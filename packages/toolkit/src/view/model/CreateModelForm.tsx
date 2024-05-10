@@ -1,639 +1,574 @@
-"use client";
-
-import cn from "clsx";
-import axios from "axios";
-import * as React from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { shallow } from "zustand/shallow";
-import {
-  BasicProgressMessageBox,
-  BasicSingleSelect,
-  BasicTextArea,
-  BasicTextField,
-  BasicUploadFileField,
-  FormRoot,
-  ProgressMessageBoxState,
-  SelectOption,
-  SolidButton,
-  getModelDefinitionToolkit,
-} from "@instill-ai/design-system";
-
-import {
-  type Model,
-  type Nullable,
-  type CreateResourceFormStore,
-  sendAmplitudeData,
-  useCreateResourceFormStore,
-  getInstillApiErrorMessage,
-  useModelDefinitions,
-  useCreateUserModel,
-  getUserModelQuery,
-  useDeployUserModel,
-  CreateUserModelPayload,
-  watchUserModel,
-  useAuthenticatedUser,
-  useAmplitudeCtx,
-} from "../../lib";
-import { checkUntilOperationIsDoen } from "../../lib/vdp-sdk/operation";
-import { InstillErrors } from "../../constant/errors";
+import { z } from "zod";
+import { InstillErrors } from "../../constant";
 import { validateInstillID } from "../../server";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CreateUserModelPayload, ModelTask, Nullable, Visibility, sendAmplitudeData, toastInstillError, useAmplitudeCtx, useAppEntity, useAuthenticatedUser, useCreateUserModel, useModelRegions, useUserMemberships } from "../../lib";
+import { Button, Form, Icons, Input, RadioGroup, Select, Tag, Textarea, getModelInstanceTaskToolkit, toast } from "@instill-ai/design-system";
+import React, { useEffect, useState } from "react";
+import { LoadingSpin } from "../../components";
+import { useRouter } from "next/navigation";
+
+const REGIONS: Record<string, string> = {
+  "REGION_GCP_EUROPE_WEST4": "GCP europe-west4",
+}
+
+const HARDWARE: Record<string, string> = {
+  "CPU": "CPU",
+  "NVIDIA_TESLA_T4": "Nvidia Tesla T4",
+  "NVIDIA_L4": "Nvidia L4",
+  "NVIDIA_A100": "Nvidia A100",
+}
+
+const getRegionTitle = (region: string) => REGIONS[region];
+const getHardwareTitle = (hardware: string) => HARDWARE[hardware];
+
+const TASKS = ["TASK_CLASSIFICATION", "TASK_DETECTION", "TASK_KEYPOINT", "TASK_OCR", "TASK_INSTANCE_SEGMENTATION", "TASK_SEMANTIC_SEGMENTATION", "TASK_TEXT_GENERATION", "TASK_TEXT_TO_IMAGE", "TASK_IMAGE_TO_IMAGE", "TASK_IMAGE_TO_TEXT"] as const;
 
 export type CreateModelFormProps = {
   accessToken: Nullable<string>;
-  onCreate: Nullable<(initStore: () => void) => void>;
-  disabledCreateModel?: boolean;
-  width?: string;
-  marginBottom?: string;
   enabledQuery: boolean;
-};
+}
 
-const selector = (state: CreateResourceFormStore) => ({
-  init: state.init,
-  setFieldError: state.setFieldError,
-  setFieldValue: state.setFieldValue,
-  modelId: state.fields.model.new.id,
-  modelIdError: state.errors.model.new.id,
-  modelDescription: state.fields.model.new.description,
-  modelDescriptionError: state.errors.model.new.description,
-  modelDefinition: state.fields.model.new.definition,
-  modelDefinitionError: state.errors.model.new.definition,
-  modelGithubRepoUrl: state.fields.model.new.github.repoUrl,
-  modelGithubRepoUrlError: state.errors.model.new.github.repoUrl,
-  modelGithubTag: state.fields.model.new.github.tag,
-  modelGithubTagError: state.errors.model.new.github.tag,
-  modelLocalFile: state.fields.model.new.local.file,
-  modelLocalFileError: state.errors.model.new.local.file,
-  modelArtivcGcsBucketPath: state.fields.model.new.artivc.gcsBucketPath,
-  modelArtivcGcsBucketPathError: state.errors.model.new.artivc.gcsBucketPath,
-  modelArtivcCredentials: state.fields.model.new.artivc.credentials,
-  modelArtivcCredentialsError: state.errors.model.new.artivc.credentials,
-  modelArtivcTag: state.fields.model.new.artivc.tag,
-  modelArtivcTagError: state.errors.model.new.artivc.tag,
-  modelHuggingFaceRepoUrl: state.fields.model.new.huggingFace.repoUrl,
-  modelHuggingFaceRepoUrlError: state.errors.model.new.huggingFace.repoUrl,
-});
+type Option = {
+  value: string;
+  title: string;
+}
+
+const CreateModelSchema = z
+  .object({
+    id: z.string(),
+    description: z.string().optional(),
+    visibility: z.enum(["VISIBILITY_PRIVATE", "VISIBILITY_PUBLIC"]).default("VISIBILITY_PRIVATE"),
+    region: z.string(),
+    hardware: z.string(),
+    task: z.enum(TASKS).default("TASK_CLASSIFICATION"),
+    namespaceId: z.string(),
+    //configuration: z.object({}),
+  })
+  .superRefine((state, ctx) => {
+    if (!validateInstillID(state.id)) {
+      return ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: InstillErrors.IDInvalidError,
+        path: ["id"],
+      });
+    }
+  });
 
 export const CreateModelForm = (props: CreateModelFormProps) => {
+  const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const {
-    accessToken,
-    enabledQuery,
-    marginBottom,
-    onCreate,
-    width,
-    disabledCreateModel,
-  } = props;
+  const { enabledQuery, accessToken  } = props;
+  const [regionOptions, setRegionOptions] = useState<Option[]>([]);
+  const [hardwareOptions, setHardwareOptions] = useState<Record<string, Option[]>>([]);
+  const [creating, setCreating] = React.useState(false);
 
-  /* -------------------------------------------------------------------------
-   * Initialize form state
-   * -----------------------------------------------------------------------*/
-
-  const queryClient = useQueryClient();
-
-  const {
-    init,
-    setFieldError,
-    setFieldValue,
-    modelId,
-    modelIdError,
-    modelDescription,
-    modelDescriptionError,
-    modelDefinition,
-    modelDefinitionError,
-    modelGithubRepoUrl,
-    modelGithubRepoUrlError,
-    modelGithubTag,
-    modelGithubTagError,
-    modelLocalFile,
-    modelLocalFileError,
-    modelArtivcGcsBucketPath,
-    modelArtivcGcsBucketPathError,
-    modelArtivcCredentials,
-    modelArtivcCredentialsError,
-    modelArtivcTag,
-    modelArtivcTagError,
-    modelHuggingFaceRepoUrl,
-    modelHuggingFaceRepoUrlError,
-  } = useCreateResourceFormStore(selector, shallow);
-
-  const user = useAuthenticatedUser({
+  const entity = useAppEntity();
+  const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
-
-  /* -------------------------------------------------------------------------
-   * Initialize the model definition
-   * -----------------------------------------------------------------------*/
-
-  const modelDefinitions = useModelDefinitions({
-    enabled: enabledQuery,
+  const userMemberships = useUserMemberships({
+    enabled: entity.isSuccess,
+    userID: me.isSuccess ? me.data.id : null,
     accessToken,
   });
 
-  const modelDefinitionOptions = React.useMemo(() => {
-    if (!modelDefinitions.isSuccess) return [];
+  const form = useForm<z.infer<typeof CreateModelSchema>>({
+    resolver: zodResolver(CreateModelSchema),
+    mode: "onChange",
+  });
 
-    return modelDefinitions.data.map((e) => {
-      const { getIcon } = getModelDefinitionToolkit(e.name);
-      return {
-        label: e.title,
-        value: e.name,
-        startIcon: getIcon({
-          width: "w-[30px]",
-          height: "h-[30px]",
-          color: "fill-instillGrey90",
-          position: "my-auto",
-        }),
-      };
-    });
-  }, [modelDefinitions]);
+  const organizationsAndUserList = React.useMemo(() => {
+    const orgsAndUserList: {
+      id: string;
+      name: string;
+      type: "user" | "organization";
+    }[] = [];
 
-  const [selectedModelDefinitionOption, setSelectedModelDefinitionOption] =
-    React.useState<Nullable<SelectOption>>(null);
-
-  /* -------------------------------------------------------------------------
-   * Create github/local/artivc/huggingface model
-   * -----------------------------------------------------------------------*/
-
-  const [modelCreated, setModelCreated] = React.useState(false);
-
-  const [createModelMessageBoxState, setCreateModelMessageBoxState] =
-    React.useState<ProgressMessageBoxState>({
-      activate: false,
-      message: null,
-      description: null,
-      status: null,
-    });
-
-  const canCreateModel = React.useMemo(() => {
-    if (!modelDefinition || modelCreated || !modelId) {
-      return false;
+    if (userMemberships.isSuccess) {
+      userMemberships.data.forEach((org) => {
+        orgsAndUserList.push({
+          id: org.organization.id,
+          name: org.organization.name,
+          type: "organization",
+        });
+      });
     }
 
-    if (modelDefinition === "model-definitions/github") {
-      if (!modelGithubRepoUrl || !modelGithubTag) {
-        return false;
-      }
-      return true;
+    if (entity.isSuccess && entity.data.entity && entity.data.entityName) {
+      orgsAndUserList.push({
+        id: entity.data.entity,
+        name: entity.data.entityName,
+        type: "user",
+      });
     }
 
-    if (modelDefinition === "model-definitions/local") {
-      if (!modelLocalFile) {
-        return false;
-      }
-      return true;
-    }
-
-    if (modelDefinition === "model-definitions/artivc") {
-      if (!modelArtivcGcsBucketPath || !modelArtivcTag) {
-        return false;
-      }
-
-      return true;
-    }
-
-    if (!modelHuggingFaceRepoUrl) {
-      return false;
-    }
-
-    return true;
+    return orgsAndUserList;
   }, [
-    modelCreated,
-    modelDefinition,
-    modelId,
-    modelGithubRepoUrl,
-    modelGithubTag,
-    modelLocalFile,
-    modelArtivcGcsBucketPath,
-    modelArtivcTag,
-    modelHuggingFaceRepoUrl,
+    userMemberships.isSuccess,
+    userMemberships.data,
+    entity.isSuccess,
+    entity.data,
   ]);
 
-  const createUserModel = useCreateUserModel();
+  const modelRegions = useModelRegions({ accessToken });
 
-  const prepareNewModel = React.useCallback(
-    async (modelName: string, modelDefinitionName: string) => {
-      const model = await getUserModelQuery({ modelName, accessToken });
-      setModelCreated(true);
-
-      queryClient.setQueryData<Model>(["models", model.name], model);
-      queryClient.setQueryData<Model[]>(["models"], (old) =>
-        old ? [...old, model] : [model]
-      );
-
-      setFieldValue("model.type", "new");
-      setFieldValue("model.new.modelIsSet", true);
-
-      setCreateModelMessageBoxState({
-        activate: true,
-        status: "success",
-        description: null,
-        message: "Succeed.",
-      });
-
-      if (amplitudeIsInit) {
-        sendAmplitudeData("create_model", {
-          model_definition_name: modelDefinitionName,
-        });
+  useEffect(() => {
+    if (regionOptions.length && Object.keys(hardwareOptions).length) {
+      if (!form.getValues('region')) {
+        form.setValue('region', regionOptions[0].value)
       }
-    },
-    [accessToken, queryClient, setFieldValue, amplitudeIsInit]
-  );
 
-  const deployUserModel = useDeployUserModel();
-
-  const handleCreateModel = React.useCallback(async () => {
-    if (!modelId || !user.isSuccess) return;
-
-    const handleCreateModelMutation = async (
-      payload: CreateUserModelPayload
-    ) => {
-      try {
-        const { operation } = await createUserModel.mutateAsync({
-          userName: user.data.name,
-          payload,
-          accessToken,
-        });
-
-        if (!modelId) return;
-
-        const operationIsDone = await checkUntilOperationIsDoen({
-          operationName: operation.name,
-          accessToken,
-        });
-
-        if (!operationIsDone) return;
-
-        const modelName = `${user.data.name}/models/${modelId.trim()}`;
-        const modelState = await watchUserModel({
-          modelName,
-          accessToken,
-        });
-
-        if (modelState.state === "STATE_ERROR") {
-          setCreateModelMessageBoxState(() => ({
-            activate: true,
-            status: "error",
-            description: "Something went wrong when creating the model",
-            message: "Create Model Failed",
-          }));
-          return;
-        }
-
-        await prepareNewModel(modelName, payload.model_definition);
-        deployUserModel.mutate({ modelName, accessToken });
-
-        setCreateModelMessageBoxState({
-          activate: true,
-          status: "success",
-          description: null,
-          message: "Succeed.",
-        });
-
-        if (onCreate) {
-          onCreate(init);
-        }
-      } catch (error) {
-        const isAxiosError = axios.isAxiosError(error);
-
-        const description = isAxiosError
-          ? getInstillApiErrorMessage(error)
-          : null;
-
-        const modelName = payload.type === "Local" ? "local" : payload.type;
-
-        const message = isAxiosError
-          ? error.message
-          : `Something went wrong when creating the ${modelName} model`;
-
-        setCreateModelMessageBoxState(() => ({
-          activate: true,
-          status: "error",
-          description,
-          message,
-        }));
+      if (!form.getValues('hardware')) {
+        //form.setValue('hardware', hardwareOptions[regionOptions[0].value][0].value)
       }
+    }
+  }, [form, regionOptions, hardwareOptions])
+
+  useEffect(() => {
+    if (entity.data.entity && !form.getValues('namespaceId')) {
+      form.setValue('namespaceId', entity.data.entity);
+    }
+  }, [form, entity.isSuccess, entity.data]);
+
+  useEffect(() => {
+    if (modelRegions.data && !regionOptions.length) {
+      const newRegionOptions = modelRegions.data.map(item => ({ value: item.region_name, title: getRegionTitle(item.region_name) }));
+      const newHardwareOptions: Record<string, Option[]> = modelRegions.data.reduce((acc, curr) => {
+        const regionHardware = curr.hardware.map(item => ({ value: item, title: getHardwareTitle(item) }))
+        
+        return {
+          ...acc,
+          [curr.region_name]: regionHardware,
+        }
+      }, {});
+      
+      setRegionOptions(newRegionOptions);
+      setHardwareOptions(newHardwareOptions);
+    }
+  }, [form, modelRegions.isSuccess, modelRegions.data, regionOptions.length])
+
+  const createModel = useCreateUserModel();
+  async function onSubmit(data: z.infer<typeof CreateModelSchema>) {
+    if (!entity.isSuccess) {
+      return;
+    }
+
+    setCreating(true);
+
+    const payload: CreateUserModelPayload = {
+      id: data.id,
+      description: data.description,
+      visibility: data.visibility,
+      region: data.region,
+      hardware: data.hardware,
+      task: data.task,
+      model_definition: "model-definitions/container",
+      configuration: {},
     };
 
-    // We don't validate the rest of the field if the ID is incorrect
-    if (!validateInstillID(modelId as string)) {
-      setFieldError("model.new.id", InstillErrors.IDInvalidError);
-      return;
-    } else if (modelId) {
-      setFieldError("model.new.id", null);
-    }
+    let isOrg = false;
+    const namespace = organizationsAndUserList.find(
+      account => {
+        if (account.id === data.namespaceId) {
+          isOrg = account.type === 'organization';
 
-    setCreateModelMessageBoxState(() => ({
-      activate: true,
-      status: "progressing",
-      description: null,
-      message: "Creating...",
-    }));
+          return true;
+        }
 
-    if (modelDefinition === "model-definitions/github") {
-      if (!modelGithubRepoUrl || !modelGithubTag) return;
-
-      const payload: CreateUserModelPayload = {
-        type: "GitHub",
-        id: modelId.trim(),
-        model_definition: "model-definitions/github",
-        description: modelDescription ?? undefined,
-        configuration: {
-          repository: modelGithubRepoUrl.trim(),
-          tag: modelGithubTag.trim(),
-        },
-      };
-
-      await handleCreateModelMutation(payload);
-    } else if (modelDefinition === "model-definitions/local") {
-      if (!modelId || !modelLocalFile) {
-        return;
+        return false;
       }
+    )?.name;
 
-      const payload: CreateUserModelPayload = {
-        type: "Local",
-        id: modelId.trim(),
-        description: modelDescription ?? undefined,
-        model_definition: "model-definitions/local",
-        configuration: {
-          content: modelLocalFile,
-        },
-      };
+    if (namespace) {
+      try {
+        await createModel.mutateAsync({
+          accessToken,
+          entityName: data.namespaceId,
+          isOrg,
+          payload,
+        });
 
-      await handleCreateModelMutation(payload);
-    } else if (modelDefinition === "model-definitions/artivc") {
-      if (!modelArtivcGcsBucketPath || !modelArtivcTag) return;
+        if (amplitudeIsInit) {
+          sendAmplitudeData("create_model");
+        }
 
-      const payload: CreateUserModelPayload = {
-        type: "ArtiVC",
-        id: modelId.trim(),
-        model_definition: "model-definitions/artivc",
-        description: modelDescription ?? undefined,
-        configuration: {
-          url: modelArtivcGcsBucketPath.trim(),
-          credential: modelArtivcCredentials
-            ? modelArtivcCredentials.trim()
-            : null,
-          tag: modelArtivcTag.trim(),
-        },
-      };
-
-      await handleCreateModelMutation(payload);
+        router.push(`/${data.namespaceId}/models/${data.id}`);
+      } catch (error) {
+        setCreating(false);
+        toastInstillError({
+          title: "Failed to create model",
+          error,
+          toast,
+        });
+      }
     } else {
-      if (!modelHuggingFaceRepoUrl) return;
-
-      const payload: CreateUserModelPayload = {
-        type: "HuggingFace",
-        id: modelId.trim(),
-        model_definition: "model-definitions/huggingface",
-        description: modelDescription ?? undefined,
-        configuration: {
-          repo_id: modelHuggingFaceRepoUrl.trim(),
-        },
-      };
-
-      await handleCreateModelMutation(payload);
+      setCreating(false);
+      toastInstillError({
+        title: "Please choose a valid owner to create your model",
+        error: null,
+        toast,
+      });
     }
-  }, [
-    createUserModel,
-    deployUserModel,
-    user.isSuccess,
-    user.data?.name,
-    modelArtivcCredentials,
-    modelArtivcGcsBucketPath,
-    modelArtivcTag,
-    modelDefinition,
-    modelDescription,
-    modelHuggingFaceRepoUrl,
-    modelId,
-    modelLocalFile,
-    modelGithubRepoUrl,
-    modelGithubTag,
-    accessToken,
-    init,
-    onCreate,
-    prepareNewModel,
-    setFieldError,
-  ]);
-
-  const getModelSetupGuide = React.useCallback((modelDefinition: string) => {
-    switch (modelDefinition) {
-      case "model-definitions/github":
-        return "https://www.instill.tech/docs/import-models/github";
-      case "model-definitions/artivc":
-        return "https://www.instill.tech/docs/import-models/artivc";
-      case "model-definitions/local":
-        return "https://www.instill.tech/docs/import-models/local";
-      case "model-definitions/huggingface":
-        return "https://www.instill.tech/docs/import-models/huggingface";
-      default:
-        return "https://www.instill.tech/docs/import-models/overview";
-    }
-  }, []);
-
-  if (disabledCreateModel) {
-    return (
-      <div className={cn("h-full flex-1", width || "w-full")}>
-        <p className="m-auto w-2/3 text-center font-sans text-sm font-normal">
-          Model creation is currently disabled, Please use our pre-deployed
-          models
-        </p>
-      </div>
-    );
   }
 
+  const formID = "create-new-model-form";
+
   return (
-    <FormRoot marginBottom={marginBottom} width={width}>
-      <div className="mb-10 flex flex-col gap-y-5">
-        <BasicTextField
-          id="model-id"
-          label="ID"
-          key="id"
-          description="Pick a ID to help you identify this resource. It should be lowercase without any space or special character besides the underscore or hyphen, it can not start with number or hyphen, and should be less than 32 characters."
-          required={true}
-          disabled={modelDefinitions ? (modelCreated ? true : false) : false}
-          value={modelId}
-          error={modelIdError}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            if (!event.target.value) {
-              setFieldValue("model.new.id", null);
-              setFieldError("model.new.id", null);
-              return;
-            }
+    <div className="flex flex-col xl:w-1/2">
+      {(entity.isSuccess && modelRegions.isSuccess) ? (
+        <Form.Root {...form}>
+          <form id={formID} onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="flex flex-col gap-y-10">
+              <div className="space-y-2">
+                <div className="flex flex-row gap-x-4">
+                  <Form.Field
+                    control={form.control}
+                    name="namespaceId"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item className="w-full">
+                          <Form.Label className="product-body-text-3-semibold">
+                            Owner
+                          </Form.Label>
+                          <Form.Control>
+                            <Select.Root
+                              value={field?.value || ""}
+                              onValueChange={(e) => {
+                                field.onChange(e);
+                                if (form.getValues("id")) {
+                                  form.trigger("id");
+                                }
+                              }}
+                            >
+                              <Select.Trigger className="w-full pl-[14px]">
+                                <Select.Value placeholder="Select Model Owner">
+                                  <div className="flex flex-row gap-x-2">
+                                    <span className="my-auto">
+                                      {field?.value?.length >= 10
+                                        ? field?.value?.slice(0, 10) +
+                                          "..."
+                                        : field.value}
+                                    </span>
+                                    <span className="my-auto">
+                                      {organizationsAndUserList.find(
+                                        (namespace) =>
+                                          namespace.id === field.value
+                                      )?.type === "organization" ? (
+                                        <Tag
+                                          variant="lightBlue"
+                                          size="sm"
+                                          className="!py-0"
+                                        >
+                                          organization
+                                        </Tag>
+                                      ) : (
+                                        <Tag
+                                          size="sm"
+                                          className="!py-0"
+                                          variant="lightNeutral"
+                                        >
+                                          user
+                                        </Tag>
+                                      )}
+                                    </span>
+                                  </div>
+                                </Select.Value>
+                              </Select.Trigger>
+                              <Select.Content>
+                                <Select.Group>
+                                  {organizationsAndUserList.length &&
+                                    organizationsAndUserList.map(
+                                      (namespace) => (
+                                        <Select.Item
+                                          value={namespace.id}
+                                          key={namespace.id}
+                                        >
+                                          <Select.ItemText>
+                                            <div className="flex flex-row gap-x-2">
+                                              <span className="my-auto">
+                                                {namespace.id}
+                                              </span>
+                                              <span className="my-auto">
+                                                {namespace.type ===
+                                                "organization" ? (
+                                                  <Tag
+                                                    variant="lightBlue"
+                                                    size="sm"
+                                                    className="!py-0"
+                                                  >
+                                                    organization
+                                                  </Tag>
+                                                ) : (
+                                                  <Tag
+                                                    size="sm"
+                                                    className="!py-0"
+                                                    variant="lightNeutral"
+                                                  >
+                                                    user
+                                                  </Tag>
+                                                )}
+                                              </span>
+                                            </div>
+                                          </Select.ItemText>
+                                        </Select.Item>
+                                      )
+                                    )}
+                                </Select.Group>
+                              </Select.Content>
+                            </Select.Root>
+                          </Form.Control>
+                          <Form.Message />
+                        </Form.Item>
+                      );
+                    }}
+                  />
 
-            const value = event.target.value.trim();
+                  <span className="pt-[30px] text-2xl text-semantic-fg-disabled">
+                    /
+                  </span>
 
-            if (validateInstillID(value)) {
-              setFieldValue("model.new.id", value);
-              setFieldError("model.new.id", null);
-            } else {
-              setFieldValue("model.new.id", value);
-              setFieldError(
-                "model.new.id",
-                "The ID should be lowercase without any space or special character besides the underscore or hyphen, it can not start with number or hyphen, and should be less than 32 characters."
-              );
-            }
-          }}
-        />
-        <BasicTextArea
-          id="model-description"
-          label="Description"
-          key="description"
-          description="Fill with a short description."
-          required={false}
-          disabled={modelDefinitions ? (modelCreated ? true : false) : false}
-          value={modelDescription}
-          error={modelDescriptionError}
-          enableCounter={true}
-          counterWordLimit={1023}
-          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-            setFieldValue("model.new.description", event.target.value)
-          }
-        />
-        <BasicSingleSelect
-          id="model-definition"
-          key="modelDefinition"
-          label="Model source"
-          value={selectedModelDefinitionOption}
-          options={modelDefinitionOptions ? modelDefinitionOptions : []}
-          error={modelDefinitionError}
-          onChange={(option) => {
-            setFieldValue("model.new.definition", option?.value);
-            setSelectedModelDefinitionOption(option);
-          }}
-          disabled={modelDefinitions ? (modelCreated ? true : false) : false}
-          required={true}
-          description={<a target="_blank" href={`${getModelSetupGuide(
-            modelDefinition || ""
-          )}`}>Setup Guide</a>}
-        />
-        {selectedModelDefinitionOption?.value === "model-definitions/github" ? (
-          <React.Fragment>
-            <BasicTextField
-              id="model-github-repo-url"
-              label="GitHub repository"
-              description="The name of a public GitHub repository, e.g.
-                      `instill-ai/model-mobilenetv2-dvc`."
-              required={true}
-              value={modelGithubRepoUrl}
-              error={modelGithubRepoUrlError}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                setFieldValue("model.new.github.repoUrl", event.target.value)
-              }
-              disabled={modelCreated ? true : false}
-            />
-            <BasicTextField
-              id="model-github-tag"
-              label="GitHub repository tag"
-              description="The tag of the public GitHub repository, e.g. `v1.0-cpu`."
-              required={true}
-              value={modelGithubTag}
-              error={modelGithubTagError}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                setFieldValue("model.new.github.tag", event.target.value)
-              }
-              disabled={modelCreated ? true : false}
-            />
-          </React.Fragment>
-        ) : null}
-        {selectedModelDefinitionOption?.value === "model-definitions/local" ? (
-          <BasicUploadFileField
-            id="model-local-file"
-            name="file"
-            label="Upload a file"
-            description="Create and upload a zip file that contains all the model files from your computer"
-            error={modelLocalFileError}
-            placeholder=""
-            uploadButtonText="Upload"
-            required={true}
-            readOnly={false}
-            disabled={modelCreated ? true : false}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setFieldValue(
-                "model.new.local.file",
-                event.target.files ? event.target.files[0] : null
-              )
-            }
-          />
-        ) : null}
-        {selectedModelDefinitionOption?.value === "model-definitions/artivc" ? (
-          <React.Fragment>
-            <BasicTextField
-              id="model-artivc-gcs-bucket-path"
-              label="GCS Bucket Path"
-              description="The bucket path string of Google Cloud Storage (GCS), e.g. `gs://mybucket/path/to/mymodel/`."
-              required={true}
-              value={modelArtivcGcsBucketPath}
-              error={modelArtivcGcsBucketPathError}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                setFieldValue(
-                  "model.new.artivc.gcsBucketPath",
-                  event.target.value
-                )
-              }
-            />
-            <BasicTextField
-              id="model-artivc-tag"
-              label="ArtiVC Tag"
-              description="The tag name of ArtiVC source commit, e.g. `v1.0-cpu`."
-              required={true}
-              value={modelArtivcTag}
-              error={modelArtivcTagError}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                setFieldValue("model.new.artivc.tag", event.target.value)
-              }
-            />
-            <BasicTextArea
-              id="model-artivc-credentials"
-              label="Credentials JSON"
-              key="credentials"
-              description="If the GCS bucket path is private, please provide the Google Cloud Application Default credential or service account credential in its JSON format to get access to the model. See ArtiVC Google Cloud Storage setup guide."
-              value={modelArtivcCredentials}
-              error={modelArtivcCredentialsError}
-              onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                setFieldValue(
-                  "model.new.artivc.credentials",
-                  event.target.value
-                )
-              }
-            />
-          </React.Fragment>
-        ) : null}
-        {selectedModelDefinitionOption?.value ===
-        "model-definitions/huggingface" ? (
-          <BasicTextField
-            id="model-huggingface-repo-url"
-            label="HuggingFace model ID"
-            description="The name of a public HuggingFace model ID, e.g. `google/vit-base-patch16-224`."
-            required={true}
-            value={modelHuggingFaceRepoUrl}
-            error={modelHuggingFaceRepoUrlError}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setFieldValue("model.new.huggingFace.repoUrl", event.target.value)
-            }
-          />
-        ) : null}
-      </div>
-      <div className="mb-10 flex flex-row">
-        <BasicProgressMessageBox
-          state={createModelMessageBoxState}
-          setActivate={(activate) =>
-            setCreateModelMessageBoxState((prev) => ({ ...prev, activate }))
-          }
-          width="w-[25vw]"
-          closable={true}
-        />
-        <SolidButton
-          disabled={canCreateModel ? false : true}
-          onClickHandler={() => handleCreateModel()}
-          position="ml-auto my-auto"
-          type="button"
-          data-testid="set-up-model-button"
-          color="primary"
-        >
-          Set up
-        </SolidButton>
-      </div>
-    </FormRoot>
-  );
-};
+                  <Form.Field
+                    control={form.control}
+                    name="id"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item className="w-full">
+                          <Form.Label className="product-body-text-3-semibold">
+                            Model ID
+                          </Form.Label>
+                          <Form.Control>
+                            <Input.Root>
+                              <Input.Core
+                                {...field}
+                                className="pl-2 !product-body-text-2-regular"
+                                type="text"
+                                placeholder="Model ID"
+                                required={false}
+                                value={field.value || ""}
+                              />
+                            </Input.Root>
+                          </Form.Control>
+
+                          <Form.Message />
+                        </Form.Item>
+                      );
+                    }}
+                  />
+                </div>
+                <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                  {`Git it a short and memorable ID, like 'cat-detector'. You can use <add the naming rule of the ID>. Use the top account drop-down to choose a different owner.`}
+                </p>
+              </div>
+              <Form.Field
+                control={form.control}
+                name="description"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <div className="flex flex-row justify-between">
+                        <Form.Label className="product-body-text-3-semibold">
+                          Description
+                        </Form.Label>
+                        <p className=" text-semantic-fg-secondary product-body-text-4-regular">
+                          Optional
+                        </p>
+                      </div>
+                      <Form.Control>
+                        <Textarea
+                          {...field}
+                          value={field.value ?? ""}
+                          autoComplete="off"
+                          placeholder="A short description of this model"
+                          className="!resize-y !text-[#1D2433] !text-opacity-80 !product-body-text-2-regular focus-visible:!ring-1"
+                        />
+                      </Form.Control>
+                      <Form.Message />
+                    </Form.Item>
+                  );
+                }}
+              />
+              <Form.Field
+                control={form.control}
+                name="task"
+                render={({ field }) => {
+                  return (
+                    <Form.Item className="flex flex-col gap-y-2.5 md:w-1/2">
+                      <Form.Label className="product-body-text-3-semibold">
+                      Model task
+                      </Form.Label>
+                      <Form.Control>
+                        <Select.Root
+                          value={field?.value || TASKS[0]}
+                          onValueChange={(value: ModelTask) => {
+                            field.onChange(value);
+                          }}
+                        >
+                          <Select.Trigger className="mt-auto w-full">
+                            <Select.Value />
+                          </Select.Trigger>
+                          <Select.Content>
+                            <Select.Group>
+                              {TASKS.map(task => {
+                                const { label } = getModelInstanceTaskToolkit(task);
+
+                                return <Select.Item key={task} value={task} label={label} />;
+                              })}
+                            </Select.Group>
+                          </Select.Content>
+                        </Select.Root>
+                      </Form.Control>
+                      <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                        The kind of operations your model is going to perform.
+                      </p>
+                    </Form.Item>
+                  )
+                }}
+              />
+              <RadioGroup.Root
+                onValueChange={(value: Exclude<Visibility, 'VISIBILITY_UNSPECIFIED'>) => {
+                  form.setValue('visibility', value);
+                }}
+                className="!flex flex-col gap-y-4"
+                defaultValue="VISIBILITY_PRIVATE"
+              >
+                <div className="flex items-center space-x-3">
+                  <label
+                    htmlFor="radio-public"
+                    className="flex flex-row gap-x-3"
+                  >
+                    <RadioGroup.Item
+                      className="my-auto"
+                      value="VISIBILITY_PUBLIC"
+                      id="radio-public"
+                    />
+                    <Icons.BookOpen02 className="my-auto h-4 w-4 stroke-semantic-fg-secondary" />
+                    <div className="flex flex-col gap-y-1">
+                      <p className="text-semantic-fg-primary product-body-text-3-semibold">
+                        Public
+                      </p>
+                      <p className="text-semantic-fg-secondary product-body-text-4-regular">
+                        Anyone on the internet can see and run this model.
+                      </p>
+                    </div>
+                  </label>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <label htmlFor="radio-private" className="flex flex-row gap-x-3">
+                    <RadioGroup.Item
+                      className="my-auto"
+                      value="VISIBILITY_PRIVATE"
+                      id="radio-private"
+                    />
+
+                    <Icons.Lock03 className="my-auto h-4 w-4 stroke-semantic-fg-secondary" />
+                    <div className="flex flex-col gap-y-1">
+                      <p className="text-semantic-fg-primary product-body-text-3-semibold">
+                        Private
+                      </p>
+                      <p className="text-semantic-fg-secondary product-body-text-4-regular">
+                        Only you and your team members can see and run this model.
+                      </p>
+                    </div>
+                  </label>
+                </div>
+              </RadioGroup.Root>
+              <Form.Field
+                control={form.control}
+                name="region"
+                render={({ field }) => {
+                  return (
+                    <Form.Item className="flex flex-col gap-y-2.5 md:w-1/2">
+                      <Form.Label className="product-body-text-3-semibold">
+                        Cloud Region
+                      </Form.Label>
+                      <Form.Control>
+                        <Select.Root
+                          value={field?.value || regionOptions?.[0]?.value}
+                          onValueChange={(value: string) => {
+                            field.onChange(value);
+
+                            if (hardwareOptions.length) {
+                              form.setValue('hardware', hardwareOptions[value][0].value);
+                            }
+                          }}
+                        >
+                          <Select.Trigger className="mt-auto w-full">
+                            <Select.Value />
+                          </Select.Trigger>
+                          <Select.Content>
+                            <Select.Group>
+                              {regionOptions.map(option => <Select.Item key={option.value} value={option.value} label={option.title} />)}
+                            </Select.Group>
+                          </Select.Content>
+                        </Select.Root>
+                      </Form.Control>
+                      <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                        {`This will affect the model's performance and operational costs. Please refer to the documentation for detailed pricing information.`}
+                      </p>
+                    </Form.Item>
+                  )
+                }}
+              />
+              <Form.Field
+                control={form.control}
+                name="hardware"
+                render={({ field }) => {
+                  return (
+                    <Form.Item className="flex flex-col gap-y-2.5 md:w-1/2">
+                      <Form.Label className="product-body-text-3-semibold">
+                        Hardware
+                      </Form.Label>
+                      <Form.Control>
+                        <Select.Root
+                          value={field?.value || hardwareOptions?.[form.getValues('region') || Object.keys(hardwareOptions)[0]]?.[0]?.value}
+                          onValueChange={(value: string) => {
+                            field.onChange(value);
+                          }}
+                        >
+                          <Select.Trigger className="mt-auto w-full">
+                            <Select.Value />
+                          </Select.Trigger>
+                          <Select.Content>
+                            <Select.Group>
+                              {(Object.keys(hardwareOptions).length && form.getValues('region'))
+                                ? hardwareOptions[form.getValues('region')].map(option => <Select.Item key={option.value} value={option.value} label={option.title} />)
+                                : null
+                              }
+                            </Select.Group>
+                          </Select.Content>
+                        </Select.Root>
+                      </Form.Control>
+                      <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                        {`This will affect the model's performance and operational costs. Please refer to the documentation for detailed pricing information.`}
+                      </p>
+                    </Form.Item>
+                  )
+                }}
+              />
+            </div>
+            <div className="pt-12 pb-14">
+              <Button
+                disabled={creating || organizationsAndUserList.length === 0}
+                form={formID}
+                variant="primary"
+                size="lg"
+                type="submit"
+              >
+                {creating ? (
+                  <LoadingSpin className="!text-semantic-fg-secondary" />
+                ) : (
+                  "Create Model"
+                )}
+              </Button>
+            </div>
+          </form>
+        </Form.Root>
+      ) : (
+        <LoadingSpin className="!m-auto !text-semantic-fg-secondary" />
+      )}
+    </div>
+  )
+}

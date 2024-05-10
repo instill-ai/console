@@ -4,6 +4,7 @@ import type {
   ModelReadme,
   ModelDefinition,
   ModelWatchState,
+  ModelRegion,
 } from "./types";
 import type { Nullable } from "../../type";
 import { Visibility } from "../types";
@@ -123,6 +124,14 @@ export type listUserModelsQueryProps = {
   accessToken: Nullable<string>;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
+};
+
+export type listUserModelRegionsQueryProps = {
+  accessToken: Nullable<string>;
+}
+
+export type ListModelRegionsResponse = {
+  regions: ModelRegion[];
 };
 
 export async function listModelsQuery(
@@ -278,6 +287,28 @@ export async function watchUserModel({
     const client = createInstillAxiosClient(accessToken, true);
     const { data } = await client.get<ModelWatchState>(`/${modelName}/watch`);
     return Promise.resolve(data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * List Model Regions
+ * -----------------------------------------------------------------------*/
+
+export async function listModelRegionsQuery({ accessToken }: listUserModelRegionsQueryProps) {
+  try {
+    const client = createInstillAxiosClient(accessToken, true);
+
+    const queryString = getQueryString({
+      baseURL: "/available-regions",
+      pageSize: null,
+      nextPageToken: null,
+    });
+
+    const { data } = await client.get<ListModelRegionsResponse>(queryString);
+
+    return Promise.resolve(data.regions);
   } catch (err) {
     return Promise.reject(err);
   }
