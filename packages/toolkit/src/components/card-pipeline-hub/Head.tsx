@@ -12,7 +12,6 @@ import {
   useShallow,
 } from "../../lib";
 import { Icons, useToast } from "@instill-ai/design-system";
-import { Menu } from "./Menu";
 import { EntityAvatar } from "../EntityAvatar";
 import { useRouter } from "next/navigation";
 

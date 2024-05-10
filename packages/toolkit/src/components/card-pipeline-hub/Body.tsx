@@ -47,6 +47,11 @@ export const Body = ({
           {pipeline.description}
         </p>
       </div>
+      <div className="flex w-full px-3 pb-3 justify-end">
+        <p className="line-clamp-3 font-mono text-xs font-normal text-semantic-fg-secondary">
+          Last updated: {pipeline.update_time}
+        </p>
+      </div>
     </div>
   );
 };
