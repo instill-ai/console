@@ -93,19 +93,19 @@ export const Head = ({
             </div>
           }
         />
-        <button
-          type="button"
-          className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
-          onClick={() => {
-            router.push(`/${ownerID}`);
-          }}
-        >
-          {ownerID}
-        </button>
+        <div className="flex-col">
+          <button
+            type="button"
+            className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
+            onClick={() => {
+              router.push(`/${ownerID}`);
+            }}
+          >
+            {ownerID}
+          </button>
+          <div className="rounded-full bg-[#E1E6EF] p-1 text-semantic-fg-secondary text-center text-sm font-bold">info</div>
+        </div>
       </div>
-      {isOwner ? (
-        <Menu pipeline={pipeline} handleDeletePipeline={handleDeletePipeline} />
-      ) : null}
     </div>
   );
 };

@@ -21,7 +21,7 @@ export const CardPipeline = (props: {
   isOwner: boolean;
   disabledPermissionLabel?: boolean;
 }) => {
-  const { ownerID, pipeline, isOwner, disabledPermissionLabel, isHub } = props;
+  const { ownerID, pipeline, isOwner, disabledPermissionLabel } = props;
 
   return (
     <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line">

@@ -229,9 +229,9 @@ export const Body = ({
                       &nbsp; Want to feature your pipeline? Drop a message
                       in&nbsp; <span className="font-bold">#featured</span>
                       &nbsp; on&nbsp;
-                      <span className="font-bold text-semantic-accent-default underline underline-offset-2">
+                      <button className="font-bold text-semantic-accent-default underline underline-offset-2">
                         Discord
-                      </span>
+                      </button>
                       <a
                         href="https://discord.com/invite/sevxWsqpGh"
                         target="_blank"

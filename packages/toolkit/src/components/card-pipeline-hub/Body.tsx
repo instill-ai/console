@@ -35,8 +35,14 @@ export const Body = ({
         >
           {pipeline.id}
         </button>
+        <button
+          type="button"
+          className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline bg-blue-100 rounded-md p-2"
+        >
+          Featured
+        </button>
       </div>
-      <div className="flex w-full px-3">
+      <div className="flex w-full px-3 pb-3">
         <p className="line-clamp-3 font-mono text-xs font-normal text-semantic-fg-secondary">
           {pipeline.description}
         </p>
