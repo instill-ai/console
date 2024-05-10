@@ -49,7 +49,7 @@ export function useInstillForm(
   const size = options?.size;
   const secrets = options?.secrets;
   const enabledCollapsibleFormGroup =
-    options?.enabledCollapsibleFormGroup ?? true;
+    options?.enabledCollapsibleFormGroup ?? false;
   const collapsibleDefaultOpen = options?.collapsibleDefaultOpen ?? false;
   const supportInstillCredit = options?.supportInstillCredit ?? false;
   const setSupportInstillCredit = options?.setSupportInstillCredit;
