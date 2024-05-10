@@ -5,9 +5,8 @@ import { Menu } from "./Menu";
 import { Tags } from "./Tags";
 import { Stats } from "./Stats";
 import { Model, Nullable, sendAmplitudeData, useAmplitudeCtx, useDeleteModel } from "../../lib";
-import { generateRegionTitle } from "../../lib/generateRegionTitle";
 import React from "react";
-import { useToast } from "@instill-ai/design-system";
+import { useToast, getModelHardwareToolkit, getModelRegionToolkit } from "@instill-ai/design-system";
 import axios from "axios";
 import { useParams } from "next/navigation";
 
@@ -91,8 +90,8 @@ export const CardModel = (props: CardModelProps) => {
           <a href={`/${entity}/models/${model.id}`} className="break-all text-semantic-accent-default hover:!underline font-medium">{model.id}</a>
           <Tags
             isPrivate={model.visibility === 'VISIBILITY_PRIVATE'}
-            region={generateRegionTitle(model.region)}
-            hardware={model.hardware}
+            region={getModelRegionToolkit(model.region)}
+            hardware={getModelHardwareToolkit(model.hardware)}
           />
           <Menu handleDeleteModel={handleDeleteModel} model={model} />
         </div>

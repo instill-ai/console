@@ -40,7 +40,7 @@ export const ModelsListPagination = ({ models, pageNumber, setPageNumber }: Mode
     }
   }, [models, pageNumber])
 
-  if (!models.data || paginationProps.totalPages === 0) {
+  if (!models.data || paginationProps.totalPages <= 1) {
     return null;
   }
 
