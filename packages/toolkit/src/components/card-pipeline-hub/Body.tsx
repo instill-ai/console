@@ -16,10 +16,8 @@ const BodySkeleton = () => {
 
 export const Body = ({
   pipeline,
-  isHub,
 }: {
   pipeline: Pipeline;
-  isHub?: boolean;
 }) => {
   const router = useRouter();
   return (
@@ -43,14 +41,6 @@ export const Body = ({
           {pipeline.description}
         </p>
       </div>
-      {!isHub && (
-        <ReadOnlyPipelineBuilder
-          pipelineName={pipeline.name}
-          recipe={pipeline.recipe}
-          metadata={pipeline.metadata}
-          className="h-\[250px\] w-full !border-none !px-0"
-        />
-      )}
     </div>
   );
 };
