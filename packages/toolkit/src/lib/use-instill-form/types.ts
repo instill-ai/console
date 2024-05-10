@@ -17,8 +17,15 @@ export type InstillCustomProps = {
   instillUIOrder?: number;
   instillUIMultiline?: boolean;
   instillEditOnNodeFields?: string[];
-  instillCredentialField?: boolean;
+  instillSecret?: boolean;
   instillPatternErrorMessage?: string;
+  instillCredentialMap?: InstillCredentialMap;
+  instillCredential?: boolean;
+};
+
+export type InstillCredentialMap = {
+  targets: string[];
+  values: string[];
 };
 
 type InstillJsonSchemaProps = {
