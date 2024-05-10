@@ -1,7 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { Button, Icons, Input, Select, Tabs } from "@instill-ai/design-system";
+import {
+  Button,
+  DiscordIcon,
+  Icons,
+  Input,
+  Select,
+  Tabs,
+} from "@instill-ai/design-system";
 
 import {
   InstillStore,
@@ -22,41 +29,14 @@ import {
   ImageWithFallback,
 } from "../../../components";
 import debounce from "lodash.debounce";
+import NewsLetterCard from "../../../components/NewsLetterCard";
+import LatestChangesCard from "../../../components/LatestChangesCard";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
 });
-const WhatsNewComponent = () => (
-  <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2">
-    <h2 className="text-2xl font-bold">What's New?</h2>
-    <ImageWithFallback
-      src={`/icons/gcs.svg`}
-      width={32}
-      height={32}
-      alt={`test-icon`}
-      fallbackImg={<Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />}
-    />
-    <div className="inline-block rounded-sm bg-blue-500 px-2 py-1 font-bold text-white">
-      Tag
-    </div>
-    <p>Text goes here</p>
-  </div>
-);
 
-const LatestChangesComponent = () => (
-  <div className="mt-4 flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2">
-    <h2 className="text-2xl font-bold">Latest Changes</h2>
-    <div className="inline-block rounded-sm bg-blue-500 px-2 py-1 font-bold text-white">
-      Tag
-    </div>
-    <p>Text goes here</p>
-    <div className="inline-block rounded-sm bg-blue-500 px-2 py-1 font-bold text-white">
-      Tag
-    </div>
-    <p>Text goes here</p>
-  </div>
-);
 export const Body = ({
   visitorCta,
 }: {
@@ -67,7 +47,7 @@ export const Body = ({
     React.useState<Nullable<string>>(null);
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
+  const [showBanner, setShowBanner] = React.useState(true);
   const pipelines = useInfinitePipelines({
     pageSize: 10,
     accessToken,
@@ -241,6 +221,34 @@ export const Body = ({
                 </div>
               </Tabs.Content>
               <Tabs.Content value="featured">
+                {showBanner && (
+                  <div className="mb-2 mt-2  flex items-center justify-between rounded-md bg-semantic-accent-bg p-4 text-semantic-fg-secondary ">
+                    <p className="flex items-center justify-between">
+                      &nbsp; Want to feature your pipeline? Drop a message
+                      in&nbsp; <span className="font-bold">#featured</span>
+                      &nbsp; on&nbsp;
+                      <span className="font-bold text-semantic-accent-default underline underline-offset-2">
+                        Discord
+                      </span>
+                      <a
+                        href="https://discord.com/invite/sevxWsqpGh"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex h-4 w-4 items-center text-semantic-accent-default"
+                      >
+                        <DiscordIcon />
+                      </a>
+                    </p>
+                    <div className="flex items-center">
+                      <button
+                        onClick={() => setShowBanner(false)}
+                        className="focus:outline-none"
+                      >
+                        <Icons.ReferenceIconX className="h-5 w-5 text-black" />
+                      </button>
+                    </div>
+                  </div>
+                )}
                 <div className="flex flex-row">
                   {/* <div className="w-[288px] pr-4 pt-6">
                     <UserProfileCard
@@ -249,8 +257,9 @@ export const Body = ({
                       visitorCta={visitorCta}
                     />
                   </div> */}
+
                   <div className="flex w-full flex-col pt-6">
-                    <div className="mb-4 flex w-full flex-col">
+                    <div className="mb-4 flex flex-col">
                       <div className="mb-2.5 flex items-center justify-between">
                         <p className="text-semantic-fg-primary product-body-text-3-semibold">
                           Pipelines 34,010
@@ -271,7 +280,7 @@ export const Body = ({
                           </Input.Root>
                         </div>
                         <Select.Root>
-                          <Select.Trigger className="w-40">
+                          <Select.Trigger className="max-w-40">
                             <Select.Value placeholder="Sort" />
                             {/* <Select.Icon /> */}
                           </Select.Trigger>
@@ -333,8 +342,8 @@ export const Body = ({
         </Tabs.Root>
       </div>
       <div className="ml-8 w-80">
-        <WhatsNewComponent />
-        <LatestChangesComponent />
+        <NewsLetterCard />
+        <LatestChangesCard />
       </div>
     </div>
   );
