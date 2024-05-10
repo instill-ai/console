@@ -9,6 +9,8 @@ export const CollapsibleFormGroup = ({
   defaultOpen,
   forceCloseCollapsibleFormGroups,
   updateForceCloseCollapsibleFormGroups,
+  forceOpenCollapsibleFormGroups,
+  updateForceOpenCollapsibleFormGroups,
 }: {
   path: string;
   title: Nullable<string>;
@@ -16,6 +18,8 @@ export const CollapsibleFormGroup = ({
   defaultOpen?: boolean;
   forceCloseCollapsibleFormGroups?: string[];
   updateForceCloseCollapsibleFormGroups?: (value: string[]) => void;
+  forceOpenCollapsibleFormGroups?: string[];
+  updateForceOpenCollapsibleFormGroups?: (value: string[]) => void;
 }) => {
   const [open, setOpen] = React.useState(defaultOpen ?? false);
 
@@ -31,7 +35,31 @@ export const CollapsibleFormGroup = ({
         );
       }
     }
-  }, [forceCloseCollapsibleFormGroups, updateForceCloseCollapsibleFormGroups]);
+  }, [
+    path,
+    forceCloseCollapsibleFormGroups,
+    updateForceCloseCollapsibleFormGroups,
+  ]);
+
+  React.useEffect(() => {
+    console.log("path", path, forceOpenCollapsibleFormGroups);
+
+    if (
+      forceOpenCollapsibleFormGroups &&
+      forceOpenCollapsibleFormGroups.includes(path)
+    ) {
+      setOpen(true);
+      if (updateForceOpenCollapsibleFormGroups) {
+        updateForceOpenCollapsibleFormGroups(
+          forceOpenCollapsibleFormGroups.filter((e) => e !== path)
+        );
+      }
+    }
+  }, [
+    path,
+    forceOpenCollapsibleFormGroups,
+    updateForceOpenCollapsibleFormGroups,
+  ]);
 
   return (
     <Collapsible.Root open={open} onOpenChange={setOpen}>

@@ -1,3 +1,3 @@
 export const InstillCredit = {
-  key: "INSTILL_CREDENTIAL",
+  key: "INSTILL_SECRET",
 };

@@ -22,7 +22,13 @@ export type PickRegularFieldsFromInstillFormTreeOptions = {
   enabledCollapsibleFormGroup?: boolean;
   collapsibleDefaultOpen?: boolean;
   forceCloseCollapsibleFormGroups?: string[];
-  updateForceCloseCollapsibleFormGroups?: (value: string[]) => void;
+  updateForceCloseCollapsibleFormGroups?: React.Dispatch<
+    React.SetStateAction<string[]>
+  >;
+  forceOpenCollapsibleFormGroups?: string[];
+  updateForceOpenCollapsibleFormGroups?: React.Dispatch<
+    React.SetStateAction<string[]>
+  >;
   supportInstillCredit?: boolean;
   setSupportInstillCredit?: (value: boolean) => void;
 };
@@ -52,6 +58,10 @@ export function pickRegularFieldsFromInstillFormTree(
     options?.forceCloseCollapsibleFormGroups ?? [];
   const updateForceCloseCollapsibleFormGroups =
     options?.updateForceCloseCollapsibleFormGroups;
+  const forceOpenCollapsibleFormGroups =
+    options?.forceOpenCollapsibleFormGroups ?? [];
+  const updateForceOpenCollapsibleFormGroups =
+    options?.updateForceOpenCollapsibleFormGroups;
 
   let title: Nullable<string> = null;
 
@@ -107,6 +117,10 @@ export function pickRegularFieldsFromInstillFormTree(
           forceCloseCollapsibleFormGroups={forceCloseCollapsibleFormGroups}
           updateForceCloseCollapsibleFormGroups={
             updateForceCloseCollapsibleFormGroups
+          }
+          forceOpenCollapsibleFormGroups={forceOpenCollapsibleFormGroups}
+          updateForceOpenCollapsibleFormGroups={
+            updateForceOpenCollapsibleFormGroups
           }
         >
           {tree.properties.map((property) => {
@@ -281,6 +295,12 @@ export function pickRegularFieldsFromInstillFormTree(
         isHidden={tree.isHidden}
         instillCredentialMap={tree.instillCredentialMap}
         setSupportInstillCredit={setSupportInstillCredit}
+        updateForceCloseCollapsibleFormGroups={
+          updateForceCloseCollapsibleFormGroups
+        }
+        updateForceOpenCollapsibleFormGroups={
+          updateForceOpenCollapsibleFormGroups
+        }
       />
     );
   }

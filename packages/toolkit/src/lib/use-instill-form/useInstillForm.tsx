@@ -30,6 +30,8 @@ export type UseInstillFormOptions = {
   | "enabledCollapsibleFormGroup"
   | "forceCloseCollapsibleFormGroups"
   | "updateForceCloseCollapsibleFormGroups"
+  | "forceOpenCollapsibleFormGroups"
+  | "updateForceOpenCollapsibleFormGroups"
   | "supportInstillCredit"
   | "setSupportInstillCredit"
 >;
@@ -51,6 +53,14 @@ export function useInstillForm(
   const collapsibleDefaultOpen = options?.collapsibleDefaultOpen ?? false;
   const supportInstillCredit = options?.supportInstillCredit ?? false;
   const setSupportInstillCredit = options?.setSupportInstillCredit;
+  const forceCloseCollapsibleFormGroups =
+    options?.forceCloseCollapsibleFormGroups ?? [];
+  const updateForceCloseCollapsibleFormGroups =
+    options?.updateForceCloseCollapsibleFormGroups;
+  const forceOpenCollapsibleFormGroups =
+    options?.forceOpenCollapsibleFormGroups ?? [];
+  const updateForceOpenCollapsibleFormGroups =
+    options?.updateForceOpenCollapsibleFormGroups;
 
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
   const [ValidatorSchema, setValidatorSchema] = React.useState<z.ZodTypeAny>(
@@ -148,6 +158,10 @@ export function useInstillForm(
         collapsibleDefaultOpen,
         supportInstillCredit,
         setSupportInstillCredit,
+        forceCloseCollapsibleFormGroups,
+        updateForceCloseCollapsibleFormGroups,
+        forceOpenCollapsibleFormGroups,
+        updateForceOpenCollapsibleFormGroups,
       }
     );
 
@@ -167,6 +181,10 @@ export function useInstillForm(
     collapsibleDefaultOpen,
     supportInstillCredit,
     setSupportInstillCredit,
+    forceCloseCollapsibleFormGroups,
+    updateForceCloseCollapsibleFormGroups,
+    forceOpenCollapsibleFormGroups,
+    updateForceOpenCollapsibleFormGroups,
   ]);
 
   return {

@@ -52,6 +52,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
   const [forceCloseCollapsibleFormGroups, setForceCloseCollapsibleFormGroups] =
     React.useState<string[]>([]);
+  const [forceOpenCollapsibleFormGroups, setForceOpenCollapsibleFormGroups] =
+    React.useState<string[]>([]);
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
   const [enableEdit, setEnableEdit] = React.useState(false);
   const [supportInstillCredit, setSupportInstillCredit] = React.useState(false);
@@ -82,6 +84,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         forceCloseCollapsibleFormGroups,
         updateForceCloseCollapsibleFormGroups:
           setForceCloseCollapsibleFormGroups,
+        forceOpenCollapsibleFormGroups,
+        updateForceOpenCollapsibleFormGroups: setForceOpenCollapsibleFormGroups,
         supportInstillCredit,
         setSupportInstillCredit,
       }

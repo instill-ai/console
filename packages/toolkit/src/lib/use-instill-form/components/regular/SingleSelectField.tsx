@@ -18,12 +18,20 @@ export const SingleSelectField = ({
   isHidden,
   instillCredentialMap,
   setSupportInstillCredit,
+  updateForceCloseCollapsibleFormGroups,
+  updateForceOpenCollapsibleFormGroups,
 }: {
   options: string[];
   shortDescription?: string;
   disabled?: boolean;
   instillCredentialMap?: InstillCredentialMap;
   setSupportInstillCredit?: (value: boolean) => void;
+  updateForceCloseCollapsibleFormGroups?: React.Dispatch<
+    React.SetStateAction<string[]>
+  >;
+  updateForceOpenCollapsibleFormGroups?: React.Dispatch<
+    React.SetStateAction<string[]>
+  >;
 } & AutoFormFieldBaseProps) => {
   return isHidden ? null : (
     <Form.Field
@@ -46,6 +54,11 @@ export const SingleSelectField = ({
                 field.onChange(e);
 
                 // Operate credit related flow
+                // 1. When user select option that support credit, we will check
+                //    whether the field has value, if not, we will fill in the
+                //    credit key into the field
+                // 2. When user select option that doesn't support credit, we will
+                //    clear the field value and focus on the field
 
                 if (instillCredentialMap) {
                   const currentCredentialFieldPath =
@@ -68,6 +81,15 @@ export const SingleSelectField = ({
                     if (setSupportInstillCredit) {
                       setSupportInstillCredit(true);
                     }
+
+                    if (updateForceCloseCollapsibleFormGroups) {
+                      const toplevelPath =
+                        currentCredentialFieldPath.split(".")[0];
+                      updateForceCloseCollapsibleFormGroups((prev) => [
+                        ...prev,
+                        toplevelPath,
+                      ]);
+                    }
                   } else {
                     // Deal with case that don't support instil credit. We
                     // will focus on the secret field and clear the value
@@ -79,6 +101,15 @@ export const SingleSelectField = ({
 
                     if (setSupportInstillCredit) {
                       setSupportInstillCredit(false);
+                    }
+
+                    if (updateForceOpenCollapsibleFormGroups) {
+                      const toplevelPath =
+                        currentCredentialFieldPath.split(".")[0];
+                      updateForceOpenCollapsibleFormGroups((prev) => [
+                        ...prev,
+                        toplevelPath,
+                      ]);
                     }
 
                     // We can not make the value change and focus event at the same
