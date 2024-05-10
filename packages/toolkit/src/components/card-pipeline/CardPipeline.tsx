@@ -27,10 +27,10 @@ export const CardPipeline = (props: {
     <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line">
       <Head pipeline={pipeline} ownerID={ownerID} isOwner={isOwner} />
       <Body pipeline={pipeline} />
-      {/* <Footer
+      <Footer
         pipeline={pipeline}
         disabledPermissionLabel={disabledPermissionLabel}
-      /> */}
+      />
     </div>
   );
 };
