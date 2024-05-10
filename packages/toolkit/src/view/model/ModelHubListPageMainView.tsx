@@ -4,19 +4,11 @@ import { Button, Input, Icons, Select } from "@instill-ai/design-system";
 import { GeneralAppPageProp, Visibility, useModels } from "../../lib";
 import { useParams, useSearchParams } from "next/navigation";
 import { ModelsList } from "./ModelsList";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import debounce from "lodash.debounce";
-import { Pagination } from "@instill-ai/design-system";
-import { env } from "../../server";
+import { ModelsListPagination } from "./ModelsListPagination";
 
 export type ModelHubListPageMainViewProps = GeneralAppPageProp;
-
-const defaultPaginationProps = {
-  isPrevDisabled: true,
-  isNextDisabled: true,
-  currentPage: 0,
-  totalPages: 0,
-}
 
 export const ModelHubListPageMainView = (
   props: ModelHubListPageMainViewProps
@@ -64,28 +56,6 @@ export const ModelHubListPageMainView = (
   });
 
   const isLoadingResource = !models.isFetched || models.isLoading || models.isFetching || models.isFetchingNextPage;
-
-  const paginationProps = useMemo(() => {
-    if (!models.data || models.data.pages.length === 0) {
-      return defaultPaginationProps;
-    }
-
-    const pageSize = env("NEXT_PUBLIC_QUERY_PAGE_SIZE") || 10;
-    const totalPages = Math.ceil(models.data.pages[0].total_size / pageSize);
-
-    let isNextDisabled = true;
-
-    if (models.hasNextPage || pageNumber < totalPages - 1) {
-      isNextDisabled = false;
-    }
-
-    return {
-      isPrevDisabled: pageNumber === 0,
-      isNextDisabled,
-      currentPage: pageNumber + 1,
-      totalPages,
-    }
-  }, [models, pageNumber])
 
   /* -------------------------------------------------------------------------
    * Render
@@ -153,30 +123,7 @@ export const ModelHubListPageMainView = (
         onModelDelete={models.refetch}
         isLoading={isLoadingResource}
       />
-      {
-        models.data && paginationProps.totalPages > 1
-          ? (
-            <Pagination
-              align="center"
-              onPrev={() => setPageNumber(currentNumber => currentNumber - 1)}
-              onNext={() => {
-                setPageNumber(currentNumber => {
-                  const newCurrentNumber = currentNumber + 1;
-                  
-                  if (
-                    paginationProps.currentPage < paginationProps.totalPages &&
-                    !models.data.pages[newCurrentNumber]
-                  ) {
-                    models.fetchNextPage();
-                  }
-
-                  return newCurrentNumber;
-                });
-              }}
-              {...paginationProps}
-            />
-          ) : null
-      }
+      <ModelsListPagination models={models} setPageNumber={setPageNumber} pageNumber={pageNumber} />
     </div>
   );
 };
