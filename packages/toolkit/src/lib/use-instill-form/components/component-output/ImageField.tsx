@@ -19,7 +19,7 @@ export const ImageField = (props: ImageFieldProps) => {
         <div className="nodrag nowheel flex flex-col rounded-sm border border-semantic-bg-line">
           <div className="flex flex-row rounded-t-[4px] border-b border-semantic-bg-line bg-[#F0F0F0] px-2 py-0.5">
             <div className="ml-auto flex flex-row gap-x-1">
-              <DownloadButton className="my-auto" text={""} />
+              <DownloadButton className="my-auto" text={image ?? ""} />
             </div>
           </div>
           <div>

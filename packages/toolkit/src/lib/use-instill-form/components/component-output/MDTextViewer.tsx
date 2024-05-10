@@ -44,7 +44,7 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
             </div>
           </div>
           <div className="ml-auto flex flex-row gap-x-1">
-            <DownloadButton className="my-auto" text={text ?? ""} />
+            {/* <DownloadButton className="my-auto" text={text ?? ""} /> */}
             <CopyButton className="my-auto" text={text ?? ""} />
           </div>
         </div>
