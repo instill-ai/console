@@ -4,24 +4,10 @@ import { validateInstillID } from "../../server";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateUserModelPayload, ModelTask, Nullable, Visibility, sendAmplitudeData, toastInstillError, useAmplitudeCtx, useAppEntity, useAuthenticatedUser, useCreateUserModel, useModelRegions, useUserMemberships } from "../../lib";
-import { Button, Form, Icons, Input, RadioGroup, Select, Tag, Textarea, getModelInstanceTaskToolkit, toast } from "@instill-ai/design-system";
+import { Button, Form, Icons, Input, RadioGroup, Select, Tag, Textarea, getModelInstanceTaskToolkit, toast, getModelRegionToolkit, getModelHardwareToolkit } from "@instill-ai/design-system";
 import React, { useEffect, useState } from "react";
 import { LoadingSpin } from "../../components";
 import { useRouter } from "next/navigation";
-
-const REGIONS: Record<string, string> = {
-  "REGION_GCP_EUROPE_WEST4": "GCP europe-west4",
-}
-
-const HARDWARE: Record<string, string> = {
-  "CPU": "CPU",
-  "NVIDIA_TESLA_T4": "Nvidia Tesla T4",
-  "NVIDIA_L4": "Nvidia L4",
-  "NVIDIA_A100": "Nvidia A100",
-}
-
-const getRegionTitle = (region: string) => REGIONS[region];
-const getHardwareTitle = (hardware: string) => HARDWARE[hardware];
 
 const TASKS = ["TASK_CLASSIFICATION", "TASK_DETECTION", "TASK_KEYPOINT", "TASK_OCR", "TASK_INSTANCE_SEGMENTATION", "TASK_SEMANTIC_SEGMENTATION", "TASK_TEXT_GENERATION", "TASK_TEXT_TO_IMAGE", "TASK_IMAGE_TO_IMAGE", "TASK_IMAGE_TO_TEXT"] as const;
 
@@ -135,9 +121,9 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
 
   useEffect(() => {
     if (modelRegions.data && !regionOptions.length) {
-      const newRegionOptions = modelRegions.data.map(item => ({ value: item.region_name, title: getRegionTitle(item.region_name) }));
+      const newRegionOptions = modelRegions.data.map(item => ({ value: item.region_name, title: getModelRegionToolkit(item.region_name) }));
       const newHardwareOptions: Record<string, Option[]> = modelRegions.data.reduce((acc, curr) => {
-        const regionHardware = curr.hardware.map(item => ({ value: item, title: getHardwareTitle(item) }))
+        const regionHardware = curr.hardware.map(item => ({ value: item, title: getModelHardwareToolkit(item) }))
         
         return {
           ...acc,
