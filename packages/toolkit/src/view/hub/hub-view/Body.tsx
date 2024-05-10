@@ -113,9 +113,7 @@ export const Body = ({
   );
 
   const tabTriggerStyle =
-    "rounded-t-sm border border-semantic-bg-line bg-semantic-bg-base-bg px-3 py-1.5 text-[#1D2433] text-opacity-80 product-body-text-3-semibold data-[state=active]:bg-semantic-bg-primary data-[state=active]:text-opacity-100";
-  const tabContentStyle =
-    "h-full w-full rounded-sm border border-semantic-bg-line bg-semantic-accent-bg p-2";
+    "text-gray-600 product-body-text-3-semibold data-[state=active]:text-black data-[state=active]:font-bold data-[state=active]:border-b-2 data-[state=active]:border-blue-500";
 
   return (
     <div className="flex justify-between px-80 sm:px-20 md:px-60">
@@ -136,20 +134,13 @@ export const Body = ({
             <div className="flex w-full flex-col">
               <Tabs.Content value="explore">
                 <div className="flex flex-row">
-                  {/* <div className="w-[288px] pr-4 pt-6">
-                    <UserProfileCard
-                      totalPipelines={null}
-                      totalPublicPipelines={userPublicPipelines.length}
-                      visitorCta={visitorCta}
-                    />
-                  </div> */}
                   <div className="flex w-full flex-col pt-6">
                     <div className="mb-4 flex flex-col">
                       <div className="mb-2.5 flex items-center justify-between">
                         <p className="text-semantic-fg-primary product-body-text-3-semibold">
                           Pipelines 34,010
                         </p>
-                        <div className="flex items-center">
+                        <div className="flex items-center gap-4">
                           <Input.Root className="w-64">
                             <Input.LeftIcon>
                               <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
@@ -163,18 +154,18 @@ export const Body = ({
                               }}
                             />
                           </Input.Root>
+                          <Select.Root>
+                            <Select.Trigger className="max-w-40">
+                              <Select.Value placeholder="Sort" />
+                              {/* <Select.Icon /> */}
+                            </Select.Trigger>
+                            <Select.Content>
+                              <Select.Item value="option1">Option 1</Select.Item>
+                              <Select.Item value="option2">Option 2</Select.Item>
+                              <Select.Item value="option3">Option 3</Select.Item>
+                            </Select.Content>
+                          </Select.Root>
                         </div>
-                        <Select.Root>
-                          <Select.Trigger className="max-w-40">
-                            <Select.Value placeholder="Sort" />
-                            {/* <Select.Icon /> */}
-                          </Select.Trigger>
-                          <Select.Content>
-                            <Select.Item value="option1">Option 1</Select.Item>
-                            <Select.Item value="option2">Option 2</Select.Item>
-                            <Select.Item value="option3">Option 3</Select.Item>
-                          </Select.Content>
-                        </Select.Root>
                       </div>
                     </div>
                     <div className="mb-4 flex flex-col gap-y-4">
@@ -252,21 +243,13 @@ export const Body = ({
                   </div>
                 )}
                 <div className="flex flex-row">
-                  {/* <div className="w-[288px] pr-4 pt-6">
-                    <UserProfileCard
-                      totalPipelines={null}
-                      totalPublicPipelines={userPublicPipelines.length}
-                      visitorCta={visitorCta}
-                    />
-                  </div> */}
-
                   <div className="flex w-full flex-col pt-6">
                     <div className="mb-4 flex flex-col">
                       <div className="mb-2.5 flex items-center justify-between">
                         <p className="text-semantic-fg-primary product-body-text-3-semibold">
                           Pipelines 34,010
                         </p>
-                        <div className="flex items-center">
+                        <div className="flex items-center gap-4">
                           <Input.Root className="w-64">
                             <Input.LeftIcon>
                               <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
@@ -280,18 +263,18 @@ export const Body = ({
                               }}
                             />
                           </Input.Root>
+                          <Select.Root>
+                            <Select.Trigger className="max-w-40">
+                              <Select.Value placeholder="Sort" />
+                              {/* <Select.Icon /> */}
+                            </Select.Trigger>
+                            <Select.Content>
+                              <Select.Item value="option1">Option 1</Select.Item>
+                              <Select.Item value="option2">Option 2</Select.Item>
+                              <Select.Item value="option3">Option 3</Select.Item>
+                            </Select.Content>
+                          </Select.Root>
                         </div>
-                        <Select.Root>
-                          <Select.Trigger className="max-w-40">
-                            <Select.Value placeholder="Sort" />
-                            {/* <Select.Icon /> */}
-                          </Select.Trigger>
-                          <Select.Content>
-                            <Select.Item value="option1">Option 1</Select.Item>
-                            <Select.Item value="option2">Option 2</Select.Item>
-                            <Select.Item value="option3">Option 3</Select.Item>
-                          </Select.Content>
-                        </Select.Root>
                       </div>
                     </div>
                     <div className="mb-4 flex flex-col gap-y-4">
