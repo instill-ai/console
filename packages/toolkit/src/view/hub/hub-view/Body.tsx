@@ -19,6 +19,7 @@ import {
   CardPipeline,
   CardSkeletonPipeline,
   UserProfileCardProps,
+  ImageWithFallback,
 } from "../../../components";
 import debounce from "lodash.debounce";
 
@@ -26,7 +27,36 @@ const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
 });
+const WhatsNewComponent = () => (
+  <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2">
+    <h2 className="text-2xl font-bold">What's New?</h2>
+    <ImageWithFallback
+      src={`/icons/gcs.svg`}
+      width={32}
+      height={32}
+      alt={`test-icon`}
+      fallbackImg={<Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />}
+    />
+    <div className="inline-block rounded-sm bg-blue-500 px-2 py-1 font-bold text-white">
+      Tag
+    </div>
+    <p>Text goes here</p>
+  </div>
+);
 
+const LatestChangesComponent = () => (
+  <div className="mt-4 flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2">
+    <h2 className="text-2xl font-bold">Latest Changes</h2>
+    <div className="inline-block rounded-sm bg-blue-500 px-2 py-1 font-bold text-white">
+      Tag
+    </div>
+    <p>Text goes here</p>
+    <div className="inline-block rounded-sm bg-blue-500 px-2 py-1 font-bold text-white">
+      Tag
+    </div>
+    <p>Text goes here</p>
+  </div>
+);
 export const Body = ({
   visitorCta,
 }: {
@@ -106,11 +136,11 @@ export const Body = ({
     "h-full w-full rounded-sm border border-semantic-bg-line bg-semantic-accent-bg p-2";
 
   return (
-    <div className="flex justify-between">
-      <div className="flex items-center">
+    <div className="flex justify-between px-80 sm:px-20 md:px-60">
+      <div className="flex w-full items-center">
         <Tabs.Root
           defaultValue="explore"
-          className="mb-8 w-full max-w-4xl flex-col justify-center"
+          className="mb-8 w-full  flex-col justify-center"
         >
           <Tabs.List className="flex justify-center gap-4">
             <Tabs.Trigger className={tabTriggerStyle} value="explore">
@@ -120,8 +150,8 @@ export const Body = ({
               Featured
             </Tabs.Trigger>
           </Tabs.List>
-          <div className="flex w-full max-w-4xl flex-row">
-            <div className="flex flex-col">
+          <div className="flex w-full flex-row">
+            <div className="flex w-full flex-col">
               <Tabs.Content value="explore">
                 <div className="flex flex-row">
                   {/* <div className="w-[288px] pr-4 pt-6">
@@ -131,7 +161,7 @@ export const Body = ({
                       visitorCta={visitorCta}
                     />
                   </div> */}
-                  <div className="flex w-[630px] flex-col pt-6">
+                  <div className="flex w-full flex-col pt-6">
                     <div className="mb-4 flex flex-col">
                       <div className="mb-2.5 flex items-center justify-between">
                         <p className="text-semantic-fg-primary product-body-text-3-semibold">
@@ -153,7 +183,7 @@ export const Body = ({
                           </Input.Root>
                         </div>
                         <Select.Root>
-                          <Select.Trigger className="w-40">
+                          <Select.Trigger className="max-w-40">
                             <Select.Value placeholder="Sort" />
                             {/* <Select.Icon /> */}
                           </Select.Trigger>
@@ -219,8 +249,8 @@ export const Body = ({
                       visitorCta={visitorCta}
                     />
                   </div> */}
-                  <div className="flex w-[630px] flex-col pt-6">
-                    <div className="mb-4 flex flex-col">
+                  <div className="flex w-full flex-col pt-6">
+                    <div className="mb-4 flex w-full flex-col">
                       <div className="mb-2.5 flex items-center justify-between">
                         <p className="text-semantic-fg-primary product-body-text-3-semibold">
                           Pipelines 34,010
@@ -302,13 +332,9 @@ export const Body = ({
           </div>
         </Tabs.Root>
       </div>
-      <div className="ml-4">
-        <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2">
-          Component 1
-        </div>
-        <div className="mt-4 flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2">
-          Component 2
-        </div>
+      <div className="ml-8 w-80">
+        <WhatsNewComponent />
+        <LatestChangesComponent />
       </div>
     </div>
   );
