@@ -23,14 +23,16 @@ import {
 import {
   LoadingSpin,
   UserProfileCard,
-  CardPipeline,
-  CardSkeletonPipeline,
   UserProfileCardProps,
   ImageWithFallback,
 } from "../../../components";
 import debounce from "lodash.debounce";
 import NewsLetterCard from "../../../components/NewsLetterCard";
 import LatestChangesCard from "../../../components/LatestChangesCard";
+import {
+  CardPipeline,
+  CardSkeletonPipeline,
+} from "../../../components/card-pipeline-hub";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
