@@ -99,9 +99,9 @@ export const ModelHubListPageMainView = (
             </Select.Trigger>
             <Select.Content>
               <Select.Group>
-                <Select.Item value="VISIBILITY_UNSPECIFIED">All</Select.Item>
-                <Select.Item value="VISIBILITY_PUBLIC">Public</Select.Item>
-                <Select.Item value="VISIBILITY_PRIVATE">Private</Select.Item>
+                <Select.Item value="VISIBILITY_UNSPECIFIED" label="All" />
+                <Select.Item value="VISIBILITY_PUBLIC" label="Public" />
+                <Select.Item value="VISIBILITY_PRIVATE" label="Private" />
               </Select.Group>
             </Select.Content>
           </Select.Root>
