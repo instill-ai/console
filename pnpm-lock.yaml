@@ -386,7 +386,7 @@ importers:
         specifier: ^1.0.6
         version: 1.0.7(tailwindcss@3.4.1)
       zod:
-        specifier: ^3.21.4
+        specifier: ^3.22.3
         version: 3.22.4
     devDependencies:
       '@babel/core':
@@ -543,7 +543,7 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1(@types/node@20.11.5)(jsdom@21.1.2)
       webpack:
-        specifier: ^5.70.0
+        specifier: ^5.76.0
         version: 5.89.0(esbuild@0.17.19)
 
   packages/design-tokens:

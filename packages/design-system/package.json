@@ -103,7 +103,7 @@
     "tsup": "^6.7.0",
     "typescript": "^5.4.2",
     "vitest": "^1.2.1",
-    "webpack": "^5.70.0"
+    "webpack": "^5.76.0"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -135,7 +135,7 @@
     "react-hook-form": "^7.51.0",
     "sanitize-html": "^2.13.0",
     "tailwindcss-animate": "^1.0.6",
-    "zod": "^3.21.4"
+    "zod": "^3.22.3"
   },
   "engines": {
     "node": ">=14.6.0"
