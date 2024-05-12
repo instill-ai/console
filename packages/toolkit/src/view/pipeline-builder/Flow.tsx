@@ -4,10 +4,15 @@ import { useShallow } from "zustand/react/shallow";
 import * as React from "react";
 import { ReactFlowInstance } from "reactflow";
 
-import { BackToLatestVersionTopBar, IteratorEditor } from "./components";
+import {
+  BackToLatestVersionTopBar,
+  IteratorEditor,
+  RemainingCreditCTA,
+} from "./components";
 
 import { InstillStore, Nullable, useInstillStore } from "../../lib";
 import { PipelineBuilderCanvas } from "./components/PipelineBuilderCanvas";
+import { env } from "../../server";
 
 const selector = (store: InstillStore) => ({
   isEditingIterator: store.isEditingIterator,
@@ -68,6 +73,11 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
                   />
                 </svg>
               </div>
+            </div>
+          ) : null}
+          {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+              <RemainingCreditCTA ctaTargetHref="/subscription" />
             </div>
           ) : null}
         </div>
