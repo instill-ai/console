@@ -128,7 +128,7 @@ export type listUserModelsQueryProps = {
 
 export type listUserModelRegionsQueryProps = {
   accessToken: Nullable<string>;
-}
+};
 
 export type ListModelRegionsResponse = {
   regions: ModelRegion[];
@@ -296,7 +296,9 @@ export async function watchUserModel({
  * List Model Regions
  * -----------------------------------------------------------------------*/
 
-export async function listModelRegionsQuery({ accessToken }: listUserModelRegionsQueryProps) {
+export async function listModelRegionsQuery({
+  accessToken,
+}: listUserModelRegionsQueryProps) {
   try {
     const client = createInstillAxiosClient(accessToken, true);
 

@@ -3,29 +3,68 @@ import { InstillErrors } from "../../constant";
 import { validateInstillID } from "../../server";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateUserModelPayload, ModelTask, Nullable, Visibility, sendAmplitudeData, toastInstillError, useAmplitudeCtx, useAppEntity, useAuthenticatedUser, useCreateUserModel, useModelRegions, useUserMemberships } from "../../lib";
-import { Button, Form, Icons, Input, RadioGroup, Select, Tag, Textarea, getModelInstanceTaskToolkit, toast, getModelRegionToolkit, getModelHardwareToolkit } from "@instill-ai/design-system";
+import {
+  CreateUserModelPayload,
+  ModelTask,
+  Nullable,
+  Visibility,
+  sendAmplitudeData,
+  toastInstillError,
+  useAmplitudeCtx,
+  useAppEntity,
+  useAuthenticatedUser,
+  useCreateUserModel,
+  useModelRegions,
+  useUserMemberships,
+} from "../../lib";
+import {
+  Button,
+  Form,
+  Icons,
+  Input,
+  RadioGroup,
+  Select,
+  Tag,
+  Textarea,
+  getModelInstanceTaskToolkit,
+  toast,
+  getModelRegionToolkit,
+  getModelHardwareToolkit,
+} from "@instill-ai/design-system";
 import React, { useEffect, useState } from "react";
 import { LoadingSpin } from "../../components";
 import { useRouter } from "next/navigation";
 
-const TASKS = ["TASK_CLASSIFICATION", "TASK_DETECTION", "TASK_KEYPOINT", "TASK_OCR", "TASK_INSTANCE_SEGMENTATION", "TASK_SEMANTIC_SEGMENTATION", "TASK_TEXT_GENERATION", "TASK_TEXT_TO_IMAGE", "TASK_IMAGE_TO_IMAGE", "TASK_IMAGE_TO_TEXT"] as const;
+const TASKS = [
+  "TASK_CLASSIFICATION",
+  "TASK_DETECTION",
+  "TASK_KEYPOINT",
+  "TASK_OCR",
+  "TASK_INSTANCE_SEGMENTATION",
+  "TASK_SEMANTIC_SEGMENTATION",
+  "TASK_TEXT_GENERATION",
+  "TASK_TEXT_TO_IMAGE",
+  "TASK_IMAGE_TO_IMAGE",
+  "TASK_IMAGE_TO_TEXT",
+] as const;
 
 export type CreateModelFormProps = {
   accessToken: Nullable<string>;
   enabledQuery: boolean;
-}
+};
 
 type Option = {
   value: string;
   title: string;
-}
+};
 
 const CreateModelSchema = z
   .object({
     id: z.string(),
     description: z.string().optional(),
-    visibility: z.enum(["VISIBILITY_PRIVATE", "VISIBILITY_PUBLIC"]).default("VISIBILITY_PRIVATE"),
+    visibility: z
+      .enum(["VISIBILITY_PRIVATE", "VISIBILITY_PUBLIC"])
+      .default("VISIBILITY_PRIVATE"),
     region: z.string(),
     hardware: z.string(),
     task: z.enum(TASKS).default("TASK_CLASSIFICATION"),
@@ -45,9 +84,11 @@ const CreateModelSchema = z
 export const CreateModelForm = (props: CreateModelFormProps) => {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const { enabledQuery, accessToken  } = props;
+  const { enabledQuery, accessToken } = props;
   const [regionOptions, setRegionOptions] = useState<Option[]>([]);
-  const [hardwareOptions, setHardwareOptions] = useState<Record<string, Option[]>>([]);
+  const [hardwareOptions, setHardwareOptions] = useState<
+    Record<string, Option[]>
+  >([]);
   const [creating, setCreating] = React.useState(false);
 
   const entity = useAppEntity();
@@ -103,38 +144,45 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
 
   useEffect(() => {
     if (regionOptions.length && Object.keys(hardwareOptions).length) {
-      if (!form.getValues('region')) {
-        form.setValue('region', regionOptions[0].value)
+      if (!form.getValues("region")) {
+        form.setValue("region", regionOptions[0].value);
       }
 
-      if (!form.getValues('hardware')) {
+      if (!form.getValues("hardware")) {
         //form.setValue('hardware', hardwareOptions[regionOptions[0].value][0].value)
       }
     }
-  }, [form, regionOptions, hardwareOptions])
+  }, [form, regionOptions, hardwareOptions]);
 
   useEffect(() => {
-    if (entity.data.entity && !form.getValues('namespaceId')) {
-      form.setValue('namespaceId', entity.data.entity);
+    if (entity.data.entity && !form.getValues("namespaceId")) {
+      form.setValue("namespaceId", entity.data.entity);
     }
   }, [form, entity.isSuccess, entity.data]);
 
   useEffect(() => {
     if (modelRegions.data && !regionOptions.length) {
-      const newRegionOptions = modelRegions.data.map(item => ({ value: item.region_name, title: getModelRegionToolkit(item.region_name) }));
-      const newHardwareOptions: Record<string, Option[]> = modelRegions.data.reduce((acc, curr) => {
-        const regionHardware = curr.hardware.map(item => ({ value: item, title: getModelHardwareToolkit(item) }))
-        
-        return {
-          ...acc,
-          [curr.region_name]: regionHardware,
-        }
-      }, {});
-      
+      const newRegionOptions = modelRegions.data.map((item) => ({
+        value: item.region_name,
+        title: getModelRegionToolkit(item.region_name),
+      }));
+      const newHardwareOptions: Record<string, Option[]> =
+        modelRegions.data.reduce((acc, curr) => {
+          const regionHardware = curr.hardware.map((item) => ({
+            value: item,
+            title: getModelHardwareToolkit(item),
+          }));
+
+          return {
+            ...acc,
+            [curr.region_name]: regionHardware,
+          };
+        }, {});
+
       setRegionOptions(newRegionOptions);
       setHardwareOptions(newHardwareOptions);
     }
-  }, [form, modelRegions.isSuccess, modelRegions.data, regionOptions.length])
+  }, [form, modelRegions.isSuccess, modelRegions.data, regionOptions.length]);
 
   const createModel = useCreateUserModel();
   async function onSubmit(data: z.infer<typeof CreateModelSchema>) {
@@ -156,17 +204,15 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
     };
 
     let isOrg = false;
-    const namespace = organizationsAndUserList.find(
-      account => {
-        if (account.id === data.namespaceId) {
-          isOrg = account.type === 'organization';
+    const namespace = organizationsAndUserList.find((account) => {
+      if (account.id === data.namespaceId) {
+        isOrg = account.type === "organization";
 
-          return true;
-        }
-
-        return false;
+        return true;
       }
-    )?.name;
+
+      return false;
+    })?.name;
 
     if (namespace) {
       try {
@@ -204,7 +250,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
 
   return (
     <div className="flex flex-col xl:w-1/2">
-      {(entity.isSuccess && modelRegions.isSuccess) ? (
+      {entity.isSuccess && modelRegions.isSuccess ? (
         <Form.Root {...form}>
           <form id={formID} onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-y-10">
@@ -234,8 +280,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                                   <div className="flex flex-row gap-x-2">
                                     <span className="my-auto">
                                       {field?.value?.length >= 10
-                                        ? field?.value?.slice(0, 10) +
-                                          "..."
+                                        ? field?.value?.slice(0, 10) + "..."
                                         : field.value}
                                     </span>
                                     <span className="my-auto">
@@ -383,7 +428,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                   return (
                     <Form.Item className="flex flex-col gap-y-2.5 md:w-1/2">
                       <Form.Label className="product-body-text-3-semibold">
-                      Model task
+                        Model task
                       </Form.Label>
                       <Form.Control>
                         <Select.Root
@@ -397,10 +442,17 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                           </Select.Trigger>
                           <Select.Content>
                             <Select.Group>
-                              {TASKS.map(task => {
-                                const { label } = getModelInstanceTaskToolkit(task);
+                              {TASKS.map((task) => {
+                                const { label } =
+                                  getModelInstanceTaskToolkit(task);
 
-                                return <Select.Item key={task} value={task} label={label} />;
+                                return (
+                                  <Select.Item
+                                    key={task}
+                                    value={task}
+                                    label={label}
+                                  />
+                                );
                               })}
                             </Select.Group>
                           </Select.Content>
@@ -410,12 +462,14 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                         The kind of operations your model is going to perform.
                       </p>
                     </Form.Item>
-                  )
+                  );
                 }}
               />
               <RadioGroup.Root
-                onValueChange={(value: Exclude<Visibility, 'VISIBILITY_UNSPECIFIED'>) => {
-                  form.setValue('visibility', value);
+                onValueChange={(
+                  value: Exclude<Visibility, "VISIBILITY_UNSPECIFIED">
+                ) => {
+                  form.setValue("visibility", value);
                 }}
                 className="!flex flex-col gap-y-4"
                 defaultValue="VISIBILITY_PRIVATE"
@@ -442,7 +496,10 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                   </label>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <label htmlFor="radio-private" className="flex flex-row gap-x-3">
+                  <label
+                    htmlFor="radio-private"
+                    className="flex flex-row gap-x-3"
+                  >
                     <RadioGroup.Item
                       className="my-auto"
                       value="VISIBILITY_PRIVATE"
@@ -455,7 +512,8 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                         Private
                       </p>
                       <p className="text-semantic-fg-secondary product-body-text-4-regular">
-                        Only you and your team members can see and run this model.
+                        Only you and your team members can see and run this
+                        model.
                       </p>
                     </div>
                   </label>
@@ -477,7 +535,10 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                             field.onChange(value);
 
                             if (hardwareOptions.length) {
-                              form.setValue('hardware', hardwareOptions[value][0].value);
+                              form.setValue(
+                                "hardware",
+                                hardwareOptions[value][0].value
+                              );
                             }
                           }}
                         >
@@ -486,7 +547,13 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                           </Select.Trigger>
                           <Select.Content>
                             <Select.Group>
-                              {regionOptions.map(option => <Select.Item key={option.value} value={option.value} label={option.title} />)}
+                              {regionOptions.map((option) => (
+                                <Select.Item
+                                  key={option.value}
+                                  value={option.value}
+                                  label={option.title}
+                                />
+                              ))}
                             </Select.Group>
                           </Select.Content>
                         </Select.Root>
@@ -495,7 +562,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                         {`This will affect the model's performance and operational costs. Please refer to the documentation for detailed pricing information.`}
                       </p>
                     </Form.Item>
-                  )
+                  );
                 }}
               />
               <Form.Field
@@ -509,7 +576,13 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                       </Form.Label>
                       <Form.Control>
                         <Select.Root
-                          value={field?.value || hardwareOptions?.[form.getValues('region') || Object.keys(hardwareOptions)[0]]?.[0]?.value}
+                          value={
+                            field?.value ||
+                            hardwareOptions?.[
+                              form.getValues("region") ||
+                                Object.keys(hardwareOptions)[0]
+                            ]?.[0]?.value
+                          }
                           onValueChange={(value: string) => {
                             field.onChange(value);
                           }}
@@ -519,10 +592,18 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                           </Select.Trigger>
                           <Select.Content>
                             <Select.Group>
-                              {(Object.keys(hardwareOptions).length && form.getValues('region'))
-                                ? hardwareOptions[form.getValues('region')].map(option => <Select.Item key={option.value} value={option.value} label={option.title} />)
-                                : null
-                              }
+                              {Object.keys(hardwareOptions).length &&
+                              form.getValues("region")
+                                ? hardwareOptions[form.getValues("region")].map(
+                                    (option) => (
+                                      <Select.Item
+                                        key={option.value}
+                                        value={option.value}
+                                        label={option.title}
+                                      />
+                                    )
+                                  )
+                                : null}
                             </Select.Group>
                           </Select.Content>
                         </Select.Root>
@@ -531,11 +612,11 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                         {`This will affect the model's performance and operational costs. Please refer to the documentation for detailed pricing information.`}
                       </p>
                     </Form.Item>
-                  )
+                  );
                 }}
               />
             </div>
-            <div className="pt-12 pb-14">
+            <div className="pb-14 pt-12">
               <Button
                 disabled={creating || organizationsAndUserList.length === 0}
                 form={formID}
@@ -556,5 +637,5 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
         <LoadingSpin className="!m-auto !text-semantic-fg-secondary" />
       )}
     </div>
-  )
-}
+  );
+};

@@ -33,9 +33,7 @@ export type CreateUserModelPayload = {
   hardware: string;
   task: ModelTask;
   model_definition: "model-definitions/container";
-  configuration: {
-    [key: string]: string;
-  }
+  configuration: Record<string, string>;
 };
 
 export type CreateUserGitHubModelPayload = {
@@ -71,7 +69,7 @@ export type CreateUserArtiVCModelPayload = {
 };
 
 export type CreateUserModelResponse = {
-  model: Model,
+  model: Model;
 };
 
 export async function createUserModelMutation({
@@ -89,7 +87,7 @@ export async function createUserModelMutation({
     const client = createInstillAxiosClient(accessToken, "model");
 
     const { data } = await client.post<CreateUserModelResponse>(
-      `/${isOrg ? 'organizations' : 'users'}/${entityName}/models`,
+      `/${isOrg ? "organizations" : "users"}/${entityName}/models`,
       payload
     );
 

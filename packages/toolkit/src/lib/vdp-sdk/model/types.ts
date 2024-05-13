@@ -106,4 +106,4 @@ export type ModelWithPipelines = Model & {
 export type ModelRegion = {
   region_name: string;
   hardware: string[];
-}
+};
