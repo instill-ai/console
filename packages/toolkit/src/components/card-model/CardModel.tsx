@@ -9,16 +9,7 @@ import React from "react";
 import { useToast, getModelHardwareToolkit, getModelRegionToolkit } from "@instill-ai/design-system";
 import axios from "axios";
 import { useParams } from "next/navigation";
-
-/* export const CardSkeletonModel = () => {
-  return (
-    <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line">
-      <Head.Skeleton />
-      <Body.Skeleton />
-      <Footer.Skeleton />
-    </div>
-  );
-}; */
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 
 export type CardModelProps = {
   model: Model;
@@ -90,8 +81,8 @@ export const CardModel = (props: CardModelProps) => {
           <a href={`/${entity}/models/${model.id}`} className="break-all text-semantic-accent-default hover:!underline font-medium">{model.id}</a>
           <Tags
             isPrivate={model.visibility === 'VISIBILITY_PRIVATE'}
-            region={getModelRegionToolkit(model.region)}
-            hardware={getModelHardwareToolkit(model.hardware)}
+            region={getModelRegionToolkit(model.region) || ''}
+            hardware={getModelHardwareToolkit(model.hardware) || ''}
           />
           <Menu handleDeleteModel={handleDeleteModel} model={model} />
         </div>
