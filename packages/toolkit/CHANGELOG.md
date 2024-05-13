@@ -1,5 +1,58 @@
 # Changelog
 
+## [0.89.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.88.2...@instill-ai/toolkit-v0.89.0) (2024-05-07)
+
+
+### Features
+
+* adapt the retirement of api prefix ([#1124](https://github.com/instill-ai/console/issues/1124)) ([3654fb4](https://github.com/instill-ai/console/commit/3654fb427dda9401714f095249ec722ff988e599))
+
+
+### Bug Fixes
+
+* **auto-gen-form:** fix wrongly handle singular object type ([#1128](https://github.com/instill-ai/console/issues/1128)) ([7e8533a](https://github.com/instill-ai/console/commit/7e8533a936bcce7e1581569261b9614e14a59c4d))
+
+## [0.88.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.88.1...@instill-ai/toolkit-v0.88.2) (2024-05-03)
+
+
+### Bug Fixes
+
+* pipeline view head section clone button permission ([#1122](https://github.com/instill-ai/console/issues/1122)) ([527fd88](https://github.com/instill-ai/console/commit/527fd88f0875a9409331b5178cdbd58cd1c07a66))
+
+## [0.88.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.88.0...@instill-ai/toolkit-v0.88.1) (2024-05-02)
+
+
+### Bug Fixes
+
+* **pipeline-builder:** fix wrongly roll back position when update node config ([#1120](https://github.com/instill-ai/console/issues/1120)) ([9b68564](https://github.com/instill-ai/console/commit/9b68564a90be700a0a579109acac56f80d9e1c62))
+
+## [0.88.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.87.1...@instill-ai/toolkit-v0.88.0) (2024-05-02)
+
+
+### Features
+
+* **pipeline-builder:** make description on node selectable ([#1119](https://github.com/instill-ai/console/issues/1119)) ([552a516](https://github.com/instill-ai/console/commit/552a516c806b325bf7b2cf176a34a3488340750a))
+
+
+### Bug Fixes
+
+* fix pipeline-view head button and style ([#1115](https://github.com/instill-ai/console/issues/1115)) ([2335cee](https://github.com/instill-ai/console/commit/2335ceee3a419b102397cdd63407d2bc95359cf2))
+* **pipeline-builder:** fix toolkit wrongly display null definition cause confusion ([#1118](https://github.com/instill-ai/console/issues/1118)) ([7ecfb08](https://github.com/instill-ai/console/commit/7ecfb086d2ca9f451d5f7e3cf601915b930bd78f))
+* **pipeline-builder:** fix we can not hint secrets on TextArea ([#1117](https://github.com/instill-ai/console/issues/1117)) ([922c50c](https://github.com/instill-ai/console/commit/922c50ce9b8b3b68c47ceb3f48768b545c5f2821))
+
+## [0.87.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.87.0...@instill-ai/toolkit-v0.87.1) (2024-05-01)
+
+
+### Bug Fixes
+
+* fix deps that have issues ([#1107](https://github.com/instill-ai/console/issues/1107)) ([751e266](https://github.com/instill-ai/console/commit/751e2663995e9965e4ce155953030f4ed65b6f89))
+* fix vscode settings to use tsconfigs in subfolders ([#1114](https://github.com/instill-ai/console/issues/1114)) ([af1bb2d](https://github.com/instill-ai/console/commit/af1bb2d306e09637eef2e67bc562a84ddeb2938d))
+* fix wrongly return entity object on useAppEntity causing issue on Dashboard ([#1111](https://github.com/instill-ai/console/issues/1111)) ([e565a90](https://github.com/instill-ai/console/commit/e565a9029df2e7deb3619ae2852a83bfd40e74ca))
+* **pipeline-builder:** fix not correctly display nodes position in iterator ([#1110](https://github.com/instill-ai/console/issues/1110)) ([d9b8f09](https://github.com/instill-ai/console/commit/d9b8f09a313bd1fa79080e738d87a6e2d37ac2ad))
+* **pipeline-builder:** fix read-only canvas pan on drag issue ([#1109](https://github.com/instill-ai/console/issues/1109)) ([d94d502](https://github.com/instill-ai/console/commit/d94d502f491f2f6452068f6f1f815d3ecff90eb5))
+* **pipeline-builder:** fix when update the field on node the screen flicker  ([#1112](https://github.com/instill-ai/console/issues/1112)) ([7d10cde](https://github.com/instill-ai/console/commit/7d10cdee637ed78cee0af0eabb5cb9adc383b641))
+* **pipeline-overview:** fix alignment between input and output fields on the pipeline overview page ([301aee7](https://github.com/instill-ai/console/commit/301aee76d193815e6403e409f467ce8a112c9c77))
+
 ## [0.87.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.86.1...@instill-ai/toolkit-v0.87.0) (2024-04-25)
 
 

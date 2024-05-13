@@ -24,6 +24,7 @@ import {
 } from "./nodes";
 import { CustomEdge } from "./CustomEdge";
 import { isResponseNode, isTriggerNode } from "../lib";
+import { canvasPanOnDrag } from "./canvasPanOnDrag";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -51,8 +52,6 @@ const nodeTypes = {
 const edgeTypes = {
   customEdge: CustomEdge,
 };
-
-const panOnDrag = [0, 1];
 
 export const PipelineBuilderCanvas = ({
   setReactFlowInstance,
@@ -119,6 +118,11 @@ export const PipelineBuilderCanvas = ({
         });
         onNodesChange(nextChanges);
       }}
+      onMove={() => {
+        if (pipelineIsReadOnly) return;
+        updateSelectedConnectorNodeId(() => null);
+        updateCurrentAdvancedConfigurationNodeID(() => null);
+      }}
       onEdgesChange={(changes) => {
         if (pipelineIsReadOnly) return;
         onEdgesChange(changes);
@@ -138,7 +142,7 @@ export const PipelineBuilderCanvas = ({
       }}
       // To enable Figma-like zoom-in-out experience
       panOnScroll={true}
-      panOnDrag={panOnDrag}
+      panOnDrag={canvasPanOnDrag}
       selectionMode={SelectionMode.Partial}
       // We want to position node based on their center
       nodeOrigin={[0.5, 0.5]}

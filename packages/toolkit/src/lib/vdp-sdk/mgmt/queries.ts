@@ -12,7 +12,7 @@ export async function getAuthenticatedUserQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetAuthenticatedResponse>("/user");
 
@@ -32,7 +32,7 @@ export async function getAuthenticatedUserSubscriptionsQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } =
       await client.get<GetAuthenticatedUserSubscriptionsResponse>(
@@ -57,7 +57,7 @@ export async function getUserQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetUserResponse>(`/${userName}`);
 
@@ -79,7 +79,7 @@ export async function getApiTokenQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetApiTokenResponse>(`/${tokenName}`);
 
@@ -111,7 +111,7 @@ export async function listApiTokensQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
     const tokens: ApiToken[] = [];
 
     const queryString = getQueryString({
@@ -150,7 +150,7 @@ export async function listUsersQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "core");
+    const client = createInstillAxiosClient(accessToken);
     const users: User[] = [];
 
     const queryString = getQueryString({
@@ -175,6 +175,30 @@ export async function listUsersQuery({
     }
 
     return Promise.resolve(users);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type GetRemainingCreditResponse = {
+  amount: number;
+};
+
+export async function getRemainingCreditQuery({
+  ownerName,
+  accessToken,
+}: {
+  ownerName: Nullable<string>;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken);
+
+    const { data } = await client.get<GetRemainingCreditResponse>(
+      `/${ownerName}/credit`
+    );
+
+    return Promise.resolve(data.amount);
   } catch (err) {
     return Promise.reject(err);
   }

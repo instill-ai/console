@@ -1221,10 +1221,8 @@ test("should generate stability ai form", async () => {
     name: /clip guidance preset/i,
   });
   expect(clipGuidancePresetField).toBeInTheDocument();
-  // default value on the schema is FAST_BLUE
-  expect(
-    within(clipGuidancePresetField).getByText("FAST_BLUE")
-  ).toBeInTheDocument();
+  // default value on the schema is NONE
+  expect(within(clipGuidancePresetField).getByText("NONE")).toBeInTheDocument();
 
   const widthField = screen.getByRole("textbox", {
     name: /width/i,
@@ -1286,9 +1284,7 @@ test("should generate stability ai form", async () => {
   expect(promptsField).toBeInTheDocument();
   expect(weightsField).toBeInTheDocument();
   expect(clipGuidancePresetField).toBeInTheDocument();
-  expect(
-    within(clipGuidancePresetField).getByText("FAST_BLUE")
-  ).toBeInTheDocument();
+  expect(within(clipGuidancePresetField).getByText("NONE")).toBeInTheDocument();
   expect(cfgScaleField).toBeInTheDocument();
   expect(cfgScaleField).toHaveValue("7");
   expect(samplerField).toBeInTheDocument();
@@ -1385,7 +1381,7 @@ test("should generate stability ai form", async () => {
     task: "TASK_IMAGE_TO_IMAGE",
     input: {
       cfg_scale: "7",
-      clip_guidance_preset: "FAST_BLUE",
+      clip_guidance_preset: "NONE",
       image_strength: "0.35",
       sampler: "K_DPM_2_ANCESTRAL",
       samples: "1",

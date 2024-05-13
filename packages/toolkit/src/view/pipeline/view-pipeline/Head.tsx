@@ -132,8 +132,8 @@ export const Head = ({
       `}</style>
       <div className="user-gradient relative flex min-h-[180px] w-full flex-col bg-semantic-bg-primary">
         <div className="flex justify-center">
-          <div className="flex w-[1440px] flex-row px-24 py-16">
-            <div className="mr-auto flex max-w-5xl flex-col gap-y-3">
+          <div className="flex h-32 w-[1440px] flex-row px-24 py-7">
+            <div className="mr-auto flex flex-col gap-y-3">
               <div className="flex w-full flex-row">
                 <div className="mr-auto flex flex-row gap-x-3">
                   {entity.isSuccess ? (
@@ -143,7 +143,7 @@ export const Head = ({
                         entityName={organization.data?.name ?? ""}
                         className="my-auto h-6 w-6"
                         fallbackImg={
-                          <div className="flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
+                          <div className="my-auto flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
                             <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
                           </div>
                         }
@@ -154,14 +154,14 @@ export const Head = ({
                         entityName={user.data?.name ?? ""}
                         className="my-auto h-6 w-6"
                         fallbackImg={
-                          <div className="flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
+                          <div className="my-auto flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
                             <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
                           </div>
                         }
                       />
                     )
                   ) : (
-                    <Skeleton className="h-6 w-6 rounded-full" />
+                    <Skeleton className="my-auto h-6 w-6 rounded-full" />
                   )}
 
                   {releases && pipeline.isSuccess ? (
@@ -284,7 +284,7 @@ export const Head = ({
                       />
                     </div>
                   ) : (
-                    <div className="flex w-full flex-row items-center gap-x-2 p-1">
+                    <div className="flex w-full flex-row items-center gap-x-2">
                       <p className="font-mono text-xs italic text-semantic-fg-disabled">
                         This is a placeholder brief of this pipeline
                       </p>
@@ -305,16 +305,14 @@ export const Head = ({
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="absolute bottom-0 flex w-[1440px] flex-row pl-24 pr-8">
-            <div className="mr-auto">
-              <TabMenu.Root
-                value={selectedTab}
-                onValueChange={(value) => setSelectedTab(value)}
-                disabledDeSelect={true}
-              >
-                <TabMenu.Item value="overview">Overview</TabMenu.Item>
-              </TabMenu.Root>
-            </div>
+          <div className="absolute bottom-0 flex w-[1440px] flex-row justify-between pl-24 pr-8">
+            <TabMenu.Root
+              value={selectedTab}
+              onValueChange={(value) => setSelectedTab(value)}
+              disabledDeSelect={true}
+            >
+              <TabMenu.Item value="overview">Overview</TabMenu.Item>
+            </TabMenu.Root>
             <div className="mt-auto flex flex-row gap-x-2 pb-1">
               {pipeline.isSuccess &&
               me.isSuccess &&
@@ -327,21 +325,6 @@ export const Head = ({
 
               {pipeline.isSuccess ? (
                 <React.Fragment>
-                  {pipeline.data.permission.can_edit ? (
-                    <Button
-                      onClick={() => {
-                        router.push(
-                          `/${entity.data.entity}/pipelines/${entity.data.id}/builder`
-                        );
-                      }}
-                      size="sm"
-                      variant="secondaryGrey"
-                      className="gap-x-2"
-                    >
-                      <Icons.Tool01 className="h-3 w-3 stroke-semantic-fg-secondary" />
-                      Edit
-                    </Button>
-                  ) : null}
                   {me.isSuccess ? (
                     <ClonePipelineDialog
                       trigger={
@@ -368,6 +351,21 @@ export const Head = ({
                       Log in to Clone
                     </Button>
                   )}
+                  {pipeline.data.permission.can_edit ? (
+                    <Button
+                      onClick={() => {
+                        router.push(
+                          `/${entity.data.entity}/pipelines/${entity.data.id}/builder`
+                        );
+                      }}
+                      size="sm"
+                      variant="secondaryGrey"
+                      className="gap-x-2"
+                    >
+                      <Icons.Tool01 className="h-3 w-3 stroke-semantic-fg-secondary" />
+                      Edit
+                    </Button>
+                  ) : null}
                 </React.Fragment>
               ) : (
                 <HeaderControllerSkeleton />
@@ -382,13 +380,13 @@ export const Head = ({
 
 const PipelineDescriptionSkeleton = () => {
   return (
-    <div className="h-4 w-[320px] animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
+    <div className="h-6 w-[320px] animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
   );
 };
 
 const PipelineNameSkeleton = () => {
   return (
-    <div className="h-6 w-[160px] animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
+    <div className="h-8 w-[160px] animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
   );
 };
 

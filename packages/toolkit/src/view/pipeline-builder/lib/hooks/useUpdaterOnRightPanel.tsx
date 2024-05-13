@@ -7,11 +7,9 @@ import {
   ZodAnyValidatorSchema,
   useInstillStore,
 } from "../../../../lib";
-import isEqual from "lodash.isequal";
 import { useShallow } from "zustand/react/shallow";
 import {
   composeEdgesFromNodes,
-  getConnectorOperatorComponentConfiguration,
   isConnectorNode,
   isIteratorNode,
   isOperatorNode,
@@ -20,6 +18,7 @@ import { ConnectorNodeData, NodeData, OperatorNodeData } from "../../type";
 
 import { Node } from "reactflow";
 import debounce from "lodash.debounce";
+import isEqual from "lodash.isequal";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -47,109 +46,98 @@ export function useUpdaterOnRightPanel({
   } = useInstillStore(useShallow(selector));
 
   const {
-    getValues,
     formState: { isDirty },
-    trigger,
+    watch,
   } = form;
 
-  const values = getValues();
-
-  const updatedValue = React.useRef<Nullable<GeneralRecord>>(null);
+  const prevValue = React.useRef<Nullable<GeneralRecord>>(null);
 
   const debounceUpdater = React.useCallback(
-    debounce((updateData) => {
-      const newNodes: Node<NodeData>[] = nodes.map((node) => {
-        if (isConnectorNode(node) && node.id === currentNodeData.id) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              connector_component: {
-                ...node.data.connector_component,
-                task: updateData.task,
-                condition: updateData.condition,
-                input: updateData.input,
-                connection: updateData.connection,
+    debounce(
+      ({
+        nodeID,
+        updateData,
+        nodes,
+      }: {
+        nodeID: string;
+        updateData: GeneralRecord;
+        nodes: Node<NodeData>[];
+      }) => {
+        const newNodes: Node<NodeData>[] = nodes.map((node) => {
+          if (isConnectorNode(node) && node.id === nodeID) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                connector_component: {
+                  ...node.data.connector_component,
+                  task: updateData.task,
+                  condition: updateData.condition,
+                  input: updateData.input,
+                  connection: updateData.connection,
+                },
               },
-            },
-          };
-        }
+            };
+          }
 
-        if (isOperatorNode(node) && node.id === currentNodeData.id) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              operator_component: {
-                ...node.data.operator_component,
-                task: updateData.task,
-                condition: updateData.condition,
-                input: updateData.input,
+          if (isOperatorNode(node) && node.id === nodeID) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                operator_component: {
+                  ...node.data.operator_component,
+                  task: updateData.task,
+                  condition: updateData.condition,
+                  input: updateData.input,
+                },
               },
-            },
-          };
-        }
+            };
+          }
 
-        if (isIteratorNode(node)) {
+          if (isIteratorNode(node)) {
+            return node;
+          }
+
           return node;
-        }
+        });
 
-        return node;
-      });
-
-      updateNodes(() => newNodes);
-      const newEdges = composeEdgesFromNodes(newNodes);
-      updateEdges(() => newEdges);
-      updatePipelineRecipeIsDirty(() => true);
-      updatedValue.current = updateData;
-    }, 300),
-    [
-      currentNodeData,
-      nodes,
-      updateEdges,
-      updateNodes,
-      updatePipelineRecipeIsDirty,
-    ]
+        updateNodes(() => newNodes);
+        const newEdges = composeEdgesFromNodes(newNodes);
+        updateEdges(() => newEdges);
+        updatePipelineRecipeIsDirty(() => true);
+        prevValue.current = updateData;
+      },
+      300
+    ),
+    [updateEdges, updateNodes, updatePipelineRecipeIsDirty]
   );
 
-  // We don't fully rely on the react-hook-form isValid and isDirty state
-  // because the isHidden fields make the formStart inacurate.
   React.useEffect(() => {
-    if (pipelineIsReadOnly) {
-      return;
-    }
+    const sub = watch((values) => {
+      if (pipelineIsReadOnly) {
+        return;
+      }
 
-    const parsed = ValidatorSchema.safeParse(values);
+      const parsed = ValidatorSchema.safeParse(values);
 
-    const configuration =
-      getConnectorOperatorComponentConfiguration(currentNodeData);
+      // RHF isDiry state is not working correctly, at the first input
+      // the state won't be updated, so we need to check by ourselves
+      if (!parsed.success || isEqual(prevValue.current, parsed.data)) {
+        return;
+      }
 
-    if (!parsed.success) {
-      return;
-    }
+      form.handleSubmit(() => {
+        debounceUpdater({
+          updateData: parsed.data,
+          nodeID: currentNodeData.id,
+          nodes,
+        });
+      })();
+    });
 
-    // We use the isDirty only for the initial render. After that we rely on the
-    // isEqual to check if the configuration has changed.
-    if (isEqual(configuration, parsed.data) || !isDirty) {
-      return;
-    }
-
-    if (updatedValue.current && isEqual(updatedValue.current, parsed.data)) {
-      return;
-    }
-
-    debounceUpdater(parsed.data);
-  }, [
-    values,
-    ValidatorSchema,
-    updateNodes,
-    updatePipelineRecipeIsDirty,
-    nodes,
-    updateEdges,
-    currentNodeData,
-    isDirty,
-    trigger,
-    debounceUpdater,
-    pipelineIsReadOnly,
-  ]);
+    return () => {
+      sub.unsubscribe();
+    };
+  }, [watch, isDirty, currentNodeData, ValidatorSchema, pipelineIsReadOnly]);
 }

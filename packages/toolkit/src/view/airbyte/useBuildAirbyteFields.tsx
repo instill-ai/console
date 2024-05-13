@@ -251,9 +251,8 @@ export const pickComponent = (
                   className="text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
                   key={option.value}
                   value={option.value}
-                >
-                  <p className="my-auto">{option.label}</p>
-                </Select.Item>
+                  label={option.label ?? undefined}
+                />
               );
             })}
           </Select.Content>

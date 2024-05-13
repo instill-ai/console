@@ -16,6 +16,7 @@ import { AutoFormFieldBaseProps, SmartHintWarning } from "../../types";
 import { useValidateReferenceAndTemplate } from "./useValidateReferenceAndTemplate";
 import { getFieldPlaceholder } from "./getFieldPlaceholder";
 import { FieldDescriptionTooltip } from "../common";
+import { Secret } from "../../../vdp-sdk";
 
 export const TextArea = ({
   form,
@@ -30,6 +31,10 @@ export const TextArea = ({
   componentID,
   size,
   isHidden,
+  secrets,
+  instillSecret,
+  instillCredential,
+  supportInstillCredit,
 }: {
   instillAcceptFormats: string[];
   shortDescription?: string;
@@ -37,6 +42,10 @@ export const TextArea = ({
   isRequired?: boolean;
   instillUpstreamTypes: string[];
   componentID?: string;
+  secrets?: Secret[];
+  instillSecret?: boolean;
+  instillCredential?: boolean;
+  supportInstillCredit?: boolean;
 } & AutoFormFieldBaseProps) => {
   const smartHints = useInstillStore((s) => s.smartHints);
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
@@ -79,6 +88,8 @@ export const TextArea = ({
     smartHintEnabledPos,
     fieldValue,
     componentID,
+    secrets,
+    instillSecret,
   });
 
   const supportTemplate = instillUpstreamTypes.includes("template");
@@ -207,13 +218,18 @@ export const TextArea = ({
                       inputRef={inputRef}
                       smartHintEnabledPos={smartHintEnabledPos}
                       instillAcceptFormats={instillAcceptFormats}
+                      instillCredential={instillCredential}
+                      supportInstillCredit={supportInstillCredit}
                     />
                   </React.Fragment>
                 ) : null}
               </Popover.Content>
             </Popover.Root>
             <Form.Description
-              className={size === "sm" ? "!product-body-text-4-regular" : ""}
+              className={cn(
+                "nodrag nopan cursor-text select-text",
+                size === "sm" ? "!product-body-text-4-regular" : ""
+              )}
               text={shortDescription ?? null}
             />
             <Form.Message

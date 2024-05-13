@@ -38,6 +38,7 @@ export const TextField = ({
               <Input.Root>
                 <Input.Core
                   {...field}
+                  ref={field.ref}
                   aria-label={title ?? undefined}
                   className={cn(
                     "nodrag nowheel",
@@ -61,12 +62,11 @@ export const TextField = ({
                 />
               </Input.Root>
             </Form.Control>
-            <Form.Description
-              className={size === "sm" ? "!product-body-text-4-regular" : ""}
-              text={shortDescription ?? null}
-            />
             <Form.Message
-              className={size === "sm" ? "!product-body-text-4-medium" : ""}
+              className={cn(
+                "nodrag nopan cursor-text select-text",
+                size === "sm" ? "!product-body-text-4-medium" : ""
+              )}
             />
           </Form.Item>
         );

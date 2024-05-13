@@ -1,27 +1,32 @@
 import { Node } from "reactflow";
-import { PipelineComponent } from "../../../lib";
 import { NodeData } from "../type";
 import { isIteratorNode } from "./checkNodeType";
+import { extractComponentFromNodes } from "./extractComponentFromNodes";
+import { composePipelineMetadataFromNodes } from "./composePipelineMetadataFromNodes";
 
 export function composeCompleteNodesUnderEditingIteratorMode({
   editingIteratorID,
-  iteratorComponents,
-  allNodes,
+  nodesInIterator,
+  nodesOutsideIterator,
 }: {
   editingIteratorID: string;
-  iteratorComponents: PipelineComponent[];
-  allNodes: Node<NodeData>[];
-}) {
-  return allNodes.map((node) => {
+  nodesInIterator: Node<NodeData>[];
+  nodesOutsideIterator: Node<NodeData>[];
+}): Node<NodeData>[] {
+  return nodesOutsideIterator?.map((node) => {
     if (node.id === editingIteratorID && isIteratorNode(node)) {
+      const components = extractComponentFromNodes(nodesInIterator);
+      const metadata = composePipelineMetadataFromNodes(nodesInIterator);
+
       return {
         ...node,
         data: {
           ...node.data,
           iterator_component: {
             ...node.data.iterator_component,
-            components: iteratorComponents,
+            components,
           },
+          metadata,
         },
       };
     }

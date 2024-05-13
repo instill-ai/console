@@ -58,6 +58,7 @@ export function useAppEntity():
     React.useState<Nullable<string>>(null);
   const [entityName, setEntityName] = React.useState<Nullable<string>>(null);
   const [modelName, setModelName] = React.useState<Nullable<string>>(null);
+  const [isSuccess, setIsSuccess] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (namespaceType.data === "NAMESPACE_ORGANIZATION") {
@@ -65,6 +66,7 @@ export function useAppEntity():
       setConnectorName(`organizations/${entity}/connectors/${id}`);
       setEntityName(`organizations/${entity}`);
       setModelName(`organizations/${entity}/models/${id}`);
+      setIsSuccess(true);
     }
 
     if (namespaceType.data === "NAMESPACE_USER") {
@@ -72,10 +74,11 @@ export function useAppEntity():
       setConnectorName(`users/${entity}/connectors/${id}`);
       setEntityName(`users/${entity}`);
       setModelName(`users/${entity}/models/${id}`);
+      setIsSuccess(true);
     }
   }, [namespaceType.data, entity, id]);
 
-  if (namespaceType.isSuccess) {
+  if (isSuccess && namespaceType.isSuccess) {
     return {
       data: {
         namespaceType: namespaceType.data,

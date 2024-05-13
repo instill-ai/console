@@ -1,11 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { removeObjKey } from "../../../server";
 import {
   createUserPipelineReleaseMutation,
-  watchUserPipelineReleaseQuery,
   type PipelineRelease,
-  type PipelineReleaseWatchState,
-  type PipelineReleasesWatchState,
   type CreateUserPipelineReleasePayload,
 } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
@@ -55,29 +51,6 @@ export function useCreateUserPipelineRelease() {
                 pipelineRelease,
               ]
             : [pipelineRelease]
-      );
-
-      // process watch state
-
-      const watch = await watchUserPipelineReleaseQuery({
-        pipelineReleaseName: pipelineRelease.name,
-        accessToken,
-      });
-
-      queryClient.setQueryData<PipelineReleaseWatchState>(
-        ["pipelineReleases", pipelineRelease.name, "watch"],
-        watch
-      );
-
-      queryClient.setQueryData<PipelineReleasesWatchState>(
-        ["pipelineReleases", entityName, "watch"],
-        (old) =>
-          old
-            ? {
-                ...removeObjKey(old, pipelineRelease.name),
-                [pipelineRelease.name]: watch,
-              }
-            : { [pipelineRelease.name]: watch }
       );
     },
   });

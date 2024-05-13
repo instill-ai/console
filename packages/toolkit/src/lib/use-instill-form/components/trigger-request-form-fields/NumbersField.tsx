@@ -142,7 +142,10 @@ export const NumbersField = ({
                 Add field
               </button>
             </div>
-            <Form.Description className="!text-xs" text={description} />
+            <Form.Description
+              className="nodrag nopan cursor-text select-text !text-xs"
+              text={description}
+            />
           </div>
         );
       }}

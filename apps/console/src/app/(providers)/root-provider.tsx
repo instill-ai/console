@@ -26,9 +26,7 @@ export const RootProvider = ({ children }: { children: React.ReactNode }) => {
   const [previousPathname, setPreviousPathname] =
     React.useState<Nullable<string>>(null);
 
-  const { initPipelineBuilder, initIteratorRelatedState } = useInstillStore(
-    useShallow(selector),
-  );
+  const { initPipelineBuilder } = useInstillStore(useShallow(selector));
 
   const initCreateResourceFormStore = useCreateResourceFormStore(
     (store) => store.init,
@@ -39,18 +37,8 @@ export const RootProvider = ({ children }: { children: React.ReactNode }) => {
 
   React.useEffect(() => {
     // When ever user leave /builder page to what ever destination
-    // we need to re-init the iterator related state
+    // we need to re-init the pipeline builder
     if (pathnameEvaluator.isPipelineBuilderPage(previousPathname)) {
-      initIteratorRelatedState();
-    }
-
-    // Init when navigate out of builder page, except navigate into
-    // overview page
-    if (
-      pathnameEvaluator.isPipelineBuilderPage(previousPathname) &&
-      !pathnameEvaluator.isPipelineBuilderPage(pathname) &&
-      !pathnameEvaluator.isPipelineOverviewPage(pathname)
-    ) {
       initPipelineBuilder();
     }
 

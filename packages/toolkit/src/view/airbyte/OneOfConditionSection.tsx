@@ -271,26 +271,6 @@ export const OneOfConditionSection = ({
               })}
             </Select.Content>
           </Select.Root>
-          {/* <Select.Root
-            onValueChange={onConditionChange}
-            value={selectedConditionOption?.value}
-            disabled={disableAll}
-          >
-            <Select.Trigger className="w-full !rounded-none">
-              <Select.Value />
-            </Select.Trigger>
-            <Select.Content>
-              {conditionOptions.map((option) => (
-                <Select.Item
-                  className="text-semantic-fg-primary product-body-text-2-regular group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary"
-                  key={option.value}
-                  value={option.value}
-                >
-                  <p className="my-auto">{option.label}</p>
-                </Select.Item>
-              ))}
-            </Select.Content>
-          </Select.Root> */}
           <p className="text-[#1D243380] product-body-text-3-regular">
             {formTree.description ?? ""}
           </p>

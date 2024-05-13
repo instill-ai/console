@@ -20,7 +20,7 @@ export async function listConnectorDefinitionsQuery({
   filter: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "vdp");
+    const client = createInstillAxiosClient(accessToken);
     const connectorDefinitions: ConnectorDefinition[] = [];
 
     const queryString = getQueryString({
@@ -64,7 +64,7 @@ export async function getConnectorDefinitionQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "vdp");
+    const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetConnectorDefinitionResponse>(
       `/${connectorDefinitionName}?view=VIEW_FULL`

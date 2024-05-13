@@ -38,14 +38,15 @@ export const DashboardPipelineListPageMainView = (
   const [queryStringPrevious, setQueryStringPrevious] =
     React.useState<Nullable<string>>(null);
 
-  const entityObject = useAppEntity();
+  const entity = useAppEntity();
 
   React.useEffect(() => {
-    if (!entityObject.isSuccess) {
+    if (!entity.isSuccess) {
       return;
     }
-    let queryParams = `owner_name='${entityObject.data.entityName}'`;
-    let queryParamsPrevious = `owner_name='${entityObject.data.entityName}'`;
+
+    let queryParams = `owner_name='${entity.data.entityName}'`;
+    let queryParamsPrevious = `owner_name='${entity.data.entityName}'`;
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(
@@ -68,11 +69,7 @@ export const DashboardPipelineListPageMainView = (
 
     setQueryString(queryParams);
     setQueryStringPrevious(queryParamsPrevious);
-  }, [
-    selectedTimeOption,
-    entityObject.isSuccess,
-    entityObject.data.entityName,
-  ]);
+  }, [selectedTimeOption, entity.isSuccess, entity.data.entityName]);
 
   /* -------------------------------------------------------------------------
    * Query pipeline and triggers data

@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/toolkit",
-  "version": "0.87.0",
+  "version": "0.89.0",
   "description": "Instill AI's frontend toolkit",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -121,7 +121,7 @@
     "@types/lodash.debounce": "^4.0.9",
     "@types/lodash.isequal": "^4.5.8",
     "@uiw/react-json-view": "2.0.0-alpha.18",
-    "axios": "^1.6.0",
+    "axios": "^1.6.8",
     "clsx": "^1.0.0",
     "cookie": "^0.5.0",
     "echarts": "^5.4.2",

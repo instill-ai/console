@@ -50,8 +50,13 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   } = useInstillStore(useShallow(selector));
 
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
+  const [forceCloseCollapsibleFormGroups, setForceCloseCollapsibleFormGroups] =
+    React.useState<string[]>([]);
+  const [forceOpenCollapsibleFormGroups, setForceOpenCollapsibleFormGroups] =
+    React.useState<string[]>([]);
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
   const [enableEdit, setEnableEdit] = React.useState(false);
+  const [supportInstillCredit, setSupportInstillCredit] = React.useState(false);
 
   React.useEffect(() => {
     setNodeIsCollapsed(collapseAllNodes);
@@ -74,6 +79,15 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         componentID: data.id,
         disabledAll: currentVersion !== "latest" || pipelineIsReadOnly,
         secrets: entitySecrets,
+        collapsibleDefaultOpen: true,
+        enabledCollapsibleFormGroup: true,
+        forceCloseCollapsibleFormGroups,
+        updateForceCloseCollapsibleFormGroups:
+          setForceCloseCollapsibleFormGroups,
+        forceOpenCollapsibleFormGroups,
+        updateForceOpenCollapsibleFormGroups: setForceOpenCollapsibleFormGroups,
+        supportInstillCredit,
+        setSupportInstillCredit,
       }
     );
 
@@ -152,7 +166,6 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
                 const values = getValues();
 
                 const parsedResult = ValidatorSchema.safeParse(values);
-                updateCurrentAdvancedConfigurationNodeID(() => id);
 
                 if (parsedResult.success) {
                   updateCurrentAdvancedConfigurationNodeID(() => id);

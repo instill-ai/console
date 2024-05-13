@@ -17,7 +17,7 @@ export function PipelineOverviewPageRender() {
       <AppTopbar logo={<Logo variant="colourLogomark" width={38} />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="p-0">
-          <ViewPipeline />;
+          <ViewPipeline />
         </PageBase.Content>
       </PageBase.Container>
     </PageBase>

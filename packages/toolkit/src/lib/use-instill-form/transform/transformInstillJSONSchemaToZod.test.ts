@@ -382,7 +382,7 @@ test("should transform fields without anyOf", () => {
       },
       dbname: { type: "string", description: "Name of the database." },
       password: {
-        instillCredentialField: true,
+        instillSecret: true,
         type: "string",
         description: "Password associated with the username.",
       },
@@ -447,7 +447,7 @@ test("should transform isHidden", () => {
       text: {
         description: "",
         instillFormat: "text",
-        instillCredentialField: true,
+        instillSecret: true,
         instillUIOrder: 1,
         anyOf: [
           {

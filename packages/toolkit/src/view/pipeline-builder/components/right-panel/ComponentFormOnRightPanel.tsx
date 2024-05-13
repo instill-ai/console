@@ -41,6 +41,8 @@ export const ComponentFormOnRightPanel = ({
       enableSmartHint: true,
       componentID: nodeData.id,
       secrets: entitySecrets,
+      enabledCollapsibleFormGroup: true,
+      collapsibleDefaultOpen: true,
     }
   );
 

@@ -103,7 +103,10 @@ export const AudioField = ({
                 }}
               />
             ) : null}
-            <Form.Description className="!text-xs" text={description} />
+            <Form.Description
+              className="nodrag nopan cursor-text select-text !text-xs"
+              text={description}
+            />
             <Form.Message />
           </Form.Item>
         );

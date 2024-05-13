@@ -14,7 +14,6 @@ import { Node } from "reactflow";
 import { triggerPipelineSnippets } from "../triggerPipelineSnippets";
 import { composeCompleteNodesUnderEditingIteratorMode } from "../../lib/composeCompleteNodesUnderEditingIteratorMode";
 import { env } from "../../../../server";
-import { extractComponentFromNodes } from "../../lib/extractComponentFromNodes";
 import { TriggerNodeData } from "../../type";
 
 const selector = (store: InstillStore) => ({
@@ -45,11 +44,10 @@ export const Toolkit = () => {
     let targetNodes = nodes;
 
     if (isEditingIterator && editingIteratorID) {
-      const iteratorComponents = extractComponentFromNodes(nodes);
       targetNodes = composeCompleteNodesUnderEditingIteratorMode({
         editingIteratorID,
-        iteratorComponents,
-        allNodes: tempSavedNodesForEditingIteratorFlow,
+        nodesInIterator: nodes,
+        nodesOutsideIterator: tempSavedNodesForEditingIteratorFlow,
       });
     }
 
