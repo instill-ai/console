@@ -52,10 +52,7 @@ export const CardModel = (props: CardModelProps) => {
     if (!model) return;
 
     try {
-      await deleteModel.mutateAsync({
-        modelName: model.name,
-        accessToken,
-      });
+      await deleteModel.mutateAsync({ modelName: model.name, accessToken });
 
       if (amplitudeIsInit) {
         sendAmplitudeData("delete_model");
