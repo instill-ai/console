@@ -8,7 +8,7 @@ import axios from "axios";
 interface BlogPostData {
   id: string;
   imageUrl: string;
-  text: string;
+  title: string;
   publishedOn: string;
   themeImgAlt: string;
   themeImgSrc: string;
@@ -53,7 +53,7 @@ const NewsLetterCard = () => {
               id: file.sha,
               themeImgSrc: metadata.themeImgSrc.replace(/^"|"$/g, '') || "",
               imageUrl: `https://www.instill.tech${metadata.themeImgSrc.replace(/^"|"$/g, '')}` || "https://placehold.co/600x400",
-              text: metadata.title?.replace(/^"|"$/g, '') || "",
+              title: metadata.title?.replace(/^"|"$/g, '') || "",
               publishedOn: formatDate(metadata.publishedOn?.replace(/^"|"$/g, '')),
               themeImgAlt: metadata.themeImgAlt || "Blog post image",
             };
@@ -94,7 +94,7 @@ const NewsLetterCard = () => {
     return <NewsLetterCardSkeleton />;
   }
 
-  const { imageUrl, text, publishedOn, themeImgAlt } = blogPosts[currentIndex];
+  const { imageUrl, title, publishedOn, themeImgAlt } = blogPosts[currentIndex];
 
   return (
     <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2">
@@ -111,11 +111,11 @@ const NewsLetterCard = () => {
       </div>
       <button
         type="button"
-        className="my-2 capitalize text-semantic-accent-default product-button-button-2 hover:!underline bg-blue-100 rounded-sm px-2 py-1 w-min whitespace-nowrap"
+        className="my-2 capitalize text-semantic-accent-default product-button-button-2 hover:!underline bg-blue-100 rounded-sm px-2 py-2 w-min whitespace-nowrap "
       >
         {publishedOn}
       </button>
-      <p className="line-clamp-3">{text}</p>
+      <p className="line-clamp-3">{title}</p>
       <div className="flex justify-end items-center mt-2">
         <button
           type="button"
