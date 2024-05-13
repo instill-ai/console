@@ -41,15 +41,18 @@ const selector = (store: InstillStore) => ({
 
 const PipelineSection = ({ tabValue }: { tabValue: string }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
-  const sortOptions = [
+  const sortFieldOptions = [
     { value: "name", label: "Name", icon: <Icons.User01 /> },
     { value: "updatedAt", label: "Last Updated", icon: <Icons.User01 /> },
-    { value: "ascending", label: "Ascending", icon: <Icons.User01 /> },
-    { value: "descending", label: "Descending", icon: <Icons.User01 /> },
+  ];
+  const sortOrderOptions = [
+    { value: "asc", label: "Ascending", icon: <Icons.User01 /> },
+    { value: "desc", label: "Descending", icon: <Icons.User01 /> },
   ];
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
-  const [selectedSortOption, setSelectedSortOption] = React.useState(sortOptions[0].value);
+  const [selectedSortField, setSelectedSortField] = React.useState(sortFieldOptions[1].value);
+  const [selectedSortOrder, setSelectedSortOrder] = React.useState(sortOrderOptions[1].value);
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const pipelines = useInfinitePipelines({
@@ -80,6 +83,23 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
     return all;
   }, [pipelines.data, pipelines.isSuccess]);
 
+  const sortedPipelines = React.useMemo(() => {
+    return [...allPipelines].sort((a, b) => {
+      if (selectedSortField === "name") {
+        return selectedSortOrder === "asc"
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
+      } else if (selectedSortField === "updatedAt") {
+        const dateA = new Date(a.updated_at);
+        const dateB = new Date(b.updated_at);
+        return selectedSortOrder === "asc"
+          ? dateA.getTime() - dateB.getTime()
+          : dateB.getTime() - dateA.getTime();
+      }
+      return 0;
+    });
+  }, [allPipelines, selectedSortField, selectedSortOrder]);
+
   const debouncedSetSearchCode = React.useMemo(
     () =>
       debounce((value: string) => {
@@ -88,23 +108,12 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
     []
   );
 
-  const handleSortChange = (value: string) => {
-    setSelectedSortOption(value);
-    // Perform the sorting logic based on the selected option
-    // You can use the `value` to determine the sorting criteria
-    // and update the `pipelines` data accordingly
-    // For example:
-    // const sortedPipelines = [...pipelines].sort((a, b) => {
-    //   if (value === "createdAt") {
-    //     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    //   } else if (value === "updatedAt") {
-    //     return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-    //   } else if (value === "name") {
-    //     return a.name.localeCompare(b.name);
-    //   }
-    // });
-    // Update the `pipelines` state with the sorted data
-    // setPipelines(sortedPipelines);
+  const handleSortFieldChange = (value: string) => {
+    setSelectedSortField(value);
+  };
+
+  const handleSortOrderChange = (value: string) => {
+    setSelectedSortOrder(value);
   };
 
   return (
@@ -129,24 +138,33 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                   }}
                 />
               </Input.Root>
-              <Select.Root value={selectedSortOption} onValueChange={handleSortChange}>
+              <Select.Root value={selectedSortField} onValueChange={handleSortFieldChange}>
                 <Select.Trigger className="max-w-40">
                   <Select.Value>
-                    {sortOptions.find((option) => option.value === selectedSortOption)?.label || "Sort"}
+                    {sortFieldOptions.find((option) => option.value === selectedSortField)?.label || "Sort By"}
                   </Select.Value>
                   {/* <Select.Icon /> */}
                 </Select.Trigger>
                 <Select.Content>
                   <Select.Group>
-                    {sortOptions.slice(0, 2).map((option) => (
+                    {sortFieldOptions.map((option) => (
                       <Select.Item key={option.value} value={option.value} className="flex justify-between">
                         {option.label}<span className="w-4 h-4">{option.icon}</span>
                       </Select.Item>
                     ))}
                   </Select.Group>
-                  <Select.Separator />
+                </Select.Content>
+              </Select.Root>
+              <Select.Root value={selectedSortOrder} onValueChange={handleSortOrderChange}>
+                <Select.Trigger className="max-w-40">
+                  <Select.Value>
+                    {sortOrderOptions.find((option) => option.value === selectedSortOrder)?.label || "Sort Order"}
+                  </Select.Value>
+                  {/* <Select.Icon /> */}
+                </Select.Trigger>
+                <Select.Content>
                   <Select.Group>
-                    {sortOptions.slice(2, 4).map((option) => (
+                    {sortOrderOptions.map((option) => (
                       <Select.Item key={option.value} value={option.value} className="flex justify-between">
                         {option.label}<span className="w-4 h-4">{option.icon}</span>
                       </Select.Item>
@@ -159,15 +177,14 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
         </div>
         <div className="mb-4 flex flex-col gap-y-4">
           {pipelines.isSuccess && !pipelines.isFetching ? (
-            allPipelines.length === 0 ? (
+            sortedPipelines.length === 0 ? (
               <div className="flex h-[500px] w-full shrink-0 grow-0 items-center justify-center rounded-sm border border-semantic-bg-line">
                 <p className="text-semantic-fg-secondary product-body-text-2-semibold">
                   Let&rsquo;s build your first pipeline! 🙌
                 </p>
               </div>
             ) : (
-              allPipelines.length &&
-              allPipelines.map((pipeline) => (
+              sortedPipelines.map((pipeline) => (
                 <CardPipeline
                   key={pipeline.uid}
                   ownerID={pipeline.owner_name.split("/")[1]}
@@ -195,6 +212,12 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
             {pipelines.isFetchingNextPage ? <LoadingSpin /> : "Load More"}
           </Button>
         ) : null}
+      </div>
+      <div className="ml-8 w-80 flex flex-col mt-6">
+        <div className="sticky top-6">
+          <NewsLetterCard />
+          <LatestChangesCard />
+        </div>
       </div>
     </div>
   );
@@ -246,7 +269,7 @@ export const Body = ({
     "text-gray-600 product-body-text-3-semibold data-[state=active]:text-black data-[state=active]:font-bold data-[state=active]:border-b-2 data-[state=active]:border-blue-500";
 
   return (
-    <div className="flex justify-between px-80 sm:px-20 md:px-60">
+    <div className="flex justify-between px-60 sm:px-20 md:px-40">
       <div className="flex w-full items-center">
         <Tabs.Root
           defaultValue="explore"
