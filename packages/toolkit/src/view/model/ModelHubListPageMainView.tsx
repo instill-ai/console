@@ -17,18 +17,17 @@ export const ModelHubListPageMainView = (
   const { entity } = useParams();
   const searchParams = useSearchParams();
   const visibility = searchParams.get("visibility");
-  const [pageNumber, setPageNumber] = useState(0)
+  const [pageNumber, setPageNumber] = useState(0);
 
-  const [searchCode, setSearchCode] = React.useState<string>('');
-  const [searchInputValue, setSearchInputValue] =
-    React.useState<string>('');
-    const debouncedSetSearchCode = React.useMemo(
-      () =>
-        debounce((value: string) => {
-          setSearchCode(value);
-        }, 300),
-      []
-    );
+  const [searchCode, setSearchCode] = React.useState<string>("");
+  const [searchInputValue, setSearchInputValue] = React.useState<string>("");
+  const debouncedSetSearchCode = React.useMemo(
+    () =>
+      debounce((value: string) => {
+        setSearchCode(value);
+      }, 300),
+    []
+  );
 
   const [selectedVisibilityOption, setSelectedVisibilityOption] =
     React.useState<Visibility>(
@@ -39,10 +38,7 @@ export const ModelHubListPageMainView = (
 
   useEffect(() => {
     setPageNumber(0);
-  }, [
-    selectedVisibilityOption,
-    searchCode
-  ])
+  }, [selectedVisibilityOption, searchCode]);
 
   /* -------------------------------------------------------------------------
    * Query resource data
@@ -55,7 +51,11 @@ export const ModelHubListPageMainView = (
     visibility: selectedVisibilityOption ?? null,
   });
 
-  const isLoadingResource = !models.isFetched || models.isLoading || models.isFetching || models.isFetchingNextPage;
+  const isLoadingResource =
+    !models.isFetched ||
+    models.isLoading ||
+    models.isFetching ||
+    models.isFetchingNextPage;
 
   /* -------------------------------------------------------------------------
    * Render
@@ -84,7 +84,7 @@ export const ModelHubListPageMainView = (
             </Input.Root>
           </div>
         </div>
-        <div className="flex flex-col gap-y-2.5 min-w-52">
+        <div className="flex min-w-52 flex-col gap-y-2.5">
           <p className="text-semantic-fg-primary product-body-text-3-semibold">
             Visibility
           </p>
@@ -118,12 +118,22 @@ export const ModelHubListPageMainView = (
         </Button>
       </div>
       <ModelsList
-        models={models.isSuccess ? (models.data?.pages[pageNumber] ? models.data?.pages[pageNumber].models : []) : []}
+        models={
+          models.isSuccess
+            ? models.data?.pages[pageNumber]
+              ? models.data?.pages[pageNumber].models
+              : []
+            : []
+        }
         accessToken={accessToken}
         onModelDelete={models.refetch}
         isLoading={isLoadingResource}
       />
-      <ModelsListPagination models={models} setPageNumber={setPageNumber} pageNumber={pageNumber} />
+      <ModelsListPagination
+        models={models}
+        setPageNumber={setPageNumber}
+        pageNumber={pageNumber}
+      />
     </div>
   );
 };

@@ -9,15 +9,19 @@ const defaultPaginationProps = {
   isNextDisabled: true,
   currentPage: 0,
   totalPages: 0,
-}
+};
 
 export type ModelsListPaginationProps = {
   models: UseInfiniteQueryResult<InfiniteData<ListUserModelsResponse>>;
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   pageNumber: number;
-}
+};
 
-export const ModelsListPagination = ({ models, pageNumber, setPageNumber }: ModelsListPaginationProps) => {
+export const ModelsListPagination = ({
+  models,
+  pageNumber,
+  setPageNumber,
+}: ModelsListPaginationProps) => {
   const paginationProps = useMemo(() => {
     if (!models.data || models.data.pages.length === 0) {
       return defaultPaginationProps;
@@ -37,8 +41,8 @@ export const ModelsListPagination = ({ models, pageNumber, setPageNumber }: Mode
       isNextDisabled,
       currentPage: pageNumber + 1,
       totalPages,
-    }
-  }, [models, pageNumber])
+    };
+  }, [models, pageNumber]);
 
   if (!models.data || paginationProps.totalPages <= 1) {
     return null;
@@ -50,7 +54,7 @@ export const ModelsListPagination = ({ models, pageNumber, setPageNumber }: Mode
         <Pagination.Item>
           <Pagination.Prev
             disabled={paginationProps.isPrevDisabled}
-            onClick={() => setPageNumber(currentNumber => currentNumber - 1)}
+            onClick={() => setPageNumber((currentNumber) => currentNumber - 1)}
           />
         </Pagination.Item>
         <Pagination.Item>
@@ -63,9 +67,9 @@ export const ModelsListPagination = ({ models, pageNumber, setPageNumber }: Mode
           <Pagination.Next
             disabled={paginationProps.isNextDisabled}
             onClick={() => {
-              setPageNumber(currentNumber => {
+              setPageNumber((currentNumber) => {
                 const newCurrentNumber = currentNumber + 1;
-                
+
                 if (
                   paginationProps.currentPage < paginationProps.totalPages &&
                   !models.data.pages[newCurrentNumber]
@@ -81,4 +85,4 @@ export const ModelsListPagination = ({ models, pageNumber, setPageNumber }: Mode
       </Pagination.Content>
     </Pagination.Root>
   );
-}
+};
