@@ -4,17 +4,17 @@ import Image from "next/image";
 import { Menu } from "./Menu";
 import { Tags } from "./Tags";
 import { Stats } from "./Stats";
-import { Model, Nullable, sendAmplitudeData, useAmplitudeCtx, useDeleteModel } from "../../lib";
+import { ListUserModelsResponse, Model, Nullable, sendAmplitudeData, useAmplitudeCtx, useDeleteModel } from "../../lib";
 import React from "react";
 import { useToast, getModelHardwareToolkit, getModelRegionToolkit } from "@instill-ai/design-system";
 import axios from "axios";
 import { useParams } from "next/navigation";
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import { InfiniteData, QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 
 export type CardModelProps = {
   model: Model;
   accessToken: Nullable<string>;
-  onDelete: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<Model[], Error>>
+  onDelete: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<InfiniteData<ListUserModelsResponse, unknown>, Error>>;
 }
 
 export const CardModel = (props: CardModelProps) => {
