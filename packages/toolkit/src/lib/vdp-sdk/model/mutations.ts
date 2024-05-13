@@ -84,7 +84,7 @@ export async function createUserModelMutation({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "model");
+    const client = createInstillAxiosClient(accessToken, true);
 
     const { data } = await client.post<CreateUserModelResponse>(
       `/${isOrg ? "organizations" : "users"}/${entityName}/models`,
@@ -115,7 +115,7 @@ export async function updateModelMutation({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "model");
+    const client = createInstillAxiosClient(accessToken, true);
 
     const { data } = await client.patch<UpdateUserModelResponse>(
       `/${payload.name}`,
@@ -135,7 +135,7 @@ export async function deleteUserModelMutation({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, "model");
+    const client = createInstillAxiosClient(accessToken, true);
 
     await client.delete(`/${modelName}`);
   } catch (err) {

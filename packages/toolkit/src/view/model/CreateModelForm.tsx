@@ -88,7 +88,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
   const [regionOptions, setRegionOptions] = useState<Option[]>([]);
   const [hardwareOptions, setHardwareOptions] = useState<
     Record<string, Option[]>
-  >([]);
+  >({});
   const [creating, setCreating] = React.useState(false);
 
   const entity = useAppEntity();
