@@ -32,7 +32,9 @@ export const TextField = ({
   size,
   isHidden,
   secrets,
-  instillCredentialField,
+  instillSecret,
+  instillCredential,
+  supportInstillCredit,
 }: {
   instillAcceptFormats: string[];
   shortDescription?: string;
@@ -41,7 +43,9 @@ export const TextField = ({
   instillUpstreamTypes: string[];
   componentID?: string;
   secrets?: Secret[];
-  instillCredentialField?: boolean;
+  instillSecret?: boolean;
+  instillCredential?: boolean;
+  supportInstillCredit?: boolean;
 } & AutoFormFieldBaseProps) => {
   const smartHints = useInstillStore((s) => s.smartHints);
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
@@ -84,7 +88,7 @@ export const TextField = ({
     fieldValue,
     componentID,
     secrets,
-    instillCredentialField,
+    instillSecret,
   });
 
   const supportTemplate = instillUpstreamTypes.includes("template");
@@ -137,7 +141,10 @@ export const TextField = ({
                     <Input.Core
                       {...field}
                       aria-label={title ?? undefined}
-                      ref={inputRef}
+                      ref={(el) => {
+                        inputRef.current = el;
+                        field.ref(el);
+                      }}
                       type="text"
                       value={
                         typeof field.value === "object" ? "" : field.value ?? ""
@@ -222,6 +229,8 @@ export const TextField = ({
                       inputRef={inputRef}
                       smartHintEnabledPos={smartHintEnabledPos}
                       instillAcceptFormats={instillAcceptFormats}
+                      instillCredential={instillCredential}
+                      supportInstillCredit={supportInstillCredit}
                     />
                   </React.Fragment>
                 ) : null}

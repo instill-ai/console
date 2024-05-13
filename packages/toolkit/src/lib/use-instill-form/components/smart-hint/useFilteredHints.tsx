@@ -15,7 +15,7 @@ export function useFilteredHints({
   fieldValue,
   componentID,
   secrets,
-  instillCredentialField,
+  instillSecret,
 }: {
   smartHints: SmartHint[];
   instillAcceptFormats: string[];
@@ -23,7 +23,7 @@ export function useFilteredHints({
   smartHintEnabledPos: Nullable<number>;
   fieldValue: string;
   componentID?: string;
-  instillCredentialField?: boolean;
+  instillSecret?: boolean;
   secrets?: Secret[];
 }) {
   const filteredHints: SmartHint[] = React.useMemo(() => {
@@ -38,7 +38,7 @@ export function useFilteredHints({
       instillAcceptFormats
     );
 
-    if (instillCredentialField && secrets) {
+    if (instillSecret && secrets) {
       allHints = secrets.map((secret) => ({
         key: secret.id,
         path: `secrets.${secret.id}`,
@@ -86,7 +86,7 @@ export function useFilteredHints({
     fieldValue,
     componentID,
     secrets,
-    instillCredentialField,
+    instillSecret,
   ]);
 
   return filteredHints;

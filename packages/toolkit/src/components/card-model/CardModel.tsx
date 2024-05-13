@@ -4,27 +4,37 @@ import Image from "next/image";
 import { Menu } from "./Menu";
 import { Tags } from "./Tags";
 import { Stats } from "./Stats";
-import { Model, Nullable, sendAmplitudeData, useAmplitudeCtx, useDeleteModel } from "../../lib";
+import {
+  ListUserModelsResponse,
+  Model,
+  Nullable,
+  sendAmplitudeData,
+  useAmplitudeCtx,
+  useDeleteModel,
+} from "../../lib";
 import React from "react";
-import { useToast, getModelHardwareToolkit, getModelRegionToolkit } from "@instill-ai/design-system";
+import {
+  useToast,
+  getModelHardwareToolkit,
+  getModelRegionToolkit,
+} from "@instill-ai/design-system";
 import axios from "axios";
 import { useParams } from "next/navigation";
-
-/* export const CardSkeletonModel = () => {
-  return (
-    <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line">
-      <Head.Skeleton />
-      <Body.Skeleton />
-      <Footer.Skeleton />
-    </div>
-  );
-}; */
+import {
+  InfiniteData,
+  QueryObserverResult,
+  RefetchOptions,
+} from "@tanstack/react-query";
 
 export type CardModelProps = {
   model: Model;
   accessToken: Nullable<string>;
-  onDelete: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<Model[], Error>>
-}
+  onDelete: (
+    options?: RefetchOptions | undefined
+  ) => Promise<
+    QueryObserverResult<InfiniteData<ListUserModelsResponse, unknown>, Error>
+  >;
+};
 
 export const CardModel = (props: CardModelProps) => {
   const { model, accessToken, onDelete } = props;
@@ -42,10 +52,7 @@ export const CardModel = (props: CardModelProps) => {
     if (!model) return;
 
     try {
-      await deleteModel.mutateAsync({
-        modelName: model.name,
-        accessToken,
-      });
+      await deleteModel.mutateAsync({ modelName: model.name, accessToken });
 
       if (amplitudeIsInit) {
         sendAmplitudeData("delete_model");
@@ -67,31 +74,29 @@ export const CardModel = (props: CardModelProps) => {
         description: message,
       });
     }
-  }, [
-    model,
-    amplitudeIsInit,
-    deleteModel,
-    onDelete,
-    accessToken,
-    toast,
-  ]);
+  }, [model, amplitudeIsInit, deleteModel, onDelete, accessToken, toast]);
 
   return (
-    <div className="flex flex-row gap-x-6 rounded-md border border-semantic-bg-line p-4 bg-white">
+    <div className="flex flex-row gap-x-6 rounded-md border border-semantic-bg-line bg-white p-4">
       <Image
-        className="rounded shrink-0"
+        className="shrink-0 rounded"
         src="/images/models/model-placeholder.svg"
         alt="model image"
         width={156}
         height={156}
       />
-      <div className="flex flex-col grow gap-y-2">
-        <div className="flex flex-row w-full gap-x-2 items-start">
-          <a href={`/${entity}/models/${model.id}`} className="break-all text-semantic-accent-default hover:!underline font-medium">{model.id}</a>
+      <div className="flex grow flex-col gap-y-2">
+        <div className="flex w-full flex-row items-start gap-x-2">
+          <a
+            href={`/${entity}/models/${model.id}`}
+            className="break-all font-medium text-semantic-accent-default hover:!underline"
+          >
+            {model.id}
+          </a>
           <Tags
-            isPrivate={model.visibility === 'VISIBILITY_PRIVATE'}
-            region={getModelRegionToolkit(model.region)}
-            hardware={getModelHardwareToolkit(model.hardware)}
+            isPrivate={model.visibility === "VISIBILITY_PRIVATE"}
+            region={getModelRegionToolkit(model.region) || ""}
+            hardware={getModelHardwareToolkit(model.hardware) || ""}
           />
           <Menu handleDeleteModel={handleDeleteModel} model={model} />
         </div>

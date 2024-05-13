@@ -32,7 +32,9 @@ export const TextArea = ({
   size,
   isHidden,
   secrets,
-  instillCredentialField,
+  instillSecret,
+  instillCredential,
+  supportInstillCredit,
 }: {
   instillAcceptFormats: string[];
   shortDescription?: string;
@@ -41,7 +43,9 @@ export const TextArea = ({
   instillUpstreamTypes: string[];
   componentID?: string;
   secrets?: Secret[];
-  instillCredentialField?: boolean;
+  instillSecret?: boolean;
+  instillCredential?: boolean;
+  supportInstillCredit?: boolean;
 } & AutoFormFieldBaseProps) => {
   const smartHints = useInstillStore((s) => s.smartHints);
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
@@ -85,7 +89,7 @@ export const TextArea = ({
     fieldValue,
     componentID,
     secrets,
-    instillCredentialField,
+    instillSecret,
   });
 
   const supportTemplate = instillUpstreamTypes.includes("template");
@@ -214,6 +218,8 @@ export const TextArea = ({
                       inputRef={inputRef}
                       smartHintEnabledPos={smartHintEnabledPos}
                       instillAcceptFormats={instillAcceptFormats}
+                      instillCredential={instillCredential}
+                      supportInstillCredit={supportInstillCredit}
                     />
                   </React.Fragment>
                 ) : null}

@@ -5,6 +5,7 @@ export { useCreateApiToken } from "./useCreateApiToken";
 export { useDeleteApiToken } from "./useDeleteApiToken";
 export { useMgmtDefinition } from "./useMgmtDefinition";
 export { useNamespaceType } from "./use-namespace-type/client";
+export { useRemainingCredit } from "./useRemainingCredit";
 export { useUpdateAuthenticatedUser } from "./useUpdateAuthenticatedUser";
 export { useUser } from "./useUser";
 export { useUsers } from "./useUsers";

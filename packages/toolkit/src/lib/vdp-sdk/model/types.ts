@@ -39,9 +39,7 @@ export type Model = {
   id: string;
   description: string;
   model_definition: string;
-  configuration: {
-    [key: string]: string;
-  },
+  configuration: Record<string, string>;
   task: ModelTask;
   visibility: Visibility;
   create_time: string;

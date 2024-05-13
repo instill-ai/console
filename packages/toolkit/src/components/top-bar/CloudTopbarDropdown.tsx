@@ -19,6 +19,7 @@ import {
 } from "../../lib";
 import { TopbarDropdownGroup, TopbarDropdownItem } from "./TopbarDropdown";
 import Link from "next/link";
+import { RemainingCreditCTA } from "./RemainingCredit";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -73,7 +74,7 @@ export const CloudTopbarDropdown = () => {
         align="end"
       >
         <div className="flex flex-col px-4 py-3">
-          <div className="flex flex-row gap-x-2">
+          <div className="mb-4 flex flex-row gap-x-2">
             <EntityAvatar
               src={me.data.profile?.avatar ?? null}
               className="my-auto h-10 w-10 cursor-pointer"
@@ -93,6 +94,7 @@ export const CloudTopbarDropdown = () => {
               </p>
             </div>
           </div>
+          <RemainingCreditCTA ctaTargetHref="/subscription" />
         </div>
         <Separator orientation="horizontal" />
         <TopbarDropdownGroup>

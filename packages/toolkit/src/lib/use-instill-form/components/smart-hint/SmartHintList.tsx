@@ -6,6 +6,7 @@ import { onClickSmartHint } from "./onClickSmartHint";
 import { ControllerRenderProps } from "react-hook-form";
 import { GeneralUseFormReturn, Nullable } from "../../../type";
 import { transformInstillFormatToHumanReadableFormat } from "../../transform";
+import { InstillCredit } from "../../../../constant";
 
 export const SmartHintList = ({
   form,
@@ -20,6 +21,8 @@ export const SmartHintList = ({
   inputRef,
   smartHintEnabledPos,
   instillAcceptFormats,
+  supportInstillCredit,
+  instillCredential,
 }: {
   field: ControllerRenderProps<
     {
@@ -39,6 +42,8 @@ export const SmartHintList = ({
   inputRef: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
   smartHintEnabledPos: Nullable<number>;
   instillAcceptFormats: string[];
+  supportInstillCredit?: boolean;
+  instillCredential?: boolean;
 }) => {
   const humanReadableAcceptFormatString = React.useMemo(() => {
     const formats = instillAcceptFormats.map((format) => {
@@ -107,9 +112,15 @@ export const SmartHintList = ({
           )}
         </div>
       ) : (
-        <div className="flex flex-col rounded border border-semantic-accent-default bg-[#F0F5FF] p-2">
+        <div className="flex flex-col gap-y-1 rounded border border-semantic-accent-default bg-[#F0F5FF] p-2">
           <p className="text-semantic-accent-default product-body-text-3-semibold">
-            {humanReadableAcceptFormatString}
+            {instillCredential
+              ? supportInstillCredit
+                ? "This configuration support Instill Credit, you can use ${" +
+                  InstillCredit.key +
+                  "} to reference it"
+                : "This configuration didn't support Instill Credit, please reference your own secret"
+              : humanReadableAcceptFormatString}
           </p>
         </div>
       )}

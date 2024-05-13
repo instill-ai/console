@@ -21,7 +21,8 @@
     "test": "turbo run test",
     "ci-build-packages": "turbo run build lint test",
     "ci-build-storybook": "turbo run build --filter=@instill-ai/design-tokens --filter=@instill-ai/design-system",
-    "prettier:fix": "prettier --write"
+    "prettier:fix": "prettier --write",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@commitlint/cli": "latest",
@@ -36,7 +37,7 @@
     "typescript": "^5.4.2"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "packageManager": "pnpm@8.8.0+sha512.798e6b322669ce63c8da856bd62ad1f7b6f36f4dfaa0ac025af2bdd700d09dd5dca943e5cad3edac5d1b3baebc4b2c3fb80fbb8537f936733c32be2ec7805144"
 }

@@ -4,6 +4,7 @@ export * from "./CustomEdge";
 export * from "./CustomHandle";
 export * from "./PipelineToolkitDialog";
 export * from "./ReadOnlyPipelineBuilder";
+export * from "./RemainingCreditCTA";
 export * from "./ComponentOutputReferenceHints";
 
 export * from "./dialogs";
