@@ -83,11 +83,11 @@ const NewsLetterCard = () => {
   };
 
   const handlePrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? blogPosts.length - 1 : prevIndex - 1));
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? 0 : prevIndex - 1));
   };
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === blogPosts.length - 1 ? 0 : prevIndex + 1));
+    setCurrentIndex((prevIndex) => (prevIndex === blogPosts.length - 1 ? prevIndex : prevIndex + 1));
   };
 
   if (blogPosts.length === 0) {
@@ -106,7 +106,7 @@ const NewsLetterCard = () => {
           height={400}
           alt={themeImgAlt}
           fallbackImg={<Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />}
-          className="w-full"
+          className="w-full h-full object-cover"
         />
       </div>
       <button
@@ -115,13 +115,23 @@ const NewsLetterCard = () => {
       >
         {publishedOn}
       </button>
-      <p>{text}</p>
+      <p className="line-clamp-3">{text}</p>
       <div className="flex justify-end items-center mt-2">
-        <button type="button" onClick={handlePrevious} className="mr-2">
-          <Icons.ChevronLeft className="h-4 w-4 stroke-semantic-accent-default" />
+        <button
+          type="button"
+          onClick={handlePrevious}
+          className={`mr-2 ${currentIndex === 0 ? 'text-gray-400 cursor-not-allowed' : ''}`}
+          disabled={currentIndex === 0}
+        >
+          <Icons.ChevronLeft className={`h-4 w-4 ${currentIndex === 0 ? 'stroke-gray-400' : 'stroke-semantic-accent-default'}`} />
         </button>
-        <button type="button" onClick={handleNext}>
-          <Icons.ChevronRight className="h-4 w-4 stroke-semantic-accent-default" />
+        <button
+          type="button"
+          onClick={handleNext}
+          className={`${currentIndex === blogPosts.length - 1 ? 'text-gray-400 cursor-not-allowed' : ''}`}
+          disabled={currentIndex === blogPosts.length - 1}
+        >
+          <Icons.ChevronRight className={`h-4 w-4 ${currentIndex === blogPosts.length - 1 ? 'stroke-gray-400' : 'stroke-semantic-accent-default'}`} />
         </button>
       </div>
     </div>
