@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Input, Icons, Select } from "@instill-ai/design-system";
-import { GeneralAppPageProp, Visibility, useModels } from "../../lib";
+import { GeneralAppPageProp, Visibility, useInfiniteModels } from "../../lib";
 import { useParams, useSearchParams } from "next/navigation";
 import { ModelsList } from "./ModelsList";
 import React, { useEffect, useState } from "react";
@@ -44,7 +44,7 @@ export const ModelHubListPageMainView = (
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const models = useModels({
+  const models = useInfiniteModels({
     enabled: enableQuery,
     accessToken,
     filter: searchCode ? `q="${searchCode}"` : null,
