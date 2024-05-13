@@ -8,9 +8,10 @@ import axios from "axios";
 interface BlogPostData {
   id: string;
   imageUrl: string;
-  tag: string;
   text: string;
-  publishedOn?: string;
+  publishedOn: string;
+  themeImgAlt: string;
+  themeImgSrc: string;
 }
 
 const NewsLetterCard = () => {
@@ -41,17 +42,18 @@ const NewsLetterCard = () => {
             const frontmatter = frontmatterMatch ? frontmatterMatch[1] : "";
             const metadata: any = {};
 
-            frontmatter.split("\n").forEach((line) => {
+            frontmatter.split("\n").forEach((line: { split: (arg0: string) => [any, any]; }) => {
               const [key, value] = line.split(":");
               metadata[key.trim()] = value.trim();
             });
 
             return {
               id: file.sha,
-              imageUrl: metadata.imageUrl || "https://placehold.co/600x400",
-              tag: metadata.tag || "",
+              themeImgSrc: metadata.themeImgSrc.replace(/^"|"$/g, '') || "",
+              imageUrl: `https://www.instill.tech${metadata.themeImgSrc.replace(/^"|"$/g, '')}` || "https://placehold.co/600x400",
               text: metadata.title?.replace(/^"|"$/g, '') || "",
               publishedOn: formatDate(metadata.publishedOn?.replace(/^"|"$/g, '')),
+              themeImgAlt: metadata.themeImgAlt || "Blog post image",
             };
           })
         );
@@ -90,7 +92,9 @@ const NewsLetterCard = () => {
     return <NewsLetterCardSkeleton />;
   }
 
-  const { imageUrl, tag, text, publishedOn } = blogPosts[currentIndex];
+  const { imageUrl, text, publishedOn, themeImgAlt } = blogPosts[currentIndex];
+
+  console.log(imageUrl)
 
   return (
     <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2">
@@ -100,7 +104,7 @@ const NewsLetterCard = () => {
           src={imageUrl}
           width={600}
           height={400}
-          alt={`test-icon-${currentIndex}`}
+          alt={themeImgAlt}
           fallbackImg={<Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />}
           className="w-full"
         />
