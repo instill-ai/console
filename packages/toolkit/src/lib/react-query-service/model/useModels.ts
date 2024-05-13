@@ -3,7 +3,7 @@ import { env } from "../../../server";
 import { Visibility, listModelsQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export function useModels({
+export function useInfiniteModels({
   accessToken,
   enabled,
   retry,
