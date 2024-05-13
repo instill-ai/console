@@ -22,7 +22,7 @@ const LatestChangesCard = () => (
       className="my-auto text-semantic-accent-default product-button-button-2 hover:!underline flex justify-start mt-4"
     >
       View changelog
-      <Icons.ChevronRight className="my-auto h-4 w-4 stroke-semantic-fg-disabled  text-semantic-accent-default" />
+      <Icons.ChevronRight className="my-auto h-4 w-4 stroke-semantic-accent-default" />
     </button>
   </div>
 );
