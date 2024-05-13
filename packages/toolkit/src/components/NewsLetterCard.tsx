@@ -14,6 +14,8 @@ interface BlogPostData {
   themeImgSrc: string;
 }
 
+//TODO: USE REMARKFORMATTER TO PARSE MDX FILES
+
 const NewsLetterCard = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPostData[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -93,8 +95,6 @@ const NewsLetterCard = () => {
   }
 
   const { imageUrl, text, publishedOn, themeImgAlt } = blogPosts[currentIndex];
-
-  console.log(imageUrl)
 
   return (
     <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2">
