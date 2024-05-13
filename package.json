@@ -45,5 +45,13 @@
       "vite": "^5.2.0",
       "express": "4.19.2"
     }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": "prettier --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pnpm lint-staged"
+    }
   }
 }
