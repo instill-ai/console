@@ -48,10 +48,5 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": "prettier --write"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pnpm lint-staged"
-    }
   }
 }
