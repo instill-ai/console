@@ -14,6 +14,28 @@ const BodySkeleton = () => {
   );
 };
 
+const formatTimestamp = (timestamp: string) => {
+  const currentDate = new Date();
+  const updatedDate = new Date(timestamp);
+  const timeDiff = currentDate.getTime() - updatedDate.getTime();
+
+  const seconds = Math.floor(timeDiff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) {
+    return `Updated ${days} day${days > 1 ? 's' : ''} ago`;
+  } else if (hours > 0) {
+    return `Updated ${hours} hour${hours > 1 ? 's' : ''} ago`;
+  } else if (minutes > 0) {
+    return `Updated ${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  } else {
+    return `Updated ${seconds} second${seconds !== 1 ? 's' : ''} ago`;
+  }
+};
+
+
 export const Body = ({
   pipeline,
 }: {
@@ -48,8 +70,8 @@ export const Body = ({
         </p>
       </div>
       <div className="flex w-full px-3 pb-3 justify-end">
-        <p className="line-clamp-3 font-mono text-xs font-normal text-semantic-fg-secondary">
-          Last updated: {pipeline.update_time}
+        <p className="line-clamp-3 text-xs font-normal text-disconnected-default-stroke">
+          {formatTimestamp(pipeline.update_time)}
         </p>
       </div>
     </div>
