@@ -42,9 +42,10 @@ const selector = (store: InstillStore) => ({
 const PipelineSection = ({ tabValue }: { tabValue: string }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
   const sortOptions = [
-    { value: "createdAt", label: "Created At" },
-    { value: "updatedAt", label: "Updated At" },
-    { value: "name", label: "Name" },
+    { value: "name", label: "Name", icon: <Icons.User01 /> },
+    { value: "updatedAt", label: "Last Updated", icon: <Icons.User01 /> },
+    { value: "ascending", label: "Ascending", icon: <Icons.User01 /> },
+    { value: "descending", label: "Descending", icon: <Icons.User01 /> },
   ];
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
@@ -137,9 +138,17 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                 </Select.Trigger>
                 <Select.Content>
                   <Select.Group>
-                    {sortOptions.map((option) => (
-                      <Select.Item key={option.value} value={option.value}>
-                        {option.label}
+                    {sortOptions.slice(0, 2).map((option) => (
+                      <Select.Item key={option.value} value={option.value} className="flex justify-between">
+                        {option.label}<span className="w-4 h-4">{option.icon}</span>
+                      </Select.Item>
+                    ))}
+                  </Select.Group>
+                  <Select.Separator />
+                  <Select.Group>
+                    {sortOptions.slice(2, 4).map((option) => (
+                      <Select.Item key={option.value} value={option.value} className="flex justify-between">
+                        {option.label}<span className="w-4 h-4">{option.icon}</span>
                       </Select.Item>
                     ))}
                   </Select.Group>
@@ -266,12 +275,6 @@ export const Body = ({
             </div>
           </div>
         </Tabs.Root>
-      </div>
-      <div className="ml-8 w-80 flex flex-col">
-        <div className="sticky top-6">
-          <NewsLetterCard />
-          <LatestChangesCard />
-        </div>
       </div>
     </div>
   );
