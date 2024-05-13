@@ -118,7 +118,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
         <div className="mb-4 flex flex-col">
           <div className="mb-2.5 flex items-center justify-between">
             <p className="text-semantic-fg-secondary product-body-text-3-semibold whitespace-nowrap">
-              Pipelines 34,010
+              Pipelines {allPipelines.length}
             </p>
             <div className="flex justify-end items-center gap-4 w-full">
               <Input.Root className="w-1/3">
