@@ -295,7 +295,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
                   );
                 }}
               >
-                Setup
+                Setups
               </Button>
             </div>
           ) : (
