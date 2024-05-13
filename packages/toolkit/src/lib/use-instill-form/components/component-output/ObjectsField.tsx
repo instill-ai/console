@@ -1,6 +1,6 @@
 "use client";
 
-import { CodeBlock, CopyToClipboardButton } from "../../../..";
+import { CopyToClipboardButton } from "../../../..";
 import { GeneralRecord, Nullable } from "../../../type";
 import { ComponentOutputFieldBaseProps } from "../../types";
 import { FieldRoot } from "./FieldRoot";

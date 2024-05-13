@@ -4,7 +4,6 @@ import { Nullable } from "../../../type";
 import { ComponentOutputFieldBaseProps } from "../../types";
 import { DownloadButton } from "./DownloadButton";
 import { FieldRoot } from "./FieldRoot";
-import { ShareButton } from "./ShareButton";
 
 export type ImageFieldProps = {
   image: Nullable<string>;

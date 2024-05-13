@@ -9,7 +9,7 @@ export const ShareButton = ({
   text: string;
   className?: string;
 }) => {
-  const [copied, setCopied] = React.useState(false);
+  const [, setCopied] = React.useState(false);
 
   return (
     <button

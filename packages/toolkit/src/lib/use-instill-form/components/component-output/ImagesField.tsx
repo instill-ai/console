@@ -3,10 +3,8 @@
 import React from "react";
 import { Nullable } from "../../../type";
 import { ComponentOutputFieldBaseProps } from "../../types";
-import { CopyButton } from "./CopyButton";
 import { DownloadButton } from "./DownloadButton";
 import { FieldRoot } from "./FieldRoot";
-import { ShareButton } from "./ShareButton";
 
 export type ImagesFieldProps = {
   images: Nullable<string>[];
@@ -24,7 +22,7 @@ export const ImagesField = (props: ImagesFieldProps) => {
               if (!image) return null;
 
               return (
-                <div>
+                <div key={`${title}-${image}-field`}>
                   <div className="flex w-full flex-row rounded-t-[4px] border-b border-semantic-bg-line bg-[#F0F0F0] px-2 py-0.5">
                     <div className="ml-auto flex flex-row gap-x-1">
                       <DownloadButton className="my-auto" text={image ?? ""} />

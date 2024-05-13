@@ -6,7 +6,6 @@ import { Switch } from "@instill-ai/design-system";
 import { CopyButton } from "./CopyButton";
 import { Nullable } from "../../../type";
 import Markdown from "markdown-to-jsx";
-import { DownloadButton } from "./DownloadButton";
 
 export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
   const [enableFormattedText, setEnableFormattedText] = React.useState(false);
