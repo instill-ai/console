@@ -82,6 +82,7 @@ export type PipelineReleasesWatchState = Record<
 >;
 
 export type Pipeline = {
+  updated_at: string | number | Date;
   name: string;
   uid: string;
   id: string;

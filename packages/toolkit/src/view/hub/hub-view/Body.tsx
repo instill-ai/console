@@ -144,7 +144,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                 <Select.Content>
                   <Select.Group>
                     {sortOptions.map((option) => (
-                      <Select.Item key={option.value} value={option.value} className="flex justify-between">
+                      <Select.Item key={option.value} value={option.value} className="flex justify-between text-[#1D2433]">
                         {option.label}<span className="w-4 h-4">{option.icon}</span>
                       </Select.Item>
                     ))}
@@ -192,7 +192,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
           </Button>
         ) : null}
       </div>
-      <div className="ml-8 w-80 flex flex-col mt-6">
+      <div className="ml-8 w-96 flex flex-col mt-6">
         <div className="sticky top-6">
           <NewsLetterCard />
           <LatestChangesCard />
@@ -248,7 +248,7 @@ export const Body = ({
     "text-gray-600 product-body-text-3-semibold data-[state=active]:text-black data-[state=active]:font-bold data-[state=active]:border-b-2 data-[state=active]:border-blue-500";
 
   return (
-    <div className="flex justify-between px-60 sm:px-20 md:px-40">
+    <div className="flex justify-between px-40 sm:px-10 md:px-20">
       <div className="flex w-full items-center">
         <Tabs.Root
           defaultValue="explore"
