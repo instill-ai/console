@@ -6,7 +6,7 @@ import { GeneralDeleteResourceDialog } from "../GeneralDeleteResourceDialog";
 import { Model } from "../../lib";
 
 export type MenuProps = {
-  model: Model,
+  model: Model;
   handleDeleteModel: () => Promise<void>;
 };
 
@@ -16,7 +16,7 @@ export const Menu = (props: MenuProps) => {
 
   return (
     <React.Fragment>
-      <div className="flex justify-center ml-auto shrink-0">
+      <div className="ml-auto flex shrink-0 justify-center">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <Button className="!px-2 !py-2" variant="tertiaryGrey">
@@ -30,7 +30,7 @@ export const Menu = (props: MenuProps) => {
           >
             <DropdownMenu.Item
               onClick={() => setDeleteDialogIsOpen(true)}
-              className="!px-4 !py-2.5 !text-semantic-error-default !product-button-button-2 gap-x-2"
+              className="gap-x-2 !px-4 !py-2.5 !text-semantic-error-default !product-button-button-2"
             >
               <Icons.Trash01 className="h-4 w-4 stroke-semantic-error-default" />
               Delete
