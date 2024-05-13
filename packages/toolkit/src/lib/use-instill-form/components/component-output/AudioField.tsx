@@ -24,12 +24,7 @@ export const AudioField = (props: AudioFieldProps) => {
           </div>
           <div className="flex h-[150px] items-center">
             <div className="w-full">
-              <AudioPlayer
-                key={1}
-                currentSong={audio}
-                songCount={1}
-                songIndex={1}
-              />
+              <AudioPlayer currentSong={audio} />
             </div>
           </div>
         </div>
