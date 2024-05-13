@@ -122,12 +122,12 @@ export const Body = ({
           defaultValue="explore"
           className="mb-8 w-full  flex-col justify-center"
         >
-          <Tabs.List className="flex justify-center gap-4">
+          <Tabs.List className="flex justify-center gap-4 mt-6">
             <Tabs.Trigger className={tabTriggerStyle} value="explore">
-              Explore
+              <span className="text-lg">Explore</span>
             </Tabs.Trigger>
             <Tabs.Trigger className={tabTriggerStyle} value="featured">
-              Featured
+              <span className="text-lg">Featured</span>
             </Tabs.Trigger>
           </Tabs.List>
           <div className="flex w-full flex-row">
@@ -214,38 +214,10 @@ export const Body = ({
                 </div>
               </Tabs.Content>
               <Tabs.Content value="featured">
-                {showBanner && (
-                  <div className="mb-2 mt-2  flex items-center justify-between rounded-md bg-semantic-accent-bg p-4 text-semantic-fg-secondary ">
-                    <p className="flex items-center justify-between">
-                      &nbsp; Want to feature your pipeline? Drop a message
-                      in&nbsp; <span className="font-bold">#featured</span>
-                      &nbsp; on&nbsp;
-                      <button className="font-bold text-semantic-accent-default underline underline-offset-2">
-                        Discord
-                      </button>
-                      <a
-                        href="https://discord.com/invite/sevxWsqpGh"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex h-4 w-4 items-center text-semantic-accent-default"
-                      >
-                        <DiscordIcon />
-                      </a>
-                    </p>
-                    <div className="flex items-center">
-                      <button
-                        onClick={() => setShowBanner(false)}
-                        className="focus:outline-none"
-                      >
-                        <Icons.ReferenceIconX className="h-5 w-5 text-black" />
-                      </button>
-                    </div>
-                  </div>
-                )}
                 <div className="flex flex-row">
                   <div className="flex w-full flex-col pt-6">
-                    <div className="mb-4 flex flex-col">
-                      <div className="mb-2.5 flex items-center justify-between">
+                    <div className="mb-3 flex flex-col">
+                      <div className="flex items-center justify-between">
                         <p className="text-semantic-fg-primary product-body-text-3-semibold">
                           Pipelines 34,010
                         </p>
@@ -277,6 +249,34 @@ export const Body = ({
                         </div>
                       </div>
                     </div>
+                    {showBanner && (
+                      <div className="mb-3 flex items-center justify-between rounded-md bg-semantic-accent-bg p-4 text-semantic-fg-secondary ">
+                        <p className="flex items-center justify-between">
+                          &nbsp; Want to feature your pipeline? Drop a message
+                          in&nbsp; <span className="font-bold">#featured</span>
+                          &nbsp; on&nbsp;
+                          <button className="font-bold text-semantic-accent-default underline underline-offset-2">
+                            Discord
+                          </button>
+                          <a
+                            href="https://discord.com/invite/sevxWsqpGh"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex h-4 w-4 items-center text-semantic-accent-default"
+                          >
+                            <DiscordIcon />
+                          </a>
+                        </p>
+                        <div className="flex items-center">
+                          <button
+                            onClick={() => setShowBanner(false)}
+                            className="focus:outline-none"
+                          >
+                            <Icons.ReferenceIconX className="h-5 w-5 text-black" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
                     <div className="mb-4 flex flex-col gap-y-4">
                       {pipelines.isSuccess && !pipelines.isFetching ? (
                         allPipelines.length === 0 ? (
