@@ -1,8 +1,8 @@
 "use client";
 
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import { InfiniteData, QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { CardModel } from "../../components/card-model/CardModel";
-import { Model, Nullable } from "../../lib";
+import { ListUserModelsResponse, Model, Nullable } from "../../lib";
 import { CardModelSkeleton } from "../../components/card-model/Skeleton";
 
 export type ModelsListProps = {
@@ -13,7 +13,7 @@ export type ModelsListProps = {
 };
 
 export const ModelsList = (props: ModelsListProps) => {
-  const { models, accessToken, onModelDelete, isLoading/* , modelsWatchState, isError */ } = props;
+  const { models, accessToken, onModelDelete, isLoading } = props;
 
   if (models.length === 0) {
     return null;
