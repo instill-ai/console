@@ -42,5 +42,10 @@
   "packageManager": "pnpm@8.8.0",
   "lint-staged": {
     "*.{ts,tsx}": "prettier --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pnpm lint-staged"
+    }
   }
 }
