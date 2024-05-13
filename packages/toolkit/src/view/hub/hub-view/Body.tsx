@@ -120,16 +120,19 @@ export const Body = ({
       <div className="flex w-full items-center">
         <Tabs.Root
           defaultValue="explore"
-          className="mb-8 w-full  flex-col justify-center"
+          className="mb-8 w-full flex-col justify-center"
         >
-          <Tabs.List className="flex justify-center gap-4 mt-6">
-            <Tabs.Trigger className={tabTriggerStyle} value="explore">
-              <span className="text-lg">Explore</span>
-            </Tabs.Trigger>
-            <Tabs.Trigger className={tabTriggerStyle} value="featured">
-              <span className="text-lg">Featured</span>
-            </Tabs.Trigger>
-          </Tabs.List>
+          <div className="flex flex-col justify-center items-center">
+            <Tabs.List className="flex gap-4 justify-center">
+              <Tabs.Trigger className={tabTriggerStyle} value="explore">
+                <span className="text-lg">Explore</span>
+              </Tabs.Trigger>
+              <Tabs.Trigger className={tabTriggerStyle} value="featured">
+                <span className="text-lg">Featured</span>
+              </Tabs.Trigger>
+            </Tabs.List>
+            <div className="border-b border-gray-200 w-full"></div>
+          </div>
           <div className="flex w-full flex-row">
             <div className="flex w-full flex-col">
               <Tabs.Content value="explore">
@@ -137,13 +140,13 @@ export const Body = ({
                   <div className="flex w-full flex-col pt-6">
                     <div className="mb-4 flex flex-col">
                       <div className="mb-2.5 flex items-center justify-between">
-                        <p className="text-semantic-fg-primary product-body-text-3-semibold">
+                        <p className="text-semantic-fg-secondary product-body-text-3-semibold">
                           Pipelines 34,010
                         </p>
-                        <div className="flex items-center gap-4">
-                          <Input.Root className="w-64">
+                        <div className="flex justify-end items-center gap-4 w-full">
+                          <Input.Root className="w-1/3">
                             <Input.LeftIcon>
-                              <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
+                              <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary " />
                             </Input.LeftIcon>
                             <Input.Core
                               value={searchInputValue ?? ""}
@@ -156,7 +159,7 @@ export const Body = ({
                           </Input.Root>
                           <Select.Root>
                             <Select.Trigger className="max-w-40">
-                              <Select.Value placeholder="Sort" />
+                              <Select.Value placeholder="Sort" className="font-bold" />
                               {/* <Select.Icon /> */}
                             </Select.Trigger>
                             <Select.Content>
@@ -218,11 +221,11 @@ export const Body = ({
                   <div className="flex w-full flex-col pt-6">
                     <div className="mb-3 flex flex-col">
                       <div className="flex items-center justify-between">
-                        <p className="text-semantic-fg-primary product-body-text-3-semibold">
+                        <p className="text-semantic-fg-secondary product-body-text-3-semibold">
                           Pipelines 34,010
                         </p>
-                        <div className="flex items-center gap-4">
-                          <Input.Root className="w-64">
+                        <div className="flex justify-end items-center gap-4 w-full">
+                          <Input.Root className="w-1/3">
                             <Input.LeftIcon>
                               <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
                             </Input.LeftIcon>
@@ -237,7 +240,7 @@ export const Body = ({
                           </Input.Root>
                           <Select.Root>
                             <Select.Trigger className="max-w-40">
-                              <Select.Value placeholder="Sort" />
+                              <Select.Value placeholder="Sort" className="font-bold" />
                               {/* <Select.Icon /> */}
                             </Select.Trigger>
                             <Select.Content>
@@ -324,12 +327,12 @@ export const Body = ({
               </Tabs.Content>
             </div>
           </div>
-        </Tabs.Root>
-      </div>
+        </Tabs.Root >
+      </div >
       <div className="ml-8 w-80">
         <NewsLetterCard />
         <LatestChangesCard />
       </div>
-    </div>
+    </div >
   );
 };
