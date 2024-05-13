@@ -41,8 +41,14 @@ const selector = (store: InstillStore) => ({
 
 const PipelineSection = ({ tabValue }: { tabValue: string }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
+  const sortOptions = [
+    { value: "createdAt", label: "Created At" },
+    { value: "updatedAt", label: "Updated At" },
+    { value: "name", label: "Name" },
+  ];
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
+  const [selectedSortOption, setSelectedSortOption] = React.useState(sortOptions[0].value);
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const pipelines = useInfinitePipelines({
@@ -81,12 +87,31 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
     []
   );
 
+  const handleSortChange = (value: string) => {
+    setSelectedSortOption(value);
+    // Perform the sorting logic based on the selected option
+    // You can use the `value` to determine the sorting criteria
+    // and update the `pipelines` data accordingly
+    // For example:
+    // const sortedPipelines = [...pipelines].sort((a, b) => {
+    //   if (value === "createdAt") {
+    //     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    //   } else if (value === "updatedAt") {
+    //     return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    //   } else if (value === "name") {
+    //     return a.name.localeCompare(b.name);
+    //   }
+    // });
+    // Update the `pipelines` state with the sorted data
+    // setPipelines(sortedPipelines);
+  };
+
   return (
     <div className="flex flex-row">
       <div className="flex w-full flex-col pt-6">
         <div className="mb-4 flex flex-col">
           <div className="mb-2.5 flex items-center justify-between">
-            <p className="text-semantic-fg-secondary product-body-text-3-semibold">
+            <p className="text-semantic-fg-secondary product-body-text-3-semibold whitespace-nowrap">
               Pipelines 34,010
             </p>
             <div className="flex justify-end items-center gap-4 w-full">
@@ -103,15 +128,21 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                   }}
                 />
               </Input.Root>
-              <Select.Root>
+              <Select.Root value={selectedSortOption} onValueChange={handleSortChange}>
                 <Select.Trigger className="max-w-40">
-                  <Select.Value placeholder="Sort" className="font-bold" />
+                  <Select.Value>
+                    {sortOptions.find((option) => option.value === selectedSortOption)?.label || "Sort"}
+                  </Select.Value>
                   {/* <Select.Icon /> */}
                 </Select.Trigger>
                 <Select.Content>
-                  <Select.Item value="option1">Option 1</Select.Item>
-                  <Select.Item value="option2">Option 2</Select.Item>
-                  <Select.Item value="option3">Option 3</Select.Item>
+                  <Select.Group>
+                    {sortOptions.map((option) => (
+                      <Select.Item key={option.value} value={option.value}>
+                        {option.label}
+                      </Select.Item>
+                    ))}
+                  </Select.Group>
                 </Select.Content>
               </Select.Root>
             </div>
@@ -170,7 +201,7 @@ const FeaturedBanner = () => {
           <p className="flex items-center justify-between">
             &nbsp; Want to feature your pipeline? Drop a message in&nbsp;{" "}
             <span className="font-bold">#featured</span>
-            &nbsp; on&nbsp;
+            &nbsp; on
             <button className="font-bold text-semantic-accent-default underline underline-offset-2">
               Discord
             </button>
@@ -210,7 +241,7 @@ export const Body = ({
       <div className="flex w-full items-center">
         <Tabs.Root
           defaultValue="explore"
-          className="mb-8 w-full flex-col justify-center"
+          className="mb-8 w-full flex-col justify-center mt-4"
         >
           <div className="flex flex-col justify-center items-center">
             <Tabs.List className="flex gap-4 justify-center">
