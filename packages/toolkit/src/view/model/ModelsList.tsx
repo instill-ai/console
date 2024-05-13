@@ -1,6 +1,10 @@
 "use client";
 
-import { InfiniteData, QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import {
+  InfiniteData,
+  QueryObserverResult,
+  RefetchOptions,
+} from "@tanstack/react-query";
 import { CardModel } from "../../components/card-model/CardModel";
 import {
   InstillStore,

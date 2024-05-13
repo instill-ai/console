@@ -10,16 +10,33 @@ import { Nullable, useModelDefinitions } from "../../lib";
 export type CreateModelFormProps = {
   accessToken: Nullable<string>;
   enabledQuery: boolean;
-}
+};
 
 const CreateModelSchema = z
   .object({
     id: z.string(),
     description: z.string().optional().nullable(),
-    visibility: z.enum(["VISIBILITY_PRIVATE", "VISIBILITY_PUBLIC"]).default("VISIBILITY_PRIVATE"),
-    region: z.enum(["REGION_GCP_EUROPE_WEST_4"]).default("REGION_GCP_EUROPE_WEST_4"),
+    visibility: z
+      .enum(["VISIBILITY_PRIVATE", "VISIBILITY_PUBLIC"])
+      .default("VISIBILITY_PRIVATE"),
+    region: z
+      .enum(["REGION_GCP_EUROPE_WEST_4"])
+      .default("REGION_GCP_EUROPE_WEST_4"),
     hardware: z.enum(["CPU"]).default("CPU"),
-    task: z.enum(["TASK_CLASSIFICATION", "TASK_DETECTION", "TASK_KEYPOINT", "TASK_OCR", "TASK_INSTANCE_SEGMENTATION", "TASK_SEMANTIC_SEGMENTATION", "TASK_TEXT_GENERATION", "TASK_TEXT_TO_IMAGE", "TASK_IMAGE_TO_IMAGE", "TASK_IMAGE_TO_TEXT"]).default("TASK_CLASSIFICATION"),
+    task: z
+      .enum([
+        "TASK_CLASSIFICATION",
+        "TASK_DETECTION",
+        "TASK_KEYPOINT",
+        "TASK_OCR",
+        "TASK_INSTANCE_SEGMENTATION",
+        "TASK_SEMANTIC_SEGMENTATION",
+        "TASK_TEXT_GENERATION",
+        "TASK_TEXT_TO_IMAGE",
+        "TASK_IMAGE_TO_IMAGE",
+        "TASK_IMAGE_TO_TEXT",
+      ])
+      .default("TASK_CLASSIFICATION"),
     configuration: z.object({}),
   })
   .superRefine((state, ctx) => {
@@ -47,7 +64,5 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
 
   console.log(modelDefinitions);
 
-  return (
-    <div>123</div>
-  )
-}
+  return <div>123</div>;
+};
