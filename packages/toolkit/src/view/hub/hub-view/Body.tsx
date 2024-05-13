@@ -41,18 +41,15 @@ const selector = (store: InstillStore) => ({
 
 const PipelineSection = ({ tabValue }: { tabValue: string }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
-  const sortFieldOptions = [
-    { value: "name", label: "Name", icon: <Icons.User01 /> },
-    { value: "updatedAt", label: "Last Updated", icon: <Icons.User01 /> },
+  const sortOptions = [
+    { value: "name-asc", label: "Name (Ascending)", icon: <Icons.User01 /> },
+    { value: "name-desc", label: "Name (Descending)", icon: <Icons.User01 /> },
+    { value: "createTime-asc", label: "Last Updated (Ascending)", icon: <Icons.User01 /> },
+    { value: "createTime-desc", label: "Last Updated (Descending)", icon: <Icons.User01 /> },
   ];
-  const sortOrderOptions = [
-    { value: "asc", label: "Ascending", icon: <Icons.User01 /> },
-    { value: "desc", label: "Descending", icon: <Icons.User01 /> },
-  ];
+  const [selectedSortOption, setSelectedSortOption] = React.useState(sortOptions[3].value);
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
-  const [selectedSortField, setSelectedSortField] = React.useState(sortFieldOptions[1].value);
-  const [selectedSortOrder, setSelectedSortOrder] = React.useState(sortOrderOptions[1].value);
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const pipelines = useInfinitePipelines({
@@ -84,21 +81,23 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
   }, [pipelines.data, pipelines.isSuccess]);
 
   const sortedPipelines = React.useMemo(() => {
+    const [sortField, sortOrder] = selectedSortOption.split("-");
+
     return [...allPipelines].sort((a, b) => {
-      if (selectedSortField === "name") {
-        return selectedSortOrder === "asc"
+      if (sortField === "name") {
+        return sortOrder === "asc"
           ? a.name.localeCompare(b.name)
           : b.name.localeCompare(a.name);
-      } else if (selectedSortField === "updatedAt") {
-        const dateA = new Date(a.updated_at);
-        const dateB = new Date(b.updated_at);
-        return selectedSortOrder === "asc"
+      } else if (sortField === "createTime") {
+        const dateA = new Date(a.create_time);
+        const dateB = new Date(b.create_time);
+        return sortOrder === "asc"
           ? dateA.getTime() - dateB.getTime()
           : dateB.getTime() - dateA.getTime();
       }
       return 0;
     });
-  }, [allPipelines, selectedSortField, selectedSortOrder]);
+  }, [allPipelines, selectedSortOption]);
 
   const debouncedSetSearchCode = React.useMemo(
     () =>
@@ -108,12 +107,9 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
     []
   );
 
-  const handleSortFieldChange = (value: string) => {
-    setSelectedSortField(value);
-  };
 
-  const handleSortOrderChange = (value: string) => {
-    setSelectedSortOrder(value);
+  const handleSortOptionChange = (value: string) => {
+    setSelectedSortOption(value);
   };
 
   return (
@@ -138,33 +134,16 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                   }}
                 />
               </Input.Root>
-              <Select.Root value={selectedSortField} onValueChange={handleSortFieldChange}>
+              <Select.Root value={selectedSortOption} onValueChange={handleSortOptionChange}>
                 <Select.Trigger className="max-w-40">
                   <Select.Value>
-                    {sortFieldOptions.find((option) => option.value === selectedSortField)?.label || "Sort By"}
+                    {sortOptions.find((option) => option.value === selectedSortOption)?.label || "Sort"}
                   </Select.Value>
                   {/* <Select.Icon /> */}
                 </Select.Trigger>
                 <Select.Content>
                   <Select.Group>
-                    {sortFieldOptions.map((option) => (
-                      <Select.Item key={option.value} value={option.value} className="flex justify-between">
-                        {option.label}<span className="w-4 h-4">{option.icon}</span>
-                      </Select.Item>
-                    ))}
-                  </Select.Group>
-                </Select.Content>
-              </Select.Root>
-              <Select.Root value={selectedSortOrder} onValueChange={handleSortOrderChange}>
-                <Select.Trigger className="max-w-40">
-                  <Select.Value>
-                    {sortOrderOptions.find((option) => option.value === selectedSortOrder)?.label || "Sort Order"}
-                  </Select.Value>
-                  {/* <Select.Icon /> */}
-                </Select.Trigger>
-                <Select.Content>
-                  <Select.Group>
-                    {sortOrderOptions.map((option) => (
+                    {sortOptions.map((option) => (
                       <Select.Item key={option.value} value={option.value} className="flex justify-between">
                         {option.label}<span className="w-4 h-4">{option.icon}</span>
                       </Select.Item>
