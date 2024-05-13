@@ -2,6 +2,7 @@
 
 import { Nullable } from "../../../type";
 import { ComponentOutputFieldBaseProps } from "../../types";
+import AudioPlayer from "./AudioPlayer";
 import { DownloadButton } from "./DownloadButton";
 import { FieldRoot } from "./FieldRoot";
 
@@ -21,8 +22,15 @@ export const AudioField = (props: AudioFieldProps) => {
               <DownloadButton className="my-auto" text={audio ?? ""} />
             </div>
           </div>
-          <div className="flex h-[150px] w-full items-center">
-            <audio className="w-full" controls={true} src={audio} />
+          <div className="flex h-[150px] items-center">
+            <div className="w-full">
+              <AudioPlayer
+                key={1}
+                currentSong={audio}
+                songCount={1}
+                songIndex={1}
+              />
+            </div>
           </div>
         </div>
       ) : null}
