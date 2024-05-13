@@ -23,10 +23,7 @@ export const ModelHubCreatePageMainView = (
         breadcrumbs={["Models", "Model Settings"]}
         className="mb-10"
       />
-      <CreateModelForm1
-        accessToken={accessToken}
-        enabledQuery={enableQuery}
-      />
+      <CreateModelForm1 accessToken={accessToken} enabledQuery={enableQuery} />
       <CreateModelForm
         width="w-full"
         onCreate={(initStore) => {
