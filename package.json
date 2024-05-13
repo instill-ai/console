@@ -21,7 +21,7 @@
     "test": "turbo run test",
     "ci-build-packages": "turbo run build lint test",
     "ci-build-storybook": "turbo run build --filter=@instill-ai/design-tokens --filter=@instill-ai/design-system",
-    "prettier:fix": "prettier --write"  
+    "prettier:fix": "prettier --write"
   },
   "devDependencies": {
     "@commitlint/cli": "latest",
