@@ -9,7 +9,8 @@ const PaginationRoot = ({
   className,
   ...props
 }: React.ComponentProps<"nav">) => (
-  <nav role="navigation" aria-label="pagination" className={cn("", className)} {...props} />
+  <nav role="navigation"
+  aria-label="pagination" className={cn("", className)} {...props} />
 );
 PaginationRoot.displayName = "PaginationRoot";
 
