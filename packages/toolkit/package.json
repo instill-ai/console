@@ -145,11 +145,6 @@
     "zod": "^3.23.8",
     "zustand": "^4.3.6"
   },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --cache --fix"
-    ]
-  },
   "peerDependencies": {
     "@instill-ai/design-system": "workspace:*",
     "@instill-ai/design-tokens": "workspace:*",
