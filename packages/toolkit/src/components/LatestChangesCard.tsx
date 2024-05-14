@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Icons } from "@instill-ai/design-system";
@@ -17,12 +17,17 @@ const LatestChangesCard: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("https://productlane.com/api/v1/changelogs/52f06d0d-2381-411e-a8c5-7b375e3a0114")
+      .get(
+        "https://productlane.com/api/v1/changelogs/52f06d0d-2381-411e-a8c5-7b375e3a0114"
+      )
       .then((response) => {
         const data: Changelog[] = response.data;
         const filteredAndSortedChangelogs = data
-          .filter(changelog => changelog.published)
-          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+          .filter((changelog) => changelog.published)
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
         setChangelogs(filteredAndSortedChangelogs.slice(0, 3));
       })
       .catch((error) => {
@@ -32,24 +37,24 @@ const LatestChangesCard: React.FC = () => {
 
   return (
     <div className="mt-4 flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
-      <h2 className="text-2xl font-bold mb-4">Latest Changes</h2>
+      <h2 className="mb-4 text-2xl font-bold">Latest Changes</h2>
       {changelogs.map((changelog) => (
         <div key={changelog.id}>
           <button
             type="button"
-            className="my-auto text-semantic-accent-default product-button-button-2 hover:!underline bg-blue-100 rounded-sm p-2 flex-auto capitalize"
+            className="my-auto flex-auto rounded-sm bg-blue-100 p-2 capitalize text-semantic-accent-default product-button-button-2 hover:!underline"
           >
             {changelog.date && new Date(changelog.date).getTime() !== 0
               ? new Date(changelog.date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
               : new Date(changelog.updatedAt).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
           </button>
           <p>{changelog.title}</p>
         </div>
@@ -61,7 +66,7 @@ const LatestChangesCard: React.FC = () => {
       >
         <button
           type="button"
-          className="my-auto text-semantic-accent-default product-button-button-2 hover:!underline flex justify-start mt-4 ml-2"
+          className="my-auto ml-2 mt-4 flex justify-start text-semantic-accent-default product-button-button-2 hover:!underline"
         >
           View changelog
           <Icons.ChevronRight className="my-auto h-4 w-4 stroke-semantic-accent-default" />

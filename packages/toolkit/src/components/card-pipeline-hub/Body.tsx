@@ -24,13 +24,13 @@ const formatTimestamp = (timestamp: string) => {
   const days = Math.floor(hours / 24);
 
   if (days > 0) {
-    return `Updated ${days} day${days > 1 ? 's' : ''} ago`;
+    return `Updated ${days} day${days > 1 ? "s" : ""} ago`;
   } else if (hours > 0) {
-    return `Updated ${hours} hour${hours > 1 ? 's' : ''} ago`;
+    return `Updated ${hours} hour${hours > 1 ? "s" : ""} ago`;
   } else if (minutes > 0) {
-    return `Updated ${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    return `Updated ${minutes} minute${minutes > 1 ? "s" : ""} ago`;
   } else {
-    return `Updated ${seconds} second${seconds !== 1 ? 's' : ''} ago`;
+    return `Updated ${seconds} second${seconds !== 1 ? "s" : ""} ago`;
   }
 };
 
@@ -60,7 +60,7 @@ export const Body = ({
         {tabValue === "featured" && (
           <button
             type="button"
-            className="my-auto !normal-case product-button-button-2 hover:!underline bg-[#F8F5FF] rounded-md p-2 text-[#6E35DE]"
+            className="my-auto rounded-md bg-[#F8F5FF] p-2 !normal-case text-[#6E35DE] product-button-button-2 hover:!underline"
           >
             Featured
           </button>
@@ -71,7 +71,7 @@ export const Body = ({
           {pipeline.description}
         </p>
       </div>
-      <div className="flex w-full px-3 pb-3 justify-end">
+      <div className="flex w-full justify-end px-3 pb-3">
         <p className="line-clamp-3 text-xs font-normal text-gray-400">
           {formatTimestamp(pipeline.update_time)}
         </p>
