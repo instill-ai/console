@@ -139,5 +139,12 @@ export function useUpdaterOnRightPanel({
     return () => {
       sub.unsubscribe();
     };
-  }, [watch, isDirty, currentNodeData, ValidatorSchema, pipelineIsReadOnly]);
+  }, [
+    watch,
+    isDirty,
+    currentNodeData,
+    ValidatorSchema,
+    pipelineIsReadOnly,
+    debounceUpdater,
+  ]);
 }
