@@ -103,6 +103,7 @@ export function useFilteredHints({
     componentID,
     secrets,
     instillSecret,
+    supportInstillCredit,
   ]);
 
   return filteredHints;

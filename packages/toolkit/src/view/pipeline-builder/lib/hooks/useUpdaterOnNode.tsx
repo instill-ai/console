@@ -157,5 +157,7 @@ export function useUpdaterOnNode({
     currentAdvancedConfigurationNodeID,
     updateCurrentAdvancedConfigurationNodeID,
     pipelineIsReadOnly,
+    debounceUpdater,
+    form,
   ]);
 }
