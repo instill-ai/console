@@ -146,5 +146,7 @@ export function useUpdaterOnRightPanel({
     ValidatorSchema,
     pipelineIsReadOnly,
     debounceUpdater,
+    nodes,
+    form,
   ]);
 }
