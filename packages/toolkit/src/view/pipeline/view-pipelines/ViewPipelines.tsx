@@ -107,7 +107,7 @@ export const ViewPipelines = () => {
           totalPublicPipelines={userPublicPipelines.data?.length ?? null}
         />
       </div>
-      <div className="flex w-[630px] flex-col pt-6">
+      <div className="flex w-full flex-col pt-6">
         <div className="mb-4 grid grid-flow-row grid-cols-3 gap-x-3">
           <div className="flex flex-col gap-y-2.5">
             <p className="text-semantic-fg-primary product-body-text-3-semibold">

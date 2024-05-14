@@ -1,7 +1,6 @@
 "use client";
 
 import { Icons } from "@instill-ai/design-system";
-import { ReadOnlyPipelineBuilder } from "../../view";
 import { Pipeline } from "../../lib";
 import { useRouter } from "next/navigation";
 
@@ -14,9 +13,12 @@ const BodySkeleton = () => {
   );
 };
 
-export const Body = ({ pipeline }: { pipeline: Pipeline }) => {
+export const Body = ({
+  pipeline,
+}: {
+  pipeline: Pipeline;
+}) => {
   const router = useRouter();
-
   return (
     <div className="flex w-full flex-col gap-y-2">
       <div className="flex flex-row gap-x-2 px-3">
@@ -32,19 +34,27 @@ export const Body = ({ pipeline }: { pipeline: Pipeline }) => {
         >
           {pipeline.id}
         </button>
+        {pipeline.isFeatured && (
+          <button
+            type="button"
+            className="my-auto rounded-md bg-[#F8F5FF] p-2 !normal-case text-[#6E35DE] product-button-button-2 hover:!underline"
+          >
+            Featured
+          </button>
+        )}
       </div>
-      <div className="flex w-full px-3">
+      <div className="flex w-full px-3 pb-3">
         <p className="line-clamp-3 font-mono text-xs font-normal text-semantic-fg-secondary">
           {pipeline.description}
         </p>
       </div>
-      <ReadOnlyPipelineBuilder
-        pipelineName={pipeline.name}
-        recipe={pipeline.recipe}
-        metadata={pipeline.metadata}
-        className="h-[250px] w-full !border-none !px-0"
-      />
+      <div className="flex w-full justify-end px-3 pb-3">
+        <p className="line-clamp-3 text-xs font-normal text-gray-400">
+          TODO Clone
+        </p>
+      </div>
     </div>
   );
 };
+
 Body.Skeleton = BodySkeleton;
