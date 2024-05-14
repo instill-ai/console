@@ -37,7 +37,7 @@ const LatestChangesCard: React.FC = () => {
         <div key={changelog.id}>
           <button
             type="button"
-            className="my-auto text-semantic-accent-default product-button-button-2 hover:!underline bg-blue-100 rounded-sm p-2 w-2/3 capitalize"
+            className="my-auto text-semantic-accent-default product-button-button-2 hover:!underline bg-blue-100 rounded-sm p-2 flex-auto capitalize"
           >
             {changelog.date && new Date(changelog.date).getTime() !== 0
               ? new Date(changelog.date).toLocaleDateString("en-US", {
@@ -45,7 +45,11 @@ const LatestChangesCard: React.FC = () => {
                 month: "long",
                 day: "numeric",
               })
-              : "January 1, 1970"}
+              : new Date(changelog.updatedAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
           </button>
           <p>{changelog.title}</p>
         </div>
