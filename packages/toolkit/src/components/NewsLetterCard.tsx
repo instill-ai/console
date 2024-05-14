@@ -1,5 +1,3 @@
-"use client";
-
 import { Icons } from "@instill-ai/design-system";
 import { ImageWithFallback } from "./ImageWithFallback";
 import { useState, useEffect } from "react";
@@ -13,8 +11,6 @@ interface BlogPostData {
   themeImgAlt: string;
   themeImgSrc: string;
 }
-
-//TODO: USE REMARKFORMATTER TO PARSE MDX FILES
 
 const NewsLetterCard = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPostData[]>([]);
@@ -70,6 +66,8 @@ const NewsLetterCard = () => {
           })
         );
 
+        blogPostsData.sort((a, b) => new Date(b.publishedOn).getTime() - new Date(a.publishedOn).getTime());
+
         setBlogPosts(blogPostsData);
       } catch (error) {
         console.error("Error fetching blog posts:", error);
@@ -82,24 +80,23 @@ const NewsLetterCard = () => {
   const formatDate = (dateString: string | undefined) => {
     if (!dateString) return "";
 
-    const [year, month, day] = dateString.split("-");
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
+    try {
+      const dateParts = dateString.split("T")[0].split("-");
+      const year = dateParts[0];
+      const month = parseInt(dateParts[1], 10);
+      const day = parseInt(dateParts[2], 10);
 
-    const formattedDate = `${monthNames[parseInt(month) - 1]} ${day}, ${year}`;
-    return formattedDate;
+      const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
+      const formattedDate = `${monthNames[month - 1]} ${day}, ${year}`;
+      return formattedDate;
+    } catch (error) {
+      console.error("Error parsing date:", error);
+      return "";
+    }
   };
 
   const handlePrevious = () => {
