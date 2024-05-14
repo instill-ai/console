@@ -10,6 +10,7 @@ interface BlogPostData {
   publishedOn: string;
   themeImgAlt: string;
   themeImgSrc: string;
+  slug: string;
 }
 
 const NewsLetterCard = () => {
@@ -62,6 +63,7 @@ const NewsLetterCard = () => {
                 metadata.publishedOn?.replace(/^"|"$/g, "")
               ),
               themeImgAlt: metadata.themeImgAlt || "Blog post image",
+              slug: metadata.slug.replace(/^"|"$/g, "") || ""
             };
           })
         );
@@ -113,22 +115,24 @@ const NewsLetterCard = () => {
     return <NewsLetterCardSkeleton />;
   }
 
-  const { imageUrl, title, publishedOn, themeImgAlt } = blogPosts[currentIndex];
+  const { imageUrl, title, publishedOn, themeImgAlt, slug } = blogPosts[currentIndex];
 
   return (
     <div className="flex h-[450px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
       <h2 className="mb-4 text-2xl font-bold">What's New?</h2>
       <div className="relative h-[250px] w-full">
-        <ImageWithFallback
-          src={imageUrl}
-          width={600}
-          height={400}
-          alt={themeImgAlt}
-          fallbackImg={
-            <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
-          }
-          className="h-full w-full object-cover"
-        />
+        <a href={`https://www.instill.tech/blog/${slug}`} target="_blank" rel="noopener noreferrer">
+          <ImageWithFallback
+            src={imageUrl}
+            width={600}
+            height={400}
+            alt={themeImgAlt}
+            fallbackImg={
+              <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+            }
+            className="h-full w-full object-cover"
+          />
+        </a>
       </div>
       <button
         type="button"
@@ -136,7 +140,9 @@ const NewsLetterCard = () => {
       >
         {publishedOn}
       </button>
-      <p className="line-clamp-3 overflow-hidden">{title}</p>
+      <a href={`https://www.instill.tech/blog/${slug}`} target="_blank" rel="noopener noreferrer">
+        <p className="line-clamp-3 overflow-hidden">{title}</p>
+      </a>
       <div className="mt-auto flex items-center justify-end">
         <button
           type="button"
