@@ -144,8 +144,8 @@ const NewsLetterCard = () => {
           className={`mr-2 ${currentIndex === 0 ? "cursor-not-allowed text-gray-400" : ""}`}
           disabled={currentIndex === 0}
         >
-          <Icons.ChevronLeft
-            className={`h-4 w-4 ${currentIndex === 0 ? "stroke-gray-400" : "stroke-semantic-accent-default"}`}
+          <Icons.ArrowLeft
+            className={`h-6 w-6 ${currentIndex === 0 ? "stroke-gray-400" : "stroke-[#1D2433CC]"}`}
           />
         </button>
         <button
@@ -154,8 +154,8 @@ const NewsLetterCard = () => {
           className={`${currentIndex === blogPosts.length - 1 ? "cursor-not-allowed text-gray-400" : ""}`}
           disabled={currentIndex === blogPosts.length - 1}
         >
-          <Icons.ChevronRight
-            className={`h-4 w-4 ${currentIndex === blogPosts.length - 1 ? "stroke-gray-400" : "stroke-semantic-accent-default"}`}
+          <Icons.ArrowRight
+            className={`h-6 w-6 ${currentIndex === blogPosts.length - 1 ? "stroke-gray-400" : "stroke-[#1D2433CC]"}`}
           />
         </button>
       </div>
