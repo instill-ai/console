@@ -18,15 +18,14 @@ export const CardPipeline = (props: {
   pipeline: Pipeline;
   isOwner: boolean;
   disabledPermissionLabel?: boolean;
-  tabValue: string;
 }) => {
-  const { ownerID, pipeline, isOwner, disabledPermissionLabel, tabValue } =
+  const { ownerID, pipeline, isOwner, disabledPermissionLabel } =
     props;
 
   return (
     <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line">
       <Head pipeline={pipeline} ownerID={ownerID} isOwner={isOwner} />
-      <Body pipeline={pipeline} tabValue={tabValue} />
+      <Body pipeline={pipeline} />
     </div>
   );
 };
