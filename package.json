@@ -42,6 +42,9 @@
   "lint-staged": {
     "**/*.{ts,tsx}": [
       "prettier --write"
+    ],
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --cache --fix"
     ]
   },
   "packageManager": "pnpm@8.8.0"

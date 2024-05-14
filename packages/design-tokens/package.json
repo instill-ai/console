@@ -49,11 +49,6 @@
     "sd-tailwindcss-transformer": "^1.3.1",
     "style-dictionary": "^3.8.0"
   },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --cache --fix"
-    ]
-  },
   "peerDependencies": {
     "tailwindcss": "^3.3.0"
   }
