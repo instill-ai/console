@@ -36,10 +36,8 @@ const formatTimestamp = (timestamp: string) => {
 
 export const Body = ({
   pipeline,
-  tabValue,
 }: {
   pipeline: Pipeline;
-  tabValue: string;
 }) => {
   const router = useRouter();
   return (
@@ -57,7 +55,7 @@ export const Body = ({
         >
           {pipeline.id}
         </button>
-        {tabValue === "featured" && (
+        {pipeline.isFeatured && (
           <button
             type="button"
             className="my-auto rounded-md bg-[#F8F5FF] p-2 !normal-case text-[#6E35DE] product-button-button-2 hover:!underline"

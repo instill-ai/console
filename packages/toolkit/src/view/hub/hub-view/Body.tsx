@@ -39,7 +39,7 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-const PipelineSection = ({ tabValue }: { tabValue: string }) => {
+const PipelineSection = () => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
   const sortOptions = [
     { value: "name-asc", label: "Name (Ascending)" },
@@ -239,7 +239,6 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                   pipeline={pipeline}
                   isOwner={pipeline.owner_name === me.data?.name}
                   disabledPermissionLabel={true}
-                  tabValue={tabValue}
                 />
               ))
             )
@@ -339,11 +338,11 @@ export const Body = ({
           <div className="flex w-full flex-row">
             <div className="flex w-full flex-col">
               <Tabs.Content value="explore">
-                <PipelineSection tabValue="explore" />
+                <PipelineSection />
               </Tabs.Content>
               <Tabs.Content value="featured">
                 <FeaturedBanner />
-                <PipelineSection tabValue="featured" />
+                <PipelineSection />
               </Tabs.Content>
             </div>
           </div>
