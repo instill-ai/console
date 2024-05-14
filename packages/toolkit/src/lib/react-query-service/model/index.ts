@@ -3,7 +3,7 @@ export * from "./useDeleteUserModel";
 export * from "./useDeployUserModel";
 export * from "./useModelDefinition";
 export * from "./useModelDefinitions";
-export * from "./useModels";
+export * from "./useInfiniteModels";
 export * from "./useUndeployUserModel";
 export * from "./useUpdateUserModel";
 export * from "./useUserModelReadme";

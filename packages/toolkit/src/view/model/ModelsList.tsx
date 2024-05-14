@@ -6,12 +6,11 @@ import {
   RefetchOptions,
 } from "@tanstack/react-query";
 import { CardModel } from "../../components/card-model/CardModel";
-import { ListUserModelsResponse, Model, Nullable } from "../../lib";
+import { InstillStore, ListUserModelsResponse, Model, Nullable, useInstillStore, useShallow } from "../../lib";
 import { CardModelSkeleton } from "../../components/card-model/Skeleton";
 
 export type ModelsListProps = {
   models: Model[];
-  accessToken: Nullable<string>;
   onModelDelete: (
     options?: RefetchOptions | undefined
   ) => Promise<
@@ -20,8 +19,14 @@ export type ModelsListProps = {
   isLoading: boolean;
 };
 
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
+
 export const ModelsList = (props: ModelsListProps) => {
-  const { models, accessToken, onModelDelete, isLoading } = props;
+  const { models, onModelDelete, isLoading } = props;
+  const { accessToken } = useInstillStore(useShallow(selector));
 
   if (models.length === 0) {
     return null;

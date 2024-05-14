@@ -120,12 +120,9 @@ export const ModelHubListPageMainView = (
       <ModelsList
         models={
           models.isSuccess
-            ? models.data?.pages[pageNumber]
-              ? models.data?.pages[pageNumber].models
-              : []
+            ? models.data.pages[pageNumber]?.models
             : []
         }
-        accessToken={accessToken}
         onModelDelete={models.refetch}
         isLoading={isLoadingResource}
       />
