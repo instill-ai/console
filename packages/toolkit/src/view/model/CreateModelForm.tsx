@@ -149,7 +149,10 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
       }
 
       if (!form.getValues("hardware")) {
-        //form.setValue('hardware', hardwareOptions[regionOptions[0].value][0].value)
+        form.setValue(
+          "hardware",
+          hardwareOptions[regionOptions[0].value][0].value
+        );
       }
     }
   }, [form, regionOptions, hardwareOptions]);
@@ -203,23 +206,15 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
       configuration: {},
     };
 
-    let isOrg = false;
-    const namespace = organizationsAndUserList.find((account) => {
-      if (account.id === data.namespaceId) {
-        isOrg = account.type === "organization";
-
-        return true;
-      }
-
-      return false;
-    })?.name;
+    const namespace = organizationsAndUserList.find(
+      (account) => account.id === data.namespaceId
+    )?.name;
 
     if (namespace) {
       try {
         await createModel.mutateAsync({
           accessToken,
-          entityName: data.namespaceId,
-          isOrg,
+          entityName: namespace,
           payload,
         });
 

@@ -8,12 +8,10 @@ export function useCreateUserModel() {
   return useMutation({
     mutationFn: async ({
       entityName,
-      isOrg,
       payload,
       accessToken,
     }: {
       entityName: string;
-      isOrg: boolean;
       payload: CreateUserModelPayload;
       accessToken: Nullable<string>;
     }) => {
@@ -23,7 +21,6 @@ export function useCreateUserModel() {
 
       const model = await createUserModelMutation({
         entityName,
-        isOrg,
         payload,
         accessToken,
       });

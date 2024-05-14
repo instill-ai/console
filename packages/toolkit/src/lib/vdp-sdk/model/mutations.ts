@@ -74,12 +74,10 @@ export type CreateUserModelResponse = {
 
 export async function createUserModelMutation({
   entityName,
-  isOrg,
   payload,
   accessToken,
 }: {
   entityName: string;
-  isOrg: boolean;
   payload: CreateUserModelPayload;
   accessToken: Nullable<string>;
 }) {
@@ -87,7 +85,7 @@ export async function createUserModelMutation({
     const client = createInstillAxiosClient(accessToken, true);
 
     const { data } = await client.post<CreateUserModelResponse>(
-      `/${isOrg ? "organizations" : "users"}/${entityName}/models`,
+      `/${entityName}/models`,
       payload
     );
 
