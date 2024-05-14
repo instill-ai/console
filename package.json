@@ -39,5 +39,10 @@
   "engines": {
     "node": ">=20.0.0"
   },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write"
+    ]
+  },
   "packageManager": "pnpm@8.8.0"
 }
