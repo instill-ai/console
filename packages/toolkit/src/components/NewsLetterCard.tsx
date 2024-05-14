@@ -97,9 +97,9 @@ const NewsLetterCard = () => {
   const { imageUrl, title, publishedOn, themeImgAlt } = blogPosts[currentIndex];
 
   return (
-    <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2">
+    <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4 h-[450px]">
       <h2 className="text-2xl font-bold mb-4">What's New?</h2>
-      <div className="relative">
+      <div className="relative h-[250px] w-full">
         <ImageWithFallback
           src={imageUrl}
           width={600}
@@ -115,8 +115,8 @@ const NewsLetterCard = () => {
       >
         {publishedOn}
       </button>
-      <p className="line-clamp-3">{title}</p>
-      <div className="flex justify-end items-center mt-2">
+      <p className="line-clamp-3 overflow-hidden">{title}</p>
+      <div className="flex justify-end items-center mt-auto">
         <button
           type="button"
           onClick={handlePrevious}

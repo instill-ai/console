@@ -116,7 +116,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
     <div className="flex flex-row">
       <div className="flex w-full flex-col pt-6">
         <div className="mb-4 flex flex-col">
-          <div className="mb-2.5 flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <p className="text-semantic-fg-secondary product-body-text-3-semibold whitespace-nowrap">
               Pipelines {allPipelines.length}
             </p>
@@ -224,7 +224,7 @@ const FeaturedBanner = () => {
               rel="noopener noreferrer"
               className="flex h-4 w-4 items-center text-semantic-accent-default"
             >
-              <DiscordIcon color="text-semantic-accent-default" />
+              <DiscordIcon color="text-[#316FED]" />
             </a>
           </p>
           <div className="flex items-center">
