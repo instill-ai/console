@@ -213,9 +213,6 @@ importers:
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.0
-      lint-staged:
-        specifier: '>=10'
-        version: 15.2.0
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
