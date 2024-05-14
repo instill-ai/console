@@ -56,7 +56,10 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     React.useState<string[]>([]);
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
   const [enableEdit, setEnableEdit] = React.useState(false);
-  const [supportInstillCredit, setSupportInstillCredit] = React.useState(false);
+  const [supportInstillCredit, updateSupportInstillCredit] =
+    React.useState(false);
+  const [isUsingInstillCredit, updateIsUsingInstillCredit] =
+    React.useState(false);
 
   React.useEffect(() => {
     setNodeIsCollapsed(collapseAllNodes);
@@ -87,7 +90,8 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
         forceOpenCollapsibleFormGroups,
         updateForceOpenCollapsibleFormGroups: setForceOpenCollapsibleFormGroups,
         supportInstillCredit,
-        setSupportInstillCredit,
+        updateSupportInstillCredit,
+        updateIsUsingInstillCredit,
       }
     );
 
@@ -115,7 +119,9 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     <NodeWrapper
       nodeData={data}
       noteIsOpen={noteIsOpen}
-      renderNodeBottomBar={() => <NodeBottomBarMenu />}
+      renderNodeBottomBar={() => (
+        <NodeBottomBarMenu isUsingInstillCredit={isUsingInstillCredit} />
+      )}
       renderBottomBarInformation={() => (
         <NodeBottomBarContent
           componentID={data.id}
