@@ -124,7 +124,7 @@ export const Head = ({
           >
             {ownerID}
           </button>
-          <div className="rounded-m bg-neutral-0 rounded-full border border-neutral-200 p-1 text-center text-sm font-bold text-neutral-600">
+          <div className="rounded-m bg-neutral-50 rounded-full border border-neutral-200 p-1 text-center text-sm font-semibold text-black">
             {displayName}
           </div>
         </div>
