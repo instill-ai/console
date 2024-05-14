@@ -142,7 +142,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                 <Select.Trigger className="max-w-40 rounded-[4px]">
                   <Select.Value className="font-bold">
                     {selectedSortOption === "name-asc" ||
-                    selectedSortOption === "name-desc"
+                      selectedSortOption === "name-desc"
                       ? selectedSortOption.includes("asc")
                         ? "Name (Ascending)"
                         : "Name (Descending)"
@@ -161,7 +161,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                     >
                       Name
                       <span className="h-4 w-4">
-                        <Icons.User01 />
+                        <Icons.BookOpen02 />
                       </span>
                     </Select.Item>
                     <Select.Item
@@ -171,7 +171,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                     >
                       Last Updated
                       <span className="h-4 w-4">
-                        <Icons.User01 />
+                        <Icons.RefreshCw05 />
                       </span>
                     </Select.Item>
                   </Select.Group>
