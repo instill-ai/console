@@ -2,6 +2,7 @@ import * as React from "react";
 import { getReferencesFromString } from "../../../../view";
 import { ControllerRenderProps } from "react-hook-form";
 import { GeneralUseFormReturn, Nullable } from "../../../type";
+import { InstillCredit } from "../../../../constant";
 
 export function onInputChange({
   field,
@@ -12,6 +13,8 @@ export function onInputChange({
   setEnableSmartHints,
   setSmartHintEnabledPos,
   setCurrentCursorPos,
+  supportInstillCredit,
+  updateIsUsingInstillCredit,
 }: {
   field: ControllerRenderProps<
     {
@@ -29,6 +32,8 @@ export function onInputChange({
     React.SetStateAction<Nullable<number>>
   >;
   setCurrentCursorPos: React.Dispatch<React.SetStateAction<Nullable<number>>>;
+  supportInstillCredit?: boolean;
+  updateIsUsingInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const currentCursorPos = event.target.selectionStart;
 
@@ -72,6 +77,16 @@ export function onInputChange({
     if (event.target.value[currentCursorPos - 1] === "$") {
       setEnableSmartHints(false);
       setSmartHintEnabledPos(null);
+    }
+  }
+
+  console.log(supportInstillCredit, event.target.value);
+
+  if (supportInstillCredit && updateIsUsingInstillCredit) {
+    if (event.target.value !== "${" + InstillCredit.key + "}") {
+      updateIsUsingInstillCredit(false);
+    } else {
+      updateIsUsingInstillCredit(true);
     }
   }
 

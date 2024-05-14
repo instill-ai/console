@@ -1,11 +1,11 @@
 "use client";
 
-import { CopyToClipboardButton } from "../../../..";
+import JsonView from "@uiw/react-json-view";
+import { CopyToClipboardButton } from "../../../../components";
 import { GeneralRecord, Nullable } from "../../../type";
 import { ComponentOutputFieldBaseProps } from "../../types";
 import { FieldRoot } from "./FieldRoot";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { vs2015 } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { customTheme } from "../../../react-json-view";
 
 export type ObjectsFieldProps = {
   objects: Nullable<GeneralRecord[]>;
@@ -21,22 +21,30 @@ export const ObjectsField = (props: ObjectsFieldProps) => {
           {objects?.map((object) => (
             <div
               key={`${title}-${JSON.stringify(object)}-field`}
-              className="relative flex min-h-[36px] w-full whitespace-pre-wrap break-all rounded text-semantic-fg-primary product-body-text-4-regular"
+              className="relative flex w-full flex-col"
             >
-              <div className="absolute right-3 top-3">
-                <CopyToClipboardButton
-                  className="border-0 !bg-[#1E1E1E] !px-1 !py-1"
-                  text={JSON.stringify(object, null, 4)}
-                  iconClassName="!stroke-[#FFFFFF]"
-                />
-              </div>
-              <SyntaxHighlighter
-                language="json"
-                style={vs2015}
-                className="w-full rounded"
-              >
-                {`${JSON.stringify(object, null, 4)}`}
-              </SyntaxHighlighter>
+              <CopyToClipboardButton
+                className="absolute right-2 top-2 !border-none !bg-transparent"
+                iconClassName="!stroke-semantic-bg-primary"
+                text={JSON.stringify(object, null, 2)}
+              />
+              <JsonView
+                value={object ?? {}}
+                style={{
+                  ...customTheme,
+                  padding: "12px",
+                  borderRadius: "8px",
+                  fontSize: "12px",
+                  overflow: "auto",
+                  maxHeight: "400px",
+                }}
+                enableClipboard={false}
+                displayObjectSize={false}
+                indentWidth={8}
+                shortenTextAfterLength={0}
+                displayDataTypes={false}
+                collapsed={3}
+              />
             </div>
           ))}
         </div>

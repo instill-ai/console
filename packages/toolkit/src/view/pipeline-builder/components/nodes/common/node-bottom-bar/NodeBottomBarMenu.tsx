@@ -4,6 +4,7 @@ import cn from "clsx";
 import * as React from "react";
 import { useNodeBottomBarContext } from "./NodeBottomBarContext";
 import { useInstillStore } from "../../../../../../lib";
+import { Icons, Tooltip } from "@instill-ai/design-system";
 
 const NodeBottomBarMenuRootPrimitive = ({
   children,
@@ -48,7 +49,11 @@ export const NodeBottomBarMenuPrimitive = {
   Item: NodeBottomBarMenuItemPrimitive,
 };
 
-export const NodeBottomBarMenu = () => {
+export const NodeBottomBarMenu = ({
+  isUsingInstillCredit,
+}: {
+  isUsingInstillCredit?: boolean;
+}) => {
   const { setSelectedValue } = useNodeBottomBarContext();
   const pipelineIsReadOnly = useInstillStore(
     (store) => store.pipelineIsReadOnly
@@ -80,6 +85,37 @@ export const NodeBottomBarMenu = () => {
       >
         Schema
       </NodeBottomBarMenuPrimitive.Item>
+      {isUsingInstillCredit ? (
+        <Tooltip.Provider>
+          <Tooltip.Root>
+            <Tooltip.Trigger asChild>
+              <Icons.CoinsStacked01 className="my-auto ml-auto h-4 w-4 cursor-pointer stroke-semantic-fg-disabled" />
+            </Tooltip.Trigger>
+            <Tooltip.Portal>
+              <Tooltip.Content
+                className="w-[320px]"
+                sideOffset={5}
+                side="right"
+              >
+                <div className="flex flex-col gap-y-1 rounded-sm bg-semantic-bg-primary p-3">
+                  <p className="text-semantic-fg-primary product-body-text-4-medium">
+                    Instill Credit
+                  </p>
+                  <p className="text-semantic-fg-primary product-body-text-4-medium">
+                    This connector is using Instill Credit
+                  </p>
+                </div>
+                <Tooltip.Arrow
+                  className="fill-white"
+                  offset={5}
+                  width={9}
+                  height={6}
+                />
+              </Tooltip.Content>
+            </Tooltip.Portal>
+          </Tooltip.Root>
+        </Tooltip.Provider>
+      ) : null}
     </NodeBottomBarMenuPrimitive.Root>
   );
 };

@@ -5,4 +5,5 @@ export type SmartHint = {
   type: string;
   properties?: SmartHint[];
   description?: string;
+  isInstillCreditHint?: boolean;
 };

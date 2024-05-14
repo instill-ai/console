@@ -17,21 +17,23 @@ export const SingleSelectField = ({
   size,
   isHidden,
   instillCredentialMap,
-  setSupportInstillCredit,
+  updateSupportInstillCredit,
   updateForceCloseCollapsibleFormGroups,
   updateForceOpenCollapsibleFormGroups,
+  updateIsUsingInstillCredit,
 }: {
   options: string[];
   shortDescription?: string;
   disabled?: boolean;
   instillCredentialMap?: InstillCredentialMap;
-  setSupportInstillCredit?: (value: boolean) => void;
+  updateSupportInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
   updateForceCloseCollapsibleFormGroups?: React.Dispatch<
     React.SetStateAction<string[]>
   >;
   updateForceOpenCollapsibleFormGroups?: React.Dispatch<
     React.SetStateAction<string[]>
   >;
+  updateIsUsingInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
 } & AutoFormFieldBaseProps) => {
   return isHidden ? null : (
     <Form.Field
@@ -78,8 +80,12 @@ export const SingleSelectField = ({
                       );
                     }
 
-                    if (setSupportInstillCredit) {
-                      setSupportInstillCredit(true);
+                    if (updateSupportInstillCredit) {
+                      updateSupportInstillCredit(true);
+                    }
+
+                    if (updateIsUsingInstillCredit) {
+                      updateIsUsingInstillCredit(true);
                     }
 
                     if (updateForceCloseCollapsibleFormGroups) {
@@ -99,8 +105,8 @@ export const SingleSelectField = ({
                       form.clearErrors(currentCredentialFieldPath);
                     }
 
-                    if (setSupportInstillCredit) {
-                      setSupportInstillCredit(false);
+                    if (updateSupportInstillCredit) {
+                      updateSupportInstillCredit(false);
                     }
 
                     if (updateForceOpenCollapsibleFormGroups) {
@@ -191,6 +197,13 @@ export const SingleSelectField = ({
                   })}
               </Select.Content>
             </Select.Root>
+            <Form.Description
+              className={cn(
+                "nodrag nopan cursor-text select-text",
+                size === "sm" ? "!product-body-text-4-regular" : ""
+              )}
+              text={shortDescription ?? null}
+            />
             <Form.Message
               className={cn(
                 "nodrag nopan cursor-text select-text",

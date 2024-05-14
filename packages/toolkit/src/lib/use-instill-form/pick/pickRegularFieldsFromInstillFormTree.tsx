@@ -30,7 +30,8 @@ export type PickRegularFieldsFromInstillFormTreeOptions = {
     React.SetStateAction<string[]>
   >;
   supportInstillCredit?: boolean;
-  setSupportInstillCredit?: (value: boolean) => void;
+  updateSupportInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
+  updateIsUsingInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export function pickRegularFieldsFromInstillFormTree(
@@ -49,7 +50,8 @@ export function pickRegularFieldsFromInstillFormTree(
   const size = options?.size;
   const secrets = options?.secrets ?? [];
   const supportInstillCredit = options?.supportInstillCredit ?? false;
-  const setSupportInstillCredit = options?.setSupportInstillCredit ?? undefined;
+  const updateSupportInstillCredit =
+    options?.updateSupportInstillCredit ?? undefined;
 
   const enabledCollapsibleFormGroup =
     options?.enabledCollapsibleFormGroup ?? false;
@@ -62,6 +64,7 @@ export function pickRegularFieldsFromInstillFormTree(
     options?.forceOpenCollapsibleFormGroups ?? [];
   const updateForceOpenCollapsibleFormGroups =
     options?.updateForceOpenCollapsibleFormGroups;
+  const updateIsUsingInstillCredit = options?.updateIsUsingInstillCredit;
 
   let title: Nullable<string> = null;
 
@@ -294,13 +297,14 @@ export function pickRegularFieldsFromInstillFormTree(
         size={size}
         isHidden={tree.isHidden}
         instillCredentialMap={tree.instillCredentialMap}
-        setSupportInstillCredit={setSupportInstillCredit}
+        updateSupportInstillCredit={updateSupportInstillCredit}
         updateForceCloseCollapsibleFormGroups={
           updateForceCloseCollapsibleFormGroups
         }
         updateForceOpenCollapsibleFormGroups={
           updateForceOpenCollapsibleFormGroups
         }
+        updateIsUsingInstillCredit={updateIsUsingInstillCredit}
       />
     );
   }
@@ -326,6 +330,7 @@ export function pickRegularFieldsFromInstillFormTree(
           instillSecret={tree.instillSecret}
           instillCredential={tree.instillCredential}
           supportInstillCredit={supportInstillCredit}
+          updateIsUsingInstillCredit={updateIsUsingInstillCredit}
         />
       );
     }
@@ -365,6 +370,7 @@ export function pickRegularFieldsFromInstillFormTree(
         instillSecret={tree.instillSecret}
         instillCredential={tree.instillCredential}
         supportInstillCredit={supportInstillCredit}
+        updateIsUsingInstillCredit={updateIsUsingInstillCredit}
       />
     );
   }
