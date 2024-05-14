@@ -111,7 +111,7 @@ const NewsLetterCard = () => {
       </div>
       <button
         type="button"
-        className="my-2 capitalize text-semantic-accent-default product-button-button-2 hover:!underline bg-blue-100 rounded-sm px-2 py-2 w-min whitespace-nowrap "
+        className="my-1 capitalize text-semantic-accent-default product-button-button-2 hover:!underline bg-blue-100 rounded-sm px-2 py-2 w-min whitespace-nowrap "
       >
         {publishedOn}
       </button>
