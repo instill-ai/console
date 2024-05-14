@@ -73,7 +73,7 @@ export const UserProfileCard = ({
                 <h3 className="mx-auto text-semantic-fg-primary product-headings-heading-3">
                   {me.data.profile?.display_name}
                 </h3>
-                <Tag className="mx-auto" variant="default" size="sm">
+                <Tag className="mx-auto" variant="default" size="sm" >
                   {me.data.id}
                 </Tag>
               </div>
@@ -108,20 +108,26 @@ export const UserProfileCard = ({
           ) : null}
           <div className="flex flex-col gap-y-2">
             {totalPipelines ? (
-              <div className="flex flex-row gap-x-2">
-                <p className="text-semantic-fg-primary product-body-text-2-semibold">
-                  My active pipelines
-                </p>
+              <div className="flex flex-row gap-x-2 justify-between">
+                <div className="flex items-center">
+                  <Icons.AlertCircle className="w-4 h-4" />
+                  <p className="text-semantic-fg-primary product-body-text-2-semibold">
+                    Pipelines
+                  </p>
+                </div>
                 <p className="text-semantic-accent-default product-body-text-2-semibold">
                   {totalPipelines}
                 </p>
               </div>
             ) : null}
             {totalPublicPipelines || totalPublicPipelines === 0 ? (
-              <div className="flex flex-row gap-x-2">
-                <p className="text-semantic-fg-primary product-body-text-2-semibold">
-                  My active public pipelines
-                </p>
+              <div className="flex flex-row gap-x-2 justify-between">
+                <div className="flex items-center">
+                  <Icons.AlertCircle className="w-4 h-4" />
+                  <p className="text-semantic-fg-primary product-body-text-2-semibold">
+                    Public pipelines
+                  </p>
+                </div>
                 <Link
                   href={`/${me.data.id}/pipelines?visibility=VISIBILITY_PUBLIC`}
                 >
