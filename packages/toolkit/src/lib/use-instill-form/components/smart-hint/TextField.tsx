@@ -248,7 +248,7 @@ export const TextField = ({
                 size === "sm" ? "!product-body-text-4-regular" : ""
               )}
               text={
-                supportInstillCredit
+                supportInstillCredit && instillCredential
                   ? `${title} support Instill Credit. You can use Instill Credit by input ` +
                     "${" +
                     `secrets.${InstillCredit.key}` +

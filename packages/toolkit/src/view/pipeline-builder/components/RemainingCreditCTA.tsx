@@ -35,7 +35,7 @@ export const RemainingCreditCTA = ({
   return (
     <div className="flex w-[232px] flex-row gap-x-2 rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-2">
       {remainingCredit.isSuccess ? (
-        <p className=" font-mono text-[11px] font-medium text-[#344054]">{`${remainingCredit.data}`}</p>
+        <p className="my-auto font-mono text-[11px] font-medium text-[#344054]">{`${remainingCredit.data}`}</p>
       ) : (
         <Skeleton className="my-auto h-5 w-[100px] rounded" />
       )}
