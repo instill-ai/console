@@ -82,7 +82,10 @@ export const Head = ({
   const displayName = React.useMemo(() => {
     const owner = pipeline.owner as UserOwner;
     const username = owner?.user?.name?.split("/")[1]; // Get the part after "users/"
-    const ownerName = owner?.user?.profile?.company_name || owner?.user?.profile?.display_name || "";
+    const ownerName =
+      owner?.user?.profile?.company_name ||
+      owner?.user?.profile?.display_name ||
+      "";
 
     // If username exists, use it directly
     if (username) {
@@ -121,7 +124,7 @@ export const Head = ({
           >
             {ownerID}
           </button>
-          <div className="rounded-m border border-neutral-200 bg-neutral-0 p-1 text-center text-sm font-bold text-neutral-600 rounded-full">
+          <div className="rounded-m bg-neutral-0 rounded-full border border-neutral-200 p-1 text-center text-sm font-bold text-neutral-600">
             {displayName}
           </div>
         </div>

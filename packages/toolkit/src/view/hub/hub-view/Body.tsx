@@ -47,7 +47,9 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
     { value: "createTime-asc", label: "Last Updated (Ascending)" },
     { value: "createTime-desc", label: "Last Updated (Descending)" },
   ];
-  const [selectedSortOption, setSelectedSortOption] = React.useState(sortOptions[3].value);
+  const [selectedSortOption, setSelectedSortOption] = React.useState(
+    sortOptions[3].value
+  );
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
 
@@ -107,7 +109,6 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
     []
   );
 
-
   const handleSortOptionChange = (value: string) => {
     setSelectedSortOption(value);
   };
@@ -117,10 +118,10 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
       <div className="flex w-full flex-col pt-6">
         <div className="mb-4 flex flex-col">
           <div className="flex items-center justify-between">
-            <p className="text-semantic-fg-secondary product-body-text-3-semibold whitespace-nowrap">
+            <p className="whitespace-nowrap text-semantic-fg-secondary product-body-text-3-semibold">
               Pipelines {allPipelines.length}
             </p>
-            <div className="flex justify-end items-center gap-4 w-full">
+            <div className="flex w-full items-center justify-end gap-4">
               <Input.Root className="w-1/3">
                 <Input.LeftIcon>
                   <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
@@ -134,10 +135,14 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                   }}
                 />
               </Input.Root>
-              <Select.Root value={selectedSortOption} onValueChange={handleSortOptionChange} >
+              <Select.Root
+                value={selectedSortOption}
+                onValueChange={handleSortOptionChange}
+              >
                 <Select.Trigger className="max-w-40 rounded-[4px]">
                   <Select.Value className="font-bold">
-                    {selectedSortOption === "name-asc" || selectedSortOption === "name-desc"
+                    {selectedSortOption === "name-asc" ||
+                    selectedSortOption === "name-desc"
                       ? selectedSortOption.includes("asc")
                         ? "Name (Ascending)"
                         : "Name (Descending)"
@@ -154,31 +159,63 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                       className="flex justify-between text-[#1D2433]"
                       onClick={() => setSelectedSortOption("name-asc")}
                     >
-                      Name<span className="w-4 h-4"><Icons.User01 /></span>
+                      Name
+                      <span className="h-4 w-4">
+                        <Icons.User01 />
+                      </span>
                     </Select.Item>
                     <Select.Item
                       value="createTime-asc"
                       className="flex justify-between text-[#1D2433]"
                       onClick={() => setSelectedSortOption("createTime-asc")}
                     >
-                      Last Updated<span className="w-4 h-4"><Icons.User01 /></span>
+                      Last Updated
+                      <span className="h-4 w-4">
+                        <Icons.User01 />
+                      </span>
                     </Select.Item>
                   </Select.Group>
                   <Select.Separator />
                   <Select.Group>
                     <Select.Item
-                      value={selectedSortOption.includes("name") ? "name-asc" : "createTime-asc"}
+                      value={
+                        selectedSortOption.includes("name")
+                          ? "name-asc"
+                          : "createTime-asc"
+                      }
                       className="flex justify-between text-[#1D2433]"
-                      onClick={() => setSelectedSortOption(selectedSortOption.includes("name") ? "name-asc" : "createTime-asc")}
+                      onClick={() =>
+                        setSelectedSortOption(
+                          selectedSortOption.includes("name")
+                            ? "name-asc"
+                            : "createTime-asc"
+                        )
+                      }
                     >
-                      Ascending<span className="w-4 h-4"><Icons.ArrowUp /></span>
+                      Ascending
+                      <span className="h-4 w-4">
+                        <Icons.ArrowUp />
+                      </span>
                     </Select.Item>
                     <Select.Item
-                      value={selectedSortOption.includes("name") ? "name-desc" : "createTime-desc"}
+                      value={
+                        selectedSortOption.includes("name")
+                          ? "name-desc"
+                          : "createTime-desc"
+                      }
                       className="flex justify-between text-[#1D2433]"
-                      onClick={() => setSelectedSortOption(selectedSortOption.includes("name") ? "name-desc" : "createTime-desc")}
+                      onClick={() =>
+                        setSelectedSortOption(
+                          selectedSortOption.includes("name")
+                            ? "name-desc"
+                            : "createTime-desc"
+                        )
+                      }
                     >
-                      Descending<span className="w-4 h-4"><Icons.ArrowDown /></span>
+                      Descending
+                      <span className="h-4 w-4">
+                        <Icons.ArrowDown />
+                      </span>
                     </Select.Item>
                   </Select.Group>
                 </Select.Content>
@@ -225,7 +262,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
           </Button>
         ) : null}
       </div>
-      <div className="ml-8 w-96 flex flex-col mt-6">
+      <div className="ml-8 mt-6 flex w-96 flex-col">
         <div className="sticky top-6">
           <NewsLetterCard />
           <LatestChangesCard />
@@ -241,11 +278,11 @@ const FeaturedBanner = () => {
   return (
     <>
       {showBanner && (
-        <div className="mb-3 flex items-center justify-between rounded-md bg-semantic-accent-bg p-4 text-semantic-fg-secondary mt-4">
+        <div className="mb-3 mt-4 flex items-center justify-between rounded-md bg-semantic-accent-bg p-4 text-semantic-fg-secondary">
           <p className="flex items-center justify-between">
             &nbsp; Want to feature your pipeline? Drop a message in&nbsp;{" "}
             <span className="font-bold">#featured</span>
-            &nbsp; on  &nbsp;
+            &nbsp; on &nbsp;
             <button className="font-bold text-semantic-accent-default underline underline-offset-2">
               Discord
             </button>
@@ -279,17 +316,17 @@ export const Body = ({
   visitorCta?: UserProfileCardProps["visitorCta"];
 }) => {
   const tabTriggerStyle =
-    "text-gray-600 product-body-text-3-semibold data-[state=active]:text-black data-[state=active]:font-bold data-[state=active]:border-b-2 data-[state=active]:border-blue-500 pb-2"
+    "text-gray-600 product-body-text-3-semibold data-[state=active]:text-black data-[state=active]:font-bold data-[state=active]:border-b-2 data-[state=active]:border-blue-500 pb-2";
 
   return (
     <div className="flex justify-between px-40 sm:px-10 md:px-20">
       <div className="flex w-full items-center">
         <Tabs.Root
           defaultValue="explore"
-          className="mb-8 w-full flex-col justify-center mt-4"
+          className="mb-8 mt-4 w-full flex-col justify-center"
         >
-          <div className="flex flex-col justify-center items-center">
-            <Tabs.List className="flex gap-4 justify-center">
+          <div className="flex flex-col items-center justify-center">
+            <Tabs.List className="flex justify-center gap-4">
               <Tabs.Trigger className={tabTriggerStyle} value="explore">
                 <span className="text-lg">Explore</span>
               </Tabs.Trigger>
@@ -297,7 +334,7 @@ export const Body = ({
                 <span className="text-lg">Featured</span>
               </Tabs.Trigger>
             </Tabs.List>
-            <div className="border-b border-gray-200 w-full"></div>
+            <div className="w-full border-b border-gray-200"></div>
           </div>
           <div className="flex w-full flex-row">
             <div className="flex w-full flex-col">
