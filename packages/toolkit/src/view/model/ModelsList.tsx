@@ -6,7 +6,14 @@ import {
   RefetchOptions,
 } from "@tanstack/react-query";
 import { CardModel } from "../../components/card-model/CardModel";
-import { InstillStore, ListUserModelsResponse, Model, Nullable, useInstillStore, useShallow } from "../../lib";
+import {
+  InstillStore,
+  ListUserModelsResponse,
+  Model,
+  Nullable,
+  useInstillStore,
+  useShallow,
+} from "../../lib";
 import { CardModelSkeleton } from "../../components/card-model/Skeleton";
 
 export type ModelsListProps = {
