@@ -179,3 +179,27 @@ export async function listUsersQuery({
     return Promise.reject(err);
   }
 }
+
+export type GetRemainingCreditResponse = {
+  amount: number;
+};
+
+export async function getRemainingCreditQuery({
+  ownerName,
+  accessToken,
+}: {
+  ownerName: Nullable<string>;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken);
+
+    const { data } = await client.get<GetRemainingCreditResponse>(
+      `/${ownerName}/credit`
+    );
+
+    return Promise.resolve(data.amount);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}

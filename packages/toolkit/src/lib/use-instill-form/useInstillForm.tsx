@@ -15,16 +15,27 @@ import {
 } from "./pick";
 import { useInstillSelectedConditionMap } from "./useInstillSelectedConditionMap";
 import { GeneralRecord, Nullable } from "../type";
-import { Secret } from "../vdp-sdk";
 
 export type UseInstillFormOptions = {
-  disabledAll?: boolean;
   checkIsHidden?: CheckIsHidden;
-  enableSmartHint?: boolean;
-  componentID?: string;
-  size?: "sm";
-  secrets?: Secret[];
-} & Pick<PickRegularFieldsFromInstillFormTreeOptions, "chooseTitleFrom">;
+} & Pick<
+  PickRegularFieldsFromInstillFormTreeOptions,
+  | "chooseTitleFrom"
+  | "secrets"
+  | "enableSmartHint"
+  | "disabledAll"
+  | "size"
+  | "componentID"
+  | "collapsibleDefaultOpen"
+  | "enabledCollapsibleFormGroup"
+  | "forceCloseCollapsibleFormGroups"
+  | "updateForceCloseCollapsibleFormGroups"
+  | "forceOpenCollapsibleFormGroups"
+  | "updateForceOpenCollapsibleFormGroups"
+  | "supportInstillCredit"
+  | "updateSupportInstillCredit"
+  | "updateIsUsingInstillCredit"
+>;
 
 export function useInstillForm(
   schema: InstillJSONSchema | null,
@@ -38,6 +49,20 @@ export function useInstillForm(
   const componentID = options?.componentID ?? "";
   const size = options?.size;
   const secrets = options?.secrets;
+  const enabledCollapsibleFormGroup =
+    options?.enabledCollapsibleFormGroup ?? false;
+  const collapsibleDefaultOpen = options?.collapsibleDefaultOpen ?? false;
+  const supportInstillCredit = options?.supportInstillCredit ?? false;
+  const updateSupportInstillCredit = options?.updateSupportInstillCredit;
+  const forceCloseCollapsibleFormGroups =
+    options?.forceCloseCollapsibleFormGroups ?? [];
+  const updateForceCloseCollapsibleFormGroups =
+    options?.updateForceCloseCollapsibleFormGroups;
+  const forceOpenCollapsibleFormGroups =
+    options?.forceOpenCollapsibleFormGroups ?? [];
+  const updateForceOpenCollapsibleFormGroups =
+    options?.updateForceOpenCollapsibleFormGroups;
+  const updateIsUsingInstillCredit = options?.updateIsUsingInstillCredit;
 
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
   const [ValidatorSchema, setValidatorSchema] = React.useState<z.ZodTypeAny>(
@@ -131,6 +156,15 @@ export function useInstillForm(
         componentID,
         size,
         secrets,
+        enabledCollapsibleFormGroup,
+        collapsibleDefaultOpen,
+        supportInstillCredit,
+        updateSupportInstillCredit,
+        forceCloseCollapsibleFormGroups,
+        updateForceCloseCollapsibleFormGroups,
+        forceOpenCollapsibleFormGroups,
+        updateForceOpenCollapsibleFormGroups,
+        updateIsUsingInstillCredit,
       }
     );
 
@@ -146,6 +180,15 @@ export function useInstillForm(
     componentID,
     size,
     secrets,
+    enabledCollapsibleFormGroup,
+    collapsibleDefaultOpen,
+    supportInstillCredit,
+    updateSupportInstillCredit,
+    forceCloseCollapsibleFormGroups,
+    updateForceCloseCollapsibleFormGroups,
+    forceOpenCollapsibleFormGroups,
+    updateForceOpenCollapsibleFormGroups,
+    updateIsUsingInstillCredit,
   ]);
 
   return {

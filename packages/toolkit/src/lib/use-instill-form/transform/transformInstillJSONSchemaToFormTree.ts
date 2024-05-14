@@ -88,6 +88,7 @@ export function transformInstillJSONSchemaToFormTree(
       if (instillUpstreamValue.enum) {
         return {
           ...baseFields,
+          ...anyOfFields,
           _type: "formItem",
           fieldKey: key ?? null,
           path: (path || key) ?? null,
@@ -359,12 +360,14 @@ const baseFields: Array<keyof InstillJSONSchema> = [
   "instillUpstreamType",
   "instillFormat",
   "instillAcceptFormats",
-  "instillCredentialField",
+  "instillSecret",
   "instillUIOrder",
   "instillEditOnNodeFields",
   "instillUIMultiline",
   "instillPatternErrorMessage",
   "patternProperties",
+  "instillCredentialMap",
+  "instillCredential",
 ];
 
 function pickBaseFields(

@@ -6,6 +6,7 @@ import {
 
 import * as React from "react";
 import { Secret } from "../../../vdp-sdk";
+import { InstillCredit } from "../../../../constant";
 
 export function useFilteredHints({
   smartHints,
@@ -15,7 +16,8 @@ export function useFilteredHints({
   fieldValue,
   componentID,
   secrets,
-  instillCredentialField,
+  instillSecret,
+  supportInstillCredit,
 }: {
   smartHints: SmartHint[];
   instillAcceptFormats: string[];
@@ -23,8 +25,9 @@ export function useFilteredHints({
   smartHintEnabledPos: Nullable<number>;
   fieldValue: string;
   componentID?: string;
-  instillCredentialField?: boolean;
+  instillSecret?: boolean;
   secrets?: Secret[];
+  supportInstillCredit?: boolean;
 }) {
   const filteredHints: SmartHint[] = React.useMemo(() => {
     if (!smartHints || smartHints.length === 0) {
@@ -38,7 +41,7 @@ export function useFilteredHints({
       instillAcceptFormats
     );
 
-    if (instillCredentialField && secrets) {
+    if (instillSecret && secrets) {
       allHints = secrets.map((secret) => ({
         key: secret.id,
         path: `secrets.${secret.id}`,
@@ -46,6 +49,19 @@ export function useFilteredHints({
         type: "string",
         properties: [],
       }));
+    }
+
+    if (supportInstillCredit) {
+      allHints = [
+        ...allHints,
+        {
+          key: "instillCredit",
+          path: `secrets.${InstillCredit.key}`,
+          instillFormat: "string",
+          type: "string",
+          isInstillCreditHint: true,
+        },
+      ];
     }
 
     if (smartHintEnabledPos !== null && currentCursorPos !== null) {
@@ -86,7 +102,8 @@ export function useFilteredHints({
     fieldValue,
     componentID,
     secrets,
-    instillCredentialField,
+    instillSecret,
+    supportInstillCredit,
   ]);
 
   return filteredHints;

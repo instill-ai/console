@@ -17,6 +17,7 @@ import { useValidateReferenceAndTemplate } from "./useValidateReferenceAndTempla
 import { getFieldPlaceholder } from "./getFieldPlaceholder";
 import { FieldDescriptionTooltip } from "../common";
 import { Secret } from "../../../vdp-sdk";
+import { InstillCredit } from "../../../../constant";
 
 export const TextField = ({
   form,
@@ -32,7 +33,10 @@ export const TextField = ({
   size,
   isHidden,
   secrets,
-  instillCredentialField,
+  instillSecret,
+  instillCredential,
+  supportInstillCredit,
+  updateIsUsingInstillCredit,
 }: {
   instillAcceptFormats: string[];
   shortDescription?: string;
@@ -41,7 +45,10 @@ export const TextField = ({
   instillUpstreamTypes: string[];
   componentID?: string;
   secrets?: Secret[];
-  instillCredentialField?: boolean;
+  instillSecret?: boolean;
+  instillCredential?: boolean;
+  supportInstillCredit?: boolean;
+  updateIsUsingInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
 } & AutoFormFieldBaseProps) => {
   const smartHints = useInstillStore((s) => s.smartHints);
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
@@ -84,7 +91,8 @@ export const TextField = ({
     fieldValue,
     componentID,
     secrets,
-    instillCredentialField,
+    instillSecret,
+    supportInstillCredit,
   });
 
   const supportTemplate = instillUpstreamTypes.includes("template");
@@ -137,7 +145,10 @@ export const TextField = ({
                     <Input.Core
                       {...field}
                       aria-label={title ?? undefined}
-                      ref={inputRef}
+                      ref={(el) => {
+                        inputRef.current = el;
+                        field.ref(el);
+                      }}
                       type="text"
                       value={
                         typeof field.value === "object" ? "" : field.value ?? ""
@@ -158,6 +169,8 @@ export const TextField = ({
                           setCurrentCursorPos,
                           setSmartHintEnabledPos,
                           setSmartHintsPopoverIsOpen,
+                          updateIsUsingInstillCredit,
+                          supportInstillCredit,
                         });
                       }}
                       onFocus={() => {
@@ -222,6 +235,8 @@ export const TextField = ({
                       inputRef={inputRef}
                       smartHintEnabledPos={smartHintEnabledPos}
                       instillAcceptFormats={instillAcceptFormats}
+                      instillCredential={instillCredential}
+                      supportInstillCredit={supportInstillCredit}
                     />
                   </React.Fragment>
                 ) : null}
@@ -232,7 +247,14 @@ export const TextField = ({
                 "nodrag nopan cursor-text select-text",
                 size === "sm" ? "!product-body-text-4-regular" : ""
               )}
-              text={shortDescription ?? null}
+              text={
+                supportInstillCredit
+                  ? `${title} support Instill Credit. You can use Instill Credit by input ` +
+                    "${" +
+                    `secrets.${InstillCredit.key}` +
+                    "}. You can still bring your own key by input ${secrets.your_secret}"
+                  : shortDescription ?? null
+              }
             />
             <Form.Message
               className={size === "sm" ? "!product-body-text-4-medium" : ""}

@@ -1,6 +1,5 @@
 "use client";
 
-import cn from "clsx";
 import { Button, Icons } from "@instill-ai/design-system";
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import { useSavePipeline } from "../../lib";

@@ -36,6 +36,7 @@ const selector = (store: InstillStore) => ({
   pipelineIsReadOnly: store.pipelineIsReadOnly,
   collapseAllNodes: store.collapseAllNodes,
   entitySecrets: store.entitySecrets,
+  currentVersion: store.currentVersion,
 });
 
 export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
@@ -44,10 +45,13 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
     pipelineIsReadOnly,
     collapseAllNodes,
     entitySecrets,
+    currentVersion,
   } = useInstillStore(useShallow(selector));
 
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
+  const [forceCloseCollapsibleFormGroups, setForceCloseCollapsibleFormGroups] =
+    React.useState<string[]>([]);
 
   React.useEffect(() => {
     setNodeIsCollapsed(collapseAllNodes);
@@ -68,8 +72,13 @@ export const OperatorNode = ({ data, id }: NodeProps<OperatorNodeData>) => {
         enableSmartHint: true,
         checkIsHidden,
         componentID: data.id,
-        disabledAll: pipelineIsReadOnly,
+        disabledAll: currentVersion !== "latest" || pipelineIsReadOnly,
         secrets: entitySecrets,
+        collapsibleDefaultOpen: true,
+        enabledCollapsibleFormGroup: true,
+        forceCloseCollapsibleFormGroups,
+        updateForceCloseCollapsibleFormGroups:
+          setForceCloseCollapsibleFormGroups,
       }
     );
 

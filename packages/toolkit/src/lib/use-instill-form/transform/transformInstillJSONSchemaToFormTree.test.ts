@@ -33,7 +33,7 @@ test("should transform basic JSON schema to formTree", () => {
       text: {
         description: "",
         instillFormat: "text",
-        instillCredentialField: true,
+        instillSecret: true,
         instillUIOrder: 1,
         instillAcceptFormats: ["string", "text/*"],
         anyOf: [
@@ -94,7 +94,7 @@ test("should transform basic JSON schema to formTree", () => {
         text: {
           description: "",
           instillFormat: "text",
-          instillCredentialField: true,
+          instillSecret: true,
           instillUIOrder: 1,
           instillAcceptFormats: ["string", "text/*"],
           anyOf: [
@@ -146,7 +146,7 @@ test("should transform basic JSON schema to formTree", () => {
         isRequired: true,
         type: "string",
         instillUIOrder: 1,
-        instillCredentialField: true,
+        instillSecret: true,
         isHidden: false,
         instillFormat: "text",
       },
@@ -302,7 +302,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
       },
       dbname: { type: "string", description: "Name of the database." },
       password: {
-        instillCredentialField: true,
+        instillSecret: true,
         type: "string",
         description: "Password associated with the username.",
       },
@@ -335,7 +335,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
           description: "Name of the database.",
         },
         password: {
-          instillCredentialField: true,
+          instillSecret: true,
           type: "string",
           description: "Password associated with the username.",
         },
@@ -383,7 +383,7 @@ test("should transform basic JSON schema without anyOf to formTree", () => {
         instillAcceptFormats: [],
       },
       {
-        instillCredentialField: true,
+        instillSecret: true,
         description: "Password associated with the username.",
         _type: "formItem",
         fieldKey: "password",
@@ -432,7 +432,7 @@ test("should transform isHidden formTree", () => {
       text: {
         description: "",
         instillFormat: "text",
-        instillCredentialField: true,
+        instillSecret: true,
         instillUIOrder: 1,
         anyOf: [
           {
@@ -514,7 +514,7 @@ test("should transform isHidden formTree", () => {
         text: {
           description: "",
           instillFormat: "text",
-          instillCredentialField: true,
+          instillSecret: true,
           instillUIOrder: 1,
           anyOf: [
             {
@@ -565,7 +565,7 @@ test("should transform isHidden formTree", () => {
         isRequired: true,
         type: "string",
         instillUIOrder: 1,
-        instillCredentialField: true,
+        instillSecret: true,
         isHidden: true,
         instillFormat: "text",
         instillAcceptFormats: [],

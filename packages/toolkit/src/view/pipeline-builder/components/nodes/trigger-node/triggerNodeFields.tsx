@@ -155,7 +155,7 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
     instill_format: "video/*",
     order: 10,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "audio/*",
+      instill_format: "video/*",
       title,
       description,
     }),

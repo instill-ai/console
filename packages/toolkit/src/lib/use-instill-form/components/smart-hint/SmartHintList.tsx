@@ -1,11 +1,12 @@
 import * as React from "react";
 import cn from "clsx";
-import { ScrollArea } from "@instill-ai/design-system";
+import { Icons, ScrollArea, Tooltip } from "@instill-ai/design-system";
 import { SmartHint } from "../../../use-smart-hint";
 import { onClickSmartHint } from "./onClickSmartHint";
 import { ControllerRenderProps } from "react-hook-form";
 import { GeneralUseFormReturn, Nullable } from "../../../type";
 import { transformInstillFormatToHumanReadableFormat } from "../../transform";
+import { InstillCredit } from "../../../../constant";
 
 export const SmartHintList = ({
   form,
@@ -20,6 +21,8 @@ export const SmartHintList = ({
   inputRef,
   smartHintEnabledPos,
   instillAcceptFormats,
+  supportInstillCredit,
+  instillCredential,
 }: {
   field: ControllerRenderProps<
     {
@@ -39,6 +42,8 @@ export const SmartHintList = ({
   inputRef: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
   smartHintEnabledPos: Nullable<number>;
   instillAcceptFormats: string[];
+  supportInstillCredit?: boolean;
+  instillCredential?: boolean;
 }) => {
   const humanReadableAcceptFormatString = React.useMemo(() => {
     const formats = instillAcceptFormats.map((format) => {
@@ -96,7 +101,42 @@ export const SmartHintList = ({
                     setHighlightedHintIndex(index);
                   }}
                 >
-                  {hint.path}
+                  {hint.isInstillCreditHint ? (
+                    <div className="flex w-full flex-row justify-between">
+                      <p>{`secrets.${InstillCredit.key}`}</p>
+                      <Tooltip.Provider>
+                        <Tooltip.Root>
+                          <Tooltip.Trigger asChild>
+                            <Icons.CoinsStacked01 className="my-auto h-4 w-4 cursor-pointer stroke-semantic-fg-secondary group-hover:stroke-semantic-bg-primary" />
+                          </Tooltip.Trigger>
+                          <Tooltip.Portal>
+                            <Tooltip.Content
+                              className="w-[320px]"
+                              sideOffset={5}
+                              side="right"
+                            >
+                              <div className="flex flex-col gap-y-1 rounded-sm bg-semantic-bg-primary p-3">
+                                <p className="text-semantic-fg-primary product-body-text-4-medium">
+                                  Instill Credit
+                                </p>
+                                <p className="text-semantic-fg-primary product-body-text-4-medium">
+                                  Instill Credit&apos;s secret
+                                </p>
+                              </div>
+                              <Tooltip.Arrow
+                                className="fill-white"
+                                offset={5}
+                                width={9}
+                                height={6}
+                              />
+                            </Tooltip.Content>
+                          </Tooltip.Portal>
+                        </Tooltip.Root>
+                      </Tooltip.Provider>
+                    </div>
+                  ) : (
+                    hint.path
+                  )}
                 </button>
               );
             })
@@ -107,9 +147,15 @@ export const SmartHintList = ({
           )}
         </div>
       ) : (
-        <div className="flex flex-col rounded border border-semantic-accent-default bg-[#F0F5FF] p-2">
+        <div className="flex flex-col gap-y-1 rounded border border-semantic-accent-default bg-[#F0F5FF] p-2">
           <p className="text-semantic-accent-default product-body-text-3-semibold">
-            {humanReadableAcceptFormatString}
+            {instillCredential
+              ? supportInstillCredit
+                ? "This configuration support Instill Credit, you can use ${" +
+                  InstillCredit.key +
+                  "} to reference it"
+                : "This configuration didn't support Instill Credit, please reference your own secret"
+              : humanReadableAcceptFormatString}
           </p>
         </div>
       )}

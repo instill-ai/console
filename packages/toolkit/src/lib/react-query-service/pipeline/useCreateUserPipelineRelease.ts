@@ -29,9 +29,9 @@ export function useCreateUserPipelineRelease() {
         accessToken,
       });
 
-      return Promise.resolve({ pipelineRelease, accessToken });
+      return Promise.resolve({ pipelineRelease });
     },
-    onSuccess: async ({ pipelineRelease, accessToken }) => {
+    onSuccess: async ({ pipelineRelease }) => {
       // At this stage the pipelineName will be
       // users/<uid>/pipelines/<pid>/releases/<version>
       const pipelineNameArray = pipelineRelease.name.split("/");

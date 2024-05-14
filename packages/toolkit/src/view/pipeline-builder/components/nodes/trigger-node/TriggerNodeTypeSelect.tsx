@@ -54,12 +54,14 @@ export const TriggerNodeTypeSelect = ({
                   value={key}
                   disabledCheck={true}
                 >
-                  <div className="flex flex-row gap-x-1 rounded-full bg-[#F1F3F9] px-1.5 py-1">
-                    {field.icon}
-                    <p className="text-semantic-fg-primary product-button-button-2">
-                      {field.title}
-                    </p>
-                  </div>
+                  <Select.ItemText>
+                    <div className="flex flex-row gap-x-1 rounded-full bg-[#F1F3F9] px-1.5 py-1">
+                      {field.icon}
+                      <p className="text-semantic-fg-primary product-button-button-2">
+                        {field.title}
+                      </p>
+                    </div>
+                  </Select.ItemText>
                 </Select.Item>
               ))}
             </div>
@@ -85,12 +87,14 @@ export const TriggerNodeTypeSelect = ({
                   value={key}
                   disabledCheck={true}
                 >
-                  <div className="flex flex-row gap-x-1 rounded-full bg-[#F1F3F9] px-1.5 py-1">
-                    {field.icon}
-                    <p className="text-semantic-fg-primary product-button-button-2">
-                      {field.title}
-                    </p>
-                  </div>
+                  <Select.ItemText>
+                    <div className="flex flex-row gap-x-1 rounded-full bg-[#F1F3F9] px-1.5 py-1">
+                      {field.icon}
+                      <p className="text-semantic-fg-primary product-button-button-2">
+                        {field.title}
+                      </p>
+                    </div>
+                  </Select.ItemText>
                 </Select.Item>
               ))}
           </div>
