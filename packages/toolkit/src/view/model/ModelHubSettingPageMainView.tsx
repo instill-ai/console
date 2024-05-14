@@ -3,6 +3,7 @@
 import * as React from "react";
 import cn from "clsx";
 import {
+  EntityAvatar,
   ModelDefinitionLabel,
   ModelTaskLabel,
   PageTitle,
@@ -10,6 +11,7 @@ import {
 } from "../../components";
 import {
   GeneralAppPageProp,
+  Nullable,
   useAppEntity,
   useDeployUserModel,
   useUndeployUserModel,
@@ -21,11 +23,38 @@ import { ChangeModelStateToggle } from "./ChangeModelStateToggle";
 import { ConfigureModelForm } from "./ConfigureModelForm";
 import { ModelConfigurationFields } from "./ModelConfigurationFields";
 import Markdown from "markdown-to-jsx";
-import { NoBgSquareProgress } from "@instill-ai/design-system";
+import {
+  GitHubIcon,
+  Icons,
+  NoBgSquareProgress,
+  getModelInstanceTaskToolkit,
+  Tag,
+  TabMenu,
+} from "@instill-ai/design-system";
 import { useParams } from "next/navigation";
+import { Head } from "./view-settings/Head";
 
 export type ModelHubSettingPageMainViewProps = GeneralAppPageProp & {
   disabledConfigureModel: boolean;
+};
+
+const ExternalLink = ({
+  children,
+  href,
+}: {
+  children: React.ReactNode;
+  href: string;
+}) => {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex flex-row items-center gap-x-1 border-b border-zinc-700 text-sm font-semibold text-semantic-bg-secondary-alt-primary"
+    >
+      {children}
+    </a>
+  );
 };
 
 export const ModelHubSettingPageMainView = (
@@ -35,6 +64,8 @@ export const ModelHubSettingPageMainView = (
   const { id, entity } = useParams();
 
   const entityObject = useAppEntity();
+
+  const [selectedTab, setSelectedTab] = React.useState<string>("overview");
 
   /* -------------------------------------------------------------------------
    * Query resource data
@@ -57,7 +88,7 @@ export const ModelHubSettingPageMainView = (
     enabled: enableQuery && entityObject.isSuccess,
     accessToken,
   });
-
+  console.log(model?.data);
   /* -------------------------------------------------------------------------
    * Toggle model state
    * -----------------------------------------------------------------------*/
@@ -67,7 +98,13 @@ export const ModelHubSettingPageMainView = (
 
   return (
     <div className="flex flex-col">
-      <PageTitle
+      <Head
+        onTabChange={setSelectedTab}
+        selectedTab={selectedTab}
+        model={model.data}
+      />
+      {selectedTab}
+      {/* <PageTitle
         title={`${id?.toString()}`}
         breadcrumbs={["Models", "Model Settings"]}
         className="mb-5"
@@ -152,7 +189,7 @@ export const ModelHubSettingPageMainView = (
       <ModelConfigurationFields
         model={model.isSuccess ? model.data : null}
         marginBottom="mb-10"
-      />
+      /> */}
     </div>
   );
 };
