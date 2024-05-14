@@ -39,7 +39,7 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-const PipelineSection = () => {
+const PipelineSection = ({ tabValue }: { tabValue: string }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
   const sortOptions = [
     { value: "name-asc", label: "Name (Ascending)" },
@@ -82,10 +82,17 @@ const PipelineSection = () => {
     return all;
   }, [pipelines.data, pipelines.isSuccess]);
 
+  const filteredPipelines = React.useMemo(() => {
+    if (tabValue === "featured") {
+      return allPipelines.filter((pipeline) => pipeline.isFeatured);
+    }
+    return allPipelines;
+  }, [allPipelines, tabValue]);
+
   const sortedPipelines = React.useMemo(() => {
     const [sortField, sortOrder] = selectedSortOption.split("-");
 
-    return [...allPipelines].sort((a, b) => {
+    return [...filteredPipelines].sort((a, b) => {
       if (sortField === "name") {
         return sortOrder === "asc"
           ? a.name.localeCompare(b.name)
@@ -99,7 +106,7 @@ const PipelineSection = () => {
       }
       return 0;
     });
-  }, [allPipelines, selectedSortOption]);
+  }, [filteredPipelines, selectedSortOption]);
 
   const debouncedSetSearchCode = React.useMemo(
     () =>
@@ -119,7 +126,10 @@ const PipelineSection = () => {
         <div className="mb-4 flex flex-col">
           <div className="flex items-center justify-between">
             <p className="whitespace-nowrap text-semantic-fg-secondary product-body-text-3-semibold">
-              Pipelines {allPipelines.length}
+              Pipelines{' '}
+              {tabValue === 'featured'
+                ? filteredPipelines.length
+                : allPipelines.length}
             </p>
             <div className="flex w-full items-center justify-end gap-4">
               <Input.Root className="w-1/3">
@@ -338,11 +348,11 @@ export const Body = ({
           <div className="flex w-full flex-row">
             <div className="flex w-full flex-col">
               <Tabs.Content value="explore">
-                <PipelineSection />
+                <PipelineSection tabValue="explore" />
               </Tabs.Content>
               <Tabs.Content value="featured">
                 <FeaturedBanner />
-                <PipelineSection />
+                <PipelineSection tabValue="featured" />
               </Tabs.Content>
             </div>
           </div>
