@@ -31,7 +31,7 @@ const LatestChangesCard: React.FC = () => {
   }, []);
 
   return (
-    <div className="mt-4 flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-2">
+    <div className="mt-4 flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
       <h2 className="text-2xl font-bold mb-4">Latest Changes</h2>
       {changelogs.map((changelog) => (
         <div key={changelog.id}>
@@ -61,7 +61,7 @@ const LatestChangesCard: React.FC = () => {
       >
         <button
           type="button"
-          className="my-auto text-semantic-accent-default product-button-button-2 hover:!underline flex justify-start mt-4"
+          className="my-auto text-semantic-accent-default product-button-button-2 hover:!underline flex justify-start mt-4 ml-2"
         >
           View changelog
           <Icons.ChevronRight className="my-auto h-4 w-4 stroke-semantic-accent-default" />
