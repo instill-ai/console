@@ -135,8 +135,8 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                 />
               </Input.Root>
               <Select.Root value={selectedSortOption} onValueChange={handleSortOptionChange} >
-                <Select.Trigger className="max-w-40">
-                  <Select.Value>
+                <Select.Trigger className="max-w-40 rounded-[4px]">
+                  <Select.Value className="font-bold">
                     {selectedSortOption === "name-asc" || selectedSortOption === "name-desc"
                       ? selectedSortOption.includes("asc")
                         ? "Name (Ascending)"
