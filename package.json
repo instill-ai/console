@@ -39,5 +39,13 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "packageManager": "pnpm@8.8.0+sha512.798e6b322669ce63c8da856bd62ad1f7b6f36f4dfaa0ac025af2bdd700d09dd5dca943e5cad3edac5d1b3baebc4b2c3fb80fbb8537f936733c32be2ec7805144"
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "prettier --write"
+    ],
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --cache --fix"
+    ]
+  },
+  "packageManager": "pnpm@8.8.0"
 }
