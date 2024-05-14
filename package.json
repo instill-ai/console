@@ -41,7 +41,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "prettier --write"
+      "prettier --write -u"
     ]
   },
   "packageManager": "pnpm@8.8.0"
