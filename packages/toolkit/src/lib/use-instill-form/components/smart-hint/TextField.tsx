@@ -92,6 +92,7 @@ export const TextField = ({
     componentID,
     secrets,
     instillSecret,
+    supportInstillCredit,
   });
 
   const supportTemplate = instillUpstreamTypes.includes("template");
