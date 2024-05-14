@@ -170,6 +170,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                   pipeline={pipeline}
                   isOwner={pipeline.owner_name === me.data?.name}
                   disabledPermissionLabel={true}
+                  tabValue={tabValue}
                 />
               ))
             )
@@ -212,17 +213,18 @@ const FeaturedBanner = () => {
           <p className="flex items-center justify-between">
             &nbsp; Want to feature your pipeline? Drop a message in&nbsp;{" "}
             <span className="font-bold">#featured</span>
-            &nbsp; on
+            &nbsp; on  &nbsp;
             <button className="font-bold text-semantic-accent-default underline underline-offset-2">
               Discord
             </button>
+            &nbsp;
             <a
               href="https://discord.com/invite/sevxWsqpGh"
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-4 w-4 items-center text-semantic-accent-default"
             >
-              <DiscordIcon />
+              <DiscordIcon color="text-semantic-accent-default" />
             </a>
           </p>
           <div className="flex items-center">
@@ -245,7 +247,7 @@ export const Body = ({
   visitorCta?: UserProfileCardProps["visitorCta"];
 }) => {
   const tabTriggerStyle =
-    "text-gray-600 product-body-text-3-semibold data-[state=active]:text-black data-[state=active]:font-bold data-[state=active]:border-b-2 data-[state=active]:border-blue-500";
+    "text-gray-600 product-body-text-3-semibold data-[state=active]:text-black data-[state=active]:font-bold data-[state=active]:border-b-2 data-[state=active]:border-blue-500 pb-2"
 
   return (
     <div className="flex justify-between px-40 sm:px-10 md:px-20">

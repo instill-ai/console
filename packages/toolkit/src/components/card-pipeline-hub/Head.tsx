@@ -79,6 +79,25 @@ export const Head = ({
     return null;
   }, [pipeline]);
 
+  const displayName = React.useMemo(() => {
+    const owner = pipeline.owner as UserOwner;
+    const username = owner?.user?.name?.split("/")[1]; // Get the part after "users/"
+    const ownerName = owner?.user?.profile?.company_name || owner?.user?.profile?.display_name || "";
+
+    // If username exists, use it directly
+    if (username) {
+      return username;
+    } else {
+      // If ownerName contains spaces, return it in lowercase with hyphens
+      if (ownerName.includes(" ")) {
+        return ownerName.toLowerCase().replace(/\s+/g, "-");
+      } else {
+        // If the owner name doesn't contain spaces, return it in lowercase
+        return ownerName.toLowerCase();
+      }
+    }
+  }, [pipeline.owner]);
+
   return (
     <div className="flex flex-row p-3">
       <div className="mr-auto flex flex-row gap-x-2">
@@ -102,10 +121,13 @@ export const Head = ({
           >
             {ownerID}
           </button>
-          <div className="rounded-full bg-[#E1E6EF] p-1 text-semantic-fg-secondary text-center text-sm font-bold">info</div>
+          <div className="rounded-full bg-[#E1E6EF] p-1 text-semantic-fg-secondary text-center text-sm font-bold">
+            {displayName}
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
 Head.Skeleton = HeadSkeleton;

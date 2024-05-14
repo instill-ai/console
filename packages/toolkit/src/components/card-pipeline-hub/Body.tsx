@@ -8,7 +8,7 @@ const BodySkeleton = () => {
   return (
     <div className="flex w-full flex-col px-2">
       <div className="mb-2 h-5 w-1/2 animate-pulse rounded bg-semantic-bg-secondary" />
-      <div className="h-\[250px\] w-full animate-pulse bg-semantic-bg-secondary" />
+      <div className="h-[250px] w-full animate-pulse bg-semantic-bg-secondary" />
     </div>
   );
 };
@@ -34,11 +34,12 @@ const formatTimestamp = (timestamp: string) => {
   }
 };
 
-
 export const Body = ({
   pipeline,
+  tabValue,
 }: {
   pipeline: Pipeline;
+  tabValue: string;
 }) => {
   const router = useRouter();
   return (
@@ -56,12 +57,14 @@ export const Body = ({
         >
           {pipeline.id}
         </button>
-        <button
-          type="button"
-          className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline bg-blue-100 rounded-md p-2"
-        >
-          Featured
-        </button>
+        {tabValue === "featured" && (
+          <button
+            type="button"
+            className="my-auto !normal-case product-button-button-2 hover:!underline bg-[#F8F5FF] rounded-md p-2 text-[#6E35DE]"
+          >
+            Featured
+          </button>
+        )}
       </div>
       <div className="flex w-full px-3 pb-3">
         <p className="line-clamp-3 font-mono text-xs font-normal text-semantic-fg-secondary">
@@ -69,7 +72,7 @@ export const Body = ({
         </p>
       </div>
       <div className="flex w-full px-3 pb-3 justify-end">
-        <p className="line-clamp-3 text-xs font-normal text-disconnected-default-stroke">
+        <p className="line-clamp-3 text-xs font-normal text-gray-400">
           {formatTimestamp(pipeline.update_time)}
         </p>
       </div>
