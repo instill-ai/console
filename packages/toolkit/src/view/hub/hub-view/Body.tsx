@@ -42,10 +42,10 @@ const selector = (store: InstillStore) => ({
 const PipelineSection = ({ tabValue }: { tabValue: string }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
   const sortOptions = [
-    { value: "name-asc", label: "Name (Ascending)", icon: <Icons.User01 /> },
-    { value: "name-desc", label: "Name (Descending)", icon: <Icons.User01 /> },
-    { value: "createTime-asc", label: "Last Updated (Ascending)", icon: <Icons.User01 /> },
-    { value: "createTime-desc", label: "Last Updated (Descending)", icon: <Icons.User01 /> },
+    { value: "name-asc", label: "Name (Ascending)" },
+    { value: "name-desc", label: "Name (Descending)" },
+    { value: "createTime-asc", label: "Last Updated (Ascending)" },
+    { value: "createTime-desc", label: "Last Updated (Descending)" },
   ];
   const [selectedSortOption, setSelectedSortOption] = React.useState(sortOptions[3].value);
   const [searchInputValue, setSearchInputValue] =
@@ -134,20 +134,52 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                   }}
                 />
               </Input.Root>
-              <Select.Root value={selectedSortOption} onValueChange={handleSortOptionChange}>
+              <Select.Root value={selectedSortOption} onValueChange={handleSortOptionChange} >
                 <Select.Trigger className="max-w-40">
                   <Select.Value>
-                    {sortOptions.find((option) => option.value === selectedSortOption)?.label || "Sort"}
+                    {selectedSortOption === "name-asc" || selectedSortOption === "name-desc"
+                      ? selectedSortOption.includes("asc")
+                        ? "Name (Ascending)"
+                        : "Name (Descending)"
+                      : selectedSortOption.includes("asc")
+                        ? "Last Updated (Ascending)"
+                        : "Last Updated (Descending)"}
                   </Select.Value>
                   {/* <Select.Icon /> */}
                 </Select.Trigger>
                 <Select.Content>
                   <Select.Group>
-                    {sortOptions.map((option) => (
-                      <Select.Item key={option.value} value={option.value} className="flex justify-between text-[#1D2433]">
-                        {option.label}<span className="w-4 h-4">{option.icon}</span>
-                      </Select.Item>
-                    ))}
+                    <Select.Item
+                      value="name-asc"
+                      className="flex justify-between text-[#1D2433]"
+                      onClick={() => setSelectedSortOption("name-asc")}
+                    >
+                      Name<span className="w-4 h-4"><Icons.User01 /></span>
+                    </Select.Item>
+                    <Select.Item
+                      value="createTime-asc"
+                      className="flex justify-between text-[#1D2433]"
+                      onClick={() => setSelectedSortOption("createTime-asc")}
+                    >
+                      Last Updated<span className="w-4 h-4"><Icons.User01 /></span>
+                    </Select.Item>
+                  </Select.Group>
+                  <Select.Separator />
+                  <Select.Group>
+                    <Select.Item
+                      value={selectedSortOption.includes("name") ? "name-asc" : "createTime-asc"}
+                      className="flex justify-between text-[#1D2433]"
+                      onClick={() => setSelectedSortOption(selectedSortOption.includes("name") ? "name-asc" : "createTime-asc")}
+                    >
+                      Ascending<span className="w-4 h-4"><Icons.ArrowUp /></span>
+                    </Select.Item>
+                    <Select.Item
+                      value={selectedSortOption.includes("name") ? "name-desc" : "createTime-desc"}
+                      className="flex justify-between text-[#1D2433]"
+                      onClick={() => setSelectedSortOption(selectedSortOption.includes("name") ? "name-desc" : "createTime-desc")}
+                    >
+                      Descending<span className="w-4 h-4"><Icons.ArrowDown /></span>
+                    </Select.Item>
                   </Select.Group>
                 </Select.Content>
               </Select.Root>
