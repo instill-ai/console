@@ -8,19 +8,31 @@ const BodySkeleton = () => {
   return (
     <div className="flex w-full flex-col px-2">
       <div className="mb-2 h-5 w-1/2 animate-pulse rounded bg-semantic-bg-secondary" />
-      <div className="h-\[250px\] w-full animate-pulse bg-semantic-bg-secondary" />
+      <div className="h-[250px] w-full animate-pulse bg-semantic-bg-secondary" />
     </div>
   );
 };
 
-export const Body = ({
-  pipeline,
-}: {
-  pipeline: Pipeline;
-}) => {
+export const Body = ({ pipeline }: { pipeline: Pipeline }) => {
   const router = useRouter();
 
-  const pipelineTasks = ["TASK_CLASSIFICATION", "TASK_TEXT_GENERATION"];
+  const pipelineTasks = [
+    "TASK_CLASSIFICATION",
+    "TASK_TEXT_GENERATION",
+    "TASK_DETECTION",
+    "TASK_KEYPOINT",
+    "TASK_OCR",
+    "TASK_INSTANCE_SEGMENTATION",
+  ];
+
+  const taskColors = {
+    TASK_CLASSIFICATION: "bg-blue-100 text-blue-800",
+    TASK_TEXT_GENERATION: "bg-green-100 text-green-800",
+    TASK_DETECTION: "bg-yellow-100 text-yellow-800",
+    TASK_KEYPOINT: "bg-purple-100 text-purple-800",
+    TASK_OCR: "bg-pink-100 text-pink-800",
+    TASK_INSTANCE_SEGMENTATION: "bg-indigo-100 text-indigo-800",
+  };
 
   return (
     <div className="flex w-full flex-col gap-y-2">
@@ -40,20 +52,23 @@ export const Body = ({
         {pipeline.isFeatured && (
           <button
             type="button"
-            className="my-auto rounded-md bg-\[#F8F5FF\] p-2 !normal-case text-\[#6E35DE\] product-button-button-2 hover:!underline"
+            className="my-auto rounded-md bg-[#F8F5FF] p-2 !normal-case text-[#6E35DE] product-button-button-2 hover:!underline"
           >
             Featured
           </button>
         )}
-        <div className="flex gap-x-2">
+        <div className="flex flex-wrap gap-2">
           {pipelineTasks.map((task) => {
             const { label, getIcon } = getModelInstanceTaskToolkit(task);
+            const taskColor = taskColors[task];
+
             return (
-              <div key={task} className="flex items-center gap-x-1">
+              <div
+                key={task}
+                className={`flex items-center gap-x-1 rounded-full px-2 py-1 ${taskColor}`}
+              >
                 {getIcon("h-4 w-4")}
-                <span className="text-xs font-normal text-semantic-fg-secondary">
-                  {label}
-                </span>
+                <span className="text-xs font-normal">{label}</span>
               </div>
             );
           })}
