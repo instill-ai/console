@@ -174,7 +174,7 @@ const NewsLetterCard = () => {
           disabled={currentIndex === 0}
         >
           <Icons.ArrowLeft
-            className={`h-6 w-6 ${currentIndex === 0 ? "stroke-gray-400" : "stroke-[#1D2433CC]"
+            className={`h-6 w-6 ${currentIndex === 0 ? "stroke-gray-400" : "stroke-semantic-fg-secondary"
               }`}
           />
         </button>
@@ -190,7 +190,7 @@ const NewsLetterCard = () => {
           <Icons.ArrowRight
             className={`h-6 w-6 ${currentIndex === blogPosts.length - 1
               ? "stroke-gray-400"
-              : "stroke-[#1D2433CC]"
+              : "stroke-semantic-fg-secondary"
               }`}
           />
         </button>
