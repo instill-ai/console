@@ -112,7 +112,7 @@ export const ConnectorOperatorControlPanel = ({
 
   const handleCopyNode = React.useCallback(() => {
     let nodePrefix: Nullable<string> = null;
-    let nodeType = "connectorNode";
+    let nodeType: Nullable<string> = null;
 
     if (isOperatorComponent(nodeData)) {
       if (!nodeData.operator_component.definition) {
@@ -134,6 +134,8 @@ export const ConnectorOperatorControlPanel = ({
       nodePrefix = transformConnectorDefinitionIDToComponentIDPrefix(
         nodeData.connector_component.definition.id
       );
+
+      nodeType = "connectorNode";
     }
 
     if (isIteratorComponent(nodeData)) {
@@ -142,7 +144,7 @@ export const ConnectorOperatorControlPanel = ({
       nodeType = "iteratorNode";
     }
 
-    if (!nodePrefix) {
+    if (!nodePrefix || !nodeType) {
       return;
     }
 
@@ -167,7 +169,10 @@ export const ConnectorOperatorControlPanel = ({
         targetPosition: Position.Right,
         position: { x: 0, y: 0 },
         zIndex: 30,
-        data: nodeData,
+        data: {
+          ...nodeData,
+          id: nodeID,
+        },
       },
     ];
     const newEdges = composeEdgesFromNodes(newNodes);
