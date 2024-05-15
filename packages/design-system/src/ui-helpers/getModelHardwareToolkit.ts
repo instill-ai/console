@@ -8,5 +8,7 @@ export const getModelHardwareToolkit = (hardwareName: string) => {
       return "Nvidia L4";
     case "NVIDIA_A100":
       return "Nvidia A100";
+    default:
+      return "Unknown";
   }
 };

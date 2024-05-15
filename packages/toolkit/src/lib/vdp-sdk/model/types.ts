@@ -102,3 +102,8 @@ export type ModelsWatchState = Record<string, ModelWatchState>;
 export type ModelWithPipelines = Model & {
   pipelines: Pipeline[];
 };
+
+export type ModelRegion = {
+  region_name: string;
+  hardware: string[];
+};

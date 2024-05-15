@@ -3,7 +3,8 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
 import { Operation } from "../operation";
-import { Model } from "./types";
+import { Visibility } from "../types";
+import { Model, ModelTask } from "./types";
 
 export type CreateUserGithubModelConfiguration = {
   repository: string;
@@ -24,11 +25,16 @@ export type CreateUserHuggingFaceModelConfiguration = {
   repo_id: string;
 };
 
-export type CreateUserModelPayload =
-  | CreateUserGitHubModelPayload
-  | CreateUserLocalModelPayload
-  | CreateUserHuggingFaceModelPayload
-  | CreateUserArtiVCModelPayload;
+export type CreateUserModelPayload = {
+  id: string;
+  description?: string;
+  visibility: Visibility;
+  region: string;
+  hardware: string;
+  task: ModelTask;
+  model_definition: "model-definitions/container";
+  configuration: Record<string, string>;
+};
 
 export type CreateUserGitHubModelPayload = {
   id: string;
@@ -63,90 +69,29 @@ export type CreateUserArtiVCModelPayload = {
 };
 
 export type CreateUserModelResponse = {
-  operation: Operation;
+  model: Model;
 };
 
 export async function createUserModelMutation({
-  userName,
+  entityName,
   payload,
   accessToken,
 }: {
-  userName: string;
+  entityName: string;
   payload: CreateUserModelPayload;
   accessToken: Nullable<string>;
 }) {
-  const client = createInstillAxiosClient(accessToken, true);
-  if (payload.type === "Local") {
-    try {
-      const formData = new FormData();
-      formData.append("id", payload.id);
-      formData.append("model_definition", payload.model_definition);
-      formData.append("content", payload.configuration.content);
+  try {
+    const client = createInstillAxiosClient(accessToken, true);
 
-      if (payload.description) {
-        formData.append("description", payload.description);
-      }
+    const { data } = await client.post<CreateUserModelResponse>(
+      `/${entityName}/models`,
+      payload
+    );
 
-      const { data } = await client.post<CreateUserModelResponse>(
-        `${userName}/models/multipart`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      return Promise.resolve(data.operation);
-    } catch (err) {
-      return Promise.reject(err);
-    }
-  } else {
-    let input: Record<string, any> = {};
-
-    if (payload.type === "GitHub") {
-      input = {
-        id: payload.id,
-        model_definition: payload.model_definition,
-        description: payload.description,
-        configuration: {
-          repository: payload.configuration.repository,
-          tag: payload.configuration.tag,
-        },
-      };
-    } else if (payload.type === "ArtiVC") {
-      input = {
-        id: payload.id,
-        model_definition: payload.model_definition,
-        description: payload.description,
-        configuration: {
-          url: payload.configuration.url,
-          credential: payload.configuration.credential
-            ? JSON.parse(payload.configuration.credential)
-            : undefined,
-          tag: payload.configuration.tag,
-        },
-      };
-    } else {
-      input = {
-        id: payload.id,
-        model_definition: payload.model_definition,
-        description: payload.description,
-        configuration: {
-          repo_id: payload.configuration.repo_id,
-        },
-      };
-    }
-
-    try {
-      const { data } = await client.post<CreateUserModelResponse>(
-        `${userName}/models`,
-        input
-      );
-
-      return Promise.resolve(data.operation);
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    return Promise.resolve(data.model);
+  } catch (err) {
+    return Promise.reject(err);
   }
 }
 

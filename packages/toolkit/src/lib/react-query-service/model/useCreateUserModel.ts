@@ -7,11 +7,11 @@ export function useCreateUserModel() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
-      userName,
+      entityName,
       payload,
       accessToken,
     }: {
-      userName: string;
+      entityName: string;
       payload: CreateUserModelPayload;
       accessToken: Nullable<string>;
     }) => {
@@ -19,16 +19,16 @@ export function useCreateUserModel() {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const operation = await createUserModelMutation({
-        userName,
+      const model = await createUserModelMutation({
+        entityName,
         payload,
         accessToken,
       });
 
       return Promise.resolve({
-        operation,
+        model,
         accessToken,
-        modelName: `${userName}/models/${payload.id}`,
+        modelName: `${entityName}/models/${payload.id}`,
       });
     },
     onSuccess: async ({ modelName, accessToken }) => {

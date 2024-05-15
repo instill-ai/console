@@ -11,5 +11,6 @@ export * from "./useUserModels";
 export * from "./useWatchUserModel";
 export * from "./useWatchUserModels";
 export { useUserModel } from "./useUserModel";
+export { useModelRegions } from "./useModelRegions";
 
 export * from "./use-user-model";
