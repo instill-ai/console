@@ -151,7 +151,9 @@ export const ViewPipelines = () => {
               </Select.Content>
             </Select.Root>
           </div>
-          <CreatePipelineDialog className="mt-auto" />
+          <div className="flex items-end ml-auto">
+            <CreatePipelineDialog className="mt-auto" />
+          </div>
         </div>
         <div className="mb-4 flex flex-col gap-y-4">
           {pipelines.isSuccess ? (
