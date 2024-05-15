@@ -72,10 +72,13 @@ export const CETopbarDropdown = () => {
                 </div>
               }
             />
-            <div className="flex flex-col">
-              <h3 className="text-semantic-fg-primary product-body-text-3-medium">
-                {me.data.profile?.display_name}
-              </h3>
+            <div className="flex flex-col flex-1">
+              <div className="flex justify-between">
+                <h3 className="text-semantic-fg-primary product-body-text-3-medium">
+                  {me.data.profile?.display_name}
+                </h3>
+                <Icons.Check className="h-4 w-4 stroke-semantic-fg-success" />
+              </div>
               <p className="text-semantic-fg-secondary product-body-text-4-regular">
                 {me.data.profile?.public_email}
               </p>
@@ -96,10 +99,15 @@ export const CETopbarDropdown = () => {
                     </div>
                   }
                 />
-                <div className="flex flex-col">
-                  <h3 className="text-semantic-fg-primary product-body-text-3-medium">
-                    {membership.organization.name}
-                  </h3>
+                <div className="flex flex-col flex-1">
+                  <div className="flex justify-between">
+                    <h3 className="text-semantic-fg-primary product-body-text-3-medium">
+                      {membership.organization.name}
+                    </h3>
+                    {membership.organization.id === activeOrganizationId && (
+                      <Icons.Check className="h-4 w-4 stroke-semantic-fg-success" />
+                    )}
+                  </div>
                   <p className="text-semantic-fg-secondary product-body-text-4-regular">
                     {membership.organization.profile?.public_email}
                   </p>
@@ -108,7 +116,7 @@ export const CETopbarDropdown = () => {
             ))}
           </div>
         ) : null}
-        <div className="p-3 rounded ">
+        <div className="p-3 rounded">
           <RemainingCreditCTA ctaTargetHref="/subscription" />
         </div>
         <Separator orientation="horizontal" />
@@ -128,6 +136,39 @@ export const CETopbarDropdown = () => {
           >
             <Icons.Gear01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
             <div className="my-auto">Settings</div>
+          </TopbarDropdownItem>
+        </TopbarDropdownGroup>
+        <Separator orientation="horizontal" />
+        <TopbarDropdownGroup>
+          <TopbarDropdownItem asChild>
+            <a
+              href="/settings/organization-profile"
+              className="flex gap-x-2"
+              rel="noopener noreferrer"
+            >
+              <Icons.Mail01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+              Organization Profile
+            </a>
+          </TopbarDropdownItem>
+          <TopbarDropdownItem asChild>
+            <a
+              href="/settings/organization-members"
+              className="flex gap-x-2"
+              rel="noopener noreferrer"
+            >
+              <Icons.Mail01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+              Members
+            </a>
+          </TopbarDropdownItem>
+          <TopbarDropdownItem asChild>
+            <a
+              href="/settings/invite-colleagues"
+              className="flex gap-x-2"
+              rel="noopener noreferrer"
+            >
+              <Icons.Mail01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+              Invite Colleagues
+            </a>
           </TopbarDropdownItem>
         </TopbarDropdownGroup>
         <Separator orientation="horizontal" />
@@ -195,7 +236,7 @@ export const CETopbarDropdown = () => {
         <TopbarDropdownGroup>
           <TopbarDropdownItem asChild>
             <Link href="/api/auth/logout" className="flex gap-x-2">
-              <Icons.Logout01 className=" my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+              <Icons.Logout01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
               <div className="my-auto">Log out</div>
             </Link>
           </TopbarDropdownItem>
