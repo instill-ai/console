@@ -1,10 +1,12 @@
 "use client";
 
+import * as React from "react";
 import cn from "clsx";
 import { Form, Icons, Select, Tooltip } from "@instill-ai/design-system";
 import { AutoFormFieldBaseProps, InstillCredentialMap } from "../../types";
 import { FieldDescriptionTooltip } from "../common";
 import { InstillCredit } from "../../../../constant";
+import { dot } from "../../../dot";
 
 export const SingleSelectField = ({
   form,
@@ -27,14 +29,107 @@ export const SingleSelectField = ({
   disabled?: boolean;
   instillCredentialMap?: InstillCredentialMap;
   updateSupportInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
+  updateIsUsingInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
   updateForceCloseCollapsibleFormGroups?: React.Dispatch<
     React.SetStateAction<string[]>
   >;
   updateForceOpenCollapsibleFormGroups?: React.Dispatch<
     React.SetStateAction<string[]>
   >;
-  updateIsUsingInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
 } & AutoFormFieldBaseProps) => {
+  const { watch } = form;
+
+  // Operate credit related flow
+  // 1. When user select option that support credit, we will check
+  //    whether the field has value, if not, we will fill in the
+  //    credit key into the field
+  // 2. When user select option that doesn't support credit, we will
+  //    clear the field value and focus on the field
+  // 3. when user first time switch to TASK_TEXT_GENERATION, we will
+  //    set the model value to gpt-3.5-turbo, and this model support
+  //    instill credit.
+  React.useEffect(() => {
+    const sub = watch((values) => {
+      const fieldValue = dot.getter(values, path);
+
+      if (instillCredentialMap) {
+        const currentCredentialFieldPath = instillCredentialMap.targets[0];
+
+        const currentCredentialFieldValue = dot.getter(
+          values,
+          currentCredentialFieldPath
+        );
+        // Deal with case that support instill credit, if the secret field
+        // is empty, we will fill in the instill credit key into that field
+        if (instillCredentialMap.values.includes(fieldValue)) {
+          if (!currentCredentialFieldValue) {
+            form.setValue(
+              currentCredentialFieldPath,
+              "${secrets." + `${InstillCredit.key}` + "}"
+            );
+          }
+
+          if (updateSupportInstillCredit) {
+            updateSupportInstillCredit(true);
+          }
+
+          if (updateIsUsingInstillCredit) {
+            updateIsUsingInstillCredit(true);
+          }
+
+          if (updateForceCloseCollapsibleFormGroups) {
+            const toplevelPath = currentCredentialFieldPath.split(".")[0];
+            updateForceCloseCollapsibleFormGroups((prev) => [
+              ...prev,
+              toplevelPath,
+            ]);
+          }
+        } else {
+          // Deal with case that don't support instil credit. We
+          // will focus on the secret field and clear the value
+
+          if (currentCredentialFieldValue) {
+            form.setValue(currentCredentialFieldPath, "");
+            form.clearErrors(currentCredentialFieldPath);
+          }
+
+          if (updateSupportInstillCredit) {
+            updateSupportInstillCredit(false);
+          }
+
+          if (updateForceOpenCollapsibleFormGroups) {
+            const toplevelPath = currentCredentialFieldPath.split(".")[0];
+            updateForceOpenCollapsibleFormGroups((prev) => [
+              ...prev,
+              toplevelPath,
+            ]);
+          }
+
+          // We can not make the value change and focus event at the same
+          // cycle, due to the field render will wash out the focus event
+          // So we need to set a timeout to make sure the focus event will
+          // be triggered after the value change event
+          setTimeout(() => {
+            form.setFocus(currentCredentialFieldPath);
+          }, 200);
+        }
+      }
+    });
+
+    return () => {
+      sub.unsubscribe();
+    };
+  }, [
+    watch,
+    instillCredentialMap,
+    updateSupportInstillCredit,
+    form,
+    path,
+    updateIsUsingInstillCredit,
+    updateForceCloseCollapsibleFormGroups,
+    updateForceOpenCollapsibleFormGroups,
+  ]);
+
   return isHidden ? null : (
     <Form.Field
       key={path}
@@ -54,79 +149,6 @@ export const SingleSelectField = ({
             <Select.Root
               onValueChange={(e) => {
                 field.onChange(e);
-
-                // Operate credit related flow
-                // 1. When user select option that support credit, we will check
-                //    whether the field has value, if not, we will fill in the
-                //    credit key into the field
-                // 2. When user select option that doesn't support credit, we will
-                //    clear the field value and focus on the field
-
-                if (instillCredentialMap) {
-                  const currentCredentialFieldPath =
-                    instillCredentialMap.targets[0];
-
-                  const currentCredentialFieldValue = form.getValues(
-                    currentCredentialFieldPath
-                  );
-
-                  // Deal with case that support instill credit, if the secret field
-                  // is empty, we will fill in the instill credit key into that field
-                  if (instillCredentialMap.values.includes(e)) {
-                    if (!currentCredentialFieldValue) {
-                      form.setValue(
-                        currentCredentialFieldPath,
-                        "${secret." + `${InstillCredit.key}` + "}"
-                      );
-                    }
-
-                    if (updateSupportInstillCredit) {
-                      updateSupportInstillCredit(true);
-                    }
-
-                    if (updateIsUsingInstillCredit) {
-                      updateIsUsingInstillCredit(true);
-                    }
-
-                    if (updateForceCloseCollapsibleFormGroups) {
-                      const toplevelPath =
-                        currentCredentialFieldPath.split(".")[0];
-                      updateForceCloseCollapsibleFormGroups((prev) => [
-                        ...prev,
-                        toplevelPath,
-                      ]);
-                    }
-                  } else {
-                    // Deal with case that don't support instil credit. We
-                    // will focus on the secret field and clear the value
-
-                    if (currentCredentialFieldValue) {
-                      form.setValue(currentCredentialFieldPath, "");
-                      form.clearErrors(currentCredentialFieldPath);
-                    }
-
-                    if (updateSupportInstillCredit) {
-                      updateSupportInstillCredit(false);
-                    }
-
-                    if (updateForceOpenCollapsibleFormGroups) {
-                      const toplevelPath =
-                        currentCredentialFieldPath.split(".")[0];
-                      updateForceOpenCollapsibleFormGroups((prev) => [
-                        ...prev,
-                        toplevelPath,
-                      ]);
-                    }
-
-                    // We can not make the value change and focus event at the same
-                    // cycle, due to the field render will wash out the focus event
-                    // So we need to set a timeout to make sure the focus event will
-                    // be triggered after the value change event
-                    setTimeout(() => {
-                      form.setFocus(currentCredentialFieldPath);
-                    }, 200);
-                  }
-                }
               }}
               // Sometime airbyte will put "" in their enum, this will break Radix select
               value={field.value === "" ? undefined : field.value ?? undefined}

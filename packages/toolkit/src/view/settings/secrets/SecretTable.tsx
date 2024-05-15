@@ -19,9 +19,10 @@ export const SecretTable = (props: APITokenTableProps) => {
       accessorKey: "id",
       header: () => <div className="min-w-[200px] text-left">id</div>,
       cell: ({ row }) => {
+        const displaySecretName = row.original.name.split("/").pop() || "";
         return (
           <div className="flex flex-col">
-            <p className="product-body-text-3-semibold">{row.original.id}</p>
+            <p className="product-body-text-3-semibold">{displaySecretName}</p>
             <p className="line-clamp-2 text-semantic-fg-disabled product-body-text-3-regular">
               {row.original.description}
             </p>
