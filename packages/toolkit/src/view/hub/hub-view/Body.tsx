@@ -166,7 +166,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                   <Select.Group>
                     <Select.Item
                       value="name-asc"
-                      className="flex justify-between text-[#1D2433]"
+                      className="flex justify-between text-semantic-fg-primary"
                       onClick={() => setSelectedSortOption("name-asc")}
                     >
                       Name
@@ -176,7 +176,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                     </Select.Item>
                     <Select.Item
                       value="createTime-asc"
-                      className="flex justify-between text-[#1D2433]"
+                      className="flex justify-between text-semantic-fg-primary"
                       onClick={() => setSelectedSortOption("createTime-asc")}
                     >
                       Last Updated
@@ -193,7 +193,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                           ? "name-asc"
                           : "createTime-asc"
                       }
-                      className="flex justify-between text-[#1D2433]"
+                      className="flex justify-between text-semantic-fg-primary"
                       onClick={() =>
                         setSelectedSortOption(
                           selectedSortOption.includes("name")
@@ -213,7 +213,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                           ? "name-desc"
                           : "createTime-desc"
                       }
-                      className="flex justify-between text-[#1D2433]"
+                      className="flex justify-between text-semantic-fg-primary"
                       onClick={() =>
                         setSelectedSortOption(
                           selectedSortOption.includes("name")
@@ -310,7 +310,7 @@ const FeaturedBanner = () => {
               onClick={() => setShowBanner(false)}
               className="focus:outline-none"
             >
-              <Icons.ReferenceIconX className="h-5 w-5 text-black" />
+              <Icons.X className="h-5 w-5 stroke-semantic-fg-secondary" />
             </button>
           </div>
         </div>
@@ -325,7 +325,7 @@ export const Body = ({
   visitorCta?: UserProfileCardProps["visitorCta"];
 }) => {
   const tabTriggerStyle =
-    "text-gray-600 product-body-text-3-semibold data-[state=active]:text-black data-[state=active]:font-bold data-[state=active]:border-b-2 data-[state=active]:border-blue-500 pb-2";
+    "text-semantic-fg-disabled product-body-text-3-semibold data-[state=active]:text-semantic-fg-primary data-[state=active]:font-bold data-[state=active]:border-b-2 data-[state=active]:border-blue-500 pb-2";
 
   return (
     <div className="flex justify-between px-40 sm:px-10 md:px-20">

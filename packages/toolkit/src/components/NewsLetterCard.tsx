@@ -154,7 +154,7 @@ const NewsLetterCard = () => {
       </div>
       <button
         type="button"
-        className="my-1 w-min whitespace-nowrap rounded-sm bg-blue-100 px-2 py-2 capitalize text-semantic-accent-default product-button-button-2 hover:!underline "
+        className="my-1 w-min whitespace-nowrap rounded-sm bg-semantic-accent-bg px-2 py-2 capitalize text-semantic-accent-default product-button-button-2 hover:!underline "
       >
         {publishedOn}
       </button>

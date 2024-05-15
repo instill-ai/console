@@ -51,7 +51,7 @@ const LatestChangesCard: React.FC = () => {
         <div key={changelog.id}>
           <button
             type="button"
-            className="my-auto flex-auto rounded-sm bg-blue-100 p-2 capitalize text-semantic-accent-default product-button-button-2 hover:!underline"
+            className="my-auto flex-auto rounded-sm bg-semantic-accent-bg p-2 capitalize text-semantic-accent-default product-button-button-2 hover:!underline"
           >
             {changelog.date && new Date(changelog.date).getTime() !== 0
               ? new Date(changelog.date).toLocaleDateString("en-US", {
