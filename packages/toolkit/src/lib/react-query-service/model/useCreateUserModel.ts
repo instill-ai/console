@@ -28,7 +28,7 @@ export function useCreateUserModel() {
       return Promise.resolve({
         model,
         accessToken,
-        modelName: `${entityName}/models/${payload.id}`,
+        modelName: model.name,
       });
     },
     onSuccess: async ({ modelName, accessToken }) => {
