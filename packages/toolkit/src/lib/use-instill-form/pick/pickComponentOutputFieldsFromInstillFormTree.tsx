@@ -74,25 +74,41 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         <p className="text-semantic-fg-secondary product-body-text-4-semibold">
           {title}
         </p>
-        {tree.properties.map((property) => {
-          return pickComponentOutputFieldsFromInstillFormTree({
-            ...props,
-            tree: property,
-            data: propertyValue,
-          });
-        })}
+        {tree.properties
+          .sort((a, b) => {
+            if (a.instillUIOrder && b.instillUIOrder) {
+              return a.instillUIOrder - b.instillUIOrder;
+            }
+
+            return 0;
+          })
+          .map((property) => {
+            return pickComponentOutputFieldsFromInstillFormTree({
+              ...props,
+              tree: property,
+              data: propertyValue,
+            });
+          })}
       </div>
     ) : (
       <React.Fragment
         key={`${tree.path || tree.fieldKey}-${props.objectArrayIndex}`}
       >
-        {tree.properties.map((property) => {
-          return pickComponentOutputFieldsFromInstillFormTree({
-            ...props,
-            tree: property,
-            data: propertyValue,
-          });
-        })}
+        {tree.properties
+          .sort((a, b) => {
+            if (a.instillUIOrder && b.instillUIOrder) {
+              return a.instillUIOrder - b.instillUIOrder;
+            }
+
+            return 0;
+          })
+          .map((property) => {
+            return pickComponentOutputFieldsFromInstillFormTree({
+              ...props,
+              tree: property,
+              data: propertyValue,
+            });
+          })}
       </React.Fragment>
     );
   }
