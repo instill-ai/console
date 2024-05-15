@@ -98,7 +98,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
   const [hardwareOptions, setHardwareOptions] = useState<
     Record<string, Option[]>
   >({});
-  const [hardwareCustomValue, setHardwareCustomValue] = useState<srting>("");
+  const [hardwareCustomValue, setHardwareCustomValue] = useState<string>("");
   const [creating, setCreating] = React.useState(false);
 
   const entity = useAppEntity();
@@ -219,7 +219,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
       visibility: data.visibility,
       region: data.region,
       hardware:
-        data.hardware === "Custom" ? data.hardwareCustom : data.hardware,
+        data.hardware === "Custom" ? data.hardwareCustom || "" : data.hardware,
       task: data.task,
       model_definition: "model-definitions/container",
       configuration: {},
