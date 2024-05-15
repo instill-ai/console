@@ -16,6 +16,7 @@ import {
   useInstillStore,
   useShallow,
 } from "../../lib";
+import { RemainingCreditCTA } from "./RemainingCredit";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -30,26 +31,10 @@ export const CETopbarDropdown = () => {
     accessToken,
   });
 
+  console.log(me.data)
+
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
 
-  const CreditsUsedCard = () => {
-    return (
-      <div className="bg-gray-200 rounded-lg p-2 w-full mx-3">
-        <div className="flex justify-between items-center mb-4">
-          <div className="text-black font-medium">Used Credits</div>
-          <button className="text-blue-600 font-medium">
-            Upgrade
-          </button>
-        </div>
-        <div className="flex flex-col items-center">
-          <div className="bg-gray-300 rounded-full w-48 h-4 relative mb-2">
-            <div className="bg-primary rounded-full h-4 w-[10%]" />
-          </div>
-          <div className="text-sm text-gray-500 mb-2">10/100</div>
-        </div>
-      </div>
-    )
-  }
 
   return me.isSuccess ? (
     <DropdownMenu.Root>
@@ -92,8 +77,31 @@ export const CETopbarDropdown = () => {
             </div>
           </div>
         </div>
-        <Separator orientation="horizontal" />
-        < CreditsUsedCard />
+        <div className="flex flex-col px-4 py-3">
+          <div className="flex flex-row gap-x-2">
+            <EntityAvatar
+              src={me.data.profile?.avatar ?? null}
+              className="h-10 w-10"
+              entityName={me.data.name}
+              fallbackImg={
+                <div className="flex h-10 w-10 rounded-full bg-semantic-bg-secondary">
+                  <Icons.User02 className="m-auto h-5 w-5 stroke-semantic-fg-disabled" />
+                </div>
+              }
+            />
+            <div className="flex flex-col">
+              <h3 className="text-semantic-fg-primary product-body-text-3-medium">
+                {me.data.profile?.company_email}
+              </h3>
+              <p className="text-semantic-fg-secondary product-body-text-4-regular">
+                {me.data.profile?.public_email}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="p-3 rounded ">
+          <RemainingCreditCTA ctaTargetHref="/subscription" />
+        </div>
         <Separator orientation="horizontal" />
         <TopbarDropdownGroup>
           <TopbarDropdownItem
