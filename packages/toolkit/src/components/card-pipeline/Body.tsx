@@ -1,6 +1,6 @@
 "use client";
 
-import { Icons } from "@instill-ai/design-system";
+import { Icons, getModelInstanceTaskToolkit } from "@instill-ai/design-system";
 import { Pipeline } from "../../lib";
 import { useRouter } from "next/navigation";
 
@@ -8,7 +8,7 @@ const BodySkeleton = () => {
   return (
     <div className="flex w-full flex-col px-2">
       <div className="mb-2 h-5 w-1/2 animate-pulse rounded bg-semantic-bg-secondary" />
-      <div className="h-[250px] w-full animate-pulse bg-semantic-bg-secondary" />
+      <div className="h-\[250px\] w-full animate-pulse bg-semantic-bg-secondary" />
     </div>
   );
 };
@@ -19,6 +19,9 @@ export const Body = ({
   pipeline: Pipeline;
 }) => {
   const router = useRouter();
+
+  const pipelineTasks = ["TASK_CLASSIFICATION", "TASK_TEXT_GENERATION"];
+
   return (
     <div className="flex w-full flex-col gap-y-2">
       <div className="flex flex-row gap-x-2 px-3">
@@ -37,11 +40,24 @@ export const Body = ({
         {pipeline.isFeatured && (
           <button
             type="button"
-            className="my-auto rounded-md bg-[#F8F5FF] p-2 !normal-case text-[#6E35DE] product-button-button-2 hover:!underline"
+            className="my-auto rounded-md bg-\[#F8F5FF\] p-2 !normal-case text-\[#6E35DE\] product-button-button-2 hover:!underline"
           >
             Featured
           </button>
         )}
+        <div className="flex gap-x-2">
+          {pipelineTasks.map((task) => {
+            const { label, getIcon } = getModelInstanceTaskToolkit(task);
+            return (
+              <div key={task} className="flex items-center gap-x-1">
+                {getIcon("h-4 w-4")}
+                <span className="text-xs font-normal text-semantic-fg-secondary">
+                  {label}
+                </span>
+              </div>
+            );
+          })}
+        </div>
       </div>
       <div className="flex w-full px-3 pb-3">
         <p className="line-clamp-3 font-mono text-xs font-normal text-semantic-fg-secondary">
