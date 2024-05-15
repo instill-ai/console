@@ -4,7 +4,6 @@ import { useParams } from "next/navigation";
 import { PageTitle } from "../../components";
 import { GeneralAppPageProp } from "../../lib";
 import { CreateModelForm } from "./CreateModelForm";
-import { CreateModelForm as CreateModelForm1 } from "./CreateModelForm1";
 
 export type ModelHubCreatePageMainViewProps = GeneralAppPageProp & {
   disabledCreateModel: boolean;
@@ -23,7 +22,6 @@ export const ModelHubCreatePageMainView = (
         breadcrumbs={["Models", "Model Settings"]}
         className="mb-10"
       />
-      <CreateModelForm1 accessToken={accessToken} enabledQuery={enableQuery} />
       <CreateModelForm
         width="w-full"
         onCreate={(initStore) => {
