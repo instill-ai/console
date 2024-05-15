@@ -2,7 +2,6 @@
 
 import { GeneralAppPageProp } from "../../lib";
 import { CreateModelForm } from "./CreateModelForm";
-import { CreateModelForm as CreateModelForm1 } from "./CreateModelForm1";
 
 export type ModelHubCreatePageMainViewProps = GeneralAppPageProp & {
   disabledCreateModel: boolean;
