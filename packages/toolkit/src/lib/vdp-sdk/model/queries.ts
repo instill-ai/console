@@ -5,6 +5,7 @@ import type {
   ModelDefinition,
   ModelWatchState,
   ModelRegion,
+  ModelVersion,
 } from "./types";
 import type { Nullable } from "../../type";
 import { Visibility } from "../types";
@@ -130,8 +131,21 @@ export type listUserModelRegionsQueryProps = {
   accessToken: Nullable<string>;
 };
 
+export type listUserModelVersionsQueryProps = {
+  accessToken: Nullable<string>;
+  id: string;
+  entityName: string;
+};
+
 export type ListModelRegionsResponse = {
   regions: ModelRegion[];
+};
+
+export type ListModelVersionsResponse = {
+  versions: ModelVersion[];
+  total_size: number;
+  page_size: number;
+  page: number;
 };
 
 export async function listModelsQuery(
@@ -311,6 +325,32 @@ export async function listModelRegionsQuery({
     const { data } = await client.get<ListModelRegionsResponse>(queryString);
 
     return Promise.resolve(data.regions);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * List Model Versions
+ * -----------------------------------------------------------------------*/
+
+export async function listModelVersionsQuery({
+  accessToken,
+  id,
+  entityName,
+}: listUserModelVersionsQueryProps) {
+  try {
+    const client = createInstillAxiosClient(accessToken, true);
+
+    const queryString = getQueryString({
+      baseURL: `${entityName}/models/${id}/versions`,
+      pageSize: null,
+      nextPageToken: null,
+    });
+
+    const { data } = await client.get<ListModelVersionsResponse>(queryString);
+
+    return Promise.resolve(data.versions);
   } catch (err) {
     return Promise.reject(err);
   }

@@ -108,3 +108,11 @@ export type ModelRegion = {
   region_name: string;
   hardware: string[];
 };
+
+export type ModelVersion = {
+  name: string;
+  id: string;
+  digest: string;
+  state: string;
+  update_time: string;
+};

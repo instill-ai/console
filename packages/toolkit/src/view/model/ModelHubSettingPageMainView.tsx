@@ -93,7 +93,7 @@ export const ModelHubSettingPageMainView = (
     enabled: enableQuery && entityObject.isSuccess,
     accessToken,
   });
-  console.log(model?.data);
+  //console.log(model?.data);
   /* -------------------------------------------------------------------------
    * Toggle model state
    * -----------------------------------------------------------------------*/
@@ -108,7 +108,10 @@ export const ModelHubSettingPageMainView = (
         selectedTab={selectedTab}
         model={model.data}
       />
-      <ModelSettingsContentViewer selectedTab={selectedTab} />
+      <ModelSettingsContentViewer
+        selectedTab={selectedTab}
+        model={model.data}
+      />
       {/* <PageTitle
         title={`${id?.toString()}`}
         breadcrumbs={["Models", "Model Settings"]}
