@@ -5,7 +5,6 @@ import { Menu } from "./Menu";
 import { Tags } from "./Tags";
 import { Stats } from "./Stats";
 import {
-  ListUserModelsResponse,
   Model,
   Nullable,
   sendAmplitudeData,
@@ -20,20 +19,11 @@ import {
 } from "@instill-ai/design-system";
 import axios from "axios";
 import { useParams } from "next/navigation";
-import {
-  InfiniteData,
-  QueryObserverResult,
-  RefetchOptions,
-} from "@tanstack/react-query";
 
 export type CardModelProps = {
   model: Model;
   accessToken: Nullable<string>;
-  onDelete: (
-    options?: RefetchOptions | undefined
-  ) => Promise<
-    QueryObserverResult<InfiniteData<ListUserModelsResponse, unknown>, Error>
-  >;
+  onDelete: () => void;
 };
 
 export const CardModel = (props: CardModelProps) => {

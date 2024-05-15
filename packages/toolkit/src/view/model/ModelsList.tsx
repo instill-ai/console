@@ -1,34 +1,17 @@
 "use client";
 
-import {
-  InfiniteData,
-  QueryObserverResult,
-  RefetchOptions,
-} from "@tanstack/react-query";
 import { CardModel } from "../../components/card-model/CardModel";
-import {
-  InstillStore,
-  ListUserModelsResponse,
-  Model,
-  Nullable,
-  useInstillStore,
-  useShallow,
-} from "../../lib";
+import { InstillStore, Model, useInstillStore, useShallow } from "../../lib";
 import { CardModelSkeleton } from "../../components/card-model/Skeleton";
 
 export type ModelsListProps = {
   models: Model[];
-  onModelDelete: (
-    options?: RefetchOptions | undefined
-  ) => Promise<
-    QueryObserverResult<InfiniteData<ListUserModelsResponse, unknown>, Error>
-  >;
+  onModelDelete: () => void;
   isLoading: boolean;
 };
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
-  enabledQuery: store.enabledQuery,
 });
 
 export const ModelsList = (props: ModelsListProps) => {
