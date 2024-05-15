@@ -70,7 +70,7 @@ export const Body = ({
         </p>
       </div>
       <div className="flex w-full justify-end px-3 pb-3">
-        <p className="line-clamp-3 text-xs font-normal text-gray-400">
+        <p className="line-clamp-3 text-xs font-semibold text-semantic-fg-disabled">
           {formatTimestamp(pipeline.update_time)}
         </p>
       </div>
