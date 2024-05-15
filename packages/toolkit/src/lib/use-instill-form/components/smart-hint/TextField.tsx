@@ -182,6 +182,7 @@ export const TextField = ({
                       disabled={disabled}
                       onKeyDown={(e) => {
                         onInputKeydown({
+                          componentType: "TextField",
                           event: e,
                           form,
                           field,
