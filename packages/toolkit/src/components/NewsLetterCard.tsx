@@ -163,7 +163,7 @@ const NewsLetterCard = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <p className="line-clamp-3 overflow-hidden">{title}</p>
+        <p className="line-clamp-3 overflow-hidden text-semantic-fg-primary">{title}</p>
       </a>
       <div className="mt-auto flex items-center justify-end">
         <button
