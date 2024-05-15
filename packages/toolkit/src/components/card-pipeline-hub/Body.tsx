@@ -55,14 +55,13 @@ export const Body = ({
         >
           {pipeline.id}
         </button>
-        {pipeline.isFeatured && (
-          <button
-            type="button"
-            className="my-auto rounded-md bg-[#F8F5FF] p-2 !normal-case text-[#6E35DE] product-button-button-2 hover:!underline"
-          >
-            Featured
-          </button>
-        )}
+        <button
+          type="button"
+          className="my-auto rounded-md bg-semantic-secondary-bg  p-2 !normal-case text-semantic-secondary-on-bg product-button-button-2 hover:!underline"
+        >
+          Featured
+        </button>
+
       </div>
       <div className="flex w-full px-3 pb-3">
         <p className="line-clamp-3 font-mono text-xs font-normal text-semantic-fg-secondary">
