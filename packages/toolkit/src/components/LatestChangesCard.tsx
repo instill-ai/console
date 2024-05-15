@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+
 import axios from "axios";
 import { Icons } from "@instill-ai/design-system";
+import { useQuery } from "@tanstack/react-query";
 
 interface Changelog {
   id: string;
@@ -12,33 +13,41 @@ interface Changelog {
   published: boolean;
 }
 
-const LatestChangesCard: React.FC = () => {
-  const [changelogs, setChangelogs] = useState<Changelog[]>([]);
+const fetchChangelogs = async () => {
+  const response = await axios.get(
+    "https://productlane.com/api/v1/changelogs/52f06d0d-2381-411e-a8c5-7b375e3a0114"
+  );
+  return response.data;
+};
 
-  useEffect(() => {
-    axios
-      .get(
-        "https://productlane.com/api/v1/changelogs/52f06d0d-2381-411e-a8c5-7b375e3a0114"
-      )
-      .then((response) => {
-        const data: Changelog[] = response.data;
-        const filteredAndSortedChangelogs = data
-          .filter((changelog) => changelog.published)
-          .sort(
-            (a, b) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-        setChangelogs(filteredAndSortedChangelogs.slice(0, 3));
-      })
-      .catch((error) => {
-        console.error("Error fetching changelogs:", error);
-      });
-  }, []);
+const LatestChangesCard: React.FC = () => {
+  const { data: changelogs, isLoading, isError } = useQuery({
+    queryKey: ["changelogs"],
+    queryFn: async () => {
+      const data = await fetchChangelogs();
+      const filteredAndSortedChangelogs = data
+        .filter((changelog: Changelog) => changelog.published)
+        .sort(
+          (a: Changelog, b: Changelog) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      return filteredAndSortedChangelogs.slice(0, 3);
+    },
+    retry: 3,
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error fetching changelogs.</div>;
+  }
 
   return (
     <div className="mt-4 flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
       <h2 className="mb-4 text-2xl font-bold">Latest Changes</h2>
-      {changelogs.map((changelog) => (
+      {changelogs?.map((changelog: Changelog) => (
         <div key={changelog.id}>
           <button
             type="button"
@@ -46,15 +55,15 @@ const LatestChangesCard: React.FC = () => {
           >
             {changelog.date && new Date(changelog.date).getTime() !== 0
               ? new Date(changelog.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
               : new Date(changelog.updatedAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
           </button>
           <p>{changelog.title}</p>
         </div>
