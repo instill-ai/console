@@ -15,6 +15,7 @@ import {
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
   useShallow,
+  useUserMemberships,
 } from "../../lib";
 import { RemainingCreditCTA } from "./RemainingCredit";
 
@@ -31,7 +32,11 @@ export const CETopbarDropdown = () => {
     accessToken,
   });
 
-  console.log(me.data)
+  const memberships = useUserMemberships({
+    enabled: enabledQuery && me.isSuccess,
+    userID: me.isSuccess ? me.data.id : null,
+    accessToken,
+  });
 
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
 
@@ -77,28 +82,32 @@ export const CETopbarDropdown = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col px-4 py-3">
-          <div className="flex flex-row gap-x-2">
-            <EntityAvatar
-              src={me.data.profile?.avatar ?? null}
-              className="h-10 w-10"
-              entityName={me.data.name}
-              fallbackImg={
-                <div className="flex h-10 w-10 rounded-full bg-semantic-bg-secondary">
-                  <Icons.User02 className="m-auto h-5 w-5 stroke-semantic-fg-disabled" />
+        {memberships.isSuccess && memberships.data.length !== 0 ? (
+          <div className="flex flex-col px-4 py-3">
+            {memberships.data.map((membership) => (
+              <div key={membership.organization.id} className="flex flex-row gap-x-2">
+                <EntityAvatar
+                  src={null} // Replace with the organization's avatar if available
+                  className="h-10 w-10"
+                  entityName={membership.organization.name}
+                  fallbackImg={
+                    <div className="flex h-10 w-10 rounded-full bg-semantic-bg-secondary">
+                      <Icons.User02 className="m-auto h-5 w-5 stroke-semantic-fg-disabled" />
+                    </div>
+                  }
+                />
+                <div className="flex flex-col">
+                  <h3 className="text-semantic-fg-primary product-body-text-3-medium">
+                    {membership.organization.name}
+                  </h3>
+                  <p className="text-semantic-fg-secondary product-body-text-4-regular">
+                    {membership.organization.profile?.public_email}
+                  </p>
                 </div>
-              }
-            />
-            <div className="flex flex-col">
-              <h3 className="text-semantic-fg-primary product-body-text-3-medium">
-                {me.data.profile?.company_email}
-              </h3>
-              <p className="text-semantic-fg-secondary product-body-text-4-regular">
-                {me.data.profile?.public_email}
-              </p>
-            </div>
+              </div>
+            ))}
           </div>
-        </div>
+        ) : null}
         <div className="p-3 rounded ">
           <RemainingCreditCTA ctaTargetHref="/subscription" />
         </div>
