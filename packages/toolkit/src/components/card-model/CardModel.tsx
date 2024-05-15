@@ -8,6 +8,7 @@ import {
   Model,
   Nullable,
   sendAmplitudeData,
+  toastInstillError,
   useAmplitudeCtx,
   useDeleteModel,
 } from "../../lib";
@@ -17,7 +18,6 @@ import {
   getModelHardwareToolkit,
   getModelRegionToolkit,
 } from "@instill-ai/design-system";
-import axios from "axios";
 import { useParams } from "next/navigation";
 
 export type CardModelProps = {
@@ -52,16 +52,10 @@ export const CardModel = (props: CardModelProps) => {
         onDelete();
       }
     } catch (error) {
-      const isAxiosError = axios.isAxiosError(error);
-      const message = isAxiosError
-        ? `${error.response?.status} - ${error.response?.data.message}`
-        : "Something went wrong when deleting the model";
-
-      toast({
-        title: "Delete model error",
-        variant: "alert-error",
-        size: "large",
-        description: message,
+      toastInstillError({
+        title: "Something went wrong while deleting the model",
+        error,
+        toast,
       });
     }
   }, [model, amplitudeIsInit, deleteModel, onDelete, accessToken, toast]);
