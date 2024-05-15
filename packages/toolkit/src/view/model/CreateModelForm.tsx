@@ -174,12 +174,12 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
   }, [form, entity.isSuccess, entity.data]);
 
   useEffect(() => {
-    const curentEnv: "CE" | "CLOUD" = env("NEXT_PUBLIC_APP_ENV");
+    const currentEnv: "CE" | "CLOUD" = env("NEXT_PUBLIC_APP_ENV");
 
     if (modelRegions.data && !regionOptions.length) {
       const newRegionOptions = modelRegions.data
         .filter((item) =>
-          curentEnv === "CE"
+          currentEnv === "CE"
             ? item.region_name === "REGION_LOCAL"
             : item.region_name !== "REGION_LOCAL"
         )
