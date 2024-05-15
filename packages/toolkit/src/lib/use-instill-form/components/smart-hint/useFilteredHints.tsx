@@ -6,6 +6,7 @@ import {
 
 import * as React from "react";
 import { Secret } from "../../../vdp-sdk";
+import { InstillCredit } from "../../../../constant";
 
 export function useFilteredHints({
   smartHints,
@@ -16,6 +17,7 @@ export function useFilteredHints({
   componentID,
   secrets,
   instillSecret,
+  supportInstillCredit,
 }: {
   smartHints: SmartHint[];
   instillAcceptFormats: string[];
@@ -25,6 +27,7 @@ export function useFilteredHints({
   componentID?: string;
   instillSecret?: boolean;
   secrets?: Secret[];
+  supportInstillCredit?: boolean;
 }) {
   const filteredHints: SmartHint[] = React.useMemo(() => {
     if (!smartHints || smartHints.length === 0) {
@@ -46,6 +49,19 @@ export function useFilteredHints({
         type: "string",
         properties: [],
       }));
+    }
+
+    if (supportInstillCredit) {
+      allHints = [
+        ...allHints,
+        {
+          key: "instillCredit",
+          path: `secrets.${InstillCredit.key}`,
+          instillFormat: "string",
+          type: "string",
+          isInstillCreditHint: true,
+        },
+      ];
     }
 
     if (smartHintEnabledPos !== null && currentCursorPos !== null) {
@@ -87,6 +103,7 @@ export function useFilteredHints({
     componentID,
     secrets,
     instillSecret,
+    supportInstillCredit,
   ]);
 
   return filteredHints;

@@ -17,6 +17,7 @@ import { useValidateReferenceAndTemplate } from "./useValidateReferenceAndTempla
 import { getFieldPlaceholder } from "./getFieldPlaceholder";
 import { FieldDescriptionTooltip } from "../common";
 import { Secret } from "../../../vdp-sdk";
+import { InstillCredit } from "../../../../constant";
 
 export const TextArea = ({
   form,
@@ -35,6 +36,7 @@ export const TextArea = ({
   instillSecret,
   instillCredential,
   supportInstillCredit,
+  updateIsUsingInstillCredit,
 }: {
   instillAcceptFormats: string[];
   shortDescription?: string;
@@ -46,6 +48,7 @@ export const TextArea = ({
   instillSecret?: boolean;
   instillCredential?: boolean;
   supportInstillCredit?: boolean;
+  updateIsUsingInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
 } & AutoFormFieldBaseProps) => {
   const smartHints = useInstillStore((s) => s.smartHints);
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
@@ -154,6 +157,8 @@ export const TextArea = ({
                         setCurrentCursorPos,
                         setSmartHintEnabledPos,
                         setSmartHintsPopoverIsOpen,
+                        updateIsUsingInstillCredit,
+                        supportInstillCredit,
                       });
                     }}
                     placeholder={placeholder}
@@ -230,7 +235,14 @@ export const TextArea = ({
                 "nodrag nopan cursor-text select-text",
                 size === "sm" ? "!product-body-text-4-regular" : ""
               )}
-              text={shortDescription ?? null}
+              text={
+                supportInstillCredit
+                  ? `${title} support Instill Credit. You can use Instill Credit by input ` +
+                    "${" +
+                    `secrets.${InstillCredit.key}` +
+                    "}. You can still bring your own key by input ${secrets.your_secret}"
+                  : shortDescription ?? null
+              }
             />
             <Form.Message
               className={size === "sm" ? "!product-body-text-4-medium" : ""}

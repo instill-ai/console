@@ -140,23 +140,23 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
     const sharing: PipelineSharing =
       permission === "public"
         ? {
-            users: {
-              "*/*": {
-                enabled: true,
-                role: "ROLE_EXECUTOR",
-              },
+          users: {
+            "*/*": {
+              enabled: true,
+              role: "ROLE_EXECUTOR",
             },
-            share_code: null,
-          }
+          },
+          share_code: null,
+        }
         : {
-            users: {
-              "*/*": {
-                enabled: false,
-                role: "ROLE_EXECUTOR",
-              },
+          users: {
+            "*/*": {
+              enabled: false,
+              role: "ROLE_EXECUTOR",
             },
-            share_code: null,
-          };
+          },
+          share_code: null,
+        };
 
     const payload: CreateUserPipelinePayload = {
       id: data.id,
@@ -239,12 +239,12 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
     >
       <Dialog.Trigger asChild>
         <Button
-          className={cn("gap-x-2", className)}
+          className={cn("gap-x-2 w-48", className)}
           variant="primary"
           size="lg"
         >
           <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
-          Create Pipeline
+          New Pipeline
         </Button>
       </Dialog.Trigger>
       <Dialog.Content
@@ -290,7 +290,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                                           <span className="my-auto">
                                             {field?.value?.length >= 10
                                               ? field?.value?.slice(0, 10) +
-                                                "..."
+                                              "..."
                                               : field.value}
                                           </span>
                                           <span className="my-auto">
@@ -334,7 +334,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                                                     </span>
                                                     <span className="my-auto">
                                                       {namespace.type ===
-                                                      "organization" ? (
+                                                        "organization" ? (
                                                         <Tag
                                                           variant="lightBlue"
                                                           size="sm"
@@ -404,10 +404,10 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                         <span className="ml-2 break-all product-body-text-3-semibold">
                           {form.watch("id") !== "" && form.watch("id")
                             ? `${env(
-                                "NEXT_PUBLIC_CONSOLE_BASE_URL"
-                              )}/${form.getValues(
-                                "namespaceId"
-                              )}/pipelines/${form.getValues("id")}`
+                              "NEXT_PUBLIC_CONSOLE_BASE_URL"
+                            )}/${form.getValues(
+                              "namespaceId"
+                            )}/pipelines/${form.getValues("id")}`
                             : null}
                         </span>
                       </p>

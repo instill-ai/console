@@ -33,7 +33,8 @@ export type UseInstillFormOptions = {
   | "forceOpenCollapsibleFormGroups"
   | "updateForceOpenCollapsibleFormGroups"
   | "supportInstillCredit"
-  | "setSupportInstillCredit"
+  | "updateSupportInstillCredit"
+  | "updateIsUsingInstillCredit"
 >;
 
 export function useInstillForm(
@@ -52,7 +53,7 @@ export function useInstillForm(
     options?.enabledCollapsibleFormGroup ?? false;
   const collapsibleDefaultOpen = options?.collapsibleDefaultOpen ?? false;
   const supportInstillCredit = options?.supportInstillCredit ?? false;
-  const setSupportInstillCredit = options?.setSupportInstillCredit;
+  const updateSupportInstillCredit = options?.updateSupportInstillCredit;
   const forceCloseCollapsibleFormGroups =
     options?.forceCloseCollapsibleFormGroups ?? [];
   const updateForceCloseCollapsibleFormGroups =
@@ -61,6 +62,7 @@ export function useInstillForm(
     options?.forceOpenCollapsibleFormGroups ?? [];
   const updateForceOpenCollapsibleFormGroups =
     options?.updateForceOpenCollapsibleFormGroups;
+  const updateIsUsingInstillCredit = options?.updateIsUsingInstillCredit;
 
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
   const [ValidatorSchema, setValidatorSchema] = React.useState<z.ZodTypeAny>(
@@ -157,11 +159,12 @@ export function useInstillForm(
         enabledCollapsibleFormGroup,
         collapsibleDefaultOpen,
         supportInstillCredit,
-        setSupportInstillCredit,
+        updateSupportInstillCredit,
         forceCloseCollapsibleFormGroups,
         updateForceCloseCollapsibleFormGroups,
         forceOpenCollapsibleFormGroups,
         updateForceOpenCollapsibleFormGroups,
+        updateIsUsingInstillCredit,
       }
     );
 
@@ -180,11 +183,12 @@ export function useInstillForm(
     enabledCollapsibleFormGroup,
     collapsibleDefaultOpen,
     supportInstillCredit,
-    setSupportInstillCredit,
+    updateSupportInstillCredit,
     forceCloseCollapsibleFormGroups,
     updateForceCloseCollapsibleFormGroups,
     forceOpenCollapsibleFormGroups,
     updateForceOpenCollapsibleFormGroups,
+    updateIsUsingInstillCredit,
   ]);
 
   return {

@@ -131,7 +131,13 @@ export const OneOfConditionField = ({
                     })}
                   </Select.Content>
                 </Select.Root>
-
+                <Form.Description
+                  className={cn(
+                    "nodrag nopan cursor-text select-text",
+                    size === "sm" ? "!product-body-text-4-regular" : ""
+                  )}
+                  text={shortDescription ?? null}
+                />
                 <Form.Message
                   className={cn(
                     "nodrag nopan cursor-text select-text",

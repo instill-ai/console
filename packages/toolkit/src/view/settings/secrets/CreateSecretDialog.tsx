@@ -78,7 +78,7 @@ export const CreateSecretDialog = () => {
       value: "",
       description: "",
     });
-  }, [open]);
+  }, [open, reset]);
 
   const createSecret = useCreateUserSecret();
   const handleCreateAPIToken = async (
