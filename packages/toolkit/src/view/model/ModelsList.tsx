@@ -28,7 +28,6 @@ export type ModelsListProps = {
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
-  enabledQuery: store.enabledQuery,
 });
 
 export const ModelsList = (props: ModelsListProps) => {
