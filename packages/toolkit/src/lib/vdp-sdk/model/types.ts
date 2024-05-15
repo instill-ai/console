@@ -147,3 +147,8 @@ export type ModelTriggerResult = {
     }
   >;
 };
+
+export type ModelRegion = {
+  region_name: string;
+  hardware: string[];
+};
