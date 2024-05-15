@@ -1,8 +1,5 @@
-"use client";
-
-import axios from "axios";
 import { Icons } from "@instill-ai/design-system";
-import { useQuery } from "@tanstack/react-query";
+import { useChangelogs } from "../lib/react-query-service/misc/useChangelogs";
 
 interface Changelog {
   id: string;
@@ -13,28 +10,9 @@ interface Changelog {
   published: boolean;
 }
 
-const fetchChangelogs = async () => {
-  const response = await axios.get(
-    "https://productlane.com/api/v1/changelogs/52f06d0d-2381-411e-a8c5-7b375e3a0114"
-  );
-  return response.data;
-};
 
 const LatestChangesCard: React.FC = () => {
-  const { data: changelogs, isLoading, isError } = useQuery({
-    queryKey: ["changelogs"],
-    queryFn: async () => {
-      const data = await fetchChangelogs();
-      const filteredAndSortedChangelogs = data
-        .filter((changelog: Changelog) => changelog.published)
-        .sort(
-          (a: Changelog, b: Changelog) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-      return filteredAndSortedChangelogs.slice(0, 3);
-    },
-    retry: 3,
-  });
+  const { data: changelogs, isLoading, isError } = useChangelogs();
 
   if (isLoading) {
     return <div>Loading...</div>;
