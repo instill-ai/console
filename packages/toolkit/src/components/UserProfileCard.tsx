@@ -109,8 +109,8 @@ export const UserProfileCard = ({
           <div className="flex flex-col gap-y-2">
             {totalPipelines ? (
               <div className="flex flex-row gap-x-2 justify-between">
-                <div className="flex items-center">
-                  <Icons.AlertCircle className="w-4 h-4" />
+                <div className="flex items-center space-x-1">
+                  <Icons.AlertCircle className="w-4 h-4 stroke-black " />
                   <p className="text-semantic-fg-primary product-body-text-2-semibold">
                     Pipelines
                   </p>
@@ -122,8 +122,8 @@ export const UserProfileCard = ({
             ) : null}
             {totalPublicPipelines || totalPublicPipelines === 0 ? (
               <div className="flex flex-row gap-x-2 justify-between">
-                <div className="flex items-center">
-                  <Icons.AlertCircle className="w-4 h-4" />
+                <div className="flex items-center space-x-1">
+                  <Icons.AlertCircle className="w-4 h-4 stroke-black " />
                   <p className="text-semantic-fg-primary product-body-text-2-semibold">
                     Public pipelines
                   </p>
