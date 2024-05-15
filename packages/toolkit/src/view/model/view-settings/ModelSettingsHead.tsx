@@ -6,12 +6,21 @@ import {
   Tag,
   TabMenu,
   getModelInstanceTaskToolkit,
+  Nullable,
 } from "@instill-ai/design-system";
 import { Model } from "../../../lib";
 
+export type ModelSettingsTabs =
+  | "overview"
+  | "api"
+  | "examples"
+  | "predictions"
+  | "versions"
+  | "settings";
+
 export type HeadProps = {
-  selectedTab: string;
-  onTabChange: React.Dispatch<React.SetStateAction<string>>;
+  selectedTab: ModelSettingsTabs;
+  onTabChange: React.Dispatch<React.SetStateAction<ModelSettingsTabs>>;
   model?: Model;
 };
 
@@ -20,7 +29,11 @@ const OWNER = {
   name: "",
 };
 
-export const Head = ({ selectedTab, onTabChange, model }: HeadProps) => {
+export const ModelSettingsHead = ({
+  selectedTab,
+  onTabChange,
+  model,
+}: HeadProps) => {
   const owner = React.useMemo(() => {
     if (!model) {
       return OWNER;
@@ -123,7 +136,9 @@ export const Head = ({ selectedTab, onTabChange, model }: HeadProps) => {
         <div className="mt-8">
           <TabMenu.Root
             value={selectedTab}
-            onValueChange={onTabChange}
+            onValueChange={(value: Nullable<string>) =>
+              onTabChange(value as ModelSettingsTabs)
+            }
             disabledDeSelect={true}
           >
             <TabMenu.Item value="overview">
@@ -134,14 +149,14 @@ export const Head = ({ selectedTab, onTabChange, model }: HeadProps) => {
               <Icons.CodeSnippet01 className="h-4 w-4" />
               API
             </TabMenu.Item>
-            <TabMenu.Item value="examples">
+            {/* <TabMenu.Item value="examples">
               <Icons.CheckCircle className="h-4 w-4" />
               Examples
             </TabMenu.Item>
             <TabMenu.Item value="predictions">
               <Icons.Activity className="h-4 w-4" />
               Predictions
-            </TabMenu.Item>
+            </TabMenu.Item> */}
             <TabMenu.Item value="versions">
               <Icons.ClockRewind className="h-4 w-4" />
               Versions

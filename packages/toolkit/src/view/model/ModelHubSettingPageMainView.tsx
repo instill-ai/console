@@ -32,7 +32,11 @@ import {
   TabMenu,
 } from "@instill-ai/design-system";
 import { useParams } from "next/navigation";
-import { Head } from "./view-settings/Head";
+import {
+  ModelSettingsContentViewer,
+  ModelSettingsHead,
+  ModelSettingsTabs,
+} from "./view-settings";
 
 export type ModelHubSettingPageMainViewProps = GeneralAppPageProp & {
   disabledConfigureModel: boolean;
@@ -65,7 +69,8 @@ export const ModelHubSettingPageMainView = (
 
   const entityObject = useAppEntity();
 
-  const [selectedTab, setSelectedTab] = React.useState<string>("overview");
+  const [selectedTab, setSelectedTab] =
+    React.useState<ModelSettingsTabs>("overview");
 
   /* -------------------------------------------------------------------------
    * Query resource data
@@ -98,12 +103,12 @@ export const ModelHubSettingPageMainView = (
 
   return (
     <div className="flex flex-col">
-      <Head
+      <ModelSettingsHead
         onTabChange={setSelectedTab}
         selectedTab={selectedTab}
         model={model.data}
       />
-      {selectedTab}
+      <ModelSettingsContentViewer selectedTab={selectedTab} />
       {/* <PageTitle
         title={`${id?.toString()}`}
         breadcrumbs={["Models", "Model Settings"]}

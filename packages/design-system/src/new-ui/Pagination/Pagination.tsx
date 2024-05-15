@@ -27,14 +27,14 @@ const PaginationContent = React.forwardRef<
     className={cn(
       "w-full$ flex items-center justify-between py-4",
 
-      "[&>li:first-child>*]:data-[align=center]:rounded-r-sm$",
+      "[&>li:first-child>*]:data-[align=center]:rounded-r-sm",
 
-      "[&>li:last-child>*]:data-[align=center]:rounded-l-sm$",
-      "[&>li:last-child>*]:data-[align=center]:border$",
+      "[&>li:last-child>*]:data-[align=center]:rounded-l-sm",
+      "[&>li:last-child>*]:data-[align=center]:border",
 
-      "[&>li:nth-child(2)]:data-[align=left]:order-last$",
-      "[&>li:nth-child(2)]:data-[align=left]:ml-auto$",
-      "[&>li:nth-child(2)]:data-[align=right]:order-first$",
+      "[&>li:nth-child(2)]:data-[align=left]:order-last",
+      "[&>li:nth-child(2)]:data-[align=left]:ml-auto",
+      "[&>li:nth-child(2)]:data-[align=right]:order-first",
       "[&>li:nth-child(2)]:data-[align=right]:mr-auto",
       className
     )}
