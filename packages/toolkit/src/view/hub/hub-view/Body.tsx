@@ -165,9 +165,9 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                 <Select.Content>
                   <Select.Group>
                     <Select.Item
-                      value="name-asc"
+                      value={selectedSortOption.includes("name") ? selectedSortOption : "name-asc"}
                       className="flex justify-between text-semantic-fg-primary"
-                      onClick={() => setSelectedSortOption("name-asc")}
+                      onClick={() => setSelectedSortOption(selectedSortOption.includes("name") ? selectedSortOption : "name-asc")}
                     >
                       Name
                       <span className="h-4 w-4">
@@ -175,9 +175,9 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                       </span>
                     </Select.Item>
                     <Select.Item
-                      value="createTime-asc"
+                      value={selectedSortOption.includes("createTime") ? selectedSortOption : "createTime-asc"}
                       className="flex justify-between text-semantic-fg-primary"
-                      onClick={() => setSelectedSortOption("createTime-asc")}
+                      onClick={() => setSelectedSortOption(selectedSortOption.includes("createTime") ? selectedSortOption : "createTime-asc")}
                     >
                       Last Updated
                       <span className="h-4 w-4">
@@ -188,19 +188,9 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                   <Select.Separator />
                   <Select.Group>
                     <Select.Item
-                      value={
-                        selectedSortOption.includes("name")
-                          ? "name-asc"
-                          : "createTime-asc"
-                      }
+                      value={selectedSortOption.includes("asc") ? selectedSortOption : selectedSortOption.replace("desc", "asc")}
                       className="flex justify-between text-semantic-fg-primary"
-                      onClick={() =>
-                        setSelectedSortOption(
-                          selectedSortOption.includes("name")
-                            ? "name-asc"
-                            : "createTime-asc"
-                        )
-                      }
+                      onClick={() => setSelectedSortOption(selectedSortOption.includes("asc") ? selectedSortOption : selectedSortOption.replace("desc", "asc"))}
                     >
                       Ascending
                       <span className="h-4 w-4">
@@ -208,19 +198,9 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                       </span>
                     </Select.Item>
                     <Select.Item
-                      value={
-                        selectedSortOption.includes("name")
-                          ? "name-desc"
-                          : "createTime-desc"
-                      }
+                      value={selectedSortOption.includes("desc") ? selectedSortOption : selectedSortOption.replace("asc", "desc")}
                       className="flex justify-between text-semantic-fg-primary"
-                      onClick={() =>
-                        setSelectedSortOption(
-                          selectedSortOption.includes("name")
-                            ? "name-desc"
-                            : "createTime-desc"
-                        )
-                      }
+                      onClick={() => setSelectedSortOption(selectedSortOption.includes("desc") ? selectedSortOption : selectedSortOption.replace("asc", "desc"))}
                     >
                       Descending
                       <span className="h-4 w-4">
