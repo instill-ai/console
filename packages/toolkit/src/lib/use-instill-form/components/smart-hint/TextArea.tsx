@@ -171,6 +171,7 @@ export const TextArea = ({
                     disabled={disabled}
                     onKeyDown={(e) => {
                       onInputKeydown({
+                        componentType: "TextArea",
                         event: e,
                         form,
                         field,

@@ -4,6 +4,7 @@ import { ControllerRenderProps } from "react-hook-form";
 import { GeneralUseFormReturn, Nullable } from "../../../type";
 
 export function onInputKeydown({
+  componentType,
   field,
   event,
   path,
@@ -17,6 +18,7 @@ export function onInputKeydown({
   setEnableSmartHints,
   smartHintEnabledPos,
 }: {
+  componentType: "TextField" | "TextArea";
   form: GeneralUseFormReturn;
   field: ControllerRenderProps<
     {
@@ -75,9 +77,13 @@ export function onInputKeydown({
       break;
     }
     case "Enter": {
-      event.preventDefault();
+      if (componentType === "TextField") {
+        event.preventDefault();
+      }
 
       if (enableSmartHints) {
+        event.preventDefault();
+
         if (filteredHints.length > 0) {
           if (inputRef.current) {
             const cursorPosition = inputRef.current.selectionStart;
