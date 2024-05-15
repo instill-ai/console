@@ -1,6 +1,5 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import { PageTitle } from "../../components";
 import { GeneralAppPageProp } from "../../lib";
 import { CreateModelForm } from "./CreateModelForm";
@@ -12,26 +11,18 @@ export type ModelHubCreatePageMainViewProps = GeneralAppPageProp & {
 export const ModelHubCreatePageMainView = (
   props: ModelHubCreatePageMainViewProps
 ) => {
-  const { accessToken, enableQuery, router, disabledCreateModel } = props;
-  const { entity } = useParams();
+  const { accessToken, enableQuery } = props;
 
   return (
     <div className="flex flex-col">
-      <PageTitle
-        title="Set Up New Model"
-        breadcrumbs={["Models", "Model Settings"]}
-        className="mb-10"
-      />
-      <CreateModelForm
-        width="w-full"
-        onCreate={(initStore) => {
-          initStore();
-          router.push(`/${entity}/models`);
-        }}
-        accessToken={accessToken}
-        enabledQuery={enableQuery}
-        disabledCreateModel={disabledCreateModel}
-      />
+      <div className="mb-10 flex border-b border-semantic-bg-line">
+        <PageTitle
+          title="Create a model"
+          breadcrumbs={["Models", "Model Settings"]}
+          className="mb-5"
+        />
+      </div>
+      <CreateModelForm accessToken={accessToken} enabledQuery={enableQuery} />
     </div>
   );
 };
