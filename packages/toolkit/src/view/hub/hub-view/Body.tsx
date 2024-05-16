@@ -268,17 +268,18 @@ const FeaturedBanner = () => {
             &nbsp; Want to feature your pipeline? Drop a message in&nbsp;{" "}
             <span className="font-bold">#featured</span>
             &nbsp; on &nbsp;
-            <span className="font-bold text-semantic-accent-default underline underline-offset-2">
-              Discord
-            </span>
-            &nbsp;
             <a
               href="https://discord.com/invite/sevxWsqpGh"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-4 w-4 items-center text-semantic-accent-default"
+              className="text-semantic-accent-default underline underline-offset-2"
             >
-              <DiscordIcon color="text-[#316FED]" />
+              <span className="flex items-center space-x-1">
+                <span className="font-bold">Discord</span>
+                <span className="flex h-4 w-4 items-center text-semantic-accent-default">
+                  <DiscordIcon color="fill-semantic-accent-default" />
+                </span>
+              </span>
             </a>
           </p>
           <div className="flex items-center">
