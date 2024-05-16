@@ -1,7 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { Button, Icons, Input } from "@instill-ai/design-system";
+import {
+  Button,
+  DiscordIcon,
+  Icons,
+  Input,
+  Select,
+  Tabs,
+} from "@instill-ai/design-system";
 
 import {
   InstillStore,
@@ -16,28 +23,37 @@ import {
 import {
   LoadingSpin,
   UserProfileCard,
-  CardPipeline,
-  CardSkeletonPipeline,
   UserProfileCardProps,
+  ImageWithFallback,
 } from "../../../components";
 import debounce from "lodash.debounce";
+import NewsLetterCard from "../../../components/NewsLetterCard";
+import LatestChangesCard from "../../../components/LatestChangesCard";
+import {
+  CardPipeline,
+  CardSkeletonPipeline,
+} from "../../../components/card-pipeline-hub";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
 });
 
-export const Body = ({
-  visitorCta,
-}: {
-  visitorCta?: UserProfileCardProps["visitorCta"];
-}) => {
+const PipelineSection = ({ tabValue }: { tabValue: string }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
+  const sortOptions = [
+    { value: "name-asc", label: "Name (Ascending)" },
+    { value: "name-desc", label: "Name (Descending)" },
+    { value: "createTime-asc", label: "Last Updated (Ascending)" },
+    { value: "createTime-desc", label: "Last Updated (Descending)" },
+  ];
+  const [selectedSortOption, setSelectedSortOption] = React.useState(
+    sortOptions[3].value
+  );
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
   const pipelines = useInfinitePipelines({
     pageSize: 10,
     accessToken,
@@ -51,34 +67,6 @@ export const Body = ({
     accessToken,
     retry: false,
   });
-
-  const userPipelines = useUserPipelines({
-    userName: me.isSuccess ? me.data.name : null,
-    enabled: enabledQuery && me.isSuccess,
-    accessToken,
-    filter: null,
-    visibility: null,
-
-    // Use these parameters to speed up request
-    disabledViewFull: true,
-    pageSize: 100,
-  });
-
-  const userPublicPipelines = React.useMemo(() => {
-    if (!userPipelines.isSuccess) {
-      return [];
-    }
-
-    return userPipelines.data.filter((pipeline) => {
-      const toplevelRule = pipeline.sharing.users["*/*"];
-
-      if (toplevelRule && toplevelRule.enabled) {
-        return true;
-      }
-
-      return false;
-    });
-  }, [userPipelines.data, userPipelines.isSuccess]);
 
   const allPipelines = React.useMemo(() => {
     if (!pipelines.isSuccess) {
@@ -94,6 +82,32 @@ export const Body = ({
     return all;
   }, [pipelines.data, pipelines.isSuccess]);
 
+  const filteredPipelines = React.useMemo(() => {
+    if (tabValue === "featured") {
+      return allPipelines.filter((pipeline) => pipeline.isFeatured);
+    }
+    return allPipelines;
+  }, [allPipelines, tabValue]);
+
+  const sortedPipelines = React.useMemo(() => {
+    const [sortField, sortOrder] = selectedSortOption.split("-");
+
+    return [...filteredPipelines].sort((a, b) => {
+      if (sortField === "name") {
+        return sortOrder === "asc"
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
+      } else if (sortField === "createTime") {
+        const dateA = new Date(a.create_time);
+        const dateB = new Date(b.create_time);
+        return sortOrder === "asc"
+          ? dateA.getTime() - dateB.getTime()
+          : dateB.getTime() - dateA.getTime();
+      }
+      return 0;
+    });
+  }, [filteredPipelines, selectedSortOption]);
+
   const debouncedSetSearchCode = React.useMemo(
     () =>
       debounce((value: string) => {
@@ -102,53 +116,117 @@ export const Body = ({
     []
   );
 
+  const handleSortOptionChange = (value: string) => {
+    setSelectedSortOption(value);
+  };
+
   return (
-    <div className=" flex flex-row px-20">
-      <div className="w-[288px] pr-4 pt-6">
-        <UserProfileCard
-          totalPipelines={null}
-          totalPublicPipelines={userPublicPipelines.length}
-          visitorCta={visitorCta}
-        />
-      </div>
-      <div className="flex w-[630px] flex-col pt-6">
+    <div className="flex flex-row">
+      <div className="flex w-full flex-col pt-6">
         <div className="mb-4 flex flex-col">
-          <p className="mb-2.5 text-semantic-fg-primary product-body-text-3-semibold">
-            Search Pipelines
-          </p>
-          <div className="flex flex-row gap-x-4">
-            <Input.Root className="flex-1">
-              <Input.LeftIcon>
-                <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
-              </Input.LeftIcon>
-              <Input.Core
-                value={searchInputValue ?? ""}
-                placeholder="Search..."
-                onChange={(event) => {
-                  setSearchInputValue(event.target.value);
-                  debouncedSetSearchCode(event.target.value);
-                }}
-              />
-            </Input.Root>
+          <div className="flex items-center justify-between">
+            <p className="whitespace-nowrap text-semantic-fg-secondary product-body-text-3-semibold">
+              Pipelines{' '}
+              {tabValue === 'featured'
+                ? filteredPipelines.length
+                : allPipelines.length}
+            </p>
+            <div className="flex w-full items-center justify-end gap-4">
+              <Input.Root className="w-1/3">
+                <Input.LeftIcon>
+                  <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
+                </Input.LeftIcon>
+                <Input.Core
+                  value={searchInputValue ?? ""}
+                  placeholder="Search..."
+                  onChange={(event) => {
+                    setSearchInputValue(event.target.value);
+                    debouncedSetSearchCode(event.target.value);
+                  }}
+                />
+              </Input.Root>
+              <Select.Root
+                value={selectedSortOption}
+                onValueChange={handleSortOptionChange}
+              >
+                <Select.Trigger className="max-w-40 rounded-[4px]">
+                  <Select.Value className="font-bold">
+                    {selectedSortOption === "name-asc" ||
+                      selectedSortOption === "name-desc"
+                      ? selectedSortOption.includes("asc")
+                        ? "Name (Ascending)"
+                        : "Name (Descending)"
+                      : selectedSortOption.includes("asc")
+                        ? "Last Updated (Ascending)"
+                        : "Last Updated (Descending)"}
+                  </Select.Value>
+                  {/* <Select.Icon /> */}
+                </Select.Trigger>
+                <Select.Content>
+                  <Select.Group>
+                    <Select.Item
+                      value={selectedSortOption.includes("name") ? selectedSortOption : "name-asc"}
+                      className="flex justify-between text-semantic-fg-primary"
+                      onClick={() => setSelectedSortOption(selectedSortOption.includes("name") ? selectedSortOption : "name-asc")}
+                    >
+                      Name
+                      <span className="h-4 w-4">
+                        <Icons.BookOpen02 />
+                      </span>
+                    </Select.Item>
+                    <Select.Item
+                      value={selectedSortOption.includes("createTime") ? selectedSortOption : "createTime-asc"}
+                      className="flex justify-between text-semantic-fg-primary"
+                      onClick={() => setSelectedSortOption(selectedSortOption.includes("createTime") ? selectedSortOption : "createTime-asc")}
+                    >
+                      Last Updated
+                      <span className="h-4 w-4">
+                        <Icons.RefreshCw05 />
+                      </span>
+                    </Select.Item>
+                  </Select.Group>
+                  <Select.Separator />
+                  <Select.Group>
+                    <Select.Item
+                      value={selectedSortOption.includes("asc") ? selectedSortOption : selectedSortOption.replace("desc", "asc")}
+                      className="flex justify-between text-semantic-fg-primary"
+                      onClick={() => setSelectedSortOption(selectedSortOption.includes("asc") ? selectedSortOption : selectedSortOption.replace("desc", "asc"))}
+                    >
+                      Ascending
+                      <span className="h-4 w-4">
+                        <Icons.ArrowUp />
+                      </span>
+                    </Select.Item>
+                    <Select.Item
+                      value={selectedSortOption.includes("desc") ? selectedSortOption : selectedSortOption.replace("asc", "desc")}
+                      className="flex justify-between text-semantic-fg-primary"
+                      onClick={() => setSelectedSortOption(selectedSortOption.includes("desc") ? selectedSortOption : selectedSortOption.replace("asc", "desc"))}
+                    >
+                      Descending
+                      <span className="h-4 w-4">
+                        <Icons.ArrowDown />
+                      </span>
+                    </Select.Item>
+                  </Select.Group>
+                </Select.Content>
+              </Select.Root>
+            </div>
           </div>
         </div>
         <div className="mb-4 flex flex-col gap-y-4">
           {pipelines.isSuccess && !pipelines.isFetching ? (
-            allPipelines.length === 0 ? (
+            sortedPipelines.length === 0 ? (
               <div className="flex h-[500px] w-full shrink-0 grow-0 items-center justify-center rounded-sm border border-semantic-bg-line">
                 <p className="text-semantic-fg-secondary product-body-text-2-semibold">
-                  Let&rsquo;s build your first pipline! 🙌
+                  Let&rsquo;s build your first pipeline! 🙌
                 </p>
               </div>
             ) : (
-              allPipelines.length &&
-              allPipelines.map((pipeline) => (
+              sortedPipelines.map((pipeline) => (
                 <CardPipeline
                   key={pipeline.uid}
                   ownerID={pipeline.owner_name.split("/")[1]}
                   pipeline={pipeline}
-                  isOwner={pipeline.owner_name === me.data?.name}
-                  disabledPermissionLabel={true}
                 />
               ))
             )
@@ -170,6 +248,93 @@ export const Body = ({
             {pipelines.isFetchingNextPage ? <LoadingSpin /> : "Load More"}
           </Button>
         ) : null}
+      </div>
+      <div className="ml-8 mt-6 flex w-96 flex-col">
+        <div className="sticky top-6">
+          <NewsLetterCard />
+          <LatestChangesCard />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const FeaturedBanner = () => {
+  const [showBanner, setShowBanner] = React.useState(true);
+
+  return (
+    <>
+      {showBanner && (
+        <div className="mb-3 mt-4 flex items-center justify-between rounded-md bg-semantic-accent-bg p-4 text-semantic-fg-secondary">
+          <p className="flex items-center justify-between">
+            &nbsp; Want to feature your pipeline? Drop a message in&nbsp;{" "}
+            <span className="font-bold">#featured</span>
+            &nbsp; on &nbsp;
+            <button className="font-bold text-semantic-accent-default underline underline-offset-2">
+              Discord
+            </button>
+            &nbsp;
+            <a
+              href="https://discord.com/invite/sevxWsqpGh"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-4 w-4 items-center text-semantic-accent-default"
+            >
+              <DiscordIcon color="text-[#316FED]" />
+            </a>
+          </p>
+          <div className="flex items-center">
+            <button
+              onClick={() => setShowBanner(false)}
+              className="focus:outline-none"
+            >
+              <Icons.X className="h-5 w-5 stroke-semantic-fg-secondary" />
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export const Body = ({
+  visitorCta,
+}: {
+  visitorCta?: UserProfileCardProps["visitorCta"];
+}) => {
+  const tabTriggerStyle =
+    "text-semantic-fg-disabled product-body-text-3-semibold data-[state=active]:text-semantic-fg-primary data-[state=active]:font-bold data-[state=active]:border-b-2 data-[state=active]:border-blue-500 pb-2";
+
+  return (
+    <div className="flex justify-between px-40 sm:px-10 md:px-20">
+      <div className="flex w-full items-center">
+        <Tabs.Root
+          defaultValue="explore"
+          className="mb-8 mt-4 w-full flex-col justify-center"
+        >
+          <div className="flex flex-col items-center justify-center">
+            <Tabs.List className="flex justify-center gap-4">
+              <Tabs.Trigger className={tabTriggerStyle} value="explore">
+                <span className="text-lg">Explore</span>
+              </Tabs.Trigger>
+              <Tabs.Trigger className={tabTriggerStyle} value="featured">
+                <span className="text-lg">Featured</span>
+              </Tabs.Trigger>
+            </Tabs.List>
+            <div className="w-full border-b border-gray-200"></div>
+          </div>
+          <div className="flex w-full flex-row">
+            <div className="flex w-full flex-col">
+              <Tabs.Content value="explore">
+                <PipelineSection tabValue="explore" />
+              </Tabs.Content>
+              <Tabs.Content value="featured">
+                <FeaturedBanner />
+                <PipelineSection tabValue="featured" />
+              </Tabs.Content>
+            </div>
+          </div>
+        </Tabs.Root>
       </div>
     </div>
   );
