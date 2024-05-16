@@ -1,4 +1,4 @@
-import { Icons, buttonVariants } from "@instill-ai/design-system";
+import { Icons, Skeleton, buttonVariants } from "@instill-ai/design-system";
 import { useChangelogs } from "../lib/react-query-service/misc/useChangelogs";
 import cn from "clsx";
 
@@ -17,8 +17,8 @@ const LatestChangesCard: React.FC = () => {
   if (changelogs.isLoading) {
     return (
       <div className="flex w-full flex-row gap-x-2 p-3">
-        <div className="my-auto h-8 w-8 shrink-0 grow-0 animate-pulse rounded-full bg-semantic-bg-secondary" />
-        <div className="h-[38px] w-20 animate-pulse rounded bg-semantic-bg-secondary"></div>
+        <Skeleton className="my-auto h-8 w-8 shrink-0 grow-0 rounded-full" />
+        <Skeleton className="h-[38px] w-20 rounded" />
       </div>
     );
   }

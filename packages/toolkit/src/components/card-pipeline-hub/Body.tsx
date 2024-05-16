@@ -1,14 +1,14 @@
 "use client";
 
-import { Button, Icons, Tag } from "@instill-ai/design-system";
+import { Button, Icons, Skeleton, Tag } from "@instill-ai/design-system";
 import { Pipeline } from "../../lib";
 import { useRouter } from "next/navigation";
 
 const BodySkeleton = () => {
   return (
     <div className="flex w-full flex-col px-2">
-      <div className="mb-2 h-5 w-1/2 animate-pulse rounded bg-semantic-bg-secondary" />
-      <div className="h-[250px] w-full animate-pulse bg-semantic-bg-secondary" />
+      <Skeleton className="mb-2 h-5 w-1/2 rounded" />
+      <Skeleton className="h-[250px] w-full" />
     </div>
   );
 };
