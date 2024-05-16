@@ -353,10 +353,12 @@ export type PipelineState =
   | "STATE_DELETED";
 
 export type ModelState =
-  | "STATE_ONLINE"
+  | "STATE_UNSPECIFIED"
   | "STATE_OFFLINE"
-  | "STATE_ERROR"
-  | "STATE_UNSPECIFIED";
+  | "STATE_SCALING"
+  | "STATE_ACTIVE"
+  | "STATE_IDLE"
+  | "STATE_ERROR";
 
 export type IconStyle = {
   width: string;

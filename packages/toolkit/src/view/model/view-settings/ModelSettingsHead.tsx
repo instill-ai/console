@@ -54,7 +54,7 @@ export const ModelSettingsHead = ({
   const task = getModelInstanceTaskToolkit(model?.task || "");
 
   return (
-    <div className="-mx-8 -mt-8 w-[calc(100%+64px)] bg-gradient-to-t from-orange-50 to-sky-200 pt-7">
+    <div className="sticky -top-8 z-10 -mx-8 -mt-8 w-[calc(100%+64px)] bg-gradient-to-t from-orange-50 to-sky-200 pt-7">
       <div className="mx-auto flex max-w-7xl flex-col gap-y-2">
         <div className="flex flex-row items-center gap-x-3">
           <EntityAvatar

@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
+  PaginationState,
   SortingState,
   flexRender,
   getCoreRowModel,
@@ -28,8 +29,12 @@ interface DataTableProps<TData, TValue> {
   isLoading: boolean;
   loadingRows: Nullable<number>;
   children?: React.ReactNode;
-  primaryText: Nullable<string>;
-  secondaryText: Nullable<string>;
+  primaryText?: Nullable<string>;
+  secondaryText?: Nullable<string>;
+  manualPagination?: boolean;
+  pageCount?: number;
+  onPaginationChange?: (state: PaginationState) => void;
+  pagination?: PaginationState;
 }
 
 const DataTable = <TData, TValue>({
@@ -43,7 +48,12 @@ const DataTable = <TData, TValue>({
   children,
   primaryText,
   secondaryText,
-}: DataTableProps<TData, TValue>) => {
+  manualPagination,
+  pageCount,
+  onPaginationChange,
+  showPageNumbers,
+  pagination,
+}: DataTableProps<TData, TValue> & { showPageNumbers?: boolean }) => {
   const [rowSelection, setRowSelection] = React.useState({});
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -69,53 +79,82 @@ const DataTable = <TData, TValue>({
       rowSelection,
       sorting,
       columnFilters,
+      pagination,
     },
+    manualPagination,
+    pageCount,
+    onPaginationChange: !onPaginationChange
+      ? undefined
+      : (updater) => {
+          if (typeof updater !== "function") {
+            return;
+          }
+
+          const newPageState = updater(table.getState().pagination);
+
+          onPaginationChange(newPageState);
+        },
   });
+
+  const hasTopSection = primaryText || secondaryText || searchKey;
 
   return (
     <div>
-      <div className="flex flex-row rounded-t-sm border border-b-0 bg-semantic-bg-primary px-6 py-5">
-        <div className="w-3/4">
-          <div className="flex flex-col space-y-2">
-            <h4 className="w-full text-semantic-fg-primary product-body-text-1-semibold">
-              {primaryText}
-            </h4>
-            <p className="w-full text-semantic-fg-disabled product-body-text-3-regular">
-              {secondaryText}
-            </p>
-          </div>
-        </div>
-        <div className="flex w-1/4 items-end">
+      {hasTopSection ? (
+        <div className="flex flex-row rounded-t-sm border border-b-0 bg-semantic-bg-primary px-6 py-5">
+          {primaryText || secondaryText ? (
+            <div className="w-3/4">
+              <div className="flex flex-col space-y-2">
+                {primaryText ? (
+                  <h4 className="w-full text-semantic-fg-primary product-body-text-1-semibold">
+                    {primaryText}
+                  </h4>
+                ) : null}
+                {secondaryText ? (
+                  <p className="w-full text-semantic-fg-disabled product-body-text-3-regular">
+                    {secondaryText}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
           {searchKey && (
-            <Input.Root className="w-full">
-              <Input.LeftIcon>
-                <Icons.SearchSm className="my-auto h-5 w-5 stroke-semantic-fg-secondary" />
-              </Input.LeftIcon>
-              <Input.Core
-                disabled={false}
-                type="text"
-                placeholder={searchPlaceholder || ""}
-                value={
-                  (table.getColumn(searchKey)?.getFilterValue() as string) ?? ""
-                }
-                onChange={(event) =>
-                  table.getColumn(searchKey)?.setFilterValue(event.target.value)
-                }
-              />
-              {(table.getColumn(searchKey)?.getFilterValue() as string) && (
-                <Input.LeftIcon
-                  onClick={() => {
-                    table.getColumn(searchKey)?.setFilterValue("");
-                  }}
-                >
-                  <Icons.X className="my-auto h-5 w-5 cursor-pointer stroke-semantic-fg-secondary" />
+            <div className="flex w-1/4 items-end">
+              <Input.Root className="w-full">
+                <Input.LeftIcon>
+                  <Icons.SearchSm className="my-auto h-5 w-5 stroke-semantic-fg-secondary" />
                 </Input.LeftIcon>
-              )}
-            </Input.Root>
+                <Input.Core
+                  disabled={false}
+                  type="text"
+                  placeholder={searchPlaceholder || ""}
+                  value={
+                    (table.getColumn(searchKey)?.getFilterValue() as string) ??
+                    ""
+                  }
+                  onChange={(event) =>
+                    table
+                      .getColumn(searchKey)
+                      ?.setFilterValue(event.target.value)
+                  }
+                />
+                {(table.getColumn(searchKey)?.getFilterValue() as string) && (
+                  <Input.LeftIcon
+                    onClick={() => {
+                      table.getColumn(searchKey)?.setFilterValue("");
+                    }}
+                  >
+                    <Icons.X className="my-auto h-5 w-5 cursor-pointer stroke-semantic-fg-secondary" />
+                  </Input.LeftIcon>
+                )}
+              </Input.Root>
+            </div>
           )}
         </div>
-      </div>
-      <Table.Root>
+      ) : null}
+      <Table.Root
+        wrapperClassName={!hasTopSection ? "rounded-t-sm" : undefined}
+      >
         <Table.Header>
           {table.getHeaderGroups().map((headerGroup) => (
             <Table.Row key={headerGroup.id}>
@@ -187,7 +226,11 @@ const DataTable = <TData, TValue>({
         </Table.Body>
       </Table.Root>
 
-      <DataTablePagination table={table} />
+      <DataTablePagination
+        table={table}
+        showPageNumbers={showPageNumbers}
+        isLoading={isLoading}
+      />
     </div>
   );
 };

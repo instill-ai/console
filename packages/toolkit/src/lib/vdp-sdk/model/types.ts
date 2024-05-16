@@ -59,10 +59,12 @@ export type Model = {
 };
 
 export type ModelState =
-  | "STATE_ONLINE"
+  | "STATE_UNSPECIFIED"
   | "STATE_OFFLINE"
-  | "STATE_ERROR"
-  | "STATE_UNSPECIFIED";
+  | "STATE_SCALING"
+  | "STATE_ACTIVE"
+  | "STATE_IDLE"
+  | "STATE_ERROR";
 
 export type ModelReadme = {
   name: string;
@@ -113,6 +115,6 @@ export type ModelVersion = {
   name: string;
   id: string;
   digest: string;
-  state: string;
+  state: ModelState;
   update_time: string;
 };

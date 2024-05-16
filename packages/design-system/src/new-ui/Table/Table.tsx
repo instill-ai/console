@@ -5,9 +5,14 @@ import * as React from "react";
 
 const TableRoot = React.forwardRef<
   HTMLTableElement,
-  React.HTMLAttributes<HTMLTableElement>
->(({ className, ...props }, ref) => (
-  <div className="w-full overflow-auto rounded-b-sm border border-semantic-bg-line">
+  React.HTMLAttributes<HTMLTableElement> & { wrapperClassName?: string }
+>(({ className, wrapperClassName, ...props }, ref) => (
+  <div
+    className={cn(
+      "w-full overflow-auto rounded-b-sm border border-semantic-bg-line",
+      wrapperClassName
+    )}
+  >
     <table
       ref={ref}
       className={cn("w-full caption-bottom text-sm", className)}

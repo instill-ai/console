@@ -12,6 +12,7 @@ export type StateLabelProps = {
   iconWidth: string;
   iconHeight: string;
   iconPosition: Nullable<string>;
+  className?: string;
 };
 
 export const StateLabel = ({
@@ -21,6 +22,7 @@ export const StateLabel = ({
   iconWidth,
   iconPosition,
   state,
+  className,
 }: StateLabelProps) => {
   let stateLabelName: string;
   let textColor: string;
@@ -37,11 +39,6 @@ export const StateLabel = ({
       bgColor = "bg-instillGreen10";
       stateLabelName = "Active";
       break;
-    case "STATE_ONLINE":
-      textColor = "text-instillGreen50";
-      bgColor = "bg-instillGreen10";
-      stateLabelName = "Online";
-      break;
     case "STATE_OFFLINE":
       textColor = "text-instillGrey70";
       bgColor = "bg-instillGrey05";
@@ -52,6 +49,21 @@ export const StateLabel = ({
       bgColor = "bg-instillGrey05";
       stateLabelName = "Inactive";
       break;
+    case "STATE_UNSPECIFIED":
+      textColor = "text-instillGrey70";
+      bgColor = "bg-instillGrey05";
+      stateLabelName = "Starting";
+      break;
+    case "STATE_SCALING":
+      textColor = "text-instillGrey70";
+      bgColor = "bg-instillGrey05";
+      stateLabelName = "Scaling";
+      break;
+    case "STATE_IDLE":
+      textColor = "text-instillGreen50";
+      bgColor = "bg-instillGreen10";
+      stateLabelName = "Idle";
+      break;
     default:
       textColor = "text-instillGrey70";
       bgColor = "bg-instillGrey05";
@@ -60,7 +72,11 @@ export const StateLabel = ({
 
   return (
     <div
-      className={cn("flex flex-row gap-x-2 p-1", enableBgColor ? bgColor : "")}
+      className={cn(
+        "flex flex-row gap-x-2 p-1",
+        enableBgColor ? bgColor : "",
+        className
+      )}
       data-testid="state-label"
     >
       {enableIcon ? (

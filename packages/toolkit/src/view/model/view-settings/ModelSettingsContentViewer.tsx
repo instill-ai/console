@@ -15,10 +15,18 @@ export const ModelSettingsContentViewer = ({
     return null;
   }
 
+  let content: null | React.ReactNode;
+
   switch (selectedTab) {
-    case "versions":
-      return <ModelSettingsVersions model={model} />;
+    case "versions": {
+      content = <ModelSettingsVersions model={model} />;
+
+      break;
+    }
+    default: {
+      content = null;
+    }
   }
 
-  return null;
+  return <div className="mx-auto w-full max-w-7xl pt-8">{content}</div>;
 };

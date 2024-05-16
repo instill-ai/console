@@ -57,7 +57,12 @@ export function createPaginationArray(
 
 export function DataTablePagination<TData>({
   table,
-}: DataTablePaginationProps<TData>) {
+  showPageNumbers = true,
+  isLoading,
+}: DataTablePaginationProps<TData> & {
+  showPageNumbers?: boolean;
+  isLoading?: boolean;
+}) {
   return (
     <div className="flex items-center justify-end py-4">
       <Button
@@ -65,40 +70,47 @@ export function DataTablePagination<TData>({
         variant="secondaryGrey"
         size="sm"
         onClick={() => table.previousPage()}
-        disabled={!table.getCanPreviousPage()}
+        disabled={isLoading || !table.getCanPreviousPage()}
       >
         <Icons.ArrowNarrowLeft className="h-5 w-5 stroke-semantic-fg-secondary" />
         <span className="product-body-text-3-semibold">Previous</span>
       </Button>
-      {createPaginationArray(
-        (table.options.state.pagination?.pageIndex || 0) + 1,
-        table.getPageCount(),
-        8
-      ).map((e, index) => (
-        <Button
-          className={cn(
-            "!rounded-none border-l-0 !border-semantic-bg-line !py-2.5 px-2.5",
-            table.getPageCount() - 1 === e && "border-r-0"
-          )}
-          variant="secondaryGrey"
-          size="sm"
-          onClick={() => table.setPageIndex(Number(e))}
-          key={`table-page-button-${index}`}
-          disabled={
-            e === table.options.state.pagination?.pageIndex || e === "..."
-          }
-        >
-          <span className="px-2 product-body-text-3-semibold">
-            {e === "..." ? e : Number(e) + 1}
-          </span>
-        </Button>
-      ))}
+      {showPageNumbers
+        ? createPaginationArray(
+            (table.options.state.pagination?.pageIndex || 0) + 1,
+            table.getPageCount(),
+            8
+          ).map((e, index) => (
+            <Button
+              className={cn(
+                "!rounded-none border-l-0 !border-semantic-bg-line !py-2.5 px-2.5",
+                table.getPageCount() - 1 === e && "border-r-0"
+              )}
+              variant="secondaryGrey"
+              size="sm"
+              onClick={() => table.setPageIndex(Number(e))}
+              key={`table-page-button-${index}`}
+              disabled={
+                isLoading ||
+                e === table.options.state.pagination?.pageIndex ||
+                e === "..."
+              }
+            >
+              <span className="px-2 product-body-text-3-semibold">
+                {e === "..." ? e : Number(e) + 1}
+              </span>
+            </Button>
+          ))
+        : null}
       <Button
-        className="gap-x-2 !rounded-l-none rounded-r-sm !border-semantic-bg-line !py-2.5 px-4"
+        className={cn(
+          "gap-x-2 !rounded-l-none rounded-r-sm !border-semantic-bg-line !py-2.5 px-4",
+          !showPageNumbers ? "border-l-0" : null
+        )}
         variant="secondaryGrey"
         size="sm"
         onClick={() => table.nextPage()}
-        disabled={!table.getCanNextPage()}
+        disabled={isLoading || !table.getCanNextPage()}
       >
         <span className="product-body-text-3-semibold">Next</span>
         <Icons.ArrowNarrowRight className="h-5 w-5 stroke-semantic-fg-secondary" />

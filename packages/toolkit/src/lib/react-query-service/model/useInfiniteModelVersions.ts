@@ -1,6 +1,13 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+  InfiniteData,
+  UseInfiniteQueryResult,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
 import type { Nullable } from "../../type";
-import { listModelVersionsQuery } from "../../vdp-sdk";
+import {
+  ListModelVersionsResponse,
+  listModelVersionsQuery,
+} from "../../vdp-sdk";
 
 export function useInfiniteModelVersions({
   accessToken,
@@ -14,7 +21,7 @@ export function useInfiniteModelVersions({
   modelName: string;
   pageSize?: number;
   retry?: false | number;
-}) {
+}): UseInfiniteQueryResult<InfiniteData<ListModelVersionsResponse>, Error> {
   let enabled = false;
 
   if (modelName && enabledQuery) {
