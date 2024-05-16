@@ -1,5 +1,5 @@
 "use client";
-import { Icons, buttonVariants } from "@instill-ai/design-system";
+import { Icons, Skeleton, buttonVariants } from "@instill-ai/design-system";
 import { ImageWithFallback } from "./ImageWithFallback";
 import { useState } from "react";
 import { useBlogPosts } from "../lib/react-query-service/misc/useBlogPosts";
@@ -25,9 +25,16 @@ const NewsLetterCard = () => {
 
   const NewsLetterCardSkeleton = () => {
     return (
-      <div className="flex w-full flex-col px-2">
-        <div className="h-[250px] w-full animate-pulse bg-semantic-bg-secondary" />
-        <div className="mb-2 h-5 w-1/2 animate-pulse rounded bg-semantic-bg-secondary" />
+      <div className="flex w-[320px] flex-col gap-y-8">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="flex h-40 w-full bg-semantic-bg-line">
+            <Skeleton className="m-auto h-36 w-full stroke-semantic-fg-secondary" />
+          </div>
+          <div className="flex w-full flex-col items-center space-y-1">
+            <Skeleton className="h-6 w-24 rounded bg-semantic-bg-line" />
+            <Skeleton className="h-6 w-16 rounded bg-semantic-bg-line" />
+          </div>
+        </div>
       </div>
     );
   };
