@@ -24,7 +24,7 @@ export async function generateMetadata({
       title: `Instill Core | ${params.entity}`,
       description: user.profile?.bio,
       openGraph: {
-        images: ["/instill-open-graph.png"],
+        images: [`/api/user?user=${params.entity}`],
       },
     };
 

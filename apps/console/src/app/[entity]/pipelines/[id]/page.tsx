@@ -52,9 +52,11 @@ export async function generateMetadata({
       title: `Instill Core | ${id}`,
       description: pipeline?.readme,
       openGraph: {
-        images: ["/instill-open-graph.png"],
+        images: [`/api/pipeline?user=${entity}&pipeline=${id}`],
       },
     };
+
+    console.log(metadata, Promise.resolve(metadata));
 
     return Promise.resolve(metadata);
   } catch (error) {
