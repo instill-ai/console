@@ -33,9 +33,7 @@ const LatestChangesCard: React.FC = () => {
       {changelogs.isSuccess &&
         changelogs.data.map((changelog: Changelog) => (
           <div key={changelog.id}>
-            <div className={`my-1 w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize hover:!underline ${cn(
-              buttonVariants({ variant: "secondaryColour", size: "md" })
-            )}`}>
+            <div className={cn(buttonVariants({ variant: "secondaryColour", size: "md" }), "my-1 w-min whitespace-nowrap rounded-sm  px-2 py-2 capitalize hover:!underline")}>
               {changelog.date && new Date(changelog.date).getTime() !== 0
                 ? new Date(changelog.date).toLocaleDateString("en-US", {
                   year: "numeric",
