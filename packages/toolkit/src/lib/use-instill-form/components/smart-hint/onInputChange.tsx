@@ -80,8 +80,6 @@ export function onInputChange({
     }
   }
 
-  console.log(supportInstillCredit, event.target.value);
-
   if (supportInstillCredit && updateIsUsingInstillCredit) {
     if (event.target.value !== "${" + InstillCredit.key + "}") {
       updateIsUsingInstillCredit(false);

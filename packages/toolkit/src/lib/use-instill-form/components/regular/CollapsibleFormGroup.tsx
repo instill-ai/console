@@ -42,8 +42,6 @@ export const CollapsibleFormGroup = ({
   ]);
 
   React.useEffect(() => {
-    console.log("path", path, forceOpenCollapsibleFormGroups);
-
     if (
       forceOpenCollapsibleFormGroups &&
       forceOpenCollapsibleFormGroups.includes(path)

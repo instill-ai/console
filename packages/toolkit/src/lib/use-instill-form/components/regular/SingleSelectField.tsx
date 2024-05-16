@@ -49,10 +49,10 @@ export const SingleSelectField = ({
   //    set the model value to gpt-3.5-turbo, and this model support
   //    instill credit.
   React.useEffect(() => {
-    const sub = watch((values) => {
+    const sub = watch((values, { name }) => {
       const fieldValue = dot.getter(values, path);
 
-      if (instillCredentialMap) {
+      if (instillCredentialMap && name === path) {
         const currentCredentialFieldPath = instillCredentialMap.targets[0];
 
         const currentCredentialFieldValue = dot.getter(
