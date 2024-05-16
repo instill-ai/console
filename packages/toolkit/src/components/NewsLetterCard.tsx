@@ -74,9 +74,7 @@ const NewsLetterCard = () => {
           />
         </a>
       </div>
-      <div className={`my-1 w-min whitespace-nowrap rounded-sm  px-2 py-2 capitalize hover:!underline ${cn(
-        buttonVariants({ variant: "secondaryColour", size: "md" })
-      )}`}>
+      <div className={cn(buttonVariants({ variant: "secondaryColour", size: "md" }), "my-1 w-min whitespace-nowrap rounded-sm  px-2 py-2 capitalize hover:!underline")}>
         {publishedOn}
       </div>
       <a
