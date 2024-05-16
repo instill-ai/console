@@ -94,7 +94,7 @@ export const CloudTopbarDropdown = () => {
               </p>
             </div>
           </div>
-          <RemainingCreditCTA ctaTargetHref="/subscription" />
+          <RemainingCreditCTA ctaTargetHref="/subscribe" />
         </div>
         <Separator orientation="horizontal" />
         <TopbarDropdownGroup>

@@ -1,5 +1,20 @@
 # @instill-ai/design-system
 
+## [0.68.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.67.0...@instill-ai/design-system-v0.68.0) (2024-05-16)
+
+
+### Features
+
+* **design-system:** improve Select component to let it cover more use cases ([#1134](https://github.com/instill-ai/console/issues/1134)) ([ed53689](https://github.com/instill-ai/console/commit/ed536895bfb24efc6c5f120047d77d0cf9397895))
+* **pipeline-builder:** implement the instill credit interaction on component ([#1139](https://github.com/instill-ai/console/issues/1139)) ([03e1596](https://github.com/instill-ai/console/commit/03e1596531d5a8c429a84a10d545f8bf219b7350))
+
+
+### Bug Fixes
+
+* dependabot alerts ([#1142](https://github.com/instill-ai/console/issues/1142)) ([1318232](https://github.com/instill-ai/console/commit/1318232d56bfb7bb46d84a03e13018d2f5cd50c4))
+* fix ci and docker node version to adapt node20 ([#1143](https://github.com/instill-ai/console/issues/1143)) ([5aed24b](https://github.com/instill-ai/console/commit/5aed24b538b2c73743602f41110c8b1adf8c6f59))
+* fix wrongly generate instillFormat for trigger component ([#1144](https://github.com/instill-ai/console/issues/1144)) ([a59a6c3](https://github.com/instill-ai/console/commit/a59a6c34b052c0051d73a87eda743cc2de21f0c9))
+
 ## [0.67.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.66.1...@instill-ai/design-system-v0.67.0) (2024-05-07)
 
 

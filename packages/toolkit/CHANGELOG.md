@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.90.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.89.0...@instill-ai/toolkit-v0.90.0) (2024-05-16)
+
+
+### Features
+
+* add the remaining credit related sdk and query ([#1140](https://github.com/instill-ai/console/issues/1140)) ([42d9a94](https://github.com/instill-ai/console/commit/42d9a94da3e5cb5b8a8afb0d4b0082e70af2abd1))
+* **design-system:** improve Select component to let it cover more use cases ([#1134](https://github.com/instill-ai/console/issues/1134)) ([ed53689](https://github.com/instill-ai/console/commit/ed536895bfb24efc6c5f120047d77d0cf9397895))
+* **pipeline-builder:** add instill secret into smart hint list ([#1147](https://github.com/instill-ai/console/issues/1147)) ([6a610c1](https://github.com/instill-ai/console/commit/6a610c1a7ef731bfeeab7710ab8106fd06477f1c))
+* **pipeline-builder:** add remaining credit view in the pipeline builder ([#1141](https://github.com/instill-ai/console/issues/1141)) ([672b2ee](https://github.com/instill-ai/console/commit/672b2ee72be8fba4e4d60c3c7e02f3a3338057a1))
+* **pipeline-builder:** align the output result with the user defined order ([#1154](https://github.com/instill-ai/console/issues/1154)) ([9565d54](https://github.com/instill-ai/console/commit/9565d54cdd5267af8d3ad9df9bb96a4e986cd83f))
+* **pipeline-builder:** dynamic switch smart-hint description for instill credit, and hint connector is using Instill Credit ([#1146](https://github.com/instill-ai/console/issues/1146)) ([98b72e4](https://github.com/instill-ai/console/commit/98b72e49256ce179507004180e8c61211e30aa20))
+* **pipeline-builder:** implement the instill credit interaction on component ([#1139](https://github.com/instill-ai/console/issues/1139)) ([03e1596](https://github.com/instill-ai/console/commit/03e1596531d5a8c429a84a10d545f8bf219b7350))
+* **pipeline-builder:** improve pipeline-builder json output style  ([#1148](https://github.com/instill-ai/console/issues/1148)) ([a1a6898](https://github.com/instill-ai/console/commit/a1a6898b684c77a7fdda5345997833231492dce3))
+
+
+### Bug Fixes
+
+* fix initial instill credit hint issue and remaining credit text ([#1152](https://github.com/instill-ai/console/issues/1152)) ([cfc6d43](https://github.com/instill-ai/console/commit/cfc6d43e9736e59b22659d7bfc0d87141fd46999))
+* fix wrongly generate instillFormat for trigger component ([#1144](https://github.com/instill-ai/console/issues/1144)) ([a59a6c3](https://github.com/instill-ai/console/commit/a59a6c34b052c0051d73a87eda743cc2de21f0c9))
+* **instill-credit:** fix credit upgrade button direction ([#1156](https://github.com/instill-ai/console/issues/1156)) ([467dead](https://github.com/instill-ai/console/commit/467dead8a96821b7d06d98c3503888a95a0a30fe))
+* **pipeline-builder:** "connectors" to "components" typo  ([#1132](https://github.com/instill-ai/console/issues/1132)) ([be04370](https://github.com/instill-ai/console/commit/be04370ef9e6c5c9650b2ae1bf2cdb3871ed4064))
+* **pipeline-builder:** better handle the enter experience in smart hint field ([#1153](https://github.com/instill-ai/console/issues/1153)) ([d274dd7](https://github.com/instill-ai/console/commit/d274dd7ea62f9077e33703dc966da7c43ddb1c35))
+* **pipeline-builder:** fix a bug when user duplicate component, the configuration will be wrongly synced ([#1155](https://github.com/instill-ai/console/issues/1155)) ([c0fc728](https://github.com/instill-ai/console/commit/c0fc728e0bad1c5dcbf912f26665258da9e9e8ff))
+* **pipeline-builder:** fix field will collapsed on input when component support credit ([#1157](https://github.com/instill-ai/console/issues/1157)) ([b82b65d](https://github.com/instill-ai/console/commit/b82b65d1e8207e30b3de83d87bca0086597059f7))
+* **pipeline-builder:** stop user from opening more options when requirement not met ([#1131](https://github.com/instill-ai/console/issues/1131)) ([5336669](https://github.com/instill-ai/console/commit/5336669577f6ba53422c5437aec50c876ae31522))
+* **pipeline-builder:** update New Connectors to Connectors ([#1129](https://github.com/instill-ai/console/issues/1129)) ([85d9ac9](https://github.com/instill-ai/console/commit/85d9ac915e6ff77ed6b42c2ac46886ea50a2021a))
+
 ## [0.89.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.88.2...@instill-ai/toolkit-v0.89.0) (2024-05-07)
 
 

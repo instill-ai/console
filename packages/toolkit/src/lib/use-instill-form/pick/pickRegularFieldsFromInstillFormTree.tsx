@@ -286,6 +286,7 @@ export function pickRegularFieldsFromInstillFormTree(
   if (tree.type === "string" && tree.enum && tree.enum.length > 0) {
     return (
       <RegularFields.SingleSelectField
+        tree={tree}
         key={tree.path}
         path={tree.path}
         form={form}
@@ -298,13 +299,13 @@ export function pickRegularFieldsFromInstillFormTree(
         isHidden={tree.isHidden}
         instillCredentialMap={tree.instillCredentialMap}
         updateSupportInstillCredit={updateSupportInstillCredit}
+        updateIsUsingInstillCredit={updateIsUsingInstillCredit}
         updateForceCloseCollapsibleFormGroups={
           updateForceCloseCollapsibleFormGroups
         }
         updateForceOpenCollapsibleFormGroups={
           updateForceOpenCollapsibleFormGroups
         }
-        updateIsUsingInstillCredit={updateIsUsingInstillCredit}
       />
     );
   }

@@ -112,6 +112,10 @@ export const ResponseNode = ({ data }: NodeProps<ResponseNodeData>) => {
           delete node.data.fields[currentEditingFieldKey];
         }
 
+        // We need to put on the initial order, for example, if we have
+        // 3 response fields, the instill_ui_order for new fields will be 3
+        const currentFieldsCount = Object.keys(node.data.fields).length;
+
         node.data = {
           ...node.data,
           fields: {
@@ -119,6 +123,7 @@ export const ResponseNode = ({ data }: NodeProps<ResponseNodeData>) => {
             [formData.key]: {
               title: formData.title,
               value: formData.value,
+              instill_ui_order: currentFieldsCount,
             },
           },
         };

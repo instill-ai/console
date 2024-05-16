@@ -3,7 +3,7 @@
 import { Button, Skeleton } from "@instill-ai/design-system";
 import {
   InstillStore,
-  useAppEntity,
+  useAuthenticatedUser,
   useInstillStore,
   useRemainingCredit,
   useShallow,
@@ -23,21 +23,23 @@ export const RemainingCreditCTA = ({
 }) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const router = useRouter();
-  const entity = useAppEntity();
+
+  const me = useAuthenticatedUser({
+    enabled: enabledQuery,
+    accessToken,
+  });
 
   const remainingCredit = useRemainingCredit({
-    ownerName: entity.data.entityName,
+    ownerName: me.isSuccess ? me.data.name : null,
     accessToken,
     enabled:
-      enabledQuery &&
-      entity.isSuccess &&
-      env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
+      enabledQuery && me.isSuccess && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
   });
 
   return (
     <div className="flex w-full flex-row gap-x-2 rounded-sm bg-semantic-bg-base-bg px-3 py-4">
       {remainingCredit.isSuccess ? (
-        <p className=" font-mono text-[11px] font-medium text-[#344054]">{`${remainingCredit.data}`}</p>
+        <p className="my-auto font-mono text-[11px] font-medium text-[#344054]">{`${remainingCredit.data} credits left`}</p>
       ) : (
         <Skeleton className="my-auto h-5 w-[100px] rounded" />
       )}
