@@ -125,7 +125,7 @@ export const ModelSettingsVersions = ({
 
     const offset = pagination.pageIndex * pagination.pageSize;
 
-    return versionList.slice(offset);
+    return versionList.slice(offset, offset + pagination.pageSize);
   }, [versionList, pagination]);
 
   const onPaginationChange = (state: PaginationState) => {
@@ -136,11 +136,11 @@ export const ModelSettingsVersions = ({
     <DataTable
       columns={columns}
       data={currentPageData}
-      pageSize={10}
+      pageSize={pagination.pageSize}
       isLoading={
         versions.isLoading || versions.isFetching || versions.isFetchingNextPage
       }
-      loadingRows={10}
+      loadingRows={pagination.pageSize}
       manualPagination={true}
       pageCount={pageCount}
       onPaginationChange={onPaginationChange}
