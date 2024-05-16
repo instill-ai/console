@@ -91,6 +91,7 @@ export const OneOfConditionField = ({
                 </div>
                 <Select.Root
                   onValueChange={(event) => {
+                    if (!event || event === "") return;
                     field.onChange(event);
                     setSelectedConditionMap((prev) => {
                       setPrevSelectedConditionMap(prev);

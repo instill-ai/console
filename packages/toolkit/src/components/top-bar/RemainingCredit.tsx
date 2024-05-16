@@ -3,7 +3,7 @@
 import { Button, Skeleton } from "@instill-ai/design-system";
 import {
   InstillStore,
-  useAppEntity,
+  useAuthenticatedUser,
   useInstillStore,
   useRemainingCredit,
   useShallow,
@@ -23,15 +23,17 @@ export const RemainingCreditCTA = ({
 }) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const router = useRouter();
-  const entity = useAppEntity();
+
+  const me = useAuthenticatedUser({
+    enabled: enabledQuery,
+    accessToken,
+  });
 
   const remainingCredit = useRemainingCredit({
-    ownerName: entity.data.entityName,
+    ownerName: me.isSuccess ? me.data.name : null,
     accessToken,
     enabled:
-      enabledQuery &&
-      entity.isSuccess &&
-      env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
+      enabledQuery && me.isSuccess && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
   });
 
   return (
