@@ -54,13 +54,12 @@ const LatestChangesCard: React.FC = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <button
-          type="button"
+        <div
           className="my-auto ml-2 mt-4 flex justify-start text-semantic-accent-default product-button-button-2 hover:!underline"
         >
           View changelog
           <Icons.ChevronRight className="my-auto h-4 w-4 stroke-semantic-accent-default" />
-        </button>
+        </div>
       </a>
     </div>
   );
