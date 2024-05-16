@@ -1,6 +1,6 @@
 "use client";
 
-import { Icons, Tag } from "@instill-ai/design-system";
+import { Button, Icons, Tag } from "@instill-ai/design-system";
 import { Pipeline } from "../../lib";
 import { useRouter } from "next/navigation";
 
@@ -44,8 +44,8 @@ export const Body = ({
     <div className="flex w-full flex-col gap-y-2">
       <div className="flex flex-row gap-x-2 px-3">
         <Icons.Pipeline className="my-auto h-4 w-4 stroke-semantic-accent-default" />
-        <button
-          type="button"
+        <Button
+          variant={"tertiaryColour"}
           className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
           onClick={() => {
             router.push(
@@ -54,7 +54,7 @@ export const Body = ({
           }}
         >
           {pipeline.id}
-        </button>
+        </Button>
         {pipeline.isFeatured && (
           <Tag
             className="my-auto rounded-md bg-semantic-secondary-bg  p-2 !normal-case text-semantic-secondary-on-bg product-button-button-2 hover:!underline"

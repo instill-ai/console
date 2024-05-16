@@ -22,9 +22,7 @@ import {
 } from "../../../lib";
 import {
   LoadingSpin,
-  UserProfileCard,
   UserProfileCardProps,
-  ImageWithFallback,
 } from "../../../components";
 import debounce from "lodash.debounce";
 import NewsLetterCard from "../../../components/NewsLetterCard";
@@ -270,9 +268,9 @@ const FeaturedBanner = () => {
             &nbsp; Want to feature your pipeline? Drop a message in&nbsp;{" "}
             <span className="font-bold">#featured</span>
             &nbsp; on &nbsp;
-            <button className="font-bold text-semantic-accent-default underline underline-offset-2">
+            <span className="font-bold text-semantic-accent-default underline underline-offset-2">
               Discord
-            </button>
+            </span>
             &nbsp;
             <a
               href="https://discord.com/invite/sevxWsqpGh"
@@ -284,12 +282,13 @@ const FeaturedBanner = () => {
             </a>
           </p>
           <div className="flex items-center">
-            <button
+            <Button
               onClick={() => setShowBanner(false)}
               className="focus:outline-none"
+              variant={"tertiaryGrey"}
             >
               <Icons.X className="h-5 w-5 stroke-semantic-fg-secondary" />
-            </button>
+            </Button>
           </div>
         </div>
       )}
