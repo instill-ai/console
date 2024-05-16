@@ -13,6 +13,8 @@ export async function GET(request: Request) {
     accessToken: null,
   });
 
+  const user = "user" in pipeline.owner ? pipeline.owner.user : null;
+
   return new ImageResponse(
     (
       <div
@@ -32,7 +34,7 @@ export async function GET(request: Request) {
                 fontWeight: "700",
               }}
             >
-              {pipeline.owner?.user?.id}/
+              {user?.id}/
               <span
                 style={{
                   fontWeight: "700",
@@ -44,7 +46,7 @@ export async function GET(request: Request) {
           </div>
           <div tw="flex">
             <img
-              src={pipeline.owner?.user?.profile.avatar}
+              src={user?.profile ? user?.profile.avatar : ""}
               alt=""
               tw="max-h-[200px] max-w-[200px]"
             />

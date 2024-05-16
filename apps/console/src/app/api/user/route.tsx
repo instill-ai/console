@@ -42,8 +42,8 @@ export async function GET(request: Request) {
                 style={{
                   fontWeight: "700",
                 }}
+                tw="ml-2"
               >
-                {" "}
                 {user?.id}
               </span>
             </span>
