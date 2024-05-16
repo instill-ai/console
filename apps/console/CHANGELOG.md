@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.47.0-beta](https://github.com/instill-ai/console/compare/v0.46.0-beta...v0.47.0-beta) (2024-05-16)
+
+
+### Features
+
+* **pipeline-builder:** implement the instill credit interaction on component ([#1139](https://github.com/instill-ai/console/issues/1139)) ([03e1596](https://github.com/instill-ai/console/commit/03e1596531d5a8c429a84a10d545f8bf219b7350))
+
+
+### Bug Fixes
+
+* fix ci and docker node version to adapt node20 ([#1143](https://github.com/instill-ai/console/issues/1143)) ([5aed24b](https://github.com/instill-ai/console/commit/5aed24b538b2c73743602f41110c8b1adf8c6f59))
+* fix initial instill credit hint issue and remaining credit text ([#1152](https://github.com/instill-ai/console/issues/1152)) ([cfc6d43](https://github.com/instill-ai/console/commit/cfc6d43e9736e59b22659d7bfc0d87141fd46999))
+* fix wrongly generate instillFormat for trigger component ([#1144](https://github.com/instill-ai/console/issues/1144)) ([a59a6c3](https://github.com/instill-ai/console/commit/a59a6c34b052c0051d73a87eda743cc2de21f0c9))
+* **pipeline-builder:** fix field will collapsed on input when component support credit ([#1157](https://github.com/instill-ai/console/issues/1157)) ([b82b65d](https://github.com/instill-ai/console/commit/b82b65d1e8207e30b3de83d87bca0086597059f7))
+
 ## [0.46.0-beta](https://github.com/instill-ai/console/compare/v0.45.2-beta...v0.46.0-beta) (2024-05-07)
 
 
