@@ -1,10 +1,12 @@
 "use client";
-import { Icons } from "@instill-ai/design-system";
+import { Icons, buttonVariants } from "@instill-ai/design-system";
 import { ImageWithFallback } from "./ImageWithFallback";
 import { useState } from "react";
 import { useBlogPosts } from "../lib/react-query-service/misc/useBlogPosts";
+import cn from "clsx";
 
-interface BlogPostData {
+
+type BlogPostData = {
   id: string;
   imageUrl: string;
   title: string;
@@ -72,12 +74,11 @@ const NewsLetterCard = () => {
           />
         </a>
       </div>
-      <button
-        type="button"
-        className="my-1 w-min whitespace-nowrap rounded-sm bg-semantic-accent-bg px-2 py-2 capitalize text-semantic-accent-default product-button-button-2 hover:!underline "
-      >
+      <div className={`my-1 w-min whitespace-nowrap rounded-sm  px-2 py-2 capitalize hover:!underline ${cn(
+        buttonVariants({ variant: "secondaryColour", size: "md" })
+      )}`}>
         {publishedOn}
-      </button>
+      </div>
       <a
         href={`https://www.instill.tech/blog/${slug}`}
         target="_blank"
