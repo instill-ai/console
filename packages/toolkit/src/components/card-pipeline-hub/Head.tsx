@@ -11,7 +11,7 @@ import {
   useInstillStore,
   useShallow,
 } from "../../lib";
-import { Icons, useToast } from "@instill-ai/design-system";
+import { Icons, Tag, useToast } from "@instill-ai/design-system";
 import { EntityAvatar } from "../EntityAvatar";
 import { useRouter } from "next/navigation";
 
@@ -81,22 +81,21 @@ export const Head = ({
 
   const displayName = React.useMemo(() => {
     const owner = pipeline.owner as UserOwner;
-    const username = owner?.user?.name?.split("/")[1]; // Get the part after "users/"
-    const ownerName =
+    const userID = owner?.user?.name?.split("/")[1]; // Get the part after "users/"
+    const ownerDisplayName =
       owner?.user?.profile?.company_name ||
       owner?.user?.profile?.display_name ||
       "";
 
-    // If username exists, use it directly
-    if (username) {
-      return username;
+    if (userID) {
+      return userID;
     } else {
       // If ownerName contains spaces, return it in lowercase with hyphens
-      if (ownerName.includes(" ")) {
-        return ownerName.toLowerCase().replace(/\s+/g, "-");
+      if (ownerDisplayName.includes(" ")) {
+        return ownerDisplayName.toLowerCase().replace(/\s+/g, "-");
       } else {
         // If the owner name doesn't contain spaces, return it in lowercase
-        return ownerName.toLowerCase();
+        return ownerDisplayName.toLowerCase();
       }
     }
   }, [pipeline.owner]);
@@ -124,8 +123,10 @@ export const Head = ({
           >
             {ownerID}
           </button>
-          <div className="rounded-m bg-neutral-50 rounded-full border border-neutral-200 p-1 text-center text-sm font-semibold text-black">
-            {displayName}
+          <div>
+            <Tag className="rounded-m bg-neutral-50 rounded-full border border-neutral-200 p-1 text-center text-sm font-semibold text-black">
+              {displayName}
+            </Tag>
           </div>
         </div>
       </div>

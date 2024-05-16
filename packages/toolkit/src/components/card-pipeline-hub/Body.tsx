@@ -1,6 +1,6 @@
 "use client";
 
-import { Icons } from "@instill-ai/design-system";
+import { Icons, Tag } from "@instill-ai/design-system";
 import { Pipeline } from "../../lib";
 import { useRouter } from "next/navigation";
 
@@ -56,12 +56,11 @@ export const Body = ({
           {pipeline.id}
         </button>
         {pipeline.isFeatured && (
-          <button
-            type="button"
+          <Tag
             className="my-auto rounded-md bg-semantic-secondary-bg  p-2 !normal-case text-semantic-secondary-on-bg product-button-button-2 hover:!underline"
           >
             Featured
-          </button>
+          </Tag>
         )}
       </div>
       <div className="flex w-full px-3 pb-3">
