@@ -6,18 +6,6 @@ import { useBlogPosts } from "../lib/react-query-service/misc/useBlogPosts";
 import cn from "clsx";
 
 
-type BlogPostData = {
-  id: string;
-  imageUrl: string;
-  title: string;
-  publishedOn: string;
-  themeImgAlt: string;
-  themeImgSrc: string;
-  slug: string;
-}
-
-
-
 const NewsLetterCard = () => {
   const { data: blogPosts = [], isLoading, isError } = useBlogPosts();
 
