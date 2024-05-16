@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { InstillErrors } from "../../constant";
-import { validateInstillID } from "../../server";
+import { env, validateInstillID } from "../../server";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -65,10 +65,13 @@ const CreateModelSchema = z
   .object({
     id: z.string(),
     description: z.string().optional(),
-    visibility: z.enum(VISIBILITY).default(VISIBILITY[0]),
+    visibility: z
+      .enum(["VISIBILITY_PRIVATE", "VISIBILITY_PUBLIC"])
+      .default("VISIBILITY_PRIVATE"),
     region: z.string(),
     hardware: z.string(),
-    task: z.enum(TASKS).default(TASKS[0]),
+    hardwareCustom: z.string().optional(),
+    task: z.enum(TASKS).default("TASK_CLASSIFICATION"),
     namespaceId: z.string(),
     //configuration: z.object({}),
   })
@@ -78,6 +81,14 @@ const CreateModelSchema = z
         code: z.ZodIssueCode.custom,
         message: InstillErrors.IDInvalidError,
         path: ["id"],
+      });
+    }
+
+    if (state.hardware === "Custom" && !state.hardwareCustom) {
+      return ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: InstillErrors.NoCustomHardwareNameError,
+        path: ["hardware"],
       });
     }
   });
@@ -90,6 +101,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
   const [hardwareOptions, setHardwareOptions] = useState<
     Record<string, Option[]>
   >({});
+  const [hardwareCustomValue, setHardwareCustomValue] = useState<string>("");
   const [creating, setCreating] = React.useState(false);
 
   const entity = useAppEntity();
@@ -165,11 +177,19 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
   }, [form, entity.isSuccess, entity.data]);
 
   useEffect(() => {
+    const currentEnv: "CE" | "CLOUD" = env("NEXT_PUBLIC_APP_ENV");
+
     if (modelRegions.data && !regionOptions.length) {
-      const newRegionOptions = modelRegions.data.map((item) => ({
-        value: item.region_name,
-        title: getModelRegionToolkit(item.region_name),
-      }));
+      const newRegionOptions = modelRegions.data
+        .filter((item) =>
+          currentEnv === "CE"
+            ? item.region_name === "REGION_LOCAL"
+            : item.region_name !== "REGION_LOCAL"
+        )
+        .map((item) => ({
+          value: item.region_name,
+          title: getModelRegionToolkit(item.region_name),
+        }));
       const newHardwareOptions: Record<string, Option[]> =
         modelRegions.data.reduce((acc, curr) => {
           const regionHardware = curr.hardware.map((item) => ({
@@ -201,7 +221,8 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
       description: data.description,
       visibility: data.visibility,
       region: data.region,
-      hardware: data.hardware,
+      hardware:
+        data.hardware === "Custom" ? data.hardwareCustom || "" : data.hardware,
       task: data.task,
       model_definition: "model-definitions/container",
       configuration: {},
@@ -241,6 +262,11 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
       });
     }
   }
+
+  const updateCustomHardware = (value: string) => {
+    setHardwareCustomValue(value);
+    form.setValue("hardwareCustom", value);
+  };
 
   const formID = "create-new-model-form";
 
@@ -378,7 +404,6 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                               />
                             </Input.Root>
                           </Form.Control>
-
                           <Form.Message />
                         </Form.Item>
                       );
@@ -530,11 +555,14 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                           onValueChange={(value: string) => {
                             field.onChange(value);
 
-                            if (hardwareOptions.length) {
+                            if (Object.keys(hardwareOptions).length) {
                               form.setValue(
                                 "hardware",
                                 hardwareOptions[value][0].value
                               );
+                            }
+                            {
+                              updateCustomHardware("");
                             }
                           }}
                         >
@@ -561,56 +589,77 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                   );
                 }}
               />
-              <Form.Field
-                control={form.control}
-                name="hardware"
-                render={({ field }) => {
-                  return (
-                    <Form.Item className="flex flex-col gap-y-2.5 md:w-1/2">
-                      <Form.Label className="product-body-text-3-semibold">
-                        Hardware
-                      </Form.Label>
-                      <Form.Control>
-                        <Select.Root
-                          value={
-                            field?.value ||
-                            hardwareOptions?.[
-                              form.getValues("region") ||
-                                Object.keys(hardwareOptions)[0]
-                            ]?.[0]?.value
-                          }
-                          onValueChange={(value: string) => {
-                            field.onChange(value);
-                          }}
-                        >
-                          <Select.Trigger className="mt-auto w-full">
-                            <Select.Value />
-                          </Select.Trigger>
-                          <Select.Content>
-                            <Select.Group>
-                              {Object.keys(hardwareOptions).length &&
-                              form.getValues("region")
-                                ? hardwareOptions[form.getValues("region")].map(
-                                    (option) => (
+              {form.getValues("region") ? (
+                <Form.Field
+                  control={form.control}
+                  name="hardware"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item className="flex flex-col gap-y-2.5 md:w-1/2">
+                        <Form.Label className="product-body-text-3-semibold">
+                          Hardware
+                        </Form.Label>
+                        <Form.Control>
+                          <Select.Root
+                            value={
+                              field?.value ||
+                              hardwareOptions?.[form.getValues("region")]?.[0]
+                                ?.value
+                            }
+                            onValueChange={(value: string) => {
+                              field.onChange(value);
+
+                              updateCustomHardware("");
+                            }}
+                          >
+                            <Select.Trigger className="mt-auto w-full">
+                              <Select.Value />
+                            </Select.Trigger>
+                            <Select.Content>
+                              <Select.Group>
+                                {Object.keys(hardwareOptions).length &&
+                                form.getValues("region")
+                                  ? hardwareOptions[
+                                      form.getValues("region")
+                                    ].map((option) => (
                                       <Select.Item
                                         key={option.value}
                                         value={option.value}
                                         label={option.title}
                                       />
-                                    )
-                                  )
-                                : null}
-                            </Select.Group>
-                          </Select.Content>
-                        </Select.Root>
-                      </Form.Control>
-                      <p className="text-semantic-fg-secondary product-body-text-3-regular">
-                        {`This will affect the model's performance and operational costs. Please refer to the documentation for detailed pricing information.`}
-                      </p>
-                    </Form.Item>
-                  );
-                }}
-              />
+                                    ))
+                                  : null}
+                              </Select.Group>
+                            </Select.Content>
+                          </Select.Root>
+                        </Form.Control>
+                        {field?.value === "Custom" ? (
+                          <Input.Root>
+                            <Input.Core
+                              disabled={false}
+                              required={false}
+                              type="text"
+                              placeholder="Your hardware name"
+                              value={hardwareCustomValue}
+                              onChange={(event) => {
+                                const value = event.target.value;
+
+                                updateCustomHardware(value);
+
+                                form.trigger("hardware");
+                              }}
+                            />
+                          </Input.Root>
+                        ) : null}
+                        <Form.Message />
+                        <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                          {`This will affect the model's performance and operational costs. Please refer to the documentation for detailed pricing information.`}
+                        </p>
+                      </Form.Item>
+                    );
+                  }}
+                />
+              ) : null}
             </div>
             <div className="pb-14 pt-12">
               <Button
