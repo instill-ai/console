@@ -77,7 +77,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
           ) : null}
           {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-              <RemainingCreditCTA ctaTargetHref="/subscription" />
+              <RemainingCreditCTA ctaTargetHref="/subscribe" />
             </div>
           ) : null}
         </div>
