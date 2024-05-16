@@ -1,6 +1,6 @@
+import { ModelSettingsEditForm, ModelSettingsVersions } from ".";
 import { Model } from "../../../lib";
 import { ModelSettingsTabs } from "./ModelSettingsHead";
-import { ModelSettingsVersions } from "./ModelSettingsVersions";
 
 export type ContentViewerProps = {
   selectedTab: ModelSettingsTabs;
@@ -20,6 +20,11 @@ export const ModelSettingsContentViewer = ({
   switch (selectedTab) {
     case "versions": {
       content = <ModelSettingsVersions model={model} />;
+
+      break;
+    }
+    case "settings": {
+      content = <ModelSettingsEditForm model={model} />;
 
       break;
     }

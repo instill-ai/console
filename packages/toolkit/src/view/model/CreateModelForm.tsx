@@ -35,7 +35,9 @@ import React, { useEffect, useState } from "react";
 import { LoadingSpin } from "../../components";
 import { useRouter } from "next/navigation";
 
-const TASKS = [
+export const VISIBILITY = ["VISIBILITY_PRIVATE", "VISIBILITY_PUBLIC"] as const;
+
+export const TASKS = [
   "TASK_CLASSIFICATION",
   "TASK_DETECTION",
   "TASK_KEYPOINT",
@@ -63,12 +65,10 @@ const CreateModelSchema = z
   .object({
     id: z.string(),
     description: z.string().optional(),
-    visibility: z
-      .enum(["VISIBILITY_PRIVATE", "VISIBILITY_PUBLIC"])
-      .default("VISIBILITY_PRIVATE"),
+    visibility: z.enum(VISIBILITY).default(VISIBILITY[0]),
     region: z.string(),
     hardware: z.string(),
-    task: z.enum(TASKS).default("TASK_CLASSIFICATION"),
+    task: z.enum(TASKS).default(TASKS[0]),
     namespaceId: z.string(),
     //configuration: z.object({}),
   })
