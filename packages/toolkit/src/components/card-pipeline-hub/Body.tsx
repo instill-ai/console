@@ -57,7 +57,8 @@ export const Body = ({
         </Button>
         {pipeline.isFeatured && (
           <Tag
-            className="my-auto rounded-md bg-semantic-secondary-bg  p-2 !normal-case text-semantic-secondary-on-bg product-button-button-2 hover:!underline"
+            variant={"lightPurple"}
+            className="my-auto product-button-button-2"
           >
             Featured
           </Tag>
