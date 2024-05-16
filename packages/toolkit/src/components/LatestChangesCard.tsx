@@ -1,7 +1,7 @@
 import { Icons } from "@instill-ai/design-system";
 import { useChangelogs } from "../lib/react-query-service/misc/useChangelogs";
 
-interface Changelog {
+type Changelog = {
   id: string;
   createdAt: string;
   updatedAt: string;
