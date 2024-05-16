@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-interface BlogPostData {
+type BlogPostData = {
   id: string;
   imageUrl: string;
   title: string;
@@ -9,7 +9,7 @@ interface BlogPostData {
   themeImgAlt: string;
   themeImgSrc: string;
   slug: string;
-}
+};
 
 const formatDate = (dateString: string | undefined) => {
   if (!dateString) return "";
