@@ -18,7 +18,6 @@ import {
   useInstillStore,
   useShallow,
   useAuthenticatedUser,
-  useUserPipelines,
 } from "../../../lib";
 import {
   LoadingSpin,
