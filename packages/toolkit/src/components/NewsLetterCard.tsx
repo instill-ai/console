@@ -53,7 +53,7 @@ const NewsLetterCard = () => {
 
   return (
     <div className="flex h-[450px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
-      <h2 className="mb-4 text-2xl font-bold">What's New?</h2>
+      <h2 className="mb-4 text-product-headings-heading-3 font-bold">What's New?</h2>
       <div className="relative h-[250px] w-full">
         <a
           href={`https://www.instill.tech/blog/${slug}`}
@@ -89,27 +89,21 @@ const NewsLetterCard = () => {
         <button
           type="button"
           onClick={handlePrevious}
-          className={`mr-2 ${currentIndex === 0 ? "cursor-not-allowed text-gray-400" : ""
-            }`}
           disabled={currentIndex === 0}
         >
           <Icons.ArrowLeft
-            className={`h-6 w-6 ${currentIndex === 0 ? "stroke-gray-400" : "stroke-semantic-fg-secondary"
+            className={`h-6 w-6 ${currentIndex === 0 ? "stroke-semantic-fg-disabled" : "stroke-semantic-fg-secondary"
               }`}
           />
         </button>
         <button
           type="button"
           onClick={handleNext}
-          className={`${currentIndex === blogPosts.length - 1
-            ? "cursor-not-allowed text-gray-400"
-            : ""
-            }`}
           disabled={currentIndex === blogPosts.length - 1}
         >
           <Icons.ArrowRight
             className={`h-6 w-6 ${currentIndex === blogPosts.length - 1
-              ? "stroke-gray-400"
+              ? "stroke-semantic-fg-disabled"
               : "stroke-semantic-fg-secondary"
               }`}
           />
