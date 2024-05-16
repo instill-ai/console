@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { InstillErrors } from "../../constant";
+import {
+  InstillErrors,
+  InstillModelTask,
+  InstillModelVisibility,
+} from "../../constant";
 import { env, validateInstillID } from "../../server";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,25 +35,9 @@ import {
   getModelRegionToolkit,
   getModelHardwareToolkit,
 } from "@instill-ai/design-system";
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { LoadingSpin } from "../../components";
 import { useRouter } from "next/navigation";
-
-export const VISIBILITY = ["VISIBILITY_PRIVATE", "VISIBILITY_PUBLIC"] as const;
-
-export const TASKS = [
-  "TASK_CLASSIFICATION",
-  "TASK_DETECTION",
-  "TASK_KEYPOINT",
-  "TASK_OCR",
-  "TASK_INSTANCE_SEGMENTATION",
-  "TASK_SEMANTIC_SEGMENTATION",
-  "TASK_TEXT_GENERATION",
-  "TASK_TEXT_GENERATION_CHAT",
-  "TASK_TEXT_TO_IMAGE",
-  "TASK_IMAGE_TO_IMAGE",
-  "TASK_VISUAL_QUESTION_ANSWERING",
-] as const;
 
 export type CreateModelFormProps = {
   accessToken: Nullable<string>;
@@ -66,12 +54,12 @@ const CreateModelSchema = z
     id: z.string(),
     description: z.string().optional(),
     visibility: z
-      .enum(["VISIBILITY_PRIVATE", "VISIBILITY_PUBLIC"])
-      .default("VISIBILITY_PRIVATE"),
+      .enum(InstillModelVisibility)
+      .default(InstillModelVisibility[0]),
     region: z.string(),
     hardware: z.string(),
     hardwareCustom: z.string().optional(),
-    task: z.enum(TASKS).default("TASK_CLASSIFICATION"),
+    task: z.enum(InstillModelTask).default(InstillModelTask[0]),
     namespaceId: z.string(),
     //configuration: z.object({}),
   })
@@ -102,7 +90,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
     Record<string, Option[]>
   >({});
   const [hardwareCustomValue, setHardwareCustomValue] = useState<string>("");
-  const [creating, setCreating] = React.useState(false);
+  const [creating, setCreating] = useState(false);
 
   const entity = useAppEntity();
   const me = useAuthenticatedUser({
@@ -120,7 +108,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
     mode: "onChange",
   });
 
-  const organizationsAndUserList = React.useMemo(() => {
+  const organizationsAndUserList = useMemo(() => {
     const orgsAndUserList: {
       id: string;
       name: string;
@@ -420,7 +408,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                 render={({ field }) => {
                   return (
                     <Form.Item>
-                      <div className="flex flex-row justify-between">
+                      <div className="flex flex-row items-center justify-between">
                         <Form.Label className="product-body-text-3-semibold">
                           Description
                         </Form.Label>
@@ -437,7 +425,6 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                           className="!resize-y !text-[#1D2433] !text-opacity-80 !product-body-text-2-regular focus-visible:!ring-1"
                         />
                       </Form.Control>
-                      <Form.Message />
                     </Form.Item>
                   );
                 }}
@@ -453,7 +440,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                       </Form.Label>
                       <Form.Control>
                         <Select.Root
-                          value={field?.value || TASKS[0]}
+                          value={field?.value || InstillModelTask[0]}
                           onValueChange={(value: ModelTask) => {
                             field.onChange(value);
                           }}
@@ -463,7 +450,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                           </Select.Trigger>
                           <Select.Content>
                             <Select.Group>
-                              {TASKS.map((task) => {
+                              {InstillModelTask.map((task) => {
                                 const { label } =
                                   getModelInstanceTaskToolkit(task);
 
@@ -493,7 +480,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                   form.setValue("visibility", value);
                 }}
                 className="!flex flex-col gap-y-4"
-                defaultValue="VISIBILITY_PRIVATE"
+                defaultValue={InstillModelVisibility[0]}
               >
                 <div className="flex items-center space-x-3">
                   <label
@@ -526,7 +513,6 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                       value="VISIBILITY_PRIVATE"
                       id="radio-private"
                     />
-
                     <Icons.Lock03 className="my-auto h-4 w-4 stroke-semantic-fg-secondary" />
                     <div className="flex flex-col gap-y-1">
                       <p className="text-semantic-fg-primary product-body-text-3-semibold">

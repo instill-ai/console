@@ -20,7 +20,7 @@ import {
   useWatchUserModel,
 } from "../../lib";
 import { ChangeModelStateToggle } from "./ChangeModelStateToggle";
-import { ConfigureModelForm } from "./ConfigureModelForm";
+
 import { ModelConfigurationFields } from "./ModelConfigurationFields";
 import Markdown from "markdown-to-jsx";
 import {
@@ -111,6 +111,7 @@ export const ModelHubSettingPageMainView = (
       <ModelSettingsContentViewer
         selectedTab={selectedTab}
         model={model.data}
+        onUpdate={model.refetch}
       />
       {/* <PageTitle
         title={`${id?.toString()}`}

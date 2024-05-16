@@ -5,11 +5,13 @@ import { ModelSettingsTabs } from "./ModelSettingsHead";
 export type ContentViewerProps = {
   selectedTab: ModelSettingsTabs;
   model?: Model;
+  onUpdate: () => void;
 };
 
 export const ModelSettingsContentViewer = ({
   selectedTab,
   model,
+  onUpdate,
 }: ContentViewerProps) => {
   if (!model) {
     return null;
@@ -24,7 +26,7 @@ export const ModelSettingsContentViewer = ({
       break;
     }
     case "settings": {
-      content = <ModelSettingsEditForm model={model} />;
+      content = <ModelSettingsEditForm model={model} onUpdate={onUpdate} />;
 
       break;
     }

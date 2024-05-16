@@ -36,6 +36,16 @@ export type CreateUserModelPayload = {
   configuration: Record<string, string>;
 };
 
+export type UpdateUserModelPayload = {
+  description?: string;
+  source_url?: string;
+  documentation_url?: string;
+  license?: string;
+  //visibility: Visibility;
+  hardware: string;
+  configuration?: Record<string, string>;
+};
+
 export type CreateUserGitHubModelPayload = {
   id: string;
   model_definition: string;
@@ -95,12 +105,6 @@ export async function createUserModelMutation({
   }
 }
 
-export type UpdateUserModelPayload = {
-  name: string;
-  description?: string;
-  configuration?: Record<string, any>;
-};
-
 export type UpdateUserModelResponse = {
   model: Model;
 };
@@ -108,7 +112,9 @@ export type UpdateUserModelResponse = {
 export async function updateModelMutation({
   payload,
   accessToken,
+  name,
 }: {
+  name: string;
   payload: UpdateUserModelPayload;
   accessToken: Nullable<string>;
 }) {
@@ -116,7 +122,7 @@ export async function updateModelMutation({
     const client = createInstillAxiosClient(accessToken, true);
 
     const { data } = await client.patch<UpdateUserModelResponse>(
-      `/${payload.name}`,
+      `/${name}`,
       payload
     );
     return Promise.resolve(data.model);

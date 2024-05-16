@@ -76,7 +76,7 @@ export async function onSuccessAfterModelMutation(
     });
 
     // process watch state
-    const watch = await watchUserModel({
+    /* const watch = await watchUserModel({
       modelName: model.name,
       accessToken,
     });
@@ -93,7 +93,7 @@ export async function onSuccessAfterModelMutation(
             [model.name]: watch,
           }
         : { [model.name]: watch }
-    );
+    ); */
 
     return;
   }
