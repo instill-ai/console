@@ -6,10 +6,6 @@ import {
   OrganizationOwner,
   Pipeline,
   UserOwner,
-  toastInstillError,
-  useDeleteUserPipeline,
-  useInstillStore,
-  useShallow,
 } from "../../lib";
 import { Icons, Tag, useToast } from "@instill-ai/design-system";
 import { EntityAvatar } from "../EntityAvatar";
@@ -24,45 +20,14 @@ export const HeadSkeleton = () => {
   );
 };
 
-const selector = (store: InstillStore) => ({
-  accessToken: store.accessToken,
-  enabledQuery: store.enabledQuery,
-});
-
 export const Head = ({
   ownerID,
-  isOwner,
   pipeline,
 }: {
   ownerID: string;
-  isOwner: boolean;
   pipeline: Pipeline;
 }) => {
   const router = useRouter();
-  const { toast } = useToast();
-  const { accessToken } = useInstillStore(useShallow(selector));
-
-  const deletePipeline = useDeleteUserPipeline();
-  async function handleDeletePipeline() {
-    try {
-      await deletePipeline.mutateAsync({
-        pipelineName: pipeline.name,
-        accessToken: accessToken ? accessToken : null,
-      });
-
-      toast({
-        title: "Pipeline deleted",
-        variant: "alert-success",
-        size: "large",
-      });
-    } catch (error) {
-      toastInstillError({
-        title: "Something went wrong when delete the pipeline",
-        error,
-        toast,
-      });
-    }
-  }
 
   const pipelineAvatar = React.useMemo(() => {
     if (pipeline.owner_name.split("/")[0] === "users") {

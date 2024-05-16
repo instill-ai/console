@@ -227,8 +227,6 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                   key={pipeline.uid}
                   ownerID={pipeline.owner_name.split("/")[1]}
                   pipeline={pipeline}
-                  isOwner={pipeline.owner_name === me.data?.name}
-                  disabledPermissionLabel={true}
                 />
               ))
             )
