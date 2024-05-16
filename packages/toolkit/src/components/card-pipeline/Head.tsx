@@ -12,6 +12,7 @@ import {
   useShallow,
 } from "../../lib";
 import { Icons, useToast } from "@instill-ai/design-system";
+import { Menu } from "./Menu";
 import { EntityAvatar } from "../EntityAvatar";
 import { useRouter } from "next/navigation";
 
@@ -79,28 +80,6 @@ export const Head = ({
     return null;
   }, [pipeline]);
 
-  const displayName = React.useMemo(() => {
-    const owner = pipeline.owner as UserOwner;
-    const username = owner?.user?.name?.split("/")[1]; // Get the part after "users/"
-    const ownerName =
-      owner?.user?.profile?.company_name ||
-      owner?.user?.profile?.display_name ||
-      "";
-
-    // If username exists, use it directly
-    if (username) {
-      return username;
-    } else {
-      // If ownerName contains spaces, return it in lowercase with hyphens
-      if (ownerName.includes(" ")) {
-        return ownerName.toLowerCase().replace(/\s+/g, "-");
-      } else {
-        // If the owner name doesn't contain spaces, return it in lowercase
-        return ownerName.toLowerCase();
-      }
-    }
-  }, [pipeline.owner]);
-
   return (
     <div className="flex flex-row p-3">
       <div className="mr-auto flex flex-row gap-x-2">
@@ -114,23 +93,20 @@ export const Head = ({
             </div>
           }
         />
-        <div className="flex-col">
-          <button
-            type="button"
-            className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
-            onClick={() => {
-              router.push(`/${ownerID}`);
-            }}
-          >
-            {ownerID}
-          </button>
-          <div className="rounded-m bg-neutral-50 rounded-full border border-neutral-200 p-1 text-center text-sm font-semibold text-black">
-            {displayName}
-          </div>
-        </div>
+        <button
+          type="button"
+          className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
+          onClick={() => {
+            router.push(`/${ownerID}`);
+          }}
+        >
+          {ownerID}
+        </button>
       </div>
+      {isOwner ? (
+        <Menu pipeline={pipeline} handleDeletePipeline={handleDeletePipeline} />
+      ) : null}
     </div>
   );
 };
-
 Head.Skeleton = HeadSkeleton;

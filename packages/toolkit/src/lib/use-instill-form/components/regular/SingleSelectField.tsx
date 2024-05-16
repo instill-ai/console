@@ -55,27 +55,10 @@ export const SingleSelectField = ({
   //    set the model value to gpt-3.5-turbo, and this model support
   //    instill credit.
   React.useEffect(() => {
-    const sub = watch((values, { name, type }) => {
+    const sub = watch((values) => {
       const fieldValue = dot.getter(values, path);
 
-      // This is a workaround before we clean up the initial value bug
-      // in the useInstillForm, the issue is around the name will be
-      // undefined from time to time when we switch the task
-      let isInstillCreditField = false;
-
-      if (name === path && instillCredentialMap) {
-        isInstillCreditField = true;
-      } else {
-        if (
-          name === undefined &&
-          (path === "input.engine" || path === "input.model")
-        ) {
-          isInstillCreditField = true;
-        }
-      }
-
-      // name === "task" is a workaround for top level task selection
-      if (isInstillCreditField && instillCredentialMap) {
+      if (instillCredentialMap) {
         const currentCredentialFieldPath = instillCredentialMap.targets[0];
 
         const currentCredentialFieldValue = dot.getter(
@@ -90,14 +73,6 @@ export const SingleSelectField = ({
               currentCredentialFieldPath,
               "${secrets." + `${InstillCredit.key}` + "}"
             );
-
-            if (updateForceCloseCollapsibleFormGroups) {
-              const toplevelPath = currentCredentialFieldPath.split(".")[0];
-              updateForceCloseCollapsibleFormGroups((prev) => [
-                ...prev,
-                toplevelPath,
-              ]);
-            }
           }
 
           if (updateSupportInstillCredit) {
@@ -106,6 +81,14 @@ export const SingleSelectField = ({
 
           if (updateIsUsingInstillCredit) {
             updateIsUsingInstillCredit(true);
+          }
+
+          if (updateForceCloseCollapsibleFormGroups) {
+            const toplevelPath = currentCredentialFieldPath.split(".")[0];
+            updateForceCloseCollapsibleFormGroups((prev) => [
+              ...prev,
+              toplevelPath,
+            ]);
           }
         } else {
           // Deal with case that don't support instil credit. We
@@ -118,10 +101,6 @@ export const SingleSelectField = ({
 
           if (updateSupportInstillCredit) {
             updateSupportInstillCredit(false);
-          }
-
-          if (updateIsUsingInstillCredit) {
-            updateIsUsingInstillCredit(false);
           }
 
           if (updateForceOpenCollapsibleFormGroups) {
@@ -141,16 +120,6 @@ export const SingleSelectField = ({
           }, 200);
         }
       }
-
-      if (isInstillCreditField && !instillCredentialMap) {
-        if (updateSupportInstillCredit) {
-          updateSupportInstillCredit(false);
-        }
-
-        if (updateIsUsingInstillCredit) {
-          updateIsUsingInstillCredit(false);
-        }
-      }
     });
 
     return () => {
@@ -165,7 +134,6 @@ export const SingleSelectField = ({
     updateIsUsingInstillCredit,
     updateForceCloseCollapsibleFormGroups,
     updateForceOpenCollapsibleFormGroups,
-    tree,
   ]);
 
   return isHidden ? null : (

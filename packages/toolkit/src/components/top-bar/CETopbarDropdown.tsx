@@ -15,9 +15,7 @@ import {
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
   useShallow,
-  useUserMemberships,
 } from "../../lib";
-import { RemainingCreditCTA } from "./RemainingCredit";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -32,14 +30,7 @@ export const CETopbarDropdown = () => {
     accessToken,
   });
 
-  const memberships = useUserMemberships({
-    enabled: enabledQuery && me.isSuccess,
-    userID: me.isSuccess ? me.data.id : null,
-    accessToken,
-  });
-
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
-
 
   return me.isSuccess ? (
     <DropdownMenu.Root>
@@ -72,52 +63,15 @@ export const CETopbarDropdown = () => {
                 </div>
               }
             />
-            <div className="flex flex-col flex-1">
-              <div className="flex justify-between">
-                <h3 className="text-semantic-fg-primary product-body-text-3-medium">
-                  {me.data.profile?.display_name}
-                </h3>
-                <Icons.Check className="h-4 w-4 stroke-semantic-fg-success" />
-              </div>
+            <div className="flex flex-col">
+              <h3 className="text-semantic-fg-primary product-body-text-3-medium">
+                {me.data.profile?.display_name}
+              </h3>
               <p className="text-semantic-fg-secondary product-body-text-4-regular">
                 {me.data.profile?.public_email}
               </p>
             </div>
           </div>
-        </div>
-        {memberships.isSuccess && memberships.data.length !== 0 ? (
-          <div className="flex flex-col px-4 py-3">
-            {memberships.data.map((membership) => (
-              <div key={membership.organization.id} className="flex flex-row gap-x-2">
-                <EntityAvatar
-                  src={null} // Replace with the organization's avatar if available
-                  className="h-10 w-10"
-                  entityName={membership.organization.name}
-                  fallbackImg={
-                    <div className="flex h-10 w-10 rounded-full bg-semantic-bg-secondary">
-                      <Icons.User02 className="m-auto h-5 w-5 stroke-semantic-fg-disabled" />
-                    </div>
-                  }
-                />
-                <div className="flex flex-col flex-1">
-                  <div className="flex justify-between">
-                    <h3 className="text-semantic-fg-primary product-body-text-3-medium">
-                      {membership.organization.name}
-                    </h3>
-                    {membership.organization.id === activeOrganizationId && (
-                      <Icons.Check className="h-4 w-4 stroke-semantic-fg-success" />
-                    )}
-                  </div>
-                  <p className="text-semantic-fg-secondary product-body-text-4-regular">
-                    {membership.organization.profile?.public_email}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : null}
-        <div className="p-3 rounded">
-          <RemainingCreditCTA ctaTargetHref="/subscription" />
         </div>
         <Separator orientation="horizontal" />
         <TopbarDropdownGroup>
@@ -136,39 +90,6 @@ export const CETopbarDropdown = () => {
           >
             <Icons.Gear01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
             <div className="my-auto">Settings</div>
-          </TopbarDropdownItem>
-        </TopbarDropdownGroup>
-        <Separator orientation="horizontal" />
-        <TopbarDropdownGroup>
-          <TopbarDropdownItem asChild>
-            <a
-              href="/settings/organization-profile"
-              className="flex gap-x-2"
-              rel="noopener noreferrer"
-            >
-              <Icons.Mail01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
-              Organization Profile
-            </a>
-          </TopbarDropdownItem>
-          <TopbarDropdownItem asChild>
-            <a
-              href="/settings/organization-members"
-              className="flex gap-x-2"
-              rel="noopener noreferrer"
-            >
-              <Icons.Mail01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
-              Members
-            </a>
-          </TopbarDropdownItem>
-          <TopbarDropdownItem asChild>
-            <a
-              href="/settings/invite-colleagues"
-              className="flex gap-x-2"
-              rel="noopener noreferrer"
-            >
-              <Icons.Mail01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
-              Invite Colleagues
-            </a>
           </TopbarDropdownItem>
         </TopbarDropdownGroup>
         <Separator orientation="horizontal" />
@@ -236,7 +157,7 @@ export const CETopbarDropdown = () => {
         <TopbarDropdownGroup>
           <TopbarDropdownItem asChild>
             <Link href="/api/auth/logout" className="flex gap-x-2">
-              <Icons.Logout01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+              <Icons.Logout01 className=" my-auto h-4 w-4 stroke-semantic-fg-disabled" />
               <div className="my-auto">Log out</div>
             </Link>
           </TopbarDropdownItem>
