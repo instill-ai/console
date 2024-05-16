@@ -63,11 +63,11 @@ export const Footer = ({
   return (
     <div className="flex flex-col px-6 pb-4">
       <div className="flex flex-row gap-x-2">
-        {/* {disabledPermissionLabel ? null : (
+        {disabledPermissionLabel ? null : (
           <Tag className="!py-0" variant="lightNeutral" size="sm">
             {isPublic ? "Public" : "Private"}
           </Tag>
-        )} */}
+        )}
         {latestRelease ? (
           <Tag className="!py-0" variant="darkBlue" size="sm">
             {latestRelease}
@@ -76,7 +76,22 @@ export const Footer = ({
       </div>
       <Separator orientation="horizontal" className="my-2" />
       <div className="flex flex-row-reverse">
-        {me.isSuccess ? (
+        {pipeline.permission.can_edit ? (
+          <Button
+            className="flex flex-row gap-x-2"
+            variant="secondaryColour"
+            size="lg"
+            onClick={() => {
+              router.push(
+                `/${pipeline.owner_name.split("/")[1]}/pipelines/${
+                  pipeline.id
+                }/builder`
+              );
+            }}
+          >
+            Build
+          </Button>
+        ) : me.isSuccess ? (
           <ClonePipelineDialog
             trigger={
               <Button

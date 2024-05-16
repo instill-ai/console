@@ -1,8 +1,11 @@
 "use client";
 
+import JsonView from "@uiw/react-json-view";
+import { CopyToClipboardButton } from "../../../../components";
 import { GeneralRecord, Nullable } from "../../../type";
 import { ComponentOutputFieldBaseProps } from "../../types";
 import { FieldRoot } from "./FieldRoot";
+import { customTheme } from "../../../react-json-view";
 
 export type ObjectsFieldProps = {
   objects: Nullable<GeneralRecord[]>;
@@ -18,9 +21,30 @@ export const ObjectsField = (props: ObjectsFieldProps) => {
           {objects?.map((object) => (
             <div
               key={`${title}-${JSON.stringify(object)}-field`}
-              className="flex min-h-[36px] w-full whitespace-pre-wrap break-all rounded border border-semantic-bg-line p-1 text-semantic-fg-primary product-body-text-4-regular"
+              className="relative flex w-full flex-col"
             >
-              {JSON.stringify(object, null, 4)}
+              <CopyToClipboardButton
+                className="absolute right-2 top-2 !border-none !bg-transparent"
+                iconClassName="!stroke-semantic-bg-primary"
+                text={JSON.stringify(object, null, 2)}
+              />
+              <JsonView
+                value={object ?? {}}
+                style={{
+                  ...customTheme,
+                  padding: "12px",
+                  borderRadius: "8px",
+                  fontSize: "12px",
+                  overflow: "auto",
+                  maxHeight: "400px",
+                }}
+                enableClipboard={false}
+                displayObjectSize={false}
+                indentWidth={8}
+                shortenTextAfterLength={0}
+                displayDataTypes={false}
+                collapsed={3}
+              />
             </div>
           ))}
         </div>

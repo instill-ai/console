@@ -298,13 +298,13 @@ export function pickRegularFieldsFromInstillFormTree(
         isHidden={tree.isHidden}
         instillCredentialMap={tree.instillCredentialMap}
         updateSupportInstillCredit={updateSupportInstillCredit}
+        updateIsUsingInstillCredit={updateIsUsingInstillCredit}
         updateForceCloseCollapsibleFormGroups={
           updateForceCloseCollapsibleFormGroups
         }
         updateForceOpenCollapsibleFormGroups={
           updateForceOpenCollapsibleFormGroups
         }
-        updateIsUsingInstillCredit={updateIsUsingInstillCredit}
       />
     );
   }
