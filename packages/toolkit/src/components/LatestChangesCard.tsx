@@ -1,5 +1,6 @@
-import { Icons } from "@instill-ai/design-system";
+import { Icons, buttonVariants } from "@instill-ai/design-system";
 import { useChangelogs } from "../lib/react-query-service/misc/useChangelogs";
+import cn from "clsx";
 
 type Changelog = {
   id: string;
@@ -32,10 +33,9 @@ const LatestChangesCard: React.FC = () => {
       {changelogs.isSuccess &&
         changelogs.data.map((changelog: Changelog) => (
           <div key={changelog.id}>
-            <button
-              type="button"
-              className="my-auto flex-auto rounded-sm bg-semantic-accent-bg p-2 capitalize text-semantic-accent-default product-button-button-2 hover:!underline"
-            >
+            <div className={`my-1 w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize hover:!underline ${cn(
+              buttonVariants({ variant: "secondaryColour", size: "md" })
+            )}`}>
               {changelog.date && new Date(changelog.date).getTime() !== 0
                 ? new Date(changelog.date).toLocaleDateString("en-US", {
                   year: "numeric",
@@ -47,7 +47,7 @@ const LatestChangesCard: React.FC = () => {
                   month: "long",
                   day: "numeric",
                 })}
-            </button>
+            </div>
             <p>{changelog.title}</p>
           </div>
         ))}
