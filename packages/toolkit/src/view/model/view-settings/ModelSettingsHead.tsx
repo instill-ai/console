@@ -68,14 +68,12 @@ export const ModelSettingsHead = ({
             }
           />
           <div className="my-auto product-headings-heading-4">
-            <span
-              onClick={() => {
-                router.push(`/${owner.name}`);
-              }}
+            <a
+              href={`/${owner.name}`}
               className="cursor-pointer text-semantic-fg-disabled hover:!underline"
             >
               {owner.name}
-            </span>
+            </a>
             <span className="text-semantic-fg-disabled">/</span>
             <span className="text-semantic-fg-primary">{model?.id}</span>
           </div>

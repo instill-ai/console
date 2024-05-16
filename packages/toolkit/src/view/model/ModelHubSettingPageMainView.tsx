@@ -93,7 +93,7 @@ export const ModelHubSettingPageMainView = (
     enabled: enableQuery && entityObject.isSuccess,
     accessToken,
   });
-  //console.log(model?.data);
+  console.log(model?.data);
   /* -------------------------------------------------------------------------
    * Toggle model state
    * -----------------------------------------------------------------------*/

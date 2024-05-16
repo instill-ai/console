@@ -133,8 +133,9 @@ export type listUserModelRegionsQueryProps = {
 
 export type listUserModelVersionsQueryProps = {
   accessToken: Nullable<string>;
-  id: string;
-  entityName: string;
+  modelName: string;
+  page?: number | null;
+  pageSize?: number;
 };
 
 export type ListModelRegionsResponse = {
@@ -334,23 +335,61 @@ export async function listModelRegionsQuery({
  * List Model Versions
  * -----------------------------------------------------------------------*/
 
+export async function listModelVersionsQuery(
+  props: listUserModelVersionsQueryProps & {
+    enablePagination: true;
+  }
+): Promise<ListModelVersionsResponse>;
+export async function listModelVersionsQuery(
+  props: listUserModelVersionsQueryProps & {
+    enablePagination: false;
+  }
+): Promise<ModelVersion[]>;
+export async function listModelVersionsQuery(
+  props: listUserModelVersionsQueryProps & {
+    enablePagination: undefined;
+  }
+): Promise<ModelVersion[]>;
 export async function listModelVersionsQuery({
   accessToken,
-  id,
-  entityName,
-}: listUserModelVersionsQueryProps) {
+  modelName,
+  page,
+  pageSize,
+  enablePagination,
+}: listUserModelVersionsQueryProps & { enablePagination?: boolean }) {
   try {
     const client = createInstillAxiosClient(accessToken, true);
-
+    const versions: ModelVersion[] = [];
     const queryString = getQueryString({
-      baseURL: `${entityName}/models/${id}/versions`,
-      pageSize: null,
+      baseURL: `${modelName}/versions`,
+      pageSize: pageSize || null,
       nextPageToken: null,
+      queryParams: page ? `page=${page}` : undefined,
     });
 
     const { data } = await client.get<ListModelVersionsResponse>(queryString);
 
-    return Promise.resolve(data.versions);
+    if (enablePagination) {
+      return Promise.resolve(data);
+    }
+
+    versions.push(...data.versions);
+
+    const lastPage = Math.ceil(data.total_size / data.page_size) - 1;
+
+    if (data.page < lastPage) {
+      versions.push(
+        ...(await listModelVersionsQuery({
+          accessToken,
+          modelName,
+          page: data.page + 1,
+          pageSize,
+          enablePagination: false,
+        }))
+      );
+    }
+
+    return Promise.resolve(versions);
   } catch (err) {
     return Promise.reject(err);
   }

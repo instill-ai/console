@@ -23,11 +23,14 @@ export const ModelSettingsVersions = ({
   const versions = useInfiniteModelVersions({
     accessToken,
     enabledQuery,
-    id: model.id,
-    entityName: model.owner_name,
+    modelName: model.name,
   });
 
-  console.log(versions);
+  setTimeout(() => {
+    if (versions.hasNextPage) {
+      versions.fetchNextPage();
+    }
+  }, 5000);
 
   return <div>Versions</div>;
 };
