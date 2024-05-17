@@ -145,12 +145,12 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                 value={selectedSortOption}
                 onValueChange={handleSortOptionChange}
               >
-                <Select.Trigger className="max-w-40 rounded-[4px]" >
+                <Select.Trigger className="max-w-24 rounded-[4px]" >
                   <Select.Value className="font-bold">
                     Sort
                   </Select.Value>
                 </Select.Trigger>
-                <Select.Content className="w-64 -ml-24">
+                <Select.Content className="w-64 -ml-40">
                   <Select.Group>
                     <Select.Item
                       value={selectedSortOption.includes("name") ? selectedSortOption : "name-asc"}

@@ -73,7 +73,7 @@ const NewsLetterCard = () => {
                     />
                 </a>
             </div>
-            <div className={cn(buttonVariants({ variant: "secondaryColour", size: "md" }), "w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize")}>
+            <div className={cn(buttonVariants({ variant: "secondaryColour", size: "md" }), "w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize pointer-events-none")}>
                 {publishedOn}
             </div>
             <a
@@ -87,11 +87,10 @@ const NewsLetterCard = () => {
                 <button
                     type="button"
                     onClick={handlePrev}
-                    disabled={currentIndex === 0}
                 >
                     <Icons.ArrowLeft
                         className={`h-6 w-6 ${currentIndex === 0
-                            ? "stroke-semantic-fg-disabled"
+                            ? "stroke-semantic-fg-disabled cursor-not-allowed"
                             : "stroke-semantic-fg-secondary"
                             }`}
                     />
@@ -99,11 +98,10 @@ const NewsLetterCard = () => {
                 <button
                     type="button"
                     onClick={handleNext}
-                    disabled={currentIndex === blogPosts.length - 1}
                 >
                     <Icons.ArrowRight
                         className={`h-6 w-6 ${currentIndex === blogPosts.length - 1
-                            ? "stroke-semantic-fg-disabled"
+                            ? "stroke-semantic-fg-disabled cursor-not-allowed"
                             : "stroke-semantic-fg-secondary"
                             }`}
                     />
