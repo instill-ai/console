@@ -91,6 +91,9 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
     } else {
       setSelectedSortField(value);
     }
+
+    // Trigger a new request
+    pipelines.refetch();
   };
 
   return (
@@ -116,7 +119,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                 />
               </Input.Root>
               <Select.Root
-                value={selectedSortField}
+                value={selectedSortField || selectedSortOrder}
                 onValueChange={handleSortOptionChange}
               >
                 <Select.Trigger className="max-w-24 rounded-[4px]">
@@ -150,7 +153,6 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                     <Select.Item
                       value="asc"
                       className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                      onClick={() => setSelectedSortOrder("asc")}
                     >
                       Ascending
                       <span className="h-4 w-4">
@@ -160,7 +162,6 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                     <Select.Item
                       value="desc"
                       className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                      onClick={() => setSelectedSortOrder("desc")}
                     >
                       Descending
                       <span className="h-4 w-4">
