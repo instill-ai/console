@@ -141,7 +141,7 @@ export const basicUploadFileFieldConfig: BasicUploadFileFieldConfig = {
   readOnlyInputBorderWidth: "border",
   readOnlyInputTextColor: "text-semantic-node-disconnected-default-stroke",
   messageFontSize: "text-xs",
-  messageTextColor: "text-instillGrey70",
+  messageTextColor: "text-semantic-node-connector-on",
   messageFontFamily: "font-sans",
   messageFontWeight: "font-normal",
   messageLineHeight: "",

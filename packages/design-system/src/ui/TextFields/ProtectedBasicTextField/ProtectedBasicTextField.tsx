@@ -122,7 +122,7 @@ export const protectedBasicTextFieldConfig: ProtectedBasicTextFieldConfig = {
   errorInputTextColor: "text-instillRed",
   autoComplete: "off",
   messageFontSize: "text-xs",
-  messageTextColor: "text-instillGrey70",
+  messageTextColor: "text-semantic-node-connector-on",
   messageFontFamily: "font-sans",
   messageFontWeight: "font-normal",
   messageLineHeight: "",
