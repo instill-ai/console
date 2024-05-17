@@ -1,6 +1,5 @@
 "use client";
 
-import { PageTitle } from "../../components";
 import { GeneralAppPageProp } from "../../lib";
 import { CreateModelForm } from "./CreateModelForm";
 
@@ -16,11 +15,7 @@ export const ModelHubCreatePageMainView = (
   return (
     <div className="flex flex-col">
       <div className="mb-10 flex border-b border-semantic-bg-line">
-        <PageTitle
-          title="Create a model"
-          breadcrumbs={["Models", "Model Settings"]}
-          className="mb-5"
-        />
+        <h2 className="text-instill-h2 mb-5 text-black">Create a model</h2>
       </div>
       <CreateModelForm accessToken={accessToken} enabledQuery={enableQuery} />
     </div>
