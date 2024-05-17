@@ -46,13 +46,13 @@ export const ModelSettingsApi = ({ model }: ModelSettingsApiProps) => {
 
   return (
     <div className="flex flex-col">
-      <div className="mb-10 flex border-b border-semantic-bg-line">
-        <h2 className="text-instill-h2 mb-5 mr-auto mt-auto text-black">
+      <div className="mb-5 flex border-b border-semantic-bg-line">
+        <h2 className="mb-5 min-w-full rounded bg-semantic-bg-base-bg px-3 py-2.5 text-lg font-medium text-black">
           How to run {model?.id} with API
         </h2>
       </div>
       <div className="flex flex-col gap-y-6">
-        <div className="font-semibold text-semantic-fg-secondary">
+        <div className="mt-5 font-semibold text-semantic-fg-secondary">
           Set the <CodeString>INSTILL_API_TOKEN</CodeString> env variable.
         </div>
         <CodeBlock
@@ -61,7 +61,7 @@ export const ModelSettingsApi = ({ model }: ModelSettingsApiProps) => {
           language="bash"
           customStyle={defaultCodeSnippetStyles}
         />
-        <div className="font-semibold text-semantic-fg-secondary">
+        <div className="mt-5 font-semibold text-semantic-fg-secondary">
           Run{" "}
           <CodeString>
             {owner.name}/{model?.id}
