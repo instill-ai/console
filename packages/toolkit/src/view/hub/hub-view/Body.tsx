@@ -210,12 +210,6 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
           </Button>
         ) : null}
       </div>
-      <div className="ml-8 mt-6 flex w-1/4 flex-col">
-        <div className="sticky top-6">
-          <NewsLetterCard />
-          <LatestChangesCard />
-        </div>
-      </div>
     </div>
   );
 };
@@ -269,7 +263,7 @@ export const Body = ({
     "text-semantic-fg-disabled product-body-text-3-semibold data-[state=active]:text-semantic-fg-primary data-[state=active]:font-bold data-[state=active]:border-b-2 data-[state=active]:border-blue-500 pb-2";
 
   return (
-    <div className="flex justify-between px-40 sm:px-10 md:px-20">
+    <div className="flex justify-between">
       <div className="flex w-full items-center">
         <Tabs.Root
           defaultValue="explore"
@@ -286,14 +280,22 @@ export const Body = ({
             </Tabs.List>
             <Separator orientation="horizontal" />
           </div>
-          <div className="flex w-full flex-row">
-            <div className="flex w-full flex-col">
-              <Tabs.Content value="explore">
-                <PipelineSection tabValue="explore" />
-              </Tabs.Content>
-              <Tabs.Content value="featured">
-                <PipelineSection tabValue="featured" />
-              </Tabs.Content>
+          <div className=" bg-semantic-bg-base-bg pt-8">
+            <div className="flex w-full flex-row px-40 sm:px-10 md:px-20">
+              <div className="flex w-full flex-col pl-8 pr-4">
+                <Tabs.Content value="explore">
+                  <PipelineSection tabValue="explore" />
+                </Tabs.Content>
+                <Tabs.Content value="featured">
+                  <PipelineSection tabValue="featured" />
+                </Tabs.Content>
+              </div>
+              <div className="ml-4 mt-6 flex w-1/4 flex-col pr-8">
+                <div className="sticky top-6">
+                  <NewsLetterCard />
+                  <LatestChangesCard />
+                </div>
+              </div>
             </div>
           </div>
         </Tabs.Root>
