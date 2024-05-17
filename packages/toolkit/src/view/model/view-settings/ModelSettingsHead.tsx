@@ -25,8 +25,8 @@ export type HeadProps = {
 };
 
 const OWNER = {
-  avatarUrl: "",
-  name: "",
+  avatarUrl: null,
+  name: null,
 };
 
 export const ModelSettingsHead = ({
@@ -59,7 +59,7 @@ export const ModelSettingsHead = ({
         <div className="flex flex-row items-center gap-x-3">
           <EntityAvatar
             src={owner.avatarUrl}
-            entityName={owner.name}
+            entityName={owner.name ?? ""}
             className="my-auto h-6 w-6"
             fallbackImg={
               <div className="my-auto flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
