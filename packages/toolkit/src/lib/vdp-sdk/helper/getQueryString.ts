@@ -6,18 +6,20 @@ export const getQueryString = ({
   nextPageToken,
   filter,
   queryParams,
+  order_by,
 }: {
   baseURL: string;
   pageSize: Nullable<number>;
   nextPageToken: Nullable<string>;
   filter?: Nullable<string>;
+  order_by?: Nullable<string>;
 
   // Just pure query params, the function will handle tialing '&'
   queryParams?: string;
 }) => {
   let url = baseURL;
 
-  if (pageSize || nextPageToken || filter) {
+  if (pageSize || nextPageToken || filter || order_by) {
     // Check if the baseURL already has a query string
     if (baseURL.includes("?")) {
       url += "&";
@@ -38,11 +40,14 @@ export const getQueryString = ({
     url += `filter=${filter}&`;
   }
 
+  if (order_by) {
+    url += `order_by=${order_by}&`;
+  }
+
   if (queryParams) {
     url += `${queryParams}&`;
   }
 
-  // Remove the trailing '&' if there are any query parameters
   if (url.endsWith("&")) {
     url = url.slice(0, -1);
   }

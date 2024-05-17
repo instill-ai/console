@@ -17,12 +17,14 @@ export function useInfinitePipelines({
   enabledQuery,
   visibility,
   filter,
+  order_by,
 }: {
   pageSize: number;
   enabledQuery: boolean;
   accessToken: Nullable<string>;
   visibility: Nullable<Visibility>;
   filter: Nullable<string>;
+  order_by: Nullable<string>;
 }): UseInfiniteQueryResult<InfiniteData<ListPipelinesResponse>, Error> {
   return useInfiniteQuery({
     queryKey: filter
@@ -36,6 +38,7 @@ export function useInfinitePipelines({
         enablePagination: true,
         visibility,
         filter,
+        order_by,
       });
 
       return Promise.resolve(pipelines);

@@ -29,23 +29,17 @@ import {
   CardPipeline,
   CardSkeletonPipeline,
 } from "../../../components/card-pipeline-hub";
-import { Icons } from "./../../../../../design-system/src/new-ui/Icons"
+import { Icons } from "./../../../../../design-system/src/new-ui/Icons";
+
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
 });
 
-const PipelineSection = ({ tabValue }: { tabValue: string }) => {
+const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
-  const sortOptions = [
-    { value: "name-asc", label: "Name (Ascending)" },
-    { value: "name-desc", label: "Name (Descending)" },
-    { value: "createTime-asc", label: "Last Updated (Ascending)" },
-    { value: "createTime-desc", label: "Last Updated (Descending)" },
-  ];
-  const [selectedSortOption, setSelectedSortOption] = React.useState(
-    sortOptions[3].value
-  );
+  const [selectedSortOption, setSelectedSortOption] =
+    React.useState<string>("update_time desc");
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
 
@@ -55,13 +49,11 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
     accessToken,
     enabledQuery,
     visibility: "VISIBILITY_PUBLIC",
-    filter: searchCode ? `q="${searchCode}"` : null,
-  });
-
-  const me = useAuthenticatedUser({
-    enabled: enabledQuery,
-    accessToken,
-    retry: false,
+    filter:
+      tabValue === "featured"
+        ? `tag="featured" AND q="${searchCode ?? ""}"`
+        : `q="${searchCode ?? ""}"`,
+    order_by: selectedSortOption,
   });
 
   const allPipelines = React.useMemo(() => {
@@ -77,32 +69,6 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
 
     return all;
   }, [pipelines.data, pipelines.isSuccess]);
-
-  const filteredPipelines = React.useMemo(() => {
-    if (tabValue === "featured") {
-      return allPipelines.filter((pipeline) => pipeline.isFeatured);
-    }
-    return allPipelines;
-  }, [allPipelines, tabValue]);
-
-  const sortedPipelines = React.useMemo(() => {
-    const [sortField, sortOrder] = selectedSortOption.split("-");
-
-    return [...filteredPipelines].sort((a, b) => {
-      if (sortField === "name") {
-        return sortOrder === "asc"
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name);
-      } else if (sortField === "createTime") {
-        const dateA = new Date(a.create_time);
-        const dateB = new Date(b.create_time);
-        return sortOrder === "asc"
-          ? dateA.getTime() - dateB.getTime()
-          : dateB.getTime() - dateA.getTime();
-      }
-      return 0;
-    });
-  }, [filteredPipelines, selectedSortOption]);
 
   const debouncedSetSearchCode = React.useMemo(
     () =>
@@ -122,10 +88,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
         <div className="mb-4 flex flex-col">
           <div className="flex items-center justify-between">
             <p className="whitespace-nowrap text-semantic-fg-disabled product-button-button-2">
-              Pipelines{' '}
-              {tabValue === 'featured'
-                ? filteredPipelines.length
-                : allPipelines.length}
+              Pipelines{' '}{allPipelines.length}
             </p>
             <div className="flex w-full items-center justify-end gap-4">
               <Input.Root className="w-1/3">
@@ -145,7 +108,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                 value={selectedSortOption}
                 onValueChange={handleSortOptionChange}
               >
-                <Select.Trigger className="max-w-24 rounded-[4px]" >
+                <Select.Trigger className="max-w-24 rounded-[4px]">
                   <Select.Value className="font-bold">
                     Sort
                   </Select.Value>
@@ -153,19 +116,19 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                 <Select.Content className="w-64 -ml-40">
                   <Select.Group>
                     <Select.Item
-                      value={selectedSortOption.includes("name") ? selectedSortOption : "name-asc"}
+                      value="id asc"
                       className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                      onClick={() => setSelectedSortOption(selectedSortOption.includes("name") ? selectedSortOption : "name-asc")}
+                      onClick={() => setSelectedSortOption("id asc")}
                     >
                       Name
                       <span className="h-4 w-4">
-                        <Icons.TextA className=" stroke-semantic-fg-disabled" />
+                        <Icons.TextA className="stroke-semantic-fg-disabled" />
                       </span>
                     </Select.Item>
                     <Select.Item
-                      value={selectedSortOption.includes("createTime") ? selectedSortOption : "createTime-asc"}
+                      value="id desc"
                       className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                      onClick={() => setSelectedSortOption(selectedSortOption.includes("createTime") ? selectedSortOption : "createTime-asc")}
+                      onClick={() => setSelectedSortOption("id desc")}
                     >
                       Last Updated
                       <span className="h-4 w-4">
@@ -176,9 +139,9 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                   <Select.Separator className=" bg-semantic-bg-line" />
                   <Select.Group>
                     <Select.Item
-                      value={selectedSortOption.includes("asc") ? selectedSortOption : selectedSortOption.replace("desc", "asc")}
+                      value="update_time asc"
                       className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                      onClick={() => setSelectedSortOption(selectedSortOption.includes("asc") ? selectedSortOption : selectedSortOption.replace("desc", "asc"))}
+                      onClick={() => setSelectedSortOption("update_time asc")}
                     >
                       Ascending
                       <span className="h-4 w-4">
@@ -186,13 +149,13 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                       </span>
                     </Select.Item>
                     <Select.Item
-                      value={selectedSortOption.includes("desc") ? selectedSortOption : selectedSortOption.replace("asc", "desc")}
+                      value="update_time desc"
                       className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                      onClick={() => setSelectedSortOption(selectedSortOption.includes("desc") ? selectedSortOption : selectedSortOption.replace("asc", "desc"))}
+                      onClick={() => setSelectedSortOption("update_time desc")}
                     >
                       Descending
                       <span className="h-4 w-4">
-                        <Icons.SortLinesDown className=" stroke-semantic-fg-disabled" />
+                        <Icons.Update className="stroke-semantic-fg-disabled" />
                       </span>
                     </Select.Item>
                   </Select.Group>
@@ -204,14 +167,14 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
         {tabValue === "featured" && <FeaturedBanner />}
         <div className="mb-4 flex flex-col gap-y-4">
           {pipelines.isSuccess && !pipelines.isFetching ? (
-            sortedPipelines.length === 0 ? (
+            allPipelines.length === 0 ? (
               <div className="flex h-[500px] w-full shrink-0 grow-0 items-center justify-center rounded-sm border border-semantic-bg-line">
                 <p className="text-semantic-fg-secondary product-body-text-2-semibold">
                   Let&rsquo;s build your first pipeline! 🙌
                 </p>
               </div>
             ) : (
-              sortedPipelines.map((pipeline) => (
+              allPipelines.map((pipeline) => (
                 <CardPipeline
                   key={pipeline.uid}
                   ownerID={pipeline.owner_name.split("/")[1]}
