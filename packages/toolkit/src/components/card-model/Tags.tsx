@@ -1,6 +1,7 @@
 "use client";
 
 import { Icons, Tag } from "@instill-ai/design-system";
+import React from "react";
 
 export type TagsProps = {
   isPrivate: boolean;
@@ -13,12 +14,16 @@ export const Tags = (props: TagsProps) => {
 
   return (
     <div className="flex shrink-0 flex-row gap-x-2">
-      {isPrivate ? (
-        <Tag variant="lightNeutral" size="sm" className="gap-x-1 rounded-sm">
-          <Icons.Lock03 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
-          Private
-        </Tag>
-      ) : null}
+      <Tag variant="lightNeutral" size="sm" className="gap-x-1 rounded-sm">
+        {isPrivate ? (
+          <React.Fragment>
+            <Icons.Lock03 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
+            Private
+          </React.Fragment>
+        ) : (
+          "Public"
+        )}
+      </Tag>
       <Tag variant="lightNeutral" size="sm" className="gap-x-1 rounded-sm">
         {region}
       </Tag>

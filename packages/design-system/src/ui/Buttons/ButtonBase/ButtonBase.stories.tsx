@@ -19,7 +19,7 @@ Playground.args = {
   textColor: "text-instillGrey05",
   hoveredTextColor: "hover:text-instillBlue10",
   disabledBgColor: "bg-instillGrey15",
-  disabledTextColor: "text-instillGrey50",
+  disabledTextColor: "text-semantic-node-disconnected-default-stroke",
   padding: "px-5 py-2.5",
   borderRadius: "rounded-[1px]",
 };

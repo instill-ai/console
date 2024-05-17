@@ -207,7 +207,7 @@ const SingleSelectBase = (props: SingleSelectBaseProps) => {
             <Select.Trigger
               id={id}
               className={cn(
-                "flex w-full flex-row px-4 py-2 text-left focus:border-instillGrey50 focus:instill-input-focus-shadow focus:instill-input-highlight",
+                "flex w-full flex-row px-4 py-2 text-left focus:border-semantic-node-disconnected-default-stroke focus:instill-input-focus-shadow focus:instill-input-highlight",
                 inputBorderColor,
                 inputBorderRadius,
                 inputBorderStyle,
