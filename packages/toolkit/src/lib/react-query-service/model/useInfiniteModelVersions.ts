@@ -18,7 +18,7 @@ export function useInfiniteModelVersions({
 }: {
   accessToken: Nullable<string>;
   enabledQuery: boolean;
-  modelName: string;
+  modelName: Nullable<string>;
   pageSize?: number;
   retry?: false | number;
 }): UseInfiniteQueryResult<InfiniteData<ListModelVersionsResponse>, Error> {
