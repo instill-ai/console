@@ -3,7 +3,6 @@ import type {
   Model,
   ModelReadme,
   ModelDefinition,
-  ModelWatchState,
   ModelRegion,
   ModelVersion,
 } from "./types";
