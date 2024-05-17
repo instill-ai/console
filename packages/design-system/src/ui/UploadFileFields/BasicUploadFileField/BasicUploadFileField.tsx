@@ -134,14 +134,14 @@ export const basicUploadFileFieldConfig: BasicUploadFileFieldConfig = {
   disabledInputBorderColor: "border-instillGrey20",
   disabledInputBorderStyle: "border-dashed",
   disabledInputBorderWidth: "border",
-  disabledInputTextColor: "text-instillGrey50",
+  disabledInputTextColor: "text-semantic-node-disconnected-default-stroke",
   readOnlyInputBgColor: "bg-white",
   readOnlyInputBorderColor: "border-instillGrey20",
   readOnlyInputBorderStyle: "border-solid",
   readOnlyInputBorderWidth: "border",
-  readOnlyInputTextColor: "text-instillGrey50",
+  readOnlyInputTextColor: "text-semantic-node-disconnected-default-stroke",
   messageFontSize: "text-xs",
-  messageTextColor: "text-instillGrey70",
+  messageTextColor: "text-semantic-node-connector-on",
   messageFontFamily: "font-sans",
   messageFontWeight: "font-normal",
   messageLineHeight: "",
@@ -149,7 +149,8 @@ export const basicUploadFileFieldConfig: BasicUploadFileFieldConfig = {
   placeholderFontSize: "placeholder:text-base",
   placeholderFontWeight: "placeholder:font-normal",
   placeholderLineHeight: "",
-  placeholderTextColor: "placeholder:text-instillGrey50",
+  placeholderTextColor:
+    "placeholder:text-semantic-node-disconnected-default-stroke",
 };
 
 const BasicUploadFileField = (props: BasicUploadFileFieldProps) => {

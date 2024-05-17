@@ -24,7 +24,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
           <CheckIcon
             width="w-4"
             height="h-4"
-            color="fill-instillGrey50"
+            color="fill-semantic-node-disconnected-default-stroke"
             position="my-auto"
           />
         </Select.ItemIndicator>

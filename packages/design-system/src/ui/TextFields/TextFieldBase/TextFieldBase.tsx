@@ -208,9 +208,15 @@ const TextFieldBase = (props: TextFieldBaseProps) => {
               placeholderLineHeight,
               placeholderTextColor,
               disabled
-                ? cn(disabledCursor, "text-instillGrey50")
+                ? cn(
+                    disabledCursor,
+                    "text-semantic-node-disconnected-default-stroke"
+                  )
                 : readOnly
-                  ? cn(readOnlyCursor, "text-instillGrey50")
+                  ? cn(
+                      readOnlyCursor,
+                      "text-semantic-node-disconnected-default-stroke"
+                    )
                   : inputTextColor
             )}
             id={id}
@@ -243,14 +249,14 @@ const TextFieldBase = (props: TextFieldBaseProps) => {
                   <EyeOffIcon
                     width="w-6"
                     height="h-6"
-                    color="text-instillGrey50"
+                    color="text-semantic-node-disconnected-default-stroke"
                     position="my-auto"
                   />
                 ) : (
                   <EyeOnIcon
                     width="w-6"
                     height="h-6"
-                    color="text-instillGrey50"
+                    color="text-semantic-node-disconnected-default-stroke"
                     position="my-auto"
                   />
                 )}

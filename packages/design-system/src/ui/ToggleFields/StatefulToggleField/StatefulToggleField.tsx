@@ -114,7 +114,7 @@ export const statefulToggleFieldConfig: StatefulToggleFieldConfig = {
   errorLabelTextColor: "text-instillRed",
   checkedInputBorderColor: "border-instillBlue50",
   messageFontSize: "text-xs",
-  messageTextColor: "text-instillGrey70",
+  messageTextColor: "text-semantic-node-connector-on",
   messageFontFamily: "font-sans",
   messageFontWeight: "font-normal",
   messageLineHeight: "",

@@ -69,7 +69,7 @@ const TextButton = (props: TextButtonProps) => {
         textColor: "text-instillBlue50",
         hoveredTextColor: "hover:text-instillBlue80",
         disabledBgColor: null,
-        disabledTextColor: "text-instillGrey50",
+        disabledTextColor: "text-semantic-node-disconnected-default-stroke",
         disabledBgOpacity: null,
         hoveredBgOpacity: null,
         bgOpacity: null,

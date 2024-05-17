@@ -72,17 +72,17 @@ export type ProgressMessageBoxBaseProps = {
   progressBlockSize: number;
 
   /** Indicator background color when error processing
-   * - e.g. bg-instillGrey50
+   * - e.g. bg-semantic-node-disconnected-default-stroke
    */
   processingIndicatorColumnBgColor: string;
 
   /** Indicator background color when error occur
-   * - e.g. bg-instillGrey50
+   * - e.g. bg-semantic-node-disconnected-default-stroke
    */
   errorindicatorColumnBgColor: string;
 
   /** Indicator background color when success
-   * - e.g. bg-instillGrey50
+   * - e.g. bg-semantic-node-disconnected-default-stroke
    */
   successIndicatorColumnBgColor: string;
 
@@ -102,7 +102,7 @@ export type ProgressMessageBoxBaseProps = {
   indicatorColumnBottomLeftBorderRadius: string;
 
   /** The background color of the column that contains the message
-   * - e.g. bg-instillGrey50
+   * - e.g. bg-semantic-node-disconnected-default-stroke
    */
   messageColumnBgColor: string;
 
@@ -233,7 +233,7 @@ const ProgressMessageBoxBase = (props: ProgressMessageBoxBaseProps) => {
           <h3 className="text-instill-h3 break-normal text-instillGrey90">
             {state.message}
           </h3>
-          <p className="text-instill-small text-instillGrey70">
+          <p className="text-instill-small text-semantic-node-connector-on">
             {state.description}
           </p>
         </div>

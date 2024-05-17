@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { env } from "../../../server";
 import type { Nullable } from "../../type";
 import { listModelRegionsQuery } from "../../vdp-sdk";
 

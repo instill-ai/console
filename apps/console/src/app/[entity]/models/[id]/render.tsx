@@ -25,7 +25,6 @@ export function ModelViewPageRender() {
             router={router}
             accessToken={accessToken.isSuccess ? accessToken.data : null}
             enableQuery={accessToken.isSuccess}
-            disabledConfigureModel={false}
           />
         </PageBase.Content>
       </PageBase.Container>

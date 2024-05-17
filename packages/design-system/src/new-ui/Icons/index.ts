@@ -1,3 +1,4 @@
+import { Activity } from "./Activity";
 import { AlertCircle } from "./AlertCircle";
 import { AlertTriangle } from "./AlertTriangle";
 import { AlighLeft } from "./AlighLeft";
@@ -14,7 +15,9 @@ import { Box } from "./Box";
 import { BracketSlash } from "./BracketSlash";
 import { Check } from "./Check";
 import { Circle } from "./Circle";
+import { ClockRewind } from "./ClockRewind";
 import { CodeBrowser } from "./CodeBrowser";
+import { CodeSnippet01 } from "./CodeSnippet01";
 import { CodeSnippet02 } from "./CodeSnippet02";
 import { CodeSquare02 } from "./CodeSquare02";
 import { CoinsStacked01 } from "./CoinsStacked01";
@@ -63,13 +66,14 @@ import { LayersTwo01 } from "./LayersTwo01";
 import { Lightning01 } from "./Lightning01";
 import { MultipleVideo } from "./MultipleVideo";
 import { Model } from "./Model";
-import { PauseCircle } from "./PauseCircle";
 import { MasterCard } from "./MasterCard";
 import { Menu01 } from "./Menu01";
 import { MessageChatSquare } from "./MessageChatSquare";
 import { Minus } from "./Minus";
 import { Mail01 } from "./Mail01";
 import { MessageSmileSquare } from "./MessageSmileSquare";
+import { NewModel } from "./NewModel";
+import { PauseCircle } from "./PauseCircle";
 import { Pipeline } from "./Pipeline";
 import { Plus } from "./Plus";
 import { Play } from "./Play";
@@ -84,6 +88,8 @@ import { ReferenceIconCheck } from "./ReferenceIconCheck";
 import { ReferenceIconX } from "./ReferenceIconX";
 import { Rocket01 } from "./Rocket01";
 import { Save01 } from "./Save01";
+import { Scales02 } from "./Scales02";
+import { Settings02 } from "./Settings02";
 import { Sliders01 } from "./Sliders01";
 import { SpeechRecognition } from "./SpeechRecognition";
 import { Speaker01 } from "./Speaker01";
@@ -114,6 +120,7 @@ import { VisualQuestionAnswering } from "./VisualQuestionAnswering";
 import { X } from "./X";
 
 export const Icons = {
+  Activity,
   AlertCircle,
   AlertTriangle,
   AlighLeft,
@@ -142,7 +149,9 @@ export const Icons = {
   Chip01,
   Chip02,
   Circle,
+  ClockRewind,
   CodeBrowser,
+  CodeSnippet01,
   CodeSnippet02,
   CodeSquare02,
   CoinsStacked01,
@@ -186,6 +195,7 @@ export const Icons = {
   Minus,
   Mail01,
   MessageSmileSquare,
+  NewModel,
   Pipeline,
   Play,
   PlayCircle,
@@ -200,6 +210,8 @@ export const Icons = {
   ReferenceIconX,
   Rocket01,
   Save01,
+  Scales02,
+  Settings02,
   SpeechRecognition,
   Sliders01,
   Speaker01,
