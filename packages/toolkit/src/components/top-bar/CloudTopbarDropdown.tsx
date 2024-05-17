@@ -28,7 +28,6 @@ const selector = (store: InstillStore) => ({
 
 export const CloudTopbarDropdown = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,

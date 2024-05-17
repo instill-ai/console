@@ -23,10 +23,7 @@ import { LoadingSpin } from "../../../components";
 import debounce from "lodash.debounce";
 import { NewsLetterCard } from "./NewsLetterCard";
 import { LatestChangesCard } from "./LatestChangesCard";
-import {
-  CardPipeline,
-  CardSkeletonPipeline,
-} from "../../../components/card-pipeline-hub";
+import { CardPipeline, CardSkeletonPipeline } from "./card-pipeline-hub";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

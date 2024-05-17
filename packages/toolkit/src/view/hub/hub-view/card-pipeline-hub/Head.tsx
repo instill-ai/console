@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { OrganizationOwner, Pipeline, UserOwner } from "../../lib";
+import { OrganizationOwner, Pipeline, UserOwner } from "../../../../lib";
 import { Icons, Tag } from "@instill-ai/design-system";
-import { EntityAvatar } from "../EntityAvatar";
+import { EntityAvatar } from "../../../../components/EntityAvatar";
 import { useRouter } from "next/navigation";
 
 export const HeadSkeleton = () => {
@@ -65,7 +65,7 @@ export const Head = ({
       <div className="mr-auto flex flex-row gap-x-2">
         <EntityAvatar
           src={pipelineAvatar}
-          className="h-8 w-8"
+          className="my-auto h-8 w-8"
           entityName={ownerID}
           fallbackImg={
             <div className="my-auto flex h-8 w-8 shrink-0 grow-0 rounded-full bg-semantic-bg-line">

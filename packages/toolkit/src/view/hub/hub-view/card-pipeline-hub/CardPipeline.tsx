@@ -1,6 +1,6 @@
 "use client";
 
-import { Pipeline } from "../../lib";
+import { Pipeline } from "../../../../lib";
 import { Body } from "./Body";
 import { Head } from "./Head";
 

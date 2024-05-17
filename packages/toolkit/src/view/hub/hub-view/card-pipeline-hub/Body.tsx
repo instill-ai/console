@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Icons, Skeleton, Tag } from "@instill-ai/design-system";
-import { Pipeline } from "../../lib";
+import { Pipeline } from "../../../../lib";
 import { useRouter } from "next/navigation";
 
 const BodySkeleton = () => {
@@ -38,22 +38,17 @@ export const Body = ({ pipeline }: { pipeline: Pipeline }) => {
   const router = useRouter();
   return (
     <div className="flex w-full flex-col gap-y-2 pb-4">
-      <div className="flex flex-row gap-x-2 px-3">
+      <div className="flex flex-row items-center gap-x-2 px-3">
         <Icons.Pipeline className="my-auto h-4 w-4 stroke-semantic-accent-default" />
-        <Button
-          variant={"tertiaryColour"}
-          className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
-          onClick={() => {
-            router.push(
-              `/${pipeline.owner_name.split("/")[1]}/pipelines/${pipeline.id}`
-            );
-          }}
+        <a
+          href={`/${pipeline.owner_name.split("/")[1]}/pipelines/${pipeline.id}`}
+          className="font-sans text-sm font-semibold text-semantic-accent-default hover:underline"
         >
           {pipeline.id}
-        </Button>
+        </a>
         {pipeline.tags.includes("featured") && (
           <Tag
-            variant={"lightPurple"}
+            variant="lightPurple"
             className="my-auto product-button-button-2"
           >
             Featured
