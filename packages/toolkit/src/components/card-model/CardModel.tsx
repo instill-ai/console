@@ -10,6 +10,7 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
+  useAppEntity,
   useDeleteModel,
 } from "../../lib";
 import React from "react";
@@ -18,7 +19,6 @@ import {
   getModelHardwareToolkit,
   getModelRegionToolkit,
 } from "@instill-ai/design-system";
-import { useParams } from "next/navigation";
 
 export type CardModelProps = {
   model: Model;
@@ -28,8 +28,7 @@ export type CardModelProps = {
 
 export const CardModel = (props: CardModelProps) => {
   const { model, accessToken, onDelete } = props;
-  const params = useParams();
-  const entity = params.entity ? String(params.entity) : null;
+  const entity = useAppEntity();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { toast } = useToast();
 
