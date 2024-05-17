@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.69.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.68.0...@instill-ai/design-system-v0.69.0) (2024-05-17)
+
+
+### Features
+
+* create hub page ([#1160](https://github.com/instill-ai/console/issues/1160)) ([85992b1](https://github.com/instill-ai/console/commit/85992b1a725f5aaa0752fa9763c44a662d3bbe22))
+
 ## [0.68.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.67.0...@instill-ai/design-system-v0.68.0) (2024-05-16)
 
 
