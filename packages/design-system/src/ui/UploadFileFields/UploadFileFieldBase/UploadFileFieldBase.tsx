@@ -35,13 +35,13 @@ export type UploadFileFieldBaseProps = Omit<
     uploadButtonFontWeight: string;
 
     /** TailwindCSS format
-     * - e.g. bg-instillGrey50
+     * - e.g. bg-semantic-node-disconnected-default-stroke
      */
     uploadButtonBgColor: string;
 
     /** TailwindCSS format
      * - use group-hover utility
-     * - e.g. group-hover:bg-instillGrey50
+     * - e.g. group-hover:bg-semantic-node-disconnected-default-stroke
      */
     uploadButtonHoverBgColor: string;
 
@@ -52,7 +52,7 @@ export type UploadFileFieldBaseProps = Omit<
 
     /** TailwindCSS format
      * - use group-hover utility
-     * - e.g. group-hover:text-instillGrey50
+     * - e.g. group-hover:text-semantic-node-disconnected-default-stroke
      */
     uploadButtonHoverTextColor: string;
 

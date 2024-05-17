@@ -59,10 +59,12 @@ export type Model = {
 };
 
 export type ModelState =
-  | "STATE_ONLINE"
+  | "STATE_UNSPECIFIED"
   | "STATE_OFFLINE"
-  | "STATE_ERROR"
-  | "STATE_UNSPECIFIED";
+  | "STATE_SCALING"
+  | "STATE_ACTIVE"
+  | "STATE_IDLE"
+  | "STATE_ERROR";
 
 export type ModelReadme = {
   name: string;
@@ -80,9 +82,10 @@ export type ModelTask =
   | "TASK_INSTANCE_SEGMENTATION"
   | "TASK_SEMANTIC_SEGMENTATION"
   | "TASK_TEXT_GENERATION"
+  | "TASK_TEXT_GENERATION_CHAT"
   | "TASK_TEXT_TO_IMAGE"
   | "TASK_IMAGE_TO_IMAGE"
-  | "TASK_IMAGE_TO_TEXT";
+  | "TASK_VISUAL_QUESTION_ANSWERING";
 
 export type ModelHubPreset = {
   id: string;
@@ -92,13 +95,6 @@ export type ModelHubPreset = {
   configuration: Record<string, string>;
 };
 
-export type ModelWatchState = {
-  state: ModelState;
-  progress: number;
-};
-
-export type ModelsWatchState = Record<string, ModelWatchState>;
-
 export type ModelWithPipelines = Model & {
   pipelines: Pipeline[];
 };
@@ -106,4 +102,12 @@ export type ModelWithPipelines = Model & {
 export type ModelRegion = {
   region_name: string;
   hardware: string[];
+};
+
+export type ModelVersion = {
+  name: string;
+  id: string;
+  digest: string;
+  state: ModelState;
+  update_time: string;
 };

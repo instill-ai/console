@@ -45,7 +45,7 @@ export type TextAreaBaseProps = BasicInputProps &
     counterFontWeight: string;
 
     /** TailwindCSS format - Text color of textarea's counter
-     * - e.g. text-instillGrey50
+     * - e.g. text-semantic-node-disconnected-default-stroke
      * - https://tailwindcss.com/docs/text-color
      */
     counterTextColor: string;
@@ -269,9 +269,15 @@ const TextAreaBase = (props: TextAreaBaseProps) => {
               placeholderLineHeight,
               placeholderTextColor,
               disabled
-                ? cn(disabledCursor, "text-instillGrey50")
+                ? cn(
+                    disabledCursor,
+                    "text-semantic-node-disconnected-default-stroke"
+                  )
                 : readOnly
-                  ? cn(readOnlyCursor, "text-instillGrey50")
+                  ? cn(
+                      readOnlyCursor,
+                      "text-semantic-node-disconnected-default-stroke"
+                    )
                   : inputTextColor,
               cn(getInputStyle, "pt-5")
             )}

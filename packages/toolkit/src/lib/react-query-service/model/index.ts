@@ -8,9 +8,8 @@ export * from "./useUndeployUserModel";
 export * from "./useUpdateUserModel";
 export * from "./useUserModelReadme";
 export * from "./useUserModels";
-export * from "./useWatchUserModel";
-export * from "./useWatchUserModels";
 export { useUserModel } from "./useUserModel";
-export { useModelRegions } from "./useModelRegions";
+export * from "./useModelRegions";
+export * from "./useInfiniteModelVersions";
 
 export * from "./use-user-model";

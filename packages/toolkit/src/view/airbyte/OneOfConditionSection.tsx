@@ -225,7 +225,7 @@ export const OneOfConditionSection = ({
   );
 
   return (
-    <div className="border-instillGrey50 flex w-full flex-col border p-5">
+    <div className="flex w-full flex-col border border-semantic-node-disconnected-default-stroke p-5">
       <div className="mb-5 flex w-full flex-row gap-x-5">
         <h3 className="text-instill-h3 my-auto text-black">{formTree.title}</h3>
         <div className="flex flex-1 flex-col space-y-2">

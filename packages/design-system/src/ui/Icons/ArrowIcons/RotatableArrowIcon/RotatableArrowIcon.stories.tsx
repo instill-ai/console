@@ -17,7 +17,7 @@ export const Playground: StoryFn<typeof RotatableArrowIcon> = Template.bind({});
 Playground.args = {
   width: "w-[30px]",
   height: "h-[30px]",
-  color: "fill-instillGrey50",
+  color: "fill-semantic-node-disconnected-default-stroke",
   position: "my-auto",
   rotate: "rotate-45",
 };
@@ -29,7 +29,7 @@ UseStyle.args = {
     width: "30px",
     height: "30px",
   },
-  color: "fill-instillGrey50",
+  color: "fill-semantic-node-disconnected-default-stroke",
   position: "my-auto",
   rotate: "rotate-45",
 };

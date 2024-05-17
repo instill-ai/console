@@ -35,7 +35,7 @@ export const StateIcon = ({
       );
       break;
     case "STATE_ACTIVE":
-    case "STATE_ONLINE":
+    case "STATE_IDLE":
       icon = (
         <StatusOnIcon
           color="fill-instillGreen"
@@ -47,9 +47,11 @@ export const StateIcon = ({
       break;
     case "STATE_OFFLINE":
     case "STATE_INACTIVE":
+    case "STATE_UNSPECIFIED":
+    case "STATE_SCALING":
       icon = (
         <StatusOffIcon
-          color="fill-instillGrey50"
+          color="fill-semantic-node-disconnected-default-stroke"
           width={width}
           height={height}
           position={position || undefined}
@@ -59,7 +61,7 @@ export const StateIcon = ({
     default:
       icon = (
         <StatusOffIcon
-          color="fill-instillGrey50"
+          color="fill-semantic-node-disconnected-default-stroke"
           width={width}
           height={height}
           position={position || undefined}

@@ -72,8 +72,9 @@ const TabMenuItem = (
     <button
       {...passThrough}
       className={cn(
-        "h-8 border-b-4 border-[#1D2433] border-opacity-0 text-semantic-fg-disabled product-button-button-3 hover:bg-semantic-accent-bg-alt",
-        "data-[selected=true]:border-semantic-accent-default data-[selected=true]:border-opacity-100 data-[selected=true]:text-semantic-fg-primary",
+        "flex flex-row items-center gap-x-2",
+        "h-8 border-b-2 border-[#1D2433] border-opacity-0 text-semantic-fg-disabled product-button-button-3 hover:text-semantic-fg-primary [&>svg]:stroke-semantic-fg-disabled [&>svg]:hover:stroke-semantic-fg-primary",
+        "data-[selected=true]:border-semantic-accent-default data-[selected=true]:border-opacity-100 data-[selected=true]:text-semantic-fg-primary [&>svg]:data-[selected=true]:stroke-semantic-fg-primary",
         className
       )}
       data-selected={selectedValue === value}

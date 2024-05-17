@@ -18,7 +18,7 @@ export const ModelsList = (props: ModelsListProps) => {
   const { models, onModelDelete, isLoading } = props;
   const { accessToken } = useInstillStore(useShallow(selector));
 
-  if (models.length === 0) {
+  if (models?.length === 0) {
     return null;
   }
 

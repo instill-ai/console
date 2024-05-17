@@ -13,7 +13,7 @@ export type BasicInputProps = {
   additionalMessageOnLabel: Nullable<string>;
 
   /** TailwindCSS format - Message's text color
-   * - e.g. text-instillGrey50
+   * - e.g. text-semantic-node-disconnected-default-stroke
    */
   messageTextColor: string;
 
@@ -62,13 +62,13 @@ export type BasicInputProps = {
   errorInputBorderStyle: string;
 
   /** TailwindCSS format - Text color when input has error
-   * - e.g. text-instillGrey50
+   * - e.g. text-semantic-node-disconnected-default-stroke
    * - https://tailwindcss.com/docs/text-color
    */
   errorInputTextColor: string;
 
   /** TailwindCSS format - Label's text color when input has error
-   * - e.g. text-instillGrey50
+   * - e.g. text-semantic-node-disconnected-default-stroke
    */
   errorLabelTextColor: string;
 
@@ -129,7 +129,7 @@ export type BasicInputProps = {
   disabledInputBorderStyle: string;
 
   /** TailwindCSS format - Text color when input is disabled
-   * - e.g. text-instillGrey50
+   * - e.g. text-semantic-node-disconnected-default-stroke
    * - https://tailwindcss.com/docs/text-color
    */
   disabledInputTextColor: string;
@@ -165,7 +165,7 @@ export type BasicInputProps = {
   readOnlyInputBorderStyle: string;
 
   /** TailwindCSS format - Text color when input is read-only
-   * - e.g. text-instillGrey50
+   * - e.g. text-semantic-node-disconnected-default-stroke
    * - https://tailwindcss.com/docs/text-color
    */
   readOnlyInputTextColor: string;
@@ -246,7 +246,7 @@ export type BasicInputProps = {
 
   /** TailwindCSS format - Input placeholder's text color
    * - Please add persudo class "placeholder:"
-   * - e.g. placeholder:text-instillGrey50
+   * - e.g. placeholder:text-semantic-node-disconnected-default-stroke
    * - https://tailwindcss.com/docs/text-color
    */
   placeholderTextColor: string;
@@ -273,7 +273,7 @@ export type BasicInputProps = {
   placeholderFontWeight: string;
 
   /** TailwindCSS format - Label's text color
-   * - e.g. text-instillGrey50
+   * - e.g. text-semantic-node-disconnected-default-stroke
    */
   labelTextColor: string;
 
@@ -308,7 +308,7 @@ export type BasicInputProps = {
   descriptionFontFamily: string;
 
   /** TailwindCSS format - Description's text color
-   * - e.g. text-instillGrey50
+   * - e.g. text-semantic-node-disconnected-default-stroke
    */
   descriptionTextColor: string;
 
@@ -353,10 +353,12 @@ export type PipelineState =
   | "STATE_DELETED";
 
 export type ModelState =
-  | "STATE_ONLINE"
+  | "STATE_UNSPECIFIED"
   | "STATE_OFFLINE"
-  | "STATE_ERROR"
-  | "STATE_UNSPECIFIED";
+  | "STATE_SCALING"
+  | "STATE_ACTIVE"
+  | "STATE_IDLE"
+  | "STATE_ERROR";
 
 export type IconStyle = {
   width: string;

@@ -30,7 +30,7 @@ export const basicInputDescriptionConfig: BasicInputDescriptionConfig = {
   descriptionFontSize: "text-xs",
   descriptionLineHeight: "leading-[15.6px]",
   descriptionFontWeight: "font-normal",
-  descriptionTextColor: "text-instillGrey50",
+  descriptionTextColor: "text-semantic-node-disconnected-default-stroke",
   descriptionLinkTextColor: "text-instillBlue50",
   descriptionLinkTextDecoration: "underline",
 };

@@ -31,7 +31,7 @@ export type TextAreaInputLabelConfig = Pick<
 export const basicInputLabelConfig: TextAreaInputLabelConfig = {
   labelFontSize: "text-base",
   labelFontWeight: "font-normal",
-  labelTextColor: "text-instillGrey50",
+  labelTextColor: "text-semantic-node-disconnected-default-stroke",
   labelLineHeight: "",
   labelFontFamily: "font-sans",
   errorLabelFontFamily: "font-sans",
@@ -40,7 +40,7 @@ export const basicInputLabelConfig: TextAreaInputLabelConfig = {
   errorLabelLineHeight: "",
   errorLabelTextColor: "text-instillRed",
   messageFontSize: "text-xs",
-  messageTextColor: "text-instillGrey70",
+  messageTextColor: "text-semantic-node-connector-on",
   messageFontFamily: "font-sans",
   messageFontWeight: "font-normal",
   messageLineHeight: "",

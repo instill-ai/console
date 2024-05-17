@@ -72,7 +72,7 @@ export const basicSingleSelectConfig: BasicSingleSelectConfig = {
   errorLabelLineHeight: "",
   errorLabelTextColor: "text-instillRed",
   messageFontSize: "text-xs",
-  messageTextColor: "text-instillGrey70",
+  messageTextColor: "text-semantic-node-connector-on",
   messageFontFamily: "font-sans",
   messageFontWeight: "font-normal",
   messageLineHeight: "",

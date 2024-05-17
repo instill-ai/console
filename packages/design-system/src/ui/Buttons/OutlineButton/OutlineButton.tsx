@@ -104,14 +104,15 @@ const OutlineButton = (props: OutlineButtonProps) => {
     case "secondary": {
       buttonStyle = {
         borderSize: "border-[1px]",
-        borderColor: "border-instillGrey50",
-        hoveredBorderColor: "hover:border-instillGrey50",
+        borderColor: "border-semantic-node-disconnected-default-stroke",
+        hoveredBorderColor:
+          "hover:border-semantic-node-disconnected-default-stroke",
         disabledBorderColor: "border-instillGrey30",
         borderRadius: "rounded-[1px]",
         bgColor: null,
-        hoveredBgColor: "hover:bg-instillGrey50",
+        hoveredBgColor: "hover:bg-semantic-node-disconnected-default-stroke",
         disabledBgColor: null,
-        textColor: "text-instillGrey50",
+        textColor: "text-semantic-node-disconnected-default-stroke",
         hoveredTextColor: "hover:text-instillGrey05",
         disabledTextColor: "text-instillGrey30",
         disabledBgOpacity: null,

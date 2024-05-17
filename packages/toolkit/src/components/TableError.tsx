@@ -16,7 +16,7 @@ export const TableError = (props: TableErrorProps) => {
       )}
     >
       <div className="m-auto flex flex-col gap-y-2.5">
-        <p className="text-instillGrey50 text-instill-small m-auto">
+        <p className="text-instill-small m-auto text-semantic-node-disconnected-default-stroke">
           Something went wrong... Please try again later.
         </p>
       </div>
