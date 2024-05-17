@@ -38,12 +38,18 @@ const selector = (store: InstillStore) => ({
 
 const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
-  const [selectedSortOption, setSelectedSortOption] =
-    React.useState<string>("update_time desc");
-  const [searchInputValue, setSearchInputValue] =
-    React.useState<Nullable<string>>(null);
+  const [selectedSortField, setSelectedSortField] = React.useState<string>("update_time");
+  const [selectedSortOrder, setSelectedSortOrder] = React.useState<string>("desc");
+  const [searchInputValue, setSearchInputValue] = React.useState<Nullable<string>>(null);
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const selectedSortOption = React.useMemo(() => {
+    if (selectedSortField && selectedSortOrder) {
+      return `${selectedSortField} ${selectedSortOrder}`;
+    }
+    return "";
+  }, [selectedSortField, selectedSortOrder]);
+
   const pipelines = useInfinitePipelines({
     pageSize: 10,
     accessToken,
@@ -79,7 +85,13 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
   );
 
   const handleSortOptionChange = (value: string) => {
-    setSelectedSortOption(value);
+    if (value === "name_asc" || value === "name_desc") {
+      setSelectedSortField("id");
+      setSelectedSortOrder(value === "name_asc" ? "asc" : "desc");
+    } else if (value === "update_asc" || value === "update_desc") {
+      setSelectedSortField("update_time");
+      setSelectedSortOrder(value === "update_asc" ? "asc" : "desc");
+    }
   };
 
   return (
@@ -105,7 +117,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                 />
               </Input.Root>
               <Select.Root
-                value={selectedSortOption}
+                value={selectedSortField}
                 onValueChange={handleSortOptionChange}
               >
                 <Select.Trigger className="max-w-24 rounded-[4px]">
@@ -118,7 +130,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                     <Select.Item
                       value="id asc"
                       className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                      onClick={() => setSelectedSortOption("id asc")}
+                      onClick={() => setSelectedSortField("id")}
                     >
                       Name
                       <span className="h-4 w-4">
@@ -128,7 +140,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                     <Select.Item
                       value="id desc"
                       className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                      onClick={() => setSelectedSortOption("id desc")}
+                      onClick={() => setSelectedSortField("update_time")}
                     >
                       Last Updated
                       <span className="h-4 w-4">
@@ -139,9 +151,9 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                   <Select.Separator className=" bg-semantic-bg-line" />
                   <Select.Group>
                     <Select.Item
-                      value="update_time asc"
+                      value="asc"
                       className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                      onClick={() => setSelectedSortOption("update_time asc")}
+                      onClick={() => setSelectedSortOrder("asc")}
                     >
                       Ascending
                       <span className="h-4 w-4">
@@ -149,13 +161,13 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                       </span>
                     </Select.Item>
                     <Select.Item
-                      value="update_time desc"
+                      value="desc"
                       className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                      onClick={() => setSelectedSortOption("update_time desc")}
+                      onClick={() => setSelectedSortOrder("desc")}
                     >
                       Descending
                       <span className="h-4 w-4">
-                        <Icons.Update className="stroke-semantic-fg-disabled" />
+                        <Icons.SortLinesDown className="stroke-semantic-fg-disabled" />
                       </span>
                     </Select.Item>
                   </Select.Group>
