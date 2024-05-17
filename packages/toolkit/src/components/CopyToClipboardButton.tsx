@@ -17,9 +17,12 @@ export const CopyToClipboardButton = ({
 
   return (
     <Button
-      className={cn("flex items-center justify-center", className)}
+      className={cn(
+        "flex items-center justify-center gap-x-1 !border !px-2 font-semibold",
+        className
+      )}
       variant="secondaryGrey"
-      size="sm"
+      size="m"
       type="button"
       onClick={async () => {
         await navigator.clipboard.writeText(text);
@@ -30,13 +33,19 @@ export const CopyToClipboardButton = ({
       }}
     >
       {copied ? (
-        <Icons.Check
-          className={cn("h-4 w-4 stroke-semantic-fg-primary", iconClassName)}
-        />
+        <React.Fragment>
+          <Icons.Check
+            className={cn("h-4 w-4 stroke-semantic-fg-primary", iconClassName)}
+          />
+          <span className="text-sm">Copied!</span>
+        </React.Fragment>
       ) : (
-        <Icons.Copy06
-          className={cn("h-4 w-4 stroke-semantic-fg-primary", iconClassName)}
-        />
+        <React.Fragment>
+          <Icons.Copy06
+            className={cn("h-4 w-4 stroke-semantic-fg-primary", iconClassName)}
+          />
+          <span className="text-sm">Copy</span>
+        </React.Fragment>
       )}
     </Button>
   );

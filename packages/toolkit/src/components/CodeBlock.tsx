@@ -16,7 +16,7 @@ export const CodeBlock = (props: CodeBlockProps) => {
   return (
     <div
       className={cn(
-        "relative flex h-full w-full flex-1 rounded-sm bg-semantic-bg-primary pr-4",
+        "relative flex h-full w-full flex-1 rounded-sm border bg-semantic-bg-primary",
         className
       )}
     >
