@@ -63,10 +63,6 @@ export function DataTablePagination<TData>({
   showPageNumbers?: boolean;
   isLoading?: boolean;
 }) {
-  if (table.getPageCount() <= 1) {
-    return null;
-  }
-
   return (
     <div className="flex items-center justify-end py-4">
       <Button

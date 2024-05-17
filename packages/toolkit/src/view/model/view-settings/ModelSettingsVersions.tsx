@@ -24,7 +24,7 @@ const selector = (store: InstillStore) => ({
 export const ModelSettingsVersions = ({
   model,
 }: ModelSettingsVersionsProps) => {
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });

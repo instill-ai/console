@@ -225,12 +225,13 @@ const DataTable = <TData, TValue>({
           )}
         </Table.Body>
       </Table.Root>
-
-      <DataTablePagination
-        table={table}
-        showPageNumbers={showPageNumbers}
-        isLoading={isLoading}
-      />
+      {data.length > pageSize ? (
+        <DataTablePagination
+          table={table}
+          showPageNumbers={showPageNumbers}
+          isLoading={isLoading}
+        />
+      ) : null}
     </div>
   );
 };
