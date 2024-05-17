@@ -1,14 +1,13 @@
 "use client";
+
 import { Icons, Skeleton, buttonVariants } from "@instill-ai/design-system";
 import { ImageWithFallback } from "./ImageWithFallback";
 import { useState } from "react";
-import { useBlogPosts } from "../lib/react-query-service/misc/useBlogPosts";
 import cn from "clsx";
-
+import { useBlogPosts } from "../lib/react-query-service/misc/useBlogPosts";
 
 const NewsLetterCard = () => {
     const { data: blogPosts = [], isLoading, isError } = useBlogPosts();
-
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const NewsLetterCardSkeleton = () => {
@@ -24,6 +23,12 @@ const NewsLetterCard = () => {
                     </div>
                 </div>
             </div>
+        );
+    };
+
+    const handlePrev = () => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex === 0 ? prevIndex : prevIndex - 1
         );
     };
 
@@ -65,7 +70,7 @@ const NewsLetterCard = () => {
                     />
                 </a>
             </div>
-            <div className={cn(buttonVariants({ variant: "secondaryColour", size: "md" }), "my-1 w-min whitespace-nowrap rounded-sm  px-2 py-2 capitalize hover:!underline")}>
+            <div className={cn(buttonVariants({ variant: "secondaryColour", size: "md" }), "my-1 w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize hover:!underline")}>
                 {publishedOn}
             </div>
             <a
@@ -75,12 +80,19 @@ const NewsLetterCard = () => {
             >
                 <p className="line-clamp-3 overflow-hidden text-semantic-fg-primary">{title}</p>
             </a>
-            <div className="mt-auto flex items-center justify-end">
-                <div className={`my-1 w-min whitespace-nowrap rounded-sm  px-2 py-2 capitalize hover:!underline ${cn(
-                    buttonVariants({ variant: "secondaryColour", size: "md" })
-                )}`}>
-                    {publishedOn}
-                </div>
+            <div className="mt-auto flex items-center justify-end space-x-2">
+                <button
+                    type="button"
+                    onClick={handlePrev}
+                    disabled={currentIndex === 0}
+                >
+                    <Icons.ArrowLeft
+                        className={`h-6 w-6 ${currentIndex === 0
+                            ? "stroke-semantic-fg-disabled"
+                            : "stroke-semantic-fg-secondary"
+                            }`}
+                    />
+                </button>
                 <button
                     type="button"
                     onClick={handleNext}
@@ -97,5 +109,6 @@ const NewsLetterCard = () => {
         </div>
     );
 };
+
 
 export default NewsLetterCard;
