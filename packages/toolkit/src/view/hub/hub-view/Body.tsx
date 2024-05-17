@@ -122,7 +122,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
       <div className="flex w-full flex-col pt-6">
         <div className="mb-4 flex flex-col">
           <div className="flex items-center justify-between">
-            <p className="whitespace-nowrap text-semantic-fg-secondary product-body-text-3-semibold">
+            <p className="whitespace-nowrap text-semantic-fg-disabled product-button-button-2">
               Pipelines{' '}
               {tabValue === 'featured'
                 ? filteredPipelines.length
