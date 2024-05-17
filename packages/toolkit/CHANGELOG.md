@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.91.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.90.0...@instill-ai/toolkit-v0.91.0) (2024-05-17)
+
+
+### Features
+
+* create hub page ([#1160](https://github.com/instill-ai/console/issues/1160)) ([85992b1](https://github.com/instill-ai/console/commit/85992b1a725f5aaa0752fa9763c44a662d3bbe22))
+
+
+### Bug Fixes
+
+* **instill-credit:** fix remaining credit decimal display ([#1161](https://github.com/instill-ai/console/issues/1161)) ([9574d18](https://github.com/instill-ai/console/commit/9574d188c6aefd2fa963580b94dd5f48002a7a88))
+* **pipeline-builder:** fix when select a model not support instill credit the api_key keep flushed away ([#1163](https://github.com/instill-ai/console/issues/1163)) ([252866e](https://github.com/instill-ai/console/commit/252866e8ab06e7252cebb7ecd1042b291305fbd3))
+
 ## [0.90.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.89.0...@instill-ai/toolkit-v0.90.0) (2024-05-16)
 
 
