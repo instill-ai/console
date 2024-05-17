@@ -13,7 +13,7 @@ import { StateLabel } from "../../../components";
 import { useEffect, useMemo, useState } from "react";
 
 export type ModelSettingsVersionsProps = {
-  model: Model;
+  model?: Model;
 };
 
 const selector = (store: InstillStore) => ({
@@ -92,7 +92,7 @@ export const ModelSettingsVersions = ({
   const versions = useInfiniteModelVersions({
     accessToken,
     enabledQuery,
-    modelName: model.name,
+    modelName: model?.name,
   });
 
   useEffect(() => {

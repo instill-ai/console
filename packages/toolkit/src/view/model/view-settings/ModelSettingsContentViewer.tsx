@@ -1,4 +1,5 @@
 import { ModelSettingsEditForm, ModelSettingsVersions } from ".";
+import { LoadingSpin } from "../../../components";
 import { Model } from "../../../lib";
 import { ModelSettingsTabs } from "./ModelSettingsHead";
 
@@ -13,10 +14,6 @@ export const ModelSettingsContentViewer = ({
   model,
   onUpdate,
 }: ContentViewerProps) => {
-  if (!model) {
-    return null;
-  }
-
   let content: null | React.ReactNode;
 
   switch (selectedTab) {
@@ -35,5 +32,13 @@ export const ModelSettingsContentViewer = ({
     }
   }
 
-  return <div className="mx-auto w-full max-w-7xl pt-8">{content}</div>;
+  return (
+    <div className="mx-auto w-full max-w-7xl pt-8">
+      {model ? (
+        content
+      ) : (
+        <LoadingSpin className="m-none !text-semantic-fg-secondary" />
+      )}
+    </div>
+  );
 };
