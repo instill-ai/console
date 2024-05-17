@@ -1,4 +1,5 @@
 export * from "./connector";
+export * from "./hub";
 export * from "./metric";
 export * from "./mgmt";
 export * from "./model";

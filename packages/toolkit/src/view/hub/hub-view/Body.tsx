@@ -15,6 +15,7 @@ import {
   InstillStore,
   Nullable,
   Pipeline,
+  useHubStats,
   useInfinitePipelines,
   useInstillStore,
   useShallow,
@@ -109,6 +110,10 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
     return all;
   }, [pipelines.data, pipelines.isSuccess]);
 
+  const hubStats = useHubStats({
+    enabled: true,
+  });
+
   const debouncedSetSearchCode = React.useMemo(
     () =>
       debounce((value: string) => {
@@ -137,7 +142,10 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
         <div className="mb-4 flex flex-col">
           <div className="flex items-center justify-between">
             <p className="whitespace-nowrap text-semantic-fg-disabled product-button-button-2">
-              Pipelines {allPipelines.length}
+              Pipelines{" "}
+              {tabValue === "featured"
+                ? hubStats.data?.number_of_featured_pipelines
+                : hubStats.data?.number_of_public_pipelines}
             </p>
             <div className="flex w-full items-center justify-end gap-4">
               <Input.Root className="w-1/3">
@@ -261,7 +269,7 @@ const FeaturedBanner = () => {
         <div className="mb-3 flex items-center justify-between rounded-md bg-semantic-accent-bg p-2 text-semantic-fg-secondary">
           <p className="flex items-center justify-between font-normal">
             Want to feature your pipeline? Drop a message in &nbsp;
-            <span className="font-bold">#featured</span>
+            <span className="font-bold">#show-your-work</span>
             &nbsp;on&nbsp;
             <a
               href="https://discord.com/invite/sevxWsqpGh"
