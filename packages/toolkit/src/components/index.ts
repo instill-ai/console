@@ -17,8 +17,6 @@ export * from "./TableLoadingProgress";
 export * from "./TableHead";
 export * from "./InlineTextSeparator";
 export * from "./LoadingSpin";
-export * from "./ModelDefinitionLabel";
-export * from "./ModelTaskLabel";
 export * from "./PageBase";
 export * from "./PageTitle";
 export * from "./ReferenceHintTag";
