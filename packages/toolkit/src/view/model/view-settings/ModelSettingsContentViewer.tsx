@@ -1,6 +1,7 @@
 import { ModelSettingsEditForm, ModelSettingsVersions } from ".";
 import { LoadingSpin } from "../../../components";
 import { Model } from "../../../lib";
+import { ModelSettingsApi } from "./ModelSettingsApi";
 import { ModelSettingsTabs } from "./ModelSettingsHead";
 
 export type ContentViewerProps = {
@@ -17,6 +18,11 @@ export const ModelSettingsContentViewer = ({
   let content: null | React.ReactNode;
 
   switch (selectedTab) {
+    case "api": {
+      content = <ModelSettingsApi model={model} />;
+
+      break;
+    }
     case "versions": {
       content = <ModelSettingsVersions model={model} />;
 
