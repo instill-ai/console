@@ -24,7 +24,7 @@ const selector = (store: InstillStore) => ({
 export const ModelSettingsVersions = ({
   model,
 }: ModelSettingsVersionsProps) => {
-  const [pagination, setPagination] = useState<PaginationState>({
+  const [paginationState, setPaginationState] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
@@ -96,10 +96,10 @@ export const ModelSettingsVersions = ({
   });
 
   useEffect(() => {
-    if (!versions.data?.pages[pagination.pageIndex]) {
+    if (!versions.data?.pages[paginationState.pageIndex]) {
       versions.fetchNextPage();
     }
-  }, [pagination.pageIndex, versions]);
+  }, [paginationState.pageIndex, versions]);
 
   const pageCount = useMemo(() => {
     if (versions.data?.pages[0]) {
@@ -123,29 +123,29 @@ export const ModelSettingsVersions = ({
       return [];
     }
 
-    const offset = pagination.pageIndex * pagination.pageSize;
+    const offset = paginationState.pageIndex * paginationState.pageSize;
 
-    return versionList.slice(offset, offset + pagination.pageSize);
-  }, [versionList, pagination]);
+    return versionList.slice(offset, offset + paginationState.pageSize);
+  }, [versionList, paginationState]);
 
-  const onPaginationChange = (state: PaginationState) => {
-    setPagination(state);
+  const onPaginationStateChange = (state: PaginationState) => {
+    setPaginationState(state);
   };
 
   return (
     <DataTable
       columns={columns as ColumnDef<unknown>[]} // https://github.com/TanStack/table/issues/4382#issuecomment-2081153305
       data={currentPageData}
-      pageSize={pagination.pageSize}
+      pageSize={paginationState.pageSize}
       isLoading={
         versions.isLoading || versions.isFetching || versions.isFetchingNextPage
       }
-      loadingRows={pagination.pageSize}
+      loadingRows={paginationState.pageSize}
       manualPagination={true}
       pageCount={pageCount}
-      onPaginationChange={onPaginationChange}
+      onPaginationStateChange={onPaginationStateChange}
       showPageNumbers={false}
-      pagination={pagination}
+      paginationState={paginationState}
     ></DataTable>
   );
 };

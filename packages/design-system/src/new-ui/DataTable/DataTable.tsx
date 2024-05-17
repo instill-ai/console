@@ -33,8 +33,8 @@ interface DataTableProps<TData, TValue> {
   secondaryText?: Nullable<string>;
   manualPagination?: boolean;
   pageCount?: number;
-  onPaginationChange?: (state: PaginationState) => void;
-  pagination?: PaginationState;
+  onPaginationStateChange?: (state: PaginationState) => void;
+  paginationState?: PaginationState;
 }
 
 const DataTable = <TData, TValue>({
@@ -50,9 +50,9 @@ const DataTable = <TData, TValue>({
   secondaryText,
   manualPagination,
   pageCount,
-  onPaginationChange,
+  onPaginationStateChange,
   showPageNumbers,
-  pagination,
+  paginationState,
 }: DataTableProps<TData, TValue> & { showPageNumbers?: boolean }) => {
   const [rowSelection, setRowSelection] = React.useState({});
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -79,11 +79,11 @@ const DataTable = <TData, TValue>({
       rowSelection,
       sorting,
       columnFilters,
-      pagination,
+      pagination: paginationState,
     },
     manualPagination,
     pageCount,
-    onPaginationChange: !onPaginationChange
+    onPaginationChange: !onPaginationStateChange
       ? undefined
       : (updater) => {
           if (typeof updater !== "function") {
@@ -92,7 +92,7 @@ const DataTable = <TData, TValue>({
 
           const newPageState = updater(table.getState().pagination);
 
-          onPaginationChange(newPageState);
+          onPaginationStateChange(newPageState);
         },
   });
 
