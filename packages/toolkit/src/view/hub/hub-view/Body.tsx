@@ -6,6 +6,7 @@ import {
   DiscordIcon,
   Input,
   Select,
+  Separator,
   Tabs,
 } from "@instill-ai/design-system";
 
@@ -283,7 +284,7 @@ export const Body = ({
                 <span className="text-lg">Featured</span>
               </Tabs.Trigger>
             </Tabs.List>
-            <div className="w-full border-b border-gray-200"></div>
+            <Separator orientation="horizontal" />
           </div>
           <div className="flex w-full flex-row">
             <div className="flex w-full flex-col">
