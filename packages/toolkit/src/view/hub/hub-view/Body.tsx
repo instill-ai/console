@@ -45,7 +45,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const selectedSortOption = React.useMemo(() => {
     if (selectedSortField && selectedSortOrder) {
-      return `=${selectedSortField} ${selectedSortOrder}`;
+      return `=order_by${selectedSortField} ${selectedSortOrder}`;
     }
     return "";
   }, [selectedSortField, selectedSortOrder]);
@@ -91,7 +91,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
       setSelectedSortField(value);
     }
   };
-  
+
   return (
     <div className="flex flex-row">
       <div className="flex w-full flex-col pt-6">
@@ -128,7 +128,6 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                     <Select.Item
                       value="id"
                       className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                      onClick={() => setSelectedSortField("id")}
                     >
                       Name
                       <span className="h-4 w-4">
@@ -138,7 +137,6 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                     <Select.Item
                       value="update_time"
                       className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                      onClick={() => setSelectedSortField("update_time")}
                     >
                       Last Updated
                       <span className="h-4 w-4">
