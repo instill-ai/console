@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { EntityAvatar } from "../../../components";
 import {
   GitHubIcon,
@@ -53,7 +53,7 @@ export const ModelSettingsHead = ({
   onTabChange,
   model,
 }: HeadProps) => {
-  const owner = React.useMemo(() => {
+  const owner = useMemo(() => {
     if (!model) {
       return OWNER;
     }
