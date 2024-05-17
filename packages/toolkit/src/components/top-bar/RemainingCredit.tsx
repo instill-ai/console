@@ -39,7 +39,7 @@ export const RemainingCreditCTA = ({
   return (
     <div className="flex w-full flex-row gap-x-2 rounded-sm bg-semantic-bg-base-bg px-3 py-4">
       {remainingCredit.isSuccess ? (
-        <p className="my-auto font-mono text-[11px] font-medium text-[#344054]">{`${remainingCredit.data} credits left`}</p>
+        <p className="my-auto font-mono text-[11px] font-medium text-[#344054]">{`${remainingCredit.data.toLocaleString("en-US", { style: "currency", currency: "USD" })} credits left`}</p>
       ) : (
         <Skeleton className="my-auto h-5 w-[100px] rounded" />
       )}
