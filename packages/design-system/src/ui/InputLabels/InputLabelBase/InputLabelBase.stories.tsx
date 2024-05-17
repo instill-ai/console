@@ -18,7 +18,7 @@ Playground.args = {
   labelFontFamily: "font-sans",
   labelFontSize: "text-base",
   labelFontWeight: "font-normal",
-  labelTextColor: "text-instillGrey50",
+  labelTextColor: "text-semantic-node-disconnected-default-stroke",
   labelLineHeight: "leading-[28px]",
   messageFontSize: "text-xs",
   messageTextColor: "text-instillGrey70",

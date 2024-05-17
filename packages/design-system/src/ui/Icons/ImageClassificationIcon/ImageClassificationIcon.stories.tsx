@@ -18,6 +18,6 @@ export const Playground: StoryFn<typeof ImageClassificationIcon> =
 Playground.args = {
   width: "w-[30px]",
   height: "h-[30px]",
-  color: "fill-instillGrey50",
+  color: "fill-semantic-node-disconnected-default-stroke",
   position: "my-auto",
 };

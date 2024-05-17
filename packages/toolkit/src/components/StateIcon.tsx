@@ -51,7 +51,7 @@ export const StateIcon = ({
     case "STATE_SCALING":
       icon = (
         <StatusOffIcon
-          color="fill-instillGrey50"
+          color="fill-semantic-node-disconnected-default-stroke"
           width={width}
           height={height}
           position={position || undefined}
@@ -61,7 +61,7 @@ export const StateIcon = ({
     default:
       icon = (
         <StatusOffIcon
-          color="fill-instillGrey50"
+          color="fill-semantic-node-disconnected-default-stroke"
           width={width}
           height={height}
           position={position || undefined}

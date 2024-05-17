@@ -27,7 +27,7 @@ export const TableLoadingProgress = ({
             position="m-auto"
           />
         </div>
-        <p className="text-instillGrey50 text-instill-small mx-auto">
+        <p className="text-instill-small mx-auto text-semantic-node-disconnected-default-stroke">
           loading...
         </p>
       </div>
