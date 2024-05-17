@@ -90,7 +90,10 @@ import { Stop } from "./Stop";
 import { SearchLg } from "./SearchLg";
 import { SearchSm } from "./SearchSm";
 import { Share07 } from "./Share07";
+import { SortLinesDown } from "./SortLinesDown";
+import { SortLinesUp } from "./SortLinesUp";
 import { Tag01 } from "./Tag01";
+import { TextA } from "./TextA";
 import { TextGenerationChat } from "./TextGenerationChat";
 import { Trash01 } from "./Trash01";
 import { Trash03 } from "./Trash03";
@@ -100,6 +103,7 @@ import { Tool01 } from "./Tool01";
 import { Upload01 } from "./Upload01";
 import { User01 } from "./User01";
 import { User02 } from "./User02";
+import { Update } from "./Update";
 import { UserPlus01 } from "./UserPlus01";
 import { Video } from "./Video";
 import { VideoRecorder } from "./VideoRecorder";
@@ -200,7 +204,10 @@ export const Icons = {
   SearchLg,
   SearchSm,
   Share07,
+  SortLinesDown,
+  SortLinesUp,
   Tag01,
+  TextA,
   TextGenerationChat,
   Trash01,
   Trash03,
@@ -211,6 +218,7 @@ export const Icons = {
   User01,
   User02,
   UserPlus01,
+  Update,
   Video,
   VideoRecorder,
   Visa,

@@ -18,7 +18,7 @@ const NewsLetterCard = () => {
                     <Skeleton className="h-full w-full bg-semantic-bg-line" />
                 </div>
                 <Skeleton className="h-6 w-24 rounded bg-semantic-bg-line" />
-                <Skeleton className="h-6 w-full rounded bg-semantic-bg-line" /> 
+                <Skeleton className="h-6 w-full rounded bg-semantic-bg-line" />
                 <Skeleton className="h-6 w-full rounded bg-semantic-bg-line" />
                 <Skeleton className="h-6 w-2/3 rounded bg-semantic-bg-line" />
                 <div className="mt-auto flex items-center justify-end space-x-2">
@@ -73,7 +73,7 @@ const NewsLetterCard = () => {
                     />
                 </a>
             </div>
-            <div className={cn(buttonVariants({ variant: "secondaryColour", size: "md" }), "w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize hover:!underline")}>
+            <div className={cn(buttonVariants({ variant: "secondaryColour", size: "md" }), "w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize")}>
                 {publishedOn}
             </div>
             <a

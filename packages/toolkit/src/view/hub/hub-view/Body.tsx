@@ -4,7 +4,6 @@ import * as React from "react";
 import {
   Button,
   DiscordIcon,
-  Icons,
   Input,
   Select,
   Tabs,
@@ -30,7 +29,7 @@ import {
   CardPipeline,
   CardSkeletonPipeline,
 } from "../../../components/card-pipeline-hub";
-
+import {Icons} from "./../../../../../design-system/src/new-ui/Icons"
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
@@ -146,21 +145,12 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                 value={selectedSortOption}
                 onValueChange={handleSortOptionChange}
               >
-                <Select.Trigger className="max-w-40 rounded-[4px]">
+                <Select.Trigger className="max-w-40 rounded-[4px]" >
                   <Select.Value className="font-bold">
-                    {selectedSortOption
-                      ? selectedSortOption === "name-asc" ||
-                        selectedSortOption === "name-desc"
-                        ? selectedSortOption.includes("asc")
-                          ? "Name (Ascending)"
-                          : "Name (Descending)"
-                        : selectedSortOption.includes("asc")
-                          ? "Last Updated (Ascending)"
-                          : "Last Updated (Descending)"
-                      : "Sort"}
+                    Sort
                   </Select.Value>
                 </Select.Trigger>
-                <Select.Content>
+                <Select.Content className="w-64 -ml-24">
                   <Select.Group>
                     <Select.Item
                       value={selectedSortOption.includes("name") ? selectedSortOption : "name-asc"}
@@ -169,7 +159,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                     >
                       Name
                       <span className="h-4 w-4">
-                        <Icons.BookOpen02 />
+                        <Icons.TextA />
                       </span>
                     </Select.Item>
                     <Select.Item
@@ -179,7 +169,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                     >
                       Last Updated
                       <span className="h-4 w-4">
-                        <Icons.RefreshCw05 />
+                        <Icons.Update />
                       </span>
                     </Select.Item>
                   </Select.Group>
@@ -192,7 +182,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                     >
                       Ascending
                       <span className="h-4 w-4">
-                        <Icons.ArrowUp />
+                        <Icons.SortLinesUp />
                       </span>
                     </Select.Item>
                     <Select.Item
@@ -202,7 +192,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                     >
                       Descending
                       <span className="h-4 w-4">
-                        <Icons.ArrowDown />
+                        <Icons.SortLinesDown />
                       </span>
                     </Select.Item>
                   </Select.Group>
