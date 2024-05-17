@@ -71,7 +71,7 @@ export const CardModel = (props: CardModelProps) => {
       <div className="flex grow flex-col gap-y-2">
         <div className="flex w-full flex-row items-start gap-x-2">
           <a
-            href={`/${entity}/models/${model.id}`}
+            href={`/${entity.data.entity}/models/${model.id}`}
             className="break-all font-medium text-semantic-accent-default hover:!underline"
           >
             {model.id}
