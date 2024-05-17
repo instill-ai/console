@@ -29,7 +29,7 @@ import {
   CardPipeline,
   CardSkeletonPipeline,
 } from "../../../components/card-pipeline-hub";
-import {Icons} from "./../../../../../design-system/src/new-ui/Icons"
+import { Icons } from "./../../../../../design-system/src/new-ui/Icons"
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
@@ -154,22 +154,22 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                   <Select.Group>
                     <Select.Item
                       value={selectedSortOption.includes("name") ? selectedSortOption : "name-asc"}
-                      className="flex justify-between text-semantic-fg-primary"
+                      className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
                       onClick={() => setSelectedSortOption(selectedSortOption.includes("name") ? selectedSortOption : "name-asc")}
                     >
                       Name
                       <span className="h-4 w-4">
-                        <Icons.TextA />
+                        <Icons.TextA className=" stroke-semantic-fg-disabled" />
                       </span>
                     </Select.Item>
                     <Select.Item
                       value={selectedSortOption.includes("createTime") ? selectedSortOption : "createTime-asc"}
-                      className="flex justify-between text-semantic-fg-primary"
+                      className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
                       onClick={() => setSelectedSortOption(selectedSortOption.includes("createTime") ? selectedSortOption : "createTime-asc")}
                     >
                       Last Updated
                       <span className="h-4 w-4">
-                        <Icons.Update />
+                        <Icons.Update className=" stroke-semantic-fg-disabled" />
                       </span>
                     </Select.Item>
                   </Select.Group>
@@ -177,22 +177,22 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                   <Select.Group>
                     <Select.Item
                       value={selectedSortOption.includes("asc") ? selectedSortOption : selectedSortOption.replace("desc", "asc")}
-                      className="flex justify-between text-semantic-fg-primary"
+                      className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
                       onClick={() => setSelectedSortOption(selectedSortOption.includes("asc") ? selectedSortOption : selectedSortOption.replace("desc", "asc"))}
                     >
                       Ascending
                       <span className="h-4 w-4">
-                        <Icons.SortLinesUp />
+                        <Icons.SortLinesUp className=" stroke-semantic-fg-disabled" />
                       </span>
                     </Select.Item>
                     <Select.Item
                       value={selectedSortOption.includes("desc") ? selectedSortOption : selectedSortOption.replace("asc", "desc")}
-                      className="flex justify-between text-semantic-fg-primary"
+                      className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
                       onClick={() => setSelectedSortOption(selectedSortOption.includes("desc") ? selectedSortOption : selectedSortOption.replace("asc", "desc"))}
                     >
                       Descending
                       <span className="h-4 w-4">
-                        <Icons.SortLinesDown />
+                        <Icons.SortLinesDown className=" stroke-semantic-fg-disabled" />
                       </span>
                     </Select.Item>
                   </Select.Group>
