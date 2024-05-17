@@ -85,15 +85,13 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
   );
 
   const handleSortOptionChange = (value: string) => {
-    if (value === "name_asc" || value === "name_desc") {
-      setSelectedSortField("id");
-      setSelectedSortOrder(value === "name_asc" ? "asc" : "desc");
-    } else if (value === "update_asc" || value === "update_desc") {
-      setSelectedSortField("update_time");
-      setSelectedSortOrder(value === "update_asc" ? "asc" : "desc");
+    if (value === "asc" || value === "desc") {
+      setSelectedSortOrder(value);
+    } else {
+      setSelectedSortField(value);
     }
   };
-
+  
   return (
     <div className="flex flex-row">
       <div className="flex w-full flex-col pt-6">
@@ -128,7 +126,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                 <Select.Content className="w-64 -ml-40">
                   <Select.Group>
                     <Select.Item
-                      value="id asc"
+                      value="id"
                       className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
                       onClick={() => setSelectedSortField("id")}
                     >
@@ -138,7 +136,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                       </span>
                     </Select.Item>
                     <Select.Item
-                      value="id desc"
+                      value="update_time"
                       className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
                       onClick={() => setSelectedSortField("update_time")}
                     >
