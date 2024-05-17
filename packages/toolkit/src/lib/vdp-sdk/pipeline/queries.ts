@@ -21,6 +21,7 @@ export type listPipelinesQueryParams = {
   accessToken: Nullable<string>;
   visibility: Nullable<Visibility>;
   filter: Nullable<string>;
+  order_by?: Nullable<string>;
 };
 
 export async function listPipelinesQuery(
@@ -50,6 +51,7 @@ export async function listPipelinesQuery(
     enablePagination,
     visibility,
     filter,
+    order_by,
   } = props;
 
   try {
@@ -62,6 +64,7 @@ export async function listPipelinesQuery(
       nextPageToken,
       queryParams: visibility ? `visibility=${visibility}` : undefined,
       filter,
+      order_by,
     });
 
     const { data } = await client.get<ListPipelinesResponse>(queryString);
@@ -81,6 +84,7 @@ export async function listPipelinesQuery(
           enablePagination: false,
           filter,
           visibility,
+          order_by,
         }))
       );
     }

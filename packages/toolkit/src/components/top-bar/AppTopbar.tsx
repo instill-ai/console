@@ -11,9 +11,10 @@ import {
 import { CloudTopbarDropdown } from "./CloudTopbarDropdown";
 import { CETopbarDropdown } from "./CETopbarDropdown";
 import { env } from "../../server";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { TopbarLinks } from "./TopbarLinks";
 import { useGuardPipelineBuilderUnsavedChangesNavigation } from "../../lib/hook";
+import { Button } from "@instill-ai/design-system";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -32,7 +33,7 @@ export const AppTopbar = ({
   disabledUserDropdown?: boolean;
 }) => {
   const pathname = usePathname();
-
+  const router = useRouter();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
@@ -63,7 +64,18 @@ export const AppTopbar = ({
           <div className="flex w-full flex-1 flex-row">{children}</div>
         ) : me.isSuccess ? (
           <TopbarLinks entity={me.data.id} pathname={pathname} />
-        ) : null}
+        ) : (
+          <Button
+            onClick={() => {
+              router.push("/api/auth/login");
+            }}
+            variant="secondaryColour"
+            className="!my-auto"
+            size="md"
+          >
+            Log In
+          </Button>
+        )}
       </div>
 
       {disabledUserDropdown ? null : (

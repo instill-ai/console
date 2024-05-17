@@ -82,6 +82,7 @@ export type PipelineReleasesWatchState = Record<
 >;
 
 export type Pipeline = {
+  updated_at: string | number | Date;
   name: string;
   uid: string;
   id: string;
@@ -97,6 +98,7 @@ export type Pipeline = {
   sharing: PipelineSharing;
   metadata: GeneralRecord;
   permission: Permission;
+  tags: string[];
 };
 
 export type OperatorDefinition = {

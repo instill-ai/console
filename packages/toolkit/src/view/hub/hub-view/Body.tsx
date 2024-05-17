@@ -1,84 +1,100 @@
 "use client";
 
 import * as React from "react";
-import { Button, Icons, Input } from "@instill-ai/design-system";
+import {
+  Button,
+  DiscordIcon,
+  Icons,
+  Input,
+  Popover,
+  Separator,
+  Tabs,
+} from "@instill-ai/design-system";
 
 import {
   InstillStore,
   Nullable,
   Pipeline,
+  useHubStats,
   useInfinitePipelines,
   useInstillStore,
   useShallow,
-  useAuthenticatedUser,
-  useUserPipelines,
 } from "../../../lib";
-import {
-  LoadingSpin,
-  UserProfileCard,
-  CardPipeline,
-  CardSkeletonPipeline,
-  UserProfileCardProps,
-} from "../../../components";
+import { LoadingSpin } from "../../../components";
 import debounce from "lodash.debounce";
+import { NewsLetterCard } from "./NewsLetterCard";
+import { LatestChangesCard } from "./LatestChangesCard";
+import { CardPipeline, CardSkeletonPipeline } from "./card-pipeline-hub";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
 });
 
-export const Body = ({
-  visitorCta,
+type SortField = "id" | "update_time";
+type SortOrder = "asc" | "desc";
+
+const SortSelectButton = ({
+  onClick,
+  label,
+  icon,
+  isSelected,
 }: {
-  visitorCta?: UserProfileCardProps["visitorCta"];
+  onClick: () => void;
+  label: string;
+  icon: React.ReactNode;
+  isSelected: boolean;
 }) => {
+  return (
+    <button
+      onClick={onClick}
+      className="flex flex-row items-center px-4 py-[9px] hover:bg-semantic-bg-base-bg"
+    >
+      <div className="flex flex-row items-center gap-x-2">
+        {icon}
+        <span className="text-semantic-fg-primary product-body-text-3-medium">
+          {label}
+        </span>
+      </div>
+      {isSelected ? (
+        <Icons.Check className="ml-auto h-4 w-4 stroke-semantic-fg-disabled" />
+      ) : null}
+    </button>
+  );
+};
+
+const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
+  const [selectedSortField, setSelectedSortField] =
+    React.useState<SortField>("update_time");
+  const [selectedSortOrder, setSelectedSortOrder] =
+    React.useState<SortOrder>("desc");
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const selectedSortOption = React.useMemo(() => {
+    if (selectedSortField && selectedSortOrder) {
+      return `${selectedSortField} ${selectedSortOrder}`;
+    }
+    return "";
+  }, [selectedSortField, selectedSortOrder]);
 
   const pipelines = useInfinitePipelines({
     pageSize: 10,
     accessToken,
     enabledQuery,
     visibility: "VISIBILITY_PUBLIC",
-    filter: searchCode ? `q="${searchCode}"` : null,
+    filter:
+      tabValue === "featured"
+        ? searchCode
+          ? `tag="featured" AND q="${searchCode ?? ""}"`
+          : `tag="featured"`
+        : searchCode
+          ? `q="${searchCode}"`
+          : "",
+    order_by: selectedSortOption,
   });
-
-  const me = useAuthenticatedUser({
-    enabled: enabledQuery,
-    accessToken,
-    retry: false,
-  });
-
-  const userPipelines = useUserPipelines({
-    userName: me.isSuccess ? me.data.name : null,
-    enabled: enabledQuery && me.isSuccess,
-    accessToken,
-    filter: null,
-    visibility: null,
-
-    // Use these parameters to speed up request
-    disabledViewFull: true,
-    pageSize: 100,
-  });
-
-  const userPublicPipelines = React.useMemo(() => {
-    if (!userPipelines.isSuccess) {
-      return [];
-    }
-
-    return userPipelines.data.filter((pipeline) => {
-      const toplevelRule = pipeline.sharing.users["*/*"];
-
-      if (toplevelRule && toplevelRule.enabled) {
-        return true;
-      }
-
-      return false;
-    });
-  }, [userPipelines.data, userPipelines.isSuccess]);
 
   const allPipelines = React.useMemo(() => {
     if (!pipelines.isSuccess) {
@@ -94,6 +110,10 @@ export const Body = ({
     return all;
   }, [pipelines.data, pipelines.isSuccess]);
 
+  const hubStats = useHubStats({
+    enabled: true,
+  });
+
   const debouncedSetSearchCode = React.useMemo(
     () =>
       debounce((value: string) => {
@@ -102,53 +122,118 @@ export const Body = ({
     []
   );
 
+  const handleSortFieldChange = (value: SortField) => {
+    if (selectedSortField !== value) {
+      setSelectedSortField(value);
+      pipelines.refetch();
+    }
+  };
+
+  const handleSortOrderChange = (value: SortOrder) => {
+    if (selectedSortOrder !== value) {
+      setSelectedSortOrder(value);
+      pipelines.refetch();
+    }
+  };
+
   return (
-    <div className=" flex flex-row px-20">
-      <div className="w-[288px] pr-4 pt-6">
-        <UserProfileCard
-          totalPipelines={null}
-          totalPublicPipelines={userPublicPipelines.length}
-          visitorCta={visitorCta}
-        />
-      </div>
-      <div className="flex w-[630px] flex-col pt-6">
+    <div className="flex flex-row">
+      <div className="flex w-full flex-col pt-6">
         <div className="mb-4 flex flex-col">
-          <p className="mb-2.5 text-semantic-fg-primary product-body-text-3-semibold">
-            Search Pipelines
-          </p>
-          <div className="flex flex-row gap-x-4">
-            <Input.Root className="flex-1">
-              <Input.LeftIcon>
-                <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
-              </Input.LeftIcon>
-              <Input.Core
-                value={searchInputValue ?? ""}
-                placeholder="Search..."
-                onChange={(event) => {
-                  setSearchInputValue(event.target.value);
-                  debouncedSetSearchCode(event.target.value);
-                }}
-              />
-            </Input.Root>
+          <div className="flex items-center justify-between">
+            <p className="whitespace-nowrap text-semantic-fg-disabled product-button-button-2">
+              Pipelines{" "}
+              {tabValue === "featured"
+                ? hubStats.data?.number_of_featured_pipelines
+                : hubStats.data?.number_of_public_pipelines}
+            </p>
+            <div className="flex w-full items-center justify-end gap-4">
+              <Input.Root className="w-1/3">
+                <Input.LeftIcon>
+                  <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
+                </Input.LeftIcon>
+                <Input.Core
+                  value={searchInputValue ?? ""}
+                  placeholder="Search..."
+                  onChange={(event) => {
+                    setSearchInputValue(event.target.value);
+                    debouncedSetSearchCode(event.target.value);
+                  }}
+                />
+              </Input.Root>
+              <Popover.Root>
+                <Popover.Trigger asChild>
+                  <button className="flex flex-row gap-x-2 rounded border border-semantic-bg-line bg-semantic-bg-primary px-4 py-3 text-semantic-fg-primary product-button-button-1">
+                    Sort
+                    <Icons.ChevronDown className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
+                  </button>
+                </Popover.Trigger>
+                <Popover.Content
+                  align="end"
+                  className="flex w-64 flex-col !px-0 py-1"
+                >
+                  <SortSelectButton
+                    label="Name"
+                    icon={
+                      <Icons.TextA className="h-4 w-4 stroke-semantic-fg-disabled" />
+                    }
+                    onClick={() => {
+                      handleSortFieldChange("id");
+                    }}
+                    isSelected={selectedSortField === "id"}
+                  />
+                  <SortSelectButton
+                    label="Last Updated"
+                    icon={
+                      <Icons.Update className="h-4 w-4 stroke-semantic-fg-disabled" />
+                    }
+                    onClick={() => {
+                      handleSortFieldChange("update_time");
+                    }}
+                    isSelected={selectedSortField === "update_time"}
+                  />
+
+                  <Separator orientation="horizontal" className="my-1" />
+                  <SortSelectButton
+                    label="Ascending"
+                    icon={
+                      <Icons.SortLinesUp className="h-4 w-4 stroke-semantic-fg-disabled" />
+                    }
+                    onClick={() => {
+                      handleSortOrderChange("asc");
+                    }}
+                    isSelected={selectedSortOrder === "asc"}
+                  />
+                  <SortSelectButton
+                    label="Descending"
+                    icon={
+                      <Icons.SortLinesDown className="h-4 w-4 stroke-semantic-fg-disabled" />
+                    }
+                    onClick={() => {
+                      handleSortOrderChange("desc");
+                    }}
+                    isSelected={selectedSortOrder === "desc"}
+                  />
+                </Popover.Content>
+              </Popover.Root>
+            </div>
           </div>
         </div>
+        {tabValue === "featured" && <FeaturedBanner />}
         <div className="mb-4 flex flex-col gap-y-4">
           {pipelines.isSuccess && !pipelines.isFetching ? (
             allPipelines.length === 0 ? (
               <div className="flex h-[500px] w-full shrink-0 grow-0 items-center justify-center rounded-sm border border-semantic-bg-line">
                 <p className="text-semantic-fg-secondary product-body-text-2-semibold">
-                  Let&rsquo;s build your first pipline! 🙌
+                  Let&rsquo;s build your first pipeline! 🙌
                 </p>
               </div>
             ) : (
-              allPipelines.length &&
               allPipelines.map((pipeline) => (
                 <CardPipeline
                   key={pipeline.uid}
                   ownerID={pipeline.owner_name.split("/")[1]}
                   pipeline={pipeline}
-                  isOwner={pipeline.owner_name === me.data?.name}
-                  disabledPermissionLabel={true}
                 />
               ))
             )
@@ -170,6 +255,93 @@ export const Body = ({
             {pipelines.isFetchingNextPage ? <LoadingSpin /> : "Load More"}
           </Button>
         ) : null}
+      </div>
+    </div>
+  );
+};
+
+const FeaturedBanner = () => {
+  const [showBanner, setShowBanner] = React.useState(true);
+
+  return (
+    <>
+      {showBanner && (
+        <div className="mb-3 flex items-center justify-between rounded-md bg-semantic-accent-bg p-2 text-semantic-fg-secondary">
+          <p className="flex items-center justify-between font-normal">
+            Want to feature your pipeline? Drop a message in &nbsp;
+            <span className="font-bold">#show-your-work</span>
+            &nbsp;on&nbsp;
+            <a
+              href="https://discord.com/invite/sevxWsqpGh"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-semantic-accent-default underline underline-offset-2"
+            >
+              <span className="flex items-center space-x-1">
+                <span className="font-bold">Discord</span>
+                <span className="flex h-4 w-4 items-center text-semantic-accent-default">
+                  <DiscordIcon color="fill-semantic-accent-default" />
+                </span>
+              </span>
+            </a>
+          </p>
+          <div className="flex items-center">
+            <Button
+              onClick={() => setShowBanner(false)}
+              className="focus:outline-none"
+              variant={"tertiaryGrey"}
+            >
+              <Icons.X className="h-5 w-5 stroke-semantic-fg-secondary" />
+            </Button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export const Body = () => {
+  // The design-token we have right now doesn't support alpha value, so we need to use hex here
+  const tabTriggerStyle =
+    "text-semantic-fg-disabled product-body-text-3-semibold border-black data-[state=active]:text-semantic-fg-primary border-b-2 border-opacity-0 data-[state=active]:border-opacity-100 data-[state=active]:border-[#316FED] pb-2";
+
+  return (
+    <div className="flex justify-between">
+      <div className="flex w-full items-center">
+        <Tabs.Root
+          defaultValue="explore"
+          className="mb-8 mt-4 w-full flex-col justify-center"
+        >
+          <div className="flex flex-col items-center justify-center">
+            <Tabs.List className="flex justify-center gap-6">
+              <Tabs.Trigger className={tabTriggerStyle} value="explore">
+                <span className="text-lg">Explore</span>
+              </Tabs.Trigger>
+              <Tabs.Trigger className={tabTriggerStyle} value="featured">
+                <span className="text-lg">Featured</span>
+              </Tabs.Trigger>
+            </Tabs.List>
+            <Separator orientation="horizontal" />
+          </div>
+          <div className=" bg-semantic-bg-base-bg pt-8">
+            <div className="flex w-full flex-row px-40 sm:px-10 md:px-20">
+              <div className="flex w-full flex-col pl-8 pr-4">
+                <Tabs.Content value="explore">
+                  <PipelineSection tabValue="explore" />
+                </Tabs.Content>
+                <Tabs.Content value="featured">
+                  <PipelineSection tabValue="featured" />
+                </Tabs.Content>
+              </div>
+              <div className="ml-4 mt-6 flex w-1/4 flex-col pr-8">
+                <div className="sticky top-6">
+                  <NewsLetterCard />
+                  <LatestChangesCard />
+                </div>
+              </div>
+            </div>
+          </div>
+        </Tabs.Root>
       </div>
     </div>
   );
