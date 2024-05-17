@@ -76,7 +76,7 @@ const fetchBlogPosts = async () => {
         title: metadata.title?.replace(/^"|"$/g, "") || "",
         publishedOn: formatDate(metadata.publishedOn?.replace(/^"|"$/g, "")),
         themeImgAlt: metadata.themeImgAlt || "Blog post image",
-        slug: metadata.slug.replace(/^"|"$/g, "") || "",
+        slug: file.path.replace(/^blog\//g, "").replace(/\.mdx$/g, ""),
       };
     })
   );
