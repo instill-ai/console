@@ -89,7 +89,7 @@ export const Head = ({
                         {ownerID}
                     </button>
                     <div>
-                        <Tag variant={"default"}>
+                        <Tag variant={"default"} className="bg-semantic-bg-base-bg">
                             {displayName}
                         </Tag>
                     </div>
