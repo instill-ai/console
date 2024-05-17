@@ -247,7 +247,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
           </Button>
         ) : null}
       </div>
-      <div className="ml-8 mt-6 flex w-96 flex-col">
+      <div className="ml-8 mt-6 flex w-1/4 flex-col">
         <div className="sticky top-6">
           <NewsLetterCard />
           <LatestChangesCard />
