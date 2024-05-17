@@ -24,8 +24,8 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   pageSize: number;
-  searchPlaceholder: Nullable<string>;
-  searchKey: Nullable<string>;
+  searchPlaceholder?: Nullable<string>;
+  searchKey?: Nullable<string>;
   isLoading: boolean;
   loadingRows: Nullable<number>;
   children?: React.ReactNode;
