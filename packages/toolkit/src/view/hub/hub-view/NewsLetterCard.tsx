@@ -4,9 +4,9 @@ import { Icons, Skeleton, buttonVariants } from "@instill-ai/design-system";
 import { ImageWithFallback } from "../../../components/ImageWithFallback";
 import { useState } from "react";
 import cn from "clsx";
-import { useBlogPosts } from "../../../lib/react-query-service/misc/useBlogPosts";
+import { useBlogPosts } from "../../../lib";
 
-const NewsLetterCard = () => {
+export const NewsLetterCard = () => {
   const { data: blogPosts = [], isLoading, isError } = useBlogPosts();
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -115,5 +115,3 @@ const NewsLetterCard = () => {
     </div>
   );
 };
-
-export default NewsLetterCard;

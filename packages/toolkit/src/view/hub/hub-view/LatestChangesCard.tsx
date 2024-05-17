@@ -1,6 +1,6 @@
-import { Icons, Skeleton, buttonVariants } from "@instill-ai/design-system";
-import { useChangelogs } from "../../../lib/react-query-service/misc/useChangelogs";
 import cn from "clsx";
+import { Icons, Skeleton, buttonVariants } from "@instill-ai/design-system";
+import { useChangelogs } from "../../../lib";
 
 type Changelog = {
   id: string;
@@ -11,7 +11,7 @@ type Changelog = {
   published: boolean;
 };
 
-const LatestChangesCard: React.FC = () => {
+export const LatestChangesCard = () => {
   const changelogs = useChangelogs();
 
   if (changelogs.isLoading) {
@@ -76,5 +76,3 @@ const LatestChangesCard: React.FC = () => {
     </div>
   );
 };
-
-export default LatestChangesCard;

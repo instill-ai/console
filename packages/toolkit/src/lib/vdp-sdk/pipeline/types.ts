@@ -98,7 +98,7 @@ export type Pipeline = {
   sharing: PipelineSharing;
   metadata: GeneralRecord;
   permission: Permission;
-  isFeatured?: boolean;
+  tags: string[];
 };
 
 export type OperatorDefinition = {

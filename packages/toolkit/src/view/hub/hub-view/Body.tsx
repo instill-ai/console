@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   Button,
   DiscordIcon,
+  Icons,
   Input,
   Popover,
   Separator,
@@ -20,13 +21,12 @@ import {
 } from "../../../lib";
 import { LoadingSpin } from "../../../components";
 import debounce from "lodash.debounce";
-import NewsLetterCard from "./NewsLetterCard";
-import LatestChangesCard from "./LatestChangesCard";
+import { NewsLetterCard } from "./NewsLetterCard";
+import { LatestChangesCard } from "./LatestChangesCard";
 import {
   CardPipeline,
   CardSkeletonPipeline,
 } from "../../../components/card-pipeline-hub";
-import { Icons } from "./../../../../../design-system/src/new-ui/Icons";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

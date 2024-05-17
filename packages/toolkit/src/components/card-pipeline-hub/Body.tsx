@@ -51,7 +51,7 @@ export const Body = ({ pipeline }: { pipeline: Pipeline }) => {
         >
           {pipeline.id}
         </Button>
-        {pipeline.isFeatured && (
+        {pipeline.tags.includes("featured") && (
           <Tag
             variant={"lightPurple"}
             className="my-auto product-button-button-2"
