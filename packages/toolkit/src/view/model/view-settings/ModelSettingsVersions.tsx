@@ -96,7 +96,7 @@ export const ModelSettingsVersions = ({
   });
 
   useEffect(() => {
-    if (!versions.data?.pages[paginationState.pageIndex]) {
+    if (versions.isSuccess && !versions.data.pages[paginationState.pageIndex]) {
       versions.fetchNextPage();
     }
   }, [paginationState.pageIndex, versions]);
