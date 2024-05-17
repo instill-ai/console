@@ -1,10 +1,10 @@
 "use client";
 
 import { Icons, Skeleton, buttonVariants } from "@instill-ai/design-system";
-import { ImageWithFallback } from "./ImageWithFallback";
+import { ImageWithFallback } from "../ImageWithFallback";
 import { useState } from "react";
 import cn from "clsx";
-import { useBlogPosts } from "../lib/react-query-service/misc/useBlogPosts";
+import { useBlogPosts } from "../../lib/react-query-service/misc/useBlogPosts";
 
 const NewsLetterCard = () => {
     const { data: blogPosts = [], isLoading, isError } = useBlogPosts();

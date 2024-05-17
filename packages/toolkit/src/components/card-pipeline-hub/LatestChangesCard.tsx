@@ -1,5 +1,5 @@
 import { Icons, Skeleton, buttonVariants } from "@instill-ai/design-system";
-import { useChangelogs } from "../lib/react-query-service/misc/useChangelogs";
+import { useChangelogs } from "../../lib/react-query-service/misc/useChangelogs";
 import cn from "clsx";
 
 type Changelog = {
