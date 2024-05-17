@@ -35,8 +35,6 @@ export const ModelHubSettingPageMainView = (
     accessToken,
   }); */
 
-  console.log(model?.data);
-
   return (
     <div className="flex flex-col">
       <ModelSettingsHead
