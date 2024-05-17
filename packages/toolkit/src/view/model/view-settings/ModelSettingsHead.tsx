@@ -29,6 +29,25 @@ const OWNER = {
   name: null,
 };
 
+const ExternalLink = ({
+  children,
+  href,
+}: {
+  children: React.ReactNode;
+  href: string;
+}) => {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex flex-row items-center gap-x-1 border-b border-zinc-700 text-sm font-semibold text-semantic-bg-secondary-alt-primary"
+    >
+      {children}
+    </a>
+  );
+};
+
 export const ModelSettingsHead = ({
   selectedTab,
   onTabChange,
@@ -91,20 +110,28 @@ export const ModelSettingsHead = ({
               </React.Fragment>
             )}
           </Tag>
-          {/*  TODO: uncomment and implement this when we have these props available
-          
-          <ExternalLink href="/">
-            <GitHubIcon width="w-[18px]" height="h-[18px]" color="fill-semantic-bg-secondary-alt-primary" />
-            GitHub
-          </ExternalLink>
-          <ExternalLink href="/">
-            <Icons.Link01 className="w-3.5 h-3.5 stroke-semantic-bg-secondary-alt-primary" />
-            Link
-          </ExternalLink>
-          <ExternalLink href="/">
-            <Icons.Scales02 className="w-3.5 h-3.5 stroke-semantic-bg-secondary-alt-primary" />
-            License
-          </ExternalLink> */}
+          {model?.source_url ? (
+            <ExternalLink href={model.source_url}>
+              <GitHubIcon
+                width="w-[18px]"
+                height="h-[18px]"
+                color="fill-semantic-bg-secondary-alt-primary"
+              />
+              GitHub
+            </ExternalLink>
+          ) : null}
+          {model?.documentation_url ? (
+            <ExternalLink href={model.documentation_url}>
+              <Icons.Link01 className="h-3.5 w-3.5 stroke-semantic-bg-secondary-alt-primary" />
+              Link
+            </ExternalLink>
+          ) : null}
+          {model?.license ? (
+            <ExternalLink href={model.license}>
+              <Icons.Scales02 className="h-3.5 w-3.5 stroke-semantic-bg-secondary-alt-primary" />
+              License
+            </ExternalLink>
+          ) : null}
         </div>
         <div className="flex flex-row items-center gap-x-1">
           <Tag
@@ -139,10 +166,10 @@ export const ModelSettingsHead = ({
             }
             disabledDeSelect={true}
           >
-            <TabMenu.Item value="overview">
+            {/* <TabMenu.Item value="overview">
               <Icons.NewModel className="h-4 w-4" />
               Overview
-            </TabMenu.Item>
+            </TabMenu.Item> */}
             <TabMenu.Item value="api">
               <Icons.CodeSnippet01 className="h-4 w-4" />
               API
