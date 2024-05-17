@@ -92,7 +92,7 @@ export const ModelSettingsVersions = ({
   const versions = useInfiniteModelVersions({
     accessToken,
     enabledQuery,
-    modelName: model?.name,
+    modelName: model?.name || null,
   });
 
   useEffect(() => {
