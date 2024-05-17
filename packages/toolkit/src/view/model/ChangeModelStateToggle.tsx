@@ -70,7 +70,7 @@ export const ChangeModelStateToggle = ({
         accessToken,
       };
 
-      if (modelWatchState === "STATE_ONLINE") {
+      if (modelWatchState === "STATE_ACTIVE") {
         await switchOff.mutateAsync(payload);
       } else {
         await switchOn.mutateAsync(payload);
@@ -94,7 +94,7 @@ export const ChangeModelStateToggle = ({
     <div className={cn("flex flex-row", marginBottom)}>
       <StatefulToggleField
         id="model-state-toggle"
-        value={modelWatchState === "STATE_ONLINE" ? true : false}
+        value={modelWatchState === "STATE_ACTIVE" ? true : false}
         onChange={changeModelInstanceStateHandler}
         label="State"
         error={error}

@@ -134,7 +134,7 @@ export const ModelSettingsVersions = ({
 
   return (
     <DataTable
-      columns={columns}
+      columns={columns as ColumnDef<unknown>[]} // https://github.com/TanStack/table/issues/4382#issuecomment-2081153305
       data={currentPageData}
       pageSize={pagination.pageSize}
       isLoading={

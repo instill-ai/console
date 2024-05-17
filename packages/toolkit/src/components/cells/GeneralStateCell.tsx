@@ -33,7 +33,6 @@ export const GeneralStateCell = ({
 
     case "STATE_ACTIVE":
     case "STATUS_COMPLETED":
-    case "STATE_ONLINE":
       element = (
         <Tag variant="lightGreen" size="sm">
           {label || "Active"}

@@ -127,9 +127,9 @@ export const ModelSettingsEditForm = ({
     setUpdating(true);
 
     const payload: UpdateUserModelPayload = {
-      description: data.description || null,
-      source_url: data.source_url || null,
-      documentation_url: data.documentation_url || null,
+      description: data.description,
+      source_url: data.source_url,
+      documentation_url: data.documentation_url,
       license: data.license,
       //visibility: data.visibility,
       hardware:
@@ -337,7 +337,7 @@ export const ModelSettingsEditForm = ({
                     </Form.Label>
                     <Form.Control>
                       <Select.Root
-                        value={field?.value || hardwareOptions?.[0]}
+                        value={field?.value || hardwareOptions?.[0].value}
                         onValueChange={(value: string) => {
                           field.onChange(value);
 
