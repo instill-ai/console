@@ -5,7 +5,7 @@ import {
   Button,
   DiscordIcon,
   Input,
-  Select,
+  Popover,
   Separator,
   Tabs,
 } from "@instill-ai/design-system";
@@ -17,12 +17,8 @@ import {
   useInfinitePipelines,
   useInstillStore,
   useShallow,
-  useAuthenticatedUser,
 } from "../../../lib";
-import {
-  LoadingSpin,
-  UserProfileCardProps,
-} from "../../../components";
+import { LoadingSpin } from "../../../components";
 import debounce from "lodash.debounce";
 import NewsLetterCard from "./NewsLetterCard";
 import LatestChangesCard from "./LatestChangesCard";
@@ -37,11 +33,46 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
+type SortField = "id" | "update_time";
+type SortOrder = "asc" | "desc";
+
+const SortSelectButton = ({
+  onClick,
+  label,
+  icon,
+  isSelected,
+}: {
+  onClick: () => void;
+  label: string;
+  icon: React.ReactNode;
+  isSelected: boolean;
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      className="flex flex-row items-center px-4 py-[9px] hover:bg-semantic-bg-base-bg"
+    >
+      <div className="flex flex-row items-center gap-x-2">
+        {icon}
+        <span className="text-semantic-fg-primary product-body-text-3-medium">
+          {label}
+        </span>
+      </div>
+      {isSelected ? (
+        <Icons.Check className="ml-auto h-4 w-4 stroke-semantic-fg-disabled" />
+      ) : null}
+    </button>
+  );
+};
+
 const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
-  const [selectedSortField, setSelectedSortField] = React.useState<string>("update_time");
-  const [selectedSortOrder, setSelectedSortOrder] = React.useState<string>("desc");
-  const [searchInputValue, setSearchInputValue] = React.useState<Nullable<string>>(null);
+  const [selectedSortField, setSelectedSortField] =
+    React.useState<SortField>("update_time");
+  const [selectedSortOrder, setSelectedSortOrder] =
+    React.useState<SortOrder>("desc");
+  const [searchInputValue, setSearchInputValue] =
+    React.useState<Nullable<string>>(null);
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const selectedSortOption = React.useMemo(() => {
@@ -58,8 +89,12 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
     visibility: "VISIBILITY_PUBLIC",
     filter:
       tabValue === "featured"
-        ? `tag="featured" AND q="${searchCode ?? ""}"`
-        : searchCode ? `q="${searchCode}"` : "",
+        ? searchCode
+          ? `tag="featured" AND q="${searchCode ?? ""}"`
+          : `tag="featured"`
+        : searchCode
+          ? `q="${searchCode}"`
+          : "",
     order_by: selectedSortOption,
   });
 
@@ -85,15 +120,18 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
     []
   );
 
-  const handleSortOptionChange = (value: string) => {
-    if (value === "asc" || value === "desc") {
-      setSelectedSortOrder(value);
-    } else {
+  const handleSortFieldChange = (value: SortField) => {
+    if (selectedSortField !== value) {
       setSelectedSortField(value);
+      pipelines.refetch();
     }
+  };
 
-    // Trigger a new request
-    pipelines.refetch();
+  const handleSortOrderChange = (value: SortOrder) => {
+    if (selectedSortOrder !== value) {
+      setSelectedSortOrder(value);
+      pipelines.refetch();
+    }
   };
 
   return (
@@ -102,7 +140,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
         <div className="mb-4 flex flex-col">
           <div className="flex items-center justify-between">
             <p className="whitespace-nowrap text-semantic-fg-disabled product-button-button-2">
-              Pipelines{' '}{allPipelines.length}
+              Pipelines {allPipelines.length}
             </p>
             <div className="flex w-full items-center justify-end gap-4">
               <Input.Root className="w-1/3">
@@ -118,59 +156,61 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                   }}
                 />
               </Input.Root>
-              <Select.Root
-                value={selectedSortField || selectedSortOrder}
-                onValueChange={handleSortOptionChange}
-              >
-                <Select.Trigger className="max-w-24 rounded-[4px]">
-                  <Select.Value className="font-bold">
+              <Popover.Root>
+                <Popover.Trigger asChild>
+                  <button className="flex flex-row gap-x-2 rounded border border-semantic-bg-line bg-semantic-bg-primary px-4 py-3 text-semantic-fg-primary product-button-button-1">
                     Sort
-                  </Select.Value>
-                </Select.Trigger>
-                <Select.Content className="w-64 -ml-40">
-                  <Select.Group>
-                    <Select.Item
-                      value="id"
-                      className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                    >
-                      Name
-                      <span className="h-4 w-4">
-                        <Icons.TextA className="stroke-semantic-fg-disabled" />
-                      </span>
-                    </Select.Item>
-                    <Select.Item
-                      value="update_time"
-                      className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                    >
-                      Last Updated
-                      <span className="h-4 w-4">
-                        <Icons.Update className=" stroke-semantic-fg-disabled" />
-                      </span>
-                    </Select.Item>
-                  </Select.Group>
-                  <Select.Separator className=" bg-semantic-bg-line" />
-                  <Select.Group>
-                    <Select.Item
-                      value="asc"
-                      className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                    >
-                      Ascending
-                      <span className="h-4 w-4">
-                        <Icons.SortLinesUp className=" stroke-semantic-fg-disabled" />
-                      </span>
-                    </Select.Item>
-                    <Select.Item
-                      value="desc"
-                      className="flex justify-between text-semantic-fg-primary product-body-text-3-medium"
-                    >
-                      Descending
-                      <span className="h-4 w-4">
-                        <Icons.SortLinesDown className="stroke-semantic-fg-disabled" />
-                      </span>
-                    </Select.Item>
-                  </Select.Group>
-                </Select.Content>
-              </Select.Root>
+                    <Icons.ChevronDown className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
+                  </button>
+                </Popover.Trigger>
+                <Popover.Content
+                  align="end"
+                  className="flex w-64 flex-col !px-0 py-1"
+                >
+                  <SortSelectButton
+                    label="Name"
+                    icon={
+                      <Icons.TextA className="h-4 w-4 stroke-semantic-fg-disabled" />
+                    }
+                    onClick={() => {
+                      handleSortFieldChange("id");
+                    }}
+                    isSelected={selectedSortField === "id"}
+                  />
+                  <SortSelectButton
+                    label="Last Updated"
+                    icon={
+                      <Icons.Update className="h-4 w-4 stroke-semantic-fg-disabled" />
+                    }
+                    onClick={() => {
+                      handleSortFieldChange("update_time");
+                    }}
+                    isSelected={selectedSortField === "update_time"}
+                  />
+
+                  <Separator orientation="horizontal" className="my-1" />
+                  <SortSelectButton
+                    label="Ascending"
+                    icon={
+                      <Icons.SortLinesUp className="h-4 w-4 stroke-semantic-fg-disabled" />
+                    }
+                    onClick={() => {
+                      handleSortOrderChange("asc");
+                    }}
+                    isSelected={selectedSortOrder === "asc"}
+                  />
+                  <SortSelectButton
+                    label="Descending"
+                    icon={
+                      <Icons.SortLinesDown className="h-4 w-4 stroke-semantic-fg-disabled" />
+                    }
+                    onClick={() => {
+                      handleSortOrderChange("desc");
+                    }}
+                    isSelected={selectedSortOrder === "desc"}
+                  />
+                </Popover.Content>
+              </Popover.Root>
             </div>
           </div>
         </div>
@@ -222,10 +262,10 @@ const FeaturedBanner = () => {
     <>
       {showBanner && (
         <div className="mb-3 flex items-center justify-between rounded-md bg-semantic-accent-bg p-2 text-semantic-fg-secondary">
-          <p className="flex items-center justify-between">
-            &nbsp; Want to feature your pipeline? Drop a message in&nbsp;{" "}
+          <p className="flex items-center justify-between font-normal">
+            Want to feature your pipeline? Drop a message in &nbsp;
             <span className="font-bold">#featured</span>
-            &nbsp; on &nbsp;
+            &nbsp;on&nbsp;
             <a
               href="https://discord.com/invite/sevxWsqpGh"
               target="_blank"
@@ -255,13 +295,10 @@ const FeaturedBanner = () => {
   );
 };
 
-export const Body = ({
-  visitorCta,
-}: {
-  visitorCta?: UserProfileCardProps["visitorCta"];
-}) => {
+export const Body = () => {
+  // The design-token we have right now doesn't support alpha value, so we need to use hex here
   const tabTriggerStyle =
-    "text-semantic-fg-disabled product-body-text-3-semibold data-[state=active]:text-semantic-fg-primary data-[state=active]:font-bold data-[state=active]:border-b-2 data-[state=active]:border-blue-500 pb-2";
+    "text-semantic-fg-disabled product-body-text-3-semibold border-black data-[state=active]:text-semantic-fg-primary border-b-2 border-opacity-0 data-[state=active]:border-opacity-100 data-[state=active]:border-[#316FED] pb-2";
 
   return (
     <div className="flex justify-between">
@@ -271,7 +308,7 @@ export const Body = ({
           className="mb-8 mt-4 w-full flex-col justify-center"
         >
           <div className="flex flex-col items-center justify-center">
-            <Tabs.List className="flex justify-center gap-4">
+            <Tabs.List className="flex justify-center gap-6">
               <Tabs.Trigger className={tabTriggerStyle} value="explore">
                 <span className="text-lg">Explore</span>
               </Tabs.Trigger>

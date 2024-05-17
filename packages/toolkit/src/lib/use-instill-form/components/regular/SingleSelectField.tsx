@@ -55,7 +55,7 @@ export const SingleSelectField = ({
   //    set the model value to gpt-3.5-turbo, and this model support
   //    instill credit.
   React.useEffect(() => {
-    const sub = watch((values, { name, type }) => {
+    const sub = watch((values, { name }) => {
       const fieldValue = dot.getter(values, path);
 
       // This is a workaround before we clean up the initial value bug

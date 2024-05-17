@@ -84,7 +84,7 @@ export async function listPipelinesQuery(
           enablePagination: false,
           filter,
           visibility,
-          order_by
+          order_by,
         }))
       );
     }

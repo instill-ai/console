@@ -1,16 +1,11 @@
 "use client";
 
-import { UserProfileCardProps } from "../../../components";
 import { Body } from "./Body";
 
-export const HubView = ({
-  visitorCta,
-}: {
-  visitorCta?: UserProfileCardProps["visitorCta"];
-}) => {
+export const HubView = () => {
   return (
     <div className="flex flex-col pb-20">
-      <Body visitorCta={visitorCta} />
+      <Body />
     </div>
   );
 };
