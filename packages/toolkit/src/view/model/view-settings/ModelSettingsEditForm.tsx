@@ -143,6 +143,13 @@ export const ModelSettingsEditForm = ({
         accessToken,
       });
 
+      toast({
+        title: "Success!",
+        variant: "notification-success",
+        size: "large",
+        description: "Model was successfully updated!",
+      });
+
       if (amplitudeIsInit) {
         sendAmplitudeData("update_model");
       }
