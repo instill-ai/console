@@ -24,8 +24,8 @@ import {
   UserProfileCardProps,
 } from "../../../components";
 import debounce from "lodash.debounce";
-import NewsLetterCard from "../../../components/card-pipeline-hub/NewsLetterCard";
-import LatestChangesCard from "../../../components/card-pipeline-hub/LatestChangesCard";
+import NewsLetterCard from "./NewsLetterCard";
+import LatestChangesCard from "./LatestChangesCard";
 import {
   CardPipeline,
   CardSkeletonPipeline,
