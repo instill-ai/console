@@ -51,7 +51,7 @@ const NewsLetterCard = () => {
 
     return (
         <div className="flex h-[450px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
-            <h2 className="mb-4 text-product-headings-heading-3 font-bold">What's New?</h2>
+            <h2 className="mb-4 product-headings-heading-3 font-bold">What's New?</h2>
             <div className="relative h-[250px] w-full">
                 <a
                     href={`https://www.instill.tech/blog/${slug}`}

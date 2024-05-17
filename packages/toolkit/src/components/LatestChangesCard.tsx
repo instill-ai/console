@@ -29,7 +29,7 @@ const LatestChangesCard: React.FC = () => {
 
     return (
         <div className="mt-4 flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
-            <h2 className="mb-4 text-product-headings-heading-3 font-bold">Latest Changes</h2>
+            <div className="mb-4 product-headings-heading-3 font-bold">Latest Changes</div>
             {changelogs.isSuccess &&
                 changelogs.data.map((changelog: Changelog) => (
                     <div key={changelog.id}>
