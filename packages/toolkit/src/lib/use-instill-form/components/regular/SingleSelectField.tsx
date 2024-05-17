@@ -74,7 +74,6 @@ export const SingleSelectField = ({
         }
       }
 
-      // name === "task" is a workaround for top level task selection
       if (isInstillCreditField && instillCredentialMap) {
         const currentCredentialFieldPath = instillCredentialMap.targets[0];
 
@@ -82,10 +81,14 @@ export const SingleSelectField = ({
           values,
           currentCredentialFieldPath
         );
+
         // Deal with case that support instill credit, if the secret field
         // is empty, we will fill in the instill credit key into that field
         if (instillCredentialMap.values.includes(fieldValue)) {
-          if (!currentCredentialFieldValue) {
+          if (
+            !currentCredentialFieldValue &&
+            name !== currentCredentialFieldPath
+          ) {
             form.setValue(
               currentCredentialFieldPath,
               "${secrets." + `${InstillCredit.key}` + "}"
@@ -111,7 +114,11 @@ export const SingleSelectField = ({
           // Deal with case that don't support instil credit. We
           // will focus on the secret field and clear the value
 
-          if (currentCredentialFieldValue) {
+          if (
+            currentCredentialFieldValue &&
+            name &&
+            name !== currentCredentialFieldPath
+          ) {
             form.setValue(currentCredentialFieldPath, "");
             form.clearErrors(currentCredentialFieldPath);
           }
