@@ -173,7 +173,7 @@ const PipelineSection = ({ tabValue }: { tabValue: string }) => {
                       </span>
                     </Select.Item>
                   </Select.Group>
-                  <Select.Separator />
+                  <Select.Separator className=" bg-semantic-bg-line" />
                   <Select.Group>
                     <Select.Item
                       value={selectedSortOption.includes("asc") ? selectedSortOption : selectedSortOption.replace("desc", "asc")}
