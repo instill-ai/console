@@ -59,7 +59,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
     filter:
       tabValue === "featured"
         ? `tag="featured" AND q="${searchCode ?? ""}"`
-        : `q="${searchCode ?? ""}"`,
+        : searchCode ? `q="${searchCode}"` : "",
     order_by: selectedSortOption,
   });
 
