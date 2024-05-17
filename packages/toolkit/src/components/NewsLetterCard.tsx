@@ -12,15 +12,18 @@ const NewsLetterCard = () => {
 
     const NewsLetterCardSkeleton = () => {
         return (
-            <div className="flex w-[320px] flex-col gap-y-8">
-                <div className="flex flex-col items-center space-y-4">
-                    <div className="flex h-40 w-full bg-semantic-bg-line">
-                        <Skeleton className="m-auto h-36 w-full stroke-semantic-fg-secondary" />
-                    </div>
-                    <div className="flex w-full flex-col items-center space-y-1">
-                        <Skeleton className="h-6 w-24 rounded bg-semantic-bg-line" />
-                        <Skeleton className="h-6 w-16 rounded bg-semantic-bg-line" />
-                    </div>
+            <div className="flex h-[450px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
+                <Skeleton className="mb-4 h-6 w-32 rounded bg-semantic-bg-line" />
+                <div className="relative h-[250px] w-full">
+                    <Skeleton className="h-full w-full bg-semantic-bg-line" />
+                </div>
+                <Skeleton className="h-6 w-24 rounded bg-semantic-bg-line" />
+                <Skeleton className="h-6 w-full rounded bg-semantic-bg-line" /> 
+                <Skeleton className="h-6 w-full rounded bg-semantic-bg-line" />
+                <Skeleton className="h-6 w-2/3 rounded bg-semantic-bg-line" />
+                <div className="mt-auto flex items-center justify-end space-x-2">
+                    <Skeleton className="h-6 w-6 rounded-full bg-semantic-bg-line" />
+                    <Skeleton className="h-6 w-6 rounded-full bg-semantic-bg-line" />
                 </div>
             </div>
         );
@@ -109,6 +112,5 @@ const NewsLetterCard = () => {
         </div>
     );
 };
-
 
 export default NewsLetterCard;
