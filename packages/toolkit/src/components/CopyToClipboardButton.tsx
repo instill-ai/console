@@ -22,7 +22,7 @@ export const CopyToClipboardButton = ({
         className
       )}
       variant="secondaryGrey"
-      size="m"
+      size="md"
       type="button"
       onClick={async () => {
         await navigator.clipboard.writeText(text);
