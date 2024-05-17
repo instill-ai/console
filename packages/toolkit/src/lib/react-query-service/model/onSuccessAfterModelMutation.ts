@@ -1,11 +1,5 @@
 import { Nullable } from "../../type";
-import { removeObjKey } from "../../../server";
-import {
-  Model,
-  ModelWatchState,
-  ModelsWatchState,
-  watchUserModel,
-} from "../../vdp-sdk";
+import { Model } from "../../vdp-sdk";
 import { QueryClient } from "@tanstack/react-query";
 
 export type OnSuccessAfterModelMutationProps =
@@ -74,26 +68,6 @@ export async function onSuccessAfterModelMutation(
     queryClient.invalidateQueries({
       queryKey: ["models", model.name, "readme"],
     });
-
-    // process watch state
-    /* const watch = await watchUserModel({
-      modelName: model.name,
-      accessToken,
-    });
-
-    queryClient.setQueryData<ModelWatchState>(
-      ["models", model.name, "watch"],
-      watch
-    );
-
-    queryClient.setQueryData<ModelsWatchState>(["models", "watch"], (old) =>
-      old
-        ? {
-            ...removeObjKey(old, model.name),
-            [model.name]: watch,
-          }
-        : { [model.name]: watch }
-    ); */
 
     return;
   }

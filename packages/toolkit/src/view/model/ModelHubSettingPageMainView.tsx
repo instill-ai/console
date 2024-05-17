@@ -17,7 +17,6 @@ import {
   useUndeployUserModel,
   useUserModel,
   useUserModelReadme,
-  useWatchUserModel,
 } from "../../lib";
 import { ChangeModelStateToggle } from "./ChangeModelStateToggle";
 
@@ -88,11 +87,6 @@ export const ModelHubSettingPageMainView = (
     accessToken,
   });
 
-  const modelWatchState = useWatchUserModel({
-    modelName: entityObject.isSuccess ? entityObject.data.modelName : null,
-    enabled: enableQuery && entityObject.isSuccess,
-    accessToken,
-  });
   console.log(model?.data);
   /* -------------------------------------------------------------------------
    * Toggle model state

@@ -288,26 +288,6 @@ export async function getUserModelReadmeQuery({
 }
 
 /* -------------------------------------------------------------------------
- * Watch Model State
- * -----------------------------------------------------------------------*/
-
-export async function watchUserModel({
-  modelName,
-  accessToken,
-}: {
-  modelName: string;
-  accessToken: Nullable<string>;
-}) {
-  try {
-    const client = createInstillAxiosClient(accessToken, true);
-    const { data } = await client.get<ModelWatchState>(`/${modelName}/watch`);
-    return Promise.resolve(data);
-  } catch (err) {
-    return Promise.reject(err);
-  }
-}
-
-/* -------------------------------------------------------------------------
  * List Model Regions
  * -----------------------------------------------------------------------*/
 

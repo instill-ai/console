@@ -95,13 +95,6 @@ export type ModelHubPreset = {
   configuration: Record<string, string>;
 };
 
-export type ModelWatchState = {
-  state: ModelState;
-  progress: number;
-};
-
-export type ModelsWatchState = Record<string, ModelWatchState>;
-
 export type ModelWithPipelines = Model & {
   pipelines: Pipeline[];
 };
