@@ -43,7 +43,6 @@ export const Head = ({
     const owner = pipeline.owner as UserOwner;
     const userID = owner?.user?.name?.split("/")[1]; // Get the part after "users/"
     const ownerDisplayName =
-      owner?.user?.profile?.company_name ||
       owner?.user?.profile?.display_name ||
       userID;
 
