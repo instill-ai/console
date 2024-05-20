@@ -37,16 +37,15 @@ export const LatestChangesCard = () => {
   }
 
   return (
-    <div className="mt-4 flex flex-col gap-y-4 rounded-sm border border-semantic-bg-line p-4 bg-semantic-bg-primary">
-      <div className="font-bold product-headings-heading-3">Latest Changes</div>
+    <div className="flex flex-col rounded-sm border border-semantic-bg-line p-4 bg-semantic-bg-primary">
+      <div className="font-bold product-headings-heading-3 mb-4">Latest Changes</div>
       {changelogs.isSuccess &&
         changelogs.data.map((changelog: Changelog) => (
-          <a href={`https://instill-ai.productlane.com/changelog/${changelog.id}`} key={changelog.id} target="_blank" rel="noopener noreferrer">
-          <div className="space-y-2">
+          <a href={`https://instill-ai.productlane.com/changelog/${changelog.id}`} key={changelog.id} target="_blank" rel="noopener noreferrer" className="mb-4">
             <div
               className={cn(
                 buttonVariants({ variant: "secondaryColour", size: "md" }),
-                "pointer-events-none w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize"
+                "pointer-events-none w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize mb-2"
               )}
             >
               {changelog.date && new Date(changelog.date).getTime() !== 0
@@ -62,7 +61,6 @@ export const LatestChangesCard = () => {
                   })}
             </div>
             <p className="product-body-text-3-regular text-semantic-fg-primary hover:underline">{changelog.title}</p>
-          </div>
           </a>
         ))}
       <a

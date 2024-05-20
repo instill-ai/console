@@ -268,26 +268,26 @@ const FeaturedBanner = () => {
       {showBanner && (
         <div className="mb-3 flex items-center justify-between rounded-sm bg-semantic-accent-bg p-4 text-semantic-fg-secondary">
           <div className="flex-col space-y-2">
-          <p className="product-body-text-2-semibold text-semantic-fg-primary">How to get featured on Instill Hub</p>
-          <p className="flex items-center justify-between font-normal">
-            Want to feature your pipeline? Drop a message in &nbsp;
-            <span className="font-bold">#show-your-work</span>
-            &nbsp;on&nbsp;
-            <a
-              href="https://discord.com/invite/sevxWsqpGh"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-semantic-accent-default"
-            >
-              <span className="relative inline-flex items-center space-x-1 font-semibold">
-                <span>Discord</span>
-                <span className="inline-flex h-4 w-4 items-center text-semantic-accent-default">
-                  <DiscordIcon color="fill-semantic-accent-default" />
+            <p className="product-body-text-2-semibold text-semantic-fg-primary">How to get featured on Instill Hub</p>
+            <p className="flex items-center justify-between font-normal">
+              Want to feature your pipeline? Drop a message in &nbsp;
+              <span className="font-bold">#show-your-work</span>
+              &nbsp;on&nbsp;
+              <a
+                href="https://discord.com/invite/sevxWsqpGh"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-semantic-accent-default"
+              >
+                <span className="relative inline-flex items-center space-x-1 font-semibold">
+                  <span>Discord</span>
+                  <span className="inline-flex h-4 w-4 items-center text-semantic-accent-default">
+                    <DiscordIcon color="fill-semantic-accent-default" />
+                  </span>
+                  <span className="absolute bottom-0 -left-1 right-0 h-0.5 bg-semantic-accent-default"></span>
                 </span>
-                <span className="absolute bottom-0 -left-1 right-0 h-0.5 bg-semantic-accent-default"></span>
-              </span>
-            </a>
-          </p>
+              </a>
+            </p>
           </div>
           <div className="flex items-center">
             <Button
@@ -339,7 +339,9 @@ export const Body = () => {
               </div>
               <div className="mt-6 flex w-1/4 flex-col min-w-[248px]">
                 <div className="sticky top-6">
-                  <NewsLetterCard />
+                  <div className="mb-4">
+                    <NewsLetterCard />
+                  </div>
                   <LatestChangesCard />
                 </div>
               </div>
