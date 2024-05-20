@@ -183,7 +183,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                     isSelected={selectedSortField === "id"}
                   />
                   <SortSelectButton
-                    label="Last Updated"
+                    label="Updated Time"
                     icon={
                       <Icons.Update className="h-4 w-4 stroke-semantic-fg-disabled" />
                     }
