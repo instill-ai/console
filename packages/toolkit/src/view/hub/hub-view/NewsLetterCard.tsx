@@ -2,7 +2,7 @@
 
 import { Icons, Skeleton, buttonVariants } from "@instill-ai/design-system";
 import { ImageWithFallback } from "../../../components/ImageWithFallback";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import cn from "clsx";
 import { useBlogPosts } from "../../../lib";
 
@@ -41,6 +41,24 @@ export const NewsLetterCard = () => {
     );
   };
 
+  const preloadAdjacentImages = () => {
+    const prevIndex = currentIndex === 0 ? 0 : currentIndex - 1;
+    const nextIndex =
+      currentIndex === blogPosts.length - 1 ? currentIndex : currentIndex + 1;
+
+    const prevImage = new Image();
+    prevImage.src = blogPosts[prevIndex].imageUrl;
+
+    const nextImage = new Image();
+    nextImage.src = blogPosts[nextIndex].imageUrl;
+  };
+
+  useEffect(() => {
+    if (blogPosts.length > 0) {
+      preloadAdjacentImages();
+    }
+  }, [currentIndex, blogPosts]);
+
   if (isLoading) {
     return <NewsLetterCardSkeleton />;
   }
@@ -57,7 +75,7 @@ export const NewsLetterCard = () => {
       <h2 className="mb-4 font-bold product-headings-heading-3">
         What&apos;s New?
       </h2>
-      <div className="relative h-[250px] w-full aspect-[3/2]">
+      <div className="relative w-full aspect-[3/2]">
         <a
           href={`https://www.instill.tech/blog/${slug}`}
           target="_blank"
