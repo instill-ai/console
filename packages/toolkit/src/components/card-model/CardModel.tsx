@@ -20,6 +20,7 @@ import {
   getModelRegionToolkit,
 } from "@instill-ai/design-system";
 import { ImageWithFallback } from "..";
+import Link from "next/link";
 
 export type CardModelProps = {
   model: Model;
@@ -81,12 +82,12 @@ export const CardModel = (props: CardModelProps) => {
       />
       <div className="flex grow flex-col gap-y-2">
         <div className="flex w-full flex-row items-start gap-x-2">
-          <a
+          <Link
             href={`/${entity.data.entity}/models/${model.id}`}
             className="break-all font-medium text-semantic-accent-default hover:!underline"
           >
             {model.id}
-          </a>
+          </Link>
           <Tags
             isPrivate={model.visibility === "VISIBILITY_PRIVATE"}
             region={getModelRegionToolkit(model.region) || ""}
