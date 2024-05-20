@@ -41,23 +41,21 @@ export const Head = ({
 
   const displayName = React.useMemo(() => {
     const owner = pipeline.owner;
-  
-    if ('user' in owner) {
+
+    if ("user" in owner) {
       // Owner is of type user
       const userOwner = owner as UserOwner;
       const userID = userOwner.user.name.split("/")[1]; // Get the part after "/"
-      const ownerDisplayName =
-        userOwner.user.profile?.display_name ||
-        userID;
+      const ownerDisplayName = userOwner.user.profile?.display_name || userID;
 
-        return ownerDisplayName.toLowerCase();
-
-    } else if ('organization' in owner) {
+      return ownerDisplayName.toLowerCase();
+    } else if ("organization" in owner) {
       // Owner is of type organization
       const orgOwner = owner as OrganizationOwner;
-      const orgID = orgOwner.organization.id
-      const orgDisplayName = orgOwner.organization.profile?.display_name || orgID
-  
+      const orgID = orgOwner.organization.id;
+      const orgDisplayName =
+        orgOwner.organization.profile?.display_name || orgID;
+
       return orgDisplayName;
     }
   }, [pipeline.owner]);

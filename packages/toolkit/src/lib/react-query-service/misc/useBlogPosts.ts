@@ -61,9 +61,7 @@ const fetchBlogPosts = async () => {
       const frontmatterMatch = fileContent.match(frontmatterRegex);
       const frontmatter = frontmatterMatch ? frontmatterMatch[1] : "";
       const metadata: any = {};
-      frontmatter
-      .split("\n")
-      .forEach((line: string) => {
+      frontmatter.split("\n").forEach((line: string) => {
         const colonIndex = line.indexOf(":");
         if (colonIndex !== -1) {
           const key = line.slice(0, colonIndex).trim();

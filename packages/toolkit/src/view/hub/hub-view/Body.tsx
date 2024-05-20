@@ -268,7 +268,9 @@ const FeaturedBanner = () => {
       {showBanner && (
         <div className="mb-3 flex items-center justify-between rounded-sm bg-semantic-accent-bg p-4 text-semantic-fg-secondary">
           <div className="flex-col space-y-2">
-            <p className="product-body-text-2-semibold text-semantic-fg-primary">How to get featured on Instill Hub</p>
+            <p className="text-semantic-fg-primary product-body-text-2-semibold">
+              How to get featured on Instill Hub
+            </p>
             <p className="flex items-center justify-between font-normal">
               Want to feature your pipeline? Drop a message in &nbsp;
               <span className="font-bold">#show-your-work</span>
@@ -284,7 +286,7 @@ const FeaturedBanner = () => {
                   <span className="inline-flex h-4 w-4 items-center text-semantic-accent-default">
                     <DiscordIcon color="fill-semantic-accent-default" />
                   </span>
-                  <span className="absolute bottom-0 -left-1 right-0 h-0.5 bg-semantic-accent-default"></span>
+                  <span className="absolute -left-1 bottom-0 right-0 h-0.5 bg-semantic-accent-default"></span>
                 </span>
               </a>
             </p>
@@ -328,7 +330,7 @@ export const Body = () => {
             <Separator orientation="horizontal" />
           </div>
           <div className=" bg-semantic-bg-base-bg pt-8">
-            <div className="flex w-full flex-row xl:px-30 lg:px-20 sm:px-5 md:px-10 space-x-4">
+            <div className="xl:px-30 flex w-full flex-row space-x-4 sm:px-5 md:px-10 lg:px-20">
               <div className="flex w-full flex-col">
                 <Tabs.Content value="explore">
                   <PipelineSection tabValue="explore" />
@@ -337,7 +339,7 @@ export const Body = () => {
                   <PipelineSection tabValue="featured" />
                 </Tabs.Content>
               </div>
-              <div className="mt-6 flex w-[18%] flex-col min-w-[248px]">
+              <div className="mt-6 flex w-[18%] min-w-[248px] flex-col">
                 <div className="sticky top-6">
                   <div className="mb-4">
                     <NewsLetterCard />

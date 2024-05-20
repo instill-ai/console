@@ -71,11 +71,11 @@ export const NewsLetterCard = () => {
     blogPosts[currentIndex];
 
   return (
-    <div className="flex h-[350px] flex-col rounded-sm border border-semantic-bg-line p-4 bg-semantic-bg-primary">
+    <div className="flex h-[350px] flex-col rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4">
       <h2 className="mb-4 font-bold product-headings-heading-3">
         What&apos;s New?
       </h2>
-      <div className="relative w-full mb-2">
+      <div className="relative mb-2 w-full">
         <a
           href={`https://www.instill.tech/blog/${slug}`}
           target="_blank"
@@ -89,14 +89,14 @@ export const NewsLetterCard = () => {
             fallbackImg={
               <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
             }
-            className="w-[248px] h-[140px] object-cover"
+            className="h-[140px] w-[248px] object-cover"
           />
         </a>
       </div>
       <div
         className={cn(
           buttonVariants({ variant: "secondaryColour", size: "md" }),
-          "pointer-events-none w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize mb-2"
+          "pointer-events-none mb-2 w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize"
         )}
       >
         {publishedOn}
@@ -106,13 +106,13 @@ export const NewsLetterCard = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <p className="overflow-hidden text-semantic-fg-primary product-body-text-3-regular line-clamp-3 hover:underline mb-2">
+        <p className="mb-2 line-clamp-3 overflow-hidden text-semantic-fg-primary product-body-text-3-regular hover:underline">
           {title}
         </p>
       </a>
       <div className="mt-auto flex items-center justify-end space-x-6">
         <button type="button" onClick={handlePrev}>
-          <Icons.ArrowNarrowLeft 
+          <Icons.ArrowNarrowLeft
             className={`h-6 w-6 ${
               currentIndex === 0
                 ? "cursor-not-allowed stroke-semantic-fg-disabled"
