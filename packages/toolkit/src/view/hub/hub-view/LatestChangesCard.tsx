@@ -41,8 +41,8 @@ export const LatestChangesCard = () => {
       <div className="font-bold product-headings-heading-3">Latest Changes</div>
       {changelogs.isSuccess &&
         changelogs.data.map((changelog: Changelog) => (
-          <a href={`https://instill-ai.productlane.com/changelog/${changelog.id}`}>
-          <div key={changelog.id} className="space-y-2">
+          <a href={`https://instill-ai.productlane.com/changelog/${changelog.id}`} key={changelog.id}>
+          <div className="space-y-2">
             <div
               className={cn(
                 buttonVariants({ variant: "secondaryColour", size: "md" }),
