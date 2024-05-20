@@ -56,7 +56,7 @@ export type Model = {
   source_url: string;
   documentation_url: string;
   license: string;
-  profile_image: string | null;
+  profile_image: string;
 };
 
 export type ModelState =

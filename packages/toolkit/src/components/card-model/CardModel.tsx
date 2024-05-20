@@ -19,11 +19,19 @@ import {
   getModelHardwareToolkit,
   getModelRegionToolkit,
 } from "@instill-ai/design-system";
+import { ImageWithFallback } from "..";
 
 export type CardModelProps = {
   model: Model;
   accessToken: Nullable<string>;
   onDelete: () => void;
+};
+
+const modelCoverImageCommonProps = {
+  alt: "Cover",
+  className: "shrink-0 rounded",
+  width: 156,
+  height: 156,
 };
 
 export const CardModel = (props: CardModelProps) => {
@@ -61,12 +69,15 @@ export const CardModel = (props: CardModelProps) => {
 
   return (
     <div className="flex flex-row gap-x-6 rounded-md border border-semantic-bg-line bg-white p-4">
-      <img
-        className="shrink-0 rounded"
-        src={model.profile_image || "/images/models/model-placeholder.svg"}
-        alt="Cover"
-        width={156}
-        height={156}
+      <ImageWithFallback
+        src={model.profile_image}
+        fallbackImg={
+          <img
+            src="/images/models/model-placeholder.svg"
+            {...modelCoverImageCommonProps}
+          />
+        }
+        {...modelCoverImageCommonProps}
       />
       <div className="flex grow flex-col gap-y-2">
         <div className="flex w-full flex-row items-start gap-x-2">
