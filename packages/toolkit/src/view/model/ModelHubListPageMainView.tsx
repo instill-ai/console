@@ -121,6 +121,7 @@ export const ModelHubListPageMainView = (
         models={models.isSuccess ? models.data.pages[pageNumber]?.models : []}
         onModelDelete={models.refetch}
         isLoading={isLoadingResource}
+        isSearchActive={!!searchCode}
       />
       <ModelsListPagination
         models={models}
