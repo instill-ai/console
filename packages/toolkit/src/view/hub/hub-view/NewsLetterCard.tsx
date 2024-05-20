@@ -57,7 +57,7 @@ export const NewsLetterCard = () => {
       <h2 className="mb-4 font-bold product-headings-heading-3">
         What&apos;s New?
       </h2>
-      <div className="relative h-[250px] w-full">
+      <div className="relative h-[250px] w-full aspect-[3/2]">
         <a
           href={`https://www.instill.tech/blog/${slug}`}
           target="_blank"
