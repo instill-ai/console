@@ -339,7 +339,7 @@ export const Body = () => {
                   <PipelineSection tabValue="featured" />
                 </Tabs.Content>
               </div>
-              <div className="mt-6 flex w-1/6 min-w-[278px] flex-col">
+              <div className="mt-6 flex w-1/6 min-w-[272px] flex-col">
                 <div className="sticky top-6">
                   <div className="mb-4">
                     <NewsLetterCard />
