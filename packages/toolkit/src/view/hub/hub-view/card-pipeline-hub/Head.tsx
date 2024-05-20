@@ -40,12 +40,16 @@ export const Head = ({
   }, [pipeline]);
 
   const displayName = React.useMemo(() => {
-    const owner = pipeline.owner as UserOwner;
-    const userID = owner?.user?.name?.split("/")[1]; // Get the part after "users/"
-    const ownerDisplayName =
-      owner?.user?.profile?.display_name ||
-      userID;
-
+    const owner = pipeline.owner;
+  
+    if ('user' in owner) {
+      // Owner is of user
+      const userOwner = owner as UserOwner;
+      const userID = userOwner.user.name.split("/")[1]; // Get the part after "/"
+      const ownerDisplayName =
+        userOwner.user.profile?.display_name ||
+        userID;
+  
       // If ownerName contains spaces, return it in lowercase with hyphens
       if (ownerDisplayName.includes(" ")) {
         return ownerDisplayName.toLowerCase().replace(/\s+/g, "-");
@@ -53,7 +57,24 @@ export const Head = ({
         // If the owner name doesn't contain spaces, return it in lowercase
         return ownerDisplayName.toLowerCase();
       }
-    }, [pipeline.owner]);
+    } else if ('organization' in owner) {
+      // Owner is of type organization
+      const orgOwner = owner as OrganizationOwner;
+      const orgID = orgOwner.organization.name.split("/")[1]; // Get the part after "/"
+      const orgDisplayName = orgOwner.organization.profile?.display_name || orgID
+  
+      // If orgDisplayName contains spaces, return it in lowercase with hyphens
+      if (orgDisplayName.includes(" ")) {
+        return orgDisplayName.toLowerCase().replace(/\s+/g, "-");
+      } else {
+        // If the organization name doesn't contain spaces, return it in lowercase
+        return orgDisplayName.toLowerCase();
+      }
+    } else {
+      // Handle the case when the owner type is unknown
+      return "";
+    }
+  }, [pipeline.owner]);
 
   return (
     <div className="flex flex-row p-3">
