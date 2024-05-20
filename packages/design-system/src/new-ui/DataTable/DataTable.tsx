@@ -118,7 +118,7 @@ const DataTable = <TData, TValue>({
               </div>
             </div>
           ) : null}
-          {searchKey && (
+          {searchKey ? (
             <div className="flex w-1/4 items-end">
               <Input.Root className="w-full">
                 <Input.LeftIcon>
@@ -149,7 +149,7 @@ const DataTable = <TData, TValue>({
                 )}
               </Input.Root>
             </div>
-          )}
+          ) : null}
         </div>
       ) : null}
       <Table.Root
