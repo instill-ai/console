@@ -24,7 +24,7 @@ export * from "./ReferenceHintDataTypeTag";
 export * from "./cells";
 export * from "./top-bar";
 export * from "./TableError";
-export * from "./UploadAvatarFieldWithCrop";
+export * from "./UploadImageFieldWithCrop";
 export * from "./UserProfileCard";
 export * from "./WarnUnsavedChangesDialog";
 export * from "./DeleteResourceModal";
