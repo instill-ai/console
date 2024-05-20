@@ -81,7 +81,7 @@ export const Head = ({
               router.push(`/${ownerID}`);
             }}
           >
-            {ownerID}
+            {displayName}
           </button>
           <div>
             <Tag
@@ -89,7 +89,7 @@ export const Head = ({
               className="bg-semantic-bg-base-bg"
               style={{ paddingTop: 0.5, paddingBottom: 0.5 }}
             >
-              {displayName}
+              {ownerID}
             </Tag>
           </div>
         </div>
