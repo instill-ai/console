@@ -45,7 +45,7 @@ export const LatestChangesCard = () => {
             <div
               className={cn(
                 buttonVariants({ variant: "secondaryColour", size: "md" }),
-                "pointer-events-none w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize mb-2"
+                "pointer-events-none w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize mb-1"
               )}
             >
               {changelog.date && new Date(changelog.date).getTime() !== 0

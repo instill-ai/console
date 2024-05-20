@@ -71,11 +71,11 @@ export const NewsLetterCard = () => {
     blogPosts[currentIndex];
 
   return (
-    <div className="flex h-[400px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4 bg-semantic-bg-primary">
+    <div className="flex h-[400px] flex-col rounded-sm border border-semantic-bg-line p-4 bg-semantic-bg-primary">
       <h2 className="mb-4 font-bold product-headings-heading-3">
         What&apos;s New?
       </h2>
-      <div className="relative w-full">
+      <div className="relative w-full mb-2">
         <a
           href={`https://www.instill.tech/blog/${slug}`}
           target="_blank"
@@ -96,7 +96,7 @@ export const NewsLetterCard = () => {
       <div
         className={cn(
           buttonVariants({ variant: "secondaryColour", size: "md" }),
-          "pointer-events-none w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize"
+          "pointer-events-none w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize mb-2"
         )}
       >
         {publishedOn}
@@ -106,7 +106,7 @@ export const NewsLetterCard = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <p className="overflow-hidden text-semantic-fg-primary product-body-text-3-regular line-clamp-3 hover:underline">
+        <p className="overflow-hidden text-semantic-fg-primary product-body-text-3-regular line-clamp-3 hover:underline mb-2">
           {title}
         </p>
       </a>
