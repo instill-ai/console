@@ -45,11 +45,8 @@ export const Head = ({
     const ownerDisplayName =
       owner?.user?.profile?.company_name ||
       owner?.user?.profile?.display_name ||
-      "";
+      userID;
 
-    if (userID) {
-      return userID;
-    } else {
       // If ownerName contains spaces, return it in lowercase with hyphens
       if (ownerDisplayName.includes(" ")) {
         return ownerDisplayName.toLowerCase().replace(/\s+/g, "-");
@@ -57,8 +54,7 @@ export const Head = ({
         // If the owner name doesn't contain spaces, return it in lowercase
         return ownerDisplayName.toLowerCase();
       }
-    }
-  }, [pipeline.owner]);
+    }, [pipeline.owner]);
 
   return (
     <div className="flex flex-row p-3">
