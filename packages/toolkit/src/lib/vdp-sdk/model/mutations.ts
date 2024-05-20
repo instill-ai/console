@@ -44,6 +44,7 @@ export type UpdateUserModelPayload = {
   //visibility: Visibility;
   hardware: string;
   configuration?: Record<string, string>;
+  profile_image?: string;
 };
 
 export type CreateUserGitHubModelPayload = {

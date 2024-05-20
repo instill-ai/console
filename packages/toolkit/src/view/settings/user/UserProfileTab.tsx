@@ -23,7 +23,7 @@ import {
   GeneralAppPageProp,
 } from "../../../lib";
 import { FormLabel } from "../FormLabel";
-import { LoadingSpin, UploadAvatarFieldWithCrop } from "../../../components";
+import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
 import { useUpdateAuthenticatedUser } from "../../../lib";
 
 export const UserProfileTabSchema = z.object({
@@ -252,9 +252,12 @@ export const UserProfileTab = (props: UserProfileTabProps) => {
               description="This will be displayed on your profile."
             />
             <Setting.TabSectionContent className="gap-y-4">
-              <UploadAvatarFieldWithCrop
+              <UploadImageFieldWithCrop
                 fieldName="profile.avatar"
                 form={form}
+                title="Upload your image"
+                rounded
+                showAsOptional
               />
             </Setting.TabSectionContent>
           </Setting.TabSectionRoot>
