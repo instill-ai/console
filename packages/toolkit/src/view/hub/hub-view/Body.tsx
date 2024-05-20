@@ -279,7 +279,7 @@ const FeaturedBanner = () => {
               rel="noopener noreferrer"
               className="text-semantic-accent-default"
             >
-              <span className="relative inline-flex items-center space-x-1 font-bold">
+              <span className="relative inline-flex items-center space-x-1 font-semibold">
                 <span>Discord</span>
                 <span className="inline-flex h-4 w-4 items-center text-semantic-accent-default">
                   <DiscordIcon color="fill-semantic-accent-default" />
@@ -337,7 +337,7 @@ export const Body = () => {
                   <PipelineSection tabValue="featured" />
                 </Tabs.Content>
               </div>
-              <div className="mt-6 flex w-1/4 flex-col">
+              <div className="mt-6 flex w-1/4 flex-col min-w-[248px]">
                 <div className="sticky top-6">
                   <NewsLetterCard />
                   <LatestChangesCard />

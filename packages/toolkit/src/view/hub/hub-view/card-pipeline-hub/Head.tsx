@@ -49,30 +49,16 @@ export const Head = ({
       const ownerDisplayName =
         userOwner.user.profile?.display_name ||
         userID;
-  
-      // If ownerName contains spaces, return it in lowercase with hyphens
-      if (ownerDisplayName.includes(" ")) {
-        return ownerDisplayName.toLowerCase().replace(/\s+/g, "-");
-      } else {
-        // If the owner name doesn't contain spaces, return it in lowercase
+
         return ownerDisplayName.toLowerCase();
-      }
+
     } else if ('organization' in owner) {
       // Owner is of type organization
       const orgOwner = owner as OrganizationOwner;
-      const orgID = orgOwner.organization.name.split("/")[1]; // Get the part after "/"
+      const orgID = orgOwner.organization.id
       const orgDisplayName = orgOwner.organization.profile?.display_name || orgID
   
-      // If orgDisplayName contains spaces, return it in lowercase with hyphens
-      if (orgDisplayName.includes(" ")) {
-        return orgDisplayName.toLowerCase().replace(/\s+/g, "-");
-      } else {
-        // If the organization name doesn't contain spaces, return it in lowercase
-        return orgDisplayName.toLowerCase();
-      }
-    } else {
-      // Handle the case when the owner type is unknown
-      return "";
+      return orgDisplayName;
     }
   }, [pipeline.owner]);
 

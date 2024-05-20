@@ -2,17 +2,17 @@
 
 import { Icons, Skeleton, buttonVariants } from "@instill-ai/design-system";
 import { ImageWithFallback } from "../../../components/ImageWithFallback";
-import { useEffect, useState } from "react";
+import * as React from "react"
 import cn from "clsx";
 import { useBlogPosts } from "../../../lib";
 
 export const NewsLetterCard = () => {
   const { data: blogPosts = [], isLoading, isError } = useBlogPosts();
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
 
   const NewsLetterCardSkeleton = () => {
     return (
-      <div className="flex h-[400px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
+      <div className="flex h-[380px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
         <Skeleton className="mb-4 h-6 w-32 rounded bg-semantic-bg-line" />
         <div className="relative h-[250px] w-full">
           <Skeleton className="h-full w-full bg-semantic-bg-line" />
@@ -53,7 +53,7 @@ export const NewsLetterCard = () => {
     nextImage.src = blogPosts[nextIndex].imageUrl;
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (blogPosts.length > 0) {
       preloadAdjacentImages();
     }
@@ -71,7 +71,7 @@ export const NewsLetterCard = () => {
     blogPosts[currentIndex];
 
   return (
-    <div className="min-w-[248px] flex h-[400px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4 bg-semantic-bg-primary">
+    <div className="flex h-[380px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4 bg-semantic-bg-primary">
       <h2 className="mb-4 font-bold product-headings-heading-3">
         What&apos;s New?
       </h2>
@@ -110,7 +110,7 @@ export const NewsLetterCard = () => {
           {title}
         </p>
       </a>
-      <div className="mt-auto flex items-center justify-end space-x-2">
+      <div className="mt-auto flex items-center justify-end space-x-6">
         <button type="button" onClick={handlePrev}>
           <Icons.ArrowNarrowLeft 
             className={`h-6 w-6 ${
