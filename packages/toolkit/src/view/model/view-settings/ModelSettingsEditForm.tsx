@@ -27,7 +27,7 @@ import {
   useShallow,
   useUpdateUserModel,
 } from "../../../lib";
-import { LoadingSpin } from "../../../components";
+import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
 
 export type ModelSettingsEditFormProps = {
   model?: Model;
@@ -48,6 +48,7 @@ const EditModelSchema = z
     //visibility: z.enum(InstillModelVisibility).default(InstillModelVisibility[0]),
     hardware: z.string(),
     hardwareCustom: z.string().optional(),
+    profile_image: z.string().optional(),
     //configuration: z.object({}),
   })
   .superRefine((state, ctx) => {
@@ -109,6 +110,7 @@ export const ModelSettingsEditForm = ({
       //visibility: model.visibility as Exclude<Visibility, "VISIBILITY_UNSPECIFIED">,
       hardware: hardwareName === "Unknown" ? "Custom" : model.hardware,
       hardwareCustom: hardwareName === "Unknown" ? model.hardware : "",
+      profile_image: model.profile_image,
     };
   }, [model]);
 
@@ -134,6 +136,7 @@ export const ModelSettingsEditForm = ({
       //visibility: data.visibility,
       hardware:
         data.hardware === "Custom" ? data.hardwareCustom || "" : data.hardware,
+      profile_image: data.profile_image,
     };
 
     try {
@@ -277,6 +280,11 @@ export const ModelSettingsEditForm = ({
                   </Form.Item>
                 );
               }}
+            />
+            <UploadImageFieldWithCrop
+              fieldName="profile_image"
+              form={form}
+              title="Cover image"
             />
             {/* TODO: Uncomment when PATCH allows updating visibility
             

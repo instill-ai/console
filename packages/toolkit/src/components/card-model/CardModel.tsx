@@ -61,10 +61,10 @@ export const CardModel = (props: CardModelProps) => {
 
   return (
     <div className="flex flex-row gap-x-6 rounded-md border border-semantic-bg-line bg-white p-4">
-      <Image
+      <img
         className="shrink-0 rounded"
-        src="/images/models/model-placeholder.svg"
-        alt="model image"
+        src={model.profile_image || "/images/models/model-placeholder.svg"}
+        alt="Cover"
         width={156}
         height={156}
       />
