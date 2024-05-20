@@ -325,8 +325,8 @@ export const Body = () => {
             <Separator orientation="horizontal" />
           </div>
           <div className=" bg-semantic-bg-base-bg pt-8">
-            <div className="flex w-full flex-row px-40 sm:px-10 md:px-20">
-              <div className="flex w-full flex-col pl-8 pr-4">
+            <div className="flex w-full flex-row xl:px-30 lg:px-20 sm:px-5 md:px-10 space-x-4">
+              <div className="flex w-full flex-col">
                 <Tabs.Content value="explore">
                   <PipelineSection tabValue="explore" />
                 </Tabs.Content>
@@ -334,7 +334,7 @@ export const Body = () => {
                   <PipelineSection tabValue="featured" />
                 </Tabs.Content>
               </div>
-              <div className="ml-4 mt-6 flex w-1/4 flex-col pr-8">
+              <div className="mt-6 flex w-1/4 flex-col">
                 <div className="sticky top-6">
                   <NewsLetterCard />
                   <LatestChangesCard />
