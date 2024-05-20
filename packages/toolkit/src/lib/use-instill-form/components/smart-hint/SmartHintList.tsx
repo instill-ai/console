@@ -151,9 +151,9 @@ export const SmartHintList = ({
           <p className="text-semantic-accent-default product-body-text-3-semibold">
             {instillCredential
               ? supportInstillCredit
-                ? "This configuration support Instill Credit, you can use ${" +
+                ? "This configuration supports Instill Credit, You can use Instill Credit by input ${secrets." +
                   InstillCredit.key +
-                  "} to reference it"
+                  "}."
                 : "This configuration didn't support Instill Credit, please reference your own secret"
               : humanReadableAcceptFormatString}
           </p>

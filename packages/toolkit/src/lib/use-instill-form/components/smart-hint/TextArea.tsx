@@ -238,7 +238,7 @@ export const TextArea = ({
               )}
               text={
                 supportInstillCredit && instillCredential
-                  ? `${title} support Instill Credit. You can use Instill Credit by input ` +
+                  ? `${title} supports Instill Credit. You can use Instill Credit by input ` +
                     "${" +
                     `secrets.${InstillCredit.key}` +
                     "}. You can still bring your own key by input ${secrets.your_secret}"
