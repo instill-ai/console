@@ -41,7 +41,7 @@ export const LatestChangesCard = () => {
       <div className="font-bold product-headings-heading-3">Latest Changes</div>
       {changelogs.isSuccess &&
         changelogs.data.map((changelog: Changelog) => (
-          <div key={changelog.id}>
+          <div key={changelog.id} className="space-y-2">
             <div
               className={cn(
                 buttonVariants({ variant: "secondaryColour", size: "md" }),
@@ -60,7 +60,7 @@ export const LatestChangesCard = () => {
                     day: "numeric",
                   })}
             </div>
-            <p>{changelog.title}</p>
+            <p className="product-body-text-3-regular text-semantic-fg-primary">{changelog.title}</p>
           </div>
         ))}
       <a

@@ -61,14 +61,16 @@ const fetchBlogPosts = async () => {
       const frontmatterMatch = fileContent.match(frontmatterRegex);
       const frontmatter = frontmatterMatch ? frontmatterMatch[1] : "";
       const metadata: any = {};
-
       frontmatter
-        .split("\n")
-        .forEach((line: { split: (arg0: string) => [any, any] }) => {
-          const [key, value] = line.split(":");
-          metadata[key.trim()] = value.trim();
-        });
-
+      .split("\n")
+      .forEach((line: string) => {
+        const colonIndex = line.indexOf(":");
+        if (colonIndex !== -1) {
+          const key = line.slice(0, colonIndex).trim();
+          const value = line.slice(colonIndex + 1).trim();
+          metadata[key] = value;
+        }
+      });
       return {
         id: file.sha,
         themeImgSrc: metadata.themeImgSrc.replace(/^"|"$/g, "") || "",
