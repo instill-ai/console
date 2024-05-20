@@ -37,7 +37,7 @@ export const LatestChangesCard = () => {
   }
 
   return (
-    <div className="mt-4 flex flex-col gap-y-4 rounded-sm border border-semantic-bg-line p-4">
+    <div className="mt-4 flex flex-col gap-y-4 rounded-sm border border-semantic-bg-line p-4 bg-semantic-bg-primary">
       <div className="font-bold product-headings-heading-3">Latest Changes</div>
       {changelogs.isSuccess &&
         changelogs.data.map((changelog: Changelog) => (

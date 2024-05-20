@@ -71,7 +71,7 @@ export const NewsLetterCard = () => {
     blogPosts[currentIndex];
 
   return (
-    <div className="flex h-[450px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
+    <div className="flex h-[450px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4 bg-semantic-bg-primary">
       <h2 className="mb-4 font-bold product-headings-heading-3">
         What&apos;s New?
       </h2>
