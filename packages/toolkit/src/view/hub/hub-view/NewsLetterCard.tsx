@@ -2,7 +2,7 @@
 
 import { Icons, Skeleton, buttonVariants } from "@instill-ai/design-system";
 import { ImageWithFallback } from "../../../components/ImageWithFallback";
-import * as React from "react"
+import * as React from "react";
 import cn from "clsx";
 import { useBlogPosts } from "../../../lib";
 
@@ -110,7 +110,7 @@ export const NewsLetterCard = () => {
           {title}
         </p>
       </a>
-      <div className="mt-auto flex items-center justify-end space-x-2">
+      <div className="mt-auto flex items-center justify-end space-x-6">
         <button type="button" onClick={handlePrev}>
           <Icons.ArrowNarrowLeft 
             className={`h-6 w-6 ${
