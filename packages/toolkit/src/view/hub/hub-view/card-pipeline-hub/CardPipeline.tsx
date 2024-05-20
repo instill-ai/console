@@ -20,7 +20,7 @@ export const CardPipeline = (props: {
   const { ownerID, pipeline } = props;
 
   return (
-    <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line">
+    <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line bg-semantic-bg-primary">
       <Head pipeline={pipeline} ownerID={ownerID} />
       <Body pipeline={pipeline} />
     </div>
