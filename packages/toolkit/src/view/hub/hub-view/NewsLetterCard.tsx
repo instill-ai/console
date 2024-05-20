@@ -94,7 +94,7 @@ export const NewsLetterCard = () => {
       </a>
       <div className="mt-auto flex items-center justify-end space-x-2">
         <button type="button" onClick={handlePrev}>
-          <Icons.ArrowLeft
+          <Icons.ArrowNarrowLeft 
             className={`h-6 w-6 ${
               currentIndex === 0
                 ? "cursor-not-allowed stroke-semantic-fg-disabled"
@@ -103,7 +103,7 @@ export const NewsLetterCard = () => {
           />
         </button>
         <button type="button" onClick={handleNext}>
-          <Icons.ArrowRight
+          <Icons.ArrowNarrowRight
             className={`h-6 w-6 ${
               currentIndex === blogPosts.length - 1
                 ? "cursor-not-allowed stroke-semantic-fg-disabled"
