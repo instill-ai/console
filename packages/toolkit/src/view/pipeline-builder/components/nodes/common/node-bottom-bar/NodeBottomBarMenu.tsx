@@ -102,7 +102,7 @@ export const NodeBottomBarMenu = ({
                     Instill Credit
                   </p>
                   <p className="text-semantic-fg-primary product-body-text-4-medium">
-                    This connector is using Instill Credit
+                    This component is using Instill Credit
                   </p>
                 </div>
                 <Tooltip.Arrow
