@@ -75,7 +75,7 @@ export const NewsLetterCard = () => {
       <h2 className="mb-4 font-bold product-headings-heading-3">
         What&apos;s New?
       </h2>
-      <div className="relative w-full aspect-[3/2]">
+      <div className="relative w-full">
         <a
           href={`https://www.instill.tech/blog/${slug}`}
           target="_blank"
@@ -83,8 +83,8 @@ export const NewsLetterCard = () => {
         >
           <ImageWithFallback
             src={imageUrl}
-            width={600}
-            height={400}
+            width={248}
+            height={140}
             alt={themeImgAlt}
             fallbackImg={
               <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
