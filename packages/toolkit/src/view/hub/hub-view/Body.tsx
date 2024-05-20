@@ -275,13 +275,14 @@ const FeaturedBanner = () => {
               href="https://discord.com/invite/sevxWsqpGh"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-semantic-accent-default underline underline-offset-2"
+              className="text-semantic-accent-default"
             >
-              <span className="flex items-center space-x-1">
-                <span className="font-bold">Discord</span>
-                <span className="flex h-4 w-4 items-center text-semantic-accent-default">
+              <span className="relative inline-flex items-center space-x-1 font-bold">
+                <span>Discord</span>
+                <span className="inline-flex h-4 w-4 items-center text-semantic-accent-default">
                   <DiscordIcon color="fill-semantic-accent-default" />
                 </span>
+                <span className="absolute bottom-0 -left-1 right-0 h-0.5 bg-semantic-accent-default"></span>
               </span>
             </a>
           </p>
