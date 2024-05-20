@@ -41,6 +41,7 @@ export const ModelHubSettingPageMainView = (
         onTabChange={setSelectedTab}
         selectedTab={selectedTab}
         model={model.data}
+        isReady={!model.isSuccess}
       />
       <ModelSettingsContentViewer
         selectedTab={selectedTab}
