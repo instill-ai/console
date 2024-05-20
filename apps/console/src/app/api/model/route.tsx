@@ -1,20 +1,17 @@
-import { fetchUserPipeline } from "@instill-ai/toolkit/server";
+import { fetchUserModel } from "@instill-ai/toolkit/server";
 import { ImageResponse } from "next/og";
 // App router includes @vercel/og.
 // No need to install it.
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const pipelineName =
-    searchParams.get("pipeline") || searchParams.get("amp;pipeline");
-  const userName = searchParams.get("user");
+  const modelName = searchParams.get("model");
+  const userName = searchParams.get("user") || searchParams.get("amp;user");
 
-  const pipeline = await fetchUserPipeline({
-    pipelineName: `users/${userName}/pipelines/${pipelineName}`,
+  const model = await fetchUserModel({
+    modelName: `users/${userName}/models/${modelName}`,
     accessToken: null,
   });
-
-  const user = "user" in pipeline.owner ? pipeline.owner.user : null;
 
   return new ImageResponse(
     (
@@ -35,19 +32,19 @@ export async function GET(request: Request) {
                 fontWeight: "700",
               }}
             >
-              {user?.id}/
+              {model.owner?.user?.id}/
               <span
                 style={{
                   fontWeight: "700",
                 }}
               >
-                {pipeline?.id}
+                {model?.id}
               </span>
             </span>
           </div>
           <div tw="flex">
             <img
-              src={user?.profile ? user?.profile.avatar : ""}
+              src={model.owner?.user?.profile.avatar}
               alt=""
               tw="max-h-[200px] max-w-[200px]"
             />
@@ -55,13 +52,13 @@ export async function GET(request: Request) {
         </div>
         <div tw="flex h-[200px] items-end">
           <a
-            href={`${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/${userName}/pipelines/${pipelineName}`}
+            href={`${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL}/${userName}/models/${modelName}`}
             target="_blank"
             rel="noreferrer"
             tw="text-[#1D2433CC] text-[32px] font-medium font-sans cursor-pointer"
             style={{ cursor: "pointer" }}
           >
-            {pipeline.description.slice(0, 200)}
+            {model.description.slice(0, 200)}
           </a>
         </div>
         <div tw="flex justify-end items-end h-[100px]">
