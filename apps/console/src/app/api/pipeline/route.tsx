@@ -1,5 +1,4 @@
 import { fetchUserPipeline } from "@instill-ai/toolkit/server";
-import Image from "next/image";
 import { ImageResponse } from "next/og";
 
 export async function GET(request: Request) {
@@ -46,7 +45,7 @@ export async function GET(request: Request) {
           </div>
           <div tw="flex">
             {user?.profile ? (
-              <Image
+              <img
                 src={user?.profile.avatar ?? ""}
                 alt=""
                 tw="max-h-[200px] max-w-[200px]"

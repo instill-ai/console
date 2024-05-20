@@ -1,18 +1,14 @@
 import { fetchUser } from "@instill-ai/toolkit/server";
-import Image from "next/image";
 import { ImageResponse } from "next/og";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-
   const userName = searchParams.get("user");
 
   const user = await fetchUser({
     userName: "users/" + userName,
     accessToken: null,
   });
-
-  console.log({ user });
 
   return new ImageResponse(
     (
@@ -45,7 +41,7 @@ export async function GET(request: Request) {
             </span>
           </div>
           <div tw="flex">
-            <Image
+            <img
               src={user.profile?.avatar ?? ""}
               alt=""
               tw="max-h-[200px] max-w-[200px] rounded-full"
