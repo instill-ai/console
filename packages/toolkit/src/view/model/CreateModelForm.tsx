@@ -272,9 +272,14 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                     render={({ field }) => {
                       return (
                         <Form.Item className="w-full">
-                          <Form.Label className="product-body-text-3-semibold">
-                            Owner
-                          </Form.Label>
+                          <div className="flex flex-row items-center justify-between">
+                            <Form.Label className="product-body-text-3-semibold">
+                              Owner
+                            </Form.Label>
+                            <p className="!font-bold text-semantic-error-default product-body-text-4-regular">
+                              *
+                            </p>
+                          </div>
                           <Form.Control>
                             <Select.Root
                               value={field?.value || ""}
@@ -377,9 +382,14 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                     render={({ field }) => {
                       return (
                         <Form.Item className="w-full">
-                          <Form.Label className="product-body-text-3-semibold">
-                            Model ID
-                          </Form.Label>
+                          <div className="flex flex-row items-center justify-between">
+                            <Form.Label className="product-body-text-3-semibold">
+                              Model ID
+                            </Form.Label>
+                            <p className="!font-bold text-semantic-error-default product-body-text-4-regular">
+                              *
+                            </p>
+                          </div>
                           <Form.Control>
                             <Input.Root>
                               <Input.Core
@@ -408,14 +418,9 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                 render={({ field }) => {
                   return (
                     <Form.Item>
-                      <div className="flex flex-row items-center justify-between">
-                        <Form.Label className="product-body-text-3-semibold">
-                          Description
-                        </Form.Label>
-                        <p className=" text-semantic-fg-secondary product-body-text-4-regular">
-                          Optional
-                        </p>
-                      </div>
+                      <Form.Label className="product-body-text-3-semibold">
+                        Description
+                      </Form.Label>
                       <Form.Control>
                         <Textarea
                           {...field}
