@@ -266,7 +266,9 @@ const FeaturedBanner = () => {
   return (
     <>
       {showBanner && (
-        <div className="mb-3 flex items-center justify-between rounded-md bg-semantic-accent-bg p-2 text-semantic-fg-secondary">
+        <div className="mb-3 flex items-center justify-between rounded-sm bg-semantic-accent-bg p-4 text-semantic-fg-secondary">
+          <div className="flex-col space-y-2">
+          <p className="product-body-text-2-semibold text-semantic-fg-primary">How to get featured on Instill Hub</p>
           <p className="flex items-center justify-between font-normal">
             Want to feature your pipeline? Drop a message in &nbsp;
             <span className="font-bold">#show-your-work</span>
@@ -286,6 +288,7 @@ const FeaturedBanner = () => {
               </span>
             </a>
           </p>
+          </div>
           <div className="flex items-center">
             <Button
               onClick={() => setShowBanner(false)}
