@@ -41,6 +41,7 @@ export const LatestChangesCard = () => {
       <div className="font-bold product-headings-heading-3">Latest Changes</div>
       {changelogs.isSuccess &&
         changelogs.data.map((changelog: Changelog) => (
+          <a href={`https://instill-ai.productlane.com/changelog/${changelog.id}`}>
           <div key={changelog.id} className="space-y-2">
             <div
               className={cn(
@@ -62,6 +63,7 @@ export const LatestChangesCard = () => {
             </div>
             <p className="product-body-text-3-regular text-semantic-fg-primary">{changelog.title}</p>
           </div>
+          </a>
         ))}
       <a
         href="https://instill-ai.productlane.com/changelog"
