@@ -12,7 +12,7 @@ export const NewsLetterCard = () => {
 
   const NewsLetterCardSkeleton = () => {
     return (
-      <div className="flex h-[450px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
+      <div className="flex h-[400px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
         <Skeleton className="mb-4 h-6 w-32 rounded bg-semantic-bg-line" />
         <div className="relative h-[250px] w-full">
           <Skeleton className="h-full w-full bg-semantic-bg-line" />
@@ -71,7 +71,7 @@ export const NewsLetterCard = () => {
     blogPosts[currentIndex];
 
   return (
-    <div className="flex h-[450px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4 bg-semantic-bg-primary">
+    <div className="min-w-[248px] flex h-[400px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4 bg-semantic-bg-primary">
       <h2 className="mb-4 font-bold product-headings-heading-3">
         What&apos;s New?
       </h2>
