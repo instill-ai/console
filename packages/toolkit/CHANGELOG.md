@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.91.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.91.0...@instill-ai/toolkit-v0.91.1) (2024-05-20)
+
+
+### Bug Fixes
+
+* fix typo in the instill credit hint ([#1164](https://github.com/instill-ai/console/issues/1164)) ([bda7440](https://github.com/instill-ai/console/commit/bda7440d84a6af04d4b85163b823d67657a808d6))
+* **instill-credit:** fix credit has dollar sign as prefix ([#1165](https://github.com/instill-ai/console/issues/1165)) ([8bf2d54](https://github.com/instill-ai/console/commit/8bf2d54932585f70d92256ef1495e86e370b17e5))
+
 ## [0.91.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.90.0...@instill-ai/toolkit-v0.91.0) (2024-05-17)
 
 
