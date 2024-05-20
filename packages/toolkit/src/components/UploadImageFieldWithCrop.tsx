@@ -7,6 +7,7 @@ import AvatarEditor from "react-avatar-editor";
 import { UseFormReturn } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import cn from "clsx";
+import { ImageWithFallback } from "./ImageWithFallback";
 
 const DEFAULT_DIMENSIONS = {
   width: 300,
@@ -73,21 +74,17 @@ export const UploadImageFieldWithCrop = ({
                     htmlFor={`upload-image-field-${imageInputId}`}
                     className="flex w-full cursor-pointer flex-col items-center justify-center rounded border border-dashed border-semantic-bg-line bg-semantic-bg-base-bg py-4 text-semantic-fg-secondary product-body-text-3-medium"
                   >
-                    {field.value ? (
-                      <img
-                        src={image ? String(image) : field.value}
-                        alt={title}
-                        className={cn(
-                          "h-[150px] object-contain",
-                          rounded ? "rounded-full" : null
-                        )}
-                      />
-                    ) : placeholder ? (
-                      placeholder
-                    ) : (
-                      <p>Upload your image</p>
-                    )}
-
+                    <ImageWithFallback
+                      src={image ? String(image) : field.value}
+                      alt={title}
+                      className={cn(
+                        "h-[150px] object-contain",
+                        rounded ? "rounded-full" : null
+                      )}
+                      width={150}
+                      height={150}
+                      fallbackImg={placeholder || <p>Upload your image</p>}
+                    />
                     <Input.Root className="hidden">
                       <Input.Core
                         {...field}
@@ -103,6 +100,8 @@ export const UploadImageFieldWithCrop = ({
                               const result = reader.result;
                               field.onChange(result);
                               setImage(String(result));
+                              // reset the input value so selecting the same file can trigger onChange
+                              e.target.value = null;
                             };
                             reader.readAsDataURL(file);
                             setOpenImage(true);
