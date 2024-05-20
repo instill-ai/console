@@ -1,8 +1,6 @@
 import { fetchUserPipeline } from "@instill-ai/toolkit/server";
 import Image from "next/image";
 import { ImageResponse } from "next/og";
-// App router includes @vercel/og.
-// No need to install it.
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -167,6 +165,6 @@ export async function GET(request: Request) {
     {
       width: 1110,
       height: 560,
-    }
+    },
   );
 }
