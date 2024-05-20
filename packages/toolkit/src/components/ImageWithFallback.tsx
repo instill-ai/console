@@ -5,7 +5,7 @@ import cn from "clsx";
 
 export type ImageWithFallbackProps = {
   src: string;
-  fallbackImg: React.ReactElement;
+  fallbackImg: React.ReactNode;
   alt: string;
   width: number;
   height: number;
@@ -21,6 +21,16 @@ export const ImageWithFallback = ({
   className,
 }: ImageWithFallbackProps) => {
   const [error, setError] = React.useState(false);
+  const currentImageSrc = React.useRef<string>(src);
+
+  React.useEffect(() => {
+    if (currentImageSrc.current !== src) {
+      currentImageSrc.current = src;
+
+      setError(false);
+    }
+  }, [src]);
+
   return error ? (
     fallbackImg
   ) : (
