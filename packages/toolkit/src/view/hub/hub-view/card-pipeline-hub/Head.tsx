@@ -43,7 +43,7 @@ export const Head = ({
     const owner = pipeline.owner;
   
     if ('user' in owner) {
-      // Owner is of user
+      // Owner is of type user
       const userOwner = owner as UserOwner;
       const userID = userOwner.user.name.split("/")[1]; // Get the part after "/"
       const ownerDisplayName =
