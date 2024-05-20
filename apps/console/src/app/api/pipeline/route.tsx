@@ -1,4 +1,5 @@
 import { fetchUserPipeline } from "@instill-ai/toolkit/server";
+import Image from "next/image";
 import { ImageResponse } from "next/og";
 // App router includes @vercel/og.
 // No need to install it.
@@ -46,11 +47,13 @@ export async function GET(request: Request) {
             </span>
           </div>
           <div tw="flex">
-            <img
-              src={user?.profile ? user?.profile.avatar : ""}
-              alt=""
-              tw="max-h-[200px] max-w-[200px]"
-            />
+            {user?.profile ? (
+              <Image
+                src={user?.profile.avatar ?? ""}
+                alt=""
+                tw="max-h-[200px] max-w-[200px]"
+              />
+            ) : null}
           </div>
         </div>
         <div tw="flex h-[200px] items-end">
