@@ -61,7 +61,7 @@ export const LatestChangesCard = () => {
                     day: "numeric",
                   })}
             </div>
-            <p className="product-body-text-3-regular text-semantic-fg-primary">{changelog.title}</p>
+            <p className="product-body-text-3-regular text-semantic-fg-primary hover:underline">{changelog.title}</p>
           </div>
           </a>
         ))}
