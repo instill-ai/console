@@ -106,7 +106,7 @@ export const NewsLetterCard = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <p className="overflow-hidden text-semantic-fg-primary product-body-text-3-regular line-clamp-3">
+        <p className="overflow-hidden text-semantic-fg-primary product-body-text-3-regular line-clamp-3 hover:underline">
           {title}
         </p>
       </a>
