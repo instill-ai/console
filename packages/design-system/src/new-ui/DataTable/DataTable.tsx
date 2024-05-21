@@ -79,21 +79,23 @@ const DataTable = <TData, TValue>({
       rowSelection,
       sorting,
       columnFilters,
-      pagination: paginationState,
+      ...(paginationState ? { pagination: paginationState } : null),
     },
     manualPagination,
     pageCount,
-    onPaginationChange: !onPaginationStateChange
-      ? undefined
-      : (updater) => {
-          if (typeof updater !== "function") {
-            return;
-          }
+    ...(onPaginationStateChange
+      ? {
+          onPaginationChange: (updater) => {
+            if (typeof updater !== "function") {
+              return;
+            }
 
-          const newPageState = updater(table.getState().pagination);
+            const newPageState = updater(table.getState().pagination);
 
-          onPaginationStateChange(newPageState);
-        },
+            onPaginationStateChange(newPageState);
+          },
+        }
+      : null),
   });
 
   const hasTopSection = primaryText || secondaryText || searchKey;
@@ -225,7 +227,8 @@ const DataTable = <TData, TValue>({
           )}
         </Table.Body>
       </Table.Root>
-      {data.length > pageSize ? (
+      {(typeof pageCount !== "undefined" && pageCount > 0) ||
+      data.length > pageSize ? (
         <DataTablePagination
           table={table}
           showPageNumbers={showPageNumbers}
