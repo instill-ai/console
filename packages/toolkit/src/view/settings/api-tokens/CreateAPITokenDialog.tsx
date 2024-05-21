@@ -77,7 +77,7 @@ export const CreateAPITokenDialog = () => {
 
       toast({
         variant: "alert-success",
-        description: "Token created successfully",
+        title: "Token created successfully",
         size: "small",
       });
     } catch (error) {
