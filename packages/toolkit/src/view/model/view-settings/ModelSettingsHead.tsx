@@ -10,6 +10,7 @@ import {
   Skeleton,
 } from "@instill-ai/design-system";
 import { Model } from "../../../lib";
+import { InstillModelTask } from "../../../constant";
 
 export type ModelSettingsTabs =
   | "overview"
@@ -154,7 +155,9 @@ export const ModelSettingsHead = ({
               variant="lightNeutral"
               size="sm"
             >
-              {task.getIcon("w-3 h-3")}
+              {task.getIcon(
+                `w-3 h-3 ${["TASK_TEXT_GENERATION_CHAT", "TASK_IMAGE_TO_IMAGE", "TASK_VISUAL_QUESTION_ANSWERING"].includes(model?.task || "") ? "stroke-semantic-secondary-on-bg [&>*]:!stroke-semantic-secondary-on-bg" : "[&>*]:!fill-semantic-secondary-on-bg"}`
+              )}
               {task.label}
             </Tag>
             {/* TODO: uncomment and implement this when we have runs count available
