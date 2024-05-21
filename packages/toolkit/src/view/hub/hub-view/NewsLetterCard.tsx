@@ -1,6 +1,11 @@
 "use client";
 
-import { Icons, Skeleton, buttonVariants } from "@instill-ai/design-system";
+import {
+  Button,
+  Icons,
+  Skeleton,
+  buttonVariants,
+} from "@instill-ai/design-system";
 import { ImageWithFallback } from "../../../components/ImageWithFallback";
 import * as React from "react";
 import cn from "clsx";
@@ -71,11 +76,11 @@ export const NewsLetterCard = () => {
     blogPosts[currentIndex];
 
   return (
-    <div className="flex h-[350px] flex-col rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4">
+    <div className="flex h-[350px] flex-col rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-3">
       <h2 className="mb-4 font-bold product-headings-heading-3">
         What&apos;s New?
       </h2>
-      <div className="relative mb-2 w-full">
+      <div className="relative mb-1 w-full">
         <a
           href={`https://www.instill.tech/blog/${slug}`}
           target="_blank"
@@ -110,25 +115,25 @@ export const NewsLetterCard = () => {
           {title}
         </p>
       </a>
-      <div className="mt-auto flex items-center justify-end space-x-6">
-        <button type="button" onClick={handlePrev}>
+      <div className="mt-auto flex items-center justify-end space-x-3">
+        <Button className="!p-2" variant="tertiaryGrey" onClick={handlePrev}>
           <Icons.ArrowNarrowLeft
-            className={`h-6 w-6 ${
+            className={`h-4 w-4 ${
               currentIndex === 0
                 ? "cursor-not-allowed stroke-semantic-fg-disabled"
                 : "stroke-semantic-fg-secondary"
             }`}
           />
-        </button>
-        <button type="button" onClick={handleNext}>
+        </Button>
+        <Button className="!p-2" variant="tertiaryGrey" onClick={handleNext}>
           <Icons.ArrowNarrowRight
-            className={`h-6 w-6 ${
+            className={`h-4 w-4 ${
               currentIndex === blogPosts.length - 1
                 ? "cursor-not-allowed stroke-semantic-fg-disabled"
                 : "stroke-semantic-fg-secondary"
             }`}
           />
-        </button>
+        </Button>
       </div>
     </div>
   );
