@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.91.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.91.1...@instill-ai/toolkit-v0.91.2) (2024-05-21)
+
+
+### Bug Fixes
+
+* **delete_secret_modal:** secret deletion glitch ([#1168](https://github.com/instill-ai/console/issues/1168)) ([1cd746d](https://github.com/instill-ai/console/commit/1cd746d84189069681350a1da755162e39c8043a))
+* **hub_page:** Hub Page Hotfix ([#1167](https://github.com/instill-ai/console/issues/1167)) ([71eecaa](https://github.com/instill-ai/console/commit/71eecaa54cd74ed084cb9bf4903067d9036a2f2d))
+* **instill-credit:** fix credit not show up in pipeline-builder ([#1170](https://github.com/instill-ai/console/issues/1170)) ([d6709f0](https://github.com/instill-ai/console/commit/d6709f00c8e26a426298d7672a13ea5f75df4325))
+
 ## [0.91.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.91.0...@instill-ai/toolkit-v0.91.1) (2024-05-20)
 
 
