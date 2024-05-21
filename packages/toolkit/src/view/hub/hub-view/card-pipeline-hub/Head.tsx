@@ -39,21 +39,21 @@ export const Head = ({
     return null;
   }, [pipeline]);
 
-    // Function to transform the ID into a more readable format
-    const transformID = (id: string) => {
-      return id
-        .split(/[-_]/) // Split the ID by dash and underscore
-        .map((part) => part.charAt(0).toUpperCase() + part.slice(1)) // Capitalize each part
-        .join(" "); // Join the parts with a space
-    };
-    
+  // Function to transform the ID into a more readable format
+  const transformID = (id: string) => {
+    return id
+      .split(/[-_]/) // Split the ID by dash and underscore
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1)) // Capitalize each part
+      .join(" "); // Join the parts with a space
+  };
+
   const displayName = React.useMemo(() => {
     const owner = pipeline.owner;
-  
+
     if ("user" in owner) {
       const userOwner = owner as UserOwner;
       const userID = userOwner.user.name.split("/")[1]; // Get the part after "/"
-  
+
       if (userOwner.user.profile?.display_name?.trim()) {
         return userOwner.user.profile.display_name;
       } else {
@@ -63,7 +63,7 @@ export const Head = ({
     } else if ("organization" in owner) {
       const orgOwner = owner as OrganizationOwner;
       const orgID = orgOwner.organization.id;
-  
+
       if (orgOwner.organization.profile?.display_name?.trim()) {
         return orgOwner.organization.profile.display_name;
       } else {
