@@ -40,23 +40,23 @@ export const Head = ({
   }, [pipeline]);
 
   const displayName = React.useMemo(() => {
-    const owner = pipeline.owner as UserOwner;
-    const userID = owner?.user?.name?.split("/")[1]; // Get the part after "users/"
-    const ownerDisplayName =
-      owner?.user?.profile?.company_name ||
-      owner?.user?.profile?.display_name ||
-      "";
+    const owner = pipeline.owner;
 
-    if (userID) {
-      return userID;
-    } else {
-      // If ownerName contains spaces, return it in lowercase with hyphens
-      if (ownerDisplayName.includes(" ")) {
-        return ownerDisplayName.toLowerCase().replace(/\s+/g, "-");
-      } else {
-        // If the owner name doesn't contain spaces, return it in lowercase
-        return ownerDisplayName.toLowerCase();
-      }
+    if ("user" in owner) {
+      // Owner is of type user
+      const userOwner = owner as UserOwner;
+      const userID = userOwner.user.name.split("/")[1]; // Get the part after "/"
+      const ownerDisplayName = userOwner.user.profile?.display_name || userID;
+
+      return ownerDisplayName.toLowerCase();
+    } else if ("organization" in owner) {
+      // Owner is of type organization
+      const orgOwner = owner as OrganizationOwner;
+      const orgID = orgOwner.organization.id;
+      const orgDisplayName =
+        orgOwner.organization.profile?.display_name || orgID;
+
+      return orgDisplayName;
     }
   }, [pipeline.owner]);
 
@@ -81,7 +81,7 @@ export const Head = ({
               router.push(`/${ownerID}`);
             }}
           >
-            {ownerID}
+            {displayName}
           </button>
           <div>
             <Tag
@@ -89,7 +89,7 @@ export const Head = ({
               className="bg-semantic-bg-base-bg"
               style={{ paddingTop: 0.5, paddingBottom: 0.5 }}
             >
-              {displayName}
+              {ownerID}
             </Tag>
           </div>
         </div>

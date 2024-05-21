@@ -183,7 +183,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                     isSelected={selectedSortField === "id"}
                   />
                   <SortSelectButton
-                    label="Last Updated"
+                    label="Updated Time"
                     icon={
                       <Icons.Update className="h-4 w-4 stroke-semantic-fg-disabled" />
                     }
@@ -266,25 +266,31 @@ const FeaturedBanner = () => {
   return (
     <>
       {showBanner && (
-        <div className="mb-3 flex items-center justify-between rounded-md bg-semantic-accent-bg p-2 text-semantic-fg-secondary">
-          <p className="flex items-center justify-between font-normal">
-            Want to feature your pipeline? Drop a message in &nbsp;
-            <span className="font-bold">#show-your-work</span>
-            &nbsp;on&nbsp;
-            <a
-              href="https://discord.com/invite/sevxWsqpGh"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-semantic-accent-default underline underline-offset-2"
-            >
-              <span className="flex items-center space-x-1">
-                <span className="font-bold">Discord</span>
-                <span className="flex h-4 w-4 items-center text-semantic-accent-default">
-                  <DiscordIcon color="fill-semantic-accent-default" />
+        <div className="mb-3 flex items-center justify-between rounded-sm bg-semantic-accent-bg p-4 text-semantic-fg-secondary">
+          <div className="flex-col space-y-2">
+            <p className="text-semantic-fg-primary product-body-text-2-semibold">
+              How to get featured on Instill Hub
+            </p>
+            <p className="flex items-center justify-between font-normal">
+              Want to feature your pipeline? Drop a message in &nbsp;
+              <span className="font-bold">#show-your-work</span>
+              &nbsp;on&nbsp;
+              <a
+                href="https://discord.com/invite/sevxWsqpGh"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-semantic-accent-default"
+              >
+                <span className="relative inline-flex items-center space-x-1 font-semibold">
+                  <span>Discord</span>
+                  <span className="inline-flex h-4 w-4 items-center text-semantic-accent-default">
+                    <DiscordIcon color="fill-semantic-accent-default" />
+                  </span>
+                  <span className="absolute -left-1 bottom-0 right-0 h-0.5 bg-semantic-accent-default"></span>
                 </span>
-              </span>
-            </a>
-          </p>
+              </a>
+            </p>
+          </div>
           <div className="flex items-center">
             <Button
               onClick={() => setShowBanner(false)}
@@ -324,8 +330,8 @@ export const Body = () => {
             <Separator orientation="horizontal" />
           </div>
           <div className=" bg-semantic-bg-base-bg pt-8">
-            <div className="flex w-full flex-row px-40 sm:px-10 md:px-20">
-              <div className="flex w-full flex-col pl-8 pr-4">
+            <div className="xl:px-30 flex w-full flex-row space-x-4 sm:px-5 md:px-10 lg:px-20">
+              <div className="flex w-full flex-col">
                 <Tabs.Content value="explore">
                   <PipelineSection tabValue="explore" />
                 </Tabs.Content>
@@ -333,9 +339,11 @@ export const Body = () => {
                   <PipelineSection tabValue="featured" />
                 </Tabs.Content>
               </div>
-              <div className="ml-4 mt-6 flex w-1/4 flex-col pr-8">
+              <div className="mt-6 flex w-1/6 min-w-[272px] flex-col">
                 <div className="sticky top-6">
-                  <NewsLetterCard />
+                  <div className="mb-4">
+                    <NewsLetterCard />
+                  </div>
                   <LatestChangesCard />
                 </div>
               </div>

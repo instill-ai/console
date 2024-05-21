@@ -49,7 +49,7 @@ export const Body = ({ pipeline }: { pipeline: Pipeline }) => {
         {pipeline.tags.includes("featured") && (
           <Tag
             variant="lightPurple"
-            className="my-auto product-button-button-2"
+            className="my-auto border-none product-body-text-3-medium"
           >
             Featured
           </Tag>

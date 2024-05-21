@@ -1,18 +1,23 @@
 "use client";
 
-import { Icons, Skeleton, buttonVariants } from "@instill-ai/design-system";
+import {
+  Button,
+  Icons,
+  Skeleton,
+  buttonVariants,
+} from "@instill-ai/design-system";
 import { ImageWithFallback } from "../../../components/ImageWithFallback";
-import { useState } from "react";
+import * as React from "react";
 import cn from "clsx";
 import { useBlogPosts } from "../../../lib";
 
 export const NewsLetterCard = () => {
   const { data: blogPosts = [], isLoading, isError } = useBlogPosts();
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
 
   const NewsLetterCardSkeleton = () => {
     return (
-      <div className="flex h-[450px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
+      <div className="flex h-[350px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
         <Skeleton className="mb-4 h-6 w-32 rounded bg-semantic-bg-line" />
         <div className="relative h-[250px] w-full">
           <Skeleton className="h-full w-full bg-semantic-bg-line" />
@@ -41,6 +46,24 @@ export const NewsLetterCard = () => {
     );
   };
 
+  const preloadAdjacentImages = () => {
+    const prevIndex = currentIndex === 0 ? 0 : currentIndex - 1;
+    const nextIndex =
+      currentIndex === blogPosts.length - 1 ? currentIndex : currentIndex + 1;
+
+    const prevImage = new Image();
+    prevImage.src = blogPosts[prevIndex].imageUrl;
+
+    const nextImage = new Image();
+    nextImage.src = blogPosts[nextIndex].imageUrl;
+  };
+
+  React.useEffect(() => {
+    if (blogPosts.length > 0) {
+      preloadAdjacentImages();
+    }
+  }, [currentIndex, blogPosts]);
+
   if (isLoading) {
     return <NewsLetterCardSkeleton />;
   }
@@ -53,11 +76,11 @@ export const NewsLetterCard = () => {
     blogPosts[currentIndex];
 
   return (
-    <div className="flex h-[450px] flex-col gap-y-2 rounded-sm border border-semantic-bg-line p-4">
+    <div className="flex h-[350px] flex-col rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-3">
       <h2 className="mb-4 font-bold product-headings-heading-3">
         What&apos;s New?
       </h2>
-      <div className="relative h-[250px] w-full">
+      <div className="relative mb-1 w-full">
         <a
           href={`https://www.instill.tech/blog/${slug}`}
           target="_blank"
@@ -65,20 +88,20 @@ export const NewsLetterCard = () => {
         >
           <ImageWithFallback
             src={imageUrl}
-            width={600}
-            height={400}
+            width={248}
+            height={140}
             alt={themeImgAlt}
             fallbackImg={
               <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
             }
-            className="h-full w-full object-cover"
+            className="h-[140px] w-[248px] object-cover"
           />
         </a>
       </div>
       <div
         className={cn(
           buttonVariants({ variant: "secondaryColour", size: "md" }),
-          "pointer-events-none w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize"
+          "pointer-events-none mb-2 w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize"
         )}
       >
         {publishedOn}
@@ -88,29 +111,29 @@ export const NewsLetterCard = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <p className="line-clamp-3 overflow-hidden text-semantic-fg-primary">
+        <p className="mb-2 line-clamp-3 overflow-hidden text-semantic-fg-primary product-body-text-3-regular hover:underline">
           {title}
         </p>
       </a>
-      <div className="mt-auto flex items-center justify-end space-x-2">
-        <button type="button" onClick={handlePrev}>
-          <Icons.ArrowLeft
-            className={`h-6 w-6 ${
+      <div className="mt-auto flex items-center justify-end space-x-3">
+        <Button className="!p-2" variant="tertiaryGrey" onClick={handlePrev}>
+          <Icons.ArrowNarrowLeft
+            className={`h-4 w-4 ${
               currentIndex === 0
                 ? "cursor-not-allowed stroke-semantic-fg-disabled"
                 : "stroke-semantic-fg-secondary"
             }`}
           />
-        </button>
-        <button type="button" onClick={handleNext}>
-          <Icons.ArrowRight
-            className={`h-6 w-6 ${
+        </Button>
+        <Button className="!p-2" variant="tertiaryGrey" onClick={handleNext}>
+          <Icons.ArrowNarrowRight
+            className={`h-4 w-4 ${
               currentIndex === blogPosts.length - 1
                 ? "cursor-not-allowed stroke-semantic-fg-disabled"
                 : "stroke-semantic-fg-secondary"
             }`}
           />
-        </button>
+        </Button>
       </div>
     </div>
   );
