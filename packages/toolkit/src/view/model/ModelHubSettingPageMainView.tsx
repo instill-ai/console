@@ -29,12 +29,6 @@ export const ModelHubSettingPageMainView = (
     accessToken,
   });
 
-  /* const modelReadme = useUserModelReadme({
-    modelName: entityObject.isSuccess ? entityObject.data.modelName : null,
-    enabled: enableQuery && entityObject.isSuccess,
-    accessToken,
-  }); */
-
   return (
     <div className="flex flex-col">
       <ModelSettingsHead
