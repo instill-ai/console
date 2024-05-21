@@ -31,6 +31,8 @@ export const DeleteSecretDialog = ({ secretName }: { secretName: string }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const accessToken = useInstillStore((store) => store.accessToken);
 
+  const displaySecretName = secretName.split("/").pop() || "";
+
   const form = useForm<z.infer<typeof DeleteSecretSchema>>({
     resolver: zodResolver(DeleteSecretSchema),
     defaultValues: {
@@ -125,7 +127,7 @@ export const DeleteSecretDialog = ({ secretName }: { secretName: string }) => {
                           <Form.Label className="!block" htmlFor={field.name}>
                             Please type
                             <span className="mx-1 select-all font-bold">
-                              {secretName}
+                              {displaySecretName}
                             </span>
                             to confirm.
                           </Form.Label>
@@ -160,7 +162,9 @@ export const DeleteSecretDialog = ({ secretName }: { secretName: string }) => {
                     className="w-full flex-1"
                     variant="primary"
                     size="lg"
-                    disabled={form.watch("code") === secretName ? false : true}
+                    disabled={
+                      form.watch("code") === displaySecretName ? false : true
+                    }
                   >
                     {isLoading ? <LoadingSpin /> : "Delete Secret"}
                   </Button>
