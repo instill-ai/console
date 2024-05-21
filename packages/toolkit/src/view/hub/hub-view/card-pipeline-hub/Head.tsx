@@ -40,7 +40,7 @@ export const Head = ({
   }, [pipeline]);
 
   // Function to transform the ID into a more readable format
-  const transformID = (id: string) => {
+  const transformIDToCapitalizeName = (id: string) => {
     return id
       .split(/[-_]/) // Split the ID by dash and underscore
       .map((part) => part.charAt(0).toUpperCase() + part.slice(1)) // Capitalize each part
@@ -52,13 +52,13 @@ export const Head = ({
 
     if ("user" in owner) {
       const userOwner = owner as UserOwner;
-      const userID = userOwner.user.name.split("/")[1]; // Get the part after "/"
+      const userID = userOwner.user.id;
 
       if (userOwner.user.profile?.display_name?.trim()) {
         return userOwner.user.profile.display_name;
       } else {
         // Transform userID if display_name is empty, null, or consists of only whitespace
-        return transformID(userID);
+        return transformIDToCapitalizeName(userID);
       }
     } else if ("organization" in owner) {
       const orgOwner = owner as OrganizationOwner;
@@ -68,7 +68,7 @@ export const Head = ({
         return orgOwner.organization.profile.display_name;
       } else {
         // Transform orgID if display_name is empty, null, or consists of only whitespace
-        return transformID(orgID);
+        return transformIDToCapitalizeName(orgID);
       }
     }
   }, [pipeline.owner]);
