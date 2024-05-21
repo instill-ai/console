@@ -48,7 +48,7 @@ export const Head = ({
       const userID = userOwner.user.name.split("/")[1]; // Get the part after "/"
       const ownerDisplayName = userOwner.user.profile?.display_name || userID;
 
-      return ownerDisplayName.toLowerCase();
+      return ownerDisplayName;
     } else if ("organization" in owner) {
       // Owner is of type organization
       const orgOwner = owner as OrganizationOwner;
