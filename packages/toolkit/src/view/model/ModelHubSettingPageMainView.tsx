@@ -17,7 +17,7 @@ export const ModelHubSettingPageMainView = (
   const entityObject = useAppEntity();
 
   const [selectedTab, setSelectedTab] =
-    React.useState<ModelSettingsTabs>("api");
+    React.useState<ModelSettingsTabs>("overview");
 
   /* -------------------------------------------------------------------------
    * Query resource data
