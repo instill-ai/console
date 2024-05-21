@@ -3,6 +3,7 @@ import { LoadingSpin } from "../../../components";
 import { Model } from "../../../lib";
 import { ModelSettingsApi } from "./ModelSettingsApi";
 import { ModelSettingsTabs } from "./ModelSettingsHead";
+import { ModelSettingsOverview } from "./ModelSettingsOverview";
 
 export type ContentViewerProps = {
   selectedTab: ModelSettingsTabs;
@@ -18,6 +19,11 @@ export const ModelSettingsContentViewer = ({
   let content: null | React.ReactNode;
 
   switch (selectedTab) {
+    case "overview": {
+      content = <ModelSettingsOverview model={model} />;
+
+      break;
+    }
     case "api": {
       content = <ModelSettingsApi model={model} />;
 

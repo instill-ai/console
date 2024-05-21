@@ -26,7 +26,7 @@ export const ModelsList = (props: ModelsListProps) => {
     <div
       className={cn(
         "mb-4 flex flex-col gap-y-4",
-        isEmpty ? "relative items-center justify-center" : null
+        isEmpty ? "items-center justify-center" : null
       )}
     >
       {isLoading ? (
@@ -45,18 +45,18 @@ export const ModelsList = (props: ModelsListProps) => {
           );
         })
       ) : (
-        <div className="">
+        <div className="relative">
           <img
             src="/images/models/no-models-placeholder.svg"
             alt="A box and a looking glass"
           />
-          <p className="absolute left-1/2 top-2/3 flex -translate-x-1/2 flex-col items-center gap-y-2 text-xl font-semibold text-semantic-fg-primary">
-            No Models found
-            {isSearchActive ? (
-              <span className="text-base font-normal text-semantic-fg-secondary">
-                Your search did not match any models
-              </span>
-            ) : null}
+          <p className="absolute left-1/2 top-3/4 flex -translate-x-1/2 flex-col items-center gap-y-2 text-center text-xl font-semibold text-semantic-fg-primary">
+            <span className="whitespace-nowrap">No models found</span>
+            <span className="text-base font-normal text-semantic-fg-secondary">
+              {isSearchActive
+                ? "Your search did not match any models"
+                : "Once you create a model, it will appear here"}
+            </span>
           </p>
         </div>
       )}
