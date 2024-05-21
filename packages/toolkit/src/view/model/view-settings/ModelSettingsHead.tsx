@@ -191,10 +191,10 @@ export const ModelSettingsHead = ({
               }
               disabledDeSelect={true}
             >
-              {/* <TabMenu.Item value="overview">
-                  <Icons.NewModel className="h-4 w-4" />
-                  Overview
-                </TabMenu.Item> */}
+              <TabMenu.Item value="overview">
+                <Icons.NewModel className="h-4 w-4" />
+                Overview
+              </TabMenu.Item>
               <TabMenu.Item value="api">
                 <Icons.CodeSnippet01 className="h-4 w-4" />
                 API
