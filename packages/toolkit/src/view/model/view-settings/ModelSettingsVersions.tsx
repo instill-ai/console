@@ -132,6 +132,27 @@ export const ModelSettingsVersions = ({
     setPaginationState(state);
   };
 
+  if (currentPageData.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <div className="relative">
+          <img
+            src="/images/models/no-model-versions-placeholder.svg"
+            alt="An icon of a git branch"
+          />
+          <p className="absolute left-1/2 top-2/3 flex -translate-x-1/2 flex-col items-center gap-y-2 text-center text-xl font-semibold text-semantic-fg-primary">
+            <span className="whitespace-nowrap">
+              No model versions deployed yet
+            </span>
+            <span className="text-base font-normal text-semantic-fg-secondary">
+              Once you deploy a new version of your model, it will appear here
+            </span>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <DataTable
       columns={columns as ColumnDef<unknown>[]} // https://github.com/TanStack/table/issues/4382#issuecomment-2081153305
