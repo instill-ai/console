@@ -60,6 +60,7 @@ import { Flag04 } from "./Flag04";
 import { Gear01 } from "./Gear01";
 import { GitMerge } from "./GitMerge";
 import { Globe01 } from "./Globe01";
+import { GraduationHat } from "./GraduationHat";
 import { HelpCircle } from "./HelpCircle";
 import { Image01 } from "./Image01";
 import { ImagePlus } from "./ImagePlus";
@@ -191,6 +192,7 @@ export const Icons = {
   Gear01,
   GitMerge,
   Globe01,
+  GraduationHat,
   HelpCircle,
   IntersectSquare,
   Link01,

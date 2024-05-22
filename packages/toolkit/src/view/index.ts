@@ -6,3 +6,4 @@ export * from "./pipeline";
 export * from "./pipeline-builder";
 export * from "./profile/user-profile-view";
 export * from "./settings";
+export * from "./knowladge";
