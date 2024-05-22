@@ -43,10 +43,10 @@ export const CreateKnowledgeDialog = ({
     return (
         <Dialog.Root open={isOpen} onOpenChange={onClose}>
             <Dialog.Content className="!w-[600px] rounded-md">
-                <Dialog.Header>
+                <Dialog.Header className="flex justify-between">
                     <Dialog.Title className="text-semantic-fg-primary product-body-text-1-semibold">Create new knowledge base</Dialog.Title>
+                    <Dialog.Close className="" />
                 </Dialog.Header>
-                <Dialog.Close className="!right-6 !top-3" />
 
                 <Form.Root
                     {...form}
@@ -120,7 +120,7 @@ export const CreateKnowledgeDialog = ({
                                 </Form.Item>
                             )}
                         />
-                        <div className="mt-8 flex justify-end gap-x-3">
+                        <div className="flex justify-end mt-8 gap-x-3">
                             <Button
                                 variant="secondaryGrey"
                                 onClick={onClose}
