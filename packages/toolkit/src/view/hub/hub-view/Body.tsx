@@ -266,39 +266,34 @@ const FeaturedBanner = () => {
   return (
     <>
       {showBanner && (
-        <div className="mb-3 flex items-center justify-between rounded-sm bg-semantic-accent-bg p-4 text-semantic-fg-secondary">
-          <div className="flex-col space-y-2">
-            <p className="text-semantic-fg-primary product-body-text-2-semibold">
-              How to get featured on Instill Hub
-            </p>
-            <p className="flex items-center justify-between font-normal">
-              Want to feature your pipeline? Drop a message in &nbsp;
-              <span className="font-bold">#show-your-work</span>
-              &nbsp;on&nbsp;
-              <a
-                href="https://discord.com/invite/sevxWsqpGh"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-semantic-accent-default"
-              >
-                <span className="relative inline-flex items-center space-x-1 font-semibold">
-                  <span>Discord</span>
-                  <span className="inline-flex h-4 w-4 items-center text-semantic-accent-default">
-                    <DiscordIcon color="fill-semantic-accent-default" />
-                  </span>
-                  <span className="absolute -left-1 bottom-0 right-0 h-0.5 bg-semantic-accent-default"></span>
-                </span>
-              </a>
-            </p>
-          </div>
-          <div className="flex items-center">
-            <Button
-              onClick={() => setShowBanner(false)}
-              className="focus:outline-none"
-              variant={"tertiaryGrey"}
+        <div className="mb-3 flex items-center justify-between rounded-sm bg-semantic-accent-bg px-4 py-2 text-semantic-fg-secondary">
+          <p className="flex items-center justify-between font-normal">
+            Want to feature your pipeline? Drop a message in &nbsp;
+            <span className="font-bold">#show-your-work</span>
+            &nbsp;on&nbsp;
+            <a
+              href="https://discord.com/invite/sevxWsqpGh"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-semantic-accent-default"
             >
+              <span className="relative inline-flex items-center space-x-1 font-semibold">
+                <span>Discord</span>
+                <span className="inline-flex h-4 w-4 items-center text-semantic-accent-default">
+                  <DiscordIcon color="fill-semantic-accent-default" />
+                </span>
+                <span className="absolute -left-1 bottom-0 right-0 h-0.5 bg-semantic-accent-default"></span>
+              </span>
+            </a>
+          </p>
+          <div className="flex items-center">
+            {/* 
+              There has no button variant in the design handover. We will use
+              default button without hover effect for this.
+            */}
+            <button onClick={() => setShowBanner(false)}>
               <Icons.X className="h-5 w-5 stroke-semantic-fg-secondary" />
-            </Button>
+            </button>
           </div>
         </div>
       )}
