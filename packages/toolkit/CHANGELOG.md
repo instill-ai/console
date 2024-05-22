@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.91.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.91.2...@instill-ai/toolkit-v0.91.3) (2024-05-22)
+
+
+### Bug Fixes
+
+* change name case in pipeline to normal case ([#1171](https://github.com/instill-ai/console/issues/1171)) ([ca15954](https://github.com/instill-ai/console/commit/ca15954a5867a9ae0049dc42fec388b495b50a64))
+
 ## [0.91.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.91.1...@instill-ai/toolkit-v0.91.2) (2024-05-21)
 
 
