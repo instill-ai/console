@@ -11,6 +11,11 @@ export const topbarItems = [
     name: "Pipelines",
   },
   {
+    pathName: "knowledge-base",
+    icon: <Icons.GraduationHat className="h-6 w-6 stroke-semantic-fg-primary" />,
+    name: "Knowledge base",
+  },
+  {
     pathName: "models",
     icon: <Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />,
     name: "Models",
