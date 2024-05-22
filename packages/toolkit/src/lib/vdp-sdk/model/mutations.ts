@@ -42,9 +42,10 @@ export type UpdateUserModelPayload = {
   documentation_url?: string;
   license?: string;
   //visibility: Visibility;
-  hardware: string;
+  hardware?: string;
   configuration?: Record<string, string>;
   profile_image?: string;
+  readme?: string;
 };
 
 export type CreateUserGitHubModelPayload = {

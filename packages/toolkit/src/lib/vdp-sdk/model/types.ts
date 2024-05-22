@@ -3,7 +3,7 @@
 import { User } from "../mgmt/types";
 import { Organization } from "../organization";
 import { Pipeline } from "../pipeline";
-import { Visibility } from "../types";
+import { Permission, Visibility } from "../types";
 
 export type ModelReleaseStage =
   | "RELEASE_STAGE_UNSPECIFIED"
@@ -57,6 +57,7 @@ export type Model = {
   documentation_url: string;
   license: string;
   profile_image: string;
+  permission: Permission;
 };
 
 export type ModelState =

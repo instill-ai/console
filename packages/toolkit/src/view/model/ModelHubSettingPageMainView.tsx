@@ -3,10 +3,10 @@
 import * as React from "react";
 import { GeneralAppPageProp, useAppEntity, useUserModel } from "../../lib";
 import {
-  ModelSettingsContentViewer,
+  ModelContentViewer,
   ModelSettingsHead,
-  ModelSettingsTabs,
-} from "./view-settings";
+  ModelViewTabs,
+} from "./view-model";
 
 export type ModelHubSettingPageMainViewProps = GeneralAppPageProp;
 
@@ -17,7 +17,7 @@ export const ModelHubSettingPageMainView = (
   const entityObject = useAppEntity();
 
   const [selectedTab, setSelectedTab] =
-    React.useState<ModelSettingsTabs>("overview");
+    React.useState<ModelViewTabs>("overview");
 
   /* -------------------------------------------------------------------------
    * Query resource data
@@ -37,7 +37,7 @@ export const ModelHubSettingPageMainView = (
         model={model.data}
         isReady={!model.isSuccess}
       />
-      <ModelSettingsContentViewer
+      <ModelContentViewer
         selectedTab={selectedTab}
         model={model.data}
         onUpdate={model.refetch}
