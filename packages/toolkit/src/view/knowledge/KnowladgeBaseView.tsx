@@ -7,10 +7,10 @@ import { Button, Icons, Separator } from "@instill-ai/design-system";
 import { GeneralAppPageProp, useModels, useWatchUserModels } from "../../lib";
 import { Sidebar } from "./components/Sidebar";
 import { KnowledgeBaseCard } from "./components/KnowledgeBaseCard";
-import { CreatedKnowledgeBaseCard } from "./components/CreatedKnowledgeBaseCard";
 import { CreateKnowledgeDialog } from "./components/CreateKnowledgeDialog";
 import * as z from "zod";
 import * as React from "react";
+import { CreateKnowledgeBaseCard } from "./components/CreateKnowledgeBaseCard";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -73,21 +73,19 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             <Separator orientation="horizontal" className="my-4" />
             <div className="grid grid-cols-3 gap-6">
               <KnowledgeBaseCard
-                title="Create Knowledge"
-                description="Import your own text data or write data in real-time via Webhook for LLM context enhancement."
                 onClick={() => setIsCreateDialogOpen(true)}
               />
-              <CreatedKnowledgeBaseCard
+              <CreateKnowledgeBaseCard
                 title="Knowledge Base 1"
                 description="Enhance your LLM context with ease by importing your own text data or writing in real-time via Webhook. Build a comprehensive knowledge base effortlessly."
                 tags={["Tags"]}
               />
-              <CreatedKnowledgeBaseCard
+              <CreateKnowledgeBaseCard
                 title="Knowledge Base 2"
                 description="Enhance your LLM context with ease by importing your own text data or writing in real-time via Webhook. Build a comprehensive knowledge base effortlessly."
                 tags={["Tags"]}
               />
-              <CreatedKnowledgeBaseCard
+              <CreateKnowledgeBaseCard
                 title="Knowledge Base 3"
                 description="Enhance your LLM context with ease by importing your own text data or writing in real-time via Webhook. Build a comprehensive knowledge base effortlessly."
                 tags={["Text improvements for LLM", "another tag", "+3"]}
