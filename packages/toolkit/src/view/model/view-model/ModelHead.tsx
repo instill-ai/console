@@ -10,9 +10,8 @@ import {
   Skeleton,
 } from "@instill-ai/design-system";
 import { Model } from "../../../lib";
-import { InstillModelTask } from "../../../constant";
 
-export type ModelSettingsTabs =
+export type ModelViewTabs =
   | "overview"
   | "api"
   | "examples"
@@ -21,8 +20,8 @@ export type ModelSettingsTabs =
   | "settings";
 
 export type HeadProps = {
-  selectedTab: ModelSettingsTabs;
-  onTabChange: React.Dispatch<React.SetStateAction<ModelSettingsTabs>>;
+  selectedTab: ModelViewTabs;
+  onTabChange: React.Dispatch<React.SetStateAction<ModelViewTabs>>;
   model?: Model;
   isReady: boolean;
 };
@@ -187,7 +186,7 @@ export const ModelSettingsHead = ({
             <TabMenu.Root
               value={selectedTab}
               onValueChange={(value: Nullable<string>) =>
-                onTabChange(value as ModelSettingsTabs)
+                onTabChange(value as ModelViewTabs)
               }
               disabledDeSelect={true}
             >
@@ -211,10 +210,12 @@ export const ModelSettingsHead = ({
                 <Icons.ClockRewind className="h-4 w-4" />
                 Versions
               </TabMenu.Item>
-              <TabMenu.Item value="settings">
-                <Icons.Settings02 className="h-4 w-4" />
-                Settings
-              </TabMenu.Item>
+              {model?.permission.can_edit ? (
+                <TabMenu.Item value="settings">
+                  <Icons.Settings02 className="h-4 w-4" />
+                  Settings
+                </TabMenu.Item>
+              ) : null}
             </TabMenu.Root>
           </div>
         )}

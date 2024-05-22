@@ -6,6 +6,7 @@ export type AmplitudeEvent =
   | "update_pipeline_name"
   | "update_pipeline_description"
   | "update_pipeline_readme"
+  | "update_model_readme"
   | "publish_pipeline"
   | "unpublish_pipeline"
   | "enable_pipeline_share_by_link"
