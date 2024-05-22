@@ -58,12 +58,12 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
    * Render
    * -----------------------------------------------------------------------*/
   return (
-    <div className="bg-semantic-bg-primary w-full">
-      <div className="pl-16 pr-8 grid grid-cols-12 gap-6 w-full">
-        <div className="col-span-2">
+    <div className="w-full h-screen bg-semantic-bg-primary">
+      <div className="grid w-full grid-cols-12 gap-6 pl-4 pr-8">
+        <div className="lg:col-span-2 md:col-span-3 sm:col-span-4">
           <Sidebar />
         </div>
-        <div className="col-span-10">
+        <div className="lg:col-span-10 md:col-span-9 sm:col-span-8">
           <div className="flex flex-col gap-y-6">
             <div className="flex items-center justify-between">
               <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
@@ -71,7 +71,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               </p>
             </div>
             <Separator orientation="horizontal" className="my-4" />
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-16">
+            <div className="grid gap-16 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 xl:grid-cols-3 2xl:grid-cols-4">
               <KnowledgeBaseCard
                 onClick={() => setIsCreateDialogOpen(true)}
               />
