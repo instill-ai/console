@@ -13,7 +13,7 @@ export const Sidebar = () => {
                     }`}
                 onClick={() => setActiveTab("my-knowledge-bases")}
             >
-                my knowledge bases
+                My Knowledge Bases
             </div>
             <div
                 className={`flex h-8 items-center gap-x-2 rounded px-3 text-sm font-semibold ${activeTab === "upload-explore"
@@ -22,7 +22,7 @@ export const Sidebar = () => {
                     }`}
                 onClick={() => setActiveTab("upload-explore")}
             >
-                Upload & explore
+                Upload & Explore
             </div>
             <div
                 className={`flex h-8 items-center gap-x-2 rounded px-3 text-sm font-semibold ${activeTab === "catalog-files"
@@ -40,7 +40,7 @@ export const Sidebar = () => {
                     }`}
                 onClick={() => setActiveTab("retrieve-test")}
             >
-                retrieve test
+                Retrieve Test
             </div>
         </aside>
     );
