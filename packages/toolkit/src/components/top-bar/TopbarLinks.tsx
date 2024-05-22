@@ -13,7 +13,7 @@ export const topbarItems = [
     name: "Pipelines",
   },
   {
-    pathName: "knowledge-base",
+    pathName: "knowledge",
     icon: <Icons.GraduationHat className="h-6 w-6 stroke-semantic-fg-primary" />,
     name: "Knowledge base",
   },
