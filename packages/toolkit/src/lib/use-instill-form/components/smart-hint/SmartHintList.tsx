@@ -7,6 +7,9 @@ import { ControllerRenderProps } from "react-hook-form";
 import { GeneralUseFormReturn, Nullable } from "../../../type";
 import { transformInstillFormatToHumanReadableFormat } from "../../transform";
 import { InstillCredit } from "../../../../constant";
+import { useInstillStore } from "../../../use-instill-store";
+import { TriggerNodeData, isTriggerNode } from "../../../../view";
+import { Node } from "reactflow";
 
 export const SmartHintList = ({
   form,
@@ -20,9 +23,11 @@ export const SmartHintList = ({
   setHighlightedHintIndex,
   inputRef,
   smartHintEnabledPos,
+  currentCursorPos,
   instillAcceptFormats,
   supportInstillCredit,
   instillCredential,
+  onCreateVariable,
 }: {
   field: ControllerRenderProps<
     {
@@ -41,10 +46,14 @@ export const SmartHintList = ({
   setHighlightedHintIndex: React.Dispatch<React.SetStateAction<number>>;
   inputRef: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
   smartHintEnabledPos: Nullable<number>;
+  currentCursorPos: Nullable<number>;
   instillAcceptFormats: string[];
   supportInstillCredit?: boolean;
   instillCredential?: boolean;
+  onCreateVariable?: (key: string) => void;
 }) => {
+  const nodes = useInstillStore((s) => s.nodes);
+
   const humanReadableAcceptFormatString = React.useMemo(() => {
     const formats = instillAcceptFormats.map((format) => {
       return transformInstillFormatToHumanReadableFormat(format);
@@ -68,6 +77,29 @@ export const SmartHintList = ({
 
     return arrayString || nonArrayString;
   }, [instillAcceptFormats]);
+
+  const fieldValue = form.getValues(path) as string;
+
+  const searchCode = React.useMemo(() => {
+    if (smartHintEnabledPos !== null && currentCursorPos !== null) {
+      return fieldValue.substring(smartHintEnabledPos, currentCursorPos);
+    }
+
+    return null;
+  }, [fieldValue, currentCursorPos, smartHintEnabledPos]);
+
+  const triggerNodeFields = React.useMemo(() => {
+    const triggerNode = nodes.find((node) => isTriggerNode(node)) as
+      | Node<TriggerNodeData>
+      | undefined;
+
+    return triggerNode?.data.fields ?? null;
+  }, [nodes]);
+
+  const keyIsExist = React.useMemo(() => {
+    if (!triggerNodeFields || !searchCode) return false;
+    return Object.keys(triggerNodeFields).includes(searchCode);
+  }, [triggerNodeFields, searchCode]);
 
   return (
     <ScrollArea.Root viewPortRef={smartHintsScrollAreaViewportRef}>

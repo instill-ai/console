@@ -74,6 +74,7 @@ import { Menu01 } from "./Menu01";
 import { MessageChatSquare } from "./MessageChatSquare";
 import { Minus } from "./Minus";
 import { Mail01 } from "./Mail01";
+import { Map01 } from "./Map01";
 import { MessageSmileSquare } from "./MessageSmileSquare";
 import { NewModel } from "./NewModel";
 import { PauseCircle } from "./PauseCircle";
@@ -204,6 +205,7 @@ export const Icons = {
   MessageChatSquare,
   Minus,
   Mail01,
+  Map01,
   MessageSmileSquare,
   NewModel,
   Pipeline,

@@ -1,8 +1,10 @@
 "use client";
 
+import * as React from "react";
 import ReactFlow, {
   Background,
   BackgroundVariant,
+  ControlButton,
   Controls,
   MiniMap,
   ReactFlowInstance,
@@ -24,6 +26,7 @@ import {
 import { CustomEdge } from "./CustomEdge";
 import { isResponseNode, isVariableNode } from "../lib";
 import { canvasPanOnDrag } from "./canvasPanOnDrag";
+import { Icons } from "@instill-ai/design-system";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -77,6 +80,14 @@ export const PipelineBuilderCanvas = ({
     pipelineIsReadOnly,
     pipelineName,
   } = useInstillStore(useShallow(selector));
+
+  const [miniMapIsOpen, setMiniMapIsOpen] = React.useState(
+    disabledMinimap ?? false
+  );
+
+  React.useEffect(() => {
+    console.log("nodes update", nodes);
+  }, [nodes]);
 
   return (
     <ReactFlow
@@ -169,15 +180,25 @@ export const PipelineBuilderCanvas = ({
       selectionOnDrag={true}
     >
       {disabledControls ? null : (
-        <Controls id={pipelineName ?? undefined} showInteractive={false} />
+        <Controls id={pipelineName ?? undefined} showInteractive={false}>
+          <ControlButton
+            onClick={() => {
+              if (disabledMinimap) return;
+              setMiniMapIsOpen((prev) => !prev);
+            }}
+          >
+            <Icons.Map01 className="h-4 w-4 stroke-semantic-fg-primary" />
+          </ControlButton>
+        </Controls>
       )}
-      {disabledMinimap ? null : (
+      {disabledMinimap ? null : miniMapIsOpen ? (
         <MiniMap
-          className="h-[var(--pipeline-builder-minimap-height)]"
+          className="h-[var(--pipeline-builder-minimap-height)] translate-x-10"
           id={pipelineName ?? undefined}
           pannable={true}
+          position="bottom-left"
         />
-      )}
+      ) : null}
       {disabledBackground ? null : (
         <Background
           id={pipelineName ?? undefined}

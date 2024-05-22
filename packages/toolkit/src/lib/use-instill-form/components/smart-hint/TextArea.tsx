@@ -18,6 +18,7 @@ import { getFieldPlaceholder } from "./getFieldPlaceholder";
 import { FieldDescriptionTooltip } from "../common";
 import { Secret } from "../../../vdp-sdk";
 import { InstillCredit } from "../../../../constant";
+import { isTriggerNode } from "../../../../view";
 
 export const TextArea = ({
   form,
@@ -51,6 +52,8 @@ export const TextArea = ({
   updateIsUsingInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
 } & AutoFormFieldBaseProps) => {
   const smartHints = useInstillStore((s) => s.smartHints);
+  const nodes = useInstillStore((s) => s.nodes);
+  const updateNodes = useInstillStore((s) => s.updateNodes);
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
     React.useState(false);
   const [enableSmartHints, setEnableSmartHints] = React.useState(false);
@@ -105,6 +108,32 @@ export const TextArea = ({
   const highlightedHint = React.useMemo(() => {
     return filteredHints[highlightedHintIndex];
   }, [filteredHints, highlightedHintIndex]);
+
+  function onCreateVariable(key: string) {
+    updateNodes((nodes) =>
+      nodes.map((node) => {
+        if (isTriggerNode(node)) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              fields: {
+                ...node.data.fields,
+                [key]: {
+                  title: key,
+                  instill_format: instillAcceptFormats[0],
+                  instill_ui_order: 0,
+                  instill_ui_multiline: false,
+                },
+              },
+            },
+          };
+        }
+
+        return node;
+      })
+    );
+  }
 
   return isHidden ? null : (
     <Form.Field
@@ -217,6 +246,7 @@ export const TextArea = ({
                       }
                       enableSmartHints={enableSmartHints}
                       setEnableSmartHints={setEnableSmartHints}
+                      currentCursorPos={currentCursorPos}
                       filteredHints={filteredHints}
                       path={path}
                       highlightedHintIndex={highlightedHintIndex}
@@ -226,6 +256,7 @@ export const TextArea = ({
                       instillAcceptFormats={instillAcceptFormats}
                       instillCredential={instillCredential}
                       supportInstillCredit={supportInstillCredit}
+                      onCreateVariable={onCreateVariable}
                     />
                   </React.Fragment>
                 ) : null}

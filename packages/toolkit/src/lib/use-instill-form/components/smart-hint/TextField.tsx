@@ -18,6 +18,7 @@ import { getFieldPlaceholder } from "./getFieldPlaceholder";
 import { FieldDescriptionTooltip } from "../common";
 import { Secret } from "../../../vdp-sdk";
 import { InstillCredit } from "../../../../constant";
+import { isTriggerNode } from "../../../../view";
 
 export const TextField = ({
   form,
@@ -51,6 +52,8 @@ export const TextField = ({
   updateIsUsingInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
 } & AutoFormFieldBaseProps) => {
   const smartHints = useInstillStore((s) => s.smartHints);
+  const updateNodes = useInstillStore((s) => s.updateNodes);
+
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
     React.useState(false);
   const [enableSmartHints, setEnableSmartHints] = React.useState(false);
@@ -94,6 +97,32 @@ export const TextField = ({
     instillSecret,
     supportInstillCredit,
   });
+
+  function onCreateVariable(key: string) {
+    updateNodes((nodes) =>
+      nodes.map((node) => {
+        if (isTriggerNode(node)) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              fields: {
+                ...node.data.fields,
+                [key]: {
+                  title: key,
+                  instill_format: "null",
+                  instill_ui_order: 0,
+                  instill_ui_multiline: false,
+                },
+              },
+            },
+          };
+        }
+
+        return node;
+      })
+    );
+  }
 
   const supportTemplate = instillUpstreamTypes.includes("template");
   const supportReference = instillUpstreamTypes.includes("reference");
@@ -229,6 +258,7 @@ export const TextField = ({
                       }
                       enableSmartHints={enableSmartHints}
                       setEnableSmartHints={setEnableSmartHints}
+                      currentCursorPos={currentCursorPos}
                       filteredHints={filteredHints}
                       path={path}
                       highlightedHintIndex={highlightedHintIndex}
@@ -238,6 +268,7 @@ export const TextField = ({
                       instillAcceptFormats={instillAcceptFormats}
                       instillCredential={instillCredential}
                       supportInstillCredit={supportInstillCredit}
+                      onCreateVariable={onCreateVariable}
                     />
                   </React.Fragment>
                 ) : null}

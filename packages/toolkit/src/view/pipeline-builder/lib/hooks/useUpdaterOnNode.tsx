@@ -61,6 +61,7 @@ export function useUpdaterOnNode({
         updateData: GeneralRecord;
         nodes: Node<NodeData>[];
       }) => {
+        console.log("yottoto", nodes);
         const newNodes = nodes.map((node) => {
           if (isGeneralNode(node) && node.id === id) {
             return {

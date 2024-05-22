@@ -52,6 +52,8 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
     open: false,
     confirmNavigation: null,
   },
+  leftSidebarIsOpen: false,
+  bottomDrawerIsOpen: false,
 };
 
 export const createPipelineBuilderSlice: StateCreator<
@@ -279,6 +281,20 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         warnUnsavedChangesDialogState: fn(state.warnUnsavedChangesDialogState),
+      };
+    }),
+  updateLeftSidebarIsOpen: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        leftSidebarIsOpen: fn(state.leftSidebarIsOpen),
+      };
+    }),
+  updateBottomDrawerIsOpen: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        bottomDrawerIsOpen: fn(state.bottomDrawerIsOpen),
       };
     }),
 });

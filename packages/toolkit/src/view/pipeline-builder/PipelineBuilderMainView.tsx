@@ -16,7 +16,9 @@ import {
 } from "../../lib";
 import {
   BottomBar,
+  BottomDrawer,
   Flow,
+  LeftSideBar,
   RightPanel,
   usePipelineBuilderGraph,
   useSavePipeline,
@@ -39,6 +41,8 @@ const selector = (store: InstillStore) => ({
   warnUnsavedChangesDialogState: store.warnUnsavedChangesDialogState,
   updateWarnUnsavdChangesDialogState: store.updateWarnUnsavdChangesDialogState,
   updateEntitySecrets: store.updateEntitySecrets,
+  leftSideBarIsOpen: store.leftSidebarIsOpen,
+  bottomDrawerIsOpen: store.bottomDrawerIsOpen,
 });
 
 export const PipelineBuilderMainView = () => {
@@ -57,6 +61,8 @@ export const PipelineBuilderMainView = () => {
     warnUnsavedChangesDialogState,
     updateWarnUnsavdChangesDialogState,
     updateEntitySecrets,
+    leftSideBarIsOpen,
+    bottomDrawerIsOpen,
   } = useInstillStore(useShallow(selector));
 
   useSmartHint();
@@ -128,7 +134,7 @@ export const PipelineBuilderMainView = () => {
             Pipeline editor main canvas
           */}
 
-          <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-controller-height)-var(--pipeline-builder-bottom-bar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
+          <div className="pipeline-builder bg-semantic-bg-base-bg flex h-[calc(100vh-var(--topbar-controller-height)-var(--pipeline-builder-bottom-bar-height))] w-full flex-row overflow-x-hidden">
             <Flow
               ref={reactFlowWrapper}
               reactFlowInstance={reactFlowInstance}
@@ -138,7 +144,7 @@ export const PipelineBuilderMainView = () => {
             />
             <div
               className={cn(
-                "fixed left-full w-[450px] transform overflow-y-scroll rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-6 shadow-sm duration-500",
+                "border-semantic-bg-line bg-semantic-bg-primary fixed left-full w-[450px] transform overflow-y-scroll rounded-sm border p-6 shadow-sm duration-500",
                 "h-[calc(100vh-var(--topbar-controller-height)-var(--pipeline-builder-bottom-bar-height)-var(--pipeline-builder-minimap-height)-var(--pipeline-builder-top-right-controler-height)-calc(4*var(--pipeline-builder-controller-padding)))]",
                 "top-[calc(var(--topbar-controller-height)+var(--pipeline-builder-top-right-controler-height)+calc(2*var(--pipeline-builder-controller-padding)))]",
                 currentAdvancedConfigurationNodeID
@@ -147,6 +153,17 @@ export const PipelineBuilderMainView = () => {
               )}
             >
               <RightPanel />
+            </div>
+
+            <div
+              className={cn(
+                "fixed left-0 top-full z-50 h-[var(--pipeline-builder-bottom-drawer-height)] w-full transform duration-500",
+                bottomDrawerIsOpen
+                  ? "-translate-y-[var(--pipeline-builder-bottom-drawer-height)]"
+                  : "",
+              )}
+            >
+              <BottomDrawer />
             </div>
           </div>
 

@@ -37,6 +37,8 @@ export type PipelineBuilderState = {
   tempSavedNodesForEditingIteratorFlow: Node<NodeData>[];
   editingIteratorID: Nullable<string>;
   warnUnsavedChangesDialogState: WarnUnsavedChangesDialogState;
+  leftSidebarIsOpen: boolean;
+  bottomDrawerIsOpen: boolean;
 };
 
 export type PipelineBuilderAction = {
@@ -92,6 +94,8 @@ export type PipelineBuilderAction = {
   updateWarnUnsavdChangesDialogState: (
     fn: (prev: WarnUnsavedChangesDialogState) => WarnUnsavedChangesDialogState,
   ) => void;
+  updateLeftSidebarIsOpen: (fn: (prev: boolean) => boolean) => void;
+  updateBottomDrawerIsOpen: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type PipelineBuilderSlice = PipelineBuilderState & PipelineBuilderAction;

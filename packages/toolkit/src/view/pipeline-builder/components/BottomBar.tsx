@@ -34,6 +34,7 @@ const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
   isEditingIterator: store.isEditingIterator,
+  updateBottomDrawerIsOpen: store.updateBottomDrawerIsOpen,
 });
 
 export const BottomBar = () => {
@@ -48,6 +49,7 @@ export const BottomBar = () => {
     accessToken,
     enabledQuery,
     isEditingIterator,
+    updateBottomDrawerIsOpen,
   } = useInstillStore(useShallow(selector));
 
   const sortedReleases = useSortedReleases({
@@ -201,6 +203,17 @@ export const BottomBar = () => {
           </Popover.Content>
         </Popover.Root>
       )}
+      <Button
+        className="gap-x-2"
+        size="sm"
+        variant="tertiaryColour"
+        type="button"
+        onClick={() => {
+          updateBottomDrawerIsOpen(() => true);
+        }}
+      >
+        Run History
+      </Button>
       <div className="my-auto flex flex-1 flex-row justify-center gap-x-2">
         <p className="text-semantic-fg-secondary product-body-text-4-medium">
           Pipeline {currentVersion ? `(${currentVersion})` : null}
