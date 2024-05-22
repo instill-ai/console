@@ -58,20 +58,20 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
    * Render
    * -----------------------------------------------------------------------*/
   return (
-    <div className="min-h-screen bg-semantic-bg-primary">
-      <div className="container mx-auto mt-8 grid grid-cols-12 gap-6">
-        <div className="col-span-3">
+    <div className="bg-semantic-bg-primary w-full">
+      <div className="pl-16 pr-8 grid grid-cols-12 gap-6 w-full">
+        <div className="col-span-2">
           <Sidebar />
         </div>
-        <div className="col-span-9">
+        <div className="col-span-10">
           <div className="flex flex-col gap-y-6">
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
+              <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
                 Knowledge Base
-              </h1>
+              </p>
             </div>
             <Separator orientation="horizontal" className="my-4" />
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-16">
               <KnowledgeBaseCard
                 onClick={() => setIsCreateDialogOpen(true)}
               />
