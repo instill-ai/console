@@ -12,7 +12,7 @@ import { getHumanReadableStringFromTime } from "../../../server";
 import { StateLabel } from "../../../components";
 import { useEffect, useMemo, useState } from "react";
 
-export type ModelSettingsVersionsProps = {
+export type ModelVersionsProps = {
   model?: Model;
 };
 
@@ -21,9 +21,7 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const ModelSettingsVersions = ({
-  model,
-}: ModelSettingsVersionsProps) => {
+export const ModelVersions = ({ model }: ModelVersionsProps) => {
   const [paginationState, setPaginationState] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,

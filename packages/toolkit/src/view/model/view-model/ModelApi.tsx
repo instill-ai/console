@@ -4,7 +4,7 @@ import { CodeString } from "../../../components/CodeString";
 import { Model, ModelTask } from "../../../lib";
 import { InstillTaksHttpRequestExample } from "../../../constant";
 
-export type ModelSettingsApiProps = {
+export type ModelApiProps = {
   model?: Model;
 };
 
@@ -27,7 +27,7 @@ const getTaskApiHttpCall = (task?: ModelTask) => {
   return InstillTaksHttpRequestExample[task];
 };
 
-export const ModelSettingsApi = ({ model }: ModelSettingsApiProps) => {
+export const ModelApi = ({ model }: ModelApiProps) => {
   const owner = useMemo(() => {
     if (!model) {
       return OWNER;
