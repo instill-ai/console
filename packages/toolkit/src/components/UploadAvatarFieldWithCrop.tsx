@@ -10,12 +10,14 @@ export const UploadAvatarFieldWithCrop = ({
   fieldName,
   form,
   placeholder,
+  title,
 }: {
   fieldName: string;
 
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   form: UseFormReturn<any>;
   placeholder?: React.ReactNode;
+  title?: string;
 }) => {
   const [profileAvatar, setProfileAvatar] = React.useState<
     string | File | null
@@ -51,7 +53,10 @@ export const UploadAvatarFieldWithCrop = ({
         render={({ field }) => {
           return (
             <Form.Item className="w-full">
-              <FormLabel title="Upload your profile" optional={true} />
+              <FormLabel
+                title={title || "Upload your profile"}
+                optional={true}
+              />
               <Form.Control>
                 <div>
                   <label
