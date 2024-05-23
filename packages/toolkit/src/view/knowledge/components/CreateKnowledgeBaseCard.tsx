@@ -85,7 +85,7 @@ export const CreateKnowledgeBaseCard = ({
         </div>
         <Separator orientation="horizontal" className="my-[10px]" />
         <p className="product-body-text-3-regular line-clamp-3">{description}</p>
-        <div className="flex justify-end">
+        <div className="flex justify-end items-end">
           <Menu onDelete={() => setDeleteDialogIsOpen(true)} />
         </div>
         {/* Coming in V2 */}
