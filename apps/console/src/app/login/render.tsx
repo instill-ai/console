@@ -146,7 +146,7 @@ export const LoginPageRender = () => {
       <AuthPageBase.Container>
         <AuthPageBase.Content>
           <div className="m-auto flex w-[360px] flex-col">
-            <h1 className="mb-8 text-semantic-fg-primary product-headings-heading-1">
+            <h1 className="text-semantic-fg-primary product-headings-heading-1 mb-8">
               {isDefaultPWD ? "Change password" : "Login"}
             </h1>
             {isDefaultPWD ? (

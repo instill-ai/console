@@ -28,7 +28,7 @@ const Content = ({ children }: { children: React.ReactNode }) => {
                     Instill Core
                   </span>
                 </p>
-                <p className="font-sans text-xl font-bold leading-4 text-semantic-fg-primary">
+                <p className="text-semantic-fg-primary font-sans text-xl font-bold leading-4">
                   The Backbone for All Your AI Needs
                 </p>
               </div>
@@ -40,7 +40,7 @@ const Content = ({ children }: { children: React.ReactNode }) => {
           </div>
 
           <div className="flex flex-row">
-            <p className="mr-auto mt-auto p-8 font-sans text-semantic-fg-disabled product-body-text-3-regular">
+            <p className="text-semantic-fg-disabled product-body-text-3-regular mr-auto mt-auto p-8 font-sans">
               © Instill AI 2023
             </p>
             <Image
@@ -52,7 +52,7 @@ const Content = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
       </div>
-      <div className="flex h-full bg-semantic-bg-primary">
+      <div className="bg-semantic-bg-primary flex h-full">
         <div className="mr-auto flex h-full w-full max-w-[720px]">
           {children}
         </div>

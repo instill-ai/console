@@ -113,8 +113,8 @@ export const ViewPipelines = () => {
             <p className="text-semantic-fg-primary product-body-text-3-semibold">
               Search Pipelines
             </p>
-            <div className="mt-auto flex flex-row gap-x-4">
-              <Input.Root className="flex-1">
+            <div className="mt-auto flex h-10 flex-row gap-x-4">
+              <Input.Root className="flex-1 !rounded">
                 <Input.LeftIcon>
                   <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
                 </Input.LeftIcon>
@@ -139,7 +139,7 @@ export const ViewPipelines = () => {
                 setSelectedVisibilityOption(value as Visibility);
               }}
             >
-              <Select.Trigger className="mt-auto w-full">
+              <Select.Trigger className="mt-auto w-full !rounded">
                 <Select.Value />
               </Select.Trigger>
               <Select.Content>
