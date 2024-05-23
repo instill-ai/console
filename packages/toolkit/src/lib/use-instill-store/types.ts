@@ -39,6 +39,7 @@ export type PipelineBuilderState = {
   warnUnsavedChangesDialogState: WarnUnsavedChangesDialogState;
   leftSidebarIsOpen: boolean;
   bottomDrawerIsOpen: boolean;
+  displayResultOnRightPanel: boolean;
 };
 
 export type PipelineBuilderAction = {
@@ -96,6 +97,7 @@ export type PipelineBuilderAction = {
   ) => void;
   updateLeftSidebarIsOpen: (fn: (prev: boolean) => boolean) => void;
   updateBottomDrawerIsOpen: (fn: (prev: boolean) => boolean) => void;
+  updateDisplayResultOnRightPanel: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type PipelineBuilderSlice = PipelineBuilderState & PipelineBuilderAction;

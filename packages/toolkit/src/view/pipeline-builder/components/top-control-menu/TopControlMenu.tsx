@@ -7,7 +7,7 @@ import { Toolkit } from "./Toolkit";
 import { Save } from "./Save";
 import { Share } from "./Share";
 import { Release } from "./Release";
-import { PublishPipelineDialog, SelectComponentDialog } from "../dialogs";
+import { PublishPipelineDialog } from "../dialogs";
 import {
   InstillStore,
   Nullable,
@@ -16,8 +16,6 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../../lib";
-import { ReactFlowInstance } from "reactflow";
-import { useAddNodeWithDefinition } from "../../lib";
 import { Button, Icons } from "@instill-ai/design-system";
 import { PipelineName } from "./PipelineName";
 
@@ -26,19 +24,9 @@ const selector = (store: InstillStore) => ({
   isEditingIterator: store.isEditingIterator,
 });
 
-export const TopControlMenu = ({
-  reactFlowInstance,
-  className,
-}: {
-  reactFlowInstance: Nullable<ReactFlowInstance>;
-  className?: string;
-}) => {
-  const [open, setOpen] = React.useState(false);
+export const TopControlMenu = () => {
   const [isSaving, setIsSaving] = React.useState(false);
-  const addNode = useAddNodeWithDefinition({ reactFlowInstance });
-  const { pipelineIsNew, isEditingIterator } = useInstillStore(
-    useShallow(selector),
-  );
+  const { pipelineIsNew } = useInstillStore(useShallow(selector));
 
   const routeInfo = useRouteInfo();
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
@@ -62,16 +50,6 @@ export const TopControlMenu = ({
           >
             <Icons.ArrowLeft className="my-auto h-5 w-5 stroke-semantic-fg-secondary" />
           </Button>
-          {isEditingIterator ? null : (
-            <SelectComponentDialog
-              open={open}
-              onOpenChange={setOpen}
-              onSelect={(definition) => {
-                addNode(definition);
-                setOpen(false);
-              }}
-            />
-          )}
         </div>
         <div className="flex w-full flex-1 items-center justify-center">
           <PipelineName />

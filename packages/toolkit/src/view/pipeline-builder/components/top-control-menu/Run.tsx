@@ -10,6 +10,7 @@ const selector = (store: InstillStore) => ({
   pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,
   isTriggeringPipeline: store.isTriggeringPipeline,
   isEditingIterator: store.isEditingIterator,
+  updateDisplayResultOnRightPanel: store.updateDisplayResultOnRightPanel,
 });
 
 export const Run = ({
@@ -18,8 +19,12 @@ export const Run = ({
   setIsSaving: (value: boolean) => void;
 }) => {
   const runButtonRef = useRef<HTMLButtonElement>(null);
-  const { pipelineRecipeIsDirty, isTriggeringPipeline, isEditingIterator } =
-    useInstillStore(useShallow(selector));
+  const {
+    pipelineRecipeIsDirty,
+    isTriggeringPipeline,
+    isEditingIterator,
+    updateDisplayResultOnRightPanel,
+  } = useInstillStore(useShallow(selector));
 
   const savePipeline = useSavePipeline({ setIsSaving });
 
@@ -37,6 +42,7 @@ export const Run = ({
           await savePipeline();
           runButtonRef.current?.click();
         }
+        updateDisplayResultOnRightPanel(() => true);
       }}
     >
       Run

@@ -17,9 +17,11 @@ import {
 import {
   BottomBar,
   BottomDrawer,
+  Cmdk,
   Flow,
   LeftSideBar,
   RightPanel,
+  useConstructNodeFromDefinition,
   usePipelineBuilderGraph,
   useSavePipeline,
 } from ".";
@@ -43,6 +45,7 @@ const selector = (store: InstillStore) => ({
   updateEntitySecrets: store.updateEntitySecrets,
   leftSideBarIsOpen: store.leftSidebarIsOpen,
   bottomDrawerIsOpen: store.bottomDrawerIsOpen,
+  displayResultOnRightPanel: store.displayResultOnRightPanel,
 });
 
 export const PipelineBuilderMainView = () => {
@@ -50,7 +53,7 @@ export const PipelineBuilderMainView = () => {
   const [reactFlowInstance, setReactFlowInstance] =
     React.useState<Nullable<ReactFlowInstance>>(null);
   const reactFlowWrapper = React.useRef<HTMLDivElement>(null);
-
+  const constructNode = useConstructNodeFromDefinition({ reactFlowInstance });
   const {
     pipelineIsNew,
     currentAdvancedConfigurationNodeID,
@@ -63,6 +66,7 @@ export const PipelineBuilderMainView = () => {
     updateEntitySecrets,
     leftSideBarIsOpen,
     bottomDrawerIsOpen,
+    displayResultOnRightPanel,
   } = useInstillStore(useShallow(selector));
 
   useSmartHint();
@@ -119,17 +123,16 @@ export const PipelineBuilderMainView = () => {
 
   return (
     <PageBase>
-      <AppTopbar
-        topbarControllerChildren={
-          <TopControlMenu
-            className="pl-3"
-            reactFlowInstance={reactFlowInstance}
-          />
-        }
-        disabledTopbarNav={true}
-      />
+      <AppTopbar logo={<Logo variant="colourLogomark" width={38} />}>
+        <TopControlMenu />
+      </AppTopbar>
       <PageBase.Container>
         <div className="flex w-full flex-col">
+          <Cmdk
+            onSelect={(definition) => {
+              constructNode(definition);
+            }}
+          />
           {/* 
             Pipeline editor main canvas
           */}
@@ -144,10 +147,8 @@ export const PipelineBuilderMainView = () => {
             />
             <div
               className={cn(
-                "border-semantic-bg-line bg-semantic-bg-primary fixed left-full w-[450px] transform overflow-y-scroll rounded-sm border p-6 shadow-sm duration-500",
-                "h-[calc(100vh-var(--topbar-controller-height)-var(--pipeline-builder-bottom-bar-height)-var(--pipeline-builder-minimap-height)-var(--pipeline-builder-top-right-controler-height)-calc(4*var(--pipeline-builder-controller-padding)))]",
-                "top-[calc(var(--topbar-controller-height)+var(--pipeline-builder-top-right-controler-height)+calc(2*var(--pipeline-builder-controller-padding)))]",
-                currentAdvancedConfigurationNodeID
+                "border-semantic-bg-line bg-semantic-bg-primary fixed left-full z-50 h-[calc(100vh-var(--topbar-height)-var(--pipeline-builder-bottom-bar-height))] w-[450px] transform overflow-y-auto border-b border-r p-6 py-6 duration-500",
+                currentAdvancedConfigurationNodeID || displayResultOnRightPanel
                   ? "-translate-x-[450px]"
                   : "",
               )}

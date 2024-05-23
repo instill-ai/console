@@ -20,7 +20,7 @@ export const ComponentOutputs = ({
 }: {
   componentID: string;
   outputSchema: Nullable<InstillJSONSchema>;
-  nodeType: "connector" | "end";
+  nodeType: "connector" | "response";
   chooseTitleFrom: ChooseTitleFrom;
   response?: Nullable<TriggerUserPipelineResponse>;
 }) => {

@@ -54,6 +54,7 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   },
   leftSidebarIsOpen: false,
   bottomDrawerIsOpen: false,
+  displayResultOnRightPanel: false,
 };
 
 export const createPipelineBuilderSlice: StateCreator<
@@ -295,6 +296,13 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         bottomDrawerIsOpen: fn(state.bottomDrawerIsOpen),
+      };
+    }),
+  updateDisplayResultOnRightPanel: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        displayResultOnRightPanel: fn(state.displayResultOnRightPanel),
       };
     }),
 });

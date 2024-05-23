@@ -110,7 +110,7 @@ export const TextField = ({
                 ...node.data.fields,
                 [key]: {
                   title: key,
-                  instill_format: "null",
+                  instill_format: instillAcceptFormats[0],
                   instill_ui_order: 0,
                   instill_ui_multiline: false,
                 },
