@@ -26,10 +26,12 @@ export const CreateKnowledgeDialog = ({
     isOpen,
     onClose,
     onSubmit,
+    title = "Create new knowledge base",
 }: {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: CreateKnowledgeFormProps["onSubmit"];
+    title?: string;
 }) => {
     const form = useForm<z.infer<typeof CreateKnowledgeFormSchema>>({
         resolver: zodResolver(CreateKnowledgeFormSchema),
