@@ -148,7 +148,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                 : hubStats.data?.number_of_public_pipelines}
             </p>
             <div className="flex w-full items-center justify-end gap-4">
-              <Input.Root className="w-1/3 !rounded">
+              <Input.Root className="w-[460px] !rounded">
                 <Input.LeftIcon>
                   <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
                 </Input.LeftIcon>
