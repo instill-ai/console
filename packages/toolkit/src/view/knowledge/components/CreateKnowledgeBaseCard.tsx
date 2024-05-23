@@ -79,12 +79,12 @@ export const CreateKnowledgeBaseCard = ({
 
   return (
     <React.Fragment>
-      <div className="flex shadow cursor-pointer flex-col gap-y-2.5 rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-6 w-[360px]">
+      <div className="flex shadow cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-2.5 w-[360px] h-[175px]">
         <div className="flex items-center justify-between">
           <h3 className="text-base font-medium text-black">{title}</h3>
         </div>
-        <Separator orientation="horizontal" className="my-4" />
-        <p className="product-body-text-3-regular">{description}</p>
+        <Separator orientation="horizontal" className="my-[10px]" />
+        <p className="product-body-text-3-regular line-clamp-3">{description}</p>
         <div className="flex justify-end">
           <Menu onDelete={() => setDeleteDialogIsOpen(true)} />
         </div>
