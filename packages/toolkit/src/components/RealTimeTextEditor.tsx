@@ -20,7 +20,7 @@ export const RealTimeTextEditor = ({
   isReady: boolean;
 }) => {
   const { toast } = useToast();
-  console.log(content);
+
   const timer = React.useRef<Nullable<number>>(null);
 
   const [isInitialized, setIsInitialized] = React.useState(false);

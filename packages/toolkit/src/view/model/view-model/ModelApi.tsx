@@ -4,6 +4,7 @@ import { CodeString } from "../../../components/CodeString";
 import { Model, ModelTask } from "../../../lib";
 import { InstillTaksHttpRequestExample } from "../../../constant";
 import React from "react";
+import { ModelSectionHeader } from "./SectionHeader";
 
 export type ModelApiProps = {
   model?: Model;
@@ -48,9 +49,9 @@ export const ModelApi = ({ model }: ModelApiProps) => {
   return (
     <div className="flex flex-col">
       <div className="mb-5 flex border-b border-semantic-bg-line">
-        <h2 className="mb-5 min-w-full rounded bg-semantic-bg-base-bg px-3 py-2.5 text-lg font-medium text-black">
+        <ModelSectionHeader className="mb-5">
           How to run {model?.id} with API
-        </h2>
+        </ModelSectionHeader>
       </div>
       <div className="flex flex-col gap-y-6">
         <div className="mt-5 font-semibold text-semantic-fg-secondary">
@@ -76,9 +77,9 @@ export const ModelApi = ({ model }: ModelApiProps) => {
           customStyle={defaultCodeSnippetStyles}
         />
         {model?.input_schema || model?.output_schema ? (
-          <h2 className="mt-5 min-w-full rounded bg-semantic-bg-base-bg px-3 py-2.5 text-lg font-medium text-black">
+          <ModelSectionHeader className="mt-5">
             Model JSON schema
-          </h2>
+          </ModelSectionHeader>
         ) : null}
         {model?.input_schema ? (
           <React.Fragment>
