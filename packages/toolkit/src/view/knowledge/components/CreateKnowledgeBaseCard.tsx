@@ -22,7 +22,7 @@ const Menu = ({ onDelete }: MenuProps) => {
       <div className="flex justify-center">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
-            <Button className="!px-2 !py-2" variant="tertiaryGrey">
+            <Button className="" variant="tertiaryGrey">
               <Icons.DotsHorizontal className="w-4 h-4 stroke-semantic-fg-secondary" />
             </Button>
           </DropdownMenu.Trigger>
@@ -100,8 +100,8 @@ export const CreateKnowledgeBaseCard = ({
         </div> */}
       </div>
       <Dialog.Root open={deleteDialogIsOpen} onOpenChange={setDeleteDialogIsOpen}>
-        <Dialog.Content className="flex items-center justify-center">
-          <div className="w-[350px] p-6  rounded-sm border border-b-semantic-bg-secondary flex flex-col justify-start items-center gap-6">
+        <Dialog.Content className="!w-[350px] rounded-sm !p-0">
+          <div className="rounded-sm border border-b-semantic-bg-secondary flex flex-col justify-start items-center gap-6 p-6">
             <div className="flex items-center justify-center w-12 h-12 p-3 rounded-full bg-semantic-warning-bg">
               <Icons.AlertTriangle className="w-6 h-6 stroke-semantic-warning-on-bg" />
             </div>
@@ -129,3 +129,14 @@ export const CreateKnowledgeBaseCard = ({
     </React.Fragment>
   );
 };
+
+
+{/* <Dialog.Root open={deleteDialogIsOpen} onOpenChange={onClose}>
+  <Dialog.Content className="!w-[600px] rounded-md">
+    <Dialog.Header className="flex justify-between">
+      <Dialog.Title className="text-semantic-fg-primary product-body-text-1-semibold">Create new knowledge base</Dialog.Title>
+      <Dialog.Close className="" />
+    </Dialog.Header>
+
+  </Dialog.Content>
+</Dialog.Root> */}
