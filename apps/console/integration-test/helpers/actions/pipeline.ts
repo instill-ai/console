@@ -26,12 +26,12 @@ export async function deletePipeline(page: Page, pipelineID: string) {
   await pipelineOverviewPage.moreOptionsButton.click();
   const moreOptionsContent = await getDropdownContent(
     page,
-    pipelineOverviewPage.moreOptionsButton,
+    pipelineOverviewPage.moreOptionsButton
   );
   await moreOptionsContent.waitFor({ state: "visible" });
   await moreOptionsContent.getByText("Delete").click();
   const deletePipelineDialog = page.getByTestId(
-    DataTestID.deleteResourceDialog,
+    DataTestID.deleteResourceDialog
   );
   await deletePipelineDialog.locator("input#confirmationCode").fill(pipelineID);
 

@@ -12,7 +12,7 @@ export class PipelineOverviewPage {
     this.pagePath = `/admin/pipelines/${pipelineID}`;
     this.runButton = page.getByRole("button", { name: "Run" });
     this.inputForm = page.locator(
-      "form[id='pipeline-details-page-trigger-pipeline-form']",
+      "form[id='pipeline-details-page-trigger-pipeline-form']"
     );
     this.moreOptionsButton = page.getByLabel("More options");
   }

@@ -14,14 +14,14 @@ export default function Home() {
 
   const { form, fields, ValidatorSchema, formTree } = useInstillForm(
     schema,
-    null,
+    null
   );
 
   return (
-    <div className="flex flex-1 min-h-screen min-w-[100vh] flex-col">
-      <div className="flex m-auto flex-row gap-x-10 w-full max-w-[1200px] p-10">
-        <div className="flex flex-col gap-y-5 w-1/2">
-          <div className="flex flex-col h-1/3 w-full">
+    <div className="flex min-h-screen min-w-[100vh] flex-1 flex-col">
+      <div className="m-auto flex w-full max-w-[1200px] flex-row gap-x-10 p-10">
+        <div className="flex w-1/2 flex-col gap-y-5">
+          <div className="flex h-1/3 w-full flex-col">
             <MonacoEditor
               language="json"
               value={code ?? ""}
@@ -45,10 +45,10 @@ export default function Home() {
                 },
                 automaticLayout: true,
               }}
-              className="border border-black h-full"
+              className="h-full border border-black"
             />
           </div>
-          <div className="flex flex-col h-1/3 w-full">
+          <div className="flex h-1/3 w-full flex-col">
             <MonacoEditor
               language="json"
               value={formTree ? JSON.stringify(formTree, null, 2) : ""}
@@ -60,10 +60,10 @@ export default function Home() {
                 },
                 automaticLayout: true,
               }}
-              className="border border-black h-full"
+              className="h-full border border-black"
             />
           </div>
-          <div className="flex flex-col h-1/3 w-full">
+          <div className="flex h-1/3 w-full flex-col">
             <MonacoEditor
               language="json"
               value={error ? error : data ? data : ""}
@@ -75,14 +75,14 @@ export default function Home() {
                 },
                 automaticLayout: true,
               }}
-              className="border border-black h-full"
+              className="h-full border border-black"
             />
           </div>
         </div>
-        <div className="flex flex-col h-full w-1/2 p-4">
+        <div className="flex h-full w-1/2 flex-col p-4">
           <Form.Root {...form}>
             <form className="w-full">
-              <div className="flex flex-col gap-y-5 mb-5">{fields}</div>
+              <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
               <div className="flex flex-row-reverse">
                 <Button
                   type="button"

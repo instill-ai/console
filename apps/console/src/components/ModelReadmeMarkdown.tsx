@@ -20,13 +20,13 @@ export const ModelReadmeMarkdown = ({
   return (
     <div
       className={cn(
-        "flex w-full flex-col border border-instillGrey20 bg-white p-5",
+        "border-instillGrey20 flex w-full flex-col border bg-white p-5",
         { "min-h-[200px]": !markdown || isLoading },
-        className,
+        className
       )}
     >
       {isLoading ? (
-        <div className="m-auto flex h-[72px] w-[72px] bg-instillBlue10">
+        <div className="bg-instillBlue10 m-auto flex h-[72px] w-[72px]">
           <NoBgSquareProgress
             isLoading={true}
             blockSize={52}
@@ -41,10 +41,10 @@ export const ModelReadmeMarkdown = ({
         </div>
       ) : (
         <React.Fragment>
-          <h3 className="mx-auto mt-auto text-instillGrey90 text-instill-h3">
+          <h3 className="text-instillGrey90 text-instill-h3 mx-auto mt-auto">
             There is no Model card
           </h3>
-          <p className="mx-auto mb-auto text-instillGrey50 text-instill-body">
+          <p className="text-instillGrey50 text-instill-body mx-auto mb-auto">
             You can add a README.md to describe the model.
           </p>
         </React.Fragment>

@@ -29,7 +29,7 @@ export const RootProvider = ({ children }: { children: React.ReactNode }) => {
   const { initPipelineBuilder } = useInstillStore(useShallow(selector));
 
   const initCreateResourceFormStore = useCreateResourceFormStore(
-    (store) => store.init,
+    (store) => store.init
   );
   const closeModal = useModalStore((store) => store.closeModal);
 
