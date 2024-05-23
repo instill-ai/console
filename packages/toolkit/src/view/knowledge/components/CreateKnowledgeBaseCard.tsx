@@ -28,7 +28,7 @@ const Menu = ({ onDelete, onEdit }: MenuProps) => {
           </DropdownMenu.Trigger>
           <DropdownMenu.Content
             align="end"
-            className="w-[195px] rounded-md !px-0"
+            className="w-[195px] rounded-md !p-0"
           >
             <DropdownMenu.Item
               onClick={onEdit}
