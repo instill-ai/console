@@ -3,6 +3,7 @@
 
 import { Icons, Separator, Tag, DropdownMenu, Button, Dialog } from "@instill-ai/design-system";
 import * as React from "react";
+import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
 
 type CreateKnowledgeBaseCardProps = {
   title: string;
@@ -12,10 +13,12 @@ type CreateKnowledgeBaseCardProps = {
 
 type MenuProps = {
   onDelete: () => void;
+  onEdit: () => void;
 };
 
 const Menu = ({ onDelete }: MenuProps) => {
   const [cloneDialogIsOpen, setCloneDialogIsOpen] = React.useState(false);
+
 
   return (
     <React.Fragment>
@@ -70,12 +73,22 @@ export const CreateKnowledgeBaseCard = ({
   tags,
 }: CreateKnowledgeBaseCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
+  const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
+
+    const handleEdit = () => {
+    setEditDialogIsOpen(true);
+  };
 
   const handleDelete = () => {
-    // Perform the delete action here
     console.log(`Deleting knowledge base: ${title}`);
     setDeleteDialogIsOpen(false);
   };
+
+  const handleCreateKnowledgeSubmit = (data: any) => {
+    console.log("Edit Knowledge submitted:", data);
+    setEditDialogIsOpen(false);
+  };
+
 
   return (
     <React.Fragment>
@@ -86,8 +99,7 @@ export const CreateKnowledgeBaseCard = ({
         <Separator orientation="horizontal" className="my-[10px]" />
         <p className="product-body-text-3-regular line-clamp-3">{description}</p>
         <div className="flex justify-end items-end">
-          <Menu onDelete={() => setDeleteDialogIsOpen(true)} />
-        </div>
+          <Menu onDelete={() => setDeleteDialogIsOpen(true)} onEdit={handleEdit} />        </div>
         {/* Coming in V2 */}
         {/* <div className="flex flex-wrap gap-1 mt-auto">
           {tags.map((tag) => (
@@ -126,17 +138,12 @@ export const CreateKnowledgeBaseCard = ({
           </div>
         </Dialog.Content>
       </Dialog.Root>
+      <CreateKnowledgeDialog
+        isOpen={editDialogIsOpen}
+        onClose={() => setEditDialogIsOpen(false)}
+        onSubmit={handleCreateKnowledgeSubmit}
+        title="Edit knowledge base"
+      />
     </React.Fragment>
   );
 };
-
-
-{/* <Dialog.Root open={deleteDialogIsOpen} onOpenChange={onClose}>
-  <Dialog.Content className="!w-[600px] rounded-md">
-    <Dialog.Header className="flex justify-between">
-      <Dialog.Title className="text-semantic-fg-primary product-body-text-1-semibold">Create new knowledge base</Dialog.Title>
-      <Dialog.Close className="" />
-    </Dialog.Header>
-
-  </Dialog.Content>
-</Dialog.Root> */}
