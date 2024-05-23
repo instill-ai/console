@@ -1,5 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
+import { InstillJSONSchema } from "../../use-instill-form";
 import { User } from "../mgmt/types";
 import { Organization } from "../organization";
 import { Pipeline } from "../pipeline";
@@ -58,6 +59,8 @@ export type Model = {
   license: string;
   profile_image: string;
   permission: Permission;
+  input_schema: InstillJSONSchema | null;
+  output_schema: InstillJSONSchema | null;
 };
 
 export type ModelState =

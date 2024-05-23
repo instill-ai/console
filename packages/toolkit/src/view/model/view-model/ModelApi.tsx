@@ -3,6 +3,7 @@ import { CodeBlock } from "../../../components";
 import { CodeString } from "../../../components/CodeString";
 import { Model, ModelTask } from "../../../lib";
 import { InstillTaksHttpRequestExample } from "../../../constant";
+import React from "react";
 
 export type ModelApiProps = {
   model?: Model;
@@ -74,6 +75,33 @@ export const ModelApi = ({ model }: ModelApiProps) => {
           language="bash"
           customStyle={defaultCodeSnippetStyles}
         />
+        {model?.input_schema || model?.output_schema ? (
+          <h2 className="mt-5 min-w-full rounded bg-semantic-bg-base-bg px-3 py-2.5 text-lg font-medium text-black">
+            Model JSON schema
+          </h2>
+        ) : null}
+        {model?.input_schema ? (
+          <React.Fragment>
+            <h3 className="font-medium text-black">Input</h3>
+            <CodeBlock
+              codeString={JSON.stringify(model.input_schema, null, 2)}
+              wrapLongLines={true}
+              language="json"
+              customStyle={defaultCodeSnippetStyles}
+            />
+          </React.Fragment>
+        ) : null}
+        {model?.output_schema ? (
+          <React.Fragment>
+            <h3 className="font-medium text-black">Output</h3>
+            <CodeBlock
+              codeString={JSON.stringify(model.output_schema, null, 2)}
+              wrapLongLines={true}
+              language="json"
+              customStyle={defaultCodeSnippetStyles}
+            />
+          </React.Fragment>
+        ) : null}
       </div>
     </div>
   );
