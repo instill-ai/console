@@ -16,10 +16,7 @@ type MenuProps = {
   onEdit: () => void;
 };
 
-const Menu = ({ onDelete }: MenuProps) => {
-  const [cloneDialogIsOpen, setCloneDialogIsOpen] = React.useState(false);
-
-
+const Menu = ({ onDelete, onEdit }: MenuProps) => {
   return (
     <React.Fragment>
       <div className="flex justify-center">
@@ -34,18 +31,14 @@ const Menu = ({ onDelete }: MenuProps) => {
             className="w-[195px] rounded-md !px-0"
           >
             <DropdownMenu.Item
-              onClick={() => {
-                setCloneDialogIsOpen(true);
-              }}
+              onClick={onEdit}
               className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
             >
               <Icons.Edit03 className="w-4 h-4 mr-2 stroke-semantic-fg-secondary" />
               Edit info
             </DropdownMenu.Item>
             <DropdownMenu.Item
-              onClick={() => {
-                setCloneDialogIsOpen(true);
-              }}
+              onClick={() => { }}
               className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
             >
               <Icons.Copy07 className="w-4 h-4 mr-2 stroke-semantic-fg-secondary" />
@@ -66,7 +59,6 @@ const Menu = ({ onDelete }: MenuProps) => {
   );
 };
 
-
 export const CreateKnowledgeBaseCard = ({
   title,
   description,
@@ -75,7 +67,7 @@ export const CreateKnowledgeBaseCard = ({
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
 
-    const handleEdit = () => {
+  const handleEdit = () => {
     setEditDialogIsOpen(true);
   };
 
@@ -88,7 +80,6 @@ export const CreateKnowledgeBaseCard = ({
     console.log("Edit Knowledge submitted:", data);
     setEditDialogIsOpen(false);
   };
-
 
   return (
     <React.Fragment>
