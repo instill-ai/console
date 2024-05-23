@@ -14,7 +14,7 @@ export default function Home() {
 
   const { form, fields, ValidatorSchema, formTree } = useInstillForm(
     schema,
-    null
+    null,
   );
 
   return (
