@@ -5,9 +5,9 @@ export const Sidebar = () => {
     const [activeTab, setActiveTab] = React.useState<Nullable<string>>("my-knowledge-bases");
 
     return (
-        <aside className="flex flex-col p-4 w-38 gap-y-4">
+        <aside className="flex flex-col w-[160px] gap-y-4">
             <div
-                className={`flex h-8 items-center gap-x-2 rounded px-3 text-sm font-semibold ${activeTab === "my-knowledge-bases"
+                className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${activeTab === "my-knowledge-bases"
                     ? "bg-semantic-accent-bg text-semantic-accent-hover"
                     : "text-semantic-fg-secondary"
                     }`}
@@ -16,7 +16,7 @@ export const Sidebar = () => {
                 My Knowledge Bases
             </div>
             <div
-                className={`flex h-8 items-center gap-x-2 rounded px-3 text-sm font-semibold ${activeTab === "upload-explore"
+                className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${activeTab === "upload-explore"
                     ? "bg-semantic-accent-bg text-semantic-accent-hover"
                     : "text-semantic-fg-secondary"
                     }`}
@@ -25,7 +25,7 @@ export const Sidebar = () => {
                 Upload & Explore
             </div>
             <div
-                className={`flex h-8 items-center gap-x-2 rounded px-3 text-sm font-semibold ${activeTab === "catalog-files"
+                className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${activeTab === "catalog-files"
                     ? "bg-semantic-accent-bg text-semantic-accent-hover"
                     : "text-semantic-fg-secondary"
                     }`}
@@ -34,7 +34,7 @@ export const Sidebar = () => {
                 Catalog / Files
             </div>
             <div
-                className={`flex h-8 items-center gap-x-2 rounded px-3 text-sm font-semibold ${activeTab === "retrieve-test"
+                className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${activeTab === "retrieve-test"
                     ? "bg-semantic-accent-bg text-semantic-accent-hover"
                     : "text-semantic-fg-secondary"
                     }`}
