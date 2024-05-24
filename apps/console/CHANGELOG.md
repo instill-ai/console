@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.47.1-beta](https://github.com/instill-ai/console/compare/v0.47.0-beta...v0.47.1-beta) (2024-05-24)
+
+
+### Bug Fixes
+
+* adjust search and visibility options style in Pipelines  ([#1174](https://github.com/instill-ai/console/issues/1174)) ([e922cdd](https://github.com/instill-ai/console/commit/e922cdd2292ba7fb056b038829074bee84620b54))
+* fix eslint version and error ([#1177](https://github.com/instill-ai/console/issues/1177)) ([7e9893d](https://github.com/instill-ai/console/commit/7e9893d8368c8b2aebf8f9948d5d1994b9ae537d))
+
 ## [0.47.0-beta](https://github.com/instill-ai/console/compare/v0.46.0-beta...v0.47.0-beta) (2024-05-16)
 
 

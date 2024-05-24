@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.69.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.69.0...@instill-ai/design-system-v0.69.1) (2024-05-24)
+
+
+### Bug Fixes
+
+* fix eslint version and error ([#1177](https://github.com/instill-ai/console/issues/1177)) ([7e9893d](https://github.com/instill-ai/console/commit/7e9893d8368c8b2aebf8f9948d5d1994b9ae537d))
+
 ## [0.69.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.68.0...@instill-ai/design-system-v0.69.0) (2024-05-17)
 
 

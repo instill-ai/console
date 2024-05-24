@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.91.4](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.91.3...@instill-ai/toolkit-v0.91.4) (2024-05-24)
+
+
+### Bug Fixes
+
+* adjust search and visibility options style in Pipelines  ([#1174](https://github.com/instill-ai/console/issues/1174)) ([e922cdd](https://github.com/instill-ai/console/commit/e922cdd2292ba7fb056b038829074bee84620b54))
+* border radius on search in hub ([#1173](https://github.com/instill-ai/console/issues/1173)) ([9b3efb5](https://github.com/instill-ai/console/commit/9b3efb575c053480f784544d296d76ce2fde4af0))
+* fix eslint version and error ([#1177](https://github.com/instill-ai/console/issues/1177)) ([7e9893d](https://github.com/instill-ai/console/commit/7e9893d8368c8b2aebf8f9948d5d1994b9ae537d))
+* **navigation:** fix upgrade to pro broken link ([#1178](https://github.com/instill-ai/console/issues/1178)) ([ac49caf](https://github.com/instill-ai/console/commit/ac49caf733192d0dbfa7d7bb67d9dc9f5bb0a608))
+
 ## [0.91.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.91.2...@instill-ai/toolkit-v0.91.3) (2024-05-22)
 
 

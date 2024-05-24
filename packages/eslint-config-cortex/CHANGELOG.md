@@ -1,5 +1,12 @@
 # eslint-config-cortex
 
+## [0.9.1](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.9.0...@instill-ai/eslint-config-cortex-v0.9.1) (2024-05-24)
+
+
+### Bug Fixes
+
+* fix eslint version and error ([#1177](https://github.com/instill-ai/console/issues/1177)) ([7e9893d](https://github.com/instill-ai/console/commit/7e9893d8368c8b2aebf8f9948d5d1994b9ae537d))
+
 ## [0.9.0](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.8.0...@instill-ai/eslint-config-cortex-v0.9.0) (2024-03-13)
 
 
