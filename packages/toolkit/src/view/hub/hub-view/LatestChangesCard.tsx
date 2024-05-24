@@ -44,13 +44,13 @@ export const LatestChangesCard = () => {
       </div>
 
       {changelogs.isSuccess && (
-        <div className="mb-8 grid grid-cols-[auto_1fr] ">
+        <div className="mb-2 grid grid-cols-[auto_1fr] ">
           {changelogs.data.map((changelog: Changelog, index: number) => (
             <React.Fragment key={changelog.id}>
               <div className="relative flex items-start  justify-center ">
                 <div className="h-3 w-3 rounded-full bg-slate-300" />
                 {index !== changelogs.data.length && (
-                  <div className="absolute top-3.5 bottom-1 left-1/2 w-0.5 -translate-x-1/2 rounded-full bg-semantic-node-disconnected-bg" />
+                  <div className="absolute top-3.5 bottom-0.5 left-1/2 w-0.5 -translate-x-1/2 rounded-full bg-semantic-node-disconnected-bg" />
                 )}
               </div>
               <a
@@ -59,7 +59,7 @@ export const LatestChangesCard = () => {
                 rel="noopener noreferrer"
                 className="pb-6 ml-2"
               >
-                <div className="mb-1 w-min whitespace-nowrap capitalize text-semantic-accent-default text-xs font-semibold">
+                <div className="mb-1 w-min whitespace-nowrap capitalize text-semantic-accent-default text-xs font-semibold -mt-0.5">
                   {changelog.date && new Date(changelog.date).getTime() !== 0
                     ? new Date(changelog.date).toLocaleDateString("en-US", {
                       year: "numeric",
@@ -86,7 +86,7 @@ export const LatestChangesCard = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <div className="my-auto flex items-center gap-2 text-semantic-accent-default product-button-button-3 hover:!underline">
+        <div className="my-auto flex items-center gap-2 text-semantic-accent-default product-button-button-3 hover:!underline ml-2">
           View changelog
           <Icons.ChevronRight className="h-4 w-4 stroke-semantic-accent-default" />
         </div>
