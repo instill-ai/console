@@ -28,12 +28,11 @@ export function useDeployUserModel() {
         return Promise.reject(err);
       }
     },
-    onSuccess: async ({ modelName, accessToken }) => {
+    onSuccess: async ({ modelName }) => {
       await onSuccessAfterModelMutation({
         type: "deploy",
         queryClient,
         modelName,
-        accessToken,
       });
     },
   });

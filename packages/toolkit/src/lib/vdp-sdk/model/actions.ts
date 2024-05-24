@@ -49,12 +49,12 @@ export async function undeployUserModeleAction({
 }
 
 export type TriggerUserModelPayload = {
-  task_inputs: Record<string, any>[];
+  task_inputs: Record<string, unknown>[];
 };
 
 export type TriggerUserModelResponse = {
   task: ModelTask;
-  task_outputs: Record<string, any>[];
+  task_outputs: Record<string, unknown>[];
 };
 
 export async function triggerUserModelAction({
