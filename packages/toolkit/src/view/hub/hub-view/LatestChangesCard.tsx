@@ -1,5 +1,4 @@
-import cn from "clsx";
-import { Icons, Separator, Skeleton, buttonVariants } from "@instill-ai/design-system";
+import { Icons, Skeleton } from "@instill-ai/design-system";
 import { useChangelogs } from "../../../lib";
 import * as React from "react";
 
