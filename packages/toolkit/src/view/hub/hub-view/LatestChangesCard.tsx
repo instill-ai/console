@@ -43,11 +43,13 @@ export const LatestChangesCard = () => {
       </div>
       {changelogs.isSuccess && (
         <div className="relative">
-          <div className="absolute left-1.5 top-4 bottom-4 w-0.5 bg-semantic-node-disconnected-bg transform -translate-x-1/2" />
           {changelogs.data.map((changelog: Changelog, index: number) => (
             <div key={changelog.id} className="mb-4 flex items-start">
-              <div className="relative z-10 mr-2 flex-shrink-0 flex flex-col items-center">
-                <div className="h-3 w-3 rounded-full bg-semantic-node-disconnected-bg mt-1" /> 
+              <div className="relative z-10 mr-4 flex-shrink-0 flex flex-col items-center">
+                <div className="h-3 w-3 rounded-full bg-semantic-node-disconnected-bg" />
+                {index !== changelogs.data.length - 1 && (
+                  <div className="mt-1 mb-1 h-6 w-0.5 bg-semantic-node-disconnected-bg rounded-full" />
+                )}
               </div>
               <a
                 href={`https://instill-ai.productlane.com/changelog/${changelog.id}`}
