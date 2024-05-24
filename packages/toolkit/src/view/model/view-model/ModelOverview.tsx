@@ -83,9 +83,9 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
 
     return {
       input: preprocessInitialSampleValues(
-        model.sample_input[taskPropName] || {}
+        model.sample_input?.[taskPropName] || {}
       ),
-      output: model.sample_output[taskPropName] || {},
+      output: model.sample_output?.[taskPropName] || {},
     };
   }, [model, taskPropName]);
   const [outputResult, setOutputResult] = useState<Record<string, any>>(
