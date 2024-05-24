@@ -25,7 +25,7 @@ export function useInfiniteModels({
   if (visibility) {
     queryKey.push(visibility);
   }
-
+  console.log(queryKey);
   return useInfiniteQuery({
     queryKey,
     queryFn: async ({ pageParam }) => {
