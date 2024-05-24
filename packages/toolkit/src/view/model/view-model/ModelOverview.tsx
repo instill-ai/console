@@ -145,8 +145,9 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
         sendAmplitudeData("trigger_model");
       }
 
-      console.log(data);
-      setOutputResult(data.task_outputs[0][taskPropName]);
+      setOutputResult(
+        data.task_outputs[0][taskPropName] as Record<string, unknown>
+      );
     } catch (error) {
       toastInstillError({
         title: "Something went wrong when triggering the model",
