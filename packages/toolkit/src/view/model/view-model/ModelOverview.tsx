@@ -42,7 +42,7 @@ const selector = (store: InstillStore) => ({
 const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
   taskName ? taskName.replace("TASK_", "").toLocaleLowerCase() : null;
 
-const preprocessInitialSampleValues = (payload: Record<string, any>) => {
+const preprocessInitialSampleValues = (payload: Record<string, unknown>) => {
   return Object.keys(payload).reduce((acc, key) => {
     const value = payload[key];
     let newValue: string | null = null;
@@ -91,7 +91,7 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
       output: model.sample_output?.[taskPropName] || {},
     };
   }, [model, taskPropName]);
-  const [outputResult, setOutputResult] = useState<Record<string, any>>(
+  const [outputResult, setOutputResult] = useState<Record<string, unknown>>(
     inputOutputSamples.output
   );
   const { accessToken } = useInstillStore(useShallow(selector));
@@ -104,9 +104,9 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
   const triggerModel = useTriggerUserModel();
 
   async function onTriggerModel(
-    formData: Record<string, any> /* z.infer<typeof Schema> */
+    formData: Record<string, unknown> /* z.infer<typeof Schema> */
   ) {
-    if (!model || !model.name) return;
+    if (!model || !model.name || !taskPropName) return;
 
     let parsedData;
 
