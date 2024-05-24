@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta } from "@storybook/react";
 import { TabMenu } from "./TabMenu";
 import { Nullable } from "../../types/general";
 

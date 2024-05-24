@@ -44,7 +44,7 @@ const TabMenuRoot = ({
         onValueChange(value);
       },
     }),
-    [value, onValueChange]
+    [value, onValueChange, disabledDeSelect]
   );
 
   return (

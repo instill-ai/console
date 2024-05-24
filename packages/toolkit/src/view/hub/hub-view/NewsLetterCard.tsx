@@ -62,7 +62,7 @@ export const NewsLetterCard = () => {
     if (blogPosts.length > 0) {
       preloadAdjacentImages();
     }
-  }, [currentIndex, blogPosts]);
+  }, [currentIndex, blogPosts, preloadAdjacentImages]);
 
   if (isLoading) {
     return <NewsLetterCardSkeleton />;

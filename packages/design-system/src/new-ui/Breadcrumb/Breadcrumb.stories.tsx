@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta } from "@storybook/react";
 import { Breadcrumb, BreadcrumbItem } from "./Breadcrumb";
 
 const meta: Meta<typeof Breadcrumb> = {
@@ -6,8 +6,6 @@ const meta: Meta<typeof Breadcrumb> = {
 };
 
 export default meta;
-
-type Story = StoryObj<typeof Breadcrumb>;
 
 export const Primary = () => {
   const items: BreadcrumbItem[] = [

@@ -2,9 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "target": "ES2022",
-    "paths": {
-      "@/*": ["./src/*"],
-    },
+
     "downlevelIteration": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "ESNext",
@@ -27,6 +25,9 @@
         "name": "next",
       },
     ],
+    "paths": {
+      "@/*": ["./src/*"],
+    },
   },
   "include": [
     "next-env.d.ts",
