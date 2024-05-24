@@ -20,6 +20,10 @@
       "line": {
         "value": "{base.neutral.200}",
         "type": "color"
+      },
+      "dot": {
+        "value": "{base.neutral.300}",
+        "type": "color"
       }
     },
     "bg-secondary": {

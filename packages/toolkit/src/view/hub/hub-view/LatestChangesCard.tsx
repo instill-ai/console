@@ -47,7 +47,7 @@ export const LatestChangesCard = () => {
           {changelogs.data.map((changelog: Changelog, index: number) => (
             <React.Fragment key={changelog.id}>
               <div className="relative flex items-start  justify-center ">
-                <div className="h-3 w-3 rounded-full bg-slate-300" />
+                <div className="h-3 w-3 rounded-full bg-semantic-bg-dot" />
                 {index !== changelogs.data.length && (
                   <div className="absolute top-3.5 bottom-0.5 left-1/2 w-0.5 -translate-x-1/2 rounded-full bg-semantic-node-disconnected-bg" />
                 )}
