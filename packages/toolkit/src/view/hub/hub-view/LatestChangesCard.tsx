@@ -1,6 +1,7 @@
 import cn from "clsx";
 import { Icons, Separator, Skeleton, buttonVariants } from "@instill-ai/design-system";
 import { useChangelogs } from "../../../lib";
+import * as React from "react";
 
 type Changelog = {
   id: string;
@@ -43,20 +44,22 @@ export const LatestChangesCard = () => {
       </div>
 
       {changelogs.isSuccess && (
-        <div className="relative mb-4">
+        <div className="mb-8 grid grid-cols-[auto_1fr] ">
           {changelogs.data.map((changelog: Changelog, index: number) => (
-            <div key={changelog.id} className="relative pb-4">
-              <div className="absolute top-1  h-3 w-3 rounded-full bg-slate-300" />
-              {index !== changelogs.data.length && (
-                <Separator className="absolute top-4 bottom-0 w-0.5 left-1.5 bg-semantic-node-disconnected-bg pb-4" orientation="vertical" />
-              )}
+            <React.Fragment key={changelog.id}>
+              <div className="relative flex items-start  justify-center ">
+                <div className="h-3 w-3 rounded-full bg-slate-300" />
+                {index !== changelogs.data.length && (
+                  <div className="absolute top-3.5 bottom-1 left-1/2 w-0.5 -translate-x-1/2 rounded-full bg-semantic-node-disconnected-bg" />
+                )}
+              </div>
               <a
                 href={`https://instill-ai.productlane.com/changelog/${changelog.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-              // className="ml-10"
+                className="pb-6 ml-2"
               >
-                <div className="mb-1 w-min whitespace-nowrap capitalize text-semantic-accent-default text-xs font-semibold ml-6">
+                <div className="mb-1 w-min whitespace-nowrap capitalize text-semantic-accent-default text-xs font-semibold">
                   {changelog.date && new Date(changelog.date).getTime() !== 0
                     ? new Date(changelog.date).toLocaleDateString("en-US", {
                       year: "numeric",
@@ -69,11 +72,11 @@ export const LatestChangesCard = () => {
                       day: "numeric",
                     })}
                 </div>
-                <p className="text-semantic-fg-primary product-body-text-3-regular hover:underline ml-6">
+                <p className="text-semantic-fg-primary product-body-text-3-regular hover:underline">
                   {changelog.title}
                 </p>
               </a>
-            </div>
+            </React.Fragment>
           ))}
         </div>
       )}
@@ -83,7 +86,7 @@ export const LatestChangesCard = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <div className="my-auto ml-2 flex justify-start text-semantic-accent-default product-button-button-3 hover:!underline items-center gap-2">
+        <div className="my-auto flex items-center gap-2 text-semantic-accent-default product-button-button-3 hover:!underline">
           View changelog
           <Icons.ChevronRight className="h-4 w-4 stroke-semantic-accent-default" />
         </div>
