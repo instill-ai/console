@@ -54,7 +54,7 @@ export type TriggerUserModelPayload = {
 
 export type TriggerUserModelResponse = {
   task: ModelTask;
-  task_outputs: Record<string, unknown>[];
+  task_outputs: Record<string, Record<string, unknown>>[];
 };
 
 export async function triggerUserModelAction({
