@@ -75,7 +75,10 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
   const [isTriggered, setIsTriggered] = useState(false);
   const [outputActiveView, setOutputActiveView] =
     useState<ModelOutputActiveView>("preview");
-  const taskPropName = convertTaskNameToPayloadPropName(model?.task);
+  const taskPropName = useMemo(
+    () => convertTaskNameToPayloadPropName(model?.task),
+    [model]
+  );
   const inputOutputSamples = useMemo(() => {
     if (!model || !taskPropName) {
       return DEFAULT_INPUT_OUTPUT_SAMPLES;
