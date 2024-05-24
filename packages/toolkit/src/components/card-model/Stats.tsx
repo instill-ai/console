@@ -1,6 +1,6 @@
 "use client";
 
-import { Icons, getModelInstanceTaskToolkit } from "@instill-ai/design-system";
+import { getModelInstanceTaskToolkit } from "@instill-ai/design-system";
 //import { convertLongNumberToK } from "../../lib/convertLongNumberToK";
 import { ModelTask } from "../../lib";
 import { getHumanReadableStringFromTime } from "../../server";

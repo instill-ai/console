@@ -23,12 +23,11 @@ export function useUpdateUserModel() {
 
       return Promise.resolve({ model, accessToken });
     },
-    onSuccess: async ({ model, accessToken }) => {
+    onSuccess: async ({ model }) => {
       await onSuccessAfterModelMutation({
         type: "update",
         queryClient,
         model,
-        accessToken,
       });
     },
   });

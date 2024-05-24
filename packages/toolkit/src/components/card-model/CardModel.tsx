@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Menu } from "./Menu";
 import { Tags } from "./Tags";
 import { Stats } from "./Stats";
