@@ -29,6 +29,7 @@ export type AmplitudeEvent =
   | "update_model"
   | "delete_model"
   | "create_model"
+  | "trigger_model"
   | "enter_subscription_pro_flow"
   | "subscribe_to_pro"
   | "enter_subscription_team_flow"

@@ -61,6 +61,8 @@ export type Model = {
   permission: Permission;
   input_schema: InstillJSONSchema | null;
   output_schema: InstillJSONSchema | null;
+  sample_input: Record<string, Record<string, any>>;
+  sample_output: Record<string, Record<string, any>>;
 };
 
 export type ModelState =
