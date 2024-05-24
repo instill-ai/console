@@ -49,7 +49,7 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
         <div>
           <div
             className={cn(
-              "markdown-body w-full overflow-x-scroll whitespace-pre rounded-b-sm px-1.5 py-1",
+              "markdown-body w-full overflow-x-scroll rounded-b-sm px-1.5 py-1",
               enableFormattedText ? "" : "hidden"
             )}
           >

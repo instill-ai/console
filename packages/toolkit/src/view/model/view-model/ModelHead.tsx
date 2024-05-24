@@ -61,7 +61,7 @@ export const ModelSettingsHead = ({
       return OWNER;
     }
 
-    const owner = model.owner.user || model.owner.organization;
+    const owner = model.owner?.user || model.owner?.organization;
 
     if (!owner || !owner.profile) {
       return OWNER;
