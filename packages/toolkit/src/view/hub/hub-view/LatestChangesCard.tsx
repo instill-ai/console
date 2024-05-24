@@ -1,5 +1,5 @@
 import cn from "clsx";
-import { Icons, Skeleton, buttonVariants } from "@instill-ai/design-system";
+import { Icons, Separator, Skeleton, buttonVariants } from "@instill-ai/design-system";
 import { useChangelogs } from "../../../lib";
 
 type Changelog = {
@@ -41,26 +41,22 @@ export const LatestChangesCard = () => {
       <div className="mb-4 font-bold product-headings-heading-3">
         Latest Changes
       </div>
+
       {changelogs.isSuccess && (
-        <div className="relative">
+        <div className="relative mb-4">
           {changelogs.data.map((changelog: Changelog, index: number) => (
-            <div key={changelog.id} className="mb-4 flex items-start">
-              <div className="relative z-10 mr-4 flex-shrink-0 flex flex-col items-center">
-                <div className="h-3 w-3 rounded-full bg-semantic-node-disconnected-bg" />
-                {index !== changelogs.data.length - 1 && (
-                  <div className="mt-1 mb-1 h-6 w-0.5 bg-semantic-node-disconnected-bg rounded-full" />
-                )}
-              </div>
+            <div key={changelog.id} className="relative pb-4">
+              <div className="absolute top-1  h-3 w-3 rounded-full bg-slate-300" />
+              {index !== changelogs.data.length && (
+                <Separator className="absolute top-4 bottom-0 w-0.5 left-1.5 bg-semantic-node-disconnected-bg pb-4" orientation="vertical" />
+              )}
               <a
                 href={`https://instill-ai.productlane.com/changelog/${changelog.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
+              // className="ml-10"
               >
-                <div
-                  className={
-                    "pointer-events-none mb-1 w-min whitespace-nowrap capitalize text-semantic-accent-default text-xs font-semibold"
-                  }
-                >
+                <div className="mb-1 w-min whitespace-nowrap capitalize text-semantic-accent-default text-xs font-semibold ml-6">
                   {changelog.date && new Date(changelog.date).getTime() !== 0
                     ? new Date(changelog.date).toLocaleDateString("en-US", {
                       year: "numeric",
@@ -73,7 +69,7 @@ export const LatestChangesCard = () => {
                       day: "numeric",
                     })}
                 </div>
-                <p className="text-semantic-fg-primary product-body-text-3-regular hover:underline">
+                <p className="text-semantic-fg-primary product-body-text-3-regular hover:underline ml-6">
                   {changelog.title}
                 </p>
               </a>
@@ -81,6 +77,7 @@ export const LatestChangesCard = () => {
           ))}
         </div>
       )}
+
       <a
         href="https://instill-ai.productlane.com/changelog"
         target="_blank"
