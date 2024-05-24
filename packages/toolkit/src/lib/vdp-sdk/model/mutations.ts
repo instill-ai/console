@@ -2,7 +2,6 @@
 
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
-import { Operation } from "../operation";
 import { Visibility } from "../types";
 import { Model, ModelTask } from "./types";
 

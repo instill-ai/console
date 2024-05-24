@@ -18,7 +18,7 @@ import {
   InstillStore,
   Model,
   UpdateUserModelPayload,
-  Visibility,
+  //Visibility,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,

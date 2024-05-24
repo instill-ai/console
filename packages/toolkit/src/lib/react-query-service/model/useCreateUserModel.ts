@@ -31,12 +31,11 @@ export function useCreateUserModel() {
         modelName: model.name,
       });
     },
-    onSuccess: async ({ modelName, accessToken }) => {
+    onSuccess: async ({ modelName }) => {
       await onSuccessAfterModelMutation({
         type: "create",
         queryClient,
         modelName,
-        accessToken,
       });
     },
   });
