@@ -173,16 +173,6 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                   className="flex w-64 flex-col !px-0 py-1"
                 >
                   <SortSelectButton
-                    label="Name"
-                    icon={
-                      <Icons.TextA className="h-4 w-4 stroke-semantic-fg-disabled" />
-                    }
-                    onClick={() => {
-                      handleSortFieldChange("id");
-                    }}
-                    isSelected={selectedSortField === "id"}
-                  />
-                  <SortSelectButton
                     label="Updated Time"
                     icon={
                       <Icons.Update className="h-4 w-4 stroke-semantic-fg-disabled" />
