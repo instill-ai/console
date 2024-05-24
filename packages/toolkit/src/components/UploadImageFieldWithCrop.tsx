@@ -101,7 +101,7 @@ export const UploadImageFieldWithCrop = ({
                               field.onChange(result);
                               setImage(String(result));
                               // reset the input value so selecting the same file can trigger onChange
-                              e.target.value = null;
+                              e.target.value = "";
                             };
                             reader.readAsDataURL(file);
                             setOpenImage(true);
