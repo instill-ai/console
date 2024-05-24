@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.5.2...@instill-ai/design-tokens-v0.5.3) (2024-05-24)
+
+
+### Bug Fixes
+
+* fix eslint version and error ([#1177](https://github.com/instill-ai/console/issues/1177)) ([7e9893d](https://github.com/instill-ai/console/commit/7e9893d8368c8b2aebf8f9948d5d1994b9ae537d))
+
 ## [0.5.2](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.5.1...@instill-ai/design-tokens-v0.5.2) (2024-05-01)
 
 

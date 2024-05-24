@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/eslint-config-cortex",
-  "version": "0.10.0-rc.0",
+  "version": "0.9.1",
   "main": "index.js",
   "license": "Apache-2.0",
   "scripts": {
