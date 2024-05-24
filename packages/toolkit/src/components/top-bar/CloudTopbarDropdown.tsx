@@ -206,7 +206,7 @@ export const CloudTopbarDropdown = () => {
             <TopbarDropdownGroup>
               <TopbarDropdownItem
                 onClick={() => {
-                  navigate("/settings/billing/plan");
+                  navigate("/subscribe");
                 }}
                 asChild
               >
