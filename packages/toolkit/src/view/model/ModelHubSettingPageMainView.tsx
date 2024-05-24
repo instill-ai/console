@@ -1,7 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { GeneralAppPageProp, useAppEntity, useUserModel } from "../../lib";
+import {
+  GeneralAppPageProp,
+  useAppEntity,
+  useQueryClient,
+  useUserModel,
+} from "../../lib";
 import {
   ModelContentViewer,
   ModelSettingsHead,
@@ -15,6 +20,7 @@ export const ModelHubSettingPageMainView = (
 ) => {
   const { accessToken, enableQuery } = props;
   const entityObject = useAppEntity();
+  const queryClient = useQueryClient();
 
   const [selectedTab, setSelectedTab] =
     React.useState<ModelViewTabs>("overview");
@@ -29,6 +35,14 @@ export const ModelHubSettingPageMainView = (
     accessToken,
   });
 
+  const onModelUpdate = () => {
+    model.refetch();
+    // Invalidate default models list to have up to date data
+    queryClient.invalidateQueries({
+      queryKey: ["models", "VISIBILITY_UNSPECIFIED"],
+    });
+  };
+
   return (
     <div className="flex flex-col">
       <ModelSettingsHead
@@ -40,7 +54,7 @@ export const ModelHubSettingPageMainView = (
       <ModelContentViewer
         selectedTab={selectedTab}
         model={model.data}
-        onUpdate={model.refetch}
+        onUpdate={onModelUpdate}
       />
     </div>
   );
