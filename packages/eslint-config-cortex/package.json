@@ -1,16 +1,19 @@
 {
   "name": "@instill-ai/eslint-config-cortex",
-  "version": "0.9.0",
+  "version": "0.10.0-rc.0",
   "main": "index.js",
   "license": "Apache-2.0",
+  "scripts": {
+    "publish-rc": "pnpm publish --no-git-checks"
+  },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.16.0",
-    "@typescript-eslint/parser": "^5.16.0",
-    "eslint": "^8.12.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.0.0",
     "eslint-config-next": "latest",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-prettier": "latest",
     "eslint-config-turbo": "latest",
-    "eslint-import-resolver-typescript": "^3.5.3",
+    "eslint-import-resolver-typescript": "^3.0.0",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-storybook": "^0.6.10",

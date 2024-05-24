@@ -3,7 +3,6 @@
 import cn from "clsx";
 import * as React from "react";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
-import { Icons } from "../Icons";
 
 const RadioGroupRoot = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
@@ -36,7 +35,11 @@ const RadioGroupItem = React.forwardRef<
       {...props}
     >
       <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
-        <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-semantic-bg-primary" />
+        {indicator ? (
+          indicator
+        ) : (
+          <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-semantic-bg-primary" />
+        )}
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   );

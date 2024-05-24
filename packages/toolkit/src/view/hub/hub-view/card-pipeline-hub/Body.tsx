@@ -1,8 +1,7 @@
 "use client";
 
-import { Button, Icons, Skeleton, Tag } from "@instill-ai/design-system";
+import { Icons, Skeleton, Tag } from "@instill-ai/design-system";
 import { Pipeline } from "../../../../lib";
-import { useRouter } from "next/navigation";
 
 const BodySkeleton = () => {
   return (
@@ -35,7 +34,6 @@ const formatTimestamp = (timestamp: string) => {
 };
 
 export const Body = ({ pipeline }: { pipeline: Pipeline }) => {
-  const router = useRouter();
   return (
     <div className="flex w-full flex-col gap-y-2 pb-4">
       <div className="flex flex-row items-center gap-x-2 px-3">

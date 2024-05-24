@@ -1,7 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { env } from "../../../server";
-import { listModelsQuery } from "../../vdp-sdk";
-import type { Nullable } from "../../type";
 import { getHubStatsQuery } from "../../vdp-sdk/hub/queries";
 
 export function useHubStats({
