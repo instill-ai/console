@@ -55,7 +55,7 @@ export const RightPanel = () => {
             size="md"
             type="button"
             onClick={() => {
-              updateDisplayResultOnRightPanel(() => true);
+              updateDisplayResultOnRightPanel(() => false);
             }}
           >
             <Icons.X className="h-4 w-4 stroke-semantic-fg-primary" />
