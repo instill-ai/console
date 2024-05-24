@@ -227,7 +227,7 @@ const DataTable = <TData, TValue>({
           )}
         </Table.Body>
       </Table.Root>
-      {(typeof pageCount !== "undefined" && pageCount > 0) ||
+      {(typeof pageCount !== "undefined" && pageCount > 1) ||
       data.length > pageSize ? (
         <DataTablePagination
           table={table}

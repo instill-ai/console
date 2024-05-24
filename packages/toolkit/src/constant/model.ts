@@ -1,4 +1,5 @@
-import { ModelTask } from "../lib";
+import { Model } from "../lib";
+import { env } from "../server";
 
 export const InstillModelVisibility = [
   "VISIBILITY_PRIVATE",
@@ -17,8 +18,23 @@ export const InstillModelTask = [
   "TASK_IMAGE_TO_IMAGE",
   "TASK_VISUAL_QUESTION_ANSWERING",
 ] as const;
-export const InstillTaksHttpRequestExample: Record<ModelTask, string> = {
-  TASK_CLASSIFICATION: `curl --location 'https://api.instill.tech/model/v1alpha/users/{user_id}/models/{model_id}/versions/{version_id}/trigger' \\
+export const defaultCodeSnippetStyles = {
+  fontSize: "14px",
+  backgroundColor: "transparent",
+  width: "100%",
+  padding: "16px",
+};
+
+export const getInstillTaskHttpRequestExample = (model?: Model) => {
+  if (!model) {
+    return "";
+  }
+
+  const apiVersion = env("NEXT_PUBLIC_MODEL_API_VERSION");
+
+  switch (model.task) {
+    case "TASK_CLASSIFICATION":
+      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {your-api-key}' \\
 --data '{
@@ -29,8 +45,9 @@ export const InstillTaksHttpRequestExample: Record<ModelTask, string> = {
       }
     }
   ]
-}'`,
-  TASK_DETECTION: `curl --location 'https://api.instill.tech/model/v1alpha/users/{user_id}/models/{model_id}/versions/{version_id}/trigger' \\
+}'`;
+    case "TASK_DETECTION":
+      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {your-api-key}' \\
 --data '{
@@ -41,8 +58,9 @@ export const InstillTaksHttpRequestExample: Record<ModelTask, string> = {
       }
     }
   ]
-}'`,
-  TASK_KEYPOINT: `curl --location 'https://api.instill.tech/model/v1alpha/users/{user_id}/models/{model_id}/versions/{version_id}/trigger' \\
+}'`;
+    case "TASK_KEYPOINT":
+      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {your-api-key}' \\
 --data '{
@@ -53,8 +71,9 @@ export const InstillTaksHttpRequestExample: Record<ModelTask, string> = {
       }
     }
   ]
-}'`,
-  TASK_OCR: `curl --location 'https://api.instill.tech/model/v1alpha/users/{user_id}/models/{model_id}/versions/{version_id}/trigger' \\
+}'`;
+    case "TASK_OCR":
+      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {your-api-key}' \\
 --data '{
@@ -65,8 +84,9 @@ export const InstillTaksHttpRequestExample: Record<ModelTask, string> = {
       }
     }
   ]
-}'`,
-  TASK_INSTANCE_SEGMENTATION: `curl --location 'https://api.instill.tech/model/v1alpha/users/{user_id}/models/{model_id}/versions/{version_id}/trigger' \\
+}'`;
+    case "TASK_INSTANCE_SEGMENTATION":
+      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {your-api-key}' \\
 --data '{
@@ -77,8 +97,9 @@ export const InstillTaksHttpRequestExample: Record<ModelTask, string> = {
       }
     }
   ]
-}'`,
-  TASK_SEMANTIC_SEGMENTATION: `curl --location 'https://api.instill.tech/model/v1alpha/users/{user_id}/models/{model_id}/versions/{version_id}/trigger' \\
+}'`;
+    case "TASK_SEMANTIC_SEGMENTATION":
+      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {your-api-key}' \\
 --data '{
@@ -89,8 +110,9 @@ export const InstillTaksHttpRequestExample: Record<ModelTask, string> = {
       }
     }
   ]
-}'`,
-  TASK_TEXT_GENERATION: `curl --location 'https://api.instill.tech/model/v1alpha/users/{user_id}/models/{model_id}/versions/{version_id}/trigger' \\
+}'`;
+    case "TASK_TEXT_GENERATION":
+      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {your-api-key}' \\
 --data '{
@@ -105,8 +127,9 @@ export const InstillTaksHttpRequestExample: Record<ModelTask, string> = {
       }
     }
   ]
-}'`,
-  TASK_TEXT_GENERATION_CHAT: `curl --location 'https://api.instill.tech/model/v1alpha/users/{user_id}/models/{model_id}/versions/{version_id}/trigger' \\
+}'`;
+    case "TASK_TEXT_GENERATION_CHAT":
+      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {your-api-key}' \\
 --data '{
@@ -132,8 +155,9 @@ export const InstillTaksHttpRequestExample: Record<ModelTask, string> = {
       }
     }
   ]
-}'`,
-  TASK_TEXT_TO_IMAGE: `curl --location 'https://api.instill.tech/model/v1alpha/users/{user_id}/models/{model_id}/versions/{version_id}/trigger' \\
+}'`;
+    case "TASK_TEXT_TO_IMAGE":
+      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {your-api-key}' \\
 --data '{
@@ -148,8 +172,9 @@ export const InstillTaksHttpRequestExample: Record<ModelTask, string> = {
       }
     }
   ]
-}'`,
-  TASK_IMAGE_TO_IMAGE: `curl --location 'https://api.instill.tech/model/v1alpha/users/{user_id}/models/{model_id}/versions/{version_id}/trigger' \\
+}'`;
+    case "TASK_IMAGE_TO_IMAGE":
+      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {your-api-key}' \\
 --data '{
@@ -165,8 +190,9 @@ export const InstillTaksHttpRequestExample: Record<ModelTask, string> = {
       }
     }
   ]
-}'`,
-  TASK_VISUAL_QUESTION_ANSWERING: `curl --location 'https://api.instill.tech/model/v1alpha/users/{user_id}/models/{model_id}/versions/{version_id}/trigger' \\
+}'`;
+    case "TASK_VISUAL_QUESTION_ANSWERING":
+      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {your-api-key}' \\
 --data '{
@@ -186,5 +212,6 @@ export const InstillTaksHttpRequestExample: Record<ModelTask, string> = {
       }
     }
   ]
-}'`,
+}'`;
+  }
 };

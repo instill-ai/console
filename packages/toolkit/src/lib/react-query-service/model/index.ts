@@ -11,5 +11,6 @@ export * from "./useUserModels";
 export { useUserModel } from "./useUserModel";
 export * from "./useModelRegions";
 export * from "./useInfiniteModelVersions";
+export * from "./useTriggerUserModel";
 
 export * from "./use-user-model";

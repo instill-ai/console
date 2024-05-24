@@ -1,8 +1,11 @@
 import { useMemo } from "react";
 import { CodeBlock } from "../../../components";
 import { CodeString } from "../../../components/CodeString";
-import { Model, ModelTask } from "../../../lib";
-import { InstillTaksHttpRequestExample } from "../../../constant";
+import { Model } from "../../../lib";
+import {
+  defaultCodeSnippetStyles,
+  getInstillTaskHttpRequestExample,
+} from "../../../constant";
 import React from "react";
 import { ModelSectionHeader } from "./SectionHeader";
 
@@ -14,28 +17,13 @@ const OWNER = {
   name: null,
 };
 
-const defaultCodeSnippetStyles = {
-  fontSize: "14px",
-  backgroundColor: "transparent",
-  width: "100%",
-  padding: "16px",
-};
-
-const getTaskApiHttpCall = (task?: ModelTask) => {
-  if (!task) {
-    return "";
-  }
-
-  return InstillTaksHttpRequestExample[task];
-};
-
 export const ModelApi = ({ model }: ModelApiProps) => {
   const owner = useMemo(() => {
     if (!model) {
       return OWNER;
     }
 
-    const owner = model.owner.user || model.owner.organization;
+    const owner = model.owner?.user || model.owner?.organization;
 
     if (!owner || !owner.profile) {
       return OWNER;
@@ -71,7 +59,7 @@ export const ModelApi = ({ model }: ModelApiProps) => {
           using Instill API.
         </div>
         <CodeBlock
-          codeString={getTaskApiHttpCall(model?.task)}
+          codeString={getInstillTaskHttpRequestExample(model)}
           wrapLongLines={true}
           language="bash"
           customStyle={defaultCodeSnippetStyles}
