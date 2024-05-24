@@ -27,6 +27,7 @@ import { useMemo, useState } from "react";
 import { ModelSectionHeader } from "./SectionHeader";
 import { recursiveHelpers } from "../../pipeline-builder";
 import { defaultCodeSnippetStyles } from "../../../constant";
+import React from "react";
 
 export type ModelOutputActiveView = "preview" | "json";
 
@@ -202,41 +203,47 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
             </form>
           </Form.Root>
         </div>
-        <div className="flex w-1/2 flex-col justify-start pb-6 pl-6">
+        <div className="flex w-1/2 flex-col pb-6 pl-6">
           <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
-          <TabMenu.Root
-            value={outputActiveView}
-            onValueChange={(value: Nullable<string>) =>
-              setOutputActiveView(value as ModelOutputActiveView)
-            }
-            disabledDeSelect={true}
-            className="mb-3 border-b border-semantic-bg-line"
-          >
-            <TabMenu.Item
-              value="preview"
-              className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
-            >
-              <span className="text-sm">Preview</span>
-            </TabMenu.Item>
-            <TabMenu.Item
-              value="json"
-              className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
-            >
-              <span className="text-sm">JSON</span>
-            </TabMenu.Item>
-          </TabMenu.Root>
-          {outputActiveView === "preview" ? (
-            <div className="flex flex-col gap-y-1 rounded bg-semantic-bg-primary">
-              {componentOutputFields}
-            </div>
+          {isTriggered ? (
+            <LoadingSpin className="m-0 !text-semantic-fg-secondary" />
           ) : (
-            <CodeBlock
-              codeString={JSON.stringify(outputResult, null, 2)}
-              wrapLongLines={true}
-              language="json"
-              customStyle={defaultCodeSnippetStyles}
-              className="!h-auto !flex-none"
-            />
+            <React.Fragment>
+              <TabMenu.Root
+                value={outputActiveView}
+                onValueChange={(value: Nullable<string>) =>
+                  setOutputActiveView(value as ModelOutputActiveView)
+                }
+                disabledDeSelect={true}
+                className="mb-3 border-b border-semantic-bg-line"
+              >
+                <TabMenu.Item
+                  value="preview"
+                  className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
+                >
+                  <span className="text-sm">Preview</span>
+                </TabMenu.Item>
+                <TabMenu.Item
+                  value="json"
+                  className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
+                >
+                  <span className="text-sm">JSON</span>
+                </TabMenu.Item>
+              </TabMenu.Root>
+              {outputActiveView === "preview" ? (
+                <div className="flex flex-col gap-y-2">
+                  {componentOutputFields}
+                </div>
+              ) : (
+                <CodeBlock
+                  codeString={JSON.stringify(outputResult, null, 2)}
+                  wrapLongLines={true}
+                  language="json"
+                  customStyle={defaultCodeSnippetStyles}
+                  className="!h-auto !flex-none"
+                />
+              )}
+            </React.Fragment>
           )}
         </div>
       </div>
