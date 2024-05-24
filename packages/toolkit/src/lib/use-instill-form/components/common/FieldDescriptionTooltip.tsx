@@ -9,7 +9,7 @@ export const FieldDescriptionTooltip = ({
   description: Nullable<string>;
 }) => {
   return description ? (
-    <Tooltip.Provider>
+    <Tooltip.Provider delayDuration={300}>
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
           <Icons.HelpCircle className="my-auto h-[14px] w-[14px] cursor-pointer stroke-semantic-fg-secondary" />

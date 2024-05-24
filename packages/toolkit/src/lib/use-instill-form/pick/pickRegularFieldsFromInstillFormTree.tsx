@@ -267,6 +267,32 @@ export function pickRegularFieldsFromInstillFormTree(
     return null;
   }
 
+  // Deal with using the auto-gen-form structure to generate regular fields instead
+  // of the reference structure of pipeline-builder
+  if (
+    !tree.instillUpstreamTypes ||
+    (tree.instillUpstreamTypes.length === 1 &&
+      tree.instillUpstreamTypes[0] === "value")
+  ) {
+    if (tree.instillAcceptFormats) {
+      if (tree.instillAcceptFormats[0].includes("image")) {
+        return (
+          <RegularFields.ImageField
+            key={tree.path}
+            path={tree.path}
+            title={title}
+            form={form}
+            description={tree.description ?? null}
+            shortDescription={tree.instillShortDescription}
+            disabled={disabledAll}
+            size={size}
+            isHidden={tree.isHidden}
+          />
+        );
+      }
+    }
+  }
+
   if (tree.type === "boolean") {
     return (
       <RegularFields.BooleanField
