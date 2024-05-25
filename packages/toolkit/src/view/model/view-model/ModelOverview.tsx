@@ -42,33 +42,6 @@ const selector = (store: InstillStore) => ({
 const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
   taskName ? taskName.replace("TASK_", "").toLocaleLowerCase() : null;
 
-const preprocessInitialSampleValues = (payload: Record<string, unknown>) => {
-  return Object.keys(payload).reduce((acc, key) => {
-    const value = payload[key];
-    let newValue: string | null = null;
-
-    if (typeof value === "string") {
-      newValue = value;
-    } else if (typeof value === "number") {
-      newValue = value.toString();
-    }
-
-    if (newValue) {
-      return {
-        ...acc,
-        [key]: newValue,
-      };
-    }
-
-    return acc;
-  }, {});
-};
-
-const DEFAULT_INPUT_OUTPUT_SAMPLES = {
-  input: {},
-  output: {},
-};
-
 export const ModelOverview = ({ model }: ModelOverviewProps) => {
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -79,26 +52,15 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
     () => convertTaskNameToPayloadPropName(model?.task),
     [model]
   );
-  const inputOutputSamples = useMemo(() => {
-    if (!model || !taskPropName) {
-      return DEFAULT_INPUT_OUTPUT_SAMPLES;
-    }
-
-    return {
-      input: preprocessInitialSampleValues(
-        model.sample_input?.[taskPropName] || {}
-      ),
-      output: model.sample_output?.[taskPropName] || {},
-    };
-  }, [model, taskPropName]);
-  const [outputResult, setOutputResult] = useState<Record<string, unknown>>(
-    inputOutputSamples.output
-  );
+  const [outputResult, setOutputResult] = useState<Record<
+    string,
+    unknown
+  > | null>(null);
   const { accessToken } = useInstillStore(useShallow(selector));
 
   const { form, fields, ValidatorSchema } = useInstillForm(
     model?.input_schema || null,
-    inputOutputSamples.input || null
+    null
   );
 
   const triggerModel = useTriggerUserModel();
@@ -162,7 +124,7 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
   const componentOutputFields = useComponentOutputFields({
     mode: "demo",
     schema: model?.output_schema || {},
-    data: outputResult || {},
+    data: outputResult || null,
   });
 
   return (
@@ -208,8 +170,8 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
         <div className="flex w-1/2 flex-col pb-6 pl-6">
           <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
           {isTriggered ? (
-            <LoadingSpin className="m-0 !text-semantic-fg-secondary" />
-          ) : (
+            <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />
+          ) : outputResult ? (
             <React.Fragment>
               <TabMenu.Root
                 value={outputActiveView}
@@ -246,6 +208,8 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
                 />
               )}
             </React.Fragment>
+          ) : (
+            <p>Run the model to see the output</p>
           )}
         </div>
       </div>
