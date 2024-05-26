@@ -76,7 +76,7 @@ export const CreateKnowledgeBaseCard = ({
     console.log(`Deleting knowledge base: ${title}`);
     setDeleteDialogIsOpen(false);
     setShowDeleteMessage(true);
-    setTimeout(() => setShowDeleteMessage(false), 90000); // Hide message after 5 seconds
+    setTimeout(() => setShowDeleteMessage(false), 5000); // Hide message after 5 seconds
   };
 
   const handleCreateKnowledgeSubmit = (data: any) => {
