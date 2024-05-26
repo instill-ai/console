@@ -4,6 +4,8 @@
 import { Icons, Separator, DropdownMenu, Button, Dialog, LinkButton } from "@instill-ai/design-system";
 import * as React from "react";
 import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
+import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBase";
+import { createKnowledgeBase, deleteKnowledgeBase, updateKnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBaseService";
 
 type CreateKnowledgeBaseCardProps = {
   title: string;
@@ -67,20 +69,29 @@ export const CreateKnowledgeBaseCard = ({
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
+  const [knowledgeBase, setKnowledgeBase] = React.useState<KnowledgeBase | null>(null);
 
   const handleEdit = () => {
     setEditDialogIsOpen(true);
   };
 
-  const handleDelete = () => {
-    console.log(`Deleting knowledge base: ${title}`);
-    setDeleteDialogIsOpen(false);
-    setShowDeleteMessage(true);
-    setTimeout(() => setShowDeleteMessage(false), 5000); // Hide message after 5 seconds
+  const handleDelete = async () => {
+    if (knowledgeBase) {
+      await deleteKnowledgeBase(knowledgeBase.id);
+      setDeleteDialogIsOpen(false);
+      setShowDeleteMessage(true);
+      setTimeout(() => setShowDeleteMessage(false), 5000);
+    }
   };
 
-  const handleCreateKnowledgeSubmit = (data: any) => {
-    console.log("Edit Knowledge submitted:", data);
+  const handleCreateKnowledgeSubmit = async (data: any) => {
+    if (knowledgeBase) {
+      const updatedKnowledgeBase = await updateKnowledgeBase(knowledgeBase.id, data);
+      setKnowledgeBase(updatedKnowledgeBase);
+    } else {
+      const newKnowledgeBase = await createKnowledgeBase(data);
+      setKnowledgeBase(newKnowledgeBase);
+    }
     setEditDialogIsOpen(false);
   };
 
