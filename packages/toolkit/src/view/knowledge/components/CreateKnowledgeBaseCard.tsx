@@ -1,7 +1,7 @@
 // CreateKnowledgeBaseCard.tsx
 'use client';
 
-import { Icons, Separator, Tag, DropdownMenu, Button, Dialog } from "@instill-ai/design-system";
+import { Icons, Separator, DropdownMenu, Button, Dialog, LinkButton } from "@instill-ai/design-system";
 import * as React from "react";
 import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
 
@@ -66,6 +66,7 @@ export const CreateKnowledgeBaseCard = ({
 }: CreateKnowledgeBaseCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
+  const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
 
   const handleEdit = () => {
     setEditDialogIsOpen(true);
@@ -74,6 +75,8 @@ export const CreateKnowledgeBaseCard = ({
   const handleDelete = () => {
     console.log(`Deleting knowledge base: ${title}`);
     setDeleteDialogIsOpen(false);
+    setShowDeleteMessage(true);
+    setTimeout(() => setShowDeleteMessage(false), 90000); // Hide message after 5 seconds
   };
 
   const handleCreateKnowledgeSubmit = (data: any) => {
@@ -83,6 +86,25 @@ export const CreateKnowledgeBaseCard = ({
 
   return (
     <React.Fragment>
+      {showDeleteMessage && (
+        <div className="fixed bottom-4 right-4 w-[400px] h-[136px] p-4 bg-semantic-bg-primary rounded-lg shadow border border-slate-200  justify-start items-start gap-4 flex mr-4">
+          <Icons.AlertTriangle className="w-6 h-6 stroke-semantic-warning-on-bg" />
+          <div className="grow shrink basis-0 h-[104px] flex-col justify-start items-start gap-4">
+            <div className="self-stretch flex-col justify-start items-start gap-1 flex">
+              <div className="self-stretch product-body-text-2-semibold">This Knowledge base has been deleted</div>
+              <div className="self-stretch product-body-text-2-regular">If this was a mistake, click "Undo Action" to reapply your changes.</div>
+            </div>
+            <LinkButton
+              className=""
+              variant="secondary"
+              size="md"
+              onClick={() => setShowDeleteMessage(false)}
+            >
+              Undo Action
+            </LinkButton>
+          </div>
+        </div>
+      )}
       <div className="flex shadow cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-2.5 w-[360px] h-[175px]">
         <div className="flex items-center justify-between">
           <h3 className="text-base font-medium text-black">{title}</h3>
@@ -90,17 +112,8 @@ export const CreateKnowledgeBaseCard = ({
         <Separator orientation="horizontal" className="my-[10px]" />
         <p className="product-body-text-3-regular line-clamp-3">{description}</p>
         <div className="flex justify-end items-end">
-          <Menu onDelete={() => setDeleteDialogIsOpen(true)} onEdit={handleEdit} />        </div>
-        {/* Coming in V2 */}
-        {/* <div className="flex flex-wrap gap-1 mt-auto">
-          {tags.map((tag) => (
-            <Tag key={tag}
-              variant={"lightNeutral"}
-            >
-              {tag}
-            </Tag>
-          ))}
-        </div> */}
+          <Menu onDelete={() => setDeleteDialogIsOpen(true)} onEdit={handleEdit} />
+        </div>
       </div>
       <Dialog.Root open={deleteDialogIsOpen} onOpenChange={setDeleteDialogIsOpen}>
         <Dialog.Content className="!w-[350px] rounded-sm !p-0">
@@ -114,14 +127,10 @@ export const CreateKnowledgeBaseCard = ({
                 <div className="text-center product-body-text-2-regular">Are you sure you want to delete this knowledge base?</div>
               </div>
               <div className="flex w-full gap-2">
-                <Button variant={"secondaryGrey"} onClick={() => setDeleteDialogIsOpen(false)}
-                  className="w-full"
-                >
+                <Button variant={"secondaryGrey"} onClick={() => setDeleteDialogIsOpen(false)} className="w-full">
                   Cancel
                 </Button>
-                <Button variant={"danger"} onClick={handleDelete}
-                  className="w-full"
-                >
+                <Button variant={"danger"} onClick={handleDelete} className="w-full">
                   Delete
                 </Button>
               </div>
