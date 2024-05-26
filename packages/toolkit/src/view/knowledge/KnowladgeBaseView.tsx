@@ -11,6 +11,8 @@ import { CreateKnowledgeDialog } from "./components/CreateKnowledgeDialog";
 import * as z from "zod";
 import * as React from "react";
 import { CreateKnowledgeBaseCard } from "./components/CreateKnowledgeBaseCard";
+import { getKnowledgeBases } from "../../lib/vdp-sdk/knowledge/knowledgeBaseService";
+import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/knowledgeBase";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -53,6 +55,17 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     models.isLoading || (models.isSuccess && models.data.length > 0)
       ? modelsWatchState.isLoading
       : false;
+
+  const [knowledgeBases, setKnowledgeBases] = React.useState<KnowledgeBase[]>([]);
+
+  React.useEffect(() => {
+    const fetchKnowledgeBases = async () => {
+      const knowledgeBasesData = await getKnowledgeBases();
+      setKnowledgeBases(knowledgeBasesData);
+    };
+
+    fetchKnowledgeBases();
+  }, []);
 
   /* -------------------------------------------------------------------------
    * Render
