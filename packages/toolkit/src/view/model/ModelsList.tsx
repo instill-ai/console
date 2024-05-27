@@ -47,6 +47,8 @@ export const ModelsList = (props: ModelsListProps) => {
       ) : (
         <div className="relative">
           <img
+            width={513}
+            height={481}
             src="/images/models/no-models-placeholder.svg"
             alt="A box and a looking glass"
           />
