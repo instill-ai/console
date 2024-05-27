@@ -1,6 +1,9 @@
 import { ModelViewPageRender } from "./render";
 import { Metadata } from "next";
-import { type ModelTabNames, getModelTabTitle } from "@instill-ai/toolkit/server";
+import {
+  type ModelTabNames,
+  getModelTabTitle,
+} from "@instill-ai/toolkit/server";
 
 type Props = {
   params: { id: string; entity: string; tab: string };
