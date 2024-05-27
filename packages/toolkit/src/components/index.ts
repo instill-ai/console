@@ -29,3 +29,4 @@ export * from "./UserProfileCard";
 export * from "./WarnUnsavedChangesDialog";
 export * from "./DeleteResourceModal";
 export * from "./RealTimeTextEditor";
+export * from "./EntitySelector";

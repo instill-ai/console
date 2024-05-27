@@ -10,9 +10,7 @@ import {
   Icons,
   Input,
   RadioGroup,
-  Select,
   Separator,
-  Tag,
   Textarea,
   useToast,
 } from "@instill-ai/design-system";
@@ -38,6 +36,7 @@ import { InstillErrors, DataTestID } from "../../../constant";
 import { LoadingSpin } from "../../../components";
 import { env, validateInstillID } from "../../../server";
 import { useRouter } from "next/navigation";
+import { EntitySelector, OwnerEntity } from "../../../components";
 
 const CreatePipelineSchema = z
   .object({
@@ -97,11 +96,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
   });
 
   const organizationsAndUserList = React.useMemo(() => {
-    const orgsAndUserList: {
-      id: string;
-      name: string;
-      type: "user" | "organization";
-    }[] = [];
+    const orgsAndUserList: OwnerEntity[] = [];
 
     if (userMemberships.isSuccess) {
       userMemberships.data.forEach((org) => {
@@ -109,15 +104,17 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
           id: org.organization.id,
           name: org.organization.name,
           type: "organization",
+          avatarUrl: org.organization.profile?.avatar || null,
         });
       });
     }
 
-    if (entity.isSuccess && entity.data.entity && entity.data.entityName) {
+    if (me.isSuccess && me.data.id && me.data.name) {
       orgsAndUserList.push({
-        id: entity.data.entity,
-        name: entity.data.entityName,
+        id: me.data.id,
+        name: me.data.name,
         type: "user",
+        avatarUrl: me.data.profile?.avatar || null,
       });
     }
 
@@ -275,91 +272,17 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                                   Owner
                                 </Form.Label>
                                 <Form.Control>
-                                  <Select.Root
+                                  <EntitySelector
                                     value={field?.value || ""}
-                                    onValueChange={(e) => {
-                                      field.onChange(e);
+                                    onChange={(value: string) => {
+                                      field.onChange(value);
+
                                       if (form.getValues("id")) {
                                         form.trigger("id");
                                       }
                                     }}
-                                  >
-                                    <Select.Trigger className="w-full pl-[14px]">
-                                      <Select.Value placeholder="Select Account Name">
-                                        <div className="flex flex-row gap-x-2">
-                                          <span className="my-auto">
-                                            {field?.value?.length >= 10
-                                              ? field?.value?.slice(0, 10) +
-                                                "..."
-                                              : field.value}
-                                          </span>
-                                          <span className="my-auto">
-                                            {organizationsAndUserList.find(
-                                              (namespace) =>
-                                                namespace.id === field.value
-                                            )?.type === "organization" ? (
-                                              <Tag
-                                                variant="lightBlue"
-                                                size="sm"
-                                                className="!py-0"
-                                              >
-                                                organization
-                                              </Tag>
-                                            ) : (
-                                              <Tag
-                                                size="sm"
-                                                className="!py-0"
-                                                variant="lightNeutral"
-                                              >
-                                                user
-                                              </Tag>
-                                            )}
-                                          </span>
-                                        </div>
-                                      </Select.Value>
-                                    </Select.Trigger>
-                                    <Select.Content>
-                                      <Select.Group>
-                                        {organizationsAndUserList.length &&
-                                          organizationsAndUserList.map(
-                                            (namespace) => (
-                                              <Select.Item
-                                                value={namespace.id}
-                                                key={namespace.id}
-                                              >
-                                                <Select.ItemText>
-                                                  <div className="flex flex-row gap-x-2">
-                                                    <span className="my-auto">
-                                                      {namespace.id}
-                                                    </span>
-                                                    <span className="my-auto">
-                                                      {namespace.type ===
-                                                      "organization" ? (
-                                                        <Tag
-                                                          variant="lightBlue"
-                                                          size="sm"
-                                                          className="!py-0"
-                                                        >
-                                                          organization
-                                                        </Tag>
-                                                      ) : (
-                                                        <Tag
-                                                          size="sm"
-                                                          className="!py-0"
-                                                          variant="lightNeutral"
-                                                        >
-                                                          user
-                                                        </Tag>
-                                                      )}
-                                                    </span>
-                                                  </div>
-                                                </Select.ItemText>
-                                              </Select.Item>
-                                            )
-                                          )}
-                                      </Select.Group>
-                                    </Select.Content>
-                                  </Select.Root>
+                                    data={organizationsAndUserList}
+                                  />
                                 </Form.Control>
                                 <Form.Message />
                               </Form.Item>
