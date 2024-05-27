@@ -670,7 +670,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
           </form>
         </Form.Root>
       ) : (
-        <LoadingSpin className="!m-auto !text-semantic-fg-secondary" />
+        <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />
       )}
     </div>
   );

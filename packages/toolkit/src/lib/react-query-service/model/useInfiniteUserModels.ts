@@ -1,22 +1,24 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { env } from "../../../server";
-import { Visibility, listModelsQuery } from "../../vdp-sdk";
+import { Visibility, listUserModelsQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
 
-export function useInfiniteModels({
+export function useInfiniteUserModels({
+  userName,
   accessToken,
   enabled,
   retry,
   filter,
   visibility,
 }: {
+  userName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   retry?: false | number;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
 }) {
-  const queryKey = ["models", "infinite"];
+  const queryKey = ["models", userName, "infinite"];
 
   if (filter) {
     queryKey.push(filter);
@@ -33,7 +35,12 @@ export function useInfiniteModels({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const models = await listModelsQuery({
+      if (!userName) {
+        return Promise.reject(new Error("userName not provided"));
+      }
+
+      const models = await listUserModelsQuery({
+        userName,
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         nextPageToken: pageParam ?? null,
         accessToken,
