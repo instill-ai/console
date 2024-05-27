@@ -7,23 +7,27 @@ import {
   useQueryClient,
   useUserModel,
 } from "../../lib";
-import {
-  ModelContentViewer,
-  ModelSettingsHead,
-  ModelViewTabs,
-} from "./view-model";
+import { ModelContentViewer, ModelSettingsHead } from "./view-model";
+import { useParams, useRouter } from "next/navigation";
+import { ModelTabNames } from "../../server";
 
 export type ModelHubSettingPageMainViewProps = GeneralAppPageProp;
 
 export const ModelHubSettingPageMainView = (
   props: ModelHubSettingPageMainViewProps
 ) => {
+  const router = useRouter();
+  const entity = useAppEntity();
+  const { tab } = useParams();
   const { accessToken, enableQuery } = props;
   const entityObject = useAppEntity();
   const queryClient = useQueryClient();
 
-  const [selectedTab, setSelectedTab] =
-    React.useState<ModelViewTabs>("overview");
+  const setSelectedTab = (tabName: ModelTabNames) => {
+    router.replace(
+      `/${entity.data.entity}/models/${model.data?.id}/${tabName}`
+    );
+  };
 
   /* -------------------------------------------------------------------------
    * Query resource data
@@ -37,22 +41,25 @@ export const ModelHubSettingPageMainView = (
 
   const onModelUpdate = () => {
     model.refetch();
+
     // Invalidate default models list to have up to date data
-    queryClient.invalidateQueries({
-      queryKey: ["models", "VISIBILITY_UNSPECIFIED"],
-    });
+    if (entity.isSuccess) {
+      queryClient.invalidateQueries({
+        queryKey: ["models", entity.data.entityName, "infinite"],
+      });
+    }
   };
 
   return (
     <div className="flex flex-col">
       <ModelSettingsHead
         onTabChange={setSelectedTab}
-        selectedTab={selectedTab}
+        selectedTab={tab as ModelTabNames}
         model={model.data}
         isReady={!model.isSuccess}
       />
       <ModelContentViewer
-        selectedTab={selectedTab}
+        selectedTab={tab as ModelTabNames}
         model={model.data}
         onUpdate={onModelUpdate}
       />

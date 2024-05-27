@@ -3,13 +3,13 @@ import {
   ModelVersions,
   ModelApi,
   ModelOverview,
-  ModelViewTabs,
 } from ".";
 import { LoadingSpin } from "../../../components";
 import { Model } from "../../../lib";
+import { ModelTabNames } from "../../../server";
 
 export type ModelContentViewerProps = {
-  selectedTab: ModelViewTabs;
+  selectedTab: ModelTabNames;
   model?: Model;
   onUpdate: () => void;
 };

@@ -10,18 +10,11 @@ import {
   Skeleton,
 } from "@instill-ai/design-system";
 import { Model } from "../../../lib";
-
-export type ModelViewTabs =
-  | "overview"
-  | "api"
-  | "examples"
-  | "predictions"
-  | "versions"
-  | "settings";
+import { ModelTabNames } from "../../../server";
 
 export type HeadProps = {
-  selectedTab: ModelViewTabs;
-  onTabChange: React.Dispatch<React.SetStateAction<ModelViewTabs>>;
+  selectedTab: ModelTabNames;
+  onTabChange: (tabName: ModelTabNames) => void;
   model?: Model;
   isReady: boolean;
 };
@@ -186,7 +179,7 @@ export const ModelSettingsHead = ({
             <TabMenu.Root
               value={selectedTab}
               onValueChange={(value: Nullable<string>) =>
-                onTabChange(value as ModelViewTabs)
+                onTabChange(value as ModelTabNames)
               }
               disabledDeSelect={true}
             >
