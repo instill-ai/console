@@ -85,7 +85,7 @@ export const CardModel = (props: CardModelProps) => {
             href={`/${entity.data.entity}/models/${model.id}/overview`}
             className="break-all font-medium text-semantic-accent-default hover:!underline"
           >
-            {model.id}
+            {entity.data.entity}/{model.id}
           </Link>
           <Tags
             isPrivate={model.visibility === "VISIBILITY_PRIVATE"}

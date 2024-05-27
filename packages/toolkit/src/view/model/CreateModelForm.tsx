@@ -28,7 +28,6 @@ import {
   Input,
   RadioGroup,
   Select,
-  Tag,
   Textarea,
   getModelInstanceTaskToolkit,
   toast,
@@ -38,6 +37,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { LoadingSpin } from "../../components";
 import { useRouter } from "next/navigation";
+import { EntitySelector, OwnerEntity } from "../../components";
 
 export type CreateModelFormProps = {
   accessToken: Nullable<string>;
@@ -109,11 +109,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
   });
 
   const organizationsAndUserList = useMemo(() => {
-    const orgsAndUserList: {
-      id: string;
-      name: string;
-      type: "user" | "organization";
-    }[] = [];
+    const orgsAndUserList: OwnerEntity[] = [];
 
     if (userMemberships.isSuccess) {
       userMemberships.data.forEach((org) => {
@@ -121,15 +117,17 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
           id: org.organization.id,
           name: org.organization.name,
           type: "organization",
+          avatarUrl: org.organization.profile?.avatar || null,
         });
       });
     }
 
-    if (entity.isSuccess && entity.data.entity && entity.data.entityName) {
+    if (me.isSuccess && me.data.id && me.data.name) {
       orgsAndUserList.push({
-        id: entity.data.entity,
-        name: entity.data.entityName,
+        id: me.data.id,
+        name: me.data.name,
         type: "user",
+        avatarUrl: me.data.profile?.avatar || null,
       });
     }
 
@@ -272,99 +270,26 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                     render={({ field }) => {
                       return (
                         <Form.Item className="w-full">
-                          <div className="flex flex-row items-center justify-between">
+                          <div className="flex flex-row items-center">
                             <Form.Label className="product-body-text-3-semibold">
                               Owner
                             </Form.Label>
-                            <p className="!font-bold text-semantic-error-default product-body-text-4-regular">
+                            <p className="ml-1 !font-bold product-body-text-4-regular">
                               *
                             </p>
                           </div>
                           <Form.Control>
-                            <Select.Root
+                            <EntitySelector
                               value={field?.value || ""}
-                              onValueChange={(e) => {
-                                field.onChange(e);
+                              onChange={(value: string) => {
+                                field.onChange(value);
+
                                 if (form.getValues("id")) {
                                   form.trigger("id");
                                 }
                               }}
-                            >
-                              <Select.Trigger className="w-full pl-[14px]">
-                                <Select.Value placeholder="Select Model Owner">
-                                  <div className="flex flex-row gap-x-2">
-                                    <span className="my-auto">
-                                      {field?.value?.length >= 10
-                                        ? field?.value?.slice(0, 10) + "..."
-                                        : field.value}
-                                    </span>
-                                    <span className="my-auto">
-                                      {organizationsAndUserList.find(
-                                        (namespace) =>
-                                          namespace.id === field.value
-                                      )?.type === "organization" ? (
-                                        <Tag
-                                          variant="lightBlue"
-                                          size="sm"
-                                          className="!py-0"
-                                        >
-                                          organization
-                                        </Tag>
-                                      ) : (
-                                        <Tag
-                                          size="sm"
-                                          className="!py-0"
-                                          variant="lightNeutral"
-                                        >
-                                          user
-                                        </Tag>
-                                      )}
-                                    </span>
-                                  </div>
-                                </Select.Value>
-                              </Select.Trigger>
-                              <Select.Content>
-                                <Select.Group>
-                                  {organizationsAndUserList.length &&
-                                    organizationsAndUserList.map(
-                                      (namespace) => (
-                                        <Select.Item
-                                          value={namespace.id}
-                                          key={namespace.id}
-                                        >
-                                          <Select.ItemText>
-                                            <div className="flex flex-row gap-x-2">
-                                              <span className="my-auto">
-                                                {namespace.id}
-                                              </span>
-                                              <span className="my-auto">
-                                                {namespace.type ===
-                                                "organization" ? (
-                                                  <Tag
-                                                    variant="lightBlue"
-                                                    size="sm"
-                                                    className="!py-0"
-                                                  >
-                                                    organization
-                                                  </Tag>
-                                                ) : (
-                                                  <Tag
-                                                    size="sm"
-                                                    className="!py-0"
-                                                    variant="lightNeutral"
-                                                  >
-                                                    user
-                                                  </Tag>
-                                                )}
-                                              </span>
-                                            </div>
-                                          </Select.ItemText>
-                                        </Select.Item>
-                                      )
-                                    )}
-                                </Select.Group>
-                              </Select.Content>
-                            </Select.Root>
+                              data={organizationsAndUserList}
+                            />
                           </Form.Control>
                           <Form.Message />
                         </Form.Item>
@@ -382,11 +307,11 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                     render={({ field }) => {
                       return (
                         <Form.Item className="w-full">
-                          <div className="flex flex-row items-center justify-between">
+                          <div className="flex flex-row items-center">
                             <Form.Label className="product-body-text-3-semibold">
                               Model ID
                             </Form.Label>
-                            <p className="!font-bold text-semantic-error-default product-body-text-4-regular">
+                            <p className="ml-1 !font-bold product-body-text-4-regular">
                               *
                             </p>
                           </div>
@@ -409,7 +334,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                   />
                 </div>
                 <p className="text-semantic-fg-secondary product-body-text-3-regular">
-                  {`Git it a short and memorable ID, like 'cat-detector'. You can use <add the naming rule of the ID>. Use the top account drop-down to choose a different owner.`}
+                  {`Give it a short and memorable ID, like 'cat-detector'. Use the drop-down to choose a different owner.`}
                 </p>
               </div>
               <Form.Field
