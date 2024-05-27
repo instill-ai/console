@@ -118,13 +118,16 @@ export type ListModelsResponse = {
   total_size: number;
 };
 
-export type listUserModelsQueryProps = {
+export type listModelsQueryProps = {
   pageSize: Nullable<number>;
   nextPageToken: Nullable<string>;
   accessToken: Nullable<string>;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
 };
+export type listUserModelsQueryProps = {
+  userName: Nullable<string>;
+} & listModelsQueryProps;
 
 export type listUserModelRegionsQueryProps = {
   accessToken: Nullable<string>;
@@ -149,17 +152,17 @@ export type ListModelVersionsResponse = {
 };
 
 export async function listModelsQuery(
-  props: listUserModelsQueryProps & {
+  props: listModelsQueryProps & {
     enablePagination: true;
   }
-): Promise<ListUserModelsResponse>;
+): Promise<ListModelsResponse>;
 export async function listModelsQuery(
-  props: listUserModelsQueryProps & {
+  props: listModelsQueryProps & {
     enablePagination: false;
   }
 ): Promise<Model[]>;
 export async function listModelsQuery(
-  props: listUserModelsQueryProps & {
+  props: listModelsQueryProps & {
     enablePagination: undefined;
   }
 ): Promise<Model[]>;
@@ -170,7 +173,7 @@ export async function listModelsQuery({
   filter,
   visibility,
   enablePagination,
-}: listUserModelsQueryProps & {
+}: listModelsQueryProps & {
   enablePagination?: boolean;
 }) {
   try {
@@ -213,22 +216,31 @@ export async function listModelsQuery({
   }
 }
 
-export type ListUserModelsResponse = {
-  models: Model[];
-  next_page_token: string;
-  total_size: number;
-};
-
+export async function listUserModelsQuery(
+  props: listUserModelsQueryProps & {
+    enablePagination: true;
+  }
+): Promise<ListModelsResponse>;
+export async function listUserModelsQuery(
+  props: listUserModelsQueryProps & {
+    enablePagination: false;
+  }
+): Promise<Model[]>;
+export async function listUserModelsQuery(
+  props: listUserModelsQueryProps & {
+    enablePagination: undefined;
+  }
+): Promise<Model[]>;
 export async function listUserModelsQuery({
   userName,
   pageSize,
   nextPageToken,
   accessToken,
-}: {
-  userName: string;
-  pageSize: Nullable<number>;
-  nextPageToken: Nullable<string>;
-  accessToken: Nullable<string>;
+  filter,
+  visibility,
+  enablePagination,
+}: listUserModelsQueryProps & {
+  enablePagination?: boolean;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, true);
@@ -239,10 +251,15 @@ export async function listUserModelsQuery({
       baseURL: `/${userName}/models?view=VIEW_FULL`,
       pageSize,
       nextPageToken,
-      filter: null,
+      filter,
+      queryParams: visibility ? `visibility=${visibility}` : undefined,
     });
 
-    const { data } = await client.get<ListUserModelsResponse>(queryString);
+    const { data } = await client.get<ListModelsResponse>(queryString);
+
+    if (enablePagination) {
+      return Promise.resolve(data);
+    }
 
     models.push(...data.models);
 
@@ -251,8 +268,11 @@ export async function listUserModelsQuery({
         ...(await listUserModelsQuery({
           userName,
           pageSize,
-          accessToken,
           nextPageToken: data.next_page_token,
+          accessToken,
+          enablePagination: false,
+          filter,
+          visibility,
         }))
       );
     }

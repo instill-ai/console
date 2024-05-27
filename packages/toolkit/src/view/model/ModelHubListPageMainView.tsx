@@ -1,8 +1,13 @@
 "use client";
 
 import { Button, Input, Icons, Select } from "@instill-ai/design-system";
-import { GeneralAppPageProp, Visibility, useInfiniteModels } from "../../lib";
-import { useParams, useSearchParams } from "next/navigation";
+import {
+  GeneralAppPageProp,
+  Visibility,
+  useAppEntity,
+  useInfiniteUserModels,
+} from "../../lib";
+import { useSearchParams } from "next/navigation";
 import { ModelsList } from "./ModelsList";
 import React, { useEffect, useState } from "react";
 import debounce from "lodash.debounce";
@@ -14,10 +19,10 @@ export const ModelHubListPageMainView = (
   props: ModelHubListPageMainViewProps
 ) => {
   const { router, enableQuery, accessToken } = props;
-  const { entity } = useParams();
   const searchParams = useSearchParams();
   const visibility = searchParams.get("visibility");
   const [pageNumber, setPageNumber] = useState(0);
+  const entity = useAppEntity();
 
   const [searchCode, setSearchCode] = React.useState<string>("");
   const [searchInputValue, setSearchInputValue] = React.useState<string>("");
@@ -44,8 +49,9 @@ export const ModelHubListPageMainView = (
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const models = useInfiniteModels({
-    enabled: enableQuery,
+  const models = useInfiniteUserModels({
+    userName: entity.data.entityName,
+    enabled: entity.isSuccess && enableQuery,
     accessToken,
     filter: searchCode ? `q="${searchCode}"` : null,
     visibility: selectedVisibilityOption ?? null,
@@ -111,7 +117,7 @@ export const ModelHubListPageMainView = (
           variant="primary"
           size="lg"
           onClick={() => {
-            router.push(`/${entity}/models/create`);
+            router.push(`/${entity.data.entity}/models/create`);
           }}
         >
           Create a Model
