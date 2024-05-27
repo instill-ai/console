@@ -8,3 +8,4 @@ export * from "./generateRandomReadableName";
 export * from "./getCanvasTextWidth";
 export * from "./chunk";
 export * from "./removeObjKey";
+export * from "./getModelTabTitle";
