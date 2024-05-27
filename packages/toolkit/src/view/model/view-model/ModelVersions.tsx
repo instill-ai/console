@@ -135,6 +135,8 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
       <div className="flex flex-col items-center justify-center">
         <div className="relative">
           <img
+            width={513}
+            height={480}
             src="/images/models/no-model-versions-placeholder.svg"
             alt="An icon of a git branch"
           />

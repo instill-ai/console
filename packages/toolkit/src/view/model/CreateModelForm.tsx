@@ -259,7 +259,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
   const formID = "create-new-model-form";
 
   return (
-    <div className="flex flex-col xl:w-1/2">
+    <div className="flex w-full flex-col md:w-1/2">
       {entity.isSuccess && modelRegions.isSuccess ? (
         <Form.Root {...form}>
           <form id={formID} onSubmit={form.handleSubmit(onSubmit)}>
