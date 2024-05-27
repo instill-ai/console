@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ComplicateIcons, Icons } from "@instill-ai/design-system";
-import { PipelineTriggerRequestField } from "../../../../../lib";
+import { PipelineVariableField } from "../../../../../lib";
 
 export type TriggerNodeInputField = {
   title: string;
@@ -12,7 +12,7 @@ export type TriggerNodeInputField = {
   getFieldConfiguration: (
     title: string,
     description?: string
-  ) => PipelineTriggerRequestField;
+  ) => PipelineVariableField;
 };
 
 export const triggerNodeFields: Record<string, TriggerNodeInputField> = {

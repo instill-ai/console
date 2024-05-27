@@ -1,2 +1,2 @@
-export * from "./ConnectorOperatorControlPanel";
+export * from "./NodeControlPanel";
 export * from "./TriggerResponseNodeControlPanel";

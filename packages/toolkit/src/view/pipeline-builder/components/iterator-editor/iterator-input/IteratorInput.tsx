@@ -67,9 +67,7 @@ export const IteratorInput = ({ className }: { className?: string }) => {
       const inputOption = availableInputOptions.find(
         (option) =>
           option.path ===
-          targetIteratorNode?.data.iterator_component.input
-            .replace("${", "")
-            .replace("}", "")
+          targetIteratorNode?.data.input.replace("${", "").replace("}", "")
       );
 
       if (inputOption) {
@@ -110,10 +108,7 @@ export const IteratorInput = ({ className }: { className?: string }) => {
                       ...node,
                       data: {
                         ...node.data,
-                        iterator_component: {
-                          ...node.data.iterator_component,
-                          input: "${" + option.path + "}",
-                        },
+                        input: "${" + option.path + "}",
                       },
                     };
                   }

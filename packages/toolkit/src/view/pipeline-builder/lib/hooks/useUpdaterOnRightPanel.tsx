@@ -8,13 +8,8 @@ import {
   useInstillStore,
 } from "../../../../lib";
 import { useShallow } from "zustand/react/shallow";
-import {
-  composeEdgesFromNodes,
-  isConnectorNode,
-  isIteratorNode,
-  isOperatorNode,
-} from "..";
-import { ConnectorNodeData, NodeData, OperatorNodeData } from "../../type";
+import { composeEdgesFromNodes, isIteratorNode } from "..";
+import { GeneralNodeData, NodeData } from "../../type";
 
 import { Node } from "reactflow";
 import debounce from "lodash.debounce";
@@ -35,7 +30,7 @@ export function useUpdaterOnRightPanel({
 }: {
   form: GeneralUseFormReturn;
   ValidatorSchema: ZodAnyValidatorSchema;
-  currentNodeData: ConnectorNodeData | OperatorNodeData;
+  currentNodeData: GeneralNodeData;
 }) {
   const {
     nodes,
@@ -64,33 +59,15 @@ export function useUpdaterOnRightPanel({
         nodes: Node<NodeData>[];
       }) => {
         const newNodes: Node<NodeData>[] = nodes.map((node) => {
-          if (isConnectorNode(node) && node.id === nodeID) {
+          if (node.id === nodeID) {
             return {
               ...node,
               data: {
                 ...node.data,
-                connector_component: {
-                  ...node.data.connector_component,
-                  task: updateData.task,
-                  condition: updateData.condition,
-                  input: updateData.input,
-                  connection: updateData.connection,
-                },
-              },
-            };
-          }
-
-          if (isOperatorNode(node) && node.id === nodeID) {
-            return {
-              ...node,
-              data: {
-                ...node.data,
-                operator_component: {
-                  ...node.data.operator_component,
-                  task: updateData.task,
-                  condition: updateData.condition,
-                  input: updateData.input,
-                },
+                task: updateData.task,
+                condition: updateData.condition,
+                input: updateData.input,
+                connection: updateData.connection,
               },
             };
           }

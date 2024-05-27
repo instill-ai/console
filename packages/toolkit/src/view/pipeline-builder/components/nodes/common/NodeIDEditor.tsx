@@ -13,9 +13,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { InstillErrors } from "../../../../../constant";
 import {
   composeEdgesFromNodes,
-  isConnectorNode,
+  isGeneralNode,
   isIteratorNode,
-  isOperatorNode,
 } from "../../../lib";
 import { validateInstillID } from "../../../../../server";
 
@@ -107,11 +106,7 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
 
           const newNodes = nodes.map((node) => {
             if (node.id === currentNodeID) {
-              if (
-                isConnectorNode(node) ||
-                isOperatorNode(node) ||
-                isIteratorNode(node)
-              ) {
+              if (isGeneralNode(node) || isIteratorNode(node)) {
                 return {
                   ...node,
                   id: newID,

@@ -17,7 +17,7 @@ import {
   isIteratorNode,
   isResponseNode,
   isTriggerNode,
-  useConstructNodeFromDefinition,
+  useAddNodeWithDefinition,
 } from "../../lib";
 import { ReactFlowInstance } from "reactflow";
 import { PipelineBuilderCanvas } from "../PipelineBuilderCanvas";
@@ -65,7 +65,7 @@ export const IteratorEditor = ({
     updateTempSavedNodesForEditingIteratorFlow,
   } = useInstillStore(useShallow(selector));
 
-  const constructNode = useConstructNodeFromDefinition({ reactFlowInstance });
+  const addNode = useAddNodeWithDefinition({ reactFlowInstance });
 
   return (
     <div className="flex h-full flex-col bg-semantic-bg-secondary p-4">
@@ -88,10 +88,7 @@ export const IteratorEditor = ({
                     ...node,
                     data: {
                       ...node.data,
-                      iterator_component: {
-                        ...node.data.iterator_component,
-                        components,
-                      },
+                      components,
                       metadata: composePipelineMetadataFromNodes(nodes),
                     },
                   };
@@ -148,7 +145,7 @@ export const IteratorEditor = ({
         open={selectDefinitionDialogIsOpen}
         onOpenChange={setSelectDefinitionDialogIsOpen}
         onSelect={(definition) => {
-          constructNode(definition);
+          addNode(definition);
           setSelectDefinitionDialogIsOpen(false);
         }}
         disabledTrigger={true}

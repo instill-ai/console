@@ -57,9 +57,9 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
     if (targetNodes) {
       const outputOption = availableOutputOptions.find((option) => {
         if (
-          targetNodes?.data.iterator_component.output_elements[outputKey] &&
+          targetNodes?.data.output_elements[outputKey] &&
           option.path ===
-            targetNodes?.data.iterator_component.output_elements[outputKey]
+            targetNodes?.data.output_elements[outputKey]
               .replace("${", "")
               .replace("}", "")
         ) {
@@ -97,12 +97,9 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
                   ...node,
                   data: {
                     ...node.data,
-                    iterator_component: {
-                      ...node.data.iterator_component,
-                      output_elements: {
-                        ...node.data.iterator_component.output_elements,
-                        [outputKey]: "${" + `${option.path}` + "}",
-                      },
+                    output_elements: {
+                      ...node.data.output_elements,
+                      [outputKey]: "${" + `${option.path}` + "}",
                     },
                   },
                 };

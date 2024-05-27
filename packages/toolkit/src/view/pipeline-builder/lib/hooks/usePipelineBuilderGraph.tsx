@@ -95,7 +95,7 @@ export function usePipelineBuilderGraph() {
 
     if (
       checkIsValidPosition({
-        components: pipeline.data.recipe.components,
+        component: pipeline.data.recipe.component,
         metadata: pipeline.data.metadata,
       })
     ) {

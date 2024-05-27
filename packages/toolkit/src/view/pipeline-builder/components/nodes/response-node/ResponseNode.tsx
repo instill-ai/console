@@ -11,7 +11,7 @@ import { arrayMove } from "@dnd-kit/sortable";
 import {
   InstillStore,
   Nullable,
-  PipelineTriggerResponseField,
+  PipelineOutputField,
   useInstillStore,
 } from "../../../../../lib";
 import { UserDefinedFieldItem } from "./UserDefinedFieldItem";
@@ -48,10 +48,9 @@ export type EndOperatorNodeFieldItem = {
   title: string;
 };
 
-export type PipelineResponseNodeFieldSortedItem =
-  PipelineTriggerResponseField & {
-    key: string;
-  };
+export type PipelineResponseNodeFieldSortedItem = PipelineOutputField & {
+  key: string;
+};
 
 export const ResponseNode = ({ data }: NodeProps<ResponseNodeData>) => {
   const [isEditing, setIsEditing] = React.useState(false);

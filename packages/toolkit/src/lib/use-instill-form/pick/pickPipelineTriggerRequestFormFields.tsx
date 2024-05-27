@@ -2,7 +2,7 @@ import { UseFormReturn } from "react-hook-form";
 import { Nullable } from "../../type";
 import { TriggerRequestFormFields } from "../components";
 import { FieldMode, StartOperatorFreeFormFieldItem } from "../types";
-import { PipelineTriggerRequestFields } from "../../vdp-sdk";
+import { PipelineVariableFieldMap } from "../../vdp-sdk";
 
 export type PickPipelineTriggerRequestFormFieldsProps = {
   mode: FieldMode;
@@ -15,7 +15,7 @@ export type PickPipelineTriggerRequestFormFieldsProps = {
   disabledFields?: boolean;
   disabledFieldControls?: boolean;
   disabledReferenceHint?: boolean;
-  fields: Nullable<PipelineTriggerRequestFields>;
+  fields: Nullable<PipelineVariableFieldMap>;
 };
 
 export function pickPipelineTriggerRequestFormFields({

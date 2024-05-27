@@ -5,16 +5,21 @@ import { NodeProps } from "reactflow";
 import { IteratorNodeData } from "../../../type";
 import { NodeHead, NodeIDEditor, NodeWrapper } from "../common";
 import { Button, Icons } from "@instill-ai/design-system";
-import { ConnectorOperatorControlPanel } from "../control-panel";
-import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
+import {
+  InstillStore,
+  PipelineGeneralComponent,
+  useInstillStore,
+  useShallow,
+} from "../../../../../lib";
 import {
   checkIsValidPosition,
   composeEdgesFromNodes,
   createGraphLayout,
   createNodesFromPipelineComponents,
 } from "../../../lib";
-import { IteratorComponentLabel } from "./IteratorComponentLable";
+import { IteratorGeneralComponentLabel } from "./IteratorComponentLable";
 import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";
+import { NodeControlPanel } from "../control-panel";
 
 const selector = (store: InstillStore) => ({
   updateIsEditingIterator: store.updateIsEditingIterator,
@@ -53,17 +58,14 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
 
       if (
         checkIsValidPosition({
-          components: data.iterator_component.components,
+          component: data.component,
           metadata: data.metadata ?? null,
           isIteratorNode: true,
         })
       ) {
-        const nodes = createNodesFromPipelineComponents(
-          data.iterator_component.components,
-          {
-            metadata: data.metadata,
-          }
-        );
+        const nodes = createNodesFromPipelineComponents(data.component, {
+          metadata: data.metadata,
+        });
         const edges = composeEdgesFromNodes(nodes);
 
         updateNodes(() => nodes);
@@ -71,9 +73,7 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
 
         return;
       } else {
-        const nodes = createNodesFromPipelineComponents(
-          data.iterator_component.components
-        );
+        const nodes = createNodesFromPipelineComponents(data.component);
         const edges = composeEdgesFromNodes(nodes);
 
         updateNodes(() => nodes);
@@ -109,7 +109,7 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
           </div>
           <NodeIDEditor currentNodeID={id} />
         </div>
-        <ConnectorOperatorControlPanel
+        <NodeControlPanel
           nodeID={id}
           nodeData={data}
           nodeIsCollapsed={nodeIsCollapsed}
@@ -122,13 +122,13 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
         <React.Fragment>
           <div className="mb-2 flex flex-col gap-y-2">
             <div className="flex flex-col gap-y-2">
-              {data.iterator_component.input ? null : (
+              {data.input ? null : (
                 <p className="rounded bg-semantic-accent-bg px-1 py-2 text-semantic-fg-disabled product-body-text-4-medium">
                   Loop through an array and filter based on multiple criteria
                 </p>
               )}
 
-              {data.iterator_component.input ? (
+              {data.input ? (
                 <React.Fragment>
                   <div className="flex flex-row">
                     <p className="text-semantic-fg-secondary product-body-text-4-medium">
@@ -138,14 +138,14 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
                   <div className="flex">
                     <div className="flex min-h-8 w-full rounded-sm border border-semantic-bg-line bg-semantic-bg-primary px-[9px] py-1.5">
                       <p className="rounded bg-semantic-accent-bg px-2 py-0.5 text-semantic-accent-default product-body-text-4-medium">
-                        {data.iterator_component.input}
+                        {data.input}
                       </p>
                     </div>
                   </div>
                 </React.Fragment>
               ) : null}
             </div>
-            {data.iterator_component.components.length > 0 ? (
+            {data.component.length > 0 ? (
               <div className="flex flex-col gap-y-2">
                 <div className="flex flex-row">
                   <p className="text-semantic-fg-secondary product-body-text-4-medium">
@@ -153,11 +153,8 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
                   </p>
                 </div>
                 <div className="flex flex-col gap-y-2">
-                  {data.iterator_component.components.map((component) => (
-                    <IteratorComponentLabel
-                      key={component.id}
-                      component={component}
-                    />
+                  {(data.component as PipelineGeneralComponent[]).map((e) => (
+                    <IteratorGeneralComponentLabel key={e.id} component={e} />
                   ))}
                 </div>
               </div>

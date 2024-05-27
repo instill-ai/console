@@ -1,8 +1,8 @@
-import { PipelineTriggerRequestFields } from "../vdp-sdk";
+import { PipelineVariableFieldMap } from "../vdp-sdk";
 import { SmartHint } from "./types";
 
 export function transformPipelineTriggerRequestFieldsToSmartHints(
-  fields: PipelineTriggerRequestFields
+  fields: PipelineVariableFieldMap
 ): SmartHint[] {
   const hints: SmartHint[] = [];
   for (const [key, value] of Object.entries(fields)) {

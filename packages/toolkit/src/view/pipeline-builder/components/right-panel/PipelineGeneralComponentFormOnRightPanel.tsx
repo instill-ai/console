@@ -5,34 +5,26 @@ import { Form } from "@instill-ai/design-system";
 
 import { useInstillForm } from "../../../../lib/use-instill-form";
 import { useCheckIsHidden, useUpdaterOnRightPanel } from "../../lib";
-import { ConnectorNodeData, OperatorNodeData } from "../../type";
-import { isConnectorComponent } from "../../lib/checkComponentType";
-import { getConnectorOperatorComponentConfiguration } from "../../lib";
+import { getGeneralComponentConfiguration } from "../../lib";
 import { useInstillStore } from "../../../../lib";
+import { GeneralNodeData } from "../../type";
 
-export const ComponentFormOnRightPanel = ({
+export const PipelineGeneralComponentFormOnRightPanel = ({
   nodeData,
   disabledAll,
 }: {
-  nodeData: ConnectorNodeData | OperatorNodeData;
+  nodeData: GeneralNodeData;
   disabledAll?: boolean;
 }) => {
   const checkIsHidden = useCheckIsHidden("onRightPanel");
   const entitySecrets = useInstillStore((store) => store.entitySecrets);
 
-  const definition = React.useMemo(() => {
-    if (isConnectorComponent(nodeData)) {
-      return nodeData.connector_component.definition;
-    }
-    return nodeData.operator_component.definition;
-  }, [nodeData]);
-
   const configuration = React.useMemo(() => {
-    return getConnectorOperatorComponentConfiguration(nodeData);
+    return getGeneralComponentConfiguration(nodeData);
   }, [nodeData]);
 
   const { form, fields, ValidatorSchema } = useInstillForm(
-    definition?.spec.component_specification ?? null,
+    nodeData.definition?.spec.component_specification ?? null,
     configuration,
     {
       disabledAll,

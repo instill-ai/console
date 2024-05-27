@@ -33,16 +33,16 @@ export const IteratorOutput = () => {
         </p>
       </div>
       <div className="mb-2 flex flex-col gap-y-2">
-        {targetIteratorNode?.data.iterator_component.output_elements
-          ? Object.entries(
-              targetIteratorNode?.data.iterator_component.output_elements
-            ).map(([key]) => (
-              <OutputSet
-                key={key}
-                outputKey={key}
-                disabledDeleteButton={key === "result_0"}
-              />
-            ))
+        {targetIteratorNode?.data.output_elements
+          ? Object.entries(targetIteratorNode?.data.output_elements).map(
+              ([key]) => (
+                <OutputSet
+                  key={key}
+                  outputKey={key}
+                  disabledDeleteButton={key === "result_0"}
+                />
+              )
+            )
           : null}
       </div>
       <AddOutputButton targetIteratorNode={targetIteratorNode ?? null} />

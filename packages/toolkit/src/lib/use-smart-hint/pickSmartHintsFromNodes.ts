@@ -2,22 +2,20 @@ import { Node } from "reactflow";
 import {
   IteratorNodeData,
   NodeData,
-  getConnectorInputOutputSchema,
-  isConnectorNode,
-  isIteratorNode,
-  isOperatorNode,
-  isTriggerNode,
+  getGeneralComponentInOutputSchema,
 } from "../../view";
-import {
-  isConnectorComponent,
-  isOperatorComponent,
-} from "../../view/pipeline-builder/lib/checkComponentType";
+
 import { SmartHint } from "./types";
 import { transformInstillJSONSchemaToFormTree } from "../use-instill-form/transform";
 import { transformFormTreeToSmartHints } from "./transformFormTreeToSmartHints";
 import { transformPipelineTriggerRequestFieldsToSmartHints } from "./transformPipelineTriggerRequestFieldsToSmartHints";
-import { getOperatorInputOutputSchema } from "../../view/pipeline-builder/lib/getOperatorInputOutputSchema";
 import { PipelineIteratorComponent } from "../vdp-sdk";
+import {
+  isGeneralNode,
+  isIteratorNode,
+  isTriggerNode,
+} from "../../view/pipeline-builder/lib/checkNodeType";
+import { isPipelineGeneralComponent } from "../../view/pipeline-builder/lib/checkComponentType";
 
 export function pickSmartHintsFromNodes({
   nodes,
@@ -50,36 +48,8 @@ export function pickSmartHintsFromNodes({
       continue;
     }
 
-    if (isConnectorNode(node)) {
-      const { outputSchema } = getConnectorInputOutputSchema(node.data);
-
-      if (outputSchema) {
-        const outputFormTree =
-          transformInstillJSONSchemaToFormTree(outputSchema);
-
-        const hints = transformFormTreeToSmartHints(outputFormTree, node.id);
-
-        smartHints = [...smartHints, ...hints];
-      }
-
-      if (!isEditingIterator) {
-        smartHints = [
-          ...smartHints,
-          {
-            path: `${node.id}.output`,
-            key: "output",
-            instillFormat: "semi-structured/json",
-            type: "object",
-            properties: [],
-          },
-        ];
-      }
-
-      continue;
-    }
-
-    if (isOperatorNode(node)) {
-      const { outputSchema } = getOperatorInputOutputSchema(node.data);
+    if (isGeneralNode(node)) {
+      const { outputSchema } = getGeneralComponentInOutputSchema(node.data);
 
       if (outputSchema) {
         const outputFormTree =
@@ -123,79 +93,48 @@ export function pickSmartHintsFromNodes({
 
       const consoleGeneratedHints: SmartHint[] = [];
 
-      Object.entries(node.data.iterator_component.output_elements).forEach(
-        ([key, value]) => {
-          const componentKey = value
-            .replace("${", "")
-            .replace("}", "")
-            .split(".")[0];
+      Object.entries(node.data.output_elements).forEach(([key, value]) => {
+        const componentKey = value
+          .replace("${", "")
+          .replace("}", "")
+          .split(".")[0];
 
-          // Get target component's type
-          const component = (
-            node.data as PipelineIteratorComponent
-          ).iterator_component.components.find(
-            (component) => component.id === componentKey
-          );
+        // Get target component's type
+        const component = (
+          node.data as PipelineIteratorComponent
+        ).component.find((component) => component.id === componentKey);
 
-          if (component) {
-            if (isConnectorComponent(component)) {
-              const { outputSchema } = getConnectorInputOutputSchema(component);
-              if (outputSchema) {
-                const outputFormTree =
-                  transformInstillJSONSchemaToFormTree(outputSchema);
-                const hints = transformFormTreeToSmartHints(
-                  outputFormTree,
-                  component.id
-                );
+        if (component) {
+          if (isPipelineGeneralComponent(component)) {
+            const { outputSchema } =
+              getGeneralComponentInOutputSchema(component);
+            if (outputSchema) {
+              const outputFormTree =
+                transformInstillJSONSchemaToFormTree(outputSchema);
+              const hints = transformFormTreeToSmartHints(
+                outputFormTree,
+                component.id
+              );
 
-                const targetHint = hints.find(
-                  (hint) =>
-                    hint.path === value.replace("${", "").replace("}", "")
-                );
+              const targetHint = hints.find(
+                (hint) => hint.path === value.replace("${", "").replace("}", "")
+              );
 
-                if (targetHint) {
-                  // Iterator exposed output format will be similar to
-                  // iterator_0.output.result_0
-                  consoleGeneratedHints.push({
-                    key,
-                    path: `${node.id}.output.${key}`,
-                    instillFormat: targetHint.instillFormat,
-                    type: targetHint.type,
-                    description: targetHint.description,
-                  });
-                }
-              }
-            }
-
-            if (isOperatorComponent(component)) {
-              const { outputSchema } = getOperatorInputOutputSchema(component);
-              if (outputSchema) {
-                const outputFormTree =
-                  transformInstillJSONSchemaToFormTree(outputSchema);
-                const hints = transformFormTreeToSmartHints(
-                  outputFormTree,
-                  component.id
-                );
-
-                const targetHint = hints.find(
-                  (hint) =>
-                    hint.path === value.replace("${", "").replace("}", "")
-                );
-
-                if (targetHint) {
-                  consoleGeneratedHints.push({
-                    key,
-                    path: `${node.id}.output.${key}`,
-                    instillFormat: targetHint.instillFormat,
-                    type: targetHint.type,
-                    description: targetHint.description,
-                  });
-                }
+              if (targetHint) {
+                // Iterator exposed output format will be similar to
+                // iterator_0.output.result_0
+                consoleGeneratedHints.push({
+                  key,
+                  path: `${node.id}.output.${key}`,
+                  instillFormat: targetHint.instillFormat,
+                  type: targetHint.type,
+                  description: targetHint.description,
+                });
               }
             }
           }
         }
-      );
+      });
 
       smartHints = [...smartHints, ...consoleGeneratedHints];
 
@@ -224,9 +163,7 @@ export function pickSmartHintsFromNodes({
       const targetHints = smartHints.find(
         (hint) =>
           hint.path ===
-          targetIteratorNode.data.iterator_component.input
-            .replace("${", "")
-            .replace("}", "")
+          targetIteratorNode.data.input.replace("${", "").replace("}", "")
       );
 
       if (targetHints) {

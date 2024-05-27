@@ -37,18 +37,15 @@ export const OutputKeyField = ({
       updateTempSavedNodesForEditingIteratorFlow((nodes) =>
         nodes.map((node) => {
           if (node.data.id === editingIteratorID && isIteratorNode(node)) {
-            delete node.data.iterator_component.output_elements[outputKey];
+            delete node.data.output_elements[outputKey];
 
             return {
               ...node,
               data: {
                 ...node.data,
-                iterator_component: {
-                  ...node.data.iterator_component,
-                  output_elements: {
-                    ...node.data.iterator_component.output_elements,
-                    [keyInput]: outputValue,
-                  },
+                output_elements: {
+                  ...node.data.output_elements,
+                  [keyInput]: outputValue,
                 },
               },
             };

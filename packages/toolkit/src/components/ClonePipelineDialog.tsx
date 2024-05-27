@@ -141,12 +141,7 @@ export const ClonePipelineDialog = ({
 
     const payload: CreateUserPipelinePayload = {
       id: data.id,
-      recipe: {
-        version: pipeline.recipe.version,
-        trigger: pipeline.recipe.trigger,
-        components: pipeline.recipe.components,
-      },
-
+      recipe: pipeline.recipe,
       metadata: pipeline.metadata,
       readme: pipeline.readme,
       description: data.brief ? data.brief : pipeline.description,

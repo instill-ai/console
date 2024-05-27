@@ -5,4 +5,4 @@ export * from "./useSavePipeline";
 export * from "./useSortedReleases";
 export * from "./useUpdaterOnNode";
 export * from "./useUpdaterOnRightPanel";
-export * from "./useConstructNodeFromDefinition";
+export * from "./useAddNodeWithDefinition";

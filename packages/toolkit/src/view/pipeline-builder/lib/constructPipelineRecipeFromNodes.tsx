@@ -3,16 +3,12 @@ import { PipelineComponent, PipelineRecipe } from "../../../lib";
 import { Node } from "reactflow";
 import { NodeData, ResponseNodeData, TriggerNodeData } from "../type";
 import {
-  isConnectorNode,
+  isGeneralNode,
   isIteratorNode,
-  isOperatorNode,
   isResponseNode,
   isTriggerNode,
 } from "./checkNodeType";
-import {
-  isConnectorComponent,
-  isOperatorComponent,
-} from "./checkComponentType";
+import { isPipelineGeneralComponent } from "./checkComponentType";
 
 export function constructPipelineRecipeFromNodes(
   nodes: Node<NodeData>[]
@@ -22,97 +18,48 @@ export function constructPipelineRecipeFromNodes(
   for (const node of nodes) {
     if (isIteratorNode(node)) {
       recipeComponents.push({
+        ...node.data,
         id: node.id,
-        iterator_component: {
-          ...node.data.iterator_component,
-          components: node.data.iterator_component.components.map(
-            (component) => {
-              if (isConnectorComponent(component)) {
-                return {
-                  ...component,
-                  connector_component: {
-                    ...component.connector_component,
-                    definition: undefined,
-                    input:
-                      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-                        recursiveHelpers.parseToNum(
-                          structuredClone(component.connector_component.input)
-                        )
-                      ),
-                    connection:
-                      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-                        recursiveHelpers.parseToNum(
-                          structuredClone(
-                            component.connector_component.connection
-                          )
-                        )
-                      ),
-                  },
-                };
-              }
+        component: node.data.component.map((e) => {
+          if (isPipelineGeneralComponent(e)) {
+            return {
+              ...e,
+              definition: undefined,
+              input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+                recursiveHelpers.parseToNum(structuredClone(e.input))
+              ),
+              connection: e.connection
+                ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+                    recursiveHelpers.parseToNum(structuredClone(e.connection))
+                  )
+                : undefined,
+            };
+          }
 
-              if (isOperatorComponent(component)) {
-                return {
-                  ...component,
-                  operator_component: {
-                    ...component.operator_component,
-                    definition: undefined,
-                    input:
-                      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-                        recursiveHelpers.parseToNum(
-                          structuredClone(component.operator_component.input)
-                        )
-                      ),
-                  },
-                };
-              }
-
-              return component;
-            }
-          ),
-        },
+          return e;
+        }),
         metadata: node.data.metadata ?? undefined,
       });
       continue;
     }
 
-    if (isConnectorNode(node)) {
+    if (isGeneralNode(node)) {
       recipeComponents.push({
+        ...node.data,
         id: node.id,
-        connector_component: {
-          ...node.data.connector_component,
-          input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-            recursiveHelpers.parseToNum(
-              structuredClone(node.data.connector_component.input)
+        input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+          recursiveHelpers.parseToNum(structuredClone(node.data.input))
+        ),
+        connection: node.data.connection
+          ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+              recursiveHelpers.parseToNum(structuredClone(node.data.connection))
             )
-          ),
-          connection: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-            recursiveHelpers.parseToNum(
-              structuredClone(node.data.connector_component.connection)
-            )
-          ),
-          definition: undefined,
-        },
+          : undefined,
+        definition: undefined,
         metadata: node.data.metadata ?? undefined,
       });
 
       continue;
-    }
-
-    if (isOperatorNode(node)) {
-      recipeComponents.push({
-        id: node.id,
-        operator_component: {
-          ...node.data.operator_component,
-          input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-            recursiveHelpers.parseToNum(
-              structuredClone(node.data.operator_component.input)
-            )
-          ),
-          definition: undefined,
-        },
-        metadata: node.data.metadata ?? undefined,
-      });
     }
   }
 
@@ -126,12 +73,8 @@ export function constructPipelineRecipeFromNodes(
 
   return {
     version: "v1beta",
-    components: recipeComponents,
-    trigger: {
-      trigger_by_request: {
-        request_fields: triggerNode ? triggerNode.data.fields : {},
-        response_fields: responseNode ? responseNode.data.fields : {},
-      },
-    },
+    component: recipeComponents,
+    variable: triggerNode ? triggerNode.data.fields : {},
+    output: responseNode ? responseNode.data.fields : {},
   };
 }

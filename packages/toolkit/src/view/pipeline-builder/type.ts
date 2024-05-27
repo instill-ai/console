@@ -2,46 +2,40 @@
 
 import {
   Nullable,
-  PipelineConnectorComponent,
   PipelineRecipe,
-  PipelineOperatorComponent,
   PipelineIteratorComponent,
   GeneralRecord,
-  PipelineTriggerRequestFields,
-  PipelineTriggerResponseFields,
+  PipelineVariableFieldMap,
+  PipelineOutputFieldMap,
+  PipelineGeneralComponent,
 } from "../../lib";
-
-export type ConnectorNodeData = {
-  note: Nullable<string>;
-} & PipelineConnectorComponent;
 
 export type TriggerNodeData = {
   id: "trigger";
   note: Nullable<string>;
   metadata?: GeneralRecord;
-  fields: PipelineTriggerRequestFields;
+  fields: PipelineVariableFieldMap;
 };
 
 export type ResponseNodeData = {
   id: "response";
   note: Nullable<string>;
   metadata?: GeneralRecord;
-  fields: PipelineTriggerResponseFields;
+  fields: PipelineOutputFieldMap;
 };
 
-export type OperatorNodeData = {
+export type GeneralNodeData = {
   note: Nullable<string>;
-} & PipelineOperatorComponent;
+} & PipelineGeneralComponent;
 
 export type IteratorNodeData = {
   note: Nullable<string>;
 } & PipelineIteratorComponent;
 
 export type NodeData =
-  | ConnectorNodeData
   | TriggerNodeData
   | ResponseNodeData
-  | OperatorNodeData
+  | GeneralNodeData
   | IteratorNodeData;
 
 export type PipelineComponentReference =

@@ -22,10 +22,9 @@ import {
 } from "../../../lib";
 import { composeEdgesFromNodes, createGraphLayout } from "../lib";
 import {
-  ConnectorNode,
   EmptyNode,
+  GeneralNode,
   IteratorNode,
-  OperatorNode,
   ResponseNode,
   TriggerNode,
 } from "./nodes";
@@ -42,11 +41,10 @@ const selector = (store: InstillStore) => ({
 
 const nodeTypes = {
   triggerNode: TriggerNode,
-  connectorNode: ConnectorNode,
   emptyNode: EmptyNode,
   responseNode: ResponseNode,
-  operatorNode: OperatorNode,
   iteratorNode: IteratorNode,
+  generalNode: GeneralNode,
 };
 
 const edgeTypes = {

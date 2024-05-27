@@ -4,25 +4,24 @@ import { checkIsValidPosition } from "./checkIsValidPosition";
 
 test("should check position is not valid", () => {
   const recipe: PipelineRecipe = {
-    trigger: {},
-    components: [
+    variable: {},
+    component: [
       {
         id: "ai_0",
-        connector_component: {
-          definition_name: "connector-definitions/stability-ai",
-          definition: null,
-          task: "",
-          input: {},
-          condition: null,
-          connection: {},
-        },
+        type: "stability-ai",
+        definition: null,
+        task: "",
+        input: {},
+        condition: null,
+        connection: {},
       },
     ],
+    output: {},
     version: "v1beta",
   };
 
   const isValid = checkIsValidPosition({
-    components: recipe.components,
+    component: recipe.component,
     metadata: {
       components: [
         {
@@ -40,30 +39,24 @@ test("should check position is not valid", () => {
 
 test("should check position is valid", () => {
   const recipe: PipelineRecipe = {
-    trigger: {
-      trigger_by_request: {
-        request_fields: {},
-        response_fields: {},
-      },
-    },
-    components: [
+    variable: {},
+    output: {},
+    component: [
       {
         id: "ai_0",
-        connector_component: {
-          definition_name: "connector-definitions/stability-ai",
-          definition: null,
-          task: "",
-          input: {},
-          condition: null,
-          connection: {},
-        },
+        type: "stability-ai",
+        definition: null,
+        task: "",
+        input: {},
+        condition: null,
+        connection: {},
       },
     ],
     version: "v1beta",
   };
 
   const isValid = checkIsValidPosition({
-    components: recipe.components,
+    component: recipe.component,
     metadata: {
       components: [
         {
@@ -93,47 +86,42 @@ test("should check position is valid", () => {
 
 test("should check position is not valid even there is one missing data", () => {
   const recipe: PipelineRecipe = {
-    trigger: {},
-    components: [
+    variable: {},
+    output: {},
+    component: [
       {
         id: "ai_0",
-        connector_component: {
-          definition_name: "connector-definitions/stability-ai",
-          definition: null,
-          task: "",
-          input: {},
-          condition: null,
-          connection: {},
-        },
+        type: "stability-ai",
+        definition: null,
+        task: "",
+        input: {},
+        condition: null,
+        connection: {},
       },
       {
         id: "ai_1",
-        connector_component: {
-          definition_name: "connector-definitions/stability-ai",
-          definition: null,
-          task: "",
-          input: {},
-          condition: null,
-          connection: {},
-        },
+        type: "stability-ai",
+        definition: null,
+        task: "",
+        input: {},
+        condition: null,
+        connection: {},
       },
       {
         id: "ai_2",
-        connector_component: {
-          definition_name: "connector-definitions/stability-ai",
-          definition: null,
-          task: "",
-          input: {},
-          condition: null,
-          connection: {},
-        },
+        type: "stability-ai",
+        definition: null,
+        task: "",
+        input: {},
+        condition: null,
+        connection: {},
       },
     ],
     version: "v1beta",
   };
 
   const isValid = checkIsValidPosition({
-    components: recipe.components,
+    component: recipe.component,
     metadata: {
       components: [
         {

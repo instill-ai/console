@@ -22,7 +22,6 @@ import { Button, Form, useToast } from "@instill-ai/design-system";
 import { recursiveHelpers, useSortedReleases } from "../../pipeline-builder";
 import { ComponentOutputs } from "../../pipeline-builder/components/ComponentOutputs";
 import { RunButton } from "./RunButton";
-import { isTriggerByRequest } from "../../pipeline-builder/lib/isTriggerByRequest";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -62,15 +61,10 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
     accessToken,
   });
 
-  const triggerFields = React.useMemo(() => {
-    if (
-      pipeline.isSuccess &&
-      isTriggerByRequest(pipeline.data.recipe.trigger)
-    ) {
+  const variables = React.useMemo(() => {
+    if (pipeline.isSuccess) {
       if (!currentVersion || releases.length === 0) {
-        return (
-          pipeline.data.recipe.trigger.trigger_by_request.request_fields ?? null
-        );
+        return pipeline.data.recipe.variable ?? null;
       }
 
       const pipelineVersion = releases.find(
@@ -78,30 +72,18 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
           release.id === currentVersion || release.alias === currentVersion
       );
 
-      if (
-        pipelineVersion &&
-        isTriggerByRequest(pipelineVersion.recipe.trigger)
-      ) {
-        return (
-          pipelineVersion?.recipe.trigger.trigger_by_request.request_fields ??
-          null
-        );
+      if (pipelineVersion) {
+        return pipelineVersion?.recipe.variable ?? null;
       }
     }
 
     return null;
   }, [releases, currentVersion, pipeline.isSuccess, pipeline.data]);
 
-  const responseFields = React.useMemo(() => {
-    if (
-      pipeline.isSuccess &&
-      isTriggerByRequest(pipeline.data.recipe.trigger)
-    ) {
+  const outputs = React.useMemo(() => {
+    if (pipeline.isSuccess) {
       if (!currentVersion || releases.length === 0) {
-        return (
-          pipeline.data.recipe.trigger.trigger_by_request.response_fields ??
-          null
-        );
+        return pipeline.data.recipe.output ?? null;
       }
 
       const pipelineVersion = releases.find(
@@ -109,14 +91,8 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
           release.id === currentVersion || release.alias === currentVersion
       );
 
-      if (
-        pipelineVersion &&
-        isTriggerByRequest(pipelineVersion.recipe.trigger)
-      ) {
-        return (
-          pipelineVersion?.recipe.trigger.trigger_by_request.response_fields ??
-          null
-        );
+      if (pipelineVersion) {
+        return pipelineVersion?.recipe.output ?? null;
       }
     }
 
@@ -125,7 +101,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
   const { fieldItems, form, Schema } = usePipelineTriggerRequestForm({
     mode: "demo",
-    fields: triggerFields,
+    fields: variables,
     keyPrefix: "pipeline-details-page-trigger-pipeline-form",
     disabledFields: false,
     disabledFieldControls: true,
@@ -146,8 +122,8 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
     const semiStructuredObjectKeys: string[] = [];
 
-    if (triggerFields) {
-      Object.entries(triggerFields).forEach(([key, value]) => {
+    if (variables) {
+      Object.entries(variables).forEach(([key, value]) => {
         if (value.instill_format === "semi-structured/json") {
           semiStructuredObjectKeys.push(key);
         }
@@ -200,25 +176,24 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
   }
 
   const inputIsNotDefined = React.useMemo(() => {
-    if (!triggerFields) return false;
+    if (!variables) return false;
 
-    if (triggerFields && Object.keys(triggerFields).length > 0) {
+    if (variables && Object.keys(variables).length > 0) {
       return false;
     }
 
     return true;
-  }, [triggerFields]);
+  }, [variables]);
 
   const outputIsNotDefined = React.useMemo(() => {
-    if (!responseFields) return true;
+    if (!outputs) return true;
 
-    if (responseFields && Object.keys(responseFields).length > 0) {
+    if (outputs && Object.keys(outputs).length > 0) {
       return false;
     }
 
     return true;
-  }, [responseFields]);
-
+  }, [outputs]);
   return (
     <div className="flex flex-col">
       <div className="mb-3 flex flex-col gap-y-6">

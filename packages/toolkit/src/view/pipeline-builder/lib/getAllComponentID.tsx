@@ -1,15 +1,13 @@
-import { isIteratorComponent } from "./checkComponentType";
+import { isPipelineIteratorComponent } from "./checkComponentType";
 import { PipelineComponent } from "../../../lib";
 
 export function getAllComponentID(components: PipelineComponent[]): string[] {
   const nodeIDs: string[] = [];
 
   for (const component of components) {
-    if (isIteratorComponent(component)) {
+    if (isPipelineIteratorComponent(component)) {
       nodeIDs.push(component.id);
-      nodeIDs.push(
-        ...getAllComponentID(component.iterator_component.components)
-      );
+      nodeIDs.push(...getAllComponentID(component.component));
       continue;
     }
 

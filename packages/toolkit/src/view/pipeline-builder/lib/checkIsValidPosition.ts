@@ -2,11 +2,11 @@ import { GeneralRecord, Nullable, PipelineComponent } from "../../../lib";
 import { PipelineComponentMetadata } from "../type";
 
 export function checkIsValidPosition({
-  components,
+  component,
   metadata,
   isIteratorNode,
 }: {
-  components: PipelineComponent[];
+  component: PipelineComponent[];
   metadata: Nullable<GeneralRecord>;
   isIteratorNode?: boolean;
 }): boolean {
@@ -36,8 +36,8 @@ export function checkIsValidPosition({
 
       let isValid = true;
 
-      for (const component of components) {
-        if (!componentIDs.includes(component.id)) {
+      for (const e of component) {
+        if (!componentIDs.includes(e.id)) {
           isValid = false;
           break;
         }

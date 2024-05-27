@@ -30,7 +30,7 @@ export const OutputValueInput = ({ outputKey }: { outputKey: string }) => {
     ) as Node<IteratorNodeData> | undefined;
 
     if (iteratorNode) {
-      return iteratorNode.data.iterator_component.output_elements[outputKey];
+      return iteratorNode.data.output_elements[outputKey];
     }
   }, [tempSavedNodesForEditingIteratorFlow, editingIteratorID, outputKey]);
 
@@ -47,12 +47,9 @@ export const OutputValueInput = ({ outputKey }: { outputKey: string }) => {
                   ...node,
                   data: {
                     ...node.data,
-                    iterator_component: {
-                      ...node.data.iterator_component,
-                      output_elements: {
-                        ...node.data.iterator_component.output_elements,
-                        [outputKey]: e.target.value,
-                      },
+                    output_elements: {
+                      ...node.data.output_elements,
+                      [outputKey]: e.target.value,
                     },
                   },
                 };

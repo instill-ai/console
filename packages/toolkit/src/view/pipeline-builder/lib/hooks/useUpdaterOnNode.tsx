@@ -8,15 +8,13 @@ import {
   useInstillStore,
 } from "../../../../lib";
 import { useShallow } from "zustand/react/shallow";
-import { composeEdgesFromNodes, isConnectorNode, isOperatorNode } from "..";
-import { ConnectorNodeData, NodeData, OperatorNodeData } from "../../type";
-import {
-  isConnectorComponent,
-  isOperatorComponent,
-} from "../checkComponentType";
+import { composeEdgesFromNodes, isGeneralNode } from "..";
+import { GeneralNodeData, NodeData } from "../../type";
+
 import debounce from "lodash.debounce";
 import isEqual from "lodash.isequal";
 import { Node } from "reactflow";
+import { isPipelineGeneralComponent } from "../checkComponentType";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -34,7 +32,7 @@ export function useUpdaterOnNode({
   form,
   ValidatorSchema,
 }: {
-  currentNodeData: OperatorNodeData | ConnectorNodeData;
+  currentNodeData: GeneralNodeData;
   form: GeneralUseFormReturn;
   ValidatorSchema: ZodAnyValidatorSchema;
 }) {
@@ -62,32 +60,15 @@ export function useUpdaterOnNode({
         nodes: Node<NodeData>[];
       }) => {
         const newNodes = nodes.map((node) => {
-          if (isConnectorNode(node) && node.id === nodeID) {
+          if (isGeneralNode(node) && node.id === nodeID) {
             return {
               ...node,
               data: {
                 ...node.data,
-                connector_component: {
-                  ...node.data.connector_component,
-                  task: updateData.task,
-                  condition: updateData.condition,
-                  input: updateData.input,
-                  connection: updateData.connection,
-                },
-              },
-            };
-          }
-
-          if (isOperatorNode(node) && node.id === nodeID) {
-            return {
-              ...node,
-              data: {
-                ...node.data,
-                operator_component: {
-                  ...node.data.operator_component,
-                  input: updateData.input,
-                  task: updateData.task,
-                },
+                task: updateData.task,
+                condition: updateData.condition,
+                input: updateData.input,
+                connection: updateData.connection,
               },
             };
           }
@@ -117,10 +98,8 @@ export function useUpdaterOnNode({
       const parsed = ValidatorSchema.safeParse(values);
 
       if (
-        (isConnectorComponent(currentNodeData) &&
-          values.task !== currentNodeData.connector_component.task) ||
-        (isOperatorComponent(currentNodeData) &&
-          values.task !== currentNodeData.operator_component.task)
+        isPipelineGeneralComponent(currentNodeData) &&
+        values.task !== currentNodeData.task
       ) {
         updateCurrentAdvancedConfigurationNodeID(() => null);
       }

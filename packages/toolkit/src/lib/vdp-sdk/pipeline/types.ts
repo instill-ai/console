@@ -21,18 +21,14 @@ export type PipelineReleaseState =
   | "STATE_ERROR"
   | "STATE_DELETED";
 
-export type PipelineTrigger =
-  | TriggerByRequest
-  | GeneralRecord
-  | Record<string, never>;
-
 export type PipelineRecipe = {
   version: string;
-  components: PipelineComponent[];
-  trigger: PipelineTrigger;
+  component: PipelineComponent[];
+  variable: PipelineVariableFieldMap;
+  output: PipelineOutputFieldMap;
 };
 
-export type PipelineTriggerRequestField = {
+export type PipelineVariableField = {
   title: string;
   description?: string;
   instill_format: string;
@@ -40,29 +36,16 @@ export type PipelineTriggerRequestField = {
   instill_ui_multiline?: boolean;
 };
 
-export type PipelineTriggerRequestFields = Record<
-  string,
-  PipelineTriggerRequestField
->;
+export type PipelineVariableFieldMap = Record<string, PipelineVariableField>;
 
-export type PipelineTriggerResponseField = {
+export type PipelineOutputField = {
   title: string;
   description?: string;
   value: string;
   instill_ui_order?: number;
 };
 
-export type PipelineTriggerResponseFields = Record<
-  string,
-  PipelineTriggerResponseField
->;
-
-export type TriggerByRequest = {
-  trigger_by_request: {
-    request_fields?: PipelineTriggerRequestFields;
-    response_fields?: PipelineTriggerResponseFields;
-  };
-};
+export type PipelineOutputFieldMap = Record<string, PipelineOutputField>;
 
 export type PipelineReleaseWatchState = {
   state: PipelineReleaseState;
@@ -167,47 +150,31 @@ export type PipelineTriggerMetadata = {
   traces: Record<string, PipelineTrace>;
 };
 
-export type PipelineConnectorComponent = {
+export type ComponentBasicFields = {
   id: string;
   metadata?: GeneralRecord;
-  connector_component: {
-    definition_name: string;
-    definition?: Nullable<ConnectorDefinition>;
-    task: string;
-    input: GeneralRecord;
-    condition: Nullable<string>;
-    connection: GeneralRecord;
-  };
+  type: string;
 };
 
-export type PipelineOperatorComponent = {
-  id: string;
-  metadata?: GeneralRecord;
-  operator_component: {
-    definition_name: string;
-    definition?: Nullable<OperatorDefinition>;
-    task: string;
-    input: GeneralRecord;
-    condition: Nullable<string>;
-  };
-};
+export type PipelineGeneralComponent = {
+  definition?: Nullable<ConnectorDefinition | OperatorDefinition>;
+  task: string;
+  input: GeneralRecord;
+  condition: Nullable<string>;
+  connection: Nullable<GeneralRecord>;
+} & ComponentBasicFields;
 
 export type PipelineIteratorComponent = {
-  id: string;
-  metadata?: GeneralRecord;
-  iterator_component: {
-    input: string;
-    output_elements: Record<string, string>;
-    components: PipelineComponent[];
-    condition: Nullable<string>;
-    data_specification: Nullable<DataSpecification>;
-  };
-};
+  input: string;
+  output_elements: Record<string, string>;
+  component: PipelineComponent[];
+  condition: Nullable<string>;
+  data_specification: Nullable<DataSpecification>;
+} & ComponentBasicFields;
 
 export type PipelineComponent =
-  | PipelineConnectorComponent
-  | PipelineOperatorComponent
-  | PipelineIteratorComponent;
+  | PipelineIteratorComponent
+  | PipelineGeneralComponent;
 
 export type StartOperatorInputType =
   | "audio/*"
