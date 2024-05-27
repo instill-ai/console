@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Pagination } from "@instill-ai/design-system";
 import { env } from "../../server";
 import { InfiniteData, UseInfiniteQueryResult } from "@tanstack/react-query";
-import { ListUserModelsResponse } from "../../lib";
+import { ListModelsResponse } from "../../lib";
 
 const defaultPaginationProps = {
   isPrevDisabled: true,
@@ -12,7 +12,7 @@ const defaultPaginationProps = {
 };
 
 export type ModelsListPaginationProps = {
-  models: UseInfiniteQueryResult<InfiniteData<ListUserModelsResponse>>;
+  models: UseInfiniteQueryResult<InfiniteData<ListModelsResponse>>;
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   pageNumber: number;
 };
