@@ -47,8 +47,8 @@ export const LatestChangesCard = () => {
           {changelogs.data.map((changelog: Changelog, index: number) => (
             <React.Fragment key={changelog.id}>
               <div className="relative flex items-start  justify-center ">
-                <div className="w-3 h-3 p-px justify-center items-center inline-flex">
-                  <div className="w-2.5 h-2.5 bg-slate-300 rounded-full" />
+                <div className="inline-flex h-3 w-3 items-center justify-center p-px">
+                  <div className="h-2.5 w-2.5 rounded-full bg-slate-300" />
                 </div>
                 {index !== changelogs.data.length && (
                   <div className="absolute bottom-0.5 left-1/2 top-3.5 w-0.5 -translate-x-1/2 rounded-full bg-semantic-node-disconnected-bg" />
@@ -63,18 +63,18 @@ export const LatestChangesCard = () => {
                 <div className="-mt-0.5 mb-1 w-min whitespace-nowrap text-xs font-semibold capitalize text-semantic-accent-default">
                   {changelog.date && new Date(changelog.date).getTime() !== 0
                     ? new Date(changelog.date).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })
-                    : new Date(changelog.updatedAt).toLocaleDateString(
-                      "en-US",
-                      {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
-                      }
-                    )}
+                      })
+                    : new Date(changelog.updatedAt).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      )}
                 </div>
                 <p className="text-semantic-fg-primary product-body-text-3-regular hover:underline">
                   {changelog.title}
