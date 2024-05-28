@@ -2,7 +2,7 @@ import { authLogoutAction } from "@instill-ai/toolkit/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function () {
+export default async function Page() {
   const cookieStore = cookies();
   const accessTokenKey = "instill-auth-session";
   const accessToken = cookieStore.get(accessTokenKey);

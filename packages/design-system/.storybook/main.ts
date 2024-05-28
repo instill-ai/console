@@ -4,6 +4,7 @@ import type { StorybookConfig } from "@storybook/react-webpack5";
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
   staticDirs: ["../public"],
+
   addons: [
     getAbsolutePath("@storybook/addon-links"),
     getAbsolutePath("@storybook/addon-essentials"),
@@ -11,14 +12,15 @@ const config: StorybookConfig = {
     getAbsolutePath("@storybook/addon-a11y"),
     getAbsolutePath("@chromatic-com/storybook"),
   ],
+
   framework: {
     name: getAbsolutePath("@storybook/nextjs"),
     options: {},
   },
-  docs: {
-    autodocs: true,
+
+  typescript: {
+    reactDocgen: "react-docgen-typescript",
   },
-  core: {},
 };
 
 export default config;

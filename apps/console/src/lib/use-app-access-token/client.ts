@@ -84,6 +84,7 @@ export function useAppAccessToken(props?: UseAccessTokenProps) {
     query.isError,
     updateAccessToken,
     updateEnabledQuery,
+    forceQueryWithoutAccessToken,
   ]);
 
   return query;
