@@ -68,7 +68,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
 
   React.useEffect(() => {
     const fetchKnowledgeBases = async () => {
-      const knowledgeBasesData = await getKnowledgeBases();
+      const knowledgeBasesData = await useGetKnowledgeBases();
       setKnowledgeBases(knowledgeBasesData);
     };
 
