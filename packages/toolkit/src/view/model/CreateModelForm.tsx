@@ -132,12 +132,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
     }
 
     return orgsAndUserList;
-  }, [
-    userMemberships.isSuccess,
-    userMemberships.data,
-    entity.isSuccess,
-    entity.data,
-  ]);
+  }, [userMemberships.isSuccess, userMemberships.data, me.isSuccess, me.data]);
 
   const modelRegions = useModelRegions({ accessToken });
 
@@ -174,7 +169,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
         )
         .map((item) => ({
           value: item.region_name,
-          title: getModelRegionToolkit(item.region_name),
+          title: getModelRegionToolkit(item.region_name) || "Unknown",
         }));
       const newHardwareOptions: Record<string, Option[]> =
         modelRegions.data.reduce((acc, curr) => {
