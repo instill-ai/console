@@ -26,10 +26,18 @@ export function useInfinitePipelines({
   filter: Nullable<string>;
   order_by: Nullable<string>;
 }): UseInfiniteQueryResult<InfiniteData<ListPipelinesResponse>, Error> {
+  const queryKey = ["pipelines", "infinite"];
+
+  if (filter) {
+    queryKey.push(filter);
+  }
+
+  if (order_by) {
+    queryKey.push(order_by);
+  }
+
   return useInfiniteQuery({
-    queryKey: filter
-      ? ["pipelines", "infinite", filter]
-      : ["pipelines", "infinite"],
+    queryKey: queryKey,
     queryFn: async ({ pageParam }) => {
       const pipelines = await listPipelinesQuery({
         pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE") ?? null,

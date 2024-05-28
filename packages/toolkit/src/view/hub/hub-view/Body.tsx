@@ -31,7 +31,7 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-type SortField = "id" | "update_time";
+type SortField = "update_time";
 type SortOrder = "asc" | "desc";
 
 const SortSelectButton = ({
@@ -129,13 +129,6 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
     }
   };
 
-  const handleSortOrderChange = (value: SortOrder) => {
-    if (selectedSortOrder !== value) {
-      setSelectedSortOrder(value);
-      pipelines.refetch();
-    }
-  };
-
   return (
     <div className="flex flex-row">
       <div className="flex w-full flex-col pt-6">
@@ -173,16 +166,6 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                   className="flex w-64 flex-col !px-0 py-1"
                 >
                   <SortSelectButton
-                    label="Name"
-                    icon={
-                      <Icons.TextA className="h-4 w-4 stroke-semantic-fg-disabled" />
-                    }
-                    onClick={() => {
-                      handleSortFieldChange("id");
-                    }}
-                    isSelected={selectedSortField === "id"}
-                  />
-                  <SortSelectButton
                     label="Updated Time"
                     icon={
                       <Icons.Update className="h-4 w-4 stroke-semantic-fg-disabled" />
@@ -200,7 +183,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                       <Icons.SortLinesUp className="h-4 w-4 stroke-semantic-fg-disabled" />
                     }
                     onClick={() => {
-                      handleSortOrderChange("asc");
+                      setSelectedSortOrder("asc");
                     }}
                     isSelected={selectedSortOrder === "asc"}
                   />
@@ -210,7 +193,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                       <Icons.SortLinesDown className="h-4 w-4 stroke-semantic-fg-disabled" />
                     }
                     onClick={() => {
-                      handleSortOrderChange("desc");
+                      setSelectedSortOrder("desc");
                     }}
                     isSelected={selectedSortOrder === "desc"}
                   />
