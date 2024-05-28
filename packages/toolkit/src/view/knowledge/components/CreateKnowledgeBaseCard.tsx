@@ -5,7 +5,6 @@ import { Icons, Separator, DropdownMenu, Button, Dialog, LinkButton } from "@ins
 import * as React from "react";
 import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBase";
-import { createKnowledgeBase, deleteKnowledgeBase, updateKnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBaseService";
 
 type CreateKnowledgeBaseCardProps = {
   title: string;
