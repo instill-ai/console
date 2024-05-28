@@ -64,7 +64,7 @@
     "@types/semver": "^7.5.3",
     "@types/testing-library__jest-dom": "^5.14.5",
     "@types/uuid": "^9.0.1",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@vitejs/plugin-react": "^4.3.0",
     "esbuild": "^0.14.34",
     "eslint": "^8.35.0",
     "fast-glob": "^3.2.12",
@@ -79,7 +79,7 @@
     "tsup": "^6.7.0",
     "tsx": "^4.6.2",
     "typescript": "^5.4.2",
-    "vitest": "^1.2.1"
+    "vitest": "^1.6.0"
   },
   "publishConfig": {
     "access": "public"
@@ -142,7 +142,7 @@
     "unique-names-generator": "^4.7.1",
     "uuid": "^9.0.0",
     "yup": "^0.32.11",
-    "zod": "^3.21.4",
+    "zod": "^3.23.8",
     "zustand": "^4.3.6"
   },
   "lint-staged": {
