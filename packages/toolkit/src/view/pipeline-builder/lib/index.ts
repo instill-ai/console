@@ -6,7 +6,6 @@ export * from "./composePipelineRecipeFromNodes";
 export * from "./createGraphLayout";
 export * from "./createNodesFromPipelineComponents";
 export * from "./extractPipelineComponentReferenceFromString";
-export * from "./extracNonTriggerResponseComponentFromNodes";
 export * from "./extractReferencesFromConfiguration";
 export * from "./getReferencesFromString";
 export * from "./generateUniqueIndex";
