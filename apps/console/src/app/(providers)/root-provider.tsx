@@ -29,7 +29,7 @@ export const RootProvider = ({ children }: { children: React.ReactNode }) => {
   const { initPipelineBuilder } = useInstillStore(useShallow(selector));
 
   const initCreateResourceFormStore = useCreateResourceFormStore(
-    (store) => store.init,
+    (store) => store.init
   );
   const closeModal = useModalStore((store) => store.closeModal);
 
@@ -56,7 +56,14 @@ export const RootProvider = ({ children }: { children: React.ReactNode }) => {
     closeModal();
     dismissToast();
     setPreviousPathname(pathname);
-  }, [pathname]);
+  }, [
+    pathname,
+    previousPathname,
+    initPipelineBuilder,
+    initCreateResourceFormStore,
+    closeModal,
+    dismissToast,
+  ]);
 
   return (
     <ReactQueryProvider>

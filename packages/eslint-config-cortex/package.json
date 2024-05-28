@@ -15,7 +15,7 @@
     "eslint-config-turbo": "latest",
     "eslint-import-resolver-typescript": "^3.0.0",
     "eslint-plugin-jsx-a11y": "^6.7.1",
-    "eslint-plugin-react-hooks": "^4.3.0",
+    "eslint-plugin-react-hooks": "^4.5.0",
     "eslint-plugin-storybook": "^0.6.10",
     "eslint-plugin-testing-library": "^5.1.0",
     "eslint-plugin-vitest": "^0.3.20"

@@ -28,7 +28,7 @@ export function useAppAccessToken(props?: UseAccessTokenProps) {
   const router = useRouter();
 
   const { updateAccessToken, updateEnabledQuery } = useInstillStore(
-    useShallow(selector),
+    useShallow(selector)
   );
 
   const query = useQuery({
@@ -40,7 +40,7 @@ export function useAppAccessToken(props?: UseAccessTokenProps) {
       } catch (error) {
         console.error(
           "Something went wrong when try to get accessToken",
-          error,
+          error
         );
 
         if (!disabledRedirectingVisitor) {
@@ -84,6 +84,7 @@ export function useAppAccessToken(props?: UseAccessTokenProps) {
     query.isError,
     updateAccessToken,
     updateEnabledQuery,
+    forceQueryWithoutAccessToken,
   ]);
 
   return query;
