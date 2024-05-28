@@ -15,6 +15,8 @@ import { UserProfileBio } from "./Bio";
 import { ProfileSeparator } from "../ProfileSeparator";
 import { PipelinesTable } from "../../pipeline";
 import { BreadcrumbWithLink } from "../../../components";
+import { useUserModels } from "../../../lib/react-query-service/model/useUserModels";
+import { ModelsTable } from "../../model/ModelsTable";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -43,6 +45,14 @@ export const UserProfileView = () => {
   });
 
   const pipelines = useUserPipelines({
+    accessToken: accessToken,
+    enabled: enabledQuery && entityObject.isSuccess,
+    userName: entityObject.isSuccess ? entityObject.data.entityName : null,
+    filter: null,
+    visibility: null,
+  });
+
+  const models = useUserModels({
     accessToken: accessToken,
     enabled: enabledQuery && entityObject.isSuccess,
     userName: entityObject.isSuccess ? entityObject.data.entityName : null,
@@ -84,13 +94,23 @@ export const UserProfileView = () => {
         ) : (
           <UserProfileBio.Skeleton />
         )}
-        <div className="flex w-full flex-col gap-y-8 px-8">
-          <ProfileSeparator title="Pipelines" />
-          <PipelinesTable
-            pipelines={pipelines.data ? pipelines.data : []}
-            isError={pipelines.isError}
-            isLoading={pipelines.isLoading}
-          />
+        <div className="flex flex-col gap-y-20">
+          <div className="flex w-full flex-col gap-y-8 px-8">
+            <ProfileSeparator title="Pipelines" />
+            <PipelinesTable
+              pipelines={pipelines.data ? pipelines.data : []}
+              isError={pipelines.isError}
+              isLoading={pipelines.isLoading}
+            />
+          </div>
+          <div className="flex w-full flex-col gap-y-8 px-8">
+            <ProfileSeparator title="Models" />
+            <ModelsTable
+              models={models.data ? models.data : []}
+              isError={models.isError}
+              isLoading={models.isLoading}
+            />
+          </div>
         </div>
       </div>
     </React.Fragment>

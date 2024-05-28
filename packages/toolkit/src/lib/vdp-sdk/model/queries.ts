@@ -5,6 +5,7 @@ import type {
   ModelDefinition,
   ModelRegion,
   ModelVersion,
+  ModelWatchState,
 } from "./types";
 import type { Nullable } from "../../type";
 import { Visibility } from "../types";
@@ -244,7 +245,6 @@ export async function listUserModelsQuery({
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, true);
-
     const models: Model[] = [];
 
     const queryString = getQueryString({
@@ -389,6 +389,26 @@ export async function listModelVersionsQuery({
     }
 
     return Promise.resolve(versions);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * Watch Model State
+ * -----------------------------------------------------------------------*/
+
+export async function watchUserModel({
+  modelName,
+  accessToken,
+}: {
+  modelName: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, true);
+    const { data } = await client.get<ModelWatchState>(`/${modelName}/watch`);
+    return Promise.resolve(data);
   } catch (err) {
     return Promise.reject(err);
   }

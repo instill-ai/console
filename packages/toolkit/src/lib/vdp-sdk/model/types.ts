@@ -118,3 +118,10 @@ export type ModelVersion = {
   state: ModelState;
   update_time: string;
 };
+
+export type ModelWatchState = {
+  state: ModelState;
+  progress: number;
+};
+
+export type ModelsWatchState = Record<string, ModelWatchState>;
