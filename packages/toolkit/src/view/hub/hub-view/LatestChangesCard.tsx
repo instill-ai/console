@@ -56,7 +56,7 @@ export const LatestChangesCard = () => {
                 href={`https://instill-ai.productlane.com/changelog/${changelog.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ml-2 pb-6"
+                className="ml-2 pb-4"
               >
                 <div className="-mt-0.5 mb-1 w-min whitespace-nowrap text-xs font-semibold capitalize text-semantic-accent-default">
                   {changelog.date && new Date(changelog.date).getTime() !== 0
