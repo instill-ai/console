@@ -5,6 +5,9 @@ import { Icons, Separator, DropdownMenu, Button, Dialog, LinkButton } from "@ins
 import * as React from "react";
 import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBase";
+import { useUpdateKnowledgeBase } from "../../../lib/vdp-sdk/knowledge/useUpdateKnowledgeBase";
+import { useCreateKnowledgeBase } from "../../../lib/vdp-sdk/knowledge/useCreateKnowledgeBase";
+import { useDeleteKnowledgeBase } from "../../../lib/vdp-sdk/knowledge/useDeleteKnowledgeBase";
 
 type CreateKnowledgeBaseCardProps = {
   title: string;
@@ -76,7 +79,7 @@ export const CreateKnowledgeBaseCard = ({
 
   const handleDelete = async () => {
     if (knowledgeBase) {
-      await deleteKnowledgeBase(knowledgeBase.id);
+      await useDeleteKnowledgeBase(knowledgeBase.id);
       setDeleteDialogIsOpen(false);
       setShowDeleteMessage(true);
       setTimeout(() => setShowDeleteMessage(false), 5000);
@@ -85,10 +88,10 @@ export const CreateKnowledgeBaseCard = ({
 
   const handleCreateKnowledgeSubmit = async (data: any) => {
     if (knowledgeBase) {
-      const updatedKnowledgeBase = await updateKnowledgeBase(knowledgeBase.id, data);
+      const updatedKnowledgeBase = await useUpdateKnowledgeBase(knowledgeBase.id, data);
       setKnowledgeBase(updatedKnowledgeBase);
     } else {
-      const newKnowledgeBase = await createKnowledgeBase(data);
+      const newKnowledgeBase = await useCreateKnowledgeBase(data);
       setKnowledgeBase(newKnowledgeBase);
     }
     setEditDialogIsOpen(false);
