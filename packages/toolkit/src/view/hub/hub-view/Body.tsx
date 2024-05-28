@@ -129,24 +129,6 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
     }
   };
 
-  const handleSortOrderChange = (value: SortOrder) => {
-    if (value === "asc") {
-      setSelectedSortOrder("desc");
-      pipelines.refetch();
-    }
-    if (value === "desc") {
-      setSelectedSortOrder("asc");
-      pipelines.refetch();
-    }
-  };
-
-  // const handleSortOrderChange = (value: SortOrder) => {
-  //   if (selectedSortOrder !== value) {
-  //     setSelectedSortOrder(value);
-  //     pipelines.refetch();
-  //   }
-  // };
-
   return (
     <div className="flex flex-row">
       <div className="flex w-full flex-col pt-6">
@@ -201,9 +183,9 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                       <Icons.SortLinesUp className="h-4 w-4 stroke-semantic-fg-disabled" />
                     }
                     onClick={() => {
-                      handleSortOrderChange("asc");
+                      setSelectedSortOrder("asc");
                     }}
-                    isSelected={selectedSortOrder === "desc"}
+                    isSelected={selectedSortOrder === "asc"}
                   />
                   <SortSelectButton
                     label="Descending"
@@ -211,9 +193,9 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                       <Icons.SortLinesDown className="h-4 w-4 stroke-semantic-fg-disabled" />
                     }
                     onClick={() => {
-                      handleSortOrderChange("desc");
+                      setSelectedSortOrder("desc");
                     }}
-                    isSelected={selectedSortOrder === "asc"}
+                    isSelected={selectedSortOrder === "desc"}
                   />
                 </Popover.Content>
               </Popover.Root>
