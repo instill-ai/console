@@ -7,10 +7,10 @@ export * from "./useInfiniteModels";
 export * from "./useInfiniteUserModels";
 export * from "./useUndeployUserModel";
 export * from "./useUpdateUserModel";
-export * from "./useUserModelReadme";
 export { useUserModel } from "./useUserModel";
 export * from "./useModelRegions";
 export * from "./useInfiniteModelVersions";
 export * from "./useTriggerUserModel";
+export * from "./useWatchUserModels";
 
 export * from "./use-user-model";

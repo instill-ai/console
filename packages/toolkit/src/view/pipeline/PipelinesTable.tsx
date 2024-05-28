@@ -21,7 +21,7 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
   const columns: ColumnDef<Pipeline>[] = [
     {
       accessorKey: "id",
-      header: () => <div className="min-w-[650px] text-left">Pipelines</div>,
+      header: () => <div className="min-w-[650px] text-left">ID</div>,
       cell: ({ row }) => {
         const pipelineNameFragments = row.original.name.split("/");
 
