@@ -64,7 +64,7 @@
     "unique-names-generator": "^4.7.1",
     "uuid": "^9.0.0",
     "yup": "^0.32.11",
-    "zod": "^3.21.4",
+    "zod": "^3.23.8",
     "zustand": "^4.3.7"
   },
   "devDependencies": {
