@@ -88,7 +88,7 @@ export const ModelSettingsEditForm = ({
           ...acc,
           {
             value: hardwareName,
-            title: getModelHardwareToolkit(hardwareName),
+            title: getModelHardwareToolkit(hardwareName) || "Unknown",
           },
         ],
         []
@@ -108,8 +108,8 @@ export const ModelSettingsEditForm = ({
       documentation_url: model.documentation_url,
       license: model.license,
       //visibility: model.visibility as Exclude<Visibility, "VISIBILITY_UNSPECIFIED">,
-      hardware: hardwareName === "Unknown" ? "Custom" : model.hardware,
-      hardwareCustom: hardwareName === "Unknown" ? model.hardware : "",
+      hardware: hardwareName === null ? "Custom" : model.hardware,
+      hardwareCustom: hardwareName === null ? model.hardware : "",
       profile_image: model.profile_image,
     };
   }, [model]);
