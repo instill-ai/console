@@ -21,7 +21,7 @@ export type HeadProps = {
 
 const OWNER = {
   avatarUrl: null,
-  name: null,
+  id: null,
 };
 
 const ExternalLink = ({
@@ -62,7 +62,7 @@ export const ModelSettingsHead = ({
 
     return {
       avatarUrl: owner.profile.avatar || "",
-      name: owner.id || "",
+      id: owner.id || "",
     };
   }, [model]);
 
@@ -74,7 +74,7 @@ export const ModelSettingsHead = ({
         <div className="flex flex-row items-center gap-x-3">
           <EntityAvatar
             src={owner.avatarUrl}
-            entityName={owner.name ?? ""}
+            entityName={owner.id ?? ""}
             className="my-auto h-6 w-6"
             fallbackImg={
               <div className="my-auto flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
@@ -88,10 +88,10 @@ export const ModelSettingsHead = ({
             <React.Fragment>
               <div className="my-auto product-headings-heading-4">
                 <a
-                  href={`/${owner.name}`}
+                  href={`/${owner.id}`}
                   className="cursor-pointer text-semantic-fg-disabled hover:!underline"
                 >
-                  {owner.name}
+                  {owner.id}
                 </a>
                 <span className="text-semantic-fg-disabled">/</span>
                 <span className="text-semantic-fg-primary">{model?.id}</span>

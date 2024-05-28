@@ -1,9 +1,19 @@
 "use client";
 
 import { CardModel } from "../../components/card-model/CardModel";
-import { InstillStore, Model, useInstillStore, useShallow } from "../../lib";
+import {
+  InstillStore,
+  Model,
+  sendAmplitudeData,
+  toastInstillError,
+  useAmplitudeCtx,
+  useDeleteModel,
+  useInstillStore,
+  useShallow,
+} from "../../lib";
 import { CardModelSkeleton } from "../../components/card-model/Skeleton";
 import cn from "clsx";
+import { useToast } from "@instill-ai/design-system";
 
 export type ModelsListProps = {
   models: Model[];
@@ -19,8 +29,37 @@ const selector = (store: InstillStore) => ({
 export const ModelsList = (props: ModelsListProps) => {
   const { models, onModelDelete, isLoading, isSearchActive } = props;
   const { accessToken } = useInstillStore(useShallow(selector));
+  const { amplitudeIsInit } = useAmplitudeCtx();
+  const { toast } = useToast();
 
   const isEmpty = !isLoading && models.length === 0;
+
+  /* -------------------------------------------------------------------------
+   * Handle delete model
+   * -----------------------------------------------------------------------*/
+
+  const deleteModel = useDeleteModel();
+  const handleDeleteModel = async (model: Model) => {
+    if (!model) return;
+
+    try {
+      await deleteModel.mutateAsync({ modelName: model.name, accessToken });
+
+      if (amplitudeIsInit) {
+        sendAmplitudeData("delete_model");
+      }
+
+      if (onModelDelete) {
+        onModelDelete();
+      }
+    } catch (error) {
+      toastInstillError({
+        title: "Something went wrong while deleting the model",
+        error,
+        toast,
+      });
+    }
+  };
 
   return (
     <div
@@ -36,12 +75,7 @@ export const ModelsList = (props: ModelsListProps) => {
       ) : !isEmpty ? (
         models.map((model, index) => {
           return (
-            <CardModel
-              model={model}
-              key={index}
-              accessToken={accessToken}
-              onDelete={onModelDelete}
-            />
+            <CardModel model={model} key={index} onDelete={handleDeleteModel} />
           );
         })
       ) : (

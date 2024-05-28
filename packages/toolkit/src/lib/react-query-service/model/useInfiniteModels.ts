@@ -5,13 +5,15 @@ import type { Nullable } from "../../type";
 
 export function useInfiniteModels({
   accessToken,
-  enabled,
+  pageSize,
+  enabledQuery,
   retry,
   filter,
   visibility,
 }: {
+  pageSize?: number;
   accessToken: Nullable<string>;
-  enabled: boolean;
+  enabledQuery: boolean;
   retry?: false | number;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
@@ -34,7 +36,7 @@ export function useInfiniteModels({
       }
 
       const models = await listModelsQuery({
-        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+        pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE") ?? null,
         nextPageToken: pageParam ?? null,
         accessToken,
         filter,
@@ -52,7 +54,7 @@ export function useInfiniteModels({
 
       return lastPage.next_page_token;
     },
-    enabled,
+    enabled: enabledQuery,
     retry: retry === false ? false : retry ? retry : 3,
   });
 }

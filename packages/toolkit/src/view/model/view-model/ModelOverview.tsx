@@ -28,6 +28,7 @@ import { ModelSectionHeader } from "./SectionHeader";
 import { recursiveHelpers } from "../../pipeline-builder";
 import { defaultCodeSnippetStyles } from "../../../constant";
 import React from "react";
+import Image from "next/image";
 
 export type ModelOutputActiveView = "preview" | "json";
 
@@ -209,7 +210,17 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
               )}
             </React.Fragment>
           ) : (
-            <p>Run the model to see the output</p>
+            <div className="flex flex-row items-center justify-center gap-x-4 pt-24">
+              <Image
+                src="/images/models/no-result.svg"
+                width={41}
+                height={40}
+                alt="Square shapes"
+              />
+              <p className="font-mono text-sm italic text-semantic-fg-disabled">
+                Execute the model to view the results
+              </p>
+            </div>
           )}
         </div>
       </div>
