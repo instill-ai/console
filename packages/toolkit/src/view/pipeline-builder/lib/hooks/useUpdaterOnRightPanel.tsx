@@ -24,10 +24,12 @@ const selector = (store: InstillStore) => ({
 });
 
 export function useUpdaterOnRightPanel({
+  nodeID,
   form,
   ValidatorSchema,
   currentNodeData,
 }: {
+  nodeID: string;
   form: GeneralUseFormReturn;
   ValidatorSchema: ZodAnyValidatorSchema;
   currentNodeData: GeneralNodeData;
@@ -50,16 +52,16 @@ export function useUpdaterOnRightPanel({
   const debounceUpdater = React.useCallback(
     debounce(
       ({
-        nodeID,
+        id,
         updateData,
         nodes,
       }: {
-        nodeID: string;
+        id: string;
         updateData: GeneralRecord;
         nodes: Node<NodeData>[];
       }) => {
         const newNodes: Node<NodeData>[] = nodes.map((node) => {
-          if (node.id === nodeID) {
+          if (node.id === id) {
             return {
               ...node,
               data: {
@@ -107,7 +109,7 @@ export function useUpdaterOnRightPanel({
       form.handleSubmit(() => {
         debounceUpdater({
           updateData: parsed.data,
-          nodeID: currentNodeData.id,
+          id: nodeID,
           nodes,
         });
       })();
@@ -125,5 +127,6 @@ export function useUpdaterOnRightPanel({
     debounceUpdater,
     nodes,
     form,
+    nodeID,
   ]);
 }

@@ -53,7 +53,7 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
   const editIterator = React.useCallback(
     function () {
       updateIsEditingIterator(() => true);
-      updateEditingIteratorID(() => data.id);
+      updateEditingIteratorID(() => id);
       updateTempSavedNodesForEditingIteratorFlow(() => nodes);
 
       if (
@@ -101,7 +101,7 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
   );
 
   return (
-    <NodeWrapper nodeData={data} noteIsOpen={noteIsOpen}>
+    <NodeWrapper nodeID={id} nodeData={data} noteIsOpen={noteIsOpen}>
       <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
         <div className="mr-auto flex flex-row gap-x-1">
           <div className="my-auto flex h-6 w-6 rounded bg-semantic-accent-bg">
@@ -145,7 +145,7 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
                 </React.Fragment>
               ) : null}
             </div>
-            {data.component.length > 0 ? (
+            {Object.keys(data.component).length > 0 ? (
               <div className="flex flex-col gap-y-2">
                 <div className="flex flex-row">
                   <p className="text-semantic-fg-secondary product-body-text-4-medium">
@@ -153,8 +153,12 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
                   </p>
                 </div>
                 <div className="flex flex-col gap-y-2">
-                  {(data.component as PipelineGeneralComponent[]).map((e) => (
-                    <IteratorGeneralComponentLabel key={e.id} component={e} />
+                  {Object.entries(data.component).map(([nodeID, e]) => (
+                    <IteratorGeneralComponentLabel
+                      key={nodeID}
+                      id={nodeID}
+                      component={e as PipelineGeneralComponent}
+                    />
                   ))}
                 </div>
               </div>
@@ -168,7 +172,7 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
             Edit Iterator
           </Button>
           <div className="mb-4 w-full">
-            <ComponentOutputReferenceHints component={data} />
+            <ComponentOutputReferenceHints componentID={id} component={data} />
           </div>
         </React.Fragment>
       )}

@@ -61,7 +61,7 @@ const selector = (store: InstillStore) => ({
     store.updateRecentlyUsedStartComponentFieldTypes,
 });
 
-export const TriggerNode = ({ data }: NodeProps<TriggerNodeData>) => {
+export const TriggerNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [noteIsOpen, setNoteIsOpen] = React.useState<boolean>(false);
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
@@ -357,6 +357,7 @@ export const TriggerNode = ({ data }: NodeProps<TriggerNodeData>) => {
 
   return (
     <NodeWrapper
+      nodeID={id}
       nodeData={data}
       noteIsOpen={noteIsOpen}
       disabledTargetHandler={true}

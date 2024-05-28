@@ -100,9 +100,9 @@ export function pickSmartHintsFromNodes({
           .split(".")[0];
 
         // Get target component's type
-        const component = (
-          node.data as PipelineIteratorComponent
-        ).component.find((component) => component.id === componentKey);
+        const component = (node.data as PipelineIteratorComponent).component[
+          componentKey
+        ];
 
         if (component) {
           if (isPipelineGeneralComponent(component)) {
@@ -113,7 +113,7 @@ export function pickSmartHintsFromNodes({
                 transformInstillJSONSchemaToFormTree(outputSchema);
               const hints = transformFormTreeToSmartHints(
                 outputFormTree,
-                component.id
+                componentKey
               );
 
               const targetHint = hints.find(
@@ -156,7 +156,7 @@ export function pickSmartHintsFromNodes({
   // Add the iterator element into the hints
   if (isEditingIterator && includeEditorElement && editingIteratorID) {
     const targetIteratorNode = tempSavedNodesForEditingIteratorFlow?.find(
-      (node) => node.data.id === editingIteratorID && isIteratorNode(node)
+      (node) => node.id === editingIteratorID && isIteratorNode(node)
     ) as Node<IteratorNodeData> | undefined;
 
     if (targetIteratorNode) {

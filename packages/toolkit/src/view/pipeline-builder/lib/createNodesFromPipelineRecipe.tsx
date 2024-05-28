@@ -35,7 +35,6 @@ export function createNodesFromPipelineRecipe(
     id: "trigger",
     type: "triggerNode",
     data: {
-      id: "trigger",
       fields: recipe.variable ?? {},
       note: triggerMetadata ? triggerMetadata.note : null,
     },
@@ -60,7 +59,6 @@ export function createNodesFromPipelineRecipe(
     id: "response",
     type: "responseNode",
     data: {
-      id: "response",
       fields: recipe.output ?? {},
       note: responseMetadata ? responseMetadata.note : null,
     },

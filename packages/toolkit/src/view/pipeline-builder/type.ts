@@ -11,14 +11,12 @@ import {
 } from "../../lib";
 
 export type TriggerNodeData = {
-  id: "trigger";
   note: Nullable<string>;
   metadata?: GeneralRecord;
   fields: PipelineVariableFieldMap;
 };
 
 export type ResponseNodeData = {
-  id: "response";
   note: Nullable<string>;
   metadata?: GeneralRecord;
   fields: PipelineOutputFieldMap;
@@ -74,11 +72,15 @@ export type PipelineTemplate = {
 export type PipelineTemplatesByCategory = Record<string, PipelineTemplate[]>;
 
 export type PipelineMetadata = {
-  components: PipelineComponentMetadata[];
+  component: PipelineComponentMetadataMap;
 };
 
+export type PipelineComponentMetadataMap = Record<
+  string,
+  PipelineComponentMetadata
+>;
+
 export type PipelineComponentMetadata = {
-  id: string;
   x: number;
   y: number;
   note: Nullable<string>;

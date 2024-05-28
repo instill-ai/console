@@ -28,10 +28,12 @@ const selector = (store: InstillStore) => ({
 });
 
 export function useUpdaterOnNode({
+  nodeID,
   currentNodeData,
   form,
   ValidatorSchema,
 }: {
+  nodeID: string;
   currentNodeData: GeneralNodeData;
   form: GeneralUseFormReturn;
   ValidatorSchema: ZodAnyValidatorSchema;
@@ -51,16 +53,16 @@ export function useUpdaterOnNode({
   const debounceUpdater = React.useCallback(
     debounce(
       ({
-        nodeID,
+        id,
         updateData,
         nodes,
       }: {
-        nodeID: string;
+        id: string;
         updateData: GeneralRecord;
         nodes: Node<NodeData>[];
       }) => {
         const newNodes = nodes.map((node) => {
-          if (isGeneralNode(node) && node.id === nodeID) {
+          if (isGeneralNode(node) && node.id === id) {
             return {
               ...node,
               data: {
@@ -120,7 +122,7 @@ export function useUpdaterOnNode({
         debounceUpdater({
           updateData: parsed.data,
           nodes,
-          nodeID: currentNodeData.id,
+          id: nodeID,
         });
       })();
     });
@@ -138,5 +140,6 @@ export function useUpdaterOnNode({
     pipelineIsReadOnly,
     debounceUpdater,
     form,
+    nodeID,
   ]);
 }

@@ -165,7 +165,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
         version: "v1beta",
         variable: {},
         output: {},
-        component: [],
+        component: {},
       },
       metadata: {
         nodes: [

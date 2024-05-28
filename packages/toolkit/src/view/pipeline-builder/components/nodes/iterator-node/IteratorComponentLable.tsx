@@ -7,8 +7,10 @@ import { ImageWithFallback } from "../../../../../components";
 import { Icons } from "@instill-ai/design-system";
 
 export const IteratorGeneralComponentLabel = ({
+  id,
   component,
 }: {
+  id: string;
   component: PipelineGeneralComponent;
 }) => {
   const [definitionID, setDefinitionID] =
@@ -32,7 +34,7 @@ export const IteratorGeneralComponentLabel = ({
             }
           />
           <p className="text-xs font-semibold leading-3 text-semantic-fg-primary">
-            {component.id}
+            {id}
           </p>
         </div>
       ) : null}

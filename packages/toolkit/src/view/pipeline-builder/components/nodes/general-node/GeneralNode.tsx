@@ -81,7 +81,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
         size: "sm",
         enableSmartHint: true,
         checkIsHidden,
-        componentID: data.id,
+        componentID: id,
         disabledAll: currentVersion !== "latest" || pipelineIsReadOnly,
         secrets: entitySecrets,
         collapsibleDefaultOpen: true,
@@ -115,10 +115,12 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     currentNodeData: data,
     form,
     ValidatorSchema,
+    nodeID: id,
   });
 
   return (
     <NodeWrapper
+      nodeID={id}
       nodeData={data}
       noteIsOpen={noteIsOpen}
       renderNodeBottomBar={() => (
@@ -126,7 +128,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
       )}
       renderBottomBarInformation={() => (
         <NodeBottomBarContent
-          componentID={data.id}
+          componentID={id}
           outputSchema={outputSchema}
           componentSchema={(data.definition?.spec as GeneralRecord) ?? null}
         />
@@ -213,6 +215,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
           <div className="mb-4 w-full">
             {!enableEdit ? (
               <ComponentOutputReferenceHints
+                componentID={id}
                 component={data}
                 task={
                   selectedConditionMap

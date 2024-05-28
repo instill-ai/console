@@ -13,7 +13,7 @@ import {
 import { SelectComponentDialog } from "..";
 import {
   composeEdgesFromNodes,
-  composePipelineMetadataFromNodes,
+  composePipelineMetadataMapFromNodes,
   isIteratorNode,
   isResponseNode,
   isTriggerNode,
@@ -74,10 +74,7 @@ export const IteratorEditor = ({
           onClick={() => {
             const newNodes = tempSavedNodesForEditingIteratorFlow.map(
               (node) => {
-                if (
-                  node.data.id === editingIteratorID &&
-                  isIteratorNode(node)
-                ) {
+                if (node.id === editingIteratorID && isIteratorNode(node)) {
                   const components = nodes
                     .filter(
                       (node) => !isTriggerNode(node) || !isResponseNode(node)
@@ -89,7 +86,7 @@ export const IteratorEditor = ({
                     data: {
                       ...node.data,
                       components,
-                      metadata: composePipelineMetadataFromNodes(nodes),
+                      metadata: composePipelineMetadataMapFromNodes(nodes),
                     },
                   };
                 }

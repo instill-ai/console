@@ -21,7 +21,7 @@ export const IteratorOutput = () => {
 
   const targetIteratorNode = React.useMemo(() => {
     return tempSavedNodesForEditingIteratorFlow.find(
-      (node) => node.data.id === editingIteratorID && isIteratorNode(node)
+      (node) => node.id === editingIteratorID && isIteratorNode(node)
     ) as Node<IteratorNodeData> | undefined;
   }, [editingIteratorID, tempSavedNodesForEditingIteratorFlow]);
 

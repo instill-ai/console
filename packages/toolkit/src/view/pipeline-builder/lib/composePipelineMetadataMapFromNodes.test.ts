@@ -1,7 +1,7 @@
 import { Node } from "reactflow";
 import { test, expect } from "vitest";
 import { NodeData } from "../type";
-import { composePipelineMetadataFromNodes } from "./composePipelineMetadataFromNodes";
+import { composePipelineMetadataMapFromNodes } from "./composePipelineMetadataMapFromNodes";
 
 test("should compose initial pipeline metadata", () => {
   const nodes: Node<NodeData>[] = [
@@ -12,7 +12,6 @@ test("should compose initial pipeline metadata", () => {
         y: 0,
       },
       data: {
-        id: "ai_0",
         type: "stability-ai",
         definition: null,
         task: "",
@@ -29,7 +28,6 @@ test("should compose initial pipeline metadata", () => {
         y: 100,
       },
       data: {
-        id: "trigger",
         fields: {},
         note: "hello-world",
       },
@@ -41,14 +39,13 @@ test("should compose initial pipeline metadata", () => {
         y: 300,
       },
       data: {
-        id: "response",
         fields: {},
         note: null,
       },
     },
   ];
 
-  const metadata = composePipelineMetadataFromNodes(nodes);
+  const metadata = composePipelineMetadataMapFromNodes(nodes);
 
   expect(metadata).toStrictEqual({
     components: [

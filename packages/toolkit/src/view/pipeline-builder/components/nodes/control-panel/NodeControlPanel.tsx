@@ -11,12 +11,11 @@ import { NodeDropdownMenu } from "../common";
 import {
   composeEdgesFromNodes,
   generateUniqueIndex,
-  getAllComponentID,
+  getAllNodeID,
   transformConnectorDefinitionIDToComponentIDPrefix,
 } from "../../../lib";
 import { GeneralNodeData, IteratorNodeData, NodeData } from "../../../type";
 
-import { extracNonTriggerResponseComponentFromNodes } from "../../../lib";
 import {
   isPipelineGeneralComponent,
   isPipelineIteratorComponent,
@@ -126,13 +125,10 @@ export const NodeControlPanel = ({
       return;
     }
 
-    // Generate a new component index
-    const components = extracNonTriggerResponseComponentFromNodes(nodes);
-
     const nodeIndex = generateUniqueIndex(
       isEditingIterator
         ? [...nodes, ...tempSavedNodesForEditingIteratorFlow].map((e) => e.id)
-        : getAllComponentID(components),
+        : getAllNodeID(nodes),
       nodePrefix
     );
 
@@ -149,7 +145,6 @@ export const NodeControlPanel = ({
         zIndex: 30,
         data: {
           ...nodeData,
-          id: nodeID,
         },
       },
     ];

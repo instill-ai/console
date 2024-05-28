@@ -7,9 +7,11 @@ import { pickOutputReferenceHintsFromComponent } from "./pickOutputReferenceHint
 import { pickFieldsFromOutputReferenceHints } from "./pickFieldsFromOutputReferenceHints";
 
 export function useOutputReferenceHintFields({
+  componentID,
   component,
   task,
 }: {
+  componentID: string;
   component: Nullable<PipelineComponent>;
   task?: string;
 }) {
@@ -19,6 +21,7 @@ export function useOutputReferenceHintFields({
     }
 
     const hints = pickOutputReferenceHintsFromComponent({
+      componentID,
       component,
       task,
     });

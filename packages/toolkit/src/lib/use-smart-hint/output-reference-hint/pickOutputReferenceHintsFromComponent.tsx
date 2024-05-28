@@ -9,10 +9,12 @@ import { transformFormTreeToSmartHints } from "../transformFormTreeToSmartHints"
 import { SmartHint } from "../types";
 
 export function pickOutputReferenceHintsFromComponent({
+  componentID,
   component,
   task,
   consoleComposedIteratorSchema,
 }: {
+  componentID: string;
   component: PipelineComponent;
   task?: string;
   consoleComposedIteratorSchema?: boolean;
@@ -30,13 +32,12 @@ export function pickOutputReferenceHintsFromComponent({
           .split(".");
 
         const componentKey = referencePathArray[0];
-        const targetComponent = component.component.find(
-          (e) => e.id === componentKey
-        );
+        const targetComponent = component.component[componentKey];
 
         if (targetComponent) {
           const componentHints = pickOutputReferenceHintsFromComponent({
             component: targetComponent,
+            componentID: componentKey,
           });
 
           const targetHint = componentHints.find(
@@ -49,9 +50,9 @@ export function pickOutputReferenceHintsFromComponent({
 
           // Deal with user directly reference the whole output of specific component in
           // the iterator
-          if (value === "${" + targetComponent.id + ".output" + "}") {
+          if (value === "${" + componentKey + ".output" + "}") {
             iteratorHints.push({
-              path: `${component.id}.output.${key}`,
+              path: `${componentKey}.output.${key}`,
               key,
               instillFormat: "null",
               type: "array",
@@ -69,7 +70,7 @@ export function pickOutputReferenceHintsFromComponent({
 
         iteratorHints = transformFormTreeToSmartHints(
           outputFormTree,
-          component.id
+          componentID
         );
       }
     }
@@ -82,7 +83,7 @@ export function pickOutputReferenceHintsFromComponent({
 
     if (outputSchema) {
       const outputFormTree = transformInstillJSONSchemaToFormTree(outputSchema);
-      const hints = transformFormTreeToSmartHints(outputFormTree, component.id);
+      const hints = transformFormTreeToSmartHints(outputFormTree, componentID);
 
       outputReferenceHints = [...outputReferenceHints, ...hints];
     }

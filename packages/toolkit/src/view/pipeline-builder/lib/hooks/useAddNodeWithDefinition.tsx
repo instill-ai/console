@@ -11,8 +11,7 @@ import {
 } from "../../../../lib";
 import { transformConnectorDefinitionIDToComponentIDPrefix } from "../transformConnectorDefinitionIDToComponentIDPrefix";
 import { generateUniqueIndex } from "../generateUniqueIndex";
-import { getAllComponentID } from "../getAllComponentID";
-import { extracNonTriggerResponseComponentFromNodes } from "../extracNonTriggerResponseComponentFromNodes";
+import { getAllNodeID } from "../getAllNodeID";
 import {
   isConnectorDefinition,
   isIteratorDefinition,
@@ -96,11 +95,10 @@ export function useAddNodeWithDefinition({
       // iterator, so we need to group the two set of nodes together. Under the
       // editing iterator mode, nodes will be the nodes in the iterator, and
       // tempSavedNodesForEditingIteratorFlow will be the nodes outside the iterator
-      const components = extracNonTriggerResponseComponentFromNodes(nodes);
       const nodeIndex = generateUniqueIndex(
         isEditingIterator
           ? [...nodes, ...tempSavedNodesForEditingIteratorFlow].map((e) => e.id)
-          : getAllComponentID(components),
+          : getAllNodeID(nodes),
         nodePrefix
       );
 
@@ -117,14 +115,13 @@ export function useAddNodeWithDefinition({
             sourcePosition: Position.Left,
             targetPosition: Position.Right,
             data: {
-              id: nodeID,
               input: "",
               type: "iterator",
               output_elements: {
                 // This is the default output element
                 result_0: "",
               },
-              component: [],
+              component: {},
               condition: null,
               data_specification: {
                 input: null,
@@ -145,7 +142,6 @@ export function useAddNodeWithDefinition({
             sourcePosition: Position.Left,
             targetPosition: Position.Right,
             data: {
-              id: nodeID,
               type: definition.id,
               definition,
               input: {},
@@ -167,7 +163,6 @@ export function useAddNodeWithDefinition({
             sourcePosition: Position.Left,
             targetPosition: Position.Right,
             data: {
-              id: nodeID,
               type: definition.id,
               definition: definition,
               input: {},

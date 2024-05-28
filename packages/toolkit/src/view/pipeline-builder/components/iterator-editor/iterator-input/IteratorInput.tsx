@@ -61,7 +61,7 @@ export const IteratorInput = ({ className }: { className?: string }) => {
   React.useEffect(() => {
     if (editingIteratorID && tempSavedNodesForEditingIteratorFlow) {
       const targetIteratorNode = tempSavedNodesForEditingIteratorFlow.find(
-        (node) => node.data.id === editingIteratorID && isIteratorNode(node)
+        (node) => node.id === editingIteratorID && isIteratorNode(node)
       ) as Node<IteratorNodeData> | undefined;
 
       const inputOption = availableInputOptions.find(
@@ -100,10 +100,7 @@ export const IteratorInput = ({ className }: { className?: string }) => {
               updatePipelineRecipeIsDirty(() => true);
               updateTempSavedNodesForEditingIteratorFlow((nodes) =>
                 nodes.map((node) => {
-                  if (
-                    node.data.id === editingIteratorID &&
-                    isIteratorNode(node)
-                  ) {
+                  if (node.id === editingIteratorID && isIteratorNode(node)) {
                     return {
                       ...node,
                       data: {

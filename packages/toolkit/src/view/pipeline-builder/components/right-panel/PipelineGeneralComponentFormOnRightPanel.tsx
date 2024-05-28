@@ -10,9 +10,11 @@ import { useInstillStore } from "../../../../lib";
 import { GeneralNodeData } from "../../type";
 
 export const PipelineGeneralComponentFormOnRightPanel = ({
+  nodeID,
   nodeData,
   disabledAll,
 }: {
+  nodeID: string;
   nodeData: GeneralNodeData;
   disabledAll?: boolean;
 }) => {
@@ -31,7 +33,7 @@ export const PipelineGeneralComponentFormOnRightPanel = ({
       chooseTitleFrom: "title",
       checkIsHidden,
       enableSmartHint: true,
-      componentID: nodeData.id,
+      componentID: nodeID,
       secrets: entitySecrets,
       enabledCollapsibleFormGroup: true,
       collapsibleDefaultOpen: true,
@@ -42,6 +44,7 @@ export const PipelineGeneralComponentFormOnRightPanel = ({
     form,
     ValidatorSchema,
     currentNodeData: nodeData,
+    nodeID,
   });
 
   return (

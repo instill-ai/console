@@ -8,7 +8,6 @@ test("should get edges from basic components", () => {
     {
       id: "trigger",
       data: {
-        id: "trigger",
         fields: {
           texts: {
             instill_format: "array:string",
@@ -23,7 +22,6 @@ test("should get edges from basic components", () => {
     {
       id: "response",
       data: {
-        id: "response",
         fields: {
           result: {
             title: "result",
@@ -46,7 +44,6 @@ test("should get edges from basic components", () => {
     {
       id: "trigger",
       data: {
-        id: "trigger",
         fields: {
           texts: {
             instill_format: "array:string",
@@ -61,7 +58,6 @@ test("should get edges from basic components", () => {
     {
       id: "response",
       data: {
-        id: "response",
         fields: {
           result: {
             title: "result",
@@ -85,7 +81,6 @@ test("should strictly check the reference field exist", () => {
     {
       id: "trigger",
       data: {
-        id: "trigger",
         fields: {
           texts: {
             instill_format: "array:string",
@@ -100,7 +95,6 @@ test("should strictly check the reference field exist", () => {
     {
       id: "response",
       data: {
-        id: "response",
         fields: {
           result: {
             title: "result",
@@ -124,7 +118,6 @@ test("should loosely check the reference field exist when reference has square b
     {
       id: "trigger",
       data: {
-        id: "trigger",
         fields: {
           texts: {
             instill_format: "array:string",
@@ -139,7 +132,6 @@ test("should loosely check the reference field exist when reference has square b
     {
       id: "response",
       data: {
-        id: "response",
         fields: {
           result: {
             title: "result",
@@ -162,7 +154,6 @@ test("should loosely check the reference field exist when reference has square b
     {
       id: "trigger",
       data: {
-        id: "trigger",
         fields: {
           texts: {
             instill_format: "array:string",
@@ -177,7 +168,6 @@ test("should loosely check the reference field exist when reference has square b
     {
       id: "response",
       data: {
-        id: "response",
         fields: {
           result: {
             title: "result",

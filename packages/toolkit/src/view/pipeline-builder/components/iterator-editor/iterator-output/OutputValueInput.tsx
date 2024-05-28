@@ -26,7 +26,7 @@ export const OutputValueInput = ({ outputKey }: { outputKey: string }) => {
 
   const outputValue = React.useMemo(() => {
     const iteratorNode = tempSavedNodesForEditingIteratorFlow.find(
-      (node) => node.data.id === editingIteratorID && isIteratorNode(node)
+      (node) => node.id === editingIteratorID && isIteratorNode(node)
     ) as Node<IteratorNodeData> | undefined;
 
     if (iteratorNode) {
@@ -42,7 +42,7 @@ export const OutputValueInput = ({ outputKey }: { outputKey: string }) => {
         onChange={(e) => {
           updateTempSavedNodesForEditingIteratorFlow((nodes) =>
             nodes.map((node) => {
-              if (node.data.id === editingIteratorID && isIteratorNode(node)) {
+              if (node.id === editingIteratorID && isIteratorNode(node)) {
                 return {
                   ...node,
                   data: {

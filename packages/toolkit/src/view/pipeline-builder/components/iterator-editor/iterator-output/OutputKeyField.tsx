@@ -36,7 +36,7 @@ export const OutputKeyField = ({
     timer.current = window.setTimeout(() => {
       updateTempSavedNodesForEditingIteratorFlow((nodes) =>
         nodes.map((node) => {
-          if (node.data.id === editingIteratorID && isIteratorNode(node)) {
+          if (node.id === editingIteratorID && isIteratorNode(node)) {
             delete node.data.output_elements[outputKey];
 
             return {

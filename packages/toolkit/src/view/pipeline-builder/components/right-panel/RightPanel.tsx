@@ -66,6 +66,7 @@ export const RightPanel = () => {
         {selectedGeneralNode && selectedGeneralNode.data.definition ? (
           <PipelineGeneralComponentFormOnRightPanel
             nodeData={selectedGeneralNode.data}
+            nodeID={selectedGeneralNode.id}
           />
         ) : null}
       </div>

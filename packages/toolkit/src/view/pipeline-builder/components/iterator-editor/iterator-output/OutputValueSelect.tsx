@@ -51,7 +51,7 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
 
   React.useEffect(() => {
     const targetNodes = tempSavedNodesForEditingIteratorFlow.find(
-      (node) => node.data.id === editingIteratorID && isIteratorNode(node)
+      (node) => node.id === editingIteratorID && isIteratorNode(node)
     ) as Node<IteratorNodeData> | undefined;
 
     if (targetNodes) {
@@ -92,7 +92,7 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
           updatePipelineRecipeIsDirty(() => true);
           updateTempSavedNodesForEditingIteratorFlow((nodes) =>
             nodes.map((node) => {
-              if (node.data.id === editingIteratorID && isIteratorNode(node)) {
+              if (node.id === editingIteratorID && isIteratorNode(node)) {
                 return {
                   ...node,
                   data: {

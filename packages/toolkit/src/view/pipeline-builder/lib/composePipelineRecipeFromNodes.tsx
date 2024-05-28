@@ -1,5 +1,5 @@
 import { recursiveHelpers } from "./recursive-helpers";
-import { PipelineComponent, PipelineRecipe } from "../../../lib";
+import { PipelineComponentMap, PipelineRecipe } from "../../../lib";
 import { Node } from "reactflow";
 import { NodeData, ResponseNodeData, TriggerNodeData } from "../type";
 import {
@@ -10,43 +10,49 @@ import {
 } from "./checkNodeType";
 import { isPipelineGeneralComponent } from "./checkComponentType";
 
-export function constructPipelineRecipeFromNodes(
+export function composePipelineRecipeFromNodes(
   nodes: Node<NodeData>[]
 ): PipelineRecipe {
-  const recipeComponents: PipelineComponent[] = [];
+  const recipeComponent: PipelineComponentMap = {};
 
   for (const node of nodes) {
     if (isIteratorNode(node)) {
-      recipeComponents.push({
+      recipeComponent[node.id] = {
         ...node.data,
-        id: node.id,
-        component: node.data.component.map((e) => {
-          if (isPipelineGeneralComponent(e)) {
-            return {
-              ...e,
-              definition: undefined,
-              input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-                recursiveHelpers.parseToNum(structuredClone(e.input))
-              ),
-              connection: e.connection
-                ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-                    recursiveHelpers.parseToNum(structuredClone(e.connection))
-                  )
-                : undefined,
-            };
-          }
+        component: Object.fromEntries(
+          Object.entries(node.data.component).map(([key, e]) => {
+            if (isPipelineGeneralComponent(e)) {
+              return [
+                key,
+                {
+                  ...e,
+                  definition: undefined,
+                  input:
+                    recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+                      recursiveHelpers.parseToNum(structuredClone(e.input))
+                    ),
+                  connection: e.connection
+                    ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+                        recursiveHelpers.parseToNum(
+                          structuredClone(e.connection)
+                        )
+                      )
+                    : undefined,
+                },
+              ];
+            }
 
-          return e;
-        }),
-        metadata: node.data.metadata ?? undefined,
-      });
+            return [key, e];
+          })
+        ),
+      };
+
       continue;
     }
 
     if (isGeneralNode(node)) {
-      recipeComponents.push({
+      recipeComponent[node.id] = {
         ...node.data,
-        id: node.id,
         input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
           recursiveHelpers.parseToNum(structuredClone(node.data.input))
         ),
@@ -57,7 +63,7 @@ export function constructPipelineRecipeFromNodes(
           : undefined,
         definition: undefined,
         metadata: node.data.metadata ?? undefined,
-      });
+      };
 
       continue;
     }
@@ -73,7 +79,7 @@ export function constructPipelineRecipeFromNodes(
 
   return {
     version: "v1beta",
-    component: recipeComponents,
+    component: recipeComponent,
     variable: triggerNode ? triggerNode.data.fields : {},
     output: responseNode ? responseNode.data.fields : {},
   };

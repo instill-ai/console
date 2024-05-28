@@ -2,34 +2,30 @@ import { Node } from "reactflow";
 
 import { NodeData, PipelineComponentMetadata } from "../type";
 import { recursiveHelpers } from ".";
-import { GeneralRecord, Nullable, PipelineComponent } from "../../../lib";
+import { GeneralRecord, Nullable, PipelineComponentMap } from "../../../lib";
 import {
   isPipelineGeneralComponent,
   isPipelineIteratorComponent,
 } from "./checkComponentType";
+import { checkIsValidComponentMetadata } from "./checkIsValidComponentMetadata";
 
 export type CreateNodesFromPipelineComponentsOptions = {
   metadata?: GeneralRecord;
 };
 
 export function createNodesFromPipelineComponents(
-  component: PipelineComponent[],
+  component: PipelineComponentMap,
   options?: CreateNodesFromPipelineComponentsOptions
 ) {
   const nodes: Node<NodeData>[] = [];
 
   const metadata = options ? options.metadata : null;
 
-  for (const e of component) {
+  for (const [id, e] of Object.entries(component)) {
     let componentMetadata: Nullable<PipelineComponentMetadata> = null;
 
-    if (
-      metadata &&
-      "components" in metadata &&
-      Array.isArray(metadata.components)
-    ) {
-      componentMetadata =
-        metadata.components.find((c) => c.id === e.id) ?? null;
+    if (checkIsValidComponentMetadata(metadata)) {
+      componentMetadata = metadata.component[id];
     }
 
     // The reason we need to transform all the value back to string is due to some
@@ -38,11 +34,10 @@ export function createNodesFromPipelineComponents(
 
     if (isPipelineIteratorComponent(e)) {
       nodes.push({
-        id: e.id,
+        id,
         type: "iteratorNode",
         data: {
           ...e,
-          id: e.id,
           note: componentMetadata ? componentMetadata.note : null,
           metadata: e.metadata,
         },
@@ -60,11 +55,10 @@ export function createNodesFromPipelineComponents(
 
     if (isPipelineGeneralComponent(e)) {
       nodes.push({
-        id: e.id,
+        id,
         type: "operatorNode",
         data: {
           ...e,
-          id: e.id,
           connection: e.connection
             ? recursiveHelpers.parseNumberToString(e.input)
             : null,

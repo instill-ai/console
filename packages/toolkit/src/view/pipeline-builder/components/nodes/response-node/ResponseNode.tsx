@@ -52,7 +52,7 @@ export type PipelineResponseNodeFieldSortedItem = PipelineOutputField & {
   key: string;
 };
 
-export const ResponseNode = ({ data }: NodeProps<ResponseNodeData>) => {
+export const ResponseNode = ({ data, id }: NodeProps<ResponseNodeData>) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [isCreating, setIsCreating] = React.useState(false);
   const [currentEditingFieldKey, setCurrentEditingFieldKey] =
@@ -236,6 +236,7 @@ export const ResponseNode = ({ data }: NodeProps<ResponseNodeData>) => {
 
   return (
     <NodeWrapper
+      nodeID={id}
       nodeData={data}
       noteIsOpen={noteIsOpen}
       disabledSourceHandler={true}
@@ -278,7 +279,7 @@ export const ResponseNode = ({ data }: NodeProps<ResponseNodeData>) => {
         />
       ) : isViewResultMode ? (
         <ComponentOutputs
-          componentID={data.id}
+          componentID={id}
           outputSchema={pipelineOpenAPIOutputSchema}
           nodeType="end"
           chooseTitleFrom="title"

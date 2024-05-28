@@ -25,7 +25,7 @@ export const DeleteOutputButton = ({ outputKey }: { outputKey: string }) => {
       onClick={() => {
         updateTempSavedNodesForEditingIteratorFlow((nodes) =>
           nodes.map((node) => {
-            if (node.data.id === editingIteratorID && isIteratorNode(node)) {
+            if (node.id === editingIteratorID && isIteratorNode(node)) {
               delete node.data.output_elements[outputKey];
 
               return {

@@ -23,7 +23,7 @@ export type PipelineReleaseState =
 
 export type PipelineRecipe = {
   version: string;
-  component: PipelineComponent[];
+  component: PipelineComponentMap;
   variable: PipelineVariableFieldMap;
   output: PipelineOutputFieldMap;
 };
@@ -151,7 +151,6 @@ export type PipelineTriggerMetadata = {
 };
 
 export type ComponentBasicFields = {
-  id: string;
   metadata?: GeneralRecord;
   type: string;
 };
@@ -167,10 +166,12 @@ export type PipelineGeneralComponent = {
 export type PipelineIteratorComponent = {
   input: string;
   output_elements: Record<string, string>;
-  component: PipelineComponent[];
+  component: PipelineComponentMap;
   condition: Nullable<string>;
   data_specification: Nullable<DataSpecification>;
 } & ComponentBasicFields;
+
+export type PipelineComponentMap = Record<string, PipelineComponent>;
 
 export type PipelineComponent =
   | PipelineIteratorComponent
