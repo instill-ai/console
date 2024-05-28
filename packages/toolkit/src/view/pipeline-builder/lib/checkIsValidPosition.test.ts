@@ -3,7 +3,7 @@ import { PipelineRecipe } from "../../../lib";
 import { checkIsValidPosition } from "./checkIsValidPosition";
 
 test("should check position is not valid", () => {
-  const recipe: PipelineRecipe = {
+  const recipe = {
     variable: {},
     component: {
       ai_0: {
@@ -17,7 +17,7 @@ test("should check position is not valid", () => {
     },
     output: {},
     version: "v1beta",
-  };
+  } satisfies PipelineRecipe;
 
   const isValid = checkIsValidPosition({
     component: recipe.component,
@@ -36,7 +36,7 @@ test("should check position is not valid", () => {
 });
 
 test("should check position is valid", () => {
-  const recipe: PipelineRecipe = {
+  const recipe = {
     variable: {},
     output: {},
     component: {
@@ -50,7 +50,7 @@ test("should check position is valid", () => {
       },
     },
     version: "v1beta",
-  };
+  } satisfies PipelineRecipe;
 
   const isValid = checkIsValidPosition({
     component: recipe.component,
@@ -79,7 +79,7 @@ test("should check position is valid", () => {
 });
 
 test("should check position is not valid even there is one missing data", () => {
-  const recipe: PipelineRecipe = {
+  const recipe = {
     variable: {},
     output: {},
     component: {
@@ -110,7 +110,7 @@ test("should check position is not valid even there is one missing data", () => 
     },
 
     version: "v1beta",
-  };
+  } satisfies PipelineRecipe;
 
   const isValid = checkIsValidPosition({
     component: recipe.component,

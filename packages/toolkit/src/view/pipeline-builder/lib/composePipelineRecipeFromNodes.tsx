@@ -80,7 +80,15 @@ export function composePipelineRecipeFromNodes(
   return {
     version: "v1beta",
     component: recipeComponent,
-    variable: triggerNode ? triggerNode.data.fields : {},
-    output: responseNode ? responseNode.data.fields : {},
+    variable: triggerNode
+      ? Object.keys(triggerNode.data.fields).length > 0
+        ? triggerNode.data.fields
+        : undefined
+      : undefined,
+    output: responseNode
+      ? Object.keys(responseNode.data.fields).length > 0
+        ? responseNode.data.fields
+        : undefined
+      : undefined,
   };
 }

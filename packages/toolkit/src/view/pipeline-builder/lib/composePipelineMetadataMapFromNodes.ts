@@ -13,6 +13,6 @@ export function composePipelineMetadataMapFromNodes(nodes: Node<NodeData>[]) {
   }
 
   return {
-    components: componentMetadatas,
+    component: componentMetadatas,
   };
 }

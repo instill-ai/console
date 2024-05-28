@@ -6,11 +6,12 @@ export function checkIsValidPosition({
   metadata,
   isIteratorNode,
 }: {
-  component: PipelineComponentMap;
+  component: Nullable<PipelineComponentMap>;
   metadata: Nullable<GeneralRecord>;
   isIteratorNode?: boolean;
 }): boolean {
   if (
+    component &&
     metadata &&
     "component" in metadata &&
     Object.keys(component).length > 0

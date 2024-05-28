@@ -23,9 +23,9 @@ export type PipelineReleaseState =
 
 export type PipelineRecipe = {
   version: string;
-  component: PipelineComponentMap;
-  variable: PipelineVariableFieldMap;
-  output: PipelineOutputFieldMap;
+  component?: PipelineComponentMap;
+  variable?: PipelineVariableFieldMap;
+  output?: PipelineOutputFieldMap;
 };
 
 export type PipelineVariableField = {

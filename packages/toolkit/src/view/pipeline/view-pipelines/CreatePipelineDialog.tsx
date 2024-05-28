@@ -163,23 +163,21 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
       description: data.description ?? undefined,
       recipe: {
         version: "v1beta",
-        variable: {},
-        output: {},
-        component: {},
+        variable: undefined,
+        output: undefined,
+        component: undefined,
       },
       metadata: {
-        nodes: [
-          {
-            id: "trigger",
+        component: {
+          trigger: {
             x: 0,
             y: 0,
           },
-          {
-            id: "response",
-            x: 350,
+          response: {
+            x: 0,
             y: 0,
           },
-        ],
+        },
       },
       sharing,
     };
