@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.69.2](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.69.1...@instill-ai/design-system-v0.69.2) (2024-05-28)
+
+
+### Bug Fixes
+
+* fix deps alerts and zod denial issue ([#1184](https://github.com/instill-ai/console/issues/1184)) ([3db9a78](https://github.com/instill-ai/console/commit/3db9a786767db1c9902bc3945e7b3defe4dd331d))
+
 ## [0.69.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.69.0...@instill-ai/design-system-v0.69.1) (2024-05-24)
 
 
