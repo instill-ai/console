@@ -1,37 +1,41 @@
 // knowledgeBaseService.ts
-import axios from "axios";
+import { createInstillAxiosClient } from "../helper";
 import { KnowledgeBase } from "./knowledgeBase";
 
-const API_BASE_URL = "http://localhost:3000"; // Replace with your backend API base URL
+export class KnowledgeBaseService {
+  async createKnowledgeBase(
+    data: Partial<KnowledgeBase>
+  ): Promise<KnowledgeBase> {
+    const client = createInstillAxiosClient(accessToken);
+    const response = await client.post<{ body: KnowledgeBase }>(
+      `/artifact/kb`,
+      data
+    );
+    return response.data.body;
+  }
 
-export const createKnowledgeBase = async (
-  data: Partial<KnowledgeBase>
-): Promise<KnowledgeBase> => {
-  const response = await axios.post<{ body: KnowledgeBase }>(
-    `${API_BASE_URL}/v1alpha/artifact/kb`,
-    data
-  );
-  return response.data.body;
-};
+  async getKnowledgeBases(): Promise<KnowledgeBase[]> {
+    const client = createInstillAxiosClient(accessToken);
+    const response = await client.get<{
+      body: { knowledgebases: KnowledgeBase[] };
+    }>(`/artifact/kb`);
+    return response.data.body.knowledgebases;
+  }
 
-export const getKnowledgeBases = async (): Promise<KnowledgeBase[]> => {
-  const response = await axios.get<{
-    body: { knowledgebases: KnowledgeBase[] };
-  }>(`${API_BASE_URL}/v1alpha/artifact/kb`);
-  return response.data.body.knowledgebases;
-};
+  async updateKnowledgeBase(
+    id: string,
+    data: Partial<KnowledgeBase>
+  ): Promise<KnowledgeBase> {
+    const client = createInstillAxiosClient(accessToken);
+    const response = await client.patch<{ body: KnowledgeBase }>(
+      `/artifact/kb/${id}`,
+      data
+    );
+    return response.data.body;
+  }
 
-export const updateKnowledgeBase = async (
-  id: string,
-  data: Partial<KnowledgeBase>
-): Promise<KnowledgeBase> => {
-  const response = await axios.put<{ body: KnowledgeBase }>(
-    `${API_BASE_URL}/v1alpha/artifact/kb/${id}`,
-    data
-  );
-  return response.data.body;
-};
-
-export const deleteKnowledgeBase = async (id: string): Promise<void> => {
-  await axios.delete(`${API_BASE_URL}/v1alpha/artifact/kb/${id}`);
-};
+  async deleteKnowledgeBase(id: string): Promise<void> {
+    const client = createInstillAxiosClient(accessToken);
+    await client.delete(`/artifact/kb/${id}`);
+  }
+}

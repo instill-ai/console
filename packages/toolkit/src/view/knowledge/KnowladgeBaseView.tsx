@@ -11,8 +11,11 @@ import { CreateKnowledgeDialog } from "./components/CreateKnowledgeDialog";
 import * as z from "zod";
 import * as React from "react";
 import { CreateKnowledgeBaseCard } from "./components/CreateKnowledgeBaseCard";
-import { getKnowledgeBases } from "../../lib/vdp-sdk/knowledge/knowledgeBaseService";
 import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/knowledgeBase";
+import { useCreateKnowledgeBase } from "../../lib/vdp-sdk/knowledge/useCreateKnowledgeBase";
+import { useGetKnowledgeBases } from "../../lib/vdp-sdk/knowledge/useGetKnowledgeBases";
+import { useUpdateKnowledgeBase } from "../../lib/vdp-sdk/knowledge/useUpdateKnowledgeBase";
+import { useDeleteKnowledgeBase } from "../../lib/vdp-sdk/knowledge/useDeleteKnowledgeBase";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -30,6 +33,11 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const { router, enableQuery, accessToken } = props;
   const { entity } = useParams();
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
+
+  const createKnowledgeBase = useCreateKnowledgeBase();
+  const getKnowledgeBases = useGetKnowledgeBases();
+  const updateKnowledgeBase = useUpdateKnowledgeBase();
+  const deleteKnowledgeBase = useDeleteKnowledgeBase();
 
   /* -------------------------------------------------------------------------
    * Query resource data
