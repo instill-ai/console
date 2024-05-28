@@ -1,5 +1,6 @@
 "use client";
 
+import cn from "clsx";
 import * as React from "react";
 import {
   Button,
@@ -13,9 +14,11 @@ import {
 
 import {
   InstillStore,
+  Model,
   Nullable,
   Pipeline,
   useHubStats,
+  useInfiniteModels,
   useInfinitePipelines,
   useInstillStore,
   useShallow,
@@ -25,6 +28,8 @@ import debounce from "lodash.debounce";
 import { NewsLetterCard } from "./NewsLetterCard";
 import { LatestChangesCard } from "./LatestChangesCard";
 import { CardPipeline, CardSkeletonPipeline } from "./card-pipeline-hub";
+import { CardModelSkeleton } from "../../../components/card-model/Skeleton";
+import { CardModel } from "../../../components/card-model";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -63,7 +68,12 @@ const SortSelectButton = ({
   );
 };
 
-const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
+type DataType = "pipelines" | "models";
+
+const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
+  tabValue,
+  dataType = "pipelines",
+}) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
   const [selectedSortField, setSelectedSortField] =
     React.useState<SortField>("update_time");
@@ -83,7 +93,7 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
   const pipelines = useInfinitePipelines({
     pageSize: 10,
     accessToken,
-    enabledQuery,
+    enabledQuery: dataType === "pipelines" && enabledQuery,
     visibility: "VISIBILITY_PUBLIC",
     filter:
       tabValue === "featured"
@@ -110,6 +120,36 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
     return all;
   }, [pipelines.data, pipelines.isSuccess]);
 
+  const models = useInfiniteModels({
+    pageSize: 10,
+    accessToken,
+    enabledQuery: dataType === "models" && enabledQuery,
+    visibility: "VISIBILITY_PUBLIC",
+    filter:
+      tabValue === "featured"
+        ? searchCode
+          ? `tag="featured" AND q="${searchCode ?? ""}"`
+          : `tag="featured"`
+        : searchCode
+          ? `q="${searchCode}"`
+          : "",
+    //order_by: selectedSortOption,
+  });
+
+  const allModels = React.useMemo(() => {
+    if (!models.isSuccess) {
+      return [];
+    }
+
+    const all: Model[] = [];
+
+    for (const page of models.data.pages) {
+      all.push(...page.models);
+    }
+
+    return all;
+  }, [models.data, models.isSuccess]);
+
   const hubStats = useHubStats({
     enabled: true,
   });
@@ -122,20 +162,59 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
     []
   );
 
+  const isFetchingNextPage = React.useMemo(() => {
+    if (dataType === "pipelines") {
+      return pipelines.isFetchingNextPage;
+    } else {
+      return models.isFetchingNextPage;
+    }
+  }, [dataType, pipelines, models]);
+
+  const hasNextPage = React.useMemo(() => {
+    if (dataType === "pipelines") {
+      return pipelines.hasNextPage;
+    } else {
+      return models.hasNextPage;
+    }
+  }, [dataType, pipelines, models]);
+
+  const refetchData = () => {
+    if (dataType === "pipelines") {
+      pipelines.refetch();
+    } else {
+      models.refetch();
+    }
+  };
+
+  const fetchNextPage = () => {
+    if (dataType === "pipelines") {
+      pipelines.fetchNextPage();
+    } else {
+      models.fetchNextPage();
+    }
+  };
+
   const handleSortFieldChange = (value: SortField) => {
     if (selectedSortField !== value) {
       setSelectedSortField(value);
-      pipelines.refetch();
+      refetchData();
+    }
+  };
+
+  const handleSortOrderChange = (value: SortOrder) => {
+    if (selectedSortOrder !== value) {
+      setSelectedSortOrder(value);
+      refetchData();
     }
   };
 
   return (
     <div className="flex flex-row">
-      <div className="flex w-full flex-col pt-6">
+      <div className="mt-2 flex w-full flex-col pt-20">
         <div className="mb-4 flex flex-col">
           <div className="flex items-center justify-between">
             <p className="whitespace-nowrap text-semantic-fg-disabled product-button-button-2">
-              Pipelines{" "}
+              {dataType === "pipelines" ? "Pipelines" : "Models"}{" "}
               {tabValue === "featured"
                 ? hubStats.data?.number_of_featured_pipelines
                 : hubStats.data?.number_of_public_pipelines}
@@ -204,38 +283,55 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
         </div>
         {tabValue === "featured" && <FeaturedBanner />}
         <div className="mb-4 flex flex-col gap-y-4">
-          {pipelines.isSuccess && !pipelines.isFetching ? (
-            allPipelines.length === 0 ? (
+          {dataType === "pipelines" ? (
+            pipelines.isSuccess && !pipelines.isFetching ? (
+              allPipelines.length === 0 ? (
+                <div className="flex h-[500px] w-full shrink-0 grow-0 items-center justify-center rounded-sm border border-semantic-bg-line">
+                  <p className="text-semantic-fg-secondary product-body-text-2-semibold">
+                    Let&rsquo;s build your first pipeline! 🙌
+                  </p>
+                </div>
+              ) : (
+                allPipelines.map((pipeline) => (
+                  <CardPipeline
+                    key={pipeline.uid}
+                    ownerID={pipeline.owner_name.split("/")[1]}
+                    pipeline={pipeline}
+                  />
+                ))
+              )
+            ) : (
+              Array.from({ length: 10 }).map((_, index) => (
+                <CardSkeletonPipeline key={`card-skelton-${index}`} />
+              ))
+            )
+          ) : models.isSuccess && !models.isFetching ? (
+            allModels.length === 0 ? (
               <div className="flex h-[500px] w-full shrink-0 grow-0 items-center justify-center rounded-sm border border-semantic-bg-line">
                 <p className="text-semantic-fg-secondary product-body-text-2-semibold">
-                  Let&rsquo;s build your first pipeline! 🙌
+                  Let&rsquo;s create your first model! 🙌
                 </p>
               </div>
             ) : (
-              allPipelines.map((pipeline) => (
-                <CardPipeline
-                  key={pipeline.uid}
-                  ownerID={pipeline.owner_name.split("/")[1]}
-                  pipeline={pipeline}
-                />
+              allModels.map((model) => (
+                <CardModel key={model.id} model={model} />
               ))
             )
           ) : (
             Array.from({ length: 10 }).map((_, index) => (
-              <CardSkeletonPipeline key={`card-skelton-${index}`} />
+              <CardModelSkeleton key={`card-skelton-${index}`} />
             ))
           )}
+          {}
         </div>
-        {pipelines.hasNextPage ? (
+        {hasNextPage ? (
           <Button
-            onClick={() => {
-              pipelines.fetchNextPage();
-            }}
+            onClick={fetchNextPage}
             variant="secondaryColour"
             size="md"
             className="w-full"
           >
-            {pipelines.isFetchingNextPage ? <LoadingSpin /> : "Load More"}
+            {isFetchingNextPage ? <LoadingSpin /> : "Load More"}
           </Button>
         ) : null}
       </div>
@@ -285,9 +381,16 @@ const FeaturedBanner = () => {
 };
 
 export const Body = () => {
+  const [exploreDataType, setExploreDataType] =
+    React.useState<DataType>("pipelines");
   // The design-token we have right now doesn't support alpha value, so we need to use hex here
   const tabTriggerStyle =
     "text-semantic-fg-disabled product-body-text-3-semibold border-black data-[state=active]:text-semantic-fg-primary border-b-2 border-opacity-0 data-[state=active]:border-opacity-100 data-[state=active]:border-[#316FED] pb-2";
+  const dataTypeTriggerStyle =
+    "px-4 h-full border border-semantic-bg-line text-base font-semibold flex items-center justify-center";
+  const dataTypeTriggerStyleActive =
+    "cursor-default bg-semantic-accent-bg text-semantic-accent-default";
+  const dataTypeTriggerStyleInactive = "bg-semantic-bg-primary cursor-pointer";
 
   return (
     <div className="flex justify-between">
@@ -307,18 +410,48 @@ export const Body = () => {
             </Tabs.List>
             <Separator orientation="horizontal" />
           </div>
-          <div className=" bg-semantic-bg-base-bg pt-8">
+          <div className=" bg-semantic-bg-base-bg">
             <div className="xl:px-30 flex w-full flex-row space-x-4 sm:px-5 md:px-10 lg:px-20">
               <div className="flex w-full flex-col">
                 <Tabs.Content value="explore">
-                  <PipelineSection tabValue="explore" />
+                  <ListSection tabValue="explore" dataType={exploreDataType} />
                 </Tabs.Content>
                 <Tabs.Content value="featured">
-                  <PipelineSection tabValue="featured" />
+                  <ListSection tabValue="featured" />
                 </Tabs.Content>
               </div>
-              <div className="mt-6 flex w-1/6 min-w-[272px] flex-col">
+              <div className="flex w-1/6 min-w-[272px] flex-col">
                 <div className="sticky top-6">
+                  <div className="my-6 h-10">
+                    <Tabs.Content value="explore">
+                      <div className="flex h-10 flex-row justify-end">
+                        <div
+                          onClick={() => setExploreDataType("pipelines")}
+                          className={cn(
+                            dataTypeTriggerStyle,
+                            "rounded-l",
+                            exploreDataType === "pipelines"
+                              ? dataTypeTriggerStyleActive
+                              : dataTypeTriggerStyleInactive
+                          )}
+                        >
+                          Pipelines
+                        </div>
+                        <div
+                          onClick={() => setExploreDataType("models")}
+                          className={cn(
+                            dataTypeTriggerStyle,
+                            "rounded-r border-l-0",
+                            exploreDataType === "models"
+                              ? dataTypeTriggerStyleActive
+                              : dataTypeTriggerStyleInactive
+                          )}
+                        >
+                          Models
+                        </div>
+                      </div>
+                    </Tabs.Content>
+                  </div>
                   <div className="mb-4">
                     <NewsLetterCard />
                   </div>
