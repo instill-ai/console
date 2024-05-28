@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.4](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.5.3...@instill-ai/design-tokens-v0.5.4) (2024-05-28)
+
+
+### Bug Fixes
+
+* fix deps alerts and zod denial issue ([#1184](https://github.com/instill-ai/console/issues/1184)) ([3db9a78](https://github.com/instill-ai/console/commit/3db9a786767db1c9902bc3945e7b3defe4dd331d))
+
 ## [0.5.3](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.5.2...@instill-ai/design-tokens-v0.5.3) (2024-05-24)
 
 

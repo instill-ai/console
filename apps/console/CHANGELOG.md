@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.47.2-beta](https://github.com/instill-ai/console/compare/v0.47.1-beta...v0.47.2-beta) (2024-05-28)
+
+
+### Bug Fixes
+
+* fix deps alerts and zod denial issue ([#1184](https://github.com/instill-ai/console/issues/1184)) ([3db9a78](https://github.com/instill-ai/console/commit/3db9a786767db1c9902bc3945e7b3defe4dd331d))
+
 ## [0.47.1-beta](https://github.com/instill-ai/console/compare/v0.47.0-beta...v0.47.1-beta) (2024-05-24)
 
 

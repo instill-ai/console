@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.92.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.91.4...@instill-ai/toolkit-v0.92.0) (2024-05-28)
+
+
+### Features
+
+* **auto-gen-form:** accept image field in the auto-gen-form ([#1182](https://github.com/instill-ai/console/issues/1182)) ([121c570](https://github.com/instill-ai/console/commit/121c5704f036db205808e6bd1a6e1de8b93f1530))
+* remove name sorting option and fix asc/desc in sorting  ([#1179](https://github.com/instill-ai/console/issues/1179)) ([1cf38ae](https://github.com/instill-ai/console/commit/1cf38ae01acee5eb0d3f1e13f7ef5824db8923f1))
+
+
+### Bug Fixes
+
+* fix deps alerts and zod denial issue ([#1184](https://github.com/instill-ai/console/issues/1184)) ([3db9a78](https://github.com/instill-ai/console/commit/3db9a786767db1c9902bc3945e7b3defe4dd331d))
+* **organization:** update UploadAvatarFieldWithCrop component to accept title props ([#1176](https://github.com/instill-ai/console/issues/1176)) ([940ec3a](https://github.com/instill-ai/console/commit/940ec3ace404c52289ba11e66ff4f70e51a0b44f))
+
 ## [0.91.4](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.91.3...@instill-ai/toolkit-v0.91.4) (2024-05-24)
 
 
