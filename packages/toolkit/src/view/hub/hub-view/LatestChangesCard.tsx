@@ -61,18 +61,18 @@ export const LatestChangesCard = () => {
                 <div className="-mt-0.5 mb-1 w-min whitespace-nowrap text-xs font-semibold capitalize text-semantic-accent-default">
                   {changelog.date && new Date(changelog.date).getTime() !== 0
                     ? new Date(changelog.date).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })
-                    : new Date(changelog.updatedAt).toLocaleDateString(
-                      "en-US",
-                      {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
-                      }
-                    )}
+                      })
+                    : new Date(changelog.updatedAt).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      )}
                 </div>
                 <p className="text-semantic-fg-primary product-body-text-3-regular hover:underline">
                   {changelog.title}
