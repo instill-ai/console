@@ -14,7 +14,7 @@ export type ModelApiProps = {
 };
 
 const OWNER = {
-  name: null,
+  id: null,
 };
 
 export const ModelApi = ({ model }: ModelApiProps) => {
@@ -30,7 +30,7 @@ export const ModelApi = ({ model }: ModelApiProps) => {
     }
 
     return {
-      name: owner.id || "",
+      id: owner.id || "",
     };
   }, [model]);
 
@@ -54,7 +54,7 @@ export const ModelApi = ({ model }: ModelApiProps) => {
         <div className="mt-5 font-semibold text-semantic-fg-secondary">
           Run{" "}
           <CodeString>
-            {owner.name}/{model?.id}
+            {owner.id}/{model?.id}
           </CodeString>{" "}
           using Instill API.
         </div>

@@ -13,6 +13,6 @@ export const getModelHardwareToolkit = (hardwareName: string) => {
     case "Custom":
       return "Custom";
     default:
-      return "Unknown";
+      return null;
   }
 };

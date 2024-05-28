@@ -3,18 +3,9 @@
 import { Menu } from "./Menu";
 import { Tags } from "./Tags";
 import { Stats } from "./Stats";
+import { Model } from "../../lib";
+import React, { useMemo } from "react";
 import {
-  Model,
-  Nullable,
-  sendAmplitudeData,
-  toastInstillError,
-  useAmplitudeCtx,
-  useAppEntity,
-  useDeleteModel,
-} from "../../lib";
-import React from "react";
-import {
-  useToast,
   getModelHardwareToolkit,
   getModelRegionToolkit,
 } from "@instill-ai/design-system";
@@ -23,8 +14,7 @@ import Link from "next/link";
 
 export type CardModelProps = {
   model: Model;
-  accessToken: Nullable<string>;
-  onDelete: () => void;
+  onDelete?: (model: Model) => Promise<void>;
 };
 
 const modelCoverImageCommonProps = {
@@ -34,38 +24,27 @@ const modelCoverImageCommonProps = {
   height: 156,
 };
 
+const OWNER = {
+  id: null,
+};
+
 export const CardModel = (props: CardModelProps) => {
-  const { model, accessToken, onDelete } = props;
-  const entity = useAppEntity();
-  const { amplitudeIsInit } = useAmplitudeCtx();
-  const { toast } = useToast();
-
-  /* -------------------------------------------------------------------------
-   * Handle delete model
-   * -----------------------------------------------------------------------*/
-
-  const deleteModel = useDeleteModel();
-  const handleDeleteModel = React.useCallback(async () => {
-    if (!model) return;
-
-    try {
-      await deleteModel.mutateAsync({ modelName: model.name, accessToken });
-
-      if (amplitudeIsInit) {
-        sendAmplitudeData("delete_model");
-      }
-
-      if (onDelete) {
-        onDelete();
-      }
-    } catch (error) {
-      toastInstillError({
-        title: "Something went wrong while deleting the model",
-        error,
-        toast,
-      });
+  const { model, onDelete } = props;
+  const owner = useMemo(() => {
+    if (!model) {
+      return OWNER;
     }
-  }, [model, amplitudeIsInit, deleteModel, onDelete, accessToken, toast]);
+
+    const owner = model.owner?.user || model.owner?.organization;
+
+    if (!owner || !owner.profile) {
+      return OWNER;
+    }
+
+    return {
+      id: owner.id || "",
+    };
+  }, [model]);
 
   return (
     <div className="flex flex-row gap-x-6 rounded-md border border-semantic-bg-line bg-white p-4">
@@ -82,17 +61,19 @@ export const CardModel = (props: CardModelProps) => {
       <div className="flex grow flex-col gap-y-2">
         <div className="flex w-full flex-row items-start gap-x-2">
           <Link
-            href={`/${entity.data.entity}/models/${model.id}/overview`}
+            href={`/${owner.id}/models/${model.id}/overview`}
             className="break-all font-medium text-semantic-accent-default hover:!underline"
           >
-            {entity.data.entity}/{model.id}
+            {owner.id}/{model.id}
           </Link>
           <Tags
             isPrivate={model.visibility === "VISIBILITY_PRIVATE"}
             region={getModelRegionToolkit(model.region) || ""}
-            hardware={getModelHardwareToolkit(model.hardware) || ""}
+            hardware={getModelHardwareToolkit(model.hardware) || model.hardware}
           />
-          <Menu handleDeleteModel={handleDeleteModel} model={model} />
+          {onDelete ? (
+            <Menu handleDeleteModel={() => onDelete(model)} model={model} />
+          ) : null}
         </div>
         <p className="text-semantic-fg-secondary">{model.description}</p>
         <Stats

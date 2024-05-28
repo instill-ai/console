@@ -5,6 +5,6 @@ export const getModelRegionToolkit = (regionName: string) => {
     case "REGION_LOCAL":
       return "Local";
     default:
-      return "Unknown";
+      return null;
   }
 };
