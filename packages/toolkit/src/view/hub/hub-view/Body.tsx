@@ -201,13 +201,6 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
     }
   };
 
-  const handleSortOrderChange = (value: SortOrder) => {
-    if (selectedSortOrder !== value) {
-      setSelectedSortOrder(value);
-      refetchData();
-    }
-  };
-
   return (
     <div className="flex flex-row">
       <div className="mt-2 flex w-full flex-col pt-20">
