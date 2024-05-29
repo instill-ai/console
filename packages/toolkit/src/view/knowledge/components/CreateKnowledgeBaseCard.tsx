@@ -12,7 +12,7 @@ import { useDeleteKnowledgeBase } from "../../../lib/vdp-sdk/knowledge/useDelete
 type CreateKnowledgeBaseCardProps = {
   title: string;
   description: string;
-  tags: string[];
+  tags?: string[];
   onCardClick: () => void;
 };
 
@@ -127,12 +127,12 @@ export const CreateKnowledgeBaseCard = ({
           </div>
         </div>
       )}
-      <div className="flex shadow cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-2.5 w-[360px] h-[175px]" onClick={onCardClick}>
+      <div className="flex shadow cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 w-[360px] h-[175px]" onClick={onCardClick}>
         <div className="flex items-center justify-between">
-          <h3 className="text-base font-medium text-black">{title}</h3>
+          <div className="product-headings-heading-4">{title}</div>
         </div>
         <Separator orientation="horizontal" className="my-[10px]" />
-        <p className="product-body-text-3-regular line-clamp-3">{description}</p>
+        <p className="product-body-text-3-regular line-clamp-3 mb-auto">{description}</p>
         <div className="flex justify-end items-end">
           <Menu onDelete={handleDelete} onEdit={handleEdit} />
         </div>
