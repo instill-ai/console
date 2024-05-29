@@ -10,6 +10,7 @@ export function useInfiniteModels({
   retry,
   filter,
   visibility,
+  order_by,
 }: {
   pageSize?: number;
   accessToken: Nullable<string>;
@@ -17,6 +18,7 @@ export function useInfiniteModels({
   retry?: false | number;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
+  order_by: Nullable<string>;
 }) {
   const queryKey = ["models", "infinite"];
 
@@ -28,13 +30,13 @@ export function useInfiniteModels({
     queryKey.push(visibility);
   }
 
+  if (order_by) {
+    queryKey.push(order_by);
+  }
+
   return useInfiniteQuery({
     queryKey,
     queryFn: async ({ pageParam }) => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
       const models = await listModelsQuery({
         pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE") ?? null,
         nextPageToken: pageParam ?? null,
@@ -42,6 +44,7 @@ export function useInfiniteModels({
         filter,
         visibility,
         enablePagination: true,
+        order_by,
       });
 
       return Promise.resolve(models);

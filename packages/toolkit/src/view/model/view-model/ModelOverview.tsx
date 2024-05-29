@@ -61,7 +61,10 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
 
   const { form, fields, ValidatorSchema } = useInstillForm(
     model?.input_schema || null,
-    null
+    null,
+    {
+      disabledAll: !model?.permission.can_trigger,
+    }
   );
 
   const triggerModel = useTriggerUserModel();
@@ -152,7 +155,7 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
               <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
               <div className="flex flex-row-reverse">
                 <Button
-                  disabled={isTriggered}
+                  disabled={!model?.permission.can_trigger || isTriggered}
                   type="submit"
                   size="md"
                   variant="secondaryColour"
@@ -224,10 +227,12 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
           )}
         </div>
       </div>
-      <div>
-        <ModelSectionHeader className="mb-5">Readme</ModelSectionHeader>
-        <ModelReadme model={model} />
-      </div>
+      {model?.permission.can_edit || model?.readme ? (
+        <React.Fragment>
+          <ModelSectionHeader className="mb-5">Readme</ModelSectionHeader>
+          <ModelReadme model={model} />
+        </React.Fragment>
+      ) : null}
     </div>
   );
 };
