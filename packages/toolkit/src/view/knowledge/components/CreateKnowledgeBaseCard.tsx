@@ -154,7 +154,7 @@ export const CreateKnowledgeBaseCard = ({
       <CreateKnowledgeDialog
         isOpen={editDialogIsOpen}
         onClose={() => setEditDialogIsOpen(false)}
-        onSubmit={handleCreateKnowledgeSubmit}
+        onSubmit={(data) => handleCreateKnowledgeSubmit(data, accessToken)}
         title="Edit knowledge base"
       />
     </React.Fragment>
