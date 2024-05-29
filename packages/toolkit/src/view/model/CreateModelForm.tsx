@@ -225,7 +225,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
           sendAmplitudeData("create_model");
         }
 
-        router.push(`/${data.namespaceId}/models/${data.id}`);
+        router.push(`/${data.namespaceId}/models/${data.id}/overview`);
       } catch (error) {
         setCreating(false);
         toastInstillError({

@@ -32,6 +32,10 @@ export function useInfinitePipelines({
     queryKey.push(filter);
   }
 
+  if (visibility) {
+    queryKey.push(visibility);
+  }
+
   if (order_by) {
     queryKey.push(order_by);
   }
