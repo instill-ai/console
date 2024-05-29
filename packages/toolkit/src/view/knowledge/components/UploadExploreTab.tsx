@@ -125,7 +125,11 @@ export const UploadExploreTab = () => {
                 </div>
             </div>
 
-            <div className="flex w-full items-center justify-start">
+            {/* 
+            COMING IN V2 
+            */}
+
+            {/* <div className="flex w-full items-center justify-start">
                 <Tabs.Root defaultValue="text" className="mb-8 mt-4 w-full">
                     <div className="flex flex-col items-center w-full">
                         <Tabs.List className="w-full h-8 border-b border-slate-200 flex justify-start items-start gap-0.5">
@@ -403,7 +407,6 @@ export const UploadExploreTab = () => {
                                     </Form.Root>
                                 </Tabs.Content>
                                 <Tabs.Content value="images">
-                                    {/* Add content for the Images tab */}
                                 </Tabs.Content>
                             </div>
                             <Separator orientation="vertical" />
@@ -441,7 +444,7 @@ export const UploadExploreTab = () => {
                         </div>
                     </div>
                 </Tabs.Root>
-            </div>
+            </div> */}
         </div>
     );
 };
