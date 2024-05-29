@@ -80,9 +80,9 @@ export const UploadExploreTab = () => {
                     <div className="bg-semantic-bg-base-bg pt-8">
                         <div className="xl:px-30 flex w-full flex-row space-x-4 sm:px-5 md:px-10 lg:px-20">
                             <div className="flex w-full flex-col">
-                                <Tabs.Content value="text">
+                                <Tabs.Content value="text" className="flex w-full">
                                     <Form.Root {...form} onSubmit={form.handleSubmit(onSubmit)}>
-                                        <form className="flex flex-col gap-6">
+                                        <form className="flex flex-col gap-6 w-1/2">
                                             <div className="flex gap-8">
                                                 <Form.Field
                                                     control={form.control}
@@ -335,42 +335,44 @@ export const UploadExploreTab = () => {
                                             </div>
                                         </form>
                                     </Form.Root>
+                                    <Separator orientation="vertical" />
+                                    <div className="flex w-1/2 flex-col">
+                                        <div className="text-lg font-semibold mb-6">Preview</div>
+                                        <div className="flex flex-col gap-3">
+                                            <div className="flex justify-center items-center gap-2">
+                                                <div className="grow h-px bg-slate-200" />
+                                                <div className="text-sm font-medium text-gray-800/80">Convert Results</div>
+                                                <div className="grow h-px bg-slate-200" />
+                                            </div>
+                                            <div className="flex flex-col gap-3">
+                                                <div className="flex flex-col">
+                                                    <div className="text-sm font-semibold mb-2">File name 1</div>
+                                                    <Textarea placeholder="Text preview" rows={3} />
+                                                </div>
+                                            </div>
+                                            <div className="flex justify-center items-center gap-2">
+                                                <div className="grow h-px bg-slate-200" />
+                                                <div className="text-sm font-medium text-gray-800/80">Split Text Results</div>
+                                                <div className="grow h-px bg-slate-200" />
+                                            </div>
+                                            <div className="flex flex-col gap-3">
+                                                <div className="flex flex-col">
+                                                    <div className="text-sm font-semibold mb-2">File name 1</div>
+                                                    <Textarea placeholder="Text preview" rows={3} />
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <div className="text-sm font-semibold mb-2">File name 2</div>
+                                                    <Textarea placeholder="Text preview" rows={3} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </Tabs.Content>
                                 <Tabs.Content value="images">
                                     {/* Add content for the Images tab */}
                                 </Tabs.Content>
                             </div>
-                            <div className="flex w-full flex-col">
-                                <div className="text-lg font-semibold mb-6">Preview</div>
-                                <div className="flex flex-col gap-3">
-                                    <div className="flex justify-center items-center gap-2">
-                                        <div className="grow h-px bg-slate-200" />
-                                        <div className="text-sm font-medium text-gray-800/80">Convert Results</div>
-                                        <div className="grow h-px bg-slate-200" />
-                                    </div>
-                                    <div className="flex flex-col gap-3">
-                                        <div className="flex flex-col">
-                                            <div className="text-sm font-semibold mb-2">File name 1</div>
-                                            <Textarea placeholder="Text preview" rows={3} />
-                                        </div>
-                                    </div>
-                                    <div className="flex justify-center items-center gap-2">
-                                        <div className="grow h-px bg-slate-200" />
-                                        <div className="text-sm font-medium text-gray-800/80">Split Text Results</div>
-                                        <div className="grow h-px bg-slate-200" />
-                                    </div>
-                                    <div className="flex flex-col gap-3">
-                                        <div className="flex flex-col">
-                                            <div className="text-sm font-semibold mb-2">File name 1</div>
-                                            <Textarea placeholder="Text preview" rows={3} />
-                                        </div>
-                                        <div className="flex flex-col">
-                                            <div className="text-sm font-semibold mb-2">File name 2</div>
-                                            <Textarea placeholder="Text preview" rows={3} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </Tabs.Root>
