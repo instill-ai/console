@@ -19,7 +19,7 @@ const CreateKnowledgeFormSchema = z.object({
 });
 
 type CreateKnowledgeFormProps = {
-  onSubmit: (data: z.infer<typeof CreateKnowledgeFormSchema>, accessToken: string | null) => void;
+    onSubmit: (data: z.infer<typeof CreateKnowledgeFormSchema>, accessToken: string | null) => void;
 };
 
 export const CreateKnowledgeDialog = ({
@@ -82,8 +82,8 @@ export const CreateKnowledgeDialog = ({
                             control={form.control}
                             name="description"
                             render={({ field }) => (
-                                <Form.Item>
-                                    <Form.Label className="product-button-button-2 text-semantic-fg-primary">
+                                <Form.Item className="!space-y-1">
+                                    <Form.Label className="product-button-button-2 text-semantic-fg-primary mb-1">
                                         Description
                                     </Form.Label>
                                     <Form.Control>

@@ -95,10 +95,11 @@ export const UploadExploreTab = () => {
                         Max 15MB each
                     </div>
                     <div className=" ">
-                        Support TXT, MARKDOWN, PDF, PNG, JPG (DOCX, DOC, PPTX, PPT, HTML, XML, RTF).
-                        <br />
-                        <br />
+                        Support TXT, MARKDOWN, PDF
                     </div>
+                    {/* <div className=" ">
+                        Support TXT, MARKDOWN, PDF, PNG, JPG (DOCX, DOC, PPTX, PPT, HTML, XML, RTF).
+                    </div> */}
                 </div>
             </div>
             <div className="w-full px-2 py-1.5  rounded border border-[#E1E6EF] justify-start items-center gap-2 inline-flex">
