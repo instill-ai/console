@@ -6,7 +6,7 @@ import { PipelineVariableField } from "../../../../../lib";
 
 export type TriggerNodeInputField = {
   title: string;
-  instill_format: string;
+  instillFormat: string;
   icon: React.ReactNode;
   order: number;
   getFieldConfiguration: (
@@ -18,10 +18,10 @@ export type TriggerNodeInputField = {
 export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   string: {
     title: "Short Text",
-    instill_format: "string",
+    instillFormat: "string",
     order: 0,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "string",
+      instillFormat: "string",
       title,
       description,
     }),
@@ -31,10 +31,10 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   },
   "array:string": {
     title: "Multiple Texts",
-    instill_format: "array:string",
+    instillFormat: "array:string",
     order: 1,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "array:string",
+      instillFormat: "array:string",
       title,
       description,
     }),
@@ -44,13 +44,13 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   },
   long_string: {
     title: "Long Text",
-    instill_format: "string",
+    instillFormat: "string",
     order: 2,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "string",
+      instillFormat: "string",
       title,
       description,
-      instill_ui_multiline: true,
+      instillUiMultiline: true,
     }),
     icon: (
       <Icons.AlighLeft className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
@@ -58,10 +58,10 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   },
   number: {
     title: "Number",
-    instill_format: "number",
+    instillFormat: "number",
     order: 3,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "number",
+      instillFormat: "number",
       title,
       description,
     }),
@@ -74,10 +74,10 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   },
   "image/*": {
     title: "Image",
-    instill_format: "image/*",
+    instillFormat: "image/*",
     order: 4,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "image/*",
+      instillFormat: "image/*",
       title,
       description,
     }),
@@ -87,10 +87,10 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   },
   "array:image/*": {
     title: "Multiple Images",
-    instill_format: "array:image/*",
+    instillFormat: "array:image/*",
     order: 5,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "array:image/*",
+      instillFormat: "array:image/*",
       title,
       description,
     }),
@@ -100,10 +100,10 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   },
   "audio/*": {
     title: "Audio",
-    instill_format: "audio/*",
+    instillFormat: "audio/*",
     order: 6,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "audio/*",
+      instillFormat: "audio/*",
       title,
       description,
     }),
@@ -113,10 +113,10 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   },
   "array:audio/*": {
     title: "Multiple Audios",
-    instill_format: "array:audio/*",
+    instillFormat: "array:audio/*",
     order: 7,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "array:audio/*",
+      instillFormat: "array:audio/*",
       title,
       description,
     }),
@@ -126,10 +126,10 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   },
   "*/*": {
     title: "File",
-    instill_format: "*/*",
+    instillFormat: "*/*",
     order: 8,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "*/*",
+      instillFormat: "*/*",
       title,
       description,
     }),
@@ -139,10 +139,10 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   },
   "array:*/*": {
     title: "Multiple Files",
-    instill_format: "array:*/*",
+    instillFormat: "array:*/*",
     order: 9,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "array:*/*",
+      instillFormat: "array:*/*",
       title,
       description,
     }),
@@ -152,10 +152,10 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   },
   "video/*": {
     title: "Video",
-    instill_format: "video/*",
+    instillFormat: "video/*",
     order: 10,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "video/*",
+      instillFormat: "video/*",
       title,
       description,
     }),
@@ -163,10 +163,10 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   },
   "array:video/*": {
     title: "Multiple Videos",
-    instill_format: "array:video/*",
+    instillFormat: "array:video/*",
     order: 11,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "array:video/*",
+      instillFormat: "array:video/*",
       title,
       description,
     }),
@@ -176,10 +176,10 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   },
   boolean: {
     title: "Boolean",
-    instill_format: "boolean",
+    instillFormat: "boolean",
     order: 12,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "boolean",
+      instillFormat: "boolean",
       title,
       description,
     }),
@@ -195,10 +195,10 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
   // By protocol, it don't have a type
   "semi-structured/json": {
     title: "JSON",
-    instill_format: "semi-structured/json",
+    instillFormat: "semi-structured/json",
     order: 13,
     getFieldConfiguration: (title, description) => ({
-      instill_format: "semi-structured/json",
+      instillFormat: "semi-structured/json",
       title,
       description,
     }),

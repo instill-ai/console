@@ -9,7 +9,7 @@ export function transformPipelineTriggerRequestFieldsToSuperRefineRules(
   if (!fields) return rules;
 
   for (const [key, value] of Object.entries(fields)) {
-    switch (value.instill_format) {
+    switch (value.instillFormat) {
       case "string":
         rules.push({
           key,

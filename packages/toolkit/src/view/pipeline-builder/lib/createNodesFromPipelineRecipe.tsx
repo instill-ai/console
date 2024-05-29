@@ -25,12 +25,8 @@ export function createNodesFromPipelineRecipe(
 
   let triggerMetadata: Nullable<PipelineComponentMetadata> = null;
 
-  if (
-    metadata &&
-    "components" in metadata &&
-    Array.isArray(metadata.components)
-  ) {
-    triggerMetadata = metadata.components.find((c) => c.id === "trigger");
+  if (metadata && "component" in metadata) {
+    triggerMetadata = metadata.component["trigger"];
   }
 
   nodes.push({
@@ -49,12 +45,8 @@ export function createNodesFromPipelineRecipe(
 
   let responseMetadata: Nullable<PipelineComponentMetadata> = null;
 
-  if (
-    metadata &&
-    "components" in metadata &&
-    Array.isArray(metadata.components)
-  ) {
-    responseMetadata = metadata.components.find((c) => c.id === "response");
+  if (metadata && "component" in metadata) {
+    responseMetadata = metadata.component["response"];
   }
 
   nodes.push({

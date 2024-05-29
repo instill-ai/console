@@ -12,7 +12,7 @@ export function transformPipelineTriggerRequestFieldsToZod(
   if (!fields) return zodSchema;
 
   for (const [key, value] of Object.entries(fields)) {
-    switch (value.instill_format) {
+    switch (value.instillFormat) {
       case "string":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;

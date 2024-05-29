@@ -66,7 +66,7 @@ export const Toolkit = () => {
     }
 
     for (const [key, value] of Object.entries(triggerNode.data.fields)) {
-      switch (value.instill_format) {
+      switch (value.instillFormat) {
         case "string": {
           input[key] = "Please put your value here";
           break;

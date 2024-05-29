@@ -44,7 +44,7 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
 
     return hints.map((hint) => ({
       path: hint.path,
-      instill_format: hint.instillFormat,
+      instillFormat: hint.instillFormat,
       description: hint.description,
     }));
   }, [nodes]);

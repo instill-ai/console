@@ -53,7 +53,7 @@ export const IteratorInput = ({ className }: { className?: string }) => {
       )
       .map((hint) => ({
         path: hint.path,
-        instill_format: hint.instillFormat,
+        instillFormat: hint.instillFormat,
         description: hint.description,
       }));
   }, [tempSavedNodesForEditingIteratorFlow]);

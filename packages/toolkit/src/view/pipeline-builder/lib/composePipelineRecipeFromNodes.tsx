@@ -18,19 +18,25 @@ export function composePipelineRecipeFromNodes(
   for (const node of nodes) {
     if (isIteratorNode(node)) {
       recipeComponent[node.id] = {
-        ...node.data,
+        definition: undefined,
+        metadata: node.data.metadata,
+        input: node.data.input,
+        condition: node.data.condition,
+        output_elements: node.data.output_elements,
+        data_specification: null,
+        type: node.data.type,
         component: Object.fromEntries(
           Object.entries(node.data.component).map(([key, e]) => {
             if (isPipelineGeneralComponent(e)) {
               return [
                 key,
                 {
-                  ...e,
                   definition: undefined,
-                  input:
-                    recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-                      recursiveHelpers.parseToNum(structuredClone(e.input))
-                    ),
+                  input: e.input
+                    ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+                        recursiveHelpers.parseToNum(structuredClone(e.input))
+                      )
+                    : undefined,
                   connection: e.connection
                     ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
                         recursiveHelpers.parseToNum(
@@ -38,6 +44,7 @@ export function composePipelineRecipeFromNodes(
                         )
                       )
                     : undefined,
+                  condition: e.condition,
                 },
               ];
             }
@@ -52,7 +59,9 @@ export function composePipelineRecipeFromNodes(
 
     if (isGeneralNode(node)) {
       recipeComponent[node.id] = {
-        ...node.data,
+        condition: node.data.condition,
+        task: node.data.task,
+        type: node.data.type,
         input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
           recursiveHelpers.parseToNum(structuredClone(node.data.input))
         ),

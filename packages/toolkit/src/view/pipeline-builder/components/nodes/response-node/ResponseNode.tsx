@@ -112,7 +112,7 @@ export const ResponseNode = ({ data, id }: NodeProps<ResponseNodeData>) => {
         }
 
         // We need to put on the initial order, for example, if we have
-        // 3 response fields, the instill_ui_order for new fields will be 3
+        // 3 response fields, the instillUiOrder for new fields will be 3
         const currentFieldsCount = Object.keys(node.data.fields).length;
 
         node.data = {
@@ -122,7 +122,7 @@ export const ResponseNode = ({ data, id }: NodeProps<ResponseNodeData>) => {
             [formData.key]: {
               title: formData.title,
               value: formData.value,
-              instill_ui_order: currentFieldsCount,
+              instillUiOrder: currentFieldsCount,
             },
           },
         };
@@ -194,8 +194,8 @@ export const ResponseNode = ({ data, id }: NodeProps<ResponseNodeData>) => {
         };
       })
       .sort((a, b) => {
-        const aOrder = a.instill_ui_order;
-        const bOrder = b.instill_ui_order;
+        const aOrder = a.instillUiOrder;
+        const bOrder = b.instillUiOrder;
 
         if (typeof aOrder === "undefined") {
           return 1;
@@ -312,7 +312,7 @@ export const ResponseNode = ({ data, id }: NodeProps<ResponseNodeData>) => {
                           {
                             title: item.title,
                             value: item.value,
-                            instill_ui_order: index,
+                            instillUiOrder: index,
                           },
                         ])
                       );

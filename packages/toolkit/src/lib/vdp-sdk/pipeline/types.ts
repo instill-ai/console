@@ -31,9 +31,9 @@ export type PipelineRecipe = {
 export type PipelineVariableField = {
   title: string;
   description?: string;
-  instill_format: string;
-  instill_ui_order?: number;
-  instill_ui_multiline?: boolean;
+  instillFormat: string;
+  instillUiOrder?: number;
+  instillUiMultiline?: boolean;
 };
 
 export type PipelineVariableFieldMap = Record<string, PipelineVariableField>;
@@ -42,7 +42,7 @@ export type PipelineOutputField = {
   title: string;
   description?: string;
   value: string;
-  instill_ui_order?: number;
+  instillUiOrder?: number;
 };
 
 export type PipelineOutputFieldMap = Record<string, PipelineOutputField>;

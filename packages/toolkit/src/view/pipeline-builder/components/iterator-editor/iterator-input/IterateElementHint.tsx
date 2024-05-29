@@ -13,11 +13,11 @@ export const IterateElmentHint = ({
   selectedInputOption: Nullable<InOutputOption>;
 }) => {
   const humanReadableInstillFormat = React.useMemo(() => {
-    if (!selectedInputOption || !selectedInputOption?.instill_format) {
+    if (!selectedInputOption || !selectedInputOption?.instillFormat) {
       return null;
     }
     return transformInstillFormatToHumanReadableFormat(
-      selectedInputOption.instill_format
+      selectedInputOption.instillFormat
     );
   }, [selectedInputOption]);
 

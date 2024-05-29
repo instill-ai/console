@@ -116,6 +116,7 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
           const newNodes = createNodesFromPipelineRecipe(newPipeline.recipe, {
             metadata: newPipeline.metadata,
           });
+
           const newEdges = composeEdgesFromNodes(newNodes);
 
           if (isEditingIterator) {

@@ -111,9 +111,9 @@ export const TriggerNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
     });
     setIsEditing(true);
 
-    let newSelectedType = data.fields[key].instill_format;
+    let newSelectedType = data.fields[key].instillFormat;
 
-    if (newSelectedType === "string" && data.fields[key].instill_ui_multiline) {
+    if (newSelectedType === "string" && data.fields[key].instillUiMultiline) {
       newSelectedType = "long_string";
     }
 
@@ -262,7 +262,7 @@ export const TriggerNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
     const semiStructuredObjectKeys: string[] = [];
 
     Object.entries(data.fields).forEach(([key, value]) => {
-      if (value.instill_format === "semi-structured/json") {
+      if (value.instillFormat === "semi-structured/json") {
         semiStructuredObjectKeys.push(key);
       }
     });
@@ -439,7 +439,7 @@ export const TriggerNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
                                         key,
                                         {
                                           ...value,
-                                          instill_ui_order: newFieldIndex,
+                                          instillUiOrder: newFieldIndex,
                                         },
                                       ];
                                     }

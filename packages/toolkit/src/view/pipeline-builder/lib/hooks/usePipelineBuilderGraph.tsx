@@ -102,6 +102,7 @@ export function usePipelineBuilderGraph() {
       const nodes = createNodesFromPipelineRecipe(pipeline.data.recipe, {
         metadata: pipeline.data.metadata,
       });
+
       const edges = composeEdgesFromNodes(nodes);
 
       updateNodes(() => nodes);

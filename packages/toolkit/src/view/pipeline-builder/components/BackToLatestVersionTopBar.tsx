@@ -71,7 +71,7 @@ export const BackToLatestVersionTopBar = () => {
 
             if (
               checkIsValidPosition({
-                component: pipeline.data.recipe.component,
+                component: pipeline.data.recipe.component ?? null,
                 metadata: pipeline.data.metadata ?? null,
               })
             ) {

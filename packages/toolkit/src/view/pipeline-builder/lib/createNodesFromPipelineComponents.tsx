@@ -56,7 +56,7 @@ export function createNodesFromPipelineComponents(
     if (isPipelineGeneralComponent(e)) {
       nodes.push({
         id,
-        type: "operatorNode",
+        type: "generalNode",
         data: {
           ...e,
           connection: e.connection

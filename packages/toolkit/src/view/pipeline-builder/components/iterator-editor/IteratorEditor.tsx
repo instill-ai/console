@@ -39,7 +39,7 @@ const selector = (store: InstillStore) => ({
 
 export type InOutputOption = {
   path: string;
-  instill_format: string;
+  instillFormat: string;
   description?: string;
 };
 

@@ -14,14 +14,13 @@ export function composeCompleteNodesUnderEditingIteratorMode({
 }): Node<NodeData>[] {
   return nodesOutsideIterator?.map((node) => {
     if (node.id === editingIteratorID && node.type === "iteratorNode") {
-      const components = composePipelineComponentMapFromNodes(nodesInIterator);
+      const component = composePipelineComponentMapFromNodes(nodesInIterator);
       const metadata = composePipelineMetadataMapFromNodes(nodesInIterator);
 
       return {
         ...node,
         data: {
-          ...node.data,
-          components,
+          component,
           metadata,
         },
       };

@@ -77,7 +77,7 @@ export const ReadOnlyPipelineBuilder = ({
 
   React.useEffect(() => {
     if (!recipe || !metadata) return;
-    const nodes = createNodesFromPipelineRecipe(recipe);
+    const nodes = createNodesFromPipelineRecipe(recipe, { metadata });
     const edges = composeEdgesFromNodes(nodes);
 
     createGraphLayout(nodes, edges)

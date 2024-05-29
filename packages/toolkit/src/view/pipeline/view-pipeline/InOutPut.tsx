@@ -124,7 +124,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
     if (variables) {
       Object.entries(variables).forEach(([key, value]) => {
-        if (value.instill_format === "semi-structured/json") {
+        if (value.instillFormat === "semi-structured/json") {
           semiStructuredObjectKeys.push(key);
         }
       });

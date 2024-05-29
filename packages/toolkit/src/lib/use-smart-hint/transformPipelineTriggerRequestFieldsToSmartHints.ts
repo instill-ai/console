@@ -9,7 +9,7 @@ export function transformPipelineTriggerRequestFieldsToSmartHints(
     hints.push({
       path: `trigger.${key}`,
       key: key,
-      instillFormat: value.instill_format ?? "null",
+      instillFormat: value.instillFormat ?? "null",
       type: "null",
     });
   }

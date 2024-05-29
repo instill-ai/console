@@ -48,10 +48,22 @@ test("should compose initial pipeline metadata", () => {
   const metadata = composePipelineMetadataMapFromNodes(nodes);
 
   expect(metadata).toStrictEqual({
-    components: [
-      { id: "ai_0", note: null, x: 0, y: 0 },
-      { id: "trigger", note: "hello-world", x: 100, y: 100 },
-      { id: "response", note: null, x: 300, y: 300 },
-    ],
+    component: {
+      ai_0: {
+        note: null,
+        x: 0,
+        y: 0,
+      },
+      trigger: {
+        note: "hello-world",
+        x: 100,
+        y: 100,
+      },
+      response: {
+        note: null,
+        x: 300,
+        y: 300,
+      },
+    },
   });
 });
