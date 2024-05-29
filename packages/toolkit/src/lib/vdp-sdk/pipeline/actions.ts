@@ -3,7 +3,11 @@
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../helper";
 import { Operation } from "../operation";
-import { PipelineRelease, PipelineTriggerMetadata } from "./types";
+import {
+  PipelineRelease,
+  PipelineTriggerMetadata,
+  PipelineValidationError,
+} from "./types";
 
 export type TriggerUserPipelinePayload = {
   inputs: Record<string, any>[];
@@ -212,6 +216,30 @@ export async function triggerAsyncUserPipelineReleaseAction({
       },
     );
     return Promise.resolve(data.operation);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type ValidateUserPipelineResponse = {
+  success: boolean;
+  errors: PipelineValidationError[];
+};
+
+export async function validateUserPipeline({
+  pipelineName,
+  accessToken,
+}: {
+  pipelineName: string;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken);
+
+    const res = await client.post<ValidateUserPipelineResponse>(
+      `/${pipelineName}/validate`
+    );
+    return Promise.resolve(res);
   } catch (err) {
     return Promise.reject(err);
   }

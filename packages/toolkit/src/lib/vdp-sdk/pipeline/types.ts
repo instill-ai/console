@@ -210,3 +210,8 @@ export type Secret = {
   // The value of the secret, which is input-only and will never be returned in API responses.
   value: Nullable<string>;
 };
+
+export type PipelineValidationError = {
+  location: string;
+  error: string;
+};
