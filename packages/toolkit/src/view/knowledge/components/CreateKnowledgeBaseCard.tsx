@@ -13,6 +13,7 @@ type CreateKnowledgeBaseCardProps = {
   title: string;
   description: string;
   tags: string[];
+  onClick: () => void;
 };
 
 type MenuProps = {
@@ -67,6 +68,7 @@ export const CreateKnowledgeBaseCard = ({
   title,
   description,
   tags,
+  onClick,
 }: CreateKnowledgeBaseCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
