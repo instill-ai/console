@@ -17,8 +17,8 @@ type CreateKnowledgeBaseCardProps = {
 };
 
 type MenuProps = {
-  onDelete: () => void;
-  onEdit: () => void;
+  onDelete: (e: React.MouseEvent) => void;
+  onEdit: (e: React.MouseEvent) => void;
 };
 
 const Menu = ({ onDelete, onEdit }: MenuProps) => {
@@ -43,7 +43,7 @@ const Menu = ({ onDelete, onEdit }: MenuProps) => {
               Edit info
             </DropdownMenu.Item>
             <DropdownMenu.Item
-              onClick={() => { }}
+              onClick={(e) => { e.stopPropagation(); }}
               className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
             >
               <Icons.Copy07 className="w-4 h-4 mr-2 stroke-semantic-fg-secondary" />
@@ -51,7 +51,7 @@ const Menu = ({ onDelete, onEdit }: MenuProps) => {
             </DropdownMenu.Item>
             <Separator orientation="horizontal" />
             <DropdownMenu.Item
-              onClick={onDelete}
+              onClick={(e) => { e.stopPropagation(); onDelete(e); }}
               className="!px-4 !py-2.5 !text-semantic-error-default product-body-text-4-medium"
             >
               <Icons.Trash01 className="w-4 h-4 mr-2 stroke-semantic-error-default" />
@@ -73,15 +73,22 @@ export const CreateKnowledgeBaseCard = ({
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
-  const [knowledgeBase, setKnowledgeBase] = React.useState<KnowledgeBase | null>(null);
+  const [knowledgeBase, setKnowledgeBase] = React.useState<KnowledgeBase | null>({ id: '123', title: '', description: '', tags: [] });
 
-  const handleEdit = () => {
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setEditDialogIsOpen(true);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setDeleteDialogIsOpen(true);
+  };
+
+  const confirmDelete = async () => {
     if (knowledgeBase) {
-      await useDeleteKnowledgeBase(knowledgeBase.id);
+      // await useDeleteKnowledgeBase(knowledgeBase.id);
+      setKnowledgeBase(null);
       setDeleteDialogIsOpen(false);
       setShowDeleteMessage(true);
       setTimeout(() => setShowDeleteMessage(false), 5000);
@@ -127,7 +134,7 @@ export const CreateKnowledgeBaseCard = ({
         <Separator orientation="horizontal" className="my-[10px]" />
         <p className="product-body-text-3-regular line-clamp-3">{description}</p>
         <div className="flex justify-end items-end">
-          <Menu onDelete={() => setDeleteDialogIsOpen(true)} onEdit={handleEdit} />
+          <Menu onDelete={handleDelete} onEdit={handleEdit} />
         </div>
       </div>
       <Dialog.Root open={deleteDialogIsOpen} onOpenChange={setDeleteDialogIsOpen}>
@@ -145,7 +152,7 @@ export const CreateKnowledgeBaseCard = ({
                 <Button variant={"secondaryGrey"} onClick={() => setDeleteDialogIsOpen(false)} className="w-full">
                   Cancel
                 </Button>
-                <Button variant={"danger"} onClick={handleDelete} className="w-full">
+                <Button variant={"danger"} onClick={confirmDelete} className="w-full">
                   Delete
                 </Button>
               </div>
