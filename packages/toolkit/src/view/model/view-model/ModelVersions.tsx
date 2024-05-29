@@ -165,6 +165,6 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
       onPaginationStateChange={onPaginationStateChange}
       showPageNumbers={false}
       paginationState={paginationState}
-    ></DataTable>
+    />
   );
 };
