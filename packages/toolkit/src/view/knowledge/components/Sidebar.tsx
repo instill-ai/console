@@ -1,5 +1,4 @@
 // Sidebar.tsx
-import * as React from "react";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBase";
 
 type SidebarProps = {

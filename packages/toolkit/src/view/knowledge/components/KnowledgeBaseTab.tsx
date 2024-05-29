@@ -41,7 +41,9 @@ export const KnowledgeBaseTab = ({ onKnowledgeBaseSelect }: KnowledgeBaseTabProp
 
     React.useEffect(() => {
         const fetchKnowledgeBases = async () => {
-            const knowledgeBasesData = await getKnowledgeBases.mutateAsync({});
+            const knowledgeBasesData = await getKnowledgeBases.mutateAsync({
+                accessToken: null
+            });
             setKnowledgeBases(knowledgeBasesData);
         };
 
