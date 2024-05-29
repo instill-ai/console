@@ -80,7 +80,7 @@ export const NewsLetterCard = () => {
       <h2 className="mb-4 font-bold product-headings-heading-3">
         What&apos;s New?
       </h2>
-      <div className="relative mb-1 w-full">
+      <div className="relative mb-2 w-full">
         <a
           href={`https://www.instill.tech/blog/${slug}`}
           target="_blank"
@@ -94,14 +94,14 @@ export const NewsLetterCard = () => {
             fallbackImg={
               <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
             }
-            className="h-[140px] w-[248px] object-cover"
+            className="h-[140px] w-[248px] object-cover rounded"
           />
         </a>
       </div>
       <div
         className={cn(
-          buttonVariants({ variant: "secondaryColour", size: "md" }),
-          "pointer-events-none mb-2 w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize"
+          buttonVariants({ variant: "tertiaryColour", size: "sm" }),
+          "pointer-events-none mb-2 w-min whitespace-nowrap rounded-sm py-2 capitalize !px-0"
         )}
       >
         {publishedOn}
@@ -118,20 +118,18 @@ export const NewsLetterCard = () => {
       <div className="mt-auto flex items-center justify-end space-x-3">
         <Button className="!p-2" variant="tertiaryGrey" onClick={handlePrev}>
           <Icons.ArrowNarrowLeft
-            className={`h-4 w-4 ${
-              currentIndex === 0
-                ? "cursor-not-allowed stroke-semantic-fg-disabled"
-                : "stroke-semantic-fg-secondary"
-            }`}
+            className={`h-4 w-4 ${currentIndex === 0
+              ? "cursor-not-allowed stroke-semantic-fg-disabled"
+              : "stroke-semantic-fg-secondary"
+              }`}
           />
         </Button>
         <Button className="!p-2" variant="tertiaryGrey" onClick={handleNext}>
           <Icons.ArrowNarrowRight
-            className={`h-4 w-4 ${
-              currentIndex === blogPosts.length - 1
-                ? "cursor-not-allowed stroke-semantic-fg-disabled"
-                : "stroke-semantic-fg-secondary"
-            }`}
+            className={`h-4 w-4 ${currentIndex === blogPosts.length - 1
+              ? "cursor-not-allowed stroke-semantic-fg-disabled"
+              : "stroke-semantic-fg-secondary"
+              }`}
           />
         </Button>
       </div>

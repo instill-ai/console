@@ -38,7 +38,7 @@ export const LatestChangesCard = () => {
 
   return (
     <div className="flex flex-col rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4">
-      <div className="mb-4 font-bold product-headings-heading-3">
+      <div className="mb-4 font-bold product-body-text-3-semibold">
         Latest Changes
       </div>
 
@@ -63,18 +63,18 @@ export const LatestChangesCard = () => {
                 <div className="-mt-0.5 mb-1 w-min whitespace-nowrap text-xs font-semibold capitalize text-semantic-accent-default">
                   {changelog.date && new Date(changelog.date).getTime() !== 0
                     ? new Date(changelog.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                    : new Date(changelog.updatedAt).toLocaleDateString(
+                      "en-US",
+                      {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
-                      })
-                    : new Date(changelog.updatedAt).toLocaleDateString(
-                        "en-US",
-                        {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        }
-                      )}
+                      }
+                    )}
                 </div>
                 <p className="text-semantic-fg-primary product-body-text-3-regular hover:underline">
                   {changelog.title}
