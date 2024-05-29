@@ -1,6 +1,6 @@
 import ELK, { ElkExtendedEdge, ElkNode } from "elkjs/lib/elk.bundled.js";
 import { Edge, Node, Position } from "reactflow";
-import { NodeData } from "../type";
+import { NodeData } from "../../type";
 
 // This is the default dimension of a connector node we have right now
 const TRIGGER_RESPONSE_NODE = {

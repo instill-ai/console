@@ -3,7 +3,6 @@ export * from "./checkNodeType";
 export * from "./composePipelineMetadataMapFromNodes";
 export * from "./composeEdgesFromNodes";
 export * from "./composePipelineRecipeFromNodes";
-export * from "./createGraphLayout";
 export * from "./createNodesFromPipelineComponents";
 export * from "./extractPipelineComponentReferenceFromString";
 export * from "./extractReferencesFromConfiguration";
@@ -20,3 +19,5 @@ export * from "./transformConnectorDefinitionIDToComponentIDPrefix";
 
 export * from "./recursive-helpers";
 export * from "./hooks";
+export * from "./checkNodeType";
+export * from "./layout";

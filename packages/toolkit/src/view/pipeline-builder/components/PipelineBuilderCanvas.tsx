@@ -30,7 +30,9 @@ import { Icons } from "@instill-ai/design-system";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
+  updateNodes: store.updateNodes,
   edges: store.edges,
+  updateEdges: store.updateEdges,
   onNodesChange: store.onNodesChange,
   onEdgesChange: store.onEdgesChange,
   onConnect: store.onConnect,
@@ -71,7 +73,9 @@ export const PipelineBuilderCanvas = ({
 }) => {
   const {
     nodes,
+    updateNodes,
     edges,
+    updateEdges,
     onNodesChange,
     onEdgesChange,
     updatePipelineRecipeIsDirty,
@@ -82,7 +86,7 @@ export const PipelineBuilderCanvas = ({
   } = useInstillStore(useShallow(selector));
 
   const [miniMapIsOpen, setMiniMapIsOpen] = React.useState(
-    disabledMinimap ?? false
+    disabledMinimap ?? false,
   );
 
   React.useEffect(() => {
@@ -188,6 +192,15 @@ export const PipelineBuilderCanvas = ({
             }}
           >
             <Icons.Map01 className="h-4 w-4 stroke-semantic-fg-primary" />
+          </ControlButton>
+          <ControlButton
+            onClick={async () => {
+              const newLayout = await tideUpNodeLayout(nodes, edges);
+              updateNodes(() => newLayout.nodes);
+              updateEdges(() => newLayout.edges);
+            }}
+          >
+            <Icons.Grid01 className="h-4 w-4 stroke-semantic-fg-primary" />
           </ControlButton>
         </Controls>
       )}
