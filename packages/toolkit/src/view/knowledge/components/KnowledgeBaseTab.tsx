@@ -62,7 +62,7 @@ export const KnowledgeBaseTab = ({ onKnowledgeBaseSelect }: KnowledgeBaseTabProp
                 </p>
             </div>
             <Separator orientation="horizontal" className="my-4" />
-            <div className="grid gap-16 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 xl:grid-cols-3 2xl:grid-cols-4">
+            <div className="grid gap-16 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 xl:grid-cols-3">
                 <KnowledgeBaseCard onClick={() => setIsCreateDialogOpen(true)} />
                 {mockKnowledgeBases.map((knowledgeBase) => (
                     <CreateKnowledgeBaseCard
@@ -70,7 +70,7 @@ export const KnowledgeBaseTab = ({ onKnowledgeBaseSelect }: KnowledgeBaseTabProp
                         title={knowledgeBase.title}
                         description={knowledgeBase.description}
                         tags={knowledgeBase.tags}
-                        onClick={() => onKnowledgeBaseSelect(knowledgeBase)}
+                        onCardClick={() => onKnowledgeBaseSelect(knowledgeBase)}
                     />
                 ))}
             </div>
