@@ -102,7 +102,7 @@ export const GeneralDeleteResourceDialog = ({
             className="!flex-1"
           >
             {isDeleting ? (
-              <LoadingSpin className="!text-semantic-fg-primary" />
+              <LoadingSpin className="!text-semantic-fg-on-default" />
             ) : (
               "Delete"
             )}

@@ -6,8 +6,14 @@ import {
   getModelInstanceTaskToolkit,
 } from "@instill-ai/design-system";
 import { ColumnDef } from "@tanstack/react-table";
-import { Model } from "../../lib";
-import { SortIcon, TableError } from "../../components";
+import {
+  InstillStore,
+  Model,
+  useInstillStore,
+  useShallow,
+  useWatchUserModels,
+} from "../../lib";
+import { SortIcon, StateLabel, TableError } from "../../components";
 import { TableCell } from "../../components/cells/TableCell";
 import { formatDate } from "../../lib/table";
 import { ModelTablePlaceholder } from "./ModelTablePlaceholder";
@@ -18,14 +24,21 @@ export type ModelsTableProps = {
   isLoading: boolean;
 };
 
-/* const modelsWatchState = useWatchUserModels({
-  modelNames: models.isSuccess ? models.data.map((p) => p.name) : [],
-  enabled: enableQuery && models.isSuccess && models.data.length > 0,
-  accessToken,
-}); */
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enableQuery: store.enabledQuery,
+});
 
 export const ModelsTable = (props: ModelsTableProps) => {
+  const { accessToken, enableQuery } = useInstillStore(useShallow(selector));
   const { models, isError, isLoading } = props;
+
+  const modelsWatchState = useWatchUserModels({
+    modelNames: models.length > 0 ? models.map((model) => model.name) : [],
+    enabled: enableQuery && models.length > 0,
+    accessToken,
+    retry: false,
+  });
 
   const columns: ColumnDef<Model>[] = [
     {
@@ -54,25 +67,31 @@ export const ModelsTable = (props: ModelsTableProps) => {
         );
       },
     },
-    /* TODO: put this back later using the updated endpoint
-    
     {
       accessorKey: "state",
       header: () => <div className="text-center">Status</div>,
       cell: ({ row }) => {
         const name: string = row.original.name;
+
         return (
           <div className="grid justify-items-center">
-            <GeneralStateCell
-              width={null}
-              state={'STATE_ACTIVE'}
-              padding="py-2"
-              label={parseStatusLabel('STATE_ACTIVE')}
+            <StateLabel
+              className="rounded-full px-2 py-0.5"
+              state={
+                modelsWatchState.isSuccess
+                  ? modelsWatchState.data[name].state
+                  : "STATE_UNSPECIFIED"
+              }
+              enableBgColor
+              enableIcon={false}
+              iconHeight="h-3"
+              iconWidth="w-3"
+              iconPosition="my-auto"
             />
           </div>
         );
       },
-    }, */
+    },
     {
       accessorKey: "create_time",
       header: ({ column }) => {

@@ -1,6 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { watchUserModel, type ModelsWatchState } from "../../vdp-sdk";
+import {
+  ModelWatchState,
+  watchUserModel,
+  type ModelsWatchState,
+} from "../../vdp-sdk";
 import type { Nullable } from "../../type";
+import { AxiosError } from "axios";
 
 export function useWatchUserModels({
   modelNames,
@@ -33,11 +38,20 @@ export function useWatchUserModels({
       const watches: ModelsWatchState = {};
 
       for (const modelName of modelNames) {
-        const watch = await watchUserModel({
-          modelName,
-          accessToken,
-        });
-        watches[modelName] = watch;
+        try {
+          const watch = await watchUserModel({
+            modelName,
+            accessToken,
+          });
+          watches[modelName] = watch;
+        } catch (error) {
+          watches[modelName] = {
+            state: "STATE_ERROR",
+            message:
+              (error as AxiosError<ModelWatchState>).response?.data?.message ||
+              "",
+          };
+        }
       }
 
       return Promise.resolve(watches);
