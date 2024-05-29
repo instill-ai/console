@@ -52,7 +52,6 @@ export const TextArea = ({
   updateIsUsingInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
 } & AutoFormFieldBaseProps) => {
   const smartHints = useInstillStore((s) => s.smartHints);
-  const nodes = useInstillStore((s) => s.nodes);
   const updateNodes = useInstillStore((s) => s.updateNodes);
   const [smartHintsPopoverIsOpen, setSmartHintsPopoverIsOpen] =
     React.useState(false);
@@ -121,9 +120,9 @@ export const TextArea = ({
                 ...node.data.fields,
                 [key]: {
                   title: key,
-                  instill_format: instillAcceptFormats[0],
-                  instill_ui_order: 0,
-                  instill_ui_multiline: false,
+                  instillFormat: instillAcceptFormats[0],
+                  instillUiOrder: 0,
+                  instillUiMultiline: false,
                 },
               },
             },

@@ -20,8 +20,6 @@ import {
   isTriggerNode,
   recursiveHelpers,
 } from "../../lib";
-import { TriggerNodeData } from "../../type";
-import { Node } from "reactflow";
 import {
   TriggerNodeFreeForm,
   TriggerNodeFreeFormSchema,
@@ -46,6 +44,8 @@ const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,
   accessToken: store.accessToken,
   updateTestModeTriggerResponse: store.updateTestModeTriggerResponse,
+  pipelineVariable: store.pipelineVariable,
+  updatePipelineVariable: store.updatePipelineVariable,
 });
 
 export const VariableSection = () => {
@@ -60,17 +60,11 @@ export const VariableSection = () => {
     currentVersion,
     accessToken,
     updateTestModeTriggerResponse,
+    pipelineVariable,
+    updatePipelineVariable,
   } = useInstillStore(useShallow(selector));
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { toast } = useToast();
-
-  const triggerNodeFieldsMap = React.useMemo(() => {
-    const triggerNode = nodes.find((node) => isTriggerNode(node)) as
-      | Node<TriggerNodeData>
-      | undefined;
-
-    return triggerNode?.data.fields ?? null;
-  }, [nodes]);
 
   const [selectedType, setSelectedType] =
     React.useState<Nullable<string>>(null);
@@ -86,21 +80,21 @@ export const VariableSection = () => {
   });
 
   const onEditFreeFormField = (key: string) => {
-    if (!triggerNodeFieldsMap) return;
+    if (!pipelineVariable) return;
 
     setCurrentEditingFieldKey(key);
     form.reset({
-      title: triggerNodeFieldsMap[key].title,
+      title: pipelineVariable[key].title,
       key,
-      description: triggerNodeFieldsMap[key].description,
+      description: pipelineVariable[key].description,
     });
     setIsEditing(true);
 
-    let newSelectedType = triggerNodeFieldsMap[key].instill_format;
+    let newSelectedType = pipelineVariable[key].instillFormat;
 
     if (
       newSelectedType === "string" &&
-      triggerNodeFieldsMap[key].instill_ui_multiline
+      pipelineVariable[key].instillUiMultiline
     ) {
       newSelectedType = "long_string";
     }
@@ -136,11 +130,24 @@ export const VariableSection = () => {
   function onCreateFreeFormField(
     formData: z.infer<typeof TriggerNodeFreeFormSchema>
   ) {
-    if (!selectedType || !triggerNodeFieldsMap) {
+    if (!selectedType) {
       return;
     }
 
-    if (Object.keys(triggerNodeFieldsMap).includes(formData.key)) {
+    const field = triggerNodeFields[selectedType].getFieldConfiguration(
+      formData.title,
+      formData.description
+    );
+
+    if (!pipelineVariable) {
+      updatePipelineVariable(() => ({
+        [formData.key]: field,
+      }));
+
+      return;
+    }
+
+    if (Object.keys(pipelineVariable).includes(formData.key)) {
       if (isEditing) {
         if (formData.key !== currentEditingFieldKey) {
           form.setError("key", {
@@ -161,11 +168,6 @@ export const VariableSection = () => {
     if (!triggerNodeFields[selectedType]) {
       return;
     }
-
-    const field = triggerNodeFields[selectedType].getFieldConfiguration(
-      formData.title,
-      formData.description
-    );
 
     updateRecentlyUsedStartComponentFieldTypes((prev) => {
       if (!prev.includes(selectedType)) {
@@ -215,8 +217,7 @@ export const VariableSection = () => {
     });
   }
 
-  const [disabledReferenceHint, setDisabledReferenceHint] =
-    React.useState(false);
+  const [disabledReferenceHint] = React.useState(false);
 
   const {
     Schema: TriggerPipelineFormSchema,
@@ -224,7 +225,7 @@ export const VariableSection = () => {
     form: triggerPipelineForm,
   } = usePipelineTriggerRequestForm({
     mode: "build",
-    fields: triggerNodeFieldsMap ?? null,
+    fields: pipelineVariable ?? null,
     onDeleteField: onDeleteFreeFormField,
     onEditField: onEditFreeFormField,
     disabledReferenceHint,
@@ -235,7 +236,7 @@ export const VariableSection = () => {
   async function onTriggerPipeline(
     formData: z.infer<typeof TriggerPipelineFormSchema>
   ) {
-    if (!pipelineName || !formData || !triggerNodeFieldsMap) return;
+    if (!pipelineName || !formData || !pipelineVariable) return;
 
     const input = recursiveHelpers.removeUndefinedAndNullFromArray(
       recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData)
@@ -246,8 +247,8 @@ export const VariableSection = () => {
 
     const semiStructuredObjectKeys: string[] = [];
 
-    Object.entries(triggerNodeFieldsMap).forEach(([key, value]) => {
-      if (value.instill_format === "semi-structured/json") {
+    Object.entries(pipelineVariable).forEach(([key, value]) => {
+      if (value.instillFormat === "semi-structured/json") {
         semiStructuredObjectKeys.push(key);
       }
     });
@@ -369,39 +370,28 @@ export const VariableSection = () => {
                     );
 
                     if (newFieldItems.length > 0) {
-                      const newNodes = nodes.map((node) => {
-                        if (isTriggerNode(node)) {
-                          const newFields = Object.fromEntries(
-                            Object.entries(node.data.fields).map(
-                              ([key, value]) => {
-                                const newFieldIndex = newFieldItems.findIndex(
-                                  (e) => e.key === key
-                                );
+                      updatePipelineVariable((prev) => {
+                        if (!prev) return null;
+                        return Object.fromEntries(
+                          Object.entries(prev).map(([key, value]) => {
+                            const newFieldIndex = newFieldItems.findIndex(
+                              (e) => e.key === key
+                            );
 
-                                if (newFieldIndex !== -1) {
-                                  return [
-                                    key,
-                                    {
-                                      ...value,
-                                      instill_ui_order: newFieldIndex,
-                                    },
-                                  ];
-                                }
+                            if (newFieldIndex !== -1) {
+                              return [
+                                key,
+                                {
+                                  ...value,
+                                  instillUiOrder: newFieldIndex,
+                                },
+                              ];
+                            }
 
-                                return [key, value];
-                              }
-                            )
-                          );
-
-                          node.data = {
-                            ...node.data,
-                            fields: newFields,
-                          };
-                        }
-                        return node;
+                            return [key, value];
+                          })
+                        );
                       });
-
-                      updateNodes(() => newNodes);
                       updatePipelineRecipeIsDirty(() => true);
                     }
                   }

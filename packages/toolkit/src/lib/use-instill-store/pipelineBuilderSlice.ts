@@ -11,7 +11,11 @@ import {
 import { Nullable } from "../type";
 
 import { NodeData } from "../../view";
-import { TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
+import {
+  PipelineOutputFieldMap,
+  PipelineVariableFieldMap,
+  TriggerUserPipelineResponse,
+} from "../vdp-sdk/pipeline";
 import { StateCreator } from "zustand";
 import {
   InstillStore,
@@ -27,6 +31,8 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   pipelineName: null,
   nodes: [],
   edges: [],
+  pipelineVariable: null,
+  pipelineOutput: null,
   isSavingPipeline: false,
   rightPanelIsOpen: false,
   pipelineRecipeIsDirty: false,
@@ -85,6 +91,28 @@ export const createPipelineBuilderSlice: StateCreator<
   updateRightPanelIsOpen: (fn: (prev: boolean) => boolean) =>
     set((state) => {
       return { ...state, rightPanelIsOpen: fn(state.rightPanelIsOpen) };
+    }),
+  updatePipelineVariable: (
+    fn: (
+      prev: Nullable<PipelineVariableFieldMap>
+    ) => Nullable<PipelineVariableFieldMap>
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        pipelineVariable: fn(state.pipelineVariable),
+      };
+    }),
+  updatePipelineOutput: (
+    fn: (
+      prev: Nullable<PipelineOutputFieldMap>
+    ) => Nullable<PipelineOutputFieldMap>
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        pipelineOutput: fn(state.pipelineOutput),
+      };
     }),
   updateNodes: (fn: (prev: Node<NodeData>[]) => Node<NodeData>[]) =>
     set((state) => {

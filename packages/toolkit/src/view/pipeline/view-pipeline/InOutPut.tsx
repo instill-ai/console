@@ -281,7 +281,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
             <ComponentOutputs
               componentID="end"
               outputSchema={pipeline.data.dataSpecification?.output ?? null}
-              nodeType="end"
+              nodeType="response"
               chooseTitleFrom="title"
               response={response}
             />

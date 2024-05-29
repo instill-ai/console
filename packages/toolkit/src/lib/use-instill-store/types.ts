@@ -1,7 +1,12 @@
 import { NodeData } from "../../view";
 import { Nullable } from "../type";
 import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
-import { Secret, TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
+import {
+  PipelineOutputFieldMap,
+  PipelineVariableFieldMap,
+  Secret,
+  TriggerUserPipelineResponse,
+} from "../vdp-sdk/pipeline";
 import { SmartHint } from "../use-smart-hint";
 import { InstillJSONSchema } from "../use-instill-form";
 
@@ -13,6 +18,8 @@ export type WarnUnsavedChangesDialogState = {
 export type PipelineBuilderState = {
   pipelineId: Nullable<string>;
   pipelineName: Nullable<string>;
+  pipelineVariable: Nullable<PipelineVariableFieldMap>;
+  pipelineOutput: Nullable<PipelineOutputFieldMap>;
   nodes: Node<NodeData>[];
   edges: Edge[];
   rightPanelIsOpen: boolean;
@@ -48,6 +55,16 @@ export type PipelineBuilderAction = {
   updatePipelineId: (fn: (prev: Nullable<string>) => Nullable<string>) => void;
   updatePipelineName: (
     fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
+  updatePipelineVariable: (
+    fn: (
+      prev: Nullable<PipelineVariableFieldMap>
+    ) => Nullable<PipelineVariableFieldMap>
+  ) => void;
+  updatePipelineOutput: (
+    fn: (
+      prev: Nullable<PipelineOutputFieldMap>
+    ) => Nullable<PipelineOutputFieldMap>
   ) => void;
   updateNodes: (fn: (prev: Node<NodeData>[]) => Node<NodeData>[]) => void;
   updateEdges: (fn: (prev: Edge[]) => Edge[]) => void;

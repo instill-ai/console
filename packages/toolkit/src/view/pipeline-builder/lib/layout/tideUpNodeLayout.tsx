@@ -9,7 +9,7 @@ export async function tideUpNodeLayout(nodes: Node<NodeData>[], edges: Edge[]) {
     const elkEdges: ElkExtendedEdge[] = [];
 
     nodes.forEach((node) => {
-      if (node.data.id !== "trigger" && node.data.id !== "response") {
+      if (node.id !== "trigger" && node.id !== "response") {
         elkNodes.push({
           id: node.id,
           width: node.width ?? undefined,

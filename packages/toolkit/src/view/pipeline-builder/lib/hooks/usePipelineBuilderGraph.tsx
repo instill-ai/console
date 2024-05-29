@@ -26,6 +26,8 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
   updatePipelineIsReadOnly: store.updatePipelineIsReadOnly,
   updateCollapseAllNodes: store.updateCollapseAllNodes,
+  updatePipelineVariable: store.updatePipelineVariable,
+  updatePipelineOutput: store.updatePipelineOutput,
 });
 
 export function usePipelineBuilderGraph() {

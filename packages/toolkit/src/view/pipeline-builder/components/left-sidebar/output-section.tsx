@@ -40,9 +40,6 @@ export const OutputSection = () => {
   const [isCreating, setIsCreating] = React.useState(false);
   const [currentEditingFieldKey, setCurrentEditingFieldKey] =
     React.useState<Nullable<string>>(null);
-  const [noteIsOpen, setNoteIsOpen] = React.useState<boolean>(false);
-  const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
-  const [isViewResultMode, setIsViewResultMode] = React.useState(false);
   const { nodes, updateNodes, updateEdges, updatePipelineRecipeIsDirty } =
     useInstillStore(useShallow(selector));
 
@@ -100,7 +97,7 @@ export const OutputSection = () => {
             [formData.key]: {
               title: formData.title,
               value: formData.value,
-              instill_ui_order: currentFieldsCount,
+              instillUiOrder: currentFieldsCount,
             },
           },
         };
@@ -176,8 +173,8 @@ export const OutputSection = () => {
         };
       })
       .sort((a, b) => {
-        const aOrder = a.instill_ui_order;
-        const bOrder = b.instill_ui_order;
+        const aOrder = a.instillUiOrder;
+        const bOrder = b.instillUiOrder;
 
         if (typeof aOrder === "undefined") {
           return 1;
@@ -230,7 +227,7 @@ export const OutputSection = () => {
                           {
                             title: item.title,
                             value: item.value,
-                            instill_ui_order: index,
+                            instillUiOrder: index,
                           },
                         ])
                       );

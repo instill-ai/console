@@ -21,7 +21,7 @@ import {
   Flow,
   LeftSideBar,
   RightPanel,
-  useConstructNodeFromDefinition,
+  useAddNodeWithDefinition,
   usePipelineBuilderGraph,
   useSavePipeline,
 } from ".";
@@ -53,7 +53,7 @@ export const PipelineBuilderMainView = () => {
   const [reactFlowInstance, setReactFlowInstance] =
     React.useState<Nullable<ReactFlowInstance>>(null);
   const reactFlowWrapper = React.useRef<HTMLDivElement>(null);
-  const constructNode = useConstructNodeFromDefinition({ reactFlowInstance });
+  const addNode = useAddNodeWithDefinition({ reactFlowInstance });
   const {
     pipelineIsNew,
     currentAdvancedConfigurationNodeID,
@@ -130,7 +130,7 @@ export const PipelineBuilderMainView = () => {
         <div className="flex w-full flex-col">
           <Cmdk
             onSelect={(definition) => {
-              constructNode(definition);
+              addNode(definition);
             }}
           />
           {/* 
