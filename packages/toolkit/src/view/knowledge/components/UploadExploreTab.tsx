@@ -82,23 +82,23 @@ export const UploadExploreTab = () => {
                 </p>
             </div>
             <Separator orientation="horizontal" className="my-4" />
-            <div className="w-full h-[150px] relative bg-semantic-accent-bg rounded border-2  border-dashed border-semantic-secondary-bg flex-col product-body-text-4-regular text-center">
-                <Icons.Upload01 className="w-8 h-8 top-[41px] absolute" />
-                <div className="w-[1024px] left-[68px] top-[91px] absolute text-center">
+            <div className="w-full h-[150px] relative bg-semantic-accent-bg rounded border  border-dashed border-semantic-secondary-bg flex-col product-body-text-4-regular ">
+                <Icons.Upload01 className="w-8 h-8" />
+                <div className="text-center w-full">
                     <span className="">
                         Drag-and-drop file, or{" "}
                     </span>
                     <span className="text-semantic-accent-hover underline">
                         browse computer
                     </span>
-                </div>
-                <div className="left-[537px] top-[125.83px] absolute">
-                    Max 15MB each
-                </div>
-                <div className="w-[1078px] h-[16.38px] left-[41px] top-[108.23px] absolute ">
-                    Support TXT, MARKDOWN, PDF, PNG, JPG (DOCX, DOC, PPTX, PPT, HTML, XML, RTF).
-                    <br />
-                    <br />
+                    <div className="">
+                        Max 15MB each
+                    </div>
+                    <div className=" ">
+                        Support TXT, MARKDOWN, PDF, PNG, JPG (DOCX, DOC, PPTX, PPT, HTML, XML, RTF).
+                        <br />
+                        <br />
+                    </div>
                 </div>
             </div>
             <div className="w-full px-2 py-1.5  rounded border border-[#E1E6EF] justify-start items-center gap-2 inline-flex">
