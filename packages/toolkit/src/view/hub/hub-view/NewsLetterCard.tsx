@@ -94,14 +94,14 @@ export const NewsLetterCard = () => {
             fallbackImg={
               <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
             }
-            className="h-[140px] w-[248px] object-cover rounded"
+            className="h-[140px] w-[248px] rounded object-cover"
           />
         </a>
       </div>
       <div
         className={cn(
           buttonVariants({ variant: "tertiaryColour", size: "sm" }),
-          "pointer-events-none mb-2 w-min whitespace-nowrap rounded-sm py-2 capitalize !px-0"
+          "pointer-events-none mb-2 w-min whitespace-nowrap rounded-sm !px-0 py-2 capitalize"
         )}
       >
         {publishedOn}
@@ -118,18 +118,20 @@ export const NewsLetterCard = () => {
       <div className="mt-auto flex items-center justify-end space-x-3">
         <Button className="!p-2" variant="tertiaryGrey" onClick={handlePrev}>
           <Icons.ArrowNarrowLeft
-            className={`h-4 w-4 ${currentIndex === 0
-              ? "cursor-not-allowed stroke-semantic-fg-disabled"
-              : "stroke-semantic-fg-secondary"
-              }`}
+            className={`h-4 w-4 ${
+              currentIndex === 0
+                ? "cursor-not-allowed stroke-semantic-fg-disabled"
+                : "stroke-semantic-fg-secondary"
+            }`}
           />
         </Button>
         <Button className="!p-2" variant="tertiaryGrey" onClick={handleNext}>
           <Icons.ArrowNarrowRight
-            className={`h-4 w-4 ${currentIndex === blogPosts.length - 1
-              ? "cursor-not-allowed stroke-semantic-fg-disabled"
-              : "stroke-semantic-fg-secondary"
-              }`}
+            className={`h-4 w-4 ${
+              currentIndex === blogPosts.length - 1
+                ? "cursor-not-allowed stroke-semantic-fg-disabled"
+                : "stroke-semantic-fg-secondary"
+            }`}
           />
         </Button>
       </div>
