@@ -51,7 +51,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   return (
     <div className="w-full h-screen bg-semantic-bg-primary">
       <div className="grid w-full grid-cols-12 gap-6 pl-4 pr-8 pt-6">
-        <div className="lg:col-span-2 md:col-span-3 sm:col-span-4 pt-18 pr-8">
+        <div className="lg:col-span-2 md:col-span-3 sm:col-span-4 pt-20 pr-8">
           <Sidebar
             activeTab={activeTab}
             onTabChange={handleTabChange}
