@@ -35,6 +35,7 @@ const selector = (store: InstillStore) => ({
   isEditingIterator: store.isEditingIterator,
   tempSavedNodesForEditingIteratorFlow:
     store.tempSavedNodesForEditingIteratorFlow,
+  collapseAllNodes: store.collapseAllNodes,
 });
 
 export const NodeControlPanel = ({
@@ -64,9 +65,14 @@ export const NodeControlPanel = ({
     updateCurrentAdvancedConfigurationNodeID,
     tempSavedNodesForEditingIteratorFlow,
     isEditingIterator,
+    collapseAllNodes,
   } = useInstillStore(useShallow(selector));
 
   const [moreOptionsIsOpen, setMoreOptionsIsOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    setNodeIsCollapsed(collapseAllNodes);
+  }, [collapseAllNodes]);
 
   const nodeTypeName = React.useMemo(() => {
     if (isPipelineGeneralComponent(nodeData)) {

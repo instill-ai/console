@@ -42,6 +42,8 @@ const selector = (store: InstillStore) => ({
     store.updateCurrentAdvancedConfigurationNodeID,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
   pipelineName: store.pipelineName,
+  collapseAllNodes: store.collapseAllNodes,
+  updateCollapseAllNodes: store.updateCollapseAllNodes,
 });
 
 const nodeTypes = {
@@ -83,6 +85,8 @@ export const PipelineBuilderCanvas = ({
     updateCurrentAdvancedConfigurationNodeID,
     pipelineIsReadOnly,
     pipelineName,
+    collapseAllNodes,
+    updateCollapseAllNodes,
   } = useInstillStore(useShallow(selector));
 
   const [miniMapIsOpen, setMiniMapIsOpen] = React.useState(
@@ -201,6 +205,17 @@ export const PipelineBuilderCanvas = ({
             }}
           >
             <Icons.Grid01 className="h-4 w-4 stroke-semantic-fg-primary" />
+          </ControlButton>
+          <ControlButton
+            onClick={() => {
+              updateCollapseAllNodes((prev) => !prev);
+            }}
+          >
+            {collapseAllNodes ? (
+              <Icons.Maxmize01 className="h-4 w-4 stroke-semantic-fg-primary" />
+            ) : (
+              <Icons.Minimize01 className="h-4 w-4 stroke-semantic-fg-primary" />
+            )}
           </ControlButton>
         </Controls>
       )}

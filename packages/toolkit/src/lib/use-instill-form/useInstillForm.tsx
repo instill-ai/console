@@ -18,6 +18,7 @@ import { GeneralRecord, Nullable } from "../type";
 
 export type UseInstillFormOptions = {
   checkIsHidden?: CheckIsHidden;
+  looseValidation?: boolean;
 } & Pick<
   PickRegularFieldsFromInstillFormTreeOptions,
   | "chooseTitleFrom"
@@ -63,6 +64,7 @@ export function useInstillForm(
   const updateForceOpenCollapsibleFormGroups =
     options?.updateForceOpenCollapsibleFormGroups;
   const updateIsUsingInstillCredit = options?.updateIsUsingInstillCredit;
+  const looseValidation = options?.looseValidation ?? false;
 
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
   const [ValidatorSchema, setValidatorSchema] = React.useState<z.ZodTypeAny>(
@@ -129,10 +131,11 @@ export function useInstillForm(
       targetSchema: schema,
       selectedConditionMap,
       checkIsHidden,
+      looseValidation,
     });
 
     setValidatorSchema(_ValidatorSchema);
-  }, [schema, selectedConditionMap, checkIsHidden]);
+  }, [schema, selectedConditionMap, checkIsHidden, looseValidation]);
 
   // Delay the initialisation of the form after the first render
   React.useEffect(() => {

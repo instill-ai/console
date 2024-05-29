@@ -33,7 +33,6 @@ const selector = (store: InstillStore) => ({
     store.updateCurrentAdvancedConfigurationNodeID,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
   currentVersion: store.currentVersion,
-  collapseAllNodes: store.collapseAllNodes,
   entitySecrets: store.entitySecrets,
 });
 
@@ -42,7 +41,6 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     updateCurrentAdvancedConfigurationNodeID,
     currentVersion,
     pipelineIsReadOnly,
-    collapseAllNodes,
     entitySecrets,
   } = useInstillStore(useShallow(selector));
 
@@ -57,10 +55,6 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     React.useState(false);
   const [isUsingInstillCredit, updateIsUsingInstillCredit] =
     React.useState(false);
-
-  React.useEffect(() => {
-    setNodeIsCollapsed(collapseAllNodes);
-  }, [collapseAllNodes]);
 
   const checkIsHidden = useCheckIsHidden("onNode");
 

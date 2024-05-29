@@ -71,6 +71,7 @@ import { Lightning01 } from "./Lightning01";
 import { MultipleVideo } from "./MultipleVideo";
 import { Model } from "./Model";
 import { MasterCard } from "./MasterCard";
+import { Maxmize01 } from "./Maxmize01";
 import { Menu01 } from "./Menu01";
 import { MessageChatSquare } from "./MessageChatSquare";
 import { Minus } from "./Minus";
@@ -203,6 +204,7 @@ export const Icons = {
   MultipleVideo,
   PauseCircle,
   MasterCard,
+  Maxmize01,
   Menu01,
   MessageChatSquare,
   Minus,

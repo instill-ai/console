@@ -16,6 +16,7 @@ export function transformInstillJSONSchemaToZod({
   propertyPath,
   forceOptional,
   checkIsHidden,
+  looseValidation,
 }: {
   parentSchema: InstillJSONSchema;
   targetSchema: InstillJSONSchema;
@@ -24,8 +25,13 @@ export function transformInstillJSONSchemaToZod({
   propertyPath?: string;
   forceOptional?: boolean;
   checkIsHidden?: CheckIsHidden;
+  looseValidation?: boolean;
 }): instillZodSchema {
   let instillZodSchema: z.ZodTypeAny = z.any();
+
+  if (looseValidation) {
+    return instillZodSchema;
+  }
 
   const isHidden = checkIsHidden
     ? checkIsHidden({
