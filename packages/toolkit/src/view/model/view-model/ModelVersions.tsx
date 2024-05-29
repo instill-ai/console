@@ -56,17 +56,15 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
       cell: ({ row }) => {
         return (
           <div className="flex flex-row justify-start">
-            {
-              <StateLabel
-                className="rounded-full px-2 py-0.5"
-                state={row.getValue("state")}
-                enableBgColor
-                enableIcon={false}
-                iconHeight="h-3"
-                iconWidth="w-3"
-                iconPosition="my-auto"
-              />
-            }
+            <StateLabel
+              className="rounded-full px-2 py-0.5"
+              state={row.getValue("state")}
+              enableBgColor
+              enableIcon={false}
+              iconHeight="h-3"
+              iconWidth="w-3"
+              iconPosition="my-auto"
+            />
           </div>
         );
       },

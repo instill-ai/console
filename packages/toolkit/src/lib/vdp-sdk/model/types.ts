@@ -121,7 +121,7 @@ export type ModelVersion = {
 
 export type ModelWatchState = {
   state: ModelState;
-  progress: number;
+  message: string;
 };
 
 export type ModelsWatchState = Record<string, ModelWatchState>;
