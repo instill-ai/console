@@ -82,40 +82,40 @@ export const UploadExploreTab = () => {
                 </p>
             </div>
             <Separator orientation="horizontal" className="my-4" />
-            <div className="w-full h-[150px] relative bg-blue-50 rounded border  border-b-semantic-secondary-bg flex-col product-body-text-4-regular">
+            <div className="w-full h-[150px] relative bg-semantic-accent-bg rounded border-2  border-dashed border-semantic-secondary-bg flex-col product-body-text-4-regular text-center">
                 <Icons.Upload01 className="w-8 h-8 top-[41px] absolute" />
                 <div className="w-[1024px] left-[68px] top-[91px] absolute text-center">
-                    <span className="text-gray-800 ">
+                    <span className="">
                         Drag-and-drop file, or{" "}
                     </span>
-                    <span className="text-blue-600 underline">
+                    <span className="text-semantic-accent-hover underline">
                         browse computer
                     </span>
                 </div>
-                <div className="left-[537px] top-[125.83px] absolute text-center text-gray-800 ">
+                <div className="left-[537px] top-[125.83px] absolute">
                     Max 15MB each
                 </div>
-                <div className="w-[1078px] h-[16.38px] left-[41px] top-[108.23px] absolute text-center ">
+                <div className="w-[1078px] h-[16.38px] left-[41px] top-[108.23px] absolute ">
                     Support TXT, MARKDOWN, PDF, PNG, JPG (DOCX, DOC, PPTX, PPT, HTML, XML, RTF).
                     <br />
                     <br />
                 </div>
             </div>
-            <div className="w-full h-8 px-2 py-1.5 bg-white rounded border border-slate-200 justify-start items-center gap-2 inline-flex">
+            <div className="w-full px-2 py-1.5  rounded border border-[#E1E6EF] justify-start items-center gap-2 inline-flex">
                 <div className="w-5 h-5 relative" />
-                <div className="text-gray-800 text-sm font-normal font-['IBM Plex Sans'] leading-tight">filename.pdf</div>
-                <div className="grow shrink basis-0 text-gray-800/opacity-60 text-xs font-normal font-['IBM Plex Sans'] leading-none">150KB</div>
+                <div className=" product-body-text-3-regular">filename.pdf</div>
+                <div className="grow shrink basis-0 product-body-text-4-regular text-semantic-fg-disabled">150KB</div>
                 <div className="w-4 h-4 relative" />
             </div>
-            <div className="w-[174px] h-[34px] flex-col justify-start items-start gap-1 inline-flex">
-                <div className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] leading-[14px] tracking-tight">
+            <div className=" flex-col justify-start items-start gap-1 inline-flex">
+                <div className="text-semantic-fg-primary product-body-text-3-semibold">
                     Pipeline in use
                 </div>
                 <div className="justify-start items-center gap-1 inline-flex">
                     <Icons.Pipeline className="w-4 h-4" />
                     <button
                         type="button"
-                        className="text-blue-600 text-sm font-semibold font-['IBM Plex Sans'] lowercase leading-[14px] tracking-tight hover:!underline"
+                        className="hover:!underline text-semantic-accent-hover product-body-text-3-semibold"
                         onClick={() => {
                             router.push(`/${ownerID}`);
                         }}
