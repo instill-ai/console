@@ -118,6 +118,7 @@ export const ModelSettingsEditForm = ({
     resolver: zodResolver(EditModelSchema),
     mode: "onChange",
     values: defaultValues,
+    disabled: !model?.permission.can_edit,
   });
   const updateUserModel = useUpdateUserModel();
 
@@ -406,7 +407,7 @@ export const ModelSettingsEditForm = ({
           </div>
           <div className="pb-14 pt-12">
             <Button
-              disabled={updating}
+              disabled={!model?.permission.can_edit || updating}
               form={formID}
               variant="primary"
               size="lg"

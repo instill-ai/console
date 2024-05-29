@@ -125,6 +125,7 @@ export type listModelsQueryProps = {
   accessToken: Nullable<string>;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
+  order_by?: Nullable<string>;
 };
 export type listUserModelsQueryProps = {
   userName: Nullable<string>;
@@ -174,6 +175,7 @@ export async function listModelsQuery({
   filter,
   visibility,
   enablePagination,
+  order_by,
 }: listModelsQueryProps & {
   enablePagination?: boolean;
 }) {
@@ -186,8 +188,9 @@ export async function listModelsQuery({
       baseURL: "/models?view=VIEW_FULL",
       pageSize,
       nextPageToken,
-      filter,
       queryParams: visibility ? `visibility=${visibility}` : undefined,
+      filter,
+      order_by,
     });
 
     const { data } = await client.get<ListModelsResponse>(queryString);
@@ -207,6 +210,7 @@ export async function listModelsQuery({
           enablePagination: false,
           filter,
           visibility,
+          order_by,
         }))
       );
     }

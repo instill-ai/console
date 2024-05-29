@@ -133,7 +133,7 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
         : searchCode
           ? `q="${searchCode}"`
           : "",
-    //order_by: selectedSortOption,
+    order_by: selectedSortOption,
   });
 
   const allModels = React.useMemo(() => {
