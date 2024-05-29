@@ -13,7 +13,7 @@ type CreateKnowledgeBaseCardProps = {
   title: string;
   description: string;
   tags: string[];
-  onClick: () => void;
+  onCardClick: () => void;
 };
 
 type MenuProps = {
@@ -68,7 +68,7 @@ export const CreateKnowledgeBaseCard = ({
   title,
   description,
   tags,
-  onClick,
+  onCardClick,
 }: CreateKnowledgeBaseCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
@@ -120,7 +120,7 @@ export const CreateKnowledgeBaseCard = ({
           </div>
         </div>
       )}
-      <div className="flex shadow cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-2.5 w-[360px] h-[175px]">
+      <div className="flex shadow cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-2.5 w-[360px] h-[175px]" onClick={onCardClick}>
         <div className="flex items-center justify-between">
           <h3 className="text-base font-medium text-black">{title}</h3>
         </div>
@@ -156,7 +156,7 @@ export const CreateKnowledgeBaseCard = ({
       <CreateKnowledgeDialog
         isOpen={editDialogIsOpen}
         onClose={() => setEditDialogIsOpen(false)}
-        onSubmit={(data) => handleCreateKnowledgeSubmit(data, accessToken)}
+        onSubmit={(data) => handleCreateKnowledgeSubmit(data)}
         title="Edit knowledge base"
       />
     </React.Fragment>
