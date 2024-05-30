@@ -81,14 +81,14 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
 
 
     return (
-        <div className="flex flex-col gap-y-6">
-            <div className="flex items-center justify-between">
+        <div className="flex flex-col">
+            <div className="flex items-center justify-between mb-5">
                 <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
                     {knowledgeBase.title}
                 </p>
             </div>
-            <Separator orientation="horizontal" className="my-4" />
-            <div className="w-full h-[150px] relative bg-semantic-accent-bg rounded-md border-2 border-dashed border-semantic-secondary-bg flex flex-col items-center justify-center product-body-text-4-regular">
+            <Separator orientation="horizontal" className="mb-6" />
+            <div className="w-full h-[150px] relative bg-semantic-accent-bg rounded-md border-2 border-dashed border-semantic-secondary-bg flex flex-col items-center justify-center product-body-text-4-regular mb-2">
                 <Icons.Upload01 className="w-8 h-8 p-1 stroke-semantic-fg-secondary mb-4" />
                 <div className="text-center w-full">
                     <span className="">
@@ -111,11 +111,10 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
     </div> */}
                 </div>
             </div>
-            <div className="w-full px-2 py-1.5  rounded border border-[#E1E6EF] justify-start items-center gap-2 inline-flex">
-                <Icons.File05 className="w-4 h-4 stroke-semantic-fg-secondary" />
+            <div className="w-full mb-6 rounded border border-[#E1E6EF] justify-start items-center gap-2 inline-flex">
+                <Icons.File05 className="w-4 h-4 stroke-semantic-fg-secondary ml-2" />
                 <div className=" product-body-text-3-regular">filename.pdf</div>
                 <div className="grow shrink basis-0 product-body-text-4-regular text-semantic-fg-disabled">150KB</div>
-                <div className="w-4 h-4 relative" />
             </div>
             <div className=" flex-col justify-start items-start gap-1 inline-flex">
                 <div className="text-semantic-fg-primary product-body-text-3-semibold">
