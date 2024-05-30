@@ -30,7 +30,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                 <div className="flex justify-start">
                     <div className="px-3 py-2 bg-semantic-bg-primary rounded border border-semantic-bg-line flex items-center gap-2">
                         <Icons.Plus className="w-4 h-4 stroke-semantic-fg-secondary" />
-                        <div className="text-semantic-fg-primary product-body-text-3-semibold">add file</div>
+                        <div className="text-semantic-fg-primary product-body-text-3-semibold">Add File</div>
                     </div>
                 </div>
                 <div className="bg-semantic-bg-primary  rounded border border-semantic-bg-line flex">
@@ -131,18 +131,19 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                         <div className="pl-3 p-3 bg-semantic-bg-base-bg border-b border-semantic-bg-line flex items-center gap-3 h-12 rounded-tr">
                             <div className="text-semantic-fg-primary product-body-text-3-medium">Preview</div>
                         </div>
-                        <div className="px-8 flex flex-col gap-3">
-                            <div className="flex flex-col gap-3">
-                                <div className="flex flex-col">
+                        <div className="px-8 flex flex-col gap-3 h-full">
+                            <div className="flex flex-col gap-3 flex-1">
+                                <div className="flex flex-col h-full">
                                     <div className="w-[311px] pb-2.5 flex items-center">
                                         <div className="flex items-start gap-1">
-                                            <div className=" product-body-text-3-semibold ">File name</div>
+                                            <div className="product-body-text-3-semibold">File name</div>
                                         </div>
                                     </div>
                                     <Textarea
                                         // {...field}
                                         // id={field.name}
                                         placeholder="Preview"
+                                        className="flex-1 resize-none"
                                     />
                                 </div>
                             </div>
@@ -153,7 +154,6 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                                 <Button variant="secondaryGrey" size="lg" className="capitalize">
                                     download
                                     <Icons.DownloadCloud01 className="w-4 h-4 stroke-semantic-fg-primary ml-2" />
-
                                 </Button>
                             </div>
                         </div>
