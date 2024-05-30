@@ -1,6 +1,3 @@
-// KnowledgeBaseView.tsx
-"use client";
-
 import { GeneralAppPageProp, useModels, useWatchUserModels } from "../../lib";
 import { Sidebar } from "./components/Sidebar";
 import { KnowledgeBaseTab } from "./components/KnowledgeBaseTab";
