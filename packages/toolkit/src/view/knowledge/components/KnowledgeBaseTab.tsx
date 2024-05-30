@@ -79,12 +79,12 @@ export const KnowledgeBaseTab = ({ onKnowledgeBaseSelect }: KnowledgeBaseTabProp
 
     return (
         <div className="flex flex-col gap-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-5">
                 <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
                     Knowledge Base
                 </p>
             </div>
-            <Separator orientation="horizontal" className="my-4" />
+            <Separator orientation="horizontal" className="mb-6" />
             {loading ? (
                 <div className="grid gap-16 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 xl:grid-cols-3">
                     {Array.from({ length: 6 }).map((_, index) => (
