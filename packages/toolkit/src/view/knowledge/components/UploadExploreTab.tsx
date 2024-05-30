@@ -111,8 +111,8 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
     </div> */}
                 </div>
             </div>
-            <div className="w-full mb-6 rounded border border-[#E1E6EF] justify-start items-center gap-2 inline-flex">
-                <Icons.File05 className="w-4 h-4 stroke-semantic-fg-secondary ml-2" />
+            <div className="w-full mb-6 rounded border border-[#E1E6EF] justify-start items-center gap-2 inline-flex px-2 py-1.5">
+                <Icons.File05 className="w-4 h-4 stroke-semantic-fg-secondary" />
                 <div className=" product-body-text-3-regular">filename.pdf</div>
                 <div className="grow shrink basis-0 product-body-text-4-regular text-semantic-fg-disabled">150KB</div>
             </div>
