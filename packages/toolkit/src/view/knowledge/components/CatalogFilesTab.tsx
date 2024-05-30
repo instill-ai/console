@@ -1,4 +1,4 @@
-import { Button, Icons, Separator } from "@instill-ai/design-system";
+import { Button, Icons, Separator, Tag } from "@instill-ai/design-system";
 import * as React from "react";
 
 export const CatalogFilesTab = () => {
@@ -22,7 +22,7 @@ export const CatalogFilesTab = () => {
                         <div className="flex-grow flex flex-col">
                             <div className="p-3 bg-slate-50 border-b border-semantic-bg-line flex items-center gap-3">
                                 <div className="flex items-center gap-1">
-                                    <div className="text-zinc-700 tproduct-body-text-3-medium">File name</div>
+                                    <div className="text-zinc-700 product-body-text-3-medium">File name</div>
                                 </div>
                             </div>
                             <div className="px-3 py-4 border-b border-semantic-bg-line flex items-center">
@@ -40,29 +40,22 @@ export const CatalogFilesTab = () => {
                         </div>
                         <div className="flex flex-col">
                             <div className="p-3 bg-slate-50 border-b border-semantic-bg-line flex items-center gap-3">
-                                <div className="flex items-center gap-1">
-                                    <div className="text-zinc-700 product-body-text-3-medium ">File type</div>
-                                </div>
+                                <Tag size="sm" variant={"lightNeutral"}>txt</Tag>
+
                             </div>
                             <div className="px-3 py-4 border-b border-semantic-bg-line flex items-center">
-                                <div className="px-2 py-0.5 bg-slate-100 rounded-[100px] flex items-center gap-1">
-                                    <div className="text-gray-800/80 product-body-text-3-medium">pdf</div>
-                                </div>
+                                <Tag size="sm" variant={"lightNeutral"}>txt</Tag>
+
                             </div>
                             <div className="px-3 py-4 border-b border-semantic-bg-line flex items-center">
-                                <div className="px-2 py-0.5 bg-slate-100 rounded-[100px] flex items-center gap-1">
-                                    <div className="text-gray-800/80 product-body-text-3-medium">txt</div>
-                                </div>
+                                <Tag size="sm" variant={"lightNeutral"}>txt</Tag>
                             </div>
                             <div className="px-3 py-4 border-b border-semantic-bg-line flex items-center">
-                                <div className="px-2 py-0.5 bg-slate-100 rounded-[100px] flex items-center gap-1">
-                                    <div className="text-gray-800/80 product-body-text-3-medium">jpg</div>
-                                </div>
+                                <Tag size="sm" variant={"lightNeutral"}>txt</Tag>
+
                             </div>
                             <div className="px-3 py-4 border-b border-semantic-bg-line flex items-center">
-                                <div className="px-2 py-0.5 bg-slate-100 rounded-[100px] flex items-center gap-1">
-                                    <div className="text-gray-800/80 product-body-text-3-medium">png</div>
-                                </div>
+                                <Tag size="sm" variant={"lightNeutral"}>txt</Tag>
                             </div>
                         </div>
                         <div className="flex flex-col">
