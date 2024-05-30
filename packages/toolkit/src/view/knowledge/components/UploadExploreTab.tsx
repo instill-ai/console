@@ -1,4 +1,3 @@
-// UploadExploreTab.tsx
 import { Icons, Separator, Tabs, Button, Select, Input, Textarea, Form, Collapsible } from "@instill-ai/design-system";
 import * as React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";

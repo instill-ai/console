@@ -1,4 +1,3 @@
-// KnowledgeBaseCard.tsx
 import { Icons } from "@instill-ai/design-system";
 
 type KnowledgeBaseCardProps = {
