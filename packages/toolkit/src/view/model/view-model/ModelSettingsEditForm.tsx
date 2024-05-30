@@ -139,7 +139,7 @@ export const ModelSettingsEditForm = ({
       source_url: data.source_url,
       documentation_url: data.documentation_url,
       license: data.license,
-      //visibility: data.visibility,
+      visibility: data.visibility,
       hardware:
         data.hardware === "Custom" ? data.hardwareCustom || "" : data.hardware,
       profile_image: data.profile_image,
