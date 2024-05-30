@@ -31,7 +31,7 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-type SortField = "update_time";
+type SortField = "update_time" | "total_runs";
 type SortOrder = "asc" | "desc";
 
 const SortSelectButton = ({
@@ -175,7 +175,16 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
                     }}
                     isSelected={selectedSortField === "update_time"}
                   />
-
+                  <SortSelectButton
+                    label="Total Runs"
+                    icon={
+                      <Icons.Rocket01 className="h-4 w-4 stroke-semantic-fg-disabled" />
+                    }
+                    onClick={() => {
+                      handleSortFieldChange("total_runs");
+                    }}
+                    isSelected={selectedSortField === "total_runs"}
+                  />
                   <Separator orientation="horizontal" className="my-1" />
                   <SortSelectButton
                     label="Ascending"
