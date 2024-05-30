@@ -1,5 +1,3 @@
-// lib/useCreateKnowledgeBase.ts
-
 import { useMutation } from "@tanstack/react-query";
 import { KnowledgeBase } from "./knowledgeBase";
 import { createKnowledgeBaseMutation } from "./knowledgeBaseMutations";

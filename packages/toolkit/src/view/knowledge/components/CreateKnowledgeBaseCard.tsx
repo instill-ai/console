@@ -1,6 +1,3 @@
-// CreateKnowledgeBaseCard.tsx
-'use client';
-
 import { Icons, Separator, DropdownMenu, Button, Dialog, LinkButton } from "@instill-ai/design-system";
 import * as React from "react";
 import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
@@ -10,9 +7,7 @@ import { useCreateKnowledgeBase } from "../../../lib/vdp-sdk/knowledge/useCreate
 import { useDeleteKnowledgeBase } from "../../../lib/vdp-sdk/knowledge/useDeleteKnowledgeBase";
 
 type CreateKnowledgeBaseCardProps = {
-  title: string;
-  description: string;
-  tags?: string[];
+  knowledgeBase: KnowledgeBase;
   onCardClick: () => void;
 };
 
@@ -65,15 +60,12 @@ const Menu = ({ onDelete, onEdit }: MenuProps) => {
 };
 
 export const CreateKnowledgeBaseCard = ({
-  title,
-  description,
-  tags,
+  knowledgeBase,
   onCardClick,
 }: CreateKnowledgeBaseCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
-  const [knowledgeBase, setKnowledgeBase] = React.useState<KnowledgeBase | null>({ id: '123', title: '', description: '', tags: [] });
 
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -85,24 +77,25 @@ export const CreateKnowledgeBaseCard = ({
     setDeleteDialogIsOpen(true);
   };
 
+  const deleteKnowledgeBase = useDeleteKnowledgeBase();
+  const updateKnowledgeBase = useUpdateKnowledgeBase();
+
   const confirmDelete = async () => {
-    if (knowledgeBase) {
-      // await useDeleteKnowledgeBase(knowledgeBase.id);
-      setKnowledgeBase(null);
-      setDeleteDialogIsOpen(false);
-      setShowDeleteMessage(true);
-      setTimeout(() => setShowDeleteMessage(false), 5000);
-    }
+    // await deleteKnowledgeBase.mutateAsync({
+    //   id: knowledgeBase.id,
+    //   accessToken: null,
+    // });
+    setDeleteDialogIsOpen(false);
+    setShowDeleteMessage(true);
+    setTimeout(() => setShowDeleteMessage(false), 5000);
   };
 
   const handleCreateKnowledgeSubmit = async (data: any) => {
-    if (knowledgeBase) {
-      const updatedKnowledgeBase = await useUpdateKnowledgeBase(knowledgeBase.id, data);
-      setKnowledgeBase(updatedKnowledgeBase);
-    } else {
-      const newKnowledgeBase = await useCreateKnowledgeBase(data);
-      setKnowledgeBase(newKnowledgeBase);
-    }
+    await updateKnowledgeBase.mutateAsync({
+      id: knowledgeBase.id,
+      payload: data,
+      accessToken: null,
+    });
     setEditDialogIsOpen(false);
   };
 
@@ -129,10 +122,10 @@ export const CreateKnowledgeBaseCard = ({
       )}
       <div className="flex shadow cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 w-[360px] h-[175px]" onClick={onCardClick}>
         <div className="flex items-center justify-between">
-          <div className="product-headings-heading-4">{title}</div>
+          <div className="product-headings-heading-4">{knowledgeBase.title}</div>
         </div>
         <Separator orientation="horizontal" className="my-[10px]" />
-        <p className="product-body-text-3-regular line-clamp-3 mb-auto">{description}</p>
+        <p className="product-body-text-3-regular line-clamp-3 mb-auto">{knowledgeBase.description}</p>
         <div className="flex justify-end items-end">
           <Menu onDelete={handleDelete} onEdit={handleEdit} />
         </div>
@@ -145,7 +138,7 @@ export const CreateKnowledgeBaseCard = ({
             </div>
             <div className="flex flex-col items-start self-stretch justify-start gap-6">
               <div className="flex flex-col items-center justify-center gap-1">
-                <div className="product-headings-heading-3">Delete {title}</div>
+                <div className="product-headings-heading-3">Delete {knowledgeBase.title}</div>
                 <div className="text-center product-body-text-2-regular">Are you sure you want to delete this knowledge base?</div>
               </div>
               <div className="flex w-full gap-2">
@@ -163,7 +156,7 @@ export const CreateKnowledgeBaseCard = ({
       <CreateKnowledgeDialog
         isOpen={editDialogIsOpen}
         onClose={() => setEditDialogIsOpen(false)}
-        onSubmit={(data) => handleCreateKnowledgeSubmit(data)}
+        onSubmit={handleCreateKnowledgeSubmit}
         title="Edit knowledge base"
       />
     </React.Fragment>
