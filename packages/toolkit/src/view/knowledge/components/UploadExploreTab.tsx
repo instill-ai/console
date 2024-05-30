@@ -89,7 +89,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
             </div>
             <Separator orientation="horizontal" className="my-4" />
             <div className="w-full h-[150px] relative bg-semantic-accent-bg rounded-md border-2 border-dashed border-semantic-secondary-bg flex flex-col items-center justify-center product-body-text-4-regular">
-                <Icons.Upload01 className="w-8 h-8" />
+                <Icons.Upload01 className="w-24 h-24 stroke-semantic-fg-secondary" />
                 <div className="text-center w-full">
                     <span className="">
                         Drag-and-drop file, or{" "}
@@ -112,7 +112,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                 </div>
             </div>
             <div className="w-full px-2 py-1.5  rounded border border-[#E1E6EF] justify-start items-center gap-2 inline-flex">
-                <div className="w-5 h-5 relative" />
+                <Icons.File05 className="w-4 h-4 stroke-semantic-fg-secondary" />
                 <div className=" product-body-text-3-regular">filename.pdf</div>
                 <div className="grow shrink basis-0 product-body-text-4-regular text-semantic-fg-disabled">150KB</div>
                 <div className="w-4 h-4 relative" />
@@ -122,7 +122,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                     Pipeline in use
                 </div>
                 <div className="justify-start items-center gap-1 inline-flex">
-                    <Icons.Pipeline className="w-4 h-4" />
+                    <Icons.Pipeline className="w-4 h-4 stroke-semantic-accent-hover" />
                     <button
                         type="button"
                         className="hover:!underline text-semantic-accent-hover product-body-text-3-semibold"
