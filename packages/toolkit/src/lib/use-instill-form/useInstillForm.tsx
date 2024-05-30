@@ -36,6 +36,7 @@ export type UseInstillFormOptions = {
   | "supportInstillCredit"
   | "updateSupportInstillCredit"
   | "updateIsUsingInstillCredit"
+  | "enableNodeHandle"
 >;
 
 export function useInstillForm(
@@ -65,6 +66,7 @@ export function useInstillForm(
     options?.updateForceOpenCollapsibleFormGroups;
   const updateIsUsingInstillCredit = options?.updateIsUsingInstillCredit;
   const looseValidation = options?.looseValidation ?? false;
+  const enableNodeHandle = options?.enableNodeHandle ?? false;
 
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
   const [ValidatorSchema, setValidatorSchema] = React.useState<z.ZodTypeAny>(
@@ -168,6 +170,7 @@ export function useInstillForm(
         forceOpenCollapsibleFormGroups,
         updateForceOpenCollapsibleFormGroups,
         updateIsUsingInstillCredit,
+        enableNodeHandle,
       },
     );
 
@@ -192,6 +195,7 @@ export function useInstillForm(
     forceOpenCollapsibleFormGroups,
     updateForceOpenCollapsibleFormGroups,
     updateIsUsingInstillCredit,
+    enableNodeHandle,
   ]);
 
   return {

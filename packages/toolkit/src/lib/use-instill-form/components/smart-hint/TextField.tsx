@@ -19,6 +19,8 @@ import { FieldDescriptionTooltip } from "../common";
 import { Secret } from "../../../vdp-sdk";
 import { InstillCredit } from "../../../../constant";
 import { isTriggerNode } from "../../../../view";
+import { OnFieldHandle } from "../../../../view/pipeline-builder/components/OnFieldHandle";
+import { Position } from "reactflow";
 
 export const TextField = ({
   form,
@@ -38,6 +40,7 @@ export const TextField = ({
   instillCredential,
   supportInstillCredit,
   updateIsUsingInstillCredit,
+  enableNodeHandle,
 }: {
   instillAcceptFormats: string[];
   shortDescription?: string;
@@ -120,7 +123,7 @@ export const TextField = ({
         }
 
         return node;
-      })
+      }),
     );
   }
 
@@ -136,164 +139,184 @@ export const TextField = ({
   }, [filteredHints, highlightedHintIndex]);
 
   return isHidden ? null : (
-    <Form.Field
-      key={path}
-      control={form.control}
-      name={path}
-      render={({ field }) => {
-        return (
-          <Form.Item className="group w-full">
-            {title || shortDescription ? (
-              <div className="flex flex-row gap-x-2">
-                <Form.Label
-                  className={
-                    size === "sm" ? "!product-body-text-4-semibold" : ""
-                  }
-                >
-                  {isRequired ? `${title} *` : title}
-                </Form.Label>
+    <div className="relative">
+      <Form.Field
+        key={path}
+        control={form.control}
+        name={path}
+        render={({ field }) => {
+          return (
+            <Form.Item className="group w-full">
+              {title || shortDescription ? (
+                <div className="flex flex-row gap-x-2">
+                  <Form.Label
+                    className={
+                      size === "sm" ? "!product-body-text-4-semibold" : ""
+                    }
+                  >
+                    {isRequired ? `${title} *` : title}
+                  </Form.Label>
 
-                <FieldDescriptionTooltip description={description} />
-              </div>
-            ) : null}
-            <Popover.Root
-              open={smartHintsPopoverIsOpen}
-              onOpenChange={(open) => {
-                initSmartHintState();
-                setSmartHintsPopoverIsOpen(open);
-              }}
-            >
-              <Popover.Trigger
-                onClick={(e) => {
-                  e.preventDefault();
+                  <FieldDescriptionTooltip description={description} />
+                </div>
+              ) : null}
+              <Popover.Root
+                open={smartHintsPopoverIsOpen}
+                onOpenChange={(open) => {
+                  initSmartHintState();
+                  setSmartHintsPopoverIsOpen(open);
                 }}
-                asChild
               >
-                <Form.Control>
-                  <Input.Root>
-                    <Input.Core
-                      {...field}
-                      aria-label={title ?? undefined}
-                      ref={(el) => {
-                        inputRef.current = el;
-                        field.ref(el);
-                      }}
-                      type="text"
-                      value={
-                        typeof field.value === "object" ? "" : field.value ?? ""
-                      }
-                      className={cn(
-                        "nodrag nowheel placeholder:text-semantic-fg-disabled",
-                        size === "sm" ? "!product-body-text-4-regular" : "",
-                      )}
-                      placeholder={placeholder}
-                      autoComplete="off"
-                      onChange={(e) => {
-                        onInputChange({
-                          event: e,
-                          field,
-                          form,
-                          path,
-                          setEnableSmartHints,
-                          setCurrentCursorPos,
-                          setSmartHintEnabledPos,
-                          setSmartHintsPopoverIsOpen,
-                          updateIsUsingInstillCredit,
-                          supportInstillCredit,
-                        });
-                      }}
-                      onFocus={() => {
-                        setSmartHintsPopoverIsOpen(true);
-                      }}
-                      onClick={() => {
-                        initSmartHintState();
-                      }}
-                      disabled={disabled}
-                      onKeyDown={(e) => {
-                        onInputKeydown({
-                          componentType: "TextField",
-                          event: e,
-                          form,
-                          field,
-                          path,
-                          setEnableSmartHints,
-                          enableSmartHints,
-                          initSmartHintState,
-                          filteredHints,
-                          highlightedHintIndex,
-                          setHighlightedHintIndex,
-                          inputRef,
-                          smartHintsScrollAreaViewportRef,
-                          smartHintEnabledPos,
-                        });
-                      }}
-                    />
-                  </Input.Root>
-                </Form.Control>
-              </Popover.Trigger>
-              <Popover.Content
-                // Popover will auto-focus the content, we need to disable it
-                onOpenAutoFocus={(e) => {
-                  e.preventDefault();
-                }}
+                <Popover.Trigger
+                  onClick={(e) => {
+                    e.preventDefault();
+                  }}
+                  asChild
+                >
+                  <Form.Control>
+                    <Input.Root>
+                      <Input.Core
+                        {...field}
+                        aria-label={title ?? undefined}
+                        ref={(el) => {
+                          inputRef.current = el;
+                          field.ref(el);
+                        }}
+                        type="text"
+                        value={
+                          typeof field.value === "object"
+                            ? ""
+                            : field.value ?? ""
+                        }
+                        className={cn(
+                          "nodrag nowheel placeholder:text-semantic-fg-disabled",
+                          size === "sm" ? "!product-body-text-4-regular" : "",
+                        )}
+                        placeholder={placeholder}
+                        autoComplete="off"
+                        onChange={(e) => {
+                          onInputChange({
+                            event: e,
+                            field,
+                            form,
+                            path,
+                            setEnableSmartHints,
+                            setCurrentCursorPos,
+                            setSmartHintEnabledPos,
+                            setSmartHintsPopoverIsOpen,
+                            updateIsUsingInstillCredit,
+                            supportInstillCredit,
+                          });
+                        }}
+                        onFocus={() => {
+                          setSmartHintsPopoverIsOpen(true);
+                        }}
+                        onClick={() => {
+                          initSmartHintState();
+                        }}
+                        disabled={disabled}
+                        onKeyDown={(e) => {
+                          onInputKeydown({
+                            componentType: "TextField",
+                            event: e,
+                            form,
+                            field,
+                            path,
+                            setEnableSmartHints,
+                            enableSmartHints,
+                            initSmartHintState,
+                            filteredHints,
+                            highlightedHintIndex,
+                            setHighlightedHintIndex,
+                            inputRef,
+                            smartHintsScrollAreaViewportRef,
+                            smartHintEnabledPos,
+                          });
+                        }}
+                      />
+                    </Input.Root>
+                  </Form.Control>
+                </Popover.Trigger>
+                <Popover.Content
+                  // Popover will auto-focus the content, we need to disable it
+                  onOpenAutoFocus={(e) => {
+                    e.preventDefault();
+                  }}
+                  className={cn(
+                    "relative !w-[var(--radix-popover-trigger-width)] !rounded !p-0",
+                  )}
+                  align="end"
+                >
+                  {supportReference || supportTemplate ? (
+                    <React.Fragment>
+                      <SmartHintInfoCard
+                        className="absolute right-0 top-0 w-[var(--radix-popover-trigger-width)] translate-x-[calc(var(--radix-popover-trigger-width)+10px)] rounded border border-semantic-bg-line bg-semantic-bg-primary shadow-md"
+                        error={error}
+                        smartHintWarning={smartHintWarning}
+                        highlightedHint={highlightedHint}
+                        enableSmartHints={enableSmartHints}
+                      />
+                      <SmartHintList
+                        field={field}
+                        form={form}
+                        smartHintsScrollAreaViewportRef={
+                          smartHintsScrollAreaViewportRef
+                        }
+                        enableSmartHints={enableSmartHints}
+                        setEnableSmartHints={setEnableSmartHints}
+                        currentCursorPos={currentCursorPos}
+                        filteredHints={filteredHints}
+                        path={path}
+                        highlightedHintIndex={highlightedHintIndex}
+                        setHighlightedHintIndex={setHighlightedHintIndex}
+                        inputRef={inputRef}
+                        smartHintEnabledPos={smartHintEnabledPos}
+                        instillAcceptFormats={instillAcceptFormats}
+                        instillCredential={instillCredential}
+                        supportInstillCredit={supportInstillCredit}
+                        onCreateVariable={onCreateVariable}
+                      />
+                    </React.Fragment>
+                  ) : null}
+                </Popover.Content>
+              </Popover.Root>
+              <Form.Description
                 className={cn(
-                  "relative !w-[var(--radix-popover-trigger-width)] !rounded !p-0",
+                  "nodrag nopan cursor-text select-text",
+                  size === "sm" ? "!product-body-text-4-regular" : "",
                 )}
-                align="end"
-              >
-                {supportReference || supportTemplate ? (
-                  <React.Fragment>
-                    <SmartHintInfoCard
-                      className="absolute right-0 top-0 w-[var(--radix-popover-trigger-width)] translate-x-[calc(var(--radix-popover-trigger-width)+10px)] rounded border border-semantic-bg-line bg-semantic-bg-primary shadow-md"
-                      error={error}
-                      smartHintWarning={smartHintWarning}
-                      highlightedHint={highlightedHint}
-                      enableSmartHints={enableSmartHints}
-                    />
-                    <SmartHintList
-                      field={field}
-                      form={form}
-                      smartHintsScrollAreaViewportRef={
-                        smartHintsScrollAreaViewportRef
-                      }
-                      enableSmartHints={enableSmartHints}
-                      setEnableSmartHints={setEnableSmartHints}
-                      currentCursorPos={currentCursorPos}
-                      filteredHints={filteredHints}
-                      path={path}
-                      highlightedHintIndex={highlightedHintIndex}
-                      setHighlightedHintIndex={setHighlightedHintIndex}
-                      inputRef={inputRef}
-                      smartHintEnabledPos={smartHintEnabledPos}
-                      instillAcceptFormats={instillAcceptFormats}
-                      instillCredential={instillCredential}
-                      supportInstillCredit={supportInstillCredit}
-                      onCreateVariable={onCreateVariable}
-                    />
-                  </React.Fragment>
-                ) : null}
-              </Popover.Content>
-            </Popover.Root>
-            <Form.Description
-              className={cn(
-                "nodrag nopan cursor-text select-text",
-                size === "sm" ? "!product-body-text-4-regular" : "",
-              )}
-              text={
-                supportInstillCredit && instillCredential
-                  ? `${title} supports Instill Credit. You can use Instill Credit by input ` +
-                    "${" +
-                    `secret.${InstillCredit.key}` +
-                    "}. You can still bring your own key by input ${secret.your_secret}"
-                  : shortDescription ?? null
-              }
-            />
-            <Form.Message
-              className={size === "sm" ? "!product-body-text-4-medium" : ""}
-            />
-          </Form.Item>
-        );
-      }}
-    />
+                text={
+                  supportInstillCredit && instillCredential
+                    ? `${title} supports Instill Credit. You can use Instill Credit by input ` +
+                      "${" +
+                      `secrets.${InstillCredit.key}` +
+                      "}. You can still bring your own key by input ${secrets.your_secret}"
+                    : shortDescription ?? null
+                }
+              />
+              <Form.Message
+                className={size === "sm" ? "!product-body-text-4-medium" : ""}
+              />
+            </Form.Item>
+          );
+        }}
+      />
+      {enableNodeHandle ? (
+        <React.Fragment>
+          <OnFieldHandle
+            id={path}
+            type="target"
+            position={Position.Left}
+            className="absolute left-0 top-1/2 !-translate-x-[calc(10px+100%)] !-translate-y-1/2"
+          />
+          <OnFieldHandle
+            id={path}
+            type="source"
+            position={Position.Right}
+            className="absolute right-0 top-1/2 !-translate-y-1/2 !translate-x-[calc(100%+10px)]"
+          />
+        </React.Fragment>
+      ) : null}
+    </div>
   );
 };

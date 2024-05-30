@@ -107,6 +107,8 @@ export function usePipelineBuilderGraph() {
         metadata: pipeline.data.metadata,
       });
 
+      console.log("dd", nodes);
+
       const edges = composeEdgesFromNodes(nodes);
 
       updateNodes(() => nodes);

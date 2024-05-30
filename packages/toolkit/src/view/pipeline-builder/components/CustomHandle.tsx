@@ -50,6 +50,7 @@ export const CustomHandle = (props: CustomHandleProps) => {
     >
       <Handle
         {...passThrough}
+        id={id}
         className={cn(
           "!static !flex !h-4 !w-4 !border-[3px] !bg-semantic-bg-primary",
           isSelected ? "!border-semantic-accent-default" : "!border-[#94A0B8]",

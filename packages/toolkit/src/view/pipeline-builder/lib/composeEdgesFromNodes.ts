@@ -242,13 +242,39 @@ function composeEdgeForReference({
           edge.target === reference.nodeID,
       ) === undefined;
 
-    if (referenceIsAvailable && hasNoEdgeForThisReference && reference.nodeID) {
-      newEdges.push({
-        id: uuidv4(),
-        source: reference.referenceValue.withoutCurlyBraces.split(".")[0],
-        target: reference.nodeID,
-        type: "customEdge",
-      });
+    if (referenceIsAvailable && reference.nodeID) {
+      if (hasNoEdgeForThisReference) {
+        newEdges.push({
+          id: uuidv4(),
+          source: reference.referenceValue.withoutCurlyBraces.split(".")[0],
+          sourceHandle: "main",
+          target: reference.nodeID,
+          targetHandle: "main",
+          type: "customMainEdge",
+        });
+      }
+
+      const referenceValueArray =
+        reference.referenceValue.withoutCurlyBraces.split(".");
+
+      // The reference is pointed to the output
+      if (reference.referenceValue.withoutCurlyBraces.includes("output")) {
+        newEdges.push({
+          id: uuidv4(),
+          source: referenceValueArray[0],
+          sourceHandle: referenceValueArray.splice(1).join("."),
+          target: reference.nodeID,
+          type: "customEdge",
+        });
+      } else {
+        newEdges.push({
+          id: uuidv4(),
+          source: referenceValueArray[0],
+          sourceHandle: referenceValueArray.splice(1).join("."),
+          target: reference.nodeID,
+          type: "customEdge",
+        });
+      }
     }
   }
 

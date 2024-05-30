@@ -23,6 +23,7 @@ const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
   updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
+  rightPanelIsOpen: store.rightPanelIsOpen,
 });
 
 export function useUpdaterOnNode({
@@ -44,6 +45,7 @@ export function useUpdaterOnNode({
     selectedConnectorNodeId,
     updateSelectedConnectorNodeId,
     pipelineIsReadOnly,
+    rightPanelIsOpen,
   } = useInstillStore(useShallow(selector));
 
   const { watch } = form;
@@ -91,6 +93,7 @@ export function useUpdaterOnNode({
 
   React.useEffect(() => {
     const sub = watch((values) => {
+      console.log("debounceUpdater", values);
       if (pipelineIsReadOnly) {
         return;
       }
@@ -106,7 +109,7 @@ export function useUpdaterOnNode({
 
       // When the right panel is open we only update the configuration
       // on right-panel updater
-      if (selectedConnectorNodeId) {
+      if (selectedConnectorNodeId && rightPanelIsOpen) {
         return;
       }
 
@@ -139,5 +142,6 @@ export function useUpdaterOnNode({
     debounceUpdater,
     form,
     nodeID,
+    rightPanelIsOpen,
   ]);
 }

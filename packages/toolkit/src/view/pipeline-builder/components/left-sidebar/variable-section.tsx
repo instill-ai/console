@@ -144,6 +144,34 @@ export const VariableSection = () => {
         [formData.key]: field,
       }));
 
+      const newNodes = nodes.map((node) => {
+        if (isTriggerNode(node) && field) {
+          if (currentEditingFieldKey) {
+            delete node.data.fields[currentEditingFieldKey];
+          }
+
+          node.data = {
+            ...node.data,
+            fields: {
+              ...node.data.fields,
+              [formData.key]: field,
+            },
+          };
+        }
+        return node;
+      });
+      const newEdges = composeEdgesFromNodes(newNodes);
+      updateNodes(() => newNodes);
+      updateEdges(() => newEdges);
+      setIsCreating(false);
+      setIsEditing(false);
+      setSelectedType(null);
+      setCurrentEditingFieldKey(null);
+      updatePipelineRecipeIsDirty(() => true);
+      form.reset({
+        title: "",
+        description: "",
+      });
       return;
     }
 
@@ -166,6 +194,9 @@ export const VariableSection = () => {
     }
 
     if (!triggerNodeFields[selectedType]) {
+      setIsCreating(false);
+      setIsEditing(false);
+      setSelectedType(null);
       return;
     }
 

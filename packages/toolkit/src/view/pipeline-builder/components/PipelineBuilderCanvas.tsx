@@ -13,6 +13,7 @@ import ReactFlow, {
 import {
   InstillStore,
   Nullable,
+  dot,
   useInstillStore,
   useShallow,
 } from "../../../lib";
@@ -27,6 +28,7 @@ import { CustomEdge } from "./CustomEdge";
 import { isResponseNode, isVariableNode } from "../lib";
 import { canvasPanOnDrag } from "./canvasPanOnDrag";
 import { Icons } from "@instill-ai/design-system";
+import { CustomMainEdge } from "./CustomMainEdge";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -54,6 +56,7 @@ const nodeTypes = {
 
 const edgeTypes = {
   customEdge: CustomEdge,
+  customMainEdge: CustomMainEdge,
 };
 
 export const PipelineBuilderCanvas = ({
@@ -89,6 +92,10 @@ export const PipelineBuilderCanvas = ({
   const [miniMapIsOpen, setMiniMapIsOpen] = React.useState(
     disabledMinimap ?? false,
   );
+
+  React.useEffect(() => {
+    console.log(edges);
+  }, [edges]);
 
   return (
     <ReactFlow
@@ -176,6 +183,48 @@ export const PipelineBuilderCanvas = ({
       elevateNodesOnSelect={true}
       elevateEdgesOnSelect={false}
       selectionOnDrag={true}
+      onConnect={(connection) => {
+        const newNodes = nodes.map((node) => {
+          if (
+            node.id === connection.target &&
+            connection.targetHandle &&
+            connection.sourceHandle
+          ) {
+            if (isGeneralNode(node)) {
+              const targetFieldValue = dot.getter(
+                node.data,
+                connection.targetHandle,
+              );
+
+              dot.setter(
+                node.data,
+                connection.targetHandle,
+                targetFieldValue
+                  ? targetFieldValue +
+                      "${" +
+                      `${connection.source}.${connection.sourceHandle}` +
+                      "}"
+                  : "${" +
+                      `${connection.source}.${connection.sourceHandle}` +
+                      "}",
+              );
+
+              return {
+                ...node,
+                data: {
+                  ...node.data,
+                },
+              };
+            }
+          }
+
+          return node;
+        });
+        const newEdges = composeEdgesFromNodes(newNodes);
+        updateNodes(() => newNodes);
+        updateEdges(() => newEdges);
+        updatePipelineRecipeIsDirty(() => true);
+      }}
     >
       {disabledControls ? null : (
         <Controls id={pipelineName ?? undefined} showInteractive={false}>

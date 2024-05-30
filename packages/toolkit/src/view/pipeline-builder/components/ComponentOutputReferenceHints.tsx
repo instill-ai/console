@@ -1,6 +1,6 @@
 "use client";
 
-import { Icons, ScrollArea } from "@instill-ai/design-system";
+import { Icons } from "@instill-ai/design-system";
 import { PipelineComponent, useOutputReferenceHintFields } from "../../../lib";
 
 export const ComponentOutputReferenceHints = ({
@@ -20,20 +20,15 @@ export const ComponentOutputReferenceHints = ({
         Output
       </p>
 
-      <ScrollArea.Root
-        className="nodrag nowheel h-full"
-        viewPortClassName="max-h-[400px]"
-      >
-        <div className="flex w-[calc(var(--pipeline-builder-node-available-width)-24px)] flex-col rounded bg-semantic-bg-primary p-4">
-          <div className="mb-2 flex flex-row items-center gap-x-1 px-2 py-px">
-            <Icons.ReferenceIconCheck className="h-[9px] w-[18px] stroke-semantic-fg-disabled" />
-            <p className="font-sans text-[11px] font-medium leading-[14.5px] text-semantic-fg-disabled">
-              references
-            </p>
-          </div>
-          <div className="flex flex-col gap-y-4">{fields}</div>
+      <div className="flex w-[calc(var(--pipeline-builder-node-available-width)-24px)] flex-col rounded bg-semantic-bg-primary p-4">
+        <div className="mb-2 flex flex-row items-center gap-x-1 px-2 py-px">
+          <Icons.ReferenceIconCheck className="h-[9px] w-[18px] stroke-semantic-fg-disabled" />
+          <p className="font-sans text-[11px] font-medium leading-[14.5px] text-semantic-fg-disabled">
+            references
+          </p>
         </div>
-      </ScrollArea.Root>
+        <div className="flex flex-col gap-y-4">{fields}</div>
+      </div>
     </div>
   );
 };

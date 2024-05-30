@@ -1,7 +1,7 @@
 "use client";
 
 import cn from "clsx";
-import { EdgeProps, getBezierPath, useStore } from "reactflow";
+import { EdgeProps, getSmoothStepPath } from "reactflow";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import React from "react";
 
@@ -9,7 +9,7 @@ const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,
 });
 
-export const CustomEdge = ({
+export const CustomMainEdge = ({
   id,
   sourceX,
   sourceY,
@@ -22,7 +22,7 @@ export const CustomEdge = ({
   source,
   target,
 }: EdgeProps) => {
-  const [edgePath] = getBezierPath({
+  const [edgePath] = getSmoothStepPath({
     sourceX,
     sourceY,
     sourcePosition,
@@ -44,17 +44,15 @@ export const CustomEdge = ({
     return false;
   }, [selectedConnectorNodeId, source, target]);
 
-  const zoomLevel = useStore((s) => s.transform[2]);
-
-  return zoomLevel < 0.5 ? null : (
+  return (
     <path
       id={id}
       style={style}
       className={cn(
         "fill-none",
         isSelected
-          ? "stroke-semantic-accent-default stroke-[3px]"
-          : "stroke-[#CBD2E1] stroke-[2px]",
+          ? "stroke-semantic-accent-default stroke-[6px]"
+          : "stroke-semantic-accent-default stroke-[6px]"
       )}
       d={edgePath}
       markerEnd={markerEnd}

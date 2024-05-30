@@ -32,6 +32,7 @@ export type PickRegularFieldsFromInstillFormTreeOptions = {
   supportInstillCredit?: boolean;
   updateSupportInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
   updateIsUsingInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
+  enableNodeHandle?: boolean;
 };
 
 export function pickRegularFieldsFromInstillFormTree(
@@ -65,6 +66,7 @@ export function pickRegularFieldsFromInstillFormTree(
   const updateForceOpenCollapsibleFormGroups =
     options?.updateForceOpenCollapsibleFormGroups;
   const updateIsUsingInstillCredit = options?.updateIsUsingInstillCredit;
+  const enableNodeHandle = options?.enableNodeHandle ?? false;
 
   let title: Nullable<string> = null;
 
@@ -381,6 +383,7 @@ export function pickRegularFieldsFromInstillFormTree(
           instillCredential={tree.instillCredential}
           supportInstillCredit={supportInstillCredit}
           updateIsUsingInstillCredit={updateIsUsingInstillCredit}
+          enableNodeHandle={enableNodeHandle}
         />
       );
     }
@@ -422,6 +425,7 @@ export function pickRegularFieldsFromInstillFormTree(
         instillCredential={tree.instillCredential}
         supportInstillCredit={supportInstillCredit}
         updateIsUsingInstillCredit={updateIsUsingInstillCredit}
+        enableNodeHandle={enableNodeHandle}
       />
     );
   }

@@ -97,28 +97,12 @@ export const NodeWrapper = ({
   }, [edges, nodeID, reactflowEdges]);
 
   return (
-    <div
-      className="relative"
-      onClick={() => {
-        updateSelectedConnectorNodeId(() => nodeID);
-
-        // We reorder the edges so that the selected edge is on top of the unselected edges
-        updateEdges((edges) => {
-          const selectedEdges: Edge[] = [];
-          const unSelectedEdges: Edge[] = [];
-
-          edges.forEach((edge) => {
-            if (edge.source === nodeID || edge.target === nodeID) {
-              selectedEdges.push(edge);
-            } else {
-              unSelectedEdges.push(edge);
-            }
-          });
-
-          return [...unSelectedEdges, ...selectedEdges];
-        });
-      }}
-    >
+    <React.Fragment>
+      <style jsx>{`
+        .react-flow__handle-connecting {
+          background-color: var(--semantic-error-default) !important;
+        }
+      `}</style>
       <div
         className={cn(
           "absolute left-0 top-0 w-[var(--pipeline-builder-node-available-width)] rounded border border-semantic-warning-default bg-semantic-warning-bg p-2",
@@ -159,32 +143,40 @@ export const NodeWrapper = ({
       {errorsOfNode ? (
         <div
           className={cn(
-            "absolute left-0 top-0 w-[var(--pipeline-builder-node-available-width)] rounded border border-semantic-error-default bg-semantic-error-bg p-2",
+            "absolute left-0 top-0 w-[var(--pipeline-builder-node-available-width)] rounded border border-semantic-warning-default bg-semantic-warning-bg p-2",
+            noteIsOpen ? "" : "hidden",
             "-translate-y-[calc(100%+16px)]"
           )}
         >
-          {errorsOfNode.map((error) => (
-            <button
-              type="button"
-              className="flex flex-row gap-x-2 hover:underline"
-              key={error.location}
-              onClick={() => {
-                updateRightPanelIsOpen(() => true);
-                updateSelectedConnectorNodeId(() => nodeID);
+          <Textarea
+            className="nowheel !resize-none !border-none !bg-transparent !text-semantic-fg-disabled !outline-none !product-body-text-4-medium"
+            value={noteValue ?? ""}
+            onChange={(e) => {
+              if (timer.current) {
+                clearTimeout(timer.current);
+              }
 
-                updateFocusErrorFieldPathOnRightPanel(() =>
-                  extractComponentFormPathFromErrorLocation(error.location)
+              timer.current = window.setTimeout(() => {
+                updateNodes((nodes) =>
+                  nodes.map((node) => {
+                    if (node.id === nodeID) {
+                      node.data = {
+                        ...node.data,
+                        note: e.target.value,
+                      };
+
+                      return node;
+                    }
+
+                    return node;
+                  })
                 );
-              }}
-            >
-              <p className="text-semantic-error-default product-body-text-4-medium">
-                {error.location.split(".")[3]}:
-              </p>
-              <p className="text-semantic-error-default product-body-text-4-medium">
-                {error.error}
-              </p>
-            </button>
-          ))}
+                updatePipelineRecipeIsDirty(() => true);
+              }, 1000);
+
+              setNoteValue(e.target.value);
+            }}
+          />
         </div>
       ) : null}
       <NodeBottomBarProvider>
@@ -202,29 +194,74 @@ export const NodeWrapper = ({
         </div>
         {renderBottomBarInformation ? (
           <div
-            id={`${nodeID}-node-bottom-information-container`}
-            className="nodrag nowheel absolute bottom-0 left-0 w-[var(--pipeline-builder-node-available-width)] translate-y-[calc(100%+16px)] rounded-sm bg-semantic-bg-base-bg shadow-md"
+            className={cn(
+              "absolute left-0 top-0 w-[var(--pipeline-builder-node-available-width)] rounded border border-semantic-error-default bg-semantic-error-bg p-2",
+              "-translate-y-[calc(100%+16px)]"
+            )}
           >
-            {renderBottomBarInformation()}
+            {errorsOfNode.map((error) => (
+              <button
+                type="button"
+                className="flex flex-row gap-x-2 hover:underline"
+                key={error.location}
+                onClick={() => {
+                  updateRightPanelIsOpen(() => true);
+                  updateSelectedConnectorNodeId(() => nodeID);
+
+                  updateFocusErrorFieldPathOnRightPanel(() =>
+                    extractComponentFormPathFromErrorLocation(error.location)
+                  );
+                }}
+              >
+                <p className="text-semantic-error-default product-body-text-4-medium">
+                  {error.location.split(".")[3]}:
+                </p>
+                <p className="text-semantic-error-default product-body-text-4-medium">
+                  {error.error}
+                </p>
+              </button>
+            ))}
           </div>
         ) : null}
-        {disabledTargetHandler ? null : (
-          <CustomHandle
-            className={hasTargetEdges ? "" : "!opacity-0"}
-            type="target"
-            position={Position.Left}
-            id={nodeID}
-          />
-        )}
-        {disabledSourceHandler ? null : (
-          <CustomHandle
-            className={hasSourceEdges ? "" : "!opacity-0"}
-            type="source"
-            position={Position.Right}
-            id={nodeID}
-          />
-        )}
-      </NodeBottomBarProvider>
-    </div>
+        <NodeBottomBarProvider>
+          <div
+            className={cn(
+              "flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg shadow-md hover:shadow-lg",
+              {
+                "outline outline-2 outline-offset-1 outline-semantic-accent-default":
+                  nodeID === selectedConnectorNodeId,
+              }
+            )}
+          >
+            <div className="flex flex-col px-3 py-2.5">{children}</div>
+            {renderNodeBottomBar ? renderNodeBottomBar() : null}
+          </div>
+          {renderBottomBarInformation ? (
+            <div
+              id={`${nodeID}-node-bottom-information-container`}
+              className="nodrag nowheel absolute bottom-0 left-0 w-[var(--pipeline-builder-node-available-width)] translate-y-[calc(100%+16px)] rounded-sm bg-semantic-bg-base-bg shadow-md"
+            >
+              {renderBottomBarInformation()}
+            </div>
+          ) : null}
+          {disabledTargetHandler ? null : (
+            <CustomHandle
+              className={hasTargetEdges ? "" : "!opacity-0"}
+              type="target"
+              position={Position.Left}
+              id="main"
+            />
+          )}
+          {disabledSourceHandler ? null : (
+            <CustomHandle
+              className={hasSourceEdges ? "" : "!opacity-0"}
+              type="source"
+              position={Position.Right}
+              id="main"
+            />
+          )}
+        </NodeBottomBarProvider>
+      </div>
+    </React.Fragment>
   );
 };
