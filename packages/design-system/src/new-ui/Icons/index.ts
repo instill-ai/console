@@ -35,6 +35,7 @@ import { Chip02 } from "./Chip02";
 import { Cube01 } from "./Cube01";
 import { CubeOutline } from "./CubeOutline";
 import { Database01 } from "./Database01";
+import { Download02 } from "./Download02";
 import { DotsHorizontal } from "./DotsHorizontal";
 import { DotsVertical } from "./DotsVertical";
 import { DownloadCloud01 } from "./DownloadCloud01";
@@ -43,6 +44,8 @@ import { Edit05 } from "./Edit05";
 import { File02 } from "./File02";
 import { File04 } from "./File04";
 import { File05 } from "./File05";
+import { FastBackward } from "./FastBackward";
+import { FastForward } from "./FastForward";
 import { FileMinus01 } from "./FileMinus01";
 import { FilePlus01 } from "./FilePlus01";
 import { FilePlus02 } from "./FilePlus02";
@@ -106,6 +109,8 @@ import { User02 } from "./User02";
 import { Update } from "./Update";
 import { UserPlus01 } from "./UserPlus01";
 import { Video } from "./Video";
+import { VolumeMax } from "./VolumeMax";
+import { VolumeX } from "./VolumeX";
 import { VideoRecorder } from "./VideoRecorder";
 import { Visa } from "./Visa";
 import { VisualQuestionAnswering } from "./VisualQuestionAnswering";
@@ -149,6 +154,7 @@ export const Icons = {
   Cube01,
   CubeOutline,
   Database01,
+  Download02,
   DotsHorizontal,
   DotsVertical,
   DownloadCloud01,
@@ -161,6 +167,8 @@ export const Icons = {
   FilePlus01,
   FilePlus02,
   FilterLines,
+  FastBackward,
+  FastForward,
   Gear01,
   Globe01,
   HelpCircle,
@@ -220,6 +228,8 @@ export const Icons = {
   UserPlus01,
   Update,
   Video,
+  VolumeMax,
+  VolumeX,
   VideoRecorder,
   Visa,
   VisualQuestionAnswering,

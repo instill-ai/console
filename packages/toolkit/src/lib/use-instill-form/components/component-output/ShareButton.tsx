@@ -2,14 +2,14 @@ import * as React from "react";
 import cn from "clsx";
 import { Icons } from "@instill-ai/design-system";
 
-export const CopyButton = ({
+export const ShareButton = ({
   className,
   text,
 }: {
   text: string;
   className?: string;
 }) => {
-  const [copied, setCopied] = React.useState(false);
+  const [, setCopied] = React.useState(false);
 
   return (
     <button
@@ -27,13 +27,9 @@ export const CopyButton = ({
       }}
     >
       <p className="font-sans text-[10px] font-semibold text-semantic-fg-disabled">
-        Copy
+        Share
       </p>
-      {copied ? (
-        <Icons.Check className="h-3 w-3 stroke-semantic-fg-disabled" />
-      ) : (
-        <Icons.Copy06 className="h-3 w-3 stroke-semantic-fg-disabled" />
-      )}
+      <Icons.Share07 className="h-3 w-3 stroke-semantic-fg-disabled" />
     </button>
   );
 };
