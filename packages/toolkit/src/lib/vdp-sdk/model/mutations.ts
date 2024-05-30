@@ -40,7 +40,7 @@ export type UpdateUserModelPayload = {
   source_url?: string;
   documentation_url?: string;
   license?: string;
-  //visibility: Visibility;
+  visibility?: Visibility;
   hardware?: string;
   configuration?: Record<string, string>;
   profile_image?: string;
