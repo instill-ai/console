@@ -1,4 +1,3 @@
-// CreateKnowledgeDialog.tsx
 import {
     Button,
     Dialog,
@@ -19,7 +18,7 @@ const CreateKnowledgeFormSchema = z.object({
 });
 
 type CreateKnowledgeFormProps = {
-    onSubmit: (data: z.infer<typeof CreateKnowledgeFormSchema>, accessToken: string | null) => void;
+    onSubmit: (data: z.infer<typeof CreateKnowledgeFormSchema>) => void;
 };
 
 export const CreateKnowledgeDialog = ({
