@@ -79,7 +79,7 @@ export const ModelsTable = (props: ModelsTableProps) => {
               className="rounded-full px-2 py-0.5"
               state={
                 modelsWatchState.isSuccess
-                  ? modelsWatchState.data[name].state
+                  ? modelsWatchState.data[name]?.state
                   : "STATE_UNSPECIFIED"
               }
               enableBgColor
