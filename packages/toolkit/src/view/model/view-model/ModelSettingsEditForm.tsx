@@ -1,7 +1,5 @@
 import { z } from "zod";
-import {
-  InstillErrors /* , InstillModelVisibility */,
-} from "../../../constant";
+import { InstillErrors, InstillModelVisibility } from "../../../constant";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -11,14 +9,16 @@ import {
   getModelHardwareToolkit,
   Select,
   toast,
-  Button /* , Icons, RadioGroup */,
+  Button,
+  RadioGroup,
+  Icons,
 } from "@instill-ai/design-system";
 import { useMemo, useState } from "react";
 import {
   InstillStore,
   Model,
   UpdateUserModelPayload,
-  //Visibility,
+  Visibility,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
@@ -45,7 +45,9 @@ const EditModelSchema = z
     source_url: z.literal("").or(z.string().url()),
     documentation_url: z.literal("").or(z.string().url()),
     license: z.literal("").or(z.string().url()),
-    //visibility: z.enum(InstillModelVisibility).default(InstillModelVisibility[0]),
+    visibility: z
+      .enum(InstillModelVisibility)
+      .default(InstillModelVisibility[0]),
     hardware: z.string(),
     hardwareCustom: z.string().optional(),
     profile_image: z.string().optional(),
@@ -107,7 +109,10 @@ export const ModelSettingsEditForm = ({
       source_url: model.source_url,
       documentation_url: model.documentation_url,
       license: model.license,
-      //visibility: model.visibility as Exclude<Visibility, "VISIBILITY_UNSPECIFIED">,
+      visibility: model.visibility as Exclude<
+        Visibility,
+        "VISIBILITY_UNSPECIFIED"
+      >,
       hardware: hardwareName === null ? "Custom" : model.hardware,
       hardwareCustom: hardwareName === null ? model.hardware : "",
       profile_image: model.profile_image,
@@ -287,8 +292,6 @@ export const ModelSettingsEditForm = ({
               form={form}
               title="Cover image"
             />
-            {/* TODO: Uncomment when PATCH allows updating visibility
-            
             <RadioGroup.Root
               onValueChange={(
                 value: Exclude<Visibility, "VISIBILITY_UNSPECIFIED">
@@ -299,10 +302,7 @@ export const ModelSettingsEditForm = ({
               defaultValue={model?.visibility || InstillModelVisibility[0]}
             >
               <div className="flex items-center space-x-3">
-                <label
-                  htmlFor="radio-public"
-                  className="flex flex-row gap-x-3"
-                >
+                <label htmlFor="radio-public" className="flex flex-row gap-x-3">
                   <RadioGroup.Item
                     className="my-auto"
                     value="VISIBILITY_PUBLIC"
@@ -335,13 +335,12 @@ export const ModelSettingsEditForm = ({
                       Private
                     </p>
                     <p className="text-semantic-fg-secondary product-body-text-4-regular">
-                      Only you and your team members can see and run this
-                      model.
+                      Only you and your team members can see and run this model.
                     </p>
                   </div>
                 </label>
               </div>
-            </RadioGroup.Root> */}
+            </RadioGroup.Root>
             <Form.Field
               control={form.control}
               name="hardware"
