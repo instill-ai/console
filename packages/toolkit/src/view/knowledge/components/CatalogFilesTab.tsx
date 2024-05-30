@@ -1,4 +1,3 @@
-// CatalogFilesTab.tsx
 import * as React from "react";
 
 export const CatalogFilesTab = () => {

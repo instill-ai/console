@@ -1,11 +1,12 @@
-// KnowledgeBaseTab.tsx
 import { Separator } from "@instill-ai/design-system";
 import * as React from "react";
 import { KnowledgeBaseCard } from "./KnowledgeBaseCard";
 import { CreateKnowledgeBaseCard } from "./CreateKnowledgeBaseCard";
 import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
 import { useGetKnowledgeBases } from "../../../lib/vdp-sdk/knowledge/useGetKnowledgeBases";
+import { useCreateKnowledgeBase } from "../../../lib/vdp-sdk/knowledge/useCreateKnowledgeBase";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBase";
+import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
 
 type KnowledgeBaseTabProps = {
     onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
@@ -33,16 +34,35 @@ const mockKnowledgeBases: KnowledgeBase[] = [
     },
 ];
 
+
+
+
 export const KnowledgeBaseTab = ({ onKnowledgeBaseSelect }: KnowledgeBaseTabProps) => {
     const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
     const [knowledgeBases, setKnowledgeBases] = React.useState<KnowledgeBase[]>([]);
 
     const getKnowledgeBases = useGetKnowledgeBases();
+    const createKnowledgeBase = useCreateKnowledgeBase();
+
+    const selector = (store: InstillStore) => ({
+        accessToken: store.accessToken,
+        enabledQuery: store.enabledQuery,
+    });
+
+    const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
+    const me = useAuthenticatedUser({
+        enabled: enabledQuery,
+        accessToken,
+    });
+
+    const userID = me.isSuccess ? me.data.id : null;
 
     React.useEffect(() => {
         const fetchKnowledgeBases = async () => {
             const knowledgeBasesData = await getKnowledgeBases.mutateAsync({
-                accessToken: null
+                accessToken: null,
+                uid: userID as string,
             });
             setKnowledgeBases(knowledgeBasesData);
         };
@@ -50,9 +70,12 @@ export const KnowledgeBaseTab = ({ onKnowledgeBaseSelect }: KnowledgeBaseTabProp
         fetchKnowledgeBases();
     }, []);
 
-    const handleCreateKnowledgeSubmit = (data: any) => {
-        console.log("Create Knowledge submitted:", data);
-        // Perform the necessary actions with the form data (e.g., API call, state update, etc.)
+    const handleCreateKnowledgeSubmit = async (data: any) => {
+        const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
+            payload: data,
+            accessToken: null,
+        });
+        setKnowledgeBases([...knowledgeBases, newKnowledgeBase]);
         setIsCreateDialogOpen(false);
     };
 
@@ -69,9 +92,7 @@ export const KnowledgeBaseTab = ({ onKnowledgeBaseSelect }: KnowledgeBaseTabProp
                 {mockKnowledgeBases.map((knowledgeBase) => (
                     <CreateKnowledgeBaseCard
                         key={knowledgeBase.id}
-                        title={knowledgeBase.title}
-                        description={knowledgeBase.description}
-                        tags={knowledgeBase.tags}
+                        knowledgeBase={knowledgeBase}
                         onCardClick={() => onKnowledgeBaseSelect(knowledgeBase)}
                     />
                 ))}
