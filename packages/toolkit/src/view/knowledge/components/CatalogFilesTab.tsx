@@ -128,7 +128,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                         </div>
                     </div>
                     <div className="w-[375px] border-l border-semantic-bg-line flex flex-col gap-6 pb-8">
-                        <div className="pl-3 p-3 bg-semantic-bg-base-bg border-b border-semantic-bg-line flex items-center gap-3 h-12 rounded-tr">
+                        <div className="pl-3 p-4 bg-semantic-bg-base-bg border-b border-semantic-bg-line flex items-center gap-3 h-12 rounded-tr">
                             <div className="text-semantic-fg-primary product-body-text-3-medium">Preview</div>
                         </div>
                         <div className="px-8 flex flex-col gap-3 h-full">
