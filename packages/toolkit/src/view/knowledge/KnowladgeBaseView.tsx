@@ -1,5 +1,5 @@
 // KnowledgeBaseView.tsx
-import { GeneralAppPageProp, useModels, useWatchUserModels } from "../../lib";
+import { GeneralAppPageProp } from "../../lib";
 import { Sidebar } from "./components/Sidebar";
 import { KnowledgeBaseTab } from "./components/KnowledgeBaseTab";
 import { UploadExploreTab } from "./components/UploadExploreTab";
@@ -11,28 +11,13 @@ import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/knowledgeBase";
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
 export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
-  const { enableQuery, accessToken } = props;
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] = React.useState<KnowledgeBase | null>(null);
   const [activeTab, setActiveTab] = React.useState("knowledge-base");
 
   /* -------------------------------------------------------------------------
    * Query resource data
    * -----------------------------------------------------------------------*/
-  const models = useModels({
-    enabled: enableQuery,
-    accessToken,
-  });
 
-  const modelsWatchState = useWatchUserModels({
-    modelNames: models.isSuccess ? models.data.map((p) => p.name) : [],
-    enabled: enableQuery && models.isSuccess && models.data.length > 0,
-    accessToken,
-  });
-
-  const isLoadingResource =
-    models.isLoading || (models.isSuccess && models.data.length > 0)
-      ? modelsWatchState.isLoading
-      : false;
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -68,6 +53,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           )}
           {activeTab === "retrieve" && selectedKnowledgeBase && <RetrieveTestTab />}
         </div>
-      </div>    </div>
+      </div>
+    </div>
   );
 };
