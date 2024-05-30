@@ -1,11 +1,16 @@
 import { Button, Icons, Separator, Tag, Textarea } from "@instill-ai/design-system";
+import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBase";
 
-export const CatalogFilesTab = () => {
+type CatalogFilesTabProps = {
+    knowledgeBase: KnowledgeBase;
+};
+
+export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     return (
         <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
                 <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
-                    Catalog
+                    {knowledgeBase.title}
                 </p>
                 {/* Coming in V2 */}
                 {/* <div className="space-x-4">
