@@ -7,8 +7,8 @@ type CatalogFilesTabProps = {
 
 export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     return (
-        <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-y-6">
+            <div className="flex items-center justify-between mb-5">
                 <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
                     {knowledgeBase.title}
                 </p>
@@ -25,7 +25,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                     </Button>
                 </div> */}
             </div>
-            <Separator orientation="horizontal" className="my-4" />
+            <Separator orientation="horizontal" className="mb-6" />
             <div className="w-full flex flex-col gap-2">
                 <div className="flex justify-start">
                     <div className="px-3 py-2 bg-semantic-bg-primary rounded border border-semantic-bg-line flex items-center gap-2">
