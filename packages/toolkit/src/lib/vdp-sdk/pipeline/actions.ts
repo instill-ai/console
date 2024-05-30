@@ -239,7 +239,7 @@ export async function validateUserPipeline({
     const res = await client.post<ValidateUserPipelineResponse>(
       `/${pipelineName}/validate`
     );
-    return Promise.resolve(res);
+    return Promise.resolve(res.data);
   } catch (err) {
     return Promise.reject(err);
   }

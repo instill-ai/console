@@ -13,7 +13,6 @@ import { GeneralNodeData, NodeData } from "../../type";
 
 import { Node } from "reactflow";
 import debounce from "lodash.debounce";
-import isEqual from "lodash.isequal";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -98,17 +97,17 @@ export function useUpdaterOnRightPanel({
         return;
       }
 
-      const parsed = ValidatorSchema.safeParse(values);
+      // const parsed = ValidatorSchema.safeParse(values);
 
       // RHF isDiry state is not working correctly, at the first input
       // the state won't be updated, so we need to check by ourselves
-      if (!parsed.success || isEqual(prevValue.current, parsed.data)) {
-        return;
-      }
+      // if (!parsed.success || isEqual(prevValue.current, parsed.data)) {
+      //   return;
+      // }
 
       form.handleSubmit(() => {
         debounceUpdater({
-          updateData: parsed.data,
+          updateData: values,
           id: nodeID,
           nodes,
         });

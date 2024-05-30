@@ -13,6 +13,7 @@ import { Nullable } from "../type";
 import { NodeData } from "../../view";
 import {
   PipelineOutputFieldMap,
+  PipelineValidationError,
   PipelineVariableFieldMap,
   TriggerUserPipelineResponse,
 } from "../vdp-sdk/pipeline";
@@ -40,7 +41,6 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   selectedConnectorNodeId: null,
   connectorFormIsDirty: false,
   selectResourceDialogIsOpen: false,
-  currentAdvancedConfigurationNodeID: null,
   collapseAllNodes: false,
   testModeTriggerResponse: null,
   pipelineOpenAPIOutputSchema: null,
@@ -61,6 +61,8 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
   leftSidebarIsOpen: false,
   bottomDrawerIsOpen: false,
   displayResultOnRightPanel: false,
+  pipelineValidationErrors: null,
+  focusErrorFieldPathOnRightPanel: null,
 };
 
 export const createPipelineBuilderSlice: StateCreator<
@@ -94,8 +96,8 @@ export const createPipelineBuilderSlice: StateCreator<
     }),
   updatePipelineVariable: (
     fn: (
-      prev: Nullable<PipelineVariableFieldMap>
-    ) => Nullable<PipelineVariableFieldMap>
+      prev: Nullable<PipelineVariableFieldMap>,
+    ) => Nullable<PipelineVariableFieldMap>,
   ) =>
     set((state) => {
       return {
@@ -105,8 +107,8 @@ export const createPipelineBuilderSlice: StateCreator<
     }),
   updatePipelineOutput: (
     fn: (
-      prev: Nullable<PipelineOutputFieldMap>
-    ) => Nullable<PipelineOutputFieldMap>
+      prev: Nullable<PipelineOutputFieldMap>,
+    ) => Nullable<PipelineOutputFieldMap>,
   ) =>
     set((state) => {
       return {
@@ -331,6 +333,28 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         displayResultOnRightPanel: fn(state.displayResultOnRightPanel),
+      };
+    }),
+  updatePipelineValidationErrors: (
+    fn: (
+      prev: Nullable<PipelineValidationError[]>,
+    ) => Nullable<PipelineValidationError[]>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        pipelineValidationErrors: fn(state.pipelineValidationErrors),
+      };
+    }),
+  updateFocusErrorFieldPathOnRightPanel: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        focusErrorFieldPathOnRightPanel: fn(
+          state.focusErrorFieldPathOnRightPanel,
+        ),
       };
     }),
 });

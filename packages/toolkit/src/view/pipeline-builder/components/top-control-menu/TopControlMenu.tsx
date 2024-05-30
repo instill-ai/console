@@ -18,6 +18,7 @@ import {
 } from "../../../../lib";
 import { Button, Icons } from "@instill-ai/design-system";
 import { PipelineName } from "./PipelineName";
+import { Validate } from "./Validate";
 
 const selector = (store: InstillStore) => ({
   pipelineIsNew: store.pipelineIsNew,
@@ -56,6 +57,7 @@ export const TopControlMenu = () => {
         </div>
         <div className="flex flex-row items-center gap-x-2">
           <Run setIsSaving={setIsSaving} />
+          <Validate />
           <Toolkit />
           <Save isSaving={isSaving} setIsSaving={setIsSaving} />
           <Share />

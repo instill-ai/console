@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { NodeProps } from "reactflow";
+import { NodeProps, useStore } from "reactflow";
 import { Form, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
@@ -29,19 +29,20 @@ import { isPipelineGeneralComponent } from "../../../lib/checkComponentType";
 import { NodeControlPanel } from "../control-panel";
 
 const selector = (store: InstillStore) => ({
-  updateCurrentAdvancedConfigurationNodeID:
-    store.updateCurrentAdvancedConfigurationNodeID,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
   currentVersion: store.currentVersion,
   entitySecrets: store.entitySecrets,
+  updateRightPanelIsOpen: store.updateRightPanelIsOpen,
+  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
 });
 
 export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
   const {
-    updateCurrentAdvancedConfigurationNodeID,
     currentVersion,
     pipelineIsReadOnly,
     entitySecrets,
+    updateRightPanelIsOpen,
+    updateSelectedConnectorNodeId,
   } = useInstillStore(useShallow(selector));
 
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
@@ -55,6 +56,15 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     React.useState(false);
   const [isUsingInstillCredit, updateIsUsingInstillCredit] =
     React.useState(false);
+
+  const zoomLevel = useStore((s) => s.transform[2]);
+  React.useEffect(() => {
+    if (zoomLevel < 0.5) {
+      setNodeIsCollapsed(true);
+    } else {
+      setNodeIsCollapsed(false);
+    }
+  }, [zoomLevel]);
 
   const checkIsHidden = useCheckIsHidden("onNode");
 
@@ -170,7 +180,8 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
                 const parsedResult = ValidatorSchema.safeParse(values);
 
                 if (parsedResult.success) {
-                  updateCurrentAdvancedConfigurationNodeID(() => id);
+                  updateSelectedConnectorNodeId(() => id);
+                  updateRightPanelIsOpen(() => true);
                 } else {
                   for (const error of parsedResult.error.errors) {
                     trigger(error.path.join("."));

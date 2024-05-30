@@ -29,13 +29,12 @@ const selector = (store: InstillStore) => ({
   updateNodes: store.updateNodes,
   updateEdges: store.updateEdges,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
-  currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
-  updateCurrentAdvancedConfigurationNodeID:
-    store.updateCurrentAdvancedConfigurationNodeID,
   isEditingIterator: store.isEditingIterator,
   tempSavedNodesForEditingIteratorFlow:
     store.tempSavedNodesForEditingIteratorFlow,
   collapseAllNodes: store.collapseAllNodes,
+  selectedConnectorNodeId: store.selectedConnectorNodeId,
+  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
 });
 
 export const NodeControlPanel = ({
@@ -61,11 +60,11 @@ export const NodeControlPanel = ({
     updateNodes,
     updateEdges,
     updatePipelineRecipeIsDirty,
-    currentAdvancedConfigurationNodeID,
-    updateCurrentAdvancedConfigurationNodeID,
     tempSavedNodesForEditingIteratorFlow,
     isEditingIterator,
     collapseAllNodes,
+    selectedConnectorNodeId,
+    updateSelectedConnectorNodeId,
   } = useInstillStore(useShallow(selector));
 
   const [moreOptionsIsOpen, setMoreOptionsIsOpen] = React.useState(false);
@@ -93,17 +92,17 @@ export const NodeControlPanel = ({
     updatePipelineRecipeIsDirty(() => true);
     updateNodes(() => newNodes);
 
-    if (nodeID === currentAdvancedConfigurationNodeID) {
-      updateCurrentAdvancedConfigurationNodeID(() => null);
+    if (nodeID === selectedConnectorNodeId) {
+      updateSelectedConnectorNodeId(() => null);
     }
   }, [
     nodeID,
-    currentAdvancedConfigurationNodeID,
-    updateCurrentAdvancedConfigurationNodeID,
     nodes,
     updateEdges,
     updateNodes,
     updatePipelineRecipeIsDirty,
+    selectedConnectorNodeId,
+    updateSelectedConnectorNodeId,
   ]);
 
   const handleCopyNode = React.useCallback(() => {

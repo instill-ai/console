@@ -38,8 +38,6 @@ const selector = (store: InstillStore) => ({
   onConnect: store.onConnect,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
-  updateCurrentAdvancedConfigurationNodeID:
-    store.updateCurrentAdvancedConfigurationNodeID,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
   pipelineName: store.pipelineName,
   collapseAllNodes: store.collapseAllNodes,
@@ -82,7 +80,6 @@ export const PipelineBuilderCanvas = ({
     onEdgesChange,
     updatePipelineRecipeIsDirty,
     updateSelectedConnectorNodeId,
-    updateCurrentAdvancedConfigurationNodeID,
     pipelineIsReadOnly,
     pipelineName,
     collapseAllNodes,
@@ -92,10 +89,6 @@ export const PipelineBuilderCanvas = ({
   const [miniMapIsOpen, setMiniMapIsOpen] = React.useState(
     disabledMinimap ?? false,
   );
-
-  React.useEffect(() => {
-    console.log("nodes update", nodes);
-  }, [nodes]);
 
   return (
     <ReactFlow
@@ -138,7 +131,6 @@ export const PipelineBuilderCanvas = ({
       onMove={() => {
         if (pipelineIsReadOnly) return;
         updateSelectedConnectorNodeId(() => null);
-        updateCurrentAdvancedConfigurationNodeID(() => null);
       }}
       onEdgesChange={(changes) => {
         if (pipelineIsReadOnly) return;
@@ -147,7 +139,6 @@ export const PipelineBuilderCanvas = ({
       onPaneClick={() => {
         if (pipelineIsReadOnly) return;
         updateSelectedConnectorNodeId(() => null);
-        updateCurrentAdvancedConfigurationNodeID(() => null);
       }}
       // snapGrid={[32, 32]}
       // snapToGrid={true}
@@ -156,7 +147,10 @@ export const PipelineBuilderCanvas = ({
       fitViewOptions={{
         includeHiddenNodes: true,
         padding: 20,
+        minZoom: 1,
       }}
+      minZoom={0.2}
+      maxZoom={3}
       // To enable Figma-like zoom-in-out experience
       panOnScroll={true}
       panOnDrag={canvasPanOnDrag}

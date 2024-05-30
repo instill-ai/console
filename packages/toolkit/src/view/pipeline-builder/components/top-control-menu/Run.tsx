@@ -11,6 +11,7 @@ const selector = (store: InstillStore) => ({
   isTriggeringPipeline: store.isTriggeringPipeline,
   isEditingIterator: store.isEditingIterator,
   updateDisplayResultOnRightPanel: store.updateDisplayResultOnRightPanel,
+  updateRightPanelIsOpen: store.updateRightPanelIsOpen,
 });
 
 export const Run = ({
@@ -24,6 +25,7 @@ export const Run = ({
     isTriggeringPipeline,
     isEditingIterator,
     updateDisplayResultOnRightPanel,
+    updateRightPanelIsOpen,
   } = useInstillStore(useShallow(selector));
 
   const savePipeline = useSavePipeline({ setIsSaving });
@@ -42,6 +44,7 @@ export const Run = ({
           await savePipeline();
           runButtonRef.current?.click();
         }
+        updateRightPanelIsOpen(() => true);
         updateDisplayResultOnRightPanel(() => true);
       }}
     >

@@ -33,15 +33,11 @@ export async function tideUpNodeLayout(nodes: Node<NodeData>[], edges: Edge[]) {
       }
     });
 
-    console.log("layout:", nodes, edges);
-
     const newGraph = await pipelineBuilderElkLayout.layout({
       id: "root",
       children: elkNodes,
       edges: elkEdges,
     });
-
-    console.log("newGraph:", newGraph);
 
     return {
       nodes: nodes.map((node) => {

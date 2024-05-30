@@ -9,6 +9,7 @@ import { NodeBottomBarProvider } from "./node-bottom-bar";
 import { Edge, Position, useEdges } from "reactflow";
 import { NodeData } from "../../../type";
 import { CustomHandle } from "../../CustomHandle";
+import { extractComponentFormPathFromErrorLocation } from "../../../lib/extractComponentFormPathFromErrorLocation";
 
 const selector = (store: InstillStore) => ({
   updateNodes: store.updateNodes,
@@ -17,6 +18,10 @@ const selector = (store: InstillStore) => ({
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
   selectedConnectorNodeId: store.selectedConnectorNodeId,
   updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
+  pipelineValidationErrors: store.pipelineValidationErrors,
+  updateRightPanelIsOpen: store.updateRightPanelIsOpen,
+  updateFocusErrorFieldPathOnRightPanel:
+    store.updateFocusErrorFieldPathOnRightPanel,
 });
 
 export const NodeWrapper = ({
@@ -45,12 +50,34 @@ export const NodeWrapper = ({
     updatePipelineRecipeIsDirty,
     selectedConnectorNodeId,
     updateSelectedConnectorNodeId,
+    pipelineValidationErrors,
+    updateRightPanelIsOpen,
+    updateFocusErrorFieldPathOnRightPanel,
   } = useInstillStore(useShallow(selector));
   const timer = React.useRef<Nullable<number>>(null);
   const [noteValue, setNoteValue] = React.useState(nodeData.note);
 
   // ReadOnlyPipelineBuilder won't update the global zustand state of nodes
   // and edges, we need to make sure it get correct edges
+
+  const errorsOfNode = React.useMemo(() => {
+    if (pipelineValidationErrors) {
+      const errors = pipelineValidationErrors.filter((error) => {
+        const locationArray = error.location.split(".");
+        if (locationArray[0] === "component" && locationArray[1] === nodeID) {
+          return true;
+        } else {
+          false;
+        }
+      });
+
+      if (errors.length > 0) {
+        return errors;
+      }
+    }
+
+    return null;
+  }, [nodeID, pipelineValidationErrors]);
 
   const reactflowEdges = useEdges();
   const hasTargetEdges = React.useMemo(() => {
@@ -129,6 +156,37 @@ export const NodeWrapper = ({
           }}
         />
       </div>
+      {errorsOfNode ? (
+        <div
+          className={cn(
+            "absolute left-0 top-0 w-[var(--pipeline-builder-node-available-width)] rounded border border-semantic-error-default bg-semantic-error-bg p-2",
+            "-translate-y-[calc(100%+16px)]"
+          )}
+        >
+          {errorsOfNode.map((error) => (
+            <button
+              type="button"
+              className="flex flex-row gap-x-2 hover:underline"
+              key={error.location}
+              onClick={() => {
+                updateRightPanelIsOpen(() => true);
+                updateSelectedConnectorNodeId(() => nodeID);
+
+                updateFocusErrorFieldPathOnRightPanel(() =>
+                  extractComponentFormPathFromErrorLocation(error.location)
+                );
+              }}
+            >
+              <p className="text-semantic-error-default product-body-text-4-medium">
+                {error.location.split(".")[3]}:
+              </p>
+              <p className="text-semantic-error-default product-body-text-4-medium">
+                {error.error}
+              </p>
+            </button>
+          ))}
+        </div>
+      ) : null}
       <NodeBottomBarProvider>
         <div
           className={cn(

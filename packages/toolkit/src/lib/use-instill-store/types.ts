@@ -3,6 +3,7 @@ import { Nullable } from "../type";
 import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
 import {
   PipelineOutputFieldMap,
+  PipelineValidationError,
   PipelineVariableFieldMap,
   Secret,
   TriggerUserPipelineResponse,
@@ -27,7 +28,6 @@ export type PipelineBuilderState = {
   pipelineRecipeIsDirty: boolean;
   pipelineIsNew: boolean;
   selectedConnectorNodeId: Nullable<string>;
-  currentAdvancedConfigurationNodeID: Nullable<string>;
   connectorFormIsDirty: boolean;
   selectResourceDialogIsOpen: boolean;
   collapseAllNodes: boolean;
@@ -47,6 +47,8 @@ export type PipelineBuilderState = {
   leftSidebarIsOpen: boolean;
   bottomDrawerIsOpen: boolean;
   displayResultOnRightPanel: boolean;
+  pipelineValidationErrors: Nullable<PipelineValidationError[]>;
+  focusErrorFieldPathOnRightPanel: Nullable<string>;
 };
 
 export type PipelineBuilderAction = {
@@ -58,13 +60,13 @@ export type PipelineBuilderAction = {
   ) => void;
   updatePipelineVariable: (
     fn: (
-      prev: Nullable<PipelineVariableFieldMap>
-    ) => Nullable<PipelineVariableFieldMap>
+      prev: Nullable<PipelineVariableFieldMap>,
+    ) => Nullable<PipelineVariableFieldMap>,
   ) => void;
   updatePipelineOutput: (
     fn: (
-      prev: Nullable<PipelineOutputFieldMap>
-    ) => Nullable<PipelineOutputFieldMap>
+      prev: Nullable<PipelineOutputFieldMap>,
+    ) => Nullable<PipelineOutputFieldMap>,
   ) => void;
   updateNodes: (fn: (prev: Node<NodeData>[]) => Node<NodeData>[]) => void;
   updateEdges: (fn: (prev: Edge[]) => Edge[]) => void;
@@ -115,6 +117,14 @@ export type PipelineBuilderAction = {
   updateLeftSidebarIsOpen: (fn: (prev: boolean) => boolean) => void;
   updateBottomDrawerIsOpen: (fn: (prev: boolean) => boolean) => void;
   updateDisplayResultOnRightPanel: (fn: (prev: boolean) => boolean) => void;
+  updatePipelineValidationErrors: (
+    fn: (
+      prev: Nullable<PipelineValidationError[]>,
+    ) => Nullable<PipelineValidationError[]>,
+  ) => void;
+  updateFocusErrorFieldPathOnRightPanel: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
 };
 
 export type PipelineBuilderSlice = PipelineBuilderState & PipelineBuilderAction;

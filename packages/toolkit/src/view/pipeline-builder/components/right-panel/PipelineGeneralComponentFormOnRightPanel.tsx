@@ -4,10 +4,17 @@ import * as React from "react";
 import { Form } from "@instill-ai/design-system";
 
 import { useInstillForm } from "../../../../lib/use-instill-form";
-import { useCheckIsHidden, useUpdaterOnRightPanel } from "../../lib";
+import { useUpdaterOnRightPanel } from "../../lib";
 import { getGeneralComponentConfiguration } from "../../lib";
-import { useInstillStore } from "../../../../lib";
+import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import { GeneralNodeData } from "../../type";
+
+const selector = (store: InstillStore) => ({
+  entitySecrets: store.entitySecrets,
+  focusErrorFieldPathOnRightPanel: store.focusErrorFieldPathOnRightPanel,
+  updateFocusErrorFieldPathOnRightPanel:
+    store.updateFocusErrorFieldPathOnRightPanel,
+});
 
 export const PipelineGeneralComponentFormOnRightPanel = ({
   nodeID,
@@ -18,8 +25,11 @@ export const PipelineGeneralComponentFormOnRightPanel = ({
   nodeData: GeneralNodeData;
   disabledAll?: boolean;
 }) => {
-  const checkIsHidden = useCheckIsHidden("onRightPanel");
-  const entitySecrets = useInstillStore((store) => store.entitySecrets);
+  const {
+    entitySecrets,
+    focusErrorFieldPathOnRightPanel,
+    updateFocusErrorFieldPathOnRightPanel,
+  } = useInstillStore(useShallow(selector));
 
   const configuration = React.useMemo(() => {
     return getGeneralComponentConfiguration(nodeData);
@@ -31,7 +41,6 @@ export const PipelineGeneralComponentFormOnRightPanel = ({
     {
       disabledAll,
       chooseTitleFrom: "title",
-      checkIsHidden,
       enableSmartHint: true,
       componentID: nodeID,
       secrets: entitySecrets,
@@ -39,6 +48,17 @@ export const PipelineGeneralComponentFormOnRightPanel = ({
       collapsibleDefaultOpen: true,
     },
   );
+
+  const { setFocus } = form;
+
+  React.useEffect(() => {
+    if (focusErrorFieldPathOnRightPanel) {
+      setTimeout(() => {
+        setFocus(focusErrorFieldPathOnRightPanel);
+        updateFocusErrorFieldPathOnRightPanel(() => null);
+      }, 200);
+    }
+  }, [focusErrorFieldPathOnRightPanel, setFocus]);
 
   useUpdaterOnRightPanel({
     form,

@@ -1,116 +1,87 @@
 "use client";
 
+import cn from "clsx";
 import * as React from "react";
-import { useShallow } from "zustand/react/shallow";
-import { Button, Icons, Separator } from "@instill-ai/design-system";
-import { InstillStore, useInstillStore } from "../../../../lib";
-import { isGeneralNode } from "../../lib";
-import { GeneralNodeData } from "../../type";
-import { Node } from "reactflow";
-import { PipelineGeneralComponentFormOnRightPanel } from "./PipelineGeneralComponentFormOnRightPanel";
-import { LoadingSpin } from "../../../../components";
-import { ComponentOutputs } from "../ComponentOutputs";
+import { Button, DialogPrimitive } from "@instill-ai/design-system";
+import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
+import { OutputView } from "./OutputView";
+import { ConfigurationView } from "./ConfigurationView";
 
 const selector = (store: InstillStore) => ({
-  nodes: store.nodes,
-  currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
-  updateCurrentAdvancedConfigurationNodeID:
-    store.updateCurrentAdvancedConfigurationNodeID,
+  rightPanelIsOpen: store.rightPanelIsOpen,
+  updateRightPanelIsOpen: store.updateRightPanelIsOpen,
   displayResultOnRightPanel: store.displayResultOnRightPanel,
-  updateDisplayResultOnRightPanel: store.updateDisplayResultOnRightPanel,
-  pipelineOpenAPIOutputSchema: store.pipelineOpenAPIOutputSchema,
-  isTriggeringPipeline: store.isTriggeringPipeline,
+  selectedConnectorNodeId: store.selectedConnectorNodeId,
 });
 
 export const RightPanel = () => {
+  const [isCenterView, setIsCenterView] = React.useState(false);
+
   const {
-    nodes,
-    currentAdvancedConfigurationNodeID,
-    updateCurrentAdvancedConfigurationNodeID,
+    rightPanelIsOpen,
+    updateRightPanelIsOpen,
     displayResultOnRightPanel,
-    updateDisplayResultOnRightPanel,
-    pipelineOpenAPIOutputSchema,
-    isTriggeringPipeline,
+    selectedConnectorNodeId,
   } = useInstillStore(useShallow(selector));
 
-  const selectedGeneralNode = React.useMemo(() => {
-    return nodes.find(
-      (node) =>
-        node.id === currentAdvancedConfigurationNodeID && isGeneralNode(node),
-    ) as Node<GeneralNodeData> | undefined;
-  }, [nodes, currentAdvancedConfigurationNodeID]);
-
-  if (displayResultOnRightPanel) {
-    return isTriggeringPipeline ? (
-      <LoadingSpin />
-    ) : (
-      <div className="flex h-full w-full flex-col gap-y-6">
-        <div className="mb-6 flex w-full flex-row gap-x-1">
-          <p className="flex flex-1 items-center justify-center rounded-sm bg-semantic-bg-base-bg py-2 text-semantic-fg-primary product-body-text-1-semibold">
-            Result
-          </p>
+  return (
+    <DialogPrimitive.Root
+      open={rightPanelIsOpen}
+      onOpenChange={(e) => {
+        updateRightPanelIsOpen(() => e);
+      }}
+    >
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay
+          className={cn(
+            "fixed inset-0 z-50",
+            "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+          )}
+        />
+        <DialogPrimitive.Content
+          className={
+            isCenterView
+              ? cn(
+                  "fixed left-[50%] top-[50%] z-50 grid h-[600px] w-[1200px] translate-x-[-50%] translate-y-[-50%] gap-4 rounded border bg-semantic-bg-primary p-6 shadow-lg duration-200",
+                  "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+                )
+              : cn(
+                  "right-0 w-[480px] border-l bg-semantic-bg-primary data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right",
+                  "fixed z-50 gap-4 p-6 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out",
+                  "h-[calc(100vh-var(--topbar-height)-var(--pipeline-builder-bottom-bar-height))]",
+                  "top-[var(--topbar-height)]",
+                )
+          }
+        >
           <Button
-            className="h-10 w-10 !px-0 !py-0"
-            variant="secondaryGrey"
+            variant="tertiaryGrey"
             size="md"
-            type="button"
             onClick={() => {
-              updateDisplayResultOnRightPanel(() => false);
+              setIsCenterView(!isCenterView);
             }}
           >
-            <Icons.X className="h-4 w-4 stroke-semantic-fg-primary" />
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 15 15"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12.5 2H2.5C2.22386 2 2 2.22386 2 2.5V12.5C2 12.7761 2.22386 13 2.5 13H12.5C12.7761 13 13 12.7761 13 12.5V2.5C13 2.22386 12.7761 2 12.5 2ZM2.5 1C1.67157 1 1 1.67157 1 2.5V12.5C1 13.3284 1.67157 14 2.5 14H12.5C13.3284 14 14 13.3284 14 12.5V2.5C14 1.67157 13.3284 1 12.5 1H2.5Z"
+                fill="currentColor"
+                fillRule="evenodd"
+                clipRule="evenodd"
+              />
+            </svg>
           </Button>
-        </div>
-        <ComponentOutputs
-          componentID="response"
-          outputSchema={pipelineOpenAPIOutputSchema}
-          nodeType="response"
-          chooseTitleFrom="title"
-        />
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex h-full w-full flex-col">
-      <div className="mb-6 flex w-full flex-row gap-x-1">
-        <p className="flex flex-1 items-center justify-center rounded-sm bg-semantic-bg-base-bg py-2 text-semantic-fg-primary product-body-text-1-semibold">
-          Connector Properties
-        </p>
-        <Button
-          className="h-10 w-10 !px-0 !py-0"
-          variant="secondaryGrey"
-          size="md"
-          type="button"
-          onClick={() => {
-            updateCurrentAdvancedConfigurationNodeID(() => null);
-          }}
-        >
-          <Icons.X className="h-4 w-4 stroke-semantic-fg-primary" />
-        </Button>
-      </div>
-      <div className="relative mb-6 w-full">
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-semantic-bg-primary px-2">
-          <p className="text-semantic-fg-secondary product-body-text-3-medium">
-            Configuration
-          </p>
-        </div>
-        <Separator orientation="horizontal" />
-      </div>
-
-      {/* 
-    We use this additional pb to cope with Browser eaten up parent's padding when it is
-    scrollable.
-  */}
-
-      <div className="flex w-full pb-10">
-        {selectedGeneralNode && selectedGeneralNode.data.definition ? (
-          <PipelineGeneralComponentFormOnRightPanel
-            nodeData={selectedGeneralNode.data}
-            nodeID={selectedGeneralNode.id}
-          />
-        ) : null}
-      </div>
-    </div>
+          {displayResultOnRightPanel ? (
+            <OutputView />
+          ) : selectedConnectorNodeId ? (
+            <ConfigurationView />
+          ) : null}
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   );
 };

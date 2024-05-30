@@ -12,7 +12,6 @@ import { composeEdgesFromNodes, isGeneralNode } from "..";
 import { GeneralNodeData, NodeData } from "../../type";
 
 import debounce from "lodash.debounce";
-import isEqual from "lodash.isequal";
 import { Node } from "reactflow";
 import { isPipelineGeneralComponent } from "../checkComponentType";
 
@@ -21,9 +20,8 @@ const selector = (store: InstillStore) => ({
   updateEdges: store.updateEdges,
   updateNodes: store.updateNodes,
   updatePipelineRecipeIsDirty: store.updatePipelineRecipeIsDirty,
-  currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
-  updateCurrentAdvancedConfigurationNodeID:
-    store.updateCurrentAdvancedConfigurationNodeID,
+  selectedConnectorNodeId: store.selectedConnectorNodeId,
+  updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
   pipelineIsReadOnly: store.pipelineIsReadOnly,
 });
 
@@ -43,8 +41,8 @@ export function useUpdaterOnNode({
     updateNodes,
     updateEdges,
     updatePipelineRecipeIsDirty,
-    currentAdvancedConfigurationNodeID,
-    updateCurrentAdvancedConfigurationNodeID,
+    selectedConnectorNodeId,
+    updateSelectedConnectorNodeId,
     pipelineIsReadOnly,
   } = useInstillStore(useShallow(selector));
 
@@ -61,7 +59,6 @@ export function useUpdaterOnNode({
         updateData: GeneralRecord;
         nodes: Node<NodeData>[];
       }) => {
-        console.log("yottoto", nodes);
         const newNodes = nodes.map((node) => {
           if (isGeneralNode(node) && node.id === id) {
             return {
@@ -98,30 +95,30 @@ export function useUpdaterOnNode({
         return;
       }
 
-      const parsed = ValidatorSchema.safeParse(values);
+      // const parsed = ValidatorSchema.safeParse(values);
 
       if (
         isPipelineGeneralComponent(currentNodeData) &&
         values.task !== currentNodeData.task
       ) {
-        updateCurrentAdvancedConfigurationNodeID(() => null);
+        updateSelectedConnectorNodeId(() => null);
       }
 
       // When the right panel is open we only update the configuration
       // on right-panel updater
-      if (currentAdvancedConfigurationNodeID) {
+      if (selectedConnectorNodeId) {
         return;
       }
 
-      // RHF isDiry state is not working correctly, at the first input
-      // the state won't be updated, so we need to check by ourselves
-      if (!parsed.success || isEqual(prevValue.current, parsed.data)) {
-        return;
-      }
+      // // RHF isDiry state is not working correctly, at the first input
+      // // the state won't be updated, so we need to check by ourselves
+      // if (!parsed.success || isEqual(prevValue.current, parsed.data)) {
+      //   return;
+      // }
 
       form.handleSubmit(() => {
         debounceUpdater({
-          updateData: parsed.data,
+          updateData: values,
           nodes,
           id: nodeID,
         });
@@ -136,8 +133,8 @@ export function useUpdaterOnNode({
     watch,
     currentNodeData,
     ValidatorSchema,
-    currentAdvancedConfigurationNodeID,
-    updateCurrentAdvancedConfigurationNodeID,
+    selectedConnectorNodeId,
+    updateSelectedConnectorNodeId,
     pipelineIsReadOnly,
     debounceUpdater,
     form,

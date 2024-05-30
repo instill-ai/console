@@ -135,3 +135,5 @@ export const Dialog = {
   Description: DialogDescription,
   Close: DialogClose,
 };
+
+export { DialogPrimitive };

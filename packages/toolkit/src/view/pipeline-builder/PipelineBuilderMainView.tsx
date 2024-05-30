@@ -35,7 +35,6 @@ import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   pipelineIsNew: store.pipelineIsNew,
-  currentAdvancedConfigurationNodeID: store.currentAdvancedConfigurationNodeID,
   updatePipelineOpenAPIOutputSchema: store.updatePipelineOpenAPIOutputSchema,
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
@@ -45,7 +44,6 @@ const selector = (store: InstillStore) => ({
   updateEntitySecrets: store.updateEntitySecrets,
   leftSideBarIsOpen: store.leftSidebarIsOpen,
   bottomDrawerIsOpen: store.bottomDrawerIsOpen,
-  displayResultOnRightPanel: store.displayResultOnRightPanel,
 });
 
 export const PipelineBuilderMainView = () => {
@@ -56,7 +54,6 @@ export const PipelineBuilderMainView = () => {
   const addNode = useAddNodeWithDefinition({ reactFlowInstance });
   const {
     pipelineIsNew,
-    currentAdvancedConfigurationNodeID,
     updatePipelineOpenAPIOutputSchema,
     accessToken,
     enabledQuery,
@@ -66,7 +63,6 @@ export const PipelineBuilderMainView = () => {
     updateEntitySecrets,
     leftSideBarIsOpen,
     bottomDrawerIsOpen,
-    displayResultOnRightPanel,
   } = useInstillStore(useShallow(selector));
 
   useSmartHint();
@@ -145,7 +141,7 @@ export const PipelineBuilderMainView = () => {
               isLoading={graphIsInitialized ? false : true}
               isError={!pipelineIsNew && pipeline.isError}
             />
-            <div
+            {/* <div
               className={cn(
                 "border-semantic-bg-line bg-semantic-bg-primary fixed left-full z-50 h-[calc(100vh-var(--topbar-height)-var(--pipeline-builder-bottom-bar-height))] w-[450px] transform overflow-y-auto border-b border-r p-6 py-6 duration-500",
                 currentAdvancedConfigurationNodeID || displayResultOnRightPanel
@@ -154,7 +150,9 @@ export const PipelineBuilderMainView = () => {
               )}
             >
               <RightPanel />
-            </div>
+            </div> */}
+
+            <RightPanel />
 
             <div
               className={cn(
