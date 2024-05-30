@@ -7,7 +7,7 @@ type CatalogFilesTabProps = {
 
 export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     return (
-        <div className="flex flex-col gap-y-6">
+        <div className="flex flex-col">
             <div className="flex items-center justify-between mb-5">
                 <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
                     {knowledgeBase.title}
