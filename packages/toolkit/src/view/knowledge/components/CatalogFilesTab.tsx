@@ -1,6 +1,4 @@
 import { Button, Icons, Separator, Tag, Textarea } from "@instill-ai/design-system";
-import * as React from "react";
-import { TextArea } from "../../../lib/use-instill-form/components/smart-hint/TextArea";
 
 export const CatalogFilesTab = () => {
     return (
@@ -9,7 +7,8 @@ export const CatalogFilesTab = () => {
                 <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
                     Catalog
                 </p>
-                <div className="space-x-4">
+                {/* Coming in V2 */}
+                {/* <div className="space-x-4">
                     <Button variant="secondaryGrey" size="lg">
                         Publish
                     </Button>
@@ -19,7 +18,7 @@ export const CatalogFilesTab = () => {
                     <Button variant="primary" size="lg">
                         Export Data
                     </Button>
-                </div>
+                </div> */}
             </div>
             <Separator orientation="horizontal" className="my-4" />
             <div className="w-full flex flex-col gap-2">
@@ -124,8 +123,8 @@ export const CatalogFilesTab = () => {
                         </div>
                     </div>
                     <div className="w-[375px] border-l border-semantic-bg-line flex flex-col gap-6 pb-8">
-                        <div className="pl-3 py-2 bg-semantic-bg-base-bg rounded-tr border-l border-b border-semantic-bg-line flex justify-start">
-                            <div className=" product-body-text-1-semibold text-semantic-fg-primary">Preview</div>
+                        <div className="pl-3 p-3 bg-semantic-bg-base-bg border-b border-semantic-bg-line flex items-center gap-3 h-12 rounded-tr">
+                            <div className="text-semantic-fg-primary product-body-text-3-medium">Preview</div>
                         </div>
                         <div className="px-8 flex flex-col gap-3">
                             <div className="flex flex-col gap-3">
