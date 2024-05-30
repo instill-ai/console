@@ -16,7 +16,7 @@ import { ProfileSeparator } from "../ProfileSeparator";
 import { PipelinesTable } from "../../pipeline";
 import { BreadcrumbWithLink } from "../../../components";
 import { useUserModels } from "../../../lib/react-query-service/model/useUserModels";
-import { ModelsTable } from "../../model/ModelsTable";
+import { ModelsTable } from "../../model";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
