@@ -94,7 +94,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                     <span className="">
                         Drag-and-drop file, or{" "}
                     </span>
-                    <span className="text-semantic-accent-hover underline">
+                    <span className="text-semantic-accent-hover underline cursor-pointer">
                         browse computer
                     </span>
                     <div className="">
