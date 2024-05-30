@@ -1,4 +1,4 @@
-import { Separator } from "@instill-ai/design-system";
+import { Separator, Skeleton } from "@instill-ai/design-system";
 import * as React from "react";
 import { KnowledgeBaseCard } from "./KnowledgeBaseCard";
 import { CreateKnowledgeBaseCard } from "./CreateKnowledgeBaseCard";
@@ -11,7 +11,6 @@ import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from 
 type KnowledgeBaseTabProps = {
     onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
 };
-
 
 const mockKnowledgeBases: KnowledgeBase[] = [
     {
@@ -34,15 +33,12 @@ const mockKnowledgeBases: KnowledgeBase[] = [
     },
 ];
 
-
-
-
 export const KnowledgeBaseTab = ({ onKnowledgeBaseSelect }: KnowledgeBaseTabProps) => {
     const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
     const [knowledgeBases, setKnowledgeBases] = React.useState<KnowledgeBase[]>([]);
-
     const getKnowledgeBases = useGetKnowledgeBases();
     const createKnowledgeBase = useCreateKnowledgeBase();
+    const [loading, setLoading] = React.useState(false);
 
     const selector = (store: InstillStore) => ({
         accessToken: store.accessToken,
@@ -60,6 +56,7 @@ export const KnowledgeBaseTab = ({ onKnowledgeBaseSelect }: KnowledgeBaseTabProp
 
     React.useEffect(() => {
         const fetchKnowledgeBases = async () => {
+            setLoading(true);
             const knowledgeBasesData = await getKnowledgeBases.mutateAsync({
                 accessToken: null,
                 uid: userID as string,
@@ -68,6 +65,7 @@ export const KnowledgeBaseTab = ({ onKnowledgeBaseSelect }: KnowledgeBaseTabProp
         };
 
         fetchKnowledgeBases();
+        setLoading(false);
     }, []);
 
     const handleCreateKnowledgeSubmit = async (data: any) => {
@@ -87,16 +85,37 @@ export const KnowledgeBaseTab = ({ onKnowledgeBaseSelect }: KnowledgeBaseTabProp
                 </p>
             </div>
             <Separator orientation="horizontal" className="my-4" />
-            <div className="grid gap-16 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 xl:grid-cols-3">
-                <KnowledgeBaseCard onClick={() => setIsCreateDialogOpen(true)} />
-                {mockKnowledgeBases.map((knowledgeBase) => (
-                    <CreateKnowledgeBaseCard
-                        key={knowledgeBase.id}
-                        knowledgeBase={knowledgeBase}
-                        onCardClick={() => onKnowledgeBaseSelect(knowledgeBase)}
-                    />
-                ))}
-            </div>
+            {loading ? (
+                <div className="grid gap-16 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 xl:grid-cols-3">
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <div key={index} className="flex shadow flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 w-[360px] h-[175px]">
+                            <div className="flex items-center justify-between">
+                                <Skeleton className="h-6 w-32 rounded bg-semantic-bg-line" />
+                                <Skeleton className="h-6 w-6 rounded bg-semantic-bg-line" />
+                            </div>
+                            <Separator orientation="horizontal" className="my-[10px]" />
+                            <div className="flex-1">
+                                <Skeleton className="h-4 w-full rounded bg-semantic-bg-line mb-2" />
+                                <Skeleton className="h-4 w-2/3 rounded bg-semantic-bg-line" />
+                            </div>
+                            <div className="flex justify-end items-end">
+                                <Skeleton className="h-8 w-8 rounded bg-semantic-bg-line" />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="grid gap-16 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 xl:grid-cols-3">
+                    <KnowledgeBaseCard onClick={() => setIsCreateDialogOpen(true)} />
+                    {mockKnowledgeBases.map((knowledgeBase) => (
+                        <CreateKnowledgeBaseCard
+                            key={knowledgeBase.id}
+                            knowledgeBase={knowledgeBase}
+                            onCardClick={() => onKnowledgeBaseSelect(knowledgeBase)}
+                        />
+                    ))}
+                </div>
+            )}
             <CreateKnowledgeDialog
                 isOpen={isCreateDialogOpen}
                 onClose={() => setIsCreateDialogOpen(false)}
