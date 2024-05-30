@@ -78,7 +78,7 @@ export const KnowledgeBaseTab = ({ onKnowledgeBaseSelect }: KnowledgeBaseTabProp
     };
 
     return (
-        <div className="flex flex-col gap-y-6">
+        <div className="flex flex-col">
             <div className="flex items-center justify-between mb-5">
                 <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
                     Knowledge Base
