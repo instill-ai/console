@@ -1,3 +1,4 @@
+// KnowledgeBaseView.tsx
 import { GeneralAppPageProp, useModels, useWatchUserModels } from "../../lib";
 import { Sidebar } from "./components/Sidebar";
 import { KnowledgeBaseTab } from "./components/KnowledgeBaseTab";
@@ -59,11 +60,14 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           {activeTab === "knowledge-base" && (
             <KnowledgeBaseTab onKnowledgeBaseSelect={handleKnowledgeBaseSelect} />
           )}
-          {activeTab === "upload" && selectedKnowledgeBase && <UploadExploreTab />}
-          {activeTab === "catalog" && selectedKnowledgeBase && <CatalogFilesTab />}
+          {activeTab === "upload" && selectedKnowledgeBase && (
+            <UploadExploreTab knowledgeBase={selectedKnowledgeBase} />
+          )}
+          {activeTab === "catalog" && selectedKnowledgeBase && (
+            <CatalogFilesTab knowledgeBase={selectedKnowledgeBase} />
+          )}
           {activeTab === "retrieve" && selectedKnowledgeBase && <RetrieveTestTab />}
         </div>
-      </div>
-    </div>
+      </div>    </div>
   );
 };

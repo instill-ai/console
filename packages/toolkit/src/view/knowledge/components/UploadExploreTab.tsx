@@ -4,6 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
+import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBase";
 
 const UploadExploreFormSchema = z.object({
     convertTransformFiles: z.string().min(1, { message: "Convert/Transform files is required" }),
@@ -17,6 +18,8 @@ const UploadExploreFormSchema = z.object({
 });
 
 type UploadExploreFormData = z.infer<typeof UploadExploreFormSchema>;
+
+
 
 const CollapsibleSection = ({
     title,
@@ -49,7 +52,11 @@ const CollapsibleSection = ({
     );
 };
 
-export const UploadExploreTab = () => {
+type UploadExploreTabProps = {
+    knowledgeBase: KnowledgeBase;
+};
+
+export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
     const form = useForm<UploadExploreFormData>({
         resolver: zodResolver(UploadExploreFormSchema),
         defaultValues: {
@@ -77,7 +84,7 @@ export const UploadExploreTab = () => {
         <div className="flex flex-col gap-y-6">
             <div className="flex items-center justify-between">
                 <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
-                    Upload & Explore
+                    {knowledgeBase.title}
                 </p>
             </div>
             <Separator orientation="horizontal" className="my-4" />
