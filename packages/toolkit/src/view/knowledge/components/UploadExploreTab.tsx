@@ -88,7 +88,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                 </p>
             </div>
             <Separator orientation="horizontal" className="mb-6" />
-            <div className="w-full h-[150px] relative bg-semantic-accent-bg rounded-md border-2 border-dashed border-semantic-secondary-bg flex flex-col items-center justify-center product-body-text-4-regular mb-2">
+            <div className="w-full h-[150px] relative bg-semantic-accent-bg rounded border-2 border-dashed border-semantic-secondary-bg flex flex-col items-center justify-center product-body-text-4-regular mb-2">
                 <Icons.Upload01 className="w-8 h-8 p-1 stroke-semantic-fg-secondary mb-4" />
                 <div className="text-center w-full">
                     <span className="">
