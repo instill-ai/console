@@ -1,4 +1,3 @@
-// Sidebar.tsx
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBase";
 
 type SidebarProps = {

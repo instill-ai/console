@@ -1,6 +1,7 @@
-// lib/vdp-sdk/knowledge/knowledgeBaseMutations.ts
-import { createInstillAxiosClient } from "../helper";
 import { KnowledgeBase } from "./knowledgeBase";
+import { KnowledgeBaseService } from "./knowledgeBaseService";
+
+const knowledgeBaseService = new KnowledgeBaseService();
 
 export async function createKnowledgeBaseMutation({
   payload,
@@ -9,24 +10,17 @@ export async function createKnowledgeBaseMutation({
   payload: Partial<KnowledgeBase>;
   accessToken: string | null;
 }) {
-  const client = createInstillAxiosClient(accessToken);
-  const response = await client.post<{ body: KnowledgeBase }>(
-    `/artifact/kb`,
-    payload
-  );
-  return response.data.body;
+  return knowledgeBaseService.createKnowledgeBase(payload, accessToken);
 }
 
 export async function getKnowledgeBasesMutation({
   accessToken,
+  uid,
 }: {
   accessToken: string | null;
+  uid: string;
 }) {
-  const client = createInstillAxiosClient(accessToken);
-  const response = await client.get<{
-    body: { knowledgebases: KnowledgeBase[] };
-  }>(`/artifact/kb`);
-  return response.data.body.knowledgebases;
+  return knowledgeBaseService.getKnowledgeBases(accessToken, uid);
 }
 
 export async function updateKnowledgeBaseMutation({
@@ -38,12 +32,7 @@ export async function updateKnowledgeBaseMutation({
   payload: Partial<KnowledgeBase>;
   accessToken: string | null;
 }) {
-  const client = createInstillAxiosClient(accessToken);
-  const response = await client.patch<{ body: KnowledgeBase }>(
-    `/artifact/kb/${id}`,
-    payload
-  );
-  return response.data.body;
+  return knowledgeBaseService.updateKnowledgeBase(id, payload, accessToken);
 }
 
 export async function deleteKnowledgeBaseMutation({
@@ -53,6 +42,5 @@ export async function deleteKnowledgeBaseMutation({
   id: string;
   accessToken: string | null;
 }) {
-  const client = createInstillAxiosClient(accessToken);
-  await client.delete(`/artifact/kb/${id}`);
+  await knowledgeBaseService.deleteKnowledgeBase(id, accessToken);
 }
