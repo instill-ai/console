@@ -128,10 +128,6 @@ export const PipelineBuilderCanvas = ({
         });
         onNodesChange(nextChanges);
       }}
-      onMove={() => {
-        if (pipelineIsReadOnly) return;
-        updateSelectedConnectorNodeId(() => null);
-      }}
       onEdgesChange={(changes) => {
         if (pipelineIsReadOnly) return;
         onEdgesChange(changes);

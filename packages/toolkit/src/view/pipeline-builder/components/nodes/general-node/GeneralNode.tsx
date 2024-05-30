@@ -33,6 +33,7 @@ const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,
   entitySecrets: store.entitySecrets,
   updateRightPanelIsOpen: store.updateRightPanelIsOpen,
+  selectedConnectorNodeId: store.selectedConnectorNodeId,
   updateSelectedConnectorNodeId: store.updateSelectedConnectorNodeId,
 });
 
@@ -42,6 +43,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     pipelineIsReadOnly,
     entitySecrets,
     updateRightPanelIsOpen,
+    selectedConnectorNodeId,
     updateSelectedConnectorNodeId,
   } = useInstillStore(useShallow(selector));
 
@@ -59,12 +61,14 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
 
   const zoomLevel = useStore((s) => s.transform[2]);
   React.useEffect(() => {
+    if (selectedConnectorNodeId === id) return;
+
     if (zoomLevel < 0.5) {
       setNodeIsCollapsed(true);
     } else {
       setNodeIsCollapsed(false);
     }
-  }, [zoomLevel]);
+  }, [zoomLevel, id, selectedConnectorNodeId]);
 
   const checkIsHidden = useCheckIsHidden("onNode");
 
