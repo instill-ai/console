@@ -40,7 +40,7 @@ export const Sidebar = ({ activeTab, onTabChange, selectedKnowledgeBase }: Sideb
             >
                 Catalog / Files
             </div>
-            <div
+            {/* <div
                 className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${activeTab === "retrieve"
                     ? "bg-semantic-accent-bg text-semantic-accent-hover"
                     : selectedKnowledgeBase
@@ -50,7 +50,7 @@ export const Sidebar = ({ activeTab, onTabChange, selectedKnowledgeBase }: Sideb
                 onClick={() => selectedKnowledgeBase && onTabChange("retrieve")}
             >
                 Retrieve Test
-            </div>
+            </div> */}
         </aside>
     );
 };
