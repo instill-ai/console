@@ -5,3 +5,4 @@ export * from "./ModelHubSettingPageMainView";
 export * from "./ModelTablePlaceholder";
 export * from "./ModelsList";
 export * from "./ModelsListPagination";
+export * from "./ModelsTable";
