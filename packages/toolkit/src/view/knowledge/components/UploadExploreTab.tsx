@@ -81,7 +81,7 @@ export const UploadExploreTab = () => {
                 </p>
             </div>
             <Separator orientation="horizontal" className="my-4" />
-            <div className="w-full h-[150px] relative bg-semantic-accent-bg rounded border  border-dashed border-semantic-secondary-bg flex-col product-body-text-4-regular ">
+            <div className="w-full h-[150px] relative bg-semantic-accent-bg rounded-md border-2 border-dashed border-semantic-secondary-bg flex flex-col items-center justify-center product-body-text-4-regular">
                 <Icons.Upload01 className="w-8 h-8" />
                 <div className="text-center w-full">
                     <span className="">
@@ -91,14 +91,14 @@ export const UploadExploreTab = () => {
                         browse computer
                     </span>
                     <div className="">
-                        Max 15MB each
-                    </div>
-                    <div className=" ">
                         Support TXT, MARKDOWN, PDF
                     </div>
-                    {/* <div className=" ">
-                        Support TXT, MARKDOWN, PDF, PNG, JPG (DOCX, DOC, PPTX, PPT, HTML, XML, RTF).
-                    </div> */}
+                    <div className="">
+                        Max 15MB each
+                    </div>
+                    {/* <div className="">
+      Support TXT, MARKDOWN, PDF, PNG, JPG (DOCX, DOC, PPTX, PPT, HTML, XML, RTF).
+    </div> */}
                 </div>
             </div>
             <div className="w-full px-2 py-1.5  rounded border border-[#E1E6EF] justify-start items-center gap-2 inline-flex">
