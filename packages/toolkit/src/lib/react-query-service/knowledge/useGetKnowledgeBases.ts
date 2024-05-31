@@ -21,7 +21,9 @@ export function useGetKnowledgeBases({
       }
       const client = createInstillAxiosClient(accessToken);
       const response = await client.get<{
-        body: { knowledge_bases: KnowledgeBase[] };
+        body: {
+          knowledge_bases: KnowledgeBase[];
+        };
         error_msg: string;
         status_code: number;
       }>(`/v1alpha/users/${uid}/knowledge-base`);
