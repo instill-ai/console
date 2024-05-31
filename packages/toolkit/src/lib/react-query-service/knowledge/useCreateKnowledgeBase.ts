@@ -8,7 +8,11 @@ export function useCreateKnowledgeBase() {
       payload,
       accessToken,
     }: {
-      payload: Partial<KnowledgeBase>;
+      payload: {
+        name: string;
+        description: string;
+        tags: string[];
+      };
       accessToken: string | null;
     }) => {
       if (!accessToken) {
