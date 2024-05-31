@@ -1,10 +1,10 @@
 import { Icons, Separator, DropdownMenu, Button, Dialog, LinkButton } from "@instill-ai/design-system";
 import * as React from "react";
 import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
-import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/knowledgeBase";
 import { useUpdateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useUpdateKnowledgeBase";
 import { useCreateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useCreateKnowledgeBase";
 import { useDeleteKnowledgeBase } from "../../../lib/react-query-service/knowledge/useDeleteKnowledgeBase";
+import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 
 type CreateKnowledgeBaseCardProps = {
   knowledgeBase: KnowledgeBase;
@@ -122,7 +122,7 @@ export const CreateKnowledgeBaseCard = ({
       )}
       <div className="flex shadow cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 w-[360px] h-[175px]" onClick={onCardClick}>
         <div className="flex items-center justify-between">
-          <div className="product-headings-heading-4">{knowledgeBase.title}</div>
+          <div className="product-headings-heading-4">{knowledgeBase.name}</div>
         </div>
         <Separator orientation="horizontal" className="my-[10px]" />
         <p className="product-body-text-3-regular line-clamp-3 mb-auto">{knowledgeBase.description}</p>
@@ -138,7 +138,7 @@ export const CreateKnowledgeBaseCard = ({
             </div>
             <div className="flex flex-col items-start self-stretch justify-start gap-6">
               <div className="flex flex-col items-center justify-center gap-1">
-                <div className="product-headings-heading-3">Delete {knowledgeBase.title}</div>
+                <div className="product-headings-heading-3">Delete {knowledgeBase.name}</div>
                 <div className="text-center product-body-text-2-regular">Are you sure you want to delete this knowledge base?</div>
               </div>
               <div className="flex w-full gap-2">
