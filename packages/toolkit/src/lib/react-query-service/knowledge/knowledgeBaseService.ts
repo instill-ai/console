@@ -1,4 +1,4 @@
-import { createInstillAxiosClient } from "../helper";
+import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { KnowledgeBase } from "./knowledgeBase";
 
 export class KnowledgeBaseService {

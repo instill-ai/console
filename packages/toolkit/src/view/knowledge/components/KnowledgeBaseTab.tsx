@@ -3,9 +3,9 @@ import * as React from "react";
 import { KnowledgeBaseCard } from "./KnowledgeBaseCard";
 import { CreateKnowledgeBaseCard } from "./CreateKnowledgeBaseCard";
 import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
-import { useGetKnowledgeBases } from "../../../lib/vdp-sdk/knowledge/useGetKnowledgeBases";
-import { useCreateKnowledgeBase } from "../../../lib/vdp-sdk/knowledge/useCreateKnowledgeBase";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBase";
+import { useGetKnowledgeBases } from "../../../lib/react-query-service/knowledge/useGetKnowledgeBases";
+import { useCreateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useCreateKnowledgeBase";
+import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/knowledgeBase";
 import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
 
 type KnowledgeBaseTabProps = {
