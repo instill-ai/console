@@ -26,7 +26,7 @@ export function useGetKnowledgeBases({
         };
         error_msg: string;
         status_code: number;
-      }>(`/v1alpha/users/${uid}/knowledge-base`);
+      }>(`/users/${uid}/knowledge-base`);
       return response.data.body.knowledge_bases;
     },
     enabled,
