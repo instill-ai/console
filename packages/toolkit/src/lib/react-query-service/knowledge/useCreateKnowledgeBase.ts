@@ -23,7 +23,7 @@ export function useCreateKnowledgeBase() {
         body: KnowledgeBase;
         error_msg: string;
         status_code: number;
-      }>(`/v1alpha/knowledge-base`, payload);
+      }>(`/knowledge-base`, payload);
       return response.data.body;
     },
   });

@@ -26,7 +26,7 @@ export function useUpdateKnowledgeBase() {
         body: KnowledgeBase;
         error_msg: string;
         status_code: number;
-      }>(`/v1alpha/knowledge-base/${id}`, payload);
+      }>(`/knowledge-base/${id}`, payload);
       return response.data.body;
     },
   });
