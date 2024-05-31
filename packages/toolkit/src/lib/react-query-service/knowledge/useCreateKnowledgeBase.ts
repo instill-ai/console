@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { KnowledgeBase } from "./knowledgeBase";
-import { createKnowledgeBaseMutation } from "./knowledgeBaseMutations";
+import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { KnowledgeBase } from "../../vdp-sdk/knowledge/types";
 
 export function useCreateKnowledgeBase() {
   return useMutation({
@@ -11,11 +11,16 @@ export function useCreateKnowledgeBase() {
       payload: Partial<KnowledgeBase>;
       accessToken: string | null;
     }) => {
-      const knowledgeBase = await createKnowledgeBaseMutation({
-        payload,
-        accessToken,
-      });
-      return knowledgeBase;
+      if (!accessToken) {
+        return Promise.reject(new Error("accessToken not provided"));
+      }
+      const client = createInstillAxiosClient(accessToken);
+      const response = await client.post<{
+        body: KnowledgeBase;
+        error_msg: string;
+        status_code: number;
+      }>(`/v1alpha/knowledge-base`, payload);
+      return response.data.body;
     },
   });
 }
