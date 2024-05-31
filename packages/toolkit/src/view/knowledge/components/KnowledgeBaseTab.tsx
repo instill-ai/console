@@ -61,13 +61,13 @@ export const KnowledgeBaseTab = ({
     });
     const createKnowledgeBase = useCreateKnowledgeBase();
 
-    React.useEffect(() => {
-        setLoading(true);
-        getKnowledgeBases.refetch().then((result) => {
-            setKnowledgeBases(result.data || []);
-            setLoading(false);
-        });
-    }, [getKnowledgeBases]);
+    // React.useEffect(() => {
+    //     setLoading(true);
+    //     getKnowledgeBases.refetch().then((result) => {
+    //         setKnowledgeBases(result.data || []);
+    //         setLoading(false);
+    //     });
+    // }, [getKnowledgeBases]);
 
     const handleCreateKnowledgeSubmit = (data: {
         name: string;
