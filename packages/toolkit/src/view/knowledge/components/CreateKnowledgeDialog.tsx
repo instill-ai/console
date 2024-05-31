@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const CreateKnowledgeFormSchema = z.object({
-    title: z.string().min(1, { message: "Title is required" }),
+    name: z.string().min(1, { message: "Name is required" }),
     description: z.string().min(1, { message: "Description is required" }),
     tags: z.array(z.string()).optional(),
 });
@@ -35,7 +35,7 @@ export const CreateKnowledgeDialog = ({
     const form = useForm<z.infer<typeof CreateKnowledgeFormSchema>>({
         resolver: zodResolver(CreateKnowledgeFormSchema),
         defaultValues: {
-            title: "",
+            name: "",
             description: "",
             tags: [],
         },
@@ -58,7 +58,7 @@ export const CreateKnowledgeDialog = ({
                     >
                         <Form.Field
                             control={form.control}
-                            name="title"
+                            name="name"
                             render={({ field }) => (
                                 <Form.Item>
                                     <Form.Label className="product-button-button-2 text-semantic-fg-primary">

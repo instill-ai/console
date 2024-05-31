@@ -14,19 +14,19 @@ type KnowledgeBaseTabProps = {
 const mockKnowledgeBases: KnowledgeBase[] = [
     {
         id: "1",
-        title: "Knowledge Base 1",
+        name: "Knowledge Base 1",
         description: "This is the first knowledge base.",
         tags: ["tag1", "tag2"],
     },
     {
         id: "2",
-        title: "Knowledge Base 2",
+        name: "Knowledge Base 2",
         description: "This is the second knowledge base.",
         tags: ["tag3", "tag4"],
     },
     {
         id: "3",
-        title: "Knowledge Base 3",
+        name: "Knowledge Base 3",
         description: "This is the third knowledge base.",
         tags: ["tag5", "tag6"],
     },
@@ -43,7 +43,6 @@ export const KnowledgeBaseTab = ({
     });
 
     const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
 
     const me = useAuthenticatedUser({
         enabled: enabledQuery,
@@ -62,10 +61,25 @@ export const KnowledgeBaseTab = ({
     });
     const createKnowledgeBase = useCreateKnowledgeBase();
 
-    const handleCreateKnowledgeSubmit = (data: Partial<KnowledgeBase>) => {
+    React.useEffect(() => {
+        setLoading(true);
+        getKnowledgeBases.refetch().then((result) => {
+            setKnowledgeBases(result.data || []);
+            setLoading(false);
+        });
+    }, [getKnowledgeBases]);
+
+    const handleCreateKnowledgeSubmit = (data: {
+        name: string;
+        description: string;
+        tags?: string[];
+    }) => {
         createKnowledgeBase.mutate(
             {
-                payload: data,
+                payload: {
+                    ...data,
+                    tags: data.tags ?? []
+                },
                 accessToken,
             },
             {
@@ -75,17 +89,6 @@ export const KnowledgeBaseTab = ({
                 },
             }
         );
-
-        React.useEffect(() => {
-            setLoading(true);
-            getKnowledgeBases.refetch().then((result) => {
-                setKnowledgeBases(result.data || []);
-                setLoading(false);
-            });
-        }, [getKnowledgeBases]);
-
-
-
     };
 
     return (
