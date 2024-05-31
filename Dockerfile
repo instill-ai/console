@@ -4,7 +4,7 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-RUN npm install -g pnpm@8.8.0
+RUN npm install -g pnpm@9.1.4
 
 COPY . . 
 
