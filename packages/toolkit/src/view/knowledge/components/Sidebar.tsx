@@ -1,4 +1,4 @@
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBase";
+import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/knowledgeBase";
 
 type SidebarProps = {
     activeTab: string;
