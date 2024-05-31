@@ -3,10 +3,9 @@ import * as React from "react";
 import { KnowledgeBaseCard } from "./KnowledgeBaseCard";
 import { CreateKnowledgeBaseCard } from "./CreateKnowledgeBaseCard";
 import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
-import { useGetKnowledgeBases } from "../../../lib/react-query-service/knowledge/useGetKnowledgeBases";
-import { useCreateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useCreateKnowledgeBase";
-import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/knowledgeBase";
+import { useGetKnowledgeBases, useCreateKnowledgeBase } from "../../../lib/react-query-service/knowledge";
 import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
+import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 
 type KnowledgeBaseTabProps = {
     onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
@@ -33,11 +32,9 @@ const mockKnowledgeBases: KnowledgeBase[] = [
     },
 ];
 
-export const KnowledgeBaseTab = ({ onKnowledgeBaseSelect }: KnowledgeBaseTabProps) => {
-    const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
-    const [knowledgeBases, setKnowledgeBases] = React.useState<KnowledgeBase[]>([]);
-    const getKnowledgeBases = useGetKnowledgeBases();
-    const createKnowledgeBase = useCreateKnowledgeBase();
+export const KnowledgeBaseTab = ({
+    onKnowledgeBaseSelect,
+}: KnowledgeBaseTabProps) => {
     const [loading, setLoading] = React.useState(false);
 
     const selector = (store: InstillStore) => ({
@@ -47,34 +44,48 @@ export const KnowledgeBaseTab = ({ onKnowledgeBaseSelect }: KnowledgeBaseTabProp
 
     const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
+
     const me = useAuthenticatedUser({
         enabled: enabledQuery,
         accessToken,
     });
-
     const userID = me.isSuccess ? me.data.id : null;
 
-    React.useEffect(() => {
-        const fetchKnowledgeBases = async () => {
+    const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
+    const [knowledgeBases, setKnowledgeBases] = React.useState<KnowledgeBase[]>(
+        []
+    );
+    const getKnowledgeBases = useGetKnowledgeBases({
+        accessToken,
+        uid: userID as string,
+        enabled: true,
+    });
+    const createKnowledgeBase = useCreateKnowledgeBase();
+
+    const handleCreateKnowledgeSubmit = (data: Partial<KnowledgeBase>) => {
+        createKnowledgeBase.mutate(
+            {
+                payload: data,
+                accessToken,
+            },
+            {
+                onSuccess: (newKnowledgeBase) => {
+                    setKnowledgeBases([...knowledgeBases, newKnowledgeBase]);
+                    setIsCreateDialogOpen(false);
+                },
+            }
+        );
+
+        React.useEffect(() => {
             setLoading(true);
-            const knowledgeBasesData = await getKnowledgeBases.mutateAsync({
-                accessToken: null,
-                uid: userID as string,
+            getKnowledgeBases.refetch().then((result) => {
+                setKnowledgeBases(result.data || []);
+                setLoading(false);
             });
-            setKnowledgeBases(knowledgeBasesData);
-        };
+        }, [getKnowledgeBases]);
 
-        fetchKnowledgeBases();
-        setLoading(false);
-    }, []);
 
-    const handleCreateKnowledgeSubmit = async (data: any) => {
-        const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
-            payload: data,
-            accessToken: null,
-        });
-        setKnowledgeBases([...knowledgeBases, newKnowledgeBase]);
-        setIsCreateDialogOpen(false);
+
     };
 
     return (
