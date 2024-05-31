@@ -3,6 +3,7 @@
 import { Nullable } from "../../../type";
 import { ComponentOutputFieldBaseProps } from "../../types";
 import { FieldRoot } from "./FieldRoot";
+import { NoOutput } from "./NoOutput";
 
 export type NumberFieldProps = {
   number: Nullable<number>;
@@ -13,10 +14,14 @@ export const NumberField = (props: NumberFieldProps) => {
 
   return (
     <FieldRoot title={title} fieldKey={`${title}-field`}>
-      {number && !hideField ? (
-        <div className="flex min-h-[20px] w-full items-center break-all rounded-sm text-semantic-fg-primary product-body-text-4-regular">
-          {number}
-        </div>
+      {!hideField ? (
+        number !== null && !isNaN(number) ? (
+          <div className="flex min-h-[20px] w-full items-center break-all rounded-sm text-semantic-fg-primary product-body-text-4-regular">
+            {number}
+          </div>
+        ) : (
+          <NoOutput />
+        )
       ) : null}
     </FieldRoot>
   );

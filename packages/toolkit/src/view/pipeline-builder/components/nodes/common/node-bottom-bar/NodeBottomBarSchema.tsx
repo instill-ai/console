@@ -13,7 +13,7 @@ export const NodeBottomBarSchema = ({
   return (
     <div className="relative flex w-full flex-col p-4">
       <CopyToClipboardButton
-        className="absolute right-6 top-6 !border-none !bg-transparent"
+        className="absolute right-2 top-2 !border-none !bg-transparent !text-semantic-fg-on-default"
         iconClassName="!stroke-semantic-bg-primary"
         text={JSON.stringify(componentSchema, null, 2)}
       />

@@ -55,7 +55,7 @@ export const NodeBottomBarOutput = ({
           <div className="relative w-full">
             {outputData ? (
               <CopyToClipboardButton
-                className="absolute right-3 top-3 !border-none !bg-transparent"
+                className="absolute right-2 top-2 !border-none !bg-transparent !text-semantic-fg-on-default"
                 iconClassName="!stroke-semantic-bg-primary"
                 text={JSON.stringify(outputData, null, 2)}
               />

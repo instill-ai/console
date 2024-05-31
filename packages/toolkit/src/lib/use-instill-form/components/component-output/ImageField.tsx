@@ -3,6 +3,7 @@
 import { Nullable } from "../../../type";
 import { ComponentOutputFieldBaseProps } from "../../types";
 import { FieldRoot } from "./FieldRoot";
+import { NoOutput } from "./NoOutput";
 
 export type ImageFieldProps = {
   image: Nullable<string>;
@@ -13,10 +14,14 @@ export const ImageField = (props: ImageFieldProps) => {
 
   return (
     <FieldRoot title={title} fieldKey={`${title}-field`}>
-      {!hideField && image ? (
-        <div className="flex w-full">
-          <img src={image} alt={`${title}`} className="object-contain" />
-        </div>
+      {!hideField ? (
+        image ? (
+          <div className="flex w-full">
+            <img src={image} alt={`${title}`} className="object-contain" />
+          </div>
+        ) : (
+          <NoOutput />
+        )
       ) : null}
     </FieldRoot>
   );
