@@ -10,7 +10,12 @@ export function useUpdateKnowledgeBase() {
       accessToken,
     }: {
       id: string;
-      payload: Partial<KnowledgeBase>;
+      payload: {
+        name?: string;
+        description?: string;
+        tags?: string[];
+        owner_name?: string;
+      };
       accessToken: string | null;
     }) => {
       if (!accessToken) {

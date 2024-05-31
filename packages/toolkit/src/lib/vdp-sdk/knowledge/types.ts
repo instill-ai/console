@@ -1,6 +1,6 @@
 export interface KnowledgeBase {
   id: string;
-  title: string;
+  name: string;
   description: string;
   tags?: string[];
   inuse?: boolean;
