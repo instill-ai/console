@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 const CreateKnowledgeFormSchema = z.object({
     title: z.string().min(1, { message: "Title is required" }),
     description: z.string().min(1, { message: "Description is required" }),
-    tags: z.string().optional(),
+    tags: z.array(z.string()).optional(),
 });
 
 type CreateKnowledgeFormProps = {
@@ -37,7 +37,7 @@ export const CreateKnowledgeDialog = ({
         defaultValues: {
             title: "",
             description: "",
-            tags: "",
+            tags: [],
         },
     });
 
