@@ -6,7 +6,7 @@ import { UploadExploreTab } from "./components/UploadExploreTab";
 import { CatalogFilesTab } from "./components/CatalogFilesTab";
 import { RetrieveTestTab } from "./components/RetrieveTestTab";
 import * as React from "react";
-import { KnowledgeBase } from "../../lib/react-query-service/knowledge/knowledgeBase";
+import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/types";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
