@@ -14,10 +14,11 @@ export function useDeleteKnowledgeBase() {
         return Promise.reject(new Error("accessToken not provided"));
       }
       const client = createInstillAxiosClient(accessToken);
-      await client.delete<{
+      const response = await client.delete<{
         error_msg: string;
         status_code: number;
       }>(`/v1alpha/knowledge-base/${id}`);
+      return response.data;
     },
   });
 }
