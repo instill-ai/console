@@ -17,7 +17,7 @@ export function useDeleteKnowledgeBase() {
       const response = await client.delete<{
         error_msg: string;
         status_code: number;
-      }>(`/v1alpha/knowledge-base/${id}`);
+      }>(`/knowledge-base/${id}`);
       return response.data;
     },
   });
