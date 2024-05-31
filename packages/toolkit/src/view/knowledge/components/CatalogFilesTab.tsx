@@ -1,5 +1,5 @@
 import { Button, Icons, Separator, Tag, Textarea } from "@instill-ai/design-system";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBase";
+import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/knowledgeBase";
 
 type CatalogFilesTabProps = {
     knowledgeBase: KnowledgeBase;

@@ -1,10 +1,10 @@
 import { Icons, Separator, DropdownMenu, Button, Dialog, LinkButton } from "@instill-ai/design-system";
 import * as React from "react";
 import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBase";
-import { useUpdateKnowledgeBase } from "../../../lib/vdp-sdk/knowledge/useUpdateKnowledgeBase";
-import { useCreateKnowledgeBase } from "../../../lib/vdp-sdk/knowledge/useCreateKnowledgeBase";
-import { useDeleteKnowledgeBase } from "../../../lib/vdp-sdk/knowledge/useDeleteKnowledgeBase";
+import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/knowledgeBase";
+import { useUpdateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useUpdateKnowledgeBase";
+import { useCreateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useCreateKnowledgeBase";
+import { useDeleteKnowledgeBase } from "../../../lib/react-query-service/knowledge/useDeleteKnowledgeBase";
 
 type CreateKnowledgeBaseCardProps = {
   knowledgeBase: KnowledgeBase;

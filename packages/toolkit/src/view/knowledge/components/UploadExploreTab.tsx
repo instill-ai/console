@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/knowledgeBase";
+import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/knowledgeBase";
 
 const UploadExploreFormSchema = z.object({
     convertTransformFiles: z.string().min(1, { message: "Convert/Transform files is required" }),
