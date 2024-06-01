@@ -4,6 +4,7 @@ export * from "./useDeployUserModel";
 export * from "./useModelDefinition";
 export * from "./useModelDefinitions";
 export * from "./useInfiniteModels";
+export * from "./useInfiniteUserModels";
 export * from "./useUndeployUserModel";
 export * from "./useUpdateUserModel";
 export { useUserModel } from "./useUserModel";
