@@ -5,28 +5,25 @@ import {
   ModelOverview,
 } from ".";
 import { LoadingSpin } from "../../../components";
-import { Model } from "../../../lib";
+import { Model, ModelState, Nullable } from "../../../lib";
 import { ModelTabNames } from "../../../server";
 
 export type ModelContentViewerProps = {
   selectedTab: ModelTabNames;
   model?: Model;
   onUpdate: () => void;
+  modelState: Nullable<ModelState>;
 };
 
 export const ModelContentViewer = ({
   selectedTab,
   model,
   onUpdate,
+  modelState,
 }: ModelContentViewerProps) => {
-  let content = <ModelOverview model={model} />;
+  let content = null;
 
   switch (selectedTab) {
-    case "overview": {
-      content = <ModelOverview model={model} />;
-
-      break;
-    }
     case "api": {
       content = <ModelApi model={model} />;
 
@@ -44,8 +41,9 @@ export const ModelContentViewer = ({
 
       break;
     }
+    case "overview":
     default: {
-      content = <ModelOverview model={model} />;
+      content = <ModelOverview model={model} modelState={modelState} />;
     }
   }
 

@@ -37,7 +37,6 @@ export const ModelsTable = (props: ModelsTableProps) => {
     modelNames: models.length > 0 ? models.map((model) => model.name) : [],
     enabled: enableQuery && models.length > 0,
     accessToken,
-    retry: false,
   });
 
   const columns: ColumnDef<Model>[] = [
@@ -76,17 +75,11 @@ export const ModelsTable = (props: ModelsTableProps) => {
         return (
           <div className="grid justify-items-center">
             <StateLabel
-              className="rounded-full px-2 py-0.5"
               state={
                 modelsWatchState.isSuccess
                   ? modelsWatchState.data[name]?.state
                   : "STATE_UNSPECIFIED"
               }
-              enableBgColor
-              enableIcon={false}
-              iconHeight="h-3"
-              iconWidth="w-3"
-              iconPosition="my-auto"
             />
           </div>
         );

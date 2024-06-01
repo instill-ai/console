@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { EntityAvatar } from "../../../components";
+import { EntityAvatar, StateLabel } from "../../../components";
 import {
   GitHubIcon,
   Icons,
@@ -9,7 +9,7 @@ import {
   Nullable,
   Skeleton,
 } from "@instill-ai/design-system";
-import { Model } from "../../../lib";
+import { Model, ModelState } from "../../../lib";
 import { ModelTabNames } from "../../../server";
 
 export type HeadProps = {
@@ -17,6 +17,7 @@ export type HeadProps = {
   onTabChange: (tabName: ModelTabNames) => void;
   model?: Model;
   isReady: boolean;
+  modelState: Nullable<ModelState>;
 };
 
 const OWNER = {
@@ -48,6 +49,7 @@ export const ModelSettingsHead = ({
   onTabChange,
   model,
   isReady,
+  modelState,
 }: HeadProps) => {
   const owner = useMemo(() => {
     if (!model) {
@@ -96,6 +98,7 @@ export const ModelSettingsHead = ({
                 <span className="text-semantic-fg-disabled">/</span>
                 <span className="text-semantic-fg-primary">{model?.id}</span>
               </div>
+              {modelState ? <StateLabel state={modelState} /> : null}
               <Tag
                 className="my-auto h-6 gap-x-1 !border-0 !py-0"
                 variant="lightNeutral"

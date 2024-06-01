@@ -6,6 +6,7 @@ import {
   useAppEntity,
   useQueryClient,
   useUserModel,
+  useWatchUserModels,
 } from "../../lib";
 import { ModelContentViewer, ModelSettingsHead } from "./view-model";
 import { useParams, useRouter } from "next/navigation";
@@ -38,6 +39,19 @@ export const ModelHubSettingPageMainView = (
     enabled: enableQuery && entityObject.isSuccess,
     accessToken,
   });
+  const modelsWatchState = useWatchUserModels({
+    modelNames: model.isSuccess ? [model.data.name] : [],
+    enabled: enableQuery && model.isSuccess,
+    accessToken,
+  });
+
+  const modelState = React.useMemo(() => {
+    if (model.isSuccess && modelsWatchState.isSuccess) {
+      return modelsWatchState.data[model.data.name].state;
+    }
+
+    return null;
+  }, [model, modelsWatchState]);
 
   const onModelUpdate = () => {
     model.refetch();
@@ -57,11 +71,13 @@ export const ModelHubSettingPageMainView = (
         selectedTab={tab as ModelTabNames}
         model={model.data}
         isReady={!model.isSuccess}
+        modelState={modelState}
       />
       <ModelContentViewer
         selectedTab={tab as ModelTabNames}
         model={model.data}
         onUpdate={onModelUpdate}
+        modelState={modelState}
       />
     </div>
   );

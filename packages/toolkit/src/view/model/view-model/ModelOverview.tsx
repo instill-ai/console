@@ -10,6 +10,7 @@ import {
   GeneralRecord,
   InstillStore,
   Model,
+  ModelState,
   ModelTask,
   sendAmplitudeData,
   toastInstillError,
@@ -34,6 +35,7 @@ export type ModelOutputActiveView = "preview" | "json";
 
 export type ModelOverviewProps = {
   model?: Model;
+  modelState: Nullable<ModelState>;
 };
 
 const selector = (store: InstillStore) => ({
@@ -43,7 +45,7 @@ const selector = (store: InstillStore) => ({
 const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
   taskName ? taskName.replace("TASK_", "").toLocaleLowerCase() : null;
 
-export const ModelOverview = ({ model }: ModelOverviewProps) => {
+export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [isTriggered, setIsTriggered] = useState(false);
@@ -59,11 +61,18 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
   > | null>(null);
   const { accessToken } = useInstillStore(useShallow(selector));
 
+  const isModelTriggerable = useMemo(() => {
+    return model && modelState
+      ? model.permission.can_trigger &&
+          ["STATE_ACTIVE", "STATE_IDLE"].includes(modelState)
+      : false;
+  }, [modelState, model]);
+
   const { form, fields, ValidatorSchema } = useInstillForm(
     model?.input_schema || null,
     null,
     {
-      disabledAll: !model?.permission.can_trigger,
+      disabledAll: !isModelTriggerable,
     }
   );
 
@@ -155,7 +164,7 @@ export const ModelOverview = ({ model }: ModelOverviewProps) => {
               <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
               <div className="flex flex-row-reverse">
                 <Button
-                  disabled={!model?.permission.can_trigger || isTriggered}
+                  disabled={!isModelTriggerable || isTriggered}
                   type="submit"
                   size="md"
                   variant="secondaryColour"
