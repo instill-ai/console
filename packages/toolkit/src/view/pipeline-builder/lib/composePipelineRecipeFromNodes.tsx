@@ -22,7 +22,7 @@ export function composePipelineRecipeFromNodes(
         metadata: node.data.metadata,
         input: node.data.input,
         condition: node.data.condition,
-        output_elements: node.data.output_elements,
+        outputElements: node.data.outputElements,
         data_specification: null,
         type: node.data.type,
         component: Object.fromEntries(
@@ -45,6 +45,9 @@ export function composePipelineRecipeFromNodes(
                       )
                     : undefined,
                   condition: e.condition,
+                  type: e.type,
+                  task: e.task,
+                  metadata: e.metadata ?? undefined,
                 },
               ];
             }

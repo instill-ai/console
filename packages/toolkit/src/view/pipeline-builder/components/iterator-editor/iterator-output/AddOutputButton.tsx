@@ -31,16 +31,16 @@ export const AddOutputButton = ({
         onClick={() => {
           let newOutputElements = {};
 
-          if (targetIteratorNode?.data.output_elements) {
+          if (targetIteratorNode?.data.outputElements) {
             const currentIndexArray = Object.keys(
-              targetIteratorNode?.data.output_elements
+              targetIteratorNode?.data.outputElements
             )
               .map((key) => key.replace("result_", ""))
               .map(Number)
               .sort((a, b) => b - a);
 
             newOutputElements = {
-              ...targetIteratorNode?.data.output_elements,
+              ...targetIteratorNode?.data.outputElements,
               [`result_${currentIndexArray[0] === 0 ? 1 : currentIndexArray[0] + 1}`]:
                 "",
             };
@@ -52,7 +52,7 @@ export const AddOutputButton = ({
                   ...node,
                   data: {
                     ...node.data,
-                    output_elements: newOutputElements,
+                    outputElements: newOutputElements,
                   },
                 };
               }

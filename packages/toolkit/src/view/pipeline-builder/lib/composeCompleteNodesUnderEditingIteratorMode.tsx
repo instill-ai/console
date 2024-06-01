@@ -20,6 +20,7 @@ export function composeCompleteNodesUnderEditingIteratorMode({
       return {
         ...node,
         data: {
+          ...node.data,
           component,
           metadata,
         },

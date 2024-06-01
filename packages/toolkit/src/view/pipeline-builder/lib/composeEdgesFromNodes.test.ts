@@ -39,8 +39,6 @@ test("should get edges from basic components", () => {
 
   const edges = composeEdgesFromNodes(nodes);
 
-  console.log(edges);
-
   expect(edges[0].source).toBe("trigger");
   expect(edges[0].target).toBe("response");
 

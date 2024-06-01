@@ -91,7 +91,7 @@ export const SingleSelectField = ({
           ) {
             form.setValue(
               currentCredentialFieldPath,
-              "${secrets." + `${InstillCredit.key}` + "}"
+              "${secret." + `${InstillCredit.key}` + "}"
             );
 
             if (updateForceCloseCollapsibleFormGroups) {

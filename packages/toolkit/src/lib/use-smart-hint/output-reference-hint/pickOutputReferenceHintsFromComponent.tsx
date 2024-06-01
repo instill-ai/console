@@ -25,7 +25,7 @@ export function pickOutputReferenceHintsFromComponent({
     let iteratorHints: SmartHint[] = [];
 
     if (consoleComposedIteratorSchema) {
-      Object.entries(component.output_elements).forEach(([key, value]) => {
+      Object.entries(component.outputElements).forEach(([key, value]) => {
         const referencePathArray = value
           .replace("${", "")
           .replace("}", "")

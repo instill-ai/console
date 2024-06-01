@@ -26,14 +26,14 @@ export const DeleteOutputButton = ({ outputKey }: { outputKey: string }) => {
         updateTempSavedNodesForEditingIteratorFlow((nodes) =>
           nodes.map((node) => {
             if (node.id === editingIteratorID && isIteratorNode(node)) {
-              delete node.data.output_elements[outputKey];
+              delete node.data.outputElements[outputKey];
 
               return {
                 ...node,
                 data: {
                   ...node.data,
-                  output_elements: {
-                    ...node.data.output_elements,
+                  outputElements: {
+                    ...node.data.outputElements,
                   },
                 },
               };

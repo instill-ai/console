@@ -165,7 +165,7 @@ export type PipelineGeneralComponent = {
 
 export type PipelineIteratorComponent = {
   input: string;
-  output_elements: Record<string, string>;
+  outputElements: Record<string, string>;
   component: PipelineComponentMap;
   condition: Nullable<string>;
   data_specification: Nullable<DataSpecification>;

@@ -117,7 +117,7 @@ export function useAddNodeWithDefinition({
             data: {
               input: "",
               type: "iterator",
-              output_elements: {
+              outputElements: {
                 // This is the default output element
                 result_0: "",
               },

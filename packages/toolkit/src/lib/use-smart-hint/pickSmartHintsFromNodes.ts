@@ -82,18 +82,18 @@ export function pickSmartHintsFromNodes({
       // The data_specification.output may not be ready due to user haven't
       // save the changes.
 
-      // The current solution is treating the iterator.output_elements as
+      // The current solution is treating the iterator.outputElements as
       // the source of truth instead of its data_specification.output
 
       /*
-       * output_elements = {
+       * outputElements = {
        *  result_0: "${connector_1.output.result}",
        * }
        */
 
       const consoleGeneratedHints: SmartHint[] = [];
 
-      Object.entries(node.data.output_elements).forEach(([key, value]) => {
+      Object.entries(node.data.outputElements).forEach(([key, value]) => {
         const componentKey = value
           .replace("${", "")
           .replace("}", "")
