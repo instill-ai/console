@@ -1,8 +1,7 @@
 import { Node } from "reactflow";
 import { NodeData } from "../type";
-import { isIteratorNode } from "./checkNodeType";
-import { extractComponentFromNodes } from "./extractComponentFromNodes";
-import { composePipelineMetadataFromNodes } from "./composePipelineMetadataFromNodes";
+import { composePipelineMetadataMapFromNodes } from "./composePipelineMetadataMapFromNodes";
+import { composePipelineComponentMapFromNodes } from "./composePipelineComponentMapFromNodes";
 
 export function composeCompleteNodesUnderEditingIteratorMode({
   editingIteratorID,
@@ -14,18 +13,15 @@ export function composeCompleteNodesUnderEditingIteratorMode({
   nodesOutsideIterator: Node<NodeData>[];
 }): Node<NodeData>[] {
   return nodesOutsideIterator?.map((node) => {
-    if (node.id === editingIteratorID && isIteratorNode(node)) {
-      const components = extractComponentFromNodes(nodesInIterator);
-      const metadata = composePipelineMetadataFromNodes(nodesInIterator);
+    if (node.id === editingIteratorID && node.type === "iteratorNode") {
+      const component = composePipelineComponentMapFromNodes(nodesInIterator);
+      const metadata = composePipelineMetadataMapFromNodes(nodesInIterator);
 
       return {
         ...node,
         data: {
           ...node.data,
-          iterator_component: {
-            ...node.data.iterator_component,
-            components,
-          },
+          component,
           metadata,
         },
       };

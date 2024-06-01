@@ -74,12 +74,12 @@ export async function createGraphLayout(
   // return fixed layout
   if (
     nodes.length === 2 &&
-    nodes.findIndex((node) => node.data.id === "trigger") !== -1 &&
-    nodes.findIndex((node) => node.data.id === "response") !== -1
+    nodes.findIndex((node) => node.id === "trigger") !== -1 &&
+    nodes.findIndex((node) => node.id === "response") !== -1
   ) {
     return {
       nodes: nodes.map((node) => {
-        if (node.data.id === "trigger") {
+        if (node.id === "trigger") {
           node.position = { x: 0, y: 0 };
         } else {
           node.position = { x: 350, y: 0 };
@@ -91,7 +91,7 @@ export async function createGraphLayout(
   }
 
   nodes.forEach((node) => {
-    if (node.data.id === "trigger" || node.data.id === "response") {
+    if (node.id === "trigger" || node.id === "response") {
       elkNodes.push({
         id: node.id,
         width: TRIGGER_RESPONSE_NODE.width,
@@ -137,7 +137,7 @@ export async function createGraphLayout(
       // We are shifting the dagre node position (anchor=center center) to the top left
       // so it matches the React Flow node anchor point (top left).
 
-      if (node.data.id === "trigger" || node.data.id === "response") {
+      if (node.id === "trigger" || node.id === "response") {
         node.position = {
           x: elkNode.x - TRIGGER_RESPONSE_NODE.width / 2,
           y: elkNode.y - TRIGGER_RESPONSE_NODE.height / 2,

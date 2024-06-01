@@ -1,24 +1,17 @@
 import {
   PipelineComponent,
-  PipelineConnectorComponent,
+  PipelineGeneralComponent,
   PipelineIteratorComponent,
-  PipelineOperatorComponent,
 } from "../../../lib";
 
-export function isConnectorComponent(
+export function isPipelineGeneralComponent(
   component: PipelineComponent
-): component is PipelineConnectorComponent {
-  return "connector_component" in component;
+): component is PipelineGeneralComponent {
+  return component.type !== "iterator";
 }
 
-export function isOperatorComponent(
-  component: PipelineComponent
-): component is PipelineOperatorComponent {
-  return "operator_component" in component;
-}
-
-export function isIteratorComponent(
+export function isPipelineIteratorComponent(
   component: PipelineComponent
 ): component is PipelineIteratorComponent {
-  return "iterator_component" in component;
+  return component.type === "iterator";
 }

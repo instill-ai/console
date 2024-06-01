@@ -1,13 +1,7 @@
 import { Node } from "reactflow";
-import {
-  GeneralRecord,
-  Nullable,
-  PipelineRecipe,
-  TriggerByRequest,
-} from "../../../lib";
+import { GeneralRecord, Nullable, PipelineRecipe } from "../../../lib";
 import { NodeData, PipelineComponentMetadata } from "../type";
 import { createNodesFromPipelineComponents } from "./createNodesFromPipelineComponents";
-import { isTriggerByRequest } from "./isTriggerByRequest";
 
 export type CreateNodesFromPipelineRecipeOptions = {
   metadata?: GeneralRecord;
@@ -20,35 +14,26 @@ export function createNodesFromPipelineRecipe(
   const metadata = options?.metadata;
   const nodes: Node<NodeData>[] = [];
 
-  const componentNodes = createNodesFromPipelineComponents(recipe.components, {
-    metadata,
-  });
-  nodes.push(...componentNodes);
+  if (recipe.component) {
+    const componentNodes = createNodesFromPipelineComponents(recipe.component, {
+      metadata,
+    });
+    nodes.push(...componentNodes);
+  }
 
   // create trigger node
 
   let triggerMetadata: Nullable<PipelineComponentMetadata> = null;
 
-  if (
-    metadata &&
-    "components" in metadata &&
-    Array.isArray(metadata.components)
-  ) {
-    triggerMetadata = metadata.components.find((c) => c.id === "trigger");
-  }
-
-  let triggerByRequest: Nullable<TriggerByRequest> = null;
-
-  if (isTriggerByRequest(recipe.trigger)) {
-    triggerByRequest = recipe.trigger;
+  if (metadata && "component" in metadata) {
+    triggerMetadata = metadata.component["trigger"];
   }
 
   nodes.push({
     id: "trigger",
     type: "triggerNode",
     data: {
-      id: "trigger",
-      fields: triggerByRequest?.trigger_by_request.request_fields ?? {},
+      fields: recipe.variable ?? {},
       note: triggerMetadata ? triggerMetadata.note : null,
     },
     position: triggerMetadata
@@ -60,20 +45,15 @@ export function createNodesFromPipelineRecipe(
 
   let responseMetadata: Nullable<PipelineComponentMetadata> = null;
 
-  if (
-    metadata &&
-    "components" in metadata &&
-    Array.isArray(metadata.components)
-  ) {
-    responseMetadata = metadata.components.find((c) => c.id === "response");
+  if (metadata && "component" in metadata) {
+    responseMetadata = metadata.component["response"];
   }
 
   nodes.push({
     id: "response",
     type: "responseNode",
     data: {
-      id: "response",
-      fields: triggerByRequest?.trigger_by_request.response_fields ?? {},
+      fields: recipe.output ?? {},
       note: responseMetadata ? responseMetadata.note : null,
     },
     position: responseMetadata

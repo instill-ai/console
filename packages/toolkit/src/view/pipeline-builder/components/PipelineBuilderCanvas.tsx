@@ -15,12 +15,11 @@ import {
   useShallow,
 } from "../../../lib";
 import {
-  ConnectorNode,
   EmptyNode,
   IteratorNode,
-  OperatorNode,
   ResponseNode,
   TriggerNode,
+  GeneralNode,
 } from "./nodes";
 import { CustomEdge } from "./CustomEdge";
 import { isResponseNode, isTriggerNode } from "../lib";
@@ -42,11 +41,10 @@ const selector = (store: InstillStore) => ({
 
 const nodeTypes = {
   triggerNode: TriggerNode,
-  connectorNode: ConnectorNode,
   emptyNode: EmptyNode,
   responseNode: ResponseNode,
-  operatorNode: OperatorNode,
   iteratorNode: IteratorNode,
+  generalNode: GeneralNode,
 };
 
 const edgeTypes = {

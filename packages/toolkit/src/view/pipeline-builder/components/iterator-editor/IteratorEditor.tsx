@@ -13,11 +13,11 @@ import {
 import { SelectComponentDialog } from "..";
 import {
   composeEdgesFromNodes,
-  composePipelineMetadataFromNodes,
+  composePipelineMetadataMapFromNodes,
   isIteratorNode,
   isResponseNode,
   isTriggerNode,
-  useConstructNodeFromDefinition,
+  useAddNodeWithDefinition,
 } from "../../lib";
 import { ReactFlowInstance } from "reactflow";
 import { PipelineBuilderCanvas } from "../PipelineBuilderCanvas";
@@ -39,7 +39,7 @@ const selector = (store: InstillStore) => ({
 
 export type InOutputOption = {
   path: string;
-  instill_format: string;
+  instillFormat: string;
   description?: string;
 };
 
@@ -65,7 +65,7 @@ export const IteratorEditor = ({
     updateTempSavedNodesForEditingIteratorFlow,
   } = useInstillStore(useShallow(selector));
 
-  const constructNode = useConstructNodeFromDefinition({ reactFlowInstance });
+  const addNode = useAddNodeWithDefinition({ reactFlowInstance });
 
   return (
     <div className="flex h-full flex-col bg-semantic-bg-secondary p-4">
@@ -74,10 +74,7 @@ export const IteratorEditor = ({
           onClick={() => {
             const newNodes = tempSavedNodesForEditingIteratorFlow.map(
               (node) => {
-                if (
-                  node.data.id === editingIteratorID &&
-                  isIteratorNode(node)
-                ) {
+                if (node.id === editingIteratorID && isIteratorNode(node)) {
                   const components = nodes
                     .filter(
                       (node) => !isTriggerNode(node) || !isResponseNode(node)
@@ -88,11 +85,8 @@ export const IteratorEditor = ({
                     ...node,
                     data: {
                       ...node.data,
-                      iterator_component: {
-                        ...node.data.iterator_component,
-                        components,
-                      },
-                      metadata: composePipelineMetadataFromNodes(nodes),
+                      components,
+                      metadata: composePipelineMetadataMapFromNodes(nodes),
                     },
                   };
                 }
@@ -148,7 +142,7 @@ export const IteratorEditor = ({
         open={selectDefinitionDialogIsOpen}
         onOpenChange={setSelectDefinitionDialogIsOpen}
         onSelect={(definition) => {
-          constructNode(definition);
+          addNode(definition);
           setSelectDefinitionDialogIsOpen(false);
         }}
         disabledTrigger={true}

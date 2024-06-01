@@ -1,15 +1,15 @@
 import { test, expect } from "vitest";
-import { PipelineTriggerRequestFields } from "../vdp-sdk";
 import { transformPipelineTriggerRequestFieldsToSmartHints } from "./transformPipelineTriggerRequestFieldsToSmartHints";
+import { PipelineVariableFieldMap } from "../vdp-sdk";
 
-test("should transform pipeline trigger request fields to smart hints", () => {
-  const fields: PipelineTriggerRequestFields = {
+test("should transform pipeline variables to smart hints", () => {
+  const fields: PipelineVariableFieldMap = {
     text: {
-      instill_format: "string",
+      instillFormat: "string",
       title: "Foo",
     },
     audio: {
-      instill_format: "audio/*",
+      instillFormat: "audio/*",
       title: "Audio",
     },
   };
@@ -38,13 +38,13 @@ test("should transform start operator metadata to smart hints with empty metadat
 });
 
 test("should transform array metadata to smart hints", () => {
-  const fields: PipelineTriggerRequestFields = {
+  const fields: PipelineVariableFieldMap = {
     text: {
-      instill_format: "array:string",
+      instillFormat: "array:string",
       title: "Text",
     },
     images: {
-      instill_format: "array:image/*",
+      instillFormat: "array:image/*",
       title: "Images",
     },
   };

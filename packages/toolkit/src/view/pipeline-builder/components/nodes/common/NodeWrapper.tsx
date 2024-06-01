@@ -20,6 +20,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const NodeWrapper = ({
+  nodeID,
   nodeData,
   children,
   noteIsOpen,
@@ -28,6 +29,7 @@ export const NodeWrapper = ({
   disabledSourceHandler,
   disabledTargetHandler,
 }: {
+  nodeID: string;
   nodeData: NodeData;
   children: React.ReactNode;
   noteIsOpen: boolean;
@@ -53,25 +55,25 @@ export const NodeWrapper = ({
   const reactflowEdges = useEdges();
   const hasTargetEdges = React.useMemo(() => {
     if (edges.length === 0 && reactflowEdges.length !== 0) {
-      return reactflowEdges.some((edge) => edge.target === nodeData.id);
+      return reactflowEdges.some((edge) => edge.target === nodeID);
     }
 
-    return edges.some((edge) => edge.target === nodeData.id);
-  }, [edges, reactflowEdges, nodeData.id]);
+    return edges.some((edge) => edge.target === nodeID);
+  }, [edges, reactflowEdges, nodeID]);
 
   const hasSourceEdges = React.useMemo(() => {
     if (edges.length === 0 && reactflowEdges.length !== 0) {
-      return reactflowEdges.some((edge) => edge.source === nodeData.id);
+      return reactflowEdges.some((edge) => edge.source === nodeID);
     }
 
-    return edges.some((edge) => edge.source === nodeData.id);
-  }, [edges, nodeData.id, reactflowEdges]);
+    return edges.some((edge) => edge.source === nodeID);
+  }, [edges, nodeID, reactflowEdges]);
 
   return (
     <div
       className="relative"
       onClick={() => {
-        updateSelectedConnectorNodeId(() => nodeData.id);
+        updateSelectedConnectorNodeId(() => nodeID);
 
         // We reorder the edges so that the selected edge is on top of the unselected edges
         updateEdges((edges) => {
@@ -79,7 +81,7 @@ export const NodeWrapper = ({
           const unSelectedEdges: Edge[] = [];
 
           edges.forEach((edge) => {
-            if (edge.source === nodeData.id || edge.target === nodeData.id) {
+            if (edge.source === nodeID || edge.target === nodeID) {
               selectedEdges.push(edge);
             } else {
               unSelectedEdges.push(edge);
@@ -108,7 +110,7 @@ export const NodeWrapper = ({
             timer.current = window.setTimeout(() => {
               updateNodes((nodes) =>
                 nodes.map((node) => {
-                  if (node.id === nodeData.id) {
+                  if (node.id === nodeID) {
                     node.data = {
                       ...node.data,
                       note: e.target.value,
@@ -133,7 +135,7 @@ export const NodeWrapper = ({
             "flex w-[var(--pipeline-builder-node-available-width)] flex-col rounded-sm border-2 border-semantic-bg-primary bg-semantic-bg-base-bg shadow-md hover:shadow-lg",
             {
               "outline outline-2 outline-offset-1 outline-semantic-accent-default":
-                nodeData.id === selectedConnectorNodeId,
+                nodeID === selectedConnectorNodeId,
             }
           )}
         >
@@ -142,7 +144,7 @@ export const NodeWrapper = ({
         </div>
         {renderBottomBarInformation ? (
           <div
-            id={`${nodeData.id}-node-bottom-information-container`}
+            id={`${nodeID}-node-bottom-information-container`}
             className="nodrag nowheel absolute bottom-0 left-0 w-[var(--pipeline-builder-node-available-width)] translate-y-[calc(100%+16px)] rounded-sm bg-semantic-bg-base-bg shadow-md"
           >
             {renderBottomBarInformation()}
@@ -153,7 +155,7 @@ export const NodeWrapper = ({
             className={hasTargetEdges ? "" : "!opacity-0"}
             type="target"
             position={Position.Left}
-            id={nodeData.id}
+            id={nodeID}
           />
         )}
         {disabledSourceHandler ? null : (
@@ -161,7 +163,7 @@ export const NodeWrapper = ({
             className={hasSourceEdges ? "" : "!opacity-0"}
             type="source"
             position={Position.Right}
-            id={nodeData.id}
+            id={nodeID}
           />
         )}
       </NodeBottomBarProvider>

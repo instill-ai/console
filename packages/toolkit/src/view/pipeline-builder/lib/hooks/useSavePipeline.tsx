@@ -14,8 +14,8 @@ import {
 } from "../../../../lib";
 import {
   composeEdgesFromNodes,
-  composePipelineMetadataFromNodes,
-  constructPipelineRecipeFromNodes,
+  composePipelineMetadataMapFromNodes,
+  composePipelineRecipeFromNodes,
 } from "..";
 import { useToast } from "@instill-ai/design-system";
 import { isAxiosError } from "axios";
@@ -98,8 +98,8 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
       if (!pipelineIsNew && pipelineRecipeIsDirty) {
         const payload: UpdateUserPipelinePayload = {
           name: entity.data.pipelineName,
-          recipe: constructPipelineRecipeFromNodes(targetNodes),
-          metadata: composePipelineMetadataFromNodes(targetNodes),
+          recipe: composePipelineRecipeFromNodes(targetNodes),
+          metadata: composePipelineMetadataMapFromNodes(targetNodes),
         };
 
         try {
@@ -116,6 +116,7 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
           const newNodes = createNodesFromPipelineRecipe(newPipeline.recipe, {
             metadata: newPipeline.metadata,
           });
+
           const newEdges = composeEdgesFromNodes(newNodes);
 
           if (isEditingIterator) {
@@ -160,8 +161,8 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
 
       const payload: CreateUserPipelinePayload = {
         id: pipelineId,
-        recipe: constructPipelineRecipeFromNodes(targetNodes),
-        metadata: composePipelineMetadataFromNodes(targetNodes),
+        recipe: composePipelineRecipeFromNodes(targetNodes),
+        metadata: composePipelineMetadataMapFromNodes(targetNodes),
       };
 
       try {

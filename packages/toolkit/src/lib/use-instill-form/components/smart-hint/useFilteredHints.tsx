@@ -44,7 +44,7 @@ export function useFilteredHints({
     if (instillSecret && secrets) {
       allHints = secrets.map((secret) => ({
         key: secret.id,
-        path: `secrets.${secret.id}`,
+        path: `secret.${secret.id}`,
         instillFormat: "string",
         type: "string",
         properties: [],
@@ -56,7 +56,7 @@ export function useFilteredHints({
         ...allHints,
         {
           key: "instillCredit",
-          path: `secrets.${InstillCredit.key}`,
+          path: `secret.${InstillCredit.key}`,
           instillFormat: "string",
           type: "string",
           isInstillCreditHint: true,

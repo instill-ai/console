@@ -53,7 +53,7 @@ export const IteratorInput = ({ className }: { className?: string }) => {
       )
       .map((hint) => ({
         path: hint.path,
-        instill_format: hint.instillFormat,
+        instillFormat: hint.instillFormat,
         description: hint.description,
       }));
   }, [tempSavedNodesForEditingIteratorFlow]);
@@ -61,15 +61,13 @@ export const IteratorInput = ({ className }: { className?: string }) => {
   React.useEffect(() => {
     if (editingIteratorID && tempSavedNodesForEditingIteratorFlow) {
       const targetIteratorNode = tempSavedNodesForEditingIteratorFlow.find(
-        (node) => node.data.id === editingIteratorID && isIteratorNode(node)
+        (node) => node.id === editingIteratorID && isIteratorNode(node)
       ) as Node<IteratorNodeData> | undefined;
 
       const inputOption = availableInputOptions.find(
         (option) =>
           option.path ===
-          targetIteratorNode?.data.iterator_component.input
-            .replace("${", "")
-            .replace("}", "")
+          targetIteratorNode?.data.input.replace("${", "").replace("}", "")
       );
 
       if (inputOption) {
@@ -102,18 +100,12 @@ export const IteratorInput = ({ className }: { className?: string }) => {
               updatePipelineRecipeIsDirty(() => true);
               updateTempSavedNodesForEditingIteratorFlow((nodes) =>
                 nodes.map((node) => {
-                  if (
-                    node.data.id === editingIteratorID &&
-                    isIteratorNode(node)
-                  ) {
+                  if (node.id === editingIteratorID && isIteratorNode(node)) {
                     return {
                       ...node,
                       data: {
                         ...node.data,
-                        iterator_component: {
-                          ...node.data.iterator_component,
-                          input: "${" + option.path + "}",
-                        },
+                        input: "${" + option.path + "}",
                       },
                     };
                   }

@@ -11,21 +11,15 @@ import { NodeDropdownMenu } from "../common";
 import {
   composeEdgesFromNodes,
   generateUniqueIndex,
-  getAllComponentID,
+  getAllNodeID,
   transformConnectorDefinitionIDToComponentIDPrefix,
 } from "../../../lib";
+import { GeneralNodeData, IteratorNodeData, NodeData } from "../../../type";
+
 import {
-  ConnectorNodeData,
-  IteratorNodeData,
-  NodeData,
-  OperatorNodeData,
-} from "../../../type";
-import {
-  isConnectorComponent,
-  isIteratorComponent,
-  isOperatorComponent,
+  isPipelineGeneralComponent,
+  isPipelineIteratorComponent,
 } from "../../../lib/checkComponentType";
-import { extractComponentFromNodes } from "../../../lib/extractComponentFromNodes";
 
 const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,
@@ -43,7 +37,7 @@ const selector = (store: InstillStore) => ({
     store.tempSavedNodesForEditingIteratorFlow,
 });
 
-export const ConnectorOperatorControlPanel = ({
+export const NodeControlPanel = ({
   nodeID,
   nodeIsCollapsed,
   setNodeIsCollapsed,
@@ -56,7 +50,7 @@ export const ConnectorOperatorControlPanel = ({
   setNodeIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
   handleToggleNote: () => void;
   noteIsOpen: boolean;
-  nodeData: ConnectorNodeData | OperatorNodeData | IteratorNodeData;
+  nodeData: GeneralNodeData | IteratorNodeData;
 }) => {
   const {
     isOwner,
@@ -75,15 +69,11 @@ export const ConnectorOperatorControlPanel = ({
   const [moreOptionsIsOpen, setMoreOptionsIsOpen] = React.useState(false);
 
   const nodeTypeName = React.useMemo(() => {
-    if (isOperatorComponent(nodeData)) {
-      return "Operator Component";
+    if (isPipelineGeneralComponent(nodeData)) {
+      return "Component";
     }
 
-    if (isConnectorComponent(nodeData)) {
-      return "Connector Component";
-    }
-
-    if (isIteratorComponent(nodeData)) {
+    if (isPipelineIteratorComponent(nodeData)) {
       return "Iterator Component";
     }
 
@@ -114,31 +104,18 @@ export const ConnectorOperatorControlPanel = ({
     let nodePrefix: Nullable<string> = null;
     let nodeType: Nullable<string> = null;
 
-    if (isOperatorComponent(nodeData)) {
-      if (!nodeData.operator_component.definition) {
+    if (isPipelineGeneralComponent(nodeData)) {
+      if (!nodeData.definition) {
         return;
       }
 
       nodePrefix = transformConnectorDefinitionIDToComponentIDPrefix(
-        nodeData.operator_component.definition.id
+        nodeData.definition.id
       );
 
-      nodeType = "operatorNode";
+      nodeType = "generalNode";
     }
-
-    if (isConnectorComponent(nodeData)) {
-      if (!nodeData.connector_component.definition) {
-        return;
-      }
-
-      nodePrefix = transformConnectorDefinitionIDToComponentIDPrefix(
-        nodeData.connector_component.definition.id
-      );
-
-      nodeType = "connectorNode";
-    }
-
-    if (isIteratorComponent(nodeData)) {
+    if (isPipelineIteratorComponent(nodeData)) {
       nodePrefix =
         transformConnectorDefinitionIDToComponentIDPrefix("iterator");
       nodeType = "iteratorNode";
@@ -148,13 +125,10 @@ export const ConnectorOperatorControlPanel = ({
       return;
     }
 
-    // Generate a new component index
-    const components = extractComponentFromNodes(nodes);
-
     const nodeIndex = generateUniqueIndex(
       isEditingIterator
         ? [...nodes, ...tempSavedNodesForEditingIteratorFlow].map((e) => e.id)
-        : getAllComponentID(components),
+        : getAllNodeID(nodes),
       nodePrefix
     );
 
@@ -171,7 +145,6 @@ export const ConnectorOperatorControlPanel = ({
         zIndex: 30,
         data: {
           ...nodeData,
-          id: nodeID,
         },
       },
     ];

@@ -5,11 +5,7 @@ import { NodeProps } from "reactflow";
 import { Form, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
-import { ConnectorNodeData } from "../../../type";
-import {
-  getConnectorInputOutputSchema,
-  getConnectorOperatorComponentConfiguration,
-} from "../../../lib";
+import { getGeneralComponentInOutputSchema } from "../../../lib";
 import {
   GeneralRecord,
   InstillStore,
@@ -18,7 +14,6 @@ import {
 } from "../../../../../lib";
 import { ImageWithFallback } from "../../../../../components";
 import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
-import { ConnectorOperatorControlPanel } from "../control-panel";
 import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
 import { useCheckIsHidden, useUpdaterOnNode } from "../../../lib";
 import {
@@ -29,7 +24,9 @@ import {
   NodeWrapper,
 } from "../common";
 import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";
-import { isConnectorComponent } from "../../../lib/checkComponentType";
+import { GeneralNodeData } from "../../../type";
+import { isPipelineGeneralComponent } from "../../../lib/checkComponentType";
+import { NodeControlPanel } from "../control-panel";
 
 const selector = (store: InstillStore) => ({
   updateCurrentAdvancedConfigurationNodeID:
@@ -40,7 +37,7 @@ const selector = (store: InstillStore) => ({
   entitySecrets: store.entitySecrets,
 });
 
-export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
+export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
   const {
     updateCurrentAdvancedConfigurationNodeID,
     currentVersion,
@@ -68,18 +65,23 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
   const checkIsHidden = useCheckIsHidden("onNode");
 
   const componentConfiguration = React.useMemo(() => {
-    return getConnectorOperatorComponentConfiguration(data);
+    return {
+      input: data.input,
+      task: data.task,
+      condition: data.condition,
+      connection: data.connection ? data.connection : undefined,
+    };
   }, [data]);
 
   const { fields, form, ValidatorSchema, selectedConditionMap } =
     useInstillForm(
-      data.connector_component.definition?.spec.component_specification ?? null,
+      data.definition?.spec.component_specification ?? null,
       componentConfiguration,
       {
         size: "sm",
         enableSmartHint: true,
         checkIsHidden,
-        componentID: data.id,
+        componentID: id,
         disabledAll: currentVersion !== "latest" || pipelineIsReadOnly,
         secrets: entitySecrets,
         collapsibleDefaultOpen: true,
@@ -101,7 +103,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     // selectedConditionMap to get the latest selected task. Due to the
     // output schema depends on the selected task
 
-    return getConnectorInputOutputSchema(
+    return getGeneralComponentInOutputSchema(
       data,
       selectedConditionMap ? selectedConditionMap["task"] : undefined
     );
@@ -113,10 +115,12 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
     currentNodeData: data,
     form,
     ValidatorSchema,
+    nodeID: id,
   });
 
   return (
     <NodeWrapper
+      nodeID={id}
       nodeData={data}
       noteIsOpen={noteIsOpen}
       renderNodeBottomBar={() => (
@@ -124,11 +128,9 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       )}
       renderBottomBarInformation={() => (
         <NodeBottomBarContent
-          componentID={data.id}
+          componentID={id}
           outputSchema={outputSchema}
-          componentSchema={
-            (data.connector_component.definition?.spec as GeneralRecord) ?? null
-          }
+          componentSchema={(data.definition?.spec as GeneralRecord) ?? null}
         />
       )}
     >
@@ -137,17 +139,17 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
       <NodeHead nodeIsCollapsed={nodeIsCollapsed}>
         <div className="mr-auto flex flex-row gap-x-1">
           <ImageWithFallback
-            src={`/icons/${data.connector_component.definition?.id}.svg`}
+            src={`/icons/${data.definition?.id}.svg`}
             width={16}
             height={16}
-            alt={`${data.connector_component.definition?.title}-icon`}
+            alt={`${data.definition?.title}-icon`}
             fallbackImg={
               <Icons.Box className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
             }
           />
           <NodeIDEditor currentNodeID={id} />
         </div>
-        <ConnectorOperatorControlPanel
+        <NodeControlPanel
           nodeID={id}
           nodeData={data}
           nodeIsCollapsed={nodeIsCollapsed}
@@ -188,20 +190,16 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
             Data connector free form
           */}
 
-          {isConnectorComponent(data) &&
-          data.connector_component.definition?.type === "CONNECTOR_TYPE_DATA" &&
-          data.connector_component.definition_name !==
-            "connector-definitions/pinecone" &&
-          data.connector_component.definition_name !==
-            "connector-definitions/gcs" &&
-          data.connector_component.definition_name !==
-            "connector-definitions/google-search" &&
-          data.connector_component.definition_name !==
-            "connector-definitions/redis" &&
-          data.connector_component.definition_name !==
-            "connector-definitions/website" &&
-          data.connector_component.definition_name !==
-            "connector-definitions/restapi" ? (
+          {isPipelineGeneralComponent(data) &&
+          data.definition &&
+          "type" in data.definition &&
+          data.definition?.type === "CONNECTOR_TYPE_DATA" &&
+          data.type !== "pinecone" &&
+          data.type !== "gcs" &&
+          data.type !== "google-search" &&
+          data.type !== "redis" &&
+          data.type !== "website" &&
+          data.type !== "restapi" ? (
             <DataConnectorFreeForm
               nodeID={id}
               component={data}
@@ -217,6 +215,7 @@ export const ConnectorNode = ({ data, id }: NodeProps<ConnectorNodeData>) => {
           <div className="mb-4 w-full">
             {!enableEdit ? (
               <ComponentOutputReferenceHints
+                componentID={id}
                 component={data}
                 task={
                   selectedConditionMap

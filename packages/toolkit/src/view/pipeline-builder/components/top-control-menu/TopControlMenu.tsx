@@ -16,7 +16,7 @@ import {
   useShallow,
 } from "../../../../lib";
 import { ReactFlowInstance } from "reactflow";
-import { useConstructNodeFromDefinition } from "../../lib";
+import { useAddNodeWithDefinition } from "../../lib";
 import { Button, Icons } from "@instill-ai/design-system";
 import { PipelineName } from "./PipelineName";
 
@@ -32,7 +32,7 @@ export const TopControlMenu = ({
 }) => {
   const [open, setOpen] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
-  const constructNode = useConstructNodeFromDefinition({ reactFlowInstance });
+  const addNode = useAddNodeWithDefinition({ reactFlowInstance });
   const { pipelineIsNew, isEditingIterator } = useInstillStore(
     useShallow(selector)
   );
@@ -62,7 +62,7 @@ export const TopControlMenu = ({
               open={open}
               onOpenChange={setOpen}
               onSelect={(definition) => {
-                constructNode(definition);
+                addNode(definition);
                 setOpen(false);
               }}
             />

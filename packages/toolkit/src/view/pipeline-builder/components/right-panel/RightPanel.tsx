@@ -4,8 +4,10 @@ import * as React from "react";
 import { useShallow } from "zustand/react/shallow";
 import { Button, Icons, Separator } from "@instill-ai/design-system";
 import { InstillStore, useInstillStore } from "../../../../lib";
-import { ComponentFormOnRightPanel } from "./ComponentFormOnRightPanel";
-import { isConnectorNode, isOperatorNode } from "../../lib";
+import { isGeneralNode } from "../../lib";
+import { GeneralNodeData } from "../../type";
+import { Node } from "reactflow";
+import { PipelineGeneralComponentFormOnRightPanel } from "./PipelineGeneralComponentFormOnRightPanel";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -21,8 +23,11 @@ export const RightPanel = () => {
     updateCurrentAdvancedConfigurationNodeID,
   } = useInstillStore(useShallow(selector));
 
-  const selectedConnectorNode = React.useMemo(() => {
-    return nodes.find((node) => node.id === currentAdvancedConfigurationNodeID);
+  const selectedGeneralNode = React.useMemo(() => {
+    return nodes.find(
+      (node) =>
+        node.id === currentAdvancedConfigurationNodeID && isGeneralNode(node)
+    ) as Node<GeneralNodeData> | undefined;
   }, [nodes, currentAdvancedConfigurationNodeID]);
 
   return (
@@ -58,15 +63,11 @@ export const RightPanel = () => {
       */}
 
       <div className="flex w-full pb-10">
-        {selectedConnectorNode &&
-        isConnectorNode(selectedConnectorNode) &&
-        selectedConnectorNode.data.connector_component.definition ? (
-          <ComponentFormOnRightPanel nodeData={selectedConnectorNode.data} />
-        ) : null}
-        {selectedConnectorNode &&
-        isOperatorNode(selectedConnectorNode) &&
-        selectedConnectorNode.data.operator_component.definition ? (
-          <ComponentFormOnRightPanel nodeData={selectedConnectorNode.data} />
+        {selectedGeneralNode && selectedGeneralNode.data.definition ? (
+          <PipelineGeneralComponentFormOnRightPanel
+            nodeData={selectedGeneralNode.data}
+            nodeID={selectedGeneralNode.id}
+          />
         ) : null}
       </div>
     </div>

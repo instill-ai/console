@@ -2,50 +2,44 @@ import { Node } from "reactflow";
 
 import { NodeData, PipelineComponentMetadata } from "../type";
 import { recursiveHelpers } from ".";
-import { GeneralRecord, Nullable, PipelineComponent } from "../../../lib";
+import { GeneralRecord, Nullable, PipelineComponentMap } from "../../../lib";
 import {
-  isConnectorComponent,
-  isIteratorComponent,
-  isOperatorComponent,
+  isPipelineGeneralComponent,
+  isPipelineIteratorComponent,
 } from "./checkComponentType";
+import { checkIsValidComponentMetadata } from "./checkIsValidComponentMetadata";
 
 export type CreateNodesFromPipelineComponentsOptions = {
   metadata?: GeneralRecord;
 };
 
 export function createNodesFromPipelineComponents(
-  components: PipelineComponent[],
+  component: PipelineComponentMap,
   options?: CreateNodesFromPipelineComponentsOptions
 ) {
   const nodes: Node<NodeData>[] = [];
 
   const metadata = options ? options.metadata : null;
 
-  for (const component of components) {
+  for (const [id, e] of Object.entries(component)) {
     let componentMetadata: Nullable<PipelineComponentMetadata> = null;
 
-    if (
-      metadata &&
-      "components" in metadata &&
-      Array.isArray(metadata.components)
-    ) {
-      componentMetadata =
-        metadata.components.find((c) => c.id === component.id) ?? null;
+    if (checkIsValidComponentMetadata(metadata)) {
+      componentMetadata = metadata.component[id];
     }
 
     // The reason we need to transform all the value back to string is due to some
     // constraint of the auto-form, most of the auto-form field value is string
     // for example, number field. (But boolean field is using boolean)
 
-    if (isIteratorComponent(component)) {
+    if (isPipelineIteratorComponent(e)) {
       nodes.push({
-        id: component.id,
+        id,
         type: "iteratorNode",
         data: {
-          id: component.id,
-          iterator_component: component.iterator_component,
+          ...e,
           note: componentMetadata ? componentMetadata.note : null,
-          metadata: component.metadata,
+          metadata: e.metadata,
         },
         position: componentMetadata
           ? { x: componentMetadata.x, y: componentMetadata.y }
@@ -59,41 +53,17 @@ export function createNodesFromPipelineComponents(
     // Especially the original configuration connect back to the react-query object
     // It will pollute other components
 
-    if (isOperatorComponent(component)) {
+    if (isPipelineGeneralComponent(e)) {
       nodes.push({
-        id: component.id,
-        type: "operatorNode",
+        id,
+        type: "generalNode",
         data: {
-          id: component.id,
-          operator_component: {
-            ...component.operator_component,
-            input: recursiveHelpers.parseNumberToString(
-              component.operator_component.input
-            ),
-          },
-          metadata: component.metadata,
-          note: componentMetadata ? componentMetadata.note : null,
-        },
-        position: componentMetadata
-          ? { x: componentMetadata.x, y: componentMetadata.y }
-          : { x: 0, y: 0 },
-      });
-      continue;
-    }
-
-    if (isConnectorComponent(component)) {
-      nodes.push({
-        id: component.id,
-        type: "connectorNode",
-        data: {
-          id: component.id,
-          connector_component: {
-            ...component.connector_component,
-            input: recursiveHelpers.parseNumberToString(
-              component.connector_component.input
-            ),
-          },
-          metadata: component.metadata,
+          ...e,
+          connection: e.connection
+            ? recursiveHelpers.parseNumberToString(e.input)
+            : null,
+          input: recursiveHelpers.parseNumberToString(e.input),
+          metadata: e.metadata,
           note: componentMetadata ? componentMetadata.note : null,
         },
         position: componentMetadata

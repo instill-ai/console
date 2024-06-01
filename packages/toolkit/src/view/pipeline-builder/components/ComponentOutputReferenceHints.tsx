@@ -4,16 +4,15 @@ import { Icons, ScrollArea } from "@instill-ai/design-system";
 import { PipelineComponent, useOutputReferenceHintFields } from "../../../lib";
 
 export const ComponentOutputReferenceHints = ({
+  componentID,
   component,
   task,
 }: {
+  componentID: string;
   component: PipelineComponent;
   task?: string;
 }) => {
-  const fields = useOutputReferenceHintFields({
-    component,
-    task,
-  });
+  const fields = useOutputReferenceHintFields({ componentID, component, task });
 
   return (
     <div className="flex flex-col">

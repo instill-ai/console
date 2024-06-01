@@ -4,22 +4,20 @@ import { Edge, Node } from "reactflow";
 import type { InstillReference, NodeData } from "../type";
 import type { InstillJSONSchema, Nullable } from "../../../lib";
 import { getReferencesFromAny } from "./getReferencesFromAny";
-import { getOperatorInputOutputSchema } from "./getOperatorInputOutputSchema";
-import { getConnectorInputOutputSchema } from "./getConnectorInputOutputSchema";
 import {
   InstillAIOpenAPIProperty,
   getPropertiesFromOpenAPISchema,
 } from "./getPropertiesFromOpenAPISchema";
-import { getConnectorOperatorComponentConfiguration } from "./getConnectorOperatorComponentConfiguration";
+import { getGeneralComponentConfiguration } from "./getGeneralComponentConfiguration";
 
+import { createNodesFromPipelineComponents } from "./createNodesFromPipelineComponents";
 import {
-  isConnectorNode,
+  isGeneralNode,
   isIteratorNode,
-  isOperatorNode,
   isResponseNode,
   isTriggerNode,
 } from "./checkNodeType";
-import { createNodesFromPipelineComponents } from "./createNodesFromPipelineComponents";
+import { getGeneralComponentInOutputSchema } from "./getGeneralComponentInOutputSchema";
 
 type ReferenceWithNodeInfo = {
   nodeID: string;
@@ -80,12 +78,10 @@ function getConnectedReferencesFromNodes(
     }
 
     if (isIteratorNode(node)) {
-      const inputReference = getReferencesFromAny(
-        node.data.iterator_component.input
-      );
+      const inputReference = getReferencesFromAny(node.data.input);
 
       const nodesInInterator = createNodesFromPipelineComponents(
-        node.data.iterator_component.components
+        node.data.component
       );
 
       // All the components inside the iterator will belong to the iterator itself
@@ -106,10 +102,8 @@ function getConnectedReferencesFromNodes(
       continue;
     }
 
-    if (isConnectorNode(node) || isOperatorNode(node)) {
-      const configuration = getConnectorOperatorComponentConfiguration(
-        node.data
-      );
+    if (isGeneralNode(node)) {
+      const configuration = getGeneralComponentConfiguration(node.data);
 
       const referencesOfThisNode = getReferencesFromAny(configuration);
 
@@ -148,20 +142,13 @@ function getAvailableReferencesFromNodes(nodes: Node<NodeData>[]) {
     let outputSchema: Nullable<InstillJSONSchema> = null;
 
     if (isIteratorNode(node)) {
-      outputSchema =
-        node.data.iterator_component.data_specification?.output ?? null;
+      outputSchema = node.data.data_specification?.output ?? null;
     }
 
-    if (isOperatorNode(node)) {
-      const { outputSchema: operatorOutputSchema } =
-        getOperatorInputOutputSchema(node.data);
-      outputSchema = operatorOutputSchema;
-    }
-
-    if (isConnectorNode(node)) {
-      const { outputSchema: connectorOutputSchema } =
-        getConnectorInputOutputSchema(node.data);
-      outputSchema = connectorOutputSchema;
+    if (isGeneralNode(node)) {
+      const { outputSchema: GeneralNodeOutputSchema } =
+        getGeneralComponentInOutputSchema(node.data);
+      outputSchema = GeneralNodeOutputSchema;
     }
 
     let outputProperties: InstillAIOpenAPIProperty[] = [];

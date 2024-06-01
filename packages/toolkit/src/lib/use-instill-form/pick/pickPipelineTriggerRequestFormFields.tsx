@@ -2,7 +2,7 @@ import { UseFormReturn } from "react-hook-form";
 import { Nullable } from "../../type";
 import { TriggerRequestFormFields } from "../components";
 import { FieldMode, StartOperatorFreeFormFieldItem } from "../types";
-import { PipelineTriggerRequestFields } from "../../vdp-sdk";
+import { PipelineVariableFieldMap } from "../../vdp-sdk";
 
 export type PickPipelineTriggerRequestFormFieldsProps = {
   mode: FieldMode;
@@ -15,7 +15,7 @@ export type PickPipelineTriggerRequestFormFieldsProps = {
   disabledFields?: boolean;
   disabledFieldControls?: boolean;
   disabledReferenceHint?: boolean;
-  fields: Nullable<PipelineTriggerRequestFields>;
+  fields: Nullable<PipelineVariableFieldMap>;
 };
 
 export function pickPipelineTriggerRequestFormFields({
@@ -37,12 +37,12 @@ export function pickPipelineTriggerRequestFormFields({
   // is we want to sort the fields by the order of `instillUIOrder` property.
 
   for (const [key, value] of Object.entries(fields)) {
-    switch (value.instill_format) {
+    switch (value.instillFormat) {
       case "string":
-        if (value.instill_ui_multiline) {
+        if (value.instillUiMultiline) {
           items.push({
             key,
-            instillUIOrder: value.instill_ui_order,
+            instillUIOrder: value.instillUiOrder,
             component: (
               <TriggerRequestFormFields.TextareaField
                 mode={mode}
@@ -57,14 +57,14 @@ export function pickPipelineTriggerRequestFormFields({
                 keyPrefix={keyPrefix}
                 disabledFieldControl={disabledFieldControls}
                 disabledReferenceHint={disabledReferenceHint}
-                instillFormat={value.instill_format}
+                instillFormat={value.instillFormat}
               />
             ),
           });
         } else {
           items.push({
             key,
-            instillUIOrder: value.instill_ui_order,
+            instillUIOrder: value.instillUiOrder,
             component: (
               <TriggerRequestFormFields.TextField
                 mode={mode}
@@ -79,7 +79,7 @@ export function pickPipelineTriggerRequestFormFields({
                 keyPrefix={keyPrefix}
                 disabledFieldControl={disabledFieldControls}
                 disabledReferenceHint={disabledReferenceHint}
-                instillFormat={value.instill_format}
+                instillFormat={value.instillFormat}
               />
             ),
           });
@@ -88,7 +88,7 @@ export function pickPipelineTriggerRequestFormFields({
       case "array:string": {
         items.push({
           key,
-          instillUIOrder: value.instill_ui_order,
+          instillUIOrder: value.instillUiOrder,
           component: (
             <TriggerRequestFormFields.TextsField
               mode={mode}
@@ -103,7 +103,7 @@ export function pickPipelineTriggerRequestFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instill_format}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -112,7 +112,7 @@ export function pickPipelineTriggerRequestFormFields({
       case "boolean":
         items.push({
           key,
-          instillUIOrder: value.instill_ui_order,
+          instillUIOrder: value.instillUiOrder,
           component: (
             <TriggerRequestFormFields.BooleanField
               mode={mode}
@@ -127,7 +127,7 @@ export function pickPipelineTriggerRequestFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instill_format}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -135,7 +135,7 @@ export function pickPipelineTriggerRequestFormFields({
       case "number":
         items.push({
           key,
-          instillUIOrder: value.instill_ui_order,
+          instillUIOrder: value.instillUiOrder,
           component: (
             <TriggerRequestFormFields.NumberField
               mode={mode}
@@ -150,7 +150,7 @@ export function pickPipelineTriggerRequestFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instill_format}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -158,7 +158,7 @@ export function pickPipelineTriggerRequestFormFields({
       case "array:number":
         items.push({
           key,
-          instillUIOrder: value.instill_ui_order,
+          instillUIOrder: value.instillUiOrder,
           component: (
             <TriggerRequestFormFields.NumbersField
               mode={mode}
@@ -173,7 +173,7 @@ export function pickPipelineTriggerRequestFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instill_format}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -181,7 +181,7 @@ export function pickPipelineTriggerRequestFormFields({
       case "audio/*":
         items.push({
           key,
-          instillUIOrder: value.instill_ui_order,
+          instillUIOrder: value.instillUiOrder,
           component: (
             <TriggerRequestFormFields.AudioField
               mode={mode}
@@ -196,7 +196,7 @@ export function pickPipelineTriggerRequestFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instill_format}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -204,7 +204,7 @@ export function pickPipelineTriggerRequestFormFields({
       case "array:audio/*":
         items.push({
           key,
-          instillUIOrder: value.instill_ui_order,
+          instillUIOrder: value.instillUiOrder,
           component: (
             <TriggerRequestFormFields.AudiosField
               mode={mode}
@@ -219,7 +219,7 @@ export function pickPipelineTriggerRequestFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instill_format}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -227,7 +227,7 @@ export function pickPipelineTriggerRequestFormFields({
       case "image/*":
         items.push({
           key,
-          instillUIOrder: value.instill_ui_order,
+          instillUIOrder: value.instillUiOrder,
           component: (
             <TriggerRequestFormFields.ImageField
               mode={mode}
@@ -242,7 +242,7 @@ export function pickPipelineTriggerRequestFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instill_format}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -250,7 +250,7 @@ export function pickPipelineTriggerRequestFormFields({
       case "array:image/*":
         items.push({
           key,
-          instillUIOrder: value.instill_ui_order,
+          instillUIOrder: value.instillUiOrder,
           component: (
             <TriggerRequestFormFields.ImagesField
               mode={mode}
@@ -265,7 +265,7 @@ export function pickPipelineTriggerRequestFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instill_format}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -274,7 +274,7 @@ export function pickPipelineTriggerRequestFormFields({
       case "video/*":
         items.push({
           key,
-          instillUIOrder: value.instill_ui_order,
+          instillUIOrder: value.instillUiOrder,
           component: (
             <TriggerRequestFormFields.VideoField
               mode={mode}
@@ -289,7 +289,7 @@ export function pickPipelineTriggerRequestFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instill_format}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -297,7 +297,7 @@ export function pickPipelineTriggerRequestFormFields({
       case "array:video/*":
         items.push({
           key,
-          instillUIOrder: value.instill_ui_order,
+          instillUIOrder: value.instillUiOrder,
           component: (
             <TriggerRequestFormFields.VideosField
               mode={mode}
@@ -312,7 +312,7 @@ export function pickPipelineTriggerRequestFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instill_format}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -320,7 +320,7 @@ export function pickPipelineTriggerRequestFormFields({
       case "*/*":
         items.push({
           key,
-          instillUIOrder: value.instill_ui_order,
+          instillUIOrder: value.instillUiOrder,
           component: (
             <TriggerRequestFormFields.FileField
               mode={mode}
@@ -335,7 +335,7 @@ export function pickPipelineTriggerRequestFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instill_format}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -343,7 +343,7 @@ export function pickPipelineTriggerRequestFormFields({
       case "array:*/*":
         items.push({
           key,
-          instillUIOrder: value.instill_ui_order,
+          instillUIOrder: value.instillUiOrder,
           component: (
             <TriggerRequestFormFields.FilesField
               mode={mode}
@@ -358,7 +358,7 @@ export function pickPipelineTriggerRequestFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instill_format}
+              instillFormat={value.instillFormat}
             />
           ),
         });
@@ -366,7 +366,7 @@ export function pickPipelineTriggerRequestFormFields({
       case "semi-structured/json":
         items.push({
           key,
-          instillUIOrder: value.instill_ui_order,
+          instillUIOrder: value.instillUiOrder,
           component: (
             <TriggerRequestFormFields.ObjectField
               mode={mode}
@@ -381,7 +381,7 @@ export function pickPipelineTriggerRequestFormFields({
               keyPrefix={keyPrefix}
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instill_format}
+              instillFormat={value.instillFormat}
             />
           ),
         });

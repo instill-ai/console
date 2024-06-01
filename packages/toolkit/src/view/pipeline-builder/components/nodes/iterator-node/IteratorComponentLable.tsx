@@ -1,30 +1,23 @@
 "use client";
 
 import * as React from "react";
-import { Nullable, PipelineComponent } from "../../../../../lib";
-import {
-  isConnectorComponent,
-  isOperatorComponent,
-} from "../../../lib/checkComponentType";
+import { Nullable, PipelineGeneralComponent } from "../../../../../lib";
+
 import { ImageWithFallback } from "../../../../../components";
 import { Icons } from "@instill-ai/design-system";
 
-export const IteratorComponentLabel = ({
+export const IteratorGeneralComponentLabel = ({
+  id,
   component,
 }: {
-  component: PipelineComponent;
+  id: string;
+  component: PipelineGeneralComponent;
 }) => {
   const [definitionID, setDefinitionID] =
     React.useState<Nullable<string>>(null);
 
   React.useEffect(() => {
-    if (isConnectorComponent(component)) {
-      setDefinitionID(component.connector_component.definition?.id ?? null);
-    }
-
-    if (isOperatorComponent(component)) {
-      setDefinitionID(component.operator_component.definition?.id ?? null);
-    }
+    setDefinitionID(component.definition?.id ?? null);
   }, [component]);
 
   return (
@@ -41,7 +34,7 @@ export const IteratorComponentLabel = ({
             }
           />
           <p className="text-xs font-semibold leading-3 text-semantic-fg-primary">
-            {component.id}
+            {id}
           </p>
         </div>
       ) : null}

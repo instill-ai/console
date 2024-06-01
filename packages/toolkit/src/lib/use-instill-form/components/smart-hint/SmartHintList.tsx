@@ -103,7 +103,7 @@ export const SmartHintList = ({
                 >
                   {hint.isInstillCreditHint ? (
                     <div className="flex w-full flex-row justify-between">
-                      <p>{`secrets.${InstillCredit.key}`}</p>
+                      <p>{`secret.${InstillCredit.key}`}</p>
                       <Tooltip.Provider>
                         <Tooltip.Root>
                           <Tooltip.Trigger asChild>
@@ -151,7 +151,7 @@ export const SmartHintList = ({
           <p className="text-semantic-accent-default product-body-text-3-semibold">
             {instillCredential
               ? supportInstillCredit
-                ? "This configuration supports Instill Credit, You can use Instill Credit by input ${secrets." +
+                ? "This configuration supports Instill Credit, You can use Instill Credit by input ${secret." +
                   InstillCredit.key +
                   "}."
                 : "This configuration didn't support Instill Credit, please reference your own secret"

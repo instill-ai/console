@@ -1,16 +1,17 @@
 export * from "./checkIsValidPosition";
-export * from "./composePipelineMetadataFromNodes";
+export * from "./checkNodeType";
+export * from "./composePipelineMetadataMapFromNodes";
 export * from "./composeEdgesFromNodes";
-export * from "./constructPipelineRecipeFromNodes";
+export * from "./composePipelineRecipeFromNodes";
 export * from "./createGraphLayout";
 export * from "./createNodesFromPipelineComponents";
 export * from "./extractPipelineComponentReferenceFromString";
 export * from "./extractReferencesFromConfiguration";
 export * from "./getReferencesFromString";
 export * from "./generateUniqueIndex";
-export * from "./getAllComponentID";
-export * from "./getConnectorInputOutputSchema";
-export * from "./getConnectorOperatorComponentConfiguration";
+export * from "./getAllNodeID";
+export * from "./getGeneralComponentInOutputSchema";
+export * from "./getGeneralComponentConfiguration";
 export * from "./getPropertiesFromOpenAPISchema";
 export * from "./readFileToBinary";
 export * from "./recursive-helpers/recursiveParseNumberToString";
@@ -19,4 +20,3 @@ export * from "./transformConnectorDefinitionIDToComponentIDPrefix";
 
 export * from "./recursive-helpers";
 export * from "./hooks";
-export * from "./checkNodeType";

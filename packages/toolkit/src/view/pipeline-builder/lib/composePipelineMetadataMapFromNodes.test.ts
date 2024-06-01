@@ -1,7 +1,7 @@
 import { Node } from "reactflow";
 import { test, expect } from "vitest";
 import { NodeData } from "../type";
-import { composePipelineMetadataFromNodes } from "./composePipelineMetadataFromNodes";
+import { composePipelineMetadataMapFromNodes } from "./composePipelineMetadataMapFromNodes";
 
 test("should compose initial pipeline metadata", () => {
   const nodes: Node<NodeData>[] = [
@@ -12,15 +12,12 @@ test("should compose initial pipeline metadata", () => {
         y: 0,
       },
       data: {
-        id: "ai_0",
-        connector_component: {
-          definition_name: "connector-definitions/stability-ai",
-          definition: null,
-          task: "",
-          input: {},
-          condition: null,
-          connection: {},
-        },
+        type: "stability-ai",
+        definition: null,
+        task: "",
+        input: {},
+        condition: null,
+        connection: {},
         note: null,
       },
     },
@@ -31,7 +28,6 @@ test("should compose initial pipeline metadata", () => {
         y: 100,
       },
       data: {
-        id: "trigger",
         fields: {},
         note: "hello-world",
       },
@@ -43,20 +39,31 @@ test("should compose initial pipeline metadata", () => {
         y: 300,
       },
       data: {
-        id: "response",
         fields: {},
         note: null,
       },
     },
   ];
 
-  const metadata = composePipelineMetadataFromNodes(nodes);
+  const metadata = composePipelineMetadataMapFromNodes(nodes);
 
   expect(metadata).toStrictEqual({
-    components: [
-      { id: "ai_0", note: null, x: 0, y: 0 },
-      { id: "trigger", note: "hello-world", x: 100, y: 100 },
-      { id: "response", note: null, x: 300, y: 300 },
-    ],
+    component: {
+      ai_0: {
+        note: null,
+        x: 0,
+        y: 0,
+      },
+      trigger: {
+        note: "hello-world",
+        x: 100,
+        y: 100,
+      },
+      response: {
+        note: null,
+        x: 300,
+        y: 300,
+      },
+    },
   });
 });

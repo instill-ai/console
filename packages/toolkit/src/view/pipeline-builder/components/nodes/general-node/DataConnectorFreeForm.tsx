@@ -17,10 +17,11 @@ import {
   GeneralRecord,
   InstillStore,
   Nullable,
-  PipelineConnectorComponent,
+  PipelineGeneralComponent,
   useInstillStore,
 } from "../../../../../lib";
-import { composeEdgesFromNodes, isConnectorNode } from "../../../lib";
+import { composeEdgesFromNodes } from "../../../lib";
+import { isGeneralNode } from "../../../lib/checkNodeType";
 
 export const Schema = z.object({
   key: z.string().min(1, { message: "Key is required" }),
@@ -44,7 +45,7 @@ export const DataConnectorFreeForm = ({
   enableEdit: boolean;
   setEnableEdit: React.Dispatch<React.SetStateAction<boolean>>;
   nodeID: string;
-  component: PipelineConnectorComponent;
+  component: PipelineGeneralComponent;
 }) => {
   const [prevFieldKey, setPrevFieldKey] =
     React.useState<Nullable<string>>(null);
@@ -63,26 +64,23 @@ export const DataConnectorFreeForm = ({
 
   function onSubmitDataConnectorInput(formData: z.infer<typeof Schema>) {
     const newNodes = nodes.map((node) => {
-      if (isConnectorNode(node) && node.id === nodeID) {
+      if (isGeneralNode(node) && node.id === nodeID) {
         if (prevFieldKey) {
-          delete node.data.connector_component.input.data[prevFieldKey];
+          delete node.data.input.data[prevFieldKey];
         }
 
         node.data = {
           ...node.data,
-          connector_component: {
-            ...node.data.connector_component,
-            input: {
-              ...node.data.connector_component.input,
-              data: node.data.connector_component.input.data
-                ? {
-                    ...node.data.connector_component.input.data,
-                    [formData.key]: formData.value,
-                  }
-                : {
-                    [formData.key]: formData.value,
-                  },
-            },
+          input: {
+            ...node.data.input,
+            data: node.data.input.data
+              ? {
+                  ...node.data.input.data,
+                  [formData.key]: formData.value,
+                }
+              : {
+                  [formData.key]: formData.value,
+                },
           },
         };
       }
@@ -102,7 +100,7 @@ export const DataConnectorFreeForm = ({
 
   function onEditDataConnectorInput(key: string) {
     form.reset({
-      value: component.connector_component.input.data[key],
+      value: component.input.data[key],
       key: key,
     });
     setEnableEdit(true);
@@ -110,17 +108,14 @@ export const DataConnectorFreeForm = ({
 
   function onDeleteDataConnectorInput(key: string) {
     const newNodes = nodes.map((node) => {
-      if (isConnectorNode(node) && node.id === nodeID) {
-        delete node.data.connector_component.input.data[key];
+      if (isGeneralNode(node) && node.id === nodeID) {
+        delete node.data.input.data[key];
         // update the value deep clone
         node.data = {
           ...node.data,
-          connector_component: {
-            ...node.data.connector_component,
-            input: {
-              ...node.data.connector_component.input,
-              data: { ...node.data.connector_component.input.data },
-            },
+          input: {
+            ...node.data.input,
+            data: { ...node.data.input.data },
           },
         };
       }
@@ -135,24 +130,24 @@ export const DataConnectorFreeForm = ({
   if (pipelineIsReadOnly) {
     return (
       <div className="mb-3 flex flex-col space-y-3">
-        {component.connector_component.input?.data
-          ? Object.entries(
-              component.connector_component.input.data as Record<string, string>
-            ).map(([key, value]) => {
-              return (
-                <div
-                  key={key}
-                  className="flex flex-row flex-wrap justify-between gap-x-2 gap-y-2  rounded-[6px] bg-semantic-bg-primary p-2"
-                >
-                  <p className="my-auto text-semantic-fg-secondary product-body-text-4-semibold">
-                    {key}
-                  </p>
-                  <div className="min-h-[32px] min-w-[100px] break-all rounded-sm border border-semantic-bg-line px-2 py-1.5 text-semantic-fg-secondary product-body-text-3-regular">
-                    {value}
+        {component.input?.data
+          ? Object.entries(component.input.data as Record<string, string>).map(
+              ([key, value]) => {
+                return (
+                  <div
+                    key={key}
+                    className="flex flex-row flex-wrap justify-between gap-x-2 gap-y-2  rounded-[6px] bg-semantic-bg-primary p-2"
+                  >
+                    <p className="my-auto text-semantic-fg-secondary product-body-text-4-semibold">
+                      {key}
+                    </p>
+                    <div className="min-h-[32px] min-w-[100px] break-all rounded-sm border border-semantic-bg-line px-2 py-1.5 text-semantic-fg-secondary product-body-text-3-regular">
+                      {value}
+                    </div>
                   </div>
-                </div>
-              );
-            })
+                );
+              }
+            )
           : null}
       </div>
     );
@@ -243,41 +238,41 @@ export const DataConnectorFreeForm = ({
   return (
     <div className="mb-3 flex flex-col">
       <div className="mb-3 flex flex-col space-y-4">
-        {component.connector_component.input?.data
-          ? Object.entries(
-              component.connector_component.input.data as GeneralRecord
-            ).map(([key]) => {
-              return (
-                <div key={key} className="flex flex-col">
-                  <div className="flex flex-row items-center justify-between">
-                    <div className="my-auto flex flex-col gap-y-1">
-                      <p className="my-auto text-semantic-fg-primary product-body-text-3-semibold">
-                        {key}
-                      </p>
-                    </div>
-                    <div className="my-auto flex flex-row gap-x-4">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onEditDataConnectorInput(key);
-                          setPrevFieldKey(key);
-                        }}
-                      >
-                        <Icons.Edit03 className="h-6 w-6 stroke-semantic-accent-on-bg" />
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onDeleteDataConnectorInput(key);
-                        }}
-                      >
-                        <Icons.Trash01 className="h-6 w-6 stroke-semantic-error-on-bg" />
-                      </button>
+        {component.input?.data
+          ? Object.entries(component.input.data as GeneralRecord).map(
+              ([key]) => {
+                return (
+                  <div key={key} className="flex flex-col">
+                    <div className="flex flex-row items-center justify-between">
+                      <div className="my-auto flex flex-col gap-y-1">
+                        <p className="my-auto text-semantic-fg-primary product-body-text-3-semibold">
+                          {key}
+                        </p>
+                      </div>
+                      <div className="my-auto flex flex-row gap-x-4">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onEditDataConnectorInput(key);
+                            setPrevFieldKey(key);
+                          }}
+                        >
+                          <Icons.Edit03 className="h-6 w-6 stroke-semantic-accent-on-bg" />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDeleteDataConnectorInput(key);
+                          }}
+                        >
+                          <Icons.Trash01 className="h-6 w-6 stroke-semantic-error-on-bg" />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })
+                );
+              }
+            )
           : null}
       </div>
       <Button

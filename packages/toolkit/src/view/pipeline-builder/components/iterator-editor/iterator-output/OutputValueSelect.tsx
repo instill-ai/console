@@ -44,22 +44,22 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
 
     return hints.map((hint) => ({
       path: hint.path,
-      instill_format: hint.instillFormat,
+      instillFormat: hint.instillFormat,
       description: hint.description,
     }));
   }, [nodes]);
 
   React.useEffect(() => {
     const targetNodes = tempSavedNodesForEditingIteratorFlow.find(
-      (node) => node.data.id === editingIteratorID && isIteratorNode(node)
+      (node) => node.id === editingIteratorID && isIteratorNode(node)
     ) as Node<IteratorNodeData> | undefined;
 
     if (targetNodes) {
       const outputOption = availableOutputOptions.find((option) => {
         if (
-          targetNodes?.data.iterator_component.output_elements[outputKey] &&
+          targetNodes?.data.outputElements[outputKey] &&
           option.path ===
-            targetNodes?.data.iterator_component.output_elements[outputKey]
+            targetNodes?.data.outputElements[outputKey]
               .replace("${", "")
               .replace("}", "")
         ) {
@@ -92,17 +92,14 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
           updatePipelineRecipeIsDirty(() => true);
           updateTempSavedNodesForEditingIteratorFlow((nodes) =>
             nodes.map((node) => {
-              if (node.data.id === editingIteratorID && isIteratorNode(node)) {
+              if (node.id === editingIteratorID && isIteratorNode(node)) {
                 return {
                   ...node,
                   data: {
                     ...node.data,
-                    iterator_component: {
-                      ...node.data.iterator_component,
-                      output_elements: {
-                        ...node.data.iterator_component.output_elements,
-                        [outputKey]: "${" + `${option.path}` + "}",
-                      },
+                    outputElements: {
+                      ...node.data.outputElements,
+                      [outputKey]: "${" + `${option.path}` + "}",
                     },
                   },
                 };

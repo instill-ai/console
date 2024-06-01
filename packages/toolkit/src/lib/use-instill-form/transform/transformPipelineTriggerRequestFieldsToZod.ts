@@ -2,17 +2,17 @@
 
 import * as z from "zod";
 import { Nullable } from "../../type";
-import { PipelineTriggerRequestFields } from "../../vdp-sdk";
+import { PipelineVariableFieldMap } from "../../vdp-sdk";
 
 export function transformPipelineTriggerRequestFieldsToZod(
-  fields: Nullable<PipelineTriggerRequestFields>
+  fields: Nullable<PipelineVariableFieldMap>
 ) {
   let zodSchema: z.ZodObject<any, any, any> = z.object({});
 
   if (!fields) return zodSchema;
 
   for (const [key, value] of Object.entries(fields)) {
-    switch (value.instill_format) {
+    switch (value.instillFormat) {
       case "string":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;

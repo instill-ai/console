@@ -26,11 +26,11 @@ export const OutputValueInput = ({ outputKey }: { outputKey: string }) => {
 
   const outputValue = React.useMemo(() => {
     const iteratorNode = tempSavedNodesForEditingIteratorFlow.find(
-      (node) => node.data.id === editingIteratorID && isIteratorNode(node)
+      (node) => node.id === editingIteratorID && isIteratorNode(node)
     ) as Node<IteratorNodeData> | undefined;
 
     if (iteratorNode) {
-      return iteratorNode.data.iterator_component.output_elements[outputKey];
+      return iteratorNode.data.outputElements[outputKey];
     }
   }, [tempSavedNodesForEditingIteratorFlow, editingIteratorID, outputKey]);
 
@@ -42,17 +42,14 @@ export const OutputValueInput = ({ outputKey }: { outputKey: string }) => {
         onChange={(e) => {
           updateTempSavedNodesForEditingIteratorFlow((nodes) =>
             nodes.map((node) => {
-              if (node.data.id === editingIteratorID && isIteratorNode(node)) {
+              if (node.id === editingIteratorID && isIteratorNode(node)) {
                 return {
                   ...node,
                   data: {
                     ...node.data,
-                    iterator_component: {
-                      ...node.data.iterator_component,
-                      output_elements: {
-                        ...node.data.iterator_component.output_elements,
-                        [outputKey]: e.target.value,
-                      },
+                    outputElements: {
+                      ...node.data.outputElements,
+                      [outputKey]: e.target.value,
                     },
                   },
                 };

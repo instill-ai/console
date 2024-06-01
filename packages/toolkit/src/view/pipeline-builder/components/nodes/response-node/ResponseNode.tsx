@@ -11,7 +11,7 @@ import { arrayMove } from "@dnd-kit/sortable";
 import {
   InstillStore,
   Nullable,
-  PipelineTriggerResponseField,
+  PipelineOutputField,
   useInstillStore,
 } from "../../../../../lib";
 import { UserDefinedFieldItem } from "./UserDefinedFieldItem";
@@ -48,12 +48,11 @@ export type EndOperatorNodeFieldItem = {
   title: string;
 };
 
-export type PipelineResponseNodeFieldSortedItem =
-  PipelineTriggerResponseField & {
-    key: string;
-  };
+export type PipelineResponseNodeFieldSortedItem = PipelineOutputField & {
+  key: string;
+};
 
-export const ResponseNode = ({ data }: NodeProps<ResponseNodeData>) => {
+export const ResponseNode = ({ data, id }: NodeProps<ResponseNodeData>) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [isCreating, setIsCreating] = React.useState(false);
   const [currentEditingFieldKey, setCurrentEditingFieldKey] =
@@ -113,7 +112,7 @@ export const ResponseNode = ({ data }: NodeProps<ResponseNodeData>) => {
         }
 
         // We need to put on the initial order, for example, if we have
-        // 3 response fields, the instill_ui_order for new fields will be 3
+        // 3 response fields, the instillUiOrder for new fields will be 3
         const currentFieldsCount = Object.keys(node.data.fields).length;
 
         node.data = {
@@ -123,7 +122,7 @@ export const ResponseNode = ({ data }: NodeProps<ResponseNodeData>) => {
             [formData.key]: {
               title: formData.title,
               value: formData.value,
-              instill_ui_order: currentFieldsCount,
+              instillUiOrder: currentFieldsCount,
             },
           },
         };
@@ -195,8 +194,8 @@ export const ResponseNode = ({ data }: NodeProps<ResponseNodeData>) => {
         };
       })
       .sort((a, b) => {
-        const aOrder = a.instill_ui_order;
-        const bOrder = b.instill_ui_order;
+        const aOrder = a.instillUiOrder;
+        const bOrder = b.instillUiOrder;
 
         if (typeof aOrder === "undefined") {
           return 1;
@@ -237,6 +236,7 @@ export const ResponseNode = ({ data }: NodeProps<ResponseNodeData>) => {
 
   return (
     <NodeWrapper
+      nodeID={id}
       nodeData={data}
       noteIsOpen={noteIsOpen}
       disabledSourceHandler={true}
@@ -279,7 +279,7 @@ export const ResponseNode = ({ data }: NodeProps<ResponseNodeData>) => {
         />
       ) : isViewResultMode ? (
         <ComponentOutputs
-          componentID={data.id}
+          componentID={id}
           outputSchema={pipelineOpenAPIOutputSchema}
           nodeType="end"
           chooseTitleFrom="title"
@@ -312,7 +312,7 @@ export const ResponseNode = ({ data }: NodeProps<ResponseNodeData>) => {
                           {
                             title: item.title,
                             value: item.value,
-                            instill_ui_order: index,
+                            instillUiOrder: index,
                           },
                         ])
                       );

@@ -7,11 +7,11 @@ test("should get edges from basic components", () => {
   const nodes: Node<NodeData>[] = [
     {
       id: "trigger",
+      type: "triggerNode",
       data: {
-        id: "trigger",
         fields: {
           texts: {
-            instill_format: "array:string",
+            instillFormat: "array:string",
             title: "texts",
             description: "",
           },
@@ -22,8 +22,8 @@ test("should get edges from basic components", () => {
     },
     {
       id: "response",
+      type: "responseNode",
       data: {
-        id: "response",
         fields: {
           result: {
             title: "result",
@@ -45,11 +45,11 @@ test("should get edges from basic components", () => {
   const wrongNodes: Node<NodeData>[] = [
     {
       id: "trigger",
+      type: "triggerNode",
       data: {
-        id: "trigger",
         fields: {
           texts: {
-            instill_format: "array:string",
+            instillFormat: "array:string",
             title: "texts",
             description: "",
           },
@@ -60,8 +60,8 @@ test("should get edges from basic components", () => {
     },
     {
       id: "response",
+      type: "responseNode",
       data: {
-        id: "response",
         fields: {
           result: {
             title: "result",
@@ -84,11 +84,11 @@ test("should strictly check the reference field exist", () => {
   const nodes: Node<NodeData>[] = [
     {
       id: "trigger",
+      type: "triggerNode",
       data: {
-        id: "trigger",
         fields: {
           texts: {
-            instill_format: "array:string",
+            instillFormat: "array:string",
             title: "texts",
             description: "",
           },
@@ -99,8 +99,8 @@ test("should strictly check the reference field exist", () => {
     },
     {
       id: "response",
+      type: "responseNode",
       data: {
-        id: "response",
         fields: {
           result: {
             title: "result",
@@ -123,11 +123,11 @@ test("should loosely check the reference field exist when reference has square b
   const nodes: Node<NodeData>[] = [
     {
       id: "trigger",
+      type: "triggerNode",
       data: {
-        id: "trigger",
         fields: {
           texts: {
-            instill_format: "array:string",
+            instillFormat: "array:string",
             title: "texts",
             description: "",
           },
@@ -138,8 +138,8 @@ test("should loosely check the reference field exist when reference has square b
     },
     {
       id: "response",
+      type: "responseNode",
       data: {
-        id: "response",
         fields: {
           result: {
             title: "result",
@@ -161,11 +161,11 @@ test("should loosely check the reference field exist when reference has square b
   const wrongNodes: Node<NodeData>[] = [
     {
       id: "trigger",
+      type: "triggerNode",
       data: {
-        id: "trigger",
         fields: {
           texts: {
-            instill_format: "array:string",
+            instillFormat: "array:string",
             title: "texts",
             description: "",
           },
@@ -176,8 +176,8 @@ test("should loosely check the reference field exist when reference has square b
     },
     {
       id: "response",
+      type: "responseNode",
       data: {
-        id: "response",
         fields: {
           result: {
             title: "result",

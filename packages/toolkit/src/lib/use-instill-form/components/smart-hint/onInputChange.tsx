@@ -83,7 +83,7 @@ export function onInputChange({
   if (supportInstillCredit && updateIsUsingInstillCredit) {
     if (
       event.target.value.trim().replace("${", "").replace("}", "") !==
-      `secrets.${InstillCredit.key}`
+      `secret.${InstillCredit.key}`
     ) {
       updateIsUsingInstillCredit(false);
     } else {

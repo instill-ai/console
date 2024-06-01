@@ -3,35 +3,32 @@ import { PipelineRecipe } from "../../../lib";
 import { checkIsValidPosition } from "./checkIsValidPosition";
 
 test("should check position is not valid", () => {
-  const recipe: PipelineRecipe = {
-    trigger: {},
-    components: [
-      {
-        id: "ai_0",
-        connector_component: {
-          definition_name: "connector-definitions/stability-ai",
-          definition: null,
-          task: "",
-          input: {},
-          condition: null,
-          connection: {},
-        },
+  const recipe = {
+    variable: {},
+    component: {
+      ai_0: {
+        type: "stability-ai",
+        definition: null,
+        task: "",
+        input: {},
+        condition: null,
+        connection: {},
       },
-    ],
+    },
+    output: {},
     version: "v1beta",
-  };
+  } satisfies PipelineRecipe;
 
   const isValid = checkIsValidPosition({
-    components: recipe.components,
+    component: recipe.component,
     metadata: {
-      components: [
-        {
-          id: "ai_1",
+      component: {
+        ai_0: {
           x: 0,
           y: 0,
           note: null,
         },
-      ],
+      },
     },
   });
 
@@ -39,52 +36,42 @@ test("should check position is not valid", () => {
 });
 
 test("should check position is valid", () => {
-  const recipe: PipelineRecipe = {
-    trigger: {
-      trigger_by_request: {
-        request_fields: {},
-        response_fields: {},
+  const recipe = {
+    variable: {},
+    output: {},
+    component: {
+      ai_0: {
+        type: "stability-ai",
+        definition: null,
+        task: "",
+        input: {},
+        condition: null,
+        connection: {},
       },
     },
-    components: [
-      {
-        id: "ai_0",
-        connector_component: {
-          definition_name: "connector-definitions/stability-ai",
-          definition: null,
-          task: "",
-          input: {},
-          condition: null,
-          connection: {},
-        },
-      },
-    ],
     version: "v1beta",
-  };
+  } satisfies PipelineRecipe;
 
   const isValid = checkIsValidPosition({
-    components: recipe.components,
+    component: recipe.component,
     metadata: {
-      components: [
-        {
-          id: "ai_0",
+      component: {
+        ai_0: {
           x: 0,
           y: 0,
           note: null,
         },
-        {
-          id: "trigger",
+        trigger: {
           x: 0,
           y: 0,
           note: null,
         },
-        {
-          id: "response",
+        response: {
           x: 0,
           y: 0,
           note: null,
         },
-      ],
+      },
     },
   });
 
@@ -92,63 +79,54 @@ test("should check position is valid", () => {
 });
 
 test("should check position is not valid even there is one missing data", () => {
-  const recipe: PipelineRecipe = {
-    trigger: {},
-    components: [
-      {
-        id: "ai_0",
-        connector_component: {
-          definition_name: "connector-definitions/stability-ai",
-          definition: null,
-          task: "",
-          input: {},
-          condition: null,
-          connection: {},
-        },
+  const recipe = {
+    variable: {},
+    output: {},
+    component: {
+      ai_0: {
+        type: "stability-ai",
+        definition: null,
+        task: "",
+        input: {},
+        condition: null,
+        connection: {},
       },
-      {
-        id: "ai_1",
-        connector_component: {
-          definition_name: "connector-definitions/stability-ai",
-          definition: null,
-          task: "",
-          input: {},
-          condition: null,
-          connection: {},
-        },
+      ai_1: {
+        type: "stability-ai",
+        definition: null,
+        task: "",
+        input: {},
+        condition: null,
+        connection: {},
       },
-      {
-        id: "ai_2",
-        connector_component: {
-          definition_name: "connector-definitions/stability-ai",
-          definition: null,
-          task: "",
-          input: {},
-          condition: null,
-          connection: {},
-        },
+      ai_2: {
+        type: "stability-ai",
+        definition: null,
+        task: "",
+        input: {},
+        condition: null,
+        connection: {},
       },
-    ],
+    },
+
     version: "v1beta",
-  };
+  } satisfies PipelineRecipe;
 
   const isValid = checkIsValidPosition({
-    components: recipe.components,
+    component: recipe.component,
     metadata: {
-      components: [
-        {
-          id: "ai_1",
+      component: {
+        ai_1: {
           x: 0,
           y: 0,
           note: null,
         },
-        {
-          id: "ai_2",
+        ai_2: {
           x: 0,
           y: 0,
           note: null,
         },
-      ],
+      },
     },
   });
 

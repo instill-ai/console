@@ -108,7 +108,7 @@ export const BottomBar = () => {
 
                         if (
                           checkIsValidPosition({
-                            components: pipeline.data.recipe.components,
+                            component: pipeline.data.recipe.component ?? null,
                             metadata: pipeline.data.metadata ?? null,
                           })
                         ) {
@@ -156,7 +156,7 @@ export const BottomBar = () => {
 
                           if (
                             checkIsValidPosition({
-                              components: release.recipe.components,
+                              component: release.recipe.component ?? null,
                               metadata: release.metadata ?? null,
                             })
                           ) {

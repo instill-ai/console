@@ -31,31 +31,28 @@ export const AddOutputButton = ({
         onClick={() => {
           let newOutputElements = {};
 
-          if (targetIteratorNode?.data.iterator_component.output_elements) {
+          if (targetIteratorNode?.data.outputElements) {
             const currentIndexArray = Object.keys(
-              targetIteratorNode?.data.iterator_component.output_elements
+              targetIteratorNode?.data.outputElements
             )
               .map((key) => key.replace("result_", ""))
               .map(Number)
               .sort((a, b) => b - a);
 
             newOutputElements = {
-              ...targetIteratorNode?.data.iterator_component.output_elements,
+              ...targetIteratorNode?.data.outputElements,
               [`result_${currentIndexArray[0] === 0 ? 1 : currentIndexArray[0] + 1}`]:
                 "",
             };
           }
           updateTempSavedNodesForEditingIteratorFlow((nodes) =>
             nodes.map((node) => {
-              if (node.data.id === editingIteratorID && isIteratorNode(node)) {
+              if (node.id === editingIteratorID && isIteratorNode(node)) {
                 return {
                   ...node,
                   data: {
                     ...node.data,
-                    iterator_component: {
-                      ...node.data.iterator_component,
-                      output_elements: newOutputElements,
-                    },
+                    outputElements: newOutputElements,
                   },
                 };
               }

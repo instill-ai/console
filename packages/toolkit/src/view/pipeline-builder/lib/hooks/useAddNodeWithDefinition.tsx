@@ -11,8 +11,11 @@ import {
 } from "../../../../lib";
 import { transformConnectorDefinitionIDToComponentIDPrefix } from "../transformConnectorDefinitionIDToComponentIDPrefix";
 import { generateUniqueIndex } from "../generateUniqueIndex";
-import { getAllComponentID } from "../getAllComponentID";
-import { extractComponentFromNodes } from "../extractComponentFromNodes";
+import { getAllNodeID } from "../getAllNodeID";
+import {
+  isConnectorDefinition,
+  isIteratorDefinition,
+} from "../../../../lib/vdp-sdk/helper";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -23,7 +26,7 @@ const selector = (store: InstillStore) => ({
   isEditingIterator: store.isEditingIterator,
 });
 
-export function useConstructNodeFromDefinition({
+export function useAddNodeWithDefinition({
   reactFlowInstance,
 }: {
   reactFlowInstance: Nullable<ReactFlowInstance>;
@@ -92,11 +95,10 @@ export function useConstructNodeFromDefinition({
       // iterator, so we need to group the two set of nodes together. Under the
       // editing iterator mode, nodes will be the nodes in the iterator, and
       // tempSavedNodesForEditingIteratorFlow will be the nodes outside the iterator
-      const components = extractComponentFromNodes(nodes);
       const nodeIndex = generateUniqueIndex(
         isEditingIterator
           ? [...nodes, ...tempSavedNodesForEditingIteratorFlow].map((e) => e.id)
-          : getAllComponentID(components),
+          : getAllNodeID(nodes),
         nodePrefix
       );
 
@@ -104,8 +106,7 @@ export function useConstructNodeFromDefinition({
 
       let newNodes = nodes;
 
-      if (definition.id === "iterator") {
-        // Process the iterators
+      if (isIteratorDefinition(definition)) {
         newNodes = [
           ...newNodes,
           {
@@ -114,19 +115,17 @@ export function useConstructNodeFromDefinition({
             sourcePosition: Position.Left,
             targetPosition: Position.Right,
             data: {
-              id: nodeID,
-              iterator_component: {
-                input: "",
-                output_elements: {
-                  // This is the default output element
-                  result_0: "",
-                },
-                components: [],
-                condition: null,
-                data_specification: {
-                  input: null,
-                  output: null,
-                },
+              input: "",
+              type: "iterator",
+              outputElements: {
+                // This is the default output element
+                result_0: "",
+              },
+              component: {},
+              condition: null,
+              data_specification: {
+                input: null,
+                output: null,
               },
               note: null,
             },
@@ -134,24 +133,21 @@ export function useConstructNodeFromDefinition({
             zIndex: 20,
           },
         ];
-      } else if ("type" in definition) {
+      } else if (isConnectorDefinition(definition)) {
         newNodes = [
           ...newNodes,
           {
             id: nodeID,
-            type: "connectorNode",
+            type: "generalNode",
             sourcePosition: Position.Left,
             targetPosition: Position.Right,
             data: {
-              id: nodeID,
-              connector_component: {
-                definition_name: definition.name,
-                definition,
-                input: {},
-                task: "",
-                condition: null,
-                connection: {},
-              },
+              type: definition.id,
+              definition,
+              input: {},
+              task: "",
+              condition: null,
+              connection: {},
               note: null,
             },
             position: newNodeXY,
@@ -163,19 +159,17 @@ export function useConstructNodeFromDefinition({
           ...newNodes,
           {
             id: nodeID,
-            type: "operatorNode",
+            type: "generalNode",
             sourcePosition: Position.Left,
             targetPosition: Position.Right,
             data: {
-              id: nodeID,
-              operator_component: {
-                definition_name: definition.name,
-                definition: definition as OperatorDefinition,
-                input: {},
-                task: "",
-                condition: null,
-              },
+              type: definition.id,
+              definition: definition,
+              input: {},
+              task: "",
+              condition: null,
               note: null,
+              connection: {},
             },
             position: newNodeXY,
             zIndex: 20,
