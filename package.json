@@ -40,11 +40,12 @@
     "node": ">=20.0.0"
   },
   "packageManager": "pnpm@9.1.4",
-  "pnpm": {
-    "overrides": {
-      "vite": "^5.2.0",
-      "express": "4.19.2"
-    }
+    "pnpm": {
+      "overrides": {
+        "vite": "^5.2.0",
+        "express": "4.19.2"
+      }
+    },
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
