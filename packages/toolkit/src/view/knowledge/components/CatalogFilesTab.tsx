@@ -1,5 +1,5 @@
 import { Button, Icons, Separator, Tag, Textarea } from "@instill-ai/design-system";
-import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/knowledgeBase";
+import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 
 type CatalogFilesTabProps = {
     knowledgeBase: KnowledgeBase;
@@ -10,7 +10,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
         <div className="flex flex-col">
             <div className="flex items-center justify-between mb-5">
                 <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
-                    {knowledgeBase.title}
+                    {knowledgeBase.name}
                 </p>
                 {/* Coming in V2 */}
                 {/* <div className="space-x-4">
