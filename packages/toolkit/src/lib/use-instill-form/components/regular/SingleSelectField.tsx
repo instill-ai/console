@@ -28,6 +28,7 @@ export const SingleSelectField = ({
   updateForceCloseCollapsibleFormGroups,
   updateForceOpenCollapsibleFormGroups,
   updateIsUsingInstillCredit,
+  isRequired,
 }: {
   tree: InstillFormTree;
   options: string[];
@@ -187,7 +188,7 @@ export const SingleSelectField = ({
               <Form.Label
                 className={size === "sm" ? "!product-body-text-4-medium" : ""}
               >
-                {title}
+                {isRequired ? `${title} *` : title}
               </Form.Label>
               <FieldDescriptionTooltip description={description} />
             </div>
