@@ -75,7 +75,9 @@ export const CardModel = (props: CardModelProps) => {
             <Menu handleDeleteModel={() => onDelete(model)} model={model} />
           ) : null}
         </div>
-        <p className="text-semantic-fg-secondary">{model.description}</p>
+        <p className="text-base text-semantic-fg-secondary">
+          {model.description}
+        </p>
         <Stats
           task={model.task}
           updatedAt={model.update_time || model.create_time}

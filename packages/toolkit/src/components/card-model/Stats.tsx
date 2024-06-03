@@ -17,7 +17,7 @@ export const Stats = (props: StatsProps) => {
 
   return (
     <div className="mt-auto flex w-full flex-row items-center gap-x-4">
-      <div className="flex flex-row items-center gap-x-1 uppercase text-semantic-fg-secondary">
+      <div className="flex flex-row items-center gap-x-1 text-sm uppercase text-semantic-fg-secondary">
         {getIcon("w-4 h-4 stroke-semantic-fg-primary")}
         {label}
       </div>

@@ -14,7 +14,11 @@ export const Tags = (props: TagsProps) => {
 
   return (
     <div className="flex shrink-0 flex-row gap-x-2">
-      <Tag variant="lightNeutral" size="sm" className="gap-x-1 rounded-sm">
+      <Tag
+        variant="lightNeutral"
+        size="md"
+        className="gap-x-1.5 rounded-sm !py-0.5"
+      >
         {isPrivate ? (
           <React.Fragment>
             <Icons.Lock03 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
@@ -27,10 +31,18 @@ export const Tags = (props: TagsProps) => {
           </React.Fragment>
         )}
       </Tag>
-      <Tag variant="lightNeutral" size="sm" className="gap-x-1 rounded-sm">
+      <Tag
+        variant="lightNeutral"
+        size="md"
+        className="gap-x-1.5 rounded-sm !py-0.5"
+      >
         {region}
       </Tag>
-      <Tag variant="lightNeutral" size="sm" className="gap-x-1 rounded-sm">
+      <Tag
+        variant="lightNeutral"
+        size="md"
+        className="gap-x-1.5 rounded-sm !py-0.5"
+      >
         <Icons.Chip01 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
         {hardware}
       </Tag>
