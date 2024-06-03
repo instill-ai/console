@@ -104,7 +104,10 @@ export const ModelSettingsHead = ({
                 size="sm"
               >
                 {model?.visibility === "VISIBILITY_PUBLIC" ? (
-                  "Public"
+                  <React.Fragment>
+                    <Icons.BookOpen02 className="h-3.5 w-3.5 stroke-semantic-fg-primary" />
+                    Public
+                  </React.Fragment>
                 ) : (
                   <React.Fragment>
                     Private

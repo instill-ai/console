@@ -21,7 +21,10 @@ export const Tags = (props: TagsProps) => {
             Private
           </React.Fragment>
         ) : (
-          "Public"
+          <React.Fragment>
+            <Icons.BookOpen02 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
+            Public
+          </React.Fragment>
         )}
       </Tag>
       <Tag variant="lightNeutral" size="sm" className="gap-x-1 rounded-sm">
