@@ -61,13 +61,13 @@ export const KnowledgeBaseTab = ({
     });
     const createKnowledgeBase = useCreateKnowledgeBase();
 
-    // React.useEffect(() => {
-    //     setLoading(true);
-    //     getKnowledgeBases.refetch().then((result) => {
-    //         setKnowledgeBases(result.data || []);
-    //         setLoading(false);
-    //     });
-    // }, [getKnowledgeBases]);
+    React.useEffect(() => {
+        setLoading(true);
+        getKnowledgeBases.refetch().then((result) => {
+            setKnowledgeBases(result.data || []);
+            setLoading(false);
+        });
+    }, [userID, accessToken]);
 
     const handleCreateKnowledgeSubmit = (data: {
         name: string;
@@ -121,7 +121,7 @@ export const KnowledgeBaseTab = ({
             ) : (
                 <div className="grid gap-16 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 xl:grid-cols-3">
                     <KnowledgeBaseCard onClick={() => setIsCreateDialogOpen(true)} />
-                    {mockKnowledgeBases.map((knowledgeBase) => (
+                    {knowledgeBases.map((knowledgeBase) => (
                         <CreateKnowledgeBaseCard
                             key={knowledgeBase.id}
                             knowledgeBase={knowledgeBase}
