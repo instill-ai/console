@@ -18,7 +18,7 @@ export function useCreateKnowledgeBase() {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
-      const client = createInstillAxiosClient(accessToken);
+      const client = createInstillAxiosClient(accessToken, true);
       const response = await client.post<{
         body: KnowledgeBase;
         error_msg: string;
