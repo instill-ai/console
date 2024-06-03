@@ -39,7 +39,12 @@ export const EditKnowledgeDialog = ({
             description: "",
             tags: [],
         },
+        mode: "onChange",
+
     });
+
+    const { formState } = form;
+
 
     return (
         <Dialog.Root open={isOpen} onOpenChange={onClose}>
@@ -127,7 +132,7 @@ export const EditKnowledgeDialog = ({
                                 variant="primary"
                                 type="submit"
                                 className="text-semantic-fg-on-default"
-                                disabled={!form.getValues("name") || !form.getValues("description")}
+                                disabled={!formState.isValid}
                             >
                                 Save
                             </Button>
