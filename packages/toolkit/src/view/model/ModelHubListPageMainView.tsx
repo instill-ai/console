@@ -113,14 +113,15 @@ export const ModelHubListPageMainView = (
           </Select.Root>
         </div>
         <Button
-          className="ml-auto"
+          className="ml-auto gap-x-2"
           variant="primary"
           size="lg"
           onClick={() => {
             router.push(`/${entity.data.entity}/models/create`);
           }}
         >
-          Create a Model
+          <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
+          Create Model
         </Button>
       </div>
       <ModelsList
