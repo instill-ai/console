@@ -25,117 +25,33 @@ export const defaultCodeSnippetStyles = {
   padding: "16px",
 };
 
-export const getInstillTaskHttpRequestExample = (model?: Model) => {
-  if (!model) {
-    return "";
-  }
-
-  const apiVersion = env("NEXT_PUBLIC_MODEL_API_VERSION");
-
-  switch (model.task) {
-    case "TASK_CLASSIFICATION":
-      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
---header 'Content-Type: application/json' \\
---header 'Authorization: Bearer {your-api-key}' \\
---data '{
-  "task_inputs": [
-    {
-      "classification": {
+const taskPayloads = {
+  TASK_CLASSIFICATION: `"classification": {
         "image_url": {your-input-image-url}
-      }
-    }
-  ]
-}'`;
-    case "TASK_DETECTION":
-      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
---header 'Content-Type: application/json' \\
---header 'Authorization: Bearer {your-api-key}' \\
---data '{
-  "task_inputs": [
-    {
-      "detection": {
+      }`,
+  TASK_DETECTION: `"detection": {
         "image_url": {your-input-image-url}
-      }
-    }
-  ]
-}'`;
-    case "TASK_KEYPOINT":
-      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
---header 'Content-Type: application/json' \\
---header 'Authorization: Bearer {your-api-key}' \\
---data '{
-  "task_inputs": [
-    {
-      "keypoint": {
+      }`,
+  TASK_KEYPOINT: `"keypoint": {
         "image_url": {your-input-image-url}
-      }
-    }
-  ]
-}'`;
-    case "TASK_OCR":
-      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
---header 'Content-Type: application/json' \\
---header 'Authorization: Bearer {your-api-key}' \\
---data '{
-  "task_inputs": [
-    {
-      "ocr": {
+      }`,
+  TASK_OCR: `"ocr": {
         "image_url": {your-input-image-url}
-      }
-    }
-  ]
-}'`;
-    case "TASK_INSTANCE_SEGMENTATION":
-      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
---header 'Content-Type: application/json' \\
---header 'Authorization: Bearer {your-api-key}' \\
---data '{
-  "task_inputs": [
-    {
-      "instance_segmentation": {
+      }`,
+  TASK_INSTANCE_SEGMENTATION: `"instance_segmentation": {
         "image_url": {your-input-image-url}
-      }
-    }
-  ]
-}'`;
-    case "TASK_SEMANTIC_SEGMENTATION":
-      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
---header 'Content-Type: application/json' \\
---header 'Authorization: Bearer {your-api-key}' \\
---data '{
-  "task_inputs": [
-    {
-      "semantic_segmentation": {
+      }`,
+  TASK_SEMANTIC_SEGMENTATION: `"semantic_segmentation": {
         "image_url": {your-input-image-url}
-      }
-    }
-  ]
-}'`;
-    case "TASK_TEXT_GENERATION":
-      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
---header 'Content-Type: application/json' \\
---header 'Authorization: Bearer {your-api-key}' \\
---data '{
-  "task_inputs": [
-    {
-      "text_generation": {
+      }`,
+  TASK_TEXT_GENERATION: `"text_generation": {
         "prompt": "In this beautiful day,",
         "system_message": "you are a helpful assistant",
         "max_new_tokens": 1024,
         "top_k": 5,
         "temperature": 0.7
-      }
-    }
-  ]
-}'`;
-    case "TASK_TEXT_GENERATION_CHAT":
-      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
---header 'Content-Type: application/json' \\
---header 'Authorization: Bearer {your-api-key}' \\
---data '{
-  "task_inputs": [
-    {
-      "text_generation": {
+      }`,
+  TASK_TEXT_GENERATION_CHAT: `"text_generation": {
         "prompt": "How is the weather today?",
         "chat_history": [
           {
@@ -152,53 +68,23 @@ export const getInstillTaskHttpRequestExample = (model?: Model) => {
         "max_new_tokens": 1024,
         "top_k": 5,
         "temperature": 0.7
-      }
-    }
-  ]
-}'`;
-    case "TASK_TEXT_TO_IMAGE":
-      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
---header 'Content-Type: application/json' \\
---header 'Authorization: Bearer {your-api-key}' \\
---data '{
-  "task_inputs": [
-    {
-      "text_to_image": {
+      }`,
+  TASK_TEXT_TO_IMAGE: `"text_to_image": {
         "prompt": "award winning high resolution photo of a giant tortoise",
         "steps": 1,
         "cfg_scale": 5.5,
         "seed": 1,
         "samples": 1
-      }
-    }
-  ]
-}'`;
-    case "TASK_IMAGE_TO_IMAGE":
-      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
---header 'Content-Type: application/json' \\
---header 'Authorization: Bearer {your-api-key}' \\
---data '{
-  "task_inputs": [
-    {
-      "image_to_image": {
+      }`,
+  TASK_IMAGE_TO_IMAGE: `"image_to_image": {
         "prompt": "spacedog",
         "prompt_image_url": "https://artifacts.instill.tech/imgs/dog.jpg",
         "steps": 1,
         "cfg_scale": 5.5,
         "seed": 1,
         "samples": 1
-      }
-    }
-  ]
-}'`;
-    case "TASK_VISUAL_QUESTION_ANSWERING":
-      return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
---header 'Content-Type: application/json' \\
---header 'Authorization: Bearer {your-api-key}' \\
---data '{
-  "task_inputs": [
-    {
-      "visual_question_answering": {
+      }`,
+  TASK_VISUAL_QUESTION_ANSWERING: `"visual_question_answering": {
         "prompt": "what is in the image?",
         "prompt_images": [
           {
@@ -209,9 +95,24 @@ export const getInstillTaskHttpRequestExample = (model?: Model) => {
         "max_new_tokens": 1024,
         "top_k": 5,
         "temperature": 0.7
-      }
+      }`,
+};
+
+export const getInstillTaskHttpRequestExample = (model?: Model) => {
+  if (!model) {
+    return "";
+  }
+
+  const apiVersion = env("NEXT_PUBLIC_MODEL_API_VERSION");
+
+  return `curl --location 'https://api.instill.tech/model/${apiVersion}/${model.name}/trigger' \\
+--header 'Content-Type: application/json' \\
+--header 'Authorization: Bearer $INSTILL_API_TOKEN' \\
+--data '{
+  "task_inputs": [
+    {
+      ${taskPayloads[model.task]}
     }
   ]
 }'`;
-  }
 };
