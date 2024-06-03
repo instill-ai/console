@@ -6,31 +6,11 @@ import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
 import { useGetKnowledgeBases, useCreateKnowledgeBase } from "../../../lib/react-query-service/knowledge";
 import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
 
 type KnowledgeBaseTabProps = {
     onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
 };
-
-const mockKnowledgeBases: KnowledgeBase[] = [
-    {
-        id: "1",
-        name: "Knowledge Base 1",
-        description: "This is the first knowledge base.",
-        tags: ["tag1", "tag2"],
-    },
-    {
-        id: "2",
-        name: "Knowledge Base 2",
-        description: "This is the second knowledge base.",
-        tags: ["tag3", "tag4"],
-    },
-    {
-        id: "3",
-        name: "Knowledge Base 3",
-        description: "This is the third knowledge base.",
-        tags: ["tag5", "tag6"],
-    },
-];
 
 export const KnowledgeBaseTab = ({
     onKnowledgeBaseSelect,
@@ -51,9 +31,8 @@ export const KnowledgeBaseTab = ({
     const userID = me.isSuccess ? me.data.id : null;
 
     const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
-    const [knowledgeBases, setKnowledgeBases] = React.useState<KnowledgeBase[]>(
-        []
-    );
+    const [knowledgeBases, setKnowledgeBases] = React.useState<KnowledgeBase[]>([]);
+    const [editingKnowledgeBase, setEditingKnowledgeBase] = React.useState<KnowledgeBase | null>(null);
     const getKnowledgeBases = useGetKnowledgeBases({
         accessToken,
         uid: userID as string,
@@ -126,6 +105,7 @@ export const KnowledgeBaseTab = ({
                             key={knowledgeBase.id}
                             knowledgeBase={knowledgeBase}
                             onCardClick={() => onKnowledgeBaseSelect(knowledgeBase)}
+                            setKnowledgeBases={setKnowledgeBases}
                         />
                     ))}
                 </div>

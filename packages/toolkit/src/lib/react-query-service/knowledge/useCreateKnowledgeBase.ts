@@ -11,7 +11,7 @@ export function useCreateKnowledgeBase() {
       payload: {
         name: string;
         description: string;
-        tags: string[];
+        tags?: string[];
       };
       accessToken: string | null;
     }) => {
