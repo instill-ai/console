@@ -311,10 +311,10 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                             </p>
                           </div>
                           <Form.Control>
-                            <Input.Root>
+                            <Input.Root className="px-[9px]">
                               <Input.Core
                                 {...field}
-                                className="pl-2 !product-body-text-2-regular"
+                                className="pl-0 !product-body-text-2-regular"
                                 type="text"
                                 placeholder="Model ID"
                                 required={false}
@@ -328,7 +328,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                     }}
                   />
                 </div>
-                <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                <p className="text-xs text-semantic-fg-secondary">
                   {`Give it a short and memorable ID, like 'cat-detector'. Use the drop-down to choose a different owner.`}
                 </p>
               </div>

@@ -47,7 +47,7 @@ export const ModelHubSettingPageMainView = (
 
   const modelState = React.useMemo(() => {
     if (model.isSuccess && modelsWatchState.isSuccess) {
-      return modelsWatchState.data[model.data.name].state;
+      return modelsWatchState.data[model.data.name]?.state || null;
     }
 
     return null;

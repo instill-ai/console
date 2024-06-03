@@ -397,9 +397,11 @@ export const Body = () => {
               <Tabs.Trigger className={tabTriggerStyle} value="explore">
                 <span className="text-lg">Explore</span>
               </Tabs.Trigger>
-              <Tabs.Trigger className={tabTriggerStyle} value="featured">
-                <span className="text-lg">Featured</span>
-              </Tabs.Trigger>
+              {exploreDataType !== "models" ? (
+                <Tabs.Trigger className={tabTriggerStyle} value="featured">
+                  <span className="text-lg">Featured</span>
+                </Tabs.Trigger>
+              ) : null}
             </Tabs.List>
             <Separator orientation="horizontal" />
           </div>

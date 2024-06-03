@@ -100,7 +100,7 @@ export const ModelSettingsHead = ({
               </div>
               {modelState ? <StateLabel state={modelState} /> : null}
               <Tag
-                className="my-auto h-6 gap-x-1 !border-0 !py-0"
+                className="my-auto h-6 gap-x-1 !border-0 !py-0 !text-sm"
                 variant="lightNeutral"
                 size="sm"
               >
@@ -109,7 +109,7 @@ export const ModelSettingsHead = ({
                 ) : (
                   <React.Fragment>
                     Private
-                    <Icons.Lock03 className="h-3 w-3 stroke-semantic-fg-primary" />
+                    <Icons.Lock03 className="h-3.5 w-3.5 stroke-semantic-fg-primary" />
                   </React.Fragment>
                 )}
               </Tag>
@@ -146,7 +146,7 @@ export const ModelSettingsHead = ({
         ) : (
           <div className="flex flex-row items-center gap-x-1">
             <Tag
-              className="my-auto h-6 gap-x-1 !border-0 !py-0 text-semantic-secondary-on-bg"
+              className="my-auto h-5 gap-x-1 !border-0 !py-0 text-semantic-secondary-on-bg"
               variant="lightNeutral"
               size="sm"
             >
