@@ -8,29 +8,33 @@ import {
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 
-const CreateKnowledgeFormSchema = z.object({
+const EditKnowledgeFormSchema = z.object({
     name: z.string().min(1, { message: "Name is required" }),
     description: z.string().min(1, { message: "Description is required" }),
     tags: z.array(z.string()).optional(),
 });
 
-type CreateKnowledgeFormProps = {
-    onSubmit: (data: z.infer<typeof CreateKnowledgeFormSchema>) => void;
+type EditKnowledgeFormProps = {
+    onSubmit: (data: z.infer<typeof EditKnowledgeFormSchema>) => void;
+    initialValues?: KnowledgeBase;
 };
 
-export const CreateKnowledgeDialog = ({
+export const EditKnowledgeDialog = ({
     isOpen,
     onClose,
     onSubmit,
+    initialValues,
 }: {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: CreateKnowledgeFormProps["onSubmit"];
+    onSubmit: EditKnowledgeFormProps["onSubmit"];
+    initialValues?: EditKnowledgeFormProps["initialValues"];
 }) => {
-    const form = useForm<z.infer<typeof CreateKnowledgeFormSchema>>({
-        resolver: zodResolver(CreateKnowledgeFormSchema),
-        defaultValues: {
+    const form = useForm<z.infer<typeof EditKnowledgeFormSchema>>({
+        resolver: zodResolver(EditKnowledgeFormSchema),
+        defaultValues: initialValues || {
             name: "",
             description: "",
             tags: [],
@@ -41,7 +45,7 @@ export const CreateKnowledgeDialog = ({
         <Dialog.Root open={isOpen} onOpenChange={onClose}>
             <Dialog.Content className="!w-[600px] rounded-md">
                 <Dialog.Header className="flex justify-between">
-                    <Dialog.Title className="text-semantic-fg-primary product-body-text-1-semibold">Create new knowledge base</Dialog.Title>
+                    <Dialog.Title className="text-semantic-fg-primary product-body-text-1-semibold">Edit knowledge base</Dialog.Title>
                     <Dialog.Close className="" />
                 </Dialog.Header>
 
@@ -118,16 +122,13 @@ export const CreateKnowledgeDialog = ({
                         <div className="flex justify-end mt-8 gap-x-3">
                             <Button
                                 variant="secondaryGrey"
-                                onClick={onClose}
-                            >
-                                Cancel
-                            </Button>
+                                onClick={onClose}>Cancel</Button>
                             <Button
                                 variant="primary"
                                 type="submit"
                                 className="text-semantic-fg-on-default"
                             >
-                                Create
+                                Save
                             </Button>
                         </div>
                     </form>
@@ -135,4 +136,4 @@ export const CreateKnowledgeDialog = ({
             </Dialog.Content>
         </Dialog.Root>
     );
-};
+}

@@ -3,20 +3,24 @@ import * as React from "react";
 import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
 import { useUpdateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useUpdateKnowledgeBase";
 import { useDeleteKnowledgeBase } from "../../../lib/react-query-service/knowledge/useDeleteKnowledgeBase";
+import { useCreateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useCreateKnowledgeBase";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
 
 type CreateKnowledgeBaseCardProps = {
   knowledgeBase: KnowledgeBase;
   onCardClick: () => void;
+  setKnowledgeBases: React.Dispatch<React.SetStateAction<KnowledgeBase[]>>;
 };
 
 type MenuProps = {
   onDelete: (e: React.MouseEvent) => void;
   onEdit: (e: React.MouseEvent) => void;
+  onDuplicate: (e: React.MouseEvent) => void;
 };
 
-const Menu = ({ onDelete, onEdit }: MenuProps) => {
+const Menu = ({ onDelete, onEdit, onDuplicate }: MenuProps) => {
   return (
     <React.Fragment>
       <div className="flex justify-center">
@@ -38,7 +42,7 @@ const Menu = ({ onDelete, onEdit }: MenuProps) => {
               Edit info
             </DropdownMenu.Item>
             <DropdownMenu.Item
-              onClick={(e) => { e.stopPropagation(); }}
+              onClick={onDuplicate}
               className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
             >
               <Icons.Copy07 className="w-4 h-4 mr-2 stroke-semantic-fg-secondary" />
@@ -62,10 +66,12 @@ const Menu = ({ onDelete, onEdit }: MenuProps) => {
 export const CreateKnowledgeBaseCard = ({
   knowledgeBase,
   onCardClick,
+  setKnowledgeBases,
 }: CreateKnowledgeBaseCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
+  const [isDeleted, setIsDeleted] = React.useState(false);
 
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -77,26 +83,50 @@ export const CreateKnowledgeBaseCard = ({
     setDeleteDialogIsOpen(true);
   };
 
+  const handleDuplicate = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const clonedKnowledgeBase = {
+      ...knowledgeBase,
+      name: `${knowledgeBase.name} (Clone)`,
+      id: undefined,
+    };
+    try {
+      const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
+        payload: clonedKnowledgeBase,
+        accessToken: accessToken,
+      });
+      setKnowledgeBases((prevKnowledgeBases) => [...prevKnowledgeBases, newKnowledgeBase]);
+    } catch (error) {
+      console.error("Error cloning knowledge base:", error);
+    }
+  };
+
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
   const updateKnowledgeBase = useUpdateKnowledgeBase();
+  const createKnowledgeBase = useCreateKnowledgeBase();
 
   const selector = (store: InstillStore) => ({
     accessToken: store.accessToken,
     enabledQuery: store.enabledQuery,
   });
 
-
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
+  const { accessToken } = useInstillStore(useShallow(selector));
 
   const confirmDelete = async () => {
-    await deleteKnowledgeBase.mutateAsync({
-      id: knowledgeBase.id,
-      accessToken: accessToken,
-    });
+    setIsDeleted(true);
     setDeleteDialogIsOpen(false);
     setShowDeleteMessage(true);
-    setTimeout(() => setShowDeleteMessage(false), 5000);
+    setTimeout(async () => {
+      if (isDeleted) {
+        await deleteKnowledgeBase.mutateAsync({
+          id: knowledgeBase.id,
+          accessToken: accessToken,
+        });
+        setKnowledgeBases((prevKnowledgeBases) =>
+          prevKnowledgeBases.filter((kb) => kb.id !== knowledgeBase.id)
+        );
+      }
+    }, 5000);
   };
 
   const handleEditKnowledgeSubmit = async (data: any) => {
@@ -122,23 +152,28 @@ export const CreateKnowledgeBaseCard = ({
               className=""
               variant="secondary"
               size="md"
-              onClick={() => setShowDeleteMessage(false)}
+              onClick={() => {
+                setShowDeleteMessage(false);
+                setIsDeleted(false);
+              }}
             >
               Undo Action
             </LinkButton>
           </div>
         </div>
       )}
-      <div className="flex shadow cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 w-[360px] h-[175px]" onClick={onCardClick}>
-        <div className="flex items-center justify-between">
-          <div className="product-headings-heading-4">{knowledgeBase.name}</div>
+      {!isDeleted && (
+        <div className="flex shadow cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 w-[360px] h-[175px]" onClick={onCardClick}>
+          <div className="flex items-center justify-between">
+            <div className="product-headings-heading-4">{knowledgeBase.name}</div>
+          </div>
+          <Separator orientation="horizontal" className="my-[10px]" />
+          <p className="product-body-text-3-regular line-clamp-3 mb-auto">{knowledgeBase.description}</p>
+          <div className="flex justify-end items-end">
+            <Menu onDelete={handleDelete} onEdit={handleEdit} onDuplicate={handleDuplicate} />
+          </div>
         </div>
-        <Separator orientation="horizontal" className="my-[10px]" />
-        <p className="product-body-text-3-regular line-clamp-3 mb-auto">{knowledgeBase.description}</p>
-        <div className="flex justify-end items-end">
-          <Menu onDelete={handleDelete} onEdit={handleEdit} />
-        </div>
-      </div>
+      )}
       <Dialog.Root open={deleteDialogIsOpen} onOpenChange={setDeleteDialogIsOpen}>
         <Dialog.Content className="!w-[350px] rounded-sm !p-0">
           <div className="rounded-sm border border-b-semantic-bg-secondary flex flex-col justify-start items-center gap-6 p-6">
@@ -162,11 +197,16 @@ export const CreateKnowledgeBaseCard = ({
           </div>
         </Dialog.Content>
       </Dialog.Root>
-      <CreateKnowledgeDialog
+      <EditKnowledgeDialog
         isOpen={editDialogIsOpen}
         onClose={() => setEditDialogIsOpen(false)}
         onSubmit={handleEditKnowledgeSubmit}
-        title="Edit knowledge base"
+        initialValues={{
+          name: knowledgeBase.name,
+          description: knowledgeBase.description,
+          tags: knowledgeBase.tags,
+          id: knowledgeBase.id,
+        }}
       />
     </React.Fragment>
   );
