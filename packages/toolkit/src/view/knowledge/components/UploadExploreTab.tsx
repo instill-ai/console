@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
-import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/knowledgeBase";
+import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 
 const UploadExploreFormSchema = z.object({
     convertTransformFiles: z.string().min(1, { message: "Convert/Transform files is required" }),
@@ -84,7 +84,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
         <div className="flex flex-col">
             <div className="flex items-center justify-between mb-5">
                 <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
-                    {knowledgeBase.title}
+                    {knowledgeBase.name}
                 </p>
             </div>
             <Separator orientation="horizontal" className="mb-6" />
