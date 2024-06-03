@@ -207,10 +207,16 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
         <div className="mb-4 flex flex-col">
           <div className="flex items-center justify-between">
             <p className="whitespace-nowrap text-semantic-fg-disabled product-button-button-2">
-              {dataType === "pipelines" ? "Pipelines" : "Models"}{" "}
-              {tabValue === "featured"
-                ? hubStats.data?.number_of_featured_pipelines
-                : hubStats.data?.number_of_public_pipelines}
+              {dataType === "pipelines" ? (
+                <React.Fragment>
+                  Pipelines{" "}
+                  {tabValue === "featured"
+                    ? hubStats.data?.number_of_featured_pipelines
+                    : hubStats.data?.number_of_public_pipelines}
+                </React.Fragment>
+              ) : (
+                <React.Fragment>Models </React.Fragment>
+              )}
             </p>
             <div className="flex w-full items-center justify-end gap-4">
               <Input.Root className="w-[431px] !rounded">
