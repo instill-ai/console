@@ -287,6 +287,7 @@ export function pickRegularFieldsFromInstillFormTree(
             disabled={disabledAll}
             size={size}
             isHidden={tree.isHidden}
+            isRequired={tree.isRequired}
           />
         );
       }
@@ -305,6 +306,7 @@ export function pickRegularFieldsFromInstillFormTree(
         disabled={disabledAll}
         size={size}
         isHidden={tree.isHidden}
+        isRequired={tree.isRequired}
       />
     );
   }
@@ -323,6 +325,7 @@ export function pickRegularFieldsFromInstillFormTree(
         disabled={disabledAll}
         size={size}
         isHidden={tree.isHidden}
+        isRequired={tree.isRequired}
         instillCredentialMap={tree.instillCredentialMap}
         updateSupportInstillCredit={updateSupportInstillCredit}
         updateIsUsingInstillCredit={updateIsUsingInstillCredit}
@@ -348,11 +351,11 @@ export function pickRegularFieldsFromInstillFormTree(
           shortDescription={tree.instillShortDescription}
           disabled={disabledAll}
           instillAcceptFormats={tree.instillAcceptFormats ?? []}
-          isRequired={tree.isRequired}
           instillUpstreamTypes={tree.instillUpstreamTypes ?? []}
           componentID={componentID}
           size={size}
           isHidden={tree.isHidden}
+          isRequired={tree.isRequired}
           secrets={secrets}
           instillSecret={tree.instillSecret}
           instillCredential={tree.instillCredential}
@@ -373,6 +376,7 @@ export function pickRegularFieldsFromInstillFormTree(
         disabled={disabledAll}
         size={size}
         isHidden={tree.isHidden}
+        isRequired={tree.isRequired}
       />
     );
   }
@@ -388,11 +392,11 @@ export function pickRegularFieldsFromInstillFormTree(
         shortDescription={tree.instillShortDescription}
         disabled={disabledAll}
         instillAcceptFormats={tree.instillAcceptFormats ?? []}
-        isRequired={tree.isRequired}
         instillUpstreamTypes={tree.instillUpstreamTypes ?? []}
         componentID={componentID}
         size={size}
         isHidden={tree.isHidden}
+        isRequired={tree.isRequired}
         secrets={secrets}
         instillSecret={tree.instillSecret}
         instillCredential={tree.instillCredential}
@@ -413,6 +417,7 @@ export function pickRegularFieldsFromInstillFormTree(
       disabled={disabledAll}
       size={size}
       isHidden={tree.isHidden}
+      isRequired={tree.isRequired}
     />
   );
 }

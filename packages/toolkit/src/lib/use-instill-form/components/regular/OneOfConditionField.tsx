@@ -25,6 +25,7 @@ export const OneOfConditionField = ({
   disabled,
   size,
   isHidden,
+  isRequired,
 }: {
   tree: InstillFormTree;
   selectedConditionMap: Nullable<SelectedConditionMap>;
@@ -85,7 +86,7 @@ export const OneOfConditionField = ({
                       size === "sm" ? "!product-body-text-4-semibold" : ""
                     }
                   >
-                    {title}
+                    {isRequired ? `${title} *` : title}
                   </Form.Label>
                   <FieldDescriptionTooltip description={description} />
                 </div>

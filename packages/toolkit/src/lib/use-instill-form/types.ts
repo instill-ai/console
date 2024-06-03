@@ -154,6 +154,7 @@ export type AutoFormFieldBaseProps = {
   isHidden?: boolean;
   disabled?: boolean;
   keyPrefix?: string;
+  isRequired?: boolean;
 };
 
 export type ZodAnyValidatorSchema = z.ZodType<any, any, any>;

@@ -14,6 +14,7 @@ export const TextField = ({
   disabled,
   size,
   isHidden,
+  isRequired,
 }: {
   shortDescription?: string;
   disabled?: boolean;
@@ -30,7 +31,7 @@ export const TextField = ({
               <Form.Label
                 className={size === "sm" ? "!product-body-text-4-medium" : ""}
               >
-                {title}
+                {isRequired ? `${title} *` : title}
               </Form.Label>
               <FieldDescriptionTooltip description={description} />
             </div>
