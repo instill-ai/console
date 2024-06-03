@@ -126,6 +126,7 @@ export const CreateKnowledgeDialog = ({
                                 variant="primary"
                                 type="submit"
                                 className="text-semantic-fg-on-default"
+                                disabled={!form.getValues("name") || !form.getValues("description")}
                             >
                                 Create
                             </Button>
