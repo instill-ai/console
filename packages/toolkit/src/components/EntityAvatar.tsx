@@ -30,7 +30,7 @@ export const EntityAvatar = ({
       onError={() => {
         setError(true);
       }}
-      className={cn("shrink-0 grow-0 rounded-full object-contain", className)}
+      className={cn("shrink-0 grow-0 rounded-full object-cover", className)}
     />
   );
 };
