@@ -19,13 +19,16 @@ export function useWatchUserModels({
   retry?: false | number;
 }) {
   let enableQuery = false;
+  const queryKey = ["models", "watch"];
 
   if (modelNames && enabled && modelNames.length > 0) {
     enableQuery = true;
+
+    queryKey.push(modelNames.join());
   }
 
   return useQuery({
-    queryKey: ["models", "watch"],
+    queryKey,
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
