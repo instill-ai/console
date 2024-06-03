@@ -38,6 +38,7 @@ import { useEffect, useMemo, useState } from "react";
 import { LoadingSpin } from "../../components";
 import { useRouter } from "next/navigation";
 import { EntitySelector, OwnerEntity } from "../../components";
+import { FieldDescriptionTooltip } from "../../lib/use-instill-form/components/common";
 
 export type CreateModelFormProps = {
   accessToken: Nullable<string>;
@@ -360,9 +361,14 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                 render={({ field }) => {
                   return (
                     <Form.Item className="flex flex-col gap-y-2.5 md:w-1/2">
-                      <Form.Label className="product-body-text-3-semibold">
-                        Model task
-                      </Form.Label>
+                      <div className="flex flex-row items-center gap-x-2">
+                        <Form.Label className="product-body-text-3-semibold">
+                          AI task
+                        </Form.Label>
+                        <FieldDescriptionTooltip
+                          description={`You can read more about AI tasks <a rel="noopener noreferrer" target="_blank" href="https://www.instill.tech/docs/model/ai-task">here</a>`}
+                        />
+                      </div>
                       <Form.Control>
                         <Select.Root
                           value={field?.value || InstillModelTask[0]}

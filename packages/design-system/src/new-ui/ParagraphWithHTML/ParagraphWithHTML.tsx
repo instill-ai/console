@@ -11,7 +11,7 @@ import { Nullable } from "../../types/general";
  */
 
 const allowedAttributes = {
-  a: ["href", "rel", "class"],
+  a: ["href", "rel", "class", "target"],
   strong: ["class"],
   em: ["class"],
   code: ["class"],
