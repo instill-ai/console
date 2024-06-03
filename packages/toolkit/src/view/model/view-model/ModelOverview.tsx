@@ -64,7 +64,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
   const isModelTriggerable = useMemo(() => {
     return model && modelState
       ? model.permission.can_trigger &&
-          ["STATE_ACTIVE", "STATE_IDLE"].includes(modelState)
+          !["STATE_UNSPECIFIED", "STATE_ERROR"].includes(modelState)
       : false;
   }, [modelState, model]);
 
