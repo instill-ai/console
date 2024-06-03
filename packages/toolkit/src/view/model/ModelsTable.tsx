@@ -42,7 +42,7 @@ export const ModelsTable = (props: ModelsTableProps) => {
   const columns: ColumnDef<Model>[] = [
     {
       accessorKey: "id",
-      header: () => <div className="min-w-[650px] text-left">ID</div>,
+      header: () => <div className="min-w-[500px] text-left">ID</div>,
       cell: ({ row }) => {
         const { getIcon, label } = getModelInstanceTaskToolkit(
           row.original.task
@@ -68,7 +68,7 @@ export const ModelsTable = (props: ModelsTableProps) => {
     },
     {
       accessorKey: "state",
-      header: () => <div className="text-center">Status</div>,
+      header: () => <div className="min-w-[100px] text-center">Status</div>,
       cell: ({ row }) => {
         const name: string = row.original.name;
 

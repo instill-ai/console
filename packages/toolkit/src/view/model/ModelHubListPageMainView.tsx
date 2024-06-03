@@ -86,10 +86,7 @@ export const ModelHubListPageMainView = (
                   setSearchInputValue(event.target.value);
                   debouncedSetSearchCode(event.target.value);
                 }}
-                // I'm not sure what's going on here, but no tailwind way of reassigning the line-height worked
-                style={{
-                  lineHeight: "22px",
-                }}
+                className="!leading-[22px]"
               />
             </Input.Root>
           </div>
