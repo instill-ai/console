@@ -88,15 +88,14 @@ export const ModelSettingsHead = ({
             <Skeleton className="h-6 w-60 rounded" />
           ) : (
             <React.Fragment>
-              <div className="my-auto product-headings-heading-4">
+              <div className="my-auto text-semantic-fg-disabled product-headings-heading-4">
                 <a
                   href={`/${owner.id}`}
-                  className="cursor-pointer text-semantic-fg-disabled hover:!underline"
+                  className="cursor-pointer hover:!underline"
                 >
                   {owner.id}
                 </a>
-                <span className="text-semantic-fg-disabled">/</span>
-                <span className="text-semantic-fg-primary">{model?.id}</span>
+                /{model?.id}
               </div>
               {modelState ? <StateLabel state={modelState} /> : null}
               <Tag
