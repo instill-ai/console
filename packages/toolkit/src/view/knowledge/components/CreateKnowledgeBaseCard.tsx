@@ -2,9 +2,9 @@ import { Icons, Separator, DropdownMenu, Button, Dialog, LinkButton } from "@ins
 import * as React from "react";
 import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
 import { useUpdateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useUpdateKnowledgeBase";
-import { useCreateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useCreateKnowledgeBase";
 import { useDeleteKnowledgeBase } from "../../../lib/react-query-service/knowledge/useDeleteKnowledgeBase";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 
 type CreateKnowledgeBaseCardProps = {
   knowledgeBase: KnowledgeBase;
@@ -80,21 +80,30 @@ export const CreateKnowledgeBaseCard = ({
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
   const updateKnowledgeBase = useUpdateKnowledgeBase();
 
+  const selector = (store: InstillStore) => ({
+    accessToken: store.accessToken,
+    enabledQuery: store.enabledQuery,
+  });
+
+
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
+
   const confirmDelete = async () => {
-    // await deleteKnowledgeBase.mutateAsync({
-    //   id: knowledgeBase.id,
-    //   accessToken: null,
-    // });
+    await deleteKnowledgeBase.mutateAsync({
+      id: knowledgeBase.id,
+      accessToken: accessToken,
+    });
     setDeleteDialogIsOpen(false);
     setShowDeleteMessage(true);
     setTimeout(() => setShowDeleteMessage(false), 5000);
   };
 
-  const handleCreateKnowledgeSubmit = async (data: any) => {
+  const handleEditKnowledgeSubmit = async (data: any) => {
     await updateKnowledgeBase.mutateAsync({
       id: knowledgeBase.id,
       payload: data,
-      accessToken: null,
+      accessToken: accessToken,
     });
     setEditDialogIsOpen(false);
   };
@@ -156,7 +165,7 @@ export const CreateKnowledgeBaseCard = ({
       <CreateKnowledgeDialog
         isOpen={editDialogIsOpen}
         onClose={() => setEditDialogIsOpen(false)}
-        onSubmit={handleCreateKnowledgeSubmit}
+        onSubmit={handleEditKnowledgeSubmit}
         title="Edit knowledge base"
       />
     </React.Fragment>
