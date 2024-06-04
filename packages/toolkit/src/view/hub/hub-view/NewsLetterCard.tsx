@@ -80,7 +80,7 @@ export const NewsLetterCard = () => {
       <h2 className="mb-4 font-bold product-headings-heading-3">
         What&apos;s New?
       </h2>
-      <div className="relative mb-1 w-full">
+      <div className="relative mb-2 w-full">
         <a
           href={`https://www.instill.tech/blog/${slug}`}
           target="_blank"
@@ -94,14 +94,14 @@ export const NewsLetterCard = () => {
             fallbackImg={
               <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
             }
-            className="h-[140px] w-[248px] object-cover"
+            className="h-[140px] w-[248px] rounded object-cover"
           />
         </a>
       </div>
       <div
         className={cn(
-          buttonVariants({ variant: "secondaryColour", size: "md" }),
-          "pointer-events-none mb-2 w-min whitespace-nowrap rounded-sm px-2 py-2 capitalize"
+          buttonVariants({ variant: "tertiaryColour", size: "sm" }),
+          "pointer-events-none mb-2 w-min whitespace-nowrap rounded-sm !px-0 py-2 capitalize"
         )}
       >
         {publishedOn}
