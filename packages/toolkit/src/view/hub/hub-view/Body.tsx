@@ -399,15 +399,22 @@ export const Body = () => {
           className="mb-8 mt-4 w-full flex-col justify-center"
         >
           <div className="flex flex-col items-center justify-center">
-            <Tabs.List className="flex justify-center gap-6">
-              <Tabs.Trigger className={tabTriggerStyle} value="explore">
-                <span className="text-lg">Explore</span>
-              </Tabs.Trigger>
-              {exploreDataType !== "models" ? (
+            <Tabs.List
+              className={cn(
+                "flex justify-center gap-6",
+                exploreDataType === "models"
+                  ? "[&>*]:pointer-events-none [&>*]:opacity-0"
+                  : ""
+              )}
+            >
+              <React.Fragment>
+                <Tabs.Trigger className={tabTriggerStyle} value="explore">
+                  <span className="text-lg">Explore</span>
+                </Tabs.Trigger>
                 <Tabs.Trigger className={tabTriggerStyle} value="featured">
                   <span className="text-lg">Featured</span>
                 </Tabs.Trigger>
-              ) : null}
+              </React.Fragment>
             </Tabs.List>
             <Separator orientation="horizontal" />
           </div>
