@@ -11,7 +11,7 @@ import {
   useInstillStore,
   useShallow,
 } from "../../lib";
-import { Icons, useToast } from "@instill-ai/design-system";
+import { Icons, Tag, useToast } from "@instill-ai/design-system";
 import { Menu } from "./Menu";
 import { EntityAvatar } from "../EntityAvatar";
 import { useRouter } from "next/navigation";
@@ -80,12 +80,47 @@ export const Head = ({
     return null;
   }, [pipeline]);
 
+
+  // Function to transform the ID into a more readable format
+  const transformIDToCapitalizeName = (id: string) => {
+    return id
+      .split(/[-_]/) // Split the ID by dash and underscore
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1)) // Capitalize each part
+      .join(" "); // Join the parts with a space
+  };
+
+  const displayName = React.useMemo(() => {
+    const owner = pipeline.owner;
+
+    if ("user" in owner) {
+      const userOwner = owner as UserOwner;
+      const userID = userOwner.user.id;
+
+      if (userOwner.user.profile?.display_name?.trim()) {
+        return userOwner.user.profile.display_name;
+      } else {
+        // Transform userID if display_name is empty, null, or consists of only whitespace
+        return transformIDToCapitalizeName(userID);
+      }
+    } else if ("organization" in owner) {
+      const orgOwner = owner as OrganizationOwner;
+      const orgID = orgOwner.organization.id;
+
+      if (orgOwner.organization.profile?.display_name?.trim()) {
+        return orgOwner.organization.profile.display_name;
+      } else {
+        // Transform orgID if display_name is empty, null, or consists of only whitespace
+        return transformIDToCapitalizeName(orgID);
+      }
+    }
+  }, [pipeline.owner]);
+
   return (
     <div className="flex flex-row p-3">
       <div className="mr-auto flex flex-row gap-x-2">
         <EntityAvatar
           src={pipelineAvatar}
-          className="h-8 w-8"
+          className="my-auto h-8 w-8"
           entityName={ownerID}
           fallbackImg={
             <div className="my-auto flex h-8 w-8 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
@@ -93,15 +128,26 @@ export const Head = ({
             </div>
           }
         />
-        <button
-          type="button"
-          className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
-          onClick={() => {
-            router.push(`/${ownerID}`);
-          }}
-        >
-          {ownerID}
-        </button>
+        <div className="flex-col">
+          <button
+            type="button"
+            className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
+            onClick={() => {
+              router.push(`/${ownerID}`);
+            }}
+          >
+            {displayName}
+          </button>
+          <div>
+            <Tag
+              variant={"default"}
+              className="bg-semantic-bg-base-bg"
+              style={{ paddingTop: 0.5, paddingBottom: 0.5 }}
+            >
+              {ownerID}
+            </Tag>
+          </div>
+        </div>
       </div>
       {isOwner ? (
         <Menu pipeline={pipeline} handleDeletePipeline={handleDeletePipeline} />

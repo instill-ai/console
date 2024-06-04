@@ -83,8 +83,7 @@ export const Footer = ({
             size="lg"
             onClick={() => {
               router.push(
-                `/${pipeline.owner_name.split("/")[1]}/pipelines/${
-                  pipeline.id
+                `/${pipeline.owner_name.split("/")[1]}/pipelines/${pipeline.id
                 }/builder`
               );
             }}
@@ -99,7 +98,7 @@ export const Footer = ({
                 variant="secondaryColour"
                 size="lg"
               >
-                <Icons.Copy07 className="h-3 w-3 stroke-semantic-accent-default" />
+                <Icons.Copy07 className="h-4 w-4 stroke-semantic-accent-default" />
                 Clone
               </Button>
             }

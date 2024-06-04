@@ -170,6 +170,7 @@ export const ViewPipelines = () => {
                   isOwner={
                     me.isSuccess ? pipeline.owner_name === me.data.name : false
                   }
+                  disabledPermissionLabel={true}
                 />
               ))
             )
