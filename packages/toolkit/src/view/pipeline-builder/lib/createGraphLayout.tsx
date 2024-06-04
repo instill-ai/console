@@ -70,16 +70,16 @@ export async function createGraphLayout(
   const elkNodes: ElkNode[] = [];
   const elkEdges: ElkExtendedEdge[] = [];
 
-  // If the nodes only contain trigger and response node, we will directly
+  // If the nodes only contain variable and response node, we will directly
   // return fixed layout
   if (
     nodes.length === 2 &&
-    nodes.findIndex((node) => node.id === "trigger") !== -1 &&
+    nodes.findIndex((node) => node.id === "variable") !== -1 &&
     nodes.findIndex((node) => node.id === "response") !== -1
   ) {
     return {
       nodes: nodes.map((node) => {
-        if (node.id === "trigger") {
+        if (node.id === "variable") {
           node.position = { x: 0, y: 0 };
         } else {
           node.position = { x: 350, y: 0 };
@@ -91,7 +91,7 @@ export async function createGraphLayout(
   }
 
   nodes.forEach((node) => {
-    if (node.id === "trigger" || node.id === "response") {
+    if (node.id === "variable" || node.id === "response") {
       elkNodes.push({
         id: node.id,
         width: TRIGGER_RESPONSE_NODE.width,
@@ -137,7 +137,7 @@ export async function createGraphLayout(
       // We are shifting the dagre node position (anchor=center center) to the top left
       // so it matches the React Flow node anchor point (top left).
 
-      if (node.id === "trigger" || node.id === "response") {
+      if (node.id === "variable" || node.id === "response") {
         node.position = {
           x: elkNode.x - TRIGGER_RESPONSE_NODE.width / 2,
           y: elkNode.y - TRIGGER_RESPONSE_NODE.height / 2,

@@ -7,7 +7,7 @@ import { ControlPanel } from "./ControlPanel";
 import { useInstillStore } from "../../../../../lib";
 import { NodeDropdownMenu } from "../common";
 
-export function TriggerResponseNodeControlPanel({
+export function VariableResponseNodeControlPanel({
   type,
   nodeIsCollapsed,
   setNodeIsCollapsed,
@@ -16,7 +16,7 @@ export function TriggerResponseNodeControlPanel({
   disabledReferenceHint,
   setDisabledReferenceHint,
 }: {
-  type: "trigger" | "response";
+  type: "variable" | "response";
   nodeIsCollapsed: boolean;
   setNodeIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
   handleToggleNote: () => void;
@@ -38,7 +38,7 @@ export function TriggerResponseNodeControlPanel({
         }}
       />
 
-      {type === "trigger" ? (
+      {type === "variable" ? (
         <Tooltip.Provider>
           <Tooltip.Root>
             <Tooltip.Trigger asChild>

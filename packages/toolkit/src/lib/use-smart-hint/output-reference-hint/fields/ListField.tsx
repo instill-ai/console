@@ -25,7 +25,7 @@ export const ListField = ({
       />
       <ReferenceHintTag.Path
         icon={<ReferenceHintTag.Icon type="check" />}
-        path={`trigger.${path}`}
+        path={`variable.${path}`}
         description={description}
       />
     </ReferenceHintTag.Root>

@@ -53,7 +53,7 @@ export function shouldChangeComponentID() {
       await stEngineContent.getByText("stable-diffusion-xl-1024-v1-0").click();
       await page
         .locator("input[name='input.prompts']")
-        .fill("${trigger." + startFieldKey + "}");
+        .fill("${variable." + startFieldKey + "}");
 
       // Create output result field in the end operator
       await pipelineBuilderPage.createEndComponentField({
@@ -68,7 +68,7 @@ export function shouldChangeComponentID() {
       // expect conection line is on pipeline-builder
       await expect(
         page.locator(
-          `g[aria-label='Edge from trigger to ${oldSTComponentID}']`,
+          `g[aria-label='Edge from variable to ${oldSTComponentID}']`,
         ),
       ).toHaveCount(1);
       await expect(
@@ -91,12 +91,12 @@ export function shouldChangeComponentID() {
       // expect connection line is not on pipeline-builder
       await expect(
         page.locator(
-          `g[aria-label='Edge from trigger to ${oldSTComponentID}']`,
+          `g[aria-label='Edge from variable to ${oldSTComponentID}']`,
         ),
       ).toHaveCount(0);
       await expect(
         page.locator(
-          `g[aria-label='Edge from trigger to ${newSTComponentID}']`,
+          `g[aria-label='Edge from variable to ${newSTComponentID}']`,
         ),
       ).toHaveCount(1);
       await expect(
@@ -110,12 +110,12 @@ export function shouldChangeComponentID() {
       await page.reload();
       await expect(
         page.locator(
-          `g[aria-label='Edge from trigger to ${oldSTComponentID}']`,
+          `g[aria-label='Edge from variable to ${oldSTComponentID}']`,
         ),
       ).toHaveCount(0);
       await expect(
         page.locator(
-          `g[aria-label='Edge from trigger to ${newSTComponentID}']`,
+          `g[aria-label='Edge from variable to ${newSTComponentID}']`,
         ),
       ).toHaveCount(1);
       await expect(

@@ -15,7 +15,7 @@ import { Nullable } from "../../../../../lib";
 import { constructFieldKey } from "./constructFieldKey";
 import { InstillErrors } from "../../../../../constant";
 import { validateInstillID } from "../../../../../server";
-import { TriggerNodeTypeSelect } from "./TriggerNodeTypeSelect";
+import { VariableNodeTypeSelect } from "./VariableNodeTypeSelect";
 
 export const TriggerNodeFreeFormSchema = z
   .object({
@@ -92,7 +92,7 @@ export const TriggerNodeFreeForm = ({
           >
             Input Type
           </label>
-          <TriggerNodeTypeSelect
+          <VariableNodeTypeSelect
             selectedType={selectedType}
             setSelectedType={setSelectedType}
             id="input_type"
@@ -171,14 +171,14 @@ export const TriggerNodeFreeForm = ({
                     </p>
                     <p className="mb-3 text-semantic-accent-default product-body-text-3-regular">
                       {"A reference is a syntax help you connect to other value in given field. " +
-                        "You can use the key ${trigger." +
+                        "You can use the key ${variable." +
                         `${form.watch("key") ? form.watch("key") : "my_prompt"}` +
                         "} to reference this value"}
                     </p>
                     <div className="flex">
                       <div className="mb-2 flex flex-row items-center gap-x-1 rounded-full border border-semantic-accent-default bg-semantic-accent-bg px-2 py-0.5">
                         <Icons.ReferenceIconCheck className="h-[9px] w-[18px] stroke-semantic-accent-default" />
-                        <p className="font-sans text-[10px] font-medium text-semantic-accent-default">{`trigger.${form.watch("key") ? form.watch("key") : "my_prompt"}`}</p>
+                        <p className="font-sans text-[10px] font-medium text-semantic-accent-default">{`variable.${form.watch("key") ? form.watch("key") : "my_prompt"}`}</p>
                       </div>
                     </div>
                   </div>

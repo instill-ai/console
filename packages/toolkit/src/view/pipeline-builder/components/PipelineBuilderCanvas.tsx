@@ -18,11 +18,11 @@ import {
   EmptyNode,
   IteratorNode,
   ResponseNode,
-  TriggerNode,
+  VariableNode,
   GeneralNode,
 } from "./nodes";
 import { CustomEdge } from "./CustomEdge";
-import { isResponseNode, isTriggerNode } from "../lib";
+import { isResponseNode, isVariableNode } from "../lib";
 import { canvasPanOnDrag } from "./canvasPanOnDrag";
 
 const selector = (store: InstillStore) => ({
@@ -40,7 +40,7 @@ const selector = (store: InstillStore) => ({
 });
 
 const nodeTypes = {
-  triggerNode: TriggerNode,
+  variableNode: VariableNode,
   emptyNode: EmptyNode,
   responseNode: ResponseNode,
   iteratorNode: IteratorNode,
@@ -105,7 +105,7 @@ export const PipelineBuilderCanvas = ({
         const nextChanges = changes.filter((change) => {
           if (change.type === "remove") {
             const node = nodes.find((node) => node.id === change.id);
-            if (node?.data && (isTriggerNode(node) || isResponseNode(node))) {
+            if (node?.data && (isVariableNode(node) || isResponseNode(node))) {
               return false;
             } else {
               return true;

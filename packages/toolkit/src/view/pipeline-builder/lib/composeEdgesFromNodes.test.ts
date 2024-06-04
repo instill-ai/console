@@ -6,8 +6,8 @@ import { NodeData } from "../type";
 test("should get edges from basic components", () => {
   const nodes: Node<NodeData>[] = [
     {
-      id: "trigger",
-      type: "triggerNode",
+      id: "variable",
+      type: "variableNode",
       data: {
         fields: {
           texts: {
@@ -28,7 +28,7 @@ test("should get edges from basic components", () => {
           result: {
             title: "result",
             description: "",
-            value: "${trigger.texts}",
+            value: "${variable.texts}",
           },
         },
         note: null,
@@ -39,13 +39,13 @@ test("should get edges from basic components", () => {
 
   const edges = composeEdgesFromNodes(nodes);
 
-  expect(edges[0].source).toBe("trigger");
+  expect(edges[0].source).toBe("variable");
   expect(edges[0].target).toBe("response");
 
   const wrongNodes: Node<NodeData>[] = [
     {
-      id: "trigger",
-      type: "triggerNode",
+      id: "variable",
+      type: "variableNode",
       data: {
         fields: {
           texts: {
@@ -83,8 +83,8 @@ test("should get edges from basic components", () => {
 test("should strictly check the reference field exist", () => {
   const nodes: Node<NodeData>[] = [
     {
-      id: "trigger",
-      type: "triggerNode",
+      id: "variable",
+      type: "variableNode",
       data: {
         fields: {
           texts: {
@@ -105,7 +105,7 @@ test("should strictly check the reference field exist", () => {
           result: {
             title: "result",
             description: "",
-            value: "${trigger.foo}",
+            value: "${variable.foo}",
           },
         },
         note: null,
@@ -122,8 +122,8 @@ test("should strictly check the reference field exist", () => {
 test("should loosely check the reference field exist when reference has square brace", () => {
   const nodes: Node<NodeData>[] = [
     {
-      id: "trigger",
-      type: "triggerNode",
+      id: "variable",
+      type: "variableNode",
       data: {
         fields: {
           texts: {
@@ -144,7 +144,7 @@ test("should loosely check the reference field exist when reference has square b
           result: {
             title: "result",
             description: "",
-            value: "${trigger['foo bar']['aaa']}",
+            value: "${variable['foo bar']['aaa']}",
           },
         },
         note: null,
@@ -155,13 +155,13 @@ test("should loosely check the reference field exist when reference has square b
 
   const edges = composeEdgesFromNodes(nodes);
 
-  expect(edges[0].source).toBe("trigger");
+  expect(edges[0].source).toBe("variable");
   expect(edges[0].target).toBe("response");
 
   const wrongNodes: Node<NodeData>[] = [
     {
-      id: "trigger",
-      type: "triggerNode",
+      id: "variable",
+      type: "variableNode",
       data: {
         fields: {
           texts: {

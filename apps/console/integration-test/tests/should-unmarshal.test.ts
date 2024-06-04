@@ -11,14 +11,14 @@ export function shouldUnmarshalJSONInput() {
     hello: 1,
   };
   const endFieldKey = "result";
-  const endFieldValue = "${trigger." + startFieldKey + "}";
+  const endFieldValue = "${variable." + startFieldKey + "}";
 
   test.describe.serial("Unmarshal pipeline builder input test", () => {
     test("should create pipeline", async ({ page }) => {
       await createPipeline(page, pipelineID);
     });
 
-    test("should compose correct pipeline and trigger in builder", async ({
+    test("should compose correct pipeline and variable in builder", async ({
       page,
     }) => {
       const pipelineBuilderPage = new PipelineBuilderPage(page, pipelineID);

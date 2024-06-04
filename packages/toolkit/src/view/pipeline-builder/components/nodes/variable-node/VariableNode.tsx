@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   composeEdgesFromNodes,
-  isTriggerNode,
+  isVariableNode,
   recursiveHelpers,
 } from "../../../lib";
 import {
@@ -34,9 +34,9 @@ import { TriggerNodeData } from "../../../type";
 import {
   TriggerNodeFreeForm,
   TriggerNodeFreeFormSchema,
-} from "./TriggerNodeFreeForm";
-import { triggerNodeFields } from "./triggerNodeFields";
-import { TriggerResponseNodeControlPanel } from "../control-panel";
+} from "./VariableNodeFreeForm";
+import { triggerNodeFields } from "./VariableNodeFields";
+import { VariableResponseNodeControlPanel } from "../control-panel";
 
 export const CreateStartOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -61,7 +61,7 @@ const selector = (store: InstillStore) => ({
     store.updateRecentlyUsedStartComponentFieldTypes,
 });
 
-export const TriggerNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
+export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [noteIsOpen, setNoteIsOpen] = React.useState<boolean>(false);
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
@@ -130,7 +130,7 @@ export const TriggerNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
   // When delete field, the input key is already the auto generated key
   const onDeleteFreeFormField = (key: string) => {
     const newNodes = nodes.map((node) => {
-      if (isTriggerNode(node)) {
+      if (isVariableNode(node)) {
         delete node.data.fields[key];
 
         node.data = {
@@ -187,7 +187,7 @@ export const TriggerNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
     });
 
     const newNodes = nodes.map((node) => {
-      if (isTriggerNode(node) && field) {
+      if (isVariableNode(node) && field) {
         if (currentEditingFieldKey) {
           delete node.data.fields[currentEditingFieldKey];
         }
@@ -368,11 +368,11 @@ export const TriggerNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
             <Icons.Lightning01 className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
           </div>
           <p className="my-auto py-2 text-semantic-fg-secondary product-body-text-4-medium">
-            trigger
+            variable
           </p>
         </div>
-        <TriggerResponseNodeControlPanel
-          type="trigger"
+        <VariableResponseNodeControlPanel
+          type="variable"
           nodeIsCollapsed={nodeIsCollapsed}
           setNodeIsCollapsed={setNodeIsCollapsed}
           handleToggleNote={() => setNoteIsOpen(!noteIsOpen)}
@@ -396,7 +396,7 @@ export const TriggerNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
             <div className="flex flex-col gap-y-3">
               <Form.Root {...triggerPipelineForm}>
                 <form
-                  id="trigger-node-trigger-pipeline-form"
+                  id="variable-node-trigger-pipeline-form"
                   className="w-full"
                   onSubmit={triggerPipelineForm.handleSubmit(onTriggerPipeline)}
                 >
@@ -425,7 +425,7 @@ export const TriggerNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
 
                         if (newFieldItems.length > 0) {
                           const newNodes = nodes.map((node) => {
-                            if (isTriggerNode(node)) {
+                            if (isVariableNode(node)) {
                               const newFields = Object.fromEntries(
                                 Object.entries(node.data.fields).map(
                                   ([key, value]) => {

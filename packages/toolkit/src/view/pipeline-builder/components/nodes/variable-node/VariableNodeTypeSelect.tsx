@@ -4,9 +4,9 @@ import cn from "clsx";
 import * as React from "react";
 import { Nullable, useInstillStore } from "../../../../../lib";
 import { Select } from "@instill-ai/design-system";
-import { triggerNodeFields } from "./triggerNodeFields";
+import { triggerNodeFields } from "./VariableNodeFields";
 
-export const TriggerNodeTypeSelect = ({
+export const VariableNodeTypeSelect = ({
   id,
   selectedType,
   setSelectedType,

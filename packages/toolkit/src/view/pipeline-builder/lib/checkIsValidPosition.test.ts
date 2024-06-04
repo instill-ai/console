@@ -61,7 +61,7 @@ test("should check position is valid", () => {
           y: 0,
           note: null,
         },
-        trigger: {
+        variable: {
           x: 0,
           y: 0,
           note: null,
