@@ -87,8 +87,8 @@ export const CreateKnowledgeBaseCard = ({
     e.stopPropagation();
     const clonedKnowledgeBase = {
       ...knowledgeBase,
-      name: `${knowledgeBase.name}(Clone)`,
-      id: undefined,
+      name: `${knowledgeBase.name}_Clone`,
+      id: knowledgeBase.id + 1
     };
     try {
       const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
