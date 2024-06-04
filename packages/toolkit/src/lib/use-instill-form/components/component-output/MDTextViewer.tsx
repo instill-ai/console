@@ -25,6 +25,23 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
         .markdown-body p {
           white-space: pre-wrap !important;
         }
+
+        .markdown-body ul > li {
+          white-space: pre-wrap !important;
+        }
+
+        .markdown-body ol > li {
+          white-space: pre-wrap !important;
+        }
+
+        .markdown-body h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          white-space: pre-wrap !important;
+        }
       `}</style>
       <div className="nodrag nowheel flex flex-col rounded-sm border border-semantic-bg-line">
         <div className="flex flex-row rounded-t-sm border-b border-semantic-bg-line bg-semantic-bg-secondary px-2 py-1">
