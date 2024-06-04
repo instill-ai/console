@@ -87,7 +87,7 @@ export const CreateKnowledgeBaseCard = ({
     e.stopPropagation();
     const clonedKnowledgeBase = {
       ...knowledgeBase,
-      name: `${knowledgeBase.name} (Clone)`,
+      name: `${knowledgeBase.name}(Clone)`,
       id: undefined,
     };
     try {
