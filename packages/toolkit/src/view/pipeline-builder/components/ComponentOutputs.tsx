@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { ScrollArea } from "@instill-ai/design-system";
 import {
   ChooseTitleFrom,
   GeneralRecord,
@@ -70,14 +69,11 @@ export const ComponentOutputs = ({
           Output
         </div>
       ) : null}
-      <ScrollArea.Root
-        className="nodrag nowheel h-full"
-        viewPortClassName="max-h-[400px]"
-      >
+      <div className="flex max-h-[400px] w-full flex-col overflow-y-auto">
         <div className="flex flex-col gap-y-1 rounded bg-semantic-bg-primary">
           {componentOutputFields}
         </div>
-      </ScrollArea.Root>
+      </div>
     </div>
   );
 };
