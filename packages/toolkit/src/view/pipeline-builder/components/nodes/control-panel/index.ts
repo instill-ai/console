@@ -1,2 +1,2 @@
 export * from "./NodeControlPanel";
-export * from "./TriggerResponseNodeControlPanel";
+export * from "./VariableResponseNodeControlPanel";

@@ -115,7 +115,7 @@ test("should transform anyOf field to zod schema", () => {
   };
 
   const templateHost = {
-    host: "${ trigger.host } ${trigger.host}",
+    host: "${ variable.host } ${variable.host}",
     port: "4433",
   };
 
@@ -128,21 +128,21 @@ test("should transform anyOf field to zod schema", () => {
   expect(zodSchema.safeParse(templateHost)).toStrictEqual({
     success: true,
     data: {
-      host: "${ trigger.host } ${trigger.host}",
+      host: "${ variable.host } ${variable.host}",
       port: "4433",
     },
   });
 
   const referencePort = {
     host: "localhost",
-    port: "${ trigger.port }",
+    port: "${ variable.port }",
   };
 
   expect(zodSchema.safeParse(referencePort)).toStrictEqual({
     success: true,
     data: {
       host: "localhost",
-      port: "${ trigger.port }",
+      port: "${ variable.port }",
     },
   });
 
@@ -291,7 +291,7 @@ test("should transform nested fields with anyOf", () => {
   const templateText = {
     task: "TASK_TEXT_EMBEDDINGS",
     input: {
-      text: "${ trigger.text } and ${ trigger.text }",
+      text: "${ variable.text } and ${ variable.text }",
     },
   };
 
@@ -300,7 +300,7 @@ test("should transform nested fields with anyOf", () => {
     data: {
       task: "TASK_TEXT_EMBEDDINGS",
       input: {
-        text: "${ trigger.text } and ${ trigger.text }",
+        text: "${ variable.text } and ${ variable.text }",
       },
     },
   });
@@ -308,7 +308,7 @@ test("should transform nested fields with anyOf", () => {
   const referenceText = {
     task: "TASK_TEXT_EMBEDDINGS",
     input: {
-      text: "${ trigger.text }",
+      text: "${ variable.text }",
     },
   };
 
@@ -317,7 +317,7 @@ test("should transform nested fields with anyOf", () => {
     data: {
       task: "TASK_TEXT_EMBEDDINGS",
       input: {
-        text: "${ trigger.text }",
+        text: "${ variable.text }",
       },
     },
   });
@@ -333,7 +333,7 @@ test("should transform nested fields with anyOf", () => {
   const referenceAudio = {
     task: "TASK_SPEECH_RECOGNITION",
     input: {
-      audio: "${ trigger.audio }",
+      audio: "${ variable.audio }",
     },
   };
 
@@ -342,7 +342,7 @@ test("should transform nested fields with anyOf", () => {
     data: {
       task: "TASK_SPEECH_RECOGNITION",
       input: {
-        audio: "${ trigger.audio }",
+        audio: "${ variable.audio }",
       },
     },
   });
@@ -350,7 +350,7 @@ test("should transform nested fields with anyOf", () => {
   const templateAudio = {
     task: "TASK_SPEECH_RECOGNITION",
     input: {
-      audio: "${ trigger.audio } and ${ trigger.audio }",
+      audio: "${ variable.audio } and ${ variable.audio }",
     },
   };
 

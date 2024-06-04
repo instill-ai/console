@@ -21,17 +21,17 @@ export function createNodesFromPipelineRecipe(
     nodes.push(...componentNodes);
   }
 
-  // create trigger node
+  // create variable node
 
   let triggerMetadata: Nullable<PipelineComponentMetadata> = null;
 
   if (metadata && "component" in metadata) {
-    triggerMetadata = metadata.component["trigger"];
+    triggerMetadata = metadata.component["variable"];
   }
 
   nodes.push({
-    id: "trigger",
-    type: "triggerNode",
+    id: "variable",
+    type: "variableNode",
     data: {
       fields: recipe.variable ?? {},
       note: triggerMetadata ? triggerMetadata.note : null,

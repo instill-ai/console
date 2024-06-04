@@ -6,7 +6,7 @@ import {
   isGeneralNode,
   isIteratorNode,
   isResponseNode,
-  isTriggerNode,
+  isVariableNode,
 } from "./checkNodeType";
 import { isPipelineGeneralComponent } from "./checkComponentType";
 
@@ -81,8 +81,8 @@ export function composePipelineRecipeFromNodes(
     }
   }
 
-  const triggerNode = nodes.find(
-    (node) => node.id === "trigger" && isTriggerNode(node)
+  const variableNode = nodes.find(
+    (node) => node.id === "variable" && isVariableNode(node)
   ) as Node<TriggerNodeData> | undefined;
 
   const responseNode = nodes.find(
@@ -92,9 +92,9 @@ export function composePipelineRecipeFromNodes(
   return {
     version: "v1beta",
     component: recipeComponent,
-    variable: triggerNode
-      ? Object.keys(triggerNode.data.fields).length > 0
-        ? triggerNode.data.fields
+    variable: variableNode
+      ? Object.keys(variableNode.data.fields).length > 0
+        ? variableNode.data.fields
         : undefined
       : undefined,
     output: responseNode

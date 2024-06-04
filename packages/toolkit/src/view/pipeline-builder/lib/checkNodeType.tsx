@@ -13,10 +13,10 @@ export function isIteratorNode(
   return node.type === "iteratorNode";
 }
 
-export function isTriggerNode(
+export function isVariableNode(
   node: Node<NodeData>
 ): node is Node<TriggerNodeData> {
-  return node.type === "triggerNode";
+  return node.type === "variableNode";
 }
 
 export function isResponseNode(

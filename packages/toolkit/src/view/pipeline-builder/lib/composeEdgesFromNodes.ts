@@ -15,7 +15,7 @@ import {
   isGeneralNode,
   isIteratorNode,
   isResponseNode,
-  isTriggerNode,
+  isVariableNode,
 } from "./checkNodeType";
 import { getGeneralComponentInOutputSchema } from "./getGeneralComponentInOutputSchema";
 
@@ -51,7 +51,7 @@ function getConnectedReferencesFromNodes(
 ) {
   let references: ReferenceWithNodeInfo[] = [];
   for (const node of nodes) {
-    if (isTriggerNode(node)) {
+    if (isVariableNode(node)) {
       const referencesOfThisNode = getReferencesFromAny(node.data.fields);
 
       references = [
@@ -122,18 +122,18 @@ function getConnectedReferencesFromNodes(
   return references;
 }
 
-// Hepler function to get all the available reference target, Take trigger
-// node for example, something like trigger.foo or trigger.bar. And for
+// Hepler function to get all the available reference target, Take variable
+// node for example, something like variable.foo or variable.bar. And for
 // other nodes, something like comp_1.output.foo or comp_1.output.bar
 function getAvailableReferencesFromNodes(nodes: Node<NodeData>[]) {
   const otherNodesAvailableReferences: string[] = [];
   const startNodeAvailableRefernces: string[] = [];
 
   for (const node of nodes) {
-    // 1. Extract available references for trigger node
-    if (isTriggerNode(node)) {
+    // 1. Extract available references for variable node
+    if (isVariableNode(node)) {
       for (const [key] of Object.entries(node.data.fields)) {
-        startNodeAvailableRefernces.push(`trigger.${key}`);
+        startNodeAvailableRefernces.push(`variable.${key}`);
       }
     }
 
@@ -194,11 +194,11 @@ function composeEdgeForReference({
 }) {
   const newEdges: Edge[] = [];
 
-  // check whether the referenced target is available for trigger node
+  // check whether the referenced target is available for variable node
   if (
     reference.referenceValue.withoutCurlyBraces
       .split(".")[0]
-      .includes("trigger")
+      .includes("variable")
   ) {
     const referenceIsAvailable = startNodeAvailableRefernces.some(
       (availableReference) =>
@@ -211,13 +211,13 @@ function composeEdgeForReference({
     // check whether we already have an edge for this reference
     const hasNoEdgeForThisReference =
       currentEdges.find(
-        (edge) => edge.source === "trigger" && edge.target === reference.nodeID
+        (edge) => edge.source === "variable" && edge.target === reference.nodeID
       ) === undefined;
 
     if (referenceIsAvailable && hasNoEdgeForThisReference && reference.nodeID) {
       newEdges.push({
         id: uuidv4(),
-        source: "trigger",
+        source: "variable",
         target: reference.nodeID,
         type: "customEdge",
       });

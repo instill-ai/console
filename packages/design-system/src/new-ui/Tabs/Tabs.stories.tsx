@@ -64,7 +64,7 @@ export const Regular: Story = {
                   configuration: {
                     input: {
                       task: "TASK_TEXT_GENERATION",
-                      prompt: "{ trigger.prompt }",
+                      prompt: "{ variable.prompt }",
                       model: "gpt-3.5-turbo",
                       system_message:
                         "You are a cat, control a generator to produce more cat. ",

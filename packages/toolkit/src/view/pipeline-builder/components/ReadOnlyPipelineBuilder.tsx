@@ -26,7 +26,7 @@ import {
   GeneralNode,
   IteratorNode,
   ResponseNode,
-  TriggerNode,
+  VariableNode,
 } from "./nodes";
 import { CustomEdge } from "./CustomEdge";
 import { createNodesFromPipelineRecipe } from "../lib/createNodesFromPipelineRecipe";
@@ -40,7 +40,7 @@ const selector = (store: InstillStore) => ({
 });
 
 const nodeTypes = {
-  triggerNode: TriggerNode,
+  variableNode: VariableNode,
   emptyNode: EmptyNode,
   responseNode: ResponseNode,
   iteratorNode: IteratorNode,

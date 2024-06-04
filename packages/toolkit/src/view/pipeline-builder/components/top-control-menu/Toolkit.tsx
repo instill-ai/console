@@ -53,19 +53,19 @@ export const Toolkit = () => {
 
     const input: GeneralRecord = {};
 
-    const triggerNode = targetNodes.find((node) => node.id === "trigger") as
+    const variableNode = targetNodes.find((node) => node.id === "variable") as
       | Node<TriggerNodeData>
       | undefined;
 
-    if (!triggerNode) {
+    if (!variableNode) {
       return "";
     }
 
-    if (!triggerNode.data.fields) {
+    if (!variableNode.data.fields) {
       return "";
     }
 
-    for (const [key, value] of Object.entries(triggerNode.data.fields)) {
+    for (const [key, value] of Object.entries(variableNode.data.fields)) {
       switch (value.instillFormat) {
         case "string": {
           input[key] = "Please put your value here";

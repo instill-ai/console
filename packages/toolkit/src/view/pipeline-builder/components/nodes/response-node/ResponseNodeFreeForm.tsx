@@ -5,7 +5,7 @@ import * as z from "zod";
 import { Button, Form, Icons, Input } from "@instill-ai/design-system";
 
 import { InstillErrors } from "../../../../../constant";
-import { constructFieldKey } from "../trigger-node/constructFieldKey";
+import { constructFieldKey } from "../variable-node/constructFieldKey";
 import { SmartHintFields } from "../../../../../lib/use-instill-form/components";
 import { validateInstillID } from "../../../../../server";
 

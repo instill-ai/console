@@ -28,7 +28,7 @@ export const Run = ({
       ref={runButtonRef}
       size="md"
       variant="tertiaryColour"
-      form="trigger-node-trigger-pipeline-form"
+      form="variable-node-trigger-pipeline-form"
       disabled={isEditingIterator}
       className="!h-8 !items-center gap-x-2"
       onClick={async (e) => {

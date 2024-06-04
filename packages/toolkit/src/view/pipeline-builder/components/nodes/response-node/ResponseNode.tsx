@@ -27,7 +27,7 @@ import {
   ResponseNodeFreeForm,
   ResponseNodeFreeFormSchema,
 } from "./ResponseNodeFreeForm";
-import { TriggerResponseNodeControlPanel } from "../control-panel";
+import { VariableResponseNodeControlPanel } from "../control-panel";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -260,7 +260,7 @@ export const ResponseNode = ({ data, id }: NodeProps<ResponseNodeData>) => {
               {isViewResultMode ? "Edit" : "See Result"}
             </button>
           )}
-          <TriggerResponseNodeControlPanel
+          <VariableResponseNodeControlPanel
             type="response"
             nodeIsCollapsed={nodeIsCollapsed}
             setNodeIsCollapsed={setNodeIsCollapsed}

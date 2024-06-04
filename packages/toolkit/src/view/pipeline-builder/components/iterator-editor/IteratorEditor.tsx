@@ -16,7 +16,7 @@ import {
   composePipelineMetadataMapFromNodes,
   isIteratorNode,
   isResponseNode,
-  isTriggerNode,
+  isVariableNode,
   useAddNodeWithDefinition,
 } from "../../lib";
 import { ReactFlowInstance } from "reactflow";
@@ -77,7 +77,7 @@ export const IteratorEditor = ({
                 if (node.id === editingIteratorID && isIteratorNode(node)) {
                   const components = nodes
                     .filter(
-                      (node) => !isTriggerNode(node) || !isResponseNode(node)
+                      (node) => !isVariableNode(node) || !isResponseNode(node)
                     )
                     .map((node) => node.data) as PipelineComponent[];
 

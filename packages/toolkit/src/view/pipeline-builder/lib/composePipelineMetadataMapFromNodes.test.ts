@@ -22,7 +22,7 @@ test("should compose initial pipeline metadata", () => {
       },
     },
     {
-      id: "trigger",
+      id: "variable",
       position: {
         x: 100,
         y: 100,
@@ -54,7 +54,7 @@ test("should compose initial pipeline metadata", () => {
         x: 0,
         y: 0,
       },
-      trigger: {
+      variable: {
         note: "hello-world",
         x: 100,
         y: 100,

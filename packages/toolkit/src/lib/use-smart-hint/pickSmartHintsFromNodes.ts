@@ -13,7 +13,7 @@ import { PipelineIteratorComponent } from "../vdp-sdk";
 import {
   isGeneralNode,
   isIteratorNode,
-  isTriggerNode,
+  isVariableNode,
 } from "../../view/pipeline-builder/lib/checkNodeType";
 import { isPipelineGeneralComponent } from "../../view/pipeline-builder/lib/checkComponentType";
 
@@ -38,7 +38,7 @@ export function pickSmartHintsFromNodes({
       : nodes;
 
   for (const node of targetNodes) {
-    if (isTriggerNode(node)) {
+    if (isVariableNode(node)) {
       const hints = transformPipelineTriggerRequestFieldsToSmartHints(
         node.data.fields
       );

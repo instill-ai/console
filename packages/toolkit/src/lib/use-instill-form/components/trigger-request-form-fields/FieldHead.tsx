@@ -93,7 +93,7 @@ export const FieldHead = ({
                                 size="sm"
                                 className="!rounded !px-2 !py-0.5"
                               >
-                                ${`{trigger.${path}}`}
+                                ${`{variable.${path}}`}
                               </Tag>{" "}
                               to reference this field&rsquo;s value.
                             </p>
@@ -205,7 +205,7 @@ export const FieldHead = ({
                 />
                 <ReferenceHintTag.Path
                   icon={<ReferenceHintTag.Icon type="check" />}
-                  path={`trigger.${path}`}
+                  path={`variable.${path}`}
                 />
               </ReferenceHintTag.Root>
             </div>

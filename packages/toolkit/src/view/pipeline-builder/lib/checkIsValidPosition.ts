@@ -16,8 +16,8 @@ export function checkIsValidPosition({
     "component" in metadata &&
     Object.keys(metadata.component).length > 0
   ) {
-    // Check whether we have metadata for trigger
-    if (!metadata.component["trigger"] && !isIteratorNode) {
+    // Check whether we have metadata for variable
+    if (!metadata.component["variable"] && !isIteratorNode) {
       return false;
     }
 
@@ -34,7 +34,7 @@ export function checkIsValidPosition({
 
     for (const componentID in componentMetadatas) {
       if (
-        componentID !== "trigger" &&
+        componentID !== "variable" &&
         componentID !== "response" &&
         !component[componentID]
       ) {
