@@ -58,6 +58,11 @@ export const DeleteAPITokenDialog = ({ tokenName }: { tokenName: string }) => {
       }
 
       setOpen(false);
+      toast({
+        title: "API token deleted successfully",
+        variant: "alert-success",
+        size: "small",
+      });
     } catch (error) {
       const description = isAxiosError(error)
         ? getInstillApiErrorMessage(error)
