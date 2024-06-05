@@ -105,13 +105,13 @@ export const ModelSettingsHead = ({
               >
                 {model?.visibility === "VISIBILITY_PUBLIC" ? (
                   <React.Fragment>
-                    <Icons.BookOpen02 className="h-3.5 w-3.5 stroke-semantic-fg-primary" />
+                    <Icons.BookOpen02 className="h-3 w-3 stroke-semantic-fg-primary" />
                     Public
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
                     Private
-                    <Icons.Lock03 className="h-3.5 w-3.5 stroke-semantic-fg-primary" />
+                    <Icons.Lock03 className="h-3 w-3 stroke-semantic-fg-primary" />
                   </React.Fragment>
                 )}
               </Tag>

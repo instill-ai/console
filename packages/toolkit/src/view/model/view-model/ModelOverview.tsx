@@ -56,7 +56,7 @@ const convertValuesToString = (props: Record<string, unknown>) => {
     if (typeof props[key] !== "string" && props[key] !== null) {
       convertedProps[key] = JSON.stringify(props[key]);
     } else {
-      convertedProps[key] = props[key];
+      convertedProps[key] = props[key] as string;
     }
   }
 
