@@ -141,7 +141,7 @@ export const CreateKnowledgeBaseCard = ({
   return (
     <React.Fragment>
       {showDeleteMessage && (
-        <div className="fixed bottom-4 right-4 w-[400px] h-[136px] p-4 bg-semantic-bg-primary rounded-lg shadow border border-slate-200  justify-start items-start gap-4 flex mr-4">
+        <div className="fixed bottom-4 right-4 w-[400px] h-[136px] p-4 bg-semantic-bg-primary rounded-lg shadow border border-slate-200 flex mr-4">
           <Icons.AlertTriangle className="w-6 h-6 stroke-semantic-warning-on-bg" />
           <div className="grow shrink basis-0 h-[104px] flex-col justify-start items-start gap-4">
             <div className="self-stretch flex-col justify-start items-start gap-1 flex">
@@ -160,6 +160,14 @@ export const CreateKnowledgeBaseCard = ({
               Undo Action
             </LinkButton>
           </div>
+          <Button
+            className="absolute top-2 right-2"
+            variant="tertiaryGrey"
+            size="sm"
+            onClick={() => setShowDeleteMessage(false)}
+          >
+            <Icons.X className="w-4 h-4 stroke-semantic-fg-secondary" />
+          </Button>
         </div>
       )}
       {!isDeleted && (
