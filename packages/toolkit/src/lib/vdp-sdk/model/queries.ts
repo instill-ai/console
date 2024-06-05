@@ -6,6 +6,7 @@ import type {
   ModelRegion,
   ModelVersion,
   ModelWatchState,
+  ModelTriggerResult,
 } from "./types";
 import type { Nullable } from "../../type";
 import { Visibility } from "../types";
@@ -412,6 +413,30 @@ export async function watchUserModel({
   try {
     const client = createInstillAxiosClient(accessToken, true);
     const { data } = await client.get<ModelWatchState>(`/${modelName}/watch`);
+    return Promise.resolve(data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * Get Model Trigger Result
+ * -----------------------------------------------------------------------*/
+
+export async function getModelOperationResult({
+  modelName,
+  accessToken,
+  fullView,
+}: {
+  modelName: string;
+  accessToken: Nullable<string>;
+  fullView: boolean;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, true);
+    const { data } = await client.get<ModelTriggerResult>(
+      `/${modelName}/operation${fullView ? "?view=VIEW_FULL" : ""}`
+    );
     return Promise.resolve(data);
   } catch (err) {
     return Promise.reject(err);

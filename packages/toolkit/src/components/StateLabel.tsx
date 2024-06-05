@@ -58,6 +58,7 @@ export const StateLabel = ({ state, className }: StateLabelProps) => {
       break;
     }
     case "STATE_UNSPECIFIED":
+    case "STATE_STARTING":
     default: {
       textColor = "text-semantic-error-hover";
       bgColor = "bg-semantic-error-bg";

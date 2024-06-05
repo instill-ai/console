@@ -215,7 +215,15 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
                     : hubStats.data?.number_of_public_pipelines}
                 </React.Fragment>
               ) : (
-                <React.Fragment>Models </React.Fragment>
+                <React.Fragment>
+                  Models
+                  {models.isSuccess && models.data.pages?.[0]?.total_size ? (
+                    <React.Fragment>
+                      {" "}
+                      {models.data.pages[0].total_size}
+                    </React.Fragment>
+                  ) : null}
+                </React.Fragment>
               )}
             </p>
             <div className="flex w-full items-center justify-end gap-4">

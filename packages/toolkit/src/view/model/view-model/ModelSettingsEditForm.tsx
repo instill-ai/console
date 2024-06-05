@@ -153,10 +153,9 @@ export const ModelSettingsEditForm = ({
       });
 
       toast({
-        title: "Success!",
+        title: "Model was successfully updated",
         variant: "notification-success",
-        size: "large",
-        description: "Model was successfully updated!",
+        size: "small",
       });
 
       if (amplitudeIsInit) {

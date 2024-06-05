@@ -11,7 +11,9 @@ export { useUserModel } from "./useUserModel";
 export * from "./useModelRegions";
 export * from "./useInfiniteModelVersions";
 export * from "./useTriggerUserModel";
+export * from "./useTriggerUserModelAsync";
 export * from "./useWatchUserModels";
 export * from "./useUserModels";
+export * from "./useLastModelTriggerResult";
 
 export * from "./use-user-model";

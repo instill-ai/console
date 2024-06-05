@@ -1,10 +1,12 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
+import { Nullable } from "vitest";
 import { InstillJSONSchema } from "../../use-instill-form";
 import { User } from "../mgmt/types";
 import { Organization } from "../organization";
 import { Pipeline } from "../pipeline";
 import { Permission, Visibility } from "../types";
+import { Operation } from "../operation/types";
 
 export type ModelReleaseStage =
   | "RELEASE_STAGE_UNSPECIFIED"
@@ -67,6 +69,7 @@ export type Model = {
 
 export type ModelState =
   | "STATE_UNSPECIFIED"
+  | "STATE_STARTING"
   | "STATE_OFFLINE"
   | "STATE_SCALING"
   | "STATE_ACTIVE"
@@ -125,3 +128,22 @@ export type ModelWatchState = {
 };
 
 export type ModelsWatchState = Record<string, ModelWatchState>;
+
+export type ModelTriggerResult = {
+  operation: Nullable<
+    Operation & {
+      response?: {
+        "@type": string;
+        request: {
+          name: string;
+          task_inputs: Record<string, any>[];
+          version: string;
+        };
+        response: {
+          task: string;
+          task_outputs: Record<string, any>[];
+        };
+      };
+    }
+  >;
+};

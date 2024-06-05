@@ -354,6 +354,7 @@ export type PipelineState =
 
 export type ModelState =
   | "STATE_UNSPECIFIED"
+  | "STATE_STARTING"
   | "STATE_OFFLINE"
   | "STATE_SCALING"
   | "STATE_ACTIVE"

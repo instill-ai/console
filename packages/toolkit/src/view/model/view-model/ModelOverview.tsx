@@ -2,6 +2,7 @@ import {
   Button,
   Form,
   Icons,
+  LinkButton,
   Nullable,
   TabMenu,
   useToast,
@@ -12,19 +13,21 @@ import {
   Model,
   ModelState,
   ModelTask,
+  type ModelTriggerResult,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
   useComponentOutputFields,
   useInstillForm,
   useInstillStore,
+  useLastModelTriggerResult,
   useShallow,
-  useTriggerUserModel,
+  useTriggerUserModelAsync,
 } from "../../../lib";
 import { ModelReadme } from "./ModelReadme";
 import { z } from "zod";
 import { CodeBlock, LoadingSpin } from "../../../components";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ModelSectionHeader } from "./SectionHeader";
 import { recursiveHelpers } from "../../pipeline-builder";
 import { defaultCodeSnippetStyles } from "../../../constant";
@@ -40,45 +43,166 @@ export type ModelOverviewProps = {
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
 });
 
 const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
-  taskName ? taskName.replace("TASK_", "").toLocaleLowerCase() : null;
+  taskName ? taskName.replace("TASK_", "").toLowerCase() : null;
+
+const convertValuesToString = (props: Record<string, unknown>) => {
+  const convertedProps: Record<string, string> = {};
+
+  for (const key in props) {
+    if (typeof props[key] !== "string" && props[key] !== null) {
+      convertedProps[key] = JSON.stringify(props[key]);
+    } else {
+      convertedProps[key] = props[key];
+    }
+  }
+
+  return convertedProps;
+};
 
 export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
-  const { toast } = useToast();
+  const { toast, dismiss } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const [isTriggered, setIsTriggered] = useState(false);
+  const [isModelRunInProgress, setIsModelRunInProgress] = useState(false);
   const [outputActiveView, setOutputActiveView] =
     useState<ModelOutputActiveView>("preview");
   const taskPropName = useMemo(
     () => convertTaskNameToPayloadPropName(model?.task),
     [model]
   );
-  const [outputResult, setOutputResult] = useState<Record<
+  const [modelRunResult, setModelRunResult] = useState<Record<
     string,
     unknown
   > | null>(null);
-  const { accessToken } = useInstillStore(useShallow(selector));
+  const [inputFromExistingResult, setInputFromExistingResult] = useState<Record<
+    string,
+    unknown
+  > | null>(null);
+  const [existingTriggerState, setExistingTriggerState] =
+    useState<ModelTriggerResult["operation"]>(null);
+  const [showFullTriggerResult, setShowFullTriggerResult] = useState(false);
+  const [existingTriggerToastShowed, setExistingTriggerToastShowed] =
+    useState(false);
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const isModelTriggerable = useMemo(() => {
     return model && modelState
       ? model.permission.can_trigger &&
+          !isModelRunInProgress &&
           !["STATE_UNSPECIFIED", "STATE_ERROR"].includes(modelState)
       : false;
-  }, [modelState, model]);
+  }, [modelState, model, isModelRunInProgress]);
 
   const { form, fields, ValidatorSchema } = useInstillForm(
     model?.input_schema || null,
-    null,
+    inputFromExistingResult,
     {
       disabledAll: !isModelTriggerable,
     }
   );
 
-  const triggerModel = useTriggerUserModel();
+  const existingModelTriggerResult = useLastModelTriggerResult({
+    accessToken,
+    modelName: model?.name || null,
+    fullView: showFullTriggerResult,
+    enabled:
+      enabledQuery && (!existingTriggerState || existingTriggerState.done),
+  });
 
-  async function onTriggerModel(
+  useEffect(() => {
+    if (!existingModelTriggerResult.data?.operation || !model) {
+      return;
+    }
+
+    if (
+      !existingTriggerState ||
+      existingTriggerState.done !==
+        existingModelTriggerResult.data.operation.done ||
+      (!existingTriggerState.response &&
+        existingModelTriggerResult.data.operation.response)
+    ) {
+      setExistingTriggerState(existingModelTriggerResult.data.operation);
+      setIsModelRunInProgress(false);
+    }
+
+    if (
+      !existingModelTriggerResult.data.operation.done &&
+      !isModelRunInProgress
+    ) {
+      setIsModelRunInProgress(true);
+    } else if (!existingTriggerState?.response && !existingTriggerToastShowed) {
+      setExistingTriggerToastShowed(true);
+      toast({
+        id: "fetch-existing-model-trigger-result",
+        variant: "notification-info",
+        title: "Run result ready",
+        size: "large",
+        description: "You can view it or do another run.",
+        action: (
+          <div className="flex flex-row gap-x-4">
+            <LinkButton
+              onClick={() => {
+                dismiss("fetch-existing-model-trigger-result");
+              }}
+              variant="secondary"
+              size="md"
+            >
+              Dismiss
+            </LinkButton>
+            <LinkButton
+              onClick={() => {
+                dismiss("fetch-existing-model-trigger-result");
+                setIsModelRunInProgress(true);
+                setShowFullTriggerResult(true);
+              }}
+              variant="primary"
+              size="md"
+              className="mr-auto"
+            >
+              View
+            </LinkButton>
+          </div>
+        ),
+        duration: 30000,
+      });
+    }
+
+    if (
+      existingTriggerState?.response &&
+      !inputFromExistingResult &&
+      !modelRunResult
+    ) {
+      const taskPropName = convertTaskNameToPayloadPropName(
+        model.task
+      ) as string;
+
+      setInputFromExistingResult(
+        convertValuesToString(
+          existingTriggerState.response.request.task_inputs[0][taskPropName]
+        )
+      );
+      setModelRunResult(
+        existingTriggerState.response.response.task_outputs[0][taskPropName]
+      );
+    }
+  }, [
+    existingModelTriggerResult,
+    existingTriggerState,
+    toast,
+    existingTriggerToastShowed,
+    dismiss,
+    isModelRunInProgress,
+    model,
+    modelRunResult,
+    inputFromExistingResult,
+  ]);
+
+  const triggerModel = useTriggerUserModelAsync();
+
+  async function onRunModel(
     formData: Record<string, unknown> /* z.infer<typeof Schema> */
   ) {
     if (!model || !model.name || !taskPropName) return;
@@ -95,7 +219,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
       return;
     }
 
-    setIsTriggered(true);
+    setIsModelRunInProgress(true);
 
     const input = recursiveHelpers.removeUndefinedAndNullFromArray(
       recursiveHelpers.replaceNullAndEmptyStringWithUndefined(parsedData)
@@ -116,20 +240,50 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
         },
       });
 
+      toast({
+        variant: "notification-success",
+        title: "Model was triggered",
+        size: "large",
+        description:
+          "Come back later or reload the page to see if the run result is ready.",
+        action: (
+          <div className="flex flex-row gap-x-4">
+            <LinkButton
+              onClick={() => {
+                dismiss();
+              }}
+              variant="secondary"
+              size="md"
+            >
+              Dismiss
+            </LinkButton>
+            <LinkButton
+              onClick={() => {
+                window.location.reload();
+              }}
+              variant="primary"
+              size="md"
+            >
+              Reload
+            </LinkButton>
+          </div>
+        ),
+      });
+
       if (amplitudeIsInit) {
         sendAmplitudeData("trigger_model");
       }
 
-      setOutputResult(data.task_outputs[0][taskPropName]);
+      setExistingTriggerState(data.operation);
     } catch (error) {
+      setIsModelRunInProgress(false);
+
       toastInstillError({
         title: "Something went wrong when triggering the model",
         error,
         toast,
       });
     }
-
-    setIsTriggered(false);
   }
 
   const overviewModelTriggerFormID = "model-details-page-trigger-model-form";
@@ -137,7 +291,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
   const componentOutputFields = useComponentOutputFields({
     mode: "demo",
     schema: model?.output_schema || {},
-    data: outputResult || null,
+    data: modelRunResult || null,
   });
 
   return (
@@ -159,18 +313,18 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
             <form
               id={overviewModelTriggerFormID}
               className="w-full"
-              onSubmit={form.handleSubmit(onTriggerModel)}
+              onSubmit={form.handleSubmit(onRunModel)}
             >
               <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
               <div className="flex flex-row-reverse">
                 <Button
-                  disabled={!isModelTriggerable || isTriggered}
+                  disabled={!isModelTriggerable || isModelRunInProgress}
                   type="submit"
                   size="md"
                   variant="secondaryColour"
                 >
                   Run
-                  {isTriggered ? (
+                  {isModelRunInProgress ? (
                     <LoadingSpin className="ml-2 !h-4 !w-4 !text-semantic-accent-hover" />
                   ) : (
                     <Icons.Play className="ml-2 h-4 w-4 stroke-semantic-accent-hover" />
@@ -182,9 +336,9 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
         </div>
         <div className="flex w-1/2 flex-col pb-6 pl-6">
           <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
-          {isTriggered ? (
+          {isModelRunInProgress ? (
             <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />
-          ) : outputResult ? (
+          ) : modelRunResult ? (
             <React.Fragment>
               <TabMenu.Root
                 value={outputActiveView}
@@ -213,7 +367,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
                 </div>
               ) : (
                 <CodeBlock
-                  codeString={JSON.stringify(outputResult, null, 2)}
+                  codeString={JSON.stringify(modelRunResult, null, 2)}
                   wrapLongLines={true}
                   language="json"
                   customStyle={defaultCodeSnippetStyles}
