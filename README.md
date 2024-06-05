@@ -1,12 +1,12 @@
-# Versatile Data Pipeline (VDP) console
+# console
 
 [![Integration Test](https://github.com/instill-ai/console/actions/workflows/integration-test.yml/badge.svg)](https://github.com/instill-ai/console/actions/workflows/integration-test.yml)
 
-## VDP Console
+## The console of 🔮 Instill Core
 
-The VDP console is written in Nextjs, Typescript, TailwindCSS and it runs a docker container with the VDP backend. Interested in trying it out? Check out [here](https://github.com/instill-ai/vdp) to run it locally.
+The console, developed using Nextjs, Typescript, and TailwindCSS, operates in a docker container alongside other **🔮 Instill Core** components. Want to give it a try? Visit the [instill-core](https://github.com/instill-ai/instill-core) repository to run the suite on your local machine.
 
-The mission of the console is simple, to provide a unified, clean, and intuitive user experience of VDP, you could set up the full pipeline just by using the browser and investigate every information of your pipelines or connectors on it.
+The primary objective of the console is to offer a unified, streamlined, and user-friendly interface for **🔮 Instill Core**. It allows users to create, manage, and observe pipelines, models, and artifacts directly from their browser.
 
 ## Folder structure
 
@@ -41,7 +41,7 @@ Please refer to the [Integration test document](/docs/integration-test.md) for m
 
 ## CI/CD
 
-Please refer to the [CICD document](/docs/cicd.md) for more details.
+Please refer to the [CI/CD document](/docs/cicd.md) for more details.
 
 ## How to add templates into instill-ai
 
