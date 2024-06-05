@@ -2,7 +2,11 @@
 
 import * as React from "react";
 import { Form, ScrollArea } from "@instill-ai/design-system";
-import { AutoFormFieldBaseProps, fillArrayWithZeros } from "../../..";
+import {
+  AutoFormFieldBaseProps,
+  GeneralRecord,
+  fillArrayWithZeros,
+} from "../../..";
 import { readFileToBinary } from "../../../../view";
 import { UploadFileInput } from "../trigger-request-form-fields/UploadFileInput";
 import { FileListItem } from "../trigger-request-form-fields/FileListItem";
@@ -19,8 +23,10 @@ export const ImagesField = ({
   isRequired,
   size,
   shortDescription,
+  instillModelPromptImageBase64ObjectFormat,
 }: AutoFormFieldBaseProps & {
   shortDescription?: string;
+  instillModelPromptImageBase64ObjectFormat?: boolean;
 }) => {
   const [imageFiles, setImageFiles] = React.useState<File[]>([]);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -78,13 +84,27 @@ export const ImagesField = ({
                   onChange={async (e) => {
                     if (e.target.files && e.target.files.length > 0) {
                       const files: File[] = [];
-                      const binaries: string[] = [];
-                      for (const file of e.target.files) {
-                        const binary = await readFileToBinary(file);
-                        files.push(file);
-                        binaries.push(binary);
+
+                      if (instillModelPromptImageBase64ObjectFormat) {
+                        const binaries: GeneralRecord[] = [];
+                        for (const file of e.target.files) {
+                          const binary = await readFileToBinary(file);
+                          files.push(file);
+                          binaries.push({
+                            prompt_image_base64: binary,
+                          });
+                        }
+                        field.onChange(binaries);
+                      } else {
+                        const binaries: string[] = [];
+                        for (const file of e.target.files) {
+                          const binary = await readFileToBinary(file);
+                          files.push(file);
+                          binaries.push(binary);
+                        }
+                        field.onChange(binaries);
                       }
-                      field.onChange(binaries);
+
                       setImageFiles((prev) => [...prev, ...files]);
                     }
                   }}

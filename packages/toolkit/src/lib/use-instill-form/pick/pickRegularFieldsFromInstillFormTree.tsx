@@ -288,6 +288,9 @@ export function pickRegularFieldsFromInstillFormTree(
             size={size}
             isHidden={tree.isHidden}
             isRequired={tree.isRequired}
+            instillModelPromptImageBase64ObjectFormat={
+              tree.instillModelPromptImageBase64ObjectFormat
+            }
           />
         );
       }
