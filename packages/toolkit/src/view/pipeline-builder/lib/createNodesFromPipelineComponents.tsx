@@ -59,9 +59,7 @@ export function createNodesFromPipelineComponents(
         type: "generalNode",
         data: {
           ...e,
-          connection: e.connection
-            ? recursiveHelpers.parseNumberToString(e.input)
-            : null,
+          setup: e.setup ? recursiveHelpers.parseNumberToString(e.setup) : null,
           input: recursiveHelpers.parseNumberToString(e.input),
           metadata: e.metadata,
           note: componentMetadata ? componentMetadata.note : null,

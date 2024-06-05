@@ -160,7 +160,7 @@ export type PipelineGeneralComponent = {
   task: string;
   input: GeneralRecord;
   condition: Nullable<string>;
-  connection: Nullable<GeneralRecord>;
+  setup: Nullable<GeneralRecord>;
 } & ComponentBasicFields;
 
 export type PipelineIteratorComponent = {

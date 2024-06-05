@@ -7,6 +7,6 @@ export const getGeneralComponentConfiguration = (
     input: component.input,
     task: component.task,
     condition: component.condition,
-    connection: component.connection ? component.connection : undefined,
+    setup: component.setup ? component.setup : undefined,
   };
 };

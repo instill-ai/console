@@ -37,11 +37,9 @@ export function composePipelineRecipeFromNodes(
                         recursiveHelpers.parseToNum(structuredClone(e.input))
                       )
                     : undefined,
-                  connection: e.connection
+                  setup: e.setup
                     ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-                        recursiveHelpers.parseToNum(
-                          structuredClone(e.connection)
-                        )
+                        recursiveHelpers.parseToNum(structuredClone(e.setup))
                       )
                     : undefined,
                   condition: e.condition,
@@ -68,9 +66,9 @@ export function composePipelineRecipeFromNodes(
         input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
           recursiveHelpers.parseToNum(structuredClone(node.data.input))
         ),
-        connection: node.data.connection
+        setup: node.data.setup
           ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-              recursiveHelpers.parseToNum(structuredClone(node.data.connection))
+              recursiveHelpers.parseToNum(structuredClone(node.data.setup))
             )
           : undefined,
         definition: undefined,

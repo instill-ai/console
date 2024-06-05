@@ -24,11 +24,9 @@ export function composePipelineComponentMapFromNodes(nodes: Node<NodeData>[]) {
                     recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
                       recursiveHelpers.parseToNum(structuredClone(e.input))
                     ),
-                  connection: e.connection
+                  setup: e.setup
                     ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-                        recursiveHelpers.parseToNum(
-                          structuredClone(e.connection)
-                        )
+                        recursiveHelpers.parseToNum(structuredClone(e.setup))
                       )
                     : undefined,
                 },
@@ -49,9 +47,9 @@ export function composePipelineComponentMapFromNodes(nodes: Node<NodeData>[]) {
         input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
           recursiveHelpers.parseToNum(structuredClone(node.data.input))
         ),
-        connection: node.data.connection
+        setup: node.data.setup
           ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-              recursiveHelpers.parseToNum(structuredClone(node.data.connection))
+              recursiveHelpers.parseToNum(structuredClone(node.data.setup))
             )
           : undefined,
         definition: undefined,
