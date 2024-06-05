@@ -1,6 +1,5 @@
 import { Icons, Separator, DropdownMenu, Button, Dialog, LinkButton } from "@instill-ai/design-system";
 import * as React from "react";
-import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
 import { useUpdateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useUpdateKnowledgeBase";
 import { useDeleteKnowledgeBase } from "../../../lib/react-query-service/knowledge/useDeleteKnowledgeBase";
 import { useCreateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useCreateKnowledgeBase";
@@ -30,10 +29,7 @@ const Menu = ({ onDelete, onEdit, onDuplicate }: MenuProps) => {
               <Icons.DotsHorizontal className="w-4 h-4 stroke-semantic-fg-secondary" />
             </Button>
           </DropdownMenu.Trigger>
-          <DropdownMenu.Content
-            align="end"
-            className="w-[195px] rounded-md !p-0"
-          >
+          <DropdownMenu.Content align="end" className="w-[195px] rounded-md !p-0">
             <DropdownMenu.Item
               onClick={onEdit}
               className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
@@ -50,7 +46,7 @@ const Menu = ({ onDelete, onEdit, onDuplicate }: MenuProps) => {
             </DropdownMenu.Item>
             <Separator orientation="horizontal" />
             <DropdownMenu.Item
-              onClick={(e) => { e.stopPropagation(); onDelete(e); }}
+              onClick={onDelete}
               className="!px-4 !py-2.5 !text-semantic-error-default product-body-text-4-medium"
             >
               <Icons.Trash01 className="w-4 h-4 mr-2 stroke-semantic-error-default" />
@@ -88,7 +84,7 @@ export const CreateKnowledgeBaseCard = ({
     const clonedKnowledgeBase = {
       ...knowledgeBase,
       name: `${knowledgeBase.name}_Clone`,
-      id: knowledgeBase.id + 1
+      id: knowledgeBase.id + 1,
     };
     try {
       const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
@@ -112,13 +108,13 @@ export const CreateKnowledgeBaseCard = ({
 
   const { accessToken } = useInstillStore(useShallow(selector));
 
-  const confirmDelete = async () => {
+  const confirmDelete = () => {
     setIsDeleted(true);
     setDeleteDialogIsOpen(false);
     setShowDeleteMessage(true);
-    setTimeout(async () => {
+    setTimeout(() => {
       if (isDeleted) {
-        await deleteKnowledgeBase.mutateAsync({
+        deleteKnowledgeBase.mutateAsync({
           id: knowledgeBase.id,
           accessToken: accessToken,
         });
@@ -130,7 +126,6 @@ export const CreateKnowledgeBaseCard = ({
       }
     }, 15000);
   };
-
 
   const handleEditKnowledgeSubmit = async (data: any) => {
     await updateKnowledgeBase.mutateAsync({
@@ -169,13 +164,15 @@ export const CreateKnowledgeBaseCard = ({
             <div className="flex flex-col items-start self-stretch justify-start gap-6">
               <div className="flex flex-col items-center justify-center gap-1">
                 <div className="product-headings-heading-3">Delete {knowledgeBase.name}</div>
-                <div className="text-center product-body-text-2-regular">Are you sure you want to delete this knowledge base?</div>
+                <div className="text-center product-body-text-2-regular">
+                  Are you sure you want to delete this knowledge base?
+                </div>
               </div>
               <div className="flex w-full gap-2">
-                <Button variant={"secondaryGrey"} onClick={() => setDeleteDialogIsOpen(false)} className="w-full">
+                <Button variant="secondaryGrey" onClick={() => setDeleteDialogIsOpen(false)} className="w-full">
                   Cancel
                 </Button>
-                <Button variant={"danger"} onClick={confirmDelete} className="w-full">
+                <Button variant="danger" onClick={confirmDelete} className="w-full">
                   Delete
                 </Button>
               </div>
@@ -183,6 +180,25 @@ export const CreateKnowledgeBaseCard = ({
           </div>
         </Dialog.Content>
       </Dialog.Root>
+      {showDeleteMessage && (
+        <div className="fixed bottom-4 right-4 w-[400px] h-[136px] p-4 bg-semantic-bg-primary rounded-lg shadow border border-slate-200 flex mr-4">
+          <Icons.AlertTriangle className="w-6 h-6 stroke-semantic-warning-on-bg" />
+          <div className="grow shrink basis-0 h-[104px] flex-col justify-start items-start gap-4">
+            <div className="self-stretch flex-col justify-start items-start gap-1 flex">
+              <div className="self-stretch product-body-text-2-semibold">{knowledgeBase.name} has been deleted</div>
+              <div className="self-stretch product-body-text-2-regular">
+                If this was a mistake, click "Undo Action" to reapply your changes.
+              </div>
+            </div>
+            <LinkButton className="" variant="secondary" size="md" onClick={undoDelete}>
+              Undo Action
+            </LinkButton>
+          </div>
+          <Button className="absolute top-2 right-2" variant="tertiaryGrey" size="sm" onClick={() => setShowDeleteMessage(false)}>
+            <Icons.X className="w-4 h-4 stroke-semantic-fg-secondary" />
+          </Button>
+        </div>
+      )}
       <EditKnowledgeDialog
         isOpen={editDialogIsOpen}
         onClose={() => setEditDialogIsOpen(false)}
