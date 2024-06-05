@@ -180,25 +180,25 @@ export const CreateKnowledgeBaseCard = ({
           </div>
         </Dialog.Content>
       </Dialog.Root>
-      {showDeleteMessage && (
-        <div className="fixed bottom-4 right-4 w-[400px] h-[136px] p-4 bg-semantic-bg-primary rounded-lg shadow border border-slate-200 flex mr-4">
-          <Icons.AlertTriangle className="w-6 h-6 stroke-semantic-warning-on-bg" />
-          <div className="grow shrink basis-0 h-[104px] flex-col justify-start items-start gap-4">
-            <div className="self-stretch flex-col justify-start items-start gap-1 flex">
-              <div className="self-stretch product-body-text-2-semibold">{knowledgeBase.name} has been deleted</div>
-              <div className="self-stretch product-body-text-2-regular">
-                If this was a mistake, click "Undo Action" to reapply your changes.
-              </div>
+      {/* {showDeleteMessage && ( */}
+      <div className="fixed bottom-4 right-4 w-[400px] h-[136px] p-4 bg-semantic-bg-primary rounded-lg shadow border border-semantic-bg-line flex">
+        <Icons.AlertTriangle className="w-6 h-6 stroke-semantic-warning-on-bg mr-4" />
+        <div className="grow shrink basis-0 flex-col justify-start items-start mr-4 space-y-4">
+          <div className="self-stretch flex-col justify-start items-start gap-1 flex">
+            <div className="self-stretch product-body-text-2-semibold ">{knowledgeBase.name} has been deleted</div>
+            <div className="self-stretch product-body-text-3-regular text-semantic-fg-secondary">
+              If this was a mistake, click "Undo Action" to reapply your changes.
             </div>
-            <LinkButton className="" variant="secondary" size="md" onClick={undoDelete}>
-              Undo Action
-            </LinkButton>
           </div>
-          <Button className="absolute top-2 right-2" variant="tertiaryGrey" size="sm" onClick={() => setShowDeleteMessage(false)}>
-            <Icons.X className="w-4 h-4 stroke-semantic-fg-secondary" />
-          </Button>
+          <LinkButton className="!p-0" variant="secondary" size="md" onClick={undoDelete}>
+            Undo Action
+          </LinkButton>
         </div>
-      )}
+        <Button className="absolute top-2 right-2" variant="tertiaryGrey" size="sm" onClick={() => setShowDeleteMessage(false)}>
+          <Icons.X className="w-6 h-6 stroke-semantic-fg-secondary" />
+        </Button>
+      </div>
+      {/* )} */}
       <EditKnowledgeDialog
         isOpen={editDialogIsOpen}
         onClose={() => setEditDialogIsOpen(false)}
