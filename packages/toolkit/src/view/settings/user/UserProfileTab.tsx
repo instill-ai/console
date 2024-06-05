@@ -286,7 +286,7 @@ export const UserProfileTab = (props: UserProfileTabProps) => {
                           Subscribe to our newsletter
                         </p>
                         <p className="text-semantic-fg-secondary product-body-text-2-regular">
-                          open source updates, community highlights, blog posts,
+                          For product updates, community highlights, blog posts,
                           useful tutorials and more!
                         </p>
                       </div>
