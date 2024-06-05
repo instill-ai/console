@@ -9,10 +9,12 @@ import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 
 type KnowledgeBaseTabProps = {
     onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
+    onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
 };
 
 export const KnowledgeBaseTab = ({
     onKnowledgeBaseSelect,
+    onDeleteKnowledgeBase,
 }: KnowledgeBaseTabProps) => {
     const [loading, setLoading] = React.useState(false);
 
@@ -31,7 +33,6 @@ export const KnowledgeBaseTab = ({
 
     const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
     const [knowledgeBases, setKnowledgeBases] = React.useState<KnowledgeBase[]>([]);
-    const [editingKnowledgeBase, setEditingKnowledgeBase] = React.useState<KnowledgeBase | null>(null);
     const getKnowledgeBases = useGetKnowledgeBases({
         accessToken,
         uid: userID as string,
