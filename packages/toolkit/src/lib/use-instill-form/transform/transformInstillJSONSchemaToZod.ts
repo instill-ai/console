@@ -457,6 +457,48 @@ export function transformInstillJSONSchemaToZod({
     return instillZodSchema;
   }
 
+  if (
+    !targetSchema.instillUpstreamTypes ||
+    (targetSchema.instillUpstreamTypes.length === 1 &&
+      targetSchema.instillUpstreamTypes[0] === "value")
+  ) {
+    if (
+      targetSchema.instillAcceptFormats &&
+      targetSchema.instillAcceptFormats.length > 0
+    ) {
+      if (targetSchema.instillAcceptFormats[0].includes("image")) {
+        instillZodSchema = z
+          .array(z.string().nullable().optional())
+          .nullable()
+          .optional();
+
+        if (isHidden) {
+          instillZodSchema = z.any();
+        }
+
+        if (!isRequired || forceOptional) {
+          instillZodSchema = instillZodSchema.nullable().optional();
+        }
+
+        return instillZodSchema;
+      }
+
+      if (targetSchema.instillAcceptFormats[0].includes("array:image")) {
+        instillZodSchema = z.string().nullable().optional();
+
+        if (isHidden) {
+          instillZodSchema = z.any();
+        }
+
+        if (!isRequired || forceOptional) {
+          instillZodSchema = instillZodSchema.nullable().optional();
+        }
+
+        return instillZodSchema;
+      }
+    }
+  }
+
   switch (targetSchema.type) {
     case "string": {
       if (isRequired) {
