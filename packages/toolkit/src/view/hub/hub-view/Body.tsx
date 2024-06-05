@@ -74,8 +74,8 @@ const PipelineSection: React.FC<{ tabValue: string }> = ({ tabValue }) => {
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const selectedSortOption = React.useMemo(() => {
-    if (selectedSortField && selectedSortOrder) {
-      return `${selectedSortField} ${selectedSortOrder}`;
+    if (selectedSortField) {
+      return `${selectedSortField} ${selectedSortOrder || "desc"}`;
     }
     return "";
   }, [selectedSortField, selectedSortOrder]);
