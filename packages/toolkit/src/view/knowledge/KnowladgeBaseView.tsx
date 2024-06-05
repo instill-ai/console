@@ -39,7 +39,6 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           setShowDeleteMessage(false);
           setKnowledgeBaseToDelete(null);
           setIsDeleted(false);
-          // Perform the deletion here or pass this state up to parent component to handle
         }
       }, 15000);
       return () => clearTimeout(timer);
