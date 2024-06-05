@@ -18,11 +18,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [isDeleted, setIsDeleted] = React.useState(false);
   const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] = React.useState<KnowledgeBase | null>(null);
 
-
   /* -------------------------------------------------------------------------
    * Query resource data
    * -----------------------------------------------------------------------*/
-
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -32,40 +30,44 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     setSelectedKnowledgeBase(knowledgeBase);
     handleTabChange("upload");
   };
-  React.useEffect(() => {
-    if (showDeleteMessage) {
-      const timer = setTimeout(() => {
-        if (isDeleted && knowledgeBaseToDelete) {
-          setShowDeleteMessage(false);
-          setKnowledgeBaseToDelete(null);
-          setIsDeleted(false);
-        }
-      }, 15000);
-      return () => clearTimeout(timer);
-    }
-  }, [showDeleteMessage, isDeleted, knowledgeBaseToDelete]);
+
+  const handleDeleteKnowledgeBase = (knowledgeBase: KnowledgeBase) => {
+    setKnowledgeBaseToDelete(knowledgeBase);
+    setIsDeleted(true);
+    setShowDeleteMessage(true);
+    setTimeout(() => {
+      if (isDeleted && knowledgeBaseToDelete) {
+        setShowDeleteMessage(false);
+        setKnowledgeBaseToDelete(null);
+        setIsDeleted(false);
+      }
+    }, 15000);
+  };
+
+  const handleUndoDelete = () => {
+    setIsDeleted(false);
+    setShowDeleteMessage(false);
+    setKnowledgeBaseToDelete(null);
+  };
+
   /* -------------------------------------------------------------------------
    * Render
    * -----------------------------------------------------------------------*/
   return (
     <div className="w-full h-screen bg-semantic-bg-primary">
-      {showDeleteMessage && (
+      {showDeleteMessage && knowledgeBaseToDelete && (
         <div className="fixed bottom-4 right-4 w-[400px] h-[136px] p-4 bg-semantic-bg-primary rounded-lg shadow border border-slate-200 flex mr-4">
           <Icons.AlertTriangle className="w-6 h-6 stroke-semantic-warning-on-bg" />
           <div className="grow shrink basis-0 h-[104px] flex-col justify-start items-start gap-4">
             <div className="self-stretch flex-col justify-start items-start gap-1 flex">
-              <div className="self-stretch product-body-text-2-semibold">This Knowledge base has been deleted</div>
-              <div className="self-stretch product-body-text-2-regular">If this was a mistake, click "Undo Action" to reapply your changes.</div>
+              <div className="self-stretch product-body-text-2-semibold">
+                {knowledgeBaseToDelete.name} has been deleted
+              </div>
+              <div className="self-stretch product-body-text-2-regular">
+                If this was a mistake, click "Undo Action" to reapply your changes.
+              </div>
             </div>
-            <LinkButton
-              className=""
-              variant="secondary"
-              size="md"
-              onClick={() => {
-                setShowDeleteMessage(false);
-                setIsDeleted(false);
-              }}
-            >
+            <LinkButton className="" variant="secondary" size="md" onClick={handleUndoDelete}>
               Undo Action
             </LinkButton>
           </div>
@@ -89,7 +91,10 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         </div>
         <div className="lg:col-span-10 md:col-span-9 sm:col-span-8">
           {activeTab === "knowledge-base" && (
-            <KnowledgeBaseTab onKnowledgeBaseSelect={handleKnowledgeBaseSelect} />
+            <KnowledgeBaseTab
+              onKnowledgeBaseSelect={handleKnowledgeBaseSelect}
+              onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
+            />
           )}
           {activeTab === "upload" && selectedKnowledgeBase && (
             <UploadExploreTab knowledgeBase={selectedKnowledgeBase} />
