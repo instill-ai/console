@@ -43,7 +43,7 @@ export const ModelHubSettingPageMainView = (
     modelNames: model.isSuccess ? [model.data.name] : [],
     enabled: enableQuery && model.isSuccess,
     accessToken,
-  }); */
+  });
 
   const modelState = React.useMemo(() => {
     if (model.isSuccess && modelsWatchState.isSuccess) {
