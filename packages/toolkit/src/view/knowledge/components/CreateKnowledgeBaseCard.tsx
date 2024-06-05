@@ -125,9 +125,12 @@ export const CreateKnowledgeBaseCard = ({
         setKnowledgeBases((prevKnowledgeBases) =>
           prevKnowledgeBases.filter((kb) => kb.id !== knowledgeBase.id)
         );
+        setShowDeleteMessage(false);
+        setIsDeleted(false);
       }
-    }, 5000);
+    }, 15000);
   };
+
 
   const handleEditKnowledgeSubmit = async (data: any) => {
     await updateKnowledgeBase.mutateAsync({
@@ -138,38 +141,13 @@ export const CreateKnowledgeBaseCard = ({
     setEditDialogIsOpen(false);
   };
 
+  const undoDelete = () => {
+    setShowDeleteMessage(false);
+    setIsDeleted(false);
+  };
+
   return (
     <React.Fragment>
-      {showDeleteMessage && (
-        <div className="fixed bottom-4 right-4 w-[400px] h-[136px] p-4 bg-semantic-bg-primary rounded-lg shadow border border-slate-200 flex mr-4">
-          <Icons.AlertTriangle className="w-6 h-6 stroke-semantic-warning-on-bg" />
-          <div className="grow shrink basis-0 h-[104px] flex-col justify-start items-start gap-4">
-            <div className="self-stretch flex-col justify-start items-start gap-1 flex">
-              <div className="self-stretch product-body-text-2-semibold">This Knowledge base has been deleted</div>
-              <div className="self-stretch product-body-text-2-regular">If this was a mistake, click "Undo Action" to reapply your changes.</div>
-            </div>
-            <LinkButton
-              className=""
-              variant="secondary"
-              size="md"
-              onClick={() => {
-                setShowDeleteMessage(false);
-                setIsDeleted(false);
-              }}
-            >
-              Undo Action
-            </LinkButton>
-          </div>
-          <Button
-            className="absolute top-2 right-2"
-            variant="tertiaryGrey"
-            size="sm"
-            onClick={() => setShowDeleteMessage(false)}
-          >
-            <Icons.X className="w-4 h-4 stroke-semantic-fg-secondary" />
-          </Button>
-        </div>
-      )}
       {!isDeleted && (
         <div className="flex shadow cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 w-[360px] h-[175px]" onClick={onCardClick}>
           <div className="flex items-center justify-between">
