@@ -9,10 +9,13 @@ import {
   OperatorDefinition,
   useInstillStore,
 } from "../../../../../lib";
-import { NewConnectorSection } from "./NewConnectorSection";
-import { OperatorSection } from "./OperatorSection";
-import { IteratorSection } from "./IteratorSection";
+
 import { DataTestID } from "../../../../../constant";
+import { GenericSection } from "./GenericSection";
+import { AISection } from "./AISection";
+import { DataSection } from "./DataSection";
+import { ApplicationSection } from "./ApplicationSection";
+import { OpoeratorSection } from "./OpoeratorSection";
 
 export type OnSelectComponent = (
   definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition
@@ -60,18 +63,26 @@ export const SelectComponentDialog = ({
         className="flex !max-w-[1048px] flex-col overflow-y-auto !p-0"
       >
         <ScrollArea.Root className="h-[700px] p-6">
-          <Dialog.Close className="bg-semantic-bg-primary" />
-          <Dialog.Header className="mb-4">
-            <Dialog.Title className="mx-auto !product-headings-heading-3">
-              Select a component
-            </Dialog.Title>
-            <Dialog.Description className="mx-auto">
-              Select a component to add to your pipeline
-            </Dialog.Description>
-          </Dialog.Header>
-          {isEditingIterator ? null : <IteratorSection onSelect={onSelect} />}
-          <OperatorSection onSelect={onSelect} />
-          <NewConnectorSection onSelect={onSelect} />
+          <div className="mb-4 flex flex-row items-center gap-x-2">
+            <div className="flex flex-1 justify-center rounded-sm bg-semantic-bg-base-bg py-2">
+              <p className="text-semantic-fg-primary product-body-text-1-semibold">
+                Components
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                onOpenChange(false);
+              }}
+              className="flex h-10 w-10 items-center justify-center rounded-sm border border-semantic-bg-line bg-semantic-bg-primary shadow"
+            >
+              <Icons.X className="h-5 w-5 stroke-semantic-fg-primary" />
+            </button>
+          </div>
+          {isEditingIterator ? null : <GenericSection onSelect={onSelect} />}
+          <OpoeratorSection onSelect={onSelect} />
+          <AISection onSelect={onSelect} />
+          <DataSection onSelect={onSelect} />
+          <ApplicationSection onSelect={onSelect} />
         </ScrollArea.Root>
       </Dialog.Content>
     </Dialog.Root>
