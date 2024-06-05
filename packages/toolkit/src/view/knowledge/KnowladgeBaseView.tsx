@@ -1,4 +1,3 @@
-// KnowledgeBaseView.tsx
 import { GeneralAppPageProp } from "../../lib";
 import { Sidebar } from "./components/Sidebar";
 import { KnowledgeBaseTab } from "./components/KnowledgeBaseTab";

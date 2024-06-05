@@ -1,3 +1,6 @@
+{/* This tab is coming in V2 */ }
+
+
 import { Button, Icons, Separator, Tag, Textarea } from "@instill-ai/design-system";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import { useState } from "react";
