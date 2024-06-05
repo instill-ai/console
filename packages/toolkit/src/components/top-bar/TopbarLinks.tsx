@@ -16,6 +16,11 @@ export const topbarItems = [
     name: "Models",
   },
   {
+    pathName: "applications",
+    icon: <Icons.Star06 className="h-6 w-6 stroke-semantic-fg-primary" />,
+    name: "AI Applications",
+  },
+  {
     pathName: "dashboard",
     icon: (
       <Icons.BarChartSquare02 className="h-6 w-6 stroke-semantic-fg-primary" />

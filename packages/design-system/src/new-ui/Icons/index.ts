@@ -86,6 +86,7 @@ import { Save01 } from "./Save01";
 import { Sliders01 } from "./Sliders01";
 import { SpeechRecognition } from "./SpeechRecognition";
 import { Speaker01 } from "./Speaker01";
+import { Star06 } from "./Star06";
 import { Stop } from "./Stop";
 import { SearchLg } from "./SearchLg";
 import { SearchSm } from "./SearchSm";
@@ -200,6 +201,7 @@ export const Icons = {
   SpeechRecognition,
   Sliders01,
   Speaker01,
+  Star06,
   Stop,
   SearchLg,
   SearchSm,
