@@ -102,7 +102,7 @@ export const ApplicationsPageMainView = (
               {mockSnippets.map((snippet) => (
                 <div
                   key={snippet.id}
-                  className="p-4 bg-semantic-bg-default rounded shadow border border-semantic-bg-line"
+                  className="p-5 bg-semantic-bg-default rounded-sm shadow border border-semantic-bg-line space-y-2.5"
                 >
                   <Tag size="md" variant="default" className="!rounded">
                     Top{snippet.id}: {snippet.score}
@@ -123,9 +123,9 @@ export const ApplicationsPageMainView = (
               <span className="text-semantic-fg-default text-sm font-semibold">
                 Pipeline in use:
               </span>
-              <div>
-                <Icons.X className="h-4 w-4 stroke-semantic-bg-primary" />
-                <span className="text-blue-600 text-sm font-semibold ">
+              <div className="flex items-center space-x-1">
+                <Icons.Pipeline className="h-4 w-4 stroke-semantic-accent-default" />
+                <span className="text-semantic-accent-default text-sm font-semibold ">
                   xiaofei/name-your-pet
                 </span>
               </div>
