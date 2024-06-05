@@ -44,7 +44,7 @@ export const ApplicationsPageMainView = (
       <Separator dir="horizontal" />
       <div className="flex gap-4">
         <div className="flex flex-col flex-1 bg-semantic-bg-surface rounded shadow">
-          <div className="p-4 bg-semantic-bg-base-bg rounded-t border-b border-semantic-bg-line">
+          <div className="p-2 bg-semantic-bg-base-bg rounded-t border-b border-semantic-bg-line">
             <div className=" product-body-text-1-semibold">
               Chat Playground
             </div>
@@ -61,17 +61,17 @@ export const ApplicationsPageMainView = (
               ))}
             </div> */}
             <div className="mt-auto">
-              <Input.Root className="flex items-center gap-2 !rounded">
+              <Input.Root className="flex items-center gap-2 !rounded px-2 py-4">
                 <Input.Core placeholder="Message..." />
-                <Button variant="primary" className="px-2" size={"sm"}>
+                <Button variant="primary" className="px-2 !mr-4" size={"sm"}>
                   <Icons.ArrowNarrowRight className="h-4 w-4 stroke-semantic-fg-on-default" />
                 </Button>
               </Input.Root>
             </div>
           </div>
         </div>
-        <div className="w-80 flex flex-col bg-semantic-bg-surface rounded shadow">
-          <div className="p-4 bg-semantic-bg-base-bg rounded-t border-b border-semantic-bg-line">
+        <div className="w-[400px] flex flex-col bg-semantic-bg-surface rounded shadow">
+          <div className="py-2 px-3 bg-semantic-bg-base-bg rounded-t border-b border-semantic-bg-line">
             <div className=" product-body-text-1-semibold">
               Parameters
             </div>
