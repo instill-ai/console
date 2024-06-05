@@ -87,11 +87,11 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                 <div className="bg-semantic-bg-primary  rounded border border-semantic-bg-line flex">
                     <div className="flex-grow flex">
                         <div className="flex-grow flex flex-col">
-                            <div className="p-2 bg-semantic-bg-base-bg border-b border-semantic-bg-line flex items-center gap-3 ">
+                            <div className="p-2 bg-semantic-bg-base-bg border-b border-semantic-bg-line flex items-center justify-center gap-3">
                                 <div className="flex items-center gap-1">
                                     <div className="text-semantic-fg-primary product-body-text-3-medium">File name</div>
                                     <Button
-                                        variant={"white"}
+                                        variant="tertiaryGrey"
                                         size="sm"
                                         onClick={() => requestSort("fileName")}
                                     >
@@ -105,7 +105,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                             </div>
                             {sortedData.map((item, index) => (
                                 <div key={index}>
-                                    <div className="px-3 flex items-center h-16">
+                                    <div className="px-3 flex items-center justify-center h-16">
                                         <div className="text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                                             {item.fileName}
                                         </div>
@@ -115,11 +115,11 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                             ))}
                         </div>
                         <div className="flex flex-col">
-                            <div className="p-2 bg-semantic-bg-base-bg border-b border-semantic-bg-line flex items-center gap-3 ">
+                            <div className="p-2 bg-semantic-bg-base-bg border-b border-semantic-bg-line flex items-center justify-center gap-3">
                                 <div className="flex items-center gap-1">
                                     <div className="text-semantic-fg-primary product-body-text-3-medium">File type</div>
                                     <Button
-                                        variant="white"
+                                        variant="tertiaryGrey"
                                         size="sm"
                                         onClick={() => requestSort("fileType")}
                                     >
@@ -133,7 +133,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                             </div>
                             {sortedData.map((item, index) => (
                                 <div key={index}>
-                                    <div className="px-3 flex items-center h-16">
+                                    <div className="px-3 flex items-center justify-center h-16">
                                         <Tag size="sm" variant="lightNeutral">
                                             {item.fileType}
                                         </Tag>
@@ -143,13 +143,13 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                             ))}
                         </div>
                         <div className="flex flex-col">
-                            <div className="p-2 bg-semantic-bg-base-bg border-b border-semantic-bg-line flex items-center gap-3 ">
+                            <div className="p-2 bg-semantic-bg-base-bg border-b border-semantic-bg-line flex items-center justify-center gap-3">
                                 <div className="flex items-center gap-1">
                                     <div className="text-semantic-fg-primary product-body-text-3-medium">
                                         Processed status
                                     </div>
                                     <Button
-                                        variant="white"
+                                        variant="tertiaryGrey"
                                         size="sm"
                                         onClick={() => requestSort("processedStatus")}
                                     >
@@ -163,7 +163,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                             </div>
                             {sortedData.map((item, index) => (
                                 <div key={index}>
-                                    <div className="px-3 flex items-center h-16">
+                                    <div className="px-3 flex items-center justify-center h-16">
                                         <div className="text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                                             {item.processedStatus}
                                         </div>
@@ -173,11 +173,11 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                             ))}
                         </div>
                         <div className="flex flex-col">
-                            <div className="p-2 bg-semantic-bg-base-bg border-b border-semantic-bg-line flex items-center gap-3 ">
+                            <div className="p-2 bg-semantic-bg-base-bg border-b border-semantic-bg-line flex items-center justify-center gap-3">
                                 <div className="flex items-center gap-1">
                                     <div className="text-semantic-fg-primary product-body-text-3-medium">Create time</div>
                                     <Button
-                                        variant="white"
+                                        variant="tertiaryGrey"
                                         size="sm"
                                         onClick={() => requestSort("createTime")}
                                     >
@@ -191,7 +191,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                             </div>
                             {sortedData.map((item, index) => (
                                 <div key={index}>
-                                    <div className="px-3 flex items-center h-16">
+                                    <div className="px-3 flex items-center justify-center h-16">
                                         <div className="text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                                             {item.createTime}
                                         </div>
@@ -201,15 +201,15 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                             ))}
                         </div>
                     </div>
-                    <div className="w-[375px] border-l border-semantic-bg-line flex flex-col gap-6 pb-8">
-                        <div className="pl-3 p-2 bg-semantic-bg-base-bg border-b border-semantic-bg-line flex items-center gap-3 rounded-tr">
+                    <div className="w-[375px] border-l border-semantic-bg-line flex flex-col gap-3 pb-8">
+                        <div className="pl-3 p-3 bg-semantic-bg-base-bg border-b border-semantic-bg-line flex items-center justify-center gap-3 rounded-tr">
                             <div className="text-semantic-fg-primary product-body-text-3-medium">Preview</div>
                         </div>
-                        <div className="px-8 flex flex-col gap-3 h-full">
-                            <div className="flex flex-col gap-3 flex-1">
-                                <div className="flex flex-col h-full">
-                                    <div className="w-[311px] pb-2.5 flex items-center">
-                                        <div className="flex items-start gap-1">
+                        <div className="px-8 flex flex-col h-full gap-3">
+                            <div className="flex flex-col flex-1">
+                                <div className="flex flex-col h-full gap-1">
+                                    <div className="w-[311px] pb-2.5 flex items-center justify-start">
+                                        <div className="flex items-start">
                                             <div className="product-body-text-3-semibold">File name</div>
                                         </div>
                                     </div>
@@ -217,19 +217,22 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                                         // {...field}
                                         // id={field.name}
                                         placeholder="Preview"
-                                        className="flex-1 resize-none"
+                                        className="flex-1 resize-none flex-grow"
                                     />
                                 </div>
                             </div>
                             <div className="flex justify-end items-start gap-3">
-                                <Button variant="tertiaryDanger" size="lg" className="capitalize">
-                                    delete
+                                <Button variant="secondaryGrey" size="lg" className="capitalize">
+                                    modify
                                 </Button>
                                 <Button variant="secondaryGrey" size="lg" className="capitalize">
                                     download
                                     <Icons.DownloadCloud01 className="w-4 h-4 stroke-semantic-fg-primary ml-2" />
                                 </Button>
                             </div>
+                            <Button variant="tertiaryDanger" size="lg" className="capitalize self-end">
+                                delete
+                            </Button>
                         </div>
                     </div>
                 </div>
