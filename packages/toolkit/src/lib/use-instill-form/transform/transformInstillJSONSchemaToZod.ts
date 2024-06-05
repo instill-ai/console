@@ -466,8 +466,8 @@ export function transformInstillJSONSchemaToZod({
       targetSchema.instillAcceptFormats &&
       targetSchema.instillAcceptFormats.length > 0
     ) {
-      if (targetSchema.instillAcceptFormats[0].includes("image")) {
-        instillZodSchema = z
+      if (targetSchema.instillAcceptFormats[0].includes("array:image")) {
+        instillZodSchema = instillZodSchema = z
           .array(z.string().nullable().optional())
           .nullable()
           .optional();
@@ -483,7 +483,7 @@ export function transformInstillJSONSchemaToZod({
         return instillZodSchema;
       }
 
-      if (targetSchema.instillAcceptFormats[0].includes("array:image")) {
+      if (targetSchema.instillAcceptFormats[0].includes("image")) {
         instillZodSchema = z.string().nullable().optional();
 
         if (isHidden) {
