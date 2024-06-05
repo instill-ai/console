@@ -274,7 +274,24 @@ export function pickRegularFieldsFromInstillFormTree(
     (tree.instillUpstreamTypes.length === 1 &&
       tree.instillUpstreamTypes[0] === "value")
   ) {
-    if (tree.instillAcceptFormats) {
+    if (tree.instillAcceptFormats && tree.instillAcceptFormats.length > 0) {
+      if (tree.instillAcceptFormats[0].includes("array:image")) {
+        return (
+          <RegularFields.ImagesField
+            key={tree.path}
+            path={tree.path}
+            title={title}
+            form={form}
+            description={tree.description ?? null}
+            shortDescription={tree.instillShortDescription}
+            disabled={disabledAll}
+            size={size}
+            isHidden={tree.isHidden}
+            isRequired={tree.isRequired}
+          />
+        );
+      }
+
       if (tree.instillAcceptFormats[0].includes("image")) {
         return (
           <RegularFields.ImageField
