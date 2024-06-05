@@ -1,9 +1,7 @@
-"use client";
-
 import { Icons } from "@instill-ai/design-system";
 import * as React from "react";
 
-export const DialogSectionRoot = ({
+export const SectionRoot = ({
   title,
   children,
 }: {
@@ -12,39 +10,17 @@ export const DialogSectionRoot = ({
 }) => {
   return (
     <div className="flex flex-col">
-      <div className="mb-4 flex w-full bg-semantic-bg-base-bg py-2">
-        <p className="mx-auto product-body-text-1-semibold">{title}</p>
+      <h3 className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
+        {title}
+      </h3>
+      <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4">
+        {children}
       </div>
-      {children}
     </div>
   );
 };
 
-export const DialogSectionGrid = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  return (
-    <div className="mb-4 grid w-full grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4">
-      {children}
-    </div>
-  );
-};
-
-export const DialogSectionSubTitle = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  return (
-    <h3 className="mb-4 text-semantic-fg-secondary product-body-text-3-medium">
-      {children}
-    </h3>
-  );
-};
-
-export const DialogSectionItem = (
+export const SectionItem = (
   props: {
     children: React.ReactNode;
   } & React.ButtonHTMLAttributes<HTMLButtonElement>
@@ -68,9 +44,7 @@ export const DialogSectionItem = (
   );
 };
 
-export const DialogSection = {
-  Root: DialogSectionRoot,
-  Grid: DialogSectionGrid,
-  SubTitle: DialogSectionSubTitle,
-  Item: DialogSectionItem,
+export const Section = {
+  Root: SectionRoot,
+  Item: SectionItem,
 };
