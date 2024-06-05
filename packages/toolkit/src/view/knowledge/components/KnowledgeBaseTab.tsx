@@ -6,7 +6,6 @@ import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
 import { useGetKnowledgeBases, useCreateKnowledgeBase } from "../../../lib/react-query-service/knowledge";
 import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
 
 type KnowledgeBaseTabProps = {
     onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
