@@ -368,6 +368,7 @@ const baseFields: Array<keyof InstillJSONSchema> = [
   "patternProperties",
   "instillCredentialMap",
   "instillCredential",
+  "instillModelPromptImageBase64ObjectFormat",
 ];
 
 function pickBaseFields(

@@ -21,6 +21,7 @@ export type InstillCustomProps = {
   instillPatternErrorMessage?: string;
   instillCredentialMap?: InstillCredentialMap;
   instillCredential?: boolean;
+  instillModelPromptImageBase64ObjectFormat?: boolean;
 };
 
 export type InstillCredentialMap = {

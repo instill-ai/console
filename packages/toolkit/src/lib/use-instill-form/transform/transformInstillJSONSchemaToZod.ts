@@ -467,10 +467,24 @@ export function transformInstillJSONSchemaToZod({
       targetSchema.instillAcceptFormats.length > 0
     ) {
       if (targetSchema.instillAcceptFormats[0].includes("array:image")) {
-        instillZodSchema = instillZodSchema = z
-          .array(z.string().nullable().optional())
-          .nullable()
-          .optional();
+        // model trigger have a special format for images field. We need to
+        // adapt it.
+
+        if (targetSchema.instillModelPromptImageBase64ObjectFormat) {
+          instillZodSchema = instillZodSchema = z
+            .array(
+              z.object({
+                prompt_image_base64: z.string(),
+              })
+            )
+            .nullable()
+            .optional();
+        } else {
+          instillZodSchema = instillZodSchema = z
+            .array(z.string().nullable().optional())
+            .nullable()
+            .optional();
+        }
 
         if (isHidden) {
           instillZodSchema = z.any();
