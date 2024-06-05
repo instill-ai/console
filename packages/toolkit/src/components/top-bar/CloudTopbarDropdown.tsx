@@ -214,7 +214,7 @@ export const CloudTopbarDropdown = () => {
                   className="flex w-full items-center"
                   variant="secondaryColour"
                 >
-                  Upgrade to Pro
+                  Upgrade to Starter Plan
                 </Button>
               </TopbarDropdownItem>
             </TopbarDropdownGroup>
