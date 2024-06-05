@@ -69,7 +69,7 @@ export function useUpdaterOnRightPanel({
                 task: updateData.task,
                 condition: updateData.condition,
                 input: updateData.input,
-                connection: updateData.connection,
+                setup: updateData.setup,
               },
             };
           }

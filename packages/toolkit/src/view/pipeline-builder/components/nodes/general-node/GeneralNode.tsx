@@ -69,7 +69,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
       input: data.input,
       task: data.task,
       condition: data.condition,
-      connection: data.connection ? data.connection : undefined,
+      setup: data.setup ? data.setup : undefined,
     };
   }, [data]);
 
