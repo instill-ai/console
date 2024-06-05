@@ -148,7 +148,7 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
     }
 
     return all;
-  }, [models.data, models.isSuccess]);
+  }, [models]);
 
   const hubStats = useHubStats({
     enabled: true,
@@ -321,7 +321,7 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
               </div>
             ) : (
               allModels.map((model) => (
-                <CardModel key={model.id} model={model} />
+                <CardModel key={model.uid} model={model} />
               ))
             )
           ) : (

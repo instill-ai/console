@@ -53,7 +53,7 @@ const convertValuesToString = (props: Record<string, unknown>) => {
   const convertedProps: Record<string, string> = {};
 
   for (const key in props) {
-    if (typeof props[key] !== "string" && props[key] !== null) {
+    if (typeof props[key] === "number") {
       convertedProps[key] = JSON.stringify(props[key]);
     } else {
       convertedProps[key] = props[key] as string;
@@ -178,7 +178,11 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
       const taskPropName = convertTaskNameToPayloadPropName(
         model.task
       ) as string;
-
+      console.log(
+        convertValuesToString(
+          existingTriggerState.response.request.task_inputs[0][taskPropName]
+        )
+      );
       setInputFromExistingResult(
         convertValuesToString(
           existingTriggerState.response.request.task_inputs[0][taskPropName]
