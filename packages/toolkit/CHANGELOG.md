@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.93.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.93.0...@instill-ai/toolkit-v0.93.1) (2024-06-06)
+
+
+### Bug Fixes
+
+* **auto-gen-form:** fix image field prefill issue ([#1209](https://github.com/instill-ai/console/issues/1209)) ([3a251e8](https://github.com/instill-ai/console/commit/3a251e8e88e70f544d9e54deeafe4626e3e59c29))
+
 ## [0.93.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.92.0...@instill-ai/toolkit-v0.93.0) (2024-06-06)
 
 
