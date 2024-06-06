@@ -1,7 +1,9 @@
+
 import * as React from "react";
-import { Button, Icons, Input, Separator, Tag } from "@instill-ai/design-system";
+import { Button, Icons, Input, Separator, Tag, Dialog } from "@instill-ai/design-system";
 import { GeneralAppPageProp, useAppEntity } from "../../lib";
 import { EntityAvatar } from "../../components";
+import { CitationDetails, mockSnippets } from "./components/CitationDetails";
 
 export type ApplicationsPageMainViewProps = GeneralAppPageProp;
 
@@ -20,26 +22,26 @@ const mockMessages = [
   },
 ];
 
-const mockSnippets = [
-  { id: "citation-01" },
-  { id: "citation-10" },
-  { id: "citation-02" },
-  { id: "citation-11" },
-  { id: "citation-03" },
-  { id: "citation-04" },
-  { id: "citation-05" },
-  { id: "citation-06" },
-  { id: "citation-07" },
-  { id: "citation-08" },
-  { id: "citation-09" },
-];
-
 export const ApplicationsPageMainView = (
   props: ApplicationsPageMainViewProps
 ) => {
   const { accessToken, enableQuery, router } = props;
 
   const entity = useAppEntity();
+
+
+  const [selectedSnippet, setSelectedSnippet] = React.useState<typeof mockSnippets[0] | null>(null);
+  const [open, setOpen] = React.useState(false);
+
+  const handleSnippetClick = (snippet: typeof mockSnippets[0]) => {
+    setSelectedSnippet(snippet);
+    setOpen(true);
+  };
+
+  const handleCloseCitationDetails = () => {
+    setOpen(false);
+    setSelectedSnippet(null);
+  };
 
   return (
     <div className="flex flex-col px-8 gap-6">
@@ -83,9 +85,25 @@ export const ApplicationsPageMainView = (
                 </Button>
                 <div className="flex gap-2 flex-wrap">
                   {mockSnippets.map((snippet) => (
-                    <Tag key={snippet.id} size="sm" variant="default" className="!rounded">
-                      {snippet.id}
-                    </Tag>
+                    <Dialog.Root key={snippet.id} open={open} onOpenChange={(open) => setOpen(open)}>
+                      <Dialog.Trigger asChild>
+                        <Tag
+                          size="sm"
+                          variant="default"
+                          className="!rounded cursor-pointer"
+                          onClick={() => handleSnippetClick(snippet)}
+                        >
+                          {snippet.id}
+                        </Tag>
+                      </Dialog.Trigger>
+                      <Dialog.Content className="">
+                        {selectedSnippet && (
+                          <CitationDetails
+                            snippet={selectedSnippet}
+                          />
+                        )}
+                      </Dialog.Content>
+                    </Dialog.Root>
                   ))}
                 </div>
               </div>
