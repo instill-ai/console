@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.93.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.92.0...@instill-ai/toolkit-v0.93.0) (2024-06-06)
+
+
+### Features
+
+* adapt the new run on version pipeline recipe in console  ([#1191](https://github.com/instill-ai/console/issues/1191)) ([935bd7c](https://github.com/instill-ai/console/commit/935bd7cebd0427b4bcb0c095e0bc852f5b8fe8ad))
+* **auto-gen-form:** adapt special model trigger data format ([#1206](https://github.com/instill-ai/console/issues/1206)) ([5183d22](https://github.com/instill-ai/console/commit/5183d22c0a79133185c991e859f37c0b52d8977b))
+* change style of Latest Changes card ([#1196](https://github.com/instill-ai/console/issues/1196)) ([45bca1b](https://github.com/instill-ai/console/commit/45bca1b4d489bd8b01fd727327aeebac15532a2e))
+* **hub:** let the total number follow the user filter on hub page ([#1208](https://github.com/instill-ai/console/issues/1208)) ([4bdb6b5](https://github.com/instill-ai/console/commit/4bdb6b5f492bbd0065e85b5379d7f4632fe47466))
+* **pipeline-builder:** replace connection with setup in the pipeline recipe ([#1200](https://github.com/instill-ai/console/issues/1200)) ([d647392](https://github.com/instill-ai/console/commit/d647392192089d3c1d320b958253376417bbc5d0))
+* **pipeline-builder:** replace trigger node with variable node ([#1197](https://github.com/instill-ai/console/issues/1197)) ([8a6f06d](https://github.com/instill-ai/console/commit/8a6f06de42a5d5874d759f2c4915744d0a387e67))
+* **pipeline-builder:** revamp the style of select component dialog ([#1199](https://github.com/instill-ai/console/issues/1199)) ([d49de44](https://github.com/instill-ai/console/commit/d49de44e492f9954dcfb53ef5275ac93a80d573f))
+* update models list ui/ux ([#1136](https://github.com/instill-ai/console/issues/1136)) ([88944b4](https://github.com/instill-ai/console/commit/88944b4245c8270ebeb0ad4439c641257e8082a7))
+
+
+### Bug Fixes
+
+* **auto-gen-form:** fix auto gen form didn't support Images field issue ([#1205](https://github.com/instill-ai/console/issues/1205)) ([50af828](https://github.com/instill-ai/console/commit/50af8283ca0f629475b47b9dd201c16fe80e6cc1))
+* **auto-gen-form:** fix bug that output markdown not correctly wrapped, cause text hard to read ([#1195](https://github.com/instill-ai/console/issues/1195)) ([06540b9](https://github.com/instill-ai/console/commit/06540b97fd22f61b29813c5672def7ae5b8fda77))
+* fix auto-gen-form required field didn't show * sign ([#1193](https://github.com/instill-ai/console/issues/1193)) ([cbd2c6a](https://github.com/instill-ai/console/commit/cbd2c6a26269c89d0893b2afc5b21feeabf34e8c))
+* fix missing notification title when delete api token ([#1194](https://github.com/instill-ai/console/issues/1194)) ([5f40aa8](https://github.com/instill-ai/console/commit/5f40aa827bfd6e3953f86d072b04c96e7ab65ce9))
+* fix wording of upgrade to starter plan button ([#1198](https://github.com/instill-ai/console/issues/1198)) ([6999f38](https://github.com/instill-ai/console/commit/6999f38293a522e05f1b27ca0e13a3b411a9093a))
+* **pipeline-builder:** fix the outdated trigger api path in the builder's toolkit ([#1201](https://github.com/instill-ai/console/issues/1201)) ([a4e6a18](https://github.com/instill-ai/console/commit/a4e6a185a31d4e3e258facf1aee85f0d0cf40326))
+* **subscription:** fix wrongly display upgrade button on the user profile dropdown ([#1202](https://github.com/instill-ai/console/issues/1202)) ([5f64c2a](https://github.com/instill-ai/console/commit/5f64c2a58663c11f1ca90752b6e8aac02c7d4a57))
+
+
+### Documentation
+
+* **license:** update repo license ([#1203](https://github.com/instill-ai/console/issues/1203)) ([11c21d7](https://github.com/instill-ai/console/commit/11c21d7858bbdba56c4a98a65c75124f6d846e2d))
+
 ## [0.92.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.91.4...@instill-ai/toolkit-v0.92.0) (2024-05-28)
 
 
