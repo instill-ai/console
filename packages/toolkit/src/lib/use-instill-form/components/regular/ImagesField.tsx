@@ -154,7 +154,10 @@ export const ImagesField = ({
                       return (
                         <FileListItem
                           key={`${value.prompt_image_base64.slice(6)}-item`}
-                          name={value.prompt_image_base64.slice(12)}
+                          name={value.prompt_image_base64.slice(
+                            value.prompt_image_base64.indexOf(",") + 1,
+                            value.prompt_image_base64.indexOf(",") + 13
+                          )}
                           onDelete={async () => {
                             const newFiles = imageFiles.filter(
                               (_, index) => index !== i
