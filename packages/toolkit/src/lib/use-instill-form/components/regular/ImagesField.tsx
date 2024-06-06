@@ -32,7 +32,7 @@ export const ImagesField = ({
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const values = form.getValues(path);
-
+  console.log(imageFiles);
   return isHidden ? null : (
     <Form.Field
       key={keyPrefix ? `${keyPrefix}-${path}` : path}
@@ -49,7 +49,7 @@ export const ImagesField = ({
               </Form.Label>
               <FieldDescriptionTooltip description={description} />
             </div>
-            <div className="grid w-full grid-flow-row grid-cols-4 rounded-sm border border-semantic-bg-line">
+            <div className="grid w-full grid-flow-row grid-cols-4 overflow-hidden rounded-sm border border-semantic-bg-line">
               {instillModelPromptImageBase64ObjectFormat &&
               Array.isArray(values)
                 ? fillArrayWithZeros(values, 8)
