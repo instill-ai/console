@@ -411,7 +411,7 @@ export const Body = () => {
               className={cn(
                 "flex justify-center gap-6",
                 exploreDataType === "models"
-                  ? "[&>*]:pointer-events-none [&>*]:opacity-0"
+                  ? "[&>*:last-child]:pointer-events-none [&>*:last-child]:opacity-0"
                   : ""
               )}
             >
