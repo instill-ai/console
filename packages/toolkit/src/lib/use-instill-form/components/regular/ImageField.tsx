@@ -25,6 +25,8 @@ export const ImageField = ({
   const [imageFile, setImageFile] = React.useState<Nullable<File>>();
   const inputRef = React.useRef<HTMLInputElement>(null);
 
+  const value = form.getValues(path);
+
   return isHidden ? null : (
     <Form.Field
       key={path}
@@ -47,6 +49,16 @@ export const ImageField = ({
                   key={`${path}-${imageFile.name}`}
                   src={URL.createObjectURL(imageFile)}
                   alt={`${path}-${imageFile.name}`}
+                  className="h-[360px] w-full object-contain"
+                />
+              ) : value ? (
+                <img
+                  key={`${value.slice(
+                    value.indexOf(",") + 1,
+                    value.indexOf(",") + 13
+                  )}`}
+                  src={value}
+                  alt={path}
                   className="h-[360px] w-full object-contain"
                 />
               ) : (
@@ -79,6 +91,20 @@ export const ImageField = ({
             {imageFile ? (
               <FileListItem
                 name={imageFile.name}
+                onDelete={() => {
+                  setImageFile(null);
+                  field.onChange(null);
+                  if (inputRef.current) {
+                    inputRef.current.value = "";
+                  }
+                }}
+              />
+            ) : value ? (
+              <FileListItem
+                name={value.slice(
+                  value.indexOf(",") + 1,
+                  value.indexOf(",") + 13
+                )}
                 onDelete={() => {
                   setImageFile(null);
                   field.onChange(null);

@@ -155,13 +155,15 @@ export const ImagesField = ({
                 <div className="flex h-full flex-col gap-y-2">
                   {values.map((value, i) => {
                     if (value.prompt_image_base64) {
+                      const binaryKey = value.prompt_image_base64.slice(
+                        value.prompt_image_base64.indexOf(",") + 1,
+                        value.prompt_image_base64.indexOf(",") + 13
+                      );
+
                       return (
                         <FileListItem
-                          key={`${value.prompt_image_base64.slice(6)}-item`}
-                          name={value.prompt_image_base64.slice(
-                            value.prompt_image_base64.indexOf(",") + 1,
-                            value.prompt_image_base64.indexOf(",") + 13
-                          )}
+                          key={`${binaryKey}-item`}
+                          name={binaryKey}
                           onDelete={async () => {
                             const newFiles = imageFiles.filter(
                               (_, index) => index !== i
