@@ -149,43 +149,47 @@ export const ImagesField = ({
             Array.isArray(values) ? (
               <ScrollArea.Root className="nowheel h-[216px] rounded-sm border border-semantic-bg-line p-2">
                 <div className="flex h-full flex-col gap-y-2">
-                  {values.map((value, i) => (
-                    <FileListItem
-                      key={`${value.slice(6)}-item`}
-                      name={value.slice(12)}
-                      onDelete={async () => {
-                        const newFiles = imageFiles.filter(
-                          (_, index) => index !== i
-                        );
+                  {values.map((value, i) => {
+                    if (value.prompt_image_base64) {
+                      return (
+                        <FileListItem
+                          key={`${value.prompt_image_base64.slice(6)}-item`}
+                          name={value.prompt_image_base64.slice(12)}
+                          onDelete={async () => {
+                            const newFiles = imageFiles.filter(
+                              (_, index) => index !== i
+                            );
 
-                        if (instillModelPromptImageBase64ObjectFormat) {
-                          const binaries: GeneralRecord[] = [];
-                          for (const file of newFiles) {
-                            const binary = await readFileToBinary(file);
-                            binaries.push({
-                              prompt_image_base64: binary,
-                            });
-                          }
-                          field.onChange(binaries);
-                        } else {
-                          const binaries: string[] = [];
-                          for (const file of newFiles) {
-                            const binary = await readFileToBinary(file);
-                            binaries.push(binary);
-                          }
-                          field.onChange(binaries);
-                        }
+                            if (instillModelPromptImageBase64ObjectFormat) {
+                              const binaries: GeneralRecord[] = [];
+                              for (const file of newFiles) {
+                                const binary = await readFileToBinary(file);
+                                binaries.push({
+                                  prompt_image_base64: binary,
+                                });
+                              }
+                              field.onChange(binaries);
+                            } else {
+                              const binaries: string[] = [];
+                              for (const file of newFiles) {
+                                const binary = await readFileToBinary(file);
+                                binaries.push(binary);
+                              }
+                              field.onChange(binaries);
+                            }
 
-                        setImageFiles(newFiles);
+                            setImageFiles(newFiles);
 
-                        // We directly remove the browser input value, we don't need it
-                        // and it may cause some surprise when user reupload the same file
-                        if (inputRef.current) {
-                          inputRef.current.value = "";
-                        }
-                      }}
-                    />
-                  ))}
+                            // We directly remove the browser input value, we don't need it
+                            // and it may cause some surprise when user reupload the same file
+                            if (inputRef.current) {
+                              inputRef.current.value = "";
+                            }
+                          }}
+                        />
+                      );
+                    }
+                  })}
                 </div>
               </ScrollArea.Root>
             ) : imageFiles.length > 0 ? (
