@@ -10,7 +10,7 @@ export const Body = () => {
 
   return (
     <div className="flex justify-between">
-      <div className="flex w-full items-center">
+      <div className="w-full items-center">
         <Tabs.Root
           defaultValue="explore"
           className="mb-8 mt-4 w-full flex-col justify-center"
@@ -26,24 +26,20 @@ export const Body = () => {
             </Tabs.List>
             <Separator orientation="horizontal" />
           </div>
-          <div className="bg-semantic-bg-base-bg pt-8">
-            <div className="xl:px-30 flex w-full flex-row space-x-4 sm:px-5 md:px-10 lg:px-20">
-              <div className="flex w-full flex-col">
-                <Tabs.Content value="explore">
-                  <PipelineSection tabValue="explore" />
-                </Tabs.Content>
-                <Tabs.Content value="featured">
-                  <PipelineSection tabValue="featured" />
-                </Tabs.Content>
+          <div className="bg-semantic-bg-base-bg pt-8 xl:px-30 flex w-full flex-row space-x-4 sm:px-5 md:px-10 lg:px-20">
+            <div className="flex w-full flex-col">
+              <Tabs.Content value="explore">
+                <PipelineSection tabValue="explore" />
+              </Tabs.Content>
+              <Tabs.Content value="featured">
+                <PipelineSection tabValue="featured" />
+              </Tabs.Content>
+            </div>
+            <div className="mt-6 flex w-1/6 min-w-[272px] flex-col sticky top-6">
+              <div className="mb-4">
+                <NewsLetterCard />
               </div>
-              <div className="mt-6 flex w-1/6 min-w-[272px] flex-col">
-                <div className="sticky top-6">
-                  <div className="mb-4">
-                    <NewsLetterCard />
-                  </div>
-                  <LatestChangesCard />
-                </div>
-              </div>
+              <LatestChangesCard />
             </div>
           </div>
         </Tabs.Root>
