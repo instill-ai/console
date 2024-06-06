@@ -17,7 +17,6 @@ import {
   Model,
   Nullable,
   Pipeline,
-  useHubStats,
   useInfiniteModels,
   useInfinitePipelines,
   useInstillStore,
@@ -150,10 +149,6 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
     return all;
   }, [models]);
 
-  const hubStats = useHubStats({
-    enabled: true,
-  });
-
   const debouncedSetSearchCode = React.useMemo(
     () =>
       debounce((value: string) => {
@@ -210,19 +205,16 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
               {dataType === "pipelines" ? (
                 <React.Fragment>
                   Pipelines{" "}
-                  {tabValue === "featured"
-                    ? hubStats.data?.number_of_featured_pipelines
-                    : hubStats.data?.number_of_public_pipelines}
+                  {pipelines.isSuccess && pipelines.data.pages?.[0]?.total_size
+                    ? pipelines.data.pages[0].total_size
+                    : null}
                 </React.Fragment>
               ) : (
                 <React.Fragment>
-                  Models
-                  {models.isSuccess && models.data.pages?.[0]?.total_size ? (
-                    <React.Fragment>
-                      {" "}
-                      {models.data.pages[0].total_size}
-                    </React.Fragment>
-                  ) : null}
+                  Models{" "}
+                  {models.isSuccess && models.data.pages?.[0]?.total_size
+                    ? models.data.pages[0].total_size
+                    : null}
                 </React.Fragment>
               )}
             </p>
