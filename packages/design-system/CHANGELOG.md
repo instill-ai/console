@@ -1,5 +1,18 @@
 # @instill-ai/design-system
 
+## [0.70.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.69.2...@instill-ai/design-system-v0.70.0) (2024-06-06)
+
+
+### Features
+
+* **pipeline-builder:** replace trigger node with variable node ([#1197](https://github.com/instill-ai/console/issues/1197)) ([8a6f06d](https://github.com/instill-ai/console/commit/8a6f06de42a5d5874d759f2c4915744d0a387e67))
+* update models list ui/ux ([#1136](https://github.com/instill-ai/console/issues/1136)) ([88944b4](https://github.com/instill-ai/console/commit/88944b4245c8270ebeb0ad4439c641257e8082a7))
+
+
+### Miscellaneous
+
+* update demanded pnpm version to 9.1.4 ([#1188](https://github.com/instill-ai/console/issues/1188)) ([bfa6544](https://github.com/instill-ai/console/commit/bfa6544f47879d422ae37df20d0af512a3994335))
+
 ## [0.69.2](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.69.1...@instill-ai/design-system-v0.69.2) (2024-05-28)
 
 

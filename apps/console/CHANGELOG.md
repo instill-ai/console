@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.48.0-beta](https://github.com/instill-ai/console/compare/v0.47.2-beta...v0.48.0-beta) (2024-06-06)
+
+
+### Features
+
+* **pipeline-builder:** replace trigger node with variable node ([#1197](https://github.com/instill-ai/console/issues/1197)) ([8a6f06d](https://github.com/instill-ai/console/commit/8a6f06de42a5d5874d759f2c4915744d0a387e67))
+* update models list ui/ux ([#1136](https://github.com/instill-ai/console/issues/1136)) ([88944b4](https://github.com/instill-ai/console/commit/88944b4245c8270ebeb0ad4439c641257e8082a7))
+
+
+### Miscellaneous
+
+* update demanded pnpm version to 9.1.4 ([#1188](https://github.com/instill-ai/console/issues/1188)) ([bfa6544](https://github.com/instill-ai/console/commit/bfa6544f47879d422ae37df20d0af512a3994335))
+
 ## [0.47.2-beta](https://github.com/instill-ai/console/compare/v0.47.1-beta...v0.47.2-beta) (2024-05-28)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.5.4...@instill-ai/design-tokens-v0.6.0) (2024-06-06)
+
+
+### Features
+
+* update models list ui/ux ([#1136](https://github.com/instill-ai/console/issues/1136)) ([88944b4](https://github.com/instill-ai/console/commit/88944b4245c8270ebeb0ad4439c641257e8082a7))
+
 ## [0.5.4](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.5.3...@instill-ai/design-tokens-v0.5.4) (2024-05-28)
 
 
