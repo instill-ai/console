@@ -49,10 +49,7 @@ export const ImagesField = ({
               </Form.Label>
               <FieldDescriptionTooltip description={description} />
             </div>
-            <div
-              className="grid min-h-[142px] w-full grid-flow-row grid-cols-4 overflow-hidden rounded-sm border border-semantic-bg-line"
-              style={{ minHeight: "142px" }}
-            >
+            <div className="grid min-h-[142px] w-full grid-flow-row grid-cols-4 overflow-hidden rounded-sm border border-semantic-bg-line">
               {instillModelPromptImageBase64ObjectFormat &&
               Array.isArray(values)
                 ? fillArrayWithZeros(values, 8)
