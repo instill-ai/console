@@ -50,7 +50,7 @@ const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
   taskName ? taskName.replace("TASK_", "").toLowerCase() : null;
 
 const convertValuesToString = (props: Record<string, unknown>) => {
-  const convertedProps: Record<string, string> = {};
+  const convertedProps: Record<string, unknown> = {};
 
   for (const key in props) {
     if (typeof props[key] === "number") {
