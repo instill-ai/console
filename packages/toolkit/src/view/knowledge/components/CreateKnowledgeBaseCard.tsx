@@ -68,6 +68,7 @@ export const CreateKnowledgeBaseCard = ({
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [isDeleted, setIsDeleted] = React.useState(false);
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -112,19 +113,23 @@ export const CreateKnowledgeBaseCard = ({
     setIsDeleted(true);
     setDeleteDialogIsOpen(false);
     setShowDeleteMessage(true);
-    setTimeout(() => {
-      if (isDeleted) {
-        deleteKnowledgeBase.mutateAsync({
-          id: knowledgeBase.id,
-          accessToken: accessToken,
-        });
-        setKnowledgeBases((prevKnowledgeBases) =>
-          prevKnowledgeBases.filter((kb) => kb.id !== knowledgeBase.id)
-        );
-        setShowDeleteMessage(false);
-        setIsDeleted(false);
-      }
+    timeoutRef.current = setTimeout(() => {
+      deleteKnowledgeBaseHandler();
     }, 15000);
+  };
+
+  const deleteKnowledgeBaseHandler = async () => {
+    if (isDeleted) {
+      await deleteKnowledgeBase.mutateAsync({
+        id: knowledgeBase.id,
+        accessToken: accessToken,
+      });
+      setKnowledgeBases((prevKnowledgeBases) =>
+        prevKnowledgeBases.filter((kb) => kb.id !== knowledgeBase.id)
+      );
+      setShowDeleteMessage(false);
+      setIsDeleted(false);
+    }
   };
 
   const handleEditKnowledgeSubmit = async (data: any) => {
@@ -139,7 +144,29 @@ export const CreateKnowledgeBaseCard = ({
   const undoDelete = () => {
     setShowDeleteMessage(false);
     setIsDeleted(false);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
   };
+
+  const handleCloseDeleteMessage = () => {
+    setShowDeleteMessage(false);
+    deleteKnowledgeBaseHandler();
+  };
+
+  React.useEffect(() => {
+    if (showDeleteMessage) {
+      timeoutRef.current = setTimeout(() => {
+        setShowDeleteMessage(false);
+        deleteKnowledgeBaseHandler();
+      }, 15000);
+    }
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [showDeleteMessage]);
 
   return (
     <React.Fragment>
@@ -194,7 +221,7 @@ export const CreateKnowledgeBaseCard = ({
               Undo Action
             </LinkButton>
           </div>
-          <Button className="absolute top-2 right-2" variant="tertiaryGrey" size="sm" onClick={() => setShowDeleteMessage(false)}>
+          <Button className="absolute top-2 right-2" variant="tertiaryGrey" size="sm" onClick={handleCloseDeleteMessage}>
             <Icons.X className="w-6 h-6 stroke-semantic-fg-secondary" />
           </Button>
         </div>
