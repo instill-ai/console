@@ -43,8 +43,15 @@ export const EditKnowledgeDialog = ({
 
     });
 
-    const { formState } = form;
+    const { formState, watch } = form;
+    const nameValue = watch("name");
 
+    const formatName = (name: string) => {
+        return name.replace(/[^a-zA-Z0-9-_]/g, "-").replace(/-+/g, "-");
+    };
+
+    const isNameValid = /^[a-zA-Z0-9-_]+$/.test(nameValue);
+    const formattedName = formatName(nameValue);
 
     return (
         <Dialog.Root open={isOpen} onOpenChange={onClose}>
@@ -76,6 +83,11 @@ export const EditKnowledgeDialog = ({
                                             />
                                         </Input.Root>
                                     </Form.Control>
+                                    {nameValue && !isNameValid && (
+                                        <p className="text-semantic-fg-secondary product-body-text-4-regular mt-1">
+                                            Name will be transformed to: {formattedName}
+                                        </p>
+                                    )}
                                     <Form.Message />
                                 </Form.Item>
                             )}
