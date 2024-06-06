@@ -49,7 +49,10 @@ export const ImagesField = ({
               </Form.Label>
               <FieldDescriptionTooltip description={description} />
             </div>
-            <div className="grid w-full grid-flow-row grid-cols-4 overflow-hidden rounded-sm border border-semantic-bg-line">
+            <div
+              className="grid min-h-[142px] w-full grid-flow-row grid-cols-4 overflow-hidden rounded-sm border border-semantic-bg-line"
+              style={{ minHeight: "142px" }}
+            >
               {instillModelPromptImageBase64ObjectFormat &&
               Array.isArray(values)
                 ? fillArrayWithZeros(values, 8)
@@ -84,7 +87,7 @@ export const ImagesField = ({
                           />
                         );
                       })
-                  : Array.from({ length: 8 }).map((_, i) => (
+                  : Array.from({ length: 4 }).map((_, i) => (
                       <div
                         key={`${path}-${i}`}
                         className="h-[140px] w-full object-contain"
@@ -124,6 +127,10 @@ export const ImagesField = ({
                       }
 
                       setImageFiles((prev) => [...prev, ...files]);
+
+                      // Reset the input value so we can use the same file again
+                      // after we delete it
+                      e.target.value = "";
                     }
                   }}
                   disabled={disabled}
