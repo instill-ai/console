@@ -32,7 +32,7 @@ export const ImagesField = ({
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const values = form.getValues(path);
-  console.log(imageFiles);
+
   return isHidden ? null : (
     <Form.Field
       key={keyPrefix ? `${keyPrefix}-${path}` : path}
