@@ -31,6 +31,8 @@ export const ImagesField = ({
   const [imageFiles, setImageFiles] = React.useState<File[]>([]);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
+  const values = form.getValues(path);
+
   return isHidden ? null : (
     <Form.Field
       key={keyPrefix ? `${keyPrefix}-${path}` : path}
@@ -48,30 +50,46 @@ export const ImagesField = ({
               <FieldDescriptionTooltip description={description} />
             </div>
             <div className="grid w-full grid-flow-row grid-cols-4 rounded-sm border border-semantic-bg-line">
-              {imageFiles.length > 0
-                ? fillArrayWithZeros(imageFiles, 8)
+              {instillModelPromptImageBase64ObjectFormat &&
+              Array.isArray(values)
+                ? fillArrayWithZeros(values, 8)
                     .slice(0, 8)
-                    .map((file, i) => {
-                      return file ? (
-                        <img
-                          key={`${path}-${file.name}`}
-                          src={URL.createObjectURL(file)}
-                          alt={`${path}-${file.name}`}
-                          className="h-[140px] object-contain"
-                        />
-                      ) : (
-                        <div
-                          key={`${path}-${i}`}
-                          className="h-[140px] w-full bg-semantic-bg-secondary object-contain"
-                        />
-                      );
+                    .map((value, i) => {
+                      if (value.prompt_image_base64) {
+                        return (
+                          <img
+                            key={`${path}-${i}`}
+                            src={value.prompt_image_base64}
+                            alt={`${path}-${i}`}
+                            className="h-[140px] object-contain"
+                          />
+                        );
+                      }
                     })
-                : Array.from({ length: 8 }).map((_, i) => (
-                    <div
-                      key={`${path}-${i}`}
-                      className="h-[140px] w-full object-contain"
-                    />
-                  ))}
+                : imageFiles.length > 0
+                  ? fillArrayWithZeros(imageFiles, 8)
+                      .slice(0, 8)
+                      .map((file, i) => {
+                        return file ? (
+                          <img
+                            key={`${path}-${file.name}`}
+                            src={URL.createObjectURL(file)}
+                            alt={`${path}-${file.name}`}
+                            className="h-[140px] object-contain"
+                          />
+                        ) : (
+                          <div
+                            key={`${path}-${i}`}
+                            className="h-[140px] w-full bg-semantic-bg-secondary object-contain"
+                          />
+                        );
+                      })
+                  : Array.from({ length: 8 }).map((_, i) => (
+                      <div
+                        key={`${path}-${i}`}
+                        className="h-[140px] w-full object-contain"
+                      />
+                    ))}
             </div>
             <div className="flex flex-row gap-x-1">
               <Form.Control>
@@ -139,14 +157,24 @@ export const ImagesField = ({
                           (_, index) => index !== i
                         );
 
-                        const newBinaries: string[] = [];
-
-                        for (const file of newFiles) {
-                          const binary = await readFileToBinary(file);
-                          newBinaries.push(binary);
+                        if (instillModelPromptImageBase64ObjectFormat) {
+                          const binaries: GeneralRecord[] = [];
+                          for (const file of newFiles) {
+                            const binary = await readFileToBinary(file);
+                            binaries.push({
+                              prompt_image_base64: binary,
+                            });
+                          }
+                          field.onChange(binaries);
+                        } else {
+                          const binaries: string[] = [];
+                          for (const file of newFiles) {
+                            const binary = await readFileToBinary(file);
+                            binaries.push(binary);
+                          }
+                          field.onChange(binaries);
                         }
 
-                        field.onChange(newBinaries);
                         setImageFiles(newFiles);
 
                         // We directly remove the browser input value, we don't need it
