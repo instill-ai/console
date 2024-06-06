@@ -1,77 +1,83 @@
 "use client";
 
 import cn from "clsx";
-
-import type { Nullable, ResourceState } from "../lib";
-import { StateIcon } from "./StateIcon";
+import type { ResourceState } from "../lib";
 
 export type StateLabelProps = {
   state: ResourceState;
-  enableIcon: boolean;
-  enableBgColor: boolean;
-  iconWidth: string;
-  iconHeight: string;
-  iconPosition: Nullable<string>;
+  className?: string;
 };
 
-export const StateLabel = ({
-  enableIcon,
-  enableBgColor,
-  iconHeight,
-  iconWidth,
-  iconPosition,
-  state,
-}: StateLabelProps) => {
+export const StateLabel = ({ state, className }: StateLabelProps) => {
   let stateLabelName: string;
   let textColor: string;
   let bgColor: string;
+  let indicatorColor: string;
 
   switch (state) {
-    case "STATE_ERROR":
-      textColor = "text-instillRed";
-      bgColor = "bg-instillRed10";
-      stateLabelName = "Error";
-      break;
-    case "STATE_ACTIVE":
-      textColor = "text-instillGreen50";
-      bgColor = "bg-instillGreen10";
+    case "STATE_ACTIVE": {
+      textColor = "text-semantic-success-hover";
+      bgColor = "bg-semantic-success-bg";
       stateLabelName = "Active";
+      indicatorColor = "bg-semantic-success-default";
       break;
-    case "STATE_ONLINE":
-      textColor = "text-instillGreen50";
-      bgColor = "bg-instillGreen10";
-      stateLabelName = "Online";
+    }
+    case "STATE_IDLE": {
+      textColor = "text-semantic-fg-primary";
+      bgColor = "bg-semantic-bg-base-bg";
+      stateLabelName = "Idle";
+      indicatorColor = "bg-semantic-success-default";
       break;
-    case "STATE_OFFLINE":
-      textColor = "text-instillGrey70";
-      bgColor = "bg-instillGrey05";
+    }
+    case "STATE_ERROR": {
+      textColor = "text-semantic-error-hover";
+      bgColor = "bg-semantic-error-bg";
+      stateLabelName = "Error";
+      indicatorColor = "bg-semantic-error-default";
+      break;
+    }
+    case "STATE_OFFLINE": {
+      textColor = "text-semantic-fg-on-default";
+      bgColor = "bg-semantic-bg-secondary-alt-primary";
       stateLabelName = "Offline";
+      indicatorColor = "bg-semantic-fg-on-default";
       break;
-    case "STATE_INACTIVE":
-      textColor = "text-instillGrey70";
-      bgColor = "bg-instillGrey05";
+    }
+    case "STATE_INACTIVE": {
+      textColor = "text-semantic-fg-secondary";
+      bgColor = "bg-semantic-bg-secondary";
       stateLabelName = "Inactive";
+      indicatorColor = "bg-semantic-fg-secondary";
       break;
-    default:
-      textColor = "text-instillGrey70";
-      bgColor = "bg-instillGrey05";
-      stateLabelName = "Unspecified";
+    }
+    case "STATE_SCALING": {
+      textColor = "text-semantic-warning-hover";
+      bgColor = "bg-semantic-warning-bg";
+      stateLabelName = "Scaling";
+      indicatorColor = "bg-semantic-warning-default";
+      break;
+    }
+    case "STATE_UNSPECIFIED":
+    case "STATE_STARTING":
+    default: {
+      textColor = "text-semantic-error-hover";
+      bgColor = "bg-semantic-error-bg";
+      stateLabelName = "Starting";
+      indicatorColor = "bg-semantic-error-default";
+    }
   }
 
   return (
     <div
-      className={cn("flex flex-row gap-x-2 p-1", enableBgColor ? bgColor : "")}
+      className={cn(
+        "flex h-6 flex-row items-center gap-x-2 rounded-full px-2.5 py-1",
+        bgColor,
+        className
+      )}
       data-testid="state-label"
     >
-      {enableIcon ? (
-        <StateIcon
-          state={state}
-          width={iconWidth}
-          height={iconHeight}
-          position={iconPosition}
-        />
-      ) : null}
-      <span className={cn("text-instill-small my-auto", textColor)}>
+      <div className={cn("h-[8px] w-[8px] rounded-full", indicatorColor)}></div>
+      <span className={cn("product-body-text-3-medium", textColor)}>
         {stateLabelName}
       </span>
     </div>

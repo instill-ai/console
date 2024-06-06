@@ -1360,6 +1360,7 @@ test("should generate stability ai form", async () => {
   expect(
     within(initImageModeField).getByText(initImageMode)
   ).toBeInTheDocument();
+  await user.clear(seedField);
   await user.type(seedField, seed);
   expect(seedField).toHaveValue(seed);
   await userEvent.click(stylePresetField, {

@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/toolkit",
-  "version": "0.92.0",
+  "version": "0.92.0-rc.21",
   "description": "Instill AI's frontend toolkit",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -144,11 +144,6 @@
     "yup": "^0.32.11",
     "zod": "^3.23.8",
     "zustand": "^4.3.6"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --cache --fix"
-    ]
   },
   "peerDependencies": {
     "@instill-ai/design-system": "workspace:*",

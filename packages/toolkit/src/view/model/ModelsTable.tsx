@@ -3,41 +3,53 @@
 import {
   Button,
   DataTable,
-  getModelDefinitionToolkit,
+  getModelInstanceTaskToolkit,
 } from "@instill-ai/design-system";
 import { ColumnDef } from "@tanstack/react-table";
-import { Model, ModelsWatchState } from "../../lib";
 import {
-  GeneralStateCell,
-  GeneralTaskCell,
-  SortIcon,
-  TableError,
-} from "../../components";
+  InstillStore,
+  Model,
+  useInstillStore,
+  useShallow,
+  useWatchUserModels,
+} from "../../lib";
+import { SortIcon, StateLabel, TableError } from "../../components";
 import { TableCell } from "../../components/cells/TableCell";
-import { formatDate, parseStatusLabel } from "../../lib/table";
+import { formatDate } from "../../lib/table";
 import { ModelTablePlaceholder } from "./ModelTablePlaceholder";
 
 export type ModelsTableProps = {
   models: Model[];
-  modelsWatchState: ModelsWatchState;
   isError: boolean;
   isLoading: boolean;
 };
 
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enableQuery: store.enabledQuery,
+});
+
 export const ModelsTable = (props: ModelsTableProps) => {
-  const { models, modelsWatchState, isError, isLoading } = props;
+  const { accessToken, enableQuery } = useInstillStore(useShallow(selector));
+  const { models, isError, isLoading } = props;
+
+  const modelsWatchState = useWatchUserModels({
+    modelNames: models.length > 0 ? models.map((model) => model.name) : [],
+    enabled: enableQuery && models.length > 0,
+    accessToken,
+  });
 
   const columns: ColumnDef<Model>[] = [
     {
       accessorKey: "id",
-      header: () => <div className="min-w-[300px] text-left">ID</div>,
+      header: () => <div className="min-w-[500px] text-left">ID</div>,
       cell: ({ row }) => {
-        const { getIcon } = getModelDefinitionToolkit(
-          row.original.model_definition
+        const { getIcon, label } = getModelInstanceTaskToolkit(
+          row.original.task
         );
 
         const modelNameFragments = row.original.name.split("/");
-        const modelLink = `/${modelNameFragments[1]}/models/${modelNameFragments[3]}`;
+        const modelLink = `/${modelNameFragments[1]}/models/${modelNameFragments[3]}/overview`;
 
         return (
           <div className="text-left">
@@ -45,24 +57,31 @@ export const ModelsTable = (props: ModelsTableProps) => {
               primaryLink={modelLink}
               primaryText={row.getValue("id")}
               secondaryLink={null}
-              secondaryText={row.original.model_definition}
-              iconElement={getIcon({
-                width: "w-4",
-                height: "h-4",
-                position: "my-auto",
-                color: "fill-semantic-bg-secondary-base-bg",
-              })}
+              secondaryText={label}
+              iconElement={getIcon(
+                `w-4 h-4 ${["TASK_TEXT_GENERATION_CHAT", "TASK_IMAGE_TO_IMAGE", "TASK_VISUAL_QUESTION_ANSWERING"].includes(row.original.task || "") ? "stroke-semantic-fg-primary [&>*]:!stroke-semantic-fg-primary" : "[&>*]:!fill-semantic-fg-primary"}`
+              )}
             />
           </div>
         );
       },
     },
     {
-      accessorKey: "task",
-      header: () => <div className="text-left">Task</div>,
+      accessorKey: "state",
+      header: () => <div className="min-w-[100px] text-center">Status</div>,
       cell: ({ row }) => {
+        const name: string = row.original.name;
+
         return (
-          <GeneralTaskCell modelTask={row.getValue("task")} className={null} />
+          <div className="grid justify-items-center">
+            <StateLabel
+              state={
+                modelsWatchState.isSuccess
+                  ? modelsWatchState.data[name]?.state
+                  : "STATE_UNSPECIFIED"
+              }
+            />
+          </div>
         );
       },
     },
@@ -89,28 +108,6 @@ export const ModelsTable = (props: ModelsTableProps) => {
         return (
           <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
             {formatDate(row.getValue("create_time"))}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "state",
-      header: () => <div className="text-center">Status</div>,
-      cell: ({ row }) => {
-        const name: string = row.original.name;
-        const modelState = modelsWatchState
-          ? modelsWatchState[name]
-            ? modelsWatchState[name].state
-            : "STATE_UNSPECIFIED"
-          : "STATE_UNSPECIFIED";
-        return (
-          <div className="grid justify-items-center">
-            <GeneralStateCell
-              width={null}
-              state={modelState}
-              padding="py-2"
-              label={parseStatusLabel(modelState)}
-            />
           </div>
         );
       },

@@ -79,7 +79,9 @@ export const reducer = (state: State, action: Action): State => {
     case "ADD_TOAST":
       return {
         ...state,
-        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
+        toasts: state.toasts.find((toast) => toast.id === action.toast.id)
+          ? state.toasts
+          : [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
       };
 
     case "UPDATE_TOAST":
@@ -140,7 +142,9 @@ function dispatch(action: Action) {
   });
 }
 
-type Toast = Omit<ToasterToast, "id">;
+type Toast = Omit<ToasterToast, "id"> & {
+  id?: string;
+};
 
 export type ToastReturn = {
   id: string;
@@ -149,7 +153,7 @@ export type ToastReturn = {
 };
 
 function toast({ ...props }: Toast): ToastReturn {
-  const id = genId();
+  const id = props.id || genId();
 
   const update = (props: ToasterToast) =>
     dispatch({

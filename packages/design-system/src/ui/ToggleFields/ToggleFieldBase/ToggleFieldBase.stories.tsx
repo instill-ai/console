@@ -34,7 +34,7 @@ Playground.args = {
   additionalMessageOnLabel: null,
   labelFontSize: "text-base",
   labelFontWeight: "font-normal",
-  labelTextColor: "text-instillGrey50",
+  labelTextColor: "text-semantic-node-disconnected-default-stroke",
   labelLineHeight: "",
   labelFontFamily: "font-sans",
   inputBgColor: "bg-white",

@@ -41,7 +41,7 @@ const Content = ({ children }: { children: React.ReactNode }) => {
 
           <div className="flex flex-row">
             <p className="text-semantic-fg-disabled product-body-text-3-regular mr-auto mt-auto p-8 font-sans">
-              © Instill AI 2023
+              © Instill AI {new Date().getFullYear()}
             </p>
             <Image
               src="/images/auth-page-bg-strip.svg"

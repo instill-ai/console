@@ -2,7 +2,7 @@ import cn from "clsx";
 
 export type InputDescriptionBaseProps = {
   /** Description of the input */
-  description: string;
+  description: string | React.ReactNode;
 
   /** TailwindCSS format - Description's font size
    * - e.g. text-base
@@ -15,7 +15,7 @@ export type InputDescriptionBaseProps = {
   descriptionFontFamily: string;
 
   /** TailwindCSS format - Description's text color
-   * - e.g. text-instillGrey50
+   * - e.g. text-semantic-node-disconnected-default-stroke
    */
   descriptionTextColor: string;
 

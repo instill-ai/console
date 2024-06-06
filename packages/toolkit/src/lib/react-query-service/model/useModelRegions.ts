@@ -1,33 +1,27 @@
 import { useQuery } from "@tanstack/react-query";
-import { env } from "../../../server";
-import { listModelsQuery } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
+import { listModelRegionsQuery } from "../../vdp-sdk";
 
-export function useModels({
+export function useModelRegions({
   accessToken,
-  enabled,
   retry,
 }: {
   accessToken: Nullable<string>;
-  enabled: boolean;
   retry?: false | number;
 }) {
+  const queryKey = ["available-model-regions"];
+
   return useQuery({
-    queryKey: ["models"],
+    queryKey,
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const models = await listModelsQuery({
-        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-        nextPageToken: null,
-        accessToken,
-      });
+      const regions = await listModelRegionsQuery({ accessToken });
 
-      return Promise.resolve(models);
+      return Promise.resolve(regions);
     },
-    enabled,
     retry: retry === false ? false : retry ? retry : 3,
   });
 }

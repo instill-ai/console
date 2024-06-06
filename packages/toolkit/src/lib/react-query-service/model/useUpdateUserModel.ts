@@ -7,9 +7,11 @@ export function useUpdateUserModel() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
+      name,
       payload,
       accessToken,
     }: {
+      name: string;
       payload: UpdateUserModelPayload;
       accessToken: Nullable<string>;
     }) => {
@@ -17,16 +19,15 @@ export function useUpdateUserModel() {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const model = await updateModelMutation({ payload, accessToken });
+      const model = await updateModelMutation({ name, payload, accessToken });
 
       return Promise.resolve({ model, accessToken });
     },
-    onSuccess: async ({ model, accessToken }) => {
+    onSuccess: async ({ model }) => {
       await onSuccessAfterModelMutation({
         type: "update",
         queryClient,
         model,
-        accessToken,
       });
     },
   });

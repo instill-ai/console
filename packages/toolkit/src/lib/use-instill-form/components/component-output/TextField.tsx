@@ -4,6 +4,7 @@ import { Nullable } from "../../../type";
 import { ComponentOutputFieldBaseProps } from "../../types";
 import { FieldRoot } from "./FieldRoot";
 import { MDTextViewer } from "./MDTextViewer";
+import { NoOutput } from "./NoOutput";
 
 export type TextFieldProps = {
   text: Nullable<string>;
@@ -16,8 +17,12 @@ export const TextField = (props: TextFieldProps) => {
 
   return (
     <FieldRoot title={title} fieldKey={`${title}-field`}>
-      {normalizedText && !hideField ? (
-        <MDTextViewer text={normalizedText} />
+      {!hideField ? (
+        typeof normalizedText === "string" ? (
+          <MDTextViewer text={normalizedText} />
+        ) : (
+          <NoOutput />
+        )
       ) : null}
     </FieldRoot>
   );

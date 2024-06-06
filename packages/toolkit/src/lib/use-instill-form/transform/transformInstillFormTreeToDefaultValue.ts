@@ -111,7 +111,11 @@ export function transformInstillFormTreeToDefaultValue(
     return initialData;
   }
 
-  if ("default" in tree && tree.default) {
+  if (
+    "default" in tree &&
+    ((tree.type === "integer" && (tree.default ?? null) !== null) ||
+      tree.default)
+  ) {
     defaultValue = `${tree.default}`;
     dot.setter(initialData, key, defaultValue);
     return initialData;

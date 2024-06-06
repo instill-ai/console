@@ -41,7 +41,7 @@ Playground.args = {
   disabledInputBorderColor: "border-instillGrey20",
   disabledInputBorderStyle: "border-dashed",
   disabledInputBorderWidth: "border",
-  disabledInputTextColor: "text-instillGrey50",
+  disabledInputTextColor: "text-semantic-node-disconnected-default-stroke",
   readOnlyCursor: "cursor-auto",
   readOnlyInputBgColor: "bg-white",
   readOnlyInputBorderColor: "border-instillGrey20",
@@ -56,7 +56,8 @@ Playground.args = {
   placeholderFontSize: "placeholder:text-base",
   placeholderFontWeight: "placeholder:font-normal",
   placeholderLineHeight: "",
-  placeholderTextColor: "placeholder:text-instillGrey50",
+  placeholderTextColor:
+    "placeholder:text-semantic-node-disconnected-default-stroke",
   labelFontSize: "text-base",
   labelFontWeight: "font-normal",
   labelTextColor: "text-instillGrey90",

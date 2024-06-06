@@ -1,4 +1,3 @@
-import cn from "clsx";
 import { ComplicateIcons, Icons } from "../new-ui";
 
 export const getModelInstanceTaskToolkit = (task: string) => {
@@ -147,14 +146,7 @@ export const getModelInstanceTaskToolkit = (task: string) => {
     case "TASK_SPEECH_RECOGNITION":
       return {
         getIcon: (className?: string) => {
-          return (
-            <Icons.SpeechRecognition
-              className={cn(
-                "my-auto h-5 w-5 stroke-semantic-fg-primary",
-                className
-              )}
-            />
-          );
+          return <Icons.SpeechRecognition className={className ?? "h-4 w-4"} />;
         },
         label: "Speech Recognition",
       };
@@ -163,12 +155,7 @@ export const getModelInstanceTaskToolkit = (task: string) => {
       return {
         getIcon: (className?: string) => {
           return (
-            <Icons.VisualQuestionAnswering
-              className={cn(
-                "my-auto h-5 w-5 stroke-semantic-fg-primary",
-                className
-              )}
-            />
+            <Icons.VisualQuestionAnswering className={className ?? "h-4 w-4"} />
           );
         },
         label: "Visual Question Answering",
@@ -178,12 +165,7 @@ export const getModelInstanceTaskToolkit = (task: string) => {
       return {
         getIcon: (className?: string) => {
           return (
-            <Icons.TextGenerationChat
-              className={cn(
-                "my-auto h-5 w-5 stroke-semantic-fg-primary",
-                className
-              )}
-            />
+            <Icons.TextGenerationChat className={className ?? "h-4 w-4"} />
           );
         },
         label: "Text Generation Chat",

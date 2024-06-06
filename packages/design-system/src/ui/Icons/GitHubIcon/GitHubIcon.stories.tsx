@@ -15,14 +15,14 @@ export const Playground: StoryFn<typeof GitHubIcon> = Template.bind({});
 Playground.args = {
   width: "w-[30px]",
   height: "h-[30px]",
-  color: "fill-instillGrey50",
+  color: "fill-semantic-node-disconnected-default-stroke",
   position: "my-auto",
 };
 
 export const WithStyle: StoryFn<typeof GitHubIcon> = Template.bind({});
 
 WithStyle.args = {
-  color: "fill-instillGrey50",
+  color: "fill-semantic-node-disconnected-default-stroke",
   position: "my-auto",
   style: {
     width: "30px",

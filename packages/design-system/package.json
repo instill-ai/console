@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/design-system",
-  "version": "0.69.2",
+  "version": "0.69.2-rc.4",
   "description": "Instill AI's design system",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -139,11 +139,6 @@
   },
   "engines": {
     "node": ">=14.6.0"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --cache --fix"
-    ]
   },
   "publishConfig": {
     "access": "public"

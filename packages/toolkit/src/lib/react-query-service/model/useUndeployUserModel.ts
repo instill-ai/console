@@ -24,12 +24,11 @@ export function useUndeployUserModel() {
 
       return Promise.resolve({ modelName, accessToken });
     },
-    onSuccess: async ({ modelName, accessToken }) => {
+    onSuccess: async ({ modelName }) => {
       await onSuccessAfterModelMutation({
         type: "deploy",
         queryClient,
         modelName,
-        accessToken,
       });
     },
   });

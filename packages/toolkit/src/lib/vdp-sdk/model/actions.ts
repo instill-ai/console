@@ -1,5 +1,7 @@
 import { createInstillAxiosClient } from "../helper";
 import { Nullable } from "../../type";
+import { ModelTask } from "./types";
+import { Operation } from "../operation/types";
 
 export type DeployUserModelResponse = {
   model_id: string;
@@ -42,6 +44,75 @@ export async function undeployUserModeleAction({
       `/${modelName}/undeploy`
     );
     return Promise.resolve(data.model_id);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type TriggerUserModelPayload = {
+  task_inputs: Record<string, unknown>[];
+};
+
+export type TriggerUserModelResponse = {
+  task: ModelTask;
+  task_outputs: Record<string, Record<string, unknown>>[];
+};
+
+export type TriggerUserModelAsyncResponse = {
+  operation: Operation;
+};
+
+export async function triggerUserModelAction({
+  modelName,
+  payload,
+  accessToken,
+}: {
+  modelName: string;
+  payload: TriggerUserModelPayload;
+  accessToken: Nullable<string>;
+  returnTraces?: boolean;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, true);
+
+    const { data } = await client.post<TriggerUserModelResponse>(
+      `/${modelName}/trigger`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return Promise.resolve(data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export async function triggerUserModelActionAsync({
+  modelName,
+  payload,
+  accessToken,
+}: {
+  modelName: string;
+  payload: TriggerUserModelPayload;
+  accessToken: Nullable<string>;
+  returnTraces?: boolean;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, true);
+
+    const { data } = await client.post<TriggerUserModelAsyncResponse>(
+      `/${modelName}/triggerAsync`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return Promise.resolve(data);
   } catch (err) {
     return Promise.reject(err);
   }

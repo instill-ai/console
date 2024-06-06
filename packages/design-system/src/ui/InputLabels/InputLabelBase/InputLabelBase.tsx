@@ -31,7 +31,7 @@ export type InputLabelBaseProps = {
   required?: boolean | undefined;
 
   /** TailwindCSS format - Message's text color
-   * - e.g. text-instillGrey50
+   * - e.g. text-semantic-node-disconnected-default-stroke
    */
   messageTextColor: string;
 
@@ -56,7 +56,7 @@ export type InputLabelBaseProps = {
   messageLineHeight: string;
 
   /** TailwindCSS format - Label's text color
-   * - e.g. text-instillGrey50
+   * - e.g. text-semantic-node-disconnected-default-stroke
    */
   labelTextColor: string;
 
@@ -81,7 +81,7 @@ export type InputLabelBaseProps = {
   labelLineHeight: string;
 
   /** TailwindCSS format - Label's text color when input has error
-   * - e.g. text-instillGrey50
+   * - e.g. text-semantic-node-disconnected-default-stroke
    */
   errorLabelTextColor: string;
 

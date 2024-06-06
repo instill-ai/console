@@ -1,7 +1,12 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
+import { Nullable } from "vitest";
+import { InstillJSONSchema } from "../../use-instill-form";
+import { User } from "../mgmt/types";
+import { Organization } from "../organization";
 import { Pipeline } from "../pipeline";
-import { Visibility } from "../types";
+import { Permission, Visibility } from "../types";
+import { Operation } from "../operation/types";
 
 export type ModelReleaseStage =
   | "RELEASE_STAGE_UNSPECIFIED"
@@ -37,22 +42,39 @@ export type Model = {
   id: string;
   description: string;
   model_definition: string;
-  configuration: {
-    [key: string]: any;
-  };
-  task: string;
-  state: ModelState;
+  configuration: Record<string, string>;
+  task: ModelTask;
   visibility: Visibility;
-  owner: string;
   create_time: string;
-  update_time: string;
+  update_time: string | null;
+  delete_time: string | null;
+  owner_name: string;
+  owner: {
+    user?: User;
+    organization?: Organization;
+  };
+  region: string;
+  hardware: string;
+  readme: string;
+  source_url: string;
+  documentation_url: string;
+  license: string;
+  profile_image: string;
+  permission: Permission;
+  input_schema: InstillJSONSchema | null;
+  output_schema: InstillJSONSchema | null;
+  sample_input: Record<string, Record<string, any>>;
+  sample_output: Record<string, Record<string, any>>;
 };
 
 export type ModelState =
-  | "STATE_ONLINE"
+  | "STATE_UNSPECIFIED"
+  | "STATE_STARTING"
   | "STATE_OFFLINE"
-  | "STATE_ERROR"
-  | "STATE_UNSPECIFIED";
+  | "STATE_SCALING"
+  | "STATE_ACTIVE"
+  | "STATE_IDLE"
+  | "STATE_ERROR";
 
 export type ModelReadme = {
   name: string;
@@ -70,9 +92,10 @@ export type ModelTask =
   | "TASK_INSTANCE_SEGMENTATION"
   | "TASK_SEMANTIC_SEGMENTATION"
   | "TASK_TEXT_GENERATION"
+  | "TASK_TEXT_GENERATION_CHAT"
   | "TASK_TEXT_TO_IMAGE"
   | "TASK_IMAGE_TO_IMAGE"
-  | "TASK_IMAGE_TO_TEXT";
+  | "TASK_VISUAL_QUESTION_ANSWERING";
 
 export type ModelHubPreset = {
   id: string;
@@ -82,13 +105,45 @@ export type ModelHubPreset = {
   configuration: Record<string, string>;
 };
 
+export type ModelWithPipelines = Model & {
+  pipelines: Pipeline[];
+};
+
+export type ModelRegion = {
+  region_name: string;
+  hardware: string[];
+};
+
+export type ModelVersion = {
+  name: string;
+  id: string;
+  digest: string;
+  state: ModelState;
+  update_time: string;
+};
+
 export type ModelWatchState = {
   state: ModelState;
-  progress: number;
+  message: string;
 };
 
 export type ModelsWatchState = Record<string, ModelWatchState>;
 
-export type ModelWithPipelines = Model & {
-  pipelines: Pipeline[];
+export type ModelTriggerResult = {
+  operation: Nullable<
+    Operation & {
+      response?: {
+        "@type": string;
+        request: {
+          name: string;
+          task_inputs: Record<string, any>[];
+          version: string;
+        };
+        response: {
+          task: string;
+          task_outputs: Record<string, any>[];
+        };
+      };
+    }
+  >;
 };

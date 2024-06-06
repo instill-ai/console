@@ -3,9 +3,13 @@ import type {
   Model,
   ModelReadme,
   ModelDefinition,
+  ModelRegion,
+  ModelVersion,
   ModelWatchState,
+  ModelTriggerResult,
 } from "./types";
 import type { Nullable } from "../../type";
+import { Visibility } from "../types";
 
 /* -------------------------------------------------------------------------
  * Model Definition
@@ -56,7 +60,7 @@ export async function listModelDefinitionsQuery({
     const modelDefinitions: ModelDefinition[] = [];
 
     const queryString = getQueryString({
-      baseURL: "/model-definitions",
+      baseURL: "/model-definitions?view=VIEW_FULL",
       pageSize,
       nextPageToken,
       filter: null,
@@ -116,14 +120,65 @@ export type ListModelsResponse = {
   total_size: number;
 };
 
+export type listModelsQueryProps = {
+  pageSize: Nullable<number>;
+  nextPageToken: Nullable<string>;
+  accessToken: Nullable<string>;
+  filter: Nullable<string>;
+  visibility: Nullable<Visibility>;
+  order_by?: Nullable<string>;
+};
+export type listUserModelsQueryProps = {
+  userName: Nullable<string>;
+} & listModelsQueryProps;
+
+export type listUserModelRegionsQueryProps = {
+  accessToken: Nullable<string>;
+};
+
+export type listUserModelVersionsQueryProps = {
+  accessToken: Nullable<string>;
+  modelName: string;
+  page?: number | null;
+  pageSize?: number;
+};
+
+export type ListModelRegionsResponse = {
+  regions: ModelRegion[];
+};
+
+export type ListModelVersionsResponse = {
+  versions: ModelVersion[];
+  total_size: number;
+  page_size: number;
+  page: number;
+};
+
+export async function listModelsQuery(
+  props: listModelsQueryProps & {
+    enablePagination: true;
+  }
+): Promise<ListModelsResponse>;
+export async function listModelsQuery(
+  props: listModelsQueryProps & {
+    enablePagination: false;
+  }
+): Promise<Model[]>;
+export async function listModelsQuery(
+  props: listModelsQueryProps & {
+    enablePagination: undefined;
+  }
+): Promise<Model[]>;
 export async function listModelsQuery({
   pageSize,
   nextPageToken,
   accessToken,
-}: {
-  pageSize: Nullable<number>;
-  nextPageToken: Nullable<string>;
-  accessToken: Nullable<string>;
+  filter,
+  visibility,
+  enablePagination,
+  order_by,
+}: listModelsQueryProps & {
+  enablePagination?: boolean;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, true);
@@ -134,10 +189,16 @@ export async function listModelsQuery({
       baseURL: "/models?view=VIEW_FULL",
       pageSize,
       nextPageToken,
-      filter: null,
+      queryParams: visibility ? `visibility=${visibility}` : undefined,
+      filter,
+      order_by,
     });
 
     const { data } = await client.get<ListModelsResponse>(queryString);
+
+    if (enablePagination) {
+      return Promise.resolve(data);
+    }
 
     models.push(...data.models);
 
@@ -145,8 +206,12 @@ export async function listModelsQuery({
       models.push(
         ...(await listModelsQuery({
           pageSize,
-          accessToken,
           nextPageToken: data.next_page_token,
+          accessToken,
+          enablePagination: false,
+          filter,
+          visibility,
+          order_by,
         }))
       );
     }
@@ -157,36 +222,49 @@ export async function listModelsQuery({
   }
 }
 
-export type ListUserModelsResponse = {
-  models: Model[];
-  next_page_token: string;
-  total_size: number;
-};
-
+export async function listUserModelsQuery(
+  props: listUserModelsQueryProps & {
+    enablePagination: true;
+  }
+): Promise<ListModelsResponse>;
+export async function listUserModelsQuery(
+  props: listUserModelsQueryProps & {
+    enablePagination: false;
+  }
+): Promise<Model[]>;
+export async function listUserModelsQuery(
+  props: listUserModelsQueryProps & {
+    enablePagination: undefined;
+  }
+): Promise<Model[]>;
 export async function listUserModelsQuery({
   userName,
   pageSize,
   nextPageToken,
   accessToken,
-}: {
-  userName: string;
-  pageSize: Nullable<number>;
-  nextPageToken: Nullable<string>;
-  accessToken: Nullable<string>;
+  filter,
+  visibility,
+  enablePagination,
+}: listUserModelsQueryProps & {
+  enablePagination?: boolean;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, true);
-
     const models: Model[] = [];
 
     const queryString = getQueryString({
       baseURL: `/${userName}/models?view=VIEW_FULL`,
       pageSize,
       nextPageToken,
-      filter: null,
+      filter,
+      queryParams: visibility ? `visibility=${visibility}` : undefined,
     });
 
-    const { data } = await client.get<ListUserModelsResponse>(queryString);
+    const { data } = await client.get<ListModelsResponse>(queryString);
+
+    if (enablePagination) {
+      return Promise.resolve(data);
+    }
 
     models.push(...data.models);
 
@@ -195,8 +273,11 @@ export async function listUserModelsQuery({
         ...(await listUserModelsQuery({
           userName,
           pageSize,
-          accessToken,
           nextPageToken: data.next_page_token,
+          accessToken,
+          enablePagination: false,
+          filter,
+          visibility,
         }))
       );
     }
@@ -231,6 +312,94 @@ export async function getUserModelReadmeQuery({
 }
 
 /* -------------------------------------------------------------------------
+ * List Model Regions
+ * -----------------------------------------------------------------------*/
+
+export async function listModelRegionsQuery({
+  accessToken,
+}: listUserModelRegionsQueryProps) {
+  try {
+    const client = createInstillAxiosClient(accessToken, true);
+
+    const queryString = getQueryString({
+      baseURL: "/available-regions",
+      pageSize: null,
+      nextPageToken: null,
+    });
+
+    const { data } = await client.get<ListModelRegionsResponse>(queryString);
+
+    return Promise.resolve(data.regions);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * List Model Versions
+ * -----------------------------------------------------------------------*/
+
+export async function listModelVersionsQuery(
+  props: listUserModelVersionsQueryProps & {
+    enablePagination: true;
+  }
+): Promise<ListModelVersionsResponse>;
+export async function listModelVersionsQuery(
+  props: listUserModelVersionsQueryProps & {
+    enablePagination: false;
+  }
+): Promise<ModelVersion[]>;
+export async function listModelVersionsQuery(
+  props: listUserModelVersionsQueryProps & {
+    enablePagination: undefined;
+  }
+): Promise<ModelVersion[]>;
+export async function listModelVersionsQuery({
+  accessToken,
+  modelName,
+  page,
+  pageSize,
+  enablePagination,
+}: listUserModelVersionsQueryProps & { enablePagination?: boolean }) {
+  try {
+    const client = createInstillAxiosClient(accessToken, true);
+    const versions: ModelVersion[] = [];
+    const queryString = getQueryString({
+      baseURL: `${modelName}/versions`,
+      pageSize: pageSize || null,
+      nextPageToken: null,
+      queryParams: page ? `page=${page}` : undefined,
+    });
+
+    const { data } = await client.get<ListModelVersionsResponse>(queryString);
+
+    if (enablePagination) {
+      return Promise.resolve(data);
+    }
+
+    versions.push(...data.versions);
+
+    const lastPage = Math.ceil(data.total_size / data.page_size) - 1;
+
+    if (data.page < lastPage) {
+      versions.push(
+        ...(await listModelVersionsQuery({
+          accessToken,
+          modelName,
+          page: data.page + 1,
+          pageSize,
+          enablePagination: false,
+        }))
+      );
+    }
+
+    return Promise.resolve(versions);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+/* -------------------------------------------------------------------------
  * Watch Model State
  * -----------------------------------------------------------------------*/
 
@@ -244,6 +413,30 @@ export async function watchUserModel({
   try {
     const client = createInstillAxiosClient(accessToken, true);
     const { data } = await client.get<ModelWatchState>(`/${modelName}/watch`);
+    return Promise.resolve(data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * Get Model Trigger Result
+ * -----------------------------------------------------------------------*/
+
+export async function getModelOperationResult({
+  modelName,
+  accessToken,
+  fullView,
+}: {
+  modelName: string;
+  accessToken: Nullable<string>;
+  fullView: boolean;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, true);
+    const { data } = await client.get<ModelTriggerResult>(
+      `/${modelName}/operation${fullView ? "?view=VIEW_FULL" : ""}`
+    );
     return Promise.resolve(data);
   } catch (err) {
     return Promise.reject(err);

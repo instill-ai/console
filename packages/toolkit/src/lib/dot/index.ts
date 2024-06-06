@@ -20,7 +20,7 @@ const getter = (obj: any, path: DotPath, defaultValue?: any): any => {
  */
 
 const setter = (obj: any, path: DotPath, value: any) => {
-  if (!isObject) return obj;
+  if (!isObject(obj)) return obj;
   path = toPath(path);
 
   let index = -1;
