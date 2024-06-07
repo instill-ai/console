@@ -40,7 +40,7 @@ export const Body = () => {
           </div>
           <div className=" bg-semantic-bg-base-bg">
             <div className="xl:px-30 flex w-full flex-row space-x-4 sm:px-5 md:px-10 lg:px-20">
-              <div className="flex w-full flex-col">
+              <div className="flex w-full flex-col pt-20">
                 <Tabs.Content value="explore">
                   {exploreDataType === "pipelines" ? (
                     <PipelineSection tabValue="explore" />
