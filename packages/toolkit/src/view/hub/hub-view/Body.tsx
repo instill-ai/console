@@ -26,7 +26,7 @@ export const Body = () => {
           className="mb-8 mt-4 w-full flex-col justify-center"
         >
           <div className="flex flex-col items-center justify-center">
-            <Tabs.List className={cn("flex justify-center gap-6")}>
+            <Tabs.List className={cn("flex justify-center gap-6", exploreDataType === "models" && "[&>*:last-child]:pointer-events-none [&>*:last-child]:opacity-0")}>
               <React.Fragment>
                 <Tabs.Trigger className={tabTriggerStyle} value="explore">
                   <span className="text-lg">Explore</span>
