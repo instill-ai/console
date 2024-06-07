@@ -397,7 +397,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                           </Select.Content>
                         </Select.Root>
                       </Form.Control>
-                      <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                      <p className="text-xs text-semantic-fg-secondary">
                         The kind of operations your model is going to perform.
                       </p>
                     </Form.Item>
@@ -499,7 +499,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                           </Select.Content>
                         </Select.Root>
                       </Form.Control>
-                      <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                      <p className="text-xs text-semantic-fg-secondary">
                         {`This will affect the model's performance and operational costs. Please refer to the documentation for detailed pricing information.`}
                       </p>
                     </Form.Item>
@@ -569,7 +569,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                           </Input.Root>
                         ) : null}
                         <Form.Message />
-                        <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                        <p className="text-xs text-semantic-fg-secondary">
                           {`This will affect the model's performance and operational costs. Please refer to the documentation for detailed pricing information.`}
                         </p>
                       </Form.Item>
