@@ -9,19 +9,17 @@ export const Tab = () => {
     React.useState<Nullable<string>>("Explore");
 
   return (
-    <div className="flex w-full border-b border-semantic-bg-line bg-semantic-bg-primary">
-      <div className="mx-auto flex h-[55px] w-[796px]">
-        <TabMenu.Root
-          value={selectedTab}
-          onValueChange={(value) => setSelectedTab(value)}
-          disabledDeSelect={true}
-          className="mx-auto mt-auto !h-10 w-[227px] !gap-x-6"
-        >
-          <TabMenu.Item className="!h-10" value="Explore">
-            Explore
-          </TabMenu.Item>
-        </TabMenu.Root>
-      </div>
+    <div className="flex border-b border-semantic-bg-line bg-semantic-bg-primary mx-auto  h-[55px] w-[796px]">
+      <TabMenu.Root
+        value={selectedTab}
+        onValueChange={(value) => setSelectedTab(value)}
+        disabledDeSelect={true}
+        className="mx-auto mt-auto !h-10 w-[227px] !gap-x-6"
+      >
+        <TabMenu.Item className="!h-10" value="Explore">
+          Explore
+        </TabMenu.Item>
+      </TabMenu.Root>
     </div>
   );
 };

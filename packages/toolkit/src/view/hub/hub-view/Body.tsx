@@ -46,29 +46,25 @@ export const Body: React.FC = () => {
               <PipelineSection tabValue="featured" />
             </Tabs.Content>
           </div>
-          <div className="flex w-1/6 min-w-[272px] flex-col">
-            <div className="sticky top-6">
-              <div className={cn("my-6 h-10", selectedTab === "featured" && "invisible")}>
-                <div className="flex h-10 flex-row justify-end">
-                  <div
-                    onClick={() => setExploreDataType("pipelines")}
-                    className={cn(dataTypeTriggerStyle, "rounded-l", exploreDataType === "pipelines" ? dataTypeTriggerStyleActive : dataTypeTriggerStyleInactive)}
-                  >
-                    Pipelines
-                  </div>
-                  <div
-                    onClick={() => setExploreDataType("models")}
-                    className={cn(dataTypeTriggerStyle, "rounded-r border-l-0", exploreDataType === "models" ? dataTypeTriggerStyleActive : dataTypeTriggerStyleInactive)}
-                  >
-                    Models
-                  </div>
-                </div>
+          <div className="flex w-1/6 min-w-[272px] flex-col bottom-6 sticky">
+            <div className={cn("my-6 h-10 flex flex-row justify-end", selectedTab === "featured" && "invisible")}>
+              <div
+                onClick={() => setExploreDataType("pipelines")}
+                className={cn(dataTypeTriggerStyle, "rounded-l", exploreDataType === "pipelines" ? dataTypeTriggerStyleActive : dataTypeTriggerStyleInactive)}
+              >
+                Pipelines
               </div>
-              <div className="mb-4">
-                <NewsLetterCard />
+              <div
+                onClick={() => setExploreDataType("models")}
+                className={cn(dataTypeTriggerStyle, "rounded-r border-l-0", exploreDataType === "models" ? dataTypeTriggerStyleActive : dataTypeTriggerStyleInactive)}
+              >
+                Models
               </div>
-              <LatestChangesCard />
             </div>
+            <div className="mb-4">
+              <NewsLetterCard />
+            </div>
+            <LatestChangesCard />
           </div>
         </div>
       </Tabs.Root>
