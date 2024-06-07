@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { Button, Icons, Input, Separator, Tag, Dialog } from "@instill-ai/design-system";
 import { GeneralAppPageProp, useAppEntity } from "../../lib";
@@ -38,10 +37,6 @@ export const ApplicationsPageMainView = (
     setOpen(true);
   };
 
-  const handleCloseCitationDetails = () => {
-    setOpen(false);
-    setSelectedSnippet(null);
-  };
 
   return (
     <div className="flex flex-col px-8 gap-6">
@@ -162,8 +157,8 @@ export const ApplicationsPageMainView = (
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac justo vitae sem ultricies consectetur. Import your own text data or write in real-time via Webhook to enhance your LLM context. Effortlessly build a comprehensive knowledge base.
                   </p>
                   <div className="flex justify-end">
-                    <Tag size="sm" variant="lightGreen" className="!rounded">
-                      Original file name.pdf
+                    <Tag size="sm" variant="lightGreen" className="!rounded gap-x-1">
+                      <Icons.File05 className="stroke-semantic-success-hover h-2.5 w-2.5" />Original file name.pdf
                     </Tag>
                   </div>
                 </div>

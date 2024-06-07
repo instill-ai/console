@@ -1,95 +1,66 @@
 import * as React from "react";
-import { Dialog, ScrollArea, Separator, Tag, Icons } from "@instill-ai/design-system";
-import cn from "clsx";
+import { ScrollArea, Icons } from "@instill-ai/design-system";
 
 type CitationDetailsProps = {
     snippet: {
         id: string;
         content: string;
         fileName: string;
+        sectionTitle: string;
     };
 };
 
-export const CitationDetails: React.FC<CitationDetailsProps> = ({ snippet }) => {
-    return (
-        <div className="w-[605px] h-[684px] p-12 bg-white justify-start items-start gap-2 inline-flex">
-            <div className="flex-col justify-start items-start gap-3 inline-flex">
-                <div className="justify-start items-start gap-2 inline-flex">
-                    <div className="w-12 h-12 p-3 bg-white rounded-[10px] shadow border border-slate-200 justify-center items-center flex">
-                        <div className="w-6 h-6 relative flex-col justify-start items-start flex">
-                            <div className="w-[19.20px] h-6 relative">
-                                <Icons.X className="w-full h-full" />
-                            </div>
-                            <div className="w-[19.20px] text-center text-white text-[9px] font-bold font-['IBM Plex Sans']">
-                                PDF
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex-col justify-start items-start gap-2 inline-flex">
-                        <div className="text-gray-800/opacity-60 text-sm font-medium font-['IBM Plex Sans'] leading-none">
-                            {snippet.fileName}
-                        </div>
-                        <div className="text-black text-base font-medium font-['IBM Plex Sans'] leading-tight">
-                            Citation Details
-                        </div>
-                    </div>
-                </div>
-                <div className="w-[509px] h-[528px] pt-2 flex-col justify-start items-start gap-[21px] flex">
-                    <div className="self-stretch h-[21px] flex-col justify-start items-start flex">
-                        <div className="self-stretch text-gray-800 text-sm font-normal font-['IBM Plex Sans'] leading-[21px] tracking-tight">
-                            Citation Details:
-                        </div>
-                    </div>
-                    <div className="self-stretch h-[394px] pl-7 flex-col justify-start items-start gap-2 flex">
-                        <ScrollArea.Root
-                            className={cn(
-                                "nowheel h-[394px] rounded-sm p-2",
-                                "border border-semantic-bg-line"
-                            )}
-                        >
-                            <div className="flex h-full flex-col gap-y-2">
-                                <div className="p-5 bg-semantic-bg-default rounded-sm shadow border border-semantic-bg-line space-y-2.5">
-                                    <Tag size="md" variant="default" className="!rounded bg-semantic-bg-base-bg">
-                                        {snippet.id}
-                                    </Tag>
-                                    <Separator />
-                                    <p className="text-semantic-fg-muted text-sm mb-2">{snippet.content}</p>
-                                    <div className="flex justify-end">
-                                        <Tag size="sm" variant="lightGreen" className="!rounded">
-                                            {snippet.fileName}
-                                        </Tag>
-                                    </div>
-                                </div>
-                            </div>
-                        </ScrollArea.Root>
-                    </div>
-                </div>
+export const CitationDetails: React.FC<CitationDetailsProps> = ({ snippet }) => (
+    <div className="flex flex-col p-6 bg-semantic-bg-primary gap-4">
+        <div className="flex items-start gap-4">
+            <div className="flex items-center justify-center w-12 h-12  rounded-[10px] shadow border border-semantic-bg-line">
+                <Icons.X className="w-6 h-6" />
             </div>
-            <div className="p-2 rounded justify-center items-center flex">
-                <Dialog.Close className="!static !h-6 !w-6">
-                    {/* <Icons.X className="h-6 w-6" /> */}
-                </Dialog.Close>
-            </div>
-            <div className="w-4 h-[520px] p-1 justify-start items-start gap-2.5 flex">
-                <div className="w-2 h-[512px] pb-96 flex-col justify-start items-center inline-flex">
-                    <div className="w-2 h-32 bg-gray-200 rounded-lg" />
-                </div>
+            <div className="flex flex-col gap-1">
+                <div className="text-semantic-fg-disabled product-headings-heading-6">{snippet.fileName}</div>
+                <div className="text-semantic-fg-primary product-headings-heading-5">{snippet.sectionTitle}</div>
             </div>
         </div>
-    );
-};
+        <div className="flex flex-col gap-4">
+            <ScrollArea.Root>
+                <div className="p-4 text-semantic-fg-primary product-body-text-3-regular">
+                    <div className=" mb-4">Here is a brief summary of three AI startups focused on productivity:</div>
+                    <div className="pl-4 space-y-4 mb-4">
+                        <div className=" ">
+                            Airtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes. Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.
+                        </div>
+                        <div className=" space-y-2">
+                            <div className="bg-semantic-bg-secondary">Clockwise: Clockwise uses AI to optimize calendars and improve time </div>
+                            <div>management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized.</div>
+                            <div>
+                                <span className="bg-semantic-bg-secondary">Clockwise's AI-powered features include smart calendar assistance,</span> which
+                            </div>
+                            <div>suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.</div>
+                        </div>
+                        <div className="">
+                            Otter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews. Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time. Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.
+                        </div>
+                    </div>
+                    <div className="">
+                        These startups demonstrate how AI is being leveraged to enhance productivity by automating mundane tasks, optimizing workflows, and improving information management and accessibility.
+                    </div>
+                </div>
+            </ScrollArea.Root>
+        </div>
+    </div>
+);
 
 export const mockSnippets = [
     {
         id: "citation-01",
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac justo vitae sem ultricies consectetur. Import your own text data or write in real-time via Webhook to enhance your LLM context. Effortlessly build a comprehensive knowledge base.",
+        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac justo vitae sem ultricies consectetur. Import your own text data or write in real-time via Webhook to enhance your LLM context. Effortlessly build a comprehensive knowledge base.",
         fileName: "file1.pdf",
+        sectionTitle: "Section Title",
     },
     {
         id: "citation-02",
-        content:
-            "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        content: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
         fileName: "file2.pdf",
+        sectionTitle: "Section Title",
     },
 ];
