@@ -100,6 +100,7 @@ export const ApplicationsPageMainView = (
                       </Dialog.Content>
                     </Dialog.Root>
                   ))}
+                  <Tag size="sm" variant="default" className="!rounded cursor-pointer p-1"><Icons.X className="stroke-semantic-fg-secondary w-3 h-3" /></Tag>
                 </div>
               </div>
               <Button variant="tertiaryGrey" size="sm" className="p-4">
@@ -153,7 +154,7 @@ export const ApplicationsPageMainView = (
                     Top{snippet.id.split("-")[1]}: 0.00{snippet.id.split("-")[1]}
                   </Tag>
                   <Separator />
-                  <p className="text-semantic-fg-muted text-sm mb-2">
+                  <p className=" product-body-text-3-regular text-semantic-fg-secondary">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac justo vitae sem ultricies consectetur. Import your own text data or write in real-time via Webhook to enhance your LLM context. Effortlessly build a comprehensive knowledge base.
                   </p>
                   <div className="flex justify-end">
@@ -165,12 +166,12 @@ export const ApplicationsPageMainView = (
               ))}
             </div>
             <div className="flex-col items-center gap-2">
-              <span className="text-semantic-fg-default text-sm font-semibold">
+              <span className="text-semantic-fg-default product-button-button-2">
                 Pipeline in use:
               </span>
               <div className="flex items-center space-x-1">
                 <Icons.Pipeline className="h-4 w-4 stroke-semantic-accent-default" />
-                <span className="text-semantic-accent-default text-sm font-semibold">
+                <span className="text-semantic-accent-default product-button-button-2">
                   xiaofei/name-your-pet
                 </span>
               </div>
