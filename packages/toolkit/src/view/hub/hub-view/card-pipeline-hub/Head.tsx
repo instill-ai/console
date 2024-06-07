@@ -74,37 +74,35 @@ export const Head = ({
   }, [pipeline.owner]);
 
   return (
-    <div className="flex flex-row p-3">
-      <div className="mr-auto flex flex-row gap-x-2">
-        <EntityAvatar
-          src={pipelineAvatar}
-          className="my-auto h-8 w-8"
-          entityName={ownerID}
-          fallbackImg={
-            <div className="my-auto flex h-8 w-8 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
-              <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
-            </div>
-          }
-        />
-        <div className="flex-col">
-          <button
-            type="button"
-            className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
-            onClick={() => {
-              router.push(`/${ownerID}`);
-            }}
-          >
-            {displayName}
-          </button>
-          <div>
-            <Tag
-              variant={"default"}
-              className="bg-semantic-bg-base-bg"
-              style={{ paddingTop: 0.5, paddingBottom: 0.5 }}
-            >
-              {ownerID}
-            </Tag>
+    <div className="flex flex-row p-3 mr-auto gap-x-2">
+      <EntityAvatar
+        src={pipelineAvatar}
+        className="my-auto h-8 w-8"
+        entityName={ownerID}
+        fallbackImg={
+          <div className="my-auto flex h-8 w-8 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
+            <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
           </div>
+        }
+      />
+      <div className="flex-col">
+        <button
+          type="button"
+          className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
+          onClick={() => {
+            router.push(`/${ownerID}`);
+          }}
+        >
+          {displayName}
+        </button>
+        <div>
+          <Tag
+            variant={"default"}
+            className="bg-semantic-bg-base-bg"
+            style={{ paddingTop: 0.5, paddingBottom: 0.5 }}
+          >
+            {ownerID}
+          </Tag>
         </div>
       </div>
     </div>
