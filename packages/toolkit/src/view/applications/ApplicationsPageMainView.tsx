@@ -48,10 +48,8 @@ export const ApplicationsPageMainView = (
       <Separator dir="horizontal" />
       <div className="flex gap-4">
         <div className="flex flex-col flex-1 rounded shadow">
-          <div className="p-2 bg-semantic-bg-base-bg rounded-t border-b border-semantic-bg-line">
-            <div className="product-body-text-1-semibold">
-              Chat Playground
-            </div>
+          <div className="p-2 bg-semantic-bg-base-bg rounded-t border-b border-semantic-bg-line product-body-text-1-semibold">
+            Chat Playground
           </div>
           <div className="flex flex-col flex-1 p-6 gap-4">
             {mockMessages.map((message) => (
@@ -66,14 +64,12 @@ export const ApplicationsPageMainView = (
                     </div>
                   }
                 />
-                <div className="flex-1 pt-2">
-                  <div className="text-gray-800 text-sm leading-[21px] tracking-tight whitespace-pre-wrap">
-                    {message.content}
-                  </div>
+                <div className="flex-1 pt-2 text-semantic-fg-primary  whitespace-pre-wrap product-body-text-3-regular">
+                  {message.content}
                 </div>
               </div>
             ))}
-            <div className="flex justify-between items-end w-full">
+            <div className="flex justify-between items-end w-full mb-auto">
               <div className="flex gap-2">
                 <Button size="sm" variant="tertiaryGrey">
                   Citations:
@@ -107,33 +103,27 @@ export const ApplicationsPageMainView = (
                 <Icons.Copy07 className="h-4 w-4 stroke-semantic-fg-secondary" />
               </Button>
             </div>
-            <div className="mt-auto">
-              <Input.Root className="flex items-center gap-2 !rounded px-2 py-4">
-                <Input.Core placeholder="Message..." />
-                <Button variant="primary" className="px-2 !mr-4" size="sm">
-                  <Icons.ArrowNarrowRight className="h-4 w-4 stroke-semantic-fg-on-default" />
-                </Button>
-              </Input.Root>
-            </div>
+            <Input.Root className="flex items-center gap-2 !rounded px-2 py-4">
+              <Input.Core placeholder="Message..." />
+              <Button variant="primary" className="px-2 !mr-4" size="sm">
+                <Icons.ArrowNarrowRight className="h-4 w-4 stroke-semantic-fg-on-default" />
+              </Button>
+            </Input.Root>
           </div>
         </div>
         <div className="w-[400px] flex flex-col bg-semantic-bg-surface rounded shadow">
-          <div className="py-2 px-3 bg-semantic-bg-base-bg rounded-t border-b border-semantic-bg-line">
-            <div className="product-body-text-1-semibold">
-              Parameters
-            </div>
+          <div className="py-2 px-3 product-body-text-1-semibold bg-semantic-bg-base-bg rounded-t border-b border-semantic-bg-line">
+            Parameters
           </div>
           <div className="flex flex-col p-6 gap-4">
             <div className="product-headings-heading-5">
               Statistics
             </div>
             <div className="flex-col text-semantic-fg-secondary bg-semantic-bg-base-bg rounded px-4 py-2 gap-y-1">
-              <div>
-                <span className="font-semibold">
-                  Reply time:
-                </span>
-                <span className="">19s</span>
-              </div>
+              <span className="font-semibold">
+                Reply time:
+              </span>
+              <span className="">19s</span>
               <div className="flex">
                 <span className="font-semibold">
                   Cost:
