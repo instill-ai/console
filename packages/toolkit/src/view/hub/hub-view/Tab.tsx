@@ -9,7 +9,7 @@ export const Tab = () => {
     React.useState<Nullable<string>>("Explore");
 
   return (
-    <div className="flex border-b border-semantic-bg-line bg-semantic-bg-primary mx-auto  h-[55px] w-[796px]">
+    <div className="mx-auto flex h-[55px] w-[796px] border-b  border-semantic-bg-line bg-semantic-bg-primary">
       <TabMenu.Root
         value={selectedTab}
         onValueChange={(value) => setSelectedTab(value)}

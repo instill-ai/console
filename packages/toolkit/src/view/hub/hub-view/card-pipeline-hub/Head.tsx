@@ -74,7 +74,7 @@ export const Head = ({
   }, [pipeline.owner]);
 
   return (
-    <div className="flex flex-row p-3 mr-auto gap-x-2">
+    <div className="mr-auto flex flex-row gap-x-2 p-3">
       <EntityAvatar
         src={pipelineAvatar}
         className="my-auto h-8 w-8"

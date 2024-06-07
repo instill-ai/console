@@ -7,23 +7,38 @@ import ModelSection from "./ModelSection";
 import cn from "clsx";
 
 export const Body: React.FC = () => {
-  const [exploreDataType, setExploreDataType] = React.useState<"pipelines" | "models">("pipelines");
-  const [selectedTab, setSelectedTab] = React.useState<"explore" | "featured">("explore");
+  const [exploreDataType, setExploreDataType] = React.useState<
+    "pipelines" | "models"
+  >("pipelines");
+  const [selectedTab, setSelectedTab] = React.useState<"explore" | "featured">(
+    "explore"
+  );
 
-  const tabTriggerStyle = "text-semantic-fg-disabled product-body-text-3-semibold border-black data-[state=active]:text-semantic-fg-primary border-b-2 border-opacity-0 data-[state=active]:border-opacity-100 data-[state=active]:border-[#316FED] pb-2";
-  const dataTypeTriggerStyle = "px-4 h-full border border-semantic-bg-line text-base font-semibold flex items-center justify-center";
-  const dataTypeTriggerStyleActive = "cursor-default bg-semantic-accent-bg text-semantic-accent-default";
+  const tabTriggerStyle =
+    "text-semantic-fg-disabled product-body-text-3-semibold border-black data-[state=active]:text-semantic-fg-primary border-b-2 border-opacity-0 data-[state=active]:border-opacity-100 data-[state=active]:border-[#316FED] pb-2";
+  const dataTypeTriggerStyle =
+    "px-4 h-full border border-semantic-bg-line text-base font-semibold flex items-center justify-center";
+  const dataTypeTriggerStyleActive =
+    "cursor-default bg-semantic-accent-bg text-semantic-accent-default";
   const dataTypeTriggerStyleInactive = "bg-semantic-bg-primary cursor-pointer";
 
   return (
     <div className="flex justify-between bg-semantic-bg-base-bg">
       <Tabs.Root
         defaultValue="explore"
-        onValueChange={(value: string) => setSelectedTab(value as "explore" | "featured")}
+        onValueChange={(value: string) =>
+          setSelectedTab(value as "explore" | "featured")
+        }
         className="mb-8 mt-4 w-full flex-col justify-center"
       >
         <div className="flex flex-col items-center justify-center">
-          <Tabs.List className={cn("flex justify-center gap-6", exploreDataType === "models" && "[&>*:last-child]:pointer-events-none [&>*:last-child]:opacity-0")}>
+          <Tabs.List
+            className={cn(
+              "flex justify-center gap-6",
+              exploreDataType === "models" &&
+                "[&>*:last-child]:pointer-events-none [&>*:last-child]:opacity-0"
+            )}
+          >
             <Tabs.Trigger className={tabTriggerStyle} value="explore">
               <span className="text-lg">Explore</span>
             </Tabs.Trigger>
@@ -33,7 +48,7 @@ export const Body: React.FC = () => {
           </Tabs.List>
           <Separator orientation="horizontal" />
         </div>
-        <div className="flex w-full flex-row space-x-4 sm:px-5 md:px-10 lg:px-20 xl:px-30">
+        <div className="xl:px-30 flex w-full flex-row space-x-4 sm:px-5 md:px-10 lg:px-20">
           <div className="flex w-full flex-col pt-20">
             <Tabs.Content value="explore">
               {exploreDataType === "pipelines" ? (
@@ -46,17 +61,34 @@ export const Body: React.FC = () => {
               <PipelineSection tabValue="featured" />
             </Tabs.Content>
           </div>
-          <div className="flex w-1/6 min-w-[272px] flex-col bottom-6 sticky">
-            <div className={cn("my-6 h-10 flex flex-row justify-end", selectedTab === "featured" && "invisible")}>
+          <div className="sticky bottom-6 flex w-1/6 min-w-[272px] flex-col">
+            <div
+              className={cn(
+                "my-6 flex h-10 flex-row justify-end",
+                selectedTab === "featured" && "invisible"
+              )}
+            >
               <div
                 onClick={() => setExploreDataType("pipelines")}
-                className={cn(dataTypeTriggerStyle, "rounded-l", exploreDataType === "pipelines" ? dataTypeTriggerStyleActive : dataTypeTriggerStyleInactive)}
+                className={cn(
+                  dataTypeTriggerStyle,
+                  "rounded-l",
+                  exploreDataType === "pipelines"
+                    ? dataTypeTriggerStyleActive
+                    : dataTypeTriggerStyleInactive
+                )}
               >
                 Pipelines
               </div>
               <div
                 onClick={() => setExploreDataType("models")}
-                className={cn(dataTypeTriggerStyle, "rounded-r border-l-0", exploreDataType === "models" ? dataTypeTriggerStyleActive : dataTypeTriggerStyleInactive)}
+                className={cn(
+                  dataTypeTriggerStyle,
+                  "rounded-r border-l-0",
+                  exploreDataType === "models"
+                    ? dataTypeTriggerStyleActive
+                    : dataTypeTriggerStyleInactive
+                )}
               >
                 Models
               </div>
