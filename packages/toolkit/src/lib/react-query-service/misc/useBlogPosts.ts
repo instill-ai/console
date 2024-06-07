@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -48,7 +47,7 @@ const fetchBlogPosts = async () => {
   const tagsResponse = await axios.get(
     "https://api.github.com/repos/instill-ai/instill.tech/tags"
   );
-  const latestTag = tagsResponse.data[0].name;
+  const latestTag = tagsResponse.data[0]?.name;
 
   const mdxResponse = await axios.get(
     `https://api.github.com/repos/instill-ai/instill.tech/contents/blog?ref=${latestTag}`
@@ -74,7 +73,7 @@ const fetchBlogPosts = async () => {
         }
       });
 
-      const draft = metadata.draft === "true" || false;
+      const draft = metadata.draft === "true";
 
       return {
         id: file.sha,
@@ -86,7 +85,7 @@ const fetchBlogPosts = async () => {
         publishedOn: formatDate(metadata.publishedOn?.replace(/^"|"$/g, "")),
         themeImgAlt: metadata.themeImgAlt || "Blog post image",
         slug: file.path.replace(/^blog\//g, "").replace(/\.mdx$/g, ""),
-        draft: draft,
+        draft,
       };
     })
   );
