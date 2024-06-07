@@ -3,6 +3,7 @@ import { Button, Icons, Input, Separator, Tag, Dialog } from "@instill-ai/design
 import { GeneralAppPageProp, useAppEntity } from "../../lib";
 import { EntityAvatar } from "../../components";
 import { CitationDetails, mockSnippets } from "./components/CitationDetails";
+import { Logo } from "@instill-ai/design-system";
 
 export type ApplicationsPageMainViewProps = GeneralAppPageProp;
 
@@ -54,16 +55,20 @@ export const ApplicationsPageMainView = (
           <div className="flex flex-col flex-1 p-6 gap-4">
             {mockMessages.map((message) => (
               <div key={message.id} className="flex gap-7 rounded-lg">
-                <EntityAvatar
-                  src={message.avatar}
-                  className="h-8 w-8"
-                  entityName={message.ownerID}
-                  fallbackImg={
-                    <div className="my-auto flex h-8 w-8 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
-                      <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
-                    </div>
-                  }
-                />
+                {message.ownerID === 'assistant' ? (
+                  <Logo variant="colourLogomark" width={38} />
+                ) : (
+                    <EntityAvatar
+                      src={message.avatar}
+                    className="h-8 w-8"
+                    entityName={message.ownerID}
+                    fallbackImg={
+                      <div className="my-auto flex h-8 w-8 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
+                        <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
+                      </div>
+                    }
+                  />
+                )}
                 <div className="flex-1 pt-2 text-semantic-fg-primary  whitespace-pre-wrap product-body-text-3-regular">
                   {message.content}
                 </div>
@@ -120,10 +125,12 @@ export const ApplicationsPageMainView = (
               Statistics
             </div>
             <div className="flex-col text-semantic-fg-secondary bg-semantic-bg-base-bg rounded px-4 py-2 gap-y-1">
-              <span className="font-semibold">
-                Reply time:
-              </span>
-              <span className="">19s</span>
+              <div className="flex">
+                <span className="font-semibold">
+                  Reply time:
+                </span>
+                <span className="">19s</span>
+              </div>
               <div className="flex">
                 <span className="font-semibold">
                   Cost:
