@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.93.4](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.93.3...@instill-ai/toolkit-v0.93.4) (2024-06-08)
+
+
+### Bug Fixes
+
+* enable view-full of model request on hub ([#1217](https://github.com/instill-ai/console/issues/1217)) ([b62a334](https://github.com/instill-ai/console/commit/b62a334d17f71c2c9c43452557140052fa9573bb))
+
 ## [0.93.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.93.2...@instill-ai/toolkit-v0.93.3) (2024-06-08)
 
 
