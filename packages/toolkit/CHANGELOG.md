@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.93.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.93.1...@instill-ai/toolkit-v0.93.2) (2024-06-08)
+
+
+### Bug Fixes
+
+* **model-forms:** fix model forms input descriptions font size ([#1212](https://github.com/instill-ai/console/issues/1212)) ([7e67a91](https://github.com/instill-ai/console/commit/7e67a91fac22c8342c224590e482b3f40d40c27a))
+* **newsletter:** use latest tag to fetch blogs ([#1213](https://github.com/instill-ai/console/issues/1213)) ([9eb5991](https://github.com/instill-ai/console/commit/9eb59914326a3c16b2c1917228fd240a797cfb6a))
+
 ## [0.93.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.93.0...@instill-ai/toolkit-v0.93.1) (2024-06-06)
 
 
