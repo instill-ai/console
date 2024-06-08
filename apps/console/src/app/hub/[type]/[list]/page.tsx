@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { HubPageRender } from "./render";
-import { HubNavigationParams } from "@instill-ai/toolkit";
 
 export async function generateMetadata() {
   const metadata: Metadata = {

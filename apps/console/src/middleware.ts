@@ -1,6 +1,7 @@
 import createMiddleware from 'next-easy-middlewares';
 import { withMiddlewareAuthRequired } from "./lib";
 import { hubRedirect } from 'lib/withMiddlewareHubRedirect';
+import { hubRedirectSetCookie } from 'lib/withMiddlewareHubSetRedirectCookie';
 
 const middlewares = {
   // Authentication guard
@@ -13,7 +14,8 @@ const middlewares = {
   "/settings": withMiddlewareAuthRequired(),
 
   // Hub redirect
-  "/hub": hubRedirect,  
+  "/hub": hubRedirect,
+  "/hub/(.*?)/:path*": hubRedirectSetCookie,
 };
 
 export const middleware = createMiddleware(middlewares);
