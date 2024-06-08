@@ -18,6 +18,7 @@ export function useInfinitePipelines({
   visibility,
   filter,
   order_by,
+  disabledViewFull,
 }: {
   pageSize: number;
   enabledQuery: boolean;
@@ -25,6 +26,7 @@ export function useInfinitePipelines({
   visibility: Nullable<Visibility>;
   filter: Nullable<string>;
   order_by: Nullable<string>;
+  disabledViewFull?: boolean;
 }): UseInfiniteQueryResult<InfiniteData<ListPipelinesResponse>, Error> {
   const queryKey = ["pipelines", "infinite"];
 
@@ -51,6 +53,7 @@ export function useInfinitePipelines({
         visibility,
         filter,
         order_by,
+        disabledViewFull,
       });
 
       return Promise.resolve(pipelines);
