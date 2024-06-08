@@ -127,6 +127,7 @@ export type listModelsQueryProps = {
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
   order_by?: Nullable<string>;
+  disabledViewFull?: boolean;
 };
 export type listUserModelsQueryProps = {
   userName: Nullable<string>;
@@ -177,6 +178,7 @@ export async function listModelsQuery({
   visibility,
   enablePagination,
   order_by,
+  disabledViewFull,
 }: listModelsQueryProps & {
   enablePagination?: boolean;
 }) {
@@ -186,7 +188,7 @@ export async function listModelsQuery({
     const models: Model[] = [];
 
     const queryString = getQueryString({
-      baseURL: "/models?view=VIEW_FULL",
+      baseURL: disabledViewFull ? "/models" : "/models?view=VIEW_FULL",
       pageSize,
       nextPageToken,
       queryParams: visibility ? `visibility=${visibility}` : undefined,
@@ -245,6 +247,7 @@ export async function listUserModelsQuery({
   filter,
   visibility,
   enablePagination,
+  disabledViewFull,
 }: listUserModelsQueryProps & {
   enablePagination?: boolean;
 }) {
@@ -253,7 +256,9 @@ export async function listUserModelsQuery({
     const models: Model[] = [];
 
     const queryString = getQueryString({
-      baseURL: `/${userName}/models?view=VIEW_FULL`,
+      baseURL: disabledViewFull
+        ? `/${userName}/models`
+        : `/${userName}/models?view=VIEW_FULL`,
       pageSize,
       nextPageToken,
       filter,

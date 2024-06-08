@@ -11,6 +11,7 @@ export function useInfiniteModels({
   filter,
   visibility,
   order_by,
+  disabledViewFull,
 }: {
   pageSize?: number;
   accessToken: Nullable<string>;
@@ -19,6 +20,7 @@ export function useInfiniteModels({
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
   order_by: Nullable<string>;
+  disabledViewFull?: boolean;
 }) {
   const queryKey = ["models", "infinite"];
 
@@ -45,6 +47,7 @@ export function useInfiniteModels({
         visibility,
         enablePagination: true,
         order_by,
+        disabledViewFull,
       });
 
       return Promise.resolve(models);

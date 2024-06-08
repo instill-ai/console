@@ -22,6 +22,7 @@ export type listPipelinesQueryParams = {
   visibility: Nullable<Visibility>;
   filter: Nullable<string>;
   order_by?: Nullable<string>;
+  disabledViewFull?: boolean;
 };
 
 export async function listPipelinesQuery(
@@ -52,6 +53,7 @@ export async function listPipelinesQuery(
     visibility,
     filter,
     order_by,
+    disabledViewFull,
   } = props;
 
   try {
@@ -59,7 +61,7 @@ export async function listPipelinesQuery(
     const pipelines: Pipeline[] = [];
 
     const queryString = getQueryString({
-      baseURL: "/pipelines?view=VIEW_FULL",
+      baseURL: disabledViewFull ? "/pipelines" : "/pipelines?view=VIEW_FULL",
       pageSize,
       nextPageToken,
       queryParams: visibility ? `visibility=${visibility}` : undefined,
@@ -85,6 +87,7 @@ export async function listPipelinesQuery(
           filter,
           visibility,
           order_by,
+          disabledViewFull,
         }))
       );
     }
