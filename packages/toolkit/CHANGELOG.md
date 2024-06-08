@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.93.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.93.2...@instill-ai/toolkit-v0.93.3) (2024-06-08)
+
+
+### Bug Fixes
+
+* use non view_full query on hub to speed up request ([#1215](https://github.com/instill-ai/console/issues/1215)) ([fc10d15](https://github.com/instill-ai/console/commit/fc10d15afe9af596a02d28bd2e8089e1f91a726a))
+
 ## [0.93.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.93.1...@instill-ai/toolkit-v0.93.2) (2024-06-08)
 
 
