@@ -134,7 +134,6 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
           ? `q="${searchCode}"`
           : "",
     order_by: selectedSortOption,
-    disabledViewFull: true,
   });
 
   const allModels = React.useMemo(() => {
