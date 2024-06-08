@@ -32,3 +32,8 @@ export type GeneralAppPageProp = {
   enableQuery: boolean;
   accessToken: Nullable<string>;
 };
+
+export type HubNavigationParams = {
+  type: "explore" | "featured";
+  list: "pipelines" | "models";
+};
