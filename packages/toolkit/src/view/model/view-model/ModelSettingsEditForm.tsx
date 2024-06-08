@@ -395,7 +395,7 @@ export const ModelSettingsEditForm = ({
                       </Input.Root>
                     ) : null}
                     <Form.Message />
-                    <p className="text-semantic-fg-secondary product-body-text-3-regular">
+                    <p className="text-xs text-semantic-fg-secondary">
                       {`This will affect the model's performance and operational costs. Please refer to the documentation for detailed pricing information.`}
                     </p>
                   </Form.Item>
