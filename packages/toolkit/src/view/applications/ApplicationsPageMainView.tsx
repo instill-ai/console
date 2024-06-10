@@ -1,26 +1,13 @@
 import * as React from "react";
-import { Button, Icons, Input, Separator, Tag, Dialog, ScrollArea } from "@instill-ai/design-system";
+import { Button, Icons, Input, Separator, Tag, Dialog, ScrollArea, Skeleton } from "@instill-ai/design-system";
 import { GeneralAppPageProp, InstillStore, useAppEntity, useAuthenticatedUser, useInstillStore, useShallow } from "../../lib";
 import { EntityAvatar } from "../../components";
-import { CitationDetails, mockSnippets } from "./components/CitationDetails";
+import { CitationDetails } from "./components/CitationDetails";
 import { Logo } from "@instill-ai/design-system";
+import { useMockCitations, useMockMessages } from "../../lib/react-query-service/applications";
+import { CitationSnippet } from "../../lib/vdp-sdk/applications/types";
 
 export type ApplicationsPageMainViewProps = GeneralAppPageProp;
-
-const mockMessages = [
-  {
-    id: 1,
-    content: "I'm interested in learning more about AI startups focused on productivity. Give me a summary of the top 3.",
-    avatar: "https://example.com/user-avatar.png",
-    ownerID: "user123",
-  },
-  {
-    id: 2,
-    content: "Here is a brief summary of three AI startups focused on productivity:\n\nAirtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes. Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.\n\nClockwise: Clockwise uses AI to optimize calendars and improve time management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized. Clockwise's AI-powered features include smart calendar assistance, which suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.\n\nOtter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews. Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time. Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.",
-    avatar: "https://example.com/assistant-avatar.png",
-    ownerID: "assistant",
-  },
-];
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -36,25 +23,29 @@ export const ApplicationsPageMainView = (
 
   const { enabledQuery } = useInstillStore(useShallow(selector));
 
-  const [selectedSnippet, setSelectedSnippet] = React.useState<typeof mockSnippets[0] | null>(null);
+  const [selectedCitation, setSelectedCitation] = React.useState<CitationSnippet | null>(null);
   const [open, setOpen] = React.useState(false);
-  const [showAllSnippets, setShowAllSnippets] = React.useState(false);
+  const [showAllCitations, setShowAllCitations] = React.useState(false);
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
 
-  const handleSnippetClick = (snippet: typeof mockSnippets[0]) => {
-    setSelectedSnippet(snippet);
+  const { data: mockMessages = [], isLoading: isMessagesLoading, isError: isMessagesError } = useMockMessages();
+  const { data: mockCitations = [], isLoading: isSnippetsLoading, isError: isSnippetsError } = useMockCitations();
+
+
+  const handleCitationClick = (citation: CitationSnippet) => {
+    setSelectedCitation(citation);
     setOpen(true);
   };
 
   const toggleShowAllSnippets = () => {
-    setShowAllSnippets((prev) => !prev);
+    setShowAllCitations((prev) => !prev);
   };
 
-  const displayedSnippets = showAllSnippets ? mockSnippets : mockSnippets.slice(0, 6);
+  const displayedCitations = showAllCitations ? mockCitations : mockCitations.slice(0, 6);
 
   const copyBotResponse = () => {
     const botResponse = mockMessages.find((message) => message.ownerID === "assistant")?.content;
@@ -62,6 +53,31 @@ export const ApplicationsPageMainView = (
       navigator.clipboard.writeText(botResponse);
     }
   };
+
+  if (isMessagesLoading || isSnippetsLoading) {
+    return (
+      <div className="flex flex-col px-8 gap-6">
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-8 w-48 bg-semantic-bg-line" />
+        </div>
+        <Separator dir="horizontal" />
+        <div className="flex gap-4">
+          <div className="flex flex-col flex-1 rounded shadow">
+            <Skeleton className="h-8 w-full bg-semantic-bg-line" />
+            <div className="flex flex-col flex-1 p-6 gap-4">
+              <Skeleton className="h-8 w-full bg-semantic-bg-line" />
+              <Skeleton className="h-8 w-full bg-semantic-bg-line" />
+              <Skeleton className="h-8 w-full bg-semantic-bg-line" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isMessagesError || isSnippetsError) {
+    return <div>Error occurred while fetching data.</div>;
+  }
 
   return (
     <div className="flex flex-col px-8 gap-6">
@@ -77,62 +93,64 @@ export const ApplicationsPageMainView = (
             Chat Playground
           </div>
           <div className="flex flex-col flex-1 p-6 gap-4">
-            {mockMessages.map((message) => (
-              <div key={message.id} className="flex gap-7 rounded-lg">
-                {message.ownerID === 'assistant' ? (
-                  <Logo variant="colourLogomark" width={38} className="mt-2" />
-                ) : (
-                  <EntityAvatar
-                    src={me.data?.profile?.avatar ?? null}
-                    className="h-8 w-8 "
-                    entityName={me.data?.name ?? ''}
-                    fallbackImg={
-                      <div className="flex h-8 w-8 mt-2 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
-                        <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
-                      </div>
-                    }
-                  />
-                )}
-                <div className="flex-1 pt-2 text-semantic-fg-primary whitespace-pre-wrap product-body-text-3-regular">
-                  {message.content}
+            <ScrollArea.Root className="h-96">
+              {mockMessages.map((message) => (
+                <div key={message.id} className="flex gap-7 rounded-lg">
+                  {message.ownerID === 'assistant' ? (
+                    <Logo variant="colourLogomark" width={38} className="mt-2" />
+                  ) : (
+                    <EntityAvatar
+                      src={me.data?.profile?.avatar ?? null}
+                      className="h-8 w-8 "
+                      entityName={me.data?.name ?? ''}
+                      fallbackImg={
+                        <div className="flex h-8 w-8 mt-2 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
+                          <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
+                        </div>
+                      }
+                    />
+                  )}
+                  <div className="flex-1 pt-2 text-semantic-fg-primary whitespace-pre-wrap product-body-text-3-regular">
+                    {message.content}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </ScrollArea.Root>
             <div className="flex justify-between items-end w-full mb-auto">
               <div className="flex gap-2">
                 <Button size="sm" variant="tertiaryGrey">
                   Citations:
                 </Button>
                 <div className="flex gap-2 flex-wrap">
-                  {displayedSnippets.map((snippet) => (
-                    <Dialog.Root key={snippet.id} open={open} onOpenChange={(open) => setOpen(open)}>
+                  {displayedCitations.map((citation) => (
+                    <Dialog.Root key={citation.id} open={open} onOpenChange={(open) => setOpen(open)}>
                       <Dialog.Trigger asChild>
                         <Tag
                           size="sm"
                           variant="default"
                           className="!rounded cursor-pointer"
-                          onClick={() => handleSnippetClick(snippet)}
+                          onClick={() => handleCitationClick(citation as CitationSnippet)}
                         >
-                          {snippet.id}
+                          {citation.id}
                         </Tag>
                       </Dialog.Trigger>
                       <Dialog.Content className="">
-                        {selectedSnippet && (
+                        {selectedCitation && (
                           <CitationDetails
-                            snippet={selectedSnippet}
+                            citation={selectedCitation}
                           />
                         )}
                       </Dialog.Content>
                     </Dialog.Root>
                   ))}
-                  {mockSnippets.length > 6 && (
+                  {mockCitations.length > 6 && (
                     <Tag
                       size="sm"
                       variant="default"
                       className="!rounded cursor-pointer p-1"
                       onClick={toggleShowAllSnippets}
                     >
-                      {showAllSnippets ? (
+                      {showAllCitations ? (
                         <Icons.X className="stroke-semantic-fg-secondary w-3 h-3 active:stroke-semantic-accent-default" />
                       ) : (
                         <Icons.Plus className="stroke-semantic-fg-secondary w-3 h-3 active:stroke-semantic-accent-default" />
@@ -181,7 +199,7 @@ export const ApplicationsPageMainView = (
               </div>
               <ScrollArea.Root className="h-96">
                 <div className="space-y-4">
-                  {mockSnippets.map((snippet) => (
+                  {mockCitations.map((snippet) => (
                     <div
                       key={snippet.id}
                       className="p-5 bg-semantic-bg-default rounded-sm shadow border border-semantic-bg-line space-y-2.5"
@@ -207,7 +225,7 @@ export const ApplicationsPageMainView = (
               <span className="text-semantic-fg-default product-button-button-2">
                 Pipeline in use:
               </span>
-              <div className="flex items-center space-x-1">
+              <div className="flex items-center space-x-1 hover:underline hover:cursor-pointer">
                 <Icons.Pipeline className="h-4 w-4 stroke-semantic-accent-default" />
                 <span className="text-semantic-accent-default product-button-button-2">
                   xiaofei/name-your-pet
