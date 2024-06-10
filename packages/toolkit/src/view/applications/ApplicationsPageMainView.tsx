@@ -45,6 +45,13 @@ export const ApplicationsPageMainView = (
 
   const displayedSnippets = showAllSnippets ? mockSnippets : mockSnippets.slice(0, 6);
 
+  const copyBotResponse = () => {
+    const botResponse = mockMessages.find((message) => message.ownerID === "assistant")?.content;
+    if (botResponse) {
+      navigator.clipboard.writeText(botResponse);
+    }
+  };
+
   return (
     <div className="flex flex-col px-8 gap-6">
       <div className="flex items-center justify-between">
@@ -62,20 +69,20 @@ export const ApplicationsPageMainView = (
             {mockMessages.map((message) => (
               <div key={message.id} className="flex gap-7 rounded-lg">
                 {message.ownerID === 'assistant' ? (
-                  <Logo variant="colourLogomark" width={38} />
+                  <Logo variant="colourLogomark" width={38} className="mt-0" />
                 ) : (
                   <EntityAvatar
                     src={message.avatar}
                     className="h-8 w-8"
                     entityName={message.ownerID}
                     fallbackImg={
-                      <div className="my-auto flex h-8 w-8 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
+                      <div className="mt-0 flex h-8 w-8 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
                         <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
                       </div>
                     }
                   />
                 )}
-                <div className="flex-1 pt-2 text-semantic-fg-primary  whitespace-pre-wrap product-body-text-3-regular">
+                <div className="flex-1 pt-2 text-semantic-fg-primary whitespace-pre-wrap product-body-text-3-regular">
                   {message.content}
                 </div>
               </div>
@@ -123,7 +130,7 @@ export const ApplicationsPageMainView = (
                   )}
                 </div>
               </div>
-              <Button variant="tertiaryGrey" size="sm" className="p-4">
+              <Button variant="tertiaryGrey" size="sm" className="p-4" onClick={copyBotResponse}>
                 <Icons.Copy07 className="h-4 w-4 stroke-semantic-fg-secondary active:stroke-semantic-accent-default" />
               </Button>
             </div>
