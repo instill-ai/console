@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Tag, Dialog, Icons } from "@instill-ai/design-system";
+import { Tag, Dialog, Icons, Skeleton } from "@instill-ai/design-system";
 import { CitationDetails } from "./CitationDetails";
 import { useMockCitations } from "../../../lib/react-query-service/applications";
 import { CitationSnippet } from "../../../lib/vdp-sdk/applications";
@@ -23,7 +23,11 @@ export const Citations: React.FC = () => {
   const displayedCitations = showAllCitations ? mockCitations : mockCitations.slice(0, 6);
 
   if (isCitationsLoading) {
-    return <div>Loading citations...</div>;
+    return (
+      <div className="flex flex-col flex-1 p-6 gap-4">
+        <Skeleton className="h-4 w-4 bg-semantic-bg-line" />
+      </div>
+    );
   }
 
   if (isCitationsError) {
