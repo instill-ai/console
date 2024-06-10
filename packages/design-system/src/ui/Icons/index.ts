@@ -64,6 +64,8 @@ import PythonIcon from "./PythonIcon";
 import type { PythonIconProps } from "./PythonIcon";
 import PlusIcon from "./PlusIcon";
 import type { PlusIconProps } from "./PlusIcon";
+import PDFIcon from "./PDFIcon";
+import type { PDFIconProps } from "./PDFIcon";
 import PyTorchIcon from "./PyTorchIcon";
 import type { PyTorchIconProps } from "./PyTorchIcon";
 import BigQueryIcon from "./BigQueryIcon";
@@ -290,6 +292,7 @@ export type {
   FilterIconProps,
   TextToImageIconProps,
   TextGenerationIconProps,
+  PDFIconProps,
 };
 
 export {
@@ -388,4 +391,5 @@ export {
   FilterIcon,
   TextToImageIcon,
   TextGenerationIcon,
+  PDFIcon,
 };
