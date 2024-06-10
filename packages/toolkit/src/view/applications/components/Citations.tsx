@@ -31,7 +31,8 @@ export const Citations: React.FC = () => {
   }
 
   return (
-    <div className="flex gap-2 flex-wrap">
+    <div className="flex gap-2 flex-wrap items-baseline">
+      <div className=" product-button-button-3 text-semantic-fg-secondary">Citations:</div>
       {displayedCitations.map((citation) => (
         <Dialog.Root key={citation.id} open={open} onOpenChange={(open) => setOpen(open)}>
           <Dialog.Trigger asChild>
@@ -50,18 +51,22 @@ export const Citations: React.FC = () => {
         </Dialog.Root>
       ))}
       {mockCitations.length > 6 && (
-        <Tag
-          size="sm"
-          variant="default"
-          className="!rounded cursor-pointer p-1"
-          onClick={toggleShowAllCitations}
-        >
-          {showAllCitations ? (
-            <Icons.X className="stroke-semantic-fg-secondary w-3 h-3 active:stroke-semantic-accent-default" />
-          ) : (
-            <Icons.Plus className="stroke-semantic-fg-secondary w-3 h-3 active:stroke-semantic-accent-default" />
-          )}
-        </Tag>
+        <div className="inline-flex items-center">
+          <Tag
+            size="sm"
+            variant="default"
+            className="!rounded cursor-pointer p-1 flex items-center"
+            onClick={toggleShowAllCitations}
+          >
+            <div className="flex items-center justify-center w-4 h-4">
+              {showAllCitations ? (
+                <Icons.X className="stroke-semantic-fg-secondary w-3 h-3 active:stroke-semantic-accent-default" />
+              ) : (
+                <Icons.Plus className="stroke-semantic-fg-secondary w-3 h-3 active:stroke-semantic-accent-default" />
+              )}
+            </div>
+          </Tag>
+        </div>
       )}
     </div>
   );
