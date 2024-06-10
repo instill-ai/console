@@ -40,7 +40,7 @@ export const Messages: React.FC<MessagesProps> = ({ me }) => {
                 {mockMessages.map((message) => (
                     <div key={message.id} className="flex gap-7 rounded-lg">
                         {message.ownerID === "assistant" ? (
-                            <Logo variant="colourLogomark" width={38} className="mt-2" />
+                            <Logo variant="colourLogomark" width={32} className="mt-2" />
                         ) : (
                             <EntityAvatar
                                 src={me?.profile?.avatar ?? null}
