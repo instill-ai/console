@@ -15,12 +15,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ mockCitations }) => {
             <div className="flex flex-col p-6 gap-4">
                 <div className="product-headings-heading-5">Statistics</div>
                 <div className="flex-col text-semantic-fg-secondary bg-semantic-bg-base-bg rounded px-4 py-2 gap-y-1">
-                    <div className="flex">
-                        <span className="font-semibold">Reply time:</span>
+                    <div className="flex whitespace-pre">
+                        <span className="font-semibold">Reply time: </span>
                         <span className="">19s</span>
                     </div>
-                    <div className="flex">
-                        <span className="font-semibold">Cost:</span>
+                    <div className="flex whitespace-pre">
+                        <span className="font-semibold">Cost: </span>
                         <span className="">$0.011</span>
                     </div>
                 </div>
