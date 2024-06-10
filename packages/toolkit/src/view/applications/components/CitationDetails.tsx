@@ -12,12 +12,12 @@ export const CitationDetails: React.FC<CitationDetailsProps> = ({ citation }) =>
     }
 
     return (
-        <div className="flex flex-col p-6 bg-semantic-bg-primary gap-4">
+        <div className="flex flex-col p-12 bg-semantic-bg-primary gap-4">
             <div className="flex items-start gap-4">
                 <div className="flex items-center justify-center w-12 h-12 rounded-[10px] shadow border border-semantic-bg-line">
                     <PDFIcon />
                 </div>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-2">
                     <div className="text-semantic-fg-disabled product-headings-heading-6">{citation.fileName}</div>
                     <div className="text-semantic-fg-primary product-headings-heading-5">{citation.sectionTitle}</div>
                 </div>

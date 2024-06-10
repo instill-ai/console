@@ -86,7 +86,7 @@ export const ApplicationsPageMainView = (
         </h2>
       </div>
       <Separator dir="horizontal" />
-      <div className="flex gap-4">
+      <div className="flex gap-2">
         <div className="flex flex-col flex-1 rounded shadow">
           <div className="p-2 bg-semantic-bg-base-bg rounded-t border-b border-semantic-bg-line product-body-text-1-semibold">
             Chat Playground
