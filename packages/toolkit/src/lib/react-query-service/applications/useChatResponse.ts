@@ -47,6 +47,24 @@ const mockCitations = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac justo vitae sem ultricies consectetur. Import your own text data or write in real-time via Webhook to enhance your LLM context. Effortlessly build a comprehensive knowledge base.",
     fileName: "file1.pdf",
     sectionTitle: "Section Title",
+    chapters: [
+      [
+        "Chapter 1:",
+        "$Airtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes.",
+        "Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.",
+      ],
+      [
+        "Chapter 2:",
+        "$Clockwise: Clockwise uses AI to optimize calendars and improve time management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized.",
+        "Clockwise's AI-powered features include smart calendar assistance, which suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.",
+      ],
+      [
+        "Chapter 3:",
+        "$Otter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews.",
+        "Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time.",
+        "Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.",
+      ],
+    ],
   },
   {
     id: "citation-02",
@@ -54,6 +72,24 @@ const mockCitations = [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     fileName: "file2.pdf",
     sectionTitle: "Section Title",
+    chapters: [
+      [
+        "Chapter 1:",
+        "$Airtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes.",
+        "Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.",
+      ],
+      [
+        "Chapter 2:",
+        "$Clockwise: Clockwise uses AI to optimize calendars and improve time management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized.",
+        "Clockwise's AI-powered features include smart calendar assistance, which suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.",
+      ],
+      [
+        "Chapter 3:",
+        "$Otter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews.",
+        "Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time.",
+        "Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.",
+      ],
+    ],
   },
   {
     id: "citation-02",
@@ -61,6 +97,24 @@ const mockCitations = [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     fileName: "file2.pdf",
     sectionTitle: "Section Title",
+    chapters: [
+      [
+        "Chapter 1:",
+        "$Airtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes.",
+        "Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.",
+      ],
+      [
+        "Chapter 2:",
+        "$Clockwise: Clockwise uses AI to optimize calendars and improve time management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized.",
+        "Clockwise's AI-powered features include smart calendar assistance, which suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.",
+      ],
+      [
+        "Chapter 3:",
+        "$Otter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews.",
+        "Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time.",
+        "Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.",
+      ],
+    ],
   },
   {
     id: "citation-02",
@@ -68,6 +122,24 @@ const mockCitations = [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     fileName: "file2.pdf",
     sectionTitle: "Section Title",
+    chapters: [
+      [
+        "Chapter 1:",
+        "$Airtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes.",
+        "Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.",
+      ],
+      [
+        "Chapter 2:",
+        "$Clockwise: Clockwise uses AI to optimize calendars and improve time management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized.",
+        "Clockwise's AI-powered features include smart calendar assistance, which suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.",
+      ],
+      [
+        "Chapter 3:",
+        "$Otter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews.",
+        "Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time.",
+        "Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.",
+      ],
+    ],
   },
   {
     id: "citation-02",
@@ -75,6 +147,24 @@ const mockCitations = [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     fileName: "file2.pdf",
     sectionTitle: "Section Title",
+    chapters: [
+      [
+        "Chapter 1:",
+        "$Airtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes.",
+        "Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.",
+      ],
+      [
+        "Chapter 2:",
+        "$Clockwise: Clockwise uses AI to optimize calendars and improve time management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized.",
+        "Clockwise's AI-powered features include smart calendar assistance, which suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.",
+      ],
+      [
+        "Chapter 3:",
+        "$Otter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews.",
+        "Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time.",
+        "Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.",
+      ],
+    ],
   },
   {
     id: "citation-02",
@@ -82,6 +172,24 @@ const mockCitations = [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     fileName: "file2.pdf",
     sectionTitle: "Section Title",
+    chapters: [
+      [
+        "Chapter 1:",
+        "$Airtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes.",
+        "Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.",
+      ],
+      [
+        "Chapter 2:",
+        "$Clockwise: Clockwise uses AI to optimize calendars and improve time management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized.",
+        "Clockwise's AI-powered features include smart calendar assistance, which suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.",
+      ],
+      [
+        "Chapter 3:",
+        "$Otter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews.",
+        "Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time.",
+        "Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.",
+      ],
+    ],
   },
   {
     id: "citation-02",
@@ -89,6 +197,24 @@ const mockCitations = [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     fileName: "file2.pdf",
     sectionTitle: "Section Title",
+    chapters: [
+      [
+        "Chapter 1:",
+        "$Airtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes.",
+        "Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.",
+      ],
+      [
+        "Chapter 2:",
+        "$Clockwise: Clockwise uses AI to optimize calendars and improve time management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized.",
+        "Clockwise's AI-powered features include smart calendar assistance, which suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.",
+      ],
+      [
+        "Chapter 3:",
+        "$Otter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews.",
+        "Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time.",
+        "Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.",
+      ],
+    ],
   },
   {
     id: "citation-02",
@@ -96,6 +222,24 @@ const mockCitations = [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     fileName: "file2.pdf",
     sectionTitle: "Section Title",
+    chapters: [
+      [
+        "Chapter 1:",
+        "$Airtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes.",
+        "Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.",
+      ],
+      [
+        "Chapter 2:",
+        "$Clockwise: Clockwise uses AI to optimize calendars and improve time management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized.",
+        "Clockwise's AI-powered features include smart calendar assistance, which suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.",
+      ],
+      [
+        "Chapter 3:",
+        "$Otter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews.",
+        "Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time.",
+        "Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.",
+      ],
+    ],
   },
   {
     id: "citation-02",
@@ -103,6 +247,24 @@ const mockCitations = [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     fileName: "file2.pdf",
     sectionTitle: "Section Title",
+    chapters: [
+      [
+        "Chapter 1:",
+        "$Airtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes.",
+        "Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.",
+      ],
+      [
+        "Chapter 2:",
+        "$Clockwise: Clockwise uses AI to optimize calendars and improve time management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized.",
+        "Clockwise's AI-powered features include smart calendar assistance, which suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.",
+      ],
+      [
+        "Chapter 3:",
+        "$Otter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews.",
+        "Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time.",
+        "Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.",
+      ],
+    ],
   },
   {
     id: "citation-02",
@@ -110,6 +272,24 @@ const mockCitations = [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     fileName: "file2.pdf",
     sectionTitle: "Section Title",
+    chapters: [
+      [
+        "Chapter 1:",
+        "$Airtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes.",
+        "Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.",
+      ],
+      [
+        "Chapter 2:",
+        "$Clockwise: Clockwise uses AI to optimize calendars and improve time management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized.",
+        "Clockwise's AI-powered features include smart calendar assistance, which suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.",
+      ],
+      [
+        "Chapter 3:",
+        "$Otter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews.",
+        "Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time.",
+        "Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.",
+      ],
+    ],
   },
   {
     id: "citation-02",
@@ -117,6 +297,24 @@ const mockCitations = [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     fileName: "file2.pdf",
     sectionTitle: "Section Title",
+    chapters: [
+      [
+        "Chapter 1:",
+        "$Airtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes.",
+        "Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.",
+      ],
+      [
+        "Chapter 2:",
+        "$Clockwise: Clockwise uses AI to optimize calendars and improve time management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized.",
+        "Clockwise's AI-powered features include smart calendar assistance, which suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.",
+      ],
+      [
+        "Chapter 3:",
+        "$Otter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews.",
+        "Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time.",
+        "Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.",
+      ],
+    ],
   },
   {
     id: "citation-02",
@@ -124,6 +322,24 @@ const mockCitations = [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     fileName: "file2.pdf",
     sectionTitle: "Section Title",
+    chapters: [
+      [
+        "Chapter 1:",
+        "$Airtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes.",
+        "Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.",
+      ],
+      [
+        "Chapter 2:",
+        "$Clockwise: Clockwise uses AI to optimize calendars and improve time management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized.",
+        "Clockwise's AI-powered features include smart calendar assistance, which suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.",
+      ],
+      [
+        "Chapter 3:",
+        "$Otter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews.",
+        "Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time.",
+        "Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.",
+      ],
+    ],
   },
   {
     id: "citation-02",
@@ -131,6 +347,24 @@ const mockCitations = [
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     fileName: "file2.pdf",
     sectionTitle: "Section Title",
+    chapters: [
+      [
+        "Chapter 1:",
+        "$Airtable: This company has developed a platform that combines database functionality with the familiarity of a spreadsheet. Users can create collaborative, customizable databases to organize their work and streamline their processes.",
+        "Airtable leverages machine learning and AI to power smart features such as automated workflows, predictive suggestions, and natural language processing for data search and filtering.",
+      ],
+      [
+        "Chapter 2:",
+        "$Clockwise: Clockwise uses AI to optimize calendars and improve time management for teams. Its platform automatically schedules focus time for deep work, while also ensuring that important meetings are prioritized.",
+        "Clockwise's AI-powered features include smart calendar assistance, which suggests optimal meeting times and durations, and time-blocking capabilities that help users allocate their time efficiently.",
+      ],
+      [
+        "Chapter 3:",
+        "$Otter.ai: Otter.ai offers an AI-powered assistant that generates rich transcripts from voice conversations, such as meetings and interviews.",
+        "Its speech recognition technology can distinguish between multiple speakers and convert speech to text in real time.",
+        "Otter.ai's productivity benefits include efficient meeting note-taking, improved accessibility, and the ability to quickly search and share voice conversations via text.",
+      ],
+    ],
   },
 ];
 

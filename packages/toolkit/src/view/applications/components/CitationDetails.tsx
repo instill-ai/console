@@ -7,6 +7,10 @@ type CitationDetailsProps = {
 };
 
 export const CitationDetails: React.FC<CitationDetailsProps> = ({ citation }) => {
+    if (!citation.chapters) {
+        return null;
+    }
+
     return (
         <div className="flex flex-col p-6 bg-semantic-bg-primary gap-4">
             <div className="flex items-start gap-4">
@@ -21,7 +25,21 @@ export const CitationDetails: React.FC<CitationDetailsProps> = ({ citation }) =>
             <div className="flex flex-col gap-4">
                 <ScrollArea.Root>
                     <div className="p-4 text-semantic-fg-primary product-body-text-3-regular">
-                        {citation.content}
+                        {citation.chapters.map((chapter, index) => (
+                            <div key={index} className="mb-4">
+                                {chapter
+                                    .filter((line) => !line.startsWith('Chapter'))
+                                    .map((line, lineIndex) => (
+                                        <React.Fragment key={lineIndex}>
+                                            {line.startsWith('$') ? (
+                                                <span className="bg-semantic-bg-secondary">{line.slice(1)}</span>
+                                            ) : (
+                                                <div>{line}</div>
+                                            )}
+                                        </React.Fragment>
+                                    ))}
+                            </div>
+                        ))}
                     </div>
                 </ScrollArea.Root>
             </div>

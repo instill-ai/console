@@ -33,15 +33,14 @@ export const ApplicationsPageMainView = (
   });
 
   const { data: mockMessages = [], isLoading: isMessagesLoading, isError: isMessagesError } = useMockMessages();
-  const { data: mockCitations = [], isLoading: isSnippetsLoading, isError: isSnippetsError } = useMockCitations();
-
+  const { data: mockCitations = [], isLoading: isCitationsLoading, isError: isCitationsError } = useMockCitations();
 
   const handleCitationClick = (citation: CitationSnippet) => {
     setSelectedCitation(citation);
     setOpen(true);
   };
 
-  const toggleShowAllSnippets = () => {
+  const toggleShowAllCitations = () => {
     setShowAllCitations((prev) => !prev);
   };
 
@@ -54,7 +53,7 @@ export const ApplicationsPageMainView = (
     }
   };
 
-  if (isMessagesLoading || isSnippetsLoading) {
+  if (isMessagesLoading || isCitationsLoading) {
     return (
       <div className="flex flex-col px-8 gap-6">
         <div className="flex items-center justify-between">
@@ -75,7 +74,7 @@ export const ApplicationsPageMainView = (
     );
   }
 
-  if (isMessagesError || isSnippetsError) {
+  if (isMessagesError || isCitationsError) {
     return <div>Error occurred while fetching data.</div>;
   }
 
@@ -111,7 +110,15 @@ export const ApplicationsPageMainView = (
                     />
                   )}
                   <div className="flex-1 pt-2 text-semantic-fg-primary whitespace-pre-wrap product-body-text-3-regular">
-                    {message.content}
+                    {message.content.split("\n").map((line, index) => (
+                      <React.Fragment key={index}>
+                        {line.startsWith("$") ? (
+                          <span className="bg-semantic-bg-secondary">{line.slice(1)}</span>
+                        ) : (
+                          <div>{line}</div>
+                        )}
+                      </React.Fragment>
+                    ))}
                   </div>
                 </div>
               ))}
@@ -136,9 +143,7 @@ export const ApplicationsPageMainView = (
                       </Dialog.Trigger>
                       <Dialog.Content className="">
                         {selectedCitation && (
-                          <CitationDetails
-                            citation={selectedCitation}
-                          />
+                          <CitationDetails citation={selectedCitation} />
                         )}
                       </Dialog.Content>
                     </Dialog.Root>
@@ -148,7 +153,7 @@ export const ApplicationsPageMainView = (
                       size="sm"
                       variant="default"
                       className="!rounded cursor-pointer p-1"
-                      onClick={toggleShowAllSnippets}
+                      onClick={toggleShowAllCitations}
                     >
                       {showAllCitations ? (
                         <Icons.X className="stroke-semantic-fg-secondary w-3 h-3 active:stroke-semantic-accent-default" />
@@ -199,17 +204,17 @@ export const ApplicationsPageMainView = (
               </div>
               <ScrollArea.Root className="h-96">
                 <div className="space-y-4">
-                  {mockCitations.map((snippet) => (
+                  {mockCitations.map((citation) => (
                     <div
-                      key={snippet.id}
+                      key={citation.id}
                       className="p-5 bg-semantic-bg-default rounded-sm shadow border border-semantic-bg-line space-y-2.5"
                     >
                       <Tag size="md" variant="default" className="!rounded bg-semantic-bg-base-bg">
-                        Top{snippet.id.split("-")[1]}: 0.00{snippet.id.split("-")[1]}
+                        Top{citation.id.split("-")[1]}: 0.00{citation.id.split("-")[1]}
                       </Tag>
                       <Separator />
                       <p className="product-body-text-3-regular text-semantic-fg-secondary">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac justo vitae sem ultricies consectetur. Import your own text data or write in real-time via Webhook to enhance your LLM context. Effortlessly build a comprehensive knowledge base.
+                        {citation.content}
                       </p>
                       <div className="flex justify-end">
                         <Tag size="sm" variant="lightGreen" className="!rounded gap-x-1">
