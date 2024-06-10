@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button, Icons, Input, Separator, Tag, Dialog, ScrollArea } from "@instill-ai/design-system";
-import { GeneralAppPageProp, useAppEntity } from "../../lib";
+import { GeneralAppPageProp, InstillStore, useAppEntity, useAuthenticatedUser, useInstillStore, useShallow } from "../../lib";
 import { EntityAvatar } from "../../components";
 import { CitationDetails, mockSnippets } from "./components/CitationDetails";
 import { Logo } from "@instill-ai/design-system";
@@ -22,6 +22,11 @@ const mockMessages = [
   },
 ];
 
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
+
 export const ApplicationsPageMainView = (
   props: ApplicationsPageMainViewProps
 ) => {
@@ -29,10 +34,16 @@ export const ApplicationsPageMainView = (
 
   const entity = useAppEntity();
 
+  const { enabledQuery } = useInstillStore(useShallow(selector));
 
   const [selectedSnippet, setSelectedSnippet] = React.useState<typeof mockSnippets[0] | null>(null);
   const [open, setOpen] = React.useState(false);
   const [showAllSnippets, setShowAllSnippets] = React.useState(false);
+
+  const me = useAuthenticatedUser({
+    enabled: enabledQuery,
+    accessToken,
+  });
 
   const handleSnippetClick = (snippet: typeof mockSnippets[0]) => {
     setSelectedSnippet(snippet);
@@ -69,14 +80,14 @@ export const ApplicationsPageMainView = (
             {mockMessages.map((message) => (
               <div key={message.id} className="flex gap-7 rounded-lg">
                 {message.ownerID === 'assistant' ? (
-                  <Logo variant="colourLogomark" width={38} className="mt-0" />
+                  <Logo variant="colourLogomark" width={38} className="mt-2" />
                 ) : (
                   <EntityAvatar
-                    src={message.avatar}
-                    className="h-8 w-8"
-                    entityName={message.ownerID}
+                    src={me.data?.profile?.avatar ?? null}
+                    className="h-8 w-8 "
+                    entityName={me.data?.name ?? ''}
                     fallbackImg={
-                      <div className="mt-0 flex h-8 w-8 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
+                      <div className="flex h-8 w-8 mt-2 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
                         <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
                       </div>
                     }
