@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Icons, Input, Separator, Tag, Dialog } from "@instill-ai/design-system";
+import { Button, Icons, Input, Separator, Tag, Dialog, ScrollArea } from "@instill-ai/design-system";
 import { GeneralAppPageProp, useAppEntity } from "../../lib";
 import { EntityAvatar } from "../../components";
 import { CitationDetails, mockSnippets } from "./components/CitationDetails";
@@ -32,12 +32,18 @@ export const ApplicationsPageMainView = (
 
   const [selectedSnippet, setSelectedSnippet] = React.useState<typeof mockSnippets[0] | null>(null);
   const [open, setOpen] = React.useState(false);
+  const [showAllSnippets, setShowAllSnippets] = React.useState(false);
 
   const handleSnippetClick = (snippet: typeof mockSnippets[0]) => {
     setSelectedSnippet(snippet);
     setOpen(true);
   };
 
+  const toggleShowAllSnippets = () => {
+    setShowAllSnippets((prev) => !prev);
+  };
+
+  const displayedSnippets = showAllSnippets ? mockSnippets : mockSnippets.slice(0, 6);
 
   return (
     <div className="flex flex-col px-8 gap-6">
@@ -58,8 +64,8 @@ export const ApplicationsPageMainView = (
                 {message.ownerID === 'assistant' ? (
                   <Logo variant="colourLogomark" width={38} />
                 ) : (
-                    <EntityAvatar
-                      src={message.avatar}
+                  <EntityAvatar
+                    src={message.avatar}
                     className="h-8 w-8"
                     entityName={message.ownerID}
                     fallbackImg={
@@ -80,7 +86,7 @@ export const ApplicationsPageMainView = (
                   Citations:
                 </Button>
                 <div className="flex gap-2 flex-wrap">
-                  {mockSnippets.map((snippet) => (
+                  {displayedSnippets.map((snippet) => (
                     <Dialog.Root key={snippet.id} open={open} onOpenChange={(open) => setOpen(open)}>
                       <Dialog.Trigger asChild>
                         <Tag
@@ -101,11 +107,24 @@ export const ApplicationsPageMainView = (
                       </Dialog.Content>
                     </Dialog.Root>
                   ))}
-                  <Tag size="sm" variant="default" className="!rounded cursor-pointer p-1"><Icons.X className="stroke-semantic-fg-secondary w-3 h-3" /></Tag>
+                  {mockSnippets.length > 6 && (
+                    <Tag
+                      size="sm"
+                      variant="default"
+                      className="!rounded cursor-pointer p-1"
+                      onClick={toggleShowAllSnippets}
+                    >
+                      {showAllSnippets ? (
+                        <Icons.X className="stroke-semantic-fg-secondary w-3 h-3 active:stroke-semantic-accent-default" />
+                      ) : (
+                        <Icons.Plus className="stroke-semantic-fg-secondary w-3 h-3 active:stroke-semantic-accent-default" />
+                      )}
+                    </Tag>
+                  )}
                 </div>
               </div>
               <Button variant="tertiaryGrey" size="sm" className="p-4">
-                <Icons.Copy07 className="h-4 w-4 stroke-semantic-fg-secondary" />
+                <Icons.Copy07 className="h-4 w-4 stroke-semantic-fg-secondary active:stroke-semantic-accent-default" />
               </Button>
             </div>
             <Input.Root className="flex items-center gap-2 !rounded px-2 py-4">
@@ -142,25 +161,29 @@ export const ApplicationsPageMainView = (
               <div className="product-headings-heading-5">
                 Retrieved Snippets
               </div>
-              {mockSnippets.slice(0, 2).map((snippet) => (
-                <div
-                  key={snippet.id}
-                  className="p-5 bg-semantic-bg-default rounded-sm shadow border border-semantic-bg-line space-y-2.5"
-                >
-                  <Tag size="md" variant="default" className="!rounded bg-semantic-bg-base-bg">
-                    Top{snippet.id.split("-")[1]}: 0.00{snippet.id.split("-")[1]}
-                  </Tag>
-                  <Separator />
-                  <p className=" product-body-text-3-regular text-semantic-fg-secondary">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac justo vitae sem ultricies consectetur. Import your own text data or write in real-time via Webhook to enhance your LLM context. Effortlessly build a comprehensive knowledge base.
-                  </p>
-                  <div className="flex justify-end">
-                    <Tag size="sm" variant="lightGreen" className="!rounded gap-x-1">
-                      <Icons.File05 className="stroke-semantic-success-hover h-2.5 w-2.5" />Original file name.pdf
-                    </Tag>
-                  </div>
+              <ScrollArea.Root className="h-96">
+                <div className="space-y-4">
+                  {mockSnippets.map((snippet) => (
+                    <div
+                      key={snippet.id}
+                      className="p-5 bg-semantic-bg-default rounded-sm shadow border border-semantic-bg-line space-y-2.5"
+                    >
+                      <Tag size="md" variant="default" className="!rounded bg-semantic-bg-base-bg">
+                        Top{snippet.id.split("-")[1]}: 0.00{snippet.id.split("-")[1]}
+                      </Tag>
+                      <Separator />
+                      <p className="product-body-text-3-regular text-semantic-fg-secondary">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac justo vitae sem ultricies consectetur. Import your own text data or write in real-time via Webhook to enhance your LLM context. Effortlessly build a comprehensive knowledge base.
+                      </p>
+                      <div className="flex justify-end">
+                        <Tag size="sm" variant="lightGreen" className="!rounded gap-x-1">
+                          <Icons.File05 className="stroke-semantic-success-hover h-2.5 w-2.5" />Original file name.pdf
+                        </Tag>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </ScrollArea.Root>
             </div>
             <div className="flex-col items-center gap-2">
               <span className="text-semantic-fg-default product-button-button-2">
