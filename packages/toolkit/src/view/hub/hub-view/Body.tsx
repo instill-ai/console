@@ -433,7 +433,7 @@ export const Body = () => {
                         <ToggleGroup.Root
                           type="single"
                           defaultValue={exploreDataType}
-                          onValueChange={(value: string) =>
+                          onValueChange={(value: DataType) =>
                             setExploreDataType(value)
                           }
                         >
