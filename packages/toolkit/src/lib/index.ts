@@ -22,3 +22,5 @@ export * from "./toastInstillError";
 export * from "./useResourceAdditionalForm";
 export * from "./useRouteInfo";
 export * from "./getCaptializeTwoWordsFromName";
+export * from "./convertLongNumberToK";
+export * from "./formatNumberToLocale";

@@ -22,6 +22,7 @@ import { CodeSnippet02 } from "./CodeSnippet02";
 import { CodeSquare02 } from "./CodeSquare02";
 import { Coins01 } from "./Coins01";
 import { CoinsStacked01 } from "./CoinsStacked01";
+import { Coins01 } from "./Coins01";
 import { Copy06 } from "./Copy06";
 import { Copy07 } from "./Copy07";
 import { CheckCircle } from "./CheckCircle";
@@ -158,6 +159,7 @@ export const Icons = {
   CodeSquare02,
   Coins01,
   CoinsStacked01,
+  Coins01,
   Copy06,
   Copy07,
   Cube01,

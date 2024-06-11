@@ -10,6 +10,7 @@ import {
   Popover,
   Separator,
   Tabs,
+  ToggleGroup,
 } from "@instill-ai/design-system";
 
 import {
@@ -386,11 +387,6 @@ export const Body = () => {
   // The design-token we have right now doesn't support alpha value, so we need to use hex here
   const tabTriggerStyle =
     "text-semantic-fg-disabled product-body-text-3-semibold border-black data-[state=active]:text-semantic-fg-primary border-b-2 border-opacity-0 data-[state=active]:border-opacity-100 data-[state=active]:border-[#316FED] pb-2";
-  const dataTypeTriggerStyle =
-    "px-4 h-full border border-semantic-bg-line text-base font-semibold flex items-center justify-center";
-  const dataTypeTriggerStyleActive =
-    "cursor-default bg-semantic-accent-bg text-semantic-accent-default";
-  const dataTypeTriggerStyleInactive = "bg-semantic-bg-primary cursor-pointer";
 
   return (
     <div className="flex justify-between">
@@ -433,31 +429,21 @@ export const Body = () => {
                 <div className="sticky top-6">
                   <div className="my-6 h-10">
                     <Tabs.Content value="explore">
-                      <div className="flex h-10 flex-row justify-end">
-                        <div
-                          onClick={() => setExploreDataType("pipelines")}
-                          className={cn(
-                            dataTypeTriggerStyle,
-                            "rounded-l",
-                            exploreDataType === "pipelines"
-                              ? dataTypeTriggerStyleActive
-                              : dataTypeTriggerStyleInactive
-                          )}
+                      <div className="flex flex-row justify-end">
+                        <ToggleGroup.Root
+                          type="single"
+                          defaultValue={exploreDataType}
+                          onValueChange={(value: string) =>
+                            setExploreDataType(value)
+                          }
                         >
-                          Pipelines
-                        </div>
-                        <div
-                          onClick={() => setExploreDataType("models")}
-                          className={cn(
-                            dataTypeTriggerStyle,
-                            "rounded-r border-l-0",
-                            exploreDataType === "models"
-                              ? dataTypeTriggerStyleActive
-                              : dataTypeTriggerStyleInactive
-                          )}
-                        >
-                          Models
-                        </div>
+                          <ToggleGroup.Item value="pipelines">
+                            Pipelines
+                          </ToggleGroup.Item>
+                          <ToggleGroup.Item value="models">
+                            Models
+                          </ToggleGroup.Item>
+                        </ToggleGroup.Root>
                       </div>
                     </Tabs.Content>
                   </div>
