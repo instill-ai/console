@@ -9,7 +9,7 @@ import {
   UpdateUserPipelinePayload,
   sendAmplitudeData,
   useAmplitudeCtx,
-  useAppEntity,
+  useRouteInfo,
 } from "../../../lib";
 import { useToast } from "@instill-ai/design-system";
 import { RealTimeTextEditor } from "../../../components";
@@ -29,17 +29,17 @@ export const Readme = ({
   const { accessToken } = useInstillStore(useShallow(selector));
   const { toast } = useToast();
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   const updateUserPipeline = useUpdateUserPipeline();
 
   const onUpdatePipelineReadme = async (readme: string) => {
-    if (!entity.isSuccess || !accessToken || !entity.data.pipelineName) {
+    if (!routeInfo.isSuccess || !accessToken || !routeInfo.data.pipelineName) {
       return;
     }
 
     const payload: UpdateUserPipelinePayload = {
-      name: entity.data.pipelineName,
+      name: routeInfo.data.pipelineName,
       readme,
     };
 
@@ -61,7 +61,9 @@ export const Readme = ({
   return (
     <RealTimeTextEditor
       onSave={onUpdatePipelineReadme}
-      isReady={entity.isSuccess && !!accessToken && !!entity.data.pipelineName}
+      isReady={
+        routeInfo.isSuccess && !!accessToken && !!routeInfo.data.pipelineName
+      }
       isEditable={isEditable}
       content={readme}
     />

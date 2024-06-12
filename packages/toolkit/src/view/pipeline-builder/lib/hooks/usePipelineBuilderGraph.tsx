@@ -11,7 +11,7 @@ import {
   useInstillStore,
 } from "../../../../lib/use-instill-store";
 import { useShallow } from "zustand/react/shallow";
-import { useAppEntity } from "../../../../lib";
+import { useRouteInfo } from "../../../../lib";
 import { createNodesFromPipelineRecipe } from "../createNodesFromPipelineRecipe";
 
 const selector = (store: InstillStore) => ({
@@ -45,11 +45,11 @@ export function usePipelineBuilderGraph() {
 
   const [graphIsInitialized, setGraphIsInitialized] = React.useState(false);
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   const pipeline = useUserPipeline({
-    enabled: enabledQuery && !pipelineIsNew && entity.isSuccess,
-    pipelineName: entity.data.pipelineName,
+    enabled: enabledQuery && !pipelineIsNew && routeInfo.isSuccess,
+    pipelineName: routeInfo.data.pipelineName,
     accessToken,
     retry: false,
   });
@@ -58,7 +58,7 @@ export function usePipelineBuilderGraph() {
   React.useEffect(() => {
     if (
       !pipeline.isSuccess ||
-      !entity.isSuccess ||
+      !routeInfo.isSuccess ||
       graphIsInitialized ||
       pipelineIsNew
     ) {
@@ -75,9 +75,11 @@ export function usePipelineBuilderGraph() {
 
     // Set the pipelineID before the graph is initialized
     if (!pipeline.isSuccess) {
-      if (entity.data.id) {
+      if (routeInfo.data.resourceId) {
         updatePipelineId(() =>
-          entity.data.id ? entity.data.id.toString() : null
+          routeInfo.data.resourceId
+            ? routeInfo.data.resourceId.toString()
+            : null
         );
       }
       return;
@@ -124,8 +126,8 @@ export function usePipelineBuilderGraph() {
         console.error(err);
       });
   }, [
-    entity.isSuccess,
-    entity.data,
+    routeInfo.isSuccess,
+    routeInfo.data,
     graphIsInitialized,
     pipelineIsNew,
     pipeline.data,

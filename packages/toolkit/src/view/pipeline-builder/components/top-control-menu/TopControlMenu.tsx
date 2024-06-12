@@ -10,7 +10,7 @@ import { PublishPipelineDialog, SelectComponentDialog } from "../dialogs";
 import {
   InstillStore,
   Nullable,
-  useAppEntity,
+  useRouteInfo,
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
   useShallow,
@@ -37,7 +37,7 @@ export const TopControlMenu = ({
     useShallow(selector)
   );
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
 
   return (
@@ -48,9 +48,11 @@ export const TopControlMenu = ({
             variant="tertiaryGrey"
             onClick={() => {
               if (pipelineIsNew) {
-                navigate(`/${entity.data.entity}/pipelines`);
+                navigate(`/${routeInfo.data.namespaceId}/pipelines`);
               } else {
-                navigate(`/${entity.data.entity}/pipelines/${entity.data.id}`);
+                navigate(
+                  `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`
+                );
               }
             }}
             className="flex cursor-pointer"
@@ -80,9 +82,9 @@ export const TopControlMenu = ({
         </div>
       </div>
       <PublishPipelineDialog
-        pipelineName={entity.data.pipelineName}
-        entity={entity.data.entity}
-        id={entity.data.id}
+        pipelineName={routeInfo.data.pipelineName}
+        entity={routeInfo.data.namespaceId}
+        id={routeInfo.data.resourceId}
       />
     </React.Fragment>
   );

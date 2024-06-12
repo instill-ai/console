@@ -6,7 +6,7 @@ import { Button, Icons } from "@instill-ai/design-system";
 import {
   GeneralRecord,
   InstillStore,
-  useAppEntity,
+  useRouteInfo,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
@@ -26,7 +26,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const Toolkit = () => {
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
   const {
     currentVersion,
     nodes,
@@ -37,7 +37,7 @@ export const Toolkit = () => {
   const [toolKitIsOpen, setToolKitIsOpen] = React.useState(false);
 
   const codeSnippte = React.useMemo(() => {
-    if (!entity.isSuccess || !entity.data.pipelineName) {
+    if (!routeInfo.isSuccess || !routeInfo.data.pipelineName) {
       return "";
     }
 
@@ -148,15 +148,15 @@ export const Toolkit = () => {
 
     snippet = snippet
       .replace(/\{vdp-pipeline-base-url\}/g, env("NEXT_PUBLIC_API_GATEWAY_URL"))
-      .replace(/\{pipeline-name\}/g, entity.data.pipelineName)
+      .replace(/\{pipeline-name\}/g, routeInfo.data.pipelineName)
       .replace(/\{input-array\}/g, inputsString)
       .replace(/\{trigger-endpoint\}/g, triggerEndpoint);
 
     return snippet;
   }, [
     nodes,
-    entity.isSuccess,
-    entity.data.pipelineName,
+    routeInfo.isSuccess,
+    routeInfo.data.pipelineName,
     currentVersion,
     isEditingIterator,
     tempSavedNodesForEditingIteratorFlow,

@@ -10,7 +10,7 @@ import {
   InstillStore,
   Nullable,
   useInstillStore,
-  useAppEntity,
+  useRouteInfo,
   useSmartHint,
   useUserPipeline,
   useUserSecrets,
@@ -62,12 +62,12 @@ export const PipelineBuilderMainView = () => {
 
   useSmartHint();
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   const entitySecrets = useUserSecrets({
-    entityName: entity.data.entityName,
+    entityName: routeInfo.data.namespaceName,
     accessToken,
-    enabled: enabledQuery,
+    enabled: enabledQuery && routeInfo.isSuccess,
   });
 
   React.useEffect(() => {
@@ -76,8 +76,8 @@ export const PipelineBuilderMainView = () => {
   }, [entitySecrets.isSuccess, entitySecrets.data, updateEntitySecrets]);
 
   const pipeline = useUserPipeline({
-    enabled: enabledQuery && entity.isSuccess && !pipelineIsNew,
-    pipelineName: entity.data.pipelineName,
+    enabled: enabledQuery && routeInfo.isSuccess && !pipelineIsNew,
+    pipelineName: routeInfo.data.pipelineName,
     accessToken,
     retry: false,
   });

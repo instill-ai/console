@@ -5,7 +5,7 @@ import { Button, DropdownMenu, Icons } from "@instill-ai/design-system";
 import {
   InstillStore,
   Pipeline,
-  useAppEntity,
+  useRouteInfo,
   useInstillStore,
   useShallow,
 } from "./../../../lib";
@@ -35,7 +35,7 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
     useShallow(selector)
   );
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   return (
     <React.Fragment>
@@ -77,17 +77,17 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </div>
-      {entity.isSuccess ? (
+      {routeInfo.isSuccess ? (
         <React.Fragment>
           <SharePipelineDialog
-            pipelineName={entity.data.pipelineName}
-            entity={entity.data.entity}
-            id={entity.data.id}
+            pipelineName={routeInfo.data.pipelineName}
+            entity={routeInfo.data.namespaceId}
+            id={routeInfo.data.resourceId}
           />
           <PublishPipelineDialog
-            pipelineName={entity.data.pipelineName}
-            entity={entity.data.entity}
-            id={entity.data.id}
+            pipelineName={routeInfo.data.pipelineName}
+            entity={routeInfo.data.namespaceId}
+            id={routeInfo.data.resourceId}
           />
           <ClonePipelineDialog
             pipeline={pipeline}

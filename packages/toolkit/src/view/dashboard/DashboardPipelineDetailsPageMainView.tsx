@@ -10,7 +10,7 @@ import {
   getPreviousTimeframe,
   getTimeInRFC3339Format,
   getTriggersSummary,
-  useAppEntity,
+  useRouteInfo,
   usePipelineTriggerRecords,
 } from "../../lib";
 import { PageTitle } from "../../components";
@@ -41,15 +41,15 @@ export const DashboardPipelineDetailsPageMainView = (
   const [queryStringPrevious, setQueryStringPrevious] =
     React.useState<Nullable<string>>(null);
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   React.useEffect(() => {
-    if (!entity.isSuccess) {
+    if (!routeInfo.isSuccess) {
       return;
     }
 
-    let queryParams = `pipeline_id='${entity.data.id}' AND owner_name='${entity.data.entityName}'`;
-    let queryParamsPrevious = `pipeline_id='${entity.data.id}' AND owner_name='${entity.data.entityName}'`;
+    let queryParams = `pipeline_id='${routeInfo.data.resourceId}' AND owner_name='${routeInfo.data.namespaceName}'`;
+    let queryParamsPrevious = `pipeline_id='${routeInfo.data.resourceId}' AND owner_name='${routeInfo.data.namespaceName}'`;
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(
@@ -71,26 +71,20 @@ export const DashboardPipelineDetailsPageMainView = (
 
     setQueryString(queryParams);
     setQueryStringPrevious(queryParamsPrevious);
-  }, [
-    id,
-    selectedTimeOption,
-    entity.isSuccess,
-    entity.data.entityName,
-    entity.data.id,
-  ]);
+  }, [id, selectedTimeOption, routeInfo.isSuccess, routeInfo.data]);
 
   /* -------------------------------------------------------------------------
    * Query pipeline data
    * -----------------------------------------------------------------------*/
 
   const pipelineTriggerRecords = usePipelineTriggerRecords({
-    enabled: enableQuery && entity.isSuccess && !!queryString,
+    enabled: enableQuery && routeInfo.isSuccess && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
   });
 
   const previousPipelineTriggerRecords = usePipelineTriggerRecords({
-    enabled: enableQuery && entity.isSuccess && !!queryStringPrevious,
+    enabled: enableQuery && routeInfo.isSuccess && !!queryStringPrevious,
     filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,
   });

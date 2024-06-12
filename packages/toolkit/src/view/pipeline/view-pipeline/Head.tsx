@@ -25,7 +25,7 @@ import {
   useUser,
   useAuthenticatedUser,
   useUserPipeline,
-  useAppEntity,
+  useRouteInfo,
   useNavigateBackAfterLogin,
 } from "../../../lib";
 import { ClonePipelineDialog, EntityAvatar } from "../../../components";
@@ -56,15 +56,15 @@ export const Head = ({
 
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   const user = useUser({
-    userName: entity.isSuccess ? entity.data.entityName : null,
+    userName: routeInfo.isSuccess ? routeInfo.data.namespaceName : null,
     accessToken,
     enabled:
       enabledQuery &&
-      entity.isSuccess &&
-      entity.data.namespaceType === "NAMESPACE_USER",
+      routeInfo.isSuccess &&
+      routeInfo.data.namespaceType === "NAMESPACE_USER",
   });
 
   const me = useAuthenticatedUser({
@@ -74,25 +74,25 @@ export const Head = ({
   });
 
   const organization = useOrganization({
-    organizationID: entity.isSuccess ? entity.data.entity : null,
+    organizationID: routeInfo.isSuccess ? routeInfo.data.namespaceId : null,
     accessToken,
     enabled:
       enabledQuery &&
-      entity.isSuccess &&
-      entity.data.namespaceType === "NAMESPACE_ORGANIZATION",
+      routeInfo.isSuccess &&
+      routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION",
   });
 
   const pipeline = useUserPipeline({
-    pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
+    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
     accessToken,
-    enabled: enabledQuery && entity.isSuccess,
+    enabled: enabledQuery && routeInfo.isSuccess,
     shareCode: shareCode ?? undefined,
   });
 
   const releases = useSortedReleases({
-    pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
+    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
     accessToken,
-    enabledQuery: enabledQuery && entity.isSuccess,
+    enabledQuery: enabledQuery && routeInfo.isSuccess,
     shareCode: shareCode ?? undefined,
   });
 
@@ -109,7 +109,7 @@ export const Head = ({
         variant: "alert-success",
         size: "large",
       });
-      router.push(`/${entity.data.entity}/pipelines`);
+      router.push(`/${routeInfo.data.namespaceId}/pipelines`);
     } catch (error) {
       toastInstillError({
         title: "Something went wrong when delete the pipeline",
@@ -136,8 +136,9 @@ export const Head = ({
             <div className="mr-auto flex flex-col gap-y-3">
               <div className="flex w-full flex-row">
                 <div className="mr-auto flex flex-row gap-x-3">
-                  {entity.isSuccess ? (
-                    entity.data.namespaceType === "NAMESPACE_ORGANIZATION" ? (
+                  {routeInfo.isSuccess ? (
+                    routeInfo.data.namespaceType ===
+                    "NAMESPACE_ORGANIZATION" ? (
                       <EntityAvatar
                         src={organization.data?.profile?.avatar ?? null}
                         entityName={organization.data?.name ?? ""}
@@ -169,15 +170,15 @@ export const Head = ({
                       <div className="my-auto product-headings-heading-4">
                         <span
                           onClick={() => {
-                            router.push(`/${entity.data.entity}`);
+                            router.push(`/${routeInfo.data.namespaceId}`);
                           }}
                           className="cursor-pointer text-semantic-fg-disabled hover:!underline"
                         >
-                          {entity.data.entity}
+                          {routeInfo.data.namespaceId}
                         </span>
                         <span className="text-semantic-fg-disabled">/</span>
                         <span className="text-semantic-fg-primary">
-                          {entity.data.id}
+                          {routeInfo.data.resourceId}
                         </span>
                       </div>
 
@@ -355,7 +356,7 @@ export const Head = ({
                     <Button
                       onClick={() => {
                         router.push(
-                          `/${entity.data.entity}/pipelines/${entity.data.id}/builder`
+                          `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/builder`
                         );
                       }}
                       size="sm"

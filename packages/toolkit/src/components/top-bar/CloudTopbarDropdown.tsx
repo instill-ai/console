@@ -122,10 +122,8 @@ export const CloudTopbarDropdown = () => {
             }}
             asChild
           >
-            <div className="flex flex-row !gap-x-0">
-              <div className="mr-2">
-                <Icons.Plus className="h-4 w-4 stroke-semantic-fg-disabled" />
-              </div>
+            <div className="flex flex-row gap-x-2">
+              <Icons.Plus className="h-4 w-4 stroke-semantic-fg-disabled" />
               <p className="mr-0.5">Create Organization</p>
             </div>
           </TopbarDropdownItem>

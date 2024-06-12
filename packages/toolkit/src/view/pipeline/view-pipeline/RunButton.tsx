@@ -1,7 +1,7 @@
 import { useSearchParams } from "next/navigation";
 import {
   InstillStore,
-  useAppEntity,
+  useRouteInfo,
   useInstillStore,
   useNavigateBackAfterLogin,
   useShallow,
@@ -32,11 +32,11 @@ export const RunButton = ({
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   const pipeline = useUserPipeline({
-    pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
-    enabled: enabledQuery && entity.isSuccess,
+    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+    enabled: enabledQuery && routeInfo.isSuccess,
     shareCode: shareCode ?? undefined,
     accessToken,
   });

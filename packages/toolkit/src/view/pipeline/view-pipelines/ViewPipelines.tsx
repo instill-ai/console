@@ -11,7 +11,7 @@ import {
   useInstillStore,
   useShallow,
   useAuthenticatedUser,
-  useAppEntity,
+  useRouteInfo,
   Visibility,
   useUserPipelines,
 } from "../../../lib";
@@ -52,13 +52,13 @@ export const ViewPipelines = () => {
     retry: false,
   });
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   const pipelines = useInfiniteUserPipelines({
     pageSize: 10,
     accessToken,
-    userName: entity.data.entityName,
-    enabledQuery: enabledQuery && entity.isSuccess,
+    userName: routeInfo.data.namespaceName,
+    enabledQuery: enabledQuery && routeInfo.isSuccess,
     filter: searchCode ? `q="${searchCode}"` : null,
     visibility: selectedVisibilityOption ?? null,
   });

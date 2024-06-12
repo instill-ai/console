@@ -8,7 +8,7 @@ import {
   CreateUserPipelineReleasePayload,
   InstillStore,
   toastInstillError,
-  useAppEntity,
+  useRouteInfo,
   useCreateUserPipelineRelease,
   useInstillStore,
   useShallow,
@@ -39,7 +39,7 @@ const selector = (store: InstillStore) => ({
 
 export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
   const { toast } = useToast();
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
   const [isReleasing, setIsReleasing] = React.useState(false);
   const form = useForm<z.infer<typeof ReleasePipelineFormSchema>>({
     resolver: zodResolver(ReleasePipelineFormSchema),
@@ -51,7 +51,7 @@ export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
 
   const onSubmit = React.useCallback(
     async (data: z.infer<typeof ReleasePipelineFormSchema>) => {
-      if (!entity.isSuccess || !entity.data.pipelineName) {
+      if (!routeInfo.isSuccess || !routeInfo.data.pipelineName) {
         return;
       }
 
@@ -63,7 +63,7 @@ export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
 
       try {
         await releasePipelineVersion.mutateAsync({
-          pipelineName: entity.data.pipelineName,
+          pipelineName: routeInfo.data.pipelineName,
           payload,
           accessToken,
         });
@@ -102,8 +102,8 @@ export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
       releasePipelineVersion,
       setIsReleasing,
       toast,
-      entity.isSuccess,
-      entity.data.pipelineName,
+      routeInfo.isSuccess,
+      routeInfo.data.pipelineName,
     ]
   );
 

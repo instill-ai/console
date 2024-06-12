@@ -11,7 +11,7 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useAppEntity,
+  useRouteInfo,
   useInstillStore,
   useShallow,
   usePipelineTriggerRequestForm,
@@ -45,18 +45,18 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
   const inOutPutFormID = "pipeline-details-page-trigger-pipeline-form";
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   const pipeline = useUserPipeline({
-    pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
-    enabled: enabledQuery && entity.isSuccess,
+    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+    enabled: enabledQuery && routeInfo.isSuccess,
     shareCode: shareCode ?? undefined,
     accessToken,
   });
 
   const releases = useSortedReleases({
-    pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
-    enabledQuery: enabledQuery && entity.isSuccess,
+    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+    enabledQuery: enabledQuery && routeInfo.isSuccess,
     shareCode: shareCode ?? undefined,
     accessToken,
   });
@@ -110,7 +110,11 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
   const triggerPipeline = useTriggerUserPipeline();
 
   async function onTriggerPipeline(formData: z.infer<typeof Schema>) {
-    if (!entity.isSuccess || !entity.data?.pipelineName || !pipeline.isSuccess)
+    if (
+      !routeInfo.isSuccess ||
+      !routeInfo.data?.pipelineName ||
+      !pipeline.isSuccess
+    )
       return;
 
     const input = recursiveHelpers.removeUndefinedAndNullFromArray(
@@ -152,7 +156,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
     try {
       const data = await triggerPipeline.mutateAsync({
-        pipelineName: entity.data.pipelineName,
+        pipelineName: routeInfo.data.pipelineName,
         accessToken,
         payload: {
           inputs: [parsedStructuredData],
@@ -214,7 +218,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
                 size="md"
                 onClick={() => {
                   router.push(
-                    `/${entity.data.entity}/pipelines/${entity.data.id}/builder`
+                    `/${routeInfo.data.namespaceName}/pipelines/${routeInfo.data.resourceId}/builder`
                   );
                 }}
               >
@@ -266,7 +270,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
                 size="md"
                 onClick={() => {
                   router.push(
-                    `/${entity.data.entity}/pipelines/${entity.data.id}/builder`
+                    `/${routeInfo.data.namespaceName}/pipelines/${routeInfo.data.resourceId}/builder`
                   );
                 }}
               >

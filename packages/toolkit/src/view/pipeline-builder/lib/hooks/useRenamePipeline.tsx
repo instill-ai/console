@@ -7,7 +7,7 @@ import {
   getInstillApiErrorMessage,
   sendAmplitudeData,
   useAmplitudeCtx,
-  useAppEntity,
+  useRouteInfo,
   useCreateUserPipeline,
   useInstillStore,
   useRenameUserPipeline,
@@ -33,7 +33,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export function useRenamePipeline() {
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
   const router = useRouter();
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -56,9 +56,9 @@ export function useRenamePipeline() {
     async function handleRenamePipeline(newId: string) {
       if (
         !pipelineId ||
-        !entity.isSuccess ||
-        !entity.data.entityName ||
-        !entity.data.pipelineName ||
+        !routeInfo.isSuccess ||
+        !routeInfo.data.namespaceName ||
+        !routeInfo.data.pipelineName ||
         !accessToken
       ) {
         return;
@@ -73,7 +73,7 @@ export function useRenamePipeline() {
 
         try {
           const res = await createUserPipeline.mutateAsync({
-            entityName: entity.data.entityName,
+            entityName: routeInfo.data.namespaceName,
             payload,
             accessToken,
           });
@@ -89,7 +89,9 @@ export function useRenamePipeline() {
             sendAmplitudeData("create_pipeline");
           }
 
-          router.push(`/${entity.data.entity}/pipelines/${newId}/builder`);
+          router.push(
+            `/${routeInfo.data.namespaceId}/pipelines/${newId}/builder`
+          );
 
           toast({
             title: "Successfully saved the pipeline",
@@ -123,7 +125,7 @@ export function useRenamePipeline() {
 
       if (pipelineRecipeIsDirty) {
         const payload: UpdateUserPipelinePayload = {
-          name: entity.data.pipelineName,
+          name: routeInfo.data.pipelineName,
           recipe: composePipelineRecipeFromNodes(nodes),
           metadata: composePipelineMetadataMapFromNodes(nodes),
         };
@@ -159,7 +161,7 @@ export function useRenamePipeline() {
       }
 
       const payload: RenameUserPipelinePayload = {
-        name: entity.data.pipelineName,
+        name: routeInfo.data.pipelineName,
         new_pipeline_id: newId,
       };
 
@@ -169,7 +171,9 @@ export function useRenamePipeline() {
           accessToken,
         });
 
-        router.push(`/${entity.data.entity}/pipelines/${newId}/builder`);
+        router.push(
+          `/${routeInfo.data.namespaceId}/pipelines/${newId}/builder`
+        );
 
         toast({
           title: "Sussessfully renamed the pipeline",
@@ -179,7 +183,7 @@ export function useRenamePipeline() {
 
         updatePipelineId(() => newId);
         updatePipelineName(
-          () => `${entity.data.entityName}/pipelines/${newId}`
+          () => `${routeInfo.data.namespaceName}/pipelines/${newId}`
         );
       } catch (error) {
         if (isAxiosError(error)) {
@@ -205,7 +209,8 @@ export function useRenamePipeline() {
       accessToken,
       amplitudeIsInit,
       createUserPipeline,
-      entity,
+      routeInfo.isSuccess,
+      routeInfo.data,
       nodes,
       pipelineId,
       pipelineIsNew,

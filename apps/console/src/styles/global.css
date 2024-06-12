@@ -32,7 +32,8 @@
 /* For the topbar */
 
 :root {
-  --topbar-height: 52px;
+  --topbar-controler-height: 52px;
+  --topbar-nav-height: 44px; 
   --pipeline-builder-bottom-bar-height: 24px;
   --pipeline-builder-node-available-width: 332px;
   --pipeline-builder-node-padding-x: 12px;

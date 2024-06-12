@@ -7,7 +7,7 @@ import {
   useInstillStore,
   useShallow,
   useUserPipeline,
-  useAppEntity,
+  useRouteInfo,
 } from "../../../lib";
 import { Head } from "./Head";
 import { InOutPut } from "./InOutPut";
@@ -32,18 +32,18 @@ export const ViewPipeline = () => {
 
   const router = useRouter();
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   const pipeline = useUserPipeline({
-    pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
-    enabled: enabledQuery && entity.isSuccess,
+    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+    enabled: enabledQuery && routeInfo.isSuccess,
     shareCode: shareCode ?? undefined,
     accessToken,
   });
 
   const releases = useSortedReleases({
-    pipelineName: entity.isSuccess ? entity.data.pipelineName : null,
-    enabledQuery: enabledQuery && entity.isSuccess,
+    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+    enabledQuery: enabledQuery && routeInfo.isSuccess,
     accessToken,
   });
 

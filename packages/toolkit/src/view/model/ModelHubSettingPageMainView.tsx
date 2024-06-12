@@ -3,7 +3,7 @@
 import * as React from "react";
 import {
   GeneralAppPageProp,
-  useAppEntity,
+  useRouteInfo,
   useQueryClient,
   useUserModel,
   useWatchUserModels,
@@ -18,15 +18,14 @@ export const ModelHubSettingPageMainView = (
   props: ModelHubSettingPageMainViewProps
 ) => {
   const router = useRouter();
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
   const { tab } = useParams();
   const { accessToken, enableQuery } = props;
-  const entityObject = useAppEntity();
   const queryClient = useQueryClient();
 
   const setSelectedTab = (tabName: ModelTabNames) => {
     router.replace(
-      `/${entity.data.entity}/models/${model.data?.id}/${tabName}`
+      `/${routeInfo.data.namespaceId}/models/${model.data?.id}/${tabName}`
     );
   };
 
@@ -35,8 +34,8 @@ export const ModelHubSettingPageMainView = (
    * -----------------------------------------------------------------------*/
 
   const model = useUserModel({
-    modelName: entityObject.isSuccess ? entityObject.data.modelName : null,
-    enabled: enableQuery && entityObject.isSuccess,
+    modelName: routeInfo.isSuccess ? routeInfo.data.modelName : null,
+    enabled: enableQuery && routeInfo.isSuccess,
     accessToken,
   });
   const modelsWatchState = useWatchUserModels({
@@ -57,9 +56,9 @@ export const ModelHubSettingPageMainView = (
     model.refetch();
 
     // Invalidate default models list to have up to date data
-    if (entity.isSuccess) {
+    if (routeInfo.isSuccess) {
       queryClient.invalidateQueries({
-        queryKey: ["models", entity.data.entityName, "infinite"],
+        queryKey: ["models", routeInfo.data.namespaceName, "infinite"],
       });
     }
   };

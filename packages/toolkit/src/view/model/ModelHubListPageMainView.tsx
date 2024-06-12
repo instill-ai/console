@@ -4,7 +4,7 @@ import { Button, Input, Icons, Select } from "@instill-ai/design-system";
 import {
   GeneralAppPageProp,
   Visibility,
-  useAppEntity,
+  useRouteInfo,
   useInfiniteUserModels,
 } from "../../lib";
 import { useSearchParams } from "next/navigation";
@@ -22,7 +22,7 @@ export const ModelHubListPageMainView = (
   const searchParams = useSearchParams();
   const visibility = searchParams.get("visibility");
   const [pageNumber, setPageNumber] = useState(0);
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   const [searchCode, setSearchCode] = React.useState<string>("");
   const [searchInputValue, setSearchInputValue] = React.useState<string>("");
@@ -50,8 +50,8 @@ export const ModelHubListPageMainView = (
    * -----------------------------------------------------------------------*/
 
   const models = useInfiniteUserModels({
-    userName: entity.data.entityName,
-    enabled: entity.isSuccess && enableQuery,
+    userName: routeInfo.data.namespaceName,
+    enabled: routeInfo.isSuccess && enableQuery,
     accessToken,
     filter: searchCode ? `q="${searchCode}"` : null,
     visibility: selectedVisibilityOption ?? null,
@@ -118,7 +118,7 @@ export const ModelHubListPageMainView = (
           variant="primary"
           size="lg"
           onClick={() => {
-            router.push(`/${entity.data.entity}/models/create`);
+            router.push(`/${routeInfo.data.namespaceId}/models/create`);
           }}
         >
           <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />

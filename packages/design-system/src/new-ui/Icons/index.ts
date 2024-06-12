@@ -20,6 +20,7 @@ import { CodeBrowser } from "./CodeBrowser";
 import { CodeSnippet01 } from "./CodeSnippet01";
 import { CodeSnippet02 } from "./CodeSnippet02";
 import { CodeSquare02 } from "./CodeSquare02";
+import { Coins01 } from "./Coins01";
 import { CoinsStacked01 } from "./CoinsStacked01";
 import { Copy06 } from "./Copy06";
 import { Copy07 } from "./Copy07";
@@ -154,6 +155,7 @@ export const Icons = {
   CodeSnippet01,
   CodeSnippet02,
   CodeSquare02,
+  Coins01,
   CoinsStacked01,
   Copy06,
   Copy07,

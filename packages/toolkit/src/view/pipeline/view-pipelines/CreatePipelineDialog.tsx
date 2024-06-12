@@ -27,7 +27,7 @@ import {
   useAmplitudeCtx,
   useAuthenticatedUser,
   useCreateUserPipeline,
-  useAppEntity,
+  useRouteInfo,
   useInstillStore,
   useShallow,
   useUserMemberships,
@@ -82,7 +82,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
@@ -90,7 +90,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
   });
 
   const userMemberships = useUserMemberships({
-    enabled: entity.isSuccess,
+    enabled: me.isSuccess,
     userID: me.isSuccess ? me.data.id : null,
     accessToken,
   });
@@ -122,13 +122,13 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
   }, [
     userMemberships.isSuccess,
     userMemberships.data,
-    entity.isSuccess,
-    entity.data,
+    routeInfo.isSuccess,
+    routeInfo.data,
   ]);
 
   const createPipeline = useCreateUserPipeline();
   async function onSubmit(data: z.infer<typeof CreatePipelineSchema>) {
-    if (!entity.isSuccess) {
+    if (!routeInfo.isSuccess) {
       return;
     }
 
@@ -179,15 +179,15 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
       sharing,
     };
 
-    const namespace = organizationsAndUserList.find(
+    const usedNamespace = organizationsAndUserList.find(
       (account) => account.id === data.namespaceId
     )?.name;
 
-    if (namespace) {
+    if (usedNamespace) {
       try {
         await createPipeline.mutateAsync({
           accessToken,
-          entityName: namespace,
+          entityName: usedNamespace,
           payload,
         });
 
@@ -223,7 +223,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
         form.reset({
           id: "",
           description: "",
-          namespaceId: entity?.data.entity || "",
+          namespaceId: routeInfo?.data.namespaceId || "",
         });
         setOpen(open);
       }}
@@ -242,7 +242,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
         data-testid={DataTestID.createPipelineDialog}
         className="!w-[600px] !p-0"
       >
-        {entity.isSuccess ? (
+        {routeInfo.isSuccess ? (
           <div className="flex flex-col">
             <div className="flex border-b border-semantic-bg-line p-6">
               <h3 className=" text-semantic-fg-primary product-body-text-1-semibold">
