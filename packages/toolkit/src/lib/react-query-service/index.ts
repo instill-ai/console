@@ -13,6 +13,7 @@ export {
   QueryClientProvider,
   useQueries,
   useQuery,
+  useInfiniteQuery,
   useQueryClient,
   useMutation,
 } from "@tanstack/react-query";
