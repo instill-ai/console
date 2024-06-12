@@ -36,7 +36,7 @@ export const RootProvider = ({ children }: { children: React.ReactNode }) => {
   const { dismiss: dismissToast } = useToast();
 
   React.useEffect(() => {
-    // When ever user leave /builder page to what ever destination
+    // When ever user leave /editor page to what ever destination
     // we need to re-init the pipeline builder
     if (pathnameEvaluator.isPipelineBuilderPage(previousPathname)) {
       initPipelineBuilder();

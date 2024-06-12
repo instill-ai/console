@@ -9,7 +9,7 @@ export const config = {
     "/(.*?)/pipelines",
 
     // For pipeline builder
-    "/(.*?)/pipelines/(.*?)/builder",
+    "/(.*?)/pipelines/(.*?)/editor",
     "/(.*?)/models/:path*",
     "/settings",
   ],

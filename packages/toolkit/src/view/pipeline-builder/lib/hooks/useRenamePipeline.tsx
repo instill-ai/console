@@ -90,7 +90,7 @@ export function useRenamePipeline() {
           }
 
           router.push(
-            `/${routeInfo.data.namespaceId}/pipelines/${newId}/builder`
+            `/${routeInfo.data.namespaceId}/pipelines/${newId}/editor`
           );
 
           toast({
@@ -172,7 +172,7 @@ export function useRenamePipeline() {
         });
 
         router.push(
-          `/${routeInfo.data.namespaceId}/pipelines/${newId}/builder`
+          `/${routeInfo.data.namespaceId}/pipelines/${newId}/editor`
         );
 
         toast({
