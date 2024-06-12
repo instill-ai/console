@@ -24,3 +24,4 @@ export * from "./useRouteInfo";
 export * from "./getCaptializeTwoWordsFromName";
 export * from "./convertLongNumberToK";
 export * from "./formatNumberToLocale";
+export * from "./generateDateInPast";
