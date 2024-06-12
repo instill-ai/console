@@ -37,13 +37,13 @@ export const RootProvider = ({ children }: { children: React.ReactNode }) => {
 
   React.useEffect(() => {
     // When ever user leave /editor page to what ever destination
-    // we need to re-init the pipeline builder
+    // we need to re-init the pipeline editor
     if (pathnameEvaluator.isPipelineBuilderPage(previousPathname)) {
       initPipelineBuilder();
     }
 
     // Init when navigate out of overview page, except navigate into
-    // builder page
+    // editor page
     if (
       pathnameEvaluator.isPipelineOverviewPage(previousPathname) &&
       !pathnameEvaluator.isPipelineOverviewPage(pathname) &&

@@ -8,7 +8,7 @@ export const config = {
     "/(.*?)/dashboard/:path*",
     "/(.*?)/pipelines",
 
-    // For pipeline builder
+    // For pipeline editor
     "/(.*?)/pipelines/(.*?)/editor",
     "/(.*?)/models/:path*",
     "/settings",
