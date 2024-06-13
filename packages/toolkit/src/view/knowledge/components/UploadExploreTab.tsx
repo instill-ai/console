@@ -1,467 +1,591 @@
-import {
-    Icons,
-    Separator,
-    //   Tabs,
-    //   Button,
-    //   Select,
-    //   Input,
-    //   Textarea,
-    //   Form,
-    //   Collapsible,
-  } from "@instill-ai/design-system";
-  // import * as React from "react";
-  // import { useForm, SubmitHandler } from "react-hook-form";
-  // import { zodResolver } from "@hookform/resolvers/zod";
-  // import * as z from "zod";
-  import { useRouter } from "next/navigation";
-  import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-  
-  // const UploadExploreFormSchema = z.object({
-  //   convertTransformFiles: z
-  //     .string()
-  //     .min(1, { message: "Convert/Transform files is required" }),
-  //   convertMethod: z.string().min(1, { message: "Convert method is required" }),
-  //   splitTextFiles: z
-  //     .string()
-  //     .min(1, { message: "Split text files is required" }),
-  //   splitMethod: z.string().min(1, { message: "Split method is required" }),
-  //   maxTokenSize: z.number().min(1, { message: "Max token size is required" }),
-  //   tokenizerModel: z.string().min(1, { message: "Tokenizer model is required" }),
-  //   embedChunksFiles: z
-  //     .string()
-  //     .min(1, { message: "Embed chunks files is required" }),
-  //   embeddingModel: z.string().min(1, { message: "Embedding model is required" }),
-  // });
-  
-  // type UploadExploreFormData = z.infer<typeof UploadExploreFormSchema>;
-  
-  // const CollapsibleSection = ({
-  //   title,
-  //   children,
-  // }: {
-  //   title: string;
-  //   children: React.ReactNode;
-  // }) => {
-  //   const [open, setOpen] = React.useState(true);
-  
-  //   return (
-  //     <Collapsible.Root open={open} onOpenChange={setOpen}>
-  //       <Collapsible.Trigger className="mb-2" asChild>
-  //         <button className="flex w-full flex-row items-center gap-x-1 rounded py-1 hover:bg-semantic-bg-secondary">
-  //           {open ? (
-  //             <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
-  //           ) : (
-  //             <Icons.ChevronRight className="h-4 w-4 stroke-semantic-fg-primary" />
-  //           )}
-  //           <p className="text-semantic-fg-primary product-body-text-3-semibold">
-  //             {title}
-  //           </p>
-  //         </button>
-  //       </Collapsible.Trigger>
-  //       <Collapsible.Content className="flex flex-col gap-y-4">
-  //         {children}
-  //       </Collapsible.Content>
-  //     </Collapsible.Root>
-  //   );
-  // };
-  
-  type UploadExploreTabProps = {
-    knowledgeBase: KnowledgeBase;
-  };
-  
-  export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
-    //   const form = useForm<UploadExploreFormData>({
-    //     resolver: zodResolver(UploadExploreFormSchema),
-    //     defaultValues: {
-    //       convertTransformFiles: "",
-    //       convertMethod: "",
-    //       splitTextFiles: "",
-    //       splitMethod: "",
-    //       maxTokenSize: 256,
-    //       tokenizerModel: "",
-    //       embedChunksFiles: "",
-    //       embeddingModel: "",
-    //     },
-    //   });
-  
-    //   const onSubmit: SubmitHandler<UploadExploreFormData> = (data) => {
-    //     console.log(data);
-    //   };
-  
-    const router = useRouter();
-  
-    const ownerID = "ownerID";
-  
+import { Icons, Separator, Tabs, Button, Select, Input, Textarea, Form, Collapsible } from "@instill-ai/design-system";
+import * as React from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { useRouter } from "next/navigation";
+import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { useUploadKnowledgeBaseFile } from "../../../lib/react-query-service/knowledge";
+import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
+
+const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
+
+
+const UploadExploreFormSchema = z.object({
+    file: z.instanceof(File),
+    convertTransformFiles: z.string().min(1, { message: "Convert/Transform files is required" }),
+    convertMethod: z.string().min(1, { message: "Convert method is required" }),
+    splitTextFiles: z.string().min(1, { message: "Split text files is required" }),
+    splitMethod: z.string().min(1, { message: "Split method is required" }),
+    maxTokenSize: z.number().min(1, { message: "Max token size is required" }),
+    tokenizerModel: z.string().min(1, { message: "Tokenizer model is required" }),
+    embedChunksFiles: z.string().min(1, { message: "Embed chunks files is required" }),
+    embeddingModel: z.string().min(1, { message: "Embedding model is required" }),
+});
+
+type UploadExploreFormData = z.infer<typeof UploadExploreFormSchema>;
+
+
+
+const CollapsibleSection = ({
+    title,
+    children,
+}: {
+    title: string;
+    children: React.ReactNode;
+}) => {
+    const [open, setOpen] = React.useState(true);
+
+
     return (
-      <div className="flex flex-col">
-        <div className="mb-5 flex items-center justify-between">
-          <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
-            {knowledgeBase.name}
-          </p>
-        </div>
-        <Separator orientation="horizontal" className="mb-6" />
-        <div className="relative mb-2 flex h-[150px] w-full flex-col items-center justify-center rounded border-2 border-dashed border-[#CBD2E1] bg-semantic-accent-bg product-body-text-4-regular">
-          <Icons.Upload01 className="mb-4 h-8 w-8 stroke-semantic-fg-secondary p-1" />
-          <div className="w-full text-center">
-            <span className="">Drag-and-drop file, or </span>
-            <span className="cursor-pointer text-semantic-accent-hover underline">
-              browse computer
-            </span>
-            <div className="">Support TXT, MARKDOWN, PDF</div>
-            <div className="">Max 15MB each</div>
-            {/* 
-              COMING IN V2 
-              */}
-            {/* <div className="">
-        Support TXT, MARKDOWN, PDF, PNG, JPG (DOCX, DOC, PPTX, PPT, HTML, XML, RTF).
-      </div> */}
-          </div>
-        </div>
-        <div className="mb-6 inline-flex w-full items-center justify-start gap-2 rounded border border-[#E1E6EF] px-2 py-1.5">
-          <Icons.File05 className="h-4 w-4 stroke-semantic-fg-secondary" />
-          <div className=" product-body-text-3-regular">filename.pdf</div>
-          <div className="shrink grow basis-0 text-semantic-fg-disabled product-body-text-4-regular">
-            150KB
-          </div>
-        </div>
-        <div className=" inline-flex flex-col items-start justify-start gap-1">
-          <div className="text-semantic-fg-primary product-body-text-3-semibold">
-            Pipeline in use
-          </div>
-          <div className="inline-flex items-center justify-start gap-1">
-            <Icons.Pipeline className="h-4 w-4 stroke-semantic-accent-hover" />
-            <button
-              type="button"
-              className="text-semantic-accent-hover product-body-text-3-semibold hover:!underline"
-              onClick={() => {
-                router.push(`/${ownerID}`);
-              }}
-            >
-              xiaofei/name-your-pet
-            </button>
-          </div>
-        </div>
-  
-        {/* 
-              COMING IN V2 
-              */}
-  
-        {/* <div className="flex w-full items-center justify-start">
-                  <Tabs.Root defaultValue="text" className="mb-8 mt-4 w-full">
-                      <div className="flex flex-col items-center w-full">
-                          <Tabs.List className="w-full h-8 border-b border-slate-200 flex justify-start items-start gap-0.5">
-                              <Tabs.Trigger value="text" className="px-4 bg-white rounded-tl-lg rounded-tr-lg border-l border-r border-t border-slate-200 justify-start items-center gap-2 flex">
-                                  <span className="text-center text-gray-800 text-xs font-semibold font-['IBM Plex Sans'] capitalize leading-3 tracking-tight">Text</span>
-                              </Tabs.Trigger>
-                              <Tabs.Trigger value="images" className="px-4 bg-slate-50 rounded-tl-lg rounded-tr-lg border border-slate-200 justify-start items-center gap-2 flex">
-                                  <span className="text-center text-gray-800/opacity-60 text-xs font-semibold font-['IBM Plex Sans'] capitalize leading-3 tracking-tight">Images</span>
-                              </Tabs.Trigger>
-                          </Tabs.List>
-                      </div>
-                      <div className="bg-white pt-8 px-8">
-                          <div className="flex w-full flex-row space-x-4">
-                              <div className="flex w-1/2 flex-col">
-                                  <Tabs.Content value="text" className="flex w-full">
-                                      <Form.Root {...form} onSubmit={form.handleSubmit(onSubmit)}>
-                                          <form className="flex flex-col gap-6 w-full">
-                                              <CollapsibleSection title="Convert / Transform files">
-                                                  <div className="flex gap-8">
-                                                      <Form.Field
-                                                          control={form.control}
-                                                          name="convertTransformFiles"
-                                                          render={({ field }) => (
-                                                              <Form.Item className="w-1/2">
-                                                                  <Form.Label className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
-                                                                      Convert / Transform files
-                                                                  </Form.Label>
-                                                                  <Form.Control>
-                                                                      <Select.Root
-                                                                          onValueChange={field.onChange}
-                                                                          defaultValue={field.value}
-                                                                      >
-                                                                          <Select.Trigger>
-                                                                              <Select.Value placeholder="Select.." />
-                                                                          </Select.Trigger>
-                                                                          <Select.Content>
-                                                                              <Select.Item value="option1">Option 1</Select.Item>
-                                                                              <Select.Item value="option2">Option 2</Select.Item>
-                                                                          </Select.Content>
-                                                                      </Select.Root>
-                                                                  </Form.Control>
-                                                                  <Form.Message />
-                                                              </Form.Item>
-                                                          )}
-                                                      />
-                                                      <Form.Field
-                                                          control={form.control}
-                                                          name="convertMethod"
-                                                          render={({ field }) => (
-                                                              <Form.Item className="w-1/2">
-                                                                  <Form.Label className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
-                                                                      Convert method
-                                                                  </Form.Label>
-                                                                  <Form.Control>
-                                                                      <Select.Root
-                                                                          onValueChange={field.onChange}
-                                                                          defaultValue={field.value}
-                                                                      >
-                                                                          <Select.Trigger>
-                                                                              <Select.Value placeholder="Select.." />
-                                                                          </Select.Trigger>
-                                                                          <Select.Content>
-                                                                              <Select.Item value="option1">Option 1</Select.Item>
-                                                                              <Select.Item value="option2">Option 2</Select.Item>
-                                                                          </Select.Content>
-                                                                      </Select.Root>
-                                                                  </Form.Control>
-                                                                  <Form.Message />
-                                                              </Form.Item>
-                                                          )}
-                                                      />
-                                                  </div>
-                                                  <div className="flex gap-2">
-                                                      <Button variant="secondaryGrey" className="grow" type="button">
-                                                          Test Pipeline
-                                                      </Button>
-                                                      <Button variant="secondaryGrey" className="grow" type="button">
-                                                          Customize Pipeline
-                                                      </Button>
-                                                      <Button variant="primary" className="grow bg-blue-50 text-blue-700" type="submit">
-                                                          Preview Results
-                                                      </Button>
-                                                  </div>
-                                              </CollapsibleSection>
-                                              <CollapsibleSection title="Split text">
-                                                  <div className="flex gap-8">
-                                                      <Form.Field
-                                                          control={form.control}
-                                                          name="splitTextFiles"
-                                                          render={({ field }) => (
-                                                              <Form.Item className="w-1/2">
-                                                                  <Form.Label className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
-                                                                      Split text files
-                                                                  </Form.Label>
-                                                                  <Form.Control>
-                                                                      <Select.Root
-                                                                          onValueChange={field.onChange}
-                                                                          defaultValue={field.value}
-                                                                      >
-                                                                          <Select.Trigger>
-                                                                              <Select.Value placeholder="Select.." />
-                                                                          </Select.Trigger>
-                                                                          <Select.Content>
-                                                                              <Select.Item value="option1">Option 1</Select.Item>
-                                                                              <Select.Item value="option2">Option 2</Select.Item>
-                                                                          </Select.Content>
-                                                                      </Select.Root>
-                                                                  </Form.Control>
-                                                                  <Form.Message />
-                                                              </Form.Item>
-                                                          )}
-                                                      />
-                                                      <Form.Field
-                                                          control={form.control}
-                                                          name="splitMethod"
-                                                          render={({ field }) => (
-                                                              <Form.Item className="w-1/2">
-                                                                  <Form.Label className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
-                                                                      Split method
-                                                                  </Form.Label>
-                                                                  <Form.Control>
-                                                                      <Select.Root
-                                                                          onValueChange={field.onChange}
-                                                                          defaultValue={field.value}
-                                                                      >
-                                                                          <Select.Trigger>
-                                                                              <Select.Value placeholder="Select.." />
-                                                                          </Select.Trigger>
-                                                                          <Select.Content>
-                                                                              <Select.Item value="option1">Option 1</Select.Item>
-                                                                              <Select.Item value="option2">Option 2</Select.Item>
-                                                                          </Select.Content>
-                                                                      </Select.Root>
-                                                                  </Form.Control>
-                                                                  <Form.Message />
-                                                              </Form.Item>
-                                                          )}
-                                                      />
-                                                  </div>
-                                                  <div className="flex gap-8">
-                                                      <Form.Field
-                                                          control={form.control}
-                                                          name="maxTokenSize"
-                                                          render={({ field }) => (
-                                                              <Form.Item className="w-1/2">
-                                                                  <Form.Label className="text-gray-800 text-base font-semibold font-['IBM Plex Sans'] capitalize leading-none tracking-tight">
-                                                                      Max token size
-                                                                  </Form.Label>
-                                                                  <Form.Control>
-                                                                      <div className="flex items-center gap-2">
-                                                                          <input
-                                                                              type="range"
-                                                                              className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                                                                              {...field}
-                                                                          />
-                                                                          <Input.Root>
-                                                                              <Input.Core
-                                                                                  {...field}
-                                                                                  id={field.name}
-                                                                                  placeholder="Username"
-                                                                                  type="text"
-                                                                                  disabled={true}
-                                                                              />
-                                                                          </Input.Root>
-                                                                      </div>
-                                                                  </Form.Control>
-                                                                  <Form.Message />
-                                                              </Form.Item>
-                                                          )}
-                                                      />
-                                                      <Form.Field
-                                                          control={form.control}
-                                                          name="tokenizerModel"
-                                                          render={({ field }) => (
-                                                              <Form.Item className="w-1/2">
-                                                                  <Form.Label className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
-                                                                      Tokenizer model
-                                                                  </Form.Label>
-                                                                  <Form.Control>
-                                                                      <Select.Root
-                                                                          onValueChange={field.onChange}
-                                                                          defaultValue={field.value}
-                                                                      >
-                                                                          <Select.Trigger>
-                                                                              <Select.Value placeholder="Select.." />
-                                                                          </Select.Trigger>
-                                                                          <Select.Content>
-                                                                              <Select.Item value="option1">Option 1</Select.Item>
-                                                                              <Select.Item value="option2">Option 2</Select.Item>
-                                                                          </Select.Content>
-                                                                      </Select.Root>
-                                                                  </Form.Control>
-                                                                  <Form.Message />
-                                                              </Form.Item>
-                                                          )}
-                                                      />
-                                                  </div>
-                                                  <div className="flex gap-2">
-                                                      <Button variant="secondaryGrey" className="grow" type="button">
-                                                          Test Pipeline
-                                                      </Button>
-                                                      <Button variant="secondaryGrey" className="grow" type="button">
-                                                          Customize Pipeline
-                                                      </Button>
-                                                      <Button variant="primary" className="grow bg-blue-50 text-blue-700" type="submit">
-                                                          Preview Results
-                                                      </Button>
-                                                  </div>
-                                              </CollapsibleSection>
-                                              <CollapsibleSection title="Embed chunks">
-                                                  <div className="flex gap-8">
-                                                      <Form.Field
-                                                          control={form.control}
-                                                          name="embedChunksFiles"
-                                                          render={({ field }) => (
-                                                              <Form.Item className="w-1/2">
-                                                                  <Form.Label className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
-                                                                      Embed chunks files
-                                                                  </Form.Label>
-                                                                  <Form.Control>
-                                                                      <Select.Root
-                                                                          onValueChange={field.onChange}
-                                                                          defaultValue={field.value}
-                                                                      >
-                                                                          <Select.Trigger>
-                                                                              <Select.Value placeholder="Select.." />
-                                                                          </Select.Trigger>
-                                                                          <Select.Content>
-                                                                              <Select.Item value="option1">Option 1</Select.Item>
-                                                                              <Select.Item value="option2">Option2</Select.Item>
-                                                                          </Select.Content>
-                                                                      </Select.Root>
-                                                                  </Form.Control>
-                                                                  <Form.Message />
-                                                              </Form.Item>
-                                                          )}
-                                                      />
-                                                      <Form.Field
-                                                          control={form.control}
-                                                          name="embeddingModel"
-                                                          render={({ field }) => (
-                                                              <Form.Item className="w-1/2">
-                                                                  <Form.Label className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
-                                                                      Embedding model
-                                                                  </Form.Label>
-                                                                  <Form.Control>
-                                                                      <Select.Root
-                                                                          onValueChange={field.onChange}
-                                                                          defaultValue={field.value}
-                                                                      >
-                                                                          <Select.Trigger>
-                                                                              <Select.Value placeholder="Select.." />
-                                                                          </Select.Trigger>
-                                                                          <Select.Content>
-                                                                              <Select.Item value="option1">Option 1</Select.Item>
-                                                                              <Select.Item value="option2">Option 2</Select.Item>
-                                                                          </Select.Content>
-                                                                      </Select.Root>
-                                                                  </Form.Control>
-                                                                  <Form.Message />
-                                                              </Form.Item>
-                                                          )}
-                                                      />
-                                                  </div>
-                                                  <div className="flex gap-2">
-                                                      <Button variant="secondaryGrey" className="grow" type="button">
-                                                          Test Pipeline
-                                                      </Button>
-                                                      <Button variant="secondaryGrey" className="grow" type="button">
-                                                          Customize Pipeline
-                                                      </Button>
-                                                  </div>
-                                              </CollapsibleSection>
-                                          </form>
-                                      </Form.Root>
-                                  </Tabs.Content>
-                                  <Tabs.Content value="images">
-                                  </Tabs.Content>
-                              </div>
-                              <Separator orientation="vertical" />
-                              <div className="flex w-1/2 flex-col pl-8">
-                                  <div className="text-lg font-semibold mb-6">Preview</div>
-                                  <div className="flex flex-col gap-3">
-                                      <div className="flex justify-center items-center gap-2">
-                                          <div className="grow h-px bg-slate-200" />
-                                          <div className="text-sm font-medium text-gray-800/80">Convert Results</div>
-                                          <div className="grow h-px bg-slate-200" />
-                                      </div>
-                                      <div className="flex flex-col gap-3">
-                                          <div className="flex flex-col">
-                                              <div className="text-sm font-semibold mb-2">File name 1</div>
-                                              <Textarea placeholder="Text preview" rows={3} />
-                                          </div>
-                                      </div>
-                                      <div className="flex justify-center items-center gap-2">
-                                          <div className="grow h-px bg-slate-200" />
-                                          <div className="text-sm font-medium text-gray-800/80">Split Text Results</div>
-                                          <div className="grow h-px bg-slate-200" />
-                                      </div>
-                                      <div className="flex flex-col gap-3">
-                                          <div className="flex flex-col">
-                                              <div className="text-sm font-semibold mb-2">File name 1</div>
-                                              <Textarea placeholder="Text preview" rows={3} />
-                                          </div>
-                                          <div className="flex flex-col">
-                                              <div className="text-sm font-semibold mb-2">File name 2</div>
-                                              <Textarea placeholder="Text preview" rows={3} />
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </Tabs.Root>
-              </div> */}
-      </div>
+        <Collapsible.Root open={open} onOpenChange={setOpen}>
+            <Collapsible.Trigger className="mb-2" asChild>
+                <button className="flex w-full flex-row items-center gap-x-1 rounded py-1 hover:bg-semantic-bg-secondary">
+                    {open ? (
+                        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
+                    ) : (
+                        <Icons.ChevronRight className="h-4 w-4 stroke-semantic-fg-primary" />
+                    )}
+                    <p className="text-semantic-fg-primary product-body-text-3-semibold">
+                        {title}
+                    </p>
+                </button>
+            </Collapsible.Trigger>
+            <Collapsible.Content className="flex flex-col gap-y-4">
+                {children}
+            </Collapsible.Content>
+        </Collapsible.Root>
     );
-  };
+};
+
+type UploadExploreTabProps = {
+    knowledgeBase: KnowledgeBase;
+};
+
+export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
+    const form = useForm<UploadExploreFormData>({
+        resolver: zodResolver(UploadExploreFormSchema),
+        defaultValues: {
+            convertTransformFiles: "",
+            convertMethod: "",
+            splitTextFiles: "",
+            splitMethod: "",
+            maxTokenSize: 256,
+            tokenizerModel: "",
+            embedChunksFiles: "",
+            embeddingModel: "",
+        },
+    });
+
+    const selector = (store: InstillStore) => ({
+        accessToken: store.accessToken,
+        enabledQuery: store.enabledQuery,
+    });
+
+    const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
+    const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
+
+    const getFileType = (file: File) => {
+        const extension = file.name.split(".").pop()?.toLowerCase();
+        switch (extension) {
+            case "txt":
+                return "FILE_TYPE_TEXT";
+            case "md":
+                return "FILE_TYPE_MARKDOWN";
+            case "pdf":
+                return "FILE_TYPE_PDF";
+            default:
+                return "FILE_TYPE_UNSPECIFIED";
+        }
+    };
+
+    const handleFileUpload = async (file: File) => {
+        if (file.size > MAX_FILE_SIZE) {
+            alert("File size exceeds the maximum limit of 15MB.");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const content = btoa(event.target?.result as string);
+
+            uploadKnowledgeBaseFile.mutate(
+                {
+                    ownerId: ownerID,
+                    knowledgeBaseId: knowledgeBase.id,
+                    payload: {
+                        name: file.name,
+                        type: getFileType(file),
+                        content,
+                    },
+                    accessToken,
+                },
+                {
+                    onSuccess: () => {
+                        alert("File uploaded successfully!");
+                        form.reset();
+                    },
+                    onError: (error) => {
+                        console.error("Error uploading file:", error);
+                        alert("An error occurred while uploading the file.");
+                    },
+                }
+            );
+        };
+        reader.readAsBinaryString(file);
+    };
+
+    const router = useRouter();
+
+    const me = useAuthenticatedUser({
+        enabled: enabledQuery,
+        accessToken,
+    });
+
+    const ownerID = me.isSuccess ? me.data.id : null;
+
+    const [isDragging, setIsDragging] = React.useState(false);
+
+    const handleDragEnter = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault();
+        setIsDragging(false);
+    };
+
+    const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault();
+    };
+
+    const handleDrop = async (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault();
+        setIsDragging(false);
+        const file = e.dataTransfer.files[0];
+        if (file) {
+            form.setValue("file", file);
+            await handleFileUpload(file);
+        }
+
+
+
+
+        return (
+            <div className="flex flex-col">
+                <div className="flex items-center justify-between mb-5">
+                    <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
+                        {knowledgeBase.name}
+                    </p>
+                </div>
+                <Separator orientation="horizontal" className="mb-6" />
+                <Form.Root {...form}>
+                    <form className="space-y-4 mb-6">
+                        <Form.Field
+                            control={form.control}
+                            name="file"
+                            render={({ field }) => (
+                                <Form.Item className="w-full">
+                                    <Form.Control>
+                                        <div>
+                                            <label
+                                                htmlFor="upload-file-field"
+                                                className={`flex h-[150px] w-full cursor-pointer flex-col items-center justify-center rounded border border-dashed ${isDragging ? "border-blue-500" : "border-semantic-bg-line"
+                                                    } bg-semantic-bg-base-bg text-semantic-fg-secondary product-body-text-3-medium`}
+                                                onDragEnter={handleDragEnter}
+                                                onDragLeave={handleDragLeave}
+                                                onDragOver={handleDragOver}
+                                                onDrop={handleDrop}
+                                            >
+                                                {field.value ? (
+                                                    <div className="text-center">
+                                                        <p>{field.value.name}</p>
+                                                        <p>{Math.round(field.value.size / 1024)}KB</p>
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex flex-col items-center justify-center space-y-2">
+                                                        <Icons.Upload01 className="w-8 h-8 p-1 stroke-semantic-fg-secondary mb-4" />
+                                                        <div className="text-center w-full">
+                                                            <span>Drag-and-drop file, or </span>
+                                                            <span className="text-semantic-accent-hover underline">
+                                                                browse computer
+                                                            </span>
+                                                            <div>Support TXT, MARKDOWN, PDF</div>
+                                                            <div>Max 15MB each</div>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                <Input.Root className="hidden">
+                                                    <Input.Core
+                                                        {...field}
+                                                        id="upload-file-field"
+                                                        type="file"
+                                                        accept=".txt,.md,.pdf"
+                                                        value={undefined}
+                                                        onChange={async (e) => {
+                                                            const file = e.target.files?.[0];
+                                                            if (file) {
+                                                                field.onChange(file);
+                                                                await handleFileUpload(file);
+                                                            }
+                                                        }}
+                                                    />
+                                                </Input.Root>
+                                            </label>
+                                        </div>
+                                    </Form.Control>
+                                    <Form.Message />
+                                </Form.Item>
+                            )}
+                        />
+                        {/* Render other form fields */}
+                        {/* ... */}
+                    </form>
+                </Form.Root>
+                <div className="w-full mb-6 rounded border border-[#E1E6EF] justify-start items-center gap-2 inline-flex px-2 py-1.5">
+                    <Icons.File05 className="w-4 h-4 stroke-semantic-fg-secondary" />
+                    <div className=" product-body-text-3-regular">filename.pdf</div>
+                    <div className="grow shrink basis-0 product-body-text-4-regular text-semantic-fg-disabled">150KB</div>
+                </div>
+                <div className=" flex-col justify-start items-start gap-1 inline-flex">
+                    <div className="text-semantic-fg-primary product-body-text-3-semibold">
+                        Pipeline in use
+                    </div>
+                    <div className="justify-start items-center gap-1 inline-flex">
+                        <Icons.Pipeline className="w-4 h-4 stroke-semantic-accent-hover" />
+                        <button
+                            type="button"
+                            className="hover:!underline text-semantic-accent-hover product-body-text-3-semibold"
+                            onClick={() => {
+                                router.push(`/${ownerID}`);
+                            }}
+                        >
+                            xiaofei/name-your-pet
+                        </button>
+                    </div>
+                </div>
+                {/* 
+            COMING IN V2 
+            */}
+
+                {/* <div className="flex w-full items-center justify-start">
+                <Tabs.Root defaultValue="text" className="mb-8 mt-4 w-full">
+                    <div className="flex flex-col items-center w-full">
+                        <Tabs.List className="w-full h-8 border-b border-slate-200 flex justify-start items-start gap-0.5">
+                            <Tabs.Trigger value="text" className="px-4 bg-white rounded-tl-lg rounded-tr-lg border-l border-r border-t border-slate-200 justify-start items-center gap-2 flex">
+                                <span className="text-center text-gray-800 text-xs font-semibold font-['IBM Plex Sans'] capitalize leading-3 tracking-tight">Text</span>
+                            </Tabs.Trigger>
+                            <Tabs.Trigger value="images" className="px-4 bg-slate-50 rounded-tl-lg rounded-tr-lg border border-slate-200 justify-start items-center gap-2 flex">
+                                <span className="text-center text-gray-800/opacity-60 text-xs font-semibold font-['IBM Plex Sans'] capitalize leading-3 tracking-tight">Images</span>
+                            </Tabs.Trigger>
+                        </Tabs.List>
+                    </div>
+                    <div className="bg-white pt-8 px-8">
+                        <div className="flex w-full flex-row space-x-4">
+                            <div className="flex w-1/2 flex-col">
+                                <Tabs.Content value="text" className="flex w-full">
+                                    <Form.Root {...form} onSubmit={form.handleSubmit(onSubmit)}>
+                                        <form className="flex flex-col gap-6 w-full">
+                                            <CollapsibleSection title="Convert / Transform files">
+                                                <div className="flex gap-8">
+                                                    <Form.Field
+                                                        control={form.control}
+                                                        name="convertTransformFiles"
+                                                        render={({ field }) => (
+                                                            <Form.Item className="w-1/2">
+                                                                <Form.Label className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
+                                                                    Convert / Transform files
+                                                                </Form.Label>
+                                                                <Form.Control>
+                                                                    <Select.Root
+                                                                        onValueChange={field.onChange}
+                                                                        defaultValue={field.value}
+                                                                    >
+                                                                        <Select.Trigger>
+                                                                            <Select.Value placeholder="Select.." />
+                                                                        </Select.Trigger>
+                                                                        <Select.Content>
+                                                                            <Select.Item value="option1">Option 1</Select.Item>
+                                                                            <Select.Item value="option2">Option 2</Select.Item>
+                                                                        </Select.Content>
+                                                                    </Select.Root>
+                                                                </Form.Control>
+                                                                <Form.Message />
+                                                            </Form.Item>
+                                                        )}
+                                                    />
+                                                    <Form.Field
+                                                        control={form.control}
+                                                        name="convertMethod"
+                                                        render={({ field }) => (
+                                                            <Form.Item className="w-1/2">
+                                                                <Form.Label className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
+                                                                    Convert method
+                                                                </Form.Label>
+                                                                <Form.Control>
+                                                                    <Select.Root
+                                                                        onValueChange={field.onChange}
+                                                                        defaultValue={field.value}
+                                                                    >
+                                                                        <Select.Trigger>
+                                                                            <Select.Value placeholder="Select.." />
+                                                                        </Select.Trigger>
+                                                                        <Select.Content>
+                                                                            <Select.Item value="option1">Option 1</Select.Item>
+                                                                            <Select.Item value="option2">Option 2</Select.Item>
+                                                                        </Select.Content>
+                                                                    </Select.Root>
+                                                                </Form.Control>
+                                                                <Form.Message />
+                                                            </Form.Item>
+                                                        )}
+                                                    />
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <Button variant="secondaryGrey" className="grow" type="button">
+                                                        Test Pipeline
+                                                    </Button>
+                                                    <Button variant="secondaryGrey" className="grow" type="button">
+                                                        Customize Pipeline
+                                                    </Button>
+                                                    <Button variant="primary" className="grow bg-blue-50 text-blue-700" type="submit">
+                                                        Preview Results
+                                                    </Button>
+                                                </div>
+                                            </CollapsibleSection>
+                                            <CollapsibleSection title="Split text">
+                                                <div className="flex gap-8">
+                                                    <Form.Field
+                                                        control={form.control}
+                                                        name="splitTextFiles"
+                                                        render={({ field }) => (
+                                                            <Form.Item className="w-1/2">
+                                                                <Form.Label className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
+                                                                    Split text files
+                                                                </Form.Label>
+                                                                <Form.Control>
+                                                                    <Select.Root
+                                                                        onValueChange={field.onChange}
+                                                                        defaultValue={field.value}
+                                                                    >
+                                                                        <Select.Trigger>
+                                                                            <Select.Value placeholder="Select.." />
+                                                                        </Select.Trigger>
+                                                                        <Select.Content>
+                                                                            <Select.Item value="option1">Option 1</Select.Item>
+                                                                            <Select.Item value="option2">Option 2</Select.Item>
+                                                                        </Select.Content>
+                                                                    </Select.Root>
+                                                                </Form.Control>
+                                                                <Form.Message />
+                                                            </Form.Item>
+                                                        )}
+                                                    />
+                                                    <Form.Field
+                                                        control={form.control}
+                                                        name="splitMethod"
+                                                        render={({ field }) => (
+                                                            <Form.Item className="w-1/2">
+                                                                <Form.Label className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
+                                                                    Split method
+                                                                </Form.Label>
+                                                                <Form.Control>
+                                                                    <Select.Root
+                                                                        onValueChange={field.onChange}
+                                                                        defaultValue={field.value}
+                                                                    >
+                                                                        <Select.Trigger>
+                                                                            <Select.Value placeholder="Select.." />
+                                                                        </Select.Trigger>
+                                                                        <Select.Content>
+                                                                            <Select.Item value="option1">Option 1</Select.Item>
+                                                                            <Select.Item value="option2">Option 2</Select.Item>
+                                                                        </Select.Content>
+                                                                    </Select.Root>
+                                                                </Form.Control>
+                                                                <Form.Message />
+                                                            </Form.Item>
+                                                        )}
+                                                    />
+                                                </div>
+                                                <div className="flex gap-8">
+                                                    <Form.Field
+                                                        control={form.control}
+                                                        name="maxTokenSize"
+                                                        render={({ field }) => (
+                                                            <Form.Item className="w-1/2">
+                                                                <Form.Label className="text-gray-800 text-base font-semibold font-['IBM Plex Sans'] capitalize leading-none tracking-tight">
+                                                                    Max token size
+                                                                </Form.Label>
+                                                                <Form.Control>
+                                                                    <div className="flex items-center gap-2">
+                                                                        <input
+                                                                            type="range"
+                                                                            className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                                                                            {...field}
+                                                                        />
+                                                                        <Input.Root>
+                                                                            <Input.Core
+                                                                                {...field}
+                                                                                id={field.name}
+                                                                                placeholder="Username"
+                                                                                type="text"
+                                                                                disabled={true}
+                                                                            />
+                                                                        </Input.Root>
+                                                                    </div>
+                                                                </Form.Control>
+                                                                <Form.Message />
+                                                            </Form.Item>
+                                                        )}
+                                                    />
+                                                    <Form.Field
+                                                        control={form.control}
+                                                        name="tokenizerModel"
+                                                        render={({ field }) => (
+                                                            <Form.Item className="w-1/2">
+                                                                <Form.Label className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
+                                                                    Tokenizer model
+                                                                </Form.Label>
+                                                                <Form.Control>
+                                                                    <Select.Root
+                                                                        onValueChange={field.onChange}
+                                                                        defaultValue={field.value}
+                                                                    >
+                                                                        <Select.Trigger>
+                                                                            <Select.Value placeholder="Select.." />
+                                                                        </Select.Trigger>
+                                                                        <Select.Content>
+                                                                            <Select.Item value="option1">Option 1</Select.Item>
+                                                                            <Select.Item value="option2">Option 2</Select.Item>
+                                                                        </Select.Content>
+                                                                    </Select.Root>
+                                                                </Form.Control>
+                                                                <Form.Message />
+                                                            </Form.Item>
+                                                        )}
+                                                    />
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <Button variant="secondaryGrey" className="grow" type="button">
+                                                        Test Pipeline
+                                                    </Button>
+                                                    <Button variant="secondaryGrey" className="grow" type="button">
+                                                        Customize Pipeline
+                                                    </Button>
+                                                    <Button variant="primary" className="grow bg-blue-50 text-blue-700" type="submit">
+                                                        Preview Results
+                                                    </Button>
+                                                </div>
+                                            </CollapsibleSection>
+                                            <CollapsibleSection title="Embed chunks">
+                                                <div className="flex gap-8">
+                                                    <Form.Field
+                                                        control={form.control}
+                                                        name="embedChunksFiles"
+                                                        render={({ field }) => (
+                                                            <Form.Item className="w-1/2">
+                                                                <Form.Label className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
+                                                                    Embed chunks files
+                                                                </Form.Label>
+                                                                <Form.Control>
+                                                                    <Select.Root
+                                                                        onValueChange={field.onChange}
+                                                                        defaultValue={field.value}
+                                                                    >
+                                                                        <Select.Trigger>
+                                                                            <Select.Value placeholder="Select.." />
+                                                                        </Select.Trigger>
+                                                                        <Select.Content>
+                                                                            <Select.Item value="option1">Option 1</Select.Item>
+                                                                            <Select.Item value="option2">Option2</Select.Item>
+                                                                        </Select.Content>
+                                                                    </Select.Root>
+                                                                </Form.Control>
+                                                                <Form.Message />
+                                                            </Form.Item>
+                                                        )}
+                                                    />
+                                                    <Form.Field
+                                                        control={form.control}
+                                                        name="embeddingModel"
+                                                        render={({ field }) => (
+                                                            <Form.Item className="w-1/2">
+                                                                <Form.Label className="text-gray-800 text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
+                                                                    Embedding model
+                                                                </Form.Label>
+                                                                <Form.Control>
+                                                                    <Select.Root
+                                                                        onValueChange={field.onChange}
+                                                                        defaultValue={field.value}
+                                                                    >
+                                                                        <Select.Trigger>
+                                                                            <Select.Value placeholder="Select.." />
+                                                                        </Select.Trigger>
+                                                                        <Select.Content>
+                                                                            <Select.Item value="option1">Option 1</Select.Item>
+                                                                            <Select.Item value="option2">Option 2</Select.Item>
+                                                                        </Select.Content>
+                                                                    </Select.Root>
+                                                                </Form.Control>
+                                                                <Form.Message />
+                                                            </Form.Item>
+                                                        )}
+                                                    />
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <Button variant="secondaryGrey" className="grow" type="button">
+                                                        Test Pipeline
+                                                    </Button>
+                                                    <Button variant="secondaryGrey" className="grow" type="button">
+                                                        Customize Pipeline
+                                                    </Button>
+                                                </div>
+                                            </CollapsibleSection>
+                                        </form>
+                                    </Form.Root>
+                                </Tabs.Content>
+                                <Tabs.Content value="images">
+                                </Tabs.Content>
+                            </div>
+                            <Separator orientation="vertical" />
+                            <div className="flex w-1/2 flex-col pl-8">
+                                <div className="text-lg font-semibold mb-6">Preview</div>
+                                <div className="flex flex-col gap-3">
+                                    <div className="flex justify-center items-center gap-2">
+                                        <div className="grow h-px bg-slate-200" />
+                                        <div className="text-sm font-medium text-gray-800/80">Convert Results</div>
+                                        <div className="grow h-px bg-slate-200" />
+                                    </div>
+                                    <div className="flex flex-col gap-3">
+                                        <div className="flex flex-col">
+                                            <div className="text-sm font-semibold mb-2">File name 1</div>
+                                            <Textarea placeholder="Text preview" rows={3} />
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-center items-center gap-2">
+                                        <div className="grow h-px bg-slate-200" />
+                                        <div className="text-sm font-medium text-gray-800/80">Split Text Results</div>
+                                        <div className="grow h-px bg-slate-200" />
+                                    </div>
+                                    <div className="flex flex-col gap-3">
+                                        <div className="flex flex-col">
+                                            <div className="text-sm font-semibold mb-2">File name 1</div>
+                                            <Textarea placeholder="Text preview" rows={3} />
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <div className="text-sm font-semibold mb-2">File name 2</div>
+                                            <Textarea placeholder="Text preview" rows={3} />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Tabs.Root>
+            </div> */}
+            </div>
+        );
+    };
