@@ -1,3 +1,3 @@
 export * from "./DataTable";
 
-export type { ColumnDef } from "@tanstack/react-table";
+export type { ColumnDef, PaginationState } from "@tanstack/react-table";

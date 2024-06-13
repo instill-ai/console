@@ -344,7 +344,7 @@ const FeaturedBanner = () => {
   const [showBanner, setShowBanner] = React.useState(true);
 
   return (
-    <>
+    <React.Fragment>
       {showBanner && (
         <div className="mb-3 flex items-center justify-between rounded-sm bg-semantic-accent-bg px-4 py-2 text-semantic-fg-secondary">
           <p className="flex items-center justify-between font-normal">
@@ -377,7 +377,7 @@ const FeaturedBanner = () => {
           </div>
         </div>
       )}
-    </>
+    </React.Fragment>
   );
 };
 

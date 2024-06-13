@@ -4,6 +4,7 @@ import { Nullable } from "../../../type";
 import { Tag } from "@instill-ai/design-system";
 import { SmartHintWarning } from "../../types";
 import { SmartHint } from "../../../use-smart-hint";
+import React from "react";
 
 export const SmartHintInfoCard = ({
   className,
@@ -53,7 +54,7 @@ export const SmartHintInfoCard = ({
           <div className="flex flex-col gap-y-2">
             {smartHintWarning.notAvailableReferences.length !== 0 ? (
               smartHintWarning.notAvailableReferences.length > 1 ? (
-                <>
+                <React.Fragment>
                   <p className="text-semantic-warning-default product-body-text-3-regular">
                     These references are not available:
                   </p>
@@ -69,9 +70,9 @@ export const SmartHintInfoCard = ({
                       </Tag>
                     ))}
                   </div>
-                </>
+                </React.Fragment>
               ) : (
-                <>
+                <React.Fragment>
                   <p className="text-semantic-warning-default product-body-text-3-regular">
                     This reference is not available:
                   </p>
@@ -87,7 +88,7 @@ export const SmartHintInfoCard = ({
                       </Tag>
                     ))}
                   </div>
-                </>
+                </React.Fragment>
               )
             ) : null}
           </div>
