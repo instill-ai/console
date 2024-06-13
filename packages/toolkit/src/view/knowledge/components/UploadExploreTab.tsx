@@ -169,108 +169,102 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
             form.setValue("file", file);
             await handleFileUpload(file);
         }
+    };
 
 
 
-
-        return (
-            <div className="flex flex-col">
-                <div className="flex items-center justify-between mb-5">
-                    <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
-                        {knowledgeBase.name}
-                    </p>
-                </div>
-                <Separator orientation="horizontal" className="mb-6" />
-                <Form.Root {...form}>
-                    <form className="space-y-4 mb-6">
-                        <Form.Field
-                            control={form.control}
-                            name="file"
-                            render={({ field }) => (
-                                <Form.Item className="w-full">
-                                    <Form.Control>
-                                        <div>
-                                            <label
-                                                htmlFor="upload-file-field"
-                                                className={`flex h-[150px] w-full cursor-pointer flex-col items-center justify-center rounded border border-dashed ${isDragging ? "border-blue-500" : "border-semantic-bg-line"
-                                                    } bg-semantic-bg-base-bg text-semantic-fg-secondary product-body-text-3-medium`}
-                                                onDragEnter={handleDragEnter}
-                                                onDragLeave={handleDragLeave}
-                                                onDragOver={handleDragOver}
-                                                onDrop={handleDrop}
-                                            >
-                                                {field.value ? (
-                                                    <div className="text-center">
-                                                        <p>{field.value.name}</p>
-                                                        <p>{Math.round(field.value.size / 1024)}KB</p>
-                                                    </div>
-                                                ) : (
-                                                    <div className="flex flex-col items-center justify-center space-y-2">
-                                                        <Icons.Upload01 className="w-8 h-8 p-1 stroke-semantic-fg-secondary mb-4" />
-                                                        <div className="text-center w-full">
-                                                            <span>Drag-and-drop file, or </span>
-                                                            <span className="text-semantic-accent-hover underline">
-                                                                browse computer
-                                                            </span>
-                                                            <div>Support TXT, MARKDOWN, PDF</div>
-                                                            <div>Max 15MB each</div>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                                <Input.Root className="hidden">
-                                                    <Input.Core
-                                                        {...field}
-                                                        id="upload-file-field"
-                                                        type="file"
-                                                        accept=".txt,.md,.pdf"
-                                                        value={undefined}
-                                                        onChange={async (e) => {
-                                                            const file = e.target.files?.[0];
-                                                            if (file) {
-                                                                field.onChange(file);
-                                                                await handleFileUpload(file);
-                                                            }
-                                                        }}
-                                                    />
-                                                </Input.Root>
-                                            </label>
-                                        </div>
-                                    </Form.Control>
-                                    <Form.Message />
-                                </Form.Item>
-                            )}
-                        />
-                        {/* Render other form fields */}
-                        {/* ... */}
-                    </form>
-                </Form.Root>
+    return (
+        <div className="flex flex-col">
+            <div className="flex items-center justify-between mb-5">
+                <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
+                    {knowledgeBase.name}
+                </p>
+            </div>
+            <Separator orientation="horizontal" className="mb-6" />
+            <Form.Root {...form}>
+                <form className="space-y-4 mb-6">
+                    <Form.Field
+                        control={form.control}
+                        name="file"
+                        render={({ field }) => (
+                            <Form.Item className="w-full">
+                                <Form.Control>
+                                    <div
+                                        className={`flex h-[150px] w-full cursor-pointer flex-col items-center justify-center rounded border border-dashed ${isDragging ? "border-semantic-accent-default" : "border-semantic-bg-line"
+                                            } bg-semantic-bg-base-bg text-semantic-fg-secondary product-body-text-3-medium hover:border-semantic-accent-default`}
+                                        onDragEnter={handleDragEnter}
+                                        onDragLeave={handleDragLeave}
+                                        onDragOver={handleDragOver}
+                                        onDrop={handleDrop}
+                                    >
+                                        <Form.Label htmlFor="upload-file-field" className="cursor-pointer">
+                                            <div className="flex flex-col items-center justify-center space-y-2">
+                                                <Icons.Upload01 className="w-8 h-8 p-1 stroke-semantic-fg-secondary mb-4" />
+                                                <div className="text-center w-full">
+                                                    <span>Drag-and-drop file, or </span>
+                                                    <span className="text-semantic-accent-hover underline">
+                                                        browse computer
+                                                    </span>
+                                                    <div>Support TXT, MARKDOWN, PDF</div>
+                                                    <div>Max 15MB each</div>
+                                                </div>
+                                            </div>
+                                        </Form.Label>
+                                        <Input.Root className="hidden">
+                                            <Input.Core
+                                                {...field}
+                                                id="upload-file-field"
+                                                type="file"
+                                                accept=".txt,.md,.pdf"
+                                                value={undefined}
+                                                onChange={async (e) => {
+                                                    const file = e.target.files?.[0];
+                                                    if (file) {
+                                                        field.onChange(file);
+                                                        await handleFileUpload(file);
+                                                    }
+                                                }}
+                                            />
+                                        </Input.Root>
+                                    </div>
+                                </Form.Control>
+                                <Form.Message />
+                            </Form.Item>
+                        )}
+                    />
+                </form>
+            </Form.Root>
+            {form.watch("file") && (
                 <div className="w-full mb-6 rounded border border-[#E1E6EF] justify-start items-center gap-2 inline-flex px-2 py-1.5">
                     <Icons.File05 className="w-4 h-4 stroke-semantic-fg-secondary" />
-                    <div className=" product-body-text-3-regular">filename.pdf</div>
-                    <div className="grow shrink basis-0 product-body-text-4-regular text-semantic-fg-disabled">150KB</div>
-                </div>
-                <div className=" flex-col justify-start items-start gap-1 inline-flex">
-                    <div className="text-semantic-fg-primary product-body-text-3-semibold">
-                        Pipeline in use
-                    </div>
-                    <div className="justify-start items-center gap-1 inline-flex">
-                        <Icons.Pipeline className="w-4 h-4 stroke-semantic-accent-hover" />
-                        <button
-                            type="button"
-                            className="hover:!underline text-semantic-accent-hover product-body-text-3-semibold"
-                            onClick={() => {
-                                router.push(`/${ownerID}`);
-                            }}
-                        >
-                            xiaofei/name-your-pet
-                        </button>
+                    <div className="product-body-text-3-regular">{form.watch("file").name}</div>
+                    <div className="grow shrink basis-0 product-body-text-4-regular text-semantic-fg-disabled">
+                        {Math.round(form.watch("file").size / 1024)}KB
                     </div>
                 </div>
-                {/* 
+            )}
+            <div className=" flex-col justify-start items-start gap-1 inline-flex">
+                <div className="text-semantic-fg-primary product-body-text-3-semibold">
+                    Pipeline in use
+                </div>
+                <div className="justify-start items-center gap-1 inline-flex">
+                    <Icons.Pipeline className="w-4 h-4 stroke-semantic-accent-hover" />
+                    <button
+                        type="button"
+                        className="hover:!underline text-semantic-accent-hover product-body-text-3-semibold"
+                        onClick={() => {
+                            router.push(`/${ownerID}`);
+                        }}
+                    >
+                        xiaofei/name-your-pet
+                    </button>
+                </div>
+            </div>
+            {/* 
             COMING IN V2 
             */}
 
-                {/* <div className="flex w-full items-center justify-start">
+            {/* <div className="flex w-full items-center justify-start">
                 <Tabs.Root defaultValue="text" className="mb-8 mt-4 w-full">
                     <div className="flex flex-col items-center w-full">
                         <Tabs.List className="w-full h-8 border-b border-slate-200 flex justify-start items-start gap-0.5">
@@ -586,6 +580,6 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                     </div>
                 </Tabs.Root>
             </div> */}
-            </div>
-        );
-    };
+        </div>
+    );
+};
