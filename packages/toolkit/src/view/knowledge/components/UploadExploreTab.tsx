@@ -147,21 +147,21 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
 
     const [isDragging, setIsDragging] = React.useState(false);
 
-    const handleDragEnter = (e: React.DragEvent<HTMLLabelElement>) => {
+    const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setIsDragging(true);
     };
 
-    const handleDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
+    const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setIsDragging(false);
     };
 
-    const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
     };
 
-    const handleDrop = async (e: React.DragEvent<HTMLLabelElement>) => {
+    const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setIsDragging(false);
         const file = e.dataTransfer.files[0];
@@ -170,7 +170,6 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
             await handleFileUpload(file);
         }
     };
-
 
 
     return (
@@ -191,7 +190,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                                 <Form.Control>
                                     <div
                                         className={`flex h-[150px] w-full cursor-pointer flex-col items-center justify-center rounded border border-dashed ${isDragging ? "border-semantic-accent-default" : "border-semantic-bg-line"
-                                            } bg-semantic-bg-base-bg text-semantic-fg-secondary product-body-text-3-medium hover:border-semantic-accent-default`}
+                                            } bg-semantic-bg-base-bg text-semantic-fg-secondary product-body-text-4-regular hover:border-semantic-accent-default`}
                                         onDragEnter={handleDragEnter}
                                         onDragLeave={handleDragLeave}
                                         onDragOver={handleDragOver}
