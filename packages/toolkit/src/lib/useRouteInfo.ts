@@ -12,35 +12,35 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export type UseAppEntitySuccessReturn = {
+export type UseRouteInfoSuccessReturn = {
   isSuccess: true;
   data: {
     namespaceType: NamespaceType;
-    entity: Nullable<string>;
-    id: Nullable<string>;
+    namespaceId: Nullable<string>;
+    resourceId: Nullable<string>;
     pipelineName: Nullable<string>;
     connectorName: Nullable<string>;
-    entityName: Nullable<string>;
+    namespaceName: Nullable<string>;
     modelName: Nullable<string>;
   };
 };
 
-export type UseAppEntityFailedReturn = {
+export type UseRouteInfoFailedReturn = {
   isSuccess: false;
   data: {
     namespaceType: null;
-    entity: null;
-    id: null;
+    namespaceId: null;
+    resourceId: null;
     pipelineName: null;
     connectorName: null;
-    entityName: null;
+    namespaceName: null;
     modelName: null;
   };
 };
 
-export function useAppEntity():
-  | UseAppEntitySuccessReturn
-  | UseAppEntityFailedReturn {
+export function useRouteInfo():
+  | UseRouteInfoSuccessReturn
+  | UseRouteInfoFailedReturn {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const params = useParams();
   const entity = params.entity ? String(params.entity) : null;
@@ -56,7 +56,8 @@ export function useAppEntity():
     React.useState<Nullable<string>>(null);
   const [connectorName, setConnectorName] =
     React.useState<Nullable<string>>(null);
-  const [entityName, setEntityName] = React.useState<Nullable<string>>(null);
+  const [namespaceName, setNamespaceName] =
+    React.useState<Nullable<string>>(null);
   const [modelName, setModelName] = React.useState<Nullable<string>>(null);
   const [isSuccess, setIsSuccess] = React.useState<boolean>(false);
 
@@ -64,7 +65,7 @@ export function useAppEntity():
     if (namespaceType.data === "NAMESPACE_ORGANIZATION") {
       setPipelineName(`organizations/${entity}/pipelines/${id}`);
       setConnectorName(`organizations/${entity}/connectors/${id}`);
-      setEntityName(`organizations/${entity}`);
+      setNamespaceName(`organizations/${entity}`);
       setModelName(`organizations/${entity}/models/${id}`);
       setIsSuccess(true);
     }
@@ -72,7 +73,7 @@ export function useAppEntity():
     if (namespaceType.data === "NAMESPACE_USER") {
       setPipelineName(`users/${entity}/pipelines/${id}`);
       setConnectorName(`users/${entity}/connectors/${id}`);
-      setEntityName(`users/${entity}`);
+      setNamespaceName(`users/${entity}`);
       setModelName(`users/${entity}/models/${id}`);
       setIsSuccess(true);
     }
@@ -82,11 +83,11 @@ export function useAppEntity():
     return {
       data: {
         namespaceType: namespaceType.data,
-        entity,
-        id,
+        namespaceId: entity,
+        resourceId: id,
+        namespaceName,
         pipelineName,
         connectorName,
-        entityName,
         modelName,
       },
       isSuccess: true,
@@ -96,11 +97,11 @@ export function useAppEntity():
       isSuccess: false,
       data: {
         namespaceType: null,
-        entity: null,
-        id: null,
+        resourceId: null,
+        namespaceId: null,
+        namespaceName: null,
         pipelineName: null,
         connectorName: null,
-        entityName: null,
         modelName: null,
       },
     };

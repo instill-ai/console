@@ -112,6 +112,11 @@ export type GeneralSlice = {
   // this is safe to do so
   entitySecrets: Secret[];
   updateEntitySecrets: (fn: (prev: Secret[]) => Secret[]) => void;
+
+  navigationNamespaceAnchor: Nullable<string>;
+  updateNavigationNamespaceAnchor: (
+    fn: (prev: Nullable<string>) => Nullable<string>
+  ) => void;
 };
 
 export type RecentlyUsedSlice = {

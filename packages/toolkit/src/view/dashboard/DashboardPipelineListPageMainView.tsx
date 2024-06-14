@@ -14,7 +14,7 @@ import {
   useTriggeredPipelines,
   useTriggeredPipelinesChart,
   dashboardOptions,
-  useAppEntity,
+  useRouteInfo,
   GeneralAppPageProp,
 } from "../../lib";
 import { FilterByDay } from "./FilterByDay";
@@ -38,15 +38,15 @@ export const DashboardPipelineListPageMainView = (
   const [queryStringPrevious, setQueryStringPrevious] =
     React.useState<Nullable<string>>(null);
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   React.useEffect(() => {
-    if (!entity.isSuccess) {
+    if (!routeInfo.isSuccess) {
       return;
     }
 
-    let queryParams = `owner_name='${entity.data.entityName}'`;
-    let queryParamsPrevious = `owner_name='${entity.data.entityName}'`;
+    let queryParams = `owner_name='${routeInfo.data.namespaceName}'`;
+    let queryParamsPrevious = `owner_name='${routeInfo.data.namespaceName}'`;
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(
@@ -69,7 +69,7 @@ export const DashboardPipelineListPageMainView = (
 
     setQueryString(queryParams);
     setQueryStringPrevious(queryParamsPrevious);
-  }, [selectedTimeOption, entity.isSuccess, entity.data.entityName]);
+  }, [selectedTimeOption, routeInfo.isSuccess, routeInfo.data.namespaceName]);
 
   /* -------------------------------------------------------------------------
    * Query pipeline and triggers data

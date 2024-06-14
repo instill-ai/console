@@ -8,7 +8,7 @@ import {
   useUser,
   useAuthenticatedUser,
   useUserPipelines,
-  useAppEntity,
+  useRouteInfo,
 } from "../../../lib";
 import { useRouter } from "next/navigation";
 import { UserProfileBio } from "./Bio";
@@ -25,7 +25,7 @@ const selector = (store: InstillStore) => ({
 
 export const UserProfileView = () => {
   const router = useRouter();
-  const entityObject = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
@@ -35,27 +35,27 @@ export const UserProfileView = () => {
   });
 
   const user = useUser({
-    userName: entityObject.data.entityName,
+    userName: routeInfo.data.namespaceName,
     accessToken: accessToken,
     enabled:
       enabledQuery &&
-      entityObject.isSuccess &&
-      (entityObject.data.namespaceType === "NAMESPACE_ORGANIZATION" ||
-        entityObject.data.namespaceType === "NAMESPACE_USER"),
+      routeInfo.isSuccess &&
+      (routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION" ||
+        routeInfo.data.namespaceType === "NAMESPACE_USER"),
   });
 
   const pipelines = useUserPipelines({
     accessToken: accessToken,
-    enabled: enabledQuery && entityObject.isSuccess,
-    userName: entityObject.isSuccess ? entityObject.data.entityName : null,
+    enabled: enabledQuery && routeInfo.isSuccess,
+    userName: routeInfo.isSuccess ? routeInfo.data.namespaceName : null,
     filter: null,
     visibility: null,
   });
 
   const models = useUserModels({
     accessToken: accessToken,
-    enabled: enabledQuery && entityObject.isSuccess,
-    userName: entityObject.isSuccess ? entityObject.data.entityName : null,
+    enabled: enabledQuery && routeInfo.isSuccess,
+    userName: routeInfo.isSuccess ? routeInfo.data.namespaceName : null,
     filter: null,
     visibility: null,
   });
@@ -83,8 +83,8 @@ export const UserProfileView = () => {
             userMemberships={null}
             isOwner={
               me.isSuccess &&
-              entityObject.isSuccess &&
-              me.data.id === String(entityObject.data.entity)
+              routeInfo.isSuccess &&
+              me.data.id === String(routeInfo.data.namespaceId)
             }
             twitterLink={user.data.profile?.social_profiles_links?.x ?? null}
             githubLink={

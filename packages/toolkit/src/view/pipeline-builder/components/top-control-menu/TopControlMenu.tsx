@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import cn from "clsx";
 import { Run } from "./Run";
 import { Toolkit } from "./Toolkit";
 import { Save } from "./Save";
@@ -10,7 +11,7 @@ import { PublishPipelineDialog, SelectComponentDialog } from "../dialogs";
 import {
   InstillStore,
   Nullable,
-  useAppEntity,
+  useRouteInfo,
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
   useShallow,
@@ -27,8 +28,10 @@ const selector = (store: InstillStore) => ({
 
 export const TopControlMenu = ({
   reactFlowInstance,
+  className,
 }: {
   reactFlowInstance: Nullable<ReactFlowInstance>;
+  className?: string;
 }) => {
   const [open, setOpen] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
@@ -37,20 +40,22 @@ export const TopControlMenu = ({
     useShallow(selector)
   );
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
 
   return (
     <React.Fragment>
-      <div className="flex w-full flex-row py-[5px]">
+      <div className={cn("flex w-full flex-row py-[5px]", className)}>
         <div className="flex flex-row items-center gap-x-4">
           <Button
             variant="tertiaryGrey"
             onClick={() => {
               if (pipelineIsNew) {
-                navigate(`/${entity.data.entity}/pipelines`);
+                navigate(`/${routeInfo.data.namespaceId}/pipelines`);
               } else {
-                navigate(`/${entity.data.entity}/pipelines/${entity.data.id}`);
+                navigate(
+                  `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`
+                );
               }
             }}
             className="flex cursor-pointer"
@@ -80,9 +85,9 @@ export const TopControlMenu = ({
         </div>
       </div>
       <PublishPipelineDialog
-        pipelineName={entity.data.pipelineName}
-        entity={entity.data.entity}
-        id={entity.data.id}
+        pipelineName={routeInfo.data.pipelineName}
+        entity={routeInfo.data.namespaceId}
+        id={routeInfo.data.resourceId}
       />
     </React.Fragment>
   );

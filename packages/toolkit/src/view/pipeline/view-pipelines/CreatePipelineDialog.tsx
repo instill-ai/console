@@ -25,18 +25,17 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useAuthenticatedUser,
   useCreateUserPipeline,
-  useAppEntity,
+  useRouteInfo,
   useInstillStore,
   useShallow,
-  useUserMemberships,
 } from "../../../lib";
 import { InstillErrors, DataTestID } from "../../../constant";
 import { LoadingSpin } from "../../../components";
 import { env, validateInstillID } from "../../../server";
 import { useRouter } from "next/navigation";
-import { EntitySelector, OwnerEntity } from "../../../components";
+import { EntitySelector } from "../../../components";
+import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 
 const CreatePipelineSchema = z
   .object({
@@ -62,7 +61,6 @@ export type CreatePipelineDialogProps = {
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
-  enabledQuery: store.enabledQuery,
 });
 
 export const CreatePipelineDialog = ({ className }: { className?: string }) => {
@@ -80,55 +78,15 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
     mode: "onChange",
   });
 
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken } = useInstillStore(useShallow(selector));
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
-  const me = useAuthenticatedUser({
-    enabled: enabledQuery,
-    accessToken,
-  });
-
-  const userMemberships = useUserMemberships({
-    enabled: entity.isSuccess,
-    userID: me.isSuccess ? me.data.id : null,
-    accessToken,
-  });
-
-  const organizationsAndUserList = React.useMemo(() => {
-    const orgsAndUserList: OwnerEntity[] = [];
-
-    if (userMemberships.isSuccess) {
-      userMemberships.data.forEach((org) => {
-        orgsAndUserList.push({
-          id: org.organization.id,
-          name: org.organization.name,
-          type: "organization",
-          avatarUrl: org.organization.profile?.avatar || null,
-        });
-      });
-    }
-
-    if (me.isSuccess && me.data.id && me.data.name) {
-      orgsAndUserList.push({
-        id: me.data.id,
-        name: me.data.name,
-        type: "user",
-        avatarUrl: me.data.profile?.avatar || null,
-      });
-    }
-
-    return orgsAndUserList;
-  }, [
-    userMemberships.isSuccess,
-    userMemberships.data,
-    entity.isSuccess,
-    entity.data,
-  ]);
+  const namespaces = useUserNamespaces();
 
   const createPipeline = useCreateUserPipeline();
   async function onSubmit(data: z.infer<typeof CreatePipelineSchema>) {
-    if (!entity.isSuccess) {
+    if (!routeInfo.isSuccess) {
       return;
     }
 
@@ -179,15 +137,15 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
       sharing,
     };
 
-    const namespace = organizationsAndUserList.find(
+    const usedNamespace = namespaces.find(
       (account) => account.id === data.namespaceId
     )?.name;
 
-    if (namespace) {
+    if (usedNamespace) {
       try {
         await createPipeline.mutateAsync({
           accessToken,
-          entityName: namespace,
+          entityName: usedNamespace,
           payload,
         });
 
@@ -223,7 +181,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
         form.reset({
           id: "",
           description: "",
-          namespaceId: entity?.data.entity || "",
+          namespaceId: routeInfo?.data.namespaceId || "",
         });
         setOpen(open);
       }}
@@ -242,7 +200,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
         data-testid={DataTestID.createPipelineDialog}
         className="!w-[600px] !p-0"
       >
-        {entity.isSuccess ? (
+        {routeInfo.isSuccess ? (
           <div className="flex flex-col">
             <div className="flex border-b border-semantic-bg-line p-6">
               <h3 className=" text-semantic-fg-primary product-body-text-1-semibold">
@@ -275,7 +233,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                                         form.trigger("id");
                                       }
                                     }}
-                                    data={organizationsAndUserList}
+                                    data={namespaces}
                                   />
                                 </Form.Control>
                                 <Form.Message />
@@ -414,7 +372,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
 
             <div className="flex flex-row-reverse px-6 pb-6 pt-8">
               <Button
-                disabled={creating || organizationsAndUserList.length === 0}
+                disabled={creating || namespaces.length === 0}
                 form={formID}
                 variant="primary"
                 size="lg"

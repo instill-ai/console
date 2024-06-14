@@ -15,7 +15,7 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useAppEntity,
+  useRouteInfo,
   useAuthenticatedUser,
   useCreateUserModel,
   useModelRegions,
@@ -93,13 +93,13 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
   const [hardwareCustomValue, setHardwareCustomValue] = useState<string>("");
   const [creating, setCreating] = useState(false);
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
   const userMemberships = useUserMemberships({
-    enabled: entity.isSuccess,
+    enabled: me.isSuccess,
     userID: me.isSuccess ? me.data.id : null,
     accessToken,
   });
@@ -153,10 +153,10 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
   }, [form, regionOptions, hardwareOptions]);
 
   useEffect(() => {
-    if (entity.data.entity && !form.getValues("namespaceId")) {
-      form.setValue("namespaceId", entity.data.entity);
+    if (routeInfo.data.namespaceName && !form.getValues("namespaceId")) {
+      form.setValue("namespaceId", routeInfo.data.namespaceName);
     }
-  }, [form, entity.isSuccess, entity.data]);
+  }, [form, routeInfo.isSuccess, routeInfo.data]);
 
   useEffect(() => {
     const currentEnv: "CE" | "CLOUD" = env("NEXT_PUBLIC_APP_ENV");
@@ -192,7 +192,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
 
   const createModel = useCreateUserModel();
   async function onSubmit(data: z.infer<typeof CreateModelSchema>) {
-    if (!entity.isSuccess) {
+    if (!routeInfo.isSuccess) {
       return;
     }
 
@@ -210,15 +210,15 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
       configuration: {},
     };
 
-    const namespace = organizationsAndUserList.find(
+    const targetName = organizationsAndUserList.find(
       (account) => account.id === data.namespaceId
     )?.name;
 
-    if (namespace) {
+    if (targetName) {
       try {
         await createModel.mutateAsync({
           accessToken,
-          entityName: namespace,
+          entityName: targetName,
           payload,
         });
 
@@ -254,7 +254,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
 
   return (
     <div className="flex w-full flex-col md:w-1/2">
-      {entity.isSuccess && modelRegions.isSuccess ? (
+      {routeInfo.isSuccess && modelRegions.isSuccess ? (
         <Form.Root {...form}>
           <form id={formID} onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-y-10">

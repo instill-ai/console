@@ -62,7 +62,7 @@ export const RootProvider = ({ children }: { children: React.ReactNode }) => {
     <ReactQueryProvider>
       <AmplitudeProvider>
         {children}
-        <Toaster additionalViewPortClassName="!top-[var(--topbar-height)]" />
+        <Toaster additionalViewPortClassName="!top-[var(--topbar-controler-height)]" />
       </AmplitudeProvider>
     </ReactQueryProvider>
   );

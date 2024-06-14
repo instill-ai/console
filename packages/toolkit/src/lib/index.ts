@@ -20,4 +20,5 @@ export * from "./fillArrayWithZero";
 export * from "./isPublicPipeline";
 export * from "./toastInstillError";
 export * from "./useResourceAdditionalForm";
-export * from "./useAppEntity";
+export * from "./useRouteInfo";
+export * from "./getCaptializeTwoWordsFromName";

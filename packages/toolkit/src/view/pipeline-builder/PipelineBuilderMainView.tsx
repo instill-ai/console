@@ -3,14 +3,13 @@
 import cn from "clsx";
 import * as React from "react";
 import { useShallow } from "zustand/react/shallow";
-import { Logo } from "@instill-ai/design-system";
 import { ReactFlowInstance } from "reactflow";
 
 import {
   InstillStore,
   Nullable,
   useInstillStore,
-  useAppEntity,
+  useRouteInfo,
   useSmartHint,
   useUserPipeline,
   useUserSecrets,
@@ -62,12 +61,12 @@ export const PipelineBuilderMainView = () => {
 
   useSmartHint();
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   const entitySecrets = useUserSecrets({
-    entityName: entity.data.entityName,
+    entityName: routeInfo.data.namespaceName,
     accessToken,
-    enabled: enabledQuery,
+    enabled: enabledQuery && routeInfo.isSuccess,
   });
 
   React.useEffect(() => {
@@ -76,8 +75,8 @@ export const PipelineBuilderMainView = () => {
   }, [entitySecrets.isSuccess, entitySecrets.data, updateEntitySecrets]);
 
   const pipeline = useUserPipeline({
-    enabled: enabledQuery && entity.isSuccess && !pipelineIsNew,
-    pipelineName: entity.data.pipelineName,
+    enabled: enabledQuery && routeInfo.isSuccess && !pipelineIsNew,
+    pipelineName: routeInfo.data.pipelineName,
     accessToken,
     retry: false,
   });
@@ -114,16 +113,22 @@ export const PipelineBuilderMainView = () => {
 
   return (
     <PageBase>
-      <AppTopbar logo={<Logo variant="colourLogomark" width={38} />}>
-        <TopControlMenu reactFlowInstance={reactFlowInstance} />
-      </AppTopbar>
+      <AppTopbar
+        topbarControllerChildren={
+          <TopControlMenu
+            className="pl-3"
+            reactFlowInstance={reactFlowInstance}
+          />
+        }
+        disabledTopbarNav={true}
+      />
       <PageBase.Container>
         <div className="flex w-full flex-col">
           {/* 
             Pipeline builder main canvas
           */}
 
-          <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-height)-var(--pipeline-builder-bottom-bar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
+          <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-controler-height)-var(--pipeline-builder-bottom-bar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
             <Flow
               ref={reactFlowWrapper}
               reactFlowInstance={reactFlowInstance}
@@ -134,8 +139,8 @@ export const PipelineBuilderMainView = () => {
             <div
               className={cn(
                 "fixed left-full w-[450px] transform overflow-y-scroll rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-6 shadow-sm duration-500",
-                "h-[calc(100vh-var(--topbar-height)-var(--pipeline-builder-bottom-bar-height)-var(--pipeline-builder-minimap-height)-var(--pipeline-builder-top-right-controler-height)-calc(4*var(--pipeline-builder-controller-padding)))]",
-                "top-[calc(var(--topbar-height)+var(--pipeline-builder-top-right-controler-height)+calc(2*var(--pipeline-builder-controller-padding)))]",
+                "h-[calc(100vh-var(--topbar-controler-height)-var(--pipeline-builder-bottom-bar-height)-var(--pipeline-builder-minimap-height)-var(--pipeline-builder-top-right-controler-height)-calc(4*var(--pipeline-builder-controller-padding)))]",
+                "top-[calc(var(--topbar-controler-height)+var(--pipeline-builder-top-right-controler-height)+calc(2*var(--pipeline-builder-controller-padding)))]",
                 currentAdvancedConfigurationNodeID ? "-translate-x-[450px]" : ""
               )}
             >

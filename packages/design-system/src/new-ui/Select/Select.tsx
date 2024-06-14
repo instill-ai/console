@@ -15,8 +15,10 @@ const ItemText = SelectPrimitive.ItemText;
 
 const Trigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
+    icon?: React.ReactNode;
+  }
+>(({ className, children, icon, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
@@ -27,7 +29,11 @@ const Trigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
+      {icon ? (
+        icon
+      ) : (
+        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
+      )}
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));
@@ -85,13 +91,14 @@ Label.displayName = SelectPrimitive.Label.displayName;
 const Item = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> & {
+    tailCheck?: boolean;
     disabledCheck?: boolean;
 
     // You can use label to have the default ItemText, or you can use
     // children to have a custom ItemText
     label?: string;
   }
->(({ className, label, disabledCheck, children, ...props }, ref) => (
+>(({ className, label, disabledCheck, tailCheck, children, ...props }, ref) => (
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
@@ -101,7 +108,12 @@ const Item = React.forwardRef<
     {...props}
   >
     {disabledCheck ? null : (
-      <span className="absolute left-2 flex h-4 w-4 items-center justify-center">
+      <span
+        className={cn(
+          "absolute flex h-4 w-4 items-center justify-center",
+          tailCheck ? "right-2" : "left-2"
+        )}
+      >
         <SelectPrimitive.ItemIndicator>
           <Icons.Check className="h-4 w-4" />
         </SelectPrimitive.ItemIndicator>

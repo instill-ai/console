@@ -1,6 +1,5 @@
 "use client";
 
-import { Logo } from "@instill-ai/design-system";
 import {
   AppTopbar,
   ModelHubSettingPageMainView,
@@ -18,7 +17,7 @@ export function ModelViewPageRender() {
 
   return (
     <PageBase>
-      <AppTopbar logo={<Logo variant="colourLogomark" width={38} />} />
+      <AppTopbar />
       <PageBase.Container>
         <PageBase.Content contentPadding="p-8">
           <ModelHubSettingPageMainView

@@ -20,7 +20,7 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useAppEntity,
+  useRouteInfo,
   useInstillStore,
   useUpdateUserPipeline,
 } from "../../../lib";
@@ -49,14 +49,15 @@ export const EditMetadataDialog = ({
   const accessToken = useInstillStore((store) => store.accessToken);
   const { toast } = useToast();
 
-  const entity = useAppEntity();
+  const routeInfo = useRouteInfo();
 
   const updateUserPipeline = useUpdateUserPipeline();
   async function onSubmit(data: z.infer<typeof PipelineEditMetadataSchema>) {
-    if (!entity.isSuccess || !entity?.data.pipelineName || !accessToken) return;
+    if (!routeInfo.isSuccess || !routeInfo?.data.pipelineName || !accessToken)
+      return;
 
     const payload: UpdateUserPipelinePayload = {
-      name: entity.data.pipelineName,
+      name: routeInfo.data.pipelineName,
       description: data.description ?? undefined,
     };
 

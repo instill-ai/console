@@ -33,4 +33,14 @@ export const createGeneralSlice: StateCreator<
         entitySecrets: fn(state.entitySecrets),
       };
     }),
+  navigationNamespaceAnchor: null,
+  updateNavigationNamespaceAnchor: (
+    fn: (prev: Nullable<string>) => Nullable<string>
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        navigationNamespaceAnchor: fn(state.navigationNamespaceAnchor),
+      };
+    }),
 });
