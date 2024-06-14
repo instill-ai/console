@@ -20,6 +20,12 @@ type CreateKnowledgeBaseCardProps = {
   setKnowledgeBases: React.Dispatch<React.SetStateAction<KnowledgeBase[]>>;
 };
 
+type EditKnowledgeDialogData = {
+  name: string;
+  description: string;
+  tags?: string[];
+};
+
 type MenuProps = {
   onDelete: (e: React.MouseEvent) => void;
   onEdit: (e: React.MouseEvent) => void;
@@ -145,7 +151,7 @@ export const CreateKnowledgeBaseCard = ({
     }
   };
 
-  const handleEditKnowledgeSubmit = async (data: any) => {
+  const handleEditKnowledgeSubmit = async (data: EditKnowledgeDialogData) => {
     await updateKnowledgeBase.mutateAsync({
       id: knowledgeBase.id,
       payload: data,
