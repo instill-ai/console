@@ -7,23 +7,25 @@ import { env } from "../../server";
 export const topbarItems = [
   {
     pathName: "pipelines",
-    icon: <Icons.Pipeline className="w-6 h-6 stroke-semantic-fg-primary" />,
+    icon: <Icons.Pipeline className="h-6 w-6 stroke-semantic-fg-primary" />,
     name: "Pipelines",
   },
   {
     pathName: "knowledge",
-    icon: <Icons.GraduationHat className="w-6 h-6 stroke-semantic-fg-primary" />,
+    icon: (
+      <Icons.GraduationHat className="h-6 w-6 stroke-semantic-fg-primary" />
+    ),
     name: "Knowledge base",
   },
   {
     pathName: "models",
-    icon: <Icons.Cube01 className="w-6 h-6 stroke-semantic-fg-primary" />,
+    icon: <Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />,
     name: "Models",
   },
   {
     pathName: "dashboard",
     icon: (
-      <Icons.BarChartSquare02 className="w-6 h-6 stroke-semantic-fg-primary" />
+      <Icons.BarChartSquare02 className="h-6 w-6 stroke-semantic-fg-primary" />
     ),
     name: "Dashboard",
   },
@@ -43,11 +45,11 @@ export const TopbarLinks = ({
           key="hub"
           href="/hub"
           icon={
-            <Icons.CubeOutline className="w-6 h-6 stroke-semantic-fg-primary" />
+            <Icons.CubeOutline className="h-6 w-6 stroke-semantic-fg-primary" />
           }
           name="Hub"
           hightlighted={pathname.split("/")[1] === "hub"}
-          className="px-4 mx-1 my-2"
+          className="mx-1 my-2 px-4"
         />
       ) : null}
       {topbarItems.map(({ pathName, name, icon }) => (
@@ -57,7 +59,7 @@ export const TopbarLinks = ({
           icon={icon}
           name={name}
           hightlighted={pathname.split("/")[2] === pathName}
-          className="px-4 mx-1 my-2"
+          className="mx-1 my-2 px-4"
         />
       ))}
     </React.Fragment>
