@@ -10,7 +10,8 @@ import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
-export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
+// export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
+export const KnowledgeBaseView = () => {
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
     React.useState<KnowledgeBase | null>(null);
   const [activeTab, setActiveTab] = React.useState("knowledge-base");

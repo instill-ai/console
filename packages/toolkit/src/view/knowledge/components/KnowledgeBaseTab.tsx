@@ -22,7 +22,7 @@ type KnowledgeBaseTabProps = {
 
 export const KnowledgeBaseTab = ({
   onKnowledgeBaseSelect,
-  onDeleteKnowledgeBase,
+  //   onDeleteKnowledgeBase,
 }: KnowledgeBaseTabProps) => {
   const [loading, setLoading] = React.useState(false);
 
