@@ -171,9 +171,7 @@ export function useRenamePipeline() {
           accessToken,
         });
 
-        router.push(
-          `/${routeInfo.data.namespaceId}/pipelines/${newId}/editor`
-        );
+        router.push(`/${routeInfo.data.namespaceId}/pipelines/${newId}/editor`);
 
         toast({
           title: "Sussessfully renamed the pipeline",
