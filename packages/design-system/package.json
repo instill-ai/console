@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/design-system",
-  "version": "0.71.0-rc.0",
+  "version": "0.71.0-rc.1",
   "description": "Instill AI's design system",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -62,6 +62,7 @@
     "@instill-ai/eslint-config-cortex": "workspace:*",
     "@instill-ai/prettier-config-cortex": "workspace:*",
     "@playwright/test": "^1.20.1",
+    "@radix-ui/react-toggle-group": "^1.0.4",
     "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-commonjs": "^21.0.3",
     "@rollup/plugin-node-resolve": "^13.1.3",
