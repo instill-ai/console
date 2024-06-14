@@ -19,7 +19,7 @@ const Content = ({
   contentPadding?: string;
 }) => {
   return (
-    <div className="flex flex-1 bg-semantic-bg-alt-primary">
+    <div className="bg-semantic-bg-alt-primary flex flex-1">
       <div
         className={cn(
           "h-[calc(100vh-var(--topbar-controller-height)-var(--topbar-nav-height))] w-full min-w-[927px] overflow-y-scroll",

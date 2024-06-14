@@ -95,13 +95,13 @@ export const NavLink = ({ title, Icon, pathname }: NavLinkProps) => {
         router.push(`/${namespaceAnchor}/${pathname}`);
       }}
       className={cn(
-        "group flex h-10 flex-row gap-x-2 border-b-2 border-[#316FED] py-3 product-button-button-1 hover:text-semantic-accent-default",
+        "product-button-button-1 hover:text-semantic-accent-default group flex h-10 flex-row gap-x-2 border-b-2 border-[#316FED] py-3",
         isOnIt
-          ? "border-opacity-100 text-semantic-fg-primary"
-          : "border-opacity-0 text-semantic-fg-disabled",
+          ? "text-semantic-fg-primary border-opacity-100"
+          : "text-semantic-fg-disabled border-opacity-0",
       )}
     >
-      <Icon className="h-5 w-5 stroke-semantic-fg-disabled group-hover:stroke-semantic-accent-default" />
+      <Icon className="stroke-semantic-fg-disabled group-hover:stroke-semantic-accent-default h-5 w-5" />
       {title}
     </button>
   );

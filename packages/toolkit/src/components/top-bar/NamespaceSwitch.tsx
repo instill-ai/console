@@ -288,7 +288,7 @@ export const NamespaceSwitch = () => {
       <Select.Trigger
         icon={<React.Fragment />}
         className={cn(
-          "!w-[136px] !border-none !p-1 hover:!bg-semantic-bg-secondary",
+          "hover:!bg-semantic-bg-secondary !w-[136px] !border-none !p-1",
           switchIsOpen
             ? "!bg-semantic-bg-secondary"
             : "!bg-semantic-bg-primary",
@@ -315,12 +315,12 @@ export const NamespaceSwitch = () => {
                   }
                 />
 
-                <p className="line-clamp-1 break-all text-semantic-fg-primary product-body-text-3-medium">
+                <p className="text-semantic-fg-primary product-body-text-3-medium line-clamp-1 break-all">
                   {truncateDisplayName(selectedNamespace.id)}
                 </p>
               </div>
 
-              <Icons.ChevronSelectorVertical className="h-4 w-4 stroke-semantic-fg-primary" />
+              <Icons.ChevronSelectorVertical className="stroke-semantic-fg-primary h-4 w-4" />
             </div>
           </Select.Value>
         ) : (
@@ -337,7 +337,7 @@ export const NamespaceSwitch = () => {
               ? namespacesWithRemainingCredit.map((namespace) => {
                   return (
                     <Select.Item
-                      className="!px-2.5 !py-1 hover:bg-semantic-bg-base-bg data-[highlighted]:!bg-semantic-bg-base-bg data-[highlighted]:!stroke-semantic-fg-primary"
+                      className="hover:bg-semantic-bg-base-bg data-[highlighted]:!bg-semantic-bg-base-bg data-[highlighted]:!stroke-semantic-fg-primary !px-2.5 !py-1"
                       tailCheck={true}
                       value={namespace.id}
                       key={namespace.id}
@@ -364,7 +364,7 @@ export const NamespaceSwitch = () => {
                               variant="lightBlue"
                               size="sm"
                             >
-                              <Icons.Coins01 className="h-2.5 w-2.5 stroke-semantic-accent-default" />
+                              <Icons.Coins01 className="stroke-semantic-accent-default h-2.5 w-2.5" />
                               {`${namespace.remainingCredit.toLocaleString("en-US", { style: "decimal" })} credits left`}
                             </Tag>
                           ) : null}
@@ -383,10 +383,10 @@ export const NamespaceSwitch = () => {
                   onClick={() => {
                     navigate("/settings/organizations/new");
                   }}
-                  className="w-full cursor-pointer p-2.5 product-body-text-3-medium hover:bg-semantic-bg-base-bg hover:!text-black"
+                  className="product-body-text-3-medium hover:bg-semantic-bg-base-bg w-full cursor-pointer p-2.5 hover:!text-black"
                 >
                   <div className="flex flex-row items-center gap-x-2">
-                    <Icons.Plus className="h-4 w-4 stroke-semantic-fg-disabled" />
+                    <Icons.Plus className="stroke-semantic-fg-disabled h-4 w-4" />
                     <p className="mr-0.5">Create Organization</p>
                   </div>
                 </button>

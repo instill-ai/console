@@ -30,7 +30,7 @@ export const TopbarMiscLinks = () => {
           buttonVariants({ variant: "tertiaryGrey", size: "md" }),
         )}
       >
-        <Icons.File06 className="h-[14px] w-[14px] stroke-semantic-fg-primary" />
+        <Icons.File06 className="stroke-semantic-fg-primary h-[14px] w-[14px]" />
         Docs
       </Link>
       <Link
@@ -40,7 +40,7 @@ export const TopbarMiscLinks = () => {
           buttonVariants({ variant: "tertiaryGrey", size: "md" }),
         )}
       >
-        <Icons.MessageSmileSquare className="h-[14px] w-[14px] stroke-semantic-fg-primary" />
+        <Icons.MessageSmileSquare className="stroke-semantic-fg-primary h-[14px] w-[14px]" />
         Community
       </Link>
     </div>

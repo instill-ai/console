@@ -77,7 +77,7 @@ export const CETopbarDropdown = () => {
               navigate(`/${me.data.id}`);
             }}
           >
-            <Icons.User02 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+            <Icons.User02 className="stroke-semantic-fg-disabled my-auto h-4 w-4" />
             <div className="my-auto">View profile</div>
           </TopbarDropdownItem>
           <TopbarDropdownItem
@@ -85,7 +85,7 @@ export const CETopbarDropdown = () => {
               navigate("/settings/profile");
             }}
           >
-            <Icons.Gear01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+            <Icons.Gear01 className="stroke-semantic-fg-disabled my-auto h-4 w-4" />
             <div className="my-auto">Settings</div>
           </TopbarDropdownItem>
         </TopbarDropdownGroup>
@@ -98,7 +98,7 @@ export const CETopbarDropdown = () => {
               rel="noopener noreferrer"
               target="_blank"
             >
-              <Icons.LayersTwo01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+              <Icons.LayersTwo01 className="stroke-semantic-fg-disabled my-auto h-4 w-4" />
               Changelog
             </a>
           </TopbarDropdownItem>
@@ -109,7 +109,7 @@ export const CETopbarDropdown = () => {
               rel="noopener noreferrer"
               target="_blank"
             >
-              <Icons.HelpCircle className="h-4 w-4 stroke-semantic-fg-disabled" />
+              <Icons.HelpCircle className="stroke-semantic-fg-disabled h-4 w-4" />
               <div className="my-auto">Support</div>
             </a>
           </TopbarDropdownItem>
@@ -118,7 +118,7 @@ export const CETopbarDropdown = () => {
         <TopbarDropdownGroup>
           <TopbarDropdownItem asChild>
             <Link href="/api/auth/logout" className="flex gap-x-2">
-              <Icons.Logout01 className=" my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+              <Icons.Logout01 className=" stroke-semantic-fg-disabled my-auto h-4 w-4" />
               <div className="my-auto">Log out</div>
             </Link>
           </TopbarDropdownItem>

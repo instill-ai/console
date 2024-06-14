@@ -47,13 +47,13 @@ export const NamespaceAvatarWithFallbackFallback = ({
   return (
     <div
       className={cn(
-        "flex shrink-0 grow-0 items-center justify-center rounded-full bg-semantic-bg-line",
+        "bg-semantic-bg-line flex shrink-0 grow-0 items-center justify-center rounded-full",
         className,
       )}
     >
       <p
         className={cn(
-          "font-sans text-[11px] font-semibold text-semantic-fg-secondary",
+          "text-semantic-fg-secondary font-sans text-[11px] font-semibold",
           textClassName,
         )}
       >
