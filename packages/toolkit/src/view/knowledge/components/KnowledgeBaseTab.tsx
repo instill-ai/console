@@ -24,7 +24,7 @@ type KnowledgeBaseTabProps = {
 export const KnowledgeBaseTab = ({
   onKnowledgeBaseSelect,
   //   onDeleteKnowledgeBase,
-  accessToken
+  accessToken,
 }: KnowledgeBaseTabProps) => {
   const [loading, setLoading] = React.useState(false);
 
@@ -33,7 +33,7 @@ export const KnowledgeBaseTab = ({
     enabledQuery: store.enabledQuery,
   });
 
-  const {  enabledQuery } = useInstillStore(useShallow(selector));
+  const { enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,

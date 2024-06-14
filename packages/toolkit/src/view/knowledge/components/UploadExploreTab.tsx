@@ -7,7 +7,7 @@ import {
   //   Input,
   //   Textarea,
   //   Form,
-//   Collapsible,
+  //   Collapsible,
 } from "@instill-ai/design-system";
 // import * as React from "react";
 // import { useForm, SubmitHandler } from "react-hook-form";
@@ -70,23 +70,23 @@ type UploadExploreTabProps = {
 };
 
 export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
-//   const form = useForm<UploadExploreFormData>({
-//     resolver: zodResolver(UploadExploreFormSchema),
-//     defaultValues: {
-//       convertTransformFiles: "",
-//       convertMethod: "",
-//       splitTextFiles: "",
-//       splitMethod: "",
-//       maxTokenSize: 256,
-//       tokenizerModel: "",
-//       embedChunksFiles: "",
-//       embeddingModel: "",
-//     },
-//   });
+  //   const form = useForm<UploadExploreFormData>({
+  //     resolver: zodResolver(UploadExploreFormSchema),
+  //     defaultValues: {
+  //       convertTransformFiles: "",
+  //       convertMethod: "",
+  //       splitTextFiles: "",
+  //       splitMethod: "",
+  //       maxTokenSize: 256,
+  //       tokenizerModel: "",
+  //       embedChunksFiles: "",
+  //       embeddingModel: "",
+  //     },
+  //   });
 
-//   const onSubmit: SubmitHandler<UploadExploreFormData> = (data) => {
-//     console.log(data);
-//   };
+  //   const onSubmit: SubmitHandler<UploadExploreFormData> = (data) => {
+  //     console.log(data);
+  //   };
 
   const router = useRouter();
 
