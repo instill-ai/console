@@ -89,7 +89,8 @@ export const Footer = ({
               );
             }}
           >
-            Build
+            <Icons.Tool01 className="h-4 w-4 stroke-semantic-accent-default" />
+            Edit
           </Button>
         ) : me.isSuccess ? (
           <ClonePipelineDialog
