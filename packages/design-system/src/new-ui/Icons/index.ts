@@ -47,6 +47,7 @@ import { Edit05 } from "./Edit05";
 import { File02 } from "./File02";
 import { File04 } from "./File04";
 import { File05 } from "./File05";
+import { File06 } from "./File06";
 import { FileMinus01 } from "./FileMinus01";
 import { FilePlus01 } from "./FilePlus01";
 import { FilePlus02 } from "./FilePlus02";
@@ -170,6 +171,7 @@ export const Icons = {
   File02,
   File04,
   File05,
+  File06,
   FileMinus01,
   FilePlus01,
   FilePlus02,

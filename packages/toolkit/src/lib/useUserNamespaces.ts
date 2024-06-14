@@ -39,15 +39,17 @@ export function useUserNamespaces() {
     const orgsAndUserList: UserNamespace[] = [];
 
     if (userMemberships.isSuccess) {
-      userMemberships.data.forEach((org) => {
-        orgsAndUserList.push({
-          id: org.organization.id,
-          name: org.organization.name,
-          type: "organization",
-          avatarUrl: org.organization.profile?.avatar ?? null,
-          displayName: org.organization.profile?.display_name ?? null,
+      userMemberships.data
+        .filter((org) => org.state === "MEMBERSHIP_STATE_ACTIVE")
+        .forEach((org) => {
+          orgsAndUserList.push({
+            id: org.organization.id,
+            name: org.organization.name,
+            type: "organization",
+            avatarUrl: org.organization.profile?.avatar ?? null,
+            displayName: org.organization.profile?.display_name ?? null,
+          });
         });
-      });
     }
 
     if (me.isSuccess && me.data.id && me.data.name) {

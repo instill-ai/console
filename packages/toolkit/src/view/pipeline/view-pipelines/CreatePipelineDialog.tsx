@@ -25,18 +25,17 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useAuthenticatedUser,
   useCreateUserPipeline,
   useRouteInfo,
   useInstillStore,
   useShallow,
-  useUserMemberships,
 } from "../../../lib";
 import { InstillErrors, DataTestID } from "../../../constant";
 import { LoadingSpin } from "../../../components";
 import { env, validateInstillID } from "../../../server";
 import { useRouter } from "next/navigation";
-import { EntitySelector, OwnerEntity } from "../../../components";
+import { EntitySelector } from "../../../components";
+import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 
 const CreatePipelineSchema = z
   .object({
@@ -62,7 +61,6 @@ export type CreatePipelineDialogProps = {
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
-  enabledQuery: store.enabledQuery,
 });
 
 export const CreatePipelineDialog = ({ className }: { className?: string }) => {
@@ -80,51 +78,11 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
     mode: "onChange",
   });
 
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken } = useInstillStore(useShallow(selector));
 
   const routeInfo = useRouteInfo();
 
-  const me = useAuthenticatedUser({
-    enabled: enabledQuery,
-    accessToken,
-  });
-
-  const userMemberships = useUserMemberships({
-    enabled: me.isSuccess,
-    userID: me.isSuccess ? me.data.id : null,
-    accessToken,
-  });
-
-  const organizationsAndUserList = React.useMemo(() => {
-    const orgsAndUserList: OwnerEntity[] = [];
-
-    if (userMemberships.isSuccess) {
-      userMemberships.data.forEach((org) => {
-        orgsAndUserList.push({
-          id: org.organization.id,
-          name: org.organization.name,
-          type: "organization",
-          avatarUrl: org.organization.profile?.avatar || null,
-        });
-      });
-    }
-
-    if (me.isSuccess && me.data.id && me.data.name) {
-      orgsAndUserList.push({
-        id: me.data.id,
-        name: me.data.name,
-        type: "user",
-        avatarUrl: me.data.profile?.avatar || null,
-      });
-    }
-
-    return orgsAndUserList;
-  }, [
-    userMemberships.isSuccess,
-    userMemberships.data,
-    routeInfo.isSuccess,
-    routeInfo.data,
-  ]);
+  const namespaces = useUserNamespaces();
 
   const createPipeline = useCreateUserPipeline();
   async function onSubmit(data: z.infer<typeof CreatePipelineSchema>) {
@@ -179,7 +137,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
       sharing,
     };
 
-    const usedNamespace = organizationsAndUserList.find(
+    const usedNamespace = namespaces.find(
       (account) => account.id === data.namespaceId
     )?.name;
 
@@ -275,7 +233,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                                         form.trigger("id");
                                       }
                                     }}
-                                    data={organizationsAndUserList}
+                                    data={namespaces}
                                   />
                                 </Form.Control>
                                 <Form.Message />
@@ -414,7 +372,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
 
             <div className="flex flex-row-reverse px-6 pb-6 pt-8">
               <Button
-                disabled={creating || organizationsAndUserList.length === 0}
+                disabled={creating || namespaces.length === 0}
                 form={formID}
                 variant="primary"
                 size="lg"

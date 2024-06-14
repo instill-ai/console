@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import cn from "clsx";
 import { Run } from "./Run";
 import { Toolkit } from "./Toolkit";
 import { Save } from "./Save";
@@ -27,8 +28,10 @@ const selector = (store: InstillStore) => ({
 
 export const TopControlMenu = ({
   reactFlowInstance,
+  className,
 }: {
   reactFlowInstance: Nullable<ReactFlowInstance>;
+  className?: string;
 }) => {
   const [open, setOpen] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
@@ -42,7 +45,7 @@ export const TopControlMenu = ({
 
   return (
     <React.Fragment>
-      <div className="flex w-full flex-row py-[5px]">
+      <div className={cn("flex w-full flex-row py-[5px]", className)}>
         <div className="flex flex-row items-center gap-x-4">
           <Button
             variant="tertiaryGrey"

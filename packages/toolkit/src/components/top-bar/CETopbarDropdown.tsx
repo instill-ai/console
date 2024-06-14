@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  ComplicateIcons,
-  DropdownMenu,
-  Icons,
-  Separator,
-} from "@instill-ai/design-system";
-import { EntityAvatar } from "../EntityAvatar";
+import { DropdownMenu, Icons, Separator } from "@instill-ai/design-system";
 import { TopbarDropdownGroup, TopbarDropdownItem } from "./TopbarDropdown";
 import Link from "next/link";
 import {
@@ -16,6 +10,7 @@ import {
   useInstillStore,
   useShallow,
 } from "../../lib";
+import { NamespaceAvatarWithFallback } from "../NamespaceAvatarWithFallback";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -35,14 +30,15 @@ export const CETopbarDropdown = () => {
   return me.isSuccess ? (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger className="!my-auto !h-10 !w-10">
-        <EntityAvatar
+        <NamespaceAvatarWithFallback.Root
           src={me.data.profile?.avatar ?? null}
           className="my-auto h-10 w-10 cursor-pointer"
-          entityName={me.data.name}
-          fallbackImg={
-            <div className="flex h-10 w-10 rounded-full bg-semantic-bg-secondary">
-              <Icons.User02 className="m-auto h-5 w-5 stroke-semantic-fg-disabled" />
-            </div>
+          fallback={
+            <NamespaceAvatarWithFallback.Fallback
+              namespaceId={me.data.id}
+              displayName={me.data.profile?.display_name ?? null}
+              className="h-10 w-10"
+            />
           }
         />
       </DropdownMenu.Trigger>
@@ -53,14 +49,15 @@ export const CETopbarDropdown = () => {
       >
         <div className="flex flex-col px-4 py-3">
           <div className="flex flex-row gap-x-2">
-            <EntityAvatar
+            <NamespaceAvatarWithFallback.Root
               src={me.data.profile?.avatar ?? null}
-              className="h-10 w-10"
-              entityName={me.data.name}
-              fallbackImg={
-                <div className="flex h-10 w-10 rounded-full bg-semantic-bg-secondary">
-                  <Icons.User02 className="m-auto h-5 w-5 stroke-semantic-fg-disabled" />
-                </div>
+              className="my-auto h-10 w-10 cursor-pointer"
+              fallback={
+                <NamespaceAvatarWithFallback.Fallback
+                  namespaceId={me.data.id}
+                  displayName={me.data.profile?.display_name ?? null}
+                  className="h-10 w-10"
+                />
               }
             />
             <div className="flex flex-col">
@@ -107,17 +104,6 @@ export const CETopbarDropdown = () => {
           </TopbarDropdownItem>
           <TopbarDropdownItem asChild>
             <a
-              href="https://github.com/instill-ai/community"
-              className="flex gap-x-2"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <Icons.MessageSmileSquare className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
-              <div className="my-auto">Community</div>
-            </a>
-          </TopbarDropdownItem>
-          <TopbarDropdownItem asChild>
-            <a
               href="https://discord.com/invite/sevxWsqpGh"
               className="flex gap-x-2"
               rel="noopener noreferrer"
@@ -125,31 +111,6 @@ export const CETopbarDropdown = () => {
             >
               <Icons.HelpCircle className="h-4 w-4 stroke-semantic-fg-disabled" />
               <div className="my-auto">Support</div>
-            </a>
-          </TopbarDropdownItem>
-          <TopbarDropdownItem asChild>
-            <a
-              href="https://www.instill.tech/docs"
-              className="flex gap-x-2"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <Icons.File05 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
-              <div className="my-auto">Documentation</div>
-            </a>
-          </TopbarDropdownItem>
-          <TopbarDropdownItem asChild>
-            <a
-              href="https://github.com/instill-ai/vdp"
-              className="flex gap-x-2"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <ComplicateIcons.GitHub
-                className="h-4 w-4"
-                fillAreaColor="fill-semantic-fg-disabled"
-              />
-              <div className="my-auto">GitHub</div>
             </a>
           </TopbarDropdownItem>
         </TopbarDropdownGroup>
@@ -164,5 +125,7 @@ export const CETopbarDropdown = () => {
         </TopbarDropdownGroup>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
-  ) : null;
+  ) : (
+    <div className="h-10 w-10" />
+  );
 };

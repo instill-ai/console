@@ -20,12 +20,12 @@ export function useNamespacesRemainingCredit({
 }) {
   let enabledQuery = false;
 
-  if (namespaceNames.length === 0 && enabled) {
+  if (namespaceNames.length !== 0 && enabled) {
     enabledQuery = true;
   }
 
   return useQuery({
-    queryKey: ["credit", namespaceNames.join(",")],
+    queryKey: ["namespaces-credit", namespaceNames.join(",")],
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
@@ -34,11 +34,15 @@ export function useNamespacesRemainingCredit({
       const remainingCredits: NamespaceRemainingCredit[] = [];
 
       for (const namespaceName of namespaceNames) {
-        const remainingCredit = await getRemainingCreditQuery({
-          ownerName: namespaceName,
-          accessToken,
-        });
-        remainingCredits.push({ namespaceName, remainingCredit });
+        try {
+          const remainingCredit = await getRemainingCreditQuery({
+            ownerName: namespaceName,
+            accessToken,
+          });
+          remainingCredits.push({ namespaceName, remainingCredit });
+        } catch (error) {
+          console.log(error);
+        }
       }
 
       return Promise.resolve(remainingCredits);

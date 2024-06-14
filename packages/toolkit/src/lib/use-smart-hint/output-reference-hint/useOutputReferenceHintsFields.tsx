@@ -28,7 +28,7 @@ export function useOutputReferenceHintFields({
     const fields = pickFieldsFromOutputReferenceHints(hints);
 
     return fields;
-  }, [component, task]);
+  }, [componentID, component, task]);
 
   return fields;
 }

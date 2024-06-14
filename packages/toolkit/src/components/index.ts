@@ -29,5 +29,3 @@ export * from "./WarnUnsavedChangesDialog";
 export * from "./DeleteResourceModal";
 export * from "./RealTimeTextEditor";
 export * from "./EntitySelector";
-
-export * from "./NamespaceSwitch";

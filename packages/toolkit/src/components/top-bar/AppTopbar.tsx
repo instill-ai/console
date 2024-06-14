@@ -1,6 +1,8 @@
 "use client";
 
+import * as React from "react";
 import cn from "clsx";
+
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -13,7 +15,9 @@ import { env } from "../../server";
 import { useRouter } from "next/navigation";
 import { useGuardPipelineBuilderUnsavedChangesNavigation } from "../../lib/hook";
 import { Button, Logo } from "@instill-ai/design-system";
-import { NamespaceSwitch } from "../NamespaceSwitch";
+import { NamespaceSwitch } from "./NamespaceSwitch";
+import { NavLinks } from "./NavLinks";
+import { TopbarMiscLinks } from "./TopbarMiscLinks";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -23,9 +27,13 @@ const selector = (store: InstillStore) => ({
 export const AppTopbar = ({
   className,
   disabledUserDropdown,
+  topbarControllerChildren,
+  disabledTopbarNav,
 }: {
   className?: string;
   disabledUserDropdown?: boolean;
+  topbarControllerChildren?: React.ReactNode;
+  disabledTopbarNav?: boolean;
 }) => {
   const router = useRouter();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
@@ -38,18 +46,22 @@ export const AppTopbar = ({
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
 
   return (
-    <div className="flex w-full flex-col border-b border-semantic-bg-line px-8">
+    <div className="flex w-full flex-col">
       <div
         className={cn(
-          "box-content flex h-[var(--topbar-controller-height)] w-full flex-row justify-between bg-semantic-bg-primary",
+          "box-content flex h-[var(--topbar-controller-height)] flex-row justify-between bg-semantic-bg-primary px-8 py-px",
           className
         )}
       >
-        <div className="flex flex-row py-2">
+        <div className="flex flex-row">
           <div className="flex flex-row items-center gap-x-4">
             <button
               onClick={() => {
-                navigate("/hub");
+                if (env("NEXT_PUBLIC_APP_ENV") === "CLOUD") {
+                  navigate("/hub");
+                } else {
+                  navigate(`/${me.data?.id}/pipelines`);
+                }
               }}
             >
               <Logo variant="colourLogomark" width={32} />
@@ -87,17 +99,28 @@ export const AppTopbar = ({
             )}
           </div>
         </div>
-        {disabledUserDropdown ? null : (
-          <div className="ml-4 flex">
-            {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
-              <CloudTopbarDropdown />
-            ) : (
-              <CETopbarDropdown />
-            )}
-          </div>
-        )}
+        <div className="flex flex-1 flex-row justify-end">
+          {topbarControllerChildren ? (
+            topbarControllerChildren
+          ) : (
+            <TopbarMiscLinks />
+          )}
+          {disabledUserDropdown ? null : (
+            <div className="ml-4 flex">
+              {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
+                <CloudTopbarDropdown />
+              ) : (
+                <CETopbarDropdown />
+              )}
+            </div>
+          )}
+        </div>
       </div>
-      <div className="h-[var(--topbar-nav-height)] w-full"></div>
+      {disabledTopbarNav ? null : (
+        <div className="box-border flex h-[var(--topbar-nav-height)] flex-row gap-x-6 border-b border-semantic-bg-line border-x-violet-50 px-8">
+          <NavLinks />
+        </div>
+      )}
     </div>
   );
 };

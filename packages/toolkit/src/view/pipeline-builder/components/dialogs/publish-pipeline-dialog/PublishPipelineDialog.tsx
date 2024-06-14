@@ -156,7 +156,7 @@ export const PublishPipelineDialog = ({
         updateDialogPublishPipelineIsOpen(() => e);
       }}
     >
-      <Dialog.Content className="!bottom-0 !h-[calc(100vh-var(--topbar-height))] !w-screen !max-w-none !px-0 !py-6">
+      <Dialog.Content className="!bottom-0 !h-[calc(100vh-var(--topbar-controler-height))] !w-screen !max-w-none !px-0 !py-6">
         <Form.Root {...form}>
           <form onSubmit={form.handleSubmit(handlePublish)}>
             <div className="flex h-full flex-col">

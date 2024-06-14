@@ -90,6 +90,7 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
       }
     },
     [
+      id,
       data,
       nodes,
       updateEdges,
