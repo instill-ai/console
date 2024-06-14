@@ -1,4 +1,14 @@
-import { Icons, Separator, Tabs, Button, Select, Input, Textarea, Form, Collapsible } from "@instill-ai/design-system";
+import {
+  Icons,
+  Separator,
+  Tabs,
+  Button,
+  Select,
+  Input,
+  Textarea,
+  Form,
+  Collapsible,
+} from "@instill-ai/design-system";
 import * as React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,138 +17,136 @@ import { useRouter } from "next/navigation";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 
 const UploadExploreFormSchema = z.object({
-    convertTransformFiles: z.string().min(1, { message: "Convert/Transform files is required" }),
-    convertMethod: z.string().min(1, { message: "Convert method is required" }),
-    splitTextFiles: z.string().min(1, { message: "Split text files is required" }),
-    splitMethod: z.string().min(1, { message: "Split method is required" }),
-    maxTokenSize: z.number().min(1, { message: "Max token size is required" }),
-    tokenizerModel: z.string().min(1, { message: "Tokenizer model is required" }),
-    embedChunksFiles: z.string().min(1, { message: "Embed chunks files is required" }),
-    embeddingModel: z.string().min(1, { message: "Embedding model is required" }),
+  convertTransformFiles: z
+    .string()
+    .min(1, { message: "Convert/Transform files is required" }),
+  convertMethod: z.string().min(1, { message: "Convert method is required" }),
+  splitTextFiles: z
+    .string()
+    .min(1, { message: "Split text files is required" }),
+  splitMethod: z.string().min(1, { message: "Split method is required" }),
+  maxTokenSize: z.number().min(1, { message: "Max token size is required" }),
+  tokenizerModel: z.string().min(1, { message: "Tokenizer model is required" }),
+  embedChunksFiles: z
+    .string()
+    .min(1, { message: "Embed chunks files is required" }),
+  embeddingModel: z.string().min(1, { message: "Embedding model is required" }),
 });
 
 type UploadExploreFormData = z.infer<typeof UploadExploreFormSchema>;
 
-
-
 const CollapsibleSection = ({
-    title,
-    children,
+  title,
+  children,
 }: {
-    title: string;
-    children: React.ReactNode;
+  title: string;
+  children: React.ReactNode;
 }) => {
-    const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(true);
 
-
-    return (
-        <Collapsible.Root open={open} onOpenChange={setOpen}>
-            <Collapsible.Trigger className="mb-2" asChild>
-                <button className="flex w-full flex-row items-center gap-x-1 rounded py-1 hover:bg-semantic-bg-secondary">
-                    {open ? (
-                        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
-                    ) : (
-                        <Icons.ChevronRight className="h-4 w-4 stroke-semantic-fg-primary" />
-                    )}
-                    <p className="text-semantic-fg-primary product-body-text-3-semibold">
-                        {title}
-                    </p>
-                </button>
-            </Collapsible.Trigger>
-            <Collapsible.Content className="flex flex-col gap-y-4">
-                {children}
-            </Collapsible.Content>
-        </Collapsible.Root>
-    );
+  return (
+    <Collapsible.Root open={open} onOpenChange={setOpen}>
+      <Collapsible.Trigger className="mb-2" asChild>
+        <button className="flex w-full flex-row items-center gap-x-1 rounded py-1 hover:bg-semantic-bg-secondary">
+          {open ? (
+            <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
+          ) : (
+            <Icons.ChevronRight className="h-4 w-4 stroke-semantic-fg-primary" />
+          )}
+          <p className="text-semantic-fg-primary product-body-text-3-semibold">
+            {title}
+          </p>
+        </button>
+      </Collapsible.Trigger>
+      <Collapsible.Content className="flex flex-col gap-y-4">
+        {children}
+      </Collapsible.Content>
+    </Collapsible.Root>
+  );
 };
 
 type UploadExploreTabProps = {
-    knowledgeBase: KnowledgeBase;
+  knowledgeBase: KnowledgeBase;
 };
 
 export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
-    const form = useForm<UploadExploreFormData>({
-        resolver: zodResolver(UploadExploreFormSchema),
-        defaultValues: {
-            convertTransformFiles: "",
-            convertMethod: "",
-            splitTextFiles: "",
-            splitMethod: "",
-            maxTokenSize: 256,
-            tokenizerModel: "",
-            embedChunksFiles: "",
-            embeddingModel: "",
-        },
-    });
+  const form = useForm<UploadExploreFormData>({
+    resolver: zodResolver(UploadExploreFormSchema),
+    defaultValues: {
+      convertTransformFiles: "",
+      convertMethod: "",
+      splitTextFiles: "",
+      splitMethod: "",
+      maxTokenSize: 256,
+      tokenizerModel: "",
+      embedChunksFiles: "",
+      embeddingModel: "",
+    },
+  });
 
-    const onSubmit: SubmitHandler<UploadExploreFormData> = (data) => {
-        console.log(data);
-    };
+  const onSubmit: SubmitHandler<UploadExploreFormData> = (data) => {
+    console.log(data);
+  };
 
-    const router = useRouter();
+  const router = useRouter();
 
-    const ownerID = "ownerID";
+  const ownerID = "ownerID";
 
-
-    return (
-        <div className="flex flex-col">
-            <div className="flex items-center justify-between mb-5">
-                <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
-                    {knowledgeBase.name}
-                </p>
-            </div>
-            <Separator orientation="horizontal" className="mb-6" />
-            <div className="w-full h-[150px] relative bg-semantic-accent-bg rounded border-2 border-dashed border-[#CBD2E1] flex flex-col items-center justify-center product-body-text-4-regular mb-2">
-                <Icons.Upload01 className="w-8 h-8 p-1 stroke-semantic-fg-secondary mb-4" />
-                <div className="text-center w-full">
-                    <span className="">
-                        Drag-and-drop file, or{" "}
-                    </span>
-                    <span className="text-semantic-accent-hover underline cursor-pointer">
-                        browse computer
-                    </span>
-                    <div className="">
-                        Support TXT, MARKDOWN, PDF
-                    </div>
-                    <div className="">
-                        Max 15MB each
-                    </div>
-                    {/* 
+  return (
+    <div className="flex flex-col">
+      <div className="mb-5 flex items-center justify-between">
+        <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
+          {knowledgeBase.name}
+        </p>
+      </div>
+      <Separator orientation="horizontal" className="mb-6" />
+      <div className="relative mb-2 flex h-[150px] w-full flex-col items-center justify-center rounded border-2 border-dashed border-[#CBD2E1] bg-semantic-accent-bg product-body-text-4-regular">
+        <Icons.Upload01 className="mb-4 h-8 w-8 stroke-semantic-fg-secondary p-1" />
+        <div className="w-full text-center">
+          <span className="">Drag-and-drop file, or </span>
+          <span className="cursor-pointer text-semantic-accent-hover underline">
+            browse computer
+          </span>
+          <div className="">Support TXT, MARKDOWN, PDF</div>
+          <div className="">Max 15MB each</div>
+          {/* 
             COMING IN V2 
             */}
-                    {/* <div className="">
+          {/* <div className="">
       Support TXT, MARKDOWN, PDF, PNG, JPG (DOCX, DOC, PPTX, PPT, HTML, XML, RTF).
     </div> */}
-                </div>
-            </div>
-            <div className="w-full mb-6 rounded border border-[#E1E6EF] justify-start items-center gap-2 inline-flex px-2 py-1.5">
-                <Icons.File05 className="w-4 h-4 stroke-semantic-fg-secondary" />
-                <div className=" product-body-text-3-regular">filename.pdf</div>
-                <div className="grow shrink basis-0 product-body-text-4-regular text-semantic-fg-disabled">150KB</div>
-            </div>
-            <div className=" flex-col justify-start items-start gap-1 inline-flex">
-                <div className="text-semantic-fg-primary product-body-text-3-semibold">
-                    Pipeline in use
-                </div>
-                <div className="justify-start items-center gap-1 inline-flex">
-                    <Icons.Pipeline className="w-4 h-4 stroke-semantic-accent-hover" />
-                    <button
-                        type="button"
-                        className="hover:!underline text-semantic-accent-hover product-body-text-3-semibold"
-                        onClick={() => {
-                            router.push(`/${ownerID}`);
-                        }}
-                    >
-                        xiaofei/name-your-pet
-                    </button>
-                </div>
-            </div>
+        </div>
+      </div>
+      <div className="mb-6 inline-flex w-full items-center justify-start gap-2 rounded border border-[#E1E6EF] px-2 py-1.5">
+        <Icons.File05 className="h-4 w-4 stroke-semantic-fg-secondary" />
+        <div className=" product-body-text-3-regular">filename.pdf</div>
+        <div className="shrink grow basis-0 text-semantic-fg-disabled product-body-text-4-regular">
+          150KB
+        </div>
+      </div>
+      <div className=" inline-flex flex-col items-start justify-start gap-1">
+        <div className="text-semantic-fg-primary product-body-text-3-semibold">
+          Pipeline in use
+        </div>
+        <div className="inline-flex items-center justify-start gap-1">
+          <Icons.Pipeline className="h-4 w-4 stroke-semantic-accent-hover" />
+          <button
+            type="button"
+            className="text-semantic-accent-hover product-body-text-3-semibold hover:!underline"
+            onClick={() => {
+              router.push(`/${ownerID}`);
+            }}
+          >
+            xiaofei/name-your-pet
+          </button>
+        </div>
+      </div>
 
-            {/* 
+      {/* 
             COMING IN V2 
             */}
 
-            {/* <div className="flex w-full items-center justify-start">
+      {/* <div className="flex w-full items-center justify-start">
                 <Tabs.Root defaultValue="text" className="mb-8 mt-4 w-full">
                     <div className="flex flex-col items-center w-full">
                         <Tabs.List className="w-full h-8 border-b border-slate-200 flex justify-start items-start gap-0.5">
@@ -454,6 +462,6 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                     </div>
                 </Tabs.Root>
             </div> */}
-        </div>
-    );
+    </div>
+  );
 };
