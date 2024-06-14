@@ -35,58 +35,58 @@ const UploadExploreFormSchema = z.object({
 
 type UploadExploreFormData = z.infer<typeof UploadExploreFormSchema>;
 
-const CollapsibleSection = ({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) => {
-  const [open, setOpen] = React.useState(true);
+// const CollapsibleSection = ({
+//   title,
+//   children,
+// }: {
+//   title: string;
+//   children: React.ReactNode;
+// }) => {
+//   const [open, setOpen] = React.useState(true);
 
-  return (
-    <Collapsible.Root open={open} onOpenChange={setOpen}>
-      <Collapsible.Trigger className="mb-2" asChild>
-        <button className="flex w-full flex-row items-center gap-x-1 rounded py-1 hover:bg-semantic-bg-secondary">
-          {open ? (
-            <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
-          ) : (
-            <Icons.ChevronRight className="h-4 w-4 stroke-semantic-fg-primary" />
-          )}
-          <p className="text-semantic-fg-primary product-body-text-3-semibold">
-            {title}
-          </p>
-        </button>
-      </Collapsible.Trigger>
-      <Collapsible.Content className="flex flex-col gap-y-4">
-        {children}
-      </Collapsible.Content>
-    </Collapsible.Root>
-  );
-};
+//   return (
+//     <Collapsible.Root open={open} onOpenChange={setOpen}>
+//       <Collapsible.Trigger className="mb-2" asChild>
+//         <button className="flex w-full flex-row items-center gap-x-1 rounded py-1 hover:bg-semantic-bg-secondary">
+//           {open ? (
+//             <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
+//           ) : (
+//             <Icons.ChevronRight className="h-4 w-4 stroke-semantic-fg-primary" />
+//           )}
+//           <p className="text-semantic-fg-primary product-body-text-3-semibold">
+//             {title}
+//           </p>
+//         </button>
+//       </Collapsible.Trigger>
+//       <Collapsible.Content className="flex flex-col gap-y-4">
+//         {children}
+//       </Collapsible.Content>
+//     </Collapsible.Root>
+//   );
+// };
 
 type UploadExploreTabProps = {
   knowledgeBase: KnowledgeBase;
 };
 
 export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
-  const form = useForm<UploadExploreFormData>({
-    resolver: zodResolver(UploadExploreFormSchema),
-    defaultValues: {
-      convertTransformFiles: "",
-      convertMethod: "",
-      splitTextFiles: "",
-      splitMethod: "",
-      maxTokenSize: 256,
-      tokenizerModel: "",
-      embedChunksFiles: "",
-      embeddingModel: "",
-    },
-  });
+//   const form = useForm<UploadExploreFormData>({
+//     resolver: zodResolver(UploadExploreFormSchema),
+//     defaultValues: {
+//       convertTransformFiles: "",
+//       convertMethod: "",
+//       splitTextFiles: "",
+//       splitMethod: "",
+//       maxTokenSize: 256,
+//       tokenizerModel: "",
+//       embedChunksFiles: "",
+//       embeddingModel: "",
+//     },
+//   });
 
-  const onSubmit: SubmitHandler<UploadExploreFormData> = (data) => {
-    console.log(data);
-  };
+//   const onSubmit: SubmitHandler<UploadExploreFormData> = (data) => {
+//     console.log(data);
+//   };
 
   const router = useRouter();
 
