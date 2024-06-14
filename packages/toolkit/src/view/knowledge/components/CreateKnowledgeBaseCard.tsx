@@ -253,8 +253,8 @@ export const CreateKnowledgeBaseCard = ({
                 {knowledgeBase.name} has been deleted
               </div>
               <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
-                If this was a mistake, click "Undo Action" to reapply your
-                changes.
+                If this was a mistake, click &quot;Undo Action&quot; to reapply
+                your changes.
               </div>
             </div>
             <LinkButton
