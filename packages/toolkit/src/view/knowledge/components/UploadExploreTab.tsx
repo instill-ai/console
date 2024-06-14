@@ -7,33 +7,33 @@ import {
   //   Input,
   //   Textarea,
   //   Form,
-  Collapsible,
+//   Collapsible,
 } from "@instill-ai/design-system";
-import * as React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+// import * as React from "react";
+// import { useForm, SubmitHandler } from "react-hook-form";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 
-const UploadExploreFormSchema = z.object({
-  convertTransformFiles: z
-    .string()
-    .min(1, { message: "Convert/Transform files is required" }),
-  convertMethod: z.string().min(1, { message: "Convert method is required" }),
-  splitTextFiles: z
-    .string()
-    .min(1, { message: "Split text files is required" }),
-  splitMethod: z.string().min(1, { message: "Split method is required" }),
-  maxTokenSize: z.number().min(1, { message: "Max token size is required" }),
-  tokenizerModel: z.string().min(1, { message: "Tokenizer model is required" }),
-  embedChunksFiles: z
-    .string()
-    .min(1, { message: "Embed chunks files is required" }),
-  embeddingModel: z.string().min(1, { message: "Embedding model is required" }),
-});
+// const UploadExploreFormSchema = z.object({
+//   convertTransformFiles: z
+//     .string()
+//     .min(1, { message: "Convert/Transform files is required" }),
+//   convertMethod: z.string().min(1, { message: "Convert method is required" }),
+//   splitTextFiles: z
+//     .string()
+//     .min(1, { message: "Split text files is required" }),
+//   splitMethod: z.string().min(1, { message: "Split method is required" }),
+//   maxTokenSize: z.number().min(1, { message: "Max token size is required" }),
+//   tokenizerModel: z.string().min(1, { message: "Tokenizer model is required" }),
+//   embedChunksFiles: z
+//     .string()
+//     .min(1, { message: "Embed chunks files is required" }),
+//   embeddingModel: z.string().min(1, { message: "Embedding model is required" }),
+// });
 
-type UploadExploreFormData = z.infer<typeof UploadExploreFormSchema>;
+// type UploadExploreFormData = z.infer<typeof UploadExploreFormSchema>;
 
 // const CollapsibleSection = ({
 //   title,
