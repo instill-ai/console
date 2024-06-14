@@ -101,6 +101,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             <KnowledgeBaseTab
               onKnowledgeBaseSelect={handleKnowledgeBaseSelect}
               onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
+              accessToken={props.accessToken}
             />
           )}
           {activeTab === "upload" && selectedKnowledgeBase && (

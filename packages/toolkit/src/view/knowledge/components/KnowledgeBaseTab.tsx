@@ -18,11 +18,13 @@ import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
   onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
+  accessToken: string | null;
 };
 
 export const KnowledgeBaseTab = ({
   onKnowledgeBaseSelect,
   //   onDeleteKnowledgeBase,
+  accessToken
 }: KnowledgeBaseTabProps) => {
   const [loading, setLoading] = React.useState(false);
 
@@ -31,7 +33,7 @@ export const KnowledgeBaseTab = ({
     enabledQuery: store.enabledQuery,
   });
 
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const {  enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
