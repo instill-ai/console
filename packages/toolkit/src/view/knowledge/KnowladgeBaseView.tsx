@@ -65,8 +65,8 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
                 {knowledgeBaseToDelete.name} has been deleted
               </div>
               <div className="self-stretch product-body-text-2-regular">
-                If this was a mistake, click "Undo Action" to reapply your
-                changes.
+                If this was a mistake, click &quot;Undo Action&quot; to reapply
+                your changes.
               </div>
             </div>
             <LinkButton
