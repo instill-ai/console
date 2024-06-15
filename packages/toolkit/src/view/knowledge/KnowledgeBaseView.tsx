@@ -7,6 +7,7 @@ import { RetrieveTestTab } from "./components/RetrieveTestTab";
 import * as React from "react";
 import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/types";
 import { Button, Icons, LinkButton } from "@instill-ai/design-system";
+import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./components/undoDeleteTime";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -42,7 +43,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         setKnowledgeBaseToDelete(null);
         setIsDeleted(false);
       }
-    }, 15000);
+    }, DELETE_KNOWLEDGE_BASE_TIMEOUT);
   };
 
   const handleUndoDelete = () => {
@@ -56,7 +57,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
    * -----------------------------------------------------------------------*/
   return (
     <div className="h-screen w-full bg-semantic-bg-primary">
-      {showDeleteMessage && knowledgeBaseToDelete && (
+      {showDeleteMessage && knowledgeBaseToDelete ? (
         <div className="fixed bottom-4 right-4 mr-4 flex h-[136px] w-[400px] rounded-lg border border-slate-200 bg-semantic-bg-primary p-4 shadow">
           <Icons.AlertTriangle className="h-6 w-6 stroke-semantic-warning-on-bg" />
           <div className="h-[104px] shrink grow basis-0 flex-col items-start justify-start gap-4">
@@ -87,7 +88,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             <Icons.X className="h-4 w-4 stroke-semantic-fg-secondary" />
           </Button>
         </div>
-      )}
+      ) : null}
       <div className="grid w-full grid-cols-12 gap-6 pl-4 pr-8 pt-6">
         <div className="pr-8 pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
           <Sidebar
@@ -97,22 +98,22 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           />
         </div>
         <div className="sm:col-span-8 md:col-span-9 lg:col-span-10">
-          {activeTab === "knowledge-base" && (
+          {activeTab === "knowledge-base" ? (
             <KnowledgeBaseTab
               onKnowledgeBaseSelect={handleKnowledgeBaseSelect}
               onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
               accessToken={props.accessToken}
             />
-          )}
-          {activeTab === "upload" && selectedKnowledgeBase && (
+          ) : null}
+          {activeTab === "upload" && selectedKnowledgeBase ? (
             <UploadExploreTab knowledgeBase={selectedKnowledgeBase} />
-          )}
-          {activeTab === "catalog" && selectedKnowledgeBase && (
+          ) : null}
+          {activeTab === "catalog" && selectedKnowledgeBase ? (
             <CatalogFilesTab knowledgeBase={selectedKnowledgeBase} />
-          )}
-          {activeTab === "retrieve" && selectedKnowledgeBase && (
+          ) : null}
+          {activeTab === "retrieve" && selectedKnowledgeBase ? (
             <RetrieveTestTab />
-          )}
+          ) : null}
         </div>
       </div>
     </div>
