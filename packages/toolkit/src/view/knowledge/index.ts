@@ -1,1 +1,1 @@
-export * from "./KnowladgeBaseView";
+export * from "./KnowledgeBaseView";

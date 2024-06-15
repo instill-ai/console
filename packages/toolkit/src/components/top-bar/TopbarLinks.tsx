@@ -15,7 +15,7 @@ export const topbarItems = [
     icon: (
       <Icons.GraduationHat className="h-6 w-6 stroke-semantic-fg-primary" />
     ),
-    name: "Knowledge base",
+    name: "Knowledge bases",
   },
   {
     pathName: "models",
