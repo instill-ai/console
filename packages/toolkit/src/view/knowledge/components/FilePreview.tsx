@@ -120,14 +120,14 @@ const FilePreview = () => {
                                                 </Form.Item>
                                             )} />
                                         </div>
-                                        <div className="flex gap-2">
-                                            <Button variant="secondaryGrey" className="grow" >
+                                        <div className="flex gap-2 w-full">
+                                            <Button className="flex-1" variant="secondaryGrey">
                                                 Test Pipeline
                                             </Button>
-                                            <Button variant="secondaryGrey" className="grow" >
+                                            <Button className="flex-1" variant="secondaryGrey">
                                                 Customize Pipeline
                                             </Button>
-                                            <Button variant="primary" type="submit">
+                                            <Button className="flex-1" variant="primary" type="submit">
                                                 Preview Results
                                             </Button>
                                         </div>
@@ -183,7 +183,7 @@ const FilePreview = () => {
                                                         <div className="flex items-center gap-2">
                                                             <input
                                                                 type="range"
-                                                                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                                                                className="w-full h-2 bg-semantic-bg-line rounded-lg appearance-none cursor-pointer accent-blue-600"
                                                                 {...field}
                                                             />
                                                             <Input.Root>
@@ -214,14 +214,14 @@ const FilePreview = () => {
                                                 </Form.Item>
                                             )} />
                                         </div>
-                                        <div className="flex gap-2">
-                                            <Button variant="secondaryGrey" className="grow" >
+                                        <div className="flex gap-2 w-full">
+                                            <Button className="flex-1" variant="secondaryGrey">
                                                 Test Pipeline
                                             </Button>
-                                            <Button variant="secondaryGrey" className="grow" >
+                                            <Button className="flex-1" variant="secondaryGrey">
                                                 Customize Pipeline
                                             </Button>
-                                            <Button variant="primary" type="submit">
+                                            <Button className="flex-1" variant="primary" type="submit">
                                                 Preview Results
                                             </Button>
                                         </div>
@@ -285,30 +285,31 @@ const FilePreview = () => {
                         <div className=" product-body-text-1-semibold">Preview</div>
                         <div className="flex flex-col gap-3">
                             <div className="flex items-center justify-center gap-2">
-                                <div className="h-px w-full bg-slate-200" />
-                                <div className="product-body-text-3-medium">Convert Results</div>
-                                <div className="h-px w-full bg-slate-200" />
+                                <div className="h-px flex-grow bg-semantic-bg-line " />
+                                <div className="product-body-text-3-medium whitespace-nowrap">Convert Results</div>
+                                <div className="h-px flex-grow bg-semantic-bg-line" />
                             </div>
                             <div className="flex flex-col">
-                                <h3 className="text-sm font-semibold mb-2">File name 1</h3>
+                                <h3 className="product-button-button-2">File name 1</h3>
                                 <Textarea placeholder="Text preview" rows={3} />
                             </div>
                             <div className="flex items-center justify-center gap-2">
-                                <div className="h-px w-full bg-slate-200" />
-                                <div className="product-body-text-3-medium">Split Text Results</div>
-                                <div className="h-px w-full bg-slate-200" />
+                                <div className="h-px flex-grow bg-semantic-bg-line" />
+                                <div className="product-body-text-3-medium whitespace-nowrap">Split Text Results</div>
+                                <div className="h-px flex-grow bg-semantic-bg-line" />
                             </div>
                             <div className="flex flex-col gap-3">
                                 <div className="flex flex-col">
-                                    <h3 className="text-sm font-semibold mb-2">File name 1</h3>
+                                    <h3 className="product-button-button-2">File name 1</h3>
                                     <Textarea placeholder="Text preview" rows={3} />
                                 </div>
                                 <div className="flex flex-col">
-                                    <h3 className="text-sm font-semibold mb-2">File name 2</h3>
+                                    <h3 className="product-button-button-2">File name 2</h3>
                                     <Textarea placeholder="Text preview" rows={3} />
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </Tabs.Root>
