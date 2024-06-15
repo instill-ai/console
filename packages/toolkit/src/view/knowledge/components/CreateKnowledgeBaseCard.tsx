@@ -189,111 +189,111 @@ export const CreateKnowledgeBaseCard = ({
   }, [showDeleteMessage]);
 
   return (
-      <React.Fragment>
-        {!isDeleted ? (
-          <div
-            className="flex h-[175px] w-[360px] cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow"
-            onClick={onCardClick}
-          >
-            <div className="flex items-center justify-between">
-              <div className="product-headings-heading-4">
-                {knowledgeBase.name}
-              </div>
-            </div>
-            <Separator orientation="horizontal" className="my-[10px]" />
-            <p className="mb-auto line-clamp-3 product-body-text-3-regular">
-              {knowledgeBase.description}
-            </p>
-            <div className="flex items-end justify-end">
-              <Menu
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-                onDuplicate={handleDuplicate}
-              />
-            </div>
-          </div>
-        ) : null}
-        <Dialog.Root
-          open={deleteDialogIsOpen}
-          onOpenChange={setDeleteDialogIsOpen}
+    <React.Fragment>
+      {!isDeleted ? (
+        <div
+          className="flex h-[175px] w-[360px] cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow"
+          onClick={onCardClick}
         >
-          <Dialog.Content className="!w-[350px] rounded-sm !p-0">
-            <div className="flex flex-col items-center justify-start gap-6 rounded-sm border border-b-semantic-bg-secondary p-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-semantic-warning-bg p-3">
-                <Icons.AlertTriangle className="h-6 w-6 stroke-semantic-warning-on-bg" />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-6 self-stretch">
-                <div className="flex flex-col items-center justify-center gap-1">
-                  <div className="product-headings-heading-3">
-                    Delete {knowledgeBase.name}
-                  </div>
-                  <div className="text-center product-body-text-2-regular">
-                    Are you sure you want to delete this knowledge base?
-                  </div>
-                </div>
-                <div className="flex w-full gap-2">
-                  <Button
-                    variant="secondaryGrey"
-                    onClick={() => setDeleteDialogIsOpen(false)}
-                    className="w-full"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="danger"
-                    onClick={confirmDelete}
-                    className="w-full"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
+          <div className="flex items-center justify-between">
+            <div className="product-headings-heading-4">
+              {knowledgeBase.name}
             </div>
-          </Dialog.Content>
-        </Dialog.Root>
-        {showDeleteMessage ? (
-          <div className="fixed bottom-4 right-4 flex h-[136px] w-[400px] rounded-lg border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
-            <Icons.AlertTriangle className="mr-4 h-6 w-6 stroke-semantic-warning-on-bg" />
-            <div className="mr-4 shrink grow basis-0 flex-col items-start justify-start space-y-4">
-              <div className="flex flex-col items-start justify-start gap-1 self-stretch">
-                <div className="self-stretch product-body-text-2-semibold">
-                  {knowledgeBase.name} has been deleted
-                </div>
-                <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
-                  If this was a mistake, click &quot;Undo Action&quot; to reapply
-                  your changes.
-                </div>
-              </div>
-              <LinkButton
-                className="!p-0"
-                variant="secondary"
-                size="md"
-                onClick={undoDelete}
-              >
-                Undo Action
-              </LinkButton>
-            </div>
-            <Button
-              className="absolute right-2 top-2"
-              variant="tertiaryGrey"
-              size="sm"
-              onClick={handleCloseDeleteMessage}
-            >
-              <Icons.X className="h-6 w-6 stroke-semantic-fg-secondary" />
-            </Button>
           </div>
-        ) : null}
-        <EditKnowledgeDialog
-          isOpen={editDialogIsOpen}
-          onClose={() => setEditDialogIsOpen(false)}
-          onSubmit={handleEditKnowledgeSubmit}
-          initialValues={{
-            name: knowledgeBase.name,
-            description: knowledgeBase.description,
-            tags: knowledgeBase.tags,
-            id: knowledgeBase.id,
-          }}
-        />
-      </React.Fragment>
-    );
+          <Separator orientation="horizontal" className="my-[10px]" />
+          <p className="mb-auto line-clamp-3 product-body-text-3-regular">
+            {knowledgeBase.description}
+          </p>
+          <div className="flex items-end justify-end">
+            <Menu
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+              onDuplicate={handleDuplicate}
+            />
+          </div>
+        </div>
+      ) : null}
+      <Dialog.Root
+        open={deleteDialogIsOpen}
+        onOpenChange={setDeleteDialogIsOpen}
+      >
+        <Dialog.Content className="!w-[350px] rounded-sm !p-0">
+          <div className="flex flex-col items-center justify-start gap-6 rounded-sm border border-b-semantic-bg-secondary p-6">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-semantic-warning-bg p-3">
+              <Icons.AlertTriangle className="h-6 w-6 stroke-semantic-warning-on-bg" />
+            </div>
+            <div className="flex flex-col items-start justify-start gap-6 self-stretch">
+              <div className="flex flex-col items-center justify-center gap-1">
+                <div className="product-headings-heading-3">
+                  Delete {knowledgeBase.name}
+                </div>
+                <div className="text-center product-body-text-2-regular">
+                  Are you sure you want to delete this knowledge base?
+                </div>
+              </div>
+              <div className="flex w-full gap-2">
+                <Button
+                  variant="secondaryGrey"
+                  onClick={() => setDeleteDialogIsOpen(false)}
+                  className="w-full"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={confirmDelete}
+                  className="w-full"
+                >
+                  Delete
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Dialog.Content>
+      </Dialog.Root>
+      {showDeleteMessage ? (
+        <div className="fixed bottom-4 right-4 flex h-[136px] w-[400px] rounded-lg border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
+          <Icons.AlertTriangle className="mr-4 h-6 w-6 stroke-semantic-warning-on-bg" />
+          <div className="mr-4 shrink grow basis-0 flex-col items-start justify-start space-y-4">
+            <div className="flex flex-col items-start justify-start gap-1 self-stretch">
+              <div className="self-stretch product-body-text-2-semibold">
+                {knowledgeBase.name} has been deleted
+              </div>
+              <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
+                If this was a mistake, click &quot;Undo Action&quot; to reapply
+                your changes.
+              </div>
+            </div>
+            <LinkButton
+              className="!p-0"
+              variant="secondary"
+              size="md"
+              onClick={undoDelete}
+            >
+              Undo Action
+            </LinkButton>
+          </div>
+          <Button
+            className="absolute right-2 top-2"
+            variant="tertiaryGrey"
+            size="sm"
+            onClick={handleCloseDeleteMessage}
+          >
+            <Icons.X className="h-6 w-6 stroke-semantic-fg-secondary" />
+          </Button>
+        </div>
+      ) : null}
+      <EditKnowledgeDialog
+        isOpen={editDialogIsOpen}
+        onClose={() => setEditDialogIsOpen(false)}
+        onSubmit={handleEditKnowledgeSubmit}
+        initialValues={{
+          name: knowledgeBase.name,
+          description: knowledgeBase.description,
+          tags: knowledgeBase.tags,
+          id: knowledgeBase.id,
+        }}
+      />
+    </React.Fragment>
+  );
 };
