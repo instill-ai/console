@@ -74,10 +74,10 @@ const FilePreview = () => {
                         <span className="text-center product-button-button-3">Images</span>
                     </Tabs.Trigger>
                 </Tabs.List>
-                <div className="flex w-full space-x-4 pt-8 border-red-500 border rounded">
+                <div className="flex w-full space-x-4 border-red-500 border rounded">
                     <div className="flex-col w-1/2">
-                        <div className="product-body-text-1-semibold bg-semantic-bg-base-bg py-2 pl-3">Data</div>
-                        <div className="  px-3">
+                        <div className="product-body-text-1-semibold bg-semantic-bg-base-bg py-2 pl-3 rounded">Data</div>
+                        <div className="  px-3  pt-8">
                             <Tabs.Content value="text">
                                 <Form.Root {...form}>
                                     <form className="flex flex-col gap-6 w-full">
@@ -284,9 +284,10 @@ const FilePreview = () => {
                             <Tabs.Content value="images" />
                         </div>
                     </div>
+                    <Separator orientation="vertical" className="absolute h-full" />
 
-                    <div className="flex flex-col w-1/2 pl-8">
-                        <div className="product-body-text-1-semibold bg-semantic-bg-base-bg py-2 pl-3">Preview</div>
+                    <div className="flex flex-col w-1/2">
+                        <div className="product-body-text-1-semibold bg-semantic-bg-base-bg py-2 pl-3 rounded">Preview</div>
                         <div className="flex flex-col gap-3">
                             <div className="flex items-center justify-center gap-2">
                                 <div className="h-px flex-grow bg-semantic-bg-line " />
