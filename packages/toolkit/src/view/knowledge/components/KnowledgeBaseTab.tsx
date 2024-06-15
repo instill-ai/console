@@ -12,6 +12,7 @@ import {
   useAuthenticatedUser,
   useInstillStore,
   useShallow,
+  Nullable,
 } from "../../../lib";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 
@@ -39,7 +40,7 @@ export const KnowledgeBaseTab = ({
     enabled: enabledQuery,
     accessToken,
   });
-  const userID = me.isSuccess ? me.data.id : null;
+  const userID: Nullable<string> = me.isSuccess ? me.data.id : null;
 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [knowledgeBases, setKnowledgeBases] = React.useState<KnowledgeBase[]>(
@@ -47,7 +48,7 @@ export const KnowledgeBaseTab = ({
   );
   const getKnowledgeBases = useGetKnowledgeBases({
     accessToken,
-    uid: userID as string,
+    uid: userID,
     enabled: true,
   });
   const createKnowledgeBase = useCreateKnowledgeBase();
