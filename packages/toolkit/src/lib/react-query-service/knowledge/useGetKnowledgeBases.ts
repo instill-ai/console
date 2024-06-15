@@ -7,7 +7,7 @@ async function getKnowledgeBasesQuery({
   uid,
 }: {
   accessToken: string | null;
-  uid: string;
+  uid: string | null;
 }): Promise<KnowledgeBase[]> {
   if (!accessToken) {
     return Promise.reject(new Error("accessToken not provided"));
@@ -30,7 +30,7 @@ export function useGetKnowledgeBases({
   retry,
 }: {
   accessToken: string | null;
-  uid: string;
+  uid: string | null;
   enabled: boolean;
   retry?: false | number;
 }) {
