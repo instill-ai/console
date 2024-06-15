@@ -65,8 +65,8 @@ const FilePreview = () => {
 
     return (
         <div className="flex w-full items-center justify-start">
-            <Tabs.Root defaultValue="text" className="mb-8 mt-4 w-full ml-4">
-                <Tabs.List className="flex w-full items-center">
+            <Tabs.Root defaultValue="text" className="mb-8 mt-4 w-full ">
+                <Tabs.List className="flex w-full items-center ml-4">
                     <Tabs.Trigger value="text" className={tabTriggerStyle}>
                         <span className="text-center product-button-button-3">Text</span>
                     </Tabs.Trigger>
@@ -74,215 +74,219 @@ const FilePreview = () => {
                         <span className="text-center product-button-button-3">Images</span>
                     </Tabs.Trigger>
                 </Tabs.List>
-                <div className="flex w-full space-x-4 px-8 pt-8">
-                    <div className="w-1/2">
-                        <Tabs.Content value="text">
-                            <Form.Root {...form}>
-                                <form className="flex flex-col gap-6 w-full">
-                                    <CollapsibleSection title="Convert / Transform files">
-                                        <div className="flex gap-8">
-                                            <Form.Field control={form.control} name="convertTransformFiles" render={({ field }) => (
-                                                <Form.Item className="w-1/2">
-                                                    <Form.Label className="product-button-button-1">
-                                                        Convert / Transform files
-                                                    </Form.Label>
-                                                    <Form.Control>
-                                                        <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
-                                                            <Select.Trigger>
-                                                                <Select.Value placeholder="Select.." />
-                                                            </Select.Trigger>
-                                                            <Select.Content>
-                                                                <Select.Item value="option1">Option 1</Select.Item>
-                                                                <Select.Item value="option2">Option 2</Select.Item>
-                                                            </Select.Content>
-                                                        </Select.Root>
-                                                    </Form.Control>
-                                                    <Form.Message />
-                                                </Form.Item>
-                                            )} />
-                                            <Form.Field control={form.control} name="convertMethod" render={({ field }) => (
-                                                <Form.Item className="w-1/2">
-                                                    <Form.Label className="product-button-button-1">
-                                                        Convert method
-                                                    </Form.Label>
-                                                    <Form.Control>
-                                                        <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
-                                                            <Select.Trigger>
-                                                                <Select.Value placeholder="Select.." />
-                                                            </Select.Trigger>
-                                                            <Select.Content>
-                                                                <Select.Item value="option1">Option 1</Select.Item>
-                                                                <Select.Item value="option2">Option 2</Select.Item>
-                                                            </Select.Content>
-                                                        </Select.Root>
-                                                    </Form.Control>
-                                                    <Form.Message />
-                                                </Form.Item>
-                                            )} />
-                                        </div>
-                                        <div className="flex gap-2 w-full">
-                                            <Button className="flex-1" variant="secondaryGrey">
-                                                Test Pipeline
-                                            </Button>
-                                            <Button className="flex-1" variant="secondaryGrey">
-                                                Customize Pipeline
-                                            </Button>
-                                            <Button className="flex-1" variant="primary" type="submit">
-                                                Preview Results
-                                            </Button>
-                                        </div>
-                                    </CollapsibleSection>
-                                    <CollapsibleSection title="Split text">
-                                        <div className="flex gap-8">
-                                            <Form.Field control={form.control} name="splitTextFiles" render={({ field }) => (
-                                                <Form.Item className="w-1/2">
-                                                    <Form.Label className="product-button-button-1">
-                                                        Split text files
-                                                    </Form.Label>
-                                                    <Form.Control>
-                                                        <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
-                                                            <Select.Trigger>
-                                                                <Select.Value placeholder="Select.." />
-                                                            </Select.Trigger>
-                                                            <Select.Content>
-                                                                <Select.Item value="option1">Option 1</Select.Item>
-                                                                <Select.Item value="option2">Option 2</Select.Item>
-                                                            </Select.Content>
-                                                        </Select.Root>
-                                                    </Form.Control>
-                                                    <Form.Message />
-                                                </Form.Item>
-                                            )} />
-                                            <Form.Field control={form.control} name="splitMethod" render={({ field }) => (
-                                                <Form.Item className="w-1/2">
-                                                    <Form.Label className="product-button-button-1">
-                                                        Split method
-                                                    </Form.Label>
-                                                    <Form.Control>
-                                                        <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
-                                                            <Select.Trigger>
-                                                                <Select.Value placeholder="Select.." />
-                                                            </Select.Trigger>
-                                                            <Select.Content>
-                                                                <Select.Item value="option1">Option 1</Select.Item>
-                                                                <Select.Item value="option2">Option 2</Select.Item>
-                                                            </Select.Content>
-                                                        </Select.Root>
-                                                    </Form.Control>
-                                                    <Form.Message />
-                                                </Form.Item>
-                                            )} />
-                                        </div>
-                                        <div className="flex gap-8">
-                                            <Form.Field control={form.control} name="maxTokenSize" render={({ field }) => (
-                                                <Form.Item className="w-1/2">
-                                                    <Form.Label className="product-button-button-1">
-                                                        Max token size
-                                                    </Form.Label>
-                                                    <Form.Control>
-                                                        <div className="flex items-center gap-2">
-                                                            <input
-                                                                type="range"
-                                                                className="w-full h-2 bg-semantic-bg-line rounded-lg appearance-none cursor-pointer accent-blue-600"
-                                                                {...field}
-                                                            />
-                                                            <Input.Root>
-                                                                <Input.Core {...field} id={field.name} placeholder="Username" type="text" disabled={true} />
-                                                            </Input.Root>
-                                                        </div>
-                                                    </Form.Control>
-                                                    <Form.Message />
-                                                </Form.Item>
-                                            )} />
-                                            <Form.Field control={form.control} name="tokenizerModel" render={({ field }) => (
-                                                <Form.Item className="w-1/2">
-                                                    <Form.Label className="product-button-button-1">
-                                                        Tokenizer model
-                                                    </Form.Label>
-                                                    <Form.Control>
-                                                        <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
-                                                            <Select.Trigger>
-                                                                <Select.Value placeholder="Select.." />
-                                                            </Select.Trigger>
-                                                            <Select.Content>
-                                                                <Select.Item value="option1">Option 1</Select.Item>
-                                                                <Select.Item value="option2">Option 2</Select.Item>
-                                                            </Select.Content>
-                                                        </Select.Root>
-                                                    </Form.Control>
-                                                    <Form.Message />
-                                                </Form.Item>
-                                            )} />
-                                        </div>
-                                        <div className="flex gap-2 w-full">
-                                            <Button className="flex-1" variant="secondaryGrey">
-                                                Test Pipeline
-                                            </Button>
-                                            <Button className="flex-1" variant="secondaryGrey">
-                                                Customize Pipeline
-                                            </Button>
-                                            <Button className="flex-1" variant="primary" type="submit">
-                                                Preview Results
-                                            </Button>
-                                        </div>
-                                    </CollapsibleSection>
-                                    <CollapsibleSection title="Embed chunks">
-                                        <div className="flex gap-8">
-                                            <Form.Field control={form.control} name="embedChunksFiles" render={({ field }) => (
-                                                <Form.Item className="w-1/2">
-                                                    <Form.Label className="product-button-button-1">
-                                                        Embed chunks files
-                                                    </Form.Label>
-                                                    <Form.Control>
-                                                        <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
-                                                            <Select.Trigger>
-                                                                <Select.Value placeholder="Select.." />
-                                                            </Select.Trigger>
-                                                            <Select.Content>
-                                                                <Select.Item value="option1">Option 1</Select.Item>
-                                                                <Select.Item value="option2">Option2</Select.Item>
-                                                            </Select.Content>
-                                                        </Select.Root>
-                                                    </Form.Control>
-                                                    <Form.Message />
-                                                </Form.Item>
-                                            )} />
-                                            <Form.Field control={form.control} name="embeddingModel" render={({ field }) => (
-                                                <Form.Item className="w-1/2">
-                                                    <Form.Label className="product-button-button-1">
-                                                        Embedding model
-                                                    </Form.Label>
-                                                    <Form.Control>
-                                                        <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
-                                                            <Select.Trigger>
-                                                                <Select.Value placeholder="Select.." />
-                                                            </Select.Trigger>
-                                                            <Select.Content>
-                                                                <Select.Item value="option1">Option 1</Select.Item>
-                                                                <Select.Item value="option2">Option 2</Select.Item>
-                                                            </Select.Content>
-                                                        </Select.Root>
-                                                    </Form.Control>
-                                                    <Form.Message />
-                                                </Form.Item>
-                                            )} />
-                                        </div>
-                                        <div className="flex gap-2">
-                                            <Button variant="secondaryGrey" className="grow" >
-                                                Test Pipeline
-                                            </Button>
-                                            <Button variant="secondaryGrey" className="grow" >
-                                                Customize Pipeline
-                                            </Button>
-                                        </div>
-                                    </CollapsibleSection>
-                                </form>
-                            </Form.Root>
-                        </Tabs.Content>
-                        <Tabs.Content value="images" />
+                <div className="flex w-full space-x-4 pt-8 border-red-500 border rounded">
+                    <div className="flex-col w-1/2">
+                        <div className="product-body-text-1-semibold bg-semantic-bg-base-bg py-2 pl-3">Data</div>
+                        <div className="  px-3">
+                            <Tabs.Content value="text">
+                                <Form.Root {...form}>
+                                    <form className="flex flex-col gap-6 w-full">
+                                        <CollapsibleSection title="Convert / Transform files">
+                                            <div className="flex gap-8">
+                                                <Form.Field control={form.control} name="convertTransformFiles" render={({ field }) => (
+                                                    <Form.Item className="w-1/2">
+                                                        <Form.Label className="product-button-button-1">
+                                                            Convert / Transform files
+                                                        </Form.Label>
+                                                        <Form.Control>
+                                                            <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
+                                                                <Select.Trigger>
+                                                                    <Select.Value placeholder="Select.." />
+                                                                </Select.Trigger>
+                                                                <Select.Content>
+                                                                    <Select.Item value="option1">Option 1</Select.Item>
+                                                                    <Select.Item value="option2">Option 2</Select.Item>
+                                                                </Select.Content>
+                                                            </Select.Root>
+                                                        </Form.Control>
+                                                        <Form.Message />
+                                                    </Form.Item>
+                                                )} />
+                                                <Form.Field control={form.control} name="convertMethod" render={({ field }) => (
+                                                    <Form.Item className="w-1/2">
+                                                        <Form.Label className="product-button-button-1">
+                                                            Convert method
+                                                        </Form.Label>
+                                                        <Form.Control>
+                                                            <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
+                                                                <Select.Trigger>
+                                                                    <Select.Value placeholder="Select.." />
+                                                                </Select.Trigger>
+                                                                <Select.Content>
+                                                                    <Select.Item value="option1">Option 1</Select.Item>
+                                                                    <Select.Item value="option2">Option 2</Select.Item>
+                                                                </Select.Content>
+                                                            </Select.Root>
+                                                        </Form.Control>
+                                                        <Form.Message />
+                                                    </Form.Item>
+                                                )} />
+                                            </div>
+                                            <div className="flex gap-2 w-full">
+                                                <Button className="flex-1" variant="secondaryGrey">
+                                                    Test Pipeline
+                                                </Button>
+                                                <Button className="flex-1" variant="secondaryGrey">
+                                                    Customize Pipeline
+                                                </Button>
+                                                <Button className="flex-1" variant="primary" type="submit">
+                                                    Preview Results
+                                                </Button>
+                                            </div>
+                                        </CollapsibleSection>
+                                        <CollapsibleSection title="Split text">
+                                            <div className="flex gap-8">
+                                                <Form.Field control={form.control} name="splitTextFiles" render={({ field }) => (
+                                                    <Form.Item className="w-1/2">
+                                                        <Form.Label className="product-button-button-1">
+                                                            Split text files
+                                                        </Form.Label>
+                                                        <Form.Control>
+                                                            <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
+                                                                <Select.Trigger>
+                                                                    <Select.Value placeholder="Select.." />
+                                                                </Select.Trigger>
+                                                                <Select.Content>
+                                                                    <Select.Item value="option1">Option 1</Select.Item>
+                                                                    <Select.Item value="option2">Option 2</Select.Item>
+                                                                </Select.Content>
+                                                            </Select.Root>
+                                                        </Form.Control>
+                                                        <Form.Message />
+                                                    </Form.Item>
+                                                )} />
+                                                <Form.Field control={form.control} name="splitMethod" render={({ field }) => (
+                                                    <Form.Item className="w-1/2">
+                                                        <Form.Label className="product-button-button-1">
+                                                            Split method
+                                                        </Form.Label>
+                                                        <Form.Control>
+                                                            <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
+                                                                <Select.Trigger>
+                                                                    <Select.Value placeholder="Select.." />
+                                                                </Select.Trigger>
+                                                                <Select.Content>
+                                                                    <Select.Item value="option1">Option 1</Select.Item>
+                                                                    <Select.Item value="option2">Option 2</Select.Item>
+                                                                </Select.Content>
+                                                            </Select.Root>
+                                                        </Form.Control>
+                                                        <Form.Message />
+                                                    </Form.Item>
+                                                )} />
+                                            </div>
+                                            <div className="flex gap-8">
+                                                <Form.Field control={form.control} name="maxTokenSize" render={({ field }) => (
+                                                    <Form.Item className="w-1/2">
+                                                        <Form.Label className="product-button-button-1">
+                                                            Max token size
+                                                        </Form.Label>
+                                                        <Form.Control>
+                                                            <div className="flex items-center gap-2">
+                                                                <input
+                                                                    type="range"
+                                                                    className="w-full h-2 bg-semantic-bg-line rounded-lg appearance-none cursor-pointer accent-blue-600"
+                                                                    {...field}
+                                                                />
+                                                                <Input.Root>
+                                                                    <Input.Core {...field} id={field.name} placeholder="Username" type="text" disabled={true} />
+                                                                </Input.Root>
+                                                            </div>
+                                                        </Form.Control>
+                                                        <Form.Message />
+                                                    </Form.Item>
+                                                )} />
+                                                <Form.Field control={form.control} name="tokenizerModel" render={({ field }) => (
+                                                    <Form.Item className="w-1/2">
+                                                        <Form.Label className="product-button-button-1">
+                                                            Tokenizer model
+                                                        </Form.Label>
+                                                        <Form.Control>
+                                                            <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
+                                                                <Select.Trigger>
+                                                                    <Select.Value placeholder="Select.." />
+                                                                </Select.Trigger>
+                                                                <Select.Content>
+                                                                    <Select.Item value="option1">Option 1</Select.Item>
+                                                                    <Select.Item value="option2">Option 2</Select.Item>
+                                                                </Select.Content>
+                                                            </Select.Root>
+                                                        </Form.Control>
+                                                        <Form.Message />
+                                                    </Form.Item>
+                                                )} />
+                                            </div>
+                                            <div className="flex gap-2 w-full">
+                                                <Button className="flex-1" variant="secondaryGrey">
+                                                    Test Pipeline
+                                                </Button>
+                                                <Button className="flex-1" variant="secondaryGrey">
+                                                    Customize Pipeline
+                                                </Button>
+                                                <Button className="flex-1" variant="primary" type="submit">
+                                                    Preview Results
+                                                </Button>
+                                            </div>
+                                        </CollapsibleSection>
+                                        <CollapsibleSection title="Embed chunks">
+                                            <div className="flex gap-8">
+                                                <Form.Field control={form.control} name="embedChunksFiles" render={({ field }) => (
+                                                    <Form.Item className="w-1/2">
+                                                        <Form.Label className="product-button-button-1">
+                                                            Embed chunks files
+                                                        </Form.Label>
+                                                        <Form.Control>
+                                                            <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
+                                                                <Select.Trigger>
+                                                                    <Select.Value placeholder="Select.." />
+                                                                </Select.Trigger>
+                                                                <Select.Content>
+                                                                    <Select.Item value="option1">Option 1</Select.Item>
+                                                                    <Select.Item value="option2">Option2</Select.Item>
+                                                                </Select.Content>
+                                                            </Select.Root>
+                                                        </Form.Control>
+                                                        <Form.Message />
+                                                    </Form.Item>
+                                                )} />
+                                                <Form.Field control={form.control} name="embeddingModel" render={({ field }) => (
+                                                    <Form.Item className="w-1/2">
+                                                        <Form.Label className="product-button-button-1">
+                                                            Embedding model
+                                                        </Form.Label>
+                                                        <Form.Control>
+                                                            <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
+                                                                <Select.Trigger>
+                                                                    <Select.Value placeholder="Select.." />
+                                                                </Select.Trigger>
+                                                                <Select.Content>
+                                                                    <Select.Item value="option1">Option 1</Select.Item>
+                                                                    <Select.Item value="option2">Option 2</Select.Item>
+                                                                </Select.Content>
+                                                            </Select.Root>
+                                                        </Form.Control>
+                                                        <Form.Message />
+                                                    </Form.Item>
+                                                )} />
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <Button variant="secondaryGrey" className="grow" >
+                                                    Test Pipeline
+                                                </Button>
+                                                <Button variant="secondaryGrey" className="grow" >
+                                                    Customize Pipeline
+                                                </Button>
+                                            </div>
+                                        </CollapsibleSection>
+                                    </form>
+                                </Form.Root>
+                            </Tabs.Content>
+                            <Tabs.Content value="images" />
+                        </div>
                     </div>
+
                     <div className="flex flex-col w-1/2 pl-8">
-                        <div className=" product-body-text-1-semibold">Preview</div>
+                        <div className="product-body-text-1-semibold bg-semantic-bg-base-bg py-2 pl-3">Preview</div>
                         <div className="flex flex-col gap-3">
                             <div className="flex items-center justify-center gap-2">
                                 <div className="h-px flex-grow bg-semantic-bg-line " />
