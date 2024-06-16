@@ -295,7 +295,7 @@ const FilePreview = () => {
                             <div className="flex items-center justify-center gap-2">
                                 <div className="h-px flex-grow bg-semantic-bg-line" />
                                 <div className="product-body-text-3-medium whitespace-nowrap">Convert Results</div>
-                                <div className="h-px flex-grow bg-semantic-bg-line" />
+                                <div className="h-px flex-grow bg-semantic-bg-line" /> 
                             </div>
                             <div className="flex flex-col">
                                 <h3 className="product-button-button-2 pb-2.5">File name 1</h3>

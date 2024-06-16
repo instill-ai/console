@@ -3,11 +3,12 @@ import { Sidebar } from "./components/Sidebar";
 import { KnowledgeBaseTab } from "./components/KnowledgeBaseTab";
 import { UploadExploreTab } from "./components/UploadExploreTab";
 import { CatalogFilesTab } from "./components/CatalogFilesTab";
-import { RetrieveTestTab } from "./components/RetrieveTestTab";
+import { MarkdownTab } from "./components/MarkdownTab";
 import * as React from "react";
 import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/types";
 import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./components/undoDeleteTime";
+import { ChunkTab } from "./components/ChunkTab";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -15,6 +16,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
     React.useState<KnowledgeBase | null>(null);
   const [activeTab, setActiveTab] = React.useState("knowledge-base");
+  const [selectedTextOption, setSelectedTextOption] = React.useState("Markdown");
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [isDeleted, setIsDeleted] = React.useState(false);
   const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] =
@@ -26,6 +28,10 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
+  };
+
+  const handleTextOptionChange = (option: string) => {
+    setSelectedTextOption(option);
   };
 
   const handleKnowledgeBaseSelect = (knowledgeBase: KnowledgeBase) => {
@@ -95,6 +101,8 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             activeTab={activeTab}
             onTabChange={handleTabChange}
             selectedKnowledgeBase={selectedKnowledgeBase}
+            selectedTextOption={selectedTextOption}
+            onTextOptionChange={handleTextOptionChange}
           />
         </div>
         <div className="sm:col-span-8 md:col-span-9 lg:col-span-10">
@@ -111,8 +119,15 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           {activeTab === "catalog" && selectedKnowledgeBase ? (
             <CatalogFilesTab knowledgeBase={selectedKnowledgeBase} />
           ) : null}
-          {activeTab === "retrieve" && selectedKnowledgeBase ? (
-            <RetrieveTestTab />
+          {activeTab === "catalog" &&
+            selectedTextOption === "Markdown" &&
+            selectedKnowledgeBase ? (
+            <MarkdownTab knowledgeBase={selectedKnowledgeBase} />
+          ) : null}
+          {activeTab === "catalog" &&
+            selectedTextOption === "Chunk" &&
+            selectedKnowledgeBase ? (
+            <ChunkTab knowledgeBase={selectedKnowledgeBase} />
           ) : null}
         </div>
       </div>
