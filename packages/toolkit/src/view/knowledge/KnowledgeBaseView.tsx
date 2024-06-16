@@ -10,6 +10,8 @@ import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./components/undoDeleteTime";
 import { ChunkTab } from "./components/ChunkTab";
 import { ImageTab } from "./components/ImageTab";
+import { Nullable } from "@instill-ai/toolkit";
+
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -17,7 +19,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
     React.useState<KnowledgeBase | null>(null);
   const [activeTab, setActiveTab] = React.useState("knowledge-base");
-  const [selectedTextOption, setSelectedTextOption] = React.useState("");
+  const [selectedTextOption, setSelectedTextOption] = React.useState(null);
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [isDeleted, setIsDeleted] = React.useState(false);
   const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] =
@@ -31,7 +33,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     setActiveTab(tab);
   };
 
-  const handleTextOptionChange = (option: string) => {
+  const handleTextOptionChange = (option: Nullable<string>) => {
     setSelectedTextOption(option);
   };
 
