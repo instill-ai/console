@@ -142,7 +142,7 @@ function getAvailableReferencesFromNodes(nodes: Node<NodeData>[]) {
     let outputSchema: Nullable<InstillJSONSchema> = null;
 
     if (isIteratorNode(node)) {
-      outputSchema = node.data.data_specification?.output ?? null;
+      outputSchema = node.data.dataSpecification?.output ?? null;
     }
 
     if (isGeneralNode(node)) {

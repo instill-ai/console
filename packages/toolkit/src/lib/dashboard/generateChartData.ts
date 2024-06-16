@@ -11,7 +11,7 @@ export function generateChartData(
 
   // Preprocess and format time bucket dates
   const formattedTimeBuckets: string[][] = pipelineData.map((pipeline) => {
-    return pipeline.time_buckets.map((bucket) => formatDateTime(bucket, range));
+    return pipeline.timeBuckets.map((bucket) => formatDateTime(bucket, range));
   });
 
   const xAxisSortedDates = sortByDate([
@@ -27,7 +27,7 @@ export function generateChartData(
   // Initialize yAxis arrays for each pipeline
   for (const pipeline of pipelineData) {
     const triggerCounts = {
-      name: pipeline.pipeline_id,
+      name: pipeline.pipelineId,
       type: "line",
       smooth: true,
       data: new Array(xAxis.length).fill(0),
@@ -44,10 +44,10 @@ export function generateChartData(
       if (xAxisIndex !== -1) {
         if (yAxis[pipelineIndex]["data"][xAxisIndex]) {
           yAxis[pipelineIndex]["data"][xAxisIndex] +=
-            pipeline.trigger_counts[bucketIndex];
+            pipeline.triggerCounts[bucketIndex];
         } else {
           yAxis[pipelineIndex]["data"][xAxisIndex] +=
-            pipeline.trigger_counts[bucketIndex];
+            pipeline.triggerCounts[bucketIndex];
         }
       }
     }

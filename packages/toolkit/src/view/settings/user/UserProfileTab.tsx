@@ -28,16 +28,16 @@ import { useUpdateAuthenticatedUser } from "../../../lib";
 
 export const UserProfileTabSchema = z.object({
   id: z.string().min(1, "User name is required"),
-  newsletter_subscription: z.boolean(),
+  newsletterSubscription: z.boolean(),
 
   profile: z
     .object({
       avatar: z.string().optional(),
-      display_name: z.string().optional(),
-      company_name: z.string().optional(),
+      displayName: z.string().optional(),
+      companyName: z.string().optional(),
       bio: z.string().optional(),
-      public_email: z.string().optional(),
-      social_profile_links: z
+      publicEmail: z.string().optional(),
+      socialProfileLinks: z
         .object({
           github: z.string().optional(),
           x: z.string().optional(),
@@ -126,7 +126,7 @@ export const UserProfileTab = (props: UserProfileTabProps) => {
             <Setting.TabSectionContent className="gap-y-4">
               <Form.Field
                 control={form.control}
-                name="profile.display_name"
+                name="profile.displayName"
                 render={({ field }) => {
                   return (
                     <Form.Item>
@@ -189,7 +189,7 @@ export const UserProfileTab = (props: UserProfileTabProps) => {
 
               <Form.Field
                 control={form.control}
-                name="profile.company_name"
+                name="profile.companyName"
                 render={({ field }) => {
                   return (
                     <Form.Item>
@@ -270,7 +270,7 @@ export const UserProfileTab = (props: UserProfileTabProps) => {
             <Setting.TabSectionContent className="gap-y-4">
               <Form.Field
                 control={form.control}
-                name="newsletter_subscription"
+                name="newsletterSubscription"
                 render={({ field }) => {
                   return (
                     <div className="flex-rol flex gap-x-3">
@@ -308,7 +308,7 @@ export const UserProfileTab = (props: UserProfileTabProps) => {
             <Setting.TabSectionContent className="gap-y-4">
               <Form.Field
                 control={form.control}
-                name="profile.social_profile_links.github"
+                name="profile.socialProfileLinks.github"
                 render={({ field }) => {
                   return (
                     <Form.Item>
@@ -331,7 +331,7 @@ export const UserProfileTab = (props: UserProfileTabProps) => {
               />
               <Form.Field
                 control={form.control}
-                name="profile.social_profile_links.x"
+                name="profile.socialProfileLinks.x"
                 render={({ field }) => {
                   return (
                     <Form.Item>

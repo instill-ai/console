@@ -23,21 +23,21 @@ export function getGeneralComponentInOutputSchema(
   // definition is not support anymore. Console need to check this.
   if (
     targetTask &&
-    component?.definition?.spec.data_specifications &&
-    component?.definition?.spec.data_specifications[targetTask]
+    component?.definition?.spec.dataSpecifications &&
+    component?.definition?.spec.dataSpecifications[targetTask]
   ) {
-    inputSchema = component?.definition?.spec.data_specifications[targetTask]
+    inputSchema = component?.definition?.spec.dataSpecifications[targetTask]
       .input as InstillJSONSchema;
-    outputSchema = component?.definition?.spec.data_specifications[targetTask]
+    outputSchema = component?.definition?.spec.dataSpecifications[targetTask]
       .output as InstillJSONSchema;
   } else if (
-    component.definition?.spec.component_specification.oneOf &&
-    component.definition?.spec.component_specification.oneOf.length > 0
+    component.definition?.spec.componentSpecification.oneOf &&
+    component.definition?.spec.componentSpecification.oneOf.length > 0
   ) {
     const defaultTask =
       ((
         (
-          component.definition?.spec.component_specification
+          component.definition?.spec.componentSpecification
             .oneOf[0] as JSONSchema7
         )?.properties?.task as JSONSchema7
       )?.const as string) ?? null;
@@ -46,12 +46,11 @@ export function getGeneralComponentInOutputSchema(
       return { outputSchema, inputSchema };
     }
 
-    if (component?.definition?.spec.data_specifications) {
-      inputSchema = component?.definition?.spec.data_specifications[defaultTask]
+    if (component?.definition?.spec.dataSpecifications) {
+      inputSchema = component?.definition?.spec.dataSpecifications[defaultTask]
         .input as InstillJSONSchema;
-      outputSchema = component?.definition?.spec.data_specifications[
-        defaultTask
-      ].output as InstillJSONSchema;
+      outputSchema = component?.definition?.spec.dataSpecifications[defaultTask]
+        .output as InstillJSONSchema;
     }
   }
 

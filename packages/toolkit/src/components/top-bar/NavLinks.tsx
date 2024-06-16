@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import * as React from "react";
 import { useUserNamespaces } from "../../lib/useUserNamespaces";
 import { InstillStore, useInstillStore, useShallow } from "../../lib";
+import { env } from "../../server";
 
 export type NavLinkProps = {
   title: string;
@@ -102,9 +103,20 @@ export const NavLink = ({ title, Icon, pathname }: NavLinkProps) => {
 export const NavLinks = () => {
   return (
     <React.Fragment>
-      {navLinkItems.map(({ pathname, Icon, title }) => (
-        <NavLink key={pathname} pathname={pathname} Icon={Icon} title={title} />
-      ))}
+      {navLinkItems
+        .filter((item) => {
+          if (env("NEXT_PUBLIC_APP_ENV") === "CE") {
+            return item.pathname !== "hub";
+          }
+        })
+        .map(({ pathname, Icon, title }) => (
+          <NavLink
+            key={pathname}
+            pathname={pathname}
+            Icon={Icon}
+            title={title}
+          />
+        ))}
     </React.Fragment>
   );
 };

@@ -86,7 +86,7 @@ export const ModelsTable = (props: ModelsTableProps) => {
       },
     },
     {
-      accessorKey: "create_time",
+      accessorKey: "createTime",
       header: ({ column }) => {
         return (
           <div className="text-center">
@@ -107,7 +107,7 @@ export const ModelsTable = (props: ModelsTableProps) => {
       cell: ({ row }) => {
         return (
           <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
-            {formatDate(row.getValue("create_time"))}
+            {formatDate(row.getValue("createTime"))}
           </div>
         );
       },

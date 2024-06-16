@@ -8,10 +8,10 @@ export const GET = () => {
   let accessToken: Nullable<string> = null;
 
   if (authSessionCookie) {
-    accessToken = JSON.parse(authSessionCookie).access_token;
+    accessToken = JSON.parse(authSessionCookie).accessToken;
   }
 
   return Response.json({
-    access_token: accessToken,
+    accessToken: accessToken,
   });
 };

@@ -20,7 +20,7 @@ export async function generateMetadata({
   let accessToken: Nullable<string> = null;
 
   if (authSessionCookie) {
-    accessToken = JSON.parse(authSessionCookie).access_token;
+    accessToken = JSON.parse(authSessionCookie).accessToken;
   }
 
   const entity = params.entity;

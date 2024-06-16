@@ -3,9 +3,9 @@ import { createInstillAxiosClient, getQueryString } from "../helper";
 import { ConnectorDefinition } from "./types";
 
 export type ListConnectorDefinitionsResponse = {
-  connector_definitions: ConnectorDefinition[];
-  next_page_token: string;
-  total_size: number;
+  connectorDefinitions: ConnectorDefinition[];
+  nextPageToken: string;
+  totalSize: number;
 };
 
 export async function listConnectorDefinitionsQuery({
@@ -33,14 +33,14 @@ export async function listConnectorDefinitionsQuery({
     const { data } =
       await client.get<ListConnectorDefinitionsResponse>(queryString);
 
-    connectorDefinitions.push(...data.connector_definitions);
+    connectorDefinitions.push(...data.connectorDefinitions);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       connectorDefinitions.push(
         ...(await listConnectorDefinitionsQuery({
           pageSize,
           accessToken,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
           filter,
         }))
       );
@@ -53,7 +53,7 @@ export async function listConnectorDefinitionsQuery({
 }
 
 export type GetConnectorDefinitionResponse = {
-  connector_definition: ConnectorDefinition;
+  connectorDefinition: ConnectorDefinition;
 };
 
 export async function getConnectorDefinitionQuery({
@@ -70,7 +70,7 @@ export async function getConnectorDefinitionQuery({
       `/${connectorDefinitionName}?view=VIEW_FULL`
     );
 
-    return Promise.resolve(data.connector_definition);
+    return Promise.resolve(data.connectorDefinition);
   } catch (err) {
     return Promise.reject(err);
   }

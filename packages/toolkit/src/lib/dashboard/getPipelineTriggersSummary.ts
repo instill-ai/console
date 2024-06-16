@@ -11,15 +11,13 @@ export function getPipelineTriggersSummary(
   let pipelineErroredAmountPrevious = 0;
 
   pipelines.forEach((pipeline) => {
-    pipelineCompleteAmount += parseInt(pipeline.trigger_count_completed);
-    pipelineErroredAmount += parseInt(pipeline.trigger_count_errored);
+    pipelineCompleteAmount += parseInt(pipeline.triggerCountCompleted);
+    pipelineErroredAmount += parseInt(pipeline.triggerCountErrored);
   });
 
   pipelinesPrevious.forEach((pipeline) => {
-    pipelineCompleteAmountPrevious += parseInt(
-      pipeline.trigger_count_completed
-    );
-    pipelineErroredAmountPrevious += parseInt(pipeline.trigger_count_errored);
+    pipelineCompleteAmountPrevious += parseInt(pipeline.triggerCountCompleted);
+    pipelineErroredAmountPrevious += parseInt(pipeline.triggerCountErrored);
   });
 
   return getPipelineTriggersStatusSummary(

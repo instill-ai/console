@@ -61,7 +61,7 @@ export const CloudTopbarDropdown = () => {
           fallback={
             <NamespaceAvatarWithFallback.Fallback
               namespaceId={me.data.id}
-              displayName={me.data.profile?.display_name ?? null}
+              displayName={me.data.profile?.displayName ?? null}
               className="h-10 w-10"
             />
           }
@@ -80,14 +80,14 @@ export const CloudTopbarDropdown = () => {
               fallback={
                 <NamespaceAvatarWithFallback.Fallback
                   namespaceId={me.data.id}
-                  displayName={me.data.profile?.display_name ?? null}
+                  displayName={me.data.profile?.displayName ?? null}
                   className="h-10 w-10"
                 />
               }
             />
             <div className="flex flex-col">
               <h3 className="text-semantic-fg-primary product-body-text-3-medium">
-                {me.data.profile?.display_name}
+                {me.data.profile?.displayName}
               </h3>
               <p className="text-semantic-fg-secondary product-body-text-4-regular">
                 {me.data.email}

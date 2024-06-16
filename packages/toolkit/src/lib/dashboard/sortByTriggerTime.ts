@@ -5,6 +5,6 @@ export function sortByTriggerTime(
 ): PipelineTriggerRecord[] {
   return data.sort(
     (a, b) =>
-      new Date(b.trigger_time).getTime() - new Date(a.trigger_time).getTime()
+      new Date(b.triggerTime).getTime() - new Date(a.triggerTime).getTime()
   );
 }

@@ -105,7 +105,7 @@ export const ViewPipeline = () => {
               <Readme
                 isEditable={
                   pipeline.isSuccess
-                    ? pipeline.data.permission.can_edit
+                    ? pipeline.data.permission.canEdit
                       ? true
                       : false
                     : false

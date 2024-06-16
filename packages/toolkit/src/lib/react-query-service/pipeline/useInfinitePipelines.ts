@@ -17,7 +17,7 @@ export function useInfinitePipelines({
   enabledQuery,
   visibility,
   filter,
-  order_by,
+  orderBy,
   disabledViewFull,
 }: {
   pageSize: number;
@@ -25,7 +25,7 @@ export function useInfinitePipelines({
   accessToken: Nullable<string>;
   visibility: Nullable<Visibility>;
   filter: Nullable<string>;
-  order_by: Nullable<string>;
+  orderBy: Nullable<string>;
   disabledViewFull?: boolean;
 }): UseInfiniteQueryResult<InfiniteData<ListPipelinesResponse>, Error> {
   const queryKey = ["pipelines", "infinite"];
@@ -38,8 +38,8 @@ export function useInfinitePipelines({
     queryKey.push(visibility);
   }
 
-  if (order_by) {
-    queryKey.push(order_by);
+  if (orderBy) {
+    queryKey.push(orderBy);
   }
 
   return useInfiniteQuery({
@@ -52,7 +52,7 @@ export function useInfinitePipelines({
         enablePagination: true,
         visibility,
         filter,
-        order_by,
+        orderBy,
         disabledViewFull,
       });
 
@@ -60,11 +60,11 @@ export function useInfinitePipelines({
     },
     initialPageParam: "",
     getNextPageParam: (lastPage) => {
-      if (lastPage.next_page_token === "") {
+      if (lastPage.nextPageToken === "") {
         return null;
       }
 
-      return lastPage.next_page_token;
+      return lastPage.nextPageToken;
     },
     enabled: enabledQuery,
   });

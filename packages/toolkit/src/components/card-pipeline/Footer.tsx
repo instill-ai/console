@@ -76,14 +76,14 @@ export const Footer = ({
       </div>
       <Separator orientation="horizontal" className="my-2" />
       <div className="flex flex-row-reverse">
-        {pipeline.permission.can_edit ? (
+        {pipeline.permission.canEdit ? (
           <Button
             className="flex flex-row gap-x-2"
             variant="secondaryColour"
             size="lg"
             onClick={() => {
               router.push(
-                `/${pipeline.owner_name.split("/")[1]}/pipelines/${
+                `/${pipeline.ownerName.split("/")[1]}/pipelines/${
                   pipeline.id
                 }/builder`
               );

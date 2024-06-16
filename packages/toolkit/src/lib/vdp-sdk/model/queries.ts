@@ -16,7 +16,7 @@ import { Visibility } from "../types";
  * -----------------------------------------------------------------------*/
 
 export type GetModelDefinitionResponse = {
-  model_definition: ModelDefinition;
+  modelDefinition: ModelDefinition;
 };
 
 export async function getModelDefinitionQuery({
@@ -33,16 +33,16 @@ export async function getModelDefinitionQuery({
       `/${modelDefinitionName}`
     );
 
-    return Promise.resolve(data.model_definition);
+    return Promise.resolve(data.modelDefinition);
   } catch (err) {
     return Promise.reject(err);
   }
 }
 
 export type ListModelDefinitionsResponse = {
-  model_definitions: ModelDefinition[];
-  next_page_token: string;
-  total_size: number;
+  modelDefinitions: ModelDefinition[];
+  nextPageToken: string;
+  totalSize: number;
 };
 
 export async function listModelDefinitionsQuery({
@@ -69,14 +69,14 @@ export async function listModelDefinitionsQuery({
     const { data } =
       await client.get<ListModelDefinitionsResponse>(queryString);
 
-    modelDefinitions.push(...data.model_definitions);
+    modelDefinitions.push(...data.modelDefinitions);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       modelDefinitions.push(
         ...(await listModelDefinitionsQuery({
           pageSize,
           accessToken,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
         }))
       );
     }
@@ -116,8 +116,8 @@ export async function getUserModelQuery({
 
 export type ListModelsResponse = {
   models: Model[];
-  next_page_token: string;
-  total_size: number;
+  nextPageToken: string;
+  totalSize: number;
 };
 
 export type listModelsQueryProps = {
@@ -126,7 +126,7 @@ export type listModelsQueryProps = {
   accessToken: Nullable<string>;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
-  order_by?: Nullable<string>;
+  orderBy?: Nullable<string>;
   disabledViewFull?: boolean;
 };
 export type listUserModelsQueryProps = {
@@ -150,8 +150,8 @@ export type ListModelRegionsResponse = {
 
 export type ListModelVersionsResponse = {
   versions: ModelVersion[];
-  total_size: number;
-  page_size: number;
+  totalSize: number;
+  pageSize: number;
   page: number;
 };
 
@@ -177,7 +177,7 @@ export async function listModelsQuery({
   filter,
   visibility,
   enablePagination,
-  order_by,
+  orderBy,
   disabledViewFull,
 }: listModelsQueryProps & {
   enablePagination?: boolean;
@@ -193,7 +193,7 @@ export async function listModelsQuery({
       nextPageToken,
       queryParams: visibility ? `visibility=${visibility}` : undefined,
       filter,
-      order_by,
+      orderBy,
     });
 
     const { data } = await client.get<ListModelsResponse>(queryString);
@@ -204,16 +204,16 @@ export async function listModelsQuery({
 
     models.push(...data.models);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       models.push(
         ...(await listModelsQuery({
           pageSize,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
           accessToken,
           enablePagination: false,
           filter,
           visibility,
-          order_by,
+          orderBy,
         }))
       );
     }
@@ -273,12 +273,12 @@ export async function listUserModelsQuery({
 
     models.push(...data.models);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       models.push(
         ...(await listUserModelsQuery({
           userName,
           pageSize,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
           accessToken,
           enablePagination: false,
           filter,
@@ -384,7 +384,7 @@ export async function listModelVersionsQuery({
 
     versions.push(...data.versions);
 
-    const lastPage = Math.ceil(data.total_size / data.page_size) - 1;
+    const lastPage = Math.ceil(data.totalSize / data.pageSize) - 1;
 
     if (data.page < lastPage) {
       versions.push(

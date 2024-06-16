@@ -40,14 +40,14 @@ export const APITokenTable = (props: APITokenTableProps) => {
           <div className="text-left">
             <APITokenNameCell
               id={row.getValue("id")}
-              accessToken={row.original.access_token}
+              accessToken={row.original.accessToken}
             />
           </div>
         );
       },
     },
     {
-      accessorKey: "create_time",
+      accessorKey: "createTime",
       header: ({ column }) => {
         return (
           <div className="text-center">
@@ -69,7 +69,7 @@ export const APITokenTable = (props: APITokenTableProps) => {
       cell: ({ row }) => {
         return (
           <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
-            {formatDate(row.getValue("create_time"))}
+            {formatDate(row.getValue("createTime"))}
           </div>
         );
       },

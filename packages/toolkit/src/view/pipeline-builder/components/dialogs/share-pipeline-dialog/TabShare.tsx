@@ -86,8 +86,8 @@ export const TabShare = ({
       return;
     }
 
-    const enabledShareByLink = pipeline.data.sharing.share_code
-      ? pipeline.data.sharing.share_code.enabled
+    const enabledShareByLink = pipeline.data.sharing.shareCode
+      ? pipeline.data.sharing.shareCode.enabled
       : false;
 
     let link: Nullable<string> = null;
@@ -97,10 +97,10 @@ export const TabShare = ({
         name: pipelineName,
         sharing: {
           users: pipeline.data.sharing.users,
-          share_code: {
+          shareCode: {
             user: "*/*",
-            role: pipeline.data.sharing.share_code?.role
-              ? pipeline.data.sharing.share_code.role
+            role: pipeline.data.sharing.shareCode?.role
+              ? pipeline.data.sharing.shareCode.role
               : "ROLE_EXECUTOR",
             enabled: true,
           },
@@ -119,7 +119,7 @@ export const TabShare = ({
 
         link = `${env(
           "NEXT_PUBLIC_CONSOLE_BASE_URL"
-        )}/${entity}/pipelines/${id}?view=${pipeline.sharing.share_code?.code}`;
+        )}/${entity}/pipelines/${id}?view=${pipeline.sharing.shareCode?.code}`;
         setIsUpdatingShareCodePermission(false);
       } catch (error) {
         setIsUpdatingShareCodePermission(false);
@@ -143,7 +143,7 @@ export const TabShare = ({
       link = `${env(
         "NEXT_PUBLIC_CONSOLE_BASE_URL"
       )}/${entity}/pipelines/${id}?view=${
-        pipeline.data.sharing.share_code?.code
+        pipeline.data.sharing.shareCode?.code
       }`;
       setIsUpdatingShareCodePermission(false);
     }
@@ -173,11 +173,11 @@ export const TabShare = ({
       return null;
     }
 
-    if (pipeline.data.owner_name.split("/")[0] === "users") {
+    if (pipeline.data.ownerName.split("/")[0] === "users") {
       return (pipeline.data.owner as UserOwner).user.profile?.avatar ?? null;
     }
 
-    if (pipeline.data.owner_name.split("/")[0] === "organizations") {
+    if (pipeline.data.ownerName.split("/")[0] === "organizations") {
       return (
         (pipeline.data.owner as OrganizationOwner).organization.profile
           ?.avatar ?? null
@@ -209,7 +209,7 @@ export const TabShare = ({
         <div className="mr-auto flex flex-row gap-x-2">
           <EntityAvatar
             src={pipelineAvatar}
-            entityName={pipeline.data?.owner_name ?? ""}
+            entityName={pipeline.data?.ownerName ?? ""}
             className="h-[30px] w-[30px]"
             fallbackImg={
               <div className="flex h-[30px] w-[30px] rounded-full bg-semantic-bg-secondary">
@@ -218,7 +218,7 @@ export const TabShare = ({
             }
           />
           <p className="my-auto text-semantic-fg-disabled product-body-text-3-medium">
-            {pipeline.data?.owner_name.split("/")[1]}
+            {pipeline.data?.ownerName.split("/")[1]}
           </p>
         </div>
         <p className="my-auto text-semantic-fg-disabled product-body-text-3-medium">

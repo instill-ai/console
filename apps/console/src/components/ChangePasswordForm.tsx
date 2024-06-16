@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const ChangePasswordFormSchema = z.object({
-  new_password: z
+  newPassword: z
     .string()
     .min(8, { message: "Password must be at least 8 characters long" }),
 });
@@ -17,7 +17,7 @@ export const ChangePasswordForm = ({ onSubmit }: ChangePasswordFormProps) => {
   const form = useForm<z.infer<typeof ChangePasswordFormSchema>>({
     resolver: zodResolver(ChangePasswordFormSchema),
     defaultValues: {
-      new_password: "",
+      newPassword: "",
     },
   });
 
@@ -30,7 +30,7 @@ export const ChangePasswordForm = ({ onSubmit }: ChangePasswordFormProps) => {
         <div className="flex flex-col gap-y-5">
           <Form.Field
             control={form.control}
-            name="new_password"
+            name="newPassword"
             render={({ field }) => {
               return (
                 <Form.Item>
@@ -45,7 +45,7 @@ export const ChangePasswordForm = ({ onSubmit }: ChangePasswordFormProps) => {
                         onChange={(e) => {
                           field.onChange(e);
                           if (e.target.value === "password") {
-                            form.setError("new_password", {
+                            form.setError("newPassword", {
                               message:
                                 "Password must be different from default password",
                             });
@@ -64,7 +64,7 @@ export const ChangePasswordForm = ({ onSubmit }: ChangePasswordFormProps) => {
           variant="primary"
           className="!w-full !flex-1"
           size="lg"
-          disabled={form.watch("new_password") === "password" ? true : false}
+          disabled={form.watch("newPassword") === "password" ? true : false}
         >
           Continue
         </Button>

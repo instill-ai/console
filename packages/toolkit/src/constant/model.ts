@@ -109,7 +109,7 @@ export const getInstillTaskHttpRequestExample = (model?: Model) => {
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer $INSTILL_API_TOKEN' \\
 --data '{
-  "task_inputs": [
+  "taskInputs": [
     {
       ${taskPayloads[model.task]}
     }

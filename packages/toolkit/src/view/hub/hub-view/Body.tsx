@@ -36,7 +36,7 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-type SortField = "update_time";
+type SortField = "updateTime";
 type SortOrder = "asc" | "desc";
 
 const SortSelectButton = ({
@@ -76,7 +76,7 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
 }) => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
   const [selectedSortField, setSelectedSortField] =
-    React.useState<SortField>("update_time");
+    React.useState<SortField>("updateTime");
   const [selectedSortOrder, setSelectedSortOrder] =
     React.useState<SortOrder>("desc");
   const [searchInputValue, setSearchInputValue] =
@@ -103,7 +103,7 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
         : searchCode
           ? `q="${searchCode}"`
           : "",
-    order_by: selectedSortOption,
+    orderBy: selectedSortOption,
     disabledViewFull: true,
   });
 
@@ -134,7 +134,7 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
         : searchCode
           ? `q="${searchCode}"`
           : "",
-    order_by: selectedSortOption,
+    orderBy: selectedSortOption,
   });
 
   const allModels = React.useMemo(() => {
@@ -207,15 +207,15 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
               {dataType === "pipelines" ? (
                 <React.Fragment>
                   Pipelines{" "}
-                  {pipelines.isSuccess && pipelines.data.pages?.[0]?.total_size
-                    ? pipelines.data.pages[0].total_size
+                  {pipelines.isSuccess && pipelines.data.pages?.[0]?.totalSize
+                    ? pipelines.data.pages[0].totalSize
                     : null}
                 </React.Fragment>
               ) : (
                 <React.Fragment>
                   Models{" "}
-                  {models.isSuccess && models.data.pages?.[0]?.total_size
-                    ? models.data.pages[0].total_size
+                  {models.isSuccess && models.data.pages?.[0]?.totalSize
+                    ? models.data.pages[0].totalSize
                     : null}
                 </React.Fragment>
               )}
@@ -251,9 +251,9 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
                       <Icons.Update className="h-4 w-4 stroke-semantic-fg-disabled" />
                     }
                     onClick={() => {
-                      handleSortFieldChange("update_time");
+                      handleSortFieldChange("updateTime");
                     }}
-                    isSelected={selectedSortField === "update_time"}
+                    isSelected={selectedSortField === "updateTime"}
                   />
 
                   <Separator orientation="horizontal" className="my-1" />
@@ -296,7 +296,7 @@ const ListSection: React.FC<{ tabValue: string; dataType?: DataType }> = ({
                 allPipelines.map((pipeline) => (
                   <CardPipeline
                     key={pipeline.uid}
-                    ownerID={pipeline.owner_name.split("/")[1]}
+                    ownerID={pipeline.ownerName.split("/")[1]}
                     pipeline={pipeline}
                   />
                 ))

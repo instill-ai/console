@@ -55,7 +55,7 @@ export const ModelReadme = ({ model }: { model?: Model }) => {
   return (
     <RealTimeTextEditor
       isReady={!!model && !!accessToken}
-      isEditable={!!model?.permission.can_edit}
+      isEditable={!!model?.permission.canEdit}
       content={model?.readme || null}
       onSave={onUpdateModelReadme}
     />

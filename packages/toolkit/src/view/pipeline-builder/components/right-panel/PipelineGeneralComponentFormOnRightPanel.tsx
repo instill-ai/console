@@ -26,7 +26,7 @@ export const PipelineGeneralComponentFormOnRightPanel = ({
   }, [nodeData]);
 
   const { form, fields, ValidatorSchema } = useInstillForm(
-    nodeData.definition?.spec.component_specification ?? null,
+    nodeData.definition?.spec.componentSpecification ?? null,
     configuration,
     {
       disabledAll,

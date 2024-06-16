@@ -14,7 +14,7 @@ export type UseCustomHookResult<T> = [
 ];
 
 export type InstillAiUserCookie = {
-  cookie_token: string;
+  cookieToken: string;
 };
 
 export type GeneralUseFormReturn = UseFormReturn<

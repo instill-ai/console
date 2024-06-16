@@ -1,8 +1,8 @@
 import { createInstillAxiosClient } from "../helper";
 
 export type HubStatsResponse = {
-  number_of_public_pipelines: number;
-  number_of_featured_pipelines: number;
+  numberOfPublicPipelines: number;
+  numberOfFeaturedPipelines: number;
 };
 
 export async function getHubStatsQuery() {

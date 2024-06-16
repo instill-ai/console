@@ -3,11 +3,11 @@ import { User } from "../mgmt";
 import { StripeSubscriptionDetail } from "../types";
 
 export type OrganizationProfile = {
-  display_name?: string;
+  displayName?: string;
   bio?: string;
-  public_email?: string;
+  publicEmail?: string;
   avatar?: string;
-  social_profiles_links?: {
+  socialProfilesLinks?: {
     webiste?: string;
     x?: string;
     github?: string;
@@ -18,8 +18,8 @@ export type Organization = {
   name: string;
   uid: string;
   id: string;
-  create_time: string;
-  update_time: string;
+  createTime: string;
+  updateTime: string;
   owner: User;
   profile?: OrganizationProfile;
 };
@@ -34,8 +34,8 @@ export type OrganizationSubscriptionPlan =
 export type OrganizationSubscription = {
   plan: OrganizationSubscriptionPlan;
   detail: Nullable<StripeSubscriptionDetail>;
-  max_seats: number;
-  used_seats: number;
+  maxSeats: number;
+  usedSeats: number;
 };
 
 export type UserMembership = {

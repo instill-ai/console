@@ -23,7 +23,7 @@ export const DashboardPipelinesTable = (
 
   const columns: ColumnDef<TriggeredPipeline>[] = [
     {
-      accessorKey: "pipeline_id",
+      accessorKey: "pipelineId",
       header: () => <div className="min-w-[450px] text-left">Pipeline Id</div>,
       cell: ({ row }) => {
         return (
@@ -36,17 +36,17 @@ export const DashboardPipelinesTable = (
             /> */}
             <Link
               href={`/${entity}/dashboard/pipeline/${row.getValue(
-                "pipeline_id"
+                "pipelineId"
               )}${days ? "?days=" + days : ""}`}
             >
-              {row.getValue("pipeline_id")}
+              {row.getValue("pipelineId")}
             </Link>
           </div>
         );
       },
     },
     {
-      accessorKey: "trigger_count_completed",
+      accessorKey: "triggerCountCompleted",
       header: ({ column }) => {
         return (
           <div className="text-center">
@@ -67,13 +67,13 @@ export const DashboardPipelinesTable = (
       cell: ({ row }) => {
         return (
           <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
-            {row.getValue("trigger_count_completed")}
+            {row.getValue("triggerCountCompleted")}
           </div>
         );
       },
     },
     {
-      accessorKey: "trigger_count_errored",
+      accessorKey: "triggerCountErrored",
       header: ({ column }) => (
         <div className="text-center">
           <Button
@@ -90,7 +90,7 @@ export const DashboardPipelinesTable = (
       cell: ({ row }) => {
         return (
           <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
-            {row.getValue("trigger_count_errored")}
+            {row.getValue("triggerCountErrored")}
           </div>
         );
       },
@@ -142,7 +142,7 @@ export const DashboardPipelinesTable = (
       data={pipelineTriggerCounts}
       pageSize={6}
       searchPlaceholder={"Search Pipelines"}
-      searchKey={"pipeline_id"}
+      searchKey={"pipelineId"}
       isLoading={isLoading}
       loadingRows={6}
       primaryText="Pipelines"

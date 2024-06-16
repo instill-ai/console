@@ -71,12 +71,12 @@ export type Pipeline = {
   id: string;
   description: string;
   readme: string;
-  create_time: string;
-  update_time: string;
+  createTime: string;
+  updateTime: string;
   recipe: PipelineRecipe;
-  data_specification: DataSpecification;
+  dataSpecification: DataSpecification;
   owner: Owner;
-  owner_name: string;
+  ownerName: string;
   releases: PipelineRelease[];
   sharing: PipelineSharing;
   metadata: GeneralRecord;
@@ -89,18 +89,18 @@ export type OperatorDefinition = {
   uid: string;
   id: string;
   title: string;
-  documentation_url: string;
+  documentationUrl: string;
   icon: string;
   spec: Spec;
   tombstone: boolean;
   public: boolean;
   custom: boolean;
-  icon_url: string;
+  iconUrl: string;
 };
 
 export type PipelineSharing = {
   users: PipelineSharingUserRules;
-  share_code: Nullable<PipelineSharingCodeRule>;
+  shareCode: Nullable<PipelineSharingCodeRule>;
 };
 
 export type PipelineSharingUserRules = Record<
@@ -130,10 +130,10 @@ export type PipelineRelease = {
   id: string;
   description: string;
   recipe: PipelineRecipe;
-  create_time: string;
-  update_time: string;
+  createTime: string;
+  updateTime: string;
   visibility: Visibility;
-  openapi_schema: OpenAPIV3.Document;
+  openapiSchema: OpenAPIV3.Document;
   metadata: GeneralRecord;
   alias?: string;
 };
@@ -143,7 +143,7 @@ export type PipelineTrace = {
   inputs: Record<string, any>[];
   outputs: Record<string, any>[];
   error: Record<string, any>;
-  compute_time_in_seconds: number;
+  computeYimeInSeconds: number;
 };
 
 export type PipelineTriggerMetadata = {
@@ -168,7 +168,7 @@ export type PipelineIteratorComponent = {
   outputElements: Record<string, string>;
   component: PipelineComponentMap;
   condition: Nullable<string>;
-  data_specification: Nullable<DataSpecification>;
+  dataSpecification: Nullable<DataSpecification>;
 } & ComponentBasicFields;
 
 export type PipelineComponentMap = Record<string, PipelineComponent>;
@@ -203,8 +203,8 @@ export type Secret = {
   name: string;
   uid: string;
   id: string;
-  create_time: string;
-  update_time: string;
+  createTime: string;
+  updateTime: string;
   description: Nullable<string>;
 
   // The value of the secret, which is input-only and will never be returned in API responses.

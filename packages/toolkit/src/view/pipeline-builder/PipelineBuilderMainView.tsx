@@ -85,7 +85,7 @@ export const PipelineBuilderMainView = () => {
     if (!pipeline.isSuccess) return;
 
     updatePipelineOpenAPIOutputSchema(
-      () => pipeline.data.data_specification?.output ?? null
+      () => pipeline.data.dataSpecification?.output ?? null
     );
   }, [pipeline.isSuccess, pipeline.data, updatePipelineOpenAPIOutputSchema]);
 
@@ -94,7 +94,7 @@ export const PipelineBuilderMainView = () => {
       return;
     }
 
-    if (!pipeline.data.permission.can_edit) {
+    if (!pipeline.data.permission.canEdit) {
       router.push("/404");
     }
   }, [pipeline.isSuccess, pipeline.data, router]);

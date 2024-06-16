@@ -42,15 +42,15 @@ type Option = {
 const EditModelSchema = z
   .object({
     description: z.string().optional(),
-    source_url: z.literal("").or(z.string().url()),
-    documentation_url: z.literal("").or(z.string().url()),
+    sourceUrl: z.literal("").or(z.string().url()),
+    documentationUrl: z.literal("").or(z.string().url()),
     license: z.literal("").or(z.string().url()),
     visibility: z
       .enum(InstillModelVisibility)
       .default(InstillModelVisibility[0]),
     hardware: z.string(),
     hardwareCustom: z.string().optional(),
-    profile_image: z.string().optional(),
+    profileImage: z.string().optional(),
     //configuration: z.object({}),
   })
   .superRefine((state, ctx) => {
@@ -84,7 +84,7 @@ export const ModelSettingsEditForm = ({
     }
 
     return modelRegions.data
-      .find((item) => item.region_name === model.region)
+      .find((item) => item.regionName === model.region)
       ?.hardware.reduce(
         (acc: Option[], hardwareName) => [
           ...acc,
@@ -106,8 +106,8 @@ export const ModelSettingsEditForm = ({
 
     return {
       description: model.description,
-      source_url: model.source_url,
-      documentation_url: model.documentation_url,
+      sourceUrl: model.sourceUrl,
+      documentationUrl: model.documentationUrl,
       license: model.license,
       visibility: model.visibility as Exclude<
         Visibility,
@@ -115,7 +115,7 @@ export const ModelSettingsEditForm = ({
       >,
       hardware: hardwareName === null ? "Custom" : model.hardware,
       hardwareCustom: hardwareName === null ? model.hardware : "",
-      profile_image: model.profile_image,
+      profileImage: model.profileImage,
     };
   }, [model]);
 
@@ -123,7 +123,7 @@ export const ModelSettingsEditForm = ({
     resolver: zodResolver(EditModelSchema),
     mode: "onChange",
     values: defaultValues,
-    disabled: !model?.permission.can_edit,
+    disabled: !model?.permission.canEdit,
   });
   const updateUserModel = useUpdateUserModel();
 
@@ -136,13 +136,13 @@ export const ModelSettingsEditForm = ({
 
     const payload: UpdateUserModelPayload = {
       description: data.description,
-      source_url: data.source_url,
-      documentation_url: data.documentation_url,
+      sourceUrl: data.sourceUrl,
+      documentationUrl: data.documentationUrl,
       license: data.license,
       visibility: data.visibility,
       hardware:
         data.hardware === "Custom" ? data.hardwareCustom || "" : data.hardware,
-      profile_image: data.profile_image,
+      profileImage: data.profileImage,
     };
 
     try {
@@ -210,7 +210,7 @@ export const ModelSettingsEditForm = ({
             />
             <Form.Field
               control={form.control}
-              name="source_url"
+              name="sourceUrl"
               render={({ field }) => {
                 return (
                   <Form.Item className="flex flex-col gap-y-2.5 md:w-1/2">
@@ -236,7 +236,7 @@ export const ModelSettingsEditForm = ({
             />
             <Form.Field
               control={form.control}
-              name="documentation_url"
+              name="documentationUrl"
               render={({ field }) => {
                 return (
                   <Form.Item className="flex flex-col gap-y-2.5 md:w-1/2">
@@ -287,7 +287,7 @@ export const ModelSettingsEditForm = ({
               }}
             />
             <UploadImageFieldWithCrop
-              fieldName="profile_image"
+              fieldName="profileImage"
               form={form}
               title="Cover image"
             />
@@ -405,7 +405,7 @@ export const ModelSettingsEditForm = ({
           </div>
           <div className="pb-14 pt-12">
             <Button
-              disabled={!model?.permission.can_edit || updating}
+              disabled={!model?.permission.canEdit || updating}
               form={formID}
               variant="primary"
               size="lg"

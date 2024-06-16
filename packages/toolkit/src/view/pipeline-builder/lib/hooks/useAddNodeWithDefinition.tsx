@@ -123,7 +123,7 @@ export function useAddNodeWithDefinition({
               },
               component: {},
               condition: null,
-              data_specification: {
+              dataSpecification: {
                 input: null,
                 output: null,
               },

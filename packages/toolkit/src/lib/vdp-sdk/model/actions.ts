@@ -4,7 +4,7 @@ import { ModelTask } from "./types";
 import { Operation } from "../operation/types";
 
 export type DeployUserModelResponse = {
-  model_id: string;
+  modelId: string;
 };
 
 export async function deployUserModelAction({
@@ -20,14 +20,14 @@ export async function deployUserModelAction({
     const { data } = await client.post<DeployUserModelResponse>(
       `/${modelName}/deploy`
     );
-    return Promise.resolve(data.model_id);
+    return Promise.resolve(data.modelId);
   } catch (err) {
     return Promise.reject(err);
   }
 }
 
 export type UndeployUserModelResponse = {
-  model_id: string;
+  modelId: string;
 };
 
 export async function undeployUserModeleAction({
@@ -43,19 +43,19 @@ export async function undeployUserModeleAction({
     const { data } = await client.post<UndeployUserModelResponse>(
       `/${modelName}/undeploy`
     );
-    return Promise.resolve(data.model_id);
+    return Promise.resolve(data.modelId);
   } catch (err) {
     return Promise.reject(err);
   }
 }
 
 export type TriggerUserModelPayload = {
-  task_inputs: Record<string, unknown>[];
+  taskInputs: Record<string, unknown>[];
 };
 
 export type TriggerUserModelResponse = {
   task: ModelTask;
-  task_outputs: Record<string, Record<string, unknown>>[];
+  taskOutputs: Record<string, Record<string, unknown>>[];
 };
 
 export type TriggerUserModelAsyncResponse = {

@@ -90,14 +90,14 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
 
   const isModelTriggerable = useMemo(() => {
     return model && modelState
-      ? model.permission.can_trigger &&
+      ? model.permission.canTrigger &&
           !isModelRunInProgress &&
           !["STATE_UNSPECIFIED", "STATE_ERROR"].includes(modelState)
       : false;
   }, [modelState, model, isModelRunInProgress]);
 
   const { form, fields, ValidatorSchema } = useInstillForm(
-    model?.input_schema || null,
+    model?.inputSchema || null,
     inputFromExistingResult,
     {
       disabledAll: !isModelTriggerable,
@@ -180,16 +180,16 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
       ) as string;
       console.log(
         convertValuesToString(
-          existingTriggerState.response.request.task_inputs[0][taskPropName]
+          existingTriggerState.response.request.taskInputs[0][taskPropName]
         )
       );
       setInputFromExistingResult(
         convertValuesToString(
-          existingTriggerState.response.request.task_inputs[0][taskPropName]
+          existingTriggerState.response.request.taskInputs[0][taskPropName]
         )
       );
       setModelRunResult(
-        existingTriggerState.response.response.task_outputs[0][taskPropName]
+        existingTriggerState.response.response.taskOutputs[0][taskPropName]
       );
     }
   }, [
@@ -236,7 +236,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
         modelName: model.name,
         accessToken,
         payload: {
-          task_inputs: [
+          taskInputs: [
             {
               [taskPropName]: parsedStructuredData,
             },
@@ -294,7 +294,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
 
   const componentOutputFields = useComponentOutputFields({
     mode: "demo",
-    schema: model?.output_schema || {},
+    schema: model?.outputSchema || {},
     data: modelRunResult || null,
   });
 
@@ -394,7 +394,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
           )}
         </div>
       </div>
-      {model?.permission.can_edit || model?.readme ? (
+      {model?.permission.canEdit || model?.readme ? (
         <React.Fragment>
           <ModelSectionHeader className="mb-5">Readme</ModelSectionHeader>
           <ModelReadme model={model} />

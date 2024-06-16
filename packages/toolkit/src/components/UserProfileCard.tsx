@@ -64,14 +64,14 @@ export const UserProfileCard = ({
               }
             />
 
-            {!me.data.profile?.display_name ? (
+            {!me.data.profile?.displayName ? (
               <h3 className="mx-auto text-center text-semantic-fg-primary product-headings-heading-3">
                 {me.data?.id}
               </h3>
             ) : (
               <div className="mx-auto flex flex-col gap-y-1">
                 <h3 className="mx-auto text-semantic-fg-primary product-headings-heading-3">
-                  {me.data.profile?.display_name}
+                  {me.data.profile?.displayName}
                 </h3>
                 <Tag className="mx-auto" variant="default" size="sm">
                   {me.data.id}

@@ -102,7 +102,7 @@ export const ViewPipelines = () => {
       <div className="w-[288px] pr-4 pt-6">
         <UserProfileCard
           totalPipelines={
-            pipelines.isSuccess ? pipelines.data.pages[0].total_size : null
+            pipelines.isSuccess ? pipelines.data.pages[0].totalSize : null
           }
           totalPublicPipelines={userPublicPipelines.data?.length ?? null}
         />
@@ -165,10 +165,10 @@ export const ViewPipelines = () => {
               allPipelines.map((pipeline) => (
                 <CardPipeline
                   key={pipeline.id}
-                  ownerID={pipeline.owner_name.split("/")[1]}
+                  ownerID={pipeline.ownerName.split("/")[1]}
                   pipeline={pipeline}
                   isOwner={
-                    me.isSuccess ? pipeline.owner_name === me.data.name : false
+                    me.isSuccess ? pipeline.ownerName === me.data.name : false
                   }
                 />
               ))

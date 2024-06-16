@@ -13,14 +13,14 @@ export type ConnectorDefinition = {
   uid: string;
   id: string;
   title: string;
-  documentation_url: string;
+  documentationUrl: string;
   icon: string;
-  icon_url: string;
+  iconUrl: string;
   type: ConnectorType;
   spec: Spec;
   tombstone: boolean;
   public: boolean;
   custom: boolean;
   vendor: string;
-  vendor_attributes: GeneralRecord;
+  vendorAttributes: GeneralRecord;
 };

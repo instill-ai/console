@@ -63,11 +63,11 @@ export function useInfiniteUserPipelines({
     },
     initialPageParam: "",
     getNextPageParam: (lastPage) => {
-      if (lastPage.next_page_token === "") {
+      if (lastPage.nextPageToken === "") {
         return null;
       }
 
-      return lastPage.next_page_token;
+      return lastPage.nextPageToken;
     },
     enabled,
   });

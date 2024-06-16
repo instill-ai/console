@@ -19,7 +19,7 @@ export class LoginPage {
       name: "Change password",
     });
     this.loginHeader = page.getByRole("heading", { name: "Login" });
-    this.newPasswordField = page.locator('input[name="new_password"]');
+    this.newPasswordField = page.locator('input[name="newPassword"]');
   }
 
   async goto() {

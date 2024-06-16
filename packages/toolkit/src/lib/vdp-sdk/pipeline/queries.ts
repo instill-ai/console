@@ -11,8 +11,8 @@ import {
 
 export type ListPipelinesResponse = {
   pipelines: Pipeline[];
-  next_page_token: string;
-  total_size: number;
+  nextPageToken: string;
+  totalSize: number;
 };
 
 export type listPipelinesQueryParams = {
@@ -21,7 +21,7 @@ export type listPipelinesQueryParams = {
   accessToken: Nullable<string>;
   visibility: Nullable<Visibility>;
   filter: Nullable<string>;
-  order_by?: Nullable<string>;
+  orderBy?: Nullable<string>;
   disabledViewFull?: boolean;
 };
 
@@ -52,7 +52,7 @@ export async function listPipelinesQuery(
     enablePagination,
     visibility,
     filter,
-    order_by,
+    orderBy,
     disabledViewFull,
   } = props;
 
@@ -66,7 +66,7 @@ export async function listPipelinesQuery(
       nextPageToken,
       queryParams: visibility ? `visibility=${visibility}` : undefined,
       filter,
-      order_by,
+      orderBy,
     });
 
     const { data } = await client.get<ListPipelinesResponse>(queryString);
@@ -77,16 +77,16 @@ export async function listPipelinesQuery(
 
     pipelines.push(...data.pipelines);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       pipelines.push(
         ...(await listPipelinesQuery({
           pageSize,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
           accessToken,
           enablePagination: false,
           filter,
           visibility,
-          order_by,
+          orderBy,
           disabledViewFull,
         }))
       );
@@ -100,8 +100,8 @@ export async function listPipelinesQuery(
 
 export type ListUserPipelinesResponse = {
   pipelines: Pipeline[];
-  next_page_token: string;
-  total_size: number;
+  nextPageToken: string;
+  totalSize: number;
 };
 
 export type listUserPipelinesQueryProps = {
@@ -166,11 +166,11 @@ export async function listUserPipelinesQuery(
 
     pipelines.push(...data.pipelines);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       pipelines.push(
         ...(await listUserPipelinesQuery({
           pageSize,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
           accessToken,
           userName,
           enablePagination: false,
@@ -227,8 +227,8 @@ export async function getUserPipelineQuery({
 
 export type ListPipelineReleasesResponse = {
   releases: PipelineRelease[];
-  next_page_token: string;
-  total_size: number;
+  nextPageToken: string;
+  totalSize: number;
 };
 
 export async function ListUserPipelineReleasesQuery({
@@ -270,12 +270,12 @@ export async function ListUserPipelineReleasesQuery({
 
     releases.push(...data.releases);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       releases.push(
         ...(await ListUserPipelineReleasesQuery({
           pipelineName,
           pageSize,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
           accessToken,
           shareCode,
         }))
@@ -339,9 +339,9 @@ export async function watchUserPipelineReleaseQuery({
  * -----------------------------------------------------------------------*/
 
 export type ListOperatorDefinitionsResponse = {
-  operator_definitions: OperatorDefinition[];
-  next_page_token: string;
-  total_size: number;
+  operatorDefinitions: OperatorDefinition[];
+  nextPageToken: string;
+  totalSize: number;
 };
 
 export async function listOperatorDefinitionsQuery({
@@ -369,14 +369,14 @@ export async function listOperatorDefinitionsQuery({
     const { data } =
       await client.get<ListOperatorDefinitionsResponse>(queryString);
 
-    operatorDefinitions.push(...data.operator_definitions);
+    operatorDefinitions.push(...data.operatorDefinitions);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       operatorDefinitions.push(
         ...(await listOperatorDefinitionsQuery({
           pageSize,
           accessToken,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
           filter,
         }))
       );
@@ -440,8 +440,8 @@ export async function getUserSecretQuery({
 
 export type ListUserSecretResponse = {
   secrets: Secret[];
-  next_page_token: string;
-  total_size: number;
+  nextPageToken: string;
+  totalSize: number;
 };
 
 export async function listUserSecretsQuery({
@@ -469,13 +469,13 @@ export async function listUserSecretsQuery({
 
     secrets.push(...data.secrets);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       secrets.push(
         ...(await listUserSecretsQuery({
           entityName,
           pageSize,
           accessToken,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
         }))
       );
     }
