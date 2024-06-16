@@ -9,6 +9,7 @@ import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/types";
 import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./components/undoDeleteTime";
 import { ChunkTab } from "./components/ChunkTab";
+import { ImageTab } from "./components/ImageTab";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -126,6 +127,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               ) : null}
               {selectedTextOption === "Chunk" ? (
                 <ChunkTab knowledgeBase={selectedKnowledgeBase} />
+              ) : null}
+              {selectedTextOption === "Image" ? (
+                <ImageTab knowledgeBase={selectedKnowledgeBase} />
               ) : null}
             </>
           ) : null}
