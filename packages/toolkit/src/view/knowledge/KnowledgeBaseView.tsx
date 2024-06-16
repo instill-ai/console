@@ -16,7 +16,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
     React.useState<KnowledgeBase | null>(null);
   const [activeTab, setActiveTab] = React.useState("knowledge-base");
-  const [selectedTextOption, setSelectedTextOption] = React.useState("Markdown");
+  const [selectedTextOption, setSelectedTextOption] = React.useState("");
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [isDeleted, setIsDeleted] = React.useState(false);
   const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] =
@@ -117,17 +117,17 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             <UploadExploreTab knowledgeBase={selectedKnowledgeBase} />
           ) : null}
           {activeTab === "catalog" && selectedKnowledgeBase ? (
-            <CatalogFilesTab knowledgeBase={selectedKnowledgeBase} />
-          ) : null}
-          {activeTab === "catalog" &&
-            selectedTextOption === "Markdown" &&
-            selectedKnowledgeBase ? (
-            <MarkdownTab knowledgeBase={selectedKnowledgeBase} />
-          ) : null}
-          {activeTab === "catalog" &&
-            selectedTextOption === "Chunk" &&
-            selectedKnowledgeBase ? (
-            <ChunkTab knowledgeBase={selectedKnowledgeBase} />
+            <>
+              {!selectedTextOption ? (
+                <CatalogFilesTab knowledgeBase={selectedKnowledgeBase} />
+              ) : null}
+              {selectedTextOption === "Markdown" ? (
+                <MarkdownTab knowledgeBase={selectedKnowledgeBase} />
+              ) : null}
+              {selectedTextOption === "Chunk" ? (
+                <ChunkTab knowledgeBase={selectedKnowledgeBase} />
+              ) : null}
+            </>
           ) : null}
         </div>
       </div>

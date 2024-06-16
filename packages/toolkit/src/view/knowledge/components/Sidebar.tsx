@@ -1,6 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { DropdownMenu } from "@instill-ai/design-system";
 
 type SidebarProps = {
   activeTab: string;
@@ -28,8 +29,8 @@ export const Sidebar = ({
     <aside className="flex w-[160px] flex-col gap-y-4">
       <div
         className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${activeTab === "knowledge-base"
-            ? "bg-semantic-accent-bg text-semantic-accent-hover"
-            : "cursor-pointer text-semantic-fg-secondary"
+          ? "bg-semantic-accent-bg text-semantic-accent-hover"
+          : "cursor-pointer text-semantic-fg-secondary"
           }`}
         onClick={() => handleTabChange("knowledge-base")}
       >
@@ -37,10 +38,10 @@ export const Sidebar = ({
       </div>
       <div
         className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${activeTab === "upload"
-            ? "bg-semantic-accent-bg text-semantic-accent-hover"
-            : selectedKnowledgeBase
-              ? "cursor-pointer text-semantic-fg-secondary"
-              : "cursor-not-allowed text-semantic-fg-secondary opacity-50"
+          ? "bg-semantic-accent-bg text-semantic-accent-hover"
+          : selectedKnowledgeBase
+            ? "cursor-pointer text-semantic-fg-secondary"
+            : "cursor-not-allowed text-semantic-fg-secondary opacity-50"
           }`}
         onClick={() => selectedKnowledgeBase && handleTabChange("upload")}
       >
@@ -48,10 +49,10 @@ export const Sidebar = ({
       </div>
       <div
         className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${activeTab === "catalog"
-            ? "bg-semantic-accent-bg text-semantic-accent-hover"
-            : selectedKnowledgeBase
-              ? "cursor-pointer text-semantic-fg-secondary"
-              : "cursor-not-allowed text-semantic-fg-secondary opacity-50"
+          ? "bg-semantic-accent-bg text-semantic-accent-hover"
+          : selectedKnowledgeBase
+            ? "cursor-pointer text-semantic-fg-secondary"
+            : "cursor-not-allowed text-semantic-fg-secondary opacity-50"
           }`}
         onClick={() => selectedKnowledgeBase && handleTabChange("catalog")}
       >
@@ -61,8 +62,8 @@ export const Sidebar = ({
         <>
           <div
             className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${selectedTextOption === "Markdown" || selectedTextOption === "Chunk"
-                ? "bg-semantic-accent-bg text-semantic-accent-hover"
-                : "cursor-pointer text-semantic-fg-secondary"
+              ? "bg-semantic-accent-bg text-semantic-accent-hover"
+              : "cursor-pointer text-semantic-fg-secondary"
               }`}
           >
             Text
@@ -84,8 +85,8 @@ export const Sidebar = ({
           <div className="ml-4">
             <div
               className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${selectedTextOption === "Markdown"
-                  ? "bg-semantic-accent-bg text-semantic-accent-hover"
-                  : "cursor-pointer text-semantic-fg-secondary"
+                ? "bg-semantic-accent-bg text-semantic-accent-hover"
+                : "cursor-pointer text-semantic-fg-secondary"
                 }`}
               onClick={() => onTextOptionChange("Markdown")}
             >
@@ -93,8 +94,8 @@ export const Sidebar = ({
             </div>
             <div
               className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${selectedTextOption === "Chunk"
-                  ? "bg-semantic-accent-bg text-semantic-accent-hover"
-                  : "cursor-pointer text-semantic-fg-secondary"
+                ? "bg-semantic-accent-bg text-semantic-accent-hover"
+                : "cursor-pointer text-semantic-fg-secondary"
                 }`}
               onClick={() => onTextOptionChange("Chunk")}
             >
@@ -103,8 +104,8 @@ export const Sidebar = ({
           </div>
           <div
             className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${selectedTextOption === "Image"
-                ? "bg-semantic-accent-bg text-semantic-accent-hover"
-                : "cursor-pointer text-semantic-fg-secondary"
+              ? "bg-semantic-accent-bg text-semantic-accent-hover"
+              : "cursor-pointer text-semantic-fg-secondary"
               }`}
             onClick={() => onTextOptionChange("Image")}
           >
@@ -112,6 +113,16 @@ export const Sidebar = ({
           </div>
         </>
       )}
+      <div
+        className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${activeTab === "test"
+          ? "bg-semantic-accent-bg text-semantic-accent-hover"
+          : selectedKnowledgeBase
+            ? "cursor-pointer text-semantic-fg-secondary"
+            : "cursor-not-allowed text-semantic-fg-secondary opacity-50"
+          }`}
+      >
+        Retrieve Test
+      </div>
     </aside>
   );
 };
