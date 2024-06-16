@@ -11,6 +11,7 @@ import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./components/undoDeleteTime";
 import { ChunkTab } from "./components/ChunkTab";
 import { ImageTab } from "./components/ImageTab";
 import { Nullable } from "@instill-ai/toolkit";
+import { RetrieveTestTab } from "./components/RetrieveTestTab";
 
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
@@ -134,6 +135,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
                 <ImageTab knowledgeBase={selectedKnowledgeBase} />
               ) : null}
             </>
+          ) : null}
+          {activeTab === "retrieve" && selectedKnowledgeBase ? (
+            <RetrieveTestTab knowledgeBase={selectedKnowledgeBase} />
           ) : null}
         </div>
       </div>

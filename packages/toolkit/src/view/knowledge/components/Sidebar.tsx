@@ -117,12 +117,14 @@ export const Sidebar = ({
         </>
       )}
       <div
-        className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${activeTab === "test"
+        className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${activeTab === "retrieve"
           ? "bg-semantic-accent-bg text-semantic-accent-hover"
           : selectedKnowledgeBase
             ? "cursor-pointer text-semantic-fg-secondary"
             : "cursor-not-allowed text-semantic-fg-secondary opacity-50"
           }`}
+        onClick={() => handleTabChange("retrieve")}
+
       >
         Retrieve Test
       </div>
