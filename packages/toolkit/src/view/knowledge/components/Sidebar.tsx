@@ -7,8 +7,8 @@ type SidebarProps = {
   activeTab: string;
   onTabChange: (tab: string) => void;
   selectedKnowledgeBase: KnowledgeBase | null;
-  selectedTextOption: string;
-  onTextOptionChange: (option: string) => void;
+  selectedTextOption: string | null;
+  onTextOptionChange: (option: string | null) => void;
 };
 
 export const Sidebar = ({
@@ -54,7 +54,10 @@ export const Sidebar = ({
             ? "cursor-pointer text-semantic-fg-secondary"
             : "cursor-not-allowed text-semantic-fg-secondary opacity-50"
           }`}
-        onClick={() => selectedKnowledgeBase && handleTabChange("catalog")}
+        onClick={() => {
+          selectedKnowledgeBase && handleTabChange("catalog");
+          onTextOptionChange(null);
+        }}
       >
         Catalog / Files
       </div>
