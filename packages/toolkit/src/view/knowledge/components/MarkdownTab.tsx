@@ -101,7 +101,7 @@ export const MarkdownTab = ({ knowledgeBase }: MarkdownTabProps) => {
           <div className="flex items-center gap-2 rounded border border-semantic-bg-line bg-semantic-bg-primary px-3 py-2">
             <Icons.Plus className="h-4 w-4 stroke-semantic-fg-secondary" />
             <div className="text-semantic-fg-primary product-body-text-3-semibold">
-              Add File
+              Add File Markdown
             </div>
           </div>
         </div>

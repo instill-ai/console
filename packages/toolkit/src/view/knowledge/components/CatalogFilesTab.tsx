@@ -78,17 +78,17 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
           {knowledgeBase.name}
         </p>
         {/* Coming in V2 */}
-        {/* <div className="space-x-4">
-                    <Button variant="secondaryGrey" size="lg">
-                        Publish
-                    </Button>
-                    <Button variant="secondaryGrey" size="lg">
-                        Update Knowledge Base
-                    </Button>
-                    <Button variant="primary" size="lg">
-                        Export Data
-                    </Button>
-                </div> */}
+        <div className="space-x-4">
+          <Button variant="secondaryGrey" size="lg">
+            Publish
+          </Button>
+          <Button variant="secondaryGrey" size="lg">
+            Update Knowledge Base
+          </Button>
+          <Button variant="primary" size="lg">
+            Export Data
+          </Button>
+        </div>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
       <div className="flex w-full flex-col gap-2">
@@ -96,7 +96,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
           <div className="flex items-center gap-2 rounded border border-semantic-bg-line bg-semantic-bg-primary px-3 py-2">
             <Icons.Plus className="h-4 w-4 stroke-semantic-fg-secondary" />
             <div className="text-semantic-fg-primary product-body-text-3-semibold">
-              Add File
+              Add File Catalog
             </div>
           </div>
         </div>
@@ -114,7 +114,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                     onClick={() => requestSort("fileName")}
                   >
                     {sortConfig.key === "fileName" &&
-                    sortConfig.direction === "ascending" ? (
+                      sortConfig.direction === "ascending" ? (
                       <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                     ) : (
                       <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -147,7 +147,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                     onClick={() => requestSort("fileType")}
                   >
                     {sortConfig.key === "fileType" &&
-                    sortConfig.direction === "ascending" ? (
+                      sortConfig.direction === "ascending" ? (
                       <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                     ) : (
                       <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -180,7 +180,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                     onClick={() => requestSort("processedStatus")}
                   >
                     {sortConfig.key === "processedStatus" &&
-                    sortConfig.direction === "ascending" ? (
+                      sortConfig.direction === "ascending" ? (
                       <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                     ) : (
                       <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -213,7 +213,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                     onClick={() => requestSort("createTime")}
                   >
                     {sortConfig.key === "createTime" &&
-                    sortConfig.direction === "ascending" ? (
+                      sortConfig.direction === "ascending" ? (
                       <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                     ) : (
                       <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
