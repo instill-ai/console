@@ -339,7 +339,7 @@ export async function watchUserPipelineReleaseQuery({
  * -----------------------------------------------------------------------*/
 
 export type ListOperatorDefinitionsResponse = {
-  operator_definitions: OperatorDefinition[];
+  operatorDefinitions: OperatorDefinition[];
   nextPageToken: string;
   totalSize: number;
 };
@@ -369,7 +369,7 @@ export async function listOperatorDefinitionsQuery({
     const { data } =
       await client.get<ListOperatorDefinitionsResponse>(queryString);
 
-    operatorDefinitions.push(...data.operator_definitions);
+    operatorDefinitions.push(...data.operatorDefinitions);
 
     if (data.nextPageToken) {
       operatorDefinitions.push(

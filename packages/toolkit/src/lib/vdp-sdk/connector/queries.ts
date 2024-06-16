@@ -53,7 +53,7 @@ export async function listConnectorDefinitionsQuery({
 }
 
 export type GetConnectorDefinitionResponse = {
-  connector_definition: ConnectorDefinition;
+  connectorDefinition: ConnectorDefinition;
 };
 
 export async function getConnectorDefinitionQuery({
@@ -70,7 +70,7 @@ export async function getConnectorDefinitionQuery({
       `/${connectorDefinitionName}?view=VIEW_FULL`
     );
 
-    return Promise.resolve(data.connector_definition);
+    return Promise.resolve(data.connectorDefinition);
   } catch (err) {
     return Promise.reject(err);
   }
