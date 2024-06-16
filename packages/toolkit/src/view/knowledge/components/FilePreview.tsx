@@ -74,7 +74,7 @@ const FilePreview = () => {
                         <span className="text-center product-button-button-3">Images</span>
                     </Tabs.Trigger>
                 </Tabs.List>
-                <div className="flex w-full space-x-4 border-red-500 border rounded">
+                <div className="flex w-full border-red-500 border rounded">
                     <div className="flex-col w-1/2">
                         <div className="product-body-text-1-semibold bg-semantic-bg-base-bg py-2 pl-3 rounded">Data</div>
                         <div className="  px-3  pt-8">
@@ -202,7 +202,9 @@ const FilePreview = () => {
                                                             Tokenizer model
                                                         </Form.Label>
                                                         <Form.Control>
-                                                            <Select.Root onValueChange={field.onChange} defaultValue={field.value}>
+                                                            <Select.Root onValueChange
+
+                                                                ={field.onChange} defaultValue={field.value}>
                                                                 <Select.Trigger>
                                                                     <Select.Value placeholder="Select.." />
                                                                 </Select.Trigger>
@@ -270,10 +272,10 @@ const FilePreview = () => {
                                                 )} />
                                             </div>
                                             <div className="flex gap-2">
-                                                <Button variant="secondaryGrey" className="grow" >
+                                                <Button variant="secondaryGrey" className="grow">
                                                     Test Pipeline
                                                 </Button>
-                                                <Button variant="secondaryGrey" className="grow" >
+                                                <Button variant="secondaryGrey" className="grow">
                                                     Customize Pipeline
                                                 </Button>
                                             </div>
@@ -284,13 +286,14 @@ const FilePreview = () => {
                             <Tabs.Content value="images" />
                         </div>
                     </div>
-                    <Separator orientation="vertical" className="absolute h-full" />
-
+                    <div className="h-auto self-stretch flex items-center">
+                        <Separator orientation="vertical" />
+                    </div>
                     <div className="flex flex-col w-1/2">
                         <div className="product-body-text-1-semibold bg-semantic-bg-base-bg py-2 pl-3 rounded">Preview</div>
                         <div className="flex flex-col gap-3">
                             <div className="flex items-center justify-center gap-2">
-                                <div className="h-px flex-grow bg-semantic-bg-line " />
+                                <div className="h-px flex-grow bg-semantic-bg-line" />
                                 <div className="product-body-text-3-medium whitespace-nowrap">Convert Results</div>
                                 <div className="h-px flex-grow bg-semantic-bg-line" />
                             </div>
@@ -314,7 +317,6 @@ const FilePreview = () => {
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </Tabs.Root>
