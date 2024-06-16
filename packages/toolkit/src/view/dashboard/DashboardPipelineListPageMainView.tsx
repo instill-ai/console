@@ -140,13 +140,13 @@ export const DashboardPipelineListPageMainView = (
     }
 
     const triggeredPipelineIdList = triggeredPipelineList.map(
-      (e) => e.pipeline_id
+      (e) => e.pipelineId
     );
 
     return getPipelineTriggersSummary(
       triggeredPipelineList,
       previoustriggeredPipelines.data.filter((trigger) =>
-        triggeredPipelineIdList.includes(trigger.pipeline_id)
+        triggeredPipelineIdList.includes(trigger.pipelineId)
       )
     );
   }, [

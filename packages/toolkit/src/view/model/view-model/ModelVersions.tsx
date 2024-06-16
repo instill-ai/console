@@ -62,13 +62,13 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
       },
     },
     {
-      accessorKey: "update_time",
+      accessorKey: "updateTime",
       header: () => <div className="text-left">Updated at</div>,
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-alt-primary">
             {getHumanReadableStringFromTime(
-              row.getValue("update_time"),
+              row.getValue("updateTime"),
               Date.now()
             )}
           </div>
@@ -92,7 +92,7 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
   const pageCount = useMemo(() => {
     if (versions.data?.pages[0]) {
       return Math.ceil(
-        versions.data.pages[0].total_size / versions.data.pages[0].page_size
+        versions.data.pages[0].totalSize / versions.data.pages[0].pageSize
       );
     }
 

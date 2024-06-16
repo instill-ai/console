@@ -289,7 +289,7 @@ export const Head = ({
                       <p className="font-mono text-xs italic text-semantic-fg-disabled">
                         This is a placeholder brief of this pipeline
                       </p>
-                      {pipeline.data.permission.can_edit ? (
+                      {pipeline.data.permission.canEdit ? (
                         <EditMetadataDialog
                           description={pipeline.data.description}
                         />
@@ -317,7 +317,7 @@ export const Head = ({
             <div className="mt-auto flex flex-row gap-x-2 pb-1">
               {pipeline.isSuccess &&
               me.isSuccess &&
-              pipeline.data.permission.can_edit ? (
+              pipeline.data.permission.canEdit ? (
                 <Menu
                   pipeline={pipeline.data}
                   handleDeletePipeline={handleDeletePipeline}
@@ -352,7 +352,7 @@ export const Head = ({
                       Log in to Clone
                     </Button>
                   )}
-                  {pipeline.data.permission.can_edit ? (
+                  {pipeline.data.permission.canEdit ? (
                     <Button
                       onClick={() => {
                         router.push(

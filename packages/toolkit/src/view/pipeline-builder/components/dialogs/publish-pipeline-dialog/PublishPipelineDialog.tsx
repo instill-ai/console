@@ -92,7 +92,7 @@ export const PublishPipelineDialog = ({
             role: "ROLE_EXECUTOR",
           },
         },
-        share_code: pipeline.data?.sharing.share_code ?? null,
+        shareCode: pipeline.data?.sharing.shareCode ?? null,
       },
       metadata: {
         license: formData.license ?? undefined,

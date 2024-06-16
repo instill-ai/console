@@ -75,8 +75,8 @@ export async function deleteApiTokenMutation({
  * -----------------------------------------------------------------------*/
 
 export type ChangePasswordPayload = {
-  old_password: string;
-  new_password: string;
+  oldPassword: string;
+  newPassword: string;
 };
 
 export async function changePasswordMutation({

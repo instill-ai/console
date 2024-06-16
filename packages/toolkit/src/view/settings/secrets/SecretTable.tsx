@@ -30,7 +30,7 @@ export const SecretTable = (props: APITokenTableProps) => {
       },
     },
     {
-      accessorKey: "create_time",
+      accessorKey: "createTime",
       header: ({ column }) => {
         return (
           <div className="text-center">
@@ -52,7 +52,7 @@ export const SecretTable = (props: APITokenTableProps) => {
       cell: ({ row }) => {
         return (
           <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
-            {formatDate(row.getValue("create_time"))}
+            {formatDate(row.getValue("createTime"))}
           </div>
         );
       },

@@ -7,19 +7,19 @@ import {
 } from "./types";
 
 export type ListPipelineTriggerRecordsResponse = {
-  pipeline_trigger_records: PipelineTriggerRecord[];
-  next_page_token: string;
-  total_size: number;
+  pipelineTriggerRecords: PipelineTriggerRecord[];
+  nextPageToken: string;
+  totalSize: number;
 };
 
 export type ListTriggeredPipelinesResponse = {
-  pipeline_trigger_table_records: TriggeredPipeline[];
-  next_page_token: string;
-  total_size: number;
+  pipelineTriggerTableRecords: TriggeredPipeline[];
+  nextPageToken: string;
+  totalSize: number;
 };
 
 export type ListPipelinesChartResponse = {
-  pipeline_trigger_chart_records: PipelinesChart[];
+  pipelineTriggerChartRecords: PipelinesChart[];
 };
 
 export async function listPipelineTriggerRecordsQuery({
@@ -47,14 +47,14 @@ export async function listPipelineTriggerRecordsQuery({
     const { data } =
       await client.get<ListPipelineTriggerRecordsResponse>(queryString);
 
-    triggers.push(...data.pipeline_trigger_records);
+    triggers.push(...data.pipelineTriggerRecords);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       triggers.push(
         ...(await listPipelineTriggerRecordsQuery({
           pageSize,
           accessToken,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
           filter,
         }))
       );
@@ -91,14 +91,14 @@ export async function listTriggeredPipelineQuery({
     const { data } =
       await client.get<ListTriggeredPipelinesResponse>(queryString);
 
-    pipelines.push(...data.pipeline_trigger_table_records);
+    pipelines.push(...data.pipelineTriggerTableRecords);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       pipelines.push(
         ...(await listTriggeredPipelineQuery({
           pageSize,
           accessToken,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
           filter,
         }))
       );
@@ -133,7 +133,7 @@ export async function listTriggeredPipelineChartQuery({
     });
 
     const { data } = await client.get<ListPipelinesChartResponse>(queryString);
-    pipelinesChart.push(...data.pipeline_trigger_chart_records);
+    pipelinesChart.push(...data.pipelineTriggerChartRecords);
 
     return Promise.resolve(pipelinesChart);
   } catch (err) {

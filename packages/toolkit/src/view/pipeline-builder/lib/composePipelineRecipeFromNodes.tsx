@@ -23,7 +23,7 @@ export function composePipelineRecipeFromNodes(
         input: node.data.input,
         condition: node.data.condition,
         outputElements: node.data.outputElements,
-        data_specification: null,
+        dataSpecification: null,
         type: node.data.type,
         component: Object.fromEntries(
           Object.entries(node.data.component).map(([key, e]) => {

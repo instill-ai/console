@@ -53,11 +53,11 @@ export function useInfiniteUserModels({
     },
     initialPageParam: "",
     getNextPageParam: (lastPage) => {
-      if (lastPage.next_page_token === "") {
+      if (lastPage.nextPageToken === "") {
         return null;
       }
 
-      return lastPage.next_page_token;
+      return lastPage.nextPageToken;
     },
     enabled,
     retry: retry === false ? false : retry ? retry : 3,

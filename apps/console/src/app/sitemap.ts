@@ -16,17 +16,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   while (continueFetching) {
     try {
       const pipelineResponse = await fetch(
-        nextToken ? `${pipelinesUrl}&page_token=${nextToken}` : pipelinesUrl,
+        nextToken ? `${pipelinesUrl}&page_token=${nextToken}` : pipelinesUrl
       );
 
       if (pipelineResponse.ok) {
-        const { pipelines, next_page_token } = await pipelineResponse.json();
+        const { pipelines, nextPageToken } = await pipelineResponse.json();
         allPipelines.push(...pipelines);
 
-        if (!next_page_token) {
+        if (!nextPageToken) {
           continueFetching = false;
         } else {
-          nextToken = next_page_token;
+          nextToken = nextPageToken;
         }
       } else {
         continueFetching = false;
@@ -39,7 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   allPipelines.map((pipeline: Pipeline) => {
     sitemaps.push({
       url: `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL || defaultBaseUrl}/${
-        pipeline.owner_name.split("/")[1]
+        pipeline.ownerName.split("/")[1]
       }/pipelines/${pipeline.id}`,
       lastModified: new Date(),
       changeFrequency: "daily",

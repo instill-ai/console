@@ -46,11 +46,12 @@ export const LoginPageRender = () => {
       await axios.post("/api/set-user-cookie", {
         key: "instill-auth-session",
         value: JSON.stringify({
-          access_token: res,
+          accessToken: res,
         }),
       });
 
       if (data.password === "password") {
+        console.log(res);
         setIsDefaultPWD(true);
         setAccessToken(res);
         setLoginIsComplete(true);
@@ -79,8 +80,9 @@ export const LoginPageRender = () => {
   }
 
   async function changePassword(
-    data: z.infer<typeof ChangePasswordFormSchema>,
+    data: z.infer<typeof ChangePasswordFormSchema>
   ) {
+    console.log("changePassword", data, accessToken);
     if (!accessToken) {
       return;
     }
@@ -88,8 +90,8 @@ export const LoginPageRender = () => {
     try {
       await changePasswordMutation({
         payload: {
-          old_password: "password",
-          new_password: data.new_password,
+          oldPassword: "password",
+          newPassword: data.newPassword,
         },
         accessToken,
       });

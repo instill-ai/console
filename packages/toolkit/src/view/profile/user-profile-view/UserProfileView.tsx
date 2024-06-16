@@ -77,7 +77,7 @@ export const UserProfileView = () => {
         {user.isSuccess ? (
           <UserProfileBio
             id={user.data.id}
-            name={user.data?.profile?.display_name ?? user.data.id}
+            name={user.data?.profile?.displayName ?? user.data.id}
             bio={user.data.profile?.bio ?? null}
             avatar={user.data.profile?.avatar ?? null}
             userMemberships={null}
@@ -86,10 +86,8 @@ export const UserProfileView = () => {
               routeInfo.isSuccess &&
               me.data.id === String(routeInfo.data.namespaceId)
             }
-            twitterLink={user.data.profile?.social_profiles_links?.x ?? null}
-            githubLink={
-              user.data.profile?.social_profiles_links?.github ?? null
-            }
+            twitterLink={user.data.profile?.socialProfilesLinks?.x ?? null}
+            githubLink={user.data.profile?.socialProfilesLinks?.github ?? null}
           />
         ) : (
           <UserProfileBio.Skeleton />

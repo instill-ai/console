@@ -153,8 +153,8 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
   }, [form, regionOptions, hardwareOptions]);
 
   useEffect(() => {
-    if (routeInfo.data.namespaceName && !form.getValues("namespaceId")) {
-      form.setValue("namespaceId", routeInfo.data.namespaceName);
+    if (routeInfo.data.namespaceId && !form.getValues("namespaceId")) {
+      form.setValue("namespaceId", routeInfo.data.namespaceId);
     }
   }, [form, routeInfo.isSuccess, routeInfo.data]);
 
@@ -165,12 +165,12 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
       const newRegionOptions = modelRegions.data
         .filter((item) =>
           currentEnv === "CE"
-            ? item.region_name === "REGION_LOCAL"
-            : item.region_name !== "REGION_LOCAL"
+            ? item.regionName === "REGION_LOCAL"
+            : item.regionName !== "REGION_LOCAL"
         )
         .map((item) => ({
-          value: item.region_name,
-          title: getModelRegionToolkit(item.region_name) || "Unknown",
+          value: item.regionName,
+          title: getModelRegionToolkit(item.regionName) || "Unknown",
         }));
       const newHardwareOptions: Record<string, Option[]> =
         modelRegions.data.reduce((acc, curr) => {
@@ -181,7 +181,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
 
           return {
             ...acc,
-            [curr.region_name]: regionHardware,
+            [curr.regionName]: regionHardware,
           };
         }, {});
 
@@ -206,7 +206,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
       hardware:
         data.hardware === "Custom" ? data.hardwareCustom || "" : data.hardware,
       task: data.task,
-      model_definition: "model-definitions/container",
+      modelDefinition: "model-definitions/container",
       configuration: {},
     };
 

@@ -49,7 +49,7 @@ export const CardModel = (props: CardModelProps) => {
   return (
     <div className="flex flex-row gap-x-6 rounded-md border border-semantic-bg-line bg-white p-4">
       <ImageWithFallback
-        src={model.profile_image}
+        src={model.profileImage}
         fallbackImg={
           <img
             src="/images/models/model-placeholder.svg"
@@ -80,7 +80,7 @@ export const CardModel = (props: CardModelProps) => {
         </p>
         <Stats
           task={model.task}
-          updatedAt={model.update_time || model.create_time}
+          updatedAt={model.updateTime || model.createTime}
         />
       </div>
     </div>

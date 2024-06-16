@@ -162,7 +162,7 @@ export function useRenamePipeline() {
 
       const payload: RenameUserPipelinePayload = {
         name: routeInfo.data.pipelineName,
-        new_pipeline_id: newId,
+        newPipelineId: newId,
       };
 
       try {

@@ -24,12 +24,12 @@ export type ModelDefinition = {
   uid: string;
   id: string;
   title: string;
-  documentation_url: string;
+  documentationUrl: string;
   icon: string;
-  release_stage: ModelReleaseStage;
-  model_spec: Record<string, any>;
-  create_time: string;
-  update_time: string;
+  releaseStage: ModelReleaseStage;
+  modelSpec: Record<string, any>;
+  createTime: string;
+  updateTime: string;
 };
 
 /* -------------------------------------------------------------------------
@@ -41,14 +41,14 @@ export type Model = {
   uid: string;
   id: string;
   description: string;
-  model_definition: string;
+  modelDefinition: string;
   configuration: Record<string, string>;
   task: ModelTask;
   visibility: Visibility;
-  create_time: string;
-  update_time: string | null;
-  delete_time: string | null;
-  owner_name: string;
+  createTime: string;
+  updateTime: string | null;
+  deleteTime: string | null;
+  ownerName: string;
   owner: {
     user?: User;
     organization?: Organization;
@@ -56,15 +56,15 @@ export type Model = {
   region: string;
   hardware: string;
   readme: string;
-  source_url: string;
-  documentation_url: string;
+  sourceUrl: string;
+  documentationUrl: string;
   license: string;
-  profile_image: string;
+  profileImage: string;
   permission: Permission;
-  input_schema: InstillJSONSchema | null;
-  output_schema: InstillJSONSchema | null;
-  sample_input: Record<string, Record<string, any>>;
-  sample_output: Record<string, Record<string, any>>;
+  inputSchema: InstillJSONSchema | null;
+  outputSchema: InstillJSONSchema | null;
+  sampleInput: Record<string, Record<string, any>>;
+  sampleOutput: Record<string, Record<string, any>>;
 };
 
 export type ModelState =
@@ -101,7 +101,7 @@ export type ModelHubPreset = {
   id: string;
   description: string;
   task: string;
-  model_definition: string;
+  modelDefinition: string;
   configuration: Record<string, string>;
 };
 
@@ -110,7 +110,7 @@ export type ModelWithPipelines = Model & {
 };
 
 export type ModelRegion = {
-  region_name: string;
+  regionName: string;
   hardware: string[];
 };
 
@@ -119,7 +119,7 @@ export type ModelVersion = {
   id: string;
   digest: string;
   state: ModelState;
-  update_time: string;
+  updateTime: string;
 };
 
 export type ModelWatchState = {
@@ -136,12 +136,12 @@ export type ModelTriggerResult = {
         "@type": string;
         request: {
           name: string;
-          task_inputs: Record<string, any>[];
+          taskInputs: Record<string, any>[];
           version: string;
         };
         response: {
           task: string;
-          task_outputs: Record<string, any>[];
+          taskOutputs: Record<string, any>[];
         };
       };
     }

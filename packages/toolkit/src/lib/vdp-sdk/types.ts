@@ -26,9 +26,9 @@ export type DataSpecification = {
 };
 
 export type Spec = {
-  resource_specification: InstillJSONSchema;
-  component_specification: InstillJSONSchema;
-  data_specifications: Nullable<Record<string, DataSpecification>>;
+  resourceSpecification: InstillJSONSchema;
+  componentSpecification: InstillJSONSchema;
+  dataSpecifications: Nullable<Record<string, DataSpecification>>;
 };
 
 export type Visibility =
@@ -37,17 +37,17 @@ export type Visibility =
   | "VISIBILITY_PUBLIC";
 
 export type Permission = {
-  can_edit: boolean;
-  can_trigger: boolean;
+  canEdit: boolean;
+  canTrigger: boolean;
 };
 
 export type StripeSubscriptionDetail = {
   product_name: string;
   id: string;
-  item_id: string;
+  itemId: string;
   price: number;
-  canceled_at?: number;
-  trial_end?: number;
+  canceledAt?: number;
+  trialEnd?: number;
   status: StripeSubscriptionStatus;
   description: string;
 };

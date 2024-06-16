@@ -10,7 +10,7 @@ export function useInfiniteModels({
   retry,
   filter,
   visibility,
-  order_by,
+  orderBy,
   disabledViewFull,
 }: {
   pageSize?: number;
@@ -19,7 +19,7 @@ export function useInfiniteModels({
   retry?: false | number;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
-  order_by: Nullable<string>;
+  orderBy: Nullable<string>;
   disabledViewFull?: boolean;
 }) {
   const queryKey = ["models", "infinite"];
@@ -32,8 +32,8 @@ export function useInfiniteModels({
     queryKey.push(visibility);
   }
 
-  if (order_by) {
-    queryKey.push(order_by);
+  if (orderBy) {
+    queryKey.push(orderBy);
   }
 
   return useInfiniteQuery({
@@ -46,7 +46,7 @@ export function useInfiniteModels({
         filter,
         visibility,
         enablePagination: true,
-        order_by,
+        orderBy,
         disabledViewFull,
       });
 
@@ -54,11 +54,11 @@ export function useInfiniteModels({
     },
     initialPageParam: "",
     getNextPageParam: (lastPage) => {
-      if (lastPage.next_page_token === "") {
+      if (lastPage.nextPageToken === "") {
         return null;
       }
 
-      return lastPage.next_page_token;
+      return lastPage.nextPageToken;
     },
     enabled: enabledQuery,
     retry: retry === false ? false : retry ? retry : 3,

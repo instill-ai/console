@@ -28,14 +28,14 @@ import { useRouter } from "next/navigation";
 
 export type OnboardingFormValues = {
   email: Nullable<string>;
-  company_name: Nullable<string>;
+  companyName: Nullable<string>;
   role: Nullable<string>;
-  newsletter_subscription: Nullable<boolean>;
+  newsletterSubscription: Nullable<boolean>;
 };
 
 type OnboardingFormErrors = {
   email: Nullable<string>;
-  company_name: Nullable<string>;
+  companyName: Nullable<string>;
   role: Nullable<string>;
 };
 
@@ -48,9 +48,9 @@ export const OnboardingForm = () => {
 
   const [fieldValues, setFieldValues] = useState<OnboardingFormValues>({
     email: null,
-    company_name: null,
+    companyName: null,
     role: null,
-    newsletter_subscription: true,
+    newsletterSubscription: true,
   });
 
   const [selectedRoleOption, setSelectedRoleOption] = useState<
@@ -70,7 +70,7 @@ export const OnboardingForm = () => {
   const handleFieldChange = useCallback(
     (key: keyof OnboardingFormValues, event: ChangeEvent<HTMLInputElement>) => {
       const value =
-        key === "newsletter_subscription"
+        key === "newsletterSubscription"
           ? event.target.checked
           : event.target.value;
 
@@ -82,7 +82,7 @@ export const OnboardingForm = () => {
         } else {
           if (
             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(
-              event.target.value,
+              event.target.value
             )
           ) {
             error = "Invalid email address";
@@ -94,7 +94,7 @@ export const OnboardingForm = () => {
         }));
       }
 
-      if (key === "company_name") {
+      if (key === "companyName") {
         let error: Nullable<string> = null;
         if (!value) {
           error = "Company name is required";
@@ -108,12 +108,12 @@ export const OnboardingForm = () => {
       setFieldValues((prev) => ({
         ...prev,
         [key]:
-          key === "newsletter_subscription"
+          key === "newsletterSubscription"
             ? event.target.checked
             : event.target.value,
       }));
     },
-    [],
+    []
   );
 
   const handleRoleChange = useCallback((option: Nullable<SelectOption>) => {
@@ -141,7 +141,7 @@ export const OnboardingForm = () => {
 
   const [fieldErrors, setFieldErrors] = useState<OnboardingFormErrors>({
     email: null,
-    company_name: null,
+    companyName: null,
     role: null,
   });
 
@@ -162,8 +162,8 @@ export const OnboardingForm = () => {
       }
     }
 
-    if (!fieldValues.company_name) {
-      errors["company_name"] = "Company name is required";
+    if (!fieldValues.companyName) {
+      errors["companyName"] = "Company name is required";
     }
 
     if (!fieldValues.role) {
@@ -183,13 +183,13 @@ export const OnboardingForm = () => {
     const payload: Partial<AuthenticatedUser> = {
       email: fieldValues.email as string,
       profile: {
-        company_name: fieldValues.company_name as string,
+        companyName: fieldValues.companyName as string,
       },
       role: fieldValues.role as string,
-      newsletter_subscription: fieldValues.newsletter_subscription
-        ? fieldValues.newsletter_subscription
+      newsletterSubscription: fieldValues.newsletterSubscription
+        ? fieldValues.newsletterSubscription
         : false,
-      cookie_token: token,
+      cookieToken: token,
     };
 
     setMessageBoxState(() => ({
@@ -219,7 +219,7 @@ export const OnboardingForm = () => {
       await axios.post("/api/set-user-cookie", {
         key: "instill-ai-user",
         value: JSON.stringify({
-          cookie_token: token,
+          cookieToken: token,
         }),
       });
       await router.push(`/${user.id}/pipelines`);
@@ -254,9 +254,9 @@ export const OnboardingForm = () => {
           label="Your company"
           required={true}
           description="Fill your company name"
-          value={fieldValues.company_name}
-          onChange={(event) => handleFieldChange("company_name", event)}
-          error={fieldErrors.company_name}
+          value={fieldValues.companyName}
+          onChange={(event) => handleFieldChange("companyName", event)}
+          error={fieldErrors.companyName}
         />
         <BasicSingleSelect
           id="role"
@@ -271,11 +271,11 @@ export const OnboardingForm = () => {
         <BasicToggleField
           id="newsletter-subscription"
           label="Newsletter subscription"
-          value={fieldValues.newsletter_subscription || false}
+          value={fieldValues.newsletterSubscription || false}
           required={true}
           description="Receive the latest news from Instill AI for product updates, community highlights, blog posts, useful tutorials and more! You can unsubscribe any time."
           onChange={(event) =>
-            handleFieldChange("newsletter_subscription", event)
+            handleFieldChange("newsletterSubscription", event)
           }
         />
       </div>

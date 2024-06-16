@@ -5,7 +5,7 @@ export type WithMiddlewareAuthRequiredOptions = {
 };
 
 export function withMiddlewareAuthRequired(
-  props?: NextMiddleware | WithMiddlewareAuthRequiredOptions,
+  props?: NextMiddleware | WithMiddlewareAuthRequiredOptions
 ): NextMiddleware {
   return async function wrappedMiddleware(...args) {
     const [req] = args;
@@ -27,7 +27,7 @@ export function withMiddlewareAuthRequired(
     const sessionCookie = req.cookies.get("instill-auth-session");
     const session = JSON.parse(sessionCookie?.value || "{}");
 
-    if (!session.access_token) {
+    if (!session.accessToken) {
       if (pathname.startsWith("/api")) {
         return NextResponse.json(
           {
@@ -35,7 +35,7 @@ export function withMiddlewareAuthRequired(
             description:
               "The user does not have an active session or is not authenticated",
           },
-          { status: 401 },
+          { status: 401 }
         );
       }
       return NextResponse.redirect(new URL("/login", origin));
@@ -46,7 +46,7 @@ export function withMiddlewareAuthRequired(
     if (providedMiddlewareRes) {
       const nextRes = new NextResponse(
         providedMiddlewareRes.body,
-        providedMiddlewareRes,
+        providedMiddlewareRes
       );
       const cookies = authRes.cookies.getAll();
       if ("cookies" in providedMiddlewareRes) {

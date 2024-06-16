@@ -9,8 +9,8 @@ import {
 
 export type ListOrganizationsResponse = {
   organizations: Organization[];
-  next_page_token: string;
-  total_size: string;
+  nextPageToken: string;
+  totalSize: string;
 };
 
 export async function listOrganizationsQuery({
@@ -39,12 +39,12 @@ export async function listOrganizationsQuery({
 
     organizations.push(...data.organizations);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       organizations.push(
         ...(await listOrganizationsQuery({
           pageSize,
           accessToken,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
           filter,
         }))
       );

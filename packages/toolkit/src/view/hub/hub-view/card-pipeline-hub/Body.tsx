@@ -39,7 +39,7 @@ export const Body = ({ pipeline }: { pipeline: Pipeline }) => {
       <div className="flex flex-row items-center gap-x-2 px-3">
         <Icons.Pipeline className="my-auto h-4 w-4 stroke-semantic-accent-default" />
         <a
-          href={`/${pipeline.owner_name.split("/")[1]}/pipelines/${pipeline.id}`}
+          href={`/${pipeline.ownerName.split("/")[1]}/pipelines/${pipeline.id}`}
           className="font-sans text-sm font-semibold text-semantic-accent-default hover:underline"
         >
           {pipeline.id}
@@ -63,7 +63,7 @@ export const Body = ({ pipeline }: { pipeline: Pipeline }) => {
 
       <div className="flex w-full justify-end px-3 pt-2">
         <p className="line-clamp-3 text-semantic-node-disconnected-default-stroke product-body-text-4-regular">
-          {formatTimestamp(pipeline.update_time)}
+          {formatTimestamp(pipeline.updateTime)}
         </p>
       </div>
     </div>

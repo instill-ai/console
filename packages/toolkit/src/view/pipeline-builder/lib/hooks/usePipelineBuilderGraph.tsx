@@ -66,7 +66,7 @@ export function usePipelineBuilderGraph() {
     }
 
     // Check whether current user is the owner of the pipeline
-    if (pipeline.data.permission.can_trigger) {
+    if (pipeline.data.permission.canTrigger) {
       updateIsOwner(() => true);
     }
 

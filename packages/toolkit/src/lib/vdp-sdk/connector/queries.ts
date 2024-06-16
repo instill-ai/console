@@ -3,9 +3,9 @@ import { createInstillAxiosClient, getQueryString } from "../helper";
 import { ConnectorDefinition } from "./types";
 
 export type ListConnectorDefinitionsResponse = {
-  connector_definitions: ConnectorDefinition[];
-  next_page_token: string;
-  total_size: number;
+  connectorDefinitions: ConnectorDefinition[];
+  nextPageToken: string;
+  totalSize: number;
 };
 
 export async function listConnectorDefinitionsQuery({
@@ -33,14 +33,14 @@ export async function listConnectorDefinitionsQuery({
     const { data } =
       await client.get<ListConnectorDefinitionsResponse>(queryString);
 
-    connectorDefinitions.push(...data.connector_definitions);
+    connectorDefinitions.push(...data.connectorDefinitions);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       connectorDefinitions.push(
         ...(await listConnectorDefinitionsQuery({
           pageSize,
           accessToken,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
           filter,
         }))
       );

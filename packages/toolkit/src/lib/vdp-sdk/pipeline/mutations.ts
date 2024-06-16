@@ -94,7 +94,7 @@ export async function deleteUserPipelineMutation({
 
 export type RenameUserPipelinePayload = {
   name: string;
-  new_pipeline_id: string;
+  newPipelineId: string;
 };
 
 export type RenameUserPipelineResponse = {

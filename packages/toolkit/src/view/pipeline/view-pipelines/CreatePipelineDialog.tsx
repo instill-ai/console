@@ -101,7 +101,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                 role: "ROLE_EXECUTOR",
               },
             },
-            share_code: null,
+            shareCode: null,
           }
         : {
             users: {
@@ -110,7 +110,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                 role: "ROLE_EXECUTOR",
               },
             },
-            share_code: null,
+            shareCode: null,
           };
 
     const payload: CreateUserPipelinePayload = {

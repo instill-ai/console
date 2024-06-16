@@ -115,8 +115,8 @@ export const ModelSettingsHead = ({
                   </React.Fragment>
                 )}
               </Tag>
-              {model?.source_url ? (
-                <ExternalLink href={model.source_url}>
+              {model?.sourceUrl ? (
+                <ExternalLink href={model.sourceUrl}>
                   <GitHubIcon
                     width="w-[18px]"
                     height="h-[18px]"
@@ -125,8 +125,8 @@ export const ModelSettingsHead = ({
                   GitHub
                 </ExternalLink>
               ) : null}
-              {model?.documentation_url ? (
-                <ExternalLink href={model.documentation_url}>
+              {model?.documentationUrl ? (
+                <ExternalLink href={model.documentationUrl}>
                   <Icons.Link01 className="h-3.5 w-3.5 stroke-semantic-bg-secondary-alt-primary" />
                   Link
                 </ExternalLink>
@@ -208,7 +208,7 @@ export const ModelSettingsHead = ({
                 <Icons.ClockRewind className="h-4 w-4" />
                 Versions
               </TabMenu.Item>
-              {model?.permission.can_edit ? (
+              {model?.permission.canEdit ? (
                 <TabMenu.Item value="settings">
                   <Icons.Settings02 className="h-4 w-4" />
                   Settings

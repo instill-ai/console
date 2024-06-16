@@ -75,7 +75,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
 
   const { fields, form, ValidatorSchema, selectedConditionMap } =
     useInstillForm(
-      data.definition?.spec.component_specification ?? null,
+      data.definition?.spec.componentSpecification ?? null,
       componentConfiguration,
       {
         size: "sm",

@@ -79,11 +79,11 @@ export function pickSmartHintsFromNodes({
     if (isIteratorNode(node)) {
       // Fragile Point:
       // Because the iterator output's generated depends on the user action
-      // The data_specification.output may not be ready due to user haven't
+      // The dataSpecification.output may not be ready due to user haven't
       // save the changes.
 
       // The current solution is treating the iterator.outputElements as
-      // the source of truth instead of its data_specification.output
+      // the source of truth instead of its dataSpecification.output
 
       /*
        * outputElements = {

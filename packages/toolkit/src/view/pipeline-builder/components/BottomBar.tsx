@@ -145,7 +145,7 @@ export const BottomBar = () => {
                         key={release.id}
                         id={release.id}
                         currentVersion={currentVersion}
-                        createTime={release.create_time}
+                        createTime={release.createTime}
                         onClick={() => {
                           updateSelectedConnectorNodeId(() => null);
 

@@ -2,12 +2,12 @@ import { Nullable } from "../../type";
 import { StripeSubscriptionDetail } from "../types";
 
 export type UserProfile = {
-  display_name?: string;
+  displayName?: string;
   bio?: string;
-  public_email?: string;
-  company_name?: string;
+  publicEmail?: string;
+  companyName?: string;
   avatar?: string;
-  social_profiles_links?: {
+  socialProfilesLinks?: {
     webiste?: string;
     x?: string;
     github?: string;
@@ -18,14 +18,14 @@ export type AuthenticatedUser = {
   name: string;
   uid: string;
   id: string;
-  create_time: string;
-  update_time: string;
-  customer_id: string;
+  createTime: string;
+  updateTime: string;
+  customerId: string;
   email: string;
-  newsletter_subscription: boolean;
+  newsletterSubscription: boolean;
   role: string;
-  onboarding_status: OnboardingStatus;
-  cookie_token?: string;
+  onboardingStatus: OnboardingStatus;
+  cookieToken?: string;
   profile?: UserProfile;
 };
 
@@ -33,8 +33,8 @@ export type User = {
   name: string;
   uid: string;
   id: string;
-  create_time: string;
-  update_time: string;
+  createTime: string;
+  updateTime: string;
   profile?: UserProfile;
 };
 
@@ -52,9 +52,9 @@ export type ApiToken = {
   name: string;
   uid: string;
   id: string;
-  create_time: string;
-  update_time: string;
-  access_token: string;
+  createTime: string;
+  updateTime: string;
+  accessToken: string;
   state: ApiTokenState;
   token_type: string;
 };

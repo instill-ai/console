@@ -62,7 +62,7 @@ export function pickOutputReferenceHintsFromComponent({
         }
       });
     } else {
-      const outputSchema = component.data_specification?.output;
+      const outputSchema = component.dataSpecification?.output;
 
       if (outputSchema) {
         const outputFormTree =

@@ -91,14 +91,14 @@ export async function getApiTokenQuery({
 
 export type ListApiTokensResponse = {
   tokens: ApiToken[];
-  next_page_token: string;
-  total_size: string;
+  nextPageToken: string;
+  totalSize: string;
 };
 
 export type ListUsersResponse = {
   users: User[];
-  next_page_token: string;
-  total_size: string;
+  nextPageToken: string;
+  totalSize: string;
 };
 
 export async function listApiTokensQuery({
@@ -125,12 +125,12 @@ export async function listApiTokensQuery({
 
     tokens.push(...data.tokens);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       tokens.push(
         ...(await listApiTokensQuery({
           pageSize,
           accessToken,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
         }))
       );
     }
@@ -164,12 +164,12 @@ export async function listUsersQuery({
 
     users.push(...data.users);
 
-    if (data.next_page_token) {
+    if (data.nextPageToken) {
       users.push(
         ...(await listUsersQuery({
           pageSize,
           accessToken,
-          nextPageToken: data.next_page_token,
+          nextPageToken: data.nextPageToken,
         }))
       );
     }

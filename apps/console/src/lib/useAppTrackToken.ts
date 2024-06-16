@@ -14,7 +14,7 @@ export function useAppTrackToken({ enabled }: { enabled: boolean }) {
           key: "instill-ai-user",
         });
 
-        const trackToken = JSON.parse(data).cookie_token;
+        const trackToken = JSON.parse(data).cookieToken;
 
         if (!trackToken) {
           router.push("/onboarding");

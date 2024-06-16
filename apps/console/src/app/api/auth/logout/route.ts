@@ -10,7 +10,7 @@ export async function GET() {
   try {
     if (accessToken) {
       await authLogoutAction({
-        accessToken: JSON.parse(accessToken.value).access_token,
+        accessToken: JSON.parse(accessToken.value).accessToken,
       });
       cookieStore.delete(accessTokenKey);
 

@@ -8,7 +8,7 @@ export async function fetchAccessToken() {
   try {
     const { data } = await axios.get("/api/access-token");
 
-    const accessToken = data.access_token;
+    const accessToken = data.accessToken;
 
     if (!accessToken) {
       throw new Error("No accessToken in response");

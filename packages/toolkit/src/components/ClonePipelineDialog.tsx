@@ -127,7 +127,7 @@ export const ClonePipelineDialog = ({
                 role: "ROLE_EXECUTOR",
               },
             },
-            share_code: null,
+            shareCode: null,
           }
         : {
             users: {
@@ -136,7 +136,7 @@ export const ClonePipelineDialog = ({
                 role: "ROLE_EXECUTOR",
               },
             },
-            share_code: null,
+            shareCode: null,
           };
 
     const payload: CreateUserPipelinePayload = {
@@ -161,7 +161,7 @@ export const ClonePipelineDialog = ({
         });
 
         if (amplitudeIsInit) {
-          if (pipeline.owner_name === me.data.name) {
+          if (pipeline.ownerName === me.data.name) {
             sendAmplitudeData("duplicate_pipeline");
           } else {
             sendAmplitudeData("clone_pipeline");

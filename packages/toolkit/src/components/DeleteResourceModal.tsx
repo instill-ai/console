@@ -49,7 +49,7 @@ export const DeleteResourceModal = ({
       title = "Delete This Pipeline";
       description =
         "This action cannot be undone. This will permanently delete the pipeline.";
-    } else if ("model_definition" in resource) {
+    } else if ("modelDefinition" in resource) {
       title = "Delete This Model";
       description =
         "This action cannot be undone. This will permanently delete the model.";

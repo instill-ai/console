@@ -22,12 +22,12 @@ export const PipelineTriggersTable = (props: PipelineTriggersTableProps) => {
 
   const columns: ColumnDef<PipelineTriggerRecord>[] = [
     {
-      accessorKey: "trigger_time",
+      accessorKey: "triggerTime",
       header: () => <div className="min-w-[400px] text-left">Timestamp</div>,
       cell: ({ row }) => {
         return (
           <div className="text-left">
-            {convertTimestampToLocal(row.getValue("trigger_time"))}
+            {convertTimestampToLocal(row.getValue("triggerTime"))}
           </div>
         );
       },
@@ -49,7 +49,7 @@ export const PipelineTriggersTable = (props: PipelineTriggersTableProps) => {
       },
     },
     {
-      accessorKey: "compute_time_duration",
+      accessorKey: "computeTimeDuration",
       header: ({ column }) => {
         return (
           <div className="min-w-[150px] text-center">
@@ -71,19 +71,19 @@ export const PipelineTriggersTable = (props: PipelineTriggersTableProps) => {
         return (
           <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
             {convertToSecondsAndMilliseconds(
-              row.getValue("compute_time_duration")
+              row.getValue("computeTimeDuration")
             )}
           </div>
         );
       },
     },
     {
-      accessorKey: "pipeline_trigger_id",
+      accessorKey: "pipelineTriggerId",
       header: () => <div className="min-w-[350px] text-center">Trigger ID</div>,
       cell: ({ row }) => {
         return (
           <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
-            {row.getValue("pipeline_trigger_id")}
+            {row.getValue("pipelineTriggerId")}
           </div>
         );
       },

@@ -47,7 +47,7 @@ export function useUserNamespaces() {
             name: org.organization.name,
             type: "organization",
             avatarUrl: org.organization.profile?.avatar ?? null,
-            displayName: org.organization.profile?.display_name ?? null,
+            displayName: org.organization.profile?.displayName ?? null,
           });
         });
     }
@@ -58,7 +58,7 @@ export function useUserNamespaces() {
         name: me.data.name,
         type: "user",
         avatarUrl: me.data.profile?.avatar ?? null,
-        displayName: me.data.profile?.display_name ?? null,
+        displayName: me.data.profile?.displayName ?? null,
       });
     }
 

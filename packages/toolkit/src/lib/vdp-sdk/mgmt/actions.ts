@@ -22,7 +22,7 @@ export type AuthLoginActionPayload = {
 };
 
 export type AuthLoginActionResponse = {
-  access_token: string;
+  accessToken: string;
 };
 
 export async function authLoginAction({
@@ -38,7 +38,7 @@ export async function authLoginAction({
       payload
     );
 
-    return Promise.resolve(data.access_token);
+    return Promise.resolve(data.accessToken);
   } catch (err) {
     return Promise.reject(err);
   }

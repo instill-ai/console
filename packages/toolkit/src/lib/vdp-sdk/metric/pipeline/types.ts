@@ -1,30 +1,30 @@
 import { PipelineMode, PipelineReleaseState } from "../../pipeline";
 
 export type PipelineTriggerCount = {
-  pipeline_id: string;
-  pipeline_uid: string;
-  pipeline_completed: number;
-  pipeline_errored: number;
+  pipelineId: string;
+  pipelineUid: string;
+  pipelineCompleted: number;
+  pipelineErrored: number;
   watchState: PipelineReleaseState;
   counts: Count[];
 };
 
 export type TriggeredPipeline = {
-  pipeline_id: string;
-  pipeline_uid: string;
-  trigger_count_completed: string;
-  trigger_count_errored: string;
+  pipelineId: string;
+  pipelineUid: string;
+  triggerCountCompleted: string;
+  triggerCountErrored: string;
   watchState?: PipelineReleaseState;
 };
 
 export type PipelinesChart = {
-  pipeline_id: string;
-  pipeline_uid: string;
-  trigger_mode: PipelineMode;
+  pipelineId: string;
+  pipelineUid: string;
+  triggerMode: PipelineMode;
   status: PipelineTriggerStatus;
-  time_buckets: string[];
-  trigger_counts: number[] | string[];
-  compute_time_duration: number[] | string[];
+  timeBuckets: string[];
+  triggerCounts: number[] | string[];
+  computeTimeDuration: number[] | string[];
   watchState?: PipelineReleaseState;
 };
 
@@ -34,17 +34,17 @@ export type PipelineTriggerStatus =
   | "STATUS_ERRORED";
 
 export type Count = {
-  trigger_time: string | Date;
+  triggerTime: string | Date;
   count: number;
 };
 
 export type PipelineTriggerRecord = {
-  trigger_time: string;
-  pipeline_trigger_id: string;
-  pipeline_id: string;
-  pipeline_uid: string;
-  pipeline_mode: PipelineMode;
-  compute_time_duration: number;
+  triggerTime: string;
+  pipelineTriggerId: string;
+  pipelineId: string;
+  pipelineUid: string;
+  pipelineMode: PipelineMode;
+  computeTimeDuration: number;
   status: PipelineTriggerStatus;
 };
 

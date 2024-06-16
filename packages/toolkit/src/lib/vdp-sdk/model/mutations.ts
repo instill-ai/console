@@ -21,7 +21,7 @@ export type CreateUserArtivcModelConfiguration = {
 };
 
 export type CreateUserHuggingFaceModelConfiguration = {
-  repo_id: string;
+  repoId: string;
 };
 
 export type CreateUserModelPayload = {
@@ -31,25 +31,25 @@ export type CreateUserModelPayload = {
   region: string;
   hardware: string;
   task: ModelTask;
-  model_definition: "model-definitions/container";
+  modelDefinition: "model-definitions/container";
   configuration: Record<string, string>;
 };
 
 export type UpdateUserModelPayload = {
   description?: string;
-  source_url?: string;
-  documentation_url?: string;
+  sourceUrl?: string;
+  documentationUrl?: string;
   license?: string;
   visibility?: Visibility;
   hardware?: string;
   configuration?: Record<string, string>;
-  profile_image?: string;
+  profileImage?: string;
   readme?: string;
 };
 
 export type CreateUserGitHubModelPayload = {
   id: string;
-  model_definition: string;
+  modelDefinition: string;
   description?: string;
   type: "GitHub";
   configuration: CreateUserGithubModelConfiguration;
@@ -57,7 +57,7 @@ export type CreateUserGitHubModelPayload = {
 
 export type CreateUserLocalModelPayload = {
   id: string;
-  model_definition: string;
+  modelDefinition: string;
   description?: string;
   type: "Local";
   configuration: CreateUserLocalModelConfiguration;
@@ -65,7 +65,7 @@ export type CreateUserLocalModelPayload = {
 
 export type CreateUserHuggingFaceModelPayload = {
   id: string;
-  model_definition: string;
+  modelDefinition: string;
   description?: string;
   type: "HuggingFace";
   configuration: CreateUserHuggingFaceModelConfiguration;
@@ -73,7 +73,7 @@ export type CreateUserHuggingFaceModelPayload = {
 
 export type CreateUserArtiVCModelPayload = {
   id: string;
-  model_definition: string;
+  modelDefinition: string;
   description?: string;
   type: "ArtiVC";
   configuration: CreateUserArtivcModelConfiguration;

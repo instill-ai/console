@@ -25,11 +25,11 @@ export const Head = ({
   const router = useRouter();
 
   const pipelineAvatar = React.useMemo(() => {
-    if (pipeline.owner_name.split("/")[0] === "users") {
+    if (pipeline.ownerName.split("/")[0] === "users") {
       return (pipeline.owner as UserOwner).user.profile?.avatar ?? null;
     }
 
-    if (pipeline.owner_name.split("/")[0] === "organizations") {
+    if (pipeline.ownerName.split("/")[0] === "organizations") {
       return (
         (pipeline.owner as OrganizationOwner).organization.profile?.avatar ??
         null
@@ -54,20 +54,20 @@ export const Head = ({
       const userOwner = owner as UserOwner;
       const userID = userOwner.user.id;
 
-      if (userOwner.user.profile?.display_name?.trim()) {
-        return userOwner.user.profile.display_name;
+      if (userOwner.user.profile?.displayName?.trim()) {
+        return userOwner.user.profile.displayName;
       } else {
-        // Transform userID if display_name is empty, null, or consists of only whitespace
+        // Transform userID if displayName is empty, null, or consists of only whitespace
         return transformIDToCapitalizeName(userID);
       }
     } else if ("organization" in owner) {
       const orgOwner = owner as OrganizationOwner;
       const orgID = orgOwner.organization.id;
 
-      if (orgOwner.organization.profile?.display_name?.trim()) {
-        return orgOwner.organization.profile.display_name;
+      if (orgOwner.organization.profile?.displayName?.trim()) {
+        return orgOwner.organization.profile.displayName;
       } else {
-        // Transform orgID if display_name is empty, null, or consists of only whitespace
+        // Transform orgID if displayName is empty, null, or consists of only whitespace
         return transformIDToCapitalizeName(orgID);
       }
     }

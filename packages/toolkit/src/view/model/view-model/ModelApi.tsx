@@ -64,27 +64,27 @@ export const ModelApi = ({ model }: ModelApiProps) => {
           language="bash"
           customStyle={defaultCodeSnippetStyles}
         />
-        {model?.input_schema || model?.output_schema ? (
+        {model?.inputSchema || model?.outputSchema ? (
           <ModelSectionHeader className="mt-5">
             Model JSON schema
           </ModelSectionHeader>
         ) : null}
-        {model?.input_schema ? (
+        {model?.inputSchema ? (
           <React.Fragment>
             <h3 className="font-medium text-black">Input</h3>
             <CodeBlock
-              codeString={JSON.stringify(model.input_schema, null, 2)}
+              codeString={JSON.stringify(model.inputSchema, null, 2)}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}
             />
           </React.Fragment>
         ) : null}
-        {model?.output_schema ? (
+        {model?.outputSchema ? (
           <React.Fragment>
             <h3 className="font-medium text-black">Output</h3>
             <CodeBlock
-              codeString={JSON.stringify(model.output_schema, null, 2)}
+              codeString={JSON.stringify(model.outputSchema, null, 2)}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}

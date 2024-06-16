@@ -66,11 +66,11 @@ export const Head = ({
   }
 
   const pipelineAvatar = React.useMemo(() => {
-    if (pipeline.owner_name.split("/")[0] === "users") {
+    if (pipeline.ownerName.split("/")[0] === "users") {
       return (pipeline.owner as UserOwner).user.profile?.avatar ?? null;
     }
 
-    if (pipeline.owner_name.split("/")[0] === "organizations") {
+    if (pipeline.ownerName.split("/")[0] === "organizations") {
       return (
         (pipeline.owner as OrganizationOwner).organization.profile?.avatar ??
         null

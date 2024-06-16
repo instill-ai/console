@@ -35,7 +35,7 @@ export const ModelContentViewer = ({
       break;
     }
     case "settings": {
-      if (model?.permission.can_edit) {
+      if (model?.permission.canEdit) {
         content = <ModelSettingsEditForm model={model} onUpdate={onUpdate} />;
       }
 

@@ -109,8 +109,8 @@ Take this destination for example, what if user select another tunnel_method? Ho
     "state": "STATE_UNSPECIFIED",
     "tombstone": false,
     "user": "users/local-user",
-    "create_time": "2022-09-01T05:55:44.498367Z",
-    "update_time": "2022-09-01T05:55:44.498367Z"
+    "createTime": "2022-09-01T05:55:44.498367Z",
+    "updateTime": "2022-09-01T05:55:44.498367Z"
   }
 }
 ```
@@ -199,8 +199,8 @@ Here is the sample destination response.
     "state": "STATE_UNSPECIFIED",
     "tombstone": false,
     "user": "users/local-user",
-    "create_time": "2022-09-01T05:55:44.498367Z",
-    "update_time": "2022-09-01T05:55:44.498367Z"
+    "createTime": "2022-09-01T05:55:44.498367Z",
+    "updateTime": "2022-09-01T05:55:44.498367Z"
   }
 }
 ```
