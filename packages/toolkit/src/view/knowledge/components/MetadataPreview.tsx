@@ -44,35 +44,17 @@ const MetadataPreview = () => {
 
     return (
         <div className="flex w-full items-center justify-start  ">
-            <ScrollArea.Root className="flex flex-col w-1/2">
+            <ScrollArea.Root className="flex flex-col">
                 <div className="product-body-text-1-semibold bg-semantic-bg-base-bg py-2 pl-3 rounded mb-8">Preview</div>
                 <div className="flex flex-col gap-3 px-8">
-                    <div className="flex items-center justify-center gap-2">
-                        <div className="h-px flex-grow bg-semantic-bg-line" />
-                        <div className="product-body-text-3-medium whitespace-nowrap">Convert Results</div>
-                        <div className="h-px flex-grow bg-semantic-bg-line" />
-                    </div>
                     <div className="flex flex-col">
-                        <h3 className="product-button-button-2 pb-2.5">File name 1</h3>
-                        <Textarea placeholder="Text preview" rows={3} />
-                    </div>
-                    <div className="flex flex-col">
-                        <h3 className="product-button-button-2 pb-2.5">File name 1</h3>
-                        <Textarea placeholder="Text preview" rows={3} />
-                    </div>
-                    <div className="flex items-center justify-center gap-2">
-                        <div className="h-px flex-grow bg-semantic-bg-line" />
-                        <div className="product-body-text-3-medium whitespace-nowrap">Split Text Results</div>
-                        <div className="h-px flex-grow bg-semantic-bg-line" />
+                        <h3 className="product-button-button-2 pb-2.5">Metadata</h3>
+                        <Textarea placeholder="Preview" rows={3} />
                     </div>
                     <div className="flex flex-col gap-3">
                         <div className="flex flex-col">
-                            <h3 className="product-button-button-2 pb-2.5">File name 1</h3>
-                            <Textarea placeholder="Text preview" rows={3} />
-                        </div>
-                        <div className="flex flex-col">
-                            <h3 className="product-button-button-2 pb-2.5">File name 2</h3>
-                            <Textarea placeholder="Text preview" rows={3} />
+                            <h3 className="product-button-button-2 pb-2.5">Technical Parameters</h3>
+                            <Textarea placeholder="Preview" rows={3} />
                         </div>
                     </div>
                 </div>

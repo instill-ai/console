@@ -50,8 +50,8 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
   };
 
   return (
-    <div className="flex col-span-6">
-      <div className="flex flex-col col-span-3">
+    <div className="flex">
+      <div className="w-2/3 pr-4">
         <div className="flex items-center space-x-2 mb-4">
           <Button variant="secondaryGrey">
             <Icons.Plus className="h-4 w-4 stroke-semantic-fg-secondary mr-2" />
@@ -70,7 +70,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
               className="flex items-center space-x-2 mb-2 cursor-pointer"
               onClick={() => toggleFileExpansion(index)}
             >
-              <p className=" product-button-button-1">{item.fileName}</p>
+              <p className="product-button-button-1">{item.fileName}</p>
               <Icons.ChevronDown
                 className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${expandedFiles.includes(index) ? "rotate-180" : ""
                   }`}
@@ -91,15 +91,14 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
                           </span>
                         </Tag>
                         <div className="flex items-center gap-1">
-                          <span className=" product-label-label-1 uppercase">
+                          <span className="product-label-label-1 uppercase">
                             {item.status ? "Retrievable" : "Unretrievable"}
                           </span>
                           <Switch
                             checked={item.status}
                             onCheckedChange={() => { }}
                             className=""
-                          >
-                          </Switch>
+                          ></Switch>
                         </div>
                       </div>
                       <div className="h-px w-full bg-semantic-bg-line" />
@@ -130,7 +129,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
           </div>
         ))}
       </div>
-      <div className="col-span-3">
+      <div className="w-1/3">
         <MetadataPreview />
       </div>
     </div>
