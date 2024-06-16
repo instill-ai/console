@@ -1,4 +1,4 @@
-import { Icons, Separator, Tabs, Button, Select, Input, Textarea, Form, Collapsible } from "@instill-ai/design-system";
+import { Icons, Separator, Tabs, Button, Select, Input, Textarea, Form, Collapsible, ScrollArea } from "@instill-ai/design-system";
 import * as React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -64,8 +64,8 @@ const FilePreview = () => {
         "rounded-t-sm border border-semantic-bg-line bg-semantic-bg-base-bg px-3 py-1.5 text-[#1D2433] text-opacity-80 product-body-text-3-semibold data-[state=active]:bg-semantic-bg-primary data-[state=active]:text-opacity-100";
 
     return (
-        <div className="flex w-full items-center justify-start">
-            <Tabs.Root defaultValue="text" className="mb-8 mt-4 w-full ">
+        <div className="flex w-full items-center justify-start  ">
+            <Tabs.Root defaultValue="text" className="mt-4 w-full mb-8 ">
                 <Tabs.List className="flex w-full items-center ml-4">
                     <Tabs.Trigger value="text" className={tabTriggerStyle}>
                         <span className="text-center product-button-button-3">Text</span>
@@ -74,7 +74,7 @@ const FilePreview = () => {
                         <span className="text-center product-button-button-3">Images</span>
                     </Tabs.Trigger>
                 </Tabs.List>
-                <div className="flex w-full border-red-500 border rounded">
+                <div className="flex w-full border-semantic-bg-line border rounded pb-8">
                     <div className="flex-col w-1/2">
                         <div className="product-body-text-1-semibold bg-semantic-bg-base-bg py-2 pl-3 rounded">Data</div>
                         <div className="  px-3  pt-8">
@@ -289,16 +289,20 @@ const FilePreview = () => {
                     <div className="h-auto self-stretch flex items-center">
                         <Separator orientation="vertical" />
                     </div>
-                    <div className="flex flex-col w-1/2">
-                        <div className="product-body-text-1-semibold bg-semantic-bg-base-bg py-2 pl-3 rounded">Preview</div>
-                        <div className="flex flex-col gap-3">
+                    <ScrollArea.Root className="flex flex-col w-1/2">
+                        <div className="product-body-text-1-semibold bg-semantic-bg-base-bg py-2 pl-3 rounded mb-8">Preview</div>
+                        <div className="flex flex-col gap-3 px-8">
                             <div className="flex items-center justify-center gap-2">
                                 <div className="h-px flex-grow bg-semantic-bg-line" />
                                 <div className="product-body-text-3-medium whitespace-nowrap">Convert Results</div>
                                 <div className="h-px flex-grow bg-semantic-bg-line" />
                             </div>
                             <div className="flex flex-col">
-                                <h3 className="product-button-button-2">File name 1</h3>
+                                <h3 className="product-button-button-2 pb-2.5">File name 1</h3>
+                                <Textarea placeholder="Text preview" rows={3} />
+                            </div>
+                            <div className="flex flex-col">
+                                <h3 className="product-button-button-2 pb-2.5">File name 1</h3>
                                 <Textarea placeholder="Text preview" rows={3} />
                             </div>
                             <div className="flex items-center justify-center gap-2">
@@ -308,16 +312,16 @@ const FilePreview = () => {
                             </div>
                             <div className="flex flex-col gap-3">
                                 <div className="flex flex-col">
-                                    <h3 className="product-button-button-2">File name 1</h3>
+                                    <h3 className="product-button-button-2 pb-2.5">File name 1</h3>
                                     <Textarea placeholder="Text preview" rows={3} />
                                 </div>
                                 <div className="flex flex-col">
-                                    <h3 className="product-button-button-2">File name 2</h3>
+                                    <h3 className="product-button-button-2 pb-2.5">File name 2</h3>
                                     <Textarea placeholder="Text preview" rows={3} />
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </ScrollArea.Root>
                 </div>
             </Tabs.Root>
         </div>
