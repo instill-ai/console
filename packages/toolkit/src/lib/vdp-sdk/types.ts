@@ -42,7 +42,7 @@ export type Permission = {
 };
 
 export type StripeSubscriptionDetail = {
-  product_name: string;
+  productName: string;
   id: string;
   itemId: string;
   price: number;
