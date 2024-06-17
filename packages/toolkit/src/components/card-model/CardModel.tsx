@@ -4,7 +4,7 @@ import { Menu } from "./Menu";
 import { Tags } from "./Tags";
 import { Stats } from "./Stats";
 import { Model } from "../../lib";
-import React, { useMemo } from "react";
+import * as React from "react";
 import {
   getModelHardwareToolkit,
   getModelRegionToolkit,
@@ -30,7 +30,7 @@ const OWNER = {
 
 export const CardModel = (props: CardModelProps) => {
   const { model, onDelete } = props;
-  const owner = useMemo(() => {
+  const owner = React.useMemo(() => {
     if (!model) {
       return OWNER;
     }
