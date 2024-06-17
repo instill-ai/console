@@ -45,8 +45,8 @@ export const DashboardPipelineListPageMainView = (
       return;
     }
 
-    let queryParams = `owner_name='${routeInfo.data.namespaceName}'`;
-    let queryParamsPrevious = `owner_name='${routeInfo.data.namespaceName}'`;
+    let queryParams = `ownerName='${routeInfo.data.namespaceName}'`;
+    let queryParamsPrevious = `ownerName='${routeInfo.data.namespaceName}'`;
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(
