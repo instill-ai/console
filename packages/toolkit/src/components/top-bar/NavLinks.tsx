@@ -107,6 +107,8 @@ export const NavLinks = () => {
         .filter((item) => {
           if (env("NEXT_PUBLIC_APP_ENV") === "CE") {
             return item.pathname !== "hub";
+          } else {
+            return true;
           }
         })
         .map(({ pathname, Icon, title }) => (

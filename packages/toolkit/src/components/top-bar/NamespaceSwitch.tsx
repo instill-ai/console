@@ -50,10 +50,6 @@ export const NamespaceSwitch = () => {
     enabledQuery,
   } = useInstillStore(useShallow(selector));
   const [switchIsOpen, setSwitchIsOpen] = React.useState(false);
-  // const [selectedNamespace, setSelectedNamespace] =
-  //   React.useState<Nullable<NamespaceWithCredit>>(null);
-  // const [namespacesWithRemainingCredit, setNamespacesWithRemainingCredit] =
-  //   React.useState<Nullable<NamespaceWithCredit[]>>(null);
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
 
   const namespaces = useUserNamespaces();
