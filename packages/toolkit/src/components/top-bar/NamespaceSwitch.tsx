@@ -161,6 +161,8 @@ export const NamespaceSwitch = () => {
 
       let namespaceAnchor: Nullable<string> = navigationNamespaceAnchor;
 
+      // If we don't have the namespace anchor, we will try to find the
+      // namespace anchor based on the current namespace id and type
       if (!namespaceAnchor) {
         if (currentNamespaceId && currentNamespaceType) {
           if (currentNamespaceType === "NAMESPACE_USER" && user.isSuccess) {

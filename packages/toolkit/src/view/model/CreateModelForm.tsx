@@ -10,16 +10,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CreateUserModelPayload,
   ModelTask,
-  Nullable,
   Visibility,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
   useRouteInfo,
-  useAuthenticatedUser,
   useCreateUserModel,
   useModelRegions,
-  useUserMemberships,
+  InstillStore,
+  useInstillStore,
+  useShallow,
 } from "../../lib";
 import {
   Button,
@@ -34,16 +34,12 @@ import {
   getModelRegionToolkit,
   getModelHardwareToolkit,
 } from "@instill-ai/design-system";
-import { useEffect, useMemo, useState } from "react";
+import * as React from "react";
 import { LoadingSpin } from "../../components";
 import { useRouter } from "next/navigation";
-import { EntitySelector, OwnerEntity } from "../../components";
+import { EntitySelector } from "../../components";
 import { FieldDescriptionTooltip } from "../../lib/use-instill-form/components/common";
-
-export type CreateModelFormProps = {
-  accessToken: Nullable<string>;
-  enabledQuery: boolean;
-};
+import { useUserNamespaces } from "../../lib/useUserNamespaces";
 
 type Option = {
   value: string;
@@ -82,62 +78,38 @@ const CreateModelSchema = z
     }
   });
 
-export const CreateModelForm = (props: CreateModelFormProps) => {
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  navigationNamespaceAnchor: store.navigationNamespaceAnchor,
+});
+
+export const CreateModelForm = () => {
+  const { accessToken, navigationNamespaceAnchor } = useInstillStore(
+    useShallow(selector)
+  );
+
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const { enabledQuery, accessToken } = props;
-  const [regionOptions, setRegionOptions] = useState<Option[]>([]);
-  const [hardwareOptions, setHardwareOptions] = useState<
+  const [regionOptions, setRegionOptions] = React.useState<Option[]>([]);
+  const [hardwareOptions, setHardwareOptions] = React.useState<
     Record<string, Option[]>
   >({});
-  const [hardwareCustomValue, setHardwareCustomValue] = useState<string>("");
-  const [creating, setCreating] = useState(false);
+  const [hardwareCustomValue, setHardwareCustomValue] =
+    React.useState<string>("");
+  const [creating, setCreating] = React.useState(false);
 
   const routeInfo = useRouteInfo();
-  const me = useAuthenticatedUser({
-    enabled: enabledQuery,
-    accessToken,
-  });
-  const userMemberships = useUserMemberships({
-    enabled: me.isSuccess,
-    userID: me.isSuccess ? me.data.id : null,
-    accessToken,
-  });
 
   const form = useForm<z.infer<typeof CreateModelSchema>>({
     resolver: zodResolver(CreateModelSchema),
     mode: "onChange",
   });
 
-  const organizationsAndUserList = useMemo(() => {
-    const orgsAndUserList: OwnerEntity[] = [];
-
-    if (userMemberships.isSuccess) {
-      userMemberships.data.forEach((org) => {
-        orgsAndUserList.push({
-          id: org.organization.id,
-          name: org.organization.name,
-          type: "organization",
-          avatarUrl: org.organization.profile?.avatar || null,
-        });
-      });
-    }
-
-    if (me.isSuccess && me.data.id && me.data.name) {
-      orgsAndUserList.push({
-        id: me.data.id,
-        name: me.data.name,
-        type: "user",
-        avatarUrl: me.data.profile?.avatar || null,
-      });
-    }
-
-    return orgsAndUserList;
-  }, [userMemberships.isSuccess, userMemberships.data, me.isSuccess, me.data]);
+  const userNamespaces = useUserNamespaces();
 
   const modelRegions = useModelRegions({ accessToken });
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (regionOptions.length && Object.keys(hardwareOptions).length) {
       if (!form.getValues("region")) {
         form.setValue("region", regionOptions[0].value);
@@ -152,13 +124,20 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
     }
   }, [form, regionOptions, hardwareOptions]);
 
-  useEffect(() => {
-    if (routeInfo.data.namespaceId && !form.getValues("namespaceId")) {
-      form.setValue("namespaceId", routeInfo.data.namespaceId);
-    }
-  }, [form, routeInfo.isSuccess, routeInfo.data]);
+  React.useEffect(() => {
+    if (!form.getValues("namespaceId")) {
+      if (navigationNamespaceAnchor) {
+        form.setValue("namespaceId", navigationNamespaceAnchor);
+        return;
+      }
 
-  useEffect(() => {
+      if (routeInfo.isSuccess && routeInfo.data.namespaceId) {
+        form.setValue("namespaceId", routeInfo.data.namespaceId);
+      }
+    }
+  }, [form, routeInfo.isSuccess, routeInfo.data, navigationNamespaceAnchor]);
+
+  React.useEffect(() => {
     const currentEnv: "CE" | "CLOUD" = env("NEXT_PUBLIC_APP_ENV");
 
     if (modelRegions.data && !regionOptions.length) {
@@ -210,15 +189,15 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
       configuration: {},
     };
 
-    const targetName = organizationsAndUserList.find(
-      (account) => account.id === data.namespaceId
+    const targetNamespace = userNamespaces.find(
+      (namespace) => namespace.id === data.namespaceId
     )?.name;
 
-    if (targetName) {
+    if (targetNamespace) {
       try {
         await createModel.mutateAsync({
           accessToken,
-          entityName: targetName,
+          entityName: targetNamespace,
           payload,
         });
 
@@ -284,7 +263,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
                                   form.trigger("id");
                                 }
                               }}
-                              data={organizationsAndUserList}
+                              data={userNamespaces}
                             />
                           </Form.Control>
                           <Form.Message />
@@ -580,7 +559,7 @@ export const CreateModelForm = (props: CreateModelFormProps) => {
             </div>
             <div className="pb-14 pt-12">
               <Button
-                disabled={creating || organizationsAndUserList.length === 0}
+                disabled={creating || userNamespaces.length === 0}
                 form={formID}
                 variant="primary"
                 size="lg"
