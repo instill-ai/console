@@ -21,7 +21,7 @@ export const TopbarMiscLinks = () => {
           className="h-[14px] w-[14px]"
           fillAreaColor="fill-semantic-fg-disabled"
         />
-        Github
+        GitHub
       </Link>
       <Link
         href="https://www.instill.tech/docs"

@@ -5,7 +5,12 @@ import cn from "clsx";
 import { usePathname, useRouter } from "next/navigation";
 import * as React from "react";
 import { useUserNamespaces } from "../../lib/useUserNamespaces";
-import { InstillStore, useInstillStore, useShallow } from "../../lib";
+import {
+  InstillStore,
+  useAuthenticatedUser,
+  useInstillStore,
+  useShallow,
+} from "../../lib";
 import { env } from "../../server";
 
 export type NavLinkProps = {
@@ -37,17 +42,18 @@ const navLinkItems: NavLinkProps[] = [
   },
 ];
 
-const selector = (store: InstillStore) => ({
+const navLinkSelector = (store: InstillStore) => ({
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
 export const NavLink = ({ title, Icon, pathname }: NavLinkProps) => {
   const router = useRouter();
   const currentPathname = usePathname();
-  const { navigationNamespaceAnchor } = useInstillStore(useShallow(selector));
+  const { navigationNamespaceAnchor } = useInstillStore(
+    useShallow(navLinkSelector)
+  );
 
   const isOnIt = React.useMemo(() => {
-    console.log("currentPathname", currentPathname, pathname);
     if (pathname === "hub" && currentPathname.split("/")[1] === pathname) {
       return true;
     }
@@ -100,7 +106,20 @@ export const NavLink = ({ title, Icon, pathname }: NavLinkProps) => {
   );
 };
 
+const navLinksSelector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
+
 export const NavLinks = () => {
+  const { accessToken, enabledQuery } = useInstillStore(
+    useShallow(navLinksSelector)
+  );
+  const me = useAuthenticatedUser({
+    enabled: enabledQuery,
+    accessToken,
+  });
+
   return (
     <React.Fragment>
       {navLinkItems
@@ -108,6 +127,10 @@ export const NavLinks = () => {
           if (env("NEXT_PUBLIC_APP_ENV") === "CE") {
             return item.pathname !== "hub";
           } else {
+            // When the user is not authenticated, only show the hub link
+            if (!me.isSuccess) {
+              return item.pathname === "hub";
+            }
             return true;
           }
         })
