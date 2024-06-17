@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { KnowledgeBase } from "../../vdp-sdk/knowledge/types";
+import { Nullable } from "@instill-ai/design-system";
 
 async function updateKnowledgeBaseMutation({
   id,
@@ -14,7 +15,7 @@ async function updateKnowledgeBaseMutation({
     tags?: string[];
     owner_name?: string;
   };
-  accessToken: string | null;
+  accessToken: Nullable<string>;
 }): Promise<KnowledgeBase> {
   if (!accessToken) {
     return Promise.reject(new Error("accessToken not provided"));

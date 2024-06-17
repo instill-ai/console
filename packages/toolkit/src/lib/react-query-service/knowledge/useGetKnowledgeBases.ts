@@ -1,13 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { KnowledgeBase } from "../../vdp-sdk/knowledge/types";
+import { Nullable } from "@instill-ai/design-system";
 
 async function getKnowledgeBasesQuery({
   accessToken,
   uid,
 }: {
-  accessToken: string | null;
-  uid: string | null;
+  accessToken: Nullable<string>;
+  uid: Nullable<string>;
 }): Promise<KnowledgeBase[]> {
   if (!accessToken) {
     return Promise.reject(new Error("accessToken not provided"));
@@ -29,8 +30,8 @@ export function useGetKnowledgeBases({
   enabled,
   retry,
 }: {
-  accessToken: string | null;
-  uid: string | null;
+  accessToken: Nullable<string>;
+  uid: Nullable<string>;
   enabled: boolean;
   retry?: false | number;
 }) {
