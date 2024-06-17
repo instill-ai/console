@@ -26,7 +26,7 @@ export function checkIsValidPosition({
       return false;
     }
 
-    // Check whether we have metadata for other components in the builder
+    // Check whether we have metadata for other components in the editor
     const componentMetadatas =
       metadata.component satisfies PipelineComponentMetadataMap;
 

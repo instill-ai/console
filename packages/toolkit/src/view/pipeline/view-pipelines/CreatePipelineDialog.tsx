@@ -153,7 +153,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
           sendAmplitudeData("create_pipeline");
         }
 
-        router.push(`/${data.namespaceId}/pipelines/${data.id}/builder`);
+        router.push(`/${data.namespaceId}/pipelines/${data.id}/editor`);
       } catch (error) {
         setCreating(false);
         toastInstillError({

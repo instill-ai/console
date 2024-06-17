@@ -218,7 +218,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
                 size="md"
                 onClick={() => {
                   router.push(
-                    `/${routeInfo.data.namespaceName}/pipelines/${routeInfo.data.resourceId}/builder`
+                    `/${routeInfo.data.namespaceName}/pipelines/${routeInfo.data.resourceId}/editor`
                   );
                 }}
               >
@@ -270,7 +270,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
                 size="md"
                 onClick={() => {
                   router.push(
-                    `/${routeInfo.data.namespaceName}/pipelines/${routeInfo.data.resourceId}/builder`
+                    `/${routeInfo.data.namespaceName}/pipelines/${routeInfo.data.resourceId}/editor`
                   );
                 }}
               >

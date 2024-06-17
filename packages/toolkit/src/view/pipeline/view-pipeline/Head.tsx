@@ -356,7 +356,7 @@ export const Head = ({
                     <Button
                       onClick={() => {
                         router.push(
-                          `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/builder`
+                          `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/editor`
                         );
                       }}
                       size="sm"

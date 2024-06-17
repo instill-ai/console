@@ -125,7 +125,7 @@ export const PipelineBuilderMainView = () => {
       <PageBase.Container>
         <div className="flex w-full flex-col">
           {/* 
-            Pipeline builder main canvas
+            Pipeline editor main canvas
           */}
 
           <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-controler-height)-var(--pipeline-builder-bottom-bar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
@@ -149,7 +149,7 @@ export const PipelineBuilderMainView = () => {
           </div>
 
           {/* 
-            Pipeline builder bottom bar
+            Pipeline editor bottom bar
           */}
 
           <div className="h-[var(--pipeline-builder-bottom-bar-height)]">

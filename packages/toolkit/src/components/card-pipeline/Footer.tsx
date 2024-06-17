@@ -85,7 +85,7 @@ export const Footer = ({
               router.push(
                 `/${pipeline.ownerName.split("/")[1]}/pipelines/${
                   pipeline.id
-                }/builder`
+                }/editor`
               );
             }}
           >

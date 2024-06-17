@@ -16,7 +16,7 @@ export class PipelineBuilderPage {
 
   constructor(page: Page, pipelineID: string) {
     this.page = page;
-    this.pipelineBuilderPagePath = `/admin/pipelines/${pipelineID}/builder`;
+    this.pipelineBuilderPagePath = `/admin/pipelines/${pipelineID}/editor`;
     this.startNode = page.locator("[data-id='variable']");
     this.startNodeAddFieldButton = this.startNode.getByRole("button", {
       name: "Add Field",
