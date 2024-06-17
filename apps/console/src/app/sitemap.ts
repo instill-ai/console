@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   while (continueFetching) {
     try {
       const pipelineResponse = await fetch(
-        nextToken ? `${pipelinesUrl}&pageToken=${nextToken}` : pipelinesUrl
+        nextToken ? `${pipelinesUrl}&pageToken=${nextToken}` : pipelinesUrl,
       );
 
       if (pipelineResponse.ok) {
