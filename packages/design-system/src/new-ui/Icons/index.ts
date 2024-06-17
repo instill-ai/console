@@ -120,6 +120,8 @@ import { VideoRecorder } from "./VideoRecorder";
 import { Visa } from "./Visa";
 import { VisualQuestionAnswering } from "./VisualQuestionAnswering";
 import { X } from "./X";
+import { CardRefresh } from "./CardRefresh";
+import { CurrencyDollar } from "./CurrencyDollar";
 
 export const Icons = {
   Activity,
@@ -137,6 +139,7 @@ export const Icons = {
   BookOpen02,
   Box,
   BracketSlash,
+  CardRefresh,
   Check,
   CheckCircle,
   ChevronDown,
@@ -162,6 +165,7 @@ export const Icons = {
   Copy07,
   Cube01,
   CubeOutline,
+  CurrencyDollar,
   Database01,
   DotsHorizontal,
   DotsVertical,
