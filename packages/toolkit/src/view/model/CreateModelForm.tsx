@@ -81,12 +81,15 @@ const CreateModelSchema = z
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
+  updateNavigationNamespaceAnchor: store.updateNavigationNamespaceAnchor,
 });
 
 export const CreateModelForm = () => {
-  const { accessToken, navigationNamespaceAnchor } = useInstillStore(
-    useShallow(selector)
-  );
+  const {
+    accessToken,
+    navigationNamespaceAnchor,
+    updateNavigationNamespaceAnchor,
+  } = useInstillStore(useShallow(selector));
 
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -204,6 +207,8 @@ export const CreateModelForm = () => {
         if (amplitudeIsInit) {
           sendAmplitudeData("create_model");
         }
+
+        updateNavigationNamespaceAnchor(() => targetNamespace);
 
         router.push(`/${data.namespaceId}/models/${data.id}/overview`);
       } catch (error) {

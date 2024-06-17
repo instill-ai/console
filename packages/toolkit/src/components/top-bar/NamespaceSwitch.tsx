@@ -248,9 +248,10 @@ export const NamespaceSwitch = () => {
         // When the user is in regular namespace page, we need to switch the page
         // to the new namespace
         if (
-          pathnameArray[2] === "pipelines" ||
-          pathnameArray[2] === "models" ||
-          (pathnameArray[2] === "dashboard" && pathnameArray.length === 3)
+          (pathnameArray[2] === "pipelines" ||
+            pathnameArray[2] === "models" ||
+            pathnameArray[2] === "dashboard") &&
+          pathnameArray.length === 3
         ) {
           pathnameArray[1] = value;
           navigate(pathnameArray.join("/"));

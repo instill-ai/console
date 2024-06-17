@@ -61,6 +61,8 @@ export type CreatePipelineDialogProps = {
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
+  navigationNamespaceAnchor: store.navigationNamespaceAnchor,
+  updateNavigationNamespaceAnchor: store.updateNavigationNamespaceAnchor,
 });
 
 export const CreatePipelineDialog = ({ className }: { className?: string }) => {
@@ -78,7 +80,11 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
     mode: "onChange",
   });
 
-  const { accessToken } = useInstillStore(useShallow(selector));
+  const {
+    accessToken,
+    navigationNamespaceAnchor,
+    updateNavigationNamespaceAnchor,
+  } = useInstillStore(useShallow(selector));
 
   const routeInfo = useRouteInfo();
 
@@ -153,6 +159,8 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
           sendAmplitudeData("create_pipeline");
         }
 
+        updateNavigationNamespaceAnchor(() => usedNamespace);
+
         router.push(`/${data.namespaceId}/pipelines/${data.id}/editor`);
       } catch (error) {
         setCreating(false);
@@ -181,7 +189,9 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
         form.reset({
           id: "",
           description: "",
-          namespaceId: routeInfo?.data.namespaceId || "",
+          namespaceId: navigationNamespaceAnchor
+            ? navigationNamespaceAnchor
+            : routeInfo?.data.namespaceId || "",
         });
         setOpen(open);
       }}
