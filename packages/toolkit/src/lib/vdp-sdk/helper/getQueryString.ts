@@ -29,11 +29,11 @@ export const getQueryString = ({
   }
 
   if (pageSize) {
-    url += `page_size=${pageSize}&`;
+    url += `pageSize=${pageSize}&`;
   }
 
   if (nextPageToken) {
-    url += `page_token=${nextPageToken}&`;
+    url += `pageToken=${nextPageToken}&`;
   }
 
   if (filter) {
@@ -41,7 +41,7 @@ export const getQueryString = ({
   }
 
   if (orderBy) {
-    url += `order_by=${orderBy}&`;
+    url += `orderBy=${orderBy}&`;
   }
 
   if (queryParams) {

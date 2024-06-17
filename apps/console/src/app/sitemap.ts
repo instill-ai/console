@@ -8,7 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const pipelinesUrl = `${
     process.env.NEXT_PUBLIC_API_GATEWAY_URL || defaultApiUrl
-  }/vdp/v1beta/pipelines?page_size=100`;
+  }/vdp/v1beta/pipelines?pageSize=100`;
   let nextToken = "";
   const allPipelines: Pipeline[] = [];
 
@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   while (continueFetching) {
     try {
       const pipelineResponse = await fetch(
-        nextToken ? `${pipelinesUrl}&page_token=${nextToken}` : pipelinesUrl,
+        nextToken ? `${pipelinesUrl}&pageToken=${nextToken}` : pipelinesUrl
       );
 
       if (pipelineResponse.ok) {

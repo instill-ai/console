@@ -48,8 +48,8 @@ export const DashboardPipelineDetailsPageMainView = (
       return;
     }
 
-    let queryParams = `pipeline_id='${routeInfo.data.resourceId}' AND owner_name='${routeInfo.data.namespaceName}'`;
-    let queryParamsPrevious = `pipeline_id='${routeInfo.data.resourceId}' AND owner_name='${routeInfo.data.namespaceName}'`;
+    let queryParams = `pipelineId='${routeInfo.data.resourceId}' AND ownerName='${routeInfo.data.namespaceName}'`;
+    let queryParamsPrevious = `pipelineId='${routeInfo.data.resourceId}' AND ownerName='${routeInfo.data.namespaceName}'`;
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(
