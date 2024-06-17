@@ -26,7 +26,7 @@ export function useConnectorDefinitions({
         nextPageToken: null,
         accessToken,
         filter:
-          connectorType !== "all" ? `connector_type=${connectorType}` : null,
+          connectorType !== "all" ? `connectorType=${connectorType}` : null,
       });
       return Promise.resolve(connectorDefinitions);
     },
