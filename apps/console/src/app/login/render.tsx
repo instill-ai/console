@@ -80,7 +80,7 @@ export const LoginPageRender = () => {
   }
 
   async function changePassword(
-    data: z.infer<typeof ChangePasswordFormSchema>
+    data: z.infer<typeof ChangePasswordFormSchema>,
   ) {
     console.log("changePassword", data, accessToken);
     if (!accessToken) {

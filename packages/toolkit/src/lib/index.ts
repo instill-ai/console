@@ -25,3 +25,8 @@ export * from "./getCaptializeTwoWordsFromName";
 export * from "./convertLongNumberToK";
 export * from "./formatNumberToLocale";
 export * from "./generateDateInPast";
+
+import debounce from "lodash.debounce";
+export { debounce };
+import isEqual from "lodash.isequal";
+export { isEqual };
