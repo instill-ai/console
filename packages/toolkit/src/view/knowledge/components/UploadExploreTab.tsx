@@ -206,15 +206,20 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                 </form>
             </Form.Root>
             {form.watch("file") && (
-                <div className="w-full mb-6 rounded border border-[#E1E6EF] justify-start items-center gap-2 inline-flex px-2 py-1.5">
-                    <Icons.File05 className="w-4 h-4 stroke-semantic-fg-secondary" />
-                    <div className="product-body-text-3-regular">{form.watch("file").name}</div>
-                    <div className="grow shrink basis-0 product-body-text-4-regular text-semantic-fg-disabled">
-                        {Math.round(form.watch("file").size / 1024)}KB
+                <div className="flex justify-center items-center gap-1 mb-6">
+                    <div className="flex items-center justify-between w-full h-8 px-2 py-1.5 rounded border border-semantic-bg-line">
+                        <div className="flex items-center gap-2">
+                            <Icons.File05 className="w-5 h-5 stroke-semantic-fg-secondary" />
+                            <div className="product-body-text-3-regular">{form.watch("file").name}</div>
+                            <div className="flex-grow product-body-text-4-regular text-semantic-fg-disabled">
+                                {Math.round(form.watch("file").size / 1024)}KB
+                            </div>
+                        </div>
+                        <Icons.X className="w-4 h-4 stroke-semantic-fg-secondary" />
                     </div>
                 </div>
             )}
-            <div className=" flex-col justify-start items-start gap-1 inline-flex">
+            {/* <div className=" flex-col justify-start items-start gap-1 inline-flex">
                 <div className="text-semantic-fg-primary product-body-text-3-semibold">
                     Pipeline in use
                 </div>
@@ -230,8 +235,8 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                         xiaofei/name-your-pet
                     </button>
                 </div>
-            </div>
-            <FilePreview />
+            </div> */}
+            {/* <FilePreview /> */}
             <div className="flex justify-end">
                 <Button variant="primary" size="lg">
                     Process File
