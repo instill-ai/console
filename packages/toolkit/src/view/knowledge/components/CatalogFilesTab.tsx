@@ -230,6 +230,27 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                 </div>
               ))}
             </div>
+            <div className="flex flex-col">
+              <div className="flex items-center justify-center gap-3 border-b border-semantic-bg-line bg-semantic-bg-base-bg p-2">
+                <div className="flex items-center gap-1">
+                  <div className="text-semantic-fg-primary product-body-text-3-medium">
+                    Delete Time
+                  </div>
+                </div>
+              </div>
+              {sortedData.map((item, index) => (
+                <div key={index}>
+                  <div className="flex h-16 items-center justify-center px-3">
+                    <Button variant="tertiaryDanger" size="lg">
+                      Delete
+                    </Button>
+                  </div>
+                  {index !== sortedData.length - 1 && (
+                    <Separator orientation="horizontal" />
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
           {/* <div className="flex w-[375px] flex-col gap-3 border-l border-semantic-bg-line pb-8">
             <div className="flex items-center justify-center gap-3 rounded-tr border-b border-semantic-bg-line bg-semantic-bg-base-bg p-3 pl-3">
