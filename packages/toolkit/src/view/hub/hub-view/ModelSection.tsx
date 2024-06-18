@@ -157,7 +157,7 @@ const ModelSection = ({ tabValue }: ModelSectionProps) => {
           allModels.length === 0 ? (
             <div className="flex h-[500px] w-full shrink-0 grow-0 items-center justify-center rounded-sm border border-semantic-bg-line">
               <p className="text-semantic-fg-secondary product-body-text-2-semibold">
-                Let's create your first model! 🙌
+                Let&rsquo;s create your first model! 🙌
               </p>
             </div>
           ) : (
