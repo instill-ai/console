@@ -88,14 +88,14 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
       </div>
       <Separator orientation="horizontal" className="mb-6" />
       <div className="flex w-full flex-col gap-2">
-        <div className="flex justify-start">
+        {/* <div className="flex justify-start">
           <Button variant={"secondaryGrey"}>
             <Icons.Plus className="h-4 w-4 stroke-semantic-fg-secondary" />
             <div className="text-semantic-fg-primary product-body-text-3-semibold">
-              Add File Markdown
+              Add File
             </div>
           </Button>
-        </div>
+        </div> */}
         <div className="flex  rounded border border-semantic-bg-line bg-semantic-bg-primary">
           <div className="flex flex-grow">
             <div className="flex flex-grow flex-col">
