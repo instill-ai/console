@@ -83,17 +83,17 @@ export const MarkdownTab = ({ knowledgeBase }: MarkdownTabProps) => {
           {knowledgeBase.name}
         </p>
         {/* Coming in V2 */}
-        {/* <div className="space-x-4">
-                    <Button variant="secondaryGrey" size="lg">
-                        Publish
-                    </Button>
-                    <Button variant="secondaryGrey" size="lg">
-                        Update Knowledge Base
-                    </Button>
-                    <Button variant="primary" size="lg">
-                        Export Data
-                    </Button>
-                </div> */}
+        <div className="space-x-4">
+          <Button variant="secondaryGrey" size="lg">
+            Publish
+          </Button>
+          <Button variant="secondaryGrey" size="lg">
+            Update Knowledge Base
+          </Button>
+          <Button variant="primary" size="lg">
+            Export Data
+          </Button>
+        </div>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
       <div className="flex w-full flex-col gap-2">

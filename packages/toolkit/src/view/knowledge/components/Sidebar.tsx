@@ -61,6 +61,7 @@ export const Sidebar = ({
       >
         Catalog / Files
       </div>
+      {/* 
       {activeTab === "catalog" && (
         <>
           <div
@@ -127,7 +128,7 @@ export const Sidebar = ({
 
       >
         Retrieve Test
-      </div>
+      </div> */}
     </aside>
   );
 };

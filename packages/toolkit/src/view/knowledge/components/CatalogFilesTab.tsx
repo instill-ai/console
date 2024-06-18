@@ -1,7 +1,3 @@
-{
-  /* This tab is coming in V2 */
-}
-
 import {
   Button,
   Icons,
@@ -79,12 +75,12 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
         </p>
         {/* Coming in V2 */}
         <div className="space-x-4">
-          <Button variant="secondaryGrey" size="lg">
+          {/* <Button variant="secondaryGrey" size="lg">
             Publish
           </Button>
           <Button variant="secondaryGrey" size="lg">
             Update Knowledge Base
-          </Button>
+          </Button> */}
           <Button variant="primary" size="lg">
             Export Data
           </Button>
@@ -235,7 +231,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
               ))}
             </div>
           </div>
-          <div className="flex w-[375px] flex-col gap-3 border-l border-semantic-bg-line pb-8">
+          {/* <div className="flex w-[375px] flex-col gap-3 border-l border-semantic-bg-line pb-8">
             <div className="flex items-center justify-center gap-3 rounded-tr border-b border-semantic-bg-line bg-semantic-bg-base-bg p-3 pl-3">
               <div className="text-semantic-fg-primary product-body-text-3-medium">
                 Preview
@@ -284,7 +280,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                 delete
               </Button>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
