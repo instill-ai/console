@@ -96,161 +96,109 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
             </div>
           </Button>
         </div> */}
-        <div className="flex  rounded border border-semantic-bg-line bg-semantic-bg-primary">
-          <div className="flex flex-grow">
-            <div className="flex flex-grow flex-col">
-              <div className="flex items-center justify-center gap-3 border-b border-semantic-bg-line bg-semantic-bg-base-bg p-2">
-                <div className="flex items-center gap-1">
-                  <div className="text-semantic-fg-primary product-body-text-3-medium">
-                    File name
-                  </div>
-                  <Button
-                    variant="tertiaryGrey"
-                    size="sm"
-                    onClick={() => requestSort("fileName")}
-                  >
-                    {sortConfig.key === "fileName" &&
-                      sortConfig.direction === "ascending" ? (
-                      <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
-                    ) : (
-                      <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
-                    )}
+        <div className="flex rounded border border-semantic-bg-line bg-semantic-bg-primary">
+          <div className="flex flex-col w-full">
+            <div className="grid grid-cols-5 items-center h-[72px] border-b border-semantic-bg-line bg-semantic-bg-base-bg">
+              <div className="flex items-center justify-center gap-1">
+                <div className="text-semantic-fg-primary product-body-text-3-medium">
+                  File name
+                </div>
+                <Button
+                  variant="tertiaryGrey"
+                  size="sm"
+                  onClick={() => requestSort("fileName")}
+                >
+                  {sortConfig.key === "fileName" &&
+                    sortConfig.direction === "ascending" ? (
+                    <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                  ) : (
+                    <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                  )}
+                </Button>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <div className="text-semantic-fg-primary product-body-text-3-medium">
+                  File type
+                </div>
+                <Button
+                  variant="tertiaryGrey"
+                  size="sm"
+                  onClick={() => requestSort("fileType")}
+                >
+                  {sortConfig.key === "fileType" &&
+                    sortConfig.direction === "ascending" ? (
+                    <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                  ) : (
+                    <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                  )}
+                </Button>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <div className="text-semantic-fg-primary product-body-text-3-medium">
+                  Processed status
+                </div>
+                <Button
+                  variant="tertiaryGrey"
+                  size="sm"
+                  onClick={() => requestSort("processedStatus")}
+                >
+                  {sortConfig.key === "processedStatus" &&
+                    sortConfig.direction === "ascending" ? (
+                    <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                  ) : (
+                    <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                  )}
+                </Button>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <div className="text-semantic-fg-primary product-body-text-3-medium">
+                  Create time
+                </div>
+                <Button
+                  variant="tertiaryGrey"
+                  size="sm"
+                  onClick={() => requestSort("createTime")}
+                >
+                  {sortConfig.key === "createTime" &&
+                    sortConfig.direction === "ascending" ? (
+                    <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                  ) : (
+                    <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                  )}
+                </Button>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <div className="text-semantic-fg-primary product-body-text-3-medium">
+                  Delete File
+                </div>
+              </div>
+            </div>
+            {sortedData.map((item, index) => (
+              <div key={index} className="grid grid-cols-5 items-center h-[72px]">
+                <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                  {item.fileName}
+                </div>
+                <div className="flex items-center justify-center">
+                  <Tag size="sm" variant="lightNeutral">
+                    {item.fileType}
+                  </Tag>
+                </div>
+                <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                  {item.processedStatus}
+                </div>
+                <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                  {item.createTime}
+                </div>
+                <div className="flex items-center justify-center">
+                  <Button variant="tertiaryDanger" size="sm">
+                    Delete
                   </Button>
                 </div>
+                {index !== sortedData.length - 1 && (
+                  <Separator orientation="horizontal" className="col-span-5" />
+                )}
               </div>
-              {sortedData.map((item, index) => (
-                <div key={index}>
-                  <div className="flex h-16 items-center justify-center px-3">
-                    <div className="text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                      {item.fileName}
-                    </div>
-                  </div>
-                  {index !== sortedData.length - 1 && (
-                    <Separator orientation="horizontal" />
-                  )}
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center justify-center gap-3 border-b border-semantic-bg-line bg-semantic-bg-base-bg p-2">
-                <div className="flex items-center gap-1">
-                  <div className="text-semantic-fg-primary product-body-text-3-medium">
-                    File type
-                  </div>
-                  <Button
-                    variant="tertiaryGrey"
-                    size="sm"
-                    onClick={() => requestSort("fileType")}
-                  >
-                    {sortConfig.key === "fileType" &&
-                      sortConfig.direction === "ascending" ? (
-                      <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
-                    ) : (
-                      <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
-                    )}
-                  </Button>
-                </div>
-              </div>
-              {sortedData.map((item, index) => (
-                <div key={index}>
-                  <div className="flex h-16 items-center justify-center px-3">
-                    <Tag size="sm" variant="lightNeutral">
-                      {item.fileType}
-                    </Tag>
-                  </div>
-                  {index !== sortedData.length - 1 && (
-                    <Separator orientation="horizontal" />
-                  )}
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center justify-center gap-3 border-b border-semantic-bg-line bg-semantic-bg-base-bg p-2">
-                <div className="flex items-center gap-1">
-                  <div className="text-semantic-fg-primary product-body-text-3-medium">
-                    Processed status
-                  </div>
-                  <Button
-                    variant="tertiaryGrey"
-                    size="sm"
-                    onClick={() => requestSort("processedStatus")}
-                  >
-                    {sortConfig.key === "processedStatus" &&
-                      sortConfig.direction === "ascending" ? (
-                      <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
-                    ) : (
-                      <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
-                    )}
-                  </Button>
-                </div>
-              </div>
-              {sortedData.map((item, index) => (
-                <div key={index}>
-                  <div className="flex h-16 items-center justify-center px-3">
-                    <div className="text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                      {item.processedStatus}
-                    </div>
-                  </div>
-                  {index !== sortedData.length - 1 && (
-                    <Separator orientation="horizontal" />
-                  )}
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center justify-center gap-3 border-b border-semantic-bg-line bg-semantic-bg-base-bg p-2">
-                <div className="flex items-center gap-1">
-                  <div className="text-semantic-fg-primary product-body-text-3-medium">
-                    Create time
-                  </div>
-                  <Button
-                    variant="tertiaryGrey"
-                    size="sm"
-                    onClick={() => requestSort("createTime")}
-                  >
-                    {sortConfig.key === "createTime" &&
-                      sortConfig.direction === "ascending" ? (
-                      <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
-                    ) : (
-                      <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
-                    )}
-                  </Button>
-                </div>
-              </div>
-              {sortedData.map((item, index) => (
-                <div key={index}>
-                  <div className="flex h-16 items-center justify-center px-3">
-                    <div className="text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                      {item.createTime}
-                    </div>
-                  </div>
-                  {index !== sortedData.length - 1 && (
-                    <Separator orientation="horizontal" />
-                  )}
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center justify-center gap-3 border-b border-semantic-bg-line bg-semantic-bg-base-bg p-2">
-                <div className="flex items-center gap-1">
-                  <div className="text-semantic-fg-primary product-body-text-3-medium">
-                    Delete Time
-                  </div>
-                </div>
-              </div>
-              {sortedData.map((item, index) => (
-                <div key={index}>
-                  <div className="flex h-16 items-center justify-center px-3">
-                    <Button variant="tertiaryDanger" size="lg">
-                      Delete
-                    </Button>
-                  </div>
-                  {index !== sortedData.length - 1 && (
-                    <Separator orientation="horizontal" />
-                  )}
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
           {/* <div className="flex w-[375px] flex-col gap-3 border-l border-semantic-bg-line pb-8">
             <div className="flex items-center justify-center gap-3 rounded-tr border-b border-semantic-bg-line bg-semantic-bg-base-bg p-3 pl-3">
