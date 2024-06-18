@@ -115,7 +115,7 @@ export const EditKnowledgeDialog = ({
                 </Form.Item>
               )}
             />
-            <Form.Field
+            {/* <Form.Field
               control={form.control}
               name="tags"
               render={({ field }) => (
@@ -140,7 +140,7 @@ export const EditKnowledgeDialog = ({
                   <Form.Message />
                 </Form.Item>
               )}
-            />
+            /> */}
             <div className="mt-8 flex justify-end gap-x-3">
               <Button variant="secondaryGrey" onClick={onClose}>
                 Cancel
