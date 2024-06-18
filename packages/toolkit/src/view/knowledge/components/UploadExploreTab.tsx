@@ -145,7 +145,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
 
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col mb-32">
             <div className="flex items-center justify-between mb-5">
                 <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
                     {knowledgeBase.name}
@@ -232,6 +232,11 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                 </div>
             </div>
             <FilePreview />
+            <div className="flex justify-end">
+                <Button variant="primary" size="lg">
+                    Process File
+                </Button>
+            </div>
         </div>
     );
 };
