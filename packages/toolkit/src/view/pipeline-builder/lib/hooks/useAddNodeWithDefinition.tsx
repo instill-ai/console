@@ -102,7 +102,7 @@ export function useAddNodeWithDefinition({
         nodePrefix
       );
 
-      const nodeID = `${nodePrefix}_${nodeIndex}`;
+      const nodeID = `${nodePrefix}-${nodeIndex}`;
 
       let newNodes = nodes;
 

@@ -20,7 +20,7 @@ import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoadingSpin } from "../../../components";
-import { validateInstillID } from "../../../server";
+import { validateInstillResourceID } from "../../../server";
 import { InstillErrors } from "../../../constant";
 
 const CreateTokenSchema = z
@@ -28,10 +28,10 @@ const CreateTokenSchema = z
     id: z.string().min(1, "Token id is required"),
   })
   .superRefine((state, ctx) => {
-    if (!validateInstillID(state.id)) {
+    if (!validateInstillResourceID(state.id)) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: InstillErrors.IDInvalidError,
+        message: InstillErrors.ResourceIDInvalidError,
         path: ["id"],
       });
     }

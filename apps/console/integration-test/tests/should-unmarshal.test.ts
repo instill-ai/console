@@ -4,7 +4,7 @@ import { PipelineBuilderPage } from "../pages/pipeline-builder.page";
 import { createPipeline, deletePipeline } from "../helpers/actions/pipeline";
 
 export function shouldUnmarshalJSONInput() {
-  const pipelineID = "unmarshal_test";
+  const pipelineID = "unmarshal-test";
   const startFieldKey = "json";
   const jsonValue = {
     foo: "bar",

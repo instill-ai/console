@@ -35,7 +35,7 @@ import {
 } from "../lib";
 import { InstillErrors } from "../constant";
 import { LoadingSpin } from "./LoadingSpin";
-import { env, validateInstillID } from "../server";
+import { env, validateInstillResourceID } from "../server";
 import { useRouter } from "next/navigation";
 
 const ClonePipelineSchema = z
@@ -45,10 +45,10 @@ const ClonePipelineSchema = z
     brief: z.string().optional().nullable(),
   })
   .superRefine((state, ctx) => {
-    if (!validateInstillID(state.id)) {
+    if (!validateInstillResourceID(state.id)) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: InstillErrors.IDInvalidError,
+        message: InstillErrors.ResourceIDInvalidError,
         path: ["id"],
       });
     }

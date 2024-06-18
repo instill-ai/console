@@ -15,5 +15,5 @@ export function transformConnectorDefinitionIDToComponentIDPrefix(id: string) {
 
       return true;
     })
-    .join("_");
+    .join("-");
 }
