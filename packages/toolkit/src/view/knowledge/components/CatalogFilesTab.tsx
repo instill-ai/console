@@ -44,8 +44,9 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     key: "",
     direction: "",
   });
+  const [data, setData] = useState(mockData);
 
-  const sortedData = [...mockData].sort((a, b) => {
+  const sortedData = [...data].sort((a, b) => {
     if (
       a[sortConfig.key as keyof typeof a] < b[sortConfig.key as keyof typeof b]
     ) {
@@ -65,6 +66,10 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
       direction = "descending";
     }
     setSortConfig({ key, direction });
+  };
+
+  const handleDelete = (fileName: string) => {
+    setData((prevData) => prevData.filter((item) => item.fileName !== fileName));
   };
 
   return (
@@ -190,7 +195,12 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   {item.createTime}
                 </div>
                 <div className="flex items-center justify-center">
-                  <Button variant="tertiaryDanger" size="sm">
+                  <Button
+                    variant="tertiaryDanger"
+                    size="lg"
+                    className="h-8"
+                    onClick={() => handleDelete(item.fileName)}
+                  >
                     Delete
                   </Button>
                 </div>
