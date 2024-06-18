@@ -94,7 +94,7 @@ export const NavLink = ({ title, Icon, pathname }: NavLinkProps) => {
         router.push(`/${namespaceAnchor}/${pathname}`);
       }}
       className={cn(
-        "group flex flex-row gap-x-2 border-b-2 border-[#316FED] py-3 product-button-button-1 hover:text-semantic-accent-default",
+        "group flex h-10 flex-row gap-x-2 border-b-2 border-[#316FED] py-3 product-button-button-1 hover:text-semantic-accent-default",
         isOnIt
           ? "border-opacity-100 text-semantic-fg-primary"
           : "border-opacity-0 text-semantic-fg-disabled"
