@@ -75,6 +75,34 @@ export const APITokenTable = (props: APITokenTableProps) => {
       },
     },
     {
+      accessorKey: "lastUseTime",
+      header: ({ column }) => {
+        return (
+          <div className="text-center">
+            <Button
+              className="gap-x-2 py-0"
+              variant="tertiaryGrey"
+              size="sm"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              <span className="min-w-[130px]">Last Used</span>
+              <SortIcon type={column.getIsSorted()} />
+            </Button>
+          </div>
+        );
+      },
+
+      cell: ({ row }) => {
+        return (
+          <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
+            {formatDate(row.getValue("lastUseTime"))}
+          </div>
+        );
+      },
+    },
+    {
       accessorKey: "uid",
       header: () => <div className="max-w-[100px] text-center"></div>,
       cell: ({ row }) => {

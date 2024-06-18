@@ -56,7 +56,8 @@ export type ApiToken = {
   updateTime: string;
   accessToken: string;
   state: ApiTokenState;
-  token_type: string;
+  tokenType: string;
+  lastUserTime: string;
 };
 
 export type ApiTokenState =
