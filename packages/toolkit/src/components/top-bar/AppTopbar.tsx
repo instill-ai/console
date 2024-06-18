@@ -54,7 +54,7 @@ export const AppTopbar = ({
         )}
       >
         <div className="flex flex-row">
-          <div className="flex flex-row items-center gap-x-4">
+          <div className="flex flex-row items-center ">
             <button
               onClick={() => {
                 if (env("NEXT_PUBLIC_APP_ENV") === "CLOUD") {
@@ -63,6 +63,7 @@ export const AppTopbar = ({
                   navigate(`/${me.data?.id}/pipelines`);
                 }
               }}
+              className="mr-4"
             >
               <Logo variant="colourLogomark" width={32} />
             </button>
@@ -72,6 +73,7 @@ export const AppTopbar = ({
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              className="mr-3"
             >
               <path
                 d="M7 22L17 2"
@@ -117,7 +119,7 @@ export const AppTopbar = ({
         </div>
       </div>
       {disabledTopbarNav ? null : (
-        <div className="box-border flex h-[var(--topbar-nav-height)] flex-row gap-x-6 border-b border-semantic-bg-line border-x-violet-50 px-8">
+        <div className="box-border flex h-[var(--topbar-nav-height)] flex-row items-end gap-x-6 border-b border-semantic-bg-line border-x-violet-50 px-8">
           <NavLinks />
         </div>
       )}

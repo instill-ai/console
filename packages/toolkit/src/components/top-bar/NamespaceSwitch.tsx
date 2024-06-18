@@ -288,44 +288,46 @@ export const NamespaceSwitch = () => {
       disabled={namespacesRemainingCredit.isSuccess ? false : true}
     >
       <Select.Trigger
-        icon={
-          <Icons.ChevronSelectorVertical className="h-4 w-4 stroke-semantic-fg-primary" />
-        }
+        icon={<React.Fragment />}
         className={cn(
-          "!w-[150px] !border-none hover:!bg-semantic-bg-secondary",
+          "!w-[136px] !border-none !p-1 hover:!bg-semantic-bg-secondary",
           switchIsOpen ? "!bg-semantic-bg-secondary" : "!bg-semantic-bg-primary"
         )}
       >
-        <Select.Value asChild>
-          {selectedNamespace ? (
-            // We force the Select.Value to re-render when the selectedNamespace changes
-            // to update the image of the Select.Value
+        {selectedNamespace ? (
+          // We force the Select.Value to re-render when the selectedNamespace changes
+          // to update the image of the Select.Value
+          <Select.Value>
             <div
               key={selectedNamespace.id}
-              className="flex flex-row items-center gap-x-2"
+              className="flex w-[128px] flex-row items-center justify-between gap-x-2"
             >
-              <NamespaceAvatarWithFallback.Root
-                src={selectedNamespace.avatarUrl ?? null}
-                className="h-8 w-8 rounded-full"
-                fallback={
-                  <NamespaceAvatarWithFallback.Fallback
-                    namespaceId={selectedNamespace.id}
-                    displayName={selectedNamespace.displayName}
-                  />
-                }
-              />
+              <div className="flex w-full flex-row items-center gap-x-2">
+                <NamespaceAvatarWithFallback.Root
+                  src={selectedNamespace.avatarUrl ?? null}
+                  className="h-8 w-8 rounded-full"
+                  fallback={
+                    <NamespaceAvatarWithFallback.Fallback
+                      namespaceId={selectedNamespace.id}
+                      displayName={selectedNamespace.displayName}
+                    />
+                  }
+                />
 
-              <p className="line-clamp-1 text-semantic-fg-primary product-body-text-3-medium">
-                {truncateDisplayName(selectedNamespace.id)}
-              </p>
+                <p className="line-clamp-1 break-all text-semantic-fg-primary product-body-text-3-medium">
+                  {truncateDisplayName(selectedNamespace.id)}
+                </p>
+              </div>
+
+              <Icons.ChevronSelectorVertical className="h-4 w-4 stroke-semantic-fg-primary" />
             </div>
-          ) : (
-            <div className="flex flex-row items-center gap-x-2">
-              <Skeleton className="h-8 w-8 rounded-full" />
-              <Skeleton className="h-6 w-16 rounded" />
-            </div>
-          )}
-        </Select.Value>
+          </Select.Value>
+        ) : (
+          <div className="flex w-[128px] flex-row items-center gap-x-2">
+            <Skeleton className="h-8 w-8 rounded-full" />
+            <Skeleton className="h-6 w-16 rounded" />
+          </div>
+        )}
       </Select.Trigger>
       <Select.Content viewportClassName="!p-0" className="!w-[255px] !p-0">
         <div className="flex flex-col">

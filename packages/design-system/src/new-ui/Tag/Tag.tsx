@@ -9,10 +9,10 @@ const tagVariants = cva(
   {
     variants: {
       variant: {
-        default: "text-semantic-fg-primary border border-semantic-bg-line",
+        default: "text-semantic-fg-primary",
         lightBlue: "bg-semantic-accent-bg text-semantic-accent-default",
         borderBlue:
-          "text-semantic-accent-hover border border-semantic-accent-default",
+          "border text-semantic-accent-hover border border-semantic-accent-default",
         darkBlue: "bg-semantic-accent-default text-semantic-fg-on-default",
         lightRed: "bg-semantic-error-bg text-semantic-error-default",
         lightYellow: "bg-semantic-warning-bg text-semantic-warning-default",
