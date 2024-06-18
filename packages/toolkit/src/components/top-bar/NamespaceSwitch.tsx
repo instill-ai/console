@@ -167,9 +167,7 @@ export const NamespaceSwitch = () => {
         if (currentNamespaceId && currentNamespaceType) {
           if (currentNamespaceType === "NAMESPACE_USER" && user.isSuccess) {
             namespaceAnchor = user.data.id;
-          }
-
-          if (
+          } else if (
             currentNamespaceType === "NAMESPACE_ORGANIZATION" &&
             organization.isSuccess
           ) {
@@ -190,9 +188,7 @@ export const NamespaceSwitch = () => {
         if (currentNamespaceId && currentNamespaceType) {
           if (currentNamespaceType === "NAMESPACE_USER" && user.isSuccess) {
             namespaceAnchor = user.data.id;
-          }
-
-          if (
+          } else if (
             currentNamespaceType === "NAMESPACE_ORGANIZATION" &&
             organization.isSuccess
           ) {
@@ -225,7 +221,7 @@ export const NamespaceSwitch = () => {
 
   return (
     <Select.Root
-      value={navigationNamespaceAnchor ?? ""}
+      value={selectedNamespace?.id ?? ""}
       onValueChange={(value) => {
         updateNavigationNamespaceAnchor(() => value);
 
@@ -235,12 +231,27 @@ export const NamespaceSwitch = () => {
 
         const pathnameArray = pathname.split("/");
 
-        // When the current page is the organizatino setting page, and user switch
-        // to another organizatino namespace, we need to switch the page too
-        if (routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION") {
-          if (pathnameArray[2] === "organization-settings") {
+        const targetNamespace = namespaces.find((e) => e.id === value);
+
+        // When the current page is the organization setting page, and user switch
+        // to another organization namespace, we need to switch the page to the org
+        // namespace's setting page
+
+        // If the switched namespace is a user, not org, then we need to redirect
+        // the user to their own setting page
+
+        if (
+          routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION" &&
+          pathnameArray[2] === "organization-settings"
+        ) {
+          if (targetNamespace && targetNamespace.type === "organization") {
             pathnameArray[1] = value;
             navigate(pathnameArray.join("/"));
+            return;
+          }
+
+          if (targetNamespace && targetNamespace.type === "user") {
+            navigate(`/settings`);
             return;
           }
         }
@@ -260,7 +271,6 @@ export const NamespaceSwitch = () => {
 
         // When the user is in its personal setting page and then he switch to organization
         // namespace, we need to switch the page to the organization setting page
-        const targetNamespace = namespaces.find((e) => e.id === value);
 
         if (
           targetNamespace &&
@@ -282,13 +292,18 @@ export const NamespaceSwitch = () => {
           <Icons.ChevronSelectorVertical className="h-4 w-4 stroke-semantic-fg-primary" />
         }
         className={cn(
-          "!w-[150px] !border-none  hover:!bg-semantic-bg-secondary",
+          "!w-[150px] !border-none hover:!bg-semantic-bg-secondary",
           switchIsOpen ? "!bg-semantic-bg-secondary" : "!bg-semantic-bg-primary"
         )}
       >
         <Select.Value asChild>
           {selectedNamespace ? (
-            <div className="flex flex-row items-center gap-x-2">
+            // We force the Select.Value to re-render when the selectedNamespace changes
+            // to update the image of the Select.Value
+            <div
+              key={selectedNamespace.id}
+              className="flex flex-row items-center gap-x-2"
+            >
               <NamespaceAvatarWithFallback.Root
                 src={selectedNamespace.avatarUrl ?? null}
                 className="h-8 w-8 rounded-full"
