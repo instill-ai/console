@@ -17,6 +17,7 @@ import { NamespaceAvatarWithFallback } from "./NamespaceAvatarWithFallback";
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  updateNavigationNamespaceAnchor: store.updateNavigationNamespaceAnchor,
 });
 
 export type UserProfileCardProps = {
@@ -33,7 +34,8 @@ export const UserProfileCard = ({
   totalPublicPipelines,
   visitorCta,
 }: UserProfileCardProps) => {
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, updateNavigationNamespaceAnchor } =
+    useInstillStore(useShallow(selector));
 
   const router = useRouter();
 
@@ -98,6 +100,9 @@ export const UserProfileCard = ({
                     key={membership.organization.id}
                     onClick={() => {
                       router.push(`/${membership.organization.id}`);
+                      updateNavigationNamespaceAnchor(
+                        () => membership.organization.id
+                      );
                     }}
                     className="flex !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
                   >
