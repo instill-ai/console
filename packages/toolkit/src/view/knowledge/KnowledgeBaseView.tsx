@@ -20,7 +20,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
     React.useState<KnowledgeBase | null>(null);
   const [activeTab, setActiveTab] = React.useState("knowledge-base");
-  const [selectedTextOption, setSelectedTextOption] = React.useState(null);
+  const [selectedTextOption, setSelectedTextOption] = React.useState(null as Nullable<string>);
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [isDeleted, setIsDeleted] = React.useState(false);
   const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] =
@@ -34,7 +34,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     setActiveTab(tab);
   };
 
-  const handleTextOptionChange = (option: Nullable<string>) => {
+  const handleTextOptionChange = (option: string | null) => {
     setSelectedTextOption(option);
   };
 
