@@ -112,7 +112,7 @@ export const CreateKnowledgeDialog = ({
               })
             )}
           >
-            <div className="flex space-x-3">
+            <div className="flex sp">
               <Form.Field
                 control={form.control}
                 name="namespaceId"
@@ -257,7 +257,7 @@ export const CreateKnowledgeDialog = ({
                 </Form.Item>
               )}
             />
-            <Form.Field
+            {/* <Form.Field
               control={form.control}
               name="tags"
               render={({ field }) => (
@@ -282,7 +282,7 @@ export const CreateKnowledgeDialog = ({
                   <Form.Message />
                 </Form.Item>
               )}
-            />
+            /> */}
             <div className="mt-8 flex justify-end gap-x-3">
               <Button variant="secondaryGrey" onClick={onClose}>
                 Cancel

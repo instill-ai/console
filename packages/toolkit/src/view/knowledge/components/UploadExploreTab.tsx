@@ -81,7 +81,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
         reader.onload = (event) => {
             const content = btoa(event.target?.result as string);
 
-            uploadKnowledgeBaseFile.mutate(
+            uploadKnowledgeBaseFile.mutate( 
                 {
                     ownerId: ownerID,
                     knowledgeBaseId: knowledgeBase.id,
@@ -154,7 +154,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
             </div>
             <Separator orientation="horizontal" className="mb-6" />
             <Form.Root {...form}>
-                <form className="space-y-4 mb-6">
+                <form className="space-y-4 mb-2">
                     <Form.Field
                         control={form.control}
                         name="file"
