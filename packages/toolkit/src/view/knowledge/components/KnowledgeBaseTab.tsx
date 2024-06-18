@@ -4,84 +4,115 @@ import { KnowledgeBaseCard } from "./KnowledgeBaseCard";
 import { CreateKnowledgeBaseCard } from "./CreateKnowledgeBaseCard";
 import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
 import {
-  useGetKnowledgeBases,
-  useCreateKnowledgeBase,
+    useGetKnowledgeBases,
+    useCreateKnowledgeBase,
 } from "../../../lib/react-query-service/knowledge";
 import {
-  InstillStore,
-  useAuthenticatedUser,
-  useInstillStore,
-  useShallow,
-  Nullable,
+    InstillStore,
+    useAuthenticatedUser,
+    useInstillStore,
+    useShallow,
+    Nullable,
+    useUserMemberships,
 } from "../../../lib";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import * as z from "zod";
+import { CreateKnowledgeFormSchema } from "./CreateKnowledgeDialog";
 
 type KnowledgeBaseTabProps = {
-  onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
-  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
-  accessToken: string | null;
+    onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
+    onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
+    accessToken: string | null;
 };
 
 export const KnowledgeBaseTab = ({
-  onKnowledgeBaseSelect,
-  //   onDeleteKnowledgeBase,
-  accessToken,
+    onKnowledgeBaseSelect,
+    //   onDeleteKnowledgeBase,
+    accessToken,
 }: KnowledgeBaseTabProps) => {
-  const [loading, setLoading] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
 
-  const selector = (store: InstillStore) => ({
-    accessToken: store.accessToken,
-    enabledQuery: store.enabledQuery,
-  });
-
-  const { enabledQuery } = useInstillStore(useShallow(selector));
-
-  const me = useAuthenticatedUser({
-    enabled: enabledQuery,
-    accessToken,
-  });
-  const userID: Nullable<string> = me.isSuccess ? me.data.id : null;
-
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
-  const [knowledgeBases, setKnowledgeBases] = React.useState<KnowledgeBase[]>(
-    []
-  );
-  const getKnowledgeBases = useGetKnowledgeBases({
-    accessToken,
-    uid: userID,
-    enabled: true,
-  });
-  const createKnowledgeBase = useCreateKnowledgeBase();
-
-  React.useEffect(() => {
-    setLoading(true);
-    getKnowledgeBases.refetch().then((result) => {
-      setKnowledgeBases(result.data || []);
-      setLoading(false);
+    const selector = (store: InstillStore) => ({
+        accessToken: store.accessToken,
+        enabledQuery: store.enabledQuery,
     });
-  }, [userID, accessToken]);
 
-  const handleCreateKnowledgeSubmit = (data: {
-    name: string;
-    description: string;
-    tags?: string[];
-  }) => {
-    createKnowledgeBase.mutate(
-      {
-        payload: {
-          ...data,
-          tags: data.tags ?? [],
-        },
+    const { enabledQuery } = useInstillStore(useShallow(selector));
+
+    const me = useAuthenticatedUser({
+        enabled: enabledQuery,
         accessToken,
-      },
-      {
-        onSuccess: (newKnowledgeBase) => {
-          setKnowledgeBases([...knowledgeBases, newKnowledgeBase]);
-          setIsCreateDialogOpen(false);
-        },
-      }
+    });
+    const userID: Nullable<string> = me.isSuccess ? me.data.id : null;
+
+    const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
+    const [knowledgeBases, setKnowledgeBases] = React.useState<KnowledgeBase[]>(
+        []
     );
-  };
+    const getKnowledgeBases = useGetKnowledgeBases({
+        accessToken,
+        uid: userID,
+        enabled: true,
+    });
+    const createKnowledgeBase = useCreateKnowledgeBase();
+
+    const organizations = useUserMemberships({
+        enabled: enabledQuery && me.isSuccess,
+        userID: me.isSuccess ? me.data.id : null,
+        accessToken,
+    });
+
+    const organizationsAndUserList = React.useMemo(() => {
+        const orgsAndUserList = [];
+        if (organizations.isSuccess && organizations.data) {
+            organizations.data.forEach((org) => {
+                orgsAndUserList.push(org.organization);
+            });
+        }
+        if (me.isSuccess && me.data) {
+            orgsAndUserList.push(me.data);
+        }
+        return orgsAndUserList;
+    }, [organizations.isSuccess, organizations.data, me.isSuccess, me.data]);
+
+    React.useEffect(() => {
+        setLoading(true);
+        getKnowledgeBases.refetch().then((result) => {
+            setKnowledgeBases(result.data || []);
+            setLoading(false);
+        });
+    }, [userID, accessToken]);
+
+    const handleCreateKnowledgeSubmit = async (
+        data: z.infer<typeof CreateKnowledgeFormSchema>
+    ) => {
+        const namespace = organizationsAndUserList.find(
+            (account) => account.id === data.namespaceId
+        )?.name;
+
+        if (namespace) {
+            try {
+                const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
+                    payload: {
+                        ...data,
+                        tags: data.tags ?? [],
+                    },
+                    accessToken: accessToken,
+                    // entityName: namespace,
+                });
+                setKnowledgeBases((prevKnowledgeBases) => [
+                    ...prevKnowledgeBases,
+                    newKnowledgeBase,
+                ]);
+                setIsCreateDialogOpen(false);
+            } catch (error) {
+                console.error("Error creating knowledge base:", error);
+            }
+        } else {
+            console.error("Invalid namespace selected");
+        }
+    };
+
 
   return (
     <div className="flex flex-col">
