@@ -51,7 +51,6 @@ export const LoginPageRender = () => {
       });
 
       if (data.password === "password") {
-        console.log(res);
         setIsDefaultPWD(true);
         setAccessToken(res);
         setLoginIsComplete(true);
@@ -80,9 +79,8 @@ export const LoginPageRender = () => {
   }
 
   async function changePassword(
-    data: z.infer<typeof ChangePasswordFormSchema>,
+    data: z.infer<typeof ChangePasswordFormSchema>
   ) {
-    console.log("changePassword", data, accessToken);
     if (!accessToken) {
       return;
     }

@@ -17,8 +17,9 @@ import {
   useUserPipeline,
 } from "../../../../../lib";
 import { isAxiosError } from "axios";
-import { EntityAvatar, LoadingSpin } from "../../../../../components";
+import { LoadingSpin } from "../../../../../components";
 import { env } from "../../../../../server";
+import { NamespaceAvatarWithFallback } from "../../../../../components/NamespaceAvatarWithFallback";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -28,12 +29,14 @@ const selector = (store: InstillStore) => ({
 
 export const TabShare = ({
   pipelineName,
-  entity,
   id,
+  namespaceId,
+  ownerDisplayName,
 }: {
   pipelineName: Nullable<string>;
-  entity: Nullable<string>;
   id: Nullable<string>;
+  namespaceId: Nullable<string>;
+  ownerDisplayName: Nullable<string>;
 }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken, enableQuery, pipelineIsNew } = useInstillStore(
@@ -75,7 +78,7 @@ export const TabShare = ({
     if (pipelineIsPublic) {
       const link = `${env(
         "NEXT_PUBLIC_CONSOLE_BASE_URL"
-      )}/${entity}/pipelines/${id}`;
+      )}/${namespaceId}/pipelines/${id}`;
 
       navigator.clipboard.writeText(link);
       setIsUpdatingShareCodePermission(false);
@@ -119,7 +122,7 @@ export const TabShare = ({
 
         link = `${env(
           "NEXT_PUBLIC_CONSOLE_BASE_URL"
-        )}/${entity}/pipelines/${id}?view=${pipeline.sharing.shareCode?.code}`;
+        )}/${namespaceId}/pipelines/${id}?view=${pipeline.sharing.shareCode?.code}`;
         setIsUpdatingShareCodePermission(false);
       } catch (error) {
         setIsUpdatingShareCodePermission(false);
@@ -142,7 +145,7 @@ export const TabShare = ({
     } else {
       link = `${env(
         "NEXT_PUBLIC_CONSOLE_BASE_URL"
-      )}/${entity}/pipelines/${id}?view=${
+      )}/${namespaceId}/pipelines/${id}?view=${
         pipeline.data.sharing.shareCode?.code
       }`;
       setIsUpdatingShareCodePermission(false);
@@ -160,7 +163,7 @@ export const TabShare = ({
     pipeline.data,
     pipelineIsPublic,
     accessToken,
-    entity,
+    namespaceId,
     id,
     updatePipeline,
     toast,
@@ -207,16 +210,20 @@ export const TabShare = ({
       <Separator orientation="horizontal" className="my-4" />
       <div className="flex flex-row">
         <div className="mr-auto flex flex-row gap-x-2">
-          <EntityAvatar
-            src={pipelineAvatar}
-            entityName={pipeline.data?.ownerName ?? ""}
-            className="h-[30px] w-[30px]"
-            fallbackImg={
-              <div className="flex h-[30px] w-[30px] rounded-full bg-semantic-bg-secondary">
-                <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
-              </div>
-            }
-          />
+          {namespaceId ? (
+            <NamespaceAvatarWithFallback.Root
+              src={pipelineAvatar}
+              className="my-auto h-6 w-6"
+              fallback={
+                <NamespaceAvatarWithFallback.Fallback
+                  namespaceId={namespaceId}
+                  displayName={ownerDisplayName}
+                  className="my-auto flex h-6 w-6"
+                />
+              }
+            />
+          ) : null}
+
           <p className="my-auto text-semantic-fg-disabled product-body-text-3-medium">
             {pipeline.data?.ownerName.split("/")[1]}
           </p>

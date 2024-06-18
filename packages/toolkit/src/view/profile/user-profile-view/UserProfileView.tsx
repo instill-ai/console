@@ -88,6 +88,7 @@ export const UserProfileView = () => {
             }
             twitterLink={user.data.profile?.socialProfilesLinks?.x ?? null}
             githubLink={user.data.profile?.socialProfilesLinks?.github ?? null}
+            displayName={user.data.profile?.displayName ?? null}
           />
         ) : (
           <UserProfileBio.Skeleton />

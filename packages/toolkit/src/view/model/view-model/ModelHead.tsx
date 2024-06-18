@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { EntityAvatar, StateLabel } from "../../../components";
+import { StateLabel } from "../../../components";
 import {
   GitHubIcon,
   Icons,
@@ -11,6 +11,7 @@ import {
 } from "@instill-ai/design-system";
 import { Model, ModelState } from "../../../lib";
 import { ModelTabNames } from "../../../server";
+import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
 
 export type HeadProps = {
   selectedTab: ModelTabNames;
@@ -20,8 +21,9 @@ export type HeadProps = {
   modelState: Nullable<ModelState>;
 };
 
-const OWNER = {
+const DEFAULT_OWNER = {
   avatarUrl: null,
+  displayName: null,
   id: null,
 };
 
@@ -53,18 +55,19 @@ export const ModelSettingsHead = ({
 }: HeadProps) => {
   const owner = useMemo(() => {
     if (!model) {
-      return OWNER;
+      return DEFAULT_OWNER;
     }
 
     const owner = model.owner?.user || model.owner?.organization;
 
     if (!owner || !owner.profile) {
-      return OWNER;
+      return DEFAULT_OWNER;
     }
 
     return {
       avatarUrl: owner.profile.avatar || "",
       id: owner.id || "",
+      displayName: owner.profile.displayName || "",
     };
   }, [model]);
 
@@ -74,16 +77,20 @@ export const ModelSettingsHead = ({
     <div className="sticky -top-8 z-10 -mx-20 -mt-8 w-[calc(100%+160px)] bg-gradient-to-t from-orange-50 to-sky-200 px-20 pt-7">
       <div className="mx-auto flex max-w-7xl flex-col gap-y-2">
         <div className="flex flex-row items-center gap-x-3">
-          <EntityAvatar
-            src={owner.avatarUrl}
-            entityName={owner.id ?? ""}
-            className="my-auto h-6 w-6"
-            fallbackImg={
-              <div className="my-auto flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
-                <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
-              </div>
-            }
-          />
+          {owner.id ? (
+            <NamespaceAvatarWithFallback.Root
+              src={owner.avatarUrl}
+              className="my-auto h-6 w-6"
+              fallback={
+                <NamespaceAvatarWithFallback.Fallback
+                  namespaceId={owner.id}
+                  displayName={owner.displayName}
+                  className="my-auto flex h-6 w-6 !bg-semantic-secondary-bg"
+                />
+              }
+            />
+          ) : null}
+
           {isReady ? (
             <Skeleton className="h-6 w-60 rounded" />
           ) : (

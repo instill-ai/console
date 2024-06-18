@@ -4,7 +4,6 @@ import * as React from "react";
 import {
   Button,
   ComplicateIcons,
-  Icons,
   Logos,
   Nullable,
   Skeleton,
@@ -13,7 +12,7 @@ import {
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { UserMembership } from "../../../lib";
-import { EntityAvatar } from "../../../components";
+import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
 
 export const UserBioSkeleton = () => {
   return (
@@ -46,6 +45,7 @@ export const UserProfileBio = ({
   isOwner,
   userMemberships,
   avatar,
+  displayName,
 }: {
   name: string;
   id: string;
@@ -55,22 +55,26 @@ export const UserProfileBio = ({
   isOwner: boolean;
   userMemberships: Nullable<UserMembership[]>;
   avatar: Nullable<string>;
+  displayName: Nullable<string>;
 }) => {
   const router = useRouter();
 
   return (
     <div className="flex w-[320px] flex-col gap-y-8">
       <div className="flex flex-col items-center space-y-4">
-        <EntityAvatar
+        <NamespaceAvatarWithFallback.Root
           src={avatar}
-          className="mx-auto h-40 w-40 rounded-full"
-          fallbackImg={
-            <div className="flex h-40 w-40 rounded-full bg-semantic-bg-line">
-              <Icons.User02 className="m-auto h-20 w-20 stroke-semantic-fg-secondary" />
-            </div>
+          className="mx-auto h-40 w-40"
+          fallback={
+            <NamespaceAvatarWithFallback.Fallback
+              namespaceId={id}
+              displayName={displayName}
+              className="h-40 w-40"
+              textClassName="!font-sans !text-[64px] !font-semibold"
+            />
           }
-          entityName={name}
         />
+
         <div className="flex w-full flex-col items-center space-y-1">
           <h3 className="text-semantic-fg-primary product-headings-heading-3">
             {name}
@@ -128,12 +132,17 @@ export const UserProfileBio = ({
                 key={membership.name}
                 className="flex items-center rounded-sm border border-semantic-bg-line p-2.5"
               >
-                <EntityAvatar
-                  entityName={membership.organization.name}
+                <NamespaceAvatarWithFallback.Root
                   src={membership.organization.profile?.avatar ?? null}
                   className="h-5 w-5"
-                  fallbackImg={
-                    <Icons.User02 className="h-5 w-5 stroke-semantic-fg-secondary" />
+                  fallback={
+                    <NamespaceAvatarWithFallback.Fallback
+                      namespaceId={membership.organization.id}
+                      displayName={
+                        membership.organization.profile?.displayName ?? null
+                      }
+                      className="h-5 w-5"
+                    />
                   }
                 />
               </button>

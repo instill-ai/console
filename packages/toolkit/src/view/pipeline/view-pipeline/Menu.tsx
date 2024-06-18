@@ -81,8 +81,13 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
         <React.Fragment>
           <SharePipelineDialog
             pipelineName={routeInfo.data.pipelineName}
-            entity={routeInfo.data.namespaceId}
+            namespaceId={routeInfo.data.namespaceId}
             id={routeInfo.data.resourceId}
+            ownerDisplayName={
+              "user" in pipeline.owner
+                ? pipeline.owner.user.profile?.displayName ?? null
+                : pipeline.owner.organization.profile?.displayName ?? null
+            }
           />
           <PublishPipelineDialog
             pipelineName={routeInfo.data.pipelineName}

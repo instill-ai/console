@@ -41,13 +41,13 @@ export const NamespaceAvatarWithFallbackFallback = ({
 }: {
   namespaceId: string;
   displayName: Nullable<string>;
-  className?: string;
+  className: string;
   textClassName?: string;
 }) => {
   return (
     <div
       className={cn(
-        "flex h-8 w-8 shrink-0 grow-0 items-center justify-center rounded-full bg-semantic-bg-line",
+        "flex shrink-0 grow-0 items-center justify-center rounded-full bg-semantic-bg-line",
         className
       )}
     >

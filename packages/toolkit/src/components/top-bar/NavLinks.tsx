@@ -71,6 +71,7 @@ export const NavLink = ({ title, Icon, pathname }: NavLinkProps) => {
       const userNamespace = namespaces.find(
         (namespace) => namespace.type === "user"
       );
+
       if (userNamespace) {
         return userNamespace.id;
       }

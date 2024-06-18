@@ -49,5 +49,6 @@ export function useNamespacesRemainingCredit({
     },
     enabled: enabledQuery,
     retry: retry === false ? false : retry ? retry : 3,
+    refetchOnWindowFocus: false,
   });
 }

@@ -3,6 +3,7 @@
 import * as React from "react";
 import {
   InstillStore,
+  Nullable,
   OrganizationOwner,
   Pipeline,
   UserOwner,
@@ -11,10 +12,10 @@ import {
   useInstillStore,
   useShallow,
 } from "../../lib";
-import { Icons, useToast } from "@instill-ai/design-system";
+import { useToast } from "@instill-ai/design-system";
 import { Menu } from "./Menu";
-import { EntityAvatar } from "../EntityAvatar";
 import { useRouter } from "next/navigation";
+import { NamespaceAvatarWithFallback } from "../NamespaceAvatarWithFallback";
 
 export const HeadSkeleton = () => {
   return (
@@ -34,10 +35,12 @@ export const Head = ({
   ownerID,
   isOwner,
   pipeline,
+  ownerDisplayName,
 }: {
   ownerID: string;
   isOwner: boolean;
   pipeline: Pipeline;
+  ownerDisplayName: Nullable<string>;
 }) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -83,16 +86,18 @@ export const Head = ({
   return (
     <div className="flex flex-row p-3">
       <div className="mr-auto flex flex-row gap-x-2">
-        <EntityAvatar
+        <NamespaceAvatarWithFallback.Root
           src={pipelineAvatar}
           className="h-8 w-8"
-          entityName={ownerID}
-          fallbackImg={
-            <div className="my-auto flex h-8 w-8 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
-              <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
-            </div>
+          fallback={
+            <NamespaceAvatarWithFallback.Fallback
+              namespaceId={ownerID}
+              displayName={ownerDisplayName}
+              className="h-8 w-8"
+            />
           }
         />
+
         <button
           type="button"
           className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
