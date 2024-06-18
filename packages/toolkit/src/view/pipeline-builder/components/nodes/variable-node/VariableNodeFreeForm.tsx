@@ -14,7 +14,7 @@ import { UseFormReturn } from "react-hook-form";
 import { Nullable } from "../../../../../lib";
 import { constructFieldKey } from "./constructFieldKey";
 import { InstillErrors } from "../../../../../constant";
-import { validateInstillID } from "../../../../../server";
+import { validateInstillVariableAndOutputKey } from "../../../../../server";
 import { VariableNodeTypeSelect } from "./VariableNodeTypeSelect";
 
 export const TriggerNodeFreeFormSchema = z
@@ -31,10 +31,10 @@ export const TriggerNodeFreeFormSchema = z
     description: z.string().optional(),
   })
   .superRefine((state, ctx) => {
-    if (state.key && !validateInstillID(state.key)) {
+    if (state.key && !validateInstillVariableAndOutputKey(state.key)) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: InstillErrors.IDInvalidError,
+        message: InstillErrors.VariableAndOutputKeyInvalidError,
         path: ["key"],
       });
     }

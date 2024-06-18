@@ -32,7 +32,7 @@ import {
 } from "../../../lib";
 import { InstillErrors, DataTestID } from "../../../constant";
 import { LoadingSpin } from "../../../components";
-import { env, validateInstillID } from "../../../server";
+import { env, validateInstillResourceID } from "../../../server";
 import { useRouter } from "next/navigation";
 import { EntitySelector } from "../../../components";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
@@ -44,10 +44,10 @@ const CreatePipelineSchema = z
     description: z.string().optional().nullable(),
   })
   .superRefine((state, ctx) => {
-    if (!validateInstillID(state.id)) {
+    if (!validateInstillResourceID(state.id)) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: InstillErrors.IDInvalidError,
+        message: InstillErrors.ResourceIDInvalidError,
         path: ["id"],
       });
     }

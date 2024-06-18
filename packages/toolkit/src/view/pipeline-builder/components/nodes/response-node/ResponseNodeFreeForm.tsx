@@ -7,7 +7,7 @@ import { Button, Form, Icons, Input } from "@instill-ai/design-system";
 import { InstillErrors } from "../../../../../constant";
 import { constructFieldKey } from "../variable-node/constructFieldKey";
 import { SmartHintFields } from "../../../../../lib/use-instill-form/components";
-import { validateInstillID } from "../../../../../server";
+import { validateInstillVariableAndOutputKey } from "../../../../../server";
 
 export const ResponseNodeFreeFormSchema = z
   .object({
@@ -22,10 +22,10 @@ export const ResponseNodeFreeFormSchema = z
     value: z.string(),
   })
   .superRefine((state, ctx) => {
-    if (state.key && !validateInstillID(state.key)) {
+    if (state.key && !validateInstillVariableAndOutputKey(state.key)) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: InstillErrors.IDInvalidError,
+        message: InstillErrors.VariableAndOutputKeyInvalidError,
         path: ["key"],
       });
     }

@@ -1,7 +1,7 @@
 export function constructFieldKey(str: string) {
   let fieldKey = str.replaceAll(/[^a-zA-Z0-9 ]/g, "_");
 
-  fieldKey = fieldKey.replaceAll(" ", "_").toLowerCase();
+  fieldKey = fieldKey.replaceAll(" ", "-").toLowerCase();
 
   // The first character of a field key cannot be a number
   if (fieldKey.match(/^[0-9]/)) {

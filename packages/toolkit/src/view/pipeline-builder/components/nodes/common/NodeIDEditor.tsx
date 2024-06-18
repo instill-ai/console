@@ -16,7 +16,7 @@ import {
   isGeneralNode,
   isIteratorNode,
 } from "../../../lib";
-import { validateInstillID } from "../../../../../server";
+import { validateInstillResourceID } from "../../../../../server";
 
 const NodeIDEditorSchema = z.object({
   nodeID: z.string().nullable().optional(),
@@ -78,9 +78,9 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
             return;
           }
 
-          if (!validateInstillID(newID)) {
+          if (!validateInstillResourceID(newID)) {
             toast({
-              title: InstillErrors.IDInvalidError,
+              title: InstillErrors.ResourceIDInvalidError,
               variant: "alert-error",
               size: "small",
             });

@@ -4,7 +4,7 @@ import {
   InstillModelTask,
   InstillModelVisibility,
 } from "../../constant";
-import { env, validateInstillID } from "../../server";
+import { env, validateInstillResourceID } from "../../server";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -58,13 +58,12 @@ const CreateModelSchema = z
     hardwareCustom: z.string().optional(),
     task: z.enum(InstillModelTask).default(InstillModelTask[0]),
     namespaceId: z.string(),
-    //configuration: z.object({}),
   })
   .superRefine((state, ctx) => {
-    if (!validateInstillID(state.id)) {
+    if (!validateInstillResourceID(state.id)) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: InstillErrors.IDInvalidError,
+        message: InstillErrors.ResourceIDInvalidError,
         path: ["id"],
       });
     }

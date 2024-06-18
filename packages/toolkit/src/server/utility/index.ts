@@ -1,4 +1,5 @@
-export * from "./validateInstillID";
+export * from "./validateInstillResourceID";
+export * from "./validateInstillVariableAndOutputKey";
 export * from "./getHumanReadableStringFromTime";
 export * from "./config";
 export * from "./handle";

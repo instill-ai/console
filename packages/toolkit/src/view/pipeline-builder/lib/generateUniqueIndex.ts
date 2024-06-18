@@ -2,7 +2,7 @@ export function generateUniqueIndex(
   componentIDs: string[],
   initialPrefix: string
 ) {
-  const prefix = `${initialPrefix}_`;
+  const prefix = `${initialPrefix}-`;
   let nodeIdx = 0;
   const idxs: number[] = [];
 

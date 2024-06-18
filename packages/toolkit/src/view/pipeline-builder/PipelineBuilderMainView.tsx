@@ -128,7 +128,7 @@ export const PipelineBuilderMainView = () => {
             Pipeline editor main canvas
           */}
 
-          <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-controler-height)-var(--pipeline-builder-bottom-bar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
+          <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-controller-height)-var(--pipeline-builder-bottom-bar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
             <Flow
               ref={reactFlowWrapper}
               reactFlowInstance={reactFlowInstance}
@@ -139,8 +139,8 @@ export const PipelineBuilderMainView = () => {
             <div
               className={cn(
                 "fixed left-full w-[450px] transform overflow-y-scroll rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-6 shadow-sm duration-500",
-                "h-[calc(100vh-var(--topbar-controler-height)-var(--pipeline-builder-bottom-bar-height)-var(--pipeline-builder-minimap-height)-var(--pipeline-builder-top-right-controler-height)-calc(4*var(--pipeline-builder-controller-padding)))]",
-                "top-[calc(var(--topbar-controler-height)+var(--pipeline-builder-top-right-controler-height)+calc(2*var(--pipeline-builder-controller-padding)))]",
+                "h-[calc(100vh-var(--topbar-controller-height)-var(--pipeline-builder-bottom-bar-height)-var(--pipeline-builder-minimap-height)-var(--pipeline-builder-top-right-controler-height)-calc(4*var(--pipeline-builder-controller-padding)))]",
+                "top-[calc(var(--topbar-controller-height)+var(--pipeline-builder-top-right-controler-height)+calc(2*var(--pipeline-builder-controller-padding)))]",
                 currentAdvancedConfigurationNodeID ? "-translate-x-[450px]" : ""
               )}
             >
