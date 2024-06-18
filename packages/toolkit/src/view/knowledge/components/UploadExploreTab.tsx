@@ -95,7 +95,6 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                 {
                     onSuccess: () => {
                         alert("File uploaded successfully!");
-                        form.reset();
                     },
                     onError: (error) => {
                         console.error("Error uploading file:", error);
@@ -142,7 +141,9 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
         }
     };
 
-
+    const handleRemoveFile = () => {
+        form.setValue("file", undefined);
+    };
 
     return (
         <div className="flex flex-col mb-32">
@@ -215,7 +216,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                                 {Math.round(form.watch("file").size / 1024)}KB
                             </div>
                         </div>
-                        <Icons.X className="w-4 h-4 stroke-semantic-fg-secondary" />
+                        <Icons.X className="w-4 h-4 stroke-semantic-fg-secondary cursor-pointer" onClick={handleRemoveFile} />
                     </div>
                 </div>
             )}
@@ -238,7 +239,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
             </div> */}
             {/* <FilePreview /> */}
             <div className="flex justify-end">
-                <Button variant="primary" size="lg">
+                <Button variant="primary" size="lg" disabled={!form.watch("file")}>
                     Process File
                 </Button>
             </div>
