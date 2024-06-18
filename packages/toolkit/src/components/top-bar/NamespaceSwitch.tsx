@@ -114,12 +114,12 @@ export const NamespaceSwitch = () => {
     if (!navigationNamespaceAnchor) {
       return null;
     }
-    return (
-      namespacesWithRemainingCredit.find(
-        (e) => e.id === navigationNamespaceAnchor
-      ) ?? null
-    );
-  }, [namespacesWithRemainingCredit, navigationNamespaceAnchor]);
+    return namespacesWithRemainingCredit.length === 0
+      ? namespaces.find((e) => e.id === navigationNamespaceAnchor) ?? null
+      : namespacesWithRemainingCredit.find(
+          (e) => e.id === navigationNamespaceAnchor
+        ) ?? null;
+  }, [namespacesWithRemainingCredit, namespaces, navigationNamespaceAnchor]);
 
   // This is to deal with user entering their own setting page, we should
   // switch the namespace to the user's namespace
@@ -305,11 +305,12 @@ export const NamespaceSwitch = () => {
               <div className="flex w-full flex-row items-center gap-x-2">
                 <NamespaceAvatarWithFallback.Root
                   src={selectedNamespace.avatarUrl ?? null}
-                  className="h-8 w-8 rounded-full"
+                  className="h-8 w-8"
                   fallback={
                     <NamespaceAvatarWithFallback.Fallback
                       namespaceId={selectedNamespace.id}
                       displayName={selectedNamespace.displayName}
+                      className="h-8 w-8"
                     />
                   }
                 />
@@ -349,7 +350,7 @@ export const NamespaceSwitch = () => {
                             <NamespaceAvatarWithFallback.Fallback
                               namespaceId={namespace.id}
                               displayName={namespace.displayName}
-                              className="!h-10 !w-10"
+                              className="h-10 w-10"
                             />
                           }
                         />

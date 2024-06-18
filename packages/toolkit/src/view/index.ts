@@ -1,6 +1,5 @@
 export * from "./airbyte";
 export * from "./dashboard";
-export * from "./hub";
 export * from "./model";
 export * from "./not-found";
 export * from "./pipeline";

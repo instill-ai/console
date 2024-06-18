@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, Icons, Separator, Tag } from "@instill-ai/design-system";
+import { Button, Separator, Tag } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
@@ -10,9 +10,9 @@ import {
   useAuthenticatedUser,
   useUserMemberships,
 } from "../lib";
-import { EntityAvatar } from "./EntityAvatar";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { NamespaceAvatarWithFallback } from "./NamespaceAvatarWithFallback";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -53,14 +53,16 @@ export const UserProfileCard = ({
       {me.isSuccess ? (
         <React.Fragment>
           <div className="flex flex-col gap-y-4">
-            <EntityAvatar
+            <NamespaceAvatarWithFallback.Root
               src={me.data.profile?.avatar ?? null}
               className="mx-auto h-20 w-20"
-              entityName={me.data.name}
-              fallbackImg={
-                <div className="mx-auto flex h-20 w-20 shrink-0 grow-0 rounded-full bg-semantic-bg-line">
-                  <Icons.User02 className="m-auto h-10 w-10 stroke-semantic-fg-disabled" />
-                </div>
+              fallback={
+                <NamespaceAvatarWithFallback.Fallback
+                  namespaceId={me.data.id}
+                  displayName={me.data.profile?.displayName ?? null}
+                  className="mx-auto h-20 w-20"
+                  textClassName="!font-sans !text-[32px] !font-semibold"
+                />
               }
             />
 

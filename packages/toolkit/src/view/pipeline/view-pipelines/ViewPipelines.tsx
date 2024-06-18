@@ -170,6 +170,11 @@ export const ViewPipelines = () => {
                   isOwner={
                     me.isSuccess ? pipeline.ownerName === me.data.name : false
                   }
+                  ownerDisplayName={
+                    "user" in pipeline.owner
+                      ? pipeline.owner.user.profile?.displayName ?? null
+                      : pipeline.owner.organization.profile?.displayName ?? null
+                  }
                 />
               ))
             )

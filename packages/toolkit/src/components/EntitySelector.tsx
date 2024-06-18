@@ -1,5 +1,6 @@
-import { Icons, Nullable, Select, Tag } from "@instill-ai/design-system";
-import { EntityAvatar } from "./EntityAvatar";
+import { Nullable, Select, Tag } from "@instill-ai/design-system";
+import { NamespaceAvatarWithFallback } from "./NamespaceAvatarWithFallback";
+import { UserNamespace } from "../lib/useUserNamespaces";
 
 export type OwnerEntity = {
   id: string;
@@ -11,7 +12,7 @@ export type OwnerEntity = {
 export type EntitySelectorProps = {
   value: string;
   onChange: (value: string) => void;
-  data: OwnerEntity[];
+  data: UserNamespace[];
 };
 
 const truncateDisplayName = (value?: string) => {
@@ -27,31 +28,35 @@ export const EntitySelector = ({
   onChange,
   data,
 }: EntitySelectorProps) => {
-  const selectedEntity = data.find((namespace) => namespace.id === value);
+  const selectedNamespace = data.find((namespace) => namespace.id === value);
 
   return (
     <Select.Root value={value} onValueChange={onChange}>
       <Select.Trigger className="w-full">
         <Select.Value placeholder="Select Model Owner">
-          <div className="flex flex-row gap-x-2">
-            <Tag
-              size="md"
-              variant="lightNeutral"
-              className="border-0 !px-1.5 !font-semibold !text-semantic-fg-primary"
-            >
-              <EntityAvatar
-                src={selectedEntity?.avatarUrl || null}
-                className="mr-1 h-4 w-4 rounded-full"
-                fallbackImg={
-                  <div className="mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-semantic-bg-line">
-                    <Icons.User02 className="h-3 w-3 stroke-semantic-fg-secondary" />
-                  </div>
-                }
-                entityName={selectedEntity?.id || ""}
-              />
-              {truncateDisplayName(selectedEntity?.id)}
-            </Tag>
-          </div>
+          {selectedNamespace ? (
+            <div className="flex">
+              <Tag
+                size="md"
+                variant="lightNeutral"
+                className="gap-x-1 border-0 !px-1.5 !font-semibold !text-semantic-fg-primary"
+              >
+                <NamespaceAvatarWithFallback.Root
+                  src={selectedNamespace.avatarUrl}
+                  className="h-4 w-4"
+                  fallback={
+                    <NamespaceAvatarWithFallback.Fallback
+                      namespaceId={selectedNamespace.id}
+                      displayName={selectedNamespace.displayName}
+                      className="flex !h-4 !w-4"
+                    />
+                  }
+                />
+
+                {truncateDisplayName(selectedNamespace?.id)}
+              </Tag>
+            </div>
+          ) : null}
         </Select.Value>
       </Select.Trigger>
       <Select.Content>
@@ -63,17 +68,18 @@ export const EntitySelector = ({
                   <Tag
                     size="md"
                     variant="lightNeutral"
-                    className="whitespace-nowrap border-0 !px-1.5 !font-semibold !text-semantic-fg-primary"
+                    className="gap-x-1 whitespace-nowrap border-0 !px-1.5 !font-semibold !text-semantic-fg-primary"
                   >
-                    <EntityAvatar
+                    <NamespaceAvatarWithFallback.Root
                       src={namespace.avatarUrl}
-                      className="mr-1 h-4 w-4 rounded-full"
-                      fallbackImg={
-                        <div className="mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-semantic-bg-line">
-                          <Icons.User02 className="h-3 w-3 stroke-semantic-fg-secondary" />
-                        </div>
+                      className="h-4 w-4"
+                      fallback={
+                        <NamespaceAvatarWithFallback.Fallback
+                          namespaceId={namespace.id}
+                          displayName={namespace.displayName}
+                          className="flex h-4 w-4"
+                        />
                       }
-                      entityName={namespace.id}
                     />
                     {truncateDisplayName(namespace.id)}
                   </Tag>

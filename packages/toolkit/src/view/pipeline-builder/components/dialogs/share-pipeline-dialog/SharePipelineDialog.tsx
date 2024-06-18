@@ -20,12 +20,14 @@ const selector = (store: InstillStore) => ({
 
 export const SharePipelineDialog = ({
   pipelineName,
-  entity,
+  namespaceId,
   id,
+  ownerDisplayName,
 }: {
   pipelineName: Nullable<string>;
-  entity: Nullable<string>;
+  namespaceId: Nullable<string>;
   id: Nullable<string>;
+  ownerDisplayName: Nullable<string>;
 }) => {
   const [selectedTab, setSelectedTab] =
     React.useState<Nullable<string>>("Share");
@@ -42,7 +44,12 @@ export const SharePipelineDialog = ({
         <div className="flex w-full flex-col">
           <Head selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
           {selectedTab === "Share" ? (
-            <TabShare pipelineName={pipelineName} entity={entity} id={id} />
+            <TabShare
+              pipelineName={pipelineName}
+              namespaceId={namespaceId}
+              id={id}
+              ownerDisplayName={ownerDisplayName}
+            />
           ) : null}
           {selectedTab === "Publish" ? (
             <TabPublish pipelineName={pipelineName} />

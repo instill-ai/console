@@ -178,11 +178,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
       const taskPropName = convertTaskNameToPayloadPropName(
         model.task
       ) as string;
-      console.log(
-        convertValuesToString(
-          existingTriggerState.response.request.taskInputs[0][taskPropName]
-        )
-      );
+
       setInputFromExistingResult(
         convertValuesToString(
           existingTriggerState.response.request.taskInputs[0][taskPropName]

@@ -143,15 +143,15 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
       sharing,
     };
 
-    const usedNamespace = namespaces.find(
+    const targetNamespace = namespaces.find(
       (account) => account.id === data.namespaceId
-    )?.name;
+    );
 
-    if (usedNamespace) {
+    if (targetNamespace) {
       try {
         await createPipeline.mutateAsync({
           accessToken,
-          entityName: usedNamespace,
+          entityName: targetNamespace.name,
           payload,
         });
 
@@ -159,7 +159,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
           sendAmplitudeData("create_pipeline");
         }
 
-        updateNavigationNamespaceAnchor(() => usedNamespace);
+        updateNavigationNamespaceAnchor(() => targetNamespace.id);
 
         router.push(`/${data.namespaceId}/pipelines/${data.id}/editor`);
       } catch (error) {

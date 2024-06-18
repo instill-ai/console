@@ -1,6 +1,6 @@
 "use client";
 
-import { Pipeline } from "../../lib";
+import { Nullable, Pipeline } from "../../lib";
 import { Body } from "./Body";
 import { Footer } from "./Footer";
 import { Head } from "./Head";
@@ -20,12 +20,24 @@ export const CardPipeline = (props: {
   pipeline: Pipeline;
   isOwner: boolean;
   disabledPermissionLabel?: boolean;
+  ownerDisplayName: Nullable<string>;
 }) => {
-  const { ownerID, pipeline, isOwner, disabledPermissionLabel } = props;
+  const {
+    ownerID,
+    pipeline,
+    isOwner,
+    disabledPermissionLabel,
+    ownerDisplayName,
+  } = props;
 
   return (
     <div className="flex flex-col gap-y-2 rounded-sm border border-semantic-bg-line">
-      <Head pipeline={pipeline} ownerID={ownerID} isOwner={isOwner} />
+      <Head
+        pipeline={pipeline}
+        ownerID={ownerID}
+        isOwner={isOwner}
+        ownerDisplayName={ownerDisplayName}
+      />
       <Body pipeline={pipeline} />
       <Footer
         pipeline={pipeline}

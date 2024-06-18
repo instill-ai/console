@@ -28,10 +28,11 @@ import {
   useRouteInfo,
   useNavigateBackAfterLogin,
 } from "../../../lib";
-import { ClonePipelineDialog, EntityAvatar } from "../../../components";
+import { ClonePipelineDialog } from "../../../components";
 import { EditMetadataDialog } from "./EditMetadataDialog";
 import cn from "clsx";
 import { Menu } from "./Menu";
+import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -139,28 +140,36 @@ export const Head = ({
                   {routeInfo.isSuccess ? (
                     routeInfo.data.namespaceType ===
                     "NAMESPACE_ORGANIZATION" ? (
-                      <EntityAvatar
-                        src={organization.data?.profile?.avatar ?? null}
-                        entityName={organization.data?.name ?? ""}
-                        className="my-auto h-6 w-6"
-                        fallbackImg={
-                          <div className="my-auto flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
-                            <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
-                          </div>
-                        }
-                      />
-                    ) : (
-                      <EntityAvatar
+                      organization.isSuccess ? (
+                        <NamespaceAvatarWithFallback.Root
+                          src={organization.data?.profile?.avatar ?? null}
+                          className="my-auto h-6 w-6"
+                          fallback={
+                            <NamespaceAvatarWithFallback.Fallback
+                              namespaceId={organization.data.id}
+                              displayName={
+                                organization.data?.profile?.displayName ?? null
+                              }
+                              className="my-auto flex h-6 w-6"
+                            />
+                          }
+                        />
+                      ) : null
+                    ) : user.isSuccess ? (
+                      <NamespaceAvatarWithFallback.Root
                         src={user.data?.profile?.avatar ?? null}
-                        entityName={user.data?.name ?? ""}
                         className="my-auto h-6 w-6"
-                        fallbackImg={
-                          <div className="my-auto flex h-6 w-6 rounded-full bg-semantic-bg-secondary">
-                            <Icons.User02 className="m-auto h-4 w-4 stroke-semantic-fg-disabled" />
-                          </div>
+                        fallback={
+                          <NamespaceAvatarWithFallback.Fallback
+                            namespaceId={user.data.id}
+                            displayName={
+                              user.data?.profile?.displayName ?? null
+                            }
+                            className="my-auto flex h-6 w-6"
+                          />
                         }
                       />
-                    )
+                    ) : null
                   ) : (
                     <Skeleton className="my-auto h-6 w-6 rounded-full" />
                   )}

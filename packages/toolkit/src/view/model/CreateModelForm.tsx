@@ -193,13 +193,13 @@ export const CreateModelForm = () => {
 
     const targetNamespace = userNamespaces.find(
       (namespace) => namespace.id === data.namespaceId
-    )?.name;
+    );
 
     if (targetNamespace) {
       try {
         await createModel.mutateAsync({
           accessToken,
-          entityName: targetNamespace,
+          entityName: targetNamespace.name,
           payload,
         });
 
@@ -207,7 +207,7 @@ export const CreateModelForm = () => {
           sendAmplitudeData("create_model");
         }
 
-        updateNavigationNamespaceAnchor(() => targetNamespace);
+        updateNavigationNamespaceAnchor(() => targetNamespace.id);
 
         router.push(`/${data.namespaceId}/models/${data.id}/overview`);
       } catch (error) {
