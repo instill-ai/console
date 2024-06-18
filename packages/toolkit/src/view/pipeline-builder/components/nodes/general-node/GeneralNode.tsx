@@ -199,7 +199,8 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
           data.type !== "google-search" &&
           data.type !== "redis" &&
           data.type !== "website" &&
-          data.type !== "restapi" ? (
+          data.type !== "restapi" &&
+          data.type !== "bigquery" ? (
             <DataConnectorFreeForm
               nodeID={id}
               component={data}
