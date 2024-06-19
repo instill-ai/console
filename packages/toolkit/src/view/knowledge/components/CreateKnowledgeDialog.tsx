@@ -20,6 +20,8 @@ import {
   useUserMemberships,
 } from "../../../lib";
 import * as React from "react";
+import { EntitySelector } from "../../../components";
+import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 
 const CreateKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -52,6 +54,8 @@ export const CreateKnowledgeDialog = ({
     mode: "onChange",
   });
 
+  const userNamespaces = useUserNamespaces();
+
   const { formState, watch } = form;
   const nameValue = watch("name");
 
@@ -79,19 +83,6 @@ export const CreateKnowledgeDialog = ({
     userID: me.isSuccess ? me.data.id : null,
     accessToken,
   });
-
-  const organizationsAndUserList = React.useMemo(() => {
-    const orgsAndUserList = [];
-    if (organizations.isSuccess && organizations.data) {
-      organizations.data.forEach((org) => {
-        orgsAndUserList.push(org.organization);
-      });
-    }
-    if (me.isSuccess && me.data) {
-      orgsAndUserList.push(me.data);
-    }
-    return orgsAndUserList;
-  }, [organizations.isSuccess, organizations.data, me.isSuccess, me.data]);
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
@@ -123,66 +114,16 @@ export const CreateKnowledgeDialog = ({
                       Owner
                     </Form.Label>
                     <Form.Control>
-                      <Select.Root
+                      <EntitySelector
                         value={field.value || ""}
-                        onValueChange={(e) => {
-                          field.onChange(e);
+                        onChange={(value: string) => {
+                          field.onChange(value);
                           if (form.getValues("namespaceId")) {
                             form.trigger("namespaceId");
                           }
                         }}
-                      >
-                        <Select.Trigger className="flex justify-start items-center gap-2 px-[9px] py-2  w-full">
-                          <Select.Value placeholder="Select Account">
-                            <div className="flex items-center gap-1">
-                              {field.value ? (
-                                <>
-                                  <div className="flex justify-center items-center gap-1 px-[5px] py-1 bg-slate-100 rounded-[100px]">
-                                    <img
-                                      className="w-4 h-4 rounded-[100px]"
-                                      src="https://via.placeholder.com/16x16"
-                                      alt=""
-                                    />
-                                    <span className="text-semantic-fg-primary text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
-                                      {organizationsAndUserList?.find(
-                                        (namespace) => namespace.id === field.value
-                                      )?.name}
-                                    </span>
-                                  </div>
-                                </>
-                              ) : null}
-                            </div>
-                          </Select.Value>
-                        </Select.Trigger>
-                        <Select.Content>
-                          <Select.Group>
-                            {organizationsAndUserList?.map((namespace) => (
-                              <Select.Item value={namespace.id} key={namespace.id}>
-                                <Select.ItemText>
-                                  <div className="flex items-center gap-2">
-                                    <span>{namespace.id}</span>
-                                    <span>
-                                      {namespace.name.includes("organizations") ? (
-                                        <Tag variant="lightBlue" size="sm" className="!py-0">
-                                          organization
-                                        </Tag>
-                                      ) : (
-                                        <Tag
-                                          size="sm"
-                                          className="!py-0"
-                                          variant="lightNeutral"
-                                        >
-                                          user
-                                        </Tag>
-                                      )}
-                                    </span>
-                                  </div>
-                                </Select.ItemText>
-                              </Select.Item>
-                            ))}
-                          </Select.Group>
-                        </Select.Content>
-                      </Select.Root>
+                        data={userNamespaces}
+                      />
                     </Form.Control>
                     <Form.Message />
                   </Form.Item>
@@ -193,20 +134,24 @@ export const CreateKnowledgeDialog = ({
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <Form.Item className="flex-1 !-ml-4">
-                    <Form.Label className="flex justify-start items-center mb-1 product-button-button-2">
+                  <Form.Item className="w-2/3">
+                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
                       Knowledge base name
                     </Form.Label>
                     <Form.Control>
-                      <Input.Root className="flex justify-start items-center gap-2 px-[9px] py-2  rounded-lg border  w-full">
+                      <Input.Root>
                         <Input.Core
                           {...field}
                           id={field.name}
-                          placeholder="KB-cool-name"
-                          className="text-semantic-fg-primary text-base font-normal font-['IBM Plex Sans'] leading-normal w-full"
+                          placeholder="Knowledge base name"
                         />
                       </Input.Root>
                     </Form.Control>
+                    {nameValue && !isNameValid && (
+                      <p className="mt-1 text-semantic-fg-secondary product-body-text-4-regular">
+                        Name will be transformed to: {formattedName}
+                      </p>
+                    )}
                     <Form.Message />
                   </Form.Item>
                 )}
