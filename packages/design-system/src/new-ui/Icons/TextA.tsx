@@ -17,10 +17,9 @@ export const TextA = React.forwardRef<
     >
       <path
         d="M19.2428 16H6.64281L3.94281 22L12.9428 2L21.9428 22"
-        stroke="black"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </IconBase>
   );

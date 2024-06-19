@@ -13,6 +13,7 @@ import { BarChartSquare02 } from "./BarChartSquare02";
 import { BookOpen02 } from "./BookOpen02";
 import { Box } from "./Box";
 import { BracketSlash } from "./BracketSlash";
+import { Building05 } from "./Building05";
 import { Check } from "./Check";
 import { Circle } from "./Circle";
 import { ClockRewind } from "./ClockRewind";
@@ -139,6 +140,7 @@ export const Icons = {
   BookOpen02,
   Box,
   BracketSlash,
+  Building05,
   CardRefresh,
   Check,
   CheckCircle,
