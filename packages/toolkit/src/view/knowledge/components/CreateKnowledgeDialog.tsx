@@ -27,7 +27,7 @@ const CreateKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().min(1, { message: "Description is required" }),
   tags: z.array(z.string()).optional(),
-  namespaceId: z.string(),
+  namespaceId: z.string().min(1, { message: "Owner is required" }),
 });
 
 type CreateKnowledgeFormProps = {
@@ -111,7 +111,7 @@ export const CreateKnowledgeDialog = ({
                 name="namespaceId"
                 render={({ field }) => (
                   <Form.Item className="w-1/2">
-                    <Form.Label className=" text-semantic-fg-primary product-button-button-2">
+                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
                       Owner
                     </Form.Label>
                     <Form.Control>
@@ -119,14 +119,14 @@ export const CreateKnowledgeDialog = ({
                         value={field.value || ""}
                         onChange={(value: string) => {
                           field.onChange(value);
-                          if (form.getValues("namespaceId")) {
-                            form.trigger("namespaceId");
-                          }
+                          form.trigger("namespaceId");
                         }}
                         data={userNamespaces}
                       />
                     </Form.Control>
-                    <Form.Message className="h-3 !mt-0.5" />
+                    <div className="h-6">
+                      <Form.Message className="!mt-0.5" />
+                    </div>
                   </Form.Item>
                 )}
               />
@@ -136,7 +136,7 @@ export const CreateKnowledgeDialog = ({
                 name="name"
                 render={({ field }) => (
                   <Form.Item className="w-1/2">
-                    <Form.Label className=" text-semantic-fg-primary product-button-button-2">
+                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
                       Knowledge base name
                     </Form.Label>
                     <Form.Control>
@@ -148,12 +148,14 @@ export const CreateKnowledgeDialog = ({
                         />
                       </Input.Root>
                     </Form.Control>
-                    {nameValue && !isNameValid && (
-                      <p className="text-semantic-fg-secondary product-body-text-4-regular h-3 !mt-0.5">
-                        Name will be transformed to: {formattedName}
-                      </p>
-                    )}
-                    <Form.Message className="h-3 !mt-0.5" />
+                    <div className="h-6">
+                      {nameValue && !isNameValid && (
+                        <p className="text-semantic-fg-secondary product-body-text-4-regular !mt-0.5">
+                          Name will be transformed to: {formattedName}
+                        </p>
+                      )}
+                      <Form.Message className="!mt-0.5" />
+                    </div>
                   </Form.Item>
                 )}
               />
@@ -211,7 +213,7 @@ export const CreateKnowledgeDialog = ({
                 variant="primary"
                 type="submit"
                 className="text-semantic-fg-on-default"
-                disabled={!formState.isValid || !namespaceIdValue || !nameValue}
+                disabled={!formState.isValid}
               >
                 Create
               </Button>
