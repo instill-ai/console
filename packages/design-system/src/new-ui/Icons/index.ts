@@ -95,6 +95,7 @@ import { Save01 } from "./Save01";
 import { Scales02 } from "./Scales02";
 import { Settings02 } from "./Settings02";
 import { Sliders01 } from "./Sliders01";
+import { SlashDivider } from "./SlashDivider";
 import { SpeechRecognition } from "./SpeechRecognition";
 import { Speaker01 } from "./Speaker01";
 import { Stop } from "./Stop";
@@ -226,6 +227,7 @@ export const Icons = {
   Settings02,
   SpeechRecognition,
   Sliders01,
+  SlashDivider,
   Speaker01,
   Stop,
   SearchLg,
