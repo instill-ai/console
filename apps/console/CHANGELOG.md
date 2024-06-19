@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.49.1-beta](https://github.com/instill-ai/console/compare/v0.49.0-beta...v0.49.1-beta) (2024-06-19)
+
+
+### Bug Fixes
+
+* fix toaster style issue ([#1248](https://github.com/instill-ai/console/issues/1248)) ([aec1217](https://github.com/instill-ai/console/commit/aec12174ef6dd3b1843449b8210d264442928cb4))
+
 ## [0.49.0-beta](https://github.com/instill-ai/console/compare/v0.48.0-beta...v0.49.0-beta) (2024-06-19)
 
 
