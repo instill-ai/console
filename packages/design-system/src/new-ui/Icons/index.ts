@@ -233,6 +233,7 @@ export const Icons = {
   Settings02,
   SpeechRecognition,
   Sliders01,
+  SlashDivider,
   Speaker01,
   Stop,
   SearchLg,
