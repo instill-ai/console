@@ -9,7 +9,6 @@ import {
   Icons,
   Input,
   RadioGroup,
-  Select,
   Separator,
   Tag,
   Textarea,
@@ -31,12 +30,16 @@ import {
   useInstillStore,
   useShallow,
   useAuthenticatedUser,
-  useUserMemberships,
+  useRouteInfo,
 } from "../lib";
 import { InstillErrors } from "../constant";
 import { LoadingSpin } from "./LoadingSpin";
 import { env, validateInstillResourceID } from "../server";
 import { useRouter } from "next/navigation";
+import { createNodesFromPipelineRecipe } from "../view/pipeline-builder/lib/createNodesFromPipelineRecipe";
+import { composePipelineRecipeFromNodes } from "../view";
+import { EntitySelector } from "./EntitySelector";
+import { useUserNamespaces } from "../lib/useUserNamespaces";
 
 const ClonePipelineSchema = z
   .object({
@@ -59,6 +62,8 @@ type Permission = "public" | "private";
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  navigationNamespaceAnchor: store.navigationNamespaceAnchor,
+  updateNavigationNamespaceAnchor: store.updateNavigationNamespaceAnchor,
 });
 
 export const ClonePipelineDialog = ({
@@ -80,35 +85,32 @@ export const ClonePipelineDialog = ({
     React.useState<Nullable<Permission>>("private");
   const { toast } = useToast();
 
+  const routeInfo = useRouteInfo();
+
+  const {
+    accessToken,
+    enabledQuery,
+    navigationNamespaceAnchor,
+    updateNavigationNamespaceAnchor,
+  } = useInstillStore(useShallow(selector));
+
   const form = useForm<z.infer<typeof ClonePipelineSchema>>({
     resolver: zodResolver(ClonePipelineSchema),
+    defaultValues: {
+      id: "",
+      brief: "",
+      namespaceId: navigationNamespaceAnchor
+        ? navigationNamespaceAnchor
+        : routeInfo?.data.namespaceId || "",
+    },
   });
-
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery && dialogIsOpen,
     accessToken,
   });
 
-  const organizations = useUserMemberships({
-    enabled: enabledQuery && me.isSuccess && dialogIsOpen,
-    userID: me.isSuccess ? me.data.id : null,
-    accessToken,
-  });
-
-  const organizationsAndUserList = React.useMemo(() => {
-    const orgsAndUserList = [];
-    if (organizations.isSuccess && organizations.data) {
-      organizations.data.forEach((org) => {
-        orgsAndUserList.push(org.organization);
-      });
-    }
-    if (me.isSuccess && me.data) {
-      orgsAndUserList.push(me.data);
-    }
-    return orgsAndUserList;
-  }, [organizations.isSuccess, organizations.data, me.isSuccess, me.data]);
+  const namespaces = useUserNamespaces();
 
   const createPipeline = useCreateUserPipeline();
   async function handleClone(data: z.infer<typeof ClonePipelineSchema>) {
@@ -139,27 +141,36 @@ export const ClonePipelineDialog = ({
             shareCode: null,
           };
 
+    // Mimic how we compose recipe from nodes here to remove unnecessary
+    // data like definition in the payload
+    const nodes = createNodesFromPipelineRecipe(pipeline.recipe, {
+      metadata: pipeline.metadata,
+    });
+
+    const recipe = composePipelineRecipeFromNodes(nodes);
+
     const payload: CreateUserPipelinePayload = {
       id: data.id,
-      recipe: pipeline.recipe,
+      recipe,
       metadata: pipeline.metadata,
       readme: pipeline.readme,
       description: data.brief ? data.brief : pipeline.description,
       sharing,
     };
 
-    const namespace = organizationsAndUserList.find(
+    console.log(payload);
+
+    const namespace = namespaces.find(
       (account) => account.id === data.namespaceId
-    )?.name;
+    );
 
     if (namespace) {
       try {
         await createPipeline.mutateAsync({
           payload,
           accessToken,
-          entityName: namespace,
+          entityName: namespace.name,
         });
-
         if (amplitudeIsInit) {
           if (pipeline.ownerName === me.data.name) {
             sendAmplitudeData("duplicate_pipeline");
@@ -167,7 +178,7 @@ export const ClonePipelineDialog = ({
             sendAmplitudeData("clone_pipeline");
           }
         }
-
+        updateNavigationNamespaceAnchor(() => namespace.id);
         router.push(`/${data.namespaceId}/pipelines/${payload.id}`);
       } catch (error) {
         console.log("error", error);
@@ -202,7 +213,9 @@ export const ClonePipelineDialog = ({
         form.reset({
           id: "",
           brief: "",
-          namespaceId: me.data?.id,
+          namespaceId: navigationNamespaceAnchor
+            ? navigationNamespaceAnchor
+            : routeInfo?.data.namespaceId || "",
         });
         if (onOpenChange) {
           onOpenChange(open);
@@ -233,100 +246,20 @@ export const ClonePipelineDialog = ({
                         control={form.control}
                         name="namespaceId"
                         render={({ field }) => {
+                          console.log(field.value);
                           return (
                             <Form.Item className="w-full">
                               <Form.Label className="product-body-text-3-semibold">
                                 Owner
                               </Form.Label>
                               <Form.Control>
-                                <Select.Root
+                                <EntitySelector
                                   value={field?.value || ""}
-                                  onValueChange={(e) => {
-                                    field.onChange(e);
-                                    if (form.getValues("id")) {
-                                      form.trigger("id");
-                                    }
+                                  onChange={(value: string) => {
+                                    field.onChange(value);
                                   }}
-                                >
-                                  <Select.Trigger className="w-full pl-[14px]">
-                                    <Select.Value placeholder="Select Account Name">
-                                      <div className="flex flex-row gap-x-2">
-                                        <span className="my-auto">
-                                          {field?.value?.length >= 10
-                                            ? field?.value?.slice(0, 10) + "..."
-                                            : field.value}
-                                        </span>
-                                        <span className="my-auto">
-                                          {organizationsAndUserList?.length &&
-                                          organizationsAndUserList
-                                            ?.find(
-                                              (namespace) =>
-                                                namespace.id === field.value
-                                            )
-                                            ?.name.includes("organizations") ? (
-                                            <Tag
-                                              variant="lightBlue"
-                                              size="sm"
-                                              className="!py-0"
-                                            >
-                                              organization
-                                            </Tag>
-                                          ) : (
-                                            <Tag
-                                              size="sm"
-                                              className="!py-0"
-                                              variant="lightNeutral"
-                                            >
-                                              user
-                                            </Tag>
-                                          )}
-                                        </span>
-                                      </div>
-                                    </Select.Value>
-                                  </Select.Trigger>
-                                  <Select.Content>
-                                    <Select.Group>
-                                      {organizationsAndUserList.length &&
-                                        organizationsAndUserList.map(
-                                          (namespace) => (
-                                            <Select.Item
-                                              value={namespace.id}
-                                              key={namespace.id}
-                                            >
-                                              <Select.ItemText>
-                                                <div className="flex flex-row gap-x-2">
-                                                  <span className="my-auto">
-                                                    {namespace.id}
-                                                  </span>
-                                                  <span className="my-auto">
-                                                    {namespace.name.includes(
-                                                      "organizations"
-                                                    ) ? (
-                                                      <Tag
-                                                        variant="lightBlue"
-                                                        size="sm"
-                                                        className="!py-0"
-                                                      >
-                                                        organization
-                                                      </Tag>
-                                                    ) : (
-                                                      <Tag
-                                                        size="sm"
-                                                        className="!py-0"
-                                                        variant="lightNeutral"
-                                                      >
-                                                        user
-                                                      </Tag>
-                                                    )}
-                                                  </span>
-                                                </div>
-                                              </Select.ItemText>
-                                            </Select.Item>
-                                          )
-                                        )}
-                                    </Select.Group>
-                                  </Select.Content>
-                                </Select.Root>
+                                  data={namespaces}
+                                />
                               </Form.Control>
 
                               <Form.Message />

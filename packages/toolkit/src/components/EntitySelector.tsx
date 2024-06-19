@@ -1,19 +1,6 @@
-import { Nullable, Select, Tag } from "@instill-ai/design-system";
+import { Select, Tag } from "@instill-ai/design-system";
 import { NamespaceAvatarWithFallback } from "./NamespaceAvatarWithFallback";
 import { UserNamespace } from "../lib/useUserNamespaces";
-
-export type OwnerEntity = {
-  id: string;
-  name: string;
-  type: "user" | "organization";
-  avatarUrl: Nullable<string>;
-};
-
-export type EntitySelectorProps = {
-  value: string;
-  onChange: (value: string) => void;
-  data: UserNamespace[];
-};
 
 const truncateDisplayName = (value?: string) => {
   if (value && value.length >= 10) {
@@ -27,13 +14,19 @@ export const EntitySelector = ({
   value,
   onChange,
   data,
-}: EntitySelectorProps) => {
+  placeholder,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  data: UserNamespace[];
+  placeholder?: string;
+}) => {
   const selectedNamespace = data.find((namespace) => namespace.id === value);
 
   return (
     <Select.Root value={value} onValueChange={onChange}>
       <Select.Trigger className="w-full">
-        <Select.Value placeholder="Select Model Owner">
+        <Select.Value placeholder={placeholder ?? "Select Owner"}>
           {selectedNamespace ? (
             <div className="flex">
               <Tag
@@ -48,7 +41,7 @@ export const EntitySelector = ({
                     <NamespaceAvatarWithFallback.Fallback
                       namespaceId={selectedNamespace.id}
                       displayName={selectedNamespace.displayName}
-                      className="flex !h-4 !w-4"
+                      className="flex h-4 w-4"
                     />
                   }
                 />
