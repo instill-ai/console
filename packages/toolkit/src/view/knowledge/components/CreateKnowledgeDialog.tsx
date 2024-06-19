@@ -97,7 +97,7 @@ export const CreateKnowledgeDialog = ({
 
         <Form.Root {...form}>
           <form
-            className="flex flex-col space-y-5"
+            className="flex flex-col space-y-3"
             onSubmit={form.handleSubmit((data) =>
               onSubmit({
                 ...data,
@@ -111,7 +111,7 @@ export const CreateKnowledgeDialog = ({
                 name="namespaceId"
                 render={({ field }) => (
                   <Form.Item className="w-1/2">
-                    <Form.Label className="mb-1 text-semantic-fg-primary product-button-button-2">
+                    <Form.Label className=" text-semantic-fg-primary product-button-button-2">
                       Owner
                     </Form.Label>
                     <Form.Control>
@@ -126,19 +126,17 @@ export const CreateKnowledgeDialog = ({
                         data={userNamespaces}
                       />
                     </Form.Control>
-                    <div className="h-4">
-                      <Form.Message />
-                    </div>
+                    <Form.Message className="h-3 !mt-0.5" />
                   </Form.Item>
                 )}
               />
-              <Icons.SlashDivider className="w-8 h-8 stroke-semantic-fg-secondary stroke-1 mb-2 items-center" />
+              <Icons.SlashDivider className="w-8 h-8 stroke-semantic-fg-secondary stroke-1" />
               <Form.Field
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <Form.Item className="w-1/2">
-                    <Form.Label className="mb-1 text-semantic-fg-primary product-button-button-2">
+                    <Form.Label className=" text-semantic-fg-primary product-button-button-2">
                       Knowledge base name
                     </Form.Label>
                     <Form.Control>
@@ -150,14 +148,12 @@ export const CreateKnowledgeDialog = ({
                         />
                       </Input.Root>
                     </Form.Control>
-                    <div className="h-4">
-                      {nameValue && !isNameValid && (
-                        <p className="text-semantic-fg-secondary product-body-text-4-regular">
-                          Name will be transformed to: {formattedName}
-                        </p>
-                      )}
-                      <Form.Message />
-                    </div>
+                    {nameValue && !isNameValid && (
+                      <p className="text-semantic-fg-secondary product-body-text-4-regular h-3 !mt-0.5">
+                        Name will be transformed to: {formattedName}
+                      </p>
+                    )}
+                    <Form.Message className="h-3 !mt-0.5" />
                   </Form.Item>
                 )}
               />
