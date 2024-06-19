@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.94.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.94.0...@instill-ai/toolkit-v0.94.1) (2024-06-19)
+
+
+### Bug Fixes
+
+* **pipeline-builder:** fix iterator saving issue ([#1251](https://github.com/instill-ai/console/issues/1251)) ([a86f39a](https://github.com/instill-ai/console/commit/a86f39ac7cc725d4ead4c72474305ac69110a3ad))
+
 ## [0.94.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.93.4...@instill-ai/toolkit-v0.94.0) (2024-06-19)
 
 
