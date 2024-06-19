@@ -39,7 +39,7 @@ export function shouldChangeComponentID() {
       // Configure new ST component
       const stComponent = page.locator(`[data-id='${oldSTComponentID}']`);
       const stTaskSelectTrigger = stComponent.getByLabel(
-        "Stability AI Component"
+        "Stability AI Component",
       );
       await stTaskSelectTrigger.click();
       const stTaskContent = await getSelectContent(page, stTaskSelectTrigger);
@@ -48,7 +48,7 @@ export function shouldChangeComponentID() {
       await stEngineSelectTrigger.click();
       const stEngineContent = await getSelectContent(
         page,
-        stEngineSelectTrigger
+        stEngineSelectTrigger,
       );
       await stEngineContent.getByText("stable-diffusion-xl-1024-v1-0").click();
       await page
@@ -68,13 +68,13 @@ export function shouldChangeComponentID() {
       // expect conection line is on pipeline-builder
       await expect(
         page.locator(
-          `g[aria-label='Edge from variable to ${oldSTComponentID}']`
-        )
+          `g[aria-label='Edge from variable to ${oldSTComponentID}']`,
+        ),
       ).toHaveCount(1);
       await expect(
         page.locator(
-          `g[aria-label='Edge from ${oldSTComponentID} to response']`
-        )
+          `g[aria-label='Edge from ${oldSTComponentID} to response']`,
+        ),
       ).toHaveCount(1);
     });
 
@@ -91,18 +91,18 @@ export function shouldChangeComponentID() {
       // expect connection line is not on pipeline-builder
       await expect(
         page.locator(
-          `g[aria-label='Edge from variable to ${oldSTComponentID}']`
-        )
+          `g[aria-label='Edge from variable to ${oldSTComponentID}']`,
+        ),
       ).toHaveCount(0);
       await expect(
         page.locator(
-          `g[aria-label='Edge from variable to ${newSTComponentID}']`
-        )
+          `g[aria-label='Edge from variable to ${newSTComponentID}']`,
+        ),
       ).toHaveCount(1);
       await expect(
         page.locator(
-          `g[aria-label='Edge from ${oldSTComponentID} to response']`
-        )
+          `g[aria-label='Edge from ${oldSTComponentID} to response']`,
+        ),
       ).toHaveCount(0);
 
       // expect connection line is not on pipeline-builder after save
@@ -110,21 +110,21 @@ export function shouldChangeComponentID() {
       await page.reload();
       await expect(
         page.locator(
-          `g[aria-label='Edge from variable to ${oldSTComponentID}']`
-        )
+          `g[aria-label='Edge from variable to ${oldSTComponentID}']`,
+        ),
       ).toHaveCount(0);
       await expect(
         page.locator(
-          `g[aria-label='Edge from variable to ${newSTComponentID}']`
-        )
+          `g[aria-label='Edge from variable to ${newSTComponentID}']`,
+        ),
       ).toHaveCount(1);
       await expect(
         page.locator(
-          `g[aria-label='Edge from ${oldSTComponentID} to response']`
-        )
+          `g[aria-label='Edge from ${oldSTComponentID} to response']`,
+        ),
       ).toHaveCount(0);
       await expect(newStComponent.locator("input[name='nodeID']")).toHaveValue(
-        newSTComponentID
+        newSTComponentID,
       );
     });
 
