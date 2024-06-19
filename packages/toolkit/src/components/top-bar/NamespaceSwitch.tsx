@@ -18,10 +18,8 @@ import {
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
   useNamespacesRemainingCredit,
-  useOrganization,
   useRouteInfo,
   useShallow,
-  useUser,
 } from "../../lib";
 import { env } from "../../server";
 import { NamespaceAvatarWithFallback } from "../NamespaceAvatarWithFallback";
@@ -72,24 +70,6 @@ export const NamespaceSwitch = () => {
     accessToken,
   });
 
-  const user = useUser({
-    userName: routeInfo.data.namespaceName,
-    enabled:
-      enabledQuery &&
-      routeInfo.isSuccess &&
-      routeInfo.data.namespaceType === "NAMESPACE_USER",
-    accessToken,
-  });
-
-  const organization = useOrganization({
-    organizationID: routeInfo.data.namespaceId,
-    enabled:
-      enabledQuery &&
-      routeInfo.isSuccess &&
-      routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION",
-    accessToken,
-  });
-
   const namespacesWithRemainingCredit = React.useMemo(() => {
     if (namespacesRemainingCredit.isSuccess) {
       return namespaces.map((namespace) => {
@@ -114,6 +94,7 @@ export const NamespaceSwitch = () => {
     if (!navigationNamespaceAnchor) {
       return null;
     }
+
     return namespacesWithRemainingCredit.length === 0
       ? namespaces.find((e) => e.id === navigationNamespaceAnchor) ?? null
       : namespacesWithRemainingCredit.find(
@@ -163,15 +144,23 @@ export const NamespaceSwitch = () => {
 
       // If we don't have the namespace anchor, we will try to find the
       // namespace anchor based on the current namespace id and type
+
       if (!namespaceAnchor) {
         if (currentNamespaceId && currentNamespaceType) {
-          if (currentNamespaceType === "NAMESPACE_USER" && user.isSuccess) {
-            namespaceAnchor = user.data.id;
+          if (
+            currentNamespaceType === "NAMESPACE_USER" &&
+            namespaces.findIndex((e) => e.id === currentNamespaceId) !== -1
+          ) {
+            namespaceAnchor = currentNamespaceId;
           } else if (
             currentNamespaceType === "NAMESPACE_ORGANIZATION" &&
-            organization.isSuccess
+            namespaces.findIndex((e) => e.id === currentNamespaceId) !== -1
           ) {
-            namespaceAnchor = organization.data.id;
+            namespaceAnchor = currentNamespaceId;
+            // The user didn't have direct permission toward this resource
+            // We will try to find the first namespace that the user has
+          } else {
+            namespaceAnchor = namespaces[0] ? namespaces[0].id : null;
           }
         } else {
           namespaceAnchor = me.data.id;
@@ -186,13 +175,18 @@ export const NamespaceSwitch = () => {
 
       if (!namespaceAnchor) {
         if (currentNamespaceId && currentNamespaceType) {
-          if (currentNamespaceType === "NAMESPACE_USER" && user.isSuccess) {
-            namespaceAnchor = user.data.id;
+          if (
+            currentNamespaceType === "NAMESPACE_USER" &&
+            namespaces.findIndex((e) => e.id === currentNamespaceId) !== -1
+          ) {
+            namespaceAnchor = currentNamespaceId;
           } else if (
             currentNamespaceType === "NAMESPACE_ORGANIZATION" &&
-            organization.isSuccess
+            namespaces.findIndex((e) => e.id === currentNamespaceId) !== -1
           ) {
-            namespaceAnchor = organization.data.id;
+            namespaceAnchor = currentNamespaceId;
+          } else {
+            namespaceAnchor = namespaces[0] ? namespaces[0].id : null;
           }
         } else {
           namespaceAnchor = me.data.id;
@@ -212,10 +206,6 @@ export const NamespaceSwitch = () => {
     routeInfo.data,
     me.isSuccess,
     me.data,
-    organization.isSuccess,
-    organization.data,
-    user.isSuccess,
-    user.data,
     updateNavigationNamespaceAnchor,
   ]);
 
@@ -225,13 +215,23 @@ export const NamespaceSwitch = () => {
       onValueChange={(value) => {
         updateNavigationNamespaceAnchor(() => value);
 
+        const pathnameArray = pathname.split("/");
+        const targetNamespace = namespaces.find((e) => e.id === value);
+
         if (!routeInfo.isSuccess) {
+          // When the user is in its personal setting page and then he switch to organization
+          // namespace, we need to switch the page to the organization setting page
+
+          if (
+            targetNamespace &&
+            pathnameArray[1] === "settings" &&
+            targetNamespace.type === "organization"
+          ) {
+            navigate(`/${value}/organization-settings`);
+            return;
+          }
           return;
         }
-
-        const pathnameArray = pathname.split("/");
-
-        const targetNamespace = namespaces.find((e) => e.id === value);
 
         // When the current page is the organization setting page, and user switch
         // to another organization namespace, we need to switch the page to the org
@@ -256,6 +256,16 @@ export const NamespaceSwitch = () => {
           }
         }
 
+        // When the current page is user/org profile page and user switch to
+        // other namespaces, we need to switch the page to the new namespace's
+        // profile page
+
+        if (pathnameArray.length === 2 && pathnameArray[1] !== "hub") {
+          pathnameArray[1] = value;
+          navigate(pathnameArray.join("/"));
+          return;
+        }
+
         // When the user is in regular namespace page, we need to switch the page
         // to the new namespace
         if (
@@ -266,18 +276,6 @@ export const NamespaceSwitch = () => {
         ) {
           pathnameArray[1] = value;
           navigate(pathnameArray.join("/"));
-          return;
-        }
-
-        // When the user is in its personal setting page and then he switch to organization
-        // namespace, we need to switch the page to the organization setting page
-
-        if (
-          targetNamespace &&
-          pathnameArray[1] === "settings" &&
-          targetNamespace.type === "organization"
-        ) {
-          navigate(`/${value}/organization-settings`);
           return;
         }
       }}

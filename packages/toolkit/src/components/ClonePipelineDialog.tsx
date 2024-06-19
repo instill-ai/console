@@ -158,8 +158,6 @@ export const ClonePipelineDialog = ({
       sharing,
     };
 
-    console.log(payload);
-
     const namespace = namespaces.find(
       (account) => account.id === data.namespaceId
     );
@@ -246,7 +244,6 @@ export const ClonePipelineDialog = ({
                         control={form.control}
                         name="namespaceId"
                         render={({ field }) => {
-                          console.log(field.value);
                           return (
                             <Form.Item className="w-full">
                               <Form.Label className="product-body-text-3-semibold">
