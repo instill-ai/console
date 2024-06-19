@@ -4,6 +4,7 @@ import {
   Button,
   Dialog,
   Form,
+  Icons,
   Input,
   Select,
   Tag,
@@ -112,13 +113,13 @@ export const CreateKnowledgeDialog = ({
               })
             )}
           >
-            <div className="flex sp">
+            <div className="flex justify-start items-end gap-1">
               <Form.Field
                 control={form.control}
                 name="namespaceId"
                 render={({ field }) => (
-                  <Form.Item className="w-1/3">
-                    <Form.Label className="product-body-text-3-semibold">
+                  <Form.Item className="flex-1">
+                    <Form.Label className="flex justify-start items-center pb-1 product-button-button-2">
                       Owner
                     </Form.Label>
                     <Form.Control>
@@ -126,113 +127,86 @@ export const CreateKnowledgeDialog = ({
                         value={field.value || ""}
                         onValueChange={(e) => {
                           field.onChange(e);
-                          if (form.getValues("id")) {
-                            form.trigger("id");
+                          if (form.getValues("namespaceId")) {
+                            form.trigger("namespaceId");
                           }
                         }}
                       >
-                        <Select.Trigger className="w-full pl-[14px]">
-                          <Select.Value placeholder="Select Account Name">
-                            <div className="flex flex-row gap-x-2">
-                              <span className="my-auto">
-                                {field.value?.length >= 10
-                                  ? field.value?.slice(0, 10) + "..."
-                                  : field.value}
-                              </span>
-                              <span className="my-auto">
-                                {organizationsAndUserList?.length &&
-                                  organizationsAndUserList.find(
-                                    (namespace) => namespace.id === field.value
-                                  )?.name.includes("organizations") ? (
-                                  <Tag
-                                    variant="lightBlue"
-                                    size="sm"
-                                    className="!py-0"
-                                  >
-                                    organization
-                                  </Tag>
-                                ) : (
-                                  <Tag
-                                    size="sm"
-                                    className="!py-0"
-                                    variant="lightNeutral"
-                                  >
-                                    user
-                                  </Tag>
-                                )}
-                              </span>
+                        <Select.Trigger className="flex justify-start items-center gap-2 px-[9px] py-2  w-full">
+                          <Select.Value placeholder="Select Account">
+                            <div className="flex items-center gap-1">
+                              {field.value ? (
+                                <>
+                                  <div className="flex justify-center items-center gap-1 px-[5px] py-1 bg-slate-100 rounded-[100px]">
+                                    <img
+                                      className="w-4 h-4 rounded-[100px]"
+                                      src="https://via.placeholder.com/16x16"
+                                      alt=""
+                                    />
+                                    <span className="text-semantic-fg-primary text-sm font-semibold font-['IBM Plex Sans'] capitalize leading-[14px] tracking-tight">
+                                      {organizationsAndUserList?.find(
+                                        (namespace) => namespace.id === field.value
+                                      )?.name}
+                                    </span>
+                                  </div>
+                                </>
+                              ) : null}
                             </div>
                           </Select.Value>
                         </Select.Trigger>
                         <Select.Content>
                           <Select.Group>
-                            {organizationsAndUserList.length &&
-                              organizationsAndUserList.map((namespace) => (
-                                <Select.Item
-                                  value={namespace.id}
-                                  key={namespace.id}
-                                >
-                                  <Select.ItemText>
-                                    <div className="flex flex-row gap-x-2">
-                                      <span className="my-auto">
-                                        {namespace.id}
-                                      </span>
-                                      <span className="my-auto">
-                                        {namespace.name.includes(
-                                          "organizations"
-                                        ) ? (
-                                          <Tag
-                                            variant="lightBlue"
-                                            size="sm"
-                                            className="!py-0"
-                                          >
-                                            organization
-                                          </Tag>
-                                        ) : (
-                                          <Tag
-                                            size="sm"
-                                            className="!py-0"
-                                            variant="lightNeutral"
-                                          >
-                                            user
-                                          </Tag>
-                                        )}
-                                      </span>
-                                    </div>
-                                  </Select.ItemText>
-                                </Select.Item>
-                              ))}
+                            {organizationsAndUserList?.map((namespace) => (
+                              <Select.Item value={namespace.id} key={namespace.id}>
+                                <Select.ItemText>
+                                  <div className="flex items-center gap-2">
+                                    <span>{namespace.id}</span>
+                                    <span>
+                                      {namespace.name.includes("organizations") ? (
+                                        <Tag variant="lightBlue" size="sm" className="!py-0">
+                                          organization
+                                        </Tag>
+                                      ) : (
+                                        <Tag
+                                          size="sm"
+                                          className="!py-0"
+                                          variant="lightNeutral"
+                                        >
+                                          user
+                                        </Tag>
+                                      )}
+                                    </span>
+                                  </div>
+                                </Select.ItemText>
+                              </Select.Item>
+                            ))}
                           </Select.Group>
                         </Select.Content>
                       </Select.Root>
                     </Form.Control>
-
                     <Form.Message />
                   </Form.Item>
                 )}
               />
+              <Icons.SlashDivider className="w-8 h-8 stroke-semantic-fg-secondary ml-1 stroke-1" />
               <Form.Field
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <Form.Item className="w-2/3">
-                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
+                  <Form.Item className="flex-1 !-ml-4">
+                    <Form.Label className="flex justify-start items-center mb-1 product-button-button-2">
                       Knowledge base name
                     </Form.Label>
                     <Form.Control>
-                      <Input.Root>
+                      <Input.Root className="flex justify-start items-center gap-2 px-[9px] py-2  rounded-lg border  w-full">
                         <Input.Core
                           {...field}
                           id={field.name}
-                          placeholder="Knowledge base name"
+                          placeholder="KB-cool-name"
+                          className="text-semantic-fg-primary text-base font-normal font-['IBM Plex Sans'] leading-normal w-full"
                         />
                       </Input.Root>
                     </Form.Control>
-                    {nameValue && !isNameValid && (
-                      <p className="mt-1 text-semantic-fg-secondary product-body-text-4-regular">
-                        Name will be transformed to: {formattedName}
-                      </p>
-                    )}
                     <Form.Message />
                   </Form.Item>
                 )}
