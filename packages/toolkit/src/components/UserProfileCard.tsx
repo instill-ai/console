@@ -124,20 +124,18 @@ export const UserProfileCard = ({
                 </p>
               </div>
             ) : null}
-            {totalPublicPipelines || totalPublicPipelines === 0 ? (
-              <div className="flex flex-row gap-x-2">
-                <p className="text-semantic-fg-primary product-body-text-2-semibold">
-                  My active public pipelines
+            <div className="flex flex-row gap-x-2">
+              <p className="text-semantic-fg-primary product-body-text-2-semibold">
+                My active public pipelines
+              </p>
+              <Link
+                href={`/${me.data.id}/pipelines?visibility=VISIBILITY_PUBLIC`}
+              >
+                <p className="text-semantic-accent-default product-body-text-2-semibold">
+                  {totalPublicPipelines ?? 0}
                 </p>
-                <Link
-                  href={`/${me.data.id}/pipelines?visibility=VISIBILITY_PUBLIC`}
-                >
-                  <p className="text-semantic-accent-default product-body-text-2-semibold">
-                    {totalPublicPipelines}
-                  </p>
-                </Link>
-              </div>
-            ) : null}
+              </Link>
+            </div>
           </div>
         </React.Fragment>
       ) : visitorCta ? (
