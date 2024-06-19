@@ -97,7 +97,9 @@ export const APITokenTable = (props: APITokenTableProps) => {
       cell: ({ row }) => {
         return (
           <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
-            {formatDate(row.getValue("lastUseTime"))}
+            {row.getValue("lastUseTime")
+              ? formatDate(row.getValue("lastUseTime"))
+              : null}
           </div>
         );
       },
