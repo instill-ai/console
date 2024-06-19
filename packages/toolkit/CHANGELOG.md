@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.94.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.94.1...@instill-ai/toolkit-v0.94.2) (2024-06-19)
+
+
+### Bug Fixes
+
+* fix container height variable wrongly calculated issue ([#1252](https://github.com/instill-ai/console/issues/1252)) ([d1bdb83](https://github.com/instill-ai/console/commit/d1bdb8372bfc2e3cfd047f119c1fb81b8d2c34c7))
+
 ## [0.94.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.94.0...@instill-ai/toolkit-v0.94.1) (2024-06-19)
 
 
