@@ -254,3 +254,33 @@ export async function deleteUserSecretMutation({
     return Promise.reject(err);
   }
 }
+
+export type CloneNamespacePipelinePayload = {
+  pipelineName: string;
+  targetPipelineName: string;
+};
+
+export type CloneNamespacePipelineResponse = {
+  pipeline: Pipeline;
+};
+
+export async function cloneNamespacePipelineMutation({
+  payload,
+  accessToken,
+}: {
+  payload: CloneNamespacePipelinePayload;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken);
+
+    const { data } = await client.post<CloneNamespacePipelineResponse>(
+      `/${payload.pipelineName}/clone`,
+      payload
+    );
+
+    return Promise.resolve(data.pipeline);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}

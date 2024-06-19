@@ -1,3 +1,4 @@
+export * from "./useCloneNamespacePipeline";
 export * from "./useCreateUserPipeline";
 export * from "./useCreateUserPipelineRelease";
 export * from "./useCreateUserSecret";
