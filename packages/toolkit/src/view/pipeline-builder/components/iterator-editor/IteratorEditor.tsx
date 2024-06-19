@@ -6,7 +6,6 @@ import { Button, Icons, Separator } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
-  PipelineComponent,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
@@ -15,14 +14,13 @@ import {
   composeEdgesFromNodes,
   composePipelineMetadataMapFromNodes,
   isIteratorNode,
-  isResponseNode,
-  isVariableNode,
   useAddNodeWithDefinition,
 } from "../../lib";
 import { ReactFlowInstance } from "reactflow";
 import { PipelineBuilderCanvas } from "../PipelineBuilderCanvas";
 import { IteratorInput } from "./iterator-input/IteratorInput";
 import { IteratorOutput } from "./iterator-output/IteratorOutput";
+import { composePipelineComponentMapFromNodes } from "../../lib/composePipelineComponentMapFromNodes";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,
@@ -75,18 +73,16 @@ export const IteratorEditor = ({
             const newNodes = tempSavedNodesForEditingIteratorFlow.map(
               (node) => {
                 if (node.id === editingIteratorID && isIteratorNode(node)) {
-                  const components = nodes
-                    .filter(
-                      (node) => !isVariableNode(node) || !isResponseNode(node)
-                    )
-                    .map((node) => node.data) as PipelineComponent[];
-
                   return {
                     ...node,
                     data: {
                       ...node.data,
-                      components,
+                      component: composePipelineComponentMapFromNodes(
+                        nodes,
+                        true
+                      ),
                       metadata: composePipelineMetadataMapFromNodes(nodes),
+                      outputElements: node.data.outputElements,
                     },
                   };
                 }
