@@ -2,7 +2,7 @@ import { test, expect } from "vitest";
 import { generateUniqueIndex } from "./generateUniqueIndex";
 
 test("should generate new node idx", () => {
-  const nodeIDs = ["ai_0", "ai_1", "ai_5", "ai_2", "ai_6"];
+  const nodeIDs = ["ai-0", "ai-1", "ai-5", "ai-2", "ai-6"];
 
   const idx = generateUniqueIndex(nodeIDs, "ai");
 
