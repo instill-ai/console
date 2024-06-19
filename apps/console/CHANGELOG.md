@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.49.0-beta](https://github.com/instill-ai/console/compare/v0.48.0-beta...v0.49.0-beta) (2024-06-19)
+
+
+### Features
+
+* adapt kabab rule for resource like component, mode, and pipeline in console ([#1238](https://github.com/instill-ai/console/issues/1238)) ([88a3fde](https://github.com/instill-ai/console/commit/88a3fde925eda236051a59f1a727e4f79ce673ea))
+* adapt the camelcase change of BE api response in the console ([#1227](https://github.com/instill-ai/console/issues/1227)) ([552a7b4](https://github.com/instill-ai/console/commit/552a7b4c81b90dc9dcf338098bcd929420189060))
+* adapt the camelCase rule in the query param ([#1230](https://github.com/instill-ai/console/issues/1230)) ([2a9ee91](https://github.com/instill-ai/console/commit/2a9ee9182bcebeaf811a496a0f24d3bf685ef375))
+* change pathname from /builder to /editor ([#1223](https://github.com/instill-ai/console/issues/1223)) ([88c4e04](https://github.com/instill-ai/console/commit/88c4e0473f6dad8478d0a562cb5453965ea6a840))
+* enable namespace-switch to help user navigate pages ([#1224](https://github.com/instill-ai/console/issues/1224)) ([067b5a5](https://github.com/instill-ai/console/commit/067b5a59598b964fc7c46173bfa79b8ffd3124b0))
+* re-export lodash for console-cloud usage ([#1229](https://github.com/instill-ai/console/issues/1229)) ([af35a00](https://github.com/instill-ai/console/commit/af35a001b7cb9a31cc5f7855893bc63c88b8a68c))
+* support sorting the last use date in api token table ([#1246](https://github.com/instill-ai/console/issues/1246)) ([55b3f74](https://github.com/instill-ai/console/commit/55b3f747f833cf6229c52fad12a30e4b865be667))
+* unify Avatar using new fallback rule ([#1240](https://github.com/instill-ai/console/issues/1240)) ([1f64140](https://github.com/instill-ai/console/commit/1f6414050f6fddb68285d6fd0e4088c6dab6bade))
+
+
+### Bug Fixes
+
+* **namespace-switch:** fix not selecting the selected namespace as default namespace when create model ([#1233](https://github.com/instill-ai/console/issues/1233)) ([bc9f37e](https://github.com/instill-ai/console/commit/bc9f37ef6ba2e288f399a904c5f2fc3eca6d0e87))
+* **namespace-switch:** fix the namespace switch style and deviation  ([#1237](https://github.com/instill-ai/console/issues/1237)) ([5e3c925](https://github.com/instill-ai/console/commit/5e3c925265d321d5c38edd3322535b72e90fb74e))
+
 ## [0.48.0-beta](https://github.com/instill-ai/console/compare/v0.47.2-beta...v0.48.0-beta) (2024-06-06)
 
 

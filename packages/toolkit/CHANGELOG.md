@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.94.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.93.4...@instill-ai/toolkit-v0.94.0) (2024-06-19)
+
+
+### Features
+
+* adapt kabab rule for resource like component, mode, and pipeline in console ([#1238](https://github.com/instill-ai/console/issues/1238)) ([88a3fde](https://github.com/instill-ai/console/commit/88a3fde925eda236051a59f1a727e4f79ce673ea))
+* adapt the camelcase change of BE api response in the console ([#1227](https://github.com/instill-ai/console/issues/1227)) ([552a7b4](https://github.com/instill-ai/console/commit/552a7b4c81b90dc9dcf338098bcd929420189060))
+* adapt the camelCase rule in the query param ([#1230](https://github.com/instill-ai/console/issues/1230)) ([2a9ee91](https://github.com/instill-ai/console/commit/2a9ee9182bcebeaf811a496a0f24d3bf685ef375))
+* **billing:** billing credits related updates ([#1226](https://github.com/instill-ai/console/issues/1226)) ([ea15ea2](https://github.com/instill-ai/console/commit/ea15ea29d36f4d07d74a3a19716c22f10f04aaf2))
+* change pathname from /builder to /editor ([#1223](https://github.com/instill-ai/console/issues/1223)) ([88c4e04](https://github.com/instill-ai/console/commit/88c4e0473f6dad8478d0a562cb5453965ea6a840))
+* enable namespace-switch to help user navigate pages ([#1224](https://github.com/instill-ai/console/issues/1224)) ([067b5a5](https://github.com/instill-ai/console/commit/067b5a59598b964fc7c46173bfa79b8ffd3124b0))
+* **pipeline-editor:** remove displaying data free form on big query ([#1239](https://github.com/instill-ai/console/issues/1239)) ([9e30bd8](https://github.com/instill-ai/console/commit/9e30bd823e62073c3e8008b6b7b4766a13fe04f9))
+* re-export lodash for console-cloud usage ([#1229](https://github.com/instill-ai/console/issues/1229)) ([af35a00](https://github.com/instill-ai/console/commit/af35a001b7cb9a31cc5f7855893bc63c88b8a68c))
+* support sorting the last use date in api token table ([#1246](https://github.com/instill-ai/console/issues/1246)) ([55b3f74](https://github.com/instill-ai/console/commit/55b3f747f833cf6229c52fad12a30e4b865be667))
+* unify Avatar using new fallback rule ([#1240](https://github.com/instill-ai/console/issues/1240)) ([1f64140](https://github.com/instill-ai/console/commit/1f6414050f6fddb68285d6fd0e4088c6dab6bade))
+
+
+### Bug Fixes
+
+* fix generateNewComponentIndex unit test ([#1247](https://github.com/instill-ai/console/issues/1247)) ([d08c823](https://github.com/instill-ai/console/commit/d08c823f6f9fb4da59d45cb1a32db322f4257804))
+* fix not correctly clone pipeline and unify UI ([#1244](https://github.com/instill-ai/console/issues/1244)) ([8da3b35](https://github.com/instill-ai/console/commit/8da3b359693c963970aee28ff58ccbc1090e8b51))
+* fix subscription type definition not obeying camelCase ([#1228](https://github.com/instill-ai/console/issues/1228)) ([8f12ff4](https://github.com/instill-ai/console/commit/8f12ff4737b31e93f016caaf0d7271758bc21465))
+* fix topbar's navlinks not displayed in console-cloud ([#1231](https://github.com/instill-ai/console/issues/1231)) ([baaf41c](https://github.com/instill-ai/console/commit/baaf41cd6cf982212fb5c2f50269d23f8f41890f))
+* fix using wrong icon for Your organizations button ([#1243](https://github.com/instill-ai/console/issues/1243)) ([6fe337e](https://github.com/instill-ai/console/commit/6fe337e389096a11df1d6538433b42d6c1b21101))
+* **namespace-switch:** fix incorrectly display navlinks for unauth user ([#1235](https://github.com/instill-ai/console/issues/1235)) ([7f50e64](https://github.com/instill-ai/console/commit/7f50e64c1c208631fe323d59e29fd7d09d730fec))
+* **namespace-switch:** fix issue about namespace switch list ([#1245](https://github.com/instill-ai/console/issues/1245)) ([78d0423](https://github.com/instill-ai/console/commit/78d0423d9dfc5023856d07fb9b8b65372ea5ccec))
+* **namespace-switch:** fix not selecting the selected namespace as default namespace when create model ([#1233](https://github.com/instill-ai/console/issues/1233)) ([bc9f37e](https://github.com/instill-ai/console/commit/bc9f37ef6ba2e288f399a904c5f2fc3eca6d0e87))
+* **namespace-switch:** fix switch namespace not correctly re-render namespace's image ([#1236](https://github.com/instill-ai/console/issues/1236)) ([0d1acd6](https://github.com/instill-ai/console/commit/0d1acd638076a0b1da82e56b7ce647d7511c51cb))
+* **namespace-switch:** fix the namespace switch style and deviation  ([#1237](https://github.com/instill-ai/console/issues/1237)) ([5e3c925](https://github.com/instill-ai/console/commit/5e3c925265d321d5c38edd3322535b72e90fb74e))
+* **namespace-switch:** fix user profile card org navigation didnt change namespace anchor ([#1241](https://github.com/instill-ai/console/issues/1241)) ([66c4c96](https://github.com/instill-ai/console/commit/66c4c96dcabfe59277d3a85c2fde38278c772f23))
+* **pipelines:** change button build to edit ([#1222](https://github.com/instill-ai/console/issues/1222)) ([914a1ba](https://github.com/instill-ai/console/commit/914a1bad5747c9afb84b49eaf4729465b151bf15))
+* set namespaceAnchor when create model or pipeline ([#1234](https://github.com/instill-ai/console/issues/1234)) ([1801f6e](https://github.com/instill-ai/console/commit/1801f6ed197e6b5aed5990f8f4470e81dd75da44))
+
 ## [0.93.4](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.93.3...@instill-ai/toolkit-v0.93.4) (2024-06-08)
 
 

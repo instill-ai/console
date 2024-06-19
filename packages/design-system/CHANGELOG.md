@@ -1,5 +1,27 @@
 # @instill-ai/design-system
 
+## [0.71.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.70.0...@instill-ai/design-system-v0.71.0) (2024-06-19)
+
+
+### Features
+
+* **billing:** billing credits related updates ([#1226](https://github.com/instill-ai/console/issues/1226)) ([ea15ea2](https://github.com/instill-ai/console/commit/ea15ea29d36f4d07d74a3a19716c22f10f04aaf2))
+* enable namespace-switch to help user navigate pages ([#1224](https://github.com/instill-ai/console/issues/1224)) ([067b5a5](https://github.com/instill-ai/console/commit/067b5a59598b964fc7c46173bfa79b8ffd3124b0))
+
+
+### Bug Fixes
+
+* fix subscription type definition not obeying camelCase ([#1228](https://github.com/instill-ai/console/issues/1228)) ([8f12ff4](https://github.com/instill-ai/console/commit/8f12ff4737b31e93f016caaf0d7271758bc21465))
+* fix Tag border style ([#1242](https://github.com/instill-ai/console/issues/1242)) ([4630f16](https://github.com/instill-ai/console/commit/4630f16eb275832a1b8a4a867cf9c6494e2b178d))
+* fix using wrong icon for Your organizations button ([#1243](https://github.com/instill-ai/console/issues/1243)) ([6fe337e](https://github.com/instill-ai/console/commit/6fe337e389096a11df1d6538433b42d6c1b21101))
+* **namespace-switch:** fix the namespace switch style and deviation  ([#1237](https://github.com/instill-ai/console/issues/1237)) ([5e3c925](https://github.com/instill-ai/console/commit/5e3c925265d321d5c38edd3322535b72e90fb74e))
+* **pipelines:** change button build to edit ([#1222](https://github.com/instill-ai/console/issues/1222)) ([914a1ba](https://github.com/instill-ai/console/commit/914a1bad5747c9afb84b49eaf4729465b151bf15))
+
+
+### Miscellaneous
+
+* add icons ([#1232](https://github.com/instill-ai/console/issues/1232)) ([5a57733](https://github.com/instill-ai/console/commit/5a57733badf7660b313f55d098fdc26de864b38e))
+
 ## [0.70.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.69.2...@instill-ai/design-system-v0.70.0) (2024-06-06)
 
 
