@@ -58,6 +58,7 @@ export const CreateKnowledgeDialog = ({
 
   const { formState, watch } = form;
   const nameValue = watch("name");
+  const namespaceIdValue = watch("namespaceId");
 
   const formatName = (name: string) => {
     return name.replace(/[^a-zA-Z0-9-_]/g, "-").replace(/-+/g, "-");
@@ -104,13 +105,13 @@ export const CreateKnowledgeDialog = ({
               })
             )}
           >
-            <div className="flex justify-start items-end gap-1">
+            <div className="flex justify-start items-center gap-4">
               <Form.Field
                 control={form.control}
                 name="namespaceId"
                 render={({ field }) => (
-                  <Form.Item className="flex-1">
-                    <Form.Label className="flex justify-start items-center pb-1 product-button-button-2">
+                  <Form.Item className="w-1/2">
+                    <Form.Label className="mb-1 text-semantic-fg-primary product-button-button-2">
                       Owner
                     </Form.Label>
                     <Form.Control>
@@ -125,17 +126,19 @@ export const CreateKnowledgeDialog = ({
                         data={userNamespaces}
                       />
                     </Form.Control>
-                    <Form.Message />
+                    <div className="h-4">
+                      <Form.Message />
+                    </div>
                   </Form.Item>
                 )}
               />
-              <Icons.SlashDivider className="w-8 h-8 stroke-semantic-fg-secondary ml-1 stroke-1" />
+              <Icons.SlashDivider className="w-8 h-8 stroke-semantic-fg-secondary stroke-1 mb-2 items-center" />
               <Form.Field
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <Form.Item className="w-2/3">
-                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
+                  <Form.Item className="w-1/2">
+                    <Form.Label className="mb-1 text-semantic-fg-primary product-button-button-2">
                       Knowledge base name
                     </Form.Label>
                     <Form.Control>
@@ -147,12 +150,14 @@ export const CreateKnowledgeDialog = ({
                         />
                       </Input.Root>
                     </Form.Control>
-                    {nameValue && !isNameValid && (
-                      <p className="mt-1 text-semantic-fg-secondary product-body-text-4-regular">
-                        Name will be transformed to: {formattedName}
-                      </p>
-                    )}
-                    <Form.Message />
+                    <div className="h-4">
+                      {nameValue && !isNameValid && (
+                        <p className="text-semantic-fg-secondary product-body-text-4-regular">
+                          Name will be transformed to: {formattedName}
+                        </p>
+                      )}
+                      <Form.Message />
+                    </div>
                   </Form.Item>
                 )}
               />
@@ -210,7 +215,7 @@ export const CreateKnowledgeDialog = ({
                 variant="primary"
                 type="submit"
                 className="text-semantic-fg-on-default"
-                disabled={!formState.isValid}
+                disabled={!formState.isValid || !namespaceIdValue || !nameValue}
               >
                 Create
               </Button>
