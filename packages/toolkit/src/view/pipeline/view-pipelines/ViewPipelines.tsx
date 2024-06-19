@@ -63,6 +63,15 @@ export const ViewPipelines = () => {
     visibility: selectedVisibilityOption ?? null,
   });
 
+  const myPipelines = useInfiniteUserPipelines({
+    userName: me.isSuccess ? me.data.name : null,
+    enabledQuery: enabledQuery && me.isSuccess,
+    accessToken,
+    pageSize: 10,
+    visibility: null,
+    filter: null,
+  });
+
   const userPublicPipelines = useUserPipelines({
     userName: me.isSuccess ? me.data.name : null,
     enabled: enabledQuery && me.isSuccess,
@@ -102,12 +111,12 @@ export const ViewPipelines = () => {
       <div className="w-[288px] pr-4 pt-6">
         <UserProfileCard
           totalPipelines={
-            pipelines.isSuccess ? pipelines.data.pages[0].totalSize : null
+            myPipelines.isSuccess ? myPipelines.data.pages[0].totalSize : null
           }
           totalPublicPipelines={userPublicPipelines.data?.length ?? null}
         />
       </div>
-      <div className="flex w-[630px] flex-col pt-6">
+      <div className="flex w-[630px] flex-col py-6">
         <div className="mb-4 grid grid-flow-row grid-cols-3 gap-x-3">
           <div className="flex flex-col gap-y-2.5">
             <p className="text-semantic-fg-primary product-body-text-3-semibold">
