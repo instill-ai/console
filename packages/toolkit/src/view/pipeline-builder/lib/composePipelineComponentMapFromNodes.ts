@@ -5,7 +5,10 @@ import { isGeneralNode, isIteratorNode } from "./checkNodeType";
 import { isPipelineGeneralComponent } from "./checkComponentType";
 import { recursiveHelpers } from "./recursive-helpers";
 
-export function composePipelineComponentMapFromNodes(nodes: Node<NodeData>[]) {
+export function composePipelineComponentMapFromNodes(
+  nodes: Node<NodeData>[],
+  retainDefinition?: boolean
+) {
   const componentMap: PipelineComponentMap = {};
 
   for (const node of nodes) {
@@ -19,7 +22,7 @@ export function composePipelineComponentMapFromNodes(nodes: Node<NodeData>[]) {
                 key,
                 {
                   ...e,
-                  definition: undefined,
+                  definition: retainDefinition ? e.definition : undefined,
                   input:
                     recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
                       recursiveHelpers.parseToNum(structuredClone(e.input))
@@ -52,7 +55,7 @@ export function composePipelineComponentMapFromNodes(nodes: Node<NodeData>[]) {
               recursiveHelpers.parseToNum(structuredClone(node.data.setup))
             )
           : undefined,
-        definition: undefined,
+        definition: retainDefinition ? node.data.definition : undefined,
         metadata: node.data.metadata ?? undefined,
       };
 
