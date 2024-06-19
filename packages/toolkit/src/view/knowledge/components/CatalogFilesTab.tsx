@@ -179,7 +179,11 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
               </div>
             </div>
             {sortedData.map((item, index) => (
-              <div key={index} className="grid grid-cols-5 items-center h-[72px]">
+              <div
+                key={index}
+                className={`grid grid-cols-5 items-center h-[72px] ${index !== sortedData.length - 1 ? "border-b border-semantic-bg-line" : ""
+                  }`}
+              >
                 <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                   {item.fileName}
                 </div>
@@ -204,9 +208,6 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                     Delete
                   </Button>
                 </div>
-                {index !== sortedData.length - 1 && (
-                  <Separator orientation="horizontal" className="col-span-5" />
-                )}
               </div>
             ))}
           </div>
