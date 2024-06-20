@@ -118,7 +118,6 @@ export const KnowledgeBaseTab = ({
     }
   };
 
-
   return (
     <div className="flex flex-col">
       <div className="mb-5 flex items-center justify-between">

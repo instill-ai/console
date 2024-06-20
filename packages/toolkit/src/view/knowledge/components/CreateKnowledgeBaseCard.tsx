@@ -256,8 +256,8 @@ export const CreateKnowledgeBaseCard = ({
         <DeleteKnowledgeBaseNotification
           knowledgeBaseName={knowledgeBase.name}
           handleCloseDeleteMessage={handleCloseDeleteMessage}
-          undoDelete={undoDelete
-          } />
+          undoDelete={undoDelete}
+        />
       ) : null}
       <EditKnowledgeDialog
         isOpen={editDialogIsOpen}
