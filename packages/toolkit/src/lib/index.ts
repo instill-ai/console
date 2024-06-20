@@ -24,6 +24,7 @@ export * from "./getCaptializeTwoWordsFromName";
 export * from "./convertLongNumberToK";
 export * from "./formatNumberToLocale";
 export * from "./generateDateInPast";
+export * from "./convertSentenceToCamelCase";
 
 import debounce from "lodash.debounce";
 export { debounce };

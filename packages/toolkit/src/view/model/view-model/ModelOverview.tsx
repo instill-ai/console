@@ -23,6 +23,7 @@ import {
   useLastModelTriggerResult,
   useShallow,
   useTriggerUserModelAsync,
+  convertSentenceToCamelCase,
 } from "../../../lib";
 import { ModelReadme } from "./ModelReadme";
 import { z } from "zod";
@@ -47,7 +48,14 @@ const selector = (store: InstillStore) => ({
 });
 
 const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
-  taskName ? taskName.replace("TASK_", "").toLowerCase() : null;
+  taskName
+    ? convertSentenceToCamelCase(
+        // This removes "TASK_" and replaces "_" with a space. The first
+        // argument has and OR operator for matching both substrings. The second
+        // argument is a function with a condition.
+        taskName.replace(/TASK_|_/g, (d) => (d === "TASK_" ? "" : " "))
+      )
+    : null;
 
 const convertValuesToString = (props: Record<string, unknown>) => {
   const convertedProps: Record<string, unknown> = {};
