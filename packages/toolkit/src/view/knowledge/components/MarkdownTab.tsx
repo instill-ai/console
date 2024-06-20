@@ -4,7 +4,7 @@ import {
   Separator,
   Tag,
   Textarea,
-  Select,
+  // Select,
   Switch,
 } from "@instill-ai/design-system";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
@@ -51,8 +51,8 @@ export const MarkdownTab = ({ knowledgeBase }: MarkdownTabProps) => {
     direction: "",
   });
 
-  const [selectedOption, setSelectedOption] = useState("Text");
-  const [selectedTextOption, setSelectedTextOption] = useState("Markdown");
+  // const [selectedOption, setSelectedOption] = useState("Text");
+  // const [selectedTextOption, setSelectedTextOption] = useState("Markdown");
 
   const sortedData = [...mockData].sort((a, b) => {
     if (
@@ -105,7 +105,7 @@ export const MarkdownTab = ({ knowledgeBase }: MarkdownTabProps) => {
             </div>
           </Button>
         </div>
-        <div className="flex  rounded border border-semantic-bg-line bg-semantic-bg-primary">
+        <div className="flex rounded border border-semantic-bg-line bg-semantic-bg-primary">
           <div className="flex flex-grow">
             <div className="flex flex-grow flex-col">
               <div className="flex items-center justify-center gap-3 border-b border-semantic-bg-line bg-semantic-bg-base-bg p-2">
@@ -263,10 +263,7 @@ export const MarkdownTab = ({ knowledgeBase }: MarkdownTabProps) => {
                 <div key={index}>
                   <div className="h-16 flex-col items-center justify-center px-3">
                     <div className=" product-label-label-2">Retrievable</div>
-                    <Switch
-                      checked={item.status}
-                      onCheckedChange={(checked) => {}}
-                    />
+                    <Switch checked={item.status} onCheckedChange={() => {}} />
                   </div>
                   {index !== sortedData.length - 1 ? (
                     <Separator orientation="horizontal" />
