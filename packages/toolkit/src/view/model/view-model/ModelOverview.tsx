@@ -50,6 +50,9 @@ const selector = (store: InstillStore) => ({
 const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
   taskName
     ? convertSentenceToCamelCase(
+        // This removes "TASK_" and replaces "_" with a space. The first
+        // argument has and OR operator for matching both substrings. The second
+        // argument is a function with a condition.
         taskName.replace(/TASK_|_/g, (d) => (d === "TASK_" ? "" : " "))
       )
     : null;
