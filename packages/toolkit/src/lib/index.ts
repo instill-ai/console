@@ -25,6 +25,7 @@ export * from "./convertLongNumberToK";
 export * from "./formatNumberToLocale";
 export * from "./generateDateInPast";
 export * from "./convertSentenceToCamelCase";
+export * from "./useUserNamespaces";
 
 import debounce from "lodash.debounce";
 export { debounce };

@@ -78,7 +78,7 @@ export const NamespaceSwitch = () => {
           remainingCredit:
             namespacesRemainingCredit.data.find(
               (e) => e.namespaceName === namespace.name
-            )?.remainingCredit ?? 0,
+            )?.remainingCredit.total ?? 0,
         };
       });
     }
