@@ -39,7 +39,10 @@ export function useNamespacesRemainingCredit({
             ownerName: namespaceName,
             accessToken,
           });
-          remainingCredits.push({ namespaceName, remainingCredit });
+          remainingCredits.push({
+            namespaceName,
+            remainingCredit: remainingCredit.total,
+          });
         } catch (error) {
           console.log(error);
         }
