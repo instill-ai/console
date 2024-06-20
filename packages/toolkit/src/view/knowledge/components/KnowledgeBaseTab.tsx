@@ -122,7 +122,7 @@ export const KnowledgeBaseTab = ({
     <div className="flex flex-col">
       <div className="mb-5 flex items-center justify-between">
         <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
-          Knowledge Base
+          Knowledge bases
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
