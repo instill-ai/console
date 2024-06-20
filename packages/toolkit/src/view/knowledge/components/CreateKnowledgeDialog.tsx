@@ -105,7 +105,7 @@ export const CreateKnowledgeDialog = ({
               })
             )}
           >
-            <div className="flex justify-start items-center gap-4">
+            <div className="flex items-center justify-start gap-4">
               <Form.Field
                 control={form.control}
                 name="namespaceId"
@@ -130,12 +130,12 @@ export const CreateKnowledgeDialog = ({
                   </Form.Item>
                 )}
               />
-              <Icons.SlashDivider className="w-8 h-8 stroke-semantic-fg-secondary stroke-1" />
+              <Icons.SlashDivider className="h-8 w-8 stroke-semantic-fg-secondary stroke-1" />
               <Form.Field
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <Form.Item className="w-1/2 -ml-4">
+                  <Form.Item className="-ml-4 w-1/2">
                     <Form.Label className="text-semantic-fg-primary product-button-button-2">
                       Knowledge base name
                     </Form.Label>
@@ -150,7 +150,7 @@ export const CreateKnowledgeDialog = ({
                     </Form.Control>
                     <div className="h-6">
                       {nameValue && !isNameValid && (
-                        <p className="text-semantic-fg-secondary product-body-text-4-regular !mt-0.5">
+                        <p className="!mt-0.5 text-semantic-fg-secondary product-body-text-4-regular">
                           Name will be transformed to: {formattedName}
                         </p>
                       )}
@@ -170,7 +170,11 @@ export const CreateKnowledgeDialog = ({
                     Description
                   </Form.Label>
                   <Form.Control>
-                    <Textarea {...field} id={field.name} placeholder="Content" />
+                    <Textarea
+                      {...field}
+                      id={field.name}
+                      placeholder="Content"
+                    />
                   </Form.Control>
                   <p className="text-semantic-fg-secondary product-body-text-4-regular">
                     Fill with a short description

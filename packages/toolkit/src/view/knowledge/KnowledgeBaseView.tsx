@@ -13,14 +13,15 @@ import { ImageTab } from "./components/ImageTab";
 import { Nullable } from "@instill-ai/toolkit";
 import { RetrieveTestTab } from "./components/RetrieveTestTab";
 
-
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
 export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
     React.useState<KnowledgeBase | null>(null);
   const [activeTab, setActiveTab] = React.useState("knowledge-base");
-  const [selectedTextOption, setSelectedTextOption] = React.useState(null as Nullable<string>);
+  const [selectedTextOption, setSelectedTextOption] = React.useState(
+    null as Nullable<string>
+  );
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [isDeleted, setIsDeleted] = React.useState(false);
   const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] =
@@ -84,7 +85,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             onTextOptionChange={handleTextOptionChange}
           />
         </div>
-        <div className={`sm:col-span-8 md:col-span-9 lg:col-span-10 ${activeTab === "catalog" ? "pt-5" : "pt-6"}`}>
+        <div
+          className={`sm:col-span-8 md:col-span-9 lg:col-span-10 ${activeTab === "catalog" ? "pt-5" : "pt-6"}`}
+        >
           {activeTab === "knowledge-base" ? (
             <KnowledgeBaseTab
               onKnowledgeBaseSelect={handleKnowledgeBaseSelect}
