@@ -27,33 +27,33 @@ export const defaultCodeSnippetStyles = {
 
 const taskPayloads = {
   TASK_CLASSIFICATION: `"classification": {
-        "image_url": {your-input-image-url}
+        "imageUrl": {your-input-image-url}
       }`,
   TASK_DETECTION: `"detection": {
-        "image_url": {your-input-image-url}
+        "imageUrl": {your-input-image-url}
       }`,
   TASK_KEYPOINT: `"keypoint": {
-        "image_url": {your-input-image-url}
+        "imageUrl": {your-input-image-url}
       }`,
   TASK_OCR: `"ocr": {
-        "image_url": {your-input-image-url}
+        "imageUrl": {your-input-image-url}
       }`,
-  TASK_INSTANCE_SEGMENTATION: `"instance_segmentation": {
-        "image_url": {your-input-image-url}
+  TASK_INSTANCE_SEGMENTATION: `"instanceSegmentation": {
+        "imageUrl": {your-input-image-url}
       }`,
-  TASK_SEMANTIC_SEGMENTATION: `"semantic_segmentation": {
-        "image_url": {your-input-image-url}
+  TASK_SEMANTIC_SEGMENTATION: `"semanticSegmentation": {
+        "imageUrl": {your-input-image-url}
       }`,
-  TASK_TEXT_GENERATION: `"text_generation": {
+  TASK_TEXT_GENERATION: `"textGeneration": {
         "prompt": "In this beautiful day,",
-        "system_message": "you are a helpful assistant",
-        "max_new_tokens": 1024,
-        "top_k": 5,
+        "systemMessage": "you are a helpful assistant",
+        "maxNewTokens": 1024,
+        "topK": 5,
         "temperature": 0.7
       }`,
-  TASK_TEXT_GENERATION_CHAT: `"text_generation": {
+  TASK_TEXT_GENERATION_CHAT: `"textGeneration": {
         "prompt": "How is the weather today?",
-        "chat_history": [
+        "chatHistory": [
           {
             "role": "user",
             "content": [
@@ -64,36 +64,36 @@ const taskPayloads = {
             ]
           }
         ],
-        "system_message": "you are a helpful assistant",
-        "max_new_tokens": 1024,
-        "top_k": 5,
+        "systemMessage": "you are a helpful assistant",
+        "maxNewTokens": 1024,
+        "topK": 5,
         "temperature": 0.7
       }`,
-  TASK_TEXT_TO_IMAGE: `"text_to_image": {
+  TASK_TEXT_TO_IMAGE: `"textToImage": {
         "prompt": "award winning high resolution photo of a giant tortoise",
         "steps": 1,
-        "cfg_scale": 5.5,
+        "cfgScale": 5.5,
         "seed": 1,
         "samples": 1
       }`,
-  TASK_IMAGE_TO_IMAGE: `"image_to_image": {
+  TASK_IMAGE_TO_IMAGE: `"imageToImage": {
         "prompt": "spacedog",
-        "prompt_image_url": "https://artifacts.instill.tech/imgs/dog.jpg",
+        "promptImageUrl": "https://artifacts.instill.tech/imgs/dog.jpg",
         "steps": 1,
-        "cfg_scale": 5.5,
+        "cfgScale": 5.5,
         "seed": 1,
         "samples": 1
       }`,
-  TASK_VISUAL_QUESTION_ANSWERING: `"visual_question_answering": {
+  TASK_VISUAL_QUESTION_ANSWERING: `"visualQuestionAnswering": {
         "prompt": "what is in the image?",
-        "prompt_images": [
+        "promptImages": [
           {
-            "prompt_image_url": "https://artifacts.instill.tech/imgs/dog.jpg"
+            "promptImageUrl": "https://artifacts.instill.tech/imgs/dog.jpg"
           }
         ],
-        "system_message": "you are a helpful assistant",
-        "max_new_tokens": 1024,
-        "top_k": 5,
+        "systemMessage": "you are a helpful assistant",
+        "maxNewTokens": 1024,
+        "topK": 5,
         "temperature": 0.7
       }`,
 };
