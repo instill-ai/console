@@ -70,16 +70,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
 
     const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
     const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] = React.useState(false);
-
-    const handleCloseFileTooLargeMessage = () => {
-        setShowFileTooLargeMessage(false);
-        form.setValue("file", null);
-    };
-
-    const handleCloseUnsupportedFileMessage = () => {
-        setShowUnsupportedFileMessage(false);
-        form.setValue("file", null);
-    };
+    const [lastValidFile, setLastValidFile] = React.useState<File | null>(null);
 
     const handleFileUpload = async (file: File) => {
         if (file.size > MAX_FILE_SIZE) {
@@ -92,6 +83,9 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
             setShowUnsupportedFileMessage(true);
             return;
         }
+
+        setLastValidFile(file);
+        form.setValue("file", file);
 
         const reader = new FileReader();
         reader.onload = (event) => {
@@ -120,6 +114,21 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
         };
         reader.readAsBinaryString(file);
     };
+
+    const handleCloseFileTooLargeMessage = () => {
+        setShowFileTooLargeMessage(false);
+        if (lastValidFile) {
+            form.setValue("file", lastValidFile);
+        }
+    };
+
+    const handleCloseUnsupportedFileMessage = () => {
+        setShowUnsupportedFileMessage(false);
+        if (lastValidFile) {
+            form.setValue("file", lastValidFile);
+        }
+    };
+
 
     const router = useRouter();
 
@@ -151,13 +160,13 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
         setIsDragging(false);
         const file = e.dataTransfer.files[0];
         if (file) {
-            form.setValue("file", file);
             await handleFileUpload(file);
         }
     };
 
     const handleRemoveFile = () => {
         form.setValue("file", null);
+        setLastValidFile(null);
     };
 
     return (
@@ -207,7 +216,6 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                                                 onChange={async (e) => {
                                                     const file = e.target.files?.[0];
                                                     if (file) {
-                                                        field.onChange(file);
                                                         await handleFileUpload(file);
                                                     }
                                                 }}
@@ -221,19 +229,17 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                     />
                 </form>
             </Form.Root>
-            {form.watch("file") ? (
-                !showFileTooLargeMessage && !showUnsupportedFileMessage ? (
-                    <div className="flex items-center justify-between w-full h-8 px-2 py-1.5 rounded border border-semantic-bg-line mb-6">
-                        <div className="flex items-center gap-2">
-                            <Icons.File05 className="w-5 h-5 stroke-semantic-fg-secondary" />
-                            <div className="product-body-text-3-regular">{form.watch("file")?.name}</div>
-                            <div className="flex-grow product-body-text-4-regular text-semantic-fg-disabled">
-                                {Math.round((form.watch("file")?.size || 0) / 1024)}KB
-                            </div>
+            {(form.watch("file") || lastValidFile) ? (
+                <div className="flex items-center justify-between w-full h-8 px-2 py-1.5 rounded border border-semantic-bg-line mb-6">
+                    <div className="flex items-center gap-2">
+                        <Icons.File05 className="w-5 h-5 stroke-semantic-fg-secondary" />
+                        <div className="product-body-text-3-regular">{form.watch("file")?.name || lastValidFile?.name}</div>
+                        <div className="flex-grow product-body-text-4-regular text-semantic-fg-disabled">
+                            {Math.round(((form.watch("file")?.size || lastValidFile?.size) || 0) / 1024)}KB
                         </div>
-                        <Icons.X className="w-4 h-4 stroke-semantic-fg-secondary cursor-pointer" onClick={handleRemoveFile} />
                     </div>
-                ) : null
+                    <Icons.X className="w-4 h-4 stroke-semantic-fg-secondary cursor-pointer" onClick={handleRemoveFile} />
+                </div>
             ) : null}
             {showFileTooLargeMessage ? (
                 <div className="fixed bottom-4 w-[400px] right-8 flex rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
@@ -292,7 +298,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
             </div> */}
             {/* <FilePreview /> */}
             <div className="flex justify-end">
-                <Button variant="primary" size="lg" disabled={!form.watch("file") || showFileTooLargeMessage || showUnsupportedFileMessage}>
+                <Button variant="primary" size="lg" disabled={!form.watch("file")}>
                     Process File
                 </Button>
             </div>
