@@ -1,10 +1,10 @@
 import {
   Button,
   Icons,
-  LinkButton,
+  // LinkButton,
   Separator,
   Tag,
-  Textarea,
+  // Textarea,
 } from "@instill-ai/design-system";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import * as React from "react";
@@ -124,7 +124,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
       <div className="flex w-full flex-col gap-2">
         {/* <div className="flex justify-start">
           <Button variant={"secondaryGrey"}>
-            <Icons.Plus className="h-4 w-4 stroke-semantic-fg-secondary" />
+            <Icons.Plus className="w-4 h-4 stroke-semantic-fg-secondary" />
             <div className="text-semantic-fg-primary product-body-text-3-semibold">
               Add File
             </div>
@@ -244,14 +244,14 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
             ))}
           </div>
           {/* <div className="flex w-[375px] flex-col gap-3 border-l border-semantic-bg-line pb-8">
-            <div className="flex items-center justify-center gap-3 rounded-tr border-b border-semantic-bg-line bg-semantic-bg-base-bg p-3 pl-3">
+            <div className="flex items-center justify-center gap-3 p-3 pl-3 border-b rounded-tr border-semantic-bg-line bg-semantic-bg-base-bg">
               <div className="text-semantic-fg-primary product-body-text-3-medium">
                 Preview
               </div>
             </div>
-            <div className="flex h-full flex-col gap-3 px-8">
-              <div className="flex flex-1 flex-col">
-                <div className="flex h-full flex-col gap-1">
+            <div className="flex flex-col h-full gap-3 px-8">
+              <div className="flex flex-col flex-1">
+                <div className="flex flex-col h-full gap-1">
                   <div className="flex w-[311px] items-center justify-start pb-2.5">
                     <div className="flex items-start">
                       <div className="product-body-text-3-semibold">
@@ -281,7 +281,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   className="capitalize"
                 >
                   download
-                  <Icons.DownloadCloud01 className="ml-2 h-4 w-4 stroke-semantic-fg-primary" />
+                  <Icons.DownloadCloud01 className="w-4 h-4 ml-2 stroke-semantic-fg-primary" />
                 </Button>
               </div>
               <Button
