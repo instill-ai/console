@@ -12,7 +12,7 @@ import FilePreview from "./FilePreview";
 const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
 
 const UploadExploreFormSchema = z.object({
-    file: z.instanceof(File),
+    file: z.instanceof(File).nullable(),
     convertTransformFiles: z.string().min(1, { message: "Convert/Transform files is required" }),
     convertMethod: z.string().min(1, { message: "Convert method is required" }),
     splitTextFiles: z.string().min(1, { message: "Split text files is required" }),
@@ -33,6 +33,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
     const form = useForm<UploadExploreFormData>({
         resolver: zodResolver(UploadExploreFormSchema),
         defaultValues: {
+            file: null,
             convertTransformFiles: "",
             convertMethod: "",
             splitTextFiles: "",
@@ -68,14 +69,27 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
     };
 
     const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
+    const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] = React.useState(false);
 
     const handleCloseFileTooLargeMessage = () => {
         setShowFileTooLargeMessage(false);
+        form.setValue("file", null);
+    };
+
+    const handleCloseUnsupportedFileMessage = () => {
+        setShowUnsupportedFileMessage(false);
+        form.setValue("file", null);
     };
 
     const handleFileUpload = async (file: File) => {
         if (file.size > MAX_FILE_SIZE) {
             setShowFileTooLargeMessage(true);
+            return;
+        }
+
+        const fileType = getFileType(file);
+        if (fileType === "FILE_TYPE_UNSPECIFIED") {
+            setShowUnsupportedFileMessage(true);
             return;
         }
 
@@ -89,18 +103,17 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                     knowledgeBaseId: knowledgeBase.id,
                     payload: {
                         name: file.name,
-                        type: getFileType(file),
+                        type: fileType,
                         content,
                     },
                     accessToken,
                 },
                 {
                     onSuccess: () => {
-                        alert("File uploaded successfully!");
+                        console.log("File uploaded successfully!");
                     },
                     onError: (error) => {
                         console.error("Error uploading file:", error);
-                        alert("An error occurred while uploading the file.");
                     },
                 }
             );
@@ -144,7 +157,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
     };
 
     const handleRemoveFile = () => {
-        form.setValue("file", undefined);
+        form.setValue("file", null);
     };
 
     return (
@@ -190,7 +203,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                                                 id="upload-file-field"
                                                 type="file"
                                                 accept=".txt,.md,.pdf"
-                                                value={undefined}
+                                                value={""}
                                                 onChange={async (e) => {
                                                     const file = e.target.files?.[0];
                                                     if (file) {
@@ -208,21 +221,21 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                     />
                 </form>
             </Form.Root>
-            {form.watch("file") && !showFileTooLargeMessage && (
-                <div className="flex justify-center items-center gap-1 mb-6">
-                    <div className="flex items-center justify-between w-full h-8 px-2 py-1.5 rounded border border-semantic-bg-line">
+            {form.watch("file") ? (
+                !showFileTooLargeMessage && !showUnsupportedFileMessage ? (
+                    <div className="flex items-center justify-between w-full h-8 px-2 py-1.5 rounded border border-semantic-bg-line mb-6">
                         <div className="flex items-center gap-2">
                             <Icons.File05 className="w-5 h-5 stroke-semantic-fg-secondary" />
-                            <div className="product-body-text-3-regular">{form.watch("file").name}</div>
+                            <div className="product-body-text-3-regular">{form.watch("file")?.name}</div>
                             <div className="flex-grow product-body-text-4-regular text-semantic-fg-disabled">
-                                {Math.round(form.watch("file").size / 1024)}KB
+                                {Math.round((form.watch("file")?.size || 0) / 1024)}KB
                             </div>
                         </div>
                         <Icons.X className="w-4 h-4 stroke-semantic-fg-secondary cursor-pointer" onClick={handleRemoveFile} />
                     </div>
-                </div>
-            )}
-            {showFileTooLargeMessage && (
+                ) : null
+            ) : null}
+            {showFileTooLargeMessage ? (
                 <div className="fixed bottom-4 right-8 flex rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
                     <Icons.AlertCircle className="mr-4 h-6 w-6 stroke-semantic-error-on-bg" />
                     <div className="mr-4 shrink grow basis-0 flex flex-col items-start justify-start gap-1 self-stretch">
@@ -240,7 +253,26 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                         <Icons.X className="h-6 w-6 stroke-semantic-fg-secondary" />
                     </Button>
                 </div>
-            )}
+            ) : null}
+            {showUnsupportedFileMessage ? (
+                <div className="fixed bottom-4 right-8 flex rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
+                    <Icons.AlertCircle className="mr-4 h-6 w-6 stroke-semantic-error-on-bg" />
+                    <div className="mr-4 shrink grow basis-0 flex flex-col items-start justify-start gap-1 self-stretch">
+                        <div className="self-stretch product-body-text-2-semibold">Unsupported file type</div>
+                        <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
+                            The knowledge base currently supports .txt, .md, and .pdf file types. Please upload a file in one of these formats.
+                        </div>
+                    </div>
+                    <Button
+                        className="absolute right-2 top-2"
+                        variant="tertiaryGrey"
+                        size="sm"
+                        onClick={handleCloseUnsupportedFileMessage}
+                    >
+                        <Icons.X className="h-6 w-6 stroke-semantic-fg-secondary" />
+                    </Button>
+                </div>
+            ) : null}
             {/* <div className=" flex-col justify-start items-start gap-1 inline-flex">
                 <div className="text-semantic-fg-primary product-body-text-3-semibold">
                     Pipeline in use
@@ -260,7 +292,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
             </div> */}
             {/* <FilePreview /> */}
             <div className="flex justify-end">
-                <Button variant="primary" size="lg" disabled={!form.watch("file") || showFileTooLargeMessage}>
+                <Button variant="primary" size="lg" disabled={!form.watch("file") || showFileTooLargeMessage || showUnsupportedFileMessage}>
                     Process File
                 </Button>
             </div>
