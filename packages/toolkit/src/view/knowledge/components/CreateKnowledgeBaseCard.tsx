@@ -4,7 +4,7 @@ import {
   DropdownMenu,
   Button,
   Dialog,
-  LinkButton,
+  // LinkButton,
 } from "@instill-ai/design-system";
 import * as React from "react";
 import { useUpdateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useUpdateKnowledgeBase";
@@ -187,7 +187,7 @@ export const CreateKnowledgeBaseCard = ({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [showDeleteMessage]);
+  }, [showDeleteMessage, deleteKnowledgeBaseHandler]);
 
   return (
     <React.Fragment>

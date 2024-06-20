@@ -1,19 +1,14 @@
 import {
   Icons,
   Separator,
-  Tabs,
   Button,
-  Select,
   Input,
-  Textarea,
   Form,
-  Collapsible,
 } from "@instill-ai/design-system";
 import * as React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useRouter } from "next/navigation";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import { useUploadKnowledgeBaseFile } from "../../../lib/react-query-service/knowledge";
 import {
@@ -22,7 +17,7 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../lib";
-import FilePreview from "./FilePreview";
+// import FilePreview from "./FilePreview";
 import IncorrectFormatFileNotification from "./Notifications/IncorrectFormatFileNotification";
 import FileSizeNotification from "./Notifications/FileSizeNotification";
 import { FILE_ERROR_TIMEOUT } from "./undoDeleteTime";
@@ -183,29 +178,6 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
 
   const [isDragging, setIsDragging] = React.useState(false);
 
-  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      await handleFileUpload(file);
-    }
-  };
-
   const handleRemoveFile = () => {
     form.setValue("file", null);
     setLastValidFile(null);
@@ -329,11 +301,11 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
           fileName={incorrectFileName}
         />
       ) : null}
-      {/* <div className=" flex-col justify-start items-start gap-1 inline-flex">
+      {/* <div className="inline-flex flex-col items-start justify-start gap-1 ">
                 <div className="text-semantic-fg-primary product-body-text-3-semibold">
                     Pipeline in use
                 </div>
-                <div className="justify-start items-center gap-1 inline-flex">
+                <div className="inline-flex items-center justify-start gap-1">
                     <Icons.Pipeline className="w-4 h-4 stroke-semantic-accent-hover" />
                     <button
                         type="button"

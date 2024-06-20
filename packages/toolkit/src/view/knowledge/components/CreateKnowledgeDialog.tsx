@@ -6,20 +6,19 @@ import {
   Form,
   Icons,
   Input,
-  Select,
-  Tag,
+  // Select,
+  // Tag,
   Textarea,
 } from "@instill-ai/design-system";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import {
-  InstillStore,
-  useAuthenticatedUser,
-  useInstillStore,
-  useShallow,
-  useUserMemberships,
-} from "../../../lib";
-import * as React from "react";
+// import {
+//   InstillStore,
+//   useAuthenticatedUser,
+//   useInstillStore,
+//   useShallow,
+// } from "../../../lib";
+// import * as React from "react";
 import { EntitySelector } from "../../../components";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 
@@ -58,7 +57,7 @@ export const CreateKnowledgeDialog = ({
 
   const { formState, watch } = form;
   const nameValue = watch("name");
-  const namespaceIdValue = watch("namespaceId");
+  // const namespaceIdValue = watch("namespaceId");
 
   const formatName = (name: string) => {
     return name.replace(/[^a-zA-Z0-9-_]/g, "-").replace(/-+/g, "-");
@@ -67,23 +66,17 @@ export const CreateKnowledgeDialog = ({
   const isNameValid = /^[a-zA-Z0-9-_]+$/.test(nameValue);
   const formattedName = formatName(nameValue);
 
-  const selector = (store: InstillStore) => ({
-    accessToken: store.accessToken,
-    enabledQuery: store.enabledQuery,
-  });
+  // const selector = (store: InstillStore) => ({
+  //   accessToken: store.accessToken,
+  //   enabledQuery: store.enabledQuery,
+  // });
 
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  // const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const me = useAuthenticatedUser({
-    enabled: enabledQuery && isOpen,
-    accessToken,
-  });
-
-  const organizations = useUserMemberships({
-    enabled: enabledQuery && me.isSuccess && isOpen,
-    userID: me.isSuccess ? me.data.id : null,
-    accessToken,
-  });
+  // const me = useAuthenticatedUser({
+  //   enabled: enabledQuery && isOpen,
+  //   accessToken,
+  // });
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>

@@ -1,7 +1,7 @@
 import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 
 type DeleteKnowledgeBaseNotificationProps = {
-  knowledgeBaseName: String;
+  knowledgeBaseName: string;
   handleCloseDeleteMessage: () => void;
   undoDelete: () => void;
 };

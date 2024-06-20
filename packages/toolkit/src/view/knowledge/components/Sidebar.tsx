@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-import { DropdownMenu } from "@instill-ai/design-system";
+// import { DropdownMenu } from "@instill-ai/design-system";
 
 type SidebarProps = {
   activeTab: string;
@@ -15,7 +15,7 @@ export const Sidebar = ({
   activeTab,
   onTabChange,
   selectedKnowledgeBase,
-  selectedTextOption,
+  // selectedTextOption,
   onTextOptionChange,
 }: SidebarProps) => {
   const router = useRouter();
@@ -77,7 +77,7 @@ export const Sidebar = ({
             <div className="ml-auto">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
+                className="w-4 h-4"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
