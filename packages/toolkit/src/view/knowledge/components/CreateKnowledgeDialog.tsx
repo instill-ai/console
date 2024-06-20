@@ -125,7 +125,7 @@ export const CreateKnowledgeDialog = ({
                       />
                     </Form.Control>
                     <div className="h-6">
-                      <Form.Message className="!mt-0.5" />
+                      <Form.Message className="!mt-0.5 product-body-text-4-regular" />
                     </div>
                   </Form.Item>
                 )}
@@ -135,7 +135,7 @@ export const CreateKnowledgeDialog = ({
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <Form.Item className="w-1/2">
+                  <Form.Item className="w-1/2 -ml-4">
                     <Form.Label className="text-semantic-fg-primary product-button-button-2">
                       Knowledge base name
                     </Form.Label>
@@ -154,7 +154,7 @@ export const CreateKnowledgeDialog = ({
                           Name will be transformed to: {formattedName}
                         </p>
                       )}
-                      <Form.Message className="!mt-0.5" />
+                      <Form.Message className="!mt-0.5 product-body-text-4-regular" />
                     </div>
                   </Form.Item>
                 )}
