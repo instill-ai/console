@@ -11,7 +11,6 @@ import FilePreview from "./FilePreview";
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
 
-
 const UploadExploreFormSchema = z.object({
     file: z.instanceof(File),
     convertTransformFiles: z.string().min(1, { message: "Convert/Transform files is required" }),
@@ -25,9 +24,6 @@ const UploadExploreFormSchema = z.object({
 });
 
 type UploadExploreFormData = z.infer<typeof UploadExploreFormSchema>;
-
-
-
 
 type UploadExploreTabProps = {
     knowledgeBase: KnowledgeBase;
@@ -71,9 +67,15 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
         }
     };
 
+    const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
+
+    const handleCloseFileTooLargeMessage = () => {
+        setShowFileTooLargeMessage(false);
+    };
+
     const handleFileUpload = async (file: File) => {
         if (file.size > MAX_FILE_SIZE) {
-            alert("File size exceeds the maximum limit of 15MB.");
+            setShowFileTooLargeMessage(true);
             return;
         }
 
@@ -81,7 +83,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
         reader.onload = (event) => {
             const content = btoa(event.target?.result as string);
 
-            uploadKnowledgeBaseFile.mutate( 
+            uploadKnowledgeBaseFile.mutate(
                 {
                     ownerId: ownerID,
                     knowledgeBaseId: knowledgeBase.id,
@@ -206,7 +208,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                     />
                 </form>
             </Form.Root>
-            {form.watch("file") && (
+            {form.watch("file") && !showFileTooLargeMessage && (
                 <div className="flex justify-center items-center gap-1 mb-6">
                     <div className="flex items-center justify-between w-full h-8 px-2 py-1.5 rounded border border-semantic-bg-line">
                         <div className="flex items-center gap-2">
@@ -218,6 +220,25 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                         </div>
                         <Icons.X className="w-4 h-4 stroke-semantic-fg-secondary cursor-pointer" onClick={handleRemoveFile} />
                     </div>
+                </div>
+            )}
+            {showFileTooLargeMessage && (
+                <div className="fixed bottom-4 right-8 flex rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
+                    <Icons.AlertCircle className="mr-4 h-6 w-6 stroke-semantic-error-on-bg" />
+                    <div className="mr-4 shrink grow basis-0 flex flex-col items-start justify-start gap-1 self-stretch">
+                        <div className="self-stretch product-body-text-2-semibold">This file is too big</div>
+                        <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
+                            Maximum file size supported is 15MB
+                        </div>
+                    </div>
+                    <Button
+                        className="absolute right-2 top-2"
+                        variant="tertiaryGrey"
+                        size="sm"
+                        onClick={handleCloseFileTooLargeMessage}
+                    >
+                        <Icons.X className="h-6 w-6 stroke-semantic-fg-secondary" />
+                    </Button>
                 </div>
             )}
             {/* <div className=" flex-col justify-start items-start gap-1 inline-flex">
@@ -239,7 +260,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
             </div> */}
             {/* <FilePreview /> */}
             <div className="flex justify-end">
-                <Button variant="primary" size="lg" disabled={!form.watch("file")}>
+                <Button variant="primary" size="lg" disabled={!form.watch("file") || showFileTooLargeMessage}>
                     Process File
                 </Button>
             </div>
