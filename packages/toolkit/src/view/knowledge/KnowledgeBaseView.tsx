@@ -67,7 +67,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
    * -----------------------------------------------------------------------*/
   return (
     <div className="h-screen w-full bg-semantic-bg-primary">
-      {showDeleteMessage && knowledgeBaseToDelete ? (
+      {/* {showDeleteMessage && knowledgeBaseToDelete ? (
         <div className="fixed bottom-4 right-4 mr-4 flex h-[136px] w-[400px] rounded-lg border border-slate-200 bg-semantic-bg-primary p-4 shadow">
           <Icons.AlertTriangle className="h-6 w-6 stroke-semantic-warning-on-bg" />
           <div className="h-[104px] shrink grow basis-0 flex-col items-start justify-start gap-4">
@@ -98,7 +98,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             <Icons.X className="h-4 w-4 stroke-semantic-fg-secondary" />
           </Button>
         </div>
-      ) : null}
+      ) : null} */}
       <div className="grid w-full grid-cols-12 gap-6 pl-4 pr-8 pt-6">
         <div className="pr-8 pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
           <Sidebar
