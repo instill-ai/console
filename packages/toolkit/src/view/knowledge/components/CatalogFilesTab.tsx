@@ -19,25 +19,25 @@ const mockData = [
   {
     fileName: "file-a.pdf",
     fileType: "pdf",
-    processedStatus: "30%",
+    processedStatus: "28.8k Words",
     createTime: "Today 1:34pm",
   },
   {
     fileName: "file-b.txt",
     fileType: "txt",
-    processedStatus: "60%",
+    processedStatus: "21.5k Words",
     createTime: "Today 4:31pm",
   },
   {
     fileName: "file-c.jpg",
     fileType: "jpg",
-    processedStatus: "12%",
+    processedStatus: "2 Images",
     createTime: "Today 7:29pm",
   },
   {
     fileName: "file-d.png",
     fileType: "png",
-    processedStatus: "25%",
+    processedStatus: "3 Images",
     createTime: "Today 11:11pm",
   },
 ];
