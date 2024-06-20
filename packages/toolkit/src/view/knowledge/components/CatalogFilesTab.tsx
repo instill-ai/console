@@ -1,12 +1,14 @@
 import {
   Button,
   Icons,
+  LinkButton,
   Separator,
   Tag,
   Textarea,
 } from "@instill-ai/design-system";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-import { useState } from "react";
+import * as React from "react";
+import { DELETE_FILE_TIMEOUT } from "./undoDeleteTime";
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -40,11 +42,14 @@ const mockData = [
 ];
 
 export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
-  const [sortConfig, setSortConfig] = useState({
+  const [sortConfig, setSortConfig] = React.useState({
     key: "",
     direction: "",
   });
-  const [data, setData] = useState(mockData);
+  const [data, setData] = React.useState(mockData);
+  const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
+  const [deletedFile, setDeletedFile] = React.useState<typeof mockData[number] | null>(null);
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const sortedData = [...data].sort((a, b) => {
     if (
@@ -59,6 +64,29 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     }
     return 0;
   });
+  const handleDelete = (fileName: string) => {
+    const fileToDelete = data.find((item) => item.fileName === fileName);
+    if (fileToDelete) {
+      setDeletedFile(fileToDelete);
+      setData((prevData) => prevData.filter((item) => item.fileName !== fileName));
+      setShowDeleteMessage(true);
+      timeoutRef.current = setTimeout(() => {
+        setShowDeleteMessage(false);
+        setDeletedFile(null);
+      }, DELETE_FILE_TIMEOUT);
+    }
+  };
+
+  const undoDelete = () => {
+    if (deletedFile) {
+      setData((prevData) => [...prevData, deletedFile]);
+      setShowDeleteMessage(false);
+      setDeletedFile(null);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    }
+  };
 
   const requestSort = (key: string) => {
     let direction = "ascending";
@@ -68,9 +96,6 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     setSortConfig({ key, direction });
   };
 
-  const handleDelete = (fileName: string) => {
-    setData((prevData) => prevData.filter((item) => item.fileName !== fileName));
-  };
 
   return (
     <div className="flex flex-col">
@@ -103,8 +128,8 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
         </div> */}
         <div className="flex rounded border border-semantic-bg-line bg-semantic-bg-primary">
           <div className="flex flex-col w-full">
-            <div className="grid grid-cols-5 items-center h-[72px] border-b border-semantic-bg-line bg-semantic-bg-base-bg">
-              <div className="flex items-center justify-center gap-1">
+            <div className="grid grid-cols-9 items-center h-[72px] border-b border-semantic-bg-line bg-semantic-bg-base-bg">
+              <div className="col-span-5 flex items-center justify-center gap-1">
                 <div className="text-semantic-fg-primary product-body-text-3-medium">
                   File name
                 </div>
@@ -181,24 +206,24 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
             {sortedData.map((item, index) => (
               <div
                 key={index}
-                className={`grid grid-cols-5 items-center h-[72px] ${index !== sortedData.length - 1 ? "border-b border-semantic-bg-line" : ""
+                className={`grid grid-cols-9 items-center h-[72px] ${index !== sortedData.length - 1 ? "border-b border-semantic-bg-line" : ""
                   }`}
               >
-                <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                <div className="col-span-5 flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                   {item.fileName}
                 </div>
-                <div className="flex items-center justify-center">
+                <div className="col-span-1 flex items-center justify-center">
                   <Tag size="sm" variant="lightNeutral">
                     {item.fileType}
                   </Tag>
                 </div>
-                <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                <div className="col-span-1 flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                   {item.processedStatus}
                 </div>
-                <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                <div className="col-span-1 flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                   {item.createTime}
                 </div>
-                <div className="flex items-center justify-center">
+                <div className="col-span-1 flex items-center justify-center">
                   <Button
                     variant="tertiaryDanger"
                     size="lg"
@@ -261,6 +286,37 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
               </Button>
             </div>
           </div> */}
+          {showDeleteMessage && deletedFile ? (
+            <div className="fixed bottom-4 right-8 flex h-[136px] w-[400px] rounded-lg border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
+              <Icons.AlertTriangle className="mr-4 h-6 w-6 stroke-semantic-warning-on-bg" />
+              <div className="mr-4 shrink grow basis-0 flex-col items-start justify-start space-y-4">
+                <div className="flex flex-col items-start justify-start gap-1 self-stretch">
+                  <div className="self-stretch product-body-text-2-semibold">
+                    {deletedFile.fileName} has been deleted
+                  </div>
+                  <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
+                    If this was a mistake, click &quot;Undo Action&quot; to reapply your changes.
+                  </div>
+                </div>
+                <LinkButton
+                  className="!p-0"
+                  variant="secondary"
+                  size="md"
+                  onClick={undoDelete}
+                >
+                  Undo Action
+                </LinkButton>
+              </div>
+              <Button
+                className="absolute right-2 top-2"
+                variant="tertiaryGrey"
+                size="sm"
+                onClick={() => setShowDeleteMessage(false)}
+              >
+                <Icons.X className="h-6 w-6 stroke-semantic-fg-secondary" />
+              </Button>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
