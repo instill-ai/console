@@ -204,20 +204,35 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                                 <Form.Control>
                                     <div
                                         className={`flex h-[150px] w-full cursor-pointer flex-col items-center justify-center rounded border border-dashed ${isDragging ? "border-semantic-accent-default" : "border-semantic-bg-line"
-                                            } bg-semantic-bg-base-bg text-semantic-fg-secondary product-body-text-4-regular hover:border-semantic-accent-default`}
-                                        onDragEnter={handleDragEnter}
-                                        onDragLeave={handleDragLeave}
-                                        onDragOver={handleDragOver}
-                                        onDrop={handleDrop}
+                                            } bg-semantic-bg-base-bg text-semantic-fg-secondary product-body-text-4-regular`}
+                                        onDragEnter={(e) => {
+                                            e.preventDefault();
+                                            setIsDragging(true);
+                                        }}
+                                        onDragLeave={(e) => {
+                                            e.preventDefault();
+                                            setIsDragging(false);
+                                        }}
+                                        onDragOver={(e) => {
+                                            e.preventDefault();
+                                        }}
+                                        onDrop={async (e) => {
+                                            e.preventDefault();
+                                            setIsDragging(false);
+                                            const file = e.dataTransfer.files[0];
+                                            if (file) {
+                                                await handleFileUpload(file);
+                                            }
+                                        }}
                                     >
                                         <Form.Label htmlFor="upload-file-field" className="cursor-pointer">
                                             <div className="flex flex-col items-center justify-center space-y-2">
                                                 <Icons.Upload01 className="w-8 h-8 p-1 stroke-semantic-fg-secondary mb-4" />
                                                 <div className="text-center w-full">
                                                     <span>Drag-and-drop file, or </span>
-                                                    <span className="text-semantic-accent-hover underline">
+                                                    <label htmlFor="upload-file-field" className="text-semantic-accent-hover underline cursor-pointer">
                                                         browse computer
-                                                    </span>
+                                                    </label>
                                                     <div>Support TXT, MARKDOWN, PDF</div>
                                                     <div>Max 15MB each</div>
                                                 </div>
