@@ -17,13 +17,18 @@ import {
 } from "../../../lib";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import * as z from "zod";
-import { CreateKnowledgeFormSchema } from "./CreateKnowledgeDialog";
 
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
   onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
   accessToken: string | null;
 };
+const CreateKnowledgeFormSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  description: z.string().min(1, { message: "Description is required" }),
+  tags: z.array(z.string()).optional(),
+  namespaceId: z.string().min(1, { message: "Namespace is required" }),
+});
 
 export const KnowledgeBaseTab = ({
   onKnowledgeBaseSelect,

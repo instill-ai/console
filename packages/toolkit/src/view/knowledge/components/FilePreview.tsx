@@ -22,9 +22,13 @@ const UploadExploreFormSchema = z.object({
 
 type UploadExploreFormData = z.infer<typeof UploadExploreFormSchema>;
 
-const CollapsibleSection = ({ title, children }) => {
-    const [open, setOpen] = React.useState(true);
+type CollapsibleSectionProps = {
+    title: string;
+    children: React.ReactNode;
+};
 
+const CollapsibleSection = ({ title, children }: CollapsibleSectionProps) => {
+    const [open, setOpen] = React.useState(true);
     return (
         <Collapsible.Root open={open} onOpenChange={setOpen}>
             <Collapsible.Trigger className="mb-2" asChild>
@@ -295,7 +299,7 @@ const FilePreview = () => {
                             <div className="flex items-center justify-center gap-2">
                                 <div className="h-px flex-grow bg-semantic-bg-line" />
                                 <div className="product-body-text-3-medium whitespace-nowrap">Convert Results</div>
-                                <div className="h-px flex-grow bg-semantic-bg-line" /> 
+                                <div className="h-px flex-grow bg-semantic-bg-line" />
                             </div>
                             <div className="flex flex-col">
                                 <h3 className="product-button-button-2 pb-2.5">File name 1</h3>
