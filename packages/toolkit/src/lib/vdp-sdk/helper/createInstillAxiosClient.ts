@@ -28,10 +28,10 @@ export function createInstillAxiosClient(
     );
   }
 
-  let APIVersion = env("NEXT_PUBLIC_GENERAL_API_VERSION");
+  let APIVersion =   process.env.NEXT_PUBLIC_GENERAL_API_VERSION;
 
   if (isAlphaVersion) {
-    APIVersion = env("NEXT_PUBLIC_MODEL_API_VERSION");
+    APIVersion = process.env.NEXT_PUBLIC_MODEL_API_VERSION;
   }
 
   const baseURL: Nullable<string> = `${
