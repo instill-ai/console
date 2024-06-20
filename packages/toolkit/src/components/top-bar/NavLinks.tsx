@@ -33,7 +33,7 @@ const navLinkItems: NavLinkProps[] = [
   {
     pathname: "knowledge",
     Icon: Icons.GraduationHat,
-    title: "Knowledge base",
+    title: "Knowledge",
   },
   {
     pathname: "models",
