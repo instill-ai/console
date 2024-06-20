@@ -8,6 +8,8 @@ import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import { useUploadKnowledgeBaseFile } from "../../../lib/react-query-service/knowledge";
 import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
 import FilePreview from "./FilePreview";
+import IncorrectFormatFileNotification from "./Notifications/IncorrectFormatFileNotification";
+import FileSizeNotification from "./Notifications/FileSizeNotification";
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
 
@@ -71,15 +73,19 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
     const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
     const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] = React.useState(false);
     const [lastValidFile, setLastValidFile] = React.useState<File | null>(null);
+    const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
+
 
     const handleFileUpload = async (file: File) => {
         if (file.size > MAX_FILE_SIZE) {
+            setIncorrectFileName(file.name)
             setShowFileTooLargeMessage(true);
             return;
         }
 
         const fileType = getFileType(file);
         if (fileType === "FILE_TYPE_UNSPECIFIED") {
+            setIncorrectFileName(file.name)
             setShowUnsupportedFileMessage(true);
             return;
         }
@@ -128,9 +134,6 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
             form.setValue("file", lastValidFile);
         }
     };
-
-
-    const router = useRouter();
 
     const me = useAuthenticatedUser({
         enabled: enabledQuery,
@@ -242,42 +245,14 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                 </div>
             ) : null}
             {showFileTooLargeMessage ? (
-                <div className="fixed bottom-4 w-[400px] right-8 flex rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
-                    <Icons.AlertCircle className="mr-4 h-6 w-6 stroke-semantic-error-on-bg" />
-                    <div className="mr-4 shrink grow basis-0 flex flex-col items-start justify-start gap-1 self-stretch">
-                        <div className="self-stretch product-body-text-2-semibold">This file is too big</div>
-                        <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
-                            Maximum file size supported is 15MB
-                        </div>
-                    </div>
-                    <Button
-                        className="absolute right-2 top-2"
-                        variant="tertiaryGrey"
-                        size="sm"
-                        onClick={handleCloseFileTooLargeMessage}
-                    >
-                        <Icons.X className="h-6 w-6 stroke-semantic-fg-secondary" />
-                    </Button>
-                </div>
+                <FileSizeNotification
+                    handleCloseFileTooLargeMessage={handleCloseFileTooLargeMessage}
+                    fileName={incorrectFileName} />
             ) : null}
             {showUnsupportedFileMessage ? (
-                <div className="fixed bottom-4 w-[400px] right-8 flex rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
-                    <Icons.AlertCircle className="mr-4 h-6 w-6 stroke-semantic-error-on-bg" />
-                    <div className="mr-4 shrink grow basis-0 flex flex-col items-start justify-start gap-1 self-stretch">
-                        <div className="self-stretch product-body-text-2-semibold">Unsupported file type</div>
-                        <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
-                            The knowledge base currently supports .txt, .md, and .pdf file types. Please upload a file in one of these formats.
-                        </div>
-                    </div>
-                    <Button
-                        className="absolute right-2 top-2"
-                        variant="tertiaryGrey"
-                        size="sm"
-                        onClick={handleCloseUnsupportedFileMessage}
-                    >
-                        <Icons.X className="h-6 w-6 stroke-semantic-fg-secondary" />
-                    </Button>
-                </div>
+                <IncorrectFormatFileNotification
+                    handleCloseUnsupportedFileMessage={handleCloseUnsupportedFileMessage}
+                    fileName={incorrectFileName} />
             ) : null}
             {/* <div className=" flex-col justify-start items-start gap-1 inline-flex">
                 <div className="text-semantic-fg-primary product-body-text-3-semibold">
