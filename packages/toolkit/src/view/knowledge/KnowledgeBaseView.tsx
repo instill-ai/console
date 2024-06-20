@@ -68,13 +68,13 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   return (
     <div className="h-screen w-full bg-semantic-bg-primary">
       {/* {showDeleteMessage && knowledgeBaseToDelete ? (
-        <DeleteKnowledgeBaseNotification
-          knowledgeBaseName={knowledgeBase.name}
-          handleCloseDeleteMessage={handleCloseDeleteMessage}
-          undoDelete={undoDelete
-          } />
-      ) : null} */}
-      <div className="grid w-full grid-cols-12 gap-6 pl-4 pr-8 pt-6">
+    <DeleteKnowledgeBaseNotification
+      knowledgeBaseName={knowledgeBase.name}
+      handleCloseDeleteMessage={handleCloseDeleteMessage}
+      undoDelete={undoDelete}
+    />
+  ) : null} */}
+      <div className="grid w-full grid-cols-12 gap-6 pl-4 pr-8">
         <div className="pr-8 pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
           <Sidebar
             activeTab={activeTab}
@@ -84,7 +84,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             onTextOptionChange={handleTextOptionChange}
           />
         </div>
-        <div className="sm:col-span-8 md:col-span-9 lg:col-span-10">
+        <div className={`sm:col-span-8 md:col-span-9 lg:col-span-10 ${activeTab === "catalog" ? "pt-5" : "pt-6"}`}>
           {activeTab === "knowledge-base" ? (
             <KnowledgeBaseTab
               onKnowledgeBaseSelect={handleKnowledgeBaseSelect}

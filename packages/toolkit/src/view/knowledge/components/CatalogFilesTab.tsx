@@ -100,7 +100,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
 
   return (
     <div className="flex flex-col">
-      <div className="mb-5 flex items-center justify-between">
+      <div className="flex items-center justify-between mb-4">
         <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
           {knowledgeBase.name}
         </p>
@@ -210,7 +210,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                 className={`grid grid-cols-9 items-center h-[72px] ${index !== sortedData.length - 1 ? "border-b border-semantic-bg-line" : ""
                   }`}
               >
-                <div className="col-span-5 flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                <div className="col-span-5 flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular -ml-4">
                   {item.fileName}
                 </div>
                 <div className="col-span-1 flex items-center justify-center">
