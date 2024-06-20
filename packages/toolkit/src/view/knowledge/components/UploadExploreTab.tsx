@@ -10,6 +10,7 @@ import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from 
 import FilePreview from "./FilePreview";
 import IncorrectFormatFileNotification from "./Notifications/IncorrectFormatFileNotification";
 import FileSizeNotification from "./Notifications/FileSizeNotification";
+import { FILE_ERROR_TIMEOUT } from "./undoDeleteTime";
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
 
@@ -74,19 +75,32 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
     const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] = React.useState(false);
     const [lastValidFile, setLastValidFile] = React.useState<File | null>(null);
     const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
-
+    const fileTooLargeTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+    const unsupportedFileTypeTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
     const handleFileUpload = async (file: File) => {
         if (file.size > MAX_FILE_SIZE) {
-            setIncorrectFileName(file.name)
+            setIncorrectFileName(file.name);
             setShowFileTooLargeMessage(true);
+            fileTooLargeTimeoutRef.current = setTimeout(() => {
+                setShowFileTooLargeMessage(false);
+                if (lastValidFile) {
+                    form.setValue("file", lastValidFile);
+                }
+            }, FILE_ERROR_TIMEOUT);
             return;
         }
 
         const fileType = getFileType(file);
         if (fileType === "FILE_TYPE_UNSPECIFIED") {
-            setIncorrectFileName(file.name)
+            setIncorrectFileName(file.name);
             setShowUnsupportedFileMessage(true);
+            unsupportedFileTypeTimeoutRef.current = setTimeout(() => {
+                setShowUnsupportedFileMessage(false);
+                if (lastValidFile) {
+                    form.setValue("file", lastValidFile);
+                }
+            }, FILE_ERROR_TIMEOUT);
             return;
         }
 
