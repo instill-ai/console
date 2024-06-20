@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.94.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.94.2...@instill-ai/toolkit-v0.94.3) (2024-06-20)
+
+
+### Bug Fixes
+
+* some props of the model trigger payload had snake_case, fixed them to camelCase ([#1254](https://github.com/instill-ai/console/issues/1254)) ([8da7b09](https://github.com/instill-ai/console/commit/8da7b0926930ae02ef7a296313f753b7a4e339cf))
+
 ## [0.94.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.94.1...@instill-ai/toolkit-v0.94.2) (2024-06-19)
 
 
