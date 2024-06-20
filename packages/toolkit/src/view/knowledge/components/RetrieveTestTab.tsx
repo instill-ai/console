@@ -1,5 +1,4 @@
-import * as React from "react";
-import { Button, Icons, Switch, Input, Tag } from "@instill-ai/design-system";
+import { Button } from "@instill-ai/design-system";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 
 type RetrieveTestTabProps = {
