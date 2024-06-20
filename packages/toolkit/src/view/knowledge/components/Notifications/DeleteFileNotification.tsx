@@ -13,7 +13,7 @@ const DeleteFileNotification = ({
     setShowDeleteMessage
 }: DeleteFileNotificationProps) => {
     return (
-        <div className="fixed bottom-4 right-8 flex h-[136px] w-[400px] rounded-lg border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
+        <div className="fixed bottom-4 right-8 flex h-[136px] w-[400px] rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
             <Icons.AlertTriangle className="mr-4 h-6 w-6 stroke-semantic-warning-on-bg" />
             <div className="mr-4 shrink grow basis-0 flex-col items-start justify-start space-y-4">
                 <div className="flex flex-col items-start justify-start gap-1 self-stretch">
