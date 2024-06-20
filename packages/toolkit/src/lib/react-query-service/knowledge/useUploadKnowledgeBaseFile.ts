@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { Nullable } from "@instill-ai/design-system";
 
 export function useUploadKnowledgeBaseFile() {
   return useMutation({
@@ -9,14 +10,14 @@ export function useUploadKnowledgeBaseFile() {
       payload,
       accessToken,
     }: {
-      ownerId: string;
+      ownerId: Nullable<string>;
       knowledgeBaseId: string;
       payload: {
         name: string;
         type: string;
         content: string;
       };
-      accessToken: string | null;
+      accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));

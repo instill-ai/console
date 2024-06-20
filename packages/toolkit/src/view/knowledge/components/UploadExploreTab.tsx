@@ -236,7 +236,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                 ) : null
             ) : null}
             {showFileTooLargeMessage ? (
-                <div className="fixed bottom-4 right-8 flex rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
+                <div className="fixed bottom-4 w-[400px] right-8 flex rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
                     <Icons.AlertCircle className="mr-4 h-6 w-6 stroke-semantic-error-on-bg" />
                     <div className="mr-4 shrink grow basis-0 flex flex-col items-start justify-start gap-1 self-stretch">
                         <div className="self-stretch product-body-text-2-semibold">This file is too big</div>
@@ -255,7 +255,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                 </div>
             ) : null}
             {showUnsupportedFileMessage ? (
-                <div className="fixed bottom-4 right-8 flex rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
+                <div className="fixed bottom-4 w-[400px] right-8 flex rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
                     <Icons.AlertCircle className="mr-4 h-6 w-6 stroke-semantic-error-on-bg" />
                     <div className="mr-4 shrink grow basis-0 flex flex-col items-start justify-start gap-1 self-stretch">
                         <div className="self-stretch product-body-text-2-semibold">Unsupported file type</div>
