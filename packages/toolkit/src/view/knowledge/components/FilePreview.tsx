@@ -11,18 +11,18 @@ import {
   ScrollArea,
 } from "@instill-ai/design-system";
 import * as React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useRouter } from "next/navigation";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-import { useUploadKnowledgeBaseFile } from "../../../lib/react-query-service/knowledge";
-import {
-  InstillStore,
-  useAuthenticatedUser,
-  useInstillStore,
-  useShallow,
-} from "../../../lib";
+// import { useRouter } from "next/navigation";
+// import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+// import { useUploadKnowledgeBaseFile } from "../../../lib/react-query-service/knowledge";
+// import {
+//   InstillStore,
+//   useAuthenticatedUser,
+//   useInstillStore,
+//   useShallow,
+// } from "../../../lib";
 
 const UploadExploreFormSchema = z.object({
   file: z.instanceof(File),
@@ -86,15 +86,15 @@ const FilePreview = () => {
       embeddingModel: "",
     },
   });
-  const onSubmit: SubmitHandler<UploadExploreFormData> = async (data) => {
-    console.log(data);
-  };
+  // const onSubmit: SubmitHandler<UploadExploreFormData> = async (data) => {
+  //   console.log(data);
+  // };
 
   const tabTriggerStyle =
     "rounded-t-sm border border-semantic-bg-line bg-semantic-bg-base-bg px-3 py-1.5 text-[#1D2433] text-opacity-80 product-body-text-3-semibold data-[state=active]:bg-semantic-bg-primary data-[state=active]:text-opacity-100";
 
   return (
-    <div className="flex w-full items-center justify-start  ">
+    <div className="flex w-full items-center justify-start ">
       <Tabs.Root defaultValue="text" className="mb-8 mt-4 w-full ">
         <Tabs.List className="ml-4 flex w-full items-center">
           <Tabs.Trigger value="text" className={tabTriggerStyle}>
@@ -109,7 +109,7 @@ const FilePreview = () => {
             <div className="rounded bg-semantic-bg-base-bg py-2 pl-3 product-body-text-1-semibold">
               Data
             </div>
-            <div className="  px-3  pt-8">
+            <div className="px-3 pt-8 ">
               <Tabs.Content value="text">
                 <Form.Root {...form}>
                   <form className="flex w-full flex-col gap-6">

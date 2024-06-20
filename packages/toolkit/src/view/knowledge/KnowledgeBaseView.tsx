@@ -6,7 +6,7 @@ import { CatalogFilesTab } from "./components/CatalogFilesTab";
 import { MarkdownTab } from "./components/MarkdownTab";
 import * as React from "react";
 import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/types";
-import { Button, Icons, LinkButton } from "@instill-ai/design-system";
+// import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./components/undoDeleteTime";
 import { ChunkTab } from "./components/ChunkTab";
 import { ImageTab } from "./components/ImageTab";
@@ -57,24 +57,25 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     }, DELETE_KNOWLEDGE_BASE_TIMEOUT);
   };
 
-  const handleUndoDelete = () => {
-    setIsDeleted(false);
-    setShowDeleteMessage(false);
-    setKnowledgeBaseToDelete(null);
-  };
+  // const handleUndoDelete = () => {
+  //   setIsDeleted(false);
+  //   setShowDeleteMessage(false);
+  //   setKnowledgeBaseToDelete(null);
+  // };
 
   /* -------------------------------------------------------------------------
    * Render
    * -----------------------------------------------------------------------*/
   return (
     <div className="h-screen w-full bg-semantic-bg-primary">
-      {/* {showDeleteMessage && knowledgeBaseToDelete ? (
-    <DeleteKnowledgeBaseNotification
-      knowledgeBaseName={knowledgeBase.name}
-      handleCloseDeleteMessage={handleCloseDeleteMessage}
-      undoDelete={undoDelete}
-    />
-  ) : null} */}
+      {showDeleteMessage && knowledgeBaseToDelete ? (
+        // <DeleteKnowledgeBaseNotification
+        //   knowledgeBaseName={knowledgeBase.name}
+        //   handleCloseDeleteMessage={handleCloseDeleteMessage}
+        //   undoDelete={undoDelete}
+        // />
+        <></>
+      ) : null}
       <div className="grid w-full grid-cols-12 gap-6 pl-4 pr-8">
         <div className="pr-8 pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
           <Sidebar
