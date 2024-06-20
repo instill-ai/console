@@ -68,36 +68,11 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   return (
     <div className="h-screen w-full bg-semantic-bg-primary">
       {/* {showDeleteMessage && knowledgeBaseToDelete ? (
-        <div className="fixed bottom-4 right-4 mr-4 flex h-[136px] w-[400px] rounded-lg border border-slate-200 bg-semantic-bg-primary p-4 shadow">
-          <Icons.AlertTriangle className="h-6 w-6 stroke-semantic-warning-on-bg" />
-          <div className="h-[104px] shrink grow basis-0 flex-col items-start justify-start gap-4">
-            <div className="flex flex-col items-start justify-start gap-1 self-stretch">
-              <div className="self-stretch product-body-text-2-semibold">
-                {knowledgeBaseToDelete.name} has been deleted
-              </div>
-              <div className="self-stretch product-body-text-2-regular">
-                If this was a mistake, click &quot;Undo Action&quot; to reapply
-                your changes.
-              </div>
-            </div>
-            <LinkButton
-              className=""
-              variant="secondary"
-              size="md"
-              onClick={handleUndoDelete}
-            >
-              Undo Action
-            </LinkButton>
-          </div>
-          <Button
-            className="absolute right-2 top-2"
-            variant="tertiaryGrey"
-            size="sm"
-            onClick={() => setShowDeleteMessage(false)}
-          >
-            <Icons.X className="h-4 w-4 stroke-semantic-fg-secondary" />
-          </Button>
-        </div>
+        <DeleteKnowledgeBaseNotification
+          knowledgeBaseName={knowledgeBase.name}
+          handleCloseDeleteMessage={handleCloseDeleteMessage}
+          undoDelete={undoDelete
+          } />
       ) : null} */}
       <div className="grid w-full grid-cols-12 gap-6 pl-4 pr-8 pt-6">
         <div className="pr-8 pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
