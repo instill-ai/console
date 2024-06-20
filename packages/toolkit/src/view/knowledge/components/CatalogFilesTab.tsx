@@ -17,7 +17,7 @@ const mockData = [
     fileName: "file-a.pdf",
     fileType: "pdf",
     processedStatus: "30%",
-    createTime: "Today 4:31pm",
+    createTime: "Today 1:34pm",
   },
   {
     fileName: "file-b.txt",
@@ -29,13 +29,13 @@ const mockData = [
     fileName: "file-c.jpg",
     fileType: "jpg",
     processedStatus: "12%",
-    createTime: "Today 4:31pm",
+    createTime: "Today 7:29pm",
   },
   {
     fileName: "file-d.png",
     fileType: "png",
     processedStatus: "25%",
-    createTime: "Today 4:31pm",
+    createTime: "Today 11:11pm",
   },
 ];
 
