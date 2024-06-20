@@ -2,7 +2,7 @@ import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 import * as React from "react";
 
 type DeleteFileNotificationProps = {
-  deletedFileName: String;
+  deletedFileName: string;
   undoDelete: () => void;
   setShowDeleteMessage: React.Dispatch<React.SetStateAction<boolean>>;
 };
