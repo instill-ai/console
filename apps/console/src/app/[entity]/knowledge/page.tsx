@@ -3,7 +3,7 @@ import { KnowladgeBasePageRender } from "./render";
 
 export async function generateMetadata() {
   const metadata: Metadata = {
-    title: `Instill Cloud | Knowledge Base`,
+    title: `Instill Cloud | Knowledge`,
     openGraph: {
       images: ["/instill-open-graph.png"],
     },
