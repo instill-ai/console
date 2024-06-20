@@ -28,7 +28,7 @@ export function createInstillAxiosClient(
     );
   }
 
-  let APIVersion =   process.env.NEXT_PUBLIC_GENERAL_API_VERSION;
+  let APIVersion = process.env.NEXT_PUBLIC_GENERAL_API_VERSION;
 
   if (isAlphaVersion) {
     APIVersion = process.env.NEXT_PUBLIC_MODEL_API_VERSION;
