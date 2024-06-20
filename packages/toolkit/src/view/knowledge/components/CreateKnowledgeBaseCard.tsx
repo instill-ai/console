@@ -154,12 +154,24 @@ export const CreateKnowledgeBaseCard = ({
   };
 
   const handleEditKnowledgeSubmit = async (data: EditKnowledgeDialogData) => {
-    await updateKnowledgeBase.mutateAsync({
-      id: knowledgeBase.id,
-      payload: data,
-      accessToken: accessToken,
-    });
-    setEditDialogIsOpen(false);
+    try {
+      const updatedKnowledgeBase = await updateKnowledgeBase.mutateAsync({
+        id: knowledgeBase.id,
+        payload: data,
+        accessToken: accessToken,
+      });
+
+      // Update the local state immediately
+      setKnowledgeBases((prevKnowledgeBases: KnowledgeBase[]) =>
+        prevKnowledgeBases.map((kb) =>
+          kb.id === knowledgeBase.id ? { ...kb, ...updatedKnowledgeBase } : kb
+        )
+      );
+
+      setEditDialogIsOpen(false);
+    } catch (error) {
+      console.error("Error updating knowledge base:", error);
+    }
   };
 
   const undoDelete = () => {
