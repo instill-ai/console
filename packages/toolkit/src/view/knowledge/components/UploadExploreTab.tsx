@@ -211,7 +211,9 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                                         }}
                                         onDragLeave={(e) => {
                                             e.preventDefault();
-                                            setIsDragging(false);
+                                            if (!e.currentTarget.contains(e.relatedTarget as Node)) {-
+                                                setIsDragging(false);
+                                            }
                                         }}
                                         onDragOver={(e) => {
                                             e.preventDefault();
