@@ -15,12 +15,12 @@ async function getKnowledgeBasesQuery({
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.get<{
     body: {
-      knowledge_bases: KnowledgeBase[];
+      knowledgeBases: KnowledgeBase[];
     };
     error_msg: string;
     status_code: number;
   }>(`/users/${uid}/knowledge-base`);
-  return response.data.body.knowledge_bases;
+  return response.data.body.knowledgeBases;
 }
 
 export function useGetKnowledgeBases({
