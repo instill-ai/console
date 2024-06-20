@@ -49,7 +49,9 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
   });
   const [data, setData] = React.useState(mockData);
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
-  const [deletedFile, setDeletedFile] = React.useState<typeof mockData[number] | null>(null);
+  const [deletedFile, setDeletedFile] = React.useState<
+    (typeof mockData)[number] | null
+  >(null);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const sortedData = [...data].sort((a, b) => {
@@ -69,7 +71,9 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     const fileToDelete = data.find((item) => item.fileName === fileName);
     if (fileToDelete) {
       setDeletedFile(fileToDelete);
-      setData((prevData) => prevData.filter((item) => item.fileName !== fileName));
+      setData((prevData) =>
+        prevData.filter((item) => item.fileName !== fileName)
+      );
       setShowDeleteMessage(true);
       timeoutRef.current = setTimeout(() => {
         setShowDeleteMessage(false);
@@ -97,10 +101,9 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     setSortConfig({ key, direction });
   };
 
-
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
           {knowledgeBase.name}
         </p>
@@ -128,8 +131,8 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
           </Button>
         </div> */}
         <div className="flex rounded border border-semantic-bg-line bg-semantic-bg-primary">
-          <div className="flex flex-col w-full">
-            <div className="grid grid-cols-9 items-center h-[72px] border-b border-semantic-bg-line bg-semantic-bg-base-bg">
+          <div className="flex w-full flex-col">
+            <div className="grid h-[72px] grid-cols-9 items-center border-b border-semantic-bg-line bg-semantic-bg-base-bg">
               <div className="col-span-5 flex items-center justify-center gap-1">
                 <div className="text-semantic-fg-primary product-body-text-3-medium">
                   File name
@@ -140,7 +143,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   onClick={() => requestSort("fileName")}
                 >
                   {sortConfig.key === "fileName" &&
-                    sortConfig.direction === "ascending" ? (
+                  sortConfig.direction === "ascending" ? (
                     <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                   ) : (
                     <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -157,7 +160,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   onClick={() => requestSort("fileType")}
                 >
                   {sortConfig.key === "fileType" &&
-                    sortConfig.direction === "ascending" ? (
+                  sortConfig.direction === "ascending" ? (
                     <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                   ) : (
                     <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -174,7 +177,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   onClick={() => requestSort("processedStatus")}
                 >
                   {sortConfig.key === "processedStatus" &&
-                    sortConfig.direction === "ascending" ? (
+                  sortConfig.direction === "ascending" ? (
                     <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                   ) : (
                     <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -191,7 +194,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   onClick={() => requestSort("createTime")}
                 >
                   {sortConfig.key === "createTime" &&
-                    sortConfig.direction === "ascending" ? (
+                  sortConfig.direction === "ascending" ? (
                     <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                   ) : (
                     <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -207,10 +210,13 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
             {sortedData.map((item, index) => (
               <div
                 key={index}
-                className={`grid grid-cols-9 items-center h-[72px] ${index !== sortedData.length - 1 ? "border-b border-semantic-bg-line" : ""
-                  }`}
+                className={`grid h-[72px] grid-cols-9 items-center ${
+                  index !== sortedData.length - 1
+                    ? "border-b border-semantic-bg-line"
+                    : ""
+                }`}
               >
-                <div className="col-span-5 flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular -ml-4">
+                <div className="col-span-5 -ml-4 flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                   {item.fileName}
                 </div>
                 <div className="col-span-1 flex items-center justify-center">
