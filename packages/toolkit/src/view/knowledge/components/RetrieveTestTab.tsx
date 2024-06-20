@@ -6,7 +6,6 @@ type RetrieveTestTabProps = {
   knowledgeBase: KnowledgeBase;
 };
 
-
 export const RetrieveTestTab = ({ knowledgeBase }: RetrieveTestTabProps) => {
   return (
     <div className="mb-5 flex items-center justify-between">
@@ -14,9 +13,9 @@ export const RetrieveTestTab = ({ knowledgeBase }: RetrieveTestTabProps) => {
         {knowledgeBase.name}
       </p>
       {/* Coming in V2 */}
-        <Button variant="primary" size="lg">
-          Export Report
-        </Button>
+      <Button variant="primary" size="lg">
+        Export Report
+      </Button>
     </div>
-  )
+  );
 };
