@@ -88,7 +88,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
   }>({ name: null, timeoutRunning: false, isRendered: false });
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const [isModelRunInProgress, setIsModelRunInProgress] = useState(false);
+  const [isModelRunInProgress, setIsModelRunInProgress] = useState(true);
   const [outputActiveView, setOutputActiveView] =
     useState<ModelOutputActiveView>("preview");
   const taskPropName = useMemo(
@@ -139,6 +139,14 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
   }, [forceUpdate]);
 
   useEffect(() => {
+    if (
+      existingModelTriggerResult.isSuccess &&
+      !currentOperationIdPollingData.current.name &&
+      !existingModelTriggerResult.data.operation
+    ) {
+      setIsModelRunInProgress(false);
+    }
+
     if (
       !existingModelTriggerResult.isSuccess ||
       !existingModelTriggerResult.data.operation ||
