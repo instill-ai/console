@@ -29,23 +29,12 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const columns: ColumnDef<ModelVersion>[] = [
     {
-      accessorKey: "id",
-      header: () => <div className="text-left">ID</div>,
+      accessorKey: "version",
+      header: () => <div className="min-w-96 text-left">Version</div>,
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-secondary">
-            {row.getValue("id")}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "digest",
-      header: () => <div className="text-left">Version</div>,
-      cell: ({ row }) => {
-        return (
-          <div className="truncate font-normal text-semantic-bg-secondary-alt-primary">
-            {row.getValue("digest")}
+            {row.getValue("version")}
           </div>
         );
       },

@@ -116,7 +116,7 @@ export type ModelRegion = {
 
 export type ModelVersion = {
   name: string;
-  id: string;
+  version: string;
   digest: string;
   state: ModelState;
   updateTime: string;
