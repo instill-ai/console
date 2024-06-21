@@ -2,7 +2,6 @@ import {
   Button,
   Form,
   Icons,
-  LinkButton,
   Nullable,
   TabMenu,
   useToast,
@@ -24,6 +23,7 @@ import {
   useShallow,
   useTriggerUserModelAsync,
   convertSentenceToCamelCase,
+  useQueryClient,
 } from "../../../lib";
 import { ModelReadme } from "./ModelReadme";
 import { z } from "zod";
@@ -34,6 +34,7 @@ import { recursiveHelpers } from "../../pipeline-builder";
 import { defaultCodeSnippetStyles } from "../../../constant";
 import React from "react";
 import Image from "next/image";
+import { OPERATION_POLL_TIMEOUT } from "./constants";
 
 export type ModelOutputActiveView = "preview" | "json";
 
@@ -71,8 +72,21 @@ const convertValuesToString = (props: Record<string, unknown>) => {
   return convertedProps;
 };
 
+const defaultCurrentOperationIdPollingData = {
+  name: null,
+  timeoutRunning: false,
+  isRendered: false,
+};
+
 export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
-  const { toast, dismiss } = useToast();
+  const queryClient = useQueryClient();
+  const forceUpdate = React.useReducer((bool) => !bool, true)[1];
+  const currentOperationIdPollingData = React.useRef<{
+    name: string | null;
+    timeoutRunning: boolean;
+    isRendered: boolean;
+  }>({ name: null, timeoutRunning: false, isRendered: false });
+  const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [isModelRunInProgress, setIsModelRunInProgress] = useState(false);
   const [outputActiveView, setOutputActiveView] =
@@ -91,9 +105,6 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
   > | null>(null);
   const [existingTriggerState, setExistingTriggerState] =
     useState<ModelTriggerResult["operation"]>(null);
-  const [showFullTriggerResult, setShowFullTriggerResult] = useState(false);
-  const [existingTriggerToastShowed, setExistingTriggerToastShowed] =
-    useState(false);
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const isModelTriggerable = useMemo(() => {
@@ -115,98 +126,98 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
   const existingModelTriggerResult = useLastModelTriggerResult({
     accessToken,
     modelName: model?.name || null,
-    fullView: showFullTriggerResult,
-    enabled:
-      enabledQuery && (!existingTriggerState || existingTriggerState.done),
+    fullView: true,
+    enabled: enabledQuery,
   });
 
+  const pollForResponse = React.useCallback(async () => {
+    await queryClient.invalidateQueries({
+      queryKey: ["models", "operation", model?.name],
+    });
+
+    forceUpdate();
+  }, [forceUpdate]);
+
   useEffect(() => {
-    if (!existingModelTriggerResult.data?.operation || !model) {
+    if (
+      !existingModelTriggerResult.isSuccess ||
+      !existingModelTriggerResult.data.operation ||
+      (currentOperationIdPollingData.current.name &&
+        existingModelTriggerResult.data?.operation?.name !==
+          currentOperationIdPollingData.current.name)
+    ) {
       return;
     }
 
-    if (
-      !existingTriggerState ||
-      existingTriggerState.done !==
-        existingModelTriggerResult.data.operation.done ||
-      (!existingTriggerState.response &&
-        existingModelTriggerResult.data.operation.response)
-    ) {
-      setExistingTriggerState(existingModelTriggerResult.data.operation);
-      setIsModelRunInProgress(false);
+    if (!existingModelTriggerResult.data?.operation?.done) {
+      if (!currentOperationIdPollingData.current.timeoutRunning) {
+        currentOperationIdPollingData.current = {
+          ...currentOperationIdPollingData.current,
+          timeoutRunning: true,
+        };
+
+        setTimeout(() => {
+          currentOperationIdPollingData.current = {
+            ...currentOperationIdPollingData.current,
+            timeoutRunning: false,
+          };
+
+          pollForResponse();
+        }, OPERATION_POLL_TIMEOUT);
+      }
+    } else {
+      if (
+        existingTriggerState?.done !==
+          existingModelTriggerResult.data.operation.done &&
+        (!currentOperationIdPollingData.current.name ||
+          existingModelTriggerResult.data.operation.name ===
+            currentOperationIdPollingData.current.name)
+      ) {
+        setExistingTriggerState(existingModelTriggerResult.data.operation);
+      }
+    }
+  }, [existingModelTriggerResult]);
+
+  useEffect(() => {
+    if (!existingTriggerState || !model) {
+      return;
     }
 
-    if (
-      !existingModelTriggerResult.data.operation.done &&
-      !isModelRunInProgress
-    ) {
-      setIsModelRunInProgress(true);
-    } else if (!existingTriggerState?.response && !existingTriggerToastShowed) {
-      setExistingTriggerToastShowed(true);
-      toast({
-        id: "fetch-existing-model-trigger-result",
-        variant: "notification-info",
-        title: "Run result ready",
-        size: "large",
-        description: "You can view it or do another run.",
-        action: (
-          <div className="flex flex-row gap-x-4">
-            <LinkButton
-              onClick={() => {
-                dismiss("fetch-existing-model-trigger-result");
-              }}
-              variant="secondary"
-              size="md"
-            >
-              Dismiss
-            </LinkButton>
-            <LinkButton
-              onClick={() => {
-                dismiss("fetch-existing-model-trigger-result");
-                setIsModelRunInProgress(true);
-                setShowFullTriggerResult(true);
-              }}
-              variant="primary"
-              size="md"
-              className="mr-auto"
-            >
-              View
-            </LinkButton>
-          </div>
-        ),
-        duration: 30000,
-      });
+    if (!existingTriggerState.done) {
+      if (!currentOperationIdPollingData.current.timeoutRunning) {
+        pollForResponse();
+      }
+    } else {
+      if (!currentOperationIdPollingData.current.isRendered) {
+        currentOperationIdPollingData.current = {
+          ...currentOperationIdPollingData.current,
+          isRendered: true,
+        };
+
+        const taskPropName = convertTaskNameToPayloadPropName(
+          model.task
+        ) as string;
+
+        setInputFromExistingResult(
+          convertValuesToString(
+            existingTriggerState.response.request.taskInputs[0][taskPropName]
+          )
+        );
+        setModelRunResult(
+          existingTriggerState.response.response.taskOutputs[0][taskPropName]
+        );
+
+        setIsModelRunInProgress(false);
+      }
     }
 
-    if (
-      existingTriggerState?.response &&
-      !inputFromExistingResult &&
-      !modelRunResult
-    ) {
-      const taskPropName = convertTaskNameToPayloadPropName(
-        model.task,
-      ) as string;
-
-      setInputFromExistingResult(
-        convertValuesToString(
-          existingTriggerState.response.request.taskInputs[0][taskPropName],
-        ),
-      );
-      setModelRunResult(
-        existingTriggerState.response.response.taskOutputs[0][taskPropName],
-      );
+    if (!currentOperationIdPollingData.current.name) {
+      currentOperationIdPollingData.current = {
+        ...defaultCurrentOperationIdPollingData,
+        name: existingTriggerState.name,
+      };
     }
-  }, [
-    existingModelTriggerResult,
-    existingTriggerState,
-    toast,
-    existingTriggerToastShowed,
-    dismiss,
-    isModelRunInProgress,
-    model,
-    modelRunResult,
-    inputFromExistingResult,
-  ]);
+  }, [existingTriggerState]);
 
   const triggerModel = useTriggerUserModelAsync();
 
@@ -248,39 +259,14 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
         },
       });
 
-      toast({
-        variant: "notification-success",
-        title: "Model was triggered",
-        size: "large",
-        description:
-          "Come back later or reload the page to see if the run result is ready.",
-        action: (
-          <div className="flex flex-row gap-x-4">
-            <LinkButton
-              onClick={() => {
-                dismiss();
-              }}
-              variant="secondary"
-              size="md"
-            >
-              Dismiss
-            </LinkButton>
-            <LinkButton
-              onClick={() => {
-                window.location.reload();
-              }}
-              variant="primary"
-              size="md"
-            >
-              Reload
-            </LinkButton>
-          </div>
-        ),
-      });
-
       if (amplitudeIsInit) {
         sendAmplitudeData("trigger_model");
       }
+
+      currentOperationIdPollingData.current = {
+        ...defaultCurrentOperationIdPollingData,
+        name: data.operation.name,
+      };
 
       setExistingTriggerState(data.operation);
     } catch (error) {

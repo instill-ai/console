@@ -354,19 +354,20 @@ export const NamespaceSwitch = () => {
                             />
                           }
                         />
-
                         <div className="flex flex-col">
                           <p className="text-semantic-fg-primary product-body-text-3-medium">
                             {namespace.id}
                           </p>
-                          <Tag
-                            className="flex flex-row gap-x-1"
-                            variant="lightBlue"
-                            size="sm"
-                          >
-                            <Icons.Coins01 className="h-2.5 w-2.5 stroke-semantic-accent-default" />
-                            {`${namespace.remainingCredit.toLocaleString("en-US", { style: "decimal" })} credits left`}
-                          </Tag>
+                          {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
+                            <Tag
+                              className="flex flex-row gap-x-1"
+                              variant="lightBlue"
+                              size="sm"
+                            >
+                              <Icons.Coins01 className="h-2.5 w-2.5 stroke-semantic-accent-default" />
+                              {`${namespace.remainingCredit.toLocaleString("en-US", { style: "decimal" })} credits left`}
+                            </Tag>
+                          ) : null}
                         </div>
                       </div>
                     </Select.Item>
