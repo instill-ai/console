@@ -181,7 +181,9 @@ export async function listUsersQuery({
 }
 
 export type GetRemainingCreditResponse = {
-  amount: number;
+  perishable: number;
+  imperishable: number;
+  total: number;
 };
 
 export async function getRemainingCreditQuery({
@@ -198,7 +200,7 @@ export async function getRemainingCreditQuery({
       `/${ownerName}/credit`
     );
 
-    return Promise.resolve(data.amount);
+    return Promise.resolve(data);
   } catch (err) {
     return Promise.reject(err);
   }

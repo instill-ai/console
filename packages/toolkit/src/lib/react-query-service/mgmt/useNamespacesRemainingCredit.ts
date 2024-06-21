@@ -1,10 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { Nullable } from "../../type";
-import { getRemainingCreditQuery } from "../../vdp-sdk";
+import {
+  GetRemainingCreditResponse,
+  getRemainingCreditQuery,
+} from "../../vdp-sdk";
 
 export type NamespaceRemainingCredit = {
   namespaceName: string;
-  remainingCredit: number;
+  remainingCredit: GetRemainingCreditResponse;
 };
 
 export function useNamespacesRemainingCredit({
@@ -39,7 +42,10 @@ export function useNamespacesRemainingCredit({
             ownerName: namespaceName,
             accessToken,
           });
-          remainingCredits.push({ namespaceName, remainingCredit });
+          remainingCredits.push({
+            namespaceName,
+            remainingCredit,
+          });
         } catch (error) {
           console.log(error);
         }
