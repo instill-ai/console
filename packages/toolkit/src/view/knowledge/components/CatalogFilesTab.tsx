@@ -104,7 +104,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
   return (
     <div className="flex flex-col">
       <div className="mb-4 flex items-center justify-between">
-        <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
+        <p className="text-semantic-fg-primary product-headings-heading-2">
           {knowledgeBase.name}
         </p>
         {/* Coming in V2 */}
