@@ -59,7 +59,7 @@ export const EditKnowledgeDialog = ({
           <Dialog.Title className="text-semantic-fg-primary product-body-text-1-semibold">
             Edit knowledge base
           </Dialog.Title>
-          <Dialog.Close className="" />
+          <Dialog.Close className="!focus:ring-0 !active:ring-0 !focus:outline-none !focus:ring-offset-0 !rounded-none !bg-transparent !shadow-none !ring-0 before:!hidden after:!hidden" />
         </Dialog.Header>
 
         <Form.Root {...form}>

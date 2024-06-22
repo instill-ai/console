@@ -186,7 +186,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
   return (
     <div className="mb-32 flex flex-col">
       <div className="mb-5 flex items-center justify-between">
-        <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
+        <p className="text-semantic-fg-primary product-headings-heading-2">
           {knowledgeBase.name}
         </p>
       </div>
@@ -212,7 +212,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                     onDragLeave={(e) => {
                       e.preventDefault();
                       if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-                        -setIsDragging(false);
+                        setIsDragging(false);
                       }
                     }}
                     onDragOver={(e) => {
@@ -231,18 +231,18 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                       htmlFor="upload-file-field"
                       className="cursor-pointer"
                     >
-                      <div className="flex flex-col items-center justify-center space-y-2">
+                      <div className="flex flex-col items-center justify-center space-y-2 text-semantic-fg-primary">
                         <Icons.Upload01 className="mb-4 h-8 w-8 stroke-semantic-fg-secondary p-1" />
                         <div className="w-full text-center">
                           <span>Drag-and-drop file, or </span>
                           <label
                             htmlFor="upload-file-field"
-                            className="cursor-pointer text-semantic-accent-hover underline"
+                            className="cursor-pointer text-semantic-accent-default"
                           >
                             browse computer
                           </label>
-                          <div>Support TXT, MARKDOWN, PDF</div>
-                          <div>Max 15MB each</div>
+                          <div className="mt-2">Support TXT, MARKDOWN, PDF</div>
+                          <div className="mt-1">Max 15MB each</div>
                         </div>
                       </div>
                     </Form.Label>

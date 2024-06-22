@@ -28,7 +28,7 @@ export const Sidebar = ({
   return (
     <aside className="flex w-[160px] flex-col gap-y-4">
       <div
-        className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${
+        className={`flex h-8 items-center gap-x-2 whitespace-nowrap rounded px-3 product-button-button-2 ${
           activeTab === "knowledge-base"
             ? "bg-semantic-accent-bg text-semantic-accent-hover"
             : "cursor-pointer text-semantic-fg-secondary"

@@ -82,7 +82,7 @@ export const CreateKnowledgeDialog = ({
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
       <Dialog.Content className="!w-[600px] rounded-md">
         <Dialog.Header className="flex justify-between">
-          <Dialog.Title className="text-semantic-fg-primary product-body-text-1-semibold">
+          <Dialog.Title className="text-semantic-fg-primary !product-body-text-1-semibold">
             Create new knowledge base
           </Dialog.Title>
           <Dialog.Close className="" />
