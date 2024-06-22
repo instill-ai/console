@@ -49,13 +49,14 @@ export const CreateKnowledgeDialog = ({
   onClose: () => void;
   onSubmit: CreateKnowledgeFormProps["onSubmit"];
 }) => {
-  const selector = (store: InstillStore) => ({
-    navigationNamespaceAnchor: store.navigationNamespaceAnchor,
-  });
-
-  const { navigationNamespaceAnchor } = useInstillStore(useShallow(selector));
+  const { navigationNamespaceAnchor } = useInstillStore(
+    useShallow((store: InstillStore) => ({
+      navigationNamespaceAnchor: store.navigationNamespaceAnchor,
+    }))
+  );
 
   const routeInfo = useRouteInfo();
+  const userNamespaces = useUserNamespaces();
 
   const form = useForm<z.infer<typeof CreateKnowledgeFormSchema>>({
     resolver: zodResolver(CreateKnowledgeFormSchema),
@@ -63,69 +64,38 @@ export const CreateKnowledgeDialog = ({
       name: "",
       description: "",
       tags: [],
-      namespaceId: navigationNamespaceAnchor
-        ? navigationNamespaceAnchor
-        : routeInfo?.data?.namespaceId || "",
+      namespaceId: "",
     },
     mode: "onChange",
   });
 
-  const userNamespaces = useUserNamespaces();
-
-  const { formState, watch } = form;
+  const { formState, watch, setValue } = form;
   const nameValue = watch("name");
   // const namespaceIdValue = watch("namespaceId");
 
-  const formatName = (name: string) => {
-    return name.replace(/[^a-zA-Z0-9-_]/g, "-").replace(/-+/g, "-");
-  };
-
+  const formatName = (name: string) =>
+    name.replace(/[^a-zA-Z0-9-_]/g, "-").replace(/-+/g, "-");
   const isNameValid = /^[a-zA-Z0-9-_]+$/.test(nameValue);
   const formattedName = formatName(nameValue);
 
-  const resetForm = () => {
-    form.reset({
-      name: "",
-      description: "",
-      tags: [],
-      namespaceId: navigationNamespaceAnchor
-        ? navigationNamespaceAnchor
-        : routeInfo?.data?.namespaceId || "",
-    });
-  };
-  React.useEffect(() => {
-    const initialNamespaceId =
-      navigationNamespaceAnchor || routeInfo?.data?.namespaceId || "";
-    form.setValue("namespaceId", initialNamespaceId);
-  }, [navigationNamespaceAnchor, routeInfo?.data?.namespaceId, form]);
-
   React.useEffect(() => {
     if (isOpen) {
-      resetForm();
+      const initialNamespaceId =
+        navigationNamespaceAnchor || routeInfo?.data?.namespaceId || "";
+      form.reset({
+        name: "",
+        description: "",
+        tags: [],
+        namespaceId: initialNamespaceId,
+      });
     }
-  }, [isOpen]);
-
-  // const selector = (store: InstillStore) => ({
-  //   accessToken: store.accessToken,
-  //   enabledQuery: store.enabledQuery,
-  // });
-
-  // const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
-  // const me = useAuthenticatedUser({
-  //   enabled: enabledQuery && isOpen,
-  //   accessToken,
-  // });
+  }, [isOpen, navigationNamespaceAnchor, routeInfo?.data?.namespaceId]);
 
   return (
     <Dialog.Root
       open={isOpen}
       onOpenChange={(open) => {
-        if (open) {
-          resetForm();
-        } else {
-          onClose();
-        }
+        if (!open) onClose();
       }}
     >
       <Dialog.Content className="!w-[600px] rounded-md">
@@ -144,9 +114,9 @@ export const CreateKnowledgeDialog = ({
                 ...data,
                 name: formatName(data.name),
               });
-              resetForm();
             })}
           >
+            {/* Form fields */}
             <div className="flex items-center justify-start gap-4">
               <Form.Field
                 control={form.control}
@@ -160,7 +130,7 @@ export const CreateKnowledgeDialog = ({
                       <EntitySelector
                         value={field.value}
                         onChange={(value: string) => {
-                          form.setValue("namespaceId", value, {
+                          setValue("namespaceId", value, {
                             shouldValidate: true,
                           });
                         }}
