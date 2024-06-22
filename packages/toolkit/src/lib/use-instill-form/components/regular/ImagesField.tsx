@@ -11,6 +11,7 @@ import { readFileToBinary } from "../../../../view";
 import { UploadFileInput } from "../trigger-request-form-fields/UploadFileInput";
 import { FileListItem } from "../trigger-request-form-fields/FileListItem";
 import { FieldDescriptionTooltip } from "../common";
+import { EmptyImageInputPlaceholder } from "../../../../components";
 
 export const ImagesField = ({
   form,
@@ -49,47 +50,44 @@ export const ImagesField = ({
               </Form.Label>
               <FieldDescriptionTooltip description={description} />
             </div>
-            <div className="grid min-h-[142px] w-full grid-flow-row grid-cols-4 overflow-hidden rounded-sm border border-semantic-bg-line">
+            <div className="grid w-full grid-flow-row grid-cols-4 overflow-hidden rounded-sm border border-semantic-bg-line">
               {instillModelPromptImageBase64ObjectFormat &&
-              Array.isArray(values)
-                ? fillArrayWithZeros(values, 8)
-                    .slice(0, 8)
-                    .map((value, i) => {
-                      if (value.prompt_image_base64) {
-                        return (
-                          <img
-                            key={`${path}-${i}`}
-                            src={value.prompt_image_base64}
-                            alt={`${path}-${i}`}
-                            className="h-[140px] object-contain"
-                          />
-                        );
-                      }
-                    })
-                : imageFiles.length > 0
-                  ? fillArrayWithZeros(imageFiles, 8)
-                      .slice(0, 8)
-                      .map((file, i) => {
-                        return file ? (
-                          <img
-                            key={`${path}-${file.name}`}
-                            src={URL.createObjectURL(file)}
-                            alt={`${path}-${file.name}`}
-                            className="h-[140px] object-contain"
-                          />
-                        ) : (
-                          <div
-                            key={`${path}-${i}`}
-                            className="h-[140px] w-full bg-semantic-bg-secondary object-contain"
-                          />
-                        );
-                      })
-                  : Array.from({ length: 4 }).map((_, i) => (
+              Array.isArray(values) ? (
+                fillArrayWithZeros(values, 8)
+                  .slice(0, 8)
+                  .map((value, i) => {
+                    if (value.prompt_image_base64) {
+                      return (
+                        <img
+                          key={`${path}-${i}`}
+                          src={value.prompt_image_base64}
+                          alt={`${path}-${i}`}
+                          className="h-[140px] object-contain"
+                        />
+                      );
+                    }
+                  })
+              ) : imageFiles.length > 0 ? (
+                fillArrayWithZeros(imageFiles, 8)
+                  .slice(0, 8)
+                  .map((file, i) => {
+                    return file ? (
+                      <img
+                        key={`${path}-${file.name}`}
+                        src={URL.createObjectURL(file)}
+                        alt={`${path}-${file.name}`}
+                        className="h-[140px] object-contain"
+                      />
+                    ) : (
                       <div
                         key={`${path}-${i}`}
-                        className="h-[140px] w-full object-contain"
+                        className="h-[140px] w-full bg-semantic-bg-secondary object-contain"
                       />
-                    ))}
+                    );
+                  })
+              ) : (
+                <EmptyImageInputPlaceholder className="col-span-4" />
+              )}
             </div>
             <div className="flex flex-row gap-x-1">
               <Form.Control>

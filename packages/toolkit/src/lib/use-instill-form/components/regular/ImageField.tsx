@@ -7,6 +7,7 @@ import { readFileToBinary } from "../../../../view";
 import { FileListItem } from "../trigger-request-form-fields/FileListItem";
 import { UploadFileInput } from "../trigger-request-form-fields/UploadFileInput";
 import { FieldDescriptionTooltip } from "../common";
+import { EmptyImageInputPlaceholder } from "../../../../components";
 
 export const ImageField = ({
   form,
@@ -64,8 +65,10 @@ export const ImageField = ({
               ) : (
                 <div
                   key={`${path}-image-placeholder`}
-                  className="flex h-[260px] w-full items-center justify-center rounded-sm border border-semantic-bg-line bg-transparent"
-                ></div>
+                  className="w-full rounded-sm border border-semantic-bg-line bg-transparent"
+                >
+                  <EmptyImageInputPlaceholder />
+                </div>
               )}
             </div>
             <div className="flex">
