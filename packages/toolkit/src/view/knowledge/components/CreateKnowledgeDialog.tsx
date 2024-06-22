@@ -27,6 +27,7 @@ import {
   useShallow,
   useRouteInfo,
 } from "../../../lib";
+import * as React from "react";
 
 const CreateKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -82,6 +83,28 @@ export const CreateKnowledgeDialog = ({
   const isNameValid = /^[a-zA-Z0-9-_]+$/.test(nameValue);
   const formattedName = formatName(nameValue);
 
+  const resetForm = () => {
+    form.reset({
+      name: "",
+      description: "",
+      tags: [],
+      namespaceId: navigationNamespaceAnchor
+        ? navigationNamespaceAnchor
+        : routeInfo?.data?.namespaceId || "",
+    });
+  };
+  React.useEffect(() => {
+    const initialNamespaceId =
+      navigationNamespaceAnchor || routeInfo?.data?.namespaceId || "";
+    form.setValue("namespaceId", initialNamespaceId);
+  }, [navigationNamespaceAnchor, routeInfo?.data?.namespaceId, form]);
+
+  React.useEffect(() => {
+    if (isOpen) {
+      resetForm();
+    }
+  }, [isOpen]);
+
   // const selector = (store: InstillStore) => ({
   //   accessToken: store.accessToken,
   //   enabledQuery: store.enabledQuery,
@@ -95,7 +118,16 @@ export const CreateKnowledgeDialog = ({
   // });
 
   return (
-    <Dialog.Root open={isOpen} onOpenChange={onClose}>
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (open) {
+          resetForm();
+        } else {
+          onClose();
+        }
+      }}
+    >
       <Dialog.Content className="!w-[600px] rounded-md">
         <Dialog.Header className="flex justify-between">
           <Dialog.Title className="text-semantic-fg-primary !product-body-text-1-semibold">
@@ -107,12 +139,13 @@ export const CreateKnowledgeDialog = ({
         <Form.Root {...form}>
           <form
             className="flex flex-col space-y-3"
-            onSubmit={form.handleSubmit((data) =>
+            onSubmit={form.handleSubmit((data) => {
               onSubmit({
                 ...data,
                 name: formatName(data.name),
-              })
-            )}
+              });
+              resetForm();
+            })}
           >
             <div className="flex items-center justify-start gap-4">
               <Form.Field
@@ -125,14 +158,11 @@ export const CreateKnowledgeDialog = ({
                     </Form.Label>
                     <Form.Control>
                       <EntitySelector
-                        value={
-                          navigationNamespaceAnchor ||
-                          routeInfo?.data?.namespaceId ||
-                          ""
-                        }
+                        value={field.value}
                         onChange={(value: string) => {
-                          field.onChange(value);
-                          form.trigger("namespaceId");
+                          form.setValue("namespaceId", value, {
+                            shouldValidate: true,
+                          });
                         }}
                         data={userNamespaces}
                       />
