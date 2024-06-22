@@ -1,3 +1,4 @@
+import cn from "clsx";
 import React, { useMemo } from "react";
 import { StateLabel } from "../../../components";
 import {
@@ -12,6 +13,7 @@ import {
 import { Model, ModelState } from "../../../lib";
 import { ModelTabNames } from "../../../server";
 import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
+import Link from "next/link";
 
 export type HeadProps = {
   selectedTab: ModelTabNames;
@@ -102,7 +104,7 @@ export const ModelSettingsHead = ({
                 >
                   {owner.id}
                 </a>
-                /{model?.id}
+                /<span className="text-semantic-fg-primary">{model?.id}</span>
               </div>
               {modelState ? <StateLabel state={modelState} /> : null}
               <Tag
@@ -176,11 +178,18 @@ export const ModelSettingsHead = ({
               </Tag> */}
           </div>
         )}
-        {model?.description ? (
-          <p className="font-mono text-xs text-semantic-fg-disabled">
-            {model.description}
-          </p>
-        ) : null}
+        <p
+          className={cn(
+            "font-mono text-xs text-semantic-fg-disabled",
+            !model?.description ? "italic" : ""
+          )}
+        >
+          {model?.description || (
+            <Link href={`/${owner.id}/models/${model?.id}/settings`}>
+              Add a description
+            </Link>
+          )}
+        </p>
         {isReady ? (
           <div className="mb-2 mt-10 flex flex-row gap-x-2">
             <Skeleton className="h-6 w-12 rounded" />
