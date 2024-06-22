@@ -76,8 +76,8 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         // />
         <></>
       ) : null}
-      <div className="grid w-full grid-cols-12 gap-6 pl-4 pr-8">
-        <div className="pr-8 pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
+      <div className="grid w-full grid-cols-12 gap-6 px-8">
+        <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
           <Sidebar
             activeTab={activeTab}
             onTabChange={handleTabChange}
