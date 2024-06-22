@@ -111,6 +111,26 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
 
   if (currentPageData.length === 0) {
     return (
+      <div className="inline-flex flex-col gap-y-4 rounded border border-semantic-bg-line bg-semantic-bg-base-bg p-6 text-semantic-fg-primary">
+        <p className="text-sm font-semibold">Model created. Time to push!</p>
+        <p className="text-sm">
+          Check out the{" "}
+          <a
+            className="text-semantic-accent-default underline"
+            href="https://www.instill-inc.tech/docs/model/create/push"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            guide to pushing your own model
+          </a>{" "}
+          for next steps, then run these commands to push it to Instill AI.
+        </p>
+      </div>
+    );
+  }
+
+  /* if (currentPageData.length === 0) {
+    return (
       <div className="flex flex-col items-center justify-center">
         <div className="relative">
           <img
@@ -130,11 +150,11 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
         </div>
       </div>
     );
-  }
+  } */
 
   return (
     <DataTable
-      columns={columns as ColumnDef<unknown>[]} // https://github.com/TanStack/table/issues/4382#issuecomment-2081153305
+      columns={columns}
       data={currentPageData}
       pageSize={paginationState.pageSize}
       isLoading={
