@@ -21,6 +21,12 @@ import * as z from "zod";
 // import * as React from "react";
 import { EntitySelector } from "../../../components";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
+import {
+  InstillStore,
+  useInstillStore,
+  useShallow,
+  useRouteInfo,
+} from "../../../lib";
 
 const CreateKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -42,13 +48,23 @@ export const CreateKnowledgeDialog = ({
   onClose: () => void;
   onSubmit: CreateKnowledgeFormProps["onSubmit"];
 }) => {
+  const selector = (store: InstillStore) => ({
+    navigationNamespaceAnchor: store.navigationNamespaceAnchor,
+  });
+
+  const { navigationNamespaceAnchor } = useInstillStore(useShallow(selector));
+
+  const routeInfo = useRouteInfo();
+
   const form = useForm<z.infer<typeof CreateKnowledgeFormSchema>>({
     resolver: zodResolver(CreateKnowledgeFormSchema),
     defaultValues: {
       name: "",
       description: "",
       tags: [],
-      namespaceId: "",
+      namespaceId: navigationNamespaceAnchor
+        ? navigationNamespaceAnchor
+        : routeInfo?.data?.namespaceId || "",
     },
     mode: "onChange",
   });
@@ -109,7 +125,11 @@ export const CreateKnowledgeDialog = ({
                     </Form.Label>
                     <Form.Control>
                       <EntitySelector
-                        value={field.value || ""}
+                        value={
+                          navigationNamespaceAnchor ||
+                          routeInfo?.data?.namespaceId ||
+                          ""
+                        }
                         onChange={(value: string) => {
                           field.onChange(value);
                           form.trigger("namespaceId");
