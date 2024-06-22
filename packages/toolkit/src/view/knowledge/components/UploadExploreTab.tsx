@@ -200,7 +200,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex h-[150px] w-full cursor-pointer flex-col items-center justify-center rounded border border-dashed ${
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded border border-dashed ${
                       isDragging
                         ? "border-semantic-accent-default"
                         : "border-semantic-bg-line"
@@ -229,10 +229,10 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                   >
                     <Form.Label
                       htmlFor="upload-file-field"
-                      className="cursor-pointer"
+                      className="flex cursor-pointer flex-col items-center justify-center"
                     >
-                      <div className="flex flex-col items-center justify-center space-y-2 text-semantic-fg-primary">
-                        <Icons.Upload01 className="mb-4 h-8 w-8 stroke-semantic-fg-secondary p-1" />
+                      <div className="flex flex-col items-center justify-center text-semantic-fg-primary">
+                        <Icons.Upload01 className="mb-4 mt-10 h-8 w-8 stroke-semantic-fg-secondary" />
                         <div className="w-full text-center">
                           <span>Drag-and-drop file, or </span>
                           <label
@@ -241,8 +241,8 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
                           >
                             browse computer
                           </label>
-                          <div className="mt-2">Support TXT, MARKDOWN, PDF</div>
-                          <div className="mt-1">Max 15MB each</div>
+                          <div className="">Support TXT, MARKDOWN, PDF</div>
+                          <div className="">Max 15MB each</div>
                         </div>
                       </div>
                     </Form.Label>
