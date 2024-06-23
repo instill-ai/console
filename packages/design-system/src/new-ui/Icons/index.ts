@@ -55,6 +55,7 @@ import { FilePlus02 } from "./FilePlus02";
 import { FilterLines } from "./FilterLines";
 import { Gear01 } from "./Gear01";
 import { Globe01 } from "./Globe01";
+import { GraduationHat } from "./GraduationHat";
 import { HelpCircle } from "./HelpCircle";
 import { IntersectSquare } from "./IntersectSquare";
 import { Link01 } from "./Link01";
@@ -94,6 +95,7 @@ import { Save01 } from "./Save01";
 import { Scales02 } from "./Scales02";
 import { Settings02 } from "./Settings02";
 import { Sliders01 } from "./Sliders01";
+import { SlashDivider } from "./SlashDivider";
 import { SpeechRecognition } from "./SpeechRecognition";
 import { Speaker01 } from "./Speaker01";
 import { Stop } from "./Stop";
@@ -184,6 +186,7 @@ export const Icons = {
   FilterLines,
   Gear01,
   Globe01,
+  GraduationHat,
   HelpCircle,
   IntersectSquare,
   Link01,
@@ -224,6 +227,7 @@ export const Icons = {
   Settings02,
   SpeechRecognition,
   Sliders01,
+  SlashDivider,
   Speaker01,
   Stop,
   SearchLg,
