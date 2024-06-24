@@ -80,6 +80,10 @@ const defaultCurrentOperationIdPollingData = {
 
 export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
   const queryClient = useQueryClient();
+  // This ref is used here to store the currently active operation id. It's in
+  // ref so we don't have to worry about stale data. As soon as we update the
+  // ref, it has new value and the very next render cycle will already have
+  // the fresh data.
   const currentOperationIdPollingData = React.useRef<{
     name: string | null;
     timeoutRunning: boolean;
