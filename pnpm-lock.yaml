@@ -33,9 +33,6 @@ importers:
       prettier:
         specifier: latest
         version: 3.2.4
-      prettier-plugin-tailwindcss:
-        specifier: latest
-        version: 0.5.11(prettier@3.2.4)
       turbo:
         specifier: latest
         version: 1.11.3
