@@ -3,6 +3,7 @@ import {
   ModelVersions,
   ModelApi,
   ModelOverview,
+  NoVersionsPlaceholder,
 } from ".";
 import { LoadingSpin } from "../../../components";
 import { Model, ModelState, Nullable } from "../../../lib";
@@ -30,7 +31,11 @@ export const ModelContentViewer = ({
       break;
     }
     case "versions": {
-      content = <ModelVersions model={model} />;
+      content = modelState ? (
+        <ModelVersions model={model} />
+      ) : (
+        <NoVersionsPlaceholder />
+      );
 
       break;
     }
@@ -43,7 +48,11 @@ export const ModelContentViewer = ({
     }
     case "overview":
     default: {
-      content = <ModelOverview model={model} modelState={modelState} />;
+      content = modelState ? (
+        <ModelOverview model={model} modelState={modelState} />
+      ) : (
+        <NoVersionsPlaceholder />
+      );
     }
   }
 

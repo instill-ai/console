@@ -127,7 +127,7 @@ export type ModelWatchState = {
   message: string;
 };
 
-export type ModelsWatchState = Record<string, ModelWatchState>;
+export type ModelsWatchState = Record<string, ModelWatchState | null>;
 
 export type ModelTriggerResult = {
   operation: Nullable<

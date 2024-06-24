@@ -109,49 +109,6 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
     setPaginationState(state);
   };
 
-  if (currentPageData.length === 0) {
-    return (
-      <div className="inline-flex flex-col gap-y-4 rounded border border-semantic-bg-line bg-semantic-bg-base-bg p-6 text-semantic-fg-primary">
-        <p className="text-sm font-semibold">Model created. Time to push!</p>
-        <p className="text-sm">
-          Check out the{" "}
-          <a
-            className="text-semantic-accent-default underline"
-            href="https://www.instill-inc.tech/docs/model/create/push"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            guide to pushing your own model
-          </a>{" "}
-          for next steps, then run these commands to push it to Instill AI.
-        </p>
-      </div>
-    );
-  }
-
-  /* if (currentPageData.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center">
-        <div className="relative">
-          <img
-            width={513}
-            height={480}
-            src="/images/models/no-model-versions-placeholder.svg"
-            alt="An icon of a git branch"
-          />
-          <p className="absolute left-1/2 top-2/3 flex -translate-x-1/2 flex-col items-center gap-y-2 text-center text-xl font-semibold text-semantic-fg-primary">
-            <span className="whitespace-nowrap">
-              No model versions deployed yet
-            </span>
-            <span className="text-base font-normal text-semantic-fg-secondary">
-              Once you deploy a new version of your model, it will appear here
-            </span>
-          </p>
-        </div>
-      </div>
-    );
-  } */
-
   return (
     <DataTable
       columns={columns}

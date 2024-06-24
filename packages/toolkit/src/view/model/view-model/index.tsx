@@ -4,3 +4,4 @@ export * from "./ModelVersions";
 export * from "./ModelSettingsEditForm";
 export * from "./ModelApi";
 export * from "./ModelOverview";
+export * from "./NoVersionsPlaceholder";
