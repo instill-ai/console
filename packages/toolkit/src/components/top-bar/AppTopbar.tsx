@@ -18,7 +18,6 @@ import { CETopbarDropdown } from "./CETopbarDropdown";
 import { CloudTopbarDropdown } from "./CloudTopbarDropdown";
 import { NamespaceSwitch } from "./NamespaceSwitch";
 import { NavLinks } from "./NavLinks";
-import { TopbarMiscLinks } from "./TopbarMiscLinks";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -103,11 +102,7 @@ export const AppTopbar = ({
           </div>
         </div>
         <div className="flex flex-1 flex-row justify-end">
-          {topbarControllerChildren ? (
-            topbarControllerChildren
-          ) : (
-            <TopbarMiscLinks />
-          )}
+          {topbarControllerChildren ? topbarControllerChildren : null}
           {disabledUserDropdown ? null : (
             <div className="ml-4 flex">
               {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (

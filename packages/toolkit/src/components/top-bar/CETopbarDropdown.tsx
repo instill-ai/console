@@ -111,8 +111,44 @@ export const CETopbarDropdown = () => {
               rel="noopener noreferrer"
               target="_blank"
             >
+              <Icons.MessageSmileSquare className="h-4 w-4 stroke-semantic-fg-disabled" />
+              <div className="my-auto">Community</div>
+            </a>
+          </TopbarDropdownItem>
+          <TopbarDropdownItem asChild>
+            <a
+              href="https://discord.com/invite/sevxWsqpGh"
+              className="flex gap-x-2"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               <Icons.HelpCircle className="h-4 w-4 stroke-semantic-fg-disabled" />
               <div className="my-auto">Support</div>
+            </a>
+          </TopbarDropdownItem>
+          <TopbarDropdownItem asChild>
+            <a
+              href="https://www.instill.tech/docs"
+              className="flex gap-x-2"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <Icons.File06 className="h-4 w-4 stroke-semantic-fg-disabled" />
+              <div className="my-auto">Documentation</div>
+            </a>
+          </TopbarDropdownItem>
+          <TopbarDropdownItem asChild>
+            <a
+              href="https://github.com/instill-ai/instill-core"
+              className="flex gap-x-2"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <ComplicateIcons.GitHub
+                className="h-4 w-4"
+                fillAreaColor="fill-semantic-fg-disabled"
+              />
+              <div className="my-auto">GitHub</div>
             </a>
           </TopbarDropdownItem>
         </TopbarDropdownGroup>
