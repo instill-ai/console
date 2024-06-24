@@ -13,7 +13,7 @@ export const NoVersionsPlaceholder = () => {
             rel="noopener noreferrer"
             target="_blank"
           >
-            Prepare a model
+            Learn: Prepare Model
           </a>
         </li>
         <li>
@@ -23,7 +23,7 @@ export const NoVersionsPlaceholder = () => {
             rel="noopener noreferrer"
             target="_blank"
           >
-            Build model image
+            Learn: Build Model Image
           </a>
         </li>
         <li>
@@ -33,7 +33,7 @@ export const NoVersionsPlaceholder = () => {
             rel="noopener noreferrer"
             target="_blank"
           >
-            Push model image
+            Learn: Push Model Image
           </a>
         </li>
       </ul>
