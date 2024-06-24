@@ -32,7 +32,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ModelSectionHeader } from "./SectionHeader";
 import { recursiveHelpers } from "../../pipeline-builder";
 import { defaultCodeSnippetStyles } from "../../../constant";
-import React from "react";
+import * as React from "react";
 import Image from "next/image";
 import { OPERATION_POLL_TIMEOUT } from "./constants";
 
@@ -184,7 +184,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
         setExistingTriggerState(existingModelTriggerResult.data.operation);
       }
     }
-  }, [existingModelTriggerResult]);
+  }, [existingModelTriggerResult.isSuccess, existingModelTriggerResult.data]);
 
   useEffect(() => {
     if (!existingTriggerState || !model) {

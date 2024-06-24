@@ -70,16 +70,12 @@ export const ModelsTable = (props: ModelsTableProps) => {
       accessorKey: "state",
       header: () => <div className="min-w-[100px] text-center">Status</div>,
       cell: ({ row }) => {
-        const name: string = row.original.name;
+        const name = row.original.name;
 
         return (
           <div className="grid justify-items-center">
             <StateLabel
-              state={
-                (modelsWatchState.isSuccess &&
-                  modelsWatchState.data[name]?.state) ||
-                "STATE_UNSPECIFIED"
-              }
+              state={modelsWatchState.data?.[name]?.state}
             />
           </div>
         );
