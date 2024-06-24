@@ -80,7 +80,6 @@ const defaultCurrentOperationIdPollingData = {
 
 export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
   const queryClient = useQueryClient();
-  const forceUpdate = React.useReducer((bool) => !bool, true)[1];
   const currentOperationIdPollingData = React.useRef<{
     name: string | null;
     timeoutRunning: boolean;
@@ -135,8 +134,8 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
       queryKey: ["models", "operation", model?.name],
     });
 
-    forceUpdate();
-  }, [forceUpdate]);
+    existingModelTriggerResult.refetch();
+  }, [existingModelTriggerResult.refetch]);
 
   useEffect(() => {
     if (
