@@ -79,7 +79,7 @@ export const BackToLatestVersionTopBar = () => {
                 pipeline.data.recipe,
                 {
                   metadata: pipeline.data.metadata,
-                }
+                },
               );
               const edges = composeEdgesFromNodes(nodes);
 

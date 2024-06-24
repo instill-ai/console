@@ -3,14 +3,14 @@ import { SmartHint } from "./types";
 
 export function transformFormTreeToSmartHints(
   tree: InstillFormTree,
-  componentNodeID: string
+  componentNodeID: string,
 ): SmartHint[] {
   let hints: SmartHint[] = [];
   if (tree._type === "formGroup") {
     tree.properties.map((property) => {
       const childHints = transformFormTreeToSmartHints(
         property,
-        componentNodeID
+        componentNodeID,
       );
       hints = [...hints, ...childHints];
     });
@@ -21,7 +21,7 @@ export function transformFormTreeToSmartHints(
   if (tree._type === "objectArray") {
     const objectHints = transformFormTreeToSmartHints(
       tree.properties,
-      componentNodeID
+      componentNodeID,
     );
 
     if (tree.path) {

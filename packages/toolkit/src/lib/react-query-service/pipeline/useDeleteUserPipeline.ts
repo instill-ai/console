@@ -31,11 +31,11 @@ export function useDeleteUserPipeline() {
       });
 
       queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) =>
-        old ? old.filter((e) => e.name !== pipelineName) : []
+        old ? old.filter((e) => e.name !== pipelineName) : [],
       );
 
       queryClient.setQueryData<Pipeline[]>(["pipelines", userName], (old) =>
-        old ? old.filter((e) => e.name !== pipelineName) : []
+        old ? old.filter((e) => e.name !== pipelineName) : [],
       );
 
       queryClient.removeQueries({

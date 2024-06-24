@@ -80,7 +80,7 @@ describe("setter", () => {
     dot.setter(obj, "twofoldly.foo.bar", undefined);
     expect(obj).toStrictEqual({ x: "y", twofoldly: { foo: {} } });
     expect(
-      Object.prototype.hasOwnProperty.call(obj.twofoldly.foo, "bar")
+      Object.prototype.hasOwnProperty.call(obj.twofoldly.foo, "bar"),
     ).toBeFalsy();
   });
 

@@ -44,7 +44,7 @@ export const CredentialTextField = ({
                   {...field}
                   className={cn(
                     "nodrag nowheel",
-                    size === "sm" ? "!product-body-text-4-regular" : ""
+                    size === "sm" ? "!product-body-text-4-regular" : "",
                   )}
                   type="text"
                   value={
@@ -78,14 +78,14 @@ export const CredentialTextField = ({
             <Form.Description
               className={cn(
                 "nodrag nopan cursor-text select-text",
-                size === "sm" ? "!product-body-text-4-regular" : ""
+                size === "sm" ? "!product-body-text-4-regular" : "",
               )}
               text={shortDescription ?? null}
             />
             <Form.Message
               className={cn(
                 "nodrag nopan cursor-text select-text",
-                size === "sm" ? "!product-body-text-4-medium" : ""
+                size === "sm" ? "!product-body-text-4-medium" : "",
               )}
             />
           </Form.Item>

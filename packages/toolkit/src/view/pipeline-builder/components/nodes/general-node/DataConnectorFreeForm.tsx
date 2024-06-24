@@ -146,7 +146,7 @@ export const DataConnectorFreeForm = ({
                     </div>
                   </div>
                 );
-              }
+              },
             )
           : null}
       </div>
@@ -271,7 +271,7 @@ export const DataConnectorFreeForm = ({
                     </div>
                   </div>
                 );
-              }
+              },
             )
           : null}
       </div>

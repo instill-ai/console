@@ -62,7 +62,7 @@ function main() {
       }
 
       const mapped = Object.entries(fontWeightMap).filter(
-        ([key]) => key === value.toString().toLocaleLowerCase()
+        ([key]) => key === value.toString().toLocaleLowerCase(),
       );
 
       if (mapped[0]) {

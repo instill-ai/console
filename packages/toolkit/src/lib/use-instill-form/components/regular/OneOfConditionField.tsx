@@ -109,7 +109,7 @@ export const OneOfConditionField = ({
                     <Select.Trigger
                       className={cn(
                         "w-full",
-                        size === "sm" ? "!product-body-text-4-regular" : ""
+                        size === "sm" ? "!product-body-text-4-regular" : "",
                       )}
                     >
                       <Select.Value />
@@ -125,7 +125,7 @@ export const OneOfConditionField = ({
                             "my-auto text-semantic-fg-primary group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary",
                             size === "sm"
                               ? "!product-body-text-4-regular"
-                              : "product-body-text-4-regular"
+                              : "product-body-text-4-regular",
                           )}
                           label={option.title ?? option.key}
                         />
@@ -136,14 +136,14 @@ export const OneOfConditionField = ({
                 <Form.Description
                   className={cn(
                     "nodrag nopan cursor-text select-text",
-                    size === "sm" ? "!product-body-text-4-regular" : ""
+                    size === "sm" ? "!product-body-text-4-regular" : "",
                   )}
                   text={shortDescription ?? null}
                 />
                 <Form.Message
                   className={cn(
                     "nodrag nopan cursor-text select-text",
-                    size === "sm" ? "!product-body-text-4-medium" : ""
+                    size === "sm" ? "!product-body-text-4-medium" : "",
                   )}
                 />
               </Form.Item>

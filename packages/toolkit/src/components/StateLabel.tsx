@@ -72,7 +72,7 @@ export const StateLabel = ({ state, className }: StateLabelProps) => {
       className={cn(
         "flex h-6 flex-row items-center gap-x-2 rounded-full px-2.5 py-1",
         bgColor,
-        className
+        className,
       )}
       data-testid="state-label"
     >

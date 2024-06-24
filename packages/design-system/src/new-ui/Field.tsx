@@ -25,7 +25,7 @@ const Description = React.forwardRef<
     <p
       className={cn(
         "flex text-[#1D2433CC] product-body-text-3-regular",
-        className
+        className,
       )}
       ref={ref}
       {...props}
@@ -44,7 +44,7 @@ const Label = React.forwardRef<
     <label
       className={cn(
         "flex text-semantic-fg-primary product-body-text-2-semibold",
-        className
+        className,
       )}
       ref={ref}
       {...props}

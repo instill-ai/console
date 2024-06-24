@@ -24,7 +24,7 @@ import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
 export type DashboardPipelineListPageMainViewProps = GeneralAppPageProp;
 
 export const DashboardPipelineListPageMainView = (
-  props: DashboardPipelineListPageMainViewProps
+  props: DashboardPipelineListPageMainViewProps,
 ) => {
   const { accessToken, enableQuery, router } = props;
 
@@ -52,15 +52,15 @@ export const DashboardPipelineListPageMainView = (
       const start = getTimeInRFC3339Format(
         selectedTimeOption.value === "24h"
           ? "todayStart"
-          : selectedTimeOption.value
+          : selectedTimeOption.value,
       );
       const stop = getTimeInRFC3339Format(
-        selectedTimeOption?.value === "1d" ? "todayStart" : "now"
+        selectedTimeOption?.value === "1d" ? "todayStart" : "now",
       );
       const previousTime = getTimeInRFC3339Format(
         getPreviousTimeframe(
-          selectedTimeOption.value as DashboardAvailableTimeframe
-        )
+          selectedTimeOption.value as DashboardAvailableTimeframe,
+        ),
       );
 
       queryParams += ` AND start='${start}' AND stop='${stop}'`;
@@ -140,14 +140,14 @@ export const DashboardPipelineListPageMainView = (
     }
 
     const triggeredPipelineIdList = triggeredPipelineList.map(
-      (e) => e.pipelineId
+      (e) => e.pipelineId,
     );
 
     return getPipelineTriggersSummary(
       triggeredPipelineList,
       previoustriggeredPipelines.data.filter((trigger) =>
-        triggeredPipelineIdList.includes(trigger.pipelineId)
-      )
+        triggeredPipelineIdList.includes(trigger.pipelineId),
+      ),
     );
   }, [
     previoustriggeredPipelines.isSuccess,

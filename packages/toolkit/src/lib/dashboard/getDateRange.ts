@@ -9,7 +9,7 @@ export function getDateRange(range: string): string[] {
       today.getDate() - 1,
       0,
       0,
-      0
+      0,
     );
     const endDate = new Date(
       today.getFullYear(),
@@ -17,7 +17,7 @@ export function getDateRange(range: string): string[] {
       today.getDate(),
       0,
       0,
-      0
+      0,
     );
 
     for (
@@ -31,7 +31,7 @@ export function getDateRange(range: string): string[] {
           day: "numeric",
           hour: "numeric",
           minute: "numeric",
-        })
+        }),
       );
     }
     // push end date
@@ -41,7 +41,7 @@ export function getDateRange(range: string): string[] {
         day: "numeric",
         hour: "numeric",
         minute: "numeric",
-      })
+      }),
     );
   } else if (range === "24h") {
     const startDate = new Date(
@@ -50,7 +50,7 @@ export function getDateRange(range: string): string[] {
       today.getDate(),
       0,
       0,
-      0
+      0,
     );
 
     for (
@@ -64,7 +64,7 @@ export function getDateRange(range: string): string[] {
           day: "numeric",
           hour: "numeric",
           minute: "numeric",
-        })
+        }),
       );
     }
     // push end date
@@ -74,7 +74,7 @@ export function getDateRange(range: string): string[] {
         day: "numeric",
         hour: "numeric",
         minute: "numeric",
-      })
+      }),
     );
   } else if (range.endsWith("d")) {
     const days = parseInt(range.slice(0, -1));
@@ -86,12 +86,12 @@ export function getDateRange(range: string): string[] {
       date.setDate(date.getDate() + 1)
     ) {
       dates.push(
-        date.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+        date.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
       );
     }
   } else {
     throw new Error(
-      "Invalid range format. Please use the format <number>d, 24h, or 1d."
+      "Invalid range format. Please use the format <number>d, 24h, or 1d.",
     );
   }
 

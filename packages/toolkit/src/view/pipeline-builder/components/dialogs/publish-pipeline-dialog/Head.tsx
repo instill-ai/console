@@ -20,7 +20,7 @@ export const Head = ({
   id: Nullable<string>;
 }) => {
   const { updateDialogPublishPipelineIsOpen } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
   return (

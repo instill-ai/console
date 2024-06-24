@@ -20,7 +20,7 @@ export const Save = ({
   setIsSaving: (value: boolean) => void;
 }) => {
   const { pipelineRecipeIsDirty, currentVersion } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
   const savePipeline = useSavePipeline({
     setIsSaving,
@@ -55,7 +55,7 @@ export const Save = ({
             "h-4 w-4",
             pipelineRecipeIsDirty
               ? "stroke-semantic-fg-primary"
-              : "stroke-[#bfbfbf]"
+              : "stroke-[#bfbfbf]",
           )}
         />
       )}

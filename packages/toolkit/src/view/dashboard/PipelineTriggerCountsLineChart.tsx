@@ -41,7 +41,7 @@ export const PipelineTriggerCountsLineChart = ({
   const chartRef = useRef<HTMLDivElement>(null);
   const { xAxis, yAxis } = generateChartData(
     pipelines,
-    selectedTimeOption.value
+    selectedTimeOption.value,
   );
 
   const xAxisData = xAxis;

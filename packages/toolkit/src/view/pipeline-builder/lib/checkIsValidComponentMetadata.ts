@@ -2,7 +2,7 @@ import { GeneralRecord, Nullable } from "../../../lib";
 import { PipelineMetadata } from "../type";
 
 export function checkIsValidComponentMetadata(
-  metadata?: Nullable<GeneralRecord>
+  metadata?: Nullable<GeneralRecord>,
 ): metadata is PipelineMetadata {
   if (
     metadata &&

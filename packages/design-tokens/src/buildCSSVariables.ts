@@ -62,7 +62,7 @@ function main() {
       }
 
       const mapped = Object.entries(fontWeightMap).filter(
-        ([key]) => key === value.toString().toLocaleLowerCase()
+        ([key]) => key === value.toString().toLocaleLowerCase(),
       );
 
       if (mapped[0]) {
@@ -119,19 +119,19 @@ function generateTheme(themes: { themeName: string; themePath: string }[]) {
       format: {
         cssVariables: ({ dictionary }) => {
           const colours = dictionary.allTokens.filter(
-            (e) => e.type === "color"
+            (e) => e.type === "color",
           );
           const colourCSS = colours
             .map((e) => `--${e.name}: ${e.value};`)
             .join("\n");
 
           const boxShadows = dictionary.allTokens.filter(
-            (e) => e.type === "boxShadow"
+            (e) => e.type === "boxShadow",
           );
           const boxShadowCSS = boxShadows
             .map(
               (e) =>
-                `--${e.name}: ${e.value.x}px ${e.value.y}px ${e.value.blur}px ${e.value.spread}px ${e.value.color};`
+                `--${e.name}: ${e.value.x}px ${e.value.y}px ${e.value.blur}px ${e.value.spread}px ${e.value.color};`,
             )
             .join("\n");
 
@@ -187,13 +187,13 @@ function generateRootTheme() {
           .join("\n");
 
         const boxShadows = dictionary.allTokens.filter(
-          (e) => e.type === "boxShadow"
+          (e) => e.type === "boxShadow",
         );
 
         const boxShadowCSS = boxShadows
           .map(
             (e) =>
-              `--${e.name}: ${e.value.x}px ${e.value.y}px ${e.value.blur}px ${e.value.spread}px ${e.value.color};`
+              `--${e.name}: ${e.value.x}px ${e.value.y}px ${e.value.blur}px ${e.value.spread}px ${e.value.color};`,
           )
           .join("\n");
 

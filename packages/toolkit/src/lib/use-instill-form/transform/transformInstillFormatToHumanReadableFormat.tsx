@@ -2,7 +2,7 @@ import { InstillHumanReadableFormat } from "../types";
 
 export function transformInstillFormatToHumanReadableFormat(
   format: string,
-  arrayInArray?: boolean
+  arrayInArray?: boolean,
 ): InstillHumanReadableFormat {
   if (format.includes("array:")) {
     if (arrayInArray) {

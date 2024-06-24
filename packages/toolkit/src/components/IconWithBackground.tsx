@@ -16,7 +16,7 @@ function IconWithBackground({
     <div
       className={cn(
         "flex h-8 w-8 items-center justify-center rounded-lg p-2",
-        className
+        className,
       )}
     >
       {iconElement}

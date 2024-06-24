@@ -37,7 +37,7 @@ export const PipelineGeneralComponentFormOnRightPanel = ({
       secrets: entitySecrets,
       enabledCollapsibleFormGroup: true,
       collapsibleDefaultOpen: true,
-    }
+    },
   );
 
   useUpdaterOnRightPanel({

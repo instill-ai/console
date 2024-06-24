@@ -11,7 +11,7 @@ import {
 import { isPipelineGeneralComponent } from "./checkComponentType";
 
 export function composePipelineRecipeFromNodes(
-  nodes: Node<NodeData>[]
+  nodes: Node<NodeData>[],
 ): PipelineRecipe {
   const recipeComponent: PipelineComponentMap = {};
 
@@ -34,12 +34,12 @@ export function composePipelineRecipeFromNodes(
                   definition: undefined,
                   input: e.input
                     ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-                        recursiveHelpers.parseToNum(structuredClone(e.input))
+                        recursiveHelpers.parseToNum(structuredClone(e.input)),
                       )
                     : undefined,
                   setup: e.setup
                     ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-                        recursiveHelpers.parseToNum(structuredClone(e.setup))
+                        recursiveHelpers.parseToNum(structuredClone(e.setup)),
                       )
                     : undefined,
                   condition: e.condition,
@@ -51,7 +51,7 @@ export function composePipelineRecipeFromNodes(
             }
 
             return [key, e];
-          })
+          }),
         ),
       };
 
@@ -64,11 +64,11 @@ export function composePipelineRecipeFromNodes(
         task: node.data.task,
         type: node.data.type,
         input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-          recursiveHelpers.parseToNum(structuredClone(node.data.input))
+          recursiveHelpers.parseToNum(structuredClone(node.data.input)),
         ),
         setup: node.data.setup
           ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-              recursiveHelpers.parseToNum(structuredClone(node.data.setup))
+              recursiveHelpers.parseToNum(structuredClone(node.data.setup)),
             )
           : undefined,
         definition: undefined,
@@ -80,11 +80,11 @@ export function composePipelineRecipeFromNodes(
   }
 
   const variableNode = nodes.find(
-    (node) => node.id === "variable" && isVariableNode(node)
+    (node) => node.id === "variable" && isVariableNode(node),
   ) as Node<TriggerNodeData> | undefined;
 
   const responseNode = nodes.find(
-    (node) => node.id === "response" && isResponseNode(node)
+    (node) => node.id === "response" && isResponseNode(node),
   ) as Node<ResponseNodeData> | undefined;
 
   return {

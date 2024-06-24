@@ -138,7 +138,7 @@ test("should reformat jsonSchema to formTree representation with parent schema",
     undefined,
     {
       required: ["key"],
-    }
+    },
   );
 
   const expected = {
@@ -230,7 +230,7 @@ test("should reformat jsonSchema to formTree representation when has oneOf", () 
     undefined,
     {
       required: ["key"],
-    }
+    },
   );
 
   const expected = {

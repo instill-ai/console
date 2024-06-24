@@ -12,7 +12,7 @@ const Template: StoryFn<typeof DarkBgSquareProgress> = (args) => (
   <DarkBgSquareProgress {...args} blockSize={48} />
 );
 export const Playground: StoryFn<typeof DarkBgSquareProgress> = Template.bind(
-  {}
+  {},
 );
 
 Playground.args = {

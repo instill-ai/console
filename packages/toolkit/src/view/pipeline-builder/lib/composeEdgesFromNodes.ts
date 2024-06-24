@@ -47,7 +47,7 @@ export function composeEdgesFromNodes(nodes: Node<NodeData>[]) {
 
 function getConnectedReferencesFromNodes(
   nodes: Node<NodeData>[],
-  overwriteNodeID?: string
+  overwriteNodeID?: string,
 ) {
   let references: ReferenceWithNodeInfo[] = [];
   for (const node of nodes) {
@@ -81,13 +81,13 @@ function getConnectedReferencesFromNodes(
       const inputReference = getReferencesFromAny(node.data.input);
 
       const nodesInInterator = createNodesFromPipelineComponents(
-        node.data.component
+        node.data.component,
       );
 
       // All the components inside the iterator will belong to the iterator itself
       const componentsReferences = getConnectedReferencesFromNodes(
         nodesInInterator,
-        node.id
+        node.id,
       );
 
       references = [
@@ -166,7 +166,7 @@ function getAvailableReferencesFromNodes(nodes: Node<NodeData>[]) {
           outputProperty.path?.includes(".")
             ? outputProperty.path?.split(".").pop()
             : outputProperty.path
-        }`
+        }`,
       );
     }
 
@@ -204,14 +204,15 @@ function composeEdgeForReference({
       (availableReference) =>
         checkReferenceIsAvailable(
           reference.referenceValue.withoutCurlyBraces,
-          availableReference
-        )
+          availableReference,
+        ),
     );
 
     // check whether we already have an edge for this reference
     const hasNoEdgeForThisReference =
       currentEdges.find(
-        (edge) => edge.source === "variable" && edge.target === reference.nodeID
+        (edge) =>
+          edge.source === "variable" && edge.target === reference.nodeID,
       ) === undefined;
 
     if (referenceIsAvailable && hasNoEdgeForThisReference && reference.nodeID) {
@@ -229,8 +230,8 @@ function composeEdgeForReference({
       (availableReference) =>
         checkReferenceIsAvailable(
           reference.referenceValue.withoutCurlyBraces,
-          availableReference
-        )
+          availableReference,
+        ),
     );
 
     const hasNoEdgeForThisReference =
@@ -238,7 +239,7 @@ function composeEdgeForReference({
         (edge) =>
           edge.source ===
             reference.referenceValue.withoutCurlyBraces.split(".")[0] &&
-          edge.target === reference.nodeID
+          edge.target === reference.nodeID,
       ) === undefined;
 
     if (referenceIsAvailable && hasNoEdgeForThisReference && reference.nodeID) {
@@ -256,7 +257,7 @@ function composeEdgeForReference({
 
 function checkReferenceIsAvailable(
   value: string,
-  availableReference: string
+  availableReference: string,
 ): boolean {
   const referenceValueWithoutArray = value.replaceAll(/\[[^\]]+\]/g, "");
 

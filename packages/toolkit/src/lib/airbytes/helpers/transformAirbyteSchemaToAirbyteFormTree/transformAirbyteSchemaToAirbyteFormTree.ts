@@ -13,7 +13,7 @@ export const transformAirbyteSchemaToAirbyteFormTree = (
   jsonSchema: AirbyteJsonSchemaDefinition,
   key = "",
   path: string = key,
-  parent?: AirbyteJsonSchema
+  parent?: AirbyteJsonSchema,
 ): AirbyteFormTree => {
   const isRequired = isKeyRequired(key, parent);
 
@@ -39,10 +39,10 @@ export const transformAirbyteSchemaToAirbyteFormTree = (
           transformAirbyteSchemaToAirbyteFormTree(
             { ...condition, type: jsonSchema.type },
             key,
-            path
+            path,
           ),
         ];
-      })
+      }),
     );
 
     return {
@@ -69,7 +69,7 @@ export const transformAirbyteSchemaToAirbyteFormTree = (
       properties: transformAirbyteSchemaToAirbyteFormTree(
         jsonSchema.items,
         key,
-        path
+        path,
       ),
       isRequired,
     };
@@ -85,8 +85,8 @@ export const transformAirbyteSchemaToAirbyteFormTree = (
           schema,
           k,
           path ? `${path}.${k}` : k,
-          jsonSchema
-        )
+          jsonSchema,
+        ),
       )
       .sort((a, b) => {
         if (typeof a.order === "undefined") {
@@ -127,7 +127,7 @@ export const transformAirbyteSchemaToAirbyteFormTree = (
 
 const isKeyRequired = (
   key: string,
-  parentSchema?: AirbyteJsonSchemaDefinition
+  parentSchema?: AirbyteJsonSchemaDefinition,
 ): boolean => {
   const isRequired =
     (typeof parentSchema !== "boolean" &&
@@ -152,13 +152,13 @@ const defaultFields: Array<keyof AirbyteJsonSchema> = [
 ];
 
 const pickDefaultFields = (
-  schema: AirbyteJsonSchema
+  schema: AirbyteJsonSchema,
 ): Partial<AirbyteJsonSchema> => {
   const partialSchema: Partial<AirbyteJsonSchema> = {
     ...Object.fromEntries(
       Object.entries(schema).filter(([k]) =>
-        defaultFields.includes(k as keyof AirbyteJsonSchema)
-      )
+        defaultFields.includes(k as keyof AirbyteJsonSchema),
+      ),
     ),
   };
 
@@ -180,7 +180,7 @@ const pickDefaultFields = (
 };
 
 function isDefined<T>(
-  a: T | null | undefined
+  a: T | null | undefined,
 ): a is Exclude<T, null | undefined> {
   return a !== undefined && a !== null;
 }

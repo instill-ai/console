@@ -25,7 +25,7 @@ export const ComponentOutputs = ({
   response?: Nullable<TriggerUserPipelineResponse>;
 }) => {
   const testModeTriggerResponse = useInstillStore(
-    (store) => store.testModeTriggerResponse
+    (store) => store.testModeTriggerResponse,
   );
 
   const data = React.useMemo(() => {

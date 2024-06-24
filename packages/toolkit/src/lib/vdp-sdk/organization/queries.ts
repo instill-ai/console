@@ -46,7 +46,7 @@ export async function listOrganizationsQuery({
           accessToken,
           nextPageToken: data.nextPageToken,
           filter,
-        }))
+        })),
       );
     }
 
@@ -71,7 +71,7 @@ export async function getOrganizationQuery({
     const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetOrganizationResponse>(
-      `/organizations/${organizationID}`
+      `/organizations/${organizationID}`,
     );
 
     return Promise.resolve(data.organization);
@@ -95,7 +95,7 @@ export async function getOrganizationSubscriptionQuery({
     const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetOrganizationSubscriptionResponse>(
-      `/organizations/${organizationID}/subscription`
+      `/organizations/${organizationID}/subscription`,
     );
 
     return Promise.resolve(data.subscription);
@@ -119,7 +119,7 @@ export async function getOrganizationMembershipsQuery({
     const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetOrganizationMembershipsResponse>(
-      `/organizations/${organizationID}/memberships`
+      `/organizations/${organizationID}/memberships`,
     );
 
     return Promise.resolve(data.memberships);
@@ -145,7 +145,7 @@ export async function getOrganizationMembershipQuery({
     const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetOrganizationMembershipResponse>(
-      `/organizations/${organizationID}/memberships/${userID}`
+      `/organizations/${organizationID}/memberships/${userID}`,
     );
 
     return Promise.resolve(data.membership);
@@ -169,7 +169,7 @@ export async function getUserMembershipsQuery({
     const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetUserMembershipsResponse>(
-      `users/${userID}/memberships`
+      `users/${userID}/memberships`,
     );
 
     return Promise.resolve(data.memberships);
@@ -195,7 +195,7 @@ export async function getUserMembershipQuery({
     const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetUserMembershipsResponse>(
-      `users/${userID}/memberships/${organizationID}`
+      `users/${userID}/memberships/${organizationID}`,
     );
 
     return Promise.resolve(data.memberships);

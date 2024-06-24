@@ -17,7 +17,7 @@ export const IterateElmentHint = ({
       return null;
     }
     return transformInstillFormatToHumanReadableFormat(
-      selectedInputOption.instillFormat
+      selectedInputOption.instillFormat,
     );
   }, [selectedInputOption]);
 

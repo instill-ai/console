@@ -16,7 +16,7 @@ const NodeDropdownMenuRoot = ({
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const pipelineIsReadOnly = useInstillStore(
-    (store: InstillStore) => store.pipelineIsReadOnly
+    (store: InstillStore) => store.pipelineIsReadOnly,
   );
 
   return (
@@ -82,7 +82,7 @@ const NodeDropdownMenuItem = (
   props: {
     onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
     children: React.ReactNode;
-  } & React.ButtonHTMLAttributes<HTMLButtonElement>
+  } & React.ButtonHTMLAttributes<HTMLButtonElement>,
 ) => {
   const { onClick, children, ...passThrough } = props;
 

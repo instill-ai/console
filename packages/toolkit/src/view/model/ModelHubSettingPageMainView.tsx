@@ -15,7 +15,7 @@ import { ModelTabNames } from "../../server";
 export type ModelHubSettingPageMainViewProps = GeneralAppPageProp;
 
 export const ModelHubSettingPageMainView = (
-  props: ModelHubSettingPageMainViewProps
+  props: ModelHubSettingPageMainViewProps,
 ) => {
   const router = useRouter();
   const routeInfo = useRouteInfo();
@@ -25,7 +25,7 @@ export const ModelHubSettingPageMainView = (
 
   const setSelectedTab = (tabName: ModelTabNames) => {
     router.replace(
-      `/${routeInfo.data.namespaceId}/models/${model.data?.id}/${tabName}`
+      `/${routeInfo.data.namespaceId}/models/${model.data?.id}/${tabName}`,
     );
   };
 

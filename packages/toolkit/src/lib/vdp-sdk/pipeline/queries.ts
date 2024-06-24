@@ -28,22 +28,22 @@ export type listPipelinesQueryParams = {
 export async function listPipelinesQuery(
   props: listPipelinesQueryParams & {
     enablePagination: true;
-  }
+  },
 ): Promise<ListPipelinesResponse>;
 export async function listPipelinesQuery(
   props: listPipelinesQueryParams & {
     enablePagination: false;
-  }
+  },
 ): Promise<Pipeline[]>;
 export async function listPipelinesQuery(
   props: listPipelinesQueryParams & {
     enablePagination: undefined;
-  }
+  },
 ): Promise<Pipeline[]>;
 export async function listPipelinesQuery(
   props: listPipelinesQueryParams & {
     enablePagination?: boolean;
-  }
+  },
 ) {
   const {
     pageSize,
@@ -88,7 +88,7 @@ export async function listPipelinesQuery(
           visibility,
           orderBy,
           disabledViewFull,
-        }))
+        })),
       );
     }
 
@@ -117,22 +117,22 @@ export type listUserPipelinesQueryProps = {
 export async function listUserPipelinesQuery(
   props: listUserPipelinesQueryProps & {
     enablePagination: true;
-  }
+  },
 ): Promise<ListUserPipelinesResponse>;
 export async function listUserPipelinesQuery(
   props: listUserPipelinesQueryProps & {
     enablePagination: false;
-  }
+  },
 ): Promise<Pipeline[]>;
 export async function listUserPipelinesQuery(
   props: listUserPipelinesQueryProps & {
     enablePagination: undefined;
-  }
+  },
 ): Promise<Pipeline[]>;
 export async function listUserPipelinesQuery(
   props: listUserPipelinesQueryProps & {
     enablePagination?: boolean;
-  }
+  },
 ) {
   const {
     pageSize,
@@ -176,7 +176,7 @@ export async function listUserPipelinesQuery(
           enablePagination: false,
           filter,
           visibility,
-        }))
+        })),
       );
     }
 
@@ -212,7 +212,7 @@ export async function getUserPipelineQuery({
             : undefined,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     return Promise.resolve(data.pipeline);
@@ -265,7 +265,7 @@ export async function ListUserPipelineReleasesQuery({
             : undefined,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     releases.push(...data.releases);
@@ -278,7 +278,7 @@ export async function ListUserPipelineReleasesQuery({
           nextPageToken: data.nextPageToken,
           accessToken,
           shareCode,
-        }))
+        })),
       );
     }
 
@@ -303,7 +303,7 @@ export async function getUserPipelineReleaseQuery({
     const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetUserPipelineReleaseResponse>(
-      `/${pipelineReleaseName}?view=VIEW_FULL`
+      `/${pipelineReleaseName}?view=VIEW_FULL`,
     );
 
     return Promise.resolve(data.release);
@@ -326,7 +326,7 @@ export async function watchUserPipelineReleaseQuery({
   try {
     const client = createInstillAxiosClient(accessToken);
     const { data } = await client.get<WatchUserPipelineReleaseResponse>(
-      `/${pipelineReleaseName}/watch`
+      `/${pipelineReleaseName}/watch`,
     );
     return Promise.resolve(data.state);
   } catch (err) {
@@ -378,7 +378,7 @@ export async function listOperatorDefinitionsQuery({
           accessToken,
           nextPageToken: data.nextPageToken,
           filter,
-        }))
+        })),
       );
     }
 
@@ -403,7 +403,7 @@ export async function getOperatorDefinitionQuery({
     const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetOperatorDefinitionResponse>(
-      `/${operatorDefinitionName}?view=VIEW_FULL`
+      `/${operatorDefinitionName}?view=VIEW_FULL`,
     );
 
     return Promise.resolve(data.operator_definition);
@@ -476,7 +476,7 @@ export async function listUserSecretsQuery({
           pageSize,
           accessToken,
           nextPageToken: data.nextPageToken,
-        }))
+        })),
       );
     }
 

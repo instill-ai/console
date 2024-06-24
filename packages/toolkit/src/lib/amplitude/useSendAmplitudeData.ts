@@ -6,7 +6,7 @@ import { AmplitudeEvent, AmplitudeEventProperties } from "./type";
 export const useSendAmplitudeData = (
   event: AmplitudeEvent,
   properties: AmplitudeEventProperties,
-  routerIsReady: boolean
+  routerIsReady: boolean,
 ) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   React.useEffect(() => {

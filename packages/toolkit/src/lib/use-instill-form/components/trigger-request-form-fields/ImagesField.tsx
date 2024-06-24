@@ -52,7 +52,7 @@ export const ImagesField = ({
                 "grid w-full grid-flow-row grid-cols-4",
                 mode === "build"
                   ? ""
-                  : "rounded-sm border border-semantic-bg-line"
+                  : "rounded-sm border border-semantic-bg-line",
               )}
             >
               {imageFiles.length > 0
@@ -67,7 +67,7 @@ export const ImagesField = ({
                           className={cn(
                             mode === "build"
                               ? "h-[55px] object-cover"
-                              : "h-[140px] object-contain"
+                              : "h-[140px] object-contain",
                           )}
                         />
                       ) : (
@@ -77,7 +77,7 @@ export const ImagesField = ({
                             "w-full bg-semantic-bg-secondary",
                             mode === "build"
                               ? "h-[55px] object-cover"
-                              : "h-[140px] object-contain"
+                              : "h-[140px] object-contain",
                           )}
                         />
                       );
@@ -89,7 +89,7 @@ export const ImagesField = ({
                         "w-full",
                         mode === "build"
                           ? "h-[55px] bg-semantic-bg-secondary object-cover"
-                          : "h-[140px] object-contain"
+                          : "h-[140px] object-contain",
                       )}
                     />
                   ))}
@@ -140,7 +140,7 @@ export const ImagesField = ({
                   "nowheel h-[216px] rounded-sm p-2",
                   mode === "build"
                     ? "bg-semantic-bg-secondary"
-                    : "border border-semantic-bg-line"
+                    : "border border-semantic-bg-line",
                 )}
               >
                 <div className="flex h-full flex-col gap-y-2">
@@ -150,7 +150,7 @@ export const ImagesField = ({
                       name={e.name}
                       onDelete={async () => {
                         const newFiles = imageFiles.filter(
-                          (_, index) => index !== i
+                          (_, index) => index !== i,
                         );
 
                         const newBinaries: string[] = [];

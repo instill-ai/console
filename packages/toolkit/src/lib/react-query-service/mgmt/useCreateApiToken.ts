@@ -29,7 +29,7 @@ export function useCreateApiToken() {
     },
     onSuccess: ({ token }) => {
       queryClient.setQueryData<ApiToken[]>(["api-tokens"], (old) =>
-        old ? [...old, token] : [token]
+        old ? [...old, token] : [token],
       );
       queryClient.setQueryData<ApiToken>(["api-tokens", token.name], token);
     },

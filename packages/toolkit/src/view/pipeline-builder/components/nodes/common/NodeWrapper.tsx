@@ -96,7 +96,7 @@ export const NodeWrapper = ({
         className={cn(
           "absolute left-0 top-0 w-[var(--pipeline-builder-node-available-width)] rounded border border-semantic-warning-default bg-semantic-warning-bg p-2",
           noteIsOpen ? "" : "hidden",
-          "-translate-y-[calc(100%+16px)]"
+          "-translate-y-[calc(100%+16px)]",
         )}
       >
         <Textarea
@@ -120,7 +120,7 @@ export const NodeWrapper = ({
                   }
 
                   return node;
-                })
+                }),
               );
               updatePipelineRecipeIsDirty(() => true);
             }, 1000);
@@ -136,7 +136,7 @@ export const NodeWrapper = ({
             {
               "outline outline-2 outline-offset-1 outline-semantic-accent-default":
                 nodeID === selectedConnectorNodeId,
-            }
+            },
           )}
         >
           <div className="flex flex-col px-3 py-2.5">{children}</div>

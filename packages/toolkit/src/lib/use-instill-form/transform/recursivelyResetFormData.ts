@@ -6,7 +6,7 @@ import { transformInstillFormTreeToDefaultValue } from "./transformInstillFormTr
 export function recursivelyResetFormData(
   tree: InstillFormTree,
   selectedConditionMap: SelectedConditionMap,
-  formData: GeneralRecord
+  formData: GeneralRecord,
 ) {
   switch (tree._type) {
     case "formGroup": {
@@ -29,7 +29,7 @@ export function recursivelyResetFormData(
           recursivelyResetFormData(
             tree.conditions[selectedCondition],
             selectedConditionMap,
-            formData
+            formData,
           );
         }
       }

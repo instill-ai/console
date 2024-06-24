@@ -4,7 +4,7 @@ import * as React from "react";
 import { transformAirbyteSchemaToAirbyteFormTree } from "../helpers/transformAirbyteSchemaToAirbyteFormTree";
 
 export const useAirbyteFormTree = (
-  definition: Nullable<ConnectorDefinition>
+  definition: Nullable<ConnectorDefinition>,
 ) => {
   const formTree = React.useMemo(() => {
     if (!definition) {
@@ -12,7 +12,7 @@ export const useAirbyteFormTree = (
     }
 
     const formTree = transformAirbyteSchemaToAirbyteFormTree(
-      definition.spec.resourceSpecification
+      definition.spec.resourceSpecification,
     );
 
     return formTree;

@@ -98,7 +98,7 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
       updateIsEditingIterator,
       updateNodes,
       updateTempSavedNodesForEditingIteratorFlow,
-    ]
+    ],
   );
 
   return (

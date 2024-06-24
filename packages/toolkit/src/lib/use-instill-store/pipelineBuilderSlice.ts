@@ -111,7 +111,7 @@ export const createPipelineBuilderSlice: StateCreator<
     set({
       edges: addEdge(
         { ...connection, animated: false, type: "customEdge" },
-        get().edges
+        get().edges,
       ),
     });
   },
@@ -137,7 +137,7 @@ export const createPipelineBuilderSlice: StateCreator<
       };
     }),
   updateSelectedConnectorNodeId: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) =>
     set((state) => {
       return {
@@ -146,13 +146,13 @@ export const createPipelineBuilderSlice: StateCreator<
       };
     }),
   updateCurrentAdvancedConfigurationNodeID: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) =>
     set((state) => {
       return {
         ...state,
         currentAdvancedConfigurationNodeID: fn(
-          state.currentAdvancedConfigurationNodeID
+          state.currentAdvancedConfigurationNodeID,
         ),
       };
     }),
@@ -179,8 +179,8 @@ export const createPipelineBuilderSlice: StateCreator<
     }),
   updateTestModeTriggerResponse: (
     fn: (
-      prev: Nullable<TriggerUserPipelineResponse>
-    ) => Nullable<TriggerUserPipelineResponse>
+      prev: Nullable<TriggerUserPipelineResponse>,
+    ) => Nullable<TriggerUserPipelineResponse>,
   ) =>
     set((state) => {
       return {
@@ -190,7 +190,7 @@ export const createPipelineBuilderSlice: StateCreator<
     }),
 
   updatePipelineOpenAPIOutputSchema: (
-    fn: (prev: Nullable<InstillJSONSchema>) => Nullable<InstillJSONSchema>
+    fn: (prev: Nullable<InstillJSONSchema>) => Nullable<InstillJSONSchema>,
   ) =>
     set((state) => {
       return {
@@ -255,13 +255,13 @@ export const createPipelineBuilderSlice: StateCreator<
       };
     }),
   updateTempSavedNodesForEditingIteratorFlow: (
-    fn: (prev: Node<NodeData>[]) => Node<NodeData>[]
+    fn: (prev: Node<NodeData>[]) => Node<NodeData>[],
   ) =>
     set((state) => {
       return {
         ...state,
         tempSavedNodesForEditingIteratorFlow: fn(
-          state.tempSavedNodesForEditingIteratorFlow
+          state.tempSavedNodesForEditingIteratorFlow,
         ),
       };
     }),
@@ -273,7 +273,7 @@ export const createPipelineBuilderSlice: StateCreator<
       };
     }),
   updateWarnUnsavdChangesDialogState: (
-    fn: (prev: WarnUnsavedChangesDialogState) => WarnUnsavedChangesDialogState
+    fn: (prev: WarnUnsavedChangesDialogState) => WarnUnsavedChangesDialogState,
   ) =>
     set((state) => {
       return {

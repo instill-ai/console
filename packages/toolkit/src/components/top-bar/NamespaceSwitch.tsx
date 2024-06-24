@@ -77,7 +77,7 @@ export const NamespaceSwitch = () => {
           ...namespace,
           remainingCredit:
             namespacesRemainingCredit.data.find(
-              (e) => e.namespaceName === namespace.name
+              (e) => e.namespaceName === namespace.name,
             )?.remainingCredit.total ?? 0,
         };
       });
@@ -98,7 +98,7 @@ export const NamespaceSwitch = () => {
     return namespacesWithRemainingCredit.length === 0
       ? namespaces.find((e) => e.id === navigationNamespaceAnchor) ?? null
       : namespacesWithRemainingCredit.find(
-          (e) => e.id === navigationNamespaceAnchor
+          (e) => e.id === navigationNamespaceAnchor,
         ) ?? null;
   }, [namespacesWithRemainingCredit, namespaces, navigationNamespaceAnchor]);
 
@@ -289,7 +289,9 @@ export const NamespaceSwitch = () => {
         icon={<React.Fragment />}
         className={cn(
           "!w-[136px] !border-none !p-1 hover:!bg-semantic-bg-secondary",
-          switchIsOpen ? "!bg-semantic-bg-secondary" : "!bg-semantic-bg-primary"
+          switchIsOpen
+            ? "!bg-semantic-bg-secondary"
+            : "!bg-semantic-bg-primary",
         )}
       >
         {selectedNamespace ? (

@@ -146,7 +146,7 @@ export type ProtectedBasicTextFieldProps =
   ProtectedBasicTextFieldRequiredProps & ProtectedBasicTextFieldOptionalProps;
 
 export const ProtectedBasicTextField = (
-  props: ProtectedBasicTextFieldProps
+  props: ProtectedBasicTextFieldProps,
 ) => {
   const {
     id,

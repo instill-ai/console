@@ -6,7 +6,7 @@
 
 export function groupBy<T, K extends keyof any>(
   list: T[],
-  getKey: (item: T) => K
+  getKey: (item: T) => K,
 ) {
   return list.reduce(
     (previous, currentItem) => {
@@ -15,6 +15,6 @@ export function groupBy<T, K extends keyof any>(
       previous[group].push(currentItem);
       return previous;
     },
-    {} as Record<K, T[]>
+    {} as Record<K, T[]>,
   );
 }

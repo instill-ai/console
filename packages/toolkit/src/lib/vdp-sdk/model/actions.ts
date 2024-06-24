@@ -18,7 +18,7 @@ export async function deployUserModelAction({
     const client = createInstillAxiosClient(accessToken, true);
 
     const { data } = await client.post<DeployUserModelResponse>(
-      `/${modelName}/deploy`
+      `/${modelName}/deploy`,
     );
     return Promise.resolve(data.modelId);
   } catch (err) {
@@ -41,7 +41,7 @@ export async function undeployUserModeleAction({
     const client = createInstillAxiosClient(accessToken, true);
 
     const { data } = await client.post<UndeployUserModelResponse>(
-      `/${modelName}/undeploy`
+      `/${modelName}/undeploy`,
     );
     return Promise.resolve(data.modelId);
   } catch (err) {
@@ -82,7 +82,7 @@ export async function triggerUserModelAction({
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return Promise.resolve(data);
   } catch (err) {
@@ -110,7 +110,7 @@ export async function triggerUserModelActionAsync({
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return Promise.resolve(data);
   } catch (err) {

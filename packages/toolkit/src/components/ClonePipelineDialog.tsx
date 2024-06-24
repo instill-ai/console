@@ -159,7 +159,7 @@ export const ClonePipelineDialog = ({
     };
 
     const namespace = namespaces.find(
-      (account) => account.id === data.namespaceId
+      (account) => account.id === data.namespaceId,
     );
 
     if (namespace) {
@@ -302,9 +302,9 @@ export const ClonePipelineDialog = ({
                       <span className="ml-2 break-all product-body-text-3-semibold">
                         {form.watch("id") !== "" && form.watch("id")
                           ? `${env(
-                              "NEXT_PUBLIC_CONSOLE_BASE_URL"
+                              "NEXT_PUBLIC_CONSOLE_BASE_URL",
                             )}/${form.getValues(
-                              "namespaceId"
+                              "namespaceId",
                             )}/pipelines/${form.getValues("id")}`
                           : null}
                       </span>

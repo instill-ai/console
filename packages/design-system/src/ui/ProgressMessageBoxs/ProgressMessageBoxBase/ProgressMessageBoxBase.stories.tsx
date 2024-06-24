@@ -44,7 +44,7 @@ const Template: StoryFn<typeof ProgressMessageBoxBase> = (args) => {
   );
 };
 export const Playground: StoryFn<typeof ProgressMessageBoxBase> = Template.bind(
-  {}
+  {},
 );
 
 Playground.args = {

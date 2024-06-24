@@ -112,7 +112,7 @@ const TextFieldBase = (props: TextFieldBaseProps) => {
         errorInputBorderStyle,
         errorInputBorderWidth,
         errorInputTextColor,
-        "instill-input-no-highlight"
+        "instill-input-no-highlight",
       )
     : disabled
       ? cn(
@@ -122,7 +122,7 @@ const TextFieldBase = (props: TextFieldBaseProps) => {
           disabledInputBorderStyle,
           disabledInputBorderWidth,
           disabledInputTextColor,
-          "instill-input-no-highlight"
+          "instill-input-no-highlight",
         )
       : readOnly
         ? cn(
@@ -132,26 +132,26 @@ const TextFieldBase = (props: TextFieldBaseProps) => {
             readOnlyInputBorderStyle,
             readOnlyInputBorderWidth,
             readOnlyInputTextColor,
-            "instill-input-no-highlight"
+            "instill-input-no-highlight",
           )
         : focusHighlight
           ? focus
             ? cn(
                 inputBorderWidth,
                 inputBorderStyle,
-                "outline-none ring-0 ring-white border-instillBlue50 instill-input-focus-shadow cursor-text"
+                "outline-none ring-0 ring-white border-instillBlue50 instill-input-focus-shadow cursor-text",
               )
             : cn(
                 inputBorderColor,
                 inputBorderStyle,
                 inputBorderWidth,
-                "cursor-text"
+                "cursor-text",
               )
           : cn(
               inputBorderColor,
               inputBorderStyle,
               inputBorderWidth,
-              "cursor-text"
+              "cursor-text",
             );
 
   return (
@@ -210,14 +210,14 @@ const TextFieldBase = (props: TextFieldBaseProps) => {
               disabled
                 ? cn(
                     disabledCursor,
-                    "text-semantic-node-disconnected-default-stroke"
+                    "text-semantic-node-disconnected-default-stroke",
                   )
                 : readOnly
                   ? cn(
                       readOnlyCursor,
-                      "text-semantic-node-disconnected-default-stroke"
+                      "text-semantic-node-disconnected-default-stroke",
                     )
-                  : inputTextColor
+                  : inputTextColor,
             )}
             id={id}
             type={showSecret ? "text" : type}

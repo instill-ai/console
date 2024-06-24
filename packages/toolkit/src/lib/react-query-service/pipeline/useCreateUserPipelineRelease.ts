@@ -39,7 +39,7 @@ export function useCreateUserPipelineRelease() {
 
       queryClient.setQueryData<PipelineRelease>(
         ["pipelineReleases", pipelineRelease.name],
-        pipelineRelease
+        pipelineRelease,
       );
 
       queryClient.setQueryData<PipelineRelease[]>(
@@ -50,7 +50,7 @@ export function useCreateUserPipelineRelease() {
                 ...old.filter((e) => e.name !== pipelineRelease.name),
                 pipelineRelease,
               ]
-            : [pipelineRelease]
+            : [pipelineRelease],
       );
     },
   });

@@ -20,7 +20,7 @@ export const useNodeBottomBarContext = () => {
   const context = React.useContext(NodeBottomBarContext);
   if (context === undefined) {
     throw new Error(
-      "useNodeBottomBarContext must be used within a BottomBarProvider"
+      "useNodeBottomBarContext must be used within a BottomBarProvider",
     );
   }
   return context;
@@ -39,7 +39,7 @@ export const NodeBottomBarProvider = ({
       selectedValue,
       setSelectedValue,
     }),
-    [selectedValue]
+    [selectedValue],
   );
 
   return (

@@ -23,7 +23,7 @@ const Trigger = React.forwardRef<
     ref={ref}
     className={cn(
       "flex h-10 w-full items-center justify-between rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-2 product-body-text-2-regular focus:border-semantic-accent-default focus:outline-none focus:ring-2 focus:ring-semantic-accent-default focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 data-[placeholder]:text-[#1D2433CC]",
-      className
+      className,
     )}
     {...props}
   >
@@ -47,7 +47,7 @@ const Content = React.forwardRef<
 >(
   (
     { className, viewportClassName, children, position = "popper", ...props },
-    ref
+    ref,
   ) => (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
@@ -55,7 +55,7 @@ const Content = React.forwardRef<
         className={cn(
           "relative z-50 max-h-[320px] min-w-[8rem] overflow-y-scroll rounded-sm border bg-semantic-bg-primary text-semantic-fg-primary shadow-md animate-in fade-in-80",
           position === "popper" && "translate-y-1",
-          className
+          className,
         )}
         position={position}
         {...props}
@@ -65,14 +65,14 @@ const Content = React.forwardRef<
             "p-1",
             position === "popper" &&
               "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
-            viewportClassName
+            viewportClassName,
           )}
         >
           {children}
         </SelectPrimitive.Viewport>
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
-  )
+  ),
 );
 Content.displayName = SelectPrimitive.Content.displayName;
 
@@ -103,7 +103,7 @@ const Item = React.forwardRef<
     ref={ref}
     className={cn(
       "group relative flex w-full cursor-pointer select-none items-center rounded stroke-semantic-fg-primary py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-semantic-accent-default focus:text-semantic-bg-primary data-[disabled]:pointer-events-none data-[highlighted]:stroke-semantic-bg-primary data-[disabled]:opacity-50",
-      className
+      className,
     )}
     {...props}
   >
@@ -111,7 +111,7 @@ const Item = React.forwardRef<
       <span
         className={cn(
           "absolute flex h-4 w-4 items-center justify-center",
-          tailCheck ? "right-2" : "left-2"
+          tailCheck ? "right-2" : "left-2",
         )}
       >
         <SelectPrimitive.ItemIndicator>

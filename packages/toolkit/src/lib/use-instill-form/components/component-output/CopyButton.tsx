@@ -15,7 +15,7 @@ export const CopyButton = ({
     <button
       className={cn(
         "flex flex-row items-center gap-x-1 rounded px-1 py-0.5 hover:bg-semantic-bg-base-bg",
-        className
+        className,
       )}
       type="button"
       onClick={async () => {

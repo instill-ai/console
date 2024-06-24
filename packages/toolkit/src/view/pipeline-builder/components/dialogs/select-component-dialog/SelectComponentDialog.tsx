@@ -18,7 +18,7 @@ import { ApplicationSection } from "./ApplicationSection";
 import { OpoeratorSection } from "./OpoeratorSection";
 
 export type OnSelectComponent = (
-  definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition
+  definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition,
 ) => void;
 
 export const SelectComponentDialog = ({
@@ -52,7 +52,7 @@ export const SelectComponentDialog = ({
                 "h-4 w-4",
                 disabled
                   ? "stroke-semantic-fg-secondary"
-                  : "stroke-semantic-bg-primary"
+                  : "stroke-semantic-bg-primary",
               )}
             />
           </Button>

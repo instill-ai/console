@@ -52,7 +52,7 @@ export const OutputKeyField = ({
           }
 
           return node;
-        })
+        }),
       );
     }, 1000);
   }, [

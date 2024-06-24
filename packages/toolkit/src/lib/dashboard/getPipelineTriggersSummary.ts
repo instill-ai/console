@@ -3,7 +3,7 @@ import { calculatePercentageDelta } from "./calculatePercentageDelta";
 
 export function getPipelineTriggersSummary(
   pipelines: TriggeredPipeline[],
-  pipelinesPrevious: TriggeredPipeline[]
+  pipelinesPrevious: TriggeredPipeline[],
 ): PipelineTriggersStatusSummary {
   let pipelineCompleteAmount = 0;
   let pipelineCompleteAmountPrevious = 0;
@@ -24,7 +24,7 @@ export function getPipelineTriggersSummary(
     pipelineCompleteAmount,
     pipelineCompleteAmountPrevious,
     pipelineErroredAmount,
-    pipelineErroredAmountPrevious
+    pipelineErroredAmountPrevious,
   );
 }
 
@@ -32,7 +32,7 @@ export function getPipelineTriggersStatusSummary(
   pipelineCompleteAmount: number,
   pipelineCompleteAmountPrevious: number,
   pipelineErroredAmount: number,
-  pipelineErroredAmountPrevious: number
+  pipelineErroredAmountPrevious: number,
 ): PipelineTriggersStatusSummary {
   return {
     completed: {
@@ -41,7 +41,7 @@ export function getPipelineTriggersStatusSummary(
       type: "pipeline",
       delta: calculatePercentageDelta(
         pipelineCompleteAmountPrevious,
-        pipelineCompleteAmount
+        pipelineCompleteAmount,
       ),
     },
     errored: {
@@ -50,7 +50,7 @@ export function getPipelineTriggersStatusSummary(
       type: "pipeline",
       delta: calculatePercentageDelta(
         pipelineErroredAmountPrevious,
-        pipelineErroredAmount
+        pipelineErroredAmount,
       ),
     },
   };

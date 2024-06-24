@@ -7,7 +7,7 @@ import { JSONSchema7 } from "json-schema";
 
 export function getGeneralComponentInOutputSchema(
   component: PipelineGeneralComponent,
-  task?: string
+  task?: string,
 ) {
   let inputSchema: Nullable<InstillJSONSchema> = null;
   let outputSchema: Nullable<InstillJSONSchema> = null;

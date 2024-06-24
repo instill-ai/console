@@ -32,7 +32,7 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
   const [cloneDialogIsOpen, setCloneDialogIsOpen] = React.useState(false);
 
   const { updateDialogSharePipelineIsOpen } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
   const routeInfo = useRouteInfo();

@@ -22,7 +22,7 @@ const NodeBottomBarMenuItemPrimitive = (
   props: {
     children: React.ReactNode;
     value: string;
-  } & React.ButtonHTMLAttributes<HTMLButtonElement>
+  } & React.ButtonHTMLAttributes<HTMLButtonElement>,
 ) => {
   const { children, value, onClick, ...passThrough } = props;
 
@@ -35,7 +35,7 @@ const NodeBottomBarMenuItemPrimitive = (
         "h-full border-b border-[#1D2433] border-opacity-0 px-1.5 py-1.5 font-sans text-[10px] font-semibold hover:bg-semantic-bg-line",
         selectedValue === value
           ? "border-opacity-100 text-semantic-fg-primary"
-          : "text-semantic-fg-disabled"
+          : "text-semantic-fg-disabled",
       )}
       onClick={onClick}
     >
@@ -56,7 +56,7 @@ export const NodeBottomBarMenu = ({
 }) => {
   const { setSelectedValue } = useNodeBottomBarContext();
   const pipelineIsReadOnly = useInstillStore(
-    (store) => store.pipelineIsReadOnly
+    (store) => store.pipelineIsReadOnly,
   );
 
   return (

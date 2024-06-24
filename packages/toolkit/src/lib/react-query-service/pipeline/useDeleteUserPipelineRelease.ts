@@ -35,7 +35,7 @@ export function useDeleteUserPipelineRelease() {
 
       queryClient.setQueryData<PipelineRelease[]>(
         ["pipelineReleases", userName],
-        (old) => (old ? old.filter((e) => e.name !== pipelineReleaseName) : [])
+        (old) => (old ? old.filter((e) => e.name !== pipelineReleaseName) : []),
       );
       queryClient.removeQueries({
         queryKey: ["pipelineReleases", pipelineReleaseName],

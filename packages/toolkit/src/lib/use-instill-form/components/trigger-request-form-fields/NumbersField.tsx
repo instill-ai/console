@@ -46,7 +46,8 @@ export const NumbersField = ({
         if (fieldError) {
           if (Array.isArray(fieldError)) {
             targetError = String(
-              fieldError.filter((e) => e !== undefined || e !== null)[0].message
+              fieldError.filter((e) => e !== undefined || e !== null)[0]
+                .message,
             );
           } else {
             targetError = String(fieldError.message);

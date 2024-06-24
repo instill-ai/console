@@ -22,7 +22,7 @@ export const NodeBottomBarContent = ({
   const { selectedValue } = useNodeBottomBarContext();
 
   const triggerResponse = useInstillStore(
-    (store) => store.testModeTriggerResponse
+    (store) => store.testModeTriggerResponse,
   );
 
   switch (selectedValue) {

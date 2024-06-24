@@ -1258,7 +1258,7 @@ test("should find one selected condition map", () => {
 
   const selectedConditionMap = pickSelectedConditionMap(
     formTree,
-    initialValues
+    initialValues,
   );
 
   expect(selectedConditionMap).toStrictEqual({
@@ -2528,7 +2528,7 @@ test("should find multiple selected condition map", () => {
 
   const selectedConditionMap = pickSelectedConditionMap(
     formTree,
-    initialValues
+    initialValues,
   );
 
   expect(selectedConditionMap).toStrictEqual({

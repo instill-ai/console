@@ -55,7 +55,7 @@ export const ImageField = ({
                 <img
                   key={`${value.slice(
                     value.indexOf(",") + 1,
-                    value.indexOf(",") + 13
+                    value.indexOf(",") + 13,
                   )}`}
                   src={value}
                   alt={path}
@@ -103,7 +103,7 @@ export const ImageField = ({
               <FileListItem
                 name={value.slice(
                   value.indexOf(",") + 1,
-                  value.indexOf(",") + 13
+                  value.indexOf(",") + 13,
                 )}
                 onDelete={() => {
                   setImageFile(null);

@@ -37,7 +37,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
         </div>
       </Select.Item>
     );
-  }
+  },
 );
 
 SelectItem.displayName = "SelectItem";

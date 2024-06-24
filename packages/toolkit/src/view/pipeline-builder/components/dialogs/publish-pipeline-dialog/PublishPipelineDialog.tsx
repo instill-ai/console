@@ -74,7 +74,7 @@ export const PublishPipelineDialog = ({
   const updateUserPipeline = useUpdateUserPipeline();
 
   async function handlePublish(
-    formData: z.infer<typeof PublishPipelineFormSchema>
+    formData: z.infer<typeof PublishPipelineFormSchema>,
   ) {
     if (isPublishing || !pipeline.isSuccess || !pipelineName) return;
 

@@ -31,7 +31,7 @@ export const FormRoot = ({
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
     },
-    []
+    [],
   );
 
   return formLess ? (

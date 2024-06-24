@@ -101,7 +101,7 @@ export const UserProfileCard = ({
                     onClick={() => {
                       router.push(`/${membership.organization.id}`);
                       updateNavigationNamespaceAnchor(
-                        () => membership.organization.id
+                        () => membership.organization.id,
                       );
                     }}
                     className="flex !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"

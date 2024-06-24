@@ -40,7 +40,7 @@ export type UseInstillFormOptions = {
 export function useInstillForm(
   schema: InstillJSONSchema | null,
   data: GeneralRecord | null,
-  options?: UseInstillFormOptions
+  options?: UseInstillFormOptions,
 ) {
   const disabledAll = options?.disabledAll ?? false;
   const chooseTitleFrom = options?.chooseTitleFrom ?? "title";
@@ -66,7 +66,7 @@ export function useInstillForm(
 
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
   const [ValidatorSchema, setValidatorSchema] = React.useState<z.ZodTypeAny>(
-    z.any()
+    z.any(),
   );
   const [initialValues, setInitialValues] =
     React.useState<Nullable<GeneralRecord>>(null);
@@ -165,7 +165,7 @@ export function useInstillForm(
         forceOpenCollapsibleFormGroups,
         updateForceOpenCollapsibleFormGroups,
         updateIsUsingInstillCredit,
-      }
+      },
     );
 
     return fields;

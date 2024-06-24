@@ -93,7 +93,7 @@ export const ModelSettingsEditForm = ({
             title: getModelHardwareToolkit(hardwareName) || "Unknown",
           },
         ],
-        []
+        [],
       );
   }, [modelRegions, model]);
 
@@ -293,7 +293,7 @@ export const ModelSettingsEditForm = ({
             />
             <RadioGroup.Root
               onValueChange={(
-                value: Exclude<Visibility, "VISIBILITY_UNSPECIFIED">
+                value: Exclude<Visibility, "VISIBILITY_UNSPECIFIED">,
               ) => {
                 form.setValue("visibility", value);
               }}

@@ -5,7 +5,7 @@ import { Nullable } from "../../type";
 import { PipelineVariableFieldMap } from "../../vdp-sdk";
 
 export function transformPipelineTriggerRequestFieldsToZod(
-  fields: Nullable<PipelineVariableFieldMap>
+  fields: Nullable<PipelineVariableFieldMap>,
 ) {
   let zodSchema: z.ZodObject<any, any, any> = z.object({});
 
@@ -19,7 +19,7 @@ export function transformPipelineTriggerRequestFieldsToZod(
       case "array:string":
         zodSchema = zodSchema.setKey(
           key,
-          z.array(z.string().nullable().optional()).nullable().optional()
+          z.array(z.string().nullable().optional()).nullable().optional(),
         );
         break;
       case "boolean":
@@ -28,13 +28,16 @@ export function transformPipelineTriggerRequestFieldsToZod(
       case "number":
         zodSchema = zodSchema.setKey(
           key,
-          z.coerce.number().nullable().optional()
+          z.coerce.number().nullable().optional(),
         );
         break;
       case "array:number":
         zodSchema = zodSchema.setKey(
           key,
-          z.array(z.coerce.number().nullable().optional()).nullable().optional()
+          z
+            .array(z.coerce.number().nullable().optional())
+            .nullable()
+            .optional(),
         );
         break;
       case "audio/*":
@@ -43,7 +46,7 @@ export function transformPipelineTriggerRequestFieldsToZod(
       case "array:audio/*":
         zodSchema = zodSchema.setKey(
           key,
-          z.array(z.string().nullable().optional()).nullable().optional()
+          z.array(z.string().nullable().optional()).nullable().optional(),
         );
         break;
       case "image/*":
@@ -52,7 +55,7 @@ export function transformPipelineTriggerRequestFieldsToZod(
       case "array:image/*":
         zodSchema = zodSchema.setKey(
           key,
-          z.array(z.string().nullable().optional()).nullable().optional()
+          z.array(z.string().nullable().optional()).nullable().optional(),
         );
         break;
       case "video/*":
@@ -61,7 +64,7 @@ export function transformPipelineTriggerRequestFieldsToZod(
       case "array:video/*":
         zodSchema = zodSchema.setKey(
           key,
-          z.array(z.string().nullable().optional()).nullable().optional()
+          z.array(z.string().nullable().optional()).nullable().optional(),
         );
         break;
       case "*/*":
@@ -70,7 +73,7 @@ export function transformPipelineTriggerRequestFieldsToZod(
       case "array:*/*":
         zodSchema = zodSchema.setKey(
           key,
-          z.array(z.string().nullable().optional()).nullable().optional()
+          z.array(z.string().nullable().optional()).nullable().optional(),
         );
         break;
       case "semi-structured/json":

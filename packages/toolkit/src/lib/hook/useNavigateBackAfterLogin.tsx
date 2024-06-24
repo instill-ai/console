@@ -17,9 +17,9 @@ export const useNavigateBackAfterLogin = () => {
       router.push(
         path
           ? `/api/auth/login?returnTo=${encodeURIComponent(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${path}`)}`
-          : `/api/auth/login?returnTo=${encodeURIComponent(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${pathname}`)}`
+          : `/api/auth/login?returnTo=${encodeURIComponent(`${env("NEXT_PUBLIC_CONSOLE_BASE_URL")}/${pathname}`)}`,
       );
     },
-    [pathname, router]
+    [pathname, router],
   );
 };

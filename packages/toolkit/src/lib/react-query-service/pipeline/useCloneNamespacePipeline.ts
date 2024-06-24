@@ -33,7 +33,7 @@ export function useCloneNamespacePipeline() {
 
       queryClient.setQueryData<Pipeline>(
         ["pipelines", pipeline.name],
-        pipeline
+        pipeline,
       );
 
       queryClient.invalidateQueries({ queryKey: ["pipelines", "infinite"] });
@@ -44,13 +44,13 @@ export function useCloneNamespacePipeline() {
       queryClient.setQueryData<Pipeline[]>(["pipelines", namespace], (old) =>
         old
           ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
-          : [pipeline]
+          : [pipeline],
       );
 
       queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) =>
         old
           ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
-          : [pipeline]
+          : [pipeline],
       );
     },
   });

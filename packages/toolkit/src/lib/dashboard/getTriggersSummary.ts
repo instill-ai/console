@@ -6,7 +6,7 @@ import { getPipelineTriggersStatusSummary } from "./getPipelineTriggersSummary";
 
 export function getTriggersSummary(
   triggers: PipelineTriggerRecord[],
-  triggersPrevious: PipelineTriggerRecord[]
+  triggersPrevious: PipelineTriggerRecord[],
 ): PipelineTriggersStatusSummary {
   let pipelineCompleteAmount = 0;
   let pipelineCompleteAmountPrevious = 0;
@@ -29,6 +29,6 @@ export function getTriggersSummary(
     pipelineCompleteAmount,
     pipelineCompleteAmountPrevious,
     pipelineErroredAmount,
-    pipelineErroredAmountPrevious
+    pipelineErroredAmountPrevious,
   );
 }

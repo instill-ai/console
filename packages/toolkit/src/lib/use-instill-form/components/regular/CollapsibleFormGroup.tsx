@@ -31,7 +31,7 @@ export const CollapsibleFormGroup = ({
       setOpen(false);
       if (updateForceCloseCollapsibleFormGroups) {
         updateForceCloseCollapsibleFormGroups(
-          forceCloseCollapsibleFormGroups.filter((e) => e !== path)
+          forceCloseCollapsibleFormGroups.filter((e) => e !== path),
         );
       }
     }
@@ -49,7 +49,7 @@ export const CollapsibleFormGroup = ({
       setOpen(true);
       if (updateForceOpenCollapsibleFormGroups) {
         updateForceOpenCollapsibleFormGroups(
-          forceOpenCollapsibleFormGroups.filter((e) => e !== path)
+          forceOpenCollapsibleFormGroups.filter((e) => e !== path),
         );
       }
     }

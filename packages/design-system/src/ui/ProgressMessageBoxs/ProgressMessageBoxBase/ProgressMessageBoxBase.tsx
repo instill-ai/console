@@ -203,7 +203,7 @@ const ProgressMessageBoxBase = (props: ProgressMessageBoxBaseProps) => {
       className={cn(
         "flex min-h-[85px] flex-row instill-progress-message-box-shadow",
         width,
-        boxBorderRadius
+        boxBorderRadius,
       )}
     >
       <div
@@ -216,7 +216,7 @@ const ProgressMessageBoxBase = (props: ProgressMessageBoxBaseProps) => {
             ? errorindicatorColumnBgColor
             : state.status === "success"
               ? successIndicatorColumnBgColor
-              : processingIndicatorColumnBgColor
+              : processingIndicatorColumnBgColor,
         )}
       >
         {statusIcon}
@@ -226,7 +226,7 @@ const ProgressMessageBoxBase = (props: ProgressMessageBoxBaseProps) => {
           "flex flex-1 flex-row py-2.5 pl-[15px] pr-2.5",
           messageColumnBgColor,
           messageColumnBottomRightBorderRadius,
-          messageColumnTopRightBorderRadius
+          messageColumnTopRightBorderRadius,
         )}
       >
         <div className="flex flex-1 flex-col gap-y-[5px]">

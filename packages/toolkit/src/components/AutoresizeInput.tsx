@@ -45,7 +45,7 @@ export const AutoresizeInputWrapper = ({
         <div
           className={cn(
             "invisible !m-0 box-border h-full border-none",
-            placeholderClassname
+            placeholderClassname,
           )}
           contentEditable={true}
           suppressContentEditableWarning={true}

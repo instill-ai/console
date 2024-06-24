@@ -62,7 +62,7 @@ export function transformInstillJSONSchemaToZod({
     const selectedSchema = selectedConditionMap
       ? oneOfConditions.find((condition) => {
           const { constKey, constValue } = pickConstInfoFromOneOfCondition(
-            condition.properties ?? {}
+            condition.properties ?? {},
           );
 
           const accessPath = propertyPath
@@ -166,7 +166,7 @@ export function transformInstillJSONSchemaToZod({
             targetSchema: targetSchema.items as InstillJSONSchema,
             selectedConditionMap,
             checkIsHidden,
-          })
+          }),
         );
       }
     } else {
@@ -215,7 +215,7 @@ export function transformInstillJSONSchemaToZod({
     // accept the object input from start operator.
     if (
       targetSchema.instillAcceptFormats?.some((format) =>
-        format.includes("semi-structured")
+        format.includes("semi-structured"),
       )
     ) {
       instillZodSchema = z.string();
@@ -230,7 +230,7 @@ export function transformInstillJSONSchemaToZod({
     let objectSchema = z.object({});
 
     for (const [entryKey, entryJsonSchema] of Object.entries(
-      objectProperties
+      objectProperties,
     )) {
       if (typeof entryJsonSchema !== "boolean") {
         objectSchema = objectSchema.extend({
@@ -266,13 +266,13 @@ export function transformInstillJSONSchemaToZod({
 
   if (targetSchema.anyOf && targetSchema.anyOf.length > 0) {
     const instillUpstreamValue = targetSchema.anyOf.find(
-      (e) => e.instillUpstreamType === "value"
+      (e) => e.instillUpstreamType === "value",
     );
 
     const acceptPrimitive = instillUpstreamValue ? true : false;
 
     const acceptReference = targetSchema.anyOf.some(
-      (e) => e.instillUpstreamType === "reference"
+      (e) => e.instillUpstreamType === "reference",
     );
 
     if (instillUpstreamValue) {
@@ -475,7 +475,7 @@ export function transformInstillJSONSchemaToZod({
             .array(
               z.object({
                 prompt_image_base64: z.string(),
-              })
+              }),
             )
             .nullable()
             .optional();

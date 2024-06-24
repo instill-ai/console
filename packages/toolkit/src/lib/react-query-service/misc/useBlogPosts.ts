@@ -45,15 +45,15 @@ const formatDate = (dateString: string | undefined) => {
 const fetchBlogPosts = async () => {
   // Fetch the latest release tag
   const tagsResponse = await axios.get(
-    "https://api.github.com/repos/instill-ai/instill.tech/tags"
+    "https://api.github.com/repos/instill-ai/instill.tech/tags",
   );
   const latestTag = tagsResponse.data[0]?.name;
 
   const mdxResponse = await axios.get(
-    `https://api.github.com/repos/instill-ai/instill.tech/contents/blog?ref=${latestTag}`
+    `https://api.github.com/repos/instill-ai/instill.tech/contents/blog?ref=${latestTag}`,
   );
   const mdxFiles = mdxResponse.data.filter((file: any) =>
-    file.name.endsWith(".mdx")
+    file.name.endsWith(".mdx"),
   );
 
   const blogPostsData: BlogPostData[] = await Promise.all(
@@ -87,12 +87,12 @@ const fetchBlogPosts = async () => {
         slug: file.path.replace(/^blog\//g, "").replace(/\.mdx$/g, ""),
         draft,
       };
-    })
+    }),
   );
 
   blogPostsData.sort(
     (a, b) =>
-      new Date(b.publishedOn).getTime() - new Date(a.publishedOn).getTime()
+      new Date(b.publishedOn).getTime() - new Date(a.publishedOn).getTime(),
   );
 
   return blogPostsData.filter((post) => !post.draft);

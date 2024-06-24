@@ -5,7 +5,7 @@ import { extractPipelineComponentReferenceFromString } from "./extractPipelineCo
 export function extractReferencesFromConfiguration(
   configuration: GeneralRecord,
   nodeId: string,
-  currentPath: string[] = []
+  currentPath: string[] = [],
 ) {
   const results: PipelineComponentReference[] = [];
 

@@ -46,7 +46,7 @@ export const AirbyteDestinationFields = ({
     selectedConditionMap,
     setSelectedConditionMap,
     formIsDirty,
-    setFormIsDirty
+    setFormIsDirty,
   );
 
   return <React.Fragment>{fields}</React.Fragment>;

@@ -26,7 +26,7 @@ export const OutputValueInput = ({ outputKey }: { outputKey: string }) => {
 
   const outputValue = React.useMemo(() => {
     const iteratorNode = tempSavedNodesForEditingIteratorFlow.find(
-      (node) => node.id === editingIteratorID && isIteratorNode(node)
+      (node) => node.id === editingIteratorID && isIteratorNode(node),
     ) as Node<IteratorNodeData> | undefined;
 
     if (iteratorNode) {
@@ -56,7 +56,7 @@ export const OutputValueInput = ({ outputKey }: { outputKey: string }) => {
               }
 
               return node;
-            })
+            }),
           );
           updatePipelineRecipeIsDirty(() => true);
         }}

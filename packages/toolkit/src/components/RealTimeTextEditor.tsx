@@ -60,7 +60,7 @@ export const RealTimeTextEditor = ({
         }
       }, 1000);
     },
-    [isReady, toast, onSave]
+    [isReady, toast, onSave],
   );
 
   const editor = useEditor({
@@ -99,7 +99,7 @@ export const RealTimeTextEditor = ({
       <EditorContent
         className={cn(
           "mb-2 w-full rounded-sm border",
-          hasUnsavedChanges ? "rounded-sm border-semantic-bg-line" : ""
+          hasUnsavedChanges ? "rounded-sm border-semantic-bg-line" : "",
         )}
         editor={editor}
       />

@@ -29,7 +29,7 @@ const linkButtonVariants = cva(
       variant: "primary",
       size: "md",
     },
-  }
+  },
 );
 
 export type LinkButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
@@ -47,7 +47,7 @@ const LinkButton = React.forwardRef<HTMLButtonElement, LinkButtonProps>(
         {...props}
       />
     );
-  }
+  },
 );
 LinkButton.displayName = "Button";
 

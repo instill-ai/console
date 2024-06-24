@@ -291,7 +291,7 @@ test("should reset basic form data", () => {
   recursivelyResetFormData(
     tree.conditions["TASK_TEXT_GENERATION"],
     selectedConditionMap,
-    data
+    data,
   );
 
   expect(data).toStrictEqual({
@@ -772,6 +772,6 @@ test.skip("should reset nested oneOf form data", () => {
   recursivelyResetFormData(
     tree.conditions["TASK_TEXT_GENERATION"],
     selectedConditionMap,
-    data
+    data,
   );
 });

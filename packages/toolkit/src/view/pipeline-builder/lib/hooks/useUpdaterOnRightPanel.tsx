@@ -87,9 +87,9 @@ export function useUpdaterOnRightPanel({
         updatePipelineRecipeIsDirty(() => true);
         prevValue.current = updateData;
       },
-      300
+      300,
     ),
-    [updateEdges, updateNodes, updatePipelineRecipeIsDirty]
+    [updateEdges, updateNodes, updatePipelineRecipeIsDirty],
   );
 
   React.useEffect(() => {

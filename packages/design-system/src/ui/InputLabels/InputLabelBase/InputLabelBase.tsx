@@ -150,15 +150,15 @@ const InputLabelBase = React.forwardRef<InputLabelBaseRef, InputLabelBaseProps>(
                     errorLabelFontSize,
                     errorLabelFontWeight,
                     errorLabelLineHeight,
-                    errorLabelTextColor
+                    errorLabelTextColor,
                   )
                 : cn(
                     labelFontSize,
                     labelFontWeight,
                     labelTextColor,
                     labelFontFamily,
-                    labelLineHeight
-                  )
+                    labelLineHeight,
+                  ),
             )}
           >{`${label} ${required ? "*" : ""}`}</p>
         ) : null}
@@ -169,7 +169,7 @@ const InputLabelBase = React.forwardRef<InputLabelBaseRef, InputLabelBaseProps>(
             messageLineHeight,
             messageFontSize,
             messageFontWeight,
-            error ? errorLabelTextColor : messageTextColor
+            error ? errorLabelTextColor : messageTextColor,
           )}
           data-testid={
             error ? `${htmlFor}-label-error` : `${htmlFor}-label-message`
@@ -179,7 +179,7 @@ const InputLabelBase = React.forwardRef<InputLabelBaseRef, InputLabelBaseProps>(
         </p>
       </label>
     ) : null;
-  }
+  },
 );
 
 export default React.memo(InputLabelBase);

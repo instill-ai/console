@@ -84,7 +84,7 @@ export const SmartHintList = ({
                     {
                       "bg-semantic-accent-bg text-semantic-accent-hover":
                         highlightedHintIndex === index,
-                    }
+                    },
                   )}
                   onClick={() => {
                     onClickSmartHint({

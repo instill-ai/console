@@ -30,7 +30,7 @@ export async function getModelDefinitionQuery({
     const client = createInstillAxiosClient(accessToken, true);
 
     const { data } = await client.get<GetModelDefinitionResponse>(
-      `/${modelDefinitionName}`
+      `/${modelDefinitionName}`,
     );
 
     return Promise.resolve(data.modelDefinition);
@@ -77,7 +77,7 @@ export async function listModelDefinitionsQuery({
           pageSize,
           accessToken,
           nextPageToken: data.nextPageToken,
-        }))
+        })),
       );
     }
 
@@ -106,7 +106,7 @@ export async function getUserModelQuery({
     const client = createInstillAxiosClient(accessToken, true);
 
     const { data } = await client.get<GetUserModelResponse>(
-      `/${modelName}?view=VIEW_FULL`
+      `/${modelName}?view=VIEW_FULL`,
     );
     return Promise.resolve(data.model);
   } catch (err) {
@@ -158,17 +158,17 @@ export type ListModelVersionsResponse = {
 export async function listModelsQuery(
   props: listModelsQueryProps & {
     enablePagination: true;
-  }
+  },
 ): Promise<ListModelsResponse>;
 export async function listModelsQuery(
   props: listModelsQueryProps & {
     enablePagination: false;
-  }
+  },
 ): Promise<Model[]>;
 export async function listModelsQuery(
   props: listModelsQueryProps & {
     enablePagination: undefined;
-  }
+  },
 ): Promise<Model[]>;
 export async function listModelsQuery({
   pageSize,
@@ -214,7 +214,7 @@ export async function listModelsQuery({
           filter,
           visibility,
           orderBy,
-        }))
+        })),
       );
     }
 
@@ -227,17 +227,17 @@ export async function listModelsQuery({
 export async function listUserModelsQuery(
   props: listUserModelsQueryProps & {
     enablePagination: true;
-  }
+  },
 ): Promise<ListModelsResponse>;
 export async function listUserModelsQuery(
   props: listUserModelsQueryProps & {
     enablePagination: false;
-  }
+  },
 ): Promise<Model[]>;
 export async function listUserModelsQuery(
   props: listUserModelsQueryProps & {
     enablePagination: undefined;
-  }
+  },
 ): Promise<Model[]>;
 export async function listUserModelsQuery({
   userName,
@@ -283,7 +283,7 @@ export async function listUserModelsQuery({
           enablePagination: false,
           filter,
           visibility,
-        }))
+        })),
       );
     }
 
@@ -308,7 +308,7 @@ export async function getUserModelReadmeQuery({
     const client = createInstillAxiosClient(accessToken, true);
 
     const { data } = await client.get<GetUserModelReadmeQueryResponse>(
-      `/${modelName}/readme`
+      `/${modelName}/readme`,
     );
     return Promise.resolve(data.readme);
   } catch (err) {
@@ -347,17 +347,17 @@ export async function listModelRegionsQuery({
 export async function listModelVersionsQuery(
   props: listUserModelVersionsQueryProps & {
     enablePagination: true;
-  }
+  },
 ): Promise<ListModelVersionsResponse>;
 export async function listModelVersionsQuery(
   props: listUserModelVersionsQueryProps & {
     enablePagination: false;
-  }
+  },
 ): Promise<ModelVersion[]>;
 export async function listModelVersionsQuery(
   props: listUserModelVersionsQueryProps & {
     enablePagination: undefined;
-  }
+  },
 ): Promise<ModelVersion[]>;
 export async function listModelVersionsQuery({
   accessToken,
@@ -394,7 +394,7 @@ export async function listModelVersionsQuery({
           page: data.page + 1,
           pageSize,
           enablePagination: false,
-        }))
+        })),
       );
     }
 
@@ -440,7 +440,7 @@ export async function getModelOperationResult({
   try {
     const client = createInstillAxiosClient(accessToken, true);
     const { data } = await client.get<ModelTriggerResult>(
-      `/${modelName}/operation${fullView ? "?view=VIEW_FULL" : ""}`
+      `/${modelName}/operation${fullView ? "?view=VIEW_FULL" : ""}`,
     );
     return Promise.resolve(data);
   } catch (err) {

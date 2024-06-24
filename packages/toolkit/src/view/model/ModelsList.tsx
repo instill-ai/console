@@ -65,7 +65,7 @@ export const ModelsList = (props: ModelsListProps) => {
     <div
       className={cn(
         "mb-4 flex flex-col gap-y-4",
-        isEmpty ? "items-center justify-center" : null
+        isEmpty ? "items-center justify-center" : null,
       )}
     >
       {isLoading ? (

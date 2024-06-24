@@ -61,7 +61,7 @@ export const VideoField = ({
                     "flex w-full items-center justify-center",
                     mode === "build"
                       ? "h-[150px] bg-semantic-bg-secondary"
-                      : "h-[260px] rounded-sm border border-semantic-bg-line bg-transparent"
+                      : "h-[260px] rounded-sm border border-semantic-bg-line bg-transparent",
                   )}
                 ></div>
               )}

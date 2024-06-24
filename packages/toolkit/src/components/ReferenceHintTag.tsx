@@ -29,7 +29,7 @@ export const ReferenceHintInstillFormat = ({
         <div
           className={cn(
             "flex flex-row items-center gap-x-[3.62px] rounded-t bg-semantic-bg-secondary px-[7.25px] py-px",
-            className
+            className,
           )}
         >
           <p className="text-semantic-fg-secondary product-label-label-2">
@@ -43,7 +43,7 @@ export const ReferenceHintInstillFormat = ({
         <div
           className={cn(
             "rounded-t border border-semantic-bg-line bg-semantic-bg-base-bg px-[7.25px] py-px font-sans text-[9px] font-medium uppercase leading-[9px] text-semantic-fg-primary",
-            className
+            className,
           )}
         >
           {instillFormat}
@@ -109,7 +109,7 @@ export const ReferenceHintPath = ({
                 "max-w-[240px] truncate px-[7.25px] py-px",
                 "flex flex-row items-center gap-x-1 bg-semantic-accent-bg",
                 "rounded-r rounded-bl",
-                className
+                className,
               )}
             >
               {icon}
@@ -186,7 +186,7 @@ export const ReferenceHintTagIcon = ({
     <Icons.ReferenceIconCheck
       className={cn(
         "h-[9px] w-[18px] stroke-semantic-accent-default",
-        className
+        className,
       )}
     />
   );

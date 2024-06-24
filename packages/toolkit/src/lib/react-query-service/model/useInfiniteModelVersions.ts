@@ -55,7 +55,7 @@ export function useInfiniteModelVersions({
     getNextPageParam: (lastPage) => {
       const versionsLastPage = Math.max(
         Math.ceil(lastPage.totalSize / lastPage.pageSize) - 1,
-        0
+        0,
       );
 
       if (lastPage.page >= versionsLastPage) {

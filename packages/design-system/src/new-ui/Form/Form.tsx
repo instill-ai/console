@@ -27,7 +27,7 @@ type FormFieldContextValue<
 };
 
 const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
+  {} as FormFieldContextValue,
 );
 
 const FormField = <
@@ -71,7 +71,7 @@ type FormItemContextValue = {
 };
 
 const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
+  {} as FormItemContextValue,
 );
 
 const FormItem = React.forwardRef<
@@ -149,7 +149,7 @@ const FormDescription = React.forwardRef<
       className={cn(
         // We use hex code temporary, until our design-token support opacity
         "text-[#1D243380] product-body-text-3-regular",
-        className
+        className,
       )}
     />
   );
@@ -173,7 +173,7 @@ const FormMessage = React.forwardRef<
       id={formMessageId}
       className={cn(
         "text-semantic-error-default product-body-text-3-regular",
-        className
+        className,
       )}
       {...props}
     >

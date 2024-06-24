@@ -125,7 +125,7 @@ test("should pick hints from non objectArray hints", () => {
 
   const pickHints = pickSmartHintsFromAcceptFormats(
     hints,
-    instillAcceptFormats
+    instillAcceptFormats,
   );
 
   expect(pickHints).toStrictEqual([

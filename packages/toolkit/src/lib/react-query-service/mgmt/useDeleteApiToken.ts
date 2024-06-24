@@ -21,7 +21,7 @@ export function useDeleteApiToken() {
     },
     onSuccess: (tokenName) => {
       queryClient.setQueryData<ApiToken[]>(["api-tokens"], (old) =>
-        old ? old.filter((e) => e.name !== tokenName) : []
+        old ? old.filter((e) => e.name !== tokenName) : [],
       );
       queryClient.removeQueries({
         queryKey: ["api-tokens", tokenName],

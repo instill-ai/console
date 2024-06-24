@@ -55,7 +55,7 @@ export function pickSelectedConditionMap({
     if (defaultCondition?.path) {
       const initialConditionValue = dot.getter(
         initialValue,
-        defaultCondition.path
+        defaultCondition.path,
       );
 
       if (initialConditionValue) {

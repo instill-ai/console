@@ -36,7 +36,7 @@ const PaginationContent = React.forwardRef<
       "[&>li:nth-child(2)]:data-[align=left]:ml-auto",
       "[&>li:nth-child(2)]:data-[align=right]:order-first",
       "[&>li:nth-child(2)]:data-[align=right]:mr-auto",
-      className
+      className,
     )}
     data-align={align}
     {...props}
@@ -59,7 +59,7 @@ const PaginationPrevious = ({
   <Button
     className={cn(
       "gap-x-2 rounded-l-sm rounded-r-none !border-semantic-bg-line !py-2.5 px-4",
-      className
+      className,
     )}
     variant="secondaryGrey"
     size="sm"
@@ -79,7 +79,7 @@ const PaginationNext = ({
   <Button
     className={cn(
       "gap-x-2 rounded-l-none rounded-r-sm border-l-0 !border-semantic-bg-line !py-2.5 px-4",
-      className
+      className,
     )}
     variant="secondaryGrey"
     size="sm"

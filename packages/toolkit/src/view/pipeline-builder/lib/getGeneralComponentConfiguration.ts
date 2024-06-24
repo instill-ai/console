@@ -1,7 +1,7 @@
 import { PipelineGeneralComponent } from "../../../lib";
 
 export const getGeneralComponentConfiguration = (
-  component: PipelineGeneralComponent
+  component: PipelineGeneralComponent,
 ) => {
   return {
     input: component.input,

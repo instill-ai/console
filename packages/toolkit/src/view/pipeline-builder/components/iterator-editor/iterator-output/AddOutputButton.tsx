@@ -33,7 +33,7 @@ export const AddOutputButton = ({
 
           if (targetIteratorNode?.data.outputElements) {
             const currentIndexArray = Object.keys(
-              targetIteratorNode?.data.outputElements
+              targetIteratorNode?.data.outputElements,
             )
               .map((key) => key.replace("result_", ""))
               .map(Number)
@@ -58,7 +58,7 @@ export const AddOutputButton = ({
               }
 
               return node;
-            })
+            }),
           );
         }}
         variant="secondaryGrey"

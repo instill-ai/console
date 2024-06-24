@@ -11,7 +11,7 @@ export type DashboardAvailableTimeframe =
   | "30d";
 
 export function getPreviousTimeframe(
-  timeframe: DashboardAvailableTimeframe
+  timeframe: DashboardAvailableTimeframe,
 ): string {
   if (timeframe === "24h" || timeframe === "1d") {
     return "2d";

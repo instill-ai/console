@@ -27,11 +27,11 @@ export type ConfigureModelFormAction = {
   init: () => void;
   setFieldError: (
     fieldName: keyof ConfigureModelFormState["errors"],
-    value: Nullable<string>
+    value: Nullable<string>,
   ) => void;
   setFieldValue: <T extends keyof ConfigureModelFormFields>(
     fieldName: T,
-    value: ConfigureModelFormFields[T]
+    value: ConfigureModelFormFields[T],
   ) => void;
   setFieldsValue: (fields: ConfigureModelFormFields) => void;
   setErrorsValue: (errors: ConfigureModelFormState["errors"]) => void;
@@ -58,27 +58,27 @@ export const useConfigureModelFormStore = create<ConfigureModelFormStore>()(
       set(
         produce((draft: ConfigureModelFormStore) => {
           draft.errors[fieldName] = value;
-        })
+        }),
       ),
     setFieldValue: (fieldName, value) =>
       set(
         produce((draft: ConfigureModelFormStore) => {
           draft.formIsDirty = true;
           draft.fields[fieldName] = value;
-        })
+        }),
       ),
     setFieldsValue: (fields) =>
       set(
         produce((draft: ConfigureModelFormStore) => {
           draft.formIsDirty = true;
           draft.fields = fields;
-        })
+        }),
       ),
     setErrorsValue: (errors) =>
       set(
         produce((draft: ConfigureModelFormStore) => {
           draft.errors = errors;
-        })
+        }),
       ),
-  }))
+  })),
 );

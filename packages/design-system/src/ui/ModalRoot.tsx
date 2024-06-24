@@ -53,7 +53,7 @@ export const ModalRoot = ({
                   className={cn(
                     "relative transform overflow-hidden text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg",
                     modalBgColor,
-                    modalPadding
+                    modalPadding,
                   )}
                   data-testid={dataTestId}
                 >
@@ -62,7 +62,7 @@ export const ModalRoot = ({
               </div>
             </div>
           </React.Fragment>,
-          el.current
+          el.current,
         )
       : null
     : null;

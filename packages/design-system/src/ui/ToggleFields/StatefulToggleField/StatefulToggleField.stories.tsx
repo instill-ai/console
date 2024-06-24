@@ -50,7 +50,7 @@ const Template: StoryFn<typeof StatefulToggleField> = (args) => {
 };
 
 export const Playground: StoryFn<typeof StatefulToggleField> = Template.bind(
-  {}
+  {},
 );
 
 Playground.args = {

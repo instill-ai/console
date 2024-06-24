@@ -238,6 +238,6 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
       updateNodes,
       updateTempSavedNodesForEditingIteratorFlow,
       updateEdges,
-    ]
+    ],
   );
 }

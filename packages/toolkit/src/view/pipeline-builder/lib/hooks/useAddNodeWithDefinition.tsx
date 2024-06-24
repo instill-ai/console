@@ -41,7 +41,7 @@ export function useAddNodeWithDefinition({
 
   return React.useCallback(
     (
-      definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition
+      definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition,
     ) => {
       if (!reactFlowInstance) return;
 
@@ -87,7 +87,7 @@ export function useAddNodeWithDefinition({
       // Construct the default component ID prefix. For example, if the definition
       // is `connector-definitions/instill_ai`, the prefix will be `instill_ai`
       const nodePrefix = transformConnectorDefinitionIDToComponentIDPrefix(
-        definition.id
+        definition.id,
       );
 
       // Generate a new component index
@@ -99,7 +99,7 @@ export function useAddNodeWithDefinition({
         isEditingIterator
           ? [...nodes, ...tempSavedNodesForEditingIteratorFlow].map((e) => e.id)
           : getAllNodeID(nodes),
-        nodePrefix
+        nodePrefix,
       );
 
       const nodeID = `${nodePrefix}-${nodeIndex}`;
@@ -187,6 +187,6 @@ export function useAddNodeWithDefinition({
       updatePipelineRecipeIsDirty,
       isEditingIterator,
       tempSavedNodesForEditingIteratorFlow,
-    ]
+    ],
   );
 }

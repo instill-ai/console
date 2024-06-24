@@ -12,7 +12,7 @@ export type PipelineTablePlaceholderProps = Pick<
 >;
 
 export const PipelineTablePlaceholder = (
-  props: PipelineTablePlaceholderProps
+  props: PipelineTablePlaceholderProps,
 ) => {
   const { marginBottom, enableCreateButton } = props;
   const width = "w-[136px]";

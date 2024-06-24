@@ -7,7 +7,7 @@ export type SemanticSegmentationIconProps = Omit<
 >;
 
 const SemanticSegmentationIcon: React.FC<SemanticSegmentationIconProps> = (
-  props
+  props,
 ) => {
   const { width, height, position, style, color } = props;
   return (

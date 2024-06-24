@@ -16,7 +16,7 @@ import { ModelsListPagination } from "./ModelsListPagination";
 export type ModelHubListPageMainViewProps = GeneralAppPageProp;
 
 export const ModelHubListPageMainView = (
-  props: ModelHubListPageMainViewProps
+  props: ModelHubListPageMainViewProps,
 ) => {
   const { router, enableQuery, accessToken } = props;
   const searchParams = useSearchParams();
@@ -31,14 +31,14 @@ export const ModelHubListPageMainView = (
       debounce((value: string) => {
         setSearchCode(value);
       }, 300),
-    []
+    [],
   );
 
   const [selectedVisibilityOption, setSelectedVisibilityOption] =
     React.useState<Visibility>(
       visibility === "VISIBILITY_PUBLIC"
         ? "VISIBILITY_PUBLIC"
-        : "VISIBILITY_UNSPECIFIED"
+        : "VISIBILITY_UNSPECIFIED",
     );
 
   useEffect(() => {

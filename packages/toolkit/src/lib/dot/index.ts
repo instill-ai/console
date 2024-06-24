@@ -58,7 +58,7 @@ const setter = (obj: any, path: DotPath, value: any) => {
 const toDot = (obj: any, parentKey?: string, result: any = {}) => {
   if (!isObject(obj)) {
     throw new Error(
-      "Target value is not a object, toDot function only process object."
+      "Target value is not a object, toDot function only process object.",
     );
   }
 

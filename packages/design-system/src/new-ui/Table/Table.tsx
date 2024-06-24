@@ -10,7 +10,7 @@ const TableRoot = React.forwardRef<
   <div
     className={cn(
       "w-full overflow-auto rounded-b-sm border border-semantic-bg-line",
-      wrapperClassName
+      wrapperClassName,
     )}
   >
     <table
@@ -66,7 +66,7 @@ const TableFoot = React.forwardRef<
     ref={ref}
     className={cn(
       "px-6 py-3 text-semantic-fg-secondary product-body-text-4-semibold [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-      className
+      className,
     )}
     {...props}
   />
@@ -81,7 +81,7 @@ const TableRow = React.forwardRef<
     ref={ref}
     className={cn(
       "border-b transition-colors hover:bg-semantic-bg-alt-primary data-[state=selected]:bg-semantic-bg-alt-primary",
-      className
+      className,
     )}
     {...props}
   />
@@ -96,7 +96,7 @@ const TableHead = React.forwardRef<
     ref={ref}
     className={cn(
       "px-6 py-3 text-semantic-fg-secondary product-body-text-4-semibold [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-      className
+      className,
     )}
     {...props}
   />
@@ -111,7 +111,7 @@ const TableCell = React.forwardRef<
     ref={ref}
     className={cn(
       "p-6 align-middle text-semantic-fg-primary product-body-text-3-semibold [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-      className
+      className,
     )}
     {...props}
   />
@@ -126,7 +126,7 @@ const TableCaption = React.forwardRef<
     ref={ref}
     className={cn(
       "mt-4 text-semantic-fg-secondary product-body-text-4-semibold",
-      className
+      className,
     )}
     {...props}
   />

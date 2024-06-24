@@ -104,7 +104,7 @@ export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
       toast,
       routeInfo.isSuccess,
       routeInfo.data.pipelineName,
-    ]
+    ],
   );
 
   return (

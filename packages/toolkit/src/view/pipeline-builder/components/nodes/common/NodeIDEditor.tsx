@@ -147,7 +147,7 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
       updatePipelineRecipeIsDirty,
       selectedConnectorNodeId,
       updateSelectedConnectorNodeId,
-    ]
+    ],
   );
 
   return (
@@ -171,7 +171,7 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
                     {...field}
                     className={cn(
                       "!absolute !bottom-0 !left-0 !right-0 !top-0 bg-transparent p-1 focus:!ring-1 focus:!ring-semantic-accent-default",
-                      textStyle
+                      textStyle,
                     )}
                     ref={nodeIDInputRef}
                     value={field.value ?? ""}

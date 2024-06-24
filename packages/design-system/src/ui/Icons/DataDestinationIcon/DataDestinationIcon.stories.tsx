@@ -13,7 +13,7 @@ const Template: StoryFn<typeof DataDestinationIcon> = (args) => (
 );
 
 export const Playground: StoryFn<typeof DataDestinationIcon> = Template.bind(
-  {}
+  {},
 );
 
 Playground.args = {

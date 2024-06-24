@@ -144,7 +144,7 @@ const OutlineButton = (props: OutlineButtonProps) => {
     }
     default: {
       throw new Error(
-        `Button variant ${props.color} not support, OutlineButton only support variant=primary`
+        `Button variant ${props.color} not support, OutlineButton only support variant=primary`,
       );
     }
   }

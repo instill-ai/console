@@ -9,7 +9,7 @@ export type CreateNodesFromPipelineRecipeOptions = {
 
 export function createNodesFromPipelineRecipe(
   recipe: PipelineRecipe,
-  options?: CreateNodesFromPipelineRecipeOptions
+  options?: CreateNodesFromPipelineRecipeOptions,
 ) {
   const metadata = options?.metadata;
   const nodes: Node<NodeData>[] = [];

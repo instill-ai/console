@@ -24,7 +24,7 @@ export const UserDefinedFieldItem = ({
   onEditField: (key: string) => void;
 }) => {
   const { isOwner, currentVersion, pipelineIsReadOnly } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
   return (

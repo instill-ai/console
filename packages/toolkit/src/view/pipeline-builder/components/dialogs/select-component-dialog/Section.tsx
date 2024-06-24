@@ -23,7 +23,7 @@ export const SectionRoot = ({
 export const SectionItem = (
   props: {
     children: React.ReactNode;
-  } & React.ButtonHTMLAttributes<HTMLButtonElement>
+  } & React.ButtonHTMLAttributes<HTMLButtonElement>,
 ) => {
   const { children, onClick, ...passThrough } = props;
   return (

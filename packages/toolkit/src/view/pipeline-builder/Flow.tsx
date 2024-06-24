@@ -83,7 +83,7 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 Flow.displayName = "Flow";

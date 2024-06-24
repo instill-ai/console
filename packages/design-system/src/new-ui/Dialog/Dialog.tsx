@@ -29,7 +29,7 @@ const DialogOverlay = React.forwardRef<
     ref={ref}
     className={cn(
       "fixed inset-0 z-50 bg-semantic-fg-disabled transition-all duration-100 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in",
-      className
+      className,
     )}
     {...props}
   />
@@ -48,7 +48,7 @@ const DialogContent = React.forwardRef<
       ref={ref}
       className={cn(
         "fixed z-50 grid w-full gap-4 rounded bg-semantic-bg-primary p-6 shadow-lg animate-in data-[state=open]:fade-in-90 data-[state=open]:slide-in-from-bottom-10 sm:max-w-lg sm:zoom-in-90 data-[state=open]:sm:slide-in-from-bottom-0 lg:max-w-4xl",
-        className
+        className,
       )}
       {...props}
     >
@@ -67,7 +67,7 @@ const DialogClose = React.forwardRef<
     ref={ref}
     className={cn(
       "absolute right-4 top-4 rounded opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-semantic-accent-hover focus:ring-offset-2 disabled:pointer-events-none",
-      className
+      className,
     )}
   >
     <Icons.X className="h-5 w-5 stroke-semantic-fg-primary" />
@@ -91,7 +91,7 @@ const DialogFooter = ({
   <div
     className={cn(
       "flex flex-col sm:flex-row sm:justify-end sm:space-x-2",
-      className
+      className,
     )}
     {...props}
   />
@@ -118,7 +118,7 @@ const DialogDescription = React.forwardRef<
     ref={ref}
     className={cn(
       "text-semantic-fg-secondary product-body-text-2-regular",
-      className
+      className,
     )}
     {...props}
   />

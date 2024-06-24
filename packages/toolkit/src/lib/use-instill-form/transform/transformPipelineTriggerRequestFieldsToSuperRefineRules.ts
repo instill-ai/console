@@ -2,7 +2,7 @@ import { Nullable, SuperRefineRule } from "../../type";
 import { PipelineVariableFieldMap } from "../../vdp-sdk";
 
 export function transformPipelineTriggerRequestFieldsToSuperRefineRules(
-  fields: Nullable<PipelineVariableFieldMap>
+  fields: Nullable<PipelineVariableFieldMap>,
 ) {
   const rules: SuperRefineRule[] = [];
 

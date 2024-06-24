@@ -26,7 +26,7 @@ export async function fetchOrganizationMemberships({
 }
 
 export function getUseOrganizationMembershipsQueryKey(
-  organizationID: Nullable<string>
+  organizationID: Nullable<string>,
 ) {
   return ["organizations", organizationID, "memberships"];
 }

@@ -23,7 +23,7 @@ const tagButtonVariants = cva(
       variant: "default",
       size: "md",
     },
-  }
+  },
 );
 
 export type TagButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
@@ -41,7 +41,7 @@ const TagButton = React.forwardRef<HTMLButtonElement, TagButtonProps>(
         {...props}
       />
     );
-  }
+  },
 );
 TagButton.displayName = "TagButton";
 

@@ -3,7 +3,7 @@
  */
 export function getHumanReadableStringFromTime(
   prevTime: string,
-  nextTime: string | number
+  nextTime: string | number,
 ) {
   const prev = Date.parse(prevTime) / 1000;
 

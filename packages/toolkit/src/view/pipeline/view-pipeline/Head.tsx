@@ -202,7 +202,7 @@ export const Head = ({
                                 "!h-8 !w-[145px] gap-x-1 !rounded-sm !border border-[#E1E6EF] !py-1 px-3 !transition-opacity !duration-300 !ease-in-out",
                                 isOpen
                                   ? "border-opacity-100 !bg-semantic-accent-bg "
-                                  : "border-opacity-0"
+                                  : "border-opacity-0",
                               )}
                               size="sm"
                               variant="tertiaryColour"
@@ -365,7 +365,7 @@ export const Head = ({
                     <Button
                       onClick={() => {
                         router.push(
-                          `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/editor`
+                          `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/editor`,
                         );
                       }}
                       size="sm"
@@ -423,7 +423,7 @@ const VersionButton = ({
       key={id}
       className={cn(
         "w-full !px-2 !py-1.5",
-        currentVersion === id ? "!bg-semantic-bg-secondary" : ""
+        currentVersion === id ? "!bg-semantic-bg-secondary" : "",
       )}
       variant={"tertiaryColour"}
       onClick={onClick}
@@ -432,7 +432,7 @@ const VersionButton = ({
         <div className="my-auto h-2 w-[9px] rounded-full bg-semantic-secondary-default"></div>
         <p
           className={cn(
-            "w-full text-left text-semantic-fg-secondary product-body-text-3-medium"
+            "w-full text-left text-semantic-fg-secondary product-body-text-3-medium",
           )}
         >
           Version {id}

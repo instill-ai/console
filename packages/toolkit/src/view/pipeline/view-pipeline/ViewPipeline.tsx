@@ -69,7 +69,7 @@ export const ViewPipeline = () => {
       return null;
     }
     return pipeline.data.releases.find(
-      (release) => release.id === currentVersion
+      (release) => release.id === currentVersion,
     );
   }, [pipeline.isSuccess, pipeline.data, currentVersion]);
 

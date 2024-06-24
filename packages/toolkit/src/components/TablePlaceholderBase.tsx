@@ -40,7 +40,7 @@ export const TablePlaceholderBase = ({
     <div
       className={cn(
         "border-instillGrey15 flex min-h-[300px] w-full flex-row border bg-white px-[9px] py-[18px]",
-        marginBottom
+        marginBottom,
       )}
     >
       {svgElement ? (

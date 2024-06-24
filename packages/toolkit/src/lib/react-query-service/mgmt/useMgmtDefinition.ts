@@ -14,7 +14,7 @@ export function useMgmtDefinition({
       const { content } = await listRepoFileContent(
         "instill-ai",
         "mgmt-backend",
-        "config/models/user.json"
+        "config/models/user.json",
       );
 
       const decode = window.atob(content);

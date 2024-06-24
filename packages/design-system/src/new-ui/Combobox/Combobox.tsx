@@ -45,7 +45,7 @@ export function Combobox({
                 <Icons.Check
                   className={cn(
                     "h-4 w-4 stroke-semantic-fg-secondary",
-                    value === item.value ? "opacity-100" : "opacity-0"
+                    value === item.value ? "opacity-100" : "opacity-0",
                   )}
                 />
 

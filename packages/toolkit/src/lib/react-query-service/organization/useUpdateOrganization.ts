@@ -29,11 +29,11 @@ export function useUpdateOrganization() {
     },
     onSuccess: ({ organization }) => {
       queryClient.setQueryData<Organization[]>(["organization"], (old) =>
-        old ? [...old, organization] : [organization]
+        old ? [...old, organization] : [organization],
       );
       queryClient.setQueryData<Organization>(
         ["organization", organization],
-        organization
+        organization,
       );
     },
   });

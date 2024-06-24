@@ -10,7 +10,7 @@ interface DataTablePaginationProps<TData> {
 export function createPaginationArray(
   currentPage: number,
   totalPages: number,
-  maxVisiblePages = 10
+  maxVisiblePages = 10,
 ): (number | string)[] {
   const paginationArray: (number | string)[] = [];
 
@@ -35,7 +35,7 @@ export function createPaginationArray(
     const startPage: number = Math.max(2, currentPage - numPagesBefore);
     const endPage: number = Math.min(
       totalPages - 2,
-      currentPage + numPagesAfter
+      currentPage + numPagesAfter,
     );
 
     // Add visible pages to the pagination array
@@ -79,12 +79,12 @@ export function DataTablePagination<TData>({
         ? createPaginationArray(
             (table.options.state.pagination?.pageIndex || 0) + 1,
             table.getPageCount(),
-            8
+            8,
           ).map((e, index) => (
             <Button
               className={cn(
                 "!rounded-none border-l-0 !border-semantic-bg-line !py-2.5 px-2.5",
-                table.getPageCount() - 1 === e && "border-r-0"
+                table.getPageCount() - 1 === e && "border-r-0",
               )}
               variant="secondaryGrey"
               size="sm"
@@ -105,7 +105,7 @@ export function DataTablePagination<TData>({
       <Button
         className={cn(
           "gap-x-2 !rounded-l-none rounded-r-sm !border-semantic-bg-line !py-2.5 px-4",
-          !showPageNumbers ? "border-l-0" : null
+          !showPageNumbers ? "border-l-0" : null,
         )}
         variant="secondaryGrey"
         size="sm"

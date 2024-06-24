@@ -76,7 +76,7 @@ export const Regular: Story = {
               ],
             },
             null,
-            2
+            2,
           )}
         </pre>
       </Tabs.Content>

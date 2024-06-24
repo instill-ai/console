@@ -79,7 +79,7 @@ export type PipelineTriggersSummaryProps = {
 };
 
 export const PipelineTriggersSummary = (
-  props: PipelineTriggersSummaryProps
+  props: PipelineTriggersSummaryProps,
 ) => {
   const { children } = props;
 

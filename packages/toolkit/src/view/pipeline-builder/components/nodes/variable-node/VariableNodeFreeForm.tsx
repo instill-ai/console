@@ -57,7 +57,7 @@ export const TriggerNodeFreeForm = ({
   selectedType: Nullable<string>;
   setSelectedType: React.Dispatch<React.SetStateAction<Nullable<string>>>;
   onCreateFreeFormField: (
-    formData: z.infer<typeof TriggerNodeFreeFormSchema>
+    formData: z.infer<typeof TriggerNodeFreeFormSchema>,
   ) => void;
   onCancel: () => void;
   isEditing: boolean;
@@ -120,7 +120,7 @@ export const TriggerNodeFreeForm = ({
                           if (!isUserInputKey && !isEditing) {
                             form.setValue(
                               "key",
-                              constructFieldKey(event.target.value)
+                              constructFieldKey(event.target.value),
                             );
                           }
                           field.onChange(event);

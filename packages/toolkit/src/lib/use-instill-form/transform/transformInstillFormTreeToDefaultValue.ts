@@ -13,7 +13,7 @@ export type TransformInstillFormTreeToDefaultValueOptions = {
 
 export function transformInstillFormTreeToDefaultValue(
   tree: InstillFormTree,
-  options?: TransformInstillFormTreeToDefaultValueOptions
+  options?: TransformInstillFormTreeToDefaultValueOptions,
 ): GeneralRecord {
   const initialData = options?.initialData ?? {};
   const isRoot = options?.isRoot ?? false;
@@ -34,13 +34,13 @@ export function transformInstillFormTreeToDefaultValue(
             initialData,
             selectedConditionMap,
             isRoot,
-          }
+          },
         );
 
         dot.setter(
           initialData,
           constPath,
-          selectedConditionMap[constPath] as string
+          selectedConditionMap[constPath] as string,
         );
       } else {
         transformInstillFormTreeToDefaultValue(
@@ -49,7 +49,7 @@ export function transformInstillFormTreeToDefaultValue(
             initialData,
             selectedConditionMap,
             isRoot,
-          }
+          },
         );
 
         dot.setter(initialData, constPath, defaultCondition.const as string);

@@ -1,7 +1,7 @@
 import { InstillJSONSchema } from "../types";
 
 export function pickConstInfoFromOneOfCondition(
-  properties: Record<string, InstillJSONSchema>
+  properties: Record<string, InstillJSONSchema>,
 ) {
   let constKey: null | string = null;
   let constValue: null | string = null;

@@ -41,7 +41,7 @@ export function pickOutputReferenceHintsFromComponent({
           });
 
           const targetHint = componentHints.find(
-            (hint) => hint.path === value.replace("${", "").replace("}", "")
+            (hint) => hint.path === value.replace("${", "").replace("}", ""),
           );
 
           if (targetHint) {
@@ -70,7 +70,7 @@ export function pickOutputReferenceHintsFromComponent({
 
         iteratorHints = transformFormTreeToSmartHints(
           outputFormTree,
-          componentID
+          componentID,
         );
       }
     }

@@ -84,9 +84,9 @@ export function useUpdaterOnNode({
         updatePipelineRecipeIsDirty(() => true);
         prevValue.current = updateData;
       },
-      300
+      300,
     ),
-    [currentNodeData, updateEdges, updateNodes, updatePipelineRecipeIsDirty]
+    [currentNodeData, updateEdges, updateNodes, updatePipelineRecipeIsDirty],
   );
 
   const prevValue = React.useRef<Nullable<GeneralRecord>>(null);

@@ -51,7 +51,7 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
 
   React.useEffect(() => {
     const targetNodes = tempSavedNodesForEditingIteratorFlow.find(
-      (node) => node.id === editingIteratorID && isIteratorNode(node)
+      (node) => node.id === editingIteratorID && isIteratorNode(node),
     ) as Node<IteratorNodeData> | undefined;
 
     if (targetNodes) {
@@ -84,7 +84,7 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
       value={selectedOutputOption?.path}
       onValueChange={(value) => {
         const option = availableOutputOptions.find(
-          (option) => option.path === value
+          (option) => option.path === value,
         );
 
         if (option) {
@@ -106,7 +106,7 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
               }
 
               return node;
-            })
+            }),
           );
         }
       }}

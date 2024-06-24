@@ -10,7 +10,7 @@ export type UseInstillSelectedConditionMapResult = UseCustomHookResult<
 
 export function useInstillSelectedConditionMap(
   tree: Nullable<InstillFormTree>,
-  initialValue: Nullable<GeneralRecord>
+  initialValue: Nullable<GeneralRecord>,
 ): UseInstillSelectedConditionMapResult {
   let initialConditionMap: Nullable<SelectedConditionMap> = {};
 

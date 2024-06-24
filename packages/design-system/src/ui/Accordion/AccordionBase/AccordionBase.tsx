@@ -164,7 +164,7 @@ const AccordionBase = (props: AccordionBaseProps) => {
         }
       });
     },
-    [setActiveIndex, allowMultiItems]
+    [setActiveIndex, allowMultiItems],
   );
 
   return (
@@ -174,7 +174,7 @@ const AccordionBase = (props: AccordionBaseProps) => {
           key={e.header}
           className={cn(
             "flex flex-col overflow-hidden",
-            type === "withIcon" ? "relative" : ""
+            type === "withIcon" ? "relative" : "",
           )}
         >
           {type === "withIcon" ? (
@@ -194,7 +194,7 @@ const AccordionBase = (props: AccordionBaseProps) => {
               headerStyle.headerPadding,
               activeIndex.includes(i)
                 ? e.headerActiveBgColor
-                : e.headerInActiveBgColor
+                : e.headerInActiveBgColor,
             )}
           >
             <div
@@ -205,7 +205,7 @@ const AccordionBase = (props: AccordionBaseProps) => {
                 headerStyle.headerFontWeight,
                 activeIndex.includes(i)
                   ? e.headerActiveTextColor
-                  : e.headerInActiveTextColor
+                  : e.headerInActiveTextColor,
               )}
             >
               {e.header}

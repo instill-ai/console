@@ -22,6 +22,6 @@ export const IconBase = React.forwardRef<SVGSVGElement, IconBaseProps>(
         {children}
       </svg>
     );
-  }
+  },
 );
 IconBase.displayName = "IconBase";

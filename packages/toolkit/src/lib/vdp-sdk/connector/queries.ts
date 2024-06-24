@@ -42,7 +42,7 @@ export async function listConnectorDefinitionsQuery({
           accessToken,
           nextPageToken: data.nextPageToken,
           filter,
-        }))
+        })),
       );
     }
 
@@ -67,7 +67,7 @@ export async function getConnectorDefinitionQuery({
     const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetConnectorDefinitionResponse>(
-      `/${connectorDefinitionName}?view=VIEW_FULL`
+      `/${connectorDefinitionName}?view=VIEW_FULL`,
     );
 
     return Promise.resolve(data.connectorDefinition);

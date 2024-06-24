@@ -110,7 +110,7 @@ export const NodeControlPanel = ({
       }
 
       nodePrefix = transformConnectorDefinitionIDToComponentIDPrefix(
-        nodeData.definition.id
+        nodeData.definition.id,
       );
 
       nodeType = "generalNode";
@@ -129,7 +129,7 @@ export const NodeControlPanel = ({
       isEditingIterator
         ? [...nodes, ...tempSavedNodesForEditingIteratorFlow].map((e) => e.id)
         : getAllNodeID(nodes),
-      nodePrefix
+      nodePrefix,
     );
 
     const nodeID = `${nodePrefix}-${nodeIndex}`;

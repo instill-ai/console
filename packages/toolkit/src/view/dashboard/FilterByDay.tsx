@@ -27,7 +27,7 @@ export const FilterByDay = ({
   React.useEffect(() => {
     if (days) {
       const timeLineOption = dashboardOptions.timeLine.find(
-        (timeLineOption) => timeLineOption.value === days
+        (timeLineOption) => timeLineOption.value === days,
       );
       if (timeLineOption) {
         setSelectedTimeOption(timeLineOption);
@@ -47,7 +47,7 @@ export const FilterByDay = ({
               "my-auto flex !h-10 cursor-pointer items-center justify-center self-stretch !px-4 !py-1 outline outline-1 outline-semantic-bg-line first:rounded-l-sm last:rounded-r-sm hover:bg-semantic-bg-secondary",
               timeLineOption.value === selectedTimeOption?.value
                 ? "bg-semantic-bg-line"
-                : "bg-white"
+                : "bg-white",
             )}
             onClick={() => {
               setSelectedTimeOption(timeLineOption);
@@ -55,7 +55,7 @@ export const FilterByDay = ({
                 `${
                   new URL(pathname, env("NEXT_PUBLIC_CONSOLE_BASE_URL"))
                     .pathname
-                }?days=${timeLineOption.value}`
+                }?days=${timeLineOption.value}`,
               );
             }}
           >

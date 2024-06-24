@@ -7,7 +7,7 @@ export type InstanceSegmentationIconProps = Omit<
 >;
 
 const InstanceSegmentationIcon: React.FC<InstanceSegmentationIconProps> = (
-  props
+  props,
 ) => {
   const { width, height, position, style, color } = props;
   return (

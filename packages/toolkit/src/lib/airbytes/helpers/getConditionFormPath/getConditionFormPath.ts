@@ -2,7 +2,7 @@ import { Nullable } from "../../../type";
 import { AirbyteFormConditionItem, AirbyteFormItem } from "../../types";
 
 export const getConditionFormPath = (
-  item: AirbyteFormConditionItem
+  item: AirbyteFormConditionItem,
 ): Nullable<string> => {
   // Try to find a workaround of Typescript limitation
   // https://github.com/microsoft/TypeScript/issues/9998

@@ -12,7 +12,7 @@ export const Label = React.forwardRef<
     ref={ref}
     className={cn(
       "flex text-semantic-fg-primary product-body-text-2-regular",
-      className
+      className,
     )}
     {...props}
   />

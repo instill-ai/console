@@ -30,7 +30,7 @@ export function useUpdateAuthenticatedUser() {
     onSuccess: (newUser) => {
       queryClient.setQueryData<AuthenticatedUser>(
         ["authenticated-user"],
-        newUser
+        newUser,
       );
     },
   });

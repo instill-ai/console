@@ -13,7 +13,7 @@ const Template: StoryFn<typeof VisualDataOperatorIcon> = (args) => (
 );
 
 export const Playground: StoryFn<typeof VisualDataOperatorIcon> = Template.bind(
-  {}
+  {},
 );
 
 Playground.args = {

@@ -155,7 +155,7 @@ export const TextField = ({
                       }
                       className={cn(
                         "nodrag nowheel placeholder:text-semantic-fg-disabled",
-                        size === "sm" ? "!product-body-text-4-regular" : ""
+                        size === "sm" ? "!product-body-text-4-regular" : "",
                       )}
                       placeholder={placeholder}
                       autoComplete="off"
@@ -208,7 +208,7 @@ export const TextField = ({
                   e.preventDefault();
                 }}
                 className={cn(
-                  "relative !w-[var(--radix-popover-trigger-width)] !rounded !p-0"
+                  "relative !w-[var(--radix-popover-trigger-width)] !rounded !p-0",
                 )}
                 align="end"
               >
@@ -246,7 +246,7 @@ export const TextField = ({
             <Form.Description
               className={cn(
                 "nodrag nopan cursor-text select-text",
-                size === "sm" ? "!product-body-text-4-regular" : ""
+                size === "sm" ? "!product-body-text-4-regular" : "",
               )}
               text={
                 supportInstillCredit && instillCredential

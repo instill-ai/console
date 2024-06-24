@@ -50,7 +50,7 @@ export const NavLink = ({ title, Icon, pathname }: NavLinkProps) => {
   const router = useRouter();
   const currentPathname = usePathname();
   const { navigationNamespaceAnchor } = useInstillStore(
-    useShallow(navLinkSelector)
+    useShallow(navLinkSelector),
   );
 
   const isOnIt = React.useMemo(() => {
@@ -69,7 +69,7 @@ export const NavLink = ({ title, Icon, pathname }: NavLinkProps) => {
   const namespaceAnchor = React.useMemo(() => {
     if (!navigationNamespaceAnchor) {
       const userNamespace = namespaces.find(
-        (namespace) => namespace.type === "user"
+        (namespace) => namespace.type === "user",
       );
 
       if (userNamespace) {
@@ -98,7 +98,7 @@ export const NavLink = ({ title, Icon, pathname }: NavLinkProps) => {
         "group flex h-10 flex-row gap-x-2 border-b-2 border-[#316FED] py-3 product-button-button-1 hover:text-semantic-accent-default",
         isOnIt
           ? "border-opacity-100 text-semantic-fg-primary"
-          : "border-opacity-0 text-semantic-fg-disabled"
+          : "border-opacity-0 text-semantic-fg-disabled",
       )}
     >
       <Icon className="h-5 w-5 stroke-semantic-fg-disabled group-hover:stroke-semantic-accent-default" />
@@ -114,7 +114,7 @@ const navLinksSelector = (store: InstillStore) => ({
 
 export const NavLinks = () => {
   const { accessToken, enabledQuery } = useInstillStore(
-    useShallow(navLinksSelector)
+    useShallow(navLinksSelector),
   );
   const me = useAuthenticatedUser({
     enabled: enabledQuery,

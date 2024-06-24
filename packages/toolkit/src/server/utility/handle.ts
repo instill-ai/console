@@ -1,7 +1,7 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export async function handle<T>(
   promise: Promise<T>,
-  defaultError: any = "rejected"
+  defaultError: any = "rejected",
 ): Promise<readonly [undefined, T] | readonly [any, undefined]> {
   return promise
     .then((data) => {
