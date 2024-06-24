@@ -13,6 +13,6 @@ export const useInstillStore = create<InstillStore>()(
       ...createPipelineBuilderSlice(...a),
       ...createGeneralSlice(...a),
       ...createRecentlyUsedSlice(...a),
-    }))
-  )
+    })),
+  ),
 );

@@ -53,7 +53,7 @@ const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
         // This removes "TASK_" and replaces "_" with a space. The first
         // argument has and OR operator for matching both substrings. The second
         // argument is a function with a condition.
-        taskName.replace(/TASK_|_/g, (d) => (d === "TASK_" ? "" : " "))
+        taskName.replace(/TASK_|_/g, (d) => (d === "TASK_" ? "" : " ")),
       )
     : null;
 
@@ -79,7 +79,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
     useState<ModelOutputActiveView>("preview");
   const taskPropName = useMemo(
     () => convertTaskNameToPayloadPropName(model?.task),
-    [model]
+    [model],
   );
   const [modelRunResult, setModelRunResult] = useState<Record<
     string,
@@ -109,7 +109,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
     inputFromExistingResult,
     {
       disabledAll: !isModelTriggerable,
-    }
+    },
   );
 
   const existingModelTriggerResult = useLastModelTriggerResult({
@@ -184,16 +184,16 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
       !modelRunResult
     ) {
       const taskPropName = convertTaskNameToPayloadPropName(
-        model.task
+        model.task,
       ) as string;
 
       setInputFromExistingResult(
         convertValuesToString(
-          existingTriggerState.response.request.taskInputs[0][taskPropName]
-        )
+          existingTriggerState.response.request.taskInputs[0][taskPropName],
+        ),
       );
       setModelRunResult(
-        existingTriggerState.response.response.taskOutputs[0][taskPropName]
+        existingTriggerState.response.response.taskOutputs[0][taskPropName],
       );
     }
   }, [
@@ -211,7 +211,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
   const triggerModel = useTriggerUserModelAsync();
 
   async function onRunModel(
-    formData: Record<string, unknown> /* z.infer<typeof Schema> */
+    formData: Record<string, unknown> /* z.infer<typeof Schema> */,
   ) {
     if (!model || !model.name || !taskPropName) return;
 
@@ -230,7 +230,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
     setIsModelRunInProgress(true);
 
     const input = recursiveHelpers.removeUndefinedAndNullFromArray(
-      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(parsedData)
+      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(parsedData),
     );
 
     const parsedStructuredData: GeneralRecord = input;

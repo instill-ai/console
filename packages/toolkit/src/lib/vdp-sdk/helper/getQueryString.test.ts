@@ -15,7 +15,7 @@ test("baseURL contains no query string", () => {
   });
 
   expect(queryString).toBe(
-    "https://www.google.com?pageSize=10&pageToken=nextPageToken&filter=filter=a"
+    "https://www.google.com?pageSize=10&pageToken=nextPageToken&filter=filter=a",
   );
 });
 
@@ -33,7 +33,7 @@ test("baseURL contains a query string", () => {
   });
 
   expect(queryString).toBe(
-    "https://www.google.com?q=hello&pageSize=10&pageToken=nextPageToken&filter=filter=a"
+    "https://www.google.com?q=hello&pageSize=10&pageToken=nextPageToken&filter=filter=a",
   );
 });
 
@@ -51,7 +51,7 @@ test("pageSize is null", () => {
   });
 
   expect(queryString).toBe(
-    "https://www.google.com?pageToken=nextPageToken&filter=filter=a"
+    "https://www.google.com?pageToken=nextPageToken&filter=filter=a",
   );
 });
 
@@ -69,7 +69,7 @@ test("nextPageToken is null", () => {
   });
 
   expect(queryString).toBe(
-    "https://www.google.com?pageSize=10&filter=filter=a"
+    "https://www.google.com?pageSize=10&filter=filter=a",
   );
 });
 
@@ -87,7 +87,7 @@ test("filter is null", () => {
   });
 
   expect(queryString).toBe(
-    "https://www.google.com?pageSize=10&pageToken=nextPageToken"
+    "https://www.google.com?pageSize=10&pageToken=nextPageToken",
   );
 });
 
@@ -185,7 +185,7 @@ test("baseURL contains a query string, pageSize and filter are null", () => {
   });
 
   expect(queryString).toBe(
-    "https://www.google.com?q=hello&pageToken=nextPageToken"
+    "https://www.google.com?q=hello&pageToken=nextPageToken",
   );
 });
 
@@ -219,6 +219,6 @@ test("baseURL contains a query string, all other fields included", () => {
   });
 
   expect(queryString).toBe(
-    "https://www.google.com?q=hello&pageSize=10&pageToken=nextPageToken&filter=filter=a"
+    "https://www.google.com?q=hello&pageSize=10&pageToken=nextPageToken&filter=filter=a",
   );
 });

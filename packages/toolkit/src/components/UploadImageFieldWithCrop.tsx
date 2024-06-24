@@ -79,7 +79,7 @@ export const UploadImageFieldWithCrop = ({
                       alt={title}
                       className={cn(
                         "h-[150px] object-contain",
-                        rounded ? "rounded-full" : null
+                        rounded ? "rounded-full" : null,
                       )}
                       width={150}
                       height={150}

@@ -26,7 +26,7 @@ export const Body = ({ pipeline }: { pipeline: Pipeline }) => {
           className="my-auto !normal-case text-semantic-accent-default product-button-button-2 hover:!underline"
           onClick={() => {
             router.push(
-              `/${pipeline.ownerName.split("/")[1]}/pipelines/${pipeline.id}`
+              `/${pipeline.ownerName.split("/")[1]}/pipelines/${pipeline.id}`,
             );
           }}
         >

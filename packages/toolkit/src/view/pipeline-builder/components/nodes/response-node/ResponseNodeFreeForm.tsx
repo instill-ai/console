@@ -96,7 +96,7 @@ export const ResponseNodeFreeForm = ({
                           if (!isUserInputKey && !isEditing) {
                             form.setValue(
                               "key",
-                              constructFieldKey(event.target.value)
+                              constructFieldKey(event.target.value),
                             );
                           }
                           field.onChange(event);

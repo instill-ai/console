@@ -79,7 +79,7 @@ export const IteratorEditor = ({
                       ...node.data,
                       component: composePipelineComponentMapFromNodes(
                         nodes,
-                        true
+                        true,
                       ),
                       metadata: composePipelineMetadataMapFromNodes(nodes),
                       outputElements: node.data.outputElements,
@@ -88,7 +88,7 @@ export const IteratorEditor = ({
                 }
 
                 return node;
-              }
+              },
             );
 
             const newEdges = composeEdgesFromNodes(newNodes);

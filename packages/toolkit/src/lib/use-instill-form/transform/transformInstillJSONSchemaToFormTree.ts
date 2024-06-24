@@ -18,7 +18,7 @@ export type TransformInstillJSONSchemaToFormTreeOptions = {
 
 export function transformInstillJSONSchemaToFormTree(
   targetSchema: InstillJSONSchemaDefinition,
-  options?: TransformInstillJSONSchemaToFormTreeOptions
+  options?: TransformInstillJSONSchemaToFormTreeOptions,
 ): InstillFormTree {
   let isRequired = false;
   const key = options?.key;
@@ -70,7 +70,7 @@ export function transformInstillJSONSchemaToFormTree(
   // 1.1 Get the type and instillAcceptFormats from anyOf field
   if (targetSchema.anyOf && targetSchema.anyOf.length > 0) {
     const instillUpstreamValue = targetSchema.anyOf.find(
-      (e) => e.instillUpstreamType === "value"
+      (e) => e.instillUpstreamType === "value",
     );
 
     if (instillUpstreamValue) {
@@ -123,7 +123,7 @@ export function transformInstillJSONSchemaToFormTree(
       }
 
       const { constKey, constValue } = pickConstInfoFromOneOfCondition(
-        condition.properties ?? {}
+        condition.properties ?? {},
       );
 
       // Some time oneOf field will also have properties fields to support
@@ -152,7 +152,7 @@ export function transformInstillJSONSchemaToFormTree(
                 key,
                 path,
                 checkIsHidden,
-              }
+              },
             ) as InstillFormGroupItem,
           ]);
         }
@@ -173,7 +173,7 @@ export function transformInstillJSONSchemaToFormTree(
             key,
             path,
             checkIsHidden,
-          }
+          },
         ) as InstillFormGroupItem,
       ]);
     }
@@ -182,7 +182,7 @@ export function transformInstillJSONSchemaToFormTree(
 
     const constField = targetSchema.oneOf[0].properties
       ? Object.entries(targetSchema.oneOf[0].properties).find(
-          ([, property]) => "const" in property
+          ([, property]) => "const" in property,
         )?.[1]
       : undefined;
 
@@ -220,7 +220,7 @@ export function transformInstillJSONSchemaToFormTree(
           key,
           path,
           checkIsHidden,
-        }
+        },
       );
 
       return {
@@ -263,7 +263,7 @@ export function transformInstillJSONSchemaToFormTree(
         key,
         path,
         checkIsHidden,
-      }
+      },
     );
 
     return {
@@ -304,7 +304,7 @@ export function transformInstillJSONSchemaToFormTree(
           key,
           path: path ? `${path}.${key}` : key,
           checkIsHidden,
-        })
+        }),
       )
       .sort((a, b) => {
         if (typeof a.instillUIOrder === "undefined") {
@@ -373,7 +373,7 @@ const baseFields: Array<keyof InstillJSONSchema> = [
 
 function pickBaseFields(
   schema: InstillJSONSchema,
-  ignoreFields?: string[]
+  ignoreFields?: string[],
 ): Partial<InstillJSONSchema> {
   const partialSchema: Partial<InstillJSONSchema> = {
     ...Object.fromEntries(
@@ -383,7 +383,7 @@ function pickBaseFields(
         }
 
         return baseFields.includes(k as keyof InstillJSONSchema);
-      })
+      }),
     ),
   };
 
@@ -405,7 +405,7 @@ function pickBaseFields(
 }
 
 function isDefined<T>(
-  a: T | null | undefined
+  a: T | null | undefined,
 ): a is Exclude<T, null | undefined> {
   return a !== undefined && a !== null;
 }

@@ -7,7 +7,7 @@ export type GenerateDateInPastOptions = {
 
 export const generateDateInPast = (
   startDate: string | number,
-  { hours, days, months, years }: GenerateDateInPastOptions
+  { hours, days, months, years }: GenerateDateInPastOptions,
 ) => {
   const date = new Date(startDate);
 

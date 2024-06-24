@@ -7,7 +7,7 @@ import { recursiveHelpers } from "./recursive-helpers";
 
 export function composePipelineComponentMapFromNodes(
   nodes: Node<NodeData>[],
-  retainDefinition?: boolean
+  retainDefinition?: boolean,
 ) {
   const componentMap: PipelineComponentMap = {};
 
@@ -25,11 +25,11 @@ export function composePipelineComponentMapFromNodes(
                   definition: retainDefinition ? e.definition : undefined,
                   input:
                     recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-                      recursiveHelpers.parseToNum(structuredClone(e.input))
+                      recursiveHelpers.parseToNum(structuredClone(e.input)),
                     ),
                   setup: e.setup
                     ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-                        recursiveHelpers.parseToNum(structuredClone(e.setup))
+                        recursiveHelpers.parseToNum(structuredClone(e.setup)),
                       )
                     : undefined,
                 },
@@ -37,7 +37,7 @@ export function composePipelineComponentMapFromNodes(
             }
 
             return [key, e];
-          })
+          }),
         ),
       };
 
@@ -48,11 +48,11 @@ export function composePipelineComponentMapFromNodes(
       componentMap[node.id] = {
         ...node.data,
         input: recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-          recursiveHelpers.parseToNum(structuredClone(node.data.input))
+          recursiveHelpers.parseToNum(structuredClone(node.data.input)),
         ),
         setup: node.data.setup
           ? recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
-              recursiveHelpers.parseToNum(structuredClone(node.data.setup))
+              recursiveHelpers.parseToNum(structuredClone(node.data.setup)),
             )
           : undefined,
         definition: retainDefinition ? node.data.definition : undefined,

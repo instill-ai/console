@@ -45,7 +45,7 @@ export async function createApiTokenMutation({
 
     const { data } = await client.post<CreateApiTokenResponse>(
       "/tokens",
-      payload
+      payload,
     );
 
     return Promise.resolve(data.token);

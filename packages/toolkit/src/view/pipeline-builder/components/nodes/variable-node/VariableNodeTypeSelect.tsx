@@ -18,7 +18,7 @@ export const VariableNodeTypeSelect = ({
   id: string;
 }) => {
   const recentlyUsedStartComponentFieldTypes = useInstillStore(
-    (store) => store.recentlyUsedStartComponentFieldTypes
+    (store) => store.recentlyUsedStartComponentFieldTypes,
   );
 
   const recentlyUsedTypes = React.useMemo(() => {
@@ -49,7 +49,7 @@ export const VariableNodeTypeSelect = ({
                   key={key}
                   className={cn(
                     "!px-1 !py-0 data-[highlighted]:!rounded data-[highlighted]:!bg-[#F1F3F9] data-[highlighted]:!stroke-semantic-fg-primary",
-                    selectedType === key ? "bg-[#F1F3F9]" : ""
+                    selectedType === key ? "bg-[#F1F3F9]" : "",
                   )}
                   value={key}
                   disabledCheck={true}
@@ -74,7 +74,7 @@ export const VariableNodeTypeSelect = ({
           <div className="flex flex-col gap-y-2">
             {Object.entries(triggerNodeFields)
               .filter(
-                ([key]) => !recentlyUsedStartComponentFieldTypes.includes(key)
+                ([key]) => !recentlyUsedStartComponentFieldTypes.includes(key),
               )
               .sort((a, b) => a[1].order - b[1].order)
               .map(([key, field]) => (
@@ -82,7 +82,7 @@ export const VariableNodeTypeSelect = ({
                   key={key}
                   className={cn(
                     "!px-1 !py-0 data-[highlighted]:!rounded data-[highlighted]:!bg-[#F1F3F9] data-[highlighted]:!stroke-semantic-fg-primary",
-                    selectedType === key ? "bg-[#F1F3F9]" : ""
+                    selectedType === key ? "bg-[#F1F3F9]" : "",
                   )}
                   value={key}
                   disabledCheck={true}

@@ -39,7 +39,7 @@ export function useRestoreUserPipelineRelease() {
 
       queryClient.setQueryData<PipelineRelease>(
         ["pipelineReleases", pipelineRelease.name],
-        pipelineRelease
+        pipelineRelease,
       );
 
       queryClient.setQueryData<PipelineRelease[]>(
@@ -50,7 +50,7 @@ export function useRestoreUserPipelineRelease() {
                 ...old.filter((e) => e.name !== pipelineRelease.name),
                 pipelineRelease,
               ]
-            : [pipelineRelease]
+            : [pipelineRelease],
       );
 
       // process watch state
@@ -62,7 +62,7 @@ export function useRestoreUserPipelineRelease() {
 
       queryClient.setQueryData<PipelineReleaseWatchState>(
         ["pipelineReleases", pipelineRelease.name, "watch"],
-        watch
+        watch,
       );
 
       queryClient.setQueryData<PipelineReleasesWatchState>(
@@ -73,7 +73,7 @@ export function useRestoreUserPipelineRelease() {
                 ...removeObjKey(old, pipelineRelease.name),
                 [pipelineRelease.name]: watch,
               }
-            : { [pipelineRelease.name]: watch }
+            : { [pipelineRelease.name]: watch },
       );
     },
   });

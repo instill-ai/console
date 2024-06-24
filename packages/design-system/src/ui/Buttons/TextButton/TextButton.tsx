@@ -96,7 +96,7 @@ const TextButton = (props: TextButtonProps) => {
     // }
     default: {
       throw new Error(
-        `Button variant ${props.color} not support, TextButton only support variant=primary`
+        `Button variant ${props.color} not support, TextButton only support variant=primary`,
       );
     }
   }

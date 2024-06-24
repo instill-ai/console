@@ -1,6 +1,6 @@
 export function calculatePercentageDelta(
   previousCount: number,
-  currentCount: number
+  currentCount: number,
 ): number {
   if (previousCount === 0 && currentCount === 0) {
     return 0; // Both counts are zero, return 0 as percentage change

@@ -28,7 +28,7 @@ export const Logo = (props: LogoProps) => {
 
   const getWhiteLogomarkWhiteType = (
     width: number,
-    className?: string
+    className?: string,
   ): React.ReactElement => {
     return (
       <svg
@@ -101,7 +101,7 @@ export const Logo = (props: LogoProps) => {
 
   const getBlackLogomarkBlackType = (
     width: number,
-    className?: string
+    className?: string,
   ): React.ReactElement => {
     return (
       <svg
@@ -186,7 +186,7 @@ export const Logo = (props: LogoProps) => {
 
   const getWhiteLogomark = (
     width: number,
-    className?: string
+    className?: string,
   ): React.ReactElement => {
     return (
       <svg
@@ -207,7 +207,7 @@ export const Logo = (props: LogoProps) => {
 
   const getBlackLogomark = (
     width: number,
-    className?: string
+    className?: string,
   ): React.ReactElement => {
     return (
       <svg
@@ -230,7 +230,7 @@ export const Logo = (props: LogoProps) => {
 
   const getBlueLogomark = (
     width: number,
-    className?: string
+    className?: string,
   ): React.ReactElement => {
     return (
       <svg
@@ -326,7 +326,7 @@ export const Logo = (props: LogoProps) => {
 
   const getColourLogomark = (
     width: number,
-    className?: string
+    className?: string,
   ): React.ReactElement => {
     return (
       <svg
@@ -422,7 +422,7 @@ export const Logo = (props: LogoProps) => {
 
   const getColourLogomarkBlackType = (
     width: number,
-    className?: string
+    className?: string,
   ): React.ReactElement => {
     return (
       <svg
@@ -567,7 +567,7 @@ export const Logo = (props: LogoProps) => {
 
   const getColourLogomarkWhiteType = (
     width: number,
-    className?: string
+    className?: string,
   ): React.ReactElement => {
     return (
       <svg

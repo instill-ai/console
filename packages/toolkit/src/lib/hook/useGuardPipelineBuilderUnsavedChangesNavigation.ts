@@ -41,6 +41,6 @@ export function useGuardPipelineBuilderUnsavedChangesNavigation() {
       updateWarnUnsavdChangesDialogState,
       router,
       pathname,
-    ]
+    ],
   );
 }

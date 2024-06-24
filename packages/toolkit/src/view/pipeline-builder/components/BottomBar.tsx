@@ -116,14 +116,14 @@ export const BottomBar = () => {
                             pipeline.data.recipe,
                             {
                               metadata: pipeline.data.metadata,
-                            }
+                            },
                           );
                           const edges = composeEdgesFromNodes(nodes);
                           newNodes = nodes;
                           newEdges = edges;
                         } else {
                           const nodes = createNodesFromPipelineRecipe(
-                            pipeline.data.recipe
+                            pipeline.data.recipe,
                           );
                           const edges = composeEdgesFromNodes(nodes);
                           newNodes = nodes;
@@ -164,7 +164,7 @@ export const BottomBar = () => {
                               release.recipe,
                               {
                                 metadata: release.metadata,
-                              }
+                              },
                             );
                             const edges = composeEdgesFromNodes(nodes);
 
@@ -172,7 +172,7 @@ export const BottomBar = () => {
                             newEdges = edges;
                           } else {
                             const nodes = createNodesFromPipelineRecipe(
-                              release.recipe
+                              release.recipe,
                             );
                             const edges = composeEdgesFromNodes(nodes);
                             newNodes = nodes;
@@ -232,7 +232,7 @@ const VersionButton = ({
       key={id}
       className={cn(
         "w-full",
-        currentVersion === id ? "hover:!bg-semantic-accent-default" : ""
+        currentVersion === id ? "hover:!bg-semantic-accent-default" : "",
       )}
       variant={currentVersion === id ? "primary" : "tertiaryColour"}
       onClick={onClick}
@@ -243,7 +243,7 @@ const VersionButton = ({
             "w-full text-left product-body-text-3-medium",
             currentVersion === id
               ? "text-semantic-fg-on-default"
-              : "text-semantic-fg-secondary"
+              : "text-semantic-fg-secondary",
           )}
         >
           {id}
@@ -254,7 +254,7 @@ const VersionButton = ({
               "w-full text-left product-body-text-4-medium",
               currentVersion === id
                 ? "text-semantic-fg-on-default"
-                : "text-semantic-fg-disabled"
+                : "text-semantic-fg-disabled",
             )}
           >
             {getHumanReadableStringFromTime(createTime, Date.now())}

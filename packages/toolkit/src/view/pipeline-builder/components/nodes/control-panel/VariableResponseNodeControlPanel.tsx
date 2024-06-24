@@ -26,7 +26,7 @@ export function VariableResponseNodeControlPanel({
 }) {
   const [moreOptionsIsOpen, setMoreOptionsIsOpen] = React.useState(false);
   const pipelineIsReadOnly = useInstillStore(
-    (store) => store.pipelineIsReadOnly
+    (store) => store.pipelineIsReadOnly,
   );
 
   return (
@@ -58,7 +58,7 @@ export function VariableResponseNodeControlPanel({
                       "h-3 w-6 transition-colors duration-500",
                       disabledReferenceHint
                         ? "stroke-semantic-fg-secondary"
-                        : "stroke-semantic-accent-default"
+                        : "stroke-semantic-accent-default",
                     )}
                   />
                 </button>

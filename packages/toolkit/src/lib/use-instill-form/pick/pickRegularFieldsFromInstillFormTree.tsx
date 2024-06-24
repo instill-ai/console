@@ -41,7 +41,7 @@ export function pickRegularFieldsFromInstillFormTree(
   setSelectedConditionMap: React.Dispatch<
     React.SetStateAction<SelectedConditionMap | null>
   >,
-  options?: PickRegularFieldsFromInstillFormTreeOptions
+  options?: PickRegularFieldsFromInstillFormTreeOptions,
 ): React.ReactNode {
   const disabledAll = options?.disabledAll ?? false;
   const chooseTitleFrom = options?.chooseTitleFrom ?? "title";
@@ -104,7 +104,7 @@ export function pickRegularFieldsFromInstillFormTree(
               form,
               selectedConditionMap,
               setSelectedConditionMap,
-              options
+              options,
             );
           })}
         </React.Fragment>
@@ -136,7 +136,7 @@ export function pickRegularFieldsFromInstillFormTree(
                 // We only enable collapsible form group for the first level
                 ...options,
                 enabledCollapsibleFormGroup: false,
-              }
+              },
             );
           })}
         </RegularFields.CollapsibleFormGroup>
@@ -150,7 +150,7 @@ export function pickRegularFieldsFromInstillFormTree(
             "mb-2 text-semantic-fg-primary",
             size === "sm"
               ? "product-body-text-4-medium"
-              : "product-body-text-3-medium"
+              : "product-body-text-3-medium",
           )}
         >
           {title}
@@ -162,7 +162,7 @@ export function pickRegularFieldsFromInstillFormTree(
               form,
               selectedConditionMap,
               setSelectedConditionMap,
-              options
+              options,
             );
           })}
         </div>
@@ -183,12 +183,12 @@ export function pickRegularFieldsFromInstillFormTree(
               form,
               selectedConditionMap,
               setSelectedConditionMap,
-              options
+              options,
             ),
             title: constInfo?.title ?? null,
           },
         ];
-      })
+      }),
     );
 
     // We will use the const path as the OneOfConditionField's path
@@ -204,7 +204,7 @@ export function pickRegularFieldsFromInstillFormTree(
 
     if (selectedCondition && tree.conditions[selectedCondition]) {
       selectedConstField = tree.conditions[selectedCondition].properties.find(
-        (e) => "const" in e
+        (e) => "const" in e,
       );
     }
 
@@ -243,7 +243,7 @@ export function pickRegularFieldsFromInstillFormTree(
           form,
           selectedConditionMap,
           setSelectedConditionMap,
-          options
+          options,
         )}
       </React.Fragment>
     );
@@ -257,7 +257,7 @@ export function pickRegularFieldsFromInstillFormTree(
           form,
           selectedConditionMap,
           setSelectedConditionMap,
-          options
+          options,
         )}
       </React.Fragment>
     );

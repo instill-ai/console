@@ -7,7 +7,7 @@ export async function fetchUserModels(
   userName: string,
   accessToken: Nullable<string>,
   filter: Nullable<string>,
-  visibility: Nullable<Visibility>
+  visibility: Nullable<Visibility>,
 ) {
   try {
     const models = await listUserModelsQuery({
@@ -58,7 +58,7 @@ export const useUserModels = ({
         userName,
         accessToken,
         filter,
-        visibility
+        visibility,
       );
       return Promise.resolve(models);
     },

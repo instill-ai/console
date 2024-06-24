@@ -85,7 +85,7 @@ export const ResponseNode = ({ data, id }: NodeProps<ResponseNodeData>) => {
   });
 
   const onCreateFreeFormField = (
-    formData: z.infer<typeof ResponseNodeFreeFormSchema>
+    formData: z.infer<typeof ResponseNodeFreeFormSchema>,
   ) => {
     if (Object.keys(data.fields).includes(formData.key)) {
       if (isEditing) {
@@ -314,7 +314,7 @@ export const ResponseNode = ({ data, id }: NodeProps<ResponseNodeData>) => {
                             value: item.value,
                             instillUiOrder: index,
                           },
-                        ])
+                        ]),
                       );
 
                       node.data = {
@@ -359,7 +359,7 @@ export const ResponseNode = ({ data, id }: NodeProps<ResponseNodeData>) => {
                 "my-auto h-4 w-4 stroke-semantic-accent-default",
                 disabledAddFieldButton
                   ? "stroke-semantic-fg-secondary"
-                  : "stroke-semantic-accent-default"
+                  : "stroke-semantic-accent-default",
               )}
             />
           </Button>

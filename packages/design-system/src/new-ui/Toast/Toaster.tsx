@@ -29,7 +29,7 @@ export function Toaster(props: ToasterProps) {
 
         if (variant === "notification-icon" && !icon) {
           throw new Error(
-            "Toaster: variant `notification-icon` requires `icon` prop"
+            "Toaster: variant `notification-icon` requires `icon` prop",
           );
         }
 
@@ -102,7 +102,7 @@ export function Toaster(props: ToasterProps) {
 
 function getToasterIcon(
   variant: ToastProps["variant"],
-  icon?: ToasterToast["icon"]
+  icon?: ToasterToast["icon"],
 ) {
   if (variant?.includes("success")) {
     return (

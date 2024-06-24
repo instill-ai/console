@@ -22,6 +22,6 @@ export const LogoBase = React.forwardRef<SVGSVGElement, LogoBaseProps>(
         {children}
       </svg>
     );
-  }
+  },
 );
 LogoBase.displayName = "LogoBase";

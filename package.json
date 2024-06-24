@@ -31,7 +31,6 @@
     "js-yaml": "^4.1.0",
     "lint-staged": ">=10",
     "prettier": "latest",
-    "prettier-plugin-tailwindcss": "latest",
     "@instill-ai/prettier-config-cortex": "workspace:*",
     "turbo": "latest",
     "typescript": "^5.4.2"
@@ -46,12 +45,10 @@
       "express": "4.19.2"
     }
   },
+  "prettier": "@instill-ai/prettier-config-cortex",
   "lint-staged": {
-    "**/*.{ts,tsx}": [
-      "prettier --write"
-    ],
     "**/*.{js,jsx,ts,tsx}": [
-      "eslint --cache --fix"
+      "prettier --write"
     ]
   }
 }

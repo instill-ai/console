@@ -35,7 +35,7 @@ export async function authLoginAction({
 
     const { data } = await client.post<AuthLoginActionResponse>(
       "/auth/login",
-      payload
+      payload,
     );
 
     return Promise.resolve(data.accessToken);
@@ -74,7 +74,7 @@ export async function checkNamespace({
       "/check-namespace",
       {
         id,
-      }
+      },
     );
     return Promise.resolve(data.type);
   } catch (err) {

@@ -31,7 +31,7 @@ export async function fetchUserPipelineReleases({
 }
 
 export function getUseUserPipelineReleasesQueryKey(
-  pipelineName: Nullable<string>
+  pipelineName: Nullable<string>,
 ) {
   return ["pipelineReleases", pipelineName];
 }

@@ -19,7 +19,7 @@ export function getTimeInRFC3339Format(interval: string): string {
 
   if (!match) {
     throw new Error(
-      "Invalid time interval format. Supported formats are: now, todayStart, 1h, 3h, 6h, 24h, 1d, 7d"
+      "Invalid time interval format. Supported formats are: now, todayStart, 1h, 3h, 6h, 24h, 1d, 7d",
     );
   }
 
@@ -32,7 +32,7 @@ export function getTimeInRFC3339Format(interval: string): string {
 
   if (!Object.prototype.hasOwnProperty.call(timeUnits, unit)) {
     throw new Error(
-      "Invalid time unit. Supported units are: h (hour), d (day)"
+      "Invalid time unit. Supported units are: h (hour), d (day)",
     );
   }
 

@@ -44,7 +44,7 @@ export const ModelReadmeMarkdown = ({
           <h3 className="text-instillGrey90 text-instill-h3 mx-auto mt-auto">
             There is no Model card
           </h3>
-          <p className="mx-auto mb-auto text-semantic-node-disconnected-default-stroke text-instill-body">
+          <p className="text-semantic-node-disconnected-default-stroke text-instill-body mx-auto mb-auto">
             You can add a README.md to describe the model.
           </p>
         </React.Fragment>

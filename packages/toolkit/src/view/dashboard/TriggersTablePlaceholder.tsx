@@ -12,7 +12,7 @@ export type TriggersTablePlaceholderProps = Pick<
 >;
 
 export const TriggersTablePlaceholder = (
-  props: TriggersTablePlaceholderProps
+  props: TriggersTablePlaceholderProps,
 ) => {
   const { marginBottom, enableCreateButton } = props;
   const width = "w-[136px]";

@@ -85,7 +85,7 @@ export const PipelineBuilderMainView = () => {
     if (!pipeline.isSuccess) return;
 
     updatePipelineOpenAPIOutputSchema(
-      () => pipeline.data.dataSpecification?.output ?? null
+      () => pipeline.data.dataSpecification?.output ?? null,
     );
   }, [pipeline.isSuccess, pipeline.data, updatePipelineOpenAPIOutputSchema]);
 
@@ -141,7 +141,9 @@ export const PipelineBuilderMainView = () => {
                 "fixed left-full w-[450px] transform overflow-y-scroll rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-6 shadow-sm duration-500",
                 "h-[calc(100vh-var(--topbar-controller-height)-var(--pipeline-builder-bottom-bar-height)-var(--pipeline-builder-minimap-height)-var(--pipeline-builder-top-right-controler-height)-calc(4*var(--pipeline-builder-controller-padding)))]",
                 "top-[calc(var(--topbar-controller-height)+var(--pipeline-builder-top-right-controler-height)+calc(2*var(--pipeline-builder-controller-padding)))]",
-                currentAdvancedConfigurationNodeID ? "-translate-x-[450px]" : ""
+                currentAdvancedConfigurationNodeID
+                  ? "-translate-x-[450px]"
+                  : "",
               )}
             >
               <RightPanel />

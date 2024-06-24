@@ -45,7 +45,7 @@ export function MultiSelect({
           variant="secondaryGrey"
           className={cn(
             "w-full justify-between",
-            selectedOptions.length > 0 ? "h-full" : "h-10"
+            selectedOptions.length > 0 ? "h-full" : "h-10",
           )}
         >
           {selectedOptions.length > 0 ? (
@@ -117,7 +117,7 @@ export function MultiSelect({
                   onChange(
                     selectedOptions.includes(option.value)
                       ? selectedOptions.filter((item) => item !== option.value)
-                      : [...selectedOptions, option.value]
+                      : [...selectedOptions, option.value],
                   );
                   setOpen(true);
                 }}
@@ -127,7 +127,7 @@ export function MultiSelect({
                     "h-4 w-4 stroke-semantic-fg-secondary",
                     selectedOptions.includes(option.value)
                       ? "opacity-100"
-                      : "opacity-0"
+                      : "opacity-0",
                   )}
                 />
                 {option.startIcon}

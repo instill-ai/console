@@ -19,7 +19,7 @@ export const CopyToClipboardButton = ({
     <Button
       className={cn(
         "flex items-center justify-center gap-x-1 !border !px-2 font-semibold",
-        className
+        className,
       )}
       variant="secondaryGrey"
       size="md"

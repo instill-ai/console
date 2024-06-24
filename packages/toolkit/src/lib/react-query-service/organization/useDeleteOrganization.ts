@@ -25,7 +25,7 @@ export function useDeleteOrganization() {
     },
     onSuccess: (organizationID) => {
       queryClient.setQueryData<Organization[]>(["organizations"], (old) =>
-        old ? old.filter((e) => e.id !== organizationID) : []
+        old ? old.filter((e) => e.id !== organizationID) : [],
       );
     },
   });

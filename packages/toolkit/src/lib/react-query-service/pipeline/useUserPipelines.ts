@@ -9,7 +9,7 @@ export async function fetchUserPipelines(
   userName: string,
   accessToken: Nullable<string>,
   filter: Nullable<string>,
-  visibility: Nullable<Visibility>
+  visibility: Nullable<Visibility>,
 ) {
   try {
     const pipelines = await listUserPipelinesQuery({
@@ -64,7 +64,7 @@ export const useUserPipelines = ({
         userName,
         accessToken,
         filter,
-        visibility
+        visibility,
       );
       return Promise.resolve(pipelines);
     },

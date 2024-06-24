@@ -55,13 +55,13 @@ const IconBase = ({
   if (style) {
     if (width) {
       throw new Error(
-        "Should not use style props together with utility class - width"
+        "Should not use style props together with utility class - width",
       );
     }
 
     if (height) {
       throw new Error(
-        "Should not use style props together with utility class - height"
+        "Should not use style props together with utility class - height",
       );
     }
   }

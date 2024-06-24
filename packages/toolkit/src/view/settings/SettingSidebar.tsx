@@ -31,7 +31,7 @@ export const SettingSidebarItem = ({
       className={cn(
         "flex w-40 flex-row items-center rounded px-3 py-[9px] hover:bg-semantic-accent-bg",
         highlighted ? "bg-semantic-accent-bg" : "",
-        className
+        className,
       )}
     >
       <div className="flex flex-row items-center space-x-3">
@@ -41,7 +41,7 @@ export const SettingSidebarItem = ({
             "text-semantic-fg-primary product-body-text-2-semibold",
             highlighted
               ? "text-semantic-accent-default"
-              : "text-semantic-fg-secondary"
+              : "text-semantic-fg-secondary",
           )}
         >
           {name}

@@ -2,7 +2,7 @@ import { GeneralRecord, InstillJSONSchema } from "../../../lib";
 import { InstillAIOpenAPIProperty } from "./getPropertiesFromOpenAPISchema";
 
 export function composePipelineInputSnippet(
-  properties: InstillAIOpenAPIProperty[]
+  properties: InstillAIOpenAPIProperty[],
 ) {
   const input: GeneralRecord = {};
 

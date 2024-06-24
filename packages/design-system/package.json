@@ -143,5 +143,10 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --cache --fix"
+    ]
   }
 }

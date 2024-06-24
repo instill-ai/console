@@ -30,11 +30,11 @@ export function useCreateOrganization() {
     },
     onSuccess: ({ organization }) => {
       queryClient.setQueryData<Organization[]>(["organizations"], (old) =>
-        old ? [...old, organization] : [organization]
+        old ? [...old, organization] : [organization],
       );
       queryClient.setQueryData<Organization>(
         ["organizations", organization],
-        organization
+        organization,
       );
     },
   });

@@ -10,7 +10,7 @@ const checkboxStyle = cn(
   "hover:border-semantic-accent-hover hover:bg-semantic-accent-bg hover:data-[state=checked]:bg-semantic-accent-hover hover:data-[state=checked]:border-semantic-accent-hover",
   "data-[state=checked]:bg-semantic-accent-default data-[state=checked]:border-semantic-accent-default",
   "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-semantic-accent-default focus-visible:ring-offset-2",
-  "disabled:cursor-not-allowed disabled:!bg-semantic-bg-secondary disabled:!border-semantic-bg-line"
+  "disabled:cursor-not-allowed disabled:!bg-semantic-bg-secondary disabled:!border-semantic-bg-line",
 );
 
 const Checkbox = React.forwardRef<

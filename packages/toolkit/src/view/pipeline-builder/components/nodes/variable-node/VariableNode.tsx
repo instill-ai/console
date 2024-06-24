@@ -146,7 +146,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
   };
 
   function onCreateFreeFormField(
-    formData: z.infer<typeof TriggerNodeFreeFormSchema>
+    formData: z.infer<typeof TriggerNodeFreeFormSchema>,
   ) {
     if (!selectedType) {
       return;
@@ -176,7 +176,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
 
     const field = triggerNodeFields[selectedType].getFieldConfiguration(
       formData.title,
-      formData.description
+      formData.description,
     );
 
     updateRecentlyUsedStartComponentFieldTypes((prev) => {
@@ -248,12 +248,12 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
   const useTriggerPipelineRelease = useTriggerUserPipelineRelease();
 
   async function onTriggerPipeline(
-    formData: z.infer<typeof TriggerPipelineFormSchema>
+    formData: z.infer<typeof TriggerPipelineFormSchema>,
   ) {
     if (!pipelineName || !formData) return;
 
     const input = recursiveHelpers.removeUndefinedAndNullFromArray(
-      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData)
+      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData),
     );
 
     // Backend need to have the encoded JSON input. So we need to double check
@@ -411,16 +411,16 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
 
                       if (over && active.id !== over.id) {
                         const oldIndex = triggerPipelineFormFields.findIndex(
-                          (e) => e.key === active.id
+                          (e) => e.key === active.id,
                         );
                         const newIndex = triggerPipelineFormFields.findIndex(
-                          (e) => e.key === over.id
+                          (e) => e.key === over.id,
                         );
 
                         const newFieldItems = arrayMove(
                           triggerPipelineFormFields,
                           oldIndex,
-                          newIndex
+                          newIndex,
                         );
 
                         if (newFieldItems.length > 0) {
@@ -431,7 +431,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
                                   ([key, value]) => {
                                     const newFieldIndex =
                                       newFieldItems.findIndex(
-                                        (e) => e.key === key
+                                        (e) => e.key === key,
                                       );
 
                                     if (newFieldIndex !== -1) {
@@ -445,8 +445,8 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
                                     }
 
                                     return [key, value];
-                                  }
-                                )
+                                  },
+                                ),
                               );
 
                               node.data = {
@@ -493,7 +493,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
                     "my-auto h-4 w-4 stroke-semantic-accent-default",
                     disabledAddFieldButton
                       ? "stroke-semantic-fg-secondary"
-                      : "stroke-semantic-accent-default"
+                      : "stroke-semantic-accent-default",
                   )}
                 />
               </Button>

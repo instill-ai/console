@@ -57,7 +57,7 @@ const DataTable = <TData, TValue>({
   const [rowSelection, setRowSelection] = React.useState({});
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [],
   );
 
   const table = useReactTable({
@@ -167,7 +167,7 @@ const DataTable = <TData, TValue>({
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </Table.Head>
                 );
@@ -204,7 +204,7 @@ const DataTable = <TData, TValue>({
                       <Table.Cell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )}
                       </Table.Cell>
                     ))}

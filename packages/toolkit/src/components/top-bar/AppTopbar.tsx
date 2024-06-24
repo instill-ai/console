@@ -50,7 +50,7 @@ export const AppTopbar = ({
       <div
         className={cn(
           "box-content flex h-[var(--topbar-controller-height)] flex-row justify-between bg-semantic-bg-primary px-8 py-px",
-          className
+          className,
         )}
       >
         <div className="flex flex-row">

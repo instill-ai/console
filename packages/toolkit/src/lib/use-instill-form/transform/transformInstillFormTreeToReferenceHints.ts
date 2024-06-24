@@ -3,7 +3,7 @@ import { ComponentOutoutReferenceHint, InstillFormTree } from "../types";
 export function transformInstillFormTreeToReferenceHints(
   tree: InstillFormTree,
   isObjectArrayChild?: boolean,
-  objectArrayParentPath?: string
+  objectArrayParentPath?: string,
 ): ComponentOutoutReferenceHint[] {
   // 1. Preprocess
   let referenceHints: ComponentOutoutReferenceHint[] = [];
@@ -19,7 +19,7 @@ export function transformInstillFormTreeToReferenceHints(
       const hints = transformInstillFormTreeToReferenceHints(
         property,
         isObjectArrayChild,
-        objectArrayParentPath
+        objectArrayParentPath,
       );
       referenceHints = [...referenceHints, ...hints];
     }
@@ -38,7 +38,7 @@ export function transformInstillFormTreeToReferenceHints(
       const hints = transformInstillFormTreeToReferenceHints(
         tree.properties,
         true,
-        tree.path
+        tree.path,
       );
       referenceHints = [...referenceHints, ...hints];
     }

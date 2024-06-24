@@ -71,7 +71,7 @@ export const InputDescriptionBase = (props: InputDescriptionBaseProps) => {
         descriptionLineHeight,
         descriptionTextColor,
         descriptionLinkTextColor,
-        descriptionLinkTextDecoration
+        descriptionLinkTextDecoration,
       )}
     >
       {description}

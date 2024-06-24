@@ -15,7 +15,7 @@ export const ReferenceHintDataTypeTag = ({
     <div
       className={cn(
         "flex flex-row gap-x-[3px] rounded bg-[#D1FAED] px-[6px] py-[1.5px]",
-        className
+        className,
       )}
     >
       <p className="my-auto align-middle font-sans text-[9px] font-medium text-semantic-success-default	">
@@ -31,7 +31,7 @@ export const ReferenceHintDataTypeTag = ({
     <div
       className={cn(
         "flex h-5 flex-row items-center rounded bg-semantic-success-bg px-2 py-1",
-        className
+        className,
       )}
     >
       <p className="font-sans text-[11px] font-medium text-semantic-success-default">

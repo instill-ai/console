@@ -41,7 +41,7 @@ export function renderHardBreak(
   state: MarkdownSerializerState,
   node: Node,
   parent: Node,
-  index: number
+  index: number,
 ) {
   const br = isInTable(parent) ? "<br>" : "\\\n";
   for (let i = index + 1; i < parent.childCount; i += 1) {
@@ -68,7 +68,7 @@ export function isPlainURL(
   link: Mark,
   parent: Node,
   index: number,
-  side: number
+  side: number,
 ) {
   if (link.attrs.title || !/^\w+:/.test(link.attrs.href)) return false;
   const content = parent.child(index + (side < 0 ? -1 : 0));
@@ -107,7 +107,7 @@ const serializerMarks = {
       state: MarkdownSerializerState,
       mark: Mark,
       parent: Node,
-      index: number
+      index: number,
     ) {
       const href = mark.attrs.canonicalSrc || mark.attrs.href;
 
@@ -151,7 +151,7 @@ export function serialize(schema: Schema, content: any) {
   const proseMirrorDocument = schema.nodeFromJSON(content);
   const serializer = new ProseMirrorMarkdownSerializer(
     serializerNodes,
-    serializerMarks
+    serializerMarks,
   );
 
   return serializer.serialize(proseMirrorDocument, {

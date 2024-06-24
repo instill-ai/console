@@ -226,7 +226,7 @@ const ToggleFieldBase = (props: ToggleFieldBaseProps) => {
                     disabledInputBorderWidth,
                     value
                       ? disabledCheckedInputBorderColor
-                      : disabledInputBorderColor
+                      : disabledInputBorderColor,
                   )
                 : readOnly
                   ? cn(
@@ -236,7 +236,7 @@ const ToggleFieldBase = (props: ToggleFieldBaseProps) => {
                       readOnlyInputBorderWidth,
                       value
                         ? readOnlyCheckedInputBorderColor
-                        : readOnlyInputBorderColor
+                        : readOnlyInputBorderColor,
                     )
                   : focusHighlight
                     ? focus
@@ -244,14 +244,14 @@ const ToggleFieldBase = (props: ToggleFieldBaseProps) => {
                           inputBorderWidth,
                           inputBorderStyle,
                           inputFocusBorderColor,
-                          inputFocusShadow
+                          inputFocusShadow,
                         )
                       : cn(
                           inputBorderStyle,
                           value ? checkedInputBorderColor : inputBorderColor,
-                          inputBorderWidth
+                          inputBorderWidth,
                         )
-                    : cn(inputBorderColor, inputBorderStyle, inputBorderWidth)
+                    : cn(inputBorderColor, inputBorderStyle, inputBorderWidth),
             )}
             checked={value}
             type="checkbox"
@@ -285,16 +285,16 @@ const ToggleFieldBase = (props: ToggleFieldBaseProps) => {
               disabled
                 ? cn(
                     value ? disabledCheckedDotColor : disabledDotColor,
-                    "cursor-not-allowed"
+                    "cursor-not-allowed",
                   )
                 : readOnly
                   ? cn(
                       value ? readOnlyCheckedDotColor : readOnlyDotColor,
-                      "cursor-auto"
+                      "cursor-auto",
                     )
                   : cn(checkedDotColor, "cursor-pointer"),
               value ? checkedDotColor : dotColor,
-              inputBorderRadius
+              inputBorderRadius,
             )}
           />
         </label>

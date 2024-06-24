@@ -9,7 +9,7 @@ export type UseAirbyteSelectedConditionMapResult = UseCustomHookResult<
 
 export const useAirbyteSelectedConditionMap = (
   formTree: Nullable<AirbyteFormTree>,
-  initialValue: Nullable<AirbyteFieldValues>
+  initialValue: Nullable<AirbyteFieldValues>,
 ): UseAirbyteSelectedConditionMapResult => {
   let initialConditionMap: Nullable<SelectedItemMap> = {};
 

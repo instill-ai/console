@@ -215,7 +215,7 @@ const SingleSelectBase = (props: SingleSelectBaseProps) => {
                 inputBgColor,
                 {
                   "cursor-not-allowed bg-instillGrey90 bg-opacity-5": disabled,
-                }
+                },
               )}
               aria-label="Food"
               ref={(node) => {
@@ -258,7 +258,7 @@ const SingleSelectBase = (props: SingleSelectBaseProps) => {
                   selectPopoverBorderStyle,
                   selectPopoverBorderWidth,
                   selectPopoverPadding,
-                  "max-h-[320px] overflow-hidden"
+                  "max-h-[320px] overflow-hidden",
                 )}
                 position="popper"
                 sideOffset={8}

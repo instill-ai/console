@@ -41,7 +41,7 @@ export async function triggerUserPipelineAction({
             "instill-return-traces, instill-share-code",
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return Promise.resolve(data);
   } catch (err) {
@@ -80,7 +80,7 @@ export async function triggerAsyncUserPipelineAction({
           "Access-Control-Allow-Headers": "instill-return-traces",
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return Promise.resolve(data.operation);
   } catch (err) {
@@ -107,7 +107,7 @@ export async function setDefaultUserPipelineReleaseMutation({
     const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.post<SetDefaultUserPipelineReleaseResponse>(
-      `/${pipelineReleaseName}/setDefault`
+      `/${pipelineReleaseName}/setDefault`,
     );
     return Promise.resolve(data.release);
   } catch (err) {
@@ -130,7 +130,7 @@ export async function restoreUserPipelineReleaseMutation({
     const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.post<RestoreUserPipelineReleaseResponse>(
-      `/${pipelineReleaseName}/restore`
+      `/${pipelineReleaseName}/restore`,
     );
     return Promise.resolve(data.release);
   } catch (err) {
@@ -170,7 +170,7 @@ export async function triggerUserPipelineReleaseAction({
           "Access-Control-Allow-Headers": "instill-return-traces",
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return Promise.resolve(data);
   } catch (err) {
@@ -209,7 +209,7 @@ export async function triggerAsyncUserPipelineReleaseAction({
           "Access-Control-Allow-Headers": "instill-return-traces",
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return Promise.resolve(data.operation);
   } catch (err) {

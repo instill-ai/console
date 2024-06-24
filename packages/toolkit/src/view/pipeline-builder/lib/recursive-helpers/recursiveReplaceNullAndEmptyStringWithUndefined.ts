@@ -11,7 +11,7 @@ export type RecursiveReplaceNullAndEmptyStringWithUndefined<T> = T extends null
       : T;
 
 export function recursiveReplaceNullAndEmptyStringWithUndefined<T>(
-  obj: T
+  obj: T,
 ): RecursiveReplaceNullAndEmptyStringWithUndefined<T> {
   if ((obj as any) === "") {
     return undefined as any;
@@ -24,7 +24,7 @@ export function recursiveReplaceNullAndEmptyStringWithUndefined<T>(
   if ((obj as any).constructor.name === "Object" || Array.isArray(obj)) {
     for (const key in obj) {
       obj[key] = recursiveReplaceNullAndEmptyStringWithUndefined(
-        obj[key]
+        obj[key],
       ) as any;
     }
   }

@@ -69,7 +69,7 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
           <div className="font-normal text-semantic-bg-secondary-alt-primary">
             {getHumanReadableStringFromTime(
               row.getValue("updateTime"),
-              Date.now()
+              Date.now(),
             )}
           </div>
         );
@@ -92,7 +92,7 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
   const pageCount = useMemo(() => {
     if (versions.data?.pages[0]) {
       return Math.ceil(
-        versions.data.pages[0].totalSize / versions.data.pages[0].pageSize
+        versions.data.pages[0].totalSize / versions.data.pages[0].pageSize,
       );
     }
 
@@ -102,7 +102,7 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
   const versionList = useMemo(() => {
     return versions.data?.pages.reduce(
       (acc: ModelVersion[], page) => [...acc, ...page.versions],
-      []
+      [],
     );
   }, [versions.data]);
 

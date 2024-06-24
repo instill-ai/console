@@ -6,7 +6,7 @@ import type { Nullable } from "../../type";
 export async function fetchPipelines(
   accessToken: Nullable<string>,
   filter: Nullable<string>,
-  visibility: Nullable<Visibility>
+  visibility: Nullable<Visibility>,
 ) {
   try {
     const pipelines = await listPipelinesQuery({

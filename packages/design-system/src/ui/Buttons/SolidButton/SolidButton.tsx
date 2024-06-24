@@ -137,7 +137,7 @@ const SolidButton = (props: SolidButtonProps) => {
     // }
     default: {
       throw new Error(
-        `Button variant ${props.color} not support, SolidButton only support variant=primary | primaryLight`
+        `Button variant ${props.color} not support, SolidButton only support variant=primary | primaryLight`,
       );
     }
   }

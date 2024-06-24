@@ -80,7 +80,7 @@ export const SingleSelectField = ({
 
         const currentCredentialFieldValue = dot.getter(
           values,
-          currentCredentialFieldPath
+          currentCredentialFieldPath,
         );
 
         // Deal with case that support instill credit, if the secret field
@@ -92,7 +92,7 @@ export const SingleSelectField = ({
           ) {
             form.setValue(
               currentCredentialFieldPath,
-              "${secret." + `${InstillCredit.key}` + "}"
+              "${secret." + `${InstillCredit.key}` + "}",
             );
 
             if (updateForceCloseCollapsibleFormGroups) {
@@ -204,7 +204,7 @@ export const SingleSelectField = ({
                 <Select.Trigger
                   className={cn(
                     "w-full",
-                    size === "sm" ? "!product-body-text-4-regular" : ""
+                    size === "sm" ? "!product-body-text-4-regular" : "",
                   )}
                 >
                   <Select.Value />
@@ -222,7 +222,7 @@ export const SingleSelectField = ({
                           "group my-auto !flex !flex-row justify-between text-semantic-fg-primary group-hover:text-semantic-bg-primary data-[highlighted]:text-semantic-bg-primary",
                           size === "sm"
                             ? "!product-body-text-4-regular"
-                            : "product-body-text-3-regular"
+                            : "product-body-text-3-regular",
                         )}
                       >
                         <Select.ItemText>
@@ -268,14 +268,14 @@ export const SingleSelectField = ({
             <Form.Description
               className={cn(
                 "nodrag nopan cursor-text select-text",
-                size === "sm" ? "!product-body-text-4-regular" : ""
+                size === "sm" ? "!product-body-text-4-regular" : "",
               )}
               text={shortDescription ?? null}
             />
             <Form.Message
               className={cn(
                 "nodrag nopan cursor-text select-text",
-                size === "sm" ? "!product-body-text-4-medium" : ""
+                size === "sm" ? "!product-body-text-4-medium" : "",
               )}
             />
           </Form.Item>

@@ -12,7 +12,7 @@ describe("Logo", () => {
     expect(colourLogomark).toHaveStyle("width: 60px");
 
     const colourLogomarkBlackType = screen.getByTestId(
-      "colour-logomark-black-type"
+      "colour-logomark-black-type",
     );
 
     expect(colourLogomarkBlackType).toHaveClass("hidden md:block");
@@ -23,7 +23,7 @@ describe("Logo", () => {
     render(<Logo variant="ColourLogomarkBlackType" width={300} />);
 
     const colourLogomarkBlackType = screen.getByTestId(
-      "colour-logomark-black-type"
+      "colour-logomark-black-type",
     );
     expect(colourLogomarkBlackType).not.toHaveClass();
     expect(colourLogomarkBlackType).toHaveStyle("width: 300px");
@@ -38,7 +38,7 @@ describe("Logo", () => {
     expect(colourLogomark).toHaveStyle("width: 60px");
 
     const colourLogomarkWhiteType = screen.getByTestId(
-      "colour-logomark-white-type"
+      "colour-logomark-white-type",
     );
 
     expect(colourLogomarkWhiteType).toHaveClass("hidden md:block");
@@ -49,7 +49,7 @@ describe("Logo", () => {
     render(<Logo variant="ColourLogomarkWhiteType" width={300} />);
 
     const colourLogomarkWhiteType = screen.getByTestId(
-      "colour-logomark-white-type"
+      "colour-logomark-white-type",
     );
     expect(colourLogomarkWhiteType).not.toHaveClass();
     expect(colourLogomarkWhiteType).toHaveStyle("width: 300px");
@@ -64,7 +64,7 @@ describe("Logo", () => {
     expect(whiteLogomark).toHaveStyle("width: 60px");
 
     const whiteLogomarkWhiteType = screen.getByTestId(
-      "white-logomark-white-type"
+      "white-logomark-white-type",
     );
 
     expect(whiteLogomarkWhiteType).toHaveClass("hidden md:block");
@@ -75,7 +75,7 @@ describe("Logo", () => {
     render(<Logo variant="whiteLogomarkWhiteType" width={300} />);
 
     const whiteLogomarkWhiteType = screen.getByTestId(
-      "white-logomark-white-type"
+      "white-logomark-white-type",
     );
     expect(whiteLogomarkWhiteType).not.toHaveClass();
     expect(whiteLogomarkWhiteType).toHaveStyle("width: 300px");
@@ -90,7 +90,7 @@ describe("Logo", () => {
     expect(blackLogomark).toHaveStyle("width: 60px");
 
     const blackLogomarkWhiteType = screen.getByTestId(
-      "black-logomark-black-type"
+      "black-logomark-black-type",
     );
 
     expect(blackLogomarkWhiteType).toHaveClass("hidden md:block");
@@ -101,7 +101,7 @@ describe("Logo", () => {
     render(<Logo variant="blackLogomarkBlackType" width={300} />);
 
     const blackLogomarkWhiteType = screen.getByTestId(
-      "black-logomark-black-type"
+      "black-logomark-black-type",
     );
     expect(blackLogomarkWhiteType).not.toHaveClass();
     expect(blackLogomarkWhiteType).toHaveStyle("width: 300px");

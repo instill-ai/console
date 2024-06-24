@@ -17,11 +17,11 @@ type listRepoFileContentResponse = {
 export const listRepoFileContent = async (
   owner: string,
   repo: string,
-  path: string
+  path: string,
 ): Promise<listRepoFileContentResponse> => {
   try {
     const response = await axios.get(
-      `https://api.github.com/repos/${owner}/${repo}/contents/${path}`
+      `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
     );
 
     return response.data;

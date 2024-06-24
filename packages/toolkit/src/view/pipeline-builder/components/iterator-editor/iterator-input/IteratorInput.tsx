@@ -49,7 +49,7 @@ export const IteratorInput = ({ className }: { className?: string }) => {
       .filter(
         (hint) =>
           hint.instillFormat.includes("array:") ||
-          hint.instillFormat.includes("semi-structured")
+          hint.instillFormat.includes("semi-structured"),
       )
       .map((hint) => ({
         path: hint.path,
@@ -61,13 +61,13 @@ export const IteratorInput = ({ className }: { className?: string }) => {
   React.useEffect(() => {
     if (editingIteratorID && tempSavedNodesForEditingIteratorFlow) {
       const targetIteratorNode = tempSavedNodesForEditingIteratorFlow.find(
-        (node) => node.id === editingIteratorID && isIteratorNode(node)
+        (node) => node.id === editingIteratorID && isIteratorNode(node),
       ) as Node<IteratorNodeData> | undefined;
 
       const inputOption = availableInputOptions.find(
         (option) =>
           option.path ===
-          targetIteratorNode?.data.input.replace("${", "").replace("}", "")
+          targetIteratorNode?.data.input.replace("${", "").replace("}", ""),
       );
 
       if (inputOption) {
@@ -92,7 +92,7 @@ export const IteratorInput = ({ className }: { className?: string }) => {
           value={selectedInputOption?.path}
           onValueChange={(value) => {
             const option = availableInputOptions.find(
-              (option) => option.path === value
+              (option) => option.path === value,
             );
 
             if (option) {
@@ -111,7 +111,7 @@ export const IteratorInput = ({ className }: { className?: string }) => {
                   }
 
                   return node;
-                })
+                }),
               );
             }
           }}

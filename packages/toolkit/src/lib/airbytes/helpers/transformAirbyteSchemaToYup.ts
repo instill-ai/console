@@ -8,7 +8,7 @@ export const transformAirbyteSchemaToYup = (
   selectedItemMap: Nullable<SelectedItemMap>,
   parentSchema?: AirbyteJsonSchema,
   propertyKey?: string,
-  propertyPath: string | undefined = propertyKey
+  propertyPath: string | undefined = propertyKey,
 ): yup.AnySchema => {
   let schema:
     | yup.NumberSchema
@@ -39,7 +39,7 @@ export const transformAirbyteSchemaToYup = (
         ? jsonSchema.oneOf.find(
             (condition) =>
               typeof condition !== "boolean" &&
-              condition.title === selectedItemMap[""]?.selectedItem
+              condition.title === selectedItemMap[""]?.selectedItem,
           )
         : jsonSchema.oneOf[0];
     } else {
@@ -48,7 +48,7 @@ export const transformAirbyteSchemaToYup = (
           ? jsonSchema.oneOf.find(
               (condition) =>
                 typeof condition !== "boolean" &&
-                condition.title === selectedItemMap[propertyPath]?.selectedItem
+                condition.title === selectedItemMap[propertyPath]?.selectedItem,
             )
           : jsonSchema.oneOf[0];
     }
@@ -59,7 +59,7 @@ export const transformAirbyteSchemaToYup = (
         selectedItemMap,
         jsonSchema,
         propertyKey,
-        propertyPath
+        propertyPath,
       );
     }
   }
@@ -78,8 +78,8 @@ export const transformAirbyteSchemaToYup = (
               selectedItemMap,
               jsonSchema,
               propertyKey,
-              propertyPath
-            )
+              propertyPath,
+            ),
           );
       }
       break;
@@ -96,10 +96,10 @@ export const transformAirbyteSchemaToYup = (
                 selectedItemMap,
                 jsonSchema,
                 propertyKey,
-                propertyPath ? `${propertyPath}.${propertyKey}` : propertyKey
+                propertyPath ? `${propertyPath}.${propertyKey}` : propertyKey,
               )
             : yup.mixed(),
-        ]
+        ],
       );
 
       if (keyEntries.length) {
@@ -117,7 +117,7 @@ export const transformAirbyteSchemaToYup = (
       if (jsonSchema?.pattern !== undefined) {
         schema = schema.matches(
           new RegExp(jsonSchema.pattern),
-          "form.pattern.error"
+          "form.pattern.error",
         );
       }
       break;

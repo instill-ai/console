@@ -11,7 +11,7 @@ export type TriggerNodeInputField = {
   order: number;
   getFieldConfiguration: (
     title: string,
-    description?: string
+    description?: string,
   ) => PipelineVariableField;
 };
 

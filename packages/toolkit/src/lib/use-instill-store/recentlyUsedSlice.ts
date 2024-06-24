@@ -9,13 +9,13 @@ export const createRecentlyUsedSlice: StateCreator<
 > = (set) => ({
   recentlyUsedStartComponentFieldTypes: [],
   updateRecentlyUsedStartComponentFieldTypes: (
-    fn: (prev: string[]) => string[]
+    fn: (prev: string[]) => string[],
   ) =>
     set((state) => {
       return {
         ...state,
         recentlyUsedStartComponentFieldTypes: fn(
-          state.recentlyUsedStartComponentFieldTypes
+          state.recentlyUsedStartComponentFieldTypes,
         ),
       };
     }),

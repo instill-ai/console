@@ -40,7 +40,7 @@ export const TabShare = ({
 }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken, enableQuery, pipelineIsNew } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
   const [isUpdatingShareCodePermission, setIsUpdatingShareCodePermission] =
     React.useState(false);
@@ -77,7 +77,7 @@ export const TabShare = ({
 
     if (pipelineIsPublic) {
       const link = `${env(
-        "NEXT_PUBLIC_CONSOLE_BASE_URL"
+        "NEXT_PUBLIC_CONSOLE_BASE_URL",
       )}/${namespaceId}/pipelines/${id}`;
 
       navigator.clipboard.writeText(link);
@@ -121,7 +121,7 @@ export const TabShare = ({
         }
 
         link = `${env(
-          "NEXT_PUBLIC_CONSOLE_BASE_URL"
+          "NEXT_PUBLIC_CONSOLE_BASE_URL",
         )}/${namespaceId}/pipelines/${id}?view=${pipeline.sharing.shareCode?.code}`;
         setIsUpdatingShareCodePermission(false);
       } catch (error) {
@@ -144,7 +144,7 @@ export const TabShare = ({
       }
     } else {
       link = `${env(
-        "NEXT_PUBLIC_CONSOLE_BASE_URL"
+        "NEXT_PUBLIC_CONSOLE_BASE_URL",
       )}/${namespaceId}/pipelines/${id}?view=${
         pipeline.data.sharing.shareCode?.code
       }`;

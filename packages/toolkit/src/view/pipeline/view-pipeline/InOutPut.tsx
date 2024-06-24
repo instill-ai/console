@@ -69,7 +69,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
       const pipelineVersion = releases.find(
         (release) =>
-          release.id === currentVersion || release.alias === currentVersion
+          release.id === currentVersion || release.alias === currentVersion,
       );
 
       if (pipelineVersion) {
@@ -88,7 +88,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
       const pipelineVersion = releases.find(
         (release) =>
-          release.id === currentVersion || release.alias === currentVersion
+          release.id === currentVersion || release.alias === currentVersion,
       );
 
       if (pipelineVersion) {
@@ -118,7 +118,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
       return;
 
     const input = recursiveHelpers.removeUndefinedAndNullFromArray(
-      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData)
+      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData),
     );
 
     // Backend need to have the encoded JSON input. So we need to double check
@@ -218,7 +218,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
                 size="md"
                 onClick={() => {
                   router.push(
-                    `/${routeInfo.data.namespaceName}/pipelines/${routeInfo.data.resourceId}/editor`
+                    `/${routeInfo.data.namespaceName}/pipelines/${routeInfo.data.resourceId}/editor`,
                   );
                 }}
               >
@@ -270,7 +270,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
                 size="md"
                 onClick={() => {
                   router.push(
-                    `/${routeInfo.data.namespaceName}/pipelines/${routeInfo.data.resourceId}/editor`
+                    `/${routeInfo.data.namespaceName}/pipelines/${routeInfo.data.resourceId}/editor`,
                   );
                 }}
               >

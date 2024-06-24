@@ -12,7 +12,7 @@ export type TransformInstillFormTreeToInitialSelectedConditionOptions = {
 
 export function transformInstillFormTreeToInitialSelectedCondition(
   tree: InstillFormTree,
-  options?: TransformInstillFormTreeToInitialSelectedConditionOptions
+  options?: TransformInstillFormTreeToInitialSelectedConditionOptions,
 ) {
   let selectedConditionMap: SelectedConditionMap = {};
 
@@ -22,7 +22,7 @@ export function transformInstillFormTreeToInitialSelectedCondition(
         ...selectedConditionMap,
         ...transformInstillFormTreeToInitialSelectedCondition(
           property,
-          options
+          options,
         ),
       };
     }
@@ -33,7 +33,7 @@ export function transformInstillFormTreeToInitialSelectedCondition(
       ...selectedConditionMap,
       ...transformInstillFormTreeToInitialSelectedCondition(
         tree.properties,
-        options
+        options,
       ),
     };
   }
@@ -47,7 +47,7 @@ export function transformInstillFormTreeToInitialSelectedCondition(
       if (options?.initialData) {
         const selectedCondition = dot.getter(
           options.initialData,
-          constField.path
+          constField.path,
         );
 
         if (selectedCondition) {
@@ -57,7 +57,7 @@ export function transformInstillFormTreeToInitialSelectedCondition(
             ...selectedConditionMap,
             ...transformInstillFormTreeToInitialSelectedCondition(
               tree.conditions[selectedCondition as string],
-              options
+              options,
             ),
           };
 
@@ -71,7 +71,7 @@ export function transformInstillFormTreeToInitialSelectedCondition(
         ...selectedConditionMap,
         ...transformInstillFormTreeToInitialSelectedCondition(
           tree.conditions[constField.const as string],
-          options
+          options,
         ),
       };
     }

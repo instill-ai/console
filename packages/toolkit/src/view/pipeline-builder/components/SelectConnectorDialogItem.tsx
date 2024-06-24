@@ -5,7 +5,7 @@ import { Icons } from "@instill-ai/design-system";
 export const SelectConnectorDialogItem = (
   props: {
     children: React.ReactNode;
-  } & React.ButtonHTMLAttributes<HTMLButtonElement>
+  } & React.ButtonHTMLAttributes<HTMLButtonElement>,
 ) => {
   const { children, onClick, ...passThrough } = props;
   return (

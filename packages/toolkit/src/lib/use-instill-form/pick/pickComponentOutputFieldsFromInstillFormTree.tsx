@@ -14,7 +14,7 @@ export type PickComponentOutputFieldsFromInstillFormTreeProps = {
 };
 
 export function pickComponentOutputFieldsFromInstillFormTree(
-  props: PickComponentOutputFieldsFromInstillFormTreeProps
+  props: PickComponentOutputFieldsFromInstillFormTreeProps,
 ) {
   // 1. Preprocess
 

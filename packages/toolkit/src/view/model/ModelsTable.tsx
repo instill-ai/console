@@ -45,7 +45,7 @@ export const ModelsTable = (props: ModelsTableProps) => {
       header: () => <div className="min-w-[500px] text-left">ID</div>,
       cell: ({ row }) => {
         const { getIcon, label } = getModelInstanceTaskToolkit(
-          row.original.task
+          row.original.task,
         );
 
         const modelNameFragments = row.original.name.split("/");
@@ -59,7 +59,7 @@ export const ModelsTable = (props: ModelsTableProps) => {
               secondaryLink={null}
               secondaryText={label}
               iconElement={getIcon(
-                `w-4 h-4 ${["TASK_TEXT_GENERATION_CHAT", "TASK_IMAGE_TO_IMAGE", "TASK_VISUAL_QUESTION_ANSWERING"].includes(row.original.task || "") ? "stroke-semantic-fg-primary [&>*]:!stroke-semantic-fg-primary" : "[&>*]:!fill-semantic-fg-primary"}`
+                `w-4 h-4 ${["TASK_TEXT_GENERATION_CHAT", "TASK_IMAGE_TO_IMAGE", "TASK_VISUAL_QUESTION_ANSWERING"].includes(row.original.task || "") ? "stroke-semantic-fg-primary [&>*]:!stroke-semantic-fg-primary" : "[&>*]:!fill-semantic-fg-primary"}`,
               )}
             />
           </div>

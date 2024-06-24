@@ -30,7 +30,7 @@ const RadioGroupItem = React.forwardRef<
       className={cn(
         "aspect-square h-4 w-4 shrink-0 rounded-full border border-semantic-fg-secondary text-semantic-fg-primary focus:outline-none focus-visible:ring-1 focus-visible:ring-semantic-accent-default disabled:cursor-not-allowed disabled:opacity-50",
         "data-[state=checked]:border-semantic-accent-default data-[state=checked]:bg-semantic-accent-default",
-        className
+        className,
       )}
       {...props}
     >

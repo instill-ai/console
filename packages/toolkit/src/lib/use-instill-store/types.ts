@@ -44,7 +44,7 @@ export type PipelineBuilderAction = {
   initIteratorRelatedState: () => void;
   updatePipelineId: (fn: (prev: Nullable<string>) => Nullable<string>) => void;
   updatePipelineName: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
   updateNodes: (fn: (prev: Node<NodeData>[]) => Node<NodeData>[]) => void;
   updateEdges: (fn: (prev: Edge[]) => Edge[]) => void;
@@ -56,25 +56,25 @@ export type PipelineBuilderAction = {
   updatePipelineRecipeIsDirty: (fn: (prev: boolean) => boolean) => void;
   updatePipelineIsNew: (fn: (prev: boolean) => boolean) => void;
   updateSelectedConnectorNodeId: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
   updateCurrentAdvancedConfigurationNodeID: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
   updateConnectorFormIsDirty: (fn: (prev: boolean) => boolean) => void;
   updateSelectResourceDialogIsOpen: (fn: (prev: boolean) => boolean) => void;
   updateCollapseAllNodes: (fn: (prev: boolean) => boolean) => void;
   updateTestModeTriggerResponse: (
     fn: (
-      prev: Nullable<TriggerUserPipelineResponse>
-    ) => Nullable<TriggerUserPipelineResponse>
+      prev: Nullable<TriggerUserPipelineResponse>,
+    ) => Nullable<TriggerUserPipelineResponse>,
   ) => void;
   updatePipelineOpenAPIOutputSchema: (
-    fn: (prev: Nullable<InstillJSONSchema>) => Nullable<InstillJSONSchema>
+    fn: (prev: Nullable<InstillJSONSchema>) => Nullable<InstillJSONSchema>,
   ) => void;
 
   updateCurrentVersion: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
   updateInitializedByTemplateOrClone: (fn: (prev: boolean) => boolean) => void;
   updateIsOwner: (fn: (prev: boolean) => boolean) => void;
@@ -84,13 +84,13 @@ export type PipelineBuilderAction = {
   updatePipelineIsReadOnly: (fn: (prev: boolean) => boolean) => void;
   updateIsEditingIterator: (fn: (prev: boolean) => boolean) => void;
   updateTempSavedNodesForEditingIteratorFlow: (
-    fn: (prev: Node<NodeData>[]) => Node<NodeData>[]
+    fn: (prev: Node<NodeData>[]) => Node<NodeData>[],
   ) => void;
   updateEditingIteratorID: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
   updateWarnUnsavdChangesDialogState: (
-    fn: (prev: WarnUnsavedChangesDialogState) => WarnUnsavedChangesDialogState
+    fn: (prev: WarnUnsavedChangesDialogState) => WarnUnsavedChangesDialogState,
   ) => void;
 };
 
@@ -115,14 +115,14 @@ export type GeneralSlice = {
 
   navigationNamespaceAnchor: Nullable<string>;
   updateNavigationNamespaceAnchor: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
 };
 
 export type RecentlyUsedSlice = {
   recentlyUsedStartComponentFieldTypes: string[];
   updateRecentlyUsedStartComponentFieldTypes: (
-    fn: (prev: string[]) => string[]
+    fn: (prev: string[]) => string[],
   ) => void;
 };
 

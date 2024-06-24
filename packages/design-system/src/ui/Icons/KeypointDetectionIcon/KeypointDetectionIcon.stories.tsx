@@ -13,7 +13,7 @@ const Template: StoryFn<typeof KeypointDetectionIcon> = (args) => (
 );
 
 export const Playground: StoryFn<typeof KeypointDetectionIcon> = Template.bind(
-  {}
+  {},
 );
 
 Playground.args = {

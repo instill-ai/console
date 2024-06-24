@@ -44,7 +44,7 @@ const TabMenuRoot = ({
         onValueChange(value);
       },
     }),
-    [value, onValueChange, disabledDeSelect]
+    [value, onValueChange, disabledDeSelect],
   );
 
   return (
@@ -61,7 +61,7 @@ const TabMenuItem = (
     children: React.ReactNode;
     value: string;
     className?: string;
-  } & React.ButtonHTMLAttributes<HTMLButtonElement>
+  } & React.ButtonHTMLAttributes<HTMLButtonElement>,
 ) => {
   const { children, className, value, onClick, ...passThrough } = props;
 
@@ -75,7 +75,7 @@ const TabMenuItem = (
         "flex flex-row items-center gap-x-2",
         "h-8 border-b-2 border-[#1D2433] border-opacity-0 text-semantic-fg-disabled product-button-button-3 hover:text-semantic-fg-primary [&>svg]:stroke-semantic-fg-disabled [&>svg]:hover:stroke-semantic-fg-primary",
         "data-[selected=true]:pointer-events-none data-[selected=true]:border-semantic-accent-default data-[selected=true]:border-opacity-100 data-[selected=true]:text-semantic-fg-primary [&>svg]:data-[selected=true]:stroke-semantic-fg-primary",
-        className
+        className,
       )}
       data-selected={selectedValue === value}
       onClick={(e) => {

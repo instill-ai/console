@@ -36,7 +36,7 @@ export async function getAuthenticatedUserSubscriptionsQuery({
 
     const { data } =
       await client.get<GetAuthenticatedUserSubscriptionsResponse>(
-        "/user/subscription"
+        "/user/subscription",
       );
 
     return Promise.resolve(data.subscription);
@@ -131,7 +131,7 @@ export async function listApiTokensQuery({
           pageSize,
           accessToken,
           nextPageToken: data.nextPageToken,
-        }))
+        })),
       );
     }
 
@@ -170,7 +170,7 @@ export async function listUsersQuery({
           pageSize,
           accessToken,
           nextPageToken: data.nextPageToken,
-        }))
+        })),
       );
     }
 
@@ -197,7 +197,7 @@ export async function getRemainingCreditQuery({
     const client = createInstillAxiosClient(accessToken);
 
     const { data } = await client.get<GetRemainingCreditResponse>(
-      `/${ownerName}/credit`
+      `/${ownerName}/credit`,
     );
 
     return Promise.resolve(data);

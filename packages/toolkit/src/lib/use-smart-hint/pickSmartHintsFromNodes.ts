@@ -40,7 +40,7 @@ export function pickSmartHintsFromNodes({
   for (const node of targetNodes) {
     if (isVariableNode(node)) {
       const hints = transformPipelineTriggerRequestFieldsToSmartHints(
-        node.data.fields
+        node.data.fields,
       );
 
       smartHints = [...smartHints, ...hints];
@@ -113,11 +113,12 @@ export function pickSmartHintsFromNodes({
                 transformInstillJSONSchemaToFormTree(outputSchema);
               const hints = transformFormTreeToSmartHints(
                 outputFormTree,
-                componentKey
+                componentKey,
               );
 
               const targetHint = hints.find(
-                (hint) => hint.path === value.replace("${", "").replace("}", "")
+                (hint) =>
+                  hint.path === value.replace("${", "").replace("}", ""),
               );
 
               if (targetHint) {
@@ -156,14 +157,14 @@ export function pickSmartHintsFromNodes({
   // Add the iterator element into the hints
   if (isEditingIterator && includeEditorElement && editingIteratorID) {
     const targetIteratorNode = tempSavedNodesForEditingIteratorFlow?.find(
-      (node) => node.id === editingIteratorID && isIteratorNode(node)
+      (node) => node.id === editingIteratorID && isIteratorNode(node),
     ) as Node<IteratorNodeData> | undefined;
 
     if (targetIteratorNode) {
       const targetHints = smartHints.find(
         (hint) =>
           hint.path ===
-          targetIteratorNode.data.input.replace("${", "").replace("}", "")
+          targetIteratorNode.data.input.replace("${", "").replace("}", ""),
       );
 
       if (targetHints) {

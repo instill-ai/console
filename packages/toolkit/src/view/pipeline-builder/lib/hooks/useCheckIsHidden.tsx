@@ -30,7 +30,7 @@ export function useCheckIsHidden(type: "onNode" | "onRightPanel") {
         return isHidden;
       }
     },
-    [type]
+    [type],
   );
 
   return checkIsHidden;

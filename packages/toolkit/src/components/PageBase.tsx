@@ -23,7 +23,7 @@ const Content = ({
       <div
         className={cn(
           "h-[calc(100vh-var(--topbar-controller-height)-var(--topbar-nav-height))] w-full min-w-[927px] overflow-y-scroll",
-          contentPadding ? contentPadding : "p-20"
+          contentPadding ? contentPadding : "p-20",
         )}
       >
         {children}

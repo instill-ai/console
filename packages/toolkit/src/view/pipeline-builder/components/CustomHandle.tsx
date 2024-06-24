@@ -18,7 +18,7 @@ export const CustomHandle = (props: CustomHandleProps) => {
   const { className, id, ...passThrough } = props;
 
   const { edges, selectedConnectorNodeId } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
   const isSelected = React.useMemo(() => {
@@ -45,7 +45,7 @@ export const CustomHandle = (props: CustomHandleProps) => {
         "absolute top-1/2",
         passThrough.type === "target"
           ? "left-0 -translate-x-full"
-          : "right-0 translate-x-full"
+          : "right-0 translate-x-full",
       )}
     >
       <Handle
@@ -53,7 +53,7 @@ export const CustomHandle = (props: CustomHandleProps) => {
         className={cn(
           "!static !flex !h-4 !w-4 !border-[3px] !bg-semantic-bg-primary",
           isSelected ? "!border-semantic-accent-default" : "!border-[#94A0B8]",
-          className
+          className,
         )}
         isConnectable={false}
       />

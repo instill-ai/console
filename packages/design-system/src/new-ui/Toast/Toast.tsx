@@ -18,7 +18,7 @@ const ToastViewport = React.forwardRef<
     ref={ref}
     className={cn(
       "fixed top-0 z-[100] flex max-h-screen w-full flex-col space-y-5 p-4 sm:bottom-auto sm:left-1/2 sm:top-0 sm:-translate-x-1/2 sm:flex-col md:max-w-[420px]",
-      className
+      className,
     )}
     {...props}
   />
@@ -33,7 +33,7 @@ const toastMainStyle = cn(
   "data-[state=closed]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full",
   "data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none",
   "data-[swipe=cancel]:translate-x-0",
-  "data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=end]:animate-out"
+  "data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=end]:animate-out",
 );
 
 const toastVariants = cva(toastMainStyle, {
@@ -87,7 +87,7 @@ const ToastClose = React.forwardRef<
     ref={ref}
     className={cn(
       "rounded active:ring-1 active:ring-semantic-bg-line",
-      className
+      className,
     )}
     toast-close=""
     {...props}
@@ -105,7 +105,7 @@ const ToastTitle = React.forwardRef<
     ref={ref}
     className={cn(
       "text-semantic-fg-primary product-body-text-2-semibold",
-      className
+      className,
     )}
     {...props}
   />
@@ -120,7 +120,7 @@ const ToastDescription = React.forwardRef<
     ref={ref}
     className={cn(
       "text-semantic-fg-secondary product-body-text-3-regular",
-      className
+      className,
     )}
     {...props}
   />

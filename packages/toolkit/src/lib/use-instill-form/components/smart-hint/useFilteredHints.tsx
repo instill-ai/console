@@ -38,7 +38,7 @@ export function useFilteredHints({
 
     let allHints = pickSmartHintsFromAcceptFormats(
       smartHints,
-      instillAcceptFormats
+      instillAcceptFormats,
     );
 
     if (instillSecret && secrets) {

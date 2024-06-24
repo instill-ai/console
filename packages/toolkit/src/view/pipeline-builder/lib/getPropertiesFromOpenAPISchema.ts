@@ -9,7 +9,7 @@ export function getPropertiesFromOpenAPISchema(
   schema: InstillJSONSchema,
   parentKey?: string,
   title?: string,
-  parentIsArray?: boolean
+  parentIsArray?: boolean,
 ) {
   let properties: InstillAIOpenAPIProperty[] = [];
 
@@ -35,7 +35,7 @@ export function getPropertiesFromOpenAPISchema(
           ...getPropertiesFromOpenAPISchema(
             value,
             [...parentKeyList, key].join("."),
-            key
+            key,
           ),
         ];
       });
@@ -49,7 +49,7 @@ export function getPropertiesFromOpenAPISchema(
           schema.items as InstillJSONSchema,
           parentKey,
           undefined,
-          true
+          true,
         ) as InstillJSONSchema["items"],
         path: parentKey,
         title: schema.title ? schema.title : title,

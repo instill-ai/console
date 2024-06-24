@@ -90,7 +90,7 @@ export function useRenamePipeline() {
           }
 
           router.push(
-            `/${routeInfo.data.namespaceId}/pipelines/${newId}/editor`
+            `/${routeInfo.data.namespaceId}/pipelines/${newId}/editor`,
           );
 
           toast({
@@ -181,7 +181,7 @@ export function useRenamePipeline() {
 
         updatePipelineId(() => newId);
         updatePipelineName(
-          () => `${routeInfo.data.namespaceName}/pipelines/${newId}`
+          () => `${routeInfo.data.namespaceName}/pipelines/${newId}`,
         );
       } catch (error) {
         if (isAxiosError(error)) {
@@ -221,6 +221,6 @@ export function useRenamePipeline() {
       updatePipelineIsNew,
       updatePipelineName,
       updatePipelineRecipeIsDirty,
-    ]
+    ],
   );
 }

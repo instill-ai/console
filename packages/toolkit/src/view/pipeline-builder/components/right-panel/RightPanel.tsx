@@ -26,7 +26,7 @@ export const RightPanel = () => {
   const selectedGeneralNode = React.useMemo(() => {
     return nodes.find(
       (node) =>
-        node.id === currentAdvancedConfigurationNodeID && isGeneralNode(node)
+        node.id === currentAdvancedConfigurationNodeID && isGeneralNode(node),
     ) as Node<GeneralNodeData> | undefined;
   }, [nodes, currentAdvancedConfigurationNodeID]);
 

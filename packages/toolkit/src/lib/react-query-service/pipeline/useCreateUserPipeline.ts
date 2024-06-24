@@ -34,7 +34,7 @@ export function useCreateUserPipeline() {
     onSuccess: async ({ pipeline, entityName }) => {
       queryClient.setQueryData<Pipeline>(
         ["pipelines", pipeline.name],
-        pipeline
+        pipeline,
       );
 
       queryClient.invalidateQueries({ queryKey: ["pipelines", "infinite"] });
@@ -45,13 +45,13 @@ export function useCreateUserPipeline() {
       queryClient.setQueryData<Pipeline[]>(["pipelines", entityName], (old) =>
         old
           ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
-          : [pipeline]
+          : [pipeline],
       );
 
       queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) =>
         old
           ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
-          : [pipeline]
+          : [pipeline],
       );
     },
   });

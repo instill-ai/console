@@ -97,7 +97,7 @@ export async function createUserModelMutation({
 
     const { data } = await client.post<CreateUserModelResponse>(
       `/${entityName}/models`,
-      payload
+      payload,
     );
 
     return Promise.resolve(data.model);
@@ -124,7 +124,7 @@ export async function updateModelMutation({
 
     const { data } = await client.patch<UpdateUserModelResponse>(
       `/${name}`,
-      payload
+      payload,
     );
     return Promise.resolve(data.model);
   } catch (err) {

@@ -22,7 +22,7 @@ import { useParams } from "next/navigation";
 export type DashboardPipelineDetailsPageMainViewProps = GeneralAppPageProp;
 
 export const DashboardPipelineDetailsPageMainView = (
-  props: DashboardPipelineDetailsPageMainViewProps
+  props: DashboardPipelineDetailsPageMainViewProps,
 ) => {
   const { accessToken, enableQuery, router } = props;
   const { id } = useParams();
@@ -55,15 +55,15 @@ export const DashboardPipelineDetailsPageMainView = (
       const start = getTimeInRFC3339Format(
         selectedTimeOption.value === "24h"
           ? "todayStart"
-          : selectedTimeOption.value
+          : selectedTimeOption.value,
       );
       const stop = getTimeInRFC3339Format(
-        selectedTimeOption?.value === "1d" ? "todayStart" : "now"
+        selectedTimeOption?.value === "1d" ? "todayStart" : "now",
       );
       const previousTime = getTimeInRFC3339Format(
         getPreviousTimeframe(
-          selectedTimeOption.value as DashboardAvailableTimeframe
-        )
+          selectedTimeOption.value as DashboardAvailableTimeframe,
+        ),
       );
       queryParams += ` AND start='${start}' AND stop='${stop}'`;
       queryParamsPrevious += ` AND start='${previousTime}' AND stop='${start}'`;
@@ -113,7 +113,7 @@ export const DashboardPipelineDetailsPageMainView = (
 
     return getTriggersSummary(
       pipelineTriggerRecords.data,
-      previousPipelineTriggerRecords.data
+      previousPipelineTriggerRecords.data,
     );
   }, [
     pipelineTriggerRecords.isSuccess,

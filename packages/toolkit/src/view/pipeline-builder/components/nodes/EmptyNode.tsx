@@ -10,7 +10,7 @@ import { useInstillStore } from "../../../../lib";
 
 export const EmptyNode = ({ id }: NodeProps<NodeData>) => {
   const updateSelectResourceDialogIsOpen = useInstillStore(
-    (state) => state.updateSelectResourceDialogIsOpen
+    (state) => state.updateSelectResourceDialogIsOpen,
   );
 
   return (

@@ -23,7 +23,7 @@ export const UploadFileInput = React.forwardRef<
         "flex rounded-full px-2 py-0.5 font-sans text-xs font-medium text-semantic-accent-default hover:bg-semantic-accent-bg",
         disabled
           ? "cursor-not-allowed bg-semantic-bg-secondary"
-          : "cursor-pointer underline"
+          : "cursor-pointer underline",
       )}
     >
       {title}

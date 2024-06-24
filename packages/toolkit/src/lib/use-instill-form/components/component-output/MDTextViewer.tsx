@@ -67,7 +67,7 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
           <div
             className={cn(
               "markdown-body w-full overflow-x-scroll rounded-b-sm px-1.5 py-1",
-              enableFormattedText ? "" : "hidden"
+              enableFormattedText ? "" : "hidden",
             )}
           >
             <Markdown>{text ?? ""}</Markdown>
@@ -75,7 +75,7 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
           <pre
             className={cn(
               "flex w-full flex-1 items-center whitespace-pre-line break-all px-1.5 py-1 text-semantic-fg-primary product-body-text-4-regular",
-              enableFormattedText ? "hidden" : ""
+              enableFormattedText ? "hidden" : "",
             )}
           >
             {text}

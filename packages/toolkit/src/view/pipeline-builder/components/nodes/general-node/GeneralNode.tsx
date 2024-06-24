@@ -94,7 +94,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
         supportInstillCredit,
         updateSupportInstillCredit,
         updateIsUsingInstillCredit,
-      }
+      },
     );
 
   const { outputSchema } = React.useMemo(() => {
@@ -105,7 +105,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
 
     return getGeneralComponentInOutputSchema(
       data,
-      selectedConditionMap ? selectedConditionMap["task"] : undefined
+      selectedConditionMap ? selectedConditionMap["task"] : undefined,
     );
   }, [data, selectedConditionMap]);
 

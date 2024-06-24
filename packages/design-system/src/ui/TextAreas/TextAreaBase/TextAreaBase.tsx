@@ -171,7 +171,7 @@ const TextAreaBase = (props: TextAreaBaseProps) => {
         errorInputBorderStyle,
         errorInputBorderWidth,
         errorInputTextColor,
-        "instill-input-no-highlight"
+        "instill-input-no-highlight",
       )
     : disabled
       ? cn(
@@ -181,7 +181,7 @@ const TextAreaBase = (props: TextAreaBaseProps) => {
           disabledInputBorderStyle,
           disabledInputBorderWidth,
           disabledInputTextColor,
-          "instill-input-no-highlight"
+          "instill-input-no-highlight",
         )
       : readOnly
         ? cn(
@@ -191,26 +191,26 @@ const TextAreaBase = (props: TextAreaBaseProps) => {
             readOnlyInputBorderStyle,
             readOnlyInputBorderWidth,
             readOnlyInputTextColor,
-            "instill-input-no-highlight"
+            "instill-input-no-highlight",
           )
         : focusHighlight
           ? focus
             ? cn(
                 inputBorderWidth,
                 inputBorderStyle,
-                "outline-none ring-0 ring-white border-instillBlue50 instill-input-focus-shadow cursor-text"
+                "outline-none ring-0 ring-white border-instillBlue50 instill-input-focus-shadow cursor-text",
               )
             : cn(
                 inputBorderColor,
                 inputBorderStyle,
                 inputBorderWidth,
-                "cursor-text"
+                "cursor-text",
               )
           : cn(
               inputBorderColor,
               inputBorderStyle,
               inputBorderWidth,
-              "cursor-text"
+              "cursor-text",
             );
 
   return (
@@ -221,7 +221,7 @@ const TextAreaBase = (props: TextAreaBaseProps) => {
           inputWidth,
           inputBorderRadius,
           bgColor,
-          { "mb-2.5": description }
+          { "mb-2.5": description },
         )}
       >
         <div className={label ? "mb-2.5" : ""}>
@@ -271,15 +271,15 @@ const TextAreaBase = (props: TextAreaBaseProps) => {
               disabled
                 ? cn(
                     disabledCursor,
-                    "text-semantic-node-disconnected-default-stroke"
+                    "text-semantic-node-disconnected-default-stroke",
                   )
                 : readOnly
                   ? cn(
                       readOnlyCursor,
-                      "text-semantic-node-disconnected-default-stroke"
+                      "text-semantic-node-disconnected-default-stroke",
                     )
                   : inputTextColor,
-              cn(getInputStyle, "pt-5")
+              cn(getInputStyle, "pt-5"),
             )}
             disabled={disabled}
             required={required}
@@ -306,7 +306,7 @@ const TextAreaBase = (props: TextAreaBaseProps) => {
                 counterFontFamily,
                 counterLineHeight,
                 counterTextColor,
-                "absolute bottom-2 right-4"
+                "absolute bottom-2 right-4",
               )}
             >{`${value ? value.length : 0}/${counterWordLimit}`}</div>
           ) : null}

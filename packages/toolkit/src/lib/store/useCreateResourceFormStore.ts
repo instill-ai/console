@@ -241,39 +241,39 @@ export const useCreateResourceFormStore = create<CreateResourceFormStore>()(
       set(
         produce((draft: CreateResourceFormStore) => {
           dot.setter(draft.errors, errorPath, value);
-        })
+        }),
       ),
     setFieldValue: (fieldPath, value) =>
       set(
         produce((draft: CreateResourceFormStore) => {
           draft.formIsDirty = true;
           dot.setter(draft.fields, fieldPath, value);
-        })
+        }),
       ),
     setFieldsValue: (fields) =>
       set(
         produce((draft: CreateResourceFormStore) => {
           draft.formIsDirty = true;
           draft.fields = fields;
-        })
+        }),
       ),
     setErrorsValue: (errors) =>
       set(
         produce((draft: CreateResourceFormStore) => {
           draft.errors = errors;
-        })
+        }),
       ),
     increasePipelineFormStep: () =>
       set(
         produce((draft: CreateResourceFormStore) => {
           draft.pipelineFormStep = draft.pipelineFormStep + 1;
-        })
+        }),
       ),
     decreasePipelineFormStep: () =>
       set(
         produce((draft: CreateResourceFormStore) => {
           draft.pipelineFormStep = draft.pipelineFormStep - 1;
-        })
+        }),
       ),
-  }))
+  })),
 );

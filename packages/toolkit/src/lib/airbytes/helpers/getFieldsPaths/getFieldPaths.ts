@@ -2,7 +2,7 @@ import { AirbyteFormTree } from "../../types";
 
 export const getFieldPaths = (
   formTree: AirbyteFormTree | AirbyteFormTree[],
-  forceUnique: boolean
+  forceUnique: boolean,
 ): string[] => {
   const fieldPaths = [];
 
@@ -25,7 +25,7 @@ export const getFieldPaths = (
 
 const pickPath = (
   formTree: AirbyteFormTree,
-  paths: string[] = []
+  paths: string[] = [],
 ): string[] => {
   if (formTree._type === "formGroup") {
     const newPaths: string[] = [];

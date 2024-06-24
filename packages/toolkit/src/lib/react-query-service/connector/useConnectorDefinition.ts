@@ -24,7 +24,7 @@ export function useConnectorDefinition({
     queryFn: async () => {
       if (!connectorDefinitionName) {
         return Promise.reject(
-          new Error("connectorDefinitionName not provided")
+          new Error("connectorDefinitionName not provided"),
         );
       }
 

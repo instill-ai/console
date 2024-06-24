@@ -5,7 +5,7 @@ import { sortByDate } from "./sortByDate";
 
 export function generateChartData(
   apiResponse: PipelinesChart[],
-  range: string
+  range: string,
 ): { xAxis: string[]; yAxis: number[][] } {
   const pipelineData = apiResponse;
 

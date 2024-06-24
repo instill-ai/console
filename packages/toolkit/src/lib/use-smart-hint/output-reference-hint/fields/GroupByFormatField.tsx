@@ -17,7 +17,7 @@ export const GroupByFormatField = ({
   const humanReadableInstillFormat = React.useMemo(() => {
     return transformInstillFormatToHumanReadableFormat(
       instillFormat,
-      arrayInArray
+      arrayInArray,
     );
   }, [instillFormat, arrayInArray]);
 

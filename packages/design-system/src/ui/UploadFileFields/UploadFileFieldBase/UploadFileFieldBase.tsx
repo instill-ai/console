@@ -237,7 +237,7 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
                   errorInputBorderColor,
                   errorInputBorderStyle,
                   errorInputBorderWidth,
-                  errorInputBgColor
+                  errorInputBgColor,
                 )
               : disabled
                 ? cn(
@@ -245,7 +245,7 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
                     disabledInputBorderColor,
                     disabledInputBorderStyle,
                     disabledInputBorderWidth,
-                    disabledInputBgColor
+                    disabledInputBgColor,
                   )
                 : readOnly
                   ? cn(
@@ -253,7 +253,7 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
                       readOnlyInputBorderColor,
                       readOnlyInputBorderStyle,
                       readOnlyInputBorderWidth,
-                      readOnlyInputBgColor
+                      readOnlyInputBgColor,
                     )
                   : focusHighlight
                     ? cn(
@@ -261,15 +261,15 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
                         inputBorderColor,
                         inputBorderStyle,
                         inputBgColor,
-                        "instill-input-highlight"
+                        "instill-input-highlight",
                       )
                     : cn(
                         inputBorderColor,
                         inputBorderStyle,
                         inputBorderWidth,
                         inputBgColor,
-                        "instill-input-no-highlight"
-                      )
+                        "instill-input-no-highlight",
+                      ),
           )}
         >
           <div className={"my-auto mr-auto flex pl-5"}>
@@ -302,7 +302,7 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
                         : readOnly
                           ? readOnlyInputTextColor
                           : inputTextColor,
-                    "flex"
+                    "flex",
                   )}
                 >
                   {file.split("\\").slice(-1)[0]}
@@ -322,7 +322,7 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
               placeholderFontSize,
               placeholderFontWeight,
               placeholderLineHeight,
-              placeholderTextColor
+              placeholderTextColor,
             )}
             aria-label={`${id}-label`}
             id={id}
@@ -364,8 +364,8 @@ const UploadFileFieldBase = (props: UploadFileFieldBaseProps) => {
                       uploadButtonBgColor,
                       uploadButtonTextColor,
                       uploadButtonHoverBgColor,
-                      uploadButtonHoverTextColor
-                    )
+                      uploadButtonHoverTextColor,
+                    ),
             )}
             onClick={(event) => handleButtonOnClick(event)}
           >

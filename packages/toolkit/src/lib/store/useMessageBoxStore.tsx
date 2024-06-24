@@ -34,5 +34,5 @@ export const useMessageBoxStore = create<MessageBoxStore>()(
         ...preState,
         ...newState,
       })),
-  }))
+  })),
 );

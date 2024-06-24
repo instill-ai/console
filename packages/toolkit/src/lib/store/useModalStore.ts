@@ -29,5 +29,5 @@ export const useModalStore = create<ModalStore>()(
       set(() => ({
         modalIsOpen: true,
       })),
-  }))
+  })),
 );

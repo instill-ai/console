@@ -41,7 +41,7 @@ export const ViewPipelines = () => {
     React.useState<Visibility>(
       visibility === "VISIBILITY_PUBLIC"
         ? "VISIBILITY_PUBLIC"
-        : "VISIBILITY_UNSPECIFIED"
+        : "VISIBILITY_UNSPECIFIED",
     );
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
@@ -103,7 +103,7 @@ export const ViewPipelines = () => {
       debounce((value: string) => {
         setSearchCode(value);
       }, 300),
-    []
+    [],
   );
 
   return (

@@ -115,7 +115,7 @@ export const ReadOnlyPipelineBuilder = ({
     <div
       className={cn(
         "group flex w-full rounded-sm border-2 border-semantic-bg-line",
-        className
+        className,
       )}
     >
       <ReactFlow

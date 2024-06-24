@@ -53,7 +53,7 @@ export const VideosField = ({
                 "grid w-full grid-flow-row grid-cols-4",
                 mode === "build"
                   ? ""
-                  : "rounded-sm border border-semantic-bg-line"
+                  : "rounded-sm border border-semantic-bg-line",
               )}
             >
               {videosFiles.length > 0
@@ -77,7 +77,7 @@ export const VideosField = ({
                             "w-full bg-semantic-bg-secondary",
                             mode === "build"
                               ? "h-[55px] object-cover"
-                              : "h-[140px] object-contain"
+                              : "h-[140px] object-contain",
                           )}
                         />
                       );
@@ -89,7 +89,7 @@ export const VideosField = ({
                         "w-full",
                         mode === "build"
                           ? "h-[55px] bg-semantic-bg-secondary object-cover"
-                          : "h-[140px] object-contain"
+                          : "h-[140px] object-contain",
                       )}
                     />
                   ))}
@@ -140,7 +140,7 @@ export const VideosField = ({
                   "nowheel h-[216px] rounded-sm p-2",
                   mode === "build"
                     ? "bg-semantic-bg-secondary"
-                    : "border border-semantic-bg-line"
+                    : "border border-semantic-bg-line",
                 )}
               >
                 <div className="flex h-full flex-col gap-y-2">
@@ -150,7 +150,7 @@ export const VideosField = ({
                       name={e.name}
                       onDelete={async () => {
                         const newFiles = videosFiles.filter(
-                          (_, index) => index !== i
+                          (_, index) => index !== i,
                         );
 
                         const newBinaries: string[] = [];

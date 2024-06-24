@@ -7,7 +7,7 @@ export type RefSize = {
 };
 
 export function useRefSize(
-  ref: React.RefObject<HTMLElement>
+  ref: React.RefObject<HTMLElement>,
 ): Nullable<RefSize> {
   const [refSize, setRefSize] = React.useState<Nullable<RefSize>>(null);
   const observerRef = React.useRef<ResizeObserver | null>(null);

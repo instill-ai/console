@@ -2,7 +2,7 @@ import { SmartHint } from "./types";
 
 export function pickSmartHintsFromAcceptFormats(
   hints: SmartHint[],
-  instillAcceptFormats: string[]
+  instillAcceptFormats: string[],
 ): SmartHint[] {
   const pickHints: SmartHint[] = [];
 
@@ -20,7 +20,7 @@ export function pickSmartHintsFromAcceptFormats(
     if (hint.type === "array" && hint.properties) {
       const childPickHints = pickSmartHintsFromAcceptFormats(
         hint.properties,
-        instillAcceptFormats
+        instillAcceptFormats,
       );
 
       if (childPickHints.length > 0) {
@@ -124,7 +124,7 @@ export function pickSmartHintsFromAcceptFormats(
       if (
         type === "semi-structured" &&
         instillAcceptFormats.some((format) =>
-          format.includes("semi-structured")
+          format.includes("semi-structured"),
         )
       ) {
         pickHints.push(hint);

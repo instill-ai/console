@@ -120,7 +120,7 @@ export const CreateModelForm = () => {
       if (!form.getValues("hardware")) {
         form.setValue(
           "hardware",
-          hardwareOptions[regionOptions[0].value][0].value
+          hardwareOptions[regionOptions[0].value][0].value,
         );
       }
     }
@@ -147,7 +147,7 @@ export const CreateModelForm = () => {
         .filter((item) =>
           currentEnv === "CE"
             ? item.regionName === "REGION_LOCAL"
-            : item.regionName !== "REGION_LOCAL"
+            : item.regionName !== "REGION_LOCAL",
         )
         .map((item) => ({
           value: item.regionName,
@@ -192,7 +192,7 @@ export const CreateModelForm = () => {
     };
 
     const targetNamespace = userNamespaces.find(
-      (namespace) => namespace.id === data.namespaceId
+      (namespace) => namespace.id === data.namespaceId,
     );
 
     if (targetNamespace) {
@@ -389,7 +389,7 @@ export const CreateModelForm = () => {
               />
               <RadioGroup.Root
                 onValueChange={(
-                  value: Exclude<Visibility, "VISIBILITY_UNSPECIFIED">
+                  value: Exclude<Visibility, "VISIBILITY_UNSPECIFIED">,
                 ) => {
                   form.setValue("visibility", value);
                 }}
@@ -458,7 +458,7 @@ export const CreateModelForm = () => {
                             if (Object.keys(hardwareOptions).length) {
                               form.setValue(
                                 "hardware",
-                                hardwareOptions[value][0].value
+                                hardwareOptions[value][0].value,
                               );
                             }
                             {

@@ -5,7 +5,7 @@ import { AirbyteFieldValues, AirbyteFormTree } from "../types";
 
 export const useAirbyteFieldValues = (
   formTree: Nullable<AirbyteFormTree>,
-  initialValue: Nullable<AirbyteFieldValues>
+  initialValue: Nullable<AirbyteFieldValues>,
 ) => {
   const [fieldValues, setFieldValues] =
     React.useState<Nullable<AirbyteFieldValues>>(initialValue);
@@ -42,11 +42,11 @@ export const pickInitialValues = (
   fieldValues: Nullable<AirbyteFieldValues>,
   setFieldValues: React.Dispatch<
     React.SetStateAction<Nullable<AirbyteFieldValues>>
-  >
+  >,
 ) => {
   if (formTree._type === "formGroup") {
     formTree.properties.map((e) =>
-      pickInitialValues(e, fieldValues, setFieldValues)
+      pickInitialValues(e, fieldValues, setFieldValues),
     );
     return;
   }

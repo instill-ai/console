@@ -36,7 +36,7 @@ export function pickFieldsFromOutputReferenceHints(hints: SmartHint[]) {
 
   const hintsGroupByFormat = groupBy(
     [...nonObjectArrayHints, ...normalizeObjectArrayHints],
-    (hint) => hint.instillFormat
+    (hint) => hint.instillFormat,
   );
 
   Object.entries(hintsGroupByFormat).forEach(([instillFormat, hints]) => {
@@ -45,13 +45,13 @@ export function pickFieldsFromOutputReferenceHints(hints: SmartHint[]) {
         key={instillFormat}
         instillFormat={instillFormat}
         hints={hints}
-      />
+      />,
     );
   });
 
   const arrayArrayHintsGroupByFormat = groupBy(
     arrayArrayHints,
-    (hint) => hint.instillFormat
+    (hint) => hint.instillFormat,
   );
 
   Object.entries(arrayArrayHintsGroupByFormat).forEach(
@@ -62,9 +62,9 @@ export function pickFieldsFromOutputReferenceHints(hints: SmartHint[]) {
           instillFormat={instillFormat}
           hints={hints}
           arrayInArray={true}
-        />
+        />,
       );
-    }
+    },
   );
 
   return fields;

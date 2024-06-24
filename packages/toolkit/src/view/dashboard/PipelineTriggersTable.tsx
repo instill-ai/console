@@ -71,7 +71,7 @@ export const PipelineTriggersTable = (props: PipelineTriggersTableProps) => {
         return (
           <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
             {convertToSecondsAndMilliseconds(
-              row.getValue("computeTimeDuration")
+              row.getValue("computeTimeDuration"),
             )}
           </div>
         );

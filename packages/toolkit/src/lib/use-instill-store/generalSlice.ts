@@ -35,7 +35,7 @@ export const createGeneralSlice: StateCreator<
     }),
   navigationNamespaceAnchor: null,
   updateNavigationNamespaceAnchor: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) =>
     set((state) => {
       return {

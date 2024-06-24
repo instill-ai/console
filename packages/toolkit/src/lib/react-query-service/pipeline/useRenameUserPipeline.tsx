@@ -40,13 +40,13 @@ export function useRenameUserPipeline() {
 
       queryClient.setQueryData<Pipeline>(
         ["pipelines", pipeline.name],
-        pipeline
+        pipeline,
       );
 
       queryClient.setQueryData<Pipeline[]>(["pipelines", userName], (old) =>
         old
           ? [...old.filter((e) => e.name !== oldPipelineName), pipeline]
-          : [pipeline]
+          : [pipeline],
       );
     },
   });

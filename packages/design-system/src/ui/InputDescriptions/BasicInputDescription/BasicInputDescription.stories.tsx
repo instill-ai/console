@@ -13,5 +13,5 @@ const Template: StoryFn<typeof BasicInputDescription> = () => (
 );
 
 export const Playground: StoryFn<typeof BasicInputDescription> = Template.bind(
-  {}
+  {},
 );

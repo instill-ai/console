@@ -56,7 +56,7 @@ export async function listPipelineTriggerRecordsQuery({
           accessToken,
           nextPageToken: data.nextPageToken,
           filter,
-        }))
+        })),
       );
     }
 
@@ -100,7 +100,7 @@ export async function listTriggeredPipelineQuery({
           accessToken,
           nextPageToken: data.nextPageToken,
           filter,
-        }))
+        })),
       );
     }
 

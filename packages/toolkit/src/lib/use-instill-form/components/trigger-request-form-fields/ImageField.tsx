@@ -55,7 +55,7 @@ export const ImageField = ({
                   alt={`${path}-${imageFile.name}`}
                   className={cn(
                     "w-full object-contain",
-                    mode === "build" ? "h-[150px]" : "h-[360px]"
+                    mode === "build" ? "h-[150px]" : "h-[360px]",
                   )}
                 />
               ) : (
@@ -65,7 +65,7 @@ export const ImageField = ({
                     "flex w-full items-center justify-center",
                     mode === "build"
                       ? "h-[150px] bg-semantic-bg-secondary"
-                      : "h-[260px] rounded-sm border border-semantic-bg-line bg-transparent"
+                      : "h-[260px] rounded-sm border border-semantic-bg-line bg-transparent",
                   )}
                 ></div>
               )}

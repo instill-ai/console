@@ -22,10 +22,10 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
 
 export const customRender: (
   ui: React.ReactElement,
-  options?: Omit<RenderOptions, "wrapper">
+  options?: Omit<RenderOptions, "wrapper">,
 ) => ReturnType<typeof render> = (
   ui: React.ReactElement,
-  options?: Omit<RenderOptions, "wrapper">
+  options?: Omit<RenderOptions, "wrapper">,
 ) =>
   render(ui, { wrapper: AllTheProviders, ...options }) as ReturnType<
     typeof render
@@ -48,7 +48,7 @@ export { customRender as render };
  * @returns escaped value like ${{user.name}
  */
 export const getEscapedReferenceValueForReactTestingLibrary = (
-  value: string
+  value: string,
 ) => {
   return "${{" + value.replace("${", "").replace("}", "") + "}";
 };

@@ -147,7 +147,7 @@ export const OneOfConditionSection = ({
     ) {
       const selectedCondition =
         conditionOptions.find(
-          (e) => e.label === selectedConditionMap[formTree.path].selectedItem
+          (e) => e.label === selectedConditionMap[formTree.path].selectedItem,
         ) || null;
       setSelectedConditionOption(selectedCondition);
     }
@@ -162,7 +162,7 @@ export const OneOfConditionSection = ({
         setSelectedConditionOption(option);
 
         const targetConstField = selectedCondition.properties.find(
-          (e) => "const" in e
+          (e) => "const" in e,
         ) as AirbyteFormItem;
 
         if (targetConstField) {
@@ -171,7 +171,7 @@ export const OneOfConditionSection = ({
             dot.setter(
               configuration,
               targetConstField.path,
-              targetConstField.const
+              targetConstField.const,
             );
             return {
               ...prev,
@@ -221,7 +221,7 @@ export const OneOfConditionSection = ({
       formTree.conditions,
       setFormIsDirty,
       conditionOptions,
-    ]
+    ],
   );
 
   return (

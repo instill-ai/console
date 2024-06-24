@@ -13,7 +13,7 @@ const Template: StoryFn<typeof InputDescriptionBase> = (args) => (
 );
 
 export const Playground: StoryFn<typeof InputDescriptionBase> = Template.bind(
-  {}
+  {},
 );
 
 Playground.args = {

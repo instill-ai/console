@@ -10,7 +10,7 @@ const ToggleGroupRoot = React.forwardRef<
     ref={ref}
     className={cn(
       "inline-flex flex-row space-x-px rounded bg-semantic-bg-line p-px",
-      className
+      className,
     )}
     {...props}
   />
@@ -26,7 +26,7 @@ const ToggleGroupItem = React.forwardRef<
     className={cn(
       "flex h-full cursor-pointer items-center justify-center bg-semantic-bg-primary px-4 py-2 text-base font-semibold",
       "first:rounded-l last:rounded-r focus:outline-none data-[state=on]:cursor-default data-[state=on]:bg-semantic-accent-bg data-[state=on]:text-semantic-accent-default",
-      className
+      className,
     )}
     {...props}
   />

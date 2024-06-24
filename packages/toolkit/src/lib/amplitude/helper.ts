@@ -6,7 +6,7 @@ import { AmplitudeEvent, AmplitudeEventProperties } from "./type";
 export const initAmplitude = (
   userId: Nullable<string>,
   enabledPageViewsTracking = true,
-  enabledSessionTracking = true
+  enabledSessionTracking = true,
 ) => {
   if (!env("NEXT_PUBLIC_AMPLITUDE_KEY")) {
     console.error("Amplitude key is not set");
@@ -27,7 +27,7 @@ export const setAmplitudeUserId = (userId: string) => {
 
 export const sendAmplitudeData = (
   eventType: AmplitudeEvent,
-  eventProperties?: AmplitudeEventProperties
+  eventProperties?: AmplitudeEventProperties,
 ) => {
   track(eventType, {
     ...eventProperties,

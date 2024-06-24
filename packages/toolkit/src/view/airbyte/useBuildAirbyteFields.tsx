@@ -30,7 +30,7 @@ export const useBuildAirbyteFields = (
     React.SetStateAction<Nullable<SelectedItemMap>>
   >,
   formIsDirty: boolean,
-  setFormIsDirty: React.Dispatch<React.SetStateAction<boolean>>
+  setFormIsDirty: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   const fields = React.useMemo(() => {
     if (!formTree) return null;
@@ -43,7 +43,7 @@ export const useBuildAirbyteFields = (
       selectedConditionMap,
       setSelectedConditionMap,
       formIsDirty,
-      setFormIsDirty
+      setFormIsDirty,
     );
   }, [
     formTree,
@@ -71,7 +71,7 @@ export const pickComponent = (
     React.SetStateAction<Nullable<SelectedItemMap>>
   >,
   formIsDirty: boolean,
-  setFormIsDirty: React.Dispatch<React.SetStateAction<boolean>>
+  setFormIsDirty: React.Dispatch<React.SetStateAction<boolean>>,
 ): React.ReactNode => {
   if (formTree._type === "formGroup") {
     return (
@@ -86,8 +86,8 @@ export const pickComponent = (
             selectedConditionMap,
             setSelectedConditionMap,
             formIsDirty,
-            setFormIsDirty
-          )
+            setFormIsDirty,
+          ),
         )}
       </React.Fragment>
     );
@@ -110,11 +110,11 @@ export const pickComponent = (
                 selectedConditionMap,
                 setSelectedConditionMap,
                 formIsDirty,
-                setFormIsDirty
+                setFormIsDirty,
               ),
             },
           ];
-        })
+        }),
       );
 
     return (
@@ -142,7 +142,7 @@ export const pickComponent = (
       selectedConditionMap,
       setSelectedConditionMap,
       formIsDirty,
-      setFormIsDirty
+      setFormIsDirty,
     );
   }
 
@@ -371,7 +371,7 @@ export const pickComponent = (
           dot.setter(
             configuration,
             formTree.path,
-            inputType === "number" ? parseInt(value) : value
+            inputType === "number" ? parseInt(value) : value,
           );
           return {
             ...prev,
@@ -391,7 +391,7 @@ export const pickComponent = (
 };
 
 const getPlaceholder = (
-  formTree: AirbyteFormGroupItem | AirbyteFormItem
+  formTree: AirbyteFormGroupItem | AirbyteFormItem,
 ): string | null => {
   let placeholder: string | null;
 

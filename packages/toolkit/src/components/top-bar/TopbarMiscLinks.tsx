@@ -14,7 +14,7 @@ export const TopbarMiscLinks = () => {
         href="https://github.com/instill-ai/instill-core"
         className={cn(
           "flex h-8 flex-row gap-x-2",
-          buttonVariants({ variant: "secondaryGrey", size: "md" })
+          buttonVariants({ variant: "secondaryGrey", size: "md" }),
         )}
       >
         <ComplicateIcons.GitHub
@@ -27,7 +27,7 @@ export const TopbarMiscLinks = () => {
         href="https://www.instill.tech/docs"
         className={cn(
           "flex h-8 flex-row gap-x-2",
-          buttonVariants({ variant: "tertiaryGrey", size: "md" })
+          buttonVariants({ variant: "tertiaryGrey", size: "md" }),
         )}
       >
         <Icons.File06 className="h-[14px] w-[14px] stroke-semantic-fg-primary" />
@@ -37,7 +37,7 @@ export const TopbarMiscLinks = () => {
         href="https://discord.com/invite/sevxWsqpGh"
         className={cn(
           "flex h-8 flex-row gap-x-2",
-          buttonVariants({ variant: "tertiaryGrey", size: "md" })
+          buttonVariants({ variant: "tertiaryGrey", size: "md" }),
         )}
       >
         <Icons.MessageSmileSquare className="h-[14px] w-[14px] stroke-semantic-fg-primary" />

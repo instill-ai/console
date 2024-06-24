@@ -94,5 +94,10 @@
   },
   "engines": {
     "node": ">=14.6.0"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --cache --fix"
+    ]
   }
 }

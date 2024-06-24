@@ -157,7 +157,7 @@ export const ImagesField = ({
                     if (value.prompt_image_base64) {
                       const binaryKey = value.prompt_image_base64.slice(
                         value.prompt_image_base64.indexOf(",") + 1,
-                        value.prompt_image_base64.indexOf(",") + 13
+                        value.prompt_image_base64.indexOf(",") + 13,
                       );
 
                       return (
@@ -166,7 +166,7 @@ export const ImagesField = ({
                           name={binaryKey}
                           onDelete={async () => {
                             const newFiles = imageFiles.filter(
-                              (_, index) => index !== i
+                              (_, index) => index !== i,
                             );
 
                             if (instillModelPromptImageBase64ObjectFormat) {
@@ -210,7 +210,7 @@ export const ImagesField = ({
                       name={e.name}
                       onDelete={async () => {
                         const newFiles = imageFiles.filter(
-                          (_, index) => index !== i
+                          (_, index) => index !== i,
                         );
 
                         if (instillModelPromptImageBase64ObjectFormat) {

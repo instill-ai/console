@@ -79,7 +79,7 @@ export function usePipelineBuilderGraph() {
         updatePipelineId(() =>
           routeInfo.data.resourceId
             ? routeInfo.data.resourceId.toString()
-            : null
+            : null,
         );
       }
       return;

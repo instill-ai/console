@@ -6,7 +6,7 @@ export type ElementPosition = {
 };
 
 export const getElementPosition = (
-  element: HTMLElement | Element
+  element: HTMLElement | Element,
 ): ElementPosition => {
   const box = element.getBoundingClientRect();
 
@@ -33,7 +33,7 @@ export const getElementPosition = (
 export const getTailwindClassNumber = (className: string): number => {
   if (!hasNumber(className)) {
     throw new Error(
-      "Tailwind css classNames don't have number, please try to use abitrary classname like w-[10px]"
+      "Tailwind css classNames don't have number, please try to use abitrary classname like w-[10px]",
     );
   }
 
@@ -59,13 +59,13 @@ export const getTailwindClassNumber = (className: string): number => {
     }
 
     throw new Error(
-      `getTailwindClassNumber now only support px and rem, input - ${className}`
+      `getTailwindClassNumber now only support px and rem, input - ${className}`,
     );
   }
 
   if (className.includes("[") || className.includes("]")) {
     throw new Error(
-      `Tailwind css classname is not complete, input - ${className}`
+      `Tailwind css classname is not complete, input - ${className}`,
     );
   }
 

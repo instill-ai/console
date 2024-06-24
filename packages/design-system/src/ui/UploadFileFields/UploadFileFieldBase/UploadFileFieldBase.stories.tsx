@@ -14,7 +14,7 @@ const Template: StoryFn<typeof UploadFileFieldBase> = (args) => (
 );
 
 export const Playground: StoryFn<typeof UploadFileFieldBase> = Template.bind(
-  {}
+  {},
 );
 
 Playground.args = {

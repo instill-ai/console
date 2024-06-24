@@ -37,7 +37,7 @@ export const TopControlMenu = ({
   const [isSaving, setIsSaving] = React.useState(false);
   const addNode = useAddNodeWithDefinition({ reactFlowInstance });
   const { pipelineIsNew, isEditingIterator } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
   const routeInfo = useRouteInfo();
@@ -54,7 +54,7 @@ export const TopControlMenu = ({
                 navigate(`/${routeInfo.data.namespaceId}/pipelines`);
               } else {
                 navigate(
-                  `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`
+                  `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`,
                 );
               }
             }}

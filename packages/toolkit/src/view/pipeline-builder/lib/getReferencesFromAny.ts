@@ -8,7 +8,7 @@ export function getReferencesFromAny(value: any) {
 
   function getReferences(
     value: any,
-    references: InstillReference[] = []
+    references: InstillReference[] = [],
   ): InstillReference[] {
     if (Array.isArray(value)) {
       for (const item of value) {

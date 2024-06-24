@@ -39,7 +39,7 @@ export type OnSuccessAfterUndeployModelProps = {
 };
 
 export async function onSuccessAfterModelMutation(
-  props: OnSuccessAfterModelMutationProps
+  props: OnSuccessAfterModelMutationProps,
 ) {
   const { type, queryClient } = props;
 
@@ -51,11 +51,11 @@ export async function onSuccessAfterModelMutation(
 
     queryClient.setQueryData<Model>(["models", model.name], model);
     queryClient.setQueryData<Model[]>(["models"], (old) =>
-      old ? [...old.filter((e) => e.name !== model.name), model] : [model]
+      old ? [...old.filter((e) => e.name !== model.name), model] : [model],
     );
 
     queryClient.setQueryData<Model[]>(["models", userName], (old) =>
-      old ? [...old.filter((e) => e.name !== model.name), model] : [model]
+      old ? [...old.filter((e) => e.name !== model.name), model] : [model],
     );
 
     // Invalidate readme

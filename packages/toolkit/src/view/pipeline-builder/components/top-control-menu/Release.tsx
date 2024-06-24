@@ -7,7 +7,7 @@ import { ReleaseMenu } from "../release-menu";
 
 export const Release = () => {
   const pipelineRecipeIsDirty = useInstillStore(
-    (store) => store.pipelineRecipeIsDirty
+    (store) => store.pipelineRecipeIsDirty,
   );
 
   return (
@@ -20,7 +20,7 @@ export const Release = () => {
             "flex !h-8 cursor-pointer flex-row gap-x-2",
             pipelineRecipeIsDirty
               ? ""
-              : "!bg-semantic-accent-default !text-semantic-fg-on-default hover:!bg-semantic-accent-hover active:!bg-semantic-accent-pressed"
+              : "!bg-semantic-accent-default !text-semantic-fg-on-default hover:!bg-semantic-accent-hover active:!bg-semantic-accent-pressed",
           )}
         >
           Release

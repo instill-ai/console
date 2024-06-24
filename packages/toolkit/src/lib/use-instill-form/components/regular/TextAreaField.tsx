@@ -39,7 +39,7 @@ export const TextAreaField = ({
                 {...field}
                 className={cn(
                   "nodrag nowheel",
-                  size === "sm" ? "!product-body-text-4-regular" : ""
+                  size === "sm" ? "!product-body-text-4-regular" : "",
                 )}
                 // At some moment the value maybe a object
                 // For example, { foo: { bar: "baz" } }}}. For foo.bar field
@@ -63,14 +63,14 @@ export const TextAreaField = ({
             <Form.Description
               className={cn(
                 "nodrag nopan cursor-text select-text",
-                size === "sm" ? "!product-body-text-4-regular" : ""
+                size === "sm" ? "!product-body-text-4-regular" : "",
               )}
               text={shortDescription ?? null}
             />
             <Form.Message
               className={cn(
                 "nodrag nopan cursor-text select-text",
-                size === "sm" ? "!product-body-text-4-medium" : ""
+                size === "sm" ? "!product-body-text-4-medium" : "",
               )}
             />
           </Form.Item>

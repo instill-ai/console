@@ -12,7 +12,7 @@ const Template: StoryFn<typeof CollapseSidebarButton> = (args) => (
   <CollapseSidebarButton {...args} />
 );
 export const Playground: StoryFn<typeof CollapseSidebarButton> = Template.bind(
-  {}
+  {},
 );
 
 Playground.args = {

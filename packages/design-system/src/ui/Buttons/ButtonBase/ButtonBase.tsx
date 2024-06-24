@@ -206,7 +206,7 @@ const ButtonBase = (props: ButtonBaseProps) => {
               disabledBgOpacity,
               disabledTextColor,
               disabledBorderColor,
-              "cursor-not-allowed"
+              "cursor-not-allowed",
             )
           : cn(
               bgColor,
@@ -216,7 +216,7 @@ const ButtonBase = (props: ButtonBaseProps) => {
               textColor,
               hoveredTextColor,
               borderColor,
-              hoveredBorderColor
+              hoveredBorderColor,
             ),
         position,
         padding,
@@ -225,7 +225,7 @@ const ButtonBase = (props: ButtonBaseProps) => {
         borderSize,
         borderRadius,
         shadow,
-        hoveredShadow
+        hoveredShadow,
       )}
     >
       {startIcon}

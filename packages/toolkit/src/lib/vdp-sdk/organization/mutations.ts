@@ -30,7 +30,7 @@ export async function createOrganizationMutation({
 
     const { data } = await client.post<CreateOrganizationResponse>(
       "/organizations",
-      payload
+      payload,
     );
 
     return Promise.resolve(data.organization);
@@ -63,7 +63,7 @@ export async function updateOrganizationMutation({
       {
         ...payload,
         id: undefined,
-      }
+      },
     );
 
     return Promise.resolve(data.organization);
@@ -98,7 +98,7 @@ export async function updateOrganizationMembershipMutation({
         ...payload,
         organizationID: undefined,
         userID: undefined,
-      }
+      },
     );
 
     return Promise.resolve(data.membership);
@@ -136,7 +136,7 @@ export async function deleteOrganizationMembershipMutation({
     const client = createInstillAxiosClient(accessToken);
 
     await client.delete(
-      `/organizations/${organizationID}/memberships/${userID}`
+      `/organizations/${organizationID}/memberships/${userID}`,
     );
   } catch (err) {
     return Promise.reject(err);
@@ -187,7 +187,7 @@ export async function updateUserMembershipMutation({
         ...payload,
         organizationID: undefined,
         userID: undefined,
-      }
+      },
     );
 
     return Promise.resolve(data.membership);

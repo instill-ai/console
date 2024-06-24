@@ -13,7 +13,7 @@ const Template: StoryFn<typeof BasicUploadFileField> = (args) => (
   <BasicUploadFileField {...args} />
 );
 export const Playground: StoryFn<typeof BasicUploadFileField> = Template.bind(
-  {}
+  {},
 );
 
 Playground.args = {

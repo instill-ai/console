@@ -40,7 +40,7 @@ export const DeleteOutputButton = ({ outputKey }: { outputKey: string }) => {
             }
 
             return node;
-          })
+          }),
         );
 
         updatePipelineRecipeIsDirty(() => true);

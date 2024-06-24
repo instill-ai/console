@@ -7,13 +7,13 @@ import { AirbyteJsonSchema, SelectedItemMap } from "../types";
 export const useBuildAirbyteYup = (
   jsonSchema: Nullable<AirbyteJsonSchema>,
   selectedItemMap: Nullable<SelectedItemMap>,
-  additionalSchema: Nullable<AnySchema>
+  additionalSchema: Nullable<AnySchema>,
 ): Nullable<AnySchema> => {
   const yup = React.useMemo(() => {
     if (!jsonSchema) return null;
     const airbyteSchema = transformAirbyteSchemaToYup(
       jsonSchema,
-      selectedItemMap
+      selectedItemMap,
     );
     return additionalSchema
       ? airbyteSchema.concat(additionalSchema)

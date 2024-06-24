@@ -9,7 +9,7 @@ import {
 export const pickSelectedConditionMap = (
   formTree: AirbyteFormTree,
   initialValue: AirbyteFieldValues,
-  parentMap: SelectedItemMap = {}
+  parentMap: SelectedItemMap = {},
 ): SelectedItemMap => {
   if (formTree._type === "formGroup") {
     let map = {} as SelectedItemMap;
@@ -66,7 +66,7 @@ export const pickSelectedConditionMap = (
     const childMap = pickSelectedConditionMap(
       formTree.properties,
       initialValue,
-      parentMap
+      parentMap,
     );
 
     map = {

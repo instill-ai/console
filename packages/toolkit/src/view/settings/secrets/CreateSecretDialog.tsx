@@ -82,7 +82,7 @@ export const CreateSecretDialog = () => {
 
   const createSecret = useCreateUserSecret();
   const handleCreateAPIToken = async (
-    data: z.infer<typeof CreateSecretSchema>
+    data: z.infer<typeof CreateSecretSchema>,
   ) => {
     if (!accessToken || !me.isSuccess) return;
 

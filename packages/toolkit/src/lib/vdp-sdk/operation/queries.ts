@@ -17,7 +17,7 @@ export async function getOperationQuery({
     const client = createInstillAxiosClient(accessToken, true);
 
     const { data } = await client.get<GetModelOperationResponse>(
-      `/${operationName}`
+      `/${operationName}`,
     );
     return Promise.resolve(data.operation);
   } catch (err) {

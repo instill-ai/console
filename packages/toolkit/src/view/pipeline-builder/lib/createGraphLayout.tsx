@@ -65,7 +65,7 @@ const elk = new ELK({
 
 export async function createGraphLayout(
   nodes: Node<NodeData>[],
-  edges: Edge[]
+  edges: Edge[],
 ) {
   const elkNodes: ElkNode[] = [];
   const elkEdges: ElkExtendedEdge[] = [];

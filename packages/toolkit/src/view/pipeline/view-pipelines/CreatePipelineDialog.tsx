@@ -144,7 +144,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
     };
 
     const targetNamespace = namespaces.find(
-      (account) => account.id === data.namespaceId
+      (account) => account.id === data.namespaceId,
     );
 
     if (targetNamespace) {
@@ -289,9 +289,9 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                         <span className="ml-2 break-all product-body-text-3-semibold">
                           {form.watch("id") !== "" && form.watch("id")
                             ? `${env(
-                                "NEXT_PUBLIC_CONSOLE_BASE_URL"
+                                "NEXT_PUBLIC_CONSOLE_BASE_URL",
                               )}/${form.getValues(
-                                "namespaceId"
+                                "namespaceId",
                               )}/pipelines/${form.getValues("id")}`
                             : null}
                         </span>

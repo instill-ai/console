@@ -5,10 +5,10 @@ import { TypographyValue } from "./type";
 
 async function main() {
   const semanticColours = tokens.filter(
-    (e) => e.type === "color" && e.filePath === "tokens/semantic/colour.json"
+    (e) => e.type === "color" && e.filePath === "tokens/semantic/colour.json",
   );
   const semanticBoxShadow = tokens.filter(
-    (e) => e.type === "boxShadow" && e.filePath === "tokens/semantic/comp.json"
+    (e) => e.type === "boxShadow" && e.filePath === "tokens/semantic/comp.json",
   );
 
   const borderWidth = tokens.filter((e) => e.type === "borderWidth");
@@ -42,7 +42,7 @@ async function main() {
           e.value as string
         )
           .replaceAll(" ", "-")
-          .toLowerCase()})"`
+          .toLowerCase()})"`,
     )
     .join(",\n");
 

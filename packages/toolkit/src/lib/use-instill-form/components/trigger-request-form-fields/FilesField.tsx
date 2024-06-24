@@ -94,7 +94,7 @@ export const FilesField = ({
                   "nowheel h-[216px] rounded-sm p-2",
                   mode === "build"
                     ? "bg-semantic-bg-secondary"
-                    : "border border-semantic-bg-line"
+                    : "border border-semantic-bg-line",
                 )}
               >
                 <div className="flex h-full flex-col gap-y-2">
@@ -104,7 +104,7 @@ export const FilesField = ({
                       name={e.name}
                       onDelete={async () => {
                         const newFiles = uploadedFiles.filter(
-                          (_, index) => index !== i
+                          (_, index) => index !== i,
                         );
 
                         const newBinaries: string[] = [];

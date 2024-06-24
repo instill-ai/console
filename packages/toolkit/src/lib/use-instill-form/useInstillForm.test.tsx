@@ -214,22 +214,22 @@ test("should generate simple one layer form", async () => {
   // Check the engine options are rendered, this need to move below the other fields
   expect(engineField).toHaveAttribute("aria-expanded", "true");
   expect(
-    screen.getByRole("option", { name: "stable-diffusion-xl-1024-v1-0" })
+    screen.getByRole("option", { name: "stable-diffusion-xl-1024-v1-0" }),
   ).toBeInTheDocument();
   expect(
-    screen.getByRole("option", { name: "stable-diffusion-xl-1024-v0-9" })
+    screen.getByRole("option", { name: "stable-diffusion-xl-1024-v0-9" }),
   ).toBeInTheDocument();
   expect(
-    screen.getByRole("option", { name: "stable-diffusion-v1-6" })
+    screen.getByRole("option", { name: "stable-diffusion-v1-6" }),
   ).toBeInTheDocument();
   expect(
-    screen.getByRole("option", { name: "esrgan-v1-x2plus" })
+    screen.getByRole("option", { name: "esrgan-v1-x2plus" }),
   ).toBeInTheDocument();
   expect(
-    screen.getByRole("option", { name: "stable-diffusion-512-v2-1" })
+    screen.getByRole("option", { name: "stable-diffusion-512-v2-1" }),
   ).toBeInTheDocument();
   expect(
-    screen.getByRole("option", { name: "stable-diffusion-xl-beta-v2-2-2" })
+    screen.getByRole("option", { name: "stable-diffusion-xl-beta-v2-2-2" }),
   ).toBeInTheDocument();
 
   // Select the last option
@@ -352,10 +352,10 @@ test("should generate oneOf form", async () => {
   // Check the task options are rendered
   expect(taskField).toHaveAttribute("aria-expanded", "true");
   expect(
-    screen.getByRole("option", { name: "TASK_TEXT_TO_IMAGE" })
+    screen.getByRole("option", { name: "TASK_TEXT_TO_IMAGE" }),
   ).toBeInTheDocument();
   expect(
-    screen.getByRole("option", { name: "TASK_IMAGE_TO_IMAGE" })
+    screen.getByRole("option", { name: "TASK_IMAGE_TO_IMAGE" }),
   ).toBeInTheDocument();
 
   // Select the last option
@@ -374,7 +374,7 @@ test("should generate oneOf form", async () => {
   // Fill in the desire values
   await user.type(
     weightsField,
-    getEscapedReferenceValueForReactTestingLibrary(weights)
+    getEscapedReferenceValueForReactTestingLibrary(weights),
   );
   expect(weightsField).toHaveValue();
 
@@ -1239,7 +1239,7 @@ test("should generate stability ai form", async () => {
   });
   expect(samplerField).toBeInTheDocument();
   expect(
-    within(samplerField).getByText("K_DPM_2_ANCESTRAL")
+    within(samplerField).getByText("K_DPM_2_ANCESTRAL"),
   ).toBeInTheDocument();
 
   const samplesField = screen.getByRole("textbox", {
@@ -1276,7 +1276,7 @@ test("should generate stability ai form", async () => {
   await user.click(screen.getByRole("option", { name: "TASK_IMAGE_TO_IMAGE" }));
   expect(taskField).toHaveAttribute("aria-expanded", "false");
   expect(
-    within(taskField).getByText("TASK_IMAGE_TO_IMAGE")
+    within(taskField).getByText("TASK_IMAGE_TO_IMAGE"),
   ).toBeInTheDocument();
 
   // Check the chosen task fields are correctly rendered
@@ -1289,7 +1289,7 @@ test("should generate stability ai form", async () => {
   expect(cfgScaleField).toHaveValue("7");
   expect(samplerField).toBeInTheDocument();
   expect(
-    within(samplerField).getByText("K_DPM_2_ANCESTRAL")
+    within(samplerField).getByText("K_DPM_2_ANCESTRAL"),
   ).toBeInTheDocument();
   expect(samplesField).toBeInTheDocument();
   expect(samplesField).toHaveValue("1");
@@ -1333,7 +1333,7 @@ test("should generate stability ai form", async () => {
 
   await user.type(
     promptsField,
-    getEscapedReferenceValueForReactTestingLibrary(prompts)
+    getEscapedReferenceValueForReactTestingLibrary(prompts),
   );
   expect(promptsField).toHaveValue(prompts);
   await userEvent.click(engineField, {
@@ -1344,12 +1344,12 @@ test("should generate stability ai form", async () => {
   expect(within(engineField).getByText(engine)).toBeInTheDocument();
   await user.type(
     weightsField,
-    getEscapedReferenceValueForReactTestingLibrary(weights)
+    getEscapedReferenceValueForReactTestingLibrary(weights),
   );
   expect(weightsField).toHaveValue(weights);
   await user.type(
     initImageField,
-    getEscapedReferenceValueForReactTestingLibrary(initImage)
+    getEscapedReferenceValueForReactTestingLibrary(initImage),
   );
   expect(initImageField).toHaveValue(initImage);
   await userEvent.click(initImageModeField, {
@@ -1358,7 +1358,7 @@ test("should generate stability ai form", async () => {
   await user.click(screen.getByRole("option", { name: initImageMode }));
   expect(initImageModeField).toHaveAttribute("aria-expanded", "false");
   expect(
-    within(initImageModeField).getByText(initImageMode)
+    within(initImageModeField).getByText(initImageMode),
   ).toBeInTheDocument();
   await user.clear(seedField);
   await user.type(seedField, seed);

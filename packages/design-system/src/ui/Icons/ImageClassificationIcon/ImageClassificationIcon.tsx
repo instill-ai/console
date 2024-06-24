@@ -7,7 +7,7 @@ export type ImageClassificationIconProps = Omit<
 >;
 
 const ImageClassificationIcon: React.FC<ImageClassificationIconProps> = (
-  props
+  props,
 ) => {
   const { width, height, position, style, color } = props;
   return (

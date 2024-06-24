@@ -16,7 +16,7 @@ export type DashboardPipelinesTableProps = {
 };
 
 export const DashboardPipelinesTable = (
-  props: DashboardPipelinesTableProps
+  props: DashboardPipelinesTableProps,
 ) => {
   const { entity, days } = useParams();
   const { pipelineTriggerCounts, isError, isLoading } = props;
@@ -36,7 +36,7 @@ export const DashboardPipelinesTable = (
             /> */}
             <Link
               href={`/${entity}/dashboard/pipeline/${row.getValue(
-                "pipelineId"
+                "pipelineId",
               )}${days ? "?days=" + days : ""}`}
             >
               {row.getValue("pipelineId")}

@@ -4,7 +4,7 @@ import { Nullable } from "../../type";
 
 export function createInstillAxiosClient(
   accessToken: Nullable<string>,
-  isModelEndpoint?: boolean
+  isModelEndpoint?: boolean,
 ) {
   const headers = accessToken
     ? {
@@ -23,7 +23,7 @@ export function createInstillAxiosClient(
     !env("NEXT_PUBLIC_API_GATEWAY_URL")
   ) {
     throw new Error(
-      "NEXT_SERVER_API_GATEWAY_URL or NEXT_PUBLIC_API_GATEWAY_URL is not defined"
+      "NEXT_SERVER_API_GATEWAY_URL or NEXT_PUBLIC_API_GATEWAY_URL is not defined",
     );
   }
 

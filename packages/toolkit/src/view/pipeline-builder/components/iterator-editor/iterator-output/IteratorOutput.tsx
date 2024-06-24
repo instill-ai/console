@@ -21,7 +21,7 @@ export const IteratorOutput = () => {
 
   const targetIteratorNode = React.useMemo(() => {
     return tempSavedNodesForEditingIteratorFlow.find(
-      (node) => node.id === editingIteratorID && isIteratorNode(node)
+      (node) => node.id === editingIteratorID && isIteratorNode(node),
     ) as Node<IteratorNodeData> | undefined;
   }, [editingIteratorID, tempSavedNodesForEditingIteratorFlow]);
 
@@ -41,7 +41,7 @@ export const IteratorOutput = () => {
                   outputKey={key}
                   disabledDeleteButton={key === "result_0"}
                 />
-              )
+              ),
             )
           : null}
       </div>
