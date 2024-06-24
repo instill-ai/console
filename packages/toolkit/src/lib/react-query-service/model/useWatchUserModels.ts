@@ -1,11 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  ModelWatchState,
-  watchUserModel,
-  type ModelsWatchState,
-} from "../../vdp-sdk";
+import { watchUserModel, type ModelsWatchState } from "../../vdp-sdk";
 import type { Nullable } from "../../type";
-import { AxiosError } from "axios";
 
 export function useWatchUserModels({
   modelNames,
@@ -48,12 +43,7 @@ export function useWatchUserModels({
           });
           watches[modelName] = watch;
         } catch (error) {
-          watches[modelName] = {
-            state: "STATE_ERROR",
-            message:
-              (error as AxiosError<ModelWatchState>).response?.data?.message ||
-              "",
-          };
+          watches[modelName] = null;
         }
       }
 

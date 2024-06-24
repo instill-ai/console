@@ -15,6 +15,7 @@ import Link from "next/link";
 export type CardModelProps = {
   model: Model;
   onDelete?: (model: Model) => Promise<void>;
+  hidePublicLabel?: boolean;
 };
 
 const modelCoverImageCommonProps = {
@@ -67,7 +68,11 @@ export const CardModel = (props: CardModelProps) => {
             {owner.id}/{model.id}
           </Link>
           <Tags
-            isPrivate={model.visibility === "VISIBILITY_PRIVATE"}
+            visibilityStatus={
+              props.hidePublicLabel && model.visibility === "VISIBILITY_PUBLIC"
+                ? null
+                : model.visibility
+            }
             region={getModelRegionToolkit(model.region) || ""}
             hardware={getModelHardwareToolkit(model.hardware) || model.hardware}
           />

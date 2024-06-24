@@ -1,14 +1,18 @@
 "use client";
 
 import cn from "clsx";
-import type { ResourceState } from "../lib";
+import type { Nullable, ResourceState } from "../lib";
 
 export type StateLabelProps = {
-  state: ResourceState;
+  state?: Nullable<ResourceState>;
   className?: string;
 };
 
 export const StateLabel = ({ state, className }: StateLabelProps) => {
+  if (!state) {
+    return null;
+  }
+
   let stateLabelName: string;
   let textColor: string;
   let bgColor: string;
