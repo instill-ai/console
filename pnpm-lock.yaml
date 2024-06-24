@@ -129,7 +129,6 @@ importers:
       next-easy-middlewares:
         specifier: ^1.1.2
         version: 1.1.2(@playwright/test@1.41.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-        version: 14.1.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       next-mdx-remote:
         specifier: ^4.1.0
         version: 4.4.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -266,7 +265,6 @@ importers:
       next:
         specifier: 14.1.3
         version: 14.1.3(@babel/core@7.24.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-        version: 14.1.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react:
         specifier: ^18
         version: 18.2.0
@@ -458,7 +456,6 @@ importers:
       '@storybook/nextjs':
         specifier: ^8.1.4
         version: 8.1.4(@types/jest@29.5.11)(esbuild@0.17.19)(next@15.0.0-rc.0(@babel/core@7.23.7)(@playwright/test@1.39.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(type-fest@3.13.1)(typescript@5.4.2)(vitest@1.6.0(@types/node@20.11.5)(jsdom@21.1.2)(terser@5.27.0))(webpack-hot-middleware@2.26.0)(webpack@5.89.0(esbuild@0.17.19))
-        version: 8.1.4(@types/jest@29.5.11)(esbuild@0.17.19)(next@14.1.3(@babel/core@7.23.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(type-fest@3.13.1)(typescript@5.4.2)(vitest@1.6.0(@types/node@20.11.5)(jsdom@21.1.2)(terser@5.27.0))(webpack-hot-middleware@2.26.0)(webpack@5.89.0(esbuild@0.17.19))
       '@storybook/react':
         specifier: ^8.1.4
         version: 8.1.4(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.2)
@@ -15004,7 +15001,6 @@ snapshots:
   '@storybook/mdx2-csf@1.1.0': {}
 
   '@storybook/nextjs@8.1.4(@types/jest@29.5.11)(esbuild@0.17.19)(next@15.0.0-rc.0(@babel/core@7.23.7)(@playwright/test@1.39.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(type-fest@3.13.1)(typescript@5.4.2)(vitest@1.6.0(@types/node@20.11.5)(jsdom@21.1.2)(terser@5.27.0))(webpack-hot-middleware@2.26.0)(webpack@5.89.0(esbuild@0.17.19))':
-  '@storybook/nextjs@8.1.4(@types/jest@29.5.11)(esbuild@0.17.19)(next@14.1.3(@babel/core@7.23.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(type-fest@3.13.1)(typescript@5.4.2)(vitest@1.6.0(@types/node@20.11.5)(jsdom@21.1.2)(terser@5.27.0))(webpack-hot-middleware@2.26.0)(webpack@5.89.0(esbuild@0.17.19))':
     dependencies:
       '@babel/core': 7.24.4
       '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.24.4)
@@ -15038,8 +15034,6 @@ snapshots:
       image-size: 1.1.1
       loader-utils: 3.2.1
       next: 15.0.0-rc.0(@babel/core@7.23.7)(@playwright/test@1.39.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      node-polyfill-webpack-plugin: 2.0.1(webpack@5.89.0(esbuild@0.17.19))
-      next: 14.1.3(@babel/core@7.23.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       node-polyfill-webpack-plugin: 2.0.1(webpack@5.89.0(esbuild@0.17.19))
       pnp-webpack-plugin: 1.7.0(typescript@5.4.2)
       postcss: 8.4.38
@@ -17921,7 +17915,7 @@ snapshots:
       debug: 4.3.4
       enhanced-resolve: 5.15.0
       eslint: 8.56.0
-      eslint-module-utils: 2.8.0(@typescript-eslint/parser@7.10.0(eslint@8.56.0)(typescript@5.4.2))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.10.0(eslint@8.56.0)(typescript@5.4.2))(eslint-plugin-import@2.29.1)(eslint@8.56.0))(eslint@8.56.0)
+      eslint-module-utils: 2.8.0(@typescript-eslint/parser@7.10.0(eslint@8.56.0)(typescript@5.4.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.10.0(eslint@8.56.0)(typescript@5.4.2))(eslint-plugin-import@2.29.1)(eslint@8.56.0))(eslint@8.56.0)
       eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.10.0(eslint@8.56.0)(typescript@5.4.2))(eslint-import-resolver-typescript@3.6.1)(eslint@8.56.0)
       fast-glob: 3.3.2
       get-tsconfig: 4.7.2
@@ -17962,16 +17956,6 @@ snapshots:
       '@typescript-eslint/parser': 7.10.0(eslint@8.56.0)(typescript@5.4.2)
       eslint: 8.56.0
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@7.10.0(eslint@8.56.0)(typescript@5.4.2))(eslint-plugin-import@2.29.1)(eslint@8.56.0)
-    transitivePeerDependencies:
-      - supports-color
-
-  eslint-module-utils@2.8.0(@typescript-eslint/parser@7.10.0(eslint@8.56.0)(typescript@5.4.2))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.10.0(eslint@8.56.0)(typescript@5.4.2))(eslint-plugin-import@2.29.1)(eslint@8.56.0))(eslint@8.56.0):
-    dependencies:
-      debug: 3.2.7
-    optionalDependencies:
-      '@typescript-eslint/parser': 7.10.0(eslint@8.56.0)(typescript@5.4.2)
-      eslint: 8.56.0
       eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@7.10.0(eslint@8.56.0)(typescript@5.4.2))(eslint-plugin-import@2.29.1)(eslint@8.56.0)
     transitivePeerDependencies:
       - supports-color
@@ -20054,6 +20038,20 @@ snapshots:
 
   neo-async@2.6.2: {}
 
+  next-easy-middlewares@1.1.2(@playwright/test@1.41.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+    dependencies:
+      next: 15.0.0-rc.0(@playwright/test@1.41.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      path-to-regexp: 6.2.2
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@opentelemetry/api'
+      - '@playwright/test'
+      - babel-plugin-macros
+      - babel-plugin-react-compiler
+      - react
+      - react-dom
+      - sass
+
   next-mdx-remote@4.4.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       '@mdx-js/mdx': 2.3.0
@@ -20064,31 +20062,6 @@ snapshots:
       vfile-matter: 3.0.1
     transitivePeerDependencies:
       - supports-color
-
-  next@14.1.3(@babel/core@7.23.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
-    dependencies:
-      '@next/env': 14.1.3
-      '@swc/helpers': 0.5.2
-      busboy: 1.6.0
-      caniuse-lite: 1.0.30001579
-      graceful-fs: 4.2.11
-      postcss: 8.4.31
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      styled-jsx: 5.1.1(@babel/core@7.24.6)(react@18.2.0)
-    optionalDependencies:
-      '@next/swc-darwin-arm64': 14.1.3
-      '@next/swc-darwin-x64': 14.1.3
-      '@next/swc-linux-arm64-gnu': 14.1.3
-      '@next/swc-linux-arm64-musl': 14.1.3
-      '@next/swc-linux-x64-gnu': 14.1.3
-      '@next/swc-linux-x64-musl': 14.1.3
-      '@next/swc-win32-arm64-msvc': 14.1.3
-      '@next/swc-win32-ia32-msvc': 14.1.3
-      '@next/swc-win32-x64-msvc': 14.1.3
-    transitivePeerDependencies:
-      - '@babel/core'
-      - babel-plugin-macros
 
   next@14.1.3(@babel/core@7.24.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
@@ -20115,27 +20088,56 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  next@14.1.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  next@15.0.0-rc.0(@babel/core@7.23.7)(@playwright/test@1.39.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
-      '@next/env': 14.1.3
-      '@swc/helpers': 0.5.2
+      '@next/env': 15.0.0-rc.0
+      '@swc/helpers': 0.5.11
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001579
+      caniuse-lite: 1.0.30001624
       graceful-fs: 4.2.11
       postcss: 8.4.31
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      styled-jsx: 5.1.1(react@18.2.0)
+      styled-jsx: 5.1.3(@babel/core@7.23.7)(react@18.2.0)
     optionalDependencies:
-      '@next/swc-darwin-arm64': 14.1.3
-      '@next/swc-darwin-x64': 14.1.3
-      '@next/swc-linux-arm64-gnu': 14.1.3
-      '@next/swc-linux-arm64-musl': 14.1.3
-      '@next/swc-linux-x64-gnu': 14.1.3
-      '@next/swc-linux-x64-musl': 14.1.3
-      '@next/swc-win32-arm64-msvc': 14.1.3
-      '@next/swc-win32-ia32-msvc': 14.1.3
-      '@next/swc-win32-x64-msvc': 14.1.3
+      '@next/swc-darwin-arm64': 15.0.0-rc.0
+      '@next/swc-darwin-x64': 15.0.0-rc.0
+      '@next/swc-linux-arm64-gnu': 15.0.0-rc.0
+      '@next/swc-linux-arm64-musl': 15.0.0-rc.0
+      '@next/swc-linux-x64-gnu': 15.0.0-rc.0
+      '@next/swc-linux-x64-musl': 15.0.0-rc.0
+      '@next/swc-win32-arm64-msvc': 15.0.0-rc.0
+      '@next/swc-win32-ia32-msvc': 15.0.0-rc.0
+      '@next/swc-win32-x64-msvc': 15.0.0-rc.0
+      '@playwright/test': 1.39.0
+      sharp: 0.33.4
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-plugin-macros
+
+  next@15.0.0-rc.0(@playwright/test@1.41.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+    dependencies:
+      '@next/env': 15.0.0-rc.0
+      '@swc/helpers': 0.5.11
+      busboy: 1.6.0
+      caniuse-lite: 1.0.30001624
+      graceful-fs: 4.2.11
+      postcss: 8.4.31
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      styled-jsx: 5.1.3(@babel/core@7.23.7)(react@18.2.0)
+    optionalDependencies:
+      '@next/swc-darwin-arm64': 15.0.0-rc.0
+      '@next/swc-darwin-x64': 15.0.0-rc.0
+      '@next/swc-linux-arm64-gnu': 15.0.0-rc.0
+      '@next/swc-linux-arm64-musl': 15.0.0-rc.0
+      '@next/swc-linux-x64-gnu': 15.0.0-rc.0
+      '@next/swc-linux-x64-musl': 15.0.0-rc.0
+      '@next/swc-win32-arm64-msvc': 15.0.0-rc.0
+      '@next/swc-win32-ia32-msvc': 15.0.0-rc.0
+      '@next/swc-win32-x64-msvc': 15.0.0-rc.0
+      '@playwright/test': 1.41.1
+      sharp: 0.33.4
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
@@ -21931,23 +21933,16 @@ snapshots:
       client-only: 0.0.1
       react: 18.2.0
     optionalDependencies:
-      '@babel/core': 7.23.7
+      '@babel/core': 7.24.4
 
   styled-jsx@5.1.1(@babel/core@7.24.6)(react@18.2.0):
     dependencies:
       client-only: 0.0.1
       react: 18.2.0
     optionalDependencies:
-      '@babel/core': 7.24.4
-
-  styled-jsx@5.1.3(@babel/core@7.23.7)(react@18.2.0):
-    dependencies:
-      client-only: 0.0.1
-      react: 18.2.0
-    optionalDependencies:
       '@babel/core': 7.24.6
 
-  styled-jsx@5.1.1(react@18.2.0):
+  styled-jsx@5.1.3(@babel/core@7.23.7)(react@18.2.0):
     dependencies:
       client-only: 0.0.1
       react: 18.2.0
@@ -22803,24 +22798,6 @@ snapshots:
       - sugarss
       - supports-color
       - terser
-    optional: true
-
-  vite-node@1.6.0(@types/node@20.11.5)(terser@5.27.0):
-    dependencies:
-      cac: 6.7.14
-      debug: 4.3.4
-      pathe: 1.1.2
-      picocolors: 1.0.0
-      vite: 5.2.12(@types/node@20.11.5)(terser@5.27.0)
-    transitivePeerDependencies:
-      - '@types/node'
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
 
   vite@5.2.12(@types/node@18.19.8)(terser@5.27.0):
     dependencies:
@@ -22831,16 +22808,6 @@ snapshots:
       '@types/node': 18.19.8
       fsevents: 2.3.3
       terser: 5.27.0
-
-  vite@5.2.12(@types/node@20.11.5)(terser@5.27.0):
-    dependencies:
-      esbuild: 0.20.2
-      postcss: 8.4.38
-      rollup: 4.18.0
-    optionalDependencies:
-      '@types/node': 20.11.5
-      fsevents: 2.3.3
-    optional: true
 
   vite@5.2.12(@types/node@20.11.5)(terser@5.27.0):
     dependencies:
