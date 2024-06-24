@@ -1,3 +1,4 @@
+import { Star06 } from "./Star06";
 import { Activity } from "./Activity";
 import { AlertCircle } from "./AlertCircle";
 import { AlertTriangle } from "./AlertTriangle";
@@ -123,6 +124,7 @@ import { VisualQuestionAnswering } from "./VisualQuestionAnswering";
 import { X } from "./X";
 import { CardRefresh } from "./CardRefresh";
 import { CurrencyDollar } from "./CurrencyDollar";
+import { PDFIcon } from "./PDFIcon";
 
 export const Icons = {
   Activity,
@@ -207,6 +209,7 @@ export const Icons = {
   MessageSmileSquare,
   NewModel,
   Pipeline,
+  PDFIcon,
   Play,
   PlayCircle,
   Plus,
@@ -225,6 +228,7 @@ export const Icons = {
   SpeechRecognition,
   Sliders01,
   Speaker01,
+  Star06,
   Stop,
   SearchLg,
   SearchSm,

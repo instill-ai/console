@@ -31,6 +31,11 @@ const navLinkItems: NavLinkProps[] = [
     title: "Pipelines",
   },
   {
+    pathname: "applications",
+    Icon: Icons.Star06,
+    title: "Applications",
+  },
+  {
     pathname: "models",
     Icon: Icons.Cube01,
     title: "Models",
