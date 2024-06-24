@@ -7,6 +7,10 @@ export const getQueryString = ({
   filter,
   queryParams,
   orderBy,
+  owner,
+  start,
+  stop,
+  aggregationWindow,
 }: {
   baseURL: string;
   pageSize: Nullable<number>;
@@ -16,6 +20,10 @@ export const getQueryString = ({
 
   // Just pure query params, the function will handle tialing '&'
   queryParams?: string;
+  owner?: string;
+  start?: string;
+  stop?: string;
+  aggregationWindow?: string;
 }) => {
   let url = baseURL;
 
@@ -46,6 +54,22 @@ export const getQueryString = ({
 
   if (queryParams) {
     url += `${queryParams}&`;
+  }
+
+  if (owner) {
+    url += `owner=${owner}&`;
+  }
+
+  if (start) {
+    url += `start=${start}&`;
+  }
+
+  if (stop) {
+    url += `stop=${stop}&`;
+  }
+
+  if (aggregationWindow) {
+    url += `aggregationWindow=${aggregationWindow}&`;
   }
 
   if (url.endsWith("&")) {

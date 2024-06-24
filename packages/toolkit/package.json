@@ -137,6 +137,7 @@
     "react-hook-form": "^7.51.0",
     "react-syntax-highlighter": "^15.5.0",
     "reactflow": "^11.10.0",
+    "recharts": "^2.12.7",
     "semver": "^7.5.4",
     "server-only": "^0.0.1",
     "unique-names-generator": "^4.7.1",

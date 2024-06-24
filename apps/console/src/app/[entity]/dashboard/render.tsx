@@ -6,6 +6,7 @@ import { useAppTrackToken } from "lib/useAppTrackToken";
 
 import {
   AppTopbar,
+  DashboardContainer,
   DashboardPipelineListPageMainView,
   PageBase,
 } from "@instill-ai/toolkit";
@@ -21,11 +22,13 @@ export function DashboardPageRender() {
       <AppTopbar />
       <PageBase.Container>
         <PageBase.Content contentPadding="p-8">
-          <DashboardPipelineListPageMainView
-            accessToken={accessToken.isSuccess ? accessToken.data : null}
-            enableQuery={accessToken.isSuccess}
-            router={router}
-          />
+          <DashboardContainer>
+            <DashboardPipelineListPageMainView
+              accessToken={accessToken.isSuccess ? accessToken.data : null}
+              enableQuery={accessToken.isSuccess}
+              router={router}
+            />
+          </DashboardContainer>
         </PageBase.Content>
       </PageBase.Container>
     </PageBase>
