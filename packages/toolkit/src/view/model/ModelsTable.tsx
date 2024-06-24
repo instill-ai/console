@@ -74,9 +74,7 @@ export const ModelsTable = (props: ModelsTableProps) => {
 
         return (
           <div className="grid justify-items-center">
-            <StateLabel
-              state={modelsWatchState.data?.[name]?.state}
-            />
+            <StateLabel state={modelsWatchState.data?.[name]?.state} />
           </div>
         );
       },
