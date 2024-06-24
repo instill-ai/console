@@ -75,7 +75,11 @@ export const ModelsTable = (props: ModelsTableProps) => {
         return (
           <div className="grid justify-items-center">
             <StateLabel
-              state={(modelsWatchState.isSuccess && modelsWatchState.data[name]?.state) || "STATE_UNSPECIFIED"}
+              state={
+                (modelsWatchState.isSuccess &&
+                  modelsWatchState.data[name]?.state) ||
+                "STATE_UNSPECIFIED"
+              }
             />
           </div>
         );

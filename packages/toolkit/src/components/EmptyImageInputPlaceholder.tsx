@@ -10,7 +10,7 @@ export const EmptyImageInputPlaceholder = ({
     <div
       className={cn(
         "flex w-full flex-col items-center justify-center gap-y-4 py-10",
-        className
+        className,
       )}
     >
       <Icons.Upload01 className="h-8 w-8 stroke-semantic-fg-secondary [&>path]:stroke-[1.5]" />

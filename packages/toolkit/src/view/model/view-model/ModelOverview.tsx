@@ -203,16 +203,16 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
         };
 
         const taskPropName = convertTaskNameToPayloadPropName(
-          model.task
+          model.task,
         ) as string;
 
         setInputFromExistingResult(
           convertValuesToString(
-            existingTriggerState.response.request.taskInputs[0][taskPropName]
-          )
+            existingTriggerState.response.request.taskInputs[0][taskPropName],
+          ),
         );
         setModelRunResult(
-          existingTriggerState.response.response.taskOutputs[0][taskPropName]
+          existingTriggerState.response.response.taskOutputs[0][taskPropName],
         );
 
         setIsModelRunInProgress(false);

@@ -181,7 +181,7 @@ export const ModelSettingsHead = ({
         <p
           className={cn(
             "font-mono text-xs text-semantic-fg-disabled",
-            !model?.description ? "italic" : ""
+            !model?.description ? "italic" : "",
           )}
         >
           {model?.description || (
