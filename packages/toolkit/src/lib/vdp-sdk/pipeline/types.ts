@@ -68,7 +68,7 @@ export type PipelineReleasesWatchState = Record<
 export type PipelineStats = {
   lastRunTime: string;
   numberOfRuns: number;
-}
+};
 
 export type Pipeline = {
   updated_at: string | number | Date;
