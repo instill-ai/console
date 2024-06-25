@@ -65,6 +65,11 @@ export type PipelineReleasesWatchState = Record<
   PipelineReleaseWatchState
 >;
 
+export type PipelineStats = {
+  lastRunTime: string;
+  numberOfRuns: number;
+}
+
 export type Pipeline = {
   updated_at: string | number | Date;
   name: string;
@@ -83,6 +88,7 @@ export type Pipeline = {
   metadata: GeneralRecord;
   permission: Permission;
   tags: string[];
+  stats: PipelineStats;
 };
 
 export type OperatorDefinition = {
