@@ -13,7 +13,6 @@ import {
   useShallow,
 } from "../../lib";
 import { useUserNamespaces } from "../../lib/useUserNamespaces";
-import { env } from "../../server";
 
 export type NavLinkProps = {
   title: string;
@@ -22,11 +21,6 @@ export type NavLinkProps = {
 };
 
 const navLinkItems: NavLinkProps[] = [
-  {
-    pathname: "hub",
-    Icon: Icons.CubeOutline,
-    title: "Hub",
-  },
   {
     pathname: "pipelines",
     Icon: Icons.Pipeline,
@@ -56,10 +50,6 @@ export const NavLink = ({ title, Icon, pathname }: NavLinkProps) => {
   );
 
   const isOnIt = React.useMemo(() => {
-    if (pathname === "hub" && currentPathname.split("/")[1] === pathname) {
-      return true;
-    }
-
     if (currentPathname.split("/")[2] === pathname) {
       return true;
     }
@@ -86,11 +76,6 @@ export const NavLink = ({ title, Icon, pathname }: NavLinkProps) => {
     <button
       onClick={() => {
         if (!namespaceAnchor) {
-          return;
-        }
-
-        if (pathname === "hub") {
-          router.push("/hub");
           return;
         }
 
@@ -125,26 +110,16 @@ export const NavLinks = () => {
 
   return (
     <React.Fragment>
-      {navLinkItems
-        .filter((item) => {
-          if (env("NEXT_PUBLIC_APP_ENV") === "CE") {
-            return item.pathname !== "hub";
-          } else {
-            // When the user is not authenticated, only show the hub link
-            if (!me.isSuccess) {
-              return item.pathname === "hub";
-            }
-            return true;
-          }
-        })
-        .map(({ pathname, Icon, title }) => (
-          <NavLink
-            key={pathname}
-            pathname={pathname}
-            Icon={Icon}
-            title={title}
-          />
-        ))}
+      {me.isSuccess
+        ? navLinkItems.map(({ pathname, Icon, title }) => (
+            <NavLink
+              key={pathname}
+              pathname={pathname}
+              Icon={Icon}
+              title={title}
+            />
+          ))
+        : null}
     </React.Fragment>
   );
 };
