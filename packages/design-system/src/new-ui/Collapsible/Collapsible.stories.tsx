@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Collapsible } from "./Collapsible";
+
 import { Button } from "../Button";
 import { Icons } from "../Icons";
+import { Collapsible } from "./Collapsible";
 
 const meta: Meta<typeof Collapsible> = {
   title: "Components/NewUi/Collapsible",

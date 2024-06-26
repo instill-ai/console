@@ -1,6 +1,7 @@
-import { test, expect } from "vitest";
-import { getFieldPaths } from "./getFieldPaths";
+import { expect, test } from "vitest";
+
 import { AirbyteFormTree } from "../../types";
+import { getFieldPaths } from "./getFieldPaths";
 
 test("should get paths from single formItem", () => {
   const formTree: AirbyteFormTree = {

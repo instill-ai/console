@@ -2,24 +2,26 @@
 
 import * as React from "react";
 import cn from "clsx";
-import { Run } from "./Run";
-import { Toolkit } from "./Toolkit";
-import { Save } from "./Save";
-import { Share } from "./Share";
-import { Release } from "./Release";
-import { PublishPipelineDialog, SelectComponentDialog } from "../dialogs";
+import { ReactFlowInstance } from "reactflow";
+
+import { Button, Icons } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   Nullable,
-  useRouteInfo,
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
+  useRouteInfo,
   useShallow,
 } from "../../../../lib";
-import { ReactFlowInstance } from "reactflow";
 import { useAddNodeWithDefinition } from "../../lib";
-import { Button, Icons } from "@instill-ai/design-system";
+import { PublishPipelineDialog, SelectComponentDialog } from "../dialogs";
 import { PipelineName } from "./PipelineName";
+import { Release } from "./Release";
+import { Run } from "./Run";
+import { Save } from "./Save";
+import { Share } from "./Share";
+import { Toolkit } from "./Toolkit";
 
 const selector = (store: InstillStore) => ({
   pipelineIsNew: store.pipelineIsNew,

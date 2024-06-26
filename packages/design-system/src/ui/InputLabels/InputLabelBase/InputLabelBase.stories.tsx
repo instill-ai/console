@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import InputLabelBase from "./InputLabelBase";
 
 const meta: Meta<typeof InputLabelBase> = {

@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import PostgreSqlIcon from "./PostgreSqlIcon";
 
 const meta: Meta<typeof PostgreSqlIcon> = {

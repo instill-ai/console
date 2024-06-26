@@ -2,13 +2,15 @@
 
 import * as React from "react";
 import cn from "clsx";
+
 import { Form, ScrollArea } from "@instill-ai/design-system";
+
 import { AutoFormFieldBaseProps } from "../../..";
 import { readFileToBinary } from "../../../../view";
+import { StartOperatorFreeFormFieldBaseProps } from "../../types";
 import { FieldHead } from "./FieldHead";
 import { FileListItem } from "./FileListItem";
 import { UploadFileInput } from "./UploadFileInput";
-import { StartOperatorFreeFormFieldBaseProps } from "../../types";
 
 export const FilesField = ({
   mode,

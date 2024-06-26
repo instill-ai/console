@@ -1,13 +1,13 @@
-import ArrowRightIcon from "./ArrowRightIcon";
-import type { ArrowRightIconProps } from "./ArrowRightIcon";
-import ArrowLeftIcon from "./ArrowLeftIcon";
-import type { ArrowLeftIconProps } from "./ArrowLeftIcon";
-import ArrowUpIcon from "./ArrowUpIcon";
-import type { ArrowUpIconProps } from "./ArrowUpIcon";
-import ArrowDownIcon from "./ArrowDownIcon";
 import type { ArrowDownIconProps } from "./ArrowDownIcon";
-import RotatableArrowIcon from "./RotatableArrowIcon";
+import type { ArrowLeftIconProps } from "./ArrowLeftIcon";
+import type { ArrowRightIconProps } from "./ArrowRightIcon";
+import type { ArrowUpIconProps } from "./ArrowUpIcon";
 import type { RotatableArrowIconProps } from "./RotatableArrowIcon";
+import ArrowDownIcon from "./ArrowDownIcon";
+import ArrowLeftIcon from "./ArrowLeftIcon";
+import ArrowRightIcon from "./ArrowRightIcon";
+import ArrowUpIcon from "./ArrowUpIcon";
+import RotatableArrowIcon from "./RotatableArrowIcon";
 
 export {
   ArrowRightIcon,

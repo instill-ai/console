@@ -1,9 +1,10 @@
+import { JSONSchema7 } from "json-schema";
+
 import {
   InstillJSONSchema,
   Nullable,
   PipelineGeneralComponent,
 } from "../../../lib";
-import { JSONSchema7 } from "json-schema";
 
 export function getGeneralComponentInOutputSchema(
   component: PipelineGeneralComponent,

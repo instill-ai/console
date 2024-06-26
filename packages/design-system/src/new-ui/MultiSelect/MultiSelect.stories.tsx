@@ -1,7 +1,8 @@
 import type { Meta } from "@storybook/react";
-import { Icons } from "../Icons";
 import * as React from "react";
+
 import { SelectOption } from "../../types/general";
+import { Icons } from "../Icons";
 import { MultiSelect } from "./MultiSelect";
 
 const meta: Meta<typeof MultiSelect> = {

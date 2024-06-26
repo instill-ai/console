@@ -1,12 +1,14 @@
 import * as React from "react";
 import cn from "clsx";
-import { Icons, ScrollArea, Tooltip } from "@instill-ai/design-system";
-import { SmartHint } from "../../../use-smart-hint";
-import { onClickSmartHint } from "./onClickSmartHint";
 import { ControllerRenderProps } from "react-hook-form";
-import { GeneralUseFormReturn, Nullable } from "../../../type";
-import { transformInstillFormatToHumanReadableFormat } from "../../transform";
+
+import { Icons, ScrollArea, Tooltip } from "@instill-ai/design-system";
+
 import { InstillCredit } from "../../../../constant";
+import { GeneralUseFormReturn, Nullable } from "../../../type";
+import { SmartHint } from "../../../use-smart-hint";
+import { transformInstillFormatToHumanReadableFormat } from "../../transform";
+import { onClickSmartHint } from "./onClickSmartHint";
 
 export const SmartHintList = ({
   form,

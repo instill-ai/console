@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import MediumIcon from "./MediumIcon";
 
 const meta: Meta<typeof MediumIcon> = {

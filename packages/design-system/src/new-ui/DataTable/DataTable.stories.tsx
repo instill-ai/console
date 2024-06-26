@@ -1,12 +1,13 @@
 import type { Meta } from "@storybook/react";
-import { DataTable } from "./DataTable";
+import * as React from "react";
 import { ColumnDef } from "@tanstack/react-table";
+
 import { PipelineState } from "../../types/general";
-import { Tag } from "../Tag";
+import { Button } from "../Button";
 import { Checkbox } from "../Checkbox";
 import { Icons } from "../Icons";
-import { Button } from "../Button";
-import * as React from "react";
+import { Tag } from "../Tag";
+import { DataTable } from "./DataTable";
 
 const meta: Meta<typeof DataTable> = {
   title: "Components/NewUi/DataTable",

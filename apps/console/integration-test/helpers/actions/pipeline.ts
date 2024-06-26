@@ -1,9 +1,10 @@
+import { Page } from "@playwright/test";
+
+import { DataTestID } from "../../data-testid";
 import { PipelineBuilderPage } from "../../pages/pipeline-builder.page";
 import { PipelineListPage } from "../../pages/pipeline-list";
-import { Page } from "@playwright/test";
 import { PipelineOverviewPage } from "../../pages/pipeline-overview.page";
 import { getDropdownContent } from "../component-helpers/dropdown";
-import { DataTestID } from "../../data-testid";
 
 export async function createPipeline(page: Page, pipelineID: string) {
   const pipelineListPage = new PipelineListPage(page);

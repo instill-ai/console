@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { getConnectorDefinitionQuery } from "../../vdp-sdk";
+
 import type { Nullable } from "../../type";
+import { getConnectorDefinitionQuery } from "../../vdp-sdk";
 
 export function useConnectorDefinition({
   connectorDefinitionName,

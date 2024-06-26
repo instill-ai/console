@@ -1,5 +1,6 @@
 import { Node } from "reactflow";
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
+
 import { NodeData } from "../type";
 import { composePipelineMetadataMapFromNodes } from "./composePipelineMetadataMapFromNodes";
 

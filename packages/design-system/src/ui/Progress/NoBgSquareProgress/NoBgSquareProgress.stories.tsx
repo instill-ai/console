@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import NoBgSquareProgress from "./NoBgSquareProgress";
 
 const meta: Meta<typeof NoBgSquareProgress> = {

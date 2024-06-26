@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { listUsersQuery } from "../../vdp-sdk";
+
 import type { Nullable } from "../../type";
 import { env } from "../../../server";
+import { listUsersQuery } from "../../vdp-sdk";
 
 export function useUsers({
   accessToken,

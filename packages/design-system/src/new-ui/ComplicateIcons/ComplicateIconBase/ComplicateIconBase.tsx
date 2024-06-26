@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export type ComplicateIconBaseProps = {
   viewBox: string;
   className?: string;

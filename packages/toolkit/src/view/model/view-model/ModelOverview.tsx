@@ -1,3 +1,8 @@
+import { useEffect, useMemo, useState } from "react";
+import * as React from "react";
+import Image from "next/image";
+import { z } from "zod";
+
 import {
   Button,
   Form,
@@ -6,13 +11,17 @@ import {
   TabMenu,
   useToast,
 } from "@instill-ai/design-system";
+
+import type { ModelTriggerResult } from "../../../lib";
+import { CodeBlock, LoadingSpin } from "../../../components";
+import { defaultCodeSnippetStyles } from "../../../constant";
 import {
+  convertSentenceToCamelCase,
   GeneralRecord,
   InstillStore,
   Model,
   ModelState,
   ModelTask,
-  type ModelTriggerResult,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
@@ -20,21 +29,14 @@ import {
   useInstillForm,
   useInstillStore,
   useLastModelTriggerResult,
+  useQueryClient,
   useShallow,
   useTriggerUserModelAsync,
-  convertSentenceToCamelCase,
-  useQueryClient,
 } from "../../../lib";
-import { ModelReadme } from "./ModelReadme";
-import { z } from "zod";
-import { CodeBlock, LoadingSpin } from "../../../components";
-import { useEffect, useMemo, useState } from "react";
-import { ModelSectionHeader } from "./SectionHeader";
 import { recursiveHelpers } from "../../pipeline-builder";
-import { defaultCodeSnippetStyles } from "../../../constant";
-import * as React from "react";
-import Image from "next/image";
 import { OPERATION_POLL_TIMEOUT } from "./constants";
+import { ModelReadme } from "./ModelReadme";
+import { ModelSectionHeader } from "./SectionHeader";
 
 export type ModelOutputActiveView = "preview" | "json";
 

@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import ArrowUpIcon from "./ArrowUpIcon";
 
 const meta: Meta<typeof ArrowUpIcon> = {

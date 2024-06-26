@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAuthenticatedUserSubscriptionsQuery } from "../../vdp-sdk";
+
 import type { Nullable } from "../../type";
+import { getAuthenticatedUserSubscriptionsQuery } from "../../vdp-sdk";
 
 export function useAuthenticatedUserSubscription({
   accessToken,

@@ -1,30 +1,28 @@
 "use client";
 
 import { ChangeEvent, useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
+import type { AuthenticatedUser, Nullable } from "@instill-ai/toolkit";
 import {
   BasicProgressMessageBox,
-  BasicTextField,
-  ProgressMessageBoxState,
   BasicSingleSelect,
+  BasicTextField,
   BasicToggleField,
-  SolidButton,
   FormRoot,
+  ProgressMessageBoxState,
   SelectOption,
+  SolidButton,
 } from "@instill-ai/design-system";
-
 import {
-  type AuthenticatedUser,
-  type Nullable,
-  useAmplitudeCtx,
-  sendAmplitudeData,
   instillUserRoles,
-  useUpdateAuthenticatedUser,
+  sendAmplitudeData,
+  useAmplitudeCtx,
   useInstillStore,
+  useUpdateAuthenticatedUser,
 } from "@instill-ai/toolkit";
-import { useRouter } from "next/navigation";
 
 export type OnboardingFormValues = {
   email: Nullable<string>;

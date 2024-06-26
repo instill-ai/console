@@ -1,17 +1,19 @@
 "use client";
 
 import * as React from "react";
-import * as z from "zod";
 import { EditorContent, useEditor } from "@tiptap/react";
+import { UseFormReturn } from "react-hook-form";
+import * as z from "zod";
+
+import { Form } from "@instill-ai/design-system";
+
 import {
-  Nullable,
   deserialize,
   extensions,
+  Nullable,
   serialize,
 } from "../../../../../lib";
-import { UseFormReturn } from "react-hook-form";
 import { PublishPipelineFormSchema } from "./PublishPipelineDialog";
-import { Form } from "@instill-ai/design-system";
 
 export const ReadmeEditor = ({
   form,

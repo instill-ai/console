@@ -1,42 +1,42 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
-import * as z from "zod";
-import { NodeProps } from "reactflow";
-import { Button, Form, Icons, useToast } from "@instill-ai/design-system";
-import { useShallow } from "zustand/react/shallow";
-import { useForm } from "react-hook-form";
+import { arrayMove } from "@dnd-kit/sortable";
 import { zodResolver } from "@hookform/resolvers/zod";
+import cn from "clsx";
+import { useForm } from "react-hook-form";
+import { NodeProps } from "reactflow";
+import * as z from "zod";
+import { useShallow } from "zustand/react/shallow";
 
+import { Button, Form, Icons, useToast } from "@instill-ai/design-system";
+
+import {
+  GeneralRecord,
+  InstillStore,
+  Nullable,
+  sendAmplitudeData,
+  toastInstillError,
+  useAmplitudeCtx,
+  useInstillStore,
+  usePipelineTriggerRequestForm,
+  useTriggerUserPipeline,
+  useTriggerUserPipelineRelease,
+} from "../../../../../lib";
 import {
   composeEdgesFromNodes,
   isVariableNode,
   recursiveHelpers,
 } from "../../../lib";
-import {
-  InstillStore,
-  Nullable,
-  useInstillStore,
-  usePipelineTriggerRequestForm,
-  useTriggerUserPipeline,
-  useTriggerUserPipelineRelease,
-  toastInstillError,
-  GeneralRecord,
-  sendAmplitudeData,
-  useAmplitudeCtx,
-} from "../../../../../lib";
-
-import { arrayMove } from "@dnd-kit/sortable";
-import { NodeHead, NodeSortableFieldWrapper, NodeWrapper } from "../common";
-import { VerticalSortableWrapper } from "../../VerticalSortableWrapper";
 import { TriggerNodeData } from "../../../type";
+import { VerticalSortableWrapper } from "../../VerticalSortableWrapper";
+import { NodeHead, NodeSortableFieldWrapper, NodeWrapper } from "../common";
+import { VariableResponseNodeControlPanel } from "../control-panel";
+import { triggerNodeFields } from "./VariableNodeFields";
 import {
   TriggerNodeFreeForm,
   TriggerNodeFreeFormSchema,
 } from "./VariableNodeFreeForm";
-import { triggerNodeFields } from "./VariableNodeFields";
-import { VariableResponseNodeControlPanel } from "../control-panel";
 
 export const CreateStartOperatorInputSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),

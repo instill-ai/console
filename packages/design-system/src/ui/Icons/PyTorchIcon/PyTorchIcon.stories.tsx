@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import PyTorchIcon from "./PyTorchIcon";
 
 const meta: Meta<typeof PyTorchIcon> = {

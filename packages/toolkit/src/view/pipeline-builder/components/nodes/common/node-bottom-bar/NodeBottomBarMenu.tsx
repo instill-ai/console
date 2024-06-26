@@ -1,10 +1,12 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
-import { useNodeBottomBarContext } from "./NodeBottomBarContext";
-import { useInstillStore } from "../../../../../../lib";
+import cn from "clsx";
+
 import { Icons, Tooltip } from "@instill-ai/design-system";
+
+import { useInstillStore } from "../../../../../../lib";
+import { useNodeBottomBarContext } from "./NodeBottomBarContext";
 
 const NodeBottomBarMenuRootPrimitive = ({
   children,

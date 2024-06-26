@@ -1,15 +1,17 @@
 "use client";
 
 import { Node } from "reactflow";
+
+import { Button } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   Nullable,
   useInstillStore,
   useShallow,
 } from "../../../../../lib";
-import { IteratorNodeData } from "../../../type";
-import { Button } from "@instill-ai/design-system";
 import { isIteratorNode } from "../../../lib";
+import { IteratorNodeData } from "../../../type";
 
 const selector = (store: InstillStore) => ({
   editingIteratorID: store.editingIteratorID,

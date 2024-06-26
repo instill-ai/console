@@ -3,15 +3,16 @@
 import * as React from "react";
 import * as semver from "semver";
 
+import { RadioGroup, Tag } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   Nullable,
-  useRouteInfo,
   useInstillStore,
+  useRouteInfo,
   useShallow,
 } from "../../../../lib";
 import { useSortedReleases } from "../../lib";
-import { RadioGroup, Tag } from "@instill-ai/design-system";
 import { UseReleasePipelineFormReturn } from "./ReleaseMenu";
 
 const selector = (store: InstillStore) => ({

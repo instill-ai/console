@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import type { Nullable } from "../../type";
 import {
   Organization,
-  UpdateOrganizationPayload,
   updateOrganizationMutation,
+  UpdateOrganizationPayload,
 } from "../../vdp-sdk";
 
 export function useUpdateOrganization() {

@@ -1,8 +1,9 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import cn from "clsx";
+
 import { Button, Icons, SelectOption } from "@instill-ai/design-system";
 
 import { dashboardOptions } from "../../lib";

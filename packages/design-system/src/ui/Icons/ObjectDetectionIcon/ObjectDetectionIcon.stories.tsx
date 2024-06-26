@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import ObjectDetectionIcon from "./ObjectDetectionIcon";
 
 const meta: Meta<typeof ObjectDetectionIcon> = {

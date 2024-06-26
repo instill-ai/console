@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import RefreshIcon from "./RefreshIcon";
 
 const meta: Meta<typeof RefreshIcon> = {

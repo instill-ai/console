@@ -1,17 +1,18 @@
 "use client";
 
 import * as React from "react";
+
 import { Icons, Select, SelectOption } from "@instill-ai/design-system";
-import {
-  dot,
-  getConditionFormPath,
-  type AirbyteFormConditionItemWithUiFields,
-  type AirbyteFormItem,
-  type AirbyteFieldValues,
-  type SelectedItemMap,
-  type AirbyteFieldErrors,
-  type Nullable,
+
+import type {
+  AirbyteFieldErrors,
+  AirbyteFieldValues,
+  AirbyteFormConditionItemWithUiFields,
+  AirbyteFormItem,
+  Nullable,
+  SelectedItemMap,
 } from "../../lib";
+import { dot, getConditionFormPath } from "../../lib";
 
 export type OneOfConditionSectionProps = {
   formTree: AirbyteFormConditionItemWithUiFields;

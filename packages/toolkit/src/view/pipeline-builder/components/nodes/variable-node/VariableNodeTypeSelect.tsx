@@ -1,9 +1,11 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
-import { Nullable, useInstillStore } from "../../../../../lib";
+import cn from "clsx";
+
 import { Select } from "@instill-ai/design-system";
+
+import { Nullable, useInstillStore } from "../../../../../lib";
 import { triggerNodeFields } from "./VariableNodeFields";
 
 export const VariableNodeTypeSelect = ({

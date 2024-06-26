@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import VisualDataOperatorIcon from "./VisualDataOperatorIcon";
 
 const meta: Meta<typeof VisualDataOperatorIcon> = {

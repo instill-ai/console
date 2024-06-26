@@ -1,4 +1,5 @@
 import cn from "clsx";
+
 import { env } from "@instill-ai/toolkit/server";
 
 import "../styles/global.css";
@@ -9,7 +10,9 @@ import "@instill-ai/design-tokens/dist/theme/light.css";
 import "@instill-ai/design-tokens/dist/theme/dark.css";
 import "reactflow/dist/style.css";
 import "../styles/tip-tap.css";
+
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+
 import { RootProvider } from "./(providers)/root-provider";
 
 const ibmPlexSans = IBM_Plex_Sans({

@@ -1,13 +1,15 @@
 "use client";
 
 import * as React from "react";
+
 import { Form } from "@instill-ai/design-system";
+
 import { AutoFormFieldBaseProps, Nullable } from "../../..";
 import { readFileToBinary } from "../../../../view";
+import { StartOperatorFreeFormFieldBaseProps } from "../../types";
 import { FieldHead } from "./FieldHead";
 import { FileListItem } from "./FileListItem";
 import { UploadFileInput } from "./UploadFileInput";
-import { StartOperatorFreeFormFieldBaseProps } from "../../types";
 
 export const FileField = ({
   mode,

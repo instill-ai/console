@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import { Input } from "./Input";
+
 import { Icons } from "../Icons";
+import { Input } from "./Input";
 
 const meta: Meta = {
   title: "Components/NewUi/Input",

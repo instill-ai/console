@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import ArrowLeftIcon from "./ArrowLeftIcon";
 
 const meta: Meta<typeof ArrowLeftIcon> = {

@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import FilterIcon from "./FilterIcon";
 
 const meta: Meta<typeof FilterIcon> = {

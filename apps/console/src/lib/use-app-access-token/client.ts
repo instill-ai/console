@@ -1,15 +1,17 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+
 import {
   InstillStore,
   useInstillStore,
   useQuery,
   useShallow,
 } from "@instill-ai/toolkit";
-import { useRouter } from "next/navigation";
+
 import { fetchAccessToken } from "./server";
-import axios from "axios";
 
 const selector = (store: InstillStore) => ({
   updateAccessToken: store.updateAccessToken,

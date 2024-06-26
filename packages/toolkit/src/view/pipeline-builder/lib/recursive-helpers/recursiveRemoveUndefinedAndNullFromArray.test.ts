@@ -1,4 +1,5 @@
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
+
 import { recursiveRemoveUndefinedAndNullFromArray } from "./recursiveRemoveUndefinedAndNullFromArray";
 
 test("should remove undefined and null from array", () => {

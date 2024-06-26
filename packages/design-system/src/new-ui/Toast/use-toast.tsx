@@ -2,7 +2,6 @@
 
 // Inspired by react-hot-toast library
 // ref: https://ui.shadcn.com/docs/components/toast
-
 import * as React from "react";
 
 import type { ToastActionElement, ToastProps } from "./Toast";

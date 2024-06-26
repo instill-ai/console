@@ -1,7 +1,8 @@
-import { test, expect } from "vitest";
-import { composeEdgesFromNodes } from "./composeEdgesFromNodes";
 import { Node } from "reactflow";
+import { expect, test } from "vitest";
+
 import { NodeData } from "../type";
+import { composeEdgesFromNodes } from "./composeEdgesFromNodes";
 
 test("should get edges from basic components", () => {
   const nodes: Node<NodeData>[] = [

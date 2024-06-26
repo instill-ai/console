@@ -1,14 +1,16 @@
 "use client";
 
-import { Button, DataTable } from "@instill-ai/design-system";
 import { ColumnDef } from "@tanstack/react-table";
+
+import { Button, DataTable } from "@instill-ai/design-system";
+
+import { GeneralStateCell, SortIcon, TableError } from "../../components";
 import {
-  PipelineTriggerRecord,
   convertTimestampToLocal,
   convertToSecondsAndMilliseconds,
   parseTriggerStatusLabel,
+  PipelineTriggerRecord,
 } from "../../lib";
-import { GeneralStateCell, SortIcon, TableError } from "../../components";
 import { TriggersTablePlaceholder } from "./TriggersTablePlaceholder";
 
 export type PipelineTriggersTableProps = {

@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import HuggingFaceIcon from "./HuggingFaceIcon";
 
 const meta: Meta<typeof HuggingFaceIcon> = {

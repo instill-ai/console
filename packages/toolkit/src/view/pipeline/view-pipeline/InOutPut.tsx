@@ -1,24 +1,26 @@
 "use client";
 
 import * as React from "react";
-import * as z from "zod";
 import { useRouter, useSearchParams } from "next/navigation";
+import * as z from "zod";
+
+import { Button, Form, useToast } from "@instill-ai/design-system";
+
 import {
   GeneralRecord,
   InstillStore,
   Nullable,
-  TriggerUserPipelineResponse,
   sendAmplitudeData,
   toastInstillError,
+  TriggerUserPipelineResponse,
   useAmplitudeCtx,
-  useRouteInfo,
   useInstillStore,
-  useShallow,
   usePipelineTriggerRequestForm,
+  useRouteInfo,
+  useShallow,
   useTriggerUserPipeline,
   useUserPipeline,
 } from "../../../lib";
-import { Button, Form, useToast } from "@instill-ai/design-system";
 import { recursiveHelpers, useSortedReleases } from "../../pipeline-builder";
 import { ComponentOutputs } from "../../pipeline-builder/components/ComponentOutputs";
 import { RunButton } from "./RunButton";

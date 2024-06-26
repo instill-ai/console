@@ -1,10 +1,11 @@
 import { create } from "zustand";
-import { InstillStore } from "./types";
-import { createSmartHintSlice } from "./smartHintSlice";
-import { createPipelineBuilderSlice } from "./pipelineBuilderSlice";
-import { createGeneralSlice } from "./generalSlice";
-import { createRecentlyUsedSlice } from "./recentlyUsedSlice";
 import { devtools, subscribeWithSelector } from "zustand/middleware";
+
+import { createGeneralSlice } from "./generalSlice";
+import { createPipelineBuilderSlice } from "./pipelineBuilderSlice";
+import { createRecentlyUsedSlice } from "./recentlyUsedSlice";
+import { createSmartHintSlice } from "./smartHintSlice";
+import { InstillStore } from "./types";
 
 export const useInstillStore = create<InstillStore>()(
   subscribeWithSelector(

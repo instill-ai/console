@@ -1,4 +1,5 @@
 import { Icons } from "@instill-ai/design-system";
+
 import { ImageWithFallback } from "../../../../../components";
 import { Section } from "./Section";
 import { OnSelectComponent } from "./SelectComponentDialog";

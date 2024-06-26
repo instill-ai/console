@@ -1,19 +1,19 @@
 import * as React from "react";
+import debounce from "lodash.debounce";
+import isEqual from "lodash.isequal";
+import { Node } from "reactflow";
+import { useShallow } from "zustand/react/shallow";
+
+import { composeEdgesFromNodes, isIteratorNode } from "..";
 import {
   GeneralRecord,
   GeneralUseFormReturn,
   InstillStore,
   Nullable,
-  ZodAnyValidatorSchema,
   useInstillStore,
+  ZodAnyValidatorSchema,
 } from "../../../../lib";
-import { useShallow } from "zustand/react/shallow";
-import { composeEdgesFromNodes, isIteratorNode } from "..";
 import { GeneralNodeData, NodeData } from "../../type";
-
-import { Node } from "reactflow";
-import debounce from "lodash.debounce";
-import isEqual from "lodash.isequal";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,

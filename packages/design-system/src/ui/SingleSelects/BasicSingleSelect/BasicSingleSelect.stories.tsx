@@ -1,8 +1,9 @@
-import { Meta, StoryFn } from "@storybook/react";
 import * as React from "react";
+import { Meta, StoryFn } from "@storybook/react";
+
 import { BasicSingleSelect, basicSingleSelectConfig } from ".";
-import { basicInputDescriptionConfig } from "../../InputDescriptions";
 import { Nullable, SelectOption } from "../../../types/general";
+import { basicInputDescriptionConfig } from "../../InputDescriptions";
 
 const meta: Meta<typeof BasicSingleSelect> = {
   title: "Components/Ui/Input/BasicSingleSelect",

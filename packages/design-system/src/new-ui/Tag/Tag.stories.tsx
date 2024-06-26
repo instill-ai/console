@@ -1,6 +1,7 @@
-import { Tag } from "./Tag";
-import { Icons } from "../Icons";
 import { Meta, StoryObj } from "@storybook/react";
+
+import { Icons } from "../Icons";
+import { Tag } from "./Tag";
 
 const meta: Meta<typeof Tag> = {
   title: "Components/NewUi/Tag",

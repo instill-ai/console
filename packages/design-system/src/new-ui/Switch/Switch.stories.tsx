@@ -1,10 +1,11 @@
-import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Meta, StoryFn } from "@storybook/react";
-import { Switch } from "./Switch";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 import { Field } from "../Field";
 import { Form } from "../Form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Switch } from "./Switch";
 
 const meta: Meta = {
   title: "Components/NewUi/Switch",

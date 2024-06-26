@@ -1,4 +1,4 @@
-import { Options, defineConfig } from "tsup";
+import { defineConfig, Options } from "tsup";
 
 const cfg: Options = {
   sourcemap: false,

@@ -1,6 +1,7 @@
-import { test, expect } from "vitest";
-import { getConditionFormPath } from "./getConditionFormPath";
+import { expect, test } from "vitest";
+
 import { AirbyteFormConditionItem } from "../../types";
+import { getConditionFormPath } from "./getConditionFormPath";
 
 test("should find path from a simple condition form", () => {
   const form: AirbyteFormConditionItem = {

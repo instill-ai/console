@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import * as z from "zod";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 import {
   AuthPageBase,
   ChangePasswordForm,
@@ -9,16 +10,16 @@ import {
   LoginForm,
   LoginFormSchema,
 } from "components";
-import { useRouter } from "next/navigation";
+import { useAppTrackToken } from "lib/useAppTrackToken";
+import * as z from "zod";
+
+import { useToast } from "@instill-ai/design-system";
 import {
-  Nullable,
   changePasswordMutation,
   getInstillApiErrorMessage,
+  Nullable,
   useAuthenticatedUser,
 } from "@instill-ai/toolkit";
-import { useToast } from "@instill-ai/design-system";
-import { useAppTrackToken } from "lib/useAppTrackToken";
-import axios from "axios";
 import { authLoginAction } from "@instill-ai/toolkit/server";
 
 export const LoginPageRender = () => {

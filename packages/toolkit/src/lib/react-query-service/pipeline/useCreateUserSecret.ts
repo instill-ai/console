@@ -1,14 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import type { Nullable } from "../../type";
+import type { CreateUserSecretPayload, Secret } from "../../vdp-sdk";
 import {
   getUseUserSecretQueryKey,
   getUseUserSecretsQueryKey,
 } from "../../../server";
-import {
-  type CreateUserSecretPayload,
-  type Secret,
-  createUserSecretMutation,
-} from "../../vdp-sdk";
-import type { Nullable } from "../../type";
+import { createUserSecretMutation } from "../../vdp-sdk";
 
 export function useCreateUserSecret() {
   const queryClient = useQueryClient();

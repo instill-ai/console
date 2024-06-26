@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
+
 import { Setting } from "..";
 import {
   InstillStore,
@@ -9,7 +11,6 @@ import {
   useShallow,
   useUserSecrets,
 } from "../../../lib";
-import { useRouter } from "next/navigation";
 import { CreateSecretDialog, SecretTable } from "../secrets";
 
 const selector = (store: InstillStore) => ({

@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import DataSourceIcon from "./DataSourceIcon";
 
 const meta: Meta<typeof DataSourceIcon> = {

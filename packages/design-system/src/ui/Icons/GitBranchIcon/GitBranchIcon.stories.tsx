@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import GitBranchIcon from "./GitBranchIcon";
 
 const meta: Meta<typeof GitBranchIcon> = {

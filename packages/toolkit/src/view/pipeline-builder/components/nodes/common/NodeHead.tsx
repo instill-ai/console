@@ -1,7 +1,7 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
+import cn from "clsx";
 
 export const NodeHead = ({
   nodeIsCollapsed,

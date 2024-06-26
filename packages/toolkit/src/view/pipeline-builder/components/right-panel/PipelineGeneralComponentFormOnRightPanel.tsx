@@ -1,12 +1,16 @@
 "use client";
 
 import * as React from "react";
+
 import { Form } from "@instill-ai/design-system";
 
-import { useInstillForm } from "../../../../lib/use-instill-form";
-import { useCheckIsHidden, useUpdaterOnRightPanel } from "../../lib";
-import { getGeneralComponentConfiguration } from "../../lib";
 import { useInstillStore } from "../../../../lib";
+import { useInstillForm } from "../../../../lib/use-instill-form";
+import {
+  getGeneralComponentConfiguration,
+  useCheckIsHidden,
+  useUpdaterOnRightPanel,
+} from "../../lib";
 import { GeneralNodeData } from "../../type";
 
 export const PipelineGeneralComponentFormOnRightPanel = ({

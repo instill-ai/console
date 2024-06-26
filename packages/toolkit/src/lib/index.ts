@@ -1,3 +1,6 @@
+import debounce from "lodash.debounce";
+import isEqual from "lodash.isequal";
+
 export * from "./airbytes";
 export * from "./amplitude";
 export * from "./dashboard";
@@ -27,7 +30,6 @@ export * from "./generateDateInPast";
 export * from "./convertSentenceToCamelCase";
 export * from "./useUserNamespaces";
 
-import debounce from "lodash.debounce";
 export { debounce };
-import isEqual from "lodash.isequal";
+
 export { isEqual };

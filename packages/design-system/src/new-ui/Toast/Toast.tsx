@@ -1,11 +1,12 @@
 "use client";
 
 // ref: https://ui.shadcn.com/docs/components/toast
-
-import cn from "clsx";
+import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
 import * as ToastPrimitives from "@radix-ui/react-toast";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
+import cn from "clsx";
+
 import { Icons } from "../Icons";
 
 const ToastProvider = ToastPrimitives.Provider;

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { createPortal } from "react-dom";
 import cn from "clsx";
+import { createPortal } from "react-dom";
 
 import { Nullable } from "../types/general";
 

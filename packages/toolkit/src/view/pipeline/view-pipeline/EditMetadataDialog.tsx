@@ -1,7 +1,10 @@
 "use client";
 
 import * as React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
+
 import {
   Button,
   Dialog,
@@ -12,16 +15,15 @@ import {
   Tooltip,
   useToast,
 } from "@instill-ai/design-system";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
   Nullable,
-  UpdateUserPipelinePayload,
   sendAmplitudeData,
   toastInstillError,
+  UpdateUserPipelinePayload,
   useAmplitudeCtx,
-  useRouteInfo,
   useInstillStore,
+  useRouteInfo,
   useUpdateUserPipeline,
 } from "../../../lib";
 

@@ -1,15 +1,5 @@
 import * as React from "react";
-import {
-  dot,
-  type Nullable,
-  type AirbyteFormConditionItemWithUiFields,
-  type AirbyteFieldErrors,
-  type AirbyteFormGroupItem,
-  type AirbyteFormItem,
-  type AirbyteFormTree,
-  type AirbyteFieldValues,
-  type SelectedItemMap,
-} from "../../lib";
+
 import {
   BasicTextArea,
   BasicTextField,
@@ -17,7 +7,19 @@ import {
   ProtectedBasicTextField,
   Select,
 } from "@instill-ai/design-system";
+
+import type {
+  AirbyteFieldErrors,
+  AirbyteFieldValues,
+  AirbyteFormConditionItemWithUiFields,
+  AirbyteFormGroupItem,
+  AirbyteFormItem,
+  AirbyteFormTree,
+  Nullable,
+  SelectedItemMap,
+} from "../../lib";
 import { OneOfConditionSection } from ".";
+import { dot } from "../../lib";
 
 export const useBuildAirbyteFields = (
   formTree: Nullable<AirbyteFormTree>,

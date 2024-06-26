@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+
 import type { Nullable } from "../../../type";
 import { fetchUser, getUseUserQueryKey } from "./server";
 

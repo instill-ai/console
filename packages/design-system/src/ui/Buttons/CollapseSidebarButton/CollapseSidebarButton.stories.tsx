@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import CollapseSidebarButton from "./CollapseSidebarButton";
 
 const meta: Meta<typeof CollapseSidebarButton> = {

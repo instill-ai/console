@@ -1,12 +1,13 @@
 import * as z from "zod";
+
+import { getReferencesFromString } from "../../../view";
+import { pickConstInfoFromOneOfCondition } from "../pick";
 import {
   CheckIsHidden,
   InstillJSONSchema,
-  SelectedConditionMap,
   instillZodSchema,
+  SelectedConditionMap,
 } from "../types";
-import { pickConstInfoFromOneOfCondition } from "../pick";
-import { getReferencesFromString } from "../../../view";
 
 export function transformInstillJSONSchemaToZod({
   parentSchema,

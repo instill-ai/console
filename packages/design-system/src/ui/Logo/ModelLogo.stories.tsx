@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+
 import { ModelLogo } from "./ModelLogo";
 
 const meta: Meta<typeof ModelLogo> = {

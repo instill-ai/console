@@ -1,5 +1,6 @@
-import { Nullable } from "../type";
 import * as React from "react";
+
+import { Nullable } from "../type";
 
 export type WindowSize = {
   width: number;

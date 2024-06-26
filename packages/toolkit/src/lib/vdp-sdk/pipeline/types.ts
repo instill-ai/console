@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { JSONSchema7TypeName } from "json-schema";
 import { OpenAPIV3 } from "openapi-types";
+
+import { GeneralRecord, Nullable } from "../../type";
 import { ConnectorDefinition } from "../connector";
 import {
   DataSpecification,
@@ -9,8 +12,6 @@ import {
   Spec,
   Visibility,
 } from "../types";
-import { GeneralRecord, Nullable } from "../../type";
-import { JSONSchema7TypeName } from "json-schema";
 
 export type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 

@@ -1,19 +1,21 @@
-import cn from "clsx";
 import React, { useMemo } from "react";
-import { StateLabel } from "../../../components";
+import Link from "next/link";
+import cn from "clsx";
+
 import {
+  getModelInstanceTaskToolkit,
   GitHubIcon,
   Icons,
-  Tag,
-  TabMenu,
-  getModelInstanceTaskToolkit,
   Nullable,
   Skeleton,
+  TabMenu,
+  Tag,
 } from "@instill-ai/design-system";
+
+import { StateLabel } from "../../../components";
+import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
 import { Model, ModelState } from "../../../lib";
 import { ModelTabNames } from "../../../server";
-import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
-import Link from "next/link";
 
 export type HeadProps = {
   selectedTab: ModelTabNames;

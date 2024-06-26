@@ -1,13 +1,15 @@
 "use client";
 
-import * as z from "zod";
 import * as React from "react";
-import { Form, Input, Popover } from "@instill-ai/design-system";
-import { useRenamePipeline } from "../../lib";
-import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+import { Form, Input, Popover } from "@instill-ai/design-system";
+
 import { LoadingSpin } from "../../../../components";
+import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
+import { useRenamePipeline } from "../../lib";
 
 const selector = (store: InstillStore) => ({
   pipelineId: store.pipelineId,

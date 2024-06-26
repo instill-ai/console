@@ -1,9 +1,10 @@
 "use client";
 
+import React from "react";
 import cn from "clsx";
 import { EdgeProps, getSmoothStepPath } from "reactflow";
+
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
-import React from "react";
 
 const selector = (store: InstillStore) => ({
   selectedConnectorNodeId: store.selectedConnectorNodeId,

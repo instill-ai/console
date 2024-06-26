@@ -1,20 +1,21 @@
 import * as React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { CheckIsHidden, InstillFormTree, InstillJSONSchema } from "./types";
+
+import { GeneralRecord, Nullable } from "../type";
 import {
+  pickRegularFieldsFromInstillFormTree,
+  PickRegularFieldsFromInstillFormTreeOptions,
+} from "./pick";
+import {
+  transformInstillFormTreeToDefaultValue,
+  transformInstillFormTreeToInitialSelectedCondition,
   transformInstillJSONSchemaToFormTree,
   transformInstillJSONSchemaToZod,
-  transformInstillFormTreeToInitialSelectedCondition,
-  transformInstillFormTreeToDefaultValue,
 } from "./transform";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  PickRegularFieldsFromInstillFormTreeOptions,
-  pickRegularFieldsFromInstillFormTree,
-} from "./pick";
+import { CheckIsHidden, InstillFormTree, InstillJSONSchema } from "./types";
 import { useInstillSelectedConditionMap } from "./useInstillSelectedConditionMap";
-import { GeneralRecord, Nullable } from "../type";
 
 export type UseInstillFormOptions = {
   checkIsHidden?: CheckIsHidden;

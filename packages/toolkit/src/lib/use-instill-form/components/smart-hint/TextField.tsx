@@ -1,23 +1,24 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
+import cn from "clsx";
+import { useFormContext } from "react-hook-form";
+
 import { Form, Input, Popover } from "@instill-ai/design-system";
+
+import { InstillCredit } from "../../../../constant";
 import { Nullable } from "../../../type";
 import { useInstillStore } from "../../../use-instill-store";
-
-import { useFormContext } from "react-hook-form";
-import { SmartHintInfoCard } from "./SmartHintInfoCard";
-import { useFilteredHints } from "./useFilteredHints";
+import { Secret } from "../../../vdp-sdk";
+import { AutoFormFieldBaseProps, SmartHintWarning } from "../../types";
+import { FieldDescriptionTooltip } from "../common";
+import { getFieldPlaceholder } from "./getFieldPlaceholder";
 import { onInputChange } from "./onInputChange";
 import { onInputKeydown } from "./onInputKeydown";
+import { SmartHintInfoCard } from "./SmartHintInfoCard";
 import { SmartHintList } from "./SmartHintList";
-import { AutoFormFieldBaseProps, SmartHintWarning } from "../../types";
+import { useFilteredHints } from "./useFilteredHints";
 import { useValidateReferenceAndTemplate } from "./useValidateReferenceAndTemplate";
-import { getFieldPlaceholder } from "./getFieldPlaceholder";
-import { FieldDescriptionTooltip } from "../common";
-import { Secret } from "../../../vdp-sdk";
-import { InstillCredit } from "../../../../constant";
 
 export const TextField = ({
   form,

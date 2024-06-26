@@ -1,4 +1,5 @@
 import { Node } from "reactflow";
+
 import { NodeData, PipelineComponentMetadataMap } from "../type";
 
 export function composePipelineMetadataMapFromNodes(nodes: Node<NodeData>[]) {

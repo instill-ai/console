@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import * as z from "zod";
 import {
   JSONSchema7,
   JSONSchema7Definition,
   JSONSchema7TypeName,
 } from "json-schema";
+import * as z from "zod";
+
 import { GeneralUseFormReturn, Nullable } from "../type";
 
 export type InstillCustomProps = {

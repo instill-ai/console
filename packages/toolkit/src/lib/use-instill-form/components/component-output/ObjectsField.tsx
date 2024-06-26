@@ -1,11 +1,12 @@
 "use client";
 
 import JsonView from "@uiw/react-json-view";
+
 import { CopyToClipboardButton } from "../../../../components";
+import { customTheme } from "../../../react-json-view";
 import { GeneralRecord, Nullable } from "../../../type";
 import { ComponentOutputFieldBaseProps } from "../../types";
 import { FieldRoot } from "./FieldRoot";
-import { customTheme } from "../../../react-json-view";
 import { NoOutput } from "./NoOutput";
 
 export type ObjectsFieldProps = {

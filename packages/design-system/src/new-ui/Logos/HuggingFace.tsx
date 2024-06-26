@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 import { LogoBase, LogoBaseProps } from "./LogoBase";
 
 export const HuggingFace = React.forwardRef<

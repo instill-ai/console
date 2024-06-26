@@ -1,7 +1,8 @@
 import { QueryClient } from "@tanstack/react-query";
+
+import { env } from "../../../../server";
 import { Nullable } from "../../../type";
 import { listUserSecretsQuery } from "../../../vdp-sdk";
-import { env } from "../../../../server";
 
 export async function fetchUserSecrets({
   entityName,

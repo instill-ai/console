@@ -1,12 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { ColumnDef } from "@tanstack/react-table";
+
 import { Button, DataTable } from "@instill-ai/design-system";
 
-import { formatDate, type Pipeline } from "../../lib";
+import type { Pipeline } from "../../lib";
 import { SortIcon, TableError } from "../../components";
+import { formatDate } from "../../lib";
 import { PipelineTablePlaceholder } from "./PipelineTablePlaceholder";
-import { useRouter } from "next/navigation";
 
 export type PipelinesTableProps = {
   pipelines: Pipeline[];

@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import MySqlIcon from "./MySqlIcon";
 
 const meta: Meta<typeof MySqlIcon> = {

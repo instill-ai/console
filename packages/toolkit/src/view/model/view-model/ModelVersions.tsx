@@ -1,16 +1,18 @@
+import { useEffect, useMemo, useState } from "react";
 import { ColumnDef, PaginationState } from "@tanstack/react-table";
+
+import { DataTable } from "@instill-ai/design-system";
+
+import { StateLabel } from "../../../components";
 import {
   InstillStore,
   Model,
-  useInstillStore,
-  useInfiniteModelVersions,
-  useShallow,
   ModelVersion,
+  useInfiniteModelVersions,
+  useInstillStore,
+  useShallow,
 } from "../../../lib";
-import { DataTable } from "@instill-ai/design-system";
 import { getHumanReadableStringFromTime } from "../../../server";
-import { StateLabel } from "../../../components";
-import { useEffect, useMemo, useState } from "react";
 
 export type ModelVersionsProps = {
   model?: Model;

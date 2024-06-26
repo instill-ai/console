@@ -1,6 +1,7 @@
-import { authLogoutAction } from "@instill-ai/toolkit/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+
+import { authLogoutAction } from "@instill-ai/toolkit/server";
 
 export default async function Page() {
   const cookieStore = cookies();

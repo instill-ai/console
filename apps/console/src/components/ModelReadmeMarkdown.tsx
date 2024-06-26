@@ -1,10 +1,10 @@
 import * as React from "react";
 import cn from "clsx";
-import remarkFrontmatter from "remark-frontmatter";
 import ReactMarkdown from "react-markdown";
-import { Nullable } from "@instill-ai/toolkit";
+import remarkFrontmatter from "remark-frontmatter";
 
 import { NoBgSquareProgress } from "@instill-ai/design-system";
+import { Nullable } from "@instill-ai/toolkit";
 
 export type ModelReadmeMarkdownProps = {
   markdown: Nullable<string>;

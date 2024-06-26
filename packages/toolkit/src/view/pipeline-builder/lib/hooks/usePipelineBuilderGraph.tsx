@@ -1,17 +1,17 @@
 import * as React from "react";
+import { useShallow } from "zustand/react/shallow";
 
 import {
   checkIsValidPosition,
   composeEdgesFromNodes,
   createGraphLayout,
 } from "../../..";
+import { useRouteInfo } from "../../../../lib";
 import { useUserPipeline } from "../../../../lib/react-query-service";
 import {
   InstillStore,
   useInstillStore,
 } from "../../../../lib/use-instill-store";
-import { useShallow } from "zustand/react/shallow";
-import { useRouteInfo } from "../../../../lib";
 import { createNodesFromPipelineRecipe } from "../createNodesFromPipelineRecipe";
 
 const selector = (store: InstillStore) => ({

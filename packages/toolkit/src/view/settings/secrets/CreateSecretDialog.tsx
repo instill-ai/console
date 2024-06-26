@@ -1,7 +1,11 @@
 "use client";
 
-import * as z from "zod";
 import * as React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { isAxiosError } from "axios";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
 import {
   Button,
   Dialog,
@@ -10,10 +14,13 @@ import {
   Textarea,
   useToast,
 } from "@instill-ai/design-system";
+
+import { LoadingSpin } from "../../../components";
+import { InstillErrors } from "../../../constant";
 import {
   CreateUserSecretPayload,
-  InstillStore,
   getInstillApiErrorMessage,
+  InstillStore,
   sendAmplitudeData,
   useAmplitudeCtx,
   useAuthenticatedUser,
@@ -21,12 +28,7 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../lib";
-import { isAxiosError } from "axios";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { LoadingSpin } from "../../../components";
 import { validateInstillResourceID } from "../../../server";
-import { InstillErrors } from "../../../constant";
 
 const CreateSecretSchema = z
   .object({

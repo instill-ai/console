@@ -1,6 +1,7 @@
-import { Nullable } from "../../type";
 import * as React from "react";
 import { AnySchema } from "yup";
+
+import { Nullable } from "../../type";
 import { transformAirbyteSchemaToYup } from "../helpers";
 import { AirbyteJsonSchema, SelectedItemMap } from "../types";
 

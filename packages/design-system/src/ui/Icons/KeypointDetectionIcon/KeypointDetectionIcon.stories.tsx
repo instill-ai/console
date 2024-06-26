@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import KeypointDetectionIcon from "./KeypointDetectionIcon";
 
 const meta: Meta<typeof KeypointDetectionIcon> = {

@@ -1,10 +1,12 @@
 "use client";
 
-import cn from "clsx";
-import { Form, Select } from "@instill-ai/design-system";
 import * as React from "react";
-import { recursivelyResetFormData } from "../../transform";
+import cn from "clsx";
+
+import { Form, Select } from "@instill-ai/design-system";
+
 import { Nullable } from "../../../type";
+import { recursivelyResetFormData } from "../../transform";
 import {
   AutoFormFieldBaseProps,
   InstillFormTree,

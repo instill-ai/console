@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import RotatableArrowIcon from "./RotatableArrowIcon";
 
 const meta: Meta<typeof RotatableArrowIcon> = {

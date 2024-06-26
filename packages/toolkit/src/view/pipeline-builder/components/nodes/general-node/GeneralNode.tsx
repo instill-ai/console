@@ -2,20 +2,26 @@
 
 import * as React from "react";
 import { NodeProps } from "reactflow";
-import { Form, Icons } from "@instill-ai/design-system";
 import { useShallow } from "zustand/react/shallow";
 
-import { getGeneralComponentInOutputSchema } from "../../../lib";
+import { Form, Icons } from "@instill-ai/design-system";
+
+import { ImageWithFallback } from "../../../../../components";
 import {
   GeneralRecord,
   InstillStore,
   useInstillForm,
   useInstillStore,
 } from "../../../../../lib";
-import { ImageWithFallback } from "../../../../../components";
-import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
+import {
+  getGeneralComponentInOutputSchema,
+  useCheckIsHidden,
+  useUpdaterOnNode,
+} from "../../../lib";
+import { isPipelineGeneralComponent } from "../../../lib/checkComponentType";
+import { GeneralNodeData } from "../../../type";
+import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";
 import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
-import { useCheckIsHidden, useUpdaterOnNode } from "../../../lib";
 import {
   NodeBottomBarContent,
   NodeBottomBarMenu,
@@ -23,10 +29,8 @@ import {
   NodeIDEditor,
   NodeWrapper,
 } from "../common";
-import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";
-import { GeneralNodeData } from "../../../type";
-import { isPipelineGeneralComponent } from "../../../lib/checkComponentType";
 import { NodeControlPanel } from "../control-panel";
+import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
 
 const selector = (store: InstillStore) => ({
   updateCurrentAdvancedConfigurationNodeID:

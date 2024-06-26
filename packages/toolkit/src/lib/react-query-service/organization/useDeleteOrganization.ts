@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteOrganizationMutation, Organization } from "../../vdp-sdk";
+
 import type { Nullable } from "../../type";
+import { deleteOrganizationMutation, Organization } from "../../vdp-sdk";
 
 export function useDeleteOrganization() {
   const queryClient = useQueryClient();

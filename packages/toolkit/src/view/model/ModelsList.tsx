@@ -1,6 +1,11 @@
 "use client";
 
+import cn from "clsx";
+
+import { useToast } from "@instill-ai/design-system";
+
 import { CardModel } from "../../components/card-model/CardModel";
+import { CardModelSkeleton } from "../../components/card-model/Skeleton";
 import {
   InstillStore,
   Model,
@@ -11,9 +16,6 @@ import {
   useInstillStore,
   useShallow,
 } from "../../lib";
-import { CardModelSkeleton } from "../../components/card-model/Skeleton";
-import cn from "clsx";
-import { useToast } from "@instill-ai/design-system";
 
 export type ModelsListProps = {
   models: Model[];

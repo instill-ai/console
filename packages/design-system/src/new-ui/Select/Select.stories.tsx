@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Select } from "./Select";
-import { Icons } from "../Icons";
+
 import { ModelLogo } from "../../ui";
+import { Icons } from "../Icons";
+import { Select } from "./Select";
 
 const meta: Meta<typeof Select> = {
   title: "Components/NewUi/Select",

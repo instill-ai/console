@@ -1,12 +1,14 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
-import { EditorContent, useEditor } from "@tiptap/react";
-import { extensions, deserialize, Nullable, serialize } from "../lib";
-import { useToast } from "@instill-ai/design-system";
-import { LoadingSpin } from ".";
 import { Editor } from "@tiptap/core";
+import { EditorContent, useEditor } from "@tiptap/react";
+import cn from "clsx";
+
+import { useToast } from "@instill-ai/design-system";
+
+import { LoadingSpin } from ".";
+import { deserialize, extensions, Nullable, serialize } from "../lib";
 
 export const RealTimeTextEditor = ({
   isEditable,

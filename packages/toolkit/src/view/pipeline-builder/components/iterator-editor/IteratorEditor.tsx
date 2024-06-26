@@ -1,26 +1,27 @@
 "use client";
 
 import * as React from "react";
+import { ReactFlowInstance } from "reactflow";
 
 import { Button, Icons, Separator } from "@instill-ai/design-system";
+
+import { SelectComponentDialog } from "..";
 import {
   InstillStore,
   Nullable,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
-import { SelectComponentDialog } from "..";
 import {
   composeEdgesFromNodes,
   composePipelineMetadataMapFromNodes,
   isIteratorNode,
   useAddNodeWithDefinition,
 } from "../../lib";
-import { ReactFlowInstance } from "reactflow";
+import { composePipelineComponentMapFromNodes } from "../../lib/composePipelineComponentMapFromNodes";
 import { PipelineBuilderCanvas } from "../PipelineBuilderCanvas";
 import { IteratorInput } from "./iterator-input/IteratorInput";
 import { IteratorOutput } from "./iterator-output/IteratorOutput";
-import { composePipelineComponentMapFromNodes } from "../../lib/composePipelineComponentMapFromNodes";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,

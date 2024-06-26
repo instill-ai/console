@@ -1,4 +1,5 @@
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
+
 import { getReferencesFromString } from "./getReferencesFromString";
 
 test("should get reference from basic string", () => {

@@ -1,16 +1,17 @@
 "use client";
 
 import * as React from "react";
+import { useParams, useRouter } from "next/navigation";
+
 import {
   GeneralAppPageProp,
-  useRouteInfo,
   useQueryClient,
+  useRouteInfo,
   useUserModel,
   useWatchUserModels,
 } from "../../lib";
-import { ModelContentViewer, ModelSettingsHead } from "./view-model";
-import { useParams, useRouter } from "next/navigation";
 import { ModelTabNames } from "../../server";
+import { ModelContentViewer, ModelSettingsHead } from "./view-model";
 
 export type ModelHubSettingPageMainViewProps = GeneralAppPageProp;
 

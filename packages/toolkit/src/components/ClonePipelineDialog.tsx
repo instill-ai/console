@@ -1,7 +1,11 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
+
 import {
   Button,
   Dialog,
@@ -14,9 +18,8 @@ import {
   Textarea,
   useToast,
 } from "@instill-ai/design-system";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
+import { InstillErrors } from "../constant";
 import {
   CreateUserPipelinePayload,
   InstillStore,
@@ -26,20 +29,18 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
+  useAuthenticatedUser,
   useCreateUserPipeline,
   useInstillStore,
-  useShallow,
-  useAuthenticatedUser,
   useRouteInfo,
+  useShallow,
 } from "../lib";
-import { InstillErrors } from "../constant";
-import { LoadingSpin } from "./LoadingSpin";
-import { env, validateInstillResourceID } from "../server";
-import { useRouter } from "next/navigation";
-import { createNodesFromPipelineRecipe } from "../view/pipeline-builder/lib/createNodesFromPipelineRecipe";
-import { composePipelineRecipeFromNodes } from "../view";
-import { EntitySelector } from "./EntitySelector";
 import { useUserNamespaces } from "../lib/useUserNamespaces";
+import { env, validateInstillResourceID } from "../server";
+import { composePipelineRecipeFromNodes } from "../view";
+import { createNodesFromPipelineRecipe } from "../view/pipeline-builder/lib/createNodesFromPipelineRecipe";
+import { EntitySelector } from "./EntitySelector";
+import { LoadingSpin } from "./LoadingSpin";
 
 const ClonePipelineSchema = z
   .object({

@@ -1,7 +1,8 @@
 import { test } from "@playwright/test";
-import { PipelineOverviewPage } from "../pages/pipeline-overview.page";
-import { PipelineBuilderPage } from "../pages/pipeline-builder.page";
+
 import { createPipeline, deletePipeline } from "../helpers/actions/pipeline";
+import { PipelineBuilderPage } from "../pages/pipeline-builder.page";
+import { PipelineOverviewPage } from "../pages/pipeline-overview.page";
 
 export function shouldUnmarshalJSONInput() {
   const pipelineID = "unmarshal-test";

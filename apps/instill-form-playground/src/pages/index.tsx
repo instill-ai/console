@@ -1,8 +1,8 @@
 import * as React from "react";
-import * as z from "zod";
-import { Button, Form, Textarea } from "@instill-ai/design-system";
-
 import MonacoEditor from "@monaco-editor/react";
+import * as z from "zod";
+
+import { Button, Form, Textarea } from "@instill-ai/design-system";
 import { InstillJSONSchema, useInstillForm } from "@instill-ai/toolkit";
 
 export default function Home() {

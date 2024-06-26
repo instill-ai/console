@@ -1,4 +1,5 @@
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
+
 import { transformInstillJSONSchemaToFormTree } from ".";
 import { InstillFormTree, InstillJSONSchema } from "../types";
 

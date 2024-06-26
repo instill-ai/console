@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ModelState } from "./model";
-import { PipelineReleaseState } from "./pipeline";
+import { Nullable } from "../type";
 import { InstillJSONSchema } from "../use-instill-form";
 import { User } from "./mgmt";
+import { ModelState } from "./model";
 import { Organization } from "./organization";
-import { Nullable } from "../type";
+import { PipelineReleaseState } from "./pipeline";
 
 export type ErrorDetails = {
   "@type": string;

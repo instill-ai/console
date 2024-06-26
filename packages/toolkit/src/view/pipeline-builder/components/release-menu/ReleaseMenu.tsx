@@ -1,24 +1,26 @@
 "use client";
 
 import * as React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
-import { Head } from "./Head";
-import { SemverSelect } from "./SemverSelect";
+
+import { Button, Form, useToast } from "@instill-ai/design-system";
+
+import { LoadingSpin } from "../../../../components";
 import {
   CreateUserPipelineReleasePayload,
   InstillStore,
   toastInstillError,
-  useRouteInfo,
   useCreateUserPipelineRelease,
   useInstillStore,
+  useRouteInfo,
   useShallow,
 } from "../../../../lib";
-import { UseFormReturn, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Form, useToast } from "@instill-ai/design-system";
-import { Description } from "./Description";
-import { LoadingSpin } from "../../../../components";
 import { composePipelineRecipeFromNodes } from "../../lib";
+import { Description } from "./Description";
+import { Head } from "./Head";
+import { SemverSelect } from "./SemverSelect";
 
 export const ReleasePipelineFormSchema = z.object({
   id: z.string(),

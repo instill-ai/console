@@ -1,6 +1,7 @@
 "use client";
 
 import cn from "clsx";
+
 import {
   TablePlaceholderBase,
   TablePlaceholderBaseProps,

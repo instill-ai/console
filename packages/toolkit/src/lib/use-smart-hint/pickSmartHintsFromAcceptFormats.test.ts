@@ -1,4 +1,5 @@
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
+
 import { pickSmartHintsFromAcceptFormats } from "./pickSmartHintsFromAcceptFormats";
 
 test("should pick hints when accept format is *", () => {

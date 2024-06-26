@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import PenIcon from "./PenIcon";
 
 const meta: Meta<typeof PenIcon> = {

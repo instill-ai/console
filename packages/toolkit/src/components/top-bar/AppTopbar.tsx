@@ -1,7 +1,10 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import cn from "clsx";
+
+import { Button, Logo } from "@instill-ai/design-system";
 
 import {
   InstillStore,
@@ -9,12 +12,10 @@ import {
   useInstillStore,
   useShallow,
 } from "../../lib";
-import { CloudTopbarDropdown } from "./CloudTopbarDropdown";
-import { CETopbarDropdown } from "./CETopbarDropdown";
-import { env } from "../../server";
-import { useRouter } from "next/navigation";
 import { useGuardPipelineBuilderUnsavedChangesNavigation } from "../../lib/hook";
-import { Button, Logo } from "@instill-ai/design-system";
+import { env } from "../../server";
+import { CETopbarDropdown } from "./CETopbarDropdown";
+import { CloudTopbarDropdown } from "./CloudTopbarDropdown";
 import { NamespaceSwitch } from "./NamespaceSwitch";
 import { NavLinks } from "./NavLinks";
 import { TopbarMiscLinks } from "./TopbarMiscLinks";

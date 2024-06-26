@@ -1,8 +1,9 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import cn from "clsx";
+
 import { SolidButton } from "@instill-ai/design-system";
 
 export type TablePlaceholderBaseProps = {

@@ -1,4 +1,5 @@
 import React from "react";
+
 import ArrowIconBase, { ArrowIconBaseProps } from "../ArrowIconBase";
 
 export type RotatableArrowIconProps = Omit<ArrowIconBaseProps, "viewBox">;

@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import SyncArrowsIcon from "./SyncArrowsIcon";
 
 const meta: Meta<typeof SyncArrowsIcon> = {

@@ -1,6 +1,7 @@
 import { Select, Tag } from "@instill-ai/design-system";
-import { NamespaceAvatarWithFallback } from "./NamespaceAvatarWithFallback";
+
 import { UserNamespace } from "../lib/useUserNamespaces";
+import { NamespaceAvatarWithFallback } from "./NamespaceAvatarWithFallback";
 
 const truncateDisplayName = (value?: string) => {
   if (value && value.length >= 10) {

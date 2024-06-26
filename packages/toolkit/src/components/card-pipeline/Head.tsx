@@ -1,21 +1,23 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
+
+import { useToast } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   Nullable,
   OrganizationOwner,
   Pipeline,
-  UserOwner,
   toastInstillError,
   useDeleteUserPipeline,
   useInstillStore,
+  UserOwner,
   useShallow,
 } from "../../lib";
-import { useToast } from "@instill-ai/design-system";
-import { Menu } from "./Menu";
-import { useRouter } from "next/navigation";
 import { NamespaceAvatarWithFallback } from "../NamespaceAvatarWithFallback";
+import { Menu } from "./Menu";
 
 export const HeadSkeleton = () => {
   return (

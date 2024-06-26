@@ -1,8 +1,9 @@
 import * as React from "react";
-import { ChooseTitleFrom, FieldMode, InstillFormTree } from "../types";
-import { ComponentOutputFields } from "../components";
-import { GeneralRecord, Nullable } from "../../type";
+
 import { dot } from "../../dot";
+import { GeneralRecord, Nullable } from "../../type";
+import { ComponentOutputFields } from "../components";
+import { ChooseTitleFrom, FieldMode, InstillFormTree } from "../types";
 
 export type PickComponentOutputFieldsFromInstillFormTreeProps = {
   tree: InstillFormTree;

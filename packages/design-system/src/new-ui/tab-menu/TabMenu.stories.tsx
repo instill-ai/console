@@ -1,7 +1,8 @@
-import * as React from "react";
 import type { Meta } from "@storybook/react";
-import { TabMenu } from "./TabMenu";
+import * as React from "react";
+
 import { Nullable } from "../../types/general";
+import { TabMenu } from "./TabMenu";
 
 const meta: Meta<typeof TabMenu> = {
   title: "Components/NewUi/TabMenu",

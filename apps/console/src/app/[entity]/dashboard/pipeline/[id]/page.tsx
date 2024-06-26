@@ -1,5 +1,6 @@
-import { PipelineDashboardPageRender } from "./render";
 import { Metadata } from "next";
+
+import { PipelineDashboardPageRender } from "./render";
 
 type Props = {
   params: { id: string; entity: string };

@@ -1,16 +1,18 @@
 "use client";
 
-import { Button, Input, Icons, Select } from "@instill-ai/design-system";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import debounce from "lodash.debounce";
+
+import { Button, Icons, Input, Select } from "@instill-ai/design-system";
+
 import {
   GeneralAppPageProp,
-  Visibility,
-  useRouteInfo,
   useInfiniteUserModels,
+  useRouteInfo,
+  Visibility,
 } from "../../lib";
-import { useSearchParams } from "next/navigation";
 import { ModelsList } from "./ModelsList";
-import React, { useEffect, useState } from "react";
-import debounce from "lodash.debounce";
 import { ModelsListPagination } from "./ModelsListPagination";
 
 export type ModelHubListPageMainViewProps = GeneralAppPageProp;

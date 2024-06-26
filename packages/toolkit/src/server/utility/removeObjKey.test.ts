@@ -1,4 +1,5 @@
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
+
 import { removeObjKey } from "./removeObjKey";
 
 test("should remove key from object", () => {

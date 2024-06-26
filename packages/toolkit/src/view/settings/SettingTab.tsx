@@ -1,6 +1,7 @@
 "use client";
 
 import cn from "clsx";
+
 import { Separator } from "@instill-ai/design-system";
 
 export const SettingTabRoot = ({ children }: { children: React.ReactNode }) => {

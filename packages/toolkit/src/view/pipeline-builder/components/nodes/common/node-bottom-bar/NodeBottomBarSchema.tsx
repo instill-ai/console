@@ -1,9 +1,10 @@
 "use client";
 
 import JsonView from "@uiw/react-json-view";
+
+import { CopyToClipboardButton } from "../../../../../../components";
 import { GeneralRecord, Nullable } from "../../../../../../lib";
 import { customTheme } from "../../../../../../lib/react-json-view";
-import { CopyToClipboardButton } from "../../../../../../components";
 
 export const NodeBottomBarSchema = ({
   componentSchema,

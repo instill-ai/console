@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import SalesforceIcon from "./SalesforceIcon";
 
 const meta: Meta<typeof SalesforceIcon> = {

@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { Nullable } from "../../../type";
 import { getReferencesFromString } from "../../../../view";
+import { Nullable } from "../../../type";
 import { SmartHint } from "../../../use-smart-hint";
 import { SmartHintWarning } from "../../types";
 

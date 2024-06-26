@@ -1,14 +1,16 @@
 import { useSearchParams } from "next/navigation";
+
+import { Button, Icons, Skeleton } from "@instill-ai/design-system";
+
+import { LoadingSpin } from "../../../components";
 import {
   InstillStore,
-  useRouteInfo,
   useInstillStore,
   useNavigateBackAfterLogin,
+  useRouteInfo,
   useShallow,
   useUserPipeline,
 } from "../../../lib";
-import { Button, Icons, Skeleton } from "@instill-ai/design-system";
-import { LoadingSpin } from "../../../components";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

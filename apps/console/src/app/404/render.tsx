@@ -1,7 +1,8 @@
 "use client";
 
-import { NotFoundView } from "@instill-ai/toolkit";
 import * as React from "react";
+
+import { NotFoundView } from "@instill-ai/toolkit";
 
 export const NotFoundPageRender = () => {
   return <NotFoundView />;

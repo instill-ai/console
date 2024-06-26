@@ -1,14 +1,14 @@
-import { createInstillAxiosClient, getQueryString } from "../helper";
+import type { Nullable } from "../../type";
 import type {
   Model,
-  ModelReadme,
   ModelDefinition,
+  ModelReadme,
   ModelRegion,
+  ModelTriggerResult,
   ModelVersion,
   ModelWatchState,
-  ModelTriggerResult,
 } from "./types";
-import type { Nullable } from "../../type";
+import { createInstillAxiosClient, getQueryString } from "../helper";
 import { Visibility } from "../types";
 
 /* -------------------------------------------------------------------------

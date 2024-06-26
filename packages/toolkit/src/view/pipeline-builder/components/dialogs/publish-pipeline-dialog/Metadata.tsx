@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { UseFormReturn } from "react-hook-form";
 import * as z from "zod";
+
 import {
   Form,
   Icons,
@@ -9,9 +11,9 @@ import {
   Textarea,
   Tooltip,
 } from "@instill-ai/design-system";
-import { UseFormReturn } from "react-hook-form";
-import { PublishPipelineFormSchema } from "./PublishPipelineDialog";
+
 import { Nullable } from "../../../../../lib";
+import { PublishPipelineFormSchema } from "./PublishPipelineDialog";
 
 export const Metadata = ({
   form,

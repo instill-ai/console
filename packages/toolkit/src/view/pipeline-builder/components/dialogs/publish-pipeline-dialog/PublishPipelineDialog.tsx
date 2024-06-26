@@ -1,18 +1,20 @@
 "use client";
 
 import * as React from "react";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 import { useShallow } from "zustand/react/shallow";
+
 import { Dialog, Form, LinkButton, useToast } from "@instill-ai/design-system";
 
 import {
   InstillStore,
   Nullable,
-  UpdateUserPipelinePayload,
   sendAmplitudeData,
   toastInstillError,
+  UpdateUserPipelinePayload,
   useAmplitudeCtx,
   useInstillStore,
   useUpdateUserPipeline,
@@ -21,7 +23,6 @@ import {
 import { Head } from "./Head";
 import { Metadata } from "./Metadata";
 import { ReadmeEditor } from "./ReadmeEditor";
-import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

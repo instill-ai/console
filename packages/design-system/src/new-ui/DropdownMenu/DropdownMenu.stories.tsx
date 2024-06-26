@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { DropdownMenu } from "./DropdownMenu";
 import * as React from "react";
-import { Button } from "../Button";
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
+
+import { Button } from "../Button";
 import { Icons } from "../Icons";
+import { DropdownMenu } from "./DropdownMenu";
 
 const meta: Meta<typeof DropdownMenu> = {
   title: "Components/NewUi/DropdownMenu",

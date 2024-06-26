@@ -1,10 +1,9 @@
 "use client";
 
 import cn from "clsx";
-import {
-  TablePlaceholderBase,
-  type TablePlaceholderBaseProps,
-} from "../../components";
+
+import type { TablePlaceholderBaseProps } from "../../components";
+import { TablePlaceholderBase } from "../../components";
 
 export type PipelineTablePlaceholderProps = Pick<
   TablePlaceholderBaseProps,

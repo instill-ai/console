@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import SlackIcon from "./SlackIcon";
 
 const meta: Meta<typeof SlackIcon> = {

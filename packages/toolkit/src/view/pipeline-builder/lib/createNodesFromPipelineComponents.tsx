@@ -1,8 +1,8 @@
 import { Node } from "reactflow";
 
-import { NodeData, PipelineComponentMetadata } from "../type";
 import { recursiveHelpers } from ".";
 import { GeneralRecord, Nullable, PipelineComponentMap } from "../../../lib";
+import { NodeData, PipelineComponentMetadata } from "../type";
 import {
   isPipelineGeneralComponent,
   isPipelineIteratorComponent,

@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import HttpIcon from "./HttpIcon";
 
 const meta: Meta<typeof HttpIcon> = {

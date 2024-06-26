@@ -1,9 +1,9 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
+import cn from "clsx";
 import {
   Controller,
   ControllerProps,
@@ -13,9 +13,9 @@ import {
   useFormContext,
 } from "react-hook-form";
 
+import { Nullable } from "../../types/general";
 import { Label } from "../Label";
 import { ParagraphWithHTML } from "../ParagraphWithHTML";
-import { Nullable } from "../../types/general";
 
 const FormRoot = ReactHookFormProvider;
 

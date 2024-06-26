@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import BasicInputLabel from "./BasicInputLabel";
 
 const meta: Meta<typeof BasicInputLabel> = {

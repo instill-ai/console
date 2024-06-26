@@ -1,7 +1,9 @@
 "use client";
 
 import cn from "clsx";
+
 import { Form, Switch } from "@instill-ai/design-system";
+
 import type { AutoFormFieldBaseProps } from "../../types";
 import { FieldDescriptionTooltip } from "../common";
 

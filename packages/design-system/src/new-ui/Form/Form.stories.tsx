@@ -1,10 +1,10 @@
-import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Meta, StoryFn } from "@storybook/react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
-import { Form } from "./Form";
 import { Input } from "../Input";
+import { Form } from "./Form";
 
 const meta: Meta = {
   title: "Components/NewUi/Form",

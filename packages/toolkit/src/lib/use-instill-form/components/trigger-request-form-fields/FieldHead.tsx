@@ -2,8 +2,10 @@
 
 import * as React from "react";
 import { useShallow } from "zustand/react/shallow";
-import { FieldMode, InstillStore, Nullable, useInstillStore } from "../../..";
+
 import { Icons, Tag, Tooltip } from "@instill-ai/design-system";
+
+import { FieldMode, InstillStore, Nullable, useInstillStore } from "../../..";
 import { ReferenceHintTag } from "../../../../components";
 import { transformInstillFormatToHumanReadableFormat } from "../../transform";
 

@@ -1,14 +1,16 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
-import { InstillStore, Nullable, useInstillStore } from "../../../../../lib";
-import { Textarea } from "@instill-ai/design-system";
-import { useShallow } from "zustand/react/shallow";
-import { NodeBottomBarProvider } from "./node-bottom-bar";
+import cn from "clsx";
 import { Edge, Position, useEdges } from "reactflow";
+import { useShallow } from "zustand/react/shallow";
+
+import { Textarea } from "@instill-ai/design-system";
+
+import { InstillStore, Nullable, useInstillStore } from "../../../../../lib";
 import { NodeData } from "../../../type";
 import { CustomHandle } from "../../CustomHandle";
+import { NodeBottomBarProvider } from "./node-bottom-bar";
 
 const selector = (store: InstillStore) => ({
   updateNodes: store.updateNodes,

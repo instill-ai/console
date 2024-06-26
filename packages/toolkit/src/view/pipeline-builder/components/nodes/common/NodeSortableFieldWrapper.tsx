@@ -1,10 +1,11 @@
 "use client";
 
-import cn from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
-import { ComplicateIcons } from "@instill-ai/design-system";
-import { useReactFlow } from "reactflow";
 import { CSS } from "@dnd-kit/utilities";
+import cn from "clsx";
+import { useReactFlow } from "reactflow";
+
+import { ComplicateIcons } from "@instill-ai/design-system";
 
 export const NodeSortableFieldWrapper = ({
   path,

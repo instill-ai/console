@@ -1,25 +1,27 @@
 "use client";
 
 import * as React from "react";
+import { isAxiosError } from "axios";
+
 import { Button, Icons, Separator, useToast } from "@instill-ai/design-system";
+
+import { LoadingSpin } from "../../../../../components";
+import { NamespaceAvatarWithFallback } from "../../../../../components/NamespaceAvatarWithFallback";
 import {
+  getInstillApiErrorMessage,
   InstillStore,
   Nullable,
   OrganizationOwner,
-  UpdateUserPipelinePayload,
-  UserOwner,
-  getInstillApiErrorMessage,
   sendAmplitudeData,
+  UpdateUserPipelinePayload,
   useAmplitudeCtx,
   useInstillStore,
+  UserOwner,
   useShallow,
   useUpdateUserPipeline,
   useUserPipeline,
 } from "../../../../../lib";
-import { isAxiosError } from "axios";
-import { LoadingSpin } from "../../../../../components";
 import { env } from "../../../../../server";
-import { NamespaceAvatarWithFallback } from "../../../../../components/NamespaceAvatarWithFallback";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

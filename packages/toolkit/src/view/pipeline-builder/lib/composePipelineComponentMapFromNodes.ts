@@ -1,8 +1,9 @@
 import { Node } from "reactflow";
-import { NodeData } from "../type";
+
 import { PipelineComponentMap } from "../../../lib";
-import { isGeneralNode, isIteratorNode } from "./checkNodeType";
+import { NodeData } from "../type";
 import { isPipelineGeneralComponent } from "./checkComponentType";
+import { isGeneralNode, isIteratorNode } from "./checkNodeType";
 import { recursiveHelpers } from "./recursive-helpers";
 
 export function composePipelineComponentMapFromNodes(

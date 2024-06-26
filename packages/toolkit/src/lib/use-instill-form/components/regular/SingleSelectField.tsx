@@ -2,15 +2,17 @@
 
 import * as React from "react";
 import cn from "clsx";
+
 import { Form, Icons, Select, Tooltip } from "@instill-ai/design-system";
+
+import { InstillCredit } from "../../../../constant";
+import { dot } from "../../../dot";
 import {
   AutoFormFieldBaseProps,
   InstillCredentialMap,
   InstillFormTree,
 } from "../../types";
 import { FieldDescriptionTooltip } from "../common";
-import { InstillCredit } from "../../../../constant";
-import { dot } from "../../../dot";
 
 export const SingleSelectField = ({
   tree,

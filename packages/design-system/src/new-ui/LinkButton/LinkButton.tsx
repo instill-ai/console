@@ -1,9 +1,10 @@
 "use client";
 
-import cn from "clsx";
+import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
+import cn from "clsx";
 
 const linkButtonVariants = cva(
   "group inline-flex items-center justify-center py-1 transition-colors !underline underline-offset-4 !decoration-1 focus:outline-none focus-visible:outline-none disabled:pointer-events-none",

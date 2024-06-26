@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteUserModelMutation } from "../../vdp-sdk";
+
 import type { Nullable } from "../../type";
+import { deleteUserModelMutation } from "../../vdp-sdk";
 import { onSuccessAfterModelMutation } from "./onSuccessAfterModelMutation";
 
 export function useDeleteModel() {

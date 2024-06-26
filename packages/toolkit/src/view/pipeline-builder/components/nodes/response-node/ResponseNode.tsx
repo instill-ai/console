@@ -1,12 +1,15 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
-import * as z from "zod";
-import { NodeProps } from "reactflow";
-import { Button, Icons } from "@instill-ai/design-system";
-import { useShallow } from "zustand/react/shallow";
 import { arrayMove } from "@dnd-kit/sortable";
+import { zodResolver } from "@hookform/resolvers/zod";
+import cn from "clsx";
+import { useForm } from "react-hook-form";
+import { NodeProps } from "reactflow";
+import * as z from "zod";
+import { useShallow } from "zustand/react/shallow";
+
+import { Button, Icons } from "@instill-ai/design-system";
 
 import {
   InstillStore,
@@ -14,20 +17,17 @@ import {
   PipelineOutputField,
   useInstillStore,
 } from "../../../../../lib";
-import { UserDefinedFieldItem } from "./UserDefinedFieldItem";
-import { VerticalSortableWrapper } from "../../VerticalSortableWrapper";
-import { ComponentOutputs } from "../../ComponentOutputs";
-import { NodeHead, NodeSortableFieldWrapper, NodeWrapper } from "../common";
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ResponseNodeData } from "../../../type";
 import { composeEdgesFromNodes, isResponseNode } from "../../../lib";
+import { ResponseNodeData } from "../../../type";
+import { ComponentOutputs } from "../../ComponentOutputs";
+import { VerticalSortableWrapper } from "../../VerticalSortableWrapper";
+import { NodeHead, NodeSortableFieldWrapper, NodeWrapper } from "../common";
+import { VariableResponseNodeControlPanel } from "../control-panel";
 import {
   ResponseNodeFreeForm,
   ResponseNodeFreeFormSchema,
 } from "./ResponseNodeFreeForm";
-import { VariableResponseNodeControlPanel } from "../control-panel";
+import { UserDefinedFieldItem } from "./UserDefinedFieldItem";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,

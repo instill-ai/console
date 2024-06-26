@@ -3,9 +3,10 @@
  * ref: https://github.com/airbytehq/airbyte/blob/29ce34f1cee4878a6e9368890d87820c0d379844/airbyte-webapp/src/core/jsonSchema/schemaToUiWidget.test.ts
  */
 
-import { test, expect } from "vitest";
-import { transformAirbyteSchemaToAirbyteFormTree } from "./transformAirbyteSchemaToAirbyteFormTree";
+import { expect, test } from "vitest";
+
 import { AirbyteJsonSchemaDefinition } from "../../types";
+import { transformAirbyteSchemaToAirbyteFormTree } from "./transformAirbyteSchemaToAirbyteFormTree";
 
 test("should reformat jsonSchema to formTree representation", () => {
   const schema: AirbyteJsonSchemaDefinition = {

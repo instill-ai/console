@@ -1,5 +1,6 @@
-import { Meta, StoryFn } from "@storybook/react";
 import * as React from "react";
+import { Meta, StoryFn } from "@storybook/react";
+
 import BasicToggleField from "./BasicToggleField";
 
 const meta: Meta<typeof BasicToggleField> = {

@@ -1,11 +1,12 @@
-import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import * as React from "react";
+
+import { Button } from "../Button";
+import { Icons } from "../Icons";
+import { LinkButton } from "../LinkButton";
 import { Toast, ToastProps } from "./Toast";
 import { Toaster } from "./Toaster";
-import { Button } from "../Button";
 import { ToasterToast, useToast } from "./use-toast";
-import { LinkButton } from "../LinkButton";
-import { Icons } from "../Icons";
 
 const meta: Meta<typeof Toast> = {
   title: "Components/NewUi/Toast",

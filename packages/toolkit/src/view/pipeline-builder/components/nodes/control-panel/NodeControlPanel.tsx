@@ -1,25 +1,25 @@
 "use client";
 
 import * as React from "react";
-import { Icons } from "@instill-ai/design-system";
 import { Node, Position } from "reactflow";
+import { useShallow } from "zustand/react/shallow";
+
+import { Icons } from "@instill-ai/design-system";
 
 import { InstillStore, Nullable, useInstillStore } from "../../../../../lib";
-import { useShallow } from "zustand/react/shallow";
-import { ControlPanel } from "./ControlPanel";
-import { NodeDropdownMenu } from "../common";
 import {
   composeEdgesFromNodes,
   generateUniqueIndex,
   getAllNodeID,
   transformConnectorDefinitionIDToComponentIDPrefix,
 } from "../../../lib";
-import { GeneralNodeData, IteratorNodeData, NodeData } from "../../../type";
-
 import {
   isPipelineGeneralComponent,
   isPipelineIteratorComponent,
 } from "../../../lib/checkComponentType";
+import { GeneralNodeData, IteratorNodeData, NodeData } from "../../../type";
+import { NodeDropdownMenu } from "../common";
+import { ControlPanel } from "./ControlPanel";
 
 const selector = (store: InstillStore) => ({
   isOwner: store.isOwner,

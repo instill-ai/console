@@ -1,7 +1,7 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
+import cn from "clsx";
 import ReactFlow, {
   Background,
   BackgroundVariant,
@@ -21,6 +21,9 @@ import {
   useShallow,
 } from "../../../lib";
 import { composeEdgesFromNodes, createGraphLayout } from "../lib";
+import { createNodesFromPipelineRecipe } from "../lib/createNodesFromPipelineRecipe";
+import { canvasPanOnDrag } from "./canvasPanOnDrag";
+import { CustomEdge } from "./CustomEdge";
 import {
   EmptyNode,
   GeneralNode,
@@ -28,9 +31,6 @@ import {
   ResponseNode,
   VariableNode,
 } from "./nodes";
-import { CustomEdge } from "./CustomEdge";
-import { createNodesFromPipelineRecipe } from "../lib/createNodesFromPipelineRecipe";
-import { canvasPanOnDrag } from "./canvasPanOnDrag";
 
 const selector = (store: InstillStore) => ({
   updateCurrentVersion: store.updateCurrentVersion,

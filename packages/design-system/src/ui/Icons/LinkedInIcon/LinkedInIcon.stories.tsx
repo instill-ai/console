@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import LinkedInIcon from "./LinkedInIcon";
 
 const meta: Meta<typeof LinkedInIcon> = {

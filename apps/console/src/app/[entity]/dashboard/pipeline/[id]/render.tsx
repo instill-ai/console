@@ -1,13 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useAppAccessToken } from "lib/use-app-access-token";
+import { useAppTrackToken } from "lib/useAppTrackToken";
+
 import {
   AppTopbar,
   DashboardPipelineDetailsPageMainView,
   PageBase,
 } from "@instill-ai/toolkit";
-import { useAppAccessToken } from "lib/use-app-access-token";
-import { useAppTrackToken } from "lib/useAppTrackToken";
-import { useRouter } from "next/navigation";
 
 export function PipelineDashboardPageRender() {
   const accessToken = useAppAccessToken();

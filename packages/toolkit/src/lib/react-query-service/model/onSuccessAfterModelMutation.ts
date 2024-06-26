@@ -1,5 +1,6 @@
-import { Model } from "../../vdp-sdk";
 import { QueryClient } from "@tanstack/react-query";
+
+import { Model } from "../../vdp-sdk";
 
 export type OnSuccessAfterModelMutationProps =
   | OnSuccessAfterDeleteModelProps

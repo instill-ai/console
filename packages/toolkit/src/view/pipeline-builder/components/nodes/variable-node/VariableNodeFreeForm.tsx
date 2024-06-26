@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { UseFormReturn } from "react-hook-form";
 import * as z from "zod";
+
 import {
   Button,
   Form,
@@ -9,12 +11,11 @@ import {
   Input,
   Textarea,
 } from "@instill-ai/design-system";
-import { UseFormReturn } from "react-hook-form";
 
-import { Nullable } from "../../../../../lib";
-import { constructFieldKey } from "./constructFieldKey";
 import { InstillErrors } from "../../../../../constant";
+import { Nullable } from "../../../../../lib";
 import { validateInstillVariableAndOutputKey } from "../../../../../server";
+import { constructFieldKey } from "./constructFieldKey";
 import { VariableNodeTypeSelect } from "./VariableNodeTypeSelect";
 
 export const TriggerNodeFreeFormSchema = z

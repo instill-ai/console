@@ -1,18 +1,19 @@
 "use client";
 
+import { useToast } from "@instill-ai/design-system";
+
+import { RealTimeTextEditor } from "../../../components";
 import {
   InstillStore,
-  useInstillStore,
-  useShallow,
   Nullable,
-  useUpdateUserPipeline,
-  UpdateUserPipelinePayload,
   sendAmplitudeData,
+  UpdateUserPipelinePayload,
   useAmplitudeCtx,
+  useInstillStore,
   useRouteInfo,
+  useShallow,
+  useUpdateUserPipeline,
 } from "../../../lib";
-import { useToast } from "@instill-ai/design-system";
-import { RealTimeTextEditor } from "../../../components";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

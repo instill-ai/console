@@ -1,11 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { usePathname } from "next/navigation";
 
 import { Toaster, useToast } from "@instill-ai/design-system";
-import { AmplitudeProvider } from "./amplitude-client-provider";
-import { ReactQueryProvider } from "./react-query-client-provider";
-import { usePathname } from "next/navigation";
 import {
   InstillStore,
   Nullable,
@@ -15,6 +13,9 @@ import {
   useModalStore,
   useShallow,
 } from "@instill-ai/toolkit";
+
+import { AmplitudeProvider } from "./amplitude-client-provider";
+import { ReactQueryProvider } from "./react-query-client-provider";
 
 const selector = (store: InstillStore) => ({
   initPipelineBuilder: store.initPipelineBuilder,

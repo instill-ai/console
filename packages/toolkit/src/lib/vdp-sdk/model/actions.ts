@@ -1,7 +1,7 @@
-import { createInstillAxiosClient } from "../helper";
 import { Nullable } from "../../type";
-import { ModelTask } from "./types";
+import { createInstillAxiosClient } from "../helper";
 import { Operation } from "../operation/types";
+import { ModelTask } from "./types";
 
 export type DeployUserModelResponse = {
   modelId: string;

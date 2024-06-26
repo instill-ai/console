@@ -1,22 +1,23 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
+
+import { BreadcrumbWithLink } from "../../../components";
 import {
   InstillStore,
+  useAuthenticatedUser,
   useInstillStore,
+  useRouteInfo,
   useShallow,
   useUser,
-  useAuthenticatedUser,
   useUserPipelines,
-  useRouteInfo,
 } from "../../../lib";
-import { useRouter } from "next/navigation";
-import { UserProfileBio } from "./Bio";
-import { ProfileSeparator } from "../ProfileSeparator";
-import { PipelinesTable } from "../../pipeline";
-import { BreadcrumbWithLink } from "../../../components";
 import { useUserModels } from "../../../lib/react-query-service/model/useUserModels";
 import { ModelsTable } from "../../model";
+import { PipelinesTable } from "../../pipeline";
+import { ProfileSeparator } from "../ProfileSeparator";
+import { UserProfileBio } from "./Bio";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

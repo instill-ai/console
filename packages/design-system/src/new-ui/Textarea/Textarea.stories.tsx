@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { Textarea } from "./Textarea";
+
 import { Field } from "../Field";
+import { Textarea } from "./Textarea";
 
 const meta: Meta<typeof Textarea> = {
   title: "Components/NewUi/Textarea",

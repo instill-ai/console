@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import AwsS3Icon from "./AwsS3Icon";
 
 const meta: Meta<typeof AwsS3Icon> = {

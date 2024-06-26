@@ -1,5 +1,6 @@
-import { SecretSettingdPageRender } from "./render";
 import { Metadata } from "next";
+
+import { SecretSettingdPageRender } from "./render";
 
 export async function generateMetadata(): Promise<Metadata> {
   const metadata: Metadata = {

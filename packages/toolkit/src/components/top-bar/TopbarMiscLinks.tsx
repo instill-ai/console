@@ -1,11 +1,13 @@
 "use client";
+
+import Link from "next/link";
 import cn from "clsx";
+
 import {
+  buttonVariants,
   ComplicateIcons,
   Icons,
-  buttonVariants,
 } from "@instill-ai/design-system";
-import Link from "next/link";
 
 export const TopbarMiscLinks = () => {
   return (

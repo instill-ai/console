@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import GoogleIcon from "./GoogleIcon";
 
 const meta: Meta<typeof GoogleIcon> = {

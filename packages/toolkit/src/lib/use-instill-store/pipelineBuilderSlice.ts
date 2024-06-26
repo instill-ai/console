@@ -1,18 +1,19 @@
 import {
+  addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
   Connection,
   Edge,
   EdgeChange,
   Node,
   NodeChange,
-  addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
 } from "reactflow";
-import { Nullable } from "../type";
+import { StateCreator } from "zustand";
 
 import { NodeData } from "../../view";
+import { Nullable } from "../type";
+import { InstillJSONSchema } from "../use-instill-form";
 import { TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
-import { StateCreator } from "zustand";
 import {
   InstillStore,
   InstillStoreMutators,
@@ -20,7 +21,6 @@ import {
   PipelineBuilderState,
   WarnUnsavedChangesDialogState,
 } from "./types";
-import { InstillJSONSchema } from "../use-instill-form";
 
 export const pipelineBuilderInitialState: PipelineBuilderState = {
   pipelineId: null,

@@ -2,15 +2,15 @@
 
 import * as React from "react";
 import JsonView from "@uiw/react-json-view";
-import { customTheme } from "../../../../../../lib/react-json-view";
 
+import { CopyToClipboardButton } from "../../../../../../components";
 import {
   GeneralRecord,
   InstillJSONSchema,
   Nullable,
 } from "../../../../../../lib";
+import { customTheme } from "../../../../../../lib/react-json-view";
 import { ComponentOutputs } from "../../../ComponentOutputs";
-import { CopyToClipboardButton } from "../../../../../../components";
 
 export const NodeBottomBarOutput = ({
   componentID,

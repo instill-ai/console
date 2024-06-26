@@ -1,11 +1,12 @@
 import * as React from "react";
-import {
-  PickComponentOutputFieldsFromInstillFormTreeProps,
-  pickComponentOutputFieldsFromInstillFormTree,
-} from "./pick";
-import { InstillJSONSchema } from "./types";
+
 import { GeneralRecord, Nullable } from "../type";
+import {
+  pickComponentOutputFieldsFromInstillFormTree,
+  PickComponentOutputFieldsFromInstillFormTreeProps,
+} from "./pick";
 import { transformInstillJSONSchemaToFormTree } from "./transform";
+import { InstillJSONSchema } from "./types";
 
 export type UseComponentOutputFieldsProps = {
   schema: Nullable<InstillJSONSchema>;

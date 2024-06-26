@@ -1,8 +1,10 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
+import cn from "clsx";
+
 import { Form, Input } from "@instill-ai/design-system";
+
 import { AutoFormFieldBaseProps } from "../../types";
 import { FieldDescriptionTooltip } from "../common";
 

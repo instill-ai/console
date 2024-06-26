@@ -1,8 +1,8 @@
 import {
-  ModelSettingsEditForm,
-  ModelVersions,
   ModelApi,
   ModelOverview,
+  ModelSettingsEditForm,
+  ModelVersions,
   NoVersionsPlaceholder,
 } from ".";
 import { LoadingSpin } from "../../../components";

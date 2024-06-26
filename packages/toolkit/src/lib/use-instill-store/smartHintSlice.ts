@@ -1,6 +1,7 @@
 import { StateCreator } from "zustand";
-import { InstillStore, InstillStoreMutators, SmartHintSlice } from "./types";
+
 import { SmartHint } from "../use-smart-hint";
+import { InstillStore, InstillStoreMutators, SmartHintSlice } from "./types";
 
 export const createSmartHintSlice: StateCreator<
   InstillStore,

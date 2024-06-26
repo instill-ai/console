@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Meta, StoryFn } from "@storybook/react";
+
 import { ProgressMessageBoxState } from "../ProgressMessageBoxBase";
 import BasicProgressMessageBox from "./BasicProgressMessageBox";
 

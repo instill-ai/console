@@ -1,13 +1,15 @@
 "use client";
 
 import * as React from "react";
+
 import { Form } from "@instill-ai/design-system";
+
 import { AutoFormFieldBaseProps, Nullable } from "../../..";
+import { EmptyImageInputPlaceholder } from "../../../../components";
 import { readFileToBinary } from "../../../../view";
+import { FieldDescriptionTooltip } from "../common";
 import { FileListItem } from "../trigger-request-form-fields/FileListItem";
 import { UploadFileInput } from "../trigger-request-form-fields/UploadFileInput";
-import { FieldDescriptionTooltip } from "../common";
-import { EmptyImageInputPlaceholder } from "../../../../components";
 
 export const ImageField = ({
   form,

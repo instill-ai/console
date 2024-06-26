@@ -1,33 +1,35 @@
-import { z } from "zod";
-import { InstillErrors, InstillModelVisibility } from "../../../constant";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  Input,
-  Textarea,
-  getModelHardwareToolkit,
-  Select,
-  toast,
-  Button,
-  RadioGroup,
-  Icons,
-} from "@instill-ai/design-system";
 import { useMemo, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import {
+  Button,
+  Form,
+  getModelHardwareToolkit,
+  Icons,
+  Input,
+  RadioGroup,
+  Select,
+  Textarea,
+  toast,
+} from "@instill-ai/design-system";
+
+import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
+import { InstillErrors, InstillModelVisibility } from "../../../constant";
 import {
   InstillStore,
   Model,
-  UpdateUserModelPayload,
-  Visibility,
   sendAmplitudeData,
   toastInstillError,
+  UpdateUserModelPayload,
   useAmplitudeCtx,
   useInstillStore,
   useModelRegions,
   useShallow,
   useUpdateUserModel,
+  Visibility,
 } from "../../../lib";
-import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
 
 export type ModelSettingsEditFormProps = {
   model?: Model;

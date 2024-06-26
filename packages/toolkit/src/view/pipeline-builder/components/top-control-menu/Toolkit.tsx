@@ -1,20 +1,22 @@
 "use client";
 
 import * as React from "react";
-import { PipelineToolkitDialog } from "../PipelineToolkitDialog";
+import { Node } from "reactflow";
+
 import { Button, Icons } from "@instill-ai/design-system";
+
 import {
   GeneralRecord,
   InstillStore,
-  useRouteInfo,
   useInstillStore,
+  useRouteInfo,
   useShallow,
 } from "../../../../lib";
-import { Node } from "reactflow";
-import { triggerPipelineSnippets } from "../triggerPipelineSnippets";
-import { composeCompleteNodesUnderEditingIteratorMode } from "../../lib/composeCompleteNodesUnderEditingIteratorMode";
 import { env } from "../../../../server";
+import { composeCompleteNodesUnderEditingIteratorMode } from "../../lib/composeCompleteNodesUnderEditingIteratorMode";
 import { TriggerNodeData } from "../../type";
+import { PipelineToolkitDialog } from "../PipelineToolkitDialog";
+import { triggerPipelineSnippets } from "../triggerPipelineSnippets";
 
 const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,

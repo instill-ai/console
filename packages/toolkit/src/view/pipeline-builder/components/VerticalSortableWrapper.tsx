@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import {
+  closestCenter,
   DndContext,
   DragEndEvent,
   DragOverEvent,
   DragStartEvent,
   PointerSensor,
-  closestCenter,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -16,6 +16,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+
 import { GeneralRecord } from "../../../lib";
 
 type SortableItem = {

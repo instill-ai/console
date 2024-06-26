@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import MongoDbIcon from "./MongoDbIcon";
 
 const meta: Meta<typeof MongoDbIcon> = {

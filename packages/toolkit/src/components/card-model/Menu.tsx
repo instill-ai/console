@@ -1,9 +1,11 @@
 "use client";
 
 import * as React from "react";
+
 import { Button, DropdownMenu, Icons } from "@instill-ai/design-system";
-import { GeneralDeleteResourceDialog } from "../GeneralDeleteResourceDialog";
+
 import { Model } from "../../lib";
+import { GeneralDeleteResourceDialog } from "../GeneralDeleteResourceDialog";
 
 export type MenuProps = {
   model: Model;

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 import { Dialog } from "@instill-ai/design-system";
 
 import {
@@ -10,8 +11,8 @@ import {
   useShallow,
 } from "../../../../../lib";
 import { Head } from "./Head";
-import { TabShare } from "./TabShare";
 import { TabPublish } from "./TabPublish";
+import { TabShare } from "./TabShare";
 
 const selector = (store: InstillStore) => ({
   dialogSharePipelineIsOpen: store.dialogSharePipelineIsOpen,

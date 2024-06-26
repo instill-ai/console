@@ -1,12 +1,12 @@
+import * as React from "react";
+
+import { InstillCredit } from "../../../../constant";
 import { Nullable } from "../../../type";
 import {
-  SmartHint,
   pickSmartHintsFromAcceptFormats,
+  SmartHint,
 } from "../../../use-smart-hint";
-
-import * as React from "react";
 import { Secret } from "../../../vdp-sdk";
-import { InstillCredit } from "../../../../constant";
 
 export function useFilteredHints({
   smartHints,

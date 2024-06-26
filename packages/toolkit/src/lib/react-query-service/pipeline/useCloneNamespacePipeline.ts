@@ -1,10 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  CloneNamespacePipelinePayload,
-  cloneNamespacePipelineMutation,
-  type Pipeline,
-} from "../../vdp-sdk";
+
 import type { Nullable } from "../../type";
+import type { Pipeline } from "../../vdp-sdk";
+import {
+  cloneNamespacePipelineMutation,
+  CloneNamespacePipelinePayload,
+} from "../../vdp-sdk";
 
 export function useCloneNamespacePipeline() {
   const queryClient = useQueryClient();

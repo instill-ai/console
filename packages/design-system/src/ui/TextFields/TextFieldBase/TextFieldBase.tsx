@@ -1,10 +1,11 @@
 import * as React from "react";
 import cn from "clsx";
+
+import { BasicInputProps, Nullable } from "../../../types/general";
 import EyeOffIcon from "../../Icons/EyeOffIcon";
 import EyeOnIcon from "../../Icons/EyeOnIcon";
-import { BasicInputProps, Nullable } from "../../../types/general";
-import InputLabelBase from "../../InputLabels/InputLabelBase";
 import { InputDescriptionBase } from "../../InputDescriptions/InputDescriptionBase";
+import InputLabelBase from "../../InputLabels/InputLabelBase";
 
 export type TextFieldBaseProps = BasicInputProps &
   Omit<JSX.IntrinsicElements["input"], "onChange" | "value"> & {

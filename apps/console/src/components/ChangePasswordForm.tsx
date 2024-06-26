@@ -1,7 +1,8 @@
-import { Button, Form, Input } from "@instill-ai/design-system";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+import { Button, Form, Input } from "@instill-ai/design-system";
 
 export const ChangePasswordFormSchema = z.object({
   newPassword: z

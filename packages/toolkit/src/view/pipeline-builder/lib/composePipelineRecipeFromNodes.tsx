@@ -1,14 +1,15 @@
-import { recursiveHelpers } from "./recursive-helpers";
-import { PipelineComponentMap, PipelineRecipe } from "../../../lib";
 import { Node } from "reactflow";
+
+import { PipelineComponentMap, PipelineRecipe } from "../../../lib";
 import { NodeData, ResponseNodeData, TriggerNodeData } from "../type";
+import { isPipelineGeneralComponent } from "./checkComponentType";
 import {
   isGeneralNode,
   isIteratorNode,
   isResponseNode,
   isVariableNode,
 } from "./checkNodeType";
-import { isPipelineGeneralComponent } from "./checkComponentType";
+import { recursiveHelpers } from "./recursive-helpers";
 
 export function composePipelineRecipeFromNodes(
   nodes: Node<NodeData>[],

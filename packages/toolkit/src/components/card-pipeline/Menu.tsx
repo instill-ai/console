@@ -1,9 +1,11 @@
 "use client";
 
 import * as React from "react";
+
 import { Button, DropdownMenu, Icons } from "@instill-ai/design-system";
-import { Pipeline } from "../../lib";
+
 import { ClonePipelineDialog, GeneralDeleteResourceDialog } from "..";
+import { Pipeline } from "../../lib";
 
 export type MenuProps = {
   pipeline: Pipeline;

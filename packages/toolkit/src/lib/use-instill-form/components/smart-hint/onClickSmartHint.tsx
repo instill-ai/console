@@ -1,7 +1,8 @@
 import * as React from "react";
 import { ControllerRenderProps } from "react-hook-form";
-import { SmartHint } from "../../../use-smart-hint";
+
 import { GeneralUseFormReturn, Nullable } from "../../../type";
+import { SmartHint } from "../../../use-smart-hint";
 
 export function onClickSmartHint({
   path,

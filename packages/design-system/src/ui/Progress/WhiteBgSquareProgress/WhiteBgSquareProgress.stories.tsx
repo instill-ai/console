@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import WhiteBgSquareProgress from "./WhiteBgSquareProgress";
 
 const meta: Meta<typeof WhiteBgSquareProgress> = {

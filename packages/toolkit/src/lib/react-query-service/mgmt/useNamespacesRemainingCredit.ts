@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { Nullable } from "../../type";
 import {
-  GetRemainingCreditResponse,
   getRemainingCreditQuery,
+  GetRemainingCreditResponse,
 } from "../../vdp-sdk";
 
 export type NamespaceRemainingCredit = {

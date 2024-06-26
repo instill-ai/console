@@ -1,8 +1,9 @@
 "use client";
 
-import cn from "clsx";
+import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
+import cn from "clsx";
 
 const tagVariants = cva("inline-flex items-center rounded-full font-semibold", {
   variants: {

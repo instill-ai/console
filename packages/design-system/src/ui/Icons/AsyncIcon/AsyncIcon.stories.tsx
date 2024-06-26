@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import AsyncIcon from "./AsyncIcon";
 
 const meta: Meta<typeof AsyncIcon> = {
