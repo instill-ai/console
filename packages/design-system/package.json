@@ -133,6 +133,7 @@
     "class-variance-authority": "^0.6.0",
     "cmdk": "^0.2.0",
     "react-hook-form": "^7.51.0",
+    "react-resizable-panels": "^2.0.19",
     "sanitize-html": "^2.13.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.6",
