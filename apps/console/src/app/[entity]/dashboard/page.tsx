@@ -1,17 +1,9 @@
-import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
-import { DashboardPageRender } from "./render";
+type Props = {
+  params: { entity: string };
+};
 
-export async function generateMetadata(): Promise<Metadata> {
-  const metadata: Metadata = {
-    title: `Instill Core | Dashboard`,
-    openGraph: {
-      images: ["/instill-open-graph.png"],
-    },
-  };
-  return Promise.resolve(metadata);
-}
-
-export default async function Page() {
-  return <DashboardPageRender />;
+export default async function Page({ params }: Props) {
+  redirect(`/${params.entity}/dashboard/pipelines`);
 }

@@ -27,7 +27,17 @@ export const getQueryString = ({
 }) => {
   let url = baseURL;
 
-  if (pageSize || nextPageToken || filter || orderBy || queryParams) {
+  if (
+    pageSize ||
+    nextPageToken ||
+    filter ||
+    orderBy ||
+    queryParams ||
+    owner ||
+    start ||
+    stop ||
+    aggregationWindow
+  ) {
     // Check if the baseURL already has a query string
     if (baseURL.includes("?")) {
       url += "&";

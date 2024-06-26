@@ -25,8 +25,30 @@ export function useCreditConsumptionChartRecords({
     enabledQuery = true;
   }
 
+  const startDate = start
+    ? new Date(start).toLocaleString("en-us", {
+        hour: "2-digit",
+        month: "2-digit",
+        day: "2-digit",
+      })
+    : null;
+
+  const stopDate = stop
+    ? new Date(stop).toLocaleString("en-us", {
+        hour: "2-digit",
+        month: "2-digit",
+        day: "2-digit",
+      })
+    : null;
+
   return useQuery({
-    queryKey: ["charts", "creditConsumption", start, stop, aggregationWindow],
+    queryKey: [
+      "charts",
+      "creditConsumption",
+      startDate,
+      stopDate,
+      aggregationWindow,
+    ],
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
