@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import * as MenubarPrimitive from "@radix-ui/react-menubar";
-import cn from "clsx";
 
 import { Icons } from "../Icons";
+import { cn } from "../../utils";
 
 const MenubarMenu = MenubarPrimitive.Menu;
 

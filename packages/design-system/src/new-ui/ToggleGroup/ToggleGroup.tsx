@@ -1,6 +1,7 @@
 import React from "react";
 import * as Toggles from "@radix-ui/react-toggle-group";
-import cn from "clsx";
+
+import { cn } from "../../utils";
 
 const ToggleGroupRoot = React.forwardRef<
   React.ElementRef<typeof Toggles.Root>,

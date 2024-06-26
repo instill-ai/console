@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import cn from "clsx";
+import { cn } from "../../utils";
 
 const TableRoot = React.forwardRef<
   HTMLTableElement,

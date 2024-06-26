@@ -10,7 +10,6 @@
     "ui",
     "react"
   ],
-  "prettier": "@instill-ai/prettier-config-cortex",
   "license": "Apache-2.0",
   "private": false,
   "scripts": {
@@ -135,6 +134,7 @@
     "cmdk": "^0.2.0",
     "react-hook-form": "^7.51.0",
     "sanitize-html": "^2.13.0",
+    "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.6",
     "zod": "^3.23.8"
   },
@@ -148,5 +148,6 @@
     "**/*.{js,jsx,ts,tsx}": [
       "eslint --cache --fix"
     ]
-  }
+  },
+  "prettier": "@instill-ai/prettier-config-cortex"
 }

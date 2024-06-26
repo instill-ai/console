@@ -1,8 +1,8 @@
 import * as React from "react";
-import cn from "clsx";
 
 import { Button } from "../Button";
 import { Icons } from "../Icons";
+import { cn } from "../../utils";
 
 type Align = "left" | "right" | "center";
 

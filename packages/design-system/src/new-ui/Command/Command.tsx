@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import { DialogProps } from "@radix-ui/react-dialog";
-import cn from "clsx";
 import { Command as CommandPrimitive } from "cmdk";
 
 import { Dialog } from "../Dialog";
+import { cn } from "../../utils";
 
 const CommandRoot = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,

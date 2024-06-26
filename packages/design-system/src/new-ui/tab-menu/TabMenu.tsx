@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import cn from "clsx";
 
 import { Nullable } from "../../types/general";
+import { cn } from "../../utils";
 
 type TabMenuContextValue = {
   selectedValue: Nullable<string>;

@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-import cn from "clsx";
 
 import { Icons } from "../Icons";
+import { cn } from "../../utils";
 
 const checkboxStyle = cn(
   "shrink-0 rounded border border-semantic-fg-secondary bg-semantic-bg-primary",

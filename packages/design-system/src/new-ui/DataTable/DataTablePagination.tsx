@@ -1,8 +1,8 @@
 import { Table } from "@tanstack/react-table";
-import cn from "clsx";
 
 import { Button } from "../Button";
 import { Icons } from "../Icons";
+import { cn } from "../../utils";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
