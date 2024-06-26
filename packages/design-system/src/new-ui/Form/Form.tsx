@@ -13,9 +13,9 @@ import {
 } from "react-hook-form";
 
 import { Nullable } from "../../types/general";
+import { cn } from "../../utils";
 import { Label } from "../Label";
 import { ParagraphWithHTML } from "../ParagraphWithHTML";
-import { cn } from "../../utils";
 
 const FormRoot = ReactHookFormProvider;
 

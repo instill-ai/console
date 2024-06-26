@@ -3,8 +3,8 @@
 import * as React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 
-import { Icons } from "../Icons";
 import { cn } from "../../utils";
+import { Icons } from "../Icons";
 
 const DropdownMenuRoot = DropdownMenuPrimitive.Root;
 

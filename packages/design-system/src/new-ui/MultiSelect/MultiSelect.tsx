@@ -3,12 +3,12 @@
 import * as React from "react";
 
 import { Nullable, SelectOption } from "../../types/general";
+import { cn } from "../../utils";
 import { Button } from "../Button";
 import { Command } from "../Command";
 import { Icons } from "../Icons";
 import { Popover } from "../Popover";
 import { Tag } from "../Tag";
-import { cn } from "../../utils";
 
 type ComboboxProps = {
   placeholder: React.ReactElement;

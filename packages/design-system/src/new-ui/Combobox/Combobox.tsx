@@ -3,10 +3,10 @@
 import * as React from "react";
 
 import { Nullable, SelectOption } from "../../types/general";
+import { cn } from "../../utils";
 import { Command } from "../Command";
 import { Icons } from "../Icons";
 import { Popover } from "../Popover";
-import { cn } from "../../utils";
 
 type ComboboxProps = {
   items: SelectOption[];
