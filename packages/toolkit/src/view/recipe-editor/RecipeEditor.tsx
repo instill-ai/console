@@ -1,1 +1,3 @@
-export const RecipeEditor = () => {};
+export const RecipeEditor = () => {
+  return;
+};
