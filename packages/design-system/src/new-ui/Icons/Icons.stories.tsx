@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import { Icons } from ".";
 
 const meta: Meta = {

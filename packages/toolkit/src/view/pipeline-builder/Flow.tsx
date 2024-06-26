@@ -1,18 +1,17 @@
 "use client";
 
-import { useShallow } from "zustand/react/shallow";
 import * as React from "react";
 import { ReactFlowInstance } from "reactflow";
+import { useShallow } from "zustand/react/shallow";
 
+import { InstillStore, Nullable, useInstillStore } from "../../lib";
+import { env } from "../../server";
 import {
   BackToLatestVersionTopBar,
   IteratorEditor,
   RemainingCreditCTA,
 } from "./components";
-
-import { InstillStore, Nullable, useInstillStore } from "../../lib";
 import { PipelineBuilderCanvas } from "./components/PipelineBuilderCanvas";
-import { env } from "../../server";
 
 const selector = (store: InstillStore) => ({
   isEditingIterator: store.isEditingIterator,

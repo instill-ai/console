@@ -1,12 +1,14 @@
 "use client";
 
 import * as React from "react";
-import * as z from "zod";
-import { Setting } from "..";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
 import { Form, Input } from "@instill-ai/design-system";
-import { useAuthenticatedUser, GeneralAppPageProp } from "../../../lib";
+
+import { Setting } from "..";
+import { GeneralAppPageProp, useAuthenticatedUser } from "../../../lib";
 
 const UserAccountTabSchema = z.object({
   email: z.string(),

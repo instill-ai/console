@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 export type LogoBaseProps = {
   viewBox: string;
   className?: string;

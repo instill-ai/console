@@ -1,45 +1,46 @@
-import { z } from "zod";
-import {
-  InstillErrors,
-  InstillModelTask,
-  InstillModelVisibility,
-} from "../../constant";
-import { env, validateInstillResourceID } from "../../server";
-import { useForm } from "react-hook-form";
+import * as React from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  CreateUserModelPayload,
-  ModelTask,
-  Visibility,
-  sendAmplitudeData,
-  toastInstillError,
-  useAmplitudeCtx,
-  useRouteInfo,
-  useCreateUserModel,
-  useModelRegions,
-  InstillStore,
-  useInstillStore,
-  useShallow,
-} from "../../lib";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 import {
   Button,
   Form,
+  getModelHardwareToolkit,
+  getModelInstanceTaskToolkit,
+  getModelRegionToolkit,
   Icons,
   Input,
   RadioGroup,
   Select,
   Textarea,
-  getModelInstanceTaskToolkit,
   toast,
-  getModelRegionToolkit,
-  getModelHardwareToolkit,
 } from "@instill-ai/design-system";
-import * as React from "react";
-import { LoadingSpin } from "../../components";
-import { useRouter } from "next/navigation";
-import { EntitySelector } from "../../components";
+
+import { EntitySelector, LoadingSpin } from "../../components";
+import {
+  InstillErrors,
+  InstillModelTask,
+  InstillModelVisibility,
+} from "../../constant";
+import {
+  CreateUserModelPayload,
+  InstillStore,
+  ModelTask,
+  sendAmplitudeData,
+  toastInstillError,
+  useAmplitudeCtx,
+  useCreateUserModel,
+  useInstillStore,
+  useModelRegions,
+  useRouteInfo,
+  useShallow,
+  Visibility,
+} from "../../lib";
 import { FieldDescriptionTooltip } from "../../lib/use-instill-form/components/common";
 import { useUserNamespaces } from "../../lib/useUserNamespaces";
+import { env, validateInstillResourceID } from "../../server";
 
 type Option = {
   value: string;

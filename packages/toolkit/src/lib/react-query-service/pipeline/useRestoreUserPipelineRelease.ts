@@ -1,13 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import type { Nullable } from "../../type";
+import type {
+  PipelineRelease,
+  PipelineReleasesWatchState,
+  PipelineReleaseWatchState,
+} from "../../vdp-sdk";
 import { removeObjKey } from "../../../server";
 import {
-  type PipelineRelease,
-  type PipelineReleaseWatchState,
-  type PipelineReleasesWatchState,
-  watchUserPipelineReleaseQuery,
   restoreUserPipelineReleaseMutation,
+  watchUserPipelineReleaseQuery,
 } from "../../vdp-sdk";
-import type { Nullable } from "../../type";
 
 export function useRestoreUserPipelineRelease() {
   const queryClient = useQueryClient();

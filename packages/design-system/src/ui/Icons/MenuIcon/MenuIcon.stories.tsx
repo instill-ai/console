@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import MenuIcon from "./MenuIcon";
 
 const meta: Meta<typeof MenuIcon> = {

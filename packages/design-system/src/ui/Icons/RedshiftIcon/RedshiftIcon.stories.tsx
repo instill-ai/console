@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import RedShiftIcon from "./RedShiftIcon";
 
 const meta: Meta<typeof RedShiftIcon> = {

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Position, ReactFlowInstance } from "reactflow";
+
 import {
   ConnectorDefinition,
   InstillStore,
@@ -9,13 +10,13 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../../lib";
-import { transformConnectorDefinitionIDToComponentIDPrefix } from "../transformConnectorDefinitionIDToComponentIDPrefix";
-import { generateUniqueIndex } from "../generateUniqueIndex";
-import { getAllNodeID } from "../getAllNodeID";
 import {
   isConnectorDefinition,
   isIteratorDefinition,
 } from "../../../../lib/vdp-sdk/helper";
+import { generateUniqueIndex } from "../generateUniqueIndex";
+import { getAllNodeID } from "../getAllNodeID";
+import { transformConnectorDefinitionIDToComponentIDPrefix } from "../transformConnectorDefinitionIDToComponentIDPrefix";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,

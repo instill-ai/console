@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { Nullable } from "../../../type";
 import { fetchUserSecret, getUseUserSecretQueryKey } from "./server";
 

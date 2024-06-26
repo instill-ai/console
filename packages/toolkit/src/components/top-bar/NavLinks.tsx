@@ -1,16 +1,18 @@
 "use client";
 
-import { Icons } from "@instill-ai/design-system";
-import cn from "clsx";
-import { usePathname, useRouter } from "next/navigation";
 import * as React from "react";
-import { useUserNamespaces } from "../../lib/useUserNamespaces";
+import { usePathname, useRouter } from "next/navigation";
+import cn from "clsx";
+
+import { Icons } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   useAuthenticatedUser,
   useInstillStore,
   useShallow,
 } from "../../lib";
+import { useUserNamespaces } from "../../lib/useUserNamespaces";
 import { env } from "../../server";
 
 export type NavLinkProps = {

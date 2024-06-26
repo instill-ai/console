@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import VersionIcon from "./VersionIcon";
 
 const meta: Meta<typeof VersionIcon> = {

@@ -1,11 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { Nullable } from "../../../../../lib";
-import { InOutputOption } from "../IteratorEditor";
-import { transformInstillFormatToHumanReadableFormat } from "../../../../../lib/use-instill-form/transform";
-import { ReferenceHintTag } from "../../../../../components";
+
 import { Icons } from "@instill-ai/design-system";
+
+import { ReferenceHintTag } from "../../../../../components";
+import { Nullable } from "../../../../../lib";
+import { transformInstillFormatToHumanReadableFormat } from "../../../../../lib/use-instill-form/transform";
+import { InOutputOption } from "../IteratorEditor";
 
 export const IterateElmentHint = ({
   selectedInputOption,

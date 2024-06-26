@@ -1,6 +1,7 @@
 "use client";
 
 import { Icons } from "../Icons";
+
 export type BreadcrumbItem = {
   label: string;
   link?: string;

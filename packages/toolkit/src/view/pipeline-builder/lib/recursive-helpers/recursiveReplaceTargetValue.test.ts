@@ -1,4 +1,5 @@
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
+
 import { recursiveReplaceTargetValue } from "./recursiveReplaceTargetValue";
 
 test("Should replace target value from array", () => {

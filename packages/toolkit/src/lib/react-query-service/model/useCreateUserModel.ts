@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CreateUserModelPayload, createUserModelMutation } from "../../vdp-sdk";
+
 import type { Nullable } from "../../type";
+import { createUserModelMutation, CreateUserModelPayload } from "../../vdp-sdk";
 import { onSuccessAfterModelMutation } from "./onSuccessAfterModelMutation";
 
 export function useCreateUserModel() {

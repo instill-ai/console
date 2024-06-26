@@ -1,4 +1,5 @@
 import type { Meta } from "@storybook/react";
+
 import { Breadcrumb, BreadcrumbItem } from "./Breadcrumb";
 
 const meta: Meta<typeof Breadcrumb> = {

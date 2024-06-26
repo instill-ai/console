@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import GearIcon from "./GearIcon";
 
 const meta: Meta<typeof GearIcon> = {

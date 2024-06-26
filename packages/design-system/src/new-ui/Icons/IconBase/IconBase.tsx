@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 export type IconBaseProps = {
   viewBox: string;
   className?: string;

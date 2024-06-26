@@ -1,9 +1,11 @@
 "use client";
 
-import { Icons } from "@instill-ai/design-system";
-import { ReadOnlyPipelineBuilder } from "../../view";
-import { Pipeline } from "../../lib";
 import { useRouter } from "next/navigation";
+
+import { Icons } from "@instill-ai/design-system";
+
+import { Pipeline } from "../../lib";
+import { ReadOnlyPipelineBuilder } from "../../view";
 
 const BodySkeleton = () => {
   return (

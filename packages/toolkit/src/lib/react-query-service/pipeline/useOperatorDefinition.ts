@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { getOperatorDefinitionQuery } from "../../vdp-sdk";
+
 import type { Nullable } from "../../type";
+import { getOperatorDefinitionQuery } from "../../vdp-sdk";
 
 export function useOperatorDefinition({
   operatorDefinitionName,

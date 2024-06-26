@@ -3,6 +3,7 @@
 import * as React from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import cn from "clsx";
+
 import { Icons } from "../Icons";
 
 const checkboxStyle = cn(

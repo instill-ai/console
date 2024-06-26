@@ -1,8 +1,9 @@
 "use client";
 
-import { Button, Icons } from "@instill-ai/design-system";
-import { useRouter } from "next/navigation";
 import * as React from "react";
+import { useRouter } from "next/navigation";
+
+import { Button, Icons } from "@instill-ai/design-system";
 
 export const LinkBlock = ({
   headIcon,

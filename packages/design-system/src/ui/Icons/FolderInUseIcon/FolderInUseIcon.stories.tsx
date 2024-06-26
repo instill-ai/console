@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import FolderInUseIcon from "./FolderInUseIcon";
 
 const meta: Meta<typeof FolderInUseIcon> = {

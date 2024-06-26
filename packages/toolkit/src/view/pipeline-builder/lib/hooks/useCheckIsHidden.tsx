@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { CheckIsHidden } from "../../../../lib";
 
 export function useCheckIsHidden(type: "onNode" | "onRightPanel") {

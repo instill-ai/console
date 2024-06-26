@@ -1,22 +1,23 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
-import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import cn from "clsx";
 import { useForm } from "react-hook-form";
-import { Form, Icons, Tooltip, useToast } from "@instill-ai/design-system";
+import * as z from "zod";
 import { useShallow } from "zustand/react/shallow";
 
+import { Form, Icons, Tooltip, useToast } from "@instill-ai/design-system";
+
 import { AutoresizeInputWrapper } from "../../../../../components";
-import { InstillStore, useInstillStore } from "../../../../../lib";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { InstillErrors } from "../../../../../constant";
+import { InstillStore, useInstillStore } from "../../../../../lib";
+import { validateInstillResourceID } from "../../../../../server";
 import {
   composeEdgesFromNodes,
   isGeneralNode,
   isIteratorNode,
 } from "../../../lib";
-import { validateInstillResourceID } from "../../../../../server";
 
 const NodeIDEditorSchema = z.object({
   nodeID: z.string().nullable().optional(),

@@ -1,7 +1,8 @@
-import { AirbyteJsonSchema, SelectedItemMap } from "../types";
-import * as yup from "yup";
-import { Nullable } from "../../type";
 import { JSONSchema7Definition } from "json-schema";
+import * as yup from "yup";
+
+import { Nullable } from "../../type";
+import { AirbyteJsonSchema, SelectedItemMap } from "../types";
 
 export const transformAirbyteSchemaToYup = (
   jsonSchema: AirbyteJsonSchema,

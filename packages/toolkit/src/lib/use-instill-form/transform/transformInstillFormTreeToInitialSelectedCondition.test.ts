@@ -1,4 +1,5 @@
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
+
 import { InstillFormTree } from "../types";
 import { transformInstillFormTreeToInitialSelectedCondition } from "./transformInstillFormTreeToInitialSelectedCondition";
 

@@ -2,18 +2,15 @@
 
 import * as React from "react";
 import { shallow } from "zustand/shallow";
+
 import {
   BasicTextField,
-  OutlineButton,
   ModalRoot,
+  OutlineButton,
 } from "@instill-ai/design-system";
-import {
-  useModalStore,
-  type Model,
-  type Pipeline,
-  type Nullable,
-  type ModalStore,
-} from "../lib";
+
+import type { ModalStore, Model, Nullable, Pipeline } from "../lib";
+import { useModalStore } from "../lib";
 
 export type DeleteResourceModalProps = {
   resource: Nullable<Pipeline | Model>;

@@ -1,9 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
+
+import type { TriggerUserModelPayload } from "../../vdp-sdk";
 import { Nullable } from "../../type";
-import {
-  type TriggerUserModelPayload,
-  triggerUserModelAction,
-} from "../../vdp-sdk";
+import { triggerUserModelAction } from "../../vdp-sdk";
 
 export function useTriggerUserModel() {
   return useMutation({

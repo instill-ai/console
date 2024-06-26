@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { Visibility, listUserModelsQuery } from "../../vdp-sdk";
-import { env } from "../../../server";
+
 import type { Nullable } from "../../type";
+import { env } from "../../../server";
+import { listUserModelsQuery, Visibility } from "../../vdp-sdk";
 
 export async function fetchUserModels(
   userName: string,

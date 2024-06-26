@@ -1,9 +1,10 @@
+import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
+
 import { NodeData } from "../../view";
 import { Nullable } from "../type";
-import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
-import { Secret, TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
-import { SmartHint } from "../use-smart-hint";
 import { InstillJSONSchema } from "../use-instill-form";
+import { SmartHint } from "../use-smart-hint";
+import { Secret, TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
 
 export type WarnUnsavedChangesDialogState = {
   open: boolean;

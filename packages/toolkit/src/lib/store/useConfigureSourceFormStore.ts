@@ -1,8 +1,9 @@
-import { Nullable } from "../type";
+import produce from "immer";
 import { z } from "zod";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import produce from "immer";
+
+import { Nullable } from "../type";
 
 export const configureSourceFormFieldSchema = z.object({
   canEdit: z.boolean(),

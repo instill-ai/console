@@ -1,10 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import type { Pipeline, UpdateUserPipelinePayload } from "../../vdp-sdk";
 import { Nullable } from "../../type";
-import {
-  updateUserPipelineMutation,
-  type Pipeline,
-  type UpdateUserPipelinePayload,
-} from "../../vdp-sdk";
+import { updateUserPipelineMutation } from "../../vdp-sdk";
 
 export function useUpdateUserPipeline() {
   const queryClient = useQueryClient();

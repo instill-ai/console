@@ -1,12 +1,12 @@
+// InputDescriptions
+import type { BasicInputDescriptionProps } from "./InputDescriptions";
+import { BasicInputDescription } from "./InputDescriptions";
+
 // Accordions
 export * from "./Accordion";
 
 // Icons
 export * from "./Icons";
-
-// InputDescriptions
-import { BasicInputDescription } from "./InputDescriptions";
-import type { BasicInputDescriptionProps } from "./InputDescriptions";
 
 // InputLabels
 export * from "./InputLabels";

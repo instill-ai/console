@@ -1,8 +1,9 @@
 "use client";
 
-import { DropdownMenu, Icons, Separator } from "@instill-ai/design-system";
-import { TopbarDropdownGroup, TopbarDropdownItem } from "./TopbarDropdown";
 import Link from "next/link";
+
+import { DropdownMenu, Icons, Separator } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -11,6 +12,7 @@ import {
   useShallow,
 } from "../../lib";
 import { NamespaceAvatarWithFallback } from "../NamespaceAvatarWithFallback";
+import { TopbarDropdownGroup, TopbarDropdownItem } from "./TopbarDropdown";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

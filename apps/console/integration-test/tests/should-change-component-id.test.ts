@@ -1,8 +1,9 @@
-import { test, expect } from "@playwright/test";
-import { PipelineBuilderPage } from "../pages/pipeline-builder.page";
-import { getSelectContent } from "../helpers/component-helpers/select";
+import { expect, test } from "@playwright/test";
+
 import { DataTestID } from "../data-testid";
 import { createPipeline, deletePipeline } from "../helpers/actions/pipeline";
+import { getSelectContent } from "../helpers/component-helpers/select";
+import { PipelineBuilderPage } from "../pages/pipeline-builder.page";
 
 export function shouldChangeComponentID() {
   const pipelineID = "change-component-node-id";

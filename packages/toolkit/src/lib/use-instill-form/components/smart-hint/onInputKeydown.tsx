@@ -1,7 +1,8 @@
 import * as React from "react";
-import { SmartHint } from "../../../use-smart-hint";
 import { ControllerRenderProps } from "react-hook-form";
+
 import { GeneralUseFormReturn, Nullable } from "../../../type";
+import { SmartHint } from "../../../use-smart-hint";
 
 export function onInputKeydown({
   componentType,

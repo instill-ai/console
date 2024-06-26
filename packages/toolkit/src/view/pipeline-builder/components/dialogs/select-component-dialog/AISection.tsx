@@ -1,13 +1,14 @@
 import { Icons } from "@instill-ai/design-system";
+
 import { ImageWithFallback } from "../../../../../components";
-import { Section } from "./Section";
-import { OnSelectComponent } from "./SelectComponentDialog";
 import {
   InstillStore,
   useConnectorDefinitions,
   useInstillStore,
   useShallow,
 } from "../../../../../lib";
+import { Section } from "./Section";
+import { OnSelectComponent } from "./SelectComponentDialog";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

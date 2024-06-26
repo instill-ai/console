@@ -1,5 +1,6 @@
-import { Meta, StoryFn } from "@storybook/react";
 import * as React from "react";
+import { Meta, StoryFn } from "@storybook/react";
+
 import { State } from "../../../types/general";
 import StatefulToggleField from "./StatefulToggleField";
 

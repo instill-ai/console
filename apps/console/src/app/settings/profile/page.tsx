@@ -1,5 +1,6 @@
-import { ProfileSettingPageRender } from "./rendex";
 import { Metadata } from "next";
+
+import { ProfileSettingPageRender } from "./rendex";
 
 export async function generateMetadata(): Promise<Metadata> {
   const metadata: Metadata = {

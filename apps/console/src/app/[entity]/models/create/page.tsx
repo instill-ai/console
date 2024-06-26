@@ -1,5 +1,6 @@
-import { CreateModelPageRender } from "./render";
 import { Metadata } from "next";
+
+import { CreateModelPageRender } from "./render";
 
 export async function generateMetadata(): Promise<Metadata> {
   const metadata: Metadata = {

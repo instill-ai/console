@@ -1,8 +1,9 @@
-import { Nullable } from "../type";
+import produce from "immer";
+import { z } from "zod";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { z } from "zod";
-import produce from "immer";
+
+import { Nullable } from "../type";
 
 export const configureModelFormFieldSchema = z.object({
   description: z.string().nullable(),

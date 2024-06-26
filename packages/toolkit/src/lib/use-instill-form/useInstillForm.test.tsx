@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { test, expect, vi } from "vitest";
+import { expect, test, vi } from "vitest";
+
+import { Form } from "@instill-ai/design-system";
+
 import {
   getEscapedReferenceValueForReactTestingLibrary,
   render,
@@ -8,9 +11,8 @@ import {
   userEvent,
   within,
 } from "../test/utils";
-import { useInstillForm } from "./useInstillForm";
 import { InstillJSONSchema } from "./types";
-import { Form } from "@instill-ai/design-system";
+import { useInstillForm } from "./useInstillForm";
 
 const SimpleFormSchema: InstillJSONSchema = {
   title: "Simple Form JSON",

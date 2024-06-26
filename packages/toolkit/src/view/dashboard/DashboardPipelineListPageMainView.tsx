@@ -1,25 +1,27 @@
 "use client";
 
 import * as React from "react";
+
 import { SelectOption } from "@instill-ai/design-system";
-import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
+
 import {
   DashboardAvailableTimeframe,
-  Nullable,
-  PipelinesChart,
-  TriggeredPipeline,
+  dashboardOptions,
+  GeneralAppPageProp,
   getPipelineTriggersSummary,
   getPreviousTimeframe,
   getTimeInRFC3339Format,
+  Nullable,
+  PipelinesChart,
+  TriggeredPipeline,
+  useRouteInfo,
   useTriggeredPipelines,
   useTriggeredPipelinesChart,
-  dashboardOptions,
-  useRouteInfo,
-  GeneralAppPageProp,
 } from "../../lib";
+import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
-import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
+import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 
 export type DashboardPipelineListPageMainViewProps = GeneralAppPageProp;
 

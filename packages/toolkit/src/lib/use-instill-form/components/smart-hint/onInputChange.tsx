@@ -1,8 +1,9 @@
 import * as React from "react";
-import { getReferencesFromString } from "../../../../view";
 import { ControllerRenderProps } from "react-hook-form";
-import { GeneralUseFormReturn, Nullable } from "../../../type";
+
 import { InstillCredit } from "../../../../constant";
+import { getReferencesFromString } from "../../../../view";
+import { GeneralUseFormReturn, Nullable } from "../../../type";
 
 export function onInputChange({
   field,

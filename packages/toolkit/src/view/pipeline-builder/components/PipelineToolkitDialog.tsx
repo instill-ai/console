@@ -1,11 +1,13 @@
 "use client";
 
 import * as React from "react";
+
 import { Dialog, Icons, ScrollArea, Tabs } from "@instill-ai/design-system";
+
 import { CodeBlock } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
-import { composeCompleteNodesUnderEditingIteratorMode } from "../lib/composeCompleteNodesUnderEditingIteratorMode";
 import { composePipelineRecipeFromNodes } from "../lib";
+import { composeCompleteNodesUnderEditingIteratorMode } from "../lib/composeCompleteNodesUnderEditingIteratorMode";
 
 export type PipelineToolkitDialogProps = {
   snippet: string;

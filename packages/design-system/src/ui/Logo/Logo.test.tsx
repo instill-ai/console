@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+
 import { Logo } from "./Logo";
-import { describe, it, expect } from "vitest";
 
 describe("Logo", () => {
   it("should render responsive colour logomark with black type", () => {

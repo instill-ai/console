@@ -1,8 +1,9 @@
 "use client";
 
-import { useQuery } from "@instill-ai/toolkit";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+
+import { useQuery } from "@instill-ai/toolkit";
 
 export function useAppTrackToken({ enabled }: { enabled: boolean }) {
   const router = useRouter();

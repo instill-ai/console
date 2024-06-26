@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import AirbyteIcon from "./AirbyteIcon";
 
 const meta: Meta<typeof AirbyteIcon> = {

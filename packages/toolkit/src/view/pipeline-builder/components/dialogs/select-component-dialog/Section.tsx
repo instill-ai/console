@@ -1,5 +1,6 @@
-import { Icons } from "@instill-ai/design-system";
 import * as React from "react";
+
+import { Icons } from "@instill-ai/design-system";
 
 export const SectionRoot = ({
   title,

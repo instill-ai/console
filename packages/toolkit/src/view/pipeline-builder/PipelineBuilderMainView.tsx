@@ -1,19 +1,11 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
-import { useShallow } from "zustand/react/shallow";
+import { useRouter } from "next/navigation";
+import cn from "clsx";
 import { ReactFlowInstance } from "reactflow";
+import { useShallow } from "zustand/react/shallow";
 
-import {
-  InstillStore,
-  Nullable,
-  useInstillStore,
-  useRouteInfo,
-  useSmartHint,
-  useUserPipeline,
-  useUserSecrets,
-} from "../../lib";
 import {
   BottomBar,
   Flow,
@@ -26,8 +18,16 @@ import {
   PageBase,
   WarnUnsavedChangesDialog,
 } from "../../components";
+import {
+  InstillStore,
+  Nullable,
+  useInstillStore,
+  useRouteInfo,
+  useSmartHint,
+  useUserPipeline,
+  useUserSecrets,
+} from "../../lib";
 import { TopControlMenu } from "./components/top-control-menu";
-import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   pipelineIsNew: store.pipelineIsNew,
@@ -128,7 +128,7 @@ export const PipelineBuilderMainView = () => {
             Pipeline editor main canvas
           */}
 
-          <div className="pipeline-builder flex h-[calc(100vh-var(--topbar-controller-height)-var(--pipeline-builder-bottom-bar-height))] w-full flex-row overflow-x-hidden bg-semantic-bg-base-bg">
+          <div className="pipeline-builder bg-semantic-bg-base-bg flex h-[calc(100vh-var(--topbar-controller-height)-var(--pipeline-builder-bottom-bar-height))] w-full flex-row overflow-x-hidden">
             <Flow
               ref={reactFlowWrapper}
               reactFlowInstance={reactFlowInstance}
@@ -138,7 +138,7 @@ export const PipelineBuilderMainView = () => {
             />
             <div
               className={cn(
-                "fixed left-full w-[450px] transform overflow-y-scroll rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-6 shadow-sm duration-500",
+                "border-semantic-bg-line bg-semantic-bg-primary fixed left-full w-[450px] transform overflow-y-scroll rounded-sm border p-6 shadow-sm duration-500",
                 "h-[calc(100vh-var(--topbar-controller-height)-var(--pipeline-builder-bottom-bar-height)-var(--pipeline-builder-minimap-height)-var(--pipeline-builder-top-right-controler-height)-calc(4*var(--pipeline-builder-controller-padding)))]",
                 "top-[calc(var(--topbar-controller-height)+var(--pipeline-builder-top-right-controler-height)+calc(2*var(--pipeline-builder-controller-padding)))]",
                 currentAdvancedConfigurationNodeID

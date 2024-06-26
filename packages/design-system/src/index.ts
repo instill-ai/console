@@ -1,5 +1,5 @@
-import { getTailwindClassNumber, getElementPosition } from "./utils";
 import type { ElementPosition } from "./utils";
+import { getElementPosition, getTailwindClassNumber } from "./utils";
 
 export * from "./new-ui";
 export * from "./ui";

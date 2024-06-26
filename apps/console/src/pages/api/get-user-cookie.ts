@@ -1,5 +1,6 @@
-import { Nullable } from "@instill-ai/toolkit";
 import { NextApiRequest, NextApiResponse } from "next";
+
+import { Nullable } from "@instill-ai/toolkit";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method, cookies, body } = req;

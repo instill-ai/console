@@ -1,5 +1,6 @@
-import { Meta, StoryFn } from "@storybook/react";
 import * as React from "react";
+import { Meta, StoryFn } from "@storybook/react";
+
 import BasicAccordion from "./BasicAccordion";
 
 const meta: Meta<typeof BasicAccordion> = {

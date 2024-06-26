@@ -2,13 +2,15 @@
 
 import * as React from "react";
 import cn from "clsx";
+
 import { Form, ScrollArea } from "@instill-ai/design-system";
+
 import { AutoFormFieldBaseProps } from "../../..";
 import { readFileToBinary } from "../../../../view";
+import { StartOperatorFreeFormFieldBaseProps } from "../../types";
+import { AudioListItem } from "./AudioListItem";
 import { FieldHead } from "./FieldHead";
 import { UploadFileInput } from "./UploadFileInput";
-import { AudioListItem } from "./AudioListItem";
-import { StartOperatorFreeFormFieldBaseProps } from "../../types";
 
 export const AudiosField = ({
   mode,

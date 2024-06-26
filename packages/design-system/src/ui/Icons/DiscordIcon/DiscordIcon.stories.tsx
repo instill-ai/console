@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import DiscordIcon from "./DiscordIcon";
 
 const meta: Meta<typeof DiscordIcon> = {

@@ -1,8 +1,9 @@
 import { UseFormReturn } from "react-hook-form";
+
 import { Nullable } from "../../type";
+import { PipelineVariableFieldMap } from "../../vdp-sdk";
 import { TriggerRequestFormFields } from "../components";
 import { FieldMode, StartOperatorFreeFormFieldItem } from "../types";
-import { PipelineVariableFieldMap } from "../../vdp-sdk";
 
 export type PickPipelineTriggerRequestFormFieldsProps = {
   mode: FieldMode;

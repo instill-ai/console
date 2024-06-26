@@ -1,9 +1,10 @@
 import * as React from "react";
-import { BasicInputProps, Nullable } from "../../../types/general";
 import cn from "clsx";
+
+import { BasicInputProps, Nullable } from "../../../types/general";
 import { DocIcon } from "../../Icons";
-import InputLabelBase from "../../InputLabels/InputLabelBase";
 import { InputDescriptionBase } from "../../InputDescriptions/InputDescriptionBase";
+import InputLabelBase from "../../InputLabels/InputLabelBase";
 
 export type UploadFileFieldBaseProps = Omit<
   BasicInputProps,

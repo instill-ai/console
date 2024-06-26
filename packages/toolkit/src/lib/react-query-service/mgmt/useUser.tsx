@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUserQuery } from "../../vdp-sdk";
+
 import type { Nullable } from "../../type";
+import { getUserQuery } from "../../vdp-sdk";
 
 export function useUser({
   userName,

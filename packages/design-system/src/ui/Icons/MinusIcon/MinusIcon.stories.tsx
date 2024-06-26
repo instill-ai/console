@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import MinusIcon from "./MinusIcon";
 
 const meta: Meta<typeof MinusIcon> = {

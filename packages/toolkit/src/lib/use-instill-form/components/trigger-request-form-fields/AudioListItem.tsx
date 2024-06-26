@@ -2,7 +2,9 @@
 
 import * as React from "react";
 import * as Progress from "@radix-ui/react-progress";
+
 import { Icons } from "@instill-ai/design-system";
+
 import { Nullable } from "../../../type";
 
 export const AudioListItem = ({

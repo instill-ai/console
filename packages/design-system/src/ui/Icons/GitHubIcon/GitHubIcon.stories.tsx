@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import GitHubIcon from "./GitHubIcon";
 
 const meta: Meta<typeof GitHubIcon> = {

@@ -1,9 +1,11 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Secret, formatDate } from "../../../lib";
-import { SortIcon, TableError } from "../../../components";
+
 import { Button, DataTable } from "@instill-ai/design-system";
+
+import { SortIcon, TableError } from "../../../components";
+import { formatDate, Secret } from "../../../lib";
 import { DeleteSecretDialog } from "./DeleteSecretDialog";
 
 export type APITokenTableProps = {

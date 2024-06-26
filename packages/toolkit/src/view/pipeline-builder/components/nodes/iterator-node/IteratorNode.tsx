@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { NodeProps } from "reactflow";
-import { IteratorNodeData } from "../../../type";
-import { NodeHead, NodeIDEditor, NodeWrapper } from "../common";
+
 import { Button, Icons } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   PipelineGeneralComponent,
@@ -17,9 +17,11 @@ import {
   createGraphLayout,
   createNodesFromPipelineComponents,
 } from "../../../lib";
-import { IteratorGeneralComponentLabel } from "./IteratorComponentLable";
+import { IteratorNodeData } from "../../../type";
 import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";
+import { NodeHead, NodeIDEditor, NodeWrapper } from "../common";
 import { NodeControlPanel } from "../control-panel";
+import { IteratorGeneralComponentLabel } from "./IteratorComponentLable";
 
 const selector = (store: InstillStore) => ({
   updateIsEditingIterator: store.updateIsEditingIterator,

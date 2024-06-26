@@ -1,4 +1,5 @@
 import { Locator, Page } from "@playwright/test";
+
 import { getSelectContent } from "../helpers/component-helpers/select";
 
 export class PipelineBuilderPage {

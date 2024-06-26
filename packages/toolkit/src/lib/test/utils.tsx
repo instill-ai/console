@@ -1,10 +1,11 @@
 import * as React from "react";
-import { render, RenderOptions } from "@testing-library/react";
 import {
   QueryCache,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { render, RenderOptions } from "@testing-library/react";
+
 import { AmplitudeCtx } from "../amplitude";
 
 export const queryCache = new QueryCache();

@@ -1,7 +1,8 @@
 import type { Meta } from "@storybook/react";
-import { Command } from "./Command";
 import * as React from "react";
+
 import { Icons } from "../Icons";
+import { Command } from "./Command";
 
 const meta: Meta<typeof Command> = {
   title: "Components/NewUi/Command",

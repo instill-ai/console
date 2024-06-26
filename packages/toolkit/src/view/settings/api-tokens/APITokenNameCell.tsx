@@ -1,7 +1,8 @@
 "use client";
 
-import { Button, Icons } from "@instill-ai/design-system";
 import { useState } from "react";
+
+import { Button, Icons } from "@instill-ai/design-system";
 
 export type APITokenNameCellProps = {
   id: string;

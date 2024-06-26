@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import { InputDescriptionBase } from "./InputDescriptionBase";
 
 const meta: Meta<typeof InputDescriptionBase> = {

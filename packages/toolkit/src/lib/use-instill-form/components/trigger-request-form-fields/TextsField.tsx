@@ -1,10 +1,12 @@
 "use client";
 
-import { Form, Icons, Input } from "@instill-ai/design-system";
 import * as React from "react";
+
+import { Form, Icons, Input } from "@instill-ai/design-system";
+
 import { AutoFormFieldBaseProps } from "../../..";
-import { FieldHead } from "./FieldHead";
 import { StartOperatorFreeFormFieldBaseProps } from "../../types";
+import { FieldHead } from "./FieldHead";
 
 export const TextsField = ({
   mode,

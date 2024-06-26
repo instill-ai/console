@@ -8,22 +8,23 @@ import ReactFlow, {
   ReactFlowInstance,
   SelectionMode,
 } from "reactflow";
+
 import {
   InstillStore,
   Nullable,
   useInstillStore,
   useShallow,
 } from "../../../lib";
+import { isResponseNode, isVariableNode } from "../lib";
+import { canvasPanOnDrag } from "./canvasPanOnDrag";
+import { CustomEdge } from "./CustomEdge";
 import {
   EmptyNode,
+  GeneralNode,
   IteratorNode,
   ResponseNode,
   VariableNode,
-  GeneralNode,
 } from "./nodes";
-import { CustomEdge } from "./CustomEdge";
-import { isResponseNode, isVariableNode } from "../lib";
-import { canvasPanOnDrag } from "./canvasPanOnDrag";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,

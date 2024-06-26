@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import ToggleIcon from "./ToggleIcon";
 
 const meta: Meta<typeof ToggleIcon> = {

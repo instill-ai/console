@@ -1,8 +1,12 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
 import cn from "clsx";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
+
 import {
   Button,
   Dialog,
@@ -14,9 +18,9 @@ import {
   Textarea,
   useToast,
 } from "@instill-ai/design-system";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
+import { EntitySelector, LoadingSpin } from "../../../components";
+import { DataTestID, InstillErrors } from "../../../constant";
 import {
   CreateUserPipelinePayload,
   InstillStore,
@@ -26,16 +30,12 @@ import {
   toastInstillError,
   useAmplitudeCtx,
   useCreateUserPipeline,
-  useRouteInfo,
   useInstillStore,
+  useRouteInfo,
   useShallow,
 } from "../../../lib";
-import { InstillErrors, DataTestID } from "../../../constant";
-import { LoadingSpin } from "../../../components";
-import { env, validateInstillResourceID } from "../../../server";
-import { useRouter } from "next/navigation";
-import { EntitySelector } from "../../../components";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
+import { env, validateInstillResourceID } from "../../../server";
 
 const CreatePipelineSchema = z
   .object({

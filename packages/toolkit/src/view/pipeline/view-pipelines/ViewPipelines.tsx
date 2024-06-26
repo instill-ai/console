@@ -1,29 +1,30 @@
 "use client";
 
 import * as React from "react";
+import { useSearchParams } from "next/navigation";
+import debounce from "lodash.debounce";
+
 import { Button, Icons, Input, Select } from "@instill-ai/design-system";
 
 import {
-  Nullable,
-  Pipeline,
-  useInfiniteUserPipelines,
-  InstillStore,
-  useInstillStore,
-  useShallow,
-  useAuthenticatedUser,
-  useRouteInfo,
-  Visibility,
-  useUserPipelines,
-} from "../../../lib";
-import {
-  LoadingSpin,
   CardPipeline,
   CardSkeletonPipeline,
+  LoadingSpin,
   UserProfileCard,
 } from "../../../components";
+import {
+  InstillStore,
+  Nullable,
+  Pipeline,
+  useAuthenticatedUser,
+  useInfiniteUserPipelines,
+  useInstillStore,
+  useRouteInfo,
+  useShallow,
+  useUserPipelines,
+  Visibility,
+} from "../../../lib";
 import { CreatePipelineDialog } from "./CreatePipelineDialog";
-import debounce from "lodash.debounce";
-import { useSearchParams } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

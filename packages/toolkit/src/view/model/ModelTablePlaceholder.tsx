@@ -9,10 +9,8 @@ import {
   SemanticSegmentationIcon,
 } from "@instill-ai/design-system";
 
-import {
-  TablePlaceholderBase,
-  type TablePlaceholderBaseProps,
-} from "../../components";
+import type { TablePlaceholderBaseProps } from "../../components";
+import { TablePlaceholderBase } from "../../components";
 
 export type ModelTablePlaceholderProps = Pick<
   TablePlaceholderBaseProps,

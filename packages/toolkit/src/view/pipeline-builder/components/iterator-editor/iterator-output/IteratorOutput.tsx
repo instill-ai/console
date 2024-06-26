@@ -1,13 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
-import { IteratorNodeData } from "../../../type";
 import { Node } from "reactflow";
-import { DeleteOutputButton } from "./DeleteOutputButton";
-import { AddOutputButton } from "./AddOutputButton";
-import { OutputValueInput } from "./OutputValueInput";
+
+import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
 import { isIteratorNode } from "../../../lib";
+import { IteratorNodeData } from "../../../type";
+import { AddOutputButton } from "./AddOutputButton";
+import { DeleteOutputButton } from "./DeleteOutputButton";
+import { OutputValueInput } from "./OutputValueInput";
 
 const selector = (store: InstillStore) => ({
   editingIteratorID: store.editingIteratorID,

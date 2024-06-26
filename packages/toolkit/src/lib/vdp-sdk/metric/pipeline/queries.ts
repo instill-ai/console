@@ -1,8 +1,8 @@
 import { Nullable } from "../../../type";
 import { createInstillAxiosClient, getQueryString } from "../../helper";
 import {
-  PipelineTriggerRecord,
   PipelinesChart,
+  PipelineTriggerRecord,
   TriggeredPipeline,
 } from "./types";
 

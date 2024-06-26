@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+
 import { NotFoundPageRender } from "./render";
 
 export async function generateMetadata() {

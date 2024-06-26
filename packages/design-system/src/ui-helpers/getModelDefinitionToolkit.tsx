@@ -1,4 +1,5 @@
 import cn from "clsx";
+
 import { IconStyle, IconStyleWithoutColor } from "../types/general";
 import {
   ArtiVcIcon,

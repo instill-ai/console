@@ -1,16 +1,18 @@
 "use client";
 
-import { Menu } from "./Menu";
-import { Tags } from "./Tags";
-import { Stats } from "./Stats";
-import { Model } from "../../lib";
 import * as React from "react";
+import Link from "next/link";
+
 import {
   getModelHardwareToolkit,
   getModelRegionToolkit,
 } from "@instill-ai/design-system";
+
 import { ImageWithFallback } from "..";
-import Link from "next/link";
+import { Model } from "../../lib";
+import { Menu } from "./Menu";
+import { Stats } from "./Stats";
+import { Tags } from "./Tags";
 
 export type CardModelProps = {
   model: Model;

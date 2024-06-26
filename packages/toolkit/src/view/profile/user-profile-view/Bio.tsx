@@ -1,6 +1,9 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import {
   Button,
   ComplicateIcons,
@@ -9,10 +12,9 @@ import {
   Skeleton,
   Tag,
 } from "@instill-ai/design-system";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { UserMembership } from "../../../lib";
+
 import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
+import { UserMembership } from "../../../lib";
 
 export const UserBioSkeleton = () => {
   return (

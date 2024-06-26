@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import cn from "clsx";
+
 import { Input } from "@instill-ai/design-system";
 
 export const UploadFileInput = React.forwardRef<

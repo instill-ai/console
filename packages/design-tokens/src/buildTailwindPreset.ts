@@ -1,6 +1,7 @@
-import { tokens } from "../dist/semantic/sd-tokens";
 import fs from "fs/promises";
 import path from "path";
+
+import { tokens } from "../dist/semantic/sd-tokens";
 import { TypographyValue } from "./type";
 
 async function main() {

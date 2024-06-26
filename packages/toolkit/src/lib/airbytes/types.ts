@@ -1,11 +1,12 @@
-import { Nullable } from "../type";
 import type {
   JSONSchema7,
   JSONSchema7Definition,
-  JSONSchema7TypeName,
   JSONSchema7Type,
+  JSONSchema7TypeName,
 } from "json-schema";
 import * as React from "react";
+
+import { Nullable } from "../type";
 
 /**
  * This is the official airbyte schema json type they are using in their web-app

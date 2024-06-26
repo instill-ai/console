@@ -1,4 +1,5 @@
 import React from "react";
+
 import IconBase, { IconBaseProps } from "../IconBase";
 
 export type IotIconProps = Omit<IconBaseProps, "viewBox" | "fill" | "color">;

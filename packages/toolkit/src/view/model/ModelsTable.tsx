@@ -1,11 +1,15 @@
 "use client";
 
+import { ColumnDef } from "@tanstack/react-table";
+
 import {
   Button,
   DataTable,
   getModelInstanceTaskToolkit,
 } from "@instill-ai/design-system";
-import { ColumnDef } from "@tanstack/react-table";
+
+import { SortIcon, StateLabel, TableError } from "../../components";
+import { TableCell } from "../../components/cells/TableCell";
 import {
   InstillStore,
   Model,
@@ -13,8 +17,6 @@ import {
   useShallow,
   useWatchUserModels,
 } from "../../lib";
-import { SortIcon, StateLabel, TableError } from "../../components";
-import { TableCell } from "../../components/cells/TableCell";
 import { formatDate } from "../../lib/table";
 import { ModelTablePlaceholder } from "./ModelTablePlaceholder";
 

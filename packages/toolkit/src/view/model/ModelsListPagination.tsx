@@ -1,8 +1,10 @@
 import { useMemo } from "react";
-import { Pagination } from "@instill-ai/design-system";
-import { env } from "../../server";
 import { InfiniteData, UseInfiniteQueryResult } from "@tanstack/react-query";
+
+import { Pagination } from "@instill-ai/design-system";
+
 import { ListModelsResponse } from "../../lib";
+import { env } from "../../server";
 
 const defaultPaginationProps = {
   isPrevDisabled: true,

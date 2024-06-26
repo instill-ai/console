@@ -4,21 +4,22 @@ import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
-  PaginationState,
-  SortingState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  PaginationState,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
+
+import { Nullable } from "../../types/general";
+import { Icons } from "../Icons";
+import { Input } from "../Input";
+import { Skeleton } from "../Skeleton";
 import { Table } from "../Table";
 import { DataTablePagination } from "./DataTablePagination";
-import { Input } from "../Input";
-import { Nullable } from "../../types/general";
-import { Skeleton } from "../Skeleton";
-import { Icons } from "../Icons";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+
 import { OnboardingPageRender } from "./render";
 
 export async function generateMetadata() {

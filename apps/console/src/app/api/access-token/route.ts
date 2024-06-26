@@ -1,5 +1,6 @@
-import { Nullable } from "@instill-ai/toolkit";
 import { cookies } from "next/headers";
+
+import { Nullable } from "@instill-ai/toolkit";
 
 export const GET = () => {
   const cookieStore = cookies();

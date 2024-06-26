@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import { DiscordIcon, MediumIcon } from "../../Icons";
 import OutlineButton from "./OutlineButton";
 

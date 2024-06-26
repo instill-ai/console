@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import LocalUploadIcon from "./LocalUploadIcon";
 
 const meta: Meta<typeof LocalUploadIcon> = {

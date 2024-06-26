@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
+
+import type { Nullable } from "../../type";
 import { env } from "../../../server";
 import { listModelDefinitionsQuery } from "../../vdp-sdk";
-import type { Nullable } from "../../type";
 
 export function useModelDefinitions({
   accessToken,

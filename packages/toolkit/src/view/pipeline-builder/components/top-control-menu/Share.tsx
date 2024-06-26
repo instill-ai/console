@@ -1,15 +1,17 @@
 "use client";
 
 import * as React from "react";
+
 import { Button, Icons } from "@instill-ai/design-system";
-import { SharePipelineDialog } from "../dialogs";
+
 import {
-  useRouteInfo,
-  useInstillStore,
-  useUserPipeline,
   InstillStore,
+  useInstillStore,
+  useRouteInfo,
   useShallow,
+  useUserPipeline,
 } from "../../../../lib";
+import { SharePipelineDialog } from "../dialogs";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

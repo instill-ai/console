@@ -1,12 +1,13 @@
 "use client";
+
 import * as React from "react";
 
 import {
   useAuthenticatedUser,
   useUserMemberships,
 } from "./react-query-service";
-import { InstillStore, useInstillStore, useShallow } from "./use-instill-store";
 import { Nullable } from "./type";
+import { InstillStore, useInstillStore, useShallow } from "./use-instill-store";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

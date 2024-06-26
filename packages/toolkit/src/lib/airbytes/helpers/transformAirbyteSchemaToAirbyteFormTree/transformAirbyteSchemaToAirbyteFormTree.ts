@@ -4,9 +4,9 @@
  */
 
 import type {
+  AirbyteFormTree,
   AirbyteJsonSchema,
   AirbyteJsonSchemaDefinition,
-  AirbyteFormTree,
 } from "../../types";
 
 export const transformAirbyteSchemaToAirbyteFormTree = (

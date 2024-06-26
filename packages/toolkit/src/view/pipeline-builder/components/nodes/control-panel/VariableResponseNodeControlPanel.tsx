@@ -2,10 +2,12 @@
 
 import * as React from "react";
 import cn from "clsx";
+
 import { Icons, Tooltip } from "@instill-ai/design-system";
-import { ControlPanel } from "./ControlPanel";
+
 import { useInstillStore } from "../../../../../lib";
 import { NodeDropdownMenu } from "../common";
+import { ControlPanel } from "./ControlPanel";
 
 export function VariableResponseNodeControlPanel({
   type,

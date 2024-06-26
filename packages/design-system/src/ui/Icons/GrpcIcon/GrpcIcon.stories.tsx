@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import GrpcIcon from "./GrpcIcon";
 
 const meta: Meta<typeof GrpcIcon> = {

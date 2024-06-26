@@ -2,37 +2,39 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSortedReleases } from "../../pipeline-builder";
+import cn from "clsx";
+
 import {
   Button,
   Icons,
-  Tag,
-  TabMenu,
-  Skeleton,
   Popover,
   ScrollArea,
+  Skeleton,
+  TabMenu,
+  Tag,
   toast,
 } from "@instill-ai/design-system";
+
+import { ClonePipelineDialog } from "../../../components";
+import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
 import {
   InstillStore,
-  Nullable,
   isPublicPipeline,
+  Nullable,
   toastInstillError,
+  useAuthenticatedUser,
   useDeleteUserPipeline,
   useInstillStore,
+  useNavigateBackAfterLogin,
   useOrganization,
+  useRouteInfo,
   useShallow,
   useUser,
-  useAuthenticatedUser,
   useUserPipeline,
-  useRouteInfo,
-  useNavigateBackAfterLogin,
 } from "../../../lib";
-import { ClonePipelineDialog } from "../../../components";
+import { useSortedReleases } from "../../pipeline-builder";
 import { EditMetadataDialog } from "./EditMetadataDialog";
-import cn from "clsx";
 import { Menu } from "./Menu";
-import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

@@ -1,7 +1,9 @@
-import { Icons } from "@instill-ai/design-system";
-import cn from "clsx";
-import Link from "next/link";
 import * as React from "react";
+import Link from "next/link";
+import cn from "clsx";
+
+import { Icons } from "@instill-ai/design-system";
+
 import { env } from "../../server";
 
 export const topbarItems = [

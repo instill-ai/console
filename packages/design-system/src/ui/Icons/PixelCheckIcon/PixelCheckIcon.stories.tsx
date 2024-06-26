@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import PixelCheckIcon from "./PixelCheckIcon";
 
 const meta: Meta<typeof PixelCheckIcon> = {

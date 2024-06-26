@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import MongoDbAtalasIcon from "./MongoDbAtalasIcon";
 
 const meta: Meta<typeof MongoDbAtalasIcon> = {

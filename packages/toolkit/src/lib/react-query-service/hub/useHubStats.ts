@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { getHubStatsQuery } from "../../vdp-sdk/hub/queries";
 
 export function useHubStats({

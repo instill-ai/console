@@ -1,21 +1,21 @@
 import { Node } from "reactflow";
+
 import {
+  getGeneralComponentInOutputSchema,
   IteratorNodeData,
   NodeData,
-  getGeneralComponentInOutputSchema,
 } from "../../view";
-
-import { SmartHint } from "./types";
-import { transformInstillJSONSchemaToFormTree } from "../use-instill-form/transform";
-import { transformFormTreeToSmartHints } from "./transformFormTreeToSmartHints";
-import { transformPipelineTriggerRequestFieldsToSmartHints } from "./transformPipelineTriggerRequestFieldsToSmartHints";
-import { PipelineIteratorComponent } from "../vdp-sdk";
+import { isPipelineGeneralComponent } from "../../view/pipeline-builder/lib/checkComponentType";
 import {
   isGeneralNode,
   isIteratorNode,
   isVariableNode,
 } from "../../view/pipeline-builder/lib/checkNodeType";
-import { isPipelineGeneralComponent } from "../../view/pipeline-builder/lib/checkComponentType";
+import { transformInstillJSONSchemaToFormTree } from "../use-instill-form/transform";
+import { PipelineIteratorComponent } from "../vdp-sdk";
+import { transformFormTreeToSmartHints } from "./transformFormTreeToSmartHints";
+import { transformPipelineTriggerRequestFieldsToSmartHints } from "./transformPipelineTriggerRequestFieldsToSmartHints";
+import { SmartHint } from "./types";
 
 export function pickSmartHintsFromNodes({
   nodes,

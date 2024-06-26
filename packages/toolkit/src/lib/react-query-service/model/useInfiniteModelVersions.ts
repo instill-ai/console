@@ -1,12 +1,13 @@
 import {
   InfiniteData,
-  UseInfiniteQueryResult,
   useInfiniteQuery,
+  UseInfiniteQueryResult,
 } from "@tanstack/react-query";
+
 import type { Nullable } from "../../type";
 import {
-  ListModelVersionsResponse,
   listModelVersionsQuery,
+  ListModelVersionsResponse,
 } from "../../vdp-sdk";
 
 export function useInfiniteModelVersions({

@@ -1,23 +1,22 @@
-import { v4 as uuidv4 } from "uuid";
 import { Edge, Node } from "reactflow";
+import { v4 as uuidv4 } from "uuid";
 
-import type { InstillReference, NodeData } from "../type";
 import type { InstillJSONSchema, Nullable } from "../../../lib";
-import { getReferencesFromAny } from "./getReferencesFromAny";
-import {
-  InstillAIOpenAPIProperty,
-  getPropertiesFromOpenAPISchema,
-} from "./getPropertiesFromOpenAPISchema";
-import { getGeneralComponentConfiguration } from "./getGeneralComponentConfiguration";
-
-import { createNodesFromPipelineComponents } from "./createNodesFromPipelineComponents";
+import type { InstillReference, NodeData } from "../type";
 import {
   isGeneralNode,
   isIteratorNode,
   isResponseNode,
   isVariableNode,
 } from "./checkNodeType";
+import { createNodesFromPipelineComponents } from "./createNodesFromPipelineComponents";
+import { getGeneralComponentConfiguration } from "./getGeneralComponentConfiguration";
 import { getGeneralComponentInOutputSchema } from "./getGeneralComponentInOutputSchema";
+import {
+  getPropertiesFromOpenAPISchema,
+  InstillAIOpenAPIProperty,
+} from "./getPropertiesFromOpenAPISchema";
+import { getReferencesFromAny } from "./getReferencesFromAny";
 
 type ReferenceWithNodeInfo = {
   nodeID: string;

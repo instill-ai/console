@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import cn from "clsx";
-import { Command } from "../Command";
-import { Popover } from "../Popover";
-import { Icons } from "../Icons";
+
 import { Nullable, SelectOption } from "../../types/general";
+import { Command } from "../Command";
+import { Icons } from "../Icons";
+import { Popover } from "../Popover";
 
 type ComboboxProps = {
   items: SelectOption[];

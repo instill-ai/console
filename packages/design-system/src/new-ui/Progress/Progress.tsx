@@ -1,8 +1,8 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
+import cn from "clsx";
 
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,

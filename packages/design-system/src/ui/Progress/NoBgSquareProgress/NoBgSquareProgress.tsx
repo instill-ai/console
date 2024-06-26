@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import SquareProgressBase, {
   SquareProgressBaseProps,
 } from "../SquareProgressBase";

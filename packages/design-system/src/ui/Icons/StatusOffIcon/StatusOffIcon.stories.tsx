@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import StatusOffIcon from "./StatusOffIcon";
 
 const meta: Meta<typeof StatusOffIcon> = {

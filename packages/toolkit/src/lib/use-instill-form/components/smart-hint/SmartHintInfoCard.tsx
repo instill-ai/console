@@ -1,10 +1,12 @@
+import React from "react";
 import cn from "clsx";
 import { FieldError } from "react-hook-form";
-import { Nullable } from "../../../type";
+
 import { Tag } from "@instill-ai/design-system";
-import { SmartHintWarning } from "../../types";
+
+import { Nullable } from "../../../type";
 import { SmartHint } from "../../../use-smart-hint";
-import React from "react";
+import { SmartHintWarning } from "../../types";
 
 export const SmartHintInfoCard = ({
   className,

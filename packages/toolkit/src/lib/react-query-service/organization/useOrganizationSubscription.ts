@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import type { Nullable } from "../../type";
 import { getOrganizationSubscriptionQuery } from "../../vdp-sdk";
 

@@ -1,5 +1,6 @@
-import { AccountSettingPageRender } from "./render";
 import { Metadata } from "next";
+
+import { AccountSettingPageRender } from "./render";
 
 export async function generateMetadata(): Promise<Metadata> {
   const metadata: Metadata = {

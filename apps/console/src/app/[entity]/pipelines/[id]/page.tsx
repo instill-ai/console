@@ -1,11 +1,13 @@
+import { Metadata } from "next";
+import { cookies } from "next/headers";
+
 import { Nullable, Pipeline } from "@instill-ai/toolkit";
 import {
   fetchNamespaceType,
   fetchUserPipeline,
 } from "@instill-ai/toolkit/server";
+
 import { PipelineOverviewPageRender } from "./render";
-import { Metadata } from "next";
-import { cookies } from "next/headers";
 
 type Props = {
   params: { id: string; entity: string };

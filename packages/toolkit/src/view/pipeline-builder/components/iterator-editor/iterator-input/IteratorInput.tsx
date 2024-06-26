@@ -1,8 +1,11 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
+import cn from "clsx";
+import { Node } from "reactflow";
+
 import { Select } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   Nullable,
@@ -10,11 +13,10 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../../../lib";
+import { isIteratorNode } from "../../../lib";
+import { IteratorNodeData } from "../../../type";
 import { InOutputOption } from "../IteratorEditor";
 import { IterateElmentHint } from "./IterateElementHint";
-import { IteratorNodeData } from "../../../type";
-import { Node } from "reactflow";
-import { isIteratorNode } from "../../../lib";
 
 const selector = (store: InstillStore) => ({
   editingIteratorID: store.editingIteratorID,

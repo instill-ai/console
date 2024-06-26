@@ -1,7 +1,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { env } from "../../../server";
-import { Visibility, listUserModelsQuery } from "../../vdp-sdk";
+
 import type { Nullable } from "../../type";
+import { env } from "../../../server";
+import { listUserModelsQuery, Visibility } from "../../vdp-sdk";
 
 export function useInfiniteUserModels({
   userName,

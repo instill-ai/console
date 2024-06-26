@@ -1,11 +1,10 @@
 "use client";
 
-import * as z from "zod";
 import * as React from "react";
-
-import { Setting } from "..";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
 import {
   Button,
   Form,
@@ -14,17 +13,19 @@ import {
   Textarea,
   useToast,
 } from "@instill-ai/design-system";
+
+import { Setting } from "..";
+import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
 import {
   AuthenticatedUser,
+  GeneralAppPageProp,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
   useAuthenticatedUser,
-  GeneralAppPageProp,
+  useUpdateAuthenticatedUser,
 } from "../../../lib";
 import { FormLabel } from "../FormLabel";
-import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
-import { useUpdateAuthenticatedUser } from "../../../lib";
 
 export const UserProfileTabSchema = z.object({
   id: z.string().min(1, "User name is required"),

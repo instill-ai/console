@@ -1,22 +1,23 @@
 "use client";
 
 import * as React from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+
 import {
   InstillStore,
   Nullable,
   useInstillStore,
+  useRouteInfo,
   useShallow,
   useUserPipeline,
-  useRouteInfo,
 } from "../../../lib";
-import { Head } from "./Head";
-import { InOutPut } from "./InOutPut";
-import { Readme } from "./Readme";
-import { useRouter, useSearchParams } from "next/navigation";
 import {
   ReadOnlyPipelineBuilder,
   useSortedReleases,
 } from "../../pipeline-builder";
+import { Head } from "./Head";
+import { InOutPut } from "./InOutPut";
+import { Readme } from "./Readme";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

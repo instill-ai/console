@@ -1,9 +1,10 @@
 import type { Meta } from "@storybook/react";
-import { Combobox } from "./Combobox";
-import { Icons } from "../Icons";
 import * as React from "react";
-import { Button } from "../Button";
+
 import { SelectOption } from "../../types/general";
+import { Button } from "../Button";
+import { Icons } from "../Icons";
+import { Combobox } from "./Combobox";
 
 const meta: Meta<typeof Combobox> = {
   title: "Components/NewUi/Combobox",

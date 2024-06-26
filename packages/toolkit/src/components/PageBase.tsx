@@ -1,7 +1,7 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
+import cn from "clsx";
 
 export const PageBase = ({ children }: { children: React.ReactNode }) => {
   return <div className="min-w-screen min-h-screen">{children}</div>;

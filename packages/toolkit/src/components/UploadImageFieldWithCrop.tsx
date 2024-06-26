@@ -1,12 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { Button, Dialog, Form, Input } from "@instill-ai/design-system";
-import { FormLabel } from "../view/settings/FormLabel";
+import cn from "clsx";
 import AvatarEditor from "react-avatar-editor";
 import { UseFormReturn } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
-import cn from "clsx";
+
+import { Button, Dialog, Form, Input } from "@instill-ai/design-system";
+
+import { FormLabel } from "../view/settings/FormLabel";
 import { ImageWithFallback } from "./ImageWithFallback";
 
 const DEFAULT_DIMENSIONS = {

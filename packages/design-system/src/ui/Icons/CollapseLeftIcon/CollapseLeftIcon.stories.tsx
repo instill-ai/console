@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import CollapseLeftIcon from "./CollapseLeftIcon";
 
 const meta: Meta<typeof CollapseLeftIcon> = {

@@ -1,13 +1,14 @@
 "use client";
 
 import * as React from "react";
+import { usePathname, useRouter } from "next/navigation";
+
+import { pathnameEvaluator } from "../pathname-evaluator";
 import {
   InstillStore,
   useInstillStore,
   useShallow,
 } from "../use-instill-store";
-import { usePathname, useRouter } from "next/navigation";
-import { pathnameEvaluator } from "../pathname-evaluator";
 
 const selector = (store: InstillStore) => ({
   pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,

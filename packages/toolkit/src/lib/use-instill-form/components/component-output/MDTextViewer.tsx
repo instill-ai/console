@@ -2,10 +2,12 @@
 
 import * as React from "react";
 import cn from "clsx";
-import { Switch } from "@instill-ai/design-system";
-import { CopyButton } from "./CopyButton";
-import { Nullable } from "../../../type";
 import Markdown from "markdown-to-jsx";
+
+import { Switch } from "@instill-ai/design-system";
+
+import { Nullable } from "../../../type";
+import { CopyButton } from "./CopyButton";
 
 export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
   const [enableFormattedText, setEnableFormattedText] = React.useState(false);

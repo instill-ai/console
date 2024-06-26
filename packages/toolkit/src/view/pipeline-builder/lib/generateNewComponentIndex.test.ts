@@ -1,4 +1,5 @@
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
+
 import { generateUniqueIndex } from "./generateUniqueIndex";
 
 test("should generate new node idx", () => {

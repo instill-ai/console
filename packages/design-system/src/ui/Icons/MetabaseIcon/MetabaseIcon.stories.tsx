@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import MetabaseIcon from "./MetabaseIcon";
 
 const meta: Meta<typeof MetabaseIcon> = {

@@ -1,5 +1,7 @@
 import * as React from "react";
+
 import { Collapsible, Icons } from "@instill-ai/design-system";
+
 import { Nullable } from "../../../type";
 
 export const CollapsibleFormGroup = ({

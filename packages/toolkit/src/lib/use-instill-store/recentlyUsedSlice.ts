@@ -1,4 +1,5 @@
 import { StateCreator } from "zustand";
+
 import { InstillStore, InstillStoreMutators, RecentlyUsedSlice } from "./types";
 
 export const createRecentlyUsedSlice: StateCreator<

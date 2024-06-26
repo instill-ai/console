@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import TextToImageIcon from "./TextToImageIcon";
 
 const meta: Meta<typeof TextToImageIcon> = {

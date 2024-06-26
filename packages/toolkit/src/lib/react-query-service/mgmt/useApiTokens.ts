@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { listApiTokensQuery } from "../../vdp-sdk";
-import { env } from "../../../server";
+
 import type { Nullable } from "../../type";
+import { env } from "../../../server";
+import { listApiTokensQuery } from "../../vdp-sdk";
 
 export function useApiTokens({
   accessToken,

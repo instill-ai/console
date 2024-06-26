@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import CopyIcon from "./CopyIcon";
 
 const meta: Meta<typeof CopyIcon> = {

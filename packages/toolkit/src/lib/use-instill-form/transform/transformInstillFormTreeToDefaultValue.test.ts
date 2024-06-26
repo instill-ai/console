@@ -1,5 +1,6 @@
+import { expect, test } from "vitest";
+
 import { InstillFormTree } from "../types";
-import { test, expect } from "vitest";
 import { transformInstillFormTreeToDefaultValue } from "./transformInstillFormTreeToDefaultValue";
 
 test("should transform formItem with example", () => {

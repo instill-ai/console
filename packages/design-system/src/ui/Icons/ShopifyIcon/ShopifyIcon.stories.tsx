@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import ShopifyIcon from "./ShopifyIcon";
 
 const meta: Meta<typeof ShopifyIcon> = {

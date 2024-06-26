@@ -1,9 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
+
+import type { TriggerUserPipelinePayload } from "../../vdp-sdk";
 import { Nullable } from "../../type";
-import {
-  type TriggerUserPipelinePayload,
-  triggerAsyncUserPipelineReleaseAction,
-} from "../../vdp-sdk";
+import { triggerAsyncUserPipelineReleaseAction } from "../../vdp-sdk";
 
 export function useTriggerAsyncUserPipelineRelease() {
   return useMutation({

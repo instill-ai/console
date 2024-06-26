@@ -1,20 +1,20 @@
 "use client";
 
 import cn from "clsx";
+
 import { Button, Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 
+import { DataTestID } from "../../../../../constant";
 import {
   ConnectorDefinition,
   IteratorDefinition,
   OperatorDefinition,
   useInstillStore,
 } from "../../../../../lib";
-
-import { DataTestID } from "../../../../../constant";
-import { GenericSection } from "./GenericSection";
 import { AISection } from "./AISection";
-import { DataSection } from "./DataSection";
 import { ApplicationSection } from "./ApplicationSection";
+import { DataSection } from "./DataSection";
+import { GenericSection } from "./GenericSection";
 import { OpoeratorSection } from "./OpoeratorSection";
 
 export type OnSelectComponent = (

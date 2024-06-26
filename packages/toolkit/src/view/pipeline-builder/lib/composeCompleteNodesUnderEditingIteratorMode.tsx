@@ -1,7 +1,8 @@
 import { Node } from "reactflow";
+
 import { NodeData } from "../type";
-import { composePipelineMetadataMapFromNodes } from "./composePipelineMetadataMapFromNodes";
 import { composePipelineComponentMapFromNodes } from "./composePipelineComponentMapFromNodes";
+import { composePipelineMetadataMapFromNodes } from "./composePipelineMetadataMapFromNodes";
 
 export function composeCompleteNodesUnderEditingIteratorMode({
   editingIteratorID,

@@ -1,16 +1,17 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
+import { usePathname } from "next/navigation";
+import cn from "clsx";
 
 import {
   Icons,
   Select,
-  Tag,
   Separator,
   Skeleton,
+  Tag,
 } from "@instill-ai/design-system";
-import { useUserNamespaces } from "../../lib/useUserNamespaces";
+
 import {
   InstillStore,
   Nullable,
@@ -21,9 +22,9 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../lib";
+import { useUserNamespaces } from "../../lib/useUserNamespaces";
 import { env } from "../../server";
 import { NamespaceAvatarWithFallback } from "../NamespaceAvatarWithFallback";
-import { usePathname } from "next/navigation";
 
 const truncateDisplayName = (value?: string) => {
   if (value && value.length >= 10) {

@@ -1,8 +1,10 @@
 "use client";
 
-import cn from "clsx";
-import { Tag } from "@instill-ai/design-system";
 import { ReactElement } from "react";
+import cn from "clsx";
+
+import { Tag } from "@instill-ai/design-system";
+
 import { Nullable, PipelineTriggerStatus, ResourceState } from "../../lib";
 
 export type GeneralStateCellProps = {

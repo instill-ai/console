@@ -1,4 +1,5 @@
 import cn from "clsx";
+
 import { Icons } from "@instill-ai/design-system";
 
 export const EmptyImageInputPlaceholder = ({

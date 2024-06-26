@@ -1,9 +1,10 @@
 "use client";
 
 import { Form, Textarea } from "@instill-ai/design-system";
+
 import { AutoFormFieldBaseProps } from "../../..";
-import { FieldHead } from "./FieldHead";
 import { StartOperatorFreeFormFieldBaseProps } from "../../types";
+import { FieldHead } from "./FieldHead";
 
 export const TextareaField = ({
   mode,

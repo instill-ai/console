@@ -1,4 +1,5 @@
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
+
 import { PipelineRecipe } from "../../../lib";
 import { checkIsValidPosition } from "./checkIsValidPosition";
 

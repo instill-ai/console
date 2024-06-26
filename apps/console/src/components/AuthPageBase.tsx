@@ -1,5 +1,6 @@
-import { Logo } from "@instill-ai/design-system";
 import Image from "next/image";
+
+import { Logo } from "@instill-ai/design-system";
 
 export const AuthPageBase = ({ children }: { children: React.ReactNode }) => {
   return <div className="min-w-screen min-h-screen">{children}</div>;

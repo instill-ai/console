@@ -2,9 +2,11 @@
 
 import * as React from "react";
 import cn from "clsx";
+
 import { Button, Icons } from "@instill-ai/design-system";
-import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
+
 import { LoadingSpin } from "../../../../components";
+import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import { useSavePipeline } from "../../lib";
 
 const selector = (store: InstillStore) => ({

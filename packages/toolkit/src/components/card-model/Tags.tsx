@@ -1,7 +1,9 @@
 "use client";
 
-import { Icons, Tag } from "@instill-ai/design-system";
 import React from "react";
+
+import { Icons, Tag } from "@instill-ai/design-system";
+
 import { Visibility } from "../../lib";
 
 export type TagsProps = {

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 import { IconBase, IconBaseProps } from "./IconBase";
 
 export const UserPlus01 = React.forwardRef<

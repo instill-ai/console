@@ -1,8 +1,9 @@
-import cn from "clsx";
-import * as Select from "@radix-ui/react-select";
 import * as React from "react";
-import { CheckIcon } from "../../Icons";
+import * as Select from "@radix-ui/react-select";
+import cn from "clsx";
+
 import { Nullable, SelectOption } from "../../../types/general";
+import { CheckIcon } from "../../Icons";
 
 export type SelectItemProps = {
   width: Nullable<number>;

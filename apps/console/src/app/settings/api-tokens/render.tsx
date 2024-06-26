@@ -1,5 +1,8 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useAppAccessToken } from "lib/use-app-access-token";
+
 import {
   AppTopbar,
   BreadcrumbWithLink,
@@ -8,8 +11,6 @@ import {
   UserAPITokenTab,
   UserSidebar,
 } from "@instill-ai/toolkit";
-import { useAppAccessToken } from "lib/use-app-access-token";
-import { useRouter } from "next/navigation";
 
 export function ApiTokenSettingdPageRender() {
   const accessToken = useAppAccessToken();

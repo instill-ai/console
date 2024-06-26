@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import EyeOnIcon from "./EyeOnIcon";
 
 const meta: Meta<typeof EyeOnIcon> = {

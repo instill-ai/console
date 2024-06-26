@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import type { Nullable } from "../../type";
 import {
-  UpdateUserMembershipPayload,
   updateUserMembershipMutation,
+  UpdateUserMembershipPayload,
 } from "../../vdp-sdk";
 
 export function useUpdateUserMembership() {

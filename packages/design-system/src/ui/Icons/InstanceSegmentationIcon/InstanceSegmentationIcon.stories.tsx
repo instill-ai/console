@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import InstanceSegmentationIcon from "./InstanceSegmentationIcon";
 
 const meta: Meta<typeof InstanceSegmentationIcon> = {

@@ -9,27 +9,30 @@
 
 /* eslint-disable no-useless-escape, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-explicit-any */
 
-import Paragraph from "@tiptap/extension-paragraph";
+import Blockquote from "@tiptap/extension-blockquote";
+import Bold from "@tiptap/extension-bold";
 import BulletList from "@tiptap/extension-bullet-list";
+import Code from "@tiptap/extension-code";
+import HardBreak from "@tiptap/extension-hard-break";
+import HorizontalRule from "@tiptap/extension-horizontal-rule";
+import Italic from "@tiptap/extension-italic";
+import Link from "@tiptap/extension-link";
 import ListItem from "@tiptap/extension-list-item";
 import OrderedList from "@tiptap/extension-ordered-list";
+import Paragraph from "@tiptap/extension-paragraph";
 import Strike from "@tiptap/extension-strike";
-import Italic from "@tiptap/extension-italic";
-import HorizontalRule from "@tiptap/extension-horizontal-rule";
-import HardBreak from "@tiptap/extension-hard-break";
-import Code from "@tiptap/extension-code";
-import Bold from "@tiptap/extension-bold";
-import Blockquote from "@tiptap/extension-blockquote";
-import Link from "@tiptap/extension-link";
-
+import MarkdownIt from "markdown-it";
 import {
   defaultMarkdownSerializer,
   MarkdownSerializerState,
   MarkdownSerializer as ProseMirrorMarkdownSerializer,
 } from "prosemirror-markdown";
-import { Mark, Node, Schema } from "prosemirror-model";
-import MarkdownIt from "markdown-it";
-import { DOMParser as ProseMirrorDOMParser } from "prosemirror-model";
+import {
+  Mark,
+  Node,
+  DOMParser as ProseMirrorDOMParser,
+  Schema,
+} from "prosemirror-model";
 
 const tableMap = new WeakMap();
 

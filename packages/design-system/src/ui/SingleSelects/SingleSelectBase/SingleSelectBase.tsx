@@ -1,14 +1,14 @@
 import * as React from "react";
-import cn from "clsx";
 import * as Select from "@radix-ui/react-select";
+import cn from "clsx";
 
 import {
   BasicInputProps,
   Nullable,
   SelectOption,
 } from "../../../types/general";
-import InputLabelBase from "../../InputLabels/InputLabelBase";
 import { InputDescriptionBase } from "../../InputDescriptions/InputDescriptionBase";
+import InputLabelBase from "../../InputLabels/InputLabelBase";
 import { SelectItem } from "./SelectItem";
 
 export type SingleSelectBaseProps = Omit<

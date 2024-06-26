@@ -2,14 +2,16 @@
 
 import * as React from "react";
 import cn from "clsx";
+
 import { Form, ScrollArea } from "@instill-ai/design-system";
+
 import { AutoFormFieldBaseProps, fillArrayWithZeros } from "../../..";
 import { readFileToBinary } from "../../../../view";
+import { StartOperatorFreeFormFieldBaseProps } from "../../types";
+import { VideoPreview } from "../common";
 import { FieldHead } from "./FieldHead";
 import { FileListItem } from "./FileListItem";
 import { UploadFileInput } from "./UploadFileInput";
-import { StartOperatorFreeFormFieldBaseProps } from "../../types";
-import { VideoPreview } from "../common";
 
 export const VideosField = ({
   mode,

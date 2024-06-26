@@ -1,10 +1,12 @@
 "use client";
 
+import { useRef } from "react";
+
 import { Button, Icons } from "@instill-ai/design-system";
+
+import { LoadingSpin } from "../../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import { useSavePipeline } from "../../lib";
-import { LoadingSpin } from "../../../../components";
-import { useRef } from "react";
 
 const selector = (store: InstillStore) => ({
   pipelineRecipeIsDirty: store.pipelineRecipeIsDirty,

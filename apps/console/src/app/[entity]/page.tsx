@@ -1,7 +1,9 @@
-import { fetchUser } from "@instill-ai/toolkit/server";
-import { ProfilePageRender } from "./render";
 import { Metadata } from "next";
+
 import { Nullable, User } from "@instill-ai/toolkit";
+import { fetchUser } from "@instill-ai/toolkit/server";
+
+import { ProfilePageRender } from "./render";
 
 type Props = {
   params: { id: string; entity: string };

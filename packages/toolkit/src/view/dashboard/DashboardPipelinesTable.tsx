@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Button, DataTable } from "@instill-ai/design-system";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { TriggeredPipeline } from "../../lib";
+import { Button, DataTable } from "@instill-ai/design-system";
+
 import { SortIcon, TableError } from "../../components";
+import { TriggeredPipeline } from "../../lib";
 import { PipelineTablePlaceholder } from "../pipeline";
 
 export type DashboardPipelinesTableProps = {

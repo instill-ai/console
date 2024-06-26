@@ -1,4 +1,5 @@
 import React from "react";
+
 import IconBase, { IconBaseProps } from "../IconBase";
 
 export type GitTagIconProps = Omit<IconBaseProps, "viewBox" | "fill">;

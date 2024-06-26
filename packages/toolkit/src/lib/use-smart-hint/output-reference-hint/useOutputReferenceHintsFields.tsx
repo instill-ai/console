@@ -1,10 +1,9 @@
 import * as React from "react";
 
 import { Nullable } from "../../type";
-
 import { PipelineComponent } from "../../vdp-sdk";
-import { pickOutputReferenceHintsFromComponent } from "./pickOutputReferenceHintsFromComponent";
 import { pickFieldsFromOutputReferenceHints } from "./pickFieldsFromOutputReferenceHints";
+import { pickOutputReferenceHintsFromComponent } from "./pickOutputReferenceHintsFromComponent";
 
 export function useOutputReferenceHintFields({
   componentID,

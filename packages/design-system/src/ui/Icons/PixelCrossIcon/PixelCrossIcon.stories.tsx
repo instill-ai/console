@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import PixelCrossIcon from "./PixelCrossIcon";
 
 const meta: Meta<typeof PixelCrossIcon> = {

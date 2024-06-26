@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import CheckIcon from "./CheckIcon";
 
 const meta: Meta<typeof CheckIcon> = {

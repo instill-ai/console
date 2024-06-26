@@ -1,6 +1,7 @@
-import { ConnectorDefinition } from "../../vdp-sdk";
-import { Nullable } from "../../type";
 import * as React from "react";
+
+import { Nullable } from "../../type";
+import { ConnectorDefinition } from "../../vdp-sdk";
 import { transformAirbyteSchemaToAirbyteFormTree } from "../helpers/transformAirbyteSchemaToAirbyteFormTree";
 
 export const useAirbyteFormTree = (

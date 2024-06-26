@@ -1,6 +1,7 @@
-import { test, expect } from "@playwright/test";
-import { PipelineBuilderPage } from "../pages/pipeline-builder.page";
+import { expect, test } from "@playwright/test";
+
 import { createPipeline, deletePipeline } from "../helpers/actions/pipeline";
+import { PipelineBuilderPage } from "../pages/pipeline-builder.page";
 
 export function shouldEditAndCreateStartAndEndOperatorField() {
   const pipelineID = "start-field-test";

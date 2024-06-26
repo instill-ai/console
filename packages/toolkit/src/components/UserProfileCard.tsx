@@ -1,17 +1,19 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import { Button, Separator, Tag } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   Nullable,
+  useAuthenticatedUser,
   useInstillStore,
   useShallow,
-  useAuthenticatedUser,
   useUserMemberships,
 } from "../lib";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { NamespaceAvatarWithFallback } from "./NamespaceAvatarWithFallback";
 
 const selector = (store: InstillStore) => ({

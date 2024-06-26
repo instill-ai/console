@@ -1,19 +1,21 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
+
 import { Button, Icons, Separator, Tag } from "@instill-ai/design-system";
+
 import {
   InstillStore,
-  Pipeline,
   isPublicPipeline,
-  useInstillStore,
-  useShallow,
+  Pipeline,
   useAuthenticatedUser,
+  useInstillStore,
   useNavigateBackAfterLogin,
+  useShallow,
 } from "../../lib";
 import { sortPipelineReleases } from "../../view";
 import { ClonePipelineDialog } from "../ClonePipelineDialog";
-import { useRouter } from "next/navigation";
 
 export const FooterSkeleton = () => {
   return (

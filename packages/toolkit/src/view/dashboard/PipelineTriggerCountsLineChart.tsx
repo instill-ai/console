@@ -2,8 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
+
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
-import { PipelinesChart, generateChartData } from "../../lib";
+
+import { generateChartData, PipelinesChart } from "../../lib";
 
 type PipelineTriggerCountsLineChartProps = {
   pipelines: PipelinesChart[];

@@ -1,7 +1,11 @@
 "use client";
 
-import * as z from "zod";
 import * as React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { useShallow } from "zustand/react/shallow";
+
 import {
   Button,
   Form,
@@ -9,9 +13,6 @@ import {
   Input,
   Textarea,
 } from "@instill-ai/design-system";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useShallow } from "zustand/react/shallow";
 
 import {
   GeneralRecord,

@@ -1,6 +1,10 @@
 "use client";
 
 import * as React from "react";
+import { Node } from "reactflow";
+
+import { Select } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   Nullable,
@@ -8,11 +12,9 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../../../lib";
-import { InOutputOption } from "../IteratorEditor";
-import { Select } from "@instill-ai/design-system";
-import { Node } from "reactflow";
-import { IteratorNodeData } from "../../../type";
 import { isIteratorNode } from "../../../lib";
+import { IteratorNodeData } from "../../../type";
+import { InOutputOption } from "../IteratorEditor";
 
 const selector = (store: InstillStore) => ({
   nodes: store.nodes,

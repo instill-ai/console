@@ -1,10 +1,12 @@
 "use client";
 
 import * as React from "react";
+
 import { Button, Dialog, Icons, Input } from "@instill-ai/design-system";
+
+import { DataTestID } from "../constant";
 import { Nullable, useControllableState } from "../lib";
 import { LoadingSpin } from "./LoadingSpin";
-import { DataTestID } from "../constant";
 
 export type GeneralDeleteResourceDialogProps = {
   resourceID: string;

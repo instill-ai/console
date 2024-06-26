@@ -1,4 +1,5 @@
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
+
 import { recursiveParseToNum } from "./recursiveParseToNum";
 
 test("should parse basic primitive", () => {

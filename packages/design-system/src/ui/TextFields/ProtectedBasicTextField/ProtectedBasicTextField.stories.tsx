@@ -1,5 +1,6 @@
-import { Meta, StoryFn } from "@storybook/react";
 import * as React from "react";
+import { Meta, StoryFn } from "@storybook/react";
+
 import { ProtectedBasicTextField } from "./ProtectedBasicTextField";
 
 const meta: Meta<typeof ProtectedBasicTextField> = {

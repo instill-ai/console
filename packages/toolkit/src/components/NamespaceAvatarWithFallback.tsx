@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import cn from "clsx";
-import { Nullable, getCaptializeTwoWordsFromName } from "../lib";
+
+import { getCaptializeTwoWordsFromName, Nullable } from "../lib";
 
 export const NamespaceAvatarWithFallbackRoot = ({
   src,

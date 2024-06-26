@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import { Logos } from ".";
 
 const meta: Meta = {

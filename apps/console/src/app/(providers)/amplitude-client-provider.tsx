@@ -1,5 +1,7 @@
 "use client";
+
 import * as React from "react";
+
 import { AmplitudeCtx } from "@instill-ai/toolkit";
 
 export const AmplitudeProvider = ({

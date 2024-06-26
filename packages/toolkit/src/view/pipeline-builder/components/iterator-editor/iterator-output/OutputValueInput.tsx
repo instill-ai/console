@@ -1,11 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { Input } from "@instill-ai/design-system";
-import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
-import { IteratorNodeData } from "../../../type";
 import { Node } from "reactflow";
+
+import { Input } from "@instill-ai/design-system";
+
+import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
 import { isIteratorNode } from "../../../lib";
+import { IteratorNodeData } from "../../../type";
 
 const selector = (store: InstillStore) => ({
   tempSavedNodesForEditingIteratorFlow:

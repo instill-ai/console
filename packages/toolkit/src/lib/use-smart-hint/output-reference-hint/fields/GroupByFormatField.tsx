@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
+
+import { SmartHint } from "../..";
 import { ReferenceHintTag } from "../../../../components";
 import { transformInstillFormatToHumanReadableFormat } from "../../../use-instill-form/transform";
-import { SmartHint } from "../..";
 
 export const GroupByFormatField = ({
   hints,

@@ -1,6 +1,6 @@
-import { Operation } from "./types";
-import { createInstillAxiosClient } from "../helper";
 import { Nullable } from "../../type";
+import { createInstillAxiosClient } from "../helper";
+import { Operation } from "./types";
 
 export type GetModelOperationResponse = {
   operation: Operation;

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Secret, deleteUserSecretMutation } from "../../vdp-sdk";
+
 import type { Nullable } from "../../type";
+import { deleteUserSecretMutation, Secret } from "../../vdp-sdk";
 import { getUseUserSecretQueryKey } from "./use-user-secret/server";
 import { getUseUserSecretsQueryKey } from "./use-user-secrets/server";
 

@@ -2,26 +2,27 @@
 
 import * as React from "react";
 import cn from "clsx";
+import { Edge, Node } from "reactflow";
 import { useShallow } from "zustand/react/shallow";
+
 import { Button, Icons, Popover, ScrollArea } from "@instill-ai/design-system";
 
 import {
   InstillStore,
   Nullable,
-  useRouteInfo,
   useInstillStore,
+  useRouteInfo,
   useUserPipeline,
 } from "../../../lib";
+import { getHumanReadableStringFromTime } from "../../../server";
 import {
   checkIsValidPosition,
   composeEdgesFromNodes,
   createGraphLayout,
   useSortedReleases,
 } from "../lib";
-import { Edge, Node } from "reactflow";
-import { NodeData } from "../type";
-import { getHumanReadableStringFromTime } from "../../../server";
 import { createNodesFromPipelineRecipe } from "../lib/createNodesFromPipelineRecipe";
+import { NodeData } from "../type";
 
 const selector = (store: InstillStore) => ({
   pipelineName: store.pipelineName,

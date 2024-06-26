@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import BigQueryIcon from "./BigQueryIcon";
 
 const meta: Meta<typeof BigQueryIcon> = {

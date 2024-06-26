@@ -2,7 +2,6 @@
 
 // We don't have a unified Tab design yes so we don't have default style here
 // Please refer to the design-docs in Figma for more details.
-
 import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import sanitizeHtml from "sanitize-html";
+
 import { Nullable } from "../../types/general";
 
 /**

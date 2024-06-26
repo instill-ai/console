@@ -1,15 +1,16 @@
-import cn from "clsx";
 import * as React from "react";
+import cn from "clsx";
+
+import { GeneralUseFormReturn, Nullable } from "../../type";
+import { Secret } from "../../vdp-sdk";
+import { RegularFields } from "../components";
+import { SmartHintFields } from "../components/smart-hint";
 import {
   ChooseTitleFrom,
   InstillFormTree,
   SelectedConditionMap,
 } from "../types";
-import { RegularFields } from "../components";
-import { GeneralUseFormReturn, Nullable } from "../../type";
-import { SmartHintFields } from "../components/smart-hint";
 import { pickDefaultCondition } from "./pickDefaultCondition";
-import { Secret } from "../../vdp-sdk";
 
 export type PickRegularFieldsFromInstillFormTreeOptions = {
   disabledAll?: boolean;

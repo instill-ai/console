@@ -1,8 +1,9 @@
 "use client";
 
-import cn from "clsx";
 import * as React from "react";
+import cn from "clsx";
 import { Handle, HandleProps } from "reactflow";
+
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 
 export type CustomHandleProps = HandleProps & {

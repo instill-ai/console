@@ -1,5 +1,6 @@
 "use client";
 
+import { Edge, Node } from "reactflow";
 import { useShallow } from "zustand/react/shallow";
 
 import { InstillStore, useInstillStore, useUserPipeline } from "../../../lib";
@@ -9,9 +10,8 @@ import {
   createGraphLayout,
   useSortedReleases,
 } from "../lib";
-import { Edge, Node } from "reactflow";
-import { NodeData } from "../type";
 import { createNodesFromPipelineRecipe } from "../lib/createNodesFromPipelineRecipe";
+import { NodeData } from "../type";
 
 const selector = (store: InstillStore) => ({
   pipelineName: store.pipelineName,

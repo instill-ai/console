@@ -1,4 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
+
 import PythonIcon from "./PythonIcon";
 
 const meta: Meta<typeof PythonIcon> = {

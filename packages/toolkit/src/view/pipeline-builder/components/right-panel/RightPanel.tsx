@@ -1,12 +1,14 @@
 "use client";
 
 import * as React from "react";
+import { Node } from "reactflow";
 import { useShallow } from "zustand/react/shallow";
+
 import { Button, Icons, Separator } from "@instill-ai/design-system";
+
 import { InstillStore, useInstillStore } from "../../../../lib";
 import { isGeneralNode } from "../../lib";
 import { GeneralNodeData } from "../../type";
-import { Node } from "reactflow";
 import { PipelineGeneralComponentFormOnRightPanel } from "./PipelineGeneralComponentFormOnRightPanel";
 
 const selector = (store: InstillStore) => ({

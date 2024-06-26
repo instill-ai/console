@@ -1,12 +1,12 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
+
 import { CodeBlock } from "../../../components";
 import { CodeString } from "../../../components/CodeString";
-import { Model } from "../../../lib";
 import {
   defaultCodeSnippetStyles,
   getInstillTaskHttpRequestExample,
 } from "../../../constant";
-import React from "react";
+import { Model } from "../../../lib";
 import { ModelSectionHeader } from "./SectionHeader";
 
 export type ModelApiProps = {

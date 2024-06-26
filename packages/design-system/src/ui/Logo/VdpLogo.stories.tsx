@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+
 import { VdpLogo } from "./VdpLogo";
 
 const meta: Meta<typeof VdpLogo> = {

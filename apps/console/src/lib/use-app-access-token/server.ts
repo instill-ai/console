@@ -1,8 +1,9 @@
-import {
-  QueryClient,
-  authValidateTokenAction,
-} from "@instill-ai/toolkit/server";
 import axios from "axios";
+
+import {
+  authValidateTokenAction,
+  QueryClient,
+} from "@instill-ai/toolkit/server";
 
 export async function fetchAccessToken() {
   try {

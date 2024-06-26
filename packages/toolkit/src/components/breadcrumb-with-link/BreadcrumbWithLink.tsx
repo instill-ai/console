@@ -1,8 +1,9 @@
 "use client";
 
-import { Icons } from "@instill-ai/design-system";
-import Link from "next/link";
 import React, { ReactElement } from "react";
+import Link from "next/link";
+
+import { Icons } from "@instill-ai/design-system";
 
 export type BreadcrumbWithLinkItem = {
   label: ReactElement | string;

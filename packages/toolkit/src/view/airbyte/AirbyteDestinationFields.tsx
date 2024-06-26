@@ -1,14 +1,15 @@
 "use client";
 
 import * as React from "react";
+
+import type { Nullable } from "../../lib";
+import { useBuildAirbyteFields } from ".";
 import {
   AirbyteFieldErrors,
   AirbyteFieldValues,
   AirbyteFormTree,
   SelectedItemMap,
 } from "../../lib/airbytes";
-import type { Nullable } from "../../lib";
-import { useBuildAirbyteFields } from ".";
 
 export type AirbyteDestinationFieldsProps = {
   fieldValues: Nullable<AirbyteFieldValues>;
