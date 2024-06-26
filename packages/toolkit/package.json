@@ -125,6 +125,7 @@
     "@tiptap/react": "^2.1.12",
     "@types/lodash.debounce": "^4.0.9",
     "@types/lodash.isequal": "^4.5.8",
+    "@uiw/react-codemirror": "^4.22.2",
     "@uiw/react-json-view": "2.0.0-alpha.18",
     "axios": "^1.6.8",
     "clsx": "^1.0.0",
