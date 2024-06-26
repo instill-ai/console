@@ -1,6 +1,6 @@
 import * as React from "react";
-import cn from "clsx";
 
+import { cn } from "../../utils";
 import { Button } from "../Button";
 import { Icons } from "../Icons";
 

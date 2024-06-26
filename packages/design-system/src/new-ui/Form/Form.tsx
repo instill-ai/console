@@ -3,7 +3,6 @@
 import * as React from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
-import cn from "clsx";
 import {
   Controller,
   ControllerProps,
@@ -14,6 +13,7 @@ import {
 } from "react-hook-form";
 
 import { Nullable } from "../../types/general";
+import { cn } from "../../utils";
 import { Label } from "../Label";
 import { ParagraphWithHTML } from "../ParagraphWithHTML";
 

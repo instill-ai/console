@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import cn from "clsx";
 
 import { Nullable, SelectOption } from "../../types/general";
+import { cn } from "../../utils";
 import { Command } from "../Command";
 import { Icons } from "../Icons";
 import { Popover } from "../Popover";

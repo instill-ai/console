@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { DialogProps } from "@radix-ui/react-dialog";
-import cn from "clsx";
 import { Command as CommandPrimitive } from "cmdk";
 
+import { cn } from "../../utils";
 import { Dialog } from "../Dialog";
 
 const CommandRoot = React.forwardRef<

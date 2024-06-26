@@ -1,6 +1,6 @@
 import { Table } from "@tanstack/react-table";
-import cn from "clsx";
 
+import { cn } from "../../utils";
 import { Button } from "../Button";
 import { Icons } from "../Icons";
 

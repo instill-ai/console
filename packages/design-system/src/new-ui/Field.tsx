@@ -1,5 +1,6 @@
 import * as React from "react";
-import cn from "clsx";
+
+import { cn } from "../utils";
 
 const Root = React.forwardRef<
   HTMLInputElement,
