@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 
-import { DropdownMenu, Icons, Separator } from "@instill-ai/design-system";
+import {
+  ComplicateIcons,
+  DropdownMenu,
+  Icons,
+  Separator,
+} from "@instill-ai/design-system";
 
 import {
   InstillStore,
