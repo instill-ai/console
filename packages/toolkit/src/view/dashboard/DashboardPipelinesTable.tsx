@@ -36,7 +36,7 @@ export const DashboardPipelinesTable = (
               className="h-5 w-5"
             /> */}
             <Link
-              href={`/${entity}/dashboard/pipeline/${row.getValue(
+              href={`/${entity}/dashboard/pipelines/${row.getValue(
                 "pipelineId",
               )}${days ? "?days=" + days : ""}`}
             >

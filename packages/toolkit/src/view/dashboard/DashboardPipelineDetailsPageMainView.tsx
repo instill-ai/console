@@ -16,7 +16,6 @@ import {
   usePipelineTriggerRecords,
   useRouteInfo,
 } from "../../lib";
-import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import { PipelineTriggersTable } from "./PipelineTriggersTable";
 
@@ -32,11 +31,10 @@ export const DashboardPipelineDetailsPageMainView = (
    * Get the pipeline definition and static state for fields
    * -----------------------------------------------------------------------*/
 
-  const [selectedTimeOption, setSelectedTimeOption] =
-    React.useState<SelectOption>({
-      label: "24h",
-      value: "24h",
-    });
+  const [selectedTimeOption] = React.useState<SelectOption>({
+    label: "24h",
+    value: "24h",
+  });
 
   const [queryString, setQueryString] = React.useState<Nullable<string>>(null);
   const [queryStringPrevious, setQueryStringPrevious] =
@@ -153,18 +151,6 @@ export const DashboardPipelineDetailsPageMainView = (
               }
             />
           </PipelineTriggersSummary>
-        </div>
-
-        {/* Filter for graph */}
-
-        <div className="w-1/2 self-end">
-          <div className="my-1">
-            <FilterByDay
-              refetch={pipelineTriggerRecords.refetch}
-              selectedTimeOption={selectedTimeOption}
-              setSelectedTimeOption={setSelectedTimeOption}
-            />
-          </div>
         </div>
       </div>
 
