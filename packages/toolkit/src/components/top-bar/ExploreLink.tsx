@@ -1,7 +1,8 @@
 "use client";
-import cn from "clsx";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import cn from "clsx";
 
 export const ExploreLink = () => {
   const pathname = usePathname();

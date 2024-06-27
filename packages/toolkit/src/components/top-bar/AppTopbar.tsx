@@ -16,9 +16,9 @@ import { useGuardPipelineBuilderUnsavedChangesNavigation } from "../../lib/hook"
 import { env } from "../../server";
 import { CETopbarDropdown } from "./CETopbarDropdown";
 import { CloudTopbarDropdown } from "./CloudTopbarDropdown";
+import { ExploreLink } from "./ExploreLink";
 import { NamespaceSwitch } from "./NamespaceSwitch";
 import { NavLinks } from "./NavLinks";
-import { ExploreLink } from "./ExploreLink";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
