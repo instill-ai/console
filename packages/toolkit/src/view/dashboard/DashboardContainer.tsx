@@ -1,9 +1,13 @@
 "use client";
 
 import * as React from "react";
-import cn from "clsx";
 import { usePathname, useRouter } from "next/navigation";
+
+import { ToggleGroup } from "@instill-ai/design-system";
+
 import { useRouteInfo } from "../../lib";
+
+type DashboardType = "pipeline" | "credits";
 
 export const DashboardContainer = ({
   children,
@@ -14,33 +18,41 @@ export const DashboardContainer = ({
   const pathname = usePathname();
   const routeInfo = useRouteInfo();
 
+  const type = React.useMemo(() => {
+    if (pathname.includes("pipeline")) {
+      return "pipeline";
+    } else if (pathname.includes("credits")) {
+      return "credits";
+    }
+  }, [pathname]);
+
   return (
     <div className="flex w-full flex-col">
       <div className="mb-10 flex flex-row items-center">
-        {["pipelines", "credit"].map((option) => (
-          <button
-            key={option}
-            className={cn(
-              "my-auto flex !h-10 cursor-pointer flex-row items-center justify-center self-stretch !px-4 !py-1 outline outline-1 outline-semantic-bg-line first:rounded-l-sm last:rounded-r-sm hover:bg-semantic-bg-secondary",
-              pathname.includes(option)
-                ? "bg-semantic-bg-line"
-                : "bg-semantic-bg-primary"
-            )}
-            onClick={() => {
-              if (option === "pipelines") {
-                router.push(
-                  `/${routeInfo.data.namespaceId}/dashboard/pipelines`
-                );
-              } else {
-                router.push(`/${routeInfo.data.namespaceId}/dashboard/credit`);
-              }
-            }}
+        <ToggleGroup.Root
+          type="single"
+          value={type}
+          onValueChange={(value: DashboardType) => {
+            if (value === "pipeline") {
+              router.push(`/${routeInfo.data.namespaceId}/dashboard/pipelines`);
+            } else {
+              router.push(`/${routeInfo.data.namespaceId}/dashboard/credits`);
+            }
+          }}
+        >
+          <ToggleGroup.Item
+            value="pipeline"
+            className={type === "pipeline" ? "pointer-events-none" : undefined}
           >
-            <p className="text-semantic-fg-primary product-body-text-4-semibold">
-              {option}
-            </p>
-          </button>
-        ))}
+            Pipeline
+          </ToggleGroup.Item>
+          <ToggleGroup.Item
+            value="explore"
+            className={type === "credits" ? "pointer-events-none" : undefined}
+          >
+            Credits
+          </ToggleGroup.Item>
+        </ToggleGroup.Root>
       </div>
       <div className="w-full">{children}</div>
     </div>
