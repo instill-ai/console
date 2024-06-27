@@ -29,7 +29,8 @@ export type OrganizationSubscriptionPlan =
   | "PLAN_FREEMIUM"
   | "PLAN_TEAM"
   | "PLAN_TEAM_PRO"
-  | "PLAN_ENTERPRISE";
+  | "PLAN_ENTERPRISE"
+  | "PLAN_UNPAID";
 
 export type OrganizationSubscription = {
   plan: OrganizationSubscriptionPlan;

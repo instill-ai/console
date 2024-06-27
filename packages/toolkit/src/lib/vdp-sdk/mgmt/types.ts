@@ -41,7 +41,8 @@ export type User = {
 export type UserSubscriptionPlan =
   | "PLAN_UNSPECIFIED"
   | "PLAN_FREEMIUM"
-  | "PLAN_STARTER";
+  | "PLAN_STARTER"
+  | "PLAN_UNPAID";
 
 export type UserSubscription = {
   plan: UserSubscriptionPlan;
