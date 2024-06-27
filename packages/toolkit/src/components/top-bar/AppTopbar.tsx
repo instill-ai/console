@@ -16,9 +16,9 @@ import { useGuardPipelineBuilderUnsavedChangesNavigation } from "../../lib/hook"
 import { env } from "../../server";
 import { CETopbarDropdown } from "./CETopbarDropdown";
 import { CloudTopbarDropdown } from "./CloudTopbarDropdown";
+import { ExploreLink } from "./ExploreLink";
 import { NamespaceSwitch } from "./NamespaceSwitch";
 import { NavLinks } from "./NavLinks";
-import { TopbarMiscLinks } from "./TopbarMiscLinks";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -103,13 +103,10 @@ export const AppTopbar = ({
           </div>
         </div>
         <div className="flex flex-1 flex-row justify-end">
-          {topbarControllerChildren ? (
-            topbarControllerChildren
-          ) : (
-            <TopbarMiscLinks />
-          )}
+          {topbarControllerChildren ? topbarControllerChildren : null}
+          {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? <ExploreLink /> : null}
           {disabledUserDropdown ? null : (
-            <div className="ml-4 flex">
+            <div className="ml-6 flex">
               {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
                 <CloudTopbarDropdown />
               ) : (
