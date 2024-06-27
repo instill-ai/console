@@ -47,7 +47,7 @@ export const DashboardContainer = ({
             Pipeline
           </ToggleGroup.Item>
           <ToggleGroup.Item
-            value="explore"
+            value="credits"
             className={type === "credits" ? "pointer-events-none" : undefined}
           >
             Credits
