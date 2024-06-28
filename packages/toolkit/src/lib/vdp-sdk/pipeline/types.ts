@@ -71,7 +71,6 @@ export type PipelineStats = {
 };
 
 export type Pipeline = {
-  updated_at: string | number | Date;
   name: string;
   uid: string;
   id: string;
@@ -89,6 +88,7 @@ export type Pipeline = {
   permission: Permission;
   tags: string[];
   stats: PipelineStats;
+  rawRecipe: string;
 };
 
 export type OperatorDefinition = {
