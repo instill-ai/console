@@ -2,7 +2,7 @@ import {
   PipelineTriggerRecord,
   PipelineTriggersStatusSummary,
 } from "../vdp-sdk";
-import { getPipelineTriggersStatusSummary } from "./getPipelineTriggersSummary";
+import { calculatePercentageDelta } from "./calculatePercentageDelta";
 
 export function getTriggersSummary(
   triggers: PipelineTriggerRecord[],
@@ -14,21 +14,43 @@ export function getTriggersSummary(
   let pipelineErroredAmountPrevious = 0;
 
   triggers.forEach((trigger) => {
-    pipelineCompleteAmount += trigger.status === "STATUS_COMPLETED" ? 1 : 0;
-    pipelineErroredAmount += trigger.status === "STATUS_ERRORED" ? 1 : 0;
+    if (trigger.status === "STATUS_COMPLETED") {
+      pipelineCompleteAmount += 1;
+    }
+
+    if (trigger.status === "STATUS_ERRORED") {
+      pipelineErroredAmount += 1;
+    }
   });
 
   triggersPrevious.forEach((trigger) => {
-    pipelineCompleteAmountPrevious +=
-      trigger.status === "STATUS_COMPLETED" ? 1 : 0;
-    pipelineErroredAmountPrevious +=
-      trigger.status === "STATUS_ERRORED" ? 1 : 0;
+    if (trigger.status === "STATUS_COMPLETED") {
+      pipelineCompleteAmountPrevious += 1;
+    }
+
+    if (trigger.status === "STATUS_ERRORED") {
+      pipelineErroredAmountPrevious += 1;
+    }
   });
 
-  return getPipelineTriggersStatusSummary(
-    pipelineCompleteAmount,
-    pipelineCompleteAmountPrevious,
-    pipelineErroredAmount,
-    pipelineErroredAmountPrevious,
-  );
+  return {
+    completed: {
+      statusType: "STATUS_COMPLETED",
+      amount: pipelineCompleteAmount,
+      type: "pipeline",
+      delta: calculatePercentageDelta(
+        pipelineCompleteAmountPrevious,
+        pipelineCompleteAmount,
+      ),
+    },
+    errored: {
+      statusType: "STATUS_ERRORED",
+      amount: pipelineErroredAmount,
+      type: "pipeline",
+      delta: calculatePercentageDelta(
+        pipelineErroredAmountPrevious,
+        pipelineErroredAmount,
+      ),
+    },
+  };
 }

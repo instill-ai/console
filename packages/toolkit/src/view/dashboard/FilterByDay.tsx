@@ -1,13 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import cn from "clsx";
 
 import { Button, Icons, SelectOption } from "@instill-ai/design-system";
 
 import { dashboardOptions } from "../../lib";
-import { env } from "../../server";
 
 export type FilterProps = {
   setSelectedTimeOption: React.Dispatch<React.SetStateAction<SelectOption>>;
@@ -20,24 +18,6 @@ export const FilterByDay = ({
   selectedTimeOption,
   setSelectedTimeOption,
 }: FilterProps) => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const days = searchParams.get("days");
-
-  React.useEffect(() => {
-    if (days) {
-      const timeLineOption = dashboardOptions.timeLine.find(
-        (timeLineOption) => timeLineOption.value === days,
-      );
-      if (timeLineOption) {
-        setSelectedTimeOption(timeLineOption);
-      }
-    } else {
-      setSelectedTimeOption(dashboardOptions.timeLine[0]);
-    }
-  }, [days, setSelectedTimeOption]);
-
   return (
     <div className="flex flex-row-reverse space-x-4 space-x-reverse">
       <div className="border-semantic flex items-start justify-start">
@@ -52,12 +32,6 @@ export const FilterByDay = ({
             )}
             onClick={() => {
               setSelectedTimeOption(timeLineOption);
-              router.push(
-                `${
-                  new URL(pathname, env("NEXT_PUBLIC_CONSOLE_BASE_URL"))
-                    .pathname
-                }?days=${timeLineOption.value}`,
-              );
             }}
           >
             <p className="text-semantic-fg-primary product-body-text-4-semibold">
