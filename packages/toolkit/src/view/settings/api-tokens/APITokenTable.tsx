@@ -20,7 +20,7 @@ export const APITokenTable = (props: APITokenTableProps) => {
   const columns: ColumnDef<ApiToken>[] = [
     {
       accessorKey: "state",
-      header: () => <div className="min-w-[180px] text-left">Status</div>,
+      header: () => <div className="min-w-[100px] text-left">Status</div>,
       cell: ({ row }) => {
         return (
           <div className="text-left">
@@ -36,7 +36,7 @@ export const APITokenTable = (props: APITokenTableProps) => {
     },
     {
       accessorKey: "id",
-      header: () => <div className="min-w-[300px] text-left">Tokens</div>,
+      header: () => <div className="min-w-[200px] text-left">Tokens</div>,
       cell: ({ row }) => {
         return (
           <div className="text-left">
@@ -52,16 +52,16 @@ export const APITokenTable = (props: APITokenTableProps) => {
       accessorKey: "createTime",
       header: ({ column }) => {
         return (
-          <div className="text-center">
+          <div className="flex">
             <Button
-              className="gap-x-2 py-0"
+              className="gap-x-2 p-0"
               variant="tertiaryGrey"
               size="sm"
               onClick={() =>
                 column.toggleSorting(column.getIsSorted() === "asc")
               }
             >
-              <span className="min-w-[130px]">Date added</span>
+              <span className="text-left min-w-[130px]">Date added</span>
               <SortIcon type={column.getIsSorted()} />
             </Button>
           </div>
@@ -70,7 +70,7 @@ export const APITokenTable = (props: APITokenTableProps) => {
 
       cell: ({ row }) => {
         return (
-          <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
+          <div className="truncate text-left text-semantic-fg-secondary product-body-text-3-regular">
             {formatDate(row.getValue("createTime"))}
           </div>
         );
@@ -80,16 +80,16 @@ export const APITokenTable = (props: APITokenTableProps) => {
       accessorKey: "lastUseTime",
       header: ({ column }) => {
         return (
-          <div className="text-center">
+          <div className="flex">
             <Button
-              className="gap-x-2 py-0"
+              className="gap-x-2 p-0"
               variant="tertiaryGrey"
               size="sm"
               onClick={() =>
                 column.toggleSorting(column.getIsSorted() === "asc")
               }
             >
-              <span className="min-w-[130px]">Last Used</span>
+              <span className="min-w-[130px] text-left">Last Used</span>
               <SortIcon type={column.getIsSorted()} />
             </Button>
           </div>
@@ -98,10 +98,10 @@ export const APITokenTable = (props: APITokenTableProps) => {
 
       cell: ({ row }) => {
         return (
-          <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
+          <div className="truncate text-left text-semantic-fg-secondary product-body-text-3-regular">
             {row.getValue("lastUseTime")
               ? formatDate(row.getValue("lastUseTime"))
-              : null}
+              : "Never used"}
           </div>
         );
       },
