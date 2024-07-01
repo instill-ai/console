@@ -32,16 +32,16 @@ import { validateInstillResourceID } from "../../../server";
 
 const CreateSecretSchema = z
   .object({
-    id: z.string().min(1, "Secret id is required"),
+    name: z.string().min(1, "Secret name is required"),
     value: z.string(),
     description: z.string().optional().nullable(),
   })
   .superRefine((state, ctx) => {
-    if (!validateInstillResourceID(state.id)) {
+    if (!validateInstillResourceID(state.name)) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: InstillErrors.ResourceIDInvalidError,
-        path: ["id"],
+        path: ["name"],
       });
     }
   });
@@ -66,7 +66,7 @@ export const CreateSecretDialog = () => {
   const form = useForm<z.infer<typeof CreateSecretSchema>>({
     resolver: zodResolver(CreateSecretSchema),
     defaultValues: {
-      id: "",
+      name: "",
       value: "",
       description: "",
     },
@@ -76,7 +76,7 @@ export const CreateSecretDialog = () => {
 
   React.useEffect(() => {
     reset({
-      id: "",
+      name: "",
       value: "",
       description: "",
     });
@@ -89,7 +89,7 @@ export const CreateSecretDialog = () => {
     if (!accessToken || !me.isSuccess) return;
 
     const payload: CreateUserSecretPayload = {
-      id: data.id,
+      id: data.name,
       value: data.value,
       description: data.description ?? undefined,
     };
@@ -121,7 +121,7 @@ export const CreateSecretDialog = () => {
       if (!isAxiosError(error)) return;
 
       if (error.response?.status === 409) {
-        form.setError("id", {
+        form.setError("name", {
           type: "manual",
           message: "Secret name already exists",
         });
@@ -181,13 +181,11 @@ export const CreateSecretDialog = () => {
                 <div className="mb-6 flex flex-col gap-y-5">
                   <Form.Field
                     control={form.control}
-                    name="id"
+                    name="name"
                     render={({ field }) => {
                       return (
                         <Form.Item>
-                          <Form.Label htmlFor={field.name}>
-                            Secret ID *
-                          </Form.Label>
+                          <Form.Label htmlFor={field.name}>Name *</Form.Label>
                           <Form.Control>
                             <Input.Root>
                               <Input.Core

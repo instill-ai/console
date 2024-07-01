@@ -19,7 +19,7 @@ export const SecretTable = (props: APITokenTableProps) => {
   const columns: ColumnDef<Secret>[] = [
     {
       accessorKey: "id",
-      header: () => <div className="min-w-[200px] text-left">id</div>,
+      header: () => <div className="min-w-[200px] text-left">Name</div>,
       cell: ({ row }) => {
         return (
           <div className="flex flex-col">
@@ -35,16 +35,16 @@ export const SecretTable = (props: APITokenTableProps) => {
       accessorKey: "createTime",
       header: ({ column }) => {
         return (
-          <div className="text-center">
+          <div className="text-left">
             <Button
-              className="gap-x-2 py-0"
+              className="gap-x-2 p-0"
               variant="tertiaryGrey"
               size="sm"
               onClick={() =>
                 column.toggleSorting(column.getIsSorted() === "asc")
               }
             >
-              <span className="min-w-[130px]">Date added</span>
+              <span className="text-left">Date added</span>
               <SortIcon type={column.getIsSorted()} />
             </Button>
           </div>
@@ -53,7 +53,7 @@ export const SecretTable = (props: APITokenTableProps) => {
 
       cell: ({ row }) => {
         return (
-          <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
+          <div className="truncate text-left text-semantic-fg-secondary product-body-text-3-regular">
             {formatDate(row.getValue("createTime"))}
           </div>
         );
