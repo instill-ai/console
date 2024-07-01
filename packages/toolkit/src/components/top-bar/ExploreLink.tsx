@@ -14,8 +14,8 @@ export const ExploreLink = () => {
       <Link
         href="/hub"
         className={cn(
-          "-mb-2 flex h-8 flex-row gap-x-2 border-b-2 text-base font-semibold",
-          isActive ? "border-semantic-accent-default" : "border-transparent",
+          "-mb-2 flex h-8 flex-row gap-x-2 border-b-2 text-base font-semibold text-semantic-fg-disabled hover:text-semantic-accent-default",
+          isActive ? "text-semantic-fg-primary border-semantic-accent-default" : "border-transparent",
         )}
       >
         Explore
