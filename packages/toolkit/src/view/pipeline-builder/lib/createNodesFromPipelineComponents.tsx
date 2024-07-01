@@ -15,7 +15,7 @@ export type CreateNodesFromPipelineComponentsOptions = {
 
 export function createNodesFromPipelineComponents(
   component: PipelineComponentMap,
-  options?: CreateNodesFromPipelineComponentsOptions,
+  options?: CreateNodesFromPipelineComponentsOptions
 ) {
   const nodes: Node<NodeData>[] = [];
 
@@ -40,6 +40,7 @@ export function createNodesFromPipelineComponents(
           ...e,
           note: componentMetadata ? componentMetadata.note : null,
           metadata: e.metadata,
+          component: e.component ? e.component : {},
         },
         position: componentMetadata
           ? { x: componentMetadata.x, y: componentMetadata.y }

@@ -13,6 +13,7 @@ import ReactFlow, {
 
 import { GeneralRecord, Nullable, PipelineRecipe } from "../../../lib";
 import {
+  CustomEdge,
   composeEdgesFromNodes,
   createGraphLayout,
 } from "../../pipeline-builder";
@@ -26,6 +27,10 @@ const nodeTypes = {
   variableNode: VariableNode,
   responseNode: ResponseNode,
   generalNode: GeneralNode,
+};
+
+const edgeTypes = {
+  customEdge: CustomEdge,
 };
 
 export const Flow = ({
@@ -69,12 +74,13 @@ export const Flow = ({
       edges={edges}
       onEdgesChange={onEdgesChange}
       fitView={true}
-      minZoom={0.35}
+      minZoom={0.5}
       fitViewOptions={{
         includeHiddenNodes: true,
         padding: 10,
       }}
       nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
       onInit={setReactFlowInstance}
       proOptions={{ hideAttribution: true }}
       elevateNodesOnSelect={true}

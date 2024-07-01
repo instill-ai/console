@@ -35,7 +35,7 @@ export async function createUserPipelineMutation({
 
     const { data } = await client.post<CreatePipelineResponse>(
       `/${entityName}/pipelines`,
-      payload,
+      payload
     );
     return Promise.resolve(data.pipeline);
   } catch (err) {
@@ -47,6 +47,7 @@ export type UpdateUserPipelinePayload = {
   name: string;
   description?: string;
   recipe?: PipelineRecipe;
+  rawRecipe?: string;
   sharing?: PipelineSharing;
   metadata?: GeneralRecord;
   readme?: string;
@@ -68,7 +69,7 @@ export async function updateUserPipelineMutation({
 
     const { data } = await client.patch<UpdateUserPipelineResponse>(
       `/${payload.name}`,
-      payload,
+      payload
     );
     return Promise.resolve(data.pipeline);
   } catch (err) {
@@ -113,7 +114,7 @@ export async function renameUserPipelineMutation({
 
     const { data } = await client.post<RenameUserPipelineResponse>(
       `/${payload.name}/rename`,
-      payload,
+      payload
     );
 
     return Promise.resolve(data.pipeline);
@@ -150,7 +151,7 @@ export async function createUserPipelineReleaseMutation({
 
     const { data } = await client.post<CreateUserPipelineReleaseResponse>(
       `${pipelineName}/releases`,
-      payload,
+      payload
     );
 
     return Promise.resolve(data.release);
@@ -182,7 +183,7 @@ export async function updateUserPipelineReleaseMutation({
 
     const { data } = await client.patch<UpdateUserPipelineReleaseResponse>(
       `/${pipelineReleaseName}`,
-      payload,
+      payload
     );
     return Promise.resolve(data.release);
   } catch (err) {
@@ -230,7 +231,7 @@ export async function createUserSecretMutation({
 
     const { data } = await client.post<CreateUserSecretResponse>(
       `/${entityName}/secrets`,
-      payload,
+      payload
     );
 
     return Promise.resolve(data.secret);
@@ -276,7 +277,7 @@ export async function cloneNamespacePipelineMutation({
 
     const { data } = await client.post<CloneNamespacePipelineResponse>(
       `/${payload.pipelineName}/clone`,
-      payload,
+      payload
     );
 
     return Promise.resolve(data.pipeline);
