@@ -260,22 +260,15 @@ export const Head = ({
                           </Popover.Content>
                         </Popover.Root>
                       ) : null}
-                      {pipeline.isSuccess ? (
+                      {pipeline.isSuccess &&
+                      !isPublicPipeline(pipeline.data) ? (
                         <Tag
-                          className="my-auto h-6 !border-0 !py-0"
+                          className="my-auto h-6 gap-x-1 !border-0 !py-0 !text-sm"
                           variant="lightNeutral"
                           size="sm"
                         >
-                          {isPublicPipeline(pipeline.data) ? (
-                            <div className="flex flex-row gap-x-1">
-                              <span className="my-auto">Public</span>
-                            </div>
-                          ) : (
-                            <div className="flex flex-row gap-x-1">
-                              <span className="my-auto">Private</span>
-                              <Icons.Lock03 className="my-auto h-3 w-3 stroke-semantic-fg-primary" />
-                            </div>
-                          )}
+                          <Icons.Lock03 className="h-3 w-3 stroke-semantic-fg-primary" />
+                          Private
                         </Tag>
                       ) : null}
                     </React.Fragment>
