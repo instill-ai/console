@@ -8,6 +8,7 @@ import yaml from "js-yaml";
 import SourceMap from "js-yaml-source-map";
 
 import { InstillYamlSchema } from "./schema";
+import { GeneralRecord, Nullable } from "../../lib";
 
 const ajv = new Ajv({ allErrors: true });
 
@@ -17,16 +18,33 @@ type SourceLocation = {
   position: number;
 };
 
-export function validateYaml(recipe: string) {
+export function validateYaml(recipe: string, skipInstillFormatCheck = false) {
   // SourceMap will index the lines of the YAML file using properties paths as keys
   const yamlSourceMap: SourceMap = new SourceMap();
   const diagnostics: Diagnostic[] = [];
 
-  try {
-    const yamlData = yaml.load(recipe, {
-      listener: yamlSourceMap.listen(),
-    });
+  let yamlData: Nullable<GeneralRecord> = null;
 
+  try {
+    yamlData = yaml.load(recipe, {
+      listener: yamlSourceMap.listen(),
+    }) as GeneralRecord;
+  } catch (error) {
+    if (error instanceof yaml.YAMLException) {
+      diagnostics.push({
+        from: error.mark.position,
+        to: error.mark.position,
+        message: error.message,
+        severity: "error",
+      });
+    }
+  }
+
+  if (!yamlData || skipInstillFormatCheck) {
+    return diagnostics;
+  }
+
+  try {
     const validator = ajv.compile(InstillYamlSchema);
 
     validator(yamlData);
@@ -72,14 +90,8 @@ export function validateYaml(recipe: string) {
       }
     }
   } catch (error) {
-    if (error instanceof yaml.YAMLException) {
-      diagnostics.push({
-        from: error.mark.position,
-        to: error.mark.position,
-        message: error.message,
-        severity: "error",
-      });
-    }
+    console.log(error);
   }
+
   return diagnostics;
 }
