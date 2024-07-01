@@ -19,6 +19,7 @@ import {
   useRouteInfo,
   useShallow,
   useTriggerUserPipeline,
+  useUserNamespaces,
   useUserPipeline,
 } from "../../../lib";
 import { recursiveHelpers, useSortedReleases } from "../../pipeline-builder";
@@ -28,6 +29,7 @@ import { RunButton } from "./RunButton";
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
 type InOutPutProps = {
@@ -39,9 +41,11 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const shareCode = searchParams.get("view");
+  const namespaces = useUserNamespaces();
   const { toast } = useToast();
 
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, navigationNamespaceAnchor } =
+    useInstillStore(useShallow(selector));
   const [response, setResponse] =
     React.useState<Nullable<TriggerUserPipelineResponse>>(null);
 
@@ -157,6 +161,10 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
     }
 
     try {
+      const targetNamespace = namespaces.find(
+        (namespace) => namespace.id === navigationNamespaceAnchor,
+      );
+
       const data = await triggerPipeline.mutateAsync({
         pipelineName: routeInfo.data.pipelineName,
         accessToken,
@@ -165,6 +173,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
         },
         returnTraces: true,
         shareCode: shareCode ?? undefined,
+        requesterUid: targetNamespace ? targetNamespace.uid : undefined,
       });
 
       if (amplitudeIsInit) {

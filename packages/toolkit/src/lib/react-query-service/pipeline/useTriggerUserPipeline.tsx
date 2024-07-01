@@ -12,12 +12,14 @@ export function useTriggerUserPipeline() {
       accessToken,
       returnTraces,
       shareCode,
+      requesterUid,
     }: {
       pipelineName: string;
       payload: TriggerUserPipelinePayload;
       accessToken: Nullable<string>;
       returnTraces?: boolean;
       shareCode?: string;
+      requesterUid?: string;
     }) => {
       const response = await triggerUserPipelineAction({
         pipelineName,
@@ -25,6 +27,7 @@ export function useTriggerUserPipeline() {
         accessToken,
         returnTraces,
         shareCode,
+        requesterUid,
       });
 
       return Promise.resolve(response);

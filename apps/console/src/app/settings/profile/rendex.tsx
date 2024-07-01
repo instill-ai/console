@@ -6,6 +6,7 @@ import { useAppAccessToken } from "lib/use-app-access-token";
 import {
   AppTopbar,
   BreadcrumbWithLink,
+  NamespaceSwitch,
   PageBase,
   Setting,
   UserProfileTab,
@@ -19,7 +20,7 @@ export function ProfileSettingPageRender() {
 
   return (
     <PageBase>
-      <AppTopbar />
+      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="p-8">
           <div className="mb-[52px] w-full px-20">

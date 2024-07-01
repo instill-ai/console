@@ -41,7 +41,11 @@ const selector = (store: InstillStore) => ({
   updateEntitySecrets: store.updateEntitySecrets,
 });
 
-export const PipelineBuilderMainView = () => {
+export const PipelineBuilderMainView = ({
+  namespaceSwitch,
+}: {
+  namespaceSwitch: React.ReactNode;
+}) => {
   const router = useRouter();
   const [reactFlowInstance, setReactFlowInstance] =
     React.useState<Nullable<ReactFlowInstance>>(null);
@@ -120,6 +124,7 @@ export const PipelineBuilderMainView = () => {
             reactFlowInstance={reactFlowInstance}
           />
         }
+        namespaceSwitch={namespaceSwitch}
         disabledTopbarNav={true}
       />
       <PageBase.Container>

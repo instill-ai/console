@@ -7,6 +7,7 @@ import { useAppTrackToken } from "lib/useAppTrackToken";
 import {
   AppTopbar,
   ModelHubSettingPageMainView,
+  NamespaceSwitch,
   PageBase,
 } from "@instill-ai/toolkit";
 
@@ -18,7 +19,7 @@ export function ModelViewPageRender() {
 
   return (
     <PageBase>
-      <AppTopbar />
+      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="p-8">
           <ModelHubSettingPageMainView

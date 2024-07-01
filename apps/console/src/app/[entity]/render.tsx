@@ -3,7 +3,12 @@
 import { useAppAccessToken } from "lib/use-app-access-token";
 import { useAppTrackToken } from "lib/useAppTrackToken";
 
-import { AppTopbar, PageBase, UserProfileView } from "@instill-ai/toolkit";
+import {
+  AppTopbar,
+  NamespaceSwitch,
+  PageBase,
+  UserProfileView,
+} from "@instill-ai/toolkit";
 
 export function ProfilePageRender() {
   useAppAccessToken({
@@ -14,7 +19,7 @@ export function ProfilePageRender() {
 
   return (
     <PageBase>
-      <AppTopbar />
+      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="!px-0 py-8">
           <UserProfileView />

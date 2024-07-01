@@ -6,6 +6,7 @@ import { useAppAccessToken } from "lib/use-app-access-token";
 import {
   AppTopbar,
   BreadcrumbWithLink,
+  NamespaceSwitch,
   PageBase,
   Setting,
   UserAPITokenTab,
@@ -18,7 +19,7 @@ export function ApiTokenSettingdPageRender() {
   const router = useRouter();
   return (
     <PageBase>
-      <AppTopbar />
+      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="p-8">
           <div className="mb-[52px] w-full px-20">
