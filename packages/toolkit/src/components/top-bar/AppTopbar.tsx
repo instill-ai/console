@@ -30,11 +30,13 @@ export const AppTopbar = ({
   disabledUserDropdown,
   topbarControllerChildren,
   disabledTopbarNav,
+  namespaceSwitch,
 }: {
   className?: string;
   disabledUserDropdown?: boolean;
   topbarControllerChildren?: React.ReactNode;
   disabledTopbarNav?: boolean;
+  namespaceSwitch: React.ReactNode;
 }) => {
   const router = useRouter();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
@@ -87,7 +89,7 @@ export const AppTopbar = ({
             </svg>
 
             {me.isSuccess ? (
-              <NamespaceSwitch />
+              namespaceSwitch ?? <NamespaceSwitch />
             ) : (
               <Button
                 onClick={() => {
@@ -103,8 +105,11 @@ export const AppTopbar = ({
           </div>
         </div>
         <div className="flex flex-1 flex-row justify-end">
-          {topbarControllerChildren ? topbarControllerChildren : null}
-          {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? <ExploreLink /> : null}
+          {topbarControllerChildren ? (
+            topbarControllerChildren
+          ) : env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
+            <ExploreLink />
+          ) : null}
           {disabledUserDropdown ? null : (
             <div className="ml-6 flex">
               {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (

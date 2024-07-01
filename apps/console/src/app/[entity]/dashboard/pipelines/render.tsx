@@ -8,6 +8,7 @@ import {
   AppTopbar,
   DashboardContainer,
   DashboardPipelineListPageMainView,
+  NamespaceSwitch,
   PageBase,
 } from "@instill-ai/toolkit";
 
@@ -19,7 +20,7 @@ export function DashboardPageRender() {
 
   return (
     <PageBase>
-      <AppTopbar />
+      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="p-8">
           <DashboardContainer>

@@ -22,6 +22,7 @@ import {
   usePipelineTriggerRequestForm,
   useTriggerUserPipeline,
   useTriggerUserPipelineRelease,
+  useUserNamespaces,
 } from "../../../../../lib";
 import {
   composeEdgesFromNodes,
@@ -59,6 +60,7 @@ const selector = (store: InstillStore) => ({
   collapseAllNodes: store.collapseAllNodes,
   updateRecentlyUsedStartComponentFieldTypes:
     store.updateRecentlyUsedStartComponentFieldTypes,
+  navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
 export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
@@ -80,6 +82,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
     pipelineIsReadOnly,
     collapseAllNodes,
     updateRecentlyUsedStartComponentFieldTypes,
+    navigationNamespaceAnchor,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -90,6 +93,8 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
     React.useState<Nullable<string>>(null);
   const [isEditing, setIsEditing] = React.useState(false);
   const [isCreating, setIsCreating] = React.useState(false);
+
+  const namespace = useUserNamespaces();
 
   const form = useForm<z.infer<typeof TriggerNodeFreeFormSchema>>({
     resolver: zodResolver(TriggerNodeFreeFormSchema),
@@ -294,6 +299,10 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
 
     if (currentVersion === "latest") {
       try {
+        const tartgetNamespace = namespace.find(
+          (ns) => ns.id === navigationNamespaceAnchor,
+        );
+
         const data = await useTriggerPipeline.mutateAsync({
           pipelineName,
           accessToken,
@@ -301,6 +310,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
             inputs: [parsedStructuredData],
           },
           returnTraces: true,
+          requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
         });
 
         if (amplitudeIsInit) {

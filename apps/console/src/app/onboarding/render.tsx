@@ -3,13 +3,18 @@
 import { OnboardingForm } from "components";
 import { useAppAccessToken } from "lib/use-app-access-token";
 
-import { AppTopbar, PageBase, PageTitle } from "@instill-ai/toolkit";
+import {
+  AppTopbar,
+  NamespaceSwitch,
+  PageBase,
+  PageTitle,
+} from "@instill-ai/toolkit";
 
 export const OnboardingPageRender = () => {
   useAppAccessToken();
   return (
     <PageBase>
-      <AppTopbar />
+      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
         <PageBase.Content>
           <div className="flex flex-col">

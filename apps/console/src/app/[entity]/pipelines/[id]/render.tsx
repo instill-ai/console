@@ -3,7 +3,12 @@
 import { useAppAccessToken } from "lib/use-app-access-token";
 import { useAppTrackToken } from "lib/useAppTrackToken";
 
-import { AppTopbar, PageBase, ViewPipeline } from "@instill-ai/toolkit";
+import {
+  AppTopbar,
+  NamespaceSwitch,
+  PageBase,
+  ViewPipeline,
+} from "@instill-ai/toolkit";
 
 export function PipelineOverviewPageRender() {
   useAppAccessToken({
@@ -14,7 +19,7 @@ export function PipelineOverviewPageRender() {
 
   return (
     <PageBase>
-      <AppTopbar />
+      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="p-0">
           <ViewPipeline />

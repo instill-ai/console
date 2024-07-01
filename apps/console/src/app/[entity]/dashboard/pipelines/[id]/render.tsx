@@ -7,6 +7,7 @@ import { useAppTrackToken } from "lib/useAppTrackToken";
 import {
   AppTopbar,
   DashboardPipelineDetailsPageMainView,
+  NamespaceSwitch,
   PageBase,
 } from "@instill-ai/toolkit";
 
@@ -18,7 +19,7 @@ export function PipelineDashboardPageRender() {
 
   return (
     <PageBase>
-      <AppTopbar />
+      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="p-8">
           <DashboardPipelineDetailsPageMainView

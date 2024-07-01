@@ -20,6 +20,7 @@ export * from "./use-instill-store";
 export * from "./use-smart-hint";
 export * from "./vdp-sdk";
 export * from "./fillArrayWithZero";
+export * from "./isPublicModel";
 export * from "./isPublicPipeline";
 export * from "./toastInstillError";
 export * from "./useRouteInfo";

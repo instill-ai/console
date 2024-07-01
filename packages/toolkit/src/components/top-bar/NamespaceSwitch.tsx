@@ -14,13 +14,18 @@ import {
 
 import {
   InstillStore,
+  isPublicModel,
+  isPublicPipeline,
   Nullable,
+  pathnameEvaluator,
   useAuthenticatedUser,
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
   useNamespacesRemainingCredit,
   useRouteInfo,
   useShallow,
+  useUserModel,
+  useUserPipeline,
 } from "../../lib";
 import { useUserNamespaces } from "../../lib/useUserNamespaces";
 import { env } from "../../server";
@@ -69,6 +74,18 @@ export const NamespaceSwitch = () => {
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
+  });
+
+  const pipeline = useUserPipeline({
+    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+    accessToken,
+    enabled: enabledQuery && pathnameEvaluator.isPipelineOverviewPage(pathname),
+  });
+
+  const model = useUserModel({
+    modelName: routeInfo.isSuccess ? routeInfo.data.modelName : null,
+    accessToken,
+    enabled: enabledQuery && pathnameEvaluator.isModelOverviewPage(pathname),
   });
 
   const namespacesWithRemainingCredit = React.useMemo(() => {
@@ -208,6 +225,11 @@ export const NamespaceSwitch = () => {
     me.isSuccess,
     me.data,
     updateNavigationNamespaceAnchor,
+    pipeline.isSuccess,
+    pipeline.data,
+    model.isSuccess,
+    model.data,
+    pathname,
   ]);
 
   return (
@@ -265,6 +287,38 @@ export const NamespaceSwitch = () => {
           pathnameArray[1] = value;
           navigate(pathnameArray.join("/"));
           return;
+        }
+
+        // When we are at user's private pipeline, and user switch to
+        // organization, we will redirect user to the organization's
+        // pipelines page
+        if (pathnameEvaluator.isPipelineOverviewPage(pathname)) {
+          if (
+            pipeline.isSuccess &&
+            routeInfo.data.namespaceType === "NAMESPACE_USER" &&
+            !isPublicPipeline(pipeline.data)
+          ) {
+            if (targetNamespace) {
+              navigate(`/${value}/pipelines`);
+              return;
+            }
+          }
+        }
+
+        // When we are at user's private model, and user switch to
+        // organization, we will redirect user to the organization's
+        // pipelines page
+        if (pathnameEvaluator.isModelOverviewPage(pathname)) {
+          if (
+            model.isSuccess &&
+            routeInfo.data.namespaceType === "NAMESPACE_USER" &&
+            !isPublicModel(model.data)
+          ) {
+            if (targetNamespace) {
+              navigate(`/${value}/models`);
+              return;
+            }
+          }
         }
 
         // When the user is in regular namespace page, we need to switch the page

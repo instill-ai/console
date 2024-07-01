@@ -16,6 +16,7 @@ const selector = (store: InstillStore) => ({
 
 export type UserNamespace = {
   id: string;
+  uid: string;
   name: string;
   displayName: Nullable<string>;
   type: "user" | "organization";
@@ -58,6 +59,7 @@ export function useUserNamespaces() {
           ) {
             orgsAndUserList.push({
               id: org.organization.id,
+              uid: org.organization.uid,
               name: org.organization.name,
               type: "organization",
               avatarUrl: org.organization.profile?.avatar ?? null,
@@ -76,6 +78,7 @@ export function useUserNamespaces() {
       orgsAndUserList = [
         {
           id: me.data.id,
+          uid: me.data.uid,
           name: me.data.name,
           type: "user",
           avatarUrl: me.data.profile?.avatar ?? null,
