@@ -79,7 +79,7 @@ export const InstillYamlSchema = {
             type: {
               type: "string",
               description: "Please specify the component type",
-              enum: ["openai", "base64", "iterator"],
+              enum: ["openai", "base64", "iterator", "json"],
             },
             task: {
               type: "string",
