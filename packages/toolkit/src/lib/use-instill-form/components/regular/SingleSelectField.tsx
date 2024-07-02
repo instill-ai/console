@@ -71,7 +71,9 @@ export const SingleSelectField = ({
       } else {
         if (
           name === undefined &&
-          (path === "input.engine" || path === "input.model")
+          (path === "input.engine" ||
+            path === "input.model" ||
+            path === "input.model-name")
         ) {
           isInstillCreditField = true;
         }
