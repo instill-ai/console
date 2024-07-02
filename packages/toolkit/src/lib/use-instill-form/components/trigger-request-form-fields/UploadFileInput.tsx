@@ -12,19 +12,21 @@ export const UploadFileInput = React.forwardRef<
     fieldKey: string;
     disabled?: boolean;
     keyPrefix?: string;
+    className?: string;
   } & React.InputHTMLAttributes<HTMLInputElement>
 >((props, ref) => {
-  const { title, fieldKey, keyPrefix, disabled, ...passThrough } = props;
+  const { title, fieldKey, keyPrefix, disabled, className, ...passThrough } = props;
   const id = `upload-file-input-${fieldKey}-${keyPrefix}`;
 
   return (
     <label
       htmlFor={id}
       className={cn(
-        "flex rounded-full px-2 py-0.5 font-sans text-xs font-medium text-semantic-accent-default hover:bg-semantic-accent-bg",
+        "flex rounded-full px-2 py-0.5 font-sans text-xs font-medium hover:bg-semantic-accent-bg",
         disabled
-          ? "cursor-not-allowed bg-semantic-bg-secondary"
-          : "cursor-pointer underline",
+          ? "text-semantic-fg-disabled cursor-not-allowed bg-semantic-bg-secondary"
+          : "text-semantic-accent-default cursor-pointer underline",
+        className,
       )}
     >
       {title}
