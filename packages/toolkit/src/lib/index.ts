@@ -30,6 +30,7 @@ export * from "./formatNumberToLocale";
 export * from "./generateDateInPast";
 export * from "./convertSentenceToCamelCase";
 export * from "./useUserNamespaces";
+export * from "./stringToHash32Bit";
 
 export { debounce };
 

@@ -8,25 +8,13 @@ import { Form, ScrollArea, cn } from "@instill-ai/design-system";
 import {
   AutoFormFieldBaseProps,
   GeneralRecord,
+  stringToHash32Bit,
 } from "../../..";
 import { FileInputDropArea } from "../../../../components";
 import { readFileToBinary } from "../../../../view";
 import { FieldDescriptionTooltip } from "../common";
 import { FileListItem } from "../trigger-request-form-fields/FileListItem";
 import { UploadFileInput } from "../trigger-request-form-fields/UploadFileInput";
-
-// https://gist.github.com/jlevy/c246006675becc446360a798e2b2d781
-const simpleHash = (str: string) => {
-  let hash = 0;
-  
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    
-    hash = (hash << 5) - hash + char;
-  }
-
-  return (hash >>> 0).toString(36).padStart(7, '0');
-};
 
 export const ImagesField = ({
   form,
@@ -142,6 +130,7 @@ export const ImagesField = ({
                 await onUpdateFiles(field, fileList);
               }}
             >
+              , or{' '}
               <Form.Control>
                 <UploadFileInput
                   keyPrefix={keyPrefix}
@@ -170,14 +159,14 @@ export const ImagesField = ({
                       // Using a hash function here to avoid key collisions.
                       // base64 strings can have big chunks of similar char
                       // sequences. So simply using them as is doesn't work.
-                      const binaryKey = simpleHash(value.prompt_image_base64);
+                      const binaryKey = stringToHash32Bit(value.prompt_image_base64);
 
                       return (
                         <FileListItem
                           key={`${binaryKey}-item`}
                           name={binaryKey}
                           index={i}
-                          onDelete={(index: number) => onDeleteImage(field, index)}
+                          onDelete={(index?: number) => {if (typeof index !== 'undefined') { onDeleteImage(field, index) }}}
                         />
                       );
                     }
@@ -192,7 +181,7 @@ export const ImagesField = ({
                       key={`${path}-${e.name}-item`}
                       name={e.name}
                       index={i}
-                      onDelete={(index: number) => onDeleteImage(field, index)}
+                      onDelete={(index?: number) => {if (typeof index !== 'undefined') { onDeleteImage(field, index) }}}
                     />
                   ))}
                 </div>
