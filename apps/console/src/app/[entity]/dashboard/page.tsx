@@ -5,5 +5,5 @@ type Props = {
 };
 
 export default async function Page({ params }: Props) {
-  redirect(`/${params.entity}/dashboard/pipelines`);
+  redirect(`/${params.entity}/dashboard/pipeline`);
 }
