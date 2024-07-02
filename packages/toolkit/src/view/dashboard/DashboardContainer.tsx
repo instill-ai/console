@@ -1,34 +1,25 @@
 "use client";
 
 import * as React from "react";
-import { usePathname, useRouter } from "next/navigation";
 
-import { ToggleGroup } from "@instill-ai/design-system";
-
-import { useRouteInfo } from "../../lib";
-
-type DashboardType = "pipeline" | "credit";
+// type DashboardType = "pipeline" | "credit";
 
 export const DashboardContainer = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const routeInfo = useRouteInfo();
-
-  const type = React.useMemo(() => {
-    if (pathname.includes("pipeline")) {
-      return "pipeline";
-    } else if (pathname.includes("credit")) {
-      return "credit";
-    }
-  }, [pathname]);
+  // const type = React.useMemo(() => {
+  //   if (pathname.includes("pipeline")) {
+  //     return "pipeline";
+  //   } else if (pathname.includes("credit")) {
+  //     return "credit";
+  //   }
+  // }, [pathname]);
 
   return (
     <div className="flex w-full flex-col">
-      <div className="mb-10 flex flex-row items-center">
+      {/* <div className="mb-10 flex flex-row items-center">
         <ToggleGroup.Root
           type="single"
           value={type}
@@ -53,8 +44,8 @@ export const DashboardContainer = ({
             Credit
           </ToggleGroup.Item>
         </ToggleGroup.Root>
-      </div>
-      <div className="w-full">{children}</div>
+      </div> */}
+      <div className="w-full h-full">{children}</div>
     </div>
   );
 };
