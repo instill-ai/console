@@ -38,54 +38,47 @@ export function useUserNamespaces() {
   });
 
   const namespaces = React.useMemo(() => {
-    let orgsAndUserList: UserNamespace[] = [];
+    const orgsAndUserList: UserNamespace[] = [];
 
-    if (userMemberships.isSuccess) {
-      userMemberships.data
-        .filter((org) => org.state === "MEMBERSHIP_STATE_ACTIVE")
-        .sort((a, b) => {
-          if (a.organization.name < b.organization.name) {
-            return -1;
-          }
-          if (a.organization.name > b.organization.name) {
-            return 1;
-          }
-          return 0;
-        })
-        .forEach((org) => {
-          if (
-            orgsAndUserList.findIndex((e) => e.id === org.organization.id) ===
-            -1
-          ) {
-            orgsAndUserList.push({
-              id: org.organization.id,
-              uid: org.organization.uid,
-              name: org.organization.name,
-              type: "organization",
-              avatarUrl: org.organization.profile?.avatar ?? null,
-              displayName: org.organization.profile?.displayName ?? null,
-            });
-          }
-        });
+    if (!userMemberships.isSuccess || !me.isSuccess) {
+      return orgsAndUserList;
     }
 
-    if (
-      me.isSuccess &&
-      me.data.id &&
-      me.data.name &&
-      orgsAndUserList.findIndex((e) => e.id === me.data.id) === -1
-    ) {
-      orgsAndUserList = [
-        {
-          id: me.data.id,
-          uid: me.data.uid,
-          name: me.data.name,
-          type: "user",
-          avatarUrl: me.data.profile?.avatar ?? null,
-          displayName: me.data.profile?.displayName ?? null,
-        },
-        ...orgsAndUserList,
-      ];
+    userMemberships.data
+      .filter((org) => org.state === "MEMBERSHIP_STATE_ACTIVE")
+      .sort((a, b) => {
+        if (a.organization.name < b.organization.name) {
+          return -1;
+        }
+        if (a.organization.name > b.organization.name) {
+          return 1;
+        }
+        return 0;
+      })
+      .forEach((org) => {
+        if (
+          orgsAndUserList.findIndex((e) => e.id === org.organization.id) === -1
+        ) {
+          orgsAndUserList.push({
+            id: org.organization.id,
+            uid: org.organization.uid,
+            name: org.organization.name,
+            type: "organization",
+            avatarUrl: org.organization.profile?.avatar ?? null,
+            displayName: org.organization.profile?.displayName ?? null,
+          });
+        }
+      });
+
+    if (orgsAndUserList.findIndex((e) => e.id === me.data.id) === -1) {
+      orgsAndUserList.push({
+        id: me.data.id,
+        uid: me.data.uid,
+        name: me.data.name,
+        type: "user",
+        avatarUrl: me.data.profile?.avatar ?? null,
+        displayName: me.data.profile?.displayName ?? null,
+      });
     }
 
     return orgsAndUserList;
