@@ -8,7 +8,7 @@ export const NoVersionsPlaceholder = () => {
       <ul>
         <li>
           <a
-            className="text-semantic-accent-default underline"
+            className="text-semantic-accent-default underline font-semibold text-sm"
             href="https://www.instill.tech/docs/model/create/prepare"
             rel="noopener noreferrer"
             target="_blank"
@@ -18,7 +18,7 @@ export const NoVersionsPlaceholder = () => {
         </li>
         <li>
           <a
-            className="text-semantic-accent-default underline"
+            className="text-semantic-accent-default underline font-semibold text-sm"
             href="https://www.instill.tech/docs/model/create/build"
             rel="noopener noreferrer"
             target="_blank"
@@ -28,7 +28,7 @@ export const NoVersionsPlaceholder = () => {
         </li>
         <li>
           <a
-            className="text-semantic-accent-default underline"
+            className="text-semantic-accent-default underline font-semibold text-sm"
             href="https://www.instill.tech/docs/model/create/push"
             rel="noopener noreferrer"
             target="_blank"
