@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.50.0-beta](https://github.com/instill-ai/console/compare/v0.49.2-beta...v0.50.0-beta) (2024-07-02)
+
+
+### Features
+
+* **component:** add email and anthropic icon ([#1266](https://github.com/instill-ai/console/issues/1266)) ([49417af](https://github.com/instill-ai/console/commit/49417af86588bb7aa70283b8d884a3db79f54ad2))
+* **dashboard:** add credit usage chart on dashboard ([#1265](https://github.com/instill-ai/console/issues/1265)) ([2304de7](https://github.com/instill-ai/console/commit/2304de7073f73f27c993e36899f70493ae8d87b8))
+* **dashboard:** revamp dashboard pathname to use singular noun ([#1276](https://github.com/instill-ai/console/issues/1276)) ([e1467f4](https://github.com/instill-ai/console/commit/e1467f4eed8054d6da19ec5f7ec246b6f7b91c57))
+
+
+### Bug Fixes
+
+* fix prettier issue around root folder and vscode plugin ([#1258](https://github.com/instill-ai/console/issues/1258)) ([d3eac49](https://github.com/instill-ai/console/commit/d3eac498ec78872392c9c5072c1b9aed303fc24f))
+* **namespace-switch:** fix namespace-switch not guard user private resource ([#1267](https://github.com/instill-ai/console/issues/1267)) ([3694ce8](https://github.com/instill-ai/console/commit/3694ce8c24529be6e1bdf9800fd3c05381c08fe4))
+
+
+### Miscellaneous
+
+* use prettier to sort import order ([#1261](https://github.com/instill-ai/console/issues/1261)) ([4640c24](https://github.com/instill-ai/console/commit/4640c24ce73940d204111880b8bb367d690e32d1))
+
 ## [0.49.2-beta](https://github.com/instill-ai/console/compare/v0.49.1-beta...v0.49.2-beta) (2024-06-20)
 
 

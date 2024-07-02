@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.6.0...@instill-ai/design-tokens-v0.6.1) (2024-07-02)
+
+
+### Bug Fixes
+
+* fix prettier issue around root folder and vscode plugin ([#1258](https://github.com/instill-ai/console/issues/1258)) ([d3eac49](https://github.com/instill-ai/console/commit/d3eac498ec78872392c9c5072c1b9aed303fc24f))
+
+
+### Miscellaneous
+
+* use prettier to sort import order ([#1261](https://github.com/instill-ai/console/issues/1261)) ([4640c24](https://github.com/instill-ai/console/commit/4640c24ce73940d204111880b8bb367d690e32d1))
+
 ## [0.6.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.5.4...@instill-ai/design-tokens-v0.6.0) (2024-06-06)
 
 
