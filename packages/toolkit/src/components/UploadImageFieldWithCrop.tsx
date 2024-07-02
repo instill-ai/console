@@ -3,13 +3,14 @@
 import * as React from "react";
 import cn from "clsx";
 import AvatarEditor from "react-avatar-editor";
-import { UseFormReturn } from "react-hook-form";
+import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
-import { Button, Dialog, Form, Input } from "@instill-ai/design-system";
+import { Button, Dialog, Form, Icons, Input, Nullable } from "@instill-ai/design-system";
 
 import { FormLabel } from "../view/settings/FormLabel";
 import { ImageWithFallback } from "./ImageWithFallback";
+import { stringToHash32Bit } from "../lib";
 
 const DEFAULT_DIMENSIONS = {
   width: 300,
@@ -24,6 +25,7 @@ export const UploadImageFieldWithCrop = ({
   dimensions = DEFAULT_DIMENSIONS,
   rounded,
   showAsOptional,
+  isDeletable,
 }: {
   fieldName: string;
   title: string;
@@ -36,8 +38,10 @@ export const UploadImageFieldWithCrop = ({
   };
   rounded?: boolean;
   showAsOptional?: boolean;
+  isDeletable?: boolean;
 }) => {
-  const [image, setImage] = React.useState<string | File | null>(null);
+  const [isHovered, setIsHovered] = React.useState(false);
+  const [image, setImage] = React.useState<Nullable<string | File>>(null);
   const [openImage, setOpenImage] = React.useState<boolean>(false);
   const editorRef = React.useRef<AvatarEditor>(null);
   const [imageInputId] = React.useState(uuidv4());
@@ -61,6 +65,21 @@ export const UploadImageFieldWithCrop = ({
     form.resetField(fieldName);
   }
 
+  const onUpdate = (field: ControllerRenderProps,file?: File) => {
+    if (file) {
+      const reader = new FileReader();
+      
+      reader.onload = () => {
+        const result = reader.result;
+        field.onChange(result);
+        setImage(String(result));
+      };
+      
+      reader.readAsDataURL(file);
+      setOpenImage(true);
+    }
+  }
+
   return (
     <React.Fragment>
       <Form.Field
@@ -71,49 +90,73 @@ export const UploadImageFieldWithCrop = ({
             <Form.Item className="w-full">
               <FormLabel title={title} optional={showAsOptional} />
               <Form.Control>
-                <div>
-                  <label
-                    htmlFor={`upload-image-field-${imageInputId}`}
-                    className="flex w-full cursor-pointer flex-col items-center justify-center rounded border border-dashed border-semantic-bg-line bg-semantic-bg-base-bg py-4 text-semantic-fg-secondary product-body-text-3-medium"
-                  >
-                    <ImageWithFallback
-                      src={image ? String(image) : field.value}
-                      alt={title}
-                      className={cn(
-                        "h-[150px] object-contain",
-                        rounded ? "rounded-full" : null,
-                      )}
-                      width={150}
-                      height={150}
-                      fallbackImg={placeholder || <p>Upload your image</p>}
+                <label
+                  htmlFor={`upload-image-field-${imageInputId}`}
+                  className={cn(
+                    "cursor-pointer flex w-full flex-col items-center justify-center py-4 rounded-sm border border-semantic-bg-line [&>*]:pointer-events-none",
+                    isHovered ? "border-semantic-accent-hover outline outline-1 outline-semantic-accent-hover" : "[&_label]:!pointer-events-auto"
+                  )}
+                  onDragOver={(event) => event.preventDefault()}
+                  onDrop={async (event) => {
+                    event.preventDefault();
+
+                    onUpdate(field, event.dataTransfer.files?.[0]);
+                    setIsHovered(false);
+                  }}
+                  onDragEnter={() => setIsHovered(true)}
+                  onDragLeave={() => setIsHovered(false)}
+                >
+                  <ImageWithFallback
+                    src={image ? String(image) : field.value}
+                    alt={title}
+                    className={cn(
+                      "h-[150px] object-contain",
+                      rounded ? "rounded-full" : null,
+                    )}
+                    width={150}
+                    height={150}
+                    fallbackImg={placeholder || (
+                      <div className="py-6 gap-y-4 flex flex-col items-center pointer-events-none">
+                        <Icons.Upload01 className="h-8 w-8 [&>path]:stroke-[1.5] stroke-semantic-fg-secondary" />
+                        <p className="text-xs text-semantic-fg-primary">Drag-and-drop a file, or <span className="text-semantic-accent-default">browse computer</span></p>
+                      </div>
+                    )}
+                  />
+                  <Input.Root className="hidden">
+                    <Input.Core
+                      {...field}
+                      id={`upload-image-field-${imageInputId}`}
+                      type="file"
+                      accept="images/*"
+                      value={undefined}
+                      onChange={async (e) => {
+                        onUpdate(field, e.target.files?.[0]);
+
+                        // reset the input value so selecting the same file can trigger onChange
+                        e.target.value = "";
+                      }}
                     />
-                    <Input.Root className="hidden">
-                      <Input.Core
-                        {...field}
-                        id={`upload-image-field-${imageInputId}`}
-                        type="file"
-                        accept="images/*"
-                        value={undefined}
-                        onChange={async (e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            const reader = new FileReader();
-                            reader.onload = () => {
-                              const result = reader.result;
-                              field.onChange(result);
-                              setImage(String(result));
-                              // reset the input value so selecting the same file can trigger onChange
-                              e.target.value = "";
-                            };
-                            reader.readAsDataURL(file);
-                            setOpenImage(true);
-                          }
-                        }}
-                      />
-                    </Input.Root>
-                  </label>
-                </div>
+                  </Input.Root>
+                </label>
               </Form.Control>
+              {((isDeletable && field.value) || image) ? (
+                <div className="flex w-full flex-row rounded border border-semantic-bg-line px-2 py-1.5">
+                  <Icons.File05 className="mr-2 h-5 w-5 stroke-semantic-fg-secondary" />
+                  <p className="w-[180px] truncate text-semantic-fg-primary product-body-text-3-regular">
+                    {image && typeof image !== 'string' ? image.name : stringToHash32Bit(image || field.value)}
+                  </p>
+                  <button
+                    onClick={() => {
+                      field.onChange('');
+                      setImage(null);
+                    }}
+                    className="ml-auto rounded p-1 hover:bg-semantic-bg-secondary"
+                    type="button"
+                  >
+                    <Icons.X className="h-4 w-4 stroke-semantic-fg-secondary" />
+                  </button>
+                </div>
+              ) : null}
               <Form.Message />
             </Form.Item>
           );

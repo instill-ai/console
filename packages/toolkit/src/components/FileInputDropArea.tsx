@@ -38,7 +38,7 @@ export const FileInputDropArea = ({
       onDragLeave={() => setIsHovered(false)}
     >
       <Icons.Upload01 className="h-8 w-8 [&>path]:stroke-[1.5]" />
-      <p className="text-xs">Drag-and-drop a file, or{' '}{children}</p>
+      <p className="text-xs">Drag-and-drop a file{children}</p>
     </div>
   );
 };

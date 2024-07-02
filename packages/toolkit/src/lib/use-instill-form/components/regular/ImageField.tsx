@@ -64,6 +64,7 @@ export const ImageField = ({
                 onUpdateFile(field, fileList?.[0]);
               }}
             >
+              , or{' '}
               <Form.Control>
                 <UploadFileInput
                   keyPrefix={path}

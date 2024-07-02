@@ -8,8 +8,8 @@ export const FileListItem = ({
   index,
 }: {
   name: string;
-  onDelete: (i: number) => void;
-  index: number;
+  onDelete: (i?: number) => void;
+  index?: number;
 }) => {
   return (
     <div className="flex w-full flex-row rounded border border-semantic-bg-line px-2 py-1.5">
