@@ -2,7 +2,7 @@
 
 import { Resizable } from "@instill-ai/design-system";
 
-import { AppTopbar, PageBase } from "../../components";
+import { AppTopbar, NamespaceSwitch, PageBase } from "../../components";
 import {
   InstillStore,
   useInstillStore,
@@ -10,10 +10,10 @@ import {
   useShallow,
   useUserPipeline,
 } from "../../lib";
-import { Editor } from "./Editor";
-import { Flow } from "./flow";
 import { ComponentCmdk } from "./cmdk";
+import { Editor } from "./Editor";
 import { EditorProvider } from "./EditorContext";
+import { Flow } from "./flow";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -32,7 +32,11 @@ export const RecipeEditorView = () => {
 
   return (
     <PageBase>
-      <AppTopbar topbarControllerChildren={<></>} disabledTopbarNav={true} />
+      <AppTopbar
+        namespaceSwitch={<NamespaceSwitch />}
+        topbarControllerChildren={<></>}
+        disabledTopbarNav={true}
+      />
       <PageBase.Container>
         <EditorProvider>
           <div className="flex h-[calc(100vh-var(--topbar-controller-height))] w-full flex-col">
