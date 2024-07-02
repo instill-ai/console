@@ -44,6 +44,7 @@ export function useCreditConsumptionChartRecords({
 
   return useQuery({
     queryKey: [
+      owner,
       "charts",
       "creditConsumption",
       startDate,
