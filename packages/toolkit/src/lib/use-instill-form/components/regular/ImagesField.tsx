@@ -3,7 +3,7 @@
 import * as React from "react";
 import { ControllerRenderProps } from "react-hook-form";
 
-import { Form, ScrollArea, cn } from "@instill-ai/design-system";
+import { cn, Form, ScrollArea } from "@instill-ai/design-system";
 
 import {
   AutoFormFieldBaseProps,
@@ -52,7 +52,7 @@ export const ImagesField = ({
 
       for (const file of fileList) {
         const binary = await readFileToBinary(file);
-        
+
         files.push(file);
         binaries.push({
           prompt_image_base64: binary,
@@ -65,7 +65,7 @@ export const ImagesField = ({
 
       for (const file of fileList) {
         const binary = await readFileToBinary(file);
-        
+
         files.push(file);
         binaries.push(binary);
       }
@@ -79,34 +79,32 @@ export const ImagesField = ({
   };
 
   const onDeleteImage = async (field: ControllerRenderProps, i: number) => {
-    const newFiles = imageFiles.filter(
-      (_, index) => index !== i,
-    );
+    const newFiles = imageFiles.filter((_, index) => index !== i);
 
     if (instillModelPromptImageBase64ObjectFormat) {
       const binaries: GeneralRecord[] = [];
-      
+
       for (const file of newFiles) {
         const binary = await readFileToBinary(file);
         binaries.push({
           prompt_image_base64: binary,
         });
       }
-      
+
       field.onChange(binaries);
     } else {
       const binaries: string[] = [];
-      
+
       for (const file of newFiles) {
         const binary = await readFileToBinary(file);
         binaries.push(binary);
       }
-      
+
       field.onChange(binaries);
     }
 
     setImageFiles(newFiles);
-  }
+  };
 
   return isHidden ? null : (
     <Form.Field
@@ -130,7 +128,7 @@ export const ImagesField = ({
                 await onUpdateFiles(field, fileList);
               }}
             >
-              , or{' '}
+              , or{" "}
               <Form.Control>
                 <UploadFileInput
                   keyPrefix={keyPrefix}
@@ -151,22 +149,34 @@ export const ImagesField = ({
               </Form.Control>
             </FileInputDropArea>
             {instillModelPromptImageBase64ObjectFormat &&
-            (Array.isArray(values) && values.length > 0) ? (
-              <ScrollArea.Root className={cn("nowheel rounded-sm border border-semantic-bg-line p-2", values.length > 4 ? "h-[216px]" : "")}>
+            Array.isArray(values) &&
+            values.length > 0 ? (
+              <ScrollArea.Root
+                className={cn(
+                  "nowheel rounded-sm border border-semantic-bg-line p-2",
+                  values.length > 4 ? "h-[216px]" : "",
+                )}
+              >
                 <div className="flex h-full flex-col gap-y-2">
                   {values.map((value, i) => {
                     if (value.prompt_image_base64) {
                       // Using a hash function here to avoid key collisions.
                       // base64 strings can have big chunks of similar char
                       // sequences. So simply using them as is doesn't work.
-                      const binaryKey = stringToHash32Bit(value.prompt_image_base64);
+                      const binaryKey = stringToHash32Bit(
+                        value.prompt_image_base64,
+                      );
 
                       return (
                         <FileListItem
                           key={`${binaryKey}-item`}
                           name={binaryKey}
                           index={i}
-                          onDelete={(index?: number) => {if (typeof index !== 'undefined') { onDeleteImage(field, index) }}}
+                          onDelete={(index?: number) => {
+                            if (typeof index !== "undefined") {
+                              onDeleteImage(field, index);
+                            }
+                          }}
                         />
                       );
                     }
@@ -174,14 +184,23 @@ export const ImagesField = ({
                 </div>
               </ScrollArea.Root>
             ) : imageFiles.length > 0 ? (
-              <ScrollArea.Root className={cn("nowheel rounded-sm border border-semantic-bg-line p-2", imageFiles.length > 4 ? "h-[216px]" : "")}>
+              <ScrollArea.Root
+                className={cn(
+                  "nowheel rounded-sm border border-semantic-bg-line p-2",
+                  imageFiles.length > 4 ? "h-[216px]" : "",
+                )}
+              >
                 <div className="flex h-full flex-col gap-y-2">
                   {imageFiles.map((e, i) => (
                     <FileListItem
                       key={`${path}-${e.name}-item`}
                       name={e.name}
                       index={i}
-                      onDelete={(index?: number) => {if (typeof index !== 'undefined') { onDeleteImage(field, index) }}}
+                      onDelete={(index?: number) => {
+                        if (typeof index !== "undefined") {
+                          onDeleteImage(field, index);
+                        }
+                      }}
                     />
                   ))}
                 </div>

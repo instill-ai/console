@@ -15,7 +15,8 @@ export const UploadFileInput = React.forwardRef<
     className?: string;
   } & React.InputHTMLAttributes<HTMLInputElement>
 >((props, ref) => {
-  const { title, fieldKey, keyPrefix, disabled, className, ...passThrough } = props;
+  const { title, fieldKey, keyPrefix, disabled, className, ...passThrough } =
+    props;
   const id = `upload-file-input-${fieldKey}-${keyPrefix}`;
 
   return (
