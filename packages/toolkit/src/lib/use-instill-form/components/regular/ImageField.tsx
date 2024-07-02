@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { ControllerRenderProps } from "react-hook-form";
 
 import { Form } from "@instill-ai/design-system";
 
@@ -30,6 +31,17 @@ export const ImageField = ({
 
   const value = form.getValues(path);
 
+  const onUpdateFile = async (field: ControllerRenderProps, file?: File) => {
+    if (file) {
+      const binary = await readFileToBinary(file);
+
+      field.onChange(binary);
+      setImageFile(file);
+    }
+
+    return;
+  };
+
   return isHidden ? null : (
     <Form.Field
       key={path}
@@ -46,7 +58,15 @@ export const ImageField = ({
               </Form.Label>
               <FieldDescriptionTooltip description={description} />
             </div>
-            <div className="w-full">
+            <div
+              className="w-full"
+              onDrop={async (event) => {
+                event.preventDefault();
+
+                onUpdateFile(field, event.dataTransfer.files[0]);
+              }}
+              onDragOver={(event) => event.preventDefault()}
+            >
               {imageFile ? (
                 <img
                   key={`${path}-${imageFile.name}`}
@@ -81,13 +101,12 @@ export const ImageField = ({
                   title="Upload image"
                   fieldKey={path}
                   accept="image/*"
-                  onChange={async (e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      const binary = await readFileToBinary(file);
-                      field.onChange(binary);
-                      setImageFile(file);
-                    }
+                  onChange={async (event) => {
+                    await onUpdateFile(field, event.target.files?.[0]);
+
+                    // Reset the input value so we can use the same file again
+                    // after we delete it
+                    event.target.value = "";
                   }}
                   disabled={disabled}
                 />

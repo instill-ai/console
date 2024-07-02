@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { ControllerRenderProps } from "react-hook-form";
 
 import { Form, ScrollArea } from "@instill-ai/design-system";
 
@@ -36,6 +37,45 @@ export const ImagesField = ({
 
   const values = form.getValues(path);
 
+  const onUpdateFiles = async (
+    field: ControllerRenderProps,
+    fileList: FileList | null,
+  ) => {
+    if (!fileList || fileList.length === 0) {
+      return;
+    }
+
+    const files: File[] = [];
+
+    if (instillModelPromptImageBase64ObjectFormat) {
+      const binaries: GeneralRecord[] = [];
+
+      for (const file of e.target.files) {
+        const binary = await readFileToBinary(file);
+        files.push(file);
+        binaries.push({
+          prompt_image_base64: binary,
+        });
+      }
+
+      field.onChange(binaries);
+    } else {
+      const binaries: string[] = [];
+
+      for (const file of e.target.files) {
+        const binary = await readFileToBinary(file);
+        files.push(file);
+        binaries.push(binary);
+      }
+
+      field.onChange(binaries);
+    }
+
+    setImageFiles((prev) => [...prev, ...files]);
+
+    return;
+  };
+
   return isHidden ? null : (
     <Form.Field
       key={keyPrefix ? `${keyPrefix}-${path}` : path}
@@ -52,7 +92,15 @@ export const ImagesField = ({
               </Form.Label>
               <FieldDescriptionTooltip description={description} />
             </div>
-            <div className="grid w-full grid-flow-row grid-cols-4 overflow-hidden rounded-sm border border-semantic-bg-line">
+            <div
+              className="grid w-full grid-flow-row grid-cols-4 overflow-hidden rounded-sm border border-semantic-bg-line"
+              onDrop={async (event) => {
+                event.preventDefault();
+
+                await onUpdateFiles(field, event.dataTransfer.files);
+              }}
+              onDragOver={(event) => event.preventDefault()}
+            >
               {instillModelPromptImageBase64ObjectFormat &&
               Array.isArray(values) ? (
                 fillArrayWithZeros(values, 8)
@@ -99,36 +147,12 @@ export const ImagesField = ({
                   title="Upload images"
                   accept="images/*"
                   multiple={true}
-                  onChange={async (e) => {
-                    if (e.target.files && e.target.files.length > 0) {
-                      const files: File[] = [];
+                  onChange={async (event) => {
+                    await onUpdateFiles(field, event.target.files);
 
-                      if (instillModelPromptImageBase64ObjectFormat) {
-                        const binaries: GeneralRecord[] = [];
-                        for (const file of e.target.files) {
-                          const binary = await readFileToBinary(file);
-                          files.push(file);
-                          binaries.push({
-                            prompt_image_base64: binary,
-                          });
-                        }
-                        field.onChange(binaries);
-                      } else {
-                        const binaries: string[] = [];
-                        for (const file of e.target.files) {
-                          const binary = await readFileToBinary(file);
-                          files.push(file);
-                          binaries.push(binary);
-                        }
-                        field.onChange(binaries);
-                      }
-
-                      setImageFiles((prev) => [...prev, ...files]);
-
-                      // Reset the input value so we can use the same file again
-                      // after we delete it
-                      e.target.value = "";
-                    }
+                    // Reset the input value so we can use the same file again
+                    // after we delete it
+                    event.target.value = "";
                   }}
                   disabled={disabled}
                 />
