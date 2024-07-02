@@ -1,6 +1,6 @@
 "use client";
-import * as React from "react";
 
+import * as React from "react";
 import { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 
 type EditorContextValue = {
@@ -8,7 +8,7 @@ type EditorContextValue = {
 };
 
 const EditorContext = React.createContext<EditorContextValue | undefined>(
-  undefined
+  undefined,
 );
 
 export const useEditor = () => {
@@ -21,8 +21,6 @@ export const useEditor = () => {
 
 export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
   const editorRef = React.useRef<ReactCodeMirrorRef>(null);
-
-  console.log(editorRef.current);
 
   return (
     <EditorContext.Provider value={{ editorRef }}>
