@@ -7,7 +7,7 @@ import { ToggleGroup } from "@instill-ai/design-system";
 
 import { useRouteInfo } from "../../lib";
 
-type DashboardType = "pipeline" | "credits";
+type DashboardType = "pipeline" | "credit";
 
 export const DashboardContainer = ({
   children,
@@ -21,8 +21,8 @@ export const DashboardContainer = ({
   const type = React.useMemo(() => {
     if (pathname.includes("pipeline")) {
       return "pipeline";
-    } else if (pathname.includes("credits")) {
-      return "credits";
+    } else if (pathname.includes("credit")) {
+      return "credit";
     }
   }, [pathname]);
 
@@ -34,9 +34,9 @@ export const DashboardContainer = ({
           value={type}
           onValueChange={(value: DashboardType) => {
             if (value === "pipeline") {
-              router.push(`/${routeInfo.data.namespaceId}/dashboard/pipelines`);
+              router.push(`/${routeInfo.data.namespaceId}/dashboard/pipeline`);
             } else {
-              router.push(`/${routeInfo.data.namespaceId}/dashboard/credits`);
+              router.push(`/${routeInfo.data.namespaceId}/dashboard/credit`);
             }
           }}
         >
@@ -47,10 +47,10 @@ export const DashboardContainer = ({
             Pipeline
           </ToggleGroup.Item>
           <ToggleGroup.Item
-            value="credits"
-            className={type === "credits" ? "pointer-events-none" : undefined}
+            value="credit"
+            className={type === "credit" ? "pointer-events-none" : undefined}
           >
-            Credits
+            Credit
           </ToggleGroup.Item>
         </ToggleGroup.Root>
       </div>

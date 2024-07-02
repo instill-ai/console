@@ -32,7 +32,7 @@ const navLinkItems: NavLinkProps[] = [
     title: "Models",
   },
   {
-    pathname: "dashboard",
+    pathname: "dashboard/pipeline",
     Icon: Icons.BarChartSquare02,
     title: "Dashboard",
   },
