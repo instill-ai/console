@@ -32,11 +32,22 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
   const columns: ColumnDef<ModelVersion>[] = [
     {
       accessorKey: "version",
-      header: () => <div className="min-w-96 text-left">Version</div>,
+      header: () => <div className="text-left">Version</div>,
       cell: ({ row }) => {
         return (
-          <div className="font-normal text-semantic-bg-secondary-secondary">
+          <div className="font-normal text-semantic-bg-secondary-secondary break-all">
             {row.getValue("version")}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "digest",
+      header: () => <div className="text-left">Digest</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+            {row.getValue("digest")}
           </div>
         );
       },
@@ -112,19 +123,23 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
   };
 
   return (
-    <DataTable
-      columns={columns}
-      data={currentPageData}
-      pageSize={paginationState.pageSize}
-      isLoading={
-        versions.isLoading || versions.isFetching || versions.isFetchingNextPage
-      }
-      loadingRows={paginationState.pageSize}
-      manualPagination={true}
-      pageCount={pageCount}
-      onPaginationStateChange={onPaginationStateChange}
-      showPageNumbers={false}
-      paginationState={paginationState}
-    />
+    <div
+      className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th:nth-child(1)]:w-60 [&_table_th:nth-child(2)]:w-auto [&_table_th:nth-child(3)]:w-40 [&_table_th:nth-child(4)]:w-52"
+    >
+      <DataTable
+        columns={columns}
+        data={currentPageData}
+        pageSize={paginationState.pageSize}
+        isLoading={
+          versions.isLoading || versions.isFetching || versions.isFetchingNextPage
+        }
+        loadingRows={paginationState.pageSize}
+        manualPagination={true}
+        pageCount={pageCount}
+        onPaginationStateChange={onPaginationStateChange}
+        showPageNumbers={false}
+        paginationState={paginationState}
+      />
+    </div>
   );
 };
