@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.95.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.94.3...@instill-ai/toolkit-v0.95.0) (2024-07-02)
+
+
+### Features
+
+* add PLAN_UNPAID type into subscription plan ([#1264](https://github.com/instill-ai/console/issues/1264)) ([9a02027](https://github.com/instill-ai/console/commit/9a02027277cb9f7678cfa7c7d272a9c4cd17883e))
+* **dashboard:** add credit usage chart on dashboard ([#1265](https://github.com/instill-ai/console/issues/1265)) ([2304de7](https://github.com/instill-ai/console/commit/2304de7073f73f27c993e36899f70493ae8d87b8))
+* **dashboard:** revamp dashboard pathname to use singular noun ([#1276](https://github.com/instill-ai/console/issues/1276)) ([e1467f4](https://github.com/instill-ai/console/commit/e1467f4eed8054d6da19ec5f7ec246b6f7b91c57))
+* model view tweaks ([#1259](https://github.com/instill-ai/console/issues/1259)) ([508bacf](https://github.com/instill-ai/console/commit/508bacfbbfdff98875c322799ab96eb7642557c9))
+* update top nav items ([#1260](https://github.com/instill-ai/console/issues/1260)) ([a1467f7](https://github.com/instill-ai/console/commit/a1467f7d4e967acebcf2298b0db5699d28b424ef))
+* updates for the cloud top-up flow ([#1249](https://github.com/instill-ai/console/issues/1249)) ([ed29cd2](https://github.com/instill-ai/console/commit/ed29cd2c8c3f9f415f5a569f63420bced2bee338))
+
+
+### Bug Fixes
+
+* add digest back to versions table ([#1273](https://github.com/instill-ai/console/issues/1273)) ([0ccc5a1](https://github.com/instill-ai/console/commit/0ccc5a15a8f36014e3f0d9da0dc7f568e09bf71f))
+* **auto-gen-form:** fix anthropic instill credit issue ([#1274](https://github.com/instill-ai/console/issues/1274)) ([d7e1865](https://github.com/instill-ai/console/commit/d7e1865dbb59e46003524e313d3e8c4860d0bb6a))
+* **dashbiard:** fix credit consumption react-query key not included owner issue ([#1275](https://github.com/instill-ai/console/issues/1275)) ([e78c94d](https://github.com/instill-ai/console/commit/e78c94da4a2166ef3e32ee8993042966cf7bb355))
+* **dashboard:** fix api-token table lastUsedTime empty text ([#1270](https://github.com/instill-ai/console/issues/1270)) ([c89d4bd](https://github.com/instill-ai/console/commit/c89d4bdb08d2e5ac7331723bac29c4a891704263))
+* empty model placeholder link styles update ([#1272](https://github.com/instill-ai/console/issues/1272)) ([68c0305](https://github.com/instill-ai/console/commit/68c0305b8eb1e547225177898a6bb4bbdfe6fe38))
+* Explore link inactive/hover state ([#1269](https://github.com/instill-ai/console/issues/1269)) ([6b40fcd](https://github.com/instill-ai/console/commit/6b40fcd836d180876c1a27e27d3ef759ad9b2923))
+* fix prettier issue around root folder and vscode plugin ([#1258](https://github.com/instill-ai/console/issues/1258)) ([d3eac49](https://github.com/instill-ai/console/commit/d3eac498ec78872392c9c5072c1b9aed303fc24f))
+* fixed private tag in the pipeline/model header ([#1268](https://github.com/instill-ai/console/issues/1268)) ([0f28e4c](https://github.com/instill-ai/console/commit/0f28e4c39d79791e2b7823eb83c07c2bd3abfb45))
+* **namespace-switch:** fix namespace-switch not guard user private resource ([#1267](https://github.com/instill-ai/console/issues/1267)) ([3694ce8](https://github.com/instill-ai/console/commit/3694ce8c24529be6e1bdf9800fd3c05381c08fe4))
+* **namespace-switch:** fix useUserNamespaces return data too early ([#1278](https://github.com/instill-ai/console/issues/1278)) ([fb34c0a](https://github.com/instill-ai/console/commit/fb34c0a61fc75656da0e56bc7eb4eccb314c4ca3))
+* replace secret ID with Name in CreateSecretDialog and SecretTable ([#1271](https://github.com/instill-ai/console/issues/1271)) ([ffe6608](https://github.com/instill-ai/console/commit/ffe6608e9d4ae7c6cb1c12660589c0804b424e66))
+
+
+### Miscellaneous
+
+* disable credit consumption related feature ([#1277](https://github.com/instill-ai/console/issues/1277)) ([cff07ba](https://github.com/instill-ai/console/commit/cff07bac4e427a46542a8c78cc44fe874eefb5ea))
+* use prettier to sort import order ([#1261](https://github.com/instill-ai/console/issues/1261)) ([4640c24](https://github.com/instill-ai/console/commit/4640c24ce73940d204111880b8bb367d690e32d1))
+
 ## [0.94.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.94.2...@instill-ai/toolkit-v0.94.3) (2024-06-20)
 
 

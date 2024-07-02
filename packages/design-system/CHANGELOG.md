@@ -1,5 +1,25 @@
 # @instill-ai/design-system
 
+## [0.72.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.71.0...@instill-ai/design-system-v0.72.0) (2024-07-02)
+
+
+### Features
+
+* add twMerge to deal with classname conflict issue ([#1262](https://github.com/instill-ai/console/issues/1262)) ([c2d40a4](https://github.com/instill-ai/console/commit/c2d40a48c837b1e103bd5730d8ce669a1e578344))
+* **dashboard:** add credit usage chart on dashboard ([#1265](https://github.com/instill-ai/console/issues/1265)) ([2304de7](https://github.com/instill-ai/console/commit/2304de7073f73f27c993e36899f70493ae8d87b8))
+* **design-system:** add resizable component ([#1263](https://github.com/instill-ai/console/issues/1263)) ([987357c](https://github.com/instill-ai/console/commit/987357c49aa2790318b4bec892b6e7d767397725))
+* model view tweaks ([#1259](https://github.com/instill-ai/console/issues/1259)) ([508bacf](https://github.com/instill-ai/console/commit/508bacfbbfdff98875c322799ab96eb7642557c9))
+
+
+### Bug Fixes
+
+* fix prettier issue around root folder and vscode plugin ([#1258](https://github.com/instill-ai/console/issues/1258)) ([d3eac49](https://github.com/instill-ai/console/commit/d3eac498ec78872392c9c5072c1b9aed303fc24f))
+
+
+### Miscellaneous
+
+* use prettier to sort import order ([#1261](https://github.com/instill-ai/console/issues/1261)) ([4640c24](https://github.com/instill-ai/console/commit/4640c24ce73940d204111880b8bb367d690e32d1))
+
 ## [0.71.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.70.0...@instill-ai/design-system-v0.71.0) (2024-06-19)
 
 
