@@ -123,15 +123,15 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
   };
 
   return (
-    <div
-      className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th:nth-child(1)]:w-60 [&_table_th:nth-child(2)]:w-auto [&_table_th:nth-child(3)]:w-40 [&_table_th:nth-child(4)]:w-52"
-    >
+    <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th:nth-child(1)]:w-60 [&_table_th:nth-child(2)]:w-auto [&_table_th:nth-child(3)]:w-40 [&_table_th:nth-child(4)]:w-52">
       <DataTable
         columns={columns}
         data={currentPageData}
         pageSize={paginationState.pageSize}
         isLoading={
-          versions.isLoading || versions.isFetching || versions.isFetchingNextPage
+          versions.isLoading ||
+          versions.isFetching ||
+          versions.isFetchingNextPage
         }
         loadingRows={paginationState.pageSize}
         manualPagination={true}
