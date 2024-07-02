@@ -5,9 +5,11 @@ import { Icons } from "@instill-ai/design-system";
 export const FileListItem = ({
   name,
   onDelete,
+  index,
 }: {
   name: string;
-  onDelete: () => void;
+  onDelete: (i?: number) => void;
+  index?: number;
 }) => {
   return (
     <div className="flex w-full flex-row rounded border border-semantic-bg-line px-2 py-1.5">
@@ -16,7 +18,7 @@ export const FileListItem = ({
         {name}
       </p>
       <button
-        onClick={() => onDelete()}
+        onClick={() => onDelete(index)}
         className="ml-auto rounded p-1 hover:bg-semantic-bg-secondary"
         type="button"
       >
