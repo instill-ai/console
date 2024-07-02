@@ -1,7 +1,7 @@
+import * as React from "react";
 import cn from "clsx";
 
 import { Icons } from "@instill-ai/design-system";
-import * as React from "react";
 
 export const FileInputDropArea = ({
   disabled,
@@ -12,7 +12,7 @@ export const FileInputDropArea = ({
   disabled?: boolean;
   children: React.ReactNode;
   className?: string;
-  onDrop: (fileList: FileList | null) => Promise<void>
+  onDrop: (fileList: FileList | null) => Promise<void>;
 }) => {
   const [isHovered, setIsHovered] = React.useState(false);
 
@@ -24,7 +24,9 @@ export const FileInputDropArea = ({
         disabled
           ? "text-semantic-fg-disabled stroke-semantic-fg-disabled"
           : "text-semantic-fg-primary stroke-semantic-fg-secondary",
-        isHovered ? "border-semantic-accent-hover outline outline-1 outline-semantic-accent-hover [&>*]:pointer-events-none" : ""
+        isHovered
+          ? "border-semantic-accent-hover outline outline-1 outline-semantic-accent-hover [&>*]:pointer-events-none"
+          : "",
       )}
       onDragOver={(event) => event.preventDefault()}
       onDrop={async (event) => {
