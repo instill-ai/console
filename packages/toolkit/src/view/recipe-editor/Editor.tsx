@@ -6,6 +6,7 @@ import { EditorView } from "@codemirror/view";
 import { langs } from "@uiw/codemirror-extensions-langs";
 import { githubLight } from "@uiw/codemirror-theme-github";
 import CodeMirror from "@uiw/react-codemirror";
+import debounce from "lodash.debounce";
 
 import {
   InstillStore,
@@ -15,10 +16,10 @@ import {
   useShallow,
   useUpdateUserPipeline,
 } from "../../lib";
-import { validateYaml } from "./validateYaml";
-import debounce from "lodash.debounce";
 import { useEditor } from "./EditorContext";
 import { PrettifyButton } from "./PrettifyButton";
+import { underlinePlugin } from "./underline-plugin";
+import { validateYaml } from "./validateYaml";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -67,9 +68,9 @@ export const Editor = ({ recipe }: { recipe: Nullable<string> }) => {
           console.error(error);
         }
       },
-      1500
+      1500,
     ),
-    [updatePipeline]
+    [updatePipeline],
   );
 
   return (
@@ -95,6 +96,7 @@ export const Editor = ({ recipe }: { recipe: Nullable<string> }) => {
             yamlLinter,
             lintGutter(),
             EditorView.lineWrapping,
+            underlinePlugin.underlineField,
           ]}
           theme={githubLight}
           onChange={(value, view) => {
