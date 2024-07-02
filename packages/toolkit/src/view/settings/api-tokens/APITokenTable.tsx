@@ -61,7 +61,7 @@ export const APITokenTable = (props: APITokenTableProps) => {
                 column.toggleSorting(column.getIsSorted() === "asc")
               }
             >
-              <span className="text-left min-w-[130px]">Date added</span>
+              <span className="text-left">Date added</span>
               <SortIcon type={column.getIsSorted()} />
             </Button>
           </div>
@@ -89,7 +89,7 @@ export const APITokenTable = (props: APITokenTableProps) => {
                 column.toggleSorting(column.getIsSorted() === "asc")
               }
             >
-              <span className="min-w-[130px] text-left">Last Used</span>
+              <span className="text-left">Last Used</span>
               <SortIcon type={column.getIsSorted()} />
             </Button>
           </div>
