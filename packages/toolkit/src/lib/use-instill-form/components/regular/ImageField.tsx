@@ -6,7 +6,7 @@ import { ControllerRenderProps } from "react-hook-form";
 import { Form } from "@instill-ai/design-system";
 
 import { AutoFormFieldBaseProps, Nullable } from "../../..";
-import { EmptyImageInputPlaceholder } from "../../../../components";
+import { FileInputDropArea } from "../../../../components";
 import { readFileToBinary } from "../../../../view";
 import { FieldDescriptionTooltip } from "../common";
 import { FileListItem } from "../trigger-request-form-fields/FileListItem";
@@ -58,47 +58,17 @@ export const ImageField = ({
               </Form.Label>
               <FieldDescriptionTooltip description={description} />
             </div>
-            <div
-              className="w-full"
-              onDrop={async (event) => {
-                event.preventDefault();
-
-                onUpdateFile(field, event.dataTransfer.files[0]);
+            <FileInputDropArea
+              disabled={disabled}
+              onDrop={async (fileList: FileList | null) => {
+                onUpdateFile(field, fileList?.[0]);
               }}
-              onDragOver={(event) => event.preventDefault()}
             >
-              {imageFile ? (
-                <img
-                  key={`${path}-${imageFile.name}`}
-                  src={URL.createObjectURL(imageFile)}
-                  alt={`${path}-${imageFile.name}`}
-                  className="h-[360px] w-full object-contain"
-                />
-              ) : value ? (
-                <img
-                  key={`${value.slice(
-                    value.indexOf(",") + 1,
-                    value.indexOf(",") + 13,
-                  )}`}
-                  src={value}
-                  alt={path}
-                  className="h-[360px] w-full object-contain"
-                />
-              ) : (
-                <div
-                  key={`${path}-image-placeholder`}
-                  className="w-full rounded-sm border border-semantic-bg-line bg-transparent"
-                >
-                  <EmptyImageInputPlaceholder />
-                </div>
-              )}
-            </div>
-            <div className="flex">
               <Form.Control>
                 <UploadFileInput
                   keyPrefix={path}
                   ref={inputRef}
-                  title="Upload image"
+                  title="browse computer"
                   fieldKey={path}
                   accept="image/*"
                   onChange={async (event) => {
@@ -109,9 +79,10 @@ export const ImageField = ({
                     event.target.value = "";
                   }}
                   disabled={disabled}
+                  className="font-normal no-underline !bg-transparent !p-0 !inline-block"
                 />
               </Form.Control>
-            </div>
+            </FileInputDropArea>
             {imageFile ? (
               <FileListItem
                 name={imageFile.name}
