@@ -43,7 +43,10 @@ export const RecipeEditorView = () => {
             <ComponentCmdk />
             <Resizable.PanelGroup direction="horizontal" className="w-full">
               <Resizable.Panel defaultSize={50} minSize={25}>
-                <Editor recipe={pipeline.data?.rawRecipe ?? null} />
+                <Editor
+                  recipe={pipeline.data?.recipe ?? null}
+                  rawRecipe={pipeline.data?.rawRecipe ?? null}
+                />
               </Resizable.Panel>
               <Resizable.Handle />
               <Resizable.Panel defaultSize={50} minSize={25}>
