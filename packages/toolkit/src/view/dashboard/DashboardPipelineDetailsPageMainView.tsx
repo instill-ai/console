@@ -1,40 +1,39 @@
 "use client";
 
 import * as React from "react";
-import { useParams } from "next/navigation";
 
 import { SelectOption } from "@instill-ai/design-system";
 
 import { PageTitle } from "../../components";
 import {
   DashboardAvailableTimeframe,
-  GeneralAppPageProp,
   getPreviousTimeframe,
   getTimeInRFC3339Format,
   getTriggersSummary,
+  InstillStore,
   Nullable,
+  useInstillStore,
   usePipelineTriggerRecords,
   useRouteInfo,
+  useShallow,
 } from "../../lib";
+import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import { PipelineTriggersTable } from "./PipelineTriggersTable";
 
-export type DashboardPipelineDetailsPageMainViewProps = GeneralAppPageProp;
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
 
-export const DashboardPipelineDetailsPageMainView = (
-  props: DashboardPipelineDetailsPageMainViewProps,
-) => {
-  const { accessToken, enableQuery, router } = props;
-  const { id } = useParams();
+export const DashboardPipelineDetailsPageMainView = () => {
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  /* -------------------------------------------------------------------------
-   * Get the pipeline definition and static state for fields
-   * -----------------------------------------------------------------------*/
-
-  const [selectedTimeOption] = React.useState<SelectOption>({
-    label: "24h",
-    value: "24h",
-  });
+  const [selectedTimeOption, setSelectedTimeOption] =
+    React.useState<SelectOption>({
+      label: "24h",
+      value: "24h",
+    });
 
   const [queryString, setQueryString] = React.useState<Nullable<string>>(null);
   const [queryStringPrevious, setQueryStringPrevious] =
@@ -70,56 +69,34 @@ export const DashboardPipelineDetailsPageMainView = (
 
     setQueryString(queryParams);
     setQueryStringPrevious(queryParamsPrevious);
-  }, [id, selectedTimeOption, routeInfo.isSuccess, routeInfo.data]);
+  }, [selectedTimeOption, routeInfo.isSuccess, routeInfo.data]);
 
   /* -------------------------------------------------------------------------
    * Query pipeline data
    * -----------------------------------------------------------------------*/
 
-  const pipelineTriggerRecords = usePipelineTriggerRecords({
-    enabled: enableQuery && routeInfo.isSuccess && !!queryString,
+  const triggers = usePipelineTriggerRecords({
+    enabled:
+      enabledQuery &&
+      routeInfo.isSuccess &&
+      !!queryString &&
+      !!queryStringPrevious,
     filter: queryString ? queryString : null,
     accessToken,
+    previousFilter: queryStringPrevious ? queryStringPrevious : null,
+    filterId: selectedTimeOption.value,
   });
-
-  const previousPipelineTriggerRecords = usePipelineTriggerRecords({
-    enabled: enableQuery && routeInfo.isSuccess && !!queryStringPrevious,
-    filter: queryStringPrevious ? queryStringPrevious : null,
-    accessToken,
-  });
-
-  // Guard this page
-  React.useEffect(() => {
-    if (
-      pipelineTriggerRecords.isError ||
-      previousPipelineTriggerRecords.isError
-    ) {
-      router.push("/404");
-    }
-  }, [
-    router,
-    pipelineTriggerRecords.isError,
-    previousPipelineTriggerRecords.isError,
-  ]);
 
   const pipelineTriggersSummary = React.useMemo(() => {
-    if (
-      !pipelineTriggerRecords.isSuccess ||
-      !previousPipelineTriggerRecords.isSuccess
-    ) {
+    if (!triggers.isSuccess) {
       return null;
     }
 
     return getTriggersSummary(
-      pipelineTriggerRecords.data,
-      previousPipelineTriggerRecords.data,
+      triggers.data.triggers,
+      triggers.data.previousTriggers,
     );
-  }, [
-    pipelineTriggerRecords.isSuccess,
-    pipelineTriggerRecords.data,
-    previousPipelineTriggerRecords.isSuccess,
-    previousPipelineTriggerRecords.data,
-  ]);
+  }, [triggers.isSuccess, triggers.data]);
 
   /* -------------------------------------------------------------------------
    * Render
@@ -152,17 +129,27 @@ export const DashboardPipelineDetailsPageMainView = (
             />
           </PipelineTriggersSummary>
         </div>
+
+        {/* Filter for graph */}
+
+        <div className="w-1/2 self-end">
+          <div className="my-1">
+            <FilterByDay
+              refetch={triggers.refetch}
+              selectedTimeOption={selectedTimeOption}
+              setSelectedTimeOption={setSelectedTimeOption}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Pipeline Table */}
 
       <div className="mt-8">
         <PipelineTriggersTable
-          pipelineTriggers={
-            pipelineTriggerRecords.isSuccess ? pipelineTriggerRecords.data : []
-          }
-          isError={pipelineTriggerRecords.isError}
-          isLoading={pipelineTriggerRecords.isLoading}
+          pipelineTriggers={triggers.isSuccess ? triggers.data.triggers : []}
+          isError={triggers.isError}
+          isLoading={triggers.isLoading}
         />
       </div>
     </div>

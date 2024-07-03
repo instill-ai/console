@@ -90,7 +90,7 @@ export const DashboardPipelineListPageMainView = (
   });
 
   const previoustriggeredPipelines = useTriggeredPipelines({
-    enabled: enableQuery,
+    enabled: enableQuery && !!queryStringPrevious,
     filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,
   });
