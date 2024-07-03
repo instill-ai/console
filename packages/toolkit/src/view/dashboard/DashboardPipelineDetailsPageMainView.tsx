@@ -84,7 +84,9 @@ export const DashboardPipelineDetailsPageMainView = () => {
     filter: queryString ? queryString : null,
     accessToken,
     previousFilter: queryStringPrevious ? queryStringPrevious : null,
-    filterId: selectedTimeOption.value,
+    filterId: routeInfo.isSuccess
+      ? `${routeInfo.data.namespaceId}-${selectedTimeOption.value}`
+      : null,
   });
 
   const pipelineTriggersSummary = React.useMemo(() => {
