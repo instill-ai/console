@@ -1,6 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IteratorDefinition, OperatorDefinition } from "instill-sdk";
+
 import { Nullable } from "../type";
 import { InstillJSONSchema } from "../use-instill-form";
+import { ConnectorDefinition } from "./connector";
 import { User } from "./mgmt";
 import { Organization } from "./organization";
 
@@ -67,3 +69,8 @@ export type OrganizationOwner = {
 };
 
 export type Owner = UserOwner | OrganizationOwner;
+
+export type Definition =
+  | OperatorDefinition
+  | ConnectorDefinition
+  | IteratorDefinition;
