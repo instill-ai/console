@@ -103,7 +103,7 @@ export const UploadImageFieldWithCrop = ({
                     "cursor-pointer flex w-full flex-col items-center justify-center py-4 rounded-sm border border-semantic-bg-line [&>*]:pointer-events-none",
                     isHovered
                       ? "border-semantic-accent-hover outline outline-1 outline-semantic-accent-hover"
-                      : "[&_label]:!pointer-events-auto",
+                      : "",
                   )}
                   onDragOver={(event) => event.preventDefault()}
                   onDrop={async (event) => {
