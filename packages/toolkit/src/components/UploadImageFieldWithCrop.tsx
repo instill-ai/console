@@ -155,7 +155,7 @@ export const UploadImageFieldWithCrop = ({
                   </Input.Root>
                 </label>
               </Form.Control>
-              {(isDeletable && field.value) || image ? (
+              {isDeletable && (field.value || image) ? (
                 <div className="flex w-full flex-row rounded border border-semantic-bg-line px-2 py-1.5">
                   <Icons.File05 className="mr-2 h-5 w-5 stroke-semantic-fg-secondary" />
                   <p className="w-[180px] truncate text-semantic-fg-primary product-body-text-3-regular">
