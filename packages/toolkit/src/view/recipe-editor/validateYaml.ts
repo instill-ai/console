@@ -7,8 +7,8 @@ import Ajv from "ajv";
 import yaml from "js-yaml";
 import SourceMap from "js-yaml-source-map";
 
-import { InstillYamlSchema } from "./schema";
 import { GeneralRecord, Nullable } from "../../lib";
+import { InstillYamlSchema } from "./schema";
 
 const ajv = new Ajv({ allErrors: true });
 
