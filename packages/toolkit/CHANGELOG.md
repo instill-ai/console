@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.95.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.95.0...@instill-ai/toolkit-v0.95.1) (2024-07-03)
+
+
+### Bug Fixes
+
+* **dashboard:** fix dashboard pipeline details page re-render issue ([#1280](https://github.com/instill-ai/console/issues/1280)) ([06bf112](https://github.com/instill-ai/console/commit/06bf112fdf2fe6da538efb0ac432a796f80eb2c6))
+
 ## [0.95.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.94.3...@instill-ai/toolkit-v0.95.0) (2024-07-02)
 
 

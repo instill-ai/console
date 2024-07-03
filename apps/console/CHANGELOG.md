@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.50.1-beta](https://github.com/instill-ai/console/compare/v0.50.0-beta...v0.50.1-beta) (2024-07-03)
+
+
+### Bug Fixes
+
+* **dashboard:** fix dashboard pipeline details page re-render issue ([#1280](https://github.com/instill-ai/console/issues/1280)) ([06bf112](https://github.com/instill-ai/console/commit/06bf112fdf2fe6da538efb0ac432a796f80eb2c6))
+
 ## [0.50.0-beta](https://github.com/instill-ai/console/compare/v0.49.2-beta...v0.50.0-beta) (2024-07-02)
 
 
