@@ -8,6 +8,7 @@ import {
 import { LoadingSpin } from "../../../components";
 import { Model, ModelState, Nullable } from "../../../lib";
 import { ModelTabNames } from "../../../server";
+import { ModelReadme } from "./ModelReadme";
 
 export type ModelContentViewerProps = {
   selectedTab: ModelTabNames;
@@ -43,6 +44,11 @@ export const ModelContentViewer = ({
       if (model?.permission.canEdit) {
         content = <ModelSettingsEditForm model={model} onUpdate={onUpdate} />;
       }
+
+      break;
+    }
+    case "readme": {
+      content = <ModelReadme model={model} onUpdate={onUpdate} />;
 
       break;
     }

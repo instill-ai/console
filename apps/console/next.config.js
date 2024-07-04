@@ -2,6 +2,7 @@
  * @type {import('next').NextConfig}
  */
 module.exports = {
+  transpilePackages: ['@mdxeditor/editor'],
   swcMinify: true,
   reactStrictMode: true,
   transpilePackages: [
@@ -26,11 +27,6 @@ module.exports = {
       {
         source: "/logout",
         destination: "/api/auth/logout",
-        permanent: false,
-      },
-      {
-        source: "/:namespace/models/:model",
-        destination: "/:namespace/models/:model/playground",
         permanent: false,
       },
     ];

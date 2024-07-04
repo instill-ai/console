@@ -5,6 +5,7 @@ const ModelTabsDictionary = {
   predictions: "Predictions",
   versions: "Versions",
   settings: "Settings",
+  readme: "README",
 };
 
 export type ModelTabNames = keyof typeof ModelTabsDictionary;

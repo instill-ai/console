@@ -31,3 +31,4 @@ export * from "./RealTimeTextEditor";
 export * from "./EntitySelector";
 export * from "./NamespaceAvatarWithFallback";
 export * from "./FileInputDropArea";
+export * from "./markdown-editor";
