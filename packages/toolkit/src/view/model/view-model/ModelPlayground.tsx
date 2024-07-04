@@ -40,7 +40,7 @@ import { ModelSectionHeader } from "./SectionHeader";
 
 export type ModelOutputActiveView = "preview" | "json";
 
-export type ModelOverviewProps = {
+export type ModelPlaygroundProps = {
   model?: Model;
   modelState: Nullable<ModelState>;
 };
@@ -80,7 +80,7 @@ const defaultCurrentOperationIdPollingData = {
   isRendered: false,
 };
 
-export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
+export const ModelPlayground = ({ model, modelState }: ModelPlaygroundProps) => {
   const queryClient = useQueryClient();
   // This ref is used here to store the currently active operation id. It's in
   // ref so we don't have to worry about stale data. As soon as we update the
@@ -293,7 +293,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
     }
   }
 
-  const overviewModelTriggerFormID = "model-details-page-trigger-model-form";
+  const playgroundModelTriggerFormID = "model-details-page-trigger-model-form";
 
   const componentOutputFields = useComponentOutputFields({
     mode: "demo",
@@ -318,7 +318,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
           </TabMenu.Root>
           <Form.Root {...form}>
             <form
-              id={overviewModelTriggerFormID}
+              id={playgroundModelTriggerFormID}
               className="w-full"
               onSubmit={form.handleSubmit(onRunModel)}
             >

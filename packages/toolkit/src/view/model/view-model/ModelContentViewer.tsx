@@ -1,6 +1,6 @@
 import {
   ModelApi,
-  ModelOverview,
+  ModelPlayground,
   ModelSettingsEditForm,
   ModelVersions,
   NoVersionsPlaceholder,
@@ -46,10 +46,10 @@ export const ModelContentViewer = ({
 
       break;
     }
-    case "overview":
+    case "playground":
     default: {
       content = modelState ? (
-        <ModelOverview model={model} modelState={modelState} />
+        <ModelPlayground model={model} modelState={modelState} />
       ) : (
         <NoVersionsPlaceholder />
       );

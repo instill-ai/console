@@ -199,9 +199,9 @@ export const ModelSettingsHead = ({
               }
               disabledDeSelect={true}
             >
-              <TabMenu.Item value="overview">
+              <TabMenu.Item value="playground">
                 <Icons.NewModel className="h-4 w-4" />
-                Overview
+                Playground
               </TabMenu.Item>
               <TabMenu.Item value="api">
                 <Icons.CodeSnippet01 className="h-4 w-4" />

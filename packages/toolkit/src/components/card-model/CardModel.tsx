@@ -64,7 +64,7 @@ export const CardModel = (props: CardModelProps) => {
       <div className="flex grow flex-col gap-y-2">
         <div className="flex w-full flex-row items-start gap-x-2">
           <Link
-            href={`/${owner.id}/models/${model.id}/overview`}
+            href={`/${owner.id}/models/${model.id}/playground`}
             className="break-all font-medium text-semantic-accent-default hover:!underline"
           >
             {owner.id}/{model.id}

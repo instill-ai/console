@@ -87,7 +87,7 @@ export const NamespaceSwitch = () => {
   const model = useUserModel({
     modelName: routeInfo.isSuccess ? routeInfo.data.modelName : null,
     accessToken,
-    enabled: enabledQuery && pathnameEvaluator.isModelOverviewPage(pathname),
+    enabled: enabledQuery && pathnameEvaluator.isModelPlaygroundPage(pathname),
   });
 
   const namespacesWithRemainingCredit = React.useMemo(() => {
@@ -310,7 +310,7 @@ export const NamespaceSwitch = () => {
         // When we are at user's private model, and user switch to
         // organization, we will redirect user to the organization's
         // pipelines page
-        if (pathnameEvaluator.isModelOverviewPage(pathname)) {
+        if (pathnameEvaluator.isModelPlaygroundPage(pathname)) {
           if (
             model.isSuccess &&
             routeInfo.data.namespaceType === "NAMESPACE_USER" &&

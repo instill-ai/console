@@ -28,6 +28,11 @@ module.exports = {
         destination: "/api/auth/logout",
         permanent: false,
       },
+      {
+        source: "/:namespace/models/:model",
+        destination: "/:namespace/models/:model/playground",
+        permanent: false,
+      },
     ];
   },
 };

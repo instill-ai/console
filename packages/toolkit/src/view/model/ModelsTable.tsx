@@ -51,7 +51,7 @@ export const ModelsTable = (props: ModelsTableProps) => {
         );
 
         const modelNameFragments = row.original.name.split("/");
-        const modelLink = `/${modelNameFragments[1]}/models/${modelNameFragments[3]}/overview`;
+        const modelLink = `/${modelNameFragments[1]}/models/${modelNameFragments[3]}/playground`;
 
         return (
           <div className="text-left">

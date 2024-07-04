@@ -215,7 +215,7 @@ export const CreateModelForm = () => {
 
         updateNavigationNamespaceAnchor(() => targetNamespace.id);
 
-        router.push(`/${data.namespaceId}/models/${data.id}/overview`);
+        router.push(`/${data.namespaceId}/models/${data.id}/playground`);
       } catch (error) {
         setCreating(false);
         toastInstillError({
