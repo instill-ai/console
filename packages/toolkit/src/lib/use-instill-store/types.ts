@@ -38,6 +38,7 @@ export type PipelineBuilderState = {
   tempSavedNodesForEditingIteratorFlow: Node<NodeData>[];
   editingIteratorID: Nullable<string>;
   warnUnsavedChangesDialogState: WarnUnsavedChangesDialogState;
+  triggerWithStreamData: TriggerUserPipelineWithStreamData[];
 };
 
 export type PipelineBuilderAction = {
@@ -92,6 +93,11 @@ export type PipelineBuilderAction = {
   ) => void;
   updateWarnUnsavdChangesDialogState: (
     fn: (prev: WarnUnsavedChangesDialogState) => WarnUnsavedChangesDialogState,
+  ) => void;
+  updateTriggerWithStreamData: (
+    fn: (
+      prev: TriggerUserPipelineWithStreamData[],
+    ) => TriggerUserPipelineWithStreamData[],
   ) => void;
 };
 

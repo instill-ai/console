@@ -52,6 +52,7 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
     open: false,
     confirmNavigation: null,
   },
+  triggerWithStreamData: [],
 };
 
 export const createPipelineBuilderSlice: StateCreator<
@@ -279,6 +280,17 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         warnUnsavedChangesDialogState: fn(state.warnUnsavedChangesDialogState),
+      };
+    }),
+  updateTriggerWithStreamData: (
+    fn: (
+      prev: TriggerUserPipelineWithStreamData[],
+    ) => TriggerUserPipelineWithStreamData[],
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        triggerWithStreamData: fn(state.triggerWithStreamData),
       };
     }),
 });
