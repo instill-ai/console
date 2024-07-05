@@ -6,34 +6,39 @@ import { linter, lintGutter } from "@codemirror/lint";
 import { EditorView } from "@codemirror/view";
 import { langs } from "@uiw/codemirror-extensions-langs";
 import { githubLight } from "@uiw/codemirror-theme-github";
-import CodeMirror from "@uiw/react-codemirror";
+import CodeMirror, { Compartment } from "@uiw/react-codemirror";
 import yaml from "js-yaml";
 import debounce from "lodash.debounce";
 
 import {
-  Definition,
   GeneralRecord,
   InstillStore,
   Nullable,
-  PipelineComponent,
+  PipelineComponentMap,
   PipelineRecipe,
+  SmartHint,
   useInstillStore,
   useRouteInfo,
   useShallow,
   useUpdateUserPipeline,
 } from "../../lib";
+import { transformInstillJSONSchemaToFormTree } from "../../lib/use-instill-form/transform";
+import { transformFormTreeToSmartHints } from "../../lib/use-smart-hint/transformFormTreeToSmartHints";
+import { getGeneralComponentInOutputSchema } from "../pipeline-builder";
 import { isPipelineGeneralComponent } from "../pipeline-builder/lib/checkComponentType";
 import { useEditor } from "./EditorContext";
 import { PrettifyButton } from "./PrettifyButton";
 import { underlinePlugin } from "./underline-plugin";
-import { useExtensionWithDependency } from "./use-extension-with-deps";
 import { validateYaml } from "./validateYaml";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
 });
 
-function myCompletions(context: CompletionContext, definitions: Definition[]) {
+function myCompletions(
+  context: CompletionContext,
+  component: PipelineComponentMap,
+) {
   const word = context.matchBefore(/\${/);
 
   if (!word) {
@@ -57,25 +62,30 @@ function myCompletions(context: CompletionContext, definitions: Definition[]) {
     return null;
   }
 
-  console.log(context, word, definitions);
+  let smartHints: SmartHint[] = [];
 
-  const component = data.component as Nullable<PipelineComponent>;
+  for (const [key, value] of Object.entries(component)) {
+    if (isPipelineGeneralComponent(value)) {
+      const { outputSchema } = getGeneralComponentInOutputSchema(value);
 
-  if (!component) {
-    return null;
-  }
+      if (outputSchema) {
+        const outputFormTree =
+          transformInstillJSONSchemaToFormTree(outputSchema);
 
-  for (const [key] of Object.entries(component)) {
-    console.log(key);
+        const hints = transformFormTreeToSmartHints(outputFormTree, key);
+
+        smartHints = [...smartHints, ...hints];
+      }
+    }
   }
 
   return {
     from: word.from,
-    options: [
-      { label: "${match}", type: "keyword" },
-      { label: "hello", type: "variable", info: "(World)" },
-      { label: "magic", type: "text", apply: "⠁⭒*.✩.*⭒⠁", detail: "macro" },
-    ],
+    options: smartHints.map((hint) => ({
+      label: "${" + hint.path + "}",
+      detail: hint.description,
+      type: hint.type,
+    })),
   };
 }
 export const Editor = ({
@@ -132,34 +142,41 @@ export const Editor = ({
     [updatePipeline],
   );
 
-  const pipelineDefinitions = React.useMemo(() => {
-    const definitions: Definition[] = [];
-
-    if (!recipe || !recipe.component) {
-      return definitions;
-    }
-
-    for (const [, value] of Object.entries(recipe.component)) {
-      if (isPipelineGeneralComponent(value)) {
-        if (value.definition) {
-          definitions.push(value.definition);
-        }
-      }
-    }
-
-    return definitions;
+  const pipelineComponentMap = React.useMemo(() => {
+    return recipe?.component ?? {};
   }, [recipe]);
 
-  const customAutoComplete = useExtensionWithDependency(
-    editorRef.current?.view ?? null,
+  const autoCompleteCompartment = React.useMemo(() => new Compartment(), []);
+
+  const autoCompleteExtension = React.useMemo(
     () =>
-      autocompletion({
-        override: [(context) => myCompletions(context, pipelineDefinitions)],
-      }),
-    pipelineDefinitions,
+      autoCompleteCompartment.of(
+        autocompletion({
+          override: [(context) => myCompletions(context, pipelineComponentMap)],
+        }),
+      ),
+    [],
   );
 
-  console.log(pipelineDefinitions);
+  React.useEffect(() => {
+    if (!editorRef.current) {
+      return;
+    }
+
+    const view = editorRef.current.view;
+
+    if (!view) {
+      return;
+    }
+
+    view.dispatch({
+      effects: autoCompleteCompartment.reconfigure(
+        autocompletion({
+          override: [(context) => myCompletions(context, pipelineComponentMap)],
+        }),
+      ),
+    });
+  }, [pipelineComponentMap]);
 
   return (
     <React.Fragment>
@@ -180,7 +197,7 @@ export const Editor = ({
           className="h-full"
           value={rawRecipe ?? ""}
           extensions={[
-            customAutoComplete,
+            autoCompleteExtension,
             langs.yaml(),
             yamlLinter,
             lintGutter(),

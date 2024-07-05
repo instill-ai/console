@@ -74,3 +74,9 @@ export type Definition =
   | OperatorDefinition
   | ConnectorDefinition
   | IteratorDefinition;
+
+export type Status =
+  | "STATUS_UNSPECIFIED"
+  | "STATUS_COMPLETED"
+  | "STATUS_SKIPPED"
+  | "STATUS_ERROR";
