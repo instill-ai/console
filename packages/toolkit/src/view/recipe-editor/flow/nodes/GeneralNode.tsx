@@ -5,7 +5,7 @@ import yaml from "js-yaml";
 import SourceMap from "js-yaml-source-map";
 import { NodeProps, Position, useEdges } from "reactflow";
 
-import { Icons } from "@instill-ai/design-system";
+import { cn, Icons } from "@instill-ai/design-system";
 
 import { ImageWithFallback } from "../../../../components";
 import {
@@ -21,6 +21,7 @@ import { useEditor } from "../../EditorContext";
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  triggerWithStreamData: store.triggerWithStreamData,
 });
 
 export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
@@ -35,7 +36,9 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
 
   const { editorRef } = useEditor();
 
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, triggerWithStreamData } = useInstillStore(
+    useShallow(selector),
+  );
 
   const routeInfo = useRouteInfo();
 
@@ -44,6 +47,21 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
   });
+
+  const isFinished = React.useMemo(() => {
+    const targetTrace = triggerWithStreamData.find((data) => {
+      const traceKey = Object.keys(data.metadata.traces)[0];
+      return traceKey === id;
+    });
+
+    console.log(triggerWithStreamData, targetTrace, id);
+
+    if (targetTrace) {
+      return true;
+    } else {
+      false;
+    }
+  }, [triggerWithStreamData, id]);
 
   return (
     <div
@@ -85,7 +103,10 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
           });
         }
       }}
-      className="flex w-[320px] flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-4"
+      className={cn(
+        "flex w-[320px] flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-4",
+        isFinished ? "bg-semantic-success-bg" : "",
+      )}
     >
       <div className="flex flex-row items-center gap-x-2">
         <div className="flex rounded-sm border border-semantic-bg-line p-2">
