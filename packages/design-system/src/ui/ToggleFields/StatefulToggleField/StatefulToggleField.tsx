@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { Nullable, State } from "../../../types/general";
 import {
   basicInputDescriptionConfig,
