@@ -128,7 +128,9 @@ export const ModelHubListPageMainView = (
         </Button>
       </div>
       <ModelsList
-        models={models.isSuccess ? models.data.pages[pageNumber]?.models : []}
+        models={
+          models.isSuccess ? models.data.pages[pageNumber]?.models ?? [] : []
+        }
         onModelDelete={models.refetch}
         isLoading={isLoadingResource}
         isSearchActive={!!searchCode}

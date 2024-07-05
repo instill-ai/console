@@ -27,10 +27,17 @@ export function getGeneralComponentInOutputSchema(
     component?.definition?.spec.dataSpecifications &&
     component?.definition?.spec.dataSpecifications[targetTask]
   ) {
-    inputSchema = component?.definition?.spec.dataSpecifications[targetTask]
-      .input as InstillJSONSchema;
-    outputSchema = component?.definition?.spec.dataSpecifications[targetTask]
-      .output as InstillJSONSchema;
+    const targetInputSpec =
+      component?.definition?.spec.dataSpecifications[targetTask];
+    const targetOutputSpec =
+      component?.definition?.spec.dataSpecifications[targetTask];
+
+    inputSchema = targetInputSpec
+      ? (targetInputSpec.input as InstillJSONSchema)
+      : null;
+    outputSchema = targetOutputSpec
+      ? (targetOutputSpec.output as InstillJSONSchema)
+      : null;
   } else if (
     component.definition?.spec.componentSpecification.oneOf &&
     component.definition?.spec.componentSpecification.oneOf.length > 0
@@ -48,10 +55,16 @@ export function getGeneralComponentInOutputSchema(
     }
 
     if (component?.definition?.spec.dataSpecifications) {
-      inputSchema = component?.definition?.spec.dataSpecifications[defaultTask]
-        .input as InstillJSONSchema;
-      outputSchema = component?.definition?.spec.dataSpecifications[defaultTask]
-        .output as InstillJSONSchema;
+      const defaultInputSpec =
+        component?.definition?.spec.dataSpecifications[defaultTask];
+      const defaultOutputSpec =
+        component?.definition?.spec.dataSpecifications[defaultTask];
+      inputSchema = defaultInputSpec
+        ? (defaultInputSpec.input as InstillJSONSchema)
+        : null;
+      outputSchema = defaultOutputSpec
+        ? (defaultOutputSpec.output as InstillJSONSchema)
+        : null;
     }
   }
 

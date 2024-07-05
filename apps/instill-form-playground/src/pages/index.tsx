@@ -2,7 +2,7 @@ import * as React from "react";
 import MonacoEditor from "@monaco-editor/react";
 import * as z from "zod";
 
-import { Button, Form, Textarea } from "@instill-ai/design-system";
+import { Button, Form } from "@instill-ai/design-system";
 import { InstillJSONSchema, useInstillForm } from "@instill-ai/toolkit";
 
 export default function Home() {
@@ -20,6 +20,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen min-w-[100vh] flex-1 flex-col">
       <div className="m-auto flex w-full max-w-[1200px] flex-row gap-x-10 p-10">
+        {`isValid - ${isValid}`}
         <div className="flex w-1/2 flex-col gap-y-5">
           <div className="flex h-1/3 w-full flex-col">
             <MonacoEditor

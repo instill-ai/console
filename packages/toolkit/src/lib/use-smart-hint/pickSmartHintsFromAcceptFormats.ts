@@ -63,7 +63,10 @@ export function pickSmartHintsFromAcceptFormats(
         // If the instillFormat is array:image/* and the accept format is array:image/png
         // then we should pick this hint
         if (subtype === "*") {
-          if (instillAcceptFormats.some((format) => format.includes(type))) {
+          if (
+            type &&
+            instillAcceptFormats.some((format) => format.includes(type))
+          ) {
             pickHints.push(hint);
             continue;
           }
@@ -96,7 +99,7 @@ export function pickSmartHintsFromAcceptFormats(
 
       // If the instillFormat is image/* and the accept format is image/png
       // then we should pick this hint
-      if (subtype === "*" && instillAcceptFormats.includes(type)) {
+      if (type && subtype === "*" && instillAcceptFormats.includes(type)) {
         pickHints.push(hint);
         continue;
       }

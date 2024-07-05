@@ -16,8 +16,8 @@ export function useRefSize(
   React.useEffect(() => {
     observerRef.current = new ResizeObserver((entries) => {
       setRefSize({
-        width: entries[0].contentRect.width,
-        height: entries[0].contentRect.height,
+        width: entries[0]?.contentRect.width ?? 0,
+        height: entries[0]?.contentRect.height ?? 0,
       });
     });
 

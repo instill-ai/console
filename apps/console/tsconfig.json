@@ -1,43 +1,32 @@
 {
+  "extends": "@instill-ai/tsconfig/base.json",
   "compilerOptions": {
-    "baseUrl": "./src",
-    "target": "ES2022",
-
-    "downlevelIteration": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "ESNext",
+    "lib": [
+      "es2022",
+      "dom",
+      "dom.iterable"
+    ],
     "jsx": "preserve",
-    "strict": true,
-    "useUnknownInCatchVariables": true,
-    "allowJs": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "moduleResolution": "Bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "incremental": false,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "./src/*"
+      ]
+    },
     "plugins": [
       {
-        "name": "next",
-      },
+        "name": "next"
+      }
     ],
-    "paths": {
-      "@/*": ["./src/*"],
-    },
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
+    "module": "esnext",
+    "strictNullChecks": true
   },
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js",
-    "**/*.jsx",
-    "**/*.mjs",
-    "**/*.json",
-    ".next/types/**/*.ts",
+    ".",
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["**/node_modules", "**/.*/", ".next"],
+  "exclude": [
+    "node_modules"
+  ]
 }

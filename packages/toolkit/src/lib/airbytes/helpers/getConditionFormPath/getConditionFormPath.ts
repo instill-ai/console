@@ -22,7 +22,7 @@ export const getConditionFormPath = (
   });
 
   if (path.length > 0) {
-    return path[0];
+    return path[0] ?? null;
   } else {
     return null;
   }

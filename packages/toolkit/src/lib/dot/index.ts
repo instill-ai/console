@@ -8,9 +8,12 @@ export type DotPath = string | string[];
 
 const getter = (obj: any, path: DotPath, defaultValue?: any): any => {
   path = toPath(path);
-  let index = 0;
+  const index = 0;
   while (obj && index < path.length) {
-    obj = obj[path[index++]];
+    const valueIndex = path[index];
+    if (valueIndex) {
+      obj = obj[valueIndex];
+    }
   }
   return obj === undefined ? defaultValue : obj;
 };
@@ -32,22 +35,24 @@ const setter = (obj: any, path: DotPath, value: any) => {
     const key = path[index];
     let newValue = value;
 
-    if (index !== lastIndex) {
-      const objValue = nested[key];
-      newValue = isObject(objValue)
-        ? objValue
-        : isInteger(path[index + 1])
-          ? []
-          : {};
-    }
+    if (key) {
+      if (index !== lastIndex) {
+        const objValue = nested[key];
+        newValue = isObject(objValue)
+          ? objValue
+          : isInteger(path[index + 1])
+            ? []
+            : {};
+      }
 
-    if (newValue === undefined) {
-      delete nested[key];
-    } else {
-      nested[key] = newValue;
-    }
+      if (newValue === undefined) {
+        delete nested[key];
+      } else {
+        nested[key] = newValue;
+      }
 
-    nested = nested[key];
+      nested = nested[key];
+    }
   }
 };
 

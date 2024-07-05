@@ -35,7 +35,7 @@ function transformPrimitive(primitive: string) {
 
   const [type, subType] = primitive.split("/");
 
-  if (subType.includes("*")) {
+  if (type && subType?.includes("*")) {
     return type;
   }
 

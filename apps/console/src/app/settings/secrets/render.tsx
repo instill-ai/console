@@ -1,7 +1,5 @@
 "use client";
 
-import { useAppAccessToken } from "lib/use-app-access-token";
-
 import {
   AppTopbar,
   BreadcrumbWithLink,
@@ -11,6 +9,8 @@ import {
   UserSecretTab,
   UserSidebar,
 } from "@instill-ai/toolkit";
+
+import { useAppAccessToken } from "~/lib/use-app-access-token";
 
 export function SecretSettingdPageRender() {
   useAppAccessToken();

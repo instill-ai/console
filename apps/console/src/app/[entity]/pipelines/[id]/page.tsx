@@ -7,6 +7,8 @@ import {
   fetchUserPipeline,
 } from "@instill-ai/toolkit/server";
 
+import { useAppAccessToken } from "~/lib/use-app-access-token";
+import { useAppTrackToken } from "~/lib/useAppTrackToken";
 import { PipelineOverviewPageRender } from "./render";
 
 type Props = {
@@ -65,5 +67,7 @@ export async function generateMetadata({
 }
 
 export default async function Page() {
+  useAppAccessToken();
+  useAppTrackToken({ enabled: true });
   return <PipelineOverviewPageRender />;
 }

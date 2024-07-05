@@ -99,7 +99,7 @@ export function onInputKeydown({
             }
 
             const newValue = `${value.slice(0, smartHintEnabledPos)}${
-              filteredHints[highlightedHintIndex].path
+              filteredHints[highlightedHintIndex]?.path
             }${closeBrace}${value.slice(cursorPosition)}`;
 
             field.onChange(newValue);
