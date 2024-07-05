@@ -50,7 +50,7 @@ const ExternalLink = ({
   );
 };
 
-export const ModelSettingsHead = ({
+export const ModelHead = ({
   selectedTab,
   onTabChange,
   model,
@@ -94,18 +94,17 @@ export const ModelSettingsHead = ({
               }
             />
           ) : null}
-
-          {isReady ? (
+          {!isReady ? (
             <Skeleton className="h-6 w-60 rounded" />
           ) : (
             <React.Fragment>
               <div className="my-auto text-semantic-fg-disabled product-headings-heading-4">
-                <a
+                <Link
                   href={`/${owner.id}`}
                   className="cursor-pointer hover:!underline"
                 >
                   {owner.id}
-                </a>
+                </Link>
                 /<span className="text-semantic-fg-primary">{model?.id}</span>
               </div>
               {modelState ? <StateLabel state={modelState} /> : null}
@@ -144,7 +143,7 @@ export const ModelSettingsHead = ({
             </React.Fragment>
           )}
         </div>
-        {isReady ? (
+        {!isReady ? (
           <React.Fragment>
             <Skeleton className="h-6 w-20 rounded" />
             <Skeleton className="h-6 w-40 rounded" />
@@ -180,12 +179,16 @@ export const ModelSettingsHead = ({
           )}
         >
           {model?.description || (
-            <Link href={`/${owner.id}/models/${model?.id}/settings`}>
-              Add a description
-            </Link>
+            model?.permission.canEdit ? (
+              <Link href={`/${owner.id}/models/${model?.id}/settings`}>
+                Add a description
+              </Link>
+            ) : (
+              <span>No description</span>
+            )
           )}
         </p>
-        {isReady ? (
+        {!isReady ? (
           <div className="mb-2 mt-10 flex flex-row gap-x-2">
             <Skeleton className="h-6 w-12 rounded" />
             <Skeleton className="h-6 w-12 rounded" />

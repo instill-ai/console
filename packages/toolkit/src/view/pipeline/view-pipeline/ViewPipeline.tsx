@@ -79,51 +79,57 @@ export const ViewPipeline = () => {
   }, [pipeline.isSuccess, pipeline.data, selectedVersionId]);
 
   return (
-    <div className="flex h-full w-full flex-col">
-      <Head
-        setSelectedVersionId={(versionId) => {
-          setSelectedVersionId(versionId);
-        }}
-        selectedVersionId={selectedVersionId}
-      />
-      <div className="flex justify-center">
-        <div className="w-[1440px]">
-          <div className="flex flex-1 flex-row px-8">
-            <div className="w-7/12 gap-y-6 py-10 pr-10">
-              <ReadOnlyPipelineBuilder
-                pipelineName={pipeline.isSuccess ? pipeline.data.name : null}
-                recipe={
-                  selectedPipelineRelease
-                    ? selectedPipelineRelease.recipe
-                    : pipeline.data?.recipe ?? null
-                }
-                metadata={
-                  selectedPipelineRelease
-                    ? selectedPipelineRelease.metadata
-                    : pipeline.data?.metadata ?? null
-                }
-                className="h-[378px] w-full"
-              />
-              <div className="my-4 w-full bg-semantic-bg-base-bg px-3 py-2 text-semantic-fg-primary product-body-text-1-semibold">
-                Pipeline Description
-              </div>
-              <Readme
-                isEditable={
-                  pipeline.isSuccess
-                    ? pipeline.data.permission.canEdit
-                      ? true
+    <React.Fragment>
+      <div className="flex flex-col px-12">
+        <Head
+          handleVersion={(version) => {
+            setCurrentVersion(version);
+          }}
+          currentVersion={currentVersion}
+          pipeline={pipeline.data}
+          isReady={pipeline.isSuccess}
+        />
+      </div>
+      <div className="flex h-full w-full flex-col">
+        <div className="flex justify-center">
+          <div className="w-[1440px]">
+            <div className="flex flex-1 flex-row px-8">
+              <div className="w-7/12 gap-y-6 py-10 pr-10">
+                <ReadOnlyPipelineBuilder
+                  pipelineName={pipeline.isSuccess ? pipeline.data.name : null}
+                  recipe={
+                    currentPipelineRelease
+                      ? currentPipelineRelease.recipe
+                      : pipeline.data?.recipe ?? null
+                  }
+                  metadata={
+                    currentPipelineRelease
+                      ? currentPipelineRelease.metadata
+                      : pipeline.data?.metadata ?? null
+                  }
+                  className="h-[378px] w-full"
+                />
+                <div className="my-4 w-full bg-semantic-bg-base-bg px-3 py-2 text-semantic-fg-primary product-body-text-1-semibold">
+                  Pipeline Description
+                </div>
+                <Readme
+                  isEditable={
+                    pipeline.isSuccess
+                      ? pipeline.data.permission.canEdit
+                        ? true
+                        : false
                       : false
-                    : false
-                }
-                readme={pipeline.isSuccess ? pipeline.data.readme : null}
-              />
-            </div>
-            <div className="w-5/12 py-10">
-              <InOutPut selectedVersionId={selectedVersionId} />
+                  }
+                  readme={pipeline.isSuccess ? pipeline.data.readme : null}
+                />
+              </div>
+              <div className="w-5/12 py-10">
+                <InOutPut currentVersion={currentVersion} />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };

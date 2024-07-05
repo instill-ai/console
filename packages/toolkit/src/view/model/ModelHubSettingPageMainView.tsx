@@ -11,7 +11,7 @@ import {
   useWatchUserModels,
 } from "../../lib";
 import { ModelTabNames } from "../../server";
-import { ModelContentViewer, ModelSettingsHead } from "./view-model";
+import { ModelContentViewer, ModelHead } from "./view-model";
 
 export type ModelHubSettingPageMainViewProps = GeneralAppPageProp;
 
@@ -66,11 +66,11 @@ export const ModelHubSettingPageMainView = (
 
   return (
     <div className="flex flex-col px-12">
-      <ModelSettingsHead
+      <ModelHead
         onTabChange={setSelectedTab}
         selectedTab={tab as ModelTabNames}
         model={model.data}
-        isReady={!model.isSuccess}
+        isReady={model.isSuccess}
         modelState={modelState}
       />
       <ModelContentViewer
