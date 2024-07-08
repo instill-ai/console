@@ -13,7 +13,7 @@ import {
 } from "@instill-ai/design-system";
 
 import type { ModelTriggerResult } from "../../../lib";
-import { CodeBlock, LoadingSpin } from "../../../components";
+import { CodeBlock, LoadingSpin, ModelSectionHeader } from "../../../components";
 import { defaultCodeSnippetStyles } from "../../../constant";
 import {
   convertSentenceToCamelCase,
@@ -35,7 +35,6 @@ import {
 } from "../../../lib";
 import { recursiveHelpers } from "../../pipeline-builder";
 import { OPERATION_POLL_TIMEOUT } from "./constants";
-import { ModelSectionHeader } from "./SectionHeader";
 
 export type ModelOutputActiveView = "preview" | "json";
 

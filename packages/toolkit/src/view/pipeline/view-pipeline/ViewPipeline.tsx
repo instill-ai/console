@@ -1,23 +1,25 @@
 "use client";
 
 import * as React from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 
 import {
   InstillStore,
-  Nullable,
   useInstillStore,
   useNamespacePipeline,
+  useQueryClient,
   useRouteInfo,
   useShallow,
 } from "../../../lib";
-import {
-  ReadOnlyPipelineBuilder,
-  useSortedReleases,
-} from "../../pipeline-builder";
+import { PipelineTabNames } from "../../../server";
+import { useSortedReleases } from "../../pipeline-builder";
 import { Head } from "./Head";
-import { InOutPut } from "./InOutPut";
-import { Readme } from "./Readme";
+import { PipelineContentViewer } from "./PipelineContentViewer";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -25,11 +27,13 @@ const selector = (store: InstillStore) => ({
 });
 
 export const ViewPipeline = () => {
+  const { tab } = useParams();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const shareCode = searchParams.get("view");
+  const activeVersion = searchParams.get("version");
+  const queryClient = useQueryClient();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-  const [selectedVersionId, setSelectedVersionId] =
-    React.useState<Nullable<string>>(null);
 
   const router = useRouter();
 
@@ -50,12 +54,29 @@ export const ViewPipeline = () => {
     accessToken,
   });
 
+  const updateActiveVersionUrl = (version: string) => {
+    const newSearchParams = new URLSearchParams();
+    newSearchParams.set("version", version);
+
+    const combinedSearchParams = new URLSearchParams({
+      ...Object.fromEntries(searchParams),
+      ...Object.fromEntries(newSearchParams),
+    });
+
+    router.replace(`${pathname}?${combinedSearchParams.toString()}`);
+  };
+
   React.useEffect(() => {
-    if (releases.length === 0 || !releases[0]) {
+    if (
+      releases.length === 0 ||
+      !releases[0] ||
+      (activeVersion && releases.find((item) => item.id === activeVersion))
+    ) {
       return;
     }
-    setSelectedVersionId(releases[0].id);
-  }, [releases]);
+
+    updateActiveVersionUrl(releases[0].id);
+  }, [releases, activeVersion, pathname]);
 
   React.useEffect(() => {
     if (pipeline.isError) {
@@ -63,72 +84,58 @@ export const ViewPipeline = () => {
     }
   }, [pipeline.isError, router]);
 
-  const selectedPipelineRelease = React.useMemo(() => {
+  const activeRelease = React.useMemo(() => {
     if (
       !pipeline.isSuccess ||
-      !selectedVersionId ||
+      !activeVersion ||
       pipeline.data.releases.length === 0
     ) {
       return null;
     }
-    return (
-      pipeline.data.releases.find(
-        (release) => release.id === selectedVersionId,
-      ) ?? null
+
+    const release = pipeline.data.releases.find(
+      (release) => release.id === activeVersion,
     );
-  }, [pipeline.isSuccess, pipeline.data, selectedVersionId]);
+
+    return release || null;
+  }, [pipeline.isSuccess, pipeline.data, activeVersion]);
+
+  const setSelectedTab = (tabName: PipelineTabNames) => {
+    const currentSearchparams = searchParams.toString();
+
+    router.replace(
+      `/${routeInfo.data.namespaceId}/pipelines/${pipeline.data?.id}/${tabName}${currentSearchparams ? `?${currentSearchparams}` : ""}`,
+    );
+  };
+
+  const onPipelineUpdate = () => {
+    pipeline.refetch();
+
+    // Invalidate default models list to have up to date data
+    if (routeInfo.isSuccess) {
+      queryClient.invalidateQueries({
+        queryKey: ["pipelines", routeInfo.data.namespaceName, "infinite"],
+      });
+    }
+  };
 
   return (
     <React.Fragment>
       <div className="flex flex-col px-12">
         <Head
-          handleVersion={(version) => {
-            setCurrentVersion(version);
-          }}
-          currentVersion={currentVersion}
+          onActiveVersionUpdate={updateActiveVersionUrl}
+          releases={releases}
           pipeline={pipeline.data}
           isReady={pipeline.isSuccess}
+          selectedTab={tab as PipelineTabNames}
+          onTabChange={setSelectedTab}
         />
-      </div>
-      <div className="flex h-full w-full flex-col">
-        <div className="flex justify-center">
-          <div className="w-[1440px]">
-            <div className="flex flex-1 flex-row px-8">
-              <div className="w-7/12 gap-y-6 py-10 pr-10">
-                <ReadOnlyPipelineBuilder
-                  pipelineName={pipeline.isSuccess ? pipeline.data.name : null}
-                  recipe={
-                    currentPipelineRelease
-                      ? currentPipelineRelease.recipe
-                      : pipeline.data?.recipe ?? null
-                  }
-                  metadata={
-                    currentPipelineRelease
-                      ? currentPipelineRelease.metadata
-                      : pipeline.data?.metadata ?? null
-                  }
-                  className="h-[378px] w-full"
-                />
-                <div className="my-4 w-full bg-semantic-bg-base-bg px-3 py-2 text-semantic-fg-primary product-body-text-1-semibold">
-                  Pipeline Description
-                </div>
-                <Readme
-                  isEditable={
-                    pipeline.isSuccess
-                      ? pipeline.data.permission.canEdit
-                        ? true
-                        : false
-                      : false
-                  }
-                  readme={pipeline.isSuccess ? pipeline.data.readme : null}
-                />
-              </div>
-              <div className="w-5/12 py-10">
-                <InOutPut currentVersion={currentVersion} />
-              </div>
-            </div>
-          </div>
-        </div>
+        <PipelineContentViewer
+          selectedTab={tab as PipelineTabNames}
+          pipeline={pipeline.data}
+          onUpdate={onPipelineUpdate}
+          activeRelease={activeRelease}
+        />
       </div>
     </React.Fragment>
   );

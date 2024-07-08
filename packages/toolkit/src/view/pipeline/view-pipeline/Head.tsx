@@ -2,12 +2,14 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import cn from "clsx";
 
 import {
   Button,
   Icons,
+  Popover,
+  ScrollArea,
   Skeleton,
   TabMenu,
   Tag,
@@ -21,6 +23,7 @@ import {
   isPublicPipeline,
   Nullable,
   Pipeline,
+  PipelineRelease,
   toastInstillError,
   useAuthenticatedUser,
   useDeleteNamespacePipeline,
@@ -29,6 +32,7 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../../lib";
+import { PipelineTabNames } from "../../../server";
 import { Menu } from "./Menu";
 
 const selector = (store: InstillStore) => ({
@@ -43,17 +47,28 @@ const DEFAULT_OWNER = {
 };
 
 export const Head = ({
+  onActiveVersionUpdate,
   pipeline,
   isReady,
+  selectedTab,
+  onTabChange,
+  releases,
 }: {
-  handleVersion: (version: string) => void;
-  currentVersion: Nullable<string>;
+  onActiveVersionUpdate: (version: string) => void;
   pipeline?: Pipeline;
   isReady: boolean;
+  selectedTab: PipelineTabNames;
+  onTabChange: (tabName: PipelineTabNames) => void;
+  releases: Nullable<PipelineRelease[]>;
 }) => {
   const router = useRouter();
   const navigateBackAfterLogin = useNavigateBackAfterLogin();
+  const searchParams = useSearchParams();
+  const activeVersion = searchParams.get("version");
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
+  const [isVersionSelectorOpen, setIsVersionSelectorOpen] =
+    React.useState<boolean>(false);
 
   const routeInfo = useRouteInfo();
 
@@ -145,33 +160,38 @@ export const Head = ({
               </div>
             </React.Fragment>
           )}
-          {/* releases.length && pipeline ? (
+          {pipeline && !isPublicPipeline(pipeline) ? (
+            <Tag
+              className="my-auto h-6 gap-x-1 !border-0 !py-0 !text-sm"
+              variant="lightNeutral"
+              size="sm"
+            >
+              <Icons.Lock03 className="h-3 w-3 stroke-semantic-fg-primary" />
+              Private
+            </Tag>
+          ) : null}
+          {!!releases?.length && pipeline ? (
             <Popover.Root
-              onOpenChange={() => setIsOpen(!isOpen)}
-              open={isOpen}
+              onOpenChange={() =>
+                setIsVersionSelectorOpen(!isVersionSelectorOpen)
+              }
+              open={isVersionSelectorOpen}
             >
               <Popover.Trigger asChild={true} className="my-auto">
                 <Button
                   className={cn(
-                    "!h-8 !w-[145px] gap-x-1 !rounded-sm !border border-[#E1E6EF] !py-1 px-3 !transition-opacity !duration-300 !ease-in-out",
-                    isOpen
+                    "!h-8 !w-[145px] gap-x-1 !rounded-sm !border border-[#E1E6EF] !py-1 px-3 !transition-opacity !duration-300 !ease-in-out ml-auto",
+                    isVersionSelectorOpen
                       ? "border-opacity-100 !bg-semantic-accent-bg "
                       : "border-opacity-0",
                   )}
                   size="sm"
                   variant="tertiaryColour"
                   type="button"
-                  onClick={() => setIsOpen(true)}
+                  onClick={() => setIsVersionSelectorOpen(true)}
                 >
-                  <Tag
-                    size="sm"
-                    variant="darkPurple"
-                    className="h-6 gap-x-2"
-                  >
-                    Version{" "}
-                    {currentVersion === "latest"
-                      ? releases[0]?.id
-                      : currentVersion}
+                  <Tag size="sm" variant="darkPurple" className="h-6 gap-x-2">
+                    Version {activeVersion}
                   </Tag>
                   <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
                 </Button>
@@ -190,14 +210,10 @@ export const Head = ({
                           <VersionButton
                             key={release.id}
                             id={release.id}
-                            currentVersion={
-                              currentVersion === "latest"
-                                ? releases[0].id
-                                : currentVersion
-                            }
+                            currentVersion={activeVersion}
                             onClick={() => {
-                              handleVersion(release.id);
-                              setIsOpen(false);
+                              onActiveVersionUpdate(release.id);
+                              setIsVersionSelectorOpen(false);
                             }}
                           />
                         ))}
@@ -211,16 +227,6 @@ export const Head = ({
                 </ScrollArea.Root>
               </Popover.Content>
             </Popover.Root>
-          ) : null */}
-          {pipeline && !isPublicPipeline(pipeline) ? (
-            <Tag
-              className="my-auto h-6 gap-x-1 !border-0 !py-0 !text-sm"
-              variant="lightNeutral"
-              size="sm"
-            >
-              <Icons.Lock03 className="h-3 w-3 stroke-semantic-fg-primary" />
-              Private
-            </Tag>
           ) : null}
         </div>
         {!isReady ? (
@@ -268,9 +274,9 @@ export const Head = ({
         ) : (
           <div className="mt-8 flex flex-row items-end justify-between">
             <TabMenu.Root
-              value={/* selectedTab */ "playground"}
-              onValueChange={
-                /* (value: Nullable<string>) */ () => null //onTabChange(value as PipelineTabNames)
+              value={selectedTab}
+              onValueChange={(value: Nullable<string>) =>
+                onTabChange(value as PipelineTabNames)
               }
               disabledDeSelect={true}
             >
@@ -289,11 +295,11 @@ export const Head = ({
               {/* <TabMenu.Item value="examples">
                   <Icons.CheckCircle className="h-4 w-4" />
                   Examples
-                </TabMenu.Item>
-                <TabMenu.Item value="preview">
-                  <Icons.Activity className="h-4 w-4" />
-                  Preview
                 </TabMenu.Item> */}
+              <TabMenu.Item value="preview">
+                <Icons.Activity className="h-4 w-4" />
+                Preview
+              </TabMenu.Item>
               <TabMenu.Item value="runs">
                 <Icons.Zap className="h-4 w-4" />
                 Runs
@@ -374,7 +380,7 @@ export const Head = ({
   );
 };
 
-/* const VersionButton = ({
+const VersionButton = ({
   id,
   currentVersion,
   onClick,
@@ -405,4 +411,4 @@ export const Head = ({
       </div>
     </Button>
   );
-}; */
+};

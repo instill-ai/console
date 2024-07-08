@@ -56,14 +56,16 @@ export type ReadOnlyPipelineBuilderProps = {
   recipe: Nullable<PipelineRecipe>;
   metadata: Nullable<GeneralRecord>;
   className?: string;
+  style?: React.CSSProperties;
 };
 
-export const ReadOnlyPipelineBuilder = ({
+export const ReadOnlyPipelineBuilder = React.forwardRef(({
   pipelineName,
   className,
   recipe,
   metadata,
-}: ReadOnlyPipelineBuilderProps) => {
+  style,
+}: ReadOnlyPipelineBuilderProps, ref: React.ForwardedRef<HTMLDivElement>) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] =
@@ -113,10 +115,12 @@ export const ReadOnlyPipelineBuilder = ({
 
   return (
     <div
+      ref={ref}
       className={cn(
         "group flex w-full rounded-sm border-2 border-semantic-bg-line",
         className,
       )}
+      style={style}
     >
       <ReactFlow
         id={pipelineName ?? undefined}
@@ -159,4 +163,6 @@ export const ReadOnlyPipelineBuilder = ({
       </ReactFlow>
     </div>
   );
-};
+})
+
+ReadOnlyPipelineBuilder.displayName = "ReadOnlyPipelineBuilder";

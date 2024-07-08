@@ -1,14 +1,16 @@
 "use client";
 
+import { useMemo } from "react";
+
 import { useToast } from "@instill-ai/design-system";
 
-import type { InstillStore, Nullable } from "../../../lib";
-import { RealTimeTextEditor } from "../../../components";
+import { ReadmeEditor } from "../../../components";
 import {
+  InstillStore,
+  Pipeline,
   sendAmplitudeData,
   useAmplitudeCtx,
   useInstillStore,
-  useRouteInfo,
   useShallow,
   useUpdateNamespacePipeline,
 } from "../../../lib";
@@ -17,28 +19,28 @@ const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
 });
 
-export const Readme = ({
-  isEditable,
-  readme,
-}: {
-  isEditable: boolean;
-  readme: Nullable<string>;
-}) => {
+export type PipelineReadmeProps = {
+  pipeline?: Pipeline;
+  onUpdate: () => void;
+};
+
+export const PipelineReadme = ({ pipeline, onUpdate }: PipelineReadmeProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken } = useInstillStore(useShallow(selector));
   const { toast } = useToast();
-
-  const routeInfo = useRouteInfo();
+  const canEdit = useMemo(() => {
+    return !!accessToken && !!pipeline?.permission.canEdit;
+  }, [pipeline, accessToken]);
 
   const updatePipeline = useUpdateNamespacePipeline();
 
   const onUpdatePipelineReadme = async (readme: string) => {
-    if (!routeInfo.isSuccess || !accessToken || !routeInfo.data.pipelineName) {
+    if (!accessToken || !pipeline) {
       return;
     }
 
     await updatePipeline.mutateAsync({
-      namespacePipelineName: routeInfo.data.pipelineName,
+      namespacePipelineName: pipeline.name,
       readme,
       accessToken,
     });
@@ -49,21 +51,20 @@ export const Readme = ({
 
     toast({
       size: "small",
-      title: "Update pipeline readme successfully",
+      title: "Pipeline readme updated successfully",
       variant: "alert-success",
     });
+
+    onUpdate();
 
     return;
   };
 
   return (
-    <RealTimeTextEditor
-      onSave={onUpdatePipelineReadme}
-      isReady={
-        routeInfo.isSuccess && !!accessToken && !!routeInfo.data.pipelineName
-      }
-      isEditable={isEditable}
-      content={readme}
+    <ReadmeEditor
+      readme={pipeline?.readme}
+      canEdit={canEdit}
+      onUpdate={onUpdatePipelineReadme}
     />
   );
 };
