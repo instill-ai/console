@@ -21,11 +21,13 @@ import {
   CreateUserSecretPayload,
   getInstillApiErrorMessage,
   InstillStore,
+  Nullable,
   sendAmplitudeData,
   useAmplitudeCtx,
   useAuthenticatedUser,
   useCreateUserSecret,
   useInstillStore,
+  useRouteInfo,
   useShallow,
 } from "../../../lib";
 import { validateInstillResourceID } from "../../../server";
@@ -57,6 +59,7 @@ export const CreateSecretDialog = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const { toast } = useToast();
+  const routeInfo = useRouteInfo();
 
   const me = useAuthenticatedUser({
     accessToken,
@@ -88,11 +91,26 @@ export const CreateSecretDialog = () => {
   ) => {
     if (!accessToken || !me.isSuccess) return;
 
+    let namespaceName: Nullable<string> = null;
+
+    if (
+      routeInfo.isSuccess &&
+      routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION"
+    ) {
+      namespaceName = routeInfo.data.namespaceName;
+    } else {
+      namespaceName = me.data.name;
+    }
+
     const payload: CreateUserSecretPayload = {
       id: data.name,
       value: data.value,
       description: data.description ?? undefined,
     };
+
+    if (!namespaceName) {
+      return;
+    }
 
     setIsLoading(true);
 
@@ -100,7 +118,7 @@ export const CreateSecretDialog = () => {
       await createSecret.mutateAsync({
         payload,
         accessToken,
-        entityName: me.data.name,
+        entityName: namespaceName,
       });
 
       setIsLoading(false);
