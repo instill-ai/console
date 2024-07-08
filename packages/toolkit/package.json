@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/toolkit",
-  "version": "0.96.0-rc.0",
+  "version": "0.96.0-rc.2",
   "description": "Instill AI's frontend toolkit",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -13,7 +13,9 @@
   "scripts": {
     "test": "vitest --run --passWithNoTests",
     "dev": "tsup --watch",
-    "build": "pnpm rimraf dist && tsup",
+    "dev-ts": "tsc --watch --emitDeclarationOnly",
+    "ts-type": "tsc --emitDeclarationOnly",
+    "build": "tsup && pnpm ts-type",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --cache",
     "publish-rc": "pnpm build && pnpm publish --no-git-checks"
   },
@@ -46,9 +48,10 @@
   "license": "Apache-2.0",
   "private": false,
   "devDependencies": {
-    "@instill-ai/tsconfig": "workspace:*",
     "@instill-ai/eslint-config-cortex": "workspace:*",
     "@instill-ai/prettier-config-cortex": "workspace:*",
+    "@instill-ai/tsconfig": "workspace:*",
+    "@microsoft/api-extractor": "^7.47.0",
     "@testing-library/jest-dom": "^6.2.1",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.2",

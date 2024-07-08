@@ -2,11 +2,17 @@
   "extends": "@instill-ai/tsconfig/internal-package.json",
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "ES2022"],
-    "jsx": "preserve",
-    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
+
+    // We need to specify this for tsup to correctly cast the jsx runtime
+    "jsx": "react-jsx",
     "outDir": "dist",
-    "module": "esnext",
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["./setupTests.ts", "vitest.config.ts", "tsup.config.ts", "dist"],
+  "exclude": [
+    "./setupTests.ts",
+    "vitest.config.ts",
+    "tsup.config.ts",
+    "dist",
+    "node_modules",
+  ],
 }

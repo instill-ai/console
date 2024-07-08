@@ -3,7 +3,7 @@ import { defineConfig, Options } from "tsup";
 const cfg: Options = {
   sourcemap: false,
   minify: false,
-  dts: true,
+  dts: false,
   format: ["esm", "cjs"],
   loader: {
     ".js": "jsx",

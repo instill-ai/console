@@ -19,6 +19,8 @@ export default defineConfig({
       "#async_hooks",
     ];
 
+    // All the component export from design-system will be used only on client side,
+    // so we cast this to avoid SSR issue.
     options.banner = {
       js: '"use client";',
     };
