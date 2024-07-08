@@ -5,7 +5,8 @@
     "jsx": "preserve",
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
     "outDir": "dist",
+    "module": "esnext",
   },
-  "include": ["src"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["./setupTests.ts", "vitest.config.ts", "tsup.config.ts", "dist"],
 }
