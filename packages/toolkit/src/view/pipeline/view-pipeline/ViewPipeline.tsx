@@ -34,9 +34,7 @@ export const ViewPipeline = () => {
   const activeVersion = searchParams.get("version");
   const queryClient = useQueryClient();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
   const router = useRouter();
-
   const routeInfo = useRouteInfo();
 
   const pipeline = useNamespacePipeline({

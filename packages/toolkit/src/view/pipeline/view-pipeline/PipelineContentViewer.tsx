@@ -4,6 +4,7 @@ import { PipelineTabNames } from "../../../server";
 import { PipelinePlayground } from "./PipelinePlayground";
 import { PipelinePreview } from "./PipelinePreview";
 import { PipelineReadme } from "./PipelineReadme";
+import { PipelineSettings } from "./PipelineSettings";
 import { PipelineVersions } from "./PipelineVersions";
 
 export type PipelineContentViewerProps = {
@@ -34,7 +35,7 @@ export const PipelineContentViewer = ({
     }
     case "settings": {
       if (pipeline?.permission.canEdit) {
-        //content = <PipelineSettingsEditForm pipeline={pipeline} onUpdate={onUpdate} />;
+        content = <PipelineSettings pipeline={pipeline} onUpdate={onUpdate} />;
       }
 
       break;

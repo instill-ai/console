@@ -181,12 +181,12 @@ export const ModelSettingsEditForm = ({
     form.setValue("hardwareCustom", value);
   };
 
-  const formID = "edit-model-form";
+  const formId = "edit-model-form";
 
   return (
     <div className="mt-1 flex flex-col xl:w-1/2">
       <Form.Root {...form}>
-        <form id={formID} onSubmit={form.handleSubmit(onSubmit)}>
+        <form id={formId} onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-y-10">
             <Form.Field
               control={form.control}
@@ -408,7 +408,7 @@ export const ModelSettingsEditForm = ({
           <div className="pb-14 pt-12">
             <Button
               disabled={!model?.permission.canEdit || updating}
-              form={formID}
+              form={formId}
               variant="primary"
               size="lg"
               type="submit"
