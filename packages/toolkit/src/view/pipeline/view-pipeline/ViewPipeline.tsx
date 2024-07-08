@@ -84,22 +84,6 @@ export const ViewPipeline = () => {
     }
   }, [pipeline.isError, router]);
 
-  const activeRelease = React.useMemo(() => {
-    if (
-      !pipeline.isSuccess ||
-      !activeVersion ||
-      pipeline.data.releases.length === 0
-    ) {
-      return null;
-    }
-
-    const release = pipeline.data.releases.find(
-      (release) => release.id === activeVersion,
-    );
-
-    return release || null;
-  }, [pipeline.isSuccess, pipeline.data, activeVersion]);
-
   const setSelectedTab = (tabName: PipelineTabNames) => {
     const currentSearchparams = searchParams.toString();
 
@@ -111,7 +95,7 @@ export const ViewPipeline = () => {
   const onPipelineUpdate = () => {
     pipeline.refetch();
 
-    // Invalidate default models list to have up to date data
+    // Invalidate default pipelines list to have up to date data
     if (routeInfo.isSuccess) {
       queryClient.invalidateQueries({
         queryKey: ["pipelines", routeInfo.data.namespaceName, "infinite"],
@@ -134,7 +118,7 @@ export const ViewPipeline = () => {
           selectedTab={tab as PipelineTabNames}
           pipeline={pipeline.data}
           onUpdate={onPipelineUpdate}
-          activeRelease={activeRelease}
+          releases={releases}
         />
       </div>
     </React.Fragment>

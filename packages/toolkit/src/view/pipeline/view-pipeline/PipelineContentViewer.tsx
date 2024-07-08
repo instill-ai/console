@@ -1,22 +1,23 @@
 import { LoadingSpin } from "../../../components";
-import { Nullable, Pipeline, PipelineRelease } from "../../../lib";
+import { Pipeline, PipelineRelease } from "../../../lib";
 import { PipelineTabNames } from "../../../server";
 import { PipelinePlayground } from "./PipelinePlayground";
 import { PipelinePreview } from "./PipelinePreview";
 import { PipelineReadme } from "./PipelineReadme";
+import { PipelineVersions } from "./PipelineVersions";
 
 export type PipelineContentViewerProps = {
   selectedTab: PipelineTabNames;
   pipeline?: Pipeline;
   onUpdate: () => void;
-  activeRelease: Nullable<PipelineRelease>;
+  releases: PipelineRelease[];
 };
 
 export const PipelineContentViewer = ({
   selectedTab,
   pipeline,
   onUpdate,
-  activeRelease,
+  releases,
 }: PipelineContentViewerProps) => {
   let content = null;
 
@@ -27,7 +28,7 @@ export const PipelineContentViewer = ({
       break;
     }
     case "versions": {
-      //content = <PipelineVersions pipeline={pipeline} />
+      content = <PipelineVersions pipeline={pipeline} releases={releases} />
 
       break;
     }
@@ -44,7 +45,7 @@ export const PipelineContentViewer = ({
       break;
     }
     case "preview": {
-      content = <PipelinePreview pipeline={pipeline} activeRelease={activeRelease} />;
+      content = <PipelinePreview pipeline={pipeline} releases={releases} />;
 
       break;
     }
@@ -55,7 +56,7 @@ export const PipelineContentViewer = ({
     }
     case "playground":
     default: {
-      content = <PipelinePlayground currentVersion={activeRelease?.id || null} />;
+      content = <PipelinePlayground />;
     }
   }
 

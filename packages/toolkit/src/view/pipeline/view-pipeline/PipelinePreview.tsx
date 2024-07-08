@@ -1,13 +1,16 @@
 import * as React from "react";
-import { Nullable, Pipeline, PipelineRelease } from "../../../lib";
+import { Pipeline, PipelineRelease } from "../../../lib";
 import { ReadOnlyPipelineBuilder } from "../../pipeline-builder"
+import { useSearchParams } from "next/navigation";
 
 export type PipelinePreviewProps = {
   pipeline?: Pipeline;
-  activeRelease: Nullable<PipelineRelease>;
+  releases: PipelineRelease[];
 }
 
-export const PipelinePreview = ({ pipeline, activeRelease }: PipelinePreviewProps) => {
+export const PipelinePreview = ({ pipeline, releases }: PipelinePreviewProps) => {
+  const searchParams = useSearchParams();
+  const currentVersion = searchParams.get("version");
   const [topOffset, setTopOffset] = React.useState(0);
   const onMount = React.useCallback((node: HTMLHeadingElement) => {
     if (!node) {
@@ -18,6 +21,14 @@ export const PipelinePreview = ({ pipeline, activeRelease }: PipelinePreviewProp
 
     setTopOffset(boundingRect.top);
   }, []);
+
+  const activeRelease = React.useMemo(() => {
+    if (!releases.length) {
+      return null;
+    }
+
+    return releases.find(item => item.id === currentVersion) || null;
+  }, [releases, currentVersion])
 
   return (
     <ReadOnlyPipelineBuilder

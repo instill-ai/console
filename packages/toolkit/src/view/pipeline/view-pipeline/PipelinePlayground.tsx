@@ -33,17 +33,12 @@ const selector = (store: InstillStore) => ({
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
-type PipelinePlaygroundProps = {
-  currentVersion: Nullable<string>;
-};
-
-export const PipelinePlayground = ({
-  currentVersion,
-}: PipelinePlaygroundProps) => {
+export const PipelinePlayground = () => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const router = useRouter();
   const searchParams = useSearchParams();
   const shareCode = searchParams.get("view");
+  const currentVersion = searchParams.get("version");
   const namespaces = useUserNamespaces();
   const { toast } = useToast();
 
