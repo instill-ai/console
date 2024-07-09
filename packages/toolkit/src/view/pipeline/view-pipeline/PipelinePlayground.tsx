@@ -69,11 +69,11 @@ export const PipelinePlayground = () => {
 
   const variables = React.useMemo(() => {
     if (pipeline.isSuccess) {
-      if (!currentVersion || releases.length === 0) {
+      if (!currentVersion || releases.data.length === 0) {
         return pipeline.data.recipe.variable ?? null;
       }
 
-      const pipelineVersion = releases.find(
+      const pipelineVersion = releases.data.find(
         (release) =>
           release.id === currentVersion || release.alias === currentVersion,
       );
@@ -88,11 +88,11 @@ export const PipelinePlayground = () => {
 
   const outputs = React.useMemo(() => {
     if (pipeline.isSuccess) {
-      if (!currentVersion || releases.length === 0) {
+      if (!currentVersion || releases.data.length === 0) {
         return pipeline.data.recipe.output ?? null;
       }
 
-      const pipelineVersion = releases.find(
+      const pipelineVersion = releases.data.find(
         (release) =>
           release.id === currentVersion || release.alias === currentVersion,
       );

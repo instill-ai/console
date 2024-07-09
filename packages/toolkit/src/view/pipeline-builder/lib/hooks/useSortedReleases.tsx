@@ -4,7 +4,7 @@ import * as semver from "semver";
 import {
   Nullable,
   PipelineRelease,
-  useNamespacePipelineReleases,
+  useInfiniteNamespacePipelineReleases,
 } from "../../../../lib";
 
 export function sortPipelineReleases(releases: PipelineRelease[]) {
@@ -41,23 +41,45 @@ export function useSortedReleases({
   enabledQuery: boolean;
   shareCode?: string;
 }) {
-  const pipelineReleases = useNamespacePipelineReleases({
+  const pipelineReleases = useInfiniteNamespacePipelineReleases({
     namespacePipelineName: pipelineName,
-    enabled: enabledQuery,
+    enabledQuery,
     accessToken,
     shareCode,
   });
+
+  React.useEffect(() => {
+    if (!pipelineReleases.data?.pages.length) {
+      return;
+    }
+
+    const targetPage =
+      pipelineReleases.data.pages[pipelineReleases.data.pages.length - 1];
+
+    if (targetPage && targetPage.nextPageToken) {
+      pipelineReleases.fetchNextPage();
+    }
+  }, [pipelineReleases.isSuccess, pipelineReleases.data]);
 
   const sortedReleases = React.useMemo(() => {
     if (!pipelineReleases.isSuccess) {
       return [];
     }
 
-    return sortPipelineReleases(pipelineReleases.data);
+    return sortPipelineReleases(
+      pipelineReleases.data.pages.reduce(
+        (acc: PipelineRelease[], page) => acc.concat(page.releases),
+        [],
+      ),
+    );
 
     // When every user change pipelineName we will rerender the pipelineReleases
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [pipelineReleases.data, pipelineReleases.isSuccess, pipelineName]);
 
-  return sortedReleases;
+  return {
+    isFetchingNextPage: pipelineReleases.isFetchingNextPage,
+    isSuccess: pipelineReleases.isSuccess,
+    data: sortedReleases,
+  };
 }

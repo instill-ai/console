@@ -53,7 +53,7 @@ export const BackToLatestVersionTopBar = () => {
     retry: false,
   });
 
-  return currentVersion === "latest" || sortedReleases.length === 0 ? null : (
+  return currentVersion === "latest" || sortedReleases.data.length === 0 ? null : (
     <div className="flex h-8 w-full flex-col bg-semantic-bg-base-bg">
       <p className="m-auto">
         <span className="text-semantic-fg-secondary product-body-text-4-medium ">
@@ -64,7 +64,7 @@ export const BackToLatestVersionTopBar = () => {
         <span
           className="cursor-pointer text-semantic-accent-default product-body-text-4-medium hover:!underline"
           onClick={() => {
-            if (sortedReleases.length === 0 || !pipeline.isSuccess) {
+            if (sortedReleases.data.length === 0 || !pipeline.isSuccess) {
               return;
             }
 

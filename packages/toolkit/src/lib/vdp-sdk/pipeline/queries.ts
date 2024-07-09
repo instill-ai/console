@@ -186,6 +186,93 @@ export async function listUserPipelinesQuery(
   }
 }
 
+export type listPipelinesReleasesQueryProps = {
+  pipelineName: string;
+  accessToken: Nullable<string>;
+  shareCode?: string;
+  nextPageToken: Nullable<string>;
+  pageSize: Nullable<number>;
+  disabledViewFull?: boolean;
+};
+
+export async function listPipelinesReleasesQuery(
+  props: listPipelinesReleasesQueryProps & {
+    enablePagination: true;
+  },
+): Promise<ListPipelineReleasesResponse>;
+export async function listPipelinesReleasesQuery(
+  props: listPipelinesReleasesQueryProps & {
+    enablePagination: false;
+  },
+): Promise<PipelineRelease[]>;
+export async function listPipelinesReleasesQuery(
+  props: listPipelinesReleasesQueryProps & {
+    enablePagination: undefined;
+  },
+): Promise<PipelineRelease[]>;
+export async function listPipelinesReleasesQuery(
+  props: listPipelinesReleasesQueryProps & {
+    enablePagination?: boolean;
+  },
+) {
+  const {
+    pageSize,
+    nextPageToken,
+    accessToken,
+    pipelineName,
+    enablePagination,
+    disabledViewFull,
+    shareCode,
+  } = props;
+  try {
+    const client = createInstillAxiosClient(accessToken);
+    const releases: PipelineRelease[] = [];
+
+    const queryString = getQueryString({
+      baseURL: disabledViewFull
+        ? `${pipelineName}/releases`
+        : `${pipelineName}/releases?view=VIEW_FULL`,
+      pageSize,
+      nextPageToken,
+    });
+
+    const { data } = await client.get<ListPipelineReleasesResponse>(queryString, {
+      headers: {
+        "instill-share-code": shareCode,
+        "Access-Control-Allow-Headers": shareCode
+          ? "instill-share-code"
+          : undefined,
+        "Content-Type": "application/json",
+      },
+    },);
+    
+
+    if (enablePagination) {
+      return Promise.resolve(data);
+    }
+
+    releases.push(...data.releases);
+
+    if (data.nextPageToken) {
+      releases.push(
+        ...(await listPipelinesReleasesQuery({
+          pageSize,
+          nextPageToken: data.nextPageToken,
+          accessToken,
+          pipelineName,
+          enablePagination: false,
+          shareCode,
+          disabledViewFull,
+        })),
+      );
+    }
+
+    return Promise.resolve(releases);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
 export type GetUserPipelineResponse = {
   pipeline: Pipeline;
 };

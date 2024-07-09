@@ -92,7 +92,7 @@ export const BottomBar = () => {
             </p>
             <ScrollArea.Root>
               <div className="flex flex-col gap-y-4">
-                {sortedReleases.length > 0 ? (
+                {sortedReleases.data.length > 0 ? (
                   <React.Fragment>
                     <VersionButton
                       id="latest"
@@ -141,7 +141,7 @@ export const BottomBar = () => {
                           });
                       }}
                     />
-                    {sortedReleases.map((release) => (
+                    {sortedReleases.data.map((release) => (
                       <VersionButton
                         key={release.id}
                         id={release.id}

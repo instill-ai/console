@@ -13,6 +13,7 @@ export type PipelineContentViewerProps = {
   pipeline?: Pipeline;
   onUpdate: () => void;
   releases: PipelineRelease[];
+  isReady: boolean;
 };
 
 export const PipelineContentViewer = ({
@@ -20,6 +21,7 @@ export const PipelineContentViewer = ({
   pipeline,
   onUpdate,
   releases,
+  isReady,
 }: PipelineContentViewerProps) => {
   let content = null;
 
@@ -30,7 +32,7 @@ export const PipelineContentViewer = ({
       break;
     }
     case "versions": {
-      content = <PipelineVersions pipeline={pipeline} releases={releases} />
+      content = <PipelineVersions pipeline={pipeline} releases={releases} isReady={isReady} />
 
       break;
     }

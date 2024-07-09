@@ -7,6 +7,7 @@ export * from "./useDeleteNamespacePipelineRelease";
 export * from "./useDeleteNamespaceSecret";
 export * from "./useInfinitePipelines";
 export * from "./useInfiniteNamespacePipelines";
+export * from "./useInfiniteNamespacePipelineReleases.js";
 export * from "./useOperatorDefinition";
 export * from "./useOperatorDefinitions";
 export * from "./useRenameNamespacePipeline";

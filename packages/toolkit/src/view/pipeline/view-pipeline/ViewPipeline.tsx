@@ -66,15 +66,15 @@ export const ViewPipeline = () => {
 
   React.useEffect(() => {
     if (
-      releases.length === 0 ||
-      !releases[0] ||
-      (activeVersion && releases.find((item) => item.id === activeVersion))
+      releases.data.length === 0 ||
+      !releases.data[0] ||
+      (activeVersion && releases.data.find((item) => item.id === activeVersion))
     ) {
       return;
     }
 
-    updateActiveVersionUrl(releases[0].id);
-  }, [releases, activeVersion, pathname]);
+    updateActiveVersionUrl(releases.data[0].id);
+  }, [releases.isSuccess, releases.data, activeVersion, pathname]);
 
   React.useEffect(() => {
     if (pipeline.isError) {
@@ -101,14 +101,17 @@ export const ViewPipeline = () => {
     }
   };
 
+  const isReady =
+    pipeline.isSuccess && releases.isSuccess && !releases.isFetchingNextPage;
+
   return (
     <React.Fragment>
       <div className="flex flex-col px-12">
         <Head
           onActiveVersionUpdate={updateActiveVersionUrl}
-          releases={releases}
+          releases={releases.data}
           pipeline={pipeline.data}
-          isReady={pipeline.isSuccess}
+          isReady={isReady}
           selectedTab={tab as PipelineTabNames}
           onTabChange={setSelectedTab}
         />
@@ -116,7 +119,8 @@ export const ViewPipeline = () => {
           selectedTab={tab as PipelineTabNames}
           pipeline={pipeline.data}
           onUpdate={onPipelineUpdate}
-          releases={releases}
+          releases={releases.data}
+          isReady={isReady}
         />
       </div>
     </React.Fragment>
