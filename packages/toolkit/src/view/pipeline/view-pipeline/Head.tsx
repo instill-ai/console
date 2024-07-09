@@ -42,11 +42,11 @@ const selector = (store: InstillStore) => ({
 });
 
 export const Head = ({
-  currentVersion,
-  handleVersion,
+  selectedVersionId,
+  setSelectedVersionId,
 }: {
-  handleVersion: (version: string) => void;
-  currentVersion: Nullable<string>;
+  selectedVersionId: Nullable<string>;
+  setSelectedVersionId: (version: string) => void;
 }) => {
   const router = useRouter();
   const navigateBackAfterLogin = useNavigateBackAfterLogin();
@@ -217,9 +217,9 @@ export const Head = ({
                                 className="h-6 gap-x-2"
                               >
                                 Version{" "}
-                                {currentVersion === "latest"
+                                {selectedVersionId === "latest"
                                   ? releases[0]?.id
-                                  : currentVersion}
+                                  : selectedVersionId}
                               </Tag>
                               <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
                             </Button>
@@ -239,12 +239,12 @@ export const Head = ({
                                         key={release.id}
                                         id={release.id}
                                         currentVersion={
-                                          currentVersion === "latest"
+                                          selectedVersionId === "latest"
                                             ? releases[0].id
-                                            : currentVersion
+                                            : selectedVersionId
                                         }
                                         onClick={() => {
-                                          handleVersion(release.id);
+                                          setSelectedVersionId(release.id);
                                           setIsOpen(false);
                                         }}
                                       />

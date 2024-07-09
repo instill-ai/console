@@ -6,6 +6,7 @@ import cn from "clsx";
 import { Form, Icons, Select, Tooltip } from "@instill-ai/design-system";
 
 import { InstillCredit } from "../../../../constant";
+import { env } from "../../../../server";
 import { dot } from "../../../dot";
 import {
   AutoFormFieldBaseProps,
@@ -58,6 +59,10 @@ export const SingleSelectField = ({
   //    set the model value to gpt-3.5-turbo, and this model support
   //    instill credit.
   React.useEffect(() => {
+    if (env("NEXT_PUBLIC_APP_ENV") === "CE") {
+      return;
+    }
+
     const sub = watch((values, { name }) => {
       const fieldValue = dot.getter(values, path);
 
@@ -232,7 +237,8 @@ export const SingleSelectField = ({
                         <Select.ItemText>
                           <p className="my-auto">{option}</p>
                         </Select.ItemText>
-                        {instillCredentialMap &&
+                        {env("NEXT_PUBLIC_APP_ENV") !== "CE" &&
+                        instillCredentialMap &&
                         instillCredentialMap.values.includes(option) ? (
                           <Tooltip.Provider>
                             <Tooltip.Root>

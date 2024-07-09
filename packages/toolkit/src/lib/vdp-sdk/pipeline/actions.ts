@@ -155,11 +155,15 @@ export async function triggerUserPipelineReleaseAction({
   payload,
   accessToken,
   returnTraces,
+  requesterUid,
+  shareCode,
 }: {
   pipelineReleaseName: string;
   payload: TriggerUserPipelinePayload;
   accessToken: Nullable<string>;
   returnTraces?: boolean;
+  requesterUid?: string;
+  shareCode?: string;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken);
@@ -170,8 +174,11 @@ export async function triggerUserPipelineReleaseAction({
       {
         headers: {
           "instill-return-traces": returnTraces ? "true" : "false",
-          "Access-Control-Allow-Headers": "instill-return-traces",
+          "instill-share-code": shareCode,
+          "Access-Control-Allow-Headers":
+            "instill-return-traces, instill-share-code, Instill-Requester-Uid",
           "Content-Type": "application/json",
+          "Instill-Requester-Uid": requesterUid,
         },
       },
     );
