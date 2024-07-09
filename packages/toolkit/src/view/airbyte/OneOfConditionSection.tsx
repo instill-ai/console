@@ -148,7 +148,7 @@ export const OneOfConditionSection = ({
     ) {
       const selectedCondition =
         conditionOptions.find(
-          (e) => e.label === selectedConditionMap[formTree.path].selectedItem,
+          (e) => e.label === selectedConditionMap[formTree.path]?.selectedItem,
         ) || null;
       setSelectedConditionOption(selectedCondition);
     }
@@ -162,7 +162,7 @@ export const OneOfConditionSection = ({
         const selectedCondition = formTree.conditions[option.label];
         setSelectedConditionOption(option);
 
-        const targetConstField = selectedCondition.properties.find(
+        const targetConstField = selectedCondition?.properties.find(
           (e) => "const" in e,
         ) as AirbyteFormItem;
 
@@ -184,7 +184,11 @@ export const OneOfConditionSection = ({
           if (conditionPath) {
             setValues((prev) => {
               const configuration = prev?.configuration ?? {};
-              dot.setter(configuration, conditionPath, selectedCondition.title);
+              dot.setter(
+                configuration,
+                conditionPath,
+                selectedCondition?.title,
+              );
               return {
                 ...prev,
                 configuration,
@@ -284,7 +288,7 @@ export const OneOfConditionSection = ({
       </div>
       <div className="flex flex-col gap-y-2">
         {selectedConditionOption
-          ? formTree.conditions[selectedConditionOption.label].uiFields ?? null
+          ? formTree.conditions[selectedConditionOption.label]?.uiFields ?? null
           : null}
       </div>
     </div>

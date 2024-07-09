@@ -24,6 +24,7 @@ import Strike from "@tiptap/extension-strike";
 import MarkdownIt from "markdown-it";
 import {
   defaultMarkdownSerializer,
+  MarkdownSerializer,
   MarkdownSerializerState,
   MarkdownSerializer as ProseMirrorMarkdownSerializer,
 } from "prosemirror-markdown";
@@ -153,8 +154,8 @@ const serializerNodes = {
 export function serialize(schema: Schema, content: any) {
   const proseMirrorDocument = schema.nodeFromJSON(content);
   const serializer = new ProseMirrorMarkdownSerializer(
-    serializerNodes,
-    serializerMarks,
+    serializerNodes as MarkdownSerializer["nodes"],
+    serializerMarks as MarkdownSerializer["marks"],
   );
 
   return serializer.serialize(proseMirrorDocument, {

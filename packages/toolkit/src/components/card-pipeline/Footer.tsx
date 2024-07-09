@@ -52,7 +52,7 @@ export const Footer = ({
     if (pipeline.releases.length === 0) {
       return null;
     }
-    return sortPipelineReleases(pipeline.releases)[0].id;
+    return sortPipelineReleases(pipeline.releases)[0]?.id ?? null;
   }, [pipeline]);
 
   const me = useAuthenticatedUser({

@@ -193,12 +193,11 @@ function composeEdgeForReference({
 }) {
   const newEdges: Edge[] = [];
 
+  const referencePrefix =
+    reference.referenceValue.withoutCurlyBraces.split(".")[0];
+
   // check whether the referenced target is available for variable node
-  if (
-    reference.referenceValue.withoutCurlyBraces
-      .split(".")[0]
-      .includes("variable")
-  ) {
+  if (referencePrefix && referencePrefix.includes("variable")) {
     const referenceIsAvailable = startNodeAvailableRefernces.some(
       (availableReference) =>
         checkReferenceIsAvailable(
@@ -242,12 +241,17 @@ function composeEdgeForReference({
       ) === undefined;
 
     if (referenceIsAvailable && hasNoEdgeForThisReference && reference.nodeID) {
-      newEdges.push({
-        id: uuidv4(),
-        source: reference.referenceValue.withoutCurlyBraces.split(".")[0],
-        target: reference.nodeID,
-        type: "customEdge",
-      });
+      const sourceId =
+        reference.referenceValue.withoutCurlyBraces.split(".")[0];
+
+      if (sourceId) {
+        newEdges.push({
+          id: uuidv4(),
+          source: sourceId,
+          target: reference.nodeID,
+          type: "customEdge",
+        });
+      }
     }
   }
 

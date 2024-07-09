@@ -3,14 +3,6 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import {
-  AuthPageBase,
-  ChangePasswordForm,
-  ChangePasswordFormSchema,
-  LoginForm,
-  LoginFormSchema,
-} from "components";
-import { useAppTrackToken } from "lib/useAppTrackToken";
 import * as z from "zod";
 
 import { useToast } from "@instill-ai/design-system";
@@ -21,6 +13,15 @@ import {
   useAuthenticatedUser,
 } from "@instill-ai/toolkit";
 import { authLoginAction } from "@instill-ai/toolkit/server";
+
+import {
+  AuthPageBase,
+  ChangePasswordForm,
+  ChangePasswordFormSchema,
+  LoginForm,
+  LoginFormSchema,
+} from "~/components";
+import { useAppTrackToken } from "~/lib/useAppTrackToken";
 
 export const LoginPageRender = () => {
   const router = useRouter();

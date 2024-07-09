@@ -15,7 +15,7 @@ function main() {
 
   // 1. Get the key-value pairs from process.env with key starting with NEXT_PUBLIC
   const inlineEnvKeys = Object.keys(process.env).filter((key) =>
-    inlineEnvPrefixes.some((prefix) => key.startsWith(prefix))
+    inlineEnvPrefixes.some((prefix) => key.startsWith(prefix)),
   );
   const inlineEnvValues = inlineEnvKeys.map((key) => process.env[key]);
 
@@ -40,7 +40,7 @@ function main() {
 
   consoleLogMessageTitleWithColor(
     "info",
-    "Merge inlined and .env file variables:"
+    "Merge inlined and .env file variables:",
   );
   console.log(mergedEnv);
 
@@ -65,6 +65,11 @@ main();
 
 // This script is borrowed from [motdotla/dotenv](https://github.com/motdotla/dotenv/blob/master/lib/main.js)
 
+/**
+ *
+ * @param {string} src
+ * @returns
+ */
 // Parser src into an Object
 function dotEnvParse(src) {
   const obj = {};
@@ -101,12 +106,19 @@ function dotEnvParse(src) {
     }
 
     // Add to object
-    obj[key] = value;
+    if (key) {
+      obj[key] = value;
+    }
   }
 
   return obj;
 }
 
+/**
+ *
+ * @param {string} type
+ * @param {string} title
+ */
 function consoleLogMessageTitleWithColor(type, title) {
   switch (type) {
     case "warn":

@@ -16,26 +16,31 @@ type BlogPostData = {
 const formatDate = (dateString: string | undefined) => {
   if (!dateString) return "";
   try {
-    const dateParts = dateString.split("T")[0].split("-");
-    const year = dateParts[0];
-    const month = parseInt(dateParts[1], 10);
-    const day = parseInt(dateParts[2], 10);
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const formattedDate = `${monthNames[month - 1]} ${day}, ${year}`;
-    return formattedDate;
+    const dateParts = dateString.split("T")[0]?.split("-");
+
+    if (dateParts && dateParts[1] && dateParts[2]) {
+      const year = dateParts[0];
+      const month = parseInt(dateParts[1], 10);
+      const day = parseInt(dateParts[2], 10);
+      const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      const formattedDate = `${monthNames[month - 1]} ${day}, ${year}`;
+      return formattedDate;
+    } else {
+      return " ";
+    }
   } catch (error) {
     console.error("Error parsing date:", error);
     return "";

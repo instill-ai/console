@@ -40,7 +40,7 @@ export const DemoFileReader: StoryFn<typeof BasicUploadFileField> = () => {
 
     const inputFileList = event.target.files;
 
-    if (inputFileList) {
+    if (inputFileList && inputFileList[0]) {
       reader.readAsDataURL(inputFileList[0]);
 
       reader.onloadend = () => {

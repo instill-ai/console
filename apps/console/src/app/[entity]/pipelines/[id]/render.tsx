@@ -1,14 +1,14 @@
 "use client";
 
-import { useAppAccessToken } from "lib/use-app-access-token";
-import { useAppTrackToken } from "lib/useAppTrackToken";
-
 import {
   AppTopbar,
   NamespaceSwitch,
   PageBase,
   ViewPipeline,
 } from "@instill-ai/toolkit";
+
+import { useAppAccessToken } from "~/lib/use-app-access-token";
+import { useAppTrackToken } from "~/lib/useAppTrackToken";
 
 export function PipelineOverviewPageRender() {
   useAppAccessToken({

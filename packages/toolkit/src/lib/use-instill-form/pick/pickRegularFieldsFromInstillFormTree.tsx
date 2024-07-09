@@ -92,7 +92,11 @@ export function pickRegularFieldsFromInstillFormTree(
     // Airbyte schema will have a scenario that under their oneOf properties
     // there is only one const field, we don't need to render it's corresponding
     // formGroup title
-    if (tree.properties.length === 1 && "const" in tree.properties[0]) {
+    if (
+      tree.properties.length === 1 &&
+      tree.properties[0] &&
+      "const" in tree.properties[0]
+    ) {
       return null;
     }
 
@@ -204,7 +208,7 @@ export function pickRegularFieldsFromInstillFormTree(
     let selectedConstField: InstillFormTree | undefined;
 
     if (selectedCondition && tree.conditions[selectedCondition]) {
-      selectedConstField = tree.conditions[selectedCondition].properties.find(
+      selectedConstField = tree.conditions[selectedCondition]?.properties.find(
         (e) => "const" in e,
       );
     }
@@ -276,7 +280,7 @@ export function pickRegularFieldsFromInstillFormTree(
       tree.instillUpstreamTypes[0] === "value")
   ) {
     if (tree.instillAcceptFormats && tree.instillAcceptFormats.length > 0) {
-      if (tree.instillAcceptFormats[0].includes("array:image")) {
+      if (tree.instillAcceptFormats[0]?.includes("array:image")) {
         return (
           <RegularFields.ImagesField
             key={tree.path}
@@ -296,7 +300,7 @@ export function pickRegularFieldsFromInstillFormTree(
         );
       }
 
-      if (tree.instillAcceptFormats[0].includes("image")) {
+      if (tree.instillAcceptFormats[0]?.includes("image")) {
         return (
           <RegularFields.ImageField
             key={tree.path}

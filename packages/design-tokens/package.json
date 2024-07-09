@@ -29,6 +29,7 @@
   "license": "Apache-2.0",
   "private": false,
   "devDependencies": {
+    "@instill-ai/tsconfig": "workspace:*",
     "@instill-ai/eslint-config-cortex": "workspace:*",
     "@instill-ai/prettier-config-cortex": "workspace:*",
     "@testing-library/jest-dom": "^6.2.1",

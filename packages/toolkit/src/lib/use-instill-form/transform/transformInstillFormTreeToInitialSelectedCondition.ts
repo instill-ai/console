@@ -39,27 +39,37 @@ export function transformInstillFormTreeToInitialSelectedCondition(
   }
 
   if (tree._type === "formCondition") {
-    const constField = tree.conditions[
-      Object.keys(tree.conditions)[0]
-    ].properties.find((e) => "const" in e) as InstillFormItem;
+    const constKey = Object.keys(tree.conditions)[0];
+
+    const constField = constKey
+      ? (tree.conditions[constKey]?.properties.find(
+          (e) => "const" in e,
+        ) as InstillFormItem)
+      : null;
 
     if (constField && constField.path) {
       if (options?.initialData) {
-        const selectedCondition = dot.getter(
+        const selectedConditionKey = dot.getter(
           options.initialData,
           constField.path,
         );
 
-        if (selectedCondition) {
-          selectedConditionMap[constField.path] = selectedCondition as string;
+        if (selectedConditionKey) {
+          selectedConditionMap[constField.path] =
+            selectedConditionKey as string;
 
-          selectedConditionMap = {
-            ...selectedConditionMap,
-            ...transformInstillFormTreeToInitialSelectedCondition(
-              tree.conditions[selectedCondition as string],
-              options,
-            ),
-          };
+          const selectedCondition =
+            tree.conditions[selectedConditionKey as string];
+
+          if (selectedCondition) {
+            selectedConditionMap = {
+              ...selectedConditionMap,
+              ...transformInstillFormTreeToInitialSelectedCondition(
+                selectedCondition,
+                options,
+              ),
+            };
+          }
 
           return selectedConditionMap;
         }
@@ -67,13 +77,17 @@ export function transformInstillFormTreeToInitialSelectedCondition(
 
       selectedConditionMap[constField.path] = constField.const as string;
 
-      selectedConditionMap = {
-        ...selectedConditionMap,
-        ...transformInstillFormTreeToInitialSelectedCondition(
-          tree.conditions[constField.const as string],
-          options,
-        ),
-      };
+      const selectedCondition = tree.conditions[constField.const as string];
+
+      if (selectedCondition) {
+        selectedConditionMap = {
+          ...selectedConditionMap,
+          ...transformInstillFormTreeToInitialSelectedCondition(
+            selectedCondition,
+            options,
+          ),
+        };
+      }
     }
   }
 

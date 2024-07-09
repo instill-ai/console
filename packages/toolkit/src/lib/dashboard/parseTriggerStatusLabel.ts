@@ -1,6 +1,6 @@
 import { PipelineTriggerStatus } from "../vdp-sdk";
 
-export function parseTriggerStatusLabel(status: PipelineTriggerStatus): string {
+export function parseTriggerStatusLabel(status: PipelineTriggerStatus) {
   const convertedStatus = status
     .split("_")
     .map(

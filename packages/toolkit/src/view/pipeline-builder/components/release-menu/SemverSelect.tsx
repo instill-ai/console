@@ -59,7 +59,11 @@ export const SemverSelect = ({
       return;
     }
 
-    const latestReleaseID = releases[0].id;
+    const latestReleaseID = releases[0]?.id;
+
+    if (!latestReleaseID) {
+      return;
+    }
 
     switch (selectedSemver) {
       case "major":

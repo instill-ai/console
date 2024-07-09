@@ -110,16 +110,20 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
   const onEditFreeFormField = (key: string) => {
     setCurrentEditingFieldKey(key);
     form.reset({
-      title: data.fields[key].title,
+      title: data.fields[key]?.title,
       key,
-      description: data.fields[key].description,
+      description: data.fields[key]?.description,
     });
     setIsEditing(true);
 
-    let newSelectedType = data.fields[key].instillFormat;
+    let newSelectedType = data.fields[key]?.instillFormat;
 
-    if (newSelectedType === "string" && data.fields[key].instillUiMultiline) {
+    if (newSelectedType === "string" && data.fields[key]?.instillUiMultiline) {
       newSelectedType = "long_string";
+    }
+
+    if (!newSelectedType) {
+      return;
     }
 
     setSelectedType(newSelectedType);
@@ -175,11 +179,13 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
       }
     }
 
-    if (!triggerNodeFields[selectedType]) {
+    const targetFieldType = triggerNodeFields[selectedType];
+
+    if (!targetFieldType) {
       return;
     }
 
-    const field = triggerNodeFields[selectedType].getFieldConfiguration(
+    const field = targetFieldType.getFieldConfiguration(
       formData.title,
       formData.description,
     );

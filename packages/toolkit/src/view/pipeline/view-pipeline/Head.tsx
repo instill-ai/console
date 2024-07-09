@@ -240,7 +240,7 @@ export const Head = ({
                                         id={release.id}
                                         currentVersion={
                                           currentVersion === "latest"
-                                            ? releases[0].id
+                                            ? releases[0]?.id ?? null
                                             : currentVersion
                                         }
                                         onClick={() => {

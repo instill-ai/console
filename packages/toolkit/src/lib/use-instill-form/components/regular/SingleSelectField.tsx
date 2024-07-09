@@ -81,76 +81,81 @@ export const SingleSelectField = ({
 
       if (isInstillCreditField && instillCredentialMap) {
         const currentCredentialFieldPath = instillCredentialMap.targets[0];
+        if (currentCredentialFieldPath) {
+          const currentCredentialFieldValue = dot.getter(
+            values,
+            currentCredentialFieldPath,
+          );
 
-        const currentCredentialFieldValue = dot.getter(
-          values,
-          currentCredentialFieldPath,
-        );
+          // Deal with case that support instill credit, if the secret field
+          // is empty, we will fill in the instill credit key into that field
+          if (instillCredentialMap.values.includes(fieldValue)) {
+            if (
+              !currentCredentialFieldValue &&
+              name !== currentCredentialFieldPath
+            ) {
+              form.setValue(
+                currentCredentialFieldPath,
+                "${secret." + `${InstillCredit.key}` + "}",
+              );
 
-        // Deal with case that support instill credit, if the secret field
-        // is empty, we will fill in the instill credit key into that field
-        if (instillCredentialMap.values.includes(fieldValue)) {
-          if (
-            !currentCredentialFieldValue &&
-            name !== currentCredentialFieldPath
-          ) {
-            form.setValue(
-              currentCredentialFieldPath,
-              "${secret." + `${InstillCredit.key}` + "}",
-            );
-
-            if (updateForceCloseCollapsibleFormGroups) {
-              const toplevelPath = currentCredentialFieldPath.split(".")[0];
-              updateForceCloseCollapsibleFormGroups((prev) => [
-                ...prev,
-                toplevelPath,
-              ]);
+              if (updateForceCloseCollapsibleFormGroups) {
+                const toplevelPath = currentCredentialFieldPath.split(".")[0];
+                if (toplevelPath) {
+                  updateForceCloseCollapsibleFormGroups((prev) => [
+                    ...prev,
+                    toplevelPath,
+                  ]);
+                }
+              }
             }
-          }
 
-          if (updateSupportInstillCredit) {
-            updateSupportInstillCredit(true);
-          }
+            if (updateSupportInstillCredit) {
+              updateSupportInstillCredit(true);
+            }
 
-          if (updateIsUsingInstillCredit) {
-            updateIsUsingInstillCredit(true);
-          }
-        } else {
-          // Deal with case that don't support instil credit. We
-          // will focus on the secret field and clear the value
+            if (updateIsUsingInstillCredit) {
+              updateIsUsingInstillCredit(true);
+            }
+          } else {
+            // Deal with case that don't support instil credit. We
+            // will focus on the secret field and clear the value
 
-          if (
-            currentCredentialFieldValue &&
-            name &&
-            name !== currentCredentialFieldPath
-          ) {
-            form.setValue(currentCredentialFieldPath, "");
-            form.clearErrors(currentCredentialFieldPath);
-          }
+            if (
+              currentCredentialFieldValue &&
+              name &&
+              name !== currentCredentialFieldPath
+            ) {
+              form.setValue(currentCredentialFieldPath, "");
+              form.clearErrors(currentCredentialFieldPath);
+            }
 
-          if (updateSupportInstillCredit) {
-            updateSupportInstillCredit(false);
-          }
+            if (updateSupportInstillCredit) {
+              updateSupportInstillCredit(false);
+            }
 
-          if (updateIsUsingInstillCredit) {
-            updateIsUsingInstillCredit(false);
-          }
+            if (updateIsUsingInstillCredit) {
+              updateIsUsingInstillCredit(false);
+            }
 
-          if (updateForceOpenCollapsibleFormGroups) {
-            const toplevelPath = currentCredentialFieldPath.split(".")[0];
-            updateForceOpenCollapsibleFormGroups((prev) => [
-              ...prev,
-              toplevelPath,
-            ]);
-          }
+            if (updateForceOpenCollapsibleFormGroups) {
+              const toplevelPath = currentCredentialFieldPath.split(".")[0];
+              if (toplevelPath) {
+                updateForceOpenCollapsibleFormGroups((prev) => [
+                  ...prev,
+                  toplevelPath,
+                ]);
+              }
+            }
 
-          // We can not make the value change and focus event at the same
-          // cycle, due to the field render will wash out the focus event
-          // So we need to set a timeout to make sure the focus event will
-          // be triggered after the value change event
-          setTimeout(() => {
-            form.setFocus(currentCredentialFieldPath);
-          }, 200);
+            // We can not make the value change and focus event at the same
+            // cycle, due to the field render will wash out the focus event
+            // So we need to set a timeout to make sure the focus event will
+            // be triggered after the value change event
+            setTimeout(() => {
+              form.setFocus(currentCredentialFieldPath);
+            }, 200);
+          }
         }
       }
 
