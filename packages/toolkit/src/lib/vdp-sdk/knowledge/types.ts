@@ -1,9 +1,13 @@
-export type KnowledgeBase = {
-  id: string;
+export interface KnowledgeBase {
+  kbId: string;
   name: string;
   description: string;
-  tags?: string[];
-  inuse?: boolean;
-  create_time?: Date;
-  update_time?: Date;
+  createTime: string;
+  updateTime: string;
+  ownerName: string;
+  tags: string[];
+  convertingPipelines: string[];
+  splittingPipelines: string[];
+  embeddingPipelines: string[];
+  downstreamApps: string[];
 }

@@ -8,7 +8,7 @@ import {
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+// import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 
 const EditKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -16,9 +16,15 @@ const EditKnowledgeFormSchema = z.object({
   tags: z.array(z.string()).optional(),
 });
 
-type EditKnowledgeFormProps = {
+type EditKnowledgeDialogProps = {
+  isOpen: boolean;
+  onClose: () => void;
   onSubmit: (data: z.infer<typeof EditKnowledgeFormSchema>) => void;
-  initialValues?: KnowledgeBase;
+  initialValues: {
+    name: string;
+    description: string;
+    tags: string[];
+  };
 };
 
 export const EditKnowledgeDialog = ({
@@ -29,8 +35,8 @@ export const EditKnowledgeDialog = ({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: EditKnowledgeFormProps["onSubmit"];
-  initialValues?: EditKnowledgeFormProps["initialValues"];
+  onSubmit: EditKnowledgeDialogProps["onSubmit"];
+  initialValues?: EditKnowledgeDialogProps["initialValues"];
 }) => {
   const form = useForm<z.infer<typeof EditKnowledgeFormSchema>>({
     resolver: zodResolver(EditKnowledgeFormSchema),

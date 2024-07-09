@@ -12,8 +12,8 @@ import {
   useAuthenticatedUser,
   useInstillStore,
   useShallow,
-  Nullable,
-  useUserMemberships,
+  // Nullable,
+  // useUserMemberships,
 } from "../../../lib";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import * as z from "zod";
@@ -35,25 +35,23 @@ export const KnowledgeBaseTab = ({
   //   onDeleteKnowledgeBase,
   accessToken,
 }: KnowledgeBaseTabProps) => {
-  const [loading, setLoading] = React.useState(false);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
+  const [knowledgeBases, setKnowledgeBases] = React.useState<KnowledgeBase[]>(
+    []
+  );
+  const [loading, setLoading] = React.useState(true);
 
-  const selector = (store: InstillStore) => ({
-    accessToken: store.accessToken,
-    enabledQuery: store.enabledQuery,
-  });
-
-  const { enabledQuery } = useInstillStore(useShallow(selector));
+  const { enabledQuery } = useInstillStore(
+    useShallow((store: InstillStore) => ({
+      enabledQuery: store.enabledQuery,
+    }))
+  );
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
-  const userID: Nullable<string> = me.isSuccess ? me.data.id : null;
 
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
-  const [knowledgeBases, setKnowledgeBases] = React.useState<KnowledgeBase[]>(
-    []
-  );
   const getKnowledgeBases = useGetKnowledgeBases({
     accessToken,
     ownerId: me.data?.id ?? null,
@@ -63,17 +61,16 @@ export const KnowledgeBaseTab = ({
   const createKnowledgeBase = useCreateKnowledgeBase();
 
   React.useEffect(() => {
-    setLoading(true);
-    getKnowledgeBases.refetch().then((result) => {
-      setKnowledgeBases(result.data || []);
+    if (getKnowledgeBases.data) {
+      setKnowledgeBases(getKnowledgeBases.data);
       setLoading(false);
-    });
-  }, [userID, accessToken]);
+    }
+  }, [getKnowledgeBases.data]);
 
   const handleCreateKnowledgeSubmit = async (
     data: z.infer<typeof CreateKnowledgeFormSchema>
   ) => {
-    if (!me.data?.id) return;
+    if (!me.data?.id || !accessToken) return;
 
     try {
       const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
@@ -85,11 +82,19 @@ export const KnowledgeBaseTab = ({
         ownerId: me.data.id,
         accessToken,
       });
-      setKnowledgeBases((prevKnowledgeBases) => [
-        ...prevKnowledgeBases,
-        newKnowledgeBase,
-      ]);
+
+      // Ensure the newKnowledgeBase has a kbId before adding it to the state
+      if (newKnowledgeBase && newKnowledgeBase.kbId) {
+        setKnowledgeBases((prevKnowledgeBases) => [
+          ...prevKnowledgeBases,
+          newKnowledgeBase,
+        ]);
+      } else {
+        console.error("Created knowledge base is missing kbId");
+      }
       setIsCreateDialogOpen(false);
+      // Refetch the knowledge bases to ensure we have the latest data
+      getKnowledgeBases.refetch();
     } catch (error) {
       console.error("Error creating knowledge base:", error);
     }
@@ -130,7 +135,7 @@ export const KnowledgeBaseTab = ({
           <KnowledgeBaseCard onClick={() => setIsCreateDialogOpen(true)} />
           {knowledgeBases.map((knowledgeBase) => (
             <CreateKnowledgeBaseCard
-              key={knowledgeBase.id}
+              key={knowledgeBase.kbId || knowledgeBase.name}
               knowledgeBase={knowledgeBase}
               onCardClick={() => onKnowledgeBaseSelect(knowledgeBase)}
               setKnowledgeBases={setKnowledgeBases}
