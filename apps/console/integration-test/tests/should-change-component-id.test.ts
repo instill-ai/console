@@ -55,6 +55,7 @@ export function shouldChangeComponentID() {
       await page
         .locator("input[name='input.prompts']")
         .fill("${variable." + startFieldKey + "}");
+      await page.locator("input[name='setup.api-key']").fill("${secret.test}");
 
       // Create output result field in the end operator
       await pipelineBuilderPage.createEndComponentField({
