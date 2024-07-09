@@ -3,17 +3,17 @@ import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { KnowledgeBase } from "../../vdp-sdk/knowledge/types";
 
 async function updateKnowledgeBaseMutation({
-  id,
   payload,
+  ownerId,
+  kbId,
   accessToken,
 }: {
-  id: string;
   payload: {
-    name?: string;
     description?: string;
     tags?: string[];
-    owner_name?: string;
   };
+  ownerId: string;
+  kbId: string;
   accessToken: string | null;
 }): Promise<KnowledgeBase> {
   if (!accessToken) {
@@ -21,11 +21,9 @@ async function updateKnowledgeBaseMutation({
   }
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.put<{
-    body: KnowledgeBase;
-    error_msg: string;
-    status_code: number;
-  }>(`/knowledge-base/${id}`, payload);
-  return response.data.body;
+    knowledge_base: KnowledgeBase;
+  }>(`/owners/${ownerId}/knowledge-bases/${kbId}`, payload);
+  return response.data.knowledge_base;
 }
 
 export function useUpdateKnowledgeBase() {

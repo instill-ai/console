@@ -1,43 +1,43 @@
+// useGetKnowledgeBases.ts
+
 import { useQuery } from "@tanstack/react-query";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { KnowledgeBase } from "../../vdp-sdk/knowledge/types";
 
-async function getKnowledgeBasesQuery({
+async function getKnowledgeBases({
+  ownerId,
   accessToken,
-  uid,
 }: {
+  ownerId: string;
   accessToken: string | null;
-  uid: string | null;
 }): Promise<KnowledgeBase[]> {
   if (!accessToken) {
     return Promise.reject(new Error("accessToken not provided"));
   }
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.get<{
-    body: {
-      knowledgeBases: KnowledgeBase[];
-    };
-    error_msg: string;
-    status_code: number;
-  }>(`/users/${uid}/knowledge-base`);
-  return response.data.body.knowledgeBases;
+    knowledge_bases: KnowledgeBase[];
+  }>(`/owners/${ownerId}/knowledge-bases`);
+  return response.data.knowledge_bases;
 }
 
 export function useGetKnowledgeBases({
   accessToken,
-  uid,
+  ownerId,
   enabled,
-  retry,
 }: {
   accessToken: string | null;
-  uid: string | null;
+  ownerId: string | null;
   enabled: boolean;
-  retry?: false | number;
 }) {
-  return useQuery<KnowledgeBase[], Error>({
-    queryKey: ["knowledge-bases", uid],
-    queryFn: () => getKnowledgeBasesQuery({ accessToken, uid }),
-    enabled,
-    retry: retry === false ? false : retry ?? 3,
+  return useQuery({
+    queryKey: ["knowledgeBases", ownerId],
+    queryFn: () => {
+      if (!ownerId || !accessToken) {
+        throw new Error("ownerId and accessToken are required");
+      }
+      return getKnowledgeBases({ ownerId, accessToken });
+    },
+    enabled: enabled && !!ownerId && !!accessToken,
   });
 }

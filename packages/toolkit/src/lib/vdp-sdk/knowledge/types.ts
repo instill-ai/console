@@ -1,4 +1,4 @@
-export interface KnowledgeBase {
+export type KnowledgeBase = {
   id: string;
   name: string;
   description: string;

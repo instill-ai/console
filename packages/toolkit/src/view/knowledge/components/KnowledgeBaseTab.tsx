@@ -56,29 +56,11 @@ export const KnowledgeBaseTab = ({
   );
   const getKnowledgeBases = useGetKnowledgeBases({
     accessToken,
-    uid: userID,
-    enabled: true,
+    ownerId: me.data?.id ?? null,
+    enabled: enabledQuery && !!me.data?.id,
   });
+
   const createKnowledgeBase = useCreateKnowledgeBase();
-
-  const organizations = useUserMemberships({
-    enabled: enabledQuery && me.isSuccess,
-    userID: me.isSuccess ? me.data.id : null,
-    accessToken,
-  });
-
-  const organizationsAndUserList = React.useMemo(() => {
-    const orgsAndUserList = [];
-    if (organizations.isSuccess && organizations.data) {
-      organizations.data.forEach((org) => {
-        orgsAndUserList.push(org.organization);
-      });
-    }
-    if (me.isSuccess && me.data) {
-      orgsAndUserList.push(me.data);
-    }
-    return orgsAndUserList;
-  }, [organizations.isSuccess, organizations.data, me.isSuccess, me.data]);
 
   React.useEffect(() => {
     setLoading(true);
@@ -91,30 +73,25 @@ export const KnowledgeBaseTab = ({
   const handleCreateKnowledgeSubmit = async (
     data: z.infer<typeof CreateKnowledgeFormSchema>
   ) => {
-    const namespace = organizationsAndUserList.find(
-      (account) => account.id === data.namespaceId
-    )?.name;
+    if (!me.data?.id) return;
 
-    if (namespace) {
-      try {
-        const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
-          payload: {
-            ...data,
-            tags: data.tags ?? [],
-          },
-          accessToken: accessToken,
-          // entityName: namespace,
-        });
-        setKnowledgeBases((prevKnowledgeBases) => [
-          ...prevKnowledgeBases,
-          newKnowledgeBase,
-        ]);
-        setIsCreateDialogOpen(false);
-      } catch (error) {
-        console.error("Error creating knowledge base:", error);
-      }
-    } else {
-      console.error("Invalid namespace selected");
+    try {
+      const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
+        payload: {
+          name: data.name,
+          description: data.description,
+          tags: data.tags ?? [],
+        },
+        ownerId: me.data.id,
+        accessToken,
+      });
+      setKnowledgeBases((prevKnowledgeBases) => [
+        ...prevKnowledgeBases,
+        newKnowledgeBase,
+      ]);
+      setIsCreateDialogOpen(false);
+    } catch (error) {
+      console.error("Error creating knowledge base:", error);
     }
   };
 
