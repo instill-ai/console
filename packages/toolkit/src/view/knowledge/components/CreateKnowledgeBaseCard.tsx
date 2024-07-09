@@ -11,7 +11,12 @@ import { useUpdateKnowledgeBase } from "../../../lib/react-query-service/knowled
 import { useDeleteKnowledgeBase } from "../../../lib/react-query-service/knowledge/useDeleteKnowledgeBase";
 import { useCreateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useCreateKnowledgeBase";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
+import {
+  InstillStore,
+  useAuthenticatedUser,
+  useInstillStore,
+  useShallow,
+} from "../../../lib";
 import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
 import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./undoDeleteTime";
 import DeleteKnowledgeBaseNotification from "./Notifications/DeleteKnowledgeBaseNotification";
@@ -76,26 +81,32 @@ const Menu = ({ onDelete, onEdit, onDuplicate }: MenuProps) => {
     </React.Fragment>
   );
 };
-
 export const CreateKnowledgeBaseCard = ({
   knowledgeBase,
   onCardClick,
   setKnowledgeBases,
 }: CreateKnowledgeBaseCardProps) => {
+  const [isHidden, setIsHidden] = React.useState(false);
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
-  const [isDeleted, setIsDeleted] = React.useState(false);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
-  const selector = (store: InstillStore) => ({
-    accessToken: store.accessToken,
-    enabledQuery: store.enabledQuery,
-  });
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
+  const { accessToken, enabledQuery } = useInstillStore(
+    useShallow((store: InstillStore) => ({
+      accessToken: store.accessToken,
+      enabledQuery: store.enabledQuery,
+    }))
+  );
+
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
+
+  const deleteKnowledgeBase = useDeleteKnowledgeBase();
+  const updateKnowledgeBase = useUpdateKnowledgeBase();
+  const createKnowledgeBase = useCreateKnowledgeBase();
 
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -109,33 +120,35 @@ export const CreateKnowledgeBaseCard = ({
 
   const handleDuplicate = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!me.data?.id || !accessToken) return;
+
     const clonedKnowledgeBase = {
-      ...knowledgeBase,
-      name: `${knowledgeBase.name}_Clone`,
+      name: `${knowledgeBase.name}-clone`,
+      description: knowledgeBase.description,
+      tags: knowledgeBase.tags || [],
     };
+
     try {
       const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
         payload: clonedKnowledgeBase,
         ownerId: me.data.id,
         accessToken,
       });
-      setKnowledgeBases((prevKnowledgeBases) => [
-        ...prevKnowledgeBases,
-        newKnowledgeBase,
-      ]);
+
+      if (newKnowledgeBase) {
+        setKnowledgeBases((prevKnowledgeBases) => [
+          ...prevKnowledgeBases,
+          newKnowledgeBase,
+        ]);
+      }
     } catch (error) {
       console.error("Error cloning knowledge base:", error);
     }
   };
 
-  const deleteKnowledgeBase = useDeleteKnowledgeBase();
-  const updateKnowledgeBase = useUpdateKnowledgeBase();
-  const createKnowledgeBase = useCreateKnowledgeBase();
-
-
   const confirmDelete = () => {
-    setIsDeleted(true);
     setDeleteDialogIsOpen(false);
+    setIsHidden(true);
     setShowDeleteMessage(true);
     timeoutRef.current = setTimeout(() => {
       deleteKnowledgeBaseHandler();
@@ -143,38 +156,50 @@ export const CreateKnowledgeBaseCard = ({
   };
 
   const deleteKnowledgeBaseHandler = async () => {
-    if (isDeleted && me.data?.id) {
-      await deleteKnowledgeBase.mutateAsync({
-        ownerId: me.data.id,
-        kbId: knowledgeBase.id,
-        accessToken,
-      });
-      setKnowledgeBases((prevKnowledgeBases) =>
-        prevKnowledgeBases.filter((kb) => kb.id !== knowledgeBase.id)
-      );
-      setShowDeleteMessage(false);
-      setIsDeleted(false);
+    if (me.data?.id && accessToken && knowledgeBase.kbId) {
+      try {
+        await deleteKnowledgeBase.mutateAsync({
+          ownerId: me.data.id,
+          kbId: knowledgeBase.kbId,
+          accessToken,
+        });
+        setKnowledgeBases((prevKnowledgeBases) =>
+          prevKnowledgeBases.filter((kb) => kb.kbId !== knowledgeBase.kbId)
+        );
+      } catch (error) {
+        console.error("Error deleting knowledge base:", error);
+        setIsHidden(false);
+      } finally {
+        setShowDeleteMessage(false);
+      }
     }
   };
 
   const handleEditKnowledgeSubmit = async (data: EditKnowledgeDialogData) => {
-    if (!me.data?.id) return;
+    if (!me.data?.id || !accessToken || !knowledgeBase.kbId) return;
+
+    const payload = {
+      name: data.name,
+      description: data.description,
+      tags: data.tags || [],
+    };
 
     try {
       const updatedKnowledgeBase = await updateKnowledgeBase.mutateAsync({
         ownerId: me.data.id,
-        kbId: knowledgeBase.id,
-        payload: data,
+        kbId: knowledgeBase.kbId,
+        payload,
         accessToken,
       });
 
-      setKnowledgeBases((prevKnowledgeBases) =>
-        prevKnowledgeBases.map((kb) =>
-          kb.id === knowledgeBase.id ? { ...kb, ...updatedKnowledgeBase } : kb
-        )
-      );
-
-      setEditDialogIsOpen(false);
+      if (updatedKnowledgeBase) {
+        setKnowledgeBases((prevKnowledgeBases) =>
+          prevKnowledgeBases.map((kb) =>
+            kb.kbId === knowledgeBase.kbId ? updatedKnowledgeBase : kb
+          )
+        );
+        setEditDialogIsOpen(false);
+      }
     } catch (error) {
       console.error("Error updating knowledge base:", error);
     }
@@ -182,7 +207,7 @@ export const CreateKnowledgeBaseCard = ({
 
   const undoDelete = () => {
     setShowDeleteMessage(false);
-    setIsDeleted(false);
+    setIsHidden(false);
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -194,44 +219,44 @@ export const CreateKnowledgeBaseCard = ({
   };
 
   React.useEffect(() => {
-    if (showDeleteMessage) {
-      timeoutRef.current = setTimeout(() => {
-        setShowDeleteMessage(false);
-        deleteKnowledgeBaseHandler();
-      }, DELETE_KNOWLEDGE_BASE_TIMEOUT);
-    }
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [showDeleteMessage, deleteKnowledgeBaseHandler]);
+  }, []);
+
+  if (isHidden) {
+    return showDeleteMessage ? (
+      <DeleteKnowledgeBaseNotification
+        knowledgeBaseName={knowledgeBase.name}
+        handleCloseDeleteMessage={handleCloseDeleteMessage}
+        undoDelete={undoDelete}
+      />
+    ) : null;
+  }
 
   return (
     <React.Fragment>
-      {!isDeleted ? (
-        <div
-          className="flex h-[175px] w-[360px] cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow"
-          onClick={onCardClick}
-        >
-          <div className="flex items-center justify-between">
-            <div className="product-headings-heading-4">
-              {knowledgeBase.name}
-            </div>
-          </div>
-          <Separator orientation="horizontal" className="my-[10px]" />
-          <p className="mb-auto line-clamp-3 product-body-text-3-regular">
-            {knowledgeBase.description}
-          </p>
-          <div className="flex items-end justify-end">
-            <Menu
-              onDelete={handleDelete}
-              onEdit={handleEdit}
-              onDuplicate={handleDuplicate}
-            />
-          </div>
+      <div
+        className="flex h-[175px] w-[360px] cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow"
+        onClick={onCardClick}
+      >
+        <div className="flex items-center justify-between">
+          <div className="product-headings-heading-4">{knowledgeBase.name}</div>
         </div>
-      ) : null}
+        <Separator orientation="horizontal" className="my-[10px]" />
+        <p className="mb-auto line-clamp-3 product-body-text-3-regular">
+          {knowledgeBase.description}
+        </p>
+        <div className="flex items-end justify-end">
+          <Menu
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+            onDuplicate={handleDuplicate}
+          />
+        </div>
+      </div>
       <Dialog.Root
         open={deleteDialogIsOpen}
         onOpenChange={setDeleteDialogIsOpen}
@@ -270,13 +295,6 @@ export const CreateKnowledgeBaseCard = ({
           </div>
         </Dialog.Content>
       </Dialog.Root>
-      {showDeleteMessage ? (
-        <DeleteKnowledgeBaseNotification
-          knowledgeBaseName={knowledgeBase.name}
-          handleCloseDeleteMessage={handleCloseDeleteMessage}
-          undoDelete={undoDelete}
-        />
-      ) : null}
       <EditKnowledgeDialog
         isOpen={editDialogIsOpen}
         onClose={() => setEditDialogIsOpen(false)}
@@ -284,8 +302,7 @@ export const CreateKnowledgeBaseCard = ({
         initialValues={{
           name: knowledgeBase.name,
           description: knowledgeBase.description,
-          tags: knowledgeBase.tags,
-          id: knowledgeBase.id,
+          tags: knowledgeBase.tags || [],
         }}
       />
     </React.Fragment>

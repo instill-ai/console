@@ -1,5 +1,3 @@
-// useGetKnowledgeBases.ts
-
 import { useQuery } from "@tanstack/react-query";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { KnowledgeBase } from "../../vdp-sdk/knowledge/types";
@@ -16,9 +14,10 @@ async function getKnowledgeBases({
   }
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.get<{
-    knowledge_bases: KnowledgeBase[];
+    knowledgeBases: KnowledgeBase[];
   }>(`/owners/${ownerId}/knowledge-bases`);
-  return response.data.knowledge_bases;
+
+  return response.data.knowledgeBases || [];
 }
 
 export function useGetKnowledgeBases({
@@ -32,11 +31,15 @@ export function useGetKnowledgeBases({
 }) {
   return useQuery({
     queryKey: ["knowledgeBases", ownerId],
-    queryFn: () => {
+    queryFn: async () => {
       if (!ownerId || !accessToken) {
         throw new Error("ownerId and accessToken are required");
       }
-      return getKnowledgeBases({ ownerId, accessToken });
+      const data = await getKnowledgeBases({ ownerId, accessToken });
+      if (!data) {
+        throw new Error("No knowledge bases data returned");
+      }
+      return data;
     },
     enabled: enabled && !!ownerId && !!accessToken,
   });

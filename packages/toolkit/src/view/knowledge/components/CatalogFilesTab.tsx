@@ -1,7 +1,6 @@
 import {
   Button,
   Icons,
-  // LinkButton,
   Separator,
   Tag,
   // Textarea,
@@ -15,30 +14,81 @@ type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
 };
 
+type FileStatus =
+  | "UNSPECIFIED"
+  | "NOTSTARTED"
+  | "WAITING"
+  | "CONVERTING"
+  | "CHUNKING"
+  | "EMBEDDING"
+  | "COMPLETED";
+
+const getStatusSortValue = (status: FileStatus): number => {
+  const statusOrder = {
+    UNSPECIFIED: 0,
+    NOTSTARTED: 1,
+    WAITING: 2,
+    CONVERTING: 3,
+    CHUNKING: 4,
+    EMBEDDING: 5,
+    COMPLETED: 6,
+  };
+  return statusOrder[status] ?? -1;
+};
+type TagVariant =
+  | "lightNeutral"
+  | "lightRed"
+  | "lightYellow"
+  | "lightBlue"
+  | "lightPurple"
+  | "lightGreen"
+  | "darkGreen";
+
+const getStatusTag = (status: FileStatus): TagVariant => {
+  const variantMap: Record<FileStatus, TagVariant> = {
+    UNSPECIFIED: "lightNeutral",
+    NOTSTARTED: "lightRed",
+    WAITING: "lightYellow",
+    CONVERTING: "lightBlue",
+    CHUNKING: "lightPurple",
+    EMBEDDING: "lightGreen",
+    COMPLETED: "darkGreen",
+  };
+  return variantMap[status] ?? "lightNeutral";
+};
+
 const mockData = [
   {
     fileName: "file-a.pdf",
     fileType: "pdf",
-    processedStatus: "28.8k Words",
+    processedStatus: { chunks: 150, tokens: 28800 },
     createTime: "Today 1:34pm",
+    status: "COMPLETED" as FileStatus,
+    fileSize: "2.3 MB",
   },
   {
     fileName: "file-b.txt",
     fileType: "txt",
-    processedStatus: "21.5k Words",
+    processedStatus: { chunks: 120, tokens: 21500 },
     createTime: "Today 4:31pm",
+    status: "CONVERTING" as FileStatus,
+    fileSize: "1.1 MB",
   },
   {
     fileName: "file-c.jpg",
     fileType: "jpg",
-    processedStatus: "2 Images",
+    processedStatus: { chunks: 2, tokens: 200 },
     createTime: "Today 7:29pm",
+    status: "WAITING" as FileStatus,
+    fileSize: "3.7 MB",
   },
   {
     fileName: "file-d.png",
     fileType: "png",
-    processedStatus: "3 Images",
+    processedStatus: { chunks: 3, tokens: 300 },
     createTime: "Today 11:11pm",
+    status: "NOTSTARTED" as FileStatus,
+    fileSize: "5.2 MB",
   },
 ];
 
@@ -55,6 +105,24 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const sortedData = [...data].sort((a, b) => {
+    if (sortConfig.key === "status") {
+      const aValue = getStatusSortValue(a.status);
+      const bValue = getStatusSortValue(b.status);
+      return sortConfig.direction === "ascending"
+        ? aValue - bValue
+        : bValue - aValue;
+    }
+    if (sortConfig.key === "processedStatus") {
+      if (a.processedStatus.chunks !== b.processedStatus.chunks) {
+        return sortConfig.direction === "ascending"
+          ? a.processedStatus.chunks - b.processedStatus.chunks
+          : b.processedStatus.chunks - a.processedStatus.chunks;
+      } else {
+        return sortConfig.direction === "ascending"
+          ? a.processedStatus.tokens - b.processedStatus.tokens
+          : b.processedStatus.tokens - a.processedStatus.tokens;
+      }
+    }
     if (
       a[sortConfig.key as keyof typeof a] < b[sortConfig.key as keyof typeof b]
     ) {
@@ -67,6 +135,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     }
     return 0;
   });
+
   const handleDelete = (fileName: string) => {
     const fileToDelete = data.find((item) => item.fileName === fileName);
     if (fileToDelete) {
@@ -132,8 +201,8 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
         </div> */}
         <div className="flex rounded border border-semantic-bg-line bg-semantic-bg-primary">
           <div className="flex w-full flex-col">
-            <div className="grid h-[72px] grid-cols-9 items-center border-b border-semantic-bg-line bg-semantic-bg-base-bg">
-              <div className="col-span-5 flex items-center justify-center gap-1">
+            <div className="grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center border-b border-semantic-bg-line bg-semantic-bg-base-bg">
+              <div className="flex items-center justify-center gap-1">
                 <div className="text-semantic-fg-primary product-body-text-3-medium">
                   File name
                 </div>
@@ -169,6 +238,40 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
               </div>
               <div className="flex items-center justify-center gap-1">
                 <div className="text-semantic-fg-primary product-body-text-3-medium">
+                  Status
+                </div>
+                <Button
+                  variant="tertiaryGrey"
+                  size="sm"
+                  onClick={() => requestSort("status")}
+                >
+                  {sortConfig.key === "status" &&
+                  sortConfig.direction === "ascending" ? (
+                    <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                  ) : (
+                    <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                  )}
+                </Button>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <div className="text-semantic-fg-primary product-body-text-3-medium">
+                  File size
+                </div>
+                <Button
+                  variant="tertiaryGrey"
+                  size="sm"
+                  onClick={() => requestSort("fileSize")}
+                >
+                  {sortConfig.key === "fileSize" &&
+                  sortConfig.direction === "ascending" ? (
+                    <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                  ) : (
+                    <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                  )}
+                </Button>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <div className="text-nowrap text-semantic-fg-primary product-body-text-3-medium">
                   Processed status
                 </div>
                 <Button
@@ -210,27 +313,36 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
             {sortedData.map((item, index) => (
               <div
                 key={index}
-                className={`grid h-[72px] grid-cols-9 items-center ${
+                className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center ${
                   index !== sortedData.length - 1
                     ? "border-b border-semantic-bg-line"
                     : ""
                 }`}
               >
-                <div className="col-span-5 -ml-4 flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                <div className="flex items-center justify-center pl-4 text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                   {item.fileName}
                 </div>
-                <div className="col-span-1 flex items-center justify-center">
+                <div className="flex items-center justify-center">
                   <Tag size="sm" variant="lightNeutral">
                     {item.fileType}
                   </Tag>
                 </div>
-                <div className="col-span-1 flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                  {item.processedStatus}
+                <div className="flex items-center justify-center">
+                  <Tag size="sm" variant={getStatusTag(item.status)}>
+                    {item.status}
+                  </Tag>
                 </div>
-                <div className="col-span-1 flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                  {item.fileSize}
+                </div>
+                <div className="flex flex-col items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                  <div>{`${item.processedStatus.chunks} chunks`}</div>
+                  <div>{`${item.processedStatus.tokens} tokens`}</div>
+                </div>
+                <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                   {item.createTime}
                 </div>
-                <div className="col-span-1 flex items-center justify-center">
+                <div className="flex items-center justify-center">
                   <Button
                     variant="tertiaryDanger"
                     size="lg"

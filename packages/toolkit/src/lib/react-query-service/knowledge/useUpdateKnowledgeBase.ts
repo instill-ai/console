@@ -9,6 +9,7 @@ async function updateKnowledgeBaseMutation({
   accessToken,
 }: {
   payload: {
+    name: string;
     description?: string;
     tags?: string[];
   };
