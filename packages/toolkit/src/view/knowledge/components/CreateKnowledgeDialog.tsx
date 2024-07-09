@@ -143,7 +143,7 @@ export const CreateKnowledgeDialog = ({
                   </Form.Item>
                 )}
               />
-              {/* <Icons.SlashDivider className="h-8 w-8 stroke-semantic-fg-secondary stroke-1" /> */}
+              <Icons.SlashDivider className="h-8 w-8 stroke-semantic-fg-secondary stroke-1" />
               <Form.Field
                 control={form.control}
                 name="name"
