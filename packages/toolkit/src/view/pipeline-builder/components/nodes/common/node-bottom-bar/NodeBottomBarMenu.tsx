@@ -6,6 +6,7 @@ import cn from "clsx";
 import { Icons, Tooltip } from "@instill-ai/design-system";
 
 import { useInstillStore } from "../../../../../../lib";
+import { env } from "../../../../../../server";
 import { useNodeBottomBarContext } from "./NodeBottomBarContext";
 
 const NodeBottomBarMenuRootPrimitive = ({
@@ -87,7 +88,7 @@ export const NodeBottomBarMenu = ({
       >
         Schema
       </NodeBottomBarMenuPrimitive.Item>
-      {isUsingInstillCredit ? (
+      {isUsingInstillCredit && env("NEXT_PUBLIC_APP_ENV") !== "CE" ? (
         <Tooltip.Provider>
           <Tooltip.Root>
             <Tooltip.Trigger asChild>

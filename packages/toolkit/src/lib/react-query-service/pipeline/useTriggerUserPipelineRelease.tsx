@@ -11,17 +11,23 @@ export function useTriggerUserPipelineRelease() {
       payload,
       accessToken,
       returnTraces,
+      shareCode,
+      requesterUid,
     }: {
       pipelineReleaseName: string;
       payload: TriggerUserPipelinePayload;
       accessToken: Nullable<string>;
       returnTraces?: boolean;
+      shareCode?: string;
+      requesterUid?: string;
     }) => {
       const pipelineRelease = await triggerUserPipelineReleaseAction({
         pipelineReleaseName,
         payload,
         accessToken,
         returnTraces,
+        shareCode,
+        requesterUid,
       });
 
       return Promise.resolve(pipelineRelease);

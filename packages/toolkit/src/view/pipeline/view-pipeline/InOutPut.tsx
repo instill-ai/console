@@ -19,6 +19,7 @@ import {
   useRouteInfo,
   useShallow,
   useTriggerUserPipeline,
+  useTriggerUserPipelineRelease,
   useUserNamespaces,
   useUserPipeline,
 } from "../../../lib";
@@ -32,11 +33,11 @@ const selector = (store: InstillStore) => ({
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
-type InOutPutProps = {
-  currentVersion: Nullable<string>;
-};
-
-export const InOutPut = ({ currentVersion }: InOutPutProps) => {
+export const InOutPut = ({
+  selectedVersionId,
+}: {
+  selectedVersionId: Nullable<string>;
+}) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -69,13 +70,14 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
 
   const variables = React.useMemo(() => {
     if (pipeline.isSuccess) {
-      if (!currentVersion || releases.length === 0) {
+      if (!selectedVersionId || releases.length === 0) {
         return pipeline.data.recipe.variable ?? null;
       }
 
       const pipelineVersion = releases.find(
         (release) =>
-          release.id === currentVersion || release.alias === currentVersion,
+          release.id === selectedVersionId ||
+          release.alias === selectedVersionId,
       );
 
       if (pipelineVersion) {
@@ -84,17 +86,18 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
     }
 
     return null;
-  }, [releases, currentVersion, pipeline.isSuccess, pipeline.data]);
+  }, [releases, selectedVersionId, pipeline.isSuccess, pipeline.data]);
 
   const outputs = React.useMemo(() => {
     if (pipeline.isSuccess) {
-      if (!currentVersion || releases.length === 0) {
+      if (!selectedVersionId || releases.length === 0) {
         return pipeline.data.recipe.output ?? null;
       }
 
       const pipelineVersion = releases.find(
         (release) =>
-          release.id === currentVersion || release.alias === currentVersion,
+          release.id === selectedVersionId ||
+          release.alias === selectedVersionId,
       );
 
       if (pipelineVersion) {
@@ -103,7 +106,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
     }
 
     return null;
-  }, [releases, currentVersion, pipeline.isSuccess, pipeline.data]);
+  }, [releases, selectedVersionId, pipeline.isSuccess, pipeline.data]);
 
   const { fieldItems, form, Schema } = usePipelineTriggerRequestForm({
     mode: "demo",
@@ -114,6 +117,7 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
   });
 
   const triggerPipeline = useTriggerUserPipeline();
+  const triggerPipelineRelease = useTriggerUserPipelineRelease();
 
   async function onTriggerPipeline(formData: z.infer<typeof Schema>) {
     if (
@@ -160,33 +164,61 @@ export const InOutPut = ({ currentVersion }: InOutPutProps) => {
       }
     }
 
-    try {
-      const targetNamespace = namespaces.find(
-        (namespace) => namespace.id === navigationNamespaceAnchor,
-      );
+    // The user can trigger different version of pipleine when they are
+    // pro or enterprise users
 
-      const data = await triggerPipeline.mutateAsync({
-        pipelineName: routeInfo.data.pipelineName,
-        accessToken,
-        payload: {
-          inputs: [parsedStructuredData],
-        },
-        returnTraces: true,
-        shareCode: shareCode ?? undefined,
-        requesterUid: targetNamespace ? targetNamespace.uid : undefined,
-      });
+    if (selectedVersionId === "latest" || selectedVersionId === null) {
+      try {
+        const targetNamespace = namespaces.find(
+          (namespace) => namespace.id === navigationNamespaceAnchor,
+        );
 
-      if (amplitudeIsInit) {
-        sendAmplitudeData("trigger_pipeline");
+        const data = await triggerPipeline.mutateAsync({
+          pipelineName: routeInfo.data.pipelineName,
+          accessToken,
+          payload: {
+            inputs: [parsedStructuredData],
+          },
+          returnTraces: true,
+          shareCode: shareCode ?? undefined,
+          requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+        });
+
+        if (amplitudeIsInit) {
+          sendAmplitudeData("trigger_pipeline");
+        }
+
+        setResponse(data);
+      } catch (error) {
+        toastInstillError({
+          title: "Something went wrong when trigger the pipeline",
+          error,
+          toast,
+        });
       }
+    } else {
+      try {
+        const targetNamespace = namespaces.find(
+          (namespace) => namespace.id === navigationNamespaceAnchor,
+        );
 
-      setResponse(data);
-    } catch (error) {
-      toastInstillError({
-        title: "Something went wrong when trigger the pipeline",
-        error,
-        toast,
-      });
+        await triggerPipelineRelease.mutateAsync({
+          pipelineReleaseName: `${routeInfo.data.pipelineName}/releases/${selectedVersionId}`,
+          payload: {
+            inputs: [parsedStructuredData],
+          },
+          accessToken,
+          returnTraces: true,
+          shareCode: shareCode ?? undefined,
+          requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+        });
+      } catch (error) {
+        toastInstillError({
+          title: "Something went wrong when trigger the pipeline",
+          error,
+          toast,
+        });
+      }
     }
   }
 

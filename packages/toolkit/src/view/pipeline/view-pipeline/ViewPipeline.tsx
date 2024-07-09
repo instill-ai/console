@@ -28,7 +28,7 @@ export const ViewPipeline = () => {
   const searchParams = useSearchParams();
   const shareCode = searchParams.get("view");
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-  const [currentVersion, setCurrentVersion] =
+  const [selectedVersionId, setSelectedVersionId] =
     React.useState<Nullable<string>>(null);
 
   const router = useRouter();
@@ -52,7 +52,7 @@ export const ViewPipeline = () => {
     if (releases.length === 0 || !releases[0]) {
       return;
     }
-    setCurrentVersion(releases[0].id);
+    setSelectedVersionId(releases[0].id);
   }, [releases]);
 
   React.useEffect(() => {
@@ -61,26 +61,28 @@ export const ViewPipeline = () => {
     }
   }, [pipeline.isError, router]);
 
-  const currentPipelineRelease = React.useMemo(() => {
+  const selectedPipelineRelease = React.useMemo(() => {
     if (
       !pipeline.isSuccess ||
-      !currentVersion ||
+      !selectedVersionId ||
       pipeline.data.releases.length === 0
     ) {
       return null;
     }
-    return pipeline.data.releases.find(
-      (release) => release.id === currentVersion,
+    return (
+      pipeline.data.releases.find(
+        (release) => release.id === selectedVersionId,
+      ) ?? null
     );
-  }, [pipeline.isSuccess, pipeline.data, currentVersion]);
+  }, [pipeline.isSuccess, pipeline.data, selectedVersionId]);
 
   return (
     <div className="flex h-full w-full flex-col">
       <Head
-        handleVersion={(version) => {
-          setCurrentVersion(version);
+        setSelectedVersionId={(versionId) => {
+          setSelectedVersionId(versionId);
         }}
-        currentVersion={currentVersion}
+        selectedVersionId={selectedVersionId}
       />
       <div className="flex justify-center">
         <div className="w-[1440px]">
@@ -89,13 +91,13 @@ export const ViewPipeline = () => {
               <ReadOnlyPipelineBuilder
                 pipelineName={pipeline.isSuccess ? pipeline.data.name : null}
                 recipe={
-                  currentPipelineRelease
-                    ? currentPipelineRelease.recipe
+                  selectedPipelineRelease
+                    ? selectedPipelineRelease.recipe
                     : pipeline.data?.recipe ?? null
                 }
                 metadata={
-                  currentPipelineRelease
-                    ? currentPipelineRelease.metadata
+                  selectedPipelineRelease
+                    ? selectedPipelineRelease.metadata
                     : pipeline.data?.metadata ?? null
                 }
                 className="h-[378px] w-full"
@@ -115,7 +117,7 @@ export const ViewPipeline = () => {
               />
             </div>
             <div className="w-5/12 py-10">
-              <InOutPut currentVersion={currentVersion} />
+              <InOutPut selectedVersionId={selectedVersionId} />
             </div>
           </div>
         </div>
