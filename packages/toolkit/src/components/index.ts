@@ -30,4 +30,4 @@ export * from "./DeleteResourceModal";
 export * from "./RealTimeTextEditor";
 export * from "./EntitySelector";
 export * from "./NamespaceAvatarWithFallback";
-export * from "./EmptyImageInputPlaceholder";
+export * from "./FileInputDropArea";
