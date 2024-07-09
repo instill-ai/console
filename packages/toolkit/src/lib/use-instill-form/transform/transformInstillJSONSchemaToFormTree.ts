@@ -76,7 +76,7 @@ export function transformInstillJSONSchemaToFormTree(
 
     if (instillUpstreamValue) {
       if (Array.isArray(instillUpstreamValue.type)) {
-        type = instillUpstreamValue.type[0];
+        type = instillUpstreamValue.type[0] ?? null;
       } else {
         type = instillUpstreamValue.type ?? null;
       }
@@ -181,7 +181,7 @@ export function transformInstillJSONSchemaToFormTree(
 
     const conditions = Object.fromEntries(conditionEntries);
 
-    const constField = targetSchema.oneOf[0].properties
+    const constField = targetSchema.oneOf[0]?.properties
       ? Object.entries(targetSchema.oneOf[0].properties).find(
           ([, property]) => "const" in property,
         )?.[1]

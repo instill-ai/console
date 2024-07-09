@@ -32,8 +32,8 @@ export const NodeBottomBarContent = ({
         !triggerResponse.metadata ||
         !triggerResponse.metadata.traces ||
         !triggerResponse.metadata.traces[componentID] ||
-        !triggerResponse.metadata.traces[componentID].outputs ||
-        triggerResponse.metadata.traces[componentID].outputs.length === 0
+        !triggerResponse.metadata.traces[componentID]?.outputs ||
+        triggerResponse.metadata.traces[componentID]?.outputs.length === 0
       ) {
         return (
           <NodeBottomBarOutput
@@ -44,18 +44,22 @@ export const NodeBottomBarContent = ({
         );
       }
 
-      const value = triggerResponse.metadata.traces[componentID].outputs[0];
+      const value = triggerResponse.metadata.traces[componentID]?.outputs[0];
 
-      return (
-        <NodeBottomBarOutput
-          componentID={componentID}
-          outputSchema={outputSchema}
-          outputData={value}
-        />
-      );
+      if (value) {
+        return (
+          <NodeBottomBarOutput
+            componentID={componentID}
+            outputSchema={outputSchema}
+            outputData={value}
+          />
+        );
+      }
+      break;
     }
     case "schema": {
       return <NodeBottomBarSchema componentSchema={componentSchema} />;
+      break;
     }
     default: {
       return null;

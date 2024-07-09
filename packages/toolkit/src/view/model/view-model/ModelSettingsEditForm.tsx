@@ -353,7 +353,7 @@ export const ModelSettingsEditForm = ({
                     </Form.Label>
                     <Form.Control>
                       <Select.Root
-                        value={field?.value || hardwareOptions?.[0].value}
+                        value={field?.value || hardwareOptions?.[0]?.value}
                         onValueChange={(value: string) => {
                           field.onChange(value);
 

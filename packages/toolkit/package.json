@@ -14,8 +14,8 @@
     "test": "vitest --run --passWithNoTests",
     "dev": "tsup --watch",
     "dev-ts": "tsc --watch --emitDeclarationOnly",
-    "build": "pnpm rimraf dist && tsup && pnpm ts-types",
-    "ts-types": "tsc --emitDeclarationOnly",
+    "ts-type": "tsc --emitDeclarationOnly",
+    "build": "tsup && pnpm ts-type",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --cache",
     "publish-rc": "pnpm build && pnpm publish --no-git-checks"
   },
@@ -50,6 +50,8 @@
   "devDependencies": {
     "@instill-ai/eslint-config-cortex": "workspace:*",
     "@instill-ai/prettier-config-cortex": "workspace:*",
+    "@instill-ai/tsconfig": "workspace:*",
+    "@microsoft/api-extractor": "^7.47.0",
     "@testing-library/jest-dom": "^6.2.1",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.2",
@@ -76,7 +78,7 @@
     "stripe": "^13.7.0",
     "tailwindcss": "^3.3.2",
     "tailwindcss-animate": "^1.0.6",
-    "tsup": "^6.7.0",
+    "tsup": "^8.1.0",
     "tsx": "^4.6.2",
     "typescript": "^5.4.2",
     "vitest": "^1.6.0"

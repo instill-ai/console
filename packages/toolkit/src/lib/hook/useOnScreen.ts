@@ -10,9 +10,11 @@ export const useOnScreen = (ref: React.RefObject<HTMLElement>) => {
   const [isOnScreen, setIsOnScreen] = React.useState(false);
 
   React.useEffect(() => {
-    observerRef.current = new IntersectionObserver(([entry]) =>
-      setIsOnScreen(entry.isIntersecting),
-    );
+    observerRef.current = new IntersectionObserver(([entry]) => {
+      if (entry) {
+        setIsOnScreen(entry.isIntersecting);
+      }
+    });
   }, []);
 
   React.useEffect(() => {

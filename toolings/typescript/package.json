@@ -1,0 +1,14 @@
+{
+  "name": "@instill-ai/tsconfig",
+  "version": "0.1.0",
+  "scripts": {
+    "publish-rc": "pnpm publish --no-git-checks"
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "*.json"
+  ]
+}

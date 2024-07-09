@@ -23,11 +23,15 @@ export function recursivelyResetFormData(
       const defaultCondition = pickDefaultCondition(tree);
 
       if (defaultCondition && defaultCondition.path) {
-        const selectedCondition = selectedConditionMap[defaultCondition.path];
+        const selectedConditionKey =
+          selectedConditionMap[defaultCondition.path];
+        const selectedCondition = selectedConditionKey
+          ? tree.conditions[selectedConditionKey]
+          : null;
 
-        if (selectedCondition && tree.conditions[selectedCondition]) {
+        if (selectedCondition) {
           recursivelyResetFormData(
-            tree.conditions[selectedCondition],
+            selectedCondition,
             selectedConditionMap,
             formData,
           );

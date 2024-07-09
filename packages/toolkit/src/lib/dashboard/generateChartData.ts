@@ -37,17 +37,19 @@ export function generateChartData(
   }
 
   pipelineData.forEach((pipeline, pipelineIndex) => {
-    for (const [bucketIndex, formattedBucket] of formattedTimeBuckets[
-      pipelineIndex
-    ].entries()) {
-      const xAxisIndex = xAxis.findIndex((date) => date === formattedBucket);
-      if (xAxisIndex !== -1) {
-        if (yAxis[pipelineIndex]["data"][xAxisIndex]) {
-          yAxis[pipelineIndex]["data"][xAxisIndex] +=
-            pipeline.triggerCounts[bucketIndex];
-        } else {
-          yAxis[pipelineIndex]["data"][xAxisIndex] +=
-            pipeline.triggerCounts[bucketIndex];
+    const buckets = formattedTimeBuckets[pipelineIndex];
+
+    if (buckets) {
+      for (const [bucketIndex, formattedBucket] of buckets.entries()) {
+        const xAxisIndex = xAxis.findIndex((date) => date === formattedBucket);
+        if (xAxisIndex !== -1) {
+          if (yAxis[pipelineIndex]["data"][xAxisIndex]) {
+            yAxis[pipelineIndex]["data"][xAxisIndex] +=
+              pipeline.triggerCounts[bucketIndex];
+          } else {
+            yAxis[pipelineIndex]["data"][xAxisIndex] +=
+              pipeline.triggerCounts[bucketIndex];
+          }
         }
       }
     }

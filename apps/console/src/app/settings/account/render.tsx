@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useAppAccessToken } from "lib/use-app-access-token";
 
 import {
   AppTopbar,
@@ -12,6 +11,8 @@ import {
   UserAccountTab,
   UserSidebar,
 } from "@instill-ai/toolkit";
+
+import { useAppAccessToken } from "~/lib/use-app-access-token";
 
 export function AccountSettingPageRender() {
   const accessToken = useAppAccessToken();

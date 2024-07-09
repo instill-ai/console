@@ -6,7 +6,6 @@ import { SelectOption } from "@instill-ai/design-system";
 
 import {
   DashboardAvailableTimeframe,
-  dashboardOptions,
   GeneralAppPageProp,
   getPipelineTriggersSummary,
   getPreviousTimeframe,
@@ -34,7 +33,10 @@ export const DashboardPipelineListPageMainView = (
    * Get the pipeline definition and static state for fields
    * -----------------------------------------------------------------------*/
   const [selectedTimeOption, setSelectedTimeOption] =
-    React.useState<SelectOption>(dashboardOptions.timeLine[0]);
+    React.useState<SelectOption>({
+      label: "Today",
+      value: "24h",
+    });
 
   const [queryString, setQueryString] = React.useState<Nullable<string>>(null);
   const [queryStringPrevious, setQueryStringPrevious] =

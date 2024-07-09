@@ -58,12 +58,10 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
 
     if (targetNodes) {
       const outputOption = availableOutputOptions.find((option) => {
+        const outputElementValue = targetNodes?.data.outputElements[outputKey];
         if (
-          targetNodes?.data.outputElements[outputKey] &&
-          option.path ===
-            targetNodes?.data.outputElements[outputKey]
-              .replace("${", "")
-              .replace("}", "")
+          outputElementValue &&
+          option.path === outputElementValue.replace("${", "").replace("}", "")
         ) {
           return true;
         }

@@ -37,12 +37,13 @@ export const ComponentOutputs = ({
       if (
         !targetResponse ||
         !targetResponse.metadata.traces[componentID] ||
-        !targetResponse.metadata.traces[componentID].outputs ||
-        targetResponse.metadata.traces[componentID].outputs.length === 0
+        !targetResponse.metadata.traces[componentID]?.outputs ||
+        targetResponse.metadata.traces[componentID]?.outputs.length === 0
       ) {
         return data;
       }
-      data = targetResponse.metadata.traces[componentID].outputs[0];
+
+      data = targetResponse.metadata.traces[componentID]?.outputs[0] ?? null;
 
       return data;
     }
@@ -51,7 +52,7 @@ export const ComponentOutputs = ({
       return data;
     }
 
-    data = targetResponse.outputs[0];
+    data = targetResponse.outputs[0] ?? null;
 
     return data;
   }, [nodeType, componentID, response, testModeTriggerResponse]);

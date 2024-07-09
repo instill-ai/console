@@ -173,8 +173,8 @@ export const ResponseNode = ({ data, id }: NodeProps<ResponseNodeData>) => {
 
   function onEditField(key: string) {
     form.reset({
-      title: data.fields[key].title,
-      value: data.fields[key].value,
+      title: data.fields[key]?.title,
+      value: data.fields[key]?.value,
       key: key,
     });
     setIsEditing(true);

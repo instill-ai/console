@@ -104,7 +104,7 @@ export const TextField = ({
   }, [instillUpstreamTypes]);
 
   const highlightedHint = React.useMemo(() => {
-    return filteredHints[highlightedHintIndex];
+    return filteredHints[highlightedHintIndex] ?? null;
   }, [filteredHints, highlightedHintIndex]);
 
   return isHidden ? null : (

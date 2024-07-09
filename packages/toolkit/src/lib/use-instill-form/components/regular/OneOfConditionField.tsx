@@ -59,7 +59,7 @@ export const OneOfConditionField = ({
 
     const selectedCondition = selectedConditionMap[path];
 
-    return conditionComponentsMap[selectedCondition];
+    return selectedCondition ? conditionComponentsMap[selectedCondition] : null;
   }, [conditionComponentsMap, selectedConditionMap, path]);
 
   const { reset, getValues } = form;

@@ -25,7 +25,7 @@ export function createNodesFromPipelineComponents(
     let componentMetadata: Nullable<PipelineComponentMetadata> = null;
 
     if (checkIsValidComponentMetadata(metadata)) {
-      componentMetadata = metadata.component[id];
+      componentMetadata = metadata.component[id] ?? null;
     }
 
     // The reason we need to transform all the value back to string is due to some

@@ -1,14 +1,14 @@
 "use client";
 
-import { OnboardingForm } from "components";
-import { useAppAccessToken } from "lib/use-app-access-token";
-
 import {
   AppTopbar,
   NamespaceSwitch,
   PageBase,
   PageTitle,
 } from "@instill-ai/toolkit";
+
+import { OnboardingForm } from "~/components";
+import { useAppAccessToken } from "~/lib/use-app-access-token";
 
 export const OnboardingPageRender = () => {
   useAppAccessToken();

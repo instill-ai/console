@@ -40,8 +40,8 @@ test("should get edges from basic components", () => {
 
   const edges = composeEdgesFromNodes(nodes);
 
-  expect(edges[0].source).toBe("variable");
-  expect(edges[0].target).toBe("response");
+  expect(edges[0]?.source).toBe("variable");
+  expect(edges[0]?.target).toBe("response");
 
   const wrongNodes: Node<NodeData>[] = [
     {
@@ -156,8 +156,8 @@ test("should loosely check the reference field exist when reference has square b
 
   const edges = composeEdgesFromNodes(nodes);
 
-  expect(edges[0].source).toBe("variable");
-  expect(edges[0].target).toBe("response");
+  expect(edges[0]?.source).toBe("variable");
+  expect(edges[0]?.target).toBe("response");
 
   const wrongNodes: Node<NodeData>[] = [
     {
