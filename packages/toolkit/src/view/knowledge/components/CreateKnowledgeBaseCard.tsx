@@ -11,7 +11,7 @@ import { useUpdateKnowledgeBase } from "../../../lib/react-query-service/knowled
 import { useDeleteKnowledgeBase } from "../../../lib/react-query-service/knowledge/useDeleteKnowledgeBase";
 import { useCreateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useCreateKnowledgeBase";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
 import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
 import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./undoDeleteTime";
 import DeleteKnowledgeBaseNotification from "./Notifications/DeleteKnowledgeBaseNotification";
@@ -87,6 +87,15 @@ export const CreateKnowledgeBaseCard = ({
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [isDeleted, setIsDeleted] = React.useState(false);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const selector = (store: InstillStore) => ({
+    accessToken: store.accessToken,
+    enabledQuery: store.enabledQuery,
+  });
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const me = useAuthenticatedUser({
+    enabled: enabledQuery,
+    accessToken,
+  });
 
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -103,14 +112,14 @@ export const CreateKnowledgeBaseCard = ({
     const clonedKnowledgeBase = {
       ...knowledgeBase,
       name: `${knowledgeBase.name}_Clone`,
-      id: knowledgeBase.id + 1,
     };
     try {
       const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
         payload: clonedKnowledgeBase,
-        accessToken: accessToken,
+        ownerId: me.data.id,
+        accessToken,
       });
-      setKnowledgeBases((prevKnowledgeBases: KnowledgeBase[]) => [
+      setKnowledgeBases((prevKnowledgeBases) => [
         ...prevKnowledgeBases,
         newKnowledgeBase,
       ]);
@@ -123,12 +132,6 @@ export const CreateKnowledgeBaseCard = ({
   const updateKnowledgeBase = useUpdateKnowledgeBase();
   const createKnowledgeBase = useCreateKnowledgeBase();
 
-  const selector = (store: InstillStore) => ({
-    accessToken: store.accessToken,
-    enabledQuery: store.enabledQuery,
-  });
-
-  const { accessToken } = useInstillStore(useShallow(selector));
 
   const confirmDelete = () => {
     setIsDeleted(true);
@@ -140,12 +143,13 @@ export const CreateKnowledgeBaseCard = ({
   };
 
   const deleteKnowledgeBaseHandler = async () => {
-    if (isDeleted) {
+    if (isDeleted && me.data?.id) {
       await deleteKnowledgeBase.mutateAsync({
-        id: knowledgeBase.id,
-        accessToken: accessToken,
+        ownerId: me.data.id,
+        kbId: knowledgeBase.id,
+        accessToken,
       });
-      setKnowledgeBases((prevKnowledgeBases: KnowledgeBase[]) =>
+      setKnowledgeBases((prevKnowledgeBases) =>
         prevKnowledgeBases.filter((kb) => kb.id !== knowledgeBase.id)
       );
       setShowDeleteMessage(false);
@@ -154,15 +158,17 @@ export const CreateKnowledgeBaseCard = ({
   };
 
   const handleEditKnowledgeSubmit = async (data: EditKnowledgeDialogData) => {
+    if (!me.data?.id) return;
+
     try {
       const updatedKnowledgeBase = await updateKnowledgeBase.mutateAsync({
-        id: knowledgeBase.id,
+        ownerId: me.data.id,
+        kbId: knowledgeBase.id,
         payload: data,
-        accessToken: accessToken,
+        accessToken,
       });
 
-      // Update the local state immediately
-      setKnowledgeBases((prevKnowledgeBases: KnowledgeBase[]) =>
+      setKnowledgeBases((prevKnowledgeBases) =>
         prevKnowledgeBases.map((kb) =>
           kb.id === knowledgeBase.id ? { ...kb, ...updatedKnowledgeBase } : kb
         )

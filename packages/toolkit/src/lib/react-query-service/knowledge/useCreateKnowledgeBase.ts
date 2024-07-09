@@ -4,6 +4,7 @@ import { KnowledgeBase } from "../../vdp-sdk/knowledge/types";
 
 async function createKnowledgeBaseMutation({
   payload,
+  ownerId,
   accessToken,
 }: {
   payload: {
@@ -11,6 +12,7 @@ async function createKnowledgeBaseMutation({
     description: string;
     tags?: string[];
   };
+  ownerId: string;
   accessToken: string | null;
 }): Promise<KnowledgeBase> {
   if (!accessToken) {
@@ -18,11 +20,9 @@ async function createKnowledgeBaseMutation({
   }
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.post<{
-    body: KnowledgeBase;
-    error_msg: string;
-    status_code: number;
-  }>(`/knowledge-base`, payload);
-  return response.data.body;
+    knowledge_base: KnowledgeBase;
+  }>(`/owners/${ownerId}/knowledge-bases`, payload);
+  return response.data.knowledge_base;
 }
 
 export function useCreateKnowledgeBase() {
