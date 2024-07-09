@@ -1,6 +1,7 @@
 import { LoadingSpin } from "../../../components";
 import { Pipeline, PipelineRelease } from "../../../lib";
 import { PipelineTabNames } from "../../../server";
+import { PipelineApi } from "./PipelineApi";
 import { PipelinePlayground } from "./PipelinePlayground";
 import { PipelinePreview } from "./PipelinePreview";
 import { PipelineReadme } from "./PipelineReadme";
@@ -24,7 +25,7 @@ export const PipelineContentViewer = ({
 
   switch (selectedTab) {
     case "api": {
-      //content = <PipelineApi pipeline={pipeline} />;
+      content = <PipelineApi pipeline={pipeline} />;
 
       break;
     }
