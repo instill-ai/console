@@ -1,11 +1,12 @@
 export const getQueryString = ({
   baseURL,
   pageSize,
-  nextPageToken,
+  pageToken,
   filter,
   queryParams,
   orderBy,
   view,
+  visibility,
   owner,
   start,
   stop,
@@ -13,10 +14,11 @@ export const getQueryString = ({
 }: {
   baseURL: string;
   pageSize?: number;
-  nextPageToken?: string;
+  pageToken?: string;
   filter?: string;
   orderBy?: string;
   view?: string;
+  visibility?: string;
 
   // Just pure query params, the function will handle tialing '&'
   queryParams?: string;
@@ -29,10 +31,11 @@ export const getQueryString = ({
 
   if (
     pageSize ||
-    nextPageToken ||
+    pageToken ||
     filter ||
     orderBy ||
     view ||
+    visibility ||
     queryParams ||
     owner ||
     start ||
@@ -51,8 +54,8 @@ export const getQueryString = ({
     url += `pageSize=${pageSize}&`;
   }
 
-  if (nextPageToken) {
-    url += `pageToken=${nextPageToken}&`;
+  if (pageToken) {
+    url += `pageToken=${pageToken}&`;
   }
 
   if (filter) {
@@ -65,6 +68,10 @@ export const getQueryString = ({
 
   if (view) {
     url += `view=${view}&`;
+  }
+
+  if (visibility) {
+    url += `visibility=${visibility}&`;
   }
 
   if (queryParams) {

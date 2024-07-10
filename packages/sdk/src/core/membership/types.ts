@@ -1,5 +1,5 @@
+import { Nullable } from "../../types";
 import { Organization } from "../organization";
-import { Nullable } from "../types";
 import { User } from "../user/types";
 
 export type MembershipRole = "admin" | "member" | "pending_member" | "owner";

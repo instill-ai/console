@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 
-import { ModelState } from "./model";
-import { Organization } from "./organization";
-import { PipelineReleaseState } from "./pipeline";
-import { User } from "./user";
+import { Organization } from "./core/organization";
+import { User } from "./core/user";
 
 export type ErrorDetails = {
   "@type": string;
@@ -16,19 +14,6 @@ export type Violation = {
   type: string;
   description: string;
   subject: string;
-};
-
-export type ResourceState = ModelState | PipelineReleaseState;
-
-export type DataSpecification = {
-  input: Nullable<InstillJSONSchema>;
-  output: Nullable<InstillJSONSchema>;
-};
-
-export type Spec = {
-  resourceSpecification: InstillJSONSchema;
-  componentSpecification: InstillJSONSchema;
-  dataSpecifications: Nullable<Record<string, DataSpecification>>;
 };
 
 export type Visibility =

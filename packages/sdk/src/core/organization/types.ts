@@ -1,4 +1,4 @@
-import { Nullable, StripeSubscriptionDetail } from "../types";
+import { Nullable, StripeSubscriptionDetail } from "../../types";
 import { User } from "../user";
 
 export type OrganizationProfile = {
@@ -23,46 +23,9 @@ export type Organization = {
   profile?: OrganizationProfile;
 };
 
-export type OrganizationSubscriptionPlan =
-  | "PLAN_UNSPECIFIED"
-  | "PLAN_FREEMIUM"
-  | "PLAN_TEAM"
-  | "PLAN_TEAM_PRO"
-  | "PLAN_ENTERPRISE"
-  | "PLAN_UNPAID";
-
-export type OrganizationSubscription = {
-  plan: OrganizationSubscriptionPlan;
-  detail: Nullable<StripeSubscriptionDetail>;
-  maxSeats: number;
-  usedSeats: number;
-};
-
-export type UserMembership = {
-  user: User;
-  organization: Organization;
-  name: Nullable<string>;
-  role: MembershipRole;
-  state: MembershipState;
-};
-
-export type OrganizationMembership = {
-  user: User;
-  organization: Organization;
-  name: Nullable<string>;
-  role: MembershipRole;
-  state: MembershipState;
-};
-
-export type MembershipRole = "admin" | "member" | "pending_member" | "owner";
-
-export type MembershipState =
-  | "MEMBERSHIP_STATE_ACTIVE"
-  | "MEMBERSHIP_STATE_PENDING";
-
 export type ListOrganizationsRequest = {
   pageSize?: number;
-  nextPageToken?: string;
+  pageToken?: string;
   view?: string;
   filter?: string;
 };

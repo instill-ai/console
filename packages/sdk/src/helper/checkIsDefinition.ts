@@ -1,5 +1,5 @@
-import { ConnectorDefinition } from "../connector";
 import { IteratorDefinition, OperatorDefinition } from "../pipeline";
+import { ConnectorDefinition } from "../vdp/component";
 
 export function isConnectorDefinition(
   definition: IteratorDefinition | ConnectorDefinition | OperatorDefinition,

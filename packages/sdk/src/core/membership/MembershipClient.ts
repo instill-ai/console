@@ -1,5 +1,5 @@
-import { APIResource } from "../core/resource";
-import { getQueryString } from "../helper";
+import { getQueryString } from "../../helper";
+import { APIResource } from "../../main/resource";
 import {
   DeleteUserMembershipRequest,
   GetOrganizationMembershipRequest,

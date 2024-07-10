@@ -1,5 +1,5 @@
-import { APIResource } from "../core/resource";
-import { getQueryString } from "../helper";
+import { getQueryString } from "../../helper";
+import { APIResource } from "../../main/resource";
 import {
   CreateOrganizationRequest,
   CreateOrganizationResponse,
@@ -33,7 +33,7 @@ export class OrganizationClient extends APIResource {
   async listOrganizations(
     props: ListOrganizationsRequest & { enablePagination: boolean },
   ) {
-    const { pageSize, nextPageToken, view, enablePagination, filter } = props;
+    const { pageSize, pageToken, view, enablePagination, filter } = props;
 
     try {
       const organizations: Organization[] = [];
@@ -41,7 +41,7 @@ export class OrganizationClient extends APIResource {
       const queryString = getQueryString({
         baseURL: "/organizations",
         pageSize,
-        nextPageToken,
+        pageToken,
         filter,
         view,
       });
@@ -60,7 +60,7 @@ export class OrganizationClient extends APIResource {
           ...(await this.listOrganizations({
             pageSize,
             view,
-            nextPageToken: data.nextPageToken,
+            pageToken: data.nextPageToken,
             filter,
             enablePagination,
           })),

@@ -54,7 +54,7 @@ export type UpdateAuthenticatedUserResponse = {
 
 export type ListUsersRequest = {
   pageSize?: number;
-  nextPageToken?: string;
+  pageToken?: string;
 };
 
 export type ListUsersResponse = {

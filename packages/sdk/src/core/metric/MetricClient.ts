@@ -1,5 +1,5 @@
-import { APIResource } from "../core/resource";
-import { getQueryString } from "../helper";
+import { getQueryString } from "../../helper";
+import { APIResource } from "../../main/resource";
 import {
   ListCreditConsumptionChartRecordResponse,
   ListPipelineTriggerComputationTimeChartsRequest,
@@ -65,7 +65,7 @@ export class MetricClient extends APIResource {
       enablePagination: boolean;
     },
   ) {
-    const { pageSize, nextPageToken, filter, enablePagination } = props;
+    const { pageSize, pageToken, filter, enablePagination } = props;
 
     try {
       const triggers: PipelineTriggerRecord[] = [];
@@ -73,7 +73,7 @@ export class MetricClient extends APIResource {
       const queryString = getQueryString({
         baseURL: `/metrics/vdp/pipeline/triggers`,
         pageSize,
-        nextPageToken,
+        pageToken,
         filter,
       });
 
@@ -90,7 +90,7 @@ export class MetricClient extends APIResource {
         triggers.push(
           ...(await this.listPipelineTriggers({
             pageSize,
-            nextPageToken: data.nextPageToken,
+            pageToken: data.nextPageToken,
             filter,
             enablePagination,
           })),
@@ -123,7 +123,7 @@ export class MetricClient extends APIResource {
       enablePagination: boolean;
     },
   ) {
-    const { pageSize, nextPageToken, filter, enablePagination } = props;
+    const { pageSize, pageToken, filter, enablePagination } = props;
 
     const pipelineTriggerTableRecords: PipelineTriggerTableRecord[] = [];
 
@@ -131,7 +131,7 @@ export class MetricClient extends APIResource {
       const queryString = getQueryString({
         baseURL: `/metrics/vdp/pipeline/tables`,
         pageSize,
-        nextPageToken,
+        pageToken,
         filter,
       });
 
@@ -148,7 +148,7 @@ export class MetricClient extends APIResource {
         pipelineTriggerTableRecords.push(
           ...(await this.listPipelineTriggerMetric({
             pageSize,
-            nextPageToken: data.nextPageToken,
+            pageToken: data.nextPageToken,
             filter,
             enablePagination,
           })),
@@ -180,7 +180,7 @@ export class MetricClient extends APIResource {
   async listPipelineTriggerComputationTimeCharts(
     props: ListPipelineTriggerComputationTimeChartsRequest,
   ) {
-    const { pageSize, nextPageToken, filter } = props;
+    const { pageSize, pageToken, filter } = props;
 
     const pipelineTriggerChartRecords: PipelineTriggerChartRecord[] = [];
 
@@ -188,7 +188,7 @@ export class MetricClient extends APIResource {
       const queryString = getQueryString({
         baseURL: `/metrics/vdp/pipeline/charts`,
         pageSize,
-        nextPageToken,
+        pageToken,
         filter,
       });
 

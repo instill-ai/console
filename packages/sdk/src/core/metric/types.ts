@@ -1,5 +1,3 @@
-import { PipelineMode, PipelineReleaseState } from "../pipeline";
-
 export type CreditConsumptionChartRecord = {
   creditOwner: string;
   timeBuckets: string[];
@@ -28,7 +26,7 @@ export type PipelineTriggerRecord = {
 
 export type ListPipelineTriggerRequest = {
   pageSize?: number;
-  nextPageToken?: string;
+  pageToken?: string;
   filter?: string;
 };
 
@@ -40,7 +38,7 @@ export type ListPipelineTriggersResponse = {
 
 export type ListPipelineTriggerMetricRequest = {
   pageSize?: number;
-  nextPageToken?: string;
+  pageToken?: string;
   filter?: string;
 };
 
@@ -60,7 +58,7 @@ export type ListPipelineTriggerMetricResponse = {
 
 export type ListPipelineTriggerComputationTimeChartsRequest = {
   pageSize?: number;
-  nextPageToken?: string;
+  pageToken?: string;
   filter?: string;
 };
 

@@ -1,5 +1,5 @@
-import { APIResource } from "../core/resource";
-import { getQueryString } from "../helper";
+import { getQueryString } from "../../helper";
+import { APIResource } from "../../main/resource";
 import {
   GetAuthenticatedResponse,
   GetUserRequest,
@@ -45,13 +45,13 @@ export class UserClient extends APIResource {
     props: ListUsersRequest & { enablePagination: boolean },
   ): Promise<ListUsersResponse | User[]>;
   async listUsers(props: ListUsersRequest & { enablePagination: boolean }) {
-    const { pageSize, nextPageToken, enablePagination } = props;
+    const { pageSize, pageToken, enablePagination } = props;
     const users: User[] = [];
     try {
       const queryString = getQueryString({
         baseURL: "/users",
         pageSize,
-        nextPageToken,
+        pageToken,
       });
 
       const data = await this._client.get<ListUsersResponse>(queryString);
@@ -66,7 +66,7 @@ export class UserClient extends APIResource {
         users.push(
           ...(await this.listUsers({
             pageSize,
-            nextPageToken: data.nextPageToken,
+            pageToken: data.nextPageToken,
             enablePagination,
           })),
         );
