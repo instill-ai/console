@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
 
-import { User } from "./mgmt";
 import { ModelState } from "./model";
 import { Organization } from "./organization";
 import { PipelineReleaseState } from "./pipeline";
+import { User } from "./user";
 
 export type ErrorDetails = {
   "@type": string;

@@ -1,7 +1,10 @@
-import { InstillAPIClient } from "../core";
 import { APIResource } from "../core/resource";
 import { getQueryString } from "../helper";
-import { ConnectorDefinition, ListConnectorDefinitionsResponse } from "./types";
+import {
+  ConnectorDefinition,
+  GetConnectorDefinitionResponse,
+  ListConnectorDefinitionsResponse,
+} from "./types";
 
 export class ConnectorClient extends APIResource {
   async listDefinitions({
@@ -53,5 +56,18 @@ export class ConnectorClient extends APIResource {
   }: {
     name: string;
     view?: string;
-  }) {}
+  }) {
+    try {
+      const queryString = getQueryString({
+        baseURL: `/${name}`,
+        view,
+      });
+
+      const data =
+        await this._client.get<GetConnectorDefinitionResponse>(queryString);
+      return Promise.resolve(data.connectorDefinition);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
 }

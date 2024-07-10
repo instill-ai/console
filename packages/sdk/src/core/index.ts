@@ -1,10 +1,15 @@
 import fetch from "isomorphic-unfetch";
 
 import { ConnectorClient } from "../connector/ConnectorClient";
+import { HubClient } from "../hub";
+import { MetricClient } from "../metric";
+import { OrganizationClient } from "../organization/OrganizationClient";
 import { GeneralRecord, HttpMethod } from "../types";
+import { UserClient } from "../user/UserClient";
+import { APIResource } from "./resource";
 
 export type RequestOption = {
-  body?: GeneralRecord;
+  body?: string;
   additionalHeaders?: GeneralRecord;
 };
 
@@ -23,6 +28,10 @@ export class InstillAPIClient {
 
   async post<Rsp>(path: string, opt?: RequestOption): Promise<Rsp> {
     return this.makeMethodRequest("POST", path, opt);
+  }
+
+  async put<Rsp>(path: string, opt?: RequestOption): Promise<Rsp> {
+    return this.makeMethodRequest("PUT", path, opt);
   }
 
   async patch<Rsp>(path: string, opt?: RequestOption): Promise<Rsp> {
@@ -59,5 +68,14 @@ export class InstillAPIClient {
     }
   }
 
-  connector = new ConnectorClient(this);
+  vdp = {
+    connector: new ConnectorClient(this),
+  };
+
+  core = {
+    hub: new HubClient(this),
+    metric: new MetricClient(this),
+    user: new UserClient(this),
+    organization: new OrganizationClient(this),
+  };
 }
