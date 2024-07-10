@@ -36,7 +36,7 @@ import {
 import { recursiveHelpers } from "../../pipeline-builder";
 import { OPERATION_POLL_TIMEOUT } from "./constants";
 
-export type ModelOutputActiveView = "preview" | "json";
+type ModelOutputActiveView = "preview" | "json";
 
 export type ModelPlaygroundProps = {
   model?: Model;

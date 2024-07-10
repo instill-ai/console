@@ -154,14 +154,12 @@ export async function triggerUserPipelineReleaseAction({
   pipelineReleaseName,
   payload,
   accessToken,
-  returnTraces,
   requesterUid,
   shareCode,
 }: {
   pipelineReleaseName: string;
   payload: TriggerUserPipelinePayload;
   accessToken: Nullable<string>;
-  returnTraces?: boolean;
   requesterUid?: string;
   shareCode?: string;
 }) {
@@ -173,11 +171,11 @@ export async function triggerUserPipelineReleaseAction({
       payload,
       {
         headers: {
-          "instill-return-traces": returnTraces ? "true" : "false",
           "instill-share-code": shareCode,
           "Access-Control-Allow-Headers":
             "instill-return-traces, instill-share-code, Instill-Requester-Uid",
           "Content-Type": "application/json",
+          "Instill-Requester-Uid": requesterUid,
           "Instill-Requester-Uid": requesterUid,
         },
       },
