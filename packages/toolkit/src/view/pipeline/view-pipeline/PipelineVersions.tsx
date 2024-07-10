@@ -7,8 +7,7 @@ import {
 } from "../../../lib";
 import { getHumanReadableStringFromTime } from "../../../server";
 import { useSearchParams, useRouter } from "next/navigation";
-
-const PAGE_SIZE = 6;
+import { TABLE_PAGE_SIZE } from "./constants";
 
 export type PipelineVersionsProps = {
   pipeline?: Pipeline;
@@ -97,9 +96,9 @@ export const PipelineVersions = ({ pipeline, releases, isReady }: PipelineVersio
       <DataTable
         columns={columns}
         data={releases}
-        pageSize={PAGE_SIZE}
+        pageSize={TABLE_PAGE_SIZE}
         isLoading={!isReady}
-        loadingRows={PAGE_SIZE}
+        loadingRows={TABLE_PAGE_SIZE}
       />
     </div>
   );

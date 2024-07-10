@@ -3,7 +3,7 @@ import { ColumnDef, PaginationState } from "@tanstack/react-table";
 
 import { DataTable } from "@instill-ai/design-system";
 
-import { StateLabel } from "../../../components";
+import { ModelStateLabel } from "../../../components";
 import {
   InstillStore,
   Model,
@@ -58,7 +58,7 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
       cell: ({ row }) => {
         return (
           <div className="flex flex-row justify-start">
-            <StateLabel state={row.getValue("state")} />
+            <ModelStateLabel state={row.getValue("state")} />
           </div>
         );
       },

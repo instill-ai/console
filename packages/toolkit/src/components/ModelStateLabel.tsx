@@ -4,12 +4,12 @@ import cn from "clsx";
 
 import type { Nullable, ResourceState } from "../lib";
 
-export type StateLabelProps = {
+export type ModelStateLabelProps = {
   state?: Nullable<ResourceState>;
   className?: string;
 };
 
-export const StateLabel = ({ state, className }: StateLabelProps) => {
+export const ModelStateLabel = ({ state, className }: ModelStateLabelProps) => {
   if (!state) {
     return null;
   }
