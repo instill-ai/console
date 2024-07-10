@@ -124,8 +124,9 @@ export const InOutPut = ({
       !routeInfo.isSuccess ||
       !routeInfo.data?.pipelineName ||
       !pipeline.isSuccess
-    )
+    ) {
       return;
+    }
 
     const input = recursiveHelpers.removeUndefinedAndNullFromArray(
       recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData),
@@ -202,7 +203,7 @@ export const InOutPut = ({
           (namespace) => namespace.id === navigationNamespaceAnchor,
         );
 
-        await triggerPipelineRelease.mutateAsync({
+        const data = await triggerPipelineRelease.mutateAsync({
           pipelineReleaseName: `${routeInfo.data.pipelineName}/releases/${selectedVersionId}`,
           payload: {
             inputs: [parsedStructuredData],
@@ -212,6 +213,8 @@ export const InOutPut = ({
           shareCode: shareCode ?? undefined,
           requesterUid: targetNamespace ? targetNamespace.uid : undefined,
         });
+
+        setResponse(data);
       } catch (error) {
         toastInstillError({
           title: "Something went wrong when trigger the pipeline",
