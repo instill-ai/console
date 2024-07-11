@@ -1,4 +1,4 @@
-import { Separator, Skeleton } from "@instill-ai/design-system";
+import { Icons, Input, Separator, Skeleton } from "@instill-ai/design-system";
 import * as React from "react";
 import { KnowledgeBaseCard } from "./KnowledgeBaseCard";
 import { CreateKnowledgeBaseCard } from "./CreateKnowledgeBaseCard";
@@ -18,6 +18,7 @@ import {
 } from "../../../lib";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import * as z from "zod";
+import KnowledgeSearchSort from "./KnowledgeSearchSort";
 
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
@@ -159,6 +160,7 @@ export const KnowledgeBaseTab = ({
         <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
           Knowledge bases
         </p>
+        <KnowledgeSearchSort />
       </div>
       <Separator orientation="horizontal" className="mb-6" />
       {loading ? (
