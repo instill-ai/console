@@ -212,7 +212,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   onClick={() => requestSort("fileName")}
                 >
                   {sortConfig.key === "fileName" &&
-                  sortConfig.direction === "ascending" ? (
+                    sortConfig.direction === "ascending" ? (
                     <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                   ) : (
                     <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -229,7 +229,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   onClick={() => requestSort("fileType")}
                 >
                   {sortConfig.key === "fileType" &&
-                  sortConfig.direction === "ascending" ? (
+                    sortConfig.direction === "ascending" ? (
                     <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                   ) : (
                     <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -246,7 +246,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   onClick={() => requestSort("status")}
                 >
                   {sortConfig.key === "status" &&
-                  sortConfig.direction === "ascending" ? (
+                    sortConfig.direction === "ascending" ? (
                     <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                   ) : (
                     <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -263,7 +263,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   onClick={() => requestSort("fileSize")}
                 >
                   {sortConfig.key === "fileSize" &&
-                  sortConfig.direction === "ascending" ? (
+                    sortConfig.direction === "ascending" ? (
                     <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                   ) : (
                     <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -280,7 +280,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   onClick={() => requestSort("processedStatus")}
                 >
                   {sortConfig.key === "processedStatus" &&
-                  sortConfig.direction === "ascending" ? (
+                    sortConfig.direction === "ascending" ? (
                     <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                   ) : (
                     <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -297,7 +297,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   onClick={() => requestSort("createTime")}
                 >
                   {sortConfig.key === "createTime" &&
-                  sortConfig.direction === "ascending" ? (
+                    sortConfig.direction === "ascending" ? (
                     <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                   ) : (
                     <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -311,13 +311,12 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
             {sortedData.map((item, index) => (
               <div
                 key={index}
-                className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center ${
-                  index !== sortedData.length - 1
-                    ? "border-b border-semantic-bg-line"
-                    : ""
-                }`}
+                className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center ${index !== sortedData.length - 1
+                  ? "border-b border-semantic-bg-line"
+                  : ""
+                  }`}
               >
-                <div className="flex items-center justify-center pl-4 text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                <div className="flex items-center justify-center pl-4 text-semantic-bg-secondary-alt-primary product-body-text-3-regula underline underline-offset-1 cursor-pointer">
                   {item.fileName}
                 </div>
                 <div className="flex items-center justify-center">

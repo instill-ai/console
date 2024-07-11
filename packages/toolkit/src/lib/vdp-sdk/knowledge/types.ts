@@ -11,3 +11,12 @@ export interface KnowledgeBase {
   embeddingPipelines: string[];
   downstreamApps: string[];
 }
+
+export type FileSnippet = {
+  id: string;
+  content: string;
+  fileName: string;
+  sectionTitle: string;
+  chapters: string[][];
+  score: number;
+};
