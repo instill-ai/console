@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { Icons } from "@instill-ai/design-system";
 // import { DropdownMenu } from "@instill-ai/design-system";
 
 type SidebarProps = {
@@ -41,7 +42,7 @@ export const Sidebar = ({
           ? "bg-semantic-accent-bg text-semantic-accent-hover"
           : selectedKnowledgeBase
             ? "cursor-pointer text-semantic-fg-secondary"
-            : "cursor-not-allowed text-semantic-fg-secondary opacity-50"
+            : "cursor-not-allowed text-semantic-fg-secondary "
           }`}
         onClick={() => selectedKnowledgeBase && handleTabChange("upload")}
       >
@@ -52,13 +53,14 @@ export const Sidebar = ({
           ? "bg-semantic-accent-bg text-semantic-accent-hover"
           : selectedKnowledgeBase
             ? "cursor-pointer text-semantic-fg-secondary"
-            : "cursor-not-allowed text-semantic-fg-secondary opacity-50"
+            : "cursor-not-allowed text-semantic-fg-secondary "
           }`}
         onClick={() => {
           selectedKnowledgeBase && handleTabChange("catalog");
           onTextOptionChange(null);
         }}
       >
+        <Icons.ChevronRight className="w-4 h-4 stroke-black" />
         Catalog
       </div>
       {activeTab === "catalog" && (
@@ -101,7 +103,7 @@ export const Sidebar = ({
           ? "bg-semantic-accent-bg text-semantic-accent-hover"
           : selectedKnowledgeBase
             ? "cursor-pointer text-semantic-fg-secondary"
-            : "cursor-not-allowed text-semantic-fg-secondary opacity-50"
+            : "cursor-not-allowed text-semantic-fg-secondary "
           }`}
         onClick={() => handleTabChange("retrieve")}
       >
