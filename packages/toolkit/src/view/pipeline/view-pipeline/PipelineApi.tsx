@@ -66,12 +66,12 @@ export const PipelineApi = ({ pipeline, releases }: PipelineApiProps) => {
   }, [currentVersion, pipeline, releases]);
 
   const runSnippet = React.useMemo(() => {
-    if (!formSchema.input?.properties) {
+    if (!formSchema?.input?.properties) {
       return "";
     }
 
     const input = generateInputsPayload(
-      formSchema.input.properties as PipelineVariableFieldMap,
+      formSchema.input?.properties as PipelineVariableFieldMap,
     );
 
     return getInstillPipelineHttpRequestExample({
@@ -116,7 +116,7 @@ export const PipelineApi = ({ pipeline, releases }: PipelineApiProps) => {
             Model JSON schema
           </ModelSectionHeader>
         ) : null}
-        {formSchema.input ? (
+        {formSchema?.input ? (
           <React.Fragment>
             <h3 className="font-medium text-black">Input</h3>
             <CodeBlock
@@ -127,7 +127,7 @@ export const PipelineApi = ({ pipeline, releases }: PipelineApiProps) => {
             />
           </React.Fragment>
         ) : null}
-        {formSchema.output ? (
+        {formSchema?.output ? (
           <React.Fragment>
             <h3 className="font-medium text-black">Output</h3>
             <CodeBlock

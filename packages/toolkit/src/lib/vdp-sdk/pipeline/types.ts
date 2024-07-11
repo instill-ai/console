@@ -147,7 +147,7 @@ export type PipelineRelease = {
   openapiSchema: OpenAPIV3.Document;
   metadata: GeneralRecord;
   alias?: string;
-  dataSpecification: DataSpecification;
+  dataSpecification: Nullable<DataSpecification>;
 };
 
 export type PipelineTrace = {
