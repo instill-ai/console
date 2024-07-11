@@ -18,7 +18,7 @@ import {
 } from "../../../lib";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import * as z from "zod";
-import KnowledgeSearchSort from "./KnowledgeSearchSort";
+import KnowledgeSearchSort, { SortAnchor, SortOrder } from "./KnowledgeSearchSort";
 
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
@@ -43,6 +43,9 @@ export const KnowledgeBaseTab = ({
     []
   );
   const [loading, setLoading] = React.useState(true);
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [selectedSortOrder, setSelectedSortOrder] = React.useState<SortOrder>("desc");
+  const [selectedSortAnchor, setSelectedSortAnchor] = React.useState<SortAnchor>("createTime");
 
   const { enabledQuery } = useInstillStore(
     useShallow((store: InstillStore) => ({
@@ -154,13 +157,56 @@ export const KnowledgeBaseTab = ({
     }
   };
 
+
+  const filteredAndSortedKnowledgeBases = React.useMemo(() => {
+    let filtered = knowledgeBases.filter((kb) =>
+      kb.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    filtered.sort((a, b) => {
+      let aValue, bValue;
+
+      switch (selectedSortAnchor) {
+        case "createTime":
+          aValue = new Date(a.createTime).getTime();
+          bValue = new Date(b.createTime).getTime();
+          break;
+        case "modifyTime":
+          aValue = new Date(a.updateTime).getTime();
+          bValue = new Date(b.updateTime).getTime();
+          break;
+        case "usage":
+          aValue = a.usage || 0;
+          bValue = b.usage || 0;
+          break;
+        default:
+          return 0;
+      }
+
+      if (selectedSortOrder === "asc") {
+        return aValue - bValue;
+      } else {
+        return bValue - aValue;
+      }
+    });
+
+    return filtered;
+  }, [knowledgeBases, searchTerm, selectedSortAnchor, selectedSortOrder]);
+
   return (
     <div className="flex flex-col">
       <div className="mb-5 flex items-center justify-between">
         <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
           Knowledge bases
         </p>
-        <KnowledgeSearchSort />
+        <KnowledgeSearchSort
+          selectedSortOrder={selectedSortOrder}
+          setSelectedSortOrder={setSelectedSortOrder}
+          selectedSortAnchor={selectedSortAnchor}
+          setSelectedSortAnchor={setSelectedSortAnchor}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+        />
       </div>
       <Separator orientation="horizontal" className="mb-6" />
       {loading ? (
@@ -188,7 +234,7 @@ export const KnowledgeBaseTab = ({
       ) : (
         <div className="grid grid-cols-[repeat(auto-fit,360px)] justify-start gap-[15px]">
           <KnowledgeBaseCard onClick={() => setIsCreateDialogOpen(true)} />
-          {knowledgeBases.map((knowledgeBase) => (
+          {filteredAndSortedKnowledgeBases.map((knowledgeBase) => (
             <CreateKnowledgeBaseCard
               key={knowledgeBase.kbId || knowledgeBase.name}
               knowledgeBase={knowledgeBase}
