@@ -7,7 +7,7 @@ import { MarkdownTab } from "./components/MarkdownTab";
 import * as React from "react";
 import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/types";
 // import { Button, Icons, LinkButton } from "@instill-ai/design-system";
-import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./components/undoDeleteTime";
+import { DELETE_KNOWLEDGE_BASE_TIMEOUT, CREDIT_TIMEOUT } from "./components/undoDeleteTime";
 import { ChunkTab } from "./components/ChunkTab";
 import { ImageTab } from "./components/ImageTab";
 import { Nullable } from "@instill-ai/toolkit";
@@ -26,6 +26,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [isDeleted, setIsDeleted] = React.useState(false);
   const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] =
     React.useState<KnowledgeBase | null>(null);
+  const [showCreditUsage, setShowCreditUsage] = React.useState(false);
+
+
 
   /* -------------------------------------------------------------------------
    * Query resource data
@@ -57,6 +60,14 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     }, DELETE_KNOWLEDGE_BASE_TIMEOUT);
   };
 
+  const handleProcessFile = () => {
+    setActiveTab("catalog");
+    setShowCreditUsage(true);
+    setTimeout(() => {
+      setShowCreditUsage(false);
+    }, CREDIT_TIMEOUT);
+  };
+
   // const handleUndoDelete = () => {
   //   setIsDeleted(false);
   //   setShowDeleteMessage(false);
@@ -76,6 +87,11 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         // />
         <></>
       ) : null}
+            {showCreditUsage && (
+        <CreditUsageNotification
+          handleCloseUnsupportedFileMessage={() => setShowCreditUsage(false)}
+        />
+      )}
       <div className="grid w-full grid-cols-12 gap-6 px-8">
         <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
           <Sidebar
@@ -97,7 +113,10 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             />
           ) : null}
           {activeTab === "upload" && selectedKnowledgeBase ? (
-            <UploadExploreTab knowledgeBase={selectedKnowledgeBase} />
+            <UploadExploreTab
+              knowledgeBase={selectedKnowledgeBase}
+              onProcessFile={handleProcessFile}
+            />
           ) : null}
           {activeTab === "catalog" && selectedKnowledgeBase ? (
             <>

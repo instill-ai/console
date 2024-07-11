@@ -1,4 +1,6 @@
 export interface KnowledgeBase {
+  usage: number;
+  usage: number;
   kbId: string;
   name: string;
   description: string;
