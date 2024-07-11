@@ -13,9 +13,10 @@ export type ModelReadmeProps = {
   readme?: string;
   onUpdate: (content: string) => Promise<void>;
   canEdit: boolean;
+  placeholder?: string;
 };
 
-export const ReadmeEditor = ({ readme, onUpdate, canEdit }: ModelReadmeProps) => {
+export const ReadmeEditor = ({ readme, onUpdate, canEdit, placeholder }: ModelReadmeProps) => {
   const [editorTopOffset, setEditorTopOffset] = React.useState(0);
   const [editorMode, setEditorMode] = React.useState<EditorMode>('edit');
   const [viewMode, setViewMode] = React.useState<ViewMode>('view');
@@ -55,7 +56,7 @@ export const ReadmeEditor = ({ readme, onUpdate, canEdit }: ModelReadmeProps) =>
   const renderMarkdown = () => {
     return (
       <div className="markdown-body w-full overflow-x-auto px-3 py-2">
-        <Markdown>{content}</Markdown>
+        <Markdown>{content || placeholder || ''}</Markdown>
       </div>
     )
   }

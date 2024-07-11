@@ -19,6 +19,10 @@ export function usePipelineTriggers({
 }) {
   const queryKey = ["metrics", "pipelines", "triggers"];
 
+  if (filter) {
+    queryKey.push(filter);
+  }
+
   if (filterId) {
     queryKey.push(filterId);
   }

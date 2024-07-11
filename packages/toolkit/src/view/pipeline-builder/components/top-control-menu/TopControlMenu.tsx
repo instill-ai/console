@@ -56,7 +56,7 @@ export const TopControlMenu = ({
                 navigate(`/${routeInfo.data.namespaceId}/pipelines`);
               } else {
                 navigate(
-                  `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`,
+                  `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/playground`,
                 );
               }
             }}

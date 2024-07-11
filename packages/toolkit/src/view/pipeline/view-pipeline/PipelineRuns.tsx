@@ -67,7 +67,7 @@ export const PipelineRuns  = ({ pipeline }: PipelineRunsProps) => {
       },
     },
   ];
-
+console.log(triggers);
   return (
     <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(2)]:w-40 [&_table_th:nth-child(3)]:w-40 [&_table_th:nth-child(4)]:w-36">
       <DataTable

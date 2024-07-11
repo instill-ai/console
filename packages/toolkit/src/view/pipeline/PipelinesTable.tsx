@@ -32,7 +32,7 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
             <button
               onClick={() => {
                 router.push(
-                  `/${pipelineNameFragments[1]}/pipelines/${pipelineNameFragments[3]}`,
+                  `/${pipelineNameFragments[1]}/pipelines/${pipelineNameFragments[3]}/playground`,
                 );
               }}
             >

@@ -175,7 +175,7 @@ export const ClonePipelineDialog = ({
           }
         }
         updateNavigationNamespaceAnchor(() => namespace.id);
-        router.push(`/${data.namespaceId}/pipelines/${payload.id}`);
+        router.push(`/${data.namespaceId}/pipelines/${payload.id}/playground`);
       } catch (error) {
         console.log("error", error);
 
@@ -303,7 +303,7 @@ export const ClonePipelineDialog = ({
                               "NEXT_PUBLIC_CONSOLE_BASE_URL",
                             )}/${form.getValues(
                               "namespaceId",
-                            )}/pipelines/${form.getValues("id")}`
+                            )}/pipelines/${form.getValues("id")}/playground`
                           : null}
                       </span>
                     </p>

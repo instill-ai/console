@@ -38,11 +38,11 @@ export const PipelineApi = ({ pipeline }: PipelineApiProps) => {
   }, [pipeline]);
 
   const runSnippet = React.useMemo(() => {
-    if (!pipeline?.dataSpecification.input?.properties) {
+    if (!pipeline?.dataSpecification?.input?.properties) {
       return "";
     }
 
-    const input = generateInputsPayload(pipeline.dataSpecification.input.properties as PipelineVariableFieldMap);
+    const input = generateInputsPayload(pipeline.dataSpecification?.input.properties as PipelineVariableFieldMap);
 
     return getInstillPipelineHttpRequestExample({
       pipelineName: pipeline?.name,
@@ -81,27 +81,27 @@ export const PipelineApi = ({ pipeline }: PipelineApiProps) => {
           language="bash"
           customStyle={defaultCodeSnippetStyles}
         />
-        {pipeline?.dataSpecification.input || pipeline?.dataSpecification.output ? (
+        {pipeline?.dataSpecification?.input || pipeline?.dataSpecification?.output ? (
           <ModelSectionHeader className="mt-5">
             Model JSON schema
           </ModelSectionHeader>
         ) : null}
-        {pipeline?.dataSpecification.input ? (
+        {pipeline?.dataSpecification?.input ? (
           <React.Fragment>
             <h3 className="font-medium text-black">Input</h3>
             <CodeBlock
-              codeString={JSON.stringify(pipeline?.dataSpecification.input, null, 2)}
+              codeString={JSON.stringify(pipeline?.dataSpecification?.input, null, 2)}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}
             />
           </React.Fragment>
         ) : null}
-        {pipeline?.dataSpecification.output ? (
+        {pipeline?.dataSpecification?.output ? (
           <React.Fragment>
             <h3 className="font-medium text-black">Output</h3>
             <CodeBlock
-              codeString={JSON.stringify(pipeline?.dataSpecification.output, null, 2)}
+              codeString={JSON.stringify(pipeline?.dataSpecification?.output, null, 2)}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}

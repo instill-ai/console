@@ -118,7 +118,7 @@ export const PipelinePlayground = () => {
   }, [releases, currentVersion, pipeline.isSuccess, pipeline.data]);
 
   const { form, fields, ValidatorSchema } = useInstillForm(
-    pipeline.data?.dataSpecification.input || null,
+    pipeline.data?.dataSpecification?.input || null,
     null,
     {
       disabledAll: !pipeline.data?.permission.canTrigger,
@@ -127,7 +127,7 @@ export const PipelinePlayground = () => {
 
   const componentOutputFields = useComponentOutputFields({
     mode: "demo",
-    schema: pipeline.data?.dataSpecification.output || null,
+    schema: pipeline.data?.dataSpecification?.output || null,
     data: pipelineRunResponse?.outputs[0] || null,
   });
 

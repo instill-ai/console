@@ -4,31 +4,20 @@ import * as React from "react";
 import { useSearchParams } from "next/navigation";
 import debounce from "lodash.debounce";
 
-import { Button, Icons, Input, Select, toast } from "@instill-ai/design-system";
+import { Icons, Input, Select } from "@instill-ai/design-system";
 
-import {
-  CardPipeline,
-  CardPipelineSkeleton,
-  LoadingSpin,
-  UserProfileCard,
-} from "../../../components";
 import {
   InstillStore,
   Nullable,
-  Pipeline,
-  sendAmplitudeData,
-  toastInstillError,
-  useAmplitudeCtx,
-  useAuthenticatedUser,
-  useDeleteNamespacePipeline,
   useInfiniteNamespacePipelines,
   useInstillStore,
-  useNamespacePipelines,
   useRouteInfo,
   useShallow,
   Visibility,
 } from "../../../lib";
 import { CreatePipelineDialog } from "./CreatePipelineDialog";
+import { PipelinesList } from "./PipelinesList";
+import { PipelinesListPagination } from "./PipelinesListPagination";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -41,7 +30,7 @@ export const ViewPipelines = () => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
-  const { amplitudeIsInit } = useAmplitudeCtx();
+  const [pageNumber, setPageNumber] = React.useState(0);
 
   const [selectedVisibilityOption, setSelectedVisibilityOption] =
     React.useState<Visibility>(
@@ -51,12 +40,6 @@ export const ViewPipelines = () => {
     );
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
-  const me = useAuthenticatedUser({
-    enabled: enabledQuery,
-    accessToken,
-    retry: false,
-  });
 
   const routeInfo = useRouteInfo();
 
@@ -69,42 +52,6 @@ export const ViewPipelines = () => {
     visibility: selectedVisibilityOption ?? null,
   });
 
-  const myPipelines = useInfiniteNamespacePipelines({
-    namespaceName: me.isSuccess ? me.data.name : null,
-    enabledQuery: enabledQuery && me.isSuccess,
-    accessToken,
-    pageSize: 10,
-    visibility: null,
-    filter: null,
-    disabledViewFull: true,
-  });
-
-  const userPublicPipelines = useNamespacePipelines({
-    namespaceName: me.isSuccess ? me.data.name : null,
-    enabled: enabledQuery && me.isSuccess,
-    accessToken,
-    filter: null,
-    visibility: "VISIBILITY_PUBLIC",
-
-    // Use these parameters to speed up request
-    disabledViewFull: true,
-    pageSize: 100,
-  });
-
-  const allPipelines = React.useMemo(() => {
-    if (!pipelines.isSuccess) {
-      return [];
-    }
-
-    const all: Pipeline[] = [];
-
-    for (const page of pipelines.data.pages) {
-      all.push(...page.pipelines);
-    }
-
-    return all;
-  }, [pipelines.data, pipelines.isSuccess]);
-
   const debouncedSetSearchCode = React.useMemo(
     () =>
       debounce((value: string) => {
@@ -113,122 +60,86 @@ export const ViewPipelines = () => {
     [],
   );
 
-  const deletePipeline = useDeleteNamespacePipeline();
-  const handleDeletePipeline = async (pipeline: Pipeline) => {
-    try {
-      await deletePipeline.mutateAsync({
-        namespacePipelineName: pipeline.name,
-        accessToken: accessToken ? accessToken : null,
-      });
-
-      if (amplitudeIsInit) {
-        sendAmplitudeData("delete_pipeline");
-      }
-
-      pipelines.refetch();
-    } catch (error) {
-      toastInstillError({
-        title: "Something went wrong when delete the pipeline",
-        error,
-        toast,
-      });
-    }
-  };
+  const isLoadingResource =
+    !pipelines.isFetched ||
+    pipelines.isLoading ||
+    pipelines.isFetching ||
+    pipelines.isFetchingNextPage;
 
   return (
-    <div className="flex flex-row px-20">
-      <div className="w-[288px] pr-4 pt-6">
-        <UserProfileCard
-          totalPipelines={
-            myPipelines.isSuccess
-              ? myPipelines.data.pages[0]?.totalSize ?? null
-              : null
-          }
-          totalPublicPipelines={userPublicPipelines.data?.length ?? null}
-        />
-      </div>
-      <div className="flex w-[630px] flex-col py-6">
-        <div className="mb-4 grid grid-flow-row grid-cols-3 gap-x-3">
-          <div className="flex flex-col gap-y-2.5">
-            <p className="text-semantic-fg-primary product-body-text-3-semibold">
-              Search Pipelines
-            </p>
-            <div className="mt-auto flex h-10 flex-row gap-x-4">
-              <Input.Root className="flex-1 !rounded">
-                <Input.LeftIcon>
-                  <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
-                </Input.LeftIcon>
-                <Input.Core
-                  value={searchInputValue ?? ""}
-                  placeholder="Search..."
-                  onChange={(event) => {
-                    setSearchInputValue(event.target.value);
-                    debouncedSetSearchCode(event.target.value);
-                  }}
-                />
-              </Input.Root>
-            </div>
+    <div className="mx-auto flex max-w-7xl flex-col px-12">
+      <div className="mb-4 flex flex-row items-end gap-x-3">
+        <div className="flex w-[300px] flex-col gap-y-2.5">
+          <p className="text-semantic-fg-primary product-body-text-3-semibold">
+            Search Pipelines
+          </p>
+          <div className="mt-auto flex flex-row gap-x-4">
+            <Input.Root className="flex-1">
+              <Input.LeftIcon>
+                <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
+              </Input.LeftIcon>
+              <Input.Core
+                value={searchInputValue ?? ""}
+                placeholder="Search..."
+                onChange={(event) => {
+                  setSearchInputValue(event.target.value);
+                  debouncedSetSearchCode(event.target.value);
+                }}
+                className="!leading-[22px]"
+              />
+            </Input.Root>
           </div>
-          <div className="flex flex-col gap-y-2.5">
-            <p className="text-semantic-fg-primary product-body-text-3-semibold">
-              Visibility
-            </p>
-            <Select.Root
-              value={selectedVisibilityOption}
-              onValueChange={(value) => {
-                setSelectedVisibilityOption(value as Visibility);
-              }}
-            >
-              <Select.Trigger className="mt-auto w-full !rounded">
-                <Select.Value />
-              </Select.Trigger>
-              <Select.Content>
-                <Select.Group>
-                  <Select.Item value="VISIBILITY_UNSPECIFIED" label="All" />
-                  <Select.Item value="VISIBILITY_PUBLIC" label="Public" />
-                  <Select.Item value="VISIBILITY_PRIVATE" label="Private" />
-                </Select.Group>
-              </Select.Content>
-            </Select.Root>
-          </div>
-          <CreatePipelineDialog className="mt-auto" />
         </div>
-        <div className="mb-4 flex flex-col gap-y-4">
-          {pipelines.isSuccess ? (
-            allPipelines.length === 0 ? (
-              <div className="flex h-[500px] w-full shrink-0 grow-0 items-center justify-center rounded-sm border border-semantic-bg-line">
-                <p className=" text-semantic-fg-secondary product-body-text-2-semibold">
-                  Let&rsquo;s build your first pipeline! 🙌
-                </p>
-              </div>
-            ) : (
-              allPipelines.map((pipeline) => (
-                <CardPipeline
-                  key={pipeline.id}
-                  pipeline={pipeline}
-                  onDelete={handleDeletePipeline}
-                />
-              ))
-            )
-          ) : (
-            Array.from({ length: 1 }).map((_, index) => (
-              <CardPipelineSkeleton key={`card-skelton-${index}`} />
-            ))
-          )}
-        </div>
-        {pipelines.hasNextPage ? (
-          <Button
-            onClick={() => {
-              pipelines.fetchNextPage();
+        <div className="flex w-[300px] min-w-52 flex-col gap-y-2.5">
+          <p className="text-semantic-fg-primary product-body-text-3-semibold">
+            Visibility
+          </p>
+          <Select.Root
+            value={selectedVisibilityOption}
+            onValueChange={(value) => {
+              setSelectedVisibilityOption(value as Visibility);
             }}
-            variant="secondaryColour"
-            size="md"
-            className="w-full"
           >
-            {pipelines.isFetchingNextPage ? <LoadingSpin /> : "Load More"}
-          </Button>
-        ) : null}
+            <Select.Trigger className="mt-auto w-full !rounded">
+              <Select.Value />
+            </Select.Trigger>
+            <Select.Content>
+              <Select.Group>
+                <Select.Item value="VISIBILITY_UNSPECIFIED" label="All" />
+                <Select.Item value="VISIBILITY_PUBLIC" label="Public" />
+                <Select.Item value="VISIBILITY_PRIVATE" label="Private" />
+              </Select.Group>
+            </Select.Content>
+          </Select.Root>
+        </div>
+        <CreatePipelineDialog className="ml-auto" />
+        {/* <Button
+          className="ml-auto gap-x-2"
+          variant="primary"
+          size="lg"
+          onClick={() => {
+            router.push(`/${routeInfo.data.namespaceId}/pipelines/create`);
+          }}
+        >
+          <Icons.Plus className="h-4 w-4 stroke-semantic-bg-primary" />
+          Create Pipeline
+        </Button> */}
       </div>
+      <PipelinesList
+        pipelines={
+          pipelines.isSuccess
+            ? pipelines.data.pages[pageNumber]?.pipelines ?? []
+            : []
+        }
+        onPipelineDelete={pipelines.refetch}
+        isLoading={isLoadingResource}
+        isSearchActive={!!searchCode}
+      />
+      <PipelinesListPagination
+        pipelines={pipelines}
+        setPageNumber={setPageNumber}
+        pageNumber={pageNumber}
+      />
     </div>
   );
 };

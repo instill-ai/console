@@ -63,7 +63,7 @@ export const CardPipeline = ({ pipeline, onDelete, hidePublicLabel }: CardPipeli
         <div className="flex w-full flex-row items-start gap-x-2">
           <Icons.Pipeline className="h-6 w-6 stroke-semantic-accent-default" />
           <Link
-            href={`/${ownerId}/pipelines/${pipeline.id}`}
+            href={`/${ownerId}/pipelines/${pipeline.id}/playground`}
             className="break-all font-medium text-semantic-accent-default hover:!underline"
           >
             {ownerId}/{pipeline.id}

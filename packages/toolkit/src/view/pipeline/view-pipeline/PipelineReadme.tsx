@@ -65,6 +65,7 @@ export const PipelineReadme = ({ pipeline, onUpdate }: PipelineReadmeProps) => {
       readme={pipeline?.readme}
       canEdit={canEdit}
       onUpdate={onUpdatePipelineReadme}
+      placeholder={canEdit ? `You don't have a README. You can start creating one by clicking **Edit** icon in the top right corner.` : "There is no README for this pipeline."}
     />
   );
 };

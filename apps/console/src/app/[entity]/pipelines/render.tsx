@@ -18,7 +18,7 @@ export const PipelinesViewPageRender = () => {
     <PageBase>
       <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
-        <PageBase.Content contentPadding="!p-0">
+        <PageBase.Content contentPadding="p-8">
           <ViewPipelines />
         </PageBase.Content>
       </PageBase.Container>
