@@ -1,152 +1,126 @@
+// CatalogFilesTab.tsx
+
 import {
   Button,
   Icons,
   Separator,
   Tag,
-  // Textarea,
 } from "@instill-ai/design-system";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { KnowledgeBase, File } from "../../../lib/vdp-sdk/knowledge/types";
 import * as React from "react";
 import { DELETE_FILE_TIMEOUT } from "./undoDeleteTime";
 import DeleteFileNotification from "./Notifications/DeleteFileNotification";
+import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import { useListKnowledgeBaseFiles } from "../../../lib/react-query-service/knowledge/useListKnowledgeBaseFiles";
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
 };
 
-type FileStatus = "Not Started" | "Waiting" | "Running" | "Completed" | "Failed";
+type FileStatus = "FILE_PROCESS_STATUS_NOTSTARTED" | "FILE_PROCESS_STATUS_WAITING" | "FILE_PROCESS_STATUS_CONVERTING" | "FILE_PROCESS_STATUS_CHUNKING" | "FILE_PROCESS_STATUS_EMBEDDING" | "FILE_PROCESS_STATUS_COMPLETED" | "FILE_PROCESS_STATUS_FAILED";
 
 type TagVariant = "lightNeutral" | "lightYellow" | "default" | "lightGreen" | "lightRed";
 
 const getStatusTag = (status: FileStatus): { variant: TagVariant; dotColor: string } => {
   const statusMap: Record<FileStatus, { variant: TagVariant; dotColor: string }> = {
-    "Not Started": { variant: "lightNeutral", dotColor: "bg-[#29AE81]" },
-    "Waiting": { variant: "lightYellow", dotColor: "bg-semantic-warning-default" },
-    "Running": { variant: "default", dotColor: "bg-semantic-accent-default" },
-    "Completed": { variant: "lightGreen", dotColor: "bg-semantic-success-default" },
-    "Failed": { variant: "lightRed", dotColor: "bg-semantic-error-default" },
+    FILE_PROCESS_STATUS_NOTSTARTED: { variant: "lightNeutral", dotColor: "bg-semantic-fg-secondary" },
+    FILE_PROCESS_STATUS_WAITING: { variant: "lightYellow", dotColor: "bg-semantic-warning-default" },
+    FILE_PROCESS_STATUS_CONVERTING: { variant: "default", dotColor: "bg-semantic-accent-default" },
+    FILE_PROCESS_STATUS_CHUNKING: { variant: "default", dotColor: "bg-semantic-accent-default" },
+    FILE_PROCESS_STATUS_EMBEDDING: { variant: "default", dotColor: "bg-semantic-accent-default" },
+    FILE_PROCESS_STATUS_COMPLETED: { variant: "lightGreen", dotColor: "bg-semantic-success-default" },
+    FILE_PROCESS_STATUS_FAILED: { variant: "lightRed", dotColor: "bg-semantic-error-default" },
   };
-  return statusMap[status] || statusMap["Not Started"];
+  return statusMap[status] || statusMap.FILE_PROCESS_STATUS_NOTSTARTED;
 };
-
-const mockData = [
-  {
-    fileName: "file-a.pdf",
-    fileType: "pdf",
-    processedStatus: { chunks: 150, tokens: 28800 },
-    createTime: "Today 1:34pm",
-    status: "Completed" as FileStatus,
-    fileSize: "2.3 MB",
-  },
-  {
-    fileName: "file-b.txt",
-    fileType: "txt",
-    processedStatus: { chunks: 120, tokens: 21500 },
-    createTime: "Today 4:31pm",
-    status: "Running" as FileStatus,
-    fileSize: "1.1 MB",
-  },
-  {
-    fileName: "file-c.jpg",
-    fileType: "jpg",
-    processedStatus: { chunks: 2, tokens: 200 },
-    createTime: "Today 7:29pm",
-    status: "Waiting" as FileStatus,
-    fileSize: "3.7 MB",
-  },
-  {
-    fileName: "file-d.png",
-    fileType: "png",
-    processedStatus: { chunks: 3, tokens: 300 },
-    createTime: "Today 11:11pm",
-    status: "Not Started" as FileStatus,
-    fileSize: "5.2 MB",
-  },
-  {
-    fileName: "file-e.png",
-    fileType: "txt",
-    processedStatus: { chunks: 3, tokens: 300 },
-    createTime: "Today 18:19pm",
-    status: "Failed" as FileStatus,
-    fileSize: "3.2 MB",
-  },
-];
 
 export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
   const [sortConfig, setSortConfig] = React.useState({
     key: "",
     direction: "",
   });
-  const [data, setData] = React.useState(mockData);
+  const { accessToken, enabledQuery } = useInstillStore(
+    useShallow((store: InstillStore) => ({
+      accessToken: store.accessToken,
+      enabledQuery: store.enabledQuery,
+    }))
+  );
+  const { data: files, isLoading } = useListKnowledgeBaseFiles({
+    ownerId: knowledgeBase.ownerName,
+    knowledgeBaseId: knowledgeBase.kbId,
+    accessToken,
+    enabled: enabledQuery,
+  });
+  const deleteKnowledgeBaseFile = useDeleteKnowledgeBaseFile();
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
-  const [deletedFile, setDeletedFile] = React.useState<
-    (typeof mockData)[number] | null
-  >(null);
+  const [deletedFile, setDeletedFile] = React.useState<File | null>(null);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const getStatusSortValue = (status: FileStatus): number => {
     const statusOrder = {
-      UNSPECIFIED: 0,
-      NOTSTARTED: 1,
-      WAITING: 2,
-      CONVERTING: 3,
-      CHUNKING: 4,
-      EMBEDDING: 5,
-      COMPLETED: 6,
+      FILE_PROCESS_STATUS_NOTSTARTED: 0,
+      FILE_PROCESS_STATUS_WAITING: 1,
+      FILE_PROCESS_STATUS_CONVERTING: 2,
+      FILE_PROCESS_STATUS_CHUNKING: 3,
+      FILE_PROCESS_STATUS_EMBEDDING: 4,
+      FILE_PROCESS_STATUS_COMPLETED: 5,
+      FILE_PROCESS_STATUS_FAILED: 6,
     };
     return statusOrder[status] ?? -1;
   };
 
-  const sortedData = [...data].sort((a, b) => {
-    if (sortConfig.key === "status") {
-      const aValue = getStatusSortValue(a.status);
-      const bValue = getStatusSortValue(b.status);
-      return sortConfig.direction === "ascending"
-        ? aValue - bValue
-        : bValue - aValue;
-    }
-    if (sortConfig.key === "processedStatus") {
-      if (a.processedStatus.chunks !== b.processedStatus.chunks) {
+  const sortedData = React.useMemo(() => {
+    if (!files) return [];
+    return [...files].sort((a, b) => {
+      if (sortConfig.key === "processStatus") {
+        const aValue = getStatusSortValue(a.processStatus);
+        const bValue = getStatusSortValue(b.processStatus);
         return sortConfig.direction === "ascending"
-          ? a.processedStatus.chunks - b.processedStatus.chunks
-          : b.processedStatus.chunks - a.processedStatus.chunks;
-      } else {
-        return sortConfig.direction === "ascending"
-          ? a.processedStatus.tokens - b.processedStatus.tokens
-          : b.processedStatus.tokens - a.processedStatus.tokens;
+          ? aValue - bValue
+          : bValue - aValue;
       }
-    }
-    if (
-      a[sortConfig.key as keyof typeof a] < b[sortConfig.key as keyof typeof b]
-    ) {
-      return sortConfig.direction === "ascending" ? -1 : 1;
-    }
-    if (
-      a[sortConfig.key as keyof typeof a] > b[sortConfig.key as keyof typeof b]
-    ) {
-      return sortConfig.direction === "ascending" ? 1 : -1;
-    }
-    return 0;
-  });
+      if (sortConfig.key === "size" || sortConfig.key === "totalChunks" || sortConfig.key === "totalTokens") {
+        return sortConfig.direction === "ascending"
+          ? a[sortConfig.key] - b[sortConfig.key]
+          : b[sortConfig.key] - a[sortConfig.key];
+      }
+      if (
+        a[sortConfig.key as keyof File] < b[sortConfig.key as keyof File]
+      ) {
+        return sortConfig.direction === "ascending" ? -1 : 1;
+      }
+      if (
+        a[sortConfig.key as keyof File] > b[sortConfig.key as keyof File]
+      ) {
+        return sortConfig.direction === "ascending" ? 1 : -1;
+      }
+      return 0;
+    });
+  }, [files, sortConfig]);
 
-  const handleDelete = (fileName: string) => {
-    const fileToDelete = data.find((item) => item.fileName === fileName);
+  const handleDelete = async (fileUid: string) => {
+    const fileToDelete = files?.find((item) => item.fileUid === fileUid);
     if (fileToDelete) {
       setDeletedFile(fileToDelete);
-      setData((prevData) =>
-        prevData.filter((item) => item.fileName !== fileName)
-      );
-      setShowDeleteMessage(true);
-      timeoutRef.current = setTimeout(() => {
-        setShowDeleteMessage(false);
-        setDeletedFile(null);
-      }, DELETE_FILE_TIMEOUT);
+      try {
+        await deleteKnowledgeBaseFile.mutateAsync({
+          fileUid,
+          accessToken,
+        });
+        setShowDeleteMessage(true);
+        timeoutRef.current = setTimeout(() => {
+          setShowDeleteMessage(false);
+          setDeletedFile(null);
+        }, DELETE_FILE_TIMEOUT);
+      } catch (error) {
+        console.error("Error deleting file:", error);
+      }
     }
   };
 
   const undoDelete = () => {
     if (deletedFile) {
-      setData((prevData) => [...prevData, deletedFile]);
+      // Implement undo delete logic here
       setShowDeleteMessage(false);
       setDeletedFile(null);
       if (timeoutRef.current) {
@@ -303,48 +277,48 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
             </div>
             {sortedData.map((item, index) => (
               <div
-                key={index}
+                key={item.fileUid}
                 className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center ${index !== sortedData.length - 1
                   ? "border-b border-semantic-bg-line"
                   : ""
                   }`}
               >
                 <div className="flex items-center justify-center pl-4 text-semantic-bg-secondary-alt-primary product-body-text-3-regula underline underline-offset-1 cursor-pointer">
-                  {item.fileName}
+                  {item.name}
                 </div>
                 <div className="flex items-center justify-center">
                   <Tag size="sm" variant="lightNeutral">
-                    {item.fileType}
+                    {item.type}
                   </Tag>
                 </div>
                 <div className="flex items-center justify-center">
                   <Tag
                     size="sm"
-                    variant={getStatusTag(item.status as FileStatus).variant}
+                    variant={getStatusTag(item.processStatus).variant}
                     className="group relative"
                   >
                     <div className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${getStatusTag(item.status as FileStatus).dotColor}`}></div>
-                      {item.status}
+                      <div className={`w-2 h-2 rounded-full ${getStatusTag(item.processStatus).dotColor}`}></div>
+                      {item.processStatus}
                     </div>
                   </Tag>
                 </div>
                 <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                  {item.fileSize}
+                  {formatFileSize(item.size)}
                 </div>
                 <div className="flex flex-col items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                  <div>{`${item.processedStatus.chunks} chunks`}</div>
-                  <div>{`${item.processedStatus.tokens} tokens`}</div>
+                  <div>{`${item.totalChunks} chunks`}</div>
+                  <div>{`${item.totalTokens} tokens`}</div>
                 </div>
                 <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                  {item.createTime}
+                  {formatDate(item.createTime)}
                 </div>
                 <div className="flex items-center justify-center">
                   <Button
                     variant="tertiaryDanger"
                     size="lg"
                     className="h-8"
-                    onClick={() => handleDelete(item.fileName)}
+                    onClick={() => handleDelete(item.fileUid)}
                   >
                     Delete
                   </Button>
@@ -404,7 +378,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
           </div> */}
           {showDeleteMessage && deletedFile ? (
             <DeleteFileNotification
-              deletedFileName={deletedFile.fileName}
+              deletedFileName={deletedFile.name}
               undoDelete={undoDelete}
               setShowDeleteMessage={setShowDeleteMessage}
             />
@@ -414,3 +388,16 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     </div>
   );
 };
+
+// Helper functions
+function formatFileSize(bytes: number): string {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  if (bytes === 0) return '0 Byte';
+  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)).toString());
+  return Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + ' ' + sizes[i];
+}
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleString();
+}

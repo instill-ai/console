@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-import { useUploadKnowledgeBaseFile } from "../../../lib/react-query-service/knowledge";
+import { useUploadKnowledgeBaseFile, useProcessKnowledgeBaseFiles } from "../../../lib/react-query-service/knowledge";
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -21,8 +21,6 @@ import {
 import IncorrectFormatFileNotification from "./Notifications/IncorrectFormatFileNotification";
 import FileSizeNotification from "./Notifications/FileSizeNotification";
 import { FILE_ERROR_TIMEOUT } from "./undoDeleteTime";
-import CreditUsageNotification from "./Notifications/CreditUsageFileNotification";
-import { useRouter } from "next/navigation";
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
 
@@ -74,7 +72,6 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
 
   const getFileType = (file: File) => {
     const extension = file.name.split(".").pop()?.toLowerCase();
@@ -100,7 +97,9 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
   const unsupportedFileTypeTimeoutRef = React.useRef<NodeJS.Timeout | null>(
     null
   );
-  const router = useRouter();
+  const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
+  const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
+
   const handleFileUpload = async (file: File) => {
     if (file.size > MAX_FILE_SIZE) {
       setIncorrectFileName(file.name);
@@ -131,11 +130,11 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
     form.setValue("file", file);
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       const content = btoa(event.target?.result as string);
 
-      uploadKnowledgeBaseFile.mutate(
-        {
+      try {
+        const uploadedFile = await uploadKnowledgeBaseFile.mutateAsync({
           ownerId: ownerID,
           knowledgeBaseId: knowledgeBase.kbId,
           payload: {
@@ -144,16 +143,19 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
             content,
           },
           accessToken,
-        },
-        {
-          onSuccess: () => {
-            console.log("File uploaded successfully!");
-          },
-          onError: (error) => {
-            console.error("Error uploading file:", error);
-          },
-        }
-      );
+        });
+
+        console.log("File uploaded successfully!", uploadedFile);
+        
+        await processKnowledgeBaseFiles.mutateAsync({
+          fileUids: [uploadedFile.fileUid],
+          accessToken,
+        });
+
+        onProcessFile();
+      } catch (error) {
+        console.error("Error uploading or processing file:", error);
+      }
     };
     reader.readAsBinaryString(file);
   };
