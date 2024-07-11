@@ -64,7 +64,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
         <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
           {knowledgeBase.name}
         </p>
-        <div className="space-x-4">
+        {/* <div className="space-x-4">
           <Button variant="secondaryGrey" size="lg">
             Publish
           </Button>
@@ -74,12 +74,12 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
           <Button variant="primary" size="lg">
             Export Data
           </Button>
-        </div>
+        </div> */}
       </div>
       <Separator orientation="horizontal" className="mb-6" />
       <div className="flex">
         <div className="w-full pr-4">
-          <div className="mb-4 flex items-center space-x-2">
+          {/* <div className="mb-4 flex items-center space-x-2">
             <Button variant="secondaryGrey">
               <Icons.Plus className="mr-2 h-4 w-4 stroke-semantic-fg-secondary" />
               <span className="product-body-text-3-semibold">
@@ -92,7 +92,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
               </Input.LeftIcon>
               <Input.Core placeholder="Search..." />
             </Input.Root>
-          </div>
+          </div> */}
           {mockData.map((item, index) => (
             <div key={index} className="mb-4">
               <div
@@ -101,9 +101,8 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
               >
                 <p className="product-button-button-1">{item.fileName}</p>
                 <Icons.ChevronDown
-                  className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${
-                    expandedFiles.includes(index) ? "rotate-180" : ""
-                  }`}
+                  className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${expandedFiles.includes(index) ? "rotate-180" : ""
+                    }`}
                 />
               </div>
               {expandedFiles.includes(index) && (
@@ -126,7 +125,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
                             </span>
                             <Switch
                               checked={item.status}
-                              onCheckedChange={() => {}}
+                              onCheckedChange={() => { }}
                               className=""
                             ></Switch>
                           </div>
