@@ -21,6 +21,7 @@ import {
 import IncorrectFormatFileNotification from "./Notifications/IncorrectFormatFileNotification";
 import FileSizeNotification from "./Notifications/FileSizeNotification";
 import { FILE_ERROR_TIMEOUT } from "./undoDeleteTime";
+import CreditUsageNotification from "./Notifications/CreditUsageFileNotification";
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
 
@@ -200,11 +201,10 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-bg-base-bg text-semantic-fg-secondary product-body-text-4-regular ${
-                      isDragging
-                        ? "border-semantic-accent-default"
-                        : "border-semantic-bg-line"
-                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-bg-base-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
+                      ? "border-semantic-accent-default"
+                      : "border-semantic-bg-line"
+                      } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
                       setIsDragging(true);
@@ -301,6 +301,9 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
           fileName={incorrectFileName}
         />
       ) : null}
+      <CreditUsageNotification
+        handleCloseUnsupportedFileMessage={handleCloseUnsupportedFileMessage}
+      />
       {/* <div className="inline-flex flex-col items-start justify-start gap-1 ">
                 <div className="text-semantic-fg-primary product-body-text-3-semibold">
                     Pipeline in use
