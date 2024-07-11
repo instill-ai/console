@@ -1,13 +1,14 @@
 import React, { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 
+import type { Pipeline, PipelineVariableFieldMap } from "../../../lib";
 import { CodeBlock, ModelSectionHeader } from "../../../components";
 import { CodeString } from "../../../components/CodeString";
+import { defaultCodeSnippetStyles } from "../../../constant";
 import {
-  defaultCodeSnippetStyles,
-} from "../../../constant";
-import type { Pipeline, PipelineVariableFieldMap } from "../../../lib";
-import { generateInputsPayload, getInstillPipelineHttpRequestExample } from "../../../constant/pipeline";
-import { useSearchParams } from "next/navigation";
+  generateInputsPayload,
+  getInstillPipelineHttpRequestExample,
+} from "../../../constant/pipeline";
 
 export type PipelineApiProps = {
   pipeline?: Pipeline;
@@ -26,7 +27,10 @@ export const PipelineApi = ({ pipeline }: PipelineApiProps) => {
       return OWNER;
     }
 
-    const owner = 'user' in pipeline.owner ? pipeline.owner.user : pipeline.owner.organization;
+    const owner =
+      "user" in pipeline.owner
+        ? pipeline.owner.user
+        : pipeline.owner.organization;
 
     if (!owner || !owner.profile) {
       return OWNER;
@@ -42,14 +46,16 @@ export const PipelineApi = ({ pipeline }: PipelineApiProps) => {
       return "";
     }
 
-    const input = generateInputsPayload(pipeline.dataSpecification?.input.properties as PipelineVariableFieldMap);
+    const input = generateInputsPayload(
+      pipeline.dataSpecification?.input.properties as PipelineVariableFieldMap,
+    );
 
     return getInstillPipelineHttpRequestExample({
       pipelineName: pipeline?.name,
       version,
-      inputsString: JSON.stringify({ inputs: [ input ] }, null, 2),
-    })
-  }, [version, pipeline])
+      inputsString: JSON.stringify({ inputs: [input] }, null, 2),
+    });
+  }, [version, pipeline]);
 
   return (
     <div className="flex flex-col">
@@ -81,7 +87,8 @@ export const PipelineApi = ({ pipeline }: PipelineApiProps) => {
           language="bash"
           customStyle={defaultCodeSnippetStyles}
         />
-        {pipeline?.dataSpecification?.input || pipeline?.dataSpecification?.output ? (
+        {pipeline?.dataSpecification?.input ||
+        pipeline?.dataSpecification?.output ? (
           <ModelSectionHeader className="mt-5">
             Model JSON schema
           </ModelSectionHeader>
@@ -90,7 +97,11 @@ export const PipelineApi = ({ pipeline }: PipelineApiProps) => {
           <React.Fragment>
             <h3 className="font-medium text-black">Input</h3>
             <CodeBlock
-              codeString={JSON.stringify(pipeline?.dataSpecification?.input, null, 2)}
+              codeString={JSON.stringify(
+                pipeline?.dataSpecification?.input,
+                null,
+                2,
+              )}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}
@@ -101,7 +112,11 @@ export const PipelineApi = ({ pipeline }: PipelineApiProps) => {
           <React.Fragment>
             <h3 className="font-medium text-black">Output</h3>
             <CodeBlock
-              codeString={JSON.stringify(pipeline?.dataSpecification?.output, null, 2)}
+              codeString={JSON.stringify(
+                pipeline?.dataSpecification?.output,
+                null,
+                2,
+              )}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}

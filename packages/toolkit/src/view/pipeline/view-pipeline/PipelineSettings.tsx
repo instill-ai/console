@@ -15,6 +15,7 @@ import {
   useToast,
 } from "@instill-ai/design-system";
 
+import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
 import {
   Nullable,
   PermissionRole,
@@ -27,7 +28,6 @@ import {
   useRouteInfo,
   useUpdateUserPipeline,
 } from "../../../lib";
-import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
 
 const PipelineSettingsSchema = z.object({
   description: z.string().optional(),
@@ -59,8 +59,8 @@ export const PipelineSettings = ({
       documentationUrl: pipeline.documentationUrl,
       license: pipeline.license,
       profileImage: pipeline.profileImage,
-      isPublic: (!!pipeline.sharing.users['*/*']?.enabled).toString(),
-      tags: pipeline.tags.join(', '),
+      isPublic: (!!pipeline.sharing.users["*/*"]?.enabled).toString(),
+      tags: pipeline.tags.join(", "),
     };
   }, [pipeline]);
   const form = useForm<z.infer<typeof PipelineSettingsSchema>>({
@@ -83,10 +83,12 @@ export const PipelineSettings = ({
       users: {
         "*/*": {
           enabled: !!pipeline?.sharing.users["*/*"]?.enabled,
-          role: pipeline?.sharing.users["*/*"]?.role || ("ROLE_EXECUTOR" as PermissionRole),
-        }
-      }
-    }
+          role:
+            pipeline?.sharing.users["*/*"]?.role ||
+            ("ROLE_EXECUTOR" as PermissionRole),
+        },
+      },
+    };
 
     const payload: UpdateUserPipelinePayload = {
       name: routeInfo.data.pipelineName,
@@ -101,10 +103,14 @@ export const PipelineSettings = ({
           "*/*": {
             ...sharing.users["*/*"],
             enabled: data.isPublic === "true",
-          }
-        }
+          },
+        },
       },
-      tags: data.tags?.trim().split(',').map(item => item.trim()) || [],
+      tags:
+        data.tags
+          ?.trim()
+          .split(",")
+          .map((item) => item.trim()) || [],
     };
 
     try {
@@ -250,13 +256,11 @@ export const PipelineSettings = ({
               title="Cover image"
             />
             <RadioGroup.Root
-              onValueChange={(
-                value: "true" | "false",
-              ) => {
+              onValueChange={(value: "true" | "false") => {
                 form.setValue("isPublic", value);
               }}
               className="!flex flex-col gap-y-4"
-              defaultValue={(form.getValues('isPublic') || false).toString()}
+              defaultValue={(form.getValues("isPublic") || false).toString()}
             >
               <div className="flex items-center space-x-3">
                 <label htmlFor="radio-public" className="flex flex-row gap-x-3">
@@ -292,7 +296,8 @@ export const PipelineSettings = ({
                       Private
                     </p>
                     <p className="text-semantic-fg-secondary product-body-text-4-regular">
-                      Only you and your team members can see and run this pipeline.
+                      Only you and your team members can see and run this
+                      pipeline.
                     </p>
                   </div>
                 </label>

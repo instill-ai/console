@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@instill-ai/design-system";
+
 import type { Nullable, PipelineTriggerStatus } from "../lib";
 
 export type PipelineRunStateLabelProps = {
@@ -8,7 +9,10 @@ export type PipelineRunStateLabelProps = {
   className?: string;
 };
 
-export const PipelineRunStateLabel = ({ state, className }: PipelineRunStateLabelProps) => {
+export const PipelineRunStateLabel = ({
+  state,
+  className,
+}: PipelineRunStateLabelProps) => {
   if (!state) {
     return null;
   }

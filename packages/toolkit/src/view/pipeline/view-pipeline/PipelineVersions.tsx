@@ -1,12 +1,10 @@
+import { useRouter, useSearchParams } from "next/navigation";
 import { ColumnDef } from "@tanstack/react-table";
+
 import { Button, DataTable } from "@instill-ai/design-system";
-import {
-  Pipeline,
-  PipelineRelease,
-  useRouteInfo,
-} from "../../../lib";
+
+import { Pipeline, PipelineRelease, useRouteInfo } from "../../../lib";
 import { getHumanReadableStringFromTime } from "../../../server";
-import { useSearchParams, useRouter } from "next/navigation";
 import { TABLE_PAGE_SIZE } from "./constants";
 
 export type PipelineVersionsProps = {
@@ -15,7 +13,11 @@ export type PipelineVersionsProps = {
   isReady: boolean;
 };
 
-export const PipelineVersions = ({ pipeline, releases, isReady }: PipelineVersionsProps) => {
+export const PipelineVersions = ({
+  pipeline,
+  releases,
+  isReady,
+}: PipelineVersionsProps) => {
   const router = useRouter();
   const routeInfo = useRouteInfo();
   const searchParams = useSearchParams();
@@ -50,36 +52,32 @@ export const PipelineVersions = ({ pipeline, releases, isReady }: PipelineVersio
       accessorKey: "createdTime",
       header: () => null,
       cell: ({ row }) => {
-        const version = row.getValue('id') as string;
+        const version = row.getValue("id") as string;
         const isActive = version === currentVersion;
 
-        return (
-          !isActive
-            ? (
-              <div className="flex flex-row justify-end">
-                <Button
-                  variant="secondaryGrey"
-                  disabled={isActive}
-                  onClick={() => onTestVersion(version)}
-                  className="-my-2"
-                >
-                  Test
-                </Button>
-              </div>
-            )
-            : null
-        );
+        return !isActive ? (
+          <div className="flex flex-row justify-end">
+            <Button
+              variant="secondaryGrey"
+              disabled={isActive}
+              onClick={() => onTestVersion(version)}
+              className="-my-2"
+            >
+              Test
+            </Button>
+          </div>
+        ) : null;
       },
     },
   ];
 
   const onTestVersion = (version: string) => {
-    if(!pipeline) {
+    if (!pipeline) {
       return;
     }
 
     const newSearchParams = new URLSearchParams();
-    newSearchParams.set('version', version);
+    newSearchParams.set("version", version);
 
     const combinedSearchParams = new URLSearchParams({
       ...Object.fromEntries(searchParams),

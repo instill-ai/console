@@ -1,7 +1,13 @@
 "use client";
 
 import * as React from "react";
+
 import { Button, Icons } from "@instill-ai/design-system";
+
+import {
+  generatePipelineHttpInputStringFromNodes,
+  getInstillPipelineHttpRequestExample,
+} from "../../../../constant/pipeline";
 import {
   InstillStore,
   useInstillStore,
@@ -10,7 +16,6 @@ import {
 } from "../../../../lib";
 import { composeCompleteNodesUnderEditingIteratorMode } from "../../lib/composeCompleteNodesUnderEditingIteratorMode";
 import { PipelineToolkitDialog } from "../PipelineToolkitDialog";
-import { generatePipelineHttpInputStringFromNodes, getInstillPipelineHttpRequestExample } from "../../../../constant/pipeline";
 
 const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,

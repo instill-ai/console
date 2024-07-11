@@ -1,7 +1,18 @@
 import { ColumnDef, DataTable } from "@instill-ai/design-system";
-import { convertToSecondsAndMilliseconds, formatDate, InstillStore, Pipeline, PipelineTriggerRecord, useInstillStore, usePipelineTriggerRecords, useRouteInfo, useShallow } from "../../../lib";
-import { TABLE_PAGE_SIZE } from "./constants";
+
 import { PipelineRunStateLabel } from "../../../components";
+import {
+  convertToSecondsAndMilliseconds,
+  formatDate,
+  InstillStore,
+  Pipeline,
+  PipelineTriggerRecord,
+  useInstillStore,
+  usePipelineTriggerRecords,
+  useRouteInfo,
+  useShallow,
+} from "../../../lib";
+import { TABLE_PAGE_SIZE } from "./constants";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -10,9 +21,9 @@ const selector = (store: InstillStore) => ({
 
 export type PipelineRunsProps = {
   pipeline?: Pipeline;
-}
+};
 
-export const PipelineRuns  = ({ pipeline }: PipelineRunsProps) => {
+export const PipelineRuns = ({ pipeline }: PipelineRunsProps) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const routeInfo = useRouteInfo();
   const triggers = usePipelineTriggerRecords({
@@ -40,7 +51,10 @@ export const PipelineRuns  = ({ pipeline }: PipelineRunsProps) => {
       header: () => <div className="text-left">State</div>,
       cell: ({ row }) => {
         return (
-          <PipelineRunStateLabel state={row.getValue("status")} className="inline-flex" />
+          <PipelineRunStateLabel
+            state={row.getValue("status")}
+            className="inline-flex"
+          />
         );
       },
     },
@@ -50,7 +64,9 @@ export const PipelineRuns  = ({ pipeline }: PipelineRunsProps) => {
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-alt-primary">
-            {convertToSecondsAndMilliseconds(row.getValue("computeTimeDuration"))}
+            {convertToSecondsAndMilliseconds(
+              row.getValue("computeTimeDuration"),
+            )}
           </div>
         );
       },
@@ -67,7 +83,7 @@ export const PipelineRuns  = ({ pipeline }: PipelineRunsProps) => {
       },
     },
   ];
-console.log(triggers);
+  console.log(triggers);
   return (
     <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(2)]:w-40 [&_table_th:nth-child(3)]:w-40 [&_table_th:nth-child(4)]:w-36">
       <DataTable
@@ -78,5 +94,5 @@ console.log(triggers);
         loadingRows={TABLE_PAGE_SIZE}
       />
     </div>
-  )
-}
+  );
+};

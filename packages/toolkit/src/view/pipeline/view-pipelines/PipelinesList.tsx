@@ -1,13 +1,18 @@
 "use client";
 
 import { cn, useToast } from "@instill-ai/design-system";
-import { InstillStore,
+
+import { CardPipeline, CardPipelineSkeleton } from "../../../components";
+import {
+  InstillStore,
+  Pipeline,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
+  useDeleteUserPipeline,
   useInstillStore,
-  useShallow,Pipeline, useDeleteUserPipeline } from "../../../lib";
-import { CardPipeline, CardPipelineSkeleton } from "../../../components";
+  useShallow,
+} from "../../../lib";
 
 export type PipelinesListProps = {
   pipelines: Pipeline[];
@@ -72,7 +77,11 @@ export const PipelinesList = (props: PipelinesListProps) => {
       ) : !isEmpty ? (
         pipelines.map((pipeline, index) => {
           return (
-            <CardPipeline pipeline={pipeline} key={index} onDelete={handleDeletePipeline} />
+            <CardPipeline
+              pipeline={pipeline}
+              key={index}
+              onDelete={handleDeletePipeline}
+            />
           );
         })
       ) : (

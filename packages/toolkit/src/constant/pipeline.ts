@@ -1,8 +1,9 @@
-import { env } from "../server";
-import { GeneralRecord, Nullable, PipelineVariableFieldMap } from "../lib";
-import { triggerPipelineSnippet } from "../view/pipeline-builder/components/triggerPipelineSnippet";
 import { Node } from "reactflow";
+
 import type { NodeData, TriggerNodeData } from "../view";
+import { GeneralRecord, Nullable, PipelineVariableFieldMap } from "../lib";
+import { env } from "../server";
+import { triggerPipelineSnippet } from "../view/pipeline-builder/components/triggerPipelineSnippet";
 
 export const generateInputsPayload = (fields: PipelineVariableFieldMap) => {
   const input: GeneralRecord = {};
@@ -77,9 +78,11 @@ export const generateInputsPayload = (fields: PipelineVariableFieldMap) => {
   }
 
   return input;
-}
+};
 
-export const generatePipelineHttpInputStringFromNodes = (nodes: Node<NodeData>[]) => {
+export const generatePipelineHttpInputStringFromNodes = (
+  nodes: Node<NodeData>[],
+) => {
   const variableNode = nodes.find((node) => node.id === "variable") as
     | Node<TriggerNodeData>
     | undefined;
@@ -95,7 +98,7 @@ export const generatePipelineHttpInputStringFromNodes = (nodes: Node<NodeData>[]
   const input = generateInputsPayload(variableNode.data.fields);
 
   return JSON.stringify({ inputs: [input] }, null, "\t");
-}
+};
 
 export const getInstillPipelineHttpRequestExample = ({
   pipelineName,
@@ -112,10 +115,7 @@ export const getInstillPipelineHttpRequestExample = ({
 
   let snippet = triggerPipelineSnippet;
 
-  const triggerEndpoint =
-    version
-      ? `releases/${version}/trigger`
-      : "trigger";
+  const triggerEndpoint = version ? `releases/${version}/trigger` : "trigger";
 
   snippet = snippet
     .replace(/\{vdp-pipeline-base-url\}/g, env("NEXT_PUBLIC_API_GATEWAY_URL"))

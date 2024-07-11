@@ -236,16 +236,18 @@ export async function listPipelinesReleasesQuery(
       nextPageToken,
     });
 
-    const { data } = await client.get<ListPipelineReleasesResponse>(queryString, {
-      headers: {
-        "instill-share-code": shareCode,
-        "Access-Control-Allow-Headers": shareCode
-          ? "instill-share-code"
-          : undefined,
-        "Content-Type": "application/json",
+    const { data } = await client.get<ListPipelineReleasesResponse>(
+      queryString,
+      {
+        headers: {
+          "instill-share-code": shareCode,
+          "Access-Control-Allow-Headers": shareCode
+            ? "instill-share-code"
+            : undefined,
+          "Content-Type": "application/json",
+        },
       },
-    },);
-    
+    );
 
     if (enablePagination) {
       return Promise.resolve(data);

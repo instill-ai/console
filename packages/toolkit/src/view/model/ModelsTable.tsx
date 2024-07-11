@@ -8,7 +8,7 @@ import {
   getModelInstanceTaskToolkit,
 } from "@instill-ai/design-system";
 
-import { SortIcon, ModelStateLabel, TableError } from "../../components";
+import { ModelStateLabel, SortIcon, TableError } from "../../components";
 import { TableCell } from "../../components/cells/TableCell";
 import {
   InstillStore,

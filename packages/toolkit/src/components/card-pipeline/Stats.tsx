@@ -1,6 +1,7 @@
 "use client";
 
 import { Icons } from "@instill-ai/design-system";
+
 import { convertLongNumberToK } from "../../lib";
 import { getHumanReadableStringFromTime } from "../../server";
 

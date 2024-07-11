@@ -2,12 +2,14 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Tags } from "./Tags"
-import { Stats } from "./Stats";
+
 import { Icons, Skeleton, Tag } from "@instill-ai/design-system";
+
 import { ImageWithFallback } from "..";
 import { Pipeline } from "../../lib";
 import { Menu } from "./Menu";
+import { Stats } from "./Stats";
+import { Tags } from "./Tags";
 
 const modelCoverImageCommonProps = {
   alt: "Cover",
@@ -40,9 +42,13 @@ export type CardPipelineProps = {
   pipeline: Pipeline;
   onDelete?: (model: Pipeline) => Promise<void>;
   hidePublicLabel?: boolean;
-}
+};
 
-export const CardPipeline = ({ pipeline, onDelete, hidePublicLabel }: CardPipelineProps) => {
+export const CardPipeline = ({
+  pipeline,
+  onDelete,
+  hidePublicLabel,
+}: CardPipelineProps) => {
   const ownerId = React.useMemo(() => {
     return pipeline.name.split("/")[1];
   }, [pipeline]);
@@ -89,7 +95,10 @@ export const CardPipeline = ({ pipeline, onDelete, hidePublicLabel }: CardPipeli
           ) : null}
           {pipeline.tags.length > 0 ? <Tags tags={pipeline.tags} /> : null}
           {onDelete ? (
-            <Menu handleDeletePipeline={() => onDelete(pipeline)} pipeline={pipeline} />
+            <Menu
+              handleDeletePipeline={() => onDelete(pipeline)}
+              pipeline={pipeline}
+            />
           ) : null}
         </div>
         <p className="text-base text-semantic-fg-secondary">

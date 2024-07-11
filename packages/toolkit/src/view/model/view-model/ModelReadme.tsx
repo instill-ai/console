@@ -1,6 +1,9 @@
 "use client";
 
+import { useMemo } from "react";
+
 import { useToast } from "@instill-ai/design-system";
+
 import { ReadmeEditor } from "../../../components";
 import {
   InstillStore,
@@ -12,7 +15,6 @@ import {
   useShallow,
   useUpdateUserModel,
 } from "../../../lib";
-import { useMemo } from "react";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -29,7 +31,7 @@ export const ModelReadme = ({ model, onUpdate }: ModelReadmeProps) => {
   const { toast } = useToast();
   const canEdit = useMemo(() => {
     return !!accessToken && !!model?.permission.canEdit;
-  }, [model, accessToken])
+  }, [model, accessToken]);
 
   const updateUserModel = useUpdateUserModel();
 

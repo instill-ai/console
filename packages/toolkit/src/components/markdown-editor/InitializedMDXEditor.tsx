@@ -1,20 +1,19 @@
-'use client'
+"use client";
 
-import type { ForwardedRef } from 'react'
+import type { MDXEditorMethods, MDXEditorProps } from "@mdxeditor/editor";
+import type { ForwardedRef } from "react";
 import {
-  headingsPlugin,
-  listsPlugin,
-  quotePlugin,
-  thematicBreakPlugin,
-  linkPlugin,
-  MDXEditor,
-  diffSourcePlugin,
-  imagePlugin,
-  tablePlugin,
   codeBlockPlugin,
-  type MDXEditorMethods,
-  type MDXEditorProps,
-} from '@mdxeditor/editor'
+  diffSourcePlugin,
+  headingsPlugin,
+  imagePlugin,
+  linkPlugin,
+  listsPlugin,
+  MDXEditor,
+  quotePlugin,
+  tablePlugin,
+  thematicBreakPlugin,
+} from "@mdxeditor/editor";
 
 export default function InitializedMDXEditor({
   editorRef,
@@ -31,10 +30,10 @@ export default function InitializedMDXEditor({
         listsPlugin(),
         quotePlugin(),
         tablePlugin(),
-        thematicBreakPlugin()
+        thematicBreakPlugin(),
       ]}
       {...props}
       ref={editorRef}
     />
-  )
+  );
 }

@@ -23,7 +23,6 @@ export const LongTextField = ({
   disabledReferenceHint,
   instillFormat,
 }: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
-
   return isHidden ? null : (
     <Form.Field
       key={keyPrefix ? `${keyPrefix}-${path}` : path}

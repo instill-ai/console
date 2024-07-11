@@ -11,6 +11,8 @@ const PipelineTabsDictionary = {
 
 export type PipelineTabNames = keyof typeof PipelineTabsDictionary;
 
-export const getPipelineTabTitle = (tabName: PipelineTabNames = "playground") => {
+export const getPipelineTabTitle = (
+  tabName: PipelineTabNames = "playground",
+) => {
   return PipelineTabsDictionary[tabName] || PipelineTabsDictionary.playground;
 };

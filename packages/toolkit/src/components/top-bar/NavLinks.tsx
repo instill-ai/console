@@ -54,7 +54,7 @@ export const NavLink = ({ title, Icon, pathname, strict }: NavLinkProps) => {
 
   const isOnIt = React.useMemo(() => {
     if (strict) {
-      return currentPathname.split("/")[2] === pathname
+      return currentPathname.split("/")[2] === pathname;
     } else {
       return currentPathname.includes(pathname);
     }

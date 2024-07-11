@@ -159,15 +159,14 @@ export const ModelHead = ({
             !model?.description ? "italic" : "",
           )}
         >
-          {model?.description || (
-            model?.permission.canEdit ? (
+          {model?.description ||
+            (model?.permission.canEdit ? (
               <Link href={`/${owner.id}/models/${model?.id}/settings`}>
                 Add a description
               </Link>
             ) : (
               <span>No description</span>
-            )
-          )}
+            ))}
         </p>
         {!isReady ? (
           <div className="mb-2 mt-10 flex flex-row gap-x-2">

@@ -13,7 +13,11 @@ import {
 } from "@instill-ai/design-system";
 
 import type { ModelTriggerResult } from "../../../lib";
-import { CodeBlock, LoadingSpin, ModelSectionHeader } from "../../../components";
+import {
+  CodeBlock,
+  LoadingSpin,
+  ModelSectionHeader,
+} from "../../../components";
 import { defaultCodeSnippetStyles } from "../../../constant";
 import {
   convertSentenceToCamelCase,
@@ -78,7 +82,10 @@ const defaultCurrentOperationIdPollingData = {
   isRendered: false,
 };
 
-export const ModelPlayground = ({ model, modelState }: ModelPlaygroundProps) => {
+export const ModelPlayground = ({
+  model,
+  modelState,
+}: ModelPlaygroundProps) => {
   const queryClient = useQueryClient();
   // This ref is used here to store the currently active operation id. It's in
   // ref so we don't have to worry about stale data. As soon as we update the

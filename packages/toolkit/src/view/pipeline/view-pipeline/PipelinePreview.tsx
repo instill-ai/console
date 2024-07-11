@@ -1,14 +1,18 @@
 import * as React from "react";
-import { Pipeline, PipelineRelease } from "../../../lib";
-import { ReadOnlyPipelineBuilder } from "../../pipeline-builder"
 import { useSearchParams } from "next/navigation";
+
+import { Pipeline, PipelineRelease } from "../../../lib";
+import { ReadOnlyPipelineBuilder } from "../../pipeline-builder";
 
 export type PipelinePreviewProps = {
   pipeline?: Pipeline;
   releases: PipelineRelease[];
-}
+};
 
-export const PipelinePreview = ({ pipeline, releases }: PipelinePreviewProps) => {
+export const PipelinePreview = ({
+  pipeline,
+  releases,
+}: PipelinePreviewProps) => {
   const searchParams = useSearchParams();
   const currentVersion = searchParams.get("version");
   const [topOffset, setTopOffset] = React.useState(0);
@@ -27,22 +31,16 @@ export const PipelinePreview = ({ pipeline, releases }: PipelinePreviewProps) =>
       return null;
     }
 
-    return releases.find(item => item.id === currentVersion) || null;
-  }, [releases, currentVersion])
+    return releases.find((item) => item.id === currentVersion) || null;
+  }, [releases, currentVersion]);
 
   return (
     <ReadOnlyPipelineBuilder
       ref={onMount}
       pipelineName={pipeline?.name || null}
-      recipe={
-        activeRelease
-          ? activeRelease.recipe
-          : pipeline?.recipe ?? null
-      }
+      recipe={activeRelease ? activeRelease.recipe : pipeline?.recipe ?? null}
       metadata={
-        activeRelease
-          ? activeRelease.metadata
-          : pipeline?.metadata ?? null
+        activeRelease ? activeRelease.metadata : pipeline?.metadata ?? null
       }
       className="min-h-80 w-full"
       style={{
@@ -50,5 +48,4 @@ export const PipelinePreview = ({ pipeline, releases }: PipelinePreviewProps) =>
       }}
     />
   );
-}
-
+};
