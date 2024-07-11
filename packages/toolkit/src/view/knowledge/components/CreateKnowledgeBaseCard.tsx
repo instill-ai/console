@@ -5,12 +5,14 @@ import {
   Button,
   Dialog,
   Tag,
+  Tooltip,
   // LinkButton,
 } from "@instill-ai/design-system";
 import * as React from "react";
 import { useDeleteKnowledgeBase } from "../../../lib/react-query-service/knowledge/useDeleteKnowledgeBase";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import {
+  formatDate,
   InstillStore,
   useAuthenticatedUser,
   useInstillStore,
@@ -151,6 +153,19 @@ export const CreateKnowledgeBaseCard = ({
     }
   };
 
+  const tooltipContent = `
+    Converting pipeline ID: AAA
+    Splitting pipeline ID: BBB
+    Embedding pipeline ID: DDD
+    Files #: CCC
+    Documents #: XXX
+    Images #: YYY
+    Text Chunks #: EEE
+    Image Chunks #: FFF
+    Downstream AI Apps: KKK
+
+  `;
+
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     setEditDialogIsOpen(true);
@@ -200,30 +215,40 @@ export const CreateKnowledgeBaseCard = ({
 
   return (
     <React.Fragment>
-      <div
-        className="flex h-[175px] w-[360px] cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow hover:bg-semantic-bg-base-bg"
-        onClick={onCardClick}
-      >
-        <div className="flex items-center justify-between">
-          <div className="product-headings-heading-4">{knowledgeBase.name}</div>
-        </div>
-        <Separator orientation="horizontal" className="my-[10px]" />
-        <p className="mb-auto line-clamp-3 product-body-text-3-regular">
-          {knowledgeBase.description}
-        </p>
-        {/* <div>
-          <Tag variant="lightNeutral" className="mr-2">
-            Text improvements for LLM
-          </Tag>
-        </div> */}
-        <div className="flex items-end justify-end">
-          <Menu
-            onDelete={handleDelete}
-            onEdit={handleEdit}
-            onDuplicate={handleDuplicate}
-          />
-        </div>
-      </div>
+      <Tooltip.Provider>
+        <Tooltip.Root>
+          <Tooltip.Trigger asChild>
+            <div
+              className="flex h-[175px] w-[360px] cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow hover:bg-semantic-bg-base-bg"
+              onClick={onCardClick}
+            >
+              <div className="flex items-center justify-between">
+                <div className="product-headings-heading-4">{knowledgeBase.name}</div>
+              </div>
+              <Separator orientation="horizontal" className="my-[10px]" />
+              <p className="mb-auto line-clamp-3 product-body-text-3-regular">
+                {knowledgeBase.description}
+              </p>
+              <div className="flex items-end justify-end">
+                <Menu
+                  onDelete={() => { }}
+                  onEdit={() => { }}
+                  onDuplicate={() => { }}
+                />
+              </div>
+            </div>
+          </Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Content
+              className="w-[360px] rounded-md bg-semantic-bg-primary p-4 shadow-lg"
+              sideOffset={5}
+            >
+              <pre className="whitespace-pre-wrap text-xs">{tooltipContent}</pre>
+              <Tooltip.Arrow className="fill-semantic-bg-primary" />
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+      </Tooltip.Provider>
       <Dialog.Root
         open={deleteDialogIsOpen}
         onOpenChange={setDeleteDialogIsOpen}
