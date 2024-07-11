@@ -121,9 +121,6 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           ) : null}
           {activeTab === "catalog" && selectedKnowledgeBase ? (
             <>
-              {!selectedTextOption ? (
-                <CatalogFilesTab knowledgeBase={selectedKnowledgeBase} />
-              ) : null}
               {selectedTextOption === "Markdown" ? (
                 <MarkdownTab knowledgeBase={selectedKnowledgeBase} />
               ) : null}
@@ -132,6 +129,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               ) : null}
               {selectedTextOption === "Image" ? (
                 <ImageTab knowledgeBase={selectedKnowledgeBase} />
+              ) : null}
+              {!selectedTextOption || selectedTextOption === "Files" ? (
+                <CatalogFilesTab knowledgeBase={selectedKnowledgeBase} />
               ) : null}
             </>
           ) : null}
