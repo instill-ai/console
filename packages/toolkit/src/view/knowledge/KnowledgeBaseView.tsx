@@ -12,6 +12,7 @@ import { ChunkTab } from "./components/ChunkTab";
 import { ImageTab } from "./components/ImageTab";
 import { Nullable } from "@instill-ai/toolkit";
 import { RetrieveTestTab } from "./components/RetrieveTestTab";
+import CreditUsageNotification from "./components/Notifications/CreditUsageFileNotification";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -87,7 +88,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         // />
         <></>
       ) : null}
-            {showCreditUsage && (
+      {showCreditUsage && (
         <CreditUsageNotification
           handleCloseUnsupportedFileMessage={() => setShowCreditUsage(false)}
         />
