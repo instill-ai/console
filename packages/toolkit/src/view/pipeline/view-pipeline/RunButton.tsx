@@ -76,6 +76,7 @@ export const RunButton = ({
       className="flex !h-8 flex-row gap-x-2"
       type="submit"
       form={inOutPutFormID}
+      disabled={isTriggeringPipeline}
     >
       Run
       {isTriggeringPipeline ? (

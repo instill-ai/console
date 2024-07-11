@@ -117,8 +117,27 @@ export const PipelinePlayground = () => {
     return null;
   }, [releases, currentVersion, pipeline.isSuccess, pipeline.data]);
 
+  const formSchema = React.useMemo(() => {
+    if (currentVersion && releases.isSuccess && releases.data.length > 0) {
+      const release = releases.data.find(release => release.id === currentVersion);
+
+      if (release) {
+        return release.dataSpecification;
+      }
+    }
+
+    if (pipeline.isSuccess) {
+      return pipeline.data.dataSpecification;
+    }
+
+    return {
+      input: null,
+      output: null,
+    };
+  }, [currentVersion, pipeline.data, pipeline.isSuccess, releases.data, releases.isSuccess]);
+
   const { form, fields, ValidatorSchema } = useInstillForm(
-    pipeline.data?.dataSpecification?.input || null,
+    formSchema.input,
     null,
     {
       disabledAll: !pipeline.data?.permission.canTrigger,
@@ -127,7 +146,7 @@ export const PipelinePlayground = () => {
 
   const componentOutputFields = useComponentOutputFields({
     mode: "demo",
-    schema: pipeline.data?.dataSpecification?.output || null,
+    schema: formSchema.output,
     data: pipelineRunResponse?.outputs[0] || null,
   });
 
@@ -264,6 +283,7 @@ export const PipelinePlayground = () => {
 
     return true;
   }, [outputs]);
+
   return (
     <div className="flex flex-row">
       <div className="flex w-1/2 flex-col border-r border-semantic-bg-line pb-6 pr-6">
@@ -313,7 +333,7 @@ export const PipelinePlayground = () => {
                       inOutPutFormID={inOutPutFormID}
                       inputIsNotDefined={inputIsNotDefined}
                       outputIsNotDefined={outputIsNotDefined}
-                      isTriggeringPipeline={triggerPipeline.isPending}
+                      isTriggeringPipeline={triggerPipeline.isPending || triggerPipelineRelease.isPending}
                     />
                   ) : (
                     <div className="h-8 w-20 animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
