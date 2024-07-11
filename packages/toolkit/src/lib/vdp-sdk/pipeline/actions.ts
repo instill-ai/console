@@ -176,7 +176,6 @@ export async function triggerUserPipelineReleaseAction({
             "instill-return-traces, instill-share-code, Instill-Requester-Uid",
           "Content-Type": "application/json",
           "Instill-Requester-Uid": requesterUid,
-          "Instill-Requester-Uid": requesterUid,
         },
       },
     );
