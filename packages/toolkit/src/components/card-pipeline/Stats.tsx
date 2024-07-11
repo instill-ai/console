@@ -1,8 +1,8 @@
 "use client";
 
 import { Icons } from "@instill-ai/design-system";
-import { convertLongNumberToK } from "@instill-ai/toolkit";
-import { getHumanReadableStringFromTime } from "@instill-ai/toolkit/server";
+import { convertLongNumberToK } from "../../lib";
+import { getHumanReadableStringFromTime } from "../../server";
 
 export type StatsProps = {
   runCount: number;
