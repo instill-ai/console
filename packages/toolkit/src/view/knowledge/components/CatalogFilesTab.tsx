@@ -14,47 +14,19 @@ type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
 };
 
-type FileStatus =
-  | "UNSPECIFIED"
-  | "NOTSTARTED"
-  | "WAITING"
-  | "CONVERTING"
-  | "CHUNKING"
-  | "EMBEDDING"
-  | "COMPLETED";
+type FileStatus = "Not Started" | "Waiting" | "Running" | "Completed" | "Failed";
 
-const getStatusSortValue = (status: FileStatus): number => {
-  const statusOrder = {
-    UNSPECIFIED: 0,
-    NOTSTARTED: 1,
-    WAITING: 2,
-    CONVERTING: 3,
-    CHUNKING: 4,
-    EMBEDDING: 5,
-    COMPLETED: 6,
-  };
-  return statusOrder[status] ?? -1;
-};
-type TagVariant =
-  | "lightNeutral"
-  | "lightRed"
-  | "lightYellow"
-  | "lightBlue"
-  | "lightPurple"
-  | "lightGreen"
-  | "darkGreen";
+type TagVariant = "lightNeutral" | "lightYellow" | "default" | "lightGreen" | "lightRed";
 
-const getStatusTag = (status: FileStatus): TagVariant => {
-  const variantMap: Record<FileStatus, TagVariant> = {
-    UNSPECIFIED: "lightNeutral",
-    NOTSTARTED: "lightRed",
-    WAITING: "lightYellow",
-    CONVERTING: "lightBlue",
-    CHUNKING: "lightPurple",
-    EMBEDDING: "lightGreen",
-    COMPLETED: "darkGreen",
+const getStatusTag = (status: FileStatus): { variant: TagVariant; dotColor: string } => {
+  const statusMap: Record<FileStatus, { variant: TagVariant; dotColor: string }> = {
+    "Not Started": { variant: "lightNeutral", dotColor: "bg-[#29AE81]" },
+    "Waiting": { variant: "lightYellow", dotColor: "bg-semantic-warning-default" },
+    "Running": { variant: "default", dotColor: "bg-semantic-accent-default" },
+    "Completed": { variant: "lightGreen", dotColor: "bg-semantic-success-default" },
+    "Failed": { variant: "lightRed", dotColor: "bg-semantic-error-default" },
   };
-  return variantMap[status] ?? "lightNeutral";
+  return statusMap[status] || statusMap["Not Started"];
 };
 
 const mockData = [
@@ -63,7 +35,7 @@ const mockData = [
     fileType: "pdf",
     processedStatus: { chunks: 150, tokens: 28800 },
     createTime: "Today 1:34pm",
-    status: "COMPLETED" as FileStatus,
+    status: "Completed" as FileStatus,
     fileSize: "2.3 MB",
   },
   {
@@ -71,7 +43,7 @@ const mockData = [
     fileType: "txt",
     processedStatus: { chunks: 120, tokens: 21500 },
     createTime: "Today 4:31pm",
-    status: "CONVERTING" as FileStatus,
+    status: "Running" as FileStatus,
     fileSize: "1.1 MB",
   },
   {
@@ -79,7 +51,7 @@ const mockData = [
     fileType: "jpg",
     processedStatus: { chunks: 2, tokens: 200 },
     createTime: "Today 7:29pm",
-    status: "WAITING" as FileStatus,
+    status: "Waiting" as FileStatus,
     fileSize: "3.7 MB",
   },
   {
@@ -87,8 +59,16 @@ const mockData = [
     fileType: "png",
     processedStatus: { chunks: 3, tokens: 300 },
     createTime: "Today 11:11pm",
-    status: "NOTSTARTED" as FileStatus,
+    status: "Not Started" as FileStatus,
     fileSize: "5.2 MB",
+  },
+  {
+    fileName: "file-e.png",
+    fileType: "txt",
+    processedStatus: { chunks: 3, tokens: 300 },
+    createTime: "Today 18:19pm",
+    status: "Failed" as FileStatus,
+    fileSize: "3.2 MB",
   },
 ];
 
@@ -103,6 +83,19 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     (typeof mockData)[number] | null
   >(null);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const getStatusSortValue = (status: FileStatus): number => {
+    const statusOrder = {
+      UNSPECIFIED: 0,
+      NOTSTARTED: 1,
+      WAITING: 2,
+      CONVERTING: 3,
+      CHUNKING: 4,
+      EMBEDDING: 5,
+      COMPLETED: 6,
+    };
+    return statusOrder[status] ?? -1;
+  };
 
   const sortedData = [...data].sort((a, b) => {
     if (sortConfig.key === "status") {
@@ -325,8 +318,15 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   </Tag>
                 </div>
                 <div className="flex items-center justify-center">
-                  <Tag size="sm" variant={getStatusTag(item.status)}>
-                    {item.status}
+                  <Tag
+                    size="sm"
+                    variant={getStatusTag(item.status as FileStatus).variant}
+                    className="group relative"
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className={`w-2 h-2 rounded-full ${getStatusTag(item.status as FileStatus).dotColor}`}></div>
+                      {item.status}
+                    </div>
                   </Tag>
                 </div>
                 <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
