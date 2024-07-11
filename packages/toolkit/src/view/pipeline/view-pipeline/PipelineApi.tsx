@@ -1,7 +1,11 @@
 import React, { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
-import type { Pipeline, PipelineRelease, PipelineVariableFieldMap } from "../../../lib";
+import type {
+  Pipeline,
+  PipelineRelease,
+  PipelineVariableFieldMap,
+} from "../../../lib";
 import { CodeBlock, ModelSectionHeader } from "../../../components";
 import { CodeString } from "../../../components/CodeString";
 import { defaultCodeSnippetStyles } from "../../../constant";
@@ -44,7 +48,7 @@ export const PipelineApi = ({ pipeline, releases }: PipelineApiProps) => {
 
   const formSchema = React.useMemo(() => {
     if (currentVersion && releases.length > 0) {
-      const release = releases.find(release => release.id === currentVersion);
+      const release = releases.find((release) => release.id === currentVersion);
 
       if (release) {
         return release.dataSpecification;
@@ -116,11 +120,7 @@ export const PipelineApi = ({ pipeline, releases }: PipelineApiProps) => {
           <React.Fragment>
             <h3 className="font-medium text-black">Input</h3>
             <CodeBlock
-              codeString={JSON.stringify(
-                formSchema.input,
-                null,
-                2,
-              )}
+              codeString={JSON.stringify(formSchema.input, null, 2)}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}
@@ -131,11 +131,7 @@ export const PipelineApi = ({ pipeline, releases }: PipelineApiProps) => {
           <React.Fragment>
             <h3 className="font-medium text-black">Output</h3>
             <CodeBlock
-              codeString={JSON.stringify(
-                formSchema.output,
-                null,
-                2,
-              )}
+              codeString={JSON.stringify(formSchema.output, null, 2)}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}

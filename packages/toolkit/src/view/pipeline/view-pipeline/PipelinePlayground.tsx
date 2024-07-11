@@ -43,7 +43,11 @@ const selector = (store: InstillStore) => ({
 
 type ModelOutputActiveView = "preview" | "json";
 
-export const PipelinePlayground = ({ releases }: { releases: PipelineRelease[] }) => {
+export const PipelinePlayground = ({
+  releases,
+}: {
+  releases: PipelineRelease[];
+}) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -113,7 +117,7 @@ export const PipelinePlayground = ({ releases }: { releases: PipelineRelease[] }
 
   const formSchema = React.useMemo(() => {
     if (currentVersion && releases.length > 0) {
-      const release = releases.find(release => release.id === currentVersion);
+      const release = releases.find((release) => release.id === currentVersion);
 
       if (release) {
         return release.dataSpecification;
@@ -327,7 +331,10 @@ export const PipelinePlayground = ({ releases }: { releases: PipelineRelease[] }
                       inOutPutFormID={inOutPutFormID}
                       inputIsNotDefined={inputIsNotDefined}
                       outputIsNotDefined={outputIsNotDefined}
-                      isTriggeringPipeline={triggerPipeline.isPending || triggerPipelineRelease.isPending}
+                      isTriggeringPipeline={
+                        triggerPipeline.isPending ||
+                        triggerPipelineRelease.isPending
+                      }
                     />
                   ) : (
                     <div className="h-8 w-20 animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
