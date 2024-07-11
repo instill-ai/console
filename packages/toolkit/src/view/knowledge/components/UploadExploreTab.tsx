@@ -22,6 +22,7 @@ import IncorrectFormatFileNotification from "./Notifications/IncorrectFormatFile
 import FileSizeNotification from "./Notifications/FileSizeNotification";
 import { FILE_ERROR_TIMEOUT } from "./undoDeleteTime";
 import CreditUsageNotification from "./Notifications/CreditUsageFileNotification";
+import { useRouter } from "next/navigation";
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
 
@@ -47,9 +48,10 @@ type UploadExploreFormData = z.infer<typeof UploadExploreFormSchema>;
 
 type UploadExploreTabProps = {
   knowledgeBase: KnowledgeBase;
+  onProcessFile: () => void;
 };
 
-export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
+export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExploreTabProps) => {
   const form = useForm<UploadExploreFormData>({
     resolver: zodResolver(UploadExploreFormSchema),
     defaultValues: {
@@ -98,7 +100,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
   const unsupportedFileTypeTimeoutRef = React.useRef<NodeJS.Timeout | null>(
     null
   );
-
+  const router = useRouter();
   const handleFileUpload = async (file: File) => {
     if (file.size > MAX_FILE_SIZE) {
       setIncorrectFileName(file.name);
@@ -135,7 +137,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
       uploadKnowledgeBaseFile.mutate(
         {
           ownerId: ownerID,
-          knowledgeBaseId: knowledgeBase.id,
+          knowledgeBaseId: knowledgeBase.kbId,
           payload: {
             name: file.name,
             type: fileType,
@@ -182,6 +184,10 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
   const handleRemoveFile = () => {
     form.setValue("file", null);
     setLastValidFile(null);
+  };
+
+  const handleProcessFile = () => {
+    onProcessFile();
   };
 
   return (
@@ -301,9 +307,6 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
           fileName={incorrectFileName}
         />
       ) : null}
-      <CreditUsageNotification
-        handleCloseUnsupportedFileMessage={handleCloseUnsupportedFileMessage}
-      />
       {/* <div className="inline-flex flex-col items-start justify-start gap-1 ">
                 <div className="text-semantic-fg-primary product-body-text-3-semibold">
                     Pipeline in use
@@ -323,7 +326,7 @@ export const UploadExploreTab = ({ knowledgeBase }: UploadExploreTabProps) => {
             </div> */}
       {/* <FilePreview /> */}
       <div className="flex justify-end">
-        <Button variant="primary" size="lg" disabled={!form.watch("file")}>
+        <Button variant="primary" size="lg" disabled={!form.watch("file")} onClick={handleProcessFile}>
           Process File
         </Button>
       </div>
