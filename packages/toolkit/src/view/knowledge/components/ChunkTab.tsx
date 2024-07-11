@@ -110,7 +110,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
                   {Array.from({ length: 6 }, (_, i) => (
                     <div
                       key={i}
-                      className="flex flex-col gap-y-2.5 rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-2.5"
+                      className="flex flex-col gap-y-2.5 rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-2.5 w-[360px]"
                     >
                       <div className="flex flex-col gap-y-2.5 p-2.5">
                         <div className="flex items-center justify-between">
