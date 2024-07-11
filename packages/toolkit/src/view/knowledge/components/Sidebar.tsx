@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import { Icons } from "@instill-ai/design-system";
-// import { DropdownMenu } from "@instill-ai/design-system";
 
 type SidebarProps = {
   activeTab: string;
@@ -26,66 +25,73 @@ export const Sidebar = ({
     router.push(`#${tab}`, { scroll: false });
   };
 
+  const getTabClassName = (tabName: string, isSubTab = false) => {
+    const baseClass = `flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${isSubTab ? "ml-4" : ""
+      }`;
+
+    if (activeTab === tabName || (isSubTab && selectedTextOption === tabName)) {
+      return `${baseClass} bg-semantic-accent-bg text-semantic-accent-hover`;
+    } else if (!selectedKnowledgeBase && tabName !== "knowledge-base") {
+      return `${baseClass} cursor-not-allowed text-semantic-fg-disabled`;
+    } else {
+      return `${baseClass} cursor-pointer text-semantic-fg-secondary`;
+    }
+  };
+
+  const getCatalogIconColor = () => {
+    if (!selectedKnowledgeBase) {
+      return 'stroke-semantic-fg-disabled';
+    }
+    if (activeTab === 'catalog') {
+      return 'stroke-semantic-accent-hover';
+    }
+    return 'stroke-semantic-fg-secondary';
+  };
+
   return (
     <aside className="flex w-[160px] flex-col gap-y-4">
       <div
-        className={`flex h-8 items-center gap-x-2 whitespace-nowrap rounded px-3 product-button-button-2 ${activeTab === "knowledge-base"
-          ? "bg-semantic-accent-bg text-semantic-accent-hover"
-          : "cursor-pointer text-semantic-fg-secondary"
-          }`}
+        className={getTabClassName("knowledge-base")}
         onClick={() => handleTabChange("knowledge-base")}
       >
         My Knowledge Bases
       </div>
       <div
-        className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${activeTab === "upload"
-          ? "bg-semantic-accent-bg text-semantic-accent-hover"
-          : selectedKnowledgeBase
-            ? "cursor-pointer text-semantic-fg-secondary"
-            : "cursor-not-allowed text-semantic-fg-secondary "
-          }`}
+        className={getTabClassName("upload")}
         onClick={() => selectedKnowledgeBase && handleTabChange("upload")}
       >
         Upload & Explore
       </div>
       <div
-        className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${activeTab === "catalog"
-          ? "bg-semantic-accent-bg text-semantic-accent-hover"
-          : selectedKnowledgeBase
-            ? "cursor-pointer text-semantic-fg-secondary"
-            : "cursor-not-allowed text-semantic-fg-secondary "
-          }`}
+        className={getTabClassName("catalog")}
         onClick={() => {
-          selectedKnowledgeBase && handleTabChange("catalog");
-          onTextOptionChange(null);
+          if (selectedKnowledgeBase) {
+            handleTabChange("catalog");
+            onTextOptionChange(null);
+          }
         }}
       >
-        <Icons.ChevronRight className="w-4 h-4 stroke-black" />
+        <Icons.ChevronRight className={`w-4 h-4 ${getCatalogIconColor()}`} />
         Catalog
       </div>
       {activeTab === "catalog" && (
         <>
-          <div className="ml-4">
-            <div
-              className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${selectedTextOption === "Markdown"
-                ? "bg-semantic-accent-bg text-semantic-accent-hover"
-                : "cursor-pointer text-semantic-fg-secondary"
-                }`}
-              onClick={() => {
-                selectedKnowledgeBase && handleTabChange("catalog");
-                onTextOptionChange("catalog");
-              }}            >
-              Files
-            </div>
-            <div
-              className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${selectedTextOption === "Chunk"
-                ? "bg-semantic-accent-bg text-semantic-accent-hover"
-                : "cursor-pointer text-semantic-fg-secondary"
-                }`}
-              onClick={() => onTextOptionChange("Chunk")}
-            >
-              Chunk
-            </div>
+          <div
+            className={getTabClassName("Files", true)}
+            onClick={() => {
+              if (selectedKnowledgeBase) {
+                handleTabChange("catalog");
+                onTextOptionChange("Files");
+              }
+            }}
+          >
+            Files
+          </div>
+          <div
+            className={getTabClassName("Chunk", true)}
+            onClick={() => selectedKnowledgeBase && onTextOptionChange("Chunk")}
+          >
+            Chunk
           </div>
           {/* <div
             className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${selectedTextOption === "Image"
@@ -99,13 +105,8 @@ export const Sidebar = ({
         </>
       )}
       <div
-        className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${activeTab === "retrieve"
-          ? "bg-semantic-accent-bg text-semantic-accent-hover"
-          : selectedKnowledgeBase
-            ? "cursor-pointer text-semantic-fg-secondary"
-            : "cursor-not-allowed text-semantic-fg-secondary "
-          }`}
-        onClick={() => handleTabChange("retrieve")}
+        className={getTabClassName("retrieve")}
+        onClick={() => selectedKnowledgeBase && handleTabChange("retrieve")}
       >
         Retrieve Test
       </div>
