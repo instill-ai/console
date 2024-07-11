@@ -132,7 +132,7 @@ export const EditKnowledgeDialog: React.FC<EditKnowledgeDialogProps> = ({
                   </Form.Item>
                 )}
               />
-              <Form.Field
+              {/* <Form.Field
                 control={form.control}
                 name="tags"
                 render={({ field }) => (
@@ -157,7 +157,7 @@ export const EditKnowledgeDialog: React.FC<EditKnowledgeDialogProps> = ({
                     <Form.Message />
                   </Form.Item>
                 )}
-              />
+              /> */}
               <div className="mt-8 flex justify-end gap-x-3">
                 <Button variant="secondaryGrey" onClick={onClose}>
                   Cancel
