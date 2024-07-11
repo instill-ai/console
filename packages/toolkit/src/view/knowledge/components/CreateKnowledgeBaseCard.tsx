@@ -211,11 +211,11 @@ export const CreateKnowledgeBaseCard = ({
         <p className="mb-auto line-clamp-3 product-body-text-3-regular">
           {knowledgeBase.description}
         </p>
-        <div>
+        {/* <div>
           <Tag variant="lightNeutral" className="mr-2">
             Text improvements for LLM
           </Tag>
-        </div>
+        </div> */}
         <div className="flex items-end justify-end">
           <Menu
             onDelete={handleDelete}
