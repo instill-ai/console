@@ -1,7 +1,7 @@
 import { Icons, Input, Popover, Separator } from '@instill-ai/design-system';
 import { SortOptionSelectButton } from './OptionSelectButton';
 
-export type SortAnchor = "updateTime" | "numberOfRuns";
+export type SortAnchor = "modifyTime" | "createTime" | "usage";
 export type SortOrder = "asc" | "desc";
 
 const KnowledgeSearchSort = ({ selectedSortOrder,
@@ -29,26 +29,36 @@ const KnowledgeSearchSort = ({ selectedSortOrder,
                         <Icons.ChevronDown className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
                     </button>
                 </Popover.Trigger>
-                <Popover.Content align="end" className="flex !w-48 flex-col !px-0 py-1">
+                <Popover.Content align="end" className="flex w-64 flex-col !px-0 py-1">
                     <SortOptionSelectButton
-                        label="Updated Time"
+                        label="Create time"
                         icon={
                             <Icons.Update className="h-4 w-4 stroke-semantic-fg-disabled" />
                         }
                         onClick={() => {
-                            setSelectedSortAnchor("updateTime");
+                            setSelectedSortAnchor("createTime");
                         }}
-                        isSelected={selectedSortAnchor === "updateTime"}
+                        isSelected={selectedSortAnchor === "createTime"}
                     />
                     <SortOptionSelectButton
-                        label="Total Runs"
+                        label="Modify time"
                         icon={
-                            <Icons.Rocket01 className="h-4 w-4 stroke-semantic-fg-disabled" />
+                            <Icons.Update className="h-4 w-4 stroke-semantic-fg-disabled" />
                         }
                         onClick={() => {
-                            setSelectedSortAnchor("numberOfRuns");
+                            setSelectedSortAnchor("modifyTime");
                         }}
-                        isSelected={selectedSortAnchor === "numberOfRuns"}
+                        isSelected={selectedSortAnchor === "modifyTime"}
+                    />
+                    <SortOptionSelectButton
+                        label="Usage"
+                        icon={
+                            <Icons.Update className="h-4 w-4 stroke-semantic-fg-disabled" />
+                        }
+                        onClick={() => {
+                            setSelectedSortAnchor("usage");
+                        }}
+                        isSelected={selectedSortAnchor === "usage"}
                     />
                     <Separator orientation="horizontal" className="my-1" />
                     <SortOptionSelectButton
