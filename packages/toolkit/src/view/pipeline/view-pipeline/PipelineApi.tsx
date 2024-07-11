@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
-import type { Pipeline, PipelineVariableFieldMap } from "../../../lib";
+import type { Pipeline, PipelineRelease, PipelineVariableFieldMap } from "../../../lib";
 import { CodeBlock, ModelSectionHeader } from "../../../components";
 import { CodeString } from "../../../components/CodeString";
 import { defaultCodeSnippetStyles } from "../../../constant";
@@ -12,15 +12,16 @@ import {
 
 export type PipelineApiProps = {
   pipeline?: Pipeline;
+  releases: PipelineRelease[];
 };
 
 const OWNER = {
   id: null,
 };
 
-export const PipelineApi = ({ pipeline }: PipelineApiProps) => {
+export const PipelineApi = ({ pipeline, releases }: PipelineApiProps) => {
   const searchParams = useSearchParams();
-  const version = searchParams.get("version");
+  const currentVersion = searchParams.get("version");
 
   const owner = useMemo(() => {
     if (!pipeline) {
@@ -41,21 +42,40 @@ export const PipelineApi = ({ pipeline }: PipelineApiProps) => {
     };
   }, [pipeline]);
 
+  const formSchema = React.useMemo(() => {
+    if (currentVersion && releases.length > 0) {
+      const release = releases.find(release => release.id === currentVersion);
+
+      if (release) {
+        return release.dataSpecification;
+      }
+    }
+
+    if (pipeline) {
+      return pipeline.dataSpecification;
+    }
+
+    return {
+      input: null,
+      output: null,
+    };
+  }, [currentVersion, pipeline, releases]);
+
   const runSnippet = React.useMemo(() => {
-    if (!pipeline?.dataSpecification?.input?.properties) {
+    if (!formSchema.input?.properties) {
       return "";
     }
 
     const input = generateInputsPayload(
-      pipeline.dataSpecification?.input.properties as PipelineVariableFieldMap,
+      formSchema.input.properties as PipelineVariableFieldMap,
     );
 
     return getInstillPipelineHttpRequestExample({
       pipelineName: pipeline?.name,
-      version,
+      version: currentVersion,
       inputsString: JSON.stringify({ inputs: [input] }, null, 2),
     });
-  }, [version, pipeline]);
+  }, [formSchema, currentVersion, pipeline]);
 
   return (
     <div className="flex flex-col">
@@ -87,18 +107,17 @@ export const PipelineApi = ({ pipeline }: PipelineApiProps) => {
           language="bash"
           customStyle={defaultCodeSnippetStyles}
         />
-        {pipeline?.dataSpecification?.input ||
-        pipeline?.dataSpecification?.output ? (
+        {formSchema ? (
           <ModelSectionHeader className="mt-5">
             Model JSON schema
           </ModelSectionHeader>
         ) : null}
-        {pipeline?.dataSpecification?.input ? (
+        {formSchema.input ? (
           <React.Fragment>
             <h3 className="font-medium text-black">Input</h3>
             <CodeBlock
               codeString={JSON.stringify(
-                pipeline?.dataSpecification?.input,
+                formSchema.input,
                 null,
                 2,
               )}
@@ -108,12 +127,12 @@ export const PipelineApi = ({ pipeline }: PipelineApiProps) => {
             />
           </React.Fragment>
         ) : null}
-        {pipeline?.dataSpecification?.output ? (
+        {formSchema.output ? (
           <React.Fragment>
             <h3 className="font-medium text-black">Output</h3>
             <CodeBlock
               codeString={JSON.stringify(
-                pipeline?.dataSpecification?.output,
+                formSchema.output,
                 null,
                 2,
               )}

@@ -28,7 +28,7 @@ export const PipelineContentViewer = ({
 
   switch (selectedTab) {
     case "api": {
-      content = <PipelineApi pipeline={pipeline} />;
+      content = <PipelineApi pipeline={pipeline} releases={releases} />;
 
       break;
     }
@@ -67,7 +67,7 @@ export const PipelineContentViewer = ({
     }
     case "playground":
     default: {
-      content = <PipelinePlayground />;
+      content = <PipelinePlayground releases={releases} />;
     }
   }
 

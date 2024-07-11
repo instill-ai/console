@@ -18,6 +18,7 @@ import {
   GeneralRecord,
   InstillStore,
   Nullable,
+  PipelineRelease,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
@@ -31,7 +32,7 @@ import {
   useTriggerNamespacePipelineRelease,
   useUserNamespaces,
 } from "../../../lib";
-import { recursiveHelpers, useSortedReleases } from "../../pipeline-builder";
+import { recursiveHelpers } from "../../pipeline-builder";
 import { RunButton } from "./RunButton";
 
 const selector = (store: InstillStore) => ({
@@ -42,7 +43,7 @@ const selector = (store: InstillStore) => ({
 
 type ModelOutputActiveView = "preview" | "json";
 
-export const PipelinePlayground = () => {
+export const PipelinePlayground = ({ releases }: { releases: PipelineRelease[] }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -72,20 +73,13 @@ export const PipelinePlayground = () => {
     accessToken,
   });
 
-  const releases = useSortedReleases({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
-    enabledQuery: enabledQuery && routeInfo.isSuccess,
-    shareCode: shareCode ?? undefined,
-    accessToken,
-  });
-
   const variables = React.useMemo(() => {
     if (pipeline.isSuccess) {
-      if (!currentVersion || releases.data.length === 0) {
+      if (!currentVersion || releases.length === 0) {
         return pipeline.data.recipe.variable ?? null;
       }
 
-      const pipelineVersion = releases.data.find(
+      const pipelineVersion = releases.find(
         (release) =>
           release.id === currentVersion || release.alias === currentVersion,
       );
@@ -100,11 +94,11 @@ export const PipelinePlayground = () => {
 
   const outputs = React.useMemo(() => {
     if (pipeline.isSuccess) {
-      if (!currentVersion || releases.data.length === 0) {
+      if (!currentVersion || releases.length === 0) {
         return pipeline.data.recipe.output ?? null;
       }
 
-      const pipelineVersion = releases.data.find(
+      const pipelineVersion = releases.find(
         (release) =>
           release.id === currentVersion || release.alias === currentVersion,
       );
@@ -118,8 +112,8 @@ export const PipelinePlayground = () => {
   }, [releases, currentVersion, pipeline.isSuccess, pipeline.data]);
 
   const formSchema = React.useMemo(() => {
-    if (currentVersion && releases.isSuccess && releases.data.length > 0) {
-      const release = releases.data.find(release => release.id === currentVersion);
+    if (currentVersion && releases.length > 0) {
+      const release = releases.find(release => release.id === currentVersion);
 
       if (release) {
         return release.dataSpecification;
@@ -134,7 +128,7 @@ export const PipelinePlayground = () => {
       input: null,
       output: null,
     };
-  }, [currentVersion, pipeline.data, pipeline.isSuccess, releases.data, releases.isSuccess]);
+  }, [currentVersion, pipeline.data, pipeline.isSuccess, releases]);
 
   const { form, fields, ValidatorSchema } = useInstillForm(
     formSchema.input,
