@@ -7,6 +7,7 @@ import cn from "clsx";
 
 import {
   Button,
+  GitHubIcon,
   Icons,
   Popover,
   ScrollArea,
@@ -16,7 +17,7 @@ import {
   toast,
 } from "@instill-ai/design-system";
 
-import { ClonePipelineDialog } from "../../../components";
+import { ClonePipelineDialog, HeadExternalLink } from "../../../components";
 import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
 import {
   InstillStore,
@@ -169,6 +170,28 @@ export const Head = ({
               <Icons.Lock03 className="h-3 w-3 stroke-semantic-fg-primary" />
               Private
             </Tag>
+          ) : null}
+          {pipeline?.sourceUrl ? (
+            <HeadExternalLink href={pipeline.sourceUrl}>
+              <GitHubIcon
+                width="w-[18px]"
+                height="h-[18px]"
+                color="fill-semantic-bg-secondary-alt-primary"
+              />
+              GitHub
+            </HeadExternalLink>
+          ) : null}
+          {pipeline?.documentationUrl ? (
+            <HeadExternalLink href={pipeline.documentationUrl}>
+              <Icons.Link01 className="h-3.5 w-3.5 stroke-semantic-bg-secondary-alt-primary" />
+              Link
+            </HeadExternalLink>
+          ) : null}
+          {pipeline?.license ? (
+            <HeadExternalLink href={pipeline.license}>
+              <Icons.Scales02 className="h-3.5 w-3.5 stroke-semantic-bg-secondary-alt-primary" />
+              License
+            </HeadExternalLink>
           ) : null}
           {!!releases?.length && pipeline ? (
             <Popover.Root

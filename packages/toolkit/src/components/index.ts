@@ -34,3 +34,4 @@ export * from "./FileInputDropArea";
 export * from "./markdown-editor";
 export * from "./ReadmeEditor";
 export * from "./SectionHeader";
+export * from "./HeadExternalLink";

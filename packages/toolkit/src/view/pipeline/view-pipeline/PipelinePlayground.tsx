@@ -380,35 +380,10 @@ export const PipelinePlayground = () => {
               alt="Square shapes"
             />
             <p className="font-mono text-sm italic text-semantic-fg-disabled">
-              Execute the model to view the results
+              Execute the pipeline to view the results
             </p>
           </div>
         )}
-        {/* pipeline.isSuccess ? (
-          outputIsNotDefined ? (
-            <div className="flex flex-row justify-between pl-3">
-              <div className="flex flex-row gap-x-6">
-                <CryingFaceSVG className="my-auto h-10 w-10 shrink-0 grow-0" />
-                <p className="my-auto font-mono text-sm italic text-semantic-fg-disabled">
-                  Pipeline output is not defined.
-                </p>
-              </div>
-              <Button
-                variant="tertiaryColour"
-                size="md"
-                onClick={() => {
-                  router.push(
-                    `/${routeInfo.data.namespaceName}/pipelines/${routeInfo.data.resourceId}/editor`,
-                  );
-                }}
-              >
-                Setup
-              </Button>
-            </div>
-          ) : (componentOutputFields)
-        ) : (
-          <InOutputSkeleton />
-        ) */}
       </div>
     </div>
   );

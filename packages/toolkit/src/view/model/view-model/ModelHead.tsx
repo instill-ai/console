@@ -12,7 +12,7 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 
-import { ModelStateLabel } from "../../../components";
+import { HeadExternalLink, ModelStateLabel } from "../../../components";
 import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
 import { Model, ModelState } from "../../../lib";
 import { ModelTabNames } from "../../../server";
@@ -29,25 +29,6 @@ const DEFAULT_OWNER = {
   avatarUrl: null,
   displayName: null,
   id: null,
-};
-
-const ExternalLink = ({
-  children,
-  href,
-}: {
-  children: React.ReactNode;
-  href: string;
-}) => {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex flex-row items-center gap-x-1 border-b border-zinc-700 text-sm font-semibold text-semantic-bg-secondary-alt-primary"
-    >
-      {children}
-    </a>
-  );
 };
 
 export const ModelHead = ({
@@ -119,26 +100,26 @@ export const ModelHead = ({
                 </Tag>
               ) : null}
               {model?.sourceUrl ? (
-                <ExternalLink href={model.sourceUrl}>
+                <HeadExternalLink href={model.sourceUrl}>
                   <GitHubIcon
                     width="w-[18px]"
                     height="h-[18px]"
                     color="fill-semantic-bg-secondary-alt-primary"
                   />
                   GitHub
-                </ExternalLink>
+                </HeadExternalLink>
               ) : null}
               {model?.documentationUrl ? (
-                <ExternalLink href={model.documentationUrl}>
+                <HeadExternalLink href={model.documentationUrl}>
                   <Icons.Link01 className="h-3.5 w-3.5 stroke-semantic-bg-secondary-alt-primary" />
                   Link
-                </ExternalLink>
+                </HeadExternalLink>
               ) : null}
               {model?.license ? (
-                <ExternalLink href={model.license}>
+                <HeadExternalLink href={model.license}>
                   <Icons.Scales02 className="h-3.5 w-3.5 stroke-semantic-bg-secondary-alt-primary" />
                   License
-                </ExternalLink>
+                </HeadExternalLink>
               ) : null}
             </React.Fragment>
           )}

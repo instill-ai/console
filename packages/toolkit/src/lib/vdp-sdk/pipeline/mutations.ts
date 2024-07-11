@@ -50,6 +50,11 @@ export type UpdateUserPipelinePayload = {
   sharing?: PipelineSharing;
   metadata?: GeneralRecord;
   readme?: string;
+  sourceUrl?: string;
+  documentationUrl?: string;
+  license?: string;
+  profileImage?: string;
+  tags?: string[];
 };
 
 export type UpdateUserPipelineResponse = {

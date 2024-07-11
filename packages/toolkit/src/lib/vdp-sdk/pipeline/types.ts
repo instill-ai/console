@@ -89,6 +89,10 @@ export type Pipeline = {
   permission: Permission;
   tags: string[];
   stats: PipelineStats;
+  profileImage: string;
+  sourceUrl: string;
+  documentationUrl: string;
+  license: string;
 };
 
 export type OperatorDefinition = {
