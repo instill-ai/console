@@ -4,11 +4,11 @@ import * as React from "react";
 import { useSearchParams } from "next/navigation";
 import debounce from "lodash.debounce";
 
-import { Button, Icons, Input, Select } from "@instill-ai/design-system";
+import { Button, Icons, Input, Select, toast } from "@instill-ai/design-system";
 
 import {
   CardPipeline,
-  CardSkeletonPipeline,
+  CardPipelineSkeleton,
   LoadingSpin,
   UserProfileCard,
 } from "../../../components";
@@ -16,7 +16,11 @@ import {
   InstillStore,
   Nullable,
   Pipeline,
+  sendAmplitudeData,
+  toastInstillError,
+  useAmplitudeCtx,
   useAuthenticatedUser,
+  useDeleteNamespacePipeline,
   useInfiniteNamespacePipelines,
   useInstillStore,
   useNamespacePipelines,
@@ -37,6 +41,7 @@ export const ViewPipelines = () => {
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
+  const { amplitudeIsInit } = useAmplitudeCtx();
 
   const [selectedVisibilityOption, setSelectedVisibilityOption] =
     React.useState<Visibility>(
@@ -108,6 +113,28 @@ export const ViewPipelines = () => {
     [],
   );
 
+  const deletePipeline = useDeleteNamespacePipeline();
+  const handleDeletePipeline = async (pipeline: Pipeline) => {
+    try {
+      await deletePipeline.mutateAsync({
+        namespacePipelineName: pipeline.name,
+        accessToken: accessToken ? accessToken : null,
+      });
+
+      if (amplitudeIsInit) {
+        sendAmplitudeData("delete_pipeline");
+      }
+
+      pipelines.refetch();
+    } catch (error) {
+      toastInstillError({
+        title: "Something went wrong when delete the pipeline",
+        error,
+        toast,
+      });
+    }
+  };
+
   return (
     <div className="flex flex-row px-20">
       <div className="w-[288px] pr-4 pt-6">
@@ -171,29 +198,21 @@ export const ViewPipelines = () => {
             allPipelines.length === 0 ? (
               <div className="flex h-[500px] w-full shrink-0 grow-0 items-center justify-center rounded-sm border border-semantic-bg-line">
                 <p className=" text-semantic-fg-secondary product-body-text-2-semibold">
-                  Let&rsquo;s build your first pipline! 🙌
+                  Let&rsquo;s build your first pipeline! 🙌
                 </p>
               </div>
             ) : (
               allPipelines.map((pipeline) => (
                 <CardPipeline
                   key={pipeline.id}
-                  ownerID={pipeline.ownerName.split("/")[1] ?? ""}
                   pipeline={pipeline}
-                  isOwner={
-                    me.isSuccess ? pipeline.ownerName === me.data.name : false
-                  }
-                  ownerDisplayName={
-                    "user" in pipeline.owner
-                      ? pipeline.owner.user.profile?.displayName ?? null
-                      : pipeline.owner.organization.profile?.displayName ?? null
-                  }
+                  onDelete={handleDeletePipeline}
                 />
               ))
             )
           ) : (
             Array.from({ length: 1 }).map((_, index) => (
-              <CardSkeletonPipeline key={`card-skelton-${index}`} />
+              <CardPipelineSkeleton key={`card-skelton-${index}`} />
             ))
           )}
         </div>
