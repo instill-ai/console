@@ -177,7 +177,7 @@ export const MarkdownTab = ({ knowledgeBase }: MarkdownTabProps) => {
               <div className="flex items-center justify-center gap-3 border-b border-semantic-bg-line bg-semantic-bg-base-bg p-2">
                 <div className="flex items-center gap-1">
                   <div className="text-semantic-fg-primary product-body-text-3-medium">
-                    Processed status
+                    Processed results
                   </div>
                   <Button
                     variant="tertiaryGrey"

@@ -6,6 +6,7 @@ import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
 import {
   useGetKnowledgeBases,
   useCreateKnowledgeBase,
+  useUpdateKnowledgeBase,
 } from "../../../lib/react-query-service/knowledge";
 import {
   InstillStore,
@@ -23,6 +24,7 @@ type KnowledgeBaseTabProps = {
   onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
   accessToken: string | null;
 };
+
 const CreateKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().min(1, { message: "Description is required" }),
@@ -59,6 +61,7 @@ export const KnowledgeBaseTab = ({
   });
 
   const createKnowledgeBase = useCreateKnowledgeBase();
+  const updateKnowledgeBase = useUpdateKnowledgeBase();
 
   React.useEffect(() => {
     if (getKnowledgeBases.data) {
@@ -83,7 +86,6 @@ export const KnowledgeBaseTab = ({
         accessToken,
       });
 
-      // Ensure the newKnowledgeBase has a kbId before adding it to the state
       if (newKnowledgeBase && newKnowledgeBase.kbId) {
         setKnowledgeBases((prevKnowledgeBases) => [
           ...prevKnowledgeBases,
@@ -93,10 +95,61 @@ export const KnowledgeBaseTab = ({
         console.error("Created knowledge base is missing kbId");
       }
       setIsCreateDialogOpen(false);
-      // Refetch the knowledge bases to ensure we have the latest data
-      getKnowledgeBases.refetch();
     } catch (error) {
       console.error("Error creating knowledge base:", error);
+    }
+  };
+
+  const handleUpdateKnowledgeBase = async (
+    data: EditKnowledgeDialogData,
+    kbId: string
+  ) => {
+    if (!me.data?.id || !accessToken) return;
+
+    try {
+      const updatedKnowledgeBase = await updateKnowledgeBase.mutateAsync({
+        ownerId: me.data.id,
+        kbId: kbId,
+        payload: data,
+        accessToken,
+      });
+
+      if (updatedKnowledgeBase) {
+        setKnowledgeBases((prevKnowledgeBases) =>
+          prevKnowledgeBases.map((kb) =>
+            kb.kbId === kbId ? updatedKnowledgeBase : kb
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error updating knowledge base:", error);
+    }
+  };
+
+  const handleCloneKnowledgeBase = async (knowledgeBase: KnowledgeBase) => {
+    if (!me.data?.id || !accessToken) return;
+
+    const clonedKnowledgeBase = {
+      name: `${knowledgeBase.name}-clone`,
+      description: knowledgeBase.description,
+      tags: knowledgeBase.tags || [],
+    };
+
+    try {
+      const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
+        payload: clonedKnowledgeBase,
+        ownerId: me.data.id,
+        accessToken,
+      });
+
+      if (newKnowledgeBase) {
+        setKnowledgeBases((prevKnowledgeBases) => [
+          ...prevKnowledgeBases,
+          newKnowledgeBase,
+        ]);
+      }
+    } catch (error) {
+      console.error("Error cloning knowledge base:", error);
     }
   };
 
@@ -138,7 +191,8 @@ export const KnowledgeBaseTab = ({
               key={knowledgeBase.kbId || knowledgeBase.name}
               knowledgeBase={knowledgeBase}
               onCardClick={() => onKnowledgeBaseSelect(knowledgeBase)}
-              setKnowledgeBases={setKnowledgeBases}
+              onUpdateKnowledgeBase={handleUpdateKnowledgeBase}
+              onCloneKnowledgeBase={handleCloneKnowledgeBase}
             />
           ))}
         </div>
