@@ -272,7 +272,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
               </div>
               <div className="flex items-center justify-center gap-1">
                 <div className="text-nowrap text-semantic-fg-primary product-body-text-3-medium">
-                  Processed status
+                  Processed results
                 </div>
                 <Button
                   variant="tertiaryGrey"
@@ -305,9 +305,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                 </Button>
               </div>
               <div className="flex items-center justify-center gap-1">
-                <div className="text-semantic-fg-primary product-body-text-3-medium">
-                  Delete File
-                </div>
+                <div className="text-semantic-fg-primary product-body-text-3-medium"></div>
               </div>
             </div>
             {sortedData.map((item, index) => (

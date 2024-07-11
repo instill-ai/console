@@ -4,12 +4,11 @@ import {
   DropdownMenu,
   Button,
   Dialog,
+  Tag,
   // LinkButton,
 } from "@instill-ai/design-system";
 import * as React from "react";
-import { useUpdateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useUpdateKnowledgeBase";
 import { useDeleteKnowledgeBase } from "../../../lib/react-query-service/knowledge/useDeleteKnowledgeBase";
-import { useCreateKnowledgeBase } from "../../../lib/react-query-service/knowledge/useCreateKnowledgeBase";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import {
   InstillStore,
@@ -20,12 +19,6 @@ import {
 import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
 import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./undoDeleteTime";
 import DeleteKnowledgeBaseNotification from "./Notifications/DeleteKnowledgeBaseNotification";
-
-type CreateKnowledgeBaseCardProps = {
-  knowledgeBase: KnowledgeBase;
-  onCardClick: () => void;
-  setKnowledgeBases: React.Dispatch<React.SetStateAction<KnowledgeBase[]>>;
-};
 
 type EditKnowledgeDialogData = {
   name: string;
@@ -67,6 +60,13 @@ const Menu = ({ onDelete, onEdit, onDuplicate }: MenuProps) => {
               <Icons.Copy07 className="mr-2 h-4 w-4 stroke-semantic-fg-secondary" />
               Duplicate
             </DropdownMenu.Item>
+            <DropdownMenu.Item
+              onClick={onDuplicate}
+              className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
+            >
+              <Icons.DownloadCloud01 className="mr-2 h-4 w-4 stroke-semantic-fg-secondary" />
+              Export
+            </DropdownMenu.Item>
             <Separator orientation="horizontal" />
             <DropdownMenu.Item
               onClick={onDelete}
@@ -81,10 +81,21 @@ const Menu = ({ onDelete, onEdit, onDuplicate }: MenuProps) => {
     </React.Fragment>
   );
 };
+
+type CreateKnowledgeBaseCardProps = {
+  knowledgeBase: KnowledgeBase;
+  onCardClick: () => void;
+  setKnowledgeBases: React.Dispatch<React.SetStateAction<KnowledgeBase[]>>;
+  onUpdateKnowledgeBase: (updatedKnowledgeBase: KnowledgeBase) => void;
+  onCloneKnowledgeBase: (newKnowledgeBase: KnowledgeBase) => void;
+};
+
 export const CreateKnowledgeBaseCard = ({
   knowledgeBase,
   onCardClick,
   setKnowledgeBases,
+  onUpdateKnowledgeBase,
+  onCloneKnowledgeBase,
 }: CreateKnowledgeBaseCardProps) => {
   const [isHidden, setIsHidden] = React.useState(false);
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
@@ -105,45 +116,10 @@ export const CreateKnowledgeBaseCard = ({
   });
 
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
-  const updateKnowledgeBase = useUpdateKnowledgeBase();
-  const createKnowledgeBase = useCreateKnowledgeBase();
-
-  const handleEdit = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setEditDialogIsOpen(true);
-  };
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     setDeleteDialogIsOpen(true);
-  };
-
-  const handleDuplicate = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!me.data?.id || !accessToken) return;
-
-    const clonedKnowledgeBase = {
-      name: `${knowledgeBase.name}-clone`,
-      description: knowledgeBase.description,
-      tags: knowledgeBase.tags || [],
-    };
-
-    try {
-      const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
-        payload: clonedKnowledgeBase,
-        ownerId: me.data.id,
-        accessToken,
-      });
-
-      if (newKnowledgeBase) {
-        setKnowledgeBases((prevKnowledgeBases) => [
-          ...prevKnowledgeBases,
-          newKnowledgeBase,
-        ]);
-      }
-    } catch (error) {
-      console.error("Error cloning knowledge base:", error);
-    }
   };
 
   const confirmDelete = () => {
@@ -175,34 +151,20 @@ export const CreateKnowledgeBaseCard = ({
     }
   };
 
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setEditDialogIsOpen(true);
+  };
+
+  const handleDuplicate = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onCloneKnowledgeBase(knowledgeBase);
+  };
+
   const handleEditKnowledgeSubmit = async (data: EditKnowledgeDialogData) => {
-    if (!me.data?.id || !accessToken || !knowledgeBase.kbId) return;
-
-    const payload = {
-      name: data.name,
-      description: data.description,
-      tags: data.tags || [],
-    };
-
-    try {
-      const updatedKnowledgeBase = await updateKnowledgeBase.mutateAsync({
-        ownerId: me.data.id,
-        kbId: knowledgeBase.kbId,
-        payload,
-        accessToken,
-      });
-
-      if (updatedKnowledgeBase) {
-        setKnowledgeBases((prevKnowledgeBases) =>
-          prevKnowledgeBases.map((kb) =>
-            kb.kbId === knowledgeBase.kbId ? updatedKnowledgeBase : kb
-          )
-        );
-        setEditDialogIsOpen(false);
-      }
-    } catch (error) {
-      console.error("Error updating knowledge base:", error);
-    }
+    if (!knowledgeBase.kbId) return;
+    await onUpdateKnowledgeBase(data, knowledgeBase.kbId);
+    setEditDialogIsOpen(false);
   };
 
   const undoDelete = () => {
@@ -239,7 +201,7 @@ export const CreateKnowledgeBaseCard = ({
   return (
     <React.Fragment>
       <div
-        className="flex h-[175px] w-[360px] cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow"
+        className="flex h-[175px] w-[360px] cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow hover:bg-semantic-bg-base-bg"
         onClick={onCardClick}
       >
         <div className="flex items-center justify-between">
@@ -249,6 +211,11 @@ export const CreateKnowledgeBaseCard = ({
         <p className="mb-auto line-clamp-3 product-body-text-3-regular">
           {knowledgeBase.description}
         </p>
+        <div>
+          <Tag variant="lightNeutral" className="mr-2">
+            Text improvements for LLM
+          </Tag>
+        </div>
         <div className="flex items-end justify-end">
           <Menu
             onDelete={handleDelete}

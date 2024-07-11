@@ -8,7 +8,7 @@ import {
 } from "@instill-ai/design-system";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import { useState } from "react";
-import MetadataPreview from "./MetadataPreview";
+// import MetadataPreview from "./MetadataPreview";
 
 type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -78,7 +78,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
       </div>
       <Separator orientation="horizontal" className="mb-6" />
       <div className="flex">
-        <div className="w-2/3 pr-4">
+        <div className="w-full pr-4">
           <div className="mb-4 flex items-center space-x-2">
             <Button variant="secondaryGrey">
               <Icons.Plus className="mr-2 h-4 w-4 stroke-semantic-fg-secondary" />
@@ -140,21 +140,33 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
                           build a comprehensive knowledge base.
                         </p>
                         <div className="flex items-center justify-end gap-1">
-                          <Tag size="sm" variant="default" className="!rounded">
+                          <Tag
+                            size="sm"
+                            variant="lightNeutral"
+                            className="!rounded"
+                          >
                             <Icons.Type01 className="mr-1 h-2.5 w-2.5 stroke-semantic-fg-primary" />
-                            <span className="product-body-text-3-medium">
+                            <span className="text-semantic-fg-primary product-body-text-3-medium">
                               2,235
                             </span>
                           </Tag>
-                          <Tag size="sm" variant="default" className="!rounded">
+                          <Tag
+                            size="sm"
+                            variant="lightNeutral"
+                            className="!rounded"
+                          >
                             <Icons.Type01 className="mr-1 h-2.5 w-2.5 stroke-semantic-fg-primary" />
-                            <span className="product-body-text-3-medium">
+                            <span className="text-semantic-fg-primary product-body-text-3-medium">
                               0
                             </span>
                           </Tag>
-                          <Tag size="sm" variant="default" className="!rounded">
+                          <Tag
+                            size="sm"
+                            variant="lightNeutral"
+                            className="!rounded"
+                          >
                             <Icons.Type01 className="mr-1 h-2.5 w-2.5 stroke-semantic-fg-primary" />
-                            <span className="product-body-text-3-medium">
+                            <span className="text-semantic-fg-primary product-body-text-3-medium">
                               2cfefe7706...
                             </span>
                           </Tag>
@@ -167,9 +179,9 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
             </div>
           ))}
         </div>
-        <div className="w-1/3">
+        {/* <div className="w-1/3">
           <MetadataPreview />
-        </div>
+        </div> */}
       </div>
     </div>
   );
