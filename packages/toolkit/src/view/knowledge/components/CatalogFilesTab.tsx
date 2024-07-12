@@ -11,7 +11,7 @@ import * as React from "react";
 import { DELETE_FILE_TIMEOUT } from "./undoDeleteTime";
 import DeleteFileNotification from "./Notifications/DeleteFileNotification";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
-import { useListKnowledgeBaseFiles } from "../../../lib/react-query-service/knowledge/useListKnowledgeBaseFiles";
+import { useListKnowledgeBaseFiles, useDeleteKnowledgeBaseFile } from "../../../lib/react-query-service/knowledge";
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
