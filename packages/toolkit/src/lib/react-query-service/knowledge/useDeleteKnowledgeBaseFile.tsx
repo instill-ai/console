@@ -17,7 +17,7 @@ export function useDeleteKnowledgeBaseFile() {
                 throw new Error("accessToken not provided");
             }
             const client = createInstillAxiosClient(accessToken, true);
-            await client.delete(`/knowledge-bases/files?file_uid=${fileUid}`);
+            await client.delete(`/knowledge-bases/files?fileUid=${fileUid}`);
         },
         onSuccess: () => {
             queryClient.invalidateQueries(["knowledgeBaseFiles"]);
