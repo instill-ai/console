@@ -180,7 +180,8 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
           <div className="flex w-full flex-col">
             <div className="grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center border-b border-semantic-bg-line bg-semantic-bg-base-bg">
               <div className="flex items-center justify-center gap-1">
-                <div className="text-semantic-fg-primary product-body-text-3-medium">
+                <div className="text-semantic-fg-primary product-body-text-3-medium"
+                >
                   File name
                 </div>
                 <Button
@@ -397,8 +398,10 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
             <FileDetailsOverlay
               fileUid={selectedFileUid}
               kbId={knowledgeBase.kbId}
+              accessToken={accessToken}
               onClose={closeOverlay}
-            />
+              showFullFile={true}
+              ownerId={knowledgeBase.ownerName}            />
           )}
         </div>
       </div>
