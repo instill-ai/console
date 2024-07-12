@@ -14,7 +14,7 @@ export type TriggerNamespacePipelineRequest = {
 };
 
 export type TriggerNamespacePipelineResponse = {
-  outputs: Record<string, any>[];
+  outputs: GeneralRecord[];
   metadata: PipelineTriggerMetadata;
 };
 
@@ -39,7 +39,7 @@ export type TriggerNamespacePipelineReleaseRequest = {
 };
 
 export type TriggerNamespacePipelineReleaseResponse = {
-  outputs: Record<string, any>[];
+  outputs: GeneralRecord[];
   metadata: PipelineTriggerMetadata;
 };
 
