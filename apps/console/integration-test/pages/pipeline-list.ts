@@ -11,7 +11,7 @@ export class PipelineListPage {
   constructor(page: Page) {
     this.page = page;
     this.createPipelineButton = page.getByRole("button", {
-      name: /Create Pipeline/i,
+      name: "Create Pipeline",
     });
     this.createPipelineDialog = page.getByTestId("create-pipeline-dialog");
     this.createPipelineDialogIDField =
