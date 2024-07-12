@@ -10,7 +10,6 @@
     "Typescript"
   ],
   "scripts": {
-    "test": "vitest --run --passWithNoTests",
     "build": "tsup && pnpm ts-types",
     "dev": "tsup --watch",
     "dev-ts": "tsc --watch --emitDeclarationOnly",
