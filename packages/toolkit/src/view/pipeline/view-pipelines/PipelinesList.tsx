@@ -15,7 +15,7 @@ import {
 } from "../../../lib";
 
 export type PipelinesListProps = {
-  pipelines: Pipeline[];
+  pipelines?: Pipeline[];
   onPipelineDelete: () => void;
   isLoading: boolean;
   isSearchActive: boolean;
@@ -31,7 +31,7 @@ export const PipelinesList = (props: PipelinesListProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { toast } = useToast();
 
-  const isEmpty = !isLoading && pipelines.length === 0;
+  const isEmpty = !isLoading && !pipelines?.length;
 
   /* -------------------------------------------------------------------------
    * Handle pipeline pipeline
@@ -75,7 +75,7 @@ export const PipelinesList = (props: PipelinesListProps) => {
           <CardPipelineSkeleton key={index} />
         ))
       ) : !isEmpty ? (
-        pipelines.map((pipeline, index) => {
+        pipelines?.map((pipeline, index) => {
           return (
             <CardPipeline
               pipeline={pipeline}

@@ -53,10 +53,10 @@ export function useSortedReleases({
       return;
     }
 
-    const targetPage =
-      pipelineReleases.data.pages[pipelineReleases.data.pages.length - 1];
-
-    if (targetPage && targetPage.nextPageToken) {
+    if (
+      pipelineReleases.data.pages[pipelineReleases.data.pages.length - 1]
+        ?.nextPageToken
+    ) {
       pipelineReleases.fetchNextPage();
     }
   }, [pipelineReleases.isSuccess, pipelineReleases.data]);

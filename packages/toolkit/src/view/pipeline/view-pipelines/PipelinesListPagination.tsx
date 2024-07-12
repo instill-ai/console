@@ -30,7 +30,9 @@ export const PipelinesListPagination = ({
     }
 
     const pageSize = env("NEXT_PUBLIC_QUERY_PAGE_SIZE") || 10;
-    const totalPages = Math.ceil(pipelines.data.pages[0].totalSize / pageSize);
+    const totalPages = pipelines.data.pages[0]
+      ? Math.ceil(pipelines.data.pages[0].totalSize / pageSize)
+      : 1;
 
     let isNextDisabled = true;
 
