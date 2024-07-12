@@ -10,6 +10,7 @@ import { Button, Form, TabMenu, useToast } from "@instill-ai/design-system";
 
 import {
   CodeBlock,
+  EmptyView,
   LoadingSpin,
   ModelSectionHeader,
 } from "../../../components";
@@ -18,6 +19,7 @@ import {
   GeneralRecord,
   InstillStore,
   Nullable,
+  Pipeline,
   PipelineRelease,
   sendAmplitudeData,
   toastInstillError,
@@ -25,7 +27,6 @@ import {
   useComponentOutputFields,
   useInstillForm,
   useInstillStore,
-  useNamespacePipeline,
   useRouteInfo,
   useShallow,
   useTriggerNamespacePipeline,
@@ -45,8 +46,10 @@ type ModelOutputActiveView = "preview" | "json";
 
 export const PipelinePlayground = ({
   releases,
+  pipeline,
 }: {
   releases: PipelineRelease[];
+  pipeline?: Pipeline;
 }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const router = useRouter();
@@ -59,8 +62,9 @@ export const PipelinePlayground = ({
   const [outputActiveView, setOutputActiveView] =
     React.useState<ModelOutputActiveView>("preview");
 
-  const { accessToken, enabledQuery, navigationNamespaceAnchor } =
-    useInstillStore(useShallow(selector));
+  const { accessToken, navigationNamespaceAnchor } = useInstillStore(
+    useShallow(selector),
+  );
   const [pipelineRunResponse, setPipelineRunResponse] =
     React.useState<Nullable<TriggerNamespacePipelineResponse>>(null);
 
@@ -68,19 +72,10 @@ export const PipelinePlayground = ({
 
   const routeInfo = useRouteInfo();
 
-  const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.isSuccess
-      ? routeInfo.data.pipelineName
-      : null,
-    enabled: enabledQuery && routeInfo.isSuccess,
-    shareCode: shareCode ?? undefined,
-    accessToken,
-  });
-
   const variables = React.useMemo(() => {
-    if (pipeline.isSuccess) {
+    if (pipeline) {
       if (!currentVersion || releases.length === 0) {
-        return pipeline.data.recipe.variable ?? null;
+        return pipeline.recipe.variable ?? null;
       }
 
       const pipelineVersion = releases.find(
@@ -94,12 +89,12 @@ export const PipelinePlayground = ({
     }
 
     return null;
-  }, [releases, currentVersion, pipeline.isSuccess, pipeline.data]);
+  }, [releases, currentVersion, pipeline]);
 
   const outputs = React.useMemo(() => {
-    if (pipeline.isSuccess) {
+    if (pipeline) {
       if (!currentVersion || releases.length === 0) {
-        return pipeline.data.recipe.output ?? null;
+        return pipeline.recipe.output ?? null;
       }
 
       const pipelineVersion = releases.find(
@@ -113,7 +108,7 @@ export const PipelinePlayground = ({
     }
 
     return null;
-  }, [releases, currentVersion, pipeline.isSuccess, pipeline.data]);
+  }, [releases, currentVersion, pipeline]);
 
   const formSchema = React.useMemo(() => {
     if (currentVersion && releases.length > 0) {
@@ -124,21 +119,21 @@ export const PipelinePlayground = ({
       }
     }
 
-    if (pipeline.isSuccess) {
-      return pipeline.data.dataSpecification;
+    if (pipeline) {
+      return pipeline.dataSpecification;
     }
 
     return {
       input: null,
       output: null,
     };
-  }, [currentVersion, pipeline.data, pipeline.isSuccess, releases]);
+  }, [currentVersion, pipeline, releases]);
 
   const { form, fields, ValidatorSchema } = useInstillForm(
     formSchema?.input || null,
     null,
     {
-      disabledAll: !pipeline.data?.permission.canTrigger,
+      disabledAll: !pipeline?.permission.canTrigger,
     },
   );
 
@@ -152,11 +147,7 @@ export const PipelinePlayground = ({
   const triggerPipelineRelease = useTriggerNamespacePipelineRelease();
 
   async function onTriggerPipeline(formData: z.infer<typeof ValidatorSchema>) {
-    if (
-      !routeInfo.isSuccess ||
-      !routeInfo.data?.pipelineName ||
-      !pipeline.isSuccess
-    ) {
+    if (!routeInfo.isSuccess || !routeInfo.data?.pipelineName || !pipeline) {
       return;
     }
 
@@ -282,6 +273,17 @@ export const PipelinePlayground = ({
     return true;
   }, [outputs]);
 
+  if (!formSchema || !formSchema.input || !formSchema.output) {
+    return (
+      <EmptyView
+        iconName="AlertCircle"
+        title="Pipeline is not runnable"
+        description="This pipeline cannot be run. Please check the configuration and ensure all necessary components are set up correctly."
+        className="flex-1"
+      />
+    );
+  }
+
   return (
     <div className="flex flex-row">
       <div className="flex w-1/2 flex-col border-r border-semantic-bg-line pb-6 pr-6">
@@ -296,7 +298,7 @@ export const PipelinePlayground = ({
             <span className="text-sm text-semantic-accent-default">Form</span>
           </TabMenu.Item>
         </TabMenu.Root>
-        {pipeline.isSuccess ? (
+        {pipeline ? (
           inputIsNotDefined ? (
             <div className="flex flex-row justify-between pl-3">
               <div className="flex flex-row gap-x-6">
@@ -326,7 +328,7 @@ export const PipelinePlayground = ({
               >
                 <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
                 <div className="flex flex-row-reverse">
-                  {pipeline.isSuccess ? (
+                  {pipeline ? (
                     <RunButton
                       inOutPutFormID={inOutPutFormID}
                       inputIsNotDefined={inputIsNotDefined}

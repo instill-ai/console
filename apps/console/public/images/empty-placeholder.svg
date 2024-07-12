@@ -1,14 +1,5 @@
 <svg width="513" height="480" viewBox="0 0 513 480" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <filter id="filter0_d_458_13420" x="230.834" y="215" width="52" height="52" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-      <feOffset dy="1"/>
-      <feGaussianBlur stdDeviation="1"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0"/>
-      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_458_13420"/>
-      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_458_13420" result="shape"/>
-    </filter>
     <radialGradient id="paint0_radial_458_13420" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(240 240) rotate(90) scale(240 240)">
       <stop/>
       <stop offset="1" stop-opacity="0"/>
@@ -65,10 +56,5 @@
       </g>
       <rect x="17.334" y="0.5" width="479" height="479" stroke="#EAECF0"/>
     </g>
-  </g>
-  <g filter="url(#filter0_d_458_13420)">
-    <rect x="232.834" y="216" width="48" height="48" rx="10" fill="white"/>
-    <rect x="233.334" y="216.5" width="47" height="47" rx="9.5" stroke="#E1E6EF"/>
-    <path d="M259.834 246C259.834 247.657 261.177 249 262.834 249C264.491 249 265.834 247.657 265.834 246C265.834 244.343 264.491 243 262.834 243C261.177 243 259.834 244.343 259.834 246ZM259.834 246C257.447 246 255.158 245.052 253.47 243.364C251.782 241.676 250.834 239.387 250.834 237M250.834 237C252.491 237 253.834 235.657 253.834 234C253.834 232.343 252.491 231 250.834 231C249.177 231 247.834 232.343 247.834 234C247.834 235.657 249.177 237 250.834 237ZM250.834 237V249" stroke="#1D2433" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

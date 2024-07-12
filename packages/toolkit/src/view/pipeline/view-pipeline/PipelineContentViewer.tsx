@@ -67,12 +67,12 @@ export const PipelineContentViewer = ({
     }
     case "playground":
     default: {
-      content = <PipelinePlayground releases={releases} />;
+      content = <PipelinePlayground pipeline={pipeline} releases={releases} />;
     }
   }
 
   return (
-    <div className="mx-auto w-full max-w-7xl pt-8">
+    <div className="mx-auto w-full max-w-7xl pt-8 flex-1 flex flex-col">
       {pipeline ? (
         content
       ) : (

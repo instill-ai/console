@@ -1,6 +1,10 @@
 import { ColumnDef, DataTable } from "@instill-ai/design-system";
 
-import { PipelineRunStateLabel } from "../../../components";
+import {
+  EmptyView,
+  LoadingSpin,
+  PipelineRunStateLabel,
+} from "../../../components";
 import {
   convertToSecondsAndMilliseconds,
   formatDate,
@@ -83,6 +87,21 @@ export const PipelineRuns = ({ pipeline }: PipelineRunsProps) => {
       },
     },
   ];
+
+  if (triggers.isPending) {
+    return <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />;
+  }
+
+  if (triggers.isSuccess && triggers.data.triggers.length === 0) {
+    return (
+      <EmptyView
+        iconName="Zap"
+        title="No runs yet"
+        description="This pipeline hasn't been run yet."
+        className="flex-1"
+      />
+    );
+  }
 
   return (
     <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(2)]:w-40 [&_table_th:nth-child(3)]:w-40 [&_table_th:nth-child(4)]:w-36">

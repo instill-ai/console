@@ -70,6 +70,11 @@ export const ModelReadme = ({ model, onUpdate }: ModelReadmeProps) => {
       readme={model?.readme}
       canEdit={canEdit}
       onUpdate={onUpdateModelReadme}
+      placeholder={
+        canEdit
+          ? `You don't have a README. You can start creating one by clicking **Edit** icon in the top right corner.`
+          : "There is no README for this model."
+      }
     />
   );
 };

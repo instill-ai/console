@@ -3,6 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Button, DataTable } from "@instill-ai/design-system";
 
+import { EmptyView, LoadingSpin } from "../../../components";
 import { Pipeline, PipelineRelease, useRouteInfo } from "../../../lib";
 import { getHumanReadableStringFromTime } from "../../../server";
 import { TABLE_PAGE_SIZE } from "./constants";
@@ -88,6 +89,21 @@ export const PipelineVersions = ({
       `/${routeInfo.data.namespaceId}/pipelines/${pipeline?.id}/playground?${combinedSearchParams.toString()}`,
     );
   };
+
+  if (!isReady) {
+    return <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />;
+  }
+
+  if (isReady && releases.length === 0) {
+    return (
+      <EmptyView
+        iconName="GitMerge"
+        title="No versions deployed yet"
+        description="Once you deploy a version of your pipeline, it will appear here."
+        className="flex-1"
+      />
+    );
+  }
 
   return (
     <div className="[&_table]:table-fixed [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(2)]:w-40 [&_table_th:nth-child(3)]:w-28">

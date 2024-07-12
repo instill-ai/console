@@ -106,7 +106,7 @@ export const ViewPipeline = () => {
 
   return (
     <React.Fragment>
-      <div className="flex flex-col px-12">
+      <div className="flex flex-col px-12 min-h-full">
         <Head
           onActiveVersionUpdate={updateActiveVersionUrl}
           releases={releases.data}

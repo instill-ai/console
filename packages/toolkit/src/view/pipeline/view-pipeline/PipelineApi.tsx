@@ -6,7 +6,7 @@ import type {
   PipelineRelease,
   PipelineVariableFieldMap,
 } from "../../../lib";
-import { CodeBlock, ModelSectionHeader } from "../../../components";
+import { CodeBlock, EmptyView, ModelSectionHeader } from "../../../components";
 import { CodeString } from "../../../components/CodeString";
 import { defaultCodeSnippetStyles } from "../../../constant";
 import {
@@ -80,6 +80,17 @@ export const PipelineApi = ({ pipeline, releases }: PipelineApiProps) => {
       inputsString: JSON.stringify({ inputs: [input] }, null, 2),
     });
   }, [formSchema, currentVersion, pipeline]);
+
+  if (!formSchema || !formSchema.input || !formSchema.output) {
+    return (
+      <EmptyView
+        iconName="AlertCircle"
+        title="Pipeline is not runnable"
+        description="This pipeline cannot be run. Please check the configuration and ensure all necessary components are set up correctly."
+        className="flex-1"
+      />
+    );
+  }
 
   return (
     <div className="flex flex-col">
