@@ -6,3 +6,4 @@ export * from "./useUploadKnowledgeBaseFile";
 export * from "./useProcessKnowledgeBaseFiles";
 export * from "./useListKnowledgeBaseFiles";
 export * from './useDeleteKnowledgeBaseFile';
+export * from './useGetFileDetails';
