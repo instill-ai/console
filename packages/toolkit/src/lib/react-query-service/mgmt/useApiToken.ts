@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import type { Nullable } from "../../type";
-import { getApiTokenQuery } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useApiToken({
   tokenName,
@@ -21,9 +21,10 @@ export function useApiToken({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const token = await getApiTokenQuery({
+      const client = getInstillAPIClient({ accessToken });
+
+      const token = await client.core.token.getApiToken({
         tokenName,
-        accessToken,
       });
 
       return Promise.resolve(token);

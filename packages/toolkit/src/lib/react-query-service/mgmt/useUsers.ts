@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import type { Nullable } from "../../type";
 import { env } from "../../../server";
-import { listUsersQuery } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useUsers({
   accessToken,
@@ -20,10 +20,11 @@ export function useUsers({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const users = await listUsersQuery({
+      const client = getInstillAPIClient({ accessToken });
+
+      const users = await client.core.user.listUsers({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-        nextPageToken: null,
-        accessToken,
+        enablePagination: false,
       });
 
       return Promise.resolve(users);

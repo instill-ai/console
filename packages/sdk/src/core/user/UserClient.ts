@@ -3,6 +3,7 @@ import { APIResource } from "../../main/resource";
 import {
   GetAuthenticatedResponse,
   GetUserRequest,
+  GetUserResponse,
   ListUsersRequest,
   ListUsersResponse,
   UpdateAuthenticatedUserRequest,
@@ -42,9 +43,12 @@ export class UserClient extends APIResource {
     props: ListUsersRequest & { enablePagination: false },
   ): Promise<User[]>;
   async listUsers(
-    props: ListUsersRequest & { enablePagination: boolean },
+    props: ListUsersRequest & { enablePagination: undefined },
+  ): Promise<User[]>;
+  async listUsers(
+    props: ListUsersRequest & { enablePagination?: boolean },
   ): Promise<ListUsersResponse | User[]>;
-  async listUsers(props: ListUsersRequest & { enablePagination: boolean }) {
+  async listUsers(props: ListUsersRequest & { enablePagination?: boolean }) {
     const { pageSize, pageToken, enablePagination } = props;
     const users: User[] = [];
     try {
@@ -67,7 +71,7 @@ export class UserClient extends APIResource {
           ...(await this.listUsers({
             pageSize,
             pageToken: data.nextPageToken,
-            enablePagination,
+            enablePagination: false,
           })),
         );
       }
@@ -80,8 +84,8 @@ export class UserClient extends APIResource {
 
   async getUser({ userName }: GetUserRequest) {
     try {
-      const data = this._client.get<User>(`/${userName}`);
-      return Promise.resolve(data);
+      const data = await this._client.get<GetUserResponse>(`/${userName}`);
+      return Promise.resolve(data.user);
     } catch (error) {
       return Promise.reject(error);
     }

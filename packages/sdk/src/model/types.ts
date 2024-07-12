@@ -1,5 +1,11 @@
 import { Organization, User } from "../core";
-import { InstillJSONSchema, Operation, Permission, Visibility } from "../types";
+import {
+  GeneralRecord,
+  InstillJSONSchema,
+  Operation,
+  Permission,
+  Visibility,
+} from "../types";
 
 export type ModelReleaseStage =
   | "RELEASE_STAGE_UNSPECIFIED"
@@ -46,7 +52,7 @@ export type ModelDefinition = {
   documentationUrl: string;
   icon: string;
   releaseStage: ModelReleaseStage;
-  modelSpec: Record<string, any>;
+  modelSpec: GeneralRecord;
   createTime: string;
   updateTime: string;
 };
@@ -78,8 +84,8 @@ export type Model = {
   permission: Permission;
   inputSchema: InstillJSONSchema | null;
   outputSchema: InstillJSONSchema | null;
-  sampleInput: Record<string, Record<string, any>>;
-  sampleOutput: Record<string, Record<string, any>>;
+  sampleInput: Record<string, GeneralRecord>;
+  sampleOutput: Record<string, GeneralRecord>;
 };
 
 export type ModelRegion = {

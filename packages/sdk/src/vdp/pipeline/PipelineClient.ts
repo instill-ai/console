@@ -48,12 +48,17 @@ export class PipelineClient extends APIResource {
   ): Promise<Pipeline[]>;
   async listAccessiblePipelines(
     props: ListAccessiblePipelinesRequest & {
-      enablePagination: boolean;
+      enablePagination: undefined;
+    },
+  ): Promise<Pipeline[]>;
+  async listAccessiblePipelines(
+    props: ListAccessiblePipelinesRequest & {
+      enablePagination?: boolean;
     },
   ): Promise<ListAccessiblePipelineResponse | Pipeline[]>;
   async listAccessiblePipelines(
     props: ListAccessiblePipelinesRequest & {
-      enablePagination: boolean;
+      enablePagination?: boolean;
     },
   ) {
     const {
@@ -93,7 +98,7 @@ export class PipelineClient extends APIResource {
           ...(await this.listAccessiblePipelines({
             pageSize,
             pageToken: data.nextPageToken,
-            enablePagination,
+            enablePagination: false,
             filter,
             visibility,
             orderBy,

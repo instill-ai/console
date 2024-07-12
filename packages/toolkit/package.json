@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/toolkit",
-  "version": "0.95.2-hotfix.2",
+  "version": "0.96.0-rc.6",
   "description": "Instill AI's frontend toolkit",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -51,6 +51,7 @@
     "@instill-ai/eslint-config-cortex": "workspace:*",
     "@instill-ai/prettier-config-cortex": "workspace:*",
     "@instill-ai/tsconfig": "workspace:*",
+    "instill-sdk": "workspace:*",
     "@microsoft/api-extractor": "^7.47.0",
     "@testing-library/jest-dom": "^6.2.1",
     "@testing-library/react": "^14.1.2",

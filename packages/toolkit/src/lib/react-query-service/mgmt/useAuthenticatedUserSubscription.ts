@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import type { Nullable } from "../../type";
-import { getAuthenticatedUserSubscriptionsQuery } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useAuthenticatedUserSubscription({
   accessToken,
@@ -19,9 +19,10 @@ export function useAuthenticatedUserSubscription({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const subscription = await getAuthenticatedUserSubscriptionsQuery({
-        accessToken,
-      });
+      const client = getInstillAPIClient({ accessToken });
+
+      const subscription =
+        await client.core.subscription.getAuthenticatedUserSubscription();
 
       return Promise.resolve(subscription);
     },

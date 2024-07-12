@@ -127,9 +127,9 @@ export type PermissionRole =
 
 export type PipelineTrace = {
   success: boolean;
-  inputs: Record<string, any>[];
-  outputs: Record<string, any>[];
-  error: Record<string, any>;
+  inputs: GeneralRecord[];
+  outputs: GeneralRecord[];
+  error: GeneralRecord;
   computeYimeInSeconds: number;
 };
 

@@ -156,7 +156,9 @@ export class MetricClient extends APIResource {
       }
 
       return Promise.resolve(pipelineTriggerTableRecords);
-    } catch (error) {}
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 
   // async listPipelineTriggerComputationTimeCharts(

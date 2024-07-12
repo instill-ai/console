@@ -26,10 +26,13 @@ export class TokenClient extends APIResource {
     props: ListApiTokenRequest & { enablePagination: false },
   ): Promise<ApiToken[]>;
   async listAPITokens(
-    props: ListApiTokenRequest & { enablePagination: boolean },
+    props: ListApiTokenRequest & { enablePagination: undefined },
+  ): Promise<ApiToken[]>;
+  async listAPITokens(
+    props: ListApiTokenRequest & { enablePagination?: boolean },
   ): Promise<ListApiTokensResponse | ApiToken[]>;
   async listAPITokens(
-    props: ListApiTokenRequest & { enablePagination: boolean },
+    props: ListApiTokenRequest & { enablePagination?: boolean },
   ) {
     const { pageSize, pageToken, enablePagination } = props;
 
@@ -55,7 +58,7 @@ export class TokenClient extends APIResource {
           ...(await this.listAPITokens({
             pageSize,
             pageToken: data.nextPageToken,
-            enablePagination,
+            enablePagination: false,
           })),
         );
       }

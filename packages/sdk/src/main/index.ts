@@ -1,5 +1,3 @@
-import fetch from "isomorphic-unfetch";
-
 import {
   CreditClient,
   MetricClient,
@@ -63,6 +61,7 @@ export class InstillAPIClient {
           Authorization: `Bearer ${this.apiToken}`,
           ...opt?.additionalHeaders,
         },
+        body: opt?.body,
       });
 
       if (!response.ok) {

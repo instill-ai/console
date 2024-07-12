@@ -1,19 +1,21 @@
 import { QueryClient } from "@tanstack/react-query";
 
 import { Nullable } from "../../../type";
-import { getAuthenticatedUserQuery } from "../../../vdp-sdk";
+import { getInstillAPIClient } from "../../../vdp-sdk";
 
 export async function fetchAuthenticatedUser({
   accessToken,
 }: {
   accessToken: Nullable<string>;
 }) {
-  try {
-    if (!accessToken) {
-      return Promise.reject(new Error("accessToken not provided"));
-    }
+  if (!accessToken) {
+    return Promise.reject(new Error("accessToken not provided"));
+  }
 
-    const user = await getAuthenticatedUserQuery({ accessToken });
+  try {
+    const client = getInstillAPIClient({ accessToken });
+
+    const user = await client.core.user.getAuthenticatedUser();
 
     return Promise.resolve(user);
   } catch (error) {
