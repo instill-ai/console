@@ -25,8 +25,8 @@ import {
   toastInstillError,
   useAmplitudeCtx,
   useComponentOutputFields,
-  useInstillForm,
   useInstillStore,
+  usePipelineTriggerRequestForm,
   useRouteInfo,
   useShallow,
   useTriggerNamespacePipeline,
@@ -129,13 +129,17 @@ export const PipelinePlayground = ({
     };
   }, [currentVersion, pipeline, releases]);
 
-  const { form, fields, ValidatorSchema } = useInstillForm(
-    formSchema?.input || null,
-    null,
-    {
-      disabledAll: !pipeline?.permission.canTrigger,
-    },
-  );
+  const {
+    fieldItems: fields,
+    form,
+    Schema: ValidatorSchema,
+  } = usePipelineTriggerRequestForm({
+    mode: "demo",
+    fields: variables,
+    keyPrefix: "pipeline-details-page-trigger-pipeline-form",
+    disabledFields: false,
+    disabledFieldControls: true,
+  });
 
   const componentOutputFields = useComponentOutputFields({
     mode: "demo",

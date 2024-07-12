@@ -10,7 +10,7 @@ export class PipelineOverviewPage {
   constructor(page: Page, pipelineID: string) {
     this.page = page;
     this.pagePath = `/admin/pipelines/${pipelineID}/playground`;
-    this.runButton = page.getByRole("button", { name: "Run" });
+    this.runButton = page.getByRole("button", { name: "Run", exact: true });
     this.inputForm = page.locator(
       "form[id='pipeline-details-page-trigger-pipeline-form']",
     );
