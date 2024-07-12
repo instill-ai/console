@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { IconBase, IconBaseProps } from "./IconBase";
 
-export const AlighLeft = React.forwardRef<
+export const AlignLeft = React.forwardRef<
   SVGSVGElement,
   Omit<IconBaseProps, "viewBox" | "children">
 >((props, ref) => {
@@ -25,4 +25,4 @@ export const AlighLeft = React.forwardRef<
     </IconBase>
   );
 });
-AlighLeft.displayName = "IconAlighLeft";
+AlignLeft.displayName = "IconAlignLeft";

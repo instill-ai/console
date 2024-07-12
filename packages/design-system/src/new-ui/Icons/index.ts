@@ -1,7 +1,7 @@
 import { Activity } from "./Activity";
 import { AlertCircle } from "./AlertCircle";
 import { AlertTriangle } from "./AlertTriangle";
-import { AlighLeft } from "./AlighLeft";
+import { AlignLeft } from "./AlignLeft";
 import { ArrowDown } from "./ArrowDown";
 import { ArrowLeft } from "./ArrowLeft";
 import { ArrowNarrowLeft } from "./ArrowNarrowLeft";
@@ -128,7 +128,7 @@ export const Icons = {
   Activity,
   AlertCircle,
   AlertTriangle,
-  AlighLeft,
+  AlignLeft,
   ArrowUp,
   ArrowDown,
   ArrowLeft,

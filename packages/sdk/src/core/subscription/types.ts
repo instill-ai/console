@@ -1,0 +1,66 @@
+import { Nullable } from "../../types";
+
+export type StripeSubscriptionStatus =
+  | "STATUS_UNSPECIFIED"
+  | "STATUS_INCOMPLETE"
+  | "STATUS_INCOMPLETE_EXPIRED"
+  | "STATUS_TRIALING"
+  | "STATUS_ACTIVE"
+  | "STATUS_PAST_DUE"
+  | "STATUS_CANCELED"
+  | "STATUS_UNPAID"
+  | "STATUS_PAUSED";
+
+export type UserSubscriptionPlan =
+  | "PLAN_UNSPECIFIED"
+  | "PLAN_FREEMIUM"
+  | "PLAN_STARTER"
+  | "PLAN_UNPAID";
+
+export type OrganizationSubscriptionPlan =
+  | "PLAN_UNSPECIFIED"
+  | "PLAN_FREEMIUM"
+  | "PLAN_TEAM"
+  | "PLAN_TEAM_PRO"
+  | "PLAN_ENTERPRISE"
+  | "PLAN_UNPAID";
+
+export type StripeSubscriptionDetail = {
+  productName: string;
+  id: string;
+  itemId: string;
+  price: number;
+  canceledAt?: number;
+  trialEnd?: number;
+  status: StripeSubscriptionStatus;
+  description: string;
+};
+
+export type UserSubscription = {
+  plan: UserSubscriptionPlan;
+  detail: Nullable<StripeSubscriptionDetail>;
+};
+
+export type OrganizationSubscription = {
+  plan: OrganizationSubscriptionPlan;
+  detail: Nullable<StripeSubscriptionDetail>;
+  maxSeats: number;
+  usedSeats: number;
+};
+
+export type GetAuthenticatedUserSubscriptionResponse = {
+  subscription: UserSubscription;
+};
+
+export type GetOrganizationSubscriptionRequest = {
+  /**
+   * The parent resource, i.e., the organization to which the subscription
+   * refers
+   * Format: organizations/{organization.id}.
+   */
+  organizationName: string;
+};
+
+export type GetOrganizationSubscriptionResponse = {
+  subscription: OrganizationSubscription;
+};
