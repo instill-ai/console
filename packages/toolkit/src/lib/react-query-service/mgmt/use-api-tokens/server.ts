@@ -2,22 +2,23 @@ import { QueryClient } from "@tanstack/react-query";
 
 import { env } from "../../../../server";
 import { Nullable } from "../../../type";
-import { listApiTokensQuery } from "../../../vdp-sdk";
+import { getInstillAPIClient } from "../../../vdp-sdk";
 
 export async function fetchApiTokens({
   accessToken,
 }: {
   accessToken: Nullable<string>;
 }) {
-  try {
-    if (!accessToken) {
-      return Promise.reject(new Error("accessToken not provided"));
-    }
+  if (!accessToken) {
+    return Promise.reject(new Error("accessToken not provided"));
+  }
 
-    const apiTokens = await listApiTokensQuery({
+  try {
+    const client = getInstillAPIClient({ accessToken });
+
+    const apiTokens = await client.core.token.listAPITokens({
       pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-      nextPageToken: null,
-      accessToken,
+      enablePagination: false,
     });
 
     return Promise.resolve(apiTokens);

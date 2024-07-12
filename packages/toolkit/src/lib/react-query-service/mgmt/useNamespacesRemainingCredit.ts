@@ -1,10 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { Nullable } from "../../type";
-import {
-  getRemainingCreditQuery,
-  GetRemainingCreditResponse,
-} from "../../vdp-sdk";
+import { getInstillAPIClient, GetRemainingCreditResponse } from "../../vdp-sdk";
 
 export type NamespaceRemainingCredit = {
   namespaceName: string;
@@ -37,12 +34,14 @@ export function useNamespacesRemainingCredit({
 
       const remainingCredits: NamespaceRemainingCredit[] = [];
 
+      const client = getInstillAPIClient({ accessToken });
+
       for (const namespaceName of namespaceNames) {
         try {
-          const remainingCredit = await getRemainingCreditQuery({
-            ownerName: namespaceName,
-            accessToken,
-          });
+          const remainingCredit =
+            await client.core.credit.getRemainingInstillCredit({
+              ownerName: namespaceName,
+            });
           remainingCredits.push({
             namespaceName,
             remainingCredit,

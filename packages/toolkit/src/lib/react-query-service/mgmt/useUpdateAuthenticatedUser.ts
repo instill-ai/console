@@ -1,11 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { UpdateAuthenticatedUserRequest } from "instill-sdk";
 
 import type { Nullable } from "../../type";
-import type { User } from "../../vdp-sdk";
-import {
-  AuthenticatedUser,
-  updateAuthenticatedUserMutation,
-} from "../../vdp-sdk";
+import { AuthenticatedUser, getInstillAPIClient } from "../../vdp-sdk";
 
 export function useUpdateAuthenticatedUser() {
   const queryClient = useQueryClient();
@@ -14,17 +11,16 @@ export function useUpdateAuthenticatedUser() {
       payload,
       accessToken,
     }: {
-      payload: Partial<User>;
+      payload: UpdateAuthenticatedUserRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const user = await updateAuthenticatedUserMutation({
-        payload,
-        accessToken,
-      });
+      const client = getInstillAPIClient({ accessToken });
+
+      const user = await client.core.user.updateAuthenticatedUser(payload);
 
       return Promise.resolve(user);
     },

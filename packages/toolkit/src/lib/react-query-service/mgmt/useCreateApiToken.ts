@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CreateApiTokenRequest } from "instill-sdk";
 
 import type { Nullable } from "../../type";
-import type { ApiToken, CreateApiTokenPayload } from "../../vdp-sdk";
-import { createApiTokenMutation } from "../../vdp-sdk";
+import type { ApiToken } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useCreateApiToken() {
   const queryClient = useQueryClient();
@@ -11,17 +12,16 @@ export function useCreateApiToken() {
       payload,
       accessToken,
     }: {
-      payload: CreateApiTokenPayload;
+      payload: CreateApiTokenRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const token = await createApiTokenMutation({
-        payload,
-        accessToken,
-      });
+      const client = getInstillAPIClient({ accessToken });
+
+      const token = await client.core.token.createApiToken(payload);
 
       return Promise.resolve({ token });
     },

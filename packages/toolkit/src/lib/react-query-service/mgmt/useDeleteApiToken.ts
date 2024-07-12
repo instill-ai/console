@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import type { Nullable } from "../../type";
 import type { ApiToken } from "../../vdp-sdk";
-import { deleteApiTokenMutation } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useDeleteApiToken() {
   const queryClient = useQueryClient();
@@ -18,7 +18,10 @@ export function useDeleteApiToken() {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      await deleteApiTokenMutation({ tokenName, accessToken });
+      const client = getInstillAPIClient({ accessToken });
+
+      await client.core.token.deleteApiToken({ tokenName });
+
       return Promise.resolve(tokenName);
     },
     onSuccess: (tokenName) => {
