@@ -17,21 +17,21 @@ type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
 };
 
-type FileStatus = "FILE_PROCESS_STATUS_NOTSTARTED" | "FILE_PROCESS_STATUS_WAITING" | "FILE_PROCESS_STATUS_CONVERTING" | "FILE_PROCESS_STATUS_CHUNKING" | "FILE_PROCESS_STATUS_EMBEDDING" | "FILE_PROCESS_STATUS_COMPLETED" | "FILE_PROCESS_STATUS_FAILED";
+type FileStatus = "NOTSTARTED" | "WAITING" | "CONVERTING" | "CHUNKING" | "EMBEDDING" | "COMPLETED" | "FAILED";
 
 type TagVariant = "lightNeutral" | "lightYellow" | "default" | "lightGreen" | "lightRed";
 
 const getStatusTag = (status: FileStatus): { variant: TagVariant; dotColor: string } => {
   const statusMap: Record<FileStatus, { variant: TagVariant; dotColor: string }> = {
-    FILE_PROCESS_STATUS_NOTSTARTED: { variant: "lightNeutral", dotColor: "bg-semantic-fg-secondary" },
-    FILE_PROCESS_STATUS_WAITING: { variant: "lightYellow", dotColor: "bg-semantic-warning-default" },
-    FILE_PROCESS_STATUS_CONVERTING: { variant: "default", dotColor: "bg-semantic-accent-default" },
-    FILE_PROCESS_STATUS_CHUNKING: { variant: "default", dotColor: "bg-semantic-accent-default" },
-    FILE_PROCESS_STATUS_EMBEDDING: { variant: "default", dotColor: "bg-semantic-accent-default" },
-    FILE_PROCESS_STATUS_COMPLETED: { variant: "lightGreen", dotColor: "bg-semantic-success-default" },
-    FILE_PROCESS_STATUS_FAILED: { variant: "lightRed", dotColor: "bg-semantic-error-default" },
+    NOTSTARTED: { variant: "lightNeutral", dotColor: "bg-semantic-fg-secondary" },
+    WAITING: { variant: "lightYellow", dotColor: "bg-semantic-warning-default" },
+    CONVERTING: { variant: "default", dotColor: "bg-semantic-accent-default" },
+    CHUNKING: { variant: "default", dotColor: "bg-semantic-accent-default" },
+    EMBEDDING: { variant: "default", dotColor: "bg-semantic-accent-default" },
+    COMPLETED: { variant: "lightGreen", dotColor: "bg-semantic-success-default" },
+    FAILED: { variant: "lightRed", dotColor: "bg-semantic-error-default" },
   };
-  return statusMap[status] || statusMap.FILE_PROCESS_STATUS_NOTSTARTED;
+  return statusMap[status] || statusMap.NOTSTARTED;
 };
 
 export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
@@ -56,15 +56,16 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
   const [deletedFile, setDeletedFile] = React.useState<File | null>(null);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
+
   const getStatusSortValue = (status: FileStatus): number => {
     const statusOrder = {
-      FILE_PROCESS_STATUS_NOTSTARTED: 0,
-      FILE_PROCESS_STATUS_WAITING: 1,
-      FILE_PROCESS_STATUS_CONVERTING: 2,
-      FILE_PROCESS_STATUS_CHUNKING: 3,
-      FILE_PROCESS_STATUS_EMBEDDING: 4,
-      FILE_PROCESS_STATUS_COMPLETED: 5,
-      FILE_PROCESS_STATUS_FAILED: 6,
+      NOTSTARTED: 0,
+      WAITING: 1,
+      CONVERTING: 2,
+      CHUNKING: 3,
+      EMBEDDING: 4,
+      COMPLETED: 5,
+      FAILED: 6,
     };
     return statusOrder[status] ?? -1;
   };
@@ -73,8 +74,8 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     if (!files) return [];
     return [...files].sort((a, b) => {
       if (sortConfig.key === "processStatus") {
-        const aValue = getStatusSortValue(a.processStatus);
-        const bValue = getStatusSortValue(b.processStatus);
+        const aValue = getStatusSortValue(a.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus);
+        const bValue = getStatusSortValue(b.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus);
         return sortConfig.direction === "ascending"
           ? aValue - bValue
           : bValue - aValue;
@@ -278,9 +279,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
             {sortedData.map((item, index) => (
               <div
                 key={item.fileUid}
-                className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center ${index !== sortedData.length - 1
-                  ? "border-b border-semantic-bg-line"
-                  : ""
+                className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center ${index !== sortedData.length - 1 ? "border-b border-semantic-bg-line" : ""
                   }`}
               >
                 <div className="flex items-center justify-center pl-4 text-semantic-bg-secondary-alt-primary product-body-text-3-regula underline underline-offset-1 cursor-pointer">
@@ -288,18 +287,18 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                 </div>
                 <div className="flex items-center justify-center">
                   <Tag size="sm" variant="lightNeutral">
-                    {item.type}
+                    {item.type.replace("FILE_TYPE_", "")}
                   </Tag>
                 </div>
                 <div className="flex items-center justify-center">
                   <Tag
                     size="sm"
-                    variant={getStatusTag(item.processStatus).variant}
+                    variant={getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).variant}
                     className="group relative"
                   >
                     <div className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${getStatusTag(item.processStatus).dotColor}`}></div>
-                      {item.processStatus}
+                      <div className={`w-2 h-2 rounded-full ${getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).dotColor}`}></div>
+                      {item.processStatus.replace("FILE_PROCESS_STATUS_", "")}
                     </div>
                   </Tag>
                 </div>
@@ -307,8 +306,8 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   {formatFileSize(item.size)}
                 </div>
                 <div className="flex flex-col items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                  <div>{`${item.totalChunks} chunks`}</div>
-                  <div>{`${item.totalTokens} tokens`}</div>
+                  <div>{`${item.totalChunks ?? 'N/A'} chunks`}</div>
+                  <div>{`${item.totalTokens ?? 'N/A'} tokens`}</div>
                 </div>
                 <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                   {formatDate(item.createTime)}
@@ -390,11 +389,13 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
 };
 
 // Helper functions
-function formatFileSize(bytes: number): string {
+function formatFileSize(bytes: number | undefined): string {
+  if (bytes === undefined || isNaN(bytes)) return 'N/A';
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  if (bytes === 0) return '0 Byte';
-  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)).toString());
-  return Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + ' ' + sizes[i];
+  if (bytes === 0) return '0 Bytes';
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  if (i === 0) return bytes + ' ' + sizes[i];
+  return (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i];
 }
 
 function formatDate(dateString: string): string {
