@@ -129,3 +129,11 @@ export type InstillJSONSchema = {
 } & InstillJsonSchemaProps;
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+
+export type Operation = {
+  name: string;
+  response?: GeneralRecord;
+  metadata?: GeneralRecord;
+  error?: GeneralRecord;
+  done: boolean;
+};

@@ -1,5 +1,10 @@
 import { APIResource } from "../../main/resource";
-import { CheckNamespaceTypeRequest, CheckNamespaceTypeResponse } from "./types";
+import {
+  CheckNameAvailabilityRequest,
+  CheckNameAvailabilityResponse,
+  CheckNamespaceTypeRequest,
+  CheckNamespaceTypeResponse,
+} from "./types";
 
 export class UtilsClient extends APIResource {
   async checkNamespaceType({ id }: CheckNamespaceTypeRequest) {
@@ -12,6 +17,21 @@ export class UtilsClient extends APIResource {
       );
 
       return Promise.resolve(data.type);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async checkNameAvailability({ name }: CheckNameAvailabilityRequest) {
+    try {
+      const data = await this._client.post<CheckNameAvailabilityResponse>(
+        "/check-name",
+        {
+          body: JSON.stringify({ name }),
+        },
+      );
+
+      return Promise.resolve(data.availability);
     } catch (error) {
       return Promise.reject(error);
     }

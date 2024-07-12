@@ -9,8 +9,12 @@ import {
   UserClient,
   UtilsClient,
 } from "../core";
+import { ModelClient } from "../model";
 import { GeneralRecord, HttpMethod } from "../types";
 import { ComponentClient, PipelineClient } from "../vdp";
+import { ReleaseClient } from "../vdp/release";
+import { SecretClient } from "../vdp/secret";
+import { TriggerClient } from "../vdp/trigger";
 
 export type RequestOption = {
   body?: string;
@@ -75,6 +79,9 @@ export class InstillAPIClient {
   vdp = {
     component: new ComponentClient(this),
     pipeline: new PipelineClient(this),
+    release: new ReleaseClient(this),
+    trigger: new TriggerClient(this),
+    secret: new SecretClient(this),
   };
 
   core = {
@@ -86,4 +93,6 @@ export class InstillAPIClient {
     credit: new CreditClient(this),
     utils: new UtilsClient(this),
   };
+
+  model = new ModelClient(this);
 }

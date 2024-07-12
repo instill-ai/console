@@ -1,3 +1,5 @@
+import { PipelineMode, PipelineReleaseState } from "../../vdp";
+
 export type CreditConsumptionChartRecord = {
   creditOwner: string;
   timeBuckets: string[];

@@ -180,13 +180,13 @@ export class PipelineClient extends APIResource {
   }
 
   async getNamespacePipeline({
-    pipelineName,
+    namespacePipelineName,
     view,
     shareCode,
   }: GetNamespacePipelineRequest) {
     try {
       const queryString = getQueryString({
-        baseURL: `/${pipelineName}`,
+        baseURL: `/${namespacePipelineName}`,
         view,
       });
 
@@ -230,21 +230,21 @@ export class PipelineClient extends APIResource {
   }
 
   async deleteNamespacePipeline({
-    pipelineName,
+    namespacePipelineName,
   }: DeleteNamespacePipelineRequest) {
     try {
-      await this._client.delete(`/${pipelineName}`);
+      await this._client.delete(`/${namespacePipelineName}`);
     } catch (error) {
       return Promise.reject(error);
     }
   }
 
   async updateNamespacePipeline(props: UpdateNamespacePipelineRequest) {
-    const { pipelineName, ...payload } = props;
+    const { namespacePipelineName, ...payload } = props;
 
     try {
       const data = await this._client.patch<UpdateNamespacePipelineResponse>(
-        `/${pipelineName}`,
+        `/${namespacePipelineName}`,
         {
           body: JSON.stringify(payload),
         },
@@ -256,11 +256,11 @@ export class PipelineClient extends APIResource {
   }
 
   async validateNamespacePipeline({
-    pipelineName,
+    namespacePipelineName,
   }: ValidateNamespacePipelineRequest) {
     try {
       const data = await this._client.post<ValidateNamespacePipelineResponse>(
-        `/${pipelineName}/validate`,
+        `/${namespacePipelineName}/validate`,
       );
       return Promise.resolve(data);
     } catch (error) {
@@ -269,12 +269,12 @@ export class PipelineClient extends APIResource {
   }
 
   async renameNamespacePipeline({
-    pipelineName,
+    namespacePipelineName,
     newPipelineId,
   }: RenameNamespacePipelineRequest) {
     try {
       const data = await this._client.post<RenameNamespacePipelineResponse>(
-        `/${pipelineName}/rename`,
+        `/${namespacePipelineName}/rename`,
         {
           body: JSON.stringify({ newPipelineId }),
         },
@@ -286,10 +286,10 @@ export class PipelineClient extends APIResource {
   }
 
   async cloneNamespacePipeline(props: CloneNamespacePipelineRequest) {
-    const { pipelineName, ...payload } = props;
+    const { namespacePipelineName, ...payload } = props;
 
     try {
-      await this._client.post(`/${pipelineName}/clone`, {
+      await this._client.post(`/${namespacePipelineName}/clone`, {
         body: JSON.stringify(payload),
       });
     } catch (error) {
@@ -300,10 +300,10 @@ export class PipelineClient extends APIResource {
   async cloneNamespacePipelineRelease(
     props: CloneNamespacePipelineReleaseRequest,
   ) {
-    const { pipelineReleaseName, ...payload } = props;
+    const { namespacePipelineReleaseName, ...payload } = props;
 
     try {
-      await this._client.post(`/${pipelineReleaseName}/clone`, {
+      await this._client.post(`/${namespacePipelineReleaseName}/clone`, {
         body: JSON.stringify(payload),
       });
     } catch (error) {

@@ -1,5 +1,4 @@
 import { JSONSchema7TypeName } from "json-schema";
-import { OpenAPIV3 } from "openapi-types";
 
 import {
   GeneralRecord,
@@ -7,9 +6,9 @@ import {
   Nullable,
   Owner,
   Permission,
-  Visibility,
 } from "../../types";
 import { ConnectorDefinition, OperatorDefinition } from "../component";
+import { PipelineRelease } from "../release";
 
 export type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
@@ -126,30 +125,12 @@ export type PermissionRole =
   | "ROLE_VIEWER"
   | "ROLE_EXECUTOR";
 
-export type PipelineRelease = {
-  name: string;
-  uid: string;
-  id: string;
-  description: string;
-  recipe: PipelineRecipe;
-  createTime: string;
-  updateTime: string;
-  visibility: Visibility;
-  openapiSchema: OpenAPIV3.Document;
-  metadata: GeneralRecord;
-  alias?: string;
-};
-
 export type PipelineTrace = {
   success: boolean;
   inputs: Record<string, any>[];
   outputs: Record<string, any>[];
   error: Record<string, any>;
   computeYimeInSeconds: number;
-};
-
-export type PipelineTriggerMetadata = {
-  traces: Record<string, PipelineTrace>;
 };
 
 export type ComponentBasicFields = {
@@ -240,7 +221,7 @@ export type ListNamespacePipelinesResponse = {
 };
 
 export type GetNamespacePipelineRequest = {
-  pipelineName: string;
+  namespacePipelineName: string;
   view?: string;
   shareCode?: string;
 };
@@ -265,11 +246,11 @@ export type CreateNamespacePipelineResponse = {
 };
 
 export type DeleteNamespacePipelineRequest = {
-  pipelineName: string;
+  namespacePipelineName: string;
 };
 
 export type UpdateNamespacePipelineRequest = {
-  pipelineName: string;
+  namespacePipelineName: string;
   description?: string;
   recipe?: PipelineRecipe;
   sharing?: PipelineSharing;
@@ -287,7 +268,7 @@ export type ValidatePipelineRecipeError = {
 };
 
 export type ValidateNamespacePipelineRequest = {
-  pipelineName: string;
+  namespacePipelineName: string;
 };
 
 export type ValidateNamespacePipelineResponse = {
@@ -296,7 +277,7 @@ export type ValidateNamespacePipelineResponse = {
 };
 
 export type RenameNamespacePipelineRequest = {
-  pipelineName: string;
+  namespacePipelineName: string;
   newPipelineId: string;
 };
 
@@ -305,14 +286,14 @@ export type RenameNamespacePipelineResponse = {
 };
 
 export type CloneNamespacePipelineRequest = {
-  pipelineName: string;
+  namespacePipelineName: string;
   target: string;
   description?: string;
   sharing?: PipelineSharing;
 };
 
 export type CloneNamespacePipelineReleaseRequest = {
-  pipelineReleaseName: string;
+  namespacePipelineReleaseName: string;
   target: string;
   description?: string;
   sharing?: PipelineSharing;

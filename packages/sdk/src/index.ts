@@ -1,9 +1,4 @@
-import { InstillAPIClient } from "./main";
-
-export * from "./helper";
-export * from "./core/metric";
-export * from "./core/hub";
-export * from "./core/organization";
-export * from "./types";
-
-export * from "./helper";
+export { InstillAPIClient } from "./main";
+export type * from "./core";
+export type * from "./model";
+export type * from "./vdp";

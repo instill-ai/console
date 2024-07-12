@@ -628,6 +628,9 @@ importers:
       openapi-types:
         specifier: ^12.1.3
         version: 12.1.3
+      tsup:
+        specifier: ^8.1.0
+        version: 8.1.0(@microsoft/api-extractor@7.47.0(@types/node@20.11.5))(postcss@8.4.38)(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.5.3))(typescript@5.5.3)
     devDependencies:
       '@instill-ai/eslint-config-cortex':
         specifier: workspace:*
@@ -21538,6 +21541,14 @@ snapshots:
       postcss: 8.4.31
       ts-node: 10.9.2(@types/node@20.11.5)(typescript@5.5.3)
 
+  postcss-load-config@4.0.2(postcss@8.4.38)(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.5.3)):
+    dependencies:
+      lilconfig: 3.0.0
+      yaml: 2.3.4
+    optionalDependencies:
+      postcss: 8.4.38
+      ts-node: 10.9.2(@types/node@20.11.5)(typescript@5.5.3)
+
   postcss-loader@8.1.1(postcss@8.4.38)(typescript@5.4.2)(webpack@5.89.0(esbuild@0.21.5)):
     dependencies:
       cosmiconfig: 9.0.0(typescript@5.4.2)
@@ -23334,6 +23345,30 @@ snapshots:
       '@microsoft/api-extractor': 7.47.0(@types/node@20.11.5)
       postcss: 8.4.31
       typescript: 5.4.2
+    transitivePeerDependencies:
+      - supports-color
+      - ts-node
+
+  tsup@8.1.0(@microsoft/api-extractor@7.47.0(@types/node@20.11.5))(postcss@8.4.38)(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.5.3))(typescript@5.5.3):
+    dependencies:
+      bundle-require: 4.0.2(esbuild@0.21.5)
+      cac: 6.7.14
+      chokidar: 3.5.3
+      debug: 4.3.4
+      esbuild: 0.21.5
+      execa: 5.1.1
+      globby: 11.1.0
+      joycon: 3.1.1
+      postcss-load-config: 4.0.2(postcss@8.4.38)(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.5.3))
+      resolve-from: 5.0.0
+      rollup: 4.18.0
+      source-map: 0.8.0-beta.0
+      sucrase: 3.35.0
+      tree-kill: 1.2.2
+    optionalDependencies:
+      '@microsoft/api-extractor': 7.47.0(@types/node@20.11.5)
+      postcss: 8.4.38
+      typescript: 5.5.3
     transitivePeerDependencies:
       - supports-color
       - ts-node

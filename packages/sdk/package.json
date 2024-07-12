@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "test": "vitest --run --passWithNoTests",
-    "build": "pnpm rimraf dist && tsup src && pnpm ts-types && ./generate_proto.sh",
+    "build": "tsup src && pnpm ts-types",
     "ts-types": "tsc --emitDeclarationOnly",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --cache",
     "publish-rc": "pnpm build && pnpm publish --no-git-checks"
@@ -45,7 +45,8 @@
     "@types/json-schema": "^7.0.11",
     "isomorphic-unfetch": "^4.0.2",
     "json-schema": "^0.4.0",
-    "openapi-types": "^12.1.3"
+    "openapi-types": "^12.1.3",
+    "tsup": "^8.1.0"
   },
   "pnpm": {
     "overrides": {

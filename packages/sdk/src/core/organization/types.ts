@@ -1,4 +1,3 @@
-import { Nullable, StripeSubscriptionDetail } from "../../types";
 import { User } from "../user";
 
 export type OrganizationProfile = {
