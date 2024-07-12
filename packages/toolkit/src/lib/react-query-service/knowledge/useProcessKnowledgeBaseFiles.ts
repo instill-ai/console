@@ -19,7 +19,7 @@ export function useProcessKnowledgeBaseFiles() {
       }
       const client = createInstillAxiosClient(accessToken, true);
       const response = await client.post<{ files: File[] }>(
-        `/v1alpha/knowledge-bases/files/processAsync`,
+        `/knowledge-bases/files/processAsync`,
         { file_uids: fileUids }
       );
       return response.data.files;
