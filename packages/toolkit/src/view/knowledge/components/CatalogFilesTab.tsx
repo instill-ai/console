@@ -11,7 +11,8 @@ import * as React from "react";
 import { DELETE_FILE_TIMEOUT } from "./undoDeleteTime";
 import DeleteFileNotification from "./Notifications/DeleteFileNotification";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
-import { useListKnowledgeBaseFiles, useDeleteKnowledgeBaseFile } from "../../../lib/react-query-service/knowledge";
+import { useListKnowledgeBaseFiles, useDeleteKnowledgeBaseFile, useGetFileDetails } from "../../../lib/react-query-service/knowledge";
+import FileDetailsOverlay from "./FileDetailsOverlay";
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -55,8 +56,16 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [deletedFile, setDeletedFile] = React.useState<File | null>(null);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const [selectedFileUid, setSelectedFileUid] = React.useState<string | null>(null);
 
 
+  const handleFileClick = (fileUid: string) => {
+    setSelectedFileUid(fileUid);
+  };
+
+  const closeOverlay = () => {
+    setSelectedFileUid(null);
+  };
   const getStatusSortValue = (status: FileStatus): number => {
     const statusOrder = {
       NOTSTARTED: 0,
@@ -282,7 +291,9 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                 className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center ${index !== sortedData.length - 1 ? "border-b border-semantic-bg-line" : ""
                   }`}
               >
-                <div className="flex items-center justify-center pl-4 text-semantic-bg-secondary-alt-primary product-body-text-3-regula underline underline-offset-1 cursor-pointer truncate">
+                <div className="flex items-center justify-center pl-4 text-semantic-bg-secondary-alt-primary product-body-text-3-regula underline underline-offset-1 cursor-pointer truncate"
+                  onClick={() => handleFileClick(item.fileUid)}
+                >
                   {item.name}
                 </div>
                 <div className="flex items-center justify-center">
@@ -382,6 +393,13 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
               setShowDeleteMessage={setShowDeleteMessage}
             />
           ) : null}
+          {selectedFileUid && (
+            <FileDetailsOverlay
+              fileUid={selectedFileUid}
+              kbId={knowledgeBase.kbId}
+              onClose={closeOverlay}
+            />
+          )}
         </div>
       </div>
     </div>
