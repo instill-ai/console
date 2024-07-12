@@ -8,3 +8,4 @@ export * from "./useListKnowledgeBaseFiles";
 export * from './useDeleteKnowledgeBaseFile';
 export * from './useGetFileDetails';
 export * from './useGetFileContent'
+export * from './useListChunks'

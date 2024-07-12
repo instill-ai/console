@@ -1,20 +1,34 @@
+// FileDetailsOverlay.tsx
+
 import { Icons, ScrollArea } from '@instill-ai/design-system'
 import React from 'react'
-import { useGetFileDetails, useGetFileContent } from '../../../lib/react-query-service/knowledge';
+import { useGetFileDetails, useGetFileContent, useListChunks } from '../../../lib/react-query-service/knowledge';
 
 type FileDetailsOverlayProps = {
     fileUid: string;
     accessToken: string;
     onClose: () => void;
     kbId: string;
+    showFullFile: boolean;
+    selectedChunkUid?: string;
+    ownerId: string;
 };
 
-const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({ fileUid, accessToken, onClose, kbId }) => {
+const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({
+    fileUid,
+    accessToken,
+    onClose,
+    kbId,
+    showFullFile,
+    selectedChunkUid,
+    ownerId
+}) => {
     const { data: fileDetails, isLoading: isLoadingDetails } = useGetFileDetails({
         fileUid,
         accessToken,
         enabled: true,
         kbId,
+        ownerId,
     });
 
     const { data: fileContent, isLoading: isLoadingContent } = useGetFileContent({
@@ -22,15 +36,39 @@ const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({ fileUid, access
         kbId,
         accessToken,
         enabled: true,
+        ownerId,
     });
 
-    if (isLoadingDetails || isLoadingContent) {
+    const { data: chunks, isLoading: isLoadingChunks } = useListChunks({
+        kbId,
+        accessToken,
+        enabled: !showFullFile,
+        ownerId,
+    });
+
+    if (isLoadingDetails || isLoadingContent || (!showFullFile && isLoadingChunks)) {
         return <div>Loading...</div>;
     }
 
-    if (!fileDetails || !fileContent) {
+    if (!fileDetails || !fileContent || (!showFullFile && !chunks)) {
         return <div>Error loading file details or content</div>;
     }
+
+    const highlightChunk = (content: string, chunkUid: string | undefined) => {
+        if (showFullFile || !chunkUid) return content;
+
+        const chunk = chunks.find(c => c.chunkUid === chunkUid);
+        if (!chunk) return content;
+
+        const { startPos, endPos } = chunk;
+        return (
+            content.slice(0, startPos) +
+            `<span style="background-color: yellow;">${content.slice(startPos, endPos)}</span>` +
+            content.slice(endPos)
+        );
+    };
+
+    const displayContent = highlightChunk(fileContent, selectedChunkUid);
 
     return (
         <div className="flex flex-col p-12 bg-semantic-bg-primary gap-4">
@@ -45,13 +83,13 @@ const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({ fileUid, access
             </div>
             <div className="flex flex-col gap-4">
                 <ScrollArea.Root>
-                    <div className="p-4 text-semantic-fg-primary product-body-text-3-regular">
-                        {fileContent.split('\n').map((line, index) => (
-                            <div key={index}>{line}</div>
-                        ))}
-                    </div>
+                    <div
+                        className="p-4 text-semantic-fg-primary product-body-text-3-regular"
+                        dangerouslySetInnerHTML={{ __html: displayContent }}
+                    />
                 </ScrollArea.Root>
             </div>
+            <button onClick={onClose}>Close</button>
         </div>
     )
 }
