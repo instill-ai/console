@@ -51,7 +51,7 @@ export const Sidebar = ({
   return (
     <aside className="flex w-[160px] flex-col gap-y-4">
       <div
-        className={getTabClassName("knowledge-base")}
+        className={`${getTabClassName("knowledge-base")} whitespace-nowrap`}
         onClick={() => handleTabChange("knowledge-base")}
       >
         My Knowledge Bases
@@ -60,7 +60,7 @@ export const Sidebar = ({
         className={getTabClassName("upload")}
         onClick={() => selectedKnowledgeBase && handleTabChange("upload")}
       >
-        Upload & Explore
+        Upload Documents
       </div>
       <div
         className={getTabClassName("catalog")}
