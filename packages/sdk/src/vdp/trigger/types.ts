@@ -7,7 +7,7 @@ export type PipelineTriggerMetadata = {
 
 export type TriggerNamespacePipelineRequest = {
   namespacePipelineName: string;
-  input: GeneralRecord[];
+  inputs: GeneralRecord[];
   returnTraces?: boolean;
   shareCode?: string;
   requesterUid?: string;
@@ -20,7 +20,7 @@ export type TriggerNamespacePipelineResponse = {
 
 export type TriggerAsyncNamespacePipelineRequest = {
   namespacePipelineName: string;
-  input: GeneralRecord[];
+  inputs: GeneralRecord[];
   returnTraces?: boolean;
   shareCode?: string;
   requesterUid?: string;
@@ -32,7 +32,7 @@ export type TriggerAsyncNamespacePipelineResponse = {
 
 export type TriggerNamespacePipelineReleaseRequest = {
   namespacePipelineReleaseName: string;
-  input: GeneralRecord[];
+  inputs: GeneralRecord[];
   returnTraces?: boolean;
   shareCode?: string;
   requesterUid?: string;
@@ -45,7 +45,7 @@ export type TriggerNamespacePipelineReleaseResponse = {
 
 export type TriggerAsyncNamespacePipelineReleaseRequest = {
   namespacePipelineReleaseName: string;
-  input: GeneralRecord[];
+  inputs: GeneralRecord[];
   returnTraces?: boolean;
   shareCode?: string;
   requesterUid?: string;

@@ -31,7 +31,7 @@ export function useRemainingCredit({
         return Promise.reject(new Error("ownerName not provided"));
       }
 
-      const client = getInstillAPIClient({ accessToken });
+      const client = getInstillAPIClient({ accessToken, publicAccess: false });
 
       const remainingCredit =
         await client.core.credit.getRemainingInstillCredit({

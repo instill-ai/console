@@ -20,7 +20,7 @@ export function useUsers({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const client = getInstillAPIClient({ accessToken });
+      const client = getInstillAPIClient({ accessToken, publicAccess: false });
 
       const users = await client.core.user.listUsers({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),

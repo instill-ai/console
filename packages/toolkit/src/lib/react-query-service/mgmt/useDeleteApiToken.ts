@@ -18,7 +18,7 @@ export function useDeleteApiToken() {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const client = getInstillAPIClient({ accessToken });
+      const client = getInstillAPIClient({ accessToken, publicAccess: false });
 
       await client.core.token.deleteApiToken({ tokenName });
 

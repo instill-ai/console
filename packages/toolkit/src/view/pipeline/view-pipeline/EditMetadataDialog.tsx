@@ -16,15 +16,14 @@ import {
   useToast,
 } from "@instill-ai/design-system";
 
+import type { Nullable } from "../../../lib";
 import {
-  Nullable,
   sendAmplitudeData,
   toastInstillError,
-  UpdateUserPipelinePayload,
   useAmplitudeCtx,
   useInstillStore,
   useRouteInfo,
-  useUpdateUserPipeline,
+  useUpdateNamespacePipeline,
 } from "../../../lib";
 
 const PipelineEditMetadataSchema = z.object({
@@ -53,18 +52,17 @@ export const EditMetadataDialog = ({
 
   const routeInfo = useRouteInfo();
 
-  const updateUserPipeline = useUpdateUserPipeline();
+  const updatePipeline = useUpdateNamespacePipeline();
   async function onSubmit(data: z.infer<typeof PipelineEditMetadataSchema>) {
     if (!routeInfo.isSuccess || !routeInfo?.data.pipelineName || !accessToken)
       return;
 
-    const payload: UpdateUserPipelinePayload = {
-      name: routeInfo.data.pipelineName,
-      description: data.description ?? undefined,
-    };
-
     try {
-      await updateUserPipeline.mutateAsync({ payload, accessToken });
+      await updatePipeline.mutateAsync({
+        namespacePipelineName: routeInfo.data.pipelineName,
+        description: data.description ?? undefined,
+        accessToken,
+      });
 
       if (amplitudeIsInit) {
         sendAmplitudeData("update_pipeline_description");

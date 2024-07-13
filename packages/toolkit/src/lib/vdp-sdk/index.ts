@@ -20,9 +20,11 @@ let instillAPIClient: Nullable<InstillAPIClient> = null;
 
 export function getInstillAPIClient({
   accessToken,
+  publicAccess,
 }: {
-  accessToken: string;
-}): InstillAPIClient {
+  accessToken?: string;
+  publicAccess: boolean;
+}) {
   if (!instillAPIClient) {
     const baseURL = `${
       process.env.NEXT_SERVER_API_GATEWAY_URL ??
@@ -31,7 +33,10 @@ export function getInstillAPIClient({
 
     instillAPIClient = new InstillAPIClient({
       baseURL,
-      apiToken: accessToken,
+
+      // When non logged in user is viewing some pages, accessToken will be null
+      apiToken: accessToken ?? "",
+      publicAccess,
     });
   }
 

@@ -60,7 +60,7 @@ export function useCreditConsumptionChartRecords({
         return Promise.reject(new Error("owner not provided"));
       }
 
-      const client = getInstillAPIClient({ accessToken });
+      const client = getInstillAPIClient({ accessToken, publicAccess: false });
 
       const data =
         await client.core.metric.listInstillCreditConsumptionTimeChart({

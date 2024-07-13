@@ -19,7 +19,7 @@ import {
   getInstillApiErrorMessage,
   sendAmplitudeData,
   useAmplitudeCtx,
-  useDeleteUserSecret,
+  useDeleteNamespaceSecret,
   useInstillStore,
 } from "../../../lib";
 
@@ -44,7 +44,7 @@ export const DeleteSecretDialog = ({ secretName }: { secretName: string }) => {
 
   const { toast } = useToast();
 
-  const deleteSecret = useDeleteUserSecret();
+  const deleteSecret = useDeleteNamespaceSecret();
 
   const handleDeleteApiToken = async () => {
     if (!accessToken) return;
@@ -52,7 +52,7 @@ export const DeleteSecretDialog = ({ secretName }: { secretName: string }) => {
 
     try {
       await deleteSecret.mutateAsync({
-        secretName,
+        namespaceSecretName: secretName,
         accessToken,
       });
       setIsLoading(false);

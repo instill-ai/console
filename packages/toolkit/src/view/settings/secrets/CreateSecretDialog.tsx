@@ -3,6 +3,7 @@
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isAxiosError } from "axios";
+import { CreateNamespaceSecretRequest } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -18,14 +19,13 @@ import {
 import { LoadingSpin } from "../../../components";
 import { InstillErrors } from "../../../constant";
 import {
-  CreateUserSecretPayload,
   getInstillApiErrorMessage,
   InstillStore,
   Nullable,
   sendAmplitudeData,
   useAmplitudeCtx,
   useAuthenticatedUser,
-  useCreateUserSecret,
+  useCreateNamespaceSecret,
   useInstillStore,
   useRouteInfo,
   useShallow,
@@ -85,7 +85,7 @@ export const CreateSecretDialog = () => {
     });
   }, [open, reset]);
 
-  const createSecret = useCreateUserSecret();
+  const createSecret = useCreateNamespaceSecret();
   const handleCreateAPIToken = async (
     data: z.infer<typeof CreateSecretSchema>,
   ) => {
@@ -102,23 +102,23 @@ export const CreateSecretDialog = () => {
       namespaceName = me.data.name;
     }
 
-    const payload: CreateUserSecretPayload = {
-      id: data.name,
-      value: data.value,
-      description: data.description ?? undefined,
-    };
-
     if (!namespaceName) {
       return;
     }
 
     setIsLoading(true);
 
+    const payload: CreateNamespaceSecretRequest = {
+      namespaceName,
+      id: data.name,
+      value: data.value,
+      description: data.description ?? undefined,
+    };
+
     try {
       await createSecret.mutateAsync({
         payload,
         accessToken,
-        entityName: namespaceName,
       });
 
       setIsLoading(false);

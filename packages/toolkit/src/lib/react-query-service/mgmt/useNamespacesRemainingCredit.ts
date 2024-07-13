@@ -34,7 +34,7 @@ export function useNamespacesRemainingCredit({
 
       const remainingCredits: NamespaceRemainingCredit[] = [];
 
-      const client = getInstillAPIClient({ accessToken });
+      const client = getInstillAPIClient({ accessToken, publicAccess: false });
 
       for (const namespaceName of namespaceNames) {
         try {

@@ -1,13 +1,13 @@
 "use client";
 
 import * as React from "react";
+import { TriggerNamespacePipelineResponse } from "instill-sdk";
 
 import {
   ChooseTitleFrom,
   GeneralRecord,
   InstillJSONSchema,
   Nullable,
-  TriggerUserPipelineResponse,
   useComponentOutputFields,
   useInstillStore,
 } from "../../../lib";
@@ -23,7 +23,7 @@ export const ComponentOutputs = ({
   outputSchema: Nullable<InstillJSONSchema>;
   nodeType: "connector" | "end";
   chooseTitleFrom: ChooseTitleFrom;
-  response?: Nullable<TriggerUserPipelineResponse>;
+  response?: Nullable<TriggerNamespacePipelineResponse>;
 }) => {
   const testModeTriggerResponse = useInstillStore(
     (store) => store.testModeTriggerResponse,
@@ -34,16 +34,17 @@ export const ComponentOutputs = ({
     const targetResponse = response ? response : testModeTriggerResponse;
 
     if (nodeType === "connector") {
-      if (
-        !targetResponse ||
-        !targetResponse.metadata.traces[componentID] ||
-        !targetResponse.metadata.traces[componentID]?.outputs ||
-        targetResponse.metadata.traces[componentID]?.outputs.length === 0
-      ) {
+      if (!targetResponse) {
         return data;
       }
 
-      data = targetResponse.metadata.traces[componentID]?.outputs[0] ?? null;
+      const traces = targetResponse.metadata.traces;
+
+      if (!traces || !traces[componentID]) {
+        return data;
+      }
+
+      data = traces[componentID]?.outputs[0] ?? null;
 
       return data;
     }

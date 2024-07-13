@@ -1,26 +1,32 @@
+"use client";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import type { Nullable } from "../../type";
 import type { Pipeline } from "../../vdp-sdk";
-import { deleteUserPipelineMutation } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
-export function useDeleteUserPipeline() {
+export function useDeleteNamespacePipeline() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
-      pipelineName,
+      namespacePipelineName,
       accessToken,
     }: {
-      pipelineName: string;
+      namespacePipelineName: string;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      await deleteUserPipelineMutation({ pipelineName, accessToken });
+      const client = getInstillAPIClient({ accessToken, publicAccess: false });
 
-      return Promise.resolve(pipelineName);
+      await client.vdp.pipeline.deleteNamespacePipeline({
+        namespacePipelineName,
+      });
+
+      return Promise.resolve(namespacePipelineName);
     },
     onSuccess: (pipelineName) => {
       // At this stage the pipelineName will be users/<uid>/pipelines/<pid>

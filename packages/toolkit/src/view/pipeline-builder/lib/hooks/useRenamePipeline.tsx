@@ -1,23 +1,25 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { isAxiosError } from "axios";
+import {
+  CreateNamespacePipelineRequest,
+  RenameNamespacePipelineRequest,
+  UpdateNamespacePipelineRequest,
+} from "instill-sdk";
 
 import { useToast } from "@instill-ai/design-system";
 
 import {
-  CreateUserPipelinePayload,
   getInstillApiErrorMessage,
   InstillStore,
-  RenameUserPipelinePayload,
   sendAmplitudeData,
-  UpdateUserPipelinePayload,
   useAmplitudeCtx,
-  useCreateUserPipeline,
+  useCreateNamespacePipeline,
   useInstillStore,
-  useRenameUserPipeline,
+  useRenameNamespacePipeline,
   useRouteInfo,
   useShallow,
-  useUpdateUserPipeline,
+  useUpdateNamespacePipeline,
 } from "../../../../lib";
 import { composePipelineMetadataMapFromNodes } from "../composePipelineMetadataMapFromNodes";
 import { composePipelineRecipeFromNodes } from "../composePipelineRecipeFromNodes";
@@ -51,9 +53,9 @@ export function useRenamePipeline() {
     accessToken,
   } = useInstillStore(useShallow(selector));
 
-  const createUserPipeline = useCreateUserPipeline();
-  const updateUserPipeline = useUpdateUserPipeline();
-  const renameUserPipeline = useRenameUserPipeline();
+  const createPipeline = useCreateNamespacePipeline();
+  const updatePipeline = useUpdateNamespacePipeline();
+  const renamePipeline = useRenameNamespacePipeline();
   return React.useCallback(
     async function handleRenamePipeline(newId: string) {
       if (
@@ -67,15 +69,15 @@ export function useRenamePipeline() {
       }
 
       if (pipelineIsNew) {
-        const payload: CreateUserPipelinePayload = {
+        const payload: CreateNamespacePipelineRequest = {
+          namespaceName: routeInfo.data.namespaceName,
           id: newId,
           recipe: composePipelineRecipeFromNodes(nodes),
           metadata: composePipelineMetadataMapFromNodes(nodes),
         };
 
         try {
-          const res = await createUserPipeline.mutateAsync({
-            entityName: routeInfo.data.namespaceName,
+          const res = await createPipeline.mutateAsync({
             payload,
             accessToken,
           });
@@ -126,15 +128,15 @@ export function useRenamePipeline() {
       // first then rename the pipeline
 
       if (pipelineRecipeIsDirty) {
-        const payload: UpdateUserPipelinePayload = {
-          name: routeInfo.data.pipelineName,
+        const payload: UpdateNamespacePipelineRequest = {
+          namespacePipelineName: routeInfo.data.pipelineName,
           recipe: composePipelineRecipeFromNodes(nodes),
           metadata: composePipelineMetadataMapFromNodes(nodes),
         };
 
         try {
-          await updateUserPipeline.mutateAsync({
-            payload,
+          await updatePipeline.mutateAsync({
+            ...payload,
             accessToken,
           });
 
@@ -162,13 +164,13 @@ export function useRenamePipeline() {
         }
       }
 
-      const payload: RenameUserPipelinePayload = {
-        name: routeInfo.data.pipelineName,
+      const payload: RenameNamespacePipelineRequest = {
+        namespacePipelineName: routeInfo.data.pipelineName,
         newPipelineId: newId,
       };
 
       try {
-        await renameUserPipeline.mutateAsync({
+        await renamePipeline.mutateAsync({
           payload: payload,
           accessToken,
         });
@@ -208,17 +210,17 @@ export function useRenamePipeline() {
     [
       accessToken,
       amplitudeIsInit,
-      createUserPipeline,
+      createPipeline,
       routeInfo.isSuccess,
       routeInfo.data,
       nodes,
       pipelineId,
       pipelineIsNew,
       pipelineRecipeIsDirty,
-      renameUserPipeline,
+      renamePipeline,
       router,
       toast,
-      updateUserPipeline,
+      updatePipeline,
       updatePipelineId,
       updatePipelineIsNew,
       updatePipelineName,

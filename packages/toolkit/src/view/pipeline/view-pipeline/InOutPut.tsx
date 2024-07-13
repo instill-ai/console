@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { TriggerNamespacePipelineResponse } from "instill-sdk";
 import * as z from "zod";
 
 import { Button, Form, useToast } from "@instill-ai/design-system";
@@ -12,16 +13,15 @@ import {
   Nullable,
   sendAmplitudeData,
   toastInstillError,
-  TriggerUserPipelineResponse,
   useAmplitudeCtx,
   useInstillStore,
+  useNamespacePipeline,
   usePipelineTriggerRequestForm,
   useRouteInfo,
   useShallow,
-  useTriggerUserPipeline,
-  useTriggerUserPipelineRelease,
+  useTriggerNamespacePipeline,
+  useTriggerNamespacePipelineRelease,
   useUserNamespaces,
-  useUserPipeline,
 } from "../../../lib";
 import { recursiveHelpers, useSortedReleases } from "../../pipeline-builder";
 import { ComponentOutputs } from "../../pipeline-builder/components/ComponentOutputs";
@@ -48,14 +48,16 @@ export const InOutPut = ({
   const { accessToken, enabledQuery, navigationNamespaceAnchor } =
     useInstillStore(useShallow(selector));
   const [response, setResponse] =
-    React.useState<Nullable<TriggerUserPipelineResponse>>(null);
+    React.useState<Nullable<TriggerNamespacePipelineResponse>>(null);
 
   const inOutPutFormID = "pipeline-details-page-trigger-pipeline-form";
 
   const routeInfo = useRouteInfo();
 
-  const pipeline = useUserPipeline({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.isSuccess
+      ? routeInfo.data.pipelineName
+      : null,
     enabled: enabledQuery && routeInfo.isSuccess,
     shareCode: shareCode ?? undefined,
     accessToken,
@@ -116,8 +118,8 @@ export const InOutPut = ({
     disabledFieldControls: true,
   });
 
-  const triggerPipeline = useTriggerUserPipeline();
-  const triggerPipelineRelease = useTriggerUserPipelineRelease();
+  const triggerPipeline = useTriggerNamespacePipeline();
+  const triggerPipelineRelease = useTriggerNamespacePipelineRelease();
 
   async function onTriggerPipeline(formData: z.infer<typeof Schema>) {
     if (
@@ -175,11 +177,9 @@ export const InOutPut = ({
         );
 
         const data = await triggerPipeline.mutateAsync({
-          pipelineName: routeInfo.data.pipelineName,
+          namespacePipelineName: routeInfo.data.pipelineName,
           accessToken,
-          payload: {
-            inputs: [parsedStructuredData],
-          },
+          inputs: [parsedStructuredData],
           returnTraces: true,
           shareCode: shareCode ?? undefined,
           requesterUid: targetNamespace ? targetNamespace.uid : undefined,
@@ -204,10 +204,8 @@ export const InOutPut = ({
         );
 
         const data = await triggerPipelineRelease.mutateAsync({
-          pipelineReleaseName: `${routeInfo.data.pipelineName}/releases/${selectedVersionId}`,
-          payload: {
-            inputs: [parsedStructuredData],
-          },
+          namespacePipelineReleaseName: `${routeInfo.data.pipelineName}/releases/${selectedVersionId}`,
+          inputs: [parsedStructuredData],
           accessToken,
           returnTraces: true,
           shareCode: shareCode ?? undefined,

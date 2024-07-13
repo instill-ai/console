@@ -14,12 +14,11 @@ export async function fetchNamespaceType({
     return Promise.reject(new Error("namespace not provided"));
   }
 
-  if (!accessToken) {
-    return Promise.reject(new Error("accessToken not provided"));
-  }
-
   try {
-    const client = getInstillAPIClient({ accessToken });
+    const client = getInstillAPIClient({
+      accessToken: accessToken ?? undefined,
+      publicAccess: accessToken ? false : true,
+    });
 
     const type = await client.core.utils.checkNamespaceType({
       id: namespace,

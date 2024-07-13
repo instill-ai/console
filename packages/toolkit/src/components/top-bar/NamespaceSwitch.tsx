@@ -21,11 +21,11 @@ import {
   useAuthenticatedUser,
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
+  useNamespacePipeline,
   useNamespacesRemainingCredit,
   useRouteInfo,
   useShallow,
   useUserModel,
-  useUserPipeline,
 } from "../../lib";
 import { useUserNamespaces } from "../../lib/useUserNamespaces";
 import { env } from "../../server";
@@ -76,8 +76,10 @@ export const NamespaceSwitch = () => {
     accessToken,
   });
 
-  const pipeline = useUserPipeline({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.isSuccess
+      ? routeInfo.data.pipelineName
+      : null,
     accessToken,
     enabled: enabledQuery && pathnameEvaluator.isPipelineOverviewPage(pathname),
   });

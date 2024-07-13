@@ -4,6 +4,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import cn from "clsx";
+import { CreateNamespacePipelineRequest } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -22,14 +23,13 @@ import {
 import { EntitySelector, LoadingSpin } from "../../../components";
 import { DataTestID, InstillErrors } from "../../../constant";
 import {
-  CreateUserPipelinePayload,
   InstillStore,
   Nullable,
   PipelineSharing,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useCreateUserPipeline,
+  useCreateNamespacePipeline,
   useInstillStore,
   useRouteInfo,
   useShallow,
@@ -90,7 +90,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
 
   const namespaces = useUserNamespaces();
 
-  const createPipeline = useCreateUserPipeline();
+  const createPipeline = useCreateNamespacePipeline();
   async function onSubmit(data: z.infer<typeof CreatePipelineSchema>) {
     if (!routeInfo.isSuccess) {
       return;
@@ -119,39 +119,39 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
             shareCode: null,
           };
 
-    const payload: CreateUserPipelinePayload = {
-      id: data.id,
-      description: data.description ?? undefined,
-      recipe: {
-        version: "v1beta",
-        variable: undefined,
-        output: undefined,
-        component: undefined,
-      },
-      metadata: {
-        component: {
-          trigger: {
-            x: 0,
-            y: 0,
-          },
-          response: {
-            x: 0,
-            y: 0,
-          },
-        },
-      },
-      sharing,
-    };
-
     const targetNamespace = namespaces.find(
       (account) => account.id === data.namespaceId,
     );
 
     if (targetNamespace) {
+      const payload: CreateNamespacePipelineRequest = {
+        namespaceName: targetNamespace.name,
+        id: data.id,
+        description: data.description ?? undefined,
+        recipe: {
+          version: "v1beta",
+          variable: undefined,
+          output: undefined,
+          component: undefined,
+        },
+        metadata: {
+          component: {
+            trigger: {
+              x: 0,
+              y: 0,
+            },
+            response: {
+              x: 0,
+              y: 0,
+            },
+          },
+        },
+        sharing,
+      };
+
       try {
         await createPipeline.mutateAsync({
           accessToken,
-          entityName: targetNamespace.name,
           payload,
         });
 

@@ -11,8 +11,8 @@ import {
   InstillStore,
   Nullable,
   useInstillStore,
+  useNamespacePipeline,
   useRouteInfo,
-  useUserPipeline,
 } from "../../../lib";
 import { getHumanReadableStringFromTime } from "../../../server";
 import {
@@ -59,9 +59,9 @@ export const BottomBar = () => {
 
   const routeInfo = useRouteInfo();
 
-  const pipeline = useUserPipeline({
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.data.pipelineName,
     enabled: enabledQuery && routeInfo.isSuccess && !pipelineIsNew,
-    pipelineName: routeInfo.data.pipelineName,
     accessToken,
     retry: false,
   });

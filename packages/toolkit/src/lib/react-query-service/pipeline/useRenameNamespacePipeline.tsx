@@ -1,32 +1,35 @@
+"use client";
+
+import type { RenameNamespacePipelineRequest } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import type { Pipeline, RenameUserPipelinePayload } from "../../vdp-sdk";
-import { Nullable } from "../../type";
-import { renameUserPipelineMutation } from "../../vdp-sdk";
+import type { Nullable } from "../../type";
+import type { Pipeline } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
-export function useRenameUserPipeline() {
+export function useRenameNamespacePipeline() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
       payload,
       accessToken,
     }: {
-      payload: RenameUserPipelinePayload;
+      payload: RenameNamespacePipelineRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const pipeline = await renameUserPipelineMutation({
-        payload,
-        accessToken,
-      });
+      const client = getInstillAPIClient({ accessToken, publicAccess: false });
+
+      const pipeline =
+        await client.vdp.pipeline.renameNamespacePipeline(payload);
 
       return Promise.resolve({
         pipeline,
         accessToken,
-        oldPipelineName: payload.name,
+        oldPipelineName: payload.namespacePipelineName,
       });
     },
     onSuccess: async ({ pipeline, oldPipelineName }) => {

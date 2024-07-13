@@ -7,9 +7,9 @@ import { Button, Icons } from "@instill-ai/design-system";
 import {
   InstillStore,
   useInstillStore,
+  useNamespacePipeline,
   useRouteInfo,
   useShallow,
-  useUserPipeline,
 } from "../../../../lib";
 import { SharePipelineDialog } from "../dialogs";
 
@@ -25,8 +25,8 @@ export const Share = () => {
 
   const routeInfo = useRouteInfo();
 
-  const pipeline = useUserPipeline({
-    pipelineName: routeInfo.data.pipelineName,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.data.pipelineName,
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
   });

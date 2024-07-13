@@ -47,11 +47,16 @@ export class ReleaseClient extends APIResource {
   ): Promise<PipelineRelease[]>;
   async listNamespacePipelineReleases(
     props: ListNamespacePipelineReleaseRequest & {
-      enablePagination: boolean;
+      enablePagination: undefined;
+    },
+  ): Promise<PipelineRelease[]>;
+  async listNamespacePipelineReleases(
+    props: ListNamespacePipelineReleaseRequest & {
+      enablePagination?: boolean;
     },
   ): Promise<ListNamespacePipelineReleaseResponse | PipelineRelease[]>;
   async listNamespacePipelineReleases(
-    props: ListNamespacePipelineReleaseRequest & { enablePagination: boolean },
+    props: ListNamespacePipelineReleaseRequest & { enablePagination?: boolean },
   ) {
     const {
       namespacePipelineName,
@@ -101,7 +106,7 @@ export class ReleaseClient extends APIResource {
             shareCode,
             view,
             filter,
-            enablePagination,
+            enablePagination: false,
           })),
         );
       }

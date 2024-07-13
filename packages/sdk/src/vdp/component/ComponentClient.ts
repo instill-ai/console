@@ -4,6 +4,8 @@ import {
   ConnectorDefinition,
   GetConnectorDefinitionRequest,
   GetConnectorDefinitionResponse,
+  GetOperatorDefinitionRequest,
+  GetOperatorDefinitionResponse,
   ListConnectorDefinitionsRequest,
   ListConnectorDefinitionsResponse,
   ListOperatorDefinitionsRequest,
@@ -81,6 +83,24 @@ export class ComponentClient extends APIResource {
       const data =
         await this._client.get<GetConnectorDefinitionResponse>(queryString);
       return Promise.resolve(data.connectorDefinition);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async getOperatorDefinition({
+    operatorDefinitionName,
+    view,
+  }: GetOperatorDefinitionRequest) {
+    try {
+      const queryString = getQueryString({
+        baseURL: `/${operatorDefinitionName}`,
+        view,
+      });
+
+      const data =
+        await this._client.get<GetOperatorDefinitionResponse>(queryString);
+      return Promise.resolve(data.operatorDefinition);
     } catch (error) {
       return Promise.reject(error);
     }

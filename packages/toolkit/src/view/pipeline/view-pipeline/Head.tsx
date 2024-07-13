@@ -23,14 +23,14 @@ import {
   Nullable,
   toastInstillError,
   useAuthenticatedUser,
-  useDeleteUserPipeline,
+  useDeleteNamespacePipeline,
   useInstillStore,
+  useNamespacePipeline,
   useNavigateBackAfterLogin,
   useOrganization,
   useRouteInfo,
   useShallow,
   useUser,
-  useUserPipeline,
 } from "../../../lib";
 import { useSortedReleases } from "../../pipeline-builder";
 import { EditMetadataDialog } from "./EditMetadataDialog";
@@ -85,8 +85,10 @@ export const Head = ({
       routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION",
   });
 
-  const pipeline = useUserPipeline({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.isSuccess
+      ? routeInfo.data.pipelineName
+      : null,
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
     shareCode: shareCode ?? undefined,
@@ -99,11 +101,11 @@ export const Head = ({
     shareCode: shareCode ?? undefined,
   });
 
-  const deletePipeline = useDeleteUserPipeline();
+  const deletePipeline = useDeleteNamespacePipeline();
   async function handleDeletePipeline() {
     try {
       await deletePipeline.mutateAsync({
-        pipelineName: pipeline.data?.name || "",
+        namespacePipelineName: pipeline.data?.name || "",
         accessToken: accessToken ? accessToken : null,
       });
 

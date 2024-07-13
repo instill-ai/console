@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { isAxiosError } from "axios";
+import { UpdateNamespacePipelineRequest } from "instill-sdk";
 
 import { Button, Icons, Separator, useToast } from "@instill-ai/design-system";
 
@@ -13,13 +14,12 @@ import {
   Nullable,
   OrganizationOwner,
   sendAmplitudeData,
-  UpdateUserPipelinePayload,
   useAmplitudeCtx,
   useInstillStore,
+  useNamespacePipeline,
   UserOwner,
   useShallow,
-  useUpdateUserPipeline,
-  useUserPipeline,
+  useUpdateNamespacePipeline,
 } from "../../../../../lib";
 import { env } from "../../../../../server";
 
@@ -50,8 +50,8 @@ export const TabShare = ({
 
   const { toast } = useToast();
 
-  const pipeline = useUserPipeline({
-    pipelineName,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: pipelineName,
     enabled: enableQuery && !!pipelineName && !pipelineIsNew,
     accessToken,
   });
@@ -70,7 +70,7 @@ export const TabShare = ({
     }
   }, [pipeline.data, pipeline.isSuccess]);
 
-  const updatePipeline = useUpdateUserPipeline();
+  const updatePipeline = useUpdateNamespacePipeline();
 
   const handleCopyLink = React.useCallback(async () => {
     if (!pipeline.isSuccess || !pipelineName) return;
@@ -98,8 +98,8 @@ export const TabShare = ({
     let link: Nullable<string> = null;
 
     if (!enabledShareByLink) {
-      const payload: UpdateUserPipelinePayload = {
-        name: pipelineName,
+      const payload: UpdateNamespacePipelineRequest = {
+        namespacePipelineName: pipelineName,
         sharing: {
           users: pipeline.data.sharing.users,
           shareCode: {
@@ -114,7 +114,7 @@ export const TabShare = ({
 
       try {
         const { pipeline } = await updatePipeline.mutateAsync({
-          payload,
+          ...payload,
           accessToken,
         });
 

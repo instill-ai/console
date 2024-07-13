@@ -13,7 +13,7 @@ export async function fetchAuthenticatedUser({
   }
 
   try {
-    const client = getInstillAPIClient({ accessToken });
+    const client = getInstillAPIClient({ accessToken, publicAccess: false });
 
     const user = await client.core.user.getAuthenticatedUser();
 

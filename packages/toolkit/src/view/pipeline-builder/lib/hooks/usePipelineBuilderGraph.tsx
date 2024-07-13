@@ -7,7 +7,7 @@ import {
   createGraphLayout,
 } from "../../..";
 import { useRouteInfo } from "../../../../lib";
-import { useUserPipeline } from "../../../../lib/react-query-service";
+import { useNamespacePipeline } from "../../../../lib/react-query-service";
 import {
   InstillStore,
   useInstillStore,
@@ -47,9 +47,9 @@ export function usePipelineBuilderGraph() {
 
   const routeInfo = useRouteInfo();
 
-  const pipeline = useUserPipeline({
+  const pipeline = useNamespacePipeline({
     enabled: enabledQuery && !pipelineIsNew && routeInfo.isSuccess,
-    pipelineName: routeInfo.data.pipelineName,
+    namespacePipelineName: routeInfo.data.pipelineName,
     accessToken,
     retry: false,
   });

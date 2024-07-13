@@ -1,3 +1,4 @@
+import { TriggerNamespacePipelineResponse } from "instill-sdk";
 import {
   addEdge,
   applyEdgeChanges,
@@ -13,7 +14,6 @@ import { StateCreator } from "zustand";
 import { NodeData } from "../../view";
 import { Nullable } from "../type";
 import { InstillJSONSchema } from "../use-instill-form";
-import { TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
 import {
   InstillStore,
   InstillStoreMutators,
@@ -179,8 +179,8 @@ export const createPipelineBuilderSlice: StateCreator<
     }),
   updateTestModeTriggerResponse: (
     fn: (
-      prev: Nullable<TriggerUserPipelineResponse>,
-    ) => Nullable<TriggerUserPipelineResponse>,
+      prev: Nullable<TriggerNamespacePipelineResponse>,
+    ) => Nullable<TriggerNamespacePipelineResponse>,
   ) =>
     set((state) => {
       return {

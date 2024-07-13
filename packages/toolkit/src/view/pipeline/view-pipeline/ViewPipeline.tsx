@@ -7,9 +7,9 @@ import {
   InstillStore,
   Nullable,
   useInstillStore,
+  useNamespacePipeline,
   useRouteInfo,
   useShallow,
-  useUserPipeline,
 } from "../../../lib";
 import {
   ReadOnlyPipelineBuilder,
@@ -35,8 +35,10 @@ export const ViewPipeline = () => {
 
   const routeInfo = useRouteInfo();
 
-  const pipeline = useUserPipeline({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.isSuccess
+      ? routeInfo.data.pipelineName
+      : null,
     enabled: enabledQuery && routeInfo.isSuccess,
     shareCode: shareCode ?? undefined,
     accessToken,

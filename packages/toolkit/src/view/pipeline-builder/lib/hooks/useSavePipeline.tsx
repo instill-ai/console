@@ -1,5 +1,9 @@
 import * as React from "react";
 import { isAxiosError } from "axios";
+import {
+  CreateNamespacePipelineRequest,
+  UpdateNamespacePipelineRequest,
+} from "instill-sdk";
 
 import { useToast } from "@instill-ai/design-system";
 
@@ -9,17 +13,15 @@ import {
   composePipelineRecipeFromNodes,
 } from "..";
 import {
-  CreateUserPipelinePayload,
   getInstillApiErrorMessage,
   InstillStore,
   sendAmplitudeData,
-  UpdateUserPipelinePayload,
   useAmplitudeCtx,
-  useCreateUserPipeline,
+  useCreateNamespacePipeline,
   useInstillStore,
   useRouteInfo,
   useShallow,
-  useUpdateUserPipeline,
+  useUpdateNamespacePipeline,
 } from "../../../../lib";
 import { composeCompleteNodesUnderEditingIteratorMode } from "../composeCompleteNodesUnderEditingIteratorMode";
 import { createNodesFromPipelineRecipe } from "../createNodesFromPipelineRecipe";
@@ -53,8 +55,8 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
   const routeInfo = useRouteInfo();
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const updateUserPipeline = useUpdateUserPipeline();
-  const createUserPipeline = useCreateUserPipeline();
+  const updatePipeline = useUpdateNamespacePipeline();
+  const createPipeline = useCreateNamespacePipeline();
 
   const {
     nodes,
@@ -98,18 +100,17 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
       }
 
       if (!pipelineIsNew && pipelineRecipeIsDirty) {
-        const payload: UpdateUserPipelinePayload = {
-          name: routeInfo.data.pipelineName,
+        const payload: UpdateNamespacePipelineRequest = {
+          namespacePipelineName: routeInfo.data.pipelineName,
           recipe: composePipelineRecipeFromNodes(targetNodes),
           metadata: composePipelineMetadataMapFromNodes(targetNodes),
         };
 
         try {
-          const { pipeline: newPipeline } =
-            await updateUserPipeline.mutateAsync({
-              payload,
-              accessToken,
-            });
+          const { pipeline: newPipeline } = await updatePipeline.mutateAsync({
+            ...payload,
+            accessToken,
+          });
 
           if (amplitudeIsInit) {
             sendAmplitudeData("update_pipeline_recipe");
@@ -161,15 +162,15 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
 
       // If the user haven't created the pipeline yet, we will create the pipeline
 
-      const payload: CreateUserPipelinePayload = {
+      const payload: CreateNamespacePipelineRequest = {
+        namespaceName: routeInfo.data.namespaceName,
         id: pipelineId,
         recipe: composePipelineRecipeFromNodes(targetNodes),
         metadata: composePipelineMetadataMapFromNodes(targetNodes),
       };
 
       try {
-        const { pipeline: newPipeline } = await createUserPipeline.mutateAsync({
-          entityName: routeInfo.data.namespaceName,
+        const { pipeline: newPipeline } = await createPipeline.mutateAsync({
           payload,
           accessToken,
         });
@@ -222,7 +223,7 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
     [
       accessToken,
       amplitudeIsInit,
-      createUserPipeline,
+      createPipeline,
       routeInfo.isSuccess,
       routeInfo.data,
       nodes,
@@ -232,7 +233,7 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
       toast,
       updatePipelineIsNew,
       updatePipelineRecipeIsDirty,
-      updateUserPipeline,
+      updatePipeline,
       setIsSaving,
       isEditingIterator,
       editingIteratorID,

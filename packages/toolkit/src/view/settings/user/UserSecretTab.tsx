@@ -8,8 +8,8 @@ import {
   InstillStore,
   useAuthenticatedUser,
   useInstillStore,
+  useNamespaceSecrets,
   useShallow,
-  useUserSecrets,
 } from "../../../lib";
 import { CreateSecretDialog, SecretTable } from "../secrets";
 
@@ -27,10 +27,10 @@ export const UserSecretTab = () => {
     enabled: enabledQuery,
   });
 
-  const secrets = useUserSecrets({
+  const secrets = useNamespaceSecrets({
+    namespaceName: me.data?.name ?? null,
     accessToken,
     enabled: enabledQuery && me.isSuccess,
-    entityName: me.data?.name ?? null,
   });
 
   React.useEffect(() => {

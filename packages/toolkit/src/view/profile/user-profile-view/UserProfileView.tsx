@@ -8,10 +8,10 @@ import {
   InstillStore,
   useAuthenticatedUser,
   useInstillStore,
+  useNamespacePipelines,
   useRouteInfo,
   useShallow,
   useUser,
-  useUserPipelines,
 } from "../../../lib";
 import { useUserModels } from "../../../lib/react-query-service/model/useUserModels";
 import { ModelsTable } from "../../model";
@@ -45,10 +45,10 @@ export const UserProfileView = () => {
         routeInfo.data.namespaceType === "NAMESPACE_USER"),
   });
 
-  const pipelines = useUserPipelines({
+  const pipelines = useNamespacePipelines({
+    namespaceName: routeInfo.isSuccess ? routeInfo.data.namespaceName : null,
     accessToken: accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
-    userName: routeInfo.isSuccess ? routeInfo.data.namespaceName : null,
     filter: null,
     visibility: null,
   });

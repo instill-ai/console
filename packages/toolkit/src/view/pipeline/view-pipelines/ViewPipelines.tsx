@@ -17,11 +17,11 @@ import {
   Nullable,
   Pipeline,
   useAuthenticatedUser,
-  useInfiniteUserPipelines,
+  useInfiniteNamespacePipelines,
   useInstillStore,
+  useNamespacePipelines,
   useRouteInfo,
   useShallow,
-  useUserPipelines,
   Visibility,
 } from "../../../lib";
 import { CreatePipelineDialog } from "./CreatePipelineDialog";
@@ -55,26 +55,27 @@ export const ViewPipelines = () => {
 
   const routeInfo = useRouteInfo();
 
-  const pipelines = useInfiniteUserPipelines({
+  const pipelines = useInfiniteNamespacePipelines({
+    namespaceName: routeInfo.data.namespaceName,
     pageSize: 10,
     accessToken,
-    userName: routeInfo.data.namespaceName,
     enabledQuery: enabledQuery && routeInfo.isSuccess,
     filter: searchCode ? `q="${searchCode}"` : null,
     visibility: selectedVisibilityOption ?? null,
   });
 
-  const myPipelines = useInfiniteUserPipelines({
-    userName: me.isSuccess ? me.data.name : null,
+  const myPipelines = useInfiniteNamespacePipelines({
+    namespaceName: me.isSuccess ? me.data.name : null,
     enabledQuery: enabledQuery && me.isSuccess,
     accessToken,
     pageSize: 10,
     visibility: null,
     filter: null,
+    disabledViewFull: true,
   });
 
-  const userPublicPipelines = useUserPipelines({
-    userName: me.isSuccess ? me.data.name : null,
+  const userPublicPipelines = useNamespacePipelines({
+    namespaceName: me.isSuccess ? me.data.name : null,
     enabled: enabledQuery && me.isSuccess,
     accessToken,
     filter: null,
