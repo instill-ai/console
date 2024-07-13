@@ -35,7 +35,7 @@ export const PipelineRuns = ({ pipeline }: PipelineRunsProps) => {
     filter: `pipelineId='${pipeline?.id}' AND ownerName='${routeInfo.data.namespaceName}'`,
     accessToken,
     previousFilter: null,
-    filterId: null,
+    filterId: `${pipeline?.id}-${routeInfo.data.namespaceName}`,
   });
 
   const columns: ColumnDef<PipelineTriggerRecord>[] = [

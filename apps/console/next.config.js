@@ -2,10 +2,10 @@
  * @type {import('next').NextConfig}
  */
 module.exports = {
-  transpilePackages: ['@mdxeditor/editor'],
   swcMinify: true,
   reactStrictMode: true,
   transpilePackages: [
+    '@mdxeditor/editor',
     "@instill-ai/toolkit",
     "@instill-ai/design-system",
     "@instill-ai/design-tokens",
