@@ -13,9 +13,9 @@ import {
   Nullable,
   PipelinesChart,
   TriggeredPipeline,
+  usePipelineTriggerComputationTimeCharts,
+  usePipelineTriggerMetric,
   useRouteInfo,
-  useTriggeredPipelines,
-  useTriggeredPipelinesChart,
 } from "../../lib";
 import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
 import { FilterByDay } from "./FilterByDay";
@@ -79,19 +79,19 @@ export const DashboardPipelineListPageMainView = (
    * Query pipeline and triggers data
    * -----------------------------------------------------------------------*/
 
-  const triggeredPipelines = useTriggeredPipelines({
+  const triggeredPipelines = usePipelineTriggerMetric({
     enabled: enableQuery && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
   });
 
-  const pipelinesChart = useTriggeredPipelinesChart({
+  const pipelinesChart = usePipelineTriggerComputationTimeCharts({
     enabled: enableQuery && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
   });
 
-  const previoustriggeredPipelines = useTriggeredPipelines({
+  const previoustriggeredPipelines = usePipelineTriggerMetric({
     enabled: enableQuery && !!queryStringPrevious,
     filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,

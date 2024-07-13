@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 
 import { env } from "../../../server";
 import { Nullable } from "../../type";
-import { listTriggeredPipelineChartQuery } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
-export function useTriggeredPipelinesChart({
+export function usePipelineTriggerComputationTimeCharts({
   enabled,
   accessToken,
   filter,
@@ -22,12 +22,13 @@ export function useTriggeredPipelinesChart({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const triggers = await listTriggeredPipelineChartQuery({
-        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-        nextPageToken: null,
-        accessToken,
-        filter,
-      });
+      const client = getInstillAPIClient({ accessToken });
+
+      const triggers =
+        await client.core.metric.listPipelineTriggerComputationTimeCharts({
+          pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+          filter: filter ?? undefined,
+        });
 
       return Promise.resolve(triggers);
     },

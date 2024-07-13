@@ -13,7 +13,7 @@ import {
   InstillStore,
   Nullable,
   useInstillStore,
-  usePipelineTriggerRecords,
+  usePipelineTriggers,
   useRouteInfo,
   useShallow,
 } from "../../lib";
@@ -75,7 +75,7 @@ export const DashboardPipelineDetailsPageMainView = () => {
    * Query pipeline data
    * -----------------------------------------------------------------------*/
 
-  const triggers = usePipelineTriggerRecords({
+  const triggers = usePipelineTriggers({
     enabled:
       enabledQuery &&
       routeInfo.isSuccess &&
@@ -83,22 +83,36 @@ export const DashboardPipelineDetailsPageMainView = () => {
       !!queryStringPrevious,
     filter: queryString ? queryString : null,
     accessToken,
-    previousFilter: queryStringPrevious ? queryStringPrevious : null,
     filterId: routeInfo.isSuccess
       ? `${routeInfo.data.namespaceId}-${selectedTimeOption.value}`
       : null,
   });
 
+  const previousTriggers = usePipelineTriggers({
+    enabled:
+      enabledQuery &&
+      routeInfo.isSuccess &&
+      !!queryString &&
+      !!queryStringPrevious,
+    filter: queryStringPrevious ? queryStringPrevious : null,
+    accessToken,
+    filterId: routeInfo.isSuccess
+      ? `${routeInfo.data.namespaceId}-${selectedTimeOption.value}-previous`
+      : null,
+  });
+
   const pipelineTriggersSummary = React.useMemo(() => {
-    if (!triggers.isSuccess) {
+    if (!triggers.isSuccess || !previousTriggers.isSuccess) {
       return null;
     }
 
-    return getTriggersSummary(
-      triggers.data.triggers,
-      triggers.data.previousTriggers,
-    );
-  }, [triggers.isSuccess, triggers.data]);
+    return getTriggersSummary(triggers.data, previousTriggers.data);
+  }, [
+    triggers.isSuccess,
+    triggers.data,
+    previousTriggers.isSuccess,
+    previousTriggers.data,
+  ]);
 
   /* -------------------------------------------------------------------------
    * Render
@@ -149,7 +163,7 @@ export const DashboardPipelineDetailsPageMainView = () => {
 
       <div className="mt-8">
         <PipelineTriggersTable
-          pipelineTriggers={triggers.isSuccess ? triggers.data.triggers : []}
+          pipelineTriggers={triggers.isSuccess ? triggers.data : []}
           isError={triggers.isError}
           isLoading={triggers.isLoading}
         />
