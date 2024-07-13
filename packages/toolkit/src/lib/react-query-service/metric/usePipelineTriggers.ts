@@ -2,20 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 
 import { env } from "../../../server";
 import { Nullable } from "../../type";
-import { listPipelineTriggerRecordsQuery } from "../../vdp-sdk/metric";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
-export function usePipelineTriggerRecords({
+export function usePipelineTriggers({
   enabled,
   accessToken,
   filter,
-  previousFilter,
   retry,
   filterId,
 }: {
   enabled: boolean;
   accessToken: Nullable<string>;
   filter: Nullable<string>;
-  previousFilter: Nullable<string>;
   retry?: false | number;
   filterId: Nullable<string>;
 }) {
@@ -26,21 +24,15 @@ export function usePipelineTriggerRecords({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const triggers = await listPipelineTriggerRecordsQuery({
+      const client = getInstillAPIClient({ accessToken });
+
+      const triggers = await client.core.metric.listPipelineTriggers({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-        nextPageToken: null,
-        accessToken,
-        filter,
+        filter: filter ?? undefined,
+        enablePagination: false,
       });
 
-      const previousTriggers = await listPipelineTriggerRecordsQuery({
-        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-        nextPageToken: null,
-        accessToken,
-        filter: previousFilter,
-      });
-
-      return Promise.resolve({ triggers, previousTriggers });
+      return Promise.resolve(triggers);
     },
     enabled,
     retry: retry === false ? false : retry ? retry : 3,

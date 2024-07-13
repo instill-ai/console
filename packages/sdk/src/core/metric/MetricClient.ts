@@ -57,12 +57,17 @@ export class MetricClient extends APIResource {
   ): Promise<PipelineTriggerRecord[]>;
   async listPipelineTriggers(
     props: ListPipelineTriggerRequest & {
-      enablePagination: boolean;
+      enablePagination: undefined;
+    },
+  ): Promise<PipelineTriggerRecord[]>;
+  async listPipelineTriggers(
+    props: ListPipelineTriggerRequest & {
+      enablePagination?: boolean;
     },
   ): Promise<ListPipelineTriggersResponse | PipelineTriggerRecord[]>;
   async listPipelineTriggers(
     props: ListPipelineTriggerRequest & {
-      enablePagination: boolean;
+      enablePagination?: boolean;
     },
   ) {
     const { pageSize, pageToken, filter, enablePagination } = props;
@@ -92,7 +97,7 @@ export class MetricClient extends APIResource {
             pageSize,
             pageToken: data.nextPageToken,
             filter,
-            enablePagination,
+            enablePagination: false,
           })),
         );
       }
@@ -115,12 +120,17 @@ export class MetricClient extends APIResource {
   ): Promise<PipelineTriggerTableRecord[]>;
   async listPipelineTriggerMetric(
     props: ListPipelineTriggerMetricRequest & {
-      enablePagination: boolean;
+      enablePagination: undefined;
+    },
+  ): Promise<PipelineTriggerTableRecord[]>;
+  async listPipelineTriggerMetric(
+    props: ListPipelineTriggerMetricRequest & {
+      enablePagination?: boolean;
     },
   ): Promise<ListPipelineTriggerMetricResponse | PipelineTriggerTableRecord[]>;
   async listPipelineTriggerMetric(
     props: ListPipelineTriggerMetricRequest & {
-      enablePagination: boolean;
+      enablePagination?: boolean;
     },
   ) {
     const { pageSize, pageToken, filter, enablePagination } = props;
@@ -150,7 +160,7 @@ export class MetricClient extends APIResource {
             pageSize,
             pageToken: data.nextPageToken,
             filter,
-            enablePagination,
+            enablePagination: false,
           })),
         );
       }
