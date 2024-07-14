@@ -1,5 +1,6 @@
 import React from "react";
-import cn from "clsx";
+
+import { cn } from "@instill-ai/design-system";
 
 export const ModelSectionHeader = ({
   children,

@@ -41,7 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     sitemaps.push({
       url: `${process.env.NEXT_PUBLIC_CONSOLE_BASE_URL || defaultBaseUrl}/${
         pipeline.ownerName.split("/")[1]
-      }/pipelines/${pipeline.id}`,
+      }/pipelines/${pipeline.id}/playground`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,

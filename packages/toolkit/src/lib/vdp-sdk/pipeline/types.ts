@@ -89,6 +89,10 @@ export type Pipeline = {
   permission: Permission;
   tags: string[];
   stats: PipelineStats;
+  profileImage: string;
+  sourceUrl: string;
+  documentationUrl: string;
+  license: string;
 };
 
 export type OperatorDefinition = {
@@ -143,6 +147,7 @@ export type PipelineRelease = {
   openapiSchema: OpenAPIV3.Document;
   metadata: GeneralRecord;
   alias?: string;
+  dataSpecification: Nullable<DataSpecification>;
 };
 
 export type PipelineTrace = {

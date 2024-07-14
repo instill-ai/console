@@ -21,7 +21,7 @@ export function PipelineOverviewPageRender() {
     <PageBase>
       <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
-        <PageBase.Content contentPadding="p-0">
+        <PageBase.Content contentPadding="p-8">
           <ViewPipeline />
         </PageBase.Content>
       </PageBase.Container>

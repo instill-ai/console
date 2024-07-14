@@ -17,8 +17,14 @@ export function usePipelineTriggers({
   retry?: false | number;
   filterId: Nullable<string>;
 }) {
+  const queryKey = ["metrics", "pipelines", "triggers"];
+
+  if (filterId) {
+    queryKey.push(filterId);
+  }
+
   return useQuery({
-    queryKey: ["metrics", "pipelines", "triggers", filterId],
+    queryKey,
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));

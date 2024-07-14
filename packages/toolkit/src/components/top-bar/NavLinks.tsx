@@ -18,6 +18,7 @@ export type NavLinkProps = {
   title: string;
   Icon: React.ElementType;
   pathname: string;
+  strict?: boolean;
 };
 
 const navLinkItems: NavLinkProps[] = [
@@ -25,11 +26,13 @@ const navLinkItems: NavLinkProps[] = [
     pathname: "pipelines",
     Icon: Icons.Pipeline,
     title: "Pipelines",
+    strict: true,
   },
   {
     pathname: "models",
     Icon: Icons.Cube01,
     title: "Models",
+    strict: true,
   },
   {
     pathname: "dashboard/pipeline",
@@ -42,7 +45,7 @@ const navLinkSelector = (store: InstillStore) => ({
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
-export const NavLink = ({ title, Icon, pathname }: NavLinkProps) => {
+export const NavLink = ({ title, Icon, pathname, strict }: NavLinkProps) => {
   const router = useRouter();
   const currentPathname = usePathname();
   const { navigationNamespaceAnchor } = useInstillStore(
@@ -50,11 +53,12 @@ export const NavLink = ({ title, Icon, pathname }: NavLinkProps) => {
   );
 
   const isOnIt = React.useMemo(() => {
-    if (currentPathname.split("/")[2] === pathname) {
-      return true;
+    if (strict) {
+      return currentPathname.split("/")[2] === pathname;
+    } else {
+      return currentPathname.includes(pathname);
     }
-    return false;
-  }, [pathname, currentPathname]);
+  }, [pathname, currentPathname, strict]);
 
   const namespaces = useUserNamespaces();
 

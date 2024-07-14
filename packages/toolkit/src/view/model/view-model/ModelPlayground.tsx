@@ -13,7 +13,11 @@ import {
 } from "@instill-ai/design-system";
 
 import type { ModelTriggerResult } from "../../../lib";
-import { CodeBlock, LoadingSpin } from "../../../components";
+import {
+  CodeBlock,
+  LoadingSpin,
+  ModelSectionHeader,
+} from "../../../components";
 import { defaultCodeSnippetStyles } from "../../../constant";
 import {
   convertSentenceToCamelCase,
@@ -35,12 +39,10 @@ import {
 } from "../../../lib";
 import { recursiveHelpers } from "../../pipeline-builder";
 import { OPERATION_POLL_TIMEOUT } from "./constants";
-import { ModelReadme } from "./ModelReadme";
-import { ModelSectionHeader } from "./SectionHeader";
 
-export type ModelOutputActiveView = "preview" | "json";
+type ModelOutputActiveView = "preview" | "json";
 
-export type ModelOverviewProps = {
+export type ModelPlaygroundProps = {
   model?: Model;
   modelState: Nullable<ModelState>;
 };
@@ -80,7 +82,10 @@ const defaultCurrentOperationIdPollingData = {
   isRendered: false,
 };
 
-export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
+export const ModelPlayground = ({
+  model,
+  modelState,
+}: ModelPlaygroundProps) => {
   const queryClient = useQueryClient();
   // This ref is used here to store the currently active operation id. It's in
   // ref so we don't have to worry about stale data. As soon as we update the
@@ -293,7 +298,7 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
     }
   }
 
-  const overviewModelTriggerFormID = "model-details-page-trigger-model-form";
+  const playgroundModelTriggerFormID = "model-details-page-trigger-model-form";
 
   const componentOutputFields = useComponentOutputFields({
     mode: "demo",
@@ -302,107 +307,99 @@ export const ModelOverview = ({ model, modelState }: ModelOverviewProps) => {
   });
 
   return (
-    <div className="flex flex-col gap-y-9">
-      <div className="flex flex-row">
-        <div className="flex w-1/2 flex-col border-r border-semantic-bg-line pb-6 pr-6">
-          <ModelSectionHeader className="mb-3">Input</ModelSectionHeader>
-          <TabMenu.Root
-            value={"form"}
-            onValueChange={() => null}
-            disabledDeSelect={true}
-            className="pointer-events-none mb-3 border-b border-semantic-bg-line"
+    <div className="flex flex-row">
+      <div className="flex w-1/2 flex-col border-r border-semantic-bg-line pb-6 pr-6">
+        <ModelSectionHeader className="mb-3">Input</ModelSectionHeader>
+        <TabMenu.Root
+          value={"form"}
+          onValueChange={() => null}
+          disabledDeSelect={true}
+          className="pointer-events-none mb-3 border-b border-semantic-bg-line"
+        >
+          <TabMenu.Item value="form">
+            <span className="text-sm text-semantic-accent-default">Form</span>
+          </TabMenu.Item>
+        </TabMenu.Root>
+        <Form.Root {...form}>
+          <form
+            id={playgroundModelTriggerFormID}
+            className="w-full"
+            onSubmit={form.handleSubmit(onRunModel)}
           >
-            <TabMenu.Item value="form">
-              <span className="text-sm text-semantic-accent-default">Form</span>
-            </TabMenu.Item>
-          </TabMenu.Root>
-          <Form.Root {...form}>
-            <form
-              id={overviewModelTriggerFormID}
-              className="w-full"
-              onSubmit={form.handleSubmit(onRunModel)}
-            >
-              <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
-              <div className="flex flex-row-reverse">
-                <Button
-                  disabled={!isModelTriggerable || isModelRunInProgress}
-                  type="submit"
-                  size="md"
-                  variant="secondaryColour"
-                >
-                  Run
-                  {isModelRunInProgress ? (
-                    <LoadingSpin className="ml-2 !h-4 !w-4 !text-semantic-accent-hover" />
-                  ) : (
-                    <Icons.Play className="ml-2 h-4 w-4 stroke-semantic-accent-hover" />
-                  )}
-                </Button>
-              </div>
-            </form>
-          </Form.Root>
-        </div>
-        <div className="flex w-1/2 flex-col pb-6 pl-6">
-          <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
-          {isModelRunInProgress ? (
-            <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />
-          ) : modelRunResult ? (
-            <React.Fragment>
-              <TabMenu.Root
-                value={outputActiveView}
-                onValueChange={(value: Nullable<string>) =>
-                  setOutputActiveView(value as ModelOutputActiveView)
-                }
-                disabledDeSelect={true}
-                className="mb-3 border-b border-semantic-bg-line"
+            <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
+            <div className="flex flex-row-reverse">
+              <Button
+                disabled={!isModelTriggerable || isModelRunInProgress}
+                type="submit"
+                size="md"
+                variant="secondaryColour"
               >
-                <TabMenu.Item
-                  value="preview"
-                  className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
-                >
-                  <span className="text-sm">Preview</span>
-                </TabMenu.Item>
-                <TabMenu.Item
-                  value="json"
-                  className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
-                >
-                  <span className="text-sm">JSON</span>
-                </TabMenu.Item>
-              </TabMenu.Root>
-              {outputActiveView === "preview" ? (
-                <div className="flex flex-col gap-y-2">
-                  {componentOutputFields}
-                </div>
-              ) : (
-                <CodeBlock
-                  codeString={JSON.stringify(modelRunResult, null, 2)}
-                  wrapLongLines={true}
-                  language="json"
-                  customStyle={defaultCodeSnippetStyles}
-                  className="!h-auto !flex-none"
-                />
-              )}
-            </React.Fragment>
-          ) : (
-            <div className="flex flex-row items-center justify-center gap-x-4 pt-24">
-              <Image
-                src="/images/models/no-result.svg"
-                width={41}
-                height={40}
-                alt="Square shapes"
-              />
-              <p className="font-mono text-sm italic text-semantic-fg-disabled">
-                Execute the model to view the results
-              </p>
+                Run
+                {isModelRunInProgress ? (
+                  <LoadingSpin className="ml-2 !h-4 !w-4 !text-semantic-accent-hover" />
+                ) : (
+                  <Icons.Play className="ml-2 h-4 w-4 stroke-semantic-accent-hover" />
+                )}
+              </Button>
             </div>
-          )}
-        </div>
+          </form>
+        </Form.Root>
       </div>
-      {model?.permission.canEdit || model?.readme ? (
-        <React.Fragment>
-          <ModelSectionHeader className="mb-5">Readme</ModelSectionHeader>
-          <ModelReadme model={model} />
-        </React.Fragment>
-      ) : null}
+      <div className="flex w-1/2 flex-col pb-6 pl-6">
+        <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
+        {isModelRunInProgress ? (
+          <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />
+        ) : modelRunResult ? (
+          <React.Fragment>
+            <TabMenu.Root
+              value={outputActiveView}
+              onValueChange={(value: Nullable<string>) =>
+                setOutputActiveView(value as ModelOutputActiveView)
+              }
+              disabledDeSelect={true}
+              className="mb-3 border-b border-semantic-bg-line"
+            >
+              <TabMenu.Item
+                value="preview"
+                className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
+              >
+                <span className="text-sm">Preview</span>
+              </TabMenu.Item>
+              <TabMenu.Item
+                value="json"
+                className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
+              >
+                <span className="text-sm">JSON</span>
+              </TabMenu.Item>
+            </TabMenu.Root>
+            {outputActiveView === "preview" ? (
+              <div className="flex flex-col gap-y-2">
+                {componentOutputFields}
+              </div>
+            ) : (
+              <CodeBlock
+                codeString={JSON.stringify(modelRunResult, null, 2)}
+                wrapLongLines={true}
+                language="json"
+                customStyle={defaultCodeSnippetStyles}
+                className="!h-auto !flex-none"
+              />
+            )}
+          </React.Fragment>
+        ) : (
+          <div className="flex flex-row items-center justify-center gap-x-4 pt-24">
+            <Image
+              src="/images/models/no-result.svg"
+              width={41}
+              height={40}
+              alt="Square shapes"
+            />
+            <p className="font-mono text-sm italic text-semantic-fg-disabled">
+              Execute the model to view the results
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

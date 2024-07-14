@@ -80,7 +80,7 @@ export const TabShare = ({
     if (pipelineIsPublic) {
       const link = `${env(
         "NEXT_PUBLIC_CONSOLE_BASE_URL",
-      )}/${namespaceId}/pipelines/${id}`;
+      )}/${namespaceId}/pipelines/${id}/playground`;
 
       navigator.clipboard.writeText(link);
       setIsUpdatingShareCodePermission(false);
@@ -124,7 +124,7 @@ export const TabShare = ({
 
         link = `${env(
           "NEXT_PUBLIC_CONSOLE_BASE_URL",
-        )}/${namespaceId}/pipelines/${id}?view=${pipeline.sharing.shareCode?.code}`;
+        )}/${namespaceId}/pipelines/${id}/playground?view=${pipeline.sharing.shareCode?.code}`;
         setIsUpdatingShareCodePermission(false);
       } catch (error) {
         setIsUpdatingShareCodePermission(false);
@@ -147,7 +147,7 @@ export const TabShare = ({
     } else {
       link = `${env(
         "NEXT_PUBLIC_CONSOLE_BASE_URL",
-      )}/${namespaceId}/pipelines/${id}?view=${
+      )}/${namespaceId}/pipelines/${id}/playground?view=${
         pipeline.data.sharing.shareCode?.code
       }`;
       setIsUpdatingShareCodePermission(false);

@@ -5,6 +5,7 @@ module.exports = {
   swcMinify: true,
   reactStrictMode: true,
   transpilePackages: [
+    '@mdxeditor/editor',
     "@instill-ai/toolkit",
     "@instill-ai/design-system",
     "@instill-ai/design-tokens",

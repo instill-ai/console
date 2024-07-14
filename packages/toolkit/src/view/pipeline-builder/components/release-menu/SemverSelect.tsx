@@ -42,7 +42,7 @@ export const SemverSelect = ({
   React.useEffect(() => {
     let newVersion: Nullable<string> = null;
 
-    if (releases.length === 0) {
+    if (releases.data.length === 0) {
       switch (selectedSemver) {
         case "major":
           newVersion = "v1.0.0";
@@ -59,7 +59,7 @@ export const SemverSelect = ({
       return;
     }
 
-    const latestReleaseID = releases[0]?.id;
+    const latestReleaseID = releases.data[0]?.id;
 
     if (!latestReleaseID) {
       return;

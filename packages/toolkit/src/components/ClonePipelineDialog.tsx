@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateNamespacePipelineRequest } from "instill-sdk";
+import { CreateNamespacePipelineRequest, Pipeline } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -20,12 +20,9 @@ import {
   useToast,
 } from "@instill-ai/design-system";
 
+import type { InstillStore, Nullable, PipelineSharing } from "../lib";
 import { InstillErrors } from "../constant";
 import {
-  InstillStore,
-  Nullable,
-  Pipeline,
-  PipelineSharing,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
@@ -175,7 +172,7 @@ export const ClonePipelineDialog = ({
           }
         }
         updateNavigationNamespaceAnchor(() => namespace.id);
-        router.push(`/${data.namespaceId}/pipelines/${payload.id}`);
+        router.push(`/${data.namespaceId}/pipelines/${payload.id}/playground`);
       } catch (error) {
         console.log("error", error);
 
@@ -303,7 +300,7 @@ export const ClonePipelineDialog = ({
                               "NEXT_PUBLIC_CONSOLE_BASE_URL",
                             )}/${form.getValues(
                               "namespaceId",
-                            )}/pipelines/${form.getValues("id")}`
+                            )}/pipelines/${form.getValues("id")}/playground`
                           : null}
                       </span>
                     </p>

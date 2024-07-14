@@ -122,7 +122,7 @@ export const PublishPipelineDialog = ({
           <div className="flex flex-row">
             <LinkButton
               onClick={() => {
-                router.push(`/${entity}/pipelines/${id}`);
+                router.push(`/${entity}/pipelines/${id}/playground`);
               }}
               variant="primary"
               size="sm"

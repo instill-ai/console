@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/toolkit",
-  "version": "0.96.0-rc.15",
+  "version": "0.96.0-rc.17",
   "description": "Instill AI's frontend toolkit",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -96,6 +96,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@instill-ai/design-system": "workspace:*",
     "@instill-ai/design-tokens": "workspace:*",
+    "@mdxeditor/editor": "^3.7.0",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-progress": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",

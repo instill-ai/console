@@ -1,8 +1,10 @@
 "use client";
 
+import { useMemo } from "react";
+
 import { useToast } from "@instill-ai/design-system";
 
-import { RealTimeTextEditor } from "../../../components";
+import { ReadmeEditor } from "../../../components";
 import {
   InstillStore,
   Model,
@@ -18,10 +20,18 @@ const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
 });
 
-export const ModelReadme = ({ model }: { model?: Model }) => {
+export type ModelReadmeProps = {
+  model?: Model;
+  onUpdate: () => void;
+};
+
+export const ModelReadme = ({ model, onUpdate }: ModelReadmeProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken } = useInstillStore(useShallow(selector));
   const { toast } = useToast();
+  const canEdit = useMemo(() => {
+    return !!accessToken && !!model?.permission.canEdit;
+  }, [model, accessToken]);
 
   const updateUserModel = useUpdateUserModel();
 
@@ -50,15 +60,21 @@ export const ModelReadme = ({ model }: { model?: Model }) => {
       variant: "alert-success",
     });
 
+    onUpdate();
+
     return;
   };
 
   return (
-    <RealTimeTextEditor
-      isReady={!!model && !!accessToken}
-      isEditable={!!model?.permission.canEdit}
-      content={model?.readme || null}
-      onSave={onUpdateModelReadme}
+    <ReadmeEditor
+      readme={model?.readme}
+      canEdit={canEdit}
+      onUpdate={onUpdateModelReadme}
+      placeholder={
+        canEdit
+          ? `You don't have a README. You can start creating one by clicking **Edit** icon in the top right corner.`
+          : "There is no README for this model."
+      }
     />
   );
 };

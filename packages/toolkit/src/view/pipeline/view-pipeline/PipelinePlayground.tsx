@@ -1,21 +1,30 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { TriggerNamespacePipelineResponse } from "instill-sdk";
+import { Pipeline, TriggerNamespacePipelineResponse } from "instill-sdk";
 import * as z from "zod";
 
-import { Button, Form, useToast } from "@instill-ai/design-system";
+import { Button, Form, TabMenu, useToast } from "@instill-ai/design-system";
 
+import {
+  CodeBlock,
+  EmptyView,
+  LoadingSpin,
+  ModelSectionHeader,
+} from "../../../components";
+import { defaultCodeSnippetStyles } from "../../../constant";
 import {
   GeneralRecord,
   InstillStore,
   Nullable,
+  PipelineRelease,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
+  useComponentOutputFields,
   useInstillStore,
-  useNamespacePipeline,
   usePipelineTriggerRequestForm,
   useRouteInfo,
   useShallow,
@@ -23,8 +32,7 @@ import {
   useTriggerNamespacePipelineRelease,
   useUserNamespaces,
 } from "../../../lib";
-import { recursiveHelpers, useSortedReleases } from "../../pipeline-builder";
-import { ComponentOutputs } from "../../pipeline-builder/components/ComponentOutputs";
+import { recursiveHelpers } from "../../pipeline-builder";
 import { RunButton } from "./RunButton";
 
 const selector = (store: InstillStore) => ({
@@ -33,53 +41,45 @@ const selector = (store: InstillStore) => ({
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
-export const InOutPut = ({
-  selectedVersionId,
+type ModelOutputActiveView = "preview" | "json";
+
+export const PipelinePlayground = ({
+  releases,
+  pipeline,
 }: {
-  selectedVersionId: Nullable<string>;
+  releases: PipelineRelease[];
+  pipeline?: Pipeline;
 }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const router = useRouter();
   const searchParams = useSearchParams();
   const shareCode = searchParams.get("view");
+  const currentVersion = searchParams.get("version");
   const namespaces = useUserNamespaces();
   const { toast } = useToast();
+  const [isPipelineRunning, setIsPipelineRunning] = React.useState(false);
+  const [outputActiveView, setOutputActiveView] =
+    React.useState<ModelOutputActiveView>("preview");
 
-  const { accessToken, enabledQuery, navigationNamespaceAnchor } =
-    useInstillStore(useShallow(selector));
-  const [response, setResponse] =
+  const { accessToken, navigationNamespaceAnchor } = useInstillStore(
+    useShallow(selector),
+  );
+  const [pipelineRunResponse, setPipelineRunResponse] =
     React.useState<Nullable<TriggerNamespacePipelineResponse>>(null);
 
   const inOutPutFormID = "pipeline-details-page-trigger-pipeline-form";
 
   const routeInfo = useRouteInfo();
 
-  const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.isSuccess
-      ? routeInfo.data.pipelineName
-      : null,
-    enabled: enabledQuery && routeInfo.isSuccess,
-    shareCode: shareCode ?? undefined,
-    accessToken,
-  });
-
-  const releases = useSortedReleases({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
-    enabledQuery: enabledQuery && routeInfo.isSuccess,
-    shareCode: shareCode ?? undefined,
-    accessToken,
-  });
-
   const variables = React.useMemo(() => {
-    if (pipeline.isSuccess) {
-      if (!selectedVersionId || releases.length === 0) {
-        return pipeline.data.recipe.variable ?? null;
+    if (pipeline) {
+      if (!currentVersion || releases.length === 0) {
+        return pipeline.recipe.variable ?? null;
       }
 
       const pipelineVersion = releases.find(
         (release) =>
-          release.id === selectedVersionId ||
-          release.alias === selectedVersionId,
+          release.id === currentVersion || release.alias === currentVersion,
       );
 
       if (pipelineVersion) {
@@ -88,18 +88,17 @@ export const InOutPut = ({
     }
 
     return null;
-  }, [releases, selectedVersionId, pipeline.isSuccess, pipeline.data]);
+  }, [releases, currentVersion, pipeline]);
 
   const outputs = React.useMemo(() => {
-    if (pipeline.isSuccess) {
-      if (!selectedVersionId || releases.length === 0) {
-        return pipeline.data.recipe.output ?? null;
+    if (pipeline) {
+      if (!currentVersion || releases.length === 0) {
+        return pipeline.recipe.output ?? null;
       }
 
       const pipelineVersion = releases.find(
         (release) =>
-          release.id === selectedVersionId ||
-          release.alias === selectedVersionId,
+          release.id === currentVersion || release.alias === currentVersion,
       );
 
       if (pipelineVersion) {
@@ -108,9 +107,32 @@ export const InOutPut = ({
     }
 
     return null;
-  }, [releases, selectedVersionId, pipeline.isSuccess, pipeline.data]);
+  }, [releases, currentVersion, pipeline]);
 
-  const { fieldItems, form, Schema } = usePipelineTriggerRequestForm({
+  const formSchema = React.useMemo(() => {
+    if (currentVersion && releases.length > 0) {
+      const release = releases.find((release) => release.id === currentVersion);
+
+      if (release) {
+        return release.dataSpecification;
+      }
+    }
+
+    if (pipeline) {
+      return pipeline.dataSpecification;
+    }
+
+    return {
+      input: null,
+      output: null,
+    };
+  }, [currentVersion, pipeline, releases]);
+
+  const {
+    fieldItems: fields,
+    form,
+    Schema: ValidatorSchema,
+  } = usePipelineTriggerRequestForm({
     mode: "demo",
     fields: variables,
     keyPrefix: "pipeline-details-page-trigger-pipeline-form",
@@ -118,17 +140,21 @@ export const InOutPut = ({
     disabledFieldControls: true,
   });
 
+  const componentOutputFields = useComponentOutputFields({
+    mode: "demo",
+    schema: formSchema?.output || null,
+    data: pipelineRunResponse?.outputs[0] || null,
+  });
+
   const triggerPipeline = useTriggerNamespacePipeline();
   const triggerPipelineRelease = useTriggerNamespacePipelineRelease();
 
-  async function onTriggerPipeline(formData: z.infer<typeof Schema>) {
-    if (
-      !routeInfo.isSuccess ||
-      !routeInfo.data?.pipelineName ||
-      !pipeline.isSuccess
-    ) {
+  async function onTriggerPipeline(formData: z.infer<typeof ValidatorSchema>) {
+    if (!routeInfo.isSuccess || !routeInfo.data?.pipelineName || !pipeline) {
       return;
     }
+
+    setIsPipelineRunning(true);
 
     const input = recursiveHelpers.removeUndefinedAndNullFromArray(
       recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData),
@@ -163,14 +189,15 @@ export const InOutPut = ({
           type: "manual",
           message: "Invalid JSON format",
         });
+        setIsPipelineRunning(false);
         return;
       }
     }
 
-    // The user can trigger different version of pipleine when they are
+    // The user can trigger different version of pipeline when they are
     // pro or enterprise users
 
-    if (selectedVersionId === "latest" || selectedVersionId === null) {
+    if (!currentVersion) {
       try {
         const targetNamespace = namespaces.find(
           (namespace) => namespace.id === navigationNamespaceAnchor,
@@ -189,7 +216,7 @@ export const InOutPut = ({
           sendAmplitudeData("trigger_pipeline");
         }
 
-        setResponse(data);
+        setPipelineRunResponse(data);
       } catch (error) {
         toastInstillError({
           title: "Something went wrong when trigger the pipeline",
@@ -204,7 +231,7 @@ export const InOutPut = ({
         );
 
         const data = await triggerPipelineRelease.mutateAsync({
-          namespacePipelineReleaseName: `${routeInfo.data.pipelineName}/releases/${selectedVersionId}`,
+          namespacePipelineReleaseName: `${routeInfo.data.pipelineName}/releases/${currentVersion}`,
           inputs: [parsedStructuredData],
           accessToken,
           returnTraces: true,
@@ -212,7 +239,11 @@ export const InOutPut = ({
           requesterUid: targetNamespace ? targetNamespace.uid : undefined,
         });
 
-        setResponse(data);
+        if (amplitudeIsInit) {
+          sendAmplitudeData("trigger_pipeline");
+        }
+
+        setPipelineRunResponse(data);
       } catch (error) {
         toastInstillError({
           title: "Something went wrong when trigger the pipeline",
@@ -221,6 +252,8 @@ export const InOutPut = ({
         });
       }
     }
+
+    setIsPipelineRunning(false);
   }
 
   const inputIsNotDefined = React.useMemo(() => {
@@ -242,13 +275,33 @@ export const InOutPut = ({
 
     return true;
   }, [outputs]);
+
+  if (!formSchema || !formSchema.input || !formSchema.output) {
+    return (
+      <EmptyView
+        iconName="AlertCircle"
+        title="Pipeline is not runnable"
+        description="This pipeline cannot be run. Please check the configuration and ensure all necessary components are set up correctly."
+        className="flex-1"
+      />
+    );
+  }
+
   return (
-    <div className="flex flex-col">
-      <div className="mb-3 flex flex-col gap-y-6">
-        <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
-          Input
-        </div>
-        {pipeline.isSuccess ? (
+    <div className="flex flex-row">
+      <div className="flex w-1/2 flex-col border-r border-semantic-bg-line pb-6 pr-6">
+        <ModelSectionHeader className="mb-3">Input</ModelSectionHeader>
+        <TabMenu.Root
+          value={"form"}
+          onValueChange={() => null}
+          disabledDeSelect={true}
+          className="pointer-events-none mb-3 border-b border-semantic-bg-line"
+        >
+          <TabMenu.Item value="form">
+            <span className="text-sm text-semantic-accent-default">Form</span>
+          </TabMenu.Item>
+        </TabMenu.Root>
+        {pipeline ? (
           inputIsNotDefined ? (
             <div className="flex flex-row justify-between pl-3">
               <div className="flex flex-row gap-x-6">
@@ -273,10 +326,25 @@ export const InOutPut = ({
             <Form.Root {...form}>
               <form
                 id={inOutPutFormID}
-                className="w-full pl-3"
+                className="w-full"
                 onSubmit={form.handleSubmit(onTriggerPipeline)}
               >
-                <div className="flex flex-col gap-y-3">{fieldItems}</div>
+                <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
+                <div className="flex flex-row-reverse">
+                  {pipeline ? (
+                    <RunButton
+                      inOutPutFormID={inOutPutFormID}
+                      inputIsNotDefined={inputIsNotDefined}
+                      outputIsNotDefined={outputIsNotDefined}
+                      isTriggeringPipeline={
+                        triggerPipeline.isPending ||
+                        triggerPipelineRelease.isPending
+                      }
+                    />
+                  ) : (
+                    <div className="h-8 w-20 animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
+                  )}
+                </div>
               </form>
             </Form.Root>
           )
@@ -284,54 +352,63 @@ export const InOutPut = ({
           <InOutputSkeleton />
         )}
       </div>
-      <div className="mb-3 flex flex-row-reverse">
-        {pipeline.isSuccess ? (
-          <RunButton
-            inOutPutFormID={inOutPutFormID}
-            inputIsNotDefined={inputIsNotDefined}
-            outputIsNotDefined={outputIsNotDefined}
-            isTriggeringPipeline={triggerPipeline.isPending}
-          />
-        ) : (
-          <div className="h-8 w-20 animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
-        )}
-      </div>
-      <div className="mb-6 flex flex-col gap-y-6">
-        <div className="bg-semantic-bg-base-bg px-3 py-2 product-body-text-1-semibold">
-          Output
-        </div>
-        {pipeline.isSuccess ? (
-          outputIsNotDefined ? (
-            <div className="flex flex-row justify-between pl-3">
-              <div className="flex flex-row gap-x-6">
-                <CryingFaceSVG className="my-auto h-10 w-10 shrink-0 grow-0" />
-                <p className="my-auto font-mono text-sm italic text-semantic-fg-disabled">
-                  Pipeline output is not defined.
-                </p>
-              </div>
-              <Button
-                variant="tertiaryColour"
-                size="md"
-                onClick={() => {
-                  router.push(
-                    `/${routeInfo.data.namespaceName}/pipelines/${routeInfo.data.resourceId}/editor`,
-                  );
-                }}
+      <div className="flex w-1/2 flex-col pb-6 pl-6">
+        <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
+        {isPipelineRunning ? (
+          <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />
+        ) : pipelineRunResponse ? (
+          <React.Fragment>
+            <TabMenu.Root
+              value={outputActiveView}
+              onValueChange={(value: Nullable<string>) =>
+                setOutputActiveView(value as ModelOutputActiveView)
+              }
+              disabledDeSelect={true}
+              className="mb-3 border-b border-semantic-bg-line"
+            >
+              <TabMenu.Item
+                value="preview"
+                className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
               >
-                Setup
-              </Button>
-            </div>
-          ) : (
-            <ComponentOutputs
-              componentID="end"
-              outputSchema={pipeline.data.dataSpecification?.output ?? null}
-              nodeType="end"
-              chooseTitleFrom="title"
-              response={response}
-            />
-          )
+                <span className="text-sm">Preview</span>
+              </TabMenu.Item>
+              <TabMenu.Item
+                value="json"
+                className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
+              >
+                <span className="text-sm">JSON</span>
+              </TabMenu.Item>
+            </TabMenu.Root>
+            {outputActiveView === "preview" ? (
+              <div className="flex flex-col gap-y-2">
+                {componentOutputFields}
+              </div>
+            ) : (
+              <CodeBlock
+                codeString={JSON.stringify(
+                  pipelineRunResponse?.outputs[0],
+                  null,
+                  2,
+                )}
+                wrapLongLines={true}
+                language="json"
+                customStyle={defaultCodeSnippetStyles}
+                className="!h-auto !flex-none"
+              />
+            )}
+          </React.Fragment>
         ) : (
-          <InOutputSkeleton />
+          <div className="flex flex-row items-center justify-center gap-x-4 pt-24">
+            <Image
+              src="/images/models/no-result.svg"
+              width={41}
+              height={40}
+              alt="Square shapes"
+            />
+            <p className="font-mono text-sm italic text-semantic-fg-disabled">
+              Execute the pipeline to view the results
+            </p>
+          </div>
         )}
       </div>
     </div>
