@@ -24,7 +24,7 @@ export function usePipelineTriggers({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const client = getInstillAPIClient({ accessToken, publicAccess: false });
+      const client = getInstillAPIClient({ accessToken });
 
       const triggers = await client.core.metric.listPipelineTriggers({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),

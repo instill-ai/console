@@ -21,7 +21,7 @@ export function useApiToken({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const client = getInstillAPIClient({ accessToken, publicAccess: false });
+      const client = getInstillAPIClient({ accessToken });
 
       const token = await client.core.token.getApiToken({
         tokenName,

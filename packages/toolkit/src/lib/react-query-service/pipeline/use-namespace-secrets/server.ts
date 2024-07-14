@@ -22,7 +22,7 @@ export async function fetchNamespaceSecrets({
   }
 
   try {
-    const client = getInstillAPIClient({ accessToken, publicAccess: false });
+    const client = getInstillAPIClient({ accessToken });
 
     const userSecrets = await client.vdp.secret.listNamespaceSecrets({
       pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),

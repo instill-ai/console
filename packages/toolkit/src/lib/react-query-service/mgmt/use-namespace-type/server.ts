@@ -17,7 +17,6 @@ export async function fetchNamespaceType({
   try {
     const client = getInstillAPIClient({
       accessToken: accessToken ?? undefined,
-      publicAccess: accessToken ? false : true,
     });
 
     const type = await client.core.utils.checkNamespaceType({

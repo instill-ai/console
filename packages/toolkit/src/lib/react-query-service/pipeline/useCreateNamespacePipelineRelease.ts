@@ -22,7 +22,7 @@ export function useCreateNamespacePipelineRelease() {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const client = getInstillAPIClient({ accessToken, publicAccess: false });
+      const client = getInstillAPIClient({ accessToken });
 
       const pipelineRelease =
         await client.vdp.release.createNamespacePipelineRelease(payload);

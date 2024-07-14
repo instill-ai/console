@@ -24,7 +24,7 @@ export function useOperatorDefinitions({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const client = getInstillAPIClient({ accessToken, publicAccess: false });
+      const client = getInstillAPIClient({ accessToken });
 
       const operatorDefinitions =
         await client.vdp.component.listOperatorDefinitions({

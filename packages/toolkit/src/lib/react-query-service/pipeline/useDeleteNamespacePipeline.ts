@@ -20,7 +20,7 @@ export function useDeleteNamespacePipeline() {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const client = getInstillAPIClient({ accessToken, publicAccess: false });
+      const client = getInstillAPIClient({ accessToken });
 
       await client.vdp.pipeline.deleteNamespacePipeline({
         namespacePipelineName,

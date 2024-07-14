@@ -19,7 +19,6 @@ export async function fetchNamespacePipeline({
   try {
     const client = getInstillAPIClient({
       accessToken: accessToken ?? undefined,
-      publicAccess: accessToken ? false : true,
     });
 
     const pipeline = await client.vdp.pipeline.getNamespacePipeline({

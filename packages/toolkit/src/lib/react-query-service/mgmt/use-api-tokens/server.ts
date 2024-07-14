@@ -14,7 +14,7 @@ export async function fetchApiTokens({
   }
 
   try {
-    const client = getInstillAPIClient({ accessToken, publicAccess: false });
+    const client = getInstillAPIClient({ accessToken });
 
     const apiTokens = await client.core.token.listAPITokens({
       pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),

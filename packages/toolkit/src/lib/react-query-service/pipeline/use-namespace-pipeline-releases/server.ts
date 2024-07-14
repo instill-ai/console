@@ -18,7 +18,6 @@ export async function fetchNamespacePipelineReleases({
   try {
     const client = getInstillAPIClient({
       accessToken: accessToken ?? undefined,
-      publicAccess: accessToken ? false : true,
     });
 
     const pipelineReleases =

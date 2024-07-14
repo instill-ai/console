@@ -18,7 +18,7 @@ export function useUpdateAuthenticatedUser() {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const client = getInstillAPIClient({ accessToken, publicAccess: false });
+      const client = getInstillAPIClient({ accessToken });
 
       const user = await client.core.user.updateAuthenticatedUser(payload);
 

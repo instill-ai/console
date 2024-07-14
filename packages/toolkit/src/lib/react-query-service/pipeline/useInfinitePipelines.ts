@@ -47,7 +47,6 @@ export function useInfinitePipelines({
     queryFn: async ({ pageParam }) => {
       const client = getInstillAPIClient({
         accessToken: accessToken ?? undefined,
-        publicAccess: accessToken ? false : true,
       });
 
       const pipelines = await client.vdp.pipeline.listAccessiblePipelines({

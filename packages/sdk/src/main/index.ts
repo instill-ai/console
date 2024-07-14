@@ -21,21 +21,11 @@ export type RequestOption = {
 
 export class InstillAPIClient {
   baseURL: string;
-  apiToken: string;
-  publicAccess?: boolean;
+  apiToken: string | undefined;
 
-  constructor({
-    baseURL,
-    apiToken,
-    publicAccess,
-  }: {
-    baseURL: string;
-    apiToken: string;
-    publicAccess?: boolean;
-  }) {
+  constructor({ baseURL, apiToken }: { baseURL: string; apiToken?: string }) {
     this.baseURL = baseURL;
     this.apiToken = apiToken;
-    this.publicAccess = publicAccess;
   }
 
   async get<Rsp>(path: string, opt?: RequestOption): Promise<Rsp> {
@@ -66,14 +56,14 @@ export class InstillAPIClient {
     try {
       const response = await fetch(`${this.baseURL}${path}`, {
         method,
-        headers: this.publicAccess
+        headers: this.apiToken
           ? {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${this.apiToken}`,
               ...opt?.additionalHeaders,
             }
           : {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${this.apiToken}`,
               ...opt?.additionalHeaders,
             },
         body: opt?.body,

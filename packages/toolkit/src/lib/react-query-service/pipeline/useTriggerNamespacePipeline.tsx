@@ -17,7 +17,6 @@ export function useTriggerNamespacePipeline() {
 
       const client = getInstillAPIClient({
         accessToken: accessToken ?? undefined,
-        publicAccess: accessToken ? false : true,
       });
 
       const response =

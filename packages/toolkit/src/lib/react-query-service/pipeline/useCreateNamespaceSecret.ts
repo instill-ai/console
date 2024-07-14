@@ -26,7 +26,7 @@ export function useCreateNamespaceSecret() {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const client = getInstillAPIClient({ accessToken, publicAccess: false });
+      const client = getInstillAPIClient({ accessToken });
 
       const secret = await client.vdp.secret.createNamespaceSecret(payload);
 
