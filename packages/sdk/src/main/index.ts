@@ -21,9 +21,9 @@ export type RequestOption = {
 
 export class InstillAPIClient {
   baseURL: string;
-  apiToken: string;
+  apiToken: string | undefined;
 
-  constructor({ baseURL, apiToken }: { baseURL: string; apiToken: string }) {
+  constructor({ baseURL, apiToken }: { baseURL: string; apiToken?: string }) {
     this.baseURL = baseURL;
     this.apiToken = apiToken;
   }
@@ -56,16 +56,25 @@ export class InstillAPIClient {
     try {
       const response = await fetch(`${this.baseURL}${path}`, {
         method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${this.apiToken}`,
-          ...opt?.additionalHeaders,
-        },
+        headers: this.apiToken
+          ? {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${this.apiToken}`,
+              ...opt?.additionalHeaders,
+            }
+          : {
+              "Content-Type": "application/json",
+              ...opt?.additionalHeaders,
+            },
         body: opt?.body,
       });
 
       if (!response.ok) {
         throw new Error(`Failed to fetch ${path}`);
+      }
+
+      if (method === "DELETE") {
+        return Promise.resolve() as Promise<Rsp>;
       }
 
       const data = (await response.json()) satisfies Rsp;

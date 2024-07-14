@@ -13,7 +13,7 @@ import {
 export class TriggerClient extends APIResource {
   async triggerNamespacePipeline({
     namespacePipelineName,
-    input,
+    inputs,
     requesterUid,
     returnTraces,
     shareCode,
@@ -22,7 +22,7 @@ export class TriggerClient extends APIResource {
       const data = this._client.post<TriggerNamespacePipelineResponse>(
         `/${namespacePipelineName}/trigger`,
         {
-          body: JSON.stringify({ input }),
+          body: JSON.stringify({ inputs }),
           additionalHeaders: {
             "instill-return-traces": returnTraces ? "true" : "false",
             "instill-share-code": shareCode,
@@ -41,7 +41,7 @@ export class TriggerClient extends APIResource {
 
   async triggerAsyncNamespacePipeline({
     namespacePipelineName,
-    input,
+    inputs,
     returnTraces,
     requesterUid,
     shareCode,
@@ -51,7 +51,7 @@ export class TriggerClient extends APIResource {
         await this._client.post<TriggerAsyncNamespacePipelineResponse>(
           `/${namespacePipelineName}/triggerAsync`,
           {
-            body: JSON.stringify({ input }),
+            body: JSON.stringify({ inputs }),
             additionalHeaders: {
               "instill-return-traces": returnTraces ? "true" : "false",
               "instill-share-code": shareCode,
@@ -70,7 +70,7 @@ export class TriggerClient extends APIResource {
 
   async triggerNamespacePipelineRelease({
     namespacePipelineReleaseName,
-    input,
+    inputs,
     returnTraces,
     requesterUid,
     shareCode,
@@ -80,7 +80,7 @@ export class TriggerClient extends APIResource {
         await this._client.post<TriggerNamespacePipelineReleaseResponse>(
           `/${namespacePipelineReleaseName}/trigger`,
           {
-            body: JSON.stringify({ input }),
+            body: JSON.stringify({ inputs }),
             additionalHeaders: {
               "instill-return-traces": returnTraces ? "true" : "false",
               "instill-share-code": shareCode,
@@ -99,7 +99,7 @@ export class TriggerClient extends APIResource {
 
   async triggerAsyncNamespacePipelineRelease({
     namespacePipelineReleaseName,
-    input,
+    inputs,
     returnTraces,
     requesterUid,
     shareCode,
@@ -109,7 +109,7 @@ export class TriggerClient extends APIResource {
         await this._client.post<TriggerAsyncNamespacePipelineReleaseResponse>(
           `/${namespacePipelineReleaseName}/triggerAsync`,
           {
-            body: JSON.stringify({ input }),
+            body: JSON.stringify({ inputs }),
             additionalHeaders: {
               "instill-return-traces": returnTraces ? "true" : "false",
               "instill-share-code": shareCode,

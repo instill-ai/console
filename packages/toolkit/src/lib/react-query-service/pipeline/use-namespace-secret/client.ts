@@ -1,35 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { Nullable } from "../../../type";
-import { fetchUserSecrets, getUseUserSecretsQueryKey } from "./server";
+import { fetchNamespaceSecret, getUseNamespaceSecretQueryKey } from "./server";
 
-export function useUserSecrets({
-  entityName,
+export function useNamespaceSecret({
+  namespaceSecretName,
   accessToken,
   enabled,
-  pageSize,
 }: {
-  entityName: Nullable<string>;
+  namespaceSecretName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  pageSize?: number;
 }) {
   let enabledQuery = false;
 
-  if (entityName && enabled) {
+  if (namespaceSecretName && enabled) {
     enabledQuery = true;
   }
 
-  const queryKey = getUseUserSecretsQueryKey(entityName);
+  const queryKey = getUseNamespaceSecretQueryKey(namespaceSecretName);
 
   return useQuery({
     queryKey,
     queryFn: async () => {
       try {
-        return await fetchUserSecrets({
-          entityName,
+        return await fetchNamespaceSecret({
+          namespaceSecretName,
           accessToken,
-          pageSize,
         });
       } catch (error) {
         return Promise.reject(error);

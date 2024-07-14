@@ -22,10 +22,10 @@ import {
   InstillStore,
   Nullable,
   useInstillStore,
+  useNamespacePipeline,
+  useNamespaceSecrets,
   useRouteInfo,
   useSmartHint,
-  useUserPipeline,
-  useUserSecrets,
 } from "../../lib";
 import { TopControlMenu } from "./components/top-control-menu";
 
@@ -67,8 +67,8 @@ export const PipelineBuilderMainView = ({
 
   const routeInfo = useRouteInfo();
 
-  const entitySecrets = useUserSecrets({
-    entityName: routeInfo.data.namespaceName,
+  const entitySecrets = useNamespaceSecrets({
+    namespaceName: routeInfo.data.namespaceName,
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
   });
@@ -78,9 +78,9 @@ export const PipelineBuilderMainView = ({
     updateEntitySecrets(() => entitySecrets.data);
   }, [entitySecrets.isSuccess, entitySecrets.data, updateEntitySecrets]);
 
-  const pipeline = useUserPipeline({
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.data.pipelineName,
     enabled: enabledQuery && routeInfo.isSuccess && !pipelineIsNew,
-    pipelineName: routeInfo.data.pipelineName,
     accessToken,
     retry: false,
   });

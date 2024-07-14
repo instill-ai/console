@@ -4,7 +4,7 @@ import * as semver from "semver";
 import {
   Nullable,
   PipelineRelease,
-  useUserPipelineReleases,
+  useNamespacePipelineReleases,
 } from "../../../../lib";
 
 export function sortPipelineReleases(releases: PipelineRelease[]) {
@@ -41,8 +41,8 @@ export function useSortedReleases({
   enabledQuery: boolean;
   shareCode?: string;
 }) {
-  const pipelineReleases = useUserPipelineReleases({
-    pipelineName,
+  const pipelineReleases = useNamespacePipelineReleases({
+    namespacePipelineName: pipelineName,
     enabled: enabledQuery,
     accessToken,
     shareCode,

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CreateNamespacePipelineRequest } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -21,7 +22,6 @@ import {
 
 import { InstillErrors } from "../constant";
 import {
-  CreateUserPipelinePayload,
   InstillStore,
   Nullable,
   Pipeline,
@@ -30,7 +30,7 @@ import {
   toastInstillError,
   useAmplitudeCtx,
   useAuthenticatedUser,
-  useCreateUserPipeline,
+  useCreateNamespacePipeline,
   useInstillStore,
   useRouteInfo,
   useShallow,
@@ -113,7 +113,7 @@ export const ClonePipelineDialog = ({
 
   const namespaces = useUserNamespaces();
 
-  const createPipeline = useCreateUserPipeline();
+  const createPipeline = useCreateNamespacePipeline();
   async function handleClone(data: z.infer<typeof ClonePipelineSchema>) {
     if (!me.isSuccess || !accessToken || !pipeline) {
       return;
@@ -150,26 +150,23 @@ export const ClonePipelineDialog = ({
 
     const recipe = composePipelineRecipeFromNodes(nodes);
 
-    const payload: CreateUserPipelinePayload = {
-      id: data.id,
-      recipe,
-      metadata: pipeline.metadata,
-      readme: pipeline.readme,
-      description: data.brief ? data.brief : pipeline.description,
-      sharing,
-    };
-
     const namespace = namespaces.find(
       (account) => account.id === data.namespaceId,
     );
 
     if (namespace) {
+      const payload: CreateNamespacePipelineRequest = {
+        namespaceName: namespace.name,
+        id: data.id,
+        recipe,
+        metadata: pipeline.metadata,
+        readme: pipeline.readme,
+        description: data.brief ? data.brief : pipeline.description,
+        sharing,
+      };
+
       try {
-        await createPipeline.mutateAsync({
-          payload,
-          accessToken,
-          entityName: namespace.name,
-        });
+        await createPipeline.mutateAsync({ payload, accessToken });
         if (amplitudeIsInit) {
           if (pipeline.ownerName === me.data.name) {
             sendAmplitudeData("duplicate_pipeline");

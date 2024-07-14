@@ -1,18 +1,22 @@
+"use client";
+
 import { useQuery } from "@tanstack/react-query";
 
 import type { Nullable } from "../../type";
-import { getOperatorDefinitionQuery } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useOperatorDefinition({
   operatorDefinitionName,
   accessToken,
   enabled,
   retry,
+  disableViewFull,
 }: {
   operatorDefinitionName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   retry?: false | number;
+  disableViewFull?: boolean;
 }) {
   let enableQuery = false;
 
@@ -27,10 +31,17 @@ export function useOperatorDefinition({
         return Promise.reject(new Error("operatorDefinitionName not provided"));
       }
 
-      const operatorDefinition = await getOperatorDefinitionQuery({
-        operatorDefinitionName,
-        accessToken,
-      });
+      if (!accessToken) {
+        return Promise.reject(new Error("accessToken not provided"));
+      }
+
+      const client = getInstillAPIClient({ accessToken });
+
+      const operatorDefinition =
+        await client.vdp.component.getOperatorDefinition({
+          operatorDefinitionName,
+          view: disableViewFull ? undefined : "VIEW_FULL",
+        });
 
       return Promise.resolve(operatorDefinition);
     },

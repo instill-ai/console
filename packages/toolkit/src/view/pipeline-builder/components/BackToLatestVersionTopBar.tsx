@@ -3,7 +3,11 @@
 import { Edge, Node } from "reactflow";
 import { useShallow } from "zustand/react/shallow";
 
-import { InstillStore, useInstillStore, useUserPipeline } from "../../../lib";
+import {
+  InstillStore,
+  useInstillStore,
+  useNamespacePipeline,
+} from "../../../lib";
 import {
   checkIsValidPosition,
   composeEdgesFromNodes,
@@ -42,9 +46,9 @@ export const BackToLatestVersionTopBar = () => {
     enabledQuery: pipelineIsNew ? false : enabledQuery,
   });
 
-  const pipeline = useUserPipeline({
+  const pipeline = useNamespacePipeline({
     enabled: enabledQuery && !pipelineIsNew,
-    pipelineName,
+    namespacePipelineName: pipelineName,
     accessToken,
     retry: false,
   });

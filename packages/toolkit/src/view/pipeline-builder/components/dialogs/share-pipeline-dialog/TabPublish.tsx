@@ -8,8 +8,8 @@ import {
   InstillStore,
   Nullable,
   useInstillStore,
+  useNamespacePipeline,
   useShallow,
-  useUserPipeline,
 } from "../../../../../lib";
 import { UnpublishPipelineDialog } from "./UnpublishPipelineDialog";
 
@@ -32,8 +32,8 @@ export const TabPublish = ({
     enabledQuery,
   } = useInstillStore(useShallow(selector));
 
-  const pipeline = useUserPipeline({
-    pipelineName: pipelineName,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: pipelineName,
     enabled: enabledQuery && !!pipelineName,
     accessToken,
   });

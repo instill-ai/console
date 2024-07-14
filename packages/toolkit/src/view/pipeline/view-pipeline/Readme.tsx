@@ -2,17 +2,15 @@
 
 import { useToast } from "@instill-ai/design-system";
 
+import type { InstillStore, Nullable } from "../../../lib";
 import { RealTimeTextEditor } from "../../../components";
 import {
-  InstillStore,
-  Nullable,
   sendAmplitudeData,
-  UpdateUserPipelinePayload,
   useAmplitudeCtx,
   useInstillStore,
   useRouteInfo,
   useShallow,
-  useUpdateUserPipeline,
+  useUpdateNamespacePipeline,
 } from "../../../lib";
 
 const selector = (store: InstillStore) => ({
@@ -32,19 +30,18 @@ export const Readme = ({
 
   const routeInfo = useRouteInfo();
 
-  const updateUserPipeline = useUpdateUserPipeline();
+  const updatePipeline = useUpdateNamespacePipeline();
 
   const onUpdatePipelineReadme = async (readme: string) => {
     if (!routeInfo.isSuccess || !accessToken || !routeInfo.data.pipelineName) {
       return;
     }
 
-    const payload: UpdateUserPipelinePayload = {
-      name: routeInfo.data.pipelineName,
+    await updatePipeline.mutateAsync({
+      namespacePipelineName: routeInfo.data.pipelineName,
       readme,
-    };
-
-    await updateUserPipeline.mutateAsync({ payload, accessToken });
+      accessToken,
+    });
 
     if (amplitudeIsInit) {
       sendAmplitudeData("update_pipeline_readme");

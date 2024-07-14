@@ -1,39 +1,40 @@
+"use client";
+
 import {
   InfiniteData,
   useInfiniteQuery,
   UseInfiniteQueryResult,
 } from "@tanstack/react-query";
 
+import type { ListPipelinesResponse } from "../../vdp-sdk";
 import { env } from "../../../server";
 import { Nullable } from "../../type";
-import {
-  ListPipelinesResponse,
-  listUserPipelinesQuery,
-  Visibility,
-} from "../../vdp-sdk";
+import { getInstillAPIClient, Visibility } from "../../vdp-sdk";
 
-export function useInfiniteUserPipelines({
-  userName,
+export function useInfiniteNamespacePipelines({
+  namespaceName,
   accessToken,
   pageSize,
   enabledQuery,
   filter,
   visibility,
+  disabledViewFull,
 }: {
-  userName: Nullable<string>;
+  namespaceName: Nullable<string>;
   accessToken: Nullable<string>;
   pageSize?: number;
   enabledQuery: boolean;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
+  disabledViewFull?: boolean;
 }): UseInfiniteQueryResult<InfiniteData<ListPipelinesResponse>, Error> {
   let enabled = false;
 
-  if (userName && enabledQuery) {
+  if (namespaceName && enabledQuery) {
     enabled = true;
   }
 
-  const queryKey = ["pipelines", userName, "infinite"];
+  const queryKey = ["pipelines", namespaceName, "infinite"];
 
   if (filter) {
     queryKey.push(filter);
@@ -46,18 +47,22 @@ export function useInfiniteUserPipelines({
   return useInfiniteQuery({
     queryKey,
     queryFn: async ({ pageParam }) => {
-      if (!userName) {
-        return Promise.reject(new Error("userName not provided"));
+      if (!namespaceName) {
+        return Promise.reject(new Error("namespaceName not provided"));
       }
 
-      const pipelines = await listUserPipelinesQuery({
+      const client = getInstillAPIClient({
+        accessToken: accessToken ?? undefined,
+      });
+
+      const pipelines = await client.vdp.pipeline.listNamespacePipelines({
         pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-        nextPageToken: pageParam ?? null,
-        userName,
-        accessToken,
+        pageToken: pageParam ?? undefined,
+        namespaceName,
         enablePagination: true,
-        filter,
-        visibility,
+        filter: filter ?? undefined,
+        visibility: visibility ?? undefined,
+        view: disabledViewFull ? undefined : "VIEW_FULL",
       });
 
       return Promise.resolve(pipelines);

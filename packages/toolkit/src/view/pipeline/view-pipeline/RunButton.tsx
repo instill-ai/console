@@ -6,10 +6,10 @@ import { LoadingSpin } from "../../../components";
 import {
   InstillStore,
   useInstillStore,
+  useNamespacePipeline,
   useNavigateBackAfterLogin,
   useRouteInfo,
   useShallow,
-  useUserPipeline,
 } from "../../../lib";
 
 const selector = (store: InstillStore) => ({
@@ -36,8 +36,10 @@ export const RunButton = ({
 
   const routeInfo = useRouteInfo();
 
-  const pipeline = useUserPipeline({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.isSuccess
+      ? routeInfo.data.pipelineName
+      : null,
     enabled: enabledQuery && routeInfo.isSuccess,
     shareCode: shareCode ?? undefined,
     accessToken,

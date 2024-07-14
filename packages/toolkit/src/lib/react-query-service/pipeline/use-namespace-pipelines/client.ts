@@ -2,12 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Nullable } from "../../../type";
 import { Visibility } from "../../../vdp-sdk";
-import { fetchUserPipelines } from "./server";
+import {
+  fetchNamespacePipelines,
+  getUseNamespacePipelinesQueryKey,
+} from "./server";
 
 // This is a public API, we won't block unauth users from accessing this
 
-export function useUserPipelines({
-  userName,
+export function useNamespacePipelines({
+  namespaceName,
   enabled,
   accessToken,
   retry,
@@ -16,7 +19,7 @@ export function useUserPipelines({
   disabledViewFull,
   pageSize,
 }: {
-  userName: Nullable<string>;
+  namespaceName: Nullable<string>;
   enabled: boolean;
   accessToken: Nullable<string>;
   filter: Nullable<string>;
@@ -31,16 +34,18 @@ export function useUserPipelines({
 }) {
   let enableQuery = false;
 
-  if (userName && enabled) {
+  if (namespaceName && enabled) {
     enableQuery = true;
   }
 
+  const queryKey = getUseNamespacePipelinesQueryKey(namespaceName);
+
   return useQuery({
-    queryKey: ["pipelines", userName],
+    queryKey: queryKey,
     queryFn: async () => {
       try {
-        return await fetchUserPipelines({
-          userName,
+        return await fetchNamespacePipelines({
+          namespaceName,
           accessToken,
           filter,
           visibility,

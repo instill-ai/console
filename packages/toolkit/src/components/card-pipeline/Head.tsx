@@ -11,7 +11,7 @@ import {
   OrganizationOwner,
   Pipeline,
   toastInstillError,
-  useDeleteUserPipeline,
+  useDeleteNamespacePipeline,
   useInstillStore,
   UserOwner,
   useShallow,
@@ -48,11 +48,11 @@ export const Head = ({
   const { toast } = useToast();
   const { accessToken } = useInstillStore(useShallow(selector));
 
-  const deletePipeline = useDeleteUserPipeline();
+  const deletePipeline = useDeleteNamespacePipeline();
   async function handleDeletePipeline() {
     try {
       await deletePipeline.mutateAsync({
-        pipelineName: pipeline.name,
+        namespacePipelineName: pipeline.name,
         accessToken: accessToken ? accessToken : null,
       });
 

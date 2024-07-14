@@ -73,3 +73,12 @@ export type ListOperatorDefinitionsResponse = {
   nextPageToken: string;
   totalSize: number;
 };
+
+export type GetOperatorDefinitionRequest = {
+  operatorDefinitionName: string;
+  view?: string;
+};
+
+export type GetOperatorDefinitionResponse = {
+  operatorDefinition: OperatorDefinition;
+};

@@ -1,10 +1,11 @@
+import { TriggerNamespacePipelineResponse } from "instill-sdk";
 import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
 
 import { NodeData } from "../../view";
 import { Nullable } from "../type";
 import { InstillJSONSchema } from "../use-instill-form";
 import { SmartHint } from "../use-smart-hint";
-import { Secret, TriggerUserPipelineResponse } from "../vdp-sdk/pipeline";
+import { Secret } from "../vdp-sdk/pipeline";
 
 export type WarnUnsavedChangesDialogState = {
   open: boolean;
@@ -25,7 +26,7 @@ export type PipelineBuilderState = {
   connectorFormIsDirty: boolean;
   selectResourceDialogIsOpen: boolean;
   collapseAllNodes: boolean;
-  testModeTriggerResponse: Nullable<TriggerUserPipelineResponse>;
+  testModeTriggerResponse: Nullable<TriggerNamespacePipelineResponse>;
   pipelineOpenAPIOutputSchema: Nullable<InstillJSONSchema>;
   currentVersion: Nullable<string>;
   initializedByTemplateOrClone: boolean;
@@ -67,8 +68,8 @@ export type PipelineBuilderAction = {
   updateCollapseAllNodes: (fn: (prev: boolean) => boolean) => void;
   updateTestModeTriggerResponse: (
     fn: (
-      prev: Nullable<TriggerUserPipelineResponse>,
-    ) => Nullable<TriggerUserPipelineResponse>,
+      prev: Nullable<TriggerNamespacePipelineResponse>,
+    ) => Nullable<TriggerNamespacePipelineResponse>,
   ) => void;
   updatePipelineOpenAPIOutputSchema: (
     fn: (prev: Nullable<InstillJSONSchema>) => Nullable<InstillJSONSchema>,

@@ -3,8 +3,8 @@ import { cookies } from "next/headers";
 
 import { Nullable, Pipeline } from "@instill-ai/toolkit";
 import {
+  fetchNamespacePipeline,
   fetchNamespaceType,
-  fetchUserPipeline,
 } from "@instill-ai/toolkit/server";
 
 import { PipelineOverviewPageRender } from "./render";
@@ -37,15 +37,15 @@ export async function generateMetadata({
     let pipeline: Nullable<Pipeline> = null;
 
     if (namespaceType === "NAMESPACE_USER") {
-      pipeline = await fetchUserPipeline({
-        pipelineName: `users/${entity}/pipelines/${id}`,
+      pipeline = await fetchNamespacePipeline({
+        namespacePipelineName: `users/${entity}/pipelines/${id}`,
         accessToken,
       });
     }
 
     if (namespaceType === "NAMESPACE_ORGANIZATION") {
-      pipeline = await fetchUserPipeline({
-        pipelineName: `organizations/${entity}/pipelines/${id}`,
+      pipeline = await fetchNamespacePipeline({
+        namespacePipelineName: `organizations/${entity}/pipelines/${id}`,
         accessToken,
       });
     }

@@ -3,16 +3,19 @@
 import { useQuery } from "@tanstack/react-query";
 
 import type { Nullable } from "../../../type";
-import { fetchUserPipeline, getUseUserPipelineQueryKey } from "./server";
+import {
+  fetchNamespacePipeline,
+  getUseNamespacePipelineQueryKey,
+} from "./server";
 
-export function useUserPipeline({
-  pipelineName,
+export function useNamespacePipeline({
+  namespacePipelineName,
   accessToken,
   enabled,
   retry,
   shareCode,
 }: {
-  pipelineName: Nullable<string>;
+  namespacePipelineName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   retry?: false | number;
@@ -20,16 +23,16 @@ export function useUserPipeline({
 }) {
   let enableQuery = false;
 
-  if (pipelineName && enabled) {
+  if (namespacePipelineName && enabled) {
     enableQuery = true;
   }
 
   return useQuery({
-    queryKey: getUseUserPipelineQueryKey(pipelineName),
+    queryKey: getUseNamespacePipelineQueryKey(namespacePipelineName),
     queryFn: async () => {
       try {
-        return await fetchUserPipeline({
-          pipelineName,
+        return await fetchNamespacePipeline({
+          namespacePipelineName,
           accessToken,
           shareCode,
         });

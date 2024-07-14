@@ -1,49 +1,52 @@
+"use client";
+
+import type { RenameNamespacePipelineRequest } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import type { Pipeline, UpdateUserPipelinePayload } from "../../vdp-sdk";
-import { Nullable } from "../../type";
-import { updateUserPipelineMutation } from "../../vdp-sdk";
+import type { Nullable } from "../../type";
+import type { Pipeline } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
-export function useUpdateUserPipeline() {
+export function useRenameNamespacePipeline() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
       payload,
       accessToken,
     }: {
-      payload: UpdateUserPipelinePayload;
+      payload: RenameNamespacePipelineRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const pipeline = await updateUserPipelineMutation({
-        payload,
-        accessToken,
-      });
+      const client = getInstillAPIClient({ accessToken });
 
-      return Promise.resolve({ pipeline });
+      const pipeline =
+        await client.vdp.pipeline.renameNamespacePipeline(payload);
+
+      return Promise.resolve({
+        pipeline,
+        accessToken,
+        oldPipelineName: payload.namespacePipelineName,
+      });
     },
-    onSuccess: async ({ pipeline }) => {
+    onSuccess: async ({ pipeline, oldPipelineName }) => {
       // At this stage the pipelineName will be users/<uid>/pipelines/<pid>
       const pipelineNameArray = pipeline.name.split("/");
       const userName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
+
+      queryClient.removeQueries({ queryKey: ["pipelines", oldPipelineName] });
 
       queryClient.setQueryData<Pipeline>(
         ["pipelines", pipeline.name],
         pipeline,
       );
 
-      queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) =>
-        old
-          ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
-          : [pipeline],
-      );
-
       queryClient.setQueryData<Pipeline[]>(["pipelines", userName], (old) =>
         old
-          ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
+          ? [...old.filter((e) => e.name !== oldPipelineName), pipeline]
           : [pipeline],
       );
     },

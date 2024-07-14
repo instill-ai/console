@@ -23,14 +23,14 @@ import {
   Nullable,
   toastInstillError,
   useAuthenticatedUser,
-  useDeleteUserPipeline,
+  useDeleteNamespacePipeline,
   useInstillStore,
+  useNamespacePipeline,
   useNavigateBackAfterLogin,
   useOrganization,
   useRouteInfo,
   useShallow,
   useUser,
-  useUserPipeline,
 } from "../../../lib";
 import { useSortedReleases } from "../../pipeline-builder";
 import { EditMetadataDialog } from "./EditMetadataDialog";
@@ -85,8 +85,10 @@ export const Head = ({
       routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION",
   });
 
-  const pipeline = useUserPipeline({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.isSuccess
+      ? routeInfo.data.pipelineName
+      : null,
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
     shareCode: shareCode ?? undefined,
@@ -99,12 +101,16 @@ export const Head = ({
     shareCode: shareCode ?? undefined,
   });
 
-  const deletePipeline = useDeleteUserPipeline();
+  const deletePipeline = useDeleteNamespacePipeline();
   async function handleDeletePipeline() {
+    if (!accessToken || !pipeline.isSuccess) {
+      return;
+    }
+
     try {
       await deletePipeline.mutateAsync({
-        pipelineName: pipeline.data?.name || "",
-        accessToken: accessToken ? accessToken : null,
+        namespacePipelineName: pipeline.data.name,
+        accessToken,
       });
 
       toast({
@@ -114,6 +120,7 @@ export const Head = ({
       });
       router.push(`/${routeInfo.data.namespaceId}/pipelines`);
     } catch (error) {
+      console.log(error);
       toastInstillError({
         title: "Something went wrong when delete the pipeline",
         error,
@@ -124,7 +131,7 @@ export const Head = ({
 
   return (
     <React.Fragment>
-      <style jsx={true}>{`
+      <style jsx>{`
         .org-gradient {
           background: linear-gradient(45deg, #dce7fe, #fef1f2);
         }
