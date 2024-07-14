@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { TriggerNamespacePipelineResponse } from "instill-sdk";
+import { Pipeline, TriggerNamespacePipelineResponse } from "instill-sdk";
 import * as z from "zod";
 
 import { Button, Form, TabMenu, useToast } from "@instill-ai/design-system";
@@ -19,7 +19,6 @@ import {
   GeneralRecord,
   InstillStore,
   Nullable,
-  Pipeline,
   PipelineRelease,
   sendAmplitudeData,
   toastInstillError,

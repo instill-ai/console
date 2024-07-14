@@ -1,10 +1,9 @@
 "use client";
 
+import type { CreateNamespacePipelineRequest, Pipeline } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CreateNamespacePipelineRequest } from "instill-sdk";
 
 import type { Nullable } from "../../type";
-import type { Pipeline } from "../../vdp-sdk";
 import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useCreateNamespacePipeline() {

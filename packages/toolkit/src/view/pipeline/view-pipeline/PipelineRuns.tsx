@@ -1,3 +1,5 @@
+import type { Pipeline } from "instill-sdk";
+
 import { ColumnDef, DataTable } from "@instill-ai/design-system";
 
 import {
@@ -9,10 +11,9 @@ import {
   convertToSecondsAndMilliseconds,
   formatDate,
   InstillStore,
-  Pipeline,
   PipelineTriggerRecord,
   useInstillStore,
-  usePipelineTriggerRecords,
+  usePipelineTriggers,
   useRouteInfo,
   useShallow,
 } from "../../../lib";
@@ -30,11 +31,10 @@ export type PipelineRunsProps = {
 export const PipelineRuns = ({ pipeline }: PipelineRunsProps) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const routeInfo = useRouteInfo();
-  const triggers = usePipelineTriggerRecords({
+  const triggers = usePipelineTriggers({
     enabled: enabledQuery && !!pipeline && routeInfo.isSuccess,
     filter: `pipelineId='${pipeline?.id}' AND ownerName='${routeInfo.data.namespaceName}'`,
     accessToken,
-    previousFilter: null,
     filterId: `${pipeline?.id}-${routeInfo.data.namespaceName}`,
   });
 
@@ -92,7 +92,7 @@ export const PipelineRuns = ({ pipeline }: PipelineRunsProps) => {
     return <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />;
   }
 
-  if (triggers.isSuccess && triggers.data.triggers.length === 0) {
+  if (triggers.isSuccess && triggers.data.length === 0) {
     return (
       <EmptyView
         iconName="Zap"
@@ -107,7 +107,7 @@ export const PipelineRuns = ({ pipeline }: PipelineRunsProps) => {
     <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(2)]:w-40 [&_table_th:nth-child(3)]:w-40 [&_table_th:nth-child(4)]:w-36">
       <DataTable
         columns={columns}
-        data={triggers.data?.triggers || []}
+        data={triggers.data ?? []}
         pageSize={TABLE_PAGE_SIZE}
         isLoading={!triggers.isSuccess}
         loadingRows={TABLE_PAGE_SIZE}

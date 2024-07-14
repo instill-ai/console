@@ -97,6 +97,10 @@ export type Pipeline = {
   permission: Permission;
   tags: string[];
   stats: PipelineStats;
+  profileImage: string;
+  sourceUrl: string;
+  documentationUrl: string;
+  license: string;
 };
 
 export type PipelineSharing = {
@@ -256,6 +260,11 @@ export type UpdateNamespacePipelineRequest = {
   sharing?: PipelineSharing;
   metadata?: GeneralRecord;
   readme?: string;
+  sourceUrl?: string;
+  documentationUrl?: string;
+  license?: string;
+  profileImage?: string;
+  tags?: string[];
 };
 
 export type UpdateNamespacePipelineResponse = {

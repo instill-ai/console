@@ -1,5 +1,6 @@
 "use client";
 
+import type { Pipeline, UpdateNamespacePipelineRequest } from "instill-sdk";
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -19,14 +20,12 @@ import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
 import {
   Nullable,
   PermissionRole,
-  Pipeline,
   sendAmplitudeData,
   toastInstillError,
-  UpdateUserPipelinePayload,
   useAmplitudeCtx,
   useInstillStore,
   useRouteInfo,
-  useUpdateUserPipeline,
+  useUpdateNamespacePipeline,
 } from "../../../lib";
 
 const PipelineSettingsSchema = z.object({
@@ -72,7 +71,7 @@ export const PipelineSettings = ({
   const { toast } = useToast();
   const routeInfo = useRouteInfo();
 
-  const updateUserPipeline = useUpdateUserPipeline();
+  const updateUserPipeline = useUpdateNamespacePipeline();
   async function onSubmit(data: z.infer<typeof PipelineSettingsSchema>) {
     if (!routeInfo.isSuccess || !routeInfo?.data.pipelineName || !accessToken) {
       return;
@@ -90,8 +89,8 @@ export const PipelineSettings = ({
       },
     };
 
-    const payload: UpdateUserPipelinePayload = {
-      name: routeInfo.data.pipelineName,
+    const payload: UpdateNamespacePipelineRequest = {
+      namespacePipelineName: routeInfo.data.pipelineName,
       description: data.description ?? undefined,
       sourceUrl: data.sourceUrl,
       documentationUrl: data.documentationUrl,
@@ -116,7 +115,7 @@ export const PipelineSettings = ({
     try {
       setUpdating(true);
 
-      await updateUserPipeline.mutateAsync({ payload, accessToken });
+      await updateUserPipeline.mutateAsync({ ...payload, accessToken });
 
       onUpdate();
 

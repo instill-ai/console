@@ -1,11 +1,8 @@
-import React, { useMemo } from "react";
+import type { Pipeline } from "instill-sdk";
+import * as React from "react";
 import { useSearchParams } from "next/navigation";
 
-import type {
-  Pipeline,
-  PipelineRelease,
-  PipelineVariableFieldMap,
-} from "../../../lib";
+import type { PipelineRelease, PipelineVariableFieldMap } from "../../../lib";
 import { CodeBlock, EmptyView, ModelSectionHeader } from "../../../components";
 import { CodeString } from "../../../components/CodeString";
 import { defaultCodeSnippetStyles } from "../../../constant";
@@ -27,7 +24,7 @@ export const PipelineApi = ({ pipeline, releases }: PipelineApiProps) => {
   const searchParams = useSearchParams();
   const currentVersion = searchParams.get("version");
 
-  const owner = useMemo(() => {
+  const owner = React.useMemo(() => {
     if (!pipeline) {
       return OWNER;
     }

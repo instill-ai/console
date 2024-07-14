@@ -1,3 +1,4 @@
+import { PipelineIteratorComponent } from "instill-sdk";
 import { Node } from "reactflow";
 
 import {
@@ -12,7 +13,6 @@ import {
   isVariableNode,
 } from "../../view/pipeline-builder/lib/checkNodeType";
 import { transformInstillJSONSchemaToFormTree } from "../use-instill-form/transform";
-import { PipelineIteratorComponent } from "../vdp-sdk";
 import { transformFormTreeToSmartHints } from "./transformFormTreeToSmartHints";
 import { transformPipelineTriggerRequestFieldsToSmartHints } from "./transformPipelineTriggerRequestFieldsToSmartHints";
 import { SmartHint } from "./types";

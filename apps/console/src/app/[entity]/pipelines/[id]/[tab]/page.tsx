@@ -1,7 +1,8 @@
 import { Metadata } from "next";
 import { cookies } from "next/headers";
+import { Pipeline } from "instill-sdk";
 
-import { Nullable, Pipeline } from "@instill-ai/toolkit";
+import { Nullable } from "@instill-ai/toolkit";
 import {
   fetchNamespacePipeline,
   fetchNamespaceType,

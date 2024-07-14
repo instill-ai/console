@@ -1,9 +1,11 @@
 "use client";
 
+import type { Pipeline } from "instill-sdk";
 import * as React from "react";
 
 import { Button, DropdownMenu, Icons } from "@instill-ai/design-system";
 
+import type { InstillStore } from "./../../../lib";
 import {
   PublishPipelineDialog,
   SharePipelineDialog,
@@ -12,13 +14,7 @@ import {
   ClonePipelineDialog,
   GeneralDeleteResourceDialog,
 } from "./../../../components";
-import {
-  InstillStore,
-  Pipeline,
-  useInstillStore,
-  useRouteInfo,
-  useShallow,
-} from "./../../../lib";
+import { useInstillStore, useRouteInfo, useShallow } from "./../../../lib";
 
 const selector = (store: InstillStore) => ({
   updateDialogSharePipelineIsOpen: store.updateDialogSharePipelineIsOpen,

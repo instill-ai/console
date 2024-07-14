@@ -1,5 +1,7 @@
+import type { Pipeline } from "instill-sdk";
+
 import { LoadingSpin } from "../../../components";
-import { Pipeline, PipelineRelease } from "../../../lib";
+import { PipelineRelease } from "../../../lib";
 import { PipelineTabNames } from "../../../server";
 import { PipelineApi } from "./PipelineApi";
 import { PipelinePlayground } from "./PipelinePlayground";

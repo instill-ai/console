@@ -18,6 +18,7 @@ export function useInfiniteNamespacePipelineReleases({
   pageSize,
   retry,
   shareCode,
+  disabledViewFull,
 }: {
   namespacePipelineName: Nullable<string>;
   enabledQuery: boolean;
@@ -25,6 +26,7 @@ export function useInfiniteNamespacePipelineReleases({
   pageSize?: number;
   retry?: false | number;
   shareCode?: string;
+  disabledViewFull?: boolean;
 }): UseInfiniteQueryResult<InfiniteData<ListPipelineReleasesResponse>, Error> {
   let enabled = false;
 
@@ -51,6 +53,7 @@ export function useInfiniteNamespacePipelineReleases({
         namespacePipelineName,
         enablePagination: true,
         shareCode,
+        view: disabledViewFull ? undefined : "VIEW_FULL",
       });
 
       return Promise.resolve(pipelines);

@@ -9,7 +9,7 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useDeleteUserPipeline,
+  useDeleteNamespacePipeline,
   useInstillStore,
   useShallow,
 } from "../../../lib";
@@ -37,13 +37,13 @@ export const PipelinesList = (props: PipelinesListProps) => {
    * Handle pipeline pipeline
    * -----------------------------------------------------------------------*/
 
-  const deletePipeline = useDeleteUserPipeline();
+  const deletePipeline = useDeleteNamespacePipeline();
   const handleDeletePipeline = async (pipeline: Pipeline) => {
     if (!pipeline) return;
 
     try {
       await deletePipeline.mutateAsync({
-        pipelineName: pipeline.name,
+        namespacePipelineName: pipeline.name,
         accessToken: accessToken ? accessToken : null,
       });
 

@@ -1,13 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
+import type { Pipeline } from "instill-sdk";
+import * as React from "react";
 
 import { useToast } from "@instill-ai/design-system";
 
 import { ReadmeEditor } from "../../../components";
 import {
   InstillStore,
-  Pipeline,
   sendAmplitudeData,
   useAmplitudeCtx,
   useInstillStore,
@@ -28,7 +28,7 @@ export const PipelineReadme = ({ pipeline, onUpdate }: PipelineReadmeProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken } = useInstillStore(useShallow(selector));
   const { toast } = useToast();
-  const canEdit = useMemo(() => {
+  const canEdit = React.useMemo(() => {
     return !!accessToken && !!pipeline?.permission.canEdit;
   }, [pipeline, accessToken]);
 

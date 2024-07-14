@@ -7,10 +7,12 @@ export async function fetchNamespacePipeline({
   namespacePipelineName,
   accessToken,
   shareCode,
+  disableViewFull,
 }: {
   namespacePipelineName: Nullable<string>;
   accessToken: Nullable<string>;
   shareCode?: string;
+  disableViewFull?: boolean;
 }) {
   if (!namespacePipelineName) {
     throw new Error("invalid namespacePipelineName name");
@@ -24,7 +26,7 @@ export async function fetchNamespacePipeline({
     const pipeline = await client.vdp.pipeline.getNamespacePipeline({
       namespacePipelineName,
       shareCode,
-      view: "VIEW_FULL",
+      view: disableViewFull ? undefined : "VIEW_FULL",
     });
 
     return Promise.resolve(pipeline);
@@ -44,11 +46,13 @@ export function prefetchNamespacePipeline({
   accessToken,
   queryClient,
   shareCode,
+  disableViewFull,
 }: {
   namespacePipelineName: Nullable<string>;
   accessToken: Nullable<string>;
   queryClient: QueryClient;
   shareCode?: string;
+  disableViewFull?: boolean;
 }) {
   const queryKey = getUseNamespacePipelineQueryKey(namespacePipelineName);
 
@@ -59,6 +63,7 @@ export function prefetchNamespacePipeline({
         namespacePipelineName,
         accessToken,
         shareCode,
+        disableViewFull,
       });
     },
   });
