@@ -10,12 +10,12 @@ export function useOperatorDefinitions({
   accessToken,
   enabled,
   retry,
-  view,
+  disableViewFull,
 }: {
   accessToken: Nullable<string>;
   enabled: boolean;
   retry?: false | number;
-  view?: string;
+  disableViewFull?: boolean;
 }) {
   return useQuery({
     queryKey: ["operator-definitions"],
@@ -30,7 +30,7 @@ export function useOperatorDefinitions({
         await client.vdp.component.listOperatorDefinitions({
           pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
           enablePagination: false,
-          view,
+          view: disableViewFull ? undefined : "VIEW_FULL",
         });
 
       return Promise.resolve(operatorDefinitions);

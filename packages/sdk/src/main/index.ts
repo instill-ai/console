@@ -83,6 +83,10 @@ export class InstillAPIClient {
         throw new Error(`Failed to fetch ${path}`);
       }
 
+      if (method === "DELETE") {
+        return Promise.resolve() as Promise<Rsp>;
+      }
+
       const data = (await response.json()) satisfies Rsp;
       return Promise.resolve(data);
     } catch (error) {

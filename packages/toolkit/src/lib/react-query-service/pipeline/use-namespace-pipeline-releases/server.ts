@@ -27,6 +27,7 @@ export async function fetchNamespacePipelineReleases({
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         shareCode: shareCode,
         enablePagination: false,
+        view: "VIEW_FULL",
       });
 
     return Promise.resolve(pipelineReleases);

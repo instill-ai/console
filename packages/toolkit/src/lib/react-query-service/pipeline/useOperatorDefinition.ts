@@ -10,13 +10,13 @@ export function useOperatorDefinition({
   accessToken,
   enabled,
   retry,
-  view,
+  disableViewFull,
 }: {
   operatorDefinitionName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   retry?: false | number;
-  view?: string;
+  disableViewFull?: boolean;
 }) {
   let enableQuery = false;
 
@@ -40,7 +40,7 @@ export function useOperatorDefinition({
       const operatorDefinition =
         await client.vdp.component.getOperatorDefinition({
           operatorDefinitionName,
-          view,
+          view: disableViewFull ? undefined : "VIEW_FULL",
         });
 
       return Promise.resolve(operatorDefinition);
