@@ -27,7 +27,7 @@ export const APITokenTable = (props: APITokenTableProps) => {
             <GeneralStateCell
               width={null}
               state={row.getValue("state")}
-              padding="py-2"
+              padding="py-0"
               label={parseTriggerStatusLabel(row.getValue("state"))}
             />
           </div>

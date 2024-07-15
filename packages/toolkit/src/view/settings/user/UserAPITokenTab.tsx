@@ -32,7 +32,8 @@ export const UserAPITokenTab = (props: UserAPITokenTabProps) => {
         <div className="mb-6 flex flex-row-reverse">
           <CreateAPITokenDialog />
         </div>
-        <div className="w-full">
+        {/*  */}
+        <div className="w-full [&_table]:table-fixed [&_table_th:nth-child(1)]:w-32 [&_table_th:nth-child(2)]:w-auto [&_table_th:nth-child(3)]:w-36 [&_table_th:nth-child(4)]:w-36 [&_table_th:nth-child(5)]:w-28">
           <APITokenTable
             isError={apiTokens.isError}
             isLoading={apiTokens.isLoading}

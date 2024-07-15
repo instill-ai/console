@@ -46,7 +46,7 @@ export const UserSecretTab = () => {
         <div className="mb-6 flex flex-row-reverse">
           <CreateSecretDialog />
         </div>
-        <div className="w-full">
+        <div className="w-full [&_table]:table-fixed [&_table_th:nth-child(1)]:auto [&_table_th:nth-child(2)]:w-36 [&_table_th:nth-child(3)]:w-28">
           <SecretTable
             isError={secrets.isError}
             isLoading={secrets.isLoading}

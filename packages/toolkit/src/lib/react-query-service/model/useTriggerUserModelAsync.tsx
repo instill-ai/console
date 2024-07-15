@@ -10,15 +10,21 @@ export function useTriggerUserModelAsync() {
       modelName,
       payload,
       accessToken,
+      requesterUid,
+      returnTraces,
     }: {
       modelName: string;
       payload: TriggerUserModelPayload;
       accessToken: Nullable<string>;
+      requesterUid?: string;
+      returnTraces?: boolean;
     }) => {
       const response = await triggerUserModelActionAsync({
         modelName,
         payload,
         accessToken,
+        requesterUid,
+        returnTraces,
       });
 
       return Promise.resolve(response);

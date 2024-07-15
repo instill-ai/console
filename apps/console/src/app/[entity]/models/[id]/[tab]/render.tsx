@@ -1,7 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import {
   AppTopbar,
   ModelHubSettingPageMainView,
@@ -13,21 +11,15 @@ import { useAppAccessToken } from "~/lib/use-app-access-token";
 import { useAppTrackToken } from "~/lib/useAppTrackToken";
 
 export function ModelViewPageRender() {
-  const accessToken = useAppAccessToken();
+  useAppAccessToken();
   useAppTrackToken({ enabled: true });
-
-  const router = useRouter();
 
   return (
     <PageBase>
       <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="p-8">
-          <ModelHubSettingPageMainView
-            router={router}
-            accessToken={accessToken.isSuccess ? accessToken.data : null}
-            enableQuery={accessToken.isSuccess}
-          />
+          <ModelHubSettingPageMainView />
         </PageBase.Content>
       </PageBase.Container>
     </PageBase>

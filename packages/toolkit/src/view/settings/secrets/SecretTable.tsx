@@ -22,9 +22,9 @@ export const SecretTable = (props: APITokenTableProps) => {
       header: () => <div className="min-w-[200px] text-left">Name</div>,
       cell: ({ row }) => {
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full">
             <p className="product-body-text-3-semibold">{row.original.id}</p>
-            <p className="line-clamp-2 text-semantic-fg-disabled product-body-text-3-regular">
+            <p className="line-clamp-2 text-semantic-fg-disabled product-body-text-3-regular overflow-hidden truncate">
               {row.original.description}
             </p>
           </div>

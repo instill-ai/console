@@ -36,6 +36,7 @@ import {
   useQueryClient,
   useShallow,
   useTriggerUserModelAsync,
+  useUserNamespaces,
 } from "../../../lib";
 import { recursiveHelpers } from "../../pipeline-builder";
 import { OPERATION_POLL_TIMEOUT } from "./constants";
@@ -50,6 +51,7 @@ export type ModelPlaygroundProps = {
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
 const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
@@ -115,7 +117,10 @@ export const ModelPlayground = ({
   > | null>(null);
   const [existingTriggerState, setExistingTriggerState] =
     useState<ModelTriggerResult["operation"]>(null);
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, navigationNamespaceAnchor } =
+    useInstillStore(useShallow(selector));
+
+  const namespaces = useUserNamespaces();
 
   const isModelTriggerable = useMemo(() => {
     return model && modelState
@@ -264,6 +269,14 @@ export const ModelPlayground = ({
 
     const parsedStructuredData: GeneralRecord = input;
 
+    const targetNamespace = namespaces.find(
+      (namespace) => namespace.id === navigationNamespaceAnchor,
+    );
+
+    if (!targetNamespace) {
+      return;
+    }
+
     try {
       const data = await triggerModel.mutateAsync({
         modelName: model.name,
@@ -275,6 +288,7 @@ export const ModelPlayground = ({
             },
           ],
         },
+        requesterUid: targetNamespace ? targetNamespace.uid : undefined,
       });
 
       if (amplitudeIsInit) {
