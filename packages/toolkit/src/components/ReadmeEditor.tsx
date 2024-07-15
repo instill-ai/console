@@ -3,7 +3,7 @@
 import * as React from "react";
 import Markdown from "markdown-to-jsx";
 
-import { Button, Icons, ToggleGroup } from "@instill-ai/design-system";
+import { Button, cn, Icons, ToggleGroup } from "@instill-ai/design-system";
 
 import { debounce } from "../lib";
 import { MarkdownEditor } from "./";
@@ -16,6 +16,7 @@ export type ModelReadmeProps = {
   onUpdate: (content: string) => Promise<void>;
   canEdit: boolean;
   placeholder?: string;
+  className?: string;
 };
 
 export const ReadmeEditor = ({
@@ -23,6 +24,7 @@ export const ReadmeEditor = ({
   onUpdate,
   canEdit,
   placeholder,
+  className,
 }: ModelReadmeProps) => {
   const [editorTopOffset, setEditorTopOffset] = React.useState(0);
   const [editorMode, setEditorMode] = React.useState<EditorMode>("edit");
@@ -56,16 +58,20 @@ export const ReadmeEditor = ({
         return;
       }
 
-      const boundingRect = node.getBoundingClientRect();
+      // This is required to obtain correct position of the element.
+      // After the mount the layout's dimensions are being updated.
+      setTimeout(() => {
+        const boundingRect = node.getBoundingClientRect();
 
-      setEditorTopOffset(boundingRect.bottom);
+        setEditorTopOffset(boundingRect.bottom);
+      }, 200);
     },
     [],
   );
 
   const renderMarkdown = () => {
     return (
-      <div className="markdown-body w-full overflow-x-auto px-3 py-2">
+      <div className="markdown-body w-full overflow-x-auto p-6">
         <Markdown>{content || placeholder || ""}</Markdown>
       </div>
     );
@@ -78,7 +84,12 @@ export const ReadmeEditor = ({
   };
 
   return (
-    <div className="border rounded-sm border-semantic-bg-line bg-semantic-bg-base-bg overflow-hidden">
+    <div
+      className={cn(
+        "border rounded-sm border-semantic-bg-line bg-semantic-bg-base-bg overflow-hidden",
+        className,
+      )}
+    >
       <style jsx={true}>
         {`
           .mdxeditor-popup-container {
