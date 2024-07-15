@@ -11,7 +11,14 @@ export const AmplitudeProvider = ({
 }) => {
   const [amplitudeIsInit, setAmplitudeIsInit] = React.useState(false);
   return (
-    <AmplitudeCtx.Provider value={{ amplitudeIsInit, setAmplitudeIsInit }}>
+    <AmplitudeCtx.Provider
+      value={{
+        amplitudeIsInit,
+        setAmplitudeIsInit,
+        userBlockCookieUsage: false,
+        setUserBlockCookieUsage: null,
+      }}
+    >
       {children}
     </AmplitudeCtx.Provider>
   );
