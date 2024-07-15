@@ -109,7 +109,8 @@ export const PipelineSettings = ({
         data.tags
           ?.trim()
           .split(",")
-          .map((item) => item.trim()) || [],
+          .map((item) => item.trim())
+          .filter((item) => item) || [],
     };
 
     try {
