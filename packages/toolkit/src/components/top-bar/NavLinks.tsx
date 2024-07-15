@@ -19,6 +19,7 @@ export type NavLinkProps = {
   Icon: React.ElementType;
   pathname: string;
   strict?: boolean;
+  isExploreRoute?: boolean;
 };
 
 const navLinkItems: NavLinkProps[] = [
@@ -45,7 +46,13 @@ const navLinkSelector = (store: InstillStore) => ({
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
-export const NavLink = ({ title, Icon, pathname, strict }: NavLinkProps) => {
+export const NavLink = ({
+  title,
+  Icon,
+  pathname,
+  strict,
+  isExploreRoute,
+}: NavLinkProps) => {
   const router = useRouter();
   const currentPathname = usePathname();
   const { navigationNamespaceAnchor } = useInstillStore(
@@ -53,12 +60,16 @@ export const NavLink = ({ title, Icon, pathname, strict }: NavLinkProps) => {
   );
 
   const isOnIt = React.useMemo(() => {
+    if (isExploreRoute) {
+      return false;
+    }
+
     if (strict) {
       return currentPathname.split("/")[2] === pathname;
     } else {
       return currentPathname.includes(pathname);
     }
-  }, [pathname, currentPathname, strict]);
+  }, [pathname, currentPathname, strict, isExploreRoute]);
 
   const namespaces = useUserNamespaces();
 
@@ -103,7 +114,7 @@ const navLinksSelector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const NavLinks = () => {
+export const NavLinks = ({ isExploreRoute }: { isExploreRoute?: boolean }) => {
   const { accessToken, enabledQuery } = useInstillStore(
     useShallow(navLinksSelector),
   );
@@ -121,6 +132,7 @@ export const NavLinks = () => {
               pathname={pathname}
               Icon={Icon}
               title={title}
+              isExploreRoute={isExploreRoute}
             />
           ))
         : null}
