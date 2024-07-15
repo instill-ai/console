@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import cn from "clsx";
 
 import { Button, Logo } from "@instill-ai/design-system";
@@ -38,6 +38,7 @@ export const AppTopbar = ({
   disabledTopbarNav?: boolean;
   namespaceSwitch: React.ReactNode;
 }) => {
+  const pathname = usePathname();
   const router = useRouter();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
@@ -47,6 +48,9 @@ export const AppTopbar = ({
   });
 
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
+
+  const isCloud = env("NEXT_PUBLIC_APP_ENV") === "CLOUD";
+  const isExploreRoute = pathname.startsWith("/hub");
 
   return (
     <div className="flex w-full flex-col">
@@ -107,12 +111,12 @@ export const AppTopbar = ({
         <div className="flex flex-1 flex-row justify-end">
           {topbarControllerChildren ? (
             topbarControllerChildren
-          ) : env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
+          ) : isCloud ? (
             <ExploreLink />
           ) : null}
           {disabledUserDropdown ? null : (
             <div className="ml-6 flex">
-              {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
+              {isCloud ? (
                 <CloudTopbarDropdown />
               ) : (
                 <CETopbarDropdown />
@@ -123,7 +127,7 @@ export const AppTopbar = ({
       </div>
       {disabledTopbarNav ? null : (
         <div className="box-border flex h-[var(--topbar-nav-height)] flex-row items-end gap-x-6 border-b border-semantic-bg-line border-x-violet-50 px-8">
-          <NavLinks />
+          <NavLinks isExploreRoute={isExploreRoute} />
         </div>
       )}
     </div>
