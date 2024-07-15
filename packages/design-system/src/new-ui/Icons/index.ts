@@ -42,6 +42,7 @@ import { Cube01 } from "./Cube01";
 import { CubeOutline } from "./CubeOutline";
 import { CurrencyDollar } from "./CurrencyDollar";
 import { Database01 } from "./Database01";
+import { Dataflow03 } from "./Dataflow03";
 import { DotsHorizontal } from "./DotsHorizontal";
 import { DotsVertical } from "./DotsVertical";
 import { DownloadCloud01 } from "./DownloadCloud01";
@@ -172,6 +173,7 @@ export const Icons = {
   CubeOutline,
   CurrencyDollar,
   Database01,
+  Dataflow03,
   DotsHorizontal,
   DotsVertical,
   DownloadCloud01,

@@ -320,7 +320,7 @@ export const Head = ({
                   Examples
                 </TabMenu.Item> */}
               <TabMenu.Item value="preview">
-                <Icons.Activity className="h-4 w-4" />
+                <Icons.Dataflow03 className="h-4 w-4" />
                 Preview
               </TabMenu.Item>
               <TabMenu.Item value="runs">
