@@ -8,6 +8,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import type { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../vdp-sdk";
+import { getUseNamespacePipelineReleasesQueryKey } from "./use-namespace-pipeline-releases/server";
+import { getUseInfiniteNamespacePipelineReleasesQueryKey } from "./useInfiniteNamespacePipelineReleases";
 
 export function useCreateNamespacePipelineRelease() {
   const queryClient = useQueryClient();
@@ -35,15 +37,21 @@ export function useCreateNamespacePipelineRelease() {
       // At this stage the pipelineName will be
       // users/<uid>/pipelines/<pid>/releases/<version>
       const pipelineNameArray = pipelineRelease.name.split("/");
-      const entityName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
+      const namespaceName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
+      const pipelineName = `${namespaceName}/pipelines/${pipelineNameArray[3]}`;
 
-      queryClient.setQueryData<PipelineRelease>(
-        ["pipelineReleases", pipelineRelease.name],
-        pipelineRelease,
-      );
+      const useInfiniteNamespacePipelineReleasesQueryKey =
+        getUseInfiniteNamespacePipelineReleasesQueryKey(pipelineName);
+
+      queryClient.invalidateQueries({
+        queryKey: useInfiniteNamespacePipelineReleasesQueryKey,
+      });
+
+      const useNamespacePipelineReleasesQueryKey =
+        getUseNamespacePipelineReleasesQueryKey(pipelineName);
 
       queryClient.setQueryData<PipelineRelease[]>(
-        ["pipelineReleases", entityName],
+        useNamespacePipelineReleasesQueryKey,
         (old) =>
           old
             ? [

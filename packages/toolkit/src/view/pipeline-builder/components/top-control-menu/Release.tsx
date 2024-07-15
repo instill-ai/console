@@ -1,19 +1,23 @@
 "use client";
 
-import cn from "clsx";
+import * as React from "react";
 
-import { Button, Icons, Popover } from "@instill-ai/design-system";
+import { Button, cn, Icons, Popover } from "@instill-ai/design-system";
 
 import { useInstillStore } from "../../../../lib";
 import { ReleaseMenu } from "../release-menu";
 
 export const Release = () => {
+  const [releaseMenuOpen, setReleaseMenuOpen] = React.useState(false);
   const pipelineRecipeIsDirty = useInstillStore(
     (store) => store.pipelineRecipeIsDirty,
   );
 
   return (
-    <Popover.Root>
+    <Popover.Root
+      open={releaseMenuOpen}
+      onOpenChange={(open) => setReleaseMenuOpen(open)}
+    >
       <Popover.Trigger asChild>
         <Button
           size="md"
@@ -30,7 +34,11 @@ export const Release = () => {
         </Button>
       </Popover.Trigger>
       <Popover.Content align="end" className="!w-[392px]">
-        <ReleaseMenu />
+        <ReleaseMenu
+          onRelease={() => {
+            setReleaseMenuOpen(false);
+          }}
+        />
       </Popover.Content>
     </Popover.Root>
   );

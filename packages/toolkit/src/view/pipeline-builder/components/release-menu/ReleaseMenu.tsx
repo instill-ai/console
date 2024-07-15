@@ -84,6 +84,7 @@ export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
           onRelease();
         }
       } catch (error) {
+        console.error(error);
         setIsReleasing(false);
         toastInstillError({
           title:

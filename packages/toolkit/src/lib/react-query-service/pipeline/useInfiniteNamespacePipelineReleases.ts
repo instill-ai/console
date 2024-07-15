@@ -11,6 +11,12 @@ import {
   ListPipelineReleasesResponse,
 } from "../../vdp-sdk";
 
+export function getUseInfiniteNamespacePipelineReleasesQueryKey(
+  namespacePipelineName: Nullable<string>,
+) {
+  return ["pipelineReleases", namespacePipelineName, "infinite"];
+}
+
 export function useInfiniteNamespacePipelineReleases({
   namespacePipelineName,
   enabledQuery,
@@ -34,7 +40,9 @@ export function useInfiniteNamespacePipelineReleases({
     enabled = true;
   }
 
-  const queryKey = ["pipelineReleases", namespacePipelineName, "infinite"];
+  const queryKey = getUseInfiniteNamespacePipelineReleasesQueryKey(
+    namespacePipelineName,
+  );
 
   return useInfiniteQuery({
     queryKey,
