@@ -116,11 +116,7 @@ export const AppTopbar = ({
           ) : null}
           {disabledUserDropdown ? null : (
             <div className="ml-6 flex">
-              {isCloud ? (
-                <CloudTopbarDropdown />
-              ) : (
-                <CETopbarDropdown />
-              )}
+              {isCloud ? <CloudTopbarDropdown /> : <CETopbarDropdown />}
             </div>
           )}
         </div>

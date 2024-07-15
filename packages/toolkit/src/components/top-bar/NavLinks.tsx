@@ -46,7 +46,13 @@ const navLinkSelector = (store: InstillStore) => ({
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
-export const NavLink = ({ title, Icon, pathname, strict, isExploreRoute }: NavLinkProps) => {
+export const NavLink = ({
+  title,
+  Icon,
+  pathname,
+  strict,
+  isExploreRoute,
+}: NavLinkProps) => {
   const router = useRouter();
   const currentPathname = usePathname();
   const { navigationNamespaceAnchor } = useInstillStore(
