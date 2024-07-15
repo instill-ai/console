@@ -15,11 +15,11 @@ export const APITokenNameCell = (props: APITokenNameCellProps) => {
 
   return (
     <div className="flex flex-row">
-      <div className="my-auto mr-auto flex flex-col">
+      <div className="my-auto mr-auto flex flex-col w-full">
         <p className="font-sans text-sm font-semibold leading-5 text-[#1D2433]">
           {id}
         </p>
-        <p className="w-1/2 truncate text-sm font-normal leading-5 text-[#1D2433] text-opacity-80">
+        <p className="w-1/2 truncate text-sm font-normal leading-5 text-[#1D2433] text-opacity-80 overflow-hidden">
           {accessToken}
         </p>
       </div>
