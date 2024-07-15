@@ -1,30 +1,35 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import debounce from "lodash.debounce";
 
 import { Button, Icons, Input, Select } from "@instill-ai/design-system";
 
 import {
-  GeneralAppPageProp,
+  InstillStore,
   useInfiniteUserModels,
+  useInstillStore,
   useRouteInfo,
+  useShallow,
   Visibility,
 } from "../../lib";
 import { ModelsList } from "./ModelsList";
 import { ModelsListPagination } from "./ModelsListPagination";
 
-export type ModelHubListPageMainViewProps = GeneralAppPageProp;
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
 
-export const ModelHubListPageMainView = (
-  props: ModelHubListPageMainViewProps,
-) => {
-  const { router, enableQuery, accessToken } = props;
+export const ModelHubListPageMainView = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const visibility = searchParams.get("visibility");
   const [pageNumber, setPageNumber] = useState(0);
   const routeInfo = useRouteInfo();
+
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const [searchCode, setSearchCode] = React.useState<string>("");
   const [searchInputValue, setSearchInputValue] = React.useState<string>("");
@@ -53,7 +58,7 @@ export const ModelHubListPageMainView = (
 
   const models = useInfiniteUserModels({
     userName: routeInfo.data.namespaceName,
-    enabled: routeInfo.isSuccess && enableQuery,
+    enabled: routeInfo.isSuccess && enabledQuery,
     accessToken,
     filter: searchCode ? `q="${searchCode}"` : null,
     visibility: selectedVisibilityOption ?? null,
