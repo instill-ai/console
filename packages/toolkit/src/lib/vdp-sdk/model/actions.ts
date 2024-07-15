@@ -1,5 +1,8 @@
 import { Nullable } from "../../type";
-import { createInstillAxiosClient } from "../helper";
+import {
+  createInstillAxiosClient,
+  getInstillAdditionalHeaders,
+} from "../helper";
 import { Operation } from "../operation/types";
 import { ModelTask } from "./types";
 
@@ -66,14 +69,22 @@ export async function triggerUserModelAction({
   modelName,
   payload,
   accessToken,
+  returnTraces,
+  requesterUid,
 }: {
   modelName: string;
   payload: TriggerUserModelPayload;
   accessToken: Nullable<string>;
   returnTraces?: boolean;
+  requesterUid?: string;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, true);
+
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+      returnTraces,
+    });
 
     const { data } = await client.post<TriggerUserModelResponse>(
       `/${modelName}/trigger`,
@@ -81,6 +92,7 @@ export async function triggerUserModelAction({
       {
         headers: {
           "Content-Type": "application/json",
+          ...additionalHeaders,
         },
       },
     );
@@ -94,14 +106,22 @@ export async function triggerUserModelActionAsync({
   modelName,
   payload,
   accessToken,
+  returnTraces,
+  requesterUid,
 }: {
   modelName: string;
   payload: TriggerUserModelPayload;
   accessToken: Nullable<string>;
   returnTraces?: boolean;
+  requesterUid?: string;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken, true);
+
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+      returnTraces,
+    });
 
     const { data } = await client.post<TriggerUserModelAsyncResponse>(
       `/${modelName}/triggerAsync`,
@@ -109,6 +129,7 @@ export async function triggerUserModelActionAsync({
       {
         headers: {
           "Content-Type": "application/json",
+          ...additionalHeaders,
         },
       },
     );

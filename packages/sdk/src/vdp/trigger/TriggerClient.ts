@@ -1,3 +1,4 @@
+import { getInstillAdditionalHeaders } from "../../helper";
 import { APIResource } from "../../main/resource";
 import {
   TriggerAsyncNamespacePipelineReleaseRequest,
@@ -18,19 +19,18 @@ export class TriggerClient extends APIResource {
     returnTraces,
     shareCode,
   }: TriggerNamespacePipelineRequest) {
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+      returnTraces,
+      shareCode,
+    });
+
     try {
       const data = this._client.post<TriggerNamespacePipelineResponse>(
         `/${namespacePipelineName}/trigger`,
         {
           body: JSON.stringify({ inputs }),
-          additionalHeaders: {
-            "instill-return-traces": returnTraces ? "true" : "false",
-            "instill-share-code": shareCode,
-            "Access-Control-Allow-Headers":
-              "instill-return-traces, instill-share-code, Instill-Requester-Uid",
-            "Content-Type": "application/json",
-            "Instill-Requester-Uid": requesterUid,
-          },
+          additionalHeaders,
         },
       );
       return Promise.resolve(data);
@@ -46,20 +46,19 @@ export class TriggerClient extends APIResource {
     requesterUid,
     shareCode,
   }: TriggerAsyncNamespacePipelineRequest) {
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+      returnTraces,
+      shareCode,
+    });
+
     try {
       const data =
         await this._client.post<TriggerAsyncNamespacePipelineResponse>(
           `/${namespacePipelineName}/triggerAsync`,
           {
             body: JSON.stringify({ inputs }),
-            additionalHeaders: {
-              "instill-return-traces": returnTraces ? "true" : "false",
-              "instill-share-code": shareCode,
-              "Access-Control-Allow-Headers":
-                "instill-return-traces, instill-share-code, Instill-Requester-Uid",
-              "Content-Type": "application/json",
-              "Instill-Requester-Uid": requesterUid,
-            },
+            additionalHeaders,
           },
         );
       return Promise.resolve(data.operation);
@@ -75,20 +74,19 @@ export class TriggerClient extends APIResource {
     requesterUid,
     shareCode,
   }: TriggerNamespacePipelineReleaseRequest) {
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+      returnTraces,
+      shareCode,
+    });
+
     try {
       const data =
         await this._client.post<TriggerNamespacePipelineReleaseResponse>(
           `/${namespacePipelineReleaseName}/trigger`,
           {
             body: JSON.stringify({ inputs }),
-            additionalHeaders: {
-              "instill-return-traces": returnTraces ? "true" : "false",
-              "instill-share-code": shareCode,
-              "Access-Control-Allow-Headers":
-                "instill-return-traces, instill-share-code, Instill-Requester-Uid",
-              "Content-Type": "application/json",
-              "Instill-Requester-Uid": requesterUid,
-            },
+            additionalHeaders,
           },
         );
       return Promise.resolve(data);
@@ -104,20 +102,19 @@ export class TriggerClient extends APIResource {
     requesterUid,
     shareCode,
   }: TriggerAsyncNamespacePipelineReleaseRequest) {
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+      returnTraces,
+      shareCode,
+    });
+
     try {
       const data =
         await this._client.post<TriggerAsyncNamespacePipelineReleaseResponse>(
           `/${namespacePipelineReleaseName}/triggerAsync`,
           {
             body: JSON.stringify({ inputs }),
-            additionalHeaders: {
-              "instill-return-traces": returnTraces ? "true" : "false",
-              "instill-share-code": shareCode,
-              "Access-Control-Allow-Headers":
-                "instill-return-traces, instill-share-code, Instill-Requester-Uid",
-              "Content-Type": "application/json",
-              "Instill-Requester-Uid": requesterUid,
-            },
+            additionalHeaders,
           },
         );
       return Promise.resolve(data);

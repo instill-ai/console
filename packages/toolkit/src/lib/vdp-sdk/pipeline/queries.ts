@@ -1,5 +1,9 @@
 import { Nullable } from "../../type";
-import { createInstillAxiosClient, getQueryString } from "../helper";
+import {
+  createInstillAxiosClient,
+  getInstillAdditionalHeaders,
+  getQueryString,
+} from "../helper";
 import { Visibility } from "../types";
 import {
   OperatorDefinition,
@@ -236,15 +240,16 @@ export async function listPipelinesReleasesQuery(
       nextPageToken,
     });
 
+    const additionalHeaders = getInstillAdditionalHeaders({
+      shareCode,
+    });
+
     const { data } = await client.get<ListPipelineReleasesResponse>(
       queryString,
       {
         headers: {
-          "instill-share-code": shareCode,
-          "Access-Control-Allow-Headers": shareCode
-            ? "instill-share-code"
-            : undefined,
           "Content-Type": "application/json",
+          ...additionalHeaders,
         },
       },
     );
@@ -291,15 +296,16 @@ export async function getUserPipelineQuery({
   try {
     const client = createInstillAxiosClient(accessToken);
 
+    const additionalHeaders = getInstillAdditionalHeaders({
+      shareCode,
+    });
+
     const { data } = await client.get<GetUserPipelineResponse>(
       `/${pipelineName}?view=VIEW_FULL`,
       {
         headers: {
-          "instill-share-code": shareCode,
-          "Access-Control-Allow-Headers": shareCode
-            ? "instill-share-code"
-            : undefined,
           "Content-Type": "application/json",
+          ...additionalHeaders,
         },
       },
     );
@@ -344,15 +350,16 @@ export async function ListUserPipelineReleasesQuery({
       filter: null,
     });
 
+    const additionalHeaders = getInstillAdditionalHeaders({
+      shareCode,
+    });
+
     const { data } = await client.get<ListPipelineReleasesResponse>(
       queryString,
       {
         headers: {
-          "instill-share-code": shareCode,
-          "Access-Control-Allow-Headers": shareCode
-            ? "instill-share-code"
-            : undefined,
           "Content-Type": "application/json",
+          ...additionalHeaders,
         },
       },
     );

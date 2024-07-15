@@ -1,4 +1,4 @@
-import { getQueryString } from "../../helper";
+import { getInstillAdditionalHeaders, getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
 import {
   CreateNamespacePipelineReleaseRequest,
@@ -79,15 +79,14 @@ export class ReleaseClient extends APIResource {
         filter,
       });
 
+      const additionalHeaders = getInstillAdditionalHeaders({
+        shareCode,
+      });
+
       const data = await this._client.get<ListNamespacePipelineReleaseResponse>(
         queryString,
         {
-          additionalHeaders: {
-            "instill-share-code": shareCode,
-            "Access-Control-Allow-Headers": shareCode
-              ? "instill-share-code"
-              : undefined,
-          },
+          additionalHeaders,
         },
       );
 
