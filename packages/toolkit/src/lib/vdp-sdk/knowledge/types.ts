@@ -41,6 +41,16 @@ export type File = {
   totalTokens: number;
 };
 
+export type Chunk = {
+  chunkUid: string;
+  content: string;
+  retrievable: boolean;
+  tokens: number;
+  startPos: number;
+  endPos: number;
+  originalFileUid: string;
+};
+
 export type FileStatus =
   | "FILE_PROCESS_STATUS_NOTSTARTED"
   | "FILE_PROCESS_STATUS_WAITING"

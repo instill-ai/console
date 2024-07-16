@@ -8,25 +8,34 @@ export function useListChunks({
   accessToken,
   enabled,
   ownerId,
+  fileUid,
 }: {
   kbId: string;
   accessToken: Nullable<string>;
   enabled: boolean;
   ownerId: string;
+  fileUid?: string;
 }) {
   return useQuery({
-    queryKey: ["chunks", kbId],
+    queryKey: ["chunks", kbId, fileUid],
     queryFn: async () => {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
       const client = createInstillAxiosClient(accessToken, true);
-      const response = await client.get(
-        `/owners/${ownerId}/knowledge-bases/${kbId}/chunks`
-      );
-      return response.data.chunks;
+      try {
+        const response = await client.get(
+          `/owners/${ownerId}/knowledge-bases/${kbId}/chunks`,
+          {
+            params: fileUid ? { fileUid } : undefined,
+          }
+        );
+        return response.data.chunks;
+      } catch (error) {
+        console.error("Error fetching chunks:", error);
+        throw new Error("Failed to fetch chunks. Please try again later.");
+      }
     },
     enabled,
   });
 }
-
