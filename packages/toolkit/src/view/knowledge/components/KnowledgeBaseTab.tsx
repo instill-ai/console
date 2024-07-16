@@ -193,6 +193,8 @@ export const KnowledgeBaseTab = ({
     return filtered;
   }, [knowledgeBases, searchTerm, selectedSortAnchor, selectedSortOrder]);
 
+  const hasReachedLimit = knowledgeBases.length >= 3;
+
   return (
     <div className="flex flex-col">
       <div className="mb-5 flex items-center justify-between">
@@ -233,7 +235,10 @@ export const KnowledgeBaseTab = ({
         </div>
       ) : (
         <div className="grid grid-cols-[repeat(auto-fit,360px)] justify-start gap-[15px]">
-          <KnowledgeBaseCard onClick={() => setIsCreateDialogOpen(true)} />
+            <KnowledgeBaseCard
+              onClick={() => setIsCreateDialogOpen(true)}
+              disabled={hasReachedLimit}
+            />
           {filteredAndSortedKnowledgeBases.map((knowledgeBase) => (
             <CreateKnowledgeBaseCard
               key={knowledgeBase.kbId || knowledgeBase.name}
