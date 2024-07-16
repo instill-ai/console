@@ -11,7 +11,7 @@ import * as React from "react";
 import { DELETE_FILE_TIMEOUT } from "./undoDeleteTime";
 import DeleteFileNotification from "./Notifications/DeleteFileNotification";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
-import { useListKnowledgeBaseFiles, useDeleteKnowledgeBaseFile, useGetFileDetails } from "../../../lib/react-query-service/knowledge";
+import { useListKnowledgeBaseFiles, useDeleteKnowledgeBaseFile } from "../../../lib/react-query-service/knowledge";
 import FileDetailsOverlay from "./FileDetailsOverlay";
 
 type CatalogFilesTabProps = {
@@ -46,7 +46,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
       enabledQuery: store.enabledQuery,
     }))
   );
-  const { data: files, isLoading } = useListKnowledgeBaseFiles({
+  const { data: files, isLoading, refetch } = useListKnowledgeBaseFiles({
     ownerId: knowledgeBase.ownerName,
     knowledgeBaseId: knowledgeBase.kbId,
     accessToken,
@@ -58,6 +58,13 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const [selectedFileUid, setSelectedFileUid] = React.useState<string | null>(null);
 
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [refetch]);
 
   const handleFileClick = (fileUid: string) => {
     setSelectedFileUid(fileUid);
@@ -401,7 +408,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
               accessToken={accessToken}
               onClose={closeOverlay}
               showFullFile={true}
-              ownerId={knowledgeBase.ownerName}            />
+              ownerId={knowledgeBase.ownerName} />
           )}
         </div>
       </div>
