@@ -17,6 +17,7 @@ export * from "./types";
 export * from "./helper";
 
 let instillAPIClient: Nullable<InstillAPIClient> = null;
+let instillModelAPIClient: Nullable<InstillAPIClient> = null;
 
 export function getInstillAPIClient({ accessToken }: { accessToken?: string }) {
   if (!instillAPIClient) {
@@ -34,4 +35,26 @@ export function getInstillAPIClient({ accessToken }: { accessToken?: string }) {
   }
 
   return instillAPIClient;
+}
+
+export function getInstillModelAPIClient({
+  accessToken,
+}: {
+  accessToken?: string;
+}) {
+  if (!instillModelAPIClient) {
+    const baseURL = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
+      env("NEXT_PUBLIC_API_GATEWAY_URL")
+    }/${env("NEXT_PUBLIC_MODEL_API_VERSION")}`;
+
+    instillModelAPIClient = new InstillAPIClient({
+      baseURL,
+
+      // When non logged in user is viewing some pages, accessToken will be null
+      apiToken: accessToken,
+    });
+  }
+
+  return instillModelAPIClient;
 }
