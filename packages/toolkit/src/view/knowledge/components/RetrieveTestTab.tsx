@@ -49,11 +49,11 @@ export const RetrieveTestTab = ({ knowledgeBase }: RetrieveTestTabProps) => {
       <div className="w-2/3 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
         <p className="mb-2 product-body-text-3-semibold">Model created. Time to push.</p>
         <p className="mb-4 product-body-text-3-regular">
-          Check out the <br />
+          Check out the &nbsp;
           <span className="text-semantic-accent-default underline">
             guide to pushing your own model
           </span>
-          <br />
+          &nbsp;
           for next steps, then run these commands to push it to Instill AI:
         </p>
         <div className="rounded bg-semantic-bg-secondary p-4">
