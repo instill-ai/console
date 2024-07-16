@@ -26,6 +26,7 @@ import {
   Model,
   ModelState,
   ModelTask,
+  onTriggerInvalidateCredits,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
@@ -289,6 +290,12 @@ export const ModelPlayground = ({
           ],
         },
         requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+      });
+
+      onTriggerInvalidateCredits({
+        ownerName: targetNamespace.name ?? null,
+        namespaceNames: namespaces.map((namespace) => namespace.name),
+        queryClient,
       });
 
       if (amplitudeIsInit) {

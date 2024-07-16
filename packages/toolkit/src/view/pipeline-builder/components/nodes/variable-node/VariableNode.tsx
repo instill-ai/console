@@ -15,11 +15,13 @@ import {
   GeneralRecord,
   InstillStore,
   Nullable,
+  onTriggerInvalidateCredits,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
   useInstillStore,
   usePipelineTriggerRequestForm,
+  useQueryClient,
   useTriggerNamespacePipeline,
   useTriggerNamespacePipelineRelease,
   useUserNamespaces,
@@ -64,6 +66,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
+  const queryClient = useQueryClient();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [noteIsOpen, setNoteIsOpen] = React.useState<boolean>(false);
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
@@ -94,7 +97,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [isCreating, setIsCreating] = React.useState(false);
 
-  const namespace = useUserNamespaces();
+  const namespaces = useUserNamespaces();
 
   const form = useForm<z.infer<typeof TriggerNodeFreeFormSchema>>({
     resolver: zodResolver(TriggerNodeFreeFormSchema),
@@ -305,7 +308,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
 
     if (currentVersion === "latest") {
       try {
-        const tartgetNamespace = namespace.find(
+        const targetNamespace = namespaces.find(
           (ns) => ns.id === navigationNamespaceAnchor,
         );
 
@@ -314,7 +317,13 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
           accessToken,
           inputs: [parsedStructuredData],
           returnTraces: true,
-          requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
+          requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+        });
+
+        onTriggerInvalidateCredits({
+          ownerName: targetNamespace?.name ?? null,
+          namespaceNames: namespaces.map((namespace) => namespace.name),
+          queryClient,
         });
 
         if (amplitudeIsInit) {
@@ -333,11 +342,22 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
       }
     } else {
       try {
+        const targetNamespace = namespaces.find(
+          (ns) => ns.id === navigationNamespaceAnchor,
+        );
+
         const data = await triggerPipelineRelease.mutateAsync({
           namespacePipelineReleaseName: `${pipelineName}/releases/${currentVersion}`,
           inputs: [parsedStructuredData],
           accessToken,
           returnTraces: true,
+          requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+        });
+
+        onTriggerInvalidateCredits({
+          ownerName: targetNamespace?.name ?? null,
+          namespaceNames: namespaces.map((namespace) => namespace.name),
+          queryClient,
         });
 
         updateIsTriggeringPipeline(() => false);

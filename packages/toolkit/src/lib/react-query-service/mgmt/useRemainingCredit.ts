@@ -3,6 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../vdp-sdk";
 
+export function getUseRemainingCreditQueryKey(ownerName: Nullable<string>) {
+  return ["credit", ownerName];
+}
+
 export function useRemainingCredit({
   ownerName,
   accessToken,
@@ -20,8 +24,10 @@ export function useRemainingCredit({
     enabledQuery = true;
   }
 
+  const queryKey = getUseRemainingCreditQueryKey(ownerName);
+
   return useQuery({
-    queryKey: ["credit", ownerName],
+    queryKey,
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
