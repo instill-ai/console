@@ -2,11 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { Pipeline } from "instill-sdk";
 
 import { Icons, Skeleton, Tag } from "@instill-ai/design-system";
 
 import { ImageWithFallback } from "..";
-import { Pipeline } from "../../lib";
 import { Menu } from "./Menu";
 import { Stats } from "./Stats";
 import { Tags } from "./Tags";

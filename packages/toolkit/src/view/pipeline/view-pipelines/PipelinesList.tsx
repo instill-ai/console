@@ -1,11 +1,12 @@
 "use client";
 
+import { Pipeline } from "instill-sdk";
+
 import { cn, useToast } from "@instill-ai/design-system";
 
+import type { InstillStore } from "../../../lib";
 import { CardPipeline, CardPipelineSkeleton } from "../../../components";
 import {
-  InstillStore,
-  Pipeline,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
