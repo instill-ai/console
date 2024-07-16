@@ -1,5 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
+import { ModelWatchState } from "instill-sdk";
 import { Nullable } from "vitest";
 
 import { InstillJSONSchema } from "../../use-instill-form";
@@ -121,11 +122,6 @@ export type ModelVersion = {
   digest: string;
   state: ModelState;
   updateTime: string;
-};
-
-export type ModelWatchState = {
-  state: ModelState;
-  message: string;
 };
 
 export type ModelsWatchState = Record<string, Nullable<ModelWatchState>>;

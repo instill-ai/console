@@ -23,10 +23,6 @@ export function useUserModel({
   return useQuery({
     queryKey: ["models", modelName],
     queryFn: async () => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
       if (!modelName) {
         return Promise.reject(new Error("Model name not provided"));
       }

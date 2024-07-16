@@ -6,8 +6,8 @@ import type {
   ModelRegion,
   ModelTriggerResult,
   ModelVersion,
-  ModelWatchState,
 } from "./types";
+import { getInstillModelAPIClient } from "..";
 import { createInstillAxiosClient, getQueryString } from "../helper";
 import { Visibility } from "../types";
 
@@ -91,10 +91,6 @@ export async function listModelDefinitionsQuery({
  * Model
  * -----------------------------------------------------------------------*/
 
-export type GetUserModelResponse = {
-  model: Model;
-};
-
 export async function getUserModelQuery({
   modelName,
   accessToken,
@@ -103,12 +99,15 @@ export async function getUserModelQuery({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, true);
+    const client = getInstillModelAPIClient({
+      accessToken: accessToken ?? undefined,
+    });
 
-    const { data } = await client.get<GetUserModelResponse>(
-      `/${modelName}?view=VIEW_FULL`,
-    );
-    return Promise.resolve(data.model);
+    const model = await client.model.getNamespaceModel({
+      namespaceModelName: modelName,
+      view: "VIEW_FULL",
+    });
+    return Promise.resolve(model);
   } catch (err) {
     return Promise.reject(err);
   }
@@ -416,9 +415,14 @@ export async function watchUserModel({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, true);
-    const { data } = await client.get<ModelWatchState>(`/${modelName}/watch`);
-    return Promise.resolve(data);
+    const client = getInstillModelAPIClient({
+      accessToken: accessToken ?? undefined,
+    });
+
+    const state = await client.model.watchNamespaceModelLatestVersionState({
+      namespaceModelName: modelName,
+    });
+    return Promise.resolve(state);
   } catch (err) {
     return Promise.reject(err);
   }

@@ -14,6 +14,8 @@ import {
 } from "../../../lib";
 import { getHumanReadableStringFromTime } from "../../../server";
 
+const PAGE_SIZE = 6;
+
 export type ModelVersionsProps = {
   model?: Model;
 };
@@ -26,7 +28,7 @@ const selector = (store: InstillStore) => ({
 export const ModelVersions = ({ model }: ModelVersionsProps) => {
   const [paginationState, setPaginationState] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: PAGE_SIZE,
   });
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const columns: ColumnDef<ModelVersion>[] = [
@@ -83,6 +85,7 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
     accessToken,
     enabledQuery,
     modelName: model?.name || null,
+    pageSize: PAGE_SIZE,
   });
 
   useEffect(() => {
