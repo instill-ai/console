@@ -3,7 +3,15 @@ import { InstillHumanReadableFormat } from "../types";
 export function transformInstillFormatToHumanReadableFormat(
   format: string,
   arrayInArray?: boolean,
+  isObjectArray?: boolean,
 ): InstillHumanReadableFormat {
+  if (isObjectArray) {
+    return {
+      isArray: true,
+      format: "object",
+    };
+  }
+
   if (format.includes("array:")) {
     if (arrayInArray) {
       return {

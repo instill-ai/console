@@ -164,11 +164,33 @@ export function pickSmartHintsFromNodes({
     ) as Node<IteratorNodeData> | undefined;
 
     if (targetIteratorNode) {
+      const targetIteratorInputPath = targetIteratorNode.data.input
+        .replace("${", "")
+        .replace("}", "");
+
       const targetHints = smartHints.find(
-        (hint) =>
-          hint.path ===
-          targetIteratorNode.data.input.replace("${", "").replace("}", ""),
+        (hint) => hint.path === targetIteratorInputPath,
       );
+
+      // Deal with user is using objectArray as iterator input
+      if (
+        targetHints &&
+        targetHints?.instillFormat === "null" &&
+        targetHints.type === "objectArray" &&
+        targetHints.properties
+      ) {
+        for (const property of targetHints.properties) {
+          smartHints = [
+            ...smartHints,
+            {
+              path: `${editingIteratorID}.element.${property.key}`,
+              key: property.key,
+              instillFormat: property.instillFormat,
+              type: property.type,
+            },
+          ];
+        }
+      }
 
       if (targetHints) {
         smartHints = [
