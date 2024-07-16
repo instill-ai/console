@@ -130,13 +130,10 @@ export const Input = ({
 
       try {
         data = JSON.parse(event.data);
-        console.log(data);
-
         if (data) {
           const result = data.result as TriggerUserPipelineWithStreamData;
 
           if (result) {
-            console.log(result);
             updateTriggerWithStreamData((prev) => [...prev, result]);
           }
         }
