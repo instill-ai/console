@@ -68,27 +68,27 @@ export const InstillYamlSchema = {
         },
       },
     },
-    component: {
-      type: "object",
-      additionalProperties: false,
-      patternProperties: {
-        "^[a-z][-a-z0-9]{0,31}$": {
-          type: "object",
-          description: "The ID of the component, must in kebab-case",
-          properties: {
-            type: {
-              type: "string",
-              description: "Please specify the component type",
-              enum: ["openai", "base64", "iterator", "json", "anthropic"],
-            },
-            task: {
-              type: "string",
-              description: "Please specify the component task",
-            },
-          },
-          required: ["type", "task"],
-        },
-      },
-    },
+    // component: {
+    //   type: "object",
+    //   additionalProperties: false,
+    //   patternProperties: {
+    //     "^[a-z][-a-z0-9]{0,31}$": {
+    //       type: "object",
+    //       description: "The ID of the component, must in kebab-case",
+    //       properties: {
+    //         type: {
+    //           type: "string",
+    //           description: "Please specify the component type",
+    //           enum: ["openai", "base64", "iterator", "json", "anthropic"],
+    //         },
+    //         task: {
+    //           type: "string",
+    //           description: "Please specify the component task",
+    //         },
+    //       },
+    //       required: ["type", "task"],
+    //     },
+    //   },
+    // },
   },
 };

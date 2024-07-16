@@ -6,9 +6,9 @@ import { AppTopbar, NamespaceSwitch, PageBase } from "../../components";
 import {
   InstillStore,
   useInstillStore,
+  useNamespacePipeline,
   useRouteInfo,
   useShallow,
-  useUserPipeline,
 } from "../../lib";
 import { ComponentCmdk } from "./cmdk";
 import { Editor } from "./Editor";
@@ -17,6 +17,7 @@ import { Flow } from "./flow";
 import { Input } from "./Input";
 import { Output } from "./Output";
 import { RunButton } from "./RunButton";
+import { VscodeEditor } from "./VscodeEditor";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -27,8 +28,10 @@ export const RecipeEditorView = () => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const routeInfo = useRouteInfo();
 
-  const pipeline = useUserPipeline({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.isSuccess
+      ? routeInfo.data.pipelineName
+      : null,
     accessToken,
     enabled: enabledQuery,
   });
@@ -50,10 +53,7 @@ export const RecipeEditorView = () => {
             <ComponentCmdk />
             <Resizable.PanelGroup direction="horizontal" className="w-full">
               <Resizable.Panel defaultSize={50} minSize={25}>
-                <Editor
-                  recipe={pipeline.data?.recipe ?? null}
-                  rawRecipe={pipeline.data?.rawRecipe ?? null}
-                />
+                <VscodeEditor />
               </Resizable.Panel>
               <Resizable.Handle />
               <Resizable.Panel defaultSize={50} minSize={25}>

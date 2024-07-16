@@ -113,6 +113,7 @@ export type Pipeline = {
   createTime: string;
   updateTime: string;
   recipe: PipelineRecipe;
+  rawRecipe: Nullable<string>;
   dataSpecification: DataSpecification;
   owner: Owner;
   ownerName: string;
@@ -271,6 +272,7 @@ export type UpdateNamespacePipelineRequest = {
   namespacePipelineName: string;
   description?: string;
   recipe?: PipelineRecipe;
+  rawRecipe?: string;
   sharing?: PipelineSharing;
   metadata?: GeneralRecord;
   readme?: string;
