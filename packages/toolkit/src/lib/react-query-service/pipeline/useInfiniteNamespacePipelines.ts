@@ -5,8 +5,8 @@ import {
   useInfiniteQuery,
   UseInfiniteQueryResult,
 } from "@tanstack/react-query";
+import { ListNamespacePipelinesResponse } from "instill-sdk";
 
-import type { ListPipelinesResponse } from "../../vdp-sdk";
 import { env } from "../../../server";
 import { Nullable } from "../../type";
 import { getInstillAPIClient, Visibility } from "../../vdp-sdk";
@@ -27,7 +27,10 @@ export function useInfiniteNamespacePipelines({
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
   disabledViewFull?: boolean;
-}): UseInfiniteQueryResult<InfiniteData<ListPipelinesResponse>, Error> {
+}): UseInfiniteQueryResult<
+  InfiniteData<ListNamespacePipelinesResponse>,
+  Error
+> {
   let enabled = false;
 
   if (namespaceName && enabledQuery) {

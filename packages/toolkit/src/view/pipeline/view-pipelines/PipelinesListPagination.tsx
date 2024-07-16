@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { InfiniteData, UseInfiniteQueryResult } from "@tanstack/react-query";
+import { ListNamespacePipelinesResponse } from "instill-sdk";
 
 import { Pagination } from "@instill-ai/design-system";
 
-import { ListPipelinesResponse } from "../../../lib";
 import { env } from "../../../server";
 
 const defaultPaginationProps = {
@@ -14,7 +14,9 @@ const defaultPaginationProps = {
 };
 
 export type PipelinesListPaginationProps = {
-  pipelines: UseInfiniteQueryResult<InfiniteData<ListPipelinesResponse>>;
+  pipelines: UseInfiniteQueryResult<
+    InfiniteData<ListNamespacePipelinesResponse>
+  >;
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   pageNumber: number;
 };
