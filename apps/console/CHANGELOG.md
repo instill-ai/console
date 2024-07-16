@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.51.0-beta](https://github.com/instill-ai/console/compare/v0.50.1-beta...v0.51.0-beta) (2024-07-16)
+
+
+### Features
+
+* merge sprint 39 changes ([#1302](https://github.com/instill-ai/console/issues/1302)) ([14194ab](https://github.com/instill-ai/console/commit/14194abb680c9a5156d35cbd5fe4c2fab25e8891))
+
+
+### Bug Fixes
+
+* fix console didn't trigger the correct pipeline version ([#1287](https://github.com/instill-ai/console/issues/1287)) ([8876366](https://github.com/instill-ai/console/commit/88763669af98b30a80277a546dd191f0090d84e3))
+
+
+### Miscellaneous
+
+* add sdk readme ([#1307](https://github.com/instill-ai/console/issues/1307)) ([10bd6d5](https://github.com/instill-ai/console/commit/10bd6d5f8e95360ba1757e8f63e793962196fb0d))
+
 ## [0.50.1-beta](https://github.com/instill-ai/console/compare/v0.50.0-beta...v0.50.1-beta) (2024-07-03)
 
 

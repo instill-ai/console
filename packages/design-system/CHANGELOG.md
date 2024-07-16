@@ -1,5 +1,17 @@
 # @instill-ai/design-system
 
+## [0.73.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.72.0...@instill-ai/design-system-v0.73.0) (2024-07-16)
+
+
+### Features
+
+* merge sprint 39 changes ([#1302](https://github.com/instill-ai/console/issues/1302)) ([14194ab](https://github.com/instill-ai/console/commit/14194abb680c9a5156d35cbd5fe4c2fab25e8891))
+
+
+### Miscellaneous
+
+* enforce more strict Typescript rule among codebase ([#1284](https://github.com/instill-ai/console/issues/1284)) ([14ea371](https://github.com/instill-ai/console/commit/14ea37183f29160a28afb45703a704d8a61b3292))
+
 ## [0.72.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.71.0...@instill-ai/design-system-v0.72.0) (2024-07-02)
 
 

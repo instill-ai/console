@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.6.1...@instill-ai/design-tokens-v0.7.0) (2024-07-16)
+
+
+### Features
+
+* merge sprint 39 changes ([#1302](https://github.com/instill-ai/console/issues/1302)) ([14194ab](https://github.com/instill-ai/console/commit/14194abb680c9a5156d35cbd5fe4c2fab25e8891))
+
 ## [0.6.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.6.0...@instill-ai/design-tokens-v0.6.1) (2024-07-02)
 
 

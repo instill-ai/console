@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.96.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.95.1...@instill-ai/toolkit-v0.96.0) (2024-07-16)
+
+
+### Features
+
+* merge sprint 39 changes ([#1302](https://github.com/instill-ai/console/issues/1302)) ([14194ab](https://github.com/instill-ai/console/commit/14194abb680c9a5156d35cbd5fe4c2fab25e8891))
+
+
+### Bug Fixes
+
+* **dashboard:** fix query pipeline trigger id filter id issue ([#1282](https://github.com/instill-ai/console/issues/1282)) ([1aebd0a](https://github.com/instill-ai/console/commit/1aebd0afdd277c9f167cf84bbfa309ab74176aeb))
+* fix console didn't trigger the correct pipeline version ([#1287](https://github.com/instill-ai/console/issues/1287)) ([8876366](https://github.com/instill-ai/console/commit/88763669af98b30a80277a546dd191f0090d84e3))
+* fix not invalid the cache for credit right after triggered pipeline or model ([#1304](https://github.com/instill-ai/console/issues/1304)) ([77fc340](https://github.com/instill-ai/console/commit/77fc34097db17e609aaf089e7887b65877bce189))
+* fix trigger pipeline version didn't show result ([#1288](https://github.com/instill-ai/console/issues/1288)) ([f74c4e0](https://github.com/instill-ai/console/commit/f74c4e0310ee6c1636ca1cc6a00543f771feb162))
+* fix use can't create secret for organization ([#1285](https://github.com/instill-ai/console/issues/1285)) ([03c2e75](https://github.com/instill-ai/console/commit/03c2e7553ebf2ab96e473d8a9251c1d8352ca5b4))
+* layout width update ([#1306](https://github.com/instill-ai/console/issues/1306)) ([7fe0050](https://github.com/instill-ai/console/commit/7fe00501c1e2ae947e107a13c195d9dbcbfb5f07))
+* model public requests ([#1309](https://github.com/instill-ai/console/issues/1309)) ([6dfe3c5](https://github.com/instill-ai/console/commit/6dfe3c546a04004ec9a39673d252efd623b5be51))
+* **pipeline-editor:** fix iterator not correct take in objectArray and use it as a hint in iterator editor ([#1303](https://github.com/instill-ai/console/issues/1303)) ([bcd47d1](https://github.com/instill-ai/console/commit/bcd47d1eceb08273cddee952af1b49287f50c00d))
+
+
+### Miscellaneous
+
+* add sdk readme ([#1307](https://github.com/instill-ai/console/issues/1307)) ([10bd6d5](https://github.com/instill-ai/console/commit/10bd6d5f8e95360ba1757e8f63e793962196fb0d))
+
 ## [0.95.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.95.0...@instill-ai/toolkit-v0.95.1) (2024-07-03)
 
 
