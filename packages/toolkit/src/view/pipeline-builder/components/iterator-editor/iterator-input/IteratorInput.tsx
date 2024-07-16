@@ -51,12 +51,14 @@ export const IteratorInput = ({ className }: { className?: string }) => {
       .filter(
         (hint) =>
           hint.instillFormat.includes("array:") ||
-          hint.instillFormat.includes("semi-structured"),
+          hint.instillFormat.includes("semi-structured") ||
+          (hint.instillFormat === "null" && hint.type === "objectArray"),
       )
       .map((hint) => ({
         path: hint.path,
         instillFormat: hint.instillFormat,
         description: hint.description,
+        type: hint.type,
       }));
   }, [tempSavedNodesForEditingIteratorFlow]);
 

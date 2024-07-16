@@ -18,6 +18,18 @@ export const IterateElmentHint = ({
     if (!selectedInputOption || !selectedInputOption?.instillFormat) {
       return null;
     }
+
+    if (
+      selectedInputOption.instillFormat === "null" &&
+      selectedInputOption.type === "objectArray"
+    ) {
+      return transformInstillFormatToHumanReadableFormat(
+        selectedInputOption.instillFormat,
+        false,
+        true,
+      );
+    }
+
     return transformInstillFormatToHumanReadableFormat(
       selectedInputOption.instillFormat,
     );

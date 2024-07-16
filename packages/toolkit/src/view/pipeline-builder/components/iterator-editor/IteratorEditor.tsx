@@ -40,6 +40,7 @@ export type InOutputOption = {
   path: string;
   instillFormat: string;
   description?: string;
+  type: string;
 };
 
 export const IteratorEditor = ({
