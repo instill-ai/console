@@ -79,7 +79,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
    * Render
    * -----------------------------------------------------------------------*/
   return (
-    <div className="h-screen w-full bg-semantic-bg-primary">
+    <div className="h-screen w-full bg-semantic-bg-alt-primary">
       {showDeleteMessage && knowledgeBaseToDelete ? (
         // <DeleteKnowledgeBaseNotification
         //   knowledgeBaseName={knowledgeBase.name}
