@@ -3,7 +3,6 @@ import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { Nullable } from "@instill-ai/toolkit";
 import { File } from "../../vdp-sdk/knowledge/types";
 
-// useGetFileContent.ts
 export function useGetFileContent({
   fileUid,
   accessToken,
@@ -24,12 +23,11 @@ export function useGetFileContent({
         throw new Error("accessToken not provided");
       }
       const client = createInstillAxiosClient(accessToken, true);
-      const response = await client.get<{ content: string }>(
+      const response = await client.get<{ sourceFile: { content: string } }>(
         `/owners/${ownerId}/knowledge-bases/${kbId}/files/${fileUid}/source`
       );
-      return response.data.content;
+      return response.data.sourceFile.content;
     },
     enabled,
   });
 }
-

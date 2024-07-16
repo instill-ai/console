@@ -4,7 +4,7 @@ import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import { useListChunks } from '../../../lib/react-query-service/knowledge';
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import FileDetailsOverlay from './FileDetailsOverlay';
-import { Icons, Tag, Switch, Separator } from '@instill-ai/design-system';
+import { Icons, Tag, Switch, Separator, Skeleton } from '@instill-ai/design-system';
 
 type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;
