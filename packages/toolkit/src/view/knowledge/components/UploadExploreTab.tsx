@@ -147,12 +147,14 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
 
         console.log("File uploaded successfully!", uploadedFile);
 
-        // await processKnowledgeBaseFiles.mutateAsync({
-        //   fileUids: [uploadedFile.fileUid],
-        //   accessToken,
-        // });
+        // Immediately process the uploaded file
+        await processKnowledgeBaseFiles.mutateAsync({
+          fileUids: [uploadedFile.fileUid],
+          accessToken,
+        });
 
-        // onProcessFile();
+        console.log("File processing started");
+        onProcessFile(); // Notify parent component that processing has started
       } catch (error) {
         console.error("Error uploading or processing file:", error);
       }
