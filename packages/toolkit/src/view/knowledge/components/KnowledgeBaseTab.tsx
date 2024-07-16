@@ -160,7 +160,8 @@ export const KnowledgeBaseTab = ({
 
   const filteredAndSortedKnowledgeBases = React.useMemo(() => {
     let filtered = knowledgeBases.filter((kb) =>
-      kb.name.toLowerCase().includes(searchTerm.toLowerCase())
+      kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      kb.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     filtered.sort((a, b) => {
@@ -235,10 +236,10 @@ export const KnowledgeBaseTab = ({
         </div>
       ) : (
         <div className="grid grid-cols-[repeat(auto-fit,360px)] justify-start gap-[15px]">
-            <KnowledgeBaseCard
-              onClick={() => setIsCreateDialogOpen(true)}
-              disabled={hasReachedLimit}
-            />
+          <KnowledgeBaseCard
+            onClick={() => setIsCreateDialogOpen(true)}
+            disabled={hasReachedLimit}
+          />
           {filteredAndSortedKnowledgeBases.map((knowledgeBase) => (
             <CreateKnowledgeBaseCard
               key={knowledgeBase.kbId || knowledgeBase.name}

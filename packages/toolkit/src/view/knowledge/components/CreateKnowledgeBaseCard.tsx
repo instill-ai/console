@@ -229,11 +229,11 @@ export const CreateKnowledgeBaseCard = ({
               <p className="mb-auto line-clamp-3 product-body-text-3-regular">
                 {knowledgeBase.description}
               </p>
-              <div className="flex items-end justify-end">
+              <div className="flex items-end justify-end" onClick={(e) => e.stopPropagation()}>
                 <Menu
-                  onDelete={() => { }}
-                  onEdit={() => { }}
-                  onDuplicate={() => { }}
+                  onDelete={handleDelete}
+                  onEdit={handleEdit}
+                  onDuplicate={handleDuplicate}
                 />
               </div>
             </div>
@@ -242,6 +242,8 @@ export const CreateKnowledgeBaseCard = ({
             <Tooltip.Content
               className="w-[360px] rounded-md bg-semantic-bg-primary p-4 shadow-lg"
               sideOffset={5}
+              side="bottom"
+              align="end"
             >
               <pre className="whitespace-pre-wrap text-xs">{tooltipContent}</pre>
               <Tooltip.Arrow className="fill-semantic-bg-primary" />
