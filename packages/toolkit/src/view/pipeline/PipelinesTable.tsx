@@ -1,11 +1,11 @@
 "use client";
 
+import type { Pipeline } from "instill-sdk";
 import { useRouter } from "next/navigation";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Button, DataTable } from "@instill-ai/design-system";
 
-import type { Pipeline } from "../../lib";
 import { SortIcon, TableError } from "../../components";
 import { formatDate } from "../../lib";
 import { PipelineTablePlaceholder } from "./PipelineTablePlaceholder";
@@ -32,7 +32,7 @@ export const PipelinesTable = (props: PipelinesTableProps) => {
             <button
               onClick={() => {
                 router.push(
-                  `/${pipelineNameFragments[1]}/pipelines/${pipelineNameFragments[3]}`,
+                  `/${pipelineNameFragments[1]}/pipelines/${pipelineNameFragments[3]}/playground`,
                 );
               }}
             >

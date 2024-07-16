@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Nullable } from "../../type";
-import { createInstillAxiosClient } from "../helper";
+import {
+  createInstillAxiosClient,
+  getInstillAdditionalHeaders,
+} from "../helper";
 import { Operation } from "../operation";
 import { PipelineRelease, PipelineTriggerMetadata } from "./types";
 
@@ -32,17 +35,19 @@ export async function triggerUserPipelineAction({
   try {
     const client = createInstillAxiosClient(accessToken);
 
+    const additionalHeaders = getInstillAdditionalHeaders({
+      shareCode,
+      requesterUid,
+      returnTraces,
+    });
+
     const { data } = await client.post<TriggerUserPipelineResponse>(
       `/${pipelineName}/trigger`,
       payload,
       {
         headers: {
-          "instill-return-traces": returnTraces ? "true" : "false",
-          "instill-share-code": shareCode,
-          "Access-Control-Allow-Headers":
-            "instill-return-traces, instill-share-code, Instill-Requester-Uid",
           "Content-Type": "application/json",
-          "Instill-Requester-Uid": requesterUid,
+          ...additionalHeaders,
         },
       },
     );
@@ -74,14 +79,17 @@ export async function triggerAsyncUserPipelineAction({
   try {
     const client = createInstillAxiosClient(accessToken);
 
+    const additionalHeaders = getInstillAdditionalHeaders({
+      returnTraces,
+    });
+
     const { data } = await client.post<TriggerAsyncUserPipelineResponse>(
       `/${pipelineName}/triggerAsync`,
       payload,
       {
         headers: {
-          "instill-return-traces": returnTraces ? "true" : "false",
-          "Access-Control-Allow-Headers": "instill-return-traces",
           "Content-Type": "application/json",
+          ...additionalHeaders,
         },
       },
     );
@@ -154,31 +162,30 @@ export async function triggerUserPipelineReleaseAction({
   pipelineReleaseName,
   payload,
   accessToken,
-  returnTraces,
   requesterUid,
   shareCode,
 }: {
   pipelineReleaseName: string;
   payload: TriggerUserPipelinePayload;
   accessToken: Nullable<string>;
-  returnTraces?: boolean;
   requesterUid?: string;
   shareCode?: string;
 }) {
   try {
     const client = createInstillAxiosClient(accessToken);
 
+    const additionalHeaders = getInstillAdditionalHeaders({
+      shareCode,
+      requesterUid,
+    });
+
     const { data } = await client.post<TriggerUserPipelineResponse>(
       `/${pipelineReleaseName}/trigger`,
       payload,
       {
         headers: {
-          "instill-return-traces": returnTraces ? "true" : "false",
-          "instill-share-code": shareCode,
-          "Access-Control-Allow-Headers":
-            "instill-return-traces, instill-share-code, Instill-Requester-Uid",
           "Content-Type": "application/json",
-          "Instill-Requester-Uid": requesterUid,
+          ...additionalHeaders,
         },
       },
     );
@@ -210,14 +217,17 @@ export async function triggerAsyncUserPipelineReleaseAction({
   try {
     const client = createInstillAxiosClient(accessToken);
 
+    const additionalHeaders = getInstillAdditionalHeaders({
+      returnTraces,
+    });
+
     const { data } = await client.post<TriggerAsyncUserPipelineReleaseResponse>(
       `/${pipelineReleaseName}/triggerAsync`,
       payload,
       {
         headers: {
-          "instill-return-traces": returnTraces ? "true" : "false",
-          "Access-Control-Allow-Headers": "instill-return-traces",
           "Content-Type": "application/json",
+          ...additionalHeaders,
         },
       },
     );

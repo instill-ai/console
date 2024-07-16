@@ -1,11 +1,14 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import cn from "clsx";
+import { Pipeline } from "instill-sdk";
 
 import {
   Button,
+  GitHubIcon,
   Icons,
   Popover,
   ScrollArea,
@@ -15,25 +18,22 @@ import {
   toast,
 } from "@instill-ai/design-system";
 
-import { ClonePipelineDialog } from "../../../components";
+import { ClonePipelineDialog, HeadExternalLink } from "../../../components";
 import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
 import {
   InstillStore,
   isPublicPipeline,
   Nullable,
+  PipelineRelease,
   toastInstillError,
   useAuthenticatedUser,
-  useDeleteUserPipeline,
+  useDeleteNamespacePipeline,
   useInstillStore,
   useNavigateBackAfterLogin,
-  useOrganization,
   useRouteInfo,
   useShallow,
-  useUser,
-  useUserPipeline,
 } from "../../../lib";
-import { useSortedReleases } from "../../pipeline-builder";
-import { EditMetadataDialog } from "./EditMetadataDialog";
+import { PipelineTabNames } from "../../../server";
 import { Menu } from "./Menu";
 
 const selector = (store: InstillStore) => ({
@@ -41,34 +41,37 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
+const DEFAULT_OWNER = {
+  avatarUrl: null,
+  displayName: null,
+  id: null,
+};
+
 export const Head = ({
-  selectedVersionId,
-  setSelectedVersionId,
+  onActiveVersionUpdate,
+  pipeline,
+  isReady,
+  selectedTab,
+  onTabChange,
+  releases,
 }: {
-  selectedVersionId: Nullable<string>;
-  setSelectedVersionId: (version: string) => void;
+  onActiveVersionUpdate: (version: string) => void;
+  pipeline?: Pipeline;
+  isReady: boolean;
+  selectedTab: PipelineTabNames;
+  onTabChange: (tabName: PipelineTabNames) => void;
+  releases: Nullable<PipelineRelease[]>;
 }) => {
   const router = useRouter();
   const navigateBackAfterLogin = useNavigateBackAfterLogin();
   const searchParams = useSearchParams();
-  const shareCode = searchParams.get("view");
+  const activeVersion = searchParams.get("version");
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const [selectedTab, setSelectedTab] =
-    React.useState<Nullable<string>>("overview");
-
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [isVersionSelectorOpen, setIsVersionSelectorOpen] =
+    React.useState<boolean>(false);
 
   const routeInfo = useRouteInfo();
-
-  const user = useUser({
-    userName: routeInfo.isSuccess ? routeInfo.data.namespaceName : null,
-    accessToken,
-    enabled:
-      enabledQuery &&
-      routeInfo.isSuccess &&
-      routeInfo.data.namespaceType === "NAMESPACE_USER",
-  });
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
@@ -76,34 +79,15 @@ export const Head = ({
     retry: false,
   });
 
-  const organization = useOrganization({
-    organizationID: routeInfo.isSuccess ? routeInfo.data.namespaceId : null,
-    accessToken,
-    enabled:
-      enabledQuery &&
-      routeInfo.isSuccess &&
-      routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION",
-  });
-
-  const pipeline = useUserPipeline({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
-    accessToken,
-    enabled: enabledQuery && routeInfo.isSuccess,
-    shareCode: shareCode ?? undefined,
-  });
-
-  const releases = useSortedReleases({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
-    accessToken,
-    enabledQuery: enabledQuery && routeInfo.isSuccess,
-    shareCode: shareCode ?? undefined,
-  });
-
-  const deletePipeline = useDeleteUserPipeline();
+  const deletePipeline = useDeleteNamespacePipeline();
   async function handleDeletePipeline() {
+    if (!accessToken || !pipeline) {
+      return;
+    }
+
     try {
       await deletePipeline.mutateAsync({
-        pipelineName: pipeline.data?.name || "",
+        namespacePipelineName: pipeline.name,
         accessToken: accessToken ? accessToken : null,
       });
 
@@ -114,6 +98,7 @@ export const Head = ({
       });
       router.push(`/${routeInfo.data.namespaceId}/pipelines`);
     } catch (error) {
+      console.log(error);
       toastInstillError({
         title: "Something went wrong when delete the pipeline",
         error,
@@ -122,285 +107,299 @@ export const Head = ({
     }
   }
 
+  const owner = React.useMemo(() => {
+    if (!pipeline) {
+      return DEFAULT_OWNER;
+    }
+
+    const owner =
+      "user" in pipeline.owner
+        ? pipeline.owner.user
+        : pipeline.owner.organization;
+
+    if (!owner || !owner.profile) {
+      return DEFAULT_OWNER;
+    }
+
+    return {
+      avatarUrl: owner.profile.avatar || "",
+      id: owner.id || "",
+      displayName: owner.profile.displayName || "",
+    };
+  }, [pipeline]);
+
   return (
-    <React.Fragment>
-      <style jsx={true}>{`
-        .org-gradient {
-          background: linear-gradient(45deg, #dce7fe, #fef1f2);
-        }
-
-        .user-gradient {
-          background: linear-gradient(45deg, #efe7fe, #fef1f2);
-        }
-      `}</style>
-      <div className="user-gradient relative flex min-h-[180px] w-full flex-col bg-semantic-bg-primary">
-        <div className="flex justify-center">
-          <div className="flex h-32 w-[1440px] flex-row px-24 py-7">
-            <div className="mr-auto flex flex-col gap-y-3">
-              <div className="flex w-full flex-row">
-                <div className="mr-auto flex flex-row gap-x-3">
-                  {routeInfo.isSuccess ? (
-                    routeInfo.data.namespaceType ===
-                    "NAMESPACE_ORGANIZATION" ? (
-                      organization.isSuccess ? (
-                        <NamespaceAvatarWithFallback.Root
-                          src={organization.data?.profile?.avatar ?? null}
-                          className="my-auto h-6 w-6"
-                          fallback={
-                            <NamespaceAvatarWithFallback.Fallback
-                              namespaceId={organization.data.id}
-                              displayName={
-                                organization.data?.profile?.displayName ?? null
-                              }
-                              className="my-auto flex h-6 w-6"
-                            />
-                          }
-                        />
-                      ) : null
-                    ) : user.isSuccess ? (
-                      <NamespaceAvatarWithFallback.Root
-                        src={user.data?.profile?.avatar ?? null}
-                        className="my-auto h-6 w-6"
-                        fallback={
-                          <NamespaceAvatarWithFallback.Fallback
-                            namespaceId={user.data.id}
-                            displayName={
-                              user.data?.profile?.displayName ?? null
-                            }
-                            className="my-auto flex h-6 w-6"
-                          />
-                        }
-                      />
-                    ) : null
-                  ) : (
-                    <Skeleton className="my-auto h-6 w-6 rounded-full" />
-                  )}
-
-                  {releases && pipeline.isSuccess ? (
-                    <React.Fragment>
-                      <div className="my-auto product-headings-heading-4">
-                        <span
-                          onClick={() => {
-                            router.push(`/${routeInfo.data.namespaceId}`);
-                          }}
-                          className="cursor-pointer text-semantic-fg-disabled hover:!underline"
-                        >
-                          {routeInfo.data.namespaceId}
-                        </span>
-                        <span className="text-semantic-fg-disabled">/</span>
-                        <span className="text-semantic-fg-primary">
-                          {routeInfo.data.resourceId}
-                        </span>
-                      </div>
-
-                      {releases.length && pipeline.isSuccess ? (
-                        <Popover.Root
-                          onOpenChange={() => setIsOpen(!isOpen)}
-                          open={isOpen}
-                        >
-                          <Popover.Trigger asChild={true} className="my-auto">
-                            <Button
-                              className={cn(
-                                "!h-8 !w-[145px] gap-x-1 !rounded-sm !border border-[#E1E6EF] !py-1 px-3 !transition-opacity !duration-300 !ease-in-out",
-                                isOpen
-                                  ? "border-opacity-100 !bg-semantic-accent-bg "
-                                  : "border-opacity-0",
-                              )}
-                              size="sm"
-                              variant="tertiaryColour"
-                              type="button"
-                              onClick={() => setIsOpen(true)}
-                            >
-                              <Tag
-                                size="sm"
-                                variant="darkPurple"
-                                className="h-6 gap-x-2"
-                              >
-                                Version{" "}
-                                {selectedVersionId === "latest"
-                                  ? releases[0]?.id
-                                  : selectedVersionId}
-                              </Tag>
-                              <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
-                            </Button>
-                          </Popover.Trigger>
-                          <Popover.Content
-                            side="top"
-                            sideOffset={4}
-                            align="start"
-                            className="flex h-[180px] w-[145px] flex-col !rounded-sm !p-0"
-                          >
-                            <ScrollArea.Root>
-                              <div className="flex flex-col gap-y-1 px-1.5 py-1">
-                                {releases.length > 0 ? (
-                                  <React.Fragment>
-                                    {releases.map((release) => (
-                                      <VersionButton
-                                        key={release.id}
-                                        id={release.id}
-                                        currentVersion={
-                                          selectedVersionId === "latest"
-                                            ? releases[0].id
-                                            : selectedVersionId
-                                        }
-                                        onClick={() => {
-                                          setSelectedVersionId(release.id);
-                                          setIsOpen(false);
-                                        }}
-                                      />
-                                    ))}
-                                  </React.Fragment>
-                                ) : (
-                                  <div className="p-2 text-semantic-fg-disabled product-body-text-4-medium">
-                                    This pipeline has no released versions.
-                                  </div>
-                                )}
-                              </div>
-                            </ScrollArea.Root>
-                          </Popover.Content>
-                        </Popover.Root>
-                      ) : null}
-                      {pipeline.isSuccess &&
-                      !isPublicPipeline(pipeline.data) ? (
-                        <Tag
-                          className="my-auto h-6 gap-x-1 !border-0 !py-0 !text-sm"
-                          variant="lightNeutral"
-                          size="sm"
-                        >
-                          <Icons.Lock03 className="h-3 w-3 stroke-semantic-fg-primary" />
-                          Private
-                        </Tag>
-                      ) : null}
-                    </React.Fragment>
-                  ) : (
-                    <PipelineNameSkeleton />
-                  )}
-                </div>
+    <div className="sticky -top-8 z-10 -mx-20 -mt-8 w-[calc(100%+160px)] bg-gradient-to-t from-[#FFF1EB] to-[#ACE0F9] px-20 pt-7">
+      <div className="mx-auto flex max-w-7xl flex-col gap-y-2">
+        <div className="flex flex-row items-center gap-x-3">
+          {owner.id ? (
+            <NamespaceAvatarWithFallback.Root
+              src={owner.avatarUrl}
+              className="my-auto h-6 w-6"
+              fallback={
+                <NamespaceAvatarWithFallback.Fallback
+                  namespaceId={owner.id}
+                  displayName={owner.displayName}
+                  className="my-auto flex h-6 w-6 !bg-semantic-secondary-bg"
+                />
+              }
+            />
+          ) : null}
+          {!isReady ? (
+            <Skeleton className="h-6 w-60 rounded" />
+          ) : (
+            <React.Fragment>
+              <div className="my-auto text-semantic-fg-disabled product-headings-heading-4">
+                <Link
+                  href={`/${routeInfo.data.namespaceId}`}
+                  className="cursor-pointer hover:!underline"
+                >
+                  {owner.id}
+                </Link>
+                /
+                <span className="text-semantic-fg-primary">{pipeline?.id}</span>
               </div>
-              {pipeline.isSuccess ? (
-                <React.Fragment>
-                  {pipeline.data?.description ? (
-                    <div className="flex w-full flex-row items-center gap-x-2">
-                      <p className="font-mono text-xs text-semantic-fg-disabled">
-                        {pipeline.data?.description}
-                      </p>
-                      <EditMetadataDialog
-                        description={pipeline.data.description}
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex w-full flex-row items-center gap-x-2">
-                      <p className="font-mono text-xs italic text-semantic-fg-disabled">
-                        This is a placeholder brief of this pipeline
-                      </p>
-                      {pipeline.data.permission.canEdit ? (
-                        <EditMetadataDialog
-                          description={pipeline.data.description}
-                        />
-                      ) : null}
-                    </div>
+            </React.Fragment>
+          )}
+          {pipeline && !isPublicPipeline(pipeline) ? (
+            <Tag
+              className="my-auto h-6 gap-x-1 !border-0 !py-0 !text-sm"
+              variant="lightNeutral"
+              size="sm"
+            >
+              <Icons.Lock03 className="h-3 w-3 stroke-semantic-fg-primary" />
+              Private
+            </Tag>
+          ) : null}
+          {pipeline?.sourceUrl ? (
+            <HeadExternalLink href={pipeline.sourceUrl}>
+              <GitHubIcon
+                width="w-[18px]"
+                height="h-[18px]"
+                color="fill-semantic-bg-secondary-alt-primary"
+              />
+              GitHub
+            </HeadExternalLink>
+          ) : null}
+          {pipeline?.documentationUrl ? (
+            <HeadExternalLink href={pipeline.documentationUrl}>
+              <Icons.Link01 className="h-3.5 w-3.5 stroke-semantic-bg-secondary-alt-primary" />
+              Link
+            </HeadExternalLink>
+          ) : null}
+          {pipeline?.license ? (
+            <HeadExternalLink href={pipeline.license}>
+              <Icons.Scales02 className="h-3.5 w-3.5 stroke-semantic-bg-secondary-alt-primary" />
+              License
+            </HeadExternalLink>
+          ) : null}
+          {!!releases?.length && pipeline ? (
+            <Popover.Root
+              onOpenChange={() =>
+                setIsVersionSelectorOpen(!isVersionSelectorOpen)
+              }
+              open={isVersionSelectorOpen}
+            >
+              <Popover.Trigger asChild={true} className="my-auto">
+                <Button
+                  className={cn(
+                    "!h-8 !w-[145px] gap-x-1 !rounded-sm !border border-[#E1E6EF] !py-1 px-3 !transition-opacity !duration-300 !ease-in-out ml-auto",
+                    isVersionSelectorOpen
+                      ? "border-opacity-100 !bg-semantic-accent-bg "
+                      : "border-opacity-0",
                   )}
-                </React.Fragment>
-              ) : (
-                <div className="h-8">
-                  <PipelineDescriptionSkeleton />
-                </div>
-              )}
-            </div>
-          </div>
+                  size="sm"
+                  variant="tertiaryColour"
+                  type="button"
+                  onClick={() => setIsVersionSelectorOpen(true)}
+                >
+                  <Tag size="sm" variant="darkPurple" className="h-6 gap-x-2">
+                    Version {activeVersion}
+                  </Tag>
+                  <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
+                </Button>
+              </Popover.Trigger>
+              <Popover.Content
+                side="top"
+                sideOffset={4}
+                align="start"
+                className="flex h-[180px] w-[145px] flex-col !rounded-sm !p-0"
+              >
+                <ScrollArea.Root>
+                  <div className="flex flex-col gap-y-1 px-1.5 py-1">
+                    {releases.length > 0 ? (
+                      <React.Fragment>
+                        {releases.map((release) => (
+                          <VersionButton
+                            key={release.id}
+                            id={release.id}
+                            currentVersion={activeVersion}
+                            onClick={() => {
+                              onActiveVersionUpdate(release.id);
+                              setIsVersionSelectorOpen(false);
+                            }}
+                          />
+                        ))}
+                      </React.Fragment>
+                    ) : (
+                      <div className="p-2 text-semantic-fg-disabled product-body-text-4-medium">
+                        This pipeline has no released versions.
+                      </div>
+                    )}
+                  </div>
+                </ScrollArea.Root>
+              </Popover.Content>
+            </Popover.Root>
+          ) : null}
         </div>
-        <div className="flex justify-center">
-          <div className="absolute bottom-0 flex w-[1440px] flex-row justify-between pl-24 pr-8">
+        {!isReady ? (
+          <React.Fragment>
+            <Skeleton className="h-6 w-20 rounded" />
+            <Skeleton className="h-6 w-40 rounded" />
+          </React.Fragment>
+        ) : pipeline?.tags.length ? (
+          <div className="flex flex-row items-center gap-x-1">
+            {pipeline?.tags.map((tag) => (
+              <Tag
+                key={tag}
+                className="my-auto h-5 gap-x-1 !border-0 !py-0 text-semantic-secondary-on-bg"
+                variant="lightNeutral"
+                size="sm"
+              >
+                {/* task.getIcon(
+                    `w-3 h-3 ${["TASK_TEXT_GENERATION_CHAT", "TASK_IMAGE_TO_IMAGE", "TASK_VISUAL_QUESTION_ANSWERING"].includes(model?.task || "") ? "stroke-semantic-secondary-on-bg [&>*]:!stroke-semantic-secondary-on-bg" : "[&>*]:!fill-semantic-secondary-on-bg"}`,
+                  ) */}
+                {tag}
+              </Tag>
+            ))}
+          </div>
+        ) : null}
+        <p
+          className={cn(
+            "font-mono text-xs text-semantic-fg-disabled",
+            !pipeline?.description ? "italic" : "",
+          )}
+        >
+          {pipeline?.description ||
+            (pipeline?.permission.canEdit ? (
+              <Link href={`/${owner.id}/pipelines/${pipeline?.id}/settings`}>
+                Add a description
+              </Link>
+            ) : (
+              <span>No description</span>
+            ))}
+        </p>
+        {!isReady ? (
+          <div className="mb-2 mt-10 flex flex-row gap-x-2">
+            <Skeleton className="h-6 w-12 rounded" />
+            <Skeleton className="h-6 w-12 rounded" />
+          </div>
+        ) : (
+          <div className="mt-8 flex flex-row items-end justify-between">
             <TabMenu.Root
               value={selectedTab}
-              onValueChange={(value) => setSelectedTab(value)}
+              onValueChange={(value: Nullable<string>) =>
+                onTabChange(value as PipelineTabNames)
+              }
               disabledDeSelect={true}
             >
-              <TabMenu.Item value="overview">Overview</TabMenu.Item>
+              <TabMenu.Item value="readme">
+                <Icons.File02 className="h-4 w-4" />
+                README
+              </TabMenu.Item>
+              <TabMenu.Item value="playground">
+                <Icons.NewModel className="h-4 w-4" />
+                Playground
+              </TabMenu.Item>
+              <TabMenu.Item value="api">
+                <Icons.CodeSnippet01 className="h-4 w-4" />
+                API
+              </TabMenu.Item>
+              {/* <TabMenu.Item value="examples">
+                  <Icons.CheckCircle className="h-4 w-4" />
+                  Examples
+                </TabMenu.Item> */}
+              <TabMenu.Item value="preview">
+                <Icons.Dataflow03 className="h-4 w-4" />
+                Preview
+              </TabMenu.Item>
+              <TabMenu.Item value="runs">
+                <Icons.Zap className="h-4 w-4" />
+                Runs
+              </TabMenu.Item>
+              <TabMenu.Item value="versions">
+                <Icons.ClockRewind className="h-4 w-4" />
+                Versions
+              </TabMenu.Item>
+              {pipeline?.permission.canEdit ? (
+                <TabMenu.Item value="settings">
+                  <Icons.Settings02 className="h-4 w-4" />
+                  Settings
+                </TabMenu.Item>
+              ) : null}
             </TabMenu.Root>
-            <div className="mt-auto flex flex-row gap-x-2 pb-1">
-              {pipeline.isSuccess &&
-              me.isSuccess &&
-              pipeline.data.permission.canEdit ? (
+            <div className="flex flex-row gap-x-2">
+              {pipeline && me.isSuccess && pipeline.permission.canEdit ? (
                 <Menu
-                  pipeline={pipeline.data}
+                  pipeline={pipeline}
                   handleDeletePipeline={handleDeletePipeline}
                 />
               ) : null}
-
-              {pipeline.isSuccess ? (
+              {pipeline ? (
                 <React.Fragment>
                   {me.isSuccess ? (
                     <ClonePipelineDialog
                       trigger={
                         <Button
-                          className="items-center gap-x-2"
-                          size="sm"
+                          className="items-center gap-x-2 h-[32px]"
+                          size="md"
                           variant="secondaryGrey"
                         >
-                          <Icons.Copy07 className="h-3 w-3 stroke-semantic-fg-secondary" />
+                          <Icons.Copy07 className="h-4 w-4 stroke-semantic-fg-secondary" />
                           Clone
                         </Button>
                       }
-                      pipeline={pipeline.data}
+                      pipeline={pipeline}
                     />
                   ) : (
                     <Button
                       onClick={() => {
                         navigateBackAfterLogin();
                       }}
-                      className="!normal-case"
+                      className="!normal-case h-[32px]"
                       variant="secondaryGrey"
-                      size="sm"
+                      size="md"
                     >
                       Log in to Clone
                     </Button>
                   )}
-                  {pipeline.data.permission.canEdit ? (
+                  {pipeline.permission.canEdit ? (
                     <Button
                       onClick={() => {
                         router.push(
                           `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/editor`,
                         );
                       }}
-                      size="sm"
+                      size="md"
                       variant="secondaryGrey"
-                      className="gap-x-2"
+                      className="gap-x-2 h-[32px]"
                     >
-                      <Icons.Tool01 className="h-3 w-3 stroke-semantic-fg-secondary" />
+                      <Icons.Tool01 className="h-4 w-4 stroke-semantic-fg-secondary" />
                       Edit
                     </Button>
                   ) : null}
                 </React.Fragment>
               ) : (
-                <HeaderControllerSkeleton />
+                <React.Fragment>
+                  <Skeleton className="h-8 w-14 rounded" />
+                  <Skeleton className="h-8 w-14 rounded" />
+                </React.Fragment>
               )}
             </div>
           </div>
-        </div>
+        )}
       </div>
-    </React.Fragment>
-  );
-};
-
-const PipelineDescriptionSkeleton = () => {
-  return (
-    <div className="h-6 w-[320px] animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
-  );
-};
-
-const PipelineNameSkeleton = () => {
-  return (
-    <div className="h-8 w-[160px] animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
-  );
-};
-
-const HeaderControllerSkeleton = () => {
-  return (
-    <React.Fragment>
-      <Skeleton className="h-8 w-14 rounded" />
-      <Skeleton className="h-8 w-14 rounded" />
-    </React.Fragment>
+    </div>
   );
 };
 

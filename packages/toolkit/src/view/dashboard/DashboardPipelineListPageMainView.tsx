@@ -6,7 +6,6 @@ import { SelectOption } from "@instill-ai/design-system";
 
 import {
   DashboardAvailableTimeframe,
-  dashboardOptions,
   GeneralAppPageProp,
   getPipelineTriggersSummary,
   getPreviousTimeframe,
@@ -14,9 +13,9 @@ import {
   Nullable,
   PipelinesChart,
   TriggeredPipeline,
+  usePipelineTriggerComputationTimeCharts,
+  usePipelineTriggerMetric,
   useRouteInfo,
-  useTriggeredPipelines,
-  useTriggeredPipelinesChart,
 } from "../../lib";
 import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
 import { FilterByDay } from "./FilterByDay";
@@ -34,7 +33,10 @@ export const DashboardPipelineListPageMainView = (
    * Get the pipeline definition and static state for fields
    * -----------------------------------------------------------------------*/
   const [selectedTimeOption, setSelectedTimeOption] =
-    React.useState<SelectOption>(dashboardOptions.timeLine[0]);
+    React.useState<SelectOption>({
+      label: "Today",
+      value: "24h",
+    });
 
   const [queryString, setQueryString] = React.useState<Nullable<string>>(null);
   const [queryStringPrevious, setQueryStringPrevious] =
@@ -77,19 +79,19 @@ export const DashboardPipelineListPageMainView = (
    * Query pipeline and triggers data
    * -----------------------------------------------------------------------*/
 
-  const triggeredPipelines = useTriggeredPipelines({
+  const triggeredPipelines = usePipelineTriggerMetric({
     enabled: enableQuery && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
   });
 
-  const pipelinesChart = useTriggeredPipelinesChart({
+  const pipelinesChart = usePipelineTriggerComputationTimeCharts({
     enabled: enableQuery && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
   });
 
-  const previoustriggeredPipelines = useTriggeredPipelines({
+  const previoustriggeredPipelines = usePipelineTriggerMetric({
     enabled: enableQuery && !!queryStringPrevious,
     filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,

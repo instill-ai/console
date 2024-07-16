@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { UpdateNamespacePipelineRequest } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useShallow } from "zustand/react/shallow";
@@ -14,11 +15,10 @@ import {
   Nullable,
   sendAmplitudeData,
   toastInstillError,
-  UpdateUserPipelinePayload,
   useAmplitudeCtx,
   useInstillStore,
-  useUpdateUserPipeline,
-  useUserPipeline,
+  useNamespacePipeline,
+  useUpdateNamespacePipeline,
 } from "../../../../../lib";
 import { Head } from "./Head";
 import { Metadata } from "./Metadata";
@@ -66,13 +66,13 @@ export const PublishPipelineDialog = ({
     resolver: zodResolver(PublishPipelineFormSchema),
   });
 
-  const pipeline = useUserPipeline({
-    pipelineName,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: pipelineName,
     accessToken,
     enabled: enabledQuery && !pipelineIsNew && !!pipelineName,
   });
 
-  const updateUserPipeline = useUpdateUserPipeline();
+  const updatePipeline = useUpdateNamespacePipeline();
 
   async function handlePublish(
     formData: z.infer<typeof PublishPipelineFormSchema>,
@@ -81,8 +81,8 @@ export const PublishPipelineDialog = ({
 
     setIsPublishing(true);
 
-    const payload: UpdateUserPipelinePayload = {
-      name: pipelineName,
+    const payload: UpdateNamespacePipelineRequest = {
+      namespacePipelineName: pipelineName,
       description: formData.description ?? undefined,
       readme: formData.readme ?? undefined,
       sharing: {
@@ -101,8 +101,8 @@ export const PublishPipelineDialog = ({
     };
 
     try {
-      await updateUserPipeline.mutateAsync({
-        payload,
+      await updatePipeline.mutateAsync({
+        ...payload,
         accessToken,
       });
 
@@ -122,7 +122,7 @@ export const PublishPipelineDialog = ({
           <div className="flex flex-row">
             <LinkButton
               onClick={() => {
-                router.push(`/${entity}/pipelines/${id}`);
+                router.push(`/${entity}/pipelines/${id}/playground`);
               }}
               variant="primary"
               size="sm"

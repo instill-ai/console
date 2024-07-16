@@ -25,12 +25,16 @@ export const ModelsListPagination = ({
   setPageNumber,
 }: ModelsListPaginationProps) => {
   const paginationProps = useMemo(() => {
-    if (!models.data || models.data.pages.length === 0) {
+    if (
+      !models.data ||
+      models.data.pages.length === 0 ||
+      !models.data.pages[0]?.totalSize
+    ) {
       return defaultPaginationProps;
     }
 
     const pageSize = env("NEXT_PUBLIC_QUERY_PAGE_SIZE") || 10;
-    const totalPages = Math.ceil(models.data.pages[0].totalSize / pageSize);
+    const totalPages = Math.ceil(models.data.pages[0]?.totalSize / pageSize);
 
     let isNextDisabled = true;
 

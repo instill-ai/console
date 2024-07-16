@@ -11,8 +11,8 @@ import {
   InstillStore,
   Nullable,
   useInstillStore,
+  useNamespacePipeline,
   useRouteInfo,
-  useUserPipeline,
 } from "../../../lib";
 import { getHumanReadableStringFromTime } from "../../../server";
 import {
@@ -59,9 +59,9 @@ export const BottomBar = () => {
 
   const routeInfo = useRouteInfo();
 
-  const pipeline = useUserPipeline({
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.data.pipelineName,
     enabled: enabledQuery && routeInfo.isSuccess && !pipelineIsNew,
-    pipelineName: routeInfo.data.pipelineName,
     accessToken,
     retry: false,
   });
@@ -92,7 +92,7 @@ export const BottomBar = () => {
             </p>
             <ScrollArea.Root>
               <div className="flex flex-col gap-y-4">
-                {sortedReleases.length > 0 ? (
+                {sortedReleases.data.length > 0 ? (
                   <React.Fragment>
                     <VersionButton
                       id="latest"
@@ -141,7 +141,7 @@ export const BottomBar = () => {
                           });
                       }}
                     />
-                    {sortedReleases.map((release) => (
+                    {sortedReleases.data.map((release) => (
                       <VersionButton
                         key={release.id}
                         id={release.id}

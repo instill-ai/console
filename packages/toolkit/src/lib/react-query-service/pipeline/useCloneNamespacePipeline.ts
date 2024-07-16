@@ -1,11 +1,10 @@
+"use client";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CloneNamespacePipelineRequest } from "instill-sdk";
 
 import type { Nullable } from "../../type";
-import type { Pipeline } from "../../vdp-sdk";
-import {
-  cloneNamespacePipelineMutation,
-  CloneNamespacePipelinePayload,
-} from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useCloneNamespacePipeline() {
   const queryClient = useQueryClient();
@@ -15,44 +14,31 @@ export function useCloneNamespacePipeline() {
       payload,
       accessToken,
     }: {
-      payload: CloneNamespacePipelinePayload;
+      payload: CloneNamespacePipelineRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const pipeline = await cloneNamespacePipelineMutation({
-        payload,
-        accessToken,
-      });
+      const client = getInstillAPIClient({ accessToken });
 
-      return Promise.resolve({ pipeline });
+      await client.vdp.pipeline.cloneNamespacePipeline(payload);
+
+      return Promise.resolve({ pipelineName: payload.namespacePipelineName });
     },
-    onSuccess: async ({ pipeline }) => {
-      const namespace = pipeline.name.split("/").splice(0, 2).join("/");
-
-      queryClient.setQueryData<Pipeline>(
-        ["pipelines", pipeline.name],
-        pipeline,
-      );
-
+    onSuccess: async ({ pipelineName }) => {
+      const namespace = pipelineName.split("/").splice(0, 2).join("/");
       queryClient.invalidateQueries({ queryKey: ["pipelines", "infinite"] });
       queryClient.invalidateQueries({
         queryKey: ["pipelines", namespace, "infinite"],
       });
-
-      queryClient.setQueryData<Pipeline[]>(["pipelines", namespace], (old) =>
-        old
-          ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
-          : [pipeline],
-      );
-
-      queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) =>
-        old
-          ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
-          : [pipeline],
-      );
+      queryClient.invalidateQueries({
+        queryKey: ["pipelines", namespace],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["pipelines"],
+      });
     },
   });
 }

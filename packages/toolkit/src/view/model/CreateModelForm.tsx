@@ -114,15 +114,20 @@ export const CreateModelForm = () => {
 
   React.useEffect(() => {
     if (regionOptions.length && Object.keys(hardwareOptions).length) {
-      if (!form.getValues("region")) {
-        form.setValue("region", regionOptions[0].value);
-      }
+      const targetRegion = regionOptions[0]?.value;
 
-      if (!form.getValues("hardware")) {
-        form.setValue(
-          "hardware",
-          hardwareOptions[regionOptions[0].value][0].value,
-        );
+      if (targetRegion) {
+        if (!form.getValues("region")) {
+          form.setValue("region", targetRegion);
+        }
+
+        const targetHardwareOptions = hardwareOptions[targetRegion];
+
+        if (targetHardwareOptions && targetHardwareOptions[0]) {
+          if (!form.getValues("hardware")) {
+            form.setValue("hardware", targetHardwareOptions[0].value);
+          }
+        }
       }
     }
   }, [form, regionOptions, hardwareOptions]);
@@ -210,7 +215,7 @@ export const CreateModelForm = () => {
 
         updateNavigationNamespaceAnchor(() => targetNamespace.id);
 
-        router.push(`/${data.namespaceId}/models/${data.id}/overview`);
+        router.push(`/${data.namespaceId}/models/${data.id}/playground`);
       } catch (error) {
         setCreating(false);
         toastInstillError({
@@ -456,11 +461,12 @@ export const CreateModelForm = () => {
                           onValueChange={(value: string) => {
                             field.onChange(value);
 
-                            if (Object.keys(hardwareOptions).length) {
-                              form.setValue(
-                                "hardware",
-                                hardwareOptions[value][0].value,
-                              );
+                            const hardwareOption = hardwareOptions[value];
+
+                            if (hardwareOption && hardwareOption[0]) {
+                              const targetValue = hardwareOption[0].value;
+
+                              form.setValue("hardware", targetValue);
                             }
                             {
                               updateCustomHardware("");
@@ -522,7 +528,7 @@ export const CreateModelForm = () => {
                                 form.getValues("region")
                                   ? hardwareOptions[
                                       form.getValues("region")
-                                    ].map((option) => (
+                                    ]?.map((option) => (
                                       <Select.Item
                                         key={option.value}
                                         value={option.value}

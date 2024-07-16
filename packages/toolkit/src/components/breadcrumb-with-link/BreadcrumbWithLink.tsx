@@ -38,7 +38,7 @@ const BreadcrumbWithLink = ({ items }: BBreadcrumbWithLinkProps) => {
         </React.Fragment>
       ))}
       <div className="my-auto text-semantic-fg-disabled product-body-text-4-regular">
-        {items[items.length - 1].label}
+        {items[items.length - 1]?.label}
       </div>
     </div>
   );

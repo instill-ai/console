@@ -10,7 +10,7 @@ const ToggleGroupRoot = React.forwardRef<
   <Toggles.Root
     ref={ref}
     className={cn(
-      "inline-flex flex-row space-x-px rounded bg-semantic-bg-line p-px",
+      "inline-flex flex-row space-x-px rounded bg-semantic-bg-line relative after:pointer-events-none after:content-[''] after:w-full after:h-full after:rounded-[inherit] after:border after:border-semantic-bg-line after:absolute after:top-0 after:left-0",
       className,
     )}
     {...props}

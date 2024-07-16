@@ -10,3 +10,4 @@ export * from "./getCanvasTextWidth";
 export * from "./chunk";
 export * from "./removeObjKey";
 export * from "./getModelTabTitle";
+export * from "./getPipelineTabTitle";

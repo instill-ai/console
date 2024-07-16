@@ -32,32 +32,35 @@ export function pickOutputReferenceHintsFromComponent({
           .split(".");
 
         const componentKey = referencePathArray[0];
-        const targetComponent = component.component[componentKey];
 
-        if (targetComponent) {
-          const componentHints = pickOutputReferenceHintsFromComponent({
-            component: targetComponent,
-            componentID: componentKey,
-          });
+        if (componentKey) {
+          const targetComponent = component.component[componentKey];
 
-          const targetHint = componentHints.find(
-            (hint) => hint.path === value.replace("${", "").replace("}", ""),
-          );
-
-          if (targetHint) {
-            iteratorHints.push(targetHint);
-          }
-
-          // Deal with user directly reference the whole output of specific component in
-          // the iterator
-          if (value === "${" + componentKey + ".output" + "}") {
-            iteratorHints.push({
-              path: `${componentKey}.output.${key}`,
-              key,
-              instillFormat: "null",
-              type: "array",
-              properties: componentHints,
+          if (targetComponent) {
+            const componentHints = pickOutputReferenceHintsFromComponent({
+              component: targetComponent,
+              componentID: componentKey,
             });
+
+            const targetHint = componentHints.find(
+              (hint) => hint.path === value.replace("${", "").replace("}", ""),
+            );
+
+            if (targetHint) {
+              iteratorHints.push(targetHint);
+            }
+
+            // Deal with user directly reference the whole output of specific component in
+            // the iterator
+            if (value === "${" + componentKey + ".output" + "}") {
+              iteratorHints.push({
+                path: `${componentKey}.output.${key}`,
+                key,
+                instillFormat: "null",
+                type: "array",
+                properties: componentHints,
+              });
+            }
           }
         }
       });

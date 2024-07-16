@@ -4,7 +4,8 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "toolings/*"
   ],
   "scripts": {
     "build": "turbo run build",
@@ -48,6 +49,7 @@
   "prettier": "@instill-ai/prettier-config-cortex",
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
+      "eslint --cache --fix",
       "prettier --write"
     ]
   }

@@ -8,9 +8,9 @@ export * from "./utility";
 // the use client. And we don't want to maintain these two close function in
 // different folder, so we separately expose them
 
-export * from "../lib/react-query-service/pipeline/use-user-pipeline/server";
-export * from "../lib/react-query-service/pipeline/use-user-pipelines/server";
-export * from "../lib/react-query-service/pipeline/use-user-pipeline-releases/server";
+export * from "../lib/react-query-service/pipeline/use-namespace-pipeline/server";
+export * from "../lib/react-query-service/pipeline/use-namespace-pipelines/server";
+export * from "../lib/react-query-service/pipeline/use-namespace-pipeline-releases/server";
 export * from "../lib/react-query-service/mgmt/use-authenticated-user/server";
 export * from "../lib/react-query-service/mgmt/use-namespace-type/server";
 export * from "../lib/react-query-service/mgmt/use-user/server";
@@ -18,8 +18,8 @@ export * from "../lib/react-query-service/mgmt/use-api-tokens/server";
 export * from "../lib/react-query-service/organization/use-organization/server";
 export * from "../lib/react-query-service/organization/use-organization-memberships/server";
 export * from "../lib/react-query-service/model/use-user-model/server";
-export * from "../lib/react-query-service/pipeline/use-user-secret/server";
-export * from "../lib/react-query-service/pipeline/use-user-secrets/server";
+export * from "../lib/react-query-service/pipeline/use-namespace-secret/server";
+export * from "../lib/react-query-service/pipeline/use-namespace-secrets/server";
 
 export {
   authLoginAction,

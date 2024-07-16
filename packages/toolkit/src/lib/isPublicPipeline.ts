@@ -1,5 +1,6 @@
-import { Nullable } from "./type";
-import { Pipeline } from "./vdp-sdk";
+import type { Pipeline } from "instill-sdk";
+
+import type { Nullable } from "./type";
 
 export function isPublicPipeline(pipeline: Nullable<Pipeline>) {
   if (!pipeline) {

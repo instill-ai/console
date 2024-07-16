@@ -3,5 +3,5 @@ export * from "./ModelHead";
 export * from "./ModelVersions";
 export * from "./ModelSettingsEditForm";
 export * from "./ModelApi";
-export * from "./ModelOverview";
+export * from "./ModelPlayground";
 export * from "./NoVersionsPlaceholder";

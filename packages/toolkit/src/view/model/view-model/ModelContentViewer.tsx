@@ -1,6 +1,6 @@
 import {
   ModelApi,
-  ModelOverview,
+  ModelPlayground,
   ModelSettingsEditForm,
   ModelVersions,
   NoVersionsPlaceholder,
@@ -8,6 +8,7 @@ import {
 import { LoadingSpin } from "../../../components";
 import { Model, ModelState, Nullable } from "../../../lib";
 import { ModelTabNames } from "../../../server";
+import { ModelReadme } from "./ModelReadme";
 
 export type ModelContentViewerProps = {
   selectedTab: ModelTabNames;
@@ -46,10 +47,15 @@ export const ModelContentViewer = ({
 
       break;
     }
-    case "overview":
+    case "readme": {
+      content = <ModelReadme model={model} onUpdate={onUpdate} />;
+
+      break;
+    }
+    case "playground":
     default: {
       content = modelState ? (
-        <ModelOverview model={model} modelState={modelState} />
+        <ModelPlayground model={model} modelState={modelState} />
       ) : (
         <NoVersionsPlaceholder />
       );
@@ -57,7 +63,7 @@ export const ModelContentViewer = ({
   }
 
   return (
-    <div className="mx-auto w-full max-w-7xl pt-8">
+    <div className="mx-auto w-full max-w-7xl pt-8 flex-1 flex flex-col">
       {model ? (
         content
       ) : (

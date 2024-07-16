@@ -18,7 +18,7 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
 
   return (
     <React.Fragment>
-      <div className="flex justify-center">
+      <div className="ml-auto flex justify-center">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <Button className="!px-2 !py-2" variant="tertiaryGrey">

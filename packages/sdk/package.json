@@ -1,0 +1,57 @@
+{
+  "name": "instill-sdk",
+  "version": "0.1.0-rc.8",
+  "description": "Instill AI's Typescript SDK",
+  "repository": "https://github.com/instill-ai/typescript-sdk.git",
+  "bugs": "https://github.com/instill-ai/community/issues",
+  "keywords": [
+    "instill-ai",
+    "SDK",
+    "Typescript"
+  ],
+  "scripts": {
+    "build": "tsup && pnpm ts-types",
+    "dev": "tsup --watch",
+    "dev-ts": "tsc --watch --emitDeclarationOnly",
+    "ts-types": "tsc --emitDeclarationOnly",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx --cache",
+    "publish-rc": "pnpm build && pnpm publish --no-git-checks"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "license": "Apache-2.0",
+  "private": false,
+  "devDependencies": {
+    "@instill-ai/eslint-config-cortex": "workspace:*",
+    "@instill-ai/prettier-config-cortex": "workspace:*",
+    "@instill-ai/tsconfig": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@types/json-schema": "^7.0.11",
+    "json-schema": "^0.4.0",
+    "openapi-types": "^12.1.3",
+    "tsup": "^8.1.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "braces": "^3.0.3",
+      "ws": "8.17.1"
+    }
+  }
+}

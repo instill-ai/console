@@ -1,7 +1,7 @@
 import { Activity } from "./Activity";
 import { AlertCircle } from "./AlertCircle";
 import { AlertTriangle } from "./AlertTriangle";
-import { AlighLeft } from "./AlighLeft";
+import { AlignLeft } from "./AlignLeft";
 import { ArrowDown } from "./ArrowDown";
 import { ArrowLeft } from "./ArrowLeft";
 import { ArrowNarrowLeft } from "./ArrowNarrowLeft";
@@ -42,6 +42,7 @@ import { Cube01 } from "./Cube01";
 import { CubeOutline } from "./CubeOutline";
 import { CurrencyDollar } from "./CurrencyDollar";
 import { Database01 } from "./Database01";
+import { Dataflow03 } from "./Dataflow03";
 import { DotsHorizontal } from "./DotsHorizontal";
 import { DotsVertical } from "./DotsVertical";
 import { DownloadCloud01 } from "./DownloadCloud01";
@@ -55,7 +56,9 @@ import { FileMinus01 } from "./FileMinus01";
 import { FilePlus01 } from "./FilePlus01";
 import { FilePlus02 } from "./FilePlus02";
 import { FilterLines } from "./FilterLines";
+import { Flag04 } from "./Flag04";
 import { Gear01 } from "./Gear01";
+import { GitMerge } from "./GitMerge";
 import { Globe01 } from "./Globe01";
 import { HelpCircle } from "./HelpCircle";
 import { Image01 } from "./Image01";
@@ -123,12 +126,13 @@ import { VideoRecorder } from "./VideoRecorder";
 import { Visa } from "./Visa";
 import { VisualQuestionAnswering } from "./VisualQuestionAnswering";
 import { X } from "./X";
+import { Zap } from "./Zap";
 
 export const Icons = {
   Activity,
   AlertCircle,
   AlertTriangle,
-  AlighLeft,
+  AlignLeft,
   ArrowUp,
   ArrowDown,
   ArrowLeft,
@@ -169,6 +173,7 @@ export const Icons = {
   CubeOutline,
   CurrencyDollar,
   Database01,
+  Dataflow03,
   DotsHorizontal,
   DotsVertical,
   DownloadCloud01,
@@ -182,7 +187,9 @@ export const Icons = {
   FilePlus01,
   FilePlus02,
   FilterLines,
+  Flag04,
   Gear01,
+  GitMerge,
   Globe01,
   HelpCircle,
   IntersectSquare,
@@ -250,4 +257,5 @@ export const Icons = {
   Visa,
   VisualQuestionAnswering,
   X,
+  Zap,
 };

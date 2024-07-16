@@ -1,9 +1,11 @@
 "use client";
 
+import type { Pipeline } from "instill-sdk";
 import * as React from "react";
 
 import { Button, DropdownMenu, Icons } from "@instill-ai/design-system";
 
+import type { InstillStore } from "./../../../lib";
 import {
   PublishPipelineDialog,
   SharePipelineDialog,
@@ -12,13 +14,7 @@ import {
   ClonePipelineDialog,
   GeneralDeleteResourceDialog,
 } from "./../../../components";
-import {
-  InstillStore,
-  Pipeline,
-  useInstillStore,
-  useRouteInfo,
-  useShallow,
-} from "./../../../lib";
+import { useInstillStore, useRouteInfo, useShallow } from "./../../../lib";
 
 const selector = (store: InstillStore) => ({
   updateDialogSharePipelineIsOpen: store.updateDialogSharePipelineIsOpen,
@@ -41,44 +37,43 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
 
   return (
     <React.Fragment>
-      <div className="flex justify-center">
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger asChild>
-            <Button
-              aria-label="More options"
-              className="!h-8 !px-2 !py-2"
-              variant="secondaryGrey"
-            >
-              <Icons.DotsVertical className="h-4 w-4 stroke-semantic-fg-primary" />
-            </Button>
-          </DropdownMenu.Trigger>
-
-          <DropdownMenu.Content
-            align="end"
-            className="w-[129px] !rounded !px-0 !py-2"
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger asChild>
+          <Button
+            aria-label="More options"
+            className="!p-0 h-[32px] flex items-center justify-center aspect-square"
+            size="md"
+            variant="secondaryGrey"
           >
-            <DropdownMenu.Item
-              onClick={() => updateDialogSharePipelineIsOpen((prev) => !prev)}
-              className="gap-x-2 !px-4 !py-2.5 !product-button-button-2"
-              key="share"
-            >
-              <Icons.Share07 className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
-              Share
-            </DropdownMenu.Item>
+            <Icons.DotsVertical className="h-4 w-4 stroke-semantic-fg-primary" />
+          </Button>
+        </DropdownMenu.Trigger>
 
-            <DropdownMenu.Item
-              onClick={() => {
-                setDeleteDialogIsOpen(true);
-              }}
-              className="gap-x-2 !px-4 !py-2.5 !text-semantic-error-default !product-button-button-2"
-              key="delete"
-            >
-              <Icons.Trash01 className="my-auto h-4 w-4 stroke-semantic-error-default" />
-              Delete
-            </DropdownMenu.Item>
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
-      </div>
+        <DropdownMenu.Content
+          align="end"
+          className="w-[129px] !rounded !px-0 !py-2"
+        >
+          <DropdownMenu.Item
+            onClick={() => updateDialogSharePipelineIsOpen((prev) => !prev)}
+            className="gap-x-2 !px-4 !py-2.5 !product-button-button-2"
+            key="share"
+          >
+            <Icons.Share07 className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
+            Share
+          </DropdownMenu.Item>
+
+          <DropdownMenu.Item
+            onClick={() => {
+              setDeleteDialogIsOpen(true);
+            }}
+            className="gap-x-2 !px-4 !py-2.5 !text-semantic-error-default !product-button-button-2"
+            key="delete"
+          >
+            <Icons.Trash01 className="my-auto h-4 w-4 stroke-semantic-error-default" />
+            Delete
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
       {routeInfo.isSuccess ? (
         <React.Fragment>
           <SharePipelineDialog

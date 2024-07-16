@@ -1,15 +1,16 @@
 "use client";
 
 import * as React from "react";
+import { ControllerRenderProps } from "react-hook-form";
 
-import { Form, ScrollArea } from "@instill-ai/design-system";
+import { cn, Form, ScrollArea } from "@instill-ai/design-system";
 
 import {
   AutoFormFieldBaseProps,
-  fillArrayWithZeros,
   GeneralRecord,
+  stringToHash32Bit,
 } from "../../..";
-import { EmptyImageInputPlaceholder } from "../../../../components";
+import { FileInputDropArea } from "../../../../components";
 import { readFileToBinary } from "../../../../view";
 import { FieldDescriptionTooltip } from "../common";
 import { FileListItem } from "../trigger-request-form-fields/FileListItem";
@@ -32,9 +33,78 @@ export const ImagesField = ({
   instillModelPromptImageBase64ObjectFormat?: boolean;
 }) => {
   const [imageFiles, setImageFiles] = React.useState<File[]>([]);
-  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const values = form.getValues(path);
+
+  const onUpdateFiles = async (
+    field: ControllerRenderProps,
+    fileList: FileList | null,
+  ) => {
+    if (!fileList || fileList.length === 0) {
+      return;
+    }
+
+    const formImages = field.value || [];
+    const files: File[] = [];
+
+    if (instillModelPromptImageBase64ObjectFormat) {
+      const binaries: GeneralRecord[] = [];
+
+      for (const file of fileList) {
+        const binary = await readFileToBinary(file);
+
+        files.push(file);
+        binaries.push({
+          prompt_image_base64: binary,
+        });
+      }
+
+      field.onChange(formImages.concat(binaries));
+    } else {
+      const binaries: string[] = [];
+
+      for (const file of fileList) {
+        const binary = await readFileToBinary(file);
+
+        files.push(file);
+        binaries.push(binary);
+      }
+
+      field.onChange(formImages.concat(binaries));
+    }
+
+    setImageFiles((prev) => [...prev, ...files]);
+
+    return;
+  };
+
+  const onDeleteImage = async (field: ControllerRenderProps, i: number) => {
+    const newFiles = imageFiles.filter((_, index) => index !== i);
+
+    if (instillModelPromptImageBase64ObjectFormat) {
+      const binaries: GeneralRecord[] = [];
+
+      for (const file of newFiles) {
+        const binary = await readFileToBinary(file);
+        binaries.push({
+          prompt_image_base64: binary,
+        });
+      }
+
+      field.onChange(binaries);
+    } else {
+      const binaries: string[] = [];
+
+      for (const file of newFiles) {
+        const binary = await readFileToBinary(file);
+        binaries.push(binary);
+      }
+
+      field.onChange(binaries);
+    }
+
+    setImageFiles(newFiles);
+  };
 
   return isHidden ? null : (
     <Form.Field
@@ -52,147 +122,59 @@ export const ImagesField = ({
               </Form.Label>
               <FieldDescriptionTooltip description={description} />
             </div>
-            <div className="grid w-full grid-flow-row grid-cols-4 overflow-hidden rounded-sm border border-semantic-bg-line">
-              {instillModelPromptImageBase64ObjectFormat &&
-              Array.isArray(values) ? (
-                fillArrayWithZeros(values, 8)
-                  .slice(0, 8)
-                  .map((value, i) => {
-                    if (value.prompt_image_base64) {
-                      return (
-                        <img
-                          key={`${path}-${i}`}
-                          src={value.prompt_image_base64}
-                          alt={`${path}-${i}`}
-                          className="h-[140px] object-contain"
-                        />
-                      );
-                    }
-                  })
-              ) : imageFiles.length > 0 ? (
-                fillArrayWithZeros(imageFiles, 8)
-                  .slice(0, 8)
-                  .map((file, i) => {
-                    return file ? (
-                      <img
-                        key={`${path}-${file.name}`}
-                        src={URL.createObjectURL(file)}
-                        alt={`${path}-${file.name}`}
-                        className="h-[140px] object-contain"
-                      />
-                    ) : (
-                      <div
-                        key={`${path}-${i}`}
-                        className="h-[140px] w-full bg-semantic-bg-secondary object-contain"
-                      />
-                    );
-                  })
-              ) : (
-                <EmptyImageInputPlaceholder className="col-span-4" />
-              )}
-            </div>
-            <div className="flex flex-row gap-x-1">
+            <FileInputDropArea
+              disabled={disabled}
+              onDrop={async (fileList: FileList | null) => {
+                await onUpdateFiles(field, fileList);
+              }}
+            >
+              , or{" "}
               <Form.Control>
                 <UploadFileInput
                   keyPrefix={keyPrefix}
                   fieldKey={path}
-                  title="Upload images"
+                  title="browse computer"
                   accept="images/*"
                   multiple={true}
-                  onChange={async (e) => {
-                    if (e.target.files && e.target.files.length > 0) {
-                      const files: File[] = [];
+                  onChange={async (event) => {
+                    await onUpdateFiles(field, event.target.files);
 
-                      if (instillModelPromptImageBase64ObjectFormat) {
-                        const binaries: GeneralRecord[] = [];
-                        for (const file of e.target.files) {
-                          const binary = await readFileToBinary(file);
-                          files.push(file);
-                          binaries.push({
-                            prompt_image_base64: binary,
-                          });
-                        }
-                        field.onChange(binaries);
-                      } else {
-                        const binaries: string[] = [];
-                        for (const file of e.target.files) {
-                          const binary = await readFileToBinary(file);
-                          files.push(file);
-                          binaries.push(binary);
-                        }
-                        field.onChange(binaries);
-                      }
-
-                      setImageFiles((prev) => [...prev, ...files]);
-
-                      // Reset the input value so we can use the same file again
-                      // after we delete it
-                      e.target.value = "";
-                    }
+                    // Reset the input value so we can use the same file again
+                    // after we delete it
+                    event.target.value = "";
                   }}
                   disabled={disabled}
+                  className="font-normal no-underline !bg-transparent !p-0 !inline-block"
                 />
               </Form.Control>
-              {imageFiles.length > 0 ? (
-                <button
-                  type="button"
-                  className="flex cursor-pointer rounded-full bg-semantic-error-bg px-2 py-0.5 font-sans text-xs font-medium text-semantic-error-default hover:bg-semantic-error-bg-alt"
-                  onClick={() => {
-                    field.onChange([]);
-                    setImageFiles([]);
-                    if (inputRef.current) {
-                      inputRef.current.value = "";
-                    }
-                  }}
-                >
-                  Delete all
-                </button>
-              ) : null}
-            </div>
+            </FileInputDropArea>
             {instillModelPromptImageBase64ObjectFormat &&
-            Array.isArray(values) ? (
-              <ScrollArea.Root className="nowheel h-[216px] rounded-sm border border-semantic-bg-line p-2">
+            Array.isArray(values) &&
+            values.length > 0 ? (
+              <ScrollArea.Root
+                className={cn(
+                  "nowheel rounded-sm border border-semantic-bg-line p-2",
+                  values.length > 4 ? "h-[216px]" : "",
+                )}
+              >
                 <div className="flex h-full flex-col gap-y-2">
                   {values.map((value, i) => {
                     if (value.prompt_image_base64) {
-                      const binaryKey = value.prompt_image_base64.slice(
-                        value.prompt_image_base64.indexOf(",") + 1,
-                        value.prompt_image_base64.indexOf(",") + 13,
+                      // Using a hash function here to avoid key collisions.
+                      // base64 strings can have big chunks of similar char
+                      // sequences. So simply using them as is doesn't work.
+                      const binaryKey = stringToHash32Bit(
+                        value.prompt_image_base64,
                       );
 
                       return (
                         <FileListItem
                           key={`${binaryKey}-item`}
                           name={binaryKey}
-                          onDelete={async () => {
-                            const newFiles = imageFiles.filter(
-                              (_, index) => index !== i,
-                            );
-
-                            if (instillModelPromptImageBase64ObjectFormat) {
-                              const binaries: GeneralRecord[] = [];
-                              for (const file of newFiles) {
-                                const binary = await readFileToBinary(file);
-                                binaries.push({
-                                  prompt_image_base64: binary,
-                                });
-                              }
-                              field.onChange(binaries);
-                            } else {
-                              const binaries: string[] = [];
-                              for (const file of newFiles) {
-                                const binary = await readFileToBinary(file);
-                                binaries.push(binary);
-                              }
-                              field.onChange(binaries);
-                            }
-
-                            setImageFiles(newFiles);
-
-                            // We directly remove the browser input value, we don't need it
-                            // and it may cause some surprise when user reupload the same file
-                            if (inputRef.current) {
-                              inputRef.current.value = "";
+                          index={i}
+                          onDelete={(index?: number) => {
+                            if (typeof index !== "undefined") {
+                              onDeleteImage(field, index);
                             }
                           }}
                         />
@@ -202,41 +184,21 @@ export const ImagesField = ({
                 </div>
               </ScrollArea.Root>
             ) : imageFiles.length > 0 ? (
-              <ScrollArea.Root className="nowheel h-[216px] rounded-sm border border-semantic-bg-line p-2">
+              <ScrollArea.Root
+                className={cn(
+                  "nowheel rounded-sm border border-semantic-bg-line p-2",
+                  imageFiles.length > 4 ? "h-[216px]" : "",
+                )}
+              >
                 <div className="flex h-full flex-col gap-y-2">
                   {imageFiles.map((e, i) => (
                     <FileListItem
                       key={`${path}-${e.name}-item`}
                       name={e.name}
-                      onDelete={async () => {
-                        const newFiles = imageFiles.filter(
-                          (_, index) => index !== i,
-                        );
-
-                        if (instillModelPromptImageBase64ObjectFormat) {
-                          const binaries: GeneralRecord[] = [];
-                          for (const file of newFiles) {
-                            const binary = await readFileToBinary(file);
-                            binaries.push({
-                              prompt_image_base64: binary,
-                            });
-                          }
-                          field.onChange(binaries);
-                        } else {
-                          const binaries: string[] = [];
-                          for (const file of newFiles) {
-                            const binary = await readFileToBinary(file);
-                            binaries.push(binary);
-                          }
-                          field.onChange(binaries);
-                        }
-
-                        setImageFiles(newFiles);
-
-                        // We directly remove the browser input value, we don't need it
-                        // and it may cause some surprise when user reupload the same file
-                        if (inputRef.current) {
-                          inputRef.current.value = "";
+                      index={i}
+                      onDelete={(index?: number) => {
+                        if (typeof index !== "undefined") {
+                          onDeleteImage(field, index);
                         }
                       }}
                     />

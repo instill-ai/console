@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { Nullable } from "../../type";
-import { getRemainingCreditQuery } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useRemainingCredit({
   ownerName,
@@ -27,10 +27,16 @@ export function useRemainingCredit({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const remainingCredit = await getRemainingCreditQuery({
-        ownerName,
-        accessToken,
-      });
+      if (!ownerName) {
+        return Promise.reject(new Error("ownerName not provided"));
+      }
+
+      const client = getInstillAPIClient({ accessToken });
+
+      const remainingCredit =
+        await client.core.credit.getRemainingInstillCredit({
+          ownerName,
+        });
 
       return Promise.resolve(remainingCredit);
     },

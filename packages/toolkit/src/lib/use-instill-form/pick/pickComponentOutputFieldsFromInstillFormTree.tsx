@@ -208,7 +208,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   if (tree.instillFormat.includes("array:")) {
     const arrayType = tree.instillFormat.replaceAll("array:", "").split("/")[0];
 
-    if (arrayType.includes("structured")) {
+    if (arrayType?.includes("structured")) {
       return (
         <ComponentOutputFields.ObjectsField
           mode={mode}
@@ -300,7 +300,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   const singularType = tree.instillFormat.split("/")[0];
 
   // Process structured type like semi-structured, structured/detection_object...etc
-  if (singularType.includes("structured")) {
+  if (singularType?.includes("structured")) {
     return (
       <ComponentOutputFields.ObjectField
         mode={mode}

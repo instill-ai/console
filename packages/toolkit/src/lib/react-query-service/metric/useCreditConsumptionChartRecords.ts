@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { Nullable } from "../../type";
-import { ListCreditConsumptionChartRecord } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useCreditConsumptionChartRecords({
   enabled,
@@ -56,13 +56,21 @@ export function useCreditConsumptionChartRecords({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const data = await ListCreditConsumptionChartRecord({
-        owner,
-        start,
-        stop,
-        aggregationWindow,
+      if (!owner) {
+        return Promise.reject(new Error("owner not provided"));
+      }
+
+      const client = getInstillAPIClient({
         accessToken,
       });
+
+      const data =
+        await client.core.metric.listInstillCreditConsumptionTimeChart({
+          owner,
+          start: start ?? undefined,
+          stop: stop ?? undefined,
+          aggregationWindow: aggregationWindow ?? undefined,
+        });
 
       return Promise.resolve(data);
     },

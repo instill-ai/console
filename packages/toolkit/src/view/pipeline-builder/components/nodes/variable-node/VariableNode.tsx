@@ -20,8 +20,8 @@ import {
   useAmplitudeCtx,
   useInstillStore,
   usePipelineTriggerRequestForm,
-  useTriggerUserPipeline,
-  useTriggerUserPipelineRelease,
+  useTriggerNamespacePipeline,
+  useTriggerNamespacePipelineRelease,
   useUserNamespaces,
 } from "../../../../../lib";
 import {
@@ -110,16 +110,20 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
   const onEditFreeFormField = (key: string) => {
     setCurrentEditingFieldKey(key);
     form.reset({
-      title: data.fields[key].title,
+      title: data.fields[key]?.title,
       key,
-      description: data.fields[key].description,
+      description: data.fields[key]?.description,
     });
     setIsEditing(true);
 
-    let newSelectedType = data.fields[key].instillFormat;
+    let newSelectedType = data.fields[key]?.instillFormat;
 
-    if (newSelectedType === "string" && data.fields[key].instillUiMultiline) {
+    if (newSelectedType === "string" && data.fields[key]?.instillUiMultiline) {
       newSelectedType = "long_string";
+    }
+
+    if (!newSelectedType) {
+      return;
     }
 
     setSelectedType(newSelectedType);
@@ -175,11 +179,13 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
       }
     }
 
-    if (!triggerNodeFields[selectedType]) {
+    const targetFieldType = triggerNodeFields[selectedType];
+
+    if (!targetFieldType) {
       return;
     }
 
-    const field = triggerNodeFields[selectedType].getFieldConfiguration(
+    const field = targetFieldType.getFieldConfiguration(
       formData.title,
       formData.description,
     );
@@ -249,8 +255,8 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
     disabledReferenceHint,
   });
 
-  const useTriggerPipeline = useTriggerUserPipeline();
-  const useTriggerPipelineRelease = useTriggerUserPipelineRelease();
+  const triggerPipeline = useTriggerNamespacePipeline();
+  const triggerPipelineRelease = useTriggerNamespacePipelineRelease();
 
   async function onTriggerPipeline(
     formData: z.infer<typeof TriggerPipelineFormSchema>,
@@ -303,12 +309,10 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
           (ns) => ns.id === navigationNamespaceAnchor,
         );
 
-        const data = await useTriggerPipeline.mutateAsync({
-          pipelineName,
+        const data = await triggerPipeline.mutateAsync({
+          namespacePipelineName: pipelineName,
           accessToken,
-          payload: {
-            inputs: [parsedStructuredData],
-          },
+          inputs: [parsedStructuredData],
           returnTraces: true,
           requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
         });
@@ -329,11 +333,9 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
       }
     } else {
       try {
-        const data = await useTriggerPipelineRelease.mutateAsync({
-          pipelineReleaseName: `${pipelineName}/releases/${currentVersion}`,
-          payload: {
-            inputs: [parsedStructuredData],
-          },
+        const data = await triggerPipelineRelease.mutateAsync({
+          namespacePipelineReleaseName: `${pipelineName}/releases/${currentVersion}`,
+          inputs: [parsedStructuredData],
           accessToken,
           returnTraces: true,
         });

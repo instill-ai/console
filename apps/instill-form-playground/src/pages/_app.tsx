@@ -1,4 +1,4 @@
-import "@/styles/globals.css";
+import "../styles/globals.css";
 import "@instill-ai/design-tokens/dist/theme/root.css";
 import "@instill-ai/design-tokens/dist/theme/light.css";
 import "@instill-ai/design-tokens/dist/theme/dark.css";

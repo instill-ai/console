@@ -1,8 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useAppAccessToken } from "lib/use-app-access-token";
-import { useAppTrackToken } from "lib/useAppTrackToken";
 
 import {
   AppTopbar,
@@ -11,6 +9,9 @@ import {
   NamespaceSwitch,
   PageBase,
 } from "@instill-ai/toolkit";
+
+import { useAppAccessToken } from "~/lib/use-app-access-token";
+import { useAppTrackToken } from "~/lib/useAppTrackToken";
 
 export function DashboardPageRender() {
   const accessToken = useAppAccessToken();

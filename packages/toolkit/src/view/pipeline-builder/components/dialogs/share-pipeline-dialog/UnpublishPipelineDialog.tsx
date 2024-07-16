@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { UpdateNamespacePipelineRequest } from "instill-sdk";
 
 import { Button, Dialog, useToast } from "@instill-ai/design-system";
 
@@ -9,12 +10,11 @@ import {
   Nullable,
   sendAmplitudeData,
   toastInstillError,
-  UpdateUserPipelinePayload,
   useAmplitudeCtx,
   useInstillStore,
+  useNamespacePipeline,
   useShallow,
-  useUpdateUserPipeline,
-  useUserPipeline,
+  useUpdateNamespacePipeline,
 } from "../../../../../lib";
 
 const selector = (store: InstillStore) => ({
@@ -34,19 +34,19 @@ export const UnpublishPipelineDialog = ({
     useInstillStore(useShallow(selector));
   const { toast } = useToast();
 
-  const pipeline = useUserPipeline({
-    pipelineName,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: pipelineName,
     enabled: enabledQuery && !!pipelineName,
     accessToken,
   });
 
-  const updateUserPipeline = useUpdateUserPipeline();
+  const updatePipeline = useUpdateNamespacePipeline();
   async function unPublishPipeline() {
     if (!pipeline.isSuccess || !pipelineName) return;
 
     try {
-      const payload: UpdateUserPipelinePayload = {
-        name: pipelineName,
+      const payload: UpdateNamespacePipelineRequest = {
+        namespacePipelineName: pipelineName,
         sharing: {
           ...pipeline.data.sharing,
           users: {
@@ -58,7 +58,7 @@ export const UnpublishPipelineDialog = ({
         },
       };
 
-      await updateUserPipeline.mutateAsync({ payload, accessToken });
+      await updatePipeline.mutateAsync({ ...payload, accessToken });
 
       if (amplitudeIsInit) {
         sendAmplitudeData("unpublish_pipeline");

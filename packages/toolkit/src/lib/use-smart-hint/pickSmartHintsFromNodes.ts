@@ -1,3 +1,4 @@
+import { PipelineIteratorComponent } from "instill-sdk";
 import { Node } from "reactflow";
 
 import {
@@ -12,7 +13,6 @@ import {
   isVariableNode,
 } from "../../view/pipeline-builder/lib/checkNodeType";
 import { transformInstillJSONSchemaToFormTree } from "../use-instill-form/transform";
-import { PipelineIteratorComponent } from "../vdp-sdk";
 import { transformFormTreeToSmartHints } from "./transformFormTreeToSmartHints";
 import { transformPipelineTriggerRequestFieldsToSmartHints } from "./transformPipelineTriggerRequestFieldsToSmartHints";
 import { SmartHint } from "./types";
@@ -100,37 +100,40 @@ export function pickSmartHintsFromNodes({
           .split(".")[0];
 
         // Get target component's type
-        const component = (node.data as PipelineIteratorComponent).component[
-          componentKey
-        ];
 
-        if (component) {
-          if (isPipelineGeneralComponent(component)) {
-            const { outputSchema } =
-              getGeneralComponentInOutputSchema(component);
-            if (outputSchema) {
-              const outputFormTree =
-                transformInstillJSONSchemaToFormTree(outputSchema);
-              const hints = transformFormTreeToSmartHints(
-                outputFormTree,
-                componentKey,
-              );
+        if (componentKey) {
+          const component = (node.data as PipelineIteratorComponent).component[
+            componentKey
+          ];
 
-              const targetHint = hints.find(
-                (hint) =>
-                  hint.path === value.replace("${", "").replace("}", ""),
-              );
+          if (component) {
+            if (isPipelineGeneralComponent(component)) {
+              const { outputSchema } =
+                getGeneralComponentInOutputSchema(component);
+              if (outputSchema) {
+                const outputFormTree =
+                  transformInstillJSONSchemaToFormTree(outputSchema);
+                const hints = transformFormTreeToSmartHints(
+                  outputFormTree,
+                  componentKey,
+                );
 
-              if (targetHint) {
-                // Iterator exposed output format will be similar to
-                // iterator_0.output.result_0
-                consoleGeneratedHints.push({
-                  key,
-                  path: `${node.id}.output.${key}`,
-                  instillFormat: targetHint.instillFormat,
-                  type: targetHint.type,
-                  description: targetHint.description,
-                });
+                const targetHint = hints.find(
+                  (hint) =>
+                    hint.path === value.replace("${", "").replace("}", ""),
+                );
+
+                if (targetHint) {
+                  // Iterator exposed output format will be similar to
+                  // iterator_0.output.result_0
+                  consoleGeneratedHints.push({
+                    key,
+                    path: `${node.id}.output.${key}`,
+                    instillFormat: targetHint.instillFormat,
+                    type: targetHint.type,
+                    description: targetHint.description,
+                  });
+                }
               }
             }
           }

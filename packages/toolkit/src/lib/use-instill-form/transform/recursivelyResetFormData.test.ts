@@ -289,18 +289,18 @@ test("should reset basic form data", () => {
     task: "TASK_TEXT_GENERATION",
   };
 
-  recursivelyResetFormData(
-    tree.conditions["TASK_TEXT_GENERATION"],
-    selectedConditionMap,
-    data,
-  );
+  const selectedCondition = tree.conditions["TASK_TEXT_GENERATION"];
 
-  expect(data).toStrictEqual({
-    input: {
-      model: null,
-    },
-    task: "TASK_TEXT_GENERATION",
-  });
+  if (selectedCondition) {
+    recursivelyResetFormData(selectedCondition, selectedConditionMap, data);
+
+    expect(data).toStrictEqual({
+      input: {
+        model: null,
+      },
+      task: "TASK_TEXT_GENERATION",
+    });
+  }
 });
 
 //This is not working properly yet
@@ -770,9 +770,9 @@ test.skip("should reset nested oneOf form data", () => {
     "input.foo.foo-condition": "world",
   };
 
-  recursivelyResetFormData(
-    tree.conditions["TASK_TEXT_GENERATION"],
-    selectedConditionMap,
-    data,
-  );
+  const selectedCondition = tree.conditions["TASK_TEXT_GENERATION"];
+
+  if (selectedCondition) {
+    recursivelyResetFormData(selectedCondition, selectedConditionMap, data);
+  }
 });

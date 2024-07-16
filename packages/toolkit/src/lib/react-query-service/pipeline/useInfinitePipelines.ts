@@ -1,16 +1,15 @@
+"use client";
+
 import {
   InfiniteData,
   useInfiniteQuery,
   UseInfiniteQueryResult,
 } from "@tanstack/react-query";
 
+import type { ListPipelinesResponse } from "../../vdp-sdk";
 import { env } from "../../../server";
 import { Nullable } from "../../type";
-import {
-  listPipelinesQuery,
-  ListPipelinesResponse,
-  Visibility,
-} from "../../vdp-sdk";
+import { getInstillAPIClient, Visibility } from "../../vdp-sdk";
 
 export function useInfinitePipelines({
   accessToken,
@@ -46,15 +45,18 @@ export function useInfinitePipelines({
   return useInfiniteQuery({
     queryKey: queryKey,
     queryFn: async ({ pageParam }) => {
-      const pipelines = await listPipelinesQuery({
+      const client = getInstillAPIClient({
+        accessToken: accessToken ?? undefined,
+      });
+
+      const pipelines = await client.vdp.pipeline.listAccessiblePipelines({
         pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE") ?? null,
-        nextPageToken: pageParam ?? null,
-        accessToken,
+        pageToken: pageParam ?? undefined,
         enablePagination: true,
-        visibility,
-        filter,
-        orderBy,
-        disabledViewFull,
+        visibility: visibility ?? undefined,
+        filter: filter ?? undefined,
+        orderBy: orderBy ?? undefined,
+        view: disabledViewFull ? undefined : "VIEW_FULL",
       });
 
       return Promise.resolve(pipelines);

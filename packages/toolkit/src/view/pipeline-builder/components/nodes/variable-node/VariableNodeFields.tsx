@@ -55,7 +55,7 @@ export const triggerNodeFields: Record<string, TriggerNodeInputField> = {
       instillUiMultiline: true,
     }),
     icon: (
-      <Icons.AlighLeft className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
+      <Icons.AlignLeft className="m-auto h-4 w-4 stroke-semantic-fg-primary" />
     ),
   },
   number: {

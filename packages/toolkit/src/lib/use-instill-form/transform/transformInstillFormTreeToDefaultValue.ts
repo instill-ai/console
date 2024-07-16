@@ -28,31 +28,38 @@ export function transformInstillFormTreeToDefaultValue(
 
     if (defaultCondition && constPath) {
       if (selectedConditionMap && selectedConditionMap[constPath]) {
-        transformInstillFormTreeToDefaultValue(
-          tree.conditions[selectedConditionMap[constPath]],
-          {
+        const selectedConditionKey = selectedConditionMap[constPath];
+        const selectedCondition = selectedConditionKey
+          ? tree.conditions[selectedConditionKey]
+          : null;
+        if (selectedCondition) {
+          transformInstillFormTreeToDefaultValue(selectedCondition, {
             initialData,
             selectedConditionMap,
             isRoot,
-          },
-        );
+          });
 
-        dot.setter(
-          initialData,
-          constPath,
-          selectedConditionMap[constPath] as string,
-        );
+          dot.setter(
+            initialData,
+            constPath,
+            selectedConditionMap[constPath] as string,
+          );
+        }
       } else {
-        transformInstillFormTreeToDefaultValue(
-          tree.conditions[Object.keys(tree.conditions)[0]],
-          {
+        const headConditionKey = Object.keys(tree.conditions)[0];
+        const headCondition = headConditionKey
+          ? tree.conditions[headConditionKey]
+          : null;
+
+        if (headCondition) {
+          transformInstillFormTreeToDefaultValue(headCondition, {
             initialData,
             selectedConditionMap,
             isRoot,
-          },
-        );
+          });
 
-        dot.setter(initialData, constPath, defaultCondition.const as string);
+          dot.setter(initialData, constPath, defaultCondition.const as string);
+        }
       }
     }
 

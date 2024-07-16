@@ -12,7 +12,7 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 
-import { StateLabel } from "../../../components";
+import { HeadExternalLink, ModelStateLabel } from "../../../components";
 import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
 import { Model, ModelState } from "../../../lib";
 import { ModelTabNames } from "../../../server";
@@ -31,26 +31,7 @@ const DEFAULT_OWNER = {
   id: null,
 };
 
-const ExternalLink = ({
-  children,
-  href,
-}: {
-  children: React.ReactNode;
-  href: string;
-}) => {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex flex-row items-center gap-x-1 border-b border-zinc-700 text-sm font-semibold text-semantic-bg-secondary-alt-primary"
-    >
-      {children}
-    </a>
-  );
-};
-
-export const ModelSettingsHead = ({
+export const ModelHead = ({
   selectedTab,
   onTabChange,
   model,
@@ -78,7 +59,7 @@ export const ModelSettingsHead = ({
   const task = getModelInstanceTaskToolkit(model?.task || "");
 
   return (
-    <div className="sticky -top-8 z-10 -mx-20 -mt-8 w-[calc(100%+160px)] bg-gradient-to-t from-orange-50 to-sky-200 px-20 pt-7">
+    <div className="sticky -top-8 z-10 -mx-20 -mt-8 w-[calc(100%+160px)] bg-gradient-to-t from-[#FFF1EB] to-[#ACE0F9] px-20 pt-7">
       <div className="mx-auto flex max-w-7xl flex-col gap-y-2">
         <div className="flex flex-row items-center gap-x-3">
           {owner.id ? (
@@ -94,21 +75,20 @@ export const ModelSettingsHead = ({
               }
             />
           ) : null}
-
-          {isReady ? (
+          {!isReady ? (
             <Skeleton className="h-6 w-60 rounded" />
           ) : (
             <React.Fragment>
               <div className="my-auto text-semantic-fg-disabled product-headings-heading-4">
-                <a
+                <Link
                   href={`/${owner.id}`}
                   className="cursor-pointer hover:!underline"
                 >
                   {owner.id}
-                </a>
+                </Link>
                 /<span className="text-semantic-fg-primary">{model?.id}</span>
               </div>
-              {modelState ? <StateLabel state={modelState} /> : null}
+              {modelState ? <ModelStateLabel state={modelState} /> : null}
               {model?.visibility !== "VISIBILITY_PUBLIC" ? (
                 <Tag
                   className="my-auto h-6 gap-x-1 !border-0 !py-0 !text-sm"
@@ -120,31 +100,31 @@ export const ModelSettingsHead = ({
                 </Tag>
               ) : null}
               {model?.sourceUrl ? (
-                <ExternalLink href={model.sourceUrl}>
+                <HeadExternalLink href={model.sourceUrl}>
                   <GitHubIcon
                     width="w-[18px]"
                     height="h-[18px]"
                     color="fill-semantic-bg-secondary-alt-primary"
                   />
                   GitHub
-                </ExternalLink>
+                </HeadExternalLink>
               ) : null}
               {model?.documentationUrl ? (
-                <ExternalLink href={model.documentationUrl}>
+                <HeadExternalLink href={model.documentationUrl}>
                   <Icons.Link01 className="h-3.5 w-3.5 stroke-semantic-bg-secondary-alt-primary" />
                   Link
-                </ExternalLink>
+                </HeadExternalLink>
               ) : null}
               {model?.license ? (
-                <ExternalLink href={model.license}>
+                <HeadExternalLink href={model.license}>
                   <Icons.Scales02 className="h-3.5 w-3.5 stroke-semantic-bg-secondary-alt-primary" />
                   License
-                </ExternalLink>
+                </HeadExternalLink>
               ) : null}
             </React.Fragment>
           )}
         </div>
-        {isReady ? (
+        {!isReady ? (
           <React.Fragment>
             <Skeleton className="h-6 w-20 rounded" />
             <Skeleton className="h-6 w-40 rounded" />
@@ -179,13 +159,16 @@ export const ModelSettingsHead = ({
             !model?.description ? "italic" : "",
           )}
         >
-          {model?.description || (
-            <Link href={`/${owner.id}/models/${model?.id}/settings`}>
-              Add a description
-            </Link>
-          )}
+          {model?.description ||
+            (model?.permission.canEdit ? (
+              <Link href={`/${owner.id}/models/${model?.id}/settings`}>
+                Add a description
+              </Link>
+            ) : (
+              <span>No description</span>
+            ))}
         </p>
-        {isReady ? (
+        {!isReady ? (
           <div className="mb-2 mt-10 flex flex-row gap-x-2">
             <Skeleton className="h-6 w-12 rounded" />
             <Skeleton className="h-6 w-12 rounded" />
@@ -199,9 +182,13 @@ export const ModelSettingsHead = ({
               }
               disabledDeSelect={true}
             >
-              <TabMenu.Item value="overview">
+              <TabMenu.Item value="readme">
+                <Icons.File02 className="h-4 w-4" />
+                README
+              </TabMenu.Item>
+              <TabMenu.Item value="playground">
                 <Icons.NewModel className="h-4 w-4" />
-                Overview
+                Playground
               </TabMenu.Item>
               <TabMenu.Item value="api">
                 <Icons.CodeSnippet01 className="h-4 w-4" />

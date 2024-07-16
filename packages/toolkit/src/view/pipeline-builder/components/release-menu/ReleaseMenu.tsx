@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CreateNamespacePipelineReleaseRequest } from "instill-sdk";
 import { useForm, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
 
@@ -9,15 +10,13 @@ import { Button, Form, useToast } from "@instill-ai/design-system";
 
 import { LoadingSpin } from "../../../../components";
 import {
-  CreateUserPipelineReleasePayload,
   InstillStore,
   toastInstillError,
-  useCreateUserPipelineRelease,
+  useCreateNamespacePipelineRelease,
   useInstillStore,
   useRouteInfo,
   useShallow,
 } from "../../../../lib";
-import { composePipelineRecipeFromNodes } from "../../lib";
 import { Description } from "./Description";
 import { Head } from "./Head";
 import { SemverSelect } from "./SemverSelect";
@@ -36,7 +35,6 @@ export type UseReleasePipelineFormReturn = UseFormReturn<
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
-  nodes: store.nodes,
 });
 
 export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
@@ -47,9 +45,9 @@ export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
     resolver: zodResolver(ReleasePipelineFormSchema),
   });
 
-  const { accessToken, nodes } = useInstillStore(useShallow(selector));
+  const { accessToken } = useInstillStore(useShallow(selector));
 
-  const releasePipelineVersion = useCreateUserPipelineRelease();
+  const createPipelineRelease = useCreateNamespacePipelineRelease();
 
   const onSubmit = React.useCallback(
     async (data: z.infer<typeof ReleasePipelineFormSchema>) => {
@@ -57,15 +55,14 @@ export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
         return;
       }
 
-      const payload: CreateUserPipelineReleasePayload = {
+      const payload: CreateNamespacePipelineReleaseRequest = {
+        namespacePipelineName: routeInfo.data.pipelineName,
         id: data.id,
         description: data.description ?? undefined,
-        recipe: composePipelineRecipeFromNodes(nodes),
       };
 
       try {
-        await releasePipelineVersion.mutateAsync({
-          pipelineName: routeInfo.data.pipelineName,
+        await createPipelineRelease.mutateAsync({
           payload,
           accessToken,
         });
@@ -87,6 +84,7 @@ export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
           onRelease();
         }
       } catch (error) {
+        console.error(error);
         setIsReleasing(false);
         toastInstillError({
           title:
@@ -99,9 +97,8 @@ export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
     [
       accessToken,
       form,
-      nodes,
       onRelease,
-      releasePipelineVersion,
+      createPipelineRelease,
       setIsReleasing,
       toast,
       routeInfo.isSuccess,

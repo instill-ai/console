@@ -214,9 +214,9 @@ export const FieldHead = ({
           </div>
         </div>
       ) : (
-        <div className="my-auto text-semantic-fg-primary product-body-text-4-semibold">
+        <label className="flex text-semantic-fg-primary product-body-text-2-regular">
           {title}
-        </div>
+        </label>
       )}
     </div>
   );

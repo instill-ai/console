@@ -1,14 +1,15 @@
 const ModelTabsDictionary = {
-  overview: "Overview",
+  playground: "Playground",
   api: "API",
   examples: "Examples",
   predictions: "Predictions",
   versions: "Versions",
   settings: "Settings",
+  readme: "README",
 };
 
 export type ModelTabNames = keyof typeof ModelTabsDictionary;
 
-export const getModelTabTitle = (tabName: ModelTabNames = "overview") => {
-  return ModelTabsDictionary[tabName] || ModelTabsDictionary.overview;
+export const getModelTabTitle = (tabName: ModelTabNames = "playground") => {
+  return ModelTabsDictionary[tabName] || ModelTabsDictionary.playground;
 };

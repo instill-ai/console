@@ -41,11 +41,13 @@ export const AddOutputButton = ({
               .map(Number)
               .sort((a, b) => b - a);
 
-            newOutputElements = {
-              ...targetIteratorNode?.data.outputElements,
-              [`result_${currentIndexArray[0] === 0 ? 1 : currentIndexArray[0] + 1}`]:
-                "",
-            };
+            if (currentIndexArray[0]) {
+              newOutputElements = {
+                ...targetIteratorNode?.data.outputElements,
+                [`result_${currentIndexArray[0] === 0 ? 1 : currentIndexArray[0] + 1}`]:
+                  "",
+              };
+            }
           }
           updateTempSavedNodesForEditingIteratorFlow((nodes) =>
             nodes.map((node) => {

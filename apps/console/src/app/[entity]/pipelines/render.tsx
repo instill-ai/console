@@ -1,14 +1,14 @@
 "use client";
 
-import { useAppAccessToken } from "lib/use-app-access-token";
-import { useAppTrackToken } from "lib/useAppTrackToken";
-
 import {
   AppTopbar,
   NamespaceSwitch,
   PageBase,
   ViewPipelines,
 } from "@instill-ai/toolkit";
+
+import { useAppAccessToken } from "~/lib/use-app-access-token";
+import { useAppTrackToken } from "~/lib/useAppTrackToken";
 
 export const PipelinesViewPageRender = () => {
   useAppAccessToken();
@@ -18,7 +18,7 @@ export const PipelinesViewPageRender = () => {
     <PageBase>
       <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
-        <PageBase.Content contentPadding="!p-0">
+        <PageBase.Content contentPadding="p-8">
           <ViewPipelines />
         </PageBase.Content>
       </PageBase.Container>

@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 
 import { Nullable } from "../../../type";
-import { getUserQuery } from "../../../vdp-sdk";
+import { getInstillAPIClient } from "../../../vdp-sdk";
 
 export async function fetchUser({
   userName,
@@ -10,12 +10,18 @@ export async function fetchUser({
   userName: Nullable<string>;
   accessToken: Nullable<string>;
 }) {
-  try {
-    if (!userName) {
-      return Promise.reject(new Error("userName not provided"));
-    }
+  if (!userName) {
+    return Promise.reject(new Error("userName not provided"));
+  }
 
-    const user = await getUserQuery({ userName, accessToken });
+  if (!accessToken) {
+    return Promise.reject(new Error("accessToken not provided"));
+  }
+
+  try {
+    const client = getInstillAPIClient({ accessToken });
+
+    const user = await client.core.user.getUser({ userName });
 
     return Promise.resolve(user);
   } catch (error) {

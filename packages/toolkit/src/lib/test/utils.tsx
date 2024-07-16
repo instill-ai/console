@@ -14,7 +14,12 @@ export const queryClient = new QueryClient({ queryCache });
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <AmplitudeCtx.Provider
-      value={{ amplitudeIsInit: false, setAmplitudeIsInit: null }}
+      value={{
+        amplitudeIsInit: false,
+        setAmplitudeIsInit: null,
+        userBlockCookieUsage: false,
+        setUserBlockCookieUsage: null,
+      }}
     >
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </AmplitudeCtx.Provider>

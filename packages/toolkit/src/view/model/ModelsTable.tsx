@@ -8,7 +8,7 @@ import {
   getModelInstanceTaskToolkit,
 } from "@instill-ai/design-system";
 
-import { SortIcon, StateLabel, TableError } from "../../components";
+import { ModelStateLabel, SortIcon, TableError } from "../../components";
 import { TableCell } from "../../components/cells/TableCell";
 import {
   InstillStore,
@@ -51,7 +51,7 @@ export const ModelsTable = (props: ModelsTableProps) => {
         );
 
         const modelNameFragments = row.original.name.split("/");
-        const modelLink = `/${modelNameFragments[1]}/models/${modelNameFragments[3]}/overview`;
+        const modelLink = `/${modelNameFragments[1]}/models/${modelNameFragments[3]}/playground`;
 
         return (
           <div className="text-left">
@@ -76,7 +76,7 @@ export const ModelsTable = (props: ModelsTableProps) => {
 
         return (
           <div className="grid justify-items-center">
-            <StateLabel state={modelsWatchState.data?.[name]?.state} />
+            <ModelStateLabel state={modelsWatchState.data?.[name]?.state} />
           </div>
         );
       },

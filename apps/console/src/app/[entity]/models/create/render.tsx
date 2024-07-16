@@ -1,7 +1,5 @@
 "use client";
 
-import { useAppTrackToken } from "lib/useAppTrackToken";
-
 import {
   AppTopbar,
   ModelHubCreatePageMainView,
@@ -9,7 +7,11 @@ import {
   PageBase,
 } from "@instill-ai/toolkit";
 
+import { useAppAccessToken } from "~/lib/use-app-access-token";
+import { useAppTrackToken } from "~/lib/useAppTrackToken";
+
 export function CreateModelPageRender() {
+  useAppAccessToken();
   useAppTrackToken({ enabled: true });
 
   return (

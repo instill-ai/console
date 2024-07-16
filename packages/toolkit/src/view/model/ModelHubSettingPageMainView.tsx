@@ -4,25 +4,29 @@ import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import {
-  GeneralAppPageProp,
+  InstillStore,
+  useInstillStore,
   useQueryClient,
   useRouteInfo,
+  useShallow,
   useUserModel,
   useWatchUserModels,
 } from "../../lib";
 import { ModelTabNames } from "../../server";
-import { ModelContentViewer, ModelSettingsHead } from "./view-model";
+import { ModelContentViewer, ModelHead } from "./view-model";
 
-export type ModelHubSettingPageMainViewProps = GeneralAppPageProp;
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
 
-export const ModelHubSettingPageMainView = (
-  props: ModelHubSettingPageMainViewProps,
-) => {
+export const ModelHubSettingPageMainView = () => {
   const router = useRouter();
   const routeInfo = useRouteInfo();
   const { tab } = useParams();
-  const { accessToken, enableQuery } = props;
   const queryClient = useQueryClient();
+
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const setSelectedTab = (tabName: ModelTabNames) => {
     router.replace(
@@ -36,12 +40,12 @@ export const ModelHubSettingPageMainView = (
 
   const model = useUserModel({
     modelName: routeInfo.isSuccess ? routeInfo.data.modelName : null,
-    enabled: enableQuery && routeInfo.isSuccess,
+    enabled: enabledQuery && routeInfo.isSuccess,
     accessToken,
   });
   const modelsWatchState = useWatchUserModels({
     modelNames: model.isSuccess ? [model.data.name] : [],
-    enabled: enableQuery && model.isSuccess,
+    enabled: enabledQuery && model.isSuccess,
     accessToken,
   });
 
@@ -65,12 +69,12 @@ export const ModelHubSettingPageMainView = (
   };
 
   return (
-    <div className="flex flex-col px-12">
-      <ModelSettingsHead
+    <div className="flex flex-col px-12 min-h-full">
+      <ModelHead
         onTabChange={setSelectedTab}
         selectedTab={tab as ModelTabNames}
         model={model.data}
-        isReady={!model.isSuccess}
+        isReady={model.isSuccess}
         modelState={modelState}
       />
       <ModelContentViewer

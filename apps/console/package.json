@@ -16,7 +16,6 @@
     "prettier:fix": "prettier --write",
     "prettier:check": "prettier --check",
     "lint": "next lint",
-    "download-airbyte-icons": "node ./downloadAirbyteIcons.js",
     "e2e:env": "NEXT_ENV_UPDATE_ENV_FILE=false node next-env.mjs",
     "e2e:local": "pnpm e2e:env && npx playwright test --project=chromium --debug",
     "e2e:first-time-login": "pnpm e2e:env && npx playwright test --project=first-time-login",
@@ -30,6 +29,8 @@
     "@instill-ai/eslint-config-cortex": "workspace:*",
     "@instill-ai/prettier-config-cortex": "workspace:*",
     "@instill-ai/toolkit": "workspace:*",
+    "@instill-ai/tsconfig": "workspace:*",
+    "instill-sdk": "workspace:*",
     "@radix-ui/react-checkbox": "^1.0.3",
     "@radix-ui/react-collapsible": "^1.0.2",
     "@radix-ui/react-dialog": "^1.0.3",
@@ -71,6 +72,7 @@
     "@next/env": "^13.5.0",
     "@playwright/test": "1.41.1",
     "@types/cookie": "^0.5.1",
+    "@types/js-yaml": "^4.0.9",
     "@types/json-schema": "^7.0.11",
     "@types/node": "^17.0.22",
     "@types/prismjs": "^1.26.0",
@@ -97,7 +99,8 @@
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
-      "eslint --cache --fix"
+      "eslint --cache --fix",
+      "prettier --write"
     ]
   }
 }

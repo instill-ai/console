@@ -21,11 +21,11 @@ import {
   useAuthenticatedUser,
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
+  useNamespacePipeline,
   useNamespacesRemainingCredit,
   useRouteInfo,
   useShallow,
   useUserModel,
-  useUserPipeline,
 } from "../../lib";
 import { useUserNamespaces } from "../../lib/useUserNamespaces";
 import { env } from "../../server";
@@ -76,8 +76,10 @@ export const NamespaceSwitch = () => {
     accessToken,
   });
 
-  const pipeline = useUserPipeline({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.isSuccess
+      ? routeInfo.data.pipelineName
+      : null,
     accessToken,
     enabled: enabledQuery && pathnameEvaluator.isPipelineOverviewPage(pathname),
   });
@@ -85,7 +87,7 @@ export const NamespaceSwitch = () => {
   const model = useUserModel({
     modelName: routeInfo.isSuccess ? routeInfo.data.modelName : null,
     accessToken,
-    enabled: enabledQuery && pathnameEvaluator.isModelOverviewPage(pathname),
+    enabled: enabledQuery && pathnameEvaluator.isModelPlaygroundPage(pathname),
   });
 
   const namespacesWithRemainingCredit = React.useMemo(() => {
@@ -308,7 +310,7 @@ export const NamespaceSwitch = () => {
         // When we are at user's private model, and user switch to
         // organization, we will redirect user to the organization's
         // pipelines page
-        if (pathnameEvaluator.isModelOverviewPage(pathname)) {
+        if (pathnameEvaluator.isModelPlaygroundPage(pathname)) {
           if (
             model.isSuccess &&
             routeInfo.data.namespaceType === "NAMESPACE_USER" &&
