@@ -8,6 +8,12 @@ export type NamespaceRemainingCredit = {
   remainingCredit: GetRemainingCreditResponse;
 };
 
+export function getUseNamespacesRemainingCreditQueryKey(
+  namespaceNames: string[],
+) {
+  return ["namespaces-credit", namespaceNames.join(",")];
+}
+
 export function useNamespacesRemainingCredit({
   namespaceNames,
   accessToken,
@@ -25,8 +31,10 @@ export function useNamespacesRemainingCredit({
     enabledQuery = true;
   }
 
+  const queryKey = getUseNamespacesRemainingCreditQueryKey(namespaceNames);
+
   return useQuery({
-    queryKey: ["namespaces-credit", namespaceNames.join(",")],
+    queryKey,
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));

@@ -11,6 +11,7 @@ export function useTriggerNamespacePipeline() {
     mutationFn: async (
       props: TriggerNamespacePipelineRequest & {
         accessToken: Nullable<string>;
+        triggerNamespaceName?: string;
       },
     ) => {
       const { accessToken, ...payload } = props;
