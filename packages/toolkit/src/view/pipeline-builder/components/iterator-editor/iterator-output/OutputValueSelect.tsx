@@ -48,6 +48,7 @@ export const OutputValueSelect = ({ outputKey }: { outputKey: string }) => {
       path: hint.path,
       instillFormat: hint.instillFormat,
       description: hint.description,
+      type: hint.type,
     }));
   }, [nodes]);
 
