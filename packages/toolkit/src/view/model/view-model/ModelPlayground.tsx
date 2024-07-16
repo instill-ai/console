@@ -124,12 +124,12 @@ export const ModelPlayground = ({
   const namespaces = useUserNamespaces();
 
   const isModelTriggerable = useMemo(() => {
-    return model && modelState
+    return accessToken && model && modelState
       ? model.permission.canTrigger &&
           !isModelRunInProgress &&
           !["STATE_UNSPECIFIED", "STATE_ERROR"].includes(modelState)
       : false;
-  }, [modelState, model, isModelRunInProgress]);
+  }, [modelState, model, isModelRunInProgress, accessToken]);
 
   const { form, fields, ValidatorSchema } = useInstillForm(
     model?.inputSchema || null,
@@ -156,14 +156,16 @@ export const ModelPlayground = ({
 
   useEffect(() => {
     if (
-      existingModelTriggerResult.isSuccess &&
-      !currentOperationIdPollingData.current.name &&
-      !existingModelTriggerResult.data.operation
+      !accessToken ||
+      (existingModelTriggerResult.isSuccess &&
+        !currentOperationIdPollingData.current.name &&
+        !existingModelTriggerResult.data.operation)
     ) {
       setIsModelRunInProgress(false);
     }
 
     if (
+      !accessToken ||
       !existingModelTriggerResult.isSuccess ||
       !existingModelTriggerResult.data.operation ||
       (currentOperationIdPollingData.current.name &&
@@ -200,7 +202,11 @@ export const ModelPlayground = ({
         setExistingTriggerState(existingModelTriggerResult.data.operation);
       }
     }
-  }, [existingModelTriggerResult.isSuccess, existingModelTriggerResult.data]);
+  }, [
+    existingModelTriggerResult.isSuccess,
+    existingModelTriggerResult.data,
+    accessToken,
+  ]);
 
   useEffect(() => {
     if (!existingTriggerState || !model) {
