@@ -25,7 +25,7 @@ export function useProcessKnowledgeBaseFiles() {
       return response.data.files;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["knowledgeBaseFiles"]);
+      queryClient.invalidateQueries({ queryKey: ["knowledgeBaseFiles"] });
     },
   });
 }

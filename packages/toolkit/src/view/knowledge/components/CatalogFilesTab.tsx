@@ -1,5 +1,3 @@
-// CatalogFilesTab.tsx
-
 import {
   Button,
   Icons,

@@ -33,7 +33,7 @@ export function useUploadKnowledgeBaseFile() {
       return response.data.file;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["knowledgeBaseFiles"]);
+      queryClient.invalidateQueries({ queryKey: ["knowledgeBaseFiles"] });
     },
   });
 }
