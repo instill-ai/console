@@ -146,13 +146,13 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
         });
 
         console.log("File uploaded successfully!", uploadedFile);
-        
-        await processKnowledgeBaseFiles.mutateAsync({
-          fileUids: [uploadedFile.fileUid],
-          accessToken,
-        });
 
-        onProcessFile();
+        // await processKnowledgeBaseFiles.mutateAsync({
+        //   fileUids: [uploadedFile.fileUid],
+        //   accessToken,
+        // });
+
+        // onProcessFile();
       } catch (error) {
         console.error("Error uploading or processing file:", error);
       }
@@ -189,9 +189,14 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
   };
 
   const handleProcessFile = () => {
-    onProcessFile();
+    if (form.watch("file")) {
+      processKnowledgeBaseFiles.mutate({
+        fileUids: [form.watch("file")?.name ?? ""],
+        accessToken,
+      });
+      onProcessFile();
+    }
   };
-
   return (
     <div className="mb-32 flex flex-col">
       <div className="mb-5 flex items-center justify-between">
