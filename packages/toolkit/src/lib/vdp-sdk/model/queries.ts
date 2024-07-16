@@ -6,7 +6,6 @@ import type {
   ModelRegion,
   ModelTriggerResult,
   ModelVersion,
-  ModelWatchState,
 } from "./types";
 import { getInstillModelAPIClient } from "..";
 import { createInstillAxiosClient, getQueryString } from "../helper";
@@ -416,9 +415,14 @@ export async function watchUserModel({
   accessToken: Nullable<string>;
 }) {
   try {
-    const client = createInstillAxiosClient(accessToken, true);
-    const { data } = await client.get<ModelWatchState>(`/${modelName}/watch`);
-    return Promise.resolve(data);
+    const client = getInstillModelAPIClient({
+      accessToken: accessToken ?? undefined,
+    });
+
+    const state = await client.model.watchNamespaceModelLatestVersionState({
+      namespaceModelName: modelName,
+    });
+    return Promise.resolve(state);
   } catch (err) {
     return Promise.reject(err);
   }
