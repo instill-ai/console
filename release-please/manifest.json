@@ -1,1 +1,1 @@
-{"apps/console":"0.50.1-beta","packages/design-system":"0.72.0","packages/design-tokens":"0.6.1","packages/eslint-config-cortex":"0.9.1","packages/prettier-config-cortex":"1.1.2","packages/toolkit":"0.95.1"}
+{"apps/console":"0.50.1-beta","packages/design-system":"0.72.0","packages/design-tokens":"0.6.1","packages/eslint-config-cortex":"0.9.1","packages/prettier-config-cortex":"1.1.2","packages/toolkit":"0.95.1", "packages/sdk": "0.1.0"}
