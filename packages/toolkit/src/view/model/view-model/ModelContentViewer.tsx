@@ -63,7 +63,7 @@ export const ModelContentViewer = ({
   }
 
   return (
-    <div className="mx-auto w-full max-w-7xl pt-8 flex-1 flex flex-col">
+    <div className="w-full pt-8">
       {model ? (
         content
       ) : (

@@ -67,7 +67,7 @@ export const ViewPipelines = () => {
     pipelines.isFetchingNextPage;
 
   return (
-    <div className="mx-auto flex w-full max-w-[1440px] flex-col">
+    <div className="flex flex-col">
       <div className="mb-4 flex flex-row items-end gap-x-3">
         <div className="flex w-[300px] flex-col gap-y-2.5">
           <p className="text-semantic-fg-primary product-body-text-3-semibold">
