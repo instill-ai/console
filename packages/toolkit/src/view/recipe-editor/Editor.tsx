@@ -20,7 +20,7 @@ import {
   useInstillStore,
   useRouteInfo,
   useShallow,
-  useUpdateUserPipeline,
+  useUpdateNamespacePipeline,
 } from "../../lib";
 import { transformInstillJSONSchemaToFormTree } from "../../lib/use-instill-form/transform";
 import { transformFormTreeToSmartHints } from "../../lib/use-smart-hint/transformFormTreeToSmartHints";
@@ -98,7 +98,7 @@ export const Editor = ({
   const { editorRef } = useEditor();
   const [schemaIsWrong, setSchemaIsWrong] = React.useState(false);
   const routeInfo = useRouteInfo();
-  const updatePipeline = useUpdateUserPipeline();
+  const updatePipeline = useUpdateNamespacePipeline();
   const { accessToken } = useInstillStore(useShallow(selector));
 
   const recipeUpdater = React.useCallback(
@@ -127,10 +127,8 @@ export const Editor = ({
 
         try {
           updatePipeline.mutateAsync({
-            payload: {
-              rawRecipe: newRawRecipe,
-              name: pipelineName,
-            },
+            rawRecipe: newRawRecipe,
+            namespacePipelineName: pipelineName,
             accessToken,
           });
         } catch (error) {
