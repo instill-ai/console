@@ -135,9 +135,9 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     }
   };
 
-  const undoDelete = () => {
+  const undoDelete = async () => {
     if (deletedFile) {
-      // Implement undo delete logic here
+      await refetch();
       setShowDeleteMessage(false);
       setDeletedFile(null);
       if (timeoutRef.current) {
