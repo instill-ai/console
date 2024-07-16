@@ -7,14 +7,13 @@ import {
   useGetKnowledgeBases,
   useCreateKnowledgeBase,
   useUpdateKnowledgeBase,
+  useDeleteKnowledgeBase,
 } from "../../../lib/react-query-service/knowledge";
 import {
   InstillStore,
   useAuthenticatedUser,
   useInstillStore,
   useShallow,
-  // Nullable,
-  // useUserMemberships,
 } from "../../../lib";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import * as z from "zod";
@@ -22,7 +21,6 @@ import KnowledgeSearchSort, { SortAnchor, SortOrder } from "./KnowledgeSearchSor
 
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
-  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
   accessToken: string | null;
 };
 
@@ -35,14 +33,9 @@ const CreateKnowledgeFormSchema = z.object({
 
 export const KnowledgeBaseTab = ({
   onKnowledgeBaseSelect,
-  //   onDeleteKnowledgeBase,
   accessToken,
 }: KnowledgeBaseTabProps) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
-  const [knowledgeBases, setKnowledgeBases] = React.useState<KnowledgeBase[]>(
-    []
-  );
-  const [loading, setLoading] = React.useState(true);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [selectedSortOrder, setSelectedSortOrder] = React.useState<SortOrder>("desc");
   const [selectedSortAnchor, setSelectedSortAnchor] = React.useState<SortAnchor>("createTime");
@@ -58,7 +51,7 @@ export const KnowledgeBaseTab = ({
     accessToken,
   });
 
-  const getKnowledgeBases = useGetKnowledgeBases({
+  const { data: knowledgeBases, isLoading, refetch } = useGetKnowledgeBases({
     accessToken,
     ownerId: me.data?.id ?? null,
     enabled: enabledQuery && !!me.data?.id,
@@ -66,13 +59,7 @@ export const KnowledgeBaseTab = ({
 
   const createKnowledgeBase = useCreateKnowledgeBase();
   const updateKnowledgeBase = useUpdateKnowledgeBase();
-
-  React.useEffect(() => {
-    if (getKnowledgeBases.data) {
-      setKnowledgeBases(getKnowledgeBases.data);
-      setLoading(false);
-    }
-  }, [getKnowledgeBases.data]);
+  const deleteKnowledgeBase = useDeleteKnowledgeBase();
 
   const handleCreateKnowledgeSubmit = async (
     data: z.infer<typeof CreateKnowledgeFormSchema>
@@ -80,7 +67,7 @@ export const KnowledgeBaseTab = ({
     if (!me.data?.id || !accessToken) return;
 
     try {
-      const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
+      await createKnowledgeBase.mutateAsync({
         payload: {
           name: data.name,
           description: data.description,
@@ -89,15 +76,7 @@ export const KnowledgeBaseTab = ({
         ownerId: me.data.id,
         accessToken,
       });
-
-      if (newKnowledgeBase && newKnowledgeBase.kbId) {
-        setKnowledgeBases((prevKnowledgeBases) => [
-          ...prevKnowledgeBases,
-          newKnowledgeBase,
-        ]);
-      } else {
-        console.error("Created knowledge base is missing kbId");
-      }
+      refetch();
       setIsCreateDialogOpen(false);
     } catch (error) {
       console.error("Error creating knowledge base:", error);
@@ -111,20 +90,13 @@ export const KnowledgeBaseTab = ({
     if (!me.data?.id || !accessToken) return;
 
     try {
-      const updatedKnowledgeBase = await updateKnowledgeBase.mutateAsync({
+      await updateKnowledgeBase.mutateAsync({
         ownerId: me.data.id,
         kbId: kbId,
         payload: data,
         accessToken,
       });
-
-      if (updatedKnowledgeBase) {
-        setKnowledgeBases((prevKnowledgeBases) =>
-          prevKnowledgeBases.map((kb) =>
-            kb.kbId === kbId ? updatedKnowledgeBase : kb
-          )
-        );
-      }
+      refetch();
     } catch (error) {
       console.error("Error updating knowledge base:", error);
     }
@@ -140,25 +112,35 @@ export const KnowledgeBaseTab = ({
     };
 
     try {
-      const newKnowledgeBase = await createKnowledgeBase.mutateAsync({
+      await createKnowledgeBase.mutateAsync({
         payload: clonedKnowledgeBase,
         ownerId: me.data.id,
         accessToken,
       });
-
-      if (newKnowledgeBase) {
-        setKnowledgeBases((prevKnowledgeBases) => [
-          ...prevKnowledgeBases,
-          newKnowledgeBase,
-        ]);
-      }
+      refetch();
     } catch (error) {
       console.error("Error cloning knowledge base:", error);
     }
   };
 
+  const handleDeleteKnowledgeBase = async (kbId: string) => {
+    if (!me.data?.id || !accessToken) return;
+
+    try {
+      await deleteKnowledgeBase.mutateAsync({
+        ownerId: me.data.id,
+        kbId: kbId,
+        accessToken,
+      });
+      refetch();
+    } catch (error) {
+      console.error("Error deleting knowledge base:", error);
+    }
+  };
 
   const filteredAndSortedKnowledgeBases = React.useMemo(() => {
+    if (!knowledgeBases) return [];
+
     let filtered = knowledgeBases.filter((kb) =>
       kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       kb.description.toLowerCase().includes(searchTerm.toLowerCase())
@@ -194,7 +176,7 @@ export const KnowledgeBaseTab = ({
     return filtered;
   }, [knowledgeBases, searchTerm, selectedSortAnchor, selectedSortOrder]);
 
-  const hasReachedLimit = knowledgeBases.length >= 3;
+  const hasReachedLimit = (knowledgeBases?.length ?? 0) >= 3;
 
   return (
     <div className="flex flex-col">
@@ -212,7 +194,7 @@ export const KnowledgeBaseTab = ({
         />
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {loading ? (
+      {isLoading ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
@@ -247,6 +229,7 @@ export const KnowledgeBaseTab = ({
               onCardClick={() => onKnowledgeBaseSelect(knowledgeBase)}
               onUpdateKnowledgeBase={handleUpdateKnowledgeBase}
               onCloneKnowledgeBase={handleCloneKnowledgeBase}
+              onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
             />
           ))}
         </div>
