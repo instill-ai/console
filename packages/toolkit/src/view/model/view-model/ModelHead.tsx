@@ -59,8 +59,8 @@ export const ModelHead = ({
   const task = getModelInstanceTaskToolkit(model?.task || "");
 
   return (
-    <div className="sticky -top-8 z-10 -mx-20 -mt-8 w-[calc(100%+160px)] bg-gradient-to-t from-orange-50 to-sky-200 px-20 pt-7">
-      <div className="mx-auto flex max-w-7xl flex-col gap-y-2">
+    <div className="sticky -top-8 z-10 -mx-8 -mt-8 w-[calc(100%+64px)] bg-gradient-to-t from-[#FFF1EB] to-[#ACE0F9] px-8 pt-7">
+      <div className="flex flex-col gap-y-2">
         <div className="flex flex-row items-center gap-x-3">
           {owner.id ? (
             <NamespaceAvatarWithFallback.Root

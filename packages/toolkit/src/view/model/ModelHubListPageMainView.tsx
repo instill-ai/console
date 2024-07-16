@@ -75,7 +75,7 @@ export const ModelHubListPageMainView = () => {
    * -----------------------------------------------------------------------*/
 
   return (
-    <div className="mx-auto flex max-w-7xl flex-col px-12">
+    <div className="flex flex-col">
       <div className="mb-4 flex flex-row items-end gap-x-3">
         <div className="flex w-[300px] flex-col gap-y-2.5">
           <p className="text-semantic-fg-primary product-body-text-3-semibold">

@@ -69,7 +69,7 @@ export const ModelHubSettingPageMainView = () => {
   };
 
   return (
-    <div className="flex flex-col px-12">
+    <div className="flex flex-col">
       <ModelHead
         onTabChange={setSelectedTab}
         selectedTab={tab as ModelTabNames}
