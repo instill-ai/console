@@ -55,6 +55,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
   const [deletedFile, setDeletedFile] = React.useState<File | null>(null);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const [selectedFileUid, setSelectedFileUid] = React.useState<string | null>(null);
+  const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -64,13 +65,17 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     return () => clearInterval(interval);
   }, [refetch]);
 
+
   const handleFileClick = (fileUid: string) => {
     setSelectedFileUid(fileUid);
+    setIsFileDetailsOpen(true);
   };
 
   const closeOverlay = () => {
     setSelectedFileUid(null);
+    setIsFileDetailsOpen(false);
   };
+
   const getStatusSortValue = (status: FileStatus): number => {
     const statusOrder = {
       NOTSTARTED: 0,
@@ -406,7 +411,10 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
               accessToken={accessToken}
               onClose={closeOverlay}
               showFullFile={true}
-              ownerId={knowledgeBase.ownerName} />
+              ownerId={knowledgeBase.ownerName}
+              isOpen={isFileDetailsOpen}
+              setIsOpen={setIsFileDetailsOpen}
+            />
           )}
         </div>
       </div>

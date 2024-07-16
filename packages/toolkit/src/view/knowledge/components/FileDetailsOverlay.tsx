@@ -1,5 +1,5 @@
-import { Icons, ScrollArea, Skeleton, Nullable } from '@instill-ai/design-system'
 import React from 'react'
+import { Icons, ScrollArea, Skeleton, Nullable, Dialog, Tabs } from '@instill-ai/design-system'
 import { useGetFileDetails, useGetFileContent, useListChunks } from '../../../lib/react-query-service/knowledge';
 
 type FileDetailsOverlayProps = {
@@ -10,6 +10,8 @@ type FileDetailsOverlayProps = {
     showFullFile: boolean;
     selectedChunkUid?: string;
     ownerId: string;
+    isOpen: boolean;
+    setIsOpen: (open: boolean) => void;
 };
 
 const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({
@@ -19,7 +21,9 @@ const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({
     kbId,
     showFullFile,
     selectedChunkUid,
-    ownerId
+    ownerId,
+    isOpen,
+    setIsOpen
 }) => {
     const { data: fileDetails, isLoading: isLoadingDetails } = useGetFileDetails({
         fileUid,
@@ -61,28 +65,19 @@ const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({
     const displayContent = fileContent ? highlightChunk(fileContent, selectedChunkUid) : '';
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="w-3/4 h-3/4 bg-semantic-bg-primary rounded-lg shadow-lg overflow-hidden">
-                <div className="flex flex-col p-6 h-full">
-                    <div className="flex items-start justify-between mb-4">
-                        <div className="flex items-start gap-4">
-                            <div className="flex items-center justify-center w-12 h-12 rounded-[10px] shadow border border-semantic-bg-line">
-                                {/* <Icons.PDFIcon className="w-6 h-6" /> */}
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <div className="text-semantic-fg-disabled product-headings-heading-6">
-                                    {isLoadingDetails ? <Skeleton className="h-6 w-32" /> : fileDetails?.name}
-                                </div>
-                                <div className="text-semantic-fg-primary product-headings-heading-5">
-                                    {isLoadingDetails ? <Skeleton className="h-6 w-24" /> : fileDetails?.type}
-                                </div>
-                            </div>
+        <Dialog.Root open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+            <Dialog.Content className="!h-[90vh] !max-w-[90vw]">
+                <div className="flex flex-col h-full">
+                    <div className="mb-6 flex flex-row space-x-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line">
+                            {/* <Icons.File className="h-5 w-5 stroke-semantic-fg-primary" /> */}
                         </div>
-                        <button onClick={onClose} className="text-semantic-fg-secondary hover:text-semantic-fg-primary">
-                            <Icons.X className="w-6 h-6" />
-                        </button>
+                        <div className="flex flex-col">
+                            <Dialog.Title>{isLoadingDetails ? <Skeleton className="h-6 w-32" /> : fileDetails?.name}</Dialog.Title>
+                            <Dialog.Description>{isLoadingDetails ? <Skeleton className="h-6 w-24" /> : fileDetails?.type}</Dialog.Description>
+                        </div>
                     </div>
-                    <ScrollArea.Root className="flex-grow">
+                    <ScrollArea.Root className="h-full">
                         {isLoadingContent ? (
                             <div className="space-y-2">
                                 <Skeleton className="h-4 w-full" />
@@ -97,8 +92,9 @@ const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({
                         )}
                     </ScrollArea.Root>
                 </div>
-            </div>
-        </div>
+                <Dialog.Close />
+            </Dialog.Content>
+        </Dialog.Root >
     )
 }
 

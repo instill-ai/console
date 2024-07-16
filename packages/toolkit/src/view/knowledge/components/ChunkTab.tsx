@@ -13,6 +13,7 @@ type ChunkTabProps = {
 export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
   const [expandedFiles, setExpandedFiles] = React.useState<string[]>([]);
   const [selectedChunk, setSelectedChunk] = React.useState<{ fileUid: string; chunkUid: string } | null>(null);
+  const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
   const { accessToken } = useInstillStore(
     useShallow((store: InstillStore) => ({
@@ -37,13 +38,14 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
 
   const handleChunkClick = (fileUid: string, chunkUid: string) => {
     setSelectedChunk({ fileUid, chunkUid });
+    setIsFileDetailsOpen(true);
   };
 
   const closeOverlay = () => {
     setSelectedChunk(null);
+    setIsFileDetailsOpen(false);
   };
 
-  if (isLoading) return <div>Loading chunks...</div>;
 
   const chunksByFile = chunks?.reduce((acc, chunk) => {
     if (!acc[chunk.originalFileUid]) {
@@ -73,7 +75,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
         </div> */}
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {loading ? (
+      {isLoading ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
@@ -126,7 +128,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
                 </div>
                 {expandedFiles.includes(fileUid) && (
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {fileChunks.map((chunk, i) => (
+                    {fileChunks.map((chunk: Chunk, i: number) => (
                       <div
                         key={chunk.chunkUid}
                         className="flex flex-col gap-y-2.5 rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-2.5 w-[360px]"
@@ -205,9 +207,11 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
           kbId={knowledgeBase.kbId}
           accessToken={accessToken}
           onClose={closeOverlay}
-          showFullFile={false}
+          showFullFile={true}
           selectedChunkUid={selectedChunk.chunkUid}
           ownerId={knowledgeBase.ownerName}
+          isOpen={isFileDetailsOpen}
+          setIsOpen={setIsFileDetailsOpen}
         />
       )}
     </div>
