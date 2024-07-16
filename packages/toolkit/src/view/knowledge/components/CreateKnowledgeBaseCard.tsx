@@ -4,20 +4,10 @@ import {
   DropdownMenu,
   Button,
   Dialog,
-  Tag,
   Tooltip,
-  // LinkButton,
 } from "@instill-ai/design-system";
 import * as React from "react";
-import { useDeleteKnowledgeBase } from "../../../lib/react-query-service/knowledge/useDeleteKnowledgeBase";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-import {
-  formatDate,
-  InstillStore,
-  useAuthenticatedUser,
-  useInstillStore,
-  useShallow,
-} from "../../../lib";
 import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
 import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./undoDeleteTime";
 import DeleteKnowledgeBaseNotification from "./Notifications/DeleteKnowledgeBaseNotification";
@@ -37,7 +27,7 @@ type MenuProps = {
 const Menu = ({ onDelete, onEdit, onDuplicate }: MenuProps) => {
   return (
     <React.Fragment>
-      <div className="flex justify-center">
+      <div className="flex justify-center z-10">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <Button className="" variant="tertiaryGrey">
@@ -87,71 +77,22 @@ const Menu = ({ onDelete, onEdit, onDuplicate }: MenuProps) => {
 type CreateKnowledgeBaseCardProps = {
   knowledgeBase: KnowledgeBase;
   onCardClick: () => void;
-  setKnowledgeBases: React.Dispatch<React.SetStateAction<KnowledgeBase[]>>;
-  onUpdateKnowledgeBase: (updatedKnowledgeBase: KnowledgeBase) => void;
-  onCloneKnowledgeBase: (newKnowledgeBase: KnowledgeBase) => void;
+  onUpdateKnowledgeBase: (data: EditKnowledgeDialogData, kbId: string) => Promise<void>;
+  onCloneKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
+  onDeleteKnowledgeBase: (kbId: string) => Promise<void>;
 };
 
 export const CreateKnowledgeBaseCard = ({
   knowledgeBase,
   onCardClick,
-  setKnowledgeBases,
   onUpdateKnowledgeBase,
   onCloneKnowledgeBase,
+  onDeleteKnowledgeBase,
 }: CreateKnowledgeBaseCardProps) => {
-  const [isHidden, setIsHidden] = React.useState(false);
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
-
-  const { accessToken, enabledQuery } = useInstillStore(
-    useShallow((store: InstillStore) => ({
-      accessToken: store.accessToken,
-      enabledQuery: store.enabledQuery,
-    }))
-  );
-
-  const me = useAuthenticatedUser({
-    enabled: enabledQuery,
-    accessToken,
-  });
-
-  const deleteKnowledgeBase = useDeleteKnowledgeBase();
-
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setDeleteDialogIsOpen(true);
-  };
-
-  const confirmDelete = () => {
-    setDeleteDialogIsOpen(false);
-    setIsHidden(true);
-    setShowDeleteMessage(true);
-    timeoutRef.current = setTimeout(() => {
-      deleteKnowledgeBaseHandler();
-    }, DELETE_KNOWLEDGE_BASE_TIMEOUT);
-  };
-
-  const deleteKnowledgeBaseHandler = async () => {
-    if (me.data?.id && accessToken && knowledgeBase.kbId) {
-      try {
-        await deleteKnowledgeBase.mutateAsync({
-          ownerId: me.data.id,
-          kbId: knowledgeBase.kbId,
-          accessToken,
-        });
-        setKnowledgeBases((prevKnowledgeBases) =>
-          prevKnowledgeBases.filter((kb) => kb.kbId !== knowledgeBase.kbId)
-        );
-      } catch (error) {
-        console.error("Error deleting knowledge base:", error);
-        setIsHidden(false);
-      } finally {
-        setShowDeleteMessage(false);
-      }
-    }
-  };
 
   const tooltipContent = `
     Converting pipeline ID: AAA
@@ -163,8 +104,20 @@ export const CreateKnowledgeBaseCard = ({
     Text Chunks #: EEE
     Image Chunks #: FFF
     Downstream AI Apps: KKK
-
   `;
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setDeleteDialogIsOpen(true);
+  };
+
+  const confirmDelete = () => {
+    setDeleteDialogIsOpen(false);
+    setShowDeleteMessage(true);
+    timeoutRef.current = setTimeout(() => {
+      onDeleteKnowledgeBase(knowledgeBase.kbId);
+    }, DELETE_KNOWLEDGE_BASE_TIMEOUT);
+  };
 
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -177,14 +130,12 @@ export const CreateKnowledgeBaseCard = ({
   };
 
   const handleEditKnowledgeSubmit = async (data: EditKnowledgeDialogData) => {
-    if (!knowledgeBase.kbId) return;
     await onUpdateKnowledgeBase(data, knowledgeBase.kbId);
     setEditDialogIsOpen(false);
   };
 
-  const undoDelete = () => {
+const undoDelete = () => {
     setShowDeleteMessage(false);
-    setIsHidden(false);
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -192,7 +143,7 @@ export const CreateKnowledgeBaseCard = ({
 
   const handleCloseDeleteMessage = () => {
     setShowDeleteMessage(false);
-    deleteKnowledgeBaseHandler();
+    onDeleteKnowledgeBase(knowledgeBase.kbId);
   };
 
   React.useEffect(() => {
@@ -203,14 +154,14 @@ export const CreateKnowledgeBaseCard = ({
     };
   }, []);
 
-  if (isHidden) {
-    return showDeleteMessage ? (
+  if (showDeleteMessage) {
+    return (
       <DeleteKnowledgeBaseNotification
         knowledgeBaseName={knowledgeBase.name}
         handleCloseDeleteMessage={handleCloseDeleteMessage}
         undoDelete={undoDelete}
       />
-    ) : null;
+    );
   }
 
   return (
