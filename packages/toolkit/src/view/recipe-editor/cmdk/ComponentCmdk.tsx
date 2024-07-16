@@ -1,32 +1,34 @@
 import * as React from "react";
+import { EditorView } from "@codemirror/view";
+import { EditorSelection } from "@uiw/react-codemirror";
+import yaml from "js-yaml";
+
 import { Command, Icons } from "@instill-ai/design-system";
+
+import { ImageWithFallback, LoadingSpin } from "../../../components";
 import {
   ConnectorDefinition,
   InstillJSONSchema,
   InstillStore,
-  IteratorDefinition,
-  OperatorDefinition,
   isConnectorDefinition,
   isIteratorDefinition,
   isOperatorDefinition,
+  IteratorDefinition,
+  OperatorDefinition,
   useConnectorDefinitions,
   useInstillStore,
+  useNamespacePipeline,
   useOperatorDefinitions,
   useRouteInfo,
   useShallow,
-  useUserPipeline,
 } from "../../../lib";
-import { ImageWithFallback, LoadingSpin } from "../../../components";
-import { useEditor } from "../EditorContext";
-import { EditorView } from "@codemirror/view";
-import { EditorSelection } from "@uiw/react-codemirror";
-import { generateUniqueNodeIdFromDefinition } from "../../pipeline-builder/lib/generateUniqueNodeIdFromDefinition";
-import yaml from "js-yaml";
 import {
   transformInstillFormTreeToDefaultValue,
   transformInstillFormTreeToInitialSelectedCondition,
   transformInstillJSONSchemaToFormTree,
 } from "../../../lib/use-instill-form/transform";
+import { generateUniqueNodeIdFromDefinition } from "../../pipeline-builder/lib/generateUniqueNodeIdFromDefinition";
+import { useEditor } from "../EditorContext";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -38,11 +40,13 @@ export const ComponentCmdk = () => {
   const routeInfo = useRouteInfo();
   const [open, setOpen] = React.useState(false);
   const { accessToken, enabledQuery, isEditingIterator } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
-  const pipeline = useUserPipeline({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.isSuccess
+      ? routeInfo.data.pipelineName
+      : null,
     accessToken,
     enabled: enabledQuery,
   });
@@ -89,7 +93,7 @@ export const ComponentCmdk = () => {
       view.state.changeByRange((range) => ({
         changes: [{ from: range.from, insert: text }],
         range: EditorSelection.range(range.from, range.to + text.length),
-      }))
+      })),
     );
   }
 
@@ -109,7 +113,7 @@ export const ComponentCmdk = () => {
   }
 
   function onSelect(
-    definition: OperatorDefinition | IteratorDefinition | ConnectorDefinition
+    definition: OperatorDefinition | IteratorDefinition | ConnectorDefinition,
   ) {
     if (!pipeline.isSuccess) {
       return;
@@ -136,7 +140,7 @@ export const ComponentCmdk = () => {
       if (isOperatorDefinition(definition)) {
         const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
         const defaultValue = generateDefaultValue(
-          definition.spec.componentSpecification
+          definition.spec.componentSpecification,
         );
 
         const doc = yaml.dump({
@@ -152,7 +156,7 @@ export const ComponentCmdk = () => {
       if (isConnectorDefinition(definition)) {
         const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
         const defaultValue = generateDefaultValue(
-          definition.spec.componentSpecification
+          definition.spec.componentSpecification,
         );
         const doc = yaml.dump({
           [id]: {

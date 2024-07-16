@@ -11,9 +11,9 @@ import { ImageWithFallback } from "../../../../components";
 import {
   InstillStore,
   useInstillStore,
+  useNamespacePipeline,
   useRouteInfo,
   useShallow,
-  useUserPipeline,
 } from "../../../../lib";
 import { CustomHandle, GeneralNodeData } from "../../../pipeline-builder";
 import { useEditor } from "../../EditorContext";
@@ -42,8 +42,10 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
 
   const routeInfo = useRouteInfo();
 
-  const pipeline = useUserPipeline({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.isSuccess
+      ? routeInfo.data.pipelineName
+      : null,
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
   });
@@ -53,8 +55,6 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
       const traceKey = Object.keys(data.metadata.traces)[0];
       return traceKey === id;
     });
-
-    console.log(triggerWithStreamData, targetTrace, id);
 
     if (targetTrace) {
       return true;
@@ -72,18 +72,16 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
 
         const view = editorRef.current?.view;
 
-        if (!view) {
+        if (!view || !pipeline.data.rawRecipe) {
           return;
         }
 
         const yamlSourceMap: SourceMap = new SourceMap();
 
         try {
-          const data = yaml.load(pipeline.data.rawRecipe, {
+          yaml.load(pipeline.data.rawRecipe, {
             listener: yamlSourceMap.listen(),
           });
-
-          console.log(data);
         } catch (error) {
           console.log(error);
           return;
