@@ -250,9 +250,7 @@ export type WatchNamespaceModelLatestVersionStateRequest = {
   namespaceModelName: string;
 };
 
-export type WatchNamespaceModelLatestVersionStateResponse = {
-  state: ModelWatchState;
-};
+export type WatchNamespaceModelLatestVersionStateResponse = ModelWatchState;
 
 export type ListNamespaceModelVersionsRequest = {
   namespaceModelName: string;

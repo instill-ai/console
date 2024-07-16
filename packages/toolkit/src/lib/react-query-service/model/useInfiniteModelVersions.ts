@@ -6,7 +6,7 @@ import {
 
 import type { Nullable } from "../../type";
 import {
-  listModelVersionsQuery,
+  getInstillModelAPIClient,
   ListModelVersionsResponse,
 } from "../../vdp-sdk";
 
@@ -34,23 +34,22 @@ export function useInfiniteModelVersions({
   return useInfiniteQuery({
     queryKey,
     queryFn: async ({ pageParam }) => {
-      if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
-      }
-
       if (!modelName) {
         return Promise.reject(new Error("modelName not provided"));
       }
 
-      const data = await listModelVersionsQuery({
-        accessToken,
-        modelName,
-        page: pageParam || null,
-        pageSize,
+      const client = getInstillModelAPIClient({
+        accessToken: accessToken ?? undefined,
+      });
+
+      const versions = await client.model.listNamespaceModelVersions({
+        pageSize: pageSize || undefined,
+        page: pageParam || undefined,
+        namespaceModelName: modelName,
         enablePagination: true,
       });
 
-      return Promise.resolve(data);
+      return Promise.resolve(versions);
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {

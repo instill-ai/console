@@ -315,7 +315,7 @@ export class ModelClient extends APIResource {
           `/${namespaceModelVersionName}/watch`,
         );
 
-      return Promise.resolve(data.state);
+      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -330,7 +330,7 @@ export class ModelClient extends APIResource {
           `/${namespaceModelName}/watch`,
         );
 
-      return Promise.resolve(data.state);
+      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -356,7 +356,7 @@ export class ModelClient extends APIResource {
     try {
       const versions: ModelVersion[] = [];
       const queryString = getQueryString({
-        baseURL: `${namespaceModelName}/versions`,
+        baseURL: `/${namespaceModelName}/versions`,
         pageSize,
         queryParams: page ? `page=${page}` : undefined,
       });
