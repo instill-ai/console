@@ -58,12 +58,20 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
   React.useEffect(() => {
-    const interval = setInterval(() => {
-      refetch();
-    }, 5000);
+    let interval: NodeJS.Timeout | null = null;
 
-    return () => clearInterval(interval);
-  }, [refetch]);
+    if (files && files.some(file => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED")) {
+      interval = setInterval(() => {
+        refetch();
+      }, 5000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [files, refetch]);
 
 
   const handleFileClick = (fileUid: string) => {
