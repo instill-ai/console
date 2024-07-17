@@ -41,7 +41,7 @@ export const AddOutputButton = ({
               .map(Number)
               .sort((a, b) => b - a);
 
-            if (currentIndexArray[0]) {
+            if (currentIndexArray[0] || currentIndexArray[0] === 0) {
               newOutputElements = {
                 ...targetIteratorNode?.data.outputElements,
                 [`result_${currentIndexArray[0] === 0 ? 1 : currentIndexArray[0] + 1}`]:
