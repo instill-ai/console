@@ -1,6 +1,5 @@
-import React from 'react'
-import { Icons, ScrollArea, Skeleton, Nullable, Dialog, Tabs } from '@instill-ai/design-system'
-import { useGetFileDetails, useGetFileContent, useListChunks } from '../../../lib/react-query-service/knowledge';
+import { Icons, ScrollArea, Skeleton, Nullable, Dialog } from '@instill-ai/design-system';
+import { useGetFileContent, useListChunks } from '../../../lib/react-query-service/knowledge';
 
 type FileDetailsOverlayProps = {
     fileUid: string;
@@ -13,9 +12,10 @@ type FileDetailsOverlayProps = {
     isOpen: boolean;
     setIsOpen: (open: boolean) => void;
     fileName: string;
+    highlightChunk: boolean;
 };
 
-const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({
+const FileDetailsOverlay = ({
     fileUid,
     accessToken,
     onClose,
@@ -25,33 +25,28 @@ const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({
     ownerId,
     isOpen,
     setIsOpen,
-    fileName
-}) => {
-    const { data: fileDetails, isLoading: isLoadingDetails } = useGetFileDetails({
-        fileUid,
-        accessToken,
-        enabled: true,
-        kbId,
-        ownerId,
-    });
+    fileName,
+    highlightChunk
+}: FileDetailsOverlayProps) => {
 
     const { data: fileContent, isLoading: isLoadingContent } = useGetFileContent({
         fileUid,
         kbId,
         accessToken,
-        enabled: true,
+        enabled: isOpen,
         ownerId,
     });
 
     const { data: chunks, isLoading: isLoadingChunks } = useListChunks({
         kbId,
         accessToken,
-        enabled: !showFullFile,
+        enabled: isOpen && highlightChunk,
         ownerId,
+        fileUid,
     });
 
-    const highlightChunk = (content: string, chunkUid: string | undefined) => {
-        if (showFullFile || !chunkUid) return content;
+    const highlightChunkInContent = (content: string, chunkUid: string | undefined) => {
+        if (!highlightChunk || !chunkUid || !content) return content;
 
         const chunk = chunks?.find((c: { chunkUid: string; }) => c.chunkUid === chunkUid);
         if (!chunk) return content;
@@ -59,20 +54,20 @@ const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({
         const { startPos, endPos } = chunk;
         return (
             content.slice(0, startPos) +
-            `<span style="background-color: yellow;">${content.slice(startPos, endPos)}</span>` +
+            `<span class="bg-semantic-bg-secondary">${content.slice(startPos, endPos)}</span>` +
             content.slice(endPos)
         );
     };
 
-    const displayContent = fileContent ? highlightChunk(fileContent, selectedChunkUid) : '';
+    const displayContent = fileContent ? highlightChunkInContent(fileContent, selectedChunkUid) : '';
 
     return (
-        <Dialog.Root open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+        <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
             <Dialog.Content className="!h-[90vh] !max-w-[90vw]">
                 <div className="flex flex-col h-full">
                     <div className="mb-6 flex flex-row space-x-4">
                         <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line">
-                            {/* <Icons.File className="h-5 w-5 stroke-semantic-fg-primary" /> */}
+                            <Icons.CardRefresh className="h-5 w-5 stroke-semantic-fg-primary" />
                         </div>
                         <div className="flex flex-col">
                             <Dialog.Title>{fileName}</Dialog.Title>
@@ -95,8 +90,8 @@ const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({
                 </div>
                 <Dialog.Close />
             </Dialog.Content>
-        </Dialog.Root >
-    )
-}
+        </Dialog.Root>
+    );
+};
 
-export default FileDetailsOverlay
+export default FileDetailsOverlay;
