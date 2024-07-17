@@ -72,7 +72,9 @@ export const ReadmeEditor = ({
   const renderMarkdown = () => {
     return (
       <div className="markdown-body w-full overflow-x-auto p-6">
-        <Markdown>{content || placeholder || ""}</Markdown>
+        <Markdown options={{ disableParsingRawHTML: true }}>
+          {content || placeholder || ""}
+        </Markdown>
       </div>
     );
   };
@@ -204,10 +206,11 @@ export const ReadmeEditor = ({
           }}
         >
           <MarkdownEditor
+            suppressHtmlProcessing
             readOnly={!canEdit}
             markdown={content}
             onChange={debouncedUpdateModelReadme}
-            className="bg-semantic-fg-on-default overflow-y-auto h-full [&_.cm-editor]:outline-none [&_.cm-gutters]:bg-semantic-bg-alt-primary [&_.cm-activeLine]:bg-semantic-bg-alt-primary [&_.cm-activeLineGutter]:bg-semantic-bg-alt-primary"
+            className="bg-semantic-fg-on-default overflow-y-auto h-full [&_.cm-editor]:outline-none [&_.cm-gutters]:bg-semantic-bg-alt-primary [&_.cm-activeLine]:bg-semantic-bg-alt-primary [&_.cm-activeLineGutter]:bg-semantic-bg-alt-primary [&_.cm-tooltip-autocomplete]:bg-semantic-bg-base-bg"
           />
         </div>
       ) : (
