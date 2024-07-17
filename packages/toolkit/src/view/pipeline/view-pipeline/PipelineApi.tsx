@@ -120,9 +120,7 @@ export const PipelineApi = ({ pipeline, releases }: PipelineApiProps) => {
           customStyle={defaultCodeSnippetStyles}
         />
         {formSchema ? (
-          <ModelSectionHeader className="mt-5">
-            Pipeline JSON schema
-          </ModelSectionHeader>
+          <ModelSectionHeader className="mt-5">JSON schema</ModelSectionHeader>
         ) : null}
         {formSchema?.input ? (
           <React.Fragment>

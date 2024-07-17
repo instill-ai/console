@@ -174,32 +174,6 @@ export const PipelineSettings = ({
             />
             <Form.Field
               control={form.control}
-              name="sourceUrl"
-              render={({ field }) => {
-                return (
-                  <Form.Item className="flex flex-col gap-y-2.5 md:w-1/2">
-                    <Form.Label className="product-body-text-3-semibold">
-                      GitHub
-                    </Form.Label>
-                    <Form.Control>
-                      <Input.Root>
-                        <Input.Core
-                          {...field}
-                          className="!product-body-text-2-regular"
-                          type="text"
-                          placeholder="GitHub repo url"
-                          required={false}
-                          value={field.value || ""}
-                        />
-                      </Input.Root>
-                    </Form.Control>
-                    <Form.Message />
-                  </Form.Item>
-                );
-              }}
-            />
-            <Form.Field
-              control={form.control}
               name="documentationUrl"
               render={({ field }) => {
                 return (
@@ -214,32 +188,6 @@ export const PipelineSettings = ({
                           className="!product-body-text-2-regular"
                           type="text"
                           placeholder="Documentation or other relevant url"
-                          required={false}
-                          value={field.value || ""}
-                        />
-                      </Input.Root>
-                    </Form.Control>
-                    <Form.Message />
-                  </Form.Item>
-                );
-              }}
-            />
-            <Form.Field
-              control={form.control}
-              name="license"
-              render={({ field }) => {
-                return (
-                  <Form.Item className="flex flex-col gap-y-2.5 md:w-1/2">
-                    <Form.Label className="product-body-text-3-semibold">
-                      License
-                    </Form.Label>
-                    <Form.Control>
-                      <Input.Root>
-                        <Input.Core
-                          {...field}
-                          className="!product-body-text-2-regular"
-                          type="text"
-                          placeholder="Model license url"
                           required={false}
                           value={field.value || ""}
                         />

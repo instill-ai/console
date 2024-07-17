@@ -9,7 +9,7 @@ export const getModelHardwareToolkit = (hardwareName: string) => {
     case "NVIDIA_L4":
       return "NVIDIA L4";
     case "NVIDIA_A100":
-      return "NVIDIA A100 (in shortage)";
+      return "NVIDIA A100";
     case "Custom":
       return "Custom";
     default:
