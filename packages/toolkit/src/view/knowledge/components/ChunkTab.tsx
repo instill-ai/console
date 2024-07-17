@@ -1,10 +1,9 @@
 import React from 'react';
-import { KnowledgeBase, File, Chunk } from "../../../lib/vdp-sdk/knowledge/types";
-import { useListKnowledgeBaseFiles, useListChunks } from '../../../lib/react-query-service/knowledge';
+import { Chunk, KnowledgeBase, File } from "../../../lib/vdp-sdk/knowledge/types";
+import { useListChunks, useListKnowledgeBaseFiles, useUpdateChunk } from '../../../lib/react-query-service/knowledge';
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import FileDetailsOverlay from './FileDetailsOverlay';
 import { Icons, Tag, Switch, Separator, Skeleton } from '@instill-ai/design-system';
-import { useQueries, useQuery } from "@tanstack/react-query";
 
 type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -15,10 +14,9 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
   const [selectedChunk, setSelectedChunk] = React.useState<{ fileUid: string; chunkUid: string } | null>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
-  const { accessToken, enabledQuery } = useInstillStore(
+  const { accessToken } = useInstillStore(
     useShallow((store: InstillStore) => ({
       accessToken: store.accessToken,
-      enabledQuery: store.enabledQuery,
     }))
   );
 
@@ -26,30 +24,16 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
     ownerId: knowledgeBase.ownerName,
     knowledgeBaseId: knowledgeBase.kbId,
     accessToken,
-    enabled: enabledQuery,
+    enabled: true,
   });
+
+  const updateChunkMutation = useUpdateChunk();
 
   React.useEffect(() => {
     if (files && files.length > 0) {
       setExpandedFiles([files[0].fileUid]);
     }
   }, [files]);
-
-  const chunkQueries = useQueries({
-    queries: (files || []).map(file => ({
-      queryKey: ['chunks', knowledgeBase.kbId, file.fileUid],
-      queryFn: () => useListChunks({
-        kbId: knowledgeBase.kbId,
-        accessToken,
-        enabled: true,
-        ownerId: knowledgeBase.ownerName,
-        fileUid: file.fileUid,
-      }).queryFn(),
-      enabled: !!files,
-    })),
-  });
-
-  const isLoading = isLoadingFiles || chunkQueries.some(query => query.isLoading);
 
   const toggleFileExpansion = (fileUid: string) => {
     setExpandedFiles(prev =>
@@ -69,16 +53,17 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
     setIsFileDetailsOpen(false);
   };
 
-  const chunksByFile = React.useMemo(() => {
-    const result: Record<string, Chunk[]> = {};
-    chunkQueries.forEach((query, index) => {
-      const file = files?.[index];
-      if (file && query.data) {
-        result[file.fileUid] = query.data;
-      }
-    });
-    return result;
-  }, [chunkQueries, files]);
+  const handleRetrievableToggle = async (chunkUid: string, currentValue: boolean) => {
+    try {
+      await updateChunkMutation.mutateAsync({
+        chunkUid,
+        accessToken,
+        retrievable: !currentValue,
+      });
+    } catch (error) {
+      console.error("Failed to update chunk retrievable status:", error);
+    }
+  };
 
   return (
     <div className="flex-col">
@@ -88,7 +73,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {isLoading ? (
+      {isLoadingFiles ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
@@ -113,76 +98,17 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
       ) : (
         <div className="flex">
           <div className="w-full pr-4">
-            {files?.map((file) => (
-              <div key={file.fileUid} className="mb-4">
-                <div
-                  className="mb-2 flex cursor-pointer items-center space-x-2"
-                  onClick={() => toggleFileExpansion(file.fileUid)}
-                >
-                  <p className="product-button-button-1">{file.name}</p>
-                  <Icons.ChevronDown
-                    className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${expandedFiles.includes(file.fileUid) ? "rotate-180" : ""
-                      }`}
-                  />
-                </div>
-                {expandedFiles.includes(file.fileUid) && (
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {chunksByFile[file.fileUid]?.map((chunk: Chunk, i: number) => (
-                      <div
-                        key={chunk.chunkUid}
-                        className="flex flex-col gap-y-2.5 rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-2.5 w-[360px]"
-                        onClick={() => handleChunkClick(file.fileUid, chunk.chunkUid)}
-                      >
-                        <div className="flex flex-col gap-y-2.5 p-2.5">
-                          <div className="flex items-center justify-between">
-                            <Tag size="sm" variant="default" className="!rounded">
-                              <span className="mr-1.5 product-body-text-3-medium">
-                                {String(i + 1).padStart(3, "0")}
-                              </span>
-                            </Tag>
-                            <div className="flex items-center gap-1">
-                              <span className="uppercase product-label-label-1">
-                                {chunk.retrievable ? "Retrievable" : "Unretrievable"}
-                              </span>
-                              <Switch
-                                checked={chunk.retrievable}
-                                onCheckedChange={() => { }}
-                                className=""
-                              />
-                            </div>
-                          </div>
-                          <div className="h-px w-full bg-semantic-bg-line" />
-                          <p className="text-semantic-fg-secondary-alt-secondary line-clamp-3 product-body-text-2-regular">
-                            {chunk.content}
-                          </p>
-                          <div className="flex items-center justify-end gap-1">
-                            <Tag
-                              size="sm"
-                              variant="lightNeutral"
-                              className="!rounded"
-                            >
-                              <Icons.Type01 className="mr-1 h-2.5 w-2.5 stroke-semantic-fg-primary" />
-                              <span className="text-semantic-fg-primary product-body-text-3-medium">
-                                {chunk.tokens}
-                              </span>
-                            </Tag>
-                            <Tag
-                              size="sm"
-                              variant="lightNeutral"
-                              className="!rounded"
-                            >
-                              <Icons.Type01 className="mr-1 h-2.5 w-2.5 stroke-semantic-fg-primary" />
-                              <span className="text-semantic-fg-primary product-body-text-3-medium">
-                                {chunk.chunkUid.slice(-8)}
-                              </span>
-                            </Tag>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+            {files?.map((file: File) => (
+              <FileChunks
+                key={file.fileUid}
+                file={file}
+                knowledgeBase={knowledgeBase}
+                accessToken={accessToken}
+                expanded={expandedFiles.includes(file.fileUid)}
+                onToggleExpand={toggleFileExpansion}
+                onChunkClick={handleChunkClick}
+                onRetrievableToggle={handleRetrievableToggle}
+              />
             ))}
           </div>
         </div>
@@ -198,7 +124,112 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
           ownerId={knowledgeBase.ownerName}
           isOpen={isFileDetailsOpen}
           setIsOpen={setIsFileDetailsOpen}
+          fileName={files?.find(file => file.fileUid === selectedChunk.fileUid)?.name || ''}
         />
+      )}
+    </div>
+  );
+};
+
+type FileChunksProps = {
+  file: File;
+  knowledgeBase: KnowledgeBase;
+  accessToken: string | null;
+  expanded: boolean;
+  onToggleExpand: (fileUid: string) => void;
+  onChunkClick: (fileUid: string, chunkUid: string) => void;
+  onRetrievableToggle: (chunkUid: string, currentValue: boolean) => Promise<void>;
+};
+
+const FileChunks: React.FC<FileChunksProps> = ({
+  file,
+  knowledgeBase,
+  accessToken,
+  expanded,
+  onToggleExpand,
+  onChunkClick,
+  onRetrievableToggle,
+}) => {
+  const { data: chunks, isLoading: isLoadingChunks } = useListChunks({
+    kbId: knowledgeBase.kbId,
+    accessToken,
+    enabled: expanded,
+    ownerId: knowledgeBase.ownerName,
+    fileUid: file.fileUid,
+  });
+
+  return (
+    <div className="mb-4">
+      <div
+        className="mb-2 flex cursor-pointer items-center space-x-2"
+        onClick={() => onToggleExpand(file.fileUid)}
+      >
+        <p className="product-button-button-1">{file.name}</p>
+        <Icons.ChevronDown
+          className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${expanded ? "rotate-180" : ""
+            }`}
+        />
+      </div>
+      {expanded && (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {isLoadingChunks ? (
+            <Skeleton className="h-32 w-full" />
+          ) : (
+            chunks?.map((chunk: Chunk, i: number) => (
+              <div
+                key={chunk.chunkUid}
+                className="flex flex-col gap-y-2.5 rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-2.5 w-[360px]"
+                onClick={() => onChunkClick(file.fileUid, chunk.chunkUid)}
+              >
+                <div className="flex flex-col gap-y-2.5 p-2.5">
+                  <div className="flex items-center justify-between">
+                    <Tag size="sm" variant="default" className="!rounded">
+                      <span className="mr-1.5 product-body-text-3-medium">
+                        {String(i + 1).padStart(3, "0")}
+                      </span>
+                    </Tag>
+                    <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                      <span className="uppercase product-label-label-1">
+                        {chunk.retrievable ? "Retrievable" : "Unretrievable"}
+                      </span>
+                      <Switch
+                        checked={chunk.retrievable}
+                        onCheckedChange={() => onRetrievableToggle(chunk.chunkUid, chunk.retrievable)}
+                        className=""
+                      />
+                    </div>
+                  </div>
+                  <div className="h-px w-full bg-semantic-bg-line" />
+                  <p className="text-semantic-fg-secondary-alt-secondary line-clamp-3 product-body-text-2-regular">
+                    {chunk.content}
+                  </p>
+                  <div className="flex items-center justify-end gap-1">
+                    <Tag
+                      size="sm"
+                      variant="lightNeutral"
+                      className="!rounded"
+                    >
+                      <Icons.Type01 className="mr-1 h-2.5 w-2.5 stroke-semantic-fg-primary" />
+                      <span className="text-semantic-fg-primary product-body-text-3-medium">
+                        {chunk.tokens}
+                      </span>
+                    </Tag>
+                    <Tag
+                      size="sm"
+                      variant="lightNeutral"
+                      className="!rounded"
+                    >
+                      <Icons.Type01 className="mr-1 h-2.5 w-2.5 stroke-semantic-fg-primary" />
+                      <span className="text-semantic-fg-primary product-body-text-3-medium">
+                        {chunk.chunkUid.slice(-8)}
+                      </span>
+                    </Tag>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       )}
     </div>
   );

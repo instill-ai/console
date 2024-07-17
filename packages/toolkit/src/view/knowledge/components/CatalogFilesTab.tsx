@@ -422,7 +422,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
               ownerId={knowledgeBase.ownerName}
               isOpen={isFileDetailsOpen}
               setIsOpen={setIsFileDetailsOpen}
-              fileName={files?.find((file) => file.fileUid === selectedFileUid)?.name}
+              fileName={files?.find((file) => file.fileUid === selectedFileUid)?.name ?? ''}
             />
           )}
         </div>
