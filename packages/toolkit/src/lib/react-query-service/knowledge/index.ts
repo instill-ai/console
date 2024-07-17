@@ -5,7 +5,8 @@ export * from "./useGetKnowledgeBases";
 export * from "./useUploadKnowledgeBaseFile";
 export * from "./useProcessKnowledgeBaseFiles";
 export * from "./useListKnowledgeBaseFiles";
-export * from './useDeleteKnowledgeBaseFile';
-export * from './useGetFileDetails';
-export * from './useGetFileContent'
-export * from './useListChunks'
+export * from "./useDeleteKnowledgeBaseFile";
+export * from "./useGetFileDetails";
+export * from "./useGetFileContent";
+export * from "./useListChunks";
+export * from "./useUpdateChunk";
