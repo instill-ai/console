@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.73.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.73.0...@instill-ai/design-system-v0.73.1) (2024-07-17)
+
+
+### Bug Fixes
+
+* readme editor html fix, wording updates, remove GitHub and License from pipeline ([#1312](https://github.com/instill-ai/console/issues/1312)) ([70c282b](https://github.com/instill-ai/console/commit/70c282b825ebfa9d0f6d8eb09ed00745b3a0fafb))
+
 ## [0.73.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.72.0...@instill-ai/design-system-v0.73.0) (2024-07-16)
 
 
