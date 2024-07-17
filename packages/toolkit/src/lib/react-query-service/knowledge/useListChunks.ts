@@ -14,7 +14,7 @@ export function useListChunks({
   accessToken: Nullable<string>;
   enabled: boolean;
   ownerId: string;
-  fileUid?: string;
+  fileUid: string;
 }) {
   return useQuery({
     queryKey: ["chunks", kbId, fileUid],
@@ -27,7 +27,7 @@ export function useListChunks({
         const response = await client.get(
           `/owners/${ownerId}/knowledge-bases/${kbId}/chunks`,
           {
-            params: fileUid ? { fileUid } : undefined,
+            params: { fileUid },
           }
         );
         return response.data.chunks;
@@ -36,6 +36,6 @@ export function useListChunks({
         throw new Error("Failed to fetch chunks. Please try again later.");
       }
     },
-    enabled,
+    enabled: enabled && !!fileUid,
   });
 }
