@@ -12,6 +12,7 @@ type FileDetailsOverlayProps = {
     ownerId: string;
     isOpen: boolean;
     setIsOpen: (open: boolean) => void;
+    fileName: string;
 };
 
 const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({
@@ -23,7 +24,8 @@ const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({
     selectedChunkUid,
     ownerId,
     isOpen,
-    setIsOpen
+    setIsOpen,
+    fileName
 }) => {
     const { data: fileDetails, isLoading: isLoadingDetails } = useGetFileDetails({
         fileUid,
@@ -73,8 +75,7 @@ const FileDetailsOverlay: React.FC<FileDetailsOverlayProps> = ({
                             {/* <Icons.File className="h-5 w-5 stroke-semantic-fg-primary" /> */}
                         </div>
                         <div className="flex flex-col">
-                            <Dialog.Title>{isLoadingDetails ? <Skeleton className="h-6 w-32" /> : fileDetails?.name}</Dialog.Title>
-                            <Dialog.Description>{isLoadingDetails ? <Skeleton className="h-6 w-24" /> : fileDetails?.type}</Dialog.Description>
+                            <Dialog.Title>{fileName}</Dialog.Title>
                         </div>
                     </div>
                     <ScrollArea.Root className="h-full">
