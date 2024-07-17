@@ -64,9 +64,7 @@ export const ModelApi = ({ model }: ModelApiProps) => {
           customStyle={defaultCodeSnippetStyles}
         />
         {model?.inputSchema || model?.outputSchema ? (
-          <ModelSectionHeader className="mt-5">
-            JSON schema
-          </ModelSectionHeader>
+          <ModelSectionHeader className="mt-5">JSON schema</ModelSectionHeader>
         ) : null}
         {model?.inputSchema ? (
           <React.Fragment>

@@ -8,7 +8,6 @@ import { Pipeline } from "instill-sdk";
 
 import {
   Button,
-  GitHubIcon,
   Icons,
   Popover,
   ScrollArea,
@@ -171,26 +170,10 @@ export const Head = ({
               Private
             </Tag>
           ) : null}
-          {pipeline?.sourceUrl ? (
-            <HeadExternalLink href={pipeline.sourceUrl}>
-              <GitHubIcon
-                width="w-[18px]"
-                height="h-[18px]"
-                color="fill-semantic-bg-secondary-alt-primary"
-              />
-              GitHub
-            </HeadExternalLink>
-          ) : null}
           {pipeline?.documentationUrl ? (
             <HeadExternalLink href={pipeline.documentationUrl}>
               <Icons.Link01 className="h-3.5 w-3.5 stroke-semantic-bg-secondary-alt-primary" />
               Link
-            </HeadExternalLink>
-          ) : null}
-          {pipeline?.license ? (
-            <HeadExternalLink href={pipeline.license}>
-              <Icons.Scales02 className="h-3.5 w-3.5 stroke-semantic-bg-secondary-alt-primary" />
-              License
             </HeadExternalLink>
           ) : null}
           {!!releases?.length && pipeline ? (
