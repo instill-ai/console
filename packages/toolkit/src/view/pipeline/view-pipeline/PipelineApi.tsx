@@ -121,7 +121,7 @@ export const PipelineApi = ({ pipeline, releases }: PipelineApiProps) => {
         />
         {formSchema ? (
           <ModelSectionHeader className="mt-5">
-            Pipeline JSON schema
+            JSON schema
           </ModelSectionHeader>
         ) : null}
         {formSchema?.input ? (

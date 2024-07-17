@@ -65,7 +65,7 @@ export const ModelApi = ({ model }: ModelApiProps) => {
         />
         {model?.inputSchema || model?.outputSchema ? (
           <ModelSectionHeader className="mt-5">
-            Model JSON schema
+            JSON schema
           </ModelSectionHeader>
         ) : null}
         {model?.inputSchema ? (
