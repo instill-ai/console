@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.96.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.96.0...@instill-ai/toolkit-v0.96.1) (2024-07-17)
+
+
+### Bug Fixes
+
+* fix iterator can not add additional output ([#1313](https://github.com/instill-ai/console/issues/1313)) ([1958be2](https://github.com/instill-ai/console/commit/1958be2804dafd55c7be9eb9f7f467bf1be5234d))
+* pre-release fixes ([#1310](https://github.com/instill-ai/console/issues/1310)) ([687dfdc](https://github.com/instill-ai/console/commit/687dfdc4e852caceb6c6be078f4abbde1b3986d0))
+* readme editor html fix, wording updates, remove GitHub and License from pipeline ([#1312](https://github.com/instill-ai/console/issues/1312)) ([70c282b](https://github.com/instill-ai/console/commit/70c282b825ebfa9d0f6d8eb09ed00745b3a0fafb))
+
 ## [0.96.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.95.1...@instill-ai/toolkit-v0.96.0) (2024-07-16)
 
 
