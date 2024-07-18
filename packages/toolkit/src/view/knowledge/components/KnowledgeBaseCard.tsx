@@ -9,10 +9,10 @@ export const KnowledgeBaseCard = ({ onClick, disabled = false }: KnowledgeBaseCa
   const cardContent = disabled
     ? "You have reached the maximum limit of 3 knowledge bases that can be created. Please consider deleting any unused knowledge bases if you wish to create a new one."
     : "Import your own text data or write data in real-time via Webhook for LLM context enhancement.";
-  
+
   const cardHeader = disabled
-    ? "Create Knowledge"
-    : "Create Knowledge (Limit reached)";
+    ? "Create Knowledge (Limit reached)"
+    : "Create Knowledge";
 
   return (
     <div

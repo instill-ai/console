@@ -127,6 +127,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
           setIsOpen={setIsFileDetailsOpen}
           fileName={files?.find(file => file.fileUid === selectedChunk.fileUid)?.name || ''}
           highlightChunk={true}
+          fileType={selectedChunk.type}
         />
       )}
     </div>
