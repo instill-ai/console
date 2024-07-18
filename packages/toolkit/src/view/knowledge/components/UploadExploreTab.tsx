@@ -153,7 +153,6 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
           accessToken,
         });
 
-        console.log("File processing started");
         onProcessFile(); // Notify parent component that processing has started
       } catch (error) {
         console.error("Error uploading or processing file:", error);
