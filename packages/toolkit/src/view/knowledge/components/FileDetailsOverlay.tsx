@@ -1,9 +1,10 @@
-import { Icons, ScrollArea, Skeleton, Nullable, Dialog } from '@instill-ai/design-system';
+import React from 'react';
+import { Dialog, Icons, ScrollArea, Skeleton } from '@instill-ai/design-system';
 import { useGetFileContent, useListChunks } from '../../../lib/react-query-service/knowledge';
 
 type FileDetailsOverlayProps = {
     fileUid: string;
-    accessToken: Nullable<string>;
+    accessToken: string | null;
     onClose: () => void;
     kbId: string;
     showFullFile: boolean;
@@ -12,7 +13,8 @@ type FileDetailsOverlayProps = {
     isOpen: boolean;
     setIsOpen: (open: boolean) => void;
     fileName: string;
-    highlightChunk: boolean;
+    highlightChunk?: boolean;
+    fileType: string;
 };
 
 const FileDetailsOverlay = ({
@@ -26,9 +28,9 @@ const FileDetailsOverlay = ({
     isOpen,
     setIsOpen,
     fileName,
-    highlightChunk
+    highlightChunk = false,
+    fileType
 }: FileDetailsOverlayProps) => {
-
     const { data: fileContent, isLoading: isLoadingContent } = useGetFileContent({
         fileUid,
         kbId,
@@ -44,6 +46,8 @@ const FileDetailsOverlay = ({
         ownerId,
         fileUid,
     });
+
+    console.log(fileType);
 
     const highlightChunkInContent = (content: string, chunkUid: string | undefined) => {
         if (!highlightChunk || !chunkUid || !content) return content;
@@ -61,13 +65,26 @@ const FileDetailsOverlay = ({
 
     const displayContent = fileContent ? highlightChunkInContent(fileContent, selectedChunkUid) : '';
 
+    const getFileIcon = () => {
+        switch (fileType.toUpperCase()) {
+            case 'FILE_TYPE_MD':
+                return <Icons.MDFile className="h-5 w-5 stroke-semantic-fg-primary" />;
+            case 'FILE_TYPE_TEXT':
+                return <Icons.TXTFile className="h-5 w-5 stroke-semantic-fg-primary" />;
+            case 'FILE_TYPE_PDF':
+                return <Icons.PDFFile className="h-5 w-5 stroke-semantic-fg-primary" />;
+            default:
+                return <Icons.Check className="h-5 w-5 stroke-semantic-fg-primary" />;
+        }
+    };
+
     return (
         <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
             <Dialog.Content className="!h-[90vh] !max-w-[90vw]">
                 <div className="flex flex-col h-full">
                     <div className="mb-6 flex flex-row space-x-4">
                         <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line">
-                            <Icons.CardRefresh className="h-5 w-5 stroke-semantic-fg-primary" />
+                            {getFileIcon()}
                         </div>
                         <div className="flex flex-col">
                             <Dialog.Title>{fileName}</Dialog.Title>

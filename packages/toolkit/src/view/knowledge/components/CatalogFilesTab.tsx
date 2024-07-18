@@ -54,8 +54,8 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [deletedFile, setDeletedFile] = React.useState<File | null>(null);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
-  const [selectedFileUid, setSelectedFileUid] = React.useState<string | null>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
+  const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
 
   React.useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -74,13 +74,13 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
   }, [files, refetch]);
 
 
-  const handleFileClick = (fileUid: string) => {
-    setSelectedFileUid(fileUid);
+  const handleFileClick = (file: File) => {
+    setSelectedFile(file);
     setIsFileDetailsOpen(true);
   };
 
   const closeOverlay = () => {
-    setSelectedFileUid(null);
+    setSelectedFile(null);
     setIsFileDetailsOpen(false);
   };
 
@@ -311,7 +311,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                   }`}
               >
                 <div className="flex items-center justify-center pl-4 text-semantic-bg-secondary-alt-primary product-body-text-3-regula underline underline-offset-1 cursor-pointer truncate"
-                  onClick={() => handleFileClick(item.fileUid)}
+                  onClick={() => handleFileClick(item)}
                 >
                   {item.name}
                 </div>
@@ -412,9 +412,9 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
               setShowDeleteMessage={setShowDeleteMessage}
             />
           ) : null}
-          {selectedFileUid && (
+          {selectedFile && (
             <FileDetailsOverlay
-              fileUid={selectedFileUid}
+              fileUid={selectedFile.fileUid}
               kbId={knowledgeBase.kbId}
               accessToken={accessToken}
               onClose={closeOverlay}
@@ -422,7 +422,8 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
               ownerId={knowledgeBase.ownerName}
               isOpen={isFileDetailsOpen}
               setIsOpen={setIsFileDetailsOpen}
-              fileName={files?.find((file) => file.fileUid === selectedFileUid)?.name ?? ''}
+              fileName={selectedFile.name}
+              fileType={selectedFile.type}
             />
           )}
         </div>
