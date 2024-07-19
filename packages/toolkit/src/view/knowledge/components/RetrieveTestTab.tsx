@@ -1,4 +1,4 @@
-import { Button, Icons } from "@instill-ai/design-system";
+import { Button, Icons, Separator } from "@instill-ai/design-system";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import * as React from "react";
 
@@ -44,8 +44,8 @@ export const RetrieveTestTab = ({ knowledgeBase }: RetrieveTestTabProps) => {
         <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-2">
           {knowledgeBase.name}
         </p>
-        <div>{/* Placeholder for future content */}</div>
       </div>
+      <Separator orientation="horizontal" className="mb-6" />
       <div className="w-2/3 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
         <p className="mb-2 product-body-text-3-semibold">Model created. Time to push.</p>
         <p className="mb-4 product-body-text-3-regular">
