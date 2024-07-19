@@ -12,7 +12,8 @@ type ChunkTabProps = {
 
 export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
   const [expandedFiles, setExpandedFiles] = React.useState<string[]>([]);
-  const [selectedChunk, setSelectedChunk] = React.useState<{ fileUid: string; chunkUid: string } | null>(null);
+  const [selectedChunk, setSelectedChunk] = React.useState<Chunk | null>(null);
+  const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
   const { accessToken } = useInstillStore(
@@ -44,15 +45,17 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
     );
   };
 
-  const handleChunkClick = (fileUid: string, chunkUid: string) => {
-    setSelectedChunk({ fileUid, chunkUid });
+  const handleChunkClick = (file: File, chunk: Chunk) => {
+    setSelectedFile(file);
+    setSelectedChunk(chunk);
     setIsFileDetailsOpen(true);
   };
 
   const closeOverlay = () => {
+    setSelectedFile(null);
     setSelectedChunk(null);
     setIsFileDetailsOpen(false);
-  };
+  }
 
   const handleRetrievableToggle = async (chunkUid: string, currentValue: boolean) => {
     try {
@@ -97,26 +100,36 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
           ))}
         </div>
       ) : (
-        <div className="flex">
-          <div className="w-full pr-4">
-            {files?.map((file: File) => (
-              <FileChunks
-                key={file.fileUid}
-                file={file}
-                knowledgeBase={knowledgeBase}
-                accessToken={accessToken}
-                expanded={expandedFiles.includes(file.fileUid)}
-                onToggleExpand={toggleFileExpansion}
-                onChunkClick={handleChunkClick}
-                onRetrievableToggle={handleRetrievableToggle}
-              />
-            ))}
+        files && files.length > 0 ? (
+          <div className="flex">
+            <div className="w-full pr-4">
+              {files.map((file: File) => (
+                <FileChunks
+                  key={file.fileUid}
+                  file={file}
+                  knowledgeBase={knowledgeBase}
+                  accessToken={accessToken}
+                  expanded={expandedFiles.includes(file.fileUid)}
+                  onToggleExpand={toggleFileExpansion}
+                  onChunkClick={handleChunkClick}
+                  onRetrievableToggle={handleRetrievableToggle}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center p-8 text-center">
+            <Icons.DownloadCloud01 className="h-16 w-16 stroke-semantic-warning-default mb-4" />
+            <p className="text-lg font-semibold mb-2">No files found</p>
+            <p className="text-semantic-fg-secondary">
+              Oops… It looks like you haven't uploaded any documents yet. Please go to the Upload Documents page to upload and process your files.
+            </p>
+          </div>
+        )
       )}
-      {selectedChunk && (
+      {selectedFile && selectedChunk && (
         <FileDetailsOverlay
-          fileUid={selectedChunk.fileUid}
+          fileUid={selectedFile.fileUid}
           kbId={knowledgeBase.kbId}
           accessToken={accessToken}
           onClose={closeOverlay}
@@ -125,9 +138,9 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
           ownerId={knowledgeBase.ownerName}
           isOpen={isFileDetailsOpen}
           setIsOpen={setIsFileDetailsOpen}
-          fileName={files?.find(file => file.fileUid === selectedChunk.fileUid)?.name || ''}
+          fileName={selectedFile.name}
           highlightChunk={true}
-          fileType={selectedChunk.type}
+          fileType={selectedFile.type}
         />
       )}
     </div>
@@ -182,24 +195,33 @@ const FileChunks = ({
             }`}
         />
       </div>
-      {expanded && (
+      {expanded ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {isLoadingChunks ? (
             <Skeleton className="h-32 w-full" />
           ) : (
-            chunks?.map((chunk: Chunk, i: number) => (
-              <ChunkCard
-                key={chunk.chunkUid}
-                chunk={chunk}
-                index={i}
-                onChunkClick={() => onChunkClick(file.fileUid, chunk.chunkUid)}
-                onRetrievableToggle={onRetrievableToggle}
-                fileContent={fileContent || ''}
-              />
-            ))
+            chunks && chunks.length > 0 ? (
+              chunks.map((chunk: Chunk, i: number) => (
+                <ChunkCard
+                  key={chunk.chunkUid}
+                  chunk={chunk}
+                  index={i}
+                  onChunkClick={() => onChunkClick(file, chunk)}
+                  onRetrievableToggle={onRetrievableToggle}
+                  fileContent={fileContent || ''}
+                />
+              ))
+            ) : (
+              <div className="col-span-3 flex flex-col items-center justify-center p-8 text-center">
+                <Icons.Gear01 className="h-12 w-12 stroke-semantic-warning-default mb-4" />
+                <p className="text-semantic-fg-secondary">
+                  Oops… It looks like your files are still being processed. Please check back later to see the chunks.
+                </p>
+              </div>
+            )
           )}
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

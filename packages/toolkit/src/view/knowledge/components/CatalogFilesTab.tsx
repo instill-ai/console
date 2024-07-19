@@ -2,6 +2,7 @@ import {
   Button,
   Icons,
   Separator,
+  Skeleton,
   Tag,
 } from "@instill-ai/design-system";
 import { KnowledgeBase, File } from "../../../lib/vdp-sdk/knowledge/types";
@@ -172,17 +173,21 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
           {knowledgeBase.name}
         </p>
         {/* Coming in V2 */}
-        <div className="space-x-4">
-          {/* <Button variant="secondaryGrey" size="lg">
+        {/* <div className="space-x-4">
+         <Button variant="secondaryGrey" size="lg">
             Publish
           </Button>
           <Button variant="secondaryGrey" size="lg">
             Update Knowledge Base
-          </Button> */}
-          <Button variant="primary" size="lg">
-            Export Data
-          </Button>
-        </div>
+          </Button> 
+          {!files || files.length === 0 ? (
+            null
+          ) : (
+            <Button variant="primary" size="lg">
+              Export Data
+            </Button>
+          )}
+        </div> */}
       </div>
       <Separator orientation="horizontal" className="mb-6" />
       <div className="flex w-full flex-col gap-2">
@@ -196,166 +201,233 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
         </div> */}
         <div className="flex rounded border border-semantic-bg-line bg-semantic-bg-primary">
           <div className="flex w-full flex-col">
-            <div className="grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center border-b border-semantic-bg-line bg-semantic-bg-base-bg">
-              <div className="flex items-center justify-center gap-1">
-                <div className="text-semantic-fg-primary product-body-text-3-medium"
-                >
-                  File name
-                </div>
-                <Button
-                  variant="tertiaryGrey"
-                  size="sm"
-                  onClick={() => requestSort("fileName")}
-                >
-                  {sortConfig.key === "fileName" &&
-                    sortConfig.direction === "ascending" ? (
-                    <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
-                  ) : (
-                    <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
-                  )}
-                </Button>
+            {isLoading ? (
+              <div className="p-8">
+                <Skeleton className="h-8 w-full mb-4" />
+                <Skeleton className="h-8 w-full mb-4" />
+                <Skeleton className="h-8 w-full" />
               </div>
-              <div className="flex items-center justify-center gap-1">
-                <div className="text-semantic-fg-primary product-body-text-3-medium">
-                  File type
-                </div>
-                <Button
-                  variant="tertiaryGrey"
-                  size="sm"
-                  onClick={() => requestSort("fileType")}
-                >
-                  {sortConfig.key === "fileType" &&
-                    sortConfig.direction === "ascending" ? (
-                    <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
-                  ) : (
-                    <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
-                  )}
-                </Button>
-              </div>
-              <div className="flex items-center justify-center gap-1">
-                <div className="text-semantic-fg-primary product-body-text-3-medium">
-                  Status
-                </div>
-                <Button
-                  variant="tertiaryGrey"
-                  size="sm"
-                  onClick={() => requestSort("status")}
-                >
-                  {sortConfig.key === "status" &&
-                    sortConfig.direction === "ascending" ? (
-                    <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
-                  ) : (
-                    <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
-                  )}
-                </Button>
-              </div>
-              <div className="flex items-center justify-center gap-1">
-                <div className="text-semantic-fg-primary product-body-text-3-medium">
-                  File size
-                </div>
-                <Button
-                  variant="tertiaryGrey"
-                  size="sm"
-                  onClick={() => requestSort("fileSize")}
-                >
-                  {sortConfig.key === "fileSize" &&
-                    sortConfig.direction === "ascending" ? (
-                    <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
-                  ) : (
-                    <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
-                  )}
-                </Button>
-              </div>
-              <div className="flex items-center justify-center gap-1">
-                <div className="text-nowrap text-semantic-fg-primary product-body-text-3-medium">
-                  Processed results
-                </div>
-                <Button
-                  variant="tertiaryGrey"
-                  size="sm"
-                  onClick={() => requestSort("processedStatus")}
-                >
-                  {sortConfig.key === "processedStatus" &&
-                    sortConfig.direction === "ascending" ? (
-                    <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
-                  ) : (
-                    <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
-                  )}
-                </Button>
-              </div>
-              <div className="flex items-center justify-center gap-1">
-                <div className="text-semantic-fg-primary product-body-text-3-medium">
-                  Create time
-                </div>
-                <Button
-                  variant="tertiaryGrey"
-                  size="sm"
-                  onClick={() => requestSort("createTime")}
-                >
-                  {sortConfig.key === "createTime" &&
-                    sortConfig.direction === "ascending" ? (
-                    <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
-                  ) : (
-                    <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
-                  )}
-                </Button>
-              </div>
-              <div className="flex items-center justify-center gap-1">
-                <div className="text-semantic-fg-primary product-body-text-3-medium"></div>
-              </div>
-            </div>
-            {sortedData.map((item, index) => (
-              <div
-                key={item.fileUid}
-                className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center ${index !== sortedData.length - 1 ? "border-b border-semantic-bg-line" : ""
-                  }`}
-              >
-                <div className="flex items-center justify-center pl-4 text-semantic-bg-secondary-alt-primary product-body-text-3-regula underline underline-offset-1 cursor-pointer truncate"
-                  onClick={() => handleFileClick(item)}
-                >
-                  {item.name}
-                </div>
-                <div className="flex items-center justify-center">
-                  <Tag size="sm" variant="lightNeutral">
-                    {item.type.replace("FILE_TYPE_", "")}
-                  </Tag>
-                </div>
-                <div className="flex items-center justify-center">
-                  <Tag
-                    size="sm"
-                    variant={getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).variant}
-                    className="group relative"
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).dotColor}`}></div>
-                      {item.processStatus.replace("FILE_PROCESS_STATUS_", "")}
+            ) : files && files.length > 0 ? (
+              <>
+                <div className="grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center border-b border-semantic-bg-line bg-semantic-bg-base-bg">
+                  <div className="flex items-center justify-center gap-1">
+                    <div className="text-semantic-fg-primary product-body-text-3-medium">
+                      File name
                     </div>
-                  </Tag>
+                    <Button
+                      variant="tertiaryGrey"
+                      size="sm"
+                      onClick={() => requestSort("fileName")}
+                    >
+                      {sortConfig.key === "fileName" &&
+                        sortConfig.direction === "ascending" ? (
+                        <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                      ) : (
+                        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                      )}
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-center gap-1">
+                    <div className="text-semantic-fg-primary product-body-text-3-medium">
+                      File type
+                    </div>
+                    <Button
+                      variant="tertiaryGrey"
+                      size="sm"
+                      onClick={() => requestSort("fileType")}
+                    >
+                      {sortConfig.key === "fileType" &&
+                        sortConfig.direction === "ascending" ? (
+                        <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                      ) : (
+                        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                      )}
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-center gap-1">
+                    <div className="text-semantic-fg-primary product-body-text-3-medium">
+                      Status
+                    </div>
+                    <Button
+                      variant="tertiaryGrey"
+                      size="sm"
+                      onClick={() => requestSort("status")}
+                    >
+                      {sortConfig.key === "status" &&
+                        sortConfig.direction === "ascending" ? (
+                        <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                      ) : (
+                        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                      )}
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-center gap-1">
+                    <div className="text-semantic-fg-primary product-body-text-3-medium">
+                      File size
+                    </div>
+                    <Button
+                      variant="tertiaryGrey"
+                      size="sm"
+                      onClick={() => requestSort("fileSize")}
+                    >
+                      {sortConfig.key === "fileSize" &&
+                        sortConfig.direction === "ascending" ? (
+                        <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                      ) : (
+                        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                      )}
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-center gap-1">
+                    <div className="text-nowrap text-semantic-fg-primary product-body-text-3-medium">
+                      Processed results
+                    </div>
+                    <Button
+                      variant="tertiaryGrey"
+                      size="sm"
+                      onClick={() => requestSort("processedStatus")}
+                    >
+                      {sortConfig.key === "processedStatus" &&
+                        sortConfig.direction === "ascending" ? (
+                        <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                      ) : (
+                        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                      )}
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-center gap-1">
+                    <div className="text-semantic-fg-primary product-body-text-3-medium">
+                      Create time
+                    </div>
+                    <Button
+                      variant="tertiaryGrey"
+                      size="sm"
+                      onClick={() => requestSort("createTime")}
+                    >
+                      {sortConfig.key === "createTime" &&
+                        sortConfig.direction === "ascending" ? (
+                        <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                      ) : (
+                        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                      )}
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-center gap-1">
+                    <div className="text-semantic-fg-primary product-body-text-3-medium"></div>
+                  </div>
                 </div>
-                <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                  {formatFileSize(item.size)}
-                </div>
-                <div className="flex flex-col items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                  <div>{`${item.totalChunks ?? 'N/A'} chunks`}</div>
-                  <div>{`${item.totalTokens ?? 'N/A'} tokens`}</div>
-                </div>
-                <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                  {formatDate(item.createTime)}
-                </div>
-                <div className="flex items-center justify-center">
-                  <Button
-                    variant="tertiaryDanger"
-                    size="lg"
-                    className="h-8"
-                    onClick={() => handleDelete(item.fileUid)}
+                {sortedData.map((item, index) => (
+                  <div
+                    key={item.fileUid}
+                    className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center ${index !== sortedData.length - 1 ? "border-b border-semantic-bg-line" : ""
+                      }`}
                   >
-                    Delete
-                  </Button>
-                </div>
+                    <div
+                      className="flex items-center justify-center pl-4 text-semantic-bg-secondary-alt-primary product-body-text-3-regula underline underline-offset-1 cursor-pointer truncate"
+                      onClick={() => handleFileClick(item)}
+                    >
+                      {item.name}
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <Tag size="sm" variant="lightNeutral">
+                        {item.type.replace("FILE_TYPE_", "")}
+                      </Tag>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <Tag
+                        size="sm"
+                        variant={getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).variant}
+                        className="group relative"
+                      >
+                        <div className="flex items-center gap-2">
+                          <div className={`w-2 h-2 rounded-full ${getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).dotColor}`}></div>
+                          {item.processStatus.replace("FILE_PROCESS_STATUS_", "")}
+                        </div>
+                      </Tag>
+                    </div>
+                    <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                      {formatFileSize(item.size)}
+                    </div>
+                    <div className="flex flex-col items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                      <div>{`${item.totalChunks ?? 'N/A'} chunks`}</div>
+                      <div>{`${item.totalTokens ?? 'N/A'} tokens`}</div>
+                    </div>
+                    <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                      {formatDate(item.createTime)}
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <Button
+                        variant="tertiaryDanger"
+                        size="lg"
+                        className="h-8"
+                        onClick={() => handleDelete(item.fileUid)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </>
+            ) : (
+
+              <div className="flex flex-col items-center justify-center p-8 text-center">
+                <Icons.Gear01 className="h-16 w-16 stroke-semantic-warning-default mb-4" />
+                <p className="text-lg font-semibold mb-2">No files found</p>
+                <p className="text-semantic-fg-secondary mb-4">
+                  Oops… Please upload your files and click the 'Process Files' button before returning to this Catalog page to check the progress and results.
+                </p>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  onClick={() => {/* Navigate to upload page */ }}
+                >
+                  Go to Upload Documents
+                </Button>
               </div>
-            ))}
+            )}
           </div>
-          {/* <div className="flex w-[375px] flex-col gap-3 border-l border-semantic-bg-line pb-8">
+        </div>
+      </div>
+      {showDeleteMessage && deletedFile ? (
+        <DeleteFileNotification
+          deletedFileName={deletedFile.name}
+          undoDelete={undoDelete}
+          setShowDeleteMessage={setShowDeleteMessage}
+        />
+      ) : null}
+      {selectedFile && (
+        <FileDetailsOverlay
+          fileUid={selectedFile.fileUid}
+          kbId={knowledgeBase.kbId}
+          accessToken={accessToken}
+          onClose={closeOverlay}
+          showFullFile={true}
+          ownerId={knowledgeBase.ownerName}
+          isOpen={isFileDetailsOpen}
+          setIsOpen={setIsFileDetailsOpen}
+          fileName={selectedFile.name}
+          fileType={selectedFile.type}
+        />
+      )}
+    </div>
+  );
+};
+
+function formatFileSize(bytes: number | undefined): string {
+  if (bytes === undefined || isNaN(bytes)) return 'N/A';
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  if (bytes === 0) return '0 Bytes';
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  if (i === 0) return bytes + ' ' + sizes[i];
+  return (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i];
+}
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleString();
+}
+
+{/* <div className="flex w-[375px] flex-col gap-3 border-l border-semantic-bg-line pb-8">
             <div className="flex items-center justify-center gap-3 p-3 pl-3 border-b rounded-tr border-semantic-bg-line bg-semantic-bg-base-bg">
               <div className="text-semantic-fg-primary product-body-text-3-medium">
                 Preview
@@ -405,44 +477,3 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
               </Button>
             </div>
           </div> */}
-          {showDeleteMessage && deletedFile ? (
-            <DeleteFileNotification
-              deletedFileName={deletedFile.name}
-              undoDelete={undoDelete}
-              setShowDeleteMessage={setShowDeleteMessage}
-            />
-          ) : null}
-          {selectedFile && (
-            <FileDetailsOverlay
-              fileUid={selectedFile.fileUid}
-              kbId={knowledgeBase.kbId}
-              accessToken={accessToken}
-              onClose={closeOverlay}
-              showFullFile={true}
-              ownerId={knowledgeBase.ownerName}
-              isOpen={isFileDetailsOpen}
-              setIsOpen={setIsFileDetailsOpen}
-              fileName={selectedFile.name}
-              fileType={selectedFile.type}
-            />
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Helper functions
-function formatFileSize(bytes: number | undefined): string {
-  if (bytes === undefined || isNaN(bytes)) return 'N/A';
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  if (bytes === 0) return '0 Bytes';
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  if (i === 0) return bytes + ' ' + sizes[i];
-  return (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i];
-}
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleString();
-}
