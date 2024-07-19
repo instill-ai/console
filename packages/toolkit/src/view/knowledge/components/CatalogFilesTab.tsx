@@ -53,7 +53,7 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
   });
   const deleteKnowledgeBaseFile = useDeleteKnowledgeBaseFile();
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
-  const [deletedFile, setDeletedFile] = React.useState<File | null>(null);
+  const [fileToDelete, setFileToDelete] = React.useState<File | null>(null);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
@@ -71,9 +71,11 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
       if (interval) {
         clearInterval(interval);
       }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
   }, [files, refetch]);
-
 
   const handleFileClick = (file: File) => {
     setSelectedFile(file);
@@ -127,34 +129,40 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     });
   }, [files, sortConfig]);
 
-  const handleDelete = async (fileUid: string) => {
-    const fileToDelete = files?.find((item) => item.fileUid === fileUid);
-    if (fileToDelete) {
-      setDeletedFile(fileToDelete);
-      try {
-        await deleteKnowledgeBaseFile.mutateAsync({
-          fileUid,
-          accessToken,
-        });
-        setShowDeleteMessage(true);
-        timeoutRef.current = setTimeout(() => {
-          setShowDeleteMessage(false);
-          setDeletedFile(null);
-        }, DELETE_FILE_TIMEOUT);
-      } catch (error) {
-        console.error("Error deleting file:", error);
-      }
-    }
-  };
-
-  const undoDelete = async () => {
-    if (deletedFile) {
-      await refetch();
-      setShowDeleteMessage(false);
-      setDeletedFile(null);
+  const handleDelete = (fileUid: string) => {
+    const file = files?.find((item) => item.fileUid === fileUid);
+    if (file) {
+      setFileToDelete(file);
+      setShowDeleteMessage(true);
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
+      timeoutRef.current = setTimeout(() => {
+        setShowDeleteMessage(false);
+        actuallyDeleteFile(file);
+      }, DELETE_FILE_TIMEOUT);
+    }
+  };
+
+  const actuallyDeleteFile = async (file: File) => {
+    try {
+      await deleteKnowledgeBaseFile.mutateAsync({
+        fileUid: file.fileUid,
+        accessToken,
+      });
+      await refetch();
+    } catch (error) {
+      console.error("Error deleting file:", error);
+    } finally {
+      setFileToDelete(null);
+    }
+  };
+
+  const undoDelete = () => {
+    setShowDeleteMessage(false);
+    setFileToDelete(null);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
   };
 
@@ -316,60 +324,61 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                     <div className="text-semantic-fg-primary product-body-text-3-medium"></div>
                   </div>
                 </div>
-                {sortedData.map((item, index) => (
-                  <div
-                    key={item.fileUid}
-                    className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center ${index !== sortedData.length - 1 ? "border-b border-semantic-bg-line" : ""
-                      }`}
-                  >
+                {sortedData
+                  .filter(item => item.fileUid !== fileToDelete?.fileUid)
+                  .map((item, index) => (
                     <div
-                      className="flex items-center justify-center pl-4 text-semantic-bg-secondary-alt-primary product-body-text-3-regula underline underline-offset-1 cursor-pointer truncate"
-                      onClick={() => handleFileClick(item)}
+                      key={item.fileUid}
+                      className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center ${index !== sortedData.length - 1 ? "border-b border-semantic-bg-line" : ""
+                        }`}
                     >
-                      {item.name}
-                    </div>
-                    <div className="flex items-center justify-center">
-                      <Tag size="sm" variant="lightNeutral">
-                        {item.type.replace("FILE_TYPE_", "")}
-                      </Tag>
-                    </div>
-                    <div className="flex items-center justify-center">
-                      <Tag
-                        size="sm"
-                        variant={getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).variant}
-                        className="group relative"
+                      <div
+                        className="flex items-center justify-center pl-4 text-semantic-bg-secondary-alt-primary product-body-text-3-regula underline underline-offset-1 cursor-pointer truncate"
+                        onClick={() => handleFileClick(item)}
                       >
-                        <div className="flex items-center gap-2">
-                          <div className={`w-2 h-2 rounded-full ${getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).dotColor}`}></div>
-                          {item.processStatus.replace("FILE_PROCESS_STATUS_", "")}
-                        </div>
-                      </Tag>
+                        {item.name}
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <Tag size="sm" variant="lightNeutral">
+                          {item.type.replace("FILE_TYPE_", "")}
+                        </Tag>
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <Tag
+                          size="sm"
+                          variant={getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).variant}
+                          className="group relative"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className={`w-2 h-2 rounded-full ${getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).dotColor}`}></div>
+                            {item.processStatus.replace("FILE_PROCESS_STATUS_", "")}
+                          </div>
+                        </Tag>
+                      </div>
+                      <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                        {formatFileSize(item.size)}
+                      </div>
+                      <div className="flex flex-col items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                        <div>{`${item.totalChunks ?? 'N/A'} chunks`}</div>
+                        <div>{`${item.totalTokens ?? 'N/A'} tokens`}</div>
+                      </div>
+                      <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+                        {formatDate(item.createTime)}
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <Button
+                          variant="tertiaryDanger"
+                          size="lg"
+                          className="h-8"
+                          onClick={() => handleDelete(item.fileUid)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                      {formatFileSize(item.size)}
-                    </div>
-                    <div className="flex flex-col items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                      <div>{`${item.totalChunks ?? 'N/A'} chunks`}</div>
-                      <div>{`${item.totalTokens ?? 'N/A'} tokens`}</div>
-                    </div>
-                    <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                      {formatDate(item.createTime)}
-                    </div>
-                    <div className="flex items-center justify-center">
-                      <Button
-                        variant="tertiaryDanger"
-                        size="lg"
-                        className="h-8"
-                        onClick={() => handleDelete(item.fileUid)}
-                      >
-                        Delete
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </>
             ) : (
-
               <div className="flex flex-col items-center justify-center p-8 text-center">
                 <Icons.Gear01 className="h-16 w-16 stroke-semantic-warning-default mb-4" />
                 <p className="text-lg font-semibold mb-2">No files found</p>
@@ -388,9 +397,9 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
           </div>
         </div>
       </div>
-      {showDeleteMessage && deletedFile ? (
+      {showDeleteMessage && fileToDelete ? (
         <DeleteFileNotification
-          deletedFileName={deletedFile.name}
+          deletedFileName={fileToDelete.name}
           undoDelete={undoDelete}
           setShowDeleteMessage={setShowDeleteMessage}
         />

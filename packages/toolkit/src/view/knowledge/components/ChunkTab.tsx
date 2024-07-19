@@ -70,9 +70,9 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
   };
 
   return (
-    <div className="flex-col">
+<div className="flex-col">
       <div className="mb-5 flex items-center justify-between">
-        <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
+        <p className="text-semantic-fg-primary product-headings-heading-2">
           {knowledgeBase.name}
         </p>
       </div>

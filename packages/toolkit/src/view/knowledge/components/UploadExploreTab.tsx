@@ -315,24 +315,6 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
           fileName={incorrectFileName}
         />
       ) : null}
-      {/* <div className="inline-flex flex-col items-start justify-start gap-1 ">
-                <div className="text-semantic-fg-primary product-body-text-3-semibold">
-                    Pipeline in use
-                </div>
-                <div className="inline-flex items-center justify-start gap-1">
-                    <Icons.Pipeline className="w-4 h-4 stroke-semantic-accent-hover" />
-                    <button
-                        type="button"
-                        className="hover:!underline text-semantic-accent-hover product-body-text-3-semibold"
-                        onClick={() => {
-                            router.push(`/${ownerID}`);
-                        }}
-                    >
-                        xiaofei/name-your-pet
-                    </button>
-                </div>
-            </div> */}
-      {/* <FilePreview /> */}
       <div className="flex justify-end">
         <Button variant="primary" size="lg" disabled={!form.watch("file")} onClick={handleProcessFile}>
           Process File
