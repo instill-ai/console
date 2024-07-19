@@ -47,8 +47,6 @@ const FileDetailsOverlay = ({
         fileUid,
     });
 
-    console.log(fileType);
-
     const highlightChunkInContent = (content: string, chunkUid: string | undefined) => {
         if (!highlightChunk || !chunkUid || !content) return content;
 
