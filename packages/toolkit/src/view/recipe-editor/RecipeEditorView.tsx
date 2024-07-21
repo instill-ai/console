@@ -11,7 +11,6 @@ import {
   useShallow,
 } from "../../lib";
 import { ComponentCmdk } from "./cmdk";
-import { Editor } from "./Editor";
 import { EditorProvider } from "./EditorContext";
 import { Flow } from "./flow";
 import { Input } from "./Input";
@@ -53,7 +52,7 @@ export const RecipeEditorView = () => {
             <ComponentCmdk />
             <Resizable.PanelGroup direction="horizontal" className="w-full">
               <Resizable.Panel defaultSize={50} minSize={25}>
-                <VscodeEditor />
+                <VscodeEditor recipe={pipeline.data?.recipe ?? null} />
               </Resizable.Panel>
               <Resizable.Handle />
               <Resizable.Panel defaultSize={50} minSize={25}>
