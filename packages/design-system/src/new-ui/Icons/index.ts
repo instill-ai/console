@@ -9,6 +9,7 @@ import { ArrowNarrowRight } from "./ArrowNarrowRight";
 import { ArrowRight } from "./ArrowRight";
 import { ArrowUp } from "./ArrowUp";
 import { ArrowUpRight } from "./ArrowUpRight";
+import { BankNote03 } from "./BankNote03";
 import { BarChartSquare02 } from "./BarChartSquare02";
 import { BookOpen02 } from "./BookOpen02";
 import { Box } from "./Box";
@@ -43,11 +44,14 @@ import { CubeOutline } from "./CubeOutline";
 import { CurrencyDollar } from "./CurrencyDollar";
 import { Database01 } from "./Database01";
 import { Dataflow03 } from "./Dataflow03";
+import { Dataflow03Broken } from "./Dataflow03Broken";
+import { DotsGrid } from "./DotsGrid";
 import { DotsHorizontal } from "./DotsHorizontal";
 import { DotsVertical } from "./DotsVertical";
 import { DownloadCloud01 } from "./DownloadCloud01";
 import { Edit03 } from "./Edit03";
 import { Edit05 } from "./Edit05";
+import { Expand06 } from "./Expand06";
 import { File02 } from "./File02";
 import { File04 } from "./File04";
 import { File05 } from "./File05";
@@ -86,6 +90,7 @@ import { Pipeline } from "./Pipeline";
 import { Play } from "./Play";
 import { PlayCircle } from "./PlayCircle";
 import { Plus } from "./Plus";
+import { PuzzlePiece01 } from "./PuzzlePiece01";
 import { Recording02 } from "./Recording02";
 import { Recording03 } from "./Recording03";
 import { Recording04 } from "./Recording04";
@@ -110,6 +115,7 @@ import { Stop } from "./Stop";
 import { Tag01 } from "./Tag01";
 import { TextA } from "./TextA";
 import { TextGenerationChat } from "./TextGenerationChat";
+import { ThumbsDown } from "./ThumbsDown";
 import { Tool01 } from "./Tool01";
 import { Trash01 } from "./Trash01";
 import { Trash03 } from "./Trash03";
@@ -140,6 +146,7 @@ export const Icons = {
   ArrowNarrowLeft,
   ArrowNarrowRight,
   ArrowUpRight,
+  BankNote03,
   BarChartSquare02,
   BookOpen02,
   Box,
@@ -174,11 +181,14 @@ export const Icons = {
   CurrencyDollar,
   Database01,
   Dataflow03,
+  Dataflow03Broken,
+  DotsGrid,
   DotsHorizontal,
   DotsVertical,
   DownloadCloud01,
   Edit03,
   Edit05,
+  Expand06,
   File02,
   File04,
   File05,
@@ -217,6 +227,7 @@ export const Icons = {
   Play,
   PlayCircle,
   Plus,
+  PuzzlePiece01,
   RefreshCw05,
   Repeat04,
   Recording02,
@@ -241,6 +252,7 @@ export const Icons = {
   Tag01,
   TextA,
   TextGenerationChat,
+  ThumbsDown,
   Trash01,
   Trash03,
   Type01,
