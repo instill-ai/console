@@ -12,6 +12,9 @@ const worker = setupServer(...coreHandlers, ...modelHandlers, ...vdpHandlers);
 
 // Start worker before all tests
 beforeAll(() => {
+  worker.events.on("request:start", ({ request }) => {
+    console.log("Outgoing:", request.method, request.url);
+  });
   worker.listen();
 });
 

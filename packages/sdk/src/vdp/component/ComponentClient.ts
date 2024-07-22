@@ -14,6 +14,7 @@ import {
   ListOperatorDefinitionsRequest,
   ListOperatorDefinitionsResponse,
   OperatorDefinition,
+  OperatorDefinitionSchema,
 } from "./types";
 
 export class ComponentClient extends APIResource {
@@ -59,16 +60,7 @@ export class ComponentClient extends APIResource {
       const data =
         await this._client.get<ListConnectorDefinitionsResponse>(queryString);
 
-      console.log(data);
-
       if (enablePagination) {
-        const parsedData =
-          this.listConnectorDefinitionsValidatorWithPagination.safeParse(data);
-
-        if (this.strict && !parsedData.success) {
-          return Promise.reject(parsedData.error);
-        }
-
         return Promise.resolve(data);
       }
 
@@ -86,20 +78,13 @@ export class ComponentClient extends APIResource {
         );
       }
 
-      const parsedData =
-        this.listConnectorDefinitionsValidatorWithoutPagination.safeParse(
-          definitions,
-        );
-
-      if (this.strict && !parsedData.success) {
-        return Promise.reject(parsedData.error);
-      }
-
       return Promise.resolve(definitions);
     } catch (error) {
       return Promise.reject(error);
     }
   }
+
+  getConnectorDefinitionValidator = ConnectorDefinitionSchema;
 
   async getConnectorDefinition({
     connectorDefinitionName,
@@ -119,6 +104,8 @@ export class ComponentClient extends APIResource {
     }
   }
 
+  getOperatorDefinitionValidator = OperatorDefinitionSchema;
+
   async getOperatorDefinition({
     operatorDefinitionName,
     view,
@@ -136,6 +123,12 @@ export class ComponentClient extends APIResource {
       return Promise.reject(error);
     }
   }
+
+  listOperatorDefinitionsValidatorWithPagination = z.object({
+    operatorDefinitions: z.array(OperatorDefinitionSchema),
+    nextPageToken: z.string(),
+    totalSize: z.number(),
+  });
 
   async listOperatorDefinitions(
     props: ListOperatorDefinitionsRequest & {

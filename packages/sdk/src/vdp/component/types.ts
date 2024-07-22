@@ -25,7 +25,6 @@ export type ConnectorDefinition = {
   title: string;
   documentationUrl: string;
   icon: string;
-  iconUrl: string;
   type: ConnectorType;
   spec: Spec;
   tombstone: boolean;
@@ -42,7 +41,6 @@ export const ConnectorDefinitionSchema = z.object({
   title: z.string(),
   documentationUrl: z.string(),
   icon: z.string(),
-  iconUrl: z.string(),
   type: ConnectorTypeSchema,
   spec: SpecSchema,
   tombstone: z.boolean(),
@@ -63,8 +61,20 @@ export type OperatorDefinition = {
   tombstone: boolean;
   public: boolean;
   custom: boolean;
-  iconUrl: string;
 };
+
+export const OperatorDefinitionSchema = z.object({
+  name: z.string(),
+  uid: z.string(),
+  id: z.string(),
+  title: z.string(),
+  documentationUrl: z.string(),
+  icon: z.string(),
+  spec: SpecSchema,
+  tombstone: z.boolean(),
+  public: z.boolean(),
+  custom: z.boolean(),
+});
 
 export type ListConnectorDefinitionsRequest = {
   pageSize?: number;

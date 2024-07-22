@@ -24,23 +24,19 @@ export type RequestOption = {
 export class InstillAPIClient {
   baseURL: string;
   apiToken: string | undefined;
-  strict: boolean | undefined;
   debug: boolean | undefined;
 
   constructor({
     baseURL,
     apiToken,
-    strict,
     debug,
   }: {
     baseURL: string;
     apiToken?: string;
-    strict?: boolean;
     debug?: boolean;
   }) {
     this.baseURL = baseURL;
     this.apiToken = apiToken;
-    this.strict = strict;
     this.debug = debug;
   }
 

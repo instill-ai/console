@@ -16,8 +16,10 @@
     "ts-types": "tsc --emitDeclarationOnly",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --cache",
     "publish-rc": "pnpm build && pnpm publish --no-git-checks",
-    "mocks": "./generate_mocks.sh",
-    "test": "vitest --run --passWithNoTests"
+    "gen-mocks": "./generate_mocks.sh",
+    "test": "vitest --run --passWithNoTests",
+    "gen": "tsx generate-mocks/main.ts",
+    "ci-test": "pnpm gen-mocks && pnpm test"
   },
   "files": [
     "dist"
@@ -52,7 +54,8 @@
     "swagger2openapi": "^7.0.8",
     "tsup": "^8.1.0",
     "tsx": "^4.6.2",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.0",
+    "zod": "^3.23.8"
   },
   "publishConfig": {
     "access": "public"
@@ -61,8 +64,8 @@
     "@types/json-schema": "^7.0.11",
     "json-schema": "^0.4.0",
     "openapi-types": "^12.1.3",
-    "whatwg-fetch": "^3.6.20",
-    "zod": "^3.23.8"
+    "whatwg-fetch": "^3.6.20"
+    
   },
   "pnpm": {
     "overrides": {

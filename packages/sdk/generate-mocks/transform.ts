@@ -80,15 +80,18 @@ export function transformToHandlerCode(
 ): string {
   return operationCollection
     .map((op) => {
-      return `http.${op.verb}(\`\${baseURL}${op.path}\`, async () => {
-        const resultArray = [${op.response.map((response) => {
-          const identifier = getResIdentifierName(response);
-          return parseInt(response?.code!) === 204
-            ? `[undefined, { status: ${parseInt(response?.code!)} }]`
-            : `[${identifier ? `await ${identifier}()` : "undefined"}, { status: ${parseInt(response?.code!)} }]`;
-        })}];
+      const successResponse = op.response.find(
+        (response) => response.code === "200",
+      );
 
-          return HttpResponse.json(...resultArray[next() % resultArray.length])
+      if (!successResponse) {
+        return "";
+      }
+
+      const identifier = getResIdentifierName(successResponse);
+
+      return `http.${op.verb}(\`\${baseURL}${op.path}\`, async () => {
+          return HttpResponse.json(await ${identifier}())
         }),\n`;
     })
     .join("  ")

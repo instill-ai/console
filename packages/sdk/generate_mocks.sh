@@ -3,7 +3,7 @@
 rm -rf protobufs
 
 # Clone the repository
-git clone --depth 1 https://github.com/instill-ai/protobufs.git
+git clone --depth 1 --branch "${1:-main}" https://github.com/instill-ai/protobufs.git
 
 cd protobufs
 
