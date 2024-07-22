@@ -85,7 +85,8 @@ const FileDetailsOverlay = ({
                             {getFileIcon()}
                         </div>
                         <div className="flex flex-col">
-                            <Dialog.Title>{fileName}</Dialog.Title>
+                            <Dialog.Title className='product-headings-heading-6 text-semantic-fg-disabled'>{fileName}</Dialog.Title>
+                            <div className='product-headings-heading-5 text-semantic-fg-primary'>{fileType}</div>
                         </div>
                     </div>
                     <ScrollArea.Root className="h-full">
