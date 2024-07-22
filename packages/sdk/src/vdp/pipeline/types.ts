@@ -1,4 +1,5 @@
 import { JSONSchema7TypeName } from "json-schema";
+import { z } from "zod";
 
 import {
   GeneralRecord,
@@ -60,6 +61,19 @@ export type Spec = {
   componentSpecification: InstillJSONSchema;
   dataSpecifications: Nullable<Record<string, DataSpecification>>;
 };
+
+export const SpecSchema = z.object({
+  resourceSpecification: z.record(z.any()),
+  componentSpecification: z.record(z.any()),
+  dataSpecifications: z
+    .record(
+      z.object({
+        input: z.any().nullable(),
+        output: z.any().nullable(),
+      }),
+    )
+    .nullable(),
+});
 
 export type PipelineComponentType =
   | "COMPONENT_TYPE_UNSPECIFIED"

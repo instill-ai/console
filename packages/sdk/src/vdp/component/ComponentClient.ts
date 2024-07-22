@@ -1,7 +1,10 @@
+import { z } from "zod";
+
 import { getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
 import {
   ConnectorDefinition,
+  ConnectorDefinitionSchema,
   GetConnectorDefinitionRequest,
   GetConnectorDefinitionResponse,
   GetOperatorDefinitionRequest,
@@ -17,6 +20,16 @@ export class ComponentClient extends APIResource {
   /* ----------------------------------------------------------------------------
    * Query
    * ---------------------------------------------------------------------------*/
+
+  listConnectorDefinitionsValidatorWithPagination = z.object({
+    connectorDefinitions: z.array(ConnectorDefinitionSchema),
+    nextPageToken: z.string(),
+    totalSize: z.number(),
+  });
+
+  listConnectorDefinitionsValidatorWithoutPagination = z.array(
+    ConnectorDefinitionSchema,
+  );
 
   async listConnectorDefinitions(
     props: ListConnectorDefinitionsRequest & { enablePagination: true },
@@ -46,7 +59,16 @@ export class ComponentClient extends APIResource {
       const data =
         await this._client.get<ListConnectorDefinitionsResponse>(queryString);
 
+      console.log(data);
+
       if (enablePagination) {
+        const parsedData =
+          this.listConnectorDefinitionsValidatorWithPagination.safeParse(data);
+
+        if (this.strict && !parsedData.success) {
+          return Promise.reject(parsedData.error);
+        }
+
         return Promise.resolve(data);
       }
 
@@ -62,6 +84,15 @@ export class ComponentClient extends APIResource {
             enablePagination,
           })),
         );
+      }
+
+      const parsedData =
+        this.listConnectorDefinitionsValidatorWithoutPagination.safeParse(
+          definitions,
+        );
+
+      if (this.strict && !parsedData.success) {
+        return Promise.reject(parsedData.error);
       }
 
       return Promise.resolve(definitions);

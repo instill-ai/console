@@ -1,5 +1,7 @@
+import { z } from "zod";
+
 import { GeneralRecord } from "../../types";
-import { Spec } from "../pipeline";
+import { Spec, SpecSchema } from "../pipeline";
 
 export type ConnectorType =
   | "CONNECTOR_TYPE_UNSPECIFIED"
@@ -7,6 +9,14 @@ export type ConnectorType =
   | "CONNECTOR_TYPE_DATA"
   | "CONNECTOR_TYPE_AI"
   | "CONNECTOR_TYPE_APPLICATION";
+
+export const ConnectorTypeSchema = z.enum([
+  "CONNECTOR_TYPE_UNSPECIFIED",
+  "CONNECTOR_TYPE_OPERATOR",
+  "CONNECTOR_TYPE_DATA",
+  "CONNECTOR_TYPE_AI",
+  "CONNECTOR_TYPE_APPLICATION",
+]);
 
 export type ConnectorDefinition = {
   name: string;
@@ -24,6 +34,23 @@ export type ConnectorDefinition = {
   vendor: string;
   vendorAttributes: GeneralRecord;
 };
+
+export const ConnectorDefinitionSchema = z.object({
+  name: z.string(),
+  uid: z.string(),
+  id: z.string(),
+  title: z.string(),
+  documentationUrl: z.string(),
+  icon: z.string(),
+  iconUrl: z.string(),
+  type: ConnectorTypeSchema,
+  spec: SpecSchema,
+  tombstone: z.boolean(),
+  public: z.boolean(),
+  custom: z.boolean(),
+  vendor: z.string(),
+  vendorAttributes: z.record(z.any()),
+});
 
 export type OperatorDefinition = {
   name: string;

@@ -1,3 +1,5 @@
+import "whatwg-fetch";
+
 import {
   CreditClient,
   MetricClient,
@@ -22,10 +24,24 @@ export type RequestOption = {
 export class InstillAPIClient {
   baseURL: string;
   apiToken: string | undefined;
+  strict: boolean | undefined;
+  debug: boolean | undefined;
 
-  constructor({ baseURL, apiToken }: { baseURL: string; apiToken?: string }) {
+  constructor({
+    baseURL,
+    apiToken,
+    strict,
+    debug,
+  }: {
+    baseURL: string;
+    apiToken?: string;
+    strict?: boolean;
+    debug?: boolean;
+  }) {
     this.baseURL = baseURL;
     this.apiToken = apiToken;
+    this.strict = strict;
+    this.debug = debug;
   }
 
   async get<Rsp>(path: string, opt?: RequestOption): Promise<Rsp> {
@@ -70,6 +86,9 @@ export class InstillAPIClient {
       });
 
       if (!response.ok) {
+        if (this.debug) {
+          console.error(response);
+        }
         throw new Error(`Failed to fetch ${path}`);
       }
 

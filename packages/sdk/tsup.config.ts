@@ -11,6 +11,7 @@ export default defineConfig({
   },
   entry: ["src/index.ts"],
   clean: false,
+
   esbuildOptions(options) {
     options.external = [
       // vitest is using some nodejs modules that is not available under our bundle env
