@@ -22,7 +22,6 @@ export type DataSpecification = {
 };
 
 export type Spec = {
-  resourceSpecification: InstillJSONSchema;
   componentSpecification: InstillJSONSchema;
   dataSpecifications: Nullable<Record<string, DataSpecification>>;
 };
