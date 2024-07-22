@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
   Icons,
   Separator,
@@ -5,7 +6,6 @@ import {
   Input,
   Form,
 } from "@instill-ai/design-system";
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -22,23 +22,17 @@ import IncorrectFormatFileNotification from "./Notifications/IncorrectFormatFile
 import FileSizeNotification from "./Notifications/FileSizeNotification";
 import { FILE_ERROR_TIMEOUT } from "./undoDeleteTime";
 
-const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
+const MAX_FILE_SIZE = 15 * 1024 * 1024;
 
 const UploadExploreFormSchema = z.object({
-  file: z.instanceof(File).nullable(),
-  convertTransformFiles: z
-    .string()
-    .min(1, { message: "Convert/Transform files is required" }),
+  files: z.array(z.instanceof(File)),
+  convertTransformFiles: z.string().min(1, { message: "Convert/Transform files is required" }),
   convertMethod: z.string().min(1, { message: "Convert method is required" }),
-  splitTextFiles: z
-    .string()
-    .min(1, { message: "Split text files is required" }),
+  splitTextFiles: z.string().min(1, { message: "Split text files is required" }),
   splitMethod: z.string().min(1, { message: "Split method is required" }),
   maxTokenSize: z.number().min(1, { message: "Max token size is required" }),
   tokenizerModel: z.string().min(1, { message: "Tokenizer model is required" }),
-  embedChunksFiles: z
-    .string()
-    .min(1, { message: "Embed chunks files is required" }),
+  embedChunksFiles: z.string().min(1, { message: "Embed chunks files is required" }),
   embeddingModel: z.string().min(1, { message: "Embedding model is required" }),
 });
 
@@ -53,7 +47,7 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
   const form = useForm<UploadExploreFormData>({
     resolver: zodResolver(UploadExploreFormSchema),
     defaultValues: {
-      file: null,
+      files: [],
       convertTransformFiles: "",
       convertMethod: "",
       splitTextFiles: "",
@@ -65,40 +59,30 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
     },
   });
 
-  const selector = (store: InstillStore) => ({
-    accessToken: store.accessToken,
-    enabledQuery: store.enabledQuery,
-  });
+  const { accessToken, enabledQuery } = useInstillStore(
+    useShallow((store: InstillStore) => ({
+      accessToken: store.accessToken,
+      enabledQuery: store.enabledQuery,
+    }))
+  );
 
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
+  const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
+  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] = React.useState(false);
+  const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
+  const fileTooLargeTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const unsupportedFileTypeTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
+  const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
 
   const getFileType = (file: File) => {
     const extension = file.name.split(".").pop()?.toLowerCase();
     switch (extension) {
-      case "txt":
-        return "FILE_TYPE_TEXT";
-      case "md":
-        return "FILE_TYPE_MARKDOWN";
-      case "pdf":
-        return "FILE_TYPE_PDF";
-      default:
-        return "FILE_TYPE_UNSPECIFIED";
+      case "txt": return "FILE_TYPE_TEXT";
+      case "md": return "FILE_TYPE_MARKDOWN";
+      case "pdf": return "FILE_TYPE_PDF";
+      default: return "FILE_TYPE_UNSPECIFIED";
     }
   };
-
-  const [showFileTooLargeMessage, setShowFileTooLargeMessage] =
-    React.useState(false);
-  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] =
-    React.useState(false);
-  const [lastValidFile, setLastValidFile] = React.useState<File | null>(null);
-  const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
-  const fileTooLargeTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
-  const unsupportedFileTypeTimeoutRef = React.useRef<NodeJS.Timeout | null>(
-    null
-  );
-  const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
-  const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
 
   const handleFileUpload = async (file: File) => {
     if (file.size > MAX_FILE_SIZE) {
@@ -106,9 +90,6 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
       setShowFileTooLargeMessage(true);
       fileTooLargeTimeoutRef.current = setTimeout(() => {
         setShowFileTooLargeMessage(false);
-        if (lastValidFile) {
-          form.setValue("file", lastValidFile);
-        }
       }, FILE_ERROR_TIMEOUT);
       return;
     }
@@ -119,60 +100,59 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
       setShowUnsupportedFileMessage(true);
       unsupportedFileTypeTimeoutRef.current = setTimeout(() => {
         setShowUnsupportedFileMessage(false);
-        if (lastValidFile) {
-          form.setValue("file", lastValidFile);
-        }
       }, FILE_ERROR_TIMEOUT);
       return;
     }
 
-    setLastValidFile(file);
-    form.setValue("file", file);
-
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-      const content = btoa(event.target?.result as string);
-
-      try {
-        const uploadedFile = await uploadKnowledgeBaseFile.mutateAsync({
-          ownerId: ownerID,
-          knowledgeBaseId: knowledgeBase.kbId,
-          payload: {
-            name: file.name,
-            type: fileType,
-            content,
-          },
-          accessToken,
-        });
-
-        console.log("File uploaded successfully!", uploadedFile);
-
-        // Immediately process the uploaded file
-        await processKnowledgeBaseFiles.mutateAsync({
-          fileUids: [uploadedFile.fileUid],
-          accessToken,
-        });
-
-        onProcessFile(); // Notify parent component that processing has started
-      } catch (error) {
-        console.error("Error uploading or processing file:", error);
-      }
-    };
-    reader.readAsBinaryString(file);
+    const currentFiles = form.getValues("files");
+    form.setValue("files", [...currentFiles, file]);
   };
 
-  const handleCloseFileTooLargeMessage = () => {
-    setShowFileTooLargeMessage(false);
-    if (lastValidFile) {
-      form.setValue("file", lastValidFile);
-    }
+  const handleRemoveFile = (index: number) => {
+    const currentFiles = form.getValues("files");
+    const updatedFiles = currentFiles.filter((_, i) => i !== index);
+    form.setValue("files", updatedFiles);
   };
 
-  const handleCloseUnsupportedFileMessage = () => {
-    setShowUnsupportedFileMessage(false);
-    if (lastValidFile) {
-      form.setValue("file", lastValidFile);
-    }
+  const handleProcessFiles = async () => {
+    const files = form.getValues("files");
+    if (files.length === 0) return;
+
+    const uploadedFiles = await Promise.all(
+      files.map(async (file) => {
+        const reader = new FileReader();
+        return new Promise<{ fileUid: string }>((resolve, reject) => {
+          reader.onload = async (event) => {
+            const content = btoa(event.target?.result as string);
+            try {
+              const uploadedFile = await uploadKnowledgeBaseFile.mutateAsync({
+                ownerId: ownerID,
+                knowledgeBaseId: knowledgeBase.kbId,
+                payload: {
+                  name: file.name,
+                  type: getFileType(file),
+                  content,
+                },
+                accessToken,
+              });
+              resolve(uploadedFile);
+            } catch (error) {
+              reject(error);
+            }
+          };
+          reader.readAsBinaryString(file);
+        });
+      })
+    );
+
+    const fileUids = uploadedFiles.map(file => file.fileUid);
+
+    await processKnowledgeBaseFiles.mutateAsync({
+      fileUids,
+      accessToken,
+    });
+
+    onProcessFile();
   };
 
   const me = useAuthenticatedUser({
@@ -184,20 +164,6 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
 
   const [isDragging, setIsDragging] = React.useState(false);
 
-  const handleRemoveFile = () => {
-    form.setValue("file", null);
-    setLastValidFile(null);
-  };
-
-  const handleProcessFile = () => {
-    if (form.watch("file")) {
-      processKnowledgeBaseFiles.mutate({
-        fileUids: [form.watch("file")?.name ?? ""],
-        accessToken,
-      });
-      onProcessFile();
-    }
-  };
   return (
     <div className="mb-32 flex flex-col">
       <div className="mb-5 flex items-center justify-between">
@@ -210,14 +176,12 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
         <form className="mb-2 space-y-4">
           <Form.Field
             control={form.control}
-            name="file"
-            render={({ field }) => (
+            name="files"
+            render={() => (
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-bg-base-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
-                      ? "border-semantic-accent-default"
-                      : "border-semantic-bg-line"
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-bg-base-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging ? "border-semantic-accent-default" : "border-semantic-bg-line"
                       } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
@@ -235,8 +199,8 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
                     onDrop={async (e) => {
                       e.preventDefault();
                       setIsDragging(false);
-                      const file = e.dataTransfer.files[0];
-                      if (file) {
+                      const files = Array.from(e.dataTransfer.files);
+                      for (const file of files) {
                         await handleFileUpload(file);
                       }
                     }}
@@ -262,7 +226,6 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
                     </Form.Label>
                     <Input.Root className="hidden">
                       <Input.Core
-                        {...field}
                         id="upload-file-field"
                         type="file"
                         accept=".txt,.md,.pdf"
@@ -283,43 +246,45 @@ export const UploadExploreTab = ({ knowledgeBase, onProcessFile }: UploadExplore
           />
         </form>
       </Form.Root>
-      {form.watch("file") || lastValidFile ? (
-        <div className="mb-6 flex h-8 w-full items-center justify-between rounded border border-semantic-bg-line px-2 py-1.5">
+      {form.watch("files").map((file, index) => (
+        <div key={index} className="mb-6 flex h-8 w-full items-center justify-between rounded border border-semantic-bg-line px-2 py-1.5">
           <div className="flex items-center gap-2">
             <Icons.File05 className="h-5 w-5 stroke-semantic-fg-secondary" />
-            <div className="product-body-text-3-regular">
-              {form.watch("file")?.name || lastValidFile?.name}
-            </div>
+            <div className="product-body-text-3-regular">{file.name}</div>
             <div className="flex-grow text-semantic-fg-disabled product-body-text-4-regular">
-              {Math.round(
-                (form.watch("file")?.size || lastValidFile?.size || 0) / 1024
-              )}
-              KB
+              {Math.round(file.size / 1024)} KB
             </div>
           </div>
           <Icons.X
             className="h-4 w-4 cursor-pointer stroke-semantic-fg-secondary"
-            onClick={handleRemoveFile}
+            onClick={() => handleRemoveFile(index)}
           />
         </div>
-      ) : null}
-      {showFileTooLargeMessage ? (
+      ))}
+      {showFileTooLargeMessage && (
         <FileSizeNotification
-          handleCloseFileTooLargeMessage={handleCloseFileTooLargeMessage}
+          handleCloseFileTooLargeMessage={() => setShowFileTooLargeMessage(false)}
           fileName={incorrectFileName}
         />
-      ) : null}
-      {showUnsupportedFileMessage ? (
+      )}
+      {showUnsupportedFileMessage && (
         <IncorrectFormatFileNotification
-          handleCloseUnsupportedFileMessage={handleCloseUnsupportedFileMessage}
+          handleCloseUnsupportedFileMessage={() => setShowUnsupportedFileMessage(false)}
           fileName={incorrectFileName}
         />
-      ) : null}
+      )}
       <div className="flex justify-end">
-        <Button variant="primary" size="lg" disabled={!form.watch("file")} onClick={handleProcessFile}>
-          Process File
+        <Button
+          variant="primary"
+          size="lg"
+          disabled={form.watch("files").length === 0}
+          onClick={handleProcessFiles}
+        >
+          Process Files
         </Button>
       </div>
     </div>
   );
 };
+
+export default UploadExploreTab;
