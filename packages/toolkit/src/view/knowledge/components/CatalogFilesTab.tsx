@@ -1,12 +1,6 @@
-import {
-  Button,
-  Icons,
-  Separator,
-  Skeleton,
-  Tag,
-} from "@instill-ai/design-system";
+import React from 'react';
+import { Button, Icons, Separator, Skeleton, Tag } from "@instill-ai/design-system";
 import { KnowledgeBase, File } from "../../../lib/vdp-sdk/knowledge/types";
-import * as React from "react";
 import { DELETE_FILE_TIMEOUT } from "./undoDeleteTime";
 import DeleteFileNotification from "./Notifications/DeleteFileNotification";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
@@ -34,23 +28,29 @@ const getStatusTag = (status: FileStatus): { variant: TagVariant; dotColor: stri
   return statusMap[status] || statusMap.NOTSTARTED;
 };
 
-export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
-  const [sortConfig, setSortConfig] = React.useState({
+export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase }) => {
+  const [sortConfig, setSortConfig] = React.useState<{
+    key: keyof File | "";
+    direction: "ascending" | "descending" | "";
+  }>({
     key: "",
     direction: "",
   });
+
   const { accessToken, enabledQuery } = useInstillStore(
     useShallow((store: InstillStore) => ({
       accessToken: store.accessToken,
       enabledQuery: store.enabledQuery,
     }))
   );
+
   const { data: files, isLoading, refetch } = useListKnowledgeBaseFiles({
     ownerId: knowledgeBase.ownerName,
     knowledgeBaseId: knowledgeBase.kbId,
     accessToken,
     enabled: enabledQuery,
   });
+
   const deleteKnowledgeBaseFile = useDeleteKnowledgeBaseFile();
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [fileToDelete, setFileToDelete] = React.useState<File | null>(null);
@@ -103,26 +103,26 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
   const sortedData = React.useMemo(() => {
     if (!files) return [];
     return [...files].sort((a, b) => {
+      if (sortConfig.key === "") return 0;
+
+      let aValue: any = a[sortConfig.key];
+      let bValue: any = b[sortConfig.key];
+
       if (sortConfig.key === "processStatus") {
-        const aValue = getStatusSortValue(a.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus);
-        const bValue = getStatusSortValue(b.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus);
-        return sortConfig.direction === "ascending"
-          ? aValue - bValue
-          : bValue - aValue;
+        aValue = getStatusSortValue(a.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus);
+        bValue = getStatusSortValue(b.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus);
+      } else if (sortConfig.key === "size" || sortConfig.key === "totalChunks" || sortConfig.key === "totalTokens") {
+        aValue = Number(aValue);
+        bValue = Number(bValue);
+      } else if (sortConfig.key === "createTime") {
+        aValue = new Date(aValue).getTime();
+        bValue = new Date(bValue).getTime();
       }
-      if (sortConfig.key === "size" || sortConfig.key === "totalChunks" || sortConfig.key === "totalTokens") {
-        return sortConfig.direction === "ascending"
-          ? a[sortConfig.key] - b[sortConfig.key]
-          : b[sortConfig.key] - a[sortConfig.key];
-      }
-      if (
-        a[sortConfig.key as keyof File] < b[sortConfig.key as keyof File]
-      ) {
+
+      if (aValue < bValue) {
         return sortConfig.direction === "ascending" ? -1 : 1;
       }
-      if (
-        a[sortConfig.key as keyof File] > b[sortConfig.key as keyof File]
-      ) {
+      if (aValue > bValue) {
         return sortConfig.direction === "ascending" ? 1 : -1;
       }
       return 0;
@@ -166,8 +166,8 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
     }
   };
 
-  const requestSort = (key: string) => {
-    let direction = "ascending";
+  const requestSort = (key: keyof File) => {
+    let direction: "ascending" | "descending" = "ascending";
     if (sortConfig.key === key && sortConfig.direction === "ascending") {
       direction = "descending";
     }
@@ -225,11 +225,14 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                     <Button
                       variant="tertiaryGrey"
                       size="sm"
-                      onClick={() => requestSort("fileName")}
+                      onClick={() => requestSort("name")}
                     >
-                      {sortConfig.key === "fileName" &&
+                      {sortConfig.key === "name" ? (
                         sortConfig.direction === "ascending" ? (
-                        <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        ) : (
+                          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        )
                       ) : (
                         <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
                       )}
@@ -242,11 +245,14 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                     <Button
                       variant="tertiaryGrey"
                       size="sm"
-                      onClick={() => requestSort("fileType")}
+                      onClick={() => requestSort("type")}
                     >
-                      {sortConfig.key === "fileType" &&
+                      {sortConfig.key === "type" ? (
                         sortConfig.direction === "ascending" ? (
-                        <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        ) : (
+                          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        )
                       ) : (
                         <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
                       )}
@@ -259,11 +265,14 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                     <Button
                       variant="tertiaryGrey"
                       size="sm"
-                      onClick={() => requestSort("status")}
+                      onClick={() => requestSort("processStatus")}
                     >
-                      {sortConfig.key === "status" &&
+                      {sortConfig.key === "processStatus" ? (
                         sortConfig.direction === "ascending" ? (
-                        <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        ) : (
+                          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        )
                       ) : (
                         <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
                       )}
@@ -276,11 +285,14 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                     <Button
                       variant="tertiaryGrey"
                       size="sm"
-                      onClick={() => requestSort("fileSize")}
+                      onClick={() => requestSort("size")}
                     >
-                      {sortConfig.key === "fileSize" &&
+                      {sortConfig.key === "size" ? (
                         sortConfig.direction === "ascending" ? (
-                        <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        ) : (
+                          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        )
                       ) : (
                         <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
                       )}
@@ -293,11 +305,14 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                     <Button
                       variant="tertiaryGrey"
                       size="sm"
-                      onClick={() => requestSort("processedStatus")}
+                      onClick={() => requestSort("totalChunks")}
                     >
-                      {sortConfig.key === "processedStatus" &&
+                      {sortConfig.key === "totalChunks" ? (
                         sortConfig.direction === "ascending" ? (
-                        <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        ) : (
+                          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        )
                       ) : (
                         <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
                       )}
@@ -312,9 +327,12 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
                       size="sm"
                       onClick={() => requestSort("createTime")}
                     >
-                      {sortConfig.key === "createTime" &&
+                      {sortConfig.key === "createTime" ? (
                         sortConfig.direction === "ascending" ? (
-                        <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        ) : (
+                          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        )
                       ) : (
                         <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
                       )}
@@ -422,19 +440,21 @@ export const CatalogFilesTab = ({ knowledgeBase }: CatalogFilesTabProps) => {
   );
 };
 
-function formatFileSize(bytes: number | undefined): string {
+const formatFileSize = (bytes: number | undefined): string => {
   if (bytes === undefined || isNaN(bytes)) return 'N/A';
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
   if (bytes === 0) return '0 Bytes';
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   if (i === 0) return bytes + ' ' + sizes[i];
   return (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i];
-}
+};
 
-function formatDate(dateString: string): string {
+const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   return date.toLocaleString();
-}
+};
+
+export default CatalogFilesTab;
 
 {/* <div className="flex w-[375px] flex-col gap-3 border-l border-semantic-bg-line pb-8">
             <div className="flex items-center justify-center gap-3 p-3 pl-3 border-b rounded-tr border-semantic-bg-line bg-semantic-bg-base-bg">
