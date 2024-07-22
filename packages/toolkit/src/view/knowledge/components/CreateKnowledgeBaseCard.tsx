@@ -11,6 +11,9 @@ import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
 import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./undoDeleteTime";
 import DeleteKnowledgeBaseNotification from "./Notifications/DeleteKnowledgeBaseNotification";
+import { useListChunks } from "../../../lib/react-query-service/knowledge";
+import { useInstillStore, useShallow } from "../../../lib";
+import { InstillStore } from "../../../lib";
 
 type EditKnowledgeDialogData = {
   name: string;
@@ -94,17 +97,40 @@ export const CreateKnowledgeBaseCard = ({
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  const tooltipContent = `
-    Converting pipeline ID: AAA
-    Splitting pipeline ID: BBB
-    Embedding pipeline ID: DDD
-    Files #: CCC
-    Documents #: XXX
-    Images #: YYY
-    Text Chunks #: EEE
-    Image Chunks #: FFF
-    Downstream AI Apps: KKK
-  `;
+  const { accessToken, enabledQuery } = useInstillStore(
+    useShallow((store: InstillStore) => ({
+      accessToken: store.accessToken,
+      enabledQuery: store.enabledQuery,
+    }))
+  );
+
+  const { data: chunks, isLoading: isLoadingChunks } = useListChunks({
+    kbId: knowledgeBase.kbId,
+    accessToken,
+    enabled: enabledQuery,
+    ownerId: knowledgeBase.ownerName,
+    fileUid: "",
+  });
+
+  const tooltipContent = React.useMemo(() => {
+    if (isLoadingChunks) return "Loading...";
+    if (!chunks) return "No data available";
+
+    const textChunks = chunks.filter((chunk: { type: string; }) => chunk.type === "TEXT");
+    const imageChunks = chunks.filter((chunk: { type: string; }) => chunk.type === "IMAGE");
+
+    return `
+      Converting pipeline ID: ${knowledgeBase.convertPipelineId || "N/A"}
+      Splitting pipeline ID: ${knowledgeBase.splitPipelineId || "N/A"}
+      Embedding pipeline ID: ${knowledgeBase.embeddingPipelineId || "N/A"}
+      Files #: ${knowledgeBase.totalFiles || 0}
+      Documents #: ${knowledgeBase.totalDocuments || 0}
+      Images #: ${knowledgeBase.totalImages || 0}
+      Text Chunks #: ${textChunks.length}
+      Image Chunks #: ${imageChunks.length}
+      Downstream AI Apps: ${knowledgeBase.downstreamAiApps?.join(", ") || "N/A"}
+    `;
+  }, [chunks, isLoadingChunks, knowledgeBase]);
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -134,7 +160,7 @@ export const CreateKnowledgeBaseCard = ({
     setEditDialogIsOpen(false);
   };
 
-const undoDelete = () => {
+  const undoDelete = () => {
     setShowDeleteMessage(false);
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -191,7 +217,7 @@ const undoDelete = () => {
           </Tooltip.Trigger>
           <Tooltip.Portal>
             <Tooltip.Content
-              className="w-[360px] rounded-md bg-semantic-bg-primary p-4 shadow-lg"
+              className="w-[360px] rounded-md bg-semantic-bg-primary p-4 shadow-lg !z-10"
               sideOffset={5}
               side="bottom"
               align="end"
@@ -253,3 +279,4 @@ const undoDelete = () => {
     </React.Fragment>
   );
 };
+
