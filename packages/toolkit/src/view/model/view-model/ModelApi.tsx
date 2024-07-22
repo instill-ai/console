@@ -55,7 +55,7 @@ export const ModelApi = ({ model }: ModelApiProps) => {
           <CodeString>
             {owner.id}/{model?.id}
           </CodeString>{" "}
-          using Instill API.
+          using API.
         </div>
         <CodeBlock
           codeString={getInstillTaskHttpRequestExample(model)}
