@@ -12,7 +12,7 @@ The integration test in the sdk package can help us make sure the contract betwe
 - We set up vitest together with msw to run the integration test.
 The verification of data will be handled by our zod validator, which is maintained by the frontend team (This is also the reason why I want to maintain the integration test in the sdk package, I can export these zod validator since there are many other Typescript dev would like to have run-time type safety when interact with our SDK, this can also serve as an additional quality of life)
 - We will have istanbul to calculate the coverage of the tests
-- 
+
 ## What it tests
 
 The test suite only test two things
