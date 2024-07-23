@@ -66,6 +66,7 @@ import { GitMerge } from "./GitMerge";
 import { Globe01 } from "./Globe01";
 import { HelpCircle } from "./HelpCircle";
 import { Image01 } from "./Image01";
+import { Image03 } from "./Image03";
 import { ImagePlus } from "./ImagePlus";
 import { InfoCircle } from "./InfoCircle";
 import { InfoSquare } from "./InfoSquare";
@@ -91,6 +92,7 @@ import { Play } from "./Play";
 import { PlayCircle } from "./PlayCircle";
 import { Plus } from "./Plus";
 import { PuzzlePiece01 } from "./PuzzlePiece01";
+import { Recording01 } from "./Recording01";
 import { Recording02 } from "./Recording02";
 import { Recording03 } from "./Recording03";
 import { Recording04 } from "./Recording04";
@@ -119,6 +121,7 @@ import { ThumbsDown } from "./ThumbsDown";
 import { Tool01 } from "./Tool01";
 import { Trash01 } from "./Trash01";
 import { Trash03 } from "./Trash03";
+import { Tv03 } from "./Tv03";
 import { Type01 } from "./Type01";
 import { Type02 } from "./Type02";
 import { TypePlus } from "./TypePlus";
@@ -209,6 +212,7 @@ export const Icons = {
   InfoCircle,
   InfoSquare,
   Image01,
+  Image03,
   ImagePlus,
   Logout01,
   LayersTwo01,
@@ -230,6 +234,7 @@ export const Icons = {
   PuzzlePiece01,
   RefreshCw05,
   Repeat04,
+  Recording01,
   Recording02,
   Recording03,
   Recording04,
@@ -259,6 +264,7 @@ export const Icons = {
   Type02,
   TypePlus,
   Tool01,
+  Tv03,
   Upload01,
   User01,
   User02,
