@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.96.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.96.1...@instill-ai/toolkit-v0.96.2) (2024-07-23)
+
+
+### Bug Fixes
+
+* fixed model trigger url, wording update ([#1314](https://github.com/instill-ai/console/issues/1314)) ([9f074ef](https://github.com/instill-ai/console/commit/9f074efdf7ff9ee61834cfc0a26fc34be473dd8c))
+* **pipeline-editor:** fix user can not scroll in the node when it's overflow ([#1317](https://github.com/instill-ai/console/issues/1317)) ([256b29d](https://github.com/instill-ai/console/commit/256b29dad7c268b222d76ba4f5434287bfb8da24))
+
 ## [0.96.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.96.0...@instill-ai/toolkit-v0.96.1) (2024-07-17)
 
 
