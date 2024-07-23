@@ -44,11 +44,8 @@ jobs:
       - name: Install dependencies
         run: rm -rf node_modules && pnpm i --frozen-lockfile
 
-      - name: Go into SDK package
-        run: cd packages/sdk
-
       - name: generate mock servers
-        run: pnpm gen-mocks ${{ inputs.protobuf-branch }}
+        run: pnpm run --filter instill-sdk gen-mocks ${{ inputs.protobuf-branch }}
 
       - name: Run integration tests
-        run: pnpm test
+        run: pnpm run --filter instill-sdk test
