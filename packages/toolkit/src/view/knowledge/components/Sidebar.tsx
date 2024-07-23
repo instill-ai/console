@@ -108,7 +108,7 @@ export const Sidebar = ({
         className={getTabClassName("retrieve")}
         onClick={() => selectedKnowledgeBase && handleTabChange("retrieve")}
       >
-        Retrieve Test
+        Chunk Search API
       </div>
     </aside>
   );
