@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type GetRemainingInstillCreditRequest = {
   /**
    * The user or organization to which the credit belongs.
@@ -11,3 +13,9 @@ export type GetRemainingInstillCreditResponse = {
   imperishable: number;
   total: number;
 };
+
+export const getRemainingInstillCreditResponseValidator = z.object({
+  perishable: z.number(),
+  imperishable: z.number(),
+  total: z.number(),
+});

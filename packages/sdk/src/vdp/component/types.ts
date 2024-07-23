@@ -1,7 +1,6 @@
 import { z } from "zod";
 
-import { GeneralRecord } from "../../types";
-import { Spec, SpecSchema } from "../pipeline";
+import { GeneralRecord, Spec, SpecSchema } from "../../types";
 
 export type ConnectorType =
   | "CONNECTOR_TYPE_UNSPECIFIED"
@@ -89,6 +88,14 @@ export type ListConnectorDefinitionsResponse = {
   totalSize: number;
 };
 
+export const listConnectorDefinitionsWithPaginationResponseValidator = z.object(
+  {
+    connectorDefinitions: z.array(ConnectorDefinitionSchema),
+    nextPageToken: z.string(),
+    totalSize: z.number(),
+  },
+);
+
 export type GetConnectorDefinitionRequest = {
   connectorDefinitionName: string;
   view?: string;
@@ -97,6 +104,9 @@ export type GetConnectorDefinitionRequest = {
 export type GetConnectorDefinitionResponse = {
   connectorDefinition: ConnectorDefinition;
 };
+
+export const getConnectorDefinitionResponseValidator =
+  ConnectorDefinitionSchema;
 
 export type ListOperatorDefinitionsRequest = {
   pageSize?: number;
@@ -111,6 +121,12 @@ export type ListOperatorDefinitionsResponse = {
   totalSize: number;
 };
 
+export const listOperatorDefinitionsWithPaginationResponseValidator = z.object({
+  operatorDefinitions: z.array(OperatorDefinitionSchema),
+  nextPageToken: z.string(),
+  totalSize: z.number(),
+});
+
 export type GetOperatorDefinitionRequest = {
   operatorDefinitionName: string;
   view?: string;
@@ -119,3 +135,5 @@ export type GetOperatorDefinitionRequest = {
 export type GetOperatorDefinitionResponse = {
   operatorDefinition: OperatorDefinition;
 };
+
+export const getOperatorDefinitionResponseValidator = OperatorDefinitionSchema;

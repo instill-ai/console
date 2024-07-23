@@ -79,6 +79,7 @@ export function transformToHandlerCode(
   operationCollection: OperationCollection,
 ): string {
   return operationCollection
+    .sort((a, b) => b.path.length - a.path.length)
     .map((op) => {
       const successResponse = op.response.find(
         (response) => response.code === "200",

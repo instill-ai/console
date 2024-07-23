@@ -3,6 +3,12 @@
 import { expect, test } from "vitest";
 
 import { InstillAPIClient } from "../../main";
+import {
+  getConnectorDefinitionResponseValidator,
+  getOperatorDefinitionResponseValidator,
+  listConnectorDefinitionsWithPaginationResponseValidator,
+  listOperatorDefinitionsWithPaginationResponseValidator,
+} from "./types";
 
 test("getConnectorDefinition", async () => {
   const client = new InstillAPIClient({
@@ -16,12 +22,12 @@ test("getConnectorDefinition", async () => {
   });
 
   const parsedData =
-    client.vdp.component.getConnectorDefinitionValidator.safeParse(definition);
+    getConnectorDefinitionResponseValidator.safeParse(definition);
 
   expect(parsedData.success).toBe(true);
 });
 
-test("listConnectorDefinitions with pagination", async () => {
+test("listConnectorDefinitions", async () => {
   const client = new InstillAPIClient({
     baseURL: `http://localhost:8080/${process.env.INSTILL_API_VERSION}`,
     apiToken: "test",
@@ -33,7 +39,7 @@ test("listConnectorDefinitions with pagination", async () => {
   });
 
   const parsedData =
-    client.vdp.component.listConnectorDefinitionsValidatorWithPagination.safeParse(
+    listConnectorDefinitionsWithPaginationResponseValidator.safeParse(
       definitions,
     );
 
@@ -52,7 +58,7 @@ test("getOperatorDefinition", async () => {
   });
 
   const parsedData =
-    client.vdp.component.getOperatorDefinitionValidator.safeParse(definition);
+    getOperatorDefinitionResponseValidator.safeParse(definition);
 
   expect(parsedData.success).toBe(true);
 });
@@ -69,7 +75,7 @@ test("listOperatorDefinitions with pagination", async () => {
   });
 
   const parsedData =
-    client.vdp.component.listOperatorDefinitionsValidatorWithPagination.safeParse(
+    listOperatorDefinitionsWithPaginationResponseValidator.safeParse(
       definitions,
     );
 

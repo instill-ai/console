@@ -8,7 +8,8 @@ import { handlers as vdpHandlers } from "./mocks/vdp/handlers.js";
 
 config();
 
-const worker = setupServer(...coreHandlers, ...modelHandlers, ...vdpHandlers);
+// The order is important.
+const worker = setupServer(...vdpHandlers, ...coreHandlers, ...modelHandlers);
 
 // Start worker before all tests
 beforeAll(() => {

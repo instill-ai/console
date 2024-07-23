@@ -2,14 +2,17 @@ import { JSONSchema7TypeName } from "json-schema";
 import { z } from "zod";
 
 import {
+  DataSpecification,
+  DataSpecificationSchema,
   GeneralRecord,
-  InstillJSONSchema,
   Nullable,
   Owner,
+  OwnerSchema,
   Permission,
+  PermissionSchema,
 } from "../../types";
-import { ConnectorDefinition, OperatorDefinition } from "../component";
-import { PipelineRelease } from "../release";
+import { PipelineRelease, PipelineReleaseSchema } from "../release";
+import { PipelineRecipe } from "../types";
 
 export type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
@@ -20,58 +23,10 @@ export type PipelineReleaseState =
   | "STATE_ERROR"
   | "STATE_DELETED";
 
-export type PipelineRecipe = {
-  version: string;
-  component?: PipelineComponentMap;
-  variable?: PipelineVariableFieldMap;
-  output?: PipelineOutputFieldMap;
-};
-
-export type PipelineVariableField = {
-  title: string;
-  description?: string;
-  instillFormat: string;
-  instillUiOrder?: number;
-  instillUiMultiline?: boolean;
-};
-
-export type PipelineVariableFieldMap = Record<string, PipelineVariableField>;
-
-export type PipelineOutputField = {
-  title: string;
-  description?: string;
-  value: string;
-  instillUiOrder?: number;
-};
-
-export type PipelineOutputFieldMap = Record<string, PipelineOutputField>;
-
 export type PipelineReleaseWatchState = {
   state: PipelineReleaseState;
   progress: number;
 };
-
-export type DataSpecification = {
-  input: Nullable<InstillJSONSchema>;
-  output: Nullable<InstillJSONSchema>;
-};
-
-export type Spec = {
-  componentSpecification: InstillJSONSchema;
-  dataSpecifications: Nullable<Record<string, DataSpecification>>;
-};
-
-export const SpecSchema = z.object({
-  componentSpecification: z.record(z.any()),
-  dataSpecifications: z
-    .record(
-      z.object({
-        input: z.any().nullable(),
-        output: z.any().nullable(),
-      }),
-    )
-    .nullable(),
-});
 
 export type PipelineComponentType =
   | "COMPONENT_TYPE_UNSPECIFIED"
@@ -90,8 +45,65 @@ export type PipelineStats = {
   numberOfRuns: number;
 };
 
+export const PipelineStatsSchema = z.object({
+  lastRunTime: z.string(),
+  numberOfRuns: z.number(),
+});
+
+export type PermissionRole =
+  | "ROLE_UNSPECIFIED"
+  | "ROLE_VIEWER"
+  | "ROLE_EXECUTOR";
+
+export const PermissionRoleSchema = z.enum([
+  "ROLE_UNSPECIFIED",
+  "ROLE_VIEWER",
+  "ROLE_EXECUTOR",
+]);
+
+export type PipelineSharingCodeRule = {
+  user: string;
+  code?: string;
+  enabled: boolean;
+  role: PermissionRole;
+};
+
+export const PipelineSharingCodeRuleSchema = z.object({
+  user: z.string(),
+  code: z.string().optional(),
+  enabled: z.boolean(),
+  role: PermissionRoleSchema,
+});
+
+export type PipelineSharingUserRules = Record<
+  string,
+  | {
+      enabled: boolean;
+      role: PermissionRole;
+    }
+  | undefined
+>;
+
+export const PipelineSharingUserRulesSchema = z.record(
+  z
+    .object({
+      enabled: z.boolean(),
+      role: PermissionRoleSchema,
+    })
+    .optional(),
+);
+
+export type PipelineSharing = {
+  users: PipelineSharingUserRules;
+  shareCode: Nullable<PipelineSharingCodeRule>;
+};
+
+export const PipelineSharingSchema = z.object({
+  users: PipelineSharingUserRulesSchema,
+  shareCode: PipelineSharingCodeRuleSchema.nullable(),
+});
+
 export type Pipeline = {
-  updated_at: string | number | Date;
   name: string;
   uid: string;
   id: string;
@@ -115,31 +127,31 @@ export type Pipeline = {
   license: string;
 };
 
-export type PipelineSharing = {
-  users: PipelineSharingUserRules;
-  shareCode: Nullable<PipelineSharingCodeRule>;
-};
+export const PipelineSchema = z.object({
+  name: z.string(),
+  uid: z.string(),
+  id: z.string(),
+  description: z.string(),
+  readme: z.string(),
+  createTime: z.string(),
+  updateTime: z.string(),
 
-export type PipelineSharingUserRules = Record<
-  string,
-  | {
-      enabled: boolean;
-      role: PermissionRole;
-    }
-  | undefined
->;
-
-export type PipelineSharingCodeRule = {
-  user: string;
-  code?: string;
-  enabled: boolean;
-  role: PermissionRole;
-};
-
-export type PermissionRole =
-  | "ROLE_UNSPECIFIED"
-  | "ROLE_VIEWER"
-  | "ROLE_EXECUTOR";
+  // Our openapi isn't fully typed on the recipe field yet
+  recipe: z.record(z.any()),
+  dataSpecification: DataSpecificationSchema,
+  owner: OwnerSchema,
+  ownerName: z.string(),
+  releases: z.array(PipelineReleaseSchema),
+  sharing: PipelineSharingSchema,
+  metadata: z.record(z.any()),
+  permission: PermissionSchema,
+  tags: z.array(z.string()),
+  stats: PipelineStatsSchema,
+  profileImage: z.string(),
+  sourceUrl: z.string(),
+  documentationUrl: z.string(),
+  license: z.string(),
+});
 
 export type PipelineTrace = {
   success: boolean;
@@ -148,33 +160,6 @@ export type PipelineTrace = {
   error: GeneralRecord;
   computeYimeInSeconds: number;
 };
-
-export type ComponentBasicFields = {
-  metadata?: GeneralRecord;
-  type: string;
-};
-
-export type PipelineGeneralComponent = {
-  definition?: Nullable<ConnectorDefinition | OperatorDefinition>;
-  task: string;
-  input: GeneralRecord;
-  condition: Nullable<string>;
-  setup: Nullable<GeneralRecord>;
-} & ComponentBasicFields;
-
-export type PipelineIteratorComponent = {
-  input: string;
-  outputElements: Record<string, string>;
-  component: PipelineComponentMap;
-  condition: Nullable<string>;
-  dataSpecification: Nullable<DataSpecification>;
-} & ComponentBasicFields;
-
-export type PipelineComponentMap = Record<string, PipelineComponent>;
-
-export type PipelineComponent =
-  | PipelineIteratorComponent
-  | PipelineGeneralComponent;
 
 export type StartOperatorInputType =
   | "audio/*"
@@ -219,6 +204,12 @@ export type ListAccessiblePipelineResponse = {
   totalSize: number;
 };
 
+export const listAccessiblePipelinesWithPaginationResponseValidator = z.object({
+  pipelines: z.array(PipelineSchema),
+  nextPageToken: z.string(),
+  totalSize: z.number(),
+});
+
 export type ListNamespacePipelinesRequest = {
   namespaceName: string;
   pageSize?: number;
@@ -236,6 +227,12 @@ export type ListNamespacePipelinesResponse = {
   totalSize: number;
 };
 
+export const listNamespacePipelinesWithPaginationResponseValidator = z.object({
+  pipelines: z.array(PipelineSchema),
+  nextPageToken: z.string(),
+  totalSize: z.number(),
+});
+
 export type GetNamespacePipelineRequest = {
   namespacePipelineName: string;
   view?: string;
@@ -245,6 +242,8 @@ export type GetNamespacePipelineRequest = {
 export type GetNamespacePipelineResponse = {
   pipeline: Pipeline;
 };
+
+export const getNamespacePipelineResponseValidator = PipelineSchema;
 
 export type CreateNamespacePipelineRequest = {
   namespaceName: string;
@@ -260,6 +259,8 @@ export type CreateNamespacePipelineRequest = {
 export type CreateNamespacePipelineResponse = {
   pipeline: Pipeline;
 };
+
+export const createNamespacePipelineResponseValidator = PipelineSchema;
 
 export type DeleteNamespacePipelineRequest = {
   namespacePipelineName: string;
@@ -282,6 +283,8 @@ export type UpdateNamespacePipelineRequest = {
 export type UpdateNamespacePipelineResponse = {
   pipeline: Pipeline;
 };
+
+export const updateNamespacePipelineResponseValidator = PipelineSchema;
 
 export type ValidatePipelineRecipeError = {
   location: string;

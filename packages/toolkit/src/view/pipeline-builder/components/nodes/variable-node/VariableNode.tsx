@@ -360,6 +360,10 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
           queryClient,
         });
 
+        if (amplitudeIsInit) {
+          sendAmplitudeData("trigger_pipeline");
+        }
+
         updateIsTriggeringPipeline(() => false);
         updateTestModeTriggerResponse(() => data);
       } catch (error) {
