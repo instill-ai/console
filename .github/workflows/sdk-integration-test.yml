@@ -48,4 +48,4 @@ jobs:
         run: pnpm run --filter instill-sdk gen-mocks ${{ inputs.protobuf-branch }}
 
       - name: Run integration tests
-        run: pnpm run --filter instill-sdk test
+        run: pnpm run --filter instill-sdk integration-test

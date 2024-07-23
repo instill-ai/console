@@ -17,9 +17,8 @@
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --cache",
     "publish-rc": "pnpm build && pnpm publish --no-git-checks",
     "gen-mocks": "./generate_mocks.sh",
-    "test": "vitest --run --passWithNoTests",
-    "gen": "tsx generate-mocks/main.ts",
-    "ci-test": "pnpm gen-mocks && pnpm test"
+    "integration-test": "vitest --run --passWithNoTests",
+    "gen": "tsx generate-mocks/main.ts"
   },
   "files": [
     "dist"
