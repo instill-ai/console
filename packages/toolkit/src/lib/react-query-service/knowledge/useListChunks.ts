@@ -24,7 +24,7 @@ export function useListChunks({
       const client = createInstillAxiosClient(accessToken, true);
       try {
         const response = await client.get(
-          `/owners/${ownerId}/knowledge-bases/${kbId}/chunks`,
+          `/namespaces/${ownerId}/knowledge-bases/${kbId}/chunks`,
           {
             params: { fileUid },
           }

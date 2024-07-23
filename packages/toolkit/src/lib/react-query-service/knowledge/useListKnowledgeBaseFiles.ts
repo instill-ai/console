@@ -28,7 +28,7 @@ export function useListKnowledgeBaseFiles({
       }
       const client = createInstillAxiosClient(accessToken, true);
       const response = await client.get<{ files: File[] }>(
-        `/owners/${ownerId}/knowledge-bases/${knowledgeBaseId}/files`
+        `/namespaces/${ownerId}/knowledge-bases/${knowledgeBaseId}/files`
       );
       return response.data.files;
     },

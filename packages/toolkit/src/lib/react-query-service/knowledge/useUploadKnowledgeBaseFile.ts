@@ -27,7 +27,7 @@ export function useUploadKnowledgeBaseFile() {
       }
       const client = createInstillAxiosClient(accessToken, true);
       const response = await client.post<{ file: File }>(
-        `/owners/${ownerId}/knowledge-bases/${knowledgeBaseId}/files`,
+        `/namespaces/${ownerId}/knowledge-bases/${knowledgeBaseId}/files`,
         payload
       );
       return response.data.file;
