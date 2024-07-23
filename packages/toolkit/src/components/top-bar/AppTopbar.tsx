@@ -93,7 +93,7 @@ export const AppTopbar = ({
             </svg>
 
             {me.isSuccess ? (
-              namespaceSwitch ?? <NamespaceSwitch />
+              (namespaceSwitch ?? <NamespaceSwitch />)
             ) : (
               <Button
                 onClick={() => {

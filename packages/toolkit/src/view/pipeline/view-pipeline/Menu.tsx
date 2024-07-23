@@ -82,8 +82,8 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
             id={routeInfo.data.resourceId}
             ownerDisplayName={
               "user" in pipeline.owner
-                ? pipeline.owner.user.profile?.displayName ?? null
-                : pipeline.owner.organization.profile?.displayName ?? null
+                ? (pipeline.owner.user.profile?.displayName ?? null)
+                : (pipeline.owner.organization.profile?.displayName ?? null)
             }
           />
           <PublishPipelineDialog

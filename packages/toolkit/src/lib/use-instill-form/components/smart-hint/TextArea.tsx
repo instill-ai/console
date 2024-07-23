@@ -145,7 +145,7 @@ export const TextArea = ({
                     )}
                     ref={inputRef}
                     value={
-                      typeof field.value === "object" ? "" : field.value ?? ""
+                      typeof field.value === "object" ? "" : (field.value ?? "")
                     }
                     autoComplete="off"
                     onChange={(e) => {
@@ -243,7 +243,7 @@ export const TextArea = ({
                     "${" +
                     `secret.${InstillCredit.key}` +
                     "}. You can still bring your own key by input ${secret.your_secret}"
-                  : shortDescription ?? null
+                  : (shortDescription ?? null)
               }
             />
             <Form.Message

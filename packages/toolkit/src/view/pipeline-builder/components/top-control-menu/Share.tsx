@@ -50,8 +50,8 @@ export const Share = () => {
           id={routeInfo.data.resourceId}
           ownerDisplayName={
             "user" in pipeline.data.owner
-              ? pipeline.data.owner.user.profile?.displayName ?? null
-              : pipeline.data.owner.organization.profile?.displayName ?? null
+              ? (pipeline.data.owner.user.profile?.displayName ?? null)
+              : (pipeline.data.owner.organization.profile?.displayName ?? null)
           }
         />
       ) : null}

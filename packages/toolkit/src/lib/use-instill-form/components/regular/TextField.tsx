@@ -49,7 +49,7 @@ export const TextField = ({
                   )}
                   type="text"
                   value={
-                    typeof field.value === "object" ? "" : field.value ?? ""
+                    typeof field.value === "object" ? "" : (field.value ?? "")
                   }
                   autoComplete="off"
                   onChange={(e) => {

@@ -152,7 +152,9 @@ export const TextField = ({
                       }}
                       type="text"
                       value={
-                        typeof field.value === "object" ? "" : field.value ?? ""
+                        typeof field.value === "object"
+                          ? ""
+                          : (field.value ?? "")
                       }
                       className={cn(
                         "nodrag nowheel placeholder:text-semantic-fg-disabled",
@@ -255,7 +257,7 @@ export const TextField = ({
                     "${" +
                     `secret.${InstillCredit.key}` +
                     "}. You can still bring your own key by input ${secret.your_secret}"
-                  : shortDescription ?? null
+                  : (shortDescription ?? null)
               }
             />
             <Form.Message

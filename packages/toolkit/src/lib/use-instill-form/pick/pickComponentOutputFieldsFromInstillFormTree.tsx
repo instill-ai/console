@@ -49,7 +49,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     }
   } else if (tree._type === "formItem") {
     if (tree.path) {
-      propertyValue = data ? dot.getter(data, tree.path) ?? null : null;
+      propertyValue = data ? (dot.getter(data, tree.path) ?? null) : null;
     }
   } else if (tree._type === "arrayArray") {
     if (tree.fieldKey) {

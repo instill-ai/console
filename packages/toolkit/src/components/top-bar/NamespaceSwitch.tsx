@@ -116,10 +116,10 @@ export const NamespaceSwitch = () => {
     }
 
     return namespacesWithRemainingCredit.length === 0
-      ? namespaces.find((e) => e.id === navigationNamespaceAnchor) ?? null
-      : namespacesWithRemainingCredit.find(
+      ? (namespaces.find((e) => e.id === navigationNamespaceAnchor) ?? null)
+      : (namespacesWithRemainingCredit.find(
           (e) => e.id === navigationNamespaceAnchor,
-        ) ?? null;
+        ) ?? null);
   }, [namespacesWithRemainingCredit, namespaces, navigationNamespaceAnchor]);
 
   // This is to deal with user entering their own setting page, we should
