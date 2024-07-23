@@ -73,7 +73,7 @@ export const NodeWrapper = ({
 
   return (
     <div
-      className="relative"
+      className="relative nowheel"
       onClick={() => {
         updateSelectedConnectorNodeId(() => nodeID);
 
