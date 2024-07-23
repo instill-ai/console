@@ -4,13 +4,15 @@ The integration test in the sdk package can help us make sure the contract betwe
 
 ## How does it work
 
-1. We first clone our [instill-ai/protobufs](https://github.com/instill-ai/protobufs) into `packages/sdk` folder.
-2. We then generate the openapi schema using the `make openapi` command in this repo.
-3. We have a modified version of [zoubingwu/msw-auto-mock](https://github.com/zoubingwu/msw-auto-mock/issues?q=) to generate our own msw handlers.
-   1. We only want to focus on the 200 status
-   2. We need to handle the pageToken pagination and many other edge cases
-4. We setup vitest together with msw to run the integration test.
-
+- We first clone our [instill-ai/protobufs](https://github.com/instill-ai/protobufs) into `packages/sdk` folder.
+- We then generate the openapi schema using the `make openapi` command in this repo.
+- We have a modified version of [zoubingwu/msw-auto-mock](https://github.com/zoubingwu/msw-auto-mock/issues?q=) to generate our own msw handlers.
+  - We only want to focus on the 200 status
+  - We need to handle the pageToken pagination and many other edge cases
+- We set up vitest together with msw to run the integration test.
+The verification of data will be handled by our zod validator, which is maintained by the frontend team (This is also the reason why I want to maintain the integration test in the sdk package, I can export these zod validator since there are many other Typescript dev would like to have run-time type safety when interact with our SDK, this can also serve as an additional quality of life)
+- We will have istanbul to calculate the coverage of the tests
+- 
 ## What it tests
 
 The test suite only test two things
