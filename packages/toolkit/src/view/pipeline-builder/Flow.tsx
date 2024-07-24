@@ -5,11 +5,9 @@ import { ReactFlowInstance } from "reactflow";
 import { useShallow } from "zustand/react/shallow";
 
 import { InstillStore, Nullable, useInstillStore } from "../../lib";
-import { env } from "../../server";
 import {
   BackToLatestVersionTopBar,
   IteratorEditor,
-  RemainingCreditCTA,
 } from "./components";
 import { PipelineBuilderCanvas } from "./components/PipelineBuilderCanvas";
 
