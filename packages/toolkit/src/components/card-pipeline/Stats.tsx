@@ -17,7 +17,7 @@ export const Stats = (props: StatsProps) => {
   return (
     <div className="mt-auto flex w-full flex-row items-center gap-x-4">
       <div className="flex flex-row items-center gap-x-1 text-sm uppercase text-semantic-fg-secondary">
-        <Icons.Rocket01 className="h-4 w-4 stroke-semantic-fg-primary" />
+        <Icons.Lightning01 className="h-4 w-4 stroke-semantic-fg-primary" />
         {convertLongNumberToK(runCount)} Run{runCount !== 1 ? "s" : ""}
       </div>
       <div className="flex flex-row items-center gap-x-1 text-sm uppercase text-semantic-fg-secondary">
