@@ -1,7 +1,8 @@
+import type { PipelineVariableFieldMap } from "instill-sdk";
 import { Node } from "reactflow";
 
 import type { NodeData, TriggerNodeData } from "../view";
-import { GeneralRecord, Nullable, PipelineVariableFieldMap } from "../lib";
+import { GeneralRecord, Nullable } from "../lib";
 import { env } from "../server";
 import { triggerPipelineSnippet } from "../view/pipeline-builder/components/triggerPipelineSnippet";
 

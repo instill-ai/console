@@ -1,7 +1,8 @@
+import type { PipelineComponentMap } from "instill-sdk";
 import { Node } from "reactflow";
 
 import { recursiveHelpers } from ".";
-import { GeneralRecord, Nullable, PipelineComponentMap } from "../../../lib";
+import { GeneralRecord, Nullable } from "../../../lib";
 import { NodeData, PipelineComponentMetadata } from "../type";
 import {
   isPipelineGeneralComponent,

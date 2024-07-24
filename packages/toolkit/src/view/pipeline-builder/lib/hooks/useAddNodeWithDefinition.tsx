@@ -1,12 +1,16 @@
+"use client";
+
+import type {
+  ConnectorDefinition,
+  IteratorDefinition,
+  OperatorDefinition,
+} from "instill-sdk";
 import * as React from "react";
 import { Position, ReactFlowInstance } from "reactflow";
 
 import {
-  ConnectorDefinition,
   InstillStore,
-  IteratorDefinition,
   Nullable,
-  OperatorDefinition,
   useInstillStore,
   useShallow,
 } from "../../../../lib";

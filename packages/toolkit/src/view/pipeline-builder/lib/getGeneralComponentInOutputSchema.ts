@@ -1,10 +1,7 @@
+import type { PipelineGeneralComponent } from "instill-sdk";
 import { JSONSchema7 } from "json-schema";
 
-import {
-  InstillJSONSchema,
-  Nullable,
-  PipelineGeneralComponent,
-} from "../../../lib";
+import { InstillJSONSchema, Nullable } from "../../../lib";
 
 export function getGeneralComponentInOutputSchema(
   component: PipelineGeneralComponent,

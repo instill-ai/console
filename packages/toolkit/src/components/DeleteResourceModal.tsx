@@ -1,5 +1,6 @@
 "use client";
 
+import type { Pipeline } from "instill-sdk";
 import * as React from "react";
 import { shallow } from "zustand/shallow";
 
@@ -9,7 +10,7 @@ import {
   OutlineButton,
 } from "@instill-ai/design-system";
 
-import type { ModalStore, Model, Nullable, Pipeline } from "../lib";
+import type { ModalStore, Model, Nullable } from "../lib";
 import { useModalStore } from "../lib";
 
 export type DeleteResourceModalProps = {

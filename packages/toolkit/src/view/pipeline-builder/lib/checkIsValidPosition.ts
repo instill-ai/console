@@ -1,4 +1,6 @@
-import { GeneralRecord, Nullable, PipelineComponentMap } from "../../../lib";
+import type { PipelineComponentMap } from "instill-sdk";
+
+import { GeneralRecord, Nullable } from "../../../lib";
 import { PipelineComponentMetadataMap } from "../type";
 
 export function checkIsValidPosition({

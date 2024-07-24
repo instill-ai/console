@@ -1,12 +1,12 @@
 "use client";
 
+import type { ListAccessiblePipelineResponse } from "instill-sdk";
 import {
   InfiniteData,
   useInfiniteQuery,
   UseInfiniteQueryResult,
 } from "@tanstack/react-query";
 
-import type { ListPipelinesResponse } from "../../vdp-sdk";
 import { env } from "../../../server";
 import { Nullable } from "../../type";
 import { getInstillAPIClient, Visibility } from "../../vdp-sdk";
@@ -27,7 +27,10 @@ export function useInfinitePipelines({
   filter: Nullable<string>;
   orderBy: Nullable<string>;
   disabledViewFull?: boolean;
-}): UseInfiniteQueryResult<InfiniteData<ListPipelinesResponse>, Error> {
+}): UseInfiniteQueryResult<
+  InfiniteData<ListAccessiblePipelineResponse>,
+  Error
+> {
   const queryKey = ["pipelines", "infinite"];
 
   if (filter) {

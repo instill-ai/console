@@ -1,5 +1,6 @@
 "use client";
 
+import type { Secret } from "instill-sdk";
 import * as React from "react";
 import cn from "clsx";
 import { useFormContext } from "react-hook-form";
@@ -9,7 +10,6 @@ import { Form, Popover, Textarea } from "@instill-ai/design-system";
 import { InstillCredit } from "../../../../constant";
 import { Nullable } from "../../../type";
 import { useInstillStore } from "../../../use-instill-store";
-import { Secret } from "../../../vdp-sdk";
 import { AutoFormFieldBaseProps, SmartHintWarning } from "../../types";
 import { FieldDescriptionTooltip } from "../common";
 import { getFieldPlaceholder } from "./getFieldPlaceholder";

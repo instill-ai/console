@@ -2,7 +2,7 @@ import {
   PipelineComponent,
   PipelineGeneralComponent,
   PipelineIteratorComponent,
-} from "../../../lib";
+} from "instill-sdk";
 
 export function isPipelineGeneralComponent(
   component: PipelineComponent,

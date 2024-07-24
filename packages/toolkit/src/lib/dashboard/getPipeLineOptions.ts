@@ -1,6 +1,6 @@
-import { SelectOption } from "@instill-ai/design-system";
+import type { Pipeline } from "instill-sdk";
 
-import { Pipeline } from "../vdp-sdk";
+import { SelectOption } from "@instill-ai/design-system";
 
 export function getPipeLineOptions(pipelines: Pipeline[]): SelectOption[] {
   const formattedPinelineOptions = pipelines?.map((pipeline) => {

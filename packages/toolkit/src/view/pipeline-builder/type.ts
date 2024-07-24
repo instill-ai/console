@@ -1,14 +1,14 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
-import {
-  GeneralRecord,
-  Nullable,
+import type {
   PipelineGeneralComponent,
   PipelineIteratorComponent,
   PipelineOutputFieldMap,
   PipelineRecipe,
   PipelineVariableFieldMap,
-} from "../../lib";
+} from "instill-sdk";
+
+import { GeneralRecord, Nullable } from "../../lib";
 
 export type TriggerNodeData = {
   note: Nullable<string>;

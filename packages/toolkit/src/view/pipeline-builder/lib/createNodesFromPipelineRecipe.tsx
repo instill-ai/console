@@ -1,6 +1,7 @@
+import type { PipelineRecipe } from "instill-sdk";
 import { Node } from "reactflow";
 
-import { GeneralRecord, Nullable, PipelineRecipe } from "../../../lib";
+import { GeneralRecord, Nullable } from "../../../lib";
 import { NodeData, PipelineComponentMetadata } from "../type";
 import { createNodesFromPipelineComponents } from "./createNodesFromPipelineComponents";
 

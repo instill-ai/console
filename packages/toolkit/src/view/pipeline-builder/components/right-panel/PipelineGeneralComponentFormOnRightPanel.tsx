@@ -6,11 +6,7 @@ import { Form } from "@instill-ai/design-system";
 
 import { useInstillStore } from "../../../../lib";
 import { useInstillForm } from "../../../../lib/use-instill-form";
-import {
-  getGeneralComponentConfiguration,
-  useCheckIsHidden,
-  useUpdaterOnRightPanel,
-} from "../../lib";
+import { useCheckIsHidden, useUpdaterOnRightPanel } from "../../lib";
 import { GeneralNodeData } from "../../type";
 
 export const PipelineGeneralComponentFormOnRightPanel = ({
@@ -26,7 +22,12 @@ export const PipelineGeneralComponentFormOnRightPanel = ({
   const entitySecrets = useInstillStore((store) => store.entitySecrets);
 
   const configuration = React.useMemo(() => {
-    return getGeneralComponentConfiguration(nodeData);
+    return {
+      input: nodeData.input,
+      condition: nodeData.condition,
+      task: nodeData.task,
+      setup: nodeData.setup,
+    };
   }, [nodeData]);
 
   const { form, fields, ValidatorSchema } = useInstillForm(

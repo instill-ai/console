@@ -1,6 +1,6 @@
+import type { PipelineVariableFieldMap } from "instill-sdk";
 import { expect, test } from "vitest";
 
-import { PipelineVariableFieldMap } from "../vdp-sdk";
 import { transformPipelineTriggerRequestFieldsToSmartHints } from "./transformPipelineTriggerRequestFieldsToSmartHints";
 
 test("should transform pipeline variables to smart hints", () => {

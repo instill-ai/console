@@ -1,11 +1,12 @@
 "use client";
 
+import type { PipelineGeneralComponent } from "instill-sdk";
 import * as React from "react";
 
 import { Icons } from "@instill-ai/design-system";
 
 import { ImageWithFallback } from "../../../../../components";
-import { Nullable, PipelineGeneralComponent } from "../../../../../lib";
+import { Nullable } from "../../../../../lib";
 
 export const IteratorGeneralComponentLabel = ({
   id,

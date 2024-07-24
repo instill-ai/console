@@ -1,8 +1,11 @@
-import type { Pipeline } from "instill-sdk";
+import type {
+  Pipeline,
+  PipelineRelease,
+  PipelineVariableFieldMap,
+} from "instill-sdk";
 import * as React from "react";
 import { useSearchParams } from "next/navigation";
 
-import type { PipelineRelease, PipelineVariableFieldMap } from "../../../lib";
 import { CodeBlock, EmptyView, ModelSectionHeader } from "../../../components";
 import { CodeString } from "../../../components/CodeString";
 import { defaultCodeSnippetStyles } from "../../../constant";

@@ -1,16 +1,12 @@
 "use client";
 
 import * as React from "react";
+import { PipelineGeneralComponent } from "instill-sdk";
 import { NodeProps } from "reactflow";
 
 import { Button, Icons } from "@instill-ai/design-system";
 
-import {
-  InstillStore,
-  PipelineGeneralComponent,
-  useInstillStore,
-  useShallow,
-} from "../../../../../lib";
+import { InstillStore, useInstillStore, useShallow } from "../../../../../lib";
 import {
   checkIsValidPosition,
   composeEdgesFromNodes,

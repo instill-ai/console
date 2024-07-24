@@ -1,8 +1,8 @@
+import type { Secret } from "instill-sdk";
 import * as React from "react";
 import cn from "clsx";
 
 import { GeneralUseFormReturn, Nullable } from "../../type";
-import { Secret } from "../../vdp-sdk";
 import { RegularFields } from "../components";
 import { SmartHintFields } from "../components/smart-hint";
 import {

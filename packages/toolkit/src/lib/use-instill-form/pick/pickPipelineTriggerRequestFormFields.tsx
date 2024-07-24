@@ -1,7 +1,7 @@
+import type { PipelineVariableFieldMap } from "instill-sdk";
 import { UseFormReturn } from "react-hook-form";
 
 import { Nullable } from "../../type";
-import { PipelineVariableFieldMap } from "../../vdp-sdk";
 import { TriggerRequestFormFields } from "../components";
 import { FieldMode, StartOperatorFreeFormFieldItem } from "../types";
 

@@ -1,7 +1,7 @@
+import { Secret } from "instill-sdk";
 import { StateCreator } from "zustand";
 
 import { Nullable } from "../type";
-import { Secret } from "../vdp-sdk";
 import { GeneralSlice, InstillStore, InstillStoreMutators } from "./types";
 
 export const createGeneralSlice: StateCreator<

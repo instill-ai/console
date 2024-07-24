@@ -1,10 +1,9 @@
 "use client";
 
+import type { PipelineVariableField } from "instill-sdk";
 import * as React from "react";
 
 import { ComplicateIcons, Icons } from "@instill-ai/design-system";
-
-import { PipelineVariableField } from "../../../../../lib";
 
 export type TriggerNodeInputField = {
   title: string;

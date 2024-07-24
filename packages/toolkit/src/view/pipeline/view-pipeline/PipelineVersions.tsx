@@ -1,11 +1,11 @@
-import type { Pipeline } from "instill-sdk";
+import type { Pipeline, PipelineRelease } from "instill-sdk";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Button, DataTable } from "@instill-ai/design-system";
 
 import { EmptyView, LoadingSpin } from "../../../components";
-import { PipelineRelease, useRouteInfo } from "../../../lib";
+import { useRouteInfo } from "../../../lib";
 import { getHumanReadableStringFromTime } from "../../../server";
 import { TABLE_PAGE_SIZE } from "./constants";
 
