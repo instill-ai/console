@@ -5,10 +5,7 @@ import { ReactFlowInstance } from "reactflow";
 import { useShallow } from "zustand/react/shallow";
 
 import { InstillStore, Nullable, useInstillStore } from "../../lib";
-import {
-  BackToLatestVersionTopBar,
-  IteratorEditor,
-} from "./components";
+import { BackToLatestVersionTopBar, IteratorEditor } from "./components";
 import { PipelineBuilderCanvas } from "./components/PipelineBuilderCanvas";
 
 const selector = (store: InstillStore) => ({
