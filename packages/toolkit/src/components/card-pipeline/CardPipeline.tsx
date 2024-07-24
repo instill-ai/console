@@ -107,6 +107,7 @@ export const CardPipeline = ({
         <Stats
           updatedAt={pipeline.updateTime || pipeline.createTime}
           runCount={pipeline.stats.numberOfRuns}
+          cloneCount={pipeline.stats.numberOfClones}
         />
       </div>
     </div>
