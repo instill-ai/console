@@ -1,7 +1,7 @@
+import type { PipelineComponent } from "instill-sdk";
 import * as React from "react";
 
 import { Nullable } from "../../type";
-import { PipelineComponent } from "../../vdp-sdk";
 import { pickFieldsFromOutputReferenceHints } from "./pickFieldsFromOutputReferenceHints";
 import { pickOutputReferenceHintsFromComponent } from "./pickOutputReferenceHintsFromComponent";
 

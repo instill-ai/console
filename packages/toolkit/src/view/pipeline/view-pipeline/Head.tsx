@@ -1,10 +1,10 @@
 "use client";
 
+import type { Pipeline, PipelineRelease } from "instill-sdk";
 import * as React from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import cn from "clsx";
-import { Pipeline } from "instill-sdk";
 
 import {
   Button,
@@ -23,7 +23,6 @@ import {
   InstillStore,
   isPublicPipeline,
   Nullable,
-  PipelineRelease,
   toastInstillError,
   useAuthenticatedUser,
   useDeleteNamespacePipeline,

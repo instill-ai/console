@@ -2,9 +2,7 @@
 import { Nullable } from "../type";
 import { InstillJSONSchema } from "../use-instill-form";
 import { User } from "./mgmt";
-import { ModelState } from "./model";
 import { Organization } from "./organization";
-import { PipelineReleaseState } from "./pipeline";
 
 export type ErrorDetails = {
   "@type": string;
@@ -17,8 +15,6 @@ export type Violation = {
   description: string;
   subject: string;
 };
-
-export type ResourceState = ModelState | PipelineReleaseState;
 
 export type DataSpecification = {
   input: Nullable<InstillJSONSchema>;

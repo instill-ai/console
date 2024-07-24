@@ -1,11 +1,12 @@
 "use client";
 
+import type { Secret } from "instill-sdk";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Button, DataTable } from "@instill-ai/design-system";
 
 import { SortIcon, TableError } from "../../../components";
-import { formatDate, Secret } from "../../../lib";
+import { formatDate } from "../../../lib";
 import { DeleteSecretDialog } from "./DeleteSecretDialog";
 
 export type APITokenTableProps = {

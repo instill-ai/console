@@ -1,10 +1,13 @@
 "use client";
 
+import type {
+  CreateNamespacePipelineRequest,
+  PipelineSharing,
+} from "instill-sdk";
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import cn from "clsx";
-import { CreateNamespacePipelineRequest } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -25,7 +28,6 @@ import { DataTestID, InstillErrors } from "../../../constant";
 import {
   InstillStore,
   Nullable,
-  PipelineSharing,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,

@@ -1,6 +1,6 @@
+import { PipelineRecipe } from "instill-sdk";
 import { expect, test } from "vitest";
 
-import { PipelineRecipe } from "../../../lib";
 import { checkIsValidPosition } from "./checkIsValidPosition";
 
 test("should check position is not valid", () => {

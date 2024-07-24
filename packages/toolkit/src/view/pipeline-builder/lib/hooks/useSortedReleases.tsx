@@ -1,9 +1,11 @@
+"use client";
+
+import type { PipelineRelease } from "instill-sdk";
 import * as React from "react";
 import * as semver from "semver";
 
 import {
   Nullable,
-  PipelineRelease,
   useInfiniteNamespacePipelineReleases,
 } from "../../../../lib";
 

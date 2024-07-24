@@ -11,7 +11,6 @@ export * from "./getReferencesFromString";
 export * from "./generateUniqueIndex";
 export * from "./getAllNodeID";
 export * from "./getGeneralComponentInOutputSchema";
-export * from "./getGeneralComponentConfiguration";
 export * from "./getPropertiesFromOpenAPISchema";
 export * from "./readFileToBinary";
 export * from "./recursive-helpers/recursiveParseNumberToString";

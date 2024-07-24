@@ -1,5 +1,6 @@
 "use client";
 
+import type { PipelineRecipe } from "instill-sdk";
 import * as React from "react";
 import cn from "clsx";
 import ReactFlow, {
@@ -16,7 +17,6 @@ import {
   GeneralRecord,
   InstillStore,
   Nullable,
-  PipelineRecipe,
   useInstillStore,
   useShallow,
 } from "../../../lib";

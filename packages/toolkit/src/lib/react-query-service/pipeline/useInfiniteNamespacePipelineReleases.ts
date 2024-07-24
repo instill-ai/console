@@ -3,13 +3,11 @@ import {
   useInfiniteQuery,
   UseInfiniteQueryResult,
 } from "@tanstack/react-query";
+import { ListNamespacePipelineReleaseResponse } from "instill-sdk";
 
 import { env } from "../../../server";
 import { Nullable } from "../../type";
-import {
-  getInstillAPIClient,
-  ListPipelineReleasesResponse,
-} from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function getUseInfiniteNamespacePipelineReleasesQueryKey(
   namespacePipelineName: Nullable<string>,
@@ -33,7 +31,10 @@ export function useInfiniteNamespacePipelineReleases({
   retry?: false | number;
   shareCode?: string;
   disabledViewFull?: boolean;
-}): UseInfiniteQueryResult<InfiniteData<ListPipelineReleasesResponse>, Error> {
+}): UseInfiniteQueryResult<
+  InfiniteData<ListNamespacePipelineReleaseResponse>,
+  Error
+> {
   let enabled = false;
 
   if (namespacePipelineName && enabledQuery) {

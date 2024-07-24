@@ -1,4 +1,4 @@
-import { PipelineMode, PipelineReleaseState } from "../../pipeline";
+import { PipelineMode, PipelineReleaseState } from "instill-sdk";
 
 export type PipelineTriggerCount = {
   pipelineId: string;

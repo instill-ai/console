@@ -1,5 +1,6 @@
+import type { PipelineVariableFieldMap } from "instill-sdk";
+
 import { Nullable, SuperRefineRule } from "../../type";
-import { PipelineVariableFieldMap } from "../../vdp-sdk";
 
 export function transformPipelineTriggerRequestFieldsToSuperRefineRules(
   fields: Nullable<PipelineVariableFieldMap>,

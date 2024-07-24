@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import type { PipelineVariableFieldMap } from "instill-sdk";
 import * as z from "zod";
 
 import { Nullable } from "../../type";
-import { PipelineVariableFieldMap } from "../../vdp-sdk";
 
 export function transformPipelineTriggerRequestFieldsToZod(
   fields: Nullable<PipelineVariableFieldMap>,

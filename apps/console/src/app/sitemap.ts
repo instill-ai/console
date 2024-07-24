@@ -1,6 +1,7 @@
+import type { Pipeline } from "instill-sdk";
 import { MetadataRoute } from "next";
 
-import { Organization, Pipeline, User } from "@instill-ai/toolkit";
+import { Organization, User } from "@instill-ai/toolkit";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const sitemaps: MetadataRoute.Sitemap = [];

@@ -1,9 +1,13 @@
 "use client";
 
+import type {
+  CreateNamespacePipelineRequest,
+  Pipeline,
+  PipelineSharing,
+} from "instill-sdk";
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateNamespacePipelineRequest, Pipeline } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -20,7 +24,7 @@ import {
   useToast,
 } from "@instill-ai/design-system";
 
-import type { InstillStore, Nullable, PipelineSharing } from "../lib";
+import type { InstillStore, Nullable } from "../lib";
 import { InstillErrors } from "../constant";
 import {
   sendAmplitudeData,

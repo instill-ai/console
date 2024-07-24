@@ -1,5 +1,6 @@
 "use client";
 
+import type { PipelineOutputField } from "instill-sdk";
 import * as React from "react";
 import { arrayMove } from "@dnd-kit/sortable";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,12 +12,7 @@ import { useShallow } from "zustand/react/shallow";
 
 import { Button, Icons } from "@instill-ai/design-system";
 
-import {
-  InstillStore,
-  Nullable,
-  PipelineOutputField,
-  useInstillStore,
-} from "../../../../../lib";
+import { InstillStore, Nullable, useInstillStore } from "../../../../../lib";
 import { composeEdgesFromNodes, isResponseNode } from "../../../lib";
 import { ResponseNodeData } from "../../../type";
 import { ComponentOutputs } from "../../ComponentOutputs";

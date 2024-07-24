@@ -1,6 +1,6 @@
+import type { PipelineComponentMap } from "instill-sdk";
 import { Node } from "reactflow";
 
-import { PipelineComponentMap } from "../../../lib";
 import { NodeData } from "../type";
 import { isPipelineGeneralComponent } from "./checkComponentType";
 import { isGeneralNode, isIteratorNode } from "./checkNodeType";

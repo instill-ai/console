@@ -1,13 +1,11 @@
-import type { Pipeline } from "instill-sdk";
+import type { Pipeline, PipelineRelease } from "instill-sdk";
 
 import { LoadingSpin } from "../../../components";
-import { PipelineRelease } from "../../../lib";
 import { PipelineTabNames } from "../../../server";
 import { PipelineApi } from "./PipelineApi";
 import { PipelinePlayground } from "./PipelinePlayground";
 import { PipelinePreview } from "./PipelinePreview";
 import { PipelineReadme } from "./PipelineReadme";
-//import { PipelineRuns } from "./PipelineRuns";
 import { PipelineSettings } from "./PipelineSettings";
 import { PipelineVersions } from "./PipelineVersions";
 

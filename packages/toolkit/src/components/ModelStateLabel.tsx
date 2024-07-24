@@ -1,11 +1,12 @@
 "use client";
 
+import type { ModelState } from "instill-sdk";
 import cn from "clsx";
 
-import type { Nullable, ResourceState } from "../lib";
+import type { Nullable } from "../lib";
 
 export type ModelStateLabelProps = {
-  state?: Nullable<ResourceState>;
+  state?: Nullable<ModelState>;
   className?: string;
 };
 
@@ -46,13 +47,6 @@ export const ModelStateLabel = ({ state, className }: ModelStateLabelProps) => {
       bgColor = "bg-semantic-bg-secondary-alt-primary";
       stateLabelName = "Offline";
       indicatorColor = "bg-semantic-fg-on-default";
-      break;
-    }
-    case "STATE_INACTIVE": {
-      textColor = "text-semantic-fg-secondary";
-      bgColor = "bg-semantic-bg-secondary";
-      stateLabelName = "Inactive";
-      indicatorColor = "bg-semantic-fg-secondary";
       break;
     }
     case "STATE_SCALING": {

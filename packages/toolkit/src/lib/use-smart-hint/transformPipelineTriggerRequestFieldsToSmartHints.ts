@@ -1,4 +1,5 @@
-import { PipelineVariableFieldMap } from "../vdp-sdk";
+import type { PipelineVariableFieldMap } from "instill-sdk";
+
 import { SmartHint } from "./types";
 
 export function transformPipelineTriggerRequestFieldsToSmartHints(

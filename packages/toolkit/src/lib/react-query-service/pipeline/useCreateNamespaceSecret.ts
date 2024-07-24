@@ -1,10 +1,9 @@
 "use client";
 
-import type { CreateNamespaceSecretRequest } from "instill-sdk";
+import type { CreateNamespaceSecretRequest, Secret } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import type { Nullable } from "../../type";
-import type { Secret } from "../../vdp-sdk";
 import {
   getUseNamespaceSecretQueryKey,
   getUseNamespaceSecretsQueryKey,

@@ -1,10 +1,11 @@
+import type { PipelineComponent } from "instill-sdk";
+
 import { getGeneralComponentInOutputSchema } from "../../../view";
 import {
   isPipelineGeneralComponent,
   isPipelineIteratorComponent,
 } from "../../../view/pipeline-builder/lib/checkComponentType";
 import { transformInstillJSONSchemaToFormTree } from "../../use-instill-form/transform";
-import { PipelineComponent } from "../../vdp-sdk";
 import { transformFormTreeToSmartHints } from "../transformFormTreeToSmartHints";
 import { SmartHint } from "../types";
 

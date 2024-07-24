@@ -10,7 +10,6 @@ import {
   isVariableNode,
 } from "./checkNodeType";
 import { createNodesFromPipelineComponents } from "./createNodesFromPipelineComponents";
-import { getGeneralComponentConfiguration } from "./getGeneralComponentConfiguration";
 import { getGeneralComponentInOutputSchema } from "./getGeneralComponentInOutputSchema";
 import {
   getPropertiesFromOpenAPISchema,
@@ -102,7 +101,12 @@ function getConnectedReferencesFromNodes(
     }
 
     if (isGeneralNode(node)) {
-      const configuration = getGeneralComponentConfiguration(node.data);
+      const configuration = {
+        input: node.data.input,
+        task: node.data.task,
+        condition: node.data.condition,
+        setup: node.data.setup,
+      };
 
       const referencesOfThisNode = getReferencesFromAny(configuration);
 

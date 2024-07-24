@@ -1,8 +1,7 @@
-import type { Pipeline } from "instill-sdk";
+import type { Pipeline, PipelineRelease } from "instill-sdk";
 import * as React from "react";
 import { useSearchParams } from "next/navigation";
 
-import { PipelineRelease } from "../../../lib";
 import { ReadOnlyPipelineBuilder } from "../../pipeline-builder";
 
 export type PipelinePreviewProps = {

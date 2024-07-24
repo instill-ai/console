@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Secret } from "instill-sdk";
 
 import { InstillCredit } from "../../../../constant";
 import { Nullable } from "../../../type";
@@ -6,7 +7,6 @@ import {
   pickSmartHintsFromAcceptFormats,
   SmartHint,
 } from "../../../use-smart-hint";
-import { Secret } from "../../../vdp-sdk";
 
 export function useFilteredHints({
   smartHints,

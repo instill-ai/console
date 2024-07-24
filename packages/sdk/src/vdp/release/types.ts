@@ -1,7 +1,5 @@
-import { OpenAPIV3 } from "openapi-types";
-
-import { GeneralRecord, Visibility } from "../../types";
-import { PipelineRecipe } from "../pipeline";
+import { GeneralRecord } from "../../types";
+import { DataSpecification, PipelineRecipe } from "../pipeline";
 
 export type PipelineRelease = {
   name: string;
@@ -11,8 +9,7 @@ export type PipelineRelease = {
   recipe: PipelineRecipe;
   createTime: string;
   updateTime: string;
-  visibility: Visibility;
-  openapiSchema: OpenAPIV3.Document;
+  dataSpecification: DataSpecification;
   metadata: GeneralRecord;
   alias?: string;
 };

@@ -1,9 +1,9 @@
 "use client";
 
+import type { Secret } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import type { Nullable } from "../../type";
-import type { Secret } from "../../vdp-sdk";
 import { getInstillAPIClient } from "../../vdp-sdk";
 import { getUseNamespaceSecretQueryKey } from "./use-namespace-secret/server";
 import { getUseNamespaceSecretsQueryKey } from "./use-namespace-secrets/server";
