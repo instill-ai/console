@@ -1,6 +1,5 @@
 import React from 'react';
 import { Chunk, KnowledgeBase, File } from "../../../../../sdk/src/vdp/artifact/types";
-import { useArtifactClient } from '../../../lib/react-query-service/knowledge';
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import FileDetailsOverlay from '../components/FileDetailsOverlay';
 import { Icons, Nullable, Separator, Skeleton } from '@instill-ai/design-system';
@@ -24,17 +23,18 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase }) => {
 
   const artifactClient = useArtifactClient();
 
-  const { data: knowledgeBaseFiles, isLoading: isLoadingFiles } = artifactClient.useListKnowledgeBasesFiles({
+  const knowledgeBaseFiles = artifactClient.useListKnowledgeBaseFiles({
     ownerId: knowledgeBase.ownerName,
     kbId: knowledgeBase.kbId,
     enabled: true,
+    enablePagination: false,
   });
 
   React.useEffect(() => {
-    if (knowledgeBaseFiles && knowledgeBaseFiles.length > 0) {
-      setExpandedFiles([knowledgeBaseFiles[0].fileUid]);
+    if (knowledgeBaseFiles.data && knowledgeBaseFiles.data.length > 0) {
+      setExpandedFiles([knowledgeBaseFiles.data[0].fileUid]);
     }
-  }, [knowledgeBaseFiles]);
+  }, [knowledgeBaseFiles.data]);
 
   const toggleFileExpansion = (fileUid: string) => {
     setExpandedFiles(prev =>
@@ -62,6 +62,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase }) => {
         chunkUid,
         retrievable: !currentValue,
       });
+      knowledgeBaseFiles.refetch();
     } catch (error) {
       console.error("Failed to update chunk retrievable status:", error);
     }
@@ -144,6 +145,3 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase }) => {
     </div>
   );
 };
-
-
-

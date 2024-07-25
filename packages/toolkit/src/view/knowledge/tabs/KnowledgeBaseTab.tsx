@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Separator, Skeleton } from "@instill-ai/design-system";
 import { KnowledgeBase } from "../../../../../sdk/src/vdp/artifact/types";
 import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
-import { useArtifactClient } from '../../../lib/react-query-service/knowledge';
 import * as z from "zod";
 import KnowledgeSearchSort, { SortAnchor, SortOrder } from "../components/KnowledgeSearchSort";
 import { CreateKnowledgeBaseCard, CreateKnowledgeDialog, KnowledgeBaseCard } from "../components";
@@ -43,9 +42,10 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
 
   const artifactClient = useArtifactClient();
 
-  const { data: knowledgeBases, isLoading, refetch } = artifactClient.useGetKnowledgeBases({
+  const knowledgeBases = artifactClient.useListKnowledgeBases({
     ownerId: me.data?.id ?? "",
     enabled: enabledQuery && !!me.data?.id,
+    enablePagination: false,
   });
 
   const handleCreateKnowledgeSubmit = async (
@@ -62,7 +62,7 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
           tags: data.tags ?? [],
         },
       });
-      refetch();
+      knowledgeBases.refetch();
       setIsCreateDialogOpen(false);
     } catch (error) {
       console.error("Error creating knowledge base:", error);
@@ -81,7 +81,7 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
         kbId: kbId,
         payload: data,
       });
-      refetch();
+      knowledgeBases.refetch();
     } catch (error) {
       console.error("Error updating knowledge base:", error);
     }
@@ -101,7 +101,7 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
         ownerId: me.data.id,
         payload: clonedKnowledgeBase,
       });
-      refetch();
+      knowledgeBases.refetch();
     } catch (error) {
       console.error("Error cloning knowledge base:", error);
     }
@@ -115,16 +115,16 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
         ownerId: me.data.id,
         kbId: kbId,
       });
-      refetch();
+      knowledgeBases.refetch();
     } catch (error) {
       console.error("Error deleting knowledge base:", error);
     }
   };
 
   const filteredAndSortedKnowledgeBases = React.useMemo(() => {
-    if (!knowledgeBases) return [];
+    if (!knowledgeBases.data) return [];
 
-    let filtered = knowledgeBases.filter((kb) =>
+    let filtered = knowledgeBases.data.filter((kb) =>
       kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       kb.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -157,9 +157,9 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
     });
 
     return filtered;
-  }, [knowledgeBases, searchTerm, selectedSortAnchor, selectedSortOrder]);
+  }, [knowledgeBases.data, searchTerm, selectedSortAnchor, selectedSortOrder]);
 
-  const hasReachedLimit = (knowledgeBases?.length ?? 0) >= 3;
+  const hasReachedLimit = (knowledgeBases.data?.length ?? 0) >= 3;
 
   return (
     <div className="flex flex-col">
@@ -177,7 +177,7 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
         />
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {isLoading ? (
+      {knowledgeBases.isLoading ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div

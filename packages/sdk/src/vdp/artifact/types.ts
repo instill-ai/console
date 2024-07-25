@@ -1,5 +1,4 @@
 export type KnowledgeBase = {
-  usage: number;
   kbId: string;
   name: string;
   description: string;
@@ -7,26 +6,17 @@ export type KnowledgeBase = {
   updateTime: string;
   ownerName: string;
   tags: string[];
-  convertingPipelines: string[];
-  splittingPipelines: string[];
-  embeddingPipelines: string[];
-  downstreamApps: string[];
-}
-
-export type FileSnippet = {
-  id: string;
-  content: string;
-  fileName: string;
-  sectionTitle: string;
-  chapters: string[][];
-  score: number;
+  convertPipelineId: string;
+  splitPipelineId: string;
+  embeddingPipelineId: string;
+  downstreamAiApps: string[];
 };
 
 export type File = {
   fileUid: string;
   name: string;
   type: string;
-  processStatus: FileStatus;
+  processStatus: string;
   processOutcome: string;
   retrievable: boolean;
   content: string;
@@ -51,21 +41,136 @@ export type Chunk = {
   originalFileUid: string;
 };
 
-export interface SourceFile {
+export type SourceFile = {
   content: string;
-}
+};
 
-export interface SimilarityChunk {
+export type SimilarityChunk = {
   chunkUid: string;
   content: string;
   score: number;
-}
+};
 
-export type FileStatus =
-  | "FILE_PROCESS_STATUS_NOTSTARTED"
-  | "FILE_PROCESS_STATUS_WAITING"
-  | "FILE_PROCESS_STATUS_CONVERTING"
-  | "FILE_PROCESS_STATUS_CHUNKING"
-  | "FILE_PROCESS_STATUS_EMBEDDING"
-  | "FILE_PROCESS_STATUS_COMPLETED"
-  | "FILE_PROCESS_STATUS_FAILED";
+export type ListKnowledgeBasesRequest = {
+  ownerId: string;
+  pageSize?: number;
+  pageToken?: string;
+};
+
+export type ListKnowledgeBasesResponse = {
+  knowledgeBases: KnowledgeBase[];
+  nextPageToken: string;
+  totalSize: number;
+};
+
+export type GetKnowledgeBaseRequest = {
+  ownerId: string;
+  kbId: string;
+};
+
+export type CreateKnowledgeBaseRequest = {
+  ownerId: string;
+  payload: {
+    name: string;
+    description: string;
+    tags?: string[];
+  };
+};
+
+export type UpdateKnowledgeBaseRequest = {
+  ownerId: string;
+  kbId: string;
+  payload: {
+    name?: string;
+    description?: string;
+    tags?: string[];
+  };
+};
+
+export type DeleteKnowledgeBaseRequest = {
+  ownerId: string;
+  kbId: string;
+};
+
+export type ListKnowledgeBaseFilesRequest = {
+  ownerId: string;
+  kbId: string;
+  pageSize?: number;
+  pageToken?: string;
+};
+
+export type ListKnowledgeBaseFilesResponse = {
+  files: File[];
+  nextPageToken: string;
+  totalSize: number;
+};
+
+export type UploadKnowledgeBaseFileRequest = {
+  ownerId: string;
+  kbId: string;
+  payload: {
+    name: string;
+    type: string;
+    content: string;
+  };
+};
+
+export type DeleteKnowledgeBaseFileRequest = {
+  fileUid: string;
+};
+
+export type ListChunksRequest = {
+  ownerId: string;
+  kbId: string;
+  fileUid: string;
+  pageSize?: number;
+  pageToken?: string;
+};
+
+export type ListChunksResponse = {
+  chunks: Chunk[];
+  nextPageToken: string;
+  totalSize: number;
+};
+
+export type UpdateChunkRequest = {
+  chunkUid: string;
+  retrievable: boolean;
+};
+
+export type GetChunkContentRequest = {
+  ownerId: string;
+  kbId: string;
+  chunkUid: string;
+};
+
+export type GetFileContentRequest = {
+  ownerId: string;
+  kbId: string;
+  fileUid: string;
+};
+
+export type GetFileDetailsRequest = {
+  ownerId: string;
+  kbId: string;
+  fileUid: string;
+};
+
+export type GetSourceFileRequest = {
+  ownerId: string;
+  kbId: string;
+  fileUid: string;
+};
+
+export type ProcessKnowledgeBaseFilesRequest = {
+  fileUids: string[];
+};
+
+export type SimilarityChunksSearchRequest = {
+  ownerId: string;
+  kbId: string;
+  payload: {
+    textPrompt: string;
+    topk: number;
+  };
+};
