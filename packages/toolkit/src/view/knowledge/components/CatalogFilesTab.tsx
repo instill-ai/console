@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icons, Separator, Skeleton, Tag } from "@instill-ai/design-system";
+import { Button, Icons, Nullable, Separator, Skeleton, Tag } from "@instill-ai/design-system";
 import { KnowledgeBase, File } from "../../../../../sdk/src/vdp/artifact/types";
 import { DELETE_FILE_TIMEOUT } from "./undoDeleteTime";
 import DeleteFileNotification from "./Notifications/DeleteFileNotification";
@@ -15,6 +15,11 @@ type FileStatus = "NOTSTARTED" | "WAITING" | "CONVERTING" | "CHUNKING" | "EMBEDD
 
 type TagVariant = "lightNeutral" | "lightYellow" | "default" | "lightGreen" | "lightRed";
 
+type SortConfig = {
+  key: keyof File | "";
+  direction: "ascending" | "descending" | "";
+};
+
 const getStatusTag = (status: FileStatus): { variant: TagVariant; dotColor: string } => {
   const statusMap: Record<FileStatus, { variant: TagVariant; dotColor: string }> = {
     NOTSTARTED: { variant: "lightNeutral", dotColor: "bg-semantic-fg-secondary" },
@@ -28,23 +33,20 @@ const getStatusTag = (status: FileStatus): { variant: TagVariant; dotColor: stri
   return statusMap[status] || statusMap.NOTSTARTED;
 };
 
+const storeSelector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
+
 export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase }) => {
-  const [sortConfig, setSortConfig] = React.useState<{
-    key: keyof File | "";
-    direction: "ascending" | "descending" | "";
-  }>({
+  const [sortConfig, setSortConfig] = React.useState<SortConfig>({
     key: "",
     direction: "",
   });
 
-  const { accessToken, enabledQuery } = useInstillStore(
-    useShallow((store: InstillStore) => ({
-      accessToken: store.accessToken,
-      enabledQuery: store.enabledQuery,
-    }))
-  );
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(storeSelector));
 
-  const { data: files, isLoading, refetch } = useListKnowledgeBaseFiles({
+  const knowledgeBaseFiles = useListKnowledgeBaseFiles({
     ownerId: knowledgeBase.ownerName,
     knowledgeBaseId: knowledgeBase.kbId,
     accessToken,
@@ -53,17 +55,17 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
 
   const deleteKnowledgeBaseFile = useDeleteKnowledgeBaseFile();
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
-  const [fileToDelete, setFileToDelete] = React.useState<File | null>(null);
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const [fileToDelete, setFileToDelete] = React.useState<Nullable<File>>(null);
+  const timeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
-  const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = React.useState<Nullable<File>>(null);
 
   React.useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: Nullable<NodeJS.Timeout> = null;
 
-    if (files && files.some(file => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED")) {
+    if (knowledgeBaseFiles.data && knowledgeBaseFiles.data.some(file => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED")) {
       interval = setInterval(() => {
-        refetch();
+        knowledgeBaseFiles.refetch();
       }, 5000);
     }
 
@@ -75,7 +77,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [files, refetch]);
+  }, [knowledgeBaseFiles.data, knowledgeBaseFiles.refetch]);
 
   const handleFileClick = (file: File) => {
     setSelectedFile(file);
@@ -101,8 +103,8 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
   };
 
   const sortedData = React.useMemo(() => {
-    if (!files) return [];
-    return [...files].sort((a, b) => {
+    if (!knowledgeBaseFiles.data) return [];
+    return [...knowledgeBaseFiles.data].sort((a, b) => {
       if (sortConfig.key === "") return 0;
 
       let aValue: any = a[sortConfig.key];
@@ -127,10 +129,10 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
       }
       return 0;
     });
-  }, [files, sortConfig]);
+  }, [knowledgeBaseFiles.data, sortConfig]);
 
   const handleDelete = (fileUid: string) => {
-    const file = files?.find((item) => item.fileUid === fileUid);
+    const file = knowledgeBaseFiles.data?.find((item) => item.fileUid === fileUid);
     if (file) {
       setFileToDelete(file);
       setShowDeleteMessage(true);
@@ -150,7 +152,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
         fileUid: file.fileUid,
         accessToken,
       });
-      await refetch();
+      await knowledgeBaseFiles.refetch();
     } catch (error) {
       console.error("Error deleting file:", error);
     } finally {
@@ -209,13 +211,13 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
         </div> */}
         <div className="flex rounded border border-semantic-bg-line bg-semantic-bg-primary">
           <div className="flex w-full flex-col">
-            {isLoading ? (
+            {knowledgeBaseFiles.isLoading ? (
               <div className="p-8">
                 <Skeleton className="h-8 w-full mb-4" />
                 <Skeleton className="h-8 w-full mb-4" />
                 <Skeleton className="h-8 w-full" />
               </div>
-            ) : files && files.length > 0 ? (
+            ) : knowledgeBaseFiles.data && knowledgeBaseFiles.data.length > 0 ? (
               <>
                 <div className="grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center border-b border-semantic-bg-line bg-semantic-bg-base-bg">
                   <div className="flex items-center justify-center gap-1">
