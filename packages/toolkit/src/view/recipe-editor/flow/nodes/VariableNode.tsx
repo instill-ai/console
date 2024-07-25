@@ -1,8 +1,4 @@
-import { NodeProps } from "reactflow";
-
-import { TriggerNodeData } from "../../../pipeline-builder";
-
-export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
+export const VariableNode = () => {
   // console.log(data, id);
   return <div />;
 };

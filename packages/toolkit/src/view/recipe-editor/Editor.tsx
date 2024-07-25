@@ -7,6 +7,7 @@ import { EditorView } from "@codemirror/view";
 import { langs } from "@uiw/codemirror-extensions-langs";
 import { githubLight } from "@uiw/codemirror-theme-github";
 import CodeMirror, { Compartment } from "@uiw/react-codemirror";
+import { PipelineComponentMap, PipelineRecipe } from "instill-sdk";
 import yaml from "js-yaml";
 import debounce from "lodash.debounce";
 
@@ -14,8 +15,6 @@ import {
   GeneralRecord,
   InstillStore,
   Nullable,
-  PipelineComponentMap,
-  PipelineRecipe,
   SmartHint,
   useInstillStore,
   useRouteInfo,
