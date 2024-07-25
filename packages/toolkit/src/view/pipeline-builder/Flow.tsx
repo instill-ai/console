@@ -5,12 +5,7 @@ import { ReactFlowInstance } from "reactflow";
 import { useShallow } from "zustand/react/shallow";
 
 import { InstillStore, Nullable, useInstillStore } from "../../lib";
-import { env } from "../../server";
-import {
-  BackToLatestVersionTopBar,
-  IteratorEditor,
-  RemainingCreditCTA,
-} from "./components";
+import { BackToLatestVersionTopBar, IteratorEditor } from "./components";
 import { PipelineBuilderCanvas } from "./components/PipelineBuilderCanvas";
 
 const selector = (store: InstillStore) => ({
@@ -74,11 +69,11 @@ export const Flow = React.forwardRef<HTMLDivElement, FlowProps>(
               </div>
             </div>
           ) : null}
-          {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
+          {/* {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
               <RemainingCreditCTA ctaTargetHref="/subscribe" />
             </div>
-          ) : null}
+          ) : null} */}
         </div>
       </div>
     );
