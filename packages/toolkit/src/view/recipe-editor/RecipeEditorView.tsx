@@ -52,7 +52,7 @@ export const RecipeEditorView = () => {
             <ComponentCmdk />
             <Resizable.PanelGroup direction="horizontal" className="w-full">
               <Resizable.Panel defaultSize={50} minSize={25}>
-                <VscodeEditor recipe={pipeline.data?.recipe ?? null} />
+                <VscodeEditor />
               </Resizable.Panel>
               <Resizable.Handle />
               <Resizable.Panel defaultSize={50} minSize={25}>

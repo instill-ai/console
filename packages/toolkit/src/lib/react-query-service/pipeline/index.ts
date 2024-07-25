@@ -11,6 +11,7 @@ export * from "./useInfiniteNamespacePipelineReleases.js";
 export * from "./useOperatorDefinition";
 export * from "./useOperatorDefinitions";
 export * from "./useRenameNamespacePipeline";
+export * from "./useStreamingTriggerUserPipeline";
 export * from "./useTriggerNamespacePipeline";
 export * from "./useTriggerNamespacePipelineRelease";
 export * from "./useUpdateNamespacePipeline";
