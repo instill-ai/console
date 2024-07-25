@@ -10,7 +10,7 @@ import * as React from "react";
 import { KnowledgeBase } from "../../../../../sdk/src/vdp/artifact/types";
 import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
 import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./undoDeleteTime";
-import DeleteKnowledgeBaseNotification from "./Notifications/DeleteKnowledgeBaseNotification";
+import { DeleteKnowledgeBaseNotification } from "./notifications";
 import { useListChunks } from "../../../lib/react-query-service/knowledge";
 import { useInstillStore, useShallow } from "../../../lib";
 import { InstillStore } from "../../../lib";

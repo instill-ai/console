@@ -1,41 +1,40 @@
 import React from 'react';
 import { Chunk, KnowledgeBase, File } from "../../../../../sdk/src/vdp/artifact/types";
-import {  useListKnowledgeBaseFiles, useUpdateChunk } from '../../../lib/react-query-service/knowledge';
+import { useArtifactClient } from '../../../lib/react-query-service/knowledge';
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
-import FileDetailsOverlay from './FileDetailsOverlay';
+import FileDetailsOverlay from '../components/FileDetailsOverlay';
 import { Icons, Nullable, Separator, Skeleton } from '@instill-ai/design-system';
-import FileChunks from './FileChunks';
+import FileChunks from '../components/FileChunks';
 
 type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;
 };
 
-export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
+const storeSelector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+});
+
+export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase }) => {
   const [expandedFiles, setExpandedFiles] = React.useState<string[]>([]);
   const [selectedChunk, setSelectedChunk] = React.useState<Nullable<Chunk>>(null);
   const [selectedFile, setSelectedFile] = React.useState<Nullable<File>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
-  const { accessToken } = useInstillStore(
-    useShallow((store: InstillStore) => ({
-      accessToken: store.accessToken,
-    }))
-  );
+  const { accessToken } = useInstillStore(useShallow(storeSelector));
 
-  const { data: files, isLoading: isLoadingFiles } = useListKnowledgeBaseFiles({
+  const artifactClient = useArtifactClient();
+
+  const { data: knowledgeBaseFiles, isLoading: isLoadingFiles } = artifactClient.useListKnowledgeBasesFiles({
     ownerId: knowledgeBase.ownerName,
-    knowledgeBaseId: knowledgeBase.kbId,
-    accessToken,
+    kbId: knowledgeBase.kbId,
     enabled: true,
   });
 
-  const updateChunkMutation = useUpdateChunk();
-
   React.useEffect(() => {
-    if (files && files.length > 0) {
-      setExpandedFiles([files[0].fileUid]);
+    if (knowledgeBaseFiles && knowledgeBaseFiles.length > 0) {
+      setExpandedFiles([knowledgeBaseFiles[0].fileUid]);
     }
-  }, [files]);
+  }, [knowledgeBaseFiles]);
 
   const toggleFileExpansion = (fileUid: string) => {
     setExpandedFiles(prev =>
@@ -59,9 +58,8 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
 
   const handleRetrievableToggle = async (chunkUid: string, currentValue: boolean) => {
     try {
-      await updateChunkMutation.mutateAsync({
+      await artifactClient.updateChunk({
         chunkUid,
-        accessToken,
         retrievable: !currentValue,
       });
     } catch (error) {
@@ -70,14 +68,14 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
   };
 
   return (
-<div className="flex-col">
+    <div className="flex-col">
       <div className="mb-5 flex items-center justify-between">
         <p className="text-semantic-fg-primary product-headings-heading-2">
           {knowledgeBase.name}
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {isLoadingFiles ? (
+      {knowledgeBaseFiles.isLoading ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
@@ -100,10 +98,10 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
           ))}
         </div>
       ) : (
-        files && files.length > 0 ? (
+        knowledgeBaseFiles.data && knowledgeBaseFiles.data.length > 0 ? (
           <div className="flex">
             <div className="w-full pr-4">
-              {files.map((file: File) => (
+              {knowledgeBaseFiles.data.map((file: File) => (
                 <FileChunks
                   key={file.fileUid}
                   file={file}

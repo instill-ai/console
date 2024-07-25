@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Icons, Nullable, Separator, Skeleton, Tag } from "@instill-ai/design-system";
 import { KnowledgeBase, File } from "../../../../../sdk/src/vdp/artifact/types";
-import { DELETE_FILE_TIMEOUT } from "./undoDeleteTime";
-import DeleteFileNotification from "./Notifications/DeleteFileNotification";
+import { DELETE_FILE_TIMEOUT } from "../components/undoDeleteTime";
+import DeleteFileNotification from "../components/notifications";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useListKnowledgeBaseFiles, useDeleteKnowledgeBaseFile } from "../../../lib/react-query-service/knowledge";
-import FileDetailsOverlay from "./FileDetailsOverlay";
+import FileDetailsOverlay from "../components/FileDetailsOverlay";
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -59,6 +59,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
   const timeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState<Nullable<File>>(null);
+
 
   React.useEffect(() => {
     let interval: Nullable<NodeJS.Timeout> = null;

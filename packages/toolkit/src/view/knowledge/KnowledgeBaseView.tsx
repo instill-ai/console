@@ -1,18 +1,20 @@
 import { GeneralAppPageProp } from "../../lib";
-import { Sidebar } from "./components/Sidebar";
-import { KnowledgeBaseTab } from "./components/KnowledgeBaseTab";
-import { UploadExploreTab } from "./components/UploadExploreTab";
-import { CatalogFilesTab } from "./components/CatalogFilesTab";
-import { MarkdownTab } from "./components/MarkdownTab";
+import { Sidebar } from "./components";
 import * as React from "react";
 import { KnowledgeBase } from "../../../../sdk/src/vdp/artifact/types";
 // import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 import { DELETE_KNOWLEDGE_BASE_TIMEOUT, CREDIT_TIMEOUT } from "./components/undoDeleteTime";
-import { ChunkTab } from "./components/ChunkTab";
 import { ImageTab } from "./components/ImageTab";
 import { Nullable } from "@instill-ai/toolkit";
-import { RetrieveTestTab } from "./components/RetrieveTestTab";
-import CreditUsageNotification from "./components/Notifications/CreditUsageFileNotification";
+import {
+  KnowledgeBaseTab,
+  UploadExploreTab,
+  CatalogFilesTab,
+  MarkdownTab,
+  ChunkTab,
+  RetrieveTestTab
+} from "./tabs";
+import { CreditUsageNotification } from "./components/Notifications";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 

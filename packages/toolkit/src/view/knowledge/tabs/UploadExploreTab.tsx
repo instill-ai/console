@@ -18,9 +18,9 @@ import {
   useShallow,
 } from "../../../lib";
 // import FilePreview from "./FilePreview";
-import IncorrectFormatFileNotification from "./Notifications/IncorrectFormatFileNotification";
-import FileSizeNotification from "./Notifications/FileSizeNotification";
-import { FILE_ERROR_TIMEOUT } from "./undoDeleteTime";
+import IncorrectFormatFileNotification from "../components/notifications/IncorrectFormatFileNotification";
+import FileSizeNotification from "../components/notifications/FileSizeNotification";
+import { FILE_ERROR_TIMEOUT } from "../components/undoDeleteTime";
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024;
 

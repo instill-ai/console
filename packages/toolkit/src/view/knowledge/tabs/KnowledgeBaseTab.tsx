@@ -1,26 +1,15 @@
-import { Icons, Input, Separator, Skeleton } from "@instill-ai/design-system";
-import * as React from "react";
-import { KnowledgeBaseCard } from "./KnowledgeBaseCard";
-import { CreateKnowledgeBaseCard } from "./CreateKnowledgeBaseCard";
-import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
-import {
-  useGetKnowledgeBases,
-  useCreateKnowledgeBase,
-  useUpdateKnowledgeBase,
-  useDeleteKnowledgeBase,
-} from "../../../lib/react-query-service/knowledge";
-import {
-  InstillStore,
-  useAuthenticatedUser,
-  useInstillStore,
-  useShallow,
-} from "../../../lib";
+import * as React from 'react';
+import { Separator, Skeleton } from "@instill-ai/design-system";
 import { KnowledgeBase } from "../../../../../sdk/src/vdp/artifact/types";
+import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
+import { useArtifactClient } from '../../../lib/react-query-service/knowledge';
 import * as z from "zod";
-import KnowledgeSearchSort, { SortAnchor, SortOrder } from "./KnowledgeSearchSort";
+import KnowledgeSearchSort, { SortAnchor, SortOrder } from "../components/KnowledgeSearchSort";
+import { CreateKnowledgeBaseCard, CreateKnowledgeDialog, KnowledgeBaseCard } from "../components";
 
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
+  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
   accessToken: string | null;
 };
 
@@ -31,10 +20,11 @@ const CreateKnowledgeFormSchema = z.object({
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
-export const KnowledgeBaseTab = ({
+export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
   onKnowledgeBaseSelect,
+  onDeleteKnowledgeBase,
   accessToken,
-}: KnowledgeBaseTabProps) => {
+}) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [selectedSortOrder, setSelectedSortOrder] = React.useState<SortOrder>("desc");
@@ -51,15 +41,12 @@ export const KnowledgeBaseTab = ({
     accessToken,
   });
 
-  const { data: knowledgeBases, isLoading, refetch } = useGetKnowledgeBases({
-    accessToken,
-    ownerId: me.data?.id ?? null,
+  const artifactClient = useArtifactClient();
+
+  const { data: knowledgeBases, isLoading, refetch } = artifactClient.useGetKnowledgeBases({
+    ownerId: me.data?.id ?? "",
     enabled: enabledQuery && !!me.data?.id,
   });
-
-  const createKnowledgeBase = useCreateKnowledgeBase();
-  const updateKnowledgeBase = useUpdateKnowledgeBase();
-  const deleteKnowledgeBase = useDeleteKnowledgeBase();
 
   const handleCreateKnowledgeSubmit = async (
     data: z.infer<typeof CreateKnowledgeFormSchema>
@@ -67,14 +54,13 @@ export const KnowledgeBaseTab = ({
     if (!me.data?.id || !accessToken) return;
 
     try {
-      await createKnowledgeBase.mutateAsync({
+      await artifactClient.createKnowledgeBase({
+        ownerId: me.data.id,
         payload: {
           name: data.name,
           description: data.description,
           tags: data.tags ?? [],
         },
-        ownerId: me.data.id,
-        accessToken,
       });
       refetch();
       setIsCreateDialogOpen(false);
@@ -90,11 +76,10 @@ export const KnowledgeBaseTab = ({
     if (!me.data?.id || !accessToken) return;
 
     try {
-      await updateKnowledgeBase.mutateAsync({
+      await artifactClient.updateKnowledgeBase({
         ownerId: me.data.id,
         kbId: kbId,
         payload: data,
-        accessToken,
       });
       refetch();
     } catch (error) {
@@ -112,10 +97,9 @@ export const KnowledgeBaseTab = ({
     };
 
     try {
-      await createKnowledgeBase.mutateAsync({
-        payload: clonedKnowledgeBase,
+      await artifactClient.createKnowledgeBase({
         ownerId: me.data.id,
-        accessToken,
+        payload: clonedKnowledgeBase,
       });
       refetch();
     } catch (error) {
@@ -127,10 +111,9 @@ export const KnowledgeBaseTab = ({
     if (!me.data?.id || !accessToken) return;
 
     try {
-      await deleteKnowledgeBase.mutateAsync({
+      await artifactClient.deleteKnowledgeBase({
         ownerId: me.data.id,
         kbId: kbId,
-        accessToken,
       });
       refetch();
     } catch (error) {
