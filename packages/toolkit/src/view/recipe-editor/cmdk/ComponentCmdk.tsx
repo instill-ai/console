@@ -1,6 +1,5 @@
 import * as React from "react";
-import { EditorView } from "@codemirror/view";
-import { EditorSelection } from "@uiw/react-codemirror";
+import { IteratorDefinition, OperatorDefinition } from "instill-sdk";
 import yaml from "js-yaml";
 
 import { Command, Icons } from "@instill-ai/design-system";
@@ -13,8 +12,7 @@ import {
   isConnectorDefinition,
   isIteratorDefinition,
   isOperatorDefinition,
-  IteratorDefinition,
-  OperatorDefinition,
+  Nullable,
   useConnectorDefinitions,
   useInstillStore,
   useNamespacePipeline,
@@ -28,20 +26,26 @@ import {
   transformInstillJSONSchemaToFormTree,
 } from "../../../lib/use-instill-form/transform";
 import { generateUniqueNodeIdFromDefinition } from "../../pipeline-builder/lib/generateUniqueNodeIdFromDefinition";
-import { useEditor } from "../EditorContext";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
   isEditingIterator: store.isEditingIterator,
+  openCmdk: store.openCmdk,
+  updateOpenCmdk: store.updateOpenCmdk,
+  editorRef: store.editorRef,
 });
 
 export const ComponentCmdk = () => {
   const routeInfo = useRouteInfo();
-  const [open, setOpen] = React.useState(false);
-  const { accessToken, enabledQuery, isEditingIterator } = useInstillStore(
-    useShallow(selector),
-  );
+  const {
+    accessToken,
+    enabledQuery,
+    isEditingIterator,
+    openCmdk,
+    updateOpenCmdk,
+    editorRef,
+  } = useInstillStore(useShallow(selector));
 
   const pipeline = useNamespacePipeline({
     namespacePipelineName: routeInfo.isSuccess
@@ -50,8 +54,6 @@ export const ComponentCmdk = () => {
     accessToken,
     enabled: enabledQuery,
   });
-
-  const { editorRef } = useEditor();
 
   const operatorDefinitions = useOperatorDefinitions({
     enabled: enabledQuery,
@@ -80,7 +82,7 @@ export const ComponentCmdk = () => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey) && !isEditingIterator) {
         e.preventDefault();
-        setOpen((open) => !open);
+        updateOpenCmdk((open) => !open);
       }
     };
 
@@ -88,14 +90,14 @@ export const ComponentCmdk = () => {
     return () => document.removeEventListener("keydown", down);
   }, [isEditingIterator]);
 
-  function dispatchOnCursor(view: EditorView, text: string) {
-    view.dispatch(
-      view.state.changeByRange((range) => ({
-        changes: [{ from: range.from, insert: text }],
-        range: EditorSelection.range(range.from, range.to + text.length),
-      })),
-    );
-  }
+  // function dispatchOnCursor(view: EditorView, text: string) {
+  //   view.dispatch(
+  //     view.state.changeByRange((range) => ({
+  //       changes: [{ from: range.from, insert: text }],
+  //       range: EditorSelection.range(range.from, range.to + text.length),
+  //     })),
+  //   );
+  // }
 
   function generateDefaultValue(schema: InstillJSONSchema) {
     const formTree = transformInstillJSONSchemaToFormTree(schema);
@@ -112,6 +114,64 @@ export const ComponentCmdk = () => {
     return data;
   }
 
+  // function onSelect(
+  //   definition: OperatorDefinition | IteratorDefinition | ConnectorDefinition,
+  // ) {
+  //   if (!pipeline.isSuccess) {
+  //     return;
+  //   }
+
+  //   const componentIds = pipeline.data.recipe.component
+  //     ? Object.keys(pipeline.data.recipe.component)
+  //     : [];
+
+  //   const view = editorRef.current?.view;
+
+  //   if (view) {
+  //     if (isIteratorDefinition(definition)) {
+  //       const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
+  //       const doc = yaml.dump({
+  //         [id]: {
+  //           type: "iterator",
+  //         },
+  //       });
+
+  //       dispatchOnCursor(view, doc);
+  //     }
+
+  //     if (isOperatorDefinition(definition)) {
+  //       const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
+  //       const defaultValue = generateDefaultValue(
+  //         definition.spec.componentSpecification,
+  //       );
+
+  //       const doc = yaml.dump({
+  //         [id]: {
+  //           type: definition.id,
+  //           ...defaultValue,
+  //         },
+  //       });
+
+  //       dispatchOnCursor(view, doc);
+  //     }
+
+  //     if (isConnectorDefinition(definition)) {
+  //       const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
+  //       const defaultValue = generateDefaultValue(
+  //         definition.spec.componentSpecification,
+  //       );
+  //       const doc = yaml.dump({
+  //         [id]: {
+  //           type: definition.id,
+  //           ...defaultValue,
+  //         },
+  //       });
+
+  //       dispatchOnCursor(view, doc);
+  //     }
+  //   }
+  // }
+
   function onSelect(
     definition: OperatorDefinition | IteratorDefinition | ConnectorDefinition,
   ) {
@@ -119,62 +179,74 @@ export const ComponentCmdk = () => {
       return;
     }
 
+    if (!editorRef) {
+      return;
+    }
+
     const componentIds = pipeline.data.recipe.component
       ? Object.keys(pipeline.data.recipe.component)
       : [];
 
-    const view = editorRef.current?.view;
+    let doc: Nullable<string> = null;
 
-    if (view) {
-      if (isIteratorDefinition(definition)) {
-        const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
-        const doc = yaml.dump({
-          [id]: {
-            type: "iterator",
-          },
-        });
+    if (isIteratorDefinition(definition)) {
+      const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
+      doc = yaml.dump({
+        [id]: {
+          type: "iterator",
+        },
+      });
+    }
 
-        dispatchOnCursor(view, doc);
-      }
+    if (isOperatorDefinition(definition)) {
+      const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
+      const defaultValue = generateDefaultValue(
+        definition.spec.componentSpecification,
+      );
 
-      if (isOperatorDefinition(definition)) {
-        const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
-        const defaultValue = generateDefaultValue(
-          definition.spec.componentSpecification,
-        );
+      doc = yaml.dump({
+        [id]: {
+          type: definition.id,
+          ...defaultValue,
+        },
+      });
+    }
 
-        const doc = yaml.dump({
-          [id]: {
-            type: definition.id,
-            ...defaultValue,
-          },
-        });
+    if (isConnectorDefinition(definition)) {
+      const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
+      const defaultValue = generateDefaultValue(
+        definition.spec.componentSpecification,
+      );
+      doc = yaml.dump({
+        [id]: {
+          type: definition.id,
+          ...defaultValue,
+        },
+      });
+    }
 
-        dispatchOnCursor(view, doc);
-      }
+    const selection = editorRef.getSelection();
 
-      if (isConnectorDefinition(definition)) {
-        const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
-        const defaultValue = generateDefaultValue(
-          definition.spec.componentSpecification,
-        );
-        const doc = yaml.dump({
-          [id]: {
-            type: definition.id,
-            ...defaultValue,
-          },
-        });
+    if (doc && selection) {
+      editorRef.executeEdits("cmdk", [
+        {
+          range: selection,
+          text: doc,
+        },
+      ]);
 
-        dispatchOnCursor(view, doc);
-      }
+      // We need this setTimeout to correctly focus the editor after the edit
+      setTimeout(() => {
+        editorRef.focus();
+      }, 100);
     }
   }
 
   return (
     <Command.Dialog
       dialogContentClassName="w-[600px] h-[450px]"
-      open={open}
-      onOpenChange={setOpen}
+      open={openCmdk}
+      onOpenChange={(open) => updateOpenCmdk(() => open)}
     >
       <Command.Input placeholder="Search component..." />
       <Command.List className="max-h-none">
@@ -190,7 +262,7 @@ export const ComponentCmdk = () => {
                     name: "iterator/iterator",
                     uid: "uid",
                   });
-                  setOpen(false);
+                  updateOpenCmdk(() => false);
                 }}
                 value="iterators"
               >
@@ -214,7 +286,7 @@ export const ComponentCmdk = () => {
                   <Command.Item
                     onSelect={() => {
                       onSelect(definition);
-                      setOpen(false);
+                      updateOpenCmdk(() => false);
                     }}
                     key={definition.id}
                     value={definition.id}
@@ -243,7 +315,7 @@ export const ComponentCmdk = () => {
                   <Command.Item
                     onSelect={() => {
                       onSelect(definition);
-                      setOpen(false);
+                      updateOpenCmdk(() => false);
                     }}
                     key={definition.id}
                     value={definition.id}
@@ -272,7 +344,7 @@ export const ComponentCmdk = () => {
                   <Command.Item
                     onSelect={() => {
                       onSelect(definition);
-                      setOpen(false);
+                      updateOpenCmdk(() => false);
                     }}
                     key={definition.id}
                     value={definition.id}
@@ -301,7 +373,7 @@ export const ComponentCmdk = () => {
                   <Command.Item
                     onSelect={() => {
                       onSelect(definition);
-                      setOpen(false);
+                      updateOpenCmdk(() => false);
                     }}
                     key={definition.id}
                     value={definition.id}

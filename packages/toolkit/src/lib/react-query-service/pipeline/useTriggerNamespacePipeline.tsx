@@ -9,7 +9,7 @@ import { getInstillAPIClient } from "../../vdp-sdk";
 export function useTriggerNamespacePipeline() {
   return useMutation({
     mutationFn: async (
-      props: TriggerNamespacePipelineRequest & {
+      props: Omit<TriggerNamespacePipelineRequest, "streaming"> & {
         accessToken: Nullable<string>;
         triggerNamespaceName?: string;
       },

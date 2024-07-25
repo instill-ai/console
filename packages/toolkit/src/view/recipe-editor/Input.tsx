@@ -1,4 +1,5 @@
 import * as React from "react";
+import { PipelineVariableFieldMap } from "instill-sdk";
 import * as z from "zod";
 
 import { Form } from "@instill-ai/design-system";
@@ -7,12 +8,10 @@ import {
   GeneralRecord,
   InstillStore,
   Nullable,
-  PipelineVariableFieldMap,
-  triggerUserPipelineAction,
-  TriggerUserPipelineWithStreamData,
   useInstillStore,
   usePipelineTriggerRequestForm,
   useShallow,
+  useStreamingTriggerUserPipeline,
   useUserNamespaces,
 } from "../../lib";
 import { env } from "../../server";
@@ -51,7 +50,7 @@ export const Input = ({
   });
 
   const namespace = useUserNamespaces();
-
+  const triggerPipeline = useStreamingTriggerUserPipeline();
   async function onTriggerPipeline(formData: z.infer<typeof Schema>) {
     if (!pipelineName || !formData || !fields) return;
 
@@ -99,15 +98,12 @@ export const Input = ({
         (ns) => ns.id === navigationNamespaceAnchor,
       );
 
-      const data = await triggerUserPipelineAction({
-        pipelineName,
+      const data = await triggerPipeline.mutateAsync({
+        namespacePipelineName: pipelineName,
         accessToken,
-        payload: {
-          inputs: [parsedStructuredData],
-        },
+        inputs: [parsedStructuredData],
         returnTraces: true,
         requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
-        streaming: true,
       });
 
       setSseURL(
@@ -131,7 +127,7 @@ export const Input = ({
       try {
         data = JSON.parse(event.data);
         if (data) {
-          const result = data.result as TriggerUserPipelineWithStreamData;
+          const result = data.result;
 
           if (result) {
             updateTriggerWithStreamData((prev) => [...prev, result]);

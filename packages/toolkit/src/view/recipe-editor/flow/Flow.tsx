@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { PipelineRecipe } from "instill-sdk";
 import ReactFlow, {
   Background,
   BackgroundVariant,
@@ -11,11 +12,11 @@ import ReactFlow, {
   useNodesState,
 } from "reactflow";
 
-import { GeneralRecord, Nullable, PipelineRecipe } from "../../../lib";
+import { GeneralRecord, Nullable } from "../../../lib";
 import {
-  CustomEdge,
   composeEdgesFromNodes,
   createGraphLayout,
+  CustomEdge,
 } from "../../pipeline-builder";
 import { canvasPanOnDrag } from "../../pipeline-builder/components/canvasPanOnDrag";
 import { createNodesFromPipelineRecipe } from "../../pipeline-builder/lib/createNodesFromPipelineRecipe";
