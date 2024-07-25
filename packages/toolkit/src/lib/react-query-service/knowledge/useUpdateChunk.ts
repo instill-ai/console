@@ -1,39 +1,36 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { Nullable } from "@instill-ai/toolkit";
-import { Chunk } from "../../../../../sdk/src/vdp/artifact/types";
+import { getInstillArtifactAPIClient, Nullable } from "@instill-ai/toolkit";
 
 export function useUpdateChunk() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
+      ownerId,
+      kbId,
       chunkUid,
+      payload,
       accessToken,
-      retrievable,
     }: {
+      ownerId: string;
+      kbId: string;
       chunkUid: string;
+      payload: { retrievable: boolean };
       accessToken: Nullable<string>;
-      retrievable: boolean;
     }) => {
       if (!accessToken) {
-        throw new Error("accessToken not provided");
+        return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const client = createInstillAxiosClient(accessToken, true);
+      const client = getInstillArtifactAPIClient({ accessToken });
 
-      try {
-        const response = await client.post(`/chunks/${chunkUid}`, {
-          retrievable,
-        });
-        return response.data.chunk as Chunk;
-      } catch (error) {
-        console.error("Error updating chunk:", error);
-        throw new Error("Failed to update chunk. Please try again later.");
-      }
+      const response = await client.vdp.knowledgeBase.updateChunk({ chunkUid, payload });
+
+      return Promise.resolve({ chunk: response.chunk, ownerId, kbId });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["chunks"] });
+    onSuccess: async ({ chunk, ownerId, kbId }) => {
+      queryClient.invalidateQueries({ queryKey: ["chunks", ownerId, kbId] });
+      queryClient.invalidateQueries({ queryKey: ["chunk", ownerId, kbId, chunk.chunkUid] });
     },
   });
 }

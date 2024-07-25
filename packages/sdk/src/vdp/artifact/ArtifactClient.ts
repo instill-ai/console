@@ -1,6 +1,6 @@
 import { getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
-import { Chunk, CreateKnowledgeBaseRequest, DeleteKnowledgeBaseFileRequest, DeleteKnowledgeBaseRequest, GetChunkContentRequest, GetFileContentRequest, GetFileDetailsRequest, GetKnowledgeBaseRequest, GetSourceFileRequest, KnowledgeBase, ListChunksRequest, ListChunksResponse, ListKnowledgeBaseFilesRequest, ListKnowledgeBaseFilesResponse, ListKnowledgeBasesRequest, ListKnowledgeBasesResponse, ProcessKnowledgeBaseFilesRequest, SimilarityChunk, SimilarityChunksSearchRequest, SourceFile, UpdateChunkRequest, UpdateKnowledgeBaseRequest, UploadKnowledgeBaseFileRequest } from "./types";
+import { Chunk, CreateKnowledgeBaseRequest, DeleteKnowledgeBaseFileRequest, DeleteKnowledgeBaseRequest, GetChunkContentRequest, GetFileContentRequest, GetFileDetailsRequest, GetKnowledgeBaseRequest, GetSourceFileRequest, KnowledgeBase, ListChunksRequest, ListChunksResponse, ListKnowledgeBaseFilesRequest, ListKnowledgeBaseFilesResponse, ListKnowledgeBasesRequest, ListKnowledgeBasesResponse, ProcessKnowledgeBaseFilesRequest, SimilarityChunk, SimilarityChunksSearchRequest, SourceFile, UpdateChunkRequest, UpdateKnowledgeBaseRequest, UploadKnowledgeBaseFileRequest, File } from "./types";
 
 
 export class ArtifactClient extends APIResource {

@@ -1,31 +1,33 @@
+"use client";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { Nullable } from "@instill-ai/toolkit";
-import { File } from "../../../../../sdk/src/vdp/artifact/types";
+import type { Nullable } from "../../type";
+import { getInstillArtifactAPIClient } from "../../vdp-sdk";
+import { ProcessKnowledgeBaseFilesRequest } from "../../../../../sdk/src/vdp/artifact/types";
 
 export function useProcessKnowledgeBaseFiles() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
-      fileUids,
+      payload,
       accessToken,
     }: {
-      fileUids: string[];
+      payload: ProcessKnowledgeBaseFilesRequest;
       accessToken: Nullable<string>;
-    }): Promise<File[]> => {
+    }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
-      const client = createInstillAxiosClient(accessToken, true);
-      const response = await client.post<{ files: File[] }>(
-        `/knowledge-bases/files/processAsync`,
-        { file_uids: fileUids }
-      );
-      return response.data.files;
+
+      const client = getInstillArtifactAPIClient({ accessToken });
+
+      await client.vdp.knowledgeBase.processKnowledgeBaseFiles(payload);
+
+      return Promise.resolve({ knowledgeBaseName: payload.knowledgeBaseName });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["knowledgeBaseFiles"] });
+    onSuccess: async ({ knowledgeBaseName }) => {
+      queryClient.invalidateQueries({ queryKey: ["knowledgeBaseFiles", knowledgeBaseName] });
     },
   });
 }

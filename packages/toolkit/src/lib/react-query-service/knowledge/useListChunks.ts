@@ -1,40 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { Nullable } from "@instill-ai/toolkit";
+import { getInstillArtifactAPIClient, Nullable } from "@instill-ai/toolkit";
 
-export function useListChunks({
-  kbId,
-  accessToken,
-  enabled,
-  ownerId,
-  fileUid,
-}: {
-  kbId: string;
-  accessToken: Nullable<string>;
-  enabled: boolean;
-  ownerId: string;
-  fileUid: string;
-}) {
+export function useListChunks() {
   return useQuery({
-    queryKey: ["chunks", kbId, fileUid],
-    queryFn: async () => {
+    queryKey: ["chunks"],
+    queryFn: async ({ ownerId, kbId, fileUid, accessToken }: { ownerId: string, kbId: string, fileUid: string, accessToken: Nullable<string> }) => {
       if (!accessToken) {
-        throw new Error("accessToken not provided");
+        return Promise.reject(new Error("accessToken not provided"));
       }
-      const client = createInstillAxiosClient(accessToken, true);
-      try {
-        const response = await client.get(
-          `/namespaces/${ownerId}/knowledge-bases/${kbId}/chunks`,
-          {
-            params: { fileUid },
-          }
-        );
-        return response.data.chunks;
-      } catch (error) {
-        console.error("Error fetching chunks:", error);
-        throw new Error("Failed to fetch chunks. Please try again later.");
-      }
+
+      const client = getInstillArtifactAPIClient({ accessToken });
+
+      const response = await client.vdp.knowledgeBase.listChunks({ ownerId, kbId, fileUid });
+
+      return Promise.resolve(response.chunks);
     },
-    enabled: enabled && !!fileUid,
   });
 }

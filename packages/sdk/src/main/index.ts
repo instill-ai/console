@@ -9,7 +9,7 @@ import {
 } from "../core";
 import { ModelClient } from "../model";
 import { GeneralRecord, HttpMethod } from "../types";
-import { ComponentClient, PipelineClient } from "../vdp";
+import { ComponentClient, PipelineClient, ArtifactClient } from "../vdp";
 import { ReleaseClient } from "../vdp/release";
 import { SecretClient } from "../vdp/secret";
 import { TriggerClient } from "../vdp/trigger";
@@ -87,6 +87,7 @@ export class InstillAPIClient {
   vdp = {
     component: new ComponentClient(this),
     pipeline: new PipelineClient(this),
+    artifact: new ArtifactClient(this),
     release: new ReleaseClient(this),
     trigger: new TriggerClient(this),
     secret: new SecretClient(this),

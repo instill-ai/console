@@ -1,26 +1,30 @@
+"use client";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { Nullable } from "@instill-ai/toolkit";
+import type { Nullable } from "../../type";
+import { getInstillArtifactAPIClient } from "../../vdp-sdk";
+import { DeleteKnowledgeBaseFileRequest } from "../../../../../sdk/src/vdp/artifact/types";
+
 
 export function useDeleteKnowledgeBaseFile() {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: async ({
-            fileUid,
+            payload,
             accessToken,
         }: {
-            fileUid: string;
+            payload: DeleteKnowledgeBaseFileRequest;
             accessToken: Nullable<string>;
         }) => {
             if (!accessToken) {
-                throw new Error("accessToken not provided");
+                return Promise.reject(new Error("accessToken not provided"));
             }
-            const client = createInstillAxiosClient(accessToken, true);
-            await client.delete(`/knowledge-bases/files?fileUid=${fileUid}`);
+            const client = getInstillArtifactAPIClient({ accessToken });
+            await client.vdp.knowledgeBase.deleteKnowledgeBaseFile(payload);
+            return Promise.resolve({ fileUid: payload.fileUid });
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries(["knowledgeBaseFiles"]);
+        onSuccess: async ({ fileUid }) => {
+            queryClient.invalidateQueries({ queryKey: ["knowledgeBaseFiles"] });
         },
     });
 }

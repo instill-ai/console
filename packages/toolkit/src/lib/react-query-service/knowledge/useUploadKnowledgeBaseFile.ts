@@ -1,39 +1,29 @@
+"use client";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { Nullable } from "@instill-ai/toolkit";
-import { File } from "../../../../../sdk/src/vdp/artifact/types";
+import type { Nullable } from "../../type";
+import { getInstillArtifactAPIClient } from "../../vdp-sdk";
+import { UploadKnowledgeBaseFileRequest } from "../../../../../sdk/src/vdp/artifact/types";
 
 export function useUploadKnowledgeBaseFile() {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: async ({
-      ownerId,
-      knowledgeBaseId,
       payload,
       accessToken,
     }: {
-      ownerId: Nullable<string>;
-      knowledgeBaseId: string;
-      payload: {
-        name: string;
-        type: string;
-        content: string;
-      };
+      payload: UploadKnowledgeBaseFileRequest;
       accessToken: Nullable<string>;
-    }): Promise<File> => {
+    }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
-      const client = createInstillAxiosClient(accessToken, true);
-      const response = await client.post<{ file: File }>(
-        `/namespaces/${ownerId}/knowledge-bases/${knowledgeBaseId}/files`,
-        payload
-      );
-      return response.data.file;
+      const client = getInstillArtifactAPIClient({ accessToken });
+      const uploadedFile = await client.vdp.knowledgeBase.uploadKnowledgeBaseFile(payload);
+      return Promise.resolve({ uploadedFile, ownerId: payload.ownerId, kbId: payload.kbId });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["knowledgeBaseFiles"] });
+    onSuccess: async ({ uploadedFile, ownerId, kbId }) => {
+      queryClient.invalidateQueries({ queryKey: ["knowledgeBaseFiles", ownerId, kbId] });
     },
   });
 }

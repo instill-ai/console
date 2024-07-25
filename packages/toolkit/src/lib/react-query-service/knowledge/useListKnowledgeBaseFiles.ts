@@ -1,37 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { Nullable } from "@instill-ai/toolkit";
-import { File } from "../../../../../sdk/src/vdp/artifact/types";
+"use client";
 
-export function useListKnowledgeBaseFiles({
-  ownerId,
-  knowledgeBaseId,
-  accessToken,
-  enabled,
-}: {
-  ownerId: Nullable<string>;
-  knowledgeBaseId: Nullable<string>;
-  accessToken: Nullable<string>;
-  enabled: boolean;
-}) {
-  return useQuery<File[]>({
-    queryKey: ["knowledgeBaseFiles", ownerId, knowledgeBaseId],
-    queryFn: async () => {
+import { useQuery } from "@tanstack/react-query";
+import type { Nullable } from "../../type";
+import { getInstillArtifactAPIClient } from "../../vdp-sdk";
+import { ListKnowledgeBaseFilesRequest } from "../../../../../sdk/src/vdp/artifact/types";
+
+export function useListKnowledgeBaseFiles() {
+  return useQuery({
+    queryKey: ["knowledgeBaseFiles"],
+    queryFn: async ({ ownerId, kbId, accessToken }: ListKnowledgeBaseFilesRequest & { accessToken: Nullable<string> }) => {
       if (!accessToken) {
-        throw new Error("accessToken not provided");
+        return Promise.reject(new Error("accessToken not provided"));
       }
-      if (!ownerId) {
-        throw new Error("ownerId not provided");
-      }
-      if (!knowledgeBaseId) {
-        throw new Error("knowledgeBaseId not provided");
-      }
-      const client = createInstillAxiosClient(accessToken, true);
-      const response = await client.get<{ files: File[] }>(
-        `/namespaces/${ownerId}/knowledge-bases/${knowledgeBaseId}/files`
-      );
-      return response.data.files;
+      const client = getInstillArtifactAPIClient({ accessToken });
+      const files = await client.vdp.knowledgeBase.listKnowledgeBaseFiles({ ownerId, kbId });
+      return Promise.resolve(files);
     },
-    enabled,
   });
 }

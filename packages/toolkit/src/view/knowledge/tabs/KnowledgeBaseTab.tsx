@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Separator, Skeleton } from "@instill-ai/design-system";
 import { KnowledgeBase } from "../../../../../sdk/src/vdp/artifact/types";
-import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
+import { getInstillAPIClient, InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
 import * as z from "zod";
 import KnowledgeSearchSort, { SortAnchor, SortOrder } from "../components/KnowledgeSearchSort";
 import { CreateKnowledgeBaseCard, CreateKnowledgeDialog, KnowledgeBaseCard } from "../components";
+import { env } from "../../../server";
 
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
@@ -29,6 +31,8 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
   const [selectedSortOrder, setSelectedSortOrder] = React.useState<SortOrder>("desc");
   const [selectedSortAnchor, setSelectedSortAnchor] = React.useState<SortAnchor>("createTime");
 
+  const queryClient = useQueryClient();
+
   const { enabledQuery } = useInstillStore(
     useShallow((store: InstillStore) => ({
       enabledQuery: store.enabledQuery,
@@ -40,21 +44,35 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
     accessToken,
   });
 
-  const artifactClient = useArtifactClient();
+  const { data: knowledgeBases, isLoading: isLoadingKnowledgeBases } = useQuery({
+    queryKey: ['knowledgeBases', me.data?.id],
+    queryFn: async () => {
+      if (!accessToken || !me.data?.id) {
+        return Promise.reject(new Error("accessToken or user id not provided"));
+      }
 
-  const knowledgeBases = artifactClient.useListKnowledgeBases({
-    ownerId: me.data?.id ?? "",
-    enabled: enabledQuery && !!me.data?.id,
-    enablePagination: false,
+      const client = getInstillAPIClient({ accessToken });
+
+      const knowledgeBases = await client.vdp.artifact.listKnowledgeBases({
+        ownerId: me.data.id,
+        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+        enablePagination: false,
+      });
+
+      return Promise.resolve(knowledgeBases);
+    },
+    enabled: enabledQuery && !!me.data?.id && !!accessToken,
+    retry: 3,
   });
 
-  const handleCreateKnowledgeSubmit = async (
-    data: z.infer<typeof CreateKnowledgeFormSchema>
-  ) => {
-    if (!me.data?.id || !accessToken) return;
+  const createKnowledgeBaseMutation = useMutation({
+    mutationFn: async (data: z.infer<typeof CreateKnowledgeFormSchema>) => {
+      if (!accessToken || !me.data?.id) {
+        throw new Error("Not authenticated");
+      }
 
-    try {
-      await artifactClient.createKnowledgeBase({
+      const client = getInstillAPIClient({ accessToken });
+      return client.vdp.artifact.createKnowledgeBase({
         ownerId: me.data.id,
         payload: {
           name: data.name,
@@ -62,69 +80,89 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
           tags: data.tags ?? [],
         },
       });
-      knowledgeBases.refetch();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['knowledgeBases', me.data?.id]);
       setIsCreateDialogOpen(false);
-    } catch (error) {
-      console.error("Error creating knowledge base:", error);
-    }
-  };
+    },
+  });
 
-  const handleUpdateKnowledgeBase = async (
-    data: EditKnowledgeDialogData,
-    kbId: string
-  ) => {
-    if (!me.data?.id || !accessToken) return;
+  const updateKnowledgeBaseMutation = useMutation({
+    mutationFn: async ({ data, kbId }: { data: EditKnowledgeDialogData; kbId: string }) => {
+      if (!accessToken || !me.data?.id) {
+        throw new Error("Not authenticated");
+      }
 
-    try {
-      await artifactClient.updateKnowledgeBase({
+      const client = getInstillAPIClient({ accessToken });
+      return client.vdp.artifact.updateKnowledgeBase({
         ownerId: me.data.id,
-        kbId: kbId,
+        kbId,
         payload: data,
       });
-      knowledgeBases.refetch();
-    } catch (error) {
-      console.error("Error updating knowledge base:", error);
-    }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['knowledgeBases', me.data?.id]);
+    },
+  });
+
+  const cloneKnowledgeBaseMutation = useMutation({
+    mutationFn: async (knowledgeBase: KnowledgeBase) => {
+      if (!accessToken || !me.data?.id) {
+        throw new Error("Not authenticated");
+      }
+
+      const client = getInstillAPIClient({ accessToken });
+      return client.vdp.artifact.createKnowledgeBase({
+        ownerId: me.data.id,
+        payload: {
+          name: `${knowledgeBase.name}-clone`,
+          description: knowledgeBase.description,
+          tags: knowledgeBase.tags || [],
+        },
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['knowledgeBases', me.data?.id]);
+    },
+  });
+
+  const deleteKnowledgeBaseMutation = useMutation({
+    mutationFn: async (kbId: string) => {
+      if (!accessToken || !me.data?.id) {
+        throw new Error("Not authenticated");
+      }
+
+      const client = getInstillAPIClient({ accessToken });
+      return client.vdp.artifact.deleteKnowledgeBase({
+        ownerId: me.data.id,
+        kbId,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['knowledgeBases', me.data?.id]);
+    },
+  });
+
+  const handleCreateKnowledgeSubmit = (data: z.infer<typeof CreateKnowledgeFormSchema>) => {
+    createKnowledgeBaseMutation.mutate(data);
   };
 
-  const handleCloneKnowledgeBase = async (knowledgeBase: KnowledgeBase) => {
-    if (!me.data?.id || !accessToken) return;
-
-    const clonedKnowledgeBase = {
-      name: `${knowledgeBase.name}-clone`,
-      description: knowledgeBase.description,
-      tags: knowledgeBase.tags || [],
-    };
-
-    try {
-      await artifactClient.createKnowledgeBase({
-        ownerId: me.data.id,
-        payload: clonedKnowledgeBase,
-      });
-      knowledgeBases.refetch();
-    } catch (error) {
-      console.error("Error cloning knowledge base:", error);
-    }
+  const handleUpdateKnowledgeBase = (data: EditKnowledgeDialogData, kbId: string) => {
+    updateKnowledgeBaseMutation.mutate({ data, kbId });
   };
 
-  const handleDeleteKnowledgeBase = async (kbId: string) => {
-    if (!me.data?.id || !accessToken) return;
+  const handleCloneKnowledgeBase = (knowledgeBase: KnowledgeBase) => {
+    cloneKnowledgeBaseMutation.mutate(knowledgeBase);
+  };
 
-    try {
-      await artifactClient.deleteKnowledgeBase({
-        ownerId: me.data.id,
-        kbId: kbId,
-      });
-      knowledgeBases.refetch();
-    } catch (error) {
-      console.error("Error deleting knowledge base:", error);
-    }
+  const handleDeleteKnowledgeBase = (kbId: string) => {
+    deleteKnowledgeBaseMutation.mutate(kbId);
   };
 
   const filteredAndSortedKnowledgeBases = React.useMemo(() => {
-    if (!knowledgeBases.data) return [];
+    if (!knowledgeBases) return [];
 
-    let filtered = knowledgeBases.data.filter((kb) =>
+    let filtered = knowledgeBases.filter((kb) =>
       kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       kb.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -157,9 +195,9 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
     });
 
     return filtered;
-  }, [knowledgeBases.data, searchTerm, selectedSortAnchor, selectedSortOrder]);
+  }, [knowledgeBases, searchTerm, selectedSortAnchor, selectedSortOrder]);
 
-  const hasReachedLimit = (knowledgeBases.data?.length ?? 0) >= 3;
+  const hasReachedLimit = (knowledgeBases?.length ?? 0) >= 3;
 
   return (
     <div className="flex flex-col">
@@ -177,7 +215,7 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
         />
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {knowledgeBases.isLoading ? (
+      {isLoadingKnowledgeBases ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div

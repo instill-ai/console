@@ -1,39 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { Nullable } from "@instill-ai/toolkit";
 
-export function useGetChunkContent({
-  chunkUid,
-  accessToken,
-  enabled,
-  kbId,
-  ownerId,
-}: {
-  chunkUid: string;
-  accessToken: Nullable<string>;
-  enabled: boolean;
-  kbId: string;
-  ownerId: string;
-}) {
+import { useQuery } from "@tanstack/react-query";
+import type { Nullable } from "../../type";
+import { getInstillArtifactAPIClient } from "../../vdp-sdk";
+
+export function useGetChunkContent() {
   return useQuery({
-    queryKey: ["chunkContent", chunkUid],
-    queryFn: async () => {
+    queryKey: ["chunkContent"],
+    queryFn: async ({ ownerId, kbId, chunkUid, accessToken }: { ownerId: string, kbId: string, chunkUid: string, accessToken: Nullable<string> }) => {
       if (!accessToken) {
-        throw new Error("accessToken not provided");
+        return Promise.reject(new Error("accessToken not provided"));
       }
-      const client = createInstillAxiosClient(accessToken, true);
-      try {
-        const response = await client.get(
-          `/namespaces/${ownerId}/knowledge-bases/${kbId}/chunks/${chunkUid}/content`
-        );
-        return response.data.content;
-      } catch (error) {
-        console.error("Error fetching chunk content:", error);
-        throw new Error(
-          "Failed to fetch chunk content. Please try again later."
-        );
-      }
+
+      const client = getInstillArtifactAPIClient({ accessToken });
+
+      const response = await client.vdp.knowledgeBase.getChunkContent({ ownerId, kbId, chunkUid });
+
+      return Promise.resolve(response.content);
     },
-    enabled,
   });
 }
