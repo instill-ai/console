@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dialog, Icons, ScrollArea, Skeleton } from '@instill-ai/design-system';
 import { useGetFileContent, useListChunks } from '../../../lib/react-query-service/knowledge';
 

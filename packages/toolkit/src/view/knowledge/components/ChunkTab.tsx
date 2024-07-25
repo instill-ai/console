@@ -1,5 +1,5 @@
 import React from 'react';
-import { Chunk, KnowledgeBase, File } from "../../../lib/vdp-sdk/knowledge/types";
+import { Chunk, KnowledgeBase, File } from "../../../../../sdk/src/vdp/artifact/types";
 import {  useListKnowledgeBaseFiles, useUpdateChunk } from '../../../lib/react-query-service/knowledge';
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import FileDetailsOverlay from './FileDetailsOverlay';

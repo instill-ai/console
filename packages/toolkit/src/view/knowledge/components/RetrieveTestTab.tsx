@@ -1,5 +1,5 @@
 import { Separator } from "@instill-ai/design-system";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { KnowledgeBase } from "../../../../../sdk/src/vdp/artifact/types";
 import { CodeBlock } from "../../../components";
 import { CodeString } from "../../../components/CodeString";
 import { defaultCodeSnippetStyles } from "../../../constant";
@@ -28,7 +28,7 @@ export const RetrieveTestTab = ({ knowledgeBase, isProcessed }: RetrieveTestTabP
         </h1>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {!isProcessed ? (
+      {/* {!isProcessed ? (
         <div className="w-2/3 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
           <p className="mb-4 product-body-text-3-regular">
             Your knowledge base has been successfully created. Now, you can proceed to the{" "}
@@ -38,7 +38,7 @@ export const RetrieveTestTab = ({ knowledgeBase, isProcessed }: RetrieveTestTabP
             to upload and process your files.
           </p>
         </div>
-      ) : (
+      ) : ( */}
         <div className="w-2/3 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
           <p className="mb-4 product-body-text-3-regular">
             Once the status of documents in Catalog / Files has changed to 'Completed', you can use the following Instill API format example to test the retrieval of this knowledge base and obtain chunks related to a given query.
@@ -65,7 +65,7 @@ export const RetrieveTestTab = ({ knowledgeBase, isProcessed }: RetrieveTestTabP
             </a>.
           </p>
         </div>
-      )}
+      {/* )} */}
     </div>
   );
 };

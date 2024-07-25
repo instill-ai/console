@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { SimilarityChunk } from "../../vdp-sdk/knowledge/types";
+import { SimilarityChunk } from "../../../../../sdk/src/vdp/artifact/types";
 import { Nullable } from "@instill-ai/toolkit";
 
 export function useSimilarityChunksSearch() {

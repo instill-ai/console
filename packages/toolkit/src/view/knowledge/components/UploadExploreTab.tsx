@@ -9,7 +9,7 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { KnowledgeBase } from "../../../../../sdk/src/vdp/artifact/types";
 import { useUploadKnowledgeBaseFile, useProcessKnowledgeBaseFiles } from "../../../lib/react-query-service/knowledge";
 import {
   InstillStore,

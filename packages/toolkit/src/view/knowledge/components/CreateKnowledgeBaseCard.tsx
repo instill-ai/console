@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from "@instill-ai/design-system";
 import * as React from "react";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { KnowledgeBase } from "../../../../../sdk/src/vdp/artifact/types";
 import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
 import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./undoDeleteTime";
 import DeleteKnowledgeBaseNotification from "./Notifications/DeleteKnowledgeBaseNotification";

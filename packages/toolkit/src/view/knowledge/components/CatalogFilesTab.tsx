@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icons, Separator, Skeleton, Tag } from "@instill-ai/design-system";
-import { KnowledgeBase, File } from "../../../lib/vdp-sdk/knowledge/types";
+import { KnowledgeBase, File } from "../../../../../sdk/src/vdp/artifact/types";
 import { DELETE_FILE_TIMEOUT } from "./undoDeleteTime";
 import DeleteFileNotification from "./Notifications/DeleteFileNotification";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";

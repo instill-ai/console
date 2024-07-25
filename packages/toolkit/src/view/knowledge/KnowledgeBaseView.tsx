@@ -5,7 +5,7 @@ import { UploadExploreTab } from "./components/UploadExploreTab";
 import { CatalogFilesTab } from "./components/CatalogFilesTab";
 import { MarkdownTab } from "./components/MarkdownTab";
 import * as React from "react";
-import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/types";
+import { KnowledgeBase } from "../../../../sdk/src/vdp/artifact/types";
 // import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 import { DELETE_KNOWLEDGE_BASE_TIMEOUT, CREDIT_TIMEOUT } from "./components/undoDeleteTime";
 import { ChunkTab } from "./components/ChunkTab";

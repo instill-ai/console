@@ -15,7 +15,7 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../lib";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { KnowledgeBase } from "../../../../../sdk/src/vdp/artifact/types";
 import * as z from "zod";
 import KnowledgeSearchSort, { SortAnchor, SortOrder } from "./KnowledgeSearchSort";
 

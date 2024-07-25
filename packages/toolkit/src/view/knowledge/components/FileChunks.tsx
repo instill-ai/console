@@ -1,6 +1,6 @@
 import { Icons, Skeleton } from "@instill-ai/design-system";
 import { useGetFileContent, useListChunks } from "../../../lib/react-query-service/knowledge";
-import { Chunk, KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { Chunk, KnowledgeBase } from "../../../../../sdk/src/vdp/artifact/types";
 import ChunkCard from "./ChunkCard";
 
 type FileChunksProps = {

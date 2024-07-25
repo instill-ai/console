@@ -1,4 +1,4 @@
-import { Chunk } from "../../../lib/vdp-sdk/knowledge/types";
+import { Chunk } from "../../../../../sdk/src/vdp/artifact/types";
 import { Icons, Tag, Switch } from '@instill-ai/design-system';
 
 type ChunkCardProps = {

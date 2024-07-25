@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { Nullable } from "@instill-ai/toolkit";
-import { Chunk } from "../../vdp-sdk/knowledge/types";
+import { Chunk } from "../../../../../sdk/src/vdp/artifact/types";
 
 export function useUpdateChunk() {
   const queryClient = useQueryClient();

@@ -7,7 +7,7 @@ import {
   // Select,
   Switch,
 } from "@instill-ai/design-system";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { KnowledgeBase } from "../../../../../sdk/src/vdp/artifact/types";
 import { useState } from "react";
 
 type MarkdownTabProps = {

@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { KnowledgeBase } from "../../../../../sdk/src/vdp/artifact/types";
 import { Icons } from "@instill-ai/design-system";
 
 type SidebarProps = {
