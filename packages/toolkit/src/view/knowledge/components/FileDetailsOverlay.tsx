@@ -47,7 +47,7 @@ const FileDetailsOverlay = ({
         fileUid,
     });
 
-    const highlightChunkInContent = (content: string, chunkUid: string | undefined) => {
+    const highlightChunkInContent = (content: string, chunkUid?: string) => {  
         if (!highlightChunk || !chunkUid || !content) return content;
 
         const chunk = chunks?.find((c: { chunkUid: string; }) => c.chunkUid === chunkUid);
