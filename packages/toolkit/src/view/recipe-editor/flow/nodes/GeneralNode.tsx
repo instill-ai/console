@@ -52,6 +52,9 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
 
   const isFinished = React.useMemo(() => {
     const targetTrace = triggerWithStreamData.find((data) => {
+      if (!data.metadata.traces) {
+        return false;
+      }
       const traceKey = Object.keys(data.metadata.traces)[0];
       return traceKey === id;
     });

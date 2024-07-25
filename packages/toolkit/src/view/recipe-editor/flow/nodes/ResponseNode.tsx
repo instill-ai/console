@@ -1,8 +1,4 @@
-import { NodeProps } from "reactflow";
-
-import { ResponseNodeData } from "../../../pipeline-builder";
-
-export const ResponseNode = ({ data, id }: NodeProps<ResponseNodeData>) => {
+export const ResponseNode = () => {
   // console.log(data, id);
   return <div />;
 };

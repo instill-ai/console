@@ -13,23 +13,87 @@ import * as React from "react";
 import { Editor } from "@monaco-editor/react";
 import { PipelineRecipe } from "instill-sdk";
 
-import { dot, GeneralRecord, Nullable } from "../../lib";
+import {
+  debounce,
+  dot,
+  GeneralRecord,
+  InstillStore,
+  Nullable,
+  useInstillStore,
+  useNamespacePipeline,
+  useRouteInfo,
+  useShallow,
+  useUpdateNamespacePipeline,
+} from "../../lib";
 import { transformInstillJSONSchemaToFormTree } from "../../lib/use-instill-form/transform";
 import { transformFormTreeToNestedSmartHints } from "../../lib/use-smart-hint/transformFormTreeToNestedSmartHints";
 import { getGeneralComponentInOutputSchema } from "../pipeline-builder";
 import { isPipelineGeneralComponent } from "../pipeline-builder/lib/checkComponentType";
 import { validateVSCodeYaml } from "./validateVSCodeYaml";
 
-export const VscodeEditor = ({
-  recipe,
-}: {
-  recipe: Nullable<PipelineRecipe>;
-}) => {
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+  updateOpenCmdk: store.updateOpenCmdk,
+  updateEditorRef: store.updateEditorRef,
+  updateMonacoRef: store.updateMonacoRef,
+});
+
+export const VscodeEditor = () => {
   const [markErrors, setMarkErrors] = React.useState<editor.IMarkerData[]>([]);
 
   const autoCompleteDisposableRef = React.useRef<Nullable<IDisposable>>(null);
   const editorRef = React.useRef<Nullable<editor.IStandaloneCodeEditor>>(null);
   const monacoRef = React.useRef<Nullable<Monaco>>(null);
+
+  const {
+    accessToken,
+    enabledQuery,
+    updateOpenCmdk,
+    updateEditorRef,
+    updateMonacoRef,
+  } = useInstillStore(useShallow(selector));
+
+  const routeInfo = useRouteInfo();
+
+  const pipeline = useNamespacePipeline({
+    namespacePipelineName: routeInfo.isSuccess
+      ? routeInfo.data.pipelineName
+      : null,
+    accessToken,
+    enabled: enabledQuery,
+  });
+
+  const updatePipeline = useUpdateNamespacePipeline();
+  const recipeUpdater = React.useCallback(
+    debounce(
+      ({
+        pipelineName,
+        newRawRecipe,
+        accessToken,
+      }: {
+        pipelineName: Nullable<string>;
+        newRawRecipe: string;
+        accessToken: Nullable<string>;
+      }) => {
+        if (!accessToken || !pipelineName) {
+          return;
+        }
+
+        try {
+          updatePipeline.mutateAsync({
+            rawRecipe: newRawRecipe,
+            namespacePipelineName: pipelineName,
+            accessToken,
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      },
+      3000,
+    ),
+    [],
+  );
 
   React.useEffect(() => {
     if (!editorRef.current || !monacoRef.current) {
@@ -46,7 +110,7 @@ export const VscodeEditor = ({
   }, [markErrors]);
 
   React.useEffect(() => {
-    if (!monacoRef.current || !recipe) {
+    if (!monacoRef.current || !pipeline.isSuccess) {
       return;
     }
 
@@ -57,18 +121,18 @@ export const VscodeEditor = ({
     const disposable =
       monacoRef.current.languages.registerCompletionItemProvider("yaml", {
         triggerCharacters: ["${", "."],
-        provideCompletionItems: (model, position, token) => {
+        provideCompletionItems: (model, position) => {
           return handleAutoComplete({
             model,
             position,
             monaco: monacoRef.current,
-            recipe,
+            recipe: pipeline.data.recipe,
           });
         },
       });
 
     autoCompleteDisposableRef.current = disposable;
-  }, [recipe]);
+  }, [pipeline.data, pipeline.isSuccess]);
 
   const handleAutoComplete = React.useCallback(
     ({
@@ -107,9 +171,6 @@ export const VscodeEditor = ({
         };
       }
 
-      // If the last character typed is a period then we need to look at member objects of the obj object
-      const isMember = active_typing.charAt(active_typing.length - 1) == ".";
-
       const component = recipe?.component;
 
       if (!component) {
@@ -118,31 +179,39 @@ export const VscodeEditor = ({
         };
       }
 
-      let allHints: GeneralRecord = {};
-
-      for (const [key, value] of Object.entries(component)) {
-        if (isPipelineGeneralComponent(value)) {
-          const { outputSchema } = getGeneralComponentInOutputSchema(value);
-
-          if (outputSchema) {
-            const outputFormTree =
-              transformInstillJSONSchemaToFormTree(outputSchema);
-
-            const hints = transformFormTreeToNestedSmartHints(outputFormTree);
-
-            allHints[key] = hints;
-          }
-        }
-      }
+      // If the last character typed is a period then we need to look at member objects of the obj object
+      const isMember = active_typing.charAt(active_typing.length - 1) == ".";
 
       console.log("isMember", isMember);
 
       if (isMember) {
+        const allHints: GeneralRecord = {};
+
+        for (const [key, value] of Object.entries(component)) {
+          if (isPipelineGeneralComponent(value)) {
+            const { outputSchema } = getGeneralComponentInOutputSchema(value);
+
+            if (outputSchema) {
+              const outputFormTree =
+                transformInstillJSONSchemaToFormTree(outputSchema);
+
+              const hints = transformFormTreeToNestedSmartHints(outputFormTree);
+
+              allHints[key] = {
+                output: hints,
+              };
+            }
+          }
+        }
+
         // Is a member, get a list of all members, and the prefix
-        const objPath = active_typing.substring(0, active_typing.length - 1);
+        const objPath = active_typing
+          .substring(0, active_typing.length - 1)
+          .replaceAll("${", "")
+          .replaceAll("}", "");
         const regex = /\[(\d+)\]/g;
         const matches = objPath.match(regex);
-        let objPathWoIndex = objPath.replaceAll(regex, "");
+        const objPathWoIndex = objPath.replaceAll(regex, "");
 
         const hint = dot.getter(allHints, objPathWoIndex) as GeneralRecord;
 
@@ -158,12 +227,12 @@ export const VscodeEditor = ({
               objPathWoIndex,
             ) as GeneralRecord;
 
-            for (const [key, value] of Object.entries(arrayHint)) {
+            for (const [key] of Object.entries(arrayHint)) {
               result.push({
                 label: key,
                 kind: monaco.languages.CompletionItemKind.Field,
-                insertText: objPath + "." + key,
-                filterText: objPath + "." + key,
+                insertText: "${" + objPath + "." + key,
+                filterText: "${" + objPath + "." + key,
                 detail: key,
 
                 range: new monaco.Range(
@@ -182,11 +251,15 @@ export const VscodeEditor = ({
         }
 
         for (const [key, value] of Object.entries(hint)) {
+          if (typeof value !== "object") {
+            continue;
+          }
+
           result.push({
             label: key,
             kind: monaco.languages.CompletionItemKind.Field,
-            insertText: objPath + "." + key,
-            filterText: objPath + "." + key,
+            insertText: "${" + objPath + "." + key,
+            filterText: "${" + objPath + "." + key,
             detail: key,
             documentation: `## ${key}  ${value.description}`,
             range: new monaco.Range(
@@ -197,24 +270,52 @@ export const VscodeEditor = ({
             ),
           });
         }
+
+        return {
+          suggestions: result,
+        };
       }
 
-      console.log("result", result);
+      const referenceRegex = /\${/g;
+      const isReference = referenceRegex.test(active_typing);
 
-      return {
-        suggestions: result,
-      };
+      if (isReference) {
+        const allHints: string[] = [];
+        for (const [key, value] of Object.entries(component)) {
+          if (isPipelineGeneralComponent(value)) {
+            allHints.push(key);
+          }
+        }
+
+        for (const hint of allHints) {
+          result.push({
+            label: hint,
+            kind: monaco.languages.CompletionItemKind.Field,
+            insertText: "${" + hint,
+            filterText: "${" + hint,
+            detail: hint,
+            range: new monaco.Range(
+              position.lineNumber,
+              position.column - active_typing.length,
+              position.lineNumber,
+              position.column,
+            ),
+          });
+        }
+
+        return {
+          suggestions: result,
+        };
+      }
     },
     [],
   );
-
-  React.useEffect(() => {}, []);
 
   return (
     <Editor
       language="yaml"
       onChange={(value) => {
-        if (!value) {
+        if (!value || !pipeline.isSuccess) {
           return;
         }
 
@@ -222,10 +323,32 @@ export const VscodeEditor = ({
 
         if (res.success) {
           setMarkErrors([]);
+          recipeUpdater({
+            pipelineName: pipeline.data.name,
+            newRawRecipe: value,
+            accessToken,
+          });
+
+          // try {
+          //   if (!pipelineName) {
+          //     return;
+          //   }
+          //   debounce(() => {
+          //     console.log("what");
+          //     updatePipeline.mutateAsync({
+          //       rawRecipe: value,
+          //       namespacePipelineName: pipelineName,
+          //       accessToken,
+          //     });
+          //   }, 1000);
+          // } catch (error) {
+          //   console.error(error);
+          // }
         } else {
           setMarkErrors(res.markers);
         }
       }}
+      value={pipeline.data?.rawRecipe ?? ""}
       options={{
         minimap: {
           enabled: false,
@@ -239,18 +362,35 @@ export const VscodeEditor = ({
       }}
       onMount={(editor, monaco) => {
         editorRef.current = editor;
+        updateEditorRef(() => editor);
         monacoRef.current = monaco;
+        updateMonacoRef(() => monaco);
         const disposable = monaco.languages.registerCompletionItemProvider(
           "yaml",
           {
             triggerCharacters: ["${", "."],
-            provideCompletionItems: (model, position, token) => {
+            provideCompletionItems: (model, position) => {
               // Split everything the user has typed on the current line up at each space, and only look at the last word
-              return handleAutoComplete({ model, position, monaco, recipe });
+              return handleAutoComplete({
+                model,
+                position,
+                monaco,
+                recipe: pipeline.data?.recipe ?? null,
+              });
             },
           },
         );
         autoCompleteDisposableRef.current = disposable;
+
+        editor.addAction({
+          id: "open-cmdk",
+          label: "Open Cmdk",
+          keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyK],
+          contextMenuOrder: 1,
+          run: () => {
+            updateOpenCmdk(() => true);
+          },
+        });
       }}
     />
   );

@@ -1,4 +1,10 @@
-import type { Secret, TriggerNamespacePipelineResponse } from "instill-sdk";
+import type {
+  Secret,
+  TriggerNamespacePipelineResponse,
+  TriggerUserPipelineWithStreamData,
+} from "instill-sdk";
+import { Monaco } from "@monaco-editor/react";
+import { editor } from "monaco-editor";
 import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
 
 import { NodeData } from "../../view";
@@ -126,6 +132,20 @@ export type GeneralSlice = {
   ) => void;
 };
 
+export type EditorSlice = {
+  openCmdk: boolean;
+  updateOpenCmdk: (fn: (prev: boolean) => boolean) => void;
+  cursorPosition: number;
+  editorRef: Nullable<editor.IStandaloneCodeEditor>;
+  updateEditorRef: (
+    fn: (
+      prev: Nullable<editor.IStandaloneCodeEditor>,
+    ) => Nullable<editor.IStandaloneCodeEditor>,
+  ) => void;
+  monacoRef: Nullable<Monaco>;
+  updateMonacoRef: (fn: (prev: Nullable<Monaco>) => Nullable<Monaco>) => void;
+};
+
 export type RecentlyUsedSlice = {
   recentlyUsedStartComponentFieldTypes: string[];
   updateRecentlyUsedStartComponentFieldTypes: (
@@ -136,7 +156,8 @@ export type RecentlyUsedSlice = {
 export type InstillStore = SmartHintSlice &
   PipelineBuilderSlice &
   GeneralSlice &
-  RecentlyUsedSlice;
+  RecentlyUsedSlice &
+  EditorSlice;
 
 export type InstillStoreMutators = [
   ["zustand/devtools", never],

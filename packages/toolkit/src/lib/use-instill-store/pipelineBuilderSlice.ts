@@ -1,4 +1,7 @@
-import { TriggerNamespacePipelineResponse } from "instill-sdk";
+import {
+  TriggerNamespacePipelineResponse,
+  TriggerUserPipelineWithStreamData,
+} from "instill-sdk";
 import {
   addEdge,
   applyEdgeChanges,
