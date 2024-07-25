@@ -1,7 +1,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
-import { getInstillArtifactAPIClient } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 import { DeleteKnowledgeBaseRequest } from "../../../../../sdk/src/vdp/artifact/types";
 
 export function useDeleteKnowledgeBase() {
@@ -15,7 +15,7 @@ export function useDeleteKnowledgeBase() {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
-      const client = getInstillArtifactAPIClient({ accessToken });
+      const client = getInstillAPIClient({ accessToken });
       await client.vdp.knowledgeBase.deleteKnowledgeBase({ ownerId, kbId });
       return Promise.resolve({ ownerId, kbId });
     },

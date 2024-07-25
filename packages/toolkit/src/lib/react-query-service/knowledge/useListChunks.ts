@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getInstillArtifactAPIClient, Nullable } from "@instill-ai/toolkit";
+import { getInstillAPIClient, Nullable } from "@instill-ai/toolkit";
 
 export function useListChunks() {
   return useQuery({
@@ -9,7 +9,7 @@ export function useListChunks() {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const client = getInstillArtifactAPIClient({ accessToken });
+      const client = getInstillAPIClient({ accessToken });
 
       const response = await client.vdp.knowledgeBase.listChunks({ ownerId, kbId, fileUid });
 

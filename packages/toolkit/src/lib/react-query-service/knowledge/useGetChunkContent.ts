@@ -1,7 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
-import { getInstillArtifactAPIClient } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useGetChunkContent() {
   return useQuery({
@@ -11,7 +11,7 @@ export function useGetChunkContent() {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const client = getInstillArtifactAPIClient({ accessToken });
+      const client = getInstillAPIClient({ accessToken });
 
       const response = await client.vdp.knowledgeBase.getChunkContent({ ownerId, kbId, chunkUid });
 

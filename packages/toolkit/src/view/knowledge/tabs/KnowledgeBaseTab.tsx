@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Separator, Skeleton } from "@instill-ai/design-system";
@@ -53,7 +55,7 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
 
       const client = getInstillAPIClient({ accessToken });
 
-      const knowledgeBases = await client.vdp.artifact.listKnowledgeBases({
+      const knowledgeBases = await client.vdp.knowledgeBase.listKnowledgeBases({
         ownerId: me.data.id,
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         enablePagination: false,
@@ -72,7 +74,7 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
       }
 
       const client = getInstillAPIClient({ accessToken });
-      return client.vdp.artifact.createKnowledgeBase({
+      return client.vdp.knowledgeBase.createKnowledgeBase({
         ownerId: me.data.id,
         payload: {
           name: data.name,
@@ -94,7 +96,7 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
       }
 
       const client = getInstillAPIClient({ accessToken });
-      return client.vdp.artifact.updateKnowledgeBase({
+      return client.vdp.knowledgeBase.updateKnowledgeBase({
         ownerId: me.data.id,
         kbId,
         payload: data,
@@ -112,10 +114,10 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
       }
 
       const client = getInstillAPIClient({ accessToken });
-      return client.vdp.artifact.createKnowledgeBase({
+      return client.vdp.knowledgeBase.createKnowledgeBase({
         ownerId: me.data.id,
         payload: {
-          name: `${knowledgeBase.name}-clone`,
+          name: `${ knowledgeBase.name } -clone`,
           description: knowledgeBase.description,
           tags: knowledgeBase.tags || [],
         },
@@ -133,7 +135,7 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
       }
 
       const client = getInstillAPIClient({ accessToken });
-      return client.vdp.artifact.deleteKnowledgeBase({
+      return client.vdp.knowledgeBase.deleteKnowledgeBase({
         ownerId: me.data.id,
         kbId,
       });

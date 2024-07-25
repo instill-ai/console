@@ -30,7 +30,7 @@ export function createInstillAxiosClient(
 
   let APIVersion = process.env.NEXT_PUBLIC_GENERAL_API_VERSION;
 
-  if (isAlphaVersion) {
+  if (isModelEndpoint) {
     APIVersion = process.env.NEXT_PUBLIC_MODEL_API_VERSION;
   }
 

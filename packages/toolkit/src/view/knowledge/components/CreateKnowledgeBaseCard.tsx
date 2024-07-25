@@ -10,10 +10,10 @@ import * as React from "react";
 import { KnowledgeBase } from "../../../../../sdk/src/vdp/artifact/types";
 import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
 import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./undoDeleteTime";
-import { DeleteKnowledgeBaseNotification } from "./notifications";
 import { useListChunks } from "../../../lib/react-query-service/knowledge";
 import { useInstillStore, useShallow } from "../../../lib";
 import { InstillStore } from "../../../lib";
+import DeleteKnowledgeBaseNotification from "./notifications/DeleteKnowledgeBaseNotification";
 
 type EditKnowledgeDialogData = {
   name: string;
@@ -84,7 +84,10 @@ type CreateKnowledgeBaseCardProps = {
   onCloneKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
   onDeleteKnowledgeBase: (kbId: string) => Promise<void>;
 };
-
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
 export const CreateKnowledgeBaseCard = ({
   knowledgeBase,
   onCardClick,
@@ -97,12 +100,8 @@ export const CreateKnowledgeBaseCard = ({
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  const { accessToken, enabledQuery } = useInstillStore(
-    useShallow((store: InstillStore) => ({
-      accessToken: store.accessToken,
-      enabledQuery: store.enabledQuery,
-    }))
-  );
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
 
   const { data: chunks, isLoading: isLoadingChunks } = useListChunks({
     kbId: knowledgeBase.kbId,

@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, Icons, Nullable, Separator, Skeleton, Tag } from "@instill-ai/design-system";
 import { KnowledgeBase, File } from "../../../../../sdk/src/vdp/artifact/types";
 import { DELETE_FILE_TIMEOUT } from "../components/undoDeleteTime";
-import { DeleteFileNotification } from "../components/notifications";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useListKnowledgeBaseFiles, useDeleteKnowledgeBaseFile } from "../../../lib/react-query-service/knowledge";
 import FileDetailsOverlay from "../components/FileDetailsOverlay";
+import DeleteFileNotification from '../components/notifications/DeleteFileNotification';
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;

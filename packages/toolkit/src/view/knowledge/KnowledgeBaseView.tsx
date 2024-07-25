@@ -14,7 +14,7 @@ import {
   ChunkTab,
   RetrieveTestTab
 } from "./tabs";
-import { CreditUsageNotification } from "./components/notifications";
+import CreditUsageNotification from "./components/notifications/CreditUsageFileNotification";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 

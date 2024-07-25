@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getInstillArtifactAPIClient, Nullable } from "@instill-ai/toolkit";
+import { getInstillAPIClient, Nullable } from "@instill-ai/toolkit";
 
 export function useUpdateChunk() {
   const queryClient = useQueryClient();
@@ -22,7 +22,7 @@ export function useUpdateChunk() {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const client = getInstillArtifactAPIClient({ accessToken });
+      const client = getInstillAPIClient({ accessToken });
 
       const response = await client.vdp.knowledgeBase.updateChunk({ chunkUid, payload });
 

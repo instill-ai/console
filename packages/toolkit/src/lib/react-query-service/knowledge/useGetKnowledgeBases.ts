@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
-import { getInstillArtifactAPIClient } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useGetKnowledgeBases() {
   return useQuery({
@@ -12,7 +12,7 @@ export function useGetKnowledgeBases() {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const client = getInstillArtifactAPIClient({ accessToken });
+      const client = getInstillAPIClient({ accessToken });
 
       const knowledgeBases = await client.vdp.knowledgeBase.listKnowledgeBases();
 
