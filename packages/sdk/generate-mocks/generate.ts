@@ -76,55 +76,34 @@ type OperationDefinition = {
 function getOperationDefinitions(
   v3Doc: OpenAPIV3.Document,
 ): OperationDefinition[] {
-  return Object.entries(v3Doc.paths).flatMap(([path, pathItem]) =>
-    !pathItem
-      ? []
-      : Object.entries(pathItem)
-          .filter((arg): arg is [string, OpenAPIV3.OperationObject] =>
-            operationKeys.includes(arg[0] as any),
-          )
-          .map(([verb, operation]) => {
-            // if (operation.parameters && operation.parameters[0]) {
-            //   console.log(path, operation.parameters[0]);
-            // }
+  return Object.entries(v3Doc.paths).flatMap(([path, pathItem]) => {
+    if (!pathItem) {
+      return [];
+    }
 
-            // The path will have something like /v1beta/{user_secret_name} to represent a resource with namespace
-            // the complete path should be /v1beta/users/uid/secrets/sid
-            const namespaceMatchRegex = /{([^}]*)}/g;
+    const operations: OperationDefinition[] = [];
 
-            const namespaces = path.match(namespaceMatchRegex);
+    for (const [verb, operation] of Object.entries(pathItem)
+      .filter((arg): arg is [string, OpenAPIV3.OperationObject] =>
+        operationKeys.includes(arg[0] as any),
+      )
+      .filter(([, operation]) => operation.deprecated !== true)) {
+      const variablesRegex = /{([^}]*)}/g;
 
-            let newPathWithNamespace = path;
+      // @ts-ignore
+      const newPathWithNamespace: string = path.replaceAll(variablesRegex, "*");
 
-            if (namespaces) {
-              for (const match of namespaces) {
-                if (operation.parameters && operation.parameters.length > 0) {
-                  const targetParameter = (
-                    operation.parameters as OpenAPIV3.ParameterObject[]
-                  ).find(
-                    (p) => p.name === match.replace("{", "").replace("}", ""),
-                  );
+      const id = camelCase(operation.operationId ?? verb + "/" + path);
+      operations.push({
+        path: newPathWithNamespace,
+        verb,
+        id,
+        responses: operation.responses,
+      });
+    }
 
-                  if (targetParameter) {
-                    newPathWithNamespace = newPathWithNamespace
-                      // @ts-ignore
-                      .replace(match, targetParameter.schema?.pattern as string)
-                      // @ts-ignore
-                      .replaceAll("[^/]+", "*");
-                  }
-                }
-              }
-            }
-
-            const id = camelCase(operation.operationId ?? verb + "/" + path);
-            return {
-              path: newPathWithNamespace,
-              verb,
-              id,
-              responses: operation.responses,
-            };
-          }),
-  );
+    return operations;
+  });
 }
 
 function operationFilter(

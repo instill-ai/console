@@ -91,9 +91,28 @@ export function transformToHandlerCode(
 
       const identifier = getResIdentifierName(successResponse);
 
-      return `http.${op.verb}(\`\${baseURL}${op.path}\`, async () => {
+      // We have namespace path like /namespaces/*/pipelines/pid
+      // For it we need to generate two route
+      // - /users/*/pipelines/pid
+      // - /organizations/*/pipelines/pid
+
+      const namespacesRegex = /namespaces/g;
+
+      if (namespacesRegex.test(op.path)) {
+        const orgPath = op.path.replace(namespacesRegex, "organizations");
+        const userPath = op.path.replace(namespacesRegex, "users");
+
+        return `http.${op.verb}(\`\${baseURL}${orgPath}\`, async () => {
+          return HttpResponse.json(await ${identifier}())
+        }),\n
+        http.${op.verb}(\`\${baseURL}${userPath}\`, async () => {
           return HttpResponse.json(await ${identifier}())
         }),\n`;
+      } else {
+        return `http.${op.verb}(\`\${baseURL}${op.path}\`, async () => {
+          return HttpResponse.json(await ${identifier}())
+        }),\n`;
+      }
     })
     .join("  ")
     .trimEnd();
