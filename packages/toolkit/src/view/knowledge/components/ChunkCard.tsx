@@ -38,7 +38,7 @@ const ChunkCard = ({ chunk, index, onChunkClick, onRetrievableToggle, fileConten
                 <p className="text-semantic-fg-secondary-alt-secondary truncate product-body-text-2-regular hover:bg-semantic-bg-secondary">
                     {fileContent}
                 </p>
-                <div className="flex items-center justify-end gap-1">
+                {/* <div className="flex items-center justify-end gap-1">
                     <Tag
                         size="sm"
                         variant="lightNeutral"
@@ -49,7 +49,7 @@ const ChunkCard = ({ chunk, index, onChunkClick, onRetrievableToggle, fileConten
                             {chunk.tokens}
                         </span>
                     </Tag>
-                </div>
+                </div> */}
             </div>
         </div>
     );

@@ -378,7 +378,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
                       </div>
                       <div className="flex flex-col items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                         <div>{`${item.totalChunks ?? 'N/A'} chunks`}</div>
-                        <div>{`${item.totalTokens ?? 'N/A'} tokens`}</div>
+                        {/* <div>{`${item.totalTokens ?? 'N/A'} tokens`}</div> */}
                       </div>
                       <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                         {formatDate(item.createTime)}

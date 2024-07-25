@@ -24,4 +24,4 @@ export const SlashDivider = React.forwardRef<
     </IconBase>
   );
 });
-SlashDivider.displayName = "IconArrowLeft";
+SlashDivider.displayName = "SlashDivider";
