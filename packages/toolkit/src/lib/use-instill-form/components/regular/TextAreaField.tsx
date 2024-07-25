@@ -48,7 +48,9 @@ export const TextAreaField = ({
                 // its value is a string But for foo field its value is a object.
                 // And some time the foo field is not a object field but a string field,
                 // we need to deal with it
-                value={typeof field.value === "object" ? "" : field.value ?? ""}
+                value={
+                  typeof field.value === "object" ? "" : (field.value ?? "")
+                }
                 autoComplete="off"
                 onChange={(e) => {
                   field.onChange(e);

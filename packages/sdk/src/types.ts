@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { JSONSchema7, JSONSchema7Definition } from "json-schema";
+import { z } from "zod";
 
-import { Organization } from "./core/organization";
-import { User } from "./core/user";
+import { Organization, OrganizationSchema } from "./core/organization";
+import { User, UserSchema } from "./core/user";
 
 export type ErrorDetails = {
   "@type": string;
@@ -25,6 +26,11 @@ export type Permission = {
   canEdit: boolean;
   canTrigger: boolean;
 };
+
+export const PermissionSchema = z.object({
+  canEdit: z.boolean(),
+  canTrigger: z.boolean(),
+});
 
 export type StripeSubscriptionDetail = {
   productName: string;
@@ -52,15 +58,25 @@ export type UserOwner = {
   user: User;
 };
 
+export const UserOwnerSchema = z.object({
+  user: UserSchema,
+});
+
 export type OrganizationOwner = {
   organization: Organization;
 };
+
+export const OrganizationOwnerSchema = z.object({
+  organization: OrganizationSchema,
+});
 
 export type Nullable<T> = T | null;
 
 export type GeneralRecord = Record<string, any>;
 
 export type Owner = UserOwner | OrganizationOwner;
+
+export const OwnerSchema = z.union([UserOwnerSchema, OrganizationOwnerSchema]);
 
 export type InstillCredentialMap = {
   targets: string[];
@@ -137,3 +153,30 @@ export type Operation = {
   error?: GeneralRecord;
   done: boolean;
 };
+
+export type DataSpecification = {
+  input: Nullable<InstillJSONSchema>;
+  output: Nullable<InstillJSONSchema>;
+};
+
+export const DataSpecificationSchema = z.object({
+  input: z.any().nullable(),
+  output: z.any().nullable(),
+});
+
+export type Spec = {
+  componentSpecification: InstillJSONSchema;
+  dataSpecifications: Nullable<Record<string, DataSpecification>>;
+};
+
+export const SpecSchema = z.object({
+  componentSpecification: z.record(z.any()),
+  dataSpecifications: z
+    .record(
+      z.object({
+        input: z.any().nullable(),
+        output: z.any().nullable(),
+      }),
+    )
+    .nullable(),
+});

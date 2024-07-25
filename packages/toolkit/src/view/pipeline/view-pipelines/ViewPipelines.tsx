@@ -128,7 +128,7 @@ export const ViewPipelines = () => {
       <PipelinesList
         pipelines={
           pipelines.isSuccess
-            ? pipelines.data.pages[pageNumber]?.pipelines ?? []
+            ? (pipelines.data.pages[pageNumber]?.pipelines ?? [])
             : []
         }
         onPipelineDelete={pipelines.refetch}

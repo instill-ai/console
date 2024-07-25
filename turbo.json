@@ -1,6 +1,6 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "storybook-static/**"]
@@ -22,6 +22,7 @@
     "NODE_ENV",
     "NEXT_PUBLIC_API_GATEWAY_URL",
     "NEXT_SERVER_API_GATEWAY_URL",
-    "NEXT_PUBLIC_CONSOLE_BASE_URL"
+    "NEXT_PUBLIC_CONSOLE_BASE_URL",
+    "INSTILL_API_VERSION"
   ]
 }

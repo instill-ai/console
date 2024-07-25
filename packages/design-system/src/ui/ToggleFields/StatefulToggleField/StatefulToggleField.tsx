@@ -146,7 +146,7 @@ const StatefulToggleField = (props: StatefulToggleFieldProps) => {
       additionalMessageOnLabel={
         state === "STATE_LOADING"
           ? loadingLabelText
-          : additionalMessageOnLabel ?? null
+          : (additionalMessageOnLabel ?? null)
       }
       description={description ?? ""}
       error={error ?? null}

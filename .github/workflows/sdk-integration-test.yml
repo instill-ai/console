@@ -1,31 +1,27 @@
-name: Unit Test
+name: SDK Integration test
 
 on:
-  push:
-    branches:
-      - "*"
-      - "!main"
   pull_request:
     branches:
       - main
+  workflow_call:
+    inputs:
+      protobuf-branch:
+        required: true
+        type: string
 
 jobs:
-  unit-test:
-    # skip the test of release bot opened PR to main
-    if: ${{ !contains(github.ref, 'release') }}
-
+  run-sdk-integration-test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup node
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - uses: pnpm/action-setup@v2.0.1
+      - uses: pnpm/action-setup@v4
         name: Install pnpm
         id: pnpm-install
         with:
@@ -48,14 +44,8 @@ jobs:
       - name: Install dependencies
         run: rm -rf node_modules && pnpm i --frozen-lockfile
 
-      - name: Run build
-        run: pnpm build
+      - name: generate mock servers
+        run: pnpm run --filter instill-sdk gen-mocks ${{ inputs.protobuf-branch }}
 
-      - name: Run linter
-        run: pnpm lint
-
-      - name: Run prettier
-        run: pnpm format:check
-
-      - name: Run tests
-        run: pnpm test
+      - name: Run integration tests
+        run: pnpm run --filter instill-sdk integration-test

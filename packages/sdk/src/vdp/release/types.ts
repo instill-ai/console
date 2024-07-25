@@ -1,5 +1,11 @@
-import { GeneralRecord } from "../../types";
-import { DataSpecification, PipelineRecipe } from "../pipeline";
+import { z } from "zod";
+
+import {
+  DataSpecification,
+  DataSpecificationSchema,
+  GeneralRecord,
+} from "../../types";
+import { PipelineRecipe } from "../types";
 
 export type PipelineRelease = {
   name: string;
@@ -9,10 +15,31 @@ export type PipelineRelease = {
   recipe: PipelineRecipe;
   createTime: string;
   updateTime: string;
-  dataSpecification: DataSpecification;
+  deleteTime?: string;
   metadata: GeneralRecord;
-  alias?: string;
+  alias: string;
+  readme: string;
+  rawRecipe: string;
+  dataSpecification: DataSpecification;
 };
+
+export const PipelineReleaseSchema = z.object({
+  name: z.string(),
+  uid: z.string(),
+  id: z.string(),
+  description: z.string(),
+
+  // Our openapi isn't fully typed on the recipe field yet
+  recipe: z.record(z.any()),
+  createTime: z.string(),
+  updateTime: z.string(),
+  deleteTime: z.string().optional(),
+  metadata: z.record(z.any()),
+  alias: z.string().optional(),
+  readme: z.string(),
+  rawRecipe: z.string(),
+  dataSpecification: DataSpecificationSchema,
+});
 
 export type GetNamespacePipelineReleaseRequest = {
   namespacePipelineReleaseName: string;

@@ -1,5 +1,6 @@
-import { GeneralRecord } from "../../types";
-import { Spec } from "../pipeline";
+import { z } from "zod";
+
+import { GeneralRecord, Spec, SpecSchema } from "../../types";
 
 export type ConnectorType =
   | "CONNECTOR_TYPE_UNSPECIFIED"
@@ -8,6 +9,14 @@ export type ConnectorType =
   | "CONNECTOR_TYPE_AI"
   | "CONNECTOR_TYPE_APPLICATION";
 
+export const ConnectorTypeSchema = z.enum([
+  "CONNECTOR_TYPE_UNSPECIFIED",
+  "CONNECTOR_TYPE_OPERATOR",
+  "CONNECTOR_TYPE_DATA",
+  "CONNECTOR_TYPE_AI",
+  "CONNECTOR_TYPE_APPLICATION",
+]);
+
 export type ConnectorDefinition = {
   name: string;
   uid: string;
@@ -15,7 +24,6 @@ export type ConnectorDefinition = {
   title: string;
   documentationUrl: string;
   icon: string;
-  iconUrl: string;
   type: ConnectorType;
   spec: Spec;
   tombstone: boolean;
@@ -24,6 +32,22 @@ export type ConnectorDefinition = {
   vendor: string;
   vendorAttributes: GeneralRecord;
 };
+
+export const ConnectorDefinitionSchema = z.object({
+  name: z.string(),
+  uid: z.string(),
+  id: z.string(),
+  title: z.string(),
+  documentationUrl: z.string(),
+  icon: z.string(),
+  type: ConnectorTypeSchema,
+  spec: SpecSchema,
+  tombstone: z.boolean(),
+  public: z.boolean(),
+  custom: z.boolean(),
+  vendor: z.string(),
+  vendorAttributes: z.record(z.any()),
+});
 
 export type OperatorDefinition = {
   name: string;
@@ -36,8 +60,20 @@ export type OperatorDefinition = {
   tombstone: boolean;
   public: boolean;
   custom: boolean;
-  iconUrl: string;
 };
+
+export const OperatorDefinitionSchema = z.object({
+  name: z.string(),
+  uid: z.string(),
+  id: z.string(),
+  title: z.string(),
+  documentationUrl: z.string(),
+  icon: z.string(),
+  spec: SpecSchema,
+  tombstone: z.boolean(),
+  public: z.boolean(),
+  custom: z.boolean(),
+});
 
 export type ListConnectorDefinitionsRequest = {
   pageSize?: number;
@@ -52,6 +88,14 @@ export type ListConnectorDefinitionsResponse = {
   totalSize: number;
 };
 
+export const listConnectorDefinitionsWithPaginationResponseValidator = z.object(
+  {
+    connectorDefinitions: z.array(ConnectorDefinitionSchema),
+    nextPageToken: z.string(),
+    totalSize: z.number(),
+  },
+);
+
 export type GetConnectorDefinitionRequest = {
   connectorDefinitionName: string;
   view?: string;
@@ -60,6 +104,9 @@ export type GetConnectorDefinitionRequest = {
 export type GetConnectorDefinitionResponse = {
   connectorDefinition: ConnectorDefinition;
 };
+
+export const getConnectorDefinitionResponseValidator =
+  ConnectorDefinitionSchema;
 
 export type ListOperatorDefinitionsRequest = {
   pageSize?: number;
@@ -74,6 +121,12 @@ export type ListOperatorDefinitionsResponse = {
   totalSize: number;
 };
 
+export const listOperatorDefinitionsWithPaginationResponseValidator = z.object({
+  operatorDefinitions: z.array(OperatorDefinitionSchema),
+  nextPageToken: z.string(),
+  totalSize: z.number(),
+});
+
 export type GetOperatorDefinitionRequest = {
   operatorDefinitionName: string;
   view?: string;
@@ -82,3 +135,5 @@ export type GetOperatorDefinitionRequest = {
 export type GetOperatorDefinitionResponse = {
   operatorDefinition: OperatorDefinition;
 };
+
+export const getOperatorDefinitionResponseValidator = OperatorDefinitionSchema;

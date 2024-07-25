@@ -38,9 +38,9 @@ export const PipelinePreview = ({
     <ReadOnlyPipelineBuilder
       ref={onMount}
       pipelineName={pipeline?.name || null}
-      recipe={activeRelease ? activeRelease.recipe : pipeline?.recipe ?? null}
+      recipe={activeRelease ? activeRelease.recipe : (pipeline?.recipe ?? null)}
       metadata={
-        activeRelease ? activeRelease.metadata : pipeline?.metadata ?? null
+        activeRelease ? activeRelease.metadata : (pipeline?.metadata ?? null)
       }
       className="min-h-80 w-full"
       style={{

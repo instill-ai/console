@@ -2,8 +2,8 @@
   "extends": "@instill-ai/tsconfig/internal-package.json",
   "compilerOptions": {
     "lib": ["es2022", "dom", "dom.iterable"],
-    "outDir": "dist",
+    "outDir": "dist"
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "generate-mocks"]
 }

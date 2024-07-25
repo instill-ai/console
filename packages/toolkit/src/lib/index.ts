@@ -1,7 +1,6 @@
 import debounce from "lodash.debounce";
 import isEqual from "lodash.isequal";
 
-export * from "./airbytes";
 export * from "./amplitude";
 export * from "./dashboard";
 export * from "./dot";

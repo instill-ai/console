@@ -231,8 +231,8 @@ export function pickRegularFieldsFromInstillFormTree(
         disabled={disabledAll}
         description={
           selectedConstField
-            ? selectedConstField.description ?? null
-            : defaultCondition.description ?? null
+            ? (selectedConstField.description ?? null)
+            : (defaultCondition.description ?? null)
         }
         size={size}
         isHidden={tree.isHidden}

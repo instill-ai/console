@@ -1,4 +1,6 @@
-import { User } from "../user";
+import { z } from "zod";
+
+import { User, UserSchema } from "../user";
 
 export type OrganizationProfile = {
   displayName?: string;
@@ -12,6 +14,20 @@ export type OrganizationProfile = {
   };
 };
 
+export const OrganizationProfileSchema = z.object({
+  displayName: z.string().optional(),
+  bio: z.string().optional(),
+  publicEmail: z.string().optional(),
+  avatar: z.string().optional(),
+  socialProfilesLinks: z
+    .object({
+      webiste: z.string().optional(),
+      x: z.string().optional(),
+      github: z.string().optional(),
+    })
+    .optional(),
+});
+
 export type Organization = {
   name: string;
   uid: string;
@@ -21,6 +37,16 @@ export type Organization = {
   owner: User;
   profile?: OrganizationProfile;
 };
+
+export const OrganizationSchema = z.object({
+  name: z.string(),
+  uid: z.string(),
+  id: z.string(),
+  createTime: z.string(),
+  updateTime: z.string(),
+  owner: UserSchema,
+  profile: OrganizationProfileSchema.optional(),
+});
 
 export type ListOrganizationsRequest = {
   pageSize?: number;

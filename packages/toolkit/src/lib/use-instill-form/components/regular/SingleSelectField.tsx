@@ -211,7 +211,9 @@ export const SingleSelectField = ({
                 field.onChange(e);
               }}
               // Sometime airbyte will put "" in their enum, this will break Radix select
-              value={field.value === "" ? undefined : field.value ?? undefined}
+              value={
+                field.value === "" ? undefined : (field.value ?? undefined)
+              }
               disabled={disabled}
             >
               <Form.Control>
