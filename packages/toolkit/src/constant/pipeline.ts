@@ -106,8 +106,8 @@ export const getInstillPipelineHttpRequestExample = ({
   inputsString,
   version,
 }: {
-  pipelineName: Nullable<string>;
-  inputsString: Nullable<string>;
+  pipelineName?: string;
+  inputsString?: string;
   version: Nullable<string>;
 }) => {
   if (!pipelineName || !inputsString) {
