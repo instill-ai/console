@@ -382,6 +382,16 @@ export const VscodeEditor = () => {
         );
         autoCompleteDisposableRef.current = disposable;
 
+        monaco.languages.registerHoverProvider("yaml", {
+          provideHover: (model, position) => {
+            const word = model.getWordAtPosition(position);
+
+            console.log(word, position);
+
+            return null;
+          },
+        });
+
         editor.addAction({
           id: "open-cmdk",
           label: "Open Cmdk",
