@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+
 import { KnowladgeBasePageRender } from "./render";
 
 export async function generateMetadata() {

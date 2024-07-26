@@ -1,14 +1,16 @@
+import { useState } from "react";
+
 import {
   Button,
   Icons,
   Separator,
-  Tag,
-  Textarea,
   // Select,
   Switch,
+  Tag,
+  Textarea,
 } from "@instill-ai/design-system";
+
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-import { useState } from "react";
 
 type MarkdownTabProps = {
   knowledgeBase: KnowledgeBase;

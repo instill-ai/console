@@ -16,11 +16,10 @@ const CreditUsageNotification = ({
           Credit Usage Reminder
         </div>
         <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular mb-4">
-          This action consumes credits. Check your remaining balance in the account settings.
+          This action consumes credits. Check your remaining balance in the
+          account settings.
         </div>
-        <LinkButton>
-          Check credits
-        </LinkButton>
+        <LinkButton>Check credits</LinkButton>
       </div>
       <Button
         className="absolute right-2 top-2"

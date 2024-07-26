@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+
 import { Nullable } from "@instill-ai/toolkit";
+
+import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 
 export function useGetChunkContent({
   chunkUid,
@@ -24,13 +26,13 @@ export function useGetChunkContent({
       const client = createInstillAxiosClient(accessToken, true);
       try {
         const response = await client.get(
-          `/owners/${ownerId}/knowledge-bases/${kbId}/chunks/${chunkUid}/content`
+          `/owners/${ownerId}/knowledge-bases/${kbId}/chunks/${chunkUid}/content`,
         );
         return response.data.content;
       } catch (error) {
         console.error("Error fetching chunk content:", error);
         throw new Error(
-          "Failed to fetch chunk content. Please try again later."
+          "Failed to fetch chunk content. Please try again later.",
         );
       }
     },

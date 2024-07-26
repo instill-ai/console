@@ -1,5 +1,9 @@
 // CreateKnowledgeDialog.tsx
+import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
 import {
   Button,
   Dialog,
@@ -10,8 +14,7 @@ import {
   // Tag,
   Textarea,
 } from "@instill-ai/design-system";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+
 // import {
 //   InstillStore,
 //   useAuthenticatedUser,
@@ -20,14 +23,13 @@ import * as z from "zod";
 // } from "../../../lib";
 // import * as React from "react";
 import { EntitySelector } from "../../../components";
-import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 import {
   InstillStore,
   useInstillStore,
-  useShallow,
   useRouteInfo,
+  useShallow,
 } from "../../../lib";
-import * as React from "react";
+import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 
 const CreateKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -52,7 +54,7 @@ export const CreateKnowledgeDialog = ({
   const { navigationNamespaceAnchor } = useInstillStore(
     useShallow((store: InstillStore) => ({
       navigationNamespaceAnchor: store.navigationNamespaceAnchor,
-    }))
+    })),
   );
 
   const routeInfo = useRouteInfo();
@@ -89,7 +91,7 @@ export const CreateKnowledgeDialog = ({
         namespaceId: initialNamespaceId,
       });
     }
-  }, [isOpen, navigationNamespaceAnchor, routeInfo?.data?.namespaceId]);
+  }, [isOpen, navigationNamespaceAnchor, routeInfo?.data?.namespaceId, form]);
 
   return (
     <Dialog.Root

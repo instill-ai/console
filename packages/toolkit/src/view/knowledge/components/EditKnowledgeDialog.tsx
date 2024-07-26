@@ -1,3 +1,8 @@
+import React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
 import {
   Button,
   Dialog,
@@ -5,10 +10,6 @@ import {
   Input,
   Textarea,
 } from "@instill-ai/design-system";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
 
 const EditKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -52,7 +53,7 @@ export const EditKnowledgeDialog: React.FC<EditKnowledgeDialogProps> = ({
   const formattedName = formatName(nameValue);
 
   const handleSubmit = async (
-    data: z.infer<typeof EditKnowledgeFormSchema>
+    data: z.infer<typeof EditKnowledgeFormSchema>,
   ) => {
     setIsSubmitting(true);
     try {

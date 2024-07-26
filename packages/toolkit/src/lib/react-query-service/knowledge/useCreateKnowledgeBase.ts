@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { KnowledgeBase } from "../../vdp-sdk/knowledge/types";
 
@@ -11,6 +12,7 @@ async function createKnowledgeBaseMutation({
     name: string;
     description: string;
     tags?: string[];
+    ownerId: string;
   };
   ownerId: string;
   accessToken: string | null;

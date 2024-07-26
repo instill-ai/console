@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+
 import { Nullable } from "@instill-ai/toolkit";
+
+import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { File } from "../../vdp-sdk/knowledge/types";
 
 export function useProcessKnowledgeBaseFiles() {
@@ -20,7 +22,7 @@ export function useProcessKnowledgeBaseFiles() {
       const client = createInstillAxiosClient(accessToken, true);
       const response = await client.post<{ files: File[] }>(
         `/knowledge-bases/files/processAsync`,
-        { file_uids: fileUids }
+        { file_uids: fileUids },
       );
       return response.data.files;
     },

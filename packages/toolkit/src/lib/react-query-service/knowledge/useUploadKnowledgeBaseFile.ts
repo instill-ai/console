@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+
 import { Nullable } from "@instill-ai/toolkit";
+
+import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { File } from "../../vdp-sdk/knowledge/types";
 
 export function useUploadKnowledgeBaseFile() {
@@ -28,7 +30,7 @@ export function useUploadKnowledgeBaseFile() {
       const client = createInstillAxiosClient(accessToken, true);
       const response = await client.post<{ file: File }>(
         `/owners/${ownerId}/knowledge-bases/${knowledgeBaseId}/files`,
-        payload
+        payload,
       );
       return response.data.file;
     },

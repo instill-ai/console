@@ -1,27 +1,38 @@
-import { Icons, Input, Separator, Skeleton } from "@instill-ai/design-system";
 import * as React from "react";
-import { KnowledgeBaseCard } from "./KnowledgeBaseCard";
-import { CreateKnowledgeBaseCard } from "./CreateKnowledgeBaseCard";
-import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
-import {
-  useGetKnowledgeBases,
-  useCreateKnowledgeBase,
-  useUpdateKnowledgeBase,
-  useDeleteKnowledgeBase,
-} from "../../../lib/react-query-service/knowledge";
+import * as z from "zod";
+
+import { Separator, Skeleton } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   useAuthenticatedUser,
   useInstillStore,
   useShallow,
 } from "../../../lib";
+import {
+  useCreateKnowledgeBase,
+  useDeleteKnowledgeBase,
+  useGetKnowledgeBases,
+  useUpdateKnowledgeBase,
+} from "../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-import * as z from "zod";
-import KnowledgeSearchSort, { SortAnchor, SortOrder } from "./KnowledgeSearchSort";
+import { CreateKnowledgeBaseCard } from "./CreateKnowledgeBaseCard";
+import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
+import { KnowledgeBaseCard } from "./KnowledgeBaseCard";
+import KnowledgeSearchSort, {
+  SortAnchor,
+  SortOrder,
+} from "./KnowledgeSearchSort";
 
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
   accessToken: string | null;
+  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
+};
+type EditKnowledgeDialogData = {
+  name: string;
+  description: string;
+  tags?: string[];
 };
 
 const CreateKnowledgeFormSchema = z.object({
@@ -37,13 +48,15 @@ export const KnowledgeBaseTab = ({
 }: KnowledgeBaseTabProps) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
-  const [selectedSortOrder, setSelectedSortOrder] = React.useState<SortOrder>("desc");
-  const [selectedSortAnchor, setSelectedSortAnchor] = React.useState<SortAnchor>("createTime");
+  const [selectedSortOrder, setSelectedSortOrder] =
+    React.useState<SortOrder>("desc");
+  const [selectedSortAnchor, setSelectedSortAnchor] =
+    React.useState<SortAnchor>("createTime");
 
   const { enabledQuery } = useInstillStore(
     useShallow((store: InstillStore) => ({
       enabledQuery: store.enabledQuery,
-    }))
+    })),
   );
 
   const me = useAuthenticatedUser({
@@ -51,7 +64,11 @@ export const KnowledgeBaseTab = ({
     accessToken,
   });
 
-  const { data: knowledgeBases, isLoading, refetch } = useGetKnowledgeBases({
+  const {
+    data: knowledgeBases,
+    isLoading,
+    refetch,
+  } = useGetKnowledgeBases({
     accessToken,
     ownerId: me.data?.id ?? null,
     enabled: enabledQuery && !!me.data?.id,
@@ -62,7 +79,7 @@ export const KnowledgeBaseTab = ({
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
 
   const handleCreateKnowledgeSubmit = async (
-    data: z.infer<typeof CreateKnowledgeFormSchema>
+    data: z.infer<typeof CreateKnowledgeFormSchema>,
   ) => {
     if (!me.data?.id || !accessToken) return;
 
@@ -72,6 +89,7 @@ export const KnowledgeBaseTab = ({
           name: data.name,
           description: data.description,
           tags: data.tags ?? [],
+          ownerId: "",
         },
         ownerId: me.data.id,
         accessToken,
@@ -85,7 +103,7 @@ export const KnowledgeBaseTab = ({
 
   const handleUpdateKnowledgeBase = async (
     data: EditKnowledgeDialogData,
-    kbId: string
+    kbId: string,
   ) => {
     if (!me.data?.id || !accessToken) return;
 
@@ -93,7 +111,11 @@ export const KnowledgeBaseTab = ({
       await updateKnowledgeBase.mutateAsync({
         ownerId: me.data.id,
         kbId: kbId,
-        payload: data,
+        payload: {
+          name: data.name,
+          description: data.description,
+          tags: data.tags || [],
+        },
         accessToken,
       });
       refetch();
@@ -113,8 +135,11 @@ export const KnowledgeBaseTab = ({
 
     try {
       await createKnowledgeBase.mutateAsync({
-        payload: clonedKnowledgeBase,
-        ownerId: me.data.id,
+        payload: {
+          ...clonedKnowledgeBase,
+          ownerId: me.data?.id ?? "",
+        },
+        ownerId: me.data?.id ?? "",
         accessToken,
       });
       refetch();
@@ -141,9 +166,10 @@ export const KnowledgeBaseTab = ({
   const filteredAndSortedKnowledgeBases = React.useMemo(() => {
     if (!knowledgeBases) return [];
 
-    let filtered = knowledgeBases.filter((kb) =>
-      kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      kb.description.toLowerCase().includes(searchTerm.toLowerCase())
+    const filtered = knowledgeBases.filter(
+      (kb) =>
+        kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        kb.description.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
     filtered.sort((a, b) => {
