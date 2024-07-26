@@ -6,13 +6,6 @@ import { User, UserSchema } from "../user/types";
 
 export type MembershipRole = "admin" | "member" | "pending_member" | "owner";
 
-export const MembershipRoleSchema = z.enum([
-  "admin",
-  "member",
-  "pending_member",
-  "owner",
-]);
-
 export type MembershipState =
   | "MEMBERSHIP_STATE_ACTIVE"
   | "MEMBERSHIP_STATE_PENDING";
@@ -34,7 +27,7 @@ export const UserMembershipSchema = z.object({
   user: UserSchema,
   organization: OrganizationSchema,
   name: z.string().nullable(),
-  role: MembershipRoleSchema,
+  role: z.string(),
   state: MembershipStateSchema,
 });
 
@@ -50,7 +43,7 @@ export const OrganizationMembershipSchema = z.object({
   user: UserSchema,
   organization: OrganizationSchema,
   name: z.string().nullable(),
-  role: MembershipRoleSchema,
+  role: z.string(),
   state: MembershipStateSchema,
 });
 
@@ -62,9 +55,8 @@ export type ListUserMembershipsResponse = {
   memberships: UserMembership[];
 };
 
-export const ListUserMembershipsResponseValidator = z.object({
-  memberships: z.array(UserMembershipSchema),
-});
+export const listUserMembershipsResponseValidator =
+  z.array(UserMembershipSchema);
 
 export type GetUserMembershipRequest = {
   userMembershipName: string;
@@ -75,7 +67,7 @@ export type GetUserMembershipResponse = {
   membership: UserMembership;
 };
 
-export const GetUserMembershipResponseValidator = UserMembershipSchema;
+export const getUserMembershipResponseValidator = UserMembershipSchema;
 
 export type ListOrganizationMembershipsRequest = {
   organizationName: string;
@@ -85,9 +77,9 @@ export type ListOrganizationMembershipsResponse = {
   memberships: OrganizationMembership[];
 };
 
-export const ListOrganizationMembershipsResponseValidator = z.object({
-  memberships: z.array(OrganizationMembershipSchema),
-});
+export const listOrganizationMembershipsResponseValidator = z.array(
+  OrganizationMembershipSchema,
+);
 
 export type GetOrganizationMembershipRequest = {
   organizationMembershipName: string;
@@ -98,7 +90,7 @@ export type GetOrganizationMembershipResponse = {
   membership: OrganizationMembership;
 };
 
-export const GetOrganizationMembershipResponseValidator =
+export const getOrganizationMembershipResponseValidator =
   OrganizationMembershipSchema;
 
 export type DeleteUserMembershipRequest = {

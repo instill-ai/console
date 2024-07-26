@@ -24,7 +24,7 @@ export class MembershipClient extends APIResource {
   async listUserMemberships({ userName }: ListUserMembershipsRequest) {
     try {
       const data = await this._client.get<ListUserMembershipsResponse>(
-        `/${userName}`,
+        `/${userName}/memberships`,
       );
 
       return Promise.resolve(data.memberships);
@@ -57,7 +57,7 @@ export class MembershipClient extends APIResource {
   }: ListOrganizationMembershipsRequest) {
     try {
       const data = await this._client.get<ListOrganizationMembershipsResponse>(
-        `/${organizationName}`,
+        `/${organizationName}/memberships`,
       );
 
       return Promise.resolve(data.memberships);

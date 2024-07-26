@@ -2,6 +2,7 @@ import "whatwg-fetch";
 
 import {
   CreditClient,
+  MembershipClient,
   MetricClient,
   OrganizationClient,
   SubscriptionClient,
@@ -11,10 +12,13 @@ import {
 } from "../core";
 import { ModelClient } from "../model";
 import { GeneralRecord, HttpMethod } from "../types";
-import { ComponentClient, PipelineClient } from "../vdp";
-import { ReleaseClient } from "../vdp/release";
-import { SecretClient } from "../vdp/secret";
-import { TriggerClient } from "../vdp/trigger";
+import {
+  ComponentClient,
+  PipelineClient,
+  ReleaseClient,
+  SecretClient,
+  TriggerClient,
+} from "../vdp";
 
 export type RequestOption = {
   body?: string;
@@ -115,6 +119,7 @@ export class InstillAPIClient {
     subscription: new SubscriptionClient(this),
     credit: new CreditClient(this),
     utils: new UtilsClient(this),
+    membership: new MembershipClient(this),
   };
 
   model = new ModelClient(this);
