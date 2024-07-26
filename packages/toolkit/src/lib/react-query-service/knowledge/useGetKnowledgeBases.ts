@@ -16,7 +16,7 @@ async function getKnowledgeBases({
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.get<{
     knowledgeBases: KnowledgeBase[];
-  }>(`/owners/${ownerId}/knowledge-bases`);
+  }>(`/namespaces/${ownerId}/knowledge-bases`);
 
   return response.data.knowledgeBases || [];
 }

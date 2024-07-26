@@ -26,7 +26,7 @@ export function useGetFileDetails({
       }
       const client = createInstillAxiosClient(accessToken, true);
       const response = await client.get<{ file: File }>(
-        `/owners/${ownerId}/knowledge-bases/${kbId}/files/${fileUid}`,
+        `/namespaces/${ownerId}/knowledge-bases/${kbId}/files/${fileUid}`,
       );
       return response.data.file;
     },

@@ -23,7 +23,7 @@ async function createKnowledgeBaseMutation({
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.post<{
     knowledge_base: KnowledgeBase;
-  }>(`/owners/${ownerId}/knowledge-bases`, payload);
+  }>(`/namespaces/${ownerId}/knowledge-bases`, payload);
   return response.data.knowledge_base;
 }
 
