@@ -10,18 +10,9 @@ import {
   Form,
   Icons,
   Input,
-  // Select,
-  // Tag,
   Textarea,
 } from "@instill-ai/design-system";
 
-// import {
-//   InstillStore,
-//   useAuthenticatedUser,
-//   useInstillStore,
-//   useShallow,
-// } from "../../../lib";
-// import * as React from "react";
 import { EntitySelector } from "../../../components";
 import {
   InstillStore,
@@ -198,32 +189,6 @@ export const CreateKnowledgeDialog = ({
                 </Form.Item>
               )}
             />
-            {/* <Form.Field
-              control={form.control}
-              name="tags"
-              render={({ field }) => (
-                <Form.Item>
-                  <div className="flex items-center justify-between">
-                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
-                      Tags
-                    </Form.Label>
-                    <p className="my-auto text-semantic-fg-secondary product-body-text-4-regular">
-                      Optional
-                    </p>
-                  </div>
-                  <Form.Control>
-                    <Input.Root>
-                      <Input.Core
-                        {...field}
-                        id={field.name}
-                        placeholder="Add tag"
-                      />
-                    </Input.Root>
-                  </Form.Control>
-                  <Form.Message />
-                </Form.Item>
-              )}
-            /> */}
             <div className="mt-8 flex justify-end gap-x-3">
               <Button variant="secondaryGrey" onClick={onClose}>
                 Cancel
@@ -243,3 +208,5 @@ export const CreateKnowledgeDialog = ({
     </Dialog.Root>
   );
 };
+
+export default CreateKnowledgeDialog;
