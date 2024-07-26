@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import type { Nullable } from "../../type";
-import { getOrganizationSubscriptionQuery } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useOrganizationSubscription({
   organizationID,
@@ -27,10 +27,18 @@ export function useOrganizationSubscription({
         return Promise.reject(new Error("organizationID not provided"));
       }
 
-      const subscription = await getOrganizationSubscriptionQuery({
-        organizationID,
+      if (!accessToken) {
+        return Promise.reject(new Error("accessToken not provided"));
+      }
+
+      const client = getInstillAPIClient({
         accessToken,
       });
+
+      const subscription =
+        await client.core.subscription.getOrganizationSubscription({
+          organizationName: `organizations/${organizationID}`,
+        });
 
       return Promise.resolve(subscription);
     },
