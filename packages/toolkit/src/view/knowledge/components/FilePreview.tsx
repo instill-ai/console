@@ -1,19 +1,21 @@
+import * as React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
 import {
+  Button,
+  Collapsible,
+  Form,
   Icons,
+  Input,
+  ScrollArea,
+  Select,
   Separator,
   Tabs,
-  Button,
-  Select,
-  Input,
   Textarea,
-  Form,
-  Collapsible,
-  ScrollArea,
 } from "@instill-ai/design-system";
-import * as React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+
 // import { useRouter } from "next/navigation";
 // import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 // import { useUploadKnowledgeBaseFile } from "../../../lib/react-query-service/knowledge";

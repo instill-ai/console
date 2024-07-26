@@ -1,10 +1,21 @@
-import React from 'react';
-import { Chunk, KnowledgeBase, File } from "../../../lib/vdp-sdk/knowledge/types";
-import { useGetFileContent, useListChunks, useListKnowledgeBaseFiles, useUpdateChunk } from '../../../lib/react-query-service/knowledge';
+import React from "react";
+
+import { Icons, Separator, Skeleton } from "@instill-ai/design-system";
+
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
-import FileDetailsOverlay from './FileDetailsOverlay';
-import { Icons, Separator, Skeleton } from '@instill-ai/design-system';
-import ChunkCard from './ChunkCard';
+import {
+  useGetFileContent,
+  useListChunks,
+  useListKnowledgeBaseFiles,
+  useUpdateChunk,
+} from "../../../lib/react-query-service/knowledge";
+import {
+  Chunk,
+  File,
+  KnowledgeBase,
+} from "../../../lib/vdp-sdk/knowledge/types";
+import ChunkCard from "./ChunkCard";
+import FileDetailsOverlay from "./FileDetailsOverlay";
 
 type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -19,7 +30,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
   const { accessToken } = useInstillStore(
     useShallow((store: InstillStore) => ({
       accessToken: store.accessToken,
-    }))
+    })),
   );
 
   const { data: files, isLoading: isLoadingFiles } = useListKnowledgeBaseFiles({
@@ -32,16 +43,16 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
   const updateChunkMutation = useUpdateChunk();
 
   React.useEffect(() => {
-    if (files && files.length > 0) {
+    if (files && files.length > 0 && files[0]?.fileUid) {
       setExpandedFiles([files[0].fileUid]);
     }
   }, [files]);
 
   const toggleFileExpansion = (fileUid: string) => {
-    setExpandedFiles(prev =>
+    setExpandedFiles((prev) =>
       prev.includes(fileUid)
-        ? prev.filter(id => id !== fileUid)
-        : [...prev, fileUid]
+        ? prev.filter((id) => id !== fileUid)
+        : [...prev, fileUid],
     );
   };
 
@@ -55,9 +66,12 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
     setSelectedFile(null);
     setSelectedChunk(null);
     setIsFileDetailsOpen(false);
-  }
+  };
 
-  const handleRetrievableToggle = async (chunkUid: string, currentValue: boolean) => {
+  const handleRetrievableToggle = async (
+    chunkUid: string,
+    currentValue: boolean,
+  ) => {
     try {
       await updateChunkMutation.mutateAsync({
         chunkUid,
@@ -70,7 +84,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
   };
 
   return (
-<div className="flex-col">
+    <div className="flex-col">
       <div className="mb-5 flex items-center justify-between">
         <p className="text-semantic-fg-primary product-headings-heading-2">
           {knowledgeBase.name}
@@ -99,33 +113,33 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
             </div>
           ))}
         </div>
+      ) : files && files.length > 0 ? (
+        <div className="flex">
+          <div className="w-full pr-4">
+            {files.map((file: File) => (
+              <FileChunks
+                key={file.fileUid}
+                file={file}
+                knowledgeBase={knowledgeBase}
+                accessToken={accessToken}
+                expanded={expandedFiles.includes(file.fileUid)}
+                onToggleExpand={toggleFileExpansion}
+                onChunkClick={handleChunkClick}
+                onRetrievableToggle={handleRetrievableToggle}
+              />
+            ))}
+          </div>
+        </div>
       ) : (
-        files && files.length > 0 ? (
-          <div className="flex">
-            <div className="w-full pr-4">
-              {files.map((file: File) => (
-                <FileChunks
-                  key={file.fileUid}
-                  file={file}
-                  knowledgeBase={knowledgeBase}
-                  accessToken={accessToken}
-                  expanded={expandedFiles.includes(file.fileUid)}
-                  onToggleExpand={toggleFileExpansion}
-                  onChunkClick={handleChunkClick}
-                  onRetrievableToggle={handleRetrievableToggle}
-                />
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center p-8 text-center">
-            <Icons.DownloadCloud01 className="h-16 w-16 stroke-semantic-warning-default mb-4" />
-            <p className="text-lg font-semibold mb-2">No files found</p>
-            <p className="text-semantic-fg-secondary">
-              Oops… It looks like you haven't uploaded any documents yet. Please go to the Upload Documents page to upload and process your files.
-            </p>
-          </div>
-        )
+        <div className="flex flex-col items-center justify-center p-8 text-center">
+          <Icons.DownloadCloud01 className="h-16 w-16 stroke-semantic-warning-default mb-4" />
+          <p className="text-lg font-semibold mb-2">No files found</p>
+          <p>
+            Oops… It looks like you haven&apos;t uploaded any documents yet.
+            Please go to the Upload Documents page to upload and process your
+            files.
+          </p>
+        </div>
       )}
       {selectedFile && selectedChunk && (
         <FileDetailsOverlay
@@ -153,8 +167,11 @@ type FileChunksProps = {
   accessToken: string | null;
   expanded: boolean;
   onToggleExpand: (fileUid: string) => void;
-  onChunkClick: (fileUid: string, chunkUid: string) => void;
-  onRetrievableToggle: (chunkUid: string, currentValue: boolean) => Promise<void>;
+  onChunkClick: (file: File, chunk: Chunk) => void;
+  onRetrievableToggle: (
+    chunkUid: string,
+    currentValue: boolean,
+  ) => Promise<void>;
 };
 
 const FileChunks = ({
@@ -166,7 +183,6 @@ const FileChunks = ({
   onChunkClick,
   onRetrievableToggle,
 }: FileChunksProps) => {
-
   const { data: chunks, isLoading: isLoadingChunks } = useListChunks({
     kbId: knowledgeBase.kbId,
     accessToken,
@@ -175,7 +191,7 @@ const FileChunks = ({
     fileUid: file.fileUid,
   });
 
-  const { data: fileContent, isLoading: isLoadingFileContent } = useGetFileContent({
+  const { data: fileContent } = useGetFileContent({
     fileUid: file.fileUid,
     kbId: knowledgeBase.kbId,
     accessToken,
@@ -191,38 +207,37 @@ const FileChunks = ({
       >
         <p className="product-button-button-1">{file.name}</p>
         <Icons.ChevronDown
-          className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${expanded ? "rotate-180" : ""
-            }`}
+          className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${
+            expanded ? "rotate-180" : ""
+          }`}
         />
       </div>
       {expanded ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {isLoadingChunks ? (
             <Skeleton className="h-32 w-full" />
+          ) : chunks && chunks.length > 0 ? (
+            chunks.map((chunk: Chunk, i: number) => (
+              <ChunkCard
+                key={chunk.chunkUid}
+                chunk={chunk}
+                index={i}
+                onChunkClick={() => onChunkClick(file, chunk)}
+                onRetrievableToggle={onRetrievableToggle}
+                fileContent={fileContent || ""}
+              />
+            ))
           ) : (
-            chunks && chunks.length > 0 ? (
-              chunks.map((chunk: Chunk, i: number) => (
-                <ChunkCard
-                  key={chunk.chunkUid}
-                  chunk={chunk}
-                  index={i}
-                  onChunkClick={() => onChunkClick(file, chunk)}
-                  onRetrievableToggle={onRetrievableToggle}
-                  fileContent={fileContent || ''}
-                />
-              ))
-            ) : (
-              <div className="col-span-3 flex flex-col items-center justify-center p-8 text-center">
-                <Icons.Gear01 className="h-12 w-12 stroke-semantic-warning-default mb-4" />
-                <p className="text-semantic-fg-secondary">
-                  Oops… It looks like your files are still being processed. Please check back later to see the chunks.
-                </p>
-              </div>
-            )
+            <div className="col-span-3 flex flex-col items-center justify-center p-8 text-center">
+              <Icons.Gear01 className="h-12 w-12 stroke-semantic-warning-default mb-4" />
+              <p className="text-semantic-fg-secondary">
+                Oops… It looks like your files are still being processed. Please
+                check back later to see the chunks.
+              </p>
+            </div>
           )}
         </div>
       ) : null}
     </div>
   );
 };
-

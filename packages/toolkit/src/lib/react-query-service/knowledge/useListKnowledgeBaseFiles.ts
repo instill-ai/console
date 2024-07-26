@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+
 import { Nullable } from "@instill-ai/toolkit";
+
+import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { File } from "../../vdp-sdk/knowledge/types";
 
 export function useListKnowledgeBaseFiles({
@@ -28,7 +30,7 @@ export function useListKnowledgeBaseFiles({
       }
       const client = createInstillAxiosClient(accessToken, true);
       const response = await client.get<{ files: File[] }>(
-        `/owners/${ownerId}/knowledge-bases/${knowledgeBaseId}/files`
+        `/owners/${ownerId}/knowledge-bases/${knowledgeBaseId}/files`,
       );
       return response.data.files;
     },

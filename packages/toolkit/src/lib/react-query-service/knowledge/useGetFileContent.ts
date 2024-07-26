@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+
 import { Nullable } from "@instill-ai/toolkit";
-import { File } from "../../vdp-sdk/knowledge/types";
+
+import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 
 export function useGetFileContent({
   fileUid,
@@ -24,7 +25,7 @@ export function useGetFileContent({
       }
       const client = createInstillAxiosClient(accessToken, true);
       const response = await client.get<{ sourceFile: { content: string } }>(
-        `/owners/${ownerId}/knowledge-bases/${kbId}/files/${fileUid}/source`
+        `/owners/${ownerId}/knowledge-bases/${kbId}/files/${fileUid}/source`,
       );
       return response.data.sourceFile.content;
     },

@@ -1,13 +1,15 @@
+import { useState } from "react";
+
 import {
   Button,
   Icons,
-  Switch,
   Input,
-  Tag,
   Separator,
+  Switch,
+  Tag,
 } from "@instill-ai/design-system";
+
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-import { useState } from "react";
 import MetadataPreview from "./MetadataPreview";
 
 type ImageTabProps = {
@@ -51,7 +53,7 @@ export const ImageTab = ({ knowledgeBase }: ImageTabProps) => {
   const toggleFileExpansion = (index: number) => {
     if (expandedFiles.includes(index)) {
       setExpandedFiles(
-        expandedFiles.filter((fileIndex) => fileIndex !== index)
+        expandedFiles.filter((fileIndex) => fileIndex !== index),
       );
     } else {
       setExpandedFiles([...expandedFiles, index]);

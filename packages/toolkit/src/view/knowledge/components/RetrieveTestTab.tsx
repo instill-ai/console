@@ -1,15 +1,19 @@
 import { Separator } from "@instill-ai/design-system";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+
 import { CodeBlock } from "../../../components";
 import { CodeString } from "../../../components/CodeString";
 import { defaultCodeSnippetStyles } from "../../../constant";
+import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 
 type RetrieveTestTabProps = {
   knowledgeBase: KnowledgeBase;
   isProcessed: boolean;
 };
 
-export const RetrieveTestTab = ({ knowledgeBase, isProcessed }: RetrieveTestTabProps) => {
+export const RetrieveTestTab = ({
+  knowledgeBase,
+  isProcessed,
+}: RetrieveTestTabProps) => {
   const curlCommand = `curl --request GET \\
      --url https://api.instill.tech/v1alpha/XXX \\
      --header 'Authorization: Bearer $INSTILL_API_TOKEN' \\
@@ -31,8 +35,12 @@ export const RetrieveTestTab = ({ knowledgeBase, isProcessed }: RetrieveTestTabP
       {!isProcessed ? (
         <div className="w-2/3 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
           <p className="mb-4 product-body-text-3-regular">
-            Your knowledge base has been successfully created. Now, you can proceed to the{" "}
-            <a href="link-to-upload" className="text-semantic-accent-default underline">
+            Your knowledge base has been successfully created. Now, you can
+            proceed to the{" "}
+            <a
+              href="link-to-upload"
+              className="text-semantic-accent-default underline"
+            >
               Upload Documents page
             </a>{" "}
             to upload and process your files.
@@ -41,7 +49,10 @@ export const RetrieveTestTab = ({ knowledgeBase, isProcessed }: RetrieveTestTabP
       ) : (
         <div className="w-2/3 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
           <p className="mb-4 product-body-text-3-regular">
-            Once the status of documents in Catalog / Files has changed to 'Completed', you can use the following Instill API format example to test the retrieval of this knowledge base and obtain chunks related to a given query.
+            Once the status of documents in Catalog / Files has changed to
+            &apos;Completed&apos;, you can use the following Instill API format example to
+            test the retrieval of this knowledge base and obtain chunks related
+            to a given query.
           </p>
           <div className="mt-8">
             <p className="mb-2 text-lg font-semibold">Example cURL command:</p>
@@ -54,15 +65,18 @@ export const RetrieveTestTab = ({ knowledgeBase, isProcessed }: RetrieveTestTabP
           </div>
           <div className="mt-8">
             <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
-            <CodeString>
-              https://api.instill.tech/v1alpha/XXX
-            </CodeString>
+            <CodeString>https://api.instill.tech/v1alpha/XXX</CodeString>
           </div>
           <p className="mt-4 product-body-text-3-regular">
-            For a more detailed overview of the input/output schemas, check out the{" "}
-            <a href="https://www.instill.tech/docs/artifact/XXX" className="text-semantic-accent-default underline">
-              Artifact's API reference
-            </a>.
+            For a more detailed overview of the input/output schemas, check out
+            the{" "}
+            <a
+              href="https://www.instill.tech/docs/artifact/XXX"
+              className="text-semantic-accent-default underline"
+            >
+              Artifact&apos;s API reference
+            </a>
+            .
           </p>
         </div>
       )}

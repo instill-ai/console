@@ -1,34 +1,73 @@
-import React from 'react';
-import { Button, Icons, Separator, Skeleton, Tag } from "@instill-ai/design-system";
-import { KnowledgeBase, File } from "../../../lib/vdp-sdk/knowledge/types";
-import { DELETE_FILE_TIMEOUT } from "./undoDeleteTime";
-import DeleteFileNotification from "./Notifications/DeleteFileNotification";
+import React from "react";
+
+import {
+  Button,
+  Icons,
+  Separator,
+  Skeleton,
+  Tag,
+} from "@instill-ai/design-system";
+
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
-import { useListKnowledgeBaseFiles, useDeleteKnowledgeBaseFile } from "../../../lib/react-query-service/knowledge";
+import {
+  useDeleteKnowledgeBaseFile,
+  useListKnowledgeBaseFiles,
+} from "../../../lib/react-query-service/knowledge";
+import { File, KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import FileDetailsOverlay from "./FileDetailsOverlay";
+import DeleteFileNotification from "./Notifications/DeleteFileNotification";
+import { DELETE_FILE_TIMEOUT } from "./undoDeleteTime";
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
 };
 
-type FileStatus = "NOTSTARTED" | "WAITING" | "CONVERTING" | "CHUNKING" | "EMBEDDING" | "COMPLETED" | "FAILED";
+type FileStatus =
+  | "NOTSTARTED"
+  | "WAITING"
+  | "CONVERTING"
+  | "CHUNKING"
+  | "EMBEDDING"
+  | "COMPLETED"
+  | "FAILED";
 
-type TagVariant = "lightNeutral" | "lightYellow" | "default" | "lightGreen" | "lightRed";
+type TagVariant =
+  | "lightNeutral"
+  | "lightYellow"
+  | "default"
+  | "lightGreen"
+  | "lightRed";
 
-const getStatusTag = (status: FileStatus): { variant: TagVariant; dotColor: string } => {
-  const statusMap: Record<FileStatus, { variant: TagVariant; dotColor: string }> = {
-    NOTSTARTED: { variant: "lightNeutral", dotColor: "bg-semantic-fg-secondary" },
-    WAITING: { variant: "lightYellow", dotColor: "bg-semantic-warning-default" },
+const getStatusTag = (
+  status: FileStatus,
+): { variant: TagVariant; dotColor: string } => {
+  const statusMap: Record<
+    FileStatus,
+    { variant: TagVariant; dotColor: string }
+  > = {
+    NOTSTARTED: {
+      variant: "lightNeutral",
+      dotColor: "bg-semantic-fg-secondary",
+    },
+    WAITING: {
+      variant: "lightYellow",
+      dotColor: "bg-semantic-warning-default",
+    },
     CONVERTING: { variant: "default", dotColor: "bg-semantic-accent-default" },
     CHUNKING: { variant: "default", dotColor: "bg-semantic-accent-default" },
     EMBEDDING: { variant: "default", dotColor: "bg-semantic-accent-default" },
-    COMPLETED: { variant: "lightGreen", dotColor: "bg-semantic-success-default" },
+    COMPLETED: {
+      variant: "lightGreen",
+      dotColor: "bg-semantic-success-default",
+    },
     FAILED: { variant: "lightRed", dotColor: "bg-semantic-error-default" },
   };
   return statusMap[status] || statusMap.NOTSTARTED;
 };
 
-export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase }) => {
+export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
+  knowledgeBase,
+}) => {
   const [sortConfig, setSortConfig] = React.useState<{
     key: keyof File | "";
     direction: "ascending" | "descending" | "";
@@ -41,10 +80,14 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
     useShallow((store: InstillStore) => ({
       accessToken: store.accessToken,
       enabledQuery: store.enabledQuery,
-    }))
+    })),
   );
 
-  const { data: files, isLoading, refetch } = useListKnowledgeBaseFiles({
+  const {
+    data: files,
+    isLoading,
+    refetch,
+  } = useListKnowledgeBaseFiles({
     ownerId: knowledgeBase.ownerName,
     knowledgeBaseId: knowledgeBase.kbId,
     accessToken,
@@ -61,7 +104,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
   React.useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
 
-    if (files && files.some(file => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED")) {
+    if (
+      files &&
+      files.some(
+        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED",
+      )
+    ) {
       interval = setInterval(() => {
         refetch();
       }, 5000);
@@ -105,18 +153,26 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
     return [...files].sort((a, b) => {
       if (sortConfig.key === "") return 0;
 
-      let aValue: any = a[sortConfig.key];
-      let bValue: any = b[sortConfig.key];
+      let aValue: string | number | Date | boolean = a[sortConfig.key];
+      let bValue: string | number | Date | boolean = b[sortConfig.key];
 
       if (sortConfig.key === "processStatus") {
-        aValue = getStatusSortValue(a.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus);
-        bValue = getStatusSortValue(b.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus);
-      } else if (sortConfig.key === "size" || sortConfig.key === "totalChunks" || sortConfig.key === "totalTokens") {
+        aValue = getStatusSortValue(
+          a.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus,
+        );
+        bValue = getStatusSortValue(
+          b.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus,
+        );
+      } else if (
+        sortConfig.key === "size" ||
+        sortConfig.key === "totalChunks" ||
+        sortConfig.key === "totalTokens"
+      ) {
         aValue = Number(aValue);
         bValue = Number(bValue);
       } else if (sortConfig.key === "createTime") {
-        aValue = new Date(aValue).getTime();
-        bValue = new Date(bValue).getTime();
+        aValue = new Date(aValue as string);
+        bValue = new Date(bValue as string);
       }
 
       if (aValue < bValue) {
@@ -343,11 +399,13 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
                   </div>
                 </div>
                 {sortedData
-                  .filter(item => item.fileUid !== fileToDelete?.fileUid)
+                  .filter((item) => item.fileUid !== fileToDelete?.fileUid)
                   .map((item, index) => (
                     <div
                       key={item.fileUid}
-                      className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center ${index !== sortedData.length - 1 ? "border-b border-semantic-bg-line" : ""
+                      className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center ${index !== sortedData.length - 1
+                        ? "border-b border-semantic-bg-line"
+                        : ""
                         }`}
                     >
                       <div
@@ -364,12 +422,24 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
                       <div className="flex items-center justify-center">
                         <Tag
                           size="sm"
-                          variant={getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).variant}
+                          variant={
+                            getStatusTag(
+                              item.processStatus.replace(
+                                "FILE_PROCESS_STATUS_",
+                                "",
+                              ) as FileStatus,
+                            ).variant
+                          }
                           className="group relative"
                         >
                           <div className="flex items-center gap-2">
-                            <div className={`w-2 h-2 rounded-full ${getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).dotColor}`}></div>
-                            {item.processStatus.replace("FILE_PROCESS_STATUS_", "")}
+                            <div
+                              className={`w-2 h-2 rounded-full ${getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).dotColor}`}
+                            ></div>
+                            {item.processStatus.replace(
+                              "FILE_PROCESS_STATUS_",
+                              "",
+                            )}
                           </div>
                         </Tag>
                       </div>
@@ -377,8 +447,8 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
                         {formatFileSize(item.size)}
                       </div>
                       <div className="flex flex-col items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-                        <div>{`${item.totalChunks ?? 'N/A'} chunks`}</div>
-                        <div>{`${item.totalTokens ?? 'N/A'} tokens`}</div>
+                        <div>{`${item.totalChunks ?? "N/A"} chunks`}</div>
+                        <div>{`${item.totalTokens ?? "N/A"} tokens`}</div>
                       </div>
                       <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                         {formatDate(item.createTime)}
@@ -401,12 +471,16 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
                 <Icons.Gear01 className="h-16 w-16 stroke-semantic-warning-default mb-4" />
                 <p className="text-lg font-semibold mb-2">No files found</p>
                 <p className="text-semantic-fg-secondary mb-4">
-                  Oops… Please upload your files and click the 'Process Files' button before returning to this Catalog page to check the progress and results.
+                  Oops... Please upload your files and click the &apos;Process Files&apos;
+                  button before returning to this Catalog page to check the
+                  progress and results.
                 </p>
                 <Button
                   variant="primary"
                   size="lg"
-                  onClick={() => {/* Navigate to upload page */ }}
+                  onClick={() => {
+                    /* Navigate to upload page */
+                  }}
                 >
                   Go to Upload Documents
                 </Button>
@@ -441,12 +515,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({ knowledgeBase 
 };
 
 const formatFileSize = (bytes: number | undefined): string => {
-  if (bytes === undefined || isNaN(bytes)) return 'N/A';
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  if (bytes === 0) return '0 Bytes';
+  if (bytes === undefined || isNaN(bytes)) return "N/A";
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+  if (bytes === 0) return "0 Bytes";
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  if (i === 0) return bytes + ' ' + sizes[i];
-  return (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i];
+  if (i === 0) return bytes + " " + sizes[i];
+  return (bytes / Math.pow(1024, i)).toFixed(2) + " " + sizes[i];
 };
 
 const formatDate = (dateString: string): string => {
@@ -456,7 +530,8 @@ const formatDate = (dateString: string): string => {
 
 export default CatalogFilesTab;
 
-{/* <div className="flex w-[375px] flex-col gap-3 border-l border-semantic-bg-line pb-8">
+{
+  /* <div className="flex w-[375px] flex-col gap-3 border-l border-semantic-bg-line pb-8">
             <div className="flex items-center justify-center gap-3 p-3 pl-3 border-b rounded-tr border-semantic-bg-line bg-semantic-bg-base-bg">
               <div className="text-semantic-fg-primary product-body-text-3-medium">
                 Preview
@@ -505,4 +580,5 @@ export default CatalogFilesTab;
                 delete
               </Button>
             </div>
-          </div> */}
+          </div> */
+}

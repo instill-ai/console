@@ -1,5 +1,6 @@
-import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 import * as React from "react";
+
+import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 
 type DeleteFileNotificationProps = {
   deletedFileName: string;
@@ -12,7 +13,6 @@ const DeleteFileNotification = ({
   undoDelete,
   setShowDeleteMessage,
 }: DeleteFileNotificationProps) => {
-
   const handleUndo = () => {
     undoDelete();
     setShowDeleteMessage(false);

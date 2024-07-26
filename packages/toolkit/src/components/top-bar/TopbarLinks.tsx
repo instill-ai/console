@@ -18,6 +18,11 @@ export const topbarItems = [
     name: "Models",
   },
   {
+    pathName: "knowledge",
+    icon: <Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />,
+    name: "Artifacts",
+  },
+  {
     pathName: "dashboard",
     icon: (
       <Icons.BarChartSquare02 className="h-6 w-6 stroke-semantic-fg-primary" />
@@ -57,44 +62,7 @@ export const TopbarLinks = ({
           className="mx-1 my-2 px-4"
         />
       ))}
-      <ArtifactDropdown
-        entity={entity}
-        hightlighted={pathname.split("/")[2] === "knowledge"}
-      />
     </React.Fragment>
-  );
-};
-
-const ArtifactDropdown = ({ entity, hightlighted }: { entity: string; hightlighted: boolean }) => {
-  return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
-        <button
-          className={cn(
-            "flex flex-row items-center rounded-xs border border-transparent py-2 hover:bg-semantic-bg-base-bg mx-1 my-2 px-4",
-            {
-              "border-opacity-100 bg-semantic-accent-bg": hightlighted,
-            }
-          )}
-        >
-          <Icons.GraduationHat className="h-6 w-6 stroke-semantic-fg-primary mr-3" />
-          <h4 className="text-semantic-fg-primary product-button-button-1">
-            Artifact
-          </h4>
-          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary ml-2" />
-        </button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content align="start" className="w-[200px] !rounded !px-0 !py-2">
-        <DropdownMenu.Item asChild>
-          <Link
-            href={`/${entity}/knowledge`}
-            className="flex items-center gap-x-2 !px-4 !py-2.5 !text-semantic-fg-primary !product-button-button-2"
-          >
-            Knowledge Base
-          </Link>
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
   );
 };
 

@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+
 import { Nullable } from "@instill-ai/toolkit";
+
+import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 
 export function useListChunks({
   kbId,
@@ -27,7 +29,7 @@ export function useListChunks({
           `/owners/${ownerId}/knowledge-bases/${kbId}/chunks`,
           {
             params: { fileUid },
-          }
+          },
         );
         return response.data.chunks;
       } catch (error) {

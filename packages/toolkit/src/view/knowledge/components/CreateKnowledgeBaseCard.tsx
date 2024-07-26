@@ -1,19 +1,20 @@
+import * as React from "react";
+
 import {
-  Icons,
-  Separator,
-  DropdownMenu,
   Button,
   Dialog,
+  DropdownMenu,
+  Icons,
+  Separator,
   Tooltip,
 } from "@instill-ai/design-system";
-import * as React from "react";
+
+import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import { useListChunks } from "../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
-import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./undoDeleteTime";
 import DeleteKnowledgeBaseNotification from "./Notifications/DeleteKnowledgeBaseNotification";
-import { useListChunks } from "../../../lib/react-query-service/knowledge";
-import { useInstillStore, useShallow } from "../../../lib";
-import { InstillStore } from "../../../lib";
+import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./undoDeleteTime";
 
 type EditKnowledgeDialogData = {
   name: string;
@@ -80,7 +81,10 @@ const Menu = ({ onDelete, onEdit, onDuplicate }: MenuProps) => {
 type CreateKnowledgeBaseCardProps = {
   knowledgeBase: KnowledgeBase;
   onCardClick: () => void;
-  onUpdateKnowledgeBase: (data: EditKnowledgeDialogData, kbId: string) => Promise<void>;
+  onUpdateKnowledgeBase: (
+    data: EditKnowledgeDialogData,
+    kbId: string,
+  ) => Promise<void>;
   onCloneKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
   onDeleteKnowledgeBase: (kbId: string) => Promise<void>;
 };
@@ -101,7 +105,7 @@ export const CreateKnowledgeBaseCard = ({
     useShallow((store: InstillStore) => ({
       accessToken: store.accessToken,
       enabledQuery: store.enabledQuery,
-    }))
+    })),
   );
 
   const { data: chunks, isLoading: isLoadingChunks } = useListChunks({
@@ -116,20 +120,22 @@ export const CreateKnowledgeBaseCard = ({
     if (isLoadingChunks) return "Loading...";
     if (!chunks) return "No data available";
 
-    const textChunks = chunks.filter((chunk: { type: string; }) => chunk.type === "TEXT");
-    const imageChunks = chunks.filter((chunk: { type: string; }) => chunk.type === "IMAGE");
+    const textChunks = chunks.filter(
+      (chunk: { type: string }) => chunk.type === "TEXT",
+    );
+    const imageChunks = chunks.filter(
+      (chunk: { type: string }) => chunk.type === "IMAGE",
+    );
 
     return `
-      Converting pipeline ID: ${knowledgeBase.convertPipelineId || "N/A"}
-      Splitting pipeline ID: ${knowledgeBase.splitPipelineId || "N/A"}
-      Embedding pipeline ID: ${knowledgeBase.embeddingPipelineId || "N/A"}
-      Files #: ${knowledgeBase.totalFiles || 0}
-      Documents #: ${knowledgeBase.totalDocuments || 0}
-      Images #: ${knowledgeBase.totalImages || 0}
-      Text Chunks #: ${textChunks.length}
-      Image Chunks #: ${imageChunks.length}
-      Downstream AI Apps: ${knowledgeBase.downstreamAiApps?.join(", ") || "N/A"}
-    `;
+    Converting pipeline ID: ${knowledgeBase.convertingPipelines?.[0] || "N/A"}
+    Splitting pipeline ID: ${knowledgeBase.splittingPipelines?.[0] || "N/A"}
+    Embedding pipeline ID: ${knowledgeBase.embeddingPipelines?.[0] || "N/A"}
+    Files #: ${chunks.length}
+    Text Chunks #: ${textChunks.length}
+    Image Chunks #: ${imageChunks.length}
+    Downstream AI Apps: ${knowledgeBase.downstreamApps?.join(", ") || "N/A"}
+  `;
   }, [chunks, isLoadingChunks, knowledgeBase]);
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -200,13 +206,18 @@ export const CreateKnowledgeBaseCard = ({
               onClick={onCardClick}
             >
               <div className="flex items-center justify-between">
-                <div className="product-headings-heading-4">{knowledgeBase.name}</div>
+                <div className="product-headings-heading-4">
+                  {knowledgeBase.name}
+                </div>
               </div>
               <Separator orientation="horizontal" className="my-[10px]" />
               <p className="mb-auto line-clamp-3 product-body-text-3-regular">
                 {knowledgeBase.description}
               </p>
-              <div className="flex items-end justify-end" onClick={(e) => e.stopPropagation()}>
+              <div
+                className="flex items-end justify-end"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <Menu
                   onDelete={handleDelete}
                   onEdit={handleEdit}
@@ -222,7 +233,9 @@ export const CreateKnowledgeBaseCard = ({
               side="bottom"
               align="end"
             >
-              <pre className="whitespace-pre-wrap text-xs">{tooltipContent}</pre>
+              <pre className="whitespace-pre-wrap text-xs">
+                {tooltipContent}
+              </pre>
               <Tooltip.Arrow className="fill-semantic-bg-primary" />
             </Tooltip.Content>
           </Tooltip.Portal>
@@ -279,4 +292,3 @@ export const CreateKnowledgeBaseCard = ({
     </React.Fragment>
   );
 };
-

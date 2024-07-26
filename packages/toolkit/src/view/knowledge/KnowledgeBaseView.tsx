@@ -1,18 +1,23 @@
-import { GeneralAppPageProp } from "../../lib";
-import { Sidebar } from "./components/Sidebar";
-import { KnowledgeBaseTab } from "./components/KnowledgeBaseTab";
-import { UploadExploreTab } from "./components/UploadExploreTab";
-import { CatalogFilesTab } from "./components/CatalogFilesTab";
-import { MarkdownTab } from "./components/MarkdownTab";
 import * as React from "react";
+
+import { Nullable } from "@instill-ai/toolkit";
+
+import { GeneralAppPageProp } from "../../lib";
 import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/types";
-// import { Button, Icons, LinkButton } from "@instill-ai/design-system";
-import { DELETE_KNOWLEDGE_BASE_TIMEOUT, CREDIT_TIMEOUT } from "./components/undoDeleteTime";
+import { CatalogFilesTab } from "./components/CatalogFilesTab";
 import { ChunkTab } from "./components/ChunkTab";
 import { ImageTab } from "./components/ImageTab";
-import { Nullable } from "@instill-ai/toolkit";
-import { RetrieveTestTab } from "./components/RetrieveTestTab";
+import { KnowledgeBaseTab } from "./components/KnowledgeBaseTab";
+import { MarkdownTab } from "./components/MarkdownTab";
 import CreditUsageNotification from "./components/Notifications/CreditUsageFileNotification";
+import { RetrieveTestTab } from "./components/RetrieveTestTab";
+import { Sidebar } from "./components/Sidebar";
+// import { Button, Icons, LinkButton } from "@instill-ai/design-system";
+import {
+  CREDIT_TIMEOUT,
+  DELETE_KNOWLEDGE_BASE_TIMEOUT,
+} from "./components/undoDeleteTime";
+import { UploadExploreTab } from "./components/UploadExploreTab";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -21,15 +26,13 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     React.useState<KnowledgeBase | null>(null);
   const [activeTab, setActiveTab] = React.useState("knowledge-base");
   const [selectedTextOption, setSelectedTextOption] = React.useState(
-    null as Nullable<string>
+    null as Nullable<string>,
   );
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [isDeleted, setIsDeleted] = React.useState(false);
   const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] =
     React.useState<KnowledgeBase | null>(null);
   const [showCreditUsage, setShowCreditUsage] = React.useState(false);
-
-
 
   /* -------------------------------------------------------------------------
    * Query resource data
@@ -90,7 +93,8 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
       ) : null}
       {showCreditUsage && (
         <CreditUsageNotification
-          handleCloseUnsupportedFileMessage={() => setShowCreditUsage(false)}
+          handleCloseCreditUsageMessage={() => setShowCreditUsage(false)}
+          fileName="test"
         />
       )}
       <div className="grid w-full grid-cols-12 gap-6 px-8">
@@ -136,7 +140,10 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             </>
           ) : null}
           {activeTab === "retrieve" && selectedKnowledgeBase ? (
-            <RetrieveTestTab knowledgeBase={selectedKnowledgeBase} />
+            <RetrieveTestTab
+              knowledgeBase={selectedKnowledgeBase}
+              isProcessed={false}
+            />
           ) : null}
         </div>
       </div>

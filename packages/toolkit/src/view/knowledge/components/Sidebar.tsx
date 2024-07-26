@@ -1,7 +1,10 @@
 "use client";
+
 import { useRouter } from "next/navigation";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+
 import { Icons } from "@instill-ai/design-system";
+
+import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 
 type SidebarProps = {
   activeTab: string;
@@ -26,8 +29,9 @@ export const Sidebar = ({
   };
 
   const getTabClassName = (tabName: string, isSubTab = false) => {
-    const baseClass = `flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${isSubTab ? "ml-4" : ""
-      }`;
+    const baseClass = `flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${
+      isSubTab ? "ml-4" : ""
+    }`;
 
     if (activeTab === tabName || (isSubTab && selectedTextOption === tabName)) {
       return `${baseClass} bg-semantic-accent-bg text-semantic-accent-hover`;
@@ -40,12 +44,12 @@ export const Sidebar = ({
 
   const getCatalogIconColor = () => {
     if (!selectedKnowledgeBase) {
-      return 'stroke-semantic-fg-disabled';
+      return "stroke-semantic-fg-disabled";
     }
-    if (activeTab === 'catalog') {
-      return 'stroke-semantic-accent-hover';
+    if (activeTab === "catalog") {
+      return "stroke-semantic-accent-hover";
     }
-    return 'stroke-semantic-fg-secondary';
+    return "stroke-semantic-fg-secondary";
   };
 
   return (

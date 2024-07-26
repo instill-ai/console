@@ -1,9 +1,11 @@
 "use client";
 
-import { AppTopbar, KnowledgeBaseView, PageBase } from "@instill-ai/toolkit";
-import { useAppAccessToken } from "lib/use-app-access-token";
-import { useAppTrackToken } from "lib/useAppTrackToken";
 import { useRouter } from "next/navigation";
+
+import { AppTopbar, KnowledgeBaseView, PageBase } from "@instill-ai/toolkit";
+
+import { useAppAccessToken } from "~/lib/use-app-access-token";
+import { useAppTrackToken } from "~/lib/useAppTrackToken";
 
 export const KnowladgeBasePageRender = () => {
   const router = useRouter();
