@@ -1,33 +1,13 @@
-// CreateKnowledgeDialog.tsx
+import React from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Button,
-  Dialog,
-  Form,
-  Icons,
-  Input,
-  // Select,
-  // Tag,
-  Textarea,
-} from "@instill-ai/design-system";
+import { Button, Dialog, Form, Icons, Input, Textarea } from "@instill-ai/design-system";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-// import {
-//   InstillStore,
-//   useAuthenticatedUser,
-//   useInstillStore,
-//   useShallow,
-// } from "../../../lib";
-// import * as React from "react";
 import { EntitySelector } from "../../../components";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
-import {
-  InstillStore,
-  useInstillStore,
-  useShallow,
-  useRouteInfo,
-} from "../../../lib";
-import * as React from "react";
+import { InstillStore, useInstillStore, useShallow, useRouteInfo } from "../../../lib";
+import { getInstillAPIClient } from "../../../lib/vdp-sdk";
 
 const CreateKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -36,19 +16,11 @@ const CreateKnowledgeFormSchema = z.object({
   namespaceId: z.string().min(1, { message: "Owner is required" }),
 });
 
-type CreateKnowledgeFormProps = {
-  onSubmit: (data: z.infer<typeof CreateKnowledgeFormSchema>) => void;
-};
-
-export const CreateKnowledgeDialog = ({
-  isOpen,
-  onClose,
-  onSubmit,
-}: {
+export const CreateKnowledgeDialog: React.FC<{
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: CreateKnowledgeFormProps["onSubmit"];
-}) => {
+  accessToken: string | null;
+}> = ({ isOpen, onClose, accessToken }) => {
   const { navigationNamespaceAnchor } = useInstillStore(
     useShallow((store: InstillStore) => ({
       navigationNamespaceAnchor: store.navigationNamespaceAnchor,
@@ -57,6 +29,7 @@ export const CreateKnowledgeDialog = ({
 
   const routeInfo = useRouteInfo();
   const userNamespaces = useUserNamespaces();
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof CreateKnowledgeFormSchema>>({
     resolver: zodResolver(CreateKnowledgeFormSchema),
@@ -69,14 +42,31 @@ export const CreateKnowledgeDialog = ({
     mode: "onChange",
   });
 
-  const { formState, watch, setValue } = form;
-  const nameValue = watch("name");
-  // const namespaceIdValue = watch("namespaceId");
+  const artifactClient = getInstillAPIClient({ accessToken }).vdp.artifact;
 
-  const formatName = (name: string) =>
-    name.replace(/[^a-zA-Z0-9-_]/g, "-").replace(/-+/g, "-");
-  const isNameValid = /^[a-zA-Z0-9-_]+$/.test(nameValue);
-  const formattedName = formatName(nameValue);
+  const createKnowledgeBaseMutation = useMutation({
+    mutationFn: async (data: z.infer<typeof CreateKnowledgeFormSchema>) => {
+      if (!accessToken) {
+        throw new Error("Not authenticated");
+      }
+      return artifactClient.createKnowledgeBase({
+        ownerId: data.namespaceId,
+        payload: {
+          name: data.name,
+          description: data.description,
+          tags: data.tags ?? [],
+        },
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['knowledgeBases']);
+      onClose();
+    },
+  });
+
+  const handleSubmit = (data: z.infer<typeof CreateKnowledgeFormSchema>) => {
+    createKnowledgeBaseMutation.mutate(data);
+  };
 
   React.useEffect(() => {
     if (isOpen) {
@@ -109,12 +99,7 @@ export const CreateKnowledgeDialog = ({
         <Form.Root {...form}>
           <form
             className="flex flex-col space-y-3"
-            onSubmit={form.handleSubmit((data) => {
-              onSubmit({
-                ...data,
-                name: formatName(data.name),
-              });
-            })}
+            onSubmit={form.handleSubmit(handleSubmit)}
           >
             {/* Form fields */}
             <div className="flex items-center justify-start gap-4">
@@ -130,7 +115,7 @@ export const CreateKnowledgeDialog = ({
                       <EntitySelector
                         value={field.value}
                         onChange={(value: string) => {
-                          setValue("namespaceId", value, {
+                          form.setValue("namespaceId", value, {
                             shouldValidate: true,
                           });
                         }}
@@ -162,11 +147,6 @@ export const CreateKnowledgeDialog = ({
                       </Input.Root>
                     </Form.Control>
                     <div className="h-6">
-                      {nameValue && !isNameValid && (
-                        <p className="!mt-0.5 text-semantic-fg-secondary product-body-text-4-regular">
-                          Name will be transformed to: {formattedName}
-                        </p>
-                      )}
                       <Form.Message className="!mt-0.5 product-body-text-4-regular" />
                     </div>
                   </Form.Item>
@@ -204,9 +184,9 @@ export const CreateKnowledgeDialog = ({
                 variant="primary"
                 type="submit"
                 className="text-semantic-fg-on-default"
-                disabled={!formState.isValid}
+                disabled={!form.formState.isValid || createKnowledgeBaseMutation.isLoading}
               >
-                Create
+                {createKnowledgeBaseMutation.isLoading ? 'Creating...' : 'Create'}
               </Button>
             </div>
           </form>

@@ -22,7 +22,7 @@ export function useProcessKnowledgeBaseFiles() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      await client.vdp.knowledgeBase.processKnowledgeBaseFiles(payload);
+      await client.vdp.artifact.processKnowledgeBaseFiles(payload);
 
       return Promise.resolve({ knowledgeBaseName: payload.knowledgeBaseName });
     },

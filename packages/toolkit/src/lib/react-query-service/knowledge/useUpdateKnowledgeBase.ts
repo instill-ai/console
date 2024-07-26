@@ -19,7 +19,7 @@ export function useUpdateKnowledgeBase() {
         return Promise.reject(new Error("accessToken not provided"));
       }
       const client = getInstillAPIClient({ accessToken });
-      const updatedKnowledgeBase = await client.vdp.knowledgeBase.updateKnowledgeBase(payload);
+      const updatedKnowledgeBase = await client.vdp.artifact.updateKnowledgeBase(payload);
       return Promise.resolve({ updatedKnowledgeBase });
     },
     onSuccess: async ({ updatedKnowledgeBase }) => {

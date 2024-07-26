@@ -24,7 +24,7 @@ export function useUpdateChunk() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      const response = await client.vdp.knowledgeBase.updateChunk({ chunkUid, payload });
+      const response = await client.vdp.artifact.updateChunk({ chunkUid, payload });
 
       return Promise.resolve({ chunk: response.chunk, ownerId, kbId });
     },

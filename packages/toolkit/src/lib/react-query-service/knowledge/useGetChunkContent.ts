@@ -13,7 +13,7 @@ export function useGetChunkContent() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      const response = await client.vdp.knowledgeBase.getChunkContent({ ownerId, kbId, chunkUid });
+      const response = await client.vdp.artifact.getChunkContent({ ownerId, kbId, chunkUid });
 
       return Promise.resolve(response.content);
     },

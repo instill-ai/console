@@ -1,20 +1,13 @@
-"use client";
-
 import * as React from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Separator, Skeleton } from "@instill-ai/design-system";
 import { KnowledgeBase } from "../../../../../sdk/src/vdp/artifact/types";
-import { getInstillAPIClient, InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
+import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
 import * as z from "zod";
 import KnowledgeSearchSort, { SortAnchor, SortOrder } from "../components/KnowledgeSearchSort";
 import { CreateKnowledgeBaseCard, CreateKnowledgeDialog, KnowledgeBaseCard } from "../components";
-import { env } from "../../../server";
-
-type KnowledgeBaseTabProps = {
-  onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
-  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
-  accessToken: string | null;
-};
+import { useListKnowledgeBases } from '../../../lib/react-query-service/knowledge/useListKnowledgeBases';
+import { getInstillAPIClient } from "../../../lib/vdp-sdk";
 
 const CreateKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -23,48 +16,29 @@ const CreateKnowledgeFormSchema = z.object({
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
-export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
-  onKnowledgeBaseSelect,
-  onDeleteKnowledgeBase,
-  accessToken,
-}) => {
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
+
+export const KnowledgeBaseTab: React.FC = () => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [selectedSortOrder, setSelectedSortOrder] = React.useState<SortOrder>("desc");
   const [selectedSortAnchor, setSelectedSortAnchor] = React.useState<SortAnchor>("createTime");
 
   const queryClient = useQueryClient();
-
-  const { enabledQuery } = useInstillStore(
-    useShallow((store: InstillStore) => ({
-      enabledQuery: store.enabledQuery,
-    }))
-  );
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
 
-  const { data: knowledgeBases, isLoading: isLoadingKnowledgeBases } = useQuery({
-    queryKey: ['knowledgeBases', me.data?.id],
-    queryFn: async () => {
-      if (!accessToken || !me.data?.id) {
-        return Promise.reject(new Error("accessToken or user id not provided"));
-      }
-
-      const client = getInstillAPIClient({ accessToken });
-
-      const knowledgeBases = await client.vdp.knowledgeBase.listKnowledgeBases({
-        ownerId: me.data.id,
-        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-        enablePagination: false,
-      });
-
-      return Promise.resolve(knowledgeBases);
-    },
+  const { data: knowledgeBases, isLoading: isLoadingKnowledgeBases } = useListKnowledgeBases({
+    ownerId: me.data?.id || "",
+    accessToken,
     enabled: enabledQuery && !!me.data?.id && !!accessToken,
-    retry: 3,
   });
 
   const createKnowledgeBaseMutation = useMutation({
@@ -72,9 +46,8 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
       if (!accessToken || !me.data?.id) {
         throw new Error("Not authenticated");
       }
-
       const client = getInstillAPIClient({ accessToken });
-      return client.vdp.knowledgeBase.createKnowledgeBase({
+      return client.vdp.artifact.createKnowledgeBase({
         ownerId: me.data.id,
         payload: {
           name: data.name,
@@ -90,37 +63,15 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
   });
 
   const updateKnowledgeBaseMutation = useMutation({
-    mutationFn: async ({ data, kbId }: { data: EditKnowledgeDialogData; kbId: string }) => {
+    mutationFn: async ({ data, kbId }: { data: any; kbId: string }) => {
       if (!accessToken || !me.data?.id) {
         throw new Error("Not authenticated");
       }
-
       const client = getInstillAPIClient({ accessToken });
-      return client.vdp.knowledgeBase.updateKnowledgeBase({
+      return client.vdp.artifact.updateKnowledgeBase({
         ownerId: me.data.id,
         kbId,
         payload: data,
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['knowledgeBases', me.data?.id]);
-    },
-  });
-
-  const cloneKnowledgeBaseMutation = useMutation({
-    mutationFn: async (knowledgeBase: KnowledgeBase) => {
-      if (!accessToken || !me.data?.id) {
-        throw new Error("Not authenticated");
-      }
-
-      const client = getInstillAPIClient({ accessToken });
-      return client.vdp.knowledgeBase.createKnowledgeBase({
-        ownerId: me.data.id,
-        payload: {
-          name: `${ knowledgeBase.name } -clone`,
-          description: knowledgeBase.description,
-          tags: knowledgeBase.tags || [],
-        },
       });
     },
     onSuccess: () => {
@@ -133,9 +84,8 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
       if (!accessToken || !me.data?.id) {
         throw new Error("Not authenticated");
       }
-
       const client = getInstillAPIClient({ accessToken });
-      return client.vdp.knowledgeBase.deleteKnowledgeBase({
+      return client.vdp.artifact.deleteKnowledgeBase({
         ownerId: me.data.id,
         kbId,
       });
@@ -149,12 +99,8 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
     createKnowledgeBaseMutation.mutate(data);
   };
 
-  const handleUpdateKnowledgeBase = (data: EditKnowledgeDialogData, kbId: string) => {
+  const handleUpdateKnowledgeBase = (data: any, kbId: string) => {
     updateKnowledgeBaseMutation.mutate({ data, kbId });
-  };
-
-  const handleCloneKnowledgeBase = (knowledgeBase: KnowledgeBase) => {
-    cloneKnowledgeBaseMutation.mutate(knowledgeBase);
   };
 
   const handleDeleteKnowledgeBase = (kbId: string) => {
@@ -200,7 +146,6 @@ export const KnowledgeBaseTab: React.FC<KnowledgeBaseTabProps> = ({
   }, [knowledgeBases, searchTerm, selectedSortAnchor, selectedSortOrder]);
 
   const hasReachedLimit = (knowledgeBases?.length ?? 0) >= 3;
-
   return (
     <div className="flex flex-col">
       <div className="mb-5 flex items-center justify-between">

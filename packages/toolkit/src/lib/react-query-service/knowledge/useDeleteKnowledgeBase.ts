@@ -16,7 +16,7 @@ export function useDeleteKnowledgeBase() {
         return Promise.reject(new Error("accessToken not provided"));
       }
       const client = getInstillAPIClient({ accessToken });
-      await client.vdp.knowledgeBase.deleteKnowledgeBase({ ownerId, kbId });
+      await client.vdp.artifact.deleteKnowledgeBase({ ownerId, kbId });
       return Promise.resolve({ ownerId, kbId });
     },
     onSuccess: async ({ ownerId, kbId }) => {

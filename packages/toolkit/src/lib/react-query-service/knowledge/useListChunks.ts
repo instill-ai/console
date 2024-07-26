@@ -11,7 +11,7 @@ export function useListChunks() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      const response = await client.vdp.knowledgeBase.listChunks({ ownerId, kbId, fileUid });
+      const response = await client.vdp.artifact.listChunks({ ownerId, kbId, fileUid });
 
       return Promise.resolve(response.chunks);
     },

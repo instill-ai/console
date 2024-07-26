@@ -14,7 +14,7 @@ export function useGetKnowledgeBases() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      const knowledgeBases = await client.vdp.knowledgeBase.listKnowledgeBases();
+      const knowledgeBases = await client.vdp.artifact.listKnowledgeBases();
 
       return Promise.resolve(knowledgeBases);
     },

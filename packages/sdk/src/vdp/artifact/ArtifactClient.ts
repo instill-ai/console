@@ -1,7 +1,6 @@
 import { getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
-import { Chunk, CreateKnowledgeBaseRequest, DeleteKnowledgeBaseFileRequest, DeleteKnowledgeBaseRequest, GetChunkContentRequest, GetFileContentRequest, GetFileDetailsRequest, GetKnowledgeBaseRequest, GetSourceFileRequest, KnowledgeBase, ListChunksRequest, ListChunksResponse, ListKnowledgeBaseFilesRequest, ListKnowledgeBaseFilesResponse, ListKnowledgeBasesRequest, ListKnowledgeBasesResponse, ProcessKnowledgeBaseFilesRequest, SimilarityChunk, SimilarityChunksSearchRequest, SourceFile, UpdateChunkRequest, UpdateKnowledgeBaseRequest, UploadKnowledgeBaseFileRequest, File } from "./types";
-
+import { Chunk, CreateKnowledgeBaseRequest, DeleteKnowledgeBaseFileRequest, DeleteKnowledgeBaseRequest, GetChunkContentRequest, GetFileContentRequest, GetFileDetailsRequest, GetSourceFileRequest, KnowledgeBase, ListChunksRequest, ListChunksResponse, ListKnowledgeBaseFilesRequest, ListKnowledgeBaseFilesResponse, ListKnowledgeBasesRequest, ListKnowledgeBasesResponse, ProcessKnowledgeBaseFilesRequest, SimilarityChunk, SimilarityChunksSearchRequest, SourceFile, UpdateChunkRequest, UpdateKnowledgeBaseRequest, UploadKnowledgeBaseFileRequest, File } from "./types";
 
 export class ArtifactClient extends APIResource {
   async listKnowledgeBases(props: ListKnowledgeBasesRequest & { enablePagination: true }): Promise<ListKnowledgeBasesResponse>;
@@ -10,7 +9,6 @@ export class ArtifactClient extends APIResource {
     const { ownerId, pageSize, pageToken, enablePagination } = props;
 
     try {
-      const knowledgeBases: KnowledgeBase[] = [];
 
       const queryString = getQueryString({
         baseURL: `/namespaces/${ownerId}/knowledge-bases`,
@@ -24,7 +22,7 @@ export class ArtifactClient extends APIResource {
         return Promise.resolve(data);
       }
 
-      knowledgeBases.push(...data.knowledgeBases);
+      const knowledgeBases: KnowledgeBase[] = data.knowledgeBases;
 
       if (data.nextPageToken) {
         knowledgeBases.push(
@@ -40,15 +38,6 @@ export class ArtifactClient extends APIResource {
       return Promise.resolve(knowledgeBases);
     } catch (err) {
       return Promise.reject(err);
-    }
-  }
-
-  async getKnowledgeBase({ ownerId, kbId }: GetKnowledgeBaseRequest): Promise<KnowledgeBase> {
-    try {
-      const data = await this._client.get<{ knowledge_base: KnowledgeBase }>(`/namespaces/${ownerId}/knowledge-bases/${kbId}`);
-      return Promise.resolve(data.knowledge_base);
-    } catch (error) {
-      return Promise.reject(error);
     }
   }
 
@@ -76,7 +65,8 @@ export class ArtifactClient extends APIResource {
     }
   }
 
-  async deleteKnowledgeBase({ ownerId, kbId }: DeleteKnowledgeBaseRequest): Promise<void> {
+  async deleteKnowledgeBase(props: DeleteKnowledgeBaseRequest): Promise<void> {
+    const { ownerId, kbId } = props;
     try {
       await this._client.delete(`/namespaces/${ownerId}/knowledge-bases/${kbId}`);
     } catch (error) {

@@ -13,7 +13,7 @@ export function useGetFileContent() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      const response = await client.vdp.knowledgeBase.getFileContent({ ownerId, kbId, fileUid });
+      const response = await client.vdp.artifact.getFileContent({ ownerId, kbId, fileUid });
 
       return Promise.resolve(response.content);
     },

@@ -20,7 +20,7 @@ export function useDeleteKnowledgeBaseFile() {
                 return Promise.reject(new Error("accessToken not provided"));
             }
             const client = getInstillAPIClient({ accessToken });
-            await client.vdp.knowledgeBase.deleteKnowledgeBaseFile(payload);
+            await client.vdp.artifact.deleteKnowledgeBaseFile(payload);
             return Promise.resolve({ fileUid: payload.fileUid });
         },
         onSuccess: async ({ fileUid }) => {

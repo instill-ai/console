@@ -11,7 +11,7 @@ export function useGetFileDetails() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      const response = await client.vdp.knowledgeBase.getFileDetails({ ownerId, kbId, fileUid });
+      const response = await client.vdp.artifact.getFileDetails({ ownerId, kbId, fileUid });
 
       return Promise.resolve(response.file);
     },

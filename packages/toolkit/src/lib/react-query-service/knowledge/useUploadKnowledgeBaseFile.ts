@@ -19,7 +19,7 @@ export function useUploadKnowledgeBaseFile() {
         return Promise.reject(new Error("accessToken not provided"));
       }
       const client = getInstillAPIClient({ accessToken });
-      const uploadedFile = await client.vdp.knowledgeBase.uploadKnowledgeBaseFile(payload);
+      const uploadedFile = await client.vdp.artifact.uploadKnowledgeBaseFile(payload);
       return Promise.resolve({ uploadedFile, ownerId: payload.ownerId, kbId: payload.kbId });
     },
     onSuccess: async ({ uploadedFile, ownerId, kbId }) => {

@@ -11,7 +11,7 @@ export function useGetSourceFile() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      const response = await client.vdp.knowledgeBase.getSourceFile({ ownerId, kbId, fileUid });
+      const response = await client.vdp.artifact.getSourceFile({ ownerId, kbId, fileUid });
 
       return Promise.resolve(response.sourceFile);
     },

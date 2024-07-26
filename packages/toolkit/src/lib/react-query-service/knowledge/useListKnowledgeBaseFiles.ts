@@ -13,7 +13,7 @@ export function useListKnowledgeBaseFiles() {
         return Promise.reject(new Error("accessToken not provided"));
       }
       const client = getInstillAPIClient({ accessToken });
-      const files = await client.vdp.knowledgeBase.listKnowledgeBaseFiles({ ownerId, kbId });
+      const files = await client.vdp.artifact.listKnowledgeBaseFiles({ ownerId, kbId });
       return Promise.resolve(files);
     },
   });
