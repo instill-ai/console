@@ -16,12 +16,12 @@ import {
   useShallow,
 } from "../../../../lib";
 import { CustomHandle, GeneralNodeData } from "../../../pipeline-builder";
-import { useEditor } from "../../EditorContext";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
   triggerWithStreamData: store.triggerWithStreamData,
+  editorRef: store.editorRef,
 });
 
 export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
@@ -34,11 +34,8 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     return reactflowEdges.some((edge) => edge.source === id);
   }, [id, reactflowEdges]);
 
-  const { editorRef } = useEditor();
-
-  const { accessToken, enabledQuery, triggerWithStreamData } = useInstillStore(
-    useShallow(selector),
-  );
+  const { accessToken, enabledQuery, triggerWithStreamData, editorRef } =
+    useInstillStore(useShallow(selector));
 
   const routeInfo = useRouteInfo();
 
@@ -69,13 +66,11 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
   return (
     <div
       onClick={() => {
-        if (!pipeline.isSuccess) {
+        if (!pipeline.isSuccess || !editorRef) {
           return;
         }
 
-        const view = editorRef.current?.view;
-
-        if (!view || !pipeline.data.rawRecipe) {
+        if (!pipeline.data.rawRecipe) {
           return;
         }
 
@@ -93,15 +88,14 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
         const targetPos = yamlSourceMap.lookup(`component.${id}`);
 
         if (targetPos) {
-          // The source-map is 1-indexed
-          const headPos = view.state.doc.line(targetPos.line - 1).from;
-
-          view.dispatch({
-            selection: {
-              head: headPos,
-              anchor: headPos,
-            },
+          editorRef.setPosition({
+            lineNumber: targetPos.line - 1,
+            column: targetPos.column,
           });
+
+          setTimeout(() => {
+            editorRef.focus();
+          }, 1);
         }
       }}
       className={cn(

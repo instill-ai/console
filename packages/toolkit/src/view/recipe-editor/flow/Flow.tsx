@@ -28,6 +28,7 @@ const nodeTypes = {
   variableNode: VariableNode,
   responseNode: ResponseNode,
   generalNode: GeneralNode,
+  iteratorNode: GeneralNode,
 };
 
 const edgeTypes = {
