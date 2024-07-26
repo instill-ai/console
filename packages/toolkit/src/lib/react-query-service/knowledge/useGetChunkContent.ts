@@ -26,7 +26,7 @@ export function useGetChunkContent({
       const client = createInstillAxiosClient(accessToken, true);
       try {
         const response = await client.get(
-          `/owners/${ownerId}/knowledge-bases/${kbId}/chunks/${chunkUid}/content`,
+          `/namespaces/${ownerId}/knowledge-bases/${kbId}/chunks/${chunkUid}/content`,
         );
         return response.data.content;
       } catch (error) {
