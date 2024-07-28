@@ -6,7 +6,8 @@ export type ConnectorType =
   | "CONNECTOR_TYPE_OPERATOR"
   | "CONNECTOR_TYPE_DATA"
   | "CONNECTOR_TYPE_AI"
-  | "CONNECTOR_TYPE_APPLICATION";
+  | "CONNECTOR_TYPE_APPLICATION"
+  | "CONNECTOR_TYPE_GENERIC";
 
 export type ConnectorDefinition = {
   name: string;
