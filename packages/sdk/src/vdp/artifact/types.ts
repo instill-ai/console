@@ -105,6 +105,12 @@ export type ListKnowledgeBaseFilesResponse = {
   totalSize: number;
 };
 
+export type GetChunkContentResponse = {
+  ownerId: string;
+  kbId: string;
+  chunkUid: string;
+};
+
 export type UploadKnowledgeBaseFileRequest = {
   ownerId: string;
   kbId: string;

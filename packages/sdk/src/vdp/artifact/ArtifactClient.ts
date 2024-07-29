@@ -5,11 +5,10 @@ import { Chunk, CreateKnowledgeBaseRequest, DeleteKnowledgeBaseFileRequest, Dele
 export class ArtifactClient extends APIResource {
   async listKnowledgeBases(props: ListKnowledgeBasesRequest & { enablePagination: true }): Promise<ListKnowledgeBasesResponse>;
   async listKnowledgeBases(props: ListKnowledgeBasesRequest & { enablePagination: false }): Promise<KnowledgeBase[]>;
-  async listKnowledgeBases(props: ListKnowledgeBasesRequest & { enablePagination: boolean }): Promise<ListKnowledgeBasesResponse | KnowledgeBase[]> {
+  async listKnowledgeBases(props: ListKnowledgeBasesRequest & { enablePagination?: boolean }): Promise<ListKnowledgeBasesResponse | KnowledgeBase[]> {
     const { ownerId, pageSize, pageToken, enablePagination } = props;
 
     try {
-
       const queryString = getQueryString({
         baseURL: `/namespaces/${ownerId}/knowledge-bases`,
         pageSize,
@@ -18,13 +17,13 @@ export class ArtifactClient extends APIResource {
 
       const data = await this._client.get<ListKnowledgeBasesResponse>(queryString);
 
-      if (enablePagination) {
+      if (enablePagination === true) {
         return Promise.resolve(data);
       }
 
       const knowledgeBases: KnowledgeBase[] = data.knowledgeBases;
 
-      if (data.nextPageToken) {
+      if (data.nextPageToken && enablePagination !== false) {
         knowledgeBases.push(
           ...(await this.listKnowledgeBases({
             ownerId,
@@ -76,12 +75,10 @@ export class ArtifactClient extends APIResource {
 
   async listKnowledgeBaseFiles(props: ListKnowledgeBaseFilesRequest & { enablePagination: true }): Promise<ListKnowledgeBaseFilesResponse>;
   async listKnowledgeBaseFiles(props: ListKnowledgeBaseFilesRequest & { enablePagination: false }): Promise<File[]>;
-  async listKnowledgeBaseFiles(props: ListKnowledgeBaseFilesRequest & { enablePagination: boolean }): Promise<ListKnowledgeBaseFilesResponse | File[]> {
+  async listKnowledgeBaseFiles(props: ListKnowledgeBaseFilesRequest & { enablePagination?: boolean }): Promise<ListKnowledgeBaseFilesResponse | File[]> {
     const { ownerId, kbId, pageSize, pageToken, enablePagination } = props;
 
     try {
-      const files: File[] = [];
-
       const queryString = getQueryString({
         baseURL: `/namespaces/${ownerId}/knowledge-bases/${kbId}/files`,
         pageSize,
@@ -90,13 +87,13 @@ export class ArtifactClient extends APIResource {
 
       const data = await this._client.get<ListKnowledgeBaseFilesResponse>(queryString);
 
-      if (enablePagination) {
+      if (enablePagination === true) {
         return Promise.resolve(data);
       }
 
-      files.push(...data.files);
+      const files: File[] = data.files;
 
-      if (data.nextPageToken) {
+      if (data.nextPageToken && enablePagination !== false) {
         files.push(
           ...(await this.listKnowledgeBaseFiles({
             ownerId,
@@ -136,12 +133,10 @@ export class ArtifactClient extends APIResource {
 
   async listChunks(props: ListChunksRequest & { enablePagination: true }): Promise<ListChunksResponse>;
   async listChunks(props: ListChunksRequest & { enablePagination: false }): Promise<Chunk[]>;
-  async listChunks(props: ListChunksRequest & { enablePagination: boolean }): Promise<ListChunksResponse | Chunk[]> {
+  async listChunks(props: ListChunksRequest & { enablePagination?: boolean }): Promise<ListChunksResponse | Chunk[]> {
     const { ownerId, kbId, fileUid, pageSize, pageToken, enablePagination } = props;
 
     try {
-      const chunks: Chunk[] = [];
-
       const queryString = getQueryString({
         baseURL: `/namespaces/${ownerId}/knowledge-bases/${kbId}/chunks`,
         pageSize,
@@ -151,13 +146,13 @@ export class ArtifactClient extends APIResource {
 
       const data = await this._client.get<ListChunksResponse>(queryString);
 
-      if (enablePagination) {
+      if (enablePagination === true) {
         return Promise.resolve(data);
       }
 
-      chunks.push(...data.chunks);
+      const chunks: Chunk[] = data.chunks;
 
-      if (data.nextPageToken) {
+      if (data.nextPageToken && enablePagination !== false) {
         chunks.push(
           ...(await this.listChunks({
             ownerId,
