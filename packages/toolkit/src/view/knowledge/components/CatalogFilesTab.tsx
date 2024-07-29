@@ -237,7 +237,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
 
   return (
     <div className="flex flex-col">
-      <div className="mb-5 flex items-center justify-between">
+      <div className="flex items-center justify-between mb-5">
         <p className="text-semantic-fg-primary product-headings-heading-2">
           {knowledgeBase.name}
         </p>
@@ -259,7 +259,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
         </div> */}
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      <div className="flex w-full flex-col gap-2">
+      <div className="flex flex-col w-full gap-2">
         {/* <div className="flex justify-start">
           <Button variant={"secondaryGrey"}>
             <Icons.Plus className="w-4 h-4 stroke-semantic-fg-secondary" />
@@ -268,13 +268,13 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
             </div>
           </Button>
         </div> */}
-        <div className="flex rounded border border-semantic-bg-line bg-semantic-bg-primary">
-          <div className="flex w-full flex-col">
+        <div className="flex border rounded border-semantic-bg-line bg-semantic-bg-primary">
+          <div className="flex flex-col w-full">
             {isLoading ? (
               <div className="p-8">
-                <Skeleton className="h-8 w-full mb-4" />
-                <Skeleton className="h-8 w-full mb-4" />
-                <Skeleton className="h-8 w-full" />
+                <Skeleton className="w-full h-8 mb-4" />
+                <Skeleton className="w-full h-8 mb-4" />
+                <Skeleton className="w-full h-8" />
               </div>
             ) : files && files.length > 0 ? (
               <>
@@ -290,12 +290,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                     >
                       {sortConfig.key === "name" ? (
                         sortConfig.direction === "ascending" ? (
-                          <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-fg-secondary" />
                         ) : (
-                          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
                         )
                       ) : (
-                        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
                       )}
                     </Button>
                   </div>
@@ -310,12 +310,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                     >
                       {sortConfig.key === "type" ? (
                         sortConfig.direction === "ascending" ? (
-                          <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-fg-secondary" />
                         ) : (
-                          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
                         )
                       ) : (
-                        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
                       )}
                     </Button>
                   </div>
@@ -330,12 +330,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                     >
                       {sortConfig.key === "processStatus" ? (
                         sortConfig.direction === "ascending" ? (
-                          <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-fg-secondary" />
                         ) : (
-                          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
                         )
                       ) : (
-                        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
                       )}
                     </Button>
                   </div>
@@ -350,12 +350,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                     >
                       {sortConfig.key === "size" ? (
                         sortConfig.direction === "ascending" ? (
-                          <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-fg-secondary" />
                         ) : (
-                          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
                         )
                       ) : (
-                        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
                       )}
                     </Button>
                   </div>
@@ -370,12 +370,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                     >
                       {sortConfig.key === "totalChunks" ? (
                         sortConfig.direction === "ascending" ? (
-                          <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-fg-secondary" />
                         ) : (
-                          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
                         )
                       ) : (
-                        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
                       )}
                     </Button>
                   </div>
@@ -390,12 +390,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                     >
                       {sortConfig.key === "createTime" ? (
                         sortConfig.direction === "ascending" ? (
-                          <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-fg-secondary" />
                         ) : (
-                          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
                         )
                       ) : (
-                        <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
+                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
                       )}
                     </Button>
                   </div>
@@ -414,7 +414,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                         }`}
                     >
                       <div
-                        className="flex items-center justify-center pl-4 text-semantic-bg-secondary-alt-primary product-body-text-3-regula underline underline-offset-1 cursor-pointer truncate"
+                        className="flex items-center justify-center pl-4 underline truncate cursor-pointer text-semantic-bg-secondary-alt-primary product-body-text-3-regula underline-offset-1"
                         onClick={() => handleFileClick(item)}
                       >
                         {item.name}
@@ -435,7 +435,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                               ) as FileStatus,
                             ).variant
                           }
-                          className="group relative"
+                          className="relative group"
                         >
                           <div className="flex items-center gap-2">
                             <div
@@ -473,9 +473,9 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
               </>
             ) : (
               <div className="flex flex-col items-center justify-center p-8 text-center">
-                <Icons.Gear01 className="h-16 w-16 stroke-semantic-warning-default mb-4" />
-                <p className="text-lg font-semibold mb-2">No files found</p>
-                <p className="text-semantic-fg-secondary mb-4">
+                <Icons.Gear01 className="w-16 h-16 mb-4 stroke-semantic-warning-default" />
+                <p className="mb-2 text-lg font-semibold">No files found</p>
+                <p className="mb-4 text-semantic-fg-secondary">
                   Oops... Please upload your files and click the &apos;Process Files&apos;
                   button before returning to this Catalog page to check the
                   progress and results.

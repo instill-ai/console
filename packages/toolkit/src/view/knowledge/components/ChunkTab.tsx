@@ -1,6 +1,6 @@
 import React from "react";
 import { Icons, Separator, Skeleton } from "@instill-ai/design-system";
-import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
 import {
   useListKnowledgeBaseFiles,
   useUpdateChunk,
@@ -24,17 +24,26 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase }) => {
   const [selectedFile, setSelectedFile] = React.useState<Nullable<KnowledgeFile>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
-  const { accessToken } = useInstillStore(
+  const { accessToken, enabledQuery } = useInstillStore(
     useShallow((store: InstillStore) => ({
       accessToken: store.accessToken,
-    }))
+      enabledQuery: store.enabledQuery,
+    })),
   );
 
-  const { data: files, isLoading: isLoadingFiles } = useListKnowledgeBaseFiles({
-    ownerId: knowledgeBase.ownerName,
+  const me = useAuthenticatedUser({
+    enabled: enabledQuery,
+    accessToken,
+  });
+
+  const {
+    data: files,
+    isLoading: isLoadingFiles,
+  } = useListKnowledgeBaseFiles({
+    namespaceId: me.data?.id ?? null,
     knowledgeBaseId: knowledgeBase.kbId,
     accessToken,
-    enabled: true,
+    enabled: enabledQuery && Boolean(me.data?.id),
   });
 
   const updateChunkMutation = useUpdateChunk();
@@ -82,7 +91,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase }) => {
 
   return (
     <div className="flex-col">
-      <div className="mb-5 flex items-center justify-between">
+      <div className="flex items-center justify-between mb-5">
         <p className="text-semantic-fg-primary product-headings-heading-2">
           {knowledgeBase.name}
         </p>
@@ -96,16 +105,16 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase }) => {
               className="flex h-[175px] w-[360px] flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow"
             >
               <div className="flex items-center justify-between">
-                <Skeleton className="h-6 w-32 rounded bg-semantic-bg-line" />
-                <Skeleton className="h-6 w-6 rounded bg-semantic-bg-line" />
+                <Skeleton className="w-32 h-6 rounded bg-semantic-bg-line" />
+                <Skeleton className="w-6 h-6 rounded bg-semantic-bg-line" />
               </div>
               <Separator orientation="horizontal" className="my-[10px]" />
               <div className="flex-1">
-                <Skeleton className="mb-2 h-4 w-full rounded bg-semantic-bg-line" />
-                <Skeleton className="h-4 w-2/3 rounded bg-semantic-bg-line" />
+                <Skeleton className="w-full h-4 mb-2 rounded bg-semantic-bg-line" />
+                <Skeleton className="w-2/3 h-4 rounded bg-semantic-bg-line" />
               </div>
               <div className="flex items-end justify-end">
-                <Skeleton className="h-8 w-8 rounded bg-semantic-bg-line" />
+                <Skeleton className="w-8 h-8 rounded bg-semantic-bg-line" />
               </div>
             </div>
           ))}
@@ -129,8 +138,8 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase }) => {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center p-8 text-center">
-          <Icons.DownloadCloud01 className="h-16 w-16 stroke-semantic-warning-default mb-4" />
-          <p className="text-lg font-semibold mb-2">No files found</p>
+          <Icons.DownloadCloud01 className="w-16 h-16 mb-4 stroke-semantic-warning-default" />
+          <p className="mb-2 text-lg font-semibold">No files found</p>
           <p>
             Oops… It looks like you haven&apos;t uploaded any documents yet.
             Please go to the Upload Documents page to upload and process your
