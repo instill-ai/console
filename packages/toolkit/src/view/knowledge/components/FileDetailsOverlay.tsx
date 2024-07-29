@@ -50,7 +50,7 @@ const FileDetailsOverlay = ({
 
   const highlightChunkInContent = (
     content: string,
-    chunkUid: string | undefined,
+    chunkUid?: string,
   ) => {
     if (!highlightChunk || !chunkUid || !content) return content;
 
