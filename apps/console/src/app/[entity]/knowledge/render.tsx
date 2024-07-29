@@ -1,6 +1,6 @@
 "use client";
 
-import { AppTopbar, KnowledgeBaseView, PageBase } from "@instill-ai/toolkit";
+import { AppTopbar, KnowledgeBaseView, NamespaceSwitch, PageBase } from "@instill-ai/toolkit";
 import { useAppAccessToken } from "~/lib/use-app-access-token";
 import { useAppTrackToken } from "~/lib/useAppTrackToken";
 import { useRouter } from "next/navigation";
@@ -14,14 +14,10 @@ export const KnowladgeBasePageRender = () => {
 
   return (
     <PageBase>
-      <AppTopbar />
+      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="!p-0">
-          <KnowledgeBaseView
-            accessToken={accessToken.isSuccess ? accessToken.data : null}
-            enableQuery={accessToken.isSuccess}
-            router={router}
-          />
+          <KnowledgeBaseView />
         </PageBase.Content>
       </PageBase.Container>
     </PageBase>

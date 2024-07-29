@@ -6,7 +6,7 @@ type DeleteKnowledgeBaseNotificationProps = {
   undoDelete: () => void;
 };
 
-const DeleteKnowledgeBaseNotification = ({
+export const DeleteKnowledgeBaseNotification = ({
   knowledgeBaseName,
   handleCloseDeleteMessage,
   undoDelete,
@@ -44,5 +44,3 @@ const DeleteKnowledgeBaseNotification = ({
     </div>
   );
 };
-
-export default DeleteKnowledgeBaseNotification;

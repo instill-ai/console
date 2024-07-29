@@ -5,7 +5,7 @@ type IncorrectFormatNotificationProps = {
   fileName: string;
 };
 
-const IncorrectFormatFileNotification = ({
+export const IncorrectFormatFileNotification = ({
   handleCloseUnsupportedFileMessage,
   fileName,
 }: IncorrectFormatNotificationProps) => {
@@ -35,5 +35,3 @@ const IncorrectFormatFileNotification = ({
     </div>
   );
 };
-
-export default IncorrectFormatFileNotification;
