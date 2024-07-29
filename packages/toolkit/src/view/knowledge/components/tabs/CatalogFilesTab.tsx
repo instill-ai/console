@@ -473,7 +473,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                   ))}
               </>
             ) : (
-              <div className="flex flex-col items-center justify-center p-8 text-center">
+              <div className="flex flex-col items-center justify-center p-8 text-center mt-32">
                 <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs mb-8">
                   <Icons.AlertCircle className="w-6 h-6 stroke-semantic-fg-primary" />
                 </div>
