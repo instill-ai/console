@@ -62,6 +62,7 @@ import { GitMerge } from "./GitMerge";
 import { Globe01 } from "./Globe01";
 import { GraduationHat } from "./GraduationHat";
 import { HelpCircle } from "./HelpCircle";
+import { Hash2} from "./Hash2";
 import { Image01 } from "./Image01";
 import { ImagePlus } from "./ImagePlus";
 import { InfoCircle } from "./InfoCircle";
@@ -198,6 +199,7 @@ export const Icons = {
   Globe01,
   GraduationHat,
   HelpCircle,
+  Hash2,
   IntersectSquare,
   Link01,
   Lock03,

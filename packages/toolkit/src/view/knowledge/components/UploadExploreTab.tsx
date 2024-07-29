@@ -254,7 +254,7 @@ export const UploadExploreTab = ({
                       htmlFor="upload-file-field"
                       className="flex cursor-pointer flex-col items-center justify-center"
                     >
-                      <div className="flex flex-col items-center justify-center text-semantic-fg-primary">
+                      <div className="flex flex-col items-center justify-center text-semantic-fg-primary product-body-text-4-regular pb-2">
                         <Icons.Upload01 className="mb-4 mt-10 h-8 w-8 stroke-semantic-fg-secondary" />
                         <div className="w-full text-center">
                           <span>Drag-and-drop file, or </span>
