@@ -138,13 +138,21 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase }) => {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center p-8 text-center">
-          <Icons.DownloadCloud01 className="w-16 h-16 mb-4 stroke-semantic-warning-default" />
-          <p className="mb-2 text-lg font-semibold">No files found</p>
-          <p>
-            Oops… It looks like you haven&apos;t uploaded any documents yet.
-            Please go to the Upload Documents page to upload and process your
-            files.
+          <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs mb-8">
+            <Icons.AlertCircle className="w-6 h-6 stroke-semantic-fg-primary" />
+          </div>
+          <p className="mb-2 product-headings-heading-2">No Chunks Created</p>
+          <p className="mb-4 text-semantic-fg-secondary product-body-text-2-regular">
+            There are no chunks created yet.
           </p>
+          {/* <Button
+                variant="primary"
+                size="lg"
+                onClick={() => {
+                }}
+              >
+                Go to Upload Documents
+              </Button> */}
         </div>
       )}
       {selectedFile && selectedChunk && (

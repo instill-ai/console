@@ -109,6 +109,7 @@ import { SlashDivider } from "./SlashDivider";
 import { Sliders01 } from "./Sliders01";
 import { SortLinesDown } from "./SortLinesDown";
 import { SortLinesUp } from "./SortLinesUp";
+import { Star06 } from "./Star06";
 import { Speaker01 } from "./Speaker01";
 import { SpeechRecognition } from "./SpeechRecognition";
 import { Stop } from "./Stop";
@@ -249,6 +250,7 @@ export const Icons = {
   Share07,
   SortLinesDown,
   SortLinesUp,
+  Star06,
   Tag01,
   TextA,
   TextGenerationChat,
