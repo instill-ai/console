@@ -268,7 +268,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
             </div>
           </Button>
         </div> */}
-        <div className="flex border rounded border-semantic-bg-line bg-semantic-bg-primary">
+        <div className="flex">
           <div className="flex flex-col w-full">
             {isLoading ? (
               <div className="p-8">
@@ -278,7 +278,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
               </div>
             ) : files && files.length > 0 ? (
               <>
-                <div className="grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center border-b border-semantic-bg-line bg-semantic-bg-base-bg">
+                <div className="grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center border-b border-semantic-bg-line bg-semantic-bg-base-bg border rounded">
                   <div className="flex items-center justify-center gap-1">
                     <div className="text-semantic-fg-primary product-body-text-3-medium">
                       File name
@@ -474,22 +474,21 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
               </>
             ) : (
               <div className="flex flex-col items-center justify-center p-8 text-center">
-                <Icons.Gear01 className="w-16 h-16 mb-4 stroke-semantic-warning-default" />
-                <p className="mb-2 text-lg font-semibold">No files found</p>
-                <p className="mb-4 text-semantic-fg-secondary">
-                  Oops... Please upload your files and click the &apos;Process Files&apos;
-                  button before returning to this Catalog page to check the
-                  progress and results.
+                <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs mb-8">
+                  <Icons.AlertCircle className="w-6 h-6 stroke-semantic-fg-primary" />
+                </div>
+                <p className="mb-2 product-headings-heading-2">No Files Uploaded</p>
+                <p className="mb-4 text-semantic-fg-secondary product-body-text-2-regular">
+                  You have no files uploaded yet. Upload files to add resources and references to your knowledge base.
                 </p>
-                <Button
-                  variant="primary"
-                  size="lg"
-                  onClick={() => {
-                    /* Navigate to upload page */
-                  }}
-                >
-                  Go to Upload Documents
-                </Button>
+                {/* <Button
+                variant="primary"
+                size="lg"
+                onClick={() => {
+                }}
+              >
+                Go to Upload Documents
+              </Button> */}
               </div>
             )}
           </div>
