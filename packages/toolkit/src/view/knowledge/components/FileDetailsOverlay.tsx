@@ -85,16 +85,16 @@ const FileDetailsOverlay = ({
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
-      <Dialog.Content className="flex flex-col h-[90vh] !max-w-[40vw]">
+      <Dialog.Content className="flex flex-col h-[90vh] max-w-[40vw]">
         <div className="flex-shrink-0 mb-3 flex flex-row space-x-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs">
             {getFileIcon()}
           </div>
-          <div className="flex flex-col">
-            <Dialog.Title className="product-headings-heading-6 text-semantic-fg-disabled">
+          <div className="flex flex-col min-w-0">
+            <Dialog.Title className="truncate product-headings-heading-6 text-semantic-fg-disabled">
               {fileName}
             </Dialog.Title>
-            <div className="product-headings-heading-5 text-semantic-fg-primary">
+            <div className="truncate product-headings-heading-5 text-semantic-fg-primary">
               {fileType}
             </div>
           </div>
@@ -116,6 +116,7 @@ const FileDetailsOverlay = ({
         <Dialog.Close />
       </Dialog.Content>
     </Dialog.Root>
+
   );
 };
 
