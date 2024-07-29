@@ -1,9 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
 import { Icons } from "@instill-ai/design-system";
-
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 
 type SidebarProps = {
@@ -29,12 +27,13 @@ export const Sidebar = ({
   };
 
   const getTabClassName = (tabName: string, isSubTab = false) => {
-    const baseClass = `flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${
-      isSubTab ? "ml-4" : ""
-    }`;
+    const baseClass = `flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${isSubTab ? "ml-4" : ""
+      }`;
+    const isActive =
+      activeTab === tabName || (isSubTab && selectedTextOption === tabName);
 
-    if (activeTab === tabName || (isSubTab && selectedTextOption === tabName)) {
-      return `${baseClass} bg-semantic-accent-bg text-semantic-accent-hover`;
+    if (isActive) {
+      return `${baseClass} bg-semantic-accent-bg text-semantic-accent-hover font-bold`;
     } else if (!selectedKnowledgeBase && tabName !== "knowledge-base") {
       return `${baseClass} cursor-not-allowed text-semantic-fg-disabled`;
     } else {
@@ -51,6 +50,8 @@ export const Sidebar = ({
     }
     return "stroke-semantic-fg-secondary";
   };
+
+  const isCatalogExpanded = activeTab === "catalog";
 
   return (
     <aside className="flex w-[160px] flex-col gap-y-4">
@@ -75,10 +76,14 @@ export const Sidebar = ({
           }
         }}
       >
-        <Icons.ChevronRight className={`w-4 h-4 ${getCatalogIconColor()}`} />
+        {isCatalogExpanded ? (
+          <Icons.ChevronDown className={`w-4 h-4 ${getCatalogIconColor()}`} />
+        ) : (
+          <Icons.ChevronRight className={`w-4 h-4 ${getCatalogIconColor()}`} />
+        )}
         Catalog
       </div>
-      {activeTab === "catalog" && (
+      {isCatalogExpanded && (
         <>
           <div
             className={getTabClassName("Files", true)}
@@ -93,7 +98,9 @@ export const Sidebar = ({
           </div>
           <div
             className={getTabClassName("Chunk", true)}
-            onClick={() => selectedKnowledgeBase && onTextOptionChange("Chunk")}
+            onClick={() =>
+              selectedKnowledgeBase && onTextOptionChange("Chunk")
+            }
           >
             Chunk
           </div>

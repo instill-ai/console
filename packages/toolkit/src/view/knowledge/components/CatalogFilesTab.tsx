@@ -8,7 +8,7 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 
-import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
 import {
   useDeleteKnowledgeBaseFile,
   useListKnowledgeBaseFiles,
@@ -83,15 +83,20 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
     })),
   );
 
+  const me = useAuthenticatedUser({
+    enabled: enabledQuery,
+    accessToken,
+  });
+
   const {
     data: files,
     isLoading,
     refetch,
   } = useListKnowledgeBaseFiles({
-    ownerId: knowledgeBase.ownerName,
+    namespaceId: me.data?.id ?? null,
     knowledgeBaseId: knowledgeBase.kbId,
     accessToken,
-    enabled: enabledQuery,
+    enabled: enabledQuery && Boolean(me.data?.id),
   });
 
   const deleteKnowledgeBaseFile = useDeleteKnowledgeBaseFile();
