@@ -408,8 +408,8 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                   .map((item, index) => (
                     <div
                       key={item.fileUid}
-                      className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center ${index !== sortedData.length - 1
-                        ? "border-b border-semantic-bg-line"
+                      className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line ${index !== sortedData.length - 1
+                        ? ""
                         : ""
                         }`}
                     >
