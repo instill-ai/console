@@ -31,15 +31,15 @@ const ChunkCard: React.FC<ChunkCardProps> = ({
       onClick={onChunkClick}
     >
       <div className="flex flex-col gap-y-2.5 p-2.5">
-        <div className="flex items-center justify-between">
+        <div className="flex justify-between">
           <Tag size="sm" variant="default" className="!rounded border-semantic-bg-line bg-semantic-bg-base-bg border items-center">
-            <Icons.Hash2 className="mr-0.5 h-10 w-10 stroke-semantic-fg-primary my-auto" />
+            <Icons.Hash2 className="mr-0.5 h-5 w-5 stroke-semantic-fg-primary" />
             <span className="product-body-text-3-medium">
               {String(index + 1).padStart(3, "0")}
             </span>
           </Tag>
           <div
-            className="flex items-center gap-1"
+            className="flex items-center gap-3"
             onClick={(e) => e.stopPropagation()}
           >
             <span className="uppercase product-label-label-1 text-semantic-node-disconnected-selected-stroke">
