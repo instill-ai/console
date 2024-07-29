@@ -172,7 +172,7 @@ export class instillArtifactAPIClient {
   }
 
   artifact = {
-    knowledgeBase: new KnowledgeBaseClient(this),
-    chunk: new ChunkClient(this),
+    // knowledgeBase: new KnowledgeBaseClient(this),
+    // chunk: new ChunkClient(this),
   };
 }

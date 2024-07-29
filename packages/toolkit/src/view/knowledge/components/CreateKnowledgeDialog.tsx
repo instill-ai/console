@@ -42,14 +42,14 @@ export const CreateKnowledgeDialog: React.FC<{
     mode: "onChange",
   });
 
-  const artifactClient = getInstillArtifactAPIClient({ accessToken }).vdp.artifact;
 
   const createKnowledgeBaseMutation = useMutation({
     mutationFn: async (data: z.infer<typeof CreateKnowledgeFormSchema>) => {
       if (!accessToken) {
         throw new Error("Not authenticated");
       }
-      return artifactClient.createKnowledgeBase({
+      const client = getInstillArtifactAPIClient({ accessToken });
+      return client.artifact.createKnowledgeBase({
         ownerId: data.namespaceId,
         payload: {
           name: data.name,

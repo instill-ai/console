@@ -21,7 +21,7 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const KnowledgeBaseTab: React.FC = () => {
+export const KnowledgeBaseTab = () => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [selectedSortOrder, setSelectedSortOrder] = React.useState<SortOrder>("desc");
