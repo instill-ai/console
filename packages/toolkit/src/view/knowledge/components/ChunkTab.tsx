@@ -1,20 +1,15 @@
 import React from "react";
-
 import { Icons, Separator, Skeleton } from "@instill-ai/design-system";
-
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import {
-  useGetFileContent,
-  useListChunks,
   useListKnowledgeBaseFiles,
   useUpdateChunk,
 } from "../../../lib/react-query-service/knowledge";
 import {
   Chunk,
-  File,
+  KnowledgeFile,
   KnowledgeBase,
 } from "../../../lib/vdp-sdk/knowledge/types";
-import ChunkCard from "./ChunkCard";
 import FileDetailsOverlay from "./FileDetailsOverlay";
 import { Nullable } from "vitest";
 import FileChunks from "./FileChunks";
@@ -23,16 +18,16 @@ type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;
 };
 
-export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
+export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase }) => {
   const [expandedFiles, setExpandedFiles] = React.useState<string[]>([]);
   const [selectedChunk, setSelectedChunk] = React.useState<Nullable<Chunk>>(null);
-  const [selectedFile, setSelectedFile] = React.useState<Nullable<File>>(null);
+  const [selectedFile, setSelectedFile] = React.useState<Nullable<KnowledgeFile>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
   const { accessToken } = useInstillStore(
     useShallow((store: InstillStore) => ({
       accessToken: store.accessToken,
-    })),
+    }))
   );
 
   const { data: files, isLoading: isLoadingFiles } = useListKnowledgeBaseFiles({
@@ -54,11 +49,11 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
     setExpandedFiles((prev) =>
       prev.includes(fileUid)
         ? prev.filter((id) => id !== fileUid)
-        : [...prev, fileUid],
+        : [...prev, fileUid]
     );
   };
 
-  const handleChunkClick = (file: File, chunk: Chunk) => {
+  const handleChunkClick = (file: KnowledgeFile, chunk: Chunk) => {
     setSelectedFile(file);
     setSelectedChunk(chunk);
     setIsFileDetailsOpen(true);
@@ -72,7 +67,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
 
   const handleRetrievableToggle = async (
     chunkUid: string,
-    currentValue: boolean,
+    currentValue: boolean
   ) => {
     try {
       await updateChunkMutation.mutateAsync({
@@ -118,7 +113,7 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
       ) : files && files.length > 0 ? (
         <div className="flex">
           <div className="w-full pr-4">
-            {files.map((file: File) => (
+            {files.map((file: KnowledgeFile) => (
               <FileChunks
                 key={file.fileUid}
                 file={file}
@@ -162,5 +157,3 @@ export const ChunkTab = ({ knowledgeBase }: ChunkTabProps) => {
     </div>
   );
 };
-
-

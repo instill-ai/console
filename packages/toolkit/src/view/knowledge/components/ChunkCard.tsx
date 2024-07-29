@@ -1,4 +1,4 @@
-import { Icons, Switch, Tag } from "@instill-ai/design-system";
+import { Switch, Tag } from "@instill-ai/design-system";
 
 import { Chunk } from "../../../lib/vdp-sdk/knowledge/types";
 
