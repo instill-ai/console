@@ -1,23 +1,24 @@
+import React from "react";
 import { Icons, Skeleton } from "@instill-ai/design-system";
 import { useGetFileContent, useListChunks } from "../../../lib/react-query-service/knowledge";
-import { Chunk, KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { Chunk, KnowledgeBase, KnowledgeFile } from "../../../lib/vdp-sdk/knowledge/types";
 import ChunkCard from "./ChunkCard";
 import { Nullable } from "vitest";
 
 type FileChunksProps = {
-    file: File;
+    file: KnowledgeFile;
     knowledgeBase: KnowledgeBase;
     accessToken: Nullable<string>;
     expanded: boolean;
     onToggleExpand: (fileUid: string) => void;
-    onChunkClick: (file: File, chunk: Chunk) => void;
+    onChunkClick: (file: KnowledgeFile, chunk: Chunk) => void;
     onRetrievableToggle: (
         chunkUid: string,
         currentValue: boolean,
     ) => Promise<void>;
 };
 
-const FileChunks = ({
+const FileChunks: React.FC<FileChunksProps> = ({
     file,
     knowledgeBase,
     accessToken,
@@ -25,10 +26,10 @@ const FileChunks = ({
     onToggleExpand,
     onChunkClick,
     onRetrievableToggle,
-}: FileChunksProps) => {
+}) => {
     const { data: chunks, isLoading: isLoadingChunks } = useListChunks({
         kbId: knowledgeBase.kbId,
-        accessToken,
+        accessToken: accessToken || null,
         enabled: expanded,
         ownerId: knowledgeBase.ownerName,
         fileUid: file.fileUid,
@@ -37,7 +38,7 @@ const FileChunks = ({
     const { data: fileContent } = useGetFileContent({
         fileUid: file.fileUid,
         kbId: knowledgeBase.kbId,
-        accessToken,
+        accessToken: accessToken || null,
         enabled: expanded,
         ownerId: knowledgeBase.ownerName,
     });
@@ -83,6 +84,5 @@ const FileChunks = ({
         </div>
     );
 };
-
 
 export default FileChunks;

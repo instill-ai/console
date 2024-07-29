@@ -22,6 +22,15 @@ export type FileSnippet = {
   score: number;
 };
 
+export interface KnowledgeFile {
+  fileUid: string;
+  name: string;
+  type: string;
+  processStatus?: string;
+  processOutcome?: string;
+  retrievable?: boolean;
+}
+
 export type File = {
   fileUid: string;
   name: string;
