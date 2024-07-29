@@ -1,6 +1,6 @@
 import { getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
-import { Chunk, CreateKnowledgeBaseRequest, DeleteKnowledgeBaseFileRequest, DeleteKnowledgeBaseRequest, GetChunkContentRequest, GetFileContentRequest, GetFileDetailsRequest, GetSourceFileRequest, KnowledgeBase, ListChunksRequest, ListChunksResponse, ListKnowledgeBaseFilesRequest, ListKnowledgeBaseFilesResponse, ListKnowledgeBasesRequest, ListKnowledgeBasesResponse, ProcessKnowledgeBaseFilesRequest, SimilarityChunk, SimilarityChunksSearchRequest, SourceFile, UpdateChunkRequest, UpdateKnowledgeBaseRequest, UploadKnowledgeBaseFileRequest, File } from "./types";
+import { Chunk, CreateKnowledgeBaseRequest, DeleteKnowledgeBaseFileRequest, DeleteKnowledgeBaseRequest, GetChunkContentRequest, GetFileContentRequest, GetFileDetailsRequest, GetSourceFileRequest, KnowledgeBase, ListChunksRequest, ListChunksResponse, ListKnowledgeBaseFilesRequest, ListKnowledgeBaseFilesResponse, ListKnowledgeBasesRequest, ListKnowledgeBasesResponse, ProcessKnowledgeBaseFilesRequest, SimilarityChunk, SimilarityChunksSearchRequest, SourceFile, UpdateChunkRequest, UpdateKnowledgeBaseRequest, UploadKnowledgeBaseFileRequest, File, GetChunkContentResponse } from "./types";
 
 export class ArtifactClient extends APIResource {
   async listKnowledgeBases(props: ListKnowledgeBasesRequest & { enablePagination: true }): Promise<ListKnowledgeBasesResponse>;
@@ -185,7 +185,7 @@ export class ArtifactClient extends APIResource {
 
   async getChunkContent({ ownerId, kbId, chunkUid }: GetChunkContentRequest): Promise<string> {
     try {
-      const data = await this._client.get<{ content: string }>(`/namespaces/${ownerId}/knowledge-bases/${kbId}/chunks/${chunkUid}/content`);
+      const data = await this._client.get<GetChunkContentResponse>(`/namespaces/${ownerId}/knowledge-bases/${kbId}/chunks/${  }/content`);  
       return Promise.resolve(data.content);
     } catch (error) {
       return Promise.reject(error);
