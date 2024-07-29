@@ -33,7 +33,8 @@ export type PipelineComponentType =
   | "COMPONENT_TYPE_CONNECTOR_AI"
   | "COMPONENT_TYPE_CONNECTOR_DATA"
   | "COMPONENT_TYPE_CONNECTOR_APPLICATION"
-  | "COMPONENT_TYPE_OPERATOR";
+  | "COMPONENT_TYPE_OPERATOR"
+  | "COMPONENT_TYPE_GENERIC";
 
 export type PipelineReleasesWatchState = Record<
   string,
