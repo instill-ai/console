@@ -102,7 +102,7 @@ export const Sidebar = ({
               selectedKnowledgeBase && onTextOptionChange("Chunk")
             }
           >
-            Chunk
+            Chunks
           </div>
           {/* <div
             className={`flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2 ${selectedTextOption === "Image"
