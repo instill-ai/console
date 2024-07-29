@@ -56,7 +56,7 @@ const FileChunks: React.FC<FileChunksProps> = ({
                 <p className="product-button-button-1 text-semantic-fg-secondary">{file.name}</p>
             </div>
             {expanded ? (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-[repeat(auto-fit,360px)] justify-start gap-[15px]">
                     {isLoadingChunks ? (
                         <Skeleton className="h-32 w-full" />
                     ) : chunks && chunks.length > 0 ? (

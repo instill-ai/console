@@ -27,7 +27,7 @@ const ChunkCard: React.FC<ChunkCardProps> = ({
 
   return (
     <div
-      className="flex flex-col gap-y-2.5 rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-2.5 w-[360px] cursor-pointer"
+      className="flex flex-col gap-y-2.5 rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-2.5 cursor-pointer shadow-sm"
       onClick={onChunkClick}
     >
       <div className="flex flex-col gap-y-2.5 p-2.5">
