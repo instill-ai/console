@@ -116,7 +116,8 @@ export const getInstillPipelineHttpRequestExample = ({
 
   let snippet = triggerPipelineSnippet;
 
-  const triggerEndpoint = version ? `releases/${version}/trigger` : "trigger";
+  const triggerEndpoint =
+    version && version !== "latest" ? `releases/${version}/trigger` : "trigger";
 
   snippet = snippet
     .replace(/\{vdp-pipeline-base-url\}/g, env("NEXT_PUBLIC_API_GATEWAY_URL"))
