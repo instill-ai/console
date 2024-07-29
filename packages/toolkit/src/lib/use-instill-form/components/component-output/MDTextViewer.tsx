@@ -3,6 +3,7 @@
 import * as React from "react";
 import cn from "clsx";
 import Markdown from "markdown-to-jsx";
+import sanitizeHtml from "sanitize-html";
 
 import { Switch } from "@instill-ai/design-system";
 
@@ -11,6 +12,8 @@ import { CopyButton } from "./CopyButton";
 
 export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
   const [enableFormattedText, setEnableFormattedText] = React.useState(false);
+
+  const sanitizedHtmlText = sanitizeHtml(text ?? "");
 
   return (
     <React.Fragment>
@@ -62,7 +65,7 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
             </div>
           </div>
           <div className="ml-auto flex flex-row">
-            <CopyButton className="my-auto" text={text ?? ""} />
+            <CopyButton className="my-auto" text={sanitizedHtmlText} />
           </div>
         </div>
         <div>
@@ -72,7 +75,7 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
               enableFormattedText ? "" : "hidden",
             )}
           >
-            <Markdown>{text ?? ""}</Markdown>
+            <Markdown>{sanitizedHtmlText}</Markdown>
           </div>
           <pre
             className={cn(
@@ -80,7 +83,7 @@ export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
               enableFormattedText ? "hidden" : "",
             )}
           >
-            {text}
+            {sanitizedHtmlText}
           </pre>
         </div>
       </div>
