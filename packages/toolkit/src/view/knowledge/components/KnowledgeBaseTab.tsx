@@ -208,7 +208,7 @@ export const KnowledgeBaseTab = ({
     <div className="flex flex-col">
       <div className="mb-5 flex items-center justify-between">
         <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
-          Knowledge bases
+          Knowledge Bases
         </p>
         <KnowledgeSearchSort
           selectedSortOrder={selectedSortOrder}
