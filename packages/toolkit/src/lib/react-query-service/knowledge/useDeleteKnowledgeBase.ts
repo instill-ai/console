@@ -6,20 +6,20 @@ import { DeleteKnowledgeBaseRequest } from "../../../../../sdk/src/vdp/artifact/
 
 export function useDeleteKnowledgeBase() {
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async ({
-      ownerId,
-      kbId,
-      accessToken,
-    }: DeleteKnowledgeBaseRequest & { accessToken: Nullable<string> }) => {
+  return useMutation<
+    { ownerId: string; kbId: string },
+    Error,
+    DeleteKnowledgeBaseRequest & { accessToken: Nullable<string> }
+  >({
+    mutationFn: async ({ ownerId, kbId, accessToken }) => {
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        throw new Error("accessToken not provided");
       }
       const client = getInstillAPIClient({ accessToken });
       await client.vdp.artifact.deleteKnowledgeBase({ ownerId, kbId });
-      return Promise.resolve({ ownerId, kbId });
+      return { ownerId, kbId };
     },
-    onSuccess: async ({ ownerId, kbId }) => {
+    onSuccess: ({ ownerId, kbId }) => {
       queryClient.invalidateQueries({ queryKey: ["knowledgeBases", ownerId] });
       queryClient.removeQueries({ queryKey: ["knowledgeBase", ownerId, kbId] });
     },

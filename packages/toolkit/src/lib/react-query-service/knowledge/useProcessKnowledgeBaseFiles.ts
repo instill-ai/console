@@ -7,26 +7,20 @@ import { ProcessKnowledgeBaseFilesRequest } from "../../../../../sdk/src/vdp/art
 
 export function useProcessKnowledgeBaseFiles() {
   const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({
-      payload,
-      accessToken,
-    }: {
-      payload: ProcessKnowledgeBaseFilesRequest;
-      accessToken: Nullable<string>;
-    }) => {
+  return useMutation<
+    { knowledgeBaseName: string },
+    Error,
+    { payload: ProcessKnowledgeBaseFilesRequest; accessToken: Nullable<string> }
+  >({
+    mutationFn: async ({ payload, accessToken }) => {
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        throw new Error("accessToken not provided");
       }
-
       const client = getInstillAPIClient({ accessToken });
-
       await client.vdp.artifact.processKnowledgeBaseFiles(payload);
-
-      return Promise.resolve({ knowledgeBaseName: payload.knowledgeBaseName });
+      return { knowledgeBaseName: payload.knowledgeBaseName };
     },
-    onSuccess: async ({ knowledgeBaseName }) => {
+    onSuccess: ({ knowledgeBaseName }) => {
       queryClient.invalidateQueries({ queryKey: ["knowledgeBaseFiles", knowledgeBaseName] });
     },
   });

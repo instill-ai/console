@@ -5,18 +5,15 @@ import type { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useGetKnowledgeBases() {
-  return useQuery({
+  return useQuery<any, Error, any, [string, { accessToken: Nullable<string> }]>({
     queryKey: ["knowledgeBases"],
-    queryFn: async ({ accessToken }: { accessToken: Nullable<string> }) => {
+    queryFn: async ({ queryKey }) => {
+      const [, { accessToken }] = queryKey;
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        throw new Error("accessToken not provided");
       }
-
       const client = getInstillAPIClient({ accessToken });
-
-      const knowledgeBases = await client.vdp.artifact.listKnowledgeBases();
-
-      return Promise.resolve(knowledgeBases);
+      return client.vdp.artifact.listKnowledgeBases();
     },
   });
 }

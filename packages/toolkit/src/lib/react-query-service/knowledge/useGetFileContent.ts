@@ -4,18 +4,21 @@ import type { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useGetFileContent() {
-  return useQuery({
+  return useQuery<
+    any,
+    Error,
+    any,
+    [string, { ownerId: string; kbId: string; fileUid: string; accessToken: Nullable<string> }]
+  >({
     queryKey: ["fileContent"],
-    queryFn: async ({ ownerId, kbId, fileUid, accessToken }: { ownerId: string, kbId: string, fileUid: string, accessToken: Nullable<string> }) => {
+    queryFn: async ({ queryKey }) => {
+      const [, { ownerId, kbId, fileUid, accessToken }] = queryKey;
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        throw new Error("accessToken not provided");
       }
-
       const client = getInstillAPIClient({ accessToken });
-
       const response = await client.vdp.artifact.getFileContent({ ownerId, kbId, fileUid });
-
-      return Promise.resolve(response.content);
+      return response.content;
     },
   });
 }

@@ -7,22 +7,20 @@ import { UpdateKnowledgeBaseRequest } from "../../../../../sdk/src/vdp/artifact/
 
 export function useUpdateKnowledgeBase() {
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async ({
-      payload,
-      accessToken,
-    }: {
-      payload: UpdateKnowledgeBaseRequest;
-      accessToken: Nullable<string>;
-    }) => {
+  return useMutation<
+    { updatedKnowledgeBase: any },
+    Error,
+    { payload: UpdateKnowledgeBaseRequest; accessToken: Nullable<string> }
+  >({
+    mutationFn: async ({ payload, accessToken }) => {
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        throw new Error("accessToken not provided");
       }
       const client = getInstillAPIClient({ accessToken });
       const updatedKnowledgeBase = await client.vdp.artifact.updateKnowledgeBase(payload);
-      return Promise.resolve({ updatedKnowledgeBase });
+      return { updatedKnowledgeBase };
     },
-    onSuccess: async ({ updatedKnowledgeBase }) => {
+    onSuccess: ({ updatedKnowledgeBase }) => {
       queryClient.invalidateQueries({ queryKey: ["knowledgeBases", updatedKnowledgeBase.ownerName] });
     },
   });

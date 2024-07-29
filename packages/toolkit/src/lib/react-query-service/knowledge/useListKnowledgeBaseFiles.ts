@@ -6,15 +6,20 @@ import { getInstillAPIClient } from "../../vdp-sdk";
 import { ListKnowledgeBaseFilesRequest } from "../../../../../sdk/src/vdp/artifact/types";
 
 export function useListKnowledgeBaseFiles() {
-  return useQuery({
+  return useQuery<
+    any,
+    Error,
+    any,
+    [string, ListKnowledgeBaseFilesRequest & { accessToken: Nullable<string> }]
+  >({
     queryKey: ["knowledgeBaseFiles"],
-    queryFn: async ({ ownerId, kbId, accessToken }: ListKnowledgeBaseFilesRequest & { accessToken: Nullable<string> }) => {
+    queryFn: async ({ queryKey }) => {
+      const [, { ownerId, kbId, accessToken }] = queryKey;
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        throw new Error("accessToken not provided");
       }
       const client = getInstillAPIClient({ accessToken });
-      const files = await client.vdp.artifact.listKnowledgeBaseFiles({ ownerId, kbId });
-      return Promise.resolve(files);
+      return client.vdp.artifact.listKnowledgeBaseFiles({ ownerId, kbId });
     },
   });
 }

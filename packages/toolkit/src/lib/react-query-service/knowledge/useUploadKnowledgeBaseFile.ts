@@ -7,22 +7,20 @@ import { UploadKnowledgeBaseFileRequest } from "../../../../../sdk/src/vdp/artif
 
 export function useUploadKnowledgeBaseFile() {
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async ({
-      payload,
-      accessToken,
-    }: {
-      payload: UploadKnowledgeBaseFileRequest;
-      accessToken: Nullable<string>;
-    }) => {
+  return useMutation<
+    { uploadedFile: any; ownerId: string; kbId: string },
+    Error,
+    { payload: UploadKnowledgeBaseFileRequest; accessToken: Nullable<string> }
+  >({
+    mutationFn: async ({ payload, accessToken }) => {
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        throw new Error("accessToken not provided");
       }
       const client = getInstillAPIClient({ accessToken });
       const uploadedFile = await client.vdp.artifact.uploadKnowledgeBaseFile(payload);
-      return Promise.resolve({ uploadedFile, ownerId: payload.ownerId, kbId: payload.kbId });
+      return { uploadedFile, ownerId: payload.ownerId, kbId: payload.kbId };
     },
-    onSuccess: async ({ uploadedFile, ownerId, kbId }) => {
+    onSuccess: ({ uploadedFile, ownerId, kbId }) => {
       queryClient.invalidateQueries({ queryKey: ["knowledgeBaseFiles", ownerId, kbId] });
     },
   });
