@@ -19,7 +19,7 @@ export const KnowledgeBaseCard: React.FC<KnowledgeBaseCardProps> = ({
 
   return (
     <div
-      className={`flex h-[175px] w-[360px] flex-col gap-y-2.5 rounded-md border border-semantic-bg-line p-6 ${disabled
+      className={`flex h-[175px] w-[360px] flex-col gap-y-5 rounded-md border border-semantic-bg-line p-6 ${disabled
         ? "bg-semantic-bg-base-bg cursor-not-allowed"
         : "bg-semantic-bg-base-bg cursor-pointer"
         }`}
