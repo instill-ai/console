@@ -436,7 +436,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                               ) as FileStatus,
                             ).variant
                           }
-                          className="relative group"
+                          className="relative group capitalize"
                         >
                           <div className="flex items-center gap-2">
                             <div

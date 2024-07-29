@@ -45,10 +45,8 @@ export const EditKnowledgeDialog: React.FC<EditKnowledgeDialogProps> = ({
   const { formState, watch, reset } = form;
   const nameValue = watch("name");
 
-  const formatName = (name: string) => {
-    return name.replace(/[^a-zA-Z0-9-_]/g, "-").replace(/-+/g, "-");
-  };
-
+  const formatName = (name: string) =>
+    name.replace(/[^a-zA-Z0-9-_]/g, "").replace(/-+/g, "-");
   const isNameValid = /^[a-zA-Z0-9-_]+$/.test(nameValue);
   const formattedName = formatName(nameValue);
 
