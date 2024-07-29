@@ -232,7 +232,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
 
   return (
     <div className="flex flex-col">
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-5 flex items-center justify-between">
         <p className="text-semantic-fg-primary product-headings-heading-2">
           {knowledgeBase.name}
         </p>
