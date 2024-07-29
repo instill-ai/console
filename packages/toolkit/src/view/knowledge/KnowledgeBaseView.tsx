@@ -9,7 +9,7 @@ import { ChunkTab } from "./components/ChunkTab";
 import { ImageTab } from "./components/ImageTab";
 import { KnowledgeBaseTab } from "./components/KnowledgeBaseTab";
 import { MarkdownTab } from "./components/MarkdownTab";
-import CreditUsageNotification from "./components/Notifications/CreditUsageFileNotification";
+import CreditUsageFileNotification from "./components/Notifications/CreditUsageFileNotification";
 import { RetrieveTestTab } from "./components/RetrieveTestTab";
 import { Sidebar } from "./components/Sidebar";
 // import { Button, Icons, LinkButton } from "@instill-ai/design-system";
@@ -92,7 +92,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         <></>
       ) : null}
       {showCreditUsage && (
-        <CreditUsageNotification
+        <CreditUsageFileNotification
           handleCloseCreditUsageMessage={() => setShowCreditUsage(false)}
           fileName="test"
         />
