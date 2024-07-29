@@ -5,7 +5,7 @@ type FileSizeNotificationProps = {
   fileName: string;
 };
 
-const FileSizeNotification = ({
+export const FileSizeNotification = ({
   handleCloseFileTooLargeMessage,
   fileName,
 }: FileSizeNotificationProps) => {
@@ -35,5 +35,3 @@ const FileSizeNotification = ({
     </div>
   );
 };
-
-export default FileSizeNotification;

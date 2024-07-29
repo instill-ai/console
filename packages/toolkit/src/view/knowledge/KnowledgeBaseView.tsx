@@ -14,7 +14,7 @@ import {
   ChunkTab,
   RetrieveTestTab
 } from "./tabs";
-import CreditUsageNotification from "./components/notifications/CreditUsageFileNotification";
+import CreditUsageFileNotification from "./components/notifications";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -91,7 +91,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         <></>
       ) : null}
       {showCreditUsage && (
-        <CreditUsageNotification
+        <CreditUsageFileNotification
           handleCloseUnsupportedFileMessage={() => setShowCreditUsage(false)}
         />
       )}

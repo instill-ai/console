@@ -7,7 +7,7 @@ type DeleteFileNotificationProps = {
   setShowDeleteMessage: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const DeleteFileNotification = ({
+export const DeleteFileNotification = ({
   deletedFileName,
   undoDelete,
   setShowDeleteMessage,
@@ -51,5 +51,3 @@ const DeleteFileNotification = ({
     </div>
   );
 };
-
-export default DeleteFileNotification;
