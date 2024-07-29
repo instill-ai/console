@@ -19,7 +19,7 @@ export const topbarItems = [
   },
   {
     pathName: "knowledge",
-    icon: <Icons.Cube01 className="h-6 w-6 stroke-semantic-fg-primary" />,
+    icon: <Icons.GraduationHat className="h-6 w-6 stroke-semantic-fg-primary" />,
     name: "Artifacts",
   },
   {
