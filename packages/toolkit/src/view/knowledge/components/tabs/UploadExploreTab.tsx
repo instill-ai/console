@@ -298,7 +298,7 @@ export const UploadExploreTab = ({
         >
           <div className="flex items-center gap-2">
             <Icons.File05 className="h-5 w-5 stroke-semantic-fg-secondary" />
-            <div className="product-body-text-3-regular">{file.name}</div>
+            <div className="product-body-text-3-regular truncate">{file.name}</div>
             <div className="flex-grow text-semantic-fg-disabled product-body-text-4-regular">
               {Math.round(file.size / 1024)} KB
             </div>
