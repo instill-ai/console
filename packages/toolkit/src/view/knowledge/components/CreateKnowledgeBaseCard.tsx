@@ -118,25 +118,26 @@ export const CreateKnowledgeBaseCard = ({
 
   const tooltipContent = React.useMemo(() => {
     if (isLoadingChunks) return "Loading...";
-    if (!chunks) return "No data available";
 
-    const textChunks = chunks.filter(
+    const textChunks = chunks ? chunks.filter(
       (chunk: { type: string }) => chunk.type === "TEXT",
-    );
-    const imageChunks = chunks.filter(
+    ) : [];
+
+    const imageChunks = chunks ? chunks.filter(
       (chunk: { type: string }) => chunk.type === "IMAGE",
-    );
+    ) : [];
 
     return `
     Converting pipeline ID: ${knowledgeBase.convertingPipelines?.[0] || "N/A"}
     Splitting pipeline ID: ${knowledgeBase.splittingPipelines?.[0] || "N/A"}
     Embedding pipeline ID: ${knowledgeBase.embeddingPipelines?.[0] || "N/A"}
-    Files #: ${chunks.length}
+    Files #: ${chunks ? chunks.length : "N/A"}
     Text Chunks #: ${textChunks.length}
     Image Chunks #: ${imageChunks.length}
     Downstream AI Apps: ${knowledgeBase.downstreamApps?.join(", ") || "N/A"}
   `;
   }, [chunks, isLoadingChunks, knowledgeBase]);
+
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
