@@ -49,11 +49,11 @@ const FileChunks: React.FC<FileChunksProps> = ({
                 className="mb-4 flex cursor-pointer items-center space-x-2"
                 onClick={() => onToggleExpand(file.fileUid)}
             >
-                <p className="product-button-button-1 text-semantic-fg-secondary">{file.name}</p>
                 <Icons.ChevronDown
-                    className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${expanded ? "rotate-180" : ""
+                    className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${expanded ? "" : "-rotate-90"
                         }`}
                 />
+                <p className="product-button-button-1 text-semantic-fg-secondary">{file.name}</p>
             </div>
             {expanded ? (
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">

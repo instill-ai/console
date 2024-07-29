@@ -32,7 +32,7 @@ const ChunkCard: React.FC<ChunkCardProps> = ({
     >
       <div className="flex flex-col gap-y-2.5 p-2.5">
         <div className="flex items-center justify-between">
-          <Tag size="sm" variant="lightNeutral" className="!rounded">
+          <Tag size="sm" variant="default" className="!rounded border-semantic-bg-line bg-semantic-bg-base-bg border"> 
             <Icons.Hash2 className="mr-1 !h-2 !w-2 stroke-semantic-fg-primary" />
             <span className="product-body-text-3-medium mr-1.5">
               {String(index + 1).padStart(3, "0")}
