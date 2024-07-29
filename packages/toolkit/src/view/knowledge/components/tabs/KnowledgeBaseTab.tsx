@@ -8,21 +8,21 @@ import {
   useAuthenticatedUser,
   useInstillStore,
   useShallow,
-} from "../../../lib";
+} from "../../../../lib";
 import {
   useCreateKnowledgeBase,
   useDeleteKnowledgeBase,
   useGetKnowledgeBases,
   useUpdateKnowledgeBase,
-} from "../../../lib/react-query-service/knowledge";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-import { CreateKnowledgeBaseCard } from "./CreateKnowledgeBaseCard";
-import { CreateKnowledgeDialog } from "./CreateKnowledgeDialog";
-import { KnowledgeBaseCard } from "./KnowledgeBaseCard";
+} from "../../../../lib/react-query-service/knowledge";
+import { KnowledgeBase } from "../../../../lib/vdp-sdk/knowledge/types";
+import { CreateKnowledgeBaseCard } from "../CreateKnowledgeBaseCard";
+import { CreateKnowledgeDialog } from "../CreateKnowledgeDialog";
+import { KnowledgeBaseCard } from "../KnowledgeBaseCard";
 import KnowledgeSearchSort, {
   SortAnchor,
   SortOrder,
-} from "./KnowledgeSearchSort";
+} from "../KnowledgeSearchSort";
 
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;

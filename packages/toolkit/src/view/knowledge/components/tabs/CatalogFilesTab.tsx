@@ -8,15 +8,15 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 
-import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
+import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../../lib";
 import {
   useDeleteKnowledgeBaseFile,
   useListKnowledgeBaseFiles,
-} from "../../../lib/react-query-service/knowledge";
-import { File, KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-import FileDetailsOverlay from "./FileDetailsOverlay";
-import DeleteFileNotification from "./Notifications/DeleteFileNotification";
-import { DELETE_FILE_TIMEOUT } from "./undoDeleteTime";
+} from "../../../../lib/react-query-service/knowledge";
+import { File, KnowledgeBase } from "../../../../lib/vdp-sdk/knowledge/types";
+import FileDetailsOverlay from "../FileDetailsOverlay";
+import DeleteFileNotification from "../Notifications/DeleteFileNotification";
+import { DELETE_FILE_TIMEOUT } from "../undoDeleteTime";
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;

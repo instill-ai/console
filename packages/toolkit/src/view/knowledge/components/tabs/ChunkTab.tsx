@@ -1,18 +1,18 @@
 import React from "react";
 import { Icons, Separator, Skeleton } from "@instill-ai/design-system";
-import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../lib";
+import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../../lib";
 import {
   useListKnowledgeBaseFiles,
   useUpdateChunk,
-} from "../../../lib/react-query-service/knowledge";
+} from "../../../../lib/react-query-service/knowledge";
 import {
   Chunk,
   KnowledgeFile,
   KnowledgeBase,
-} from "../../../lib/vdp-sdk/knowledge/types";
-import FileDetailsOverlay from "./FileDetailsOverlay";
+} from "../../../../lib/vdp-sdk/knowledge/types";
+import FileDetailsOverlay from "../FileDetailsOverlay";
 import { Nullable } from "vitest";
-import FileChunks from "./FileChunks";
+import FileChunks from "../FileChunks";
 
 type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;

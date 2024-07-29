@@ -1,26 +1,30 @@
-import { Icons, Separator, Switch, Tag } from "@instill-ai/design-system";
-
+import * as React from "react";
+import { Icons, Switch, Tag } from "@instill-ai/design-system";
 import { Chunk } from "../../../lib/vdp-sdk/knowledge/types";
 
 type ChunkCardProps = {
   chunk: Chunk;
   index: number;
   onChunkClick: () => void;
-  onRetrievableToggle: (
-    chunkUid: string,
-    currentValue: boolean,
-  ) => Promise<void>;
+  onRetrievableToggle: (chunkUid: string, currentValue: boolean) => Promise<void>;
   fileContent: string;
 };
 
-const ChunkCard = ({
+const ChunkCard: React.FC<ChunkCardProps> = ({
   chunk,
   index,
   onChunkClick,
   onRetrievableToggle,
   fileContent,
-}: ChunkCardProps) => {
-  console.log(chunk)
+}) => {
+
+  const chunkContent = React.useMemo(() => {
+    if (chunk.startPos !== undefined && chunk.endPos !== undefined) {
+      return fileContent.slice(chunk.startPos, chunk.endPos);
+    }
+    return "Chunk content not available";
+  }, [chunk, fileContent]);
+
   return (
     <div
       className="flex flex-col gap-y-2.5 rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-2.5 w-[360px] cursor-pointer"
@@ -52,7 +56,7 @@ const ChunkCard = ({
         </div>
         <div className="h-px w-full bg-semantic-bg-line" />
         <p className="text-semantic-fg-secondary-alt-secondary truncate product-body-text-2-regular hover:bg-semantic-bg-secondary">
-          {fileContent}
+          {chunkContent}
         </p>
         {/* <div className="flex items-center justify-end gap-1">
           <Tag size="sm" variant="lightNeutral" className="!rounded">
