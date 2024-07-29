@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getInstillAPIClient, Nullable } from "@instill-ai/toolkit";
+import { getInstillArtifactAPIClient, Nullable } from "@instill-ai/toolkit";
 
 export function useGetSourceFile() {
   return useQuery<
@@ -14,7 +14,7 @@ export function useGetSourceFile() {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
-      const client = getInstillAPIClient({ accessToken });
+      const client = getInstillArtifactAPIClient({ accessToken });
       const response = await client.vdp.artifact.getSourceFile({ ownerId, kbId, fileUid });
       return response.sourceFile;
     },

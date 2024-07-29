@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getInstillAPIClient } from "../../vdp-sdk";
+import { getInstillArtifactAPIClient } from "../../vdp-sdk";
 import { Nullable } from "../../type";
 
 export function useListKnowledgeBases({
@@ -17,7 +17,7 @@ export function useListKnowledgeBases({
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
-      const client = getInstillAPIClient({ accessToken });
+      const client = getInstillArtifactAPIClient({ accessToken });
       return client.vdp.artifact.listKnowledgeBases({
         ownerId,
         pageSize: 100,

@@ -105,3 +105,74 @@ export class InstillAPIClient {
 
   model = new ModelClient(this);
 }
+
+export class instillArtifactAPIClient {
+  baseURL: string;
+  apiToken: string | undefined;
+
+  constructor({ baseURL, apiToken }: { baseURL: string; apiToken?: string }) {
+    this.baseURL = baseURL;
+    this.apiToken = apiToken;
+  }
+
+  async get<Rsp>(path: string, opt?: RequestOption): Promise<Rsp> {
+    return this.makeMethodRequest("GET", path, opt);
+  }
+
+  async post<Rsp>(path: string, opt?: RequestOption): Promise<Rsp> {
+    return this.makeMethodRequest("POST", path, opt);
+  }
+
+  async put<Rsp>(path: string, opt?: RequestOption): Promise<Rsp> {
+    return this.makeMethodRequest("PUT", path, opt);
+  }
+
+  async patch<Rsp>(path: string, opt?: RequestOption): Promise<Rsp> {
+    return this.makeMethodRequest("PATCH", path, opt);
+  }
+
+  async delete<Rsp>(path: string, opt?: RequestOption): Promise<Rsp> {
+    return this.makeMethodRequest("DELETE", path, opt);
+  }
+
+  private async makeMethodRequest<Rsp>(
+    method: HttpMethod,
+    path: string,
+    opt?: RequestOption,
+  ): Promise<Rsp> {
+    try {
+      const response = await fetch(`${this.baseURL}${path}`, {
+        method,
+        headers: this.apiToken
+          ? {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${this.apiToken}`,
+              ...opt?.additionalHeaders,
+            }
+          : {
+              "Content-Type": "application/json",
+              ...opt?.additionalHeaders,
+            },
+        body: opt?.body,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${path}`);
+      }
+
+      if (method === "DELETE") {
+        return Promise.resolve() as Promise<Rsp>;
+      }
+
+      const data = (await response.json()) satisfies Rsp;
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  artifact = {
+    knowledgeBase: new KnowledgeBaseClient(this),
+    chunk: new ChunkClient(this),
+  };
+}

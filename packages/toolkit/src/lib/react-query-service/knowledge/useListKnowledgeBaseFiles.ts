@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
-import { getInstillAPIClient } from "../../vdp-sdk";
+import { getInstillArtifactAPIClient } from "../../vdp-sdk";
 import { ListKnowledgeBaseFilesRequest } from "../../../../../sdk/src/vdp/artifact/types";
 
 export function useListKnowledgeBaseFiles() {
@@ -18,7 +18,7 @@ export function useListKnowledgeBaseFiles() {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
-      const client = getInstillAPIClient({ accessToken });
+      const client = getInstillArtifactAPIClient({ accessToken });
       return client.vdp.artifact.listKnowledgeBaseFiles({ ownerId, kbId });
     },
   });

@@ -7,7 +7,7 @@ import * as z from "zod";
 import KnowledgeSearchSort, { SortAnchor, SortOrder } from "../components/KnowledgeSearchSort";
 import { CreateKnowledgeBaseCard, CreateKnowledgeDialog, KnowledgeBaseCard } from "../components";
 import { useListKnowledgeBases } from '../../../lib/react-query-service/knowledge/useListKnowledgeBases';
-import { getInstillAPIClient } from "../../../lib/vdp-sdk";
+import { getInstillArtifactAPIClient } from "../../../lib/vdp-sdk";
 
 const CreateKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -46,7 +46,7 @@ export const KnowledgeBaseTab: React.FC = () => {
       if (!accessToken || !me.data?.id) {
         throw new Error("Not authenticated");
       }
-      const client = getInstillAPIClient({ accessToken });
+      const client = getInstillArtifactAPIClient({ accessToken });
       return client.vdp.artifact.createKnowledgeBase({
         ownerId: me.data.id,
         payload: {
@@ -67,7 +67,7 @@ export const KnowledgeBaseTab: React.FC = () => {
       if (!accessToken || !me.data?.id) {
         throw new Error("Not authenticated");
       }
-      const client = getInstillAPIClient({ accessToken });
+      const client = getInstillArtifactAPIClient({ accessToken });
       return client.vdp.artifact.updateKnowledgeBase({
         ownerId: me.data.id,
         kbId,
@@ -84,7 +84,7 @@ export const KnowledgeBaseTab: React.FC = () => {
       if (!accessToken || !me.data?.id) {
         throw new Error("Not authenticated");
       }
-      const client = getInstillAPIClient({ accessToken });
+      const client = getInstillArtifactAPIClient({ accessToken });
       return client.vdp.artifact.deleteKnowledgeBase({
         ownerId: me.data.id,
         kbId,

@@ -2,13 +2,13 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
-import { getInstillAPIClient } from "../../vdp-sdk";
-import { CreateKnowledgeBaseRequest } from "../../../../../sdk/src/vdp/artifact/types";
+import { getInstillArtifactAPIClient } from "../../vdp-sdk";
+import { CreateKnowledgeBaseRequest, KnowledgeBase } from "../../../../../sdk/src/vdp/artifact/types";
 
 export function useCreateKnowledgeBase() {
   const queryClient = useQueryClient();
   return useMutation<
-    { knowledgeBase: any; namespaceName: string },
+    KnowledgeBase,
     Error,
     { payload: CreateKnowledgeBaseRequest; accessToken: Nullable<string> }
   >({
@@ -16,12 +16,12 @@ export function useCreateKnowledgeBase() {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
-      const client = getInstillAPIClient({ accessToken });
-      const knowledgeBase = await client.vdp.artifact.createKnowledgeBase(payload);
-      return { knowledgeBase, namespaceName: payload.ownerId };
+      const client = getInstillArtifactAPIClient({ accessToken });
+      const knowledgeBase = await client.artifact.createKnowledgeBase(payload);
+      return knowledgeBase;
     },
-    onSuccess: ({ knowledgeBase, namespaceName }) => {
-      queryClient.invalidateQueries({ queryKey: ["knowledgeBases", namespaceName] });
+    onSuccess: (knowledgeBase) => {
+      queryClient.invalidateQueries({ queryKey: ["knowledgeBases", knowledgeBase.ownerName] });
     },
   });
 }

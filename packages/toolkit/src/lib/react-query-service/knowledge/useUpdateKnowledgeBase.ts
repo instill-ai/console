@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
-import { getInstillAPIClient } from "../../vdp-sdk";
+import { getInstillArtifactAPIClient } from "../../vdp-sdk";
 import { UpdateKnowledgeBaseRequest } from "../../../../../sdk/src/vdp/artifact/types";
 
 export function useUpdateKnowledgeBase() {
@@ -16,7 +16,7 @@ export function useUpdateKnowledgeBase() {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
-      const client = getInstillAPIClient({ accessToken });
+      const client = getInstillArtifactAPIClient({ accessToken });
       const updatedKnowledgeBase = await client.vdp.artifact.updateKnowledgeBase(payload);
       return { updatedKnowledgeBase };
     },

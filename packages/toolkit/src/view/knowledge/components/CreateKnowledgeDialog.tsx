@@ -7,7 +7,7 @@ import * as z from "zod";
 import { EntitySelector } from "../../../components";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 import { InstillStore, useInstillStore, useShallow, useRouteInfo } from "../../../lib";
-import { getInstillAPIClient } from "../../../lib/vdp-sdk";
+import { getInstillArtifactAPIClient } from "../../../lib/vdp-sdk";
 
 const CreateKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -42,7 +42,7 @@ export const CreateKnowledgeDialog: React.FC<{
     mode: "onChange",
   });
 
-  const artifactClient = getInstillAPIClient({ accessToken }).vdp.artifact;
+  const artifactClient = getInstillArtifactAPIClient({ accessToken }).vdp.artifact;
 
   const createKnowledgeBaseMutation = useMutation({
     mutationFn: async (data: z.infer<typeof CreateKnowledgeFormSchema>) => {

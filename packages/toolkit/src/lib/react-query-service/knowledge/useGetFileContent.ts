@@ -1,7 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import type { Nullable } from "../../type";
-import { getInstillAPIClient } from "../../vdp-sdk";
+import { getInstillArtifactAPIClient } from "../../vdp-sdk";
 
 export function useGetFileContent() {
   return useQuery<
@@ -16,7 +16,7 @@ export function useGetFileContent() {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
-      const client = getInstillAPIClient({ accessToken });
+      const client = getInstillArtifactAPIClient({ accessToken });
       const response = await client.vdp.artifact.getFileContent({ ownerId, kbId, fileUid });
       return response.content;
     },
