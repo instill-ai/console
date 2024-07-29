@@ -91,6 +91,7 @@ export const UploadExploreTab = ({
   );
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
+  const [isProcessing, setIsProcessing] = React.useState(false);
 
   const getFileType = (file: File) => {
     const extension = file.name.split(".").pop()?.toLowerCase();
@@ -137,44 +138,53 @@ export const UploadExploreTab = ({
   };
 
   const handleProcessFiles = async () => {
+    setIsProcessing(true);
     const files = form.getValues("files");
-    if (files.length === 0) return;
+    if (files.length === 0) {
+      setIsProcessing(false);
+      return;
+    }
 
-    const uploadedFiles = await Promise.all(
-      files.map(async (file) => {
-        const reader = new FileReader();
-        return new Promise<{ fileUid: string }>((resolve, reject) => {
-          reader.onload = async (event) => {
-            const content = btoa(event.target?.result as string);
-            try {
-              const uploadedFile = await uploadKnowledgeBaseFile.mutateAsync({
-                ownerId: ownerID,
-                knowledgeBaseId: knowledgeBase.kbId,
-                payload: {
-                  name: file.name,
-                  type: getFileType(file),
-                  content,
-                },
-                accessToken,
-              });
-              resolve(uploadedFile);
-            } catch (error) {
-              reject(error);
-            }
-          };
-          reader.readAsBinaryString(file);
-        });
-      }),
-    );
+    try {
+      const uploadedFiles = await Promise.all(
+        files.map(async (file) => {
+          const reader = new FileReader();
+          return new Promise<{ fileUid: string }>((resolve, reject) => {
+            reader.onload = async (event) => {
+              const content = btoa(event.target?.result as string);
+              try {
+                const uploadedFile = await uploadKnowledgeBaseFile.mutateAsync({
+                  ownerId: ownerID,
+                  knowledgeBaseId: knowledgeBase.kbId,
+                  payload: {
+                    name: file.name,
+                    type: getFileType(file),
+                    content,
+                  },
+                  accessToken,
+                });
+                resolve(uploadedFile);
+              } catch (error) {
+                reject(error);
+              }
+            };
+            reader.readAsBinaryString(file);
+          });
+        })
+      );
 
-    const fileUids = uploadedFiles.map((file) => file.fileUid);
+      const fileUids = uploadedFiles.map((file) => file.fileUid);
 
-    await processKnowledgeBaseFiles.mutateAsync({
-      fileUids,
-      accessToken,
-    });
+      await processKnowledgeBaseFiles.mutateAsync({
+        fileUids,
+        accessToken,
+      });
 
-    onProcessFile();
+      onProcessFile();
+    } catch (error) {
+      console.error("Error processing files:", error);
+      setIsProcessing(false);
+    }
   };
 
   const me = useAuthenticatedUser({
@@ -203,11 +213,10 @@ export const UploadExploreTab = ({
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-bg-base-bg text-semantic-fg-secondary product-body-text-4-regular ${
-                      isDragging
-                        ? "border-semantic-accent-default"
-                        : "border-semantic-bg-line"
-                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-bg-base-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
+                      ? "border-semantic-accent-default"
+                      : "border-semantic-bg-line"
+                      } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
                       setIsDragging(true);
@@ -309,10 +318,17 @@ export const UploadExploreTab = ({
         <Button
           variant="primary"
           size="lg"
-          disabled={form.watch("files").length === 0}
+          disabled={form.watch("files").length === 0 || isProcessing}
           onClick={handleProcessFiles}
         >
-          Process Files
+          {isProcessing ? (
+            <>
+              <Icons.LayersTwo01 className="mr-2 h-4 w-4 animate-spin" />
+              Processing...
+            </>
+          ) : (
+            "Process Files"
+          )}
         </Button>
       </div>
     </div>
