@@ -1,4 +1,4 @@
-import { Switch, Tag } from "@instill-ai/design-system";
+import { Icons, Separator, Switch, Tag } from "@instill-ai/design-system";
 
 import { Chunk } from "../../../lib/vdp-sdk/knowledge/types";
 
@@ -20,6 +20,7 @@ const ChunkCard = ({
   onRetrievableToggle,
   fileContent,
 }: ChunkCardProps) => {
+  console.log(chunk)
   return (
     <div
       className="flex flex-col gap-y-2.5 rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-2.5 w-[360px] cursor-pointer"
@@ -27,8 +28,9 @@ const ChunkCard = ({
     >
       <div className="flex flex-col gap-y-2.5 p-2.5">
         <div className="flex items-center justify-between">
-          <Tag size="sm" variant="default" className="!rounded">
-            <span className="mr-1.5 product-body-text-3-medium">
+          <Tag size="sm" variant="lightNeutral" className="!rounded">
+            <Icons.Hash2 className="mr-1 !h-2 !w-2 stroke-semantic-fg-primary" />
+            <span className="product-body-text-3-medium mr-1.5">
               {String(index + 1).padStart(3, "0")}
             </span>
           </Tag>
@@ -36,7 +38,7 @@ const ChunkCard = ({
             className="flex items-center gap-1"
             onClick={(e) => e.stopPropagation()}
           >
-            <span className="uppercase product-label-label-1">
+            <span className="uppercase product-label-label-1 text-semantic-node-disconnected-selected-stroke">
               {chunk.retrievable ? "Retrievable" : "Unretrievable"}
             </span>
             <Switch
