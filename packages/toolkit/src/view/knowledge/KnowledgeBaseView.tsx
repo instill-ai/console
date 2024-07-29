@@ -4,20 +4,20 @@ import { Nullable } from "@instill-ai/toolkit";
 
 import { GeneralAppPageProp } from "../../lib";
 import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/types";
-import { CatalogFilesTab } from "./components/CatalogFilesTab";
-import { ChunkTab } from "./components/ChunkTab";
-import { ImageTab } from "./components/ImageTab";
-import { KnowledgeBaseTab } from "./components/KnowledgeBaseTab";
-import { MarkdownTab } from "./components/MarkdownTab";
+import { CatalogFilesTab } from "./components/tabs/CatalogFilesTab";
+import { ChunkTab } from "./components/tabs/ChunkTab";
+import { ImageTab } from "./components/tabs/ImageTab";
+import { KnowledgeBaseTab } from "./components/tabs/KnowledgeBaseTab";
+import { MarkdownTab } from "./components/tabs/MarkdownTab";
 import CreditUsageFileNotification from "./components/Notifications/CreditUsageFileNotification";
-import { RetrieveTestTab } from "./components/RetrieveTestTab";
+import { RetrieveTestTab } from "./components/tabs/RetrieveTestTab";
 import { Sidebar } from "./components/Sidebar";
 // import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 import {
   CREDIT_TIMEOUT,
   DELETE_KNOWLEDGE_BASE_TIMEOUT,
 } from "./components/undoDeleteTime";
-import { UploadExploreTab } from "./components/UploadExploreTab";
+import { UploadExploreTab } from "./components/tabs/UploadExploreTab";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -142,7 +142,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           {activeTab === "retrieve" && selectedKnowledgeBase ? (
             <RetrieveTestTab
               knowledgeBase={selectedKnowledgeBase}
-              isProcessed={false}
+              isProcessed={true}
             />
           ) : null}
         </div>

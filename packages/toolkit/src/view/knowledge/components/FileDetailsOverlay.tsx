@@ -89,7 +89,7 @@ const FileDetailsOverlay = ({
       <Dialog.Content className="!h-[90vh] !max-w-[40vw]">
         <div className="flex flex-col h-full">
           <div className="mb-6 flex flex-row space-x-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-sm">
+            <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs">
               {getFileIcon()}
             </div>
             <div className="flex flex-col">

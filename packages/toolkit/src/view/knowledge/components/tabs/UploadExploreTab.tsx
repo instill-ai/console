@@ -16,17 +16,17 @@ import {
   useAuthenticatedUser,
   useInstillStore,
   useShallow,
-} from "../../../lib";
+} from "../../../../lib";
 import {
   useProcessKnowledgeBaseFiles,
   useUploadKnowledgeBaseFile,
-} from "../../../lib/react-query-service/knowledge";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-import FileSizeNotification from "./Notifications/FileSizeNotification";
+} from "../../../../lib/react-query-service/knowledge";
+import { KnowledgeBase } from "../../../../lib/vdp-sdk/knowledge/types";
+import FileSizeNotification from "../Notifications/FileSizeNotification";
 // import FilePreview from "./FilePreview";
-import IncorrectFormatFileNotification from "./Notifications/IncorrectFormatFileNotification";
-import { FILE_ERROR_TIMEOUT } from "./undoDeleteTime";
-import DuplicateFileNotification from "./Notifications/DuplicateFileNotification";
+import IncorrectFormatFileNotification from "../Notifications/IncorrectFormatFileNotification";
+import { FILE_ERROR_TIMEOUT } from "../undoDeleteTime";
+import DuplicateFileNotification from "../Notifications/DuplicateFileNotification";
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024;
 

@@ -1,9 +1,9 @@
 import { Separator } from "@instill-ai/design-system";
 
-import { CodeBlock } from "../../../components";
-import { CodeString } from "../../../components/CodeString";
-import { defaultCodeSnippetStyles } from "../../../constant";
-import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+import { CodeBlock } from "../../../../components";
+import { CodeString } from "../../../../components/CodeString";
+import { defaultCodeSnippetStyles } from "../../../../constant";
+import { KnowledgeBase } from "../../../../lib/vdp-sdk/knowledge/types";
 
 type RetrieveTestTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -23,7 +23,6 @@ export const RetrieveTestTab = ({
        "topK": 5,
        "query": "Please put your query sentence here"
 }'`;
-
   return (
     <div className="flex flex-col">
       <div className="mb-5 flex items-center justify-between">
