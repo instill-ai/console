@@ -4,7 +4,6 @@ import { Button, Icons } from "@instill-ai/design-system";
 
 type DuplicateFileNotificationProps = {
   deletedFileName: string;
-  undoDelete: () => void;
   setShowDeleteMessage: React.Dispatch<React.SetStateAction<boolean>>;
 };
 

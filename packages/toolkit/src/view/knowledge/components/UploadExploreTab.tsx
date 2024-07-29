@@ -26,6 +26,7 @@ import FileSizeNotification from "./Notifications/FileSizeNotification";
 // import FilePreview from "./FilePreview";
 import IncorrectFormatFileNotification from "./Notifications/IncorrectFormatFileNotification";
 import { FILE_ERROR_TIMEOUT } from "./undoDeleteTime";
+import DuplicateFileNotification from "./Notifications/DuplicateFileNotification";
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024;
 
@@ -80,15 +81,14 @@ export const UploadExploreTab = ({
     })),
   );
 
-  const [showFileTooLargeMessage, setShowFileTooLargeMessage] =
-    React.useState(false);
-  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] =
-    React.useState(false);
+  const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
+  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] = React.useState(false);
+  const [showDuplicateFileMessage, setShowDuplicateFileMessage] = React.useState(false);
   const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
+  const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
   const fileTooLargeTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
-  const unsupportedFileTypeTimeoutRef = React.useRef<NodeJS.Timeout | null>(
-    null,
-  );
+  const unsupportedFileTypeTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const duplicateFileTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
   const [isProcessing, setIsProcessing] = React.useState(false);
@@ -128,6 +128,17 @@ export const UploadExploreTab = ({
     }
 
     const currentFiles = form.getValues("files");
+    const isDuplicate = currentFiles.some(existingFile => existingFile.name === file.name);
+
+    if (isDuplicate) {
+      setDuplicateFileName(file.name);
+      setShowDuplicateFileMessage(true);
+      duplicateFileTimeoutRef.current = setTimeout(() => {
+        setShowDuplicateFileMessage(false);
+      }, FILE_ERROR_TIMEOUT);
+      return;
+    }
+
     form.setValue("files", [...currentFiles, file]);
   };
 
@@ -312,6 +323,12 @@ export const UploadExploreTab = ({
             setShowUnsupportedFileMessage(false)
           }
           fileName={incorrectFileName}
+        />
+      )}
+      {showDuplicateFileMessage && (
+        <DuplicateFileNotification
+          deletedFileName={duplicateFileName}
+          setShowDeleteMessage={setShowDuplicateFileMessage}
         />
       )}
       <div className="flex justify-end">
