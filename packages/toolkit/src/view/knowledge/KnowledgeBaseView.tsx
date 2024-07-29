@@ -1,7 +1,5 @@
 import * as React from "react";
-
 import { Nullable } from "@instill-ai/toolkit";
-
 import { GeneralAppPageProp } from "../../lib";
 import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/types";
 import { CatalogFilesTab } from "./components/tabs/CatalogFilesTab";
@@ -12,12 +10,13 @@ import { MarkdownTab } from "./components/tabs/MarkdownTab";
 import CreditUsageFileNotification from "./components/Notifications/CreditUsageFileNotification";
 import { RetrieveTestTab } from "./components/tabs/RetrieveTestTab";
 import { Sidebar } from "./components/Sidebar";
-// import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 import {
   CREDIT_TIMEOUT,
   DELETE_KNOWLEDGE_BASE_TIMEOUT,
 } from "./components/undoDeleteTime";
 import { UploadExploreTab } from "./components/tabs/UploadExploreTab";
+import { useListKnowledgeBaseFiles } from "../../lib/react-query-service/knowledge";
+import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../lib";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -33,10 +32,33 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] =
     React.useState<Nullable<KnowledgeBase>>(null);
   const [showCreditUsage, setShowCreditUsage] = React.useState(false);
+  const [isProcessed, setIsProcessed] = React.useState(false);
 
-  /* -------------------------------------------------------------------------
-   * Query resource data
-   * -----------------------------------------------------------------------*/
+  const { accessToken, enabledQuery } = useInstillStore(
+    useShallow((store: InstillStore) => ({
+      accessToken: store.accessToken,
+      enabledQuery: store.enabledQuery,
+    }))
+  );
+
+  const me = useAuthenticatedUser({
+    enabled: enabledQuery,
+    accessToken,
+  });
+
+  const { data: files } = useListKnowledgeBaseFiles({
+    namespaceId: me.data?.id ?? null,
+    knowledgeBaseId: selectedKnowledgeBase?.kbId ?? "",
+    accessToken,
+    enabled: enabledQuery && Boolean(me.data?.id) && Boolean(selectedKnowledgeBase),
+  });
+
+  React.useEffect(() => {
+    if (files) {
+      const hasChunks = files.some(file => file.totalChunks > 0);
+      setIsProcessed(hasChunks);
+    }
+  }, [files]);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -72,23 +94,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     }, CREDIT_TIMEOUT);
   };
 
-  // const handleUndoDelete = () => {
-  //   setIsDeleted(false);
-  //   setShowDeleteMessage(false);
-  //   setKnowledgeBaseToDelete(null);
-  // };
-
-  /* -------------------------------------------------------------------------
-   * Render
-   * -----------------------------------------------------------------------*/
   return (
     <div className="h-screen w-full bg-semantic-bg-alt-primary">
       {showDeleteMessage && knowledgeBaseToDelete ? (
-        // <DeleteKnowledgeBaseNotification
-        //   knowledgeBaseName={knowledgeBase.name}
-        //   handleCloseDeleteMessage={handleCloseDeleteMessage}
-        //   undoDelete={undoDelete}
-        // />
         <></>
       ) : null}
       {showCreditUsage && (
@@ -107,9 +115,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             onTextOptionChange={handleTextOptionChange}
           />
         </div>
-        <div
-          className={`sm:col-span-8 md:col-span-9 lg:col-span-10 pt-5`}
-        >
+        <div className={`sm:col-span-8 md:col-span-9 lg:col-span-10 pt-5`}>
           {activeTab === "knowledge-base" ? (
             <KnowledgeBaseTab
               onKnowledgeBaseSelect={handleKnowledgeBaseSelect}
@@ -142,7 +148,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           {activeTab === "retrieve" && selectedKnowledgeBase ? (
             <RetrieveTestTab
               knowledgeBase={selectedKnowledgeBase}
-              isProcessed={true}
+              isProcessed={isProcessed}
             />
           ) : null}
         </div>
