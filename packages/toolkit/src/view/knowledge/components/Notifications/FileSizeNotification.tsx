@@ -16,7 +16,7 @@ const FileSizeNotification = ({
         <div className="self-stretch product-body-text-2-semibold">
           This file is too big
         </div>
-        <div className="self-stretch product-body-text-2-semibold">
+        <div className="self-stretch product-body-text-2-semibold truncate">
           {fileName}
         </div>
         <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">

@@ -16,7 +16,7 @@ const IncorrectFormatFileNotification = ({
         <div className="self-stretch product-body-text-2-semibold">
           Unsupported File Type
         </div>
-        <div className="self-stretch product-body-text-2-semibold">
+        <div className="self-stretch product-body-text-2-semibold truncate">
           {fileName}
         </div>
         <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
