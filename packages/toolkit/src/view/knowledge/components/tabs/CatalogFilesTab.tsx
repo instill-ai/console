@@ -262,7 +262,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
       <div className="flex flex-col w-full gap-2">
         {/* <div className="flex justify-start">
           <Button variant={"secondaryGrey"}>
-            <Icons.Plus className="w-4 h-4 stroke-semantic-fg-secondary" />
+            <Icons.Plus className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
             <div className="text-semantic-fg-primary product-body-text-3-semibold">
               Add File
             </div>
@@ -290,12 +290,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                     >
                       {sortConfig.key === "name" ? (
                         sortConfig.direction === "ascending" ? (
-                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                         ) : (
-                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                         )
                       ) : (
-                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
+                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                       )}
                     </Button>
                   </div>
@@ -310,12 +310,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                     >
                       {sortConfig.key === "type" ? (
                         sortConfig.direction === "ascending" ? (
-                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                         ) : (
-                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                         )
                       ) : (
-                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
+                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                       )}
                     </Button>
                   </div>
@@ -330,12 +330,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                     >
                       {sortConfig.key === "processStatus" ? (
                         sortConfig.direction === "ascending" ? (
-                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                         ) : (
-                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                         )
                       ) : (
-                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
+                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                       )}
                     </Button>
                   </div>
@@ -350,12 +350,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                     >
                       {sortConfig.key === "size" ? (
                         sortConfig.direction === "ascending" ? (
-                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                         ) : (
-                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                         )
                       ) : (
-                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
+                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                       )}
                     </Button>
                   </div>
@@ -370,12 +370,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                     >
                       {sortConfig.key === "totalChunks" ? (
                         sortConfig.direction === "ascending" ? (
-                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                         ) : (
-                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                         )
                       ) : (
-                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
+                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                       )}
                     </Button>
                   </div>
@@ -390,12 +390,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                     >
                       {sortConfig.key === "createTime" ? (
                         sortConfig.direction === "ascending" ? (
-                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronUp className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                         ) : (
-                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
+                          <Icons.ChevronDown className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                         )
                       ) : (
-                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-fg-secondary" />
+                        <Icons.ChevronDown className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary" />
                       )}
                     </Button>
                   </div>
@@ -418,6 +418,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                         onClick={() => handleFileClick(item)}
                       >
                         {item.name}
+                        <Icons.ArrowUpRight className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary ml-0.5" />
                       </div>
                       <div className="flex items-center justify-center">
                         <Tag size="sm" variant="lightNeutral">
