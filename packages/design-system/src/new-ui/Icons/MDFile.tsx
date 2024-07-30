@@ -13,7 +13,7 @@ export const MDFile = React.forwardRef<
     <IconBase
       {...passThrough}
       ref={ref}
-      viewBox="0 0 24 24"
+      viewBox="0 0 40 40"
       className={className}
     >
       <path d="M4.3335 4C4.3335 1.79086 6.12436 0 8.3335 0H24.3335L36.3335 12V36C36.3335 38.2091 34.5426 40 32.3335 40H8.3335C6.12436 40 4.3335 38.2091 4.3335 36V4Z" fill="#316FED" />
