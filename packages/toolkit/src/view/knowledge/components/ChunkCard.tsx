@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Icons, Switch, Tag } from "@instill-ai/design-system";
+import { Icons, Separator, Switch, Tag } from "@instill-ai/design-system";
 import { Chunk } from "../../../lib/vdp-sdk/knowledge/types";
 
 type ChunkCardProps = {
@@ -31,7 +31,7 @@ const ChunkCard: React.FC<ChunkCardProps> = ({
       onClick={onChunkClick}
     >
       <div className="flex flex-col gap-y-2.5 p-2.5">
-        <div className="flex justify-between">
+        <div className="flex justify-between mb-2">
           <Tag size="sm" variant="default" className="!rounded border-semantic-bg-line bg-semantic-bg-base-bg border items-center">
             <Icons.Hash2 className="mr-0.5 h-5 w-5 stroke-semantic-fg-primary" />
             <span className="product-body-text-3-medium">
@@ -54,7 +54,7 @@ const ChunkCard: React.FC<ChunkCardProps> = ({
             />
           </div>
         </div>
-        <div className="h-px w-full bg-semantic-bg-line" />
+        <Separator orientation="horizontal" className="mb-2" />
         <p className="text-semantic-fg-secondary-alt-secondary truncate product-body-text-2-regular hover:bg-semantic-bg-secondary">
           {chunkContent}
         </p>

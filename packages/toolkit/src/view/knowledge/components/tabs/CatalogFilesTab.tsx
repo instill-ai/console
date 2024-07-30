@@ -279,7 +279,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
             ) : files && files.length > 0 ? (
               <>
                 <div className="grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center border-b border-semantic-bg-line bg-semantic-bg-base-bg border rounded">
-                  <div className="flex items-center justify-start gap-1 px-4">
+                  <div className="flex items-center justify-center gap-1 px-4">
                     <div className="text-semantic-fg-primary product-body-text-3-medium truncate max-w-[200px]">
                       File name
                     </div>
@@ -412,7 +412,7 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                         }`}
                     >
                       <div
-                        className="flex items-center justify-start px-4 truncate cursor-pointer text-semantic-bg-secondary-alt-primary product-body-text-3-regular"
+                        className="flex items-center justify-center px-4 truncate cursor-pointer text-semantic-bg-secondary-alt-primary product-body-text-3-regular"
                         onClick={() => handleFileClick(item)}
                       >
                         <span className="truncate max-w-[200px]" title={item.name}>
@@ -426,28 +426,30 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                         </Tag>
                       </div>
                       <div className="flex items-center justify-center">
-                        <Tag
-                          size="sm"
-                          variant={
-                            getStatusTag(
-                              item.processStatus.replace(
-                                "FILE_PROCESS_STATUS_",
-                                "",
-                              ) as FileStatus,
-                            ).variant
-                          }
-                          className="relative group capitalize"
-                        >
-                          <div className="flex items-center gap-2">
-                            <div
-                              className={`w-2 h-2 rounded-full ${getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).dotColor}`}
-                            ></div>
-                            {item.processStatus.replace(
-                              "FILE_PROCESS_STATUS_",
-                              "",
-                            )}
-                          </div>
-                        </Tag>
+                        <div className="flex items-center justify-center">
+                          <Tag
+                            size="sm"
+                            variant={
+                              getStatusTag(
+                                item.processStatus.replace(
+                                  "FILE_PROCESS_STATUS_",
+                                  "",
+                                ) as FileStatus,
+                              ).variant
+                            }
+                            className="relative group capitalize"
+                          >
+                            <div className="flex items-center gap-2">
+                              <div
+                                className={`w-2 h-2 rounded-full ${getStatusTag(item.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus).dotColor}`}
+                              ></div>
+                              {item.processStatus
+                                .replace("FILE_PROCESS_STATUS_", "")
+                                .toLowerCase()
+                                .replace(/\b\w/g, (c) => c.toUpperCase())}
+                            </div>
+                          </Tag>
+                        </div>
                       </div>
                       <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
                         {formatFileSize(item.size)}

@@ -137,7 +137,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase }) => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center p-8 text-center mt-32">
+        <div className="flex flex-col items-center justify-center p-8 text-center mt-40">
           <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs mb-8">
             <Icons.AlertCircle className="w-6 h-6 stroke-semantic-fg-primary" />
           </div>

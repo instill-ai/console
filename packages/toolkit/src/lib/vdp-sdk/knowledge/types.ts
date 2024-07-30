@@ -1,4 +1,5 @@
 export type KnowledgeBase = {
+  chunks: any;
   usage: number;
   kbId: string;
   name: string;
@@ -11,6 +12,7 @@ export type KnowledgeBase = {
   splittingPipelines: string[];
   embeddingPipelines: string[];
   downstreamApps: string[];
+  totalFiles: number
 }
 
 export type FileSnippet = {
