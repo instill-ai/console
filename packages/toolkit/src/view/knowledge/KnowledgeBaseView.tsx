@@ -139,13 +139,19 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
                 <MarkdownTab knowledgeBase={selectedKnowledgeBase} />
               ) : null}
               {selectedTextOption === "Chunk" ? (
-                <ChunkTab knowledgeBase={selectedKnowledgeBase} />
+                <ChunkTab
+                  knowledgeBase={selectedKnowledgeBase}
+                  onGoToUpload={handleGoToUpload}
+                />
               ) : null}
               {selectedTextOption === "Image" ? (
                 <ImageTab knowledgeBase={selectedKnowledgeBase} />
               ) : null}
               {!selectedTextOption || selectedTextOption === "Files" ? (
-                <CatalogFilesTab knowledgeBase={selectedKnowledgeBase} />
+                <CatalogFilesTab
+                  knowledgeBase={selectedKnowledgeBase}
+                  onGoToUpload={handleGoToUpload}
+                />
               ) : null}
             </>
           ) : null}
