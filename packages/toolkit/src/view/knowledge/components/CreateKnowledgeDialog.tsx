@@ -67,7 +67,10 @@ export const CreateKnowledgeDialog = ({
   // const namespaceIdValue = watch("namespaceId");
 
   const formatName = (name: string) =>
-    name.replace(/[^a-zA-Z0-9-_]/g, "").replace(/-+/g, "-");
+    name
+      .toLowerCase()
+      .replace(/[^a-z0-9-_]/g, "-")
+      .replace(/-+/g, "-");
   const isNameValid = /^[a-zA-Z0-9-_]+$/.test(nameValue);
   const formattedName = formatName(nameValue);
 
