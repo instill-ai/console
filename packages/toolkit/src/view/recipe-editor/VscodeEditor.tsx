@@ -154,7 +154,7 @@ export const VscodeEditor = () => {
     }) => {
       const result: languages.CompletionItem[] = [];
 
-      if (!monaco) {
+      if (!monaco || !recipe) {
         return {
           suggestions: result,
         };
@@ -188,9 +188,35 @@ export const VscodeEditor = () => {
       // If the last character typed is a period then we need to look at member objects of the obj object
       const isMember = active_typing.charAt(active_typing.length - 1) == ".";
 
-      console.log("isMember", isMember);
-
+      // If the user is typing a member object
+      // For example: when user type ${o we first need to hint them the available components id
       if (isMember) {
+        console.log(active_typing, active_typing.includes("variable"));
+
+        if (active_typing.includes("variable") && recipe.variable) {
+          const allHints = recipe.variable;
+
+          for (const [key] of Object.entries(allHints)) {
+            result.push({
+              label: key,
+              kind: monaco.languages.CompletionItemKind.Field,
+              insertText: "${" + "variable." + key,
+              filterText: "${" + "variable." + key,
+              documentation: `## ${key}  OMG`,
+              range: new monaco.Range(
+                position.lineNumber,
+                position.column - active_typing.length,
+                position.lineNumber,
+                position.column,
+              ),
+            });
+          }
+
+          return {
+            suggestions: result,
+          };
+        }
+
         const allHints: GeneralRecord = {};
 
         for (const [key, value] of Object.entries(component)) {
@@ -239,8 +265,7 @@ export const VscodeEditor = () => {
                 kind: monaco.languages.CompletionItemKind.Field,
                 insertText: "${" + objPath + "." + key,
                 filterText: "${" + objPath + "." + key,
-                detail: key,
-
+                documentation: `## ${key}  OMG`,
                 range: new monaco.Range(
                   position.lineNumber,
                   position.column - active_typing.length,
@@ -266,7 +291,6 @@ export const VscodeEditor = () => {
             kind: monaco.languages.CompletionItemKind.Field,
             insertText: "${" + objPath + "." + key,
             filterText: "${" + objPath + "." + key,
-            detail: key,
             documentation: `## ${key}  ${value.description}`,
             range: new monaco.Range(
               position.lineNumber,
@@ -286,20 +310,40 @@ export const VscodeEditor = () => {
       const isReference = referenceRegex.test(active_typing);
 
       if (isReference) {
-        const allHints: string[] = [];
+        const componentKeys: string[] = [];
         for (const [key, value] of Object.entries(component)) {
           if (isPipelineGeneralComponent(value)) {
-            allHints.push(key);
+            componentKeys.push(key);
           }
         }
 
-        for (const hint of allHints) {
+        for (const key of componentKeys) {
           result.push({
-            label: hint,
-            kind: monaco.languages.CompletionItemKind.Field,
-            insertText: "${" + hint,
-            filterText: "${" + hint,
-            detail: hint,
+            label: key,
+            kind: monaco.languages.CompletionItemKind.Function,
+            insertText: "${" + key,
+            filterText: "${" + key,
+            documentation: {
+              value: `## ${key} hello-world`,
+            },
+            range: new monaco.Range(
+              position.lineNumber,
+              position.column - active_typing.length,
+              position.lineNumber,
+              position.column,
+            ),
+          });
+        }
+
+        if (recipe.variable) {
+          result.push({
+            label: "variable",
+            kind: monaco.languages.CompletionItemKind.Variable,
+            insertText: "${" + "variable",
+            filterText: "${" + "variable",
+            documentation: {
+              value: `## hello-world`,
+            },
             range: new monaco.Range(
               position.lineNumber,
               position.column - active_typing.length,
@@ -364,6 +408,9 @@ export const VscodeEditor = () => {
           other: true,
           comments: false,
           strings: true,
+        },
+        suggest: {
+          showSnippets: true,
         },
       }}
       onMount={(editor, monaco) => {
