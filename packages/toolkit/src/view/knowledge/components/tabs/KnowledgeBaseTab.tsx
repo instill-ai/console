@@ -256,6 +256,7 @@ export const KnowledgeBaseTab = ({
               onUpdateKnowledgeBase={handleUpdateKnowledgeBase}
               onCloneKnowledgeBase={handleCloneKnowledgeBase}
               onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
+              disabled={hasReachedLimit}
             />
           ))}
         </div>
