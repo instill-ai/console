@@ -20,6 +20,7 @@ import { DELETE_FILE_TIMEOUT } from "../undoDeleteTime";
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
+  onGoToUpload: () => void;
 };
 
 type FileStatus =
@@ -67,6 +68,7 @@ const getStatusTag = (
 
 export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
   knowledgeBase,
+  onGoToUpload,
 }) => {
   const [sortConfig, setSortConfig] = React.useState<{
     key: keyof File | "";
@@ -483,14 +485,16 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                 <p className="mb-4 text-semantic-fg-secondary product-body-text-2-regular">
                   You have no files uploaded yet. Upload files to add resources and references to your knowledge base.
                 </p>
-                {/* <Button
-                variant="primary"
-                size="lg"
-                onClick={() => {
-                }}
-              >
-                Go to Upload Documents
-              </Button> */}
+                <Button
+                  variant="primary"
+                  size="lg"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onGoToUpload();
+                  }}
+                >
+                  Go to Upload Documents
+                </Button>
               </div>
             )}
           </div>
