@@ -42,7 +42,6 @@ const FileChunks: React.FC<FileChunksProps> = ({
         enabled: expanded,
         ownerId: knowledgeBase.ownerName,
     });
-
     return (
         <div className="mb-4">
             <div
@@ -50,38 +49,31 @@ const FileChunks: React.FC<FileChunksProps> = ({
                 onClick={() => onToggleExpand(file.fileUid)}
             >
                 <Icons.ChevronDown
-                    className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${expanded ? "" : "-rotate-90"
-                        }`}
+                    className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${expanded ? "" : "-rotate-90"}`}
                 />
-                <p className="text-semantic-fg-secondary font-semibold text-[16px] leading-4">{file.name}</p>
+                <p className={`text-${isLoadingChunks ? 'text-semantic-fg-disabled' : 'text-semantic-fg-secondary'} font-semibold text-[16px] leading-4 mr-6`}>
+                    {file.name}
+                </p>
+                {isLoadingChunks && (
+                    <p className="text-semantic-fg-secondary italic">Processing file...</p>
+                )}
             </div>
-            {expanded ? (
+            {expanded && !isLoadingChunks && chunks && chunks.length > 0 && (
                 <div className="grid grid-cols-[repeat(auto-fit,360px)] justify-start gap-[15px]">
-                    {isLoadingChunks ? (
-                        <Skeleton className="h-32 w-full" />
-                    ) : chunks && chunks.length > 0 ? (
-                        chunks.map((chunk: Chunk, i: number) => (
-                            <ChunkCard
-                                key={chunk.chunkUid}
-                                chunk={chunk}
-                                index={i}
-                                onChunkClick={() => onChunkClick(file, chunk)}
-                                onRetrievableToggle={onRetrievableToggle}
-                                fileContent={fileContent || ""}
-                            />
-                        ))
-                    ) : (
-                        <div className="col-span-3 flex flex-col items-center justify-center p-8 text-center">
-                            <Icons.Gear01 className="h-12 w-12 stroke-semantic-warning-default mb-4" />
-                            <p className="text-semantic-fg-secondary">
-                                Oops… It looks like your files are still being processed. Please
-                                check back later to see the chunks.
-                            </p>
-                        </div>
-                    )}
+                    {chunks.map((chunk: Chunk, i: number) => (
+                        <ChunkCard
+                            key={chunk.chunkUid}
+                            chunk={chunk}
+                            index={i}
+                            onChunkClick={() => onChunkClick(file, chunk)}
+                            onRetrievableToggle={onRetrievableToggle}
+                            fileContent={fileContent || ""}
+                        />
+                    ))}
                 </div>
-            ) : null}
+            )}
         </div>
+
     );
 };
 
