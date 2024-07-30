@@ -6,6 +6,12 @@
  *
  * Use storage services to custom intellisense
  * https://stackoverflow.com/questions/54795603/always-show-the-show-more-section-in-monaco-editor
+ *
+ * 4 Steps to Add Custom Language Support to Monaco Editor
+ * https://ohdarling88.medium.com/4-steps-to-add-custom-language-support-to-monaco-editor-5075eafa156d
+ *
+ * [Part 2] Connect Monaco React Web Editor with Language Server using WebSocket… How hard can it be?
+ * https://nipunamarcus.medium.com/part-2-connect-monaco-react-web-editor-with-language-server-using-websocket-how-hard-can-it-be-aa66d93327a6
  */
 import type { Monaco } from "@monaco-editor/react";
 import type { editor, IDisposable, languages, Position } from "monaco-editor";
