@@ -1,5 +1,5 @@
 import React from "react";
-import { Icons, Separator, Skeleton } from "@instill-ai/design-system";
+import { Button, Icons, Separator, Skeleton } from "@instill-ai/design-system";
 import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../../lib";
 import {
   useListKnowledgeBaseFiles,
@@ -16,9 +16,10 @@ import FileChunks from "../FileChunks";
 
 type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;
+  onGoToUpload: () => void;
 };
 
-export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase }) => {
+export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase, onGoToUpload }) => {
   const [expandedFiles, setExpandedFiles] = React.useState<string[]>([]);
   const [selectedChunk, setSelectedChunk] = React.useState<Nullable<Chunk>>(null);
   const [selectedFile, setSelectedFile] = React.useState<Nullable<KnowledgeFile>>(null);
@@ -145,14 +146,16 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase }) => {
           <p className="mb-4 text-semantic-fg-secondary product-body-text-2-regular">
             There are no chunks created yet.
           </p>
-          {/* <Button
-                variant="primary"
-                size="lg"
-                onClick={() => {
-                }}
-              >
-                Go to Upload Documents
-              </Button> */}
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={(e) => {
+              e.preventDefault();
+              onGoToUpload();
+            }}
+          >
+            Go to Upload Documents
+          </Button>
         </div>
       )}
       {selectedFile && selectedChunk && (
