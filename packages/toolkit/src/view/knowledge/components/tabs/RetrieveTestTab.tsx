@@ -7,11 +7,13 @@ import { KnowledgeBase } from "../../../../lib/vdp-sdk/knowledge/types";
 type RetrieveTestTabProps = {
   knowledgeBase: KnowledgeBase;
   isProcessed: boolean;
+  onGoToUpload: () => void;
 };
 
 export const RetrieveTestTab = ({
   knowledgeBase,
   isProcessed,
+  onGoToUpload,
 }: RetrieveTestTabProps) => {
   const namespaceId = "test";
   const kbId = knowledgeBase.kbId;
@@ -89,7 +91,11 @@ export const RetrieveTestTab = ({
             Your knowledge base has been successfully created. Now, you can
             proceed to the{" "}
             <a
-              href="link-to-upload"
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                onGoToUpload();
+              }}
               className="text-semantic-accent-default underline"
             >
               Upload Documents page

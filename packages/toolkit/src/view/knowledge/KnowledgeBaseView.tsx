@@ -25,7 +25,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     React.useState<Nullable<KnowledgeBase>>(null);
   const [activeTab, setActiveTab] = React.useState("knowledge-base");
   const [selectedTextOption, setSelectedTextOption] = React.useState(
-    null as Nullable<string>,
+    null as Nullable<string>
   );
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [isDeleted, setIsDeleted] = React.useState(false);
@@ -94,6 +94,10 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     }, CREDIT_TIMEOUT);
   };
 
+  const handleGoToUpload = () => {
+    handleTabChange("upload");
+  };
+
   return (
     <div className="h-screen w-full bg-semantic-bg-alt-primary">
       {showDeleteMessage && knowledgeBaseToDelete ? (
@@ -149,6 +153,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             <RetrieveTestTab
               knowledgeBase={selectedKnowledgeBase}
               isProcessed={isProcessed}
+              onGoToUpload={handleGoToUpload}
             />
           ) : null}
         </div>
