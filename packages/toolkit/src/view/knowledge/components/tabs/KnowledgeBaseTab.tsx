@@ -256,7 +256,6 @@ export const KnowledgeBaseTab = ({
               onUpdateKnowledgeBase={handleUpdateKnowledgeBase}
               onCloneKnowledgeBase={handleCloneKnowledgeBase}
               onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
-              allKnowledgeBases={knowledgeBases}
             />
           ))}
         </div>
