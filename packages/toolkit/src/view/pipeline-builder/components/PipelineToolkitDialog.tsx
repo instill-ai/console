@@ -84,7 +84,10 @@ export const PipelineToolkitDialog = (props: PipelineToolkitDialogProps) => {
             </Tabs.List>
             <div className="flex h-full w-full">
               <Tabs.Content className={tabContentStyle} value="snippet">
-                <ScrollArea.Root className="h-full">
+                <ScrollArea.Root
+                  viewPortClassName="max-w-[496px]"
+                  className="h-full"
+                >
                   <CodeBlock
                     codeString={snippet}
                     wrapLongLines={true}
@@ -95,6 +98,10 @@ export const PipelineToolkitDialog = (props: PipelineToolkitDialogProps) => {
                       fontSize: "14px",
                       backgroundColor: "white",
                       width: "100%",
+                      maxWidth: "496px",
+                      padding: "48px 12px",
+                      whiteSpace: "pre-wrap",
+                      wordBreak: "break-all",
                     }}
                   />
                 </ScrollArea.Root>
@@ -109,6 +116,7 @@ export const PipelineToolkitDialog = (props: PipelineToolkitDialogProps) => {
                       fontSize: "14px",
                       backgroundColor: "white",
                       width: "100%",
+                      padding: "0 8px 0 8px",
                     }}
                   />
                 </ScrollArea.Root>
