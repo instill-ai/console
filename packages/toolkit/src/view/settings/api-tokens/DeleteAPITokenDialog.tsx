@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -16,8 +15,8 @@ import {
 
 import { LoadingSpin } from "../../../components";
 import {
-  getInstillApiErrorMessage,
   sendAmplitudeData,
+  toastInstillError,
   useAmplitudeCtx,
   useDeleteApiToken,
   useInstillStore,
@@ -66,15 +65,10 @@ export const DeleteAPITokenDialog = ({ tokenName }: { tokenName: string }) => {
         size: "small",
       });
     } catch (error) {
-      const description = isAxiosError(error)
-        ? getInstillApiErrorMessage(error)
-        : null;
-
-      toast({
+      toastInstillError({
         title: "Something went wrong when deleting the token",
-        variant: "alert-error",
-        size: "large",
-        description,
+        error,
+        toast,
       });
     }
   };

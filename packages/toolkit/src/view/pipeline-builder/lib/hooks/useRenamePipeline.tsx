@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { isAxiosError } from "axios";
 import {
   CreateNamespacePipelineRequest,
   RenameNamespacePipelineRequest,
@@ -12,9 +11,9 @@ import {
 import { useToast } from "@instill-ai/design-system";
 
 import {
-  getInstillApiErrorMessage,
   InstillStore,
   sendAmplitudeData,
+  toastInstillError,
   useAmplitudeCtx,
   useCreateNamespacePipeline,
   useInstillStore,
@@ -105,20 +104,11 @@ export function useRenamePipeline() {
             size: "small",
           });
         } catch (error) {
-          if (isAxiosError(error)) {
-            toast({
-              title: "Something went wrong when save the pipeline",
-              description: getInstillApiErrorMessage(error),
-              variant: "alert-error",
-              size: "large",
-            });
-          } else {
-            toast({
-              title: "Something went wrong when save the pipeline",
-              variant: "alert-error",
-              size: "large",
-            });
-          }
+          toastInstillError({
+            title: "Something went wrong when save the pipeline",
+            error,
+            toast,
+          });
 
           return Promise.reject(error);
         }
@@ -148,20 +138,12 @@ export function useRenamePipeline() {
 
           updatePipelineRecipeIsDirty(() => false);
         } catch (error) {
-          if (isAxiosError(error)) {
-            toast({
-              title: "Something went wrong when save the pipeline",
-              description: getInstillApiErrorMessage(error),
-              variant: "alert-error",
-              size: "large",
-            });
-          } else {
-            toast({
-              title: "Something went wrong when save the pipeline",
-              variant: "alert-error",
-              size: "large",
-            });
-          }
+          toastInstillError({
+            title: "Something went wrong when save the pipeline",
+            error,
+            toast,
+          });
+
           return Promise.reject(error);
         }
       }
@@ -190,22 +172,11 @@ export function useRenamePipeline() {
           () => `${routeInfo.data.namespaceName}/pipelines/${newId}`,
         );
       } catch (error) {
-        if (isAxiosError(error)) {
-          toast({
-            title: "Something went wrong when rename the pipeline",
-            description: getInstillApiErrorMessage(error),
-            variant: "alert-error",
-            size: "large",
-          });
-        } else {
-          toast({
-            title: "Something went wrong when rename the pipeline",
-            variant: "alert-error",
-            description: "Please try again later",
-            size: "large",
-          });
-        }
-
+        toastInstillError({
+          title: "Something went wrong when rename the pipeline",
+          error,
+          toast,
+        });
         return Promise.reject(error);
       }
     },

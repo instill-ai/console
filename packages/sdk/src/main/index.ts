@@ -11,7 +11,7 @@ import {
   UtilsClient,
 } from "../core";
 import { ModelClient } from "../model";
-import { GeneralRecord, HttpMethod } from "../types";
+import { GeneralRecord, HttpMethod, InstillError } from "../types";
 import {
   ComponentClient,
   PipelineClient,
@@ -89,7 +89,15 @@ export class InstillAPIClient {
         if (this.debug) {
           console.error(response);
         }
-        throw new Error(`Failed to fetch ${path}`);
+
+        if (response.status === 404) {
+          return Promise.reject(new InstillError("Not Found", 404));
+        }
+
+        const error = await response.json();
+        return Promise.reject(
+          new InstillError(error.message, response.status, error),
+        );
       }
 
       if (method === "DELETE") {

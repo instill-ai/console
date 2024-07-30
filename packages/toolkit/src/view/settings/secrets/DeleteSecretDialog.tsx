@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -16,8 +15,8 @@ import {
 
 import { LoadingSpin } from "../../../components";
 import {
-  getInstillApiErrorMessage,
   sendAmplitudeData,
+  toastInstillError,
   useAmplitudeCtx,
   useDeleteNamespaceSecret,
   useInstillStore,
@@ -69,13 +68,10 @@ export const DeleteSecretDialog = ({ secretName }: { secretName: string }) => {
         size: "small",
       });
     } catch (error) {
-      toast({
+      toastInstillError({
         title: "Something went wrong when deleting the secret",
-        variant: "alert-error",
-        size: "large",
-        description: isAxiosError(error)
-          ? getInstillApiErrorMessage(error)
-          : null,
+        error,
+        toast,
       });
     }
   };
