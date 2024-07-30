@@ -8,8 +8,8 @@ import * as z from "zod";
 import { useToast } from "@instill-ai/design-system";
 import {
   changePasswordMutation,
-  getInstillApiErrorMessage,
   Nullable,
+  toastInstillError,
   useAuthenticatedUser,
 } from "@instill-ai/toolkit";
 import { authLoginAction } from "@instill-ai/toolkit/server";
@@ -62,21 +62,11 @@ export const LoginPageRender = () => {
         setChangePasswordIsComplete(true);
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast({
-          title: "Something went wrong when login",
-          variant: "alert-error",
-          size: "large",
-          description: getInstillApiErrorMessage(error),
-        });
-      } else {
-        toast({
-          title: "Something went wrong when login",
-          variant: "alert-error",
-          size: "large",
-          description: "Please try again later",
-        });
-      }
+      toastInstillError({
+        title: "Something went wrong when login",
+        error,
+        toast,
+      });
     }
   }
 
@@ -98,21 +88,11 @@ export const LoginPageRender = () => {
 
       setChangePasswordIsComplete(true);
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast({
-          title: "Something went wrong when login",
-          variant: "alert-error",
-          size: "large",
-          description: getInstillApiErrorMessage(error),
-        });
-      } else {
-        toast({
-          title: "Something went wrong when login",
-          variant: "alert-error",
-          size: "large",
-          description: "Please try again later",
-        });
-      }
+      toastInstillError({
+        title: "Something went wrong when change password",
+        error,
+        toast,
+      });
     }
   }
 

@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { isAxiosError } from "axios";
 import {
   CreateNamespacePipelineRequest,
   UpdateNamespacePipelineRequest,
@@ -15,9 +14,9 @@ import {
   composePipelineRecipeFromNodes,
 } from "..";
 import {
-  getInstillApiErrorMessage,
   InstillStore,
   sendAmplitudeData,
+  toastInstillError,
   useAmplitudeCtx,
   useCreateNamespacePipeline,
   useInstillStore,
@@ -139,20 +138,11 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
 
           updatePipelineRecipeIsDirty(() => false);
         } catch (error) {
-          if (isAxiosError(error)) {
-            toast({
-              title: "Something went wrong when save the pipeline",
-              description: getInstillApiErrorMessage(error),
-              variant: "alert-error",
-              size: "large",
-            });
-          } else {
-            toast({
-              title: "Something went wrong when save the pipeline",
-              variant: "alert-error",
-              size: "large",
-            });
-          }
+          toastInstillError({
+            title: "Something went wrong when save the pipeline",
+            error,
+            toast,
+          });
         }
 
         if (setIsSaving) {
@@ -202,20 +192,11 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
           size: "small",
         });
       } catch (error) {
-        if (isAxiosError(error)) {
-          toast({
-            title: "Something went wrong when save the pipeline",
-            description: getInstillApiErrorMessage(error),
-            variant: "alert-error",
-            size: "large",
-          });
-        } else {
-          toast({
-            title: "Something went wrong when save the pipeline",
-            variant: "alert-error",
-            size: "large",
-          });
-        }
+        toastInstillError({
+          title: "Something went wrong when save the pipeline",
+          error,
+          toast,
+        });
       }
 
       if (setIsSaving) {

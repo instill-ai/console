@@ -17,8 +17,8 @@ import {
 import { LoadingSpin } from "../../../components";
 import { InstillErrors } from "../../../constant";
 import {
-  getInstillApiErrorMessage,
   sendAmplitudeData,
+  toastInstillError,
   useAmplitudeCtx,
   useCreateApiToken,
   useInstillStore,
@@ -94,13 +94,10 @@ export const CreateAPITokenDialog = () => {
         return;
       }
 
-      toast({
+      toastInstillError({
         title: "Failed to create API Token",
-        variant: "alert-error",
-        size: "large",
-        description: isAxiosError(error)
-          ? getInstillApiErrorMessage(error)
-          : null,
+        toast,
+        error,
       });
     }
   };

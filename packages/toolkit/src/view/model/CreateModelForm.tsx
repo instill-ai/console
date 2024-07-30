@@ -182,8 +182,6 @@ export const CreateModelForm = () => {
 
     setCreating(true);
 
-    console.log(data);
-
     const payload: CreateUserModelPayload = {
       id: data.id,
       description: data.description,

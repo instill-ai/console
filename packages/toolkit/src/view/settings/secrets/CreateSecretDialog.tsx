@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { isAxiosError } from "axios";
-import { CreateNamespaceSecretRequest } from "instill-sdk";
+import { CreateNamespaceSecretRequest, InstillError } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -19,10 +18,10 @@ import {
 import { LoadingSpin } from "../../../components";
 import { InstillErrors } from "../../../constant";
 import {
-  getInstillApiErrorMessage,
   InstillStore,
   Nullable,
   sendAmplitudeData,
+  toastInstillError,
   useAmplitudeCtx,
   useAuthenticatedUser,
   useCreateNamespaceSecret,
@@ -136,9 +135,10 @@ export const CreateSecretDialog = () => {
       });
     } catch (error) {
       setIsLoading(false);
-      if (!isAxiosError(error)) return;
-
-      if (error.response?.status === 409) {
+      if (
+        error instanceof InstillError &&
+        error.message === "Secret ID already exists"
+      ) {
         form.setError("name", {
           type: "manual",
           message: "Secret name already exists",
@@ -146,13 +146,10 @@ export const CreateSecretDialog = () => {
         return;
       }
 
-      toast({
+      toastInstillError({
         title: "Failed to create secret",
-        variant: "alert-error",
-        size: "large",
-        description: isAxiosError(error)
-          ? getInstillApiErrorMessage(error)
-          : null,
+        error,
+        toast,
       });
     }
   };

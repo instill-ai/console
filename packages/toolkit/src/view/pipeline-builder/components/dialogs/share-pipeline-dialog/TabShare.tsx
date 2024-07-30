@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { isAxiosError } from "axios";
 import { UpdateNamespacePipelineRequest } from "instill-sdk";
 
 import { Button, Icons, Separator, useToast } from "@instill-ai/design-system";
@@ -9,11 +8,11 @@ import { Button, Icons, Separator, useToast } from "@instill-ai/design-system";
 import { LoadingSpin } from "../../../../../components";
 import { NamespaceAvatarWithFallback } from "../../../../../components/NamespaceAvatarWithFallback";
 import {
-  getInstillApiErrorMessage,
   InstillStore,
   Nullable,
   OrganizationOwner,
   sendAmplitudeData,
+  toastInstillError,
   useAmplitudeCtx,
   useInstillStore,
   useNamespacePipeline,
@@ -128,21 +127,12 @@ export const TabShare = ({
         setIsUpdatingShareCodePermission(false);
       } catch (error) {
         setIsUpdatingShareCodePermission(false);
-        if (isAxiosError(error)) {
-          toast({
-            title: "Something went wrong when update pipeline permission",
-            variant: "alert-error",
-            size: "large",
-            description: getInstillApiErrorMessage(error),
-          });
-        } else {
-          toast({
-            title: "Something went wrong when update pipeline permission",
-            variant: "alert-error",
-            size: "large",
-            description: "Please try again later",
-          });
-        }
+
+        toastInstillError({
+          title: "Something went wrong when update pipeline permission",
+          error,
+          toast,
+        });
       }
     } else {
       link = `${env(

@@ -32,28 +32,6 @@ export const PermissionSchema = z.object({
   canTrigger: z.boolean(),
 });
 
-export type StripeSubscriptionDetail = {
-  productName: string;
-  id: string;
-  itemId: string;
-  price: number;
-  canceledAt?: number;
-  trialEnd?: number;
-  status: StripeSubscriptionStatus;
-  description: string;
-};
-
-export type StripeSubscriptionStatus =
-  | "STATUS_UNSPECIFIED"
-  | "STATUS_INCOMPLETE"
-  | "STATUS_INCOMPLETE_EXPIRED"
-  | "STATUS_TRIALING"
-  | "STATUS_ACTIVE"
-  | "STATUS_PAST_DUE"
-  | "STATUS_CANCELED"
-  | "STATUS_UNPAID"
-  | "STATUS_PAUSED";
-
 export type UserOwner = {
   user: User;
 };
@@ -180,3 +158,24 @@ export const SpecSchema = z.object({
     )
     .nullable(),
 });
+
+export class InstillError extends Error {
+  response?: InstillErrorResponse;
+  status: number;
+
+  constructor(
+    message: string,
+    status: number,
+    response?: InstillErrorResponse,
+  ) {
+    super(message);
+    this.status = status;
+    this.response = response;
+  }
+}
+
+export type InstillErrorResponse = {
+  code: number;
+  message: string;
+  details: ErrorDetails[];
+};
