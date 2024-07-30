@@ -26,9 +26,10 @@ type MenuProps = {
   onDelete: (e: React.MouseEvent) => void;
   onEdit: (e: React.MouseEvent) => void;
   onDuplicate: (e: React.MouseEvent) => void;
+  disabled: boolean;
 };
 
-const Menu = ({ onDelete, onEdit, onDuplicate }: MenuProps) => {
+const Menu = ({ onDelete, onEdit, onDuplicate, disabled }: MenuProps) => {
   return (
     <React.Fragment>
       <div className="flex justify-center z-10">
@@ -52,6 +53,7 @@ const Menu = ({ onDelete, onEdit, onDuplicate }: MenuProps) => {
             <DropdownMenu.Item
               onClick={onDuplicate}
               className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
+              disabled={disabled}
             >
               <Icons.Copy07 className="mr-2 h-4 w-4 stroke-semantic-fg-secondary" />
               Duplicate
@@ -87,6 +89,7 @@ type CreateKnowledgeBaseCardProps = {
   ) => Promise<void>;
   onCloneKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
   onDeleteKnowledgeBase: (kbId: string) => Promise<void>;
+  disabled?: boolean;
 };
 
 export const CreateKnowledgeBaseCard = ({
@@ -95,6 +98,7 @@ export const CreateKnowledgeBaseCard = ({
   onUpdateKnowledgeBase,
   onCloneKnowledgeBase,
   onDeleteKnowledgeBase,
+  disabled = false,
 }: CreateKnowledgeBaseCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
@@ -228,6 +232,7 @@ export const CreateKnowledgeBaseCard = ({
                   onDelete={handleDelete}
                   onEdit={handleEdit}
                   onDuplicate={handleDuplicate}
+                  disabled={disabled}
                 />
               </div>
             </div>
