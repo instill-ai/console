@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,6 +22,7 @@ import {
 import {
   useProcessKnowledgeBaseFiles,
   useUploadKnowledgeBaseFile,
+  useListKnowledgeBaseFiles,
 } from "../../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../../lib/vdp-sdk/knowledge/types";
 import FileSizeNotification from "../Notifications/FileSizeNotification";
@@ -78,7 +81,7 @@ export const UploadExploreTab = ({
     useShallow((store: InstillStore) => ({
       accessToken: store.accessToken,
       enabledQuery: store.enabledQuery,
-    })),
+    }))
   );
 
   const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
@@ -92,6 +95,21 @@ export const UploadExploreTab = ({
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
   const [isProcessing, setIsProcessing] = React.useState(false);
+  const [isDragging, setIsDragging] = React.useState(false);
+
+  const me = useAuthenticatedUser({
+    enabled: enabledQuery,
+    accessToken,
+  });
+
+  const ownerID = me.isSuccess ? me.data.id : null;
+
+  const { data: existingFiles } = useListKnowledgeBaseFiles({
+    namespaceId: ownerID,
+    knowledgeBaseId: knowledgeBase.kbId,
+    accessToken,
+    enabled: Boolean(ownerID),
+  });
 
   const getFileType = (file: File) => {
     const extension = file.name.split(".").pop()?.toLowerCase();
@@ -128,7 +146,7 @@ export const UploadExploreTab = ({
     }
 
     const currentFiles = form.getValues("files");
-    const isDuplicate = currentFiles.some(existingFile => existingFile.name === file.name);
+    const isDuplicate = existingFiles?.some(existingFile => existingFile.name === file.name);
 
     if (isDuplicate) {
       setDuplicateFileName(file.name);
@@ -194,18 +212,10 @@ export const UploadExploreTab = ({
       onProcessFile();
     } catch (error) {
       console.error("Error processing files:", error);
+    } finally {
       setIsProcessing(false);
     }
   };
-
-  const me = useAuthenticatedUser({
-    enabled: enabledQuery,
-    accessToken,
-  });
-
-  const ownerID = me.isSuccess ? me.data.id : null;
-
-  const [isDragging, setIsDragging] = React.useState(false);
 
   return (
     <div className="mb-32 flex flex-col">
