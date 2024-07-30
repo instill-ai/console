@@ -7,9 +7,7 @@ import {
   Button,
   Form,
   getModelHardwareToolkit,
-  Icons,
   Input,
-  RadioGroup,
   Select,
   Textarea,
   toast,
@@ -293,7 +291,8 @@ export const ModelSettingsEditForm = ({
               form={form}
               title="Cover image"
             />
-            <RadioGroup.Root
+            {/* INS-5438: We tempoarily hide the private option for better visibility */}
+            {/* <RadioGroup.Root
               onValueChange={(
                 value: Exclude<Visibility, "VISIBILITY_UNSPECIFIED">,
               ) => {
@@ -341,7 +340,7 @@ export const ModelSettingsEditForm = ({
                   </div>
                 </label>
               </div>
-            </RadioGroup.Root>
+            </RadioGroup.Root> */}
             <Form.Field
               control={form.control}
               name="hardware"

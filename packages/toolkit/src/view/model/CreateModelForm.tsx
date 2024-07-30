@@ -10,9 +10,7 @@ import {
   getModelHardwareToolkit,
   getModelInstanceTaskToolkit,
   getModelRegionToolkit,
-  Icons,
   Input,
-  RadioGroup,
   Select,
   Textarea,
   toast,
@@ -36,7 +34,6 @@ import {
   useModelRegions,
   useRouteInfo,
   useShallow,
-  Visibility,
 } from "../../lib";
 import { FieldDescriptionTooltip } from "../../lib/use-instill-form/components/common";
 import { useUserNamespaces } from "../../lib/useUserNamespaces";
@@ -53,7 +50,7 @@ const CreateModelSchema = z
     description: z.string().optional(),
     visibility: z
       .enum(InstillModelVisibility)
-      .default(InstillModelVisibility[0]),
+      .default(InstillModelVisibility[1]),
     region: z.string(),
     hardware: z.string(),
     hardwareCustom: z.string().optional(),
@@ -185,10 +182,12 @@ export const CreateModelForm = () => {
 
     setCreating(true);
 
+    console.log(data);
+
     const payload: CreateUserModelPayload = {
       id: data.id,
       description: data.description,
-      visibility: data.visibility,
+      visibility: data.visibility ?? "VISIBILITY_PUBLIC",
       region: data.region,
       hardware:
         data.hardware === "Custom" ? data.hardwareCustom || "" : data.hardware,
@@ -393,7 +392,8 @@ export const CreateModelForm = () => {
                   );
                 }}
               />
-              <RadioGroup.Root
+              {/* INS-5438: We tempoarily hide the private option for better visibility */}
+              {/* <RadioGroup.Root
                 onValueChange={(
                   value: Exclude<Visibility, "VISIBILITY_UNSPECIFIED">,
                 ) => {
@@ -445,7 +445,7 @@ export const CreateModelForm = () => {
                     </div>
                   </label>
                 </div>
-              </RadioGroup.Root>
+              </RadioGroup.Root> */}
               <Form.Field
                 control={form.control}
                 name="region"
