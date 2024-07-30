@@ -80,7 +80,6 @@ const Menu = ({ onDelete, onEdit, onDuplicate }: MenuProps) => {
 
 type CreateKnowledgeBaseCardProps = {
   knowledgeBase: KnowledgeBase;
-  allKnowledgeBases: KnowledgeBase[] | undefined;
   onCardClick: () => void;
   onUpdateKnowledgeBase: (
     data: EditKnowledgeDialogData,
@@ -92,7 +91,6 @@ type CreateKnowledgeBaseCardProps = {
 
 export const CreateKnowledgeBaseCard = ({
   knowledgeBase,
-  allKnowledgeBases,
   onCardClick,
   onUpdateKnowledgeBase,
   onCloneKnowledgeBase,
@@ -299,12 +297,4 @@ export const CreateKnowledgeBaseCard = ({
       />
     </React.Fragment>
   );
-};
-
-const formatFileSize = (bytes: number): string => {
-  if (isNaN(bytes) || bytes === 0) return "0 Bytes";
-  const k = 1024;
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 };
