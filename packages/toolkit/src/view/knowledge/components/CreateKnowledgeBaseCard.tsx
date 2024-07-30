@@ -130,10 +130,6 @@ export const CreateKnowledgeBaseCard = ({
       (chunk: { type: string }) => chunk.type === "TEXT",
     ) : [];
 
-    const imageChunks = chunks ? chunks.filter(
-      (chunk: { type: string }) => chunk.type === "IMAGE",
-    ) : [];
-
     return `
     Converting pipeline ID: ${knowledgeBase.convertingPipelines?.[0] || "N/A"}
     Splitting pipeline ID: ${knowledgeBase.splittingPipelines?.[0] || "N/A"}
