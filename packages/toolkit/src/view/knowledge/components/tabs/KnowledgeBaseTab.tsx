@@ -28,10 +28,11 @@ type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
   accessToken: string | null;
   onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
+  pendingDeletions: string[];
 };
 type EditKnowledgeDialogData = {
   name: string;
-  description: string;
+  description?: string;
   tags?: string[];
 };
 
@@ -40,11 +41,14 @@ const CreateKnowledgeFormSchema = z.object({
   description: z.string().optional(),
   tags: z.array(z.string()).optional(),
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
+
 });
 
 export const KnowledgeBaseTab = ({
   onKnowledgeBaseSelect,
   accessToken,
+  onDeleteKnowledgeBase,
+  pendingDeletions,
 }: KnowledgeBaseTabProps) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -76,7 +80,6 @@ export const KnowledgeBaseTab = ({
 
   const createKnowledgeBase = useCreateKnowledgeBase();
   const updateKnowledgeBase = useUpdateKnowledgeBase();
-  const deleteKnowledgeBase = useDeleteKnowledgeBase();
 
   const handleCreateKnowledgeSubmit = async (
     data: z.infer<typeof CreateKnowledgeFormSchema>,
@@ -148,29 +151,17 @@ export const KnowledgeBaseTab = ({
     }
   };
 
-  const handleDeleteKnowledgeBase = async (kbId: string) => {
-    if (!me.data?.id || !accessToken) return;
-
-    try {
-      await deleteKnowledgeBase.mutateAsync({
-        ownerId: me.data.id,
-        kbId: kbId,
-        accessToken,
-      });
-      refetch();
-    } catch (error) {
-      console.error("Error deleting knowledge base:", error);
-    }
-  };
 
   const filteredAndSortedKnowledgeBases = React.useMemo(() => {
     if (!knowledgeBases) return [];
 
-    const filtered = knowledgeBases.filter(
-      (kb) =>
-        kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        kb.description.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
+    const filtered = knowledgeBases
+      .filter(kb => !pendingDeletions.includes(kb.kbId))
+      .filter(
+        (kb) =>
+          kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          kb.description.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
 
     filtered.sort((a, b) => {
       let aValue, bValue;
@@ -200,7 +191,7 @@ export const KnowledgeBaseTab = ({
     });
 
     return filtered;
-  }, [knowledgeBases, searchTerm, selectedSortAnchor, selectedSortOrder]);
+  }, [knowledgeBases, searchTerm, selectedSortAnchor, selectedSortOrder, pendingDeletions]);
 
   const hasReachedLimit = (knowledgeBases?.length ?? 0) >= 3;
 
@@ -255,7 +246,7 @@ export const KnowledgeBaseTab = ({
               onCardClick={() => onKnowledgeBaseSelect(knowledgeBase)}
               onUpdateKnowledgeBase={handleUpdateKnowledgeBase}
               onCloneKnowledgeBase={handleCloneKnowledgeBase}
-              onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
+              onDeleteKnowledgeBase={onDeleteKnowledgeBase}
               disabled={hasReachedLimit}
             />
           ))}
