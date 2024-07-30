@@ -13,7 +13,7 @@ export const PDFFile = React.forwardRef<
     <IconBase
       {...passThrough}
       ref={ref}
-      viewBox="0 0 24 24"
+      viewBox="0 0 40 40"
       className={className}
     >
       <path d="M4 4C4 1.79086 5.79086 0 8 0H24L36 12V36C36 38.2091 34.2091 40 32 40H8C5.79086 40 4 38.2091 4 36V4Z" fill="#E02E3D" />

@@ -72,21 +72,20 @@ const FileDetailsOverlay = ({
   const getFileIcon = React.useCallback(() => {
     switch (fileType.toUpperCase()) {
       case "FILE_TYPE_MARKDOWN":
-        return <Icons.MDFile className="h-5 w-5 stroke-semantic-fg-primary" />;
+        return <Icons.MDFile className="h-5 w-5" />;
       case "FILE_TYPE_TEXT":
-        return <Icons.TXTFile className="h-5 w-5 stroke-semantic-fg-primary" />;
+        return <Icons.TXTFile className="h-5 w-5" />;
       case "FILE_TYPE_PDF":
-        return <Icons.PDFFile className="h-5 w-5 stroke-semantic-fg-primary" />;
+        return <Icons.PDFFile className="h-5 w-5" />;
       default:
-        return <Icons.Check className="h-5 w-5 stroke-semantic-fg-primary" />;
+        return <Icons.Check className="h-5 w-5" />;
     }
   }, [fileType]);
-
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Content className="flex flex-col h-[90vh] max-w-[40vw]">
         <div className="flex-shrink-0 mb-3 flex flex-row space-x-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs">
+          <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs overflow-hidden">
             {getFileIcon()}
           </div>
           <div className="flex flex-col min-w-0">
@@ -94,7 +93,7 @@ const FileDetailsOverlay = ({
               {fileName}
             </Dialog.Title>
             <div className="truncate product-headings-heading-5 text-semantic-fg-primary">
-              {fileType}
+              {fileType.replace("FILE_TYPE_", "")}
             </div>
           </div>
         </div>
