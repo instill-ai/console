@@ -278,9 +278,9 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
               </div>
             ) : files && files.length > 0 ? (
               <>
-                <div className="grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center border-b border-semantic-bg-line bg-semantic-bg-base-bg border rounded">
-                  <div className="flex items-center justify-center gap-1">
-                    <div className="text-semantic-fg-primary product-body-text-3-medium">
+                <div className="grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center border-b border-semantic-bg-line bg-semantic-bg-base-bg border rounded">
+                  <div className="flex items-center justify-start gap-1 px-4">
+                    <div className="text-semantic-fg-primary product-body-text-3-medium truncate max-w-[200px]">
                       File name
                     </div>
                     <Button
@@ -408,17 +408,17 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                   .map((item, index) => (
                     <div
                       key={item.fileUid}
-                      className={`grid h-[72px] grid-cols-[3fr_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line ${index !== sortedData.length - 1
-                        ? ""
-                        : ""
+                      className={`grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line ${index !== sortedData.length - 1 ? "" : ""
                         }`}
                     >
                       <div
-                        className="flex items-center justify-center pl-4 underline truncate cursor-pointer text-semantic-bg-secondary-alt-primary product-body-text-3-regula underline-offset-1"
+                        className="flex items-center justify-start px-4 truncate cursor-pointer text-semantic-bg-secondary-alt-primary product-body-text-3-regular"
                         onClick={() => handleFileClick(item)}
                       >
-                        {item.name}
-                        <Icons.ArrowUpRight className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary ml-0.5" />
+                        <span className="truncate max-w-[200px]" title={item.name}>
+                          {item.name}
+                        </span>
+                        <Icons.ArrowUpRight className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary ml-0.5 flex-shrink-0" />
                       </div>
                       <div className="flex items-center justify-center">
                         <Tag size="sm" variant="lightNeutral">
