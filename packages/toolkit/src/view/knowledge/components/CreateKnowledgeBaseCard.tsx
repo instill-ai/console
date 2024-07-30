@@ -80,6 +80,7 @@ const Menu = ({ onDelete, onEdit, onDuplicate }: MenuProps) => {
 
 type CreateKnowledgeBaseCardProps = {
   knowledgeBase: KnowledgeBase;
+  allKnowledgeBases: KnowledgeBase[] | undefined;
   onCardClick: () => void;
   onUpdateKnowledgeBase: (
     data: EditKnowledgeDialogData,
@@ -91,6 +92,7 @@ type CreateKnowledgeBaseCardProps = {
 
 export const CreateKnowledgeBaseCard = ({
   knowledgeBase,
+  allKnowledgeBases,
   onCardClick,
   onUpdateKnowledgeBase,
   onCloneKnowledgeBase,
@@ -99,6 +101,7 @@ export const CreateKnowledgeBaseCard = ({
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
+  const [isHovered, setIsHovered] = React.useState(false);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const { accessToken, enabledQuery } = useInstillStore(
@@ -111,12 +114,14 @@ export const CreateKnowledgeBaseCard = ({
   const { data: chunks, isLoading: isLoadingChunks } = useListChunks({
     kbId: knowledgeBase.kbId,
     accessToken,
-    enabled: enabledQuery,
+    enabled: enabledQuery && isHovered,
     ownerId: knowledgeBase.ownerName,
     fileUid: "",
   });
 
   const tooltipContent = React.useMemo(() => {
+    if (!isHovered) return "";
+
     if (isLoadingChunks) return "Loading...";
 
     const textChunks = chunks ? chunks.filter(
@@ -131,12 +136,12 @@ export const CreateKnowledgeBaseCard = ({
     Converting pipeline ID: ${knowledgeBase.convertingPipelines?.[0] || "N/A"}
     Splitting pipeline ID: ${knowledgeBase.splittingPipelines?.[0] || "N/A"}
     Embedding pipeline ID: ${knowledgeBase.embeddingPipelines?.[0] || "N/A"}
-    Files #: ${chunks ? chunks.length : "N/A"}
+    Files #: ${knowledgeBase.totalFiles || "N/A"}
     Text Chunks #: ${textChunks.length}
     Image Chunks #: ${imageChunks.length}
     Downstream AI Apps: ${knowledgeBase.downstreamApps?.join(", ") || "N/A"}
   `;
-  }, [chunks, isLoadingChunks, knowledgeBase]);
+  }, [isHovered, isLoadingChunks, chunks, knowledgeBase]);
 
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -205,6 +210,8 @@ export const CreateKnowledgeBaseCard = ({
             <div
               className="flex h-[175px] w-[360px] cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow hover:bg-semantic-bg-base-bg"
               onClick={onCardClick}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
             >
               <div className="flex items-center justify-between">
                 <div className="product-headings-heading-4">
@@ -292,4 +299,12 @@ export const CreateKnowledgeBaseCard = ({
       />
     </React.Fragment>
   );
+};
+
+const formatFileSize = (bytes: number): string => {
+  if (isNaN(bytes) || bytes === 0) return "0 Bytes";
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 };
