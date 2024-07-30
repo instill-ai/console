@@ -53,7 +53,7 @@ const FileChunks: React.FC<FileChunksProps> = ({
                     className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${expanded ? "" : "-rotate-90"
                         }`}
                 />
-                <p className="product-button-button-1 text-semantic-fg-secondary">{file.name}</p>
+                <p className="text-semantic-fg-secondary font-semibold text-[16px] leading-4">{file.name}</p>
             </div>
             {expanded ? (
                 <div className="grid grid-cols-[repeat(auto-fit,360px)] justify-start gap-[15px]">

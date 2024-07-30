@@ -24,6 +24,10 @@ export const Sidebar = ({
   const handleTabChange = (tab: string) => {
     onTabChange(tab);
     router.push(`#${tab}`, { scroll: false });
+
+    if (tab === "catalog" && selectedKnowledgeBase) {
+      onTextOptionChange("Files");
+    }
   };
 
   const getTabClassName = (tabName: string, isSubTab = false) => {
@@ -72,7 +76,6 @@ export const Sidebar = ({
         onClick={() => {
           if (selectedKnowledgeBase) {
             handleTabChange("catalog");
-            onTextOptionChange(null);
           }
         }}
       >
