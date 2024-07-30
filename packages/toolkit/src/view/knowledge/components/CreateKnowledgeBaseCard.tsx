@@ -13,12 +13,10 @@ import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useListChunks } from "../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
 import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
-import DeleteKnowledgeBaseNotification from "./Notifications/DeleteKnowledgeBaseNotification";
-import { DELETE_KNOWLEDGE_BASE_TIMEOUT } from "./undoDeleteTime";
 
 type EditKnowledgeDialogData = {
   name: string;
-  description: string;
+  description?: string;
   tags?: string[];
 };
 
@@ -88,7 +86,7 @@ type CreateKnowledgeBaseCardProps = {
     kbId: string,
   ) => Promise<void>;
   onCloneKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
-  onDeleteKnowledgeBase: (kbId: string) => Promise<void>;
+  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
   disabled?: boolean;
 };
 
@@ -102,20 +100,18 @@ export const CreateKnowledgeBaseCard = ({
 }: CreateKnowledgeBaseCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
-  const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [isHovered, setIsHovered] = React.useState(false);
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const { accessToken, enabledQuery } = useInstillStore(
     useShallow((store: InstillStore) => ({
       accessToken: store.accessToken,
       enabledQuery: store.enabledQuery,
-    })),
+    }))
   );
 
   const { data: chunks, isLoading: isLoadingChunks } = useListChunks({
     kbId: knowledgeBase.kbId,
-    accessToken,
+    accessToken: accessToken || null,
     enabled: enabledQuery && isHovered,
     ownerId: knowledgeBase.ownerName,
     fileUid: "",
@@ -139,7 +135,6 @@ export const CreateKnowledgeBaseCard = ({
   `;
   }, [isHovered, isLoadingChunks, chunks, knowledgeBase]);
 
-
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     setDeleteDialogIsOpen(true);
@@ -147,10 +142,7 @@ export const CreateKnowledgeBaseCard = ({
 
   const confirmDelete = () => {
     setDeleteDialogIsOpen(false);
-    setShowDeleteMessage(true);
-    timeoutRef.current = setTimeout(() => {
-      onDeleteKnowledgeBase(knowledgeBase.kbId);
-    }, DELETE_KNOWLEDGE_BASE_TIMEOUT);
+    onDeleteKnowledgeBase(knowledgeBase);
   };
 
   const handleEdit = (e: React.MouseEvent) => {
@@ -167,36 +159,6 @@ export const CreateKnowledgeBaseCard = ({
     await onUpdateKnowledgeBase(data, knowledgeBase.kbId);
     setEditDialogIsOpen(false);
   };
-
-  const undoDelete = () => {
-    setShowDeleteMessage(false);
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-  };
-
-  const handleCloseDeleteMessage = () => {
-    setShowDeleteMessage(false);
-    onDeleteKnowledgeBase(knowledgeBase.kbId);
-  };
-
-  React.useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
-
-  if (showDeleteMessage) {
-    return (
-      <DeleteKnowledgeBaseNotification
-        knowledgeBaseName={knowledgeBase.name}
-        handleCloseDeleteMessage={handleCloseDeleteMessage}
-        undoDelete={undoDelete}
-      />
-    );
-  }
 
   return (
     <React.Fragment>

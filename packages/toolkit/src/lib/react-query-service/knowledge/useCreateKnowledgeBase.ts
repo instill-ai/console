@@ -10,7 +10,7 @@ async function createKnowledgeBaseMutation({
 }: {
   payload: {
     name: string;
-    description: string;
+    description?: string;
     tags?: string[];
     ownerId: string;
   };
