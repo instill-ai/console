@@ -13,7 +13,7 @@ import {
 
 const EditKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
-  description: z.string().min(1, { message: "Description is required" }),
+  description: z.string().optional(),
   tags: z.array(z.string()).optional(),
 });
 
@@ -117,19 +117,21 @@ export const EditKnowledgeDialog: React.FC<EditKnowledgeDialogProps> = ({
                 name="description"
                 render={({ field }) => (
                   <Form.Item className="!space-y-1">
-                    <Form.Label className="mb-1 text-semantic-fg-primary product-button-button-2">
-                      Description
-                    </Form.Label>
+                    <div className="flex items-center justify-between">
+                      <Form.Label className="mb-1 text-semantic-fg-primary product-button-button-2">
+                        Description
+                      </Form.Label>
+                      <p className="my-auto text-semantic-fg-secondary product-body-text-4-regular">
+                        Optional
+                      </p>
+                    </div>
                     <Form.Control>
                       <Textarea
                         {...field}
                         id={field.name}
-                        placeholder="Content"
+                        placeholder="Fill with a short description"
                       />
                     </Form.Control>
-                    <p className="text-semantic-fg-secondary product-body-text-4-regular">
-                      Fill with a short description
-                    </p>
                     <Form.Message />
                   </Form.Item>
                 )}
