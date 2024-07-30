@@ -44,7 +44,7 @@ const KnowledgeSearchSort = ({
           <SortOptionSelectButton
             label="Created Time"
             icon={
-              <Icons.Update className={`h-4 w-4 ${selectedSortAnchor === "createTime" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`} />
+              <Icons.ClockPlus className={`h-5 w-5 mt-1 ${selectedSortAnchor === "createTime" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`} />
             }
             onClick={() => {
               setSelectedSortAnchor("createTime");
@@ -54,7 +54,7 @@ const KnowledgeSearchSort = ({
           <SortOptionSelectButton
             label="Modified Time"
             icon={
-              <Icons.Update className={`h-4 w-4 ${selectedSortAnchor === "modifyTime" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`} />
+              <Icons.ClockCheck className={`h-5 w-5 mt-1 ${selectedSortAnchor === "modifyTime" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`} />
             }
             onClick={() => {
               setSelectedSortAnchor("modifyTime");
@@ -64,7 +64,7 @@ const KnowledgeSearchSort = ({
           <SortOptionSelectButton
             label="Usage"
             icon={
-              <Icons.Update className={`h-4 w-4 ${selectedSortAnchor === "usage" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`} />
+              <Icons.TrendUp className={`h-5 w-5 mt-1 ${selectedSortAnchor === "usage" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`} />
             }
             onClick={() => {
               setSelectedSortAnchor("usage");

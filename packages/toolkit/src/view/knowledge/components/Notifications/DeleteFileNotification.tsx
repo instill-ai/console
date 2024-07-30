@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 
 type DeleteFileNotificationProps = {
@@ -20,13 +19,14 @@ const DeleteFileNotification = ({
 
   return (
     <div className="fixed bottom-4 right-8 flex h-[136px] w-[400px] rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
-      <Icons.AlertTriangle className="mr-4 h-6 w-6 stroke-semantic-warning-on-bg" />
-      <div className="mr-4 shrink grow basis-0 flex-col items-start justify-start space-y-4">
-        <div className="flex flex-col items-start justify-start gap-1 self-stretch">
-          <div className="self-stretch product-body-text-2-semibold truncate">
-            {deletedFileName} has been deleted
+      <Icons.AlertTriangle className="mr-4 h-6 w-6 flex-shrink-0 stroke-semantic-warning-on-bg" />
+      <div className="mr-4 flex flex-col justify-between overflow-hidden">
+        <div className="flex flex-col gap-1">
+          <div className="product-body-text-2-semibold flex items-center">
+            <span className="truncate max-w-[200px]">{deletedFileName}</span>
+            <span className="flex-shrink-0 whitespace-nowrap"> has been deleted</span>
           </div>
-          <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
+          <div className="text-semantic-fg-secondary product-body-text-3-regular line-clamp-2">
             If this was a mistake, click &quot;Undo Action&quot; to reapply your
             changes.
           </div>
