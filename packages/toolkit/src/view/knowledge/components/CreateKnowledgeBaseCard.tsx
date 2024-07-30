@@ -140,8 +140,6 @@ export const CreateKnowledgeBaseCard = ({
     Embedding pipeline ID: ${knowledgeBase.embeddingPipelines?.[0] || "N/A"}
     Files #: ${knowledgeBase.totalFiles || "N/A"}
     Text Chunks #: ${textChunks.length}
-    Image Chunks #: ${imageChunks.length}
-    Downstream AI Apps: ${knowledgeBase.downstreamApps?.join(", ") || "N/A"}
   `;
   }, [isHovered, isLoadingChunks, chunks, knowledgeBase]);
 
