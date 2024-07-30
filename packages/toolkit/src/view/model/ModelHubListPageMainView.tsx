@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import debounce from "lodash.debounce";
 
-import { Button, Icons, Input, Select } from "@instill-ai/design-system";
+import { Button, Icons, Input } from "@instill-ai/design-system";
 
 import {
   InstillStore,
@@ -41,12 +41,11 @@ export const ModelHubListPageMainView = () => {
     [],
   );
 
-  const [selectedVisibilityOption, setSelectedVisibilityOption] =
-    React.useState<Visibility>(
-      visibility === "VISIBILITY_PUBLIC"
-        ? "VISIBILITY_PUBLIC"
-        : "VISIBILITY_UNSPECIFIED",
-    );
+  const [selectedVisibilityOption] = React.useState<Visibility>(
+    visibility === "VISIBILITY_PUBLIC"
+      ? "VISIBILITY_PUBLIC"
+      : "VISIBILITY_UNSPECIFIED",
+  );
 
   useEffect(() => {
     setPageNumber(0);
@@ -98,7 +97,7 @@ export const ModelHubListPageMainView = () => {
             </Input.Root>
           </div>
         </div>
-        <div className="flex w-[300px] min-w-52 flex-col gap-y-2.5">
+        {/* <div className="flex w-[300px] min-w-52 flex-col gap-y-2.5">
           <p className="text-semantic-fg-primary product-body-text-3-semibold">
             Visibility
           </p>
@@ -119,7 +118,7 @@ export const ModelHubListPageMainView = () => {
               </Select.Group>
             </Select.Content>
           </Select.Root>
-        </div>
+        </div> */}
         <Button
           className="ml-auto gap-x-2"
           variant="primary"
