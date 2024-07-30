@@ -150,7 +150,7 @@ export const RetrieveTestTab = ({
             For a more detailed overview of the input/output schemas, check out
             the{" "}
             <a
-              href="https://www.instill.tech/docs/artifact/XXX"
+              href="https://www.instill.tech/docs/artifact/search"
               className="text-semantic-accent-default underline"
             >
               Artifact&apos;s API reference
