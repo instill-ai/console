@@ -69,10 +69,9 @@ const FileDetailsOverlay = ({
     fileContent ? highlightChunkInContent(fileContent, selectedChunkUid) : "",
     [fileContent, highlightChunkInContent, selectedChunkUid]
   );
-
   const getFileIcon = React.useCallback(() => {
     switch (fileType.toUpperCase()) {
-      case "FILE_TYPE_MD":
+      case "FILE_TYPE_MARKDOWN":
         return <Icons.MDFile className="h-5 w-5 stroke-semantic-fg-primary" />;
       case "FILE_TYPE_TEXT":
         return <Icons.TXTFile className="h-5 w-5 stroke-semantic-fg-primary" />;
