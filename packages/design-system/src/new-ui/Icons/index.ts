@@ -30,6 +30,8 @@ import { Chip01 } from "./Chip01";
 import { Chip02 } from "./Chip02";
 import { Circle } from "./Circle";
 import { ClockRewind } from "./ClockRewind";
+import { ClockCheck } from "./ClockCheck";
+import { ClockPlus } from "./ClockPlus";
 import { CodeBrowser } from "./CodeBrowser";
 import { CodeSnippet01 } from "./CodeSnippet01";
 import { CodeSnippet02 } from "./CodeSnippet02";
@@ -122,6 +124,7 @@ import { Trash03 } from "./Trash03";
 import { TXTFile } from "./TXTFile";
 import { Type01 } from "./Type01";
 import { Type02 } from "./Type02";
+import { TrendUp } from "./TrendUp";
 import { TypePlus } from "./TypePlus";
 import { Update } from "./Update";
 import { Upload01 } from "./Upload01";
@@ -168,6 +171,8 @@ export const Icons = {
   Chip02,
   Circle,
   ClockRewind,
+  ClockCheck,
+  ClockPlus,
   CodeBrowser,
   CodeSnippet01,
   CodeSnippet02,
@@ -256,6 +261,7 @@ export const Icons = {
   TextGenerationChat,
   Trash01,
   Trash03,
+  TrendUp,
   Type01,
   Type02,
   TypePlus,

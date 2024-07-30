@@ -58,7 +58,7 @@ const FileDetailsOverlay = ({
       const { startPos, endPos } = chunk;
       return (
         content.slice(0, startPos) +
-        `<span class="bg-semantic-bg-secondary">${content.slice(startPos, endPos)}</span>` +
+        `<span class="bg-semantic-bg-line hover:bg-[#CBD2E1]">${content.slice(startPos, endPos)}</span>` +
         content.slice(endPos)
       );
     },
