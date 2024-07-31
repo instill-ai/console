@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { KnowledgeBase } from "./../../../../dist/lib/vdp-sdk/knowledge/types.d";
+import { KnowledgeBase } from "./../../../../dist/lib/vdp-sdk/knowledge/types";
 
 async function updateKnowledgeBaseMutation({
   payload,
