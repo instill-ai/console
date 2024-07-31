@@ -48,14 +48,21 @@ const getStatusTag = (
     return statusMap[status as FileStatus] || statusMap.NOTSTARTED;
 };
 
+const formatStatus = (status: string): string => {
+    if (status.toLowerCase() === "notstarted") {
+        return "Not Started";
+    }
+    return status.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+};
+
 export const StatusTag: React.FC<StatusTagProps> = ({ status }) => {
-    const { variant, dotColor } = getStatusTag(status as FileStatus);
+    const { variant, dotColor } = getStatusTag(status.toUpperCase() as FileStatus);
 
     return (
         <Tag size="sm" variant={variant} className="relative group capitalize">
             <div className="flex items-center gap-2">
                 <div className={`w-2 h-2 rounded-full ${dotColor}`}></div>
-                {status.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())}
+                {formatStatus(status)}
             </div>
         </Tag>
     );
