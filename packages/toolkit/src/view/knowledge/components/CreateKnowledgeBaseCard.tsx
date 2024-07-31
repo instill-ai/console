@@ -9,8 +9,8 @@ import {
   Tooltip,
 } from "@instill-ai/design-system";
 
-import { InstillStore, useInstillStore, useShallow } from "../../../lib";
-import { useListChunks } from "../../../lib/react-query-service/knowledge";
+import { InstillStore, useInstillStore, useQueries, useShallow } from "../../../lib";
+import { useGetAllChunks, useListKnowledgeBaseFiles } from "../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
 import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
 
@@ -102,38 +102,54 @@ export const CreateKnowledgeBaseCard = ({
   const [isHovered, setIsHovered] = React.useState(false);
   const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
 
-  const { accessToken, enabledQuery } = useInstillStore(
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow((store: InstillStore) => ({
       accessToken: store.accessToken,
       enabledQuery: store.enabledQuery,
+      selectedNamespace: store.navigationNamespaceAnchor,
     })),
   );
 
-  const { data: chunks, isLoading: isLoadingChunks } = useListChunks({
-    kbId: knowledgeBase.kbId,
+  const { data: files } = useListKnowledgeBaseFiles({
+    namespaceId: selectedNamespace || null,
+    knowledgeBaseId: knowledgeBase.kbId,
     accessToken: accessToken || null,
     enabled: enabledQuery && isHovered,
-    ownerId: knowledgeBase.ownerName,
-    fileUid: "",
   });
+
+  const chunkQueries = useQueries({
+    queries: (files || []).map((file) => ({
+      queryKey: ["chunks", knowledgeBase.kbId, file.fileUid],
+      queryFn: () => useGetAllChunks(
+        accessToken || "",
+        knowledgeBase.ownerName,
+        knowledgeBase.kbId,
+        file.fileUid
+      ),
+      enabled: enabledQuery && isHovered && !!files && !!accessToken,
+    })),
+  });
+
+  const totalChunks = React.useMemo(() => {
+    return chunkQueries.reduce((total, query) => {
+      if (query.data) {
+        return total + query.data.length;
+      }
+      return total;
+    }, 0);
+  }, [chunkQueries]);
 
   const tooltipContent = React.useMemo(() => {
     if (!isHovered) return "";
-
-    if (isLoadingChunks) return "Loading...";
-
-    const textChunks = chunks
-      ? chunks.filter((chunk: { type: string }) => chunk.type === "TEXT")
-      : [];
 
     return `
 Converting pipeline ID: ${knowledgeBase.convertingPipelines?.[0] || "N/A"}
 Splitting pipeline ID: ${knowledgeBase.splittingPipelines?.[0] || "N/A"}
 Embedding pipeline ID: ${knowledgeBase.embeddingPipelines?.[0] || "N/A"}
 Files #: ${knowledgeBase.totalFiles || "N/A"}
-Text Chunks #: ${textChunks.length}
+Text Chunks #: ${totalChunks}
     `.trim();
-  }, [isHovered, isLoadingChunks, chunks, knowledgeBase]);
+  }, [isHovered, knowledgeBase, totalChunks]);
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();

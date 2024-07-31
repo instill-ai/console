@@ -11,3 +11,4 @@ export * from "./useGetFileContent";
 export * from "./useListChunks";
 export * from "./useUpdateChunk";
 export * from "./useGetChunkContent";
+export * from "./useGetAllChunks";
