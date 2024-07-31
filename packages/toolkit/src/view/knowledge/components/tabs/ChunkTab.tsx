@@ -13,13 +13,9 @@ import {
   useListKnowledgeBaseFiles,
   useUpdateChunk,
 } from "../../../../lib/react-query-service/knowledge";
-import {
-  Chunk,
-  KnowledgeBase,
-  KnowledgeFile,
-} from "../../../../lib/vdp-sdk/knowledge/types";
 import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";
+import { Chunk, KnowledgeBase, KnowledgeFile } from "../../../../../../sdk/src/knowledge/types";
 
 type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;
