@@ -112,11 +112,14 @@ const FileDetailsOverlay = ({
               <Skeleton className="h-4 w-3/4" />
             </div>
           ) : (
-            // <div
-            //   className="h-full overflow-y-auto px-4 pb-4 text-semantic-fg-primary product-body-text-3-regular"
-            //   dangerouslySetInnerHTML={{ __html: displayContent }}
-            //   />
-            <Markdown>{sanitizedHtmlText}</Markdown>
+            fileType.toUpperCase() === "FILE_TYPE_PDF" ? (
+              <div
+                className="h-full overflow-y-auto px-4 pb-4 text-semantic-fg-primary product-body-text-3-regular"
+                dangerouslySetInnerHTML={{ __html: displayContent }}
+              />
+            ) : (
+              <Markdown>{sanitizedHtmlText}</Markdown>
+            )
           )}
         </ScrollArea.Root>
         <Dialog.Close />
