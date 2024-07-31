@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Icons } from "@instill-ai/design-system";
-import { File } from "../../../../../../sdk/src/knowledge/types";
-import StatusTag from "./StatusTag";
+import { File } from "../../../../../sdk/src/knowledge/types";
+import { StatusTag } from "./StatusTag";
 
 type FileTableRowProps = {
   item: File;
