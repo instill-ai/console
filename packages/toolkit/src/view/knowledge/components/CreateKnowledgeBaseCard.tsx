@@ -11,7 +11,7 @@ import {
 
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useListChunks } from "../../../lib/react-query-service/knowledge";
-import { KnowledgeBase } from "../../../../../sdk/src/knowledge/types";
+import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
 import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
 
 type EditKnowledgeDialogData = {

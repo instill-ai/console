@@ -5,7 +5,6 @@ import { Separator, Skeleton } from "@instill-ai/design-system";
 
 import {
   InstillStore,
-  useAuthenticatedUser,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
@@ -14,7 +13,7 @@ import {
   useGetKnowledgeBases,
   useUpdateKnowledgeBase,
 } from "../../../../lib/react-query-service/knowledge";
-import { KnowledgeBase } from "../../../../../../sdk/src/knowledge/types";
+import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
 import { CreateKnowledgeBaseCard } from "../CreateKnowledgeBaseCard";
 import { CreateKnowledgeDialog } from "../CreateKnowledgeDialog";
 import { KnowledgeBaseCard } from "../KnowledgeBaseCard";
@@ -63,7 +62,6 @@ export const KnowledgeBaseTab = ({
     }))
   );
 
-  console.log("selectedNamespace", selectedNamespace);
   const {
     data: knowledgeBases,
     isLoading,

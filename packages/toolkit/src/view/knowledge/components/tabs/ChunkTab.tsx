@@ -15,7 +15,7 @@ import {
 } from "../../../../lib/react-query-service/knowledge";
 import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";
-import { Chunk, KnowledgeBase, KnowledgeFile } from "../../../../../../sdk/src/knowledge/types";
+import { Chunk, KnowledgeBase, KnowledgeFile } from "../../../../lib/react-query-service/knowledge/types";
 
 type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;

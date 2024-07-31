@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { KnowledgeBase } from "../../../../../sdk/src/knowledge/types";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { KnowledgeBase } from "./types";
 
 async function getKnowledgeBases({
   ownerId,

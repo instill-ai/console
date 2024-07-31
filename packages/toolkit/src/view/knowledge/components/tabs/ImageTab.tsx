@@ -9,7 +9,7 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 
-import { KnowledgeBase } from "../../../../../../sdk/src/knowledge/types";
+import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
 import MetadataPreview from "../MetadataPreview";
 
 type ImageTabProps = {

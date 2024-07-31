@@ -1,5 +1,5 @@
 import React from "react";
-import { File, FileStatus } from "../../../../../sdk/src/knowledge/types";
+import { File, FileStatus } from "../../../lib/react-query-service/knowledge/types";
 import { FileTableRow } from "./FileTableRow";
 import { FileTableHeader } from "./FileTableHeader";
 

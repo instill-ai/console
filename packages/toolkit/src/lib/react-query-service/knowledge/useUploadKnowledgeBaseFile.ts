@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Nullable } from "@instill-ai/toolkit";
 
-import { File } from "../../../../../sdk/src/knowledge/types";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { File } from "./types";
 
 export function useUploadKnowledgeBaseFile() {
   const queryClient = useQueryClient();

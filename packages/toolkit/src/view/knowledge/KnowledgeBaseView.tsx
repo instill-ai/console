@@ -5,7 +5,6 @@ import { Nullable } from "@instill-ai/toolkit";
 import {
   GeneralAppPageProp,
   InstillStore,
-  useAuthenticatedUser,
   useInstillStore,
   useShallow,
 } from "../../lib";
@@ -14,7 +13,7 @@ import {
   useGetKnowledgeBases,
   useListKnowledgeBaseFiles,
 } from "../../lib/react-query-service/knowledge";
-import { KnowledgeBase } from "../../../../sdk/src/knowledge/types";
+import { KnowledgeBase } from "../../lib/react-query-service/knowledge/types";
 import { DeleteKnowledgeBaseNotification, CreditUsageFileNotification } from "./components/notifications";
 import { Sidebar } from "./components";
 import { CatalogFilesTab, ChunkTab, ImageTab, KnowledgeBaseTab, MarkdownTab, RetrieveTestTab, UploadExploreTab } from "./components/tabs";
@@ -46,11 +45,6 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
       selectedNamespace: store.navigationNamespaceAnchor,
     })),
   );
-
-  const me = useAuthenticatedUser({
-    enabled: enabledQuery,
-    accessToken,
-  });
 
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
   const { refetch: refetchKnowledgeBases } = useGetKnowledgeBases({

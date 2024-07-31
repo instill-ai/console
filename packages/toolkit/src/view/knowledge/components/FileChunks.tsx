@@ -10,7 +10,7 @@ import {
   Chunk,
   KnowledgeBase,
   KnowledgeFile,
-} from "../../../../../sdk/src/knowledge/types";
+} from "../../../lib/react-query-service/knowledge/types";
 import ChunkCard from "./ChunkCard";
 
 type FileChunksProps = {

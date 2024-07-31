@@ -10,7 +10,7 @@ import {
   useDeleteKnowledgeBaseFile,
   useListKnowledgeBaseFiles,
 } from "../../../../lib/react-query-service/knowledge";
-import { File, KnowledgeBase } from "../../../../../../sdk/src/knowledge/types";
+import { File, KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { DELETE_FILE_TIMEOUT } from "../lib/undoDeleteTime";
 import { DeleteFileNotification } from "../notifications";

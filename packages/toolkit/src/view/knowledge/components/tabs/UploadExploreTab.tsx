@@ -25,7 +25,7 @@ import {
   useProcessKnowledgeBaseFiles,
   useUploadKnowledgeBaseFile,
 } from "../../../../lib/react-query-service/knowledge";
-import { KnowledgeBase } from "../../../../../../sdk/src/knowledge/types";
+import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
 // import FilePreview from "./FilePreview";
 import { IncorrectFormatFileNotification, DuplicateFileNotification, FileSizeNotification } from "../notifications";
 import { FILE_ERROR_TIMEOUT } from "../lib/undoDeleteTime";
