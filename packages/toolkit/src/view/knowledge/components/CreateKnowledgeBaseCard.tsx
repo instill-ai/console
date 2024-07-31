@@ -25,13 +25,15 @@ type MenuProps = {
   onEdit: (e: React.MouseEvent) => void;
   onDuplicate: (e: React.MouseEvent) => void;
   disabled: boolean;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void
 };
 
-const Menu = ({ onDelete, onEdit, onDuplicate, disabled }: MenuProps) => {
+const Menu = ({ onDelete, onEdit, onDuplicate, disabled, isOpen, setIsOpen }: MenuProps) => {
   return (
     <React.Fragment>
       <div className="flex justify-center z-10">
-        <DropdownMenu.Root>
+        <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenu.Trigger asChild>
             <Button className="" variant="tertiaryGrey">
               <Icons.DotsHorizontal className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -101,6 +103,7 @@ export const CreateKnowledgeBaseCard = ({
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
   const [isHovered, setIsHovered] = React.useState(false);
   const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow((store: InstillStore) => ({
@@ -186,7 +189,7 @@ Text Chunks #: ${totalChunks}
   return (
     <React.Fragment>
       <Tooltip.Provider>
-        <Tooltip.Root>
+        <Tooltip.Root disableHoverableContent={isMenuOpen}>
           <Tooltip.Trigger asChild>
             <div
               className="flex h-[175px] w-[360px] cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow hover:bg-semantic-bg-base-bg"
@@ -213,6 +216,8 @@ Text Chunks #: ${totalChunks}
                   onEdit={handleEdit}
                   onDuplicate={handleDuplicate}
                   disabled={disabled}
+                  isOpen={isMenuOpen}
+                  setIsOpen={setIsMenuOpen}
                 />
               </div>
             </div>
