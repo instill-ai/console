@@ -41,7 +41,7 @@ const navLinkItems: NavLinkProps[] = [
     title: "Artifacts",
   },
   {
-    pathname: "dashboard/pipeline",
+    pathname: "dashboard",
     Icon: Icons.BarChartSquare02,
     title: "Dashboard",
   },
@@ -132,14 +132,14 @@ export const NavLinks = ({ isExploreRoute }: { isExploreRoute?: boolean }) => {
     <React.Fragment>
       {me.isSuccess
         ? navLinkItems.map(({ pathname, Icon, title }) => (
-            <NavLink
-              key={pathname}
-              pathname={pathname}
-              Icon={Icon}
-              title={title}
-              isExploreRoute={isExploreRoute}
-            />
-          ))
+          <NavLink
+            key={pathname}
+            pathname={pathname}
+            Icon={Icon}
+            title={title}
+            isExploreRoute={isExploreRoute}
+          />
+        ))
         : null}
     </React.Fragment>
   );
