@@ -133,7 +133,7 @@ export const RetrieveTestTab = ({
           </div>
 
           <div className="mt-8">
-            <p className="mb-2 text-lg font-semibold">Input JSON Schema:</p>
+            <p className="mb-2 text-lg font-semibold">JSON Schema:</p>
             <CodeBlock
               codeString={inputSchema}
               wrapLongLines={true}
@@ -143,7 +143,7 @@ export const RetrieveTestTab = ({
           </div>
 
           <div className="mt-8">
-            <p className="mb-2 text-lg font-semibold">Output JSON Schema:</p>
+            <p className="mb-2 text-lg font-semibold">Input, Output:</p>
             <CodeBlock
               codeString={outputSchema}
               wrapLongLines={true}
