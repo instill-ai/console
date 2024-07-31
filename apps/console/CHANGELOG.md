@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.52.0-beta](https://github.com/instill-ai/console/compare/v0.51.0-beta...v0.52.0-beta) (2024-07-31)
+
+
+### Features
+
+* move restapi component into generic type ([#1326](https://github.com/instill-ai/console/issues/1326)) ([fbaf1ab](https://github.com/instill-ai/console/commit/fbaf1ab3386d8edc767440d1431320354da2b5ec))
+
+
+### Bug Fixes
+
+* unify how we handle error ([#1331](https://github.com/instill-ai/console/issues/1331)) ([5d79849](https://github.com/instill-ai/console/commit/5d79849e5b1920dc2296422c8a46968219ee9fbf))
+
+
+### Miscellaneous
+
+* replace pipeline type in toolkit with type in sdk ([#1319](https://github.com/instill-ai/console/issues/1319)) ([48de6c3](https://github.com/instill-ai/console/commit/48de6c366e29f17df7c1da22a203f210065404c4))
+
 ## [0.51.0-beta](https://github.com/instill-ai/console/compare/v0.50.1-beta...v0.51.0-beta) (2024-07-16)
 
 
