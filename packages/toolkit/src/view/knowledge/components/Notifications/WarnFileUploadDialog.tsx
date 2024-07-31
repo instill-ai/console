@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { Button, Dialog, Icons } from "@instill-ai/design-system";
 
 export type WarnFileUploadDialogProps = {

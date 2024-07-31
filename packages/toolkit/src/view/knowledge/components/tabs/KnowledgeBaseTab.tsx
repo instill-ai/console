@@ -11,7 +11,6 @@ import {
 } from "../../../../lib";
 import {
   useCreateKnowledgeBase,
-  useDeleteKnowledgeBase,
   useGetKnowledgeBases,
   useUpdateKnowledgeBase,
 } from "../../../../lib/react-query-service/knowledge";
