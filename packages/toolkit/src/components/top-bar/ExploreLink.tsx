@@ -7,7 +7,8 @@ import cn from "clsx";
 export const ExploreLink = () => {
   const pathname = usePathname();
 
-  const isActive = pathname.startsWith("/hub");
+  const isActive =
+    pathname.startsWith("/explore") || pathname.startsWith("/featured");
 
   return (
     <div className="my-auto flex flex-row gap-x-1">
