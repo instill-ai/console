@@ -20,4 +20,4 @@ export const Hash2 = React.forwardRef<
     </IconBase>
   );
 });
-Hash2.displayName = "Hash2";
+Hash2.displayName = "IconHash2";
