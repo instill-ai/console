@@ -39,9 +39,9 @@ const ChunkCard: React.FC<ChunkCardProps> = ({
           <Tag
             size="sm"
             variant="default"
-            className="!rounded border-semantic-bg-line bg-semantic-bg-base-bg border items-center"
+            className="!rounded border-semantic-bg-line bg-semantic-bg-base-bg border items-center h-6"
           >
-            <Icons.Hash2 className="mr-0.5 h-5 w-5 stroke-semantic-fg-primary" />
+            <Icons.Hash2 className="-mr-1 h-5 w-5 stroke-semantic-fg-primary mt-3" />
             <span className="product-body-text-3-medium">
               {String(index + 1).padStart(3, "0")}
             </span>
