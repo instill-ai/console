@@ -11,7 +11,6 @@ const DuplicateFileNotification = ({
   deletedFileName,
   setShowDeleteMessage,
 }: DuplicateFileNotificationProps) => {
-
   return (
     <div className="fixed bottom-4 right-8 flex  w-[400px] rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
       <Icons.AlertTriangle className="mr-4 h-6 w-6 stroke-semantic-warning-on-bg" />
@@ -21,7 +20,9 @@ const DuplicateFileNotification = ({
             {deletedFileName} Already Uploaded or Exists in Knowledge Base
           </div>
           <div className="text-semantic-fg-secondary product-body-text-3-regular overflow-hidden text-ellipsis whitespace-pre-wrap">
-            Current knowledge base does not support uploading the same file twice. Please consider deleting the old file with the same name or renaming your new file before attempting to upload again.
+            Current knowledge base does not support uploading the same file
+            twice. Please consider deleting the old file with the same name or
+            renaming your new file before attempting to upload again.
           </div>
         </div>
       </div>

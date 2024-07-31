@@ -1,4 +1,5 @@
 import { Icons, Input, Popover, Separator } from "@instill-ai/design-system";
+
 import { SortOptionSelectButton } from "./OptionSelectButton";
 
 export type SortAnchor = "modifyTime" | "createTime" | "usage";
@@ -44,7 +45,9 @@ const KnowledgeSearchSort = ({
           <SortOptionSelectButton
             label="Created Time"
             icon={
-              <Icons.ClockPlus className={`h-5 w-5 mt-1 ${selectedSortAnchor === "createTime" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`} />
+              <Icons.ClockPlus
+                className={`h-5 w-5 mt-1 ${selectedSortAnchor === "createTime" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`}
+              />
             }
             onClick={() => {
               setSelectedSortAnchor("createTime");
@@ -54,7 +57,9 @@ const KnowledgeSearchSort = ({
           <SortOptionSelectButton
             label="Modified Time"
             icon={
-              <Icons.ClockCheck className={`h-5 w-5 mt-1 ${selectedSortAnchor === "modifyTime" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`} />
+              <Icons.ClockCheck
+                className={`h-5 w-5 mt-1 ${selectedSortAnchor === "modifyTime" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`}
+              />
             }
             onClick={() => {
               setSelectedSortAnchor("modifyTime");
@@ -64,7 +69,9 @@ const KnowledgeSearchSort = ({
           <SortOptionSelectButton
             label="Usage"
             icon={
-              <Icons.TrendUp className={`h-5 w-5 mt-1 ${selectedSortAnchor === "usage" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`} />
+              <Icons.TrendUp
+                className={`h-5 w-5 mt-1 ${selectedSortAnchor === "usage" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`}
+              />
             }
             onClick={() => {
               setSelectedSortAnchor("usage");
@@ -75,7 +82,9 @@ const KnowledgeSearchSort = ({
           <SortOptionSelectButton
             label="Ascending"
             icon={
-              <Icons.SortLinesUp className={`h-4 w-4 ${selectedSortOrder === "asc" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`} />
+              <Icons.SortLinesUp
+                className={`h-4 w-4 ${selectedSortOrder === "asc" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`}
+              />
             }
             onClick={() => {
               setSelectedSortOrder("asc");
@@ -85,7 +94,9 @@ const KnowledgeSearchSort = ({
           <SortOptionSelectButton
             label="Descending"
             icon={
-              <Icons.SortLinesDown className={`h-4 w-4 ${selectedSortOrder === "desc" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`} />
+              <Icons.SortLinesDown
+                className={`h-4 w-4 ${selectedSortOrder === "desc" ? "stroke-semantic-fg-primary" : "stroke-semantic-fg-disabled"}`}
+              />
             }
             onClick={() => {
               setSelectedSortOrder("desc");

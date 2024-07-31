@@ -1,12 +1,13 @@
-import React from 'react';
+import React from "react";
+import Markdown from "markdown-to-jsx";
+import sanitizeHtml from "sanitize-html";
+
 import { Dialog, Icons, ScrollArea, Skeleton } from "@instill-ai/design-system";
+
 import {
   useGetFileContent,
   useListChunks,
 } from "../../../lib/react-query-service/knowledge";
-import Markdown from 'markdown-to-jsx';
-import sanitizeHtml from "sanitize-html";
-
 
 type FileDetailsOverlayProps = {
   fileUid: string;
@@ -65,12 +66,13 @@ const FileDetailsOverlay = ({
         content.slice(endPos)
       );
     },
-    [chunks, highlightChunk]
+    [chunks, highlightChunk],
   );
 
-  const displayContent = React.useMemo(() =>
-    fileContent ? highlightChunkInContent(fileContent, selectedChunkUid) : "",
-    [fileContent, highlightChunkInContent, selectedChunkUid]
+  const displayContent = React.useMemo(
+    () =>
+      fileContent ? highlightChunkInContent(fileContent, selectedChunkUid) : "",
+    [fileContent, highlightChunkInContent, selectedChunkUid],
   );
   const getFileIcon = React.useCallback(() => {
     switch (fileType.toUpperCase()) {
@@ -120,7 +122,6 @@ const FileDetailsOverlay = ({
         <Dialog.Close />
       </Dialog.Content>
     </Dialog.Root>
-
   );
 };
 

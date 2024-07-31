@@ -20,16 +20,16 @@ import {
   useShallow,
 } from "../../../../lib";
 import {
+  useListKnowledgeBaseFiles,
   useProcessKnowledgeBaseFiles,
   useUploadKnowledgeBaseFile,
-  useListKnowledgeBaseFiles,
 } from "../../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../../lib/vdp-sdk/knowledge/types";
+import DuplicateFileNotification from "../Notifications/DuplicateFileNotification";
 import FileSizeNotification from "../Notifications/FileSizeNotification";
 // import FilePreview from "./FilePreview";
 import IncorrectFormatFileNotification from "../Notifications/IncorrectFormatFileNotification";
 import { FILE_ERROR_TIMEOUT } from "../undoDeleteTime";
-import DuplicateFileNotification from "../Notifications/DuplicateFileNotification";
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024;
 
@@ -81,16 +81,21 @@ export const UploadExploreTab = ({
     useShallow((store: InstillStore) => ({
       accessToken: store.accessToken,
       enabledQuery: store.enabledQuery,
-    }))
+    })),
   );
 
-  const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
-  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] = React.useState(false);
-  const [showDuplicateFileMessage, setShowDuplicateFileMessage] = React.useState(false);
+  const [showFileTooLargeMessage, setShowFileTooLargeMessage] =
+    React.useState(false);
+  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] =
+    React.useState(false);
+  const [showDuplicateFileMessage, setShowDuplicateFileMessage] =
+    React.useState(false);
   const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
   const fileTooLargeTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
-  const unsupportedFileTypeTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const unsupportedFileTypeTimeoutRef = React.useRef<NodeJS.Timeout | null>(
+    null,
+  );
   const duplicateFileTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
@@ -146,7 +151,9 @@ export const UploadExploreTab = ({
     }
 
     const currentFiles = form.getValues("files");
-    const isDuplicate = existingFiles?.some(existingFile => existingFile.name === file.name);
+    const isDuplicate = existingFiles?.some(
+      (existingFile) => existingFile.name === file.name,
+    );
 
     if (isDuplicate) {
       setDuplicateFileName(file.name);
@@ -199,7 +206,7 @@ export const UploadExploreTab = ({
             };
             reader.readAsBinaryString(file);
           });
-        })
+        }),
       );
 
       const fileUids = uploadedFiles.map((file) => file.fileUid);
@@ -234,10 +241,11 @@ export const UploadExploreTab = ({
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
-                      ? "border-semantic-accent-default"
-                      : "border-semantic-bg-line"
-                      } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${
+                      isDragging
+                        ? "border-semantic-accent-default"
+                        : "border-semantic-bg-line"
+                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
                       setIsDragging(true);
@@ -308,7 +316,9 @@ export const UploadExploreTab = ({
         >
           <div className="flex items-center gap-2">
             <Icons.File05 className="h-5 w-5 stroke-semantic-fg-secondary" />
-            <div className="product-body-text-3-regular truncate">{file.name}</div>
+            <div className="product-body-text-3-regular truncate">
+              {file.name}
+            </div>
             <div className="flex-grow text-semantic-fg-disabled product-body-text-4-regular">
               {Math.round(file.size / 1024)} KB
             </div>

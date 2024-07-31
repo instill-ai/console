@@ -106,7 +106,7 @@ export const CreateKnowledgeBaseCard = ({
     useShallow((store: InstillStore) => ({
       accessToken: store.accessToken,
       enabledQuery: store.enabledQuery,
-    }))
+    })),
   );
 
   const { data: chunks, isLoading: isLoadingChunks } = useListChunks({
@@ -122,9 +122,9 @@ export const CreateKnowledgeBaseCard = ({
 
     if (isLoadingChunks) return "Loading...";
 
-    const textChunks = chunks ? chunks.filter(
-      (chunk: { type: string }) => chunk.type === "TEXT",
-    ) : [];
+    const textChunks = chunks
+      ? chunks.filter((chunk: { type: string }) => chunk.type === "TEXT")
+      : [];
 
     return `
     Converting pipeline ID: ${knowledgeBase.convertingPipelines?.[0] || "N/A"}

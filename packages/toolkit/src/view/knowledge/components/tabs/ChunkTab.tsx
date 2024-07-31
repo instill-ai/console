@@ -1,28 +1,40 @@
 import React from "react";
+import { Nullable } from "vitest";
+
 import { Button, Icons, Separator, Skeleton } from "@instill-ai/design-system";
-import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../../lib";
+
+import {
+  InstillStore,
+  useAuthenticatedUser,
+  useInstillStore,
+  useShallow,
+} from "../../../../lib";
 import {
   useListKnowledgeBaseFiles,
   useUpdateChunk,
 } from "../../../../lib/react-query-service/knowledge";
 import {
   Chunk,
-  KnowledgeFile,
   KnowledgeBase,
+  KnowledgeFile,
 } from "../../../../lib/vdp-sdk/knowledge/types";
-import FileDetailsOverlay from "../FileDetailsOverlay";
-import { Nullable } from "vitest";
 import FileChunks from "../FileChunks";
+import FileDetailsOverlay from "../FileDetailsOverlay";
 
 type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;
   onGoToUpload: () => void;
 };
 
-export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase, onGoToUpload }) => {
+export const ChunkTab: React.FC<ChunkTabProps> = ({
+  knowledgeBase,
+  onGoToUpload,
+}) => {
   const [expandedFiles, setExpandedFiles] = React.useState<string[]>([]);
-  const [selectedChunk, setSelectedChunk] = React.useState<Nullable<Chunk>>(null);
-  const [selectedFile, setSelectedFile] = React.useState<Nullable<KnowledgeFile>>(null);
+  const [selectedChunk, setSelectedChunk] =
+    React.useState<Nullable<Chunk>>(null);
+  const [selectedFile, setSelectedFile] =
+    React.useState<Nullable<KnowledgeFile>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
   const { accessToken, enabledQuery } = useInstillStore(
@@ -37,10 +49,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase, onGoToUpload 
     accessToken,
   });
 
-  const {
-    data: files,
-    isLoading: isLoadingFiles,
-  } = useListKnowledgeBaseFiles({
+  const { data: files, isLoading: isLoadingFiles } = useListKnowledgeBaseFiles({
     namespaceId: me.data?.id ?? null,
     knowledgeBaseId: knowledgeBase.kbId,
     accessToken,
@@ -59,7 +68,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase, onGoToUpload 
     setExpandedFiles((prev) =>
       prev.includes(fileUid)
         ? prev.filter((id) => id !== fileUid)
-        : [...prev, fileUid]
+        : [...prev, fileUid],
     );
   };
 
@@ -77,7 +86,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase, onGoToUpload 
 
   const handleRetrievableToggle = async (
     chunkUid: string,
-    currentValue: boolean
+    currentValue: boolean,
   ) => {
     try {
       await updateChunkMutation.mutateAsync({

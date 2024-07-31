@@ -1,4 +1,5 @@
 import { Separator } from "@instill-ai/design-system";
+
 import { CodeBlock } from "../../../../components";
 import { CodeString } from "../../../../components/CodeString";
 import { defaultCodeSnippetStyles } from "../../../../constant";
@@ -103,13 +104,15 @@ export const RetrieveTestTab = ({
         <div className="w-2/3 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
           <p className="mb-4 product-body-text-3-regular">
             Once the status of documents in Catalog / Files has changed to
-            &apos;Completed&apos;, you can use the following Instill API format example to
-            test the retrieval of this knowledge base and obtain chunks related
-            to a given query.
+            &apos;Completed&apos;, you can use the following Instill API format
+            example to test the retrieval of this knowledge base and obtain
+            chunks related to a given query.
           </p>
 
           <div className="mt-8">
-            <p className="mb-2 text-lg font-semibold">Set Environment Variable:</p>
+            <p className="mb-2 text-lg font-semibold">
+              Set Environment Variable:
+            </p>
             <CodeString>export INSTILL_API_TOKEN=********</CodeString>
           </div>
 

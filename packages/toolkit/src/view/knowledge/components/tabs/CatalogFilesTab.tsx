@@ -8,7 +8,12 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 
-import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../../../lib";
+import {
+  InstillStore,
+  useAuthenticatedUser,
+  useInstillStore,
+  useShallow,
+} from "../../../../lib";
 import {
   useDeleteKnowledgeBaseFile,
   useListKnowledgeBaseFiles,
@@ -410,14 +415,18 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                   .map((item, index) => (
                     <div
                       key={item.fileUid}
-                      className={`grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line ${index !== sortedData.length - 1 ? "" : ""
-                        }`}
+                      className={`grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line ${
+                        index !== sortedData.length - 1 ? "" : ""
+                      }`}
                     >
                       <div
                         className="flex items-center justify-center px-4 truncate cursor-pointer text-semantic-bg-secondary-alt-primary product-body-text-3-regular"
                         onClick={() => handleFileClick(item)}
                       >
-                        <span className="truncate max-w-[200px]" title={item.name}>
+                        <span
+                          className="truncate max-w-[200px]"
+                          title={item.name}
+                        >
                           {item.name}
                         </span>
                         <Icons.ArrowUpRight className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary ml-0.5 flex-shrink-0" />
@@ -481,9 +490,12 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                 <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs mb-8">
                   <Icons.AlertCircle className="w-6 h-6 stroke-semantic-fg-primary" />
                 </div>
-                <p className="mb-2 product-headings-heading-2">No Files Uploaded</p>
+                <p className="mb-2 product-headings-heading-2">
+                  No Files Uploaded
+                </p>
                 <p className="mb-4 text-semantic-fg-secondary product-body-text-2-regular">
-                  You have no files uploaded yet. Upload files to add resources and references to your knowledge base.
+                  You have no files uploaded yet. Upload files to add resources
+                  and references to your knowledge base.
                 </p>
                 <Button
                   variant="primary"

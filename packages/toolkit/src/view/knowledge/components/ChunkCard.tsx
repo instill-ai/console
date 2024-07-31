@@ -1,12 +1,17 @@
 import * as React from "react";
+
 import { Icons, Separator, Switch, Tag } from "@instill-ai/design-system";
+
 import { Chunk } from "../../../lib/vdp-sdk/knowledge/types";
 
 type ChunkCardProps = {
   chunk: Chunk;
   index: number;
   onChunkClick: () => void;
-  onRetrievableToggle: (chunkUid: string, currentValue: boolean) => Promise<void>;
+  onRetrievableToggle: (
+    chunkUid: string,
+    currentValue: boolean,
+  ) => Promise<void>;
   fileContent: string;
 };
 
@@ -17,7 +22,6 @@ const ChunkCard: React.FC<ChunkCardProps> = ({
   onRetrievableToggle,
   fileContent,
 }) => {
-
   const chunkContent = React.useMemo(() => {
     if (chunk.startPos !== undefined && chunk.endPos !== undefined) {
       return fileContent.slice(chunk.startPos, chunk.endPos);
@@ -32,7 +36,11 @@ const ChunkCard: React.FC<ChunkCardProps> = ({
     >
       <div className="flex flex-col gap-y-2.5 p-2.5">
         <div className="flex justify-between mb-2">
-          <Tag size="sm" variant="default" className="!rounded border-semantic-bg-line bg-semantic-bg-base-bg border items-center">
+          <Tag
+            size="sm"
+            variant="default"
+            className="!rounded border-semantic-bg-line bg-semantic-bg-base-bg border items-center"
+          >
             <Icons.Hash2 className="mr-0.5 h-5 w-5 stroke-semantic-fg-primary" />
             <span className="product-body-text-3-medium">
               {String(index + 1).padStart(3, "0")}

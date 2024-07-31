@@ -19,8 +19,11 @@ export const SortOptionSelectButton = ({
       <div className="flex flex-row items-center gap-x-2">
         {icon}
         <span
-          className={`product-body-text-3-medium ${isSelected ? "text-semantic-fg-primary" : "text-semantic-fg-disabled"
-            }`}
+          className={`product-body-text-3-medium ${
+            isSelected
+              ? "text-semantic-fg-primary"
+              : "text-semantic-fg-disabled"
+          }`}
         >
           {label}
         </span>
@@ -29,6 +32,5 @@ export const SortOptionSelectButton = ({
         <Icons.Check className="ml-auto h-4 w-4 stroke-semantic-fg-disabled" />
       ) : null}
     </button>
-
   );
 };

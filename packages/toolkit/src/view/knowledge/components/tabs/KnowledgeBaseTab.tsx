@@ -40,7 +40,6 @@ const CreateKnowledgeFormSchema = z.object({
   description: z.string().optional(),
   tags: z.array(z.string()).optional(),
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
-
 });
 
 export const KnowledgeBaseTab = ({
@@ -150,12 +149,11 @@ export const KnowledgeBaseTab = ({
     }
   };
 
-
   const filteredAndSortedKnowledgeBases = React.useMemo(() => {
     if (!knowledgeBases) return [];
 
     const filtered = knowledgeBases
-      .filter(kb => !pendingDeletions.includes(kb.kbId))
+      .filter((kb) => !pendingDeletions.includes(kb.kbId))
       .filter(
         (kb) =>
           kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -190,7 +188,13 @@ export const KnowledgeBaseTab = ({
     });
 
     return filtered;
-  }, [knowledgeBases, searchTerm, selectedSortAnchor, selectedSortOrder, pendingDeletions]);
+  }, [
+    knowledgeBases,
+    searchTerm,
+    selectedSortAnchor,
+    selectedSortOrder,
+    pendingDeletions,
+  ]);
 
   const hasReachedLimit = (knowledgeBases?.length ?? 0) >= 3;
 

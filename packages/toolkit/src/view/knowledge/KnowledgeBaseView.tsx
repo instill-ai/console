@@ -1,23 +1,34 @@
 import * as React from "react";
+
 import { Nullable } from "@instill-ai/toolkit";
-import { GeneralAppPageProp } from "../../lib";
+
+import {
+  GeneralAppPageProp,
+  InstillStore,
+  useAuthenticatedUser,
+  useInstillStore,
+  useShallow,
+} from "../../lib";
+import {
+  useDeleteKnowledgeBase,
+  useGetKnowledgeBases,
+  useListKnowledgeBaseFiles,
+} from "../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/types";
+import CreditUsageFileNotification from "./components/Notifications/CreditUsageFileNotification";
+import DeleteKnowledgeBaseNotification from "./components/Notifications/DeleteKnowledgeBaseNotification";
+import { Sidebar } from "./components/Sidebar";
 import { CatalogFilesTab } from "./components/tabs/CatalogFilesTab";
 import { ChunkTab } from "./components/tabs/ChunkTab";
 import { ImageTab } from "./components/tabs/ImageTab";
 import { KnowledgeBaseTab } from "./components/tabs/KnowledgeBaseTab";
 import { MarkdownTab } from "./components/tabs/MarkdownTab";
-import CreditUsageFileNotification from "./components/Notifications/CreditUsageFileNotification";
-import DeleteKnowledgeBaseNotification from "./components/Notifications/DeleteKnowledgeBaseNotification";
 import { RetrieveTestTab } from "./components/tabs/RetrieveTestTab";
-import { Sidebar } from "./components/Sidebar";
+import { UploadExploreTab } from "./components/tabs/UploadExploreTab";
 import {
   CREDIT_TIMEOUT,
   DELETE_KNOWLEDGE_BASE_TIMEOUT,
 } from "./components/undoDeleteTime";
-import { UploadExploreTab } from "./components/tabs/UploadExploreTab";
-import { useListKnowledgeBaseFiles, useDeleteKnowledgeBase, useGetKnowledgeBases } from "../../lib/react-query-service/knowledge";
-import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow } from "../../lib";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -26,7 +37,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     React.useState<Nullable<KnowledgeBase>>(null);
   const [activeTab, setActiveTab] = React.useState("knowledge-base");
   const [selectedTextOption, setSelectedTextOption] = React.useState(
-    null as Nullable<string>
+    null as Nullable<string>,
   );
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] =
@@ -39,7 +50,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     useShallow((store: InstillStore) => ({
       accessToken: store.accessToken,
       enabledQuery: store.enabledQuery,
-    }))
+    })),
   );
 
   const me = useAuthenticatedUser({
@@ -58,12 +69,13 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     namespaceId: me.data?.id ?? null,
     knowledgeBaseId: selectedKnowledgeBase?.kbId ?? "",
     accessToken,
-    enabled: enabledQuery && Boolean(me.data?.id) && Boolean(selectedKnowledgeBase),
+    enabled:
+      enabledQuery && Boolean(me.data?.id) && Boolean(selectedKnowledgeBase),
   });
 
   React.useEffect(() => {
     if (files) {
-      const hasChunks = files.some(file => file.totalChunks > 0);
+      const hasChunks = files.some((file) => file.totalChunks > 0);
       setIsProcessed(hasChunks);
     }
   }, [files]);
@@ -84,7 +96,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const handleDeleteKnowledgeBase = (knowledgeBase: KnowledgeBase) => {
     setKnowledgeBaseToDelete(knowledgeBase);
     setShowDeleteMessage(true);
-    setPendingDeletions(prev => [...prev, knowledgeBase.kbId]);
+    setPendingDeletions((prev) => [...prev, knowledgeBase.kbId]);
   };
 
   const actuallyDeleteKnowledgeBase = async () => {
@@ -98,7 +110,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
       });
       setShowDeleteMessage(false);
       setKnowledgeBaseToDelete(null);
-      setPendingDeletions(prev => prev.filter(id => id !== knowledgeBaseToDelete.kbId));
+      setPendingDeletions((prev) =>
+        prev.filter((id) => id !== knowledgeBaseToDelete.kbId),
+      );
       if (selectedKnowledgeBase?.kbId === knowledgeBaseToDelete.kbId) {
         setSelectedKnowledgeBase(null);
         setActiveTab("knowledge-base");
@@ -113,7 +127,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const undoDelete = () => {
     setShowDeleteMessage(false);
     if (knowledgeBaseToDelete) {
-      setPendingDeletions(prev => prev.filter(id => id !== knowledgeBaseToDelete.kbId));
+      setPendingDeletions((prev) =>
+        prev.filter((id) => id !== knowledgeBaseToDelete.kbId),
+      );
     }
     setKnowledgeBaseToDelete(null);
   };
