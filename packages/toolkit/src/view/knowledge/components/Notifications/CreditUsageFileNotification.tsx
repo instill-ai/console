@@ -5,7 +5,7 @@ type CreditUsageNotificationProps = {
   fileName: string;
 };
 
-const CreditUsageFileNotification = ({
+export const CreditUsageFileNotification = ({
   handleCloseCreditUsageMessage,
 }: CreditUsageNotificationProps) => {
   return (
@@ -32,5 +32,3 @@ const CreditUsageFileNotification = ({
     </div>
   );
 };
-
-export default CreditUsageFileNotification;

@@ -15,20 +15,13 @@ import {
   useListKnowledgeBaseFiles,
 } from "../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/types";
-import CreditUsageFileNotification from "./components/Notifications/CreditUsageFileNotification";
-import DeleteKnowledgeBaseNotification from "./components/Notifications/DeleteKnowledgeBaseNotification";
-import { Sidebar } from "./components/Sidebar";
-import { CatalogFilesTab } from "./components/tabs/CatalogFilesTab";
-import { ChunkTab } from "./components/tabs/ChunkTab";
-import { ImageTab } from "./components/tabs/ImageTab";
-import { KnowledgeBaseTab } from "./components/tabs/KnowledgeBaseTab";
-import { MarkdownTab } from "./components/tabs/MarkdownTab";
-import { RetrieveTestTab } from "./components/tabs/RetrieveTestTab";
-import { UploadExploreTab } from "./components/tabs/UploadExploreTab";
+import { DeleteKnowledgeBaseNotification, CreditUsageFileNotification } from "./components/notifications";
+import { Sidebar } from "./components";
+import { CatalogFilesTab, ChunkTab, ImageTab, KnowledgeBaseTab, MarkdownTab, RetrieveTestTab, UploadExploreTab } from "./components/tabs";
 import {
   CREDIT_TIMEOUT,
   DELETE_KNOWLEDGE_BASE_TIMEOUT,
-} from "./components/undoDeleteTime";
+} from "./components/lib/undoDeleteTime";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 

@@ -7,7 +7,7 @@ type DuplicateFileNotificationProps = {
   setShowDeleteMessage: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const DuplicateFileNotification = ({
+export const DuplicateFileNotification = ({
   deletedFileName,
   setShowDeleteMessage,
 }: DuplicateFileNotificationProps) => {
@@ -38,4 +38,3 @@ const DuplicateFileNotification = ({
   );
 };
 
-export default DuplicateFileNotification;

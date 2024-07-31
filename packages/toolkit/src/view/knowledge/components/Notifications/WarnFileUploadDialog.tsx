@@ -9,7 +9,7 @@ export type WarnFileUploadDialogProps = {
   onLeave: () => void;
 };
 
-const WarnFileUploadDialog = ({
+export const WarnFileUploadDialog = ({
   open,
   setOpen,
   onStay,
@@ -56,5 +56,3 @@ const WarnFileUploadDialog = ({
     </Dialog.Root>
   );
 };
-
-export default WarnFileUploadDialog;

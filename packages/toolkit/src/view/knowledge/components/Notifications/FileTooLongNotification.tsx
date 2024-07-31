@@ -5,7 +5,7 @@ type FileTooLongNotificationProps = {
   fileName: string;
 };
 
-const FileTooLongNotification = ({
+export const FileTooLongNotification = ({
   handleCloseFileTooLongNotificationMessage,
   fileName,
 }: FileTooLongNotificationProps) => {
@@ -35,5 +35,3 @@ const FileTooLongNotification = ({
     </div>
   );
 };
-
-export default FileTooLongNotification;

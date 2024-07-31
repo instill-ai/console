@@ -25,11 +25,11 @@ import {
   useUploadKnowledgeBaseFile,
 } from "../../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../../lib/vdp-sdk/knowledge/types";
-import DuplicateFileNotification from "../Notifications/DuplicateFileNotification";
-import FileSizeNotification from "../Notifications/FileSizeNotification";
+import DuplicateFileNotification from "../notifications/DuplicateFileNotification";
+import FileSizeNotification from "../notifications/FileSizeNotification";
 // import FilePreview from "./FilePreview";
-import IncorrectFormatFileNotification from "../Notifications/IncorrectFormatFileNotification";
-import { FILE_ERROR_TIMEOUT } from "../undoDeleteTime";
+import IncorrectFormatFileNotification from "../notifications/IncorrectFormatFileNotification";
+import { FILE_ERROR_TIMEOUT } from "../lib/undoDeleteTime";
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024;
 
@@ -241,11 +241,10 @@ export const UploadExploreTab = ({
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${
-                      isDragging
-                        ? "border-semantic-accent-default"
-                        : "border-semantic-bg-line"
-                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
+                      ? "border-semantic-accent-default"
+                      : "border-semantic-bg-line"
+                      } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
                       setIsDragging(true);

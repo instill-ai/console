@@ -20,8 +20,8 @@ import {
 } from "../../../../lib/react-query-service/knowledge";
 import { File, KnowledgeBase } from "../../../../lib/vdp-sdk/knowledge/types";
 import FileDetailsOverlay from "../FileDetailsOverlay";
-import DeleteFileNotification from "../Notifications/DeleteFileNotification";
-import { DELETE_FILE_TIMEOUT } from "../undoDeleteTime";
+import { DELETE_FILE_TIMEOUT } from "../lib/undoDeleteTime";
+import { DeleteFileNotification } from "../notifications";
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -415,9 +415,8 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
                   .map((item, index) => (
                     <div
                       key={item.fileUid}
-                      className={`grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line ${
-                        index !== sortedData.length - 1 ? "" : ""
-                      }`}
+                      className={`grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line ${index !== sortedData.length - 1 ? "" : ""
+                        }`}
                     >
                       <div
                         className="flex items-center justify-center px-4 truncate cursor-pointer text-semantic-bg-secondary-alt-primary product-body-text-3-regular"
