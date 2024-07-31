@@ -60,6 +60,7 @@ export type Chunk = {
   startPos: number;
   endPos: number;
   originalFileUid: string;
+  type: string;
 };
 
 export type FileStatus =
