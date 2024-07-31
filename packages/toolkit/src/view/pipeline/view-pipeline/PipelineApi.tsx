@@ -114,7 +114,7 @@ export const PipelineApi = ({ pipeline, releases }: PipelineApiProps) => {
           <CodeString>
             {owner.id}/{pipeline?.id}
           </CodeString>{" "}
-          using Instill API.
+          using API.
         </div>
         <CodeBlock
           codeString={runSnippet}
