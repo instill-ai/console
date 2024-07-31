@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.74.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.73.1...@instill-ai/design-system-v0.74.0) (2024-07-31)
+
+
+### Features
+
+* add integration test for SDK ([#1315](https://github.com/instill-ai/console/issues/1315)) ([d247ec9](https://github.com/instill-ai/console/commit/d247ec9a539dd258530d1286c191ede3131014f0))
+
 ## [0.73.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.73.0...@instill-ai/design-system-v0.73.1) (2024-07-17)
 
 
