@@ -1,5 +1,5 @@
 import React from "react";
-import { Nullable } from "vitest";
+import { Nullable } from "@instill-ai/toolkit";
 
 import { Button, Icons, Separator, Skeleton } from "@instill-ai/design-system";
 
