@@ -4,6 +4,9 @@ import {
   useGetFileContent,
   useListChunks,
 } from "../../../lib/react-query-service/knowledge";
+import Markdown from 'markdown-to-jsx';
+import sanitizeHtml from "sanitize-html";
+
 
 type FileDetailsOverlayProps = {
   fileUid: string;
@@ -81,6 +84,8 @@ const FileDetailsOverlay = ({
         return <Icons.Check className="h-5 w-5" />;
     }
   }, [fileType]);
+  const sanitizedHtmlText = sanitizeHtml(displayContent ?? "");
+
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Content className="flex flex-col h-[90vh] max-w-[40vw]">
@@ -105,10 +110,11 @@ const FileDetailsOverlay = ({
               <Skeleton className="h-4 w-3/4" />
             </div>
           ) : (
-            <div
-              className="h-full overflow-y-auto px-4 pb-4 text-semantic-fg-primary product-body-text-3-regular"
-              dangerouslySetInnerHTML={{ __html: displayContent }}
-            />
+            // <div
+            //   className="h-full overflow-y-auto px-4 pb-4 text-semantic-fg-primary product-body-text-3-regular"
+            //   dangerouslySetInnerHTML={{ __html: displayContent }}
+            //   />
+            <Markdown>{sanitizedHtmlText}</Markdown>
           )}
         </ScrollArea.Root>
         <Dialog.Close />
