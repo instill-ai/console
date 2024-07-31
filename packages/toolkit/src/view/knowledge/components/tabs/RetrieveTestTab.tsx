@@ -90,16 +90,12 @@ export const RetrieveTestTab = ({
           <p className="mb-4 product-body-text-3-regular">
             Your knowledge base has been successfully created. Now, you can
             proceed to the{" "}
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                onGoToUpload();
-              }}
+            <button
+              onClick={onGoToUpload}
               className="text-semantic-accent-default underline"
             >
               Upload Documents page
-            </a>{" "}
+            </button>{" "}
             to upload and process your files.
           </p>
         </div>

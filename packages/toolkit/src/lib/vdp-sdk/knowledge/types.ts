@@ -1,5 +1,5 @@
 export type KnowledgeBase = {
-  chunks: any;
+  chunks: Chunk[];
   usage: number;
   kbId: string;
   name: string;

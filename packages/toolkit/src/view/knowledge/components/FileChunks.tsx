@@ -1,9 +1,8 @@
 import React from "react";
-import { Icons } from "@instill-ai/design-system";
+import { Icons, Nullable } from "@instill-ai/design-system";
 import { useGetFileContent, useListChunks } from "../../../lib/react-query-service/knowledge";
 import { Chunk, KnowledgeBase, KnowledgeFile } from "../../../lib/vdp-sdk/knowledge/types";
 import ChunkCard from "./ChunkCard";
-import { Nullable } from "vitest";
 
 type FileChunksProps = {
     file: KnowledgeFile;
