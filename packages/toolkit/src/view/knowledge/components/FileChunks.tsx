@@ -1,5 +1,5 @@
 import React from "react";
-import { Icons, Skeleton } from "@instill-ai/design-system";
+import { Icons } from "@instill-ai/design-system";
 import { useGetFileContent, useListChunks } from "../../../lib/react-query-service/knowledge";
 import { Chunk, KnowledgeBase, KnowledgeFile } from "../../../lib/vdp-sdk/knowledge/types";
 import ChunkCard from "./ChunkCard";
