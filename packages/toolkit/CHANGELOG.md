@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.97.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.96.2...@instill-ai/toolkit-v0.97.0) (2024-07-31)
+
+
+### Features
+
+* add integration test for SDK ([#1315](https://github.com/instill-ai/console/issues/1315)) ([d247ec9](https://github.com/instill-ai/console/commit/d247ec9a539dd258530d1286c191ede3131014f0))
+* make models public available ([#1329](https://github.com/instill-ai/console/issues/1329)) ([4207072](https://github.com/instill-ai/console/commit/420707227169b1aefeedefc92c2c0927045fa008))
+* move restapi component into generic type ([#1326](https://github.com/instill-ai/console/issues/1326)) ([fbaf1ab](https://github.com/instill-ai/console/commit/fbaf1ab3386d8edc767440d1431320354da2b5ec))
+* open up model public setting option ([#1333](https://github.com/instill-ai/console/issues/1333)) ([f61ec99](https://github.com/instill-ai/console/commit/f61ec996df204ef44a05dec786a930d86fa45fc8))
+* update subscription endpoint PLAN type ([#1323](https://github.com/instill-ai/console/issues/1323)) ([895c163](https://github.com/instill-ai/console/commit/895c163c4e3e601c7b9d77b51af0787d4def32ca))
+
+
+### Bug Fixes
+
+* fix model api snippet not correctly cast with double quote for authorization token ([#1330](https://github.com/instill-ai/console/issues/1330)) ([95535af](https://github.com/instill-ai/console/commit/95535aff152e15a40cecde1d6b7454ccd5efc970))
+* fix navlink wrongly highlight when user is in /explore and /feature page ([#1334](https://github.com/instill-ai/console/issues/1334)) ([24f4562](https://github.com/instill-ai/console/commit/24f45623a52330c86dcc6aa2cfcde285b42f2dae))
+* fix typo in the pipeline api tab ([#1332](https://github.com/instill-ai/console/issues/1332)) ([61180d7](https://github.com/instill-ai/console/commit/61180d7364a0083ca00933df8730d3882b74380d))
+* incorrect endpoint to run pipeline ([#1325](https://github.com/instill-ai/console/issues/1325)) ([f23ade0](https://github.com/instill-ai/console/commit/f23ade0d8a91c5343f67ea51d37e82c5adbca023))
+* **pipeline-editor:** fix not sanitized html for use-instill-form issue ([#1327](https://github.com/instill-ai/console/issues/1327)) ([8622126](https://github.com/instill-ai/console/commit/862212677c94fb483560ce3ac452a4b19229a4f9))
+* remove the bottom credits balance ([#1318](https://github.com/instill-ai/console/issues/1318)) ([943960c](https://github.com/instill-ai/console/commit/943960c2957a6389291ba01124bfadf33fef1e31))
+* unify how we handle error ([#1331](https://github.com/instill-ai/console/issues/1331)) ([5d79849](https://github.com/instill-ai/console/commit/5d79849e5b1920dc2296422c8a46968219ee9fbf))
+
+
+### Miscellaneous
+
+* replace pipeline type in toolkit with type in sdk ([#1319](https://github.com/instill-ai/console/issues/1319)) ([48de6c3](https://github.com/instill-ai/console/commit/48de6c366e29f17df7c1da22a203f210065404c4))
+
 ## [0.96.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.96.1...@instill-ai/toolkit-v0.96.2) (2024-07-23)
 
 
