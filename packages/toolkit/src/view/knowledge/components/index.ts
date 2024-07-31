@@ -10,3 +10,8 @@ export * from "./KnowledgeSearchSort";
 export * from "./MetadataPreview";
 export * from "./OptionSelectButton";
 export * from "./Sidebar";
+export * from "./EmptyState";
+export * from "./FileTableRow";
+export * from "./FileTableHeader";
+export * from "./StatusTag";
+export * from "./FileTable";
