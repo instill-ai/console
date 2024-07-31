@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { KnowledgeBase } from "../../../../../sdk/src/knowledge/types";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { KnowledgeBase } from "./../../../../dist/lib/vdp-sdk/knowledge/types.d";
 
 async function updateKnowledgeBaseMutation({
   payload,
@@ -23,9 +23,9 @@ async function updateKnowledgeBaseMutation({
   }
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.put<{
-    knowledge_base: KnowledgeBase;
+    knowledgeBase: KnowledgeBase;
   }>(`/namespaces/${ownerId}/knowledge-bases/${kbId}`, payload);
-  return response.data.knowledge_base;
+  return response.data.knowledgeBase;
 }
 
 export function useUpdateKnowledgeBase() {

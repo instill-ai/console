@@ -17,9 +17,9 @@ async function deleteKnowledgeBaseMutation({
   }
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.delete<{
-    knowledge_base: KnowledgeBase;
+    knowledgeBase: KnowledgeBase;
   }>(`/namespaces/${ownerId}/knowledge-bases/${kbId}`);
-  return response.data.knowledge_base;
+  return response.data.knowledgeBase;
 }
 
 export function useDeleteKnowledgeBase() {
