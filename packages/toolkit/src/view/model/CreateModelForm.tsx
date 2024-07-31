@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Visibility } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -10,7 +11,9 @@ import {
   getModelHardwareToolkit,
   getModelInstanceTaskToolkit,
   getModelRegionToolkit,
+  Icons,
   Input,
+  RadioGroup,
   Select,
   Textarea,
   toast,
@@ -391,14 +394,14 @@ export const CreateModelForm = () => {
                 }}
               />
               {/* INS-5438: We tempoarily hide the private option for better visibility */}
-              {/* <RadioGroup.Root
+              <RadioGroup.Root
                 onValueChange={(
                   value: Exclude<Visibility, "VISIBILITY_UNSPECIFIED">,
                 ) => {
                   form.setValue("visibility", value);
                 }}
                 className="!flex flex-col gap-y-4"
-                defaultValue={InstillModelVisibility[0]}
+                defaultValue={InstillModelVisibility[1]}
               >
                 <div className="flex items-center space-x-3">
                   <label
@@ -421,7 +424,7 @@ export const CreateModelForm = () => {
                     </div>
                   </label>
                 </div>
-                <div className="flex items-center space-x-3">
+                {/* <div className="flex items-center space-x-3">
                   <label
                     htmlFor="radio-private"
                     className="flex flex-row gap-x-3"
@@ -442,8 +445,8 @@ export const CreateModelForm = () => {
                       </p>
                     </div>
                   </label>
-                </div>
-              </RadioGroup.Root> */}
+                </div> */}
+              </RadioGroup.Root>
               <Form.Field
                 control={form.control}
                 name="region"
