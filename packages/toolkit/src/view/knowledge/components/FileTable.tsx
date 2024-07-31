@@ -3,7 +3,6 @@ import { File, FileStatus } from "../../../../../sdk/src/knowledge/types";
 import { FileTableRow } from "./FileTableRow";
 import { FileTableHeader } from "./FileTableHeader";
 
-
 type FileTableProps = {
     files: File[];
     sortConfig: {
@@ -24,16 +23,15 @@ export const FileTable: React.FC<FileTableProps> = ({
     handleFileClick,
     fileToDelete,
 }) => {
-
     const getStatusSortValue = (status: FileStatus): number => {
-        const statusOrder = {
-            NOTSTARTED: 0,
-            WAITING: 1,
-            CONVERTING: 2,
-            CHUNKING: 3,
-            EMBEDDING: 4,
-            COMPLETED: 5,
-            FAILED: 6,
+        const statusOrder: Record<FileStatus, number> = {
+            FILE_PROCESS_STATUS_NOTSTARTED: 0,
+            FILE_PROCESS_STATUS_WAITING: 1,
+            FILE_PROCESS_STATUS_CONVERTING: 2,
+            FILE_PROCESS_STATUS_CHUNKING: 3,
+            FILE_PROCESS_STATUS_EMBEDDING: 4,
+            FILE_PROCESS_STATUS_COMPLETED: 5,
+            FILE_PROCESS_STATUS_FAILED: 6,
         };
         return statusOrder[status] ?? -1;
     };
@@ -47,12 +45,8 @@ export const FileTable: React.FC<FileTableProps> = ({
             let bValue: string | number | Date | boolean = b[sortConfig.key];
 
             if (sortConfig.key === "processStatus") {
-                aValue = getStatusSortValue(
-                    a.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus
-                );
-                bValue = getStatusSortValue(
-                    b.processStatus.replace("FILE_PROCESS_STATUS_", "") as FileStatus
-                );
+                aValue = getStatusSortValue(a.processStatus as FileStatus);
+                bValue = getStatusSortValue(b.processStatus as FileStatus);
             } else if (
                 sortConfig.key === "size" ||
                 sortConfig.key === "totalChunks" ||
