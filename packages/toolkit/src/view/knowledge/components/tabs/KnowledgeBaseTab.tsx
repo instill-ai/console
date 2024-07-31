@@ -29,6 +29,7 @@ type KnowledgeBaseTabProps = {
   onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
   pendingDeletions: string[];
 };
+
 type EditKnowledgeDialogData = {
   name: string;
   description?: string;
@@ -55,34 +56,31 @@ export const KnowledgeBaseTab = ({
   const [selectedSortAnchor, setSelectedSortAnchor] =
     React.useState<SortAnchor>("createTime");
 
-  const { enabledQuery } = useInstillStore(
+  const { enabledQuery, selectedNamespace } = useInstillStore(
     useShallow((store: InstillStore) => ({
       enabledQuery: store.enabledQuery,
-    })),
+      selectedNamespace: store.navigationNamespaceAnchor,
+    }))
   );
 
-  const me = useAuthenticatedUser({
-    enabled: enabledQuery,
-    accessToken,
-  });
-
+  console.log("selectedNamespace", selectedNamespace);
   const {
     data: knowledgeBases,
     isLoading,
     refetch,
   } = useGetKnowledgeBases({
     accessToken,
-    ownerId: me.data?.id ?? null,
-    enabled: enabledQuery && !!me.data?.id,
+    ownerId: selectedNamespace ?? null,
+    enabled: enabledQuery && !!selectedNamespace,
   });
 
   const createKnowledgeBase = useCreateKnowledgeBase();
   const updateKnowledgeBase = useUpdateKnowledgeBase();
 
   const handleCreateKnowledgeSubmit = async (
-    data: z.infer<typeof CreateKnowledgeFormSchema>,
+    data: z.infer<typeof CreateKnowledgeFormSchema>
   ) => {
-    if (!me.data?.id || !accessToken) return;
+    if (!accessToken) return;
 
     try {
       await createKnowledgeBase.mutateAsync({
@@ -90,9 +88,9 @@ export const KnowledgeBaseTab = ({
           name: data.name,
           description: data.description,
           tags: data.tags ?? [],
-          ownerId: "",
+          ownerId: data.namespaceId,
         },
-        ownerId: me.data.id,
+        ownerId: data.namespaceId,
         accessToken,
       });
       refetch();
@@ -104,13 +102,13 @@ export const KnowledgeBaseTab = ({
 
   const handleUpdateKnowledgeBase = async (
     data: EditKnowledgeDialogData,
-    kbId: string,
+    kbId: string
   ) => {
-    if (!me.data?.id || !accessToken) return;
+    if (!selectedNamespace || !accessToken) return;
 
     try {
       await updateKnowledgeBase.mutateAsync({
-        ownerId: me.data.id,
+        ownerId: selectedNamespace,
         kbId: kbId,
         payload: {
           name: data.name,
@@ -126,7 +124,7 @@ export const KnowledgeBaseTab = ({
   };
 
   const handleCloneKnowledgeBase = async (knowledgeBase: KnowledgeBase) => {
-    if (!me.data?.id || !accessToken) return;
+    if (!selectedNamespace || !accessToken) return;
 
     const clonedKnowledgeBase = {
       name: `${knowledgeBase.name}-clone`,
@@ -138,9 +136,9 @@ export const KnowledgeBaseTab = ({
       await createKnowledgeBase.mutateAsync({
         payload: {
           ...clonedKnowledgeBase,
-          ownerId: me.data?.id ?? "",
+          ownerId: selectedNamespace,
         },
-        ownerId: me.data?.id ?? "",
+        ownerId: selectedNamespace,
         accessToken,
       });
       refetch();
@@ -157,7 +155,7 @@ export const KnowledgeBaseTab = ({
       .filter(
         (kb) =>
           kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          kb.description.toLowerCase().includes(searchTerm.toLowerCase()),
+          kb.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
     filtered.sort((a, b) => {
@@ -196,7 +194,7 @@ export const KnowledgeBaseTab = ({
     pendingDeletions,
   ]);
 
-  const hasReachedLimit = (knowledgeBases?.length ?? 0) >= 3;
+  const hasReachedLimit = (filteredAndSortedKnowledgeBases.length ?? 0) >= 3;
 
   return (
     <div className="flex flex-col">

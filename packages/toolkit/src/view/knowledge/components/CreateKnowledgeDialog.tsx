@@ -1,4 +1,3 @@
-// CreateKnowledgeDialog.tsx
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -14,19 +13,14 @@ import {
 } from "@instill-ai/design-system";
 
 import { EntitySelector } from "../../../components";
-import {
-  InstillStore,
-  useInstillStore,
-  useRouteInfo,
-  useShallow,
-} from "../../../lib";
+import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 
 const CreateKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().optional(),
   tags: z.array(z.string()).optional(),
-  namespaceId: z.string().min(1, { message: "Owner is required" }),
+  namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
 type CreateKnowledgeFormProps = {
@@ -42,13 +36,12 @@ export const CreateKnowledgeDialog = ({
   onClose: () => void;
   onSubmit: CreateKnowledgeFormProps["onSubmit"];
 }) => {
-  const { navigationNamespaceAnchor } = useInstillStore(
+  const { selectedNamespace } = useInstillStore(
     useShallow((store: InstillStore) => ({
-      navigationNamespaceAnchor: store.navigationNamespaceAnchor,
-    })),
+      selectedNamespace: store.navigationNamespaceAnchor,
+    }))
   );
 
-  const routeInfo = useRouteInfo();
   const userNamespaces = useUserNamespaces();
 
   const form = useForm<z.infer<typeof CreateKnowledgeFormSchema>>({
@@ -57,14 +50,13 @@ export const CreateKnowledgeDialog = ({
       name: "",
       description: "",
       tags: [],
-      namespaceId: "",
+      namespaceId: selectedNamespace || "",
     },
     mode: "onChange",
   });
 
   const { formState, watch, setValue } = form;
   const nameValue = watch("name");
-  // const namespaceIdValue = watch("namespaceId");
 
   const formatName = (name: string) =>
     name
@@ -76,16 +68,14 @@ export const CreateKnowledgeDialog = ({
 
   React.useEffect(() => {
     if (isOpen) {
-      const initialNamespaceId =
-        navigationNamespaceAnchor || routeInfo?.data?.namespaceId || "";
       form.reset({
         name: "",
         description: "",
         tags: [],
-        namespaceId: initialNamespaceId,
+        namespaceId: selectedNamespace || "",
       });
     }
-  }, [isOpen, navigationNamespaceAnchor, routeInfo?.data?.namespaceId, form]);
+  }, [isOpen, selectedNamespace, form]);
 
   return (
     <Dialog.Root
@@ -112,63 +102,58 @@ export const CreateKnowledgeDialog = ({
               });
             })}
           >
-            {/* Form fields */}
-            <div className="flex items-center justify-start gap-4">
-              <Form.Field
-                control={form.control}
-                name="namespaceId"
-                render={({ field }) => (
-                  <Form.Item className="w-1/2">
-                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
-                      Owner
-                    </Form.Label>
-                    <Form.Control>
-                      <EntitySelector
-                        value={field.value}
-                        onChange={(value: string) => {
-                          setValue("namespaceId", value, {
-                            shouldValidate: true,
-                          });
-                        }}
-                        data={userNamespaces}
+            <Form.Field
+              control={form.control}
+              name="namespaceId"
+              render={({ field }) => (
+                <Form.Item>
+                  <Form.Label className="text-semantic-fg-primary product-button-button-2">
+                    Owner
+                  </Form.Label>
+                  <Form.Control>
+                    <EntitySelector
+                      value={field.value}
+                      onChange={(value: string) => {
+                        setValue("namespaceId", value, {
+                          shouldValidate: true,
+                        });
+                      }}
+                      data={userNamespaces}
+                    />
+                  </Form.Control>
+                  <Form.Message />
+                </Form.Item>
+              )}
+            />
+            <Icons.SlashDivider className="h-8 w-8 stroke-semantic-fg-secondary stroke-1" />
+            <Form.Field
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <Form.Item className="-ml-4 w-1/2">
+                  <Form.Label className="text-semantic-fg-primary product-button-button-2">
+                    Knowledge base name
+                  </Form.Label>
+                  <Form.Control>
+                    <Input.Root>
+                      <Input.Core
+                        {...field}
+                        id={field.name}
+                        placeholder="Knowledge base name"
                       />
-                    </Form.Control>
-                    <div className="h-6">
-                      <Form.Message className="!mt-0.5 product-body-text-4-regular" />
-                    </div>
-                  </Form.Item>
-                )}
-              />
-              <Icons.SlashDivider className="h-8 w-8 stroke-semantic-fg-secondary stroke-1" />
-              <Form.Field
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <Form.Item className="-ml-4 w-1/2">
-                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
-                      Knowledge base name
-                    </Form.Label>
-                    <Form.Control>
-                      <Input.Root>
-                        <Input.Core
-                          {...field}
-                          id={field.name}
-                          placeholder="Knowledge base name"
-                        />
-                      </Input.Root>
-                    </Form.Control>
-                    <div className="h-6">
-                      {nameValue && !isNameValid && (
-                        <p className="!mt-0.5 text-semantic-fg-secondary product-body-text-4-regular">
-                          Name will be transformed to: {formattedName}
-                        </p>
-                      )}
-                      <Form.Message className="!mt-0.5 product-body-text-4-regular" />
-                    </div>
-                  </Form.Item>
-                )}
-              />
-            </div>
+                    </Input.Root>
+                  </Form.Control>
+                  <div className="h-6">
+                    {nameValue && !isNameValid && (
+                      <p className="!mt-0.5 text-semantic-fg-secondary product-body-text-4-regular">
+                        Name will be transformed to: {formattedName}
+                      </p>
+                    )}
+                    <Form.Message className="!mt-0.5 product-body-text-4-regular" />
+                  </div>
+                </Form.Item>
+              )}
+            />
 
             <Form.Field
               control={form.control}
@@ -213,5 +198,3 @@ export const CreateKnowledgeDialog = ({
     </Dialog.Root>
   );
 };
-
-export default CreateKnowledgeDialog;

@@ -39,10 +39,11 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [isProcessed, setIsProcessed] = React.useState(false);
   const [pendingDeletions, setPendingDeletions] = React.useState<string[]>([]);
 
-  const { accessToken, enabledQuery } = useInstillStore(
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow((store: InstillStore) => ({
       accessToken: store.accessToken,
       enabledQuery: store.enabledQuery,
+      selectedNamespace: store.navigationNamespaceAnchor,
     })),
   );
 
@@ -54,16 +55,16 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
   const { refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
     accessToken,
-    ownerId: me.data?.id ?? null,
-    enabled: enabledQuery && !!me.data?.id,
+    ownerId: selectedNamespace ?? null,
+    enabled: enabledQuery && !!selectedNamespace,
   });
 
   const { data: files } = useListKnowledgeBaseFiles({
-    namespaceId: me.data?.id ?? null,
+    namespaceId: selectedNamespace ?? null,
     knowledgeBaseId: selectedKnowledgeBase?.kbId ?? "",
     accessToken,
     enabled:
-      enabledQuery && Boolean(me.data?.id) && Boolean(selectedKnowledgeBase),
+      enabledQuery && Boolean(selectedNamespace) && Boolean(selectedKnowledgeBase),
   });
 
   React.useEffect(() => {
@@ -93,11 +94,11 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   };
 
   const actuallyDeleteKnowledgeBase = async () => {
-    if (!me.data?.id || !accessToken || !knowledgeBaseToDelete) return;
+    if (!selectedNamespace || !accessToken || !knowledgeBaseToDelete) return;
 
     try {
       await deleteKnowledgeBase.mutateAsync({
-        ownerId: me.data.id,
+        ownerId: selectedNamespace,
         kbId: knowledgeBaseToDelete.kbId,
         accessToken,
       });
@@ -148,6 +149,12 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     }
     return () => clearTimeout(timer);
   }, [showDeleteMessage]);
+
+  React.useEffect(() => {
+    // Reset selected knowledge base when namespace changes
+    setSelectedKnowledgeBase(null);
+    setActiveTab("knowledge-base");
+  }, [selectedNamespace]);
 
   return (
     <div className="h-screen w-full bg-semantic-bg-alt-primary">
