@@ -75,6 +75,13 @@ export const KnowledgeBaseTab = ({
   const createKnowledgeBase = useCreateKnowledgeBase();
   const updateKnowledgeBase = useUpdateKnowledgeBase();
 
+  // Refetch when the namespace changes
+  React.useEffect(() => {
+    if (selectedNamespace) {
+      refetch();
+    }
+  }, [selectedNamespace, refetch]);
+
   const handleCreateKnowledgeSubmit = async (
     data: z.infer<typeof CreateKnowledgeFormSchema>
   ) => {
