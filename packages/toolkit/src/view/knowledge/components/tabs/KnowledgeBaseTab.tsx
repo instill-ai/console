@@ -14,7 +14,7 @@ import {
   useGetKnowledgeBases,
   useUpdateKnowledgeBase,
 } from "../../../../lib/react-query-service/knowledge";
-import { KnowledgeBase } from "../../../../lib/vdp-sdk/knowledge/types";
+import { KnowledgeBase } from "../../../../../../sdk/src/knowledge/types";
 import { CreateKnowledgeBaseCard } from "../CreateKnowledgeBaseCard";
 import { CreateKnowledgeDialog } from "../CreateKnowledgeDialog";
 import { KnowledgeBaseCard } from "../KnowledgeBaseCard";

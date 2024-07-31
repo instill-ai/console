@@ -10,7 +10,7 @@ import {
   Chunk,
   KnowledgeBase,
   KnowledgeFile,
-} from "../../../lib/vdp-sdk/knowledge/types";
+} from "../../../../../sdk/src/knowledge/types";
 import ChunkCard from "./ChunkCard";
 
 type FileChunksProps = {

@@ -14,7 +14,7 @@ import {
   useGetKnowledgeBases,
   useListKnowledgeBaseFiles,
 } from "../../lib/react-query-service/knowledge";
-import { KnowledgeBase } from "../../lib/vdp-sdk/knowledge/types";
+import { KnowledgeBase } from "../../../../sdk/src/knowledge/types";
 import { DeleteKnowledgeBaseNotification, CreditUsageFileNotification } from "./components/notifications";
 import { Sidebar } from "./components";
 import { CatalogFilesTab, ChunkTab, ImageTab, KnowledgeBaseTab, MarkdownTab, RetrieveTestTab, UploadExploreTab } from "./components/tabs";

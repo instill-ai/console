@@ -3,6 +3,7 @@ import React from "react";
 import {
   Button,
   Icons,
+  Nullable,
   Separator,
   Skeleton,
   Tag,
@@ -18,7 +19,7 @@ import {
   useDeleteKnowledgeBaseFile,
   useListKnowledgeBaseFiles,
 } from "../../../../lib/react-query-service/knowledge";
-import { File, KnowledgeBase } from "../../../../lib/vdp-sdk/knowledge/types";
+import { File, KnowledgeBase } from "../../../../../../sdk/src/knowledge/types";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { DELETE_FILE_TIMEOUT } from "../lib/undoDeleteTime";
 import { DeleteFileNotification } from "../notifications";
@@ -108,10 +109,10 @@ export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
 
   const deleteKnowledgeBaseFile = useDeleteKnowledgeBaseFile();
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
-  const [fileToDelete, setFileToDelete] = React.useState<File | null>(null);
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const [fileToDelete, setFileToDelete] = React.useState<Nullable<File>>(null);
+  const timeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
-  const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = React.useState<Nullable<File>>(null);
 
   React.useEffect(() => {
     let interval: NodeJS.Timeout | null = null;

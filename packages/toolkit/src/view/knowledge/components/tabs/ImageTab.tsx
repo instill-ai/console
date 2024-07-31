@@ -9,7 +9,7 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 
-import { KnowledgeBase } from "../../../../lib/vdp-sdk/knowledge/types";
+import { KnowledgeBase } from "../../../../../../sdk/src/knowledge/types";
 import MetadataPreview from "../MetadataPreview";
 
 type ImageTabProps = {
@@ -101,9 +101,8 @@ export const ImageTab = ({ knowledgeBase }: ImageTabProps) => {
               >
                 <p className=" product-button-button-1">{item.fileName}</p>
                 <Icons.ChevronDown
-                  className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${
-                    expandedFiles.includes(index) ? "rotate-180" : ""
-                  }`}
+                  className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${expandedFiles.includes(index) ? "rotate-180" : ""
+                    }`}
                 />
               </div>
               {expandedFiles.includes(index) && (
@@ -126,7 +125,7 @@ export const ImageTab = ({ knowledgeBase }: ImageTabProps) => {
                             </span>
                             <Switch
                               checked={item.status}
-                              onCheckedChange={() => {}}
+                              onCheckedChange={() => { }}
                               className=""
                             ></Switch>
                           </div>

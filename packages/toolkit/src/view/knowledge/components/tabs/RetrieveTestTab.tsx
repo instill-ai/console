@@ -3,7 +3,7 @@ import { Separator } from "@instill-ai/design-system";
 import { CodeBlock } from "../../../../components";
 import { CodeString } from "../../../../components/CodeString";
 import { defaultCodeSnippetStyles } from "../../../../constant";
-import { KnowledgeBase } from "../../../../lib/vdp-sdk/knowledge/types";
+import { KnowledgeBase } from "../../../../../../sdk/src/knowledge/types";
 
 type RetrieveTestTabProps = {
   knowledgeBase: KnowledgeBase;

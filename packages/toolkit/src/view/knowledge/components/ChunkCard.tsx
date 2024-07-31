@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Icons, Separator, Switch, Tag } from "@instill-ai/design-system";
 
-import { Chunk } from "../../../lib/vdp-sdk/knowledge/types";
+import { Chunk } from "../../../../../sdk/src/knowledge/types";
 
 type ChunkCardProps = {
   chunk: Chunk;

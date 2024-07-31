@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Nullable } from "@instill-ai/toolkit";
 
+import { File } from "../../../../../sdk/src/knowledge/types";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { File } from "../../vdp-sdk/knowledge/types";
 
 export function useGetFileDetails({
   fileUid,
