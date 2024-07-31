@@ -102,59 +102,62 @@ export const CreateKnowledgeDialog = ({
               });
             })}
           >
-            <Form.Field
-              control={form.control}
-              name="namespaceId"
-              render={({ field }) => (
-                <Form.Item>
-                  <Form.Label className="text-semantic-fg-primary product-button-button-2">
-                    Owner
-                  </Form.Label>
-                  <Form.Control>
-                    <EntitySelector
-                      value={field.value}
-                      onChange={(value: string) => {
-                        setValue("namespaceId", value, {
-                          shouldValidate: true,
-                        });
-                      }}
-                      data={userNamespaces}
-                    />
-                  </Form.Control>
-                  <Form.Message />
-                </Form.Item>
-              )}
-            />
-            <Icons.SlashDivider className="h-8 w-8 stroke-semantic-fg-secondary stroke-1" />
-            <Form.Field
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <Form.Item className="-ml-4 w-1/2">
-                  <Form.Label className="text-semantic-fg-primary product-button-button-2">
-                    Knowledge base name
-                  </Form.Label>
-                  <Form.Control>
-                    <Input.Root>
-                      <Input.Core
-                        {...field}
-                        id={field.name}
-                        placeholder="Knowledge base name"
+            <div className="flex items-center justify-start gap-4">
+              <Form.Field
+                control={form.control}
+                name="namespaceId"
+                render={({ field }) => (
+                  <Form.Item className="w-1/2">
+                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
+                      Owner
+                    </Form.Label>
+                    <Form.Control>
+                      <EntitySelector
+                        value={field.value}
+                        onChange={(value: string) => {
+                          setValue("namespaceId", value, {
+                            shouldValidate: true,
+                          });
+                        }}
+                        data={userNamespaces}
                       />
-                    </Input.Root>
-                  </Form.Control>
-                  <div className="h-6">
-                    {nameValue && !isNameValid && (
-                      <p className="!mt-0.5 text-semantic-fg-secondary product-body-text-4-regular">
-                        Name will be transformed to: {formattedName}
-                      </p>
-                    )}
-                    <Form.Message className="!mt-0.5 product-body-text-4-regular" />
-                  </div>
-                </Form.Item>
-              )}
-            />
-
+                    </Form.Control>
+                    <div className="h-6">
+                      <Form.Message className="!mt-0.5 product-body-text-4-regular" />
+                    </div>
+                  </Form.Item>
+                )}
+              />
+              <Icons.SlashDivider className="h-8 w-8 stroke-semantic-fg-secondary stroke-1" />
+              <Form.Field
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <Form.Item className="-ml-4 w-1/2">
+                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
+                      Knowledge base name
+                    </Form.Label>
+                    <Form.Control>
+                      <Input.Root>
+                        <Input.Core
+                          {...field}
+                          id={field.name}
+                          placeholder="Knowledge base name"
+                        />
+                      </Input.Root>
+                    </Form.Control>
+                    <div className="h-6">
+                      {nameValue && !isNameValid && (
+                        <p className="!mt-0.5 text-semantic-fg-secondary product-body-text-4-regular">
+                          Name will be transformed to: {formattedName}
+                        </p>
+                      )}
+                      <Form.Message className="!mt-0.5 product-body-text-4-regular" />
+                    </div>
+                  </Form.Item>
+                )}
+              />
+            </div>
             <Form.Field
               control={form.control}
               name="description"

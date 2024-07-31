@@ -77,7 +77,6 @@ const Menu = ({ onDelete, onEdit, onDuplicate, disabled }: MenuProps) => {
     </React.Fragment>
   );
 };
-
 type CreateKnowledgeBaseCardProps = {
   knowledgeBase: KnowledgeBase;
   onCardClick: () => void;
@@ -101,6 +100,7 @@ export const CreateKnowledgeBaseCard = ({
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
   const [isHovered, setIsHovered] = React.useState(false);
+  const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
 
   const { accessToken, enabledQuery } = useInstillStore(
     useShallow((store: InstillStore) => ({
@@ -127,12 +127,12 @@ export const CreateKnowledgeBaseCard = ({
       : [];
 
     return `
-    Converting pipeline ID: ${knowledgeBase.convertingPipelines?.[0] || "N/A"}
-    Splitting pipeline ID: ${knowledgeBase.splittingPipelines?.[0] || "N/A"}
-    Embedding pipeline ID: ${knowledgeBase.embeddingPipelines?.[0] || "N/A"}
-    Files #: ${knowledgeBase.totalFiles || "N/A"}
-    Text Chunks #: ${textChunks.length}
-  `;
+Converting pipeline ID: ${knowledgeBase.convertingPipelines?.[0] || "N/A"}
+Splitting pipeline ID: ${knowledgeBase.splittingPipelines?.[0] || "N/A"}
+Embedding pipeline ID: ${knowledgeBase.embeddingPipelines?.[0] || "N/A"}
+Files #: ${knowledgeBase.totalFiles || "N/A"}
+Text Chunks #: ${textChunks.length}
+    `.trim();
   }, [isHovered, isLoadingChunks, chunks, knowledgeBase]);
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -159,6 +159,13 @@ export const CreateKnowledgeBaseCard = ({
     await onUpdateKnowledgeBase(data, knowledgeBase.kbId);
     setEditDialogIsOpen(false);
   };
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePosition({
+      x: e.clientX - rect.left - 300,
+      y: e.clientY - rect.top - 150,
+    });
+  };
 
   return (
     <React.Fragment>
@@ -170,6 +177,7 @@ export const CreateKnowledgeBaseCard = ({
               onClick={onCardClick}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
+              onMouseMove={handleMouseMove}
             >
               <div className="flex items-center justify-between">
                 <div className="product-headings-heading-4">
@@ -195,14 +203,15 @@ export const CreateKnowledgeBaseCard = ({
           </Tooltip.Trigger>
           <Tooltip.Portal>
             <Tooltip.Content
-              className="w-[360px] rounded-md bg-semantic-bg-primary p-4 shadow-lg !z-10"
-              sideOffset={5}
-              side="bottom"
-              align="end"
+              className="absolute w-[300px] max-w-[300px] rounded-md bg-semantic-bg-primary p-4 shadow-lg !z-10"
+              style={{
+                left: `${mousePosition.x}px`,
+                top: `${mousePosition.y}px`,
+              }}
             >
-              <pre className="whitespace-pre-wrap text-xs">
+              <div className="whitespace-pre-wrap text-xs break-words">
                 {tooltipContent}
-              </pre>
+              </div>
               <Tooltip.Arrow className="fill-semantic-bg-primary" />
             </Tooltip.Content>
           </Tooltip.Portal>
