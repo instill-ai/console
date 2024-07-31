@@ -10,6 +10,7 @@ import {
   Form,
   Icons,
   Input,
+  Nullable,
   Separator,
 } from "@instill-ai/design-system";
 
@@ -25,10 +26,8 @@ import {
   useUploadKnowledgeBaseFile,
 } from "../../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../../lib/vdp-sdk/knowledge/types";
-import DuplicateFileNotification from "../notifications/DuplicateFileNotification";
-import FileSizeNotification from "../notifications/FileSizeNotification";
 // import FilePreview from "./FilePreview";
-import IncorrectFormatFileNotification from "../notifications/IncorrectFormatFileNotification";
+import { IncorrectFormatFileNotification, DuplicateFileNotification, FileSizeNotification } from "../notifications";
 import { FILE_ERROR_TIMEOUT } from "../lib/undoDeleteTime";
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024;
@@ -92,11 +91,11 @@ export const UploadExploreTab = ({
     React.useState(false);
   const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
-  const fileTooLargeTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
-  const unsupportedFileTypeTimeoutRef = React.useRef<NodeJS.Timeout | null>(
+  const fileTooLargeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
+  const unsupportedFileTypeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(
     null,
   );
-  const duplicateFileTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const duplicateFileTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
   const [isProcessing, setIsProcessing] = React.useState(false);
