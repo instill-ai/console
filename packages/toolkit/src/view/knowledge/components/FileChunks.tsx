@@ -1,4 +1,5 @@
-import { Icons, Nullable } from "@instill-ai/design-system";
+import React from "react";
+import { cn, Icons, Nullable } from "@instill-ai/design-system";
 import {
   useGetFileContent,
   useListChunks,
@@ -32,13 +33,10 @@ const FileChunks = ({
   onChunkClick,
   onRetrievableToggle,
 }: FileChunksProps) => {
-
-  const isProcessing = file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED";
-
-  const { data: chunks } = useListChunks({
+  const { data: chunks, refetch } = useListChunks({
     kbId: knowledgeBase.kbId,
     accessToken: accessToken || null,
-    enabled: expanded && !isProcessing,
+    enabled: expanded,
     ownerId: knowledgeBase.ownerName,
     fileUid: file.fileUid,
   });
@@ -47,9 +45,11 @@ const FileChunks = ({
     fileUid: file.fileUid,
     kbId: knowledgeBase.kbId,
     accessToken: accessToken || null,
-    enabled: expanded && !isProcessing,
+    enabled: expanded,
     ownerId: knowledgeBase.ownerName,
   });
+
+  const isProcessing = file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED";
 
   const handleToggleExpand = () => {
     if (!isProcessing) {
@@ -57,22 +57,46 @@ const FileChunks = ({
     }
   };
 
+  React.useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+
+    // Set up an interval to refetch chunks if the file is still processing
+    if (isProcessing) {
+      interval = setInterval(() => {
+        refetch();
+      }, 5000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [isProcessing, refetch]);
+
   return (
     <div className="mb-4">
       <div
-        className={`mb-4 flex items-center space-x-2 ${isProcessing ? "cursor-not-allowed" : "cursor-pointer"
-          }`}
+        className={cn(
+          "mb-4 flex items-center space-x-2",
+          isProcessing ? "cursor-not-allowed" : "cursor-pointer"
+        )}
         onClick={handleToggleExpand}
       >
         <Icons.ChevronDown
-          className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${expanded && !isProcessing ? "" : "-rotate-90"
-            } ${isProcessing ? "opacity-50" : ""}`}
+          className={cn(
+            "h-4 w-4 stroke-semantic-fg-primary transition-transform",
+            expanded && !isProcessing ? "" : "-rotate-90",
+            isProcessing ? "opacity-50" : ""
+          )}
         />
         <p
-          className={`${isProcessing
-            ? "text-semantic-fg-disabled"
-            : "text-semantic-fg-secondary"
-            } font-semibold text-[16px] leading-4 mr-6`}
+          className={cn(
+            "font-semibold text-[16px] leading-4 mr-6",
+            isProcessing
+              ? "text-semantic-fg-disabled"
+              : "text-semantic-fg-secondary"
+          )}
         >
           {file.name}
         </p>

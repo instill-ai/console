@@ -2,6 +2,7 @@ import React from "react";
 import { File, FileStatus } from "../../../lib/react-query-service/knowledge/types";
 import { FileTableRow } from "./FileTableRow";
 import { FileTableHeader } from "./FileTableHeader";
+import { getStatusSortValue } from "./lib/functions";
 
 type FileTableProps = {
     files: File[];
@@ -23,18 +24,6 @@ export const FileTable = ({
     handleFileClick,
     fileToDelete,
 }: FileTableProps) => {
-    const getStatusSortValue = (status: FileStatus): number => {
-        const statusOrder: Record<FileStatus, number> = {
-            FILE_PROCESS_STATUS_NOTSTARTED: 0,
-            FILE_PROCESS_STATUS_WAITING: 1,
-            FILE_PROCESS_STATUS_CONVERTING: 2,
-            FILE_PROCESS_STATUS_CHUNKING: 3,
-            FILE_PROCESS_STATUS_EMBEDDING: 4,
-            FILE_PROCESS_STATUS_COMPLETED: 5,
-            FILE_PROCESS_STATUS_FAILED: 6,
-        };
-        return statusOrder[status] ?? -1;
-    };
 
     const sortedData = React.useMemo(() => {
         if (!files) return [];

@@ -2,12 +2,13 @@ import React from "react";
 import Markdown from "markdown-to-jsx";
 import sanitizeHtml from "sanitize-html";
 
-import { Dialog, Icons, ScrollArea, Skeleton } from "@instill-ai/design-system";
+import { Dialog, ScrollArea, Skeleton } from "@instill-ai/design-system";
 
 import {
   useGetFileContent,
   useListChunks,
 } from "../../../lib/react-query-service/knowledge";
+import { getFileIcon } from "./lib/functions";
 
 type FileDetailsOverlayProps = {
   fileUid: string;
@@ -74,18 +75,8 @@ const FileDetailsOverlay = ({
       fileContent ? highlightChunkInContent(fileContent, selectedChunkUid) : "",
     [fileContent, highlightChunkInContent, selectedChunkUid],
   );
-  const getFileIcon = React.useCallback(() => {
-    switch (fileType.toUpperCase()) {
-      case "FILE_TYPE_MARKDOWN":
-        return <Icons.MDFile className="h-5 w-5" />;
-      case "FILE_TYPE_TEXT":
-        return <Icons.TXTFile className="h-5 w-5" />;
-      case "FILE_TYPE_PDF":
-        return <Icons.PDFFile className="h-5 w-5" />;
-      default:
-        return <Icons.Check className="h-5 w-5" />;
-    }
-  }, [fileType]);
+
+  const fileIcon = React.useMemo(() => getFileIcon(fileType), [fileType]);
   const sanitizedHtmlText = sanitizeHtml(displayContent ?? "");
 
   return (
@@ -93,7 +84,7 @@ const FileDetailsOverlay = ({
       <Dialog.Content className="flex flex-col h-[90vh] max-w-[40vw]">
         <div className="flex-shrink-0 mb-3 flex flex-row space-x-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs overflow-hidden">
-            {getFileIcon()}
+            {fileIcon}
           </div>
           <div className="flex flex-col min-w-0">
             <Dialog.Title className="truncate product-headings-heading-6 text-semantic-fg-disabled">
