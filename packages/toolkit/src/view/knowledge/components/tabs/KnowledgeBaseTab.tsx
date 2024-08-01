@@ -90,7 +90,6 @@ export const KnowledgeBaseTab = ({
           name: data.name,
           description: data.description,
           tags: data.tags ?? [],
-          ownerId: data.namespaceId,
         },
         ownerId: data.namespaceId,
         accessToken,
@@ -138,7 +137,6 @@ export const KnowledgeBaseTab = ({
       await createKnowledgeBase.mutateAsync({
         payload: {
           ...clonedKnowledgeBase,
-          ownerId: selectedNamespace,
         },
         ownerId: selectedNamespace,
         accessToken,

@@ -124,6 +124,8 @@ export const CatalogFilesTab = ({
       await deleteKnowledgeBaseFile.mutateAsync({
         fileUid: file.fileUid,
         accessToken,
+        ownerId: knowledgeBase.ownerName,
+        kbId: knowledgeBase.kbId,
       });
       await files.refetch();
     } catch (error) {

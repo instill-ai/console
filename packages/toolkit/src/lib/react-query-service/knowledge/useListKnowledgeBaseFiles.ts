@@ -6,31 +6,31 @@ import { getInstillAPIClient } from "../../vdp-sdk";
 import { File } from "./types";
 
 export function useListKnowledgeBaseFiles({
-  ownerId,
+  namespaceId,
   knowledgeBaseId,
   accessToken,
   enabled,
 }: {
-  ownerId: Nullable<string>;
+  namespaceId: Nullable<string>;
   knowledgeBaseId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
 }) {
   return useQuery<File[]>({
-    queryKey: ["knowledgeBaseFiles", ownerId, knowledgeBaseId],
+    queryKey: ["knowledgeBaseFiles", namespaceId, knowledgeBaseId],
     queryFn: async () => {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
-      if (!ownerId) {
-        throw new Error("ownerId not provided");
+      if (!namespaceId) {
+        throw new Error("namespaceId not provided");
       }
       if (!knowledgeBaseId) {
         throw new Error("knowledgeBaseId not provided");
       }
       const client = getInstillAPIClient({ accessToken });
       const response = await client.vdp.artifact.listKnowledgeBaseFiles({
-        ownerId,
+        namespaceId,
         kbId: knowledgeBaseId,
       });
       return response.files;
