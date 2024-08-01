@@ -14,13 +14,22 @@ import {
   useListKnowledgeBaseFiles,
 } from "../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../lib/react-query-service/knowledge/types";
-import { DeleteKnowledgeBaseNotification, CreditUsageFileNotification } from "./components/notifications";
 import { Sidebar } from "./components";
-import { CatalogFilesTab, ChunkTab, KnowledgeBaseTab, RetrieveTestTab, UploadExploreTab } from "./components/tabs";
 import {
   CREDIT_TIMEOUT,
   DELETE_KNOWLEDGE_BASE_TIMEOUT,
 } from "./components/lib/undoDeleteTime";
+import {
+  CreditUsageFileNotification,
+  DeleteKnowledgeBaseNotification,
+} from "./components/notifications";
+import {
+  CatalogFilesTab,
+  ChunkTab,
+  KnowledgeBaseTab,
+  RetrieveTestTab,
+  UploadExploreTab,
+} from "./components/tabs";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -41,7 +50,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [isProcessed, setIsProcessed] = React.useState(false);
   const [pendingDeletions, setPendingDeletions] = React.useState<string[]>([]);
 
-  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
+    useShallow(selector),
+  );
 
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
   const { refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
@@ -55,7 +66,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     knowledgeBaseId: selectedKnowledgeBase?.kbId ?? "",
     accessToken,
     enabled:
-      enabledQuery && Boolean(selectedNamespace) && Boolean(selectedKnowledgeBase),
+      enabledQuery &&
+      Boolean(selectedNamespace) &&
+      Boolean(selectedKnowledgeBase),
   });
 
   React.useEffect(() => {
