@@ -33,7 +33,7 @@ const FileChunks = ({
   onChunkClick,
   onRetrievableToggle,
 }: FileChunksProps) => {
-  const { data: chunks, refetch } = useListChunks({
+  const chunks = useListChunks({
     kbId: knowledgeBase.kbId,
     accessToken: accessToken || null,
     enabled: expanded,
@@ -41,7 +41,7 @@ const FileChunks = ({
     fileUid: file.fileUid,
   });
 
-  const { data: fileContent } = useGetFileContent({
+  const fileContent = useGetFileContent({
     fileUid: file.fileUid,
     kbId: knowledgeBase.kbId,
     accessToken: accessToken || null,
@@ -63,7 +63,7 @@ const FileChunks = ({
     // Set up an interval to refetch chunks if the file is still processing
     if (isProcessing) {
       interval = setInterval(() => {
-        refetch();
+        chunks.refetch();
       }, 5000);
     }
 
@@ -72,7 +72,7 @@ const FileChunks = ({
         clearInterval(interval);
       }
     };
-  }, [isProcessing, refetch]);
+  }, [isProcessing, chunks.refetch]);
 
   return (
     <div className="mb-4">
@@ -106,16 +106,16 @@ const FileChunks = ({
           </p>
         )}
       </div>
-      {expanded && !isProcessing && chunks && chunks.length > 0 && (
+      {expanded && !isProcessing && chunks.data && chunks.data.length > 0 && (
         <div className="grid grid-cols-[repeat(auto-fit,360px)] justify-start gap-[15px]">
-          {chunks.map((chunk: Chunk, i: number) => (
+          {chunks.data.map((chunk: Chunk, i: number) => (
             <ChunkCard
               key={chunk.chunkUid}
               chunk={chunk}
               index={i}
               onChunkClick={() => onChunkClick(file, chunk)}
               onRetrievableToggle={onRetrievableToggle}
-              fileContent={fileContent || ""}
+              fileContent={fileContent.data || ""}
             />
           ))}
         </div>

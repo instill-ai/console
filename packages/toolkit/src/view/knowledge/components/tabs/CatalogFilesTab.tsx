@@ -17,7 +17,6 @@ import { DeleteFileNotification } from "../notifications";
 import { FileTable } from "../FileTable";
 import EmptyState from "../EmptyState";
 
-
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
   onGoToUpload: () => void;
@@ -43,17 +42,12 @@ export const CatalogFilesTab = ({
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
 
-  const {
-    data: files,
-    isLoading,
-    refetch,
-  } = useListKnowledgeBaseFiles({
+  const files = useListKnowledgeBaseFiles({
     namespaceId: me.data?.id ?? null,
     knowledgeBaseId: knowledgeBase.kbId,
     accessToken,
@@ -75,15 +69,15 @@ export const CatalogFilesTab = ({
 
     // Check if there are any files that haven't completed processing
     if (
-      files &&
-      files.some(
+      files.data &&
+      files.data.some(
         (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED"
       )
     ) {
       // Set up an interval to refetch file data every 5 seconds
       // This ensures that the UI stays up-to-date with the latest file processing status
       interval = setInterval(() => {
-        refetch();
+        files.refetch();
       }, 5000);
     }
 
@@ -97,7 +91,8 @@ export const CatalogFilesTab = ({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [files, refetch]);
+  }, [files.data, files.refetch]);
+
   const handleFileClick = (file: File) => {
     setSelectedFile(file);
     setIsFileDetailsOpen(true);
@@ -108,9 +103,8 @@ export const CatalogFilesTab = ({
     setIsFileDetailsOpen(false);
   };
 
-
   const handleDelete = (fileUid: string) => {
-    const file = files?.find((item) => item.fileUid === fileUid);
+    const file = files.data?.find((item) => item.fileUid === fileUid);
     if (file) {
       setFileToDelete(file);
       setShowDeleteMessage(true);
@@ -118,10 +112,6 @@ export const CatalogFilesTab = ({
         clearTimeout(timeoutRef.current);
       }
 
-      // Timeout mechanism for "soft delete" functionality
-      // This delay allows users to undo their delete action within a specified time frame
-      // It enhances user experience by providing a safeguard against accidental deletions
-      // The actual deletion occurs after the timeout unless the user cancels it
       timeoutRef.current = setTimeout(() => {
         setShowDeleteMessage(false);
         actuallyDeleteFile(file);
@@ -129,14 +119,13 @@ export const CatalogFilesTab = ({
     }
   };
 
-
   const actuallyDeleteFile = async (file: File) => {
     try {
       await deleteKnowledgeBaseFile.mutateAsync({
         fileUid: file.fileUid,
         accessToken,
       });
-      await refetch();
+      await files.refetch();
     } catch (error) {
       console.error("Error deleting file:", error);
     } finally {
@@ -171,15 +160,15 @@ export const CatalogFilesTab = ({
       <div className="flex flex-col w-full gap-2">
         <div className="flex">
           <div className="flex flex-col w-full">
-            {isLoading ? (
+            {files.isLoading ? (
               <div className="p-8">
                 <Skeleton className="w-full h-8 mb-4" />
                 <Skeleton className="w-full h-8 mb-4" />
                 <Skeleton className="w-full h-8" />
               </div>
-            ) : files && files.length > 0 ? (
+            ) : files.data && files.data.length > 0 ? (
               <FileTable
-                files={files}
+                files={files.data}
                 sortConfig={sortConfig}
                 requestSort={requestSort}
                 handleDelete={handleDelete}

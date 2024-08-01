@@ -41,13 +41,12 @@ export const ChunkTab = ({
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
 
-  const { data: allFiles, isLoading: isLoadingFiles } = useListKnowledgeBaseFiles({
+  const allFiles = useListKnowledgeBaseFiles({
     namespaceId: me.data?.id ?? null,
     knowledgeBaseId: knowledgeBase.kbId,
     accessToken,
@@ -57,14 +56,14 @@ export const ChunkTab = ({
   const updateChunkMutation = useUpdateChunk();
 
   const files = React.useMemo(() => {
-    return allFiles?.filter(file => file.processStatus !== "FILE_PROCESS_STATUS_FAILED") || [];
-  }, [allFiles]);
+    return allFiles.data?.filter(file => file.processStatus !== "FILE_PROCESS_STATUS_FAILED") || [];
+  }, [allFiles.data]);
 
   const toggleFileExpansion = (fileUid: string) => {
     setExpandedFiles((prev) =>
       prev.includes(fileUid)
         ? prev.filter((id) => id !== fileUid)
-        : [...prev, fileUid],
+        : [...prev, fileUid]
     );
   };
 
@@ -103,7 +102,7 @@ export const ChunkTab = ({
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {isLoadingFiles ? (
+      {allFiles.isLoading ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div

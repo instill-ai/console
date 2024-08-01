@@ -90,6 +90,7 @@ type CreateKnowledgeBaseCardProps = {
   onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
   disabled?: boolean;
 };
+
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
@@ -112,7 +113,7 @@ export const CreateKnowledgeBaseCard = ({
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
 
-  const { data: files } = useListKnowledgeBaseFiles({
+  const files = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace || null,
     knowledgeBaseId: knowledgeBase.kbId,
     accessToken: accessToken || null,
@@ -120,7 +121,7 @@ export const CreateKnowledgeBaseCard = ({
   });
 
   const chunkQueries = useQueries({
-    queries: (files || []).map((file) => ({
+    queries: (files.data || []).map((file) => ({
       queryKey: ["chunks", knowledgeBase.kbId, file.fileUid],
       queryFn: () => useGetAllChunks(
         accessToken || "",
@@ -128,7 +129,7 @@ export const CreateKnowledgeBaseCard = ({
         knowledgeBase.kbId,
         file.fileUid
       ),
-      enabled: enabledQuery && isHovered && !!files && !!accessToken,
+      enabled: enabledQuery && isHovered && !!files.data && !!accessToken,
     })),
   });
 

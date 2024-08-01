@@ -63,11 +63,7 @@ export const KnowledgeBaseTab = ({
 
   const { enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
 
-  const {
-    data: knowledgeBases,
-    isLoading,
-    refetch,
-  } = useGetKnowledgeBases({
+  const knowledgeBases = useGetKnowledgeBases({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
@@ -79,9 +75,9 @@ export const KnowledgeBaseTab = ({
   // Refetch when the namespace changes
   React.useEffect(() => {
     if (selectedNamespace) {
-      refetch();
+      knowledgeBases.refetch();
     }
-  }, [selectedNamespace, refetch]);
+  }, [selectedNamespace, knowledgeBases.refetch]);
 
   const handleCreateKnowledgeSubmit = async (
     data: z.infer<typeof CreateKnowledgeFormSchema>
@@ -99,7 +95,7 @@ export const KnowledgeBaseTab = ({
         ownerId: data.namespaceId,
         accessToken,
       });
-      refetch();
+      knowledgeBases.refetch();
       setIsCreateDialogOpen(false);
     } catch (error) {
       console.error("Error creating catalog:", error);
@@ -123,7 +119,7 @@ export const KnowledgeBaseTab = ({
         },
         accessToken,
       });
-      refetch();
+      knowledgeBases.refetch();
     } catch (error) {
       console.error("Error updating catalog:", error);
     }
@@ -147,16 +143,16 @@ export const KnowledgeBaseTab = ({
         ownerId: selectedNamespace,
         accessToken,
       });
-      refetch();
+      knowledgeBases.refetch();
     } catch (error) {
       console.error("Error cloning catalog:", error);
     }
   };
 
   const filteredAndSortedKnowledgeBases = React.useMemo(() => {
-    if (!knowledgeBases) return [];
+    if (!knowledgeBases.data) return [];
 
-    const filtered = knowledgeBases
+    const filtered = knowledgeBases.data
       .filter((kb) => !pendingDeletions.includes(kb.kbId))
       .filter(
         (kb) =>
@@ -193,7 +189,7 @@ export const KnowledgeBaseTab = ({
 
     return filtered;
   }, [
-    knowledgeBases,
+    knowledgeBases.data,
     searchTerm,
     selectedSortAnchor,
     selectedSortOrder,
@@ -218,7 +214,7 @@ export const KnowledgeBaseTab = ({
         />
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {isLoading ? (
+      {knowledgeBases.isLoading ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div

@@ -44,13 +44,12 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
 
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
-  const { refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
+  const knowledgeBases = useGetKnowledgeBases({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
   });
-  //client.vpd.useListKnowledgeBaseFiles
-  const { data: files } = useListKnowledgeBaseFiles({
+  const files = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace ?? null,
     knowledgeBaseId: selectedKnowledgeBase?.kbId ?? "",
     accessToken,
@@ -59,11 +58,11 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   });
 
   React.useEffect(() => {
-    if (files) {
-      const hasChunks = files.some((file) => file.totalChunks > 0);
+    if (files.data) {
+      const hasChunks = files.data.some((file) => file.totalChunks > 0);
       setIsProcessed(hasChunks);
     }
-  }, [files]);
+  }, [files.data]);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -98,7 +97,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         setSelectedKnowledgeBase(null);
         setActiveTab("knowledge-base");
       }
-      refetchKnowledgeBases();
+      knowledgeBases.refetch();
     } catch (error) {
       console.error("Error deleting catalog:", error);
       setShowDeleteMessage(false);
