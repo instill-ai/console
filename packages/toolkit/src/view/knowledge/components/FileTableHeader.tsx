@@ -27,7 +27,12 @@ export const FileTableHeader = ({
     };
 
     return (
-        <div className="grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center border-b border-semantic-bg-line bg-semantic-bg-base-bg border rounded">
+        <div
+            className="grid h-[72px] items-center border-b border-semantic-bg-line bg-semantic-bg-base-bg border rounded"
+            style={{
+                gridTemplateColumns: "minmax(0, 3fr) 1fr 1fr 1fr 1fr 2fr 1fr"
+            }}
+        >
             <div className="flex items-center justify-center gap-1 px-4">
                 <div className="text-semantic-fg-primary product-body-text-3-medium truncate max-w-[200px]">
                     File name
