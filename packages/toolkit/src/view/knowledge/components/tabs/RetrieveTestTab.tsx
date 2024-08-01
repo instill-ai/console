@@ -4,19 +4,22 @@ import { CodeBlock } from "../../../../components";
 import { CodeString } from "../../../../components/CodeString";
 import { defaultCodeSnippetStyles } from "../../../../constant";
 import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
+import { Nullable } from "instill-sdk";
 
 type RetrieveTestTabProps = {
   knowledgeBase: KnowledgeBase;
   isProcessed: boolean;
   onGoToUpload: () => void;
+  namespaceId: Nullable<string>;
 };
 
 export const RetrieveTestTab = ({
   knowledgeBase,
   isProcessed,
   onGoToUpload,
+  namespaceId,
 }: RetrieveTestTabProps) => {
-  const namespaceId = "test";
+
   const kbId = knowledgeBase.kbId;
 
   const curlCommand = `curl -X POST \\

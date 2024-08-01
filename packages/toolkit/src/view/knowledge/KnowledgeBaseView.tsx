@@ -217,6 +217,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               knowledgeBase={selectedKnowledgeBase}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
+              namespaceId={selectedNamespace}
             />
           ) : null}
         </div>
