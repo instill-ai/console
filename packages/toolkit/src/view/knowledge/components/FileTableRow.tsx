@@ -8,6 +8,7 @@ type FileTableRowProps = {
   index: number;
   handleFileClick: (file: File) => void;
   handleDelete: (fileUid: string) => void;
+  isDeleteDisabled: boolean;
 };
 
 export const FileTableRow = ({
@@ -15,12 +16,12 @@ export const FileTableRow = ({
   index,
   handleFileClick,
   handleDelete,
+  isDeleteDisabled,
 }: FileTableRowProps) => {
   return (
     <div
-      className={`grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line ${
-        index !== 0 ? "" : ""
-      }`}
+      className={`grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line ${index !== 0 ? "" : ""
+        }`}
     >
       <div
         className="flex items-center justify-center px-4 truncate cursor-pointer text-semantic-bg-secondary-alt-primary product-body-text-3-regular"
@@ -54,6 +55,7 @@ export const FileTableRow = ({
           size="lg"
           className="h-8"
           onClick={() => handleDelete(item.fileUid)}
+          disabled={isDeleteDisabled}
         >
           Delete
         </Button>

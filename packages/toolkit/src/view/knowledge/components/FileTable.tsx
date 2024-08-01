@@ -64,17 +64,16 @@ export const FileTable = ({
   return (
     <div className="flex flex-col">
       <FileTableHeader sortConfig={sortConfig} requestSort={requestSort} />
-      {sortedData
-        .filter((item) => item.fileUid !== fileToDelete?.fileUid)
-        .map((item, index) => (
-          <FileTableRow
-            key={item.fileUid}
-            item={item}
-            index={index}
-            handleFileClick={handleFileClick}
-            handleDelete={handleDelete}
-          />
-        ))}
+      {sortedData.map((item, index) => (
+        <FileTableRow
+          key={item.fileUid}
+          item={item}
+          index={index}
+          handleFileClick={handleFileClick}
+          handleDelete={handleDelete}
+          isDeleteDisabled={!!fileToDelete}
+        />
+      ))}
     </div>
   );
 };
