@@ -1,7 +1,5 @@
 import React from "react";
-
 import { Icons, Nullable } from "@instill-ai/design-system";
-
 import {
   useGetFileContent,
   useListChunks,
@@ -35,10 +33,13 @@ const FileChunks = ({
   onChunkClick,
   onRetrievableToggle,
 }: FileChunksProps) => {
-  const { data: chunks, isLoading: isLoadingChunks } = useListChunks({
+
+  const isProcessing = file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED";
+
+  const { data: chunks } = useListChunks({
     kbId: knowledgeBase.kbId,
     accessToken: accessToken || null,
-    enabled: expanded,
+    enabled: expanded && !isProcessing,
     ownerId: knowledgeBase.ownerName,
     fileUid: file.fileUid,
   });
@@ -47,30 +48,42 @@ const FileChunks = ({
     fileUid: file.fileUid,
     kbId: knowledgeBase.kbId,
     accessToken: accessToken || null,
-    enabled: expanded,
+    enabled: expanded && !isProcessing,
     ownerId: knowledgeBase.ownerName,
   });
+
+  const handleToggleExpand = () => {
+    if (!isProcessing) {
+      onToggleExpand(file.fileUid);
+    }
+  };
+
   return (
     <div className="mb-4">
       <div
-        className="mb-4 flex cursor-pointer items-center space-x-2"
-        onClick={() => onToggleExpand(file.fileUid)}
+        className={`mb-4 flex items-center space-x-2 ${isProcessing ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
+        onClick={handleToggleExpand}
       >
         <Icons.ChevronDown
-          className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${expanded ? "" : "-rotate-90"}`}
+          className={`h-4 w-4 stroke-semantic-fg-primary transition-transform ${expanded && !isProcessing ? "" : "-rotate-90"
+            } ${isProcessing ? "opacity-50" : ""}`}
         />
         <p
-          className={`text-${isLoadingChunks ? "text-semantic-fg-disabled" : "text-semantic-fg-secondary"} font-semibold text-[16px] leading-4 mr-6`}
+          className={`${isProcessing
+            ? "text-semantic-fg-disabled"
+            : "text-semantic-fg-secondary"
+            } font-semibold text-[16px] leading-4 mr-6`}
         >
           {file.name}
         </p>
-        {isLoadingChunks && (
+        {isProcessing && (
           <p className="text-semantic-fg-secondary italic">
             Processing file...
           </p>
         )}
       </div>
-      {expanded && !isLoadingChunks && chunks && chunks.length > 0 && (
+      {expanded && !isProcessing && chunks && chunks.length > 0 && (
         <div className="grid grid-cols-[repeat(auto-fit,360px)] justify-start gap-[15px]">
           {chunks.map((chunk: Chunk, i: number) => (
             <ChunkCard
