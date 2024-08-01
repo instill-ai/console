@@ -119,7 +119,7 @@ export const CreateKnowledgeDialog = ({
       }
 
       // Redirect to the new knowledge base page
-      router.push(`/${data.namespaceId}/catalogs/${formatName(data.name)}`);
+      router.push(`/${data.namespaceId}/catalog`);
       onClose();
     } catch (error) {
       console.error("Failed to create knowledge base", error);
