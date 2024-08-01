@@ -42,7 +42,7 @@ const selector = (store: InstillStore) => ({
 export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
     React.useState<Nullable<KnowledgeBase>>(null);
-  const [activeTab, setActiveTab] = React.useState("knowledge-base");
+  const [activeTab, setActiveTab] = React.useState("catalog");
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] =
     React.useState<Nullable<KnowledgeBase>>(null);
@@ -109,7 +109,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
       );
       if (selectedKnowledgeBase?.catalogId === knowledgeBaseToDelete.catalogId) {
         setSelectedKnowledgeBase(null);
-        setActiveTab("knowledge-base");
+        setActiveTab("catalog");
       }
       refetchKnowledgeBases();
     } catch (error) {
@@ -169,7 +169,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   React.useEffect(() => {
     // Reset selected catalog when namespace changes
     setSelectedKnowledgeBase(null);
-    setActiveTab("knowledge-base");
+    setActiveTab("catalog");
   }, [selectedNamespace]);
 
   return (
@@ -196,7 +196,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           />
         </div>
         <div className={`sm:col-span-8 md:col-span-9 lg:col-span-10 pt-5`}>
-          {activeTab === "knowledge-base" && (
+          {activeTab === "catalog" && (
             <KnowledgeBaseTab
               onKnowledgeBaseSelect={handleKnowledgeBaseSelect}
               onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
