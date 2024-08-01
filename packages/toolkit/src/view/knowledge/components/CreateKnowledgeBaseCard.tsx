@@ -131,19 +131,19 @@ export const CreateKnowledgeBaseCard = ({
 
   const { data: files } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace || null,
-    knowledgeBaseId: knowledgeBase.kbId,
+    knowledgeBaseId: knowledgeBase.catalogId,
     accessToken: accessToken || null,
     enabled: enabledQuery && isHovered,
   });
 
   const chunkQueries = useQueries({
     queries: (files || []).map((file) => ({
-      queryKey: ["chunks", knowledgeBase.kbId, file.fileUid],
+      queryKey: ["chunks", knowledgeBase.catalogId, file.fileUid],
       queryFn: () =>
         getAllChunks(
           accessToken || "",
           knowledgeBase.ownerName,
-          knowledgeBase.kbId,
+          knowledgeBase.catalogId,
           file.fileUid,
         ),
       enabled: enabledQuery && isHovered && !!files && !!accessToken,
