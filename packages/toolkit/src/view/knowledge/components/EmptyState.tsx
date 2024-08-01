@@ -5,7 +5,7 @@ type EmptyStateProps = {
   onGoToUpload: () => void;
 };
 
-const EmptyState: React.FC<EmptyStateProps> = ({ onGoToUpload }) => {
+const EmptyState = ({ onGoToUpload }: EmptyStateProps) => {
   return (
     <div className="flex flex-col items-center justify-center p-8 text-center mt-32">
       <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs mb-8">

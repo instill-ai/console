@@ -15,13 +15,13 @@ type ChunkCardProps = {
   fileContent: string;
 };
 
-const ChunkCard: React.FC<ChunkCardProps> = ({
+const ChunkCard = ({
   chunk,
   index,
   onChunkClick,
   onRetrievableToggle,
   fileContent,
-}) => {
+} : ChunkCardProps) => {
   const chunkContent = React.useMemo(() => {
     if (chunk.startPos !== undefined && chunk.endPos !== undefined) {
       return fileContent.slice(chunk.startPos, chunk.endPos);

@@ -7,10 +7,10 @@ type KnowledgeBaseCardProps = {
   disabled?: boolean;
 };
 
-export const KnowledgeBaseCard: React.FC<KnowledgeBaseCardProps> = ({
+export const KnowledgeBaseCard = ({
   onClick,
   disabled = false,
-}) => {
+}: KnowledgeBaseCardProps) => {
   const cardContent = disabled
     ? "You reached the limit of Catalogs. Please delete one if you want to create a new one."
     : "Click to create a new, empty catalog for uploading and processing your files.";

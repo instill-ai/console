@@ -15,14 +15,14 @@ type FileTableProps = {
     fileToDelete: File | null;
 };
 
-export const FileTable: React.FC<FileTableProps> = ({
+export const FileTable = ({
     files,
     sortConfig,
     requestSort,
     handleDelete,
     handleFileClick,
     fileToDelete,
-}) => {
+}: FileTableProps) => {
     const getStatusSortValue = (status: FileStatus): number => {
         const statusOrder: Record<FileStatus, number> = {
             FILE_PROCESS_STATUS_NOTSTARTED: 0,

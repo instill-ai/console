@@ -23,10 +23,10 @@ type CatalogFilesTabProps = {
   onGoToUpload: () => void;
 };
 
-export const CatalogFilesTab: React.FC<CatalogFilesTabProps> = ({
+export const CatalogFilesTab = ({
   knowledgeBase,
   onGoToUpload,
-}) => {
+} : CatalogFilesTabProps) => {
   const [sortConfig, setSortConfig] = React.useState<{
     key: keyof File | "";
     direction: "ascending" | "descending" | "";

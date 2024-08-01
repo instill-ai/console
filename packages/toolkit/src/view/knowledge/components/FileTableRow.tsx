@@ -10,12 +10,12 @@ type FileTableRowProps = {
   handleDelete: (fileUid: string) => void;
 };
 
-export const FileTableRow: React.FC<FileTableRowProps> = ({
+export const FileTableRow = ({
   item,
   index,
   handleFileClick,
   handleDelete,
-}) => {
+}: FileTableRowProps) => {
   return (
     <div
       className={`grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line ${index !== 0 ? "" : ""

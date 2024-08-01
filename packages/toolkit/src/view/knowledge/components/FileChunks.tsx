@@ -26,7 +26,7 @@ type FileChunksProps = {
   ) => Promise<void>;
 };
 
-const FileChunks: React.FC<FileChunksProps> = ({
+const FileChunks = ({
   file,
   knowledgeBase,
   accessToken,
@@ -34,7 +34,7 @@ const FileChunks: React.FC<FileChunksProps> = ({
   onToggleExpand,
   onChunkClick,
   onRetrievableToggle,
-}) => {
+}: FileChunksProps) => {
   const { data: chunks, isLoading: isLoadingChunks } = useListChunks({
     kbId: knowledgeBase.kbId,
     accessToken: accessToken || null,

@@ -10,10 +10,10 @@ type FileTableHeaderProps = {
     requestSort: (key: keyof File) => void;
 };
 
-export const FileTableHeader: React.FC<FileTableHeaderProps> = ({
+export const FileTableHeader = ({
     sortConfig,
     requestSort,
-}) => {
+}: FileTableHeaderProps) => {
     const renderSortIcon = (key: keyof File) => {
         if (sortConfig.key === key) {
             return sortConfig.direction === "ascending" ? (

@@ -28,12 +28,12 @@ type EditKnowledgeDialogProps = {
   };
 };
 
-export const EditKnowledgeDialog: React.FC<EditKnowledgeDialogProps> = ({
+export const EditKnowledgeDialog = ({
   isOpen,
   onClose,
   onSubmit,
   initialValues,
-}) => {
+} : EditKnowledgeDialogProps) => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const form = useForm<z.infer<typeof EditKnowledgeFormSchema>>({
