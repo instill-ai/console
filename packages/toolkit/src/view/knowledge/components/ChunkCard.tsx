@@ -21,7 +21,7 @@ const ChunkCard = ({
   onChunkClick,
   onRetrievableToggle,
   fileContent,
-} : ChunkCardProps) => {
+}: ChunkCardProps) => {
   const chunkContent = React.useMemo(() => {
     if (chunk.startPos !== undefined && chunk.endPos !== undefined) {
       return fileContent.slice(chunk.startPos, chunk.endPos);
@@ -58,7 +58,6 @@ const ChunkCard = ({
               onCheckedChange={() =>
                 onRetrievableToggle(chunk.chunkUid, chunk.retrievable)
               }
-              className=""
             />
           </div>
         </div>
