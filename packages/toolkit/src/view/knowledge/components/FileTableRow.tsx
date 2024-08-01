@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Button, Icons } from "@instill-ai/design-system";
 
 import { File } from "../../../lib/react-query-service/knowledge/types";
@@ -20,9 +18,8 @@ export const FileTableRow = ({
 }: FileTableRowProps) => {
   return (
     <div
-      className={`grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line ${
-        index !== 0 ? "" : ""
-      }`}
+      className={`grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line ${index !== 0 ? "" : ""
+        }`}
     >
       <div
         className="flex items-center justify-center px-4 truncate cursor-pointer text-semantic-bg-secondary-alt-primary product-body-text-3-regular"
