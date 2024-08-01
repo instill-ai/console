@@ -17,7 +17,7 @@ export const getStatusSortValue = (status: FileStatus): number => {
 export const getFileIcon = (fileType: string) => {
   switch (fileType.toUpperCase()) {
     case "FILE_TYPE_MARKDOWN":
-      return <Icon.MDFile className="h-5 w-5" />;
+      return <Icons.MDFile className="h-5 w-5" />;
     case "FILE_TYPE_TEXT":
       return <Icons.TXTFile className="h-5 w-5" />;
     case "FILE_TYPE_PDF":
