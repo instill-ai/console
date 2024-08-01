@@ -26,11 +26,12 @@ import {
   useUploadKnowledgeBaseFile,
 } from "../../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
-import { FILE_ERROR_TIMEOUT } from "../lib/undoDeleteTime";
+import { FILE_ERROR_TIMEOUT, MAX_FILE_NAME_LENGTH } from "../lib/undoDeleteTime";
 // import FilePreview from "./FilePreview";
 import {
   DuplicateFileNotification,
   FileSizeNotification,
+  FileTooLongNotification,
   IncorrectFormatFileNotification,
 } from "../notifications";
 
@@ -96,6 +97,8 @@ export const UploadExploreTab = ({
     React.useState(false);
   const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
+  const [showFileTooLongMessage, setShowFileTooLongMessage] = React.useState(false);
+  const [tooLongFileName, setTooLongFileName] = React.useState<string>("");
   const fileTooLargeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
   const unsupportedFileTypeTimeoutRef =
     React.useRef<Nullable<NodeJS.Timeout>>(null);
@@ -151,6 +154,12 @@ export const UploadExploreTab = ({
       unsupportedFileTypeTimeoutRef.current = setTimeout(() => {
         setShowUnsupportedFileMessage(false);
       }, FILE_ERROR_TIMEOUT);
+      return;
+    }
+
+    if (file.name.length > MAX_FILE_NAME_LENGTH) {
+      setTooLongFileName(file.name);
+      setShowFileTooLongMessage(true);
       return;
     }
 
@@ -353,6 +362,12 @@ export const UploadExploreTab = ({
         <DuplicateFileNotification
           deletedFileName={duplicateFileName}
           setShowDeleteMessage={setShowDuplicateFileMessage}
+        />
+      )}
+      {showFileTooLongMessage && (
+        <FileTooLongNotification
+          handleCloseFileTooLongNotificationMessage={() => setShowFileTooLongMessage(false)}
+          fileName={tooLongFileName}
         />
       )}
       <div className="flex justify-end">
