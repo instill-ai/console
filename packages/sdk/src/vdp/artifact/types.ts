@@ -1,5 +1,3 @@
-// types.ts
-
 export type KnowledgeBase = {
   chunks: Chunk[];
   usage: number;
