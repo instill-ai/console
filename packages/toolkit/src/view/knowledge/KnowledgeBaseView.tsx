@@ -1,7 +1,5 @@
 import * as React from "react";
-
 import { Nullable } from "@instill-ai/toolkit";
-
 import {
   GeneralAppPageProp,
   InstillStore,
@@ -16,11 +14,9 @@ import {
 import { KnowledgeBase } from "../../lib/react-query-service/knowledge/types";
 import { Sidebar } from "./components";
 import {
-  CREDIT_TIMEOUT,
   DELETE_KNOWLEDGE_BASE_TIMEOUT,
 } from "./components/lib/static";
 import {
-  // CreditUsageFileNotification,
   DeleteKnowledgeBaseNotification,
 } from "./components/notifications";
 import {
@@ -46,12 +42,12 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] =
     React.useState<Nullable<KnowledgeBase>>(null);
-  // const [showCreditUsage, setShowCreditUsage] = React.useState(false);
   const [isProcessed, setIsProcessed] = React.useState(false);
   const [pendingDeletions, setPendingDeletions] = React.useState<string[]>([]);
+  const [deletionTimer, setDeletionTimer] = React.useState<NodeJS.Timeout | null>(null);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector),
+    useShallow(selector)
   );
 
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
@@ -91,6 +87,13 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     setKnowledgeBaseToDelete(knowledgeBase);
     setShowDeleteMessage(true);
     setPendingDeletions((prev) => [...prev, knowledgeBase.catalogId]);
+
+    // Set up the deletion timer
+    const timer = setTimeout(() => {
+      actuallyDeleteKnowledgeBase();
+    }, DELETE_KNOWLEDGE_BASE_TIMEOUT);
+
+    setDeletionTimer(timer);
   };
 
   const actuallyDeleteKnowledgeBase = async () => {
@@ -102,11 +105,6 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         kbId: knowledgeBaseToDelete.catalogId,
         accessToken,
       });
-      setShowDeleteMessage(false);
-      setKnowledgeBaseToDelete(null);
-      setPendingDeletions((prev) =>
-        prev.filter((id) => id !== knowledgeBaseToDelete.catalogId),
-      );
       if (selectedKnowledgeBase?.catalogId === knowledgeBaseToDelete.catalogId) {
         setSelectedKnowledgeBase(null);
         setActiveTab("catalog");
@@ -114,26 +112,33 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
       refetchKnowledgeBases();
     } catch (error) {
       console.error("Error deleting catalog:", error);
-      setShowDeleteMessage(false);
+    } finally {
+      cleanupDeleteState();
+    }
+  };
+
+  const cleanupDeleteState = () => {
+    setShowDeleteMessage(false);
+    setKnowledgeBaseToDelete(null);
+    setPendingDeletions((prev) =>
+      prev.filter((id) => id !== knowledgeBaseToDelete?.catalogId)
+    );
+    if (deletionTimer) {
+      clearTimeout(deletionTimer);
+      setDeletionTimer(null);
     }
   };
 
   const undoDelete = () => {
-    setShowDeleteMessage(false);
-    if (knowledgeBaseToDelete) {
-      setPendingDeletions((prev) =>
-        prev.filter((id) => id !== knowledgeBaseToDelete.catalogId),
-      );
-    }
-    setKnowledgeBaseToDelete(null);
+    cleanupDeleteState();
+  };
+
+  const handleCloseDeleteMessage = () => {
+    actuallyDeleteKnowledgeBase();
   };
 
   const handleProcessFile = () => {
     setActiveTab("catalog");
-    // setShowCreditUsage(true);
-    setTimeout(() => {
-      // setShowCreditUsage(false);
-    }, CREDIT_TIMEOUT);
   };
 
   const handleGoToUpload = () => {
@@ -141,52 +146,31 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   };
 
   React.useEffect(() => {
-    let timer: NodeJS.Timeout;
-
-    // This effect manages the delayed deletion of a knowledge base
-    if (showDeleteMessage) {
-      // When the delete message is shown, start a timer
-      timer = setTimeout(() => {
-        // After the specified timeout, trigger the actual deletion
-        actuallyDeleteKnowledgeBase();
-      }, DELETE_KNOWLEDGE_BASE_TIMEOUT);
-    }
-
-    // Cleanup function to clear the timer if the component unmounts
-    // or if showDeleteMessage changes before the timer completes
-    return () => clearTimeout(timer);
-
-    // This effect runs whenever showDeleteMessage changes
-  }, [showDeleteMessage]);
-
-  // Note: This mechanism allows for a "soft delete" approach:
-  // 1. User initiates delete action
-  // 2. A delete message is shown (showDeleteMessage becomes true)
-  // 3. A timer starts
-  // 4. If the user doesn't undo within the timeout period, the knowledge base is deleted
-  // 5. If the user undoes or navigates away, the timer is cleared, preventing deletion
-
-  React.useEffect(() => {
     // Reset selected catalog when namespace changes
     setSelectedKnowledgeBase(null);
     setActiveTab("catalog");
   }, [selectedNamespace]);
+
+  // This effect handles the auto-close of the notification
+  React.useEffect(() => {
+    if (showDeleteMessage) {
+      const timer = setTimeout(() => {
+        actuallyDeleteKnowledgeBase();
+      }, DELETE_KNOWLEDGE_BASE_TIMEOUT);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showDeleteMessage]);
 
   return (
     <div className="h-screen w-full bg-semantic-bg-alt-primary">
       {showDeleteMessage && knowledgeBaseToDelete && (
         <DeleteKnowledgeBaseNotification
           knowledgeBaseName={knowledgeBaseToDelete.name}
-          handleCloseDeleteMessage={actuallyDeleteKnowledgeBase}
+          handleCloseDeleteMessage={handleCloseDeleteMessage}
           undoDelete={undoDelete}
         />
       )}
-      {/* {showCreditUsage && (
-        <CreditUsageFileNotification
-          handleCloseCreditUsageMessage={() => setShowCreditUsage(false)}
-          fileName="test"
-        />
-      )} */}
       <div className="grid w-full grid-cols-12 gap-6 px-8">
         <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
           <Sidebar
