@@ -13,7 +13,7 @@ export const KnowledgeBaseCard: React.FC<KnowledgeBaseCardProps> = ({
 }) => {
   const cardContent = disabled
     ? "You reached the limit of Catalogs. Please delete one if you want to create a new one."
-    : "Import your own text data or write data in real-time via Webhook for LLM context enhancement.";
+    : "Click to create a new, empty catalog for uploading and processing your files.";
   const cardHeader = disabled
     ? "Create Catalog (Limit Reached)"
     : "Create Catalog";

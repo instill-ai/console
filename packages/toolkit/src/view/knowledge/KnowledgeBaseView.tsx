@@ -165,61 +165,49 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           fileName="test"
         />
       )}
-      <div className="grid w-full grid-cols-12 gap-6 px-8">
+     <div className="grid w-full grid-cols-12 gap-6 px-8">
         <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
           <Sidebar
             activeTab={activeTab}
             onTabChange={handleTabChange}
             selectedKnowledgeBase={selectedKnowledgeBase}
-            selectedTextOption={selectedTextOption}
-            onTextOptionChange={handleTextOptionChange}
           />
         </div>
         <div className={`sm:col-span-8 md:col-span-9 lg:col-span-10 pt-5`}>
-          {activeTab === "knowledge-base" ? (
+          {activeTab === "knowledge-base" && (
             <KnowledgeBaseTab
               onKnowledgeBaseSelect={handleKnowledgeBaseSelect}
               onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
               accessToken={props.accessToken}
               pendingDeletions={pendingDeletions}
             />
-          ) : null}
-          {activeTab === "upload" && selectedKnowledgeBase ? (
+          )}
+          {activeTab === "upload" && selectedKnowledgeBase && (
             <UploadExploreTab
               knowledgeBase={selectedKnowledgeBase}
               onProcessFile={handleProcessFile}
             />
-          ) : null}
-          {activeTab === "catalog" && selectedKnowledgeBase ? (
-            <>
-              {selectedTextOption === "Markdown" ? (
-                <MarkdownTab knowledgeBase={selectedKnowledgeBase} />
-              ) : null}
-              {selectedTextOption === "Chunk" ? (
-                <ChunkTab
-                  knowledgeBase={selectedKnowledgeBase}
-                  onGoToUpload={handleGoToUpload}
-                />
-              ) : null}
-              {selectedTextOption === "Image" ? (
-                <ImageTab knowledgeBase={selectedKnowledgeBase} />
-              ) : null}
-              {!selectedTextOption || selectedTextOption === "Files" ? (
-                <CatalogFilesTab
-                  knowledgeBase={selectedKnowledgeBase}
-                  onGoToUpload={handleGoToUpload}
-                />
-              ) : null}
-            </>
-          ) : null}
-          {activeTab === "retrieve" && selectedKnowledgeBase ? (
+          )}
+          {activeTab === "files" && selectedKnowledgeBase && (
+            <CatalogFilesTab
+              knowledgeBase={selectedKnowledgeBase}
+              onGoToUpload={handleGoToUpload}
+            />
+          )}
+          {activeTab === "chunks" && selectedKnowledgeBase && (
+            <ChunkTab
+              knowledgeBase={selectedKnowledgeBase}
+              onGoToUpload={handleGoToUpload}
+            />
+          )}
+          {activeTab === "retrieve" && selectedKnowledgeBase && (
             <RetrieveTestTab
               knowledgeBase={selectedKnowledgeBase}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}
             />
-          ) : null}
+          )}
         </div>
       </div>
     </div>
