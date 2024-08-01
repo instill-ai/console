@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Nullable } from "@instill-ai/toolkit";
 
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { getInstillAPIClient } from "../../vdp-sdk";
 import { File } from "./types";
 
 export function useUploadKnowledgeBaseFile() {
@@ -27,12 +27,16 @@ export function useUploadKnowledgeBaseFile() {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
-      const client = createInstillAxiosClient(accessToken, true);
-      const response = await client.post<{ file: File }>(
-        `/namespaces/${ownerId}/knowledge-bases/${knowledgeBaseId}/files`,
+      if (!ownerId) {
+        return Promise.reject(new Error("ownerId not provided"));
+      }
+      const client = getInstillAPIClient({ accessToken });
+      const response = await client.vdp.artifact.uploadKnowledgeBaseFile({
+        ownerId,
+        kbId: knowledgeBaseId,
         payload,
-      );
-      return response.data.file;
+      });
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["knowledgeBaseFiles"] });

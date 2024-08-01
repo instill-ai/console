@@ -2,33 +2,35 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Nullable } from "@instill-ai/toolkit";
 
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { getInstillAPIClient } from "../../vdp-sdk";
 import { File } from "./types";
 
 export function useGetFileDetails({
+  ownerId,
+  kbId,
   fileUid,
   accessToken,
   enabled,
-  kbId,
-  ownerId,
 }: {
+  ownerId: string;
+  kbId: string;
   fileUid: string;
   accessToken: Nullable<string>;
   enabled: boolean;
-  kbId: string;
-  ownerId: string;
 }) {
   return useQuery<File>({
-    queryKey: ["fileDetails", fileUid],
+    queryKey: ["fileDetails", ownerId, kbId, fileUid],
     queryFn: async () => {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
-      const client = createInstillAxiosClient(accessToken, true);
-      const response = await client.get<{ file: File }>(
-        `/namespaces/${ownerId}/knowledge-bases/${kbId}/files/${fileUid}`,
-      );
-      return response.data.file;
+      const client = getInstillAPIClient({ accessToken });
+      const file = await client.vdp.artifact.getFileDetails({
+        ownerId,
+        kbId,
+        fileUid,
+      });
+      return file;
     },
     enabled,
   });

@@ -1,25 +1,37 @@
-import { createInstillAxiosClient } from "../../../lib";
+import { useQuery } from "@tanstack/react-query";
 
-export async function useGetAllChunks(
-  accessToken: string,
-  ownerName: string,
-  kbId: string,
-  fileUid: string,
-) {
-  if (!accessToken) {
-    throw new Error("accessToken not provided");
-  }
-  const client = createInstillAxiosClient(accessToken, true);
-  try {
-    const response = await client.get(
-      `/namespaces/${ownerName}/knowledge-bases/${kbId}/chunks`,
-      {
-        params: { fileUid },
-      },
-    );
-    return response.data.chunks;
-  } catch (error) {
-    console.error("Error fetching chunks:", error);
-    throw new Error("Failed to fetch chunks. Please try again later.");
-  }
+import { Nullable } from "@instill-ai/toolkit";
+
+import { getInstillAPIClient } from "../../vdp-sdk";
+import { Chunk } from "./types";
+
+export function useGetAllChunks({
+  accessToken,
+  ownerName,
+  kbId,
+  fileUid,
+  enabled,
+}: {
+  accessToken: Nullable<string>;
+  ownerName: string;
+  kbId: string;
+  fileUid: string;
+  enabled: boolean;
+}) {
+  return useQuery<Chunk[]>({
+    queryKey: ["allChunks", ownerName, kbId, fileUid],
+    queryFn: async () => {
+      if (!accessToken) {
+        throw new Error("accessToken not provided");
+      }
+      const client = getInstillAPIClient({ accessToken });
+      const response = await client.vdp.artifact.listChunks({
+        ownerId: ownerName,
+        kbId,
+        fileUid,
+      });
+      return response.chunks;
+    },
+    enabled,
+  });
 }

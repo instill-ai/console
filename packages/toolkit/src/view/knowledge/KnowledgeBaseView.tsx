@@ -49,7 +49,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
   });
-
+  //client.vpd.useListKnowledgeBaseFiles
   const { data: files } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace ?? null,
     knowledgeBaseId: selectedKnowledgeBase?.kbId ?? "",
