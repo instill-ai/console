@@ -1,4 +1,3 @@
-import React from "react";
 import { Icons, Nullable } from "@instill-ai/design-system";
 import {
   useGetFileContent,

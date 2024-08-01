@@ -16,7 +16,7 @@ import {
 import { KnowledgeBase } from "../../lib/react-query-service/knowledge/types";
 import { DeleteKnowledgeBaseNotification, CreditUsageFileNotification } from "./components/notifications";
 import { Sidebar } from "./components";
-import { CatalogFilesTab, ChunkTab, ImageTab, KnowledgeBaseTab, MarkdownTab, RetrieveTestTab, UploadExploreTab } from "./components/tabs";
+import { CatalogFilesTab, ChunkTab, KnowledgeBaseTab, RetrieveTestTab, UploadExploreTab } from "./components/tabs";
 import {
   CREDIT_TIMEOUT,
   DELETE_KNOWLEDGE_BASE_TIMEOUT,
