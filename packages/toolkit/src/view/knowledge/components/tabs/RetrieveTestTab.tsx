@@ -1,7 +1,5 @@
 import { Nullable } from "instill-sdk";
-
 import { Separator } from "@instill-ai/design-system";
-
 import { CodeBlock } from "../../../../components";
 import { CodeString } from "../../../../components/CodeString";
 import { defaultCodeSnippetStyles } from "../../../../constant";
@@ -112,14 +110,14 @@ export const RetrieveTestTab = ({
             related to a given query.
           </p>
 
-          <div className="mt-8">
+          <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">
               Set Environment Variable:
             </p>
             <CodeString>export INSTILL_API_TOKEN=********</CodeString>
           </div>
 
-          <div className="mt-8">
+          <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">Example cURL command:</p>
             <CodeBlock
               codeString={curlCommand}
@@ -129,13 +127,13 @@ export const RetrieveTestTab = ({
             />
           </div>
 
-          <div className="mt-8">
+          <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
             <CodeString>{`https://api.instill.tech/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}/chunks/similarity`}</CodeString>
           </div>
-
-          <div className="mt-8">
-            <p className="mb-2 text-lg font-semibold">JSON Schema:</p>
+          <p className="mb-2 product-headings-heading-3">JSON Schema:</p>
+          <div className="mb-8">
+            <p className="mb-2 text-lg font-semibold">Input:</p>
             <CodeBlock
               codeString={inputSchema}
               wrapLongLines={true}
@@ -144,8 +142,8 @@ export const RetrieveTestTab = ({
             />
           </div>
 
-          <div className="mt-8">
-            <p className="mb-2 text-lg font-semibold">Input, Output:</p>
+          <div className="mb-8">
+            <p className="mb-2 text-lg font-semibold">Output:</p>
             <CodeBlock
               codeString={outputSchema}
               wrapLongLines={true}
@@ -154,7 +152,7 @@ export const RetrieveTestTab = ({
             />
           </div>
 
-          <p className="mt-4 product-body-text-3-regular">
+          <p className="mb-4 product-body-text-3-regular">
             For a more detailed overview of the input/output schemas, check out
             the{" "}
             <a
