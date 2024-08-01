@@ -12,7 +12,7 @@ export async function useGetAllChunks(
   const client = createInstillAxiosClient(accessToken, true);
   try {
     const response = await client.get(
-      `/namespaces/${ownerName}/knowledge-bases/${kbId}/chunks`,
+      `/namespaces/${ownerName}/catalogs/${kbId}/chunks`,
       {
         params: { fileUid },
       },

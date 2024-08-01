@@ -23,7 +23,7 @@ export const RetrieveTestTab = ({
   const kbId = knowledgeBase.kbId;
 
   const curlCommand = `curl -X POST \\
-'https://api.instill.tech/v1alpha/namespaces/${namespaceId}/knowledge-bases/${kbId}/chunks/similarity' \\
+'https://api.instill.tech/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}/chunks/similarity' \\
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer $INSTILL_API_TOKEN' \\
 --data '{
@@ -131,7 +131,7 @@ export const RetrieveTestTab = ({
 
           <div className="mt-8">
             <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
-            <CodeString>{`https://api.instill.tech/v1alpha/namespaces/${namespaceId}/knowledge-bases/${kbId}/chunks/similarity`}</CodeString>
+            <CodeString>{`https://api.instill.tech/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}/chunks/similarity`}</CodeString>
           </div>
 
           <div className="mt-8">

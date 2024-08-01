@@ -24,7 +24,7 @@ async function updateKnowledgeBaseMutation({
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.put<{
     knowledgeBase: KnowledgeBase;
-  }>(`/namespaces/${ownerId}/knowledge-bases/${kbId}`, payload);
+  }>(`/namespaces/${ownerId}/catalogs/${kbId}`, payload);
   return response.data.knowledgeBase;
 }
 

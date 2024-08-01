@@ -30,7 +30,7 @@ export function useListKnowledgeBaseFiles({
       }
       const client = createInstillAxiosClient(accessToken, true);
       const response = await client.get<{ files: File[] }>(
-        `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/files`,
+        `/namespaces/${namespaceId}/catalogs/${knowledgeBaseId}/files`,
       );
       return response.data.files;
     },
