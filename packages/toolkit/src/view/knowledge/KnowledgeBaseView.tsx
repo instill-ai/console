@@ -18,7 +18,7 @@ import { Sidebar } from "./components";
 import {
   CREDIT_TIMEOUT,
   DELETE_KNOWLEDGE_BASE_TIMEOUT,
-} from "./components/lib/undoDeleteTime";
+} from "./components/lib/static";
 import {
   CreditUsageFileNotification,
   DeleteKnowledgeBaseNotification,

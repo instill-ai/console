@@ -19,7 +19,7 @@ import {
 import EmptyState from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";
-import { DELETE_FILE_TIMEOUT } from "../lib/undoDeleteTime";
+import { DELETE_FILE_TIMEOUT } from "../lib/static";
 import { DeleteFileNotification } from "../notifications";
 
 type CatalogFilesTabProps = {

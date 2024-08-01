@@ -26,7 +26,7 @@ import {
   useUploadKnowledgeBaseFile,
 } from "../../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
-import { FILE_ERROR_TIMEOUT, MAX_FILE_NAME_LENGTH } from "../lib/undoDeleteTime";
+import { FILE_ERROR_TIMEOUT, MAX_FILE_NAME_LENGTH, MAX_FILE_SIZE } from "../lib/static";
 // import FilePreview from "./FilePreview";
 import {
   DuplicateFileNotification,
@@ -35,7 +35,7 @@ import {
   IncorrectFormatFileNotification,
 } from "../notifications";
 
-const MAX_FILE_SIZE = 15 * 1024 * 1024;
+;
 
 const UploadExploreFormSchema = z.object({
   files: z.array(z.instanceof(File)),
