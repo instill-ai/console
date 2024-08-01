@@ -17,8 +17,8 @@ async function getKnowledgeBases({
   const response = await client.get<{
     knowledgeBases: KnowledgeBase[];
   }>(`/namespaces/${ownerId}/catalogs`);
-
-  return response.data.knowledgeBases || [];
+  console.log(response);
+  return response.data.catalogs || [];
 }
 
 export function useGetKnowledgeBases({
