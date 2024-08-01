@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -12,7 +13,7 @@ import {
   Textarea,
 } from "@instill-ai/design-system";
 
-import { EntitySelector } from "../../../components";
+import { EntitySelector, LoadingSpin } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 
@@ -23,26 +24,33 @@ const CreateKnowledgeFormSchema = z.object({
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
-type CreateKnowledgeFormProps = {
-  onSubmit: (data: z.infer<typeof CreateKnowledgeFormSchema>) => void;
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  navigationNamespaceAnchor: store.navigationNamespaceAnchor,
+  updateNavigationNamespaceAnchor: store.updateNavigationNamespaceAnchor,
+});
+
+type CreateKnowledgeDialogProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (data: z.infer<typeof CreateKnowledgeFormSchema>) => Promise<void>;
 };
 
 export const CreateKnowledgeDialog = ({
   isOpen,
   onClose,
   onSubmit,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: CreateKnowledgeFormProps["onSubmit"];
-}) => {
-  const { selectedNamespace } = useInstillStore(
-    useShallow((store: InstillStore) => ({
-      selectedNamespace: store.navigationNamespaceAnchor,
-    })),
-  );
+}: CreateKnowledgeDialogProps) => {
+  const router = useRouter();
+  const [creating, setCreating] = React.useState(false);
+
+  const {
+    navigationNamespaceAnchor,
+    updateNavigationNamespaceAnchor,
+  } = useInstillStore(useShallow(selector));
 
   const userNamespaces = useUserNamespaces();
+
 
   const form = useForm<z.infer<typeof CreateKnowledgeFormSchema>>({
     resolver: zodResolver(CreateKnowledgeFormSchema),
@@ -50,7 +58,7 @@ export const CreateKnowledgeDialog = ({
       name: "",
       description: "",
       tags: [],
-      namespaceId: selectedNamespace || "",
+      namespaceId: navigationNamespaceAnchor || "",
     },
     mode: "onChange",
   });
@@ -91,10 +99,34 @@ export const CreateKnowledgeDialog = ({
         name: "",
         description: "",
         tags: [],
-        namespaceId: selectedNamespace || "",
+        namespaceId: navigationNamespaceAnchor || "",
       });
     }
-  }, [isOpen, selectedNamespace, form]);
+  }, [isOpen, navigationNamespaceAnchor, form]);
+
+  const handleSubmit = async (data: z.infer<typeof CreateKnowledgeFormSchema>) => {
+    setCreating(true);
+
+    try {
+      await onSubmit({
+        ...data,
+        name: formatName(data.name),
+      });
+
+      // Update the navigation namespace anchor if a different namespace was selected
+      if (data.namespaceId !== navigationNamespaceAnchor) {
+        updateNavigationNamespaceAnchor(() => data.namespaceId);
+      }
+
+      // Redirect to the new knowledge base page
+      router.push(`/${data.namespaceId}/catalogs/${formatName(data.name)}`);
+      onClose();
+    } catch (error) {
+      console.error("Failed to create knowledge base", error);
+    } finally {
+      setCreating(false);
+    }
+  };
 
   return (
     <Dialog.Root
@@ -114,12 +146,7 @@ export const CreateKnowledgeDialog = ({
         <Form.Root {...form}>
           <form
             className="flex flex-col space-y-3"
-            onSubmit={form.handleSubmit((data) => {
-              onSubmit({
-                ...data,
-                name: formatName(data.name),
-              });
-            })}
+            onSubmit={form.handleSubmit(handleSubmit)}
           >
             <div className="flex items-center justify-start gap-4">
               <Form.Field
@@ -212,9 +239,13 @@ export const CreateKnowledgeDialog = ({
                 variant="primary"
                 type="submit"
                 className="text-semantic-fg-on-default"
-                disabled={!formState.isValid}
+                disabled={!formState.isValid || creating}
               >
-                Create
+                {creating ? (
+                  <LoadingSpin className="!text-semantic-fg-secondary" />
+                ) : (
+                  "Create"
+                )}
               </Button>
             </div>
           </form>

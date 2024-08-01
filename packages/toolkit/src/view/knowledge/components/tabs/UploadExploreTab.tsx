@@ -193,11 +193,19 @@ export const UploadExploreTab = ({
     try {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
+        if (!file) continue;
+
         setProcessingProgress((i / files.length) * 100);
 
         const reader = new FileReader();
         const content = await new Promise<string>((resolve) => {
-          reader.onload = (event) => resolve(btoa(event.target?.result as string));
+          reader.onload = (event) => {
+            if (event.target?.result) {
+              resolve(btoa(event.target.result as string));
+            } else {
+              resolve('');
+            }
+          };
           reader.readAsBinaryString(file);
         });
 
