@@ -1,34 +1,39 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { Nullable } from "@instill-ai/toolkit";
+
+import { getInstillAPIClient } from "../../vdp-sdk";
 import { KnowledgeBase } from "./types";
 
-async function createKnowledgeBaseMutation({
-  payload,
-  ownerId,
-  accessToken,
-}: {
-  payload: {
-    name: string;
-    description?: string;
-    tags?: string[];
-    ownerId: string;
-  };
-  ownerId: string;
-  accessToken: string | null;
-}): Promise<KnowledgeBase> {
-  if (!accessToken) {
-    return Promise.reject(new Error("accessToken not provided"));
-  }
-  const client = createInstillAxiosClient(accessToken, true);
-  const response = await client.post<{
-    knowledgeBase: KnowledgeBase;
-  }>(`/namespaces/${ownerId}/knowledge-bases`, payload);
-  return response.data.knowledgeBase;
-}
-
 export function useCreateKnowledgeBase() {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: createKnowledgeBaseMutation,
+    mutationFn: async ({
+      payload,
+      ownerId,
+      accessToken,
+    }: {
+      payload: {
+        name: string;
+        description?: string;
+        tags?: string[];
+      };
+      ownerId: string;
+      accessToken: Nullable<string>;
+    }): Promise<KnowledgeBase> => {
+      if (!accessToken) {
+        return Promise.reject(new Error("accessToken not provided"));
+      }
+      const client = getInstillAPIClient({ accessToken });
+      const response = await client.vdp.artifact.createKnowledgeBase({
+        ownerId,
+        payload,
+      });
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["knowledgeBases"] });
+    },
   });
 }

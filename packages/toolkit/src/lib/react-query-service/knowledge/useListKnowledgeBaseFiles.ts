@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Nullable } from "@instill-ai/toolkit";
 
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { getInstillAPIClient } from "../../vdp-sdk";
 import { File } from "./types";
 
 export function useListKnowledgeBaseFiles({
@@ -11,7 +11,7 @@ export function useListKnowledgeBaseFiles({
   accessToken,
   enabled,
 }: {
-  namespaceId: Nullable<string> | undefined;
+  namespaceId: Nullable<string>;
   knowledgeBaseId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
@@ -28,11 +28,12 @@ export function useListKnowledgeBaseFiles({
       if (!knowledgeBaseId) {
         throw new Error("knowledgeBaseId not provided");
       }
-      const client = createInstillAxiosClient(accessToken, true);
-      const response = await client.get<{ files: File[] }>(
-        `/namespaces/${namespaceId}/knowledge-bases/${knowledgeBaseId}/files`,
-      );
-      return response.data.files;
+      const client = getInstillAPIClient({ accessToken });
+      const response = await client.vdp.artifact.listKnowledgeBaseFiles({
+        namespaceId,
+        kbId: knowledgeBaseId,
+      });
+      return response.files;
     },
     enabled,
   });

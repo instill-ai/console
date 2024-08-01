@@ -13,6 +13,7 @@ import {
 import { ModelClient } from "../model";
 import { GeneralRecord, HttpMethod, InstillError } from "../types";
 import {
+  ArtifactClient,
   ComponentClient,
   PipelineClient,
   ReleaseClient,
@@ -117,6 +118,7 @@ export class InstillAPIClient {
     release: new ReleaseClient(this),
     trigger: new TriggerClient(this),
     secret: new SecretClient(this),
+    artifact: new ArtifactClient(this),
   };
 
   core = {

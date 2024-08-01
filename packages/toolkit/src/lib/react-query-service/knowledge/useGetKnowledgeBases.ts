@@ -1,46 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { Nullable } from "@instill-ai/toolkit";
+
+import { getInstillAPIClient } from "../../vdp-sdk";
 import { KnowledgeBase } from "./types";
-
-async function getKnowledgeBases({
-  ownerId,
-  accessToken,
-}: {
-  ownerId: string;
-  accessToken: string | null;
-}): Promise<KnowledgeBase[]> {
-  if (!accessToken) {
-    return Promise.reject(new Error("accessToken not provided"));
-  }
-  const client = createInstillAxiosClient(accessToken, true);
-  const response = await client.get<{
-    knowledgeBases: KnowledgeBase[];
-  }>(`/namespaces/${ownerId}/knowledge-bases`);
-
-  return response.data.knowledgeBases || [];
-}
 
 export function useGetKnowledgeBases({
   accessToken,
   ownerId,
   enabled,
 }: {
-  accessToken: string | null;
-  ownerId: string | null;
+  accessToken: Nullable<string>;
+  ownerId: Nullable<string>;
   enabled: boolean;
 }) {
-  return useQuery({
+  return useQuery<KnowledgeBase[]>({
     queryKey: ["knowledgeBases", ownerId],
     queryFn: async () => {
       if (!ownerId || !accessToken) {
         throw new Error("ownerId and accessToken are required");
       }
-      const data = await getKnowledgeBases({ ownerId, accessToken });
-      if (!data) {
-        throw new Error("No catalogs data returned");
-      }
-      return data;
+      const client = getInstillAPIClient({ accessToken });
+      const response = await client.vdp.artifact.listKnowledgeBases({
+        ownerId,
+      });
+      return response.knowledgeBases;
     },
     enabled: enabled && !!ownerId && !!accessToken,
   });

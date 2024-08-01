@@ -26,7 +26,6 @@ import {
   useUploadKnowledgeBaseFile,
 } from "../../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
-// import FilePreview from "./FilePreview";
 import { IncorrectFormatFileNotification, DuplicateFileNotification, FileSizeNotification } from "../notifications";
 import { FILE_ERROR_TIMEOUT } from "../lib/undoDeleteTime";
 
@@ -102,15 +101,14 @@ export const UploadExploreTab = ({
   const [isDragging, setIsDragging] = React.useState(false);
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
 
-  const ownerID = me.isSuccess ? me.data.id : null;
+  const ownerID = me.data?.id ?? null;
 
-  const { data: existingFiles } = useListKnowledgeBaseFiles({
+  const existingFiles = useListKnowledgeBaseFiles({
     namespaceId: ownerID,
     knowledgeBaseId: knowledgeBase.kbId,
     accessToken,
@@ -152,8 +150,8 @@ export const UploadExploreTab = ({
     }
 
     const currentFiles = form.getValues("files");
-    const isDuplicate = existingFiles?.some(
-      (existingFile) => existingFile.name === file.name,
+    const isDuplicate = existingFiles?.data?.some(
+      (existingFile: { name: string; }) => existingFile.name === file.name,
     );
 
     if (isDuplicate) {

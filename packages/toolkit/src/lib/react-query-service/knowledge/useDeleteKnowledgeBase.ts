@@ -1,29 +1,30 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { KnowledgeBase } from "./types";
+import { Nullable } from "@instill-ai/toolkit";
 
-async function deleteKnowledgeBaseMutation({
-  ownerId,
-  kbId,
-  accessToken,
-}: {
-  ownerId: string;
-  kbId: string;
-  accessToken: string | null;
-}): Promise<KnowledgeBase> {
-  if (!accessToken) {
-    return Promise.reject(new Error("accessToken not provided"));
-  }
-  const client = createInstillAxiosClient(accessToken, true);
-  const response = await client.delete<{
-    knowledgeBase: KnowledgeBase;
-  }>(`/namespaces/${ownerId}/knowledge-bases/${kbId}`);
-  return response.data.knowledgeBase;
-}
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useDeleteKnowledgeBase() {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: deleteKnowledgeBaseMutation,
+    mutationFn: async ({
+      ownerId,
+      kbId,
+      accessToken,
+    }: {
+      ownerId: string;
+      kbId: string;
+      accessToken: Nullable<string>;
+    }) => {
+      if (!accessToken) {
+        throw new Error("accessToken not provided");
+      }
+      const client = getInstillAPIClient({ accessToken });
+      await client.vdp.artifact.deleteKnowledgeBase({ ownerId, kbId });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["knowledgeBases"] });
+    },
   });
 }

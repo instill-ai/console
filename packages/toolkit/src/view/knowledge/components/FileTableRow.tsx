@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Icons } from "@instill-ai/design-system";
 import { File } from "../../../lib/react-query-service/knowledge/types";
 import { StatusTag } from "./StatusTag";
