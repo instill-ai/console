@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { Button, Icons } from "@instill-ai/design-system";
+import { truncateName } from "../lib/functions";
 
 type DuplicateFileNotificationProps = {
   deletedFileName: string;
@@ -17,7 +18,8 @@ export const DuplicateFileNotification = ({
       <div className="flex flex-col justify-between overflow-hidden">
         <div className="flex flex-col items-start justify-start gap-1">
           <div className="product-body-text-2-semibold whitespace-pre-wrap overflow-hidden text-ellipsis">
-            {deletedFileName} Already Uploaded or Exists in Catalog
+            {truncateName(deletedFileName)}
+            Already Uploaded or Exists in Catalog
           </div>
           <div className="text-semantic-fg-secondary product-body-text-3-regular overflow-hidden text-ellipsis whitespace-pre-wrap">
             Current catalog does not support uploading the same file twice.

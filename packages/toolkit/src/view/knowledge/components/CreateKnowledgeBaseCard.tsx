@@ -21,6 +21,7 @@ import {
 } from "../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
 import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
+import { truncateName } from "./lib/functions";
 
 type EditKnowledgeDialogData = {
   name: string;
@@ -267,7 +268,7 @@ Text Chunks #: ${totalChunks}
             <div className="flex flex-col items-start justify-start gap-6 self-stretch">
               <div className="flex flex-col items-center justify-center gap-1">
                 <div className="product-headings-heading-3">
-                  Delete {knowledgeBase.name}
+                  Delete {truncateName(knowledgeBase.name)}
                 </div>
                 <div className="text-center product-body-text-2-regular">
                   Are you sure you want to delete this catalog?

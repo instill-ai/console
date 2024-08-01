@@ -1,4 +1,5 @@
 import { Button, Icons } from "@instill-ai/design-system";
+import { truncateName } from "../lib/functions";
 
 type FileSizeNotificationProps = {
   handleCloseFileTooLargeMessage: () => void;
@@ -17,7 +18,7 @@ export const FileSizeNotification = ({
           This file is too big
         </div>
         <div className="self-stretch product-body-text-2-semibold truncate">
-          {fileName}
+          {truncateName(fileName)}
         </div>
         <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
           Please ensure your file is 15MB or smaller to upload it to the

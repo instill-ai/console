@@ -27,3 +27,8 @@ export const getFileIcon = (fileType: string) => {
       return <Icons.Check className="h-5 w-5" />;
   }
 };
+
+export const truncateName = (name: string, maxLength: number = 20) => {
+  if (name.length <= maxLength) return name;
+  return `${name.slice(0, maxLength)}...`;
+};

@@ -1,4 +1,5 @@
 import { Button, Icons } from "@instill-ai/design-system";
+import { truncateName } from "../lib/functions";
 
 type FileTooLongNotificationProps = {
   handleCloseFileTooLongNotificationMessage: () => void;
@@ -17,7 +18,7 @@ export const FileTooLongNotification = ({
           File name too long
         </div>
         <div className="self-stretch product-body-text-2-semibold truncate">
-          {fileName}
+          {truncateName(fileName)}
         </div>
         <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
           {/* Supported file types for the catalog <br />
