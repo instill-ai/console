@@ -203,7 +203,7 @@ export const CatalogFilesTab = ({
       {selectedFile && (
         <FileDetailsOverlay
           fileUid={selectedFile.fileUid}
-          kbId={knowledgeBase.catalogId}
+          catalogId={knowledgeBase.catalogId}
           accessToken={accessToken}
           onClose={closeOverlay}
           showFullFile={true}

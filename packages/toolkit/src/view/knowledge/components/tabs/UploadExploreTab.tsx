@@ -59,6 +59,7 @@ type UploadExploreFormData = z.infer<typeof UploadExploreFormSchema>;
 type UploadExploreTabProps = {
   knowledgeBase: KnowledgeBase;
   onProcessFile: () => void;
+  onTabChange: (tab: string) => void;
 };
 
 const selector = (store: InstillStore) => ({
@@ -70,6 +71,7 @@ const selector = (store: InstillStore) => ({
 export const UploadExploreTab = ({
   knowledgeBase,
   onProcessFile,
+  onTabChange,
 }: UploadExploreTabProps) => {
   const form = useForm<UploadExploreFormData>({
     resolver: zodResolver(UploadExploreFormSchema),
@@ -219,6 +221,7 @@ export const UploadExploreTab = ({
       });
 
       onProcessFile();
+      onTabChange("files");
     } catch (error) {
       console.error("Error processing files:", error);
     } finally {

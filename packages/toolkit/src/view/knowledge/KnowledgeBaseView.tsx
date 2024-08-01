@@ -208,6 +208,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             <UploadExploreTab
               knowledgeBase={selectedKnowledgeBase}
               onProcessFile={handleProcessFile}
+              onTabChange={handleTabChange}
             />
           )}
           {activeTab === "files" && selectedKnowledgeBase && (
