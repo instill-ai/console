@@ -27,15 +27,12 @@ import {
 } from "../../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
 import { FILE_ERROR_TIMEOUT, MAX_FILE_NAME_LENGTH, MAX_FILE_SIZE } from "../lib/static";
-// import FilePreview from "./FilePreview";
 import {
   DuplicateFileNotification,
   FileSizeNotification,
   FileTooLongNotification,
   IncorrectFormatFileNotification,
 } from "../notifications";
-
-;
 
 const UploadExploreFormSchema = z.object({
   files: z.array(z.instanceof(File)),
@@ -89,24 +86,23 @@ export const UploadExploreTab = ({
     },
   });
 
-  const [showFileTooLargeMessage, setShowFileTooLargeMessage] =
-    React.useState(false);
-  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] =
-    React.useState(false);
-  const [showDuplicateFileMessage, setShowDuplicateFileMessage] =
-    React.useState(false);
+  const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
+  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] = React.useState(false);
+  const [showDuplicateFileMessage, setShowDuplicateFileMessage] = React.useState(false);
   const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
   const [showFileTooLongMessage, setShowFileTooLongMessage] = React.useState(false);
   const [tooLongFileName, setTooLongFileName] = React.useState<string>("");
-  const fileTooLargeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
-  const unsupportedFileTypeTimeoutRef =
-    React.useRef<Nullable<NodeJS.Timeout>>(null);
-  const duplicateFileTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
-  const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
-  const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
+  const [processingProgress, setProcessingProgress] = React.useState(0);
+
+  const fileTooLargeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
+  const unsupportedFileTypeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
+  const duplicateFileTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
+
+  const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
+  const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
@@ -195,46 +191,41 @@ export const UploadExploreTab = ({
     }
 
     try {
-      const uploadedFiles = await Promise.all(
-        files.map(async (file) => {
-          const reader = new FileReader();
-          return new Promise<{ fileUid: string }>((resolve, reject) => {
-            reader.onload = async (event) => {
-              const content = btoa(event.target?.result as string);
-              try {
-                const uploadedFile = await uploadKnowledgeBaseFile.mutateAsync({
-                  ownerId: ownerID,
-                  knowledgeBaseId: knowledgeBase.catalogId,
-                  payload: {
-                    name: file.name,
-                    type: getFileType(file),
-                    content,
-                  },
-                  accessToken,
-                });
-                resolve(uploadedFile);
-              } catch (error) {
-                reject(error);
-              }
-            };
-            reader.readAsBinaryString(file);
-          });
-        }),
-      );
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        setProcessingProgress((i / files.length) * 100);
 
-      const fileUids = uploadedFiles.map((file) => file.fileUid);
+        const reader = new FileReader();
+        const content = await new Promise<string>((resolve) => {
+          reader.onload = (event) => resolve(btoa(event.target?.result as string));
+          reader.readAsBinaryString(file);
+        });
 
-      await processKnowledgeBaseFiles.mutateAsync({
-        fileUids,
-        accessToken,
-      });
+        const uploadedFile = await uploadKnowledgeBaseFile.mutateAsync({
+          ownerId: ownerID,
+          knowledgeBaseId: knowledgeBase.catalogId,
+          payload: {
+            name: file.name,
+            type: getFileType(file),
+            content,
+          },
+          accessToken,
+        });
 
+        await processKnowledgeBaseFiles.mutateAsync({
+          fileUids: [uploadedFile.fileUid],
+          accessToken,
+        });
+      }
+
+      setProcessingProgress(100);
       onProcessFile();
       onTabChange("files");
     } catch (error) {
       console.error("Error processing files:", error);
     } finally {
       setIsProcessing(false);
+      setProcessingProgress(0);
     }
   };
 
@@ -305,10 +296,11 @@ export const UploadExploreTab = ({
                         id="upload-file-field"
                         type="file"
                         accept=".txt,.md,.pdf"
+                        multiple
                         value={""}
                         onChange={async (e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
+                          const files = Array.from(e.target.files || []);
+                          for (const file of files) {
                             await handleFileUpload(file);
                           }
                         }}
@@ -370,7 +362,20 @@ export const UploadExploreTab = ({
           fileName={tooLongFileName}
         />
       )}
-      <div className="flex justify-end">
+      <div className="flex flex-col items-end">
+        {isProcessing && (
+          <div className="mb-4 w-full">
+            <div className="h-2 w-full bg-gray-200 rounded-full">
+              <div
+                className="h-full bg-blue-600 rounded-full"
+                style={{ width: `${processingProgress}%` }}
+              ></div>
+            </div>
+            <p className="text-right mt-1 text-sm text-gray-600">
+              Processing: {Math.round(processingProgress)}%
+            </p>
+          </div>
+        )}
         <Button
           variant="primary"
           size="lg"
