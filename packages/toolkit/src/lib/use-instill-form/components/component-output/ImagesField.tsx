@@ -25,7 +25,7 @@ export const ImagesField = (props: ImagesFieldProps) => {
                   key={`${title}-${image}-field`}
                   alt={`${title}-images-{idx}`}
                   src={image}
-                  className="object-contain"
+                  className="object-cover"
                 />
               );
             })
