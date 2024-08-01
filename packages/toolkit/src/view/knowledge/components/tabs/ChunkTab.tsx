@@ -28,10 +28,10 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const ChunkTab: React.FC<ChunkTabProps> = ({
+export const ChunkTab = ({
   knowledgeBase,
   onGoToUpload,
-}) => {
+}: ChunkTabProps) => {
   const [expandedFiles, setExpandedFiles] = React.useState<string[]>([]);
   const [selectedChunk, setSelectedChunk] =
     React.useState<Nullable<Chunk>>(null);
@@ -47,7 +47,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
     accessToken,
   });
 
-  const { data: files, isLoading: isLoadingFiles } = useListKnowledgeBaseFiles({
+  const { data: allFiles, isLoading: isLoadingFiles } = useListKnowledgeBaseFiles({
     namespaceId: me.data?.id ?? null,
     knowledgeBaseId: knowledgeBase.kbId,
     accessToken,
@@ -56,11 +56,9 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
 
   const updateChunkMutation = useUpdateChunk();
 
-  React.useEffect(() => {
-    if (files && files.length > 0 && files[0]?.fileUid) {
-      setExpandedFiles([files[0].fileUid]);
-    }
-  }, [files]);
+  const files = React.useMemo(() => {
+    return allFiles?.filter(file => file.processStatus !== "FILE_PROCESS_STATUS_FAILED") || [];
+  }, [allFiles]);
 
   const toggleFileExpansion = (fileUid: string) => {
     setExpandedFiles((prev) =>
