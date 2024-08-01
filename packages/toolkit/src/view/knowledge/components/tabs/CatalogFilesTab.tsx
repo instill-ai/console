@@ -73,25 +73,17 @@ export const CatalogFilesTab = ({
   React.useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
 
-    // This effect sets up an interval to periodically check and update the status of files
-    // It's useful for monitoring files that are still being processed
-
-    // Check if there are any files that haven't completed processing
     if (
       files &&
       files.some(
         (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED",
       )
     ) {
-      // Set up an interval to refetch file data every 5 seconds
-      // This ensures that the UI stays up-to-date with the latest file processing status
       interval = setInterval(() => {
         refetch();
       }, 5000);
     }
 
-    // Cleanup function to clear the interval and any lingering timeouts when the component unmounts
-    // or when the dependencies (files or refetch) change
     return () => {
       if (interval) {
         clearInterval(interval);
@@ -101,6 +93,7 @@ export const CatalogFilesTab = ({
       }
     };
   }, [files, refetch]);
+
   const handleFileClick = (file: File) => {
     setSelectedFile(file);
     setIsFileDetailsOpen(true);
@@ -120,10 +113,6 @@ export const CatalogFilesTab = ({
         clearTimeout(timeoutRef.current);
       }
 
-      // Timeout mechanism for "soft delete" functionality
-      // This delay allows users to undo their delete action within a specified time frame
-      // It enhances user experience by providing a safeguard against accidental deletions
-      // The actual deletion occurs after the timeout unless the user cancels it
       timeoutRef.current = setTimeout(() => {
         setShowDeleteMessage(false);
         actuallyDeleteFile(file);
@@ -150,6 +139,16 @@ export const CatalogFilesTab = ({
     setFileToDelete(null);
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
+    }
+  };
+
+  const closeNotification = () => {
+    setShowDeleteMessage(false);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    if (fileToDelete) {
+      actuallyDeleteFile(fileToDelete);
     }
   };
 
@@ -197,7 +196,7 @@ export const CatalogFilesTab = ({
         <DeleteFileNotification
           deletedFileName={fileToDelete.name}
           undoDelete={undoDelete}
-          setShowDeleteMessage={setShowDeleteMessage}
+          setShowDeleteMessage={closeNotification}
         />
       ) : null}
       {selectedFile && (
