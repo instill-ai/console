@@ -50,7 +50,7 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
   const { data: allFiles, isLoading: isLoadingFiles } =
     useListKnowledgeBaseFiles({
       namespaceId: me.data?.id ?? null,
-      knowledgeBaseId: knowledgeBase.kbId,
+      knowledgeBaseId: knowledgeBase.catalogId,
       accessToken,
       enabled: enabledQuery && Boolean(me.data?.id),
     });
@@ -171,7 +171,7 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
       {selectedFile && selectedChunk && (
         <FileDetailsOverlay
           fileUid={selectedFile.fileUid}
-          kbId={knowledgeBase.kbId}
+          catalogId={knowledgeBase.catalogId}
           accessToken={accessToken}
           onClose={closeOverlay}
           showFullFile={true}

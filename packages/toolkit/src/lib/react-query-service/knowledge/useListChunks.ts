@@ -5,20 +5,20 @@ import { Nullable } from "@instill-ai/toolkit";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 
 export function useListChunks({
-  kbId,
+  catalogId,
   accessToken,
   enabled,
   ownerId,
   fileUid,
 }: {
-  kbId: string;
+  catalogId: string;
   accessToken: Nullable<string>;
   enabled: boolean;
   ownerId: string;
   fileUid: string;
 }) {
   return useQuery({
-    queryKey: ["chunks", kbId, fileUid],
+    queryKey: ["chunks", catalogId, fileUid],
     queryFn: async () => {
       if (!accessToken) {
         throw new Error("accessToken not provided");
@@ -26,7 +26,7 @@ export function useListChunks({
       const client = createInstillAxiosClient(accessToken, true);
       try {
         const response = await client.get(
-          `/namespaces/${ownerId}/knowledge-bases/${kbId}/chunks`,
+          `/namespaces/${ownerId}/knowledge-bases/${catalogId}/chunks`,
           {
             params: { fileUid },
           },

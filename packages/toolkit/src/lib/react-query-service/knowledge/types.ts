@@ -2,6 +2,7 @@ export type KnowledgeBase = {
   chunks: Chunk[];
   usage: number;
   kbId: string;
+  catalogId: string;
   name: string;
   description: string;
   createTime: string;

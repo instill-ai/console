@@ -36,7 +36,7 @@ const FileChunks = ({
   onRetrievableToggle,
 }: FileChunksProps) => {
   const { data: chunks, refetch } = useListChunks({
-    kbId: knowledgeBase.kbId,
+    catalogId: knowledgeBase.catalogId,
     accessToken: accessToken || null,
     enabled: expanded,
     ownerId: knowledgeBase.ownerName,
@@ -45,7 +45,7 @@ const FileChunks = ({
 
   const { data: fileContent } = useGetFileContent({
     fileUid: file.fileUid,
-    kbId: knowledgeBase.kbId,
+    catalogId: knowledgeBase.catalogId,
     accessToken: accessToken || null,
     enabled: expanded,
     ownerId: knowledgeBase.ownerName,

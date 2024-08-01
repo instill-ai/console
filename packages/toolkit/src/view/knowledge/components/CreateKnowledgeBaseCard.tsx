@@ -192,7 +192,7 @@ Text Chunks #: ${totalChunks}
   };
 
   const handleEditKnowledgeSubmit = async (data: EditKnowledgeDialogData) => {
-    await onUpdateKnowledgeBase(data, knowledgeBase.kbId);
+    await onUpdateKnowledgeBase(data, knowledgeBase.catalogId);
     setEditDialogIsOpen(false);
   };
   const handleMouseMove = (e: React.MouseEvent) => {

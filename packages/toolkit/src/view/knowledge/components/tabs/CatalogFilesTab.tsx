@@ -58,7 +58,7 @@ export const CatalogFilesTab = ({
     refetch,
   } = useListKnowledgeBaseFiles({
     namespaceId: me.data?.id ?? null,
-    knowledgeBaseId: knowledgeBase.kbId,
+    knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
     enabled: enabledQuery && Boolean(me.data?.id),
   });
@@ -203,7 +203,7 @@ export const CatalogFilesTab = ({
       {selectedFile && (
         <FileDetailsOverlay
           fileUid={selectedFile.fileUid}
-          kbId={knowledgeBase.kbId}
+          kbId={knowledgeBase.catalogId}
           accessToken={accessToken}
           onClose={closeOverlay}
           showFullFile={true}

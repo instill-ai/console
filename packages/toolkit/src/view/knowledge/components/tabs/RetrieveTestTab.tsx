@@ -20,7 +20,7 @@ export const RetrieveTestTab = ({
   onGoToUpload,
   namespaceId,
 }: RetrieveTestTabProps) => {
-  const kbId = knowledgeBase.kbId;
+  const kbId = knowledgeBase.catalogId;
 
   const curlCommand = `curl -X POST \\
 'https://api.instill.tech/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}/chunks/similarity' \\

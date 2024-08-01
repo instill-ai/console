@@ -14,7 +14,7 @@ type FileDetailsOverlayProps = {
   fileUid: string;
   accessToken: string | null;
   onClose: () => void;
-  kbId: string;
+  catalogId: string;
   showFullFile: boolean;
   selectedChunkUid?: string;
   ownerId: string;
@@ -28,7 +28,7 @@ type FileDetailsOverlayProps = {
 const FileDetailsOverlay = ({
   fileUid,
   accessToken,
-  kbId,
+  catalogId,
   selectedChunkUid,
   ownerId,
   isOpen,
@@ -39,14 +39,14 @@ const FileDetailsOverlay = ({
 }: FileDetailsOverlayProps) => {
   const { data: fileContent, isLoading: isLoadingContent } = useGetFileContent({
     fileUid,
-    kbId,
+    catalogId,
     accessToken,
     enabled: isOpen,
     ownerId,
   });
 
   const { data: chunks } = useListChunks({
-    kbId,
+    catalogId,
     accessToken,
     enabled: isOpen && highlightChunk,
     ownerId,

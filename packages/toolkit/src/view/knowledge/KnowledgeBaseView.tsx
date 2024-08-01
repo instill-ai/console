@@ -63,7 +63,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
 
   const { data: files } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace ?? null,
-    knowledgeBaseId: selectedKnowledgeBase?.kbId ?? "",
+    knowledgeBaseId: selectedKnowledgeBase?.catalogId ?? "",
     accessToken,
     enabled:
       enabledQuery &&
@@ -90,7 +90,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const handleDeleteKnowledgeBase = (knowledgeBase: KnowledgeBase) => {
     setKnowledgeBaseToDelete(knowledgeBase);
     setShowDeleteMessage(true);
-    setPendingDeletions((prev) => [...prev, knowledgeBase.kbId]);
+    setPendingDeletions((prev) => [...prev, knowledgeBase.catalogId]);
   };
 
   const actuallyDeleteKnowledgeBase = async () => {
@@ -99,15 +99,15 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     try {
       await deleteKnowledgeBase.mutateAsync({
         ownerId: selectedNamespace,
-        kbId: knowledgeBaseToDelete.kbId,
+        kbId: knowledgeBaseToDelete.catalogId,
         accessToken,
       });
       setShowDeleteMessage(false);
       setKnowledgeBaseToDelete(null);
       setPendingDeletions((prev) =>
-        prev.filter((id) => id !== knowledgeBaseToDelete.kbId),
+        prev.filter((id) => id !== knowledgeBaseToDelete.catalogId),
       );
-      if (selectedKnowledgeBase?.kbId === knowledgeBaseToDelete.kbId) {
+      if (selectedKnowledgeBase?.catalogId === knowledgeBaseToDelete.catalogId) {
         setSelectedKnowledgeBase(null);
         setActiveTab("knowledge-base");
       }
@@ -122,7 +122,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     setShowDeleteMessage(false);
     if (knowledgeBaseToDelete) {
       setPendingDeletions((prev) =>
-        prev.filter((id) => id !== knowledgeBaseToDelete.kbId),
+        prev.filter((id) => id !== knowledgeBaseToDelete.catalogId),
       );
     }
     setKnowledgeBaseToDelete(null);
