@@ -1,5 +1,5 @@
 import { getQueryString } from "../../helper";
-import { InstillAPIClient } from "../../main";
+import { APIResource } from "../../main/resource";
 import {
   Chunk,
   CreateKnowledgeBaseRequest,
@@ -26,13 +26,7 @@ import {
   UploadKnowledgeBaseFileRequest,
 } from "./types";
 
-export class ArtifactClient {
-  private client: InstillAPIClient;
-
-  constructor(client: InstillAPIClient) {
-    this.client = client;
-  }
-
+export class Artifact_client extends APIResource {
   async listKnowledgeBases(
     props: ListKnowledgeBasesRequest,
   ): Promise<ListKnowledgeBasesResponse> {
@@ -42,14 +36,14 @@ export class ArtifactClient {
       pageSize,
       pageToken,
     });
-    return this.client.get<ListKnowledgeBasesResponse>(queryString);
+    return this._client.get<ListKnowledgeBasesResponse>(queryString);
   }
 
   async createKnowledgeBase(
     props: CreateKnowledgeBaseRequest,
   ): Promise<KnowledgeBase> {
     const { ownerId, payload } = props;
-    const response = await this.client.post<{ knowledge_base: KnowledgeBase }>(
+    const response = await this._client.post<{ knowledge_base: KnowledgeBase }>(
       `/namespaces/${ownerId}/knowledge-bases`,
       { body: JSON.stringify(payload) },
     );
@@ -60,7 +54,7 @@ export class ArtifactClient {
     props: DeleteKnowledgeBaseFileRequest,
   ): Promise<void> {
     const { ownerId, kbId, fileUid } = props;
-    await this.client.delete(
+    await this._client.delete(
       `/namespaces/${ownerId}/knowledge-bases/${kbId}/files/${fileUid}`,
     );
   }
@@ -69,23 +63,24 @@ export class ArtifactClient {
     props: UpdateKnowledgeBaseRequest,
   ): Promise<KnowledgeBase> {
     const { ownerId, kbId, payload } = props;
-    const response = await this.client.patch<{ knowledge_base: KnowledgeBase }>(
-      `/namespaces/${ownerId}/knowledge-bases/${kbId}`,
-      { body: JSON.stringify(payload) },
-    );
+    const response = await this._client.patch<{
+      knowledge_base: KnowledgeBase;
+    }>(`/namespaces/${ownerId}/knowledge-bases/${kbId}`, {
+      body: JSON.stringify(payload),
+    });
     return response.knowledge_base;
   }
 
   async deleteKnowledgeBase(props: DeleteKnowledgeBaseRequest): Promise<void> {
     const { ownerId, kbId } = props;
-    await this.client.delete(`/namespaces/${ownerId}/knowledge-bases/${kbId}`);
+    await this._client.delete(`/namespaces/${ownerId}/knowledge-bases/${kbId}`);
   }
 
   async listKnowledgeBaseFiles(
     props: ListKnowledgeBaseFilesRequest,
   ): Promise<ListKnowledgeBaseFilesResponse> {
     const { ownerId, kbId, pageSize, pageToken } = props;
-    const response = await this.client.get<ListKnowledgeBaseFilesResponse>(
+    const response = await this._client.get<ListKnowledgeBaseFilesResponse>(
       `/namespaces/${ownerId}/knowledge-bases/${kbId}/files`,
       {
         params: { pageSize, pageToken },
@@ -98,7 +93,7 @@ export class ArtifactClient {
     props: UploadKnowledgeBaseFileRequest,
   ): Promise<File> {
     const { ownerId, kbId, payload } = props;
-    const response = await this.client.post<{ file: File }>(
+    const response = await this._client.post<{ file: File }>(
       `/namespaces/${ownerId}/knowledge-bases/${kbId}/files`,
       { body: JSON.stringify(payload) },
     );
@@ -107,7 +102,7 @@ export class ArtifactClient {
 
   async listChunks(props: ListChunksRequest): Promise<ListChunksResponse> {
     const { ownerId, kbId, fileUid, pageSize, pageToken } = props;
-    const response = await this.client.get<ListChunksResponse>(
+    const response = await this._client.get<ListChunksResponse>(
       `/namespaces/${ownerId}/knowledge-bases/${kbId}/chunks`,
       {
         params: { fileUid, pageSize, pageToken },
@@ -118,7 +113,7 @@ export class ArtifactClient {
 
   async updateChunk(props: UpdateChunkRequest): Promise<Chunk> {
     const { chunkUid, retrievable } = props;
-    const response = await this.client.post<{ chunk: Chunk }>(
+    const response = await this._client.post<{ chunk: Chunk }>(
       `/chunks/${chunkUid}`,
       { body: JSON.stringify({ retrievable }) },
     );
@@ -127,7 +122,7 @@ export class ArtifactClient {
 
   async getChunkContent(props: GetChunkContentRequest): Promise<string> {
     const { ownerId, kbId, chunkUid } = props;
-    const response = await this.client.get<{ content: string }>(
+    const response = await this._client.get<{ content: string }>(
       `/namespaces/${ownerId}/knowledge-bases/${kbId}/chunks/${chunkUid}/content`,
     );
     return response.content;
@@ -135,7 +130,9 @@ export class ArtifactClient {
 
   async getFileContent(props: GetFileContentRequest): Promise<string> {
     const { ownerId, kbId, fileUid } = props;
-    const response = await this.client.get<{ sourceFile: { content: string } }>(
+    const response = await this._client.get<{
+      sourceFile: { content: string };
+    }>(
       `/namespaces/${ownerId}/knowledge-bases/${kbId}/files/${fileUid}/source`,
     );
     return response.sourceFile.content;
@@ -143,7 +140,7 @@ export class ArtifactClient {
 
   async getFileDetails(props: GetFileDetailsRequest): Promise<File> {
     const { ownerId, kbId, fileUid } = props;
-    const response = await this.client.get<{ file: File }>(
+    const response = await this._client.get<{ file: File }>(
       `/namespaces/${ownerId}/knowledge-bases/${kbId}/files/${fileUid}`,
     );
     return response.file;
@@ -151,7 +148,7 @@ export class ArtifactClient {
 
   async getSourceFile(props: GetSourceFileRequest): Promise<SourceFile> {
     const { ownerId, kbId, fileUid } = props;
-    const response = await this.client.get<{ sourceFile: SourceFile }>(
+    const response = await this._client.get<{ sourceFile: SourceFile }>(
       `/namespaces/${ownerId}/knowledge-bases/${kbId}/files/${fileUid}/source`,
     );
     return response.sourceFile;
@@ -160,7 +157,7 @@ export class ArtifactClient {
   async processKnowledgeBaseFiles(
     props: ProcessKnowledgeBaseFilesRequest,
   ): Promise<File[]> {
-    const response = await this.client.post<{ files: File[] }>(
+    const response = await this._client.post<{ files: File[] }>(
       `/knowledge-bases/files/processAsync`,
       { body: JSON.stringify({ file_uids: props.fileUids }) },
     );
@@ -171,7 +168,7 @@ export class ArtifactClient {
     props: SimilarityChunksSearchRequest,
   ): Promise<SimilarityChunk[]> {
     const { ownerId, kbId, payload } = props;
-    const response = await this.client.post<{
+    const response = await this._client.post<{
       similarChunks: SimilarityChunk[];
     }>(`/namespaces/${ownerId}/knowledge-bases/${kbId}/chunks/similarity`, {
       body: JSON.stringify(payload),
