@@ -33,7 +33,7 @@ export const EditKnowledgeDialog = ({
   onClose,
   onSubmit,
   initialValues,
-} : EditKnowledgeDialogProps) => {
+}: EditKnowledgeDialogProps) => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const form = useForm<z.infer<typeof EditKnowledgeFormSchema>>({
@@ -42,16 +42,7 @@ export const EditKnowledgeDialog = ({
     mode: "onChange",
   });
 
-  const { formState, watch, reset } = form;
-  const nameValue = watch("name");
-
-  const formatName = (name: string) =>
-    name
-      .toLowerCase()
-      .replace(/[^a-z0-9-_]/g, "-")
-      .replace(/-+/g, "-");
-  const isNameValid = /^[a-zA-Z0-9-_]+$/.test(nameValue);
-  const formattedName = formatName(nameValue);
+  const { formState, reset } = form;
 
   const handleSubmit = async (
     data: z.infer<typeof EditKnowledgeFormSchema>,
@@ -100,14 +91,10 @@ export const EditKnowledgeDialog = ({
                           {...field}
                           id={field.name}
                           placeholder="Catalog name"
+                          disabled={true}
                         />
                       </Input.Root>
                     </Form.Control>
-                    {nameValue && !isNameValid && (
-                      <p className="mt-1 text-semantic-fg-secondary product-body-text-4-regular">
-                        Name will be transformed to: {formattedName}
-                      </p>
-                    )}
                     <Form.Message />
                   </Form.Item>
                 )}
@@ -136,32 +123,6 @@ export const EditKnowledgeDialog = ({
                   </Form.Item>
                 )}
               />
-              {/* <Form.Field
-                control={form.control}
-                name="tags"
-                render={({ field }) => (
-                  <Form.Item>
-                    <div className="flex items-center justify-between">
-                      <Form.Label className="text-semantic-fg-primary product-button-button-2">
-                        Tags
-                      </Form.Label>
-                      <p className="my-auto text-semantic-fg-secondary product-body-text-4-regular">
-                        Optional
-                      </p>
-                    </div>
-                    <Form.Control>
-                      <Input.Root>
-                        <Input.Core
-                          {...field}
-                          id={field.name}
-                          placeholder="Add tag"
-                        />
-                      </Input.Root>
-                    </Form.Control>
-                    <Form.Message />
-                  </Form.Item>
-                )}
-              /> */}
               <div className="mt-8 flex justify-end gap-x-3">
                 <Button variant="secondaryGrey" onClick={onClose}>
                   Cancel

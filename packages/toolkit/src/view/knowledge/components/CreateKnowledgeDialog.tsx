@@ -58,12 +58,31 @@ export const CreateKnowledgeDialog = ({
   const { formState, watch, setValue } = form;
   const nameValue = watch("name");
 
-  const formatName = (name: string) =>
-    name
-      .toLowerCase()
-      .replace(/[^a-z0-9-_]/g, "-")
-      .replace(/-+/g, "-");
-  const isNameValid = /^[a-zA-Z0-9-_]+$/.test(nameValue);
+  const formatName = (name: string) => {
+    // First, lowercase the name and replace invalid characters with hyphens
+    let formatted = name.toLowerCase().replace(/[^a-z0-9-]/g, "-");
+
+    // Remove leading hyphens
+    formatted = formatted.replace(/^-+/, "");
+
+    // Ensure it starts with a letter
+    if (!/^[a-z]/.test(formatted)) {
+      formatted = "c" + formatted;
+    }
+
+    // Remove consecutive hyphens
+    formatted = formatted.replace(/-+/g, "-");
+
+    // Truncate to 32 characters
+    formatted = formatted.slice(0, 32);
+
+    // Remove trailing hyphens
+    formatted = formatted.replace(/-+$/, "");
+
+    return formatted;
+  };
+
+  const isNameValid = (name: string) => /^[a-z][-a-z0-9]{0,31}$/.test(name);
   const formattedName = formatName(nameValue);
 
   React.useEffect(() => {
@@ -143,11 +162,14 @@ export const CreateKnowledgeDialog = ({
                           {...field}
                           id={field.name}
                           placeholder="Catalog name"
+                          onChange={(e) => {
+                            field.onChange(e);
+                          }}
                         />
                       </Input.Root>
                     </Form.Control>
                     <div className="h-6">
-                      {nameValue && !isNameValid && (
+                      {nameValue && formattedName !== nameValue && (
                         <p className="!mt-0.5 text-semantic-fg-secondary product-body-text-4-regular">
                           Name will be transformed to: {formattedName}
                         </p>
