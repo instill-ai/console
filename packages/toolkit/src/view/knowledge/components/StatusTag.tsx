@@ -1,4 +1,3 @@
-import React from "react";
 import { Tag } from "@instill-ai/design-system";
 
 type StatusTagProps = {
@@ -55,7 +54,7 @@ const formatStatus = (status: string): string => {
     return status.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
 };
 
-export const StatusTag = ({ status } : StatusTagProps) => {
+export const StatusTag = ({ status }: StatusTagProps) => {
     const { variant, dotColor } = getStatusTag(status.toUpperCase() as FileStatus);
 
     return (

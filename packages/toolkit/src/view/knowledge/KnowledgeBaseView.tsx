@@ -129,13 +129,29 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
 
   React.useEffect(() => {
     let timer: NodeJS.Timeout;
+
+    // This effect manages the delayed deletion of a knowledge base
     if (showDeleteMessage) {
+      // When the delete message is shown, start a timer
       timer = setTimeout(() => {
+        // After the specified timeout, trigger the actual deletion
         actuallyDeleteKnowledgeBase();
       }, DELETE_KNOWLEDGE_BASE_TIMEOUT);
     }
+
+    // Cleanup function to clear the timer if the component unmounts
+    // or if showDeleteMessage changes before the timer completes
     return () => clearTimeout(timer);
+
+    // This effect runs whenever showDeleteMessage changes
   }, [showDeleteMessage]);
+
+  // Note: This mechanism allows for a "soft delete" approach:
+  // 1. User initiates delete action
+  // 2. A delete message is shown (showDeleteMessage becomes true)
+  // 3. A timer starts
+  // 4. If the user doesn't undo within the timeout period, the knowledge base is deleted
+  // 5. If the user undoes or navigates away, the timer is cleared, preventing deletion
 
   React.useEffect(() => {
     // Reset selected catalog when namespace changes
