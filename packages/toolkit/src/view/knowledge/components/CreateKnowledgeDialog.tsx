@@ -39,7 +39,7 @@ export const CreateKnowledgeDialog = ({
   const { selectedNamespace } = useInstillStore(
     useShallow((store: InstillStore) => ({
       selectedNamespace: store.navigationNamespaceAnchor,
-    }))
+    })),
   );
 
   const userNamespaces = useUserNamespaces();
@@ -82,7 +82,7 @@ export const CreateKnowledgeDialog = ({
     return formatted;
   };
 
-  const isNameValid = (name: string) => /^[a-z][-a-z0-9]{0,31}$/.test(name);
+  // const isNameValid = (name: string) => /^[a-z][-a-z0-9]{0,31}$/.test(name);
   const formattedName = formatName(nameValue);
 
   React.useEffect(() => {

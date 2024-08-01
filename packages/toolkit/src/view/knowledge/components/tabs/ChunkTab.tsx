@@ -1,7 +1,7 @@
 import React from "react";
-import { Nullable } from "@instill-ai/toolkit";
 
 import { Button, Icons, Separator, Skeleton } from "@instill-ai/design-system";
+import { Nullable } from "@instill-ai/toolkit";
 
 import {
   InstillStore,
@@ -13,9 +13,13 @@ import {
   useListKnowledgeBaseFiles,
   useUpdateChunk,
 } from "../../../../lib/react-query-service/knowledge";
+import {
+  Chunk,
+  KnowledgeBase,
+  KnowledgeFile,
+} from "../../../../lib/react-query-service/knowledge/types";
 import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";
-import { Chunk, KnowledgeBase, KnowledgeFile } from "../../../../lib/react-query-service/knowledge/types";
 
 type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -28,10 +32,7 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const ChunkTab = ({
-  knowledgeBase,
-  onGoToUpload,
-}: ChunkTabProps) => {
+export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
   const [expandedFiles, setExpandedFiles] = React.useState<string[]>([]);
   const [selectedChunk, setSelectedChunk] =
     React.useState<Nullable<Chunk>>(null);
@@ -41,23 +42,27 @@ export const ChunkTab = ({
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
 
-  const { data: allFiles, isLoading: isLoadingFiles } = useListKnowledgeBaseFiles({
-    namespaceId: me.data?.id ?? null,
-    knowledgeBaseId: knowledgeBase.kbId,
-    accessToken,
-    enabled: enabledQuery && Boolean(me.data?.id),
-  });
+  const { data: allFiles, isLoading: isLoadingFiles } =
+    useListKnowledgeBaseFiles({
+      namespaceId: me.data?.id ?? null,
+      knowledgeBaseId: knowledgeBase.kbId,
+      accessToken,
+      enabled: enabledQuery && Boolean(me.data?.id),
+    });
 
   const updateChunkMutation = useUpdateChunk();
 
   const files = React.useMemo(() => {
-    return allFiles?.filter(file => file.processStatus !== "FILE_PROCESS_STATUS_FAILED") || [];
+    return (
+      allFiles?.filter(
+        (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED",
+      ) || []
+    );
   }, [allFiles]);
 
   const toggleFileExpansion = (fileUid: string) => {

@@ -26,9 +26,13 @@ import {
   useUploadKnowledgeBaseFile,
 } from "../../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
-// import FilePreview from "./FilePreview";
-import { IncorrectFormatFileNotification, DuplicateFileNotification, FileSizeNotification } from "../notifications";
 import { FILE_ERROR_TIMEOUT } from "../lib/undoDeleteTime";
+// import FilePreview from "./FilePreview";
+import {
+  DuplicateFileNotification,
+  FileSizeNotification,
+  IncorrectFormatFileNotification,
+} from "../notifications";
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024;
 
@@ -82,7 +86,6 @@ export const UploadExploreTab = ({
     },
   });
 
-
   const [showFileTooLargeMessage, setShowFileTooLargeMessage] =
     React.useState(false);
   const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] =
@@ -92,16 +95,14 @@ export const UploadExploreTab = ({
   const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
   const fileTooLargeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
-  const unsupportedFileTypeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(
-    null,
-  );
+  const unsupportedFileTypeTimeoutRef =
+    React.useRef<Nullable<NodeJS.Timeout>>(null);
   const duplicateFileTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
@@ -242,10 +243,11 @@ export const UploadExploreTab = ({
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
-                      ? "border-semantic-accent-default"
-                      : "border-semantic-bg-line"
-                      } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${
+                      isDragging
+                        ? "border-semantic-accent-default"
+                        : "border-semantic-bg-line"
+                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
                       setIsDragging(true);

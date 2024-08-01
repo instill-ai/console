@@ -3,11 +3,7 @@ import * as z from "zod";
 
 import { Separator, Skeleton } from "@instill-ai/design-system";
 
-import {
-  InstillStore,
-  useInstillStore,
-  useShallow,
-} from "../../../../lib";
+import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import {
   useCreateKnowledgeBase,
   useGetKnowledgeBases,
@@ -61,7 +57,9 @@ export const KnowledgeBaseTab = ({
   const [selectedSortAnchor, setSelectedSortAnchor] =
     React.useState<SortAnchor>("createTime");
 
-  const { enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
+  const { enabledQuery, selectedNamespace } = useInstillStore(
+    useShallow(selector),
+  );
 
   const {
     data: knowledgeBases,
@@ -84,7 +82,7 @@ export const KnowledgeBaseTab = ({
   }, [selectedNamespace, refetch]);
 
   const handleCreateKnowledgeSubmit = async (
-    data: z.infer<typeof CreateKnowledgeFormSchema>
+    data: z.infer<typeof CreateKnowledgeFormSchema>,
   ) => {
     if (!accessToken) return;
 
@@ -108,7 +106,7 @@ export const KnowledgeBaseTab = ({
 
   const handleUpdateKnowledgeBase = async (
     data: EditKnowledgeDialogData,
-    kbId: string
+    kbId: string,
   ) => {
     if (!selectedNamespace || !accessToken) return;
 
@@ -161,7 +159,7 @@ export const KnowledgeBaseTab = ({
       .filter(
         (kb) =>
           kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          kb.description.toLowerCase().includes(searchTerm.toLowerCase())
+          kb.description.toLowerCase().includes(searchTerm.toLowerCase()),
       );
 
     filtered.sort((a, b) => {

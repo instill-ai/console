@@ -20,9 +20,9 @@ export const DuplicateFileNotification = ({
             {deletedFileName} Already Uploaded or Exists in Catalog
           </div>
           <div className="text-semantic-fg-secondary product-body-text-3-regular overflow-hidden text-ellipsis whitespace-pre-wrap">
-            Current catalog does not support uploading the same file
-            twice. Please consider deleting the old file with the same name or
-            renaming your new file before attempting to upload again.
+            Current catalog does not support uploading the same file twice.
+            Please consider deleting the old file with the same name or renaming
+            your new file before attempting to upload again.
           </div>
         </div>
       </div>
@@ -37,4 +37,3 @@ export const DuplicateFileNotification = ({
     </div>
   );
 };
-

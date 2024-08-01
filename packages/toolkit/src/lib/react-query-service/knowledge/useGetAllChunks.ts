@@ -1,6 +1,6 @@
 import { createInstillAxiosClient } from "../../../lib";
 
-export async function useGetAllChunks(
+export async function getAllChunks(
   accessToken: string,
   ownerName: string,
   kbId: string,

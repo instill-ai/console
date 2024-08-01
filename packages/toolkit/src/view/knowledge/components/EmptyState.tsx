@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Button, Icons } from "@instill-ai/design-system";
 
 type EmptyStateProps = {

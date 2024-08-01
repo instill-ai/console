@@ -1,5 +1,7 @@
 import React from "react";
+
 import { Separator, Skeleton } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -10,13 +12,15 @@ import {
   useDeleteKnowledgeBaseFile,
   useListKnowledgeBaseFiles,
 } from "../../../../lib/react-query-service/knowledge";
-import { File, KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
+import {
+  File,
+  KnowledgeBase,
+} from "../../../../lib/react-query-service/knowledge/types";
+import EmptyState from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
+import { FileTable } from "../FileTable";
 import { DELETE_FILE_TIMEOUT } from "../lib/undoDeleteTime";
 import { DeleteFileNotification } from "../notifications";
-import { FileTable } from "../FileTable";
-import EmptyState from "../EmptyState";
-
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -42,7 +46,6 @@ export const CatalogFilesTab = ({
   });
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
@@ -77,7 +80,7 @@ export const CatalogFilesTab = ({
     if (
       files &&
       files.some(
-        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED"
+        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED",
       )
     ) {
       // Set up an interval to refetch file data every 5 seconds
@@ -108,7 +111,6 @@ export const CatalogFilesTab = ({
     setIsFileDetailsOpen(false);
   };
 
-
   const handleDelete = (fileUid: string) => {
     const file = files?.find((item) => item.fileUid === fileUid);
     if (file) {
@@ -128,7 +130,6 @@ export const CatalogFilesTab = ({
       }, DELETE_FILE_TIMEOUT);
     }
   };
-
 
   const actuallyDeleteFile = async (file: File) => {
     try {

@@ -1,5 +1,7 @@
 import React from "react";
+
 import { cn, Icons, Nullable } from "@instill-ai/design-system";
+
 import {
   useGetFileContent,
   useListChunks,
@@ -79,7 +81,7 @@ const FileChunks = ({
       <div
         className={cn(
           "mb-4 flex items-center space-x-2",
-          isProcessing ? "cursor-not-allowed" : "cursor-pointer"
+          isProcessing ? "cursor-not-allowed" : "cursor-pointer",
         )}
         onClick={handleToggleExpand}
       >
@@ -87,7 +89,7 @@ const FileChunks = ({
           className={cn(
             "h-4 w-4 stroke-semantic-fg-primary transition-transform",
             expanded && !isProcessing ? "" : "-rotate-90",
-            isProcessing ? "opacity-50" : ""
+            isProcessing ? "opacity-50" : "",
           )}
         />
         <p
@@ -95,7 +97,7 @@ const FileChunks = ({
             "font-semibold text-[16px] leading-4 mr-6",
             isProcessing
               ? "text-semantic-fg-disabled"
-              : "text-semantic-fg-secondary"
+              : "text-semantic-fg-secondary",
           )}
         >
           {file.name}

@@ -9,8 +9,16 @@ import {
   Tooltip,
 } from "@instill-ai/design-system";
 
-import { InstillStore, useInstillStore, useQueries, useShallow } from "../../../lib";
-import { useGetAllChunks, useListKnowledgeBaseFiles } from "../../../lib/react-query-service/knowledge";
+import {
+  InstillStore,
+  useInstillStore,
+  useQueries,
+  useShallow,
+} from "../../../lib";
+import {
+  getAllChunks,
+  useListKnowledgeBaseFiles,
+} from "../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
 import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
 
@@ -26,10 +34,17 @@ type MenuProps = {
   onDuplicate: (e: React.MouseEvent) => void;
   disabled: boolean;
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void
+  setIsOpen: (isOpen: boolean) => void;
 };
 
-const Menu = ({ onDelete, onEdit, onDuplicate, disabled, isOpen, setIsOpen }: MenuProps) => {
+const Menu = ({
+  onDelete,
+  onEdit,
+  onDuplicate,
+  disabled,
+  isOpen,
+  setIsOpen,
+}: MenuProps) => {
   return (
     <React.Fragment>
       <div className="flex justify-center z-10">
@@ -110,7 +125,10 @@ export const CreateKnowledgeBaseCard = ({
   const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
+    useShallow(selector),
+  );
+
 
   const { data: files } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace || null,
@@ -122,7 +140,7 @@ export const CreateKnowledgeBaseCard = ({
   const chunkQueries = useQueries({
     queries: (files || []).map((file) => ({
       queryKey: ["chunks", knowledgeBase.kbId, file.fileUid],
-      queryFn: () => useGetAllChunks(
+      queryFn: () => getAllChunks(
         accessToken || "",
         knowledgeBase.ownerName,
         knowledgeBase.kbId,

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+
 import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
 
 type SidebarProps = {
@@ -22,7 +23,8 @@ export const Sidebar = ({
   };
 
   const getTabClassName = (tabName: string) => {
-    const baseClass = "flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2";
+    const baseClass =
+      "flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2";
     const isActive = activeTab === tabName;
 
     if (isActive) {
