@@ -4,3 +4,4 @@ export * from "./release";
 export * from "./secret";
 export * from "./trigger";
 export * from "./types";
+export * from "./artifact";
