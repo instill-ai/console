@@ -1,9 +1,7 @@
 import React from "react";
 import Markdown from "markdown-to-jsx";
 import sanitizeHtml from "sanitize-html";
-
 import { Dialog, ScrollArea, Skeleton } from "@instill-ai/design-system";
-
 import {
   useGetFileContent,
   useListChunks,
@@ -57,27 +55,39 @@ const FileDetailsOverlay = ({
     (content: string, chunkUid?: string) => {
       if (!highlightChunk || !chunkUid || !content) return content;
       const chunk = chunks?.find(
-        (c: { chunkUid: string }) => c.chunkUid === chunkUid,
+        (c: { chunkUid: string }) => c.chunkUid === chunkUid
       );
       if (!chunk) return content;
       const { startPos, endPos } = chunk;
-      return (
-        content.slice(0, startPos) +
-        `<span class="bg-semantic-bg-line hover:bg-[#CBD2E1]">${content.slice(startPos, endPos)}</span>` +
-        content.slice(endPos)
-      );
+      console.log("startPos", startPos, endPos);
+
+      const beforeHighlight = content.slice(0, startPos);
+      const highlightedPart = content.slice(startPos, endPos);
+      const afterHighlight = content.slice(endPos);
+
+      return `${beforeHighlight}<span class="bg-semantic-bg-line hover:bg-[#CBD2E1]">${highlightedPart}</span>${afterHighlight}`;
     },
-    [chunks, highlightChunk],
+    [chunks, highlightChunk]
   );
 
   const displayContent = React.useMemo(
     () =>
       fileContent ? highlightChunkInContent(fileContent, selectedChunkUid) : "",
-    [fileContent, highlightChunkInContent, selectedChunkUid],
+    [fileContent, highlightChunkInContent, selectedChunkUid]
   );
 
   const fileIcon = React.useMemo(() => getFileIcon(fileType), [fileType]);
-  const sanitizedHtmlText = sanitizeHtml(displayContent ?? "");
+
+  const sanitizedHtmlText = React.useMemo(() =>
+    sanitizeHtml(displayContent ?? "", {
+      allowedTags: sanitizeHtml.defaults.allowedTags.concat(['span']),
+      allowedAttributes: {
+        ...sanitizeHtml.defaults.allowedAttributes,
+        span: ['class']
+      }
+    }),
+    [displayContent]
+  );
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -102,13 +112,20 @@ const FileDetailsOverlay = ({
               <Skeleton className="h-4 w-full" />
               <Skeleton className="h-4 w-3/4" />
             </div>
-          ) : fileType.toUpperCase() === "FILE_TYPE_PDF" ? (
-            <div
-              className="h-full overflow-y-auto px-4 pb-4 text-semantic-fg-primary product-body-text-3-regular"
-              dangerouslySetInnerHTML={{ __html: displayContent }}
-            />
           ) : (
-            <Markdown>{sanitizedHtmlText}</Markdown>
+            <Markdown
+              options={{
+                overrides: {
+                  span: {
+                    props: {
+                      className: "bg-semantic-bg-line hover:bg-[#CBD2E1]",
+                    },
+                  },
+                },
+              }}
+            >
+              {sanitizedHtmlText}
+            </Markdown>
           )}
         </ScrollArea.Root>
         <Dialog.Close />

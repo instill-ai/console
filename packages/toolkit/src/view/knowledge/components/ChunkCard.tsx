@@ -62,7 +62,7 @@ const ChunkCard = ({
           </div>
         </div>
         <Separator orientation="horizontal" className="mb-2" />
-        <p className="text-semantic-fg-secondary-alt-secondary product-body-text-2-regular hover:bg-[#CBD2E1] line-clamp-3">
+        <p className="text-semantic-fg-secondary-alt-secondary product-body-text-3-regular hover:bg-[#CBD2E1] line-clamp-3">
           {chunkContent}
         </p>
         {/* <div className="flex items-center justify-end gap-1">
