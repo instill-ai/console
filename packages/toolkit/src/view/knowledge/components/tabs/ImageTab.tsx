@@ -71,7 +71,7 @@ export const ImageTab = ({ knowledgeBase }: ImageTabProps) => {
             Publish
           </Button>
           <Button variant="secondaryGrey" size="lg">
-            Update Knowledge Base
+            Update Catalog
           </Button>
           <Button variant="primary" size="lg">
             Export Data
@@ -136,7 +136,7 @@ export const ImageTab = ({ knowledgeBase }: ImageTabProps) => {
                           elit. Fusce ac justo vitae sem ultricies consectetur.
                           Import your own text data or write in real-time via
                           Webhook to enhance your LLM context. Effortlessly
-                          build a comprehensive knowledge base.
+                          build a comprehensive catalog.
                         </p>
                         <div className="flex items-center justify-end gap-1">
                           <Tag size="sm" variant="default" className="!rounded">

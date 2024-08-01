@@ -14,7 +14,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({ onGoToUpload }) => {
       <p className="mb-2 product-headings-heading-2">No Files Uploaded</p>
       <p className="mb-4 text-semantic-fg-secondary product-body-text-2-regular">
         You have no files uploaded yet. Upload files to add resources and
-        references to your knowledge base.
+        references to your catalog.
       </p>
       <Button
         variant="primary"

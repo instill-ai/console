@@ -107,7 +107,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
       }
       refetchKnowledgeBases();
     } catch (error) {
-      console.error("Error deleting knowledge base:", error);
+      console.error("Error deleting catalog:", error);
       setShowDeleteMessage(false);
     }
   };
@@ -145,7 +145,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   }, [showDeleteMessage]);
 
   React.useEffect(() => {
-    // Reset selected knowledge base when namespace changes
+    // Reset selected catalog when namespace changes
     setSelectedKnowledgeBase(null);
     setActiveTab("knowledge-base");
   }, [selectedNamespace]);

@@ -101,7 +101,7 @@ export const KnowledgeBaseTab = ({
       refetch();
       setIsCreateDialogOpen(false);
     } catch (error) {
-      console.error("Error creating knowledge base:", error);
+      console.error("Error creating catalog:", error);
     }
   };
 
@@ -124,7 +124,7 @@ export const KnowledgeBaseTab = ({
       });
       refetch();
     } catch (error) {
-      console.error("Error updating knowledge base:", error);
+      console.error("Error updating catalog:", error);
     }
   };
 
@@ -148,7 +148,7 @@ export const KnowledgeBaseTab = ({
       });
       refetch();
     } catch (error) {
-      console.error("Error cloning knowledge base:", error);
+      console.error("Error cloning catalog:", error);
     }
   };
 
@@ -205,7 +205,7 @@ export const KnowledgeBaseTab = ({
     <div className="flex flex-col">
       <div className="mb-5 flex items-center justify-between">
         <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
-          Knowledge Bases
+          Catalogs
         </p>
         <KnowledgeSearchSort
           selectedSortOrder={selectedSortOrder}

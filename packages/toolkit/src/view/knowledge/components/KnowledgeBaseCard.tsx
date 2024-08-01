@@ -12,7 +12,7 @@ export const KnowledgeBaseCard: React.FC<KnowledgeBaseCardProps> = ({
   disabled = false,
 }) => {
   const cardContent = disabled
-    ? "You reached the limit of Knowledge bases. Please delete one if you want to create a new one."
+    ? "You reached the limit of Catalogs. Please delete one if you want to create a new one."
     : "Import your own text data or write data in real-time via Webhook for LLM context enhancement.";
   const cardHeader = disabled
     ? "Create Knowledge (Limit Reached)"
@@ -20,33 +20,29 @@ export const KnowledgeBaseCard: React.FC<KnowledgeBaseCardProps> = ({
 
   return (
     <div
-      className={`flex h-[175px] w-[360px] flex-col gap-y-5 rounded-md border border-semantic-bg-line p-6 ${
-        disabled
+      className={`flex h-[175px] w-[360px] flex-col gap-y-5 rounded-md border border-semantic-bg-line p-6 ${disabled
           ? "bg-semantic-bg-base-bg cursor-not-allowed"
           : "bg-semantic-bg-base-bg cursor-pointer"
-      }`}
+        }`}
       onClick={disabled ? undefined : onClick}
     >
       <div className="flex items-center gap-x-2">
         <Icons.Plus
-          className={`h-4 w-4 ${
-            disabled
+          className={`h-4 w-4 ${disabled
               ? "stroke-semantic-fg-disabled"
               : "stroke-semantic-fg-secondary"
-          }`}
+            }`}
         />
         <div
-          className={` product-body-text-2-medium ${
-            disabled ? "text-semantic-fg-disabled" : "text-semantic-fg-primary"
-          }`}
+          className={` product-body-text-2-medium ${disabled ? "text-semantic-fg-disabled" : "text-semantic-fg-primary"
+            }`}
         >
           {cardHeader}
         </div>
       </div>
       <p
-        className={`product-body-text-3-regular ${
-          disabled ? "text-semantic-fg-disabled" : "text-semantic-fg-secondary"
-        }`}
+        className={`product-body-text-3-regular ${disabled ? "text-semantic-fg-disabled" : "text-semantic-fg-secondary"
+          }`}
       >
         {cardContent}
       </p>

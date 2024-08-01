@@ -65,7 +65,7 @@ export const Sidebar = ({
         className={`${getTabClassName("knowledge-base")} whitespace-nowrap`}
         onClick={() => handleTabChange("knowledge-base")}
       >
-        My Knowledge Bases
+        My Catalogs
       </div>
       <div
         className={getTabClassName("upload")}

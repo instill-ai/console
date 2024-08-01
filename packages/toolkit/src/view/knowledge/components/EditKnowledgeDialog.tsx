@@ -64,7 +64,7 @@ export const EditKnowledgeDialog: React.FC<EditKnowledgeDialogProps> = ({
         reset(initialValues);
       }, 1000);
     } catch (error) {
-      console.error("Error updating knowledge base:", error);
+      console.error("Error updating catalog:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -76,7 +76,7 @@ export const EditKnowledgeDialog: React.FC<EditKnowledgeDialogProps> = ({
         <Dialog.Content className="!w-[600px] rounded-md">
           <Dialog.Header className="flex justify-between">
             <Dialog.Title className="text-semantic-fg-primary product-body-text-1-semibold">
-              Edit knowledge base
+              Edit catalog
             </Dialog.Title>
             <Dialog.Close className="!focus:ring-0 !active:ring-0 !focus:outline-none !focus:ring-offset-0 !rounded-none !bg-transparent !shadow-none !ring-0 before:!hidden after:!hidden" />
           </Dialog.Header>
@@ -99,7 +99,7 @@ export const EditKnowledgeDialog: React.FC<EditKnowledgeDialogProps> = ({
                         <Input.Core
                           {...field}
                           id={field.name}
-                          placeholder="Knowledge base name"
+                          placeholder="Catalog name"
                         />
                       </Input.Root>
                     </Form.Control>

@@ -20,7 +20,7 @@ export const IncorrectFormatFileNotification = ({
           {fileName}
         </div>
         <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
-          Supported file types for the knowledge base <br />
+          Supported file types for the catalog <br />
           are .txt, .md, and .pdf. Please use one of these formats.
         </div>
       </div>

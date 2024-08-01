@@ -38,7 +38,7 @@ export function useGetKnowledgeBases({
       }
       const data = await getKnowledgeBases({ ownerId, accessToken });
       if (!data) {
-        throw new Error("No knowledge bases data returned");
+        throw new Error("No catalogs data returned");
       }
       return data;
     },

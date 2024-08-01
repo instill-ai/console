@@ -92,7 +92,7 @@ export const RetrieveTestTab = ({
       {!isProcessed ? (
         <div className="w-2/3 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
           <p className="mb-4 product-body-text-3-regular">
-            Your knowledge base has been successfully created. Now, you can
+            Your catalog has been successfully created. Now, you can
             proceed to the{" "}
             <button
               onClick={onGoToUpload}
@@ -108,7 +108,7 @@ export const RetrieveTestTab = ({
           <p className="mb-4 product-body-text-3-regular">
             Once the status of documents in Catalog / Files has changed to
             &apos;Completed&apos;, you can use the following Instill API format
-            example to test the retrieval of this knowledge base and obtain
+            example to test the retrieval of this catalog and obtain
             chunks related to a given query.
           </p>
 

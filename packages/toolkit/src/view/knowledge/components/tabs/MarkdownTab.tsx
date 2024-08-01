@@ -90,7 +90,7 @@ export const MarkdownTab = ({ knowledgeBase }: MarkdownTabProps) => {
             Publish
           </Button>
           <Button variant="secondaryGrey" size="lg">
-            Update Knowledge Base
+            Update Catalog
           </Button>
           <Button variant="primary" size="lg">
             Export Data

@@ -87,7 +87,7 @@ export const CreateKnowledgeDialog = ({
       <Dialog.Content className="!w-[600px] rounded-md">
         <Dialog.Header className="flex justify-between">
           <Dialog.Title className="text-semantic-fg-primary !product-body-text-1-semibold">
-            Create new knowledge base
+            Create new catalog
           </Dialog.Title>
           <Dialog.Close className="!focus:ring-0 !active:ring-0 !focus:outline-none !focus:ring-offset-0 !rounded-none !bg-transparent !shadow-none !ring-0 before:!hidden after:!hidden" />
         </Dialog.Header>
@@ -135,14 +135,14 @@ export const CreateKnowledgeDialog = ({
                 render={({ field }) => (
                   <Form.Item className="-ml-4 w-1/2">
                     <Form.Label className="text-semantic-fg-primary product-button-button-2">
-                      Knowledge base name
+                      Catalog name
                     </Form.Label>
                     <Form.Control>
                       <Input.Root>
                         <Input.Core
                           {...field}
                           id={field.name}
-                          placeholder="Knowledge base name"
+                          placeholder="Catalog name"
                         />
                       </Input.Root>
                     </Form.Control>

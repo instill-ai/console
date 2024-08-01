@@ -253,7 +253,7 @@ Text Chunks #: ${totalChunks}
                   Delete {knowledgeBase.name}
                 </div>
                 <div className="text-center product-body-text-2-regular">
-                  Are you sure you want to delete this knowledge base?
+                  Are you sure you want to delete this catalog?
                 </div>
               </div>
               <div className="flex w-full gap-2">

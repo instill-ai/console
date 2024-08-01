@@ -21,7 +21,7 @@ export const FileSizeNotification = ({
         </div>
         <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
           Please ensure your file is 15MB or smaller to upload it to the
-          knowledge base.
+          catalog.
         </div>
       </div>
       <Button
