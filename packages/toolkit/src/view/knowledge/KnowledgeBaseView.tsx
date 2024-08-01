@@ -24,13 +24,16 @@ import {
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+  selectedNamespace: store.navigationNamespaceAnchor,
+});
+
 export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
     React.useState<Nullable<KnowledgeBase>>(null);
   const [activeTab, setActiveTab] = React.useState("knowledge-base");
-  const [selectedTextOption, setSelectedTextOption] = React.useState(
-    null as Nullable<string>,
-  );
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] =
     React.useState<Nullable<KnowledgeBase>>(null);
@@ -38,13 +41,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [isProcessed, setIsProcessed] = React.useState(false);
   const [pendingDeletions, setPendingDeletions] = React.useState<string[]>([]);
 
-  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow((store: InstillStore) => ({
-      accessToken: store.accessToken,
-      enabledQuery: store.enabledQuery,
-      selectedNamespace: store.navigationNamespaceAnchor,
-    })),
-  );
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
 
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
   const { refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
@@ -70,10 +67,6 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
-  };
-
-  const handleTextOptionChange = (option: Nullable<string>) => {
-    setSelectedTextOption(option);
   };
 
   const handleKnowledgeBaseSelect = (knowledgeBase: KnowledgeBase) => {
@@ -165,7 +158,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           fileName="test"
         />
       )}
-     <div className="grid w-full grid-cols-12 gap-6 px-8">
+      <div className="grid w-full grid-cols-12 gap-6 px-8">
         <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
           <Sidebar
             activeTab={activeTab}

@@ -23,10 +23,16 @@ type CatalogFilesTabProps = {
   onGoToUpload: () => void;
 };
 
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+  selectedNamespace: store.navigationNamespaceAnchor,
+});
+
 export const CatalogFilesTab = ({
   knowledgeBase,
   onGoToUpload,
-} : CatalogFilesTabProps) => {
+}: CatalogFilesTabProps) => {
   const [sortConfig, setSortConfig] = React.useState<{
     key: keyof File | "";
     direction: "ascending" | "descending" | "";
@@ -35,12 +41,8 @@ export const CatalogFilesTab = ({
     direction: "",
   });
 
-  const { accessToken, enabledQuery } = useInstillStore(
-    useShallow((store: InstillStore) => ({
-      accessToken: store.accessToken,
-      enabledQuery: store.enabledQuery,
-    }))
-  );
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,

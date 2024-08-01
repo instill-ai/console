@@ -57,6 +57,12 @@ type UploadExploreTabProps = {
   onProcessFile: () => void;
 };
 
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+  selectedNamespace: store.navigationNamespaceAnchor,
+});
+
 export const UploadExploreTab = ({
   knowledgeBase,
   onProcessFile,
@@ -76,12 +82,6 @@ export const UploadExploreTab = ({
     },
   });
 
-  const { accessToken, enabledQuery } = useInstillStore(
-    useShallow((store: InstillStore) => ({
-      accessToken: store.accessToken,
-      enabledQuery: store.enabledQuery,
-    })),
-  );
 
   const [showFileTooLargeMessage, setShowFileTooLargeMessage] =
     React.useState(false);
@@ -100,6 +100,8 @@ export const UploadExploreTab = ({
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,

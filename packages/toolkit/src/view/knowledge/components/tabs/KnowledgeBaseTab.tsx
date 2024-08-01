@@ -42,6 +42,12 @@ const CreateKnowledgeFormSchema = z.object({
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+  selectedNamespace: store.navigationNamespaceAnchor,
+});
+
 export const KnowledgeBaseTab = ({
   onKnowledgeBaseSelect,
   accessToken,
@@ -55,12 +61,7 @@ export const KnowledgeBaseTab = ({
   const [selectedSortAnchor, setSelectedSortAnchor] =
     React.useState<SortAnchor>("createTime");
 
-  const { enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow((store: InstillStore) => ({
-      enabledQuery: store.enabledQuery,
-      selectedNamespace: store.navigationNamespaceAnchor,
-    }))
-  );
+  const { enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
 
   const {
     data: knowledgeBases,

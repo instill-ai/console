@@ -90,6 +90,11 @@ type CreateKnowledgeBaseCardProps = {
   onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
   disabled?: boolean;
 };
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+  selectedNamespace: store.navigationNamespaceAnchor,
+});
 
 export const CreateKnowledgeBaseCard = ({
   knowledgeBase,
@@ -105,13 +110,7 @@ export const CreateKnowledgeBaseCard = ({
   const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow((store: InstillStore) => ({
-      accessToken: store.accessToken,
-      enabledQuery: store.enabledQuery,
-      selectedNamespace: store.navigationNamespaceAnchor,
-    })),
-  );
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
 
   const { data: files } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace || null,

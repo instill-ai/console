@@ -22,6 +22,12 @@ type ChunkTabProps = {
   onGoToUpload: () => void;
 };
 
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+  selectedNamespace: store.navigationNamespaceAnchor,
+});
+
 export const ChunkTab: React.FC<ChunkTabProps> = ({
   knowledgeBase,
   onGoToUpload,
@@ -33,12 +39,8 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
     React.useState<Nullable<KnowledgeFile>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
-  const { accessToken, enabledQuery } = useInstillStore(
-    useShallow((store: InstillStore) => ({
-      accessToken: store.accessToken,
-      enabledQuery: store.enabledQuery,
-    })),
-  );
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
