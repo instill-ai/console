@@ -96,6 +96,7 @@ export const UploadExploreTab = ({
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
   const [processingProgress, setProcessingProgress] = React.useState(0);
+  const [processingFileIndex, setProcessingFileIndex] = React.useState<Nullable<number>>(null);
 
   const fileTooLargeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
   const unsupportedFileTypeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
@@ -190,12 +191,15 @@ export const UploadExploreTab = ({
       return;
     }
 
+    const processedFiles = new Set<string>();
+
     try {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        if (!file) continue;
+        if (!file || processedFiles.has(file.name)) continue;
 
-        setProcessingProgress((i / files.length) * 100);
+        setProcessingFileIndex(i);
+        setProcessingProgress(((i + 1) / files.length) * 100);
 
         const reader = new FileReader();
         const content = await new Promise<string>((resolve) => {
@@ -209,22 +213,38 @@ export const UploadExploreTab = ({
           reader.readAsBinaryString(file);
         });
 
-        const uploadedFile = await uploadKnowledgeBaseFile.mutateAsync({
-          ownerId: ownerID,
-          knowledgeBaseId: knowledgeBase.catalogId,
-          payload: {
-            name: file.name,
-            type: getFileType(file),
-            content,
-          },
-          accessToken,
-        });
+        try {
+          const uploadedFile = await uploadKnowledgeBaseFile.mutateAsync({
+            ownerId: ownerID,
+            knowledgeBaseId: knowledgeBase.catalogId,
+            payload: {
+              name: file.name,
+              type: getFileType(file),
+              content,
+            },
+            accessToken,
+          });
 
-        await processKnowledgeBaseFiles.mutateAsync({
-          fileUids: [uploadedFile.fileUid],
-          accessToken,
-        });
+          await processKnowledgeBaseFiles.mutateAsync({
+            fileUids: [uploadedFile.fileUid],
+            accessToken,
+          });
+
+          processedFiles.add(file.name);
+        } catch (error) {
+          console.error(`Error processing file ${file.name}:`, error);
+          // If the file already exists, we'll just skip it
+          if (error.response && error.response.status === 409) {
+            console.log(`File ${file.name} already exists, skipping.`);
+            processedFiles.add(file.name);
+          } else {
+            throw error;  // Re-throw if it's not a "file already exists" error
+          }
+        }
       }
+
+      // Remove all processed files from the form
+      form.setValue("files", form.getValues("files").filter(file => !processedFiles.has(file.name)));
 
       setProcessingProgress(100);
       onProcessFile();
@@ -234,6 +254,7 @@ export const UploadExploreTab = ({
     } finally {
       setIsProcessing(false);
       setProcessingProgress(0);
+      setProcessingFileIndex(null);
     }
   };
 
@@ -336,10 +357,14 @@ export const UploadExploreTab = ({
               {Math.round(file.size / 1024)} KB
             </div>
           </div>
-          <Icons.X
-            className="h-4 w-4 cursor-pointer stroke-semantic-fg-secondary"
-            onClick={() => handleRemoveFile(index)}
-          />
+          {isProcessing && processingFileIndex === index ? (
+            <Icons.LayersTwo01 className="h-4 w-4 animate-spin stroke-semantic-fg-secondary" />
+          ) : (
+            <Icons.X
+              className={`h-4 w-4 ${isProcessing ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} stroke-semantic-fg-secondary`}
+              onClick={() => !isProcessing && handleRemoveFile(index)}
+            />
+          )}
         </div>
       ))}
       {showFileTooLargeMessage && (
@@ -375,7 +400,7 @@ export const UploadExploreTab = ({
           <div className="mb-4 w-full">
             <div className="h-2 w-full bg-gray-200 rounded-full">
               <div
-                className="h-full bg-blue-600 rounded-full"
+                className="h-full bg-semantic-accent-default rounded-full"
                 style={{ width: `${processingProgress}%` }}
               ></div>
             </div>
