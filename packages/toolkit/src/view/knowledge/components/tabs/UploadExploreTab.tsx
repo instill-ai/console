@@ -33,21 +33,24 @@ import {
   IncorrectFormatFileNotification,
 } from "../notifications";
 
+// Type guard for File object
+const isFile = (value: unknown): value is File => {
+  return typeof window !== 'undefined' && value instanceof File;
+};
+
 const UploadExploreFormSchema = z.object({
-  files: z.array(z.instanceof(File)),
-  convertTransformFiles: z
-    .string()
-    .min(1, { message: "Convert/Transform files is required" }),
+  files: z.array(
+    z.unknown().refine((value): value is File => isFile(value), {
+      message: "Invalid file type"
+    })
+  ),
+  convertTransformFiles: z.string().min(1, { message: "Convert/Transform files is required" }),
   convertMethod: z.string().min(1, { message: "Convert method is required" }),
-  splitTextFiles: z
-    .string()
-    .min(1, { message: "Split text files is required" }),
+  splitTextFiles: z.string().min(1, { message: "Split text files is required" }),
   splitMethod: z.string().min(1, { message: "Split method is required" }),
   maxTokenSize: z.number().min(1, { message: "Max token size is required" }),
   tokenizerModel: z.string().min(1, { message: "Tokenizer model is required" }),
-  embedChunksFiles: z
-    .string()
-    .min(1, { message: "Embed chunks files is required" }),
+  embedChunksFiles: z.string().min(1, { message: "Embed chunks files is required" }),
   embeddingModel: z.string().min(1, { message: "Embedding model is required" }),
 });
 
@@ -85,40 +88,25 @@ export const UploadExploreTab = ({
     },
   });
 
-  const [showFileTooLargeMessage, setShowFileTooLargeMessage] =
-    React.useState(false);
-  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] =
-    React.useState(false);
-  const [showDuplicateFileMessage, setShowDuplicateFileMessage] =
-    React.useState(false);
+  const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
+  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] = React.useState(false);
+  const [showDuplicateFileMessage, setShowDuplicateFileMessage] = React.useState(false);
   const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
-  const [showFileTooLongMessage, setShowFileTooLongMessage] =
-    React.useState(false);
+  const [showFileTooLongMessage, setShowFileTooLongMessage] = React.useState(false);
   const [tooLongFileName, setTooLongFileName] = React.useState<string>("");
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
   const [processingProgress, setProcessingProgress] = React.useState(0);
-  const [processingFileIndex, setProcessingFileIndex] =
-    React.useState<Nullable<number>>(null);
+  const [processingFileIndex, setProcessingFileIndex] = React.useState<Nullable<number>>(null);
 
   const fileTooLargeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
-  const unsupportedFileTypeTimeoutRef =
-    React.useRef<Nullable<NodeJS.Timeout>>(null);
+  const unsupportedFileTypeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
   const duplicateFileTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
 
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
-  const { accessToken, selectedNamespace } = useInstillStore(
-    useShallow(selector),
-  );
-
-  // const me = useAuthenticatedUser({
-  //   enabled: enabledQuery,
-  //   accessToken,
-  // });
-
-  // const ownerID = me.isSuccess ? me.data.id : null;
+  const { accessToken, selectedNamespace } = useInstillStore(useShallow(selector));
 
   const { data: existingFiles } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
@@ -169,7 +157,7 @@ export const UploadExploreTab = ({
 
     const currentFiles = form.getValues("files");
     const isDuplicate = existingFiles?.some(
-      (existingFile) => existingFile.name === file.name,
+      (existingFile) => existingFile.name === file.name
     );
 
     if (isDuplicate) {
@@ -203,7 +191,7 @@ export const UploadExploreTab = ({
     try {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        if (!file || processedFiles.has(file.name)) continue;
+        if (!isFile(file) || processedFiles.has(file.name)) continue;
 
         setProcessingFileIndex(i);
         setProcessingProgress(((i + 1) / files.length) * 100);
@@ -249,10 +237,7 @@ export const UploadExploreTab = ({
               throw error;
             }
           } else {
-            console.error(
-              `Unexpected error processing file ${file.name}:`,
-              error,
-            );
+            console.error(`Unexpected error processing file ${file.name}:`, error);
             throw error;
           }
         }
@@ -260,9 +245,7 @@ export const UploadExploreTab = ({
 
       form.setValue(
         "files",
-        form
-          .getValues("files")
-          .filter((file) => !processedFiles.has(file.name)),
+        form.getValues("files").filter((file) => isFile(file) && !processedFiles.has(file.name))
       );
 
       setProcessingProgress(100);
