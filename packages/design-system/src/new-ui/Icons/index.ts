@@ -30,6 +30,8 @@ import { ChevronUpDouble } from "./ChevronUpDouble";
 import { Chip01 } from "./Chip01";
 import { Chip02 } from "./Chip02";
 import { Circle } from "./Circle";
+import { ClockCheck } from "./ClockCheck";
+import { ClockPlus } from "./ClockPlus";
 import { ClockRewind } from "./ClockRewind";
 import { CodeBrowser } from "./CodeBrowser";
 import { CodeSnippet01 } from "./CodeSnippet01";
@@ -64,6 +66,8 @@ import { Flag04 } from "./Flag04";
 import { Gear01 } from "./Gear01";
 import { GitMerge } from "./GitMerge";
 import { Globe01 } from "./Globe01";
+import { GraduationHat } from "./GraduationHat";
+import { Hash2 } from "./Hash2";
 import { HelpCircle } from "./HelpCircle";
 import { Image01 } from "./Image01";
 import { Image03 } from "./Image03";
@@ -79,6 +83,7 @@ import { LockUnlocked03 } from "./LockUnlocked03";
 import { Logout01 } from "./Logout01";
 import { Mail01 } from "./Mail01";
 import { MasterCard } from "./MasterCard";
+import { MDFile } from "./MDFile";
 import { Menu01 } from "./Menu01";
 import { MessageChatSquare } from "./MessageChatSquare";
 import { MessageSmileSquare } from "./MessageSmileSquare";
@@ -87,6 +92,7 @@ import { Model } from "./Model";
 import { MultipleVideo } from "./MultipleVideo";
 import { NewModel } from "./NewModel";
 import { PauseCircle } from "./PauseCircle";
+import { PDFFile } from "./PDFFile";
 import { Pipeline } from "./Pipeline";
 import { Play } from "./Play";
 import { PlayCircle } from "./PlayCircle";
@@ -108,11 +114,13 @@ import { SearchLg } from "./SearchLg";
 import { SearchSm } from "./SearchSm";
 import { Settings02 } from "./Settings02";
 import { Share07 } from "./Share07";
+import { SlashDivider } from "./SlashDivider";
 import { Sliders01 } from "./Sliders01";
 import { SortLinesDown } from "./SortLinesDown";
 import { SortLinesUp } from "./SortLinesUp";
 import { Speaker01 } from "./Speaker01";
 import { SpeechRecognition } from "./SpeechRecognition";
+import { Star06 } from "./Star06";
 import { Stop } from "./Stop";
 import { Tag01 } from "./Tag01";
 import { TextA } from "./TextA";
@@ -121,7 +129,9 @@ import { ThumbsDown } from "./ThumbsDown";
 import { Tool01 } from "./Tool01";
 import { Trash01 } from "./Trash01";
 import { Trash03 } from "./Trash03";
+import { TrendUp } from "./TrendUp";
 import { Tv03 } from "./Tv03";
+import { TXTFile } from "./TXTFile";
 import { Type01 } from "./Type01";
 import { Type02 } from "./Type02";
 import { TypePlus } from "./TypePlus";
@@ -171,6 +181,8 @@ export const Icons = {
   Chip02,
   Circle,
   ClockRewind,
+  ClockCheck,
+  ClockPlus,
   CodeBrowser,
   CodeSnippet01,
   CodeSnippet02,
@@ -204,7 +216,9 @@ export const Icons = {
   Gear01,
   GitMerge,
   Globe01,
+  GraduationHat,
   HelpCircle,
+  Hash2,
   IntersectSquare,
   Link01,
   Lock03,
@@ -221,12 +235,14 @@ export const Icons = {
   MultipleVideo,
   PauseCircle,
   MasterCard,
+  MDFile,
   Menu01,
   MessageChatSquare,
   Minus,
   Mail01,
   MessageSmileSquare,
   NewModel,
+  PDFFile,
   Pipeline,
   Play,
   PlayCircle,
@@ -247,6 +263,7 @@ export const Icons = {
   Settings02,
   SpeechRecognition,
   Sliders01,
+  SlashDivider,
   Speaker01,
   Stop,
   SearchLg,
@@ -254,12 +271,14 @@ export const Icons = {
   Share07,
   SortLinesDown,
   SortLinesUp,
+  Star06,
   Tag01,
   TextA,
   TextGenerationChat,
   ThumbsDown,
   Trash01,
   Trash03,
+  TrendUp,
   Type01,
   Type02,
   TypePlus,
