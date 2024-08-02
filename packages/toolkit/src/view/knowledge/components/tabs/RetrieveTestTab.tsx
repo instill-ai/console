@@ -102,7 +102,7 @@ export const RetrieveTestTab = ({
           </p>
         </div>
       ) : (
-        <div className="w-2/3 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
+        <div className="w-5/6 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
           <p className="mb-4 product-body-text-3-regular">
             Once the status of documents in Catalog / Files has changed to
             &apos;Completed&apos;, you can use the following Instill API format

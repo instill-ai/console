@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Icons, Dialog } from "@instill-ai/design-system";
 import { File } from "../../../lib/react-query-service/knowledge/types";
 import { StatusTag } from "./StatusTag";
+import { truncateName } from "./lib/functions";
 
 type FileTableRowProps = {
   item: File;
@@ -70,21 +71,41 @@ export const FileTableRow = ({
         </div>
       </div>
 
-      <Dialog.Root open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <Dialog.Content>
-          <Dialog.Header>
-            <Dialog.Title>Delete File</Dialog.Title>
-            <Dialog.Description>
-              Are you sure you want to delete {item.name}? This action cannot be undone.
-            </Dialog.Description>
-          </Dialog.Header>
-          <div className="flex justify-end space-x-2 mt-6">
-            <Button variant="secondaryGrey" onClick={() => setIsDeleteDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button variant="danger" onClick={confirmDelete}>
-              Delete
-            </Button>
+      <Dialog.Root
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
+        <Dialog.Content className="!w-[350px] rounded-sm !p-0">
+          <div className="flex flex-col items-center justify-start gap-6 rounded-sm border border-b-semantic-bg-secondary p-6">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-semantic-warning-bg p-3">
+              <Icons.AlertTriangle className="h-6 w-6 stroke-semantic-warning-on-bg" />
+            </div>
+            <div className="flex flex-col items-start justify-start gap-6 self-stretch">
+              <div className="flex flex-col items-center justify-center gap-1">
+                <div className="product-headings-heading-3">
+                  Delete {truncateName(item.name)}
+                </div>
+                <div className="text-center product-body-text-2-regular">
+                  Are you sure you want to delete this file?
+                </div>
+              </div>
+              <div className="flex w-full gap-2">
+                <Button
+                  variant="secondaryGrey"
+                  onClick={() => setIsDeleteDialogOpen(false)}
+                  className="w-full"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={confirmDelete}
+                  className="w-full"
+                >
+                  Delete
+                </Button>
+              </div>
+            </div>
           </div>
         </Dialog.Content>
       </Dialog.Root>

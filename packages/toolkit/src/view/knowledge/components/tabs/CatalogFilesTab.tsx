@@ -1,7 +1,5 @@
 import React from "react";
-
 import { Separator, Skeleton } from "@instill-ai/design-system";
-
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -19,8 +17,6 @@ import {
 import EmptyState from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";
-import { DELETE_FILE_TIMEOUT } from "../lib/static";
-import { DeleteFileNotification } from "../notifications";
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -64,9 +60,6 @@ export const CatalogFilesTab = ({
   });
 
   const deleteKnowledgeBaseFile = useDeleteKnowledgeBaseFile();
-  const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
-  const [fileToDelete, setFileToDelete] = React.useState<File | null>(null);
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
 
@@ -76,7 +69,7 @@ export const CatalogFilesTab = ({
     if (
       files &&
       files.some(
-        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED",
+        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED"
       )
     ) {
       interval = setInterval(() => {
@@ -87,9 +80,6 @@ export const CatalogFilesTab = ({
     return () => {
       if (interval) {
         clearInterval(interval);
-      }
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
       }
     };
   }, [files, refetch]);
@@ -104,51 +94,15 @@ export const CatalogFilesTab = ({
     setIsFileDetailsOpen(false);
   };
 
-  const handleDelete = (fileUid: string) => {
-    const file = files?.find((item) => item.fileUid === fileUid);
-    if (file) {
-      setFileToDelete(file);
-      setShowDeleteMessage(true);
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-
-      timeoutRef.current = setTimeout(() => {
-        setShowDeleteMessage(false);
-        actuallyDeleteFile(file);
-      }, DELETE_FILE_TIMEOUT);
-    }
-  };
-
-  const actuallyDeleteFile = async (file: File) => {
+  const handleDelete = async (fileUid: string) => {
     try {
       await deleteKnowledgeBaseFile.mutateAsync({
-        fileUid: file.fileUid,
+        fileUid,
         accessToken,
       });
       await refetch();
     } catch (error) {
       console.error("Error deleting file:", error);
-    } finally {
-      setFileToDelete(null);
-    }
-  };
-
-  const undoDelete = () => {
-    setShowDeleteMessage(false);
-    setFileToDelete(null);
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-  };
-
-  const closeNotification = () => {
-    setShowDeleteMessage(false);
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    if (fileToDelete) {
-      actuallyDeleteFile(fileToDelete);
     }
   };
 
@@ -184,7 +138,6 @@ export const CatalogFilesTab = ({
                 requestSort={requestSort}
                 handleDelete={handleDelete}
                 handleFileClick={handleFileClick}
-                fileToDelete={fileToDelete}
               />
             ) : (
               <EmptyState onGoToUpload={onGoToUpload} />
@@ -192,13 +145,6 @@ export const CatalogFilesTab = ({
           </div>
         </div>
       </div>
-      {showDeleteMessage && fileToDelete ? (
-        <DeleteFileNotification
-          deletedFileName={fileToDelete.name}
-          undoDelete={undoDelete}
-          setShowDeleteMessage={closeNotification}
-        />
-      ) : null}
       {selectedFile && (
         <FileDetailsOverlay
           fileUid={selectedFile.fileUid}
