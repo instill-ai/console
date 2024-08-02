@@ -104,7 +104,7 @@ export const UploadExploreTab = ({
 
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
@@ -114,7 +114,7 @@ export const UploadExploreTab = ({
   const ownerID = me.isSuccess ? me.data.id : null;
 
   const { data: existingFiles } = useListKnowledgeBaseFiles({
-    namespaceId: ownerID,
+    namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
     enabled: Boolean(ownerID),
@@ -215,7 +215,7 @@ export const UploadExploreTab = ({
 
         try {
           const uploadedFile = await uploadKnowledgeBaseFile.mutateAsync({
-            ownerId: ownerID,
+            ownerId: selectedNamespace,
             knowledgeBaseId: knowledgeBase.catalogId,
             payload: {
               name: file.name,
