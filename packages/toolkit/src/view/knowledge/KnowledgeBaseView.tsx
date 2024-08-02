@@ -39,7 +39,7 @@ const selector = (store: InstillStore) => ({
 export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
     React.useState<Nullable<KnowledgeBase>>(null);
-  const [activeTab, setActiveTab] = React.useState("catalog");
+  const [activeTab, setActiveTab] = React.useState("catalogs");
   const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
   const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] =
     React.useState<Nullable<KnowledgeBase>>(null);
@@ -108,7 +108,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
       });
       if (selectedKnowledgeBase?.catalogId === knowledgeBaseToDelete.catalogId) {
         setSelectedKnowledgeBase(null);
-        setActiveTab("catalog");
+        setActiveTab("catalogs");
       }
       refetchKnowledgeBases();
     } catch (error) {
@@ -139,7 +139,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   };
 
   const handleProcessFile = () => {
-    setActiveTab("catalog");
+    setShowCreditUsage(true);
+    setActiveTab("catalogs");
+    setIsProcessed(false);
   };
 
   const handleGoToUpload = () => {
@@ -149,7 +151,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   React.useEffect(() => {
     // Reset selected catalog when namespace changes
     setSelectedKnowledgeBase(null);
-    setActiveTab("catalog");
+    setActiveTab("catalogs");
   }, [selectedNamespace]);
 
   // This effect handles the auto-close of the notification
@@ -172,7 +174,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           undoDelete={undoDelete}
         />
       )}
-            {showCreditUsage && (
+      {showCreditUsage && (
         <CreditUsageFileNotification
           handleCloseCreditUsageMessage={() => setShowCreditUsage(false)}
           fileName="test"
@@ -187,7 +189,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           />
         </div>
         <div className={`sm:col-span-8 md:col-span-9 lg:col-span-10 pt-5`}>
-          {activeTab === "catalog" && (
+          {activeTab === "catalogs" && (
             <KnowledgeBaseTab
               onKnowledgeBaseSelect={handleKnowledgeBaseSelect}
               onDeleteKnowledgeBase={handleDeleteKnowledgeBase}

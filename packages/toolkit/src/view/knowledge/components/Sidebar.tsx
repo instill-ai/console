@@ -29,7 +29,7 @@ export const Sidebar = ({
 
     if (isActive) {
       return `${baseClass} bg-semantic-accent-bg text-semantic-accent-hover font-bold`;
-    } else if (!selectedKnowledgeBase && tabName !== "catalog") {
+    } else if (!selectedKnowledgeBase && tabName !== "catalogs") {
       return `${baseClass} cursor-not-allowed text-semantic-fg-disabled`;
     } else {
       return `${baseClass} cursor-pointer text-semantic-fg-secondary`;
@@ -39,8 +39,8 @@ export const Sidebar = ({
   return (
     <aside className="flex w-[160px] flex-col gap-y-4">
       <div
-        className={`${getTabClassName("catalog")} whitespace-nowrap`}
-        onClick={() => handleTabChange("catalog")}
+        className={`${getTabClassName("catalogs")} whitespace-nowrap`}
+        onClick={() => handleTabChange("catalogs")}
       >
         My Catalogs
       </div>
