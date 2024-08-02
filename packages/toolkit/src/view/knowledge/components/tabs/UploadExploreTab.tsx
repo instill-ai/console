@@ -33,8 +33,17 @@ import {
   IncorrectFormatFileNotification,
 } from "../notifications";
 
+// Type guard for File object
+const isFile = (value: unknown): value is File => {
+  return typeof window !== "undefined" && value instanceof File;
+};
+
 const UploadExploreFormSchema = z.object({
-  files: z.array(z.instanceof(File)),
+  files: z.array(
+    z.unknown().refine((value): value is File => isFile(value), {
+      message: "Invalid file type",
+    }),
+  ),
   convertTransformFiles: z
     .string()
     .min(1, { message: "Convert/Transform files is required" }),
@@ -112,13 +121,6 @@ export const UploadExploreTab = ({
   const { accessToken, selectedNamespace } = useInstillStore(
     useShallow(selector),
   );
-
-  // const me = useAuthenticatedUser({
-  //   enabled: enabledQuery,
-  //   accessToken,
-  // });
-
-  // const ownerID = me.isSuccess ? me.data.id : null;
 
   const { data: existingFiles } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
@@ -203,7 +205,7 @@ export const UploadExploreTab = ({
     try {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        if (!file || processedFiles.has(file.name)) continue;
+        if (!isFile(file) || processedFiles.has(file.name)) continue;
 
         setProcessingFileIndex(i);
         setProcessingProgress(((i + 1) / files.length) * 100);
@@ -262,7 +264,7 @@ export const UploadExploreTab = ({
         "files",
         form
           .getValues("files")
-          .filter((file) => !processedFiles.has(file.name)),
+          .filter((file) => isFile(file) && !processedFiles.has(file.name)),
       );
 
       setProcessingProgress(100);
