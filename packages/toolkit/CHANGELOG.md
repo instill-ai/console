@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.98.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.97.0...@instill-ai/toolkit-v0.98.0) (2024-08-02)
+
+
+### Features
+
+* Catalog MVP ([#1340](https://github.com/instill-ai/console/issues/1340)) ([746793a](https://github.com/instill-ai/console/commit/746793a075a4e2aae3a642d8e3a4ae8701ea9fb5))
+* show private label in pipeline header ([#1338](https://github.com/instill-ai/console/issues/1338)) ([b9a554d](https://github.com/instill-ai/console/commit/b9a554dccc5819bc125af80553d3195b33b25823))
+
+
+### Bug Fixes
+
+* make multiple graphics inputs use cover object fit instead of contain ([#1337](https://github.com/instill-ai/console/issues/1337)) ([2d603e5](https://github.com/instill-ai/console/commit/2d603e5322d651ead9e3e5245d6ff3c1fe83776f))
+
 ## [0.97.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.96.2...@instill-ai/toolkit-v0.97.0) (2024-07-31)
 
 
