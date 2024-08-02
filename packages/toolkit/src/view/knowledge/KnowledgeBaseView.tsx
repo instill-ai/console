@@ -17,6 +17,7 @@ import {
   DELETE_KNOWLEDGE_BASE_TIMEOUT,
 } from "./components/lib/static";
 import {
+  CreditUsageFileNotification,
   DeleteKnowledgeBaseNotification,
 } from "./components/notifications";
 import {
@@ -45,7 +46,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [isProcessed, setIsProcessed] = React.useState(false);
   const [pendingDeletions, setPendingDeletions] = React.useState<string[]>([]);
   const [deletionTimer, setDeletionTimer] = React.useState<NodeJS.Timeout | null>(null);
-
+  const [showCreditUsage, setShowCreditUsage] = React.useState(false);
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector)
   );
@@ -169,6 +170,12 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           knowledgeBaseName={knowledgeBaseToDelete.name}
           handleCloseDeleteMessage={handleCloseDeleteMessage}
           undoDelete={undoDelete}
+        />
+      )}
+            {showCreditUsage && (
+        <CreditUsageFileNotification
+          handleCloseCreditUsageMessage={() => setShowCreditUsage(false)}
+          fileName="test"
         />
       )}
       <div className="grid w-full grid-cols-12 gap-6 px-8">

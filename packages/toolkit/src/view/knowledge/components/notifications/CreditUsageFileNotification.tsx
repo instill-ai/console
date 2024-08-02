@@ -19,7 +19,7 @@ export const CreditUsageFileNotification = ({
           This action consumes credits. Check your remaining balance in the
           account settings.
         </div>
-        <LinkButton>Check credits</LinkButton>
+        {/* <LinkButton>Check credits</LinkButton> */}
       </div>
       <Button
         className="absolute right-2 top-2"
