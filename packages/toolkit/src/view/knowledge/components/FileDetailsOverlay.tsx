@@ -1,5 +1,4 @@
 import React from "react";
-import Markdown from "markdown-to-jsx";
 import sanitizeHtml from "sanitize-html";
 import { Dialog, ScrollArea, Skeleton } from "@instill-ai/design-system";
 import {
@@ -59,15 +58,30 @@ const FileDetailsOverlay = ({
       );
       if (!chunk) return content;
       const { startPos, endPos } = chunk;
-      console.log("startPos", startPos, endPos);
+      console.log("startPos", startPos, "endPos", endPos);
 
-      const beforeHighlight = content.slice(0, startPos);
-      const highlightedPart = content.slice(startPos, endPos);
-      const afterHighlight = content.slice(endPos);
-
-      return `${beforeHighlight}<span class="bg-semantic-bg-line hover:bg-[#CBD2E1]">${highlightedPart}</span>${afterHighlight}`;
+      // Handle different file types
+      if (fileType.includes("TEXT") || fileType.includes("MARKDOWN")) {
+        // For text-based files, use HTML span for highlighting
+        const beforeHighlight = content.slice(0, startPos);
+        const highlightedPart = content.slice(startPos, endPos);
+        const afterHighlight = content.slice(endPos);
+        return `${beforeHighlight}<span class="bg-semantic-bg-line hover:bg-[#CBD2E1]">${highlightedPart}</span>${afterHighlight}`;
+      } else {
+        // For other file types, use a more robust method
+        return content.split('\n').map((line, index) => {
+          const lineStart = content.split('\n').slice(0, index).join('\n').length + (index > 0 ? 1 : 0);
+          const lineEnd = lineStart + line.length;
+          if (lineStart <= endPos && lineEnd >= startPos) {
+            const highlightStart = Math.max(startPos - lineStart, 0);
+            const highlightEnd = Math.min(endPos - lineStart, line.length);
+            return `${line.slice(0, highlightStart)}<span class="bg-semantic-bg-line hover:bg-[#CBD2E1]">${line.slice(highlightStart, highlightEnd)}</span>${line.slice(highlightEnd)}`;
+          }
+          return line;
+        }).join('\n');
+      }
     },
-    [chunks, highlightChunk]
+    [chunks, highlightChunk, fileType]
   );
 
   const displayContent = React.useMemo(
@@ -76,18 +90,18 @@ const FileDetailsOverlay = ({
     [fileContent, highlightChunkInContent, selectedChunkUid]
   );
 
-  const fileIcon = React.useMemo(() => getFileIcon(fileType), [fileType]);
-
-  const sanitizedHtmlText = React.useMemo(() =>
-    sanitizeHtml(displayContent ?? "", {
-      allowedTags: sanitizeHtml.defaults.allowedTags.concat(['span']),
-      allowedAttributes: {
-        ...sanitizeHtml.defaults.allowedAttributes,
-        span: ['class']
-      }
-    }),
+  const sanitizedHtmlText = React.useMemo(
+    () =>
+      sanitizeHtml(displayContent ?? "", {
+        allowedTags: sanitizeHtml.defaults.allowedTags.concat(["span"]),
+        allowedAttributes: {
+          ...sanitizeHtml.defaults.allowedAttributes,
+          span: ["class"],
+        },
+      }),
     [displayContent]
   );
+  const fileIcon = React.useMemo(() => getFileIcon(fileType), [fileType]);
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -113,20 +127,8 @@ const FileDetailsOverlay = ({
               <Skeleton className="h-4 w-3/4" />
             </div>
           ) : (
-            <article className="prose">
-              <Markdown
-                options={{
-                  overrides: {
-                    span: {
-                      props: {
-                        className: "bg-semantic-bg-line hover:bg-[#CBD2E1]",
-                      },
-                    },
-                  },
-                }}
-              >
-                {sanitizedHtmlText}
-              </Markdown>
+            <article className="prose whitespace-pre-wrap">
+              <div dangerouslySetInnerHTML={{ __html: sanitizedHtmlText }} />
             </article>
           )}
         </ScrollArea.Root>
