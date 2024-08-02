@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.53.0-beta](https://github.com/instill-ai/console/compare/v0.52.0-beta...v0.53.0-beta) (2024-08-02)
+
+
+### Features
+
+* Catalog MVP ([#1340](https://github.com/instill-ai/console/issues/1340)) ([746793a](https://github.com/instill-ai/console/commit/746793a075a4e2aae3a642d8e3a4ae8701ea9fb5))
+
 ## [0.52.0-beta](https://github.com/instill-ai/console/compare/v0.51.0-beta...v0.52.0-beta) (2024-07-31)
 
 
