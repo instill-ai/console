@@ -282,6 +282,7 @@ export const Icons = {
   Type01,
   Type02,
   TypePlus,
+  TXTFile,
   Tool01,
   Tv03,
   Upload01,
