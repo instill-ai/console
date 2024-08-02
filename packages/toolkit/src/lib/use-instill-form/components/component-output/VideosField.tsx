@@ -25,7 +25,7 @@ export const VideosField = (props: VideosFieldProps) => {
                 <VideoPreview
                   key={`${title}-${video}-field`}
                   src={video}
-                  className="object-contain"
+                  className="object-cover"
                 />
               );
             })}
