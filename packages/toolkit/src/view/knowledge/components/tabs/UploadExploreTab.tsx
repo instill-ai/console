@@ -16,7 +16,6 @@ import {
 
 import {
   InstillStore,
-  useAuthenticatedUser,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
@@ -104,20 +103,20 @@ export const UploadExploreTab = ({
 
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
-  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
+  const { accessToken, selectedNamespace } = useInstillStore(useShallow(selector));
 
-  const me = useAuthenticatedUser({
-    enabled: enabledQuery,
-    accessToken,
-  });
+  // const me = useAuthenticatedUser({
+  //   enabled: enabledQuery,
+  //   accessToken,
+  // });
 
-  const ownerID = me.isSuccess ? me.data.id : null;
+  // const ownerID = me.isSuccess ? me.data.id : null;
 
   const { data: existingFiles } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
-    enabled: Boolean(ownerID),
+    enabled: Boolean(selectedNamespace),
   });
 
   const getFileType = (file: File) => {

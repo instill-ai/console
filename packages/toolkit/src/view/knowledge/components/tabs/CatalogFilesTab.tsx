@@ -41,7 +41,7 @@ export const CatalogFilesTab = ({
     direction: "",
   });
 
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
@@ -53,7 +53,7 @@ export const CatalogFilesTab = ({
     isLoading,
     refetch,
   } = useListKnowledgeBaseFiles({
-    namespaceId: me.data?.id ?? null,
+    namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
     enabled: enabledQuery && Boolean(me.data?.id),

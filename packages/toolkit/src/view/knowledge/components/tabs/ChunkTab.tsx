@@ -40,7 +40,7 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
     React.useState<Nullable<KnowledgeFile>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
@@ -49,7 +49,7 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
 
   const { data: allFiles, isLoading: isLoadingFiles } =
     useListKnowledgeBaseFiles({
-      namespaceId: me.data?.id ?? null,
+      namespaceId: selectedNamespace,
       knowledgeBaseId: knowledgeBase.catalogId,
       accessToken,
       enabled: enabledQuery && Boolean(me.data?.id),
