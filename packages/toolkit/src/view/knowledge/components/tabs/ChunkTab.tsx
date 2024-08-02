@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Button, Icons, Separator, Skeleton } from "@instill-ai/design-system";
-import { Nullable } from "@instill-ai/toolkit";
+import { Button, Separator, Skeleton } from "@instill-ai/design-system";
+import { EmptyView, Nullable } from "@instill-ai/toolkit";
 
 import {
   InstillStore,
@@ -148,14 +148,13 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center p-8 text-center mt-40">
-          <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs mb-8">
-            <Icons.AlertCircle className="w-6 h-6 stroke-semantic-fg-primary" />
-          </div>
-          <p className="mb-2 product-headings-heading-2">No Chunks Created</p>
-          <p className="mb-4 text-semantic-fg-secondary product-body-text-2-regular">
-            There are no chunks created yet.
-          </p>
+        <div className="flex flex-col items-center justify-center p-8 text-center">
+          <EmptyView
+            iconName="AlertCircle"
+            title="No Chunks Created"
+            description="There are no chunks created yet."
+            className="flex-1"
+          />
           <Button
             variant="primary"
             size="lg"
