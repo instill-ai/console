@@ -18,6 +18,11 @@ export const topbarItems = [
     name: "Models",
   },
   {
+    pathName: "catalog",
+    icon: <Icons.Database01 className="h-6 w-6 stroke-semantic-fg-primary" />,
+    name: "Artifacts",
+  },
+  {
     pathName: "dashboard",
     icon: (
       <Icons.BarChartSquare02 className="h-6 w-6 stroke-semantic-fg-primary" />
