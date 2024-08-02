@@ -8,7 +8,7 @@
   "private": true,
   "@instill-ai/prettier-config-cortex": "workspace:*",
   "scripts": {
-    "dev": "cross-env NEXT_ENV_UPDATE_ENV_FILE=false node next-env.mjs && next dev",
+    "dev": "NEXT_ENV_UPDATE_ENV_FILE=false node next-env.mjs && next dev",
     "build": "next build",
     "start": "next start",
     "test": "echo 'wip'",
