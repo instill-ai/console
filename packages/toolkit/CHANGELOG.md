@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.98.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.98.0...@instill-ai/toolkit-v0.98.1) (2024-08-02)
+
+
+### Bug Fixes
+
+* add File safeguards to file uploud ([#1341](https://github.com/instill-ai/console/issues/1341)) ([4d7c18e](https://github.com/instill-ai/console/commit/4d7c18e663aa29a6731673c3227aee0f15ca241b))
+
 ## [0.98.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.97.0...@instill-ai/toolkit-v0.98.0) (2024-08-02)
 
 
