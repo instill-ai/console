@@ -14,6 +14,7 @@ import {
 import { KnowledgeBase } from "../../lib/react-query-service/knowledge/types";
 import { Sidebar } from "./components";
 import {
+  CREDIT_TIMEOUT,
   DELETE_KNOWLEDGE_BASE_TIMEOUT,
 } from "./components/lib/static";
 import {
@@ -47,6 +48,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [pendingDeletions, setPendingDeletions] = React.useState<string[]>([]);
   const [deletionTimer, setDeletionTimer] = React.useState<NodeJS.Timeout | null>(null);
   const [showCreditUsage, setShowCreditUsage] = React.useState(false);
+  const [creditUsageTimer, setCreditUsageTimer] = React.useState<NodeJS.Timeout | null>(null);
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector)
   );
@@ -89,7 +91,6 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     setShowDeleteMessage(true);
     setPendingDeletions((prev) => [...prev, knowledgeBase.catalogId]);
 
-    // Set up the deletion timer
     const timer = setTimeout(() => {
       actuallyDeleteKnowledgeBase();
     }, DELETE_KNOWLEDGE_BASE_TIMEOUT);
@@ -142,6 +143,20 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     setShowCreditUsage(true);
     setActiveTab("catalogs");
     setIsProcessed(false);
+
+    const timer = setTimeout(() => {
+      setShowCreditUsage(false);
+    }, CREDIT_TIMEOUT);
+
+    setCreditUsageTimer(timer);
+  };
+
+  const handleCloseCreditUsageMessage = () => {
+    setShowCreditUsage(false);
+    if (creditUsageTimer) {
+      clearTimeout(creditUsageTimer);
+      setCreditUsageTimer(null);
+    }
   };
 
   const handleGoToUpload = () => {
@@ -149,12 +164,10 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   };
 
   React.useEffect(() => {
-    // Reset selected catalog when namespace changes
     setSelectedKnowledgeBase(null);
     setActiveTab("catalogs");
   }, [selectedNamespace]);
 
-  // This effect handles the auto-close of the notification
   React.useEffect(() => {
     if (showDeleteMessage) {
       const timer = setTimeout(() => {
@@ -164,6 +177,15 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
       return () => clearTimeout(timer);
     }
   }, [showDeleteMessage]);
+
+  // Cleanup effect for credit usage timer
+  React.useEffect(() => {
+    return () => {
+      if (creditUsageTimer) {
+        clearTimeout(creditUsageTimer);
+      }
+    };
+  }, [creditUsageTimer]);
 
   return (
     <div className="h-screen w-full bg-semantic-bg-alt-primary">
@@ -176,7 +198,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
       )}
       {showCreditUsage && (
         <CreditUsageFileNotification
-          handleCloseCreditUsageMessage={() => setShowCreditUsage(false)}
+          handleCloseCreditUsageMessage={handleCloseCreditUsageMessage}
           fileName="test"
         />
       )}
