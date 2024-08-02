@@ -44,13 +44,10 @@ export const CreateKnowledgeDialog = ({
   const router = useRouter();
   const [creating, setCreating] = React.useState(false);
 
-  const {
-    navigationNamespaceAnchor,
-    updateNavigationNamespaceAnchor,
-  } = useInstillStore(useShallow(selector));
+  const { navigationNamespaceAnchor, updateNavigationNamespaceAnchor } =
+    useInstillStore(useShallow(selector));
 
   const userNamespaces = useUserNamespaces();
-
 
   const form = useForm<z.infer<typeof CreateKnowledgeFormSchema>>({
     resolver: zodResolver(CreateKnowledgeFormSchema),
@@ -104,7 +101,9 @@ export const CreateKnowledgeDialog = ({
     }
   }, [isOpen, navigationNamespaceAnchor, form]);
 
-  const handleSubmit = async (data: z.infer<typeof CreateKnowledgeFormSchema>) => {
+  const handleSubmit = async (
+    data: z.infer<typeof CreateKnowledgeFormSchema>,
+  ) => {
     setCreating(true);
 
     try {

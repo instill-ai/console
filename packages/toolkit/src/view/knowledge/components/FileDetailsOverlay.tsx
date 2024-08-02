@@ -1,6 +1,8 @@
 import React from "react";
 import sanitizeHtml from "sanitize-html";
+
 import { Dialog, ScrollArea, Skeleton } from "@instill-ai/design-system";
+
 import {
   useGetFileContent,
   useListChunks,
@@ -54,7 +56,7 @@ const FileDetailsOverlay = ({
     (content: string, chunkUid?: string) => {
       if (!highlightChunk || !chunkUid || !content) return content;
       const chunk = chunks?.find(
-        (c: { chunkUid: string }) => c.chunkUid === chunkUid
+        (c: { chunkUid: string }) => c.chunkUid === chunkUid,
       );
       if (!chunk) return content;
       const { startPos, endPos } = chunk;
@@ -69,25 +71,30 @@ const FileDetailsOverlay = ({
         return `${beforeHighlight}<span class="bg-semantic-bg-line hover:bg-[#CBD2E1]">${highlightedPart}</span>${afterHighlight}`;
       } else {
         // For other file types, use a more robust method
-        return content.split('\n').map((line, index) => {
-          const lineStart = content.split('\n').slice(0, index).join('\n').length + (index > 0 ? 1 : 0);
-          const lineEnd = lineStart + line.length;
-          if (lineStart <= endPos && lineEnd >= startPos) {
-            const highlightStart = Math.max(startPos - lineStart, 0);
-            const highlightEnd = Math.min(endPos - lineStart, line.length);
-            return `${line.slice(0, highlightStart)}<span class="bg-semantic-bg-line hover:bg-[#CBD2E1]">${line.slice(highlightStart, highlightEnd)}</span>${line.slice(highlightEnd)}`;
-          }
-          return line;
-        }).join('\n');
+        return content
+          .split("\n")
+          .map((line, index) => {
+            const lineStart =
+              content.split("\n").slice(0, index).join("\n").length +
+              (index > 0 ? 1 : 0);
+            const lineEnd = lineStart + line.length;
+            if (lineStart <= endPos && lineEnd >= startPos) {
+              const highlightStart = Math.max(startPos - lineStart, 0);
+              const highlightEnd = Math.min(endPos - lineStart, line.length);
+              return `${line.slice(0, highlightStart)}<span class="bg-semantic-bg-line hover:bg-[#CBD2E1]">${line.slice(highlightStart, highlightEnd)}</span>${line.slice(highlightEnd)}`;
+            }
+            return line;
+          })
+          .join("\n");
       }
     },
-    [chunks, highlightChunk, fileType]
+    [chunks, highlightChunk, fileType],
   );
 
   const displayContent = React.useMemo(
     () =>
       fileContent ? highlightChunkInContent(fileContent, selectedChunkUid) : "",
-    [fileContent, highlightChunkInContent, selectedChunkUid]
+    [fileContent, highlightChunkInContent, selectedChunkUid],
   );
 
   const sanitizedHtmlText = React.useMemo(
@@ -99,7 +106,7 @@ const FileDetailsOverlay = ({
           span: ["class"],
         },
       }),
-    [displayContent]
+    [displayContent],
   );
   const fileIcon = React.useMemo(() => getFileIcon(fileType), [fileType]);
 

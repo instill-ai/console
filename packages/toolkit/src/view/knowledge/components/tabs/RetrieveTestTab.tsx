@@ -1,5 +1,7 @@
 import { Nullable } from "instill-sdk";
+
 import { Separator } from "@instill-ai/design-system";
+
 import { CodeBlock } from "../../../../components";
 import { CodeString } from "../../../../components/CodeString";
 import { defaultCodeSnippetStyles } from "../../../../constant";

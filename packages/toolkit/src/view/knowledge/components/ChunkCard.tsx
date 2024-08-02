@@ -59,7 +59,7 @@ const ChunkCard = ({
                 onRetrievableToggle(chunk.chunkUid, chunk.retrievable)
               }
             />
-          </div> 
+          </div>
         </div>
         <Separator orientation="horizontal" className="mb-2" />
         <p className="text-semantic-fg-secondary product-body-text-3-regular hover:bg-[#CBD2E1] line-clamp-3">

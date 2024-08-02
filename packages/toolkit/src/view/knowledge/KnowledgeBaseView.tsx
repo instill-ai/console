@@ -1,5 +1,7 @@
 import * as React from "react";
+
 import { Nullable } from "@instill-ai/toolkit";
+
 import {
   GeneralAppPageProp,
   InstillStore,
@@ -46,11 +48,13 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     React.useState<Nullable<KnowledgeBase>>(null);
   const [isProcessed, setIsProcessed] = React.useState(false);
   const [pendingDeletions, setPendingDeletions] = React.useState<string[]>([]);
-  const [deletionTimer, setDeletionTimer] = React.useState<NodeJS.Timeout | null>(null);
+  const [deletionTimer, setDeletionTimer] =
+    React.useState<NodeJS.Timeout | null>(null);
   const [showCreditUsage, setShowCreditUsage] = React.useState(false);
-  const [creditUsageTimer, setCreditUsageTimer] = React.useState<NodeJS.Timeout | null>(null);
+  const [creditUsageTimer, setCreditUsageTimer] =
+    React.useState<NodeJS.Timeout | null>(null);
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
@@ -107,7 +111,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         kbId: knowledgeBaseToDelete.catalogId,
         accessToken,
       });
-      if (selectedKnowledgeBase?.catalogId === knowledgeBaseToDelete.catalogId) {
+      if (
+        selectedKnowledgeBase?.catalogId === knowledgeBaseToDelete.catalogId
+      ) {
         setSelectedKnowledgeBase(null);
         setActiveTab("catalogs");
       }
@@ -123,7 +129,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     setShowDeleteMessage(false);
     setKnowledgeBaseToDelete(null);
     setPendingDeletions((prev) =>
-      prev.filter((id) => id !== knowledgeBaseToDelete?.catalogId)
+      prev.filter((id) => id !== knowledgeBaseToDelete?.catalogId),
     );
     if (deletionTimer) {
       clearTimeout(deletionTimer);
@@ -176,7 +182,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
 
       return () => clearTimeout(timer);
     }
-  }, [showDeleteMessage]);
+  }, [showDeleteMessage, actuallyDeleteKnowledgeBase]);
 
   // Cleanup effect for credit usage timer
   React.useEffect(() => {

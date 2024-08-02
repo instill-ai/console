@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { Button, Icons, LinkButton } from "@instill-ai/design-system";
+
 import { truncateName } from "../lib/functions";
 
 type DeleteFileNotificationProps = {

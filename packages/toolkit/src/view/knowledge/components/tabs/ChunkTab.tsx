@@ -1,7 +1,9 @@
 import React from "react";
+import { Nullable } from "instill-sdk";
 
 import { Button, Separator, Skeleton } from "@instill-ai/design-system";
 
+import { EmptyView } from "../../../../components";
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -19,8 +21,6 @@ import {
 } from "../../../../lib/react-query-service/knowledge/types";
 import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";
-import { Nullable } from "instill-sdk";
-import { EmptyView } from "../../../../components";
 
 type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -41,7 +41,9 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
     React.useState<Nullable<KnowledgeFile>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
-  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
+    useShallow(selector),
+  );
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,

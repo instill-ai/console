@@ -18,9 +18,7 @@ export const SortOptionSelectButton = ({
     >
       <div className="flex flex-row items-center gap-x-2">
         {icon}
-        <span
-          className={"product-body-text-3-medium text-semantic-fg-primary"}
-        >
+        <span className={"product-body-text-3-medium text-semantic-fg-primary"}>
           {label}
         </span>
       </div>

@@ -14,18 +14,18 @@ import {
   Separator,
 } from "@instill-ai/design-system";
 
-import {
-  InstillStore,
-  useInstillStore,
-  useShallow,
-} from "../../../../lib";
+import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import {
   useListKnowledgeBaseFiles,
   useProcessKnowledgeBaseFiles,
   useUploadKnowledgeBaseFile,
 } from "../../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
-import { FILE_ERROR_TIMEOUT, MAX_FILE_NAME_LENGTH, MAX_FILE_SIZE } from "../lib/static";
+import {
+  FILE_ERROR_TIMEOUT,
+  MAX_FILE_NAME_LENGTH,
+  MAX_FILE_SIZE,
+} from "../lib/static";
 import {
   DuplicateFileNotification,
   FileSizeNotification,
@@ -85,25 +85,33 @@ export const UploadExploreTab = ({
     },
   });
 
-  const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
-  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] = React.useState(false);
-  const [showDuplicateFileMessage, setShowDuplicateFileMessage] = React.useState(false);
+  const [showFileTooLargeMessage, setShowFileTooLargeMessage] =
+    React.useState(false);
+  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] =
+    React.useState(false);
+  const [showDuplicateFileMessage, setShowDuplicateFileMessage] =
+    React.useState(false);
   const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
-  const [showFileTooLongMessage, setShowFileTooLongMessage] = React.useState(false);
+  const [showFileTooLongMessage, setShowFileTooLongMessage] =
+    React.useState(false);
   const [tooLongFileName, setTooLongFileName] = React.useState<string>("");
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
   const [processingProgress, setProcessingProgress] = React.useState(0);
-  const [processingFileIndex, setProcessingFileIndex] = React.useState<Nullable<number>>(null);
+  const [processingFileIndex, setProcessingFileIndex] =
+    React.useState<Nullable<number>>(null);
 
   const fileTooLargeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
-  const unsupportedFileTypeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
+  const unsupportedFileTypeTimeoutRef =
+    React.useRef<Nullable<NodeJS.Timeout>>(null);
   const duplicateFileTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
 
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
-  const { accessToken, selectedNamespace } = useInstillStore(useShallow(selector));
+  const { accessToken, selectedNamespace } = useInstillStore(
+    useShallow(selector),
+  );
 
   // const me = useAuthenticatedUser({
   //   enabled: enabledQuery,
@@ -206,7 +214,7 @@ export const UploadExploreTab = ({
             if (event.target?.result) {
               resolve(btoa(event.target.result as string));
             } else {
-              resolve('');
+              resolve("");
             }
           };
           reader.readAsBinaryString(file);
@@ -234,20 +242,30 @@ export const UploadExploreTab = ({
           if (error instanceof Error) {
             console.error(`Error processing file ${file.name}:`, error.message);
             // If the file already exists, we'll just skip it. May need to handle other errors in the future
-            if ((error as any).response && (error as any).response.status === 409) {
+            if (
+              (error as Error)
+            ) {
               console.log(`File ${file.name} already exists, skipping.`);
               processedFiles.add(file.name);
             } else {
               throw error;
             }
           } else {
-            console.error(`Unexpected error processing file ${file.name}:`, error);
+            console.error(
+              `Unexpected error processing file ${file.name}:`,
+              error,
+            );
             throw error;
           }
         }
       }
 
-      form.setValue("files", form.getValues("files").filter(file => !processedFiles.has(file.name)));
+      form.setValue(
+        "files",
+        form
+          .getValues("files")
+          .filter((file) => !processedFiles.has(file.name)),
+      );
 
       setProcessingProgress(100);
       onProcessFile();
@@ -368,7 +386,7 @@ export const UploadExploreTab = ({
             <Icons.LayersTwo01 className="h-4 w-4 animate-spin stroke-semantic-fg-secondary" />
           ) : (
             <Icons.X
-              className={`h-4 w-4 ${isProcessing ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} stroke-semantic-fg-secondary`}
+              className={`h-4 w-4 ${isProcessing ? "cursor-not-allowed opacity-50" : "cursor-pointer"} stroke-semantic-fg-secondary`}
               onClick={() => !isProcessing && handleRemoveFile(index)}
             />
           )}
@@ -398,7 +416,9 @@ export const UploadExploreTab = ({
       )}
       {showFileTooLongMessage && (
         <FileTooLongNotification
-          handleCloseFileTooLongNotificationMessage={() => setShowFileTooLongMessage(false)}
+          handleCloseFileTooLongNotificationMessage={() =>
+            setShowFileTooLongMessage(false)
+          }
           fileName={tooLongFileName}
         />
       )}

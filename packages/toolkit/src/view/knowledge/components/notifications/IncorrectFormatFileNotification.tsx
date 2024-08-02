@@ -1,4 +1,5 @@
 import { Button, Icons } from "@instill-ai/design-system";
+
 import { truncateName } from "../lib/functions";
 
 type IncorrectFormatNotificationProps = {

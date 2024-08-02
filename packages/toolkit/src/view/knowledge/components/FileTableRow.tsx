@@ -1,15 +1,17 @@
 import React from "react";
-import { Button, Icons, Dialog } from "@instill-ai/design-system";
+
+import { Button, Dialog, Icons } from "@instill-ai/design-system";
+
 import { File } from "../../../lib/react-query-service/knowledge/types";
-import { StatusTag } from "./StatusTag";
 import { truncateName } from "./lib/functions";
+import { StatusTag } from "./StatusTag";
 
 type FileTableRowProps = {
   item: File;
   index: number;
   handleFileClick: (file: File) => void;
   handleDelete: (fileUid: string) => void;
-}
+};
 export const FileTableRow = ({
   item,
   handleFileClick,

@@ -1,4 +1,5 @@
 import { Icons, Input, Popover, Separator } from "@instill-ai/design-system";
+
 import { SortOptionSelectButton } from "./OptionSelectButton";
 
 export type SortAnchor = "modifyTime" | "createTime" | "usage";
@@ -43,7 +44,9 @@ const KnowledgeSearchSort = ({
         <Popover.Content align="end" className="flex w-64 flex-col !px-0 py-1">
           <SortOptionSelectButton
             label="Created Time"
-            icon={<Icons.ClockPlus className="h-5 w-5 mt-1 stroke-semantic-fg-primary" />}
+            icon={
+              <Icons.ClockPlus className="h-5 w-5 mt-1 stroke-semantic-fg-primary" />
+            }
             onClick={() => {
               setSelectedSortAnchor("createTime");
             }}
@@ -51,7 +54,9 @@ const KnowledgeSearchSort = ({
           />
           <SortOptionSelectButton
             label="Modified Time"
-            icon={<Icons.ClockCheck className="h-5 w-5 mt-1 stroke-semantic-fg-primary" />}
+            icon={
+              <Icons.ClockCheck className="h-5 w-5 mt-1 stroke-semantic-fg-primary" />
+            }
             onClick={() => {
               setSelectedSortAnchor("modifyTime");
             }}
@@ -59,7 +64,9 @@ const KnowledgeSearchSort = ({
           />
           <SortOptionSelectButton
             label="Usage"
-            icon={<Icons.TrendUp className="h-5 w-5 mt-1 stroke-semantic-fg-primary" />}
+            icon={
+              <Icons.TrendUp className="h-5 w-5 mt-1 stroke-semantic-fg-primary" />
+            }
             onClick={() => {
               setSelectedSortAnchor("usage");
             }}
@@ -68,7 +75,9 @@ const KnowledgeSearchSort = ({
           <Separator orientation="horizontal" className="my-1" />
           <SortOptionSelectButton
             label="Ascending"
-            icon={<Icons.SortLinesUp className="h-4 w-4 stroke-semantic-fg-primary" />}
+            icon={
+              <Icons.SortLinesUp className="h-4 w-4 stroke-semantic-fg-primary" />
+            }
             onClick={() => {
               setSelectedSortOrder("asc");
             }}
@@ -76,7 +85,9 @@ const KnowledgeSearchSort = ({
           />
           <SortOptionSelectButton
             label="Descending"
-            icon={<Icons.SortLinesDown className="h-4 w-4 stroke-semantic-fg-primary" />}
+            icon={
+              <Icons.SortLinesDown className="h-4 w-4 stroke-semantic-fg-primary" />
+            }
             onClick={() => {
               setSelectedSortOrder("desc");
             }}

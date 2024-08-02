@@ -1,5 +1,7 @@
 import React from "react";
+
 import { Separator, Skeleton } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -41,7 +43,9 @@ export const CatalogFilesTab = ({
     direction: "",
   });
 
-  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
+    useShallow(selector),
+  );
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
@@ -69,7 +73,7 @@ export const CatalogFilesTab = ({
     if (
       files &&
       files.some(
-        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED"
+        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED",
       )
     ) {
       interval = setInterval(() => {
