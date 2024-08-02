@@ -6,6 +6,7 @@
     // We need to specify this for tsup to correctly cast the jsx runtime
     "jsx": "react-jsx",
     "outDir": "dist",
+    "rootDir": "src",
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": [

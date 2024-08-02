@@ -36,6 +36,11 @@ const navLinkItems: NavLinkProps[] = [
     strict: true,
   },
   {
+    pathname: "catalog",
+    Icon: Icons.Database01,
+    title: "Artifacts",
+  },
+  {
     pathname: "dashboard",
     Icon: Icons.BarChartSquare02,
     title: "Dashboard",
