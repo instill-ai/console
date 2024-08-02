@@ -1,5 +1,5 @@
-import { Button, cn, Icons } from "@instill-ai/design-system";
-
+import React from "react";
+import { Button, Icons, Dialog } from "@instill-ai/design-system";
 import { File } from "../../../lib/react-query-service/knowledge/types";
 import { StatusTag } from "./StatusTag";
 
@@ -13,53 +13,82 @@ type FileTableRowProps = {
 
 export const FileTableRow = ({
   item,
-  index,
   handleFileClick,
   handleDelete,
   isDeleteDisabled,
 }: FileTableRowProps) => {
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+
+  const handleDeleteClick = () => {
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    setIsDeleteDialogOpen(false);
+    handleDelete(item.fileUid);
+  };
+
   return (
-    <div
-      className="grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line"
-    >
-      <div
-        className="flex items-center justify-center px-4 truncate cursor-pointer text-semantic-bg-secondary-alt-primary product-body-text-3-regular"
-        onClick={() => handleFileClick(item)}
-      >
-        <span className="truncate max-w-[200px]" title={item.name}>
-          {item.name}
-        </span>
-        <Icons.ArrowUpRight className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary ml-0.5 flex-shrink-0" />
-      </div>
-      <div className="flex items-center justify-center">
-        <StatusTag status={item.type.replace("FILE_TYPE_", "")} />
-      </div>
-      <div className="flex items-center justify-center">
-        <StatusTag
-          status={item.processStatus.replace("FILE_PROCESS_STATUS_", "")}
-        />
-      </div>
-      <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-        {formatFileSize(item.size)}
-      </div>
-      <div className="flex flex-col items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-        <div>{`${item.totalChunks ?? "N/A"} chunks`}</div>
-      </div>
-      <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-        {formatDate(item.createTime)}
-      </div>
-      <div className="flex items-center justify-center">
-        <Button
-          variant="tertiaryDanger"
-          size="lg"
-          className="h-8"
-          onClick={() => handleDelete(item.fileUid)}
-          disabled={isDeleteDisabled}
+    <>
+      <div className="grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line">
+        <div
+          className="flex items-center justify-center px-4 truncate cursor-pointer text-semantic-bg-secondary-alt-primary product-body-text-3-regular"
+          onClick={() => handleFileClick(item)}
         >
-          Delete
-        </Button>
+          <span className="truncate max-w-[200px]" title={item.name}>
+            {item.name}
+          </span>
+          <Icons.ArrowUpRight className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary ml-0.5 flex-shrink-0" />
+        </div>
+        <div className="flex items-center justify-center">
+          <StatusTag status={item.type.replace("FILE_TYPE_", "")} />
+        </div>
+        <div className="flex items-center justify-center">
+          <StatusTag
+            status={item.processStatus.replace("FILE_PROCESS_STATUS_", "")}
+          />
+        </div>
+        <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+          {formatFileSize(item.size)}
+        </div>
+        <div className="flex flex-col items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+          <div>{`${item.totalChunks ?? "N/A"} chunks`}</div>
+        </div>
+        <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
+          {formatDate(item.createTime)}
+        </div>
+        <div className="flex items-center justify-center">
+          <Button
+            variant="tertiaryDanger"
+            size="lg"
+            className="h-8"
+            onClick={handleDeleteClick}
+            disabled={isDeleteDisabled}
+          >
+            Delete
+          </Button>
+        </div>
       </div>
-    </div>
+
+      <Dialog.Root open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Delete File</Dialog.Title>
+            <Dialog.Description>
+              Are you sure you want to delete {item.name}? This action cannot be undone.
+            </Dialog.Description>
+          </Dialog.Header>
+          <div className="flex justify-end space-x-2 mt-6">
+            <Button variant="secondaryGrey" onClick={() => setIsDeleteDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={confirmDelete}>
+              Delete
+            </Button>
+          </div>
+        </Dialog.Content>
+      </Dialog.Root>
+    </>
   );
 };
 

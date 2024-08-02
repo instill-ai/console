@@ -7,7 +7,7 @@ type EmptyStateProps = {
 
 const EmptyState = ({ onGoToUpload }: EmptyStateProps) => {
   return (
-    <div className="flex flex-col items-center justify-center p-8 text-center mt-32">
+    <div className="flex flex-col items-center justify-center p-8 text-center">
       <EmptyView
         iconName="AlertCircle"
         title="No Files Uploaded"
