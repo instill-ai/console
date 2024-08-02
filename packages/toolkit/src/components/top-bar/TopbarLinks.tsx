@@ -19,7 +19,7 @@ export const topbarItems = [
   },
   {
     pathName: "catalog",
-    icon: <Icons.Star06 className="h-6 w-6 stroke-semantic-fg-primary" />,
+    icon: <Icons.Database01 className="h-6 w-6 stroke-semantic-fg-primary" />,
     name: "Artifacts",
   },
   {
