@@ -9,14 +9,11 @@ type FileTableRowProps = {
   index: number;
   handleFileClick: (file: File) => void;
   handleDelete: (fileUid: string) => void;
-  isDeleteDisabled: boolean;
-};
-
+}
 export const FileTableRow = ({
   item,
   handleFileClick,
   handleDelete,
-  isDeleteDisabled,
 }: FileTableRowProps) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
 
@@ -64,7 +61,6 @@ export const FileTableRow = ({
             size="lg"
             className="h-8"
             onClick={handleDeleteClick}
-            disabled={isDeleteDisabled}
           >
             Delete
           </Button>

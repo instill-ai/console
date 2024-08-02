@@ -1,4 +1,4 @@
-import { Button, Icons, LinkButton } from "@instill-ai/design-system";
+import { Button, Icons } from "@instill-ai/design-system";
 
 type CreditUsageNotificationProps = {
   handleCloseCreditUsageMessage: () => void;

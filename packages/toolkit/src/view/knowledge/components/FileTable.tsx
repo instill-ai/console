@@ -17,7 +17,6 @@ type FileTableProps = {
   requestSort: (key: keyof File) => void;
   handleDelete: (fileUid: string) => void;
   handleFileClick: (file: File) => void;
-  fileToDelete: File | null;
 };
 
 export const FileTable = ({
@@ -26,7 +25,6 @@ export const FileTable = ({
   requestSort,
   handleDelete,
   handleFileClick,
-  fileToDelete,
 }: FileTableProps) => {
   const sortedData = React.useMemo(() => {
     if (!files) return [];
@@ -71,7 +69,6 @@ export const FileTable = ({
           index={index}
           handleFileClick={handleFileClick}
           handleDelete={handleDelete}
-          isDeleteDisabled={!!fileToDelete}
         />
       ))}
     </div>
