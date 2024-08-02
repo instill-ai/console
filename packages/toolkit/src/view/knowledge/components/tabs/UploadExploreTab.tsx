@@ -232,25 +232,33 @@ export const UploadExploreTab = ({
 
           processedFiles.add(file.name);
         } catch (error) {
-          console.error(`Error processing file ${file.name}:`, error);
-          // If the file already exists, we'll just skip it
-          if (error.response && error.response.status === 409) {
-            console.log(`File ${file.name} already exists, skipping.`);
-            processedFiles.add(file.name);
+          if (error instanceof Error) {
+            console.error(`Error processing file ${file.name}:`, error.message);
+            // If the file already exists, we'll just skip it. May need to handle other errors in the future
+            if ((error as any).response && (error as any).response.status === 409) {
+              console.log(`File ${file.name} already exists, skipping.`);
+              processedFiles.add(file.name);
+            } else {
+              throw error;
+            }
           } else {
-            throw error;  // Re-throw if it's not a "file already exists" error
+            console.error(`Unexpected error processing file ${file.name}:`, error);
+            throw error;
           }
         }
       }
 
-      // Remove all processed files from the form
       form.setValue("files", form.getValues("files").filter(file => !processedFiles.has(file.name)));
 
       setProcessingProgress(100);
       onProcessFile();
       onTabChange("files");
     } catch (error) {
-      console.error("Error processing files:", error);
+      if (error instanceof Error) {
+        console.error("Error processing files:", error.message);
+      } else {
+        console.error("Unexpected error processing files:", error);
+      }
     } finally {
       setIsProcessing(false);
       setProcessingProgress(0);
