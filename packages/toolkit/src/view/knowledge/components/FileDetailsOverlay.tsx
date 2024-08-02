@@ -113,19 +113,21 @@ const FileDetailsOverlay = ({
               <Skeleton className="h-4 w-3/4" />
             </div>
           ) : (
-            <Markdown
-              options={{
-                overrides: {
-                  span: {
-                    props: {
-                      className: "bg-semantic-bg-line hover:bg-[#CBD2E1]",
+            <article className="prose">
+              <Markdown
+                options={{
+                  overrides: {
+                    span: {
+                      props: {
+                        className: "bg-semantic-bg-line hover:bg-[#CBD2E1]",
+                      },
                     },
                   },
-                },
-              }}
-            >
-              {sanitizedHtmlText}
-            </Markdown>
+                }}
+              >
+                {sanitizedHtmlText}
+              </Markdown>
+            </article>
           )}
         </ScrollArea.Root>
         <Dialog.Close />
