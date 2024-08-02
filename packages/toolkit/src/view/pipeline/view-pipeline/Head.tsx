@@ -159,15 +159,27 @@ export const Head = ({
               </div>
             </React.Fragment>
           )}
-          {pipeline && !isPublicPipeline(pipeline) ? (
-            <Tag
-              className="my-auto h-6 gap-x-1 !border-0 !py-0 !text-sm"
-              variant="lightNeutral"
-              size="sm"
-            >
-              <Icons.Lock03 className="h-3 w-3 stroke-semantic-fg-primary" />
-              Private
-            </Tag>
+          {pipeline
+            ? (
+              <Tag
+                className="my-auto h-6 gap-x-1 !border-0 !py-0 !text-sm"
+                variant="lightNeutral"
+                size="sm"
+              >
+                {isPublicPipeline(pipeline)
+                  ? (
+                    <React.Fragment>
+                      <Icons.BookOpen02 className="h-3 w-3 stroke-semantic-fg-primary" />
+                      Public
+                    </React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      <Icons.Lock03 className="h-3 w-3 stroke-semantic-fg-primary" />
+                      Private
+                    </React.Fragment>
+                  )
+                }
+              </Tag>
           ) : null}
           {pipeline?.documentationUrl ? (
             <HeadExternalLink href={pipeline.documentationUrl}>
