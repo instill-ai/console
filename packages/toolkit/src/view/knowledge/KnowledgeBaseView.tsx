@@ -30,6 +30,7 @@ import {
   RetrieveTestTab,
   UploadExploreTab,
 } from "./components/tabs";
+import { env } from "../../server";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -56,6 +57,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector),
   );
+  const isLocalEnvironment = env("NEXT_PUBLIC_API_GATEWAY_URL")
 
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
   const { refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
@@ -202,7 +204,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           undoDelete={undoDelete}
         />
       )}
-      {showCreditUsage && (
+      {showCreditUsage && !isLocalEnvironment && (
         <CreditUsageFileNotification
           handleCloseCreditUsageMessage={handleCloseCreditUsageMessage}
           fileName="test"
