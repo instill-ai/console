@@ -14,6 +14,7 @@ import {
   useListKnowledgeBaseFiles,
 } from "../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../lib/react-query-service/knowledge/types";
+import { env } from "../../server";
 import { Sidebar } from "./components";
 import {
   CREDIT_TIMEOUT,
@@ -30,7 +31,6 @@ import {
   RetrieveTestTab,
   UploadExploreTab,
 } from "./components/tabs";
-import { env } from "../../server";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -57,7 +57,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector),
   );
-  const isLocalEnvironment = env("NEXT_PUBLIC_API_GATEWAY_URL")
+  const isLocalEnvironment = env("NEXT_PUBLIC_API_GATEWAY_URL");
 
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
   const { refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
