@@ -1,18 +1,17 @@
-import { Nullable } from "instill-sdk";
-
-import { Separator } from "@instill-ai/design-system";
-
-import { CodeBlock } from "../../../../components";
-import { CodeString } from "../../../../components/CodeString";
-import { defaultCodeSnippetStyles } from "../../../../constant";
-import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
+import * as React from 'react'
+import { Nullable } from "instill-sdk"
+import { Separator } from "@instill-ai/design-system"
+import { CodeBlock, ModelSectionHeader } from "../../../../components"
+import { defaultCodeSnippetStyles } from "../../../../constant"
+import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types"
+import { env } from '../../../../server'
 
 type RetrieveTestTabProps = {
-  knowledgeBase: KnowledgeBase;
-  isProcessed: boolean;
-  onGoToUpload: () => void;
-  namespaceId: Nullable<string>;
-};
+  knowledgeBase: KnowledgeBase
+  isProcessed: boolean
+  onGoToUpload: () => void
+  namespaceId: Nullable<string>
+}
 
 export const RetrieveTestTab = ({
   knowledgeBase,
@@ -20,16 +19,18 @@ export const RetrieveTestTab = ({
   onGoToUpload,
   namespaceId,
 }: RetrieveTestTabProps) => {
-  const kbId = knowledgeBase.catalogId;
+  const kbId = knowledgeBase.catalogId
 
-  const curlCommand = `curl -X POST \\
-'https://api.instill.tech/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}/chunks/similarity' \\
---header 'Content-Type: application/json' \\
---header 'Authorization: Bearer $INSTILL_API_TOKEN' \\
+  const curlCommand = React.useMemo(() => {
+    const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL")
+    return `curl -X POST '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}/chunks/similarity' \\
+--header "Content-Type: application/json" \\
+--header "Authorization: Bearer $INSTILL_API_TOKEN" \\
 --data '{
   "textPrompt": "Please put your query sentence here",
   "topk": 5
-}'`;
+}'`
+  }, [namespaceId, kbId])
 
   const inputSchema = `{
   "type": "object",
@@ -116,9 +117,13 @@ export const RetrieveTestTab = ({
             <p className="mb-2 text-lg font-semibold">
               Set Environment Variable:
             </p>
-            <CodeString>export INSTILL_API_TOKEN=********</CodeString>
+            <CodeBlock
+              codeString={"$ export INSTILL_API_TOKEN=********"}
+              wrapLongLines={true}
+              language="bash"
+              customStyle={defaultCodeSnippetStyles}
+            />
           </div>
-
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">Example cURL command:</p>
             <CodeBlock
@@ -131,9 +136,13 @@ export const RetrieveTestTab = ({
 
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
-            <CodeString>{`https://api.instill.tech/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}/chunks/similarity`}</CodeString>
+            <CodeBlock
+              codeString={`${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}/chunks/similarity`}
+              wrapLongLines={true}
+              customStyle={defaultCodeSnippetStyles}
+            />
           </div>
-          <p className="mb-2 product-headings-heading-3">JSON Schema:</p>
+          <ModelSectionHeader className="mt-5">JSON Schema</ModelSectionHeader>
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">Input:</p>
             <CodeBlock
@@ -157,7 +166,7 @@ export const RetrieveTestTab = ({
           {/* <p className="mb-4 product-body-text-3-regular">
             For a more detailed overview of the input/output schemas, check out
             the{" "}
-            <a
+            
               href="https://www.instill.tech/docs/artifact/search"
               className="text-semantic-accent-default underline"
             >
@@ -168,7 +177,7 @@ export const RetrieveTestTab = ({
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default RetrieveTestTab;
+export default RetrieveTestTab
