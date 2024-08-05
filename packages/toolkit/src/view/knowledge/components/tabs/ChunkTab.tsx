@@ -44,47 +44,20 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
     accessToken,
   });
 
-  const [allFiles, setAllFiles] = React.useState<KnowledgeFile[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const { data: filesData, isLoading } = useListKnowledgeBaseFiles({
+    namespaceId: selectedNamespace,
+    knowledgeBaseId: knowledgeBase.catalogId,
+    accessToken,
+    enabled: enabledQuery && Boolean(me.data?.id),
+    pageSize: 100,
+  });
 
-  const fetchAllFiles = React.useCallback(async () => {
-    if (!enabledQuery || !me.data?.id) return;
-
-    let allFetchedFiles: KnowledgeFile[] = [];
-    let nextPageToken: string | null = null;
-
-    do {
-      try {
-        const result = await useListKnowledgeBaseFiles({
-          namespaceId: selectedNamespace,
-          knowledgeBaseId: knowledgeBase.catalogId,
-          accessToken,
-          enabled: true,
-          pageSize: 100,
-          pageToken: nextPageToken || undefined,
-        });
-
-        if (result.data) {
-          allFetchedFiles = [...allFetchedFiles, ...result.data.files];
-          nextPageToken = result.data.nextPageToken;
-        } else {
-          nextPageToken = null;
-        }
-      } catch (error) {
-        console.error("Error fetching files:", error);
-        nextPageToken = null;
-      }
-    } while (nextPageToken);
-
-    setAllFiles(allFetchedFiles.filter(
+  const files = React.useMemo(() => {
+    if (!filesData) return [];
+    return filesData.files.filter(
       (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED"
-    ));
-    setIsLoading(false);
-  }, [enabledQuery, me.data?.id, selectedNamespace, knowledgeBase.catalogId, accessToken]);
-
-  React.useEffect(() => {
-    fetchAllFiles();
-  }, [fetchAllFiles]);
+    );
+  }, [filesData]);
 
   const updateChunkMutation = useUpdateChunk();
 
@@ -153,10 +126,10 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
             </div>
           ))}
         </div>
-      ) : allFiles.length > 0 ? (
+      ) : files.length > 0 ? (
         <div className="flex">
           <div className="w-full pr-4">
-            {allFiles.map((file: KnowledgeFile) => (
+            {files.map((file: KnowledgeFile) => (
               <FileChunks
                 key={file.fileUid}
                 file={file}
