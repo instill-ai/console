@@ -57,7 +57,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector),
   );
-  const isLocalEnvironment = env("NEXT_PUBLIC_API_GATEWAY_URL");
+  const isLocalEnvironment = env("NEXT_PUBLIC_APP_ENV") === "CE";
 
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
   const { refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
@@ -171,6 +171,11 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     handleTabChange("upload");
   };
 
+  const handleDeselectKnowledgeBase = () => {
+    setSelectedKnowledgeBase(null);
+    setActiveTab("catalogs");
+  };
+
   React.useEffect(() => {
     setSelectedKnowledgeBase(null);
     setActiveTab("catalogs");
@@ -216,6 +221,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             activeTab={activeTab}
             onTabChange={handleTabChange}
             selectedKnowledgeBase={selectedKnowledgeBase}
+            onDeselectKnowledgeBase={handleDeselectKnowledgeBase}
           />
         </div>
         <div className={`sm:col-span-8 md:col-span-9 lg:col-span-10 pt-5`}>

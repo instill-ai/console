@@ -32,3 +32,16 @@ export const truncateName = (name: string, maxLength: number = 20) => {
   if (name.length <= maxLength) return name;
   return `${name.slice(0, maxLength)}...`;
 };
+
+export const convertFileType = (type: string): string => {
+  switch (type) {
+    case "FILE_TYPE_TEXT":
+      return "txt";
+    case "FILE_TYPE_MARKDOWN":
+      return "md";
+    case "FILE_TYPE_PDF":
+      return "pdf";
+    default:
+      return type.replace("FILE_TYPE_", "").toLowerCase();
+  }
+};
