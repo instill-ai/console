@@ -10,18 +10,14 @@ export function useListKnowledgeBaseFiles({
   knowledgeBaseId,
   accessToken,
   enabled,
-  pageSize = 100,
-  pageToken,
 }: {
   namespaceId: Nullable<string> | undefined;
   knowledgeBaseId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  pageSize?: number;
-  pageToken?: string;
 }) {
-  return useQuery<{ files: File[]; nextPageToken: string | null }>({
-    queryKey: ["knowledgeBaseFiles", namespaceId, knowledgeBaseId, pageToken],
+  return useQuery<File[]>({
+    queryKey: ["knowledgeBaseFiles", namespaceId, knowledgeBaseId],
     queryFn: async () => {
       if (!accessToken) {
         throw new Error("accessToken not provided");
@@ -33,15 +29,9 @@ export function useListKnowledgeBaseFiles({
         throw new Error("knowledgeBaseId not provided");
       }
       const client = createInstillAxiosClient(accessToken, true);
-      const response = await client.get<{
-        files: File[];
-        nextPageToken: string | null;
-      }>(`/namespaces/${namespaceId}/catalogs/${knowledgeBaseId}/files`, {
-        params: {
-          pageSize,
-          pageToken,
-        },
-      });
+      const response = await client.get<{ files: File[] }>(
+        `/namespaces/${namespaceId}/catalogs/${knowledgeBaseId}/files`,
+      );
       return response.data;
     },
     enabled,
