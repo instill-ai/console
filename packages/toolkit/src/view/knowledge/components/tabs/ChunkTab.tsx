@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { Nullable } from "@instill-ai/toolkit";
 import { Button, Separator, Skeleton } from "@instill-ai/design-system";
 import { EmptyView } from "@instill-ai/toolkit";
 
@@ -22,6 +21,7 @@ import {
 } from "../../../../lib/react-query-service/knowledge/types";
 import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";
+import { Nullable } from "instill-sdk";
 
 type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;
