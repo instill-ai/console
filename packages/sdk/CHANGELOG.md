@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/instill-ai/console/compare/instill-sdk-v0.3.0...instill-sdk-v0.3.1) (2024-08-05)
+
+
+### Bug Fixes
+
+* add pagination to Catalog ([#1346](https://github.com/instill-ai/console/issues/1346)) ([a40f85b](https://github.com/instill-ai/console/commit/a40f85be7b3114e92f26646dfb105dc7293d03f9))
+
 ## [0.3.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.2.0...instill-sdk-v0.3.0) (2024-07-31)
 
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.98.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.98.2...@instill-ai/toolkit-v0.98.3) (2024-08-05)
+
+
+### Bug Fixes
+
+* add pagination to Catalog ([#1346](https://github.com/instill-ai/console/issues/1346)) ([a40f85b](https://github.com/instill-ai/console/commit/a40f85be7b3114e92f26646dfb105dc7293d03f9))
+* catalog fix linting ([#1348](https://github.com/instill-ai/console/issues/1348)) ([3d93788](https://github.com/instill-ai/console/commit/3d93788b47d7919cb215fb65da95a6ac8747cc0b))
+
 ## [0.98.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.98.1...@instill-ai/toolkit-v0.98.2) (2024-08-05)
 
 
