@@ -60,7 +60,6 @@ const FileDetailsOverlay = ({
       );
       if (!chunk) return content;
       const { startPos, endPos } = chunk;
-      console.log("startPos", startPos, "endPos", endPos);
 
       // Handle different file types
       if (fileType.includes("TEXT") || fileType.includes("MARKDOWN")) {

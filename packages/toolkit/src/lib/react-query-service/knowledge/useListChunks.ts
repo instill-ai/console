@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { Nullable } from "@instill-ai/toolkit";
-
+import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 
 export function useListChunks({

@@ -170,7 +170,8 @@ export const UploadExploreTab = ({
     }
 
     const currentFiles = form.getValues("files");
-    const isDuplicate = existingFiles?.some(
+
+    const isDuplicate = existingFiles?.files?.some(
       (existingFile) => existingFile.name === file.name,
     );
 

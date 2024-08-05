@@ -1,6 +1,5 @@
 import * as React from "react";
-
-import { Nullable } from "@instill-ai/toolkit";
+import { Nullable } from "instill-sdk";
 
 import {
   GeneralAppPageProp,
@@ -66,7 +65,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     enabled: enabledQuery && !!selectedNamespace,
   });
 
-  const { data: files } = useListKnowledgeBaseFiles({
+  const { data: filesData } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace ?? null,
     knowledgeBaseId: selectedKnowledgeBase?.catalogId ?? "",
     accessToken,
@@ -77,11 +76,11 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   });
 
   React.useEffect(() => {
-    if (files) {
-      const hasChunks = files.some((file) => file.totalChunks > 0);
+    if (filesData) {
+      const hasChunks = filesData.files.some((file) => file.totalChunks > 0);
       setIsProcessed(hasChunks);
     }
-  }, [files]);
+  }, [filesData]);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
