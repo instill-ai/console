@@ -1,5 +1,7 @@
 import React from "react";
+
 import { Separator, Skeleton } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   useAuthenticatedUser,

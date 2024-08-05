@@ -1,8 +1,11 @@
 "use client";
 
 import React from "react";
+import { Nullable } from "instill-sdk";
+
 import { Button, Separator, Skeleton } from "@instill-ai/design-system";
 
+import { EmptyView } from "../../../../components";
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -20,8 +23,6 @@ import {
 } from "../../../../lib/react-query-service/knowledge/types";
 import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";
-import { Nullable } from "instill-sdk";
-import { EmptyView } from "../../../../components";
 
 type ChunkTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -34,14 +35,19 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase, onGoToUpload }) => {
+export const ChunkTab: React.FC<ChunkTabProps> = ({
+  knowledgeBase,
+  onGoToUpload,
+}) => {
   const [expandedFiles, setExpandedFiles] = React.useState<string[]>([]);
-  const [selectedChunk, setSelectedChunk] = React.useState<Nullable<Chunk>>(null);
-  const [selectedFile, setSelectedFile] = React.useState<Nullable<KnowledgeFile>>(null);
+  const [selectedChunk, setSelectedChunk] =
+    React.useState<Nullable<Chunk>>(null);
+  const [selectedFile, setSelectedFile] =
+    React.useState<Nullable<KnowledgeFile>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
   const me = useAuthenticatedUser({
@@ -63,7 +69,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase, onGoToUpload 
 
   const files = React.useMemo(() => {
     return (filesData?.files || []).filter(
-      (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED"
+      (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED",
     );
   }, [filesData]);
 
@@ -73,7 +79,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase, onGoToUpload 
     setExpandedFiles((prev) =>
       prev.includes(fileUid)
         ? prev.filter((id) => id !== fileUid)
-        : [...prev, fileUid]
+        : [...prev, fileUid],
     );
   };
 
@@ -91,7 +97,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase, onGoToUpload 
 
   const handleRetrievableToggle = async (
     chunkUid: string,
-    currentValue: boolean
+    currentValue: boolean,
   ) => {
     try {
       await updateChunkMutation.mutateAsync({
@@ -109,7 +115,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase, onGoToUpload 
 
     if (
       files.some(
-        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED"
+        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED",
       )
     ) {
       interval = setInterval(() => {
