@@ -171,8 +171,8 @@ export const UploadExploreTab = ({
 
     const currentFiles = form.getValues("files");
 
-    const isDuplicate = existingFiles?.files?.some(
-      (existingFile) => existingFile.name === file.name
+    const isDuplicate = existingFiles?.some(
+      (existingFile) => existingFile.name === file.name,
     );
 
     if (isDuplicate) {
@@ -301,10 +301,11 @@ export const UploadExploreTab = ({
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
-                      ? "border-semantic-accent-default"
-                      : "border-semantic-bg-line"
-                      } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${
+                      isDragging
+                        ? "border-semantic-accent-default"
+                        : "border-semantic-bg-line"
+                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
                       setIsDragging(true);

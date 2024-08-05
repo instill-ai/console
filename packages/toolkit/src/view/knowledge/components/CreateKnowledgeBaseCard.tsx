@@ -138,7 +138,7 @@ export const CreateKnowledgeBaseCard = ({
   });
 
   const chunkQueries = useQueries({
-    queries: (filesData?.files || []).map((file) => ({
+    queries: (filesData || []).map((file) => ({
       queryKey: ["chunks", knowledgeBase.catalogId, file.fileUid],
       queryFn: () =>
         getAllChunks(
