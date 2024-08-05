@@ -202,12 +202,10 @@ export const Editor = ({
             underlinePlugin.underlineField,
           ]}
           theme={githubLight}
-          onChange={(value, view) => {
+          onChange={(value) => {
             if (!routeInfo.isSuccess || !routeInfo.data.pipelineName) {
               return;
             }
-
-            console.log(view.state.doc.toString());
 
             recipeUpdater({
               newRawRecipe: value,
