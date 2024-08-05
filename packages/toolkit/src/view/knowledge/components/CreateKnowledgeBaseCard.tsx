@@ -130,7 +130,7 @@ export const CreateKnowledgeBaseCard = ({
     useShallow(selector),
   );
 
-  const { data: files } = useListKnowledgeBaseFiles({
+  const { data: filesData } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace || null,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken: accessToken || null,
@@ -138,7 +138,7 @@ export const CreateKnowledgeBaseCard = ({
   });
 
   const chunkQueries = useQueries({
-    queries: (files || []).map((file) => ({
+    queries: (filesData?.files || []).map((file) => ({
       queryKey: ["chunks", knowledgeBase.catalogId, file.fileUid],
       queryFn: () =>
         getAllChunks(
@@ -147,7 +147,7 @@ export const CreateKnowledgeBaseCard = ({
           knowledgeBase.catalogId,
           file.fileUid,
         ),
-      enabled: enabledQuery && isHovered && !!files && !!accessToken,
+      enabled: enabledQuery && isHovered && !!filesData && !!accessToken,
     })),
   });
 

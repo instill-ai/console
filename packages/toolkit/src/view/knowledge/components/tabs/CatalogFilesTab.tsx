@@ -1,7 +1,5 @@
 import React from "react";
-
 import { Separator, Skeleton } from "@instill-ai/design-system";
-
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -44,7 +42,7 @@ export const CatalogFilesTab = ({
   });
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector),
+    useShallow(selector)
   );
 
   const me = useAuthenticatedUser({
@@ -53,7 +51,7 @@ export const CatalogFilesTab = ({
   });
 
   const {
-    data: files,
+    data: filesData,
     isLoading,
     refetch,
   } = useListKnowledgeBaseFiles({
@@ -61,7 +59,10 @@ export const CatalogFilesTab = ({
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
     enabled: enabledQuery && Boolean(me.data?.id),
+    pageSize: 100,
   });
+
+  const files = React.useMemo(() => filesData?.files || [], [filesData]);
 
   const deleteKnowledgeBaseFile = useDeleteKnowledgeBaseFile();
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
@@ -71,9 +72,8 @@ export const CatalogFilesTab = ({
     let interval: NodeJS.Timeout | null = null;
 
     if (
-      files &&
       files.some(
-        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED",
+        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED"
       )
     ) {
       interval = setInterval(() => {
@@ -135,7 +135,7 @@ export const CatalogFilesTab = ({
                 <Skeleton className="w-full h-8 mb-4" />
                 <Skeleton className="w-full h-8" />
               </div>
-            ) : files && files.length > 0 ? (
+            ) : files.length > 0 ? (
               <FileTable
                 files={files}
                 sortConfig={sortConfig}

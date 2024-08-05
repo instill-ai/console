@@ -1,8 +1,6 @@
 import React from "react";
 import { Nullable } from "instill-sdk";
-
 import { Button, Separator, Skeleton } from "@instill-ai/design-system";
-
 import { EmptyView } from "../../../../components";
 import {
   InstillStore,
@@ -35,44 +33,66 @@ const selector = (store: InstillStore) => ({
 
 export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
   const [expandedFiles, setExpandedFiles] = React.useState<string[]>([]);
-  const [selectedChunk, setSelectedChunk] =
-    React.useState<Nullable<Chunk>>(null);
-  const [selectedFile, setSelectedFile] =
-    React.useState<Nullable<KnowledgeFile>>(null);
+  const [selectedChunk, setSelectedChunk] = React.useState<Nullable<Chunk>>(null);
+  const [selectedFile, setSelectedFile] = React.useState<Nullable<KnowledgeFile>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
-  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector),
-  );
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
   });
 
-  const { data: allFiles, isLoading: isLoadingFiles } =
-    useListKnowledgeBaseFiles({
-      namespaceId: selectedNamespace,
-      knowledgeBaseId: knowledgeBase.catalogId,
-      accessToken,
-      enabled: enabledQuery && Boolean(me.data?.id),
-    });
+  const [allFiles, setAllFiles] = React.useState<KnowledgeFile[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  const fetchAllFiles = React.useCallback(async () => {
+    if (!enabledQuery || !me.data?.id) return;
+
+    let allFetchedFiles: KnowledgeFile[] = [];
+    let nextPageToken: string | null = null;
+
+    do {
+      try {
+        const result = await useListKnowledgeBaseFiles({
+          namespaceId: selectedNamespace,
+          knowledgeBaseId: knowledgeBase.catalogId,
+          accessToken,
+          enabled: true,
+          pageSize: 100,
+          pageToken: nextPageToken || undefined,
+        });
+
+        if (result.data) {
+          allFetchedFiles = [...allFetchedFiles, ...result.data.files];
+          nextPageToken = result.data.nextPageToken;
+        } else {
+          nextPageToken = null;
+        }
+      } catch (error) {
+        console.error("Error fetching files:", error);
+        nextPageToken = null;
+      }
+    } while (nextPageToken);
+
+    setAllFiles(allFetchedFiles.filter(
+      (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED"
+    ));
+    setIsLoading(false);
+  }, [enabledQuery, me.data?.id, selectedNamespace, knowledgeBase.catalogId, accessToken]);
+
+  React.useEffect(() => {
+    fetchAllFiles();
+  }, [fetchAllFiles]);
 
   const updateChunkMutation = useUpdateChunk();
-
-  const files = React.useMemo(() => {
-    return (
-      allFiles?.filter(
-        (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED",
-      ) || []
-    );
-  }, [allFiles]);
 
   const toggleFileExpansion = (fileUid: string) => {
     setExpandedFiles((prev) =>
       prev.includes(fileUid)
         ? prev.filter((id) => id !== fileUid)
-        : [...prev, fileUid],
+        : [...prev, fileUid]
     );
   };
 
@@ -90,7 +110,7 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
 
   const handleRetrievableToggle = async (
     chunkUid: string,
-    currentValue: boolean,
+    currentValue: boolean
   ) => {
     try {
       await updateChunkMutation.mutateAsync({
@@ -111,7 +131,7 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {isLoadingFiles ? (
+      {isLoading ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
@@ -133,10 +153,10 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
             </div>
           ))}
         </div>
-      ) : files && files.length > 0 ? (
+      ) : allFiles.length > 0 ? (
         <div className="flex">
           <div className="w-full pr-4">
-            {files.map((file: KnowledgeFile) => (
+            {allFiles.map((file: KnowledgeFile) => (
               <FileChunks
                 key={file.fileUid}
                 file={file}
