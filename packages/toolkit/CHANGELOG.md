@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.98.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.98.1...@instill-ai/toolkit-v0.98.2) (2024-08-05)
+
+
+### Bug Fixes
+
+* fix domain in catolog api  ([#1343](https://github.com/instill-ai/console/issues/1343)) ([d0c7f6c](https://github.com/instill-ai/console/commit/d0c7f6c3dcaacf01bc79243fede2093e541a68fe))
+
 ## [0.98.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.98.0...@instill-ai/toolkit-v0.98.1) (2024-08-02)
 
 
