@@ -1,10 +1,9 @@
 import * as React from "react";
 
-import { Nullable } from "@instill-ai/toolkit";
-
 import {
   GeneralAppPageProp,
   InstillStore,
+  Nullable,
   useInstillStore,
   useShallow,
 } from "../../lib";

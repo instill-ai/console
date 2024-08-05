@@ -1,10 +1,11 @@
 import React from "react";
 
 import { Button, Separator, Skeleton } from "@instill-ai/design-system";
-import { EmptyView, Nullable } from "@instill-ai/toolkit";
 
+import { EmptyView } from "../../../../components";
 import {
   InstillStore,
+  Nullable,
   useAuthenticatedUser,
   useInstillStore,
   useShallow,
@@ -40,7 +41,9 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
     React.useState<Nullable<KnowledgeFile>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
-  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
+    useShallow(selector),
+  );
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
