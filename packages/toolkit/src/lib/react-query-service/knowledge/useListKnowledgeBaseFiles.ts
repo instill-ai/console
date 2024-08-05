@@ -1,4 +1,4 @@
-import type { Nullable } from "instill-sdk";
+import { Nullable } from "../../type";
 import { useQuery } from "@tanstack/react-query";
 
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
