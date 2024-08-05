@@ -47,7 +47,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
   const me = useAuthenticatedUser({
@@ -65,7 +65,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
 
   const files = React.useMemo(() => {
     return (knowledgeBaseFiles.data?.files || []).filter(
-      (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED"
+      (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED",
     );
   }, [knowledgeBaseFiles.isSuccess, knowledgeBaseFiles.data]);
 
@@ -75,7 +75,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
     setExpandedFiles((prev) =>
       prev.includes(fileUid)
         ? prev.filter((id) => id !== fileUid)
-        : [...prev, fileUid]
+        : [...prev, fileUid],
     );
   };
 
@@ -93,7 +93,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
 
   const handleRetrievableToggle = async (
     chunkUid: string,
-    currentValue: boolean
+    currentValue: boolean,
   ) => {
     try {
       await updateChunkMutation.mutateAsync({
@@ -111,7 +111,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
 
     if (
       files.some(
-        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED"
+        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED",
       )
     ) {
       interval = setInterval(() => {
