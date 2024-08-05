@@ -1,8 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
+
 import { Icons } from "@instill-ai/design-system";
+
+import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
 
 type SidebarProps = {
   activeTab: string;
