@@ -51,8 +51,7 @@ const FileChunks = ({
     ownerId: knowledgeBase.ownerName,
   });
 
-  // const isProcessing = file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED";
-  const isProcessing = false;
+  const isProcessing = file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED";
 
   const handleToggleExpand = () => {
     if (!isProcessing) {
