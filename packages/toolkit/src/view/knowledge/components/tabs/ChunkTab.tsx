@@ -47,7 +47,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector),
+    useShallow(selector)
   );
 
   const me = useAuthenticatedUser({
@@ -55,11 +55,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
     accessToken,
   });
 
-  const {
-    data: filesData,
-    isLoading,
-    refetch,
-  } = useListKnowledgeBaseFiles({
+  const knowledgeBaseFiles = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
@@ -68,10 +64,10 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
   });
 
   const files = React.useMemo(() => {
-    return (filesData?.files || []).filter(
-      (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED",
+    return (knowledgeBaseFiles.data?.files || []).filter(
+      (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED"
     );
-  }, [filesData]);
+  }, [knowledgeBaseFiles.isSuccess, knowledgeBaseFiles.data]);
 
   const updateChunkMutation = useUpdateChunk();
 
@@ -79,7 +75,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
     setExpandedFiles((prev) =>
       prev.includes(fileUid)
         ? prev.filter((id) => id !== fileUid)
-        : [...prev, fileUid],
+        : [...prev, fileUid]
     );
   };
 
@@ -97,7 +93,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
 
   const handleRetrievableToggle = async (
     chunkUid: string,
-    currentValue: boolean,
+    currentValue: boolean
   ) => {
     try {
       await updateChunkMutation.mutateAsync({
@@ -115,11 +111,11 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
 
     if (
       files.some(
-        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED",
+        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED"
       )
     ) {
       interval = setInterval(() => {
-        refetch();
+        knowledgeBaseFiles.refetch();
       }, 5000);
     }
 
@@ -128,7 +124,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
         clearInterval(interval);
       }
     };
-  }, [files, refetch]);
+  }, [files, knowledgeBaseFiles]);
 
   return (
     <div className="flex-col">
@@ -138,7 +134,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {isLoading ? (
+      {knowledgeBaseFiles.isLoading ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
