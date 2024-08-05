@@ -5,7 +5,7 @@ module.exports = {
   swcMinify: true,
   reactStrictMode: true,
   transpilePackages: [
-    '@mdxeditor/editor',
+    "@mdxeditor/editor",
     "@instill-ai/toolkit",
     "@instill-ai/design-system",
     "@instill-ai/design-tokens",
@@ -27,6 +27,16 @@ module.exports = {
       {
         source: "/logout",
         destination: "/api/auth/logout",
+        permanent: false,
+      },
+      {
+        source: "/:path*/models/:modelID((?!create$).*)",
+        destination: "/:path*/models/:modelID/playground",
+        permanent: false,
+      },
+      {
+        source: "/:path*/pipelines/:pipelineID",
+        destination: "/:path*/pipelines/:pipelineID/playground",
         permanent: false,
       },
     ];
