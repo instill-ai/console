@@ -1,9 +1,9 @@
 import React from "react";
 
-import { Button, Dialog, Icons } from "@instill-ai/design-system";
+import { Button, Dialog, Icons, Tag } from "@instill-ai/design-system";
 
 import { File } from "../../../lib/react-query-service/knowledge/types";
-import { truncateName } from "./lib/functions";
+import { convertFileType, truncateName } from "./lib/functions";
 import { StatusTag } from "./StatusTag";
 
 type FileTableRowProps = {
@@ -27,7 +27,6 @@ export const FileTableRow = ({
     setIsDeleteDialogOpen(false);
     handleDelete(item.fileUid);
   };
-
   return (
     <>
       <div className="grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line">
@@ -41,7 +40,9 @@ export const FileTableRow = ({
           <Icons.ArrowUpRight className="w-4 h-4 stroke-semantic-bg-secondary-alt-primary ml-0.5 flex-shrink-0" />
         </div>
         <div className="flex items-center justify-center">
-          <StatusTag status={item.type.replace("FILE_TYPE_", "")} />
+          <Tag size="sm" variant="lightNeutral">
+            {convertFileType(item.type)}
+          </Tag>
         </div>
         <div className="flex items-center justify-center">
           <StatusTag

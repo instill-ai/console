@@ -14,6 +14,7 @@ import {
   useListKnowledgeBaseFiles,
 } from "../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../lib/react-query-service/knowledge/types";
+import { env } from "../../server";
 import { Sidebar } from "./components";
 import {
   CREDIT_TIMEOUT,
@@ -56,6 +57,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector),
   );
+  const isLocalEnvironment = env("NEXT_PUBLIC_APP_ENV") === "CE";
 
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
   const { refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
@@ -169,6 +171,11 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     handleTabChange("upload");
   };
 
+  const handleDeselectKnowledgeBase = () => {
+    setSelectedKnowledgeBase(null);
+    setActiveTab("catalogs");
+  };
+
   React.useEffect(() => {
     setSelectedKnowledgeBase(null);
     setActiveTab("catalogs");
@@ -202,7 +209,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           undoDelete={undoDelete}
         />
       )}
-      {showCreditUsage && (
+      {showCreditUsage && !isLocalEnvironment && (
         <CreditUsageFileNotification
           handleCloseCreditUsageMessage={handleCloseCreditUsageMessage}
           fileName="test"
@@ -214,6 +221,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             activeTab={activeTab}
             onTabChange={handleTabChange}
             selectedKnowledgeBase={selectedKnowledgeBase}
+            onDeselectKnowledgeBase={handleDeselectKnowledgeBase}
           />
         </div>
         <div className={`sm:col-span-8 md:col-span-9 lg:col-span-10 pt-5`}>
