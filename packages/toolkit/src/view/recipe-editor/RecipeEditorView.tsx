@@ -1,8 +1,8 @@
 "use client";
 
-import { Resizable, Separator } from "@instill-ai/design-system";
+import { Button, Icons, Resizable, Separator } from "@instill-ai/design-system";
 
-import { AppTopbar, NamespaceSwitch, PageBase } from "../../components";
+import { PageBase } from "../../components";
 import {
   InstillStore,
   useInstillStore,
@@ -15,6 +15,7 @@ import { EditorProvider } from "./EditorContext";
 import { Flow } from "./flow";
 import { Input } from "./Input";
 import { Output } from "./Output";
+import { PipelineNamePopover } from "./PipelineNamePopover";
 import { RunButton } from "./RunButton";
 import { VscodeEditor } from "./VscodeEditor";
 
@@ -37,15 +38,29 @@ export const RecipeEditorView = () => {
 
   return (
     <PageBase>
-      <AppTopbar
-        namespaceSwitch={<NamespaceSwitch />}
-        topbarControllerChildren={
-          <div className="flex flex-row h-full items-center">
-            <RunButton />
-          </div>
-        }
-        disabledTopbarNav={true}
-      />
+      <div className="flex flex-row px-3 py-2 bg-semantic-bg-secondary">
+        <div className="flex flex-row gap-x-2">
+          <Button
+            size="sm"
+            className="!w-8 !h-8 items-center justify-center"
+            variant="tertiaryGrey"
+          >
+            <Icons.LayoutLeft className="w-4 h-4 stroke-semantic-fg-primary" />
+          </Button>
+          <Button
+            size="sm"
+            className="!w-8 !h-8 items-center justify-center"
+            variant="tertiaryGrey"
+          >
+            <Icons.ArrowLeft className="w-4 h-4 stroke-semantic-fg-primary" />
+          </Button>
+          <PipelineNamePopover sharing={pipeline.data?.sharing ?? null} />
+        </div>
+        <div className="flex flex-1 items-center justify-center">
+          <RunButton />
+        </div>
+        <div className="flex flex-row"></div>
+      </div>
       <PageBase.Container>
         <EditorProvider>
           <div className="flex h-[calc(100vh-var(--topbar-controller-height))] w-full flex-col">
