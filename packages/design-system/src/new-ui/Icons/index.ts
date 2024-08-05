@@ -76,6 +76,7 @@ import { InfoCircle } from "./InfoCircle";
 import { InfoSquare } from "./InfoSquare";
 import { IntersectSquare } from "./IntersectSquare";
 import { LayersTwo01 } from "./LayersTwo01";
+import { LayoutLeft } from "./LayoutLeft";
 import { Lightning01 } from "./Lightning01";
 import { Link01 } from "./Link01";
 import { Lock03 } from "./Lock03";
@@ -231,6 +232,7 @@ export const Icons = {
   Logout01,
   LayersTwo01,
   Lightning01,
+  LayoutLeft,
   Model,
   MultipleVideo,
   PauseCircle,
