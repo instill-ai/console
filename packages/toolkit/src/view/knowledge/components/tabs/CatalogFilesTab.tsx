@@ -1,7 +1,5 @@
 import React from "react";
-
 import { Separator, Skeleton } from "@instill-ai/design-system";
-
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -53,7 +51,7 @@ export const CatalogFilesTab = ({
   });
 
   const {
-    data: files,
+    data: filesData,
     isLoading,
     refetch,
   } = useListKnowledgeBaseFiles({
@@ -61,7 +59,10 @@ export const CatalogFilesTab = ({
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
     enabled: enabledQuery && Boolean(me.data?.id),
+    pageSize: 100,
   });
+
+  const files = React.useMemo(() => filesData?.files || [], [filesData]);
 
   const deleteKnowledgeBaseFile = useDeleteKnowledgeBaseFile();
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);

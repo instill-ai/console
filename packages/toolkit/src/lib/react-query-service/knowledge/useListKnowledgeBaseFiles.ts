@@ -1,92 +1,48 @@
 import { useQuery } from "@tanstack/react-query";
-import { Nullable } from "instill-sdk";
 
-import { createInstillAxiosClient, getQueryString } from "../../vdp-sdk/helper";
+import { Nullable } from "@instill-ai/toolkit";
+
+import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { File } from "./types";
-
-export async function listKnowledgeBaseFiles({
-  namespaceId,
-  knowledgeBaseId,
-  accessToken,
-  pageSize,
-  nextPageToken,
-}: {
-  namespaceId: string;
-  knowledgeBaseId: string;
-  accessToken: string;
-  pageSize: number;
-  nextPageToken: Nullable<string>;
-}) {
-  const client = createInstillAxiosClient(accessToken, true);
-  const queryString = getQueryString({
-    baseURL: `/namespaces/${namespaceId}/catalogs/${knowledgeBaseId}/files`,
-    pageSize,
-    nextPageToken,
-  });
-
-  try {
-    const files: File[] = [];
-
-    const { data } = await client.get<{
-      files: File[];
-      nextPageToken: Nullable<string>;
-    }>(queryString);
-
-    files.push(...data.files);
-
-    if (data.nextPageToken) {
-      const nextFiles = await listKnowledgeBaseFiles({
-        namespaceId,
-        knowledgeBaseId,
-        accessToken,
-        pageSize,
-        nextPageToken: data.nextPageToken,
-      });
-
-      files.push(...nextFiles);
-    }
-
-    return Promise.resolve(files);
-  } catch (error) {
-    return Promise.reject(error);
-  }
-}
 
 export function useListKnowledgeBaseFiles({
   namespaceId,
   knowledgeBaseId,
   accessToken,
   enabled,
+  pageSize = 100,
+  pageToken,
 }: {
   namespaceId: Nullable<string> | undefined;
   knowledgeBaseId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
+  pageSize?: number;
+  pageToken?: string;
 }) {
-  return useQuery<File[]>({
-    queryKey: ["knowledgeBaseFiles", namespaceId, knowledgeBaseId],
+  return useQuery<{ files: File[]; nextPageToken: string | null }>({
+    queryKey: ["knowledgeBaseFiles", namespaceId, knowledgeBaseId, pageToken],
     queryFn: async () => {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
-
       if (!namespaceId) {
         throw new Error("namespaceId not provided");
       }
-
       if (!knowledgeBaseId) {
         throw new Error("knowledgeBaseId not provided");
       }
-
-      const files = await listKnowledgeBaseFiles({
-        namespaceId,
-        knowledgeBaseId,
-        accessToken,
-        pageSize: 10,
-        nextPageToken: null,
+      const client = createInstillAxiosClient(accessToken, true);
+      const response = await client.get<{
+        files: File[];
+        nextPageToken: string | null;
+      }>(`/namespaces/${namespaceId}/catalogs/${knowledgeBaseId}/files`, {
+        params: {
+          pageSize,
+          pageToken,
+        },
       });
-
-      return Promise.resolve(files);
+      return response.data;
     },
     enabled,
   });

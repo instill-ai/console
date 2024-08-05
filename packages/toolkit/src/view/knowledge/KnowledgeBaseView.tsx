@@ -1,9 +1,9 @@
 import * as React from "react";
+import { Nullable } from "instill-sdk";
 
 import {
   GeneralAppPageProp,
   InstillStore,
-  Nullable,
   useInstillStore,
   useShallow,
 } from "../../lib";
@@ -77,7 +77,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
 
   React.useEffect(() => {
     if (filesData) {
-      const hasChunks = filesData.some((file) => file.totalChunks > 0);
+      const hasChunks = filesData.files.some((file) => file.totalChunks > 0);
       setIsProcessed(hasChunks);
     }
   }, [filesData]);

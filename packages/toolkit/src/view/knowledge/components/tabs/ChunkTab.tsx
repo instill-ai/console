@@ -1,11 +1,12 @@
+"use client";
+
 import React from "react";
-
+import { Nullable } from "@instill-ai/toolkit";
 import { Button, Separator, Skeleton } from "@instill-ai/design-system";
+import { EmptyView } from "@instill-ai/toolkit";
 
-import { EmptyView } from "../../../../components";
 import {
   InstillStore,
-  Nullable,
   useAuthenticatedUser,
   useInstillStore,
   useShallow,
@@ -33,16 +34,14 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
+export const ChunkTab: React.FC<ChunkTabProps> = ({ knowledgeBase, onGoToUpload }) => {
   const [expandedFiles, setExpandedFiles] = React.useState<string[]>([]);
-  const [selectedChunk, setSelectedChunk] =
-    React.useState<Nullable<Chunk>>(null);
-  const [selectedFile, setSelectedFile] =
-    React.useState<Nullable<KnowledgeFile>>(null);
+  const [selectedChunk, setSelectedChunk] = React.useState<Nullable<Chunk>>(null);
+  const [selectedFile, setSelectedFile] = React.useState<Nullable<KnowledgeFile>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector),
+    useShallow(selector)
   );
 
   const me = useAuthenticatedUser({
@@ -50,29 +49,31 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
     accessToken,
   });
 
-  const { data: allFiles, isLoading: isLoadingFiles } =
-    useListKnowledgeBaseFiles({
-      namespaceId: selectedNamespace,
-      knowledgeBaseId: knowledgeBase.catalogId,
-      accessToken,
-      enabled: enabledQuery && Boolean(me.data?.id),
-    });
-
-  const updateChunkMutation = useUpdateChunk();
+  const {
+    data: filesData,
+    isLoading,
+    refetch,
+  } = useListKnowledgeBaseFiles({
+    namespaceId: selectedNamespace,
+    knowledgeBaseId: knowledgeBase.catalogId,
+    accessToken,
+    enabled: enabledQuery && Boolean(me.data?.id),
+    pageSize: 100,
+  });
 
   const files = React.useMemo(() => {
-    return (
-      allFiles?.filter(
-        (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED",
-      ) || []
+    return (filesData?.files || []).filter(
+      (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED"
     );
-  }, [allFiles]);
+  }, [filesData]);
+
+  const updateChunkMutation = useUpdateChunk();
 
   const toggleFileExpansion = (fileUid: string) => {
     setExpandedFiles((prev) =>
       prev.includes(fileUid)
         ? prev.filter((id) => id !== fileUid)
-        : [...prev, fileUid],
+        : [...prev, fileUid]
     );
   };
 
@@ -90,7 +91,7 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
 
   const handleRetrievableToggle = async (
     chunkUid: string,
-    currentValue: boolean,
+    currentValue: boolean
   ) => {
     try {
       await updateChunkMutation.mutateAsync({
@@ -103,6 +104,26 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
     }
   };
 
+  React.useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+
+    if (
+      files.some(
+        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED"
+      )
+    ) {
+      interval = setInterval(() => {
+        refetch();
+      }, 5000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [files, refetch]);
+
   return (
     <div className="flex-col">
       <div className="flex items-center justify-between mb-5">
@@ -111,7 +132,7 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {isLoadingFiles ? (
+      {isLoading ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
@@ -133,7 +154,7 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
             </div>
           ))}
         </div>
-      ) : files && files.length > 0 ? (
+      ) : files.length > 0 ? (
         <div className="flex">
           <div className="w-full pr-4">
             {files.map((file: KnowledgeFile) => (
@@ -189,3 +210,5 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
     </div>
   );
 };
+
+export default ChunkTab;
