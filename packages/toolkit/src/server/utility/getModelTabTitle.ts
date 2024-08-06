@@ -1,3 +1,4 @@
+// New tabs require adding exceptions to redirect in next.config.js
 const ModelTabsDictionary = {
   playground: "Playground",
   api: "API",

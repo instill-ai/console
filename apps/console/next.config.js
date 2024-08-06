@@ -11,10 +11,6 @@ module.exports = {
     "@instill-ai/design-tokens",
   ],
   webpack: (config) => {
-    // if (isServer) {
-    //   require("./lib/generate-sitemap");
-    // }
-
     return config;
   },
   output: "standalone",
@@ -30,13 +26,23 @@ module.exports = {
         permanent: false,
       },
       {
-        source: "/:path*/models/:modelID((?!create$).*)",
-        destination: "/:path*/models/:modelID/playground",
+        source: "/:username/models/:modelID",
+        destination: "/:username/models/:modelID/playground",
         permanent: false,
       },
       {
-        source: "/:path*/pipelines/:pipelineID",
-        destination: "/:path*/pipelines/:pipelineID/playground",
+        source: "/:username/pipelines/:pipelineID",
+        destination: "/:username/pipelines/:pipelineID/playground",
+        permanent: false,
+      },
+      {
+        source: "/:username/models/:modelID/:slug(create|api|examples|predictions|versions|settings|readme)",
+        destination: "/:username/models/:modelID/:slug",
+        permanent: false,
+      },
+      {
+        source: "/:username/pipelines/:pipelineID/:slug(create|api|examples|predictions|versions|settings|readme)",
+        destination: "/:username/pipelines/:pipelineID/:slug",
         permanent: false,
       },
     ];
