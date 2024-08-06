@@ -39,12 +39,12 @@ export const CETopbarDropdown = () => {
       <DropdownMenu.Trigger className="!my-auto !h-10 !w-10">
         <NamespaceAvatarWithFallback.Root
           src={me.data.profile?.avatar ?? null}
-          className="my-auto h-8 w-8 cursor-pointer"
+          className="my-auto h-10 w-10 cursor-pointer"
           fallback={
             <NamespaceAvatarWithFallback.Fallback
               namespaceId={me.data.id}
               displayName={me.data.profile?.displayName ?? null}
-              className="h-8 w-8"
+              className="h-10 w-10"
             />
           }
         />
