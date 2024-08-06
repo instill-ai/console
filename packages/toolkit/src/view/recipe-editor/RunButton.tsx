@@ -15,15 +15,15 @@ export const RunButton = () => {
   return (
     <Button
       size="md"
-      variant="tertiaryColour"
+      variant="primary"
       form="variable-node-trigger-pipeline-form"
       className="!h-8 !items-center gap-x-2"
     >
       Run
       {isTriggeringPipeline ? (
-        <LoadingSpin className="!h-4 !w-4 !text-semantic-accent-default" />
+        <LoadingSpin className="!h-4 !w-4 !text-semantic-bg-primary" />
       ) : (
-        <Icons.PlayCircle className="h-4 w-4 stroke-semantic-accent-default" />
+        <Icons.Play className="h-4 w-4 !stroke-semantic-bg-primary" />
       )}
     </Button>
   );
