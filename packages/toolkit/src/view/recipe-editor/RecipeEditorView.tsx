@@ -3,6 +3,8 @@
 import { Button, Icons, Resizable, Separator } from "@instill-ai/design-system";
 
 import { PageBase } from "../../components";
+import { CETopbarDropdown } from "../../components/top-bar/CETopbarDropdown";
+import { CloudTopbarDropdown } from "../../components/top-bar/CloudTopbarDropdown";
 import {
   InstillStore,
   useInstillStore,
@@ -10,22 +12,29 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../lib";
+import { env } from "../../server";
 import { ComponentCmdk } from "./cmdk";
 import { EditorProvider } from "./EditorContext";
 import { Flow } from "./flow";
 import { Input } from "./Input";
 import { Output } from "./Output";
 import { PipelineNamePopover } from "./PipelineNamePopover";
+import { ReleasePopover } from "./ReleasePopover";
 import { RunButton } from "./RunButton";
+import { ShareDialogTrigger } from "./ShareDialogTrigger";
+import { ToolkitDialogTrigger } from "./ToolkitDialogTrigger";
 import { VscodeEditor } from "./VscodeEditor";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  updateOpenCmdk: store.updateOpenCmdk,
 });
 
 export const RecipeEditorView = () => {
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, updateOpenCmdk } = useInstillStore(
+    useShallow(selector),
+  );
   const routeInfo = useRouteInfo();
 
   const pipeline = useNamespacePipeline({
@@ -36,9 +45,11 @@ export const RecipeEditorView = () => {
     enabled: enabledQuery,
   });
 
+  const isCloud = env("NEXT_PUBLIC_APP_ENV") === "CLOUD";
+
   return (
     <PageBase>
-      <div className="flex flex-row px-3 py-2 bg-semantic-bg-secondary">
+      <div className="flex flex-row px-3 h-12 items-center bg-semantic-bg-secondary">
         <div className="flex flex-row gap-x-2">
           <Button
             size="sm"
@@ -59,7 +70,36 @@ export const RecipeEditorView = () => {
         <div className="flex flex-1 items-center justify-center">
           <RunButton />
         </div>
-        <div className="flex flex-row"></div>
+        <div className="flex flex-row gap-x-2">
+          <button
+            onClick={() => {
+              updateOpenCmdk(() => true);
+            }}
+            className="flex flex-row gap-x-2 h-8 rounded border border-semantic-bg-line bg-semantic-bg-primary items-center px-2"
+          >
+            <Icons.SearchSm className="w-4 h-4 stroke-semantic-fg-primary" />
+            <span
+              className="product-body-text-3-regular"
+              style={{ color: "#1D2433CC" }}
+            >
+              Search...
+            </span>
+            <div className="border flex border-semantic-bg-line rounded h-6 bg-semantic-bg-alt-primary px-1">
+              <span
+                className="product-body-text-3-regular my-auto"
+                style={{ color: "#1D2433CC" }}
+              >
+                ⌘K
+              </span>
+            </div>
+          </button>
+          <ToolkitDialogTrigger />
+          <ShareDialogTrigger />
+          <ReleasePopover />
+        </div>
+        <div className="ml-4 flex">
+          {isCloud ? <CloudTopbarDropdown /> : <CETopbarDropdown />}
+        </div>
       </div>
       <PageBase.Container>
         <EditorProvider>
