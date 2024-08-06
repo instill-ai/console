@@ -343,7 +343,7 @@ export const UploadExploreTab = ({
                             browse computer
                           </label>
                           <div className="">Support TXT, MARKDOWN, PDF</div>
-                          <div className="">Max 15MB each</div>
+                          <div className="">Max 150MB each</div>
                         </div>
                       </div>
                     </Form.Label>
