@@ -3,7 +3,6 @@ import * as React from "react";
 import {
   Button,
   Dialog,
-  DropdownMenu,
   Icons,
   Separator,
   Tooltip,
@@ -20,7 +19,7 @@ import {
   useListKnowledgeBaseFiles,
 } from "../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
-import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
+import { EditKnowledgeDialog, CatalogCardMenu } from "./";
 import { truncateName } from "./lib/functions";
 
 type EditKnowledgeDialogData = {
@@ -29,72 +28,7 @@ type EditKnowledgeDialogData = {
   tags?: string[];
 };
 
-type MenuProps = {
-  onDelete: (e: React.MouseEvent) => void;
-  onEdit: (e: React.MouseEvent) => void;
-  onDuplicate: (e: React.MouseEvent) => void;
-  disabled: boolean;
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-};
 
-const Menu = ({
-  onDelete,
-  onEdit,
-  onDuplicate,
-  disabled,
-  isOpen,
-  setIsOpen,
-}: MenuProps) => {
-  return (
-    <React.Fragment>
-      <div className="flex justify-center z-10">
-        <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
-          <DropdownMenu.Trigger asChild>
-            <Button className="" variant="tertiaryGrey">
-              <Icons.DotsHorizontal className="h-4 w-4 stroke-semantic-fg-secondary" />
-            </Button>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content
-            align="end"
-            className="w-[195px] rounded-md !p-0"
-          >
-            <DropdownMenu.Item
-              onClick={onEdit}
-              className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
-            >
-              <Icons.Edit03 className="mr-2 h-4 w-4 stroke-semantic-fg-secondary" />
-              Edit info
-            </DropdownMenu.Item>
-            <DropdownMenu.Item
-              onClick={onDuplicate}
-              className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
-              disabled={disabled}
-            >
-              <Icons.Copy07 className="mr-2 h-4 w-4 stroke-semantic-fg-secondary" />
-              Duplicate
-            </DropdownMenu.Item>
-            {/* <DropdownMenu.Item
-              onClick={onDuplicate}
-              className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
-            >
-              <Icons.DownloadCloud01 className="mr-2 h-4 w-4 stroke-semantic-fg-secondary" />
-              Export
-            </DropdownMenu.Item> */}
-            <Separator orientation="horizontal" />
-            <DropdownMenu.Item
-              onClick={onDelete}
-              className="!px-4 !py-2.5 !text-semantic-error-default product-body-text-4-medium"
-            >
-              <Icons.Trash01 className="mr-2 h-4 w-4 stroke-semantic-error-default" />
-              Delete
-            </DropdownMenu.Item>
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
-      </div>
-    </React.Fragment>
-  );
-};
 type CreateKnowledgeBaseCardProps = {
   knowledgeBase: KnowledgeBase;
   onCardClick: () => void;
@@ -169,7 +103,8 @@ Splitting pipeline ID: ${knowledgeBase.splittingPipelines?.[0] || "N/A"}
 Embedding pipeline ID: ${knowledgeBase.embeddingPipelines?.[0] || "N/A"}
 Files #: ${knowledgeBase.totalFiles || "N/A"}
 Text Chunks #: ${totalChunks}
-    `.trim();
+Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
+`.trim();
   }, [isHovered, knowledgeBase, totalChunks]);
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -229,7 +164,7 @@ Text Chunks #: ${totalChunks}
                 className="flex items-end justify-end"
                 onClick={(e) => e.stopPropagation()}
               >
-                <Menu
+                <CatalogCardMenu
                   onDelete={handleDelete}
                   onEdit={handleEdit}
                   onDuplicate={handleDuplicate}
