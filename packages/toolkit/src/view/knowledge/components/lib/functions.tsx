@@ -23,8 +23,16 @@ export const getFileIcon = (fileType: string) => {
       return <Icons.TXTFile className="h-5 w-5" />;
     case "FILE_TYPE_PDF":
       return <Icons.PDFFile className="h-5 w-5" />;
+    case "FILE_TYPE_WORD":
+      return <Icons.DOCFile className="h-5 w-5" />;
+    case "FILE_TYPE_DOCX":
+      return <Icons.DOCXFile className="h-5 w-5" />;
+    case "FILE_TYPE_POWERPOINT":
+      return <Icons.PPTFile className="h-5 w-5" />;
+    case "FILE_TYPE_HTML":
+      return <Icons.HTMLFile className="h-5 w-5" />;
     default:
-      return <Icons.Check className="h-5 w-5" />;
+      return <Icons.File05 className="h-5 w-5" />;
   }
 };
 
