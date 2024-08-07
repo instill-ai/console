@@ -103,3 +103,17 @@ export const getPlanStorageLimit = (plan: string): number => {
       return 50 * 1024 * 1024; // Default to 50MB
   }
 };
+
+export const formatFileSize = (bytes: number | undefined): string => {
+  if (bytes === undefined || isNaN(bytes)) return "N/A";
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+  if (bytes === 0) return "0 Bytes";
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  if (i === 0) return bytes + " " + sizes[i];
+  return (bytes / Math.pow(1024, i)).toFixed(2) + " " + sizes[i];
+};
+
+export const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  return date.toLocaleString();
+};
