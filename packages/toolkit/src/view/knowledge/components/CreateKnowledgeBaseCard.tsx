@@ -1,9 +1,6 @@
 import * as React from "react";
 
 import {
-  Button,
-  Dialog,
-  Icons,
   Separator,
   Tooltip,
 } from "@instill-ai/design-system";
@@ -20,14 +17,13 @@ import {
 } from "../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
 import { EditKnowledgeDialog, CatalogCardMenu } from "./";
-import { truncateName } from "./lib/functions";
+import { GeneralDeleteResourceDialog } from "../../../components/GeneralDeleteResourceDialog";
 
 type EditKnowledgeDialogData = {
   name: string;
   description?: string;
   tags?: string[];
 };
-
 
 type CreateKnowledgeBaseCardProps = {
   knowledgeBase: KnowledgeBase;
@@ -37,9 +33,10 @@ type CreateKnowledgeBaseCardProps = {
     kbId: string,
   ) => Promise<void>;
   onCloneKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
-  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
+  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
   disabled?: boolean;
 };
+
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
@@ -112,11 +109,6 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
     setDeleteDialogIsOpen(true);
   };
 
-  const confirmDelete = () => {
-    setDeleteDialogIsOpen(false);
-    onDeleteKnowledgeBase(knowledgeBase);
-  };
-
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     setEditDialogIsOpen(true);
@@ -131,6 +123,7 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
     await onUpdateKnowledgeBase(data, knowledgeBase.catalogId);
     setEditDialogIsOpen(false);
   };
+
   const handleMouseMove = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setMousePosition({
@@ -191,44 +184,18 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
           </Tooltip.Portal>
         </Tooltip.Root>
       </Tooltip.Provider>
-      <Dialog.Root
+      <GeneralDeleteResourceDialog
+        resourceID={knowledgeBase.name}
+        title={`Delete ${knowledgeBase.name}`}
+        description="This action cannot be undone. This will permanently delete the catalog and all its associated data."
         open={deleteDialogIsOpen}
         onOpenChange={setDeleteDialogIsOpen}
-      >
-        <Dialog.Content className="!w-[350px] rounded-sm !p-0">
-          <div className="flex flex-col items-center justify-start gap-6 rounded-sm border border-b-semantic-bg-secondary p-6">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-semantic-warning-bg p-3">
-              <Icons.AlertTriangle className="h-6 w-6 stroke-semantic-warning-on-bg" />
-            </div>
-            <div className="flex flex-col items-start justify-start gap-6 self-stretch">
-              <div className="flex flex-col items-center justify-center gap-1">
-                <div className="product-headings-heading-3">
-                  Delete {truncateName(knowledgeBase.name)}
-                </div>
-                <div className="text-center product-body-text-2-regular">
-                  Are you sure you want to delete this catalog?
-                </div>
-              </div>
-              <div className="flex w-full gap-2">
-                <Button
-                  variant="secondaryGrey"
-                  onClick={() => setDeleteDialogIsOpen(false)}
-                  className="w-full"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={confirmDelete}
-                  className="w-full"
-                >
-                  Delete
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Dialog.Content>
-      </Dialog.Root>
+        handleDeleteResource={async () => {
+          await onDeleteKnowledgeBase(knowledgeBase);
+          setDeleteDialogIsOpen(false);
+        }}
+        trigger={null}
+      />
       <EditKnowledgeDialog
         isOpen={editDialogIsOpen}
         onClose={() => setEditDialogIsOpen(false)}

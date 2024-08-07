@@ -125,3 +125,17 @@ export const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   return date.toLocaleString();
 };
+
+export const getKnowledgeBaseLimit = (plan: string) => {
+  switch (plan) {
+    case "PLAN_FREEMIUM":
+      return 10;
+    case "PLAN_TEAM":
+      return 300;
+    case "PLAN_TEAM_PRO":
+    case "PLAN_ENTERPRISE":
+      return 500;
+    default:
+      return 10;
+  }
+};
