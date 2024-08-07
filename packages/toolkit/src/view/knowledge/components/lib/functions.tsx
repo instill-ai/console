@@ -28,9 +28,28 @@ export const getFileIcon = (fileType: string) => {
   }
 };
 
-export const truncateName = (name: string, maxLength: number = 20) => {
-  if (name.length <= maxLength) return name;
-  return `${name.slice(0, maxLength)}...`;
+export const getFileType = (file: File) => {
+  const extension = file.name.split(".").pop()?.toLowerCase();
+  switch (extension) {
+    case "txt":
+      return "FILE_TYPE_TEXT";
+    case "md":
+    case "markdown":
+      return "FILE_TYPE_MARKDOWN";
+    case "pdf":
+      return "FILE_TYPE_PDF";
+    case "docx":
+    case "doc":
+      return "FILE_TYPE_WORD";
+    case "pptx":
+    case "ppt":
+      return "FILE_TYPE_POWERPOINT";
+    case "html":
+    case "htm":
+      return "FILE_TYPE_HTML";
+    default:
+      return "FILE_TYPE_UNSPECIFIED";
+  }
 };
 
 export const convertFileType = (type: string): string => {
@@ -41,7 +60,46 @@ export const convertFileType = (type: string): string => {
       return "md";
     case "FILE_TYPE_PDF":
       return "pdf";
+    case "FILE_TYPE_WORD":
+      return "docx";
+    case "FILE_TYPE_POWERPOINT":
+      return "pptx";
+    case "FILE_TYPE_HTML":
+      return "html";
     default:
       return type.replace("FILE_TYPE_", "").toLowerCase();
+  }
+};
+
+export const truncateName = (name: string, maxLength: number = 20) => {
+  if (name.length <= maxLength) return name;
+  return `${name.slice(0, maxLength)}...`;
+};
+
+export const getPlanMaxFileSize = (plan: string): number => {
+  switch (plan) {
+    case "PLAN_FREEMIUM":
+      return 15 * 1024 * 1024; // 15MB
+    case "PLAN_TEAM":
+    case "PLAN_TEAM_PRO":
+    case "PLAN_ENTERPRISE":
+      return 150 * 1024 * 1024; // 150MB
+    default:
+      return 15 * 1024 * 1024; // Default to 15MB
+  }
+};
+
+export const getPlanStorageLimit = (plan: string): number => {
+  switch (plan) {
+    case "PLAN_FREEMIUM":
+      return 50 * 1024 * 1024; // 50MB
+    case "PLAN_TEAM_PRO":
+      return 500 * 1024 * 1024; // 500MB
+    case "PLAN_TEAM":
+      return 2 * 1024 * 1024 * 1024; // 2GB
+    case "PLAN_ENTERPRISE":
+      return Infinity; // Unlimited
+    default:
+      return 50 * 1024 * 1024; // Default to 50MB
   }
 };

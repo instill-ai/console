@@ -14,7 +14,7 @@ import {
   Separator,
 } from "@instill-ai/design-system";
 
-import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
+import { InstillStore, useAuthenticatedUserSubscription, useInstillStore, useShallow } from "../../../../lib";
 import {
   useListKnowledgeBaseFiles,
   useProcessKnowledgeBaseFiles,
@@ -24,14 +24,15 @@ import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/typ
 import {
   FILE_ERROR_TIMEOUT,
   MAX_FILE_NAME_LENGTH,
-  MAX_FILE_SIZE,
 } from "../lib/static";
 import {
   DuplicateFileNotification,
   FileSizeNotification,
   FileTooLongNotification,
   IncorrectFormatFileNotification,
+  InsufficientStorageNotification,
 } from "../notifications";
+import { getFileType, getPlanMaxFileSize, getPlanStorageLimit } from "../lib/functions";
 
 // Type guard for File object
 const isFile = (value: unknown): value is File => {
@@ -94,33 +95,34 @@ export const UploadExploreTab = ({
     },
   });
 
-  const [showFileTooLargeMessage, setShowFileTooLargeMessage] =
-    React.useState(false);
-  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] =
-    React.useState(false);
-  const [showDuplicateFileMessage, setShowDuplicateFileMessage] =
-    React.useState(false);
+  const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
+  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] = React.useState(false);
+  const [showDuplicateFileMessage, setShowDuplicateFileMessage] = React.useState(false);
+  const [showFileTooLongMessage, setShowFileTooLongMessage] = React.useState(false);
+  const [showInsufficientStorageMessage, setShowInsufficientStorageMessage] = React.useState(false);
   const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
-  const [showFileTooLongMessage, setShowFileTooLongMessage] =
-    React.useState(false);
   const [tooLongFileName, setTooLongFileName] = React.useState<string>("");
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
   const [processingProgress, setProcessingProgress] = React.useState(0);
-  const [processingFileIndex, setProcessingFileIndex] =
-    React.useState<Nullable<number>>(null);
+  const [processingFileIndex, setProcessingFileIndex] = React.useState<Nullable<number>>(null);
 
   const fileTooLargeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
-  const unsupportedFileTypeTimeoutRef =
-    React.useRef<Nullable<NodeJS.Timeout>>(null);
+  const unsupportedFileTypeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
   const duplicateFileTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
+  const insufficientStorageTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
 
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
-  const { accessToken, selectedNamespace } = useInstillStore(
+  const { accessToken, selectedNamespace, enabledQuery } = useInstillStore(
     useShallow(selector),
   );
+
+  const sub = useAuthenticatedUserSubscription({
+    enabled: enabledQuery,
+    accessToken,
+  });
 
   const { data: existingFiles } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
@@ -129,26 +131,28 @@ export const UploadExploreTab = ({
     enabled: Boolean(selectedNamespace),
   });
 
-  const getFileType = (file: File) => {
-    const extension = file.name.split(".").pop()?.toLowerCase();
-    switch (extension) {
-      case "txt":
-        return "FILE_TYPE_TEXT";
-      case "md":
-        return "FILE_TYPE_MARKDOWN";
-      case "pdf":
-        return "FILE_TYPE_PDF";
-      default:
-        return "FILE_TYPE_UNSPECIFIED";
-    }
-  };
+  const planMaxFileSize = getPlanMaxFileSize(sub.data?.plan || "PLAN_FREEMIUM");
+  const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREEMIUM");
+
+  // Mock data for used storage space NEED TO BE REPLACED WITH ACTUAL API CALL WHEN AVAILABLE
+  const usedStorageSpace = 10 * 1024 * 1024; // 10MB for example
+  const remainingStorageSpace = planStorageLimit - usedStorageSpace;
 
   const handleFileUpload = async (file: File) => {
-    if (file.size > MAX_FILE_SIZE) {
+    if (file.size > planMaxFileSize) {
       setIncorrectFileName(file.name);
       setShowFileTooLargeMessage(true);
       fileTooLargeTimeoutRef.current = setTimeout(() => {
         setShowFileTooLargeMessage(false);
+      }, FILE_ERROR_TIMEOUT);
+      return;
+    }
+
+    if (file.size > remainingStorageSpace) {
+      setIncorrectFileName(file.name);
+      setShowInsufficientStorageMessage(true);
+      insufficientStorageTimeoutRef.current = setTimeout(() => {
+        setShowInsufficientStorageMessage(false);
       }, FILE_ERROR_TIMEOUT);
       return;
     }
@@ -301,11 +305,10 @@ export const UploadExploreTab = ({
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${
-                      isDragging
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
                         ? "border-semantic-accent-default"
                         : "border-semantic-bg-line"
-                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
+                      } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
                       setIsDragging(true);
@@ -342,8 +345,8 @@ export const UploadExploreTab = ({
                           >
                             browse computer
                           </label>
-                          <div className="">Support TXT, MARKDOWN, PDF</div>
-                          <div className="">Max 150MB each</div>
+                          <div className="">Support TXT, MARKDOWN, PDF, DOCX, DOC, PPTX, PPT, HTML</div>
+                          <div className="">Max {planMaxFileSize / (1024 * 1024)}MB each</div>
                         </div>
                       </div>
                     </Form.Label>
@@ -351,7 +354,7 @@ export const UploadExploreTab = ({
                       <Input.Core
                         id="upload-file-field"
                         type="file"
-                        accept=".txt,.md,.pdf"
+                        accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html"
                         multiple
                         value={""}
                         onChange={async (e) => {
@@ -422,6 +425,14 @@ export const UploadExploreTab = ({
             setShowFileTooLongMessage(false)
           }
           fileName={tooLongFileName}
+        />
+      )}
+      {showInsufficientStorageMessage && (
+        <InsufficientStorageNotification
+          handleCloseInsufficientStorageMessage={() =>
+            setShowInsufficientStorageMessage(false)
+          }
+          fileName={incorrectFileName}
         />
       )}
       <div className="flex flex-col items-end">
