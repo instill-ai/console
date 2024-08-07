@@ -3,7 +3,7 @@ import * as z from "zod";
 
 import { Separator, Skeleton } from "@instill-ai/design-system";
 
-import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
+import { InstillStore, useAuthenticatedUserSubscription, useInstillStore, useShallow } from "../../../../lib";
 import {
   useCreateKnowledgeBase,
   useGetKnowledgeBases,
@@ -17,12 +17,13 @@ import KnowledgeSearchSort, {
   SortAnchor,
   SortOrder,
 } from "../KnowledgeSearchSort";
+import { getKnowledgeBaseLimit } from "../lib/functions";
 
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
   accessToken: string | null;
-  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
-  pendingDeletions: string[];
+  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
+  knowledgeBases: KnowledgeBase[];
 };
 
 type EditKnowledgeDialogData = {
@@ -48,38 +49,35 @@ export const KnowledgeBaseTab = ({
   onKnowledgeBaseSelect,
   accessToken,
   onDeleteKnowledgeBase,
-  pendingDeletions,
+  knowledgeBases,
 }: KnowledgeBaseTabProps) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
-  const [selectedSortOrder, setSelectedSortOrder] =
-    React.useState<SortOrder>("desc");
-  const [selectedSortAnchor, setSelectedSortAnchor] =
-    React.useState<SortAnchor>("createTime");
+  const [selectedSortOrder, setSelectedSortOrder] = React.useState<SortOrder>("desc");
+  const [selectedSortAnchor, setSelectedSortAnchor] = React.useState<SortAnchor>("createTime");
 
-  const { enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector),
-  );
+  const { enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
 
-  const {
-    data: knowledgeBases,
-    isLoading,
-    refetch,
-  } = useGetKnowledgeBases({
+  const createKnowledgeBase = useCreateKnowledgeBase();
+  const updateKnowledgeBase = useUpdateKnowledgeBase();
+  const { refetch: refetchKnowledgeBases, isLoading } = useGetKnowledgeBases({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
   });
 
-  const createKnowledgeBase = useCreateKnowledgeBase();
-  const updateKnowledgeBase = useUpdateKnowledgeBase();
+  const subscription = useAuthenticatedUserSubscription({
+    enabled: enabledQuery,
+    accessToken: accessToken || "",
+  });
 
-  // Refetch when the namespace changes
+  const knowledgeBaseLimit = getKnowledgeBaseLimit(subscription?.data?.plan || "PLAN_FREEMIUM");
+
   React.useEffect(() => {
     if (selectedNamespace) {
-      refetch();
+      refetchKnowledgeBases();
     }
-  }, [selectedNamespace, refetch]);
+  }, [selectedNamespace, refetchKnowledgeBases]);
 
   const handleCreateKnowledgeSubmit = async (
     data: z.infer<typeof CreateKnowledgeFormSchema>,
@@ -97,7 +95,7 @@ export const KnowledgeBaseTab = ({
         ownerId: data.namespaceId,
         accessToken,
       });
-      refetch();
+      refetchKnowledgeBases();
       setIsCreateDialogOpen(false);
     } catch (error) {
       console.error("Error creating catalog:", error);
@@ -121,7 +119,7 @@ export const KnowledgeBaseTab = ({
         },
         accessToken,
       });
-      refetch();
+      refetchKnowledgeBases();
     } catch (error) {
       console.error("Error updating catalog:", error);
     }
@@ -145,22 +143,18 @@ export const KnowledgeBaseTab = ({
         ownerId: selectedNamespace,
         accessToken,
       });
-      refetch();
+      refetchKnowledgeBases();
     } catch (error) {
       console.error("Error cloning catalog:", error);
     }
   };
 
   const filteredAndSortedKnowledgeBases = React.useMemo(() => {
-    if (!knowledgeBases) return [];
-
-    const filtered = knowledgeBases
-      .filter((kb) => !pendingDeletions.includes(kb.kbId))
-      .filter(
-        (kb) =>
-          kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          kb.description.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
+    const filtered = knowledgeBases.filter(
+      (kb) =>
+        kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        kb.description.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
 
     filtered.sort((a, b) => {
       let aValue, bValue;
@@ -190,15 +184,9 @@ export const KnowledgeBaseTab = ({
     });
 
     return filtered;
-  }, [
-    knowledgeBases,
-    searchTerm,
-    selectedSortAnchor,
-    selectedSortOrder,
-    pendingDeletions,
-  ]);
+  }, [knowledgeBases, searchTerm, selectedSortAnchor, selectedSortOrder]);
 
-  const hasReachedLimit = (filteredAndSortedKnowledgeBases.length ?? 0) >= 3;
+  const hasReachedLimit = filteredAndSortedKnowledgeBases.length >= knowledgeBaseLimit;
 
   return (
     <div className="flex flex-col">
