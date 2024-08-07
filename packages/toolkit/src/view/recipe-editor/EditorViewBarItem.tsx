@@ -47,11 +47,17 @@ export const EditorViewBarItem = ({
   }
 
   return (
-    <div {...attributes} ref={setNodeRef} style={style} key={id}>
+    <div
+      {...attributes}
+      className="bg-semantic-bg-alt-primary"
+      ref={setNodeRef}
+      style={style}
+      key={id}
+    >
       <button
         {...listeners}
         ref={setActivatorNodeRef}
-        className="flex first:rounded-tl border-r border-semantic-bg-line flex-row gap-x-2 px-2 h-8 items-center bg-semantic-bg-alt-primary"
+        className="flex first:rounded-tl border-r border-semantic-bg-line flex-row gap-x-2 px-2 h-8 items-center"
       >
         {icon}
         <p className="text-[13px] font-sans text-semantic-fg-primary">

@@ -6,6 +6,7 @@ import { Nullable } from "instill-sdk";
 
 import {
   Button,
+  cn,
   Icons,
   ImperativePanelHandle,
   Resizable,
@@ -24,9 +25,8 @@ import {
 import { env } from "../../server";
 import { ComponentCmdk } from "./cmdk";
 import { EditorProvider } from "./EditorContext";
-import { EditorViewBarItem } from "./EditorViewBarItem";
+import { EditorViewSectionBar } from "./EditorViewSectionBar";
 import { Flow } from "./flow";
-import { HorizontalSortableWrapper } from "./HorizontalSortableWrapper";
 import { Input } from "./Input";
 import { Output } from "./Output";
 import { PipelineNamePopover } from "./PipelineNamePopover";
@@ -54,7 +54,7 @@ export const RecipeEditorView = () => {
   } = useInstillStore(useShallow(selector));
   const routeInfo = useRouteInfo();
   const [currentExpandView, setCurrentExpandView] =
-    React.useState<Nullable<"left" | "topRight" | "bottomRight">>("left");
+    React.useState<Nullable<"left" | "topRight" | "bottomRight">>(null);
 
   const leftPanelRef = React.useRef<ImperativePanelHandle>(null);
   const rightPanelRef = React.useRef<ImperativePanelHandle>(null);
@@ -74,6 +74,38 @@ export const RecipeEditorView = () => {
       return;
     }
 
+    const inputView = pipeline.data?.recipe.variable ? (
+      <Input
+        pipelineName={pipeline.data?.name ?? null}
+        fields={pipeline.data?.recipe.variable ?? null}
+      />
+    ) : (
+      <div className="flex w-full relative h-full bg-semantic-bg-alt-primary">
+        <img
+          src="/images/empty-placeholder.svg"
+          alt="Grid"
+          className="min-w-full min-h-full"
+        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="flex flex-col">
+            <div className="flex mx-auto items-center mb-5 justify-center rounded-sm border w-12 h-12 bg-semantic-fg-on-default border-semantic-bg-line shadow-[0_0_2_0_rgba(0,0,0,0.08)]">
+              <Icons.AlertCircle className="h-6 w-6 stroke-semantic-fg-primary" />
+            </div>
+
+            <div className="flex flex-col gap-y-2 max-w-[512px]">
+              <p className="font-semibold text-xl text-semantic-fg-primary text-center">
+                Pipeline is not runnable
+              </p>
+              <p className="text-semantic-fg-secondary text-center">
+                This pipeline cannot be run. Please check the configuration and
+                ensure all necessary components are set up correctly.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
     updateEditorMultiScreenModel(() => ({
       topRight: {
         views: [
@@ -89,12 +121,6 @@ export const RecipeEditorView = () => {
               />
             ),
           },
-          {
-            id: "main-input",
-            title: "Input",
-            type: "input",
-            view: null,
-          },
         ],
         currentViewId: "main-preview-flow",
       },
@@ -105,12 +131,7 @@ export const RecipeEditorView = () => {
             id: "main-input",
             title: "Input",
             type: "input",
-            view: (
-              <Input
-                pipelineName={pipeline.data?.name ?? null}
-                fields={pipeline.data?.recipe.variable ?? null}
-              />
-            ),
+            view: inputView,
           },
           {
             id: "main-output",
@@ -195,9 +216,29 @@ export const RecipeEditorView = () => {
                 ref={leftPanelRef}
                 defaultSize={50}
               >
-                <VscodeEditor />
+                <div className="flex flex-col w-full h-full">
+                  <div className="flex flex-row justify-between border-b border-semantic-bg-line rounded-tr bg-semantic-bg-base-bg h-8 items-center">
+                    <div className="flex flex-row px-1.5 h-full box-border items-center border-t border-semantic-accent-default gap-x-1.5 bg-semantic-bg-alt-primary">
+                      <Icons.Pipeline className="w-4 h-4 stroke-semantic-accent-default" />
+                      <span className="text-[13px] font-sans text-semantic-fg-primary">
+                        {pipeline.data?.id ?? null}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex h-7 items-center flex-row-reverse bg-semantic-bg-alt-primary border-b border-semantic-bg-line">
+                    <button className="flex flex-row items-center gap-x-1 px-1">
+                      <Icons.AlignLeft className="w-3 h-3 stroke-semantic-fg-secondary" />
+                      <span className="text-xs font-sans text-semantic-fg-secondary">
+                        Format
+                      </span>
+                    </button>
+                  </div>
+                  <VscodeEditor />
+                </div>
               </Resizable.Panel>
-              <Resizable.Handle className="mr-3" />
+              <Resizable.Handle
+                className={cn("opacity-0", currentExpandView ? "" : "mr-3")}
+              />
               <Resizable.Panel
                 id="right-panel"
                 ref={rightPanelRef}
@@ -208,86 +249,61 @@ export const RecipeEditorView = () => {
                     id="top-right-panel"
                     ref={topRightPanelRef}
                     defaultSize={50}
-                    minSize={25}
                   >
                     <div className="flex flex-col w-full h-full">
-                      <div className="flex flex-row rounded pr-1 bg-semantic-bg-base-bg border-b border-semantic-bg-line">
-                        {editorMultiScreenModel.topRight ? (
-                          <HorizontalSortableWrapper
-                            items={editorMultiScreenModel.topRight.views}
-                            onDragEnd={(event) => {
-                              const { active, over } = event;
+                      <EditorViewSectionBar
+                        views={editorMultiScreenModel.topRight?.views ?? []}
+                        isExpanded={currentExpandView === "topRight"}
+                        onToggleExpand={() => {
+                          if (currentExpandView === "topRight") {
+                            leftPanelRef.current?.resize(50);
+                            bottomRightPanelRef.current?.resize(50);
+                            setCurrentExpandView(null);
+                          } else {
+                            leftPanelRef.current?.resize(0);
+                            bottomRightPanelRef.current?.resize(0);
+                            setCurrentExpandView("topRight");
+                          }
+                        }}
+                        onDragEnd={(event) => {
+                          const { active, over } = event;
 
-                              if (!editorMultiScreenModel.topRight) {
-                                return;
-                              }
+                          if (!editorMultiScreenModel.topRight) {
+                            return;
+                          }
 
-                              const newViews =
-                                editorMultiScreenModel.topRight.views;
+                          const newViews =
+                            editorMultiScreenModel.topRight.views;
 
-                              if (over && active.id !== over.id) {
-                                const oldIndex =
-                                  editorMultiScreenModel.topRight.views.findIndex(
-                                    (e) => e.id === active.id,
-                                  );
-                                const newIndex =
-                                  editorMultiScreenModel.topRight.views.findIndex(
-                                    (e) => e.id === over.id,
-                                  );
+                          if (over && active.id !== over.id) {
+                            const oldIndex =
+                              editorMultiScreenModel.topRight.views.findIndex(
+                                (e) => e.id === active.id,
+                              );
+                            const newIndex =
+                              editorMultiScreenModel.topRight.views.findIndex(
+                                (e) => e.id === over.id,
+                              );
 
-                                const movedNewViews = arrayMove(
-                                  newViews,
-                                  oldIndex,
-                                  newIndex,
-                                );
+                            const movedNewViews = arrayMove(
+                              newViews,
+                              oldIndex,
+                              newIndex,
+                            );
 
-                                if (movedNewViews.length > 0) {
-                                  updateEditorMultiScreenModel((prev) => ({
-                                    ...prev,
-                                    topRight: {
-                                      views: movedNewViews,
-                                      currentViewId:
-                                        prev.topRight?.currentViewId ?? null,
-                                    },
-                                  }));
-                                }
-                              }
-                            }}
-                          >
-                            <div className="flex flex-1 flex-row w-full">
-                              {editorMultiScreenModel.topRight.views.map(
-                                (view) => (
-                                  <EditorViewBarItem
-                                    key={view.id}
-                                    id={view.id}
-                                    title={view.title}
-                                    type={view.type}
-                                  />
-                                ),
-                              )}
-                            </div>
-                          </HorizontalSortableWrapper>
-                        ) : null}
-                        <button
-                          onClick={() => {
-                            if (currentExpandView === "topRight") {
-                              leftPanelRef.current?.resize(50);
-                              bottomRightPanelRef.current?.resize(50);
-                              setCurrentExpandView(null);
-                            } else {
-                              leftPanelRef.current?.resize(0);
-                              bottomRightPanelRef.current?.resize(0);
-                              setCurrentExpandView("topRight");
+                            if (movedNewViews.length > 0) {
+                              updateEditorMultiScreenModel((prev) => ({
+                                ...prev,
+                                topRight: {
+                                  views: movedNewViews,
+                                  currentViewId:
+                                    prev.topRight?.currentViewId ?? null,
+                                },
+                              }));
                             }
-                          }}
-                        >
-                          {currentExpandView === "topRight" ? (
-                            <Icons.Minimize01 className="w-3 h-3 stroke-semantic-fg-primary" />
-                          ) : (
-                            <Icons.Expand01 className="w-3 h-3 stroke-semantic-fg-primary" />
-                          )}
-                        </button>
-                      </div>
+                          }
+                        }}
+                      />
                       {editorMultiScreenModel.topRight
                         ? editorMultiScreenModel.topRight.views.find(
                             (view) =>
@@ -297,12 +313,75 @@ export const RecipeEditorView = () => {
                         : null}
                     </div>
                   </Resizable.Panel>
-                  <Resizable.Handle className="mb-2" />
+                  <Resizable.Handle className="mb-2 opacity-0" />
                   <Resizable.Panel
                     id="bottom-right-panel"
                     ref={bottomRightPanelRef}
                     defaultSize={50}
-                  ></Resizable.Panel>
+                  >
+                    <div className="flex flex-col w-full h-full">
+                      <EditorViewSectionBar
+                        views={editorMultiScreenModel.bottomRight?.views ?? []}
+                        isExpanded={currentExpandView === "bottomRight"}
+                        onToggleExpand={() => {
+                          if (currentExpandView === "bottomRight") {
+                            leftPanelRef.current?.resize(50);
+                            topRightPanelRef.current?.resize(50);
+                            setCurrentExpandView(null);
+                          } else {
+                            leftPanelRef.current?.resize(0);
+                            topRightPanelRef.current?.resize(0);
+                            setCurrentExpandView("bottomRight");
+                          }
+                        }}
+                        onDragEnd={(event) => {
+                          const { active, over } = event;
+
+                          if (!editorMultiScreenModel.bottomRight) {
+                            return;
+                          }
+
+                          const newViews =
+                            editorMultiScreenModel.bottomRight.views;
+
+                          if (over && active.id !== over.id) {
+                            const oldIndex =
+                              editorMultiScreenModel.bottomRight.views.findIndex(
+                                (e) => e.id === active.id,
+                              );
+                            const newIndex =
+                              editorMultiScreenModel.bottomRight.views.findIndex(
+                                (e) => e.id === over.id,
+                              );
+
+                            const movedNewViews = arrayMove(
+                              newViews,
+                              oldIndex,
+                              newIndex,
+                            );
+
+                            if (movedNewViews.length > 0) {
+                              updateEditorMultiScreenModel((prev) => ({
+                                ...prev,
+                                bottomRight: {
+                                  views: movedNewViews,
+                                  currentViewId:
+                                    prev.bottomRight?.currentViewId ?? null,
+                                },
+                              }));
+                            }
+                          }
+                        }}
+                      />
+                      {editorMultiScreenModel.bottomRight
+                        ? editorMultiScreenModel.bottomRight.views.find(
+                            (view) =>
+                              view.id ===
+                              editorMultiScreenModel.bottomRight?.currentViewId,
+                          )?.view
+                        : null}
+                    </div>
+                  </Resizable.Panel>
                 </Resizable.PanelGroup>
               </Resizable.Panel>
             </Resizable.PanelGroup>
