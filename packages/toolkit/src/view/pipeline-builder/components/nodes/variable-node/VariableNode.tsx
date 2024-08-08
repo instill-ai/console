@@ -327,7 +327,9 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
         });
 
         if (amplitudeIsInit) {
-          sendAmplitudeData("trigger_pipeline");
+          sendAmplitudeData("trigger_pipeline", {
+            page_url: window.location.href,
+          });
         }
 
         updateIsTriggeringPipeline(() => false);
@@ -361,7 +363,9 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
         });
 
         if (amplitudeIsInit) {
-          sendAmplitudeData("trigger_pipeline");
+          sendAmplitudeData("trigger_pipeline", {
+            page_url: window.location.href,
+          });
         }
 
         updateIsTriggeringPipeline(() => false);

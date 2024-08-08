@@ -40,4 +40,5 @@ export type AmplitudeEvent =
 export type AmplitudeEventProperties = {
   connector_definition_name?: string;
   model_definition_name?: string;
+  page_url?: string;
 };
