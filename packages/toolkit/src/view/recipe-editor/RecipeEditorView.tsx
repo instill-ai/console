@@ -27,9 +27,11 @@ import { ComponentCmdk } from "./cmdk";
 import { EditorProvider } from "./EditorContext";
 import { EditorViewSectionBar } from "./EditorViewSectionBar";
 import { Flow } from "./flow";
+import { InOutputEmptyView } from "./InOutputEmptyView";
 import { Input } from "./Input";
 import { Output } from "./Output";
 import { PipelineNamePopover } from "./PipelineNamePopover";
+import { prettifyYaml } from "./prettifyYaml";
 import { ReleasePopover } from "./ReleasePopover";
 import { RunButton } from "./RunButton";
 import { ShareDialogTrigger } from "./ShareDialogTrigger";
@@ -80,30 +82,16 @@ export const RecipeEditorView = () => {
         fields={pipeline.data?.recipe.variable ?? null}
       />
     ) : (
-      <div className="flex w-full relative h-full bg-semantic-bg-alt-primary">
-        <img
-          src="/images/empty-placeholder.svg"
-          alt="Grid"
-          className="min-w-full min-h-full"
-        />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex flex-col">
-            <div className="flex mx-auto items-center mb-5 justify-center rounded-sm border w-12 h-12 bg-semantic-fg-on-default border-semantic-bg-line shadow-[0_0_2_0_rgba(0,0,0,0.08)]">
-              <Icons.AlertCircle className="h-6 w-6 stroke-semantic-fg-primary" />
-            </div>
+      <InOutputEmptyView />
+    );
 
-            <div className="flex flex-col gap-y-2 max-w-[512px]">
-              <p className="font-semibold text-xl text-semantic-fg-primary text-center">
-                Pipeline is not runnable
-              </p>
-              <p className="text-semantic-fg-secondary text-center">
-                This pipeline cannot be run. Please check the configuration and
-                ensure all necessary components are set up correctly.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+    const outputView = pipeline.data?.dataSpecification?.output ? (
+      <Output
+        id="test"
+        outputSchema={pipeline.data?.dataSpecification?.output ?? null}
+      />
+    ) : (
+      <InOutputEmptyView />
     );
 
     updateEditorMultiScreenModel(() => ({
@@ -137,12 +125,7 @@ export const RecipeEditorView = () => {
             id: "main-output",
             title: "Output",
             type: "output",
-            view: (
-              <Output
-                id="test"
-                outputSchema={pipeline.data?.dataSpecification?.output ?? null}
-              />
-            ),
+            view: outputView,
           },
         ],
         currentViewId: "main-input",
@@ -151,6 +134,32 @@ export const RecipeEditorView = () => {
   }, [pipeline.data, pipeline.isSuccess]);
 
   const isCloud = env("NEXT_PUBLIC_APP_ENV") === "CLOUD";
+
+  const handleDownload = React.useCallback(async () => {
+    if (pipeline.isSuccess && pipeline.data?.rawRecipe) {
+      let prettifiedRecipe: Nullable<string> = null;
+
+      try {
+        prettifiedRecipe = await prettifyYaml(pipeline.data.rawRecipe);
+      } catch (error) {
+        prettifiedRecipe = pipeline.data.rawRecipe;
+        console.error(error);
+      }
+
+      const blob = new Blob([prettifiedRecipe], {
+        type: "text/plain;charset=utf-8",
+      });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${pipeline.data.id}_recipe.txt`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+  }, [pipeline.isSuccess, pipeline.data]);
 
   return (
     <PageBase>
@@ -223,6 +232,29 @@ export const RecipeEditorView = () => {
                       <span className="text-[13px] font-sans text-semantic-fg-primary">
                         {pipeline.data?.id ?? null}
                       </span>
+                    </div>
+                    <div className="flex flex-row">
+                      <button
+                        className="p-1.5"
+                        onClick={() => {
+                          if (currentExpandView === "left") {
+                            rightPanelRef.current?.resize(50);
+                            setCurrentExpandView(null);
+                          } else {
+                            rightPanelRef.current?.resize(0);
+                            setCurrentExpandView("left");
+                          }
+                        }}
+                      >
+                        {currentExpandView === "left" ? (
+                          <Icons.Minimize01 className="w-3 h-3 stroke-semantic-fg-primary" />
+                        ) : (
+                          <Icons.Expand01 className="w-3 h-3 stroke-semantic-fg-primary" />
+                        )}
+                      </button>
+                      <button className="p-1.5" onClick={handleDownload}>
+                        <Icons.Download01 className="w-3 h-3 stroke-semantic-fg-primary" />
+                      </button>
                     </div>
                   </div>
                   <div className="flex h-7 items-center flex-row-reverse bg-semantic-bg-alt-primary border-b border-semantic-bg-line">

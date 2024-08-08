@@ -50,6 +50,7 @@ import { Dataflow03Broken } from "./Dataflow03Broken";
 import { DotsGrid } from "./DotsGrid";
 import { DotsHorizontal } from "./DotsHorizontal";
 import { DotsVertical } from "./DotsVertical";
+import { Download01 } from "./Download01";
 import { DownloadCloud01 } from "./DownloadCloud01";
 import { Edit03 } from "./Edit03";
 import { Edit05 } from "./Edit05";
@@ -199,6 +200,7 @@ export const Icons = {
   Cube01,
   CubeOutline,
   CurrencyDollar,
+  Download01,
   Database01,
   Dataflow03,
   Dataflow03Broken,
