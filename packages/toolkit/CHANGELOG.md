@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.99.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.98.3...@instill-ai/toolkit-v0.99.0) (2024-08-08)
+
+
+### Features
+
+* add page_url into amplitude event properties ([#1355](https://github.com/instill-ai/console/issues/1355)) ([8e95386](https://github.com/instill-ai/console/commit/8e953866e1ae060bfd9132960c00fe311533bc53))
+
+
+### Bug Fixes
+
+* replace log in to clone with log in to run button on the model page ([#1352](https://github.com/instill-ai/console/issues/1352)) ([2be9801](https://github.com/instill-ai/console/commit/2be9801ab50d5648a68f2fd008a8bd1f9cb90828))
+
 ## [0.98.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.98.2...@instill-ai/toolkit-v0.98.3) (2024-08-05)
 
 
