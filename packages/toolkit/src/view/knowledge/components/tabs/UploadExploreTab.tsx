@@ -446,6 +446,7 @@ export const UploadExploreTab = ({
             setShowInsufficientStorageMessage(false)
           }
           fileName={incorrectFileName}
+          availableSpace={planStorageLimit}
         />
       )}
       <div className="flex flex-col items-end">
