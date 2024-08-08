@@ -165,17 +165,17 @@ export const RetrieveTestTab = ({
             />
           </div>
 
-          {/* <p className="mb-4 product-body-text-3-regular">
+          <p className="mb-4 product-body-text-3-regular">
             For a more detailed overview of the input/output schemas, check out
             the{" "}
-            
+            <a
               href="https://www.instill.tech/docs/artifact/search"
               className="text-semantic-accent-default underline"
             >
               Artifact&apos;s API reference
             </a>
             .
-          </p> */}
+          </p>
         </div>
       )}
     </div>
