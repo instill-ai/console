@@ -1,6 +1,7 @@
 "use client";
 
 import { DragEndEvent } from "@dnd-kit/core";
+import { Nullable } from "instill-sdk";
 
 import { Icons } from "@instill-ai/design-system";
 
