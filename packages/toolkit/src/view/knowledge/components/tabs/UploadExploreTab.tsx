@@ -138,8 +138,8 @@ export const UploadExploreTab = ({
   // Mock data for used storage space NEED TO BE REPLACED WITH ACTUAL API CALL WHEN AVAILABLE
   const usedStorageSpace = 10 * 1024 * 1024; // 10MB for example
   const remainingStorageSpace = planStorageLimit - usedStorageSpace;
-  // const [showStorageWarning, setshowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
-  const [showStorageWarning, setshowStorageWarning] = React.useState(true);
+  const [showStorageWarning, setshowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
+  // const [showStorageWarning, setshowStorageWarning] = React.useState(true);
 
   const handleFileUpload = async (file: File) => {
     if (file.size > planMaxFileSize) {
