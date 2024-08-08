@@ -24,7 +24,7 @@ import {
   RetrieveTestTab,
   UploadExploreTab,
 } from "./components/tabs";
-import { WarnUnsavedChangesDialog } from "../../components";
+import { WarnDiscardFilesDialog } from "./components";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -229,11 +229,10 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           )}
         </div>
       </div>
-      <WarnUnsavedChangesDialog
+      <WarnDiscardFilesDialog
         open={showWarnDialog}
         setOpen={setShowWarnDialog}
         onCancel={handleWarnDialogClose}
-        onSave={handleWarnDialogClose}
         onDiscard={handleWarnDialogDiscard}
       />
     </div>

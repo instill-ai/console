@@ -16,3 +16,4 @@ export * from "./FileTableHeader";
 export * from "./StatusTag";
 export * from "./FileTable";
 export * from "./CatalogCardMenu";
+export * from "./WarnDiscardFilesDialog";
