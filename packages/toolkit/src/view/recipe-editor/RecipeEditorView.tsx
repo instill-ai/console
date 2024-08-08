@@ -44,6 +44,7 @@ const selector = (store: InstillStore) => ({
   updateOpenCmdk: store.updateOpenCmdk,
   editorMultiScreenModel: store.editorMultiScreenModel,
   updateEditorMultiScreenModel: store.updateEditorMultiScreenModel,
+  editorRef: store.editorRef,
 });
 
 export const RecipeEditorView = () => {
@@ -53,6 +54,7 @@ export const RecipeEditorView = () => {
     updateOpenCmdk,
     editorMultiScreenModel,
     updateEditorMultiScreenModel,
+    editorRef,
   } = useInstillStore(useShallow(selector));
   const routeInfo = useRouteInfo();
   const [currentExpandView, setCurrentExpandView] =
@@ -258,7 +260,35 @@ export const RecipeEditorView = () => {
                     </div>
                   </div>
                   <div className="flex h-7 items-center flex-row-reverse bg-semantic-bg-alt-primary border-b border-semantic-bg-line">
-                    <button className="flex flex-row items-center gap-x-1 px-1">
+                    <button
+                      onClick={async () => {
+                        if (
+                          !pipeline.isSuccess ||
+                          !pipeline.data?.rawRecipe ||
+                          !editorRef
+                        ) {
+                          return;
+                        }
+
+                        console.log(editorRef);
+
+                        let prettifiedRecipe: Nullable<string> = null;
+
+                        try {
+                          prettifiedRecipe = await prettifyYaml(
+                            pipeline.data.rawRecipe,
+                          );
+                        } catch (error) {
+                          prettifiedRecipe = pipeline.data.rawRecipe;
+                          console.error(error);
+                        }
+
+                        if (prettifiedRecipe) {
+                          editorRef?.setValue(prettifiedRecipe);
+                        }
+                      }}
+                      className="flex flex-row items-center gap-x-1 px-1"
+                    >
                       <Icons.AlignLeft className="w-3 h-3 stroke-semantic-fg-secondary" />
                       <span className="text-xs font-sans text-semantic-fg-secondary">
                         Format
@@ -282,7 +312,7 @@ export const RecipeEditorView = () => {
                     ref={topRightPanelRef}
                     defaultSize={50}
                   >
-                    <div className="flex flex-col w-full h-full">
+                    <div className="flex flex-col w-full h-full rounded-b">
                       <EditorViewSectionBar
                         views={editorMultiScreenModel.topRight?.views ?? []}
                         isExpanded={currentExpandView === "topRight"}

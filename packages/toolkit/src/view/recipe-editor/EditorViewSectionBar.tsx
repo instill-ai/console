@@ -20,7 +20,7 @@ export const EditorViewSectionBar = ({
   onToggleExpand: () => void;
 }) => {
   return (
-    <div className="flex flex-row rounded h-8 pr-1 bg-semantic-bg-base-bg box-border border-b border-semantic-bg-line">
+    <div className="flex flex-row rounded-t h-8 pr-1 bg-semantic-bg-base-bg box-border border-b border-semantic-bg-line">
       <HorizontalSortableWrapper items={views} onDragEnd={onDragEnd}>
         <div className="flex flex-1 flex-row w-full">
           {views.map((view) => (

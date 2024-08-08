@@ -113,6 +113,7 @@ export const Flow = ({
       </div>
       <ReactFlow
         id={pipelineId ?? undefined}
+        className="rounded-b"
         nodes={nodes}
         onNodesChange={onNodesChange}
         edges={edges}
