@@ -65,7 +65,7 @@ const FileDetailsOverlay = ({
       if (fileType.includes("TEXT") || fileType.includes("MARKDOWN")) {
         // For text-based files, use HTML span for highlighting
         const beforeHighlight = content.slice(0, startPos);
-        const highlightedPart = content.slice(startPos, endPos);
+        const highlightedPart = content.slice(startPos, endPos + 1);
         const afterHighlight = content.slice(endPos);
         return `${beforeHighlight}<span class="bg-semantic-bg-line hover:bg-[#CBD2E1]">${highlightedPart}</span>${afterHighlight}`;
       } else {

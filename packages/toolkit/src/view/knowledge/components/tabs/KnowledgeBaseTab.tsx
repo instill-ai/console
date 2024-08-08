@@ -18,6 +18,7 @@ import KnowledgeSearchSort, {
   SortOrder,
 } from "../KnowledgeSearchSort";
 import { getKnowledgeBaseLimit } from "../lib/functions";
+import Link from "next/link";
 
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
@@ -190,10 +191,16 @@ export const KnowledgeBaseTab = ({
 
   return (
     <div className="flex flex-col">
-      <div className="mb-5 flex items-center justify-between">
-        <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
-          Catalogs
-        </p>
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex justify-start space-x-3 items-center">
+          <p className="text-semantic-fg-primary product-headings-heading-2">
+            Catalogs
+          </p>
+          <p className=" product-body-text-3-regular space-x-2">
+            <span className="text-semantic-fg-secondary">({filteredAndSortedKnowledgeBases.length}/{knowledgeBaseLimit})</span>
+            <Link className="hover:underline text-semantic-accent-default cursor-pointer" href={`/${selectedNamespace}/subscribe`}>Upgrade your plan to create more catalogs</Link>
+          </p>
+        </div>
         <KnowledgeSearchSort
           selectedSortOrder={selectedSortOrder}
           setSelectedSortOrder={setSelectedSortOrder}

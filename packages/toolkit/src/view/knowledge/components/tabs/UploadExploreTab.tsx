@@ -10,8 +10,8 @@ import {
   Form,
   Icons,
   Input,
-  Nullable,
   Separator,
+  Nullable
 } from "@instill-ai/design-system";
 
 import { InstillStore, useAuthenticatedUserSubscription, useInstillStore, useShallow } from "../../../../lib";
@@ -30,9 +30,11 @@ import {
   FileSizeNotification,
   FileTooLongNotification,
   IncorrectFormatFileNotification,
+  InsufficientStorageBanner,
   InsufficientStorageNotification,
 } from "../notifications";
 import { getFileType, getPlanMaxFileSize, getPlanStorageLimit } from "../lib/functions";
+import Link from "next/link";
 
 // Type guard for File object
 const isFile = (value: unknown): value is File => {
@@ -118,7 +120,6 @@ export const UploadExploreTab = ({
   const { accessToken, selectedNamespace, enabledQuery } = useInstillStore(
     useShallow(selector),
   );
-
   const sub = useAuthenticatedUserSubscription({
     enabled: enabledQuery,
     accessToken,
@@ -137,6 +138,8 @@ export const UploadExploreTab = ({
   // Mock data for used storage space NEED TO BE REPLACED WITH ACTUAL API CALL WHEN AVAILABLE
   const usedStorageSpace = 10 * 1024 * 1024; // 10MB for example
   const remainingStorageSpace = planStorageLimit - usedStorageSpace;
+  // const [showStorageWarning, setshowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
+  const [showStorageWarning, setshowStorageWarning] = React.useState(true);
 
   const handleFileUpload = async (file: File) => {
     if (file.size > planMaxFileSize) {
@@ -290,9 +293,19 @@ export const UploadExploreTab = ({
 
   return (
     <div className="mb-32 flex flex-col">
-      <div className="mb-5 flex items-center justify-between">
-        <p className="text-semantic-fg-primary product-headings-heading-2">
+      {showStorageWarning && (
+        <InsufficientStorageBanner
+          selectedNamespace={selectedNamespace}
+          setshowStorageWarning={setshowStorageWarning}
+        />
+      )}
+      <div className="flex flex-col items-start justify-start gap-1 mb-2">
+        <p className="text-semantic-fg-primary product-headings-heading-3">
           {knowledgeBase.name}
+        </p>
+        <p className="product-body-text-3-regular flex flex-col gap-1">
+          <span className="text-semantic-fg-secondary">Remaining storage space: {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB</span>
+          <Link href={`/${selectedNamespace}/subscribe`} className="hover:underline text-semantic-accent-default cursor-pointer product-body-text-4-regular">Upgrade your plan for more storage space</Link>
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
@@ -306,8 +319,8 @@ export const UploadExploreTab = ({
                 <Form.Control>
                   <div
                     className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
-                        ? "border-semantic-accent-default"
-                        : "border-semantic-bg-line"
+                      ? "border-semantic-accent-default"
+                      : "border-semantic-bg-line"
                       } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();

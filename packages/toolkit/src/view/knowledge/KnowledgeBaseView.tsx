@@ -149,15 +149,17 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         />
       )}
       <div className="grid w-full grid-cols-12 gap-6 px-8">
-        <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
-          <Sidebar
-            activeTab={activeTab}
-            onTabChange={handleTabChange}
-            selectedKnowledgeBase={selectedKnowledgeBase}
-            onDeselectKnowledgeBase={handleDeselectKnowledgeBase}
-          />
-        </div>
-        <div className={`sm:col-span-8 md:col-span-9 lg:col-span-10 pt-5`}>
+        {selectedKnowledgeBase && (
+          <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
+            <Sidebar
+              activeTab={activeTab}
+              onTabChange={handleTabChange}
+              selectedKnowledgeBase={selectedKnowledgeBase}
+              onDeselectKnowledgeBase={handleDeselectKnowledgeBase}
+            />
+          </div>
+        )}
+        <div className={`${selectedKnowledgeBase ? 'sm:col-span-8 md:col-span-9 lg:col-span-10' : 'col-span-12'} pt-5`}>
           {activeTab === "catalogs" && (
             <KnowledgeBaseTab
               onKnowledgeBaseSelect={handleKnowledgeBaseSelect}
