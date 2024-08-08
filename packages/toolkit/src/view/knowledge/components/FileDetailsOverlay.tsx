@@ -66,7 +66,7 @@ const FileDetailsOverlay = ({
         // For text-based files, use HTML span for highlighting
         const beforeHighlight = content.slice(0, startPos);
         const highlightedPart = content.slice(startPos, endPos + 1);
-        const afterHighlight = content.slice(endPos);
+        const afterHighlight = content.slice(endPos + 1);
         return `${beforeHighlight}<span class="bg-semantic-bg-line hover:bg-[#CBD2E1]">${highlightedPart}</span>${afterHighlight}`;
       } else {
         // For other file types, use a more robust method
@@ -79,7 +79,7 @@ const FileDetailsOverlay = ({
             const lineEnd = lineStart + line.length;
             if (lineStart <= endPos && lineEnd >= startPos) {
               const highlightStart = Math.max(startPos - lineStart, 0);
-              const highlightEnd = Math.min(endPos - lineStart, line.length);
+              const highlightEnd = Math.min(endPos - lineStart + 1, line.length);
               return `${line.slice(0, highlightStart)}<span class="bg-semantic-bg-line hover:bg-[#CBD2E1]">${line.slice(highlightStart, highlightEnd)}</span>${line.slice(highlightEnd)}`;
             }
             return line;
