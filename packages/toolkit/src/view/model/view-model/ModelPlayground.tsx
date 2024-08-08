@@ -314,7 +314,9 @@ export const ModelPlayground = ({
       });
 
       if (amplitudeIsInit) {
-        sendAmplitudeData("trigger_model");
+        sendAmplitudeData("trigger_model", {
+          page_url: window.location.href,
+        });
       }
 
       currentOperationIdPollingData.current = {

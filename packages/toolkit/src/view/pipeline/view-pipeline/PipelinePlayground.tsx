@@ -225,7 +225,9 @@ export const PipelinePlayground = ({
         });
 
         if (amplitudeIsInit) {
-          sendAmplitudeData("trigger_pipeline");
+          sendAmplitudeData("trigger_pipeline", {
+            page_url: window.location.href,
+          });
         }
 
         setPipelineRunResponse(data);
@@ -258,7 +260,9 @@ export const PipelinePlayground = ({
         });
 
         if (amplitudeIsInit) {
-          sendAmplitudeData("trigger_pipeline");
+          sendAmplitudeData("trigger_pipeline", {
+            page_url: window.location.href,
+          });
         }
 
         setPipelineRunResponse(data);
