@@ -112,6 +112,10 @@ export const getPlanStorageLimit = (plan: string): number => {
   }
 };
 
+export const getPlanStorageLimitMB = (size: number): string => {
+  return (size / (1024 * 1024)).toFixed(2);
+}
+
 export const formatFileSize = (bytes: number | undefined): string => {
   if (bytes === undefined || isNaN(bytes)) return "N/A";
   const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
