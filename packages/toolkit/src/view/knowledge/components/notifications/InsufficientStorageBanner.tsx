@@ -1,15 +1,12 @@
 import { Button, Icons, LinkButton } from "@instill-ai/design-system";
-import { Nullable } from "instill-sdk";
 import { useRouter } from "next/navigation";
 
 type InsufficientStorageBannerProps = {
     setshowStorageWarning: React.Dispatch<React.SetStateAction<boolean>>;
-    selectedNamespace: Nullable<string>;
 };
 
 export const InsufficientStorageBanner = ({
     setshowStorageWarning,
-    selectedNamespace,
 }: InsufficientStorageBannerProps) => {
     const router = useRouter();
 
@@ -25,7 +22,7 @@ export const InsufficientStorageBanner = ({
                         size="sm"
                         variant="secondary"
                         onClick={() => {
-                            router.push(`/${selectedNamespace}/subscribe`);
+                            router.push(`/settings/billing/subscriptions`);
                         }}
                     >
                         Upgrade your plan for more storage space
