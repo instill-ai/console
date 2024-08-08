@@ -3,7 +3,12 @@ import { editor } from "monaco-editor";
 import { StateCreator } from "zustand";
 
 import { Nullable } from "../type";
-import { EditorSlice, InstillStore, InstillStoreMutators } from "./types";
+import {
+  EditorMultiScreenModel,
+  EditorSlice,
+  InstillStore,
+  InstillStoreMutators,
+} from "./types";
 
 export const createEditorSlice: StateCreator<
   InstillStore,
@@ -40,4 +45,18 @@ export const createEditorSlice: StateCreator<
       };
     }),
   cursorPosition: 0,
+  editorMultiScreenModel: {
+    main: null,
+    topRight: null,
+    bottomRight: null,
+  },
+  updateEditorMultiScreenModel: (
+    fn: (prev: EditorMultiScreenModel) => EditorMultiScreenModel,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        editorMultiScreenModel: fn(state.editorMultiScreenModel),
+      };
+    }),
 });
