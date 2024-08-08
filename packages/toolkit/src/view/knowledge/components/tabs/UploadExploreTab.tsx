@@ -16,6 +16,7 @@ import {
 
 import { InstillStore, useAuthenticatedUserSubscription, useInstillStore, useShallow } from "../../../../lib";
 import {
+  useGetKnowledgeBases,
   useListKnowledgeBaseFiles,
   useProcessKnowledgeBaseFiles,
   useUploadKnowledgeBaseFile,
@@ -135,11 +136,20 @@ export const UploadExploreTab = ({
   const planMaxFileSize = getPlanMaxFileSize(sub.data?.plan || "PLAN_FREEMIUM");
   const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREEMIUM");
 
-  // Mock data for used storage space NEED TO BE REPLACED WITH ACTUAL API CALL WHEN AVAILABLE
-  const usedStorageSpace = 10 * 1024 * 1024; // 10MB for example
+  const { data: allKnowledgeBases } = useGetKnowledgeBases({
+    accessToken,
+    ownerId: selectedNamespace ?? null,
+    enabled: enabledQuery && !!selectedNamespace,
+  });
+
+  const usedStorageSpace = React.useMemo(() => {
+    if (!allKnowledgeBases) return 0;
+    return allKnowledgeBases.reduce((total, kb) => total + parseInt(String(kb.usedStorage)), 0);
+  }, [allKnowledgeBases]);
+  
   const remainingStorageSpace = planStorageLimit - usedStorageSpace;
-  const [showStorageWarning, setshowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
-  // const [showStorageWarning, setshowStorageWarning] = React.useState(true);
+  // const [showStorageWarning, setshowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
+  const [showStorageWarning, setshowStorageWarning] = React.useState(true);
 
   const handleFileUpload = async (file: File) => {
     if (file.size > planMaxFileSize) {
@@ -245,6 +255,7 @@ export const UploadExploreTab = ({
           await processKnowledgeBaseFiles.mutateAsync({
             fileUids: [uploadedFile.fileUid],
             accessToken,
+            namespace: selectedNamespace,
           });
 
           processedFiles.add(file.name);
