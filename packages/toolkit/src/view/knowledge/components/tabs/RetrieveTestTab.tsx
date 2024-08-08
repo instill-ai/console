@@ -30,7 +30,7 @@ export const RetrieveTestTab = ({
 --header "Authorization: Bearer $INSTILL_API_TOKEN" \\
 --data '{
   "textPrompt": "Please put your query sentence here",
-  "topk": 5
+  "topK": 5
 }'`;
   }, [namespaceId, kbId]);
 
@@ -41,10 +41,10 @@ export const RetrieveTestTab = ({
       "type": "string",
       "title": "text prompt"
     },
-    "topk": {
+    "topK": {
       "type": "integer",
       "format": "int64",
-      "title": "topk"
+      "title": "topK"
     }
   },
   "title": "Similar chunk search request"
