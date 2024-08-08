@@ -11,17 +11,27 @@ export function useProcessKnowledgeBaseFiles() {
     mutationFn: async ({
       fileUids,
       accessToken,
+      namespace,
     }: {
       fileUids: string[];
       accessToken: Nullable<string>;
+      namespace: Nullable<string>;
     }): Promise<File[]> => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
+      }
+      if (!namespace) {
+        return Promise.reject(new Error("namespace not provided"));
       }
       const client = createInstillAxiosClient(accessToken, true);
       const response = await client.post<{ files: File[] }>(
         `/catalogs/files/processAsync`,
         { file_uids: fileUids },
+        // {
+        //   headers: {
+        //     Requester: namespace,
+        //   },
+        // },
       );
       return response.data.files;
     },
