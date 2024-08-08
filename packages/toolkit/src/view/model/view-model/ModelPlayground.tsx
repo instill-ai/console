@@ -384,11 +384,11 @@ export const ModelPlayground = ({
                   onClick={() => {
                     navigateBackAfterLogin();
                   }}
-                  className="!normal-case"
-                  variant="secondaryGrey"
+                  className="!h-8 !normal-case"
+                  variant="secondaryColour"
                   size="md"
                 >
-                  Log in to Clone
+                  Log in to Run
                 </Button>
               )}
             </div>
