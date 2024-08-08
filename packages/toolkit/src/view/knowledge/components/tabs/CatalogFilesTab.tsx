@@ -1,7 +1,5 @@
-import React from "react";
-
+import * as React from "react";
 import { Separator, Skeleton } from "@instill-ai/design-system";
-
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -60,7 +58,7 @@ export const CatalogFilesTab = ({
   const {
     data: filesData,
     isLoading,
-    refetch,
+    refetch: refetchFiles,
   } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
@@ -80,24 +78,24 @@ export const CatalogFilesTab = ({
     accessToken,
   });
 
-
   const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREEMIUM");
 
-  const { data: allKnowledgeBases } = useGetKnowledgeBases({
+  const { data: allKnowledgeBases, refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
   });
 
+  const [remainingStorageSpace, setRemainingStorageSpace] = React.useState(planStorageLimit);
 
-  const usedStorageSpace = React.useMemo(() => {
-    if (!allKnowledgeBases) return 0;
-    return allKnowledgeBases.reduce((total, kb) => total + parseInt(String(kb.usedStorage)), 0);
-  }, [allKnowledgeBases]);
+  React.useEffect(() => {
+    if (allKnowledgeBases) {
+      const totalUsed = allKnowledgeBases.reduce((total, kb) => total + parseInt(String(kb.usedStorage)), 0);
+      setRemainingStorageSpace(planStorageLimit - totalUsed);
+    }
+  }, [allKnowledgeBases, planStorageLimit]);
 
-  const remainingStorageSpace = planStorageLimit - usedStorageSpace;
-  const [showStorageWarning, setshowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
-
+  const [showStorageWarning, setShowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
 
   React.useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -109,7 +107,7 @@ export const CatalogFilesTab = ({
       )
     ) {
       interval = setInterval(() => {
-        refetch();
+        refetchFiles();
       }, 5000);
     }
 
@@ -118,7 +116,7 @@ export const CatalogFilesTab = ({
         clearInterval(interval);
       }
     };
-  }, [files, refetch]);
+  }, [files, refetchFiles]);
 
   const handleFileClick = (file: File) => {
     setSelectedFile(file);
@@ -136,7 +134,8 @@ export const CatalogFilesTab = ({
         fileUid,
         accessToken,
       });
-      await refetch();
+      await refetchFiles();
+      await refetchKnowledgeBases();
     } catch (error) {
       console.error("Error deleting file:", error);
     }
@@ -150,12 +149,15 @@ export const CatalogFilesTab = ({
     setSortConfig({ key, direction });
   };
 
+  React.useEffect(() => {
+    setShowStorageWarning((remainingStorageSpace / planStorageLimit) * 100 <= 5);
+  }, [remainingStorageSpace, planStorageLimit]);
+
   return (
     <div className="flex flex-col">
       {showStorageWarning && (
         <InsufficientStorageBanner
-          selectedNamespace={selectedNamespace}
-          setshowStorageWarning={setshowStorageWarning}
+          setshowStorageWarning={setShowStorageWarning}
         />
       )}
       <div className="flex flex-col items-start justify-start gap-1 mb-2">
@@ -164,7 +166,7 @@ export const CatalogFilesTab = ({
         </p>
         <p className="product-body-text-3-regular flex flex-col gap-1">
           <span className="text-semantic-fg-secondary">Remaining storage space: {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB</span>
-          <Link href={`/${selectedNamespace}/subscribe`} className="hover:underline text-semantic-accent-default cursor-pointer product-body-text-4-regular">Upgrade your plan for more storage space</Link>
+          <Link href={`/settings/billing/subscriptions`} className="hover:underline text-semantic-accent-default cursor-pointer product-body-text-4-regular">Upgrade your plan for more storage space</Link>
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />

@@ -126,7 +126,7 @@ export const UploadExploreTab = ({
     accessToken,
   });
 
-  const { data: existingFiles } = useListKnowledgeBaseFiles({
+  const { data: existingFiles, refetch: refetchExistingFiles } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
@@ -136,20 +136,26 @@ export const UploadExploreTab = ({
   const planMaxFileSize = getPlanMaxFileSize(sub.data?.plan || "PLAN_FREEMIUM");
   const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREEMIUM");
 
-  const { data: allKnowledgeBases } = useGetKnowledgeBases({
+  const { data: allKnowledgeBases, refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
   });
 
-  const usedStorageSpace = React.useMemo(() => {
-    if (!allKnowledgeBases) return 0;
-    return allKnowledgeBases.reduce((total, kb) => total + parseInt(String(kb.usedStorage)), 0);
-  }, [allKnowledgeBases]);
-  
-  const remainingStorageSpace = planStorageLimit - usedStorageSpace;
-  // const [showStorageWarning, setshowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
-  const [showStorageWarning, setshowStorageWarning] = React.useState(true);
+  const [remainingStorageSpace, setRemainingStorageSpace] = React.useState(planStorageLimit);
+
+  React.useEffect(() => {
+    if (allKnowledgeBases) {
+      const totalUsed = allKnowledgeBases.reduce((total, kb) => total + parseInt(String(kb.usedStorage)), 0);
+      setRemainingStorageSpace(planStorageLimit - totalUsed);
+    }
+  }, [allKnowledgeBases, planStorageLimit]);
+
+  const updateRemainingSpace = (fileSize: number, isAdding: boolean) => {
+    setRemainingStorageSpace(prev => isAdding ? prev - fileSize : prev + fileSize);
+  };
+
+  const [showStorageWarning, setShowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
 
   const handleFileUpload = async (file: File) => {
     if (file.size > planMaxFileSize) {
@@ -186,8 +192,6 @@ export const UploadExploreTab = ({
       return;
     }
 
-    const currentFiles = form.getValues("files");
-
     const isDuplicate = existingFiles?.files?.some(
       (existingFile) => existingFile.name === file.name,
     );
@@ -201,13 +205,17 @@ export const UploadExploreTab = ({
       return;
     }
 
+    const currentFiles = form.getValues("files");
     form.setValue("files", [...currentFiles, file]);
+    updateRemainingSpace(file.size, true);
   };
 
   const handleRemoveFile = (index: number) => {
     const currentFiles = form.getValues("files");
+    const removedFile = currentFiles[index] as File;
     const updatedFiles = currentFiles.filter((_, i) => i !== index);
     form.setValue("files", updatedFiles);
+    updateRemainingSpace(removedFile.size, false);
   };
 
   const handleProcessFiles = async () => {
@@ -262,7 +270,6 @@ export const UploadExploreTab = ({
         } catch (error) {
           if (error instanceof Error) {
             console.error(`Error processing file ${file.name}:`, error.message);
-            // If the file already exists, we'll just skip it. May need to handle other errors in the future
             if (error as Error) {
               console.log(`File ${file.name} already exists, skipping.`);
               processedFiles.add(file.name);
@@ -287,14 +294,12 @@ export const UploadExploreTab = ({
       );
 
       setProcessingProgress(100);
+      await refetchKnowledgeBases();
+      await refetchExistingFiles();
       onProcessFile();
       onTabChange("files");
     } catch (error) {
-      if (error instanceof Error) {
-        console.error("Error processing files:", error.message);
-      } else {
-        console.error("Unexpected error processing files:", error);
-      }
+      console.error("Error processing files:", error);
     } finally {
       setIsProcessing(false);
       setProcessingProgress(0);
@@ -302,12 +307,15 @@ export const UploadExploreTab = ({
     }
   };
 
+  React.useEffect(() => {
+    setShowStorageWarning((remainingStorageSpace / planStorageLimit) * 100 <= 5);
+  }, [remainingStorageSpace, planStorageLimit]);
+
   return (
     <div className="mb-32 flex flex-col">
       {showStorageWarning && (
         <InsufficientStorageBanner
-          selectedNamespace={selectedNamespace}
-          setshowStorageWarning={setshowStorageWarning}
+          setshowStorageWarning={setShowStorageWarning}
         />
       )}
       <div className="flex flex-col items-start justify-start gap-1 mb-2">
@@ -316,7 +324,7 @@ export const UploadExploreTab = ({
         </p>
         <p className="product-body-text-3-regular flex flex-col gap-1">
           <span className="text-semantic-fg-secondary">Remaining storage space: {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB</span>
-          <Link href={`/${selectedNamespace}/subscribe`} className="hover:underline text-semantic-accent-default cursor-pointer product-body-text-4-regular">Upgrade your plan for more storage space</Link>
+          <Link href={`/settings/billing/subscriptions`} className="hover:underline text-semantic-accent-default cursor-pointer product-body-text-4-regular">Upgrade your plan for more storage space</Link>
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
