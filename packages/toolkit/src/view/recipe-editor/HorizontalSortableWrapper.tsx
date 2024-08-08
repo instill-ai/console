@@ -32,7 +32,14 @@ export const HorizontalSortableWrapper = ({
   children: React.ReactNode;
   items: EditorView[];
 }) => {
-  const sensors = useSensors(useSensor(PointerSensor));
+  // This will allow the user to click the items without activating the drag
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+  );
 
   return (
     <DndContext

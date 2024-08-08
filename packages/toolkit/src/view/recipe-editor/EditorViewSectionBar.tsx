@@ -13,11 +13,15 @@ export const EditorViewSectionBar = ({
   isExpanded,
   onDragEnd,
   onToggleExpand,
+  onClick,
+  currentViewId,
 }: {
   views: EditorView[];
   onDragEnd: (event: DragEndEvent) => void;
   isExpanded: boolean;
   onToggleExpand: () => void;
+  onClick: (id: string) => void;
+  currentViewId: Nullable<string>;
 }) => {
   return (
     <div className="flex flex-row rounded-t h-8 pr-1 bg-semantic-bg-base-bg box-border border-b border-semantic-bg-line">
@@ -29,6 +33,8 @@ export const EditorViewSectionBar = ({
               id={view.id}
               title={view.title}
               type={view.type}
+              onClick={onClick}
+              currentViewId={currentViewId}
             />
           ))}
         </div>

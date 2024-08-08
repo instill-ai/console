@@ -148,8 +148,8 @@ export type EditorViewSection = {
 
 export type EditorMultiScreenModel = {
   main: Nullable<EditorViewSection>;
-  topRight?: Nullable<EditorViewSection>;
-  bottomRight?: Nullable<EditorViewSection>;
+  topRight: Nullable<EditorViewSection>;
+  bottomRight: Nullable<EditorViewSection>;
 };
 
 export type EditorSlice = {

@@ -2,8 +2,9 @@
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Nullable } from "instill-sdk";
 
-import { Icons } from "@instill-ai/design-system";
+import { cn, Icons } from "@instill-ai/design-system";
 
 import { EditorViewType } from "../../lib";
 
@@ -11,10 +12,14 @@ export const EditorViewBarItem = ({
   id,
   title,
   type,
+  currentViewId,
+  onClick,
 }: {
   id: string;
   title: string;
   type: EditorViewType;
+  currentViewId: Nullable<string>;
+  onClick: (id: string) => void;
 }) => {
   const {
     attributes,
@@ -49,7 +54,13 @@ export const EditorViewBarItem = ({
   return (
     <div
       {...attributes}
-      className="bg-semantic-bg-alt-primary first:rounded-tl"
+      className={cn(
+        "first:rounded-tl cursor-pointer",
+        currentViewId === id
+          ? "bg-semantic-bg-alt-primary"
+          : "bg-semantic-bg-line",
+      )}
+      onClick={() => onClick(id)}
       ref={setNodeRef}
       style={style}
       key={id}

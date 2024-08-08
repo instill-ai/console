@@ -315,6 +315,9 @@ export const RecipeEditorView = () => {
                     <div className="flex flex-col w-full h-full rounded-b">
                       <EditorViewSectionBar
                         views={editorMultiScreenModel.topRight?.views ?? []}
+                        currentViewId={
+                          editorMultiScreenModel.topRight?.currentViewId ?? null
+                        }
                         isExpanded={currentExpandView === "topRight"}
                         onToggleExpand={() => {
                           if (currentExpandView === "topRight") {
@@ -365,14 +368,25 @@ export const RecipeEditorView = () => {
                             }
                           }
                         }}
+                        onClick={(id) => {
+                          updateEditorMultiScreenModel((prev) => ({
+                            ...prev,
+                            topRight: {
+                              views: prev.topRight?.views ?? [],
+                              currentViewId: id,
+                            },
+                          }));
+                        }}
                       />
-                      {editorMultiScreenModel.topRight
-                        ? editorMultiScreenModel.topRight.views.find(
-                            (view) =>
-                              view.id ===
-                              editorMultiScreenModel.topRight?.currentViewId,
-                          )?.view
-                        : null}
+                      <div className="rounded-b w-full h-full overflow-hidden">
+                        {editorMultiScreenModel.topRight
+                          ? editorMultiScreenModel.topRight.views.find(
+                              (view) =>
+                                view.id ===
+                                editorMultiScreenModel.topRight?.currentViewId,
+                            )?.view
+                          : null}
+                      </div>
                     </div>
                   </Resizable.Panel>
                   <Resizable.Handle className="mb-2 opacity-0" />
@@ -385,6 +399,10 @@ export const RecipeEditorView = () => {
                       <EditorViewSectionBar
                         views={editorMultiScreenModel.bottomRight?.views ?? []}
                         isExpanded={currentExpandView === "bottomRight"}
+                        currentViewId={
+                          editorMultiScreenModel.bottomRight?.currentViewId ??
+                          null
+                        }
                         onToggleExpand={() => {
                           if (currentExpandView === "bottomRight") {
                             leftPanelRef.current?.resize(50);
@@ -434,14 +452,26 @@ export const RecipeEditorView = () => {
                             }
                           }
                         }}
+                        onClick={(id) => {
+                          updateEditorMultiScreenModel((prev) => ({
+                            ...prev,
+                            bottomRight: {
+                              views: prev.bottomRight?.views ?? [],
+                              currentViewId: id,
+                            },
+                          }));
+                        }}
                       />
-                      {editorMultiScreenModel.bottomRight
-                        ? editorMultiScreenModel.bottomRight.views.find(
-                            (view) =>
-                              view.id ===
-                              editorMultiScreenModel.bottomRight?.currentViewId,
-                          )?.view
-                        : null}
+                      <div className="w-full h-full rounded-b overflow-hidden">
+                        {editorMultiScreenModel.bottomRight
+                          ? editorMultiScreenModel.bottomRight.views.find(
+                              (view) =>
+                                view.id ===
+                                editorMultiScreenModel.bottomRight
+                                  ?.currentViewId,
+                            )?.view
+                          : null}
+                      </div>
                     </div>
                   </Resizable.Panel>
                 </Resizable.PanelGroup>
