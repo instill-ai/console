@@ -42,3 +42,5 @@ export const Resizable = {
   Panel: ResizablePanel,
   Handle: ResizableHandle,
 };
+
+export type ImperativePanelHandle = ResizablePrimitive.ImperativePanelHandle;
