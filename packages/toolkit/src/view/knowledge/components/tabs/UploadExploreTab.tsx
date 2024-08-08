@@ -70,6 +70,7 @@ type UploadExploreTabProps = {
   knowledgeBase: KnowledgeBase;
   onProcessFile: () => void;
   onTabChange: (tab: string) => void;
+  setHasUnsavedChanges: (hasChanges: boolean) => void;
 };
 
 const selector = (store: InstillStore) => ({
@@ -82,6 +83,7 @@ export const UploadExploreTab = ({
   knowledgeBase,
   onProcessFile,
   onTabChange,
+  setHasUnsavedChanges,
 }: UploadExploreTabProps) => {
   const form = useForm<UploadExploreFormData>({
     resolver: zodResolver(UploadExploreFormSchema),
@@ -118,6 +120,7 @@ export const UploadExploreTab = ({
 
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
+
   const { accessToken, selectedNamespace, enabledQuery } = useInstillStore(
     useShallow(selector),
   );
@@ -207,6 +210,7 @@ export const UploadExploreTab = ({
 
     const currentFiles = form.getValues("files");
     form.setValue("files", [...currentFiles, file]);
+    setHasUnsavedChanges(true);
     updateRemainingSpace(file.size, true);
   };
 
@@ -216,6 +220,7 @@ export const UploadExploreTab = ({
     const updatedFiles = currentFiles.filter((_, i) => i !== index);
     form.setValue("files", updatedFiles);
     updateRemainingSpace(removedFile.size, false);
+    setHasUnsavedChanges(updatedFiles.length > 0);
   };
 
   const handleProcessFiles = async () => {
@@ -297,6 +302,7 @@ export const UploadExploreTab = ({
       await refetchKnowledgeBases();
       await refetchExistingFiles();
       onProcessFile();
+      setHasUnsavedChanges(false);
       onTabChange("files");
     } catch (error) {
       console.error("Error processing files:", error);
