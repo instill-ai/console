@@ -364,6 +364,7 @@ export const VscodeEditor = () => {
   return (
     <Editor
       language="yaml"
+      className="text-lg rounded-b"
       onChange={(value) => {
         if (!value || !pipeline.isSuccess) {
           return;
@@ -378,22 +379,6 @@ export const VscodeEditor = () => {
             newRawRecipe: value,
             accessToken,
           });
-
-          // try {
-          //   if (!pipelineName) {
-          //     return;
-          //   }
-          //   debounce(() => {
-          //     console.log("what");
-          //     updatePipeline.mutateAsync({
-          //       rawRecipe: value,
-          //       namespacePipelineName: pipelineName,
-          //       accessToken,
-          //     });
-          //   }, 1000);
-          // } catch (error) {
-          //   console.error(error);
-          // }
         } else {
           setMarkErrors(res.markers);
         }
@@ -412,6 +397,7 @@ export const VscodeEditor = () => {
         suggest: {
           showSnippets: true,
         },
+        fontSize: 18,
       }}
       onMount={(editor, monaco) => {
         editorRef.current = editor;
