@@ -12,6 +12,7 @@ export const InsufficientStorageNotification = ({
     fileName,
     availableSpace
 }: InsufficientStorageNotificationProps) => {
+    const availableSpaceMB = (availableSpace / (1024 * 1024)).toFixed(2);
     return (
         <div className="fixed bottom-4 right-8 flex w-[400px] rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
             <Icons.AlertCircle className="mr-4 h-6 w-6 stroke-semantic-error-on-bg" />
@@ -23,7 +24,7 @@ export const InsufficientStorageNotification = ({
                     {truncateName(fileName)}
                 </div>
                 <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
-                    You have reached your plan&apos;s maximum upload capacity of { availableSpace } MB under your current namespace. Please delete any unnecessary files before attempting further uploads or consider upgrading your plan for additional capacity.
+                    You have reached your plan&apos;s maximum upload capacity of {availableSpaceMB} MB under your current namespace. Please delete any unnecessary files before attempting further uploads or consider upgrading your plan for additional capacity.
                 </div>
             </div>
             <Button
