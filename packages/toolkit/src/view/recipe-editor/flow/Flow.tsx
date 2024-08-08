@@ -12,6 +12,8 @@ import ReactFlow, {
   useNodesState,
 } from "reactflow";
 
+import { Icons } from "@instill-ai/design-system";
+
 import { GeneralRecord, Nullable } from "../../../lib";
 import {
   composeEdgesFromNodes,
@@ -68,44 +70,86 @@ export const Flow = ({
   }, [recipe, pipelineMetadata, setEdges, setNodes, reactFlowInstance]);
 
   return (
-    <ReactFlow
-      id={pipelineId ?? undefined}
-      className="rounded-sm"
-      nodes={nodes}
-      onNodesChange={onNodesChange}
-      edges={edges}
-      onEdgesChange={onEdgesChange}
-      fitView={true}
-      minZoom={0.5}
-      fitViewOptions={{
-        includeHiddenNodes: true,
-        padding: 10,
-      }}
-      nodeTypes={nodeTypes}
-      edgeTypes={edgeTypes}
-      onInit={setReactFlowInstance}
-      proOptions={{ hideAttribution: true }}
-      elevateNodesOnSelect={true}
-      // To enable Figma-like zoom-in-out experience
-      panOnScroll={false}
-      panOnDrag={canvasPanOnDrag}
-      selectionMode={SelectionMode.Partial}
-      selectionOnDrag={true}
-      nodeOrigin={[0.5, 0.5]}
-    >
-      <Background
+    <div className="flex flex-col w-full h-full">
+      <div className="flex flex-row h-9 justify-between items-center bg-semantic-bg-alt-primary border-b border-semantic-bg-line">
+        <button
+          onClick={() => {
+            if (!reactFlowInstance) {
+              return;
+            }
+
+            reactFlowInstance.fitView();
+          }}
+          className="p-1.5"
+        >
+          <Icons.Maximize02 className="w-3 h-3 stroke-semantic-fg-primary" />
+        </button>
+        <div className="flex flex-row">
+          <button
+            className="p-1.5"
+            onClick={() => {
+              if (!reactFlowInstance) {
+                return;
+              }
+
+              reactFlowInstance.zoomIn();
+            }}
+          >
+            <Icons.Plus className="w-3 h-3 stroke-semantic-fg-primary" />
+          </button>
+          <button
+            className="p-1.5"
+            onClick={() => {
+              if (!reactFlowInstance) {
+                return;
+              }
+
+              reactFlowInstance.zoomOut();
+            }}
+          >
+            <Icons.Minus className="w-3 h-3 stroke-semantic-fg-primary" />
+          </button>
+        </div>
+      </div>
+      <ReactFlow
         id={pipelineId ?? undefined}
-        variant={BackgroundVariant.Dots}
-        gap={32}
-        color="#D2D6DB"
-        className="!bg-semantic-bg-alt-primary"
-        size={3}
-      />
-      <Controls
-        id={pipelineId ?? undefined}
-        showInteractive={false}
-        className="opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      />
-    </ReactFlow>
+        className="rounded-b"
+        nodes={nodes}
+        onNodesChange={onNodesChange}
+        edges={edges}
+        onEdgesChange={onEdgesChange}
+        fitView={true}
+        minZoom={0.5}
+        fitViewOptions={{
+          includeHiddenNodes: true,
+          padding: 10,
+        }}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        onInit={setReactFlowInstance}
+        proOptions={{ hideAttribution: true }}
+        elevateNodesOnSelect={true}
+        // To enable Figma-like zoom-in-out experience
+        panOnScroll={false}
+        panOnDrag={canvasPanOnDrag}
+        selectionMode={SelectionMode.Partial}
+        selectionOnDrag={true}
+        nodeOrigin={[0.5, 0.5]}
+      >
+        <Background
+          id={pipelineId ?? undefined}
+          variant={BackgroundVariant.Dots}
+          gap={32}
+          color="#D2D6DB"
+          className="!bg-semantic-bg-alt-primary"
+          size={3}
+        />
+        <Controls
+          id={pipelineId ?? undefined}
+          showInteractive={false}
+          className="opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        />
+      </ReactFlow>
+    </div>
   );
 };

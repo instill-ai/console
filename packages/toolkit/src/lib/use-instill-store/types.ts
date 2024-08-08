@@ -132,6 +132,26 @@ export type GeneralSlice = {
   ) => void;
 };
 
+export type EditorViewType = "preview" | "docs" | "input" | "output";
+
+export type EditorView = {
+  id: string;
+  type: EditorViewType;
+  view: React.ReactNode;
+  title: string;
+};
+
+export type EditorViewSection = {
+  views: EditorView[];
+  currentViewId: Nullable<string>;
+};
+
+export type EditorMultiScreenModel = {
+  main: Nullable<EditorViewSection>;
+  topRight: Nullable<EditorViewSection>;
+  bottomRight: Nullable<EditorViewSection>;
+};
+
 export type EditorSlice = {
   openCmdk: boolean;
   updateOpenCmdk: (fn: (prev: boolean) => boolean) => void;
@@ -144,6 +164,10 @@ export type EditorSlice = {
   ) => void;
   monacoRef: Nullable<Monaco>;
   updateMonacoRef: (fn: (prev: Nullable<Monaco>) => Nullable<Monaco>) => void;
+  editorMultiScreenModel: EditorMultiScreenModel;
+  updateEditorMultiScreenModel: (
+    fn: (prev: EditorMultiScreenModel) => EditorMultiScreenModel,
+  ) => void;
 };
 
 export type RecentlyUsedSlice = {

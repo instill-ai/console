@@ -52,10 +52,13 @@ import { DOCXFile } from "./DOCXFile";
 import { DotsGrid } from "./DotsGrid";
 import { DotsHorizontal } from "./DotsHorizontal";
 import { DotsVertical } from "./DotsVertical";
+import { Download01 } from "./Download01";
 import { DownloadCloud01 } from "./DownloadCloud01";
 import { Edit03 } from "./Edit03";
 import { Edit05 } from "./Edit05";
+import { Expand01 } from "./Expand01";
 import { Expand06 } from "./Expand06";
+import { Eye } from "./Eye";
 import { File02 } from "./File02";
 import { File04 } from "./File04";
 import { File05 } from "./File05";
@@ -87,10 +90,12 @@ import { LockUnlocked03 } from "./LockUnlocked03";
 import { Logout01 } from "./Logout01";
 import { Mail01 } from "./Mail01";
 import { MasterCard } from "./MasterCard";
+import { Maximize02 } from "./Maximize02";
 import { MDFile } from "./MDFile";
 import { Menu01 } from "./Menu01";
 import { MessageChatSquare } from "./MessageChatSquare";
 import { MessageSmileSquare } from "./MessageSmileSquare";
+import { Minimize01 } from "./Minimize01";
 import { Minus } from "./Minus";
 import { Model } from "./Model";
 import { MultipleVideo } from "./MultipleVideo";
@@ -201,6 +206,7 @@ export const Icons = {
   Cube01,
   CubeOutline,
   CurrencyDollar,
+  Download01,
   Database01,
   Dataflow03,
   Dataflow03Broken,
@@ -212,6 +218,8 @@ export const Icons = {
   DownloadCloud01,
   Edit03,
   Edit05,
+  Eye,
+  Expand01,
   Expand06,
   File02,
   File04,
@@ -244,6 +252,8 @@ export const Icons = {
   LayoutLeft,
   Model,
   MultipleVideo,
+  Maximize02,
+  Minimize01,
   PauseCircle,
   MasterCard,
   MDFile,
