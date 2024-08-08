@@ -1,5 +1,5 @@
 import { Button, Icons } from "@instill-ai/design-system";
-import { truncateName } from "../lib/functions";
+import { getPlanStorageLimitMB, truncateName } from "../lib/functions";
 
 type InsufficientStorageNotificationProps = {
     handleCloseInsufficientStorageMessage: () => void;
@@ -12,7 +12,7 @@ export const InsufficientStorageNotification = ({
     fileName,
     availableSpace
 }: InsufficientStorageNotificationProps) => {
-    const availableSpaceMB = (availableSpace / (1024 * 1024)).toFixed(2);
+    const availableSpaceMB = getPlanStorageLimitMB(availableSpace);
     return (
         <div className="fixed bottom-4 right-8 flex w-[400px] rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
             <Icons.AlertCircle className="mr-4 h-6 w-6 stroke-semantic-error-on-bg" />
