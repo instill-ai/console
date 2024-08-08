@@ -24,6 +24,7 @@ import {
   RetrieveTestTab,
   UploadExploreTab,
 } from "./components/tabs";
+import { WarnUnsavedChangesDialog } from "../../components";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -41,6 +42,10 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [showCreditUsage, setShowCreditUsage] = React.useState(false);
   const [creditUsageTimer, setCreditUsageTimer] =
     React.useState<NodeJS.Timeout | null>(null);
+  const [showWarnDialog, setShowWarnDialog] = React.useState(false);
+  const [pendingTabChange, setPendingTabChange] = React.useState<string | null>(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
+
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector)
   );
@@ -70,13 +75,49 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     }
   }, [filesData]);
 
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab);
+  const handleTabChangeAttempt = (tab: string) => {
+    if (hasUnsavedChanges) {
+      setShowWarnDialog(true);
+      setPendingTabChange(tab);
+    } else {
+      setActiveTab(tab);
+    }
+  };
+
+  const handleWarnDialogClose = async (): Promise<void> => {
+    return new Promise((resolve) => {
+      setShowWarnDialog(false);
+      setPendingTabChange(null);
+      resolve();
+    });
+  };
+
+  const handleWarnDialogDiscard = () => {
+    if (pendingTabChange) {
+      setActiveTab(pendingTabChange);
+    }
+    setShowWarnDialog(false);
+    setPendingTabChange(null);
+    setHasUnsavedChanges(false);
+  };
+
+  const handleProcessFile = () => {
+    setShowCreditUsage(true);
+    setActiveTab("files");
+    setIsProcessed(false);
+    setHasUnsavedChanges(false);
+
+    const timer = setTimeout(() => {
+      setShowCreditUsage(false);
+    }, CREDIT_TIMEOUT);
+
+    setCreditUsageTimer(timer);
   };
 
   const handleKnowledgeBaseSelect = (knowledgeBase: KnowledgeBase) => {
     setSelectedKnowledgeBase(knowledgeBase);
-    handleTabChange("upload");
+    setActiveTab("upload");
+    setHasUnsavedChanges(false);
   };
 
   const handleDeleteKnowledgeBase = async (knowledgeBase: KnowledgeBase) => {
@@ -98,18 +139,6 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     }
   };
 
-  const handleProcessFile = () => {
-    setShowCreditUsage(true);
-    setActiveTab("catalogs");
-    setIsProcessed(false);
-
-    const timer = setTimeout(() => {
-      setShowCreditUsage(false);
-    }, CREDIT_TIMEOUT);
-
-    setCreditUsageTimer(timer);
-  };
-
   const handleCloseCreditUsageMessage = () => {
     setShowCreditUsage(false);
     if (creditUsageTimer) {
@@ -119,17 +148,19 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   };
 
   const handleGoToUpload = () => {
-    handleTabChange("upload");
+    handleTabChangeAttempt("upload");
   };
 
   const handleDeselectKnowledgeBase = () => {
     setSelectedKnowledgeBase(null);
     setActiveTab("catalogs");
+    setHasUnsavedChanges(false);
   };
 
   React.useEffect(() => {
     setSelectedKnowledgeBase(null);
     setActiveTab("catalogs");
+    setHasUnsavedChanges(false);
   }, [selectedNamespace]);
 
   React.useEffect(() => {
@@ -153,7 +184,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
             <Sidebar
               activeTab={activeTab}
-              onTabChange={handleTabChange}
+              onTabChange={handleTabChangeAttempt}
               selectedKnowledgeBase={selectedKnowledgeBase}
               onDeselectKnowledgeBase={handleDeselectKnowledgeBase}
             />
@@ -172,7 +203,8 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             <UploadExploreTab
               knowledgeBase={selectedKnowledgeBase}
               onProcessFile={handleProcessFile}
-              onTabChange={handleTabChange}
+              onTabChange={setActiveTab}
+              setHasUnsavedChanges={setHasUnsavedChanges}
             />
           )}
           {activeTab === "files" && selectedKnowledgeBase && (
@@ -197,6 +229,13 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           )}
         </div>
       </div>
+      <WarnUnsavedChangesDialog
+        open={showWarnDialog}
+        setOpen={setShowWarnDialog}
+        onCancel={handleWarnDialogClose}
+        onSave={handleWarnDialogClose}
+        onDiscard={handleWarnDialogDiscard}
+      />
     </div>
   );
 };
