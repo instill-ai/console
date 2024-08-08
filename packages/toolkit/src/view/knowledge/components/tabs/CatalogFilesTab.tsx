@@ -5,6 +5,7 @@ import { Separator, Skeleton } from "@instill-ai/design-system";
 import {
   InstillStore,
   useAuthenticatedUser,
+  useAuthenticatedUserSubscription,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
@@ -19,6 +20,9 @@ import {
 import EmptyState from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";
+import Link from "next/link";
+import { getPlanStorageLimit } from "../lib/functions";
+import { InsufficientStorageBanner } from "../notifications";
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -69,6 +73,19 @@ export const CatalogFilesTab = ({
   const deleteKnowledgeBaseFile = useDeleteKnowledgeBaseFile();
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
+
+  const sub = useAuthenticatedUserSubscription({
+    enabled: enabledQuery,
+    accessToken,
+  });
+
+
+  const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREEMIUM");
+
+  const usedStorageSpace = 10 * 1024 * 1024; // 10MB for example
+  const remainingStorageSpace = planStorageLimit - usedStorageSpace;
+  const [showStorageWarning, setshowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
+
 
   React.useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -123,9 +140,19 @@ export const CatalogFilesTab = ({
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-between mb-5">
-        <p className="text-semantic-fg-primary product-headings-heading-2">
+      {showStorageWarning && (
+        <InsufficientStorageBanner
+          selectedNamespace={selectedNamespace}
+          setshowStorageWarning={setshowStorageWarning}
+        />
+      )}
+      <div className="flex flex-col items-start justify-start gap-1 mb-2">
+        <p className="text-semantic-fg-primary product-headings-heading-3">
           {knowledgeBase.name}
+        </p>
+        <p className="product-body-text-3-regular flex flex-col gap-1">
+          <span className="text-semantic-fg-secondary">Remaining storage space: {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB</span>
+          <Link href={`/${selectedNamespace}/subscribe`} className="hover:underline text-semantic-accent-default cursor-pointer product-body-text-4-regular">Upgrade your plan for more storage space</Link>
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />

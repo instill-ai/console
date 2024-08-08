@@ -87,9 +87,9 @@ export const RetrieveTestTab = ({
   return (
     <div className="flex flex-col mb-10">
       <div className="mb-5 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-2">
+        <p className="text-semantic-fg-primary product-headings-heading-3">
           {knowledgeBase.name}
-        </h1>
+        </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
       {!isProcessed ? (
