@@ -99,25 +99,23 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
         }
       }}
       className={cn(
-        "flex w-[320px] flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-4",
+        "flex w-[60px] h-[60px] flex-col rounded p-3 bg-semantic-bg-base-bg",
         isFinished ? "bg-semantic-success-bg" : "",
       )}
+      style={{
+        border: "1px solid #94a0b8",
+      }}
     >
-      <div className="flex flex-row items-center gap-x-2">
-        <div className="flex rounded-sm border border-semantic-bg-line p-2">
-          <ImageWithFallback
-            src={`/icons/${data.definition?.id}.svg`}
-            width={32}
-            height={32}
-            alt={`${data.definition?.title}-icon`}
-            fallbackImg={
-              <Icons.Box className="my-auto h-8 w-8 stroke-semantic-fg-primary" />
-            }
-          />
-        </div>
-        <p className="productbody-text-2-medium text-semantic-fg-primary">
-          {id}
-        </p>
+      <div className="flex flex-row items-center justify-center">
+        <ImageWithFallback
+          src={`/icons/${data.definition?.id}.svg`}
+          width={36}
+          height={36}
+          alt={`${data.definition?.title}-icon`}
+          fallbackImg={
+            <Icons.Box className="my-auto h-9 w-9 stroke-semantic-fg-primary" />
+          }
+        />
       </div>
       <CustomHandle
         className={hasTargetEdges ? "" : "!opacity-0"}

@@ -154,14 +154,27 @@ export const Input = ({
   }, [sseURL, updateIsTriggeringPipeline, updateTriggerWithStreamData]);
 
   return (
-    <Form.Root {...form}>
-      <form
-        id="variable-node-trigger-pipeline-form"
-        className="w-full"
-        onSubmit={form.handleSubmit(onTriggerPipeline)}
-      >
-        <div className="flex flex-col gap-y-4">{fieldItems}</div>
-      </form>
-    </Form.Root>
+    <div className="flex flex-col">
+      <h3 className="py-2 product-body-text-1-semibold text-semantic-fg-primary">
+        Input
+      </h3>
+      <div className="flex w-full flex-row border-b border-semantic-bg-line mb-3 box-border">
+        <p
+          className="font-fans text-sm border-b-[2px] py-1 pb-2 border-semantic-accent-default"
+          style={{ color: "#5F6D86" }}
+        >
+          Form
+        </p>
+      </div>
+      <Form.Root {...form}>
+        <form
+          id="variable-node-trigger-pipeline-form"
+          className="w-full"
+          onSubmit={form.handleSubmit(onTriggerPipeline)}
+        >
+          <div className="flex flex-col gap-y-4">{fieldItems}</div>
+        </form>
+      </Form.Root>
+    </div>
   );
 };

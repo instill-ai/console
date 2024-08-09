@@ -9,11 +9,13 @@ export const Output = ({
   outputSchema: Nullable<InstillJSONSchema>;
 }) => {
   return (
-    <ComponentOutputs
-      componentID={id}
-      outputSchema={outputSchema}
-      nodeType="end"
-      chooseTitleFrom="title"
-    />
+    <div className="flex flex-col py-4">
+      <ComponentOutputs
+        componentID={id}
+        outputSchema={outputSchema}
+        nodeType="end"
+        chooseTitleFrom="title"
+      />
+    </div>
   );
 };
