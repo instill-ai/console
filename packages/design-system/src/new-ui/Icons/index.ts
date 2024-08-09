@@ -15,6 +15,7 @@ import { BookOpen02 } from "./BookOpen02";
 import { Box } from "./Box";
 import { BracketSlash } from "./BracketSlash";
 import { Building05 } from "./Building05";
+import { CalendarCheck01 } from "./CalendarCheck01";
 import { CardRefresh } from "./CardRefresh";
 import { Check } from "./Check";
 import { CheckCircle } from "./CheckCircle";
@@ -182,6 +183,7 @@ export const Icons = {
   Box,
   BracketSlash,
   Building05,
+  CalendarCheck01,
   CardRefresh,
   Check,
   CheckCircle,

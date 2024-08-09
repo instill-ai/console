@@ -311,10 +311,10 @@ export const Head = ({
                 <Icons.Dataflow03 className="h-4 w-4" />
                 Preview
               </TabMenu.Item>
-              {/* <TabMenu.Item value="runs">
+              <TabMenu.Item value="runs">
                 <Icons.Zap className="h-4 w-4" />
                 Runs
-              </TabMenu.Item> */}
+              </TabMenu.Item>
               <TabMenu.Item value="versions">
                 <Icons.ClockRewind className="h-4 w-4" />
                 Versions

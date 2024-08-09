@@ -10,6 +10,7 @@ import {
 
 import {
   InstillStore,
+  Nullable,
   useInstillStore,
   useNamespacePipeline,
   useQueryClient,
@@ -27,7 +28,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const ViewPipeline = () => {
-  const { tab } = useParams();
+  const { path } = useParams();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const shareCode = searchParams.get("view");
@@ -58,7 +59,13 @@ export const ViewPipeline = () => {
     }
   }, [pipeline.isError, router]);
 
-  const updateActiveVersionUrl = (version: string) => {
+  const updateActiveVersionUrl = (version: Nullable<string>) => {
+    if (version === null) {
+      router.replace(pathname);
+
+      return;
+    }
+
     const newSearchParams = new URLSearchParams();
     newSearchParams.set("version", version);
 
@@ -71,15 +78,19 @@ export const ViewPipeline = () => {
   };
 
   React.useEffect(() => {
-    if (
-      releases.data.length === 0 ||
-      !releases.data[0] ||
-      (activeVersion && releases.data.find((item) => item.id === activeVersion))
-    ) {
-      return;
+    if (releases.isSuccess) {
+      if (activeVersion) {
+        if (releases.data.length > 0) {
+          if (!releases.data.find((item) => item.id === activeVersion) && releases.data[0]) {
+            updateActiveVersionUrl(releases.data[0].id);
+          }
+        } else {
+          updateActiveVersionUrl(null);
+        }
+      } else if (releases.data[0]) {
+        updateActiveVersionUrl(releases.data[0].id);
+      }
     }
-
-    updateActiveVersionUrl(releases.data[0].id);
   }, [releases.isSuccess, releases.data, activeVersion, pathname]);
 
   const setSelectedTab = (tabName: PipelineTabNames) => {
@@ -112,11 +123,11 @@ export const ViewPipeline = () => {
           releases={releases.data}
           pipeline={pipeline.data}
           isReady={isReady}
-          selectedTab={tab as PipelineTabNames}
+          selectedTab={path?.[0] as PipelineTabNames}
           onTabChange={setSelectedTab}
         />
         <PipelineContentViewer
-          selectedTab={tab as PipelineTabNames}
+          selectedTab={path?.[0] as PipelineTabNames}
           pipeline={pipeline.data}
           onUpdate={onPipelineUpdate}
           releases={releases.data}
