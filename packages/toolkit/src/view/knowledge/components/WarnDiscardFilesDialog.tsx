@@ -25,33 +25,22 @@ export const WarnDiscardFilesDialog = ({
           </div>
           <div className="flex flex-col">
             <Dialog.Title className="!mx-auto !product-headings-heading-3">
-              Unsaved changes
+              File Upload in Progress
             </Dialog.Title>
             <Dialog.Description className="!mx-auto !text-center">
-              You have unsaved changes. Do you want to save the changes before
-              leaving this page?
+              You have a file uploading. Leaving the page will terminate the upload. Do you want to stay on this page to complete the file upload?
             </Dialog.Description>
           </div>
           <div className="flex flex-row gap-x-2">
             <Button
               onClick={() => {
-                onCancel();
+                onDiscard();
               }}
               variant="secondaryGrey"
               size="lg"
               className="!flex-1 !px-2.5"
             >
-              Cancel
-            </Button>
-            <Button
-              onClick={() => {
-                onDiscard();
-              }}
-              variant="danger"
-              size="lg"
-              className="!flex-1 !px-2.5"
-            >
-              Don&apos;t Save
+              No
             </Button>
             <Button
               onClick={() => {
@@ -61,7 +50,7 @@ export const WarnDiscardFilesDialog = ({
               size="lg"
               className="!flex-1 !px-2.5"
             >
-              Save
+              Yes
             </Button>
           </div>
         </div>
