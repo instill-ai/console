@@ -16,12 +16,11 @@ import {
   File,
   KnowledgeBase,
 } from "../../../../lib/react-query-service/knowledge/types";
-import EmptyState from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";
-import Link from "next/link";
 import { getPlanStorageLimit } from "../lib/helpers";
-import { InsufficientStorageBanner } from "../notifications";
+import { InsufficientStorageBanner, UpgradePlanLink } from "../notifications";
+import { EmptyState } from "../EmptyState";
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
@@ -173,9 +172,9 @@ export const CatalogFilesTab = ({
         <p className="text-semantic-fg-primary product-headings-heading-3">
           {knowledgeBase.name}
         </p>
-        <p className="product-body-text-3-regular flex flex-col gap-1">
-          <span className="text-semantic-fg-secondary">Remaining storage space: {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB</span>
-          <Link href={`/settings/billing/subscriptions`} className="hover:underline text-semantic-accent-default cursor-pointer product-body-text-4-regular">Upgrade your plan for more storage space</Link>
+        <p className="flex flex-col gap-1">
+          <span className="text-semantic-fg-secondary product-body-text-3-regular">Remaining storage space: {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB</span>
+          <UpgradePlanLink pageName="catalog" accessToken={accessToken} enabledQuery={enabledQuery} />
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />

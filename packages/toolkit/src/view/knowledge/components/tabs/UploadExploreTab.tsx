@@ -33,9 +33,9 @@ import {
   IncorrectFormatFileNotification,
   InsufficientStorageBanner,
   InsufficientStorageNotification,
+  UpgradePlanLink,
 } from "../notifications";
 import { getFileType, getPlanMaxFileSize, getPlanStorageLimit } from "../lib/helpers";
-import Link from "next/link";
 
 // Type guard for File object
 const isFile = (value: unknown): value is File => {
@@ -330,7 +330,7 @@ export const UploadExploreTab = ({
         </p>
         <p className="product-body-text-3-regular flex flex-col gap-1">
           <span className="text-semantic-fg-secondary">Remaining storage space: {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB</span>
-          <Link href={`/settings/billing/subscriptions`} className="hover:underline text-semantic-accent-default cursor-pointer product-body-text-4-regular">Upgrade your plan for more storage space</Link>
+          <UpgradePlanLink pageName="catalog" accessToken={accessToken} enabledQuery={enabledQuery} />
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />

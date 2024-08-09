@@ -6,7 +6,7 @@ type EmptyStateProps = {
   onGoToUpload: () => void;
 };
 
-const EmptyState = ({ onGoToUpload }: EmptyStateProps) => {
+export const EmptyState = ({ onGoToUpload }: EmptyStateProps) => {
   return (
     <div className="flex flex-col items-center justify-center p-8 text-center">
       <EmptyView
@@ -29,5 +29,3 @@ const EmptyState = ({ onGoToUpload }: EmptyStateProps) => {
     </div>
   );
 };
-
-export default EmptyState;

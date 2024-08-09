@@ -192,7 +192,7 @@ export const KnowledgeBaseTab = ({
   return (
     <div className="flex flex-col">
       <div className="mb-4 flex items-center justify-between">
-        <div className="flex justify-start space-x-3 items-center">
+        <div className="flex justify-start space-x-2  items-center">
           <p className="text-semantic-fg-primary product-headings-heading-2">
             Catalogs
           </p>
