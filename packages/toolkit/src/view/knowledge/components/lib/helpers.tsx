@@ -106,9 +106,9 @@ export const getPlanMaxFileSize = (plan: string): number => {
 
 export const getPlanStorageLimit = (plan: string): number => {
   switch (plan) {
-    case "PLAN_FREEMIUM":
-      return 50 * 1024 * 1024; // 50MB
-    case "PLAN_TEAM_PRO":
+    case "PLAN_FREE":
+      return 15 * 1024 * 1024; // 50MB
+    case "PLAN_PRO":
       return 500 * 1024 * 1024; // 500MB
     case "PLAN_TEAM":
       return 2 * 1024 * 1024 * 1024; // 2GB
@@ -139,10 +139,10 @@ export const formatDate = (dateString: string): string => {
 
 export const getKnowledgeBaseLimit = (plan: string) => {
   switch (plan) {
-    case "PLAN_FREEMIUM":
+    case "PLAN_FREE":
       return 10;
-    case "PLAN_TEAM":
-      return 300;
+    case "PLAN_PRO":
+      return 50;
     case "PLAN_TEAM_PRO":
     case "PLAN_ENTERPRISE":
       return 500;

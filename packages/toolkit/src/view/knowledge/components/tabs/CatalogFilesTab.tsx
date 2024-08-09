@@ -87,7 +87,7 @@ export const CatalogFilesTab = ({
     accessToken,
   });
 
-  const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREEMIUM");
+  const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREE");
 
   const { data: allKnowledgeBases, refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
     accessToken,

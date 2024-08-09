@@ -72,7 +72,7 @@ export const KnowledgeBaseTab = ({
     accessToken: accessToken || "",
   });
 
-  const knowledgeBaseLimit = getKnowledgeBaseLimit(subscription?.data?.plan || "PLAN_FREEMIUM");
+  const knowledgeBaseLimit = getKnowledgeBaseLimit(subscription?.data?.plan || "PLAN_FREE");
 
   React.useEffect(() => {
     if (selectedNamespace) {
