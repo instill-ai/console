@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Nullable, PipelineComponentMap } from "instill-sdk";
+import Fuse from "fuse.js";
+import { Nullable, PipelineComponent, PipelineComponentMap } from "instill-sdk";
 
 import { Collapsible, Icons } from "@instill-ai/design-system";
 
@@ -9,14 +10,38 @@ import {
   isPipelineIteratorComponent,
 } from "../../pipeline-builder/lib/checkComponentType";
 
+type PipelineComponentWKey = PipelineComponent & {
+  key: string;
+};
+
 export const ComponentSection = ({
   pipelineComponentMap,
   className,
+  searchCode,
 }: {
   pipelineComponentMap: Nullable<PipelineComponentMap>;
   className?: string;
+  searchCode: Nullable<string>;
 }) => {
   const [open, setOpen] = React.useState(false);
+
+  const searchedComponents: PipelineComponentWKey[] = React.useMemo(() => {
+    if (!pipelineComponentMap) return [];
+    const componentsWithKey = Object.entries(pipelineComponentMap).map(
+      ([key, component]) => ({
+        key,
+        ...component,
+      }),
+    );
+
+    if (!searchCode) return componentsWithKey;
+
+    const fuse = new Fuse(componentsWithKey, {
+      keys: ["key", "definition.title", "definition.id"],
+    });
+
+    return fuse.search(searchCode).map((result) => result.item);
+  }, [pipelineComponentMap, searchCode]);
 
   return (
     <Collapsible.Root className={className} open={open} onOpenChange={setOpen}>
@@ -34,8 +59,8 @@ export const ComponentSection = ({
       </Collapsible.Trigger>
       <Collapsible.Content className="flex flex-col gap-y-1 px-2">
         {pipelineComponentMap
-          ? Object.entries(pipelineComponentMap).map(([key, component]) => (
-              <div key={key} className="flex flex-row gap-x-2">
+          ? searchedComponents.map((component) => (
+              <div key={component.key} className="flex flex-row gap-x-2">
                 <div className="rounded-[2px] flex items-center justify-center w-6 h-6 bg-semantic-bg-primary border border-semantic-bg-line">
                   {isPipelineGeneralComponent(component) ? (
                     <ImageWithFallback
@@ -61,7 +86,7 @@ export const ComponentSection = ({
                   ) : null}
                 </div>
                 <p className="text-xs text-semantic-fg-primary my-auto">
-                  {key}
+                  {component.key}
                 </p>
               </div>
             ))

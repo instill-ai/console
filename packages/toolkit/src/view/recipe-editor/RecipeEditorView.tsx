@@ -232,7 +232,7 @@ export const RecipeEditorView = () => {
           <div className="flex h-[calc(100vh-var(--topbar-controller-height))] bg-semantic-bg-secondary w-full flex-row px-2 py-1.5">
             <div
               className={cn(
-                "h-full transition-transform duration-300 top-[var(--topbar-controller-height)] absolute left-0",
+                "h-[calc(100vh-var(--topbar-controller-height)-12px)] transition-transform duration-300 top-[var(--topbar-controller-height)] absolute left-0 pb-2",
                 isSidebarOpen ? "translate-x-0" : "-translate-x-full",
               )}
             >
