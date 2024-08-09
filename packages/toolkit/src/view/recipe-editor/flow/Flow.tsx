@@ -5,7 +5,6 @@ import { PipelineRecipe } from "instill-sdk";
 import ReactFlow, {
   Background,
   BackgroundVariant,
-  Controls,
   ReactFlowInstance,
   SelectionMode,
   useEdgesState,
@@ -70,7 +69,7 @@ export const Flow = ({
   }, [recipe, pipelineMetadata, setEdges, setNodes, reactFlowInstance]);
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full h-full group">
       <div className="flex flex-row h-9 justify-between items-center bg-semantic-bg-alt-primary border-b border-semantic-bg-line">
         <button
           onClick={() => {
@@ -78,7 +77,10 @@ export const Flow = ({
               return;
             }
 
-            reactFlowInstance.fitView();
+            reactFlowInstance.fitView({
+              includeHiddenNodes: true,
+              padding: 10,
+            });
           }}
           className="p-1.5"
         >
@@ -113,7 +115,7 @@ export const Flow = ({
       </div>
       <ReactFlow
         id={pipelineId ?? undefined}
-        className="rounded-b"
+        className="w-full h-full rounded-b"
         nodes={nodes}
         onNodesChange={onNodesChange}
         edges={edges}
@@ -143,11 +145,6 @@ export const Flow = ({
           color="#D2D6DB"
           className="!bg-semantic-bg-alt-primary"
           size={3}
-        />
-        <Controls
-          id={pipelineId ?? undefined}
-          showInteractive={false}
-          className="opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         />
       </ReactFlow>
     </div>
