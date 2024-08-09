@@ -23,12 +23,14 @@ export const getFileIcon = (fileType: string) => {
       return <Icons.TXTFile className="h-5 w-5" />;
     case "FILE_TYPE_PDF":
       return <Icons.PDFFile className="h-5 w-5" />;
-    case "FILE_TYPE_WORD":
+    case "FILE_TYPE_DOC":
       return <Icons.DOCFile className="h-5 w-5" />;
     case "FILE_TYPE_DOCX":
       return <Icons.DOCXFile className="h-5 w-5" />;
-    case "FILE_TYPE_POWERPOINT":
+    case "FILE_TYPE_PPT":
       return <Icons.PPTFile className="h-5 w-5" />;
+    case "FILE_TYPE_PPTX":
+      return <Icons.PPTXFile className="h-5 w-5" />
     case "FILE_TYPE_HTML":
       return <Icons.HTMLFile className="h-5 w-5" />;
     default:
@@ -69,10 +71,14 @@ export const convertFileType = (type: string): string => {
       return "md";
     case "FILE_TYPE_PDF":
       return "pdf";
-    case "FILE_TYPE_WORD":
+    case "FILE_TYPE_DOCX":
       return "docx";
-    case "FILE_TYPE_POWERPOINT":
+    case "FILE_TYPE_DOC":
+      return "doc";
+    case "FILE_TYPE_PPTX":
       return "pptx";
+    case "FILE_TYPE_PPT":
+      return "ppt"
     case "FILE_TYPE_HTML":
       return "html";
     default:
@@ -87,9 +93,9 @@ export const truncateName = (name: string, maxLength: number = 20) => {
 
 export const getPlanMaxFileSize = (plan: string): number => {
   switch (plan) {
-    case "PLAN_FREEMIUM":
+    case "PLAN_FREE":
       return 15 * 1024 * 1024; // 15MB
-    case "PLAN_TEAM":
+    case "PLAN_PRO":
     case "PLAN_TEAM_PRO":
     case "PLAN_ENTERPRISE":
       return 150 * 1024 * 1024; // 150MB

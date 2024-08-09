@@ -16,7 +16,7 @@ export const InsufficientStorageBanner = ({
                 <Icons.AlertTriangle className="mr-4 h-6 w-6 stroke-semantic-warning-on-bg flex-shrink-0" />
                 <div className="flex flex-col items-start justify-start">
                     <p className="text-semantic-fg-primary product-body-text-3-regular">
-                        Storage is almost full. Once the storage is full, you won&apos;t be able to create, edit, or upload files.
+                        Storage is less than 5%. Once the storage is full, you won&apos;t be able to create, edit, or upload files.
                     </p>
                     <LinkButton
                         size="sm"
