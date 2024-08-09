@@ -8,6 +8,7 @@ import { PipelinePreview } from "./PipelinePreview";
 import { PipelineReadme } from "./PipelineReadme";
 import { PipelineSettings } from "./PipelineSettings";
 import { PipelineVersions } from "./PipelineVersions";
+import { PipelineRuns } from "./PipelineRuns";
 
 export type PipelineContentViewerProps = {
   selectedTab: PipelineTabNames;
@@ -60,11 +61,11 @@ export const PipelineContentViewer = ({
 
       break;
     }
-    /* case "runs": {
+    case "runs": {
       content = <PipelineRuns pipeline={pipeline} />;
 
       break;
-    } */
+    }
     case "playground":
     default: {
       content = <PipelinePlayground pipeline={pipeline} releases={releases} />;
