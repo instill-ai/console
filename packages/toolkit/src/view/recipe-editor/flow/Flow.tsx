@@ -76,9 +76,11 @@ export const Flow = ({
             if (!reactFlowInstance) {
               return;
             }
-            console.log(reactFlowInstance.fitView, "wtf");
 
-            reactFlowInstance.fitView();
+            reactFlowInstance.fitView({
+              includeHiddenNodes: true,
+              padding: 10,
+            });
           }}
           className="p-1.5"
         >
@@ -113,7 +115,7 @@ export const Flow = ({
       </div>
       <ReactFlow
         id={pipelineId ?? undefined}
-        className="rounded-b"
+        className="w-full h-full rounded-b"
         nodes={nodes}
         onNodesChange={onNodesChange}
         edges={edges}
