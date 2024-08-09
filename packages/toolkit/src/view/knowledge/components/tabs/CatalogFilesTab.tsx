@@ -20,7 +20,7 @@ import EmptyState from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";
 import Link from "next/link";
-import { getPlanStorageLimit } from "../lib/functions";
+import { getPlanStorageLimit } from "../lib/helpers";
 import { InsufficientStorageBanner } from "../notifications";
 
 type CatalogFilesTabProps = {
