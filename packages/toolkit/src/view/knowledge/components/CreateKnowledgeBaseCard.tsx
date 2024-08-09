@@ -54,6 +54,7 @@ export const CreateKnowledgeBaseCard = ({
   const [isHovered, setIsHovered] = React.useState(false);
   const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const cardRef = React.useRef<HTMLDivElement>(null);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector)
@@ -123,23 +124,34 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
-      x: e.clientX - rect.left - 300,
-      y: e.clientY - rect.top - 150,
-    });
+    if (cardRef.current) {
+      const rect = cardRef.current.getBoundingClientRect();
+      setMousePosition({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    }
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
   };
 
   return (
     <React.Fragment>
       <Tooltip.Provider>
-        <Tooltip.Root disableHoverableContent={isMenuOpen}>
+        <Tooltip.Root open={isHovered && !isMenuOpen}>
           <Tooltip.Trigger asChild>
             <div
+              ref={cardRef}
               className="flex h-[175px] w-[360px] cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow hover:bg-semantic-bg-base-bg"
               onClick={onCardClick}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               onMouseMove={handleMouseMove}
             >
               <div className="flex items-center justify-between">
@@ -170,8 +182,10 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
             <Tooltip.Content
               className="absolute w-[300px] max-w-[300px] rounded-md bg-semantic-bg-primary p-4 shadow-lg !z-10"
               style={{
-                left: `${mousePosition.x}px`,
-                top: `${mousePosition.y}px`,
+                left: `${mousePosition.x - 150}px`,
+                top: `${mousePosition.y - 70 }px`,
+                transform: 'translate(-50%, -50%)',
+                pointerEvents: 'none'
               }}
             >
               <div className="whitespace-pre-wrap text-xs break-words">
