@@ -1,10 +1,8 @@
 import * as React from "react";
-
 import {
   Separator,
   Tooltip,
 } from "@instill-ai/design-system";
-
 import {
   InstillStore,
   useInstillStore,
@@ -58,7 +56,7 @@ export const CreateKnowledgeBaseCard = ({
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector),
+    useShallow(selector)
   );
 
   const { data: filesData } = useListKnowledgeBaseFiles({
@@ -150,7 +148,7 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
                 </div>
               </div>
               <Separator orientation="horizontal" className="my-[10px]" />
-              <p className="mb-auto line-clamp-3 product-body-text-3-regular">
+              <p className="mb-auto line-clamp-3 product-body-text-3-regular whitespace-pre-wrap break-words">
                 {knowledgeBase.description}
               </p>
               <div

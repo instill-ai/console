@@ -1,26 +1,29 @@
-import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import * as React from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-
 import {
-  Button,
   Dialog,
   Form,
   Input,
+  Button,
   Textarea,
 } from "@instill-ai/design-system";
 
+const MAX_DESCRIPTION_LENGTH = 150;
+
 const EditKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
-  description: z.string().optional(),
+  description: z.string().max(MAX_DESCRIPTION_LENGTH, { message: `Description must be ${MAX_DESCRIPTION_LENGTH} characters or less` }).optional(),
   tags: z.array(z.string()).optional(),
 });
+
+type EditKnowledgeDialogData = z.infer<typeof EditKnowledgeFormSchema>;
 
 type EditKnowledgeDialogProps = {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: z.infer<typeof EditKnowledgeFormSchema>) => Promise<void>;
+  onSubmit: (data: EditKnowledgeDialogData) => Promise<void>;
   initialValues: {
     name: string;
     description: string;
@@ -36,24 +39,26 @@ export const EditKnowledgeDialog = ({
 }: EditKnowledgeDialogProps) => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const form = useForm<z.infer<typeof EditKnowledgeFormSchema>>({
+  const form = useForm<EditKnowledgeDialogData>({
     resolver: zodResolver(EditKnowledgeFormSchema),
     defaultValues: initialValues,
     mode: "onChange",
   });
 
-  const { formState, reset } = form;
+  const { formState, reset, watch } = form;
+  const description = watch("description");
 
-  const handleSubmit = async (
-    data: z.infer<typeof EditKnowledgeFormSchema>,
-  ) => {
+  React.useEffect(() => {
+    if (isOpen) {
+      reset(initialValues);
+    }
+  }, [isOpen, initialValues, reset]);
+
+  const handleSubmit = async (data: EditKnowledgeDialogData) => {
     setIsSubmitting(true);
     try {
       await onSubmit(data);
-      setTimeout(() => {
-        onClose();
-        reset(initialValues);
-      }, 1000);
+      onClose();
     } catch (error) {
       console.error("Error updating catalog:", error);
     } finally {
@@ -66,7 +71,7 @@ export const EditKnowledgeDialog = ({
       <Dialog.Root open={isOpen} onOpenChange={onClose}>
         <Dialog.Content className="!w-[600px] rounded-md">
           <Dialog.Header className="flex justify-between">
-            <Dialog.Title className="text-semantic-fg-primary product-body-text-1-semibold">
+            <Dialog.Title className="text-semantic-fg-primary !product-body-text-1-semibold">
               Edit catalog
             </Dialog.Title>
             <Dialog.Close className="!focus:ring-0 !active:ring-0 !focus:outline-none !focus:ring-offset-0 !rounded-none !bg-transparent !shadow-none !ring-0 before:!hidden after:!hidden" />
@@ -117,9 +122,14 @@ export const EditKnowledgeDialog = ({
                         {...field}
                         id={field.name}
                         placeholder="Fill with a short description"
+                        className="min-h-[100px] whitespace-pre-wrap"
+                        maxLength={MAX_DESCRIPTION_LENGTH}
                       />
                     </Form.Control>
                     <Form.Message />
+                    <div className="text-right text-semantic-fg-secondary product-body-text-4-regular">
+                      {description?.length || 0}/{MAX_DESCRIPTION_LENGTH}
+                    </div>
                   </Form.Item>
                 )}
               />
