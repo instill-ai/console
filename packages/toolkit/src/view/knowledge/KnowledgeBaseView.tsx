@@ -15,14 +15,8 @@ import {
 import { KnowledgeBase } from "../../lib/react-query-service/knowledge/types";
 import { env } from "../../server";
 import { Sidebar } from "./components";
-import {
-  CREDIT_TIMEOUT,
-  DELETE_KNOWLEDGE_BASE_TIMEOUT,
-} from "./components/lib/static";
-import {
-  CreditUsageFileNotification,
-  DeleteKnowledgeBaseNotification,
-} from "./components/notifications";
+import { CREDIT_TIMEOUT } from "./components/lib/static";
+import { CreditUsageFileNotification } from "./components/notifications";
 import {
   CatalogFilesTab,
   ChunkTab,
@@ -30,6 +24,7 @@ import {
   RetrieveTestTab,
   UploadExploreTab,
 } from "./components/tabs";
+import { WarnDiscardFilesDialog } from "./components";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -43,23 +38,21 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
     React.useState<Nullable<KnowledgeBase>>(null);
   const [activeTab, setActiveTab] = React.useState("catalogs");
-  const [showDeleteMessage, setShowDeleteMessage] = React.useState(false);
-  const [knowledgeBaseToDelete, setKnowledgeBaseToDelete] =
-    React.useState<Nullable<KnowledgeBase>>(null);
   const [isProcessed, setIsProcessed] = React.useState(false);
-  const [pendingDeletions, setPendingDeletions] = React.useState<string[]>([]);
-  const [deletionTimer, setDeletionTimer] =
-    React.useState<NodeJS.Timeout | null>(null);
   const [showCreditUsage, setShowCreditUsage] = React.useState(false);
   const [creditUsageTimer, setCreditUsageTimer] =
     React.useState<NodeJS.Timeout | null>(null);
+  const [showWarnDialog, setShowWarnDialog] = React.useState(false);
+  const [pendingTabChange, setPendingTabChange] = React.useState<string | null>(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
+
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector),
+    useShallow(selector)
   );
   const isLocalEnvironment = env("NEXT_PUBLIC_APP_ENV") === "CE";
 
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
-  const { refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
+  const { data: knowledgeBases, refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
@@ -82,80 +75,68 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     }
   }, [filesData]);
 
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab);
-  };
-
-  const handleKnowledgeBaseSelect = (knowledgeBase: KnowledgeBase) => {
-    setSelectedKnowledgeBase(knowledgeBase);
-    handleTabChange("upload");
-  };
-
-  const handleDeleteKnowledgeBase = (knowledgeBase: KnowledgeBase) => {
-    setKnowledgeBaseToDelete(knowledgeBase);
-    setShowDeleteMessage(true);
-    setPendingDeletions((prev) => [...prev, knowledgeBase.catalogId]);
-
-    const timer = setTimeout(() => {
-      actuallyDeleteKnowledgeBase();
-    }, DELETE_KNOWLEDGE_BASE_TIMEOUT);
-
-    setDeletionTimer(timer);
-  };
-
-  const actuallyDeleteKnowledgeBase = async () => {
-    if (!selectedNamespace || !accessToken || !knowledgeBaseToDelete) return;
-
-    try {
-      await deleteKnowledgeBase.mutateAsync({
-        ownerId: selectedNamespace,
-        kbId: knowledgeBaseToDelete.catalogId,
-        accessToken,
-      });
-      if (
-        selectedKnowledgeBase?.catalogId === knowledgeBaseToDelete.catalogId
-      ) {
-        setSelectedKnowledgeBase(null);
-        setActiveTab("catalogs");
-      }
-      refetchKnowledgeBases();
-    } catch (error) {
-      console.error("Error deleting catalog:", error);
-    } finally {
-      cleanupDeleteState();
+  const handleTabChangeAttempt = (tab: string) => {
+    if (hasUnsavedChanges) {
+      setShowWarnDialog(true);
+      setPendingTabChange(tab);
+    } else {
+      setActiveTab(tab);
     }
   };
 
-  const cleanupDeleteState = () => {
-    setShowDeleteMessage(false);
-    setKnowledgeBaseToDelete(null);
-    setPendingDeletions((prev) =>
-      prev.filter((id) => id !== knowledgeBaseToDelete?.catalogId),
-    );
-    if (deletionTimer) {
-      clearTimeout(deletionTimer);
-      setDeletionTimer(null);
+  const handleWarnDialogClose = async (): Promise<void> => {
+    return new Promise((resolve) => {
+      setShowWarnDialog(false);
+      setPendingTabChange(null);
+      resolve();
+    });
+  };
+
+  const handleWarnDialogDiscard = () => {
+    if (pendingTabChange) {
+      setActiveTab(pendingTabChange);
     }
-  };
-
-  const undoDelete = () => {
-    cleanupDeleteState();
-  };
-
-  const handleCloseDeleteMessage = () => {
-    actuallyDeleteKnowledgeBase();
+    setShowWarnDialog(false);
+    setPendingTabChange(null);
+    setHasUnsavedChanges(false);
   };
 
   const handleProcessFile = () => {
     setShowCreditUsage(true);
-    setActiveTab("catalogs");
+    setActiveTab("files");
     setIsProcessed(false);
+    setHasUnsavedChanges(false);
 
     const timer = setTimeout(() => {
       setShowCreditUsage(false);
     }, CREDIT_TIMEOUT);
 
     setCreditUsageTimer(timer);
+  };
+
+  const handleKnowledgeBaseSelect = (knowledgeBase: KnowledgeBase) => {
+    setSelectedKnowledgeBase(knowledgeBase);
+    setActiveTab("upload");
+    setHasUnsavedChanges(false);
+  };
+
+  const handleDeleteKnowledgeBase = async (knowledgeBase: KnowledgeBase) => {
+    if (!selectedNamespace || !accessToken) return;
+
+    try {
+      await deleteKnowledgeBase.mutateAsync({
+        ownerId: selectedNamespace,
+        kbId: knowledgeBase.catalogId,
+        accessToken,
+      });
+      if (selectedKnowledgeBase?.catalogId === knowledgeBase.catalogId) {
+        setSelectedKnowledgeBase(null);
+        setActiveTab("catalogs");
+      }
+      refetchKnowledgeBases();
+    } catch (error) {
+      console.error("Error deleting catalog:", error);
+    }
   };
 
   const handleCloseCreditUsageMessage = () => {
@@ -167,30 +148,21 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   };
 
   const handleGoToUpload = () => {
-    handleTabChange("upload");
+    handleTabChangeAttempt("upload");
   };
 
   const handleDeselectKnowledgeBase = () => {
     setSelectedKnowledgeBase(null);
     setActiveTab("catalogs");
+    setHasUnsavedChanges(false);
   };
 
   React.useEffect(() => {
     setSelectedKnowledgeBase(null);
     setActiveTab("catalogs");
+    setHasUnsavedChanges(false);
   }, [selectedNamespace]);
 
-  React.useEffect(() => {
-    if (showDeleteMessage) {
-      const timer = setTimeout(() => {
-        actuallyDeleteKnowledgeBase();
-      }, DELETE_KNOWLEDGE_BASE_TIMEOUT);
-
-      return () => clearTimeout(timer);
-    }
-  }, [showDeleteMessage, actuallyDeleteKnowledgeBase]);
-
-  // Cleanup effect for credit usage timer
   React.useEffect(() => {
     return () => {
       if (creditUsageTimer) {
@@ -201,13 +173,6 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
 
   return (
     <div className="h-screen w-full bg-semantic-bg-alt-primary">
-      {showDeleteMessage && knowledgeBaseToDelete && (
-        <DeleteKnowledgeBaseNotification
-          knowledgeBaseName={knowledgeBaseToDelete.name}
-          handleCloseDeleteMessage={handleCloseDeleteMessage}
-          undoDelete={undoDelete}
-        />
-      )}
       {showCreditUsage && !isLocalEnvironment && (
         <CreditUsageFileNotification
           handleCloseCreditUsageMessage={handleCloseCreditUsageMessage}
@@ -215,28 +180,31 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         />
       )}
       <div className="grid w-full grid-cols-12 gap-6 px-8">
-        <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
-          <Sidebar
-            activeTab={activeTab}
-            onTabChange={handleTabChange}
-            selectedKnowledgeBase={selectedKnowledgeBase}
-            onDeselectKnowledgeBase={handleDeselectKnowledgeBase}
-          />
-        </div>
-        <div className={`sm:col-span-8 md:col-span-9 lg:col-span-10 pt-5`}>
+        {selectedKnowledgeBase && (
+          <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
+            <Sidebar
+              activeTab={activeTab}
+              onTabChange={handleTabChangeAttempt}
+              selectedKnowledgeBase={selectedKnowledgeBase}
+              onDeselectKnowledgeBase={handleDeselectKnowledgeBase}
+            />
+          </div>
+        )}
+        <div className={`${selectedKnowledgeBase ? 'sm:col-span-8 md:col-span-9 lg:col-span-10' : 'col-span-12'} pt-5`}>
           {activeTab === "catalogs" && (
             <KnowledgeBaseTab
               onKnowledgeBaseSelect={handleKnowledgeBaseSelect}
               onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
               accessToken={props.accessToken}
-              pendingDeletions={pendingDeletions}
+              knowledgeBases={knowledgeBases || []}
             />
           )}
           {activeTab === "upload" && selectedKnowledgeBase && (
             <UploadExploreTab
               knowledgeBase={selectedKnowledgeBase}
               onProcessFile={handleProcessFile}
-              onTabChange={handleTabChange}
+              onTabChange={setActiveTab}
+              setHasUnsavedChanges={setHasUnsavedChanges}
             />
           )}
           {activeTab === "files" && selectedKnowledgeBase && (
@@ -261,6 +229,12 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           )}
         </div>
       </div>
+      <WarnDiscardFilesDialog
+        open={showWarnDialog}
+        setOpen={setShowWarnDialog}
+        onCancel={handleWarnDialogClose}
+        onDiscard={handleWarnDialogDiscard}
+      />
     </div>
   );
 };

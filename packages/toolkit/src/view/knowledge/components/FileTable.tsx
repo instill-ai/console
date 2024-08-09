@@ -6,7 +6,7 @@ import {
 } from "../../../lib/react-query-service/knowledge/types";
 import { FileTableHeader } from "./FileTableHeader";
 import { FileTableRow } from "./FileTableRow";
-import { getStatusSortValue } from "./lib/functions";
+import { getStatusSortValue } from "./lib/helpers";
 
 type FileTableProps = {
   files: File[];

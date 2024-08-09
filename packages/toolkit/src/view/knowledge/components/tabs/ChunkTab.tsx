@@ -67,7 +67,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
     return (knowledgeBaseFiles.data?.files || []).filter(
       (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED",
     );
-  }, [knowledgeBaseFiles.isSuccess, knowledgeBaseFiles.data]);
+  }, [knowledgeBaseFiles.data]);
 
   const updateChunkMutation = useUpdateChunk();
 
@@ -129,7 +129,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
   return (
     <div className="flex-col">
       <div className="flex items-center justify-between mb-5">
-        <p className="text-semantic-fg-primary product-headings-heading-2">
+        <p className="text-semantic-fg-primary product-headings-heading-3">
           {knowledgeBase.name}
         </p>
       </div>

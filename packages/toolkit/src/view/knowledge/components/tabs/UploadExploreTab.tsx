@@ -10,12 +10,13 @@ import {
   Form,
   Icons,
   Input,
-  Nullable,
   Separator,
+  Nullable
 } from "@instill-ai/design-system";
 
-import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
+import { InstillStore, useAuthenticatedUserSubscription, useInstillStore, useShallow } from "../../../../lib";
 import {
+  useGetKnowledgeBases,
   useListKnowledgeBaseFiles,
   useProcessKnowledgeBaseFiles,
   useUploadKnowledgeBaseFile,
@@ -24,14 +25,17 @@ import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/typ
 import {
   FILE_ERROR_TIMEOUT,
   MAX_FILE_NAME_LENGTH,
-  MAX_FILE_SIZE,
 } from "../lib/static";
 import {
   DuplicateFileNotification,
   FileSizeNotification,
   FileTooLongNotification,
   IncorrectFormatFileNotification,
+  InsufficientStorageBanner,
+  InsufficientStorageNotification,
 } from "../notifications";
+import { getFileType, getPlanMaxFileSize, getPlanStorageLimit } from "../lib/helpers";
+import Link from "next/link";
 
 // Type guard for File object
 const isFile = (value: unknown): value is File => {
@@ -66,6 +70,7 @@ type UploadExploreTabProps = {
   knowledgeBase: KnowledgeBase;
   onProcessFile: () => void;
   onTabChange: (tab: string) => void;
+  setHasUnsavedChanges: (hasChanges: boolean) => void;
 };
 
 const selector = (store: InstillStore) => ({
@@ -78,6 +83,7 @@ export const UploadExploreTab = ({
   knowledgeBase,
   onProcessFile,
   onTabChange,
+  setHasUnsavedChanges,
 }: UploadExploreTabProps) => {
   const form = useForm<UploadExploreFormData>({
     resolver: zodResolver(UploadExploreFormSchema),
@@ -94,61 +100,81 @@ export const UploadExploreTab = ({
     },
   });
 
-  const [showFileTooLargeMessage, setShowFileTooLargeMessage] =
-    React.useState(false);
-  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] =
-    React.useState(false);
-  const [showDuplicateFileMessage, setShowDuplicateFileMessage] =
-    React.useState(false);
+  const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
+  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] = React.useState(false);
+  const [showDuplicateFileMessage, setShowDuplicateFileMessage] = React.useState(false);
+  const [showFileTooLongMessage, setShowFileTooLongMessage] = React.useState(false);
+  const [showInsufficientStorageMessage, setShowInsufficientStorageMessage] = React.useState(false);
   const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
-  const [showFileTooLongMessage, setShowFileTooLongMessage] =
-    React.useState(false);
   const [tooLongFileName, setTooLongFileName] = React.useState<string>("");
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
   const [processingProgress, setProcessingProgress] = React.useState(0);
-  const [processingFileIndex, setProcessingFileIndex] =
-    React.useState<Nullable<number>>(null);
+  const [processingFileIndex, setProcessingFileIndex] = React.useState<Nullable<number>>(null);
 
   const fileTooLargeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
-  const unsupportedFileTypeTimeoutRef =
-    React.useRef<Nullable<NodeJS.Timeout>>(null);
+  const unsupportedFileTypeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
   const duplicateFileTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
+  const insufficientStorageTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
 
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
-  const { accessToken, selectedNamespace } = useInstillStore(
+
+  const { accessToken, selectedNamespace, enabledQuery } = useInstillStore(
     useShallow(selector),
   );
+  const sub = useAuthenticatedUserSubscription({
+    enabled: enabledQuery,
+    accessToken,
+  });
 
-  const { data: existingFiles } = useListKnowledgeBaseFiles({
+  const { data: existingFiles, refetch: refetchExistingFiles } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
     enabled: Boolean(selectedNamespace),
   });
 
-  const getFileType = (file: File) => {
-    const extension = file.name.split(".").pop()?.toLowerCase();
-    switch (extension) {
-      case "txt":
-        return "FILE_TYPE_TEXT";
-      case "md":
-        return "FILE_TYPE_MARKDOWN";
-      case "pdf":
-        return "FILE_TYPE_PDF";
-      default:
-        return "FILE_TYPE_UNSPECIFIED";
+  const planMaxFileSize = getPlanMaxFileSize(sub.data?.plan || "PLAN_FREEMIUM");
+  const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREEMIUM");
+
+  const { data: allKnowledgeBases, refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
+    accessToken,
+    ownerId: selectedNamespace ?? null,
+    enabled: enabledQuery && !!selectedNamespace,
+  });
+
+  const [remainingStorageSpace, setRemainingStorageSpace] = React.useState(planStorageLimit);
+
+  React.useEffect(() => {
+    if (allKnowledgeBases) {
+      const totalUsed = allKnowledgeBases.reduce((total, kb) => total + parseInt(String(kb.usedStorage)), 0);
+      setRemainingStorageSpace(planStorageLimit - totalUsed);
     }
+  }, [allKnowledgeBases, planStorageLimit]);
+
+  const updateRemainingSpace = (fileSize: number, isAdding: boolean) => {
+    setRemainingStorageSpace(prev => isAdding ? prev - fileSize : prev + fileSize);
   };
 
+  const [showStorageWarning, setShowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
+
   const handleFileUpload = async (file: File) => {
-    if (file.size > MAX_FILE_SIZE) {
+    if (file.size > planMaxFileSize) {
       setIncorrectFileName(file.name);
       setShowFileTooLargeMessage(true);
       fileTooLargeTimeoutRef.current = setTimeout(() => {
         setShowFileTooLargeMessage(false);
+      }, FILE_ERROR_TIMEOUT);
+      return;
+    }
+
+    if (file.size > remainingStorageSpace) {
+      setIncorrectFileName(file.name);
+      setShowInsufficientStorageMessage(true);
+      insufficientStorageTimeoutRef.current = setTimeout(() => {
+        setShowInsufficientStorageMessage(false);
       }, FILE_ERROR_TIMEOUT);
       return;
     }
@@ -169,8 +195,6 @@ export const UploadExploreTab = ({
       return;
     }
 
-    const currentFiles = form.getValues("files");
-
     const isDuplicate = existingFiles?.files?.some(
       (existingFile) => existingFile.name === file.name,
     );
@@ -184,13 +208,19 @@ export const UploadExploreTab = ({
       return;
     }
 
+    const currentFiles = form.getValues("files");
     form.setValue("files", [...currentFiles, file]);
+    setHasUnsavedChanges(true);
+    updateRemainingSpace(file.size, true);
   };
 
   const handleRemoveFile = (index: number) => {
     const currentFiles = form.getValues("files");
+    const removedFile = currentFiles[index] as File;
     const updatedFiles = currentFiles.filter((_, i) => i !== index);
     form.setValue("files", updatedFiles);
+    updateRemainingSpace(removedFile.size, false);
+    setHasUnsavedChanges(updatedFiles.length > 0);
   };
 
   const handleProcessFiles = async () => {
@@ -238,13 +268,13 @@ export const UploadExploreTab = ({
           await processKnowledgeBaseFiles.mutateAsync({
             fileUids: [uploadedFile.fileUid],
             accessToken,
+            namespace: selectedNamespace,
           });
 
           processedFiles.add(file.name);
         } catch (error) {
           if (error instanceof Error) {
             console.error(`Error processing file ${file.name}:`, error.message);
-            // If the file already exists, we'll just skip it. May need to handle other errors in the future
             if (error as Error) {
               console.log(`File ${file.name} already exists, skipping.`);
               processedFiles.add(file.name);
@@ -269,14 +299,13 @@ export const UploadExploreTab = ({
       );
 
       setProcessingProgress(100);
+      await refetchKnowledgeBases();
+      await refetchExistingFiles();
       onProcessFile();
+      setHasUnsavedChanges(false);
       onTabChange("files");
     } catch (error) {
-      if (error instanceof Error) {
-        console.error("Error processing files:", error.message);
-      } else {
-        console.error("Unexpected error processing files:", error);
-      }
+      console.error("Error processing files:", error);
     } finally {
       setIsProcessing(false);
       setProcessingProgress(0);
@@ -284,11 +313,24 @@ export const UploadExploreTab = ({
     }
   };
 
+  React.useEffect(() => {
+    setShowStorageWarning((remainingStorageSpace / planStorageLimit) * 100 <= 5);
+  }, [remainingStorageSpace, planStorageLimit]);
+
   return (
     <div className="mb-32 flex flex-col">
-      <div className="mb-5 flex items-center justify-between">
-        <p className="text-semantic-fg-primary product-headings-heading-2">
+      {showStorageWarning && (
+        <InsufficientStorageBanner
+          setshowStorageWarning={setShowStorageWarning}
+        />
+      )}
+      <div className="flex flex-col items-start justify-start gap-1 mb-2">
+        <p className="text-semantic-fg-primary product-headings-heading-3">
           {knowledgeBase.name}
+        </p>
+        <p className="product-body-text-3-regular flex flex-col gap-1">
+          <span className="text-semantic-fg-secondary">Remaining storage space: {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB</span>
+          <Link href={`/settings/billing/subscriptions`} className="hover:underline text-semantic-accent-default cursor-pointer product-body-text-4-regular">Upgrade your plan for more storage space</Link>
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
@@ -301,11 +343,10 @@ export const UploadExploreTab = ({
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${
-                      isDragging
-                        ? "border-semantic-accent-default"
-                        : "border-semantic-bg-line"
-                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
+                      ? "border-semantic-accent-default"
+                      : "border-semantic-bg-line"
+                      } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
                       setIsDragging(true);
@@ -342,8 +383,8 @@ export const UploadExploreTab = ({
                           >
                             browse computer
                           </label>
-                          <div className="">Support TXT, MARKDOWN, PDF</div>
-                          <div className="">Max 15MB each</div>
+                          <div className="">Support TXT, MARKDOWN, PDF, DOCX, DOC, PPTX, PPT, HTML</div>
+                          <div className="">Max {planMaxFileSize / (1024 * 1024)}MB each</div>
                         </div>
                       </div>
                     </Form.Label>
@@ -351,7 +392,7 @@ export const UploadExploreTab = ({
                       <Input.Core
                         id="upload-file-field"
                         type="file"
-                        accept=".txt,.md,.pdf"
+                        accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html"
                         multiple
                         value={""}
                         onChange={async (e) => {
@@ -422,6 +463,15 @@ export const UploadExploreTab = ({
             setShowFileTooLongMessage(false)
           }
           fileName={tooLongFileName}
+        />
+      )}
+      {showInsufficientStorageMessage && (
+        <InsufficientStorageNotification
+          handleCloseInsufficientStorageMessage={() =>
+            setShowInsufficientStorageMessage(false)
+          }
+          fileName={incorrectFileName}
+          availableSpace={planStorageLimit}
         />
       )}
       <div className="flex flex-col items-end">

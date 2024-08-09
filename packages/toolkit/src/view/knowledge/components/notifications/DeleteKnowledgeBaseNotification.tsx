@@ -1,6 +1,6 @@
 import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 
-import { truncateName } from "../lib/functions";
+import { truncateName } from "../lib/helpers";
 
 type DeleteKnowledgeBaseNotificationProps = {
   knowledgeBaseName: string;

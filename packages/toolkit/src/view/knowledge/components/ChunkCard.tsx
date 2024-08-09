@@ -65,14 +65,14 @@ const ChunkCard = ({
         <p className="text-semantic-fg-secondary product-body-text-3-regular hover:bg-[#CBD2E1] line-clamp-3">
           {chunkContent}
         </p>
-        {/* <div className="flex items-center justify-end gap-1">
+        <div className="flex items-center justify-end gap-1">
           <Tag size="sm" variant="lightNeutral" className="!rounded">
             <Icons.Type01 className="mr-1 h-2.5 w-2.5 stroke-semantic-fg-primary" />
             <span className="text-semantic-fg-primary product-body-text-3-medium">
               {chunk.tokens}
             </span>
           </Tag>
-        </div> */}
+        </div>
       </div>
     </div>
   );
