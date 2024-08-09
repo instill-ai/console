@@ -67,7 +67,16 @@ export const CatalogFilesTab = ({
     pageSize: 100,
   });
 
-  const files = React.useMemo(() => filesData?.files || [], [filesData]);
+  const [files, setFiles] = React.useState<File[]>([]);
+  React.useEffect(() => {
+    setFiles(filesData?.files || []);
+  }, [filesData]);
+
+  React.useEffect(() => {
+    // Refetch files when the component mounts or when the knowledgeBase changes
+    refetchFiles();
+  }, [knowledgeBase, refetchFiles]);
+
 
   const deleteKnowledgeBaseFile = useDeleteKnowledgeBaseFile();
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
