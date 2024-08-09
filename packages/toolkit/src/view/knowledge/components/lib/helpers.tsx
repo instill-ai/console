@@ -47,13 +47,14 @@ export const getFileType = (file: File) => {
     case "pdf":
       return "FILE_TYPE_PDF";
     case "docx":
+      return "FILE_TYPE_DOCX";
     case "doc":
-      return "FILE_TYPE_WORD";
+      return "FILE_TYPE_DOC";
     case "pptx":
+      return "FILE_TYPE_PPTX"
     case "ppt":
-      return "FILE_TYPE_POWERPOINT";
+      return "FILE_TYPE_PPT";
     case "html":
-    case "htm":
       return "FILE_TYPE_HTML";
     default:
       return "FILE_TYPE_UNSPECIFIED";

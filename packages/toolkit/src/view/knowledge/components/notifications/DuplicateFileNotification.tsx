@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Button, Icons } from "@instill-ai/design-system";
 
-import { truncateName } from "../lib/functions";
+import { truncateName } from "../lib/helpers";
 
 type DuplicateFileNotificationProps = {
   deletedFileName: string;

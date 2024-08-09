@@ -17,7 +17,7 @@ import KnowledgeSearchSort, {
   SortAnchor,
   SortOrder,
 } from "../KnowledgeSearchSort";
-import { getKnowledgeBaseLimit } from "../lib/functions";
+import { getKnowledgeBaseLimit } from "../lib/helpers";
 import Link from "next/link";
 
 type KnowledgeBaseTabProps = {

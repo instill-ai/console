@@ -7,7 +7,7 @@ import {
   useGetFileContent,
   useListChunks,
 } from "../../../lib/react-query-service/knowledge";
-import { getFileIcon } from "./lib/functions";
+import { getFileIcon } from "./lib/helpers";
 
 type FileDetailsOverlayProps = {
   fileUid: string;

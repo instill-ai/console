@@ -34,7 +34,7 @@ import {
   InsufficientStorageBanner,
   InsufficientStorageNotification,
 } from "../notifications";
-import { getFileType, getPlanMaxFileSize, getPlanStorageLimit } from "../lib/functions";
+import { getFileType, getPlanMaxFileSize, getPlanStorageLimit } from "../lib/helpers";
 import Link from "next/link";
 
 // Type guard for File object
