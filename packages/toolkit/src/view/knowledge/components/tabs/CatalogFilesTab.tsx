@@ -3,7 +3,6 @@ import { Separator, Skeleton } from "@instill-ai/design-system";
 import {
   InstillStore,
   useAuthenticatedUser,
-  useAuthenticatedUserSubscription,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
@@ -20,11 +19,14 @@ import { FileTable } from "../FileTable";
 import { getPlanStorageLimit } from "../lib/helpers";
 import { InsufficientStorageBanner, UpgradePlanLink } from "../notifications";
 import { EmptyState } from "../EmptyState";
+import { UserSubscription, OrganizationSubscription, Nullable } from "instill-sdk";
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
   onGoToUpload: () => void;
   remainingStorageSpace: number;
+  subscription: Nullable<UserSubscription | OrganizationSubscription >;
+  updateRemainingSpace: (fileSize: number, isAdding: boolean) => void;
 };
 
 const selector = (store: InstillStore) => ({
@@ -37,6 +39,8 @@ export const CatalogFilesTab = ({
   knowledgeBase,
   onGoToUpload,
   remainingStorageSpace,
+  subscription,
+  updateRemainingSpace,
 }: CatalogFilesTabProps) => {
   const [sortConfig, setSortConfig] = React.useState<{
     key: keyof File | "";
@@ -55,11 +59,7 @@ export const CatalogFilesTab = ({
     accessToken,
   });
 
-  const {
-    data: filesData,
-    isLoading,
-    refetch: refetchFiles,
-  } = useListKnowledgeBaseFiles({
+  const filesData = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
@@ -69,24 +69,19 @@ export const CatalogFilesTab = ({
 
   const [files, setFiles] = React.useState<File[]>([]);
   React.useEffect(() => {
-    setFiles(filesData?.files || []);
-  }, [filesData]);
+    setFiles(filesData.data?.files || []);
+  }, [filesData.data]);
 
   React.useEffect(() => {
-    // Refetch files when the component mounts or when the knowledgeBase changes
-    refetchFiles();
-  }, [knowledgeBase, refetchFiles]);
+    filesData.refetch();
+  }, [knowledgeBase, filesData.refetch]);
 
   const deleteKnowledgeBaseFile = useDeleteKnowledgeBaseFile();
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
-  const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = React.useState<Nullable<File>>(null);
 
-  const sub = useAuthenticatedUserSubscription({
-    enabled: enabledQuery,
-    accessToken,
-  });
-
-  const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREE");
+  const plan = subscription?.plan || "PLAN_FREE";
+  const planStorageLimit = getPlanStorageLimit(plan);
 
   const [showStorageWarning, setShowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
 
@@ -100,7 +95,7 @@ export const CatalogFilesTab = ({
       )
     ) {
       interval = setInterval(() => {
-        refetchFiles();
+        filesData.refetch();
       }, 5000);
     }
 
@@ -109,7 +104,7 @@ export const CatalogFilesTab = ({
         clearInterval(interval);
       }
     };
-  }, [files, refetchFiles]);
+  }, [files, filesData]);
 
   const handleFileClick = (file: File) => {
     setSelectedFile(file);
@@ -123,11 +118,15 @@ export const CatalogFilesTab = ({
 
   const handleDelete = async (fileUid: string) => {
     try {
-      await deleteKnowledgeBaseFile.mutateAsync({
-        fileUid,
-        accessToken,
-      });
-      await refetchFiles();
+      const fileToDelete = files.find(file => file.fileUid === fileUid);
+      if (fileToDelete) {
+        await deleteKnowledgeBaseFile.mutateAsync({
+          fileUid,
+          accessToken,
+        });
+        updateRemainingSpace(fileToDelete.size, false);
+      }
+      await filesData.refetch();
     } catch (error) {
       console.error("Error deleting file:", error);
     }
@@ -165,7 +164,7 @@ export const CatalogFilesTab = ({
       <div className="flex flex-col w-full gap-2">
         <div className="flex">
           <div className="flex flex-col w-full">
-            {isLoading ? (
+            {filesData.isLoading ? (
               <div className="p-8">
                 <Skeleton className="w-full h-8 mb-4" />
                 <Skeleton className="w-full h-8 mb-4" />

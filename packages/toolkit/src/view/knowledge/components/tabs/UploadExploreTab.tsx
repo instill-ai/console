@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -14,7 +12,7 @@ import {
   Nullable
 } from "@instill-ai/design-system";
 
-import { InstillStore, useAuthenticatedUserSubscription, useInstillStore, useShallow } from "../../../../lib";
+import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import {
   useListKnowledgeBaseFiles,
   useProcessKnowledgeBaseFiles,
@@ -35,6 +33,7 @@ import {
   UpgradePlanLink,
 } from "../notifications";
 import { getFileType, getPlanMaxFileSize, getPlanStorageLimit } from "../lib/helpers";
+import { UserSubscription, OrganizationSubscription } from "instill-sdk";
 
 // Type guard for File object
 const isFile = (value: unknown): value is File => {
@@ -72,6 +71,7 @@ type UploadExploreTabProps = {
   setHasUnsavedChanges: (hasChanges: boolean) => void;
   remainingStorageSpace: number;
   updateRemainingSpace: (fileSize: number, isAdding: boolean) => void;
+  subscription: Nullable<UserSubscription | OrganizationSubscription >;
 };
 
 const selector = (store: InstillStore) => ({
@@ -87,6 +87,7 @@ export const UploadExploreTab = ({
   setHasUnsavedChanges,
   remainingStorageSpace,
   updateRemainingSpace,
+  subscription,
 }: UploadExploreTabProps) => {
   const form = useForm<UploadExploreFormData>({
     resolver: zodResolver(UploadExploreFormSchema),
@@ -127,20 +128,17 @@ export const UploadExploreTab = ({
   const { accessToken, selectedNamespace, enabledQuery } = useInstillStore(
     useShallow(selector),
   );
-  const sub = useAuthenticatedUserSubscription({
-    enabled: enabledQuery,
-    accessToken,
-  });
 
-  const { data: existingFiles } = useListKnowledgeBaseFiles({
+  const existingFiles = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
     enabled: Boolean(selectedNamespace),
   });
 
-  const planMaxFileSize = getPlanMaxFileSize(sub.data?.plan || "PLAN_FREE");
-  const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREE");
+  const plan = subscription?.plan || "PLAN_FREE";
+  const planMaxFileSize = getPlanMaxFileSize(plan);
+  const planStorageLimit = getPlanStorageLimit(plan);
 
   const [showStorageWarning, setShowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
 
@@ -179,7 +177,7 @@ export const UploadExploreTab = ({
       return;
     }
 
-    const isDuplicate = existingFiles?.files?.some(
+    const isDuplicate = existingFiles.data?.files?.some(
       (existingFile) => existingFile.name === file.name,
     );
 
@@ -311,7 +309,7 @@ export const UploadExploreTab = ({
           {knowledgeBase.name}
         </p>
         <p className="product-body-text-3-regular flex flex-col gap-1">
-          <span className="text-semantic-fg-secondary">Remaining storage space: {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB</span>
+        <span className="text-semantic-fg-secondary">Remaining storage space: {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB</span>
           <UpgradePlanLink pageName="catalog" accessToken={accessToken} enabledQuery={enabledQuery} />
         </p>
       </div>

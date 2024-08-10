@@ -1,6 +1,8 @@
 import { Icons } from "@instill-ai/design-system";
 
 import { FileStatus } from "../../../../lib/react-query-service/knowledge/types";
+import { Nullable, OrganizationSubscription, OrganizationSubscriptionPlan, UserSubscription, UserSubscriptionPlan } from "instill-sdk";
+import { getInstillAPIClient } from "../../../../lib";
 
 export const getStatusSortValue = (status: FileStatus): number => {
   const statusOrder: Record<FileStatus, number> = {
@@ -91,12 +93,11 @@ export const truncateName = (name: string, maxLength: number = 20) => {
   return `${name.slice(0, maxLength)}...`;
 };
 
-export const getPlanMaxFileSize = (plan: string): number => {
+export const getPlanMaxFileSize = (plan: UserSubscriptionPlan | OrganizationSubscriptionPlan): number => {
   switch (plan) {
     case "PLAN_FREE":
       return 15 * 1024 * 1024; // 15MB
-    case "PLAN_PRO":
-    case "PLAN_TEAM_PRO":
+    case "PLAN_TEAM":
     case "PLAN_ENTERPRISE":
       return 150 * 1024 * 1024; // 150MB
     default:
@@ -104,10 +105,10 @@ export const getPlanMaxFileSize = (plan: string): number => {
   }
 };
 
-export const getPlanStorageLimit = (plan: string): number => {
+export const getPlanStorageLimit = (plan: UserSubscriptionPlan | OrganizationSubscriptionPlan): number => {
   switch (plan) {
     case "PLAN_FREE":
-      return 15 * 1024 * 1024; // 50MB
+      return 50 * 1024 * 1024; // 50MB
     case "PLAN_PRO":
       return 500 * 1024 * 1024; // 500MB
     case "PLAN_TEAM":
@@ -118,6 +119,56 @@ export const getPlanStorageLimit = (plan: string): number => {
       return 50 * 1024 * 1024; // Default to 50MB
   }
 };
+
+export const getKnowledgeBaseLimit = (plan: UserSubscriptionPlan | OrganizationSubscriptionPlan): number => {
+  switch (plan) {
+    case "PLAN_FREE":
+      return 10;
+    case "PLAN_PRO":
+      return 50;
+    case "PLAN_TEAM":
+      return 100;
+    case "PLAN_ENTERPRISE":
+      return 500;
+    default:
+      return 10;
+  }
+};
+
+
+export const getSubscriptionInfo = (
+  namespaceType: "user" | "organization" | null,
+  userSub: Nullable<UserSubscription>,
+  orgSub: Nullable<OrganizationSubscription>
+) => {
+  const subscription = namespaceType === "organization" ? orgSub : userSub;
+  const plan = subscription?.plan || "PLAN_FREE";
+  const planStorageLimit = getPlanStorageLimit(plan);
+  const planMaxFileSize = getPlanMaxFileSize(plan);
+  
+  return { subscription, plan, planStorageLimit, planMaxFileSize };
+};
+
+
+export const checkNamespaceType = async (selectedNamespace: string, accessToken: string) => {
+  try {
+    const client = getInstillAPIClient({ accessToken });
+    const type = await client.core.utils.checkNamespaceType({ id: selectedNamespace });
+    return type === "NAMESPACE_USER" ? "user" : "organization";
+  } catch (error) {
+    console.error("Error checking namespace type:", error);
+    return null;
+  }
+};
+
+
+export const calculateRemainingStorage = (
+  planStorageLimit: number,
+  usedStorage: number
+): number => {
+  return Math.max(0, planStorageLimit - usedStorage);
+};
+
 
 export const getPlanStorageLimitMB = (size: number): string => {
   return (size / (1024 * 1024)).toFixed(2);
@@ -137,16 +188,3 @@ export const formatDate = (dateString: string): string => {
   return date.toLocaleString();
 };
 
-export const getKnowledgeBaseLimit = (plan: string) => {
-  switch (plan) {
-    case "PLAN_FREE":
-      return 10;
-    case "PLAN_PRO":
-      return 50;
-    case "PLAN_TEAM_PRO":
-    case "PLAN_ENTERPRISE":
-      return 500;
-    default:
-      return 10;
-  }
-};

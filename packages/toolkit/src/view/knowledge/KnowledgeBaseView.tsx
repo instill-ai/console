@@ -6,6 +6,8 @@ import {
   InstillStore,
   useInstillStore,
   useShallow,
+  useAuthenticatedUserSubscription,
+  useOrganizationSubscription,
 } from "../../lib";
 import {
   useDeleteKnowledgeBase,
@@ -25,8 +27,7 @@ import {
   UploadExploreTab,
 } from "./components/tabs";
 import { WarnDiscardFilesDialog } from "./components";
-import { useAuthenticatedUserSubscription } from "../../lib";
-import { getPlanStorageLimit } from "./components/lib/helpers";
+import { calculateRemainingStorage, checkNamespaceType, getSubscriptionInfo } from "./components/lib/helpers";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -43,11 +44,12 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [isProcessed, setIsProcessed] = React.useState(false);
   const [showCreditUsage, setShowCreditUsage] = React.useState(false);
   const [creditUsageTimer, setCreditUsageTimer] =
-    React.useState<NodeJS.Timeout | null>(null);
+    React.useState<Nullable<NodeJS.Timeout>>(null);
   const [showWarnDialog, setShowWarnDialog] = React.useState(false);
-  const [pendingTabChange, setPendingTabChange] = React.useState<string | null>(null);
+  const [pendingTabChange, setPendingTabChange] =  React.useState<Nullable<string>>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
   const [remainingStorageSpace, setRemainingStorageSpace] = React.useState(0);
+  const [namespaceType, setNamespaceType] = React.useState<Nullable<"user" | "organization">>(null);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector)
@@ -55,13 +57,13 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const isLocalEnvironment = env("NEXT_PUBLIC_APP_ENV") === "CE";
 
   const deleteKnowledgeBase = useDeleteKnowledgeBase();
-  const { data: knowledgeBases, refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
+  const knowledgeBases = useGetKnowledgeBases({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
   });
 
-  const { data: filesData } = useListKnowledgeBaseFiles({
+  const filesData = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace ?? null,
     knowledgeBaseId: selectedKnowledgeBase?.catalogId ?? "",
     accessToken,
@@ -71,30 +73,61 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
       Boolean(selectedKnowledgeBase),
   });
 
-  const sub = useAuthenticatedUserSubscription({
+  const userSub = useAuthenticatedUserSubscription({
     enabled: enabledQuery,
     accessToken,
   });
 
-  const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREEMIUM");
+  const orgSub = useOrganizationSubscription({
+    organizationID: selectedNamespace ? selectedNamespace : null,
+    accessToken,
+    enabled: enabledQuery && namespaceType === "organization",
+  });
+
+ React.useEffect(() => {
+    const getNamespaceType = async () => {
+      if (selectedNamespace && accessToken) {
+        const type = await checkNamespaceType(selectedNamespace, accessToken);
+        setNamespaceType(type);
+      } else {
+        setNamespaceType(null);
+      }
+    };
+
+    getNamespaceType();
+  }, [selectedNamespace, accessToken]);
+
+  const { subscription, plan, planStorageLimit } = getSubscriptionInfo(
+    namespaceType,
+    userSub.data || null,
+    orgSub.data || null
+  );
 
   React.useEffect(() => {
-    if (knowledgeBases) {
-      const totalUsed = knowledgeBases.reduce((total, kb) => total + parseInt(String(kb.usedStorage)), 0);
-      setRemainingStorageSpace(planStorageLimit - totalUsed);
+    if (knowledgeBases.data) {
+      const totalUsed = knowledgeBases.data.reduce((total, kb) => total + parseInt(String(kb.usedStorage)), 0);
+      setRemainingStorageSpace(calculateRemainingStorage(planStorageLimit, totalUsed));
     }
-  }, [knowledgeBases, planStorageLimit]);
+  }, [knowledgeBases.data, planStorageLimit]);
 
-  const updateRemainingSpace = (fileSize: number, isAdding: boolean) => {
-    setRemainingStorageSpace(prev => isAdding ? prev - fileSize : prev + fileSize);
-  };
+  const updateRemainingSpace = React.useCallback((fileSize: number, isAdding: boolean) => {
+    setRemainingStorageSpace(prev => {
+      const newUsedStorage = isAdding 
+        ? planStorageLimit - prev + fileSize
+        : planStorageLimit - prev - fileSize;
+      return calculateRemainingStorage(planStorageLimit, newUsedStorage);
+    });
+  }, [planStorageLimit]);
+
+  console.log(planStorageLimit, plan, namespaceType, subscription)
+
 
   React.useEffect(() => {
-    if (filesData) {
-      const hasChunks = filesData.files.some((file) => file.totalChunks > 0);
+    if (filesData.data) {
+      const hasChunks = filesData.data.files.some((file) => file.totalChunks > 0);
       setIsProcessed(hasChunks);
     }
-  }, [filesData]);
+  }, [filesData.data]);
 
   const handleTabChangeAttempt = (tab: string) => {
     if (hasUnsavedChanges) {
@@ -154,9 +187,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         setSelectedKnowledgeBase(null);
         setActiveTab("catalogs");
       }
-      refetchKnowledgeBases();
+      knowledgeBases.refetch();
     } catch (error) {
-      console.error("Error deleting catalog:", error);
+      console.error("Error deleting knowledge base:", error);
     }
   };
 
@@ -217,26 +250,29 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               onKnowledgeBaseSelect={handleKnowledgeBaseSelect}
               onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
               accessToken={props.accessToken}
-              knowledgeBases={knowledgeBases || []}
+              knowledgeBases={knowledgeBases.data || []}
             />
           )}
-          {activeTab === "upload" && selectedKnowledgeBase && (
-            <UploadExploreTab
-              knowledgeBase={selectedKnowledgeBase}
-              onProcessFile={handleProcessFile}
-              onTabChange={setActiveTab}
-              setHasUnsavedChanges={setHasUnsavedChanges}
-              remainingStorageSpace={remainingStorageSpace}
-              updateRemainingSpace={updateRemainingSpace}
-            />
-          )}
-          {activeTab === "files" && selectedKnowledgeBase && (
-            <CatalogFilesTab
-              knowledgeBase={selectedKnowledgeBase}
-              onGoToUpload={handleGoToUpload}
-              remainingStorageSpace={remainingStorageSpace}
-            />
-          )}
+     {activeTab === "files" && selectedKnowledgeBase && (
+  <CatalogFilesTab
+  knowledgeBase={selectedKnowledgeBase}
+  onGoToUpload={handleGoToUpload}
+  remainingStorageSpace={remainingStorageSpace}
+  updateRemainingSpace={updateRemainingSpace}
+  subscription={subscription}
+/>
+      )}
+      {activeTab === "upload" && selectedKnowledgeBase && (
+        <UploadExploreTab
+        knowledgeBase={selectedKnowledgeBase}
+        onProcessFile={handleProcessFile}
+        onTabChange={setActiveTab}
+        setHasUnsavedChanges={setHasUnsavedChanges}
+        remainingStorageSpace={remainingStorageSpace}
+        updateRemainingSpace={updateRemainingSpace}
+        subscription={subscription}
+        />
+      )}
           {activeTab === "chunks" && selectedKnowledgeBase && (
             <ChunkTab
               knowledgeBase={selectedKnowledgeBase}
