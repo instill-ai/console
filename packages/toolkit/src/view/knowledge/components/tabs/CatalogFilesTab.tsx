@@ -9,7 +9,6 @@ import {
 } from "../../../../lib";
 import {
   useDeleteKnowledgeBaseFile,
-  useGetKnowledgeBases,
   useListKnowledgeBaseFiles,
 } from "../../../../lib/react-query-service/knowledge";
 import {
@@ -25,6 +24,7 @@ import { EmptyState } from "../EmptyState";
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
   onGoToUpload: () => void;
+  remainingStorageSpace: number;
 };
 
 const selector = (store: InstillStore) => ({
@@ -36,6 +36,7 @@ const selector = (store: InstillStore) => ({
 export const CatalogFilesTab = ({
   knowledgeBase,
   onGoToUpload,
+  remainingStorageSpace,
 }: CatalogFilesTabProps) => {
   const [sortConfig, setSortConfig] = React.useState<{
     key: keyof File | "";
@@ -46,7 +47,7 @@ export const CatalogFilesTab = ({
   });
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector),
+    useShallow(selector)
   );
 
   const me = useAuthenticatedUser({
@@ -76,7 +77,6 @@ export const CatalogFilesTab = ({
     refetchFiles();
   }, [knowledgeBase, refetchFiles]);
 
-
   const deleteKnowledgeBaseFile = useDeleteKnowledgeBaseFile();
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
@@ -88,21 +88,6 @@ export const CatalogFilesTab = ({
 
   const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREE");
 
-  const { data: allKnowledgeBases, refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
-    accessToken,
-    ownerId: selectedNamespace ?? null,
-    enabled: enabledQuery && !!selectedNamespace,
-  });
-
-  const [remainingStorageSpace, setRemainingStorageSpace] = React.useState(planStorageLimit);
-
-  React.useEffect(() => {
-    if (allKnowledgeBases) {
-      const totalUsed = allKnowledgeBases.reduce((total, kb) => total + parseInt(String(kb.usedStorage)), 0);
-      setRemainingStorageSpace(planStorageLimit - totalUsed);
-    }
-  }, [allKnowledgeBases, planStorageLimit]);
-
   const [showStorageWarning, setShowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
 
   React.useEffect(() => {
@@ -111,7 +96,7 @@ export const CatalogFilesTab = ({
     if (
       files &&
       files.some(
-        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED",
+        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED"
       )
     ) {
       interval = setInterval(() => {
@@ -143,7 +128,6 @@ export const CatalogFilesTab = ({
         accessToken,
       });
       await refetchFiles();
-      await refetchKnowledgeBases();
     } catch (error) {
       console.error("Error deleting file:", error);
     }

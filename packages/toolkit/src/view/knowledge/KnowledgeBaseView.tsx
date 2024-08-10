@@ -25,6 +25,8 @@ import {
   UploadExploreTab,
 } from "./components/tabs";
 import { WarnDiscardFilesDialog } from "./components";
+import { useAuthenticatedUserSubscription } from "../../lib";
+import { getPlanStorageLimit } from "./components/lib/helpers";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -45,6 +47,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [showWarnDialog, setShowWarnDialog] = React.useState(false);
   const [pendingTabChange, setPendingTabChange] = React.useState<string | null>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
+  const [remainingStorageSpace, setRemainingStorageSpace] = React.useState(0);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector)
@@ -67,6 +70,24 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
       Boolean(selectedNamespace) &&
       Boolean(selectedKnowledgeBase),
   });
+
+  const sub = useAuthenticatedUserSubscription({
+    enabled: enabledQuery,
+    accessToken,
+  });
+
+  const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREEMIUM");
+
+  React.useEffect(() => {
+    if (knowledgeBases) {
+      const totalUsed = knowledgeBases.reduce((total, kb) => total + parseInt(String(kb.usedStorage)), 0);
+      setRemainingStorageSpace(planStorageLimit - totalUsed);
+    }
+  }, [knowledgeBases, planStorageLimit]);
+
+  const updateRemainingSpace = (fileSize: number, isAdding: boolean) => {
+    setRemainingStorageSpace(prev => isAdding ? prev - fileSize : prev + fileSize);
+  };
 
   React.useEffect(() => {
     if (filesData) {
@@ -205,12 +226,15 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               onProcessFile={handleProcessFile}
               onTabChange={setActiveTab}
               setHasUnsavedChanges={setHasUnsavedChanges}
+              remainingStorageSpace={remainingStorageSpace}
+              updateRemainingSpace={updateRemainingSpace}
             />
           )}
           {activeTab === "files" && selectedKnowledgeBase && (
             <CatalogFilesTab
               knowledgeBase={selectedKnowledgeBase}
               onGoToUpload={handleGoToUpload}
+              remainingStorageSpace={remainingStorageSpace}
             />
           )}
           {activeTab === "chunks" && selectedKnowledgeBase && (

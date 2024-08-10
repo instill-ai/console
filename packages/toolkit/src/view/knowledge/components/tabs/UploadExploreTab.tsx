@@ -16,7 +16,6 @@ import {
 
 import { InstillStore, useAuthenticatedUserSubscription, useInstillStore, useShallow } from "../../../../lib";
 import {
-  useGetKnowledgeBases,
   useListKnowledgeBaseFiles,
   useProcessKnowledgeBaseFiles,
   useUploadKnowledgeBaseFile,
@@ -71,6 +70,8 @@ type UploadExploreTabProps = {
   onProcessFile: () => void;
   onTabChange: (tab: string) => void;
   setHasUnsavedChanges: (hasChanges: boolean) => void;
+  remainingStorageSpace: number;
+  updateRemainingSpace: (fileSize: number, isAdding: boolean) => void;
 };
 
 const selector = (store: InstillStore) => ({
@@ -84,6 +85,8 @@ export const UploadExploreTab = ({
   onProcessFile,
   onTabChange,
   setHasUnsavedChanges,
+  remainingStorageSpace,
+  updateRemainingSpace,
 }: UploadExploreTabProps) => {
   const form = useForm<UploadExploreFormData>({
     resolver: zodResolver(UploadExploreFormSchema),
@@ -129,34 +132,15 @@ export const UploadExploreTab = ({
     accessToken,
   });
 
-  const { data: existingFiles, refetch: refetchExistingFiles } = useListKnowledgeBaseFiles({
+  const { data: existingFiles } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
     enabled: Boolean(selectedNamespace),
   });
 
-  const planMaxFileSize = getPlanMaxFileSize(sub.data?.plan || "PLAN_FREEMIUM");
-  const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREEMIUM");
-
-  const { data: allKnowledgeBases, refetch: refetchKnowledgeBases } = useGetKnowledgeBases({
-    accessToken,
-    ownerId: selectedNamespace ?? null,
-    enabled: enabledQuery && !!selectedNamespace,
-  });
-
-  const [remainingStorageSpace, setRemainingStorageSpace] = React.useState(planStorageLimit);
-
-  React.useEffect(() => {
-    if (allKnowledgeBases) {
-      const totalUsed = allKnowledgeBases.reduce((total, kb) => total + parseInt(String(kb.usedStorage)), 0);
-      setRemainingStorageSpace(planStorageLimit - totalUsed);
-    }
-  }, [allKnowledgeBases, planStorageLimit]);
-
-  const updateRemainingSpace = (fileSize: number, isAdding: boolean) => {
-    setRemainingStorageSpace(prev => isAdding ? prev - fileSize : prev + fileSize);
-  };
+  const planMaxFileSize = getPlanMaxFileSize(sub.data?.plan || "PLAN_FREE");
+  const planStorageLimit = getPlanStorageLimit(sub.data?.plan || "PLAN_FREE");
 
   const [showStorageWarning, setShowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
 
@@ -299,8 +283,6 @@ export const UploadExploreTab = ({
       );
 
       setProcessingProgress(100);
-      await refetchKnowledgeBases();
-      await refetchExistingFiles();
       onProcessFile();
       setHasUnsavedChanges(false);
       onTabChange("files");
