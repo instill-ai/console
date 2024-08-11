@@ -3,11 +3,7 @@ import * as z from "zod";
 
 import { Separator, Skeleton } from "@instill-ai/design-system";
 
-import {
-  InstillStore,
-  useInstillStore,
-  useShallow,
-} from "../../../../lib";
+import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import {
   useCreateKnowledgeBase,
   useGetKnowledgeBases,

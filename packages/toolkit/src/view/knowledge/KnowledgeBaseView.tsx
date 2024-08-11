@@ -144,9 +144,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     }
   }, [filesData.data]);
 
-  const knowledgeBaseLimit = React.useMemo(() =>
-    getKnowledgeBaseLimit(plan),
-    [plan]
+  const knowledgeBaseLimit = React.useMemo(
+    () => getKnowledgeBaseLimit(plan),
+    [plan],
   );
 
   const handleTabChangeAttempt = (tab: string) => {
