@@ -268,10 +268,11 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           </div>
         )}
         <div
-          className={`${selectedKnowledgeBase
-            ? "sm:col-span-8 md:col-span-9 lg:col-span-10"
-            : "col-span-12"
-            } pt-5`}
+          className={`${
+            selectedKnowledgeBase
+              ? "sm:col-span-8 md:col-span-9 lg:col-span-10"
+              : "col-span-12"
+          } pt-5`}
         >
           {activeTab === "catalogs" && (
             <KnowledgeBaseTab
