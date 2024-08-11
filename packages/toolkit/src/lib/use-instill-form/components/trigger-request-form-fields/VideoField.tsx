@@ -31,6 +31,13 @@ export const VideoField = ({
   const [videoFile, setVideoFile] = React.useState<Nullable<File>>();
   const inputRef = React.useRef<HTMLInputElement>(null);
 
+  const videoUrl = React.useMemo(() => {
+    if (videoFile) {
+      return URL.createObjectURL(videoFile);
+    }
+    return null;
+  }, [videoFile]);
+
   return isHidden ? null : (
     <Form.Field
       key={keyPrefix ? `${keyPrefix}-${path}` : path}
@@ -51,11 +58,8 @@ export const VideoField = ({
             />
 
             <div className="w-full">
-              {videoFile ? (
-                <VideoPreview
-                  src={URL.createObjectURL(videoFile)}
-                  className={mode === "build" ? "h-[150px]" : "h-[360px]"}
-                />
+              {videoUrl ? (
+                <VideoPreview src={videoUrl} className="max-h-[360px]" />
               ) : (
                 <div
                   key={`${path}-image-placeholder`}
