@@ -20,6 +20,7 @@ import { Sidebar, WarnDiscardFilesDialog } from "./components";
 import {
   calculateRemainingStorage,
   checkNamespaceType,
+  getKnowledgeBaseLimit,
   getSubscriptionInfo,
 } from "./components/lib/helpers";
 import { CREDIT_TIMEOUT } from "./components/lib/static";
@@ -142,6 +143,11 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
       setIsProcessed(hasChunks);
     }
   }, [filesData.data]);
+
+  const knowledgeBaseLimit = React.useMemo(() =>
+    getKnowledgeBaseLimit(plan),
+    [plan]
+  );
 
   const handleTabChangeAttempt = (tab: string) => {
     if (hasUnsavedChanges) {
@@ -267,6 +273,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
               accessToken={props.accessToken}
               knowledgeBases={knowledgeBases.data || []}
+              knowledgeBaseLimit={knowledgeBaseLimit}
             />
           )}
           {activeTab === "files" && selectedKnowledgeBase && (

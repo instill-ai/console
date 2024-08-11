@@ -5,7 +5,6 @@ import { Separator, Skeleton } from "@instill-ai/design-system";
 
 import {
   InstillStore,
-  useAuthenticatedUserSubscription,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
@@ -22,7 +21,6 @@ import KnowledgeSearchSort, {
   SortAnchor,
   SortOrder,
 } from "../KnowledgeSearchSort";
-import { getKnowledgeBaseLimit } from "../lib/helpers";
 import { UpgradePlanLink } from "../notifications";
 
 type KnowledgeBaseTabProps = {
@@ -30,6 +28,7 @@ type KnowledgeBaseTabProps = {
   accessToken: string | null;
   onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
   knowledgeBases: KnowledgeBase[];
+  knowledgeBaseLimit: number;
 };
 
 type EditKnowledgeDialogData = {
@@ -56,6 +55,7 @@ export const KnowledgeBaseTab = ({
   accessToken,
   onDeleteKnowledgeBase,
   knowledgeBases,
+  knowledgeBaseLimit,
 }: KnowledgeBaseTabProps) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -75,15 +75,6 @@ export const KnowledgeBaseTab = ({
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
   });
-
-  const subscription = useAuthenticatedUserSubscription({
-    enabled: enabledQuery,
-    accessToken: accessToken || "",
-  });
-
-  const knowledgeBaseLimit = getKnowledgeBaseLimit(
-    subscription?.data?.plan || "PLAN_FREE",
-  );
 
   React.useEffect(() => {
     if (selectedNamespace) {
