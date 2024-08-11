@@ -30,6 +30,7 @@ export const VideoPreview = ({
         ref={videoRef}
         src={src}
         className={cn("w-full object-contain", className)}
+        onEnded={() => setIsPlaying(false)}
       />
       {isPlaying ? (
         <div className="absolute bottom-0 left-0 right-0 top-0 z-10 flex items-center justify-center">
