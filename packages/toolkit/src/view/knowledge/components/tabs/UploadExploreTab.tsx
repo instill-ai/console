@@ -462,6 +462,7 @@ export const UploadExploreTab = ({
             setShowFileTooLargeMessage(false)
           }
           fileName={incorrectFileName}
+          planMaxFileSize={planMaxFileSize}
         />
       )}
       {showUnsupportedFileMessage && (
