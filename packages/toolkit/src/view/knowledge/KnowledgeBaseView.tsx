@@ -155,6 +155,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
       setPendingTabChange(tab);
     } else {
       setActiveTab(tab);
+      if (tab === "catalogs") {
+        setSelectedKnowledgeBase(null);
+      }
     }
   };
 
@@ -169,6 +172,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const handleWarnDialogDiscard = () => {
     if (pendingTabChange) {
       setActiveTab(pendingTabChange);
+      if (pendingTabChange === "catalogs") {
+        setSelectedKnowledgeBase(null);
+      }
     }
     setShowWarnDialog(false);
     setPendingTabChange(null);
@@ -189,9 +195,8 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   };
 
   const handleKnowledgeBaseSelect = (knowledgeBase: KnowledgeBase) => {
+    handleTabChangeAttempt("upload");
     setSelectedKnowledgeBase(knowledgeBase);
-    setActiveTab("upload");
-    setHasUnsavedChanges(false);
   };
 
   const handleDeleteKnowledgeBase = async (knowledgeBase: KnowledgeBase) => {
@@ -226,9 +231,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   };
 
   const handleDeselectKnowledgeBase = () => {
-    setSelectedKnowledgeBase(null);
-    setActiveTab("catalogs");
-    setHasUnsavedChanges(false);
+    handleTabChangeAttempt("catalogs");
   };
 
   React.useEffect(() => {
@@ -265,7 +268,10 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           </div>
         )}
         <div
-          className={`${selectedKnowledgeBase ? "sm:col-span-8 md:col-span-9 lg:col-span-10" : "col-span-12"} pt-5`}
+          className={`${selectedKnowledgeBase
+            ? "sm:col-span-8 md:col-span-9 lg:col-span-10"
+            : "col-span-12"
+            } pt-5`}
         >
           {activeTab === "catalogs" && (
             <KnowledgeBaseTab
@@ -292,7 +298,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             <UploadExploreTab
               knowledgeBase={selectedKnowledgeBase}
               onProcessFile={handleProcessFile}
-              onTabChange={setActiveTab}
+              onTabChange={handleTabChangeAttempt}
               setHasUnsavedChanges={setHasUnsavedChanges}
               remainingStorageSpace={remainingStorageSpace}
               updateRemainingSpace={updateRemainingSpace}
