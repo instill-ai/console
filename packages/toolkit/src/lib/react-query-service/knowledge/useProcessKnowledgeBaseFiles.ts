@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getInstillAdditionalHeaders } from "instill-sdk";
+
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { File } from "./types";
-import { getInstillAdditionalHeaders } from "instill-sdk";
 
 export function useProcessKnowledgeBaseFiles() {
   const queryClient = useQueryClient();
@@ -11,23 +12,23 @@ export function useProcessKnowledgeBaseFiles() {
     mutationFn: async ({
       fileUids,
       accessToken,
-      namespace,
+      namespaceUid,
     }: {
       fileUids: string[];
       accessToken: Nullable<string>;
-      namespace: Nullable<string>;
+      namespaceUid: Nullable<string>;
     }): Promise<File[]> => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
-      if (!namespace) {
-        return Promise.reject(new Error("namespace not provided"));
+      if (!namespaceUid) {
+        return Promise.reject(new Error("namespaceUid not provided"));
       }
 
       const client = createInstillAxiosClient(accessToken, true);
 
       const additionalHeaders = getInstillAdditionalHeaders({
-        requesterUid: namespace,
+        requesterUid: namespaceUid,
       });
 
       const response = await client.post<{ files: File[] }>(
@@ -35,7 +36,7 @@ export function useProcessKnowledgeBaseFiles() {
         { file_uids: fileUids },
         {
           headers: additionalHeaders,
-        }
+        },
       );
 
       return response.data.files;

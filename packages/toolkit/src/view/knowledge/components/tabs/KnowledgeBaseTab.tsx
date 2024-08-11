@@ -18,7 +18,7 @@ import KnowledgeSearchSort, {
   SortOrder,
 } from "../KnowledgeSearchSort";
 import { getKnowledgeBaseLimit } from "../lib/helpers";
-import Link from "next/link";
+import { UpgradePlanLink } from "../notifications";
 
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
@@ -198,7 +198,7 @@ export const KnowledgeBaseTab = ({
           </p>
           <p className=" product-body-text-3-regular space-x-2">
             <span className="text-semantic-fg-secondary">({filteredAndSortedKnowledgeBases.length}/{knowledgeBaseLimit})</span>
-            <Link className="hover:underline text-semantic-accent-default cursor-pointer" href={`/${selectedNamespace}/subscribe`}>Upgrade your plan to create more catalogs</Link>
+            <UpgradePlanLink pageName="catalog" accessToken={accessToken} enabledQuery={enabledQuery} />
           </p>
         </div>
         <KnowledgeSearchSort

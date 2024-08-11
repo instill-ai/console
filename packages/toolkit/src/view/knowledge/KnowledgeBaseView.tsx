@@ -46,7 +46,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [creditUsageTimer, setCreditUsageTimer] =
     React.useState<Nullable<NodeJS.Timeout>>(null);
   const [showWarnDialog, setShowWarnDialog] = React.useState(false);
-  const [pendingTabChange, setPendingTabChange] =  React.useState<Nullable<string>>(null);
+  const [pendingTabChange, setPendingTabChange] = React.useState<Nullable<string>>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
   const [remainingStorageSpace, setRemainingStorageSpace] = React.useState(0);
   const [namespaceType, setNamespaceType] = React.useState<Nullable<"user" | "organization">>(null);
@@ -84,7 +84,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     enabled: enabledQuery && namespaceType === "organization",
   });
 
- React.useEffect(() => {
+  React.useEffect(() => {
     const getNamespaceType = async () => {
       if (selectedNamespace && accessToken) {
         const type = await checkNamespaceType(selectedNamespace, accessToken);
@@ -112,7 +112,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
 
   const updateRemainingSpace = React.useCallback((fileSize: number, isAdding: boolean) => {
     setRemainingStorageSpace(prev => {
-      const newUsedStorage = isAdding 
+      const newUsedStorage = isAdding
         ? planStorageLimit - prev + fileSize
         : planStorageLimit - prev - fileSize;
       return calculateRemainingStorage(planStorageLimit, newUsedStorage);
@@ -253,26 +253,26 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               knowledgeBases={knowledgeBases.data || []}
             />
           )}
-     {activeTab === "files" && selectedKnowledgeBase && (
-  <CatalogFilesTab
-  knowledgeBase={selectedKnowledgeBase}
-  onGoToUpload={handleGoToUpload}
-  remainingStorageSpace={remainingStorageSpace}
-  updateRemainingSpace={updateRemainingSpace}
-  subscription={subscription}
-/>
-      )}
-      {activeTab === "upload" && selectedKnowledgeBase && (
-        <UploadExploreTab
-        knowledgeBase={selectedKnowledgeBase}
-        onProcessFile={handleProcessFile}
-        onTabChange={setActiveTab}
-        setHasUnsavedChanges={setHasUnsavedChanges}
-        remainingStorageSpace={remainingStorageSpace}
-        updateRemainingSpace={updateRemainingSpace}
-        subscription={subscription}
-        />
-      )}
+          {activeTab === "files" && selectedKnowledgeBase && (
+            <CatalogFilesTab
+              knowledgeBase={selectedKnowledgeBase}
+              onGoToUpload={handleGoToUpload}
+              remainingStorageSpace={remainingStorageSpace}
+              updateRemainingSpace={updateRemainingSpace}
+              subscription={subscription}
+            />
+          )}
+          {activeTab === "upload" && selectedKnowledgeBase && (
+            <UploadExploreTab
+              knowledgeBase={selectedKnowledgeBase}
+              onProcessFile={handleProcessFile}
+              onTabChange={setActiveTab}
+              setHasUnsavedChanges={setHasUnsavedChanges}
+              remainingStorageSpace={remainingStorageSpace}
+              updateRemainingSpace={updateRemainingSpace}
+              subscription={subscription}
+            />
+          )}
           {activeTab === "chunks" && selectedKnowledgeBase && (
             <ChunkTab
               knowledgeBase={selectedKnowledgeBase}

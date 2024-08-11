@@ -12,7 +12,7 @@ import {
   Nullable
 } from "@instill-ai/design-system";
 
-import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
+import { InstillStore, useInstillStore, useShallow, useUserNamespaces } from "../../../../lib";
 import {
   useListKnowledgeBaseFiles,
   useProcessKnowledgeBaseFiles,
@@ -71,7 +71,7 @@ type UploadExploreTabProps = {
   setHasUnsavedChanges: (hasChanges: boolean) => void;
   remainingStorageSpace: number;
   updateRemainingSpace: (fileSize: number, isAdding: boolean) => void;
-  subscription: Nullable<UserSubscription | OrganizationSubscription >;
+  subscription: Nullable<UserSubscription | OrganizationSubscription>;
 };
 
 const selector = (store: InstillStore) => ({
@@ -128,6 +128,8 @@ export const UploadExploreTab = ({
   const { accessToken, selectedNamespace, enabledQuery } = useInstillStore(
     useShallow(selector),
   );
+
+  const namespaces = useUserNamespaces();
 
   const existingFiles = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
@@ -216,6 +218,14 @@ export const UploadExploreTab = ({
     const processedFiles = new Set<string>();
 
     try {
+      const targetNamespace = namespaces.find(
+        (namespace) => namespace.id === selectedNamespace
+      );
+
+      if (!targetNamespace) {
+        throw new Error("Selected namespace not found");
+      }
+
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         if (!isFile(file) || processedFiles.has(file.name)) continue;
@@ -250,7 +260,7 @@ export const UploadExploreTab = ({
           await processKnowledgeBaseFiles.mutateAsync({
             fileUids: [uploadedFile.fileUid],
             accessToken,
-            namespace: selectedNamespace,
+            namespaceUid: targetNamespace.uid,
           });
 
           processedFiles.add(file.name);
@@ -309,7 +319,7 @@ export const UploadExploreTab = ({
           {knowledgeBase.name}
         </p>
         <p className="product-body-text-3-regular flex flex-col gap-1">
-        <span className="text-semantic-fg-secondary">Remaining storage space: {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB</span>
+          <span className="text-semantic-fg-secondary">Remaining storage space: {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB</span>
           <UpgradePlanLink pageName="catalog" accessToken={accessToken} enabledQuery={enabledQuery} />
         </p>
       </div>
