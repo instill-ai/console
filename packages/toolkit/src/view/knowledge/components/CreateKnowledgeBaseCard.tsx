@@ -1,8 +1,8 @@
 import * as React from "react";
-import {
-  Separator,
-  Tooltip,
-} from "@instill-ai/design-system";
+
+import { Separator, Tooltip } from "@instill-ai/design-system";
+
+import { GeneralDeleteResourceDialog } from "../../../components/GeneralDeleteResourceDialog";
 import {
   InstillStore,
   useInstillStore,
@@ -14,8 +14,7 @@ import {
   useListKnowledgeBaseFiles,
 } from "../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
-import { EditKnowledgeDialog, CatalogCardMenu } from "./";
-import { GeneralDeleteResourceDialog } from "../../../components/GeneralDeleteResourceDialog";
+import { CatalogCardMenu, EditKnowledgeDialog } from "./";
 
 type EditKnowledgeDialogData = {
   name: string;
@@ -57,7 +56,7 @@ export const CreateKnowledgeBaseCard = ({
   const cardRef = React.useRef<HTMLDivElement>(null);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
   const { data: filesData } = useListKnowledgeBaseFiles({
@@ -183,9 +182,9 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
               className="absolute w-[300px] max-w-[300px] rounded-md bg-semantic-bg-primary p-4 shadow-lg !z-10"
               style={{
                 left: `${mousePosition.x - 150}px`,
-                top: `${mousePosition.y - 70 }px`,
-                transform: 'translate(-50%, -50%)',
-                pointerEvents: 'none'
+                top: `${mousePosition.y - 70}px`,
+                transform: "translate(-50%, -50%)",
+                pointerEvents: "none",
               }}
             >
               <div className="whitespace-pre-wrap text-xs break-words">

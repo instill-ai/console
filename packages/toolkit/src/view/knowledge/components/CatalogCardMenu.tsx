@@ -1,5 +1,11 @@
-import { Button, DropdownMenu, Icons, Separator } from "@instill-ai/design-system";
 import React from "react";
+
+import {
+  Button,
+  DropdownMenu,
+  Icons,
+  Separator,
+} from "@instill-ai/design-system";
 
 type CatalogCardMenuProps = {
   onDelete: (e: React.MouseEvent) => void;

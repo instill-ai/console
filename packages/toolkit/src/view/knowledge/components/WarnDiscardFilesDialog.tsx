@@ -15,7 +15,6 @@ export const WarnDiscardFilesDialog = ({
   open,
   setOpen,
 }: WarnDiscardFilesDialogProps) => {
-
   return (
     <Dialog.Root open={open} onOpenChange={(open) => setOpen(open)}>
       <Dialog.Content className="!w-[400px]">
@@ -28,7 +27,9 @@ export const WarnDiscardFilesDialog = ({
               File Upload in Progress
             </Dialog.Title>
             <Dialog.Description className="!mx-auto !text-center">
-              You have a file uploading. Leaving the page will terminate the upload. Do you want to stay on this page to complete the file upload?
+              You have a file uploading. Leaving the page will terminate the
+              upload. Do you want to stay on this page to complete the file
+              upload?
             </Dialog.Description>
           </div>
           <div className="flex flex-row gap-x-2">

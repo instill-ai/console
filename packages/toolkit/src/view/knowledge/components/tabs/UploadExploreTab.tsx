@@ -1,5 +1,6 @@
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { OrganizationSubscription, UserSubscription } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -8,11 +9,16 @@ import {
   Form,
   Icons,
   Input,
+  Nullable,
   Separator,
-  Nullable
 } from "@instill-ai/design-system";
 
-import { InstillStore, useInstillStore, useShallow, useUserNamespaces } from "../../../../lib";
+import {
+  InstillStore,
+  useInstillStore,
+  useShallow,
+  useUserNamespaces,
+} from "../../../../lib";
 import {
   useListKnowledgeBaseFiles,
   useProcessKnowledgeBaseFiles,
@@ -20,9 +26,11 @@ import {
 } from "../../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
 import {
-  FILE_ERROR_TIMEOUT,
-  MAX_FILE_NAME_LENGTH,
-} from "../lib/static";
+  getFileType,
+  getPlanMaxFileSize,
+  getPlanStorageLimit,
+} from "../lib/helpers";
+import { FILE_ERROR_TIMEOUT, MAX_FILE_NAME_LENGTH } from "../lib/static";
 import {
   DuplicateFileNotification,
   FileSizeNotification,
@@ -32,8 +40,6 @@ import {
   InsufficientStorageNotification,
   UpgradePlanLink,
 } from "../notifications";
-import { getFileType, getPlanMaxFileSize, getPlanStorageLimit } from "../lib/helpers";
-import { UserSubscription, OrganizationSubscription } from "instill-sdk";
 
 // Type guard for File object
 const isFile = (value: unknown): value is File => {
@@ -104,23 +110,31 @@ export const UploadExploreTab = ({
     },
   });
 
-  const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
-  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] = React.useState(false);
-  const [showDuplicateFileMessage, setShowDuplicateFileMessage] = React.useState(false);
-  const [showFileTooLongMessage, setShowFileTooLongMessage] = React.useState(false);
-  const [showInsufficientStorageMessage, setShowInsufficientStorageMessage] = React.useState(false);
+  const [showFileTooLargeMessage, setShowFileTooLargeMessage] =
+    React.useState(false);
+  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] =
+    React.useState(false);
+  const [showDuplicateFileMessage, setShowDuplicateFileMessage] =
+    React.useState(false);
+  const [showFileTooLongMessage, setShowFileTooLongMessage] =
+    React.useState(false);
+  const [showInsufficientStorageMessage, setShowInsufficientStorageMessage] =
+    React.useState(false);
   const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
   const [tooLongFileName, setTooLongFileName] = React.useState<string>("");
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
   const [processingProgress, setProcessingProgress] = React.useState(0);
-  const [processingFileIndex, setProcessingFileIndex] = React.useState<Nullable<number>>(null);
+  const [processingFileIndex, setProcessingFileIndex] =
+    React.useState<Nullable<number>>(null);
 
   const fileTooLargeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
-  const unsupportedFileTypeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
+  const unsupportedFileTypeTimeoutRef =
+    React.useRef<Nullable<NodeJS.Timeout>>(null);
   const duplicateFileTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
-  const insufficientStorageTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
+  const insufficientStorageTimeoutRef =
+    React.useRef<Nullable<NodeJS.Timeout>>(null);
 
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
@@ -142,7 +156,9 @@ export const UploadExploreTab = ({
   const planMaxFileSize = getPlanMaxFileSize(plan);
   const planStorageLimit = getPlanStorageLimit(plan);
 
-  const [showStorageWarning, setShowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
+  const [showStorageWarning, setShowStorageWarning] = React.useState(
+    (remainingStorageSpace / planStorageLimit) * 100 <= 5,
+  );
 
   const handleFileUpload = async (file: File) => {
     if (file.size > planMaxFileSize) {
@@ -219,7 +235,7 @@ export const UploadExploreTab = ({
 
     try {
       const targetNamespace = namespaces.find(
-        (namespace) => namespace.id === selectedNamespace
+        (namespace) => namespace.id === selectedNamespace,
       );
 
       if (!targetNamespace) {
@@ -304,7 +320,9 @@ export const UploadExploreTab = ({
   };
 
   React.useEffect(() => {
-    setShowStorageWarning((remainingStorageSpace / planStorageLimit) * 100 <= 5);
+    setShowStorageWarning(
+      (remainingStorageSpace / planStorageLimit) * 100 <= 5,
+    );
   }, [remainingStorageSpace, planStorageLimit]);
 
   return (
@@ -319,8 +337,15 @@ export const UploadExploreTab = ({
           {knowledgeBase.name}
         </p>
         <p className="product-body-text-3-regular flex flex-col gap-1">
-          <span className="text-semantic-fg-secondary">Remaining storage space: {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB</span>
-          <UpgradePlanLink pageName="catalog" accessToken={accessToken} enabledQuery={enabledQuery} />
+          <span className="text-semantic-fg-secondary">
+            Remaining storage space:{" "}
+            {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB
+          </span>
+          <UpgradePlanLink
+            pageName="catalog"
+            accessToken={accessToken}
+            enabledQuery={enabledQuery}
+          />
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
@@ -333,10 +358,11 @@ export const UploadExploreTab = ({
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
-                      ? "border-semantic-accent-default"
-                      : "border-semantic-bg-line"
-                      } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${
+                      isDragging
+                        ? "border-semantic-accent-default"
+                        : "border-semantic-bg-line"
+                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
                       setIsDragging(true);
@@ -373,8 +399,13 @@ export const UploadExploreTab = ({
                           >
                             browse computer
                           </label>
-                          <div className="">Support TXT, MARKDOWN, PDF, DOCX, DOC, PPTX, PPT, HTML</div>
-                          <div className="">Max {planMaxFileSize / (1024 * 1024)}MB each</div>
+                          <div className="">
+                            Support TXT, MARKDOWN, PDF, DOCX, DOC, PPTX, PPT,
+                            HTML
+                          </div>
+                          <div className="">
+                            Max {planMaxFileSize / (1024 * 1024)}MB each
+                          </div>
                         </div>
                       </div>
                     </Form.Label>

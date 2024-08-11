@@ -1,8 +1,15 @@
+import {
+  Nullable,
+  OrganizationSubscription,
+  OrganizationSubscriptionPlan,
+  UserSubscription,
+  UserSubscriptionPlan,
+} from "instill-sdk";
+
 import { Icons } from "@instill-ai/design-system";
 
-import { FileStatus } from "../../../../lib/react-query-service/knowledge/types";
-import { Nullable, OrganizationSubscription, OrganizationSubscriptionPlan, UserSubscription, UserSubscriptionPlan } from "instill-sdk";
 import { getInstillAPIClient } from "../../../../lib";
+import { FileStatus } from "../../../../lib/react-query-service/knowledge/types";
 
 export const getStatusSortValue = (status: FileStatus): number => {
   const statusOrder: Record<FileStatus, number> = {
@@ -32,7 +39,7 @@ export const getFileIcon = (fileType: string) => {
     case "FILE_TYPE_PPT":
       return <Icons.PPTFile className="h-5 w-5" />;
     case "FILE_TYPE_PPTX":
-      return <Icons.PPTXFile className="h-5 w-5" />
+      return <Icons.PPTXFile className="h-5 w-5" />;
     case "FILE_TYPE_HTML":
       return <Icons.HTMLFile className="h-5 w-5" />;
     default:
@@ -55,7 +62,7 @@ export const getFileType = (file: File) => {
     case "doc":
       return "FILE_TYPE_DOC";
     case "pptx":
-      return "FILE_TYPE_PPTX"
+      return "FILE_TYPE_PPTX";
     case "ppt":
       return "FILE_TYPE_PPT";
     case "html":
@@ -80,7 +87,7 @@ export const convertFileType = (type: string): string => {
     case "FILE_TYPE_PPTX":
       return "pptx";
     case "FILE_TYPE_PPT":
-      return "ppt"
+      return "ppt";
     case "FILE_TYPE_HTML":
       return "html";
     default:
@@ -93,7 +100,9 @@ export const truncateName = (name: string, maxLength: number = 20) => {
   return `${name.slice(0, maxLength)}...`;
 };
 
-export const getPlanMaxFileSize = (plan: UserSubscriptionPlan | OrganizationSubscriptionPlan): number => {
+export const getPlanMaxFileSize = (
+  plan: UserSubscriptionPlan | OrganizationSubscriptionPlan,
+): number => {
   switch (plan) {
     case "PLAN_FREE":
       return 15 * 1024 * 1024; // 15MB
@@ -105,7 +114,9 @@ export const getPlanMaxFileSize = (plan: UserSubscriptionPlan | OrganizationSubs
   }
 };
 
-export const getPlanStorageLimit = (plan: UserSubscriptionPlan | OrganizationSubscriptionPlan): number => {
+export const getPlanStorageLimit = (
+  plan: UserSubscriptionPlan | OrganizationSubscriptionPlan,
+): number => {
   switch (plan) {
     case "PLAN_FREE":
       return 50 * 1024 * 1024; // 50MB
@@ -120,7 +131,9 @@ export const getPlanStorageLimit = (plan: UserSubscriptionPlan | OrganizationSub
   }
 };
 
-export const getKnowledgeBaseLimit = (plan: UserSubscriptionPlan | OrganizationSubscriptionPlan): number => {
+export const getKnowledgeBaseLimit = (
+  plan: UserSubscriptionPlan | OrganizationSubscriptionPlan,
+): number => {
   switch (plan) {
     case "PLAN_FREE":
       return 10;
@@ -135,25 +148,28 @@ export const getKnowledgeBaseLimit = (plan: UserSubscriptionPlan | OrganizationS
   }
 };
 
-
 export const getSubscriptionInfo = (
   namespaceType: "user" | "organization" | null,
   userSub: Nullable<UserSubscription>,
-  orgSub: Nullable<OrganizationSubscription>
+  orgSub: Nullable<OrganizationSubscription>,
 ) => {
   const subscription = namespaceType === "organization" ? orgSub : userSub;
   const plan = subscription?.plan || "PLAN_FREE";
   const planStorageLimit = getPlanStorageLimit(plan);
   const planMaxFileSize = getPlanMaxFileSize(plan);
-  
+
   return { subscription, plan, planStorageLimit, planMaxFileSize };
 };
 
-
-export const checkNamespaceType = async (selectedNamespace: string, accessToken: string) => {
+export const checkNamespaceType = async (
+  selectedNamespace: string,
+  accessToken: string,
+) => {
   try {
     const client = getInstillAPIClient({ accessToken });
-    const type = await client.core.utils.checkNamespaceType({ id: selectedNamespace });
+    const type = await client.core.utils.checkNamespaceType({
+      id: selectedNamespace,
+    });
     return type === "NAMESPACE_USER" ? "user" : "organization";
   } catch (error) {
     console.error("Error checking namespace type:", error);
@@ -161,18 +177,16 @@ export const checkNamespaceType = async (selectedNamespace: string, accessToken:
   }
 };
 
-
 export const calculateRemainingStorage = (
   planStorageLimit: number,
-  usedStorage: number
+  usedStorage: number,
 ): number => {
   return Math.max(0, planStorageLimit - usedStorage);
 };
 
-
 export const getPlanStorageLimitMB = (size: number): string => {
   return (size / (1024 * 1024)).toFixed(2);
-}
+};
 
 export const formatFileSize = (bytes: number | undefined): string => {
   if (bytes === undefined || isNaN(bytes)) return "N/A";
@@ -187,4 +201,3 @@ export const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   return date.toLocaleString();
 };
-

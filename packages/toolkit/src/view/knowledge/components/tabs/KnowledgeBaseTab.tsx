@@ -3,7 +3,12 @@ import * as z from "zod";
 
 import { Separator, Skeleton } from "@instill-ai/design-system";
 
-import { InstillStore, useAuthenticatedUserSubscription, useInstillStore, useShallow } from "../../../../lib";
+import {
+  InstillStore,
+  useAuthenticatedUserSubscription,
+  useInstillStore,
+  useShallow,
+} from "../../../../lib";
 import {
   useCreateKnowledgeBase,
   useGetKnowledgeBases,
@@ -54,10 +59,14 @@ export const KnowledgeBaseTab = ({
 }: KnowledgeBaseTabProps) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
-  const [selectedSortOrder, setSelectedSortOrder] = React.useState<SortOrder>("desc");
-  const [selectedSortAnchor, setSelectedSortAnchor] = React.useState<SortAnchor>("createTime");
+  const [selectedSortOrder, setSelectedSortOrder] =
+    React.useState<SortOrder>("desc");
+  const [selectedSortAnchor, setSelectedSortAnchor] =
+    React.useState<SortAnchor>("createTime");
 
-  const { enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
+  const { enabledQuery, selectedNamespace } = useInstillStore(
+    useShallow(selector),
+  );
 
   const createKnowledgeBase = useCreateKnowledgeBase();
   const updateKnowledgeBase = useUpdateKnowledgeBase();
@@ -72,7 +81,9 @@ export const KnowledgeBaseTab = ({
     accessToken: accessToken || "",
   });
 
-  const knowledgeBaseLimit = getKnowledgeBaseLimit(subscription?.data?.plan || "PLAN_FREE");
+  const knowledgeBaseLimit = getKnowledgeBaseLimit(
+    subscription?.data?.plan || "PLAN_FREE",
+  );
 
   React.useEffect(() => {
     if (selectedNamespace) {
@@ -187,7 +198,8 @@ export const KnowledgeBaseTab = ({
     return filtered;
   }, [knowledgeBases, searchTerm, selectedSortAnchor, selectedSortOrder]);
 
-  const hasReachedLimit = filteredAndSortedKnowledgeBases.length >= knowledgeBaseLimit;
+  const hasReachedLimit =
+    filteredAndSortedKnowledgeBases.length >= knowledgeBaseLimit;
 
   return (
     <div className="flex flex-col">
@@ -197,8 +209,14 @@ export const KnowledgeBaseTab = ({
             Catalogs
           </p>
           <p className=" product-body-text-3-regular space-x-2">
-            <span className="text-semantic-fg-secondary">({filteredAndSortedKnowledgeBases.length}/{knowledgeBaseLimit})</span>
-            <UpgradePlanLink pageName="catalog" accessToken={accessToken} enabledQuery={enabledQuery} />
+            <span className="text-semantic-fg-secondary">
+              ({filteredAndSortedKnowledgeBases.length}/{knowledgeBaseLimit})
+            </span>
+            <UpgradePlanLink
+              pageName="catalog"
+              accessToken={accessToken}
+              enabledQuery={enabledQuery}
+            />
           </p>
         </div>
         <KnowledgeSearchSort

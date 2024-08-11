@@ -1,12 +1,13 @@
 import * as React from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
+
 import {
+  Button,
   Dialog,
   Form,
   Input,
-  Button,
   Textarea,
 } from "@instill-ai/design-system";
 
@@ -14,7 +15,12 @@ const MAX_DESCRIPTION_LENGTH = 150;
 
 const EditKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
-  description: z.string().max(MAX_DESCRIPTION_LENGTH, { message: `Description must be ${MAX_DESCRIPTION_LENGTH} characters or less` }).optional(),
+  description: z
+    .string()
+    .max(MAX_DESCRIPTION_LENGTH, {
+      message: `Description must be ${MAX_DESCRIPTION_LENGTH} characters or less`,
+    })
+    .optional(),
   tags: z.array(z.string()).optional(),
 });
 

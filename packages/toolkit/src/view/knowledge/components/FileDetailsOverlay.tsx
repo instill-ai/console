@@ -79,7 +79,10 @@ const FileDetailsOverlay = ({
             const lineEnd = lineStart + line.length;
             if (lineStart <= endPos && lineEnd >= startPos) {
               const highlightStart = Math.max(startPos - lineStart, 0);
-              const highlightEnd = Math.min(endPos - lineStart + 1, line.length);
+              const highlightEnd = Math.min(
+                endPos - lineStart + 1,
+                line.length,
+              );
               return `${line.slice(0, highlightStart)}<span class="bg-semantic-bg-line hover:bg-[#CBD2E1]">${line.slice(highlightStart, highlightEnd)}</span>${line.slice(highlightEnd)}`;
             }
             return line;

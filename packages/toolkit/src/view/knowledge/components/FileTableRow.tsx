@@ -3,7 +3,12 @@ import React from "react";
 import { Button, Dialog, Icons, Tag } from "@instill-ai/design-system";
 
 import { File } from "../../../lib/react-query-service/knowledge/types";
-import { convertFileType, formatFileSize, truncateName, formatDate } from "./lib/helpers";
+import {
+  convertFileType,
+  formatDate,
+  formatFileSize,
+  truncateName,
+} from "./lib/helpers";
 import { StatusTag } from "./StatusTag";
 
 type FileTableRowProps = {
@@ -111,4 +116,3 @@ export const FileTableRow = ({
     </>
   );
 };
-

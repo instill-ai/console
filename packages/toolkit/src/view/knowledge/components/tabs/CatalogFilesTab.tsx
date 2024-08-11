@@ -1,5 +1,12 @@
 import * as React from "react";
+import {
+  Nullable,
+  OrganizationSubscription,
+  UserSubscription,
+} from "instill-sdk";
+
 import { Separator, Skeleton } from "@instill-ai/design-system";
+
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -14,18 +21,17 @@ import {
   File,
   KnowledgeBase,
 } from "../../../../lib/react-query-service/knowledge/types";
+import { EmptyState } from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";
 import { getPlanStorageLimit } from "../lib/helpers";
 import { InsufficientStorageBanner, UpgradePlanLink } from "../notifications";
-import { EmptyState } from "../EmptyState";
-import { UserSubscription, OrganizationSubscription, Nullable } from "instill-sdk";
 
 type CatalogFilesTabProps = {
   knowledgeBase: KnowledgeBase;
   onGoToUpload: () => void;
   remainingStorageSpace: number;
-  subscription: Nullable<UserSubscription | OrganizationSubscription >;
+  subscription: Nullable<UserSubscription | OrganizationSubscription>;
   updateRemainingSpace: (fileSize: number, isAdding: boolean) => void;
 };
 
@@ -51,7 +57,7 @@ export const CatalogFilesTab = ({
   });
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
   const me = useAuthenticatedUser({
@@ -83,7 +89,9 @@ export const CatalogFilesTab = ({
   const plan = subscription?.plan || "PLAN_FREE";
   const planStorageLimit = getPlanStorageLimit(plan);
 
-  const [showStorageWarning, setShowStorageWarning] = React.useState((remainingStorageSpace / planStorageLimit) * 100 <= 5);
+  const [showStorageWarning, setShowStorageWarning] = React.useState(
+    (remainingStorageSpace / planStorageLimit) * 100 <= 5,
+  );
 
   React.useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -91,7 +99,7 @@ export const CatalogFilesTab = ({
     if (
       files &&
       files.some(
-        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED"
+        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED",
       )
     ) {
       interval = setInterval(() => {
@@ -118,7 +126,7 @@ export const CatalogFilesTab = ({
 
   const handleDelete = async (fileUid: string) => {
     try {
-      const fileToDelete = files.find(file => file.fileUid === fileUid);
+      const fileToDelete = files.find((file) => file.fileUid === fileUid);
       if (fileToDelete) {
         await deleteKnowledgeBaseFile.mutateAsync({
           fileUid,
@@ -141,7 +149,9 @@ export const CatalogFilesTab = ({
   };
 
   React.useEffect(() => {
-    setShowStorageWarning((remainingStorageSpace / planStorageLimit) * 100 <= 5);
+    setShowStorageWarning(
+      (remainingStorageSpace / planStorageLimit) * 100 <= 5,
+    );
   }, [remainingStorageSpace, planStorageLimit]);
 
   return (
@@ -156,8 +166,15 @@ export const CatalogFilesTab = ({
           {knowledgeBase.name}
         </p>
         <p className="flex flex-col gap-1">
-          <span className="text-semantic-fg-secondary product-body-text-3-regular">Remaining storage space: {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB</span>
-          <UpgradePlanLink pageName="catalog" accessToken={accessToken} enabledQuery={enabledQuery} />
+          <span className="text-semantic-fg-secondary product-body-text-3-regular">
+            Remaining storage space:{" "}
+            {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB
+          </span>
+          <UpgradePlanLink
+            pageName="catalog"
+            accessToken={accessToken}
+            enabledQuery={enabledQuery}
+          />
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
