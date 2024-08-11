@@ -209,6 +209,25 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     const arrayType = tree.instillFormat.replaceAll("array:", "").split("/")[0];
 
     if (arrayType?.includes("structured")) {
+      // Some time even the type hint is array:semi-structured, backend will still be possible
+      // to return array of string or array of number. So we need to handle that case here
+      if (Array.isArray(propertyValue) && propertyValue.length > 0) {
+        const firstElement = propertyValue[0];
+        if (
+          typeof firstElement === "string" ||
+          typeof firstElement === "number"
+        ) {
+          return (
+            <ComponentOutputFields.ObjectField
+              mode={mode}
+              title={title}
+              object={propertyValue}
+              hideField={hideField}
+            />
+          );
+        }
+      }
+
       return (
         <ComponentOutputFields.ObjectsField
           mode={mode}
