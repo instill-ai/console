@@ -35,10 +35,7 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const ChunkTab = ({
-  knowledgeBase,
-  onGoToUpload,
-}: ChunkTabProps) => {
+export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
   const [expandedFiles, setExpandedFiles] = React.useState<string[]>([]);
   const [selectedChunk, setSelectedChunk] =
     React.useState<Nullable<Chunk>>(null);
@@ -212,5 +209,3 @@ export const ChunkTab = ({
     </div>
   );
 };
-
-export default ChunkTab;
