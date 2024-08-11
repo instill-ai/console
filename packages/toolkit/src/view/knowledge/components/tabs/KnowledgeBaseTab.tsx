@@ -75,6 +75,7 @@ export const KnowledgeBaseTab = ({
 
   const createKnowledgeBase = useCreateKnowledgeBase();
   const updateKnowledgeBase = useUpdateKnowledgeBase();
+  const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
   const { refetch: refetchKnowledgeBases, isLoading } = useGetKnowledgeBases({
     accessToken,
     ownerId: selectedNamespace ?? null,
@@ -206,13 +207,17 @@ export const KnowledgeBaseTab = ({
           </p>
           <p className=" product-body-text-3-regular space-x-2">
             <span className="text-semantic-fg-secondary">
-              ({filteredAndSortedKnowledgeBases.length}/{knowledgeBaseLimit})
+              {isEnterprisePlan
+                ? `(${filteredAndSortedKnowledgeBases.length})`
+                : `(${filteredAndSortedKnowledgeBases.length}/${knowledgeBaseLimit})`}
             </span>
-            <UpgradePlanLink
-              plan={subscription?.plan || "PLAN_FREE"}
-              namespaceType={namespaceType}
-              pageName="catalog"
-            />
+            {!isEnterprisePlan && (
+              <UpgradePlanLink
+                plan={subscription?.plan || "PLAN_FREE"}
+                namespaceType={namespaceType}
+                pageName="catalog"
+              />
+            )}
           </p>
         </div>
         <KnowledgeSearchSort

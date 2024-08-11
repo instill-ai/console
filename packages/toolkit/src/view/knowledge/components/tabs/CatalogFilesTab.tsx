@@ -90,6 +90,7 @@ export const CatalogFilesTab = ({
 
   const plan = subscription?.plan || "PLAN_FREE";
   const planStorageLimit = getPlanStorageLimit(plan);
+  const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
 
   const [showStorageWarning, setShowStorageWarning] = React.useState(
     (remainingStorageSpace / planStorageLimit) * 100 <= 5,
@@ -158,7 +159,7 @@ export const CatalogFilesTab = ({
 
   return (
     <div className="flex flex-col">
-      {showStorageWarning && (
+      {showStorageWarning && !isEnterprisePlan && (
         <InsufficientStorageBanner
           setshowStorageWarning={setShowStorageWarning}
         />
@@ -168,15 +169,19 @@ export const CatalogFilesTab = ({
           {knowledgeBase.name}
         </p>
         <p className="flex flex-col gap-1">
-          <span className="text-semantic-fg-secondary product-body-text-3-regular">
-            Remaining storage space:{" "}
-            {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB
-          </span>
-          <UpgradePlanLink
-            plan={subscription?.plan || "PLAN_FREE"}
-            namespaceType={namespaceType}
-            pageName="catalog"
-          />
+          {!isEnterprisePlan && (
+            <span className="text-semantic-fg-secondary product-body-text-3-regular">
+              Remaining storage space:{" "}
+              {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB
+            </span>
+          )}
+          {!isEnterprisePlan && (
+            <UpgradePlanLink
+              plan={subscription?.plan || "PLAN_FREE"}
+              namespaceType={namespaceType}
+              pageName="catalog"
+            />
+          )}
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />

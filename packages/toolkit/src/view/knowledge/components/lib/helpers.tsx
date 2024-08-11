@@ -126,11 +126,11 @@ export const getPlanStorageLimit = (
     case "PLAN_TEAM":
       return 2 * 1024 * 1024 * 1024; // 2GB
     case "PLAN_ENTERPRISE":
-      return 10 * 1024 * 1024 * 1024; // 10GB
+      return Infinity; // Unlimited storage
     default:
       return 50 * 1024 * 1024; // Default to 50MB
   }
-};
+}
 
 export const getKnowledgeBaseLimit = (
   plan: UserSubscriptionPlan | OrganizationSubscriptionPlan,
@@ -143,7 +143,7 @@ export const getKnowledgeBaseLimit = (
     case "PLAN_TEAM":
       return 100;
     case "PLAN_ENTERPRISE":
-      return 500;
+      return Infinity;
     default:
       return 10;
   }

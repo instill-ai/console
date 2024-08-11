@@ -157,6 +157,7 @@ export const UploadExploreTab = ({
   const plan = subscription?.plan || "PLAN_FREE";
   const planMaxFileSize = getPlanMaxFileSize(plan);
   const planStorageLimit = getPlanStorageLimit(plan);
+  const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
 
   const [showStorageWarning, setShowStorageWarning] = React.useState(
     (remainingStorageSpace / planStorageLimit) * 100 <= 5,
@@ -329,7 +330,7 @@ export const UploadExploreTab = ({
 
   return (
     <div className="mb-32 flex flex-col">
-      {showStorageWarning && (
+      {showStorageWarning && !isEnterprisePlan && (
         <InsufficientStorageBanner
           setshowStorageWarning={setShowStorageWarning}
         />
@@ -339,15 +340,19 @@ export const UploadExploreTab = ({
           {knowledgeBase.name}
         </p>
         <p className="product-body-text-3-regular flex flex-col gap-1">
-          <span className="text-semantic-fg-secondary">
-            Remaining storage space:{" "}
-            {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB
-          </span>
-          <UpgradePlanLink
-            plan={subscription?.plan || "PLAN_FREE"}
-            namespaceType={namespaceType}
-            pageName="upload"
-          />
+          {!isEnterprisePlan && (
+            <span className="text-semantic-fg-secondary">
+              Remaining storage space:{" "}
+              {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB
+            </span>
+          )}
+          {!isEnterprisePlan && (
+            <UpgradePlanLink
+              plan={subscription?.plan || "PLAN_FREE"}
+              namespaceType={namespaceType}
+              pageName="upload"
+            />
+          )}
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
@@ -360,11 +365,10 @@ export const UploadExploreTab = ({
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${
-                      isDragging
-                        ? "border-semantic-accent-default"
-                        : "border-semantic-bg-line"
-                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
+                      ? "border-semantic-accent-default"
+                      : "border-semantic-bg-line"
+                      } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
                       setIsDragging(true);
