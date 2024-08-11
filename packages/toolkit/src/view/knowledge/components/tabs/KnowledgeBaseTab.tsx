@@ -1,4 +1,9 @@
 import * as React from "react";
+import {
+  Nullable,
+  OrganizationSubscription,
+  UserSubscription,
+} from "instill-sdk";
 import * as z from "zod";
 
 import { Separator, Skeleton } from "@instill-ai/design-system";
@@ -18,7 +23,6 @@ import KnowledgeSearchSort, {
   SortOrder,
 } from "../KnowledgeSearchSort";
 import { UpgradePlanLink } from "../notifications";
-import { Nullable, OrganizationSubscription, UserSubscription } from "instill-sdk";
 
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
@@ -56,7 +60,7 @@ export const KnowledgeBaseTab = ({
   knowledgeBases,
   knowledgeBaseLimit,
   namespaceType,
-  subscription
+  subscription,
 }: KnowledgeBaseTabProps) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");

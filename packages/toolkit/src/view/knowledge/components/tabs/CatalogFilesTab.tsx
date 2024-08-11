@@ -48,7 +48,7 @@ export const CatalogFilesTab = ({
   remainingStorageSpace,
   subscription,
   updateRemainingSpace,
-  namespaceType
+  namespaceType,
 }: CatalogFilesTabProps) => {
   const [sortConfig, setSortConfig] = React.useState<{
     key: keyof File | "";

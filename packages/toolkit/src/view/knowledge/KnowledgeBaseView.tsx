@@ -286,7 +286,6 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               updateRemainingSpace={updateRemainingSpace}
               subscription={subscription}
               namespaceType={namespaceType}
-
             />
           )}
           {activeTab === "upload" && selectedKnowledgeBase && (
