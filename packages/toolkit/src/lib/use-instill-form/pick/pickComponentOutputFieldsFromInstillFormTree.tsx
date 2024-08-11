@@ -215,7 +215,8 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         const firstElement = propertyValue[0];
         if (
           typeof firstElement === "string" ||
-          typeof firstElement === "number"
+          typeof firstElement === "number" ||
+          typeof firstElement === "boolean"
         ) {
           return (
             <ComponentOutputFields.ObjectField
