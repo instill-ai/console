@@ -274,6 +274,8 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               accessToken={props.accessToken}
               knowledgeBases={knowledgeBases.data || []}
               knowledgeBaseLimit={knowledgeBaseLimit}
+              namespaceType={namespaceType}
+              subscription={subscription}
             />
           )}
           {activeTab === "files" && selectedKnowledgeBase && (
@@ -283,6 +285,8 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               remainingStorageSpace={remainingStorageSpace}
               updateRemainingSpace={updateRemainingSpace}
               subscription={subscription}
+              namespaceType={namespaceType}
+
             />
           )}
           {activeTab === "upload" && selectedKnowledgeBase && (
@@ -294,6 +298,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               remainingStorageSpace={remainingStorageSpace}
               updateRemainingSpace={updateRemainingSpace}
               subscription={subscription}
+              namespaceType={namespaceType}
             />
           )}
           {activeTab === "chunks" && selectedKnowledgeBase && (

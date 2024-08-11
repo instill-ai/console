@@ -33,6 +33,7 @@ type CatalogFilesTabProps = {
   remainingStorageSpace: number;
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
   updateRemainingSpace: (fileSize: number, isAdding: boolean) => void;
+  namespaceType: Nullable<"user" | "organization">;
 };
 
 const selector = (store: InstillStore) => ({
@@ -47,6 +48,7 @@ export const CatalogFilesTab = ({
   remainingStorageSpace,
   subscription,
   updateRemainingSpace,
+  namespaceType
 }: CatalogFilesTabProps) => {
   const [sortConfig, setSortConfig] = React.useState<{
     key: keyof File | "";
@@ -171,9 +173,9 @@ export const CatalogFilesTab = ({
             {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB
           </span>
           <UpgradePlanLink
+            plan={subscription?.plan || "PLAN_FREE"}
+            namespaceType={namespaceType}
             pageName="catalog"
-            accessToken={accessToken}
-            enabledQuery={enabledQuery}
           />
         </p>
       </div>

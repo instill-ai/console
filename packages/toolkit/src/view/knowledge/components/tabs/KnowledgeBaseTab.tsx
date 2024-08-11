@@ -18,13 +18,16 @@ import KnowledgeSearchSort, {
   SortOrder,
 } from "../KnowledgeSearchSort";
 import { UpgradePlanLink } from "../notifications";
+import { Nullable, OrganizationSubscription, UserSubscription } from "instill-sdk";
 
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
-  accessToken: string | null;
+  accessToken: Nullable<string>;
   onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
   knowledgeBases: KnowledgeBase[];
   knowledgeBaseLimit: number;
+  namespaceType: Nullable<"user" | "organization">;
+  subscription: Nullable<UserSubscription | OrganizationSubscription>;
 };
 
 type EditKnowledgeDialogData = {
@@ -52,6 +55,8 @@ export const KnowledgeBaseTab = ({
   onDeleteKnowledgeBase,
   knowledgeBases,
   knowledgeBaseLimit,
+  namespaceType,
+  subscription
 }: KnowledgeBaseTabProps) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -200,9 +205,9 @@ export const KnowledgeBaseTab = ({
               ({filteredAndSortedKnowledgeBases.length}/{knowledgeBaseLimit})
             </span>
             <UpgradePlanLink
+              plan={subscription?.plan || "PLAN_FREE"}
+              namespaceType={namespaceType}
               pageName="catalog"
-              accessToken={accessToken}
-              enabledQuery={enabledQuery}
             />
           </p>
         </div>

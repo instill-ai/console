@@ -78,6 +78,7 @@ type UploadExploreTabProps = {
   remainingStorageSpace: number;
   updateRemainingSpace: (fileSize: number, isAdding: boolean) => void;
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
+  namespaceType: Nullable<"user" | "organization">;
 };
 
 const selector = (store: InstillStore) => ({
@@ -94,6 +95,7 @@ export const UploadExploreTab = ({
   remainingStorageSpace,
   updateRemainingSpace,
   subscription,
+  namespaceType
 }: UploadExploreTabProps) => {
   const form = useForm<UploadExploreFormData>({
     resolver: zodResolver(UploadExploreFormSchema),
@@ -139,7 +141,7 @@ export const UploadExploreTab = ({
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
 
-  const { accessToken, selectedNamespace, enabledQuery } = useInstillStore(
+  const { accessToken, selectedNamespace } = useInstillStore(
     useShallow(selector),
   );
 
@@ -342,9 +344,9 @@ export const UploadExploreTab = ({
             {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB
           </span>
           <UpgradePlanLink
-            pageName="catalog"
-            accessToken={accessToken}
-            enabledQuery={enabledQuery}
+            plan={subscription?.plan || "PLAN_FREE"}
+            namespaceType={namespaceType}
+            pageName="upload"
           />
         </p>
       </div>
@@ -358,11 +360,10 @@ export const UploadExploreTab = ({
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${
-                      isDragging
-                        ? "border-semantic-accent-default"
-                        : "border-semantic-bg-line"
-                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
+                      ? "border-semantic-accent-default"
+                      : "border-semantic-bg-line"
+                      } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
                       setIsDragging(true);
