@@ -6,16 +6,6 @@ import * as MenubarPrimitive from "@radix-ui/react-menubar";
 import { cn } from "../../utils";
 import { Icons } from "../Icons";
 
-const MenubarMenu = MenubarPrimitive.Menu;
-
-const MenubarGroup = MenubarPrimitive.Group;
-
-const MenubarPortal = MenubarPrimitive.Portal;
-
-const MenubarSub = MenubarPrimitive.Sub;
-
-const MenubarRadioGroup = MenubarPrimitive.RadioGroup;
-
 const MenubarRoot = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Root>
@@ -238,23 +228,42 @@ const MenubarShortcut = ({
     />
   );
 };
-MenubarShortcut.displayname = "MenubarShortcut";
+MenubarShortcut.displayName = "MenubarShortcut";
 
-export const Menubar = {
+type MenubarType = {
+  Root: typeof MenubarRoot;
+  Menu: typeof MenubarPrimitive.Menu;
+  Trigger: typeof MenubarTrigger;
+  Content: typeof MenubarContent;
+  Item: typeof MenubarItem;
+  Separator: typeof MenubarSeparator;
+  Label: typeof MenubarLabel;
+  CheckboxItem: typeof MenubarCheckboxItem;
+  RadioGroup: typeof MenubarPrimitive.RadioGroup;
+  RadioItem: typeof MenubarRadioItem;
+  Portal: typeof MenubarPrimitive.Portal;
+  SubContent: typeof MenubarSubContent;
+  SubTrigger: typeof MenubarSubTrigger;
+  Group: typeof MenubarPrimitive.Group;
+  Sub: typeof MenubarPrimitive.Sub;
+  Shortcut: typeof MenubarShortcut;
+};
+
+export const Menubar: MenubarType = {
   Root: MenubarRoot,
-  Menu: MenubarMenu,
+  Menu: MenubarPrimitive.Menu,
   Trigger: MenubarTrigger,
   Content: MenubarContent,
   Item: MenubarItem,
   Separator: MenubarSeparator,
   Label: MenubarLabel,
   CheckboxItem: MenubarCheckboxItem,
-  RadioGroup: MenubarRadioGroup,
+  RadioGroup: MenubarPrimitive.RadioGroup,
   RadioItem: MenubarRadioItem,
-  Portal: MenubarPortal,
+  Portal: MenubarPrimitive.Portal,
   SubContent: MenubarSubContent,
   SubTrigger: MenubarSubTrigger,
-  Group: MenubarGroup,
-  Sub: MenubarSub,
+  Group: MenubarPrimitive.Group,
+  Sub: MenubarPrimitive.Sub,
   Shortcut: MenubarShortcut,
 };
