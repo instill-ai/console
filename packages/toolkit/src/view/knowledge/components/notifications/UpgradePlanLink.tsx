@@ -18,12 +18,12 @@ export const UpgradePlanLink = ({
       case plan === "PLAN_FREE":
         return {
           text: `Upgrade your plan to create more ${baseText}`,
-          href: "https://console-d0.instill-inc.tech/subscribe",
+          href: "/subscribe",
         };
       case plan === "PLAN_PRO" && namespaceType === "user":
         return {
           text: `Create an organization to add more ${baseText}`,
-          href: "https://console-d0.instill-inc.tech/settings/organizations/new",
+          href: "/settings/organizations/new",
         };
       case plan === "PLAN_TEAM" && namespaceType === "organization":
         return {
