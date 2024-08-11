@@ -130,7 +130,7 @@ export const getPlanStorageLimit = (
     default:
       return 50 * 1024 * 1024; // Default to 50MB
   }
-}
+};
 
 export const getKnowledgeBaseLimit = (
   plan: UserSubscriptionPlan | OrganizationSubscriptionPlan,
