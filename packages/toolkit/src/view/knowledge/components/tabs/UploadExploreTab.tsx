@@ -30,6 +30,7 @@ import {
   getFileType,
   getPlanMaxFileSize,
   getPlanStorageLimit,
+  shouldShowStorageWarning,
 } from "../lib/helpers";
 import { FILE_ERROR_TIMEOUT, MAX_FILE_NAME_LENGTH } from "../lib/constant";
 import {
@@ -161,7 +162,7 @@ export const UploadExploreTab = ({
   const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
 
   const [showStorageWarning, setShowStorageWarning] = React.useState(
-    (remainingStorageSpace / planStorageLimit) * 100 <= 5,
+    shouldShowStorageWarning(remainingStorageSpace, planStorageLimit)
   );
 
   const handleFileUpload = async (file: File) => {
@@ -325,7 +326,7 @@ export const UploadExploreTab = ({
 
   React.useEffect(() => {
     setShowStorageWarning(
-      (remainingStorageSpace / planStorageLimit) * 100 <= 5,
+      shouldShowStorageWarning(remainingStorageSpace, planStorageLimit)
     );
   }, [remainingStorageSpace, planStorageLimit]);
 
@@ -367,8 +368,8 @@ export const UploadExploreTab = ({
                 <Form.Control>
                   <div
                     className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
-                        ? "border-semantic-accent-default"
-                        : "border-semantic-bg-line"
+                      ? "border-semantic-accent-default"
+                      : "border-semantic-bg-line"
                       } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();

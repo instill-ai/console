@@ -25,7 +25,7 @@ import {
 import { EmptyState } from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";
-import { getPlanStorageLimit } from "../lib/helpers";
+import { getPlanStorageLimit, shouldShowStorageWarning } from "../lib/helpers";
 import { InsufficientStorageBanner, UpgradePlanLink } from "../notifications";
 
 type CatalogFilesTabProps = {
@@ -94,7 +94,7 @@ export const CatalogFilesTab = ({
   const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
 
   const [showStorageWarning, setShowStorageWarning] = React.useState(
-    (remainingStorageSpace / planStorageLimit) * 100 <= 5,
+    shouldShowStorageWarning(remainingStorageSpace, planStorageLimit)
   );
 
   React.useEffect(() => {
@@ -154,7 +154,7 @@ export const CatalogFilesTab = ({
 
   React.useEffect(() => {
     setShowStorageWarning(
-      (remainingStorageSpace / planStorageLimit) * 100 <= 5,
+      shouldShowStorageWarning(remainingStorageSpace, planStorageLimit)
     );
   }, [remainingStorageSpace, planStorageLimit]);
 

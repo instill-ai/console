@@ -10,3 +10,4 @@ export const STORAGE_LIMIT_FREE = 50 * 1024 * 1024; // 50MB
 export const STORAGE_LIMIT_PRO = 500 * 1024 * 1024; // 500MB
 export const STORAGE_LIMIT_TEAM = 2 * 1024 * 1024 * 1024; // 2GB
 export const MAX_DESCRIPTION_LENGTH = 150;
+export const STORAGE_WARNING_THRESHOLD = 5; // 5%

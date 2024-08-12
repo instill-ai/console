@@ -10,6 +10,8 @@ import { Icons } from "@instill-ai/design-system";
 
 import { getInstillAPIClient } from "../../../../lib";
 import { FileStatus } from "../../../../lib/react-query-service/knowledge/types";
+import { STORAGE_WARNING_THRESHOLD } from "./constant";
+
 
 export const getStatusSortValue = (status: FileStatus): number => {
   const statusOrder: Record<FileStatus, number> = {
@@ -152,7 +154,7 @@ export const getKnowledgeBaseLimit = (
 export const getSubscriptionInfo = (
   namespaceType: Nullable<"user" | "organization">,
   userSub: Nullable<UserSubscription>,
-    orgSub: Nullable<OrganizationSubscription>,
+  orgSub: Nullable<OrganizationSubscription>,
 ) => {
   const subscription = namespaceType === "organization" ? orgSub : userSub;
   const plan = subscription?.plan || "PLAN_FREE";
@@ -187,6 +189,13 @@ export const calculateRemainingStorage = (
 
 export const getPlanStorageLimitMB = (size: number): string => {
   return (size / (1024 * 1024)).toFixed(2);
+};
+
+export const shouldShowStorageWarning = (
+  remainingStorageSpace: number,
+  planStorageLimit: number
+): boolean => {
+  return (remainingStorageSpace / planStorageLimit) * 100 <= STORAGE_WARNING_THRESHOLD;
 };
 
 export const formatFileSize = (bytes: number | undefined): string => {
