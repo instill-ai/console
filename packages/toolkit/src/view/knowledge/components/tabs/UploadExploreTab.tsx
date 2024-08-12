@@ -30,7 +30,7 @@ import {
   getPlanMaxFileSize,
   getPlanStorageLimit,
 } from "../lib/helpers";
-import { FILE_ERROR_TIMEOUT, MAX_FILE_NAME_LENGTH } from "../lib/static";
+import { FILE_ERROR_TIMEOUT, MAX_FILE_NAME_LENGTH } from "../lib/constant";
 import {
   DuplicateFileNotification,
   FileSizeNotification,
