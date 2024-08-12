@@ -32,6 +32,7 @@ import {
   RetrieveTestTab,
   UploadExploreTab,
 } from "./components/tabs";
+import { cn } from "@instill-ai/design-system";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -91,6 +92,14 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     enabled: enabledQuery && namespaceType === "organization",
   });
 
+  const subscriptionInfo = React.useMemo(() => {
+    return getSubscriptionInfo(
+      namespaceType,
+      userSub.data || null,
+      orgSub.data || null
+    );
+  }, [namespaceType, userSub.data, orgSub.data]);
+
   React.useEffect(() => {
     const getNamespaceType = async () => {
       if (selectedNamespace && accessToken) {
@@ -104,12 +113,6 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     getNamespaceType();
   }, [selectedNamespace, accessToken]);
 
-  const { subscription, plan, planStorageLimit } = getSubscriptionInfo(
-    namespaceType,
-    userSub.data || null,
-    orgSub.data || null,
-  );
-
   React.useEffect(() => {
     if (knowledgeBases.data) {
       const totalUsed = knowledgeBases.data.reduce(
@@ -117,24 +120,24 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         0,
       );
       setRemainingStorageSpace(
-        calculateRemainingStorage(planStorageLimit, totalUsed),
+        calculateRemainingStorage(subscriptionInfo.planStorageLimit, totalUsed)
       );
     }
-  }, [knowledgeBases.data, planStorageLimit]);
+  }, [knowledgeBases.data, subscriptionInfo.planStorageLimit]);
 
   const updateRemainingSpace = React.useCallback(
     (fileSize: number, isAdding: boolean) => {
       setRemainingStorageSpace((prev) => {
         const newUsedStorage = isAdding
-          ? planStorageLimit - prev + fileSize
-          : planStorageLimit - prev - fileSize;
-        return calculateRemainingStorage(planStorageLimit, newUsedStorage);
+          ? subscriptionInfo.planStorageLimit - prev + fileSize
+          : subscriptionInfo.planStorageLimit - prev - fileSize;
+        return calculateRemainingStorage(subscriptionInfo.planStorageLimit, newUsedStorage);
       });
     },
-    [planStorageLimit],
+    [subscriptionInfo.planStorageLimit]
   );
 
-  console.log(planStorageLimit, plan, namespaceType, subscription);
+  console.log(subscriptionInfo.planStorageLimit, subscriptionInfo.plan, namespaceType, subscriptionInfo.subscription);
 
   React.useEffect(() => {
     if (filesData.data) {
@@ -146,8 +149,8 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   }, [filesData.data]);
 
   const knowledgeBaseLimit = React.useMemo(
-    () => getKnowledgeBaseLimit(plan),
-    [plan],
+    () => getKnowledgeBaseLimit(subscriptionInfo.plan),
+    [subscriptionInfo.plan]
   );
 
   const handleTabChangeAttempt = (tab: string, isAutomatic: boolean = false) => {
@@ -254,14 +257,14 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
 
   return (
     <div className="h-screen w-full bg-semantic-bg-alt-primary">
-      {showCreditUsage && !isLocalEnvironment && (
+      {showCreditUsage && !isLocalEnvironment ? (
         <CreditUsageFileNotification
           handleCloseCreditUsageMessage={handleCloseCreditUsageMessage}
           fileName="test"
         />
-      )}
+      ) : null}
       <div className="grid w-full grid-cols-12 gap-6 px-8">
-        {selectedKnowledgeBase && (
+        {selectedKnowledgeBase ? (
           <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
             <Sidebar
               activeTab={activeTab}
@@ -270,14 +273,16 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               onDeselectKnowledgeBase={handleDeselectKnowledgeBase}
             />
           </div>
-        )}
+        ) : null}
         <div
-          className={`${selectedKnowledgeBase
-            ? "sm:col-span-8 md:col-span-9 lg:col-span-10"
-            : "col-span-12"
-            } pt-5`}
+          className={cn(
+            "pt-5",
+            selectedKnowledgeBase
+              ? "sm:col-span-8 md:col-span-9 lg:col-span-10"
+              : "col-span-12"
+          )}
         >
-          {activeTab === "catalogs" && (
+          {activeTab === "catalogs" ? (
             <KnowledgeBaseTab
               onKnowledgeBaseSelect={handleKnowledgeBaseSelect}
               onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
@@ -285,20 +290,20 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               knowledgeBases={knowledgeBases.data || []}
               knowledgeBaseLimit={knowledgeBaseLimit}
               namespaceType={namespaceType}
-              subscription={subscription}
+              subscription={subscriptionInfo.subscription}
             />
-          )}
-          {activeTab === "files" && selectedKnowledgeBase && (
+          ) : null}
+          {activeTab === "files" && selectedKnowledgeBase ? (
             <CatalogFilesTab
               knowledgeBase={selectedKnowledgeBase}
               onGoToUpload={handleGoToUpload}
               remainingStorageSpace={remainingStorageSpace}
               updateRemainingSpace={updateRemainingSpace}
-              subscription={subscription}
+              subscription={subscriptionInfo.subscription}
               namespaceType={namespaceType}
             />
-          )}
-          {activeTab === "upload" && selectedKnowledgeBase && (
+          ) : null}
+          {activeTab === "upload" && selectedKnowledgeBase ? (
             <UploadExploreTab
               knowledgeBase={selectedKnowledgeBase}
               onProcessFile={handleProcessFile}
@@ -306,24 +311,24 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               setHasUnsavedChanges={setHasUnsavedChanges}
               remainingStorageSpace={remainingStorageSpace}
               updateRemainingSpace={updateRemainingSpace}
-              subscription={subscription}
+              subscription={subscriptionInfo.subscription}
               namespaceType={namespaceType}
             />
-          )}
-          {activeTab === "chunks" && selectedKnowledgeBase && (
+          ) : null}
+          {activeTab === "chunks" && selectedKnowledgeBase ? (
             <ChunkTab
               knowledgeBase={selectedKnowledgeBase}
               onGoToUpload={handleGoToUpload}
             />
-          )}
-          {activeTab === "retrieve" && selectedKnowledgeBase && (
+          ) : null}
+          {activeTab === "retrieve" && selectedKnowledgeBase ? (
             <RetrieveTestTab
               knowledgeBase={selectedKnowledgeBase}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}
             />
-          )}
+          ) : null}
         </div>
       </div>
       <WarnDiscardFilesDialog
