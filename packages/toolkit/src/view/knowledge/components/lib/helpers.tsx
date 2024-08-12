@@ -150,9 +150,9 @@ export const getKnowledgeBaseLimit = (
 };
 
 export const getSubscriptionInfo = (
-  namespaceType: "user" | "organization" | null,
+  namespaceType: Nullable<"user" | "organization">,
   userSub: Nullable<UserSubscription>,
-  orgSub: Nullable<OrganizationSubscription>,
+    orgSub: Nullable<OrganizationSubscription>,
 ) => {
   const subscription = namespaceType === "organization" ? orgSub : userSub;
   const plan = subscription?.plan || "PLAN_FREE";
