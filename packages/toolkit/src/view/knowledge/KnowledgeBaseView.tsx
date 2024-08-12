@@ -289,6 +289,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               knowledgeBaseLimit={knowledgeBaseLimit}
               namespaceType={namespaceType}
               subscription={subscriptionInfo.subscription}
+              isLocalEnvironment={isLocalEnvironment}
             />
           ) : null}
           {activeTab === "files" && selectedKnowledgeBase ? (
@@ -299,6 +300,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               updateRemainingSpace={updateRemainingSpace}
               subscription={subscriptionInfo.subscription}
               namespaceType={namespaceType}
+              isLocalEnvironment={isLocalEnvironment}
             />
           ) : null}
           {activeTab === "upload" && selectedKnowledgeBase ? (
@@ -311,6 +313,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               updateRemainingSpace={updateRemainingSpace}
               subscription={subscriptionInfo.subscription}
               namespaceType={namespaceType}
+              isLocalEnvironment={isLocalEnvironment}
             />
           ) : null}
           {activeTab === "chunks" && selectedKnowledgeBase ? (

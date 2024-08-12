@@ -33,6 +33,7 @@ type KnowledgeBaseTabProps = {
   knowledgeBaseLimit: number;
   namespaceType: Nullable<"user" | "organization">;
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
+  isLocalEnvironment: boolean;
 };
 
 type EditKnowledgeDialogData = {
@@ -62,6 +63,7 @@ export const KnowledgeBaseTab = ({
   knowledgeBaseLimit,
   namespaceType,
   subscription,
+  isLocalEnvironment
 }: KnowledgeBaseTabProps) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -209,11 +211,11 @@ export const KnowledgeBaseTab = ({
           </p>
           <p className=" product-body-text-3-regular space-x-2">
             <span className="text-semantic-fg-secondary">
-              {isTeamPlan
+              {isLocalEnvironment || isTeamPlan
                 ? `(${filteredAndSortedKnowledgeBases.length})`
                 : `(${filteredAndSortedKnowledgeBases.length}/${knowledgeBaseLimit})`}
             </span>
-            {!isTeamPlan && (
+            {!isLocalEnvironment && !isTeamPlan && (
               <UpgradePlanLink
                 plan={subscription?.plan || "PLAN_FREE"}
                 namespaceType={namespaceType}
@@ -258,7 +260,7 @@ export const KnowledgeBaseTab = ({
         <div className="grid grid-cols-[repeat(auto-fit,360px)] justify-start gap-[15px]">
           <KnowledgeBaseCard
             onClick={() => setIsCreateDialogOpen(true)}
-            disabled={hasReachedLimit}
+            disabled={isLocalEnvironment ? false : hasReachedLimit}
           />
           {filteredAndSortedKnowledgeBases.map((knowledgeBase) => (
             <CreateKnowledgeBaseCard

@@ -87,6 +87,7 @@ type UploadExploreTabProps = {
   updateRemainingSpace: (fileSize: number, isAdding: boolean) => void;
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
   namespaceType: Nullable<"user" | "organization">;
+  isLocalEnvironment: boolean;
 };
 
 const selector = (store: InstillStore) => ({
@@ -104,6 +105,7 @@ export const UploadExploreTab = ({
   updateRemainingSpace,
   subscription,
   namespaceType,
+  isLocalEnvironment
 }: UploadExploreTabProps) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -339,29 +341,29 @@ export const UploadExploreTab = ({
 
   return (
     <div className="mb-32 flex flex-col">
-      {showStorageWarning && !isEnterprisePlan && (
+      {!isLocalEnvironment && showStorageWarning && !isEnterprisePlan ? (
         <InsufficientStorageBanner
           setshowStorageWarning={setShowStorageWarning}
         />
-      )}
+      ) : null}
       <div className="flex flex-col items-start justify-start gap-1 mb-2">
         <p className="text-semantic-fg-primary product-headings-heading-3">
           {knowledgeBase.name}
         </p>
         <p className="product-body-text-3-regular flex flex-col gap-1">
-          {!isEnterprisePlan && (
+          {!isLocalEnvironment && !isEnterprisePlan ? (
             <span className="text-semantic-fg-secondary">
               Remaining storage space:{" "}
               {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB
             </span>
-          )}
-          {!isEnterprisePlan && (
+          ) : null}
+          {!isLocalEnvironment && !isEnterprisePlan ? (
             <UpgradePlanLink
               plan={subscription?.plan || "PLAN_FREE"}
               namespaceType={namespaceType}
               pageName="upload"
             />
-          )}
+          ) : null}
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />

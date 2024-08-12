@@ -35,6 +35,7 @@ type CatalogFilesTabProps = {
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
   updateRemainingSpace: (fileSize: number, isAdding: boolean) => void;
   namespaceType: Nullable<"user" | "organization">;
+  isLocalEnvironment: boolean;
 };
 
 const selector = (store: InstillStore) => ({
@@ -50,6 +51,7 @@ export const CatalogFilesTab = ({
   subscription,
   updateRemainingSpace,
   namespaceType,
+  isLocalEnvironment
 }: CatalogFilesTabProps) => {
   const [sortConfig, setSortConfig] = React.useState<{
     key: keyof File | "";
@@ -160,29 +162,29 @@ export const CatalogFilesTab = ({
 
   return (
     <div className="flex flex-col mb-10">
-      {showStorageWarning && !isEnterprisePlan && (
+      {!isLocalEnvironment && showStorageWarning && !isEnterprisePlan ? (
         <InsufficientStorageBanner
           setshowStorageWarning={setShowStorageWarning}
         />
-      )}
+      ) : null}
       <div className="flex flex-col items-start justify-start gap-1 mb-2">
         <p className="text-semantic-fg-primary product-headings-heading-3">
           {knowledgeBase.name}
         </p>
         <p className="flex flex-col gap-1">
-          {!isEnterprisePlan && (
+          {!isLocalEnvironment && !isEnterprisePlan ? (
             <span className="text-semantic-fg-secondary product-body-text-3-regular">
               Remaining storage space:{" "}
               {(remainingStorageSpace / (1024 * 1024)).toFixed(2)} MB
             </span>
-          )}
-          {!isEnterprisePlan && (
+          ) : null}
+          {!isLocalEnvironment && !isEnterprisePlan ? (
             <UpgradePlanLink
               plan={subscription?.plan || "PLAN_FREE"}
               namespaceType={namespaceType}
               pageName="catalog"
             />
-          )}
+          ) : null}
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
