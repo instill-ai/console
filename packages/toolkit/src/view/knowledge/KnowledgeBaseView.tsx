@@ -137,8 +137,6 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     [subscriptionInfo.planStorageLimit]
   );
 
-  console.log(subscriptionInfo.planStorageLimit, subscriptionInfo.plan, namespaceType, subscriptionInfo.subscription);
-
   React.useEffect(() => {
     if (filesData.data) {
       const hasChunks = filesData.data.files.some(

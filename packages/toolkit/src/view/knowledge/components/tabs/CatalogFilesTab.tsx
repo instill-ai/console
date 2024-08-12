@@ -159,7 +159,7 @@ export const CatalogFilesTab = ({
   }, [remainingStorageSpace, planStorageLimit]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mb-10">
       {showStorageWarning && !isEnterprisePlan && (
         <InsufficientStorageBanner
           setshowStorageWarning={setShowStorageWarning}

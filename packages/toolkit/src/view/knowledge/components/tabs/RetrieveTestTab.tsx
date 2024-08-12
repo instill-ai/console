@@ -137,7 +137,7 @@ export const RetrieveTestTab = ({
             />
           </div>
 
-          <div className="mb-8">
+          <div className="mb-12">
             <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
             <CodeBlock
               codeString={`${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}/chunks/similarity`}
@@ -145,7 +145,7 @@ export const RetrieveTestTab = ({
               customStyle={defaultCodeSnippetStyles}
             />
           </div>
-          <ModelSectionHeader className="mt-5">JSON Schema</ModelSectionHeader>
+          <ModelSectionHeader>JSON Schema</ModelSectionHeader>
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">Input:</p>
             <CodeBlock
