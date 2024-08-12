@@ -18,7 +18,6 @@ import {
   useCheckIsHidden,
   useUpdaterOnNode,
 } from "../../../lib";
-import { isPipelineGeneralComponent } from "../../../lib/checkComponentType";
 import { GeneralNodeData } from "../../../type";
 import { ComponentOutputReferenceHints } from "../../ComponentOutputReferenceHints";
 import { OpenAdvancedConfigurationButton } from "../../OpenAdvancedConfigurationButton";
@@ -30,7 +29,6 @@ import {
   NodeWrapper,
 } from "../common";
 import { NodeControlPanel } from "../control-panel";
-import { DataConnectorFreeForm } from "./DataConnectorFreeForm";
 
 const selector = (store: InstillStore) => ({
   updateCurrentAdvancedConfigurationNodeID:
@@ -56,7 +54,6 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
   const [forceOpenCollapsibleFormGroups, setForceOpenCollapsibleFormGroups] =
     React.useState<string[]>([]);
   const [noteIsOpen, setNoteIsOpen] = React.useState(false);
-  const [enableEdit, setEnableEdit] = React.useState(false);
   const [supportInstillCredit, updateSupportInstillCredit] =
     React.useState(false);
   const [isUsingInstillCredit, updateIsUsingInstillCredit] =
@@ -191,44 +188,17 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
           </div>
 
           {/* 
-            Data connector free form
-          */}
-
-          {isPipelineGeneralComponent(data) &&
-          data.definition &&
-          "type" in data.definition &&
-          data.definition?.type === "CONNECTOR_TYPE_DATA" &&
-          data.type !== "pinecone" &&
-          data.type !== "gcs" &&
-          data.type !== "google-search" &&
-          data.type !== "redis" &&
-          data.type !== "website" &&
-          data.type !== "restapi" &&
-          data.type !== "bigquery" ? (
-            <DataConnectorFreeForm
-              nodeID={id}
-              component={data}
-              enableEdit={enableEdit}
-              setEnableEdit={setEnableEdit}
-            />
-          ) : null}
-
-          {/* 
             Output properties
           */}
 
           <div className="mb-4 w-full">
-            {!enableEdit ? (
-              <ComponentOutputReferenceHints
-                componentID={id}
-                component={data}
-                task={
-                  selectedConditionMap
-                    ? selectedConditionMap["task"]
-                    : undefined
-                }
-              />
-            ) : null}
+            <ComponentOutputReferenceHints
+              componentID={id}
+              component={data}
+              task={
+                selectedConditionMap ? selectedConditionMap["task"] : undefined
+              }
+            />
           </div>
         </React.Fragment>
       )}

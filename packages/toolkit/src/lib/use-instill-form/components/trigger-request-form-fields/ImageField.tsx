@@ -55,10 +55,7 @@ export const ImageField = ({
                   key={`${path}-${imageFile.name}`}
                   src={URL.createObjectURL(imageFile)}
                   alt={`${path}-${imageFile.name}`}
-                  className={cn(
-                    "w-full object-contain",
-                    mode === "build" ? "h-[150px]" : "h-[360px]",
-                  )}
+                  className="w-full object-contain max-h-[360px]"
                 />
               ) : (
                 <div
