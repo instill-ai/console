@@ -1,3 +1,4 @@
+'use client';
 import React from "react";
 
 import {
@@ -25,7 +26,6 @@ export const CatalogCardMenu = ({
   setIsOpen,
 }: CatalogCardMenuProps) => {
   return (
-    <React.Fragment>
       <div className="flex justify-center z-10">
         <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenu.Trigger asChild>
@@ -73,6 +73,5 @@ export const CatalogCardMenu = ({
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </div>
-    </React.Fragment>
   );
 };

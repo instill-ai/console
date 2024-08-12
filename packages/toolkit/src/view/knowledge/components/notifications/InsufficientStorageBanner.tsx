@@ -1,3 +1,4 @@
+'use client';
 import { useRouter } from "next/navigation";
 
 import { Button, Icons, LinkButton } from "@instill-ai/design-system";
