@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import * as React from "react";
 import { Nullable } from "instill-sdk";
 
 import { Button, Separator, Skeleton } from "@instill-ai/design-system";

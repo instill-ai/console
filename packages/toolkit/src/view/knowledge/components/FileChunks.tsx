@@ -1,5 +1,5 @@
-import React from "react";
-
+'use client';
+import * as React from "react";
 import { cn, Icons, Nullable } from "@instill-ai/design-system";
 
 import {

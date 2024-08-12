@@ -1,4 +1,5 @@
-import { useState } from "react";
+'use client'
+import * as React from 'react'
 
 import {
   Button,
@@ -49,7 +50,7 @@ const mockData = [
 ];
 
 export const ImageTab = ({ knowledgeBase }: ImageTabProps) => {
-  const [expandedFiles, setExpandedFiles] = useState<number[]>([0]);
+  const [expandedFiles, setExpandedFiles] = React.useState<number[]>([0]);
 
   const toggleFileExpansion = (index: number) => {
     if (expandedFiles.includes(index)) {
@@ -128,7 +129,7 @@ export const ImageTab = ({ knowledgeBase }: ImageTabProps) => {
                             </span>
                             <Switch
                               checked={item.status}
-                              onCheckedChange={() => {}}
+                              onCheckedChange={() => { }}
                               className=""
                             ></Switch>
                           </div>

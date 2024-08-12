@@ -1,3 +1,4 @@
+'use client';
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OrganizationSubscription, UserSubscription } from "instill-sdk";
@@ -365,11 +366,10 @@ export const UploadExploreTab = ({
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${
-                      isDragging
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
                         ? "border-semantic-accent-default"
                         : "border-semantic-bg-line"
-                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
+                      } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
                       setIsDragging(true);

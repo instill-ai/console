@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import * as React from "react";
 import { Separator, Tooltip } from "@instill-ai/design-system";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
