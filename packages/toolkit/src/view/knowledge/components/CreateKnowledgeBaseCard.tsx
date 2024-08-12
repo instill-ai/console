@@ -1,20 +1,12 @@
-import * as React from "react";
+"use client";
 
+import React from "react";
 import { Separator, Tooltip } from "@instill-ai/design-system";
-
-import { GeneralDeleteResourceDialog } from "../../../components/GeneralDeleteResourceDialog";
-import {
-  InstillStore,
-  useInstillStore,
-  useQueries,
-  useShallow,
-} from "../../../lib";
-import {
-  getAllChunks,
-  useListKnowledgeBaseFiles,
-} from "../../../lib/react-query-service/knowledge";
+import { InstillStore, useInstillStore, useQueries, useShallow } from "../../../lib";
+import { getAllChunks, useListKnowledgeBaseFiles } from "../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
 import { CatalogCardMenu, EditKnowledgeDialog } from "./";
+import { GeneralDeleteResourceDialog } from "../../../components/GeneralDeleteResourceDialog";
 
 type EditKnowledgeDialogData = {
   name: string;
@@ -25,10 +17,7 @@ type EditKnowledgeDialogData = {
 type CreateKnowledgeBaseCardProps = {
   knowledgeBase: KnowledgeBase;
   onCardClick: () => void;
-  onUpdateKnowledgeBase: (
-    data: EditKnowledgeDialogData,
-    kbId: string,
-  ) => Promise<void>;
+  onUpdateKnowledgeBase: (data: EditKnowledgeDialogData, kbId: string) => Promise<void>;
   onCloneKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
   onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
   disabled?: boolean;
@@ -40,43 +29,38 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const CreateKnowledgeBaseCard = ({
+export const CreateKnowledgeBaseCard: React.FC<CreateKnowledgeBaseCardProps> = ({
   knowledgeBase,
   onCardClick,
   onUpdateKnowledgeBase,
   onCloneKnowledgeBase,
   onDeleteKnowledgeBase,
   disabled = false,
-}: CreateKnowledgeBaseCardProps) => {
+}) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
-  const [isHovered, setIsHovered] = React.useState(false);
-  const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const cardRef = React.useRef<HTMLDivElement>(null);
 
-  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector),
-  );
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
 
   const { data: filesData } = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace || null,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken: accessToken || null,
-    enabled: enabledQuery && isHovered,
+    enabled: enabledQuery,
   });
 
   const chunkQueries = useQueries({
     queries: (filesData?.files || []).map((file) => ({
       queryKey: ["chunks", knowledgeBase.catalogId, file.fileUid],
-      queryFn: () =>
-        getAllChunks(
-          accessToken || "",
-          knowledgeBase.ownerName,
-          knowledgeBase.catalogId,
-          file.fileUid,
-        ),
-      enabled: enabledQuery && isHovered && !!filesData && !!accessToken,
+      queryFn: () => getAllChunks(
+        accessToken || "",
+        knowledgeBase.ownerName,
+        knowledgeBase.catalogId,
+        file.fileUid,
+      ),
+      enabled: enabledQuery && !!filesData && !!accessToken,
     })),
   });
 
@@ -90,8 +74,6 @@ export const CreateKnowledgeBaseCard = ({
   }, [chunkQueries]);
 
   const tooltipContent = React.useMemo(() => {
-    if (!isHovered) return "";
-
     return `
 Converting pipeline ID: ${knowledgeBase.convertingPipelines?.[0] || "N/A"}
 Splitting pipeline ID: ${knowledgeBase.splittingPipelines?.[0] || "N/A"}
@@ -100,7 +82,7 @@ Files #: ${knowledgeBase.totalFiles || "N/A"}
 Text Chunks #: ${totalChunks}
 Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
 `.trim();
-  }, [isHovered, knowledgeBase, totalChunks]);
+  }, [knowledgeBase, totalChunks]);
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -122,36 +104,15 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
     setEditDialogIsOpen(false);
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (cardRef.current) {
-      const rect = cardRef.current.getBoundingClientRect();
-      setMousePosition({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      });
-    }
-  };
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
   return (
     <React.Fragment>
       <Tooltip.Provider>
-        <Tooltip.Root open={isHovered && !isMenuOpen}>
+        <Tooltip.Root>
           <Tooltip.Trigger asChild>
             <div
               ref={cardRef}
               className="flex h-[175px] w-[360px] cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow hover:bg-semantic-bg-base-bg"
               onClick={onCardClick}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              onMouseMove={handleMouseMove}
             >
               <div className="flex items-center justify-between">
                 <div className="product-headings-heading-4">
@@ -180,12 +141,6 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
           <Tooltip.Portal>
             <Tooltip.Content
               className="absolute w-[300px] max-w-[300px] rounded-md bg-semantic-bg-primary p-4 shadow-lg !z-10"
-              style={{
-                left: `${mousePosition.x - 150}px`,
-                top: `${mousePosition.y - 70}px`,
-                transform: "translate(-50%, -50%)",
-                pointerEvents: "none",
-              }}
             >
               <div className="whitespace-pre-wrap text-xs break-words">
                 {tooltipContent}

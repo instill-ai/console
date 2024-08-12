@@ -23,7 +23,7 @@ import {
   getKnowledgeBaseLimit,
   getSubscriptionInfo,
 } from "./components/lib/helpers";
-import { CREDIT_TIMEOUT } from "./components/lib/static";
+import { CREDIT_TIMEOUT } from "./components/lib/constant";
 import { CreditUsageFileNotification } from "./components/notifications";
 import {
   CatalogFilesTab,
