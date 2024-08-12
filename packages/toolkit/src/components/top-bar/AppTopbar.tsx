@@ -50,7 +50,8 @@ export const AppTopbar = ({
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
 
   const isCloud = env("NEXT_PUBLIC_APP_ENV") === "CLOUD";
-  const isExploreRoute = pathname.startsWith("/hub");
+  const isExploreRoute =
+    pathname.startsWith("/featured") || pathname.startsWith("/explore");
 
   return (
     <div className="flex w-full flex-col">
