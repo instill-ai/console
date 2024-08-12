@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Nullable } from "instill-sdk";
 
+import { cn } from "@instill-ai/design-system";
+
 import {
   GeneralAppPageProp,
   InstillStore,
@@ -17,13 +19,13 @@ import {
 import { KnowledgeBase } from "../../lib/react-query-service/knowledge/types";
 import { env } from "../../server";
 import { Sidebar, WarnDiscardFilesDialog } from "./components";
+import { CREDIT_TIMEOUT } from "./components/lib/constant";
 import {
   calculateRemainingStorage,
   checkNamespaceType,
   getKnowledgeBaseLimit,
   getSubscriptionInfo,
 } from "./components/lib/helpers";
-import { CREDIT_TIMEOUT } from "./components/lib/constant";
 import { CreditUsageFileNotification } from "./components/notifications";
 import {
   CatalogFilesTab,
@@ -32,7 +34,6 @@ import {
   RetrieveTestTab,
   UploadExploreTab,
 } from "./components/tabs";
-import { cn } from "@instill-ai/design-system";
 
 export type KnowledgeBaseViewProps = GeneralAppPageProp;
 
@@ -96,7 +97,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     return getSubscriptionInfo(
       namespaceType,
       userSub.data || null,
-      orgSub.data || null
+      orgSub.data || null,
     );
   }, [namespaceType, userSub.data, orgSub.data]);
 
@@ -120,7 +121,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         0,
       );
       setRemainingStorageSpace(
-        calculateRemainingStorage(subscriptionInfo.planStorageLimit, totalUsed)
+        calculateRemainingStorage(subscriptionInfo.planStorageLimit, totalUsed),
       );
     }
   }, [knowledgeBases.data, subscriptionInfo.planStorageLimit]);
@@ -131,10 +132,13 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         const newUsedStorage = isAdding
           ? subscriptionInfo.planStorageLimit - prev + fileSize
           : subscriptionInfo.planStorageLimit - prev - fileSize;
-        return calculateRemainingStorage(subscriptionInfo.planStorageLimit, newUsedStorage);
+        return calculateRemainingStorage(
+          subscriptionInfo.planStorageLimit,
+          newUsedStorage,
+        );
       });
     },
-    [subscriptionInfo.planStorageLimit]
+    [subscriptionInfo.planStorageLimit],
   );
 
   React.useEffect(() => {
@@ -148,10 +152,13 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
 
   const knowledgeBaseLimit = React.useMemo(
     () => getKnowledgeBaseLimit(subscriptionInfo.plan),
-    [subscriptionInfo.plan]
+    [subscriptionInfo.plan],
   );
 
-  const handleTabChangeAttempt = (tab: string, isAutomatic: boolean = false) => {
+  const handleTabChangeAttempt = (
+    tab: string,
+    isAutomatic: boolean = false,
+  ) => {
     setIsAutomaticTabChange(isAutomatic);
     if (hasUnsavedChanges && !isAutomatic) {
       setShowWarnDialog(true);
@@ -277,7 +284,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             "pt-5",
             selectedKnowledgeBase
               ? "sm:col-span-8 md:col-span-9 lg:col-span-10"
-              : "col-span-12"
+              : "col-span-12",
           )}
         >
           {activeTab === "catalogs" ? (

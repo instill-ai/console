@@ -1,4 +1,5 @@
-'use client';
+"use client";
+
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -11,8 +12,8 @@ import {
   Input,
   Textarea,
 } from "@instill-ai/design-system";
-import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
 
+import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
 
 const EditKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),

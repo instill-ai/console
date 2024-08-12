@@ -1,5 +1,7 @@
-'use client';
+"use client";
+
 import * as React from "react";
+
 import {
   Button,
   DropdownMenu,
@@ -35,10 +37,7 @@ export const CatalogCardMenu = ({
             <Icons.DotsHorizontal className="h-4 w-4 stroke-semantic-fg-secondary" />
           </Button>
         </DropdownMenu.Trigger>
-        <DropdownMenu.Content
-          align="end"
-          className="w-[195px] rounded-md !p-0"
-        >
+        <DropdownMenu.Content align="end" className="w-[195px] rounded-md !p-0">
           <DropdownMenu.Item
             onClick={onEdit}
             className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"

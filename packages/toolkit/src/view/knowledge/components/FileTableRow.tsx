@@ -1,5 +1,7 @@
-'use client'
+"use client";
+
 import * as React from "react";
+
 import { Button, Dialog, Icons, Tag } from "@instill-ai/design-system";
 
 import { File } from "../../../lib/react-query-service/knowledge/types";

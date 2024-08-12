@@ -1,12 +1,17 @@
 "use client";
 
 import * as React from "react";
+
 import { Separator, Tooltip } from "@instill-ai/design-system";
+
+import { GeneralDeleteResourceDialog } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import {
+  useGetAllChunks,
+  useListKnowledgeBaseFiles,
+} from "../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
 import { CatalogCardMenu, EditKnowledgeDialog } from "./";
-import { GeneralDeleteResourceDialog } from "../../../components";
-import { useListKnowledgeBaseFiles, useGetAllChunks } from "../../../lib/react-query-service/knowledge";
 
 type EditKnowledgeDialogData = {
   name: string;
@@ -17,7 +22,10 @@ type EditKnowledgeDialogData = {
 type CreateKnowledgeBaseCardProps = {
   knowledgeBase: KnowledgeBase;
   onCardClick: () => void;
-  onUpdateKnowledgeBase: (data: EditKnowledgeDialogData, kbId: string) => Promise<void>;
+  onUpdateKnowledgeBase: (
+    data: EditKnowledgeDialogData,
+    kbId: string,
+  ) => Promise<void>;
   onCloneKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
   onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
   disabled?: boolean;
@@ -42,7 +50,9 @@ export const CreateKnowledgeBaseCard = ({
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const cardRef = React.useRef<HTMLDivElement>(null);
 
-  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
+    useShallow(selector),
+  );
 
   const existingFiles = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
@@ -129,9 +139,7 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
             </div>
           </Tooltip.Trigger>
           <Tooltip.Portal>
-            <Tooltip.Content
-              className="absolute w-[300px] max-w-[300px] rounded-md bg-semantic-bg-primary p-4 shadow-lg !z-10"
-            >
+            <Tooltip.Content className="absolute w-[300px] max-w-[300px] rounded-md bg-semantic-bg-primary p-4 shadow-lg !z-10">
               <div className="whitespace-pre-wrap text-xs break-words">
                 {tooltipContent}
               </div>
