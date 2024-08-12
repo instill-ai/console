@@ -1,4 +1,5 @@
 'use client';
+
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OrganizationSubscription, UserSubscription } from "instill-sdk";
@@ -12,14 +13,18 @@ import {
   Input,
   Nullable,
   Separator,
+  useToast,
 } from "@instill-ai/design-system";
 
 import {
   InstillStore,
   useInstillStore,
-  useRemainingCredit,
   useShallow,
   useUserNamespaces,
+  useQueryClient,
+  onTriggerInvalidateCredits,
+  toastInstillError,
+  sendAmplitudeData,
 } from "../../../../lib";
 import {
   useListKnowledgeBaseFiles,
@@ -43,9 +48,8 @@ import {
   InsufficientStorageNotification,
   UpgradePlanLink,
 } from "../notifications";
-import { env } from "../../../../server";
+import { useAmplitudeCtx } from "../../../../lib/amplitude";
 
-// Type guard for File object
 const isFile = (value: unknown): value is File => {
   return typeof window !== "undefined" && value instanceof File;
 };
@@ -101,6 +105,10 @@ export const UploadExploreTab = ({
   subscription,
   namespaceType,
 }: UploadExploreTabProps) => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const { amplitudeIsInit } = useAmplitudeCtx();
+
   const form = useForm<UploadExploreFormData>({
     resolver: zodResolver(UploadExploreFormSchema),
     defaultValues: {
@@ -116,47 +124,31 @@ export const UploadExploreTab = ({
     },
   });
 
-  const [showFileTooLargeMessage, setShowFileTooLargeMessage] =
-    React.useState(false);
-  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] =
-    React.useState(false);
-  const [showDuplicateFileMessage, setShowDuplicateFileMessage] =
-    React.useState(false);
-  const [showFileTooLongMessage, setShowFileTooLongMessage] =
-    React.useState(false);
-  const [showInsufficientStorageMessage, setShowInsufficientStorageMessage] =
-    React.useState(false);
+  const [showFileTooLargeMessage, setShowFileTooLargeMessage] = React.useState(false);
+  const [showUnsupportedFileMessage, setShowUnsupportedFileMessage] = React.useState(false);
+  const [showDuplicateFileMessage, setShowDuplicateFileMessage] = React.useState(false);
+  const [showFileTooLongMessage, setShowFileTooLongMessage] = React.useState(false);
+  const [showInsufficientStorageMessage, setShowInsufficientStorageMessage] = React.useState(false);
   const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
   const [tooLongFileName, setTooLongFileName] = React.useState<string>("");
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
   const [processingProgress, setProcessingProgress] = React.useState(0);
-  const [processingFileIndex, setProcessingFileIndex] =
-    React.useState<Nullable<number>>(null);
+  const [processingFileIndex, setProcessingFileIndex] = React.useState<Nullable<number>>(null);
 
   const fileTooLargeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
-  const unsupportedFileTypeTimeoutRef =
-    React.useRef<Nullable<NodeJS.Timeout>>(null);
+  const unsupportedFileTypeTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
   const duplicateFileTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
-  const insufficientStorageTimeoutRef =
-    React.useRef<Nullable<NodeJS.Timeout>>(null);
+  const insufficientStorageTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
 
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
 
-  const { accessToken, selectedNamespace } = useInstillStore(
-    useShallow(selector),
-  );
+  const { accessToken, selectedNamespace } = useInstillStore(useShallow(selector));
 
   const namespaces = useUserNamespaces();
 
-  const remainingCredit = useRemainingCredit({
-    ownerName: selectedNamespace,
-    accessToken,
-    enabled:
-      Boolean(selectedNamespace) && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
-  });
 
   const existingFiles = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
@@ -295,21 +287,12 @@ export const UploadExploreTab = ({
 
           processedFiles.add(file.name);
         } catch (error) {
-          if (error instanceof Error) {
-            console.error(`Error processing file ${file.name}:`, error.message);
-            if (error as Error) {
-              console.log(`File ${file.name} already exists, skipping.`);
-              processedFiles.add(file.name);
-            } else {
-              throw error;
-            }
-          } else {
-            console.error(
-              `Unexpected error processing file ${file.name}:`,
-              error,
-            );
-            throw error;
-          }
+          console.error(`Error processing file ${file.name}:`, error);
+          toastInstillError({
+            title: `Error processing file ${file.name}`,
+            error,
+            toast,
+          });
         }
       }
 
@@ -319,13 +302,28 @@ export const UploadExploreTab = ({
           .getValues("files")
           .filter((file) => isFile(file) && !processedFiles.has(file.name)),
       );
-
+      onTriggerInvalidateCredits({
+        ownerName: targetNamespace?.name ?? null,
+        namespaceNames: namespaces.map((namespace) => namespace.name),
+        queryClient,
+      });
       setProcessingProgress(100);
       onProcessFile();
       setHasUnsavedChanges(false);
       onTabChange("files");
+
+      if (amplitudeIsInit) {
+        sendAmplitudeData("process_catalog_files", {
+          page_url: window.location.href,
+        });
+      }
     } catch (error) {
       console.error("Error processing files:", error);
+      toastInstillError({
+        title: "Error processing files",
+        error,
+        toast,
+      });
     } finally {
       setIsProcessing(false);
       setProcessingProgress(0);
@@ -530,7 +528,7 @@ export const UploadExploreTab = ({
         <Button
           variant="primary"
           size="lg"
-          disabled={form.watch("files").length === 0 || isProcessing || remainingCredit?.data?.total === 0}
+          disabled={form.watch("files").length === 0 || isProcessing}
           onClick={handleProcessFiles}
         >
           {isProcessing ? (

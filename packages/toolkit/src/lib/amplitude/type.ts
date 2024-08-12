@@ -35,7 +35,8 @@ export type AmplitudeEvent =
   | "enter_subscription_team_flow"
   | "subscribe_to_team"
   | "create_secret"
-  | "delete_secret";
+  | "delete_secret"
+  | "process_catalog_files";
 
 export type AmplitudeEventProperties = {
   connector_definition_name?: string;
