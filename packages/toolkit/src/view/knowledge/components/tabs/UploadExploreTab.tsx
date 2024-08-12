@@ -13,7 +13,7 @@ import {
   Input,
   Nullable,
   Separator,
-  useToast,
+  toast,
 } from "@instill-ai/design-system";
 
 import {
@@ -25,6 +25,7 @@ import {
   onTriggerInvalidateCredits,
   toastInstillError,
   sendAmplitudeData,
+  useRemainingCredit,
 } from "../../../../lib";
 import {
   useListKnowledgeBaseFiles,
@@ -107,7 +108,6 @@ export const UploadExploreTab = ({
   namespaceType,
   isLocalEnvironment
 }: UploadExploreTabProps) => {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const { amplitudeIsInit } = useAmplitudeCtx();
 
@@ -147,10 +147,9 @@ export const UploadExploreTab = ({
   const uploadKnowledgeBaseFile = useUploadKnowledgeBaseFile();
   const processKnowledgeBaseFiles = useProcessKnowledgeBaseFiles();
 
-  const { accessToken, selectedNamespace } = useInstillStore(useShallow(selector));
+  const { accessToken, selectedNamespace, enabledQuery } = useInstillStore(useShallow(selector));
 
   const namespaces = useUserNamespaces();
-
 
   const existingFiles = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
@@ -167,6 +166,12 @@ export const UploadExploreTab = ({
   const [showStorageWarning, setShowStorageWarning] = React.useState(
     shouldShowStorageWarning(remainingStorageSpace, planStorageLimit)
   );
+
+  const remainingCredit = useRemainingCredit({
+    ownerName: selectedNamespace,
+    accessToken,
+    enabled: enabledQuery,
+  });
 
   const handleFileUpload = async (file: File) => {
     if (file.size > planMaxFileSize) {
@@ -232,6 +237,16 @@ export const UploadExploreTab = ({
   };
 
   const handleProcessFiles = async () => {
+
+    if (!isLocalEnvironment && remainingCredit.data && remainingCredit.data.total < 10) {
+      toastInstillError({
+        title: "Insufficient Credit Balance",
+        error: "Your credit balance is too low to use this service. Please consider upgrading your plan to continue.",
+        toast
+      });
+      return;
+    }
+
     setIsProcessing(true);
     const files = form.getValues("files");
     if (files.length === 0) {
@@ -530,7 +545,7 @@ export const UploadExploreTab = ({
         <Button
           variant="primary"
           size="lg"
-          disabled={form.watch("files").length === 0 || isProcessing}
+          disabled={form.watch("files").length === 0 || isProcessing || remainingCredit.isLoading}
           onClick={handleProcessFiles}
         >
           {isProcessing ? (
