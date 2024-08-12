@@ -17,7 +17,7 @@ export const VideoField = (props: VideoFieldProps) => {
     <FieldRoot title={title} fieldKey={`${title}-field`}>
       {!hideField ? (
         video ? (
-          <VideoPreview src={video} className="w-full" />
+          <VideoPreview src={video} className="w-full max-h-[360px]" />
         ) : (
           <NoOutput />
         )
