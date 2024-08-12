@@ -11,7 +11,6 @@ import { Icons } from "@instill-ai/design-system";
 import { getInstillAPIClient } from "../../../../lib";
 import { FileStatus } from "../../../../lib/react-query-service/knowledge/types";
 import { STORAGE_WARNING_THRESHOLD } from "./constant";
-import { env } from "../../../../server";
 
 export const getStatusSortValue = (status: FileStatus): number => {
   const statusOrder: Record<FileStatus, number> = {
@@ -105,9 +104,6 @@ export const truncateName = (name: string, maxLength: number = 20) => {
 export const getPlanMaxFileSize = (
   plan: UserSubscriptionPlan | OrganizationSubscriptionPlan,
 ): number => {
-  if (env("NEXT_PUBLIC_APP_ENV") === "CE") {
-    return 150 * 1024 * 1024;
-  }
   switch (plan) {
     case "PLAN_FREE":
       return 50 * 1024 * 1024; // 50MB
@@ -123,9 +119,6 @@ export const getPlanMaxFileSize = (
 export const getPlanStorageLimit = (
   plan: UserSubscriptionPlan | OrganizationSubscriptionPlan,
 ): number => {
-  if (env("NEXT_PUBLIC_APP_ENV") === "CE") {
-    return Infinity;
-  }
   switch (plan) {
     case "PLAN_FREE":
       return 50 * 1024 * 1024; // 50MB
@@ -143,9 +136,6 @@ export const getPlanStorageLimit = (
 export const getKnowledgeBaseLimit = (
   plan: UserSubscriptionPlan | OrganizationSubscriptionPlan,
 ): number => {
-  if (env("NEXT_PUBLIC_APP_ENV") === "CE") {
-    return Infinity;
-  }
   switch (plan) {
     case "PLAN_FREE":
       return 10;

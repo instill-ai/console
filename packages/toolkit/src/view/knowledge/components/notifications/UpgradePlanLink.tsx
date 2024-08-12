@@ -19,10 +19,10 @@ export const UpgradePlanLink = ({
         text: `Upgrade your plan to create more ${baseText}`,
         href: "/subscribe",
       };
-    } if (plan === "PLAN_FREE" && namespaceType === "organization") {
+    } else if (plan === "PLAN_FREE" && namespaceType === "organization") {
       return {
         text: `Upgrade your plan to create more ${baseText}`,
-        href: "org-free/organization-settings/billing/subscriptions/plan",
+        href: "/org-free/organization-settings/billing/subscriptions/plan",
       };
     } else if (plan === "PLAN_PRO" && namespaceType === "user") {
       return {
