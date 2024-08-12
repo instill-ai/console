@@ -11,8 +11,8 @@ import {
   Input,
   Textarea,
 } from "@instill-ai/design-system";
+import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
 
-const MAX_DESCRIPTION_LENGTH = 150;
 
 const EditKnowledgeFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
