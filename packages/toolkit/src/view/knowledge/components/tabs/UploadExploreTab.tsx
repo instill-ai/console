@@ -17,6 +17,7 @@ import {
 import {
   InstillStore,
   useInstillStore,
+  useRemainingCredit,
   useShallow,
   useUserNamespaces,
 } from "../../../../lib";
@@ -42,6 +43,7 @@ import {
   InsufficientStorageNotification,
   UpgradePlanLink,
 } from "../notifications";
+import { env } from "../../../../server";
 
 // Type guard for File object
 const isFile = (value: unknown): value is File => {
@@ -148,6 +150,13 @@ export const UploadExploreTab = ({
   );
 
   const namespaces = useUserNamespaces();
+
+  const remainingCredit = useRemainingCredit({
+    ownerName: selectedNamespace,
+    accessToken,
+    enabled:
+      Boolean(selectedNamespace) && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
+  });
 
   const existingFiles = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace,
@@ -521,7 +530,7 @@ export const UploadExploreTab = ({
         <Button
           variant="primary"
           size="lg"
-          disabled={form.watch("files").length === 0 || isProcessing}
+          disabled={form.watch("files").length === 0 || isProcessing || remainingCredit?.data?.total === 0}
           onClick={handleProcessFiles}
         >
           {isProcessing ? (

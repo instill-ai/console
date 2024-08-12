@@ -9,3 +9,4 @@ export * from "./WarnFileUploadDialog";
 export * from "./InsufficientStorageNotification";
 export * from "./InsufficientStorageBanner";
 export * from "./UpgradePlanLink";
+export * from "./InsufficientStorageNotification";
