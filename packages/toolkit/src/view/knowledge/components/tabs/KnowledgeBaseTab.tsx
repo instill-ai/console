@@ -76,7 +76,7 @@ export const KnowledgeBaseTab = ({
 
   const createKnowledgeBase = useCreateKnowledgeBase();
   const updateKnowledgeBase = useUpdateKnowledgeBase();
-  const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
+  const isTeamPlan = subscription?.plan === "PLAN_ENTERPRISE" || subscription?.plan === "PLAN_TEAM";
 
   const catalogState = useGetKnowledgeBases({
     accessToken,
@@ -209,11 +209,11 @@ export const KnowledgeBaseTab = ({
           </p>
           <p className=" product-body-text-3-regular space-x-2">
             <span className="text-semantic-fg-secondary">
-              {isEnterprisePlan
+              {isTeamPlan
                 ? `(${filteredAndSortedKnowledgeBases.length})`
                 : `(${filteredAndSortedKnowledgeBases.length}/${knowledgeBaseLimit})`}
             </span>
-            {!isEnterprisePlan && (
+            {!isTeamPlan && (
               <UpgradePlanLink
                 plan={subscription?.plan || "PLAN_FREE"}
                 namespaceType={namespaceType}

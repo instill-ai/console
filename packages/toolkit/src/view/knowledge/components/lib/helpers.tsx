@@ -143,7 +143,7 @@ export const getKnowledgeBaseLimit = (
     case "PLAN_PRO":
       return 50;
     case "PLAN_TEAM":
-      return 100;
+      return Infinity;
     case "PLAN_ENTERPRISE":
       return Infinity;
     default:
