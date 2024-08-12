@@ -16,8 +16,12 @@ export const ImageField = (props: ImageFieldProps) => {
     <FieldRoot title={title} fieldKey={`${title}-field`}>
       {!hideField ? (
         image ? (
-          <div className="flex w-full">
-            <img src={image} alt={`${title}`} className="object-contain" />
+          <div className="flex w-full justify-center">
+            <img
+              src={image}
+              alt={`${title}`}
+              className="object-contain max-h-[360px]"
+            />
           </div>
         ) : (
           <NoOutput />
