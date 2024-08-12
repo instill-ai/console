@@ -77,7 +77,8 @@ export const KnowledgeBaseTab = ({
   const createKnowledgeBase = useCreateKnowledgeBase();
   const updateKnowledgeBase = useUpdateKnowledgeBase();
   const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
-  const { refetch: refetchKnowledgeBases, isLoading } = useGetKnowledgeBases({
+
+  const catalogState = useGetKnowledgeBases({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
@@ -85,9 +86,9 @@ export const KnowledgeBaseTab = ({
 
   React.useEffect(() => {
     if (selectedNamespace) {
-      refetchKnowledgeBases();
+      catalogState.refetch();
     }
-  }, [selectedNamespace, refetchKnowledgeBases]);
+  }, [selectedNamespace, catalogState.refetch]);
 
   const handleCreateKnowledgeSubmit = async (
     data: z.infer<typeof CreateKnowledgeFormSchema>,
@@ -105,7 +106,7 @@ export const KnowledgeBaseTab = ({
         ownerId: data.namespaceId,
         accessToken,
       });
-      refetchKnowledgeBases();
+      catalogState.refetch();
       setIsCreateDialogOpen(false);
     } catch (error) {
       console.error("Error creating catalog:", error);
@@ -129,7 +130,7 @@ export const KnowledgeBaseTab = ({
         },
         accessToken,
       });
-      refetchKnowledgeBases();
+      catalogState.refetch();
     } catch (error) {
       console.error("Error updating catalog:", error);
     }
@@ -153,7 +154,7 @@ export const KnowledgeBaseTab = ({
         ownerId: selectedNamespace,
         accessToken,
       });
-      refetchKnowledgeBases();
+      catalogState.refetch();
     } catch (error) {
       console.error("Error cloning catalog:", error);
     }
@@ -231,7 +232,7 @@ export const KnowledgeBaseTab = ({
         />
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {isLoading ? (
+      {catalogState.isLoading ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
