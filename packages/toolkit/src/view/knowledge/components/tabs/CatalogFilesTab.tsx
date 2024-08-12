@@ -76,12 +76,11 @@ export const CatalogFilesTab = ({
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
     enabled: enabledQuery && Boolean(me.data?.id),
-    pageSize: 100,
   });
 
   const [files, setFiles] = React.useState<File[]>([]);
   React.useEffect(() => {
-    setFiles(filesData.data?.files || []);
+    setFiles(filesData.data || []);
   }, [filesData.data]);
 
   React.useEffect(() => {

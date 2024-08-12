@@ -1,26 +1,53 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { env } from "../../../server";
 import { Nullable } from "../../type";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { createInstillAxiosClient, getQueryString } from "../../vdp-sdk/helper";
 import { File } from "./types";
+
+export async function listKnowledgeBaseFiles({
+  namespaceId,
+  knowledgeBaseId,
+  accessToken,
+  pageSize,
+  nextPageToken,
+}: {
+  namespaceId: string;
+  knowledgeBaseId: string;
+  accessToken: string;
+  pageSize: number;
+  nextPageToken: Nullable<string>;
+}): Promise<{ files: File[]; nextPageToken: Nullable<string> }> {
+  const client = createInstillAxiosClient(accessToken, true);
+  const queryString = getQueryString({
+    baseURL: `/namespaces/${namespaceId}/catalogs/${knowledgeBaseId}/files`,
+    pageSize,
+    nextPageToken,
+  });
+  try {
+    const { data } = await client.get<{
+      files: File[];
+      nextPageToken: Nullable<string>;
+    }>(queryString);
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+}
 
 export function useListKnowledgeBaseFiles({
   namespaceId,
   knowledgeBaseId,
   accessToken,
   enabled,
-  pageSize = 100,
-  pageToken,
 }: {
   namespaceId: Nullable<string> | undefined;
   knowledgeBaseId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  pageSize?: number;
-  pageToken?: string;
 }) {
-  return useQuery<{ files: File[]; nextPageToken: string | null }>({
-    queryKey: ["knowledgeBaseFiles", namespaceId, knowledgeBaseId, pageToken],
+  return useQuery<File[]>({
+    queryKey: ["knowledgeBaseFiles", namespaceId, knowledgeBaseId],
     queryFn: async () => {
       if (!accessToken) {
         throw new Error("accessToken not provided");
@@ -31,17 +58,24 @@ export function useListKnowledgeBaseFiles({
       if (!knowledgeBaseId) {
         throw new Error("knowledgeBaseId not provided");
       }
-      const client = createInstillAxiosClient(accessToken, true);
-      const response = await client.get<{
-        files: File[];
-        nextPageToken: string | null;
-      }>(`/namespaces/${namespaceId}/catalogs/${knowledgeBaseId}/files`, {
-        params: {
-          pageSize,
-          pageToken,
-        },
-      });
-      return response.data;
+
+      let allFiles: File[] = [];
+      let nextPageToken: Nullable<string> = null;
+
+      do {
+        const response = await listKnowledgeBaseFiles({
+          namespaceId,
+          knowledgeBaseId,
+          accessToken,
+          pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+          nextPageToken,
+        });
+
+        allFiles = [...allFiles, ...response.files];
+        nextPageToken = response.nextPageToken;
+      } while (nextPageToken && nextPageToken !== "");
+
+      return allFiles;
     },
     enabled,
   });

@@ -218,7 +218,7 @@ export const UploadExploreTab = ({
       return;
     }
 
-    const isDuplicate = existingFiles.data?.files?.some(
+    const isDuplicate = existingFiles.data?.some(
       (existingFile) => existingFile.name === file.name,
     );
 

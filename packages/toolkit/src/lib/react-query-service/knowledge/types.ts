@@ -53,6 +53,7 @@ export type File = {
   size: number;
   totalChunks: number;
   totalTokens: number;
+  nextPageToken: string;
 };
 
 export type Chunk = {
