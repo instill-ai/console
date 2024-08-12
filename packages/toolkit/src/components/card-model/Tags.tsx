@@ -1,7 +1,7 @@
 "use client";
 
+import * as React from "react";
 import { Icons, Tag } from "@instill-ai/design-system";
-
 import { Visibility } from "../../lib";
 
 export type TagsProps = {
@@ -11,12 +11,11 @@ export type TagsProps = {
 };
 
 export const Tags = (props: TagsProps) => {
-  const { region, hardware } = props;
+  const { region, hardware, visibilityStatus } = props;
 
   return (
     <div className="flex shrink-0 flex-row gap-x-2">
-      {/* INS-5438: We tempoarily hide the private option for better visibility */}
-      {/* {visibilityStatus ? (
+      {visibilityStatus ? (
         <Tag
           variant="lightNeutral"
           size="md"
@@ -34,7 +33,7 @@ export const Tags = (props: TagsProps) => {
             </React.Fragment>
           )}
         </Tag>
-      ) : null} */}
+      ) : null}
       <Tag
         variant="lightNeutral"
         size="md"
