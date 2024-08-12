@@ -14,10 +14,15 @@ export const UpgradePlanLink = ({
   const getLinkContent = () => {
     const baseText = pageName === "catalog" ? "catalogs" : "storage space";
 
-    if (plan === "PLAN_FREE") {
+    if (plan === "PLAN_FREE" && namespaceType === "user") {
       return {
         text: `Upgrade your plan to create more ${baseText}`,
         href: "/subscribe",
+      };
+    } if (plan === "PLAN_FREE" && namespaceType === "organization") {
+      return {
+        text: `Upgrade your plan to create more ${baseText}`,
+        href: "org-free/organization-settings/billing/subscriptions/plan",
       };
     } else if (plan === "PLAN_PRO" && namespaceType === "user") {
       return {
