@@ -65,11 +65,10 @@ export const EditKnowledgeDialog = ({
     setIsSubmitting(true);
     try {
       await onSubmit(data);
+      setIsSubmitting(false);
       onClose();
     } catch (error) {
       console.error("Error updating catalog:", error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 

@@ -54,6 +54,7 @@ export const CatalogCardMenu = ({
             <Icons.Copy07 className="mr-2 h-4 w-4 stroke-semantic-fg-secondary" />
             Duplicate
           </DropdownMenu.Item>
+          {/* Coming in V2 */}
           {/* <DropdownMenu.Item
                 onClick={onDuplicate}
                 className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
