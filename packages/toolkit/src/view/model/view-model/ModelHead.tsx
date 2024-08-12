@@ -94,19 +94,17 @@ export const ModelHead = ({
                 variant="lightNeutral"
                 size="sm"
               >
-                {model?.visibility !== "VISIBILITY_PUBLIC"
-                  ? (
-                    <React.Fragment>
-                      <Icons.Lock03 className="h-3 w-3 stroke-semantic-fg-primary" />
-                      Private
-                    </React.Fragment>
-                  ) : (
-                    <React.Fragment>
-                      <Icons.BookOpen02 className="h-3 w-3 stroke-semantic-fg-primary" />
-                      Public
-                    </React.Fragment>
-                  )
-                }
+                {model?.visibility !== "VISIBILITY_PUBLIC" ? (
+                  <React.Fragment>
+                    <Icons.Lock03 className="h-3 w-3 stroke-semantic-fg-primary" />
+                    Private
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <Icons.BookOpen02 className="h-3 w-3 stroke-semantic-fg-primary" />
+                    Public
+                  </React.Fragment>
+                )}
               </Tag>
               {model?.sourceUrl ? (
                 <HeadExternalLink href={model.sourceUrl}>
