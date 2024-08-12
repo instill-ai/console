@@ -2,11 +2,11 @@
 
 import React from "react";
 import { Separator, Tooltip } from "@instill-ai/design-system";
-import { InstillStore, useInstillStore, useQueries, useShallow } from "../../../lib";
-import { getAllChunks, useListKnowledgeBaseFiles } from "../../../lib/react-query-service/knowledge";
+import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
 import { CatalogCardMenu, EditKnowledgeDialog } from "./";
-import { GeneralDeleteResourceDialog } from "../../../components/GeneralDeleteResourceDialog";
+import { GeneralDeleteResourceDialog } from "../../../components";
+import { useListKnowledgeBaseFiles, useGetAllChunks } from "../../../lib/react-query-service/knowledge";
 
 type EditKnowledgeDialogData = {
   name: string;
@@ -29,14 +29,14 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const CreateKnowledgeBaseCard: React.FC<CreateKnowledgeBaseCardProps> = ({
+export const CreateKnowledgeBaseCard = ({
   knowledgeBase,
   onCardClick,
   onUpdateKnowledgeBase,
   onCloneKnowledgeBase,
   onDeleteKnowledgeBase,
   disabled = false,
-}) => {
+}: CreateKnowledgeBaseCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -44,34 +44,24 @@ export const CreateKnowledgeBaseCard: React.FC<CreateKnowledgeBaseCardProps> = (
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(useShallow(selector));
 
-  const { data: filesData } = useListKnowledgeBaseFiles({
-    namespaceId: selectedNamespace || null,
+  const existingFiles = useListKnowledgeBaseFiles({
+    namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken: accessToken || null,
     enabled: enabledQuery,
   });
 
-  const chunkQueries = useQueries({
-    queries: (filesData?.files || []).map((file) => ({
-      queryKey: ["chunks", knowledgeBase.catalogId, file.fileUid],
-      queryFn: () => getAllChunks(
-        accessToken || "",
-        knowledgeBase.ownerName,
-        knowledgeBase.catalogId,
-        file.fileUid,
-      ),
-      enabled: enabledQuery && !!filesData && !!accessToken,
-    })),
+  const chunks = useGetAllChunks({
+    accessToken,
+    ownerName: knowledgeBase.ownerName,
+    kbId: knowledgeBase.catalogId,
+    fileUid: existingFiles.data?.files[0]?.fileUid,
+    enabled: Boolean(existingFiles.data) && Boolean(accessToken),
   });
 
   const totalChunks = React.useMemo(() => {
-    return chunkQueries.reduce((total, query) => {
-      if (query.data) {
-        return total + query.data.length;
-      }
-      return total;
-    }, 0);
-  }, [chunkQueries]);
+    return chunks.data ? chunks.data.length : 0;
+  }, [chunks.data]);
 
   const tooltipContent = React.useMemo(() => {
     return `

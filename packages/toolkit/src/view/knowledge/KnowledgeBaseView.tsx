@@ -56,6 +56,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   const [remainingStorageSpace, setRemainingStorageSpace] = React.useState(0);
   const [namespaceType, setNamespaceType] =
     React.useState<Nullable<"user" | "organization">>(null);
+  const [isAutomaticTabChange, setIsAutomaticTabChange] = React.useState(false);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector),
@@ -149,8 +150,9 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     [plan],
   );
 
-  const handleTabChangeAttempt = (tab: string) => {
-    if (hasUnsavedChanges) {
+  const handleTabChangeAttempt = (tab: string, isAutomatic: boolean = false) => {
+    setIsAutomaticTabChange(isAutomatic);
+    if (hasUnsavedChanges && !isAutomatic) {
       setShowWarnDialog(true);
       setPendingTabChange(tab);
     } else {
@@ -165,6 +167,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     return new Promise((resolve) => {
       setShowWarnDialog(false);
       setPendingTabChange(null);
+      setIsAutomaticTabChange(false);
       resolve();
     });
   };
@@ -179,11 +182,12 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
     setShowWarnDialog(false);
     setPendingTabChange(null);
     setHasUnsavedChanges(false);
+    setIsAutomaticTabChange(false);
   };
 
   const handleProcessFile = () => {
     setShowCreditUsage(true);
-    setActiveTab("files");
+    handleTabChangeAttempt("files", true);
     setIsProcessed(false);
     setHasUnsavedChanges(false);
 
@@ -268,11 +272,10 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
           </div>
         )}
         <div
-          className={`${
-            selectedKnowledgeBase
-              ? "sm:col-span-8 md:col-span-9 lg:col-span-10"
-              : "col-span-12"
-          } pt-5`}
+          className={`${selectedKnowledgeBase
+            ? "sm:col-span-8 md:col-span-9 lg:col-span-10"
+            : "col-span-12"
+            } pt-5`}
         >
           {activeTab === "catalogs" && (
             <KnowledgeBaseTab
@@ -299,7 +302,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
             <UploadExploreTab
               knowledgeBase={selectedKnowledgeBase}
               onProcessFile={handleProcessFile}
-              onTabChange={handleTabChangeAttempt}
+              onTabChange={(tab) => handleTabChangeAttempt(tab, true)}
               setHasUnsavedChanges={setHasUnsavedChanges}
               remainingStorageSpace={remainingStorageSpace}
               updateRemainingSpace={updateRemainingSpace}
@@ -324,7 +327,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
         </div>
       </div>
       <WarnDiscardFilesDialog
-        open={showWarnDialog}
+        open={showWarnDialog && !isAutomaticTabChange}
         setOpen={setShowWarnDialog}
         onCancel={handleWarnDialogClose}
         onDiscard={handleWarnDialogDiscard}
