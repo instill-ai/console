@@ -1,6 +1,6 @@
 export * from "./CreditUsageFileNotification";
 export * from "./DeleteFileNotification";
-export * from "./DeleteKnowledgeBaseNotification";
+export * from "./DeleteCatalogNotification";
 export * from "./DuplicateFileNotification";
 export * from "./FileSizeNotification.js";
 export * from "./FileTooLongNotification";

@@ -23,7 +23,7 @@ import { CREDIT_TIMEOUT } from "./components/lib/constant";
 import {
   calculateRemainingStorage,
   checkNamespaceType,
-  getKnowledgeBaseLimit,
+  getCatalogLimit,
   getSubscriptionInfo,
 } from "./components/lib/helpers";
 import { CreditUsageFileNotification } from "./components/notifications";
@@ -149,7 +149,7 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
   }, [filesData.data, filesData.isSuccess]);
 
   const knowledgeBaseLimit = React.useMemo(
-    () => getKnowledgeBaseLimit(subscriptionInfo.plan),
+    () => getCatalogLimit(subscriptionInfo.plan),
     [subscriptionInfo.plan],
   );
 

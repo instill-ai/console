@@ -11,19 +11,19 @@ import {
   useListCatalogFiles,
 } from "../../../lib/react-query-service/catalog";
 import { KnowledgeBase } from "../../../lib/react-query-service/catalog/types";
-import { CatalogCardMenu, EditKnowledgeDialog } from ".";
+import { CatalogCardMenu, EditCatalogDialog } from ".";
 
-type EditKnowledgeDialogData = {
+type EditCatalogDialogData = {
   name: string;
   description?: string;
   tags?: string[];
 };
 
-type CreateKnowledgeBaseCardProps = {
+type CreateCatalogCardProps = {
   knowledgeBase: KnowledgeBase;
   onCardClick: () => void;
   onUpdateKnowledgeBase: (
-    data: EditKnowledgeDialogData,
+    data: EditCatalogDialogData,
     kbId: string,
   ) => Promise<void>;
   onCloneKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
@@ -44,7 +44,7 @@ export const CreateCatalogCard = ({
   onCloneKnowledgeBase,
   onDeleteKnowledgeBase,
   disabled = false,
-}: CreateKnowledgeBaseCardProps) => {
+}: CreateCatalogCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -101,7 +101,7 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
     onCloneKnowledgeBase(knowledgeBase);
   };
 
-  const handleEditKnowledgeSubmit = async (data: EditKnowledgeDialogData) => {
+  const handleEditKnowledgeSubmit = async (data: EditCatalogDialogData) => {
     await onUpdateKnowledgeBase(data, knowledgeBase.catalogId);
     setEditDialogIsOpen(false);
   };
@@ -162,7 +162,7 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
         }}
         trigger={null}
       />
-      <EditKnowledgeDialog
+      <EditCatalogDialog
         isOpen={editDialogIsOpen}
         onClose={() => setEditDialogIsOpen(false)}
         onSubmit={handleEditKnowledgeSubmit}

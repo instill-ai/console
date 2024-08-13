@@ -19,8 +19,8 @@ import {
 import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types";
 import { CreateCatalogCard } from "../CreateCatalogCard";
 import { CreateCatalogDialog } from "../CreateCatalogDialog";
-import { KnowledgeBaseCard } from "../CatalogCard";
-import KnowledgeSearchSort, {
+import { CatalogCard } from "../CatalogCard";
+import CatalogSearchSort, {
   SortAnchor,
   SortOrder,
 } from "../CatalogSearchSort";
@@ -37,7 +37,7 @@ type KnowledgeBaseTabProps = {
   isLocalEnvironment: boolean;
 };
 
-type EditKnowledgeDialogData = {
+type EditCatalogDialogData = {
   name: string;
   description?: string;
   tags?: string[];
@@ -118,7 +118,7 @@ export const KnowledgeBaseTab = ({
   };
 
   const handleUpdateKnowledgeBase = async (
-    data: EditKnowledgeDialogData,
+    data: EditCatalogDialogData,
     kbId: string,
   ) => {
     if (!selectedNamespace || !accessToken) return;
@@ -226,7 +226,7 @@ export const KnowledgeBaseTab = ({
             ) : null}
           </p>
         </div>
-        <KnowledgeSearchSort
+        <CatalogSearchSort
           selectedSortOrder={selectedSortOrder}
           setSelectedSortOrder={setSelectedSortOrder}
           selectedSortAnchor={selectedSortAnchor}
@@ -260,7 +260,7 @@ export const KnowledgeBaseTab = ({
         </div>
       ) : (
         <div className="grid grid-cols-[repeat(auto-fit,360px)] justify-start gap-[15px]">
-          <KnowledgeBaseCard
+          <CatalogCard
             onClick={() => setIsCreateDialogOpen(true)}
             disabled={isLocalEnvironment ? false : hasReachedLimit}
           />

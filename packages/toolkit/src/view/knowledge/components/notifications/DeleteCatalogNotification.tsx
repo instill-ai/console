@@ -4,17 +4,17 @@ import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 
 import { truncateName } from "../lib/helpers";
 
-type DeleteKnowledgeBaseNotificationProps = {
+type DeleteCatalogNotificationProps = {
   knowledgeBaseName: string;
   handleCloseDeleteMessage: () => void;
   undoDelete: () => void;
 };
 
-export const DeleteKnowledgeBaseNotification = ({
+export const DeleteCatalogNotification = ({
   knowledgeBaseName,
   handleCloseDeleteMessage,
   undoDelete,
-}: DeleteKnowledgeBaseNotificationProps) => {
+}: DeleteCatalogNotificationProps) => {
   return (
     <div className="fixed bottom-4 right-8 flex w-[400px] rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
       <Icons.AlertTriangle className="mr-4 h-6 w-6 stroke-semantic-warning-on-bg" />

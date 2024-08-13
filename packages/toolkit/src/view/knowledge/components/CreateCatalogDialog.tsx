@@ -32,7 +32,7 @@ const selector = (store: InstillStore) => ({
   updateNavigationNamespaceAnchor: store.updateNavigationNamespaceAnchor,
 });
 
-type CreateKnowledgeDialogProps = {
+type CreateCatalogDialogProps = {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: z.infer<typeof CreateKnowledgeFormSchema>) => Promise<void>;
@@ -42,7 +42,7 @@ export const CreateCatalogDialog = ({
   isOpen,
   onClose,
   onSubmit,
-}: CreateKnowledgeDialogProps) => {
+}: CreateCatalogDialogProps) => {
   const router = useRouter();
   const [creating, setCreating] = React.useState(false);
 

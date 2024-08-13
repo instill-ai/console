@@ -26,12 +26,12 @@ const EditKnowledgeFormSchema = z.object({
   tags: z.array(z.string()).optional(),
 });
 
-type EditKnowledgeDialogData = z.infer<typeof EditKnowledgeFormSchema>;
+type EditCatalogDialogData = z.infer<typeof EditKnowledgeFormSchema>;
 
-type EditKnowledgeDialogProps = {
+type EditCatalogDialogProps = {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: EditKnowledgeDialogData) => Promise<void>;
+  onSubmit: (data: EditCatalogDialogData) => Promise<void>;
   initialValues: {
     name: string;
     description: string;
@@ -39,15 +39,15 @@ type EditKnowledgeDialogProps = {
   };
 };
 
-export const EditKnowledgeDialog = ({
+export const EditCatalogDialog = ({
   isOpen,
   onClose,
   onSubmit,
   initialValues,
-}: EditKnowledgeDialogProps) => {
+}: EditCatalogDialogProps) => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const form = useForm<EditKnowledgeDialogData>({
+  const form = useForm<EditCatalogDialogData>({
     resolver: zodResolver(EditKnowledgeFormSchema),
     defaultValues: initialValues,
     mode: "onChange",
@@ -62,7 +62,7 @@ export const EditKnowledgeDialog = ({
     }
   }, [isOpen, initialValues, reset]);
 
-  const handleSubmit = async (data: EditKnowledgeDialogData) => {
+  const handleSubmit = async (data: EditCatalogDialogData) => {
     setIsSubmitting(true);
     try {
       await onSubmit(data);

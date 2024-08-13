@@ -5,7 +5,7 @@ import { SortOptionSelectButton } from "./OptionSelectButton";
 export type SortAnchor = "modifyTime" | "createTime" | "usage";
 export type SortOrder = "asc" | "desc";
 
-type KnowledgeSearchSortProps = {
+type CatalogSearchSortProps = {
   selectedSortOrder: SortOrder;
   setSelectedSortOrder: (value: SortOrder) => void;
   selectedSortAnchor: SortAnchor;
@@ -14,14 +14,14 @@ type KnowledgeSearchSortProps = {
   setSearchTerm: (value: string) => void;
 };
 
-const KnowledgeSearchSort = ({
+const CatalogSearchSort = ({
   selectedSortOrder,
   setSelectedSortOrder,
   selectedSortAnchor,
   setSelectedSortAnchor,
   searchTerm,
   setSearchTerm,
-}: KnowledgeSearchSortProps) => {
+}: CatalogSearchSortProps) => {
   return (
     <div className="flex space-x-4">
       <Input.Root className="!rounded">
@@ -99,4 +99,4 @@ const KnowledgeSearchSort = ({
   );
 };
 
-export default KnowledgeSearchSort;
+export default CatalogSearchSort;

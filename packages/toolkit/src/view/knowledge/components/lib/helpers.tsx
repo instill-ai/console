@@ -133,7 +133,7 @@ export const getPlanStorageLimit = (
   }
 };
 
-export const getKnowledgeBaseLimit = (
+export const getCatalogLimit = (
   plan: UserSubscriptionPlan | OrganizationSubscriptionPlan,
 ): number => {
   switch (plan) {
