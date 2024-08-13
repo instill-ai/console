@@ -167,6 +167,8 @@ export const CatalogFilesTab = ({
       {!isLocalEnvironment && showStorageWarning && !isEnterprisePlan ? (
         <InsufficientStorageBanner
           setshowStorageWarning={setShowStorageWarning}
+          plan={subscription?.plan || "PLAN_FREE"}
+          namespaceType={namespaceType}
         />
       ) : null}
       <div className="flex flex-col items-start justify-start gap-1 mb-2">
