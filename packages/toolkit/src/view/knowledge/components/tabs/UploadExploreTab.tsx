@@ -33,8 +33,8 @@ import {
   useListCatalogFiles,
   useProcessCatalogFiles,
   useUploadCatalogFile,
-} from "../../../../lib/react-query-service/knowledge";
-import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
+} from "../../../../lib/react-query-service/catalog";
+import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types";
 import { FILE_ERROR_TIMEOUT, MAX_FILE_NAME_LENGTH } from "../lib/constant";
 import {
   getFileType,

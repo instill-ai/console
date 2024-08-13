@@ -12,7 +12,7 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 
-import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
+import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types";
 import MetadataPreview from "../MetadataPreview";
 
 type ImageTabProps = {
@@ -130,7 +130,7 @@ export const ImageTab = ({ knowledgeBase }: ImageTabProps) => {
                             </span>
                             <Switch
                               checked={item.status}
-                              onCheckedChange={() => {}}
+                              onCheckedChange={() => { }}
                               className=""
                             ></Switch>
                           </div>

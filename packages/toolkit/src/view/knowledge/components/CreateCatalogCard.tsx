@@ -9,8 +9,8 @@ import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import {
   useGetAllChunks,
   useListCatalogFiles,
-} from "../../../lib/react-query-service/knowledge";
-import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
+} from "../../../lib/react-query-service/catalog";
+import { KnowledgeBase } from "../../../lib/react-query-service/catalog/types";
 import { CatalogCardMenu, EditKnowledgeDialog } from ".";
 
 type EditKnowledgeDialogData = {

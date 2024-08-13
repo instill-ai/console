@@ -8,7 +8,7 @@ import { Dialog, ScrollArea, Skeleton } from "@instill-ai/design-system";
 import {
   useGetFileContent,
   useListChunks,
-} from "../../../lib/react-query-service/knowledge";
+} from "../../../lib/react-query-service/catalog";
 import { getFileIcon } from "./lib/helpers";
 
 type FileDetailsOverlayProps = {

@@ -7,12 +7,12 @@ import { cn, Icons, Nullable } from "@instill-ai/design-system";
 import {
   useGetFileContent,
   useListChunks,
-} from "../../../lib/react-query-service/knowledge";
+} from "../../../lib/react-query-service/catalog";
 import {
   Chunk,
   KnowledgeBase,
   KnowledgeFile,
-} from "../../../lib/react-query-service/knowledge/types";
+} from "../../../lib/react-query-service/catalog/types";
 import ChunkCard from "./ChunkCard";
 
 type FileChunksProps = {

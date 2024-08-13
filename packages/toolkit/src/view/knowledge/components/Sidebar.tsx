@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { Icons } from "@instill-ai/design-system";
 
-import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
+import { KnowledgeBase } from "../../../lib/react-query-service/catalog/types";
 
 type SidebarProps = {
   activeTab: string;

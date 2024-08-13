@@ -15,12 +15,12 @@ import {
 import {
   useListCatalogFiles,
   useUpdateChunk,
-} from "../../../../lib/react-query-service/knowledge";
+} from "../../../../lib/react-query-service/catalog";
 import {
   Chunk,
   KnowledgeBase,
   KnowledgeFile,
-} from "../../../../lib/react-query-service/knowledge/types";
+} from "../../../../lib/react-query-service/catalog/types";
 import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 

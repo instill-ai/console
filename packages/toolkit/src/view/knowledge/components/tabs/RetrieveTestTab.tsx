@@ -7,7 +7,7 @@ import { Separator } from "@instill-ai/design-system";
 
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
-import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
+import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types";
 import { env } from "../../../../server";
 
 type RetrieveTestTabProps = {

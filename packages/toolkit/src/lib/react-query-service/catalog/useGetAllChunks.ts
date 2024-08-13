@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { createInstillAxiosClient } from "../../../lib";
+import { createInstillAxiosClient } from "../..";
 
 export async function getAllChunks(
   accessToken: string,

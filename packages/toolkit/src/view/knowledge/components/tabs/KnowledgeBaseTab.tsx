@@ -12,18 +12,18 @@ import { Separator, Skeleton } from "@instill-ai/design-system";
 
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import {
-  useCreateCatalog,
-  useGetCatalogs,
-  useUpdateCatalog,
+  useCreateKnowledgeBase,
+  useGetKnowledgeBases,
+  useUpdateKnowledgeBase,
 } from "../../../../lib/react-query-service/catalog";
 import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types";
-import { CreateKnowledgeBaseCard } from "../CreateCatalogCard";
-import { CreateKnowledgeDialog } from "../CreateCatalogDialog";
-import { KnowledgeBaseCard } from "../CatalogCard";
+import { CreateKnowledgeBaseCard } from "../CreateKnowledgeBaseCard";
+import { CreateKnowledgeDialog } from "../CreateKnowledgeDialog";
+import { KnowledgeBaseCard } from "../KnowledgeBaseCard";
 import KnowledgeSearchSort, {
   SortAnchor,
   SortOrder,
-} from "../CatalogSearchSort";
+} from "../KnowledgeSearchSort";
 import { UpgradePlanLink } from "../notifications";
 
 type KnowledgeBaseTabProps = {
@@ -77,12 +77,12 @@ export const KnowledgeBaseTab = ({
     useShallow(selector),
   );
 
-  const createKnowledgeBase = useCreateCatalog();
-  const updateKnowledgeBase = useUpdateCatalog();
+  const createKnowledgeBase = useCreateKnowledgeBase();
+  const updateKnowledgeBase = useUpdateKnowledgeBase();
   const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
   const isTeamPlan = subscription?.plan === "PLAN_TEAM";
 
-  const catalogState = useGetCatalogs({
+  const catalogState = useGetKnowledgeBases({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,

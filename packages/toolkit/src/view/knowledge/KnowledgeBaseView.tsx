@@ -12,9 +12,9 @@ import {
   useShallow,
 } from "../../lib";
 import {
-  useDeleteCatalog,
-  useGetCatalogs,
-  useListCatalogFiles,
+  useDeleteKnowledgeBase,
+  useGetKnowledgeBases,
+  useListKnowledgeBaseFiles,
 } from "../../lib/react-query-service/catalog";
 import { KnowledgeBase } from "../../lib/react-query-service/catalog/types";
 import { env } from "../../server";
@@ -65,14 +65,14 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   );
   const isLocalEnvironment = env("NEXT_PUBLIC_APP_ENV") === "CE";
 
-  const deleteKnowledgeBase = useDeleteCatalog();
-  const knowledgeBases = useGetCatalogs({
+  const deleteKnowledgeBase = useDeleteKnowledgeBase();
+  const knowledgeBases = useGetKnowledgeBases({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
   });
 
-  const filesData = useListCatalogFiles({
+  const filesData = useListKnowledgeBaseFiles({
     namespaceId: selectedNamespace ?? null,
     knowledgeBaseId: selectedKnowledgeBase?.catalogId ?? "",
     accessToken,

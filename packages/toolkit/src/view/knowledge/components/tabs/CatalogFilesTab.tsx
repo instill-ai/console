@@ -18,11 +18,11 @@ import {
 import {
   useDeleteCatalogFile,
   useListCatalogFiles,
-} from "../../../../lib/react-query-service/knowledge";
+} from "../../../../lib/react-query-service/catalog";
 import {
   File,
   KnowledgeBase,
-} from "../../../../lib/react-query-service/knowledge/types";
+} from "../../../../lib/react-query-service/catalog/types";
 import { EmptyState } from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";

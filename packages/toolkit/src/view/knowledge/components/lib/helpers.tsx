@@ -9,7 +9,7 @@ import {
 import { Icons } from "@instill-ai/design-system";
 
 import { getInstillAPIClient } from "../../../../lib";
-import { FileStatus } from "../../../../lib/react-query-service/knowledge/types";
+import { FileStatus } from "../../../../lib/react-query-service/catalog/types";
 import { STORAGE_WARNING_THRESHOLD } from "./constant";
 
 export const getStatusSortValue = (status: FileStatus): number => {
