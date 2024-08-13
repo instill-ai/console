@@ -3,35 +3,32 @@ import Link from "next/link";
 type UpgradePlanLinkProps = {
   plan: string;
   namespaceType: "user" | "organization" | null;
-  pageName: "catalog" | "upload";
 };
 
 export const UpgradePlanLink = ({
   plan,
   namespaceType,
-  pageName,
 }: UpgradePlanLinkProps) => {
   const getLinkContent = () => {
-    const baseText = pageName === "catalog" ? "catalogs" : "storage space";
 
     if (plan === "PLAN_FREE" && namespaceType === "user") {
       return {
-        text: `Upgrade your plan to create more ${baseText}`,
+        text: "Upgrade your plan to create more storage space",
         href: "/subscribe",
       };
     } else if (plan === "PLAN_FREE" && namespaceType === "organization") {
       return {
-        text: `Upgrade your plan to create more ${baseText}`,
+        text: "Upgrade your plan to create more storage space",
         href: "/org-free/organization-settings/billing/subscriptions/plan",
       };
     } else if (plan === "PLAN_PRO" && namespaceType === "user") {
       return {
-        text: `Create an organization to add more ${baseText}`,
+        text: "Create an organization to add more storage space",
         href: "/settings/organizations/new",
       };
     } else if (plan === "PLAN_TEAM" && namespaceType === "organization") {
       return {
-        text: `Contact us to learn about the enterprise plan and create more ${baseText}`,
+        text: "Contact us to learn about the enterprise plan and create more storage space",
         href: "https://cal.com/instill-ai/30min-talk",
       };
     }

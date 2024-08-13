@@ -184,7 +184,6 @@ export const CatalogFilesTab = ({
             <UpgradePlanLink
               plan={subscription?.plan || "PLAN_FREE"}
               namespaceType={namespaceType}
-              pageName="catalog"
             />
           ) : null}
         </p>

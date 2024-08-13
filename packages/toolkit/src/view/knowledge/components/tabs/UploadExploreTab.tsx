@@ -408,7 +408,6 @@ export const UploadExploreTab = ({
             <UpgradePlanLink
               plan={subscription?.plan || "PLAN_FREE"}
               namespaceType={namespaceType}
-              pageName="upload"
             />
           ) : null}
         </p>
