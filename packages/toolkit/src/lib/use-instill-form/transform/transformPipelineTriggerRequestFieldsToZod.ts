@@ -13,6 +13,9 @@ export function transformPipelineTriggerRequestFieldsToZod(
   if (!fields) return zodSchema;
 
   for (const [key, value] of Object.entries(fields)) {
+    // Skip the fields that don't have value or instillFormat
+    if (!value || !value.instillFormat) continue;
+
     switch (value.instillFormat) {
       case "string":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());

@@ -9,14 +9,9 @@ import SourceMap from "js-yaml-source-map";
 
 import { GeneralRecord, Nullable } from "../../lib";
 import { InstillYamlSchema } from "./schema";
+import { SourceLocation } from "./types";
 
 const ajv = new Ajv({ allErrors: true });
-
-type SourceLocation = {
-  line: number;
-  column: number;
-  position: number;
-};
 
 export function validateYaml(recipe: string, skipInstillFormatCheck = false) {
   // SourceMap will index the lines of the YAML file using properties paths as keys
