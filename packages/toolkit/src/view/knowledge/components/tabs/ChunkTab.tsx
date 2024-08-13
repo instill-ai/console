@@ -57,11 +57,10 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
     enabled: enabledQuery && Boolean(me.data?.id),
-    pageSize: 100,
   });
 
   const files = React.useMemo(() => {
-    return (knowledgeBaseFiles.data?.files || []).filter(
+    return (knowledgeBaseFiles.data || []).filter(
       (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED",
     );
   }, [knowledgeBaseFiles.data]);
