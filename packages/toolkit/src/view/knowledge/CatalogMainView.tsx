@@ -12,9 +12,9 @@ import {
   useShallow,
 } from "../../lib";
 import {
-  useDeleteKnowledgeBase,
-  useGetKnowledgeBases,
-  useListKnowledgeBaseFiles,
+  useDeleteCatalog,
+  useGetCatalogs,
+  useListCatalogFiles,
 } from "../../lib/react-query-service/catalog";
 import { KnowledgeBase } from "../../lib/react-query-service/catalog/types";
 import { env } from "../../server";
@@ -43,7 +43,7 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
+export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
     React.useState<Nullable<KnowledgeBase>>(null);
   const [activeTab, setActiveTab] = React.useState("catalogs");
@@ -65,14 +65,14 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   );
   const isLocalEnvironment = env("NEXT_PUBLIC_APP_ENV") === "CE";
 
-  const deleteKnowledgeBase = useDeleteKnowledgeBase();
-  const knowledgeBases = useGetKnowledgeBases({
+  const deleteKnowledgeBase = useDeleteCatalog();
+  const knowledgeBases = useGetCatalogs({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
   });
 
-  const filesData = useListKnowledgeBaseFiles({
+  const filesData = useListCatalogFiles({
     namespaceId: selectedNamespace ?? null,
     knowledgeBaseId: selectedKnowledgeBase?.catalogId ?? "",
     accessToken,

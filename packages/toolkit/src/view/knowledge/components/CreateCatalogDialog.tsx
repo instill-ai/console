@@ -38,7 +38,7 @@ type CreateKnowledgeDialogProps = {
   onSubmit: (data: z.infer<typeof CreateKnowledgeFormSchema>) => Promise<void>;
 };
 
-export const CreateKnowledgeDialog = ({
+export const CreateCatalogDialog = ({
   isOpen,
   onClose,
   onSubmit,

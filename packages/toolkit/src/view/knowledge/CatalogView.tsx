@@ -43,7 +43,7 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
+export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
     React.useState<Nullable<KnowledgeBase>>(null);
   const [activeTab, setActiveTab] = React.useState("catalogs");

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import {
   AppTopbar,
-  KnowledgeBaseView,
+  CatalogMainView,
   NamespaceSwitch,
   PageBase,
 } from "@instill-ai/toolkit";
@@ -24,7 +24,7 @@ export const KnowladgeBasePageRender = () => {
       <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="!p-0">
-          <KnowledgeBaseView
+          <CatalogMainView
             accessToken={accessToken.isSuccess ? accessToken.data : null}
             enableQuery={accessToken.isSuccess}
             router={router}

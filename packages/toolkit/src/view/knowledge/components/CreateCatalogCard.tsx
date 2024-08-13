@@ -37,7 +37,7 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const CreateKnowledgeBaseCard = ({
+export const CreateCatalogCard = ({
   knowledgeBase,
   onCardClick,
   onUpdateKnowledgeBase,

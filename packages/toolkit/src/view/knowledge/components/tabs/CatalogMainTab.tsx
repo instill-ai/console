@@ -17,8 +17,8 @@ import {
   useUpdateCatalog,
 } from "../../../../lib/react-query-service/catalog";
 import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types";
-import { CreateKnowledgeBaseCard } from "../CreateCatalogCard";
-import { CreateKnowledgeDialog } from "../CreateCatalogDialog";
+import { CreateCatalogCard } from "../CreateCatalogCard";
+import { CreateCatalogDialog } from "../CreateCatalogDialog";
 import { KnowledgeBaseCard } from "../CatalogCard";
 import KnowledgeSearchSort, {
   SortAnchor,
@@ -265,7 +265,7 @@ export const KnowledgeBaseTab = ({
             disabled={isLocalEnvironment ? false : hasReachedLimit}
           />
           {filteredAndSortedKnowledgeBases.map((knowledgeBase) => (
-            <CreateKnowledgeBaseCard
+            <CreateCatalogCard
               key={knowledgeBase.kbId || knowledgeBase.name}
               knowledgeBase={knowledgeBase}
               onCardClick={() => onKnowledgeBaseSelect(knowledgeBase)}
@@ -277,7 +277,7 @@ export const KnowledgeBaseTab = ({
           ))}
         </div>
       )}
-      <CreateKnowledgeDialog
+      <CreateCatalogDialog
         isOpen={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
         onSubmit={handleCreateKnowledgeSubmit}

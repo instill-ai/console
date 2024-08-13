@@ -12,18 +12,18 @@ import { Separator, Skeleton } from "@instill-ai/design-system";
 
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import {
-  useCreateKnowledgeBase,
-  useGetKnowledgeBases,
-  useUpdateKnowledgeBase,
+  useCreateCatalog,
+  useGetCatalogs,
+  useUpdateCatalog,
 } from "../../../../lib/react-query-service/catalog";
 import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types";
-import { CreateKnowledgeBaseCard } from "../CreateKnowledgeBaseCard";
-import { CreateKnowledgeDialog } from "../CreateKnowledgeDialog";
-import { KnowledgeBaseCard } from "../KnowledgeBaseCard";
+import { CreateCatalogCard } from "../CreateCatalogCard";
+import { CreateCatalogDialog } from "../CreateCatalogDialog";
+import { KnowledgeBaseCard } from "../CatalogCard";
 import KnowledgeSearchSort, {
   SortAnchor,
   SortOrder,
-} from "../KnowledgeSearchSort";
+} from "../CatalogSearchSort";
 import { UpgradePlanLink } from "../notifications";
 
 type KnowledgeBaseTabProps = {
@@ -77,12 +77,12 @@ export const KnowledgeBaseTab = ({
     useShallow(selector),
   );
 
-  const createKnowledgeBase = useCreateKnowledgeBase();
-  const updateKnowledgeBase = useUpdateKnowledgeBase();
+  const createKnowledgeBase = useCreateCatalog();
+  const updateKnowledgeBase = useUpdateCatalog();
   const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
   const isTeamPlan = subscription?.plan === "PLAN_TEAM";
 
-  const catalogState = useGetKnowledgeBases({
+  const catalogState = useGetCatalogs({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
@@ -265,7 +265,7 @@ export const KnowledgeBaseTab = ({
             disabled={isLocalEnvironment ? false : hasReachedLimit}
           />
           {filteredAndSortedKnowledgeBases.map((knowledgeBase) => (
-            <CreateKnowledgeBaseCard
+            <CreateCatalogCard
               key={knowledgeBase.kbId || knowledgeBase.name}
               knowledgeBase={knowledgeBase}
               onCardClick={() => onKnowledgeBaseSelect(knowledgeBase)}
@@ -277,7 +277,7 @@ export const KnowledgeBaseTab = ({
           ))}
         </div>
       )}
-      <CreateKnowledgeDialog
+      <CreateCatalogDialog
         isOpen={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
         onSubmit={handleCreateKnowledgeSubmit}
