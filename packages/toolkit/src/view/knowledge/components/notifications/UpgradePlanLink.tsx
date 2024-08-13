@@ -4,11 +4,13 @@ import Link from "next/link";
 type UpgradePlanLinkProps = {
   plan: string;
   namespaceType: Nullable<"user" | "organization">;
+  selectedNamespace: Nullable<string>;
 };
 
 export const UpgradePlanLink = ({
   plan,
   namespaceType,
+  selectedNamespace,
 }: UpgradePlanLinkProps) => {
   const getLinkContent = () => {
     if (plan === "PLAN_FREE" && namespaceType === "user") {
@@ -19,7 +21,7 @@ export const UpgradePlanLink = ({
     } else if (plan === "PLAN_FREE" && namespaceType === "organization") {
       return {
         text: "Upgrade your plan to create more storage space",
-        href: "/organization-settings/billing/subscriptions/plan",
+        href: `/${selectedNamespace}/organization-settings/billing/subscriptions/plan`,
       };
     } else if (plan === "PLAN_PRO" && namespaceType === "user") {
       return {

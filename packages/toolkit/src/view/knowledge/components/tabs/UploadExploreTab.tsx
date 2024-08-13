@@ -90,6 +90,7 @@ type UploadExploreTabProps = {
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
   namespaceType: Nullable<"user" | "organization">;
   isLocalEnvironment: boolean;
+  selectedNamespace: Nullable<string>;
 };
 
 const selector = (store: InstillStore) => ({
@@ -108,6 +109,7 @@ export const UploadExploreTab = ({
   subscription,
   namespaceType,
   isLocalEnvironment,
+  selectedNamespace
 }: UploadExploreTabProps) => {
   const queryClient = useQueryClient();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -393,6 +395,7 @@ export const UploadExploreTab = ({
           setshowStorageWarning={setShowStorageWarning}
           plan={subscription?.plan || "PLAN_FREE"}
           namespaceType={namespaceType}
+          selectedNamespace={selectedNamespace}
         />
       ) : null}
       <div className="flex flex-col items-start justify-start gap-1 mb-2">
@@ -410,6 +413,7 @@ export const UploadExploreTab = ({
             <UpgradePlanLink
               plan={subscription?.plan || "PLAN_FREE"}
               namespaceType={namespaceType}
+              selectedNamespace={selectedNamespace}
             />
           ) : null}
         </p>
@@ -425,8 +429,8 @@ export const UploadExploreTab = ({
                 <Form.Control>
                   <div
                     className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
-                        ? "border-semantic-accent-default"
-                        : "border-semantic-bg-line"
+                      ? "border-semantic-accent-default"
+                      : "border-semantic-bg-line"
                       } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();

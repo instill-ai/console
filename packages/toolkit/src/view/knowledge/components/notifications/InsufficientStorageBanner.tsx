@@ -8,12 +8,14 @@ type InsufficientStorageBannerProps = {
   setshowStorageWarning: React.Dispatch<React.SetStateAction<boolean>>;
   plan: string;
   namespaceType: Nullable<"user" | "organization">;
+  selectedNamespace: Nullable<string>;
 };
 
 export const InsufficientStorageBanner = ({
   setshowStorageWarning,
   plan,
   namespaceType,
+  selectedNamespace,
 }: InsufficientStorageBannerProps) => {
   const router = useRouter();
 
@@ -21,7 +23,7 @@ export const InsufficientStorageBanner = ({
     if (plan === "PLAN_FREE" && namespaceType === "user") {
       return "/subscribe";
     } else if (plan === "PLAN_FREE" && namespaceType === "organization") {
-      return "/organization-settings/billing/subscriptions/plan";
+      return `/${selectedNamespace}/organization-settings/billing/subscriptions/plan`;
     } else if (plan === "PLAN_PRO" && namespaceType === "user") {
       return "/settings/organizations/new";
     } else if (plan === "PLAN_TEAM" && namespaceType === "organization") {

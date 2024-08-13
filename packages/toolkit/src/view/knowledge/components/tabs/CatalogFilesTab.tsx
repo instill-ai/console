@@ -169,6 +169,7 @@ export const CatalogFilesTab = ({
           setshowStorageWarning={setShowStorageWarning}
           plan={subscription?.plan || "PLAN_FREE"}
           namespaceType={namespaceType}
+          selectedNamespace={selectedNamespace}
         />
       ) : null}
       <div className="flex flex-col items-start justify-start gap-1 mb-2">
@@ -186,6 +187,7 @@ export const CatalogFilesTab = ({
             <UpgradePlanLink
               plan={subscription?.plan || "PLAN_FREE"}
               namespaceType={namespaceType}
+              selectedNamespace={selectedNamespace}
             />
           ) : null}
         </p>
