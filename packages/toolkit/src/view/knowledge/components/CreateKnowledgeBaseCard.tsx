@@ -65,7 +65,9 @@ export const CreateKnowledgeBaseCard = ({
     accessToken,
     ownerName: knowledgeBase.ownerName,
     kbId: knowledgeBase.catalogId,
-    fileUid: existingFiles.isSuccess ? existingFiles.data?.[0]?.fileUid : undefined,
+    fileUid: existingFiles.isSuccess
+      ? existingFiles.data?.[0]?.fileUid
+      : undefined,
     enabled: Boolean(existingFiles.data) && Boolean(accessToken),
   });
 

@@ -64,10 +64,9 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
       return [];
     }
     return (knowledgeBaseFiles.data || []).filter(
-      (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED"
+      (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED",
     );
   }, [knowledgeBaseFiles.isSuccess, knowledgeBaseFiles.data]);
-
 
   const updateChunkMutation = useUpdateChunk();
 

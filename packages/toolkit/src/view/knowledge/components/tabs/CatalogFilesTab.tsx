@@ -85,7 +85,6 @@ export const CatalogFilesTab = ({
     }
   }, [filesData.isSuccess, filesData.data]);
 
-
   React.useEffect(() => {
     filesData.refetch();
   }, [knowledgeBase, filesData.refetch]);
