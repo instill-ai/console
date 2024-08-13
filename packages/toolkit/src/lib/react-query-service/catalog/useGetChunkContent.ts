@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 
+//Unused for now, might be removed later
 export function useGetChunkContent({
   chunkUid,
   accessToken,
