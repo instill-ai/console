@@ -89,17 +89,23 @@ export const ModelHead = ({
                 /<span className="text-semantic-fg-primary">{model?.id}</span>
               </div>
               {modelState ? <ModelStateLabel state={modelState} /> : null}
-              {/* INS-5438: We tempoarily hide the private option for better visibility */}
-              {/* {model?.visibility !== "VISIBILITY_PUBLIC" ? (
-                <Tag
-                  className="my-auto h-6 gap-x-1 !border-0 !py-0 !text-sm"
-                  variant="lightNeutral"
-                  size="sm"
-                >
-                  <Icons.Lock03 className="h-3 w-3 stroke-semantic-fg-primary" />
-                  Private
-                </Tag>
-              ) : null} */}
+              <Tag
+                className="my-auto h-6 gap-x-1 !border-0 !py-0 !text-sm"
+                variant="lightNeutral"
+                size="sm"
+              >
+                {model?.visibility !== "VISIBILITY_PUBLIC" ? (
+                  <React.Fragment>
+                    <Icons.Lock03 className="h-3 w-3 stroke-semantic-fg-primary" />
+                    Private
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <Icons.BookOpen02 className="h-3 w-3 stroke-semantic-fg-primary" />
+                    Public
+                  </React.Fragment>
+                )}
+              </Tag>
               {model?.sourceUrl ? (
                 <HeadExternalLink href={model.sourceUrl}>
                   <GitHubIcon
