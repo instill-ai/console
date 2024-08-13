@@ -10,7 +10,6 @@ export const UpgradePlanLink = ({
   namespaceType,
 }: UpgradePlanLinkProps) => {
   const getLinkContent = () => {
-
     if (plan === "PLAN_FREE" && namespaceType === "user") {
       return {
         text: "Upgrade your plan to create more storage space",

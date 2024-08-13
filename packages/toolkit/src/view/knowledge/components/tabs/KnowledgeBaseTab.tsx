@@ -79,8 +79,7 @@ export const KnowledgeBaseTab = ({
 
   const createKnowledgeBase = useCreateKnowledgeBase();
   const updateKnowledgeBase = useUpdateKnowledgeBase();
-  const isEnterprisePlan =
-    subscription?.plan === "PLAN_ENTERPRISE"
+  const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
   const isTeamPlan = subscription?.plan === "PLAN_TEAM";
 
   const catalogState = useGetKnowledgeBases({
@@ -218,13 +217,12 @@ export const KnowledgeBaseTab = ({
                 ? `(${filteredAndSortedKnowledgeBases.length})`
                 : `(${filteredAndSortedKnowledgeBases.length}/${knowledgeBaseLimit})`}
             </span>
-            {!isLocalEnvironment && !isEnterprisePlan
-              ? <UpgradePlanLink
+            {!isLocalEnvironment && !isEnterprisePlan ? (
+              <UpgradePlanLink
                 plan={subscription?.plan || "PLAN_FREE"}
                 namespaceType={namespaceType}
               />
-              : null
-            }
+            ) : null}
           </p>
         </div>
         <KnowledgeSearchSort
