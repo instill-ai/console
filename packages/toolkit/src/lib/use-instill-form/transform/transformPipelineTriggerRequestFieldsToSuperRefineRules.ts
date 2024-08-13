@@ -10,6 +10,9 @@ export function transformPipelineTriggerRequestFieldsToSuperRefineRules(
   if (!fields) return rules;
 
   for (const [key, value] of Object.entries(fields)) {
+    // Skip the fields that don't have value or instillFormat
+    if (!value || !value.instillFormat) continue;
+
     switch (value.instillFormat) {
       case "string":
         rules.push({

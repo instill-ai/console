@@ -19,6 +19,18 @@ export const ConnectorTypeSchema = z.enum([
   "CONNECTOR_TYPE_GENERIC",
 ]);
 
+export type Task = {
+  title: string;
+  name: string;
+  description?: string;
+};
+
+export const TaskSchema = z.object({
+  title: z.string(),
+  name: z.string(),
+  description: z.string().optional(),
+});
+
 export type ConnectorDefinition = {
   name: string;
   uid: string;
@@ -33,6 +45,7 @@ export type ConnectorDefinition = {
   custom: boolean;
   vendor: string;
   vendorAttributes: GeneralRecord;
+  tasks: Task[];
 };
 
 export const ConnectorDefinitionSchema = z.object({
@@ -49,6 +62,7 @@ export const ConnectorDefinitionSchema = z.object({
   custom: z.boolean(),
   vendor: z.string(),
   vendorAttributes: z.record(z.any()),
+  tasks: z.array(TaskSchema),
 });
 
 export type OperatorDefinition = {
@@ -62,6 +76,7 @@ export type OperatorDefinition = {
   tombstone: boolean;
   public: boolean;
   custom: boolean;
+  tasks: Task[];
 };
 
 export const OperatorDefinitionSchema = z.object({
@@ -75,6 +90,7 @@ export const OperatorDefinitionSchema = z.object({
   tombstone: z.boolean(),
   public: z.boolean(),
   custom: z.boolean(),
+  tasks: z.array(TaskSchema),
 });
 
 export type ListConnectorDefinitionsRequest = {
