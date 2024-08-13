@@ -20,8 +20,8 @@ import {
   useListCatalogFiles,
 } from "../../../../lib/react-query-service/catalog";
 import {
-  File,
   Catalog,
+  File,
 } from "../../../../lib/react-query-service/catalog/types";
 import { EmptyState } from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";

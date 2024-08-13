@@ -17,9 +17,9 @@ import {
   useUpdateChunk,
 } from "../../../../lib/react-query-service/catalog";
 import {
-  Chunk,
   Catalog,
   CatalogFile,
+  Chunk,
 } from "../../../../lib/react-query-service/catalog/types";
 import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";

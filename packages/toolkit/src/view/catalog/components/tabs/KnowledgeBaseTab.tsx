@@ -17,13 +17,10 @@ import {
   useUpdateCatalog,
 } from "../../../../lib/react-query-service/catalog";
 import { Catalog } from "../../../../lib/react-query-service/catalog/types";
+import { CatalogCard } from "../CatalogCard";
+import CatalogSearchSort, { SortAnchor, SortOrder } from "../CatalogSearchSort";
 import { CreateCatalogCard } from "../CreateCatalogCard";
 import { CreateCatalogDialog } from "../CreateCatalogDialog";
-import { CatalogCard } from "../CatalogCard";
-import CatalogSearchSort, {
-  SortAnchor,
-  SortOrder,
-} from "../CatalogSearchSort";
 import { UpgradePlanLink } from "../notifications";
 
 type CatalogTabProps = {
@@ -201,8 +198,7 @@ export const CatalogTab = ({
     return filtered;
   }, [catalogs, searchTerm, selectedSortAnchor, selectedSortOrder]);
 
-  const hasReachedLimit =
-    filteredAndSortedCatalogs.length >= catalogLimit;
+  const hasReachedLimit = filteredAndSortedCatalogs.length >= catalogLimit;
 
   return (
     <div className="flex flex-col">

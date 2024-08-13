@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { Separator, Tooltip } from "@instill-ai/design-system";
 
+import { CatalogCardMenu, EditCatalogDialog } from ".";
 import { GeneralDeleteResourceDialog } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import {
@@ -11,7 +12,6 @@ import {
   useListCatalogFiles,
 } from "../../../lib/react-query-service/catalog";
 import { Catalog } from "../../../lib/react-query-service/catalog/types";
-import { CatalogCardMenu, EditCatalogDialog } from ".";
 
 type EditCatalogDialogData = {
   name: string;
@@ -22,10 +22,7 @@ type EditCatalogDialogData = {
 type CreateCatalogCardProps = {
   catalog: Catalog;
   onCardClick: () => void;
-  onUpdateCatalog: (
-    data: EditCatalogDialogData,
-    kbId: string,
-  ) => Promise<void>;
+  onUpdateCatalog: (data: EditCatalogDialogData, kbId: string) => Promise<void>;
   onCloneCatalog: (catalog: Catalog) => Promise<void>;
   onDeleteCatalog: (catalog: Catalog) => Promise<void>;
   disabled?: boolean;
@@ -117,9 +114,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
               onClick={onCardClick}
             >
               <div className="flex items-center justify-between">
-                <div className="product-headings-heading-4">
-                  {catalog.name}
-                </div>
+                <div className="product-headings-heading-4">{catalog.name}</div>
               </div>
               <Separator orientation="horizontal" className="my-[10px]" />
               <p className="mb-auto line-clamp-3 product-body-text-3-regular whitespace-pre-wrap break-words">

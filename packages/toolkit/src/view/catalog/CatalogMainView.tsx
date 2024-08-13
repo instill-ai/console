@@ -29,8 +29,8 @@ import {
 import { CreditUsageFileNotification } from "./components/notifications";
 import {
   CatalogFilesTab,
-  ChunkTab,
   CatalogTab,
+  ChunkTab,
   RetrieveTestTab,
   UploadExploreTab,
 } from "./components/tabs";
@@ -77,9 +77,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
     catalogId: selectedCatalog?.catalogId ?? "",
     accessToken,
     enabled:
-      enabledQuery &&
-      Boolean(selectedNamespace) &&
-      Boolean(selectedCatalog),
+      enabledQuery && Boolean(selectedNamespace) && Boolean(selectedCatalog),
   });
 
   const userSub = useAuthenticatedUserSubscription({

@@ -9,9 +9,9 @@ import {
   useListChunks,
 } from "../../../lib/react-query-service/catalog";
 import {
-  Chunk,
   Catalog,
   CatalogFile,
+  Chunk,
 } from "../../../lib/react-query-service/catalog/types";
 import ChunkCard from "./ChunkCard";
 

@@ -130,7 +130,7 @@ export const ImageTab = ({ catalog }: ImageTabProps) => {
                             </span>
                             <Switch
                               checked={item.status}
-                              onCheckedChange={() => { }}
+                              onCheckedChange={() => {}}
                               className=""
                             ></Switch>
                           </div>
