@@ -60,10 +60,14 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
   });
 
   const files = React.useMemo(() => {
+    if (!knowledgeBaseFiles.isSuccess) {
+      return [];
+    }
     return (knowledgeBaseFiles.data || []).filter(
-      (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED",
+      (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED"
     );
-  }, [knowledgeBaseFiles.data]);
+  }, [knowledgeBaseFiles.isSuccess, knowledgeBaseFiles.data]);
+
 
   const updateChunkMutation = useUpdateChunk();
 

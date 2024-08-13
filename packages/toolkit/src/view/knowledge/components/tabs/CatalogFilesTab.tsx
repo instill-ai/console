@@ -80,8 +80,11 @@ export const CatalogFilesTab = ({
 
   const [files, setFiles] = React.useState<File[]>([]);
   React.useEffect(() => {
-    setFiles(filesData.data || []);
-  }, [filesData.data]);
+    if (filesData.isSuccess && filesData.data) {
+      setFiles(filesData.data);
+    }
+  }, [filesData.isSuccess, filesData.data]);
+
 
   React.useEffect(() => {
     filesData.refetch();

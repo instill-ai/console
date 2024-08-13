@@ -142,11 +142,11 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
   );
 
   React.useEffect(() => {
-    if (filesData.data) {
+    if (filesData.isSuccess) {
       const hasChunks = filesData.data.some((file) => file.totalChunks > 0);
       setIsProcessed(hasChunks);
     }
-  }, [filesData.data]);
+  }, [filesData.data, filesData.isSuccess]);
 
   const knowledgeBaseLimit = React.useMemo(
     () => getKnowledgeBaseLimit(subscriptionInfo.plan),
