@@ -9,21 +9,21 @@ import { Catalog } from "../../../lib/react-query-service/catalog/types";
 type SidebarProps = {
   activeTab: string;
   onTabChange: (tab: string) => void;
-  selectedKnowledgeBase: Catalog | null;
-  onDeselectKnowledgeBase: () => void;
+  selectedCatalog: Catalog | null;
+  onDeselectCatalog: () => void;
 };
 
 export const Sidebar = ({
   activeTab,
   onTabChange,
-  selectedKnowledgeBase,
-  onDeselectKnowledgeBase,
+  selectedCatalog,
+  onDeselectCatalog,
 }: SidebarProps) => {
   const router = useRouter();
 
   const handleTabChange = (tab: string) => {
     if (tab === "catalogs") {
-      onDeselectKnowledgeBase();
+      onDeselectCatalog();
     }
     onTabChange(tab);
     router.push(`#${tab}`, { scroll: false });
@@ -47,12 +47,12 @@ export const Sidebar = ({
         className={`${getTabClassName("catalogs")} whitespace-nowrap`}
         onClick={() => handleTabChange("catalogs")}
       >
-        {selectedKnowledgeBase && activeTab !== "catalogs" && (
+        {selectedCatalog && activeTab !== "catalogs" && (
           <Icons.ArrowLeft className="h-4 w-4 stroke-semantic-fg-disabled" />
         )}
         My Catalogs
       </div>
-      {selectedKnowledgeBase && (
+      {selectedCatalog && (
         <>
           <div
             className={getTabClassName("upload")}

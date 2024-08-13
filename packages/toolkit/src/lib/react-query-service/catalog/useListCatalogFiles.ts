@@ -4,7 +4,7 @@ import { Nullable } from "../../type";
 import { createInstillAxiosClient, getQueryString } from "../../vdp-sdk/helper";
 import { File } from "./types";
 
-export async function listKnowledgeBaseFiles({
+export async function listCatalogFiles({
   namespaceId,
   catalogId,
   accessToken,
@@ -72,7 +72,7 @@ export function useListCatalogFiles({
       let totalSize = 0;
 
       do {
-        const result = await listKnowledgeBaseFiles({
+        const result = await listCatalogFiles({
           namespaceId,
           catalogId,
           accessToken,

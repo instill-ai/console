@@ -22,12 +22,12 @@ type EditCatalogDialogData = {
 type CreateCatalogCardProps = {
   catalog: Catalog;
   onCardClick: () => void;
-  onUpdateKnowledgeBase: (
+  onUpdateCatalog: (
     data: EditCatalogDialogData,
     kbId: string,
   ) => Promise<void>;
-  onCloneKnowledgeBase: (catalog: Catalog) => Promise<void>;
-  onDeleteKnowledgeBase: (catalog: Catalog) => Promise<void>;
+  onCloneCatalog: (catalog: Catalog) => Promise<void>;
+  onDeleteCatalog: (catalog: Catalog) => Promise<void>;
   disabled?: boolean;
 };
 
@@ -40,9 +40,9 @@ const selector = (store: InstillStore) => ({
 export const CreateCatalogCard = ({
   catalog,
   onCardClick,
-  onUpdateKnowledgeBase,
-  onCloneKnowledgeBase,
-  onDeleteKnowledgeBase,
+  onUpdateCatalog,
+  onCloneCatalog,
+  onDeleteCatalog,
   disabled = false,
 }: CreateCatalogCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
@@ -98,11 +98,11 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
 
   const handleDuplicate = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onCloneKnowledgeBase(catalog);
+    onCloneCatalog(catalog);
   };
 
   const handleEditKnowledgeSubmit = async (data: EditCatalogDialogData) => {
-    await onUpdateKnowledgeBase(data, catalog.catalogId);
+    await onUpdateCatalog(data, catalog.catalogId);
     setEditDialogIsOpen(false);
   };
 
@@ -157,7 +157,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
         open={deleteDialogIsOpen}
         onOpenChange={setDeleteDialogIsOpen}
         handleDeleteResource={async () => {
-          await onDeleteKnowledgeBase(catalog);
+          await onDeleteCatalog(catalog);
           setDeleteDialogIsOpen(false);
         }}
         trigger={null}

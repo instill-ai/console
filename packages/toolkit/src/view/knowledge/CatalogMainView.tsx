@@ -30,12 +30,12 @@ import { CreditUsageFileNotification } from "./components/notifications";
 import {
   CatalogFilesTab,
   ChunkTab,
-  KnowledgeBaseTab,
+  CatalogTab,
   RetrieveTestTab,
   UploadExploreTab,
 } from "./components/tabs";
 
-export type KnowledgeBaseViewProps = GeneralAppPageProp;
+export type CatalogViewProps = GeneralAppPageProp;
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -43,8 +43,8 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
-  const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
+export const CatalogMainView = (props: CatalogViewProps) => {
+  const [selectedCatalog, setSelectedCatalog] =
     React.useState<Nullable<Catalog>>(null);
   const [activeTab, setActiveTab] = React.useState("catalogs");
   const [isProcessed, setIsProcessed] = React.useState(false);
@@ -65,7 +65,7 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
   );
   const isLocalEnvironment = env("NEXT_PUBLIC_APP_ENV") === "CE";
 
-  const deleteKnowledgeBase = useDeleteCatalog();
+  const deleteCatalog = useDeleteCatalog();
   const catalogs = useGetCatalogs({
     accessToken,
     ownerId: selectedNamespace ?? null,
@@ -74,12 +74,12 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
 
   const filesData = useListCatalogFiles({
     namespaceId: selectedNamespace ?? null,
-    catalogId: selectedKnowledgeBase?.catalogId ?? "",
+    catalogId: selectedCatalog?.catalogId ?? "",
     accessToken,
     enabled:
       enabledQuery &&
       Boolean(selectedNamespace) &&
-      Boolean(selectedKnowledgeBase),
+      Boolean(selectedCatalog),
   });
 
   const userSub = useAuthenticatedUserSubscription({
@@ -164,7 +164,7 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
     } else {
       setActiveTab(tab);
       if (tab === "catalogs") {
-        setSelectedKnowledgeBase(null);
+        setSelectedCatalog(null);
       }
     }
   };
@@ -182,7 +182,7 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
     if (pendingTabChange) {
       setActiveTab(pendingTabChange);
       if (pendingTabChange === "catalogs") {
-        setSelectedKnowledgeBase(null);
+        setSelectedCatalog(null);
       }
     }
     setShowWarnDialog(false);
@@ -204,22 +204,22 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
     setCreditUsageTimer(timer);
   };
 
-  const handleKnowledgeBaseSelect = (catalog: Catalog) => {
+  const handleCatalogSelect = (catalog: Catalog) => {
     handleTabChangeAttempt("upload");
-    setSelectedKnowledgeBase(catalog);
+    setSelectedCatalog(catalog);
   };
 
-  const handleDeleteKnowledgeBase = async (catalog: Catalog) => {
+  const handleDeleteCatalog = async (catalog: Catalog) => {
     if (!selectedNamespace || !accessToken) return;
 
     try {
-      await deleteKnowledgeBase.mutateAsync({
+      await deleteCatalog.mutateAsync({
         ownerId: selectedNamespace,
         kbId: catalog.catalogId,
         accessToken,
       });
-      if (selectedKnowledgeBase?.catalogId === catalog.catalogId) {
-        setSelectedKnowledgeBase(null);
+      if (selectedCatalog?.catalogId === catalog.catalogId) {
+        setSelectedCatalog(null);
         setActiveTab("catalogs");
       }
       catalogs.refetch();
@@ -240,12 +240,12 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
     handleTabChangeAttempt("upload");
   };
 
-  const handleDeselectKnowledgeBase = () => {
+  const handleDeselectCatalog = () => {
     handleTabChangeAttempt("catalogs");
   };
 
   React.useEffect(() => {
-    setSelectedKnowledgeBase(null);
+    setSelectedCatalog(null);
     setActiveTab("catalogs");
     setHasUnsavedChanges(false);
   }, [selectedNamespace]);
@@ -267,28 +267,28 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
         />
       ) : null}
       <div className="grid w-full grid-cols-12 gap-6 px-8">
-        {selectedKnowledgeBase ? (
+        {selectedCatalog ? (
           <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
             <Sidebar
               activeTab={activeTab}
               onTabChange={handleTabChangeAttempt}
-              selectedKnowledgeBase={selectedKnowledgeBase}
-              onDeselectKnowledgeBase={handleDeselectKnowledgeBase}
+              selectedCatalog={selectedCatalog}
+              onDeselectCatalog={handleDeselectCatalog}
             />
           </div>
         ) : null}
         <div
           className={cn(
             "pt-5",
-            selectedKnowledgeBase
+            selectedCatalog
               ? "sm:col-span-8 md:col-span-9 lg:col-span-10"
               : "col-span-12",
           )}
         >
           {activeTab === "catalogs" ? (
-            <KnowledgeBaseTab
-              onKnowledgeBaseSelect={handleKnowledgeBaseSelect}
-              onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
+            <CatalogTab
+              onCatalogSelect={handleCatalogSelect}
+              onDeleteCatalog={handleDeleteCatalog}
               accessToken={props.accessToken}
               catalogs={catalogs.data || []}
               catalogLimit={catalogLimit}
@@ -297,9 +297,9 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
             />
           ) : null}
-          {activeTab === "files" && selectedKnowledgeBase ? (
+          {activeTab === "files" && selectedCatalog ? (
             <CatalogFilesTab
-              catalog={selectedKnowledgeBase}
+              catalog={selectedCatalog}
               onGoToUpload={handleGoToUpload}
               remainingStorageSpace={remainingStorageSpace}
               updateRemainingSpace={updateRemainingSpace}
@@ -308,9 +308,9 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
             />
           ) : null}
-          {activeTab === "upload" && selectedKnowledgeBase ? (
+          {activeTab === "upload" && selectedCatalog ? (
             <UploadExploreTab
-              catalog={selectedKnowledgeBase}
+              catalog={selectedCatalog}
               onProcessFile={handleProcessFile}
               onTabChange={(tab) => handleTabChangeAttempt(tab, true)}
               setHasUnsavedChanges={setHasUnsavedChanges}
@@ -322,15 +322,15 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
               selectedNamespace={selectedNamespace}
             />
           ) : null}
-          {activeTab === "chunks" && selectedKnowledgeBase ? (
+          {activeTab === "chunks" && selectedCatalog ? (
             <ChunkTab
-              catalog={selectedKnowledgeBase}
+              catalog={selectedCatalog}
               onGoToUpload={handleGoToUpload}
             />
           ) : null}
-          {activeTab === "retrieve" && selectedKnowledgeBase ? (
+          {activeTab === "retrieve" && selectedCatalog ? (
             <RetrieveTestTab
-              catalog={selectedKnowledgeBase}
+              catalog={selectedCatalog}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}

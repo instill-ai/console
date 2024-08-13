@@ -89,7 +89,7 @@ export const CatalogFilesTab = ({
     filesData.refetch();
   }, [catalog, filesData.refetch]);
 
-  const deleteKnowledgeBaseFile = useDeleteCatalogFile();
+  const deleteCatalogFile = useDeleteCatalogFile();
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState<Nullable<File>>(null);
 
@@ -136,7 +136,7 @@ export const CatalogFilesTab = ({
     try {
       const fileToDelete = files.find((file) => file.fileUid === fileUid);
       if (fileToDelete) {
-        await deleteKnowledgeBaseFile.mutateAsync({
+        await deleteCatalogFile.mutateAsync({
           fileUid,
           accessToken,
         });

@@ -155,8 +155,8 @@ export const UploadExploreTab = ({
   const insufficientStorageTimeoutRef =
     React.useRef<Nullable<NodeJS.Timeout>>(null);
 
-  const uploadKnowledgeBaseFile = useUploadCatalogFile();
-  const processKnowledgeBaseFiles = useProcessCatalogFiles();
+  const uploadCatalogFile = useUploadCatalogFile();
+  const processCatalogFiles = useProcessCatalogFiles();
 
   const { accessToken, navigationNamespaceAnchor, enabledQuery } =
     useInstillStore(useShallow(selector));
@@ -319,7 +319,7 @@ export const UploadExploreTab = ({
         });
 
         try {
-          const uploadedFile = await uploadKnowledgeBaseFile.mutateAsync({
+          const uploadedFile = await uploadCatalogFile.mutateAsync({
             ownerId: navigationNamespaceAnchor,
             catalogId: catalog.catalogId,
             payload: {
@@ -330,7 +330,7 @@ export const UploadExploreTab = ({
             accessToken,
           });
 
-          await processKnowledgeBaseFiles.mutateAsync({
+          await processCatalogFiles.mutateAsync({
             fileUids: [uploadedFile.fileUid],
             accessToken,
             namespaceUid: targetNamespace.uid,
