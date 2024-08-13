@@ -288,7 +288,7 @@ export const RecipeEditorView = () => {
                         </button>
                       </div>
                     </div>
-                    <div className="flex h-7 items-center flex-row-reverse bg-semantic-bg-alt-primary border-b border-semantic-bg-line">
+                    <div className="flex h-7 shrink-0 items-center flex-row-reverse bg-semantic-bg-alt-primary border-b border-semantic-bg-line">
                       <button
                         onClick={async () => {
                           if (

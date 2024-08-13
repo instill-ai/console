@@ -38,6 +38,9 @@ export function pickPipelineTriggerRequestFormFields({
   // is we want to sort the fields by the order of `instillUIOrder` property.
 
   for (const [key, value] of Object.entries(fields)) {
+    // Skip the fields that don't have value or instillFormat
+    if (!value || !value.instillFormat) continue;
+
     switch (value.instillFormat) {
       case "string":
         if (value.instillUiMultiline) {
