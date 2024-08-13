@@ -221,6 +221,7 @@ export const KnowledgeBaseTab = ({
               <UpgradePlanLink
                 plan={subscription?.plan || "PLAN_FREE"}
                 namespaceType={namespaceType}
+                selectedNamespace={selectedNamespace}
               />
             ) : null}
           </p>
