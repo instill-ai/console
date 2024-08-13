@@ -1,8 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 import { Nullable } from "instill-sdk";
+
+import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 
 type InsufficientStorageBannerProps = {
   setshowStorageWarning: React.Dispatch<React.SetStateAction<boolean>>;

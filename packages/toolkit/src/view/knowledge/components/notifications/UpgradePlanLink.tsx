@@ -1,5 +1,5 @@
-import { Nullable } from "instill-sdk";
 import Link from "next/link";
+import { Nullable } from "instill-sdk";
 
 type UpgradePlanLinkProps = {
   plan: string;
