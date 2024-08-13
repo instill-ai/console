@@ -192,9 +192,12 @@ export const getPlanStorageLimitMB = (size: number): string => {
 
 export const shouldShowStorageWarning = (
   remainingStorageSpace: number,
-  planStorageLimit: number
+  planStorageLimit: number,
 ): boolean => {
-  return (remainingStorageSpace / planStorageLimit) * 100 <= STORAGE_WARNING_THRESHOLD;
+  return (
+    (remainingStorageSpace / planStorageLimit) * 100 <=
+    STORAGE_WARNING_THRESHOLD
+  );
 };
 
 export const formatFileSize = (bytes: number | undefined): string => {

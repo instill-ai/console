@@ -1,4 +1,5 @@
-'use client'
+"use client";
+
 import * as React from "react";
 import {
   Nullable,
@@ -63,7 +64,7 @@ export const KnowledgeBaseTab = ({
   knowledgeBaseLimit,
   namespaceType,
   subscription,
-  isLocalEnvironment
+  isLocalEnvironment,
 }: KnowledgeBaseTabProps) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -78,7 +79,9 @@ export const KnowledgeBaseTab = ({
 
   const createKnowledgeBase = useCreateKnowledgeBase();
   const updateKnowledgeBase = useUpdateKnowledgeBase();
-  const isTeamPlan = subscription?.plan === "PLAN_ENTERPRISE" || subscription?.plan === "PLAN_TEAM";
+  const isTeamPlan =
+    subscription?.plan === "PLAN_ENTERPRISE" ||
+    subscription?.plan === "PLAN_TEAM";
 
   const catalogState = useGetKnowledgeBases({
     accessToken,

@@ -1,4 +1,5 @@
-'use client';
+"use client";
+
 import { Button, Icons } from "@instill-ai/design-system";
 
 import { getPlanStorageLimitMB, truncateName } from "../lib/helpers";

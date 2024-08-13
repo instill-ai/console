@@ -1,5 +1,6 @@
-'use client'
-import * as React from 'react'
+"use client";
+
+import * as React from "react";
 
 import {
   Button,
@@ -129,7 +130,7 @@ export const ImageTab = ({ knowledgeBase }: ImageTabProps) => {
                             </span>
                             <Switch
                               checked={item.status}
-                              onCheckedChange={() => { }}
+                              onCheckedChange={() => {}}
                               className=""
                             ></Switch>
                           </div>

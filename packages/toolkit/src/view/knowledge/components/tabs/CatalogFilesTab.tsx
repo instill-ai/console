@@ -1,4 +1,5 @@
 "use client";
+
 import * as React from "react";
 import {
   Nullable,
@@ -51,7 +52,7 @@ export const CatalogFilesTab = ({
   subscription,
   updateRemainingSpace,
   namespaceType,
-  isLocalEnvironment
+  isLocalEnvironment,
 }: CatalogFilesTabProps) => {
   const [sortConfig, setSortConfig] = React.useState<{
     key: keyof File | "";
@@ -96,7 +97,7 @@ export const CatalogFilesTab = ({
   const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
 
   const [showStorageWarning, setShowStorageWarning] = React.useState(
-    shouldShowStorageWarning(remainingStorageSpace, planStorageLimit)
+    shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
   );
 
   React.useEffect(() => {
@@ -156,7 +157,7 @@ export const CatalogFilesTab = ({
 
   React.useEffect(() => {
     setShowStorageWarning(
-      shouldShowStorageWarning(remainingStorageSpace, planStorageLimit)
+      shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
     );
   }, [remainingStorageSpace, planStorageLimit]);
 
