@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.99.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.98.3...@instill-ai/toolkit-v0.99.0) (2024-08-13)
+
+
+### Features
+
+* add page_url into amplitude event properties ([#1355](https://github.com/instill-ai/console/issues/1355)) ([8e95386](https://github.com/instill-ai/console/commit/8e953866e1ae060bfd9132960c00fe311533bc53))
+* **catalog:** MVP 2 ([#1351](https://github.com/instill-ai/console/issues/1351)) ([8648319](https://github.com/instill-ai/console/commit/8648319aace47bcff864a2067a85143ef22bbd79))
+* **catalog:** pagination ([#1369](https://github.com/instill-ai/console/issues/1369)) ([03da2c5](https://github.com/instill-ai/console/commit/03da2c563a2d0e865bd9793d1a5c55f5eae4f43d))
+* show private/public labels for model cards and on model page ([#1367](https://github.com/instill-ai/console/issues/1367)) ([3b8f571](https://github.com/instill-ai/console/commit/3b8f571b68b2543c86fcd894faff2b05eecd3dc4))
+
+
+### Bug Fixes
+
+* **catalog:** fix link on Team plan  ([#1370](https://github.com/instill-ai/console/issues/1370)) ([7efd02c](https://github.com/instill-ai/console/commit/7efd02cbd6d264723226ee6a86a90378ef70e11a))
+* fix duplicated page indicator on explore/featured related pages ([#1365](https://github.com/instill-ai/console/issues/1365)) ([a75b80a](https://github.com/instill-ai/console/commit/a75b80a100b53e7cb9e0891f2b17e558d7231487))
+* **pipeline-editor:** fix console not correctly handle array:semi-structured edge case ([#1362](https://github.com/instill-ai/console/issues/1362)) ([1b5735c](https://github.com/instill-ai/console/commit/1b5735cc6006d3a90cc30da7ce5143ed69965a2e))
+* **pipeline-editor:** fix video input have the wrong width due to limited hight (Make it looks like having redundant padding) ([#1361](https://github.com/instill-ai/console/issues/1361)) ([14f921c](https://github.com/instill-ai/console/commit/14f921c5784287ee10f5cc8595907822fb388c02))
+* **pipeline-editor:** fix video input-output always show play icon after playing once ([#1360](https://github.com/instill-ai/console/issues/1360)) ([7d9f195](https://github.com/instill-ai/console/commit/7d9f1955c743d1f4cffb29322f86d6541f7190c4))
+* **pipeline-editor:** further fix image padding issue between input and output ([#1363](https://github.com/instill-ai/console/issues/1363)) ([0596544](https://github.com/instill-ai/console/commit/0596544c5f7db0e10734e8c6c8d969e6abff09ae))
+* remove add field for data related component ([#1364](https://github.com/instill-ai/console/issues/1364)) ([50e52aa](https://github.com/instill-ai/console/commit/50e52aaaf3d8d60dd526a8d4db201e41cd78a1df))
+* replace log in to clone with log in to run button on the model page ([#1352](https://github.com/instill-ai/console/issues/1352)) ([2be9801](https://github.com/instill-ai/console/commit/2be9801ab50d5648a68f2fd008a8bd1f9cb90828))
+
 ## [0.98.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.98.2...@instill-ai/toolkit-v0.98.3) (2024-08-05)
 
 

@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.76.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.75.0...@instill-ai/design-system-v0.76.0) (2024-08-13)
+
+
+### Features
+
+* **catalog:** MVP 2 ([#1351](https://github.com/instill-ai/console/issues/1351)) ([8648319](https://github.com/instill-ai/console/commit/8648319aace47bcff864a2067a85143ef22bbd79))
+
 ## [0.75.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.74.0...@instill-ai/design-system-v0.75.0) (2024-08-02)
 
 
