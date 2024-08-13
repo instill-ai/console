@@ -19,7 +19,7 @@ import {
 import {
   Chunk,
   Catalog,
-  KnowledgeFile,
+  CatalogFile,
 } from "../../../../lib/react-query-service/catalog/types";
 import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";
@@ -40,7 +40,7 @@ export const ChunkTab = ({ catalog, onGoToUpload }: ChunkTabProps) => {
   const [selectedChunk, setSelectedChunk] =
     React.useState<Nullable<Chunk>>(null);
   const [selectedFile, setSelectedFile] =
-    React.useState<Nullable<KnowledgeFile>>(null);
+    React.useState<Nullable<CatalogFile>>(null);
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
@@ -78,7 +78,7 @@ export const ChunkTab = ({ catalog, onGoToUpload }: ChunkTabProps) => {
     );
   };
 
-  const handleChunkClick = (file: KnowledgeFile, chunk: Chunk) => {
+  const handleChunkClick = (file: CatalogFile, chunk: Chunk) => {
     setSelectedFile(file);
     setSelectedChunk(chunk);
     setIsFileDetailsOpen(true);
@@ -158,7 +158,7 @@ export const ChunkTab = ({ catalog, onGoToUpload }: ChunkTabProps) => {
       ) : files.length > 0 ? (
         <div className="flex">
           <div className="w-full pr-4">
-            {files.map((file: KnowledgeFile) => (
+            {files.map((file: CatalogFile) => (
               <FileChunks
                 key={file.fileUid}
                 file={file}

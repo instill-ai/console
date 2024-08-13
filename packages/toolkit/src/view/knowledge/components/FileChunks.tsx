@@ -11,17 +11,17 @@ import {
 import {
   Chunk,
   Catalog,
-  KnowledgeFile,
+  CatalogFile,
 } from "../../../lib/react-query-service/catalog/types";
 import ChunkCard from "./ChunkCard";
 
 type FileChunksProps = {
-  file: KnowledgeFile;
+  file: CatalogFile;
   catalog: Catalog;
   accessToken: Nullable<string>;
   expanded: boolean;
   onToggleExpand: (fileUid: string) => void;
-  onChunkClick: (file: KnowledgeFile, chunk: Chunk) => void;
+  onChunkClick: (file: CatalogFile, chunk: Chunk) => void;
   onRetrievableToggle: (
     chunkUid: string,
     currentValue: boolean,

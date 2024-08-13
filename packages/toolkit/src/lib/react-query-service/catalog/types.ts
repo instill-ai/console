@@ -27,7 +27,7 @@ export type FileSnippet = {
   score: number;
 };
 
-export interface KnowledgeFile {
+export interface CatalogFile {
   fileUid: string;
   name: string;
   type: string;

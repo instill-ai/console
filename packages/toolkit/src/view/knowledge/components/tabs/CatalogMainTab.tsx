@@ -43,7 +43,7 @@ type EditCatalogDialogData = {
   tags?: string[];
 };
 
-const CreateKnowledgeFormSchema = z.object({
+const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().optional(),
   tags: z.array(z.string()).optional(),
@@ -94,8 +94,8 @@ export const CatalogTab = ({
     }
   }, [selectedNamespace, catalogState.refetch]);
 
-  const handleCreateKnowledgeSubmit = async (
-    data: z.infer<typeof CreateKnowledgeFormSchema>,
+  const handleCreateCatalogSubmit = async (
+    data: z.infer<typeof CreateCatalogFormSchema>,
   ) => {
     if (!accessToken) return;
 
@@ -280,7 +280,7 @@ export const CatalogTab = ({
       <CreateCatalogDialog
         isOpen={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
-        onSubmit={handleCreateKnowledgeSubmit}
+        onSubmit={handleCreateCatalogSubmit}
       />
     </div>
   );

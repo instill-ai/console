@@ -19,7 +19,7 @@ import { EntitySelector, LoadingSpin } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 
-const CreateKnowledgeFormSchema = z.object({
+const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().optional(),
   tags: z.array(z.string()).optional(),
@@ -35,7 +35,7 @@ const selector = (store: InstillStore) => ({
 type CreateCatalogDialogProps = {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: z.infer<typeof CreateKnowledgeFormSchema>) => Promise<void>;
+  onSubmit: (data: z.infer<typeof CreateCatalogFormSchema>) => Promise<void>;
 };
 
 export const CreateCatalogDialog = ({
@@ -51,8 +51,8 @@ export const CreateCatalogDialog = ({
 
   const userNamespaces = useUserNamespaces();
 
-  const form = useForm<z.infer<typeof CreateKnowledgeFormSchema>>({
-    resolver: zodResolver(CreateKnowledgeFormSchema),
+  const form = useForm<z.infer<typeof CreateCatalogFormSchema>>({
+    resolver: zodResolver(CreateCatalogFormSchema),
     defaultValues: {
       name: "",
       description: "",
@@ -104,7 +104,7 @@ export const CreateCatalogDialog = ({
   }, [isOpen, navigationNamespaceAnchor, form]);
 
   const handleSubmit = async (
-    data: z.infer<typeof CreateKnowledgeFormSchema>,
+    data: z.infer<typeof CreateCatalogFormSchema>,
   ) => {
     setCreating(true);
 

@@ -15,7 +15,7 @@ import {
 
 import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
 
-const EditKnowledgeFormSchema = z.object({
+const EditCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z
     .string()
@@ -26,7 +26,7 @@ const EditKnowledgeFormSchema = z.object({
   tags: z.array(z.string()).optional(),
 });
 
-type EditCatalogDialogData = z.infer<typeof EditKnowledgeFormSchema>;
+type EditCatalogDialogData = z.infer<typeof EditCatalogFormSchema>;
 
 type EditCatalogDialogProps = {
   isOpen: boolean;
@@ -48,7 +48,7 @@ export const EditCatalogDialog = ({
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const form = useForm<EditCatalogDialogData>({
-    resolver: zodResolver(EditKnowledgeFormSchema),
+    resolver: zodResolver(EditCatalogFormSchema),
     defaultValues: initialValues,
     mode: "onChange",
   });

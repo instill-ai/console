@@ -101,7 +101,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
     onCloneCatalog(catalog);
   };
 
-  const handleEditKnowledgeSubmit = async (data: EditCatalogDialogData) => {
+  const handleEditCatalogSubmit = async (data: EditCatalogDialogData) => {
     await onUpdateCatalog(data, catalog.catalogId);
     setEditDialogIsOpen(false);
   };
@@ -165,7 +165,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
       <EditCatalogDialog
         isOpen={editDialogIsOpen}
         onClose={() => setEditDialogIsOpen(false)}
-        onSubmit={handleEditKnowledgeSubmit}
+        onSubmit={handleEditCatalogSubmit}
         initialValues={{
           name: catalog.name,
           description: catalog.description,
