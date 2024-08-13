@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.54.0-beta](https://github.com/instill-ai/console/compare/v0.53.0-beta...v0.54.0-beta) (2024-08-13)
+
+
+### Features
+
+* update open graph ([#1366](https://github.com/instill-ai/console/issues/1366)) ([418a2ee](https://github.com/instill-ai/console/commit/418a2ee31ba1105acb96a702acfb039c8960faa8))
+
+
+### Miscellaneous
+
+* add new component icons ([#1359](https://github.com/instill-ai/console/issues/1359)) ([dd37377](https://github.com/instill-ai/console/commit/dd373770bbe002a12895037f90b235a090631e86))
+
 ## [0.53.0-beta](https://github.com/instill-ai/console/compare/v0.52.0-beta...v0.53.0-beta) (2024-08-02)
 
 
