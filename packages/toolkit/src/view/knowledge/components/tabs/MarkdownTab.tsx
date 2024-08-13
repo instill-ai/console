@@ -1,4 +1,6 @@
-import { useState } from "react";
+" use client";
+
+import * as React from "react";
 
 import {
   Button,
@@ -48,7 +50,7 @@ const mockData = [
 ];
 
 export const MarkdownTab = ({ knowledgeBase }: MarkdownTabProps) => {
-  const [sortConfig, setSortConfig] = useState({
+  const [sortConfig, setSortConfig] = React.useState({
     key: "",
     direction: "",
   });

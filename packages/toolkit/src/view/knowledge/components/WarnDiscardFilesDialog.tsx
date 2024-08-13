@@ -1,18 +1,18 @@
 import { Button, Dialog, Icons } from "@instill-ai/design-system";
 
-export type WarnFileUploadDialogProps = {
+export type WarnDiscardFilesDialogProps = {
+  onCancel: () => void;
+  onDiscard: () => void;
   open: boolean;
   setOpen: (open: boolean) => void;
-  onStay: () => void;
-  onLeave: () => void;
 };
 
-export const WarnFileUploadDialog = ({
+export const WarnDiscardFilesDialog = ({
+  onCancel,
+  onDiscard,
   open,
   setOpen,
-  onStay,
-  onLeave,
-}: WarnFileUploadDialogProps) => {
+}: WarnDiscardFilesDialogProps) => {
   return (
     <Dialog.Root open={open} onOpenChange={(open) => setOpen(open)}>
       <Dialog.Content className="!w-[400px]">
@@ -32,7 +32,9 @@ export const WarnFileUploadDialog = ({
           </div>
           <div className="flex flex-row gap-x-2">
             <Button
-              onClick={onLeave}
+              onClick={() => {
+                onDiscard();
+              }}
               variant="secondaryGrey"
               size="lg"
               className="!flex-1 !px-2.5"
@@ -40,7 +42,9 @@ export const WarnFileUploadDialog = ({
               No
             </Button>
             <Button
-              onClick={onStay}
+              onClick={() => {
+                onCancel();
+              }}
               variant="primary"
               size="lg"
               className="!flex-1 !px-2.5"

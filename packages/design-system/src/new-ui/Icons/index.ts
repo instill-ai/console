@@ -47,6 +47,8 @@ import { CurrencyDollar } from "./CurrencyDollar";
 import { Database01 } from "./Database01";
 import { Dataflow03 } from "./Dataflow03";
 import { Dataflow03Broken } from "./Dataflow03Broken";
+import { DOCFile } from "./DOCFile";
+import { DOCXFile } from "./DOCXFile";
 import { DotsGrid } from "./DotsGrid";
 import { DotsHorizontal } from "./DotsHorizontal";
 import { DotsVertical } from "./DotsVertical";
@@ -69,6 +71,7 @@ import { Globe01 } from "./Globe01";
 import { GraduationHat } from "./GraduationHat";
 import { Hash2 } from "./Hash2";
 import { HelpCircle } from "./HelpCircle";
+import { HTMLFile } from "./HTMLFile";
 import { Image01 } from "./Image01";
 import { Image03 } from "./Image03";
 import { ImagePlus } from "./ImagePlus";
@@ -97,6 +100,8 @@ import { Pipeline } from "./Pipeline";
 import { Play } from "./Play";
 import { PlayCircle } from "./PlayCircle";
 import { Plus } from "./Plus";
+import { PPTFile } from "./PPTFile";
+import { PPTXFile } from "./PPTXFile";
 import { PuzzlePiece01 } from "./PuzzlePiece01";
 import { Recording01 } from "./Recording01";
 import { Recording02 } from "./Recording02";
@@ -197,6 +202,8 @@ export const Icons = {
   Database01,
   Dataflow03,
   Dataflow03Broken,
+  DOCFile,
+  DOCXFile,
   DotsGrid,
   DotsHorizontal,
   DotsVertical,
@@ -218,6 +225,7 @@ export const Icons = {
   Globe01,
   GraduationHat,
   HelpCircle,
+  HTMLFile,
   Hash2,
   IntersectSquare,
   Link01,
@@ -247,6 +255,8 @@ export const Icons = {
   Play,
   PlayCircle,
   Plus,
+  PPTFile,
+  PPTXFile,
   PuzzlePiece01,
   RefreshCw05,
   Repeat04,

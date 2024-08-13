@@ -1,15 +1,19 @@
+"use client";
+
 import { Button, Icons } from "@instill-ai/design-system";
 
-import { truncateName } from "../lib/functions";
+import { truncateName } from "../lib/helpers";
 
 type FileSizeNotificationProps = {
   handleCloseFileTooLargeMessage: () => void;
   fileName: string;
+  planMaxFileSize: number;
 };
 
 export const FileSizeNotification = ({
   handleCloseFileTooLargeMessage,
   fileName,
+  planMaxFileSize,
 }: FileSizeNotificationProps) => {
   return (
     <div className="fixed bottom-4 right-8 flex  w-[400px] rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow">
@@ -22,8 +26,8 @@ export const FileSizeNotification = ({
           {truncateName(fileName)}
         </div>
         <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
-          Please ensure your file is 15MB or smaller to upload it to the
-          catalog.
+          Please ensure your file is {planMaxFileSize / (1024 * 1024)} MB or
+          smaller to upload it to the catalog. catalog.
         </div>
       </div>
       <Button

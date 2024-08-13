@@ -1,4 +1,11 @@
+"use client";
+
 import * as React from "react";
+import {
+  Nullable,
+  OrganizationSubscription,
+  UserSubscription,
+} from "instill-sdk";
 import * as z from "zod";
 
 import { Separator, Skeleton } from "@instill-ai/design-system";
@@ -17,12 +24,17 @@ import KnowledgeSearchSort, {
   SortAnchor,
   SortOrder,
 } from "../KnowledgeSearchSort";
+import { UpgradePlanLink } from "../notifications";
 
 type KnowledgeBaseTabProps = {
   onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
-  accessToken: string | null;
-  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
-  pendingDeletions: string[];
+  accessToken: Nullable<string>;
+  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
+  knowledgeBases: KnowledgeBase[];
+  knowledgeBaseLimit: number;
+  namespaceType: Nullable<"user" | "organization">;
+  subscription: Nullable<UserSubscription | OrganizationSubscription>;
+  isLocalEnvironment: boolean;
 };
 
 type EditKnowledgeDialogData = {
@@ -48,7 +60,11 @@ export const KnowledgeBaseTab = ({
   onKnowledgeBaseSelect,
   accessToken,
   onDeleteKnowledgeBase,
-  pendingDeletions,
+  knowledgeBases,
+  knowledgeBaseLimit,
+  namespaceType,
+  subscription,
+  isLocalEnvironment,
 }: KnowledgeBaseTabProps) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -61,25 +77,23 @@ export const KnowledgeBaseTab = ({
     useShallow(selector),
   );
 
-  const {
-    data: knowledgeBases,
-    isLoading,
-    refetch,
-  } = useGetKnowledgeBases({
+  const createKnowledgeBase = useCreateKnowledgeBase();
+  const updateKnowledgeBase = useUpdateKnowledgeBase();
+  const isTeamPlan =
+    subscription?.plan === "PLAN_ENTERPRISE" ||
+    subscription?.plan === "PLAN_TEAM";
+
+  const catalogState = useGetKnowledgeBases({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
   });
 
-  const createKnowledgeBase = useCreateKnowledgeBase();
-  const updateKnowledgeBase = useUpdateKnowledgeBase();
-
-  // Refetch when the namespace changes
   React.useEffect(() => {
     if (selectedNamespace) {
-      refetch();
+      catalogState.refetch();
     }
-  }, [selectedNamespace, refetch]);
+  }, [selectedNamespace, catalogState.refetch]);
 
   const handleCreateKnowledgeSubmit = async (
     data: z.infer<typeof CreateKnowledgeFormSchema>,
@@ -97,7 +111,7 @@ export const KnowledgeBaseTab = ({
         ownerId: data.namespaceId,
         accessToken,
       });
-      refetch();
+      catalogState.refetch();
       setIsCreateDialogOpen(false);
     } catch (error) {
       console.error("Error creating catalog:", error);
@@ -121,7 +135,7 @@ export const KnowledgeBaseTab = ({
         },
         accessToken,
       });
-      refetch();
+      catalogState.refetch();
     } catch (error) {
       console.error("Error updating catalog:", error);
     }
@@ -145,22 +159,18 @@ export const KnowledgeBaseTab = ({
         ownerId: selectedNamespace,
         accessToken,
       });
-      refetch();
+      catalogState.refetch();
     } catch (error) {
       console.error("Error cloning catalog:", error);
     }
   };
 
   const filteredAndSortedKnowledgeBases = React.useMemo(() => {
-    if (!knowledgeBases) return [];
-
-    const filtered = knowledgeBases
-      .filter((kb) => !pendingDeletions.includes(kb.kbId))
-      .filter(
-        (kb) =>
-          kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          kb.description.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
+    const filtered = knowledgeBases.filter(
+      (kb) =>
+        kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        kb.description.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
 
     filtered.sort((a, b) => {
       let aValue, bValue;
@@ -190,22 +200,33 @@ export const KnowledgeBaseTab = ({
     });
 
     return filtered;
-  }, [
-    knowledgeBases,
-    searchTerm,
-    selectedSortAnchor,
-    selectedSortOrder,
-    pendingDeletions,
-  ]);
+  }, [knowledgeBases, searchTerm, selectedSortAnchor, selectedSortOrder]);
 
-  const hasReachedLimit = (filteredAndSortedKnowledgeBases.length ?? 0) >= 3;
+  const hasReachedLimit =
+    filteredAndSortedKnowledgeBases.length >= knowledgeBaseLimit;
 
   return (
     <div className="flex flex-col">
-      <div className="mb-5 flex items-center justify-between">
-        <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
-          Catalogs
-        </p>
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex justify-start space-x-2  items-center">
+          <p className="text-semantic-fg-primary product-headings-heading-2">
+            Catalogs
+          </p>
+          <p className=" product-body-text-3-regular space-x-2">
+            <span className="text-semantic-fg-secondary">
+              {isLocalEnvironment || isTeamPlan
+                ? `(${filteredAndSortedKnowledgeBases.length})`
+                : `(${filteredAndSortedKnowledgeBases.length}/${knowledgeBaseLimit})`}
+            </span>
+            {!isLocalEnvironment && !isTeamPlan && (
+              <UpgradePlanLink
+                plan={subscription?.plan || "PLAN_FREE"}
+                namespaceType={namespaceType}
+                pageName="catalog"
+              />
+            )}
+          </p>
+        </div>
         <KnowledgeSearchSort
           selectedSortOrder={selectedSortOrder}
           setSelectedSortOrder={setSelectedSortOrder}
@@ -216,7 +237,7 @@ export const KnowledgeBaseTab = ({
         />
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {isLoading ? (
+      {catalogState.isLoading ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
@@ -242,7 +263,7 @@ export const KnowledgeBaseTab = ({
         <div className="grid grid-cols-[repeat(auto-fit,360px)] justify-start gap-[15px]">
           <KnowledgeBaseCard
             onClick={() => setIsCreateDialogOpen(true)}
-            disabled={hasReachedLimit}
+            disabled={isLocalEnvironment ? false : hasReachedLimit}
           />
           {filteredAndSortedKnowledgeBases.map((knowledgeBase) => (
             <CreateKnowledgeBaseCard

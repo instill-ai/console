@@ -1,27 +1,17 @@
+"use client";
+
 import * as React from "react";
 
-import {
-  Button,
-  Dialog,
-  DropdownMenu,
-  Icons,
-  Separator,
-  Tooltip,
-} from "@instill-ai/design-system";
+import { Separator, Tooltip } from "@instill-ai/design-system";
 
+import { GeneralDeleteResourceDialog } from "../../../components";
+import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import {
-  InstillStore,
-  useInstillStore,
-  useQueries,
-  useShallow,
-} from "../../../lib";
-import {
-  getAllChunks,
+  useGetAllChunks,
   useListKnowledgeBaseFiles,
 } from "../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
-import { EditKnowledgeDialog } from "./EditKnowledgeDialog";
-import { truncateName } from "./lib/functions";
+import { CatalogCardMenu, EditKnowledgeDialog } from "./";
 
 type EditKnowledgeDialogData = {
   name: string;
@@ -29,72 +19,6 @@ type EditKnowledgeDialogData = {
   tags?: string[];
 };
 
-type MenuProps = {
-  onDelete: (e: React.MouseEvent) => void;
-  onEdit: (e: React.MouseEvent) => void;
-  onDuplicate: (e: React.MouseEvent) => void;
-  disabled: boolean;
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-};
-
-const Menu = ({
-  onDelete,
-  onEdit,
-  onDuplicate,
-  disabled,
-  isOpen,
-  setIsOpen,
-}: MenuProps) => {
-  return (
-    <React.Fragment>
-      <div className="flex justify-center z-10">
-        <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
-          <DropdownMenu.Trigger asChild>
-            <Button className="" variant="tertiaryGrey">
-              <Icons.DotsHorizontal className="h-4 w-4 stroke-semantic-fg-secondary" />
-            </Button>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content
-            align="end"
-            className="w-[195px] rounded-md !p-0"
-          >
-            <DropdownMenu.Item
-              onClick={onEdit}
-              className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
-            >
-              <Icons.Edit03 className="mr-2 h-4 w-4 stroke-semantic-fg-secondary" />
-              Edit info
-            </DropdownMenu.Item>
-            <DropdownMenu.Item
-              onClick={onDuplicate}
-              className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
-              disabled={disabled}
-            >
-              <Icons.Copy07 className="mr-2 h-4 w-4 stroke-semantic-fg-secondary" />
-              Duplicate
-            </DropdownMenu.Item>
-            {/* <DropdownMenu.Item
-              onClick={onDuplicate}
-              className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
-            >
-              <Icons.DownloadCloud01 className="mr-2 h-4 w-4 stroke-semantic-fg-secondary" />
-              Export
-            </DropdownMenu.Item> */}
-            <Separator orientation="horizontal" />
-            <DropdownMenu.Item
-              onClick={onDelete}
-              className="!px-4 !py-2.5 !text-semantic-error-default product-body-text-4-medium"
-            >
-              <Icons.Trash01 className="mr-2 h-4 w-4 stroke-semantic-error-default" />
-              Delete
-            </DropdownMenu.Item>
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
-      </div>
-    </React.Fragment>
-  );
-};
 type CreateKnowledgeBaseCardProps = {
   knowledgeBase: KnowledgeBase;
   onCardClick: () => void;
@@ -103,9 +27,10 @@ type CreateKnowledgeBaseCardProps = {
     kbId: string,
   ) => Promise<void>;
   onCloneKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
-  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => void;
+  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
   disabled?: boolean;
 };
+
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
@@ -122,64 +47,46 @@ export const CreateKnowledgeBaseCard = ({
 }: CreateKnowledgeBaseCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
-  const [isHovered, setIsHovered] = React.useState(false);
-  const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const cardRef = React.useRef<HTMLDivElement>(null);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector),
   );
 
-  const { data: filesData } = useListKnowledgeBaseFiles({
-    namespaceId: selectedNamespace || null,
+  const existingFiles = useListKnowledgeBaseFiles({
+    namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken: accessToken || null,
-    enabled: enabledQuery && isHovered,
+    enabled: enabledQuery,
   });
 
-  const chunkQueries = useQueries({
-    queries: (filesData?.files || []).map((file) => ({
-      queryKey: ["chunks", knowledgeBase.catalogId, file.fileUid],
-      queryFn: () =>
-        getAllChunks(
-          accessToken || "",
-          knowledgeBase.ownerName,
-          knowledgeBase.catalogId,
-          file.fileUid,
-        ),
-      enabled: enabledQuery && isHovered && !!filesData && !!accessToken,
-    })),
+  const chunks = useGetAllChunks({
+    accessToken,
+    ownerName: knowledgeBase.ownerName,
+    kbId: knowledgeBase.catalogId,
+    fileUid: existingFiles.data?.files[0]?.fileUid,
+    enabled: Boolean(existingFiles.data) && Boolean(accessToken),
   });
 
   const totalChunks = React.useMemo(() => {
-    return chunkQueries.reduce((total, query) => {
-      if (query.data) {
-        return total + query.data.length;
-      }
-      return total;
-    }, 0);
-  }, [chunkQueries]);
+    return chunks.data ? chunks.data.length : 0;
+  }, [chunks.data]);
 
   const tooltipContent = React.useMemo(() => {
-    if (!isHovered) return "";
-
     return `
 Converting pipeline ID: ${knowledgeBase.convertingPipelines?.[0] || "N/A"}
 Splitting pipeline ID: ${knowledgeBase.splittingPipelines?.[0] || "N/A"}
 Embedding pipeline ID: ${knowledgeBase.embeddingPipelines?.[0] || "N/A"}
 Files #: ${knowledgeBase.totalFiles || "N/A"}
 Text Chunks #: ${totalChunks}
-    `.trim();
-  }, [isHovered, knowledgeBase, totalChunks]);
+Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
+`.trim();
+  }, [knowledgeBase, totalChunks]);
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     setDeleteDialogIsOpen(true);
-  };
-
-  const confirmDelete = () => {
-    setDeleteDialogIsOpen(false);
-    onDeleteKnowledgeBase(knowledgeBase);
   };
 
   const handleEdit = (e: React.MouseEvent) => {
@@ -196,25 +103,16 @@ Text Chunks #: ${totalChunks}
     await onUpdateKnowledgeBase(data, knowledgeBase.catalogId);
     setEditDialogIsOpen(false);
   };
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
-      x: e.clientX - rect.left - 300,
-      y: e.clientY - rect.top - 150,
-    });
-  };
 
   return (
     <React.Fragment>
       <Tooltip.Provider>
-        <Tooltip.Root disableHoverableContent={isMenuOpen}>
+        <Tooltip.Root>
           <Tooltip.Trigger asChild>
             <div
+              ref={cardRef}
               className="flex h-[175px] w-[360px] cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow hover:bg-semantic-bg-base-bg"
               onClick={onCardClick}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              onMouseMove={handleMouseMove}
             >
               <div className="flex items-center justify-between">
                 <div className="product-headings-heading-4">
@@ -222,14 +120,14 @@ Text Chunks #: ${totalChunks}
                 </div>
               </div>
               <Separator orientation="horizontal" className="my-[10px]" />
-              <p className="mb-auto line-clamp-3 product-body-text-3-regular">
+              <p className="mb-auto line-clamp-3 product-body-text-3-regular whitespace-pre-wrap break-words">
                 {knowledgeBase.description}
               </p>
               <div
                 className="flex items-end justify-end"
                 onClick={(e) => e.stopPropagation()}
               >
-                <Menu
+                <CatalogCardMenu
                   onDelete={handleDelete}
                   onEdit={handleEdit}
                   onDuplicate={handleDuplicate}
@@ -241,13 +139,7 @@ Text Chunks #: ${totalChunks}
             </div>
           </Tooltip.Trigger>
           <Tooltip.Portal>
-            <Tooltip.Content
-              className="absolute w-[300px] max-w-[300px] rounded-md bg-semantic-bg-primary p-4 shadow-lg !z-10"
-              style={{
-                left: `${mousePosition.x}px`,
-                top: `${mousePosition.y}px`,
-              }}
-            >
+            <Tooltip.Content className="absolute w-[300px] max-w-[300px] rounded-md bg-semantic-bg-primary p-4 shadow-lg !z-10">
               <div className="whitespace-pre-wrap text-xs break-words">
                 {tooltipContent}
               </div>
@@ -256,44 +148,18 @@ Text Chunks #: ${totalChunks}
           </Tooltip.Portal>
         </Tooltip.Root>
       </Tooltip.Provider>
-      <Dialog.Root
+      <GeneralDeleteResourceDialog
+        resourceID={knowledgeBase.name}
+        title={`Delete ${knowledgeBase.name}`}
+        description="This action cannot be undone. This will permanently delete the catalog and all its associated data."
         open={deleteDialogIsOpen}
         onOpenChange={setDeleteDialogIsOpen}
-      >
-        <Dialog.Content className="!w-[350px] rounded-sm !p-0">
-          <div className="flex flex-col items-center justify-start gap-6 rounded-sm border border-b-semantic-bg-secondary p-6">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-semantic-warning-bg p-3">
-              <Icons.AlertTriangle className="h-6 w-6 stroke-semantic-warning-on-bg" />
-            </div>
-            <div className="flex flex-col items-start justify-start gap-6 self-stretch">
-              <div className="flex flex-col items-center justify-center gap-1">
-                <div className="product-headings-heading-3">
-                  Delete {truncateName(knowledgeBase.name)}
-                </div>
-                <div className="text-center product-body-text-2-regular">
-                  Are you sure you want to delete this catalog?
-                </div>
-              </div>
-              <div className="flex w-full gap-2">
-                <Button
-                  variant="secondaryGrey"
-                  onClick={() => setDeleteDialogIsOpen(false)}
-                  className="w-full"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={confirmDelete}
-                  className="w-full"
-                >
-                  Delete
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Dialog.Content>
-      </Dialog.Root>
+        handleDeleteResource={async () => {
+          await onDeleteKnowledgeBase(knowledgeBase);
+          setDeleteDialogIsOpen(false);
+        }}
+        trigger={null}
+      />
       <EditKnowledgeDialog
         isOpen={editDialogIsOpen}
         onClose={() => setEditDialogIsOpen(false)}

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import * as React from "react";
 import { Nullable } from "instill-sdk";
 
 import { Button, Separator, Skeleton } from "@instill-ai/design-system";
@@ -35,10 +35,7 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const ChunkTab: React.FC<ChunkTabProps> = ({
-  knowledgeBase,
-  onGoToUpload,
-}) => {
+export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
   const [expandedFiles, setExpandedFiles] = React.useState<string[]>([]);
   const [selectedChunk, setSelectedChunk] =
     React.useState<Nullable<Chunk>>(null);
@@ -67,7 +64,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
     return (knowledgeBaseFiles.data?.files || []).filter(
       (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED",
     );
-  }, [knowledgeBaseFiles.isSuccess, knowledgeBaseFiles.data]);
+  }, [knowledgeBaseFiles.data]);
 
   const updateChunkMutation = useUpdateChunk();
 
@@ -129,7 +126,7 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
   return (
     <div className="flex-col">
       <div className="flex items-center justify-between mb-5">
-        <p className="text-semantic-fg-primary product-headings-heading-2">
+        <p className="text-semantic-fg-primary product-headings-heading-3">
           {knowledgeBase.name}
         </p>
       </div>
@@ -212,5 +209,3 @@ export const ChunkTab: React.FC<ChunkTabProps> = ({
     </div>
   );
 };
-
-export default ChunkTab;

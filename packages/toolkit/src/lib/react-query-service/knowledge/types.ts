@@ -14,6 +14,8 @@ export type KnowledgeBase = {
   embeddingPipelines: string[];
   downstreamApps: string[];
   totalFiles: number;
+  totalTokens: number;
+  usedStorage: number;
 };
 
 export type FileSnippet = {

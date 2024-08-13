@@ -1,9 +1,16 @@
-import React from "react";
+"use client";
+
+import * as React from "react";
 
 import { Button, Dialog, Icons, Tag } from "@instill-ai/design-system";
 
 import { File } from "../../../lib/react-query-service/knowledge/types";
-import { convertFileType, truncateName } from "./lib/functions";
+import {
+  convertFileType,
+  formatDate,
+  formatFileSize,
+  truncateName,
+} from "./lib/helpers";
 import { StatusTag } from "./StatusTag";
 
 type FileTableRowProps = {
@@ -53,7 +60,7 @@ export const FileTableRow = ({
           {formatFileSize(item.size)}
         </div>
         <div className="flex flex-col items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-          <div>{`${item.totalChunks ?? "N/A"} chunks`}</div>
+          <div>{`${item.totalChunks ?? "N/A"} chunks, ${item.totalTokens} tokens`}</div>
         </div>
         <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
           {formatDate(item.createTime)}
@@ -110,18 +117,4 @@ export const FileTableRow = ({
       </Dialog.Root>
     </>
   );
-};
-
-const formatFileSize = (bytes: number | undefined): string => {
-  if (bytes === undefined || isNaN(bytes)) return "N/A";
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-  if (bytes === 0) return "0 Bytes";
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  if (i === 0) return bytes + " " + sizes[i];
-  return (bytes / Math.pow(1024, i)).toFixed(2) + " " + sizes[i];
-};
-
-const formatDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  return date.toLocaleString();
 };

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Nullable } from "instill-sdk";
 
@@ -30,7 +32,7 @@ export const RetrieveTestTab = ({
 --header "Authorization: Bearer $INSTILL_API_TOKEN" \\
 --data '{
   "textPrompt": "Please put your query sentence here",
-  "topk": 5
+  "topK": 5
 }'`;
   }, [namespaceId, kbId]);
 
@@ -41,10 +43,10 @@ export const RetrieveTestTab = ({
       "type": "string",
       "title": "text prompt"
     },
-    "topk": {
+    "topK": {
       "type": "integer",
       "format": "int64",
-      "title": "topk"
+      "title": "topK"
     }
   },
   "title": "Similar chunk search request"
@@ -87,9 +89,9 @@ export const RetrieveTestTab = ({
   return (
     <div className="flex flex-col mb-10">
       <div className="mb-5 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-2">
+        <p className="text-semantic-fg-primary product-headings-heading-3">
           {knowledgeBase.name}
-        </h1>
+        </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
       {!isProcessed ? (
@@ -136,7 +138,7 @@ export const RetrieveTestTab = ({
             />
           </div>
 
-          <div className="mb-8">
+          <div className="mb-12">
             <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
             <CodeBlock
               codeString={`${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}/chunks/similarity`}
@@ -144,7 +146,7 @@ export const RetrieveTestTab = ({
               customStyle={defaultCodeSnippetStyles}
             />
           </div>
-          <ModelSectionHeader className="mt-5">JSON Schema</ModelSectionHeader>
+          <ModelSectionHeader>JSON Schema</ModelSectionHeader>
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">Input:</p>
             <CodeBlock
@@ -165,17 +167,17 @@ export const RetrieveTestTab = ({
             />
           </div>
 
-          {/* <p className="mb-4 product-body-text-3-regular">
+          <p className="mb-4 product-body-text-3-regular">
             For a more detailed overview of the input/output schemas, check out
             the{" "}
-            
+            <a
               href="https://www.instill.tech/docs/artifact/search"
               className="text-semantic-accent-default underline"
             >
               Artifact&apos;s API reference
             </a>
             .
-          </p> */}
+          </p>
         </div>
       )}
     </div>

@@ -1,6 +1,8 @@
+"use client";
+
 import { Button, Icons } from "@instill-ai/design-system";
 
-import { truncateName } from "../lib/functions";
+import { truncateName } from "../lib/helpers";
 
 type IncorrectFormatNotificationProps = {
   handleCloseUnsupportedFileMessage: () => void;
@@ -23,7 +25,8 @@ export const IncorrectFormatFileNotification = ({
         </div>
         <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
           Supported file types for the catalog <br />
-          are .txt, .md, and .pdf. Please use one of these formats.
+          are .txt, .md, .doc, .docx, .pptx, .html and .pdf. Please use one of
+          these formats.
         </div>
       </div>
       <Button
