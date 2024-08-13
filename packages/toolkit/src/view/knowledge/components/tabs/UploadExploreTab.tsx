@@ -233,9 +233,12 @@ export const UploadExploreTab = ({
       return;
     }
 
-    const isDuplicate = existingFiles.data?.files?.some(
-      (existingFile) => existingFile.name === file.name,
-    );
+    const isDuplicate =
+      existingFiles.isSuccess && existingFiles.data
+        ? existingFiles.data.some(
+            (existingFile) => existingFile.name === file.name,
+          )
+        : false;
 
     if (isDuplicate) {
       setDuplicateFileName(file.name);
