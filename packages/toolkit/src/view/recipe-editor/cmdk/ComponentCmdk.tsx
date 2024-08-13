@@ -397,6 +397,7 @@ export const ComponentCmdk = () => {
               )}
             </Command.Group>
           </div>
+          <div className="flex w-2/3 p-4"></div>
         </div>
       </Command.List>
     </Command.Dialog>

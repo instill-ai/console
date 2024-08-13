@@ -62,6 +62,7 @@ export const ConnectorDefinitionSchema = z.object({
   custom: z.boolean(),
   vendor: z.string(),
   vendorAttributes: z.record(z.any()),
+  tasks: z.array(TaskSchema),
 });
 
 export type ComponentDefinition = {

@@ -27,6 +27,7 @@ import {
   Nullable,
   useInstillStore,
   useNamespacePipeline,
+  useNamespaceSecrets,
   useRouteInfo,
   useShallow,
   useUpdateNamespacePipeline,
@@ -35,6 +36,7 @@ import { transformInstillJSONSchemaToFormTree } from "../../lib/use-instill-form
 import { transformFormTreeToNestedSmartHints } from "../../lib/use-smart-hint/transformFormTreeToNestedSmartHints";
 import { getGeneralComponentInOutputSchema } from "../pipeline-builder";
 import { isPipelineGeneralComponent } from "../pipeline-builder/lib/checkComponentType";
+import { getAllComponentKeyLineNumberMaps } from "./getAllComponentKeyLineNumberMaps";
 import { validateVSCodeYaml } from "./validateVSCodeYaml";
 
 const selector = (store: InstillStore) => ({
@@ -47,6 +49,8 @@ const selector = (store: InstillStore) => ({
 
 export const VscodeEditor = () => {
   const [markErrors, setMarkErrors] = React.useState<editor.IMarkerData[]>([]);
+  const [unsavedRawRecipe, setUnsavedRawRecipe] =
+    React.useState<Nullable<string>>(null);
 
   const autoCompleteDisposableRef = React.useRef<Nullable<IDisposable>>(null);
   const editorRef = React.useRef<Nullable<editor.IStandaloneCodeEditor>>(null);
@@ -61,7 +65,11 @@ export const VscodeEditor = () => {
   } = useInstillStore(useShallow(selector));
 
   const routeInfo = useRouteInfo();
-
+  const namespaceSecrets = useNamespaceSecrets({
+    namespaceName: routeInfo.data.namespaceName,
+    accessToken,
+    enabled: enabledQuery && routeInfo.isSuccess,
+  });
   const pipeline = useNamespacePipeline({
     namespacePipelineName: routeInfo.isSuccess
       ? routeInfo.data.pipelineName
@@ -86,20 +94,32 @@ export const VscodeEditor = () => {
           return;
         }
 
-        try {
-          updatePipeline.mutateAsync({
-            rawRecipe: newRawRecipe,
-            namespacePipelineName: pipelineName,
-            accessToken,
-          });
-        } catch (error) {
-          console.error(error);
+        const res = validateVSCodeYaml(newRawRecipe);
+
+        if (res.success) {
+          try {
+            updatePipeline.mutateAsync({
+              rawRecipe: newRawRecipe,
+              namespacePipelineName: pipelineName,
+              accessToken,
+            });
+          } catch (error) {
+            console.error(error);
+          }
         }
       },
       3000,
     ),
     [],
   );
+
+  React.useEffect(() => {
+    if (!pipeline.isSuccess) {
+      return;
+    }
+
+    setUnsavedRawRecipe(pipeline.data.rawRecipe);
+  }, [pipeline.isSuccess, pipeline.data]);
 
   React.useEffect(() => {
     if (!editorRef.current || !monacoRef.current) {
@@ -166,7 +186,12 @@ export const VscodeEditor = () => {
         endLineNumber: position.lineNumber,
         endColumn: position.column,
       });
+
+      const allValue = model.getValue();
+
       const words = last_chars.replace("\t", "").split(" ");
+
+      console.log(last_chars);
 
       // What the user is currently typing (everything after the last space)
       const active_typing = words[words.length - 1];
@@ -175,6 +200,48 @@ export const VscodeEditor = () => {
         return {
           suggestions: result,
         };
+      }
+
+      // hint task
+      const componentKeyLineNumberMaps =
+        getAllComponentKeyLineNumberMaps(allValue);
+
+      const smallestComponentKeyLineNumberMap = componentKeyLineNumberMaps
+        .reverse()
+        .find((map) => map.lineNumber <= position.lineNumber);
+
+      if (
+        active_typing.includes("task:") &&
+        smallestComponentKeyLineNumberMap &&
+        pipeline.isSuccess &&
+        pipeline.data.recipe.component
+      ) {
+        const targetComponent =
+          pipeline.data.recipe.component[smallestComponentKeyLineNumberMap.key];
+
+        if (targetComponent && isPipelineGeneralComponent(targetComponent)) {
+          const taskKeys =
+            targetComponent.definition?.tasks.map((task) => task.name) ?? [];
+
+          for (const key of taskKeys) {
+            result.push({
+              label: key,
+              kind: monaco.languages.CompletionItemKind.Field,
+              insertText: key,
+              filterText: key,
+              range: new monaco.Range(
+                position.lineNumber,
+                position.column - active_typing.length,
+                position.lineNumber,
+                position.column,
+              ),
+            });
+          }
+
+          return {
+            suggestions: result,
+          };
+        }
       }
 
       const component = recipe?.component;
@@ -191,24 +258,48 @@ export const VscodeEditor = () => {
       // If the user is typing a member object
       // For example: when user type ${o we first need to hint them the available components id
       if (isMember) {
-        console.log(active_typing, active_typing.includes("variable"));
-
-        if (active_typing.includes("variable") && recipe.variable) {
-          const allHints = recipe.variable;
-
-          for (const [key] of Object.entries(allHints)) {
+        if (active_typing.includes("secret") && namespaceSecrets.isSuccess) {
+          for (const secret of namespaceSecrets.data) {
             result.push({
-              label: key,
+              label: secret.id,
               kind: monaco.languages.CompletionItemKind.Field,
-              insertText: "${" + "variable." + key,
-              filterText: "${" + "variable." + key,
-              documentation: `## ${key}  OMG`,
+              insertText: "${" + "secret." + secret.id,
+              filterText: "${" + "secret." + secret.id,
+              documentation: secret.description ?? undefined,
               range: new monaco.Range(
                 position.lineNumber,
                 position.column - active_typing.length,
                 position.lineNumber,
                 position.column,
               ),
+              detail: secret.description ?? undefined,
+            });
+          }
+
+          return {
+            suggestions: result,
+          };
+        }
+
+        if (active_typing.includes("variable") && recipe.variable) {
+          const allHints = recipe.variable;
+
+          for (const [key, value] of Object.entries(allHints)) {
+            result.push({
+              label: key,
+              kind: monaco.languages.CompletionItemKind.Field,
+              insertText: "${" + "variable." + key,
+              filterText: "${" + "variable." + key,
+              documentation: {
+                value: `**${key}** \n\n instill-format: ${value.instillFormat}`,
+              },
+              range: new monaco.Range(
+                position.lineNumber,
+                position.column - active_typing.length,
+                position.lineNumber,
+                position.column,
+              ),
+              detail: `${value.instillFormat}`,
             });
           }
 
@@ -291,13 +382,14 @@ export const VscodeEditor = () => {
             kind: monaco.languages.CompletionItemKind.Field,
             insertText: "${" + objPath + "." + key,
             filterText: "${" + objPath + "." + key,
-            documentation: `## ${key}  ${value.description}`,
+            documentation: `## ${key} \n\n ${value.description}`,
             range: new monaco.Range(
               position.lineNumber,
               position.column - active_typing.length,
               position.lineNumber,
               position.column,
             ),
+            detail: value.instillFormat ?? "",
           });
         }
 
@@ -353,94 +445,133 @@ export const VscodeEditor = () => {
           });
         }
 
+        result.push({
+          label: "secret",
+          kind: monaco.languages.CompletionItemKind.Variable,
+          insertText: "${" + "secret",
+          filterText: "${" + "secret",
+          documentation: {
+            value: "Instill Secret",
+          },
+          range: new monaco.Range(
+            position.lineNumber,
+            position.column - active_typing.length,
+            position.lineNumber,
+            position.column,
+          ),
+        });
+
         return {
           suggestions: result,
         };
       }
     },
-    [],
+    [
+      namespaceSecrets.isSuccess,
+      namespaceSecrets.data,
+      pipeline.isSuccess,
+      pipeline.data,
+    ],
   );
 
   return (
-    <Editor
-      language="yaml"
-      className="text-lg rounded-b"
-      onChange={(value) => {
-        if (!value || !pipeline.isSuccess) {
-          return;
-        }
+    <React.Fragment>
+      <style jsx>{`
+        .monaco-editor 
+      
+      `}</style>
+      <Editor
+        language="yaml"
+        className="text-lg rounded-b"
+        onChange={(value) => {
+          if (!value || !pipeline.isSuccess) {
+            return;
+          }
 
-        const res = validateVSCodeYaml(value);
+          // In the updater we will check whether the value is valid or not again, the reason
+          // why we do this duplicated check is due to we want to invoke the updater function
+          // every time the user type something, so it didn't send the wrong value to the backend
 
-        if (res.success) {
-          setMarkErrors([]);
+          // For example, if we only invoke updater only when the recipe is valid, once the user
+          // type something wrong, then the updater will send the last valid value to the backend
+          // and overwrite the value that the user is typing.
+
           recipeUpdater({
             pipelineName: pipeline.data.name,
             newRawRecipe: value,
             accessToken,
           });
-        } else {
-          setMarkErrors(res.markers);
-        }
-      }}
-      value={pipeline.data?.rawRecipe ?? ""}
-      options={{
-        minimap: {
-          enabled: false,
-        },
-        automaticLayout: true,
-        quickSuggestions: {
-          other: true,
-          comments: false,
-          strings: true,
-        },
-        suggest: {
-          showSnippets: true,
-        },
-        fontSize: 18,
-      }}
-      onMount={(editor, monaco) => {
-        editorRef.current = editor;
-        updateEditorRef(() => editor);
-        monacoRef.current = monaco;
-        updateMonacoRef(() => monaco);
-        const disposable = monaco.languages.registerCompletionItemProvider(
-          "yaml",
-          {
-            triggerCharacters: ["${", "."],
-            provideCompletionItems: (model, position) => {
-              // Split everything the user has typed on the current line up at each space, and only look at the last word
-              return handleAutoComplete({
-                model,
-                position,
-                monaco,
-                recipe: pipeline.data?.recipe ?? null,
-              });
+
+          setUnsavedRawRecipe(value);
+
+          const res = validateVSCodeYaml(value);
+
+          if (res.success) {
+            setMarkErrors([]);
+          } else {
+            setUnsavedRawRecipe(value);
+            setMarkErrors(res.markers);
+          }
+        }}
+        value={unsavedRawRecipe ?? ""}
+        options={{
+          minimap: {
+            enabled: false,
+          },
+          automaticLayout: true,
+          quickSuggestions: {
+            other: true,
+            comments: false,
+            strings: true,
+          },
+          suggest: {
+            showSnippets: true,
+          },
+          fontSize: 18,
+        }}
+        onMount={(editor, monaco) => {
+          editorRef.current = editor;
+          updateEditorRef(() => editor);
+          monacoRef.current = monaco;
+          updateMonacoRef(() => monaco);
+          const disposable = monaco.languages.registerCompletionItemProvider(
+            "yaml",
+            {
+              triggerCharacters: ["${", "."],
+              provideCompletionItems: (model, position) => {
+                // Split everything the user has typed on the current line up at each space, and only look at the last word
+                return handleAutoComplete({
+                  model,
+                  position,
+                  monaco,
+                  recipe: pipeline.data?.recipe ?? null,
+                });
+              },
             },
-          },
-        );
-        autoCompleteDisposableRef.current = disposable;
+          );
+          autoCompleteDisposableRef.current = disposable;
 
-        monaco.languages.registerHoverProvider("yaml", {
-          provideHover: (model, position) => {
-            const word = model.getWordAtPosition(position);
+          monaco.languages.registerHoverProvider("yaml", {
+            provideHover: (model, position) => {
+              const word = model.getWordAtPosition(position);
 
-            console.log(word, position);
+              console.log(word, position);
 
-            return null;
-          },
-        });
+              return null;
+            },
+          });
 
-        editor.addAction({
-          id: "open-cmdk",
-          label: "Open Cmdk",
-          keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyK],
-          contextMenuOrder: 1,
-          run: () => {
-            updateOpenCmdk(() => true);
-          },
-        });
-      }}
-    />
+          editor.addAction({
+            id: "open-cmdk",
+            label: "Open Cmdk",
+            keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyK],
+            contextMenuOrder: 1,
+            run: () => {
+              updateOpenCmdk(() => true);
+            },
+          });
+        }}
+      />
+    </React.Fragment>
   );
 };
