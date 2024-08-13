@@ -42,7 +42,7 @@ export function useProcessCatalogFiles() {
       return response.data.files;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["knowledgeBaseFiles"] });
+      queryClient.invalidateQueries({ queryKey: ["catalogFiles"] });
     },
   });
 }

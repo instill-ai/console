@@ -66,7 +66,7 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
   const isLocalEnvironment = env("NEXT_PUBLIC_APP_ENV") === "CE";
 
   const deleteKnowledgeBase = useDeleteCatalog();
-  const knowledgeBases = useGetCatalogs({
+  const catalogs = useGetCatalogs({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
@@ -74,7 +74,7 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
 
   const filesData = useListCatalogFiles({
     namespaceId: selectedNamespace ?? null,
-    knowledgeBaseId: selectedKnowledgeBase?.catalogId ?? "",
+    catalogId: selectedKnowledgeBase?.catalogId ?? "",
     accessToken,
     enabled:
       enabledQuery &&
@@ -115,8 +115,8 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
   }, [selectedNamespace, accessToken]);
 
   React.useEffect(() => {
-    if (knowledgeBases.data) {
-      const totalUsed = knowledgeBases.data.reduce(
+    if (catalogs.data) {
+      const totalUsed = catalogs.data.reduce(
         (total, kb) => total + parseInt(String(kb.usedStorage)),
         0,
       );
@@ -124,7 +124,7 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
         calculateRemainingStorage(subscriptionInfo.planStorageLimit, totalUsed),
       );
     }
-  }, [knowledgeBases.data, subscriptionInfo.planStorageLimit]);
+  }, [catalogs.data, subscriptionInfo.planStorageLimit]);
 
   const updateRemainingSpace = React.useCallback(
     (fileSize: number, isAdding: boolean) => {
@@ -148,7 +148,7 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
     }
   }, [filesData.data, filesData.isSuccess]);
 
-  const knowledgeBaseLimit = React.useMemo(
+  const catalogLimit = React.useMemo(
     () => getCatalogLimit(subscriptionInfo.plan),
     [subscriptionInfo.plan],
   );
@@ -204,25 +204,25 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
     setCreditUsageTimer(timer);
   };
 
-  const handleKnowledgeBaseSelect = (knowledgeBase: KnowledgeBase) => {
+  const handleKnowledgeBaseSelect = (catalog: KnowledgeBase) => {
     handleTabChangeAttempt("upload");
-    setSelectedKnowledgeBase(knowledgeBase);
+    setSelectedKnowledgeBase(catalog);
   };
 
-  const handleDeleteKnowledgeBase = async (knowledgeBase: KnowledgeBase) => {
+  const handleDeleteKnowledgeBase = async (catalog: KnowledgeBase) => {
     if (!selectedNamespace || !accessToken) return;
 
     try {
       await deleteKnowledgeBase.mutateAsync({
         ownerId: selectedNamespace,
-        kbId: knowledgeBase.catalogId,
+        kbId: catalog.catalogId,
         accessToken,
       });
-      if (selectedKnowledgeBase?.catalogId === knowledgeBase.catalogId) {
+      if (selectedKnowledgeBase?.catalogId === catalog.catalogId) {
         setSelectedKnowledgeBase(null);
         setActiveTab("catalogs");
       }
-      knowledgeBases.refetch();
+      catalogs.refetch();
     } catch (error) {
       console.error("Error deleting knowledge base:", error);
     }
@@ -290,8 +290,8 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
               onKnowledgeBaseSelect={handleKnowledgeBaseSelect}
               onDeleteKnowledgeBase={handleDeleteKnowledgeBase}
               accessToken={props.accessToken}
-              knowledgeBases={knowledgeBases.data || []}
-              knowledgeBaseLimit={knowledgeBaseLimit}
+              catalogs={catalogs.data || []}
+              catalogLimit={catalogLimit}
               namespaceType={namespaceType}
               subscription={subscriptionInfo.subscription}
               isLocalEnvironment={isLocalEnvironment}
@@ -299,7 +299,7 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
           ) : null}
           {activeTab === "files" && selectedKnowledgeBase ? (
             <CatalogFilesTab
-              knowledgeBase={selectedKnowledgeBase}
+              catalog={selectedKnowledgeBase}
               onGoToUpload={handleGoToUpload}
               remainingStorageSpace={remainingStorageSpace}
               updateRemainingSpace={updateRemainingSpace}
@@ -310,7 +310,7 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
           ) : null}
           {activeTab === "upload" && selectedKnowledgeBase ? (
             <UploadExploreTab
-              knowledgeBase={selectedKnowledgeBase}
+              catalog={selectedKnowledgeBase}
               onProcessFile={handleProcessFile}
               onTabChange={(tab) => handleTabChangeAttempt(tab, true)}
               setHasUnsavedChanges={setHasUnsavedChanges}
@@ -324,13 +324,13 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
           ) : null}
           {activeTab === "chunks" && selectedKnowledgeBase ? (
             <ChunkTab
-              knowledgeBase={selectedKnowledgeBase}
+              catalog={selectedKnowledgeBase}
               onGoToUpload={handleGoToUpload}
             />
           ) : null}
           {activeTab === "retrieve" && selectedKnowledgeBase ? (
             <RetrieveTestTab
-              knowledgeBase={selectedKnowledgeBase}
+              catalog={selectedKnowledgeBase}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}

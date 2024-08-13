@@ -17,9 +17,9 @@ async function deleteCatalogMutation({
   }
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.delete<{
-    knowledgeBase: KnowledgeBase;
+    catalog: KnowledgeBase;
   }>(`/namespaces/${ownerId}/catalogs/${kbId}`);
-  return response.data.knowledgeBase;
+  return response.data.catalog;
 }
 
 export function useDeleteCatalog() {

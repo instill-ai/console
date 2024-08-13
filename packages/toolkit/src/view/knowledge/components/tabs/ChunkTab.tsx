@@ -25,7 +25,7 @@ import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 
 type ChunkTabProps = {
-  knowledgeBase: KnowledgeBase;
+  catalog: KnowledgeBase;
   onGoToUpload: () => void;
 };
 
@@ -35,7 +35,7 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
+export const ChunkTab = ({ catalog, onGoToUpload }: ChunkTabProps) => {
   const [expandedFiles, setExpandedFiles] = React.useState<string[]>([]);
   const [selectedChunk, setSelectedChunk] =
     React.useState<Nullable<Chunk>>(null);
@@ -52,21 +52,21 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
     accessToken,
   });
 
-  const knowledgeBaseFiles = useListCatalogFiles({
+  const catalogFiles = useListCatalogFiles({
     namespaceId: selectedNamespace,
-    knowledgeBaseId: knowledgeBase.catalogId,
+    catalogId: catalog.catalogId,
     accessToken,
     enabled: enabledQuery && Boolean(me.data?.id),
   });
 
   const files = React.useMemo(() => {
-    if (!knowledgeBaseFiles.isSuccess) {
+    if (!catalogFiles.isSuccess) {
       return [];
     }
-    return (knowledgeBaseFiles.data || []).filter(
+    return (catalogFiles.data || []).filter(
       (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED",
     );
-  }, [knowledgeBaseFiles.isSuccess, knowledgeBaseFiles.data]);
+  }, [catalogFiles.isSuccess, catalogFiles.data]);
 
   const updateChunkMutation = useUpdateChunk();
 
@@ -114,7 +114,7 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
       )
     ) {
       interval = setInterval(() => {
-        knowledgeBaseFiles.refetch();
+        catalogFiles.refetch();
       }, 5000);
     }
 
@@ -123,17 +123,17 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
         clearInterval(interval);
       }
     };
-  }, [files, knowledgeBaseFiles]);
+  }, [files, catalogFiles]);
 
   return (
     <div className="flex-col">
       <div className="flex items-center justify-between mb-5">
         <p className="text-semantic-fg-primary product-headings-heading-3">
-          {knowledgeBase.name}
+          {catalog.name}
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {knowledgeBaseFiles.isLoading ? (
+      {catalogFiles.isLoading ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
@@ -162,7 +162,7 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
               <FileChunks
                 key={file.fileUid}
                 file={file}
-                knowledgeBase={knowledgeBase}
+                catalog={catalog}
                 accessToken={accessToken}
                 expanded={expandedFiles.includes(file.fileUid)}
                 onToggleExpand={toggleFileExpansion}
@@ -195,12 +195,12 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
       {selectedFile && selectedChunk && (
         <FileDetailsOverlay
           fileUid={selectedFile.fileUid}
-          catalogId={knowledgeBase.catalogId}
+          catalogId={catalog.catalogId}
           accessToken={accessToken}
           onClose={closeOverlay}
           showFullFile={true}
           selectedChunkUid={selectedChunk.chunkUid}
-          ownerId={knowledgeBase.ownerName}
+          ownerId={catalog.ownerName}
           isOpen={isFileDetailsOpen}
           setIsOpen={setIsFileDetailsOpen}
           fileName={selectedFile.name}

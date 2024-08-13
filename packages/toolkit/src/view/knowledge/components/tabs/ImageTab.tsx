@@ -16,7 +16,7 @@ import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types
 import MetadataPreview from "../MetadataPreview";
 
 type ImageTabProps = {
-  knowledgeBase: KnowledgeBase;
+  catalog: KnowledgeBase;
 };
 
 const mockData = [
@@ -50,7 +50,7 @@ const mockData = [
   },
 ];
 
-export const ImageTab = ({ knowledgeBase }: ImageTabProps) => {
+export const ImageTab = ({ catalog }: ImageTabProps) => {
   const [expandedFiles, setExpandedFiles] = React.useState<number[]>([0]);
 
   const toggleFileExpansion = (index: number) => {
@@ -67,7 +67,7 @@ export const ImageTab = ({ knowledgeBase }: ImageTabProps) => {
     <div className="flex-col">
       <div className="mb-5 flex items-center justify-between">
         <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
-          {knowledgeBase.name}
+          {catalog.name}
         </p>
         <div className="space-x-4">
           <Button variant="secondaryGrey" size="lg">

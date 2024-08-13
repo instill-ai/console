@@ -17,7 +17,7 @@ import ChunkCard from "./ChunkCard";
 
 type FileChunksProps = {
   file: KnowledgeFile;
-  knowledgeBase: KnowledgeBase;
+  catalog: KnowledgeBase;
   accessToken: Nullable<string>;
   expanded: boolean;
   onToggleExpand: (fileUid: string) => void;
@@ -30,7 +30,7 @@ type FileChunksProps = {
 
 const FileChunks = ({
   file,
-  knowledgeBase,
+  catalog,
   accessToken,
   expanded,
   onToggleExpand,
@@ -38,19 +38,19 @@ const FileChunks = ({
   onRetrievableToggle,
 }: FileChunksProps) => {
   const { data: chunks, refetch } = useListChunks({
-    catalogId: knowledgeBase.catalogId,
+    catalogId: catalog.catalogId,
     accessToken: accessToken || null,
     enabled: expanded,
-    ownerId: knowledgeBase.ownerName,
+    ownerId: catalog.ownerName,
     fileUid: file.fileUid,
   });
 
   const { data: fileContent } = useGetFileContent({
     fileUid: file.fileUid,
-    catalogId: knowledgeBase.catalogId,
+    catalogId: catalog.catalogId,
     accessToken: accessToken || null,
     enabled: expanded,
-    ownerId: knowledgeBase.ownerName,
+    ownerId: catalog.ownerName,
   });
 
   const isProcessing = file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED";

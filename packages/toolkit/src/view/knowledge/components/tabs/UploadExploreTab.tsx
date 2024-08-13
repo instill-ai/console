@@ -81,7 +81,7 @@ const UploadExploreFormSchema = z.object({
 type UploadExploreFormData = z.infer<typeof UploadExploreFormSchema>;
 
 type UploadExploreTabProps = {
-  knowledgeBase: KnowledgeBase;
+  catalog: KnowledgeBase;
   onProcessFile: () => void;
   onTabChange: (tab: string) => void;
   setHasUnsavedChanges: (hasChanges: boolean) => void;
@@ -100,7 +100,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const UploadExploreTab = ({
-  knowledgeBase,
+  catalog,
   onProcessFile,
   onTabChange,
   setHasUnsavedChanges,
@@ -165,7 +165,7 @@ export const UploadExploreTab = ({
 
   const existingFiles = useListCatalogFiles({
     namespaceId: navigationNamespaceAnchor,
-    knowledgeBaseId: knowledgeBase.catalogId,
+    catalogId: catalog.catalogId,
     accessToken,
     enabled: Boolean(navigationNamespaceAnchor),
   });
@@ -321,7 +321,7 @@ export const UploadExploreTab = ({
         try {
           const uploadedFile = await uploadKnowledgeBaseFile.mutateAsync({
             ownerId: navigationNamespaceAnchor,
-            knowledgeBaseId: knowledgeBase.catalogId,
+            catalogId: catalog.catalogId,
             payload: {
               name: file.name,
               type: getFileType(file),
@@ -400,7 +400,7 @@ export const UploadExploreTab = ({
       ) : null}
       <div className="flex flex-col items-start justify-start gap-1 mb-2">
         <p className="text-semantic-fg-primary product-headings-heading-3">
-          {knowledgeBase.name}
+          {catalog.name}
         </p>
         <p className="product-body-text-3-regular flex flex-col gap-1">
           {!isLocalEnvironment && !isEnterprisePlan ? (

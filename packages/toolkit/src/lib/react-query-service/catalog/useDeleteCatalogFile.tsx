@@ -21,7 +21,7 @@ export function useDeleteCatalogFile() {
       await client.delete(`/catalogs/files?fileUid=${fileUid}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["knowledgeBaseFiles"] });
+      queryClient.invalidateQueries({ queryKey: ["catalogFiles"] });
     },
   });
 }

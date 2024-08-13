@@ -27,11 +27,11 @@ import CatalogSearchSort, {
 import { UpgradePlanLink } from "../notifications";
 
 type KnowledgeBaseTabProps = {
-  onKnowledgeBaseSelect: (knowledgeBase: KnowledgeBase) => void;
+  onKnowledgeBaseSelect: (catalog: KnowledgeBase) => void;
   accessToken: Nullable<string>;
-  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
-  knowledgeBases: KnowledgeBase[];
-  knowledgeBaseLimit: number;
+  onDeleteKnowledgeBase: (catalog: KnowledgeBase) => Promise<void>;
+  catalogs: KnowledgeBase[];
+  catalogLimit: number;
   namespaceType: Nullable<"user" | "organization">;
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
   isLocalEnvironment: boolean;
@@ -60,8 +60,8 @@ export const KnowledgeBaseTab = ({
   onKnowledgeBaseSelect,
   accessToken,
   onDeleteKnowledgeBase,
-  knowledgeBases,
-  knowledgeBaseLimit,
+  catalogs,
+  catalogLimit,
   namespaceType,
   subscription,
   isLocalEnvironment,
@@ -140,13 +140,13 @@ export const KnowledgeBaseTab = ({
     }
   };
 
-  const handleCloneKnowledgeBase = async (knowledgeBase: KnowledgeBase) => {
+  const handleCloneKnowledgeBase = async (catalog: KnowledgeBase) => {
     if (!selectedNamespace || !accessToken) return;
 
     const clonedKnowledgeBase = {
-      name: `${knowledgeBase.name}-clone`,
-      description: knowledgeBase.description,
-      tags: knowledgeBase.tags || [],
+      name: `${catalog.name}-clone`,
+      description: catalog.description,
+      tags: catalog.tags || [],
     };
 
     try {
@@ -165,7 +165,7 @@ export const KnowledgeBaseTab = ({
   };
 
   const filteredAndSortedKnowledgeBases = React.useMemo(() => {
-    const filtered = knowledgeBases.filter(
+    const filtered = catalogs.filter(
       (kb) =>
         kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         kb.description.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -199,10 +199,10 @@ export const KnowledgeBaseTab = ({
     });
 
     return filtered;
-  }, [knowledgeBases, searchTerm, selectedSortAnchor, selectedSortOrder]);
+  }, [catalogs, searchTerm, selectedSortAnchor, selectedSortOrder]);
 
   const hasReachedLimit =
-    filteredAndSortedKnowledgeBases.length >= knowledgeBaseLimit;
+    filteredAndSortedKnowledgeBases.length >= catalogLimit;
 
   return (
     <div className="flex flex-col">
@@ -215,7 +215,7 @@ export const KnowledgeBaseTab = ({
             <span className="text-semantic-fg-secondary">
               {isLocalEnvironment || isEnterprisePlan || isTeamPlan
                 ? `(${filteredAndSortedKnowledgeBases.length})`
-                : `(${filteredAndSortedKnowledgeBases.length}/${knowledgeBaseLimit})`}
+                : `(${filteredAndSortedKnowledgeBases.length}/${catalogLimit})`}
             </span>
             {!isLocalEnvironment && !isEnterprisePlan ? (
               <UpgradePlanLink
@@ -264,11 +264,11 @@ export const KnowledgeBaseTab = ({
             onClick={() => setIsCreateDialogOpen(true)}
             disabled={isLocalEnvironment ? false : hasReachedLimit}
           />
-          {filteredAndSortedKnowledgeBases.map((knowledgeBase) => (
+          {filteredAndSortedKnowledgeBases.map((catalog) => (
             <CreateCatalogCard
-              key={knowledgeBase.kbId || knowledgeBase.name}
-              knowledgeBase={knowledgeBase}
-              onCardClick={() => onKnowledgeBaseSelect(knowledgeBase)}
+              key={catalog.kbId || catalog.name}
+              catalog={catalog}
+              onCardClick={() => onKnowledgeBaseSelect(catalog)}
               onUpdateKnowledgeBase={handleUpdateKnowledgeBase}
               onCloneKnowledgeBase={handleCloneKnowledgeBase}
               onDeleteKnowledgeBase={onDeleteKnowledgeBase}

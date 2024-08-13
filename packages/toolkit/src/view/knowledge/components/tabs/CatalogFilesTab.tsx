@@ -30,7 +30,7 @@ import { getPlanStorageLimit, shouldShowStorageWarning } from "../lib/helpers";
 import { InsufficientStorageBanner, UpgradePlanLink } from "../notifications";
 
 type CatalogFilesTabProps = {
-  knowledgeBase: KnowledgeBase;
+  catalog: KnowledgeBase;
   onGoToUpload: () => void;
   remainingStorageSpace: number;
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
@@ -46,7 +46,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const CatalogFilesTab = ({
-  knowledgeBase,
+  catalog,
   onGoToUpload,
   remainingStorageSpace,
   subscription,
@@ -73,7 +73,7 @@ export const CatalogFilesTab = ({
 
   const filesData = useListCatalogFiles({
     namespaceId: selectedNamespace,
-    knowledgeBaseId: knowledgeBase.catalogId,
+    catalogId: catalog.catalogId,
     accessToken,
     enabled: enabledQuery && Boolean(me.data?.id),
   });
@@ -87,7 +87,7 @@ export const CatalogFilesTab = ({
 
   React.useEffect(() => {
     filesData.refetch();
-  }, [knowledgeBase, filesData.refetch]);
+  }, [catalog, filesData.refetch]);
 
   const deleteKnowledgeBaseFile = useDeleteCatalogFile();
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
@@ -174,7 +174,7 @@ export const CatalogFilesTab = ({
       ) : null}
       <div className="flex flex-col items-start justify-start gap-1 mb-2">
         <p className="text-semantic-fg-primary product-headings-heading-3">
-          {knowledgeBase.name}
+          {catalog.name}
         </p>
         <p className="flex flex-col gap-1">
           {!isLocalEnvironment && !isEnterprisePlan ? (
@@ -219,11 +219,11 @@ export const CatalogFilesTab = ({
       {selectedFile && (
         <FileDetailsOverlay
           fileUid={selectedFile.fileUid}
-          catalogId={knowledgeBase.catalogId}
+          catalogId={catalog.catalogId}
           accessToken={accessToken}
           onClose={closeOverlay}
           showFullFile={true}
-          ownerId={knowledgeBase.ownerName}
+          ownerId={catalog.ownerName}
           isOpen={isFileDetailsOpen}
           setIsOpen={setIsFileDetailsOpen}
           fileName={selectedFile.name}

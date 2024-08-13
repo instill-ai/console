@@ -10,12 +10,12 @@ export function useUploadCatalogFile() {
   return useMutation({
     mutationFn: async ({
       ownerId,
-      knowledgeBaseId,
+      catalogId,
       payload,
       accessToken,
     }: {
       ownerId: Nullable<string>;
-      knowledgeBaseId: string;
+      catalogId: string;
       payload: {
         name: string;
         type: string;
@@ -28,13 +28,13 @@ export function useUploadCatalogFile() {
       }
       const client = createInstillAxiosClient(accessToken, true);
       const response = await client.post<{ file: File }>(
-        `/namespaces/${ownerId}/catalogs/${knowledgeBaseId}/files`,
+        `/namespaces/${ownerId}/catalogs/${catalogId}/files`,
         payload,
       );
       return response.data.file;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["knowledgeBaseFiles"] });
+      queryClient.invalidateQueries({ queryKey: ["catalogFiles"] });
     },
   });
 }

@@ -23,9 +23,9 @@ async function updateCatalogMutation({
   }
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.put<{
-    knowledgeBase: KnowledgeBase;
+    catalog: KnowledgeBase;
   }>(`/namespaces/${ownerId}/catalogs/${kbId}`, payload);
-  return response.data.knowledgeBase;
+  return response.data.catalog;
 }
 
 export function useUpdateCatalog() {

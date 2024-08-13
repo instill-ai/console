@@ -11,19 +11,19 @@ import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types
 import { env } from "../../../../server";
 
 type RetrieveTestTabProps = {
-  knowledgeBase: KnowledgeBase;
+  catalog: KnowledgeBase;
   isProcessed: boolean;
   onGoToUpload: () => void;
   namespaceId: Nullable<string>;
 };
 
 export const RetrieveTestTab = ({
-  knowledgeBase,
+  catalog,
   isProcessed,
   onGoToUpload,
   namespaceId,
 }: RetrieveTestTabProps) => {
-  const kbId = knowledgeBase.catalogId;
+  const kbId = catalog.catalogId;
 
   const curlCommand = React.useMemo(() => {
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
@@ -90,7 +90,7 @@ export const RetrieveTestTab = ({
     <div className="flex flex-col mb-10">
       <div className="mb-5 flex items-center justify-between">
         <p className="text-semantic-fg-primary product-headings-heading-3">
-          {knowledgeBase.name}
+          {catalog.name}
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />

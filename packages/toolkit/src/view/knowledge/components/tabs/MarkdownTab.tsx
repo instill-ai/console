@@ -15,7 +15,7 @@ import {
 import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types";
 
 type MarkdownTabProps = {
-  knowledgeBase: KnowledgeBase;
+  catalog: KnowledgeBase;
 };
 
 const mockData = [
@@ -49,7 +49,7 @@ const mockData = [
   },
 ];
 
-export const MarkdownTab = ({ knowledgeBase }: MarkdownTabProps) => {
+export const MarkdownTab = ({ catalog }: MarkdownTabProps) => {
   const [sortConfig, setSortConfig] = React.useState({
     key: "",
     direction: "",
@@ -84,7 +84,7 @@ export const MarkdownTab = ({ knowledgeBase }: MarkdownTabProps) => {
     <div className="flex flex-col">
       <div className="mb-5 flex items-center justify-between">
         <p className="text-2xl font-bold text-semantic-fg-primary product-headings-heading-1">
-          {knowledgeBase.name}
+          {catalog.name}
         </p>
         {/* Coming in V2 */}
         <div className="space-x-4">

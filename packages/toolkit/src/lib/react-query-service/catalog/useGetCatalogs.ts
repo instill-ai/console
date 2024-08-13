@@ -30,7 +30,7 @@ export function useGetCatalogs({
   enabled: boolean;
 }) {
   return useQuery({
-    queryKey: ["knowledgeBases", ownerId],
+    queryKey: ["catalogs", ownerId],
     queryFn: async () => {
       if (!ownerId || !accessToken) {
         throw new Error("ownerId and accessToken are required");

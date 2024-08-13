@@ -6,13 +6,13 @@ import { File } from "./types";
 
 export async function listKnowledgeBaseFiles({
   namespaceId,
-  knowledgeBaseId,
+  catalogId,
   accessToken,
   pageSize,
   nextPageToken,
 }: {
   namespaceId: string;
-  knowledgeBaseId: string;
+  catalogId: string;
   accessToken: string;
   pageSize: number;
   nextPageToken: Nullable<string>;
@@ -23,7 +23,7 @@ export async function listKnowledgeBaseFiles({
 }> {
   const client = createInstillAxiosClient(accessToken, true);
   const queryString = getQueryString({
-    baseURL: `/namespaces/${namespaceId}/catalogs/${knowledgeBaseId}/files`,
+    baseURL: `/namespaces/${namespaceId}/catalogs/${catalogId}/files`,
     pageSize,
     nextPageToken,
   });
@@ -45,17 +45,17 @@ export async function listKnowledgeBaseFiles({
 
 export function useListCatalogFiles({
   namespaceId,
-  knowledgeBaseId,
+  catalogId,
   accessToken,
   enabled,
 }: {
   namespaceId: Nullable<string> | undefined;
-  knowledgeBaseId: Nullable<string>;
+  catalogId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
 }) {
   return useQuery<File[]>({
-    queryKey: ["knowledgeBaseFiles", namespaceId, knowledgeBaseId],
+    queryKey: ["catalogFiles", namespaceId, catalogId],
     queryFn: async () => {
       if (!accessToken) {
         throw new Error("accessToken not provided");
@@ -63,8 +63,8 @@ export function useListCatalogFiles({
       if (!namespaceId) {
         throw new Error("namespaceId not provided");
       }
-      if (!knowledgeBaseId) {
-        throw new Error("knowledgeBaseId not provided");
+      if (!catalogId) {
+        throw new Error("catalogId not provided");
       }
 
       let allFiles: File[] = [];
@@ -74,7 +74,7 @@ export function useListCatalogFiles({
       do {
         const result = await listKnowledgeBaseFiles({
           namespaceId,
-          knowledgeBaseId,
+          catalogId,
           accessToken,
           pageSize: 10,
           nextPageToken,

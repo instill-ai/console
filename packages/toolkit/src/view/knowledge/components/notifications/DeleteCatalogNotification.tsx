@@ -5,13 +5,13 @@ import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 import { truncateName } from "../lib/helpers";
 
 type DeleteCatalogNotificationProps = {
-  knowledgeBaseName: string;
+  catalogName: string;
   handleCloseDeleteMessage: () => void;
   undoDelete: () => void;
 };
 
 export const DeleteCatalogNotification = ({
-  knowledgeBaseName,
+  catalogName,
   handleCloseDeleteMessage,
   undoDelete,
 }: DeleteCatalogNotificationProps) => {
@@ -21,7 +21,7 @@ export const DeleteCatalogNotification = ({
       <div className="mr-4 shrink grow basis-0 flex-col items-start justify-start space-y-4">
         <div className="flex flex-col items-start justify-start gap-1 self-stretch">
           <div className="self-stretch product-body-text-2-semibold truncate">
-            {truncateName(knowledgeBaseName)} has been deleted
+            {truncateName(catalogName)} has been deleted
           </div>
           <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
             If this was a mistake, click &quot;Undo Action&quot; to reapply your

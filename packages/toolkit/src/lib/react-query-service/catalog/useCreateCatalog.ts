@@ -22,9 +22,9 @@ async function createCatalogMutation({
   }
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.post<{
-    knowledgeBase: KnowledgeBase;
+    catalog: KnowledgeBase;
   }>(`/namespaces/${ownerId}/catalogs`, payload);
-  return response.data.knowledgeBase;
+  return response.data.catalog;
 }
 
 export function useCreateCatalog() {

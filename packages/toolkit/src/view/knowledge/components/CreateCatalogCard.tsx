@@ -20,14 +20,14 @@ type EditCatalogDialogData = {
 };
 
 type CreateCatalogCardProps = {
-  knowledgeBase: KnowledgeBase;
+  catalog: KnowledgeBase;
   onCardClick: () => void;
   onUpdateKnowledgeBase: (
     data: EditCatalogDialogData,
     kbId: string,
   ) => Promise<void>;
-  onCloneKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
-  onDeleteKnowledgeBase: (knowledgeBase: KnowledgeBase) => Promise<void>;
+  onCloneKnowledgeBase: (catalog: KnowledgeBase) => Promise<void>;
+  onDeleteKnowledgeBase: (catalog: KnowledgeBase) => Promise<void>;
   disabled?: boolean;
 };
 
@@ -38,7 +38,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const CreateCatalogCard = ({
-  knowledgeBase,
+  catalog,
   onCardClick,
   onUpdateKnowledgeBase,
   onCloneKnowledgeBase,
@@ -56,15 +56,15 @@ export const CreateCatalogCard = ({
 
   const existingFiles = useListCatalogFiles({
     namespaceId: selectedNamespace,
-    knowledgeBaseId: knowledgeBase.catalogId,
+    catalogId: catalog.catalogId,
     accessToken: accessToken || null,
     enabled: enabledQuery,
   });
 
   const chunks = useGetAllChunks({
     accessToken,
-    ownerName: knowledgeBase.ownerName,
-    kbId: knowledgeBase.catalogId,
+    ownerName: catalog.ownerName,
+    kbId: catalog.catalogId,
     fileUid: existingFiles.isSuccess
       ? existingFiles.data?.[0]?.fileUid
       : undefined,
@@ -77,14 +77,14 @@ export const CreateCatalogCard = ({
 
   const tooltipContent = React.useMemo(() => {
     return `
-Converting pipeline ID: ${knowledgeBase.convertingPipelines?.[0] || "N/A"}
-Splitting pipeline ID: ${knowledgeBase.splittingPipelines?.[0] || "N/A"}
-Embedding pipeline ID: ${knowledgeBase.embeddingPipelines?.[0] || "N/A"}
-Files #: ${knowledgeBase.totalFiles || "N/A"}
+Converting pipeline ID: ${catalog.convertingPipelines?.[0] || "N/A"}
+Splitting pipeline ID: ${catalog.splittingPipelines?.[0] || "N/A"}
+Embedding pipeline ID: ${catalog.embeddingPipelines?.[0] || "N/A"}
+Files #: ${catalog.totalFiles || "N/A"}
 Text Chunks #: ${totalChunks}
-Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
+Tokens: #: ${catalog.totalTokens || "N/A"}
 `.trim();
-  }, [knowledgeBase, totalChunks]);
+  }, [catalog, totalChunks]);
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -98,11 +98,11 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
 
   const handleDuplicate = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onCloneKnowledgeBase(knowledgeBase);
+    onCloneKnowledgeBase(catalog);
   };
 
   const handleEditKnowledgeSubmit = async (data: EditCatalogDialogData) => {
-    await onUpdateKnowledgeBase(data, knowledgeBase.catalogId);
+    await onUpdateKnowledgeBase(data, catalog.catalogId);
     setEditDialogIsOpen(false);
   };
 
@@ -118,12 +118,12 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
             >
               <div className="flex items-center justify-between">
                 <div className="product-headings-heading-4">
-                  {knowledgeBase.name}
+                  {catalog.name}
                 </div>
               </div>
               <Separator orientation="horizontal" className="my-[10px]" />
               <p className="mb-auto line-clamp-3 product-body-text-3-regular whitespace-pre-wrap break-words">
-                {knowledgeBase.description}
+                {catalog.description}
               </p>
               <div
                 className="flex items-end justify-end"
@@ -151,13 +151,13 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
         </Tooltip.Root>
       </Tooltip.Provider>
       <GeneralDeleteResourceDialog
-        resourceID={knowledgeBase.name}
-        title={`Delete ${knowledgeBase.name}`}
+        resourceID={catalog.name}
+        title={`Delete ${catalog.name}`}
         description="This action cannot be undone. This will permanently delete the catalog and all its associated data."
         open={deleteDialogIsOpen}
         onOpenChange={setDeleteDialogIsOpen}
         handleDeleteResource={async () => {
-          await onDeleteKnowledgeBase(knowledgeBase);
+          await onDeleteKnowledgeBase(catalog);
           setDeleteDialogIsOpen(false);
         }}
         trigger={null}
@@ -167,9 +167,9 @@ Tokens: #: ${knowledgeBase.totalTokens || "N/A"}
         onClose={() => setEditDialogIsOpen(false)}
         onSubmit={handleEditKnowledgeSubmit}
         initialValues={{
-          name: knowledgeBase.name,
-          description: knowledgeBase.description,
-          tags: knowledgeBase.tags || [],
+          name: catalog.name,
+          description: catalog.description,
+          tags: catalog.tags || [],
         }}
       />
     </React.Fragment>
