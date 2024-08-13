@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { KnowledgeBase } from "./types";
 
-async function deleteKnowledgeBaseMutation({
+async function deleteCatalogMutation({
   ownerId,
   kbId,
   accessToken,
@@ -22,8 +22,8 @@ async function deleteKnowledgeBaseMutation({
   return response.data.knowledgeBase;
 }
 
-export function useDeleteKnowledgeBase() {
+export function useDeleteCatalog() {
   return useMutation({
-    mutationFn: deleteKnowledgeBaseMutation,
+    mutationFn: deleteCatalogMutation,
   });
 }

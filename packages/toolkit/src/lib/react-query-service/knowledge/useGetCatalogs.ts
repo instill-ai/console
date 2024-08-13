@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { KnowledgeBase } from "./types";
 
-async function getKnowledgeBases({
+async function getCatalogs({
   ownerId,
   accessToken,
 }: {
@@ -20,7 +20,7 @@ async function getKnowledgeBases({
   return response.data.catalogs || [];
 }
 
-export function useGetKnowledgeBases({
+export function useGetCatalogs({
   accessToken,
   ownerId,
   enabled,
@@ -35,7 +35,7 @@ export function useGetKnowledgeBases({
       if (!ownerId || !accessToken) {
         throw new Error("ownerId and accessToken are required");
       }
-      const data = await getKnowledgeBases({ ownerId, accessToken });
+      const data = await getCatalogs({ ownerId, accessToken });
       if (!data) {
         throw new Error("No catalogs data returned");
       }

@@ -8,7 +8,7 @@ import { GeneralDeleteResourceDialog } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import {
   useGetAllChunks,
-  useListKnowledgeBaseFiles,
+  useListCatalogFiles,
 } from "../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
 import { CatalogCardMenu, EditKnowledgeDialog } from ".";
@@ -54,7 +54,7 @@ export const CreateKnowledgeBaseCard = ({
     useShallow(selector),
   );
 
-  const existingFiles = useListKnowledgeBaseFiles({
+  const existingFiles = useListCatalogFiles({
     namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken: accessToken || null,

@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { KnowledgeBase } from "./types";
 
-async function createKnowledgeBaseMutation({
+async function createCatalogMutation({
   payload,
   ownerId,
   accessToken,
@@ -27,8 +27,8 @@ async function createKnowledgeBaseMutation({
   return response.data.knowledgeBase;
 }
 
-export function useCreateKnowledgeBase() {
+export function useCreateCatalog() {
   return useMutation({
-    mutationFn: createKnowledgeBaseMutation,
+    mutationFn: createCatalogMutation,
   });
 }

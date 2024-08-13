@@ -4,7 +4,7 @@ import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 import { File } from "./types";
 
-export function useUploadKnowledgeBaseFile() {
+export function useUploadCatalogFile() {
   const queryClient = useQueryClient();
 
   return useMutation({

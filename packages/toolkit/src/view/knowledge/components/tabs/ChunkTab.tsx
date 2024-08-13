@@ -13,7 +13,7 @@ import {
   useShallow,
 } from "../../../../lib";
 import {
-  useListKnowledgeBaseFiles,
+  useListCatalogFiles,
   useUpdateChunk,
 } from "../../../../lib/react-query-service/knowledge";
 import {
@@ -52,7 +52,7 @@ export const ChunkTab = ({ knowledgeBase, onGoToUpload }: ChunkTabProps) => {
     accessToken,
   });
 
-  const knowledgeBaseFiles = useListKnowledgeBaseFiles({
+  const knowledgeBaseFiles = useListCatalogFiles({
     namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,

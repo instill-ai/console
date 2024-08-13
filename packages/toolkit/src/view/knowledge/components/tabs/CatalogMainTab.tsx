@@ -12,9 +12,9 @@ import { Separator, Skeleton } from "@instill-ai/design-system";
 
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import {
-  useCreateKnowledgeBase,
-  useGetKnowledgeBases,
-  useUpdateKnowledgeBase,
+  useCreateCatalog,
+  useGetCatalogs,
+  useUpdateCatalog,
 } from "../../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
 import { CreateKnowledgeBaseCard } from "../CreateCatalogCard";
@@ -77,12 +77,12 @@ export const KnowledgeBaseTab = ({
     useShallow(selector),
   );
 
-  const createKnowledgeBase = useCreateKnowledgeBase();
-  const updateKnowledgeBase = useUpdateKnowledgeBase();
+  const createKnowledgeBase = useCreateCatalog();
+  const updateKnowledgeBase = useUpdateCatalog();
   const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
   const isTeamPlan = subscription?.plan === "PLAN_TEAM";
 
-  const catalogState = useGetKnowledgeBases({
+  const catalogState = useGetCatalogs({
     accessToken,
     ownerId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,

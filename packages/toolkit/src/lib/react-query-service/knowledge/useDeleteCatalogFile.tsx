@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Nullable } from "../../type";
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
 
-export function useDeleteKnowledgeBaseFile() {
+export function useDeleteCatalogFile() {
   const queryClient = useQueryClient();
 
   return useMutation({

@@ -43,7 +43,7 @@ export async function listKnowledgeBaseFiles({
   }
 }
 
-export function useListKnowledgeBaseFiles({
+export function useListCatalogFiles({
   namespaceId,
   knowledgeBaseId,
   accessToken,

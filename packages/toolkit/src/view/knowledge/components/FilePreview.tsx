@@ -20,7 +20,7 @@ import {
 
 // import { useRouter } from "next/navigation";
 // import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
-// import { useUploadKnowledgeBaseFile } from "../../../lib/react-query-service/knowledge";
+// import { useUploadCatalogFile } from "../../../lib/react-query-service/knowledge";
 // import {
 //   InstillStore,
 //   useAuthenticatedUser,

@@ -16,8 +16,8 @@ import {
   useShallow,
 } from "../../../../lib";
 import {
-  useDeleteKnowledgeBaseFile,
-  useListKnowledgeBaseFiles,
+  useDeleteCatalogFile,
+  useListCatalogFiles,
 } from "../../../../lib/react-query-service/knowledge";
 import {
   File,
@@ -71,7 +71,7 @@ export const CatalogFilesTab = ({
     accessToken,
   });
 
-  const filesData = useListKnowledgeBaseFiles({
+  const filesData = useListCatalogFiles({
     namespaceId: selectedNamespace,
     knowledgeBaseId: knowledgeBase.catalogId,
     accessToken,
@@ -89,7 +89,7 @@ export const CatalogFilesTab = ({
     filesData.refetch();
   }, [knowledgeBase, filesData.refetch]);
 
-  const deleteKnowledgeBaseFile = useDeleteKnowledgeBaseFile();
+  const deleteKnowledgeBaseFile = useDeleteCatalogFile();
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState<Nullable<File>>(null);
 
