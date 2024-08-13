@@ -1,17 +1,37 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Nullable } from "instill-sdk";
 
 import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 
 type InsufficientStorageBannerProps = {
   setshowStorageWarning: React.Dispatch<React.SetStateAction<boolean>>;
+  plan: string;
+  namespaceType: Nullable<"user" | "organization">;
+  selectedNamespace: Nullable<string>;
 };
 
 export const InsufficientStorageBanner = ({
   setshowStorageWarning,
+  plan,
+  namespaceType,
+  selectedNamespace,
 }: InsufficientStorageBannerProps) => {
   const router = useRouter();
+
+  const getUpgradeLink = () => {
+    if (plan === "PLAN_FREE" && namespaceType === "user") {
+      return "/subscribe";
+    } else if (plan === "PLAN_FREE" && namespaceType === "organization") {
+      return `/${selectedNamespace}/organization-settings/billing/subscriptions/plan`;
+    } else if (plan === "PLAN_PRO" && namespaceType === "user") {
+      return "/settings/organizations/new";
+    } else if (plan === "PLAN_TEAM" && namespaceType === "organization") {
+      return "https://cal.com/instill-ai/30min-talk";
+    }
+    return "/settings/billing/subscriptions";
+  };
 
   return (
     <div className="mb-4 w-full bg-semantic-warning-bg p-4 flex justify-between">
@@ -26,7 +46,7 @@ export const InsufficientStorageBanner = ({
             size="sm"
             variant="secondary"
             onClick={() => {
-              router.push(`/settings/billing/subscriptions`);
+              router.push(getUpgradeLink());
             }}
           >
             Upgrade your plan for more storage space

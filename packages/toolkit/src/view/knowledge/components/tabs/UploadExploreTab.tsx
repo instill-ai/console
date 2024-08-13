@@ -90,6 +90,7 @@ type UploadExploreTabProps = {
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
   namespaceType: Nullable<"user" | "organization">;
   isLocalEnvironment: boolean;
+  selectedNamespace: Nullable<string>;
 };
 
 const selector = (store: InstillStore) => ({
@@ -108,6 +109,7 @@ export const UploadExploreTab = ({
   subscription,
   namespaceType,
   isLocalEnvironment,
+  selectedNamespace,
 }: UploadExploreTabProps) => {
   const queryClient = useQueryClient();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -391,6 +393,9 @@ export const UploadExploreTab = ({
       {!isLocalEnvironment && showStorageWarning && !isEnterprisePlan ? (
         <InsufficientStorageBanner
           setshowStorageWarning={setShowStorageWarning}
+          plan={subscription?.plan || "PLAN_FREE"}
+          namespaceType={namespaceType}
+          selectedNamespace={selectedNamespace}
         />
       ) : null}
       <div className="flex flex-col items-start justify-start gap-1 mb-2">
@@ -408,7 +413,7 @@ export const UploadExploreTab = ({
             <UpgradePlanLink
               plan={subscription?.plan || "PLAN_FREE"}
               namespaceType={namespaceType}
-              pageName="upload"
+              selectedNamespace={selectedNamespace}
             />
           ) : null}
         </p>

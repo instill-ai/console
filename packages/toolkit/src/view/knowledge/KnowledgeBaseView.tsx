@@ -319,6 +319,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
               subscription={subscriptionInfo.subscription}
               namespaceType={namespaceType}
               isLocalEnvironment={isLocalEnvironment}
+              selectedNamespace={selectedNamespace}
             />
           ) : null}
           {activeTab === "chunks" && selectedKnowledgeBase ? (
