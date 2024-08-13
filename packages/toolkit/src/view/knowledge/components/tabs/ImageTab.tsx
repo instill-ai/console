@@ -12,11 +12,11 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 
-import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types";
+import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import MetadataPreview from "../MetadataPreview";
 
 type ImageTabProps = {
-  catalog: KnowledgeBase;
+  catalog: Catalog;
 };
 
 const mockData = [

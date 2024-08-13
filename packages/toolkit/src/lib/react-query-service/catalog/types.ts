@@ -1,4 +1,4 @@
-export type KnowledgeBase = {
+export type Catalog = {
   chunks: Chunk[];
   usage: number;
   kbId: string;

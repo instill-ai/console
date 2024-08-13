@@ -16,7 +16,7 @@ import {
   useGetCatalogs,
   useUpdateCatalog,
 } from "../../../../lib/react-query-service/catalog";
-import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types";
+import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { CreateCatalogCard } from "../CreateCatalogCard";
 import { CreateCatalogDialog } from "../CreateCatalogDialog";
 import { CatalogCard } from "../CatalogCard";
@@ -27,10 +27,10 @@ import CatalogSearchSort, {
 import { UpgradePlanLink } from "../notifications";
 
 type KnowledgeBaseTabProps = {
-  onKnowledgeBaseSelect: (catalog: KnowledgeBase) => void;
+  onKnowledgeBaseSelect: (catalog: Catalog) => void;
   accessToken: Nullable<string>;
-  onDeleteKnowledgeBase: (catalog: KnowledgeBase) => Promise<void>;
-  catalogs: KnowledgeBase[];
+  onDeleteKnowledgeBase: (catalog: Catalog) => Promise<void>;
+  catalogs: Catalog[];
   catalogLimit: number;
   namespaceType: Nullable<"user" | "organization">;
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
@@ -140,7 +140,7 @@ export const KnowledgeBaseTab = ({
     }
   };
 
-  const handleCloneKnowledgeBase = async (catalog: KnowledgeBase) => {
+  const handleCloneKnowledgeBase = async (catalog: Catalog) => {
     if (!selectedNamespace || !accessToken) return;
 
     const clonedKnowledgeBase = {

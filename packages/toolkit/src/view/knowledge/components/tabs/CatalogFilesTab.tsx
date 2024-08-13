@@ -21,7 +21,7 @@ import {
 } from "../../../../lib/react-query-service/catalog";
 import {
   File,
-  KnowledgeBase,
+  Catalog,
 } from "../../../../lib/react-query-service/catalog/types";
 import { EmptyState } from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
@@ -30,7 +30,7 @@ import { getPlanStorageLimit, shouldShowStorageWarning } from "../lib/helpers";
 import { InsufficientStorageBanner, UpgradePlanLink } from "../notifications";
 
 type CatalogFilesTabProps = {
-  catalog: KnowledgeBase;
+  catalog: Catalog;
   onGoToUpload: () => void;
   remainingStorageSpace: number;
   subscription: Nullable<UserSubscription | OrganizationSubscription>;

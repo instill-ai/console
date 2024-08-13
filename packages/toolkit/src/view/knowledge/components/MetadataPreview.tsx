@@ -16,7 +16,7 @@ import {
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import * as z from "zod";
 // import { useRouter } from "next/navigation";
-// import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+// import { Catalog } from "../../../lib/vdp-sdk/knowledge/types";
 // import { useUploadCatalogFile } from "../../../lib/react-query-service/knowledge";
 // import {
 //   InstillStore,

@@ -4,12 +4,12 @@ import { useRouter } from "next/navigation";
 
 import { Icons } from "@instill-ai/design-system";
 
-import { KnowledgeBase } from "../../../lib/react-query-service/catalog/types";
+import { Catalog } from "../../../lib/react-query-service/catalog/types";
 
 type SidebarProps = {
   activeTab: string;
   onTabChange: (tab: string) => void;
-  selectedKnowledgeBase: KnowledgeBase | null;
+  selectedKnowledgeBase: Catalog | null;
   onDeselectKnowledgeBase: () => void;
 };
 

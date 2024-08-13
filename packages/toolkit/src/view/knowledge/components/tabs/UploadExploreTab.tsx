@@ -34,7 +34,7 @@ import {
   useProcessCatalogFiles,
   useUploadCatalogFile,
 } from "../../../../lib/react-query-service/catalog";
-import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types";
+import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { FILE_ERROR_TIMEOUT, MAX_FILE_NAME_LENGTH } from "../lib/constant";
 import {
   getFileType,
@@ -81,7 +81,7 @@ const UploadExploreFormSchema = z.object({
 type UploadExploreFormData = z.infer<typeof UploadExploreFormSchema>;
 
 type UploadExploreTabProps = {
-  catalog: KnowledgeBase;
+  catalog: Catalog;
   onProcessFile: () => void;
   onTabChange: (tab: string) => void;
   setHasUnsavedChanges: (hasChanges: boolean) => void;

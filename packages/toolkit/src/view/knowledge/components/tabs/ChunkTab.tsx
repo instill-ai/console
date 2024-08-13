@@ -18,14 +18,14 @@ import {
 } from "../../../../lib/react-query-service/catalog";
 import {
   Chunk,
-  KnowledgeBase,
+  Catalog,
   KnowledgeFile,
 } from "../../../../lib/react-query-service/catalog/types";
 import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 
 type ChunkTabProps = {
-  catalog: KnowledgeBase;
+  catalog: Catalog;
   onGoToUpload: () => void;
 };
 

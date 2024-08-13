@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { KnowledgeBase } from "./types";
+import { Catalog } from "./types";
 
 async function createCatalogMutation({
   payload,
@@ -16,13 +16,13 @@ async function createCatalogMutation({
   };
   ownerId: string;
   accessToken: string | null;
-}): Promise<KnowledgeBase> {
+}): Promise<Catalog> {
   if (!accessToken) {
     return Promise.reject(new Error("accessToken not provided"));
   }
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.post<{
-    catalog: KnowledgeBase;
+    catalog: Catalog;
   }>(`/namespaces/${ownerId}/catalogs`, payload);
   return response.data.catalog;
 }

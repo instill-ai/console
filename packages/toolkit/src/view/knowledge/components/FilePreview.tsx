@@ -19,7 +19,7 @@ import {
 } from "@instill-ai/design-system";
 
 // import { useRouter } from "next/navigation";
-// import { KnowledgeBase } from "../../../lib/vdp-sdk/knowledge/types";
+// import { Catalog } from "../../../lib/vdp-sdk/knowledge/types";
 // import { useUploadCatalogFile } from "../../../lib/react-query-service/knowledge";
 // import {
 //   InstillStore,

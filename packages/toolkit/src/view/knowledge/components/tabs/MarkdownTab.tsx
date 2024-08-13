@@ -12,10 +12,10 @@ import {
   Textarea,
 } from "@instill-ai/design-system";
 
-import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types";
+import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 
 type MarkdownTabProps = {
-  catalog: KnowledgeBase;
+  catalog: Catalog;
 };
 
 const mockData = [

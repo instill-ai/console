@@ -16,7 +16,7 @@ import {
   useGetCatalogs,
   useListCatalogFiles,
 } from "../../lib/react-query-service/catalog";
-import { KnowledgeBase } from "../../lib/react-query-service/catalog/types";
+import { Catalog } from "../../lib/react-query-service/catalog/types";
 import { env } from "../../server";
 import { Sidebar, WarnDiscardFilesDialog } from "./components";
 import { CREDIT_TIMEOUT } from "./components/lib/constant";
@@ -45,7 +45,7 @@ const selector = (store: InstillStore) => ({
 
 export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] =
-    React.useState<Nullable<KnowledgeBase>>(null);
+    React.useState<Nullable<Catalog>>(null);
   const [activeTab, setActiveTab] = React.useState("catalogs");
   const [isProcessed, setIsProcessed] = React.useState(false);
   const [showCreditUsage, setShowCreditUsage] = React.useState(false);
@@ -204,12 +204,12 @@ export const CatalogMainView = (props: KnowledgeBaseViewProps) => {
     setCreditUsageTimer(timer);
   };
 
-  const handleKnowledgeBaseSelect = (catalog: KnowledgeBase) => {
+  const handleKnowledgeBaseSelect = (catalog: Catalog) => {
     handleTabChangeAttempt("upload");
     setSelectedKnowledgeBase(catalog);
   };
 
-  const handleDeleteKnowledgeBase = async (catalog: KnowledgeBase) => {
+  const handleDeleteKnowledgeBase = async (catalog: Catalog) => {
     if (!selectedNamespace || !accessToken) return;
 
     try {

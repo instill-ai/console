@@ -10,7 +10,7 @@ import {
   useGetAllChunks,
   useListCatalogFiles,
 } from "../../../lib/react-query-service/catalog";
-import { KnowledgeBase } from "../../../lib/react-query-service/catalog/types";
+import { Catalog } from "../../../lib/react-query-service/catalog/types";
 import { CatalogCardMenu, EditCatalogDialog } from ".";
 
 type EditCatalogDialogData = {
@@ -20,14 +20,14 @@ type EditCatalogDialogData = {
 };
 
 type CreateCatalogCardProps = {
-  catalog: KnowledgeBase;
+  catalog: Catalog;
   onCardClick: () => void;
   onUpdateKnowledgeBase: (
     data: EditCatalogDialogData,
     kbId: string,
   ) => Promise<void>;
-  onCloneKnowledgeBase: (catalog: KnowledgeBase) => Promise<void>;
-  onDeleteKnowledgeBase: (catalog: KnowledgeBase) => Promise<void>;
+  onCloneKnowledgeBase: (catalog: Catalog) => Promise<void>;
+  onDeleteKnowledgeBase: (catalog: Catalog) => Promise<void>;
   disabled?: boolean;
 };
 

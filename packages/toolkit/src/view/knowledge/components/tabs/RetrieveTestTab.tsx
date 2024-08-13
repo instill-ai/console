@@ -7,11 +7,11 @@ import { Separator } from "@instill-ai/design-system";
 
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
-import { KnowledgeBase } from "../../../../lib/react-query-service/catalog/types";
+import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { env } from "../../../../server";
 
 type RetrieveTestTabProps = {
-  catalog: KnowledgeBase;
+  catalog: Catalog;
   isProcessed: boolean;
   onGoToUpload: () => void;
   namespaceId: Nullable<string>;
