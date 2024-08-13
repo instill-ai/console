@@ -143,9 +143,7 @@ export const KnowledgeBaseView = (props: KnowledgeBaseViewProps) => {
 
   React.useEffect(() => {
     if (filesData.data) {
-      const hasChunks = filesData.data.some(
-        (file) => file.totalChunks > 0,
-      );
+      const hasChunks = filesData.data.some((file) => file.totalChunks > 0);
       setIsProcessed(hasChunks);
     }
   }, [filesData.data]);

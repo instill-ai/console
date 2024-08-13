@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
+
+import { Nullable } from "../../type";
 import { createInstillAxiosClient, getQueryString } from "../../vdp-sdk/helper";
 import { File } from "./types";
-import { Nullable } from "../../type";
 
 export async function listKnowledgeBaseFiles({
   namespaceId,
@@ -15,7 +16,11 @@ export async function listKnowledgeBaseFiles({
   accessToken: string;
   pageSize: number;
   nextPageToken: Nullable<string>;
-}): Promise<{ files: File[]; nextPageToken: Nullable<string>; totalSize: number }> {
+}): Promise<{
+  files: File[];
+  nextPageToken: Nullable<string>;
+  totalSize: number;
+}> {
   const client = createInstillAxiosClient(accessToken, true);
   const queryString = getQueryString({
     baseURL: `/namespaces/${namespaceId}/catalogs/${knowledgeBaseId}/files`,
