@@ -17,13 +17,13 @@ import {
   useUpdateKnowledgeBase,
 } from "../../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../../lib/react-query-service/knowledge/types";
-import { CreateKnowledgeBaseCard } from "../CreateKnowledgeBaseCard";
-import { CreateKnowledgeDialog } from "../CreateKnowledgeDialog";
-import { KnowledgeBaseCard } from "../KnowledgeBaseCard";
+import { CreateKnowledgeBaseCard } from "../CreateCatalogCard";
+import { CreateKnowledgeDialog } from "../CreateCatalogDialog";
+import { KnowledgeBaseCard } from "../CatalogCard";
 import KnowledgeSearchSort, {
   SortAnchor,
   SortOrder,
-} from "../KnowledgeSearchSort";
+} from "../CatalogSearchSort";
 import { UpgradePlanLink } from "../notifications";
 
 type KnowledgeBaseTabProps = {

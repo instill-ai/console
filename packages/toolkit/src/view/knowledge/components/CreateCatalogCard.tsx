@@ -11,7 +11,7 @@ import {
   useListKnowledgeBaseFiles,
 } from "../../../lib/react-query-service/knowledge";
 import { KnowledgeBase } from "../../../lib/react-query-service/knowledge/types";
-import { CatalogCardMenu, EditKnowledgeDialog } from "./";
+import { CatalogCardMenu, EditKnowledgeDialog } from ".";
 
 type EditKnowledgeDialogData = {
   name: string;
