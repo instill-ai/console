@@ -119,11 +119,11 @@ export const CreateCatalogDialog = ({
         updateNavigationNamespaceAnchor(() => data.namespaceId);
       }
 
-      // Redirect to the new knowledge base page
+      // Redirect to the new catalog page
       router.push(`/${data.namespaceId}/catalog`);
       onClose();
     } catch (error) {
-      console.error("Failed to create knowledge base", error);
+      console.error("Failed to create catalog", error);
     } finally {
       setCreating(false);
     }

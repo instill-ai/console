@@ -224,7 +224,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
       }
       catalogs.refetch();
     } catch (error) {
-      console.error("Error deleting knowledge base:", error);
+      console.error("Error deleting catalog:", error);
     }
   };
 
