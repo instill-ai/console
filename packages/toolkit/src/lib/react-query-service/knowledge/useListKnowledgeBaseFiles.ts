@@ -15,37 +15,24 @@ export async function listKnowledgeBaseFiles({
   accessToken: string;
   pageSize: number;
   nextPageToken: Nullable<string>;
-}) {
+}): Promise<{ files: File[]; nextPageToken: Nullable<string>; totalSize: number }> {
   const client = createInstillAxiosClient(accessToken, true);
   const queryString = getQueryString({
     baseURL: `/namespaces/${namespaceId}/catalogs/${knowledgeBaseId}/files`,
     pageSize,
     nextPageToken,
   });
-
   try {
-    const files: File[] = [];
-
     const { data } = await client.get<{
       files: File[];
       nextPageToken: Nullable<string>;
+      totalSize: number;
     }>(queryString);
-
-    files.push(...data.files);
-
-    if (data.nextPageToken && data.nextPageToken !="" ) {
-      const nextFiles = await listKnowledgeBaseFiles({
-        namespaceId,
-        knowledgeBaseId,
-        accessToken,
-        pageSize,
-        nextPageToken: data.nextPageToken,
-      });
-      console.log("nextFiles", nextFiles);
-      files.push(...nextFiles);
-    }
-
-    return Promise.resolve(files);
+    return {
+      files: data.files,
+      nextPageToken: data.nextPageToken,
+      totalSize: data.totalSize,
+    };
   } catch (error) {
     return Promise.reject(error);
   }
@@ -68,24 +55,38 @@ export function useListKnowledgeBaseFiles({
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
-
       if (!namespaceId) {
         throw new Error("namespaceId not provided");
       }
-
       if (!knowledgeBaseId) {
         throw new Error("knowledgeBaseId not provided");
       }
 
-      const files = await listKnowledgeBaseFiles({
-        namespaceId,
-        knowledgeBaseId,
-        accessToken,
-        pageSize: 10,
-        nextPageToken: null,
-      });
+      let allFiles: File[] = [];
+      let nextPageToken: Nullable<string> = null;
+      let totalSize = 0;
 
-      return Promise.resolve(files);
+      do {
+        const result = await listKnowledgeBaseFiles({
+          namespaceId,
+          knowledgeBaseId,
+          accessToken,
+          pageSize: 10,
+          nextPageToken,
+        });
+
+        allFiles = [...allFiles, ...result.files];
+        nextPageToken = result.nextPageToken;
+        totalSize = result.totalSize;
+
+        // Stop fetching if we've received all files
+        if (allFiles.length >= totalSize) {
+          break;
+        }
+      } while (nextPageToken && nextPageToken !== "");
+
+      // Ensure we don't return more files than the total
+      return allFiles.slice(0, totalSize);
     },
     enabled,
   });
