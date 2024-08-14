@@ -6,7 +6,7 @@ import { Icons } from "../Icons";
 
 type DataTablePaginationProps<TData> = {
   table: Table<TData>;
-}
+};
 
 export function createPaginationArray(
   currentPage: number,
@@ -78,30 +78,30 @@ export function DataTablePagination<TData>({
       </Button>
       {showPageNumbers
         ? createPaginationArray(
-          (table.options.state.pagination?.pageIndex || 0) + 1,
-          table.getPageCount(),
-          8,
-        ).map((e, index) => (
-          <Button
-            className={cn(
-              "!rounded-none border-l-0 !border-semantic-bg-line !py-2.5 px-2.5",
-              table.getPageCount() - 1 === e && "border-r-0",
-            )}
-            variant="secondaryGrey"
-            size="sm"
-            onClick={() => table.setPageIndex(Number(e))}
-            key={`table-page-button-${index}`}
-            disabled={
-              isLoading ||
-              e === table.options.state.pagination?.pageIndex ||
-              e === "..."
-            }
-          >
-            <span className="px-2 product-body-text-3-semibold">
-              {e === "..." ? e : Number(e) + 1}
-            </span>
-          </Button>
-        ))
+            (table.options.state.pagination?.pageIndex || 0) + 1,
+            table.getPageCount(),
+            8,
+          ).map((e, index) => (
+            <Button
+              className={cn(
+                "!rounded-none border-l-0 !border-semantic-bg-line !py-2.5 px-2.5",
+                table.getPageCount() - 1 === e && "border-r-0",
+              )}
+              variant="secondaryGrey"
+              size="sm"
+              onClick={() => table.setPageIndex(Number(e))}
+              key={`table-page-button-${index}`}
+              disabled={
+                isLoading ||
+                e === table.options.state.pagination?.pageIndex ||
+                e === "..."
+              }
+            >
+              <span className="px-2 product-body-text-3-semibold">
+                {e === "..." ? e : Number(e) + 1}
+              </span>
+            </Button>
+          ))
         : null}
       <Button
         className={cn(

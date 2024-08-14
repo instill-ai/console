@@ -39,7 +39,7 @@ export type IconBaseProps = {
     width: string;
     height: string;
   };
-}
+};
 
 const IconBase = ({
   viewBox,

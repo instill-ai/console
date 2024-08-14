@@ -36,7 +36,7 @@ type DataTableProps<TData, TValue> = {
   pageCount?: number;
   onPaginationStateChange?: (state: PaginationState) => void;
   paginationState?: PaginationState;
-}
+};
 
 const DataTable = <TData, TValue>({
   columns,
@@ -86,16 +86,16 @@ const DataTable = <TData, TValue>({
     pageCount,
     ...(onPaginationStateChange
       ? {
-        onPaginationChange: (updater) => {
-          if (typeof updater !== "function") {
-            return;
-          }
+          onPaginationChange: (updater) => {
+            if (typeof updater !== "function") {
+              return;
+            }
 
-          const newPageState = updater(table.getState().pagination);
+            const newPageState = updater(table.getState().pagination);
 
-          onPaginationStateChange(newPageState);
-        },
-      }
+            onPaginationStateChange(newPageState);
+          },
+        }
       : null),
   });
 
@@ -167,9 +167,9 @@ const DataTable = <TData, TValue>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                   </Table.Head>
                 );
               })}
@@ -229,7 +229,7 @@ const DataTable = <TData, TValue>({
         </Table.Body>
       </Table.Root>
       {(typeof pageCount !== "undefined" && pageCount > 1) ||
-        data.length > pageSize ? (
+      data.length > pageSize ? (
         <DataTablePagination
           table={table}
           showPageNumbers={showPageNumbers}

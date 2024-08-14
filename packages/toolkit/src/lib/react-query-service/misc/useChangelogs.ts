@@ -8,7 +8,7 @@ type Changelog = {
   date: string | null;
   title: string;
   published: boolean;
-}
+};
 
 const fetchChangelogs = async () => {
   const response = await axios.get(

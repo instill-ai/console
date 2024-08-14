@@ -34,7 +34,7 @@ export type CatalogFile = {
   processStatus?: string;
   processOutcome?: string;
   retrievable?: boolean;
-}
+};
 
 export type File = {
   fileUid: string;

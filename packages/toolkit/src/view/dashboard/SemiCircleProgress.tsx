@@ -11,7 +11,7 @@ type SemiCircleProgressProps = {
   direction?: "left" | "right";
   showPercentValue?: boolean;
   percentage: number;
-}
+};
 
 const SemiCircleProgress: React.FC<SemiCircleProgressProps> = ({
   stroke = "#02B732",

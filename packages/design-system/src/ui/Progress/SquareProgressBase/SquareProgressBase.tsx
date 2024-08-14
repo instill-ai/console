@@ -26,7 +26,7 @@ export type SquareProgressBaseProps = {
    * - e.g. mb-auto
    */
   position?: string;
-}
+};
 
 const SquareProgressBase = (props: SquareProgressBaseProps) => {
   const {
