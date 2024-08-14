@@ -13,6 +13,11 @@
  * [Part 2] Connect Monaco React Web Editor with Language Server using WebSocket… How hard can it be?
  * https://nipunamarcus.medium.com/part-2-connect-monaco-react-web-editor-with-language-server-using-websocket-how-hard-can-it-be-aa66d93327a6
  */
+
+// suggest-widget
+// suggest-details-container
+// suggest-details-list
+// suggest-details-list-item
 import type { Monaco } from "@monaco-editor/react";
 import type { editor, IDisposable, languages, Position } from "monaco-editor";
 import * as React from "react";
@@ -36,7 +41,7 @@ import { transformInstillJSONSchemaToFormTree } from "../../lib/use-instill-form
 import { transformFormTreeToNestedSmartHints } from "../../lib/use-smart-hint/transformFormTreeToNestedSmartHints";
 import { getGeneralComponentInOutputSchema } from "../pipeline-builder";
 import { isPipelineGeneralComponent } from "../pipeline-builder/lib/checkComponentType";
-import { getAllComponentKeyLineNumberMaps } from "./getAllComponentKeyLineNumberMaps";
+import { keyLineNumberMapHelpers } from "./keyLineNumberMapHelpers";
 import { validateVSCodeYaml } from "./validateVSCodeYaml";
 
 const selector = (store: InstillStore) => ({
@@ -46,6 +51,23 @@ const selector = (store: InstillStore) => ({
   updateEditorRef: store.updateEditorRef,
   updateMonacoRef: store.updateMonacoRef,
 });
+
+const availableInstillFormats = [
+  "string",
+  "array:string",
+  "number",
+  "array:number",
+  "boolean",
+  "image/*",
+  "array:image/*",
+  "audio/*",
+  "array:audio/*",
+  "video/*",
+  "array:video/*",
+  "*/*",
+  "array:*/*",
+  "semi-structured/json",
+];
 
 export const VscodeEditor = () => {
   const [markErrors, setMarkErrors] = React.useState<editor.IMarkerData[]>([]);
@@ -191,8 +213,6 @@ export const VscodeEditor = () => {
 
       const words = last_chars.replace("\t", "").split(" ");
 
-      console.log(last_chars);
-
       // What the user is currently typing (everything after the last space)
       const active_typing = words[words.length - 1];
 
@@ -202,16 +222,18 @@ export const VscodeEditor = () => {
         };
       }
 
-      // hint task
+      // We need to hint task type for every component.
+      // 1. We need to find the component that the user is typing in. -> Check the closest and smallest component key line number.
+      // 2. We need to find the task type for the component.
       const componentKeyLineNumberMaps =
-        getAllComponentKeyLineNumberMaps(allValue);
+        keyLineNumberMapHelpers.getAllComponentKeyLineNumberMaps(allValue);
 
       const smallestComponentKeyLineNumberMap = componentKeyLineNumberMaps
         .reverse()
         .find((map) => map.lineNumber <= position.lineNumber);
 
       if (
-        active_typing.includes("task:") &&
+        last_chars.includes("task:") &&
         smallestComponentKeyLineNumberMap &&
         pipeline.isSuccess &&
         pipeline.data.recipe.component
@@ -235,6 +257,10 @@ export const VscodeEditor = () => {
                 position.lineNumber,
                 position.column,
               ),
+              documentation: {
+                value: `# ${key} \n hello-world [Microsoft](http://www.microsoft.com)`,
+                isTrusted: true,
+              },
             });
           }
 
@@ -242,6 +268,39 @@ export const VscodeEditor = () => {
             suggestions: result,
           };
         }
+      }
+
+      // We need to hint instill-format for variables
+      const topLevelKeyLineNumberMaps =
+        keyLineNumberMapHelpers.getTopLevelKeyLineNumberMaps(allValue);
+
+      const smallestTopLevelKeyLineNumberMap = topLevelKeyLineNumberMaps
+        .reverse()
+        .find((map) => map.lineNumber <= position.lineNumber);
+
+      if (
+        smallestTopLevelKeyLineNumberMap &&
+        smallestTopLevelKeyLineNumberMap.key === "variable" &&
+        last_chars.includes("instill-format:")
+      ) {
+        for (const format of availableInstillFormats) {
+          result.push({
+            label: format,
+            kind: monaco.languages.CompletionItemKind.Field,
+            insertText: format,
+            filterText: format,
+            range: new monaco.Range(
+              position.lineNumber,
+              position.column - active_typing.length,
+              position.lineNumber,
+              position.column,
+            ),
+          });
+        }
+
+        return {
+          suggestions: result,
+        };
       }
 
       const component = recipe?.component;
@@ -417,6 +476,7 @@ export const VscodeEditor = () => {
             filterText: "${" + key,
             documentation: {
               value: `## ${key} hello-world`,
+              isTrusted: true,
             },
             range: new monaco.Range(
               position.lineNumber,
@@ -477,8 +537,10 @@ export const VscodeEditor = () => {
   return (
     <React.Fragment>
       <style jsx>{`
-        .monaco-editor 
-      
+        .rendered-markdown > h1 {
+          font-size: 1.5rem;
+          font-weight: 600;
+        }
       `}</style>
       <Editor
         language="yaml"
@@ -518,6 +580,7 @@ export const VscodeEditor = () => {
           minimap: {
             enabled: false,
           },
+          tabSize: 2,
           automaticLayout: true,
           quickSuggestions: {
             other: true,
@@ -558,6 +621,21 @@ export const VscodeEditor = () => {
               console.log(word, position);
 
               return null;
+
+              // return {
+              //   range: new monaco.Range(
+              //     1,
+              //     1,
+              //     model.getLineCount(),
+              //     model.getLineMaxColumn(model.getLineCount()),
+              //   ),
+              //   contents: [
+              //     { value: "**SOURCE**" },
+              //     {
+              //       value: "```html\n",
+              //     },
+              //   ],
+              // };
             },
           });
 

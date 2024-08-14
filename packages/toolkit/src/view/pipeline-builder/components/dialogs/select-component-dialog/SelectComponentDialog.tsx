@@ -1,12 +1,16 @@
 "use client";
 
-import type { IteratorDefinition, OperatorDefinition } from "instill-sdk";
+import type {
+  ConnectorDefinition,
+  IteratorDefinition,
+  OperatorDefinition,
+} from "instill-sdk";
 import cn from "clsx";
 
 import { Button, Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 
 import { DataTestID } from "../../../../../constant";
-import { ConnectorDefinition, useInstillStore } from "../../../../../lib";
+import { useInstillStore } from "../../../../../lib";
 import { AISection } from "./AISection";
 import { ApplicationSection } from "./ApplicationSection";
 import { DataSection } from "./DataSection";
