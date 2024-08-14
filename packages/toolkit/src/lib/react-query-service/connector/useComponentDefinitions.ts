@@ -32,6 +32,7 @@ export function useComponentDefinitions({
               ? `componentType=${componentType}`
               : undefined,
           enablePagination: false,
+          view: "VIEW_FULL",
         });
       return Promise.resolve(connectorDefinitions);
     },
