@@ -69,10 +69,18 @@ const availableInstillFormats = [
   "semi-structured/json",
 ];
 
-export const VscodeEditor = () => {
+export const VscodeEditor = ({
+  unsavedRawRecipe,
+  setUnsavedRawRecipe,
+  setHasUnsavedChanges,
+  setIsSaving,
+}: {
+  unsavedRawRecipe: Nullable<string>;
+  setUnsavedRawRecipe: (unsavedRawRecipe: Nullable<string>) => void;
+  setHasUnsavedChanges: (hasUnsavedChanges: boolean) => void;
+  setIsSaving: (isSaving: boolean) => void;
+}) => {
   const [markErrors, setMarkErrors] = React.useState<editor.IMarkerData[]>([]);
-  const [unsavedRawRecipe, setUnsavedRawRecipe] =
-    React.useState<Nullable<string>>(null);
 
   const autoCompleteDisposableRef = React.useRef<Nullable<IDisposable>>(null);
   const editorRef = React.useRef<Nullable<editor.IStandaloneCodeEditor>>(null);
@@ -120,11 +128,16 @@ export const VscodeEditor = () => {
 
         if (res.success) {
           try {
+            setIsSaving(true);
             updatePipeline.mutateAsync({
               rawRecipe: newRawRecipe,
               namespacePipelineName: pipelineName,
               accessToken,
             });
+
+            setIsSaving(false);
+
+            setHasUnsavedChanges(false);
           } catch (error) {
             console.error(error);
           }
@@ -134,14 +147,6 @@ export const VscodeEditor = () => {
     ),
     [],
   );
-
-  React.useEffect(() => {
-    if (!pipeline.isSuccess) {
-      return;
-    }
-
-    setUnsavedRawRecipe(pipeline.data.rawRecipe);
-  }, [pipeline.isSuccess, pipeline.data]);
 
   React.useEffect(() => {
     if (!editorRef.current || !monacoRef.current) {
@@ -549,6 +554,8 @@ export const VscodeEditor = () => {
           if (!value || !pipeline.isSuccess) {
             return;
           }
+
+          setHasUnsavedChanges(true);
 
           // In the updater we will check whether the value is valid or not again, the reason
           // why we do this duplicated check is due to we want to invoke the updater function
