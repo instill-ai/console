@@ -4,9 +4,9 @@ import { cn } from "../../utils";
 import { Button } from "../Button";
 import { Icons } from "../Icons";
 
-interface DataTablePaginationProps<TData> {
+type DataTablePaginationProps<TData> = {
   table: Table<TData>;
-}
+};
 
 export function createPaginationArray(
   currentPage: number,

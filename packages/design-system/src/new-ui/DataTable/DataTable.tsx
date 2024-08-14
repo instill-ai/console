@@ -21,7 +21,7 @@ import { Skeleton } from "../Skeleton";
 import { Table } from "../Table";
 import { DataTablePagination } from "./DataTablePagination";
 
-interface DataTableProps<TData, TValue> {
+type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   pageSize: number;
@@ -36,7 +36,7 @@ interface DataTableProps<TData, TValue> {
   pageCount?: number;
   onPaginationStateChange?: (state: PaginationState) => void;
   paginationState?: PaginationState;
-}
+};
 
 const DataTable = <TData, TValue>({
   columns,

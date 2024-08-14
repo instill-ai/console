@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-interface Changelog {
+type Changelog = {
   id: string;
   createdAt: string;
   updatedAt: string;
   date: string | null;
   title: string;
   published: boolean;
-}
+};
 
 const fetchChangelogs = async () => {
   const response = await axios.get(

@@ -12,17 +12,17 @@ import { GenerateOptions } from "./types";
 
 const MAX_STRING_LENGTH = 42;
 
-export interface ResponseMap {
+export type ResponseMap = {
   code: string;
   id: string;
   responses?: Record<string, OpenAPIV3.SchemaObject>;
-}
+};
 
-export interface Operation {
+export type Operation = {
   verb: string;
   path: string;
   response: ResponseMap[];
-}
+};
 
 export type OperationCollection = Operation[];
 

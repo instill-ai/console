@@ -1,7 +1,7 @@
 import React from "react";
 import cn from "clsx";
 
-export interface IconBaseProps {
+export type IconBaseProps = {
   /** The viewbox of target icon
    * - e.g. "0 0 32 32"
    */
@@ -39,7 +39,7 @@ export interface IconBaseProps {
     width: string;
     height: string;
   };
-}
+};
 
 const IconBase = ({
   viewBox,

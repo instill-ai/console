@@ -4,7 +4,7 @@ import "./SquareProgressBase.css";
 
 import { Nullable } from "../../../types/general";
 
-export interface SquareProgressBaseProps {
+export type SquareProgressBaseProps = {
   /** TailwindCSS format - Loading status block's background color
    * - bg-instillGrey30
    */
@@ -26,7 +26,7 @@ export interface SquareProgressBaseProps {
    * - e.g. mb-auto
    */
   position?: string;
-}
+};
 
 const SquareProgressBase = (props: SquareProgressBaseProps) => {
   const {

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-interface SemiCircleProgressProps {
+type SemiCircleProgressProps = {
   stroke?: string;
   strokeWidth?: number;
   background?: string;
@@ -11,7 +11,7 @@ interface SemiCircleProgressProps {
   direction?: "left" | "right";
   showPercentValue?: boolean;
   percentage: number;
-}
+};
 
 const SemiCircleProgress: React.FC<SemiCircleProgressProps> = ({
   stroke = "#02B732",
