@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-interface SemiCircleProgressProps {
+type SemiCircleProgressProps = {
   stroke?: string;
   strokeWidth?: number;
   background?: string;
