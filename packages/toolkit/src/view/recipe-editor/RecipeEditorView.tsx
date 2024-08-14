@@ -59,7 +59,7 @@ export const RecipeEditorView = () => {
     editorRef,
   } = useInstillStore(useShallow(selector));
   const routeInfo = useRouteInfo();
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
   const [currentExpandView, setCurrentExpandView] =
     React.useState<Nullable<"left" | "topRight" | "bottomRight">>(null);
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();

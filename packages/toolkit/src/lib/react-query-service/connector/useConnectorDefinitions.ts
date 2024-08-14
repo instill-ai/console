@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import type { Nullable } from "../../type";
 import { env } from "../../../server";
-import { ConnectorType, listConnectorDefinitionsQuery } from "../../vdp-sdk";
+import { ConnectorType, getInstillAPIClient } from "../../vdp-sdk";
 
 export function useConnectorDefinitions({
   connectorType,
@@ -22,13 +22,18 @@ export function useConnectorDefinitions({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const connectorDefinitions = await listConnectorDefinitionsQuery({
-        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-        nextPageToken: null,
-        accessToken,
-        filter:
-          connectorType !== "all" ? `connectorType=${connectorType}` : null,
-      });
+      const client = getInstillAPIClient({ accessToken });
+
+      const connectorDefinitions =
+        await client.vdp.component.listConnectorDefinitions({
+          pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+          filter:
+            connectorType !== "all"
+              ? `connectorType=${connectorType}`
+              : undefined,
+          enablePagination: false,
+        });
+
       return Promise.resolve(connectorDefinitions);
     },
     enabled,
