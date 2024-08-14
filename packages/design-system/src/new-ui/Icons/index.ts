@@ -120,6 +120,7 @@ import { RefreshCw05 } from "./RefreshCw05";
 import { Repeat04 } from "./Repeat04";
 import { Rocket01 } from "./Rocket01";
 import { Save01 } from "./Save01";
+import { Save02 } from "./Save02";
 import { Scales02 } from "./Scales02";
 import { SearchLg } from "./SearchLg";
 import { SearchSm } from "./SearchSm";
@@ -282,6 +283,7 @@ export const Icons = {
   ReferenceIconX,
   Rocket01,
   Save01,
+  Save02,
   Scales02,
   Settings02,
   SpeechRecognition,
