@@ -15,7 +15,8 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../../../lib";
-import { CustomHandle, GeneralNodeData } from "../../../pipeline-builder";
+import { GeneralNodeData } from "../../../pipeline-builder";
+import { CustomHandle } from "./CustomHandle";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -27,11 +28,17 @@ const selector = (store: InstillStore) => ({
 export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
   const reactflowEdges = useEdges();
   const hasTargetEdges = React.useMemo(() => {
-    return reactflowEdges.some((edge) => edge.target === id);
+    return reactflowEdges.some(
+      (edge) => edge.target === id && edge.source !== "variable",
+    );
   }, [reactflowEdges, id]);
 
+  console.log(reactflowEdges);
+
   const hasSourceEdges = React.useMemo(() => {
-    return reactflowEdges.some((edge) => edge.source === id);
+    return reactflowEdges.some(
+      (edge) => edge.source === id && edge.target !== "response",
+    );
   }, [id, reactflowEdges]);
 
   const { accessToken, enabledQuery, triggerWithStreamData, editorRef } =

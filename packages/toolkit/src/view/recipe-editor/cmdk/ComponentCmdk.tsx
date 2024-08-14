@@ -1,12 +1,15 @@
 import * as React from "react";
-import { IteratorDefinition, OperatorDefinition } from "instill-sdk";
+import {
+  ConnectorDefinition,
+  IteratorDefinition,
+  OperatorDefinition,
+} from "instill-sdk";
 import yaml from "js-yaml";
 
 import { Command, Icons } from "@instill-ai/design-system";
 
 import { ImageWithFallback, LoadingSpin } from "../../../components";
 import {
-  ConnectorDefinition,
   InstillJSONSchema,
   InstillStore,
   isConnectorDefinition,
