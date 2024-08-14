@@ -12,7 +12,7 @@ import {
   Resizable,
 } from "@instill-ai/design-system";
 
-import { PageBase } from "../../components";
+import { LoadingSpin, PageBase } from "../../components";
 import { CETopbarDropdown } from "../../components/top-bar/CETopbarDropdown";
 import { CloudTopbarDropdown } from "../../components/top-bar/CloudTopbarDropdown";
 import {
@@ -63,7 +63,10 @@ export const RecipeEditorView = () => {
   const [currentExpandView, setCurrentExpandView] =
     React.useState<Nullable<"left" | "topRight" | "bottomRight">>(null);
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
-
+  const [unsavedRawRecipe, setUnsavedRawRecipe] =
+    React.useState<Nullable<string>>(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
+  const [isSaving, setIsSaving] = React.useState(false);
   const leftPanelRef = React.useRef<ImperativePanelHandle>(null);
   const rightPanelRef = React.useRef<ImperativePanelHandle>(null);
   const topRightPanelRef = React.useRef<ImperativePanelHandle>(null);
@@ -76,6 +79,14 @@ export const RecipeEditorView = () => {
     accessToken,
     enabled: enabledQuery,
   });
+
+  React.useEffect(() => {
+    if (!pipeline.isSuccess) {
+      return;
+    }
+
+    setUnsavedRawRecipe(pipeline.data.rawRecipe);
+  }, [pipeline.isSuccess, pipeline.data]);
 
   React.useEffect(() => {
     if (!pipeline.isSuccess) {
@@ -263,6 +274,11 @@ export const RecipeEditorView = () => {
                         <span className="text-[13px] font-sans text-semantic-fg-primary">
                           {pipeline.data?.id ?? null}
                         </span>
+                        {isSaving ? (
+                          <LoadingSpin className="!w-3 !h-3 !text-semantic-fg-secondary" />
+                        ) : hasUnsavedChanges ? (
+                          <div className="w-2 h-2 shrink-0 grow-0 rounded-full bg-semantic-bg-line" />
+                        ) : null}
                       </div>
                       <div className="flex flex-row">
                         <button
@@ -291,24 +307,17 @@ export const RecipeEditorView = () => {
                     <div className="flex h-7 shrink-0 items-center flex-row-reverse bg-semantic-bg-alt-primary border-b border-semantic-bg-line">
                       <button
                         onClick={async () => {
-                          if (
-                            !pipeline.isSuccess ||
-                            !pipeline.data?.rawRecipe ||
-                            !editorRef
-                          ) {
+                          if (!unsavedRawRecipe || !editorRef) {
                             return;
                           }
-
-                          console.log(editorRef);
 
                           let prettifiedRecipe: Nullable<string> = null;
 
                           try {
-                            prettifiedRecipe = await prettifyYaml(
-                              pipeline.data.rawRecipe,
-                            );
+                            prettifiedRecipe =
+                              await prettifyYaml(unsavedRawRecipe);
                           } catch (error) {
-                            prettifiedRecipe = pipeline.data.rawRecipe;
+                            prettifiedRecipe = unsavedRawRecipe;
                             console.error(error);
                           }
 
@@ -324,7 +333,12 @@ export const RecipeEditorView = () => {
                         </span>
                       </button>
                     </div>
-                    <VscodeEditor />
+                    <VscodeEditor
+                      unsavedRawRecipe={unsavedRawRecipe}
+                      setUnsavedRawRecipe={setUnsavedRawRecipe}
+                      setHasUnsavedChanges={setHasUnsavedChanges}
+                      setIsSaving={setIsSaving}
+                    />
                   </div>
                 </Resizable.Panel>
                 <Resizable.Handle

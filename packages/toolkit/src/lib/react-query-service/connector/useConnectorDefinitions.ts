@@ -32,6 +32,7 @@ export function useConnectorDefinitions({
               ? `connectorType=${connectorType}`
               : undefined,
           enablePagination: false,
+          view: "VIEW_FULL",
         });
 
       return Promise.resolve(connectorDefinitions);
