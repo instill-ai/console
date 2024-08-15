@@ -50,6 +50,10 @@ export const SelectOrganization = () => {
         return `--header Instill-Requester-Uid:${getSelectedOrgUid(selectedOrg)}`;
     }, [selectedOrg, getSelectedOrgUid]);
 
+    if (organizations.isSuccess && organizations.data.length === 0) {
+        return null;
+    }
+
     return (
         <div className="flex gap-4 p-4 rounded border border-semantic-bg-line">
             <Icons.AlertCircle className="w-6 h-6 stroke-semantic-node-connector-on" />
