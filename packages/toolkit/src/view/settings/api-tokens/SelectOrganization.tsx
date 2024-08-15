@@ -6,6 +6,7 @@ import { CodeBlock } from "../../../components";
 import { defaultCodeSnippetStyles } from "../../../constant";
 import Link from "next/link";
 import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow, useUserMemberships } from "../../../lib";
+import { Nullable, UserMembership } from "instill-sdk";
 
 const selector = (store: InstillStore) => ({
     accessToken: store.accessToken,
@@ -27,14 +28,11 @@ export const SelectOrganization = () => {
         accessToken,
     });
 
-    const [selectedOrg, setSelectedOrg] = React.useState<string | null>(null);
+    const [selectedOrg, setSelectedOrg] = React.useState<Nullable<string> | undefined>(null);
 
     React.useEffect(() => {
-        if (organizations.isSuccess && organizations.data?.length > 0) {
-            const firstOrg = organizations.data[0]?.organization?.id;
-            if (firstOrg) {
-                setSelectedOrg(firstOrg);
-            }
+        if (organizations.isSuccess && organizations.data) {
+            setSelectedOrg(organizations?.data[0]?.organization?.id);
         }
     }, [organizations.isSuccess, organizations.data]);
 
@@ -42,9 +40,15 @@ export const SelectOrganization = () => {
         console.log("Selected organization:", selectedOrg);
     }, [selectedOrg]);
 
+    const getSelectedOrgUid = React.useCallback((orgId: Nullable<string> | undefined): string => {
+        if (!organizations.isSuccess) return "Loading...";
+        const org = organizations.data.find(membership => membership.organization.id === orgId);
+        return org ? org.organization.uid : "Loading...";
+    }, [organizations.isSuccess, organizations.data]);
+
     const codeString = React.useMemo(() => {
-        return `--header Instill-Requester-Uid:${selectedOrg || '$INSTILL_ORGANZATION_UID'}`;
-    }, [selectedOrg]);
+        return `--header Instill-Requester-Uid:${getSelectedOrgUid(selectedOrg)}`;
+    }, [selectedOrg, getSelectedOrgUid]);
 
     return (
         <div className="flex gap-4 p-4 rounded border border-semantic-bg-line">
@@ -65,12 +69,12 @@ export const SelectOrganization = () => {
                     <p className="product-button-button-2 text-semantic-fg-secondary">
                         Organization:
                     </p>
-                    <Select.Root value={selectedOrg || undefined} onValueChange={(value) => setSelectedOrg(value)}>
+                    <Select.Root value={selectedOrg || undefined} onValueChange={setSelectedOrg}>
                         <Select.Trigger className="flex gap-2 items-center px-2.5 py-1.5 text-xs leading-none bg-semantic-bg-primary rounded border border-semantic-bg-line min-w-[240px] text-semantic-fg-primary w-[280px]">
                             <Select.Value placeholder="Select an organization" />
                         </Select.Trigger>
                         <Select.Content viewportClassName="!p-0">
-                            {organizations.isSuccess && organizations.data?.map((membership) => (
+                            {organizations.data?.map((membership: UserMembership) => (
                                 <Select.Item
                                     key={membership.organization.id}
                                     value={membership.organization.id}
