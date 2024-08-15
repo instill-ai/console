@@ -525,47 +525,6 @@ export const RecipeEditorView = () => {
                 </Resizable.Panel>
               </Resizable.PanelGroup>
             </div>
-
-            {/* <Resizable.PanelGroup direction="vertical" className="w-full">
-              <Resizable.Panel defaultSize={50} minSize={25}>
-                <Resizable.PanelGroup direction="horizontal">
-                  <Resizable.Panel defaultSize={50} minSize={25}>
-                    <Flow
-                      pipelineId={pipeline.data?.id ?? null}
-                      recipe={pipeline.data?.recipe ?? null}
-                      pipelineMetadata={pipeline.data?.metadata ?? null}
-                    />
-                  </Resizable.Panel>
-                  <Resizable.Handle />
-                  <Resizable.Panel defaultSize={50} minSize={25}>
-                    <div className="h-full w-full flex flex-row bg-white p-4">
-                      <div className="flex flex-row w-1/2 p-4">
-                        <Input
-                          pipelineName={pipeline.data?.name ?? null}
-                          fields={pipeline.data?.recipe.variable ?? null}
-                        />
-                      </div>
-                      <Separator orientation="vertical" />
-                      <div className="flex flex-row w-1/2 p-4">
-                        <Output
-                          id="test"
-                          outputSchema={
-                            pipeline.data?.dataSpecification?.output ?? null
-                          }
-                        />
-                      </div>
-                    </div>
-                  </Resizable.Panel>
-                </Resizable.PanelGroup>
-              </Resizable.Panel>
-              <Resizable.Handle />
-              <Resizable.Panel defaultSize={50} minSize={25}>
-                <Editor
-                  recipe={pipeline.data?.recipe ?? null}
-                  rawRecipe={pipeline.data?.rawRecipe ?? null}
-                />
-              </Resizable.Panel>
-            </Resizable.PanelGroup> */}
           </div>
         </EditorProvider>
       </PageBase.Container>
