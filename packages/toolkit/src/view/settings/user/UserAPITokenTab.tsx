@@ -4,8 +4,12 @@ import * as React from "react";
 
 import { Setting } from "..";
 import { GeneralAppPageProp, useApiTokens } from "../../../lib";
-import { APITokenTable, CreateAPITokenDialog, SelectOrganization } from "../api-tokens";
 import { env } from "../../../server";
+import {
+  APITokenTable,
+  CreateAPITokenDialog,
+  SelectOrganization,
+} from "../api-tokens";
 
 export type UserAPITokenTabProps = GeneralAppPageProp;
 

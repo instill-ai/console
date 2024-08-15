@@ -1,12 +1,20 @@
 "use client";
 
 import * as React from "react";
-import { Select, Icons } from "@instill-ai/design-system";
+import Link from "next/link";
+import { Nullable, UserMembership } from "instill-sdk";
+
+import { Icons, Select } from "@instill-ai/design-system";
+
 import { CodeBlock } from "../../../components";
 import { defaultCodeSnippetStyles } from "../../../constant";
-import Link from "next/link";
-import { InstillStore, useAuthenticatedUser, useInstillStore, useShallow, useUserMemberships } from "../../../lib";
-import { Nullable, UserMembership } from "instill-sdk";
+import {
+    InstillStore,
+    useAuthenticatedUser,
+    useInstillStore,
+    useShallow,
+    useUserMemberships,
+} from "../../../lib";
 
 const selector = (store: InstillStore) => ({
     accessToken: store.accessToken,
@@ -14,8 +22,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const SelectOrganization = () => {
-    const { accessToken, enabledQuery } =
-        useInstillStore(useShallow(selector));
+    const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
     const me = useAuthenticatedUser({
         enabled: enabledQuery,
@@ -28,7 +35,9 @@ export const SelectOrganization = () => {
         accessToken,
     });
 
-    const [selectedOrg, setSelectedOrg] = React.useState<Nullable<string> | undefined>(null);
+    const [selectedOrg, setSelectedOrg] = React.useState<
+        Nullable<string> | undefined
+    >(null);
 
     React.useEffect(() => {
         if (organizations.isSuccess && organizations.data) {
@@ -40,11 +49,16 @@ export const SelectOrganization = () => {
         console.log("Selected organization:", selectedOrg);
     }, [selectedOrg]);
 
-    const getSelectedOrgUid = React.useCallback((orgId: Nullable<string> | undefined): string => {
-        if (!organizations.isSuccess) return "Loading...";
-        const org = organizations.data.find(membership => membership.organization.id === orgId);
-        return org ? org.organization.uid : "Loading...";
-    }, [organizations.isSuccess, organizations.data]);
+    const getSelectedOrgUid = React.useCallback(
+        (orgId: Nullable<string> | undefined): string => {
+            if (!organizations.isSuccess) return "Loading...";
+            const org = organizations.data.find(
+                (membership) => membership.organization.id === orgId,
+            );
+            return org ? org.organization.uid : "Loading...";
+        },
+        [organizations.isSuccess, organizations.data],
+    );
 
     const codeString = React.useMemo(() => {
         return `--header Instill-Requester-Uid:${getSelectedOrgUid(selectedOrg)}`;
