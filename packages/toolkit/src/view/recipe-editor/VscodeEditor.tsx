@@ -14,6 +14,8 @@
  * https://nipunamarcus.medium.com/part-2-connect-monaco-react-web-editor-with-language-server-using-websocket-how-hard-can-it-be-aa66d93327a6
  */
 
+// To debug suggest-widget, you need to delete all the browser blur event
+
 // suggest-widget
 // suggest-details-container
 // suggest-details-list
@@ -23,6 +25,10 @@ import type { editor, IDisposable, languages, Position } from "monaco-editor";
 import * as React from "react";
 import { Editor } from "@monaco-editor/react";
 import { PipelineRecipe } from "instill-sdk";
+import yaml from "js-yaml";
+import SourceMap from "js-yaml-source-map";
+
+import { Dialog } from "@instill-ai/design-system";
 
 import {
   debounce,
@@ -39,9 +45,11 @@ import {
 } from "../../lib";
 import { transformInstillJSONSchemaToFormTree } from "../../lib/use-instill-form/transform";
 import { transformFormTreeToNestedSmartHints } from "../../lib/use-smart-hint/transformFormTreeToNestedSmartHints";
+import { env } from "../../server";
 import { getGeneralComponentInOutputSchema } from "../pipeline-builder";
 import { isPipelineGeneralComponent } from "../pipeline-builder/lib/checkComponentType";
 import { keyLineNumberMapHelpers } from "./keyLineNumberMapHelpers";
+import { SourceLocation } from "./types";
 import { validateVSCodeYaml } from "./validateVSCodeYaml";
 
 const selector = (store: InstillStore) => ({
@@ -85,6 +93,9 @@ export const VscodeEditor = ({
   const autoCompleteDisposableRef = React.useRef<Nullable<IDisposable>>(null);
   const editorRef = React.useRef<Nullable<editor.IStandaloneCodeEditor>>(null);
   const monacoRef = React.useRef<Nullable<Monaco>>(null);
+
+  const [openInstillCreditDialog, setOpenInstillCreditDialog] =
+    React.useState(false);
 
   const {
     accessToken,
@@ -340,6 +351,22 @@ export const VscodeEditor = ({
             });
           }
 
+          if (env("NEXT_PUBLIC_APP_ENV") === "CE") {
+            result.push({
+              label: "INSTILL_CREDIT",
+              kind: monaco.languages.CompletionItemKind.Field,
+              insertText: "${" + "secret.INSTILL_CREDIT",
+              filterText: "${" + "secret.INSTILL_CREDIT",
+              documentation: "Instill Credit",
+              range: new monaco.Range(
+                position.lineNumber,
+                position.column - active_typing.length,
+                position.lineNumber,
+                position.column,
+              ),
+            });
+          }
+
           return {
             suggestions: result,
           };
@@ -546,6 +573,11 @@ export const VscodeEditor = ({
           font-size: 1.5rem;
           font-weight: 600;
         }
+
+        .codelens-decoration > a {
+          font-size: 1rem;
+          font-weight: 400;
+        }
       `}</style>
       <Editor
         language="yaml"
@@ -646,6 +678,86 @@ export const VscodeEditor = ({
             },
           });
 
+          const openInstillCreditDialogCommand = editor.addCommand(0, () => {
+            setOpenInstillCreditDialog(() => true);
+          });
+
+          monaco.languages.registerCodeLensProvider("yaml", {
+            provideCodeLenses: function (model) {
+              const codeLenses: languages.CodeLens[] = [];
+              const currentEditorValue = model.getValue();
+              const yamlSourceMap: SourceMap = new SourceMap();
+              let yamlData: Nullable<GeneralRecord> = null;
+
+              try {
+                yamlData = yaml.load(currentEditorValue, {
+                  listener: yamlSourceMap.listen(),
+                }) as GeneralRecord;
+              } catch (error) {
+                yamlData = null;
+              }
+
+              if (!yamlData) {
+                return {
+                  lenses: codeLenses,
+                  dispose: () => {
+                    console.log("Disposing code lenses");
+                  },
+                };
+              }
+
+              const yamlComponent = yamlData?.component as
+                | GeneralRecord
+                | undefined;
+
+              if (!yamlComponent) {
+                return {
+                  lenses: codeLenses,
+                  dispose: () => {
+                    console.log("Disposing code lenses");
+                  },
+                };
+              }
+
+              for (const [key, value] of Object.entries(yamlComponent)) {
+                if (isPipelineGeneralComponent(value)) {
+                  if (value.setup) {
+                    const apiKey = value.setup["api-key"];
+                    if (apiKey && apiKey.includes("secret.INSTILL_CREDIT")) {
+                      const componentKey = `component.${key}`;
+                      const propertyLocation: SourceLocation | undefined =
+                        yamlSourceMap.lookup(componentKey);
+
+                      if (propertyLocation) {
+                        codeLenses.push({
+                          range: new monaco.Range(
+                            propertyLocation.line - 1,
+                            propertyLocation.column,
+                            propertyLocation.line - 1,
+                            propertyLocation.column,
+                          ),
+                          id: key,
+                          command: {
+                            id: openInstillCreditDialogCommand ?? "",
+                            title: `Component ${key} is using Instill Credit`,
+                            tooltip: "",
+                          },
+                        });
+                      }
+                    }
+                  }
+                }
+              }
+
+              return {
+                lenses: codeLenses,
+                dispose: () => {
+                  console.log("Disposing code lenses");
+                },
+              };
+            },
+          });
+
           editor.addAction({
             id: "open-cmdk",
             label: "Open Cmdk",
@@ -657,6 +769,34 @@ export const VscodeEditor = ({
           });
         }}
       />
+      <Dialog.Root
+        open={openInstillCreditDialog}
+        onOpenChange={(open) => setOpenInstillCreditDialog(open)}
+      >
+        <Dialog.Content className="!h-[475px] !max-w-[560px]">
+          <div className="flex flex-col gap-y-2">
+            <h2 className="product-headings-heading-2">Instill Credit</h2>
+            <p className="product-body-text-3-medium">
+              The purpose of Instill Credit is easing the adoption of ☁️ Instill
+              Cloud, minimizing the time required to build and set up a
+              pipeline. After setting up your account, you&apos;ll get 10,000
+              monthly credits for free, which can be spent on the following
+              actions:
+            </p>
+            <ul className="list-disc list-outside ml-4">
+              <li className="product-body-text-3-regular">
+                Run your own pipelines, or any public pipeline available on
+                Explore.
+              </li>
+              <li className="product-body-text-3-regular">
+                Execute pre-configured AI components without needing to create
+                accounts or API keys on 3rd party services.
+              </li>
+            </ul>
+          </div>
+          <Dialog.Close />
+        </Dialog.Content>
+      </Dialog.Root>
     </React.Fragment>
   );
 };
