@@ -4,6 +4,7 @@ import type {
   ModelDefinition,
   ModelReadme,
   ModelRegion,
+  ModelRun,
   ModelTriggerResult,
   ModelVersion,
 } from "./types";
@@ -136,6 +137,16 @@ export type listUserModelRegionsQueryProps = {
   accessToken: Nullable<string>;
 };
 
+export type listModelRunsQueryProps = {
+  modelName: string;
+  accessToken: Nullable<string>;
+  fullView: boolean;
+  pageSize: number;
+  page: number;
+  orderBy: Nullable<string>;
+  filter: Nullable<string>;
+}
+
 export type listUserModelVersionsQueryProps = {
   accessToken: Nullable<string>;
   modelName: string;
@@ -145,6 +156,13 @@ export type listUserModelVersionsQueryProps = {
 
 export type ListModelRegionsResponse = {
   regions: ModelRegion[];
+};
+
+export type ListModelRunsResponse = {
+  runs: ModelRun[];
+  totalSize: number;
+  pageSize: number;
+  page: number;
 };
 
 export type ListModelVersionsResponse = {
@@ -334,6 +352,38 @@ export async function listModelRegionsQuery({
     const { data } = await client.get<ListModelRegionsResponse>(queryString);
 
     return Promise.resolve(data.regions);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * List Model Runs
+ * -----------------------------------------------------------------------*/
+
+export async function listModelRunsQuery({
+  modelName,
+  accessToken,
+  fullView,
+  pageSize,
+  page,
+  orderBy,
+  filter,
+}: listModelRunsQueryProps) {
+  try {
+    const client = createInstillAxiosClient(accessToken);
+
+    const queryString = getQueryString({
+      baseURL: `${modelName}/runs${fullView ? "?view=VIEW_FULL" : ""}`,
+      pageSize,
+      page,
+      filter,
+      orderBy,
+    });
+
+    const { data } = await client.get<ListModelRunsResponse>(queryString);
+
+    return Promise.resolve(data);
   } catch (err) {
     return Promise.reject(err);
   }

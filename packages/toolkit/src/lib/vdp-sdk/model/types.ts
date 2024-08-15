@@ -116,6 +116,21 @@ export type ModelRegion = {
   hardware: string[];
 };
 
+export type ModelRun = {
+  uid: string;
+  modelUid: string;
+  status: ModelRunStatus;
+  source: "RUN_SOURCE_CONSOLE" | "RUN_SOURCE_API";
+  totalDuration: string;
+  endTime: string;
+  createTime: string;
+  updateTime: string;
+  version: string;
+  taskInputs: Record<string, any>[];
+  taskOutputs: Record<string, any>[];
+  credits: Nullable<number>;
+}
+
 export type ModelVersion = {
   name: string;
   version: string;
@@ -144,3 +159,9 @@ export type ModelTriggerResult = {
     }
   >;
 };
+
+export type ModelRunStatus =
+  | "RUN_STATUS_PROCESSING"
+  | "RUN_STATUS_COMPLETED"
+  | "RUN_STATUS_FAILED"
+  | "RUN_STATUS_QUEUED";

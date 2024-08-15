@@ -6,12 +6,12 @@ import { getModelTabTitle } from "@instill-ai/toolkit/server";
 import { ModelViewPageRender } from "./render";
 
 type Props = {
-  params: { id: string; entity: string; tab: string };
+  params: { id: string; entity: string; path: string[] };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const metadata: Metadata = {
-    title: `Instill Core | ${params.id} | ${getModelTabTitle(params.tab as ModelTabNames)}`,
+    title: `Instill Core | ${params.id} | ${getModelTabTitle(params.path[0] as ModelTabNames)}`,
 
     openGraph: {
       images: ["/instill-open-graph.png"],

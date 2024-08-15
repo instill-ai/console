@@ -6,6 +6,7 @@ const ModelTabsDictionary = {
   versions: "Versions",
   settings: "Settings",
   readme: "README",
+  runs: "Runs",
 };
 
 export type ModelTabNames = keyof typeof ModelTabsDictionary;

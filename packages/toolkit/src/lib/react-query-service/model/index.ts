@@ -15,5 +15,6 @@ export * from "./useTriggerUserModelAsync";
 export * from "./useWatchUserModels";
 export * from "./useUserModels";
 export * from "./useLastModelTriggerResult";
+export * from "./usePaginatedModelRuns.js";
 
 export * from "./use-user-model";

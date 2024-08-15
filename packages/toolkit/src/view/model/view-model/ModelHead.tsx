@@ -209,6 +209,10 @@ export const ModelHead = ({
                   <Icons.Activity className="h-4 w-4" />
                   Predictions
                 </TabMenu.Item> */}
+              <TabMenu.Item value="runs">
+                <Icons.Zap className="h-4 w-4" />
+                Runs
+              </TabMenu.Item>
               <TabMenu.Item value="versions">
                 <Icons.ClockRewind className="h-4 w-4" />
                 Versions

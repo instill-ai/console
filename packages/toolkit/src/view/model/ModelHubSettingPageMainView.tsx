@@ -23,7 +23,7 @@ const selector = (store: InstillStore) => ({
 export const ModelHubSettingPageMainView = () => {
   const router = useRouter();
   const routeInfo = useRouteInfo();
-  const { tab } = useParams();
+  const { path } = useParams();
   const queryClient = useQueryClient();
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
@@ -79,13 +79,13 @@ export const ModelHubSettingPageMainView = () => {
     <div className="flex flex-col">
       <ModelHead
         onTabChange={setSelectedTab}
-        selectedTab={tab as ModelTabNames}
+        selectedTab={path?.[0] as ModelTabNames}
         model={model.data}
         isReady={model.isSuccess}
         modelState={modelState}
       />
       <ModelContentViewer
-        selectedTab={tab as ModelTabNames}
+        selectedTab={path?.[0] as ModelTabNames}
         model={model.data}
         onUpdate={onModelUpdate}
         modelState={modelState}
