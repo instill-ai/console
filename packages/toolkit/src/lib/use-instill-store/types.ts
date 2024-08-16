@@ -139,6 +139,7 @@ export type EditorView = {
   type: EditorViewType;
   view: React.ReactNode;
   title: string;
+  closeable: boolean;
 };
 
 export type EditorViewSection = {
@@ -147,13 +148,17 @@ export type EditorViewSection = {
 };
 
 export type EditorMultiScreenModel = {
-  main: Nullable<EditorViewSection>;
-  topRight: Nullable<EditorViewSection>;
-  bottomRight: Nullable<EditorViewSection>;
+  main: EditorViewSection;
+  topRight: EditorViewSection;
+  bottomRight: EditorViewSection;
 };
 
 export type EditorSlice = {
   openCmdk: boolean;
+  selectedComponentId: Nullable<string>;
+  updateSelectedComponentId: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
   updateOpenCmdk: (fn: (prev: boolean) => boolean) => void;
   cursorPosition: number;
   editorRef: Nullable<editor.IStandaloneCodeEditor>;

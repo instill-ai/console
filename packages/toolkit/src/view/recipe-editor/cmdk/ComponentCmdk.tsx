@@ -63,6 +63,12 @@ export const ComponentCmdk = () => {
     accessToken,
   });
 
+  const genericDefinitions = useConnectorDefinitions({
+    connectorType: "CONNECTOR_TYPE_GENERIC",
+    enabled: enabledQuery,
+    accessToken,
+  });
+
   const aiDefinitions = useConnectorDefinitions({
     connectorType: "CONNECTOR_TYPE_AI",
     enabled: enabledQuery,
@@ -282,6 +288,35 @@ export const ComponentCmdk = () => {
                   Iterator
                 </p>
               </Command.Item>
+            </Command.Group>
+            <Command.Group heading="Generics">
+              {genericDefinitions.isSuccess ? (
+                genericDefinitions.data.map((definition) => (
+                  <Command.Item
+                    onSelect={() => {
+                      onSelect(definition);
+                      updateOpenCmdk(() => false);
+                    }}
+                    key={definition.id}
+                    value={definition.id}
+                  >
+                    <ImageWithFallback
+                      src={`/icons/${definition.id}.svg`}
+                      width={16}
+                      height={16}
+                      alt={`${definition.title}-icon`}
+                      fallbackImg={
+                        <Icons.Box className="h-8 w-8 stroke-semantic-fg-primary" />
+                      }
+                    />
+                    <p className="my-auto text-left text-semantic-fg-primary product-body-text-3-medium">
+                      {definition.title}
+                    </p>
+                  </Command.Item>
+                ))
+              ) : (
+                <LoadingSpin />
+              )}
             </Command.Group>
             <Command.Group heading="Operators">
               {operatorDefinitions.isSuccess ? (
