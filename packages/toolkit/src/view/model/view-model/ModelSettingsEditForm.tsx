@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -27,7 +26,6 @@ import {
   useAmplitudeCtx,
   useInstillStore,
   useModelRegions,
-  useRouteInfo,
   useShallow,
   useUpdateUserModel,
   Visibility,
@@ -80,8 +78,6 @@ export const ModelSettingsEditForm = ({
     React.useState<string>("");
   const [updating, setUpdating] = React.useState(false);
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const router = useRouter();
-  const routeInfo = useRouteInfo();
 
   const modelRegions = useModelRegions({ accessToken });
 
@@ -103,13 +99,6 @@ export const ModelSettingsEditForm = ({
         [],
       );
   }, [modelRegions, model]);
-
-  React.useEffect(() => {
-    if (model && !model.permission.canEdit) {
-      const playgroundPath = `/${routeInfo.data?.namespaceId}/models/${model.id}/playground`;
-      router.replace(playgroundPath);
-    }
-  }, [model, routeInfo.data?.namespaceId, router]);
 
   const defaultValues = React.useMemo(() => {
     if (!model) {
@@ -380,12 +369,12 @@ export const ModelSettingsEditForm = ({
                           <Select.Group>
                             {hardwareOptions?.length
                               ? hardwareOptions.map((option) => (
-                                  <Select.Item
-                                    key={option.value}
-                                    value={option.value}
-                                    label={option.title}
-                                  />
-                                ))
+                                <Select.Item
+                                  key={option.value}
+                                  value={option.value}
+                                  label={option.title}
+                                />
+                              ))
                               : null}
                           </Select.Group>
                         </Select.Content>
