@@ -6,6 +6,7 @@ import type {
   UpdateNamespacePipelineRequest,
 } from "instill-sdk";
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -30,7 +31,6 @@ import {
   useRouteInfo,
   useUpdateNamespacePipeline,
 } from "../../../lib";
-import { useRouter } from "next/navigation";
 
 const PipelineSettingsSchema = z.object({
   description: z.string().optional(),

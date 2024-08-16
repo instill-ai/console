@@ -82,7 +82,6 @@ export const ViewPipeline = () => {
     updateActiveVersionUrl(releases.data[0].id);
   }, [releases.isSuccess, releases.data, activeVersion, pathname]);
 
-
   const setSelectedTab = (tabName: PipelineTabNames) => {
     const currentSearchparams = searchParams.toString();
 

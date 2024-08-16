@@ -1,4 +1,5 @@
-import * as React from 'react';
+import * as React from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,7 +15,7 @@ import {
   Textarea,
   toast,
 } from "@instill-ai/design-system";
-import { useRouter } from "next/navigation";
+
 import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
 import { InstillErrors, InstillModelVisibility } from "../../../constant";
 import {
@@ -75,10 +76,11 @@ export const ModelSettingsEditForm = ({
   onUpdate,
 }: ModelSettingsEditFormProps) => {
   const { accessToken } = useInstillStore(useShallow(selector));
-  const [hardwareCustomValue, setHardwareCustomValue] = React.useState<string>("");
+  const [hardwareCustomValue, setHardwareCustomValue] =
+    React.useState<string>("");
   const [updating, setUpdating] = React.useState(false);
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const router = useRouter()
+  const router = useRouter();
   const routeInfo = useRouteInfo();
 
   const modelRegions = useModelRegions({ accessToken });
@@ -378,12 +380,12 @@ export const ModelSettingsEditForm = ({
                           <Select.Group>
                             {hardwareOptions?.length
                               ? hardwareOptions.map((option) => (
-                                <Select.Item
-                                  key={option.value}
-                                  value={option.value}
-                                  label={option.title}
-                                />
-                              ))
+                                  <Select.Item
+                                    key={option.value}
+                                    value={option.value}
+                                    label={option.title}
+                                  />
+                                ))
                               : null}
                           </Select.Group>
                         </Select.Content>
