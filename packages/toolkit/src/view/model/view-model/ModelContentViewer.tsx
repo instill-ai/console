@@ -1,6 +1,8 @@
+"use client";
 
-'use client';
 import * as React from "react";
+import { useRouter } from "next/navigation";
+
 import {
   ModelApi,
   ModelPlayground,
@@ -9,11 +11,9 @@ import {
   NoVersionsPlaceholder,
 } from ".";
 import { LoadingSpin } from "../../../components";
-import { Model, ModelState, Nullable } from "../../../lib";
+import { Model, ModelState, Nullable, useRouteInfo } from "../../../lib";
 import { ModelTabNames } from "../../../server";
 import { ModelReadme } from "./ModelReadme";
-import { useRouter } from "next/navigation";
-import { useRouteInfo } from "../../../lib";
 
 export type ModelContentViewerProps = {
   selectedTab: ModelTabNames;
