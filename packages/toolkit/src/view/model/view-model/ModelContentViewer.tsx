@@ -1,3 +1,6 @@
+
+'use client';
+import * as React from "react";
 import {
   ModelApi,
   ModelPlayground,
@@ -9,6 +12,8 @@ import { LoadingSpin } from "../../../components";
 import { Model, ModelState, Nullable } from "../../../lib";
 import { ModelTabNames } from "../../../server";
 import { ModelReadme } from "./ModelReadme";
+import { useRouter } from "next/navigation";
+import { useRouteInfo } from "../../../lib";
 
 export type ModelContentViewerProps = {
   selectedTab: ModelTabNames;
@@ -23,6 +28,20 @@ export const ModelContentViewer = ({
   onUpdate,
   modelState,
 }: ModelContentViewerProps) => {
+  const router = useRouter();
+  const routeInfo = useRouteInfo();
+  React.useEffect(() => {
+    if (model) {
+      if (!model.permission.canEdit) {
+        const playgroundPath = `/${routeInfo.data?.namespaceId}/models/${model.id}/playground`;
+        router.push(playgroundPath);
+      } else {
+        console.log("User has permission to edit model");
+      }
+    } else {
+      console.log("Model data not available");
+    }
+  }, [model, routeInfo.data?.namespaceId, router]);
   let content = null;
 
   switch (selectedTab) {
