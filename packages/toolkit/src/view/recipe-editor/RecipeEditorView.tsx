@@ -125,11 +125,15 @@ export const RecipeEditorView = () => {
                 pipelineMetadata={pipeline.data?.metadata ?? null}
               />
             ),
+            closeable: false,
           },
         ],
         currentViewId: "main-preview-flow",
       },
-      main: null,
+      main: {
+        views: [],
+        currentViewId: null,
+      },
       bottomRight: {
         views: [
           {
@@ -137,12 +141,14 @@ export const RecipeEditorView = () => {
             title: "Input",
             type: "input",
             view: inputView,
+            closeable: false,
           },
           {
             id: "main-output",
             title: "Output",
             type: "output",
             view: outputView,
+            closeable: false,
           },
         ],
         currentViewId: "main-input",
@@ -333,12 +339,14 @@ export const RecipeEditorView = () => {
                         </span>
                       </button>
                     </div>
-                    <VscodeEditor
-                      unsavedRawRecipe={unsavedRawRecipe}
-                      setUnsavedRawRecipe={setUnsavedRawRecipe}
-                      setHasUnsavedChanges={setHasUnsavedChanges}
-                      setIsSaving={setIsSaving}
-                    />
+                    <div className="w-full h-full bg-semantic-bg-primary">
+                      <VscodeEditor
+                        unsavedRawRecipe={unsavedRawRecipe}
+                        setUnsavedRawRecipe={setUnsavedRawRecipe}
+                        setHasUnsavedChanges={setHasUnsavedChanges}
+                        setIsSaving={setIsSaving}
+                      />
+                    </div>
                   </div>
                 </Resizable.Panel>
                 <Resizable.Handle
@@ -416,13 +424,24 @@ export const RecipeEditorView = () => {
                             updateEditorMultiScreenModel((prev) => ({
                               ...prev,
                               topRight: {
-                                views: prev.topRight?.views ?? [],
+                                ...prev.topRight,
                                 currentViewId: id,
                               },
                             }));
                           }}
+                          onDelete={(id) => {
+                            updateEditorMultiScreenModel((prev) => ({
+                              ...prev,
+                              topRight: {
+                                views: prev.topRight.views.filter(
+                                  (view) => view.id !== id,
+                                ),
+                                currentViewId: "main-preview-flow",
+                              },
+                            }));
+                          }}
                         />
-                        <div className="rounded-b w-full h-full overflow-hidden">
+                        <div className="rounded-b w-full h-full overflow-hidden bg-semantic-bg-alt-primary">
                           {editorMultiScreenModel.topRight
                             ? editorMultiScreenModel.topRight.views.find(
                                 (view) =>
@@ -503,8 +522,19 @@ export const RecipeEditorView = () => {
                             updateEditorMultiScreenModel((prev) => ({
                               ...prev,
                               bottomRight: {
-                                views: prev.bottomRight?.views ?? [],
+                                ...prev.bottomRight,
                                 currentViewId: id,
+                              },
+                            }));
+                          }}
+                          onDelete={(id) => {
+                            updateEditorMultiScreenModel((prev) => ({
+                              ...prev,
+                              bottomRight: {
+                                views: prev.bottomRight.views.filter(
+                                  (view) => view.id !== id,
+                                ),
+                                currentViewId: "main-input",
                               },
                             }));
                           }}

@@ -88,6 +88,7 @@ import { Link01 } from "./Link01";
 import { Lock03 } from "./Lock03";
 import { LockUnlocked03 } from "./LockUnlocked03";
 import { Logout01 } from "./Logout01";
+import { Logout04 } from "./Logout04";
 import { Mail01 } from "./Mail01";
 import { MasterCard } from "./MasterCard";
 import { Maximize02 } from "./Maximize02";
@@ -247,6 +248,7 @@ export const Icons = {
   Image03,
   ImagePlus,
   Logout01,
+  Logout04,
   LayersTwo01,
   Lightning01,
   LayoutLeft,

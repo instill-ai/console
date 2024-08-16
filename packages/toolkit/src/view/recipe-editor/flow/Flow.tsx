@@ -13,7 +13,13 @@ import ReactFlow, {
 
 import { Icons } from "@instill-ai/design-system";
 
-import { GeneralRecord, Nullable } from "../../../lib";
+import {
+  GeneralRecord,
+  InstillStore,
+  Nullable,
+  useInstillStore,
+  useShallow,
+} from "../../../lib";
 import {
   composeEdgesFromNodes,
   createGraphLayout,
@@ -36,6 +42,10 @@ const edgeTypes = {
   customEdge: CustomEdge,
 };
 
+const selector = (store: InstillStore) => ({
+  updateSelectedComponentId: store.updateSelectedComponentId,
+});
+
 export const Flow = ({
   pipelineId,
   recipe,
@@ -49,6 +59,8 @@ export const Flow = ({
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] =
     React.useState<Nullable<ReactFlowInstance>>(null);
+
+  const { updateSelectedComponentId } = useInstillStore(useShallow(selector));
 
   React.useEffect(() => {
     if (!recipe || !pipelineMetadata) return;
@@ -125,6 +137,9 @@ export const Flow = ({
         fitViewOptions={{
           includeHiddenNodes: true,
           padding: 10,
+        }}
+        onPaneClick={() => {
+          updateSelectedComponentId(() => null);
         }}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
