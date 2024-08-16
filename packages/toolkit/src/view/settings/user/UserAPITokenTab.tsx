@@ -4,7 +4,12 @@ import * as React from "react";
 
 import { Setting } from "..";
 import { GeneralAppPageProp, useApiTokens } from "../../../lib";
-import { APITokenTable, CreateAPITokenDialog } from "../api-tokens";
+import { env } from "../../../server";
+import {
+  APITokenTable,
+  CreateAPITokenDialog,
+  SelectOrganization,
+} from "../api-tokens";
 
 export type UserAPITokenTabProps = GeneralAppPageProp;
 
@@ -28,6 +33,7 @@ export const UserAPITokenTab = (props: UserAPITokenTabProps) => {
         title="API Tokens"
         description="Manage your API Tokens"
       />
+      {env("NEXT_PUBLIC_APP_ENV") !== "CE" ? <SelectOrganization /> : null}
       <div className="flex flex-col px-8 pt-12">
         <div className="mb-6 flex flex-row-reverse">
           <CreateAPITokenDialog />
