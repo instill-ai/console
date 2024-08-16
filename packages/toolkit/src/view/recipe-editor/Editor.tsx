@@ -27,7 +27,6 @@ import { getGeneralComponentInOutputSchema } from "../pipeline-builder";
 import { isPipelineGeneralComponent } from "../pipeline-builder/lib/checkComponentType";
 import { useEditor } from "./EditorContext";
 import { PrettifyButton } from "./PrettifyButton";
-import { underlinePlugin } from "./underline-plugin";
 import { validateYaml } from "./validateYaml";
 
 const selector = (store: InstillStore) => ({
@@ -199,7 +198,6 @@ export const Editor = ({
             yamlLinter,
             lintGutter(),
             EditorView.lineWrapping,
-            underlinePlugin.underlineField,
           ]}
           theme={githubLight}
           onChange={(value) => {
