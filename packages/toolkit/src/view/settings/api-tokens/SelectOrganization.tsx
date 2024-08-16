@@ -58,7 +58,11 @@ export const SelectOrganization = () => {
     return `--header Instill-Requester-Uid:${getSelectedOrgUid(selectedOrg)}`;
   }, [selectedOrg, getSelectedOrgUid]);
 
-  if (!organizations.isSuccess || !organizations.data || organizations.data.length === 0) {
+  if (
+    !organizations.isSuccess ||
+    !organizations.data ||
+    organizations.data.length === 0
+  ) {
     return null;
   }
 
