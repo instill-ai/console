@@ -3,10 +3,9 @@
  * dependency issue, we need to put the type and schema here
  */
 
-import { Nullable } from "vitest";
 import { z } from "zod";
 
-import { DataSpecification, GeneralRecord } from "../types";
+import { DataSpecification, GeneralRecord, Nullable } from "../types";
 import { ComponentDefinition } from "./component";
 
 export type PipelineVariableField = {

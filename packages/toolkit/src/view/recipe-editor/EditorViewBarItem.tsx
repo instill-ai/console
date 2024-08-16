@@ -1,10 +1,11 @@
 "use client";
 
+import * as React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Nullable } from "instill-sdk";
 
-import { cn, Icons } from "@instill-ai/design-system";
+import { Button, cn, Icons } from "@instill-ai/design-system";
 
 import { EditorViewType } from "../../lib";
 
@@ -14,12 +15,16 @@ export const EditorViewBarItem = ({
   type,
   currentViewId,
   onClick,
+  onDelete,
+  closeable,
 }: {
   id: string;
   title: string;
   type: EditorViewType;
   currentViewId: Nullable<string>;
   onClick: (id: string) => void;
+  onDelete: (id: string) => void;
+  closeable: boolean;
 }) => {
   const {
     attributes,
@@ -68,12 +73,27 @@ export const EditorViewBarItem = ({
       <button
         {...listeners}
         ref={setActivatorNodeRef}
-        className="flex border-r border-semantic-bg-line flex-row gap-x-2 px-2 h-8 items-center"
+        className="flex relative border-r border-semantic-bg-line flex-row gap-x-2 px-2 h-8 items-center"
       >
         {icon}
         <p className="text-[13px] font-sans text-semantic-fg-primary">
           {title}
         </p>
+        {closeable ? (
+          <React.Fragment>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(id);
+              }}
+              variant="tertiaryGrey"
+              className="!absolute z-50 top-1/2 -translate-y-1/2 right-2 !p-0 !w-4 h-4"
+            >
+              <Icons.X className="w-3 h-3 stroke-semantic-fg-secondary" />
+            </Button>
+            <div className="w-4 h-4 shrink-0 grow-0" />
+          </React.Fragment>
+        ) : null}
       </button>
     </div>
   );

@@ -30,6 +30,7 @@ import SourceMap from "js-yaml-source-map";
 
 import { Dialog } from "@instill-ai/design-system";
 
+import { LoadingSpin } from "../../components";
 import {
   debounce,
   dot,
@@ -424,12 +425,10 @@ export const VscodeEditor = ({
           .replaceAll("${", "")
           .replaceAll("}", "");
         const regex = /\[(\d+)\]/g;
-        const matches = objPath.match(regex);
+        // const matches = objPath.match(regex);
         const objPathWoIndex = objPath.replaceAll(regex, "");
 
         const hint = dot.getter(allHints, objPathWoIndex) as GeneralRecord;
-
-        console.log(allHints, hint, objPath, matches, objPathWoIndex);
 
         if (hint.type === "objectArray") {
           const regex = /\[(\d+)\]/g;
@@ -581,7 +580,12 @@ export const VscodeEditor = ({
       `}</style>
       <Editor
         language="yaml"
-        className="text-lg rounded-b"
+        className="rounded-b"
+        loading={
+          <div className="w-10 h-10 flex items-center justify-center">
+            <LoadingSpin className="!text-semantic-fg-primary" />
+          </div>
+        }
         onChange={(value) => {
           if (!value || !pipeline.isSuccess) {
             return;

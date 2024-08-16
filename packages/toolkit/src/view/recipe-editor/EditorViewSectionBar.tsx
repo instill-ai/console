@@ -16,12 +16,14 @@ export const EditorViewSectionBar = ({
   onToggleExpand,
   onClick,
   currentViewId,
+  onDelete,
 }: {
   views: EditorView[];
   onDragEnd: (event: DragEndEvent) => void;
   isExpanded: boolean;
   onToggleExpand: () => void;
   onClick: (id: string) => void;
+  onDelete: (id: string) => void;
   currentViewId: Nullable<string>;
 }) => {
   return (
@@ -36,6 +38,8 @@ export const EditorViewSectionBar = ({
               type={view.type}
               onClick={onClick}
               currentViewId={currentViewId}
+              closeable={view.closeable}
+              onDelete={onDelete}
             />
           ))}
         </div>

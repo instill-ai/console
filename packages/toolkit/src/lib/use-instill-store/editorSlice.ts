@@ -46,9 +46,18 @@ export const createEditorSlice: StateCreator<
     }),
   cursorPosition: 0,
   editorMultiScreenModel: {
-    main: null,
-    topRight: null,
-    bottomRight: null,
+    main: {
+      views: [],
+      currentViewId: null,
+    },
+    topRight: {
+      views: [],
+      currentViewId: null,
+    },
+    bottomRight: {
+      views: [],
+      currentViewId: null,
+    },
   },
   updateEditorMultiScreenModel: (
     fn: (prev: EditorMultiScreenModel) => EditorMultiScreenModel,
@@ -57,6 +66,16 @@ export const createEditorSlice: StateCreator<
       return {
         ...state,
         editorMultiScreenModel: fn(state.editorMultiScreenModel),
+      };
+    }),
+  selectedComponentId: null,
+  updateSelectedComponentId: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        selectedComponentId: fn(state.selectedComponentId),
       };
     }),
 });
