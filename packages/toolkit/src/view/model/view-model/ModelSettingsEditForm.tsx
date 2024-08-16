@@ -369,12 +369,12 @@ export const ModelSettingsEditForm = ({
                           <Select.Group>
                             {hardwareOptions?.length
                               ? hardwareOptions.map((option) => (
-                                <Select.Item
-                                  key={option.value}
-                                  value={option.value}
-                                  label={option.title}
-                                />
-                              ))
+                                  <Select.Item
+                                    key={option.value}
+                                    value={option.value}
+                                    label={option.title}
+                                  />
+                                ))
                               : null}
                           </Select.Group>
                         </Select.Content>
