@@ -6,7 +6,6 @@ import type {
   UpdateNamespacePipelineRequest,
 } from "instill-sdk";
 import * as React from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -51,7 +50,6 @@ export const PipelineSettings = ({
 }) => {
   const [updating, setUpdating] = React.useState(false);
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const router = useRouter();
   const defaultValues = React.useMemo(() => {
     if (!pipeline) {
       return undefined;
@@ -75,13 +73,6 @@ export const PipelineSettings = ({
   const accessToken = useInstillStore((store) => store.accessToken);
   const { toast } = useToast();
   const routeInfo = useRouteInfo();
-
-  React.useEffect(() => {
-    if (pipeline && !pipeline.permission.canEdit) {
-      const playgroundPath = `/${routeInfo.data?.namespaceId}/pipelines/${pipeline.id}/playground`;
-      router.replace(playgroundPath);
-    }
-  }, [pipeline, routeInfo.data?.namespaceId, router]);
 
   const updateUserPipeline = useUpdateNamespacePipeline();
   async function onSubmit(data: z.infer<typeof PipelineSettingsSchema>) {
