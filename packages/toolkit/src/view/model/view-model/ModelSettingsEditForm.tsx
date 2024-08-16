@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import * as React from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,7 +14,7 @@ import {
   Textarea,
   toast,
 } from "@instill-ai/design-system";
-
+import { useRouter } from "next/navigation";
 import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
 import { InstillErrors, InstillModelVisibility } from "../../../constant";
 import {
@@ -26,6 +26,7 @@ import {
   useAmplitudeCtx,
   useInstillStore,
   useModelRegions,
+  useRouteInfo,
   useShallow,
   useUpdateUserModel,
   Visibility,
@@ -74,13 +75,15 @@ export const ModelSettingsEditForm = ({
   onUpdate,
 }: ModelSettingsEditFormProps) => {
   const { accessToken } = useInstillStore(useShallow(selector));
-  const [hardwareCustomValue, setHardwareCustomValue] = useState<string>("");
-  const [updating, setUpdating] = useState(false);
+  const [hardwareCustomValue, setHardwareCustomValue] = React.useState<string>("");
+  const [updating, setUpdating] = React.useState(false);
   const { amplitudeIsInit } = useAmplitudeCtx();
+  const router = useRouter()
+  const routeInfo = useRouteInfo();
 
   const modelRegions = useModelRegions({ accessToken });
 
-  const hardwareOptions = useMemo(() => {
+  const hardwareOptions = React.useMemo(() => {
     if (!modelRegions.data || !model) {
       return [];
     }
@@ -99,7 +102,14 @@ export const ModelSettingsEditForm = ({
       );
   }, [modelRegions, model]);
 
-  const defaultValues = useMemo(() => {
+  React.useEffect(() => {
+    if (model && !model.permission.canEdit) {
+      const playgroundPath = `/${routeInfo.data?.namespaceId}/models/${model.id}/playground`;
+      router.replace(playgroundPath);
+    }
+  }, [model, routeInfo.data?.namespaceId, router]);
+
+  const defaultValues = React.useMemo(() => {
     if (!model) {
       return undefined;
     }
@@ -368,12 +378,12 @@ export const ModelSettingsEditForm = ({
                           <Select.Group>
                             {hardwareOptions?.length
                               ? hardwareOptions.map((option) => (
-                                  <Select.Item
-                                    key={option.value}
-                                    value={option.value}
-                                    label={option.title}
-                                  />
-                                ))
+                                <Select.Item
+                                  key={option.value}
+                                  value={option.value}
+                                  label={option.title}
+                                />
+                              ))
                               : null}
                           </Select.Group>
                         </Select.Content>
