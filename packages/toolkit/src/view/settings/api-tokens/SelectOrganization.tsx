@@ -35,19 +35,13 @@ export const SelectOrganization = () => {
     accessToken,
   });
 
-  const [selectedOrg, setSelectedOrg] = React.useState<
-    Nullable<string> | undefined
-  >(null);
+  const [selectedOrg, setSelectedOrg] = React.useState<Nullable<string>>(null);
 
   React.useEffect(() => {
-    if (organizations.isSuccess && organizations.data) {
-      setSelectedOrg(organizations?.data[0]?.organization?.id);
+    if (organizations.isSuccess && organizations.data[0]?.organization.id) {
+      setSelectedOrg(organizations.data[0].organization.id);
     }
   }, [organizations.isSuccess, organizations.data]);
-
-  React.useEffect(() => {
-    console.log("Selected organization:", selectedOrg);
-  }, [selectedOrg]);
 
   const getSelectedOrgUid = React.useCallback(
     (orgId: Nullable<string> | undefined): string => {
@@ -64,7 +58,7 @@ export const SelectOrganization = () => {
     return `--header Instill-Requester-Uid:${getSelectedOrgUid(selectedOrg)}`;
   }, [selectedOrg, getSelectedOrgUid]);
 
-  if (organizations.isSuccess && organizations.data.length === 0) {
+  if (!organizations.isSuccess || !organizations.data || organizations.data.length === 0) {
     return null;
   }
 
@@ -81,8 +75,10 @@ export const SelectOrganization = () => {
           header. If you omit this header, personal credits will be used. For
           more details, refer to the{" "}
           <Link
-            href="/docs/api-tokens"
+            href="https://www.instill.tech/docs/core/token"
             className="text-semantic-accent-default"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             documentation
           </Link>
