@@ -43,6 +43,8 @@ export const getFileIcon = (fileType: string) => {
       return <Icons.PPTXFile className="h-5 w-5" />;
     case "FILE_TYPE_HTML":
       return <Icons.HTMLFile className="h-5 w-5" />;
+    case "FILE_TYPE_XLSX":
+      return <Icons.HTMLFile className="h-5 w-5" />;
     default:
       return <Icons.File05 className="h-5 w-5" />;
   }
@@ -68,6 +70,8 @@ export const getFileType = (file: File) => {
       return "FILE_TYPE_PPT";
     case "html":
       return "FILE_TYPE_HTML";
+    case "xlsx":
+      return "FILE_TYPE_XLSX";
     default:
       return "FILE_TYPE_UNSPECIFIED";
   }
@@ -91,6 +95,8 @@ export const convertFileType = (type: string): string => {
       return "ppt";
     case "FILE_TYPE_HTML":
       return "html";
+    case "FILE_TYPE_XLSX":
+      return "xlsx";
     default:
       return type.replace("FILE_TYPE_", "").toLowerCase();
   }

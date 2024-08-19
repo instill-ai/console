@@ -238,8 +238,8 @@ export const UploadExploreTab = ({
     const isDuplicate =
       existingFiles.isSuccess && existingFiles.data
         ? existingFiles.data.some(
-            (existingFile) => existingFile.name === file.name,
-          )
+          (existingFile) => existingFile.name === file.name,
+        )
         : false;
 
     if (isDuplicate) {
@@ -428,11 +428,10 @@ export const UploadExploreTab = ({
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${
-                      isDragging
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
                         ? "border-semantic-accent-default"
                         : "border-semantic-bg-line"
-                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
+                      } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
                       setIsDragging(true);
@@ -471,7 +470,7 @@ export const UploadExploreTab = ({
                           </label>
                           <div className="">
                             Support TXT, MARKDOWN, PDF, DOCX, DOC, PPTX, PPT,
-                            HTML
+                            HTML, XLSX
                           </div>
                           <div className="">
                             Max {planMaxFileSize / (1024 * 1024)}MB each
@@ -483,7 +482,7 @@ export const UploadExploreTab = ({
                       <Input.Core
                         id="upload-file-field"
                         type="file"
-                        accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html"
+                        accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html, .xlsx"
                         multiple
                         value={""}
                         onChange={async (e) => {

@@ -25,18 +25,29 @@ export const GetCatalogTab = ({
 }: GetCatalogTabProps) => {
     const kbId = catalog.catalogId;
 
-    const curlCommand = React.useMemo(() => {
+    const curlCommand1 = React.useMemo(() => {
         const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
         return `curl -X GET '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${'{fileUid}'}' \\
 --header "Content-Type: application/json" \\
---header "Authorization: Bearer $INSTILL_API_TOKEN"
+--header "Authorization: Bearer $INSTILL_API_TOKEN"`;
+    }, [namespaceId, kbId]);
 
-or
-
-curl --location '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileId=${'{filename}'}' \\
+    const curlCommand2 = React.useMemo(() => {
+        const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
+        return `curl --location '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileId=${'{filename}'}' \\
 --header 'Content-Type: application/json' \\
 --header 'Accept: application/json' \\
 --header 'Authorization: Bearer $INSTILL_API_TOKEN'`;
+    }, [namespaceId, kbId]);
+
+    const apiEndpoint1 = React.useMemo(() => {
+        const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
+        return `${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${'{fileUid}'}`;
+    }, [namespaceId, kbId]);
+
+    const apiEndpoint2 = React.useMemo(() => {
+        const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
+        return `${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileId=${'{filename}'}`;
     }, [namespaceId, kbId]);
 
     const inputSchema = `{
@@ -239,7 +250,14 @@ curl --location '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?f
                     <div className="mb-8">
                         <p className="mb-2 text-lg font-semibold">Example cURL command:</p>
                         <CodeBlock
-                            codeString={curlCommand}
+                            codeString={curlCommand1}
+                            wrapLongLines={true}
+                            language="bash"
+                            customStyle={defaultCodeSnippetStyles}
+                        />
+                        <p className="my-4 font-semibold">or</p>
+                        <CodeBlock
+                            codeString={curlCommand2}
                             wrapLongLines={true}
                             language="bash"
                             customStyle={defaultCodeSnippetStyles}
@@ -249,11 +267,13 @@ curl --location '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?f
                     <div className="mb-12">
                         <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
                         <CodeBlock
-                            codeString={`${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${'{fileUid}'}
-
-or
-
-${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileId=${'{filename}'}`}
+                            codeString={apiEndpoint1}
+                            wrapLongLines={true}
+                            customStyle={defaultCodeSnippetStyles}
+                        />
+                        <p className="my-4 font-semibold">or</p>
+                        <CodeBlock
+                            codeString={apiEndpoint2}
                             wrapLongLines={true}
                             customStyle={defaultCodeSnippetStyles}
                         />
@@ -262,7 +282,7 @@ ${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs
                     <div className="mb-8">
                         <p className="mb-2 text-lg font-semibold">Input:</p>
                         <CodeBlock
-                            codeString={inputSchema}s
+                            codeString={inputSchema}
                             wrapLongLines={true}
                             language="json"
                             customStyle={defaultCodeSnippetStyles}
@@ -282,19 +302,19 @@ ${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs
                     <p className="mb-4 product-body-text-3-regular">
                         For a more detailed overview of the input/output schemas, check out
                         the{" "}
-                    <a
-                        href="https://www.instill.tech/docs/artifact/get"
-                        className="text-semantic-accent-default underline"
-            >
-                        Artifact&apos;s API reference
-                    </a>
-                    .
-                </p>
-        </div>
-    )
-}
-    </div >
-  );
+                        <a
+                            href="https://www.instill.tech/docs/artifact/get"
+                            className="text-semantic-accent-default underline"
+                        >
+                            Artifact&apos;s API reference
+                        </a>
+                        .
+                    </p>
+                </div>
+            )
+            }
+        </div >
+    );
 };
 
 export default GetCatalogTab;
