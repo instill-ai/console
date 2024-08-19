@@ -119,9 +119,10 @@ export type ModelRegion = {
 export type ModelRun = {
   uid: string;
   modelUid: string;
+  requesterId: string;
   status: ModelRunStatus;
   source: "RUN_SOURCE_CONSOLE" | "RUN_SOURCE_API";
-  totalDuration: string;
+  totalDuration: number;
   endTime: string;
   createTime: string;
   updateTime: string;

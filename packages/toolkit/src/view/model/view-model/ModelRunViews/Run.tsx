@@ -2,19 +2,39 @@ import { Model, Nullable } from "instill-sdk";
 import * as React from "react";
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { Button, Form, Icons, TabMenu } from "@instill-ai/design-system";
-import { useInstillForm, useRouteInfo } from "../../../../lib";
+import { convertToSecondsAndMilliseconds, InstillStore, useInstillForm, useInstillStore, usePaginatedModelRuns, useRouteInfo, useShallow } from "../../../../lib";
 import Image from "next/image";
 import { defaultCodeSnippetStyles } from "../../../../constant";
 import { ModelRunStateLabel } from "../../../../components/ModelRunStateLabel";
 import { ModelOutputActiveView } from "../ModelPlayground";
+import { getHumanReadableStringFromTime } from "../../../../server";
 
 export type ModelRunProps = {
   id?: string;
   model?: Model;
 }
 
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
+
 export const ModelRun = ({ id, model }: ModelRunProps) => {
   const routeInfo = useRouteInfo();
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const modelRuns = usePaginatedModelRuns({
+    accessToken,
+    enabled: enabledQuery && routeInfo.isSuccess,
+    modelName: `namespaces/${routeInfo.data.namespaceId}/models/${routeInfo.data.resourceId}`,
+    pageSize: 1,
+    page: 0,
+    filter: `uid="${id}"`,
+    fullView: true,
+  });
+  const modelRun = React.useMemo(() => {
+    return modelRuns.data?.runs[0] || null
+  }, [modelRuns.isSuccess, modelRuns.data]);
+
   const {
     fields,
     form,
@@ -26,7 +46,6 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
       disabledAll: true,
     },
   );
-
   const [outputActiveView, setOutputActiveView] = React.useState<ModelOutputActiveView>("preview");
 
   return (
@@ -46,16 +65,20 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
         <div className="border rounded-sm p-6 flex flex-col gap-y-5">
           <div className="text-lg text-semantic-fg-primary font-bold">{id}</div>
           <div className="flex flex-row items-center justify-between text-xs">
-            <div>Version <b>v1.1.1</b></div>
+            <div>Version <b>{modelRun?.version}</b></div>
             <div>Status <ModelRunStateLabel
-              state="RUN_STATUS_COMPLETED"
+              state={modelRun?.status}
               className="inline-flex"
             /></div>
-            <div>Source <b>v1.1.1</b></div>
-            <div>Total Duration <b>v1.1.1</b></div>
-            <div>Created Time <b>v1.1.1</b></div>
-            <div>Runner <b>v1.1.1</b></div>
-            <div>Credits <b>v1.1.1</b></div>
+            <div>Source <b>{modelRun?.source === 'RUN_SOURCE_CONSOLE' ? "Web" : "API"}</b></div>
+            <div>Total Duration <b>{convertToSecondsAndMilliseconds(modelRun?.totalDuration || 0)}</b></div>
+            <div>Created Time <b>{getHumanReadableStringFromTime(modelRun?.createTime, Date.now())}</b></div>
+            <div>Runner <b>{modelRun?.requesterId}</b></div>
+            {
+              modelRun && 'credits' in modelRun && modelRun.credits !== null
+                ? <div>Credits <b>{modelRun.credits}</b></div>
+                : null
+            }
           </div>
         </div>
         <div className="flex flex-row">

@@ -371,7 +371,7 @@ export async function listModelRunsQuery({
   filter,
 }: listModelRunsQueryProps) {
   try {
-    const client = createInstillAxiosClient(accessToken);
+    const client = createInstillAxiosClient(accessToken, true);
 
     const queryString = getQueryString({
       baseURL: `${modelName}/runs${fullView ? "?view=VIEW_FULL" : ""}`,
