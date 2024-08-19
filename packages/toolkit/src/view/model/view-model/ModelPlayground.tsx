@@ -57,7 +57,7 @@ const selector = (store: InstillStore) => ({
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
-const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
+export const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
   taskName
     ? convertSentenceToCamelCase(
         // This removes "TASK_" and replaces "_" with a space. The first
@@ -67,7 +67,7 @@ const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
       )
     : null;
 
-const convertValuesToString = (props: Record<string, unknown>) => {
+export const convertValuesToString = (props: Record<string, unknown>) => {
   const convertedProps: Record<string, unknown> = {};
 
   for (const key in props) {

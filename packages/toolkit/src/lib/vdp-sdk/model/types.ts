@@ -1,6 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
-import { ModelWatchState, Pipeline } from "instill-sdk";
+import { GeneralRecord, ModelWatchState, Pipeline } from "instill-sdk";
 import { Nullable } from "vitest";
 
 import { InstillJSONSchema } from "../../use-instill-form";
@@ -127,7 +127,7 @@ export type ModelRun = {
   createTime: string;
   updateTime: string;
   version: string;
-  taskInputs: Record<string, any>[];
+  taskInputs: GeneralRecord[];
   taskOutputs: Record<string, any>[];
   credits: Nullable<number>;
 }

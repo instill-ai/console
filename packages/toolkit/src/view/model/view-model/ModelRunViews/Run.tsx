@@ -2,11 +2,10 @@ import { Model, Nullable } from "instill-sdk";
 import * as React from "react";
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { Button, Form, Icons, TabMenu } from "@instill-ai/design-system";
-import { convertToSecondsAndMilliseconds, InstillStore, useInstillForm, useInstillStore, usePaginatedModelRuns, useRouteInfo, useShallow } from "../../../../lib";
-import Image from "next/image";
+import { convertToSecondsAndMilliseconds, InstillStore, useComponentOutputFields, useInstillForm, useInstillStore, usePaginatedModelRuns, useRouteInfo, useShallow } from "../../../../lib";
 import { defaultCodeSnippetStyles } from "../../../../constant";
 import { ModelRunStateLabel } from "../../../../components/ModelRunStateLabel";
-import { ModelOutputActiveView } from "../ModelPlayground";
+import { convertTaskNameToPayloadPropName, convertValuesToString, ModelOutputActiveView } from "../ModelPlayground";
 import { getHumanReadableStringFromTime } from "../../../../server";
 
 export type ModelRunProps = {
@@ -22,6 +21,7 @@ const selector = (store: InstillStore) => ({
 export const ModelRun = ({ id, model }: ModelRunProps) => {
   const routeInfo = useRouteInfo();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const [outputActiveView, setOutputActiveView] = React.useState<ModelOutputActiveView>("preview");
   const modelRuns = usePaginatedModelRuns({
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
@@ -34,6 +34,16 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
   const modelRun = React.useMemo(() => {
     return modelRuns.data?.runs[0] || null
   }, [modelRuns.isSuccess, modelRuns.data]);
+  const taskInputOutput = React.useMemo(() => {
+    const taskPropName = convertTaskNameToPayloadPropName(model?.task) as string;
+
+    return {
+      input: modelRun?.taskInputs[0] ? convertValuesToString(
+        modelRun?.taskInputs[0][taskPropName],
+      ) : null,
+      output: modelRun?.taskOutputs[0] ? modelRun?.taskOutputs[0][taskPropName] : null,
+    }
+  }, [modelRun, model])
 
   const {
     fields,
@@ -41,12 +51,16 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
     //Schema: ValidatorSchema,
   } = useInstillForm(
     model?.inputSchema || null,
-    null,
+    taskInputOutput.input,
     {
       disabledAll: true,
     },
   );
-  const [outputActiveView, setOutputActiveView] = React.useState<ModelOutputActiveView>("preview");
+  const componentOutputFields = useComponentOutputFields({
+    mode: "demo",
+    schema: model?.outputSchema || null,
+    data: taskInputOutput.output,
+  });
 
   return (
     <React.Fragment>
@@ -102,60 +116,39 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
           </div>
           <div className="flex w-1/2 flex-col pb-6 pl-6">
             <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
-            {(routeInfo.data.modelName === 'abc') ? (
-              <React.Fragment>
-                <TabMenu.Root
-                  value={outputActiveView}
-                  onValueChange={(value: Nullable<string>) =>
-                    setOutputActiveView(value as ModelOutputActiveView)
-                  }
-                  disabledDeSelect={true}
-                  className="mb-3 border-b border-semantic-bg-line"
-                >
-                  <TabMenu.Item
-                    value="preview"
-                    className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
-                  >
-                    <span className="text-sm">Preview</span>
-                  </TabMenu.Item>
-                  <TabMenu.Item
-                    value="json"
-                    className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
-                  >
-                    <span className="text-sm">JSON</span>
-                  </TabMenu.Item>
-                </TabMenu.Root>
-                {outputActiveView === "preview" ? (
-                  <div className="flex flex-col gap-y-2">
-                    {/* componentOutputFields */}
-                  </div>
-                ) : (
-                  <CodeBlock
-                    codeString={JSON.stringify(
-                      //pipelineRunResponse?.outputs[0],
-                      '',
-                      null,
-                      2,
-                    )}
-                    wrapLongLines={true}
-                    language="json"
-                    customStyle={defaultCodeSnippetStyles}
-                    className="!h-auto !flex-none"
-                  />
-                )}
-              </React.Fragment>
-            ) : (
-              <div className="flex flex-row items-center justify-center gap-x-4 pt-24">
-                <Image
-                  src="/images/models/no-result.svg"
-                  width={41}
-                  height={40}
-                  alt="Square shapes"
-                />
-                <p className="font-mono text-sm italic text-semantic-fg-disabled">
-                  Execute the model to view the results
-                </p>
+            <TabMenu.Root
+              value={outputActiveView}
+              onValueChange={(value: Nullable<string>) =>
+                setOutputActiveView(value as ModelOutputActiveView)
+              }
+              disabledDeSelect={true}
+              className="mb-3 border-b border-semantic-bg-line"
+            >
+              <TabMenu.Item
+                value="preview"
+                className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
+              >
+                <span className="text-sm">Preview</span>
+              </TabMenu.Item>
+              <TabMenu.Item
+                value="json"
+                className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
+              >
+                <span className="text-sm">JSON</span>
+              </TabMenu.Item>
+            </TabMenu.Root>
+            {outputActiveView === "preview" ? (
+              <div className="flex flex-col gap-y-2">
+                {componentOutputFields}
               </div>
+            ) : (
+              <CodeBlock
+                codeString={JSON.stringify(taskInputOutput.output, null, 2)}
+                wrapLongLines={true}
+                language="json"
+                customStyle={defaultCodeSnippetStyles}
+                className="!h-auto !flex-none"
+              />
             )}
           </div>
         </div>
