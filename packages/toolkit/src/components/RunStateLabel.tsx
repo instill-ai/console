@@ -2,17 +2,17 @@
 
 import { cn } from "@instill-ai/design-system";
 
-import type { ModelRunStatus, Nullable } from "../lib";
+import type { RunStatus, Nullable } from "../lib";
 
-export type ModelRunStateLabelProps = {
-  state?: Nullable<ModelRunStatus>;
+export type RunStateLabelProps = {
+  state?: Nullable<RunStatus>;
   className?: string;
 };
 
-export const ModelRunStateLabel = ({
+export const RunStateLabel = ({
   state,
   className,
-}: ModelRunStateLabelProps) => {
+}: RunStateLabelProps) => {
   if (!state) {
     return null;
   }

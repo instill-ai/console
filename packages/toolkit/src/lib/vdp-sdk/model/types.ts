@@ -7,7 +7,7 @@ import { InstillJSONSchema } from "../../use-instill-form";
 import { User } from "../mgmt/types";
 import { Operation } from "../operation/types";
 import { Organization } from "../organization";
-import { Permission, Visibility } from "../types";
+import { Permission, RunSource, RunStatus, Visibility } from "../types";
 
 export type ModelReleaseStage =
   | "RELEASE_STAGE_UNSPECIFIED"
@@ -120,8 +120,8 @@ export type ModelRun = {
   uid: string;
   modelUid: string;
   requesterId: string;
-  status: ModelRunStatus;
-  source: "RUN_SOURCE_CONSOLE" | "RUN_SOURCE_API";
+  status: RunStatus;
+  source: RunSource;
   totalDuration: number;
   endTime: string;
   createTime: string;
@@ -160,9 +160,3 @@ export type ModelTriggerResult = {
     }
   >;
 };
-
-export type ModelRunStatus =
-  | "RUN_STATUS_PROCESSING"
-  | "RUN_STATUS_COMPLETED"
-  | "RUN_STATUS_FAILED"
-  | "RUN_STATUS_QUEUED";

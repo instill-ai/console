@@ -13,7 +13,7 @@ import {
 } from "../../../../lib";
 import { TABLE_PAGE_SIZE } from "../constants";
 import Link from "next/link";
-import { ModelRunStateLabel } from "../../../../components/ModelRunStateLabel";
+import { RunStateLabel } from "../../../../components";
 import { getHumanReadableStringFromTime } from "../../../../server";
 
 const selector = (store: InstillStore) => ({
@@ -78,7 +78,7 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
     }
 
     return Math.ceil(modelRuns.data.totalSize / modelRuns.data.pageSize);
-  }, [modelRuns.isSuccess, modelRuns.data])
+  }, [modelRuns.isSuccess, modelRuns.data]);
 
   const columns = React.useMemo(() => {
     const columns: ColumnDef<ModelRun>[] = [
@@ -109,7 +109,7 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
         header: () => <div className="text-left">Status</div>,
         cell: ({ row }) => {
           return (
-            <ModelRunStateLabel
+            <RunStateLabel
               state={row.getValue("status")}
               className="inline-flex"
             />

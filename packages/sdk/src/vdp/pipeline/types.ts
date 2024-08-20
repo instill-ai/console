@@ -14,6 +14,14 @@ import {
 import { PipelineRelease, PipelineReleaseSchema } from "../release";
 import { PipelineRecipe } from "../types";
 
+export type RunStatus =
+  | "RUN_STATUS_PROCESSING"
+  | "RUN_STATUS_COMPLETED"
+  | "RUN_STATUS_FAILED"
+  | "RUN_STATUS_QUEUED";
+
+export type RunSource = "RUN_SOURCE_CONSOLE" | "RUN_SOURCE_API";
+
 export type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
 export type PipelineReleaseState =
@@ -221,6 +229,46 @@ export type ListNamespacePipelinesRequest = {
   showDeleted?: boolean;
   visibility?: string;
   orderBy?: string;
+};
+
+export type ListPaginatedNamespacePipelineRunsRequest = {
+  pipelineName: string;
+  fullView: boolean;
+  pageSize: number;
+  page: number;
+  orderBy: Nullable<string>;
+  filter: Nullable<string>;
+};
+
+export type ListPaginatedNamespacePipelineRunsResponse = {
+  pipelineRuns: PipelineRun[];
+  totalSize: number;
+  page: number;
+  pageSize: number;
+};
+
+export type FileReference = {
+  name: string;
+  type: string;
+  size: number;
+  url: string;
+};
+
+export type PipelineRun = {
+  pipelineUid: string;
+  pipelineRunUid: string;
+  pipelineVersion: string;
+  status: RunStatus;
+  source: RunSource;
+  totalDuration: number;
+  requesterId: string;
+  inputsReference: FileReference[];
+  inputs: GeneralRecord[];
+  outputsReference: FileReference[];
+  outputs: GeneralRecord[];
+  recipeSnapshot: null;
+  startTime: string;
+  completeTime: string;
 };
 
 export type ListNamespacePipelinesResponse = {

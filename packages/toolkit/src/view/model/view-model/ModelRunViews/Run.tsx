@@ -1,10 +1,9 @@
 import { Model, Nullable } from "instill-sdk";
 import * as React from "react";
-import { CodeBlock, ModelSectionHeader } from "../../../../components";
+import { CodeBlock, ModelSectionHeader, RunStateLabel } from "../../../../components";
 import { Button, Form, Icons, TabMenu } from "@instill-ai/design-system";
 import { convertToSecondsAndMilliseconds, InstillStore, useComponentOutputFields, useInstillForm, useInstillStore, usePaginatedModelRuns, useRouteInfo, useShallow } from "../../../../lib";
 import { defaultCodeSnippetStyles } from "../../../../constant";
-import { ModelRunStateLabel } from "../../../../components/ModelRunStateLabel";
 import { convertTaskNameToPayloadPropName, convertValuesToString, ModelOutputActiveView } from "../ModelPlayground";
 import { getHumanReadableStringFromTime } from "../../../../server";
 
@@ -80,13 +79,13 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
           <div className="text-lg text-semantic-fg-primary font-bold">{id}</div>
           <div className="flex flex-row items-center justify-between text-xs">
             <div>Version <b>{modelRun?.version}</b></div>
-            <div>Status <ModelRunStateLabel
+            <div>Status <RunStateLabel
               state={modelRun?.status}
               className="inline-flex"
             /></div>
             <div>Source <b>{modelRun?.source === 'RUN_SOURCE_CONSOLE' ? "Web" : "API"}</b></div>
             <div>Total Duration <b>{convertToSecondsAndMilliseconds(modelRun?.totalDuration || 0)}</b></div>
-            <div>Created Time <b>{getHumanReadableStringFromTime(modelRun?.createTime, Date.now())}</b></div>
+            <div>Created Time <b>{modelRun?.createTime ? getHumanReadableStringFromTime(modelRun?.createTime, Date.now()) : null}</b></div>
             <div>Runner <b>{modelRun?.requesterId}</b></div>
             {
               modelRun && 'credits' in modelRun && modelRun.credits !== null

@@ -1,7 +1,10 @@
+import { Nullable } from "vitest";
+
 export const getQueryString = ({
   baseURL,
   pageSize,
   pageToken,
+  page,
   filter,
   queryParams,
   orderBy,
@@ -16,8 +19,9 @@ export const getQueryString = ({
   baseURL: string;
   pageSize?: number;
   pageToken?: string;
-  filter?: string;
-  orderBy?: string;
+  page?: Nullable<number>;
+  filter?: Nullable<string>;
+  orderBy?: Nullable<string>;
   view?: string;
   visibility?: string;
   page?: number;
@@ -33,6 +37,7 @@ export const getQueryString = ({
 
   if (
     pageSize ||
+    page ||
     pageToken ||
     filter ||
     orderBy ||
@@ -62,6 +67,10 @@ export const getQueryString = ({
 
   if (pageToken) {
     url += `pageToken=${pageToken}&`;
+  }
+
+  if (page) {
+    url += `page=${page}&`;
   }
 
   if (filter) {
