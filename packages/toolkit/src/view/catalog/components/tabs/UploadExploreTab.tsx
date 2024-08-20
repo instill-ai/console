@@ -429,8 +429,8 @@ export const UploadExploreTab = ({
                 <Form.Control>
                   <div
                     className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
-                        ? "border-semantic-accent-default"
-                        : "border-semantic-bg-line"
+                      ? "border-semantic-accent-default"
+                      : "border-semantic-bg-line"
                       } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
@@ -482,7 +482,7 @@ export const UploadExploreTab = ({
                       <Input.Core
                         id="upload-file-field"
                         type="file"
-                        accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html, .xlsx"
+                        accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html,.xlsx"
                         multiple
                         value={""}
                         onChange={async (e) => {

@@ -49,10 +49,17 @@ export const ModelStateLabel = ({ state, className }: ModelStateLabelProps) => {
       indicatorColor = "bg-semantic-fg-on-default";
       break;
     }
-    case "STATE_SCALING": {
+    case "STATE_SCALING_UP": {
       textColor = "text-semantic-warning-hover";
       bgColor = "bg-semantic-warning-bg";
-      stateLabelName = "Scaling";
+      stateLabelName = "Scaling up";
+      indicatorColor = "bg-semantic-warning-default";
+      break;
+    }
+    case "STATE_SCALING_DOWN": {
+      textColor = "text-semantic-warning-hover";
+      bgColor = "bg-semantic-warning-bg";
+      stateLabelName = "Scaling down";
       indicatorColor = "bg-semantic-warning-default";
       break;
     }
