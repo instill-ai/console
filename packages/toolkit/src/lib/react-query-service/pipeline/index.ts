@@ -13,6 +13,7 @@ export * from "./useStreamingTriggerUserPipeline";
 export * from "./useTriggerNamespacePipeline";
 export * from "./useTriggerNamespacePipelineRelease";
 export * from "./useUpdateNamespacePipeline";
+export * from "./usePaginatedPipelineRuns";
 export * from "./useSortedReleases";
 export * from "./use-namespace-pipeline";
 export * from "./use-namespace-pipelines";

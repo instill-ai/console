@@ -1,10 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import type { TriggerUserModelPayload } from "../../vdp-sdk";
 import { Nullable } from "../../type";
 import { triggerUserModelActionAsync } from "../../vdp-sdk";
 
 export function useTriggerUserModelAsync() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({
       modelName,
@@ -28,6 +30,9 @@ export function useTriggerUserModelAsync() {
       });
 
       return Promise.resolve(response);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["model-runs"] });
     },
   });
 }

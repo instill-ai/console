@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { Pipeline } from "instill-sdk";
+import type { Pipeline, PipelineRun } from "instill-sdk";
 import { ColumnDef, DataTable, Icons, PaginationState } from "@instill-ai/design-system";
 import {
   EmptyView,
@@ -14,7 +14,7 @@ import {
   useShallow,
 } from "../../../../lib";
 import Link from "next/link";
-import { usePaginatedPipelineRuns } from "../../../../lib/react-query-service/pipeline/usePaginatedPipelineRuns";
+import { usePaginatedPipelineRuns } from "../../../../lib/react-query-service/pipeline";
 import { TABLE_PAGE_SIZE } from "../constants";
 import { getHumanReadableStringFromTime } from "../../../../server";
 
@@ -45,7 +45,6 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
     pageIndex: 0,
     pageSize: TABLE_PAGE_SIZE,
   });
-  //const { path } = useParams();
   const pipelineRuns = usePaginatedPipelineRuns({
     pipelineName: `namespaces/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`,
     enabled: enabledQuery && routeInfo.isSuccess,
@@ -69,7 +68,7 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
   }, [pipelineRuns.isSuccess, pipelineRuns.data]);
 
   const columns = React.useMemo(() => {
-    const columns: ColumnDef<unknown>[] = [
+    const columns: ColumnDef<PipelineRun>[] = [
       {
         accessorKey: "pipelineRunUid",
         header: () => <div className="text-left">Run ID</div>,

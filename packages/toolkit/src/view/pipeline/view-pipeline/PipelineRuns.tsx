@@ -21,7 +21,7 @@ import type { Pipeline } from "instill-sdk";
 //import { TABLE_PAGE_SIZE } from "./constants";
 //import Link from "next/link";
 import { useParams } from "next/navigation";
-import { PipelineRunList, PipelineRun } from "./PipelineRunViews";
+import { PipelineRunList, PipelineRunView as PipelineRun } from "./PipelineRunViews";
 
 /* const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

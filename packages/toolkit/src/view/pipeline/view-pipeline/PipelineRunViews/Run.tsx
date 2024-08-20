@@ -1,19 +1,39 @@
 import { Nullable, Pipeline } from "instill-sdk";
 import * as React from "react";
-import { CodeBlock, ModelSectionHeader, PipelineRunStateLabel } from "../../../../components";
+import { CodeBlock, ModelSectionHeader, RunStateLabel } from "../../../../components";
 import { Button, ColumnDef, DataTable, Dialog, Form, Icons, TabMenu } from "@instill-ai/design-system";
-import { convertToSecondsAndMilliseconds, formatDate, usePipelineTriggerRequestForm, useRouteInfo } from "../../../../lib";
+import { convertToSecondsAndMilliseconds, formatDate, InstillStore, useInstillStore, usePipelineTriggerRequestForm, useRouteInfo, useShallow } from "../../../../lib";
 import { InOutputSkeleton, PipelineOutputActiveView } from "../PipelinePlayground";
 import Image from "next/image";
 import { defaultCodeSnippetStyles } from "../../../../constant";
+import { usePaginatedPipelineRuns } from "../../../../lib/react-query-service/pipeline";
+import { getHumanReadableStringFromTime } from "../../../../server";
 
 export type PipelineRunProps = {
   id?: string;
   pipeline?: Pipeline;
 }
 
-export const PipelineRun = ({ id, pipeline }: PipelineRunProps) => {
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
+
+export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
   const routeInfo = useRouteInfo();
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const pipelineRuns = usePaginatedPipelineRuns({
+    pipelineName: `namespaces/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`,
+    enabled: enabledQuery && routeInfo.isSuccess,
+    accessToken,
+    pageSize: 1,
+    page: 0,
+    filter: `pipelineTriggerUID="${id}"`,
+    //fullView: true,
+  });
+  const pipelineRun = React.useMemo(() => {
+    return pipelineRuns.data?.pipelineRuns[0] || null
+  }, [pipelineRuns.isSuccess, pipelineRuns.data]);
   const {
     fieldItems: fields,
     form,
@@ -47,7 +67,7 @@ export const PipelineRun = ({ id, pipeline }: PipelineRunProps) => {
         header: () => <div className="text-left">Status</div>,
         cell: ({ row }) => {
           return (
-            <PipelineRunStateLabel
+            <RunStateLabel
               state={row.getValue("status")}
               className="inline-flex"
             />
@@ -141,16 +161,20 @@ export const PipelineRun = ({ id, pipeline }: PipelineRunProps) => {
         <div className="border rounded-sm p-6 flex flex-col gap-y-5">
           <div className="text-lg text-semantic-fg-primary font-bold">{id}</div>
           <div className="flex flex-row items-center justify-between text-xs">
-            <div>Version <b>v1.1.1</b></div>
-            <div>Status <PipelineRunStateLabel
-              state="STATUS_COMPLETED"
+            <div>Version <b>{pipelineRun?.pipelineVersion}</b></div>
+            <div>Status <RunStateLabel
+              state={pipelineRun?.status}
               className="inline-flex"
             /></div>
-            <div>Source <b>v1.1.1</b></div>
-            <div>Total Duration <b>v1.1.1</b></div>
-            <div>Created Time <b>v1.1.1</b></div>
-            <div>Runner <b>v1.1.1</b></div>
-            <div>Credits <b>v1.1.1</b></div>
+            <div>Source <b>{pipelineRun?.source === 'RUN_SOURCE_CONSOLE' ? "Web" : "API"}</b></div>
+            <div>Total Duration <b>{convertToSecondsAndMilliseconds(pipelineRun?.totalDuration || 0)}</b></div>
+            <div>Trigger Time <b>{pipelineRun?.startTime ? getHumanReadableStringFromTime(pipelineRun.startTime, Date.now()) : null}</b></div>
+            <div>Runner <b>{pipelineRun?.requesterId}</b></div>
+            {
+              pipelineRun && 'credits' in pipelineRun && pipelineRun.credits !== null
+                ? <div>Credits <b>{pipelineRun.credits}</b></div>
+                : null
+            }
           </div>
         </div>
         <div>

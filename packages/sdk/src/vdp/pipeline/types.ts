@@ -266,9 +266,10 @@ export type PipelineRun = {
   inputs: GeneralRecord[];
   outputsReference: FileReference[];
   outputs: GeneralRecord[];
-  recipeSnapshot: null;
+  recipeSnapshot: Nullable<GeneralRecord>;
   startTime: string;
   completeTime: string;
+  credits: Nullable<number>;
 };
 
 export type ListNamespacePipelinesResponse = {
