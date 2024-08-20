@@ -12,5 +12,8 @@ export const config = {
     "/(.*?)/pipelines/(.*?)/editor",
     "/(.*?)/models/:path*",
     "/settings",
+
+    // For Catalog
+    "/(.*?)/catalog/:path*",
   ],
 };
