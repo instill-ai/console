@@ -49,6 +49,7 @@ import { getGeneralComponentInOutputSchema } from "../pipeline-builder";
 import { isPipelineGeneralComponent } from "../pipeline-builder/lib/checkComponentType";
 import { analyzeColonInString } from "./helpers";
 import { keyLineNumberMapHelpers } from "./keyLineNumberMapHelpers";
+import { tomorrowTheme } from "./tomorrowTheme";
 import { validateVSCodeYaml } from "./validateVSCodeYaml";
 
 const selector = (store: InstillStore) => ({
@@ -633,6 +634,11 @@ export const VscodeEditor = ({
             .reverse()
             .find((map) => map.lineNumber <= position.lineNumber);
 
+        console.log(
+          "smallestComponentTopLevelKeyLineNumberMap",
+          smallestComponentTopLevelKeyLineNumberMap,
+        );
+
         if (!smallestComponentTopLevelKeyLineNumberMap) {
           return null;
         }
@@ -687,8 +693,6 @@ export const VscodeEditor = ({
 
         const nestedHints = transformFormTreeToNestedSmartHints(formTree);
 
-        console.log("gg", nestedHints);
-
         const hoveredKeyPathWoComponentKey = `${smallestComponentTopLevelKeyLineNumberMap.key}.${substringBeforeColon}`;
 
         const targetHint = dot.getter(
@@ -707,8 +711,6 @@ export const VscodeEditor = ({
               [hoveredKeyDotPath]: targetHint,
             };
           }
-
-          console.log(targetHint);
 
           return {
             range: new monaco.Range(
@@ -844,6 +846,16 @@ export const VscodeEditor = ({
           font-size: 1rem;
           font-weight: 400;
         }
+
+        .editor-widget {
+          border: 1px solid #bfbfbf !important;
+          background-color: #f0f0f0 !important;
+        }
+
+        .monaco-hover-content {
+          background-color: #ffffff !important;
+          border: 1px solid #e1e6ef !important;
+        }
       `}</style>
       <Editor
         language="yaml"
@@ -887,6 +899,7 @@ export const VscodeEditor = ({
             setMarkErrors(res.markers);
           }
         }}
+        theme="tomorrow"
         value={unsavedRawRecipe ?? ""}
         options={{
           minimap: {
@@ -923,6 +936,11 @@ export const VscodeEditor = ({
               },
             });
           autoCompleteDisposableRef.current = autoCompleteDisposable;
+
+          monaco.editor.defineTheme(
+            "tomorrow",
+            tomorrowTheme as editor.IStandaloneThemeData,
+          );
 
           const hoverHintDisposable = monaco.languages.registerHoverProvider(
             "yaml",
