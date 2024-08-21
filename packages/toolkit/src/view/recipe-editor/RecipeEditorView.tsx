@@ -33,6 +33,7 @@ import { Input } from "./Input";
 import { Output } from "./Output";
 import { PipelineNamePopover } from "./PipelineNamePopover";
 import { prettifyYaml } from "./prettifyYaml";
+import { ReleasedVersionPopover } from "./ReleasedVersionPopover";
 import { ReleasePopover } from "./ReleasePopover";
 import { RunButton } from "./RunButton";
 import { ShareDialogTrigger } from "./ShareDialogTrigger";
@@ -47,6 +48,12 @@ const selector = (store: InstillStore) => ({
   editorMultiScreenModel: store.editorMultiScreenModel,
   updateEditorMultiScreenModel: store.updateEditorMultiScreenModel,
   editorRef: store.editorRef,
+  rawRecipeOnDom: store.rawRecipeOnDom,
+  updateRawRecipeOnDom: store.updateRawRecipeOnDom,
+  hasUnsavedRecipe: store.hasUnsavedRecipe,
+  isSavingRecipe: store.isSavingRecipe,
+  updateCurrentVersion: store.updateCurrentVersion,
+  currentVersion: store.currentVersion,
 });
 
 export const RecipeEditorView = () => {
@@ -57,16 +64,19 @@ export const RecipeEditorView = () => {
     editorMultiScreenModel,
     updateEditorMultiScreenModel,
     editorRef,
+    rawRecipeOnDom,
+    updateRawRecipeOnDom,
+    hasUnsavedRecipe,
+    isSavingRecipe,
+    updateCurrentVersion,
+    currentVersion,
   } = useInstillStore(useShallow(selector));
   const routeInfo = useRouteInfo();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
   const [currentExpandView, setCurrentExpandView] =
     React.useState<Nullable<"left" | "topRight" | "bottomRight">>(null);
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
-  const [unsavedRawRecipe, setUnsavedRawRecipe] =
-    React.useState<Nullable<string>>(null);
-  const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
-  const [isSaving, setIsSaving] = React.useState(false);
+
   const leftPanelRef = React.useRef<ImperativePanelHandle>(null);
   const rightPanelRef = React.useRef<ImperativePanelHandle>(null);
   const topRightPanelRef = React.useRef<ImperativePanelHandle>(null);
@@ -85,8 +95,12 @@ export const RecipeEditorView = () => {
       return;
     }
 
-    setUnsavedRawRecipe(pipeline.data.rawRecipe);
+    updateRawRecipeOnDom(() => pipeline.data.rawRecipe);
   }, [pipeline.isSuccess, pipeline.data]);
+
+  React.useEffect(() => {
+    updateCurrentVersion(() => "latest");
+  }, []);
 
   React.useEffect(() => {
     if (!pipeline.isSuccess) {
@@ -280,9 +294,9 @@ export const RecipeEditorView = () => {
                         <span className="text-[13px] font-sans text-semantic-fg-primary">
                           {pipeline.data?.id ?? null}
                         </span>
-                        {isSaving ? (
+                        {isSavingRecipe ? (
                           <LoadingSpin className="!w-3 !h-3 !text-semantic-fg-secondary" />
-                        ) : hasUnsavedChanges ? (
+                        ) : hasUnsavedRecipe ? (
                           <div className="w-2 h-2 shrink-0 grow-0 rounded-full bg-semantic-bg-line" />
                         ) : null}
                       </div>
@@ -313,7 +327,7 @@ export const RecipeEditorView = () => {
                     <div className="flex h-7 shrink-0 items-center flex-row-reverse bg-semantic-bg-alt-primary border-b border-semantic-bg-line">
                       <button
                         onClick={async () => {
-                          if (!unsavedRawRecipe || !editorRef) {
+                          if (!rawRecipeOnDom || !editorRef) {
                             return;
                           }
 
@@ -321,9 +335,9 @@ export const RecipeEditorView = () => {
 
                           try {
                             prettifiedRecipe =
-                              await prettifyYaml(unsavedRawRecipe);
+                              await prettifyYaml(rawRecipeOnDom);
                           } catch (error) {
-                            prettifiedRecipe = unsavedRawRecipe;
+                            prettifiedRecipe = rawRecipeOnDom;
                             console.error(error);
                           }
 
@@ -339,13 +353,41 @@ export const RecipeEditorView = () => {
                         </span>
                       </button>
                     </div>
-                    <div className="w-full h-full bg-semantic-bg-primary">
-                      <VscodeEditor
-                        unsavedRawRecipe={unsavedRawRecipe}
-                        setUnsavedRawRecipe={setUnsavedRawRecipe}
-                        setHasUnsavedChanges={setHasUnsavedChanges}
-                        setIsSaving={setIsSaving}
-                      />
+                    {currentVersion !== "latest" && pipeline.isSuccess ? (
+                      <div className="flex p-1.5 w-full flex-col bg-semantic-bg-base-bg">
+                        <p className="product-body-text-3-medium break-words">
+                          <span className="text-semantic-fg-secondary">
+                            You are viewing a past version of this pipeline,
+                            which is not editable.
+                          </span>
+                          {` `}
+                          <span
+                            className="cursor-pointer text-semantic-accent-default hover:!underline"
+                            onClick={() => {
+                              if (!pipeline.isSuccess) {
+                                return;
+                              }
+
+                              updateCurrentVersion(() => "latest");
+                              updateRawRecipeOnDom(
+                                () => pipeline.data.rawRecipe,
+                              );
+                            }}
+                          >
+                            Click Here
+                          </span>
+                          {` `}
+                          <span className="text-semantic-fg-secondary">
+                            for the latest version.
+                          </span>
+                        </p>
+                      </div>
+                    ) : null}
+                    <div className="w-full flex-1 bg-semantic-bg-primary">
+                      <VscodeEditor />
+                    </div>
+                    <div className="h-7 shrink-0 flex flex-row bg-semantic-bg-alt-primary">
+                      <ReleasedVersionPopover />
                     </div>
                   </div>
                 </Resizable.Panel>

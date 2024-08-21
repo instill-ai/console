@@ -59,6 +59,30 @@ export const createEditorSlice: StateCreator<
       currentViewId: null,
     },
   },
+  rawRecipeOnDom: null,
+  updateRawRecipeOnDom: (fn: (prev: Nullable<string>) => Nullable<string>) =>
+    set((state) => {
+      return {
+        ...state,
+        rawRecipeOnDom: fn(state.rawRecipeOnDom),
+      };
+    }),
+  isSavingRecipe: false,
+  updateIsSavingRecipe: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        isSavingRecipe: fn(state.isSavingRecipe),
+      };
+    }),
+  hasUnsavedRecipe: false,
+  updateHasUnsavedRecipe: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        hasUnsavedRecipe: fn(state.hasUnsavedRecipe),
+      };
+    }),
   updateEditorMultiScreenModel: (
     fn: (prev: EditorMultiScreenModel) => EditorMultiScreenModel,
   ) =>

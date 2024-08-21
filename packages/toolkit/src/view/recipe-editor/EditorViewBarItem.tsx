@@ -60,7 +60,7 @@ export const EditorViewBarItem = ({
     <div
       {...attributes}
       className={cn(
-        "first:rounded-tl cursor-pointer",
+        "first:rounded-tl cursor-pointer shrink-0",
         currentViewId === id
           ? "bg-semantic-bg-alt-primary"
           : "bg-semantic-bg-line",

@@ -27,9 +27,12 @@ export const EditorViewSectionBar = ({
   currentViewId: Nullable<string>;
 }) => {
   return (
-    <div className="flex overflow-x-auto flex-row rounded-t h-8 pr-1 bg-semantic-bg-base-bg box-border border-b border-semantic-bg-line">
+    <div className="flex flex-row rounded-t min-h-8 pr-1 bg-semantic-bg-base-bg box-border border-b border-semantic-bg-line">
       <HorizontalSortableWrapper items={views} onDragEnd={onDragEnd}>
-        <div className="flex flex-1 flex-row w-full">
+        <div
+          className="flex flex-1 flex-row w-full overflow-x-auto overflow-y-hidden"
+          style={{ scrollbarWidth: "none" }}
+        >
           {views.map((view) => (
             <EditorViewBarItem
               key={view.id}
@@ -44,7 +47,7 @@ export const EditorViewSectionBar = ({
           ))}
         </div>
       </HorizontalSortableWrapper>
-      <button className="ml-auto" onClick={onToggleExpand}>
+      <button className="ml-auto px-2" onClick={onToggleExpand}>
         {isExpanded ? (
           <Icons.Minimize01 className="w-3 h-3 stroke-semantic-fg-primary" />
         ) : (

@@ -58,6 +58,11 @@ const selector = (store: InstillStore) => ({
   updateOpenCmdk: store.updateOpenCmdk,
   updateEditorRef: store.updateEditorRef,
   updateMonacoRef: store.updateMonacoRef,
+  rawRecipeOnDom: store.rawRecipeOnDom,
+  updateRawRecipeOnDom: store.updateRawRecipeOnDom,
+  updateHasUnsavedRecipe: store.updateHasUnsavedRecipe,
+  updateIsSavingRecipe: store.updateIsSavingRecipe,
+  currentVersion: store.currentVersion,
 });
 
 const availableInstillFormats = [
@@ -79,17 +84,7 @@ const availableInstillFormats = [
 
 const componentTopLevelKeys = ["type", "input", "setup", "condition", "task"];
 
-export const VscodeEditor = ({
-  unsavedRawRecipe,
-  setUnsavedRawRecipe,
-  setHasUnsavedChanges,
-  setIsSaving,
-}: {
-  unsavedRawRecipe: Nullable<string>;
-  setUnsavedRawRecipe: (unsavedRawRecipe: Nullable<string>) => void;
-  setHasUnsavedChanges: (hasUnsavedChanges: boolean) => void;
-  setIsSaving: (isSaving: boolean) => void;
-}) => {
+export const VscodeEditor = () => {
   const [markErrors, setMarkErrors] = React.useState<editor.IMarkerData[]>([]);
 
   const autoCompleteDisposableRef = React.useRef<Nullable<IDisposable>>(null);
@@ -109,6 +104,11 @@ export const VscodeEditor = ({
     updateOpenCmdk,
     updateEditorRef,
     updateMonacoRef,
+    rawRecipeOnDom,
+    updateRawRecipeOnDom,
+    updateHasUnsavedRecipe,
+    updateIsSavingRecipe,
+    currentVersion,
   } = useInstillStore(useShallow(selector));
 
   const routeInfo = useRouteInfo();
@@ -145,16 +145,20 @@ export const VscodeEditor = ({
 
         if (res.success) {
           try {
-            setIsSaving(true);
+            updateIsSavingRecipe(() => true);
+
             updatePipeline.mutateAsync({
               rawRecipe: newRawRecipe,
               namespacePipelineName: pipelineName,
               accessToken,
             });
 
-            setIsSaving(false);
-
-            setHasUnsavedChanges(false);
+            // Smooth the indicator transition, if the update goes too fast, the indicator
+            // will blink
+            setTimeout(() => {
+              updateIsSavingRecipe(() => false);
+              updateHasUnsavedRecipe(() => false);
+            }, 500);
           } catch (error) {
             console.error(error);
           }
@@ -830,7 +834,10 @@ export const VscodeEditor = ({
   );
 
   return (
-    <React.Fragment>
+    <div className="w-full h-full relative">
+      {pipeline.isSuccess && currentVersion !== "latest" ? (
+        <div className="absolute z-10 inset-0 bg-semantic-fg-primary opacity-25"></div>
+      ) : null}
       <style jsx={true}>{`
         .rendered-markdown > h1 {
           font-size: 1.5rem;
@@ -870,7 +877,7 @@ export const VscodeEditor = ({
             return;
           }
 
-          setHasUnsavedChanges(true);
+          updateHasUnsavedRecipe(() => true);
 
           // In the updater we will check whether the value is valid or not again, the reason
           // why we do this duplicated check is due to we want to invoke the updater function
@@ -886,21 +893,19 @@ export const VscodeEditor = ({
             accessToken,
           });
 
-          setUnsavedRawRecipe(value);
+          updateRawRecipeOnDom(() => value);
 
           const res = validateVSCodeYaml(value);
-
-          console.log("he", res);
 
           if (res.success) {
             setMarkErrors([]);
           } else {
-            setUnsavedRawRecipe(value);
+            updateRawRecipeOnDom(() => value);
             setMarkErrors(res.markers);
           }
         }}
         theme="tomorrow"
-        value={unsavedRawRecipe ?? ""}
+        value={rawRecipeOnDom ?? ""}
         options={{
           minimap: {
             enabled: false,
@@ -916,6 +921,11 @@ export const VscodeEditor = ({
             showSnippets: true,
           },
           fontSize: 18,
+          readOnly: currentVersion !== "latest",
+          readOnlyMessage: {
+            value:
+              "You are viewing a past version of this pipeline, which is not editable.",
+          },
         }}
         onMount={(editor, monaco) => {
           editorRef.current = editor;
@@ -1009,6 +1019,6 @@ export const VscodeEditor = ({
           <Dialog.Close />
         </Dialog.Content>
       </Dialog.Root>
-    </React.Fragment>
+    </div>
   );
 };

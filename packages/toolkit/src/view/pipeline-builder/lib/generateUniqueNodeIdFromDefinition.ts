@@ -1,11 +1,10 @@
-import { IteratorDefinition, OperatorDefinition } from "instill-sdk";
+import { ComponentDefinition, IteratorDefinition } from "instill-sdk";
 
-import { ConnectorDefinition } from "../../../lib";
 import { generateUniqueIndex } from "./generateUniqueIndex";
 import { transformConnectorDefinitionIDToComponentIDPrefix } from "./transformConnectorDefinitionIDToComponentIDPrefix";
 
 export function generateUniqueNodeIdFromDefinition(
-  definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition,
+  definition: ComponentDefinition | IteratorDefinition,
   currentIds: string[],
 ) {
   // Construct the default component ID prefix. For example, if the definition

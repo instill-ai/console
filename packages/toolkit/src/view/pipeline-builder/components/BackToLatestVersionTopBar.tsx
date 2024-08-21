@@ -7,12 +7,12 @@ import {
   InstillStore,
   useInstillStore,
   useNamespacePipeline,
+  useSortedReleases,
 } from "../../../lib";
 import {
   checkIsValidPosition,
   composeEdgesFromNodes,
   createGraphLayout,
-  useSortedReleases,
 } from "../lib";
 import { createNodesFromPipelineRecipe } from "../lib/createNodesFromPipelineRecipe";
 import { NodeData } from "../type";

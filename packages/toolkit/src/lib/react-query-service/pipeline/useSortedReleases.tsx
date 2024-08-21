@@ -1,13 +1,10 @@
 "use client";
 
-import type { PipelineRelease } from "instill-sdk";
+import type { Nullable, PipelineRelease } from "instill-sdk";
 import * as React from "react";
 import * as semver from "semver";
 
-import {
-  Nullable,
-  useInfiniteNamespacePipelineReleases,
-} from "../../../../lib";
+import { useInfiniteNamespacePipelineReleases } from "./useInfiniteNamespacePipelineReleases";
 
 export function sortPipelineReleases(releases: PipelineRelease[]) {
   return releases.sort((a, b) => {

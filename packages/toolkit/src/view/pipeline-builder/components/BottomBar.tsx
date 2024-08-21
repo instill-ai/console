@@ -13,13 +13,13 @@ import {
   useInstillStore,
   useNamespacePipeline,
   useRouteInfo,
+  useSortedReleases,
 } from "../../../lib";
 import { getHumanReadableStringFromTime } from "../../../server";
 import {
   checkIsValidPosition,
   composeEdgesFromNodes,
   createGraphLayout,
-  useSortedReleases,
 } from "../lib";
 import { createNodesFromPipelineRecipe } from "../lib/createNodesFromPipelineRecipe";
 import { NodeData } from "../type";
