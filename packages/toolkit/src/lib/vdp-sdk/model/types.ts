@@ -119,7 +119,7 @@ export type ModelRegion = {
 export type ModelRun = {
   uid: string;
   modelUid: string;
-  requesterId: string;
+  runnerId: string;
   status: RunStatus;
   source: RunSource;
   totalDuration: number;

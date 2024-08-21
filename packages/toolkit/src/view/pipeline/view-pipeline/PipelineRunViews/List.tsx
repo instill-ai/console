@@ -1,9 +1,10 @@
 import * as React from "react";
 import type { Pipeline, PipelineRun } from "instill-sdk";
-import { ColumnDef, DataTable, Icons, PaginationState } from "@instill-ai/design-system";
+import { ColumnDef, DataTable, PaginationState } from "@instill-ai/design-system";
 import {
   EmptyView,
   LoadingSpin,
+  RunsTableSortableColHeader,
   RunStateLabel,
 } from "../../../../components";
 import {
@@ -25,16 +26,6 @@ const selector = (store: InstillStore) => ({
 
 export type PipelineRunListProps = {
   pipeline?: Pipeline;
-};
-
-type Sort = "asc" | "desc" | undefined;
-
-const getIcon = (type: Sort) => {
-  switch (type) {
-    case 'asc': return <Icons.ArrowDown className="h-4 w-4 stroke-semantic-fg-secondary" />;
-    case 'desc': return <Icons.ArrowUp className="h-4 w-4 stroke-semantic-fg-secondary" />;
-    default: return <Icons.ChevronSelectorVertical className="h-4 w-4 stroke-semantic-fg-secondary" />;
-  }
 };
 
 export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
@@ -66,6 +57,14 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
 
     return Math.ceil(pipelineRuns.data.totalSize / pipelineRuns.data.pageSize);
   }, [pipelineRuns.isSuccess, pipelineRuns.data]);
+
+  const onSortOrderUpdate = (sortValue: string) => {
+    setPaginationState(currentValue => ({
+      ...currentValue,
+      pageIndex: 0,
+    }));
+    setOrderBy(sortValue);
+  }
 
   const columns = React.useMemo(() => {
     const columns: ColumnDef<PipelineRun>[] = [
@@ -116,7 +115,14 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
       },
       {
         accessorKey: "totalDuration",
-        header: () => <div className="text-left">Total Duration</div>,
+        header: () => (
+          <RunsTableSortableColHeader
+            title="Total Duration"
+            paramName="total_duration"
+            currentSortParamValue={orderBy}
+            onSort={onSortOrderUpdate}
+          />
+        ),
         cell: ({ row }) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-alt-primary">
@@ -129,28 +135,14 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
       },
       {
         accessorKey: "startTime",
-        header: () => {
-          const sortParam = 'started_time';
-          const orderedParams = orderBy?.split(' ');
-          const isOrderedByStartTime = orderedParams?.[0] ===  sortParam;
-          const currentOrder = orderedParams?.[1] as Sort;
-
-          return (
-            <div
-              className="flex flex-row items-center gap-x-1 cursor-pointer"
-              onClick={() => {
-                setPaginationState(currentValue => ({
-                  ...currentValue,
-                  pageIndex: 0,
-                }));
-                setOrderBy(`${sortParam} ${currentOrder === 'asc' ? 'desc' : 'asc'}`);
-              }}
-            >
-              Trigger Time
-              {getIcon(isOrderedByStartTime ? currentOrder : undefined)}
-            </div>
-          );
-        },
+        header: () => (
+          <RunsTableSortableColHeader
+            title="Trigger Time"
+            paramName="started_time"
+            currentSortParamValue={orderBy}
+            onSort={onSortOrderUpdate}
+          />
+        ),
         cell: ({ row }) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-alt-primary">

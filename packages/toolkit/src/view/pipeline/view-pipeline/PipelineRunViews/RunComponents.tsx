@@ -5,7 +5,7 @@ import * as React from "react";
 import { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { TABLE_PAGE_SIZE } from "../constants";
 import { Button, DataTable, Dialog } from "@instill-ai/design-system";
-import { ModelSectionHeader, RunStateLabel } from "../../../../components";
+import { ModelSectionHeader, RunsTableSortableColHeader, RunStateLabel } from "../../../../components";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -14,7 +14,7 @@ const selector = (store: InstillStore) => ({
 
 export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullable<string> }) => {
   const routeInfo = useRouteInfo();
-  //const [orderBy, setOrderBy] = React.useState<string>();
+  const [orderBy, setOrderBy] = React.useState<string>();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const [paginationState, setPaginationState] = React.useState<PaginationState>({
     pageIndex: 0,
@@ -34,10 +34,25 @@ export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullab
   }, [pipelineComponentRuns.isSuccess, pipelineComponentRuns.data]);
   const [currentOutputContent, setCurrentOutputContent] = React.useState<Nullable<{ componentId: string, content: string }>>(null);
 
+  const onSortOrderUpdate = (sortValue: string) => {
+    setPaginationState(currentValue => ({
+      ...currentValue,
+      pageIndex: 0,
+    }));
+    setOrderBy(sortValue);
+  }
+
   const componentRunsColumns: ColumnDef<ComponentRun>[] = [
     {
       accessorKey: "componentId",
-      header: () => <div className="text-left">Component ID</div>,
+      header: () => (
+        <RunsTableSortableColHeader
+          title="Component ID"
+          paramName="component_id"
+          currentSortParamValue={orderBy}
+          onSort={onSortOrderUpdate}
+        />
+      ),
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-secondary break-all">
@@ -60,7 +75,14 @@ export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullab
     },
     {
       accessorKey: "totalDuration",
-      header: () => <div className="text-left">Total Duration</div>,
+      header: () => (
+        <RunsTableSortableColHeader
+          title="Total Duration"
+          paramName="total_duration"
+          currentSortParamValue={orderBy}
+          onSort={onSortOrderUpdate}
+        />
+      ),
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-alt-primary">
@@ -73,7 +95,14 @@ export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullab
     },
     {
       accessorKey: "startTime",
-      header: () => <div className="text-left">Start Time</div>,
+      header: () => (
+        <RunsTableSortableColHeader
+          title="Start Time"
+          paramName="started_time"
+          currentSortParamValue={orderBy}
+          onSort={onSortOrderUpdate}
+        />
+      ),
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-alt-primary">
@@ -84,7 +113,14 @@ export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullab
     },
     {
       accessorKey: "completeTime",
-      header: () => <div className="text-left">Completed Time</div>,
+      header: () => (
+        <RunsTableSortableColHeader
+          title="Completed Time"
+          paramName="completed_time"
+          currentSortParamValue={orderBy}
+          onSort={onSortOrderUpdate}
+        />
+      ),
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-alt-primary">

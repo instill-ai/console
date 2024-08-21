@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { Model } from "instill-sdk";
 
-import { ColumnDef, DataTable, Icons, PaginationState } from "@instill-ai/design-system";
+import { ColumnDef, DataTable, PaginationState } from "@instill-ai/design-system";
 import {
   convertToSecondsAndMilliseconds,
   InstillStore,
@@ -13,7 +13,7 @@ import {
 } from "../../../../lib";
 import { TABLE_PAGE_SIZE } from "../constants";
 import Link from "next/link";
-import { RunStateLabel } from "../../../../components";
+import { RunsTableSortableColHeader, RunStateLabel } from "../../../../components";
 import { getHumanReadableStringFromTime } from "../../../../server";
 
 const selector = (store: InstillStore) => ({
@@ -27,16 +27,6 @@ export type ModelRunListProps = {
 
 const OWNER = {
   id: null,
-};
-
-type Sort = "asc" | "desc" | undefined;
-
-const getIcon = (type: Sort) => {
-  switch (type) {
-    case 'asc': return <Icons.ArrowDown className="h-4 w-4 stroke-semantic-fg-secondary" />;
-    case 'desc': return <Icons.ArrowUp className="h-4 w-4 stroke-semantic-fg-secondary" />;
-    default: return <Icons.ChevronSelectorVertical className="h-4 w-4 stroke-semantic-fg-secondary" />;
-  }
 };
 
 export const ModelRunList = ({ model }: ModelRunListProps) => {
@@ -79,6 +69,14 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
 
     return Math.ceil(modelRuns.data.totalSize / modelRuns.data.pageSize);
   }, [modelRuns.isSuccess, modelRuns.data]);
+
+  const onSortOrderUpdate = (sortValue: string) => {
+    setPaginationState(currentValue => ({
+      ...currentValue,
+      pageIndex: 0,
+    }));
+    setOrderBy(sortValue);
+  }
 
   const columns = React.useMemo(() => {
     const columns: ColumnDef<ModelRun>[] = [
@@ -129,12 +127,19 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
       },
       {
         accessorKey: "totalDuration",
-        header: () => <div className="text-left">Total Duration</div>,
+        header: () => (
+          <RunsTableSortableColHeader
+            title="Total Duration"
+            paramName="total_duration"
+            currentSortParamValue={orderBy}
+            onSort={onSortOrderUpdate}
+          />
+        ),
         cell: ({ row }) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-alt-primary">
               {convertToSecondsAndMilliseconds(
-                row.getValue("totalDuration"),
+                (row.getValue("totalDuration") as number) / 1000,
               )}
             </div>
           );
@@ -142,28 +147,14 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
       },
       {
         accessorKey: "createTime",
-        header: () => {
-          const sortParam = 'create_time';
-          const orderedParams = orderBy?.split(' ');
-          const isOrderedByCreateTime = orderedParams?.[0] ===  sortParam;
-          const currentOrder = orderedParams?.[1] as Sort;
-
-          return (
-            <div
-              className="flex flex-row items-center gap-x-1 cursor-pointer"
-              onClick={() => {
-                setPaginationState(currentValue => ({
-                  ...currentValue,
-                  pageIndex: 0,
-                }));
-                setOrderBy(`${sortParam} ${currentOrder === 'asc' ? 'desc' : 'asc'}`);
-              }}
-            >
-              Created
-              {getIcon(isOrderedByCreateTime ? currentOrder : undefined)}
-            </div>
-          );
-        },
+        header: () => (
+          <RunsTableSortableColHeader
+            title="Created"
+            paramName="create_time"
+            currentSortParamValue={orderBy}
+            onSort={onSortOrderUpdate}
+          />
+        ),
         cell: ({ row }) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-alt-primary">
@@ -173,12 +164,12 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
         },
       },
       {
-        accessorKey: "requesterId",
+        accessorKey: "runnerId",
         header: () => <div className="text-left">Runner</div>,
         cell: ({ row }) => {
           return (
-            <div className="font-normal text-semantic-bg-secondary-secondary break-all first-letter:uppercase">
-              {row.getValue("requesterId") ? '' : 'Not '}you
+            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+              <Link target="_blank" className="text-semantic-accent-default hover:underline" href={`/${row.getValue("runnerId")}`}>{row.getValue("runnerId")}</Link>
             </div>
           );
         },
@@ -203,7 +194,7 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
   }, [modelRuns.isSuccess, modelRuns.data, orderBy]);
 
   return (
-    <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th]:w-40 [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(7)]:w-24 [&_table_th:nth-child(8)]:w-28">
+    <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th]:w-40 [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(7)]:w-52 [&_table_th:nth-child(8)]:w-28">
       <DataTable
         columns={columns}
         data={modelRuns.isSuccess ? modelRuns.data.runs : []}

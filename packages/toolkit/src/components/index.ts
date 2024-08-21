@@ -37,3 +37,4 @@ export * from "./SectionHeader";
 export * from "./HeadExternalLink";
 export * from "./EmptyView";
 export * from "./RunStateLabel";
+export * from "./RunsTableSortableColHeader";
