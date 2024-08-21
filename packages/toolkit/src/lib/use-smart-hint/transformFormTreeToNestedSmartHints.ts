@@ -16,7 +16,11 @@ export function transformFormTreeToNestedSmartHints(
       }),
     );
 
-    return properties;
+    return {
+      ...properties,
+      key: tree.fieldKey ?? "null",
+      description: tree.description,
+    };
   }
 
   if (tree._type === "objectArray" && tree.fieldKey) {

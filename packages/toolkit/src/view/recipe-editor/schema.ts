@@ -1,3 +1,46 @@
+const operatorDefinitionIds = [
+  "base64",
+  "json",
+  "image",
+  "text",
+  "document",
+  "audio",
+  "video",
+  "web",
+];
+
+const connectorDefinitionIds = [
+  "restapi",
+  "stability-ai",
+  "instill-model",
+  "hugging-face",
+  "openai",
+  "anthropic",
+  "mistral-ai",
+  "cohere",
+  "firework-ai",
+  "groq",
+  "ollama",
+  "github",
+  "numbers",
+  "google-search",
+  "slack",
+  "email",
+  "jira",
+  "hubspot",
+  "whatsapp",
+  "bigquery",
+  "gcs",
+  "pinecone",
+  "redis",
+  "elasticsearch",
+  "mongodb",
+  "sql",
+  "weaviate",
+  "qdrant",
+  "artifact",
+];
+
 export const InstillYamlSchema = {
   $id: "http://json-schema.org/draft-06/schema#",
   type: "object",
@@ -68,27 +111,27 @@ export const InstillYamlSchema = {
         },
       },
     },
-    // component: {
-    //   type: "object",
-    //   additionalProperties: false,
-    //   patternProperties: {
-    //     "^[a-z][-a-z0-9]{0,31}$": {
-    //       type: "object",
-    //       description: "The ID of the component, must in kebab-case",
-    //       properties: {
-    //         type: {
-    //           type: "string",
-    //           description: "Please specify the component type",
-    //           enum: ["openai", "base64", "iterator", "json", "anthropic"],
-    //         },
-    //         task: {
-    //           type: "string",
-    //           description: "Please specify the component task",
-    //         },
-    //       },
-    //       required: ["type", "task"],
-    //     },
-    //   },
-    // },
+    component: {
+      type: "object",
+      additionalProperties: false,
+      patternProperties: {
+        "^[a-z][-a-z0-9]{0,31}$": {
+          type: "object",
+          description: "The ID of the component, must in kebab-case",
+          properties: {
+            type: {
+              type: "string",
+              description: "Please specify the component type",
+              enum: [...operatorDefinitionIds, ...connectorDefinitionIds],
+            },
+            task: {
+              type: "string",
+              description: "Please specify the component task",
+            },
+          },
+          required: ["type", "task"],
+        },
+      },
+    },
   },
 };
