@@ -57,8 +57,6 @@ export const ModelHubSettingPageMainView = () => {
     return null;
   }, [model, modelsWatchState]);
 
-  console.log("modelState", modelState);
-
   const onModelUpdate = () => {
     model.refetch();
 

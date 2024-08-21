@@ -232,7 +232,8 @@ export const CreateCatalogDialog = ({
                 </Form.Item>
               )}
             />
-            <Form.Field
+            {/* Coming in V2 */}
+            {/* <Form.Field
               control={form.control}
               name="tags"
               render={({ field }) => (
@@ -260,7 +261,7 @@ export const CreateCatalogDialog = ({
                   <Form.Message />
                 </Form.Item>
               )}
-            />
+            /> */}
             <div className="mt-8 flex justify-end gap-x-3">
               <Button variant="secondaryGrey" onClick={onClose}>
                 Cancel
