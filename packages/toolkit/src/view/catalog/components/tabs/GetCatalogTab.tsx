@@ -1,4 +1,5 @@
-import React from "react";
+'use client';
+import * as React from "react";
 import { Nullable } from "instill-sdk";
 
 import { Button, ScrollArea, Separator } from "@instill-ai/design-system";
@@ -10,6 +11,7 @@ import { env } from "../../../../server";
 import { useListCatalogFiles } from "../../../../lib/react-query-service/catalog";
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import { DropdownMenu } from "@instill-ai/design-system";
+import { truncateName } from "../lib/helpers";
 
 type GetCatalogTabProps = {
   catalog: Catalog;
@@ -250,7 +252,7 @@ export const GetCatalogTab = ({
             <DropdownMenu.Root>
               <DropdownMenu.Trigger asChild>
                 <Button
-                  className="!px-2 !py-2 max-w-64 text-left !normal-case"
+                  className="!px-2 !py-2 w-48 text-left !normal-case"
                   variant="primary"
                 >
                   <span className="block truncate">
@@ -264,9 +266,8 @@ export const GetCatalogTab = ({
                     <DropdownMenu.Item
                       key={file.fileUid}
                       onSelect={() => setSelectedFile(file)}
-                      className="truncate"
                     >
-                      {file.name}
+                      {truncateName(file.name, 30)}
                     </DropdownMenu.Item>
                   ))}
                 </ScrollArea.Root>
