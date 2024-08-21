@@ -121,7 +121,7 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-alt-primary">
               {convertToSecondsAndMilliseconds(
-                row.getValue("totalDuration"),
+                (row.getValue("totalDuration") as number)/1000,
               )}
             </div>
           );
@@ -130,7 +130,7 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
       {
         accessorKey: "startTime",
         header: () => {
-          const sortParam = 'start_time';
+          const sortParam = 'started_time';
           const orderedParams = orderBy?.split(' ');
           const isOrderedByStartTime = orderedParams?.[0] ===  sortParam;
           const currentOrder = orderedParams?.[1] as Sort;
@@ -160,12 +160,12 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
         },
       },
       {
-        accessorKey: "requesterId",
+        accessorKey: "runnerId",
         header: () => <div className="text-left">Runner</div>,
         cell: ({ row }) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-              {row.getValue("requesterId")}
+              <Link target="_blank" className="text-semantic-accent-default hover:underline" href={`/${row.getValue("runnerId")}`}>{row.getValue("runnerId")}</Link>
             </div>
           );
         },

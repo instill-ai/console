@@ -261,7 +261,7 @@ export type PipelineRun = {
   status: RunStatus;
   source: RunSource;
   totalDuration: number;
-  requesterId: string;
+  runnerId: string;
   inputsReference: FileReference[];
   inputs: GeneralRecord[];
   outputsReference: FileReference[];
@@ -270,6 +270,34 @@ export type PipelineRun = {
   startTime: string;
   completeTime: string;
   credits: Nullable<number>;
+  error: Nullable<string>;
+};
+
+export type ListPaginatedNamespacePipelineRunComponentsRequest = {
+  pipelineRunId: string;
+  //fullView: boolean;
+  pageSize: number;
+  page: number;
+  //orderBy: Nullable<string>;
+  //filter: Nullable<string>;
+};
+
+export type ListPaginatedNamespacePipelineRunComponentsResponse = {
+  componentRuns: ComponentRun[];
+  totalSize: number;
+  page: number;
+  pageSize: number;
+};
+
+export type ComponentRun = {
+  pipelineRunUid: string;
+  componentId: string;
+  status: RunStatus;
+  totalDuration: number;
+  startTime: string;
+  completeTime: string;
+  inputs: GeneralRecord[];
+  outputs: GeneralRecord[];
 };
 
 export type ListNamespacePipelinesResponse = {

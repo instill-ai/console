@@ -13,6 +13,8 @@ import {
   ListAccessiblePipelinesRequest,
   ListNamespacePipelinesRequest,
   ListNamespacePipelinesResponse,
+  ListPaginatedNamespacePipelineRunComponentsRequest,
+  ListPaginatedNamespacePipelineRunComponentsResponse,
   ListPaginatedNamespacePipelineRunsRequest,
   ListPaginatedNamespacePipelineRunsResponse,
   Pipeline,
@@ -132,6 +134,36 @@ export class PipelineClient extends APIResource {
 
       const data =
         await this._client.get<ListPaginatedNamespacePipelineRunsResponse>(
+          queryString,
+        );
+
+      return Promise.resolve(data);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  async listPaginatedNamespacePipelineRunComponents(
+    props: ListPaginatedNamespacePipelineRunComponentsRequest,
+  ) {
+    const {
+      pipelineRunId,
+      /* fullView, */ pageSize,
+      page /* orderBy, filter */,
+    } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/pipeline-runs/${pipelineRunId}/component-runs`,
+        pageSize,
+        page,
+        //filter,
+        //orderBy,
+        //view: fullView ? "VIEW_FULL" : "VIEW_BASIC",
+      });
+
+      const data =
+        await this._client.get<ListPaginatedNamespacePipelineRunComponentsResponse>(
           queryString,
         );
 
