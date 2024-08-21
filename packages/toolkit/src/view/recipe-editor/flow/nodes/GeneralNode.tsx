@@ -2,9 +2,8 @@
 
 import * as React from "react";
 import { Nullable } from "instill-sdk";
-import yaml from "js-yaml";
-import SourceMap from "js-yaml-source-map";
 import { NodeProps, Position, useEdges } from "reactflow";
+import YAML from "yaml";
 
 import { Button, cn, Icons } from "@instill-ai/design-system";
 
@@ -96,23 +95,25 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
       return;
     }
 
-    const yamlSourceMap: SourceMap = new SourceMap();
+    const lineCounter = new YAML.LineCounter();
+    const doc = YAML.parseAllDocuments<YAML.YAMLMap>(pipeline.data.rawRecipe, {
+      lineCounter,
+    });
 
-    try {
-      yaml.load(pipeline.data.rawRecipe, {
-        listener: yamlSourceMap.listen(),
-      });
-    } catch (error) {
-      console.log(error);
+    if (!doc || !doc[0]) {
       return;
     }
 
-    const targetPos = yamlSourceMap.lookup(`component.${id}`);
+    const node = doc[0].getIn(["component", id], true) as YAML.Node;
 
-    if (targetPos) {
+    if (node && node.range) {
+      const pos = lineCounter.linePos(node.range[0]);
+      const adjustedLine =
+        node instanceof YAML.Scalar ? pos.line : pos.line - 1;
+
       editorRef.setPosition({
-        lineNumber: targetPos.line - 1,
-        column: targetPos.column,
+        lineNumber: adjustedLine,
+        column: 0,
       });
 
       setTimeout(() => {
@@ -254,12 +255,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
           id={id}
         />
       </div>
-      <div
-        className={cn(
-          "bottom-0 w-full flex absolute translate-y-full duration-300 transition-opacity ease-in-out",
-          isSelected ? "opacity-100" : "opacity-0",
-        )}
-      >
+      <div className={cn("bottom-0 w-full flex absolute translate-y-full")}>
         <p className="product-body-text-3-medium w-full text-center text-semantic-fg-disabled">
           {id}
         </p>

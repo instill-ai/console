@@ -25,8 +25,7 @@ import type { editor, IDisposable, languages, Position } from "monaco-editor";
 import * as React from "react";
 import { Editor } from "@monaco-editor/react";
 import { PipelineRecipe } from "instill-sdk";
-import yaml from "js-yaml";
-import SourceMap from "js-yaml-source-map";
+import YAML from "yaml";
 
 import { Dialog } from "@instill-ai/design-system";
 
@@ -46,11 +45,10 @@ import {
 } from "../../lib";
 import { transformInstillJSONSchemaToFormTree } from "../../lib/use-instill-form/transform";
 import { transformFormTreeToNestedSmartHints } from "../../lib/use-smart-hint/transformFormTreeToNestedSmartHints";
-import { env } from "../../server";
 import { getGeneralComponentInOutputSchema } from "../pipeline-builder";
 import { isPipelineGeneralComponent } from "../pipeline-builder/lib/checkComponentType";
+import { analyzeColonInString } from "./helpers";
 import { keyLineNumberMapHelpers } from "./keyLineNumberMapHelpers";
-import { SourceLocation } from "./types";
 import { validateVSCodeYaml } from "./validateVSCodeYaml";
 
 const selector = (store: InstillStore) => ({
@@ -78,6 +76,8 @@ const availableInstillFormats = [
   "semi-structured/json",
 ];
 
+const componentTopLevelKeys = ["type", "input", "setup", "condition", "task"];
+
 export const VscodeEditor = ({
   unsavedRawRecipe,
   setUnsavedRawRecipe,
@@ -92,11 +92,15 @@ export const VscodeEditor = ({
   const [markErrors, setMarkErrors] = React.useState<editor.IMarkerData[]>([]);
 
   const autoCompleteDisposableRef = React.useRef<Nullable<IDisposable>>(null);
+  const hoverHintDisposableRef = React.useRef<Nullable<IDisposable>>(null);
+  const codeLensDisposableRef = React.useRef<Nullable<IDisposable>>(null);
   const editorRef = React.useRef<Nullable<editor.IStandaloneCodeEditor>>(null);
   const monacoRef = React.useRef<Nullable<Monaco>>(null);
 
   const [openInstillCreditDialog, setOpenInstillCreditDialog] =
     React.useState(false);
+
+  const cachedHoveredHints = React.useRef<Nullable<GeneralRecord>>(null);
 
   const {
     accessToken,
@@ -171,6 +175,8 @@ export const VscodeEditor = ({
       return;
     }
 
+    console.log("tyoyo", markErrors);
+
     monacoRef.current.editor.setModelMarkers(model, "owner", markErrors);
   }, [markErrors]);
 
@@ -183,7 +189,11 @@ export const VscodeEditor = ({
       autoCompleteDisposableRef.current.dispose();
     }
 
-    const disposable =
+    if (hoverHintDisposableRef.current) {
+      hoverHintDisposableRef.current.dispose();
+    }
+
+    const autoCompleteDisposable =
       monacoRef.current.languages.registerCompletionItemProvider("yaml", {
         triggerCharacters: ["${", "."],
         provideCompletionItems: (model, position) => {
@@ -195,8 +205,19 @@ export const VscodeEditor = ({
           });
         },
       });
+    autoCompleteDisposableRef.current = autoCompleteDisposable;
 
-    autoCompleteDisposableRef.current = disposable;
+    const hoverHintDisposable =
+      monacoRef.current.languages.registerHoverProvider("yaml", {
+        provideHover: (model, position) => {
+          return handleHoverHint({
+            model,
+            position,
+            monaco: monacoRef.current,
+          });
+        },
+      });
+    hoverHintDisposableRef.current = hoverHintDisposable;
   }, [pipeline.data, pipeline.isSuccess]);
 
   const handleAutoComplete = React.useCallback(
@@ -250,46 +271,53 @@ export const VscodeEditor = ({
         .find((map) => map.lineNumber <= position.lineNumber);
 
       if (
-        last_chars.includes("task:") &&
         smallestComponentKeyLineNumberMap &&
         pipeline.isSuccess &&
         pipeline.data.recipe.component
       ) {
-        const targetComponent =
-          pipeline.data.recipe.component[smallestComponentKeyLineNumberMap.key];
+        if (last_chars.includes("task:")) {
+          const targetComponent =
+            pipeline.data.recipe.component[
+              smallestComponentKeyLineNumberMap.key
+            ];
 
-        if (targetComponent && isPipelineGeneralComponent(targetComponent)) {
-          const taskKeys =
-            targetComponent.definition?.tasks.map((task) => task.name) ?? [];
+          if (targetComponent && isPipelineGeneralComponent(targetComponent)) {
+            const taskKeys =
+              targetComponent.definition?.tasks.map((task) => task.name) ?? [];
 
-          for (const key of taskKeys) {
-            result.push({
-              label: key,
-              kind: monaco.languages.CompletionItemKind.Field,
-              insertText: key,
-              filterText: key,
-              range: new monaco.Range(
-                position.lineNumber,
-                position.column - active_typing.length,
-                position.lineNumber,
-                position.column,
-              ),
-              documentation: {
-                value: `# ${key} \n hello-world [Microsoft](http://www.microsoft.com)`,
-                isTrusted: true,
-              },
-            });
+            for (const key of taskKeys) {
+              result.push({
+                label: key,
+                kind: monaco.languages.CompletionItemKind.Field,
+                insertText: key,
+                filterText: key,
+                range: new monaco.Range(
+                  position.lineNumber,
+                  position.column - active_typing.length,
+                  position.lineNumber,
+                  position.column,
+                ),
+                documentation: {
+                  value: `# ${key} \n hello-world [Microsoft](http://www.microsoft.com)`,
+                  isTrusted: true,
+                },
+              });
+            }
+
+            return {
+              suggestions: result,
+            };
           }
-
-          return {
-            suggestions: result,
-          };
         }
+
+        // We need to hint component type for every component
+        // if (last_chars.includes("type:")) {
+        // }
       }
 
       // We need to hint instill-format for variables
       const topLevelKeyLineNumberMaps =
-        keyLineNumberMapHelpers.getTopLevelKeyLineNumberMaps(allValue);
+        keyLineNumberMapHelpers.getRecipeTopLevelKeyLineNumberMaps(allValue);
 
       const smallestTopLevelKeyLineNumberMap = topLevelKeyLineNumberMaps
         .reverse()
@@ -349,22 +377,6 @@ export const VscodeEditor = ({
                 position.column,
               ),
               detail: secret.description ?? undefined,
-            });
-          }
-
-          if (env("NEXT_PUBLIC_APP_ENV") === "CE") {
-            result.push({
-              label: "INSTILL_CREDIT",
-              kind: monaco.languages.CompletionItemKind.Field,
-              insertText: "${" + "secret.INSTILL_CREDIT",
-              filterText: "${" + "secret.INSTILL_CREDIT",
-              documentation: "Instill Credit",
-              range: new monaco.Range(
-                position.lineNumber,
-                position.column - active_typing.length,
-                position.lineNumber,
-                position.column,
-              ),
             });
           }
 
@@ -565,11 +577,266 @@ export const VscodeEditor = ({
     ],
   );
 
+  const handleHoverHint = React.useCallback(
+    ({
+      model,
+      position,
+      monaco,
+    }: {
+      model: editor.ITextModel;
+      position: Position;
+      monaco: Nullable<Monaco>;
+    }) => {
+      if (!pipeline.isSuccess || !monaco) {
+        return;
+      }
+
+      const content = model.getValue();
+
+      const givenLineContent = model.getLineContent(position.lineNumber);
+
+      try {
+        const { isBeforeColon, substringBeforeColon } = analyzeColonInString(
+          givenLineContent,
+          position.column,
+        );
+
+        // The hover hint now only work for the key not the value
+        if (!isBeforeColon) {
+          return null;
+        }
+
+        // We need to hint user what is the component top level keys
+        if (componentTopLevelKeys.includes(substringBeforeColon)) {
+          return null;
+        }
+
+        const componentKeyLineNumberMaps =
+          keyLineNumberMapHelpers.getAllComponentKeyLineNumberMaps(content);
+
+        const smallestComponentKeyLineNumberMap = componentKeyLineNumberMaps
+          .reverse()
+          .find((map) => map.lineNumber <= position.lineNumber);
+
+        if (!smallestComponentKeyLineNumberMap) {
+          return null;
+        }
+
+        const componentTopLevelKeyLineNumberMaps =
+          keyLineNumberMapHelpers.getComponentTopLevelKeyLineNumberMaps(
+            content,
+            smallestComponentKeyLineNumberMap.key,
+          );
+
+        const smallestComponentTopLevelKeyLineNumberMap =
+          componentTopLevelKeyLineNumberMaps
+            .reverse()
+            .find((map) => map.lineNumber <= position.lineNumber);
+
+        if (!smallestComponentTopLevelKeyLineNumberMap) {
+          return null;
+        }
+
+        const hoveredKeyDotPath = `${smallestComponentTopLevelKeyLineNumberMap.dotPath}.${substringBeforeColon}`;
+
+        if (cachedHoveredHints.current) {
+          const targetHint = cachedHoveredHints.current[hoveredKeyDotPath];
+          if (targetHint) {
+            return {
+              range: new monaco.Range(
+                position.lineNumber,
+                position.column,
+                position.lineNumber,
+                position.column,
+              ),
+              contents: [
+                { value: `## ${targetHint.key}` },
+                {
+                  value: targetHint.description,
+                },
+              ],
+            };
+          }
+        }
+
+        const targetComponent = pipeline.data.recipe.component
+          ? pipeline.data.recipe.component[
+              smallestComponentKeyLineNumberMap.key
+            ]
+          : null;
+
+        if (
+          !targetComponent ||
+          !isPipelineGeneralComponent(targetComponent) ||
+          !targetComponent.definition?.spec.componentSpecification
+        ) {
+          return null;
+        }
+
+        const targetTaskDefinition =
+          targetComponent.definition.spec.componentSpecification.oneOf?.find(
+            (oneOf) => oneOf.properties?.task?.const === targetComponent.task,
+          );
+
+        if (!targetTaskDefinition) {
+          return null;
+        }
+
+        const formTree =
+          transformInstillJSONSchemaToFormTree(targetTaskDefinition);
+
+        const nestedHints = transformFormTreeToNestedSmartHints(formTree);
+
+        console.log("gg", nestedHints);
+
+        const hoveredKeyPathWoComponentKey = `${smallestComponentTopLevelKeyLineNumberMap.key}.${substringBeforeColon}`;
+
+        const targetHint = dot.getter(
+          nestedHints,
+          hoveredKeyPathWoComponentKey,
+        );
+
+        if (targetHint) {
+          if (cachedHoveredHints.current) {
+            cachedHoveredHints.current = {
+              ...cachedHoveredHints.current,
+              [hoveredKeyDotPath]: targetHint,
+            };
+          } else {
+            cachedHoveredHints.current = {
+              [hoveredKeyDotPath]: targetHint,
+            };
+          }
+
+          console.log(targetHint);
+
+          return {
+            range: new monaco.Range(
+              position.lineNumber,
+              position.column,
+              position.lineNumber,
+              position.column,
+            ),
+            contents: [
+              { value: `## ${targetHint.key}` },
+              {
+                value: targetHint.description,
+              },
+            ],
+          };
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+      return null;
+
+      // return {
+      //   range: new monaco.Range(
+      //     1,
+      //     1,
+      //     model.getLineCount(),
+      //     model.getLineMaxColumn(model.getLineCount()),
+      //   ),
+      //   contents: [
+      //     { value: "**SOURCE**" },
+      //     {
+      //       value: "```html\n",
+      //     },
+      //   ],
+      // };
+    },
+    [pipeline.isSuccess, pipeline.data],
+  );
+
+  const handleCodeLens = React.useCallback(
+    ({
+      model,
+      monaco,
+      commandId,
+    }: {
+      model: editor.ITextModel;
+      monaco: Nullable<Monaco>;
+      commandId: Nullable<string>;
+    }) => {
+      if (!monaco || !commandId) {
+        return;
+      }
+
+      const codeLenses: languages.CodeLens[] = [];
+      const currentEditorValue = model.getValue();
+
+      const lineCounter = new YAML.LineCounter();
+      const yamlData = YAML.parse(currentEditorValue);
+      const doc = YAML.parseAllDocuments<YAML.YAMLMap>(currentEditorValue, {
+        lineCounter,
+      });
+
+      if (!yamlData || !doc || !doc[0]) {
+        return null;
+      }
+
+      const yamlComponent = yamlData?.component as GeneralRecord | undefined;
+
+      if (!yamlComponent) {
+        return null;
+      }
+
+      for (const [key, value] of Object.entries(yamlComponent)) {
+        if (!value) {
+          continue;
+        }
+
+        if (isPipelineGeneralComponent(value)) {
+          if (value.setup) {
+            const apiKey = value.setup["api-key"];
+            if (apiKey && apiKey.includes("secret.INSTILL_CREDIT")) {
+              const node = doc[0].getIn(["component", key], true) as YAML.Node;
+
+              if (node && node.range) {
+                const pos = lineCounter.linePos(node.range[0]);
+                const adjustedLine =
+                  node instanceof YAML.Scalar ? pos.col : pos.line - 1;
+                codeLenses.push({
+                  range: new monaco.Range(
+                    adjustedLine - 1,
+                    pos.col,
+                    adjustedLine - 1,
+                    pos.col,
+                  ),
+                  id: key,
+                  command: {
+                    id: commandId,
+                    title: `Component ${key} is using Instill Credit`,
+                    tooltip: "",
+                  },
+                });
+              }
+            }
+          }
+        }
+      }
+
+      return {
+        lenses: codeLenses,
+        dispose: () => {
+          console.log("Disposing code lenses");
+        },
+      };
+    },
+    [],
+  );
+
   return (
     <React.Fragment>
-      <style jsx>{`
+      <style jsx={true}>{`
         .rendered-markdown > h1 {
           font-size: 1.5rem;
+          font-weight: 600;
+        }
+
+        .rendered-markdown > h2 {
+          font-size: 1.2rem;
           font-weight: 600;
         }
 
@@ -611,6 +878,8 @@ export const VscodeEditor = ({
 
           const res = validateVSCodeYaml(value);
 
+          console.log("he", res);
+
           if (res.success) {
             setMarkErrors([]);
           } else {
@@ -640,9 +909,8 @@ export const VscodeEditor = ({
           updateEditorRef(() => editor);
           monacoRef.current = monaco;
           updateMonacoRef(() => monaco);
-          const disposable = monaco.languages.registerCompletionItemProvider(
-            "yaml",
-            {
+          const autoCompleteDisposable =
+            monaco.languages.registerCompletionItemProvider("yaml", {
               triggerCharacters: ["${", "."],
               provideCompletionItems: (model, position) => {
                 // Split everything the user has typed on the current line up at each space, and only look at the last word
@@ -653,114 +921,36 @@ export const VscodeEditor = ({
                   recipe: pipeline.data?.recipe ?? null,
                 });
               },
+            });
+          autoCompleteDisposableRef.current = autoCompleteDisposable;
+
+          const hoverHintDisposable = monaco.languages.registerHoverProvider(
+            "yaml",
+            {
+              provideHover: (model, position) => {
+                return handleHoverHint({ model, position, monaco });
+              },
             },
           );
-          autoCompleteDisposableRef.current = disposable;
-
-          monaco.languages.registerHoverProvider("yaml", {
-            provideHover: (model, position) => {
-              const word = model.getWordAtPosition(position);
-
-              console.log(word, position);
-
-              return null;
-
-              // return {
-              //   range: new monaco.Range(
-              //     1,
-              //     1,
-              //     model.getLineCount(),
-              //     model.getLineMaxColumn(model.getLineCount()),
-              //   ),
-              //   contents: [
-              //     { value: "**SOURCE**" },
-              //     {
-              //       value: "```html\n",
-              //     },
-              //   ],
-              // };
-            },
-          });
+          hoverHintDisposableRef.current = hoverHintDisposable;
 
           const openInstillCreditDialogCommand = editor.addCommand(0, () => {
             setOpenInstillCreditDialog(() => true);
           });
 
-          monaco.languages.registerCodeLensProvider("yaml", {
-            provideCodeLenses: function (model) {
-              const codeLenses: languages.CodeLens[] = [];
-              const currentEditorValue = model.getValue();
-              const yamlSourceMap: SourceMap = new SourceMap();
-              let yamlData: Nullable<GeneralRecord> = null;
-
-              try {
-                yamlData = yaml.load(currentEditorValue, {
-                  listener: yamlSourceMap.listen(),
-                }) as GeneralRecord;
-              } catch (error) {
-                yamlData = null;
-              }
-
-              if (!yamlData) {
-                return {
-                  lenses: codeLenses,
-                  dispose: () => {
-                    console.log("Disposing code lenses");
-                  },
-                };
-              }
-
-              const yamlComponent = yamlData?.component as
-                | GeneralRecord
-                | undefined;
-
-              if (!yamlComponent) {
-                return {
-                  lenses: codeLenses,
-                  dispose: () => {
-                    console.log("Disposing code lenses");
-                  },
-                };
-              }
-
-              for (const [key, value] of Object.entries(yamlComponent)) {
-                if (isPipelineGeneralComponent(value)) {
-                  if (value.setup) {
-                    const apiKey = value.setup["api-key"];
-                    if (apiKey && apiKey.includes("secret.INSTILL_CREDIT")) {
-                      const componentKey = `component.${key}`;
-                      const propertyLocation: SourceLocation | undefined =
-                        yamlSourceMap.lookup(componentKey);
-
-                      if (propertyLocation) {
-                        codeLenses.push({
-                          range: new monaco.Range(
-                            propertyLocation.line - 1,
-                            propertyLocation.column,
-                            propertyLocation.line - 1,
-                            propertyLocation.column,
-                          ),
-                          id: key,
-                          command: {
-                            id: openInstillCreditDialogCommand ?? "",
-                            title: `Component ${key} is using Instill Credit`,
-                            tooltip: "",
-                          },
-                        });
-                      }
-                    }
-                  }
-                }
-              }
-
-              return {
-                lenses: codeLenses,
-                dispose: () => {
-                  console.log("Disposing code lenses");
-                },
-              };
+          const codeLensDisposable = monaco.languages.registerCodeLensProvider(
+            "yaml",
+            {
+              provideCodeLenses: (model) => {
+                return handleCodeLens({
+                  model,
+                  monaco,
+                  commandId: openInstillCreditDialogCommand,
+                });
+              },
             },
-          });
+          );
+          codeLensDisposableRef.current = codeLensDisposable;
 
           editor.addAction({
             id: "open-cmdk",

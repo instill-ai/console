@@ -4,7 +4,7 @@ import {
   IteratorDefinition,
   OperatorDefinition,
 } from "instill-sdk";
-import yaml from "js-yaml";
+import YAML from "yaml";
 
 import { Command, Icons } from "@instill-ai/design-system";
 
@@ -200,7 +200,7 @@ export const ComponentCmdk = () => {
 
     if (isIteratorDefinition(definition)) {
       const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
-      doc = yaml.dump({
+      doc = YAML.stringify({
         [id]: {
           type: "iterator",
         },
@@ -213,7 +213,7 @@ export const ComponentCmdk = () => {
         definition.spec.componentSpecification,
       );
 
-      doc = yaml.dump({
+      doc = YAML.stringify({
         [id]: {
           type: definition.id,
           ...defaultValue,
@@ -226,7 +226,7 @@ export const ComponentCmdk = () => {
       const defaultValue = generateDefaultValue(
         definition.spec.componentSpecification,
       );
-      doc = yaml.dump({
+      doc = YAML.stringify({
         [id]: {
           type: definition.id,
           ...defaultValue,

@@ -1,8 +1,5 @@
-import { GeneralRecord, Nullable } from "instill-sdk";
-import yaml from "js-yaml";
-import SourceMap from "js-yaml-source-map";
-
-import { SourceLocation } from "./types";
+import { GeneralRecord } from "instill-sdk";
+import YAML from "yaml";
 
 export type EditorKeyLineNumberMap = {
   key: string;
@@ -14,40 +11,25 @@ function getAllComponentKeyLineNumberMaps(
   recipe: string,
 ): EditorKeyLineNumberMap[] {
   const componentKeyLineNumberMap: EditorKeyLineNumberMap[] = [];
-  const yamlSourceMap: SourceMap = new SourceMap();
-
-  let yamlData: Nullable<GeneralRecord> = null;
-
-  try {
-    yamlData = yaml.load(recipe, {
-      listener: yamlSourceMap.listen(),
-    }) as GeneralRecord;
-  } catch (error) {
-    return componentKeyLineNumberMap;
-  }
-
-  // get all the component key
+  const lineCounter = new YAML.LineCounter();
+  const yamlData = YAML.parse(recipe);
+  const doc = YAML.parseAllDocuments<YAML.YAMLMap>(recipe, { lineCounter });
   const yamlComponent = yamlData?.component as GeneralRecord | undefined;
 
-  if (!yamlComponent) {
+  if (!yamlComponent || !doc || !doc[0]) {
     return componentKeyLineNumberMap;
   }
 
-  const componentKeyPaths: string[] = [];
-
   for (const key in yamlComponent) {
-    componentKeyPaths.push(`component.${key}`);
-  }
-
-  for (const componentKeyPath of componentKeyPaths) {
-    const propertyLocation: SourceLocation | undefined =
-      yamlSourceMap.lookup(componentKeyPath);
-
-    if (propertyLocation) {
+    const node = doc[0].getIn(["component", key], true) as YAML.Node;
+    if (node && node.range) {
+      // The line counter of YAML.MAP type has some offset issue
+      const line = lineCounter.linePos(node.range[0]).line;
+      const adjustedLine = node instanceof YAML.Scalar ? line : line - 1;
       componentKeyLineNumberMap.push({
-        key: componentKeyPath.replace("component.", ""),
-        dotPath: componentKeyPath,
-        lineNumber: propertyLocation.line - 1,
+        key,
+        dotPath: `component.${key}`,
+        lineNumber: adjustedLine,
       });
     }
   }
@@ -55,57 +37,96 @@ function getAllComponentKeyLineNumberMaps(
   return componentKeyLineNumberMap.sort((a, b) => a.lineNumber - b.lineNumber);
 }
 
-function getTopLevelKeyLineNumberMaps(
+function getComponentTopLevelKeyLineNumberMaps(
   recipe: string,
-): EditorKeyLineNumberMap[] {
+  componentKey: string,
+) {
   const componentKeyLineNumberMap: EditorKeyLineNumberMap[] = [];
-  const yamlSourceMap: SourceMap = new SourceMap();
+  const lineCounter = new YAML.LineCounter();
+  const yamlData = YAML.parse(recipe);
+  const doc = YAML.parseAllDocuments<YAML.YAMLMap>(recipe, { lineCounter });
+  const yamlComponent = yamlData?.component as GeneralRecord | undefined;
 
-  let yamlData: Nullable<GeneralRecord> = null;
-
-  try {
-    yamlData = yaml.load(recipe, {
-      listener: yamlSourceMap.listen(),
-    }) as GeneralRecord;
-  } catch (error) {
+  if (!yamlComponent || !doc || !doc[0]) {
     return componentKeyLineNumberMap;
   }
 
-  if (!yamlData) {
+  const targetComponent = yamlComponent[componentKey] as
+    | GeneralRecord
+    | undefined;
+
+  if (!targetComponent) {
+    return componentKeyLineNumberMap;
+  }
+
+  for (const key in targetComponent) {
+    const node = doc[0].getIn(
+      ["component", componentKey, key],
+      true,
+    ) as YAML.Node;
+
+    if (node && node.range) {
+      // The line counter of YAML.MAP type has some offset issue
+      const line = lineCounter.linePos(node.range[0]).line;
+      const adjustedLine = node instanceof YAML.Scalar ? line : line - 1;
+      componentKeyLineNumberMap.push({
+        key,
+        dotPath: `component.${componentKey}.${key}`,
+        lineNumber: adjustedLine,
+      });
+    }
+  }
+
+  return componentKeyLineNumberMap.sort((a, b) => a.lineNumber - b.lineNumber);
+}
+
+function getRecipeTopLevelKeyLineNumberMaps(
+  recipe: string,
+): EditorKeyLineNumberMap[] {
+  const componentKeyLineNumberMap: EditorKeyLineNumberMap[] = [];
+  const lineCounter = new YAML.LineCounter();
+  const yamlData = YAML.parse(recipe);
+  const doc = YAML.parseAllDocuments<YAML.YAMLMap>(recipe, { lineCounter });
+
+  if (!doc || !doc[0]) {
     return componentKeyLineNumberMap;
   }
 
   if (yamlData.component) {
-    const location: SourceLocation | undefined =
-      yamlSourceMap.lookup("component");
-    if (location) {
+    const node = doc[0].getIn(["component"], true) as YAML.Node;
+    if (node && node.range) {
+      const line = lineCounter.linePos(node.range[0]).line;
+      const adjustedLine = node instanceof YAML.Scalar ? line : line - 1;
       componentKeyLineNumberMap.push({
         key: "component",
         dotPath: "component",
-        lineNumber: location?.line - 1,
+        lineNumber: adjustedLine,
       });
     }
   }
 
   if (yamlData.variable) {
-    const location: SourceLocation | undefined =
-      yamlSourceMap.lookup("variable");
-    if (location) {
+    const node = doc[0].getIn(["variable"], true) as YAML.Node;
+    if (node && node.range) {
+      const line = lineCounter.linePos(node.range[0]).line;
+      const adjustedLine = node instanceof YAML.Scalar ? line : line - 1;
       componentKeyLineNumberMap.push({
         key: "variable",
         dotPath: "variable",
-        lineNumber: location?.line - 1,
+        lineNumber: adjustedLine,
       });
     }
   }
 
   if (yamlData.output) {
-    const location: SourceLocation | undefined = yamlSourceMap.lookup("output");
-    if (location) {
+    const node = doc[0].getIn(["output"], true) as YAML.Node;
+    if (node && node.range) {
+      const line = lineCounter.linePos(node.range[0]).line;
+      const adjustedLine = node instanceof YAML.Scalar ? line : line - 1;
       componentKeyLineNumberMap.push({
         key: "output",
         dotPath: "output",
-        lineNumber: location?.line - 1,
+        lineNumber: adjustedLine,
       });
     }
   }
@@ -115,5 +136,6 @@ function getTopLevelKeyLineNumberMaps(
 
 export const keyLineNumberMapHelpers = {
   getAllComponentKeyLineNumberMaps,
-  getTopLevelKeyLineNumberMaps,
+  getRecipeTopLevelKeyLineNumberMaps,
+  getComponentTopLevelKeyLineNumberMaps,
 };

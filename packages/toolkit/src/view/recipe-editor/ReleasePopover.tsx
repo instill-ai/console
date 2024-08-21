@@ -4,14 +4,10 @@ import * as React from "react";
 
 import { Button, cn, Icons, Popover } from "@instill-ai/design-system";
 
-import { useInstillStore } from "../../lib";
 import { ReleaseMenu } from "../pipeline-builder";
 
 export const ReleasePopover = () => {
   const [releaseMenuOpen, setReleaseMenuOpen] = React.useState(false);
-  const pipelineRecipeIsDirty = useInstillStore(
-    (store) => store.pipelineRecipeIsDirty,
-  );
 
   return (
     <Popover.Root
@@ -21,16 +17,11 @@ export const ReleasePopover = () => {
       <Popover.Trigger asChild>
         <Button
           size="md"
-          variant="primary"
-          className={cn(
-            "flex !h-8 cursor-pointer flex-row gap-x-2",
-            pipelineRecipeIsDirty
-              ? ""
-              : "!bg-semantic-accent-default !text-semantic-fg-on-default hover:!bg-semantic-accent-hover active:!bg-semantic-accent-pressed",
-          )}
+          variant="secondaryGrey"
+          className={cn("flex !h-8 cursor-pointer flex-row gap-x-2")}
         >
           Release
-          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-on-default" />
+          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
         </Button>
       </Popover.Trigger>
       <Popover.Content align="end" className="!w-[392px]">
