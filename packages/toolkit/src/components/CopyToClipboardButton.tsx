@@ -9,10 +9,12 @@ export const CopyToClipboardButton = ({
   className,
   iconClassName,
   text,
+  disableCopy,
 }: {
   text: string;
   className?: string;
   iconClassName?: string;
+  disableCopy?: boolean;
 }) => {
   const [copied, setCopied] = React.useState(false);
 
@@ -25,6 +27,7 @@ export const CopyToClipboardButton = ({
       variant="secondaryGrey"
       size="md"
       type="button"
+      disabled={disableCopy}
       onClick={async () => {
         await navigator.clipboard.writeText(text);
         setCopied(true);

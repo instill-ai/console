@@ -5,7 +5,7 @@ import { Button, Separator } from "@instill-ai/design-system";
 
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
-import { Catalog } from "../../../../lib/react-query-service/catalog/types";
+import { Catalog, File } from "../../../../lib/react-query-service/catalog/types";
 import { env } from "../../../../server";
 import { useListCatalogFiles } from "../../../../lib/react-query-service/catalog";
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
@@ -31,7 +31,7 @@ export const GetCatalogTab = ({
   namespaceId,
 }: GetCatalogTabProps) => {
   const kbId = catalog.catalogId;
-  const [selectedFileUid, setSelectedFileUid] = React.useState<string>("");
+  const [selectedFile, setSelectedFile] = React.useState<Nullable<File>>(null);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector)
@@ -46,15 +46,15 @@ export const GetCatalogTab = ({
 
   const curlCommand1 = React.useMemo(() => {
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
-    return `curl -X GET '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${selectedFileUid}' \\
+    return `curl -X GET '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${selectedFile?.fileUid || ""}' \\
 --header "Content-Type: application/json" \\
 --header "Authorization: Bearer $INSTILL_API_TOKEN"`;
-  }, [namespaceId, kbId, selectedFileUid]);
+  }, [namespaceId, kbId, selectedFile]);
 
   const apiEndpoint1 = React.useMemo(() => {
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
-    return `${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${selectedFileUid}`;
-  }, [namespaceId, kbId, selectedFileUid]);
+    return `${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${selectedFile?.fileUid || ""}`;
+  }, [namespaceId, kbId, selectedFile]);
 
   const inputSchema = `{
   "type": "object",
@@ -246,16 +246,21 @@ export const GetCatalogTab = ({
           </p>
           <div className="mb-8">
             <DropdownMenu.Root>
-              <DropdownMenu.Trigger  >
-                <Button className="!px-2 !py-2" variant="primary">
-                  {selectedFileUid || "Select a file"}
+              <DropdownMenu.Trigger asChild>
+                <Button
+                  className="!px-2 !py-2 max-w-64 text-left"
+                  variant="primary"
+                >
+                  <span className="block truncate">
+                    {selectedFile ? selectedFile.name : "Select a file"}
+                  </span>
                 </Button>
               </DropdownMenu.Trigger>
-              <DropdownMenu.Content >
+              <DropdownMenu.Content>
                 {filesData.data?.map((file) => (
                   <DropdownMenu.Item
                     key={file.fileUid}
-                    onSelect={() => setSelectedFileUid(file.fileUid)}
+                    onSelect={() => setSelectedFile(file)}
                   >
                     {file.name}
                   </DropdownMenu.Item>
@@ -275,22 +280,24 @@ export const GetCatalogTab = ({
               customStyle={defaultCodeSnippetStyles}
             />
           </div>
-          <div className="mb-8">
+          <div className={`mb-8 ${!selectedFile ? 'opacity-50' : ''}`}>
             <p className="mb-2 text-lg font-semibold">Example cURL command:</p>
             <CodeBlock
               codeString={curlCommand1}
               wrapLongLines={true}
               language="bash"
               customStyle={defaultCodeSnippetStyles}
+              disableCopy={!selectedFile}
             />
           </div>
 
-          <div className="mb-12">
+          <div className={`mb-12 ${!selectedFile ? 'opacity-50' : ''}`}>
             <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
             <CodeBlock
               codeString={apiEndpoint1}
               wrapLongLines={true}
               customStyle={defaultCodeSnippetStyles}
+              disableCopy={!selectedFile}
             />
           </div>
           <ModelSectionHeader>JSON Schema</ModelSectionHeader>

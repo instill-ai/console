@@ -9,10 +9,15 @@ import { CopyToClipboardButton } from "./CopyToClipboardButton";
 export type CodeBlockProps = {
   codeString: string;
   className?: string;
+  disableCopy?: boolean;
 } & Omit<React.ComponentProps<typeof SyntaxHighlighter>, "style">;
 
 export const CodeBlock = (props: CodeBlockProps) => {
-  const { codeString, className, ...passThrough } = props;
+  const { codeString, className, disableCopy, ...passThrough } = props;
+
+  const iconClassName = disableCopy
+    ? "stroke-semantic-fg-disabled"
+    : "stroke-semantic-fg-primary";
 
   return (
     <div
@@ -25,6 +30,8 @@ export const CodeBlock = (props: CodeBlockProps) => {
         <CopyToClipboardButton
           className="border-0 !px-1 !py-1"
           text={codeString}
+          disableCopy={disableCopy}
+          iconClassName={iconClassName}
         />
       </div>
       <SyntaxHighlighter style={docco} {...passThrough}>
