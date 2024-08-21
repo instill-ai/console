@@ -236,7 +236,7 @@ export const CreateCatalogDialog = ({
               control={form.control}
               name="tags"
               render={({ field }) => (
-                <Form.Item >
+                <Form.Item>
                   <div className="flex items-center justify-between">
                     <Form.Label className="mb-1 text-semantic-fg-primary product-button-button-2">
                       Tags
@@ -246,7 +246,6 @@ export const CreateCatalogDialog = ({
                     </p>
                   </div>
                   <Form.Control>
-
                     <Input.Root>
                       <Input.Core
                         {...field}

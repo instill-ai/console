@@ -1,16 +1,24 @@
-'use client';
+"use client";
+
 import * as React from "react";
 import { Nullable } from "instill-sdk";
 
-import { Button, ScrollArea, Separator } from "@instill-ai/design-system";
+import {
+  Button,
+  DropdownMenu,
+  ScrollArea,
+  Separator,
+} from "@instill-ai/design-system";
 
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
-import { Catalog, File } from "../../../../lib/react-query-service/catalog/types";
-import { env } from "../../../../server";
-import { useListCatalogFiles } from "../../../../lib/react-query-service/catalog";
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
-import { DropdownMenu } from "@instill-ai/design-system";
+import { useListCatalogFiles } from "../../../../lib/react-query-service/catalog";
+import {
+  Catalog,
+  File,
+} from "../../../../lib/react-query-service/catalog/types";
+import { env } from "../../../../server";
 import { truncateName } from "../lib/helpers";
 
 type GetCatalogTabProps = {
@@ -36,7 +44,7 @@ export const GetCatalogTab = ({
   const [selectedFile, setSelectedFile] = React.useState<Nullable<File>>(null);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
   const filesData = useListCatalogFiles({
@@ -238,14 +246,15 @@ export const GetCatalogTab = ({
       ) : (
         <div className="w-5/6 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
           <p className="mb-4 product-body-text-3-regular">
-            Once the status of documents in a catalog&apos;s files has changed to
-            &apos;Completed&apos;, you can use the following Instill API example
-            to retrieve the file catalog&apos;s detailed information and obtain
-            the necessary chunks and metadata.
+            Once the status of documents in a catalog&apos;s files has changed
+            to &apos;Completed&apos;, you can use the following Instill API
+            example to retrieve the file catalog&apos;s detailed information and
+            obtain the necessary chunks and metadata.
           </p>
           {!selectedFile ? (
             <p className="mb-4 product-body-text-3-regular">
-              Select a file from the dropdown below to populate the fileUid in the API commands.
+              Select a file from the dropdown below to populate the fileUid in
+              the API commands.
             </p>
           ) : null}
           <div className="mb-8">
@@ -286,7 +295,7 @@ export const GetCatalogTab = ({
               customStyle={defaultCodeSnippetStyles}
             />
           </div>
-          <div className={`mb-8 ${!selectedFile ? 'opacity-50' : ''}`}>
+          <div className={`mb-8 ${!selectedFile ? "opacity-50" : ""}`}>
             <p className="mb-2 text-lg font-semibold">Example cURL command:</p>
             <CodeBlock
               codeString={curlCommand1}
@@ -297,7 +306,7 @@ export const GetCatalogTab = ({
             />
           </div>
 
-          <div className={`mb-12 ${!selectedFile ? 'opacity-50' : ''}`}>
+          <div className={`mb-12 ${!selectedFile ? "opacity-50" : ""}`}>
             <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
             <CodeBlock
               codeString={apiEndpoint1}
