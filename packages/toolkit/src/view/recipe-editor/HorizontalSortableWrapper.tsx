@@ -49,7 +49,7 @@ export const HorizontalSortableWrapper = ({
       onDragStart={onDragStart}
       onDragOver={onDragOver}
       modifiers={[restrictToHorizontalAxis]}
-      autoScroll={false}
+      autoScroll={true}
     >
       <SortableContext
         strategy={horizontalListSortingStrategy}

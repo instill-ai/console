@@ -173,6 +173,14 @@ export type EditorSlice = {
   updateEditorMultiScreenModel: (
     fn: (prev: EditorMultiScreenModel) => EditorMultiScreenModel,
   ) => void;
+  rawRecipeOnDom: Nullable<string>;
+  updateRawRecipeOnDom: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
+  isSavingRecipe: boolean;
+  updateIsSavingRecipe: (fn: (prev: boolean) => boolean) => void;
+  hasUnsavedRecipe: boolean;
+  updateHasUnsavedRecipe: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type RecentlyUsedSlice = {

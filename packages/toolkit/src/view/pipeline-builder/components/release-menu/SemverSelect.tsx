@@ -11,8 +11,8 @@ import {
   useInstillStore,
   useRouteInfo,
   useShallow,
+  useSortedReleases,
 } from "../../../../lib";
-import { useSortedReleases } from "../../lib";
 import { UseReleasePipelineFormReturn } from "./ReleaseMenu";
 
 const selector = (store: InstillStore) => ({
