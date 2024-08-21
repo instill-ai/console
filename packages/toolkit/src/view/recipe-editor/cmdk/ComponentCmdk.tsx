@@ -1,9 +1,5 @@
 import * as React from "react";
-import {
-  ConnectorDefinition,
-  IteratorDefinition,
-  OperatorDefinition,
-} from "instill-sdk";
+import { ComponentDefinition, IteratorDefinition } from "instill-sdk";
 import YAML from "yaml";
 
 import { Command, Icons } from "@instill-ai/design-system";
@@ -12,14 +8,12 @@ import { ImageWithFallback, LoadingSpin } from "../../../components";
 import {
   InstillJSONSchema,
   InstillStore,
-  isConnectorDefinition,
+  isComponentDefinition,
   isIteratorDefinition,
-  isOperatorDefinition,
   Nullable,
-  useConnectorDefinitions,
+  useComponentDefinitions,
   useInstillStore,
   useNamespacePipeline,
-  useOperatorDefinitions,
   useRouteInfo,
   useShallow,
 } from "../../../lib";
@@ -58,31 +52,32 @@ export const ComponentCmdk = () => {
     enabled: enabledQuery,
   });
 
-  const operatorDefinitions = useOperatorDefinitions({
+  const operatorDefinitions = useComponentDefinitions({
+    componentType: "COMPONENT_TYPE_OPERATOR",
     enabled: enabledQuery,
     accessToken,
   });
 
-  const genericDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_GENERIC",
+  const genericDefinitions = useComponentDefinitions({
+    componentType: "COMPONENT_TYPE_GENERIC",
     enabled: enabledQuery,
     accessToken,
   });
 
-  const aiDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_AI",
+  const aiDefinitions = useComponentDefinitions({
+    componentType: "COMPONENT_TYPE_AI",
     enabled: enabledQuery,
     accessToken,
   });
 
-  const applicationDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_APPLICATION",
+  const applicationDefinitions = useComponentDefinitions({
+    componentType: "COMPONENT_TYPE_APPLICATION",
     enabled: enabledQuery,
     accessToken,
   });
 
-  const dataDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_DATA",
+  const dataDefinitions = useComponentDefinitions({
+    componentType: "COMPONENT_TYPE_DATA",
     enabled: enabledQuery,
     accessToken,
   });
@@ -181,9 +176,7 @@ export const ComponentCmdk = () => {
   //   }
   // }
 
-  function onSelect(
-    definition: OperatorDefinition | IteratorDefinition | ConnectorDefinition,
-  ) {
+  function onSelect(definition: ComponentDefinition | IteratorDefinition) {
     if (!pipeline.isSuccess) {
       return;
     }
@@ -207,25 +200,12 @@ export const ComponentCmdk = () => {
       });
     }
 
-    if (isOperatorDefinition(definition)) {
+    if (isComponentDefinition(definition)) {
       const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
       const defaultValue = generateDefaultValue(
         definition.spec.componentSpecification,
       );
 
-      doc = YAML.stringify({
-        [id]: {
-          type: definition.id,
-          ...defaultValue,
-        },
-      });
-    }
-
-    if (isConnectorDefinition(definition)) {
-      const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
-      const defaultValue = generateDefaultValue(
-        definition.spec.componentSpecification,
-      );
       doc = YAML.stringify({
         [id]: {
           type: definition.id,

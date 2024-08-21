@@ -10,8 +10,6 @@ import { Button, cn, Icons } from "@instill-ai/design-system";
 import { ImageWithFallback } from "../../../../components";
 import {
   InstillStore,
-  isConnectorDefinition,
-  isOperatorDefinition,
   useInstillStore,
   useNamespacePipeline,
   useRouteInfo,
@@ -133,27 +131,22 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     const viewId = `${id}-documentation-view`;
     const viewTitle = `${data.definition.title} Documentation`;
 
-    console.log(data.definition);
-
-    if (isOperatorDefinition(data.definition)) {
-      documentationUrl = urlPrefix + `/operator/${data.definition.id}`;
-    }
-
-    if (isConnectorDefinition(data.definition)) {
-      switch (data.definition.type) {
-        case "COMPONENT_TYPE_AI":
-          documentationUrl = urlPrefix + `/ai/${data.definition.id}`;
-          break;
-        case "COMPONENT_TYPE_DATA":
-          documentationUrl = urlPrefix + `/data/${data.definition.id}`;
-          break;
-        case "COMPONENT_TYPE_APPLICATION":
-          documentationUrl = urlPrefix + `/application/${data.definition.id}`;
-          break;
-        case "COMPONENT_TYPE_GENERIC":
-          documentationUrl = urlPrefix + `/generic/${data.definition.id}`;
-          break;
-      }
+    switch (data.definition.type) {
+      case "COMPONENT_TYPE_OPERATOR":
+        documentationUrl = urlPrefix + `/operator/${data.definition.id}`;
+        break;
+      case "COMPONENT_TYPE_AI":
+        documentationUrl = urlPrefix + `/ai/${data.definition.id}`;
+        break;
+      case "COMPONENT_TYPE_DATA":
+        documentationUrl = urlPrefix + `/data/${data.definition.id}`;
+        break;
+      case "COMPONENT_TYPE_APPLICATION":
+        documentationUrl = urlPrefix + `/application/${data.definition.id}`;
+        break;
+      case "COMPONENT_TYPE_GENERIC":
+        documentationUrl = urlPrefix + `/generic/${data.definition.id}`;
+        break;
     }
 
     if (!documentationUrl) {
