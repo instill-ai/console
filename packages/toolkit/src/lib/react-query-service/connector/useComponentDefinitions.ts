@@ -1,24 +1,22 @@
-"use client";
-
 import { useQuery } from "@tanstack/react-query";
+import { ComponentType, Nullable } from "instill-sdk";
 
-import type { Nullable } from "../../type";
 import { env } from "../../../server";
 import { getInstillAPIClient } from "../../vdp-sdk";
 
-export function useOperatorDefinitions({
+export function useComponentDefinitions({
+  componentType,
   accessToken,
   enabled,
   retry,
-  disableViewFull,
 }: {
+  componentType: ComponentType | "all";
   accessToken: Nullable<string>;
   enabled: boolean;
   retry?: false | number;
-  disableViewFull?: boolean;
 }) {
   return useQuery({
-    queryKey: ["operator-definitions"],
+    queryKey: ["component-definitions", componentType],
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
@@ -26,14 +24,16 @@ export function useOperatorDefinitions({
 
       const client = getInstillAPIClient({ accessToken });
 
-      const operatorDefinitions =
-        await client.vdp.component.listOperatorDefinitions({
+      const connectorDefinitions =
+        await client.vdp.component.listComponentDefinitions({
           pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+          filter:
+            componentType !== "all"
+              ? `componentType=${componentType}`
+              : undefined,
           enablePagination: false,
-          view: disableViewFull ? undefined : "VIEW_FULL",
         });
-
-      return Promise.resolve(operatorDefinitions);
+      return Promise.resolve(connectorDefinitions);
     },
     enabled,
     retry: retry === false ? false : retry ? retry : 3,

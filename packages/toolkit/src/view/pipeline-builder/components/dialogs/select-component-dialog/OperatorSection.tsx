@@ -3,8 +3,8 @@ import { Icons } from "@instill-ai/design-system";
 import { ImageWithFallback } from "../../../../../components";
 import {
   InstillStore,
+  useComponentDefinitions,
   useInstillStore,
-  useOperatorDefinitions,
   useShallow,
 } from "../../../../../lib";
 import { Section } from "./Section";
@@ -15,14 +15,15 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
 });
 
-export const OpoeratorSection = ({
+export const OperatorSection = ({
   onSelect,
 }: {
   onSelect: OnSelectComponent;
 }) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const operatorDefinitions = useOperatorDefinitions({
+  const operatorDefinitions = useComponentDefinitions({
+    componentType: "COMPONENT_TYPE_OPERATOR",
     enabled: enabledQuery,
     accessToken,
   });

@@ -7,7 +7,7 @@ import { Nullable } from "vitest";
 import { z } from "zod";
 
 import { DataSpecification, GeneralRecord } from "../types";
-import { ConnectorDefinition, OperatorDefinition } from "./component";
+import { ComponentDefinition } from "./component";
 
 export type PipelineVariableField = {
   title: string;
@@ -55,7 +55,7 @@ export type ComponentBasicFields = {
 };
 
 export type PipelineGeneralComponent = {
-  definition?: Nullable<ConnectorDefinition | OperatorDefinition>;
+  definition?: Nullable<ComponentDefinition>;
   task: string;
   input: GeneralRecord;
   condition: Nullable<string>;

@@ -3,7 +3,7 @@ import { Icons } from "@instill-ai/design-system";
 import { ImageWithFallback } from "../../../../../components";
 import {
   InstillStore,
-  useConnectorDefinitions,
+  useComponentDefinitions,
   useInstillStore,
   useShallow,
 } from "../../../../../lib";
@@ -22,8 +22,8 @@ export const ApplicationSection = ({
 }) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const applicationDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_APPLICATION",
+  const applicationDefinitions = useComponentDefinitions({
+    componentType: "COMPONENT_TYPE_APPLICATION",
     enabled: enabledQuery,
     accessToken,
   });
