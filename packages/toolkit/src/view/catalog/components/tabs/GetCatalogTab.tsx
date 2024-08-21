@@ -1,14 +1,15 @@
-"use client";
-
-import * as React from "react";
+import React from "react";
 import { Nullable } from "instill-sdk";
 
-import { Separator } from "@instill-ai/design-system";
+import { Button, Separator } from "@instill-ai/design-system";
 
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
 import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { env } from "../../../../server";
+import { useListCatalogFiles } from "../../../../lib/react-query-service/catalog";
+import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
+import { DropdownMenu } from "@instill-ai/design-system";
 
 type GetCatalogTabProps = {
   catalog: Catalog;
@@ -17,6 +18,12 @@ type GetCatalogTabProps = {
   namespaceId: Nullable<string>;
 };
 
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+  selectedNamespace: store.navigationNamespaceAnchor,
+});
+
 export const GetCatalogTab = ({
   catalog,
   isProcessed,
@@ -24,18 +31,30 @@ export const GetCatalogTab = ({
   namespaceId,
 }: GetCatalogTabProps) => {
   const kbId = catalog.catalogId;
+  const [selectedFileUid, setSelectedFileUid] = React.useState<string>("");
+
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
+    useShallow(selector)
+  );
+
+  const filesData = useListCatalogFiles({
+    namespaceId: selectedNamespace,
+    catalogId: catalog.catalogId,
+    accessToken,
+    enabled: enabledQuery && Boolean(selectedNamespace),
+  });
 
   const curlCommand1 = React.useMemo(() => {
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
-    return `curl -X GET '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${'{fileUid}'}' \\
+    return `curl -X GET '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${selectedFileUid}' \\
 --header "Content-Type: application/json" \\
 --header "Authorization: Bearer $INSTILL_API_TOKEN"`;
-  }, [namespaceId, kbId]);
+  }, [namespaceId, kbId, selectedFileUid]);
 
   const apiEndpoint1 = React.useMemo(() => {
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
-    return `${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${'{fileUid}'}`;
-  }, [namespaceId, kbId]);
+    return `${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${selectedFileUid}`;
+  }, [namespaceId, kbId, selectedFileUid]);
 
   const inputSchema = `{
   "type": "object",
@@ -222,6 +241,28 @@ export const GetCatalogTab = ({
             to retrieve the file catalog&apos;s detailed information and obtain
             the necessary chunks and metadata.
           </p>
+          <p className="mb-4 product-body-text-3-regular">
+            Select a file from the dropdown below to populate the fileUid in the API commands.
+          </p>
+          <div className="mb-8">
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger  >
+                <Button className="!px-2 !py-2" variant="primary">
+                  {selectedFileUid || "Select a file"}
+                </Button>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content >
+                {filesData.data?.map((file) => (
+                  <DropdownMenu.Item
+                    key={file.fileUid}
+                    onSelect={() => setSelectedFileUid(file.fileUid)}
+                  >
+                    {file.name}
+                  </DropdownMenu.Item>
+                ))}
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+          </div>
 
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">
@@ -285,9 +326,8 @@ export const GetCatalogTab = ({
             .
           </p>
         </div>
-      )
-      }
-    </div >
+      )}
+    </div>
   );
 };
 
