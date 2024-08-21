@@ -1,11 +1,14 @@
 import { getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
 import {
+  ComponentDefinition,
   ConnectorDefinition,
   GetConnectorDefinitionRequest,
   GetConnectorDefinitionResponse,
   GetOperatorDefinitionRequest,
   GetOperatorDefinitionResponse,
+  ListComponentDefinitionsRequest,
+  ListComponentDefinitionsResponse,
   ListConnectorDefinitionsRequest,
   ListConnectorDefinitionsResponse,
   ListOperatorDefinitionsRequest,
@@ -18,6 +21,9 @@ export class ComponentClient extends APIResource {
    * Query
    * ---------------------------------------------------------------------------*/
 
+  /**
+   * @deprecated use ths listComponentDefinitions instead
+   */
   async listConnectorDefinitions(
     props: ListConnectorDefinitionsRequest & { enablePagination: true },
   ): Promise<ListConnectorDefinitionsResponse>;
@@ -25,10 +31,13 @@ export class ComponentClient extends APIResource {
     props: ListConnectorDefinitionsRequest & { enablePagination: false },
   ): Promise<ConnectorDefinition[]>;
   async listConnectorDefinitions(
-    props: ListConnectorDefinitionsRequest & { enablePagination: boolean },
+    props: ListConnectorDefinitionsRequest & { enablePagination: undefined },
+  ): Promise<ConnectorDefinition[]>;
+  async listConnectorDefinitions(
+    props: ListConnectorDefinitionsRequest & { enablePagination?: boolean },
   ): Promise<ListConnectorDefinitionsResponse | ConnectorDefinition[]>;
   async listConnectorDefinitions(
-    props: ListConnectorDefinitionsRequest & { enablePagination: boolean },
+    props: ListConnectorDefinitionsRequest & { enablePagination?: boolean },
   ) {
     const { pageSize, pageToken, filter, view, enablePagination } = props;
 
@@ -59,7 +68,62 @@ export class ComponentClient extends APIResource {
             pageToken: data.nextPageToken,
             filter,
             view,
-            enablePagination,
+            enablePagination: false,
+          })),
+        );
+      }
+
+      return Promise.resolve(definitions);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listComponentDefinitions(
+    props: ListComponentDefinitionsRequest & { enablePagination: true },
+  ): Promise<ListComponentDefinitionsResponse>;
+  async listComponentDefinitions(
+    props: ListComponentDefinitionsRequest & { enablePagination: false },
+  ): Promise<ComponentDefinition[]>;
+  async listComponentDefinitions(
+    props: ListComponentDefinitionsRequest & { enablePagination: undefined },
+  ): Promise<ComponentDefinition[]>;
+  async listComponentDefinitions(
+    props: ListComponentDefinitionsRequest & { enablePagination?: boolean },
+  ): Promise<ListComponentDefinitionsResponse | ComponentDefinition[]>;
+  async listComponentDefinitions(
+    props: ListComponentDefinitionsRequest & { enablePagination?: boolean },
+  ) {
+    const { pageSize, pageToken, filter, view, enablePagination } = props;
+
+    try {
+      const definitions: ComponentDefinition[] = [];
+
+      const queryString = getQueryString({
+        baseURL: `/component-definitions`,
+        pageSize,
+        pageToken,
+        filter,
+        view,
+      });
+
+      const data =
+        await this._client.get<ListComponentDefinitionsResponse>(queryString);
+
+      if (enablePagination) {
+        return Promise.resolve(data);
+      }
+
+      definitions.push(...data.componentDefinitions);
+
+      if (data.nextPageToken) {
+        definitions.push(
+          ...(await this.listComponentDefinitions({
+            pageSize,
+            pageToken: data.nextPageToken,
+            filter,
+            view,
+            enablePagination: false,
           })),
         );
       }

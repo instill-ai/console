@@ -3,7 +3,7 @@ import { Icons } from "@instill-ai/design-system";
 import { ImageWithFallback } from "../../../../../components";
 import {
   InstillStore,
-  useConnectorDefinitions,
+  useComponentDefinitions,
   useInstillStore,
   useShallow,
 } from "../../../../../lib";
@@ -22,8 +22,8 @@ export const GenericSection = ({
 }) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const genericDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_GENERIC",
+  const genericDefinitions = useComponentDefinitions({
+    componentType: "COMPONENT_TYPE_GENERIC",
     enabled: enabledQuery,
     accessToken,
   });

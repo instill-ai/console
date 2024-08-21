@@ -3,7 +3,7 @@ import { Icons } from "@instill-ai/design-system";
 import { ImageWithFallback } from "../../../../../components";
 import {
   InstillStore,
-  useConnectorDefinitions,
+  useComponentDefinitions,
   useInstillStore,
   useShallow,
 } from "../../../../../lib";
@@ -18,8 +18,8 @@ const selector = (store: InstillStore) => ({
 export const AISection = ({ onSelect }: { onSelect: OnSelectComponent }) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const aiDefinitions = useConnectorDefinitions({
-    connectorType: "CONNECTOR_TYPE_AI",
+  const aiDefinitions = useComponentDefinitions({
+    componentType: "COMPONENT_TYPE_AI",
     enabled: enabledQuery,
     accessToken,
   });

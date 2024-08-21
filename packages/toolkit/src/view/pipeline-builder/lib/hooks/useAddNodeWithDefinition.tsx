@@ -1,10 +1,6 @@
 "use client";
 
-import type {
-  ConnectorDefinition,
-  IteratorDefinition,
-  OperatorDefinition,
-} from "instill-sdk";
+import type { ComponentDefinition, IteratorDefinition } from "instill-sdk";
 import * as React from "react";
 import { Position, ReactFlowInstance } from "reactflow";
 
@@ -14,10 +10,7 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../../lib";
-import {
-  isConnectorDefinition,
-  isIteratorDefinition,
-} from "../../../../lib/vdp-sdk/helper";
+import { isIteratorDefinition } from "../../../../lib/vdp-sdk/helper";
 import { generateUniqueIndex } from "../generateUniqueIndex";
 import { getAllNodeID } from "../getAllNodeID";
 import { transformConnectorDefinitionIDToComponentIDPrefix } from "../transformConnectorDefinitionIDToComponentIDPrefix";
@@ -45,9 +38,7 @@ export function useAddNodeWithDefinition({
   } = useInstillStore(useShallow(selector));
 
   return React.useCallback(
-    (
-      definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition,
-    ) => {
+    (definition: ComponentDefinition | IteratorDefinition) => {
       if (!reactFlowInstance) return;
 
       let newNodeXY = {
@@ -138,7 +129,7 @@ export function useAddNodeWithDefinition({
             zIndex: 20,
           },
         ];
-      } else if (isConnectorDefinition(definition)) {
+      } else {
         newNodes = [
           ...newNodes,
           {
@@ -154,27 +145,6 @@ export function useAddNodeWithDefinition({
               condition: null,
               setup: {},
               note: null,
-            },
-            position: newNodeXY,
-            zIndex: 20,
-          },
-        ];
-      } else {
-        newNodes = [
-          ...newNodes,
-          {
-            id: nodeID,
-            type: "generalNode",
-            sourcePosition: Position.Left,
-            targetPosition: Position.Right,
-            data: {
-              type: definition.id,
-              definition: definition,
-              input: {},
-              task: "",
-              condition: null,
-              note: null,
-              setup: {},
             },
             position: newNodeXY,
             zIndex: 20,

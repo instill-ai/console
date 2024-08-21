@@ -1,2 +1,1 @@
-export * from "./useConnectorDefinition";
-export * from "./useConnectorDefinitions";
+export * from "./useComponentDefinitions";

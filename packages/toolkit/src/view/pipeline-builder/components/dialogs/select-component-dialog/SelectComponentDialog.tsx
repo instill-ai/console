@@ -1,20 +1,20 @@
 "use client";
 
-import type { IteratorDefinition, OperatorDefinition } from "instill-sdk";
+import type { ComponentDefinition, IteratorDefinition } from "instill-sdk";
 import cn from "clsx";
 
 import { Button, Dialog, Icons, ScrollArea } from "@instill-ai/design-system";
 
 import { DataTestID } from "../../../../../constant";
-import { ConnectorDefinition, useInstillStore } from "../../../../../lib";
+import { useInstillStore } from "../../../../../lib";
 import { AISection } from "./AISection";
 import { ApplicationSection } from "./ApplicationSection";
 import { DataSection } from "./DataSection";
 import { GenericSection } from "./GenericSection";
-import { OpoeratorSection } from "./OpoeratorSection";
+import { OperatorSection } from "./OperatorSection";
 
 export type OnSelectComponent = (
-  definition: ConnectorDefinition | OperatorDefinition | IteratorDefinition,
+  definition: ComponentDefinition | IteratorDefinition,
 ) => void;
 
 export const SelectComponentDialog = ({
@@ -75,7 +75,7 @@ export const SelectComponentDialog = ({
             </button>
           </div>
           {isEditingIterator ? null : <GenericSection onSelect={onSelect} />}
-          <OpoeratorSection onSelect={onSelect} />
+          <OperatorSection onSelect={onSelect} />
           <AISection onSelect={onSelect} />
           <DataSection onSelect={onSelect} />
           <ApplicationSection onSelect={onSelect} />

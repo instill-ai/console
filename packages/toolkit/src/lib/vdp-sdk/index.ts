@@ -3,7 +3,6 @@ import { InstillAPIClient } from "instill-sdk";
 import { env } from "../../server";
 import { Nullable } from "../type";
 
-export * from "./connector";
 export * from "./helper";
 export * from "./metric";
 export * from "./hub";
