@@ -8,19 +8,12 @@
 // monaco-editor whole namespace
 import type { editor } from "monaco-editor";
 import Ajv from "ajv";
-import yaml from "js-yaml";
-import SourceMap from "js-yaml-source-map";
+import YAML from "yaml";
 
 import { GeneralRecord, Nullable } from "../../lib";
 import { InstillYamlSchema } from "./schema";
 
 const ajv = new Ajv({ allErrors: true });
-
-type SourceLocation = {
-  line: number;
-  column: number;
-  position: number;
-};
 
 type ValidateReturn =
   | {
@@ -44,25 +37,35 @@ export function validateVSCodeYaml(
   skipInstillFormatCheck = false,
 ): ValidateReturn {
   // SourceMap will index the lines of the YAML file using properties paths as keys
-  const yamlSourceMap: SourceMap = new SourceMap();
   const markers: editor.IMarkerData[] = [];
 
   let yamlData: Nullable<GeneralRecord> = null;
 
+  const lineCounter = new YAML.LineCounter();
+
+  const doc = YAML.parseAllDocuments<YAML.YAMLMap>(recipe, { lineCounter });
+
+  if (!doc || !doc[0]) {
+    return {
+      success: false,
+      markers: [],
+    };
+  }
+
   try {
-    yamlData = yaml.load(recipe, {
-      listener: yamlSourceMap.listen(),
-    }) as GeneralRecord;
+    yamlData = YAML.parse(recipe);
   } catch (error) {
-    if (error instanceof yaml.YAMLException) {
-      markers.push({
-        startLineNumber: error.mark.line,
-        startColumn: error.mark.column,
-        endLineNumber: error.mark.line,
-        endColumn: error.mark.column,
-        message: error.message,
-        severity: MarkerSeverity.Error,
-      });
+    if (error instanceof YAML.YAMLError) {
+      if (error.linePos && error.linePos.length > 0) {
+        markers.push({
+          startLineNumber: error.linePos[0].line,
+          startColumn: error.linePos[0].col,
+          endLineNumber: error.linePos[0].line,
+          endColumn: error.linePos[0].col,
+          message: error.message,
+          severity: MarkerSeverity.Error,
+        });
+      }
     }
   }
 
@@ -77,54 +80,33 @@ export function validateVSCodeYaml(
 
     if (validator.errors) {
       for (const error of validator.errors) {
-        if (error instanceof yaml.YAMLException) {
-          console.log(error);
-        }
         const propertyPath: string = error.instancePath
           .replace(/^\//, "")
           .replace(/\//g, ".");
-        const propertyLocation: SourceLocation | undefined =
-          yamlSourceMap.lookup(propertyPath);
-        // const propertyLineNumber: string = propertyLocation
-        //   ? propertyLocation.line.toString()
-        //   : "unknown";
 
-        if (error.keyword === "additionalProperties") {
-          const additionalPropertyPath = `${propertyPath}.${error.params.additionalProperty}`;
-          const additionalPropertyLocation: SourceLocation | undefined =
-            yamlSourceMap.lookup(additionalPropertyPath);
-          // const additionalPropertyLineNumber: string =
-          //   additionalPropertyLocation
-          //     ? additionalPropertyLocation.line.toString()
-          //     : "unknown";
+        const node = doc[0].getIn(propertyPath.split("."), true) as YAML.Node;
 
-          if (additionalPropertyLocation) {
-            markers.push({
-              startLineNumber: additionalPropertyLocation.line,
-              startColumn: additionalPropertyLocation.column,
-              endLineNumber: additionalPropertyLocation.line,
-              endColumn: additionalPropertyLocation.column,
-              message: `Property '${additionalPropertyPath}' ${error.message}`,
-              severity: MarkerSeverity.Error,
-            });
-          }
-        } else {
-          if (propertyLocation) {
-            markers.push({
-              startLineNumber: propertyLocation.line,
-              startColumn: propertyLocation.column,
-              endLineNumber: propertyLocation.line,
-              endColumn: propertyLocation.column,
-              message: `Property '${propertyPath}' ${error.message}`,
-              severity: MarkerSeverity.Error,
-            });
-          }
+        if (node && node.range) {
+          const pos = lineCounter.linePos(node.range[0]);
+          const adjustedLine =
+            node instanceof YAML.Scalar ? pos.line : pos.line - 1;
+
+          markers.push({
+            startLineNumber: adjustedLine,
+            startColumn: pos.col,
+            endLineNumber: adjustedLine,
+            endColumn: pos.col,
+            message: error.message || "Unknown error",
+            severity: MarkerSeverity.Error,
+          });
         }
       }
     }
   } catch (error) {
     console.log(error);
   }
+
+  console.log(":mm", markers);
 
   if (markers.length === 0) {
     return { success: true, data: yamlData };
