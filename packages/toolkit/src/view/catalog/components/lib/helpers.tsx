@@ -44,7 +44,7 @@ export const getFileIcon = (fileType: string) => {
     case "FILE_TYPE_HTML":
       return <Icons.HTMLFile className="h-5 w-5" />;
     case "FILE_TYPE_XLSX":
-      return <Icons.HTMLFile className="h-5 w-5" />;
+      return <Icons.XLSXFile className="h-5 w-5" />;
     default:
       return <Icons.File05 className="h-5 w-5" />;
   }

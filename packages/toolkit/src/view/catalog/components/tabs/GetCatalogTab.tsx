@@ -11,46 +11,33 @@ import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { env } from "../../../../server";
 
 type GetCatalogTabProps = {
-    catalog: Catalog;
-    isProcessed: boolean;
-    onGoToUpload: () => void;
-    namespaceId: Nullable<string>;
+  catalog: Catalog;
+  isProcessed: boolean;
+  onGoToUpload: () => void;
+  namespaceId: Nullable<string>;
 };
 
 export const GetCatalogTab = ({
-    catalog,
-    isProcessed,
-    onGoToUpload,
-    namespaceId,
+  catalog,
+  isProcessed,
+  onGoToUpload,
+  namespaceId,
 }: GetCatalogTabProps) => {
-    const kbId = catalog.catalogId;
+  const kbId = catalog.catalogId;
 
-    const curlCommand1 = React.useMemo(() => {
-        const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
-        return `curl -X GET '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${'{fileUid}'}' \\
+  const curlCommand1 = React.useMemo(() => {
+    const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
+    return `curl -X GET '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${'{fileUid}'}' \\
 --header "Content-Type: application/json" \\
 --header "Authorization: Bearer $INSTILL_API_TOKEN"`;
-    }, [namespaceId, kbId]);
+  }, [namespaceId, kbId]);
 
-    const curlCommand2 = React.useMemo(() => {
-        const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
-        return `curl --location '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileId=${'{filename}'}' \\
---header 'Content-Type: application/json' \\
---header 'Accept: application/json' \\
---header 'Authorization: Bearer $INSTILL_API_TOKEN'`;
-    }, [namespaceId, kbId]);
+  const apiEndpoint1 = React.useMemo(() => {
+    const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
+    return `${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${'{fileUid}'}`;
+  }, [namespaceId, kbId]);
 
-    const apiEndpoint1 = React.useMemo(() => {
-        const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
-        return `${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${'{fileUid}'}`;
-    }, [namespaceId, kbId]);
-
-    const apiEndpoint2 = React.useMemo(() => {
-        const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
-        return `${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileId=${'{filename}'}`;
-    }, [namespaceId, kbId]);
-
-    const inputSchema = `{
+  const inputSchema = `{
   "type": "object",
   "properties": {
     "namespaceId": {
@@ -73,7 +60,7 @@ export const GetCatalogTab = ({
   "title": "Get File Catalog Request"
 }`;
 
-    const outputSchema = `{
+  const outputSchema = `{
   "type": "object",
   "properties": {
     "originalData": {
@@ -205,116 +192,103 @@ export const GetCatalogTab = ({
   "title": "Get File Catalog Response"
 }`;
 
-    return (
-        <div className="flex flex-col mb-10">
-            <div className="mb-5 flex items-center justify-between">
-                <p className="text-semantic-fg-primary product-headings-heading-3">
-                    {catalog.name}
-                </p>
-            </div>
-            <Separator orientation="horizontal" className="mb-6" />
-            {!isProcessed ? (
-                <div className="w-2/3 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
-                    <p className="mb-4 product-body-text-3-regular">
-                        Your catalog has been successfully created. Now, you can proceed to
-                        the{" "}
-                        <button
-                            onClick={onGoToUpload}
-                            className="text-semantic-accent-default underline"
-                        >
-                            Upload Documents page
-                        </button>{" "}
-                        to upload and process your files.
-                    </p>
-                </div>
-            ) : (
-                <div className="w-5/6 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
-                    <p className="mb-4 product-body-text-3-regular">
-                        Once the status of documents in a catalog&apos;s files has changed to
-                        &apos;Completed&apos;, you can use the following Instill API example
-                        to retrieve the file catalog&apos;s detailed information and obtain
-                        the necessary chunks and metadata.
-                    </p>
+  return (
+    <div className="flex flex-col mb-10">
+      <div className="mb-5 flex items-center justify-between">
+        <p className="text-semantic-fg-primary product-headings-heading-3">
+          {catalog.name}
+        </p>
+      </div>
+      <Separator orientation="horizontal" className="mb-6" />
+      {!isProcessed ? (
+        <div className="w-2/3 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
+          <p className="mb-4 product-body-text-3-regular">
+            Your catalog has been successfully created. Now, you can proceed to
+            the{" "}
+            <button
+              onClick={onGoToUpload}
+              className="text-semantic-accent-default underline"
+            >
+              Upload Documents page
+            </button>{" "}
+            to upload and process your files.
+          </p>
+        </div>
+      ) : (
+        <div className="w-5/6 rounded bg-semantic-bg-base-bg p-6 border border-semantic-bg-line">
+          <p className="mb-4 product-body-text-3-regular">
+            Once the status of documents in a catalog&apos;s files has changed to
+            &apos;Completed&apos;, you can use the following Instill API example
+            to retrieve the file catalog&apos;s detailed information and obtain
+            the necessary chunks and metadata.
+          </p>
 
-                    <div className="mb-8">
-                        <p className="mb-2 text-lg font-semibold">
-                            Set Environment Variable:
-                        </p>
-                        <CodeBlock
-                            codeString={"$ export INSTILL_API_TOKEN=********"}
-                            wrapLongLines={true}
-                            language="bash"
-                            customStyle={defaultCodeSnippetStyles}
-                        />
-                    </div>
-                    <div className="mb-8">
-                        <p className="mb-2 text-lg font-semibold">Example cURL command:</p>
-                        <CodeBlock
-                            codeString={curlCommand1}
-                            wrapLongLines={true}
-                            language="bash"
-                            customStyle={defaultCodeSnippetStyles}
-                        />
-                        <p className="my-4 font-semibold">or</p>
-                        <CodeBlock
-                            codeString={curlCommand2}
-                            wrapLongLines={true}
-                            language="bash"
-                            customStyle={defaultCodeSnippetStyles}
-                        />
-                    </div>
+          <div className="mb-8">
+            <p className="mb-2 text-lg font-semibold">
+              Set Environment Variable:
+            </p>
+            <CodeBlock
+              codeString={"$ export INSTILL_API_TOKEN=********"}
+              wrapLongLines={true}
+              language="bash"
+              customStyle={defaultCodeSnippetStyles}
+            />
+          </div>
+          <div className="mb-8">
+            <p className="mb-2 text-lg font-semibold">Example cURL command:</p>
+            <CodeBlock
+              codeString={curlCommand1}
+              wrapLongLines={true}
+              language="bash"
+              customStyle={defaultCodeSnippetStyles}
+            />
+          </div>
 
-                    <div className="mb-12">
-                        <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
-                        <CodeBlock
-                            codeString={apiEndpoint1}
-                            wrapLongLines={true}
-                            customStyle={defaultCodeSnippetStyles}
-                        />
-                        <p className="my-4 font-semibold">or</p>
-                        <CodeBlock
-                            codeString={apiEndpoint2}
-                            wrapLongLines={true}
-                            customStyle={defaultCodeSnippetStyles}
-                        />
-                    </div>
-                    <ModelSectionHeader>JSON Schema</ModelSectionHeader>
-                    <div className="mb-8">
-                        <p className="mb-2 text-lg font-semibold">Input:</p>
-                        <CodeBlock
-                            codeString={inputSchema}
-                            wrapLongLines={true}
-                            language="json"
-                            customStyle={defaultCodeSnippetStyles}
-                        />
-                    </div>
+          <div className="mb-12">
+            <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
+            <CodeBlock
+              codeString={apiEndpoint1}
+              wrapLongLines={true}
+              customStyle={defaultCodeSnippetStyles}
+            />
+          </div>
+          <ModelSectionHeader>JSON Schema</ModelSectionHeader>
+          <div className="mb-8">
+            <p className="mb-2 text-lg font-semibold">Input:</p>
+            <CodeBlock
+              codeString={inputSchema}
+              wrapLongLines={true}
+              language="json"
+              customStyle={defaultCodeSnippetStyles}
+            />
+          </div>
 
-                    <div className="mb-8">
-                        <p className="mb-2 text-lg font-semibold">Output:</p>
-                        <CodeBlock
-                            codeString={outputSchema}
-                            wrapLongLines={true}
-                            language="json"
-                            customStyle={defaultCodeSnippetStyles}
-                        />
-                    </div>
+          <div className="mb-8">
+            <p className="mb-2 text-lg font-semibold">Output:</p>
+            <CodeBlock
+              codeString={outputSchema}
+              wrapLongLines={true}
+              language="json"
+              customStyle={defaultCodeSnippetStyles}
+            />
+          </div>
 
-                    <p className="mb-4 product-body-text-3-regular">
-                        For a more detailed overview of the input/output schemas, check out
-                        the{" "}
-                        <a
-                            href="https://www.instill.tech/docs/artifact/get"
-                            className="text-semantic-accent-default underline"
-                        >
-                            Artifact&apos;s API reference
-                        </a>
-                        .
-                    </p>
-                </div>
-            )
-            }
-        </div >
-    );
+          <p className="mb-4 product-body-text-3-regular">
+            For a more detailed overview of the input/output schemas, check out
+            the{" "}
+            <a
+              href="https://www.instill.tech/docs/artifact/get"
+              className="text-semantic-accent-default underline"
+            >
+              Artifact&apos;s API reference
+            </a>
+            .
+          </p>
+        </div>
+      )
+      }
+    </div >
+  );
 };
 
 export default GetCatalogTab;
