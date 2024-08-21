@@ -442,14 +442,20 @@ export const RecipeEditorView = () => {
                           }}
                         />
                         <div className="rounded-b w-full h-full overflow-hidden bg-semantic-bg-alt-primary">
-                          {editorMultiScreenModel.topRight
-                            ? editorMultiScreenModel.topRight.views.find(
-                                (view) =>
-                                  view.id ===
-                                  editorMultiScreenModel.topRight
-                                    ?.currentViewId,
-                              )?.view
-                            : null}
+                          {editorMultiScreenModel.topRight.views.map((view) => (
+                            <div
+                              key={view.id}
+                              className={cn(
+                                "flex w-full h-full",
+                                view.id ===
+                                  editorMultiScreenModel.topRight?.currentViewId
+                                  ? ""
+                                  : "hidden",
+                              )}
+                            >
+                              {view.view}
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </Resizable.Panel>
@@ -540,14 +546,23 @@ export const RecipeEditorView = () => {
                           }}
                         />
                         <div className="w-full h-full rounded-b bg-semantic-bg-alt-primary px-4 overflow-hidden">
-                          {editorMultiScreenModel.bottomRight
-                            ? editorMultiScreenModel.bottomRight.views.find(
-                                (view) =>
+                          {editorMultiScreenModel.bottomRight.views.map(
+                            (view) => (
+                              <div
+                                key={view.id}
+                                className={cn(
+                                  "flex w-full h-full",
                                   view.id ===
-                                  editorMultiScreenModel.bottomRight
-                                    ?.currentViewId,
-                              )?.view
-                            : null}
+                                    editorMultiScreenModel.bottomRight
+                                      ?.currentViewId
+                                    ? ""
+                                    : "hidden",
+                                )}
+                              >
+                                {view.view}
+                              </div>
+                            ),
+                          )}
                         </div>
                       </div>
                     </Resizable.Panel>
