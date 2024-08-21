@@ -1,7 +1,7 @@
 import React from "react";
 import { Nullable } from "instill-sdk";
 
-import { Button, Separator } from "@instill-ai/design-system";
+import { Button, ScrollArea, Separator } from "@instill-ai/design-system";
 
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
@@ -241,14 +241,16 @@ export const GetCatalogTab = ({
             to retrieve the file catalog&apos;s detailed information and obtain
             the necessary chunks and metadata.
           </p>
-          <p className="mb-4 product-body-text-3-regular">
-            Select a file from the dropdown below to populate the fileUid in the API commands.
-          </p>
+          {!selectedFile ? (
+            <p className="mb-4 product-body-text-3-regular">
+              Select a file from the dropdown below to populate the fileUid in the API commands.
+            </p>
+          ) : null}
           <div className="mb-8">
             <DropdownMenu.Root>
               <DropdownMenu.Trigger asChild>
                 <Button
-                  className="!px-2 !py-2 max-w-64 text-left"
+                  className="!px-2 !py-2 max-w-64 text-left !normal-case"
                   variant="primary"
                 >
                   <span className="block truncate">
@@ -256,15 +258,18 @@ export const GetCatalogTab = ({
                   </span>
                 </Button>
               </DropdownMenu.Trigger>
-              <DropdownMenu.Content>
-                {filesData.data?.map((file) => (
-                  <DropdownMenu.Item
-                    key={file.fileUid}
-                    onSelect={() => setSelectedFile(file)}
-                  >
-                    {file.name}
-                  </DropdownMenu.Item>
-                ))}
+              <DropdownMenu.Content className="w-64">
+                <ScrollArea.Root className="max-h-64 overflow-auto">
+                  {filesData.data?.map((file) => (
+                    <DropdownMenu.Item
+                      key={file.fileUid}
+                      onSelect={() => setSelectedFile(file)}
+                      className="truncate"
+                    >
+                      {file.name}
+                    </DropdownMenu.Item>
+                  ))}
+                </ScrollArea.Root>
               </DropdownMenu.Content>
             </DropdownMenu.Root>
           </div>
