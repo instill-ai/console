@@ -47,7 +47,6 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
   const {
     fields,
     form,
-    //Schema: ValidatorSchema,
   } = useInstillForm(
     model?.inputSchema || null,
     taskInputOutput.input,

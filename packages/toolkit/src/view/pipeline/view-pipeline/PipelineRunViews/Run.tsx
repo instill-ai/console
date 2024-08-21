@@ -39,14 +39,20 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
   const {
     fieldItems: fields,
     form,
-    //Schema: ValidatorSchema,
   } = usePipelineTriggerRequestForm({
     mode: "demo",
-    fields: pipeline?.recipe.variable || null,
-    keyPrefix: "pipeline-details-page-trigger-pipeline-form",
+    fields: pipelineRun?.recipeSnapshot?.variable || null,
+    keyPrefix: "pipeline-run-details-page-form",
     disabledFields: true,
     disabledFieldControls: true,
+    values: pipelineRun?.inputs[0],
   });
+
+  /* const componentOutputFields = useComponentOutputFields({
+    mode: "demo",
+    schema: formSchema?.output || null,
+    data: pipelineRun?.outputs[0] || null,
+  }); */
 
   const [outputActiveView, setOutputActiveView] = React.useState<PipelineOutputActiveView>("preview");
 
@@ -147,8 +153,7 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
                 ) : (
                   <CodeBlock
                     codeString={JSON.stringify(
-                      //pipelineRunResponse?.outputs[0],
-                      '',
+                      pipelineRun?.outputs[0],
                       null,
                       2,
                     )}
