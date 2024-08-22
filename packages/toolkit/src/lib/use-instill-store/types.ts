@@ -154,12 +154,14 @@ export type EditorMultiScreenModel = {
 };
 
 export type EditorSlice = {
-  openCmdk: boolean;
+  openActionCmdk: boolean;
+  updateOpenActionCmdk: (fn: (prev: boolean) => boolean) => void;
+  openComponentCmdo: boolean;
+  updateOpenComponentCmdo: (fn: (prev: boolean) => boolean) => void;
   selectedComponentId: Nullable<string>;
   updateSelectedComponentId: (
     fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
-  updateOpenCmdk: (fn: (prev: boolean) => boolean) => void;
   cursorPosition: number;
   editorRef: Nullable<editor.IStandaloneCodeEditor>;
   updateEditorRef: (

@@ -16,14 +16,23 @@ export const createEditorSlice: StateCreator<
   [],
   EditorSlice
 > = (set) => ({
-  openCmdk: false,
-  updateOpenCmdk: (fn: (prev: boolean) => boolean) =>
+  openComponentCmdo: false,
+  updateOpenComponentCmdo: (fn: (prev: boolean) => boolean) =>
     set((state) => {
       return {
         ...state,
-        openCmdk: fn(state.openCmdk),
+        openComponentCmdo: fn(state.openComponentCmdo),
       };
     }),
+  openActionCmdk: false,
+  updateOpenActionCmdk: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        openActionCmdk: fn(state.openActionCmdk),
+      };
+    }),
+
   editorRef: null,
   updateEditorRef: (
     fn: (
