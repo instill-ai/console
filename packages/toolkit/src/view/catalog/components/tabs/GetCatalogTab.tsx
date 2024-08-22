@@ -8,6 +8,7 @@ import {
   DropdownMenu,
   ScrollArea,
   Separator,
+  cn,
 } from "@instill-ai/design-system";
 
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
@@ -25,13 +26,6 @@ import {
 } from "../lib/constant";
 import { truncateName } from "../lib/helpers";
 
-type GetCatalogTabProps = {
-  catalog: Catalog;
-  isProcessed: boolean;
-  onGoToUpload: () => void;
-  namespaceId: Nullable<string>;
-};
-
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
@@ -43,7 +37,12 @@ export const GetCatalogTab = ({
   isProcessed,
   onGoToUpload,
   namespaceId,
-}: GetCatalogTabProps) => {
+}: {
+  catalog: Catalog;
+  isProcessed: boolean;
+  onGoToUpload: () => void;
+  namespaceId: Nullable<string>;
+}) => {
   const catalogId = catalog.catalogId;
   const [selectedFile, setSelectedFile] = React.useState<Nullable<File>>(null);
 
@@ -144,7 +143,7 @@ export const GetCatalogTab = ({
               customStyle={defaultCodeSnippetStyles}
             />
           </div>
-          <div className={`mb-8 ${!selectedFile ? "opacity-50" : ""}`}>
+          <div className={cn("mb-8", !selectedFile ? "opacity-50" : "")}>
             <p className="mb-2 text-lg font-semibold">Example cURL command:</p>
             <CodeBlock
               codeString={curlCommand1}

@@ -14,19 +14,17 @@ import {
   RetrieveTestTabOutputSchema,
 } from "../lib/constant";
 
-type RetrieveTestTabProps = {
-  catalog: Catalog;
-  isProcessed: boolean;
-  onGoToUpload: () => void;
-  namespaceId: Nullable<string>;
-};
-
 export const RetrieveTestTab = ({
   catalog,
   isProcessed,
   onGoToUpload,
   namespaceId,
-}: RetrieveTestTabProps) => {
+}: {
+  catalog: Catalog;
+  isProcessed: boolean;
+  onGoToUpload: () => void;
+  namespaceId: Nullable<string>;
+}) => {
   const catalogId = catalog.catalogId;
 
   const curlCommand = React.useMemo(() => {
