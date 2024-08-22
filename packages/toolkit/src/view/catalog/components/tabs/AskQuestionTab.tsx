@@ -9,20 +9,19 @@ import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
 import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { env } from "../../../../server";
-
-type AskQuestionTabProps = {
-  catalog: Catalog;
-  isProcessed: boolean;
-  onGoToUpload: () => void;
-  namespaceId: Nullable<string>;
-};
+import { AskQuestionTabInputSchema, AskQuestionTabOutputSchema } from "../lib/constant";
 
 export const AskQuestionTab = ({
   catalog,
   isProcessed,
   onGoToUpload,
   namespaceId,
-}: AskQuestionTabProps) => {
+}: {
+  catalog: Catalog;
+  isProcessed: boolean;
+  onGoToUpload: () => void;
+  namespaceId: Nullable<string>;
+}) => {
   const kbId = catalog.catalogId;
 
   const curlCommand = React.useMemo(() => {
@@ -36,54 +35,7 @@ export const AskQuestionTab = ({
 }'`;
   }, [namespaceId, kbId]);
 
-  const inputSchema = `{
-  "type": "object",
-  "properties": {
-    "question": {
-      "type": "string",
-      "title": "Question"
-    },
-    "topK": {
-      "type": "integer",
-      "format": "int64",
-      "title": "Top K"
-    }
-  },
-  "required": ["question"],
-  "title": "Ask Question Request"
-}`;
 
-  const outputSchema = `{
-  "type": "object",
-  "properties": {
-    "answer": {
-      "type": "string",
-      "title": "Answer"
-    },
-    "referenceSources": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "chunkUid": {
-            "type": "string",
-            "title": "Chunk UID"
-          },
-          "textContent": {
-            "type": "string",
-            "title": "Text Content"
-          },
-          "sourceFile": {
-            "type": "string",
-            "title": "Source File"
-          }
-        }
-      },
-      "title": "Reference Sources"
-    }
-  },
-  "title": "Ask Question Response"
-}`;
 
   return (
     <div className="flex flex-col mb-10">
@@ -148,7 +100,7 @@ export const AskQuestionTab = ({
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">Input:</p>
             <CodeBlock
-              codeString={inputSchema}
+              codeString={AskQuestionTabInputSchema}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}
@@ -158,7 +110,7 @@ export const AskQuestionTab = ({
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">Output:</p>
             <CodeBlock
-              codeString={outputSchema}
+              codeString={AskQuestionTabOutputSchema}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}

@@ -9,6 +9,8 @@ import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
 import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { env } from "../../../../server";
+import { RetrieveTestTabInputSchema, RetrieveTestTabOutputSchema } from "../lib/constant";
+
 
 type RetrieveTestTabProps = {
   catalog: Catalog;
@@ -36,55 +38,7 @@ export const RetrieveTestTab = ({
 }'`;
   }, [namespaceId, kbId]);
 
-  const inputSchema = `{
-  "type": "object",
-  "properties": {
-    "textPrompt": {
-      "type": "string",
-      "title": "text prompt"
-    },
-    "topK": {
-      "type": "integer",
-      "format": "int64",
-      "title": "topK"
-    }
-  },
-  "title": "Similar chunk search request"
-}`;
 
-  const outputSchema = `{
-  "type": "object",
-  "properties": {
-    "similarChunks": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "chunkUid": {
-            "type": "string",
-            "title": "chunk uid"
-          },
-          "similarityScore": {
-            "type": "number",
-            "format": "float",
-            "title": "similarity score"
-          },
-          "textContent": {
-            "type": "string",
-            "title": "chunk"
-          },
-          "sourceFile": {
-            "type": "string",
-            "title": "source file"
-          }
-        },
-        "title": "similarity chunks"
-      },
-      "title": "chunks"
-    }
-  },
-  "title": "Similar chunk search response"
-}`;
 
   return (
     <div className="flex flex-col mb-10">
@@ -150,7 +104,7 @@ export const RetrieveTestTab = ({
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">Input:</p>
             <CodeBlock
-              codeString={inputSchema}
+              codeString={RetrieveTestTabInputSchema}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}
@@ -160,7 +114,7 @@ export const RetrieveTestTab = ({
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">Output:</p>
             <CodeBlock
-              codeString={outputSchema}
+              codeString={RetrieveTestTabOutputSchema}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}

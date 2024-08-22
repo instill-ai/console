@@ -20,6 +20,8 @@ import {
 } from "../../../../lib/react-query-service/catalog/types";
 import { env } from "../../../../server";
 import { truncateName } from "../lib/helpers";
+import { GetCatalogTabInputSchema, GetCatalogTabOutputSchema } from "../lib/constant";
+
 
 type GetCatalogTabProps = {
   catalog: Catalog;
@@ -66,160 +68,7 @@ export const GetCatalogTab = ({
     return `${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${selectedFile?.fileUid || ""}`;
   }, [namespaceId, kbId, selectedFile]);
 
-  const inputSchema = `{
-  "type": "object",
-  "properties": {
-    "namespaceId": {
-      "type": "string",
-      "title": "Namespace ID"
-    },
-    "catalogId": {
-      "type": "string",
-      "title": "Catalog ID"
-    },
-    "fileUid": {
-      "type": "string",
-      "title": "File UID"
-    },
-    "fileId": {
-      "type": "string",
-      "title": "File ID"
-    }
-  },
-  "title": "Get File Catalog Request"
-}`;
-
-  const outputSchema = `{
-  "type": "object",
-  "properties": {
-    "originalData": {
-      "type": "string",
-      "title": "Original data encoded in base64"
-    },
-    "metadata": {
-      "type": "object",
-      "title": "File Catalog Metadata",
-      "properties": {
-        "fileUid": {
-          "type": "string",
-          "title": "File UID"
-        },
-        "fileId": {
-          "type": "string",
-          "title": "File ID"
-        },
-        "fileType": {
-          "type": "string",
-          "title": "File Type"
-        },
-        "fileSize": {
-          "type": "integer",
-          "format": "int64",
-          "title": "File Size in Bytes"
-        },
-        "fileUploadTime": {
-          "type": "string",
-          "format": "date-time",
-          "title": "Upload Time"
-        },
-        "fileProcessStatus": {
-          "type": "string",
-          "title": "File Process Status"
-        }
-      }
-    },
-    "text": {
-      "type": "object",
-      "title": "Transformed Text Content",
-      "properties": {
-        "pipelineIds": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Pipelines"
-        },
-        "transformedContent": {
-          "type": "string",
-          "title": "Transformed Content"
-        },
-        "transformedContentUid": {
-          "type": "string",
-          "title": "Transformed Content UID"
-        },
-        "transformedContentChunkNum": {
-          "type": "integer",
-          "format": "int32",
-          "title": "Transformed Content Chunk Number"
-        },
-        "transformedContentTokenNum": {
-          "type": "integer",
-          "format": "int32",
-          "title": "Transformed Content Token Number"
-        },
-        "transformedContentUpdateTime": {
-          "type": "string",
-          "format": "date-time",
-          "title": "Transformed Content Update Time"
-        }
-      }
-    },
-    "chunks": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "uid": {
-            "type": "string",
-            "title": "Chunk UID"
-          },
-          "type": {
-            "type": "string",
-            "title": "Chunk Type"
-          },
-          "startPos": {
-            "type": "integer",
-            "format": "int32",
-            "title": "Chunk Start Position"
-          },
-          "endPos": {
-            "type": "integer",
-            "format": "int32",
-            "title": "Chunk End Position"
-          },
-          "content": {
-            "type": "string",
-            "title": "Chunk Content"
-          },
-          "tokensNum": {
-            "type": "integer",
-            "format": "int32",
-            "title": "Chunk Tokens Number"
-          },
-          "embedding": {
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "float"
-            },
-            "title": "Embedding"
-          },
-          "createTime": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Chunk Create Time"
-          },
-          "retrievable": {
-            "type": "boolean",
-            "title": "Chunk Retrievable"
-          }
-        }
-      },
-      "title": "Chunks"
-    }
-  },
-  "title": "Get File Catalog Response"
-}`;
+  
 
   return (
     <div className="flex flex-col mb-10">
@@ -319,7 +168,7 @@ export const GetCatalogTab = ({
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">Input:</p>
             <CodeBlock
-              codeString={inputSchema}
+              codeString={GetCatalogTabInputSchema}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}
@@ -329,7 +178,7 @@ export const GetCatalogTab = ({
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">Output:</p>
             <CodeBlock
-              codeString={outputSchema}
+              codeString={GetCatalogTabOutputSchema}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}
