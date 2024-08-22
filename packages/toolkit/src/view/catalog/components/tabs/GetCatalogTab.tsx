@@ -5,10 +5,10 @@ import { Nullable } from "instill-sdk";
 
 import {
   Button,
+  cn,
   DropdownMenu,
   ScrollArea,
   Separator,
-  cn,
 } from "@instill-ai/design-system";
 
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
