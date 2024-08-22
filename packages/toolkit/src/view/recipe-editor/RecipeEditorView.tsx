@@ -24,7 +24,7 @@ import {
   useShallow,
 } from "../../lib";
 import { env } from "../../server";
-import { ComponentCmdk } from "./cmdk";
+import { ActionCmdk, ComponentCmdo } from "./commands";
 import { EditorProvider } from "./EditorContext";
 import { EditorViewSectionBar } from "./EditorViewSectionBar";
 import { Flow } from "./flow";
@@ -44,7 +44,7 @@ import { VscodeEditor } from "./VscodeEditor";
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
-  updateOpenCmdk: store.updateOpenCmdk,
+  updateOpenActionCmdk: store.updateOpenActionCmdk,
   editorMultiScreenModel: store.editorMultiScreenModel,
   updateEditorMultiScreenModel: store.updateEditorMultiScreenModel,
   editorRef: store.editorRef,
@@ -60,7 +60,7 @@ export const RecipeEditorView = () => {
   const {
     accessToken,
     enabledQuery,
-    updateOpenCmdk,
+    updateOpenActionCmdk,
     editorMultiScreenModel,
     updateEditorMultiScreenModel,
     editorRef,
@@ -230,7 +230,7 @@ export const RecipeEditorView = () => {
         <div className="flex flex-row gap-x-2">
           <button
             onClick={() => {
-              updateOpenCmdk(() => true);
+              updateOpenActionCmdk(() => true);
             }}
             className="flex flex-row gap-x-2 h-8 rounded border border-semantic-bg-line bg-semantic-bg-primary items-center px-2"
           >
@@ -272,7 +272,8 @@ export const RecipeEditorView = () => {
                 pipelineId={pipeline.data?.id ?? null}
               />
             </div>
-            <ComponentCmdk />
+            <ActionCmdk />
+            <ComponentCmdo />
             <div
               className={cn(
                 "h-full transition-all ease-in-out duration-300",

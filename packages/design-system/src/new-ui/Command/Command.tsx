@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DialogProps } from "@radix-ui/react-dialog";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Command as CommandPrimitive } from "cmdk";
 
 import { cn } from "../../utils";
@@ -22,42 +22,52 @@ const CommandRoot = React.forwardRef<
 ));
 CommandRoot.displayName = CommandPrimitive.displayName;
 
-const CommandDialog = ({
-  children,
-  dialogContentClassName,
-  commandRootClassName,
-  ...props
-}: DialogProps & {
-  dialogContentClassName?: string;
-  commandRootClassName?: string;
-}) => {
-  return (
-    <Dialog.Root {...props}>
-      <Dialog.Content
-        className={cn("overflow-hidden !p-0", dialogContentClassName)}
-      >
-        <CommandRoot
-          className={cn(
-            "[&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5",
-            commandRootClassName,
-          )}
+const CommandDialog = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  DialogPrimitive.DialogProps & {
+    dialogContentClassName?: string;
+    commandRootClassName?: string;
+  }
+>(
+  (
+    { children, dialogContentClassName, commandRootClassName, ...props },
+    ref,
+  ) => {
+    return (
+      <Dialog.Root {...props}>
+        <Dialog.Content
+          className={cn("overflow-hidden !p-0", dialogContentClassName)}
         >
-          {children}
-        </CommandRoot>
-        <Dialog.Close />
-      </Dialog.Content>
-    </Dialog.Root>
-  );
-};
+          <CommandRoot
+            ref={ref}
+            className={cn(
+              "[&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5",
+              commandRootClassName,
+            )}
+          >
+            {children}
+          </CommandRoot>
+          <Dialog.Close />
+        </Dialog.Content>
+      </Dialog.Root>
+    );
+  },
+);
+CommandDialog.displayName = "CommandDialog";
 
 const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
-  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input> & {
+  Omit<
+    React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>,
+    "className"
+  > & {
     startIcon?: React.ReactNode;
+    inputClassName?: string;
+    wrapperClassName?: string;
   }
->(({ className, startIcon, ...props }, ref) => (
+>(({ inputClassName, wrapperClassName, startIcon, ...props }, ref) => (
   <div
-    className="flex items-center gap-x-2 border-b px-3"
+    className={cn("flex items-center gap-x-2 border-b px-3", wrapperClassName)}
     cmdk-input-wrapper=""
   >
     {startIcon}
@@ -65,7 +75,7 @@ const CommandInput = React.forwardRef<
       ref={ref}
       className={cn(
         "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-semantic-fg-disabled disabled:cursor-not-allowed disabled:opacity-50",
-        className,
+        inputClassName,
       )}
       {...props}
     />
