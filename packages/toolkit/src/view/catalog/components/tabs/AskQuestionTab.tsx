@@ -9,7 +9,10 @@ import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
 import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { env } from "../../../../server";
-import { AskQuestionTabInputSchema, AskQuestionTabOutputSchema } from "../lib/constant";
+import {
+  AskQuestionTabInputSchema,
+  AskQuestionTabOutputSchema,
+} from "../lib/constant";
 
 export const AskQuestionTab = ({
   catalog,
@@ -34,8 +37,6 @@ export const AskQuestionTab = ({
   "topK": 5
 }'`;
   }, [namespaceId, kbId]);
-
-
 
   return (
     <div className="flex flex-col mb-10">

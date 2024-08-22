@@ -2,7 +2,9 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Icons, cn } from "@instill-ai/design-system";
+
+import { cn, Icons } from "@instill-ai/design-system";
+
 import { Catalog } from "../../../lib/react-query-service/catalog/types";
 
 type SidebarProps = {
@@ -34,11 +36,11 @@ export const Sidebar = ({
       "flex h-8 items-center gap-x-2 rounded px-3 product-button-button-2",
       activeTab === tabName
         ? "bg-semantic-accent-bg text-semantic-accent-hover font-bold"
-        : "cursor-pointer text-semantic-fg-secondary"
+        : "cursor-pointer text-semantic-fg-secondary",
     );
 
   const isApiTabActive = ["retrieve", "ask_question", "get_catalog"].includes(
-    activeTab
+    activeTab,
   );
 
   React.useEffect(() => {
@@ -89,14 +91,14 @@ export const Sidebar = ({
           <div
             className={cn(
               getTabClassName("api"),
-              isApiExpanded ? "bg-semantic-accent-bg" : ""
+              isApiExpanded ? "bg-semantic-accent-bg" : "",
             )}
             onClick={handleApiClick}
           >
             <Icons.ChevronDown
               className={cn(
                 "h-4 w-4 transition-transform duration-200 stroke-semantic-fg-secondary",
-                isApiExpanded ? "transform rotate-180" : ""
+                isApiExpanded ? "transform rotate-180" : "",
               )}
             />
             API

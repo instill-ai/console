@@ -19,9 +19,11 @@ import {
   File,
 } from "../../../../lib/react-query-service/catalog/types";
 import { env } from "../../../../server";
+import {
+  GetCatalogTabInputSchema,
+  GetCatalogTabOutputSchema,
+} from "../lib/constant";
 import { truncateName } from "../lib/helpers";
-import { GetCatalogTabInputSchema, GetCatalogTabOutputSchema } from "../lib/constant";
-
 
 type GetCatalogTabProps = {
   catalog: Catalog;
@@ -67,8 +69,6 @@ export const GetCatalogTab = ({
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
     return `${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${selectedFile?.fileUid || ""}`;
   }, [namespaceId, kbId, selectedFile]);
-
-  
 
   return (
     <div className="flex flex-col mb-10">

@@ -9,8 +9,10 @@ import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
 import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { env } from "../../../../server";
-import { RetrieveTestTabInputSchema, RetrieveTestTabOutputSchema } from "../lib/constant";
-
+import {
+  RetrieveTestTabInputSchema,
+  RetrieveTestTabOutputSchema,
+} from "../lib/constant";
 
 type RetrieveTestTabProps = {
   catalog: Catalog;
@@ -37,8 +39,6 @@ export const RetrieveTestTab = ({
   "topK": 5
 }'`;
   }, [namespaceId, kbId]);
-
-
 
   return (
     <div className="flex flex-col mb-10">

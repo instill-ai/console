@@ -61,7 +61,7 @@ export const AskQuestionTabOutputSchema = `{
   "title": "Ask Question Response"
 }`;
 
-  export const RetrieveTestTabInputSchema = `{
+export const RetrieveTestTabInputSchema = `{
   "type": "object",
   "properties": {
     "textPrompt": {
@@ -77,7 +77,7 @@ export const AskQuestionTabOutputSchema = `{
   "title": "Similar chunk search request"
 }`;
 
- export  const RetrieveTestTabOutputSchema = `{
+export const RetrieveTestTabOutputSchema = `{
   "type": "object",
   "properties": {
     "similarChunks": {
@@ -134,7 +134,7 @@ export const GetCatalogTabInputSchema = `{
   "title": "Get File Catalog Request"
 }`;
 
-  export const GetCatalogTabOutputSchema = `{
+export const GetCatalogTabOutputSchema = `{
   "type": "object",
   "properties": {
     "originalData": {
