@@ -35,11 +35,7 @@ export const ModelContentViewer = ({
       if (!model.permission.canEdit && selectedTab === "settings") {
         const playgroundPath = `/${routeInfo.data?.namespaceId}/models/${model.id}/playground`;
         router.push(playgroundPath);
-      } else {
-        console.log("User has permission to edit model");
       }
-    } else {
-      console.log("Model data not available");
     }
   }, [model, routeInfo.data?.namespaceId, router]);
   let content = null;
