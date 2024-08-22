@@ -1,9 +1,8 @@
 "use client";
 
 import * as React from "react";
-import cn from "clsx";
 
-import { Button, Icons } from "@instill-ai/design-system";
+import { Button, Icons, cn } from "@instill-ai/design-system";
 
 export const CopyToClipboardButton = ({
   className,
