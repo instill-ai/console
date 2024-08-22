@@ -1,25 +1,4 @@
-///import * as React from "react";
 import type { Pipeline } from "instill-sdk";
-
-//import { ColumnDef, DataTable } from "@instill-ai/design-system";
-
-/* import {
-  EmptyView,
-  LoadingSpin,
-  PipelineRunStateLabel,
-} from "../../../components"; */
-/* import {
-  convertToSecondsAndMilliseconds,
-  formatDate,
-  InstillStore,
-  PipelineTriggerRecord,
-  useInstillStore,
-  usePipelineTriggers,
-  useRouteInfo,
-  useShallow,
-} from "../../../lib"; */
-//import { TABLE_PAGE_SIZE } from "./constants";
-//import Link from "next/link";
 import { useParams } from "next/navigation";
 import { PipelineRunList, PipelineRunView as PipelineRun } from "./PipelineRunViews";
 

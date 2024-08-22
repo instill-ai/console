@@ -83,9 +83,16 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
         accessorKey: "pipelineVersion",
         header: () => <div className="text-left">Version</div>,
         cell: ({ row }) => {
+          let content: React.ReactNode = `Unversioned`;
+          const version = row.getValue("pipelineVersion");
+
+          if (version !== 'latest') {
+            content = <Link href={`/${ownerId}/pipelines/${pipeline?.id}/playground?version=${version}`} className="text-semantic-accent-default hover:underline">{row.getValue("pipelineVersion")}</Link>
+          }
+          
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-              <Link href={`/${ownerId}/pipelines/${pipeline?.id}/playground?version=${row.getValue("pipelineVersion")}`} className="text-semantic-accent-default hover:underline">{row.getValue("pipelineVersion")}</Link>
+              {content}
             </div>
           );
         },
