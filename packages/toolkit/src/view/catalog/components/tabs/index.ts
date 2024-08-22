@@ -5,3 +5,5 @@ export * from "./CatalogMainTab";
 export * from "./MarkdownTab";
 export * from "./RetrieveTestTab";
 export * from "./UploadExploreTab";
+export * from "./AskQuestionTab";
+export * from "./GetCatalogTab";

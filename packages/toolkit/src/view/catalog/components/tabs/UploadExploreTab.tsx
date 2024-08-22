@@ -471,7 +471,7 @@ export const UploadExploreTab = ({
                           </label>
                           <div className="">
                             Support TXT, MARKDOWN, PDF, DOCX, DOC, PPTX, PPT,
-                            HTML
+                            HTML, XLSX
                           </div>
                           <div className="">
                             Max {planMaxFileSize / (1024 * 1024)}MB each
@@ -483,7 +483,7 @@ export const UploadExploreTab = ({
                       <Input.Core
                         id="upload-file-field"
                         type="file"
-                        accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html"
+                        accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html,.xlsx"
                         multiple
                         value={""}
                         onChange={async (e) => {

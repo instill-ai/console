@@ -150,6 +150,7 @@ import { VideoRecorder } from "./VideoRecorder";
 import { Visa } from "./Visa";
 import { VisualQuestionAnswering } from "./VisualQuestionAnswering";
 import { X } from "./X";
+import { XLSXFile } from "./XLSXFile";
 import { Zap } from "./Zap";
 
 export const Icons = {
@@ -305,5 +306,6 @@ export const Icons = {
   Visa,
   VisualQuestionAnswering,
   X,
+  XLSXFile,
   Zap,
 };

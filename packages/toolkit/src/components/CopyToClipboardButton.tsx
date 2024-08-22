@@ -1,18 +1,19 @@
 "use client";
 
 import * as React from "react";
-import cn from "clsx";
 
-import { Button, Icons } from "@instill-ai/design-system";
+import { Button, cn, Icons } from "@instill-ai/design-system";
 
 export const CopyToClipboardButton = ({
   className,
   iconClassName,
   text,
+  disableCopy,
 }: {
   text: string;
   className?: string;
   iconClassName?: string;
+  disableCopy?: boolean;
 }) => {
   const [copied, setCopied] = React.useState(false);
 
@@ -25,6 +26,7 @@ export const CopyToClipboardButton = ({
       variant="secondaryGrey"
       size="md"
       type="button"
+      disabled={disableCopy}
       onClick={async () => {
         await navigator.clipboard.writeText(text);
         setCopied(true);

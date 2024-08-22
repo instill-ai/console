@@ -8,13 +8,13 @@ export function useGetChunkContent({
   chunkUid,
   accessToken,
   enabled,
-  kbId,
+  catalogId,
   ownerId,
 }: {
   chunkUid: string;
   accessToken: Nullable<string>;
   enabled: boolean;
-  kbId: string;
+  catalogId: string;
   ownerId: string;
 }) {
   return useQuery({
@@ -26,7 +26,7 @@ export function useGetChunkContent({
       const client = createInstillAxiosClient(accessToken, true);
       try {
         const response = await client.get(
-          `/namespaces/${ownerId}/knowledge-bases/${kbId}/chunks/${chunkUid}/content`,
+          `/namespaces/${ownerId}/knowledge-bases/${catalogId}/chunks/${chunkUid}/content`,
         );
         return response.data.content;
       } catch (error) {

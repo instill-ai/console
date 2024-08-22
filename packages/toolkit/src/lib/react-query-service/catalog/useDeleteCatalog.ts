@@ -5,11 +5,11 @@ import { Catalog } from "./types";
 
 async function deleteCatalogMutation({
   ownerId,
-  kbId,
+  catalogId,
   accessToken,
 }: {
   ownerId: string;
-  kbId: string;
+  catalogId: string;
   accessToken: string | null;
 }): Promise<Catalog> {
   if (!accessToken) {
@@ -18,7 +18,7 @@ async function deleteCatalogMutation({
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.delete<{
     catalog: Catalog;
-  }>(`/namespaces/${ownerId}/catalogs/${kbId}`);
+  }>(`/namespaces/${ownerId}/catalogs/${catalogId}`);
   return response.data.catalog;
 }
 

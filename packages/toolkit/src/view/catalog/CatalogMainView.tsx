@@ -28,9 +28,11 @@ import {
 } from "./components/lib/helpers";
 import { CreditUsageFileNotification } from "./components/notifications";
 import {
+  AskQuestionTab,
   CatalogFilesTab,
   CatalogTab,
   ChunkTab,
+  GetCatalogTab,
   RetrieveTestTab,
   UploadExploreTab,
 } from "./components/tabs";
@@ -213,7 +215,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
     try {
       await deleteCatalog.mutateAsync({
         ownerId: selectedNamespace,
-        kbId: catalog.catalogId,
+        catalogId: catalog.catalogId,
         accessToken,
       });
       if (selectedCatalog?.catalogId === catalog.catalogId) {
@@ -328,6 +330,22 @@ export const CatalogMainView = (props: CatalogViewProps) => {
           ) : null}
           {activeTab === "retrieve" && selectedCatalog ? (
             <RetrieveTestTab
+              catalog={selectedCatalog}
+              isProcessed={isProcessed}
+              onGoToUpload={handleGoToUpload}
+              namespaceId={selectedNamespace}
+            />
+          ) : null}
+          {activeTab === "ask_question" && selectedCatalog ? (
+            <AskQuestionTab
+              catalog={selectedCatalog}
+              isProcessed={isProcessed}
+              onGoToUpload={handleGoToUpload}
+              namespaceId={selectedNamespace}
+            />
+          ) : null}
+          {activeTab === "get_catalog" && selectedCatalog ? (
+            <GetCatalogTab
               catalog={selectedCatalog}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}

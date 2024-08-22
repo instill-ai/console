@@ -5,7 +5,7 @@ import { createInstillAxiosClient } from "../..";
 export async function getAllChunks(
   accessToken: string,
   ownerName: string,
-  kbId: string,
+  catalogId: string,
   fileUid: string,
 ) {
   if (!accessToken) {
@@ -14,7 +14,7 @@ export async function getAllChunks(
   const client = createInstillAxiosClient(accessToken, true);
   try {
     const response = await client.get(
-      `/namespaces/${ownerName}/catalogs/${kbId}/chunks`,
+      `/namespaces/${ownerName}/catalogs/${catalogId}/chunks`,
       {
         params: { fileUid },
       },
@@ -29,20 +29,20 @@ export async function getAllChunks(
 export function useGetAllChunks({
   accessToken,
   ownerName,
-  kbId,
+  catalogId,
   fileUid,
   enabled,
 }: {
   accessToken: string | null;
   ownerName: string;
-  kbId: string;
+  catalogId: string;
   fileUid: string | undefined;
   enabled: boolean;
 }) {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["chunks", kbId, fileUid],
+    queryKey: ["chunks", catalogId, fileUid],
     queryFn: () =>
-      getAllChunks(accessToken || "", ownerName, kbId, fileUid || ""),
+      getAllChunks(accessToken || "", ownerName, catalogId, fileUid || ""),
     enabled: enabled && !!accessToken && !!fileUid,
   });
 

@@ -10,11 +10,11 @@ import { defaultCodeSnippetStyles } from "../../../../constant";
 import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { env } from "../../../../server";
 import {
-  RetrieveTestTabInputSchema,
-  RetrieveTestTabOutputSchema,
+  AskQuestionTabInputSchema,
+  AskQuestionTabOutputSchema,
 } from "../lib/constant";
 
-export const RetrieveTestTab = ({
+export const AskQuestionTab = ({
   catalog,
   isProcessed,
   onGoToUpload,
@@ -29,11 +29,11 @@ export const RetrieveTestTab = ({
 
   const curlCommand = React.useMemo(() => {
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
-    return `curl -X POST '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}/chunks/retrieve' \\
+    return `curl -X POST '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}/ask' \\
 --header "Content-Type: application/json" \\
 --header "Authorization: Bearer $INSTILL_API_TOKEN" \\
 --data '{
-  "textPrompt": "Please put your query sentence here",
+  "question": "Please put your question here",
   "topK": 5
 }'`;
   }, [namespaceId, catalogId]);
@@ -65,8 +65,7 @@ export const RetrieveTestTab = ({
           <p className="mb-4 product-body-text-3-regular">
             Once the status of documents in Catalog / Files has changed to
             &apos;Completed&apos;, you can use the following Instill API format
-            example to test the retrieval of this catalog and obtain chunks
-            related to a given query.
+            example to ask questions about the content in your catalog.
           </p>
 
           <div className="mb-8">
@@ -93,7 +92,7 @@ export const RetrieveTestTab = ({
           <div className="mb-12">
             <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
             <CodeBlock
-              codeString={`${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}/chunks/similarity`}
+              codeString={`${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}/ask`}
               wrapLongLines={true}
               customStyle={defaultCodeSnippetStyles}
             />
@@ -102,7 +101,7 @@ export const RetrieveTestTab = ({
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">Input:</p>
             <CodeBlock
-              codeString={RetrieveTestTabInputSchema}
+              codeString={AskQuestionTabInputSchema}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}
@@ -112,7 +111,7 @@ export const RetrieveTestTab = ({
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">Output:</p>
             <CodeBlock
-              codeString={RetrieveTestTabOutputSchema}
+              codeString={AskQuestionTabOutputSchema}
               wrapLongLines={true}
               language="json"
               customStyle={defaultCodeSnippetStyles}
@@ -123,7 +122,7 @@ export const RetrieveTestTab = ({
             For a more detailed overview of the input/output schemas, check out
             the{" "}
             <a
-              href="https://www.instill.tech/docs/artifact/search"
+              href="https://www.instill.tech/docs/artifact/ask"
               className="text-semantic-accent-default underline"
             >
               Artifact&apos;s API reference
@@ -136,4 +135,4 @@ export const RetrieveTestTab = ({
   );
 };
 
-export default RetrieveTestTab;
+export default AskQuestionTab;

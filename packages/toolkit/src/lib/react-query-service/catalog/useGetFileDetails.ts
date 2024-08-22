@@ -8,13 +8,13 @@ export function useGetFileDetails({
   fileUid,
   accessToken,
   enabled,
-  kbId,
+  catalogId,
   ownerId,
 }: {
   fileUid: string;
   accessToken: Nullable<string>;
   enabled: boolean;
-  kbId: string;
+  catalogId: string;
   ownerId: string;
 }) {
   return useQuery<File>({
@@ -25,7 +25,7 @@ export function useGetFileDetails({
       }
       const client = createInstillAxiosClient(accessToken, true);
       const response = await client.get<{ file: File }>(
-        `/namespaces/${ownerId}/catalogs/${kbId}/files/${fileUid}`,
+        `/namespaces/${ownerId}/catalogs/${catalogId}/files/${fileUid}`,
       );
       return response.data.file;
     },

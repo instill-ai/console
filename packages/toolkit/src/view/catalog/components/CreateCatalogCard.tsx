@@ -22,7 +22,10 @@ type EditCatalogDialogData = {
 type CreateCatalogCardProps = {
   catalog: Catalog;
   onCardClick: () => void;
-  onUpdateCatalog: (data: EditCatalogDialogData, kbId: string) => Promise<void>;
+  onUpdateCatalog: (
+    data: EditCatalogDialogData,
+    catalogId: string,
+  ) => Promise<void>;
   onCloneCatalog: (catalog: Catalog) => Promise<void>;
   onDeleteCatalog: (catalog: Catalog) => Promise<void>;
   disabled?: boolean;
@@ -61,7 +64,7 @@ export const CreateCatalogCard = ({
   const chunks = useGetAllChunks({
     accessToken,
     ownerName: catalog.ownerName,
-    kbId: catalog.catalogId,
+    catalogId: catalog.catalogId,
     fileUid: existingFiles.isSuccess
       ? existingFiles.data?.[0]?.fileUid
       : undefined,
