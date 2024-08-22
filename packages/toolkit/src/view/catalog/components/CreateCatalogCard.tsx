@@ -22,7 +22,10 @@ type EditCatalogDialogData = {
 type CreateCatalogCardProps = {
   catalog: Catalog;
   onCardClick: () => void;
-  onUpdateCatalog: (data: EditCatalogDialogData, catalogId: string) => Promise<void>;
+  onUpdateCatalog: (
+    data: EditCatalogDialogData,
+    catalogId: string,
+  ) => Promise<void>;
   onCloneCatalog: (catalog: Catalog) => Promise<void>;
   onDeleteCatalog: (catalog: Catalog) => Promise<void>;
   disabled?: boolean;
