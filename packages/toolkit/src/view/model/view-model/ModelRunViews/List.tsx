@@ -97,7 +97,8 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
         cell: ({ row }) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-              <Link href={`/${owner.id}/models/${model?.id}/playground?version=${row.getValue("version")}`} className="text-semantic-accent-default hover:underline">{row.getValue("version")}</Link>
+              {row.getValue("version")}
+              {/* <Link href={`/${owner.id}/models/${model?.id}/playground?version=${row.getValue("version")}`} className="text-semantic-accent-default hover:underline">{row.getValue("version")}</Link> */}
             </div>
           );
         },

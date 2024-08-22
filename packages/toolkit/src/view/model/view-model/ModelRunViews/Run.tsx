@@ -6,6 +6,7 @@ import { convertToSecondsAndMilliseconds, InstillStore, useComponentOutputFields
 import { defaultCodeSnippetStyles } from "../../../../constant";
 import { convertTaskNameToPayloadPropName, convertValuesToString, ModelOutputActiveView } from "../ModelPlayground";
 import { getHumanReadableStringFromTime } from "../../../../server";
+import Link from "next/link";
 
 export type ModelRunProps = {
   id?: string;
@@ -85,7 +86,7 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
             <div>Source <b>{modelRun?.source === 'RUN_SOURCE_CONSOLE' ? "Web" : "API"}</b></div>
             <div>Total Duration <b>{convertToSecondsAndMilliseconds(modelRun?.totalDuration || 0)}</b></div>
             <div>Created Time <b>{modelRun?.createTime ? getHumanReadableStringFromTime(modelRun?.createTime, Date.now()) : null}</b></div>
-            <div>Runner <b>{modelRun?.requesterId}</b></div>
+            <div>Runner <Link target="_blank" className="text-semantic-accent-default hover:underline" href={`/${modelRun?.runnerId}`}><b>{modelRun?.runnerId}</b></Link></div>
             {
               modelRun && 'credits' in modelRun && modelRun.credits !== null
                 ? <div>Credits <b>{modelRun.credits}</b></div>
