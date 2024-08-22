@@ -23,6 +23,11 @@ export const topbarItems = [
     name: "Artifacts",
   },
   {
+    pathName: "applications",
+    icon: <Icons.Browser className="h-6 w-6 stroke-semantic-fg-primary" />,
+    name: "Applications",
+  },
+  {
     pathName: "dashboard",
     icon: (
       <Icons.BarChartSquare02 className="h-6 w-6 stroke-semantic-fg-primary" />
