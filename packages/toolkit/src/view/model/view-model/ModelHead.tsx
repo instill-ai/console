@@ -12,12 +12,14 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 
-import { HeadExternalLink, ModelStateLabel } from "../../../components";
+import { HeadExternalLink, ModelStateLabel, VersionDropdownSelector } from "../../../components";
 import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
 import { Model, ModelState } from "../../../lib";
 import { ModelTabNames } from "../../../server";
+import { useSearchParams } from "next/navigation";
 
 export type HeadProps = {
+  onActiveVersionUpdate: (version: string) => void;
   selectedTab: ModelTabNames;
   onTabChange: (tabName: ModelTabNames) => void;
   model?: Model;
@@ -32,12 +34,15 @@ const DEFAULT_OWNER = {
 };
 
 export const ModelHead = ({
+  onActiveVersionUpdate,
   selectedTab,
   onTabChange,
   model,
   isReady,
   modelState,
 }: HeadProps) => {
+  const searchParams = useSearchParams();
+  const activeVersion = searchParams.get("version");
   const owner = useMemo(() => {
     if (!model) {
       return DEFAULT_OWNER;
@@ -130,6 +135,13 @@ export const ModelHead = ({
               ) : null}
             </React.Fragment>
           )}
+          {model?.versions.length ? (
+            <VersionDropdownSelector
+              activeVersion={activeVersion}
+              versions={model.versions}
+              onVersionUpdate={onActiveVersionUpdate}
+            />
+          ) : null}
         </div>
         {!isReady ? (
           <React.Fragment>

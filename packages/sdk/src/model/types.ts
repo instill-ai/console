@@ -87,6 +87,11 @@ export type Model = {
   outputSchema: InstillJSONSchema | null;
   sampleInput: Record<string, GeneralRecord>;
   sampleOutput: Record<string, GeneralRecord>;
+  stats: {
+    numberOfRuns: number;
+    lastRunTime: string;
+  };
+  versions: string[];
 };
 
 export type ModelRegion = {

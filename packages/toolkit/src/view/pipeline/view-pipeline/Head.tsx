@@ -9,15 +9,13 @@ import cn from "clsx";
 import {
   Button,
   Icons,
-  Popover,
-  ScrollArea,
   Skeleton,
   TabMenu,
   Tag,
   toast,
 } from "@instill-ai/design-system";
 
-import { ClonePipelineDialog, HeadExternalLink } from "../../../components";
+import { ClonePipelineDialog, HeadExternalLink, VersionDropdownSelector } from "../../../components";
 import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
 import {
   InstillStore,
@@ -65,9 +63,6 @@ export const Head = ({
   const searchParams = useSearchParams();
   const activeVersion = searchParams.get("version");
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-
-  const [isVersionSelectorOpen, setIsVersionSelectorOpen] =
-    React.useState<boolean>(false);
 
   const routeInfo = useRouteInfo();
 
@@ -185,62 +180,11 @@ export const Head = ({
             </HeadExternalLink>
           ) : null}
           {!!releases?.length && pipeline ? (
-            <Popover.Root
-              onOpenChange={() =>
-                setIsVersionSelectorOpen(!isVersionSelectorOpen)
-              }
-              open={isVersionSelectorOpen}
-            >
-              <Popover.Trigger asChild={true} className="my-auto">
-                <Button
-                  className={cn(
-                    "!h-8 !w-[145px] gap-x-1 !rounded-sm !border border-[#E1E6EF] !py-1 px-3 !transition-opacity !duration-300 !ease-in-out ml-auto",
-                    isVersionSelectorOpen
-                      ? "border-opacity-100 !bg-semantic-accent-bg "
-                      : "border-opacity-0",
-                  )}
-                  size="sm"
-                  variant="tertiaryColour"
-                  type="button"
-                  onClick={() => setIsVersionSelectorOpen(true)}
-                >
-                  <Tag size="sm" variant="darkPurple" className="h-6 gap-x-2">
-                    Version {activeVersion}
-                  </Tag>
-                  <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
-                </Button>
-              </Popover.Trigger>
-              <Popover.Content
-                side="top"
-                sideOffset={4}
-                align="start"
-                className="flex h-[180px] w-[145px] flex-col !rounded-sm !p-0"
-              >
-                <ScrollArea.Root>
-                  <div className="flex flex-col gap-y-1 px-1.5 py-1">
-                    {releases.length > 0 ? (
-                      <React.Fragment>
-                        {releases.map((release) => (
-                          <VersionButton
-                            key={release.id}
-                            id={release.id}
-                            currentVersion={activeVersion}
-                            onClick={() => {
-                              onActiveVersionUpdate(release.id);
-                              setIsVersionSelectorOpen(false);
-                            }}
-                          />
-                        ))}
-                      </React.Fragment>
-                    ) : (
-                      <div className="p-2 text-semantic-fg-disabled product-body-text-4-medium">
-                        This pipeline has no released versions.
-                      </div>
-                    )}
-                  </div>
-                </ScrollArea.Root>
-              </Popover.Content>
-            </Popover.Root>
+            <VersionDropdownSelector
+              activeVersion={activeVersion}
+              versions={releases.map(release => release.id)}
+              onVersionUpdate={onActiveVersionUpdate}
+            />
           ) : null}
         </div>
         {!isReady ? (
@@ -403,38 +347,5 @@ export const Head = ({
         )}
       </div>
     </div>
-  );
-};
-
-const VersionButton = ({
-  id,
-  currentVersion,
-  onClick,
-}: {
-  id: string;
-  currentVersion: Nullable<string>;
-  onClick: () => void;
-}) => {
-  return (
-    <Button
-      key={id}
-      className={cn(
-        "w-full !px-2 !py-1.5",
-        currentVersion === id ? "!bg-semantic-bg-secondary" : "",
-      )}
-      variant={"tertiaryColour"}
-      onClick={onClick}
-    >
-      <div className="flex w-full flex-row gap-x-2">
-        <div className="my-auto h-2 w-[9px] rounded-full bg-semantic-secondary-default"></div>
-        <p
-          className={cn(
-            "w-full text-left text-semantic-fg-secondary product-body-text-3-medium",
-          )}
-        >
-          Version {id}
-        </p>
-      </div>
-    </Button>
   );
 };

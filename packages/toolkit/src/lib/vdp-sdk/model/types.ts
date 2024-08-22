@@ -70,6 +70,7 @@ export type Model = {
     numberOfRuns: number;
     lastRunTime: string;
   }
+  versions: string[];
 };
 
 export type ModelState =

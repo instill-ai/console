@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import {
   InstillStore,
@@ -14,6 +14,7 @@ import {
 } from "../../lib";
 import { ModelTabNames } from "../../server";
 import { ModelContentViewer, ModelHead } from "./view-model";
+import { Nullable } from "instill-sdk";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -21,6 +22,9 @@ const selector = (store: InstillStore) => ({
 });
 
 export const ModelHubSettingPageMainView = () => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const activeVersion = searchParams.get("version");
   const router = useRouter();
   const routeInfo = useRouteInfo();
   const { path } = useParams();
@@ -75,9 +79,44 @@ export const ModelHubSettingPageMainView = () => {
     }
   };
 
+  const updateActiveVersionUrl = (version: Nullable<string>) => {
+    if (version === null) {
+      router.replace(pathname);
+
+      return;
+    }
+
+    const newSearchParams = new URLSearchParams();
+    newSearchParams.set("version", version);
+
+    const combinedSearchParams = new URLSearchParams({
+      ...Object.fromEntries(searchParams),
+      ...Object.fromEntries(newSearchParams),
+    });
+
+    router.replace(`${pathname}?${combinedSearchParams.toString()}`);
+  };
+
+  React.useEffect(() => {
+    if (model.isSuccess) {
+      if (activeVersion) {
+        if (model.data.versions.length > 0) {
+          if (!model.data.versions.find((item) => item === activeVersion) && model.data.versions[0]) {
+            updateActiveVersionUrl(model.data.versions[0]);
+          }
+        } else {
+          updateActiveVersionUrl(null);
+        }
+      } else if (model.data.versions[0]) {
+        updateActiveVersionUrl(model.data.versions[0]);
+      }
+    }
+  }, [model.isSuccess, model.data, activeVersion, pathname]);
+
   return (
     <div className="flex flex-col">
       <ModelHead
+        onActiveVersionUpdate={updateActiveVersionUrl}
         onTabChange={setSelectedTab}
         selectedTab={path?.[0] as ModelTabNames}
         model={model.data}
