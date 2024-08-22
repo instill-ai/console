@@ -27,18 +27,18 @@ export const RetrieveTestTab = ({
   onGoToUpload,
   namespaceId,
 }: RetrieveTestTabProps) => {
-  const kbId = catalog.catalogId;
+  const catalogId = catalog.catalogId;
 
   const curlCommand = React.useMemo(() => {
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
-    return `curl -X POST '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}/chunks/similarity' \\
+    return `curl -X POST '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}/chunks/retrieve' \\
 --header "Content-Type: application/json" \\
 --header "Authorization: Bearer $INSTILL_API_TOKEN" \\
 --data '{
   "textPrompt": "Please put your query sentence here",
   "topK": 5
 }'`;
-  }, [namespaceId, kbId]);
+  }, [namespaceId, catalogId]);
 
   return (
     <div className="flex flex-col mb-10">
@@ -95,7 +95,7 @@ export const RetrieveTestTab = ({
           <div className="mb-12">
             <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
             <CodeBlock
-              codeString={`${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}/chunks/similarity`}
+              codeString={`${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}/chunks/similarity`}
               wrapLongLines={true}
               customStyle={defaultCodeSnippetStyles}
             />

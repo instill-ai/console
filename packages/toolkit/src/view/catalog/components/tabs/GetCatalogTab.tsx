@@ -44,7 +44,7 @@ export const GetCatalogTab = ({
   onGoToUpload,
   namespaceId,
 }: GetCatalogTabProps) => {
-  const kbId = catalog.catalogId;
+  const catalogId = catalog.catalogId;
   const [selectedFile, setSelectedFile] = React.useState<Nullable<File>>(null);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
@@ -60,15 +60,15 @@ export const GetCatalogTab = ({
 
   const curlCommand1 = React.useMemo(() => {
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
-    return `curl -X GET '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${selectedFile?.fileUid || ""}' \\
+    return `curl -X GET '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}?fileUid=${selectedFile?.fileUid || ""}' \\
 --header "Content-Type: application/json" \\
 --header "Authorization: Bearer $INSTILL_API_TOKEN"`;
-  }, [namespaceId, kbId, selectedFile]);
+  }, [namespaceId, catalogId, selectedFile]);
 
   const apiEndpoint1 = React.useMemo(() => {
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
-    return `${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}?fileUid=${selectedFile?.fileUid || ""}`;
-  }, [namespaceId, kbId, selectedFile]);
+    return `${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}?fileUid=${selectedFile?.fileUid || ""}`;
+  }, [namespaceId, catalogId, selectedFile]);
 
   return (
     <div className="flex flex-col mb-10">

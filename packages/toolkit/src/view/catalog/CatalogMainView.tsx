@@ -215,7 +215,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
     try {
       await deleteCatalog.mutateAsync({
         ownerId: selectedNamespace,
-        kbId: catalog.catalogId,
+        catalogId: catalog.catalogId,
         accessToken,
       });
       if (selectedCatalog?.catalogId === catalog.catalogId) {

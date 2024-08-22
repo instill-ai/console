@@ -1,7 +1,7 @@
 export type Catalog = {
   chunks: Chunk[];
   usage: number;
-  kbId: string;
+  catalogId: string;
   catalogId: string;
   name: string;
   description: string;

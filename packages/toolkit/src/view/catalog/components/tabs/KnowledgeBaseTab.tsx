@@ -116,14 +116,14 @@ export const CatalogTab = ({
 
   const handleUpdateCatalog = async (
     data: EditCatalogDialogData,
-    kbId: string,
+    catalogId: string,
   ) => {
     if (!selectedNamespace || !accessToken) return;
 
     try {
       await updateCatalog.mutateAsync({
         ownerId: selectedNamespace,
-        kbId: kbId,
+        catalogId: catalogId,
         payload: {
           name: data.name,
           description: data.description,
@@ -262,7 +262,7 @@ export const CatalogTab = ({
           />
           {filteredAndSortedCatalogs.map((catalog) => (
             <CreateCatalogCard
-              key={catalog.kbId || catalog.name}
+              key={catalog.catalogId || catalog.name}
               catalog={catalog}
               onCardClick={() => onCatalogSelect(catalog)}
               onUpdateCatalog={handleUpdateCatalog}

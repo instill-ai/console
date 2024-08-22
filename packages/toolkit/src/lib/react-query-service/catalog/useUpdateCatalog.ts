@@ -6,7 +6,7 @@ import { Catalog } from "./types";
 async function updateCatalogMutation({
   payload,
   ownerId,
-  kbId,
+  catalogId,
   accessToken,
 }: {
   payload: {
@@ -15,7 +15,7 @@ async function updateCatalogMutation({
     tags?: string[];
   };
   ownerId: string;
-  kbId: string;
+  catalogId: string;
   accessToken: string | null;
 }): Promise<Catalog> {
   if (!accessToken) {
@@ -24,7 +24,7 @@ async function updateCatalogMutation({
   const client = createInstillAxiosClient(accessToken, true);
   const response = await client.put<{
     catalog: Catalog;
-  }>(`/namespaces/${ownerId}/catalogs/${kbId}`, payload);
+  }>(`/namespaces/${ownerId}/catalogs/${catalogId}`, payload);
   return response.data.catalog;
 }
 

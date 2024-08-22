@@ -25,18 +25,18 @@ export const AskQuestionTab = ({
   onGoToUpload: () => void;
   namespaceId: Nullable<string>;
 }) => {
-  const kbId = catalog.catalogId;
+  const catalogId = catalog.catalogId;
 
   const curlCommand = React.useMemo(() => {
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
-    return `curl -X POST '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}/ask' \\
+    return `curl -X POST '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}/ask' \\
 --header "Content-Type: application/json" \\
 --header "Authorization: Bearer $INSTILL_API_TOKEN" \\
 --data '{
   "question": "Please put your question here",
   "topK": 5
 }'`;
-  }, [namespaceId, kbId]);
+  }, [namespaceId, catalogId]);
 
   return (
     <div className="flex flex-col mb-10">
@@ -92,7 +92,7 @@ export const AskQuestionTab = ({
           <div className="mb-12">
             <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
             <CodeBlock
-              codeString={`${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs/${kbId}/ask`}
+              codeString={`${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}/ask`}
               wrapLongLines={true}
               customStyle={defaultCodeSnippetStyles}
             />
