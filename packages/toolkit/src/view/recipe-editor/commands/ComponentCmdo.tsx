@@ -27,21 +27,21 @@ import { generateUniqueNodeIdFromDefinition } from "../../pipeline-builder/lib/g
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
-  isEditingIterator: store.isEditingIterator,
-  openCmdk: store.openCmdk,
-  updateOpenCmdk: store.updateOpenCmdk,
+  openComponentCmdo: store.openComponentCmdo,
+  openActionCmdk: store.openActionCmdk,
+  updateOpenComponentCmdo: store.updateOpenComponentCmdo,
   editorRef: store.editorRef,
 });
 
-export const ComponentCmdk = () => {
+export const ComponentCmdo = () => {
   const routeInfo = useRouteInfo();
   const {
     accessToken,
     enabledQuery,
-    isEditingIterator,
-    openCmdk,
-    updateOpenCmdk,
+    openComponentCmdo,
+    updateOpenComponentCmdo,
     editorRef,
+    openActionCmdk,
   } = useInstillStore(useShallow(selector));
 
   const pipeline = useNamespacePipeline({
@@ -84,15 +84,19 @@ export const ComponentCmdk = () => {
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey) && !isEditingIterator) {
+      if (openActionCmdk) {
+        return;
+      }
+
+      if (e.key === "o" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        updateOpenCmdk((open) => !open);
+        updateOpenComponentCmdo((open) => !open);
       }
     };
 
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, [isEditingIterator]);
+  }, [openActionCmdk]);
 
   // function dispatchOnCursor(view: EditorView, text: string) {
   //   view.dispatch(
@@ -234,8 +238,8 @@ export const ComponentCmdk = () => {
   return (
     <Command.Dialog
       dialogContentClassName="w-[600px] h-[450px]"
-      open={openCmdk}
-      onOpenChange={(open) => updateOpenCmdk(() => open)}
+      open={openComponentCmdo}
+      onOpenChange={(open) => updateOpenComponentCmdo(() => open)}
     >
       <Command.Input placeholder="Search component..." />
       <Command.List className="max-h-none">
@@ -251,7 +255,7 @@ export const ComponentCmdk = () => {
                     name: "iterator/iterator",
                     uid: "uid",
                   });
-                  updateOpenCmdk(() => false);
+                  updateOpenComponentCmdo(() => false);
                 }}
                 value="iterators"
               >
@@ -275,7 +279,7 @@ export const ComponentCmdk = () => {
                   <Command.Item
                     onSelect={() => {
                       onSelect(definition);
-                      updateOpenCmdk(() => false);
+                      updateOpenComponentCmdo(() => false);
                     }}
                     key={definition.id}
                     value={definition.id}
@@ -304,7 +308,7 @@ export const ComponentCmdk = () => {
                   <Command.Item
                     onSelect={() => {
                       onSelect(definition);
-                      updateOpenCmdk(() => false);
+                      updateOpenComponentCmdo(() => false);
                     }}
                     key={definition.id}
                     value={definition.id}
@@ -333,7 +337,7 @@ export const ComponentCmdk = () => {
                   <Command.Item
                     onSelect={() => {
                       onSelect(definition);
-                      updateOpenCmdk(() => false);
+                      updateOpenComponentCmdo(() => false);
                     }}
                     key={definition.id}
                     value={definition.id}
@@ -362,7 +366,7 @@ export const ComponentCmdk = () => {
                   <Command.Item
                     onSelect={() => {
                       onSelect(definition);
-                      updateOpenCmdk(() => false);
+                      updateOpenComponentCmdo(() => false);
                     }}
                     key={definition.id}
                     value={definition.id}
@@ -391,7 +395,7 @@ export const ComponentCmdk = () => {
                   <Command.Item
                     onSelect={() => {
                       onSelect(definition);
-                      updateOpenCmdk(() => false);
+                      updateOpenComponentCmdo(() => false);
                     }}
                     key={definition.id}
                     value={definition.id}

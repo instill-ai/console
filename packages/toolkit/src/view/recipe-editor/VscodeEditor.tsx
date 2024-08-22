@@ -55,7 +55,7 @@ import { validateVSCodeYaml } from "./validateVSCodeYaml";
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
-  updateOpenCmdk: store.updateOpenCmdk,
+  updateOpenActionCmdk: store.updateOpenActionCmdk,
   updateEditorRef: store.updateEditorRef,
   updateMonacoRef: store.updateMonacoRef,
   rawRecipeOnDom: store.rawRecipeOnDom,
@@ -101,7 +101,7 @@ export const VscodeEditor = () => {
   const {
     accessToken,
     enabledQuery,
-    updateOpenCmdk,
+    updateOpenActionCmdk,
     updateEditorRef,
     updateMonacoRef,
     rawRecipeOnDom,
@@ -986,7 +986,7 @@ export const VscodeEditor = () => {
             keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyK],
             contextMenuOrder: 1,
             run: () => {
-              updateOpenCmdk(() => true);
+              updateOpenActionCmdk(() => true);
             },
           });
         }}

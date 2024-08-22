@@ -124,6 +124,7 @@ import { Save01 } from "./Save01";
 import { Save02 } from "./Save02";
 import { Scales02 } from "./Scales02";
 import { SearchLg } from "./SearchLg";
+import { SearchMd } from "./SearchMd";
 import { SearchSm } from "./SearchSm";
 import { Settings02 } from "./Settings02";
 import { Share07 } from "./Share07";
@@ -293,6 +294,7 @@ export const Icons = {
   Speaker01,
   Stop,
   SearchLg,
+  SearchMd,
   SearchSm,
   Share07,
   SortLinesDown,
