@@ -1,7 +1,9 @@
-import { Button } from "@instill-ai/design-system";
-import { useEditor } from "./EditorContext";
-import * as prettier from "prettier/standalone";
 import * as yamlPlugin from "prettier/plugins/yaml.js";
+import * as prettier from "prettier/standalone";
+
+import { Button } from "@instill-ai/design-system";
+
+import { useEditor } from "./EditorContext";
 
 export const PrettifyButton = () => {
   const { editorRef } = useEditor();
@@ -23,7 +25,7 @@ export const PrettifyButton = () => {
             tabWidth: 2,
             useTabs: false,
             plugins: [yamlPlugin],
-          }
+          },
         );
 
         editorView.dispatch({
