@@ -1,4 +1,10 @@
-import type { Secret, TriggerNamespacePipelineResponse } from "instill-sdk";
+import type {
+  Secret,
+  TriggerNamespacePipelineResponse,
+  TriggerUserPipelineWithStreamData,
+} from "instill-sdk";
+import { Monaco } from "@monaco-editor/react";
+import { editor } from "monaco-editor";
 import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
 
 import { NodeData } from "../../view";
@@ -38,6 +44,7 @@ export type PipelineBuilderState = {
   tempSavedNodesForEditingIteratorFlow: Node<NodeData>[];
   editingIteratorID: Nullable<string>;
   warnUnsavedChangesDialogState: WarnUnsavedChangesDialogState;
+  triggerWithStreamData: TriggerUserPipelineWithStreamData[];
 };
 
 export type PipelineBuilderAction = {
@@ -93,6 +100,11 @@ export type PipelineBuilderAction = {
   updateWarnUnsavdChangesDialogState: (
     fn: (prev: WarnUnsavedChangesDialogState) => WarnUnsavedChangesDialogState,
   ) => void;
+  updateTriggerWithStreamData: (
+    fn: (
+      prev: TriggerUserPipelineWithStreamData[],
+    ) => TriggerUserPipelineWithStreamData[],
+  ) => void;
 };
 
 export type PipelineBuilderSlice = PipelineBuilderState & PipelineBuilderAction;
@@ -120,6 +132,75 @@ export type GeneralSlice = {
   ) => void;
 };
 
+export type EditorViewType = "preview" | "docs" | "input" | "output";
+
+export type EditorView = {
+  id: string;
+  type: EditorViewType;
+  view: React.ReactNode;
+  title: string;
+  closeable: boolean;
+};
+
+export type EditorViewSection = {
+  views: EditorView[];
+  currentViewId: Nullable<string>;
+};
+
+export type EditorMultiScreenModel = {
+  main: EditorViewSection;
+  topRight: EditorViewSection;
+  bottomRight: EditorViewSection;
+};
+
+export type EditorSlice = {
+  openActionCmdk: boolean;
+  updateOpenActionCmdk: (fn: (prev: boolean) => boolean) => void;
+  openComponentCmdo: boolean;
+  updateOpenComponentCmdo: (fn: (prev: boolean) => boolean) => void;
+  selectedComponentId: Nullable<string>;
+  updateSelectedComponentId: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
+  cursorPosition: number;
+  editorRef: Nullable<editor.IStandaloneCodeEditor>;
+  updateEditorRef: (
+    fn: (
+      prev: Nullable<editor.IStandaloneCodeEditor>,
+    ) => Nullable<editor.IStandaloneCodeEditor>,
+  ) => void;
+  monacoRef: Nullable<Monaco>;
+  updateMonacoRef: (fn: (prev: Nullable<Monaco>) => Nullable<Monaco>) => void;
+  editorMultiScreenModel: EditorMultiScreenModel;
+  updateEditorMultiScreenModel: (
+    fn: (prev: EditorMultiScreenModel) => EditorMultiScreenModel,
+  ) => void;
+  rawRecipeOnDom: Nullable<string>;
+
+  /**
+   * This value is only for caching the user input in the editor.
+   *
+   * Don't use this to update the raw value of the editor. If it is for actions like
+   * adding a new component, updating a component, etc, use the respective actions
+   * from the monaco-editor to have history record for undo/redo.
+   * @returns void
+   */
+  updateRawRecipeOnDom: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
+  isSavingRecipe: boolean;
+  updateIsSavingRecipe: (fn: (prev: boolean) => boolean) => void;
+  hasUnsavedRecipe: boolean;
+  updateHasUnsavedRecipe: (fn: (prev: boolean) => boolean) => void;
+
+  /**
+   * This is used to trigger the import recipe file uploader
+   * Once this is triggered and the user select the desired file,
+   * The import recipe dialog will be opened and the file will be read
+   */
+  importRecipeInputTriggerRef: React.MutableRefObject<HTMLInputElement>;
+};
+
 export type RecentlyUsedSlice = {
   recentlyUsedStartComponentFieldTypes: string[];
   updateRecentlyUsedStartComponentFieldTypes: (
@@ -130,7 +211,8 @@ export type RecentlyUsedSlice = {
 export type InstillStore = SmartHintSlice &
   PipelineBuilderSlice &
   GeneralSlice &
-  RecentlyUsedSlice;
+  RecentlyUsedSlice &
+  EditorSlice;
 
 export type InstillStoreMutators = [
   ["zustand/devtools", never],

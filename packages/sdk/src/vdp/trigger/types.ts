@@ -11,11 +11,17 @@ export type TriggerNamespacePipelineRequest = {
   returnTraces?: boolean;
   shareCode?: string;
   requesterUid?: string;
+  streaming?: boolean;
 };
 
 export type TriggerNamespacePipelineResponse = {
   outputs: GeneralRecord[];
   metadata: PipelineTriggerMetadata;
+};
+
+export type TriggerNamespacePipelineWithStreamingResponse = {
+  sessionUUID: string;
+  sourceInstanceId: string;
 };
 
 export type TriggerAsyncNamespacePipelineRequest = {
@@ -36,6 +42,7 @@ export type TriggerNamespacePipelineReleaseRequest = {
   returnTraces?: boolean;
   shareCode?: string;
   requesterUid?: string;
+  streaming?: boolean;
 };
 
 export type TriggerNamespacePipelineReleaseResponse = {
@@ -53,4 +60,9 @@ export type TriggerAsyncNamespacePipelineReleaseRequest = {
 
 export type TriggerAsyncNamespacePipelineReleaseResponse = {
   operation: Operation;
+};
+
+export type TriggerUserPipelineWithStreamData = {
+  outputs: GeneralRecord[];
+  metadata: PipelineTriggerMetadata;
 };

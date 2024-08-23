@@ -15,9 +15,9 @@ import {
   useQueryClient,
   useRouteInfo,
   useShallow,
+  useSortedReleases,
 } from "../../../lib";
 import { PipelineTabNames } from "../../../server";
-import { useSortedReleases } from "../../pipeline-builder";
 import { Head } from "./Head";
 import { PipelineContentViewer } from "./PipelineContentViewer";
 

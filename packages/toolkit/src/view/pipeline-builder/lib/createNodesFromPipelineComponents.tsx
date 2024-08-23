@@ -41,6 +41,7 @@ export function createNodesFromPipelineComponents(
           ...e,
           note: componentMetadata ? componentMetadata.note : null,
           metadata: e.metadata,
+          component: e.component ? e.component : {},
         },
         position: componentMetadata
           ? { x: componentMetadata.x, y: componentMetadata.y }

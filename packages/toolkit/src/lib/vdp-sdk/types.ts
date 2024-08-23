@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ComponentDefinition, IteratorDefinition } from "instill-sdk";
+
 import { Nullable } from "../type";
 import { InstillJSONSchema } from "../use-instill-form";
 import { User } from "./mgmt";
@@ -67,3 +68,11 @@ export type OrganizationOwner = {
 };
 
 export type Owner = UserOwner | OrganizationOwner;
+
+export type Definition = ComponentDefinition | IteratorDefinition;
+
+export type Status =
+  | "STATUS_UNSPECIFIED"
+  | "STATUS_COMPLETED"
+  | "STATUS_SKIPPED"
+  | "STATUS_ERROR";

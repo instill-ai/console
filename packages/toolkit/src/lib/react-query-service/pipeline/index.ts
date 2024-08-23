@@ -9,10 +9,11 @@ export * from "./useInfinitePipelines";
 export * from "./useInfiniteNamespacePipelines";
 export * from "./useInfiniteNamespacePipelineReleases.js";
 export * from "./useRenameNamespacePipeline";
+export * from "./useStreamingTriggerUserPipeline";
 export * from "./useTriggerNamespacePipeline";
 export * from "./useTriggerNamespacePipelineRelease";
 export * from "./useUpdateNamespacePipeline";
-
+export * from "./useSortedReleases";
 export * from "./use-namespace-pipeline";
 export * from "./use-namespace-pipelines";
 export * from "./use-namespace-pipeline-releases";

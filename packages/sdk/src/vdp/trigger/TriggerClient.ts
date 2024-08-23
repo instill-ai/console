@@ -9,31 +9,81 @@ import {
   TriggerNamespacePipelineReleaseResponse,
   TriggerNamespacePipelineRequest,
   TriggerNamespacePipelineResponse,
+  TriggerNamespacePipelineWithStreamingResponse,
 } from "./types";
 
 export class TriggerClient extends APIResource {
   async triggerNamespacePipeline({
     namespacePipelineName,
     inputs,
+    returnTraces,
+    requesterUid,
+    shareCode,
+    streaming,
+  }: TriggerNamespacePipelineRequest & {
+    streaming: true;
+  }): Promise<TriggerNamespacePipelineWithStreamingResponse>;
+  async triggerNamespacePipeline({
+    namespacePipelineName,
+    inputs,
+    returnTraces,
+    requesterUid,
+    shareCode,
+    streaming,
+  }: TriggerNamespacePipelineRequest & {
+    streaming: false;
+  }): Promise<TriggerNamespacePipelineResponse>;
+  async triggerNamespacePipeline({
+    namespacePipelineName,
+    inputs,
+    returnTraces,
+    requesterUid,
+    shareCode,
+    streaming,
+  }: TriggerNamespacePipelineRequest & {
+    streaming?: undefined;
+  }): Promise<TriggerNamespacePipelineResponse>;
+  async triggerNamespacePipeline({
+    namespacePipelineName,
+    inputs,
+    returnTraces,
+    requesterUid,
+    shareCode,
+    streaming,
+  }: TriggerNamespacePipelineRequest & {
+    streaming?: boolean;
+  }): Promise<
+    | TriggerNamespacePipelineResponse
+    | TriggerNamespacePipelineWithStreamingResponse
+  >;
+  async triggerNamespacePipeline({
+    namespacePipelineName,
+    inputs,
     requesterUid,
     returnTraces,
     shareCode,
+    streaming,
   }: TriggerNamespacePipelineRequest) {
     const additionalHeaders = getInstillAdditionalHeaders({
       requesterUid,
       returnTraces,
       shareCode,
+      streaming,
     });
 
     try {
-      const data = this._client.post<TriggerNamespacePipelineResponse>(
-        `/${namespacePipelineName}/trigger`,
-        {
-          body: JSON.stringify({ inputs }),
-          additionalHeaders,
-        },
-      );
-      return Promise.resolve(data);
+      const data = this._client.post(`/${namespacePipelineName}/trigger`, {
+        body: JSON.stringify({ inputs }),
+        additionalHeaders,
+      });
+
+      if (streaming) {
+        return Promise.resolve(
+          data,
+        ) as Promise<TriggerNamespacePipelineWithStreamingResponse>;
+      } else {
+        return Promise.resolve(data);
+      }
     } catch (error) {
       return Promise.reject(error);
     }
@@ -73,11 +123,15 @@ export class TriggerClient extends APIResource {
     returnTraces,
     requesterUid,
     shareCode,
-  }: TriggerNamespacePipelineReleaseRequest) {
+    streaming,
+  }: TriggerNamespacePipelineReleaseRequest & {
+    streaming?: boolean;
+  }) {
     const additionalHeaders = getInstillAdditionalHeaders({
       requesterUid,
       returnTraces,
       shareCode,
+      streaming,
     });
 
     try {
@@ -89,6 +143,7 @@ export class TriggerClient extends APIResource {
             additionalHeaders,
           },
         );
+
       return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);

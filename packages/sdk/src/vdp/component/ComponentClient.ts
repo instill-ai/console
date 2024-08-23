@@ -94,7 +94,7 @@ export class ComponentClient extends APIResource {
   async listComponentDefinitions(
     props: ListComponentDefinitionsRequest & { enablePagination?: boolean },
   ) {
-    const { pageSize, pageToken, filter, view, enablePagination } = props;
+    const { pageSize, page, filter, view, enablePagination } = props;
 
     try {
       const definitions: ComponentDefinition[] = [];
@@ -102,7 +102,7 @@ export class ComponentClient extends APIResource {
       const queryString = getQueryString({
         baseURL: `/component-definitions`,
         pageSize,
-        pageToken,
+        page,
         filter,
         view,
       });
@@ -116,11 +116,11 @@ export class ComponentClient extends APIResource {
 
       definitions.push(...data.componentDefinitions);
 
-      if (data.nextPageToken) {
+      if (data.page + 1 < data.totalSize / data.pageSize) {
         definitions.push(
           ...(await this.listComponentDefinitions({
             pageSize,
-            pageToken: data.nextPageToken,
+            page: data.page + 1,
             filter,
             view,
             enablePagination: false,

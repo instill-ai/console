@@ -52,14 +52,18 @@ import { DOCXFile } from "./DOCXFile";
 import { DotsGrid } from "./DotsGrid";
 import { DotsHorizontal } from "./DotsHorizontal";
 import { DotsVertical } from "./DotsVertical";
+import { Download01 } from "./Download01";
 import { DownloadCloud01 } from "./DownloadCloud01";
 import { Edit03 } from "./Edit03";
 import { Edit05 } from "./Edit05";
+import { Expand01 } from "./Expand01";
 import { Expand06 } from "./Expand06";
+import { Eye } from "./Eye";
 import { File02 } from "./File02";
 import { File04 } from "./File04";
 import { File05 } from "./File05";
 import { File06 } from "./File06";
+import { FileDownload03 } from "./FileDownload03";
 import { FileMinus01 } from "./FileMinus01";
 import { FilePlus01 } from "./FilePlus01";
 import { FilePlus02 } from "./FilePlus02";
@@ -79,17 +83,21 @@ import { InfoCircle } from "./InfoCircle";
 import { InfoSquare } from "./InfoSquare";
 import { IntersectSquare } from "./IntersectSquare";
 import { LayersTwo01 } from "./LayersTwo01";
+import { LayoutLeft } from "./LayoutLeft";
 import { Lightning01 } from "./Lightning01";
 import { Link01 } from "./Link01";
 import { Lock03 } from "./Lock03";
 import { LockUnlocked03 } from "./LockUnlocked03";
 import { Logout01 } from "./Logout01";
+import { Logout04 } from "./Logout04";
 import { Mail01 } from "./Mail01";
 import { MasterCard } from "./MasterCard";
+import { Maximize02 } from "./Maximize02";
 import { MDFile } from "./MDFile";
 import { Menu01 } from "./Menu01";
 import { MessageChatSquare } from "./MessageChatSquare";
 import { MessageSmileSquare } from "./MessageSmileSquare";
+import { Minimize01 } from "./Minimize01";
 import { Minus } from "./Minus";
 import { Model } from "./Model";
 import { MultipleVideo } from "./MultipleVideo";
@@ -113,9 +121,12 @@ import { ReferenceIconX } from "./ReferenceIconX";
 import { RefreshCw05 } from "./RefreshCw05";
 import { Repeat04 } from "./Repeat04";
 import { Rocket01 } from "./Rocket01";
+import { Rocket02 } from "./Rocket02";
 import { Save01 } from "./Save01";
+import { Save02 } from "./Save02";
 import { Scales02 } from "./Scales02";
 import { SearchLg } from "./SearchLg";
+import { SearchMd } from "./SearchMd";
 import { SearchSm } from "./SearchSm";
 import { Settings02 } from "./Settings02";
 import { Share07 } from "./Share07";
@@ -200,6 +211,7 @@ export const Icons = {
   Cube01,
   CubeOutline,
   CurrencyDollar,
+  Download01,
   Database01,
   Dataflow03,
   Dataflow03Broken,
@@ -211,6 +223,8 @@ export const Icons = {
   DownloadCloud01,
   Edit03,
   Edit05,
+  Eye,
+  Expand01,
   Expand06,
   File02,
   File04,
@@ -220,6 +234,7 @@ export const Icons = {
   FilePlus01,
   FilePlus02,
   FilterLines,
+  FileDownload03,
   Flag04,
   Gear01,
   GitMerge,
@@ -238,10 +253,14 @@ export const Icons = {
   Image03,
   ImagePlus,
   Logout01,
+  Logout04,
   LayersTwo01,
   Lightning01,
+  LayoutLeft,
   Model,
   MultipleVideo,
+  Maximize02,
+  Minimize01,
   PauseCircle,
   MasterCard,
   MDFile,
@@ -269,7 +288,9 @@ export const Icons = {
   ReferenceIconCheck,
   ReferenceIconX,
   Rocket01,
+  Rocket02,
   Save01,
+  Save02,
   Scales02,
   Settings02,
   SpeechRecognition,
@@ -278,6 +299,7 @@ export const Icons = {
   Speaker01,
   Stop,
   SearchLg,
+  SearchMd,
   SearchSm,
   Share07,
   SortLinesDown,

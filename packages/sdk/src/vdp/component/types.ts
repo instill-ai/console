@@ -62,6 +62,7 @@ export const ConnectorDefinitionSchema = z.object({
   custom: z.boolean(),
   vendor: z.string(),
   vendorAttributes: z.record(z.any()),
+  tasks: z.array(TaskSchema),
 });
 
 export type ComponentDefinition = {
@@ -159,7 +160,7 @@ export const listConnectorDefinitionsWithPaginationResponseValidator = z.object(
 
 export type ListComponentDefinitionsRequest = {
   pageSize?: number;
-  pageToken?: string;
+  page?: number;
   filter?: string;
   view?: string;
 };
@@ -168,6 +169,8 @@ export type ListComponentDefinitionsResponse = {
   componentDefinitions: ComponentDefinition[];
   nextPageToken: string;
   totalSize: number;
+  pageSize: number;
+  page: number;
 };
 
 export const listComponentDefinitionsWithPaginationResponseValidator = z.object(
