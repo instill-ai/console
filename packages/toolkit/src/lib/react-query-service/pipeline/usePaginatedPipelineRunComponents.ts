@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import type { Nullable } from "../../type";
 import { env } from "../../../server";
 import { getInstillAPIClient } from "../../vdp-sdk";
@@ -28,7 +29,7 @@ export function usePaginatedPipelineRunComponents({
     "pipeline-component-runs",
     pipelineRunId,
     "paginated",
-    accessToken ? 'withAuth' : 'unAuth',
+    accessToken ? "withAuth" : "unAuth",
     //fullView ? 'VIEW_FULL' : 'VIEW_BASIC',
     pageSize || env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
     page || 0,
@@ -53,14 +54,15 @@ export function usePaginatedPipelineRunComponents({
         accessToken: accessToken ?? undefined,
       });
 
-      const data = await client.vdp.pipeline.listPaginatedNamespacePipelineRunComponents({
-        pipelineRunId,
-        pageSize: pageSize || env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-        //fullView: !!fullView,
-        page: page || 0,
-        //orderBy: orderBy || null,
-        //filter: filter || null,
-      });
+      const data =
+        await client.vdp.pipeline.listPaginatedNamespacePipelineRunComponents({
+          pipelineRunId,
+          pageSize: pageSize || env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+          //fullView: !!fullView,
+          page: page || 0,
+          //orderBy: orderBy || null,
+          //filter: filter || null,
+        });
 
       return Promise.resolve(data);
     },

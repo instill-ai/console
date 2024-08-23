@@ -1,6 +1,13 @@
-import * as React from "react";
 import type { Pipeline, PipelineRun } from "instill-sdk";
-import { ColumnDef, DataTable, PaginationState } from "@instill-ai/design-system";
+import * as React from "react";
+import Link from "next/link";
+
+import {
+  ColumnDef,
+  DataTable,
+  PaginationState,
+} from "@instill-ai/design-system";
+
 import {
   EmptyView,
   LoadingSpin,
@@ -14,10 +21,9 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../../../lib";
-import Link from "next/link";
 import { usePaginatedPipelineRuns } from "../../../../lib/react-query-service/pipeline";
-import { TABLE_PAGE_SIZE } from "../constants";
 import { getHumanReadableStringFromTime } from "../../../../server";
+import { TABLE_PAGE_SIZE } from "../constants";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -32,10 +38,12 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
   const [orderBy, setOrderBy] = React.useState<string>();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const routeInfo = useRouteInfo();
-  const [paginationState, setPaginationState] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: TABLE_PAGE_SIZE,
-  });
+  const [paginationState, setPaginationState] = React.useState<PaginationState>(
+    {
+      pageIndex: 0,
+      pageSize: TABLE_PAGE_SIZE,
+    },
+  );
   const pipelineRuns = usePaginatedPipelineRuns({
     pipelineName: `namespaces/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`,
     enabled: enabledQuery && routeInfo.isSuccess,
@@ -59,12 +67,12 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
   }, [pipelineRuns.isSuccess, pipelineRuns.data]);
 
   const onSortOrderUpdate = (sortValue: string) => {
-    setPaginationState(currentValue => ({
+    setPaginationState((currentValue) => ({
       ...currentValue,
       pageIndex: 0,
     }));
     setOrderBy(sortValue);
-  }
+  };
 
   const columns: ColumnDef<PipelineRun>[] = [
     {
@@ -73,7 +81,12 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            <Link href={`/${ownerId}/pipelines/${pipeline?.id}/runs/${row.getValue("pipelineRunUid")}`} className="text-semantic-accent-default hover:underline">{row.getValue("pipelineRunUid")}</Link>
+            <Link
+              href={`/${ownerId}/pipelines/${pipeline?.id}/runs/${row.getValue("pipelineRunUid")}`}
+              className="text-semantic-accent-default hover:underline"
+            >
+              {row.getValue("pipelineRunUid")}
+            </Link>
           </div>
         );
       },
@@ -85,10 +98,17 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
         let content: React.ReactNode = `Unversioned`;
         const version = row.getValue("pipelineVersion");
 
-        if (version !== 'latest') {
-          content = <Link href={`/${ownerId}/pipelines/${pipeline?.id}/playground?version=${version}`} className="text-semantic-accent-default hover:underline">{row.getValue("pipelineVersion")}</Link>
+        if (version !== "latest") {
+          content = (
+            <Link
+              href={`/${ownerId}/pipelines/${pipeline?.id}/playground?version=${version}`}
+              className="text-semantic-accent-default hover:underline"
+            >
+              {row.getValue("pipelineVersion")}
+            </Link>
+          );
         }
-        
+
         return (
           <div className="font-normal text-semantic-bg-secondary-secondary break-all">
             {content}
@@ -114,7 +134,7 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            {row.getValue("source") === 'RUN_SOURCE_CONSOLE' ? "Web" : "API"}
+            {row.getValue("source") === "RUN_SOURCE_CONSOLE" ? "Web" : "API"}
           </div>
         );
       },
@@ -133,7 +153,7 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-alt-primary">
             {convertToSecondsAndMilliseconds(
-              (row.getValue("totalDuration") as number)/1000,
+              (row.getValue("totalDuration") as number) / 1000,
             )}
           </div>
         );
@@ -152,7 +172,10 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-alt-primary">
-            {getHumanReadableStringFromTime(row.getValue("startTime"), Date.now())}
+            {getHumanReadableStringFromTime(
+              row.getValue("startTime"),
+              Date.now(),
+            )}
           </div>
         );
       },
@@ -163,7 +186,13 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            <Link target="_blank" className="text-semantic-accent-default hover:underline" href={`/${row.getValue("runnerId")}`}>{row.getValue("runnerId")}</Link>
+            <Link
+              target="_blank"
+              className="text-semantic-accent-default hover:underline"
+              href={`/${row.getValue("runnerId")}`}
+            >
+              {row.getValue("runnerId")}
+            </Link>
           </div>
         );
       },
@@ -178,7 +207,7 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
           </div>
         );
       },
-    }
+    },
   ];
 
   if (pipelineRuns.isPending) {
@@ -208,11 +237,11 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
         <p className="absolute left-1/2 top-3/4 flex -translate-x-1/2 flex-col items-center gap-y-2 text-center text-xl font-semibold text-semantic-fg-primary">
           <span className="whitespace-nowrap">No run logs found</span>
           <span className="text-base font-normal text-semantic-fg-secondary">
-              Once you run this pipeline, they will appear here
+            Once you run this pipeline, they will appear here
           </span>
         </p>
       </div>
-    )
+    );
   }
 
   return (

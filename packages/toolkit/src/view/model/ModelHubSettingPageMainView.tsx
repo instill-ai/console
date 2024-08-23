@@ -1,7 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
+import { Nullable } from "instill-sdk";
 
 import {
   InstillStore,
@@ -14,7 +20,6 @@ import {
 } from "../../lib";
 import { ModelTabNames } from "../../server";
 import { ModelContentViewer, ModelHead } from "./view-model";
-import { Nullable } from "instill-sdk";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -101,7 +106,10 @@ export const ModelHubSettingPageMainView = () => {
     if (model.isSuccess) {
       if (activeVersion) {
         if (model.data.versions.length > 0) {
-          if (!model.data.versions.find((item) => item === activeVersion) && model.data.versions[0]) {
+          if (
+            !model.data.versions.find((item) => item === activeVersion) &&
+            model.data.versions[0]
+          ) {
             updateActiveVersionUrl(model.data.versions[0]);
           }
         } else {

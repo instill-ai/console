@@ -15,7 +15,11 @@ import {
   toast,
 } from "@instill-ai/design-system";
 
-import { ClonePipelineDialog, HeadExternalLink, VersionDropdownSelector } from "../../../components";
+import {
+  ClonePipelineDialog,
+  HeadExternalLink,
+  VersionDropdownSelector,
+} from "../../../components";
 import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
 import {
   InstillStore,
@@ -182,7 +186,7 @@ export const Head = ({
           {!!releases?.length && pipeline ? (
             <VersionDropdownSelector
               activeVersion={activeVersion}
-              versions={releases.map(release => release.id)}
+              versions={releases.map((release) => release.id)}
               onVersionUpdate={onActiveVersionUpdate}
             />
           ) : null}

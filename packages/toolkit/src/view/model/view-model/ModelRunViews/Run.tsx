@@ -1,17 +1,36 @@
-import { Model, Nullable } from "instill-sdk";
 import * as React from "react";
-import { CodeBlock, ModelSectionHeader, RunStateLabel } from "../../../../components";
-import { Button, Form, Icons, TabMenu } from "@instill-ai/design-system";
-import { convertToSecondsAndMilliseconds, InstillStore, useComponentOutputFields, useInstillForm, useInstillStore, usePaginatedModelRuns, useRouteInfo, useShallow } from "../../../../lib";
-import { defaultCodeSnippetStyles } from "../../../../constant";
-import { convertTaskNameToPayloadPropName, convertValuesToString, ModelOutputActiveView } from "../ModelPlayground";
-import { getHumanReadableStringFromTime } from "../../../../server";
 import Link from "next/link";
+import { Model, Nullable } from "instill-sdk";
+
+import { Button, Form, Icons, TabMenu } from "@instill-ai/design-system";
+
+import {
+  CodeBlock,
+  ModelSectionHeader,
+  RunStateLabel,
+} from "../../../../components";
+import { defaultCodeSnippetStyles } from "../../../../constant";
+import {
+  convertToSecondsAndMilliseconds,
+  InstillStore,
+  useComponentOutputFields,
+  useInstillForm,
+  useInstillStore,
+  usePaginatedModelRuns,
+  useRouteInfo,
+  useShallow,
+} from "../../../../lib";
+import { getHumanReadableStringFromTime } from "../../../../server";
+import {
+  convertTaskNameToPayloadPropName,
+  convertValuesToString,
+  ModelOutputActiveView,
+} from "../ModelPlayground";
 
 export type ModelRunProps = {
   id?: string;
   model?: Model;
-}
+};
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -21,7 +40,8 @@ const selector = (store: InstillStore) => ({
 export const ModelRun = ({ id, model }: ModelRunProps) => {
   const routeInfo = useRouteInfo();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-  const [outputActiveView, setOutputActiveView] = React.useState<ModelOutputActiveView>("preview");
+  const [outputActiveView, setOutputActiveView] =
+    React.useState<ModelOutputActiveView>("preview");
   const modelRuns = usePaginatedModelRuns({
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
@@ -32,23 +52,24 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
     fullView: true,
   });
   const modelRun = React.useMemo(() => {
-    return modelRuns.data?.runs[0] || null
+    return modelRuns.data?.runs[0] || null;
   }, [modelRuns.isSuccess, modelRuns.data]);
   const taskInputOutput = React.useMemo(() => {
-    const taskPropName = convertTaskNameToPayloadPropName(model?.task) as string;
+    const taskPropName = convertTaskNameToPayloadPropName(
+      model?.task,
+    ) as string;
 
     return {
-      input: modelRun?.taskInputs[0] ? convertValuesToString(
-        modelRun?.taskInputs[0][taskPropName],
-      ) : null,
-      output: modelRun?.taskOutputs[0] ? modelRun?.taskOutputs[0][taskPropName] : null,
-    }
-  }, [modelRun, model])
+      input: modelRun?.taskInputs[0]
+        ? convertValuesToString(modelRun?.taskInputs[0][taskPropName])
+        : null,
+      output: modelRun?.taskOutputs[0]
+        ? modelRun?.taskOutputs[0][taskPropName]
+        : null,
+    };
+  }, [modelRun, model]);
 
-  const {
-    fields,
-    form,
-  } = useInstillForm(
+  const { fields, form } = useInstillForm(
     model?.inputSchema || null,
     taskInputOutput.input,
     {
@@ -78,20 +99,49 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
         <div className="border rounded-sm p-6 flex flex-col gap-y-5">
           <div className="text-lg text-semantic-fg-primary font-bold">{id}</div>
           <div className="flex flex-row items-center justify-between text-xs">
-            <div>Version <b>{modelRun?.version}</b></div>
-            <div>Status <RunStateLabel
-              state={modelRun?.status}
-              className="inline-flex"
-            /></div>
-            <div>Source <b>{modelRun?.source === 'RUN_SOURCE_CONSOLE' ? "Web" : "API"}</b></div>
-            <div>Total Duration <b>{convertToSecondsAndMilliseconds(modelRun?.totalDuration || 0)}</b></div>
-            <div>Created Time <b>{modelRun?.createTime ? getHumanReadableStringFromTime(modelRun?.createTime, Date.now()) : null}</b></div>
-            <div>Runner <Link target="_blank" className="text-semantic-accent-default hover:underline" href={`/${modelRun?.runnerId}`}><b>{modelRun?.runnerId}</b></Link></div>
-            {
-              (modelRun && modelRun.creditAmount !== null)
-                ? <div>Credits <b>{modelRun.creditAmount}</b></div>
-                : null
-            }
+            <div>
+              Version <b>{modelRun?.version}</b>
+            </div>
+            <div>
+              Status{" "}
+              <RunStateLabel state={modelRun?.status} className="inline-flex" />
+            </div>
+            <div>
+              Source{" "}
+              <b>{modelRun?.source === "RUN_SOURCE_CONSOLE" ? "Web" : "API"}</b>
+            </div>
+            <div>
+              Total Duration{" "}
+              <b>
+                {convertToSecondsAndMilliseconds(modelRun?.totalDuration || 0)}
+              </b>
+            </div>
+            <div>
+              Created Time{" "}
+              <b>
+                {modelRun?.createTime
+                  ? getHumanReadableStringFromTime(
+                      modelRun?.createTime,
+                      Date.now(),
+                    )
+                  : null}
+              </b>
+            </div>
+            <div>
+              Runner{" "}
+              <Link
+                target="_blank"
+                className="text-semantic-accent-default hover:underline"
+                href={`/${modelRun?.runnerId}`}
+              >
+                <b>{modelRun?.runnerId}</b>
+              </Link>
+            </div>
+            {modelRun && modelRun.creditAmount !== null ? (
+              <div>
+                Credits <b>{modelRun.creditAmount}</b>
+              </div>
+            ) : null}
           </div>
         </div>
         <div className="flex flex-row">
@@ -104,7 +154,9 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
               className="pointer-events-none mb-3 border-b border-semantic-bg-line"
             >
               <TabMenu.Item value="form">
-                <span className="text-sm text-semantic-accent-default">Form</span>
+                <span className="text-sm text-semantic-accent-default">
+                  Form
+                </span>
               </TabMenu.Item>
             </TabMenu.Root>
             <Form.Root {...form}>
@@ -154,4 +206,4 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
       </div>
     </React.Fragment>
   );
-}
+};

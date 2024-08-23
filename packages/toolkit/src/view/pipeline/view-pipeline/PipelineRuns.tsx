@@ -1,6 +1,10 @@
 import type { Pipeline } from "instill-sdk";
 import { useParams } from "next/navigation";
-import { PipelineRunList, PipelineRunView as PipelineRun } from "./PipelineRunViews";
+
+import {
+  PipelineRunView as PipelineRun,
+  PipelineRunList,
+} from "./PipelineRunViews";
 
 /* const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -13,10 +17,10 @@ export type PipelineRunsProps = {
 
 export const PipelineRuns = ({ pipeline }: PipelineRunsProps) => {
   const { path } = useParams();
-  
+
   if (path?.length === 1) {
-    return <PipelineRunList pipeline={pipeline} />
+    return <PipelineRunList pipeline={pipeline} />;
   } else {
-    return <PipelineRun pipeline={pipeline} id={path?.[1]} />
+    return <PipelineRun pipeline={pipeline} id={path?.[1]} />;
   }
 };

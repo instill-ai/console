@@ -1,25 +1,44 @@
-import { ComponentRun, GeneralRecord, Nullable } from "instill-sdk";
-import { convertToSecondsAndMilliseconds, formatDate, InstillStore, useInstillStore, useRouteInfo, useShallow } from "../../../../lib";
-import { usePaginatedPipelineRunComponents } from "../../../../lib/react-query-service/pipeline";
 import * as React from "react";
 import { ColumnDef, PaginationState } from "@tanstack/react-table";
-import { TABLE_PAGE_SIZE } from "../constants";
+import { ComponentRun, GeneralRecord, Nullable } from "instill-sdk";
+
 import { Button, DataTable, Dialog } from "@instill-ai/design-system";
-import { ModelSectionHeader, RunsTableSortableColHeader, RunStateLabel } from "../../../../components";
+
+import {
+  ModelSectionHeader,
+  RunsTableSortableColHeader,
+  RunStateLabel,
+} from "../../../../components";
+import {
+  convertToSecondsAndMilliseconds,
+  formatDate,
+  InstillStore,
+  useInstillStore,
+  useRouteInfo,
+  useShallow,
+} from "../../../../lib";
+import { usePaginatedPipelineRunComponents } from "../../../../lib/react-query-service/pipeline";
+import { TABLE_PAGE_SIZE } from "../constants";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
 });
 
-export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullable<string> }) => {
+export const PipelineRunComponents = ({
+  pipelineRunId,
+}: {
+  pipelineRunId: Nullable<string>;
+}) => {
   const routeInfo = useRouteInfo();
   const [orderBy, setOrderBy] = React.useState<string>();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-  const [paginationState, setPaginationState] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: TABLE_PAGE_SIZE,
-  });
+  const [paginationState, setPaginationState] = React.useState<PaginationState>(
+    {
+      pageIndex: 0,
+      pageSize: TABLE_PAGE_SIZE,
+    },
+  );
   const pipelineComponentRuns = usePaginatedPipelineRunComponents({
     pipelineRunId: pipelineRunId,
     enabled: enabledQuery && routeInfo.isSuccess,
@@ -30,17 +49,21 @@ export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullab
       return 1;
     }
 
-    return Math.ceil(pipelineComponentRuns.data.totalSize / pipelineComponentRuns.data.pageSize);
+    return Math.ceil(
+      pipelineComponentRuns.data.totalSize /
+        pipelineComponentRuns.data.pageSize,
+    );
   }, [pipelineComponentRuns.isSuccess, pipelineComponentRuns.data]);
-  const [currentOutputContent, setCurrentOutputContent] = React.useState<Nullable<{ componentId: string, content: string }>>(null);
+  const [currentOutputContent, setCurrentOutputContent] =
+    React.useState<Nullable<{ componentId: string; content: string }>>(null);
 
   const onSortOrderUpdate = (sortValue: string) => {
-    setPaginationState(currentValue => ({
+    setPaginationState((currentValue) => ({
       ...currentValue,
       pageIndex: 0,
     }));
     setOrderBy(sortValue);
-  }
+  };
 
   const componentRunsColumns: ColumnDef<ComponentRun>[] = [
     {
@@ -86,9 +109,11 @@ export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullab
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-alt-primary">
-            {row.getValue("totalDuration") ? convertToSecondsAndMilliseconds(
-              (row.getValue("totalDuration") as number) / 1000,
-            ) : null}
+            {row.getValue("totalDuration")
+              ? convertToSecondsAndMilliseconds(
+                  (row.getValue("totalDuration") as number) / 1000,
+                )
+              : null}
           </div>
         );
       },
@@ -124,7 +149,9 @@ export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullab
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-alt-primary">
-            {row.getValue("completeTime") ? formatDate(row.getValue("completeTime")) : null}
+            {row.getValue("completeTime")
+              ? formatDate(row.getValue("completeTime"))
+              : null}
           </div>
         );
       },
@@ -149,10 +176,14 @@ export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullab
             <Button
               size="sm"
               variant="secondaryGrey"
-              onClick={() =>{
+              onClick={() => {
                 setCurrentOutputContent({
                   componentId: row.original.componentId,
-                  content: JSON.stringify((row.getValue("outputs") as GeneralRecord)[0], null, 2),
+                  content: JSON.stringify(
+                    (row.getValue("outputs") as GeneralRecord)[0],
+                    null,
+                    2,
+                  ),
                 });
               }}
             >
@@ -170,13 +201,21 @@ export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullab
 
   return (
     <div>
-      <ModelSectionHeader className="mb-4">Component Run Metadata</ModelSectionHeader>
+      <ModelSectionHeader className="mb-4">
+        Component Run Metadata
+      </ModelSectionHeader>
       <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th]:w-40 [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(6)]:w-28 [&_table_th:nth-child(7)]:w-32">
         <DataTable
           columns={componentRunsColumns}
-          data={pipelineComponentRuns.isSuccess ? pipelineComponentRuns.data.componentRuns : []}
+          data={
+            pipelineComponentRuns.isSuccess
+              ? pipelineComponentRuns.data.componentRuns
+              : []
+          }
           pageSize={paginationState.pageSize}
-          isLoading={pipelineComponentRuns.isFetching || pipelineComponentRuns.isLoading}
+          isLoading={
+            pipelineComponentRuns.isFetching || pipelineComponentRuns.isLoading
+          }
           loadingRows={paginationState.pageSize}
           pageCount={pageCount}
           manualPagination={true}
@@ -193,12 +232,19 @@ export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullab
           }}
         >
           <Dialog.Header>
-            <Dialog.Title>Component {currentOutputContent?.componentId} output</Dialog.Title>
-            <Dialog.Close onClick={() => setCurrentOutputContent(null)} className="!right-6 !top-6" />
+            <Dialog.Title>
+              Component {currentOutputContent?.componentId} output
+            </Dialog.Title>
+            <Dialog.Close
+              onClick={() => setCurrentOutputContent(null)}
+              className="!right-6 !top-6"
+            />
           </Dialog.Header>
-          <pre className="w-full h-full overflow-auto">{currentOutputContent?.content}</pre>
+          <pre className="w-full h-full overflow-auto">
+            {currentOutputContent?.content}
+          </pre>
         </Dialog.Content>
       </Dialog.Root>
     </div>
-  )
-}
+  );
+};

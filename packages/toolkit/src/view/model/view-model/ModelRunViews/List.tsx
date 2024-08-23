@@ -1,7 +1,17 @@
-import * as React from "react";
 import type { Model } from "instill-sdk";
+import * as React from "react";
+import Link from "next/link";
 
-import { ColumnDef, DataTable, PaginationState } from "@instill-ai/design-system";
+import {
+  ColumnDef,
+  DataTable,
+  PaginationState,
+} from "@instill-ai/design-system";
+
+import {
+  RunsTableSortableColHeader,
+  RunStateLabel,
+} from "../../../../components";
 import {
   convertToSecondsAndMilliseconds,
   InstillStore,
@@ -11,10 +21,8 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../../../lib";
-import { TABLE_PAGE_SIZE } from "../constants";
-import Link from "next/link";
-import { RunsTableSortableColHeader, RunStateLabel } from "../../../../components";
 import { getHumanReadableStringFromTime } from "../../../../server";
+import { TABLE_PAGE_SIZE } from "../constants";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -31,10 +39,12 @@ const OWNER = {
 
 export const ModelRunList = ({ model }: ModelRunListProps) => {
   const [orderBy, setOrderBy] = React.useState<string>();
-  const [paginationState, setPaginationState] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: TABLE_PAGE_SIZE,
-  });
+  const [paginationState, setPaginationState] = React.useState<PaginationState>(
+    {
+      pageIndex: 0,
+      pageSize: TABLE_PAGE_SIZE,
+    },
+  );
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const routeInfo = useRouteInfo();
   const modelRuns = usePaginatedModelRuns({
@@ -71,12 +81,12 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
   }, [modelRuns.isSuccess, modelRuns.data]);
 
   const onSortOrderUpdate = (sortValue: string) => {
-    setPaginationState(currentValue => ({
+    setPaginationState((currentValue) => ({
       ...currentValue,
       pageIndex: 0,
     }));
     setOrderBy(sortValue);
-  }
+  };
 
   const columns: ColumnDef<ModelRun>[] = [
     {
@@ -85,7 +95,12 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            <Link href={`/${owner.id}/models/${model?.id}/runs/${row.getValue("uid")}`} className="text-semantic-accent-default hover:underline">{row.getValue("uid")}</Link>
+            <Link
+              href={`/${owner.id}/models/${model?.id}/runs/${row.getValue("uid")}`}
+              className="text-semantic-accent-default hover:underline"
+            >
+              {row.getValue("uid")}
+            </Link>
           </div>
         );
       },
@@ -96,7 +111,12 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            <Link href={`/${owner.id}/models/${model?.id}/playground?version=${row.getValue("version")}`} className="text-semantic-accent-default hover:underline">{row.getValue("version")}</Link>
+            <Link
+              href={`/${owner.id}/models/${model?.id}/playground?version=${row.getValue("version")}`}
+              className="text-semantic-accent-default hover:underline"
+            >
+              {row.getValue("version")}
+            </Link>
           </div>
         );
       },
@@ -119,7 +139,7 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            {row.getValue("source") === 'RUN_SOURCE_CONSOLE' ? "Web" : "API"}
+            {row.getValue("source") === "RUN_SOURCE_CONSOLE" ? "Web" : "API"}
           </div>
         );
       },
@@ -157,7 +177,10 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-alt-primary">
-            {getHumanReadableStringFromTime(row.getValue("createTime"), Date.now())}
+            {getHumanReadableStringFromTime(
+              row.getValue("createTime"),
+              Date.now(),
+            )}
           </div>
         );
       },
@@ -168,7 +191,13 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            <Link target="_blank" className="text-semantic-accent-default hover:underline" href={`/${row.getValue("runnerId")}`}>{row.getValue("runnerId")}</Link>
+            <Link
+              target="_blank"
+              className="text-semantic-accent-default hover:underline"
+              href={`/${row.getValue("runnerId")}`}
+            >
+              {row.getValue("runnerId")}
+            </Link>
           </div>
         );
       },
@@ -183,7 +212,7 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
           </div>
         );
       },
-    }
+    },
   ];
 
   if (modelRuns.isSuccess && !modelRuns.data.runs.length) {
@@ -198,11 +227,11 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
         <p className="absolute left-1/2 top-3/4 flex -translate-x-1/2 flex-col items-center gap-y-2 text-center text-xl font-semibold text-semantic-fg-primary">
           <span className="whitespace-nowrap">No run logs found</span>
           <span className="text-base font-normal text-semantic-fg-secondary">
-              Once you run this model, they will appear here
+            Once you run this model, they will appear here
           </span>
         </p>
       </div>
-    )
+    );
   }
 
   return (

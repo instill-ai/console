@@ -1,19 +1,36 @@
-import { Nullable, Pipeline } from "instill-sdk";
 import * as React from "react";
-import { CodeBlock, ModelSectionHeader, RunStateLabel } from "../../../../components";
+import Link from "next/link";
+import { Nullable, Pipeline } from "instill-sdk";
+
 import { Button, Form, Icons, TabMenu } from "@instill-ai/design-system";
-import { convertToSecondsAndMilliseconds, InstillStore, useComponentOutputFields, useInstillStore, usePipelineTriggerRequestForm, useRouteInfo, useShallow } from "../../../../lib";
-import { InOutputSkeleton, PipelineOutputActiveView } from "../PipelinePlayground";
+
+import {
+  CodeBlock,
+  ModelSectionHeader,
+  RunStateLabel,
+} from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
+import {
+  convertToSecondsAndMilliseconds,
+  InstillStore,
+  useComponentOutputFields,
+  useInstillStore,
+  usePipelineTriggerRequestForm,
+  useRouteInfo,
+  useShallow,
+} from "../../../../lib";
 import { usePaginatedPipelineRuns } from "../../../../lib/react-query-service/pipeline";
 import { getHumanReadableStringFromTime } from "../../../../server";
+import {
+  InOutputSkeleton,
+  PipelineOutputActiveView,
+} from "../PipelinePlayground";
 import { PipelineRunComponents } from "./RunComponents";
-import Link from "next/link";
 
 export type PipelineRunProps = {
   id?: string;
   pipeline?: Pipeline;
-}
+};
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -33,12 +50,9 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
     fullView: true,
   });
   const pipelineRun = React.useMemo(() => {
-    return pipelineRuns.data?.pipelineRuns[0] || null
+    return pipelineRuns.data?.pipelineRuns[0] || null;
   }, [pipelineRuns.isSuccess, pipelineRuns.data]);
-  const {
-    fieldItems: fields,
-    form,
-  } = usePipelineTriggerRequestForm({
+  const { fieldItems: fields, form } = usePipelineTriggerRequestForm({
     mode: "demo",
     fields: pipelineRun?.recipeSnapshot?.variable || null,
     keyPrefix: "pipeline-run-details-page-form",
@@ -53,7 +67,8 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
     data: pipelineRun?.outputs[0] || null,
   });
 
-  const [outputActiveView, setOutputActiveView] = React.useState<PipelineOutputActiveView>("preview");
+  const [outputActiveView, setOutputActiveView] =
+    React.useState<PipelineOutputActiveView>("preview");
 
   return (
     <React.Fragment>
@@ -64,7 +79,9 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
           size="lg"
           asChild
         >
-          <a href={`/${routeInfo.data.namespaceId}/pipelines/${pipeline?.id}/runs`}>
+          <a
+            href={`/${routeInfo.data.namespaceId}/pipelines/${pipeline?.id}/runs`}
+          >
             <Icons.ChevronLeft className="h-4 w-4 stroke-semantic-accent-default" />
             Back
           </a>
@@ -72,26 +89,66 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
         <div className="border rounded-sm p-6 flex flex-col gap-y-5">
           <div className="text-lg text-semantic-fg-primary font-bold">{id}</div>
           <div className="flex flex-row items-center justify-between text-xs">
-            <div>Version <b>{pipelineRun?.pipelineVersion}</b></div>
-            <div>Status <RunStateLabel
-              state={pipelineRun?.status}
-              className="inline-flex"
-            /></div>
-            <div>Source <b>{pipelineRun?.source === 'RUN_SOURCE_CONSOLE' ? "Web" : "API"}</b></div>
-            <div>Total Duration <b>{convertToSecondsAndMilliseconds((pipelineRun?.totalDuration || 0) / 1000)}</b></div>
-            <div>Trigger Time <b>{pipelineRun?.startTime ? getHumanReadableStringFromTime(pipelineRun.startTime, Date.now()) : null}</b></div>
-            <div>Runner <Link target="_blank" className="text-semantic-accent-default hover:underline" href={`/${pipelineRun?.runnerId}`}><b>{pipelineRun?.runnerId}</b></Link></div>
-            {
-              (pipelineRun && pipelineRun.creditAmount !== null)
-                ? <div>Credits <b>{pipelineRun.creditAmount}</b></div>
-                : null
-            }
+            <div>
+              Version <b>{pipelineRun?.pipelineVersion}</b>
+            </div>
+            <div>
+              Status{" "}
+              <RunStateLabel
+                state={pipelineRun?.status}
+                className="inline-flex"
+              />
+            </div>
+            <div>
+              Source{" "}
+              <b>
+                {pipelineRun?.source === "RUN_SOURCE_CONSOLE" ? "Web" : "API"}
+              </b>
+            </div>
+            <div>
+              Total Duration{" "}
+              <b>
+                {convertToSecondsAndMilliseconds(
+                  (pipelineRun?.totalDuration || 0) / 1000,
+                )}
+              </b>
+            </div>
+            <div>
+              Trigger Time{" "}
+              <b>
+                {pipelineRun?.startTime
+                  ? getHumanReadableStringFromTime(
+                      pipelineRun.startTime,
+                      Date.now(),
+                    )
+                  : null}
+              </b>
+            </div>
+            <div>
+              Runner{" "}
+              <Link
+                target="_blank"
+                className="text-semantic-accent-default hover:underline"
+                href={`/${pipelineRun?.runnerId}`}
+              >
+                <b>{pipelineRun?.runnerId}</b>
+              </Link>
+            </div>
+            {pipelineRun && pipelineRun.creditAmount !== null ? (
+              <div>
+                Credits <b>{pipelineRun.creditAmount}</b>
+              </div>
+            ) : null}
           </div>
         </div>
         <div>
           <ModelSectionHeader className="mb-3">Recipe</ModelSectionHeader>
           <CodeBlock
-            codeString={pipelineRun?.recipeSnapshot ? JSON.stringify(pipelineRun.recipeSnapshot, null, 2) : ''}
+            codeString={
+              pipelineRun?.recipeSnapshot
+                ? JSON.stringify(pipelineRun.recipeSnapshot, null, 2)
+                : ""
+            }
             wrapLongLines={true}
             language="json"
             customStyle={defaultCodeSnippetStyles}
@@ -107,15 +164,17 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
               className="pointer-events-none mb-3 border-b border-semantic-bg-line"
             >
               <TabMenu.Item value="form">
-                <span className="text-sm text-semantic-accent-default">Form</span>
+                <span className="text-sm text-semantic-accent-default">
+                  Form
+                </span>
               </TabMenu.Item>
             </TabMenu.Root>
             {pipeline ? (
-                <Form.Root {...form}>
-                  <form className="w-full">
-                    <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
-                  </form>
-                </Form.Root>
+              <Form.Root {...form}>
+                <form className="w-full">
+                  <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
+                </form>
+              </Form.Root>
             ) : (
               <InOutputSkeleton />
             )}
@@ -149,11 +208,7 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
               </div>
             ) : (
               <CodeBlock
-                codeString={JSON.stringify(
-                  pipelineRun?.outputs[0],
-                  null,
-                  2,
-                )}
+                codeString={JSON.stringify(pipelineRun?.outputs[0], null, 2)}
                 wrapLongLines={true}
                 language="json"
                 customStyle={defaultCodeSnippetStyles}
@@ -166,4 +221,4 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
       </div>
     </React.Fragment>
   );
-}
+};

@@ -69,7 +69,7 @@ export type Model = {
   stats: {
     numberOfRuns: number;
     lastRunTime: string;
-  }
+  };
   versions: string[];
 };
 
@@ -135,7 +135,7 @@ export type ModelRun = {
   taskInputs: GeneralRecord[];
   taskOutputs: Record<string, any>[];
   creditAmount: Nullable<number>;
-}
+};
 
 export type ModelVersion = {
   name: string;

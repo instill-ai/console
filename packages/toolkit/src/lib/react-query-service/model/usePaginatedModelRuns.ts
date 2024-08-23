@@ -29,8 +29,8 @@ export function usePaginatedModelRuns({
     "model-runs",
     modelName,
     "paginated",
-    accessToken ? 'withAuth' : 'unAuth',
-    fullView ? 'VIEW_FULL' : 'VIEW_BASIC',
+    accessToken ? "withAuth" : "unAuth",
+    fullView ? "VIEW_FULL" : "VIEW_BASIC",
     pageSize || env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
     page || 0,
   ];
@@ -46,7 +46,6 @@ export function usePaginatedModelRuns({
   return useQuery({
     queryKey,
     queryFn: async () => {
-
       if (!modelName) {
         return Promise.reject(new Error("modelName not provided"));
       }

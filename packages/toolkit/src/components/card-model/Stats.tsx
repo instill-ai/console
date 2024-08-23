@@ -1,6 +1,7 @@
 "use client";
 
 import { getModelInstanceTaskToolkit, Icons } from "@instill-ai/design-system";
+
 import { convertLongNumberToK, ModelTask } from "../../lib";
 import { getHumanReadableStringFromTime } from "../../server";
 
@@ -22,7 +23,8 @@ export const Stats = (props: StatsProps) => {
       </div>
       <div className="flex flex-row items-center gap-x-1 uppercase text-semantic-fg-secondary">
         <Icons.Rocket01 className="w-4 h-4 stroke-semantic-fg-primary" />
-        {runCount ? convertLongNumberToK(runCount) : 0} Run{runCount !== 1 ? 's' : ''}
+        {runCount ? convertLongNumberToK(runCount) : 0} Run
+        {runCount !== 1 ? "s" : ""}
       </div>
       <div className="ml-auto text-sm text-semantic-fg-disabled">
         Updated {getHumanReadableStringFromTime(updatedAt, Date.now())}

@@ -81,7 +81,10 @@ export const ViewPipeline = () => {
     if (releases.isSuccess) {
       if (activeVersion) {
         if (releases.data.length > 0) {
-          if (!releases.data.find((item) => item.id === activeVersion) && releases.data[0]) {
+          if (
+            !releases.data.find((item) => item.id === activeVersion) &&
+            releases.data[0]
+          ) {
             updateActiveVersionUrl(releases.data[0].id);
           }
         } else {

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import * as React from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { z } from "zod";
 
 import {
@@ -43,7 +44,6 @@ import {
 } from "../../../lib";
 import { recursiveHelpers } from "../../pipeline-builder";
 import { OPERATION_POLL_TIMEOUT } from "./constants";
-import { useSearchParams } from "next/navigation";
 
 export type ModelOutputActiveView = "preview" | "json";
 

@@ -1,15 +1,24 @@
 import * as React from "react";
-import { Button, cn, Icons, Nullable, Popover, ScrollArea, Tag } from "@instill-ai/design-system";
+
+import {
+  Button,
+  cn,
+  Icons,
+  Nullable,
+  Popover,
+  ScrollArea,
+  Tag,
+} from "@instill-ai/design-system";
 
 const truncateStringMiddle = (string: string, maxLength: number) => {
   if (string.length > maxLength) {
     const length = Math.floor(maxLength / 2) - 4;
-    
-    return `${string.substring(0, length)}...${string.substring(string.length - length)}`
+
+    return `${string.substring(0, length)}...${string.substring(string.length - length)}`;
   }
 
   return string;
-}
+};
 
 const VersionButton = ({
   id,
@@ -48,18 +57,23 @@ export type VersionDropdownSelectorProps = {
   activeVersion: Nullable<string>;
   versions: string[];
   onVersionUpdate: (value: string) => void;
-}
+};
 
-export const VersionDropdownSelector = ({ activeVersion, versions, onVersionUpdate }: VersionDropdownSelectorProps) => {
-  const [isVersionSelectorOpen, setIsVersionSelectorOpen] = React.useState<boolean>(false);
+export const VersionDropdownSelector = ({
+  activeVersion,
+  versions,
+  onVersionUpdate,
+}: VersionDropdownSelectorProps) => {
+  const [isVersionSelectorOpen, setIsVersionSelectorOpen] =
+    React.useState<boolean>(false);
 
   return (
     <div className="relative ml-auto">
-      <div className="absolute bottom-full left-0 ml-4 font-semibold text-sm text-semantic-fg-secondary">Version</div>
+      <div className="absolute bottom-full left-0 ml-4 font-semibold text-sm text-semantic-fg-secondary">
+        Version
+      </div>
       <Popover.Root
-        onOpenChange={() =>
-          setIsVersionSelectorOpen(!isVersionSelectorOpen)
-        }
+        onOpenChange={() => setIsVersionSelectorOpen(!isVersionSelectorOpen)}
         open={isVersionSelectorOpen}
       >
         <Popover.Trigger asChild={true} className="my-auto">
@@ -75,8 +89,14 @@ export const VersionDropdownSelector = ({ activeVersion, versions, onVersionUpda
             type="button"
             onClick={() => setIsVersionSelectorOpen(true)}
           >
-            <Tag size="sm" variant="darkPurple" className="h-6 gap-x-2 min-w-0 flex-1">
-              <span className="whitespace-nowrap overflow-hidden text-ellipsis">{truncateStringMiddle(activeVersion || '', 18)}</span>
+            <Tag
+              size="sm"
+              variant="darkPurple"
+              className="h-6 gap-x-2 min-w-0 flex-1"
+            >
+              <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                {truncateStringMiddle(activeVersion || "", 18)}
+              </span>
             </Tag>
             <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary shrink-0" />
           </Button>
@@ -87,8 +107,8 @@ export const VersionDropdownSelector = ({ activeVersion, versions, onVersionUpda
           align="end"
           className="flex flex-col !rounded-sm !p-0"
           style={{
-            maxWidth: '160px',
-            maxHeight: '260px',
+            maxWidth: "160px",
+            maxHeight: "260px",
           }}
         >
           <ScrollArea.Root className="[&>div>div]:!block">
@@ -117,5 +137,5 @@ export const VersionDropdownSelector = ({ activeVersion, versions, onVersionUpda
         </Popover.Content>
       </Popover.Root>
     </div>
-  )
-}
+  );
+};

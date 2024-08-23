@@ -2,17 +2,14 @@
 
 import { cn } from "@instill-ai/design-system";
 
-import type { RunStatus, Nullable } from "../lib";
+import type { Nullable, RunStatus } from "../lib";
 
 export type RunStateLabelProps = {
   state?: Nullable<RunStatus>;
   className?: string;
 };
 
-export const RunStateLabel = ({
-  state,
-  className,
-}: RunStateLabelProps) => {
+export const RunStateLabel = ({ state, className }: RunStateLabelProps) => {
   if (!state) {
     return null;
   }
@@ -42,7 +39,8 @@ export const RunStateLabel = ({
     default: {
       textColor = "text-semantic-error-hover";
       bgColor = "bg-semantic-error-bg";
-      stateLabelName = state === "RUN_STATUS_PROCESSING" ? "Processing" : "Queued";
+      stateLabelName =
+        state === "RUN_STATUS_PROCESSING" ? "Processing" : "Queued";
       indicatorColor = "bg-semantic-error-default";
     }
   }

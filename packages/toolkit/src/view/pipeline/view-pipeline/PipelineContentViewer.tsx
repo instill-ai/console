@@ -11,9 +11,9 @@ import { PipelineApi } from "./PipelineApi";
 import { PipelinePlayground } from "./PipelinePlayground";
 import { PipelinePreview } from "./PipelinePreview";
 import { PipelineReadme } from "./PipelineReadme";
+import { PipelineRuns } from "./PipelineRuns";
 import { PipelineSettings } from "./PipelineSettings";
 import { PipelineVersions } from "./PipelineVersions";
-import { PipelineRuns } from "./PipelineRuns";
 
 export type PipelineContentViewerProps = {
   selectedTab: PipelineTabNames;

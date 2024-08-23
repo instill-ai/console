@@ -71,7 +71,7 @@ export type Owner = UserOwner | OrganizationOwner;
 
 export type Definition = ComponentDefinition | IteratorDefinition;
 
-export type RunStatus = 
+export type RunStatus =
   | "RUN_STATUS_PROCESSING"
   | "RUN_STATUS_COMPLETED"
   | "RUN_STATUS_FAILED"

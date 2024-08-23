@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import cn from "clsx";
 
 import {
@@ -12,11 +13,14 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 
-import { HeadExternalLink, ModelStateLabel, VersionDropdownSelector } from "../../../components";
+import {
+  HeadExternalLink,
+  ModelStateLabel,
+  VersionDropdownSelector,
+} from "../../../components";
 import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
 import { Model, ModelState } from "../../../lib";
 import { ModelTabNames } from "../../../server";
-import { useSearchParams } from "next/navigation";
 
 export type HeadProps = {
   onActiveVersionUpdate: (version: string) => void;

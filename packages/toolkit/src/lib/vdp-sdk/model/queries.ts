@@ -145,7 +145,7 @@ export type listModelRunsQueryProps = {
   page: number;
   orderBy: Nullable<string>;
   filter: Nullable<string>;
-}
+};
 
 export type listUserModelVersionsQueryProps = {
   accessToken: Nullable<string>;
