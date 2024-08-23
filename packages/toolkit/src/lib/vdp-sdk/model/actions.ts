@@ -138,3 +138,42 @@ export async function triggerUserModelActionAsync({
     return Promise.reject(err);
   }
 }
+
+export async function triggerUserModelVersionActionAsync({
+  modelName,
+  payload,
+  accessToken,
+  returnTraces,
+  requesterUid,
+  versionId,
+}: {
+  modelName: string;
+  payload: TriggerUserModelPayload;
+  accessToken: Nullable<string>;
+  returnTraces?: boolean;
+  requesterUid?: string;
+  versionId: Nullable<string>;
+}) {
+  try {
+    const client = createInstillAxiosClient(accessToken, true);
+
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+      returnTraces,
+    });
+
+    const { data } = await client.post<TriggerUserModelAsyncResponse>(
+      `/${modelName}/versions/${versionId}/triggerAsync`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...additionalHeaders,
+        },
+      },
+    );
+    return Promise.resolve(data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}

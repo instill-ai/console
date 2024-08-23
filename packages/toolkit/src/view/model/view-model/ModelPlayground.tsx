@@ -38,11 +38,12 @@ import {
   useNavigateBackAfterLogin,
   useQueryClient,
   useShallow,
-  useTriggerUserModelAsync,
+  useTriggerUserModelVersionAsync,
   useUserNamespaces,
 } from "../../../lib";
 import { recursiveHelpers } from "../../pipeline-builder";
 import { OPERATION_POLL_TIMEOUT } from "./constants";
+import { useSearchParams } from "next/navigation";
 
 export type ModelOutputActiveView = "preview" | "json";
 
@@ -91,6 +92,8 @@ export const ModelPlayground = ({
   model,
   modelState,
 }: ModelPlaygroundProps) => {
+  const searchParams = useSearchParams();
+  const activeVersion = searchParams.get("version");
   const queryClient = useQueryClient();
   // This ref is used here to store the currently active operation id. It's in
   // ref so we don't have to worry about stale data. As soon as we update the
@@ -258,7 +261,7 @@ export const ModelPlayground = ({
     }
   }, [existingTriggerState]);
 
-  const triggerModel = useTriggerUserModelAsync();
+  const triggerModel = useTriggerUserModelVersionAsync();
 
   async function onRunModel(
     formData: Record<string, unknown> /* z.infer<typeof Schema> */,
@@ -305,6 +308,7 @@ export const ModelPlayground = ({
           ],
         },
         requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+        versionId: activeVersion,
       });
 
       onTriggerInvalidateCredits({

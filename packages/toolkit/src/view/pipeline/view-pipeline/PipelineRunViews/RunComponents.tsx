@@ -130,12 +130,12 @@ export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullab
       },
     },
     {
-      accessorKey: "creditSpent",
-      header: () => <div className="text-left">Credit</div>,
+      accessorKey: "creditAmount",
+      header: () => <div className="text-left">Credits</div>,
       cell: ({ row }) => {
         return (
           <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            {row.getValue("creditSpent")}
+            {row.getValue("creditAmount")}
           </div>
         );
       },
@@ -164,8 +164,12 @@ export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullab
     },
   ];
 
+  if (!pipelineComponentRuns.data?.componentRuns.length) {
+    return null;
+  }
+
   return (
-    <React.Fragment>
+    <div>
       <ModelSectionHeader className="mb-4">Component Run Metadata</ModelSectionHeader>
       <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th]:w-40 [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(6)]:w-28 [&_table_th:nth-child(7)]:w-32">
         <DataTable
@@ -195,6 +199,6 @@ export const PipelineRunComponents = ({ pipelineRunId }: { pipelineRunId: Nullab
           <pre className="w-full h-full overflow-auto">{currentOutputContent?.content}</pre>
         </Dialog.Content>
       </Dialog.Root>
-    </React.Fragment>
+    </div>
   )
 }

@@ -88,8 +88,8 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
             <div>Created Time <b>{modelRun?.createTime ? getHumanReadableStringFromTime(modelRun?.createTime, Date.now()) : null}</b></div>
             <div>Runner <Link target="_blank" className="text-semantic-accent-default hover:underline" href={`/${modelRun?.runnerId}`}><b>{modelRun?.runnerId}</b></Link></div>
             {
-              modelRun && 'credits' in modelRun && modelRun.credits !== null
-                ? <div>Credits <b>{modelRun.credits}</b></div>
+              (modelRun && modelRun.creditAmount !== null)
+                ? <div>Credits <b>{modelRun.creditAmount}</b></div>
                 : null
             }
           </div>

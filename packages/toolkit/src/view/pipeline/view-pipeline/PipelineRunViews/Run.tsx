@@ -2,9 +2,8 @@ import { Nullable, Pipeline } from "instill-sdk";
 import * as React from "react";
 import { CodeBlock, ModelSectionHeader, RunStateLabel } from "../../../../components";
 import { Button, Form, Icons, TabMenu } from "@instill-ai/design-system";
-import { convertToSecondsAndMilliseconds, InstillStore, useInstillStore, usePipelineTriggerRequestForm, useRouteInfo, useShallow } from "../../../../lib";
+import { convertToSecondsAndMilliseconds, InstillStore, useComponentOutputFields, useInstillStore, usePipelineTriggerRequestForm, useRouteInfo, useShallow } from "../../../../lib";
 import { InOutputSkeleton, PipelineOutputActiveView } from "../PipelinePlayground";
-import Image from "next/image";
 import { defaultCodeSnippetStyles } from "../../../../constant";
 import { usePaginatedPipelineRuns } from "../../../../lib/react-query-service/pipeline";
 import { getHumanReadableStringFromTime } from "../../../../server";
@@ -31,7 +30,7 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
     pageSize: 1,
     page: 0,
     filter: `pipelineTriggerUID="${id}"`,
-    //fullView: true,
+    fullView: true,
   });
   const pipelineRun = React.useMemo(() => {
     return pipelineRuns.data?.pipelineRuns[0] || null
@@ -48,11 +47,11 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
     values: pipelineRun?.inputs[0],
   });
 
-  /* const componentOutputFields = useComponentOutputFields({
+  const componentOutputFields = useComponentOutputFields({
     mode: "demo",
-    schema: formSchema?.output || null,
+    schema: pipelineRun?.dataSpecification.output || null,
     data: pipelineRun?.outputs[0] || null,
-  }); */
+  });
 
   const [outputActiveView, setOutputActiveView] = React.useState<PipelineOutputActiveView>("preview");
 
@@ -83,8 +82,8 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
             <div>Trigger Time <b>{pipelineRun?.startTime ? getHumanReadableStringFromTime(pipelineRun.startTime, Date.now()) : null}</b></div>
             <div>Runner <Link target="_blank" className="text-semantic-accent-default hover:underline" href={`/${pipelineRun?.runnerId}`}><b>{pipelineRun?.runnerId}</b></Link></div>
             {
-              pipelineRun && 'credits' in pipelineRun && pipelineRun.credits !== null
-                ? <div>Credits <b>{pipelineRun.credits}</b></div>
+              (pipelineRun && pipelineRun.creditAmount !== null)
+                ? <div>Credits <b>{pipelineRun.creditAmount}</b></div>
                 : null
             }
           </div>
@@ -123,65 +122,47 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
           </div>
           <div className="flex w-1/2 flex-col pb-6 pl-6">
             <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
-            {(routeInfo.data.modelName === 'abc') ? (
-              <React.Fragment>
-                <TabMenu.Root
-                  value={outputActiveView}
-                  onValueChange={(value: Nullable<string>) =>
-                    setOutputActiveView(value as PipelineOutputActiveView)
-                  }
-                  disabledDeSelect={true}
-                  className="mb-3 border-b border-semantic-bg-line"
-                >
-                  <TabMenu.Item
-                    value="preview"
-                    className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
-                  >
-                    <span className="text-sm">Preview</span>
-                  </TabMenu.Item>
-                  <TabMenu.Item
-                    value="json"
-                    className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
-                  >
-                    <span className="text-sm">JSON</span>
-                  </TabMenu.Item>
-                </TabMenu.Root>
-                {outputActiveView === "preview" ? (
-                  <div className="flex flex-col gap-y-2">
-                    {/* componentOutputFields */}
-                  </div>
-                ) : (
-                  <CodeBlock
-                    codeString={JSON.stringify(
-                      pipelineRun?.outputs[0],
-                      null,
-                      2,
-                    )}
-                    wrapLongLines={true}
-                    language="json"
-                    customStyle={defaultCodeSnippetStyles}
-                    className="!h-auto !flex-none"
-                  />
-                )}
-              </React.Fragment>
-            ) : (
-              <div className="flex flex-row items-center justify-center gap-x-4 pt-24">
-                <Image
-                  src="/images/models/no-result.svg"
-                  width={41}
-                  height={40}
-                  alt="Square shapes"
-                />
-                <p className="font-mono text-sm italic text-semantic-fg-disabled">
-                  Execute the pipeline to view the results
-                </p>
+            <TabMenu.Root
+              value={outputActiveView}
+              onValueChange={(value: Nullable<string>) =>
+                setOutputActiveView(value as PipelineOutputActiveView)
+              }
+              disabledDeSelect={true}
+              className="mb-3 border-b border-semantic-bg-line"
+            >
+              <TabMenu.Item
+                value="preview"
+                className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
+              >
+                <span className="text-sm">Preview</span>
+              </TabMenu.Item>
+              <TabMenu.Item
+                value="json"
+                className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
+              >
+                <span className="text-sm">JSON</span>
+              </TabMenu.Item>
+            </TabMenu.Root>
+            {outputActiveView === "preview" ? (
+              <div className="flex flex-col gap-y-2">
+                {componentOutputFields}
               </div>
+            ) : (
+              <CodeBlock
+                codeString={JSON.stringify(
+                  pipelineRun?.outputs[0],
+                  null,
+                  2,
+                )}
+                wrapLongLines={true}
+                language="json"
+                customStyle={defaultCodeSnippetStyles}
+                className="!h-auto !flex-none"
+              />
             )}
           </div>
         </div>
-        <div>
-          <PipelineRunComponents pipelineRunId={id || null} />
-        </div>
+        <PipelineRunComponents pipelineRunId={id || null} />
       </div>
     </React.Fragment>
   );

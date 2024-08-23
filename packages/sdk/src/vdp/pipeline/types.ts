@@ -269,8 +269,9 @@ export type PipelineRun = {
   recipeSnapshot: Nullable<GeneralRecord>;
   startTime: string;
   completeTime: string;
-  credits: Nullable<number>;
+  creditAmount: Nullable<number>;
   error: Nullable<string>;
+  dataSpecification: DataSpecification;
 };
 
 export type ListPaginatedNamespacePipelineRunComponentsRequest = {

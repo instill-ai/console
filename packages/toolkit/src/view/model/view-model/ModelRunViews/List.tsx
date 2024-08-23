@@ -78,121 +78,113 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
     setOrderBy(sortValue);
   }
 
-  const columns = React.useMemo(() => {
-    const columns: ColumnDef<ModelRun>[] = [
-      {
-        accessorKey: "uid",
-        header: () => <div className="text-left">Run ID</div>,
-        cell: ({ row }) => {
-          return (
-            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-              <Link href={`/${owner.id}/models/${model?.id}/runs/${row.getValue("uid")}`} className="text-semantic-accent-default hover:underline">{row.getValue("uid")}</Link>
-            </div>
-          );
-        },
+  const columns: ColumnDef<ModelRun>[] = [
+    {
+      accessorKey: "uid",
+      header: () => <div className="text-left">Run ID</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+            <Link href={`/${owner.id}/models/${model?.id}/runs/${row.getValue("uid")}`} className="text-semantic-accent-default hover:underline">{row.getValue("uid")}</Link>
+          </div>
+        );
       },
-      {
-        accessorKey: "version",
-        header: () => <div className="text-left">Version</div>,
-        cell: ({ row }) => {
-          return (
-            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-              {row.getValue("version")}
-              {/* <Link href={`/${owner.id}/models/${model?.id}/playground?version=${row.getValue("version")}`} className="text-semantic-accent-default hover:underline">{row.getValue("version")}</Link> */}
-            </div>
-          );
-        },
+    },
+    {
+      accessorKey: "version",
+      header: () => <div className="text-left">Version</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+            <Link href={`/${owner.id}/models/${model?.id}/playground?version=${row.getValue("version")}`} className="text-semantic-accent-default hover:underline">{row.getValue("version")}</Link>
+          </div>
+        );
       },
-      {
-        accessorKey: "status",
-        header: () => <div className="text-left">Status</div>,
-        cell: ({ row }) => {
-          return (
-            <RunStateLabel
-              state={row.getValue("status")}
-              className="inline-flex"
-            />
-          );
-        },
-      },
-      {
-        accessorKey: "source",
-        header: () => <div className="text-left">Source</div>,
-        cell: ({ row }) => {
-          return (
-            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-              {row.getValue("source") === 'RUN_SOURCE_CONSOLE' ? "Web" : "API"}
-            </div>
-          );
-        },
-      },
-      {
-        accessorKey: "totalDuration",
-        header: () => (
-          <RunsTableSortableColHeader
-            title="Total Duration"
-            paramName="total_duration"
-            currentSortParamValue={orderBy}
-            onSort={onSortOrderUpdate}
+    },
+    {
+      accessorKey: "status",
+      header: () => <div className="text-left">Status</div>,
+      cell: ({ row }) => {
+        return (
+          <RunStateLabel
+            state={row.getValue("status")}
+            className="inline-flex"
           />
-        ),
-        cell: ({ row }) => {
-          return (
-            <div className="font-normal text-semantic-bg-secondary-alt-primary">
-              {convertToSecondsAndMilliseconds(
-                (row.getValue("totalDuration") as number) / 1000,
-              )}
-            </div>
-          );
-        },
+        );
       },
-      {
-        accessorKey: "createTime",
-        header: () => (
-          <RunsTableSortableColHeader
-            title="Created"
-            paramName="create_time"
-            currentSortParamValue={orderBy}
-            onSort={onSortOrderUpdate}
-          />
-        ),
-        cell: ({ row }) => {
-          return (
-            <div className="font-normal text-semantic-bg-secondary-alt-primary">
-              {getHumanReadableStringFromTime(row.getValue("createTime"), Date.now())}
-            </div>
-          );
-        },
+    },
+    {
+      accessorKey: "source",
+      header: () => <div className="text-left">Source</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+            {row.getValue("source") === 'RUN_SOURCE_CONSOLE' ? "Web" : "API"}
+          </div>
+        );
       },
-      {
-        accessorKey: "runnerId",
-        header: () => <div className="text-left">Runner</div>,
-        cell: ({ row }) => {
-          return (
-            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-              <Link target="_blank" className="text-semantic-accent-default hover:underline" href={`/${row.getValue("runnerId")}`}>{row.getValue("runnerId")}</Link>
-            </div>
-          );
-        },
+    },
+    {
+      accessorKey: "totalDuration",
+      header: () => (
+        <RunsTableSortableColHeader
+          title="Total Duration"
+          paramName="total_duration"
+          currentSortParamValue={orderBy}
+          onSort={onSortOrderUpdate}
+        />
+      ),
+      cell: ({ row }) => {
+        return (
+          <div className="font-normal text-semantic-bg-secondary-alt-primary">
+            {convertToSecondsAndMilliseconds(
+              (row.getValue("totalDuration") as number) / 1000,
+            )}
+          </div>
+        );
       },
-    ];
-
-    if (modelRuns.data && modelRuns.data.runs[0] && 'credits' in modelRuns.data.runs[0] && modelRuns.data.runs[0].credits !== null) {
-      columns.push({
-        accessorKey: "credits",
-        header: () => <div className="text-left">Credit</div>,
-        cell: ({ row }) => {
-          return (
-            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-              {row.getValue("credits")}
-            </div>
-          );
-        },
-      });
+    },
+    {
+      accessorKey: "createTime",
+      header: () => (
+        <RunsTableSortableColHeader
+          title="Created"
+          paramName="create_time"
+          currentSortParamValue={orderBy}
+          onSort={onSortOrderUpdate}
+        />
+      ),
+      cell: ({ row }) => {
+        return (
+          <div className="font-normal text-semantic-bg-secondary-alt-primary">
+            {getHumanReadableStringFromTime(row.getValue("createTime"), Date.now())}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "runnerId",
+      header: () => <div className="text-left">Runner</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+            <Link target="_blank" className="text-semantic-accent-default hover:underline" href={`/${row.getValue("runnerId")}`}>{row.getValue("runnerId")}</Link>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "creditAmount",
+      header: () => <div className="text-left">Credit</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+            {row.getValue("creditAmount")}
+          </div>
+        );
+      },
     }
-
-    return columns;
-  }, [modelRuns.isSuccess, modelRuns.data, orderBy]);
+  ];
 
   return (
     <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th]:w-40 [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(7)]:w-52 [&_table_th:nth-child(8)]:w-28">

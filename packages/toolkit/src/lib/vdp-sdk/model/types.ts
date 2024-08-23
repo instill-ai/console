@@ -134,7 +134,7 @@ export type ModelRun = {
   version: string;
   taskInputs: GeneralRecord[];
   taskOutputs: Record<string, any>[];
-  credits: Nullable<number>;
+  creditAmount: Nullable<number>;
 }
 
 export type ModelVersion = {
