@@ -52,6 +52,12 @@ export const ViewPipeline = () => {
     accessToken,
   });
 
+  React.useEffect(() => {
+    if (pipeline.isError) {
+      router.push("/404");
+    }
+  }, [pipeline.isError, router]);
+
   const updateActiveVersionUrl = (version: string) => {
     const newSearchParams = new URLSearchParams();
     newSearchParams.set("version", version);
@@ -75,12 +81,6 @@ export const ViewPipeline = () => {
 
     updateActiveVersionUrl(releases.data[0].id);
   }, [releases.isSuccess, releases.data, activeVersion, pathname]);
-
-  React.useEffect(() => {
-    if (pipeline.isError) {
-      router.push("/404");
-    }
-  }, [pipeline.isError, router]);
 
   const setSelectedTab = (tabName: PipelineTabNames) => {
     const currentSearchparams = searchParams.toString();

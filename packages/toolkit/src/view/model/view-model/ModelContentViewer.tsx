@@ -1,3 +1,8 @@
+"use client";
+
+import * as React from "react";
+import { useRouter } from "next/navigation";
+
 import {
   ModelApi,
   ModelPlayground,
@@ -6,7 +11,7 @@ import {
   NoVersionsPlaceholder,
 } from ".";
 import { LoadingSpin } from "../../../components";
-import { Model, ModelState, Nullable } from "../../../lib";
+import { Model, ModelState, Nullable, useRouteInfo } from "../../../lib";
 import { ModelTabNames } from "../../../server";
 import { ModelReadme } from "./ModelReadme";
 
@@ -23,6 +28,16 @@ export const ModelContentViewer = ({
   onUpdate,
   modelState,
 }: ModelContentViewerProps) => {
+  const router = useRouter();
+  const routeInfo = useRouteInfo();
+  React.useEffect(() => {
+    if (model) {
+      if (!model.permission.canEdit && selectedTab === "settings") {
+        const playgroundPath = `/${routeInfo.data?.namespaceId}/models/${model.id}/playground`;
+        router.push(playgroundPath);
+      }
+    }
+  }, [model, routeInfo.data?.namespaceId, router]);
   let content = null;
 
   switch (selectedTab) {

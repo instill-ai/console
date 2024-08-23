@@ -1,6 +1,11 @@
+"use client";
+
 import type { Pipeline, PipelineRelease } from "instill-sdk";
+import * as React from "react";
+import { useRouter } from "next/navigation";
 
 import { LoadingSpin } from "../../../components";
+import { useRouteInfo } from "../../../lib";
 import { PipelineTabNames } from "../../../server";
 import { PipelineApi } from "./PipelineApi";
 import { PipelinePlayground } from "./PipelinePlayground";
@@ -24,6 +29,19 @@ export const PipelineContentViewer = ({
   releases,
   isReady,
 }: PipelineContentViewerProps) => {
+  const router = useRouter();
+  const routeInfo = useRouteInfo();
+
+  React.useEffect(() => {
+    if (
+      pipeline &&
+      selectedTab === "settings" &&
+      !pipeline.permission.canEdit
+    ) {
+      const playgroundPath = `/${routeInfo.data?.namespaceId}/pipelines/${pipeline.id}/playground`;
+      router.push(playgroundPath);
+    }
+  }, [selectedTab, pipeline, routeInfo.data?.namespaceId, router]);
   let content = null;
 
   switch (selectedTab) {

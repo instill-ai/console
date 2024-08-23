@@ -43,6 +43,13 @@ export const ModelHubSettingPageMainView = () => {
     enabled: enabledQuery && routeInfo.isSuccess,
     accessToken,
   });
+
+  React.useEffect(() => {
+    if (model.isError) {
+      router.push("/404");
+    }
+  }, [model.isError, router]);
+
   const modelsWatchState = useWatchUserModels({
     modelNames: model.isSuccess ? [model.data.name] : [],
     enabled: enabledQuery && model.isSuccess,

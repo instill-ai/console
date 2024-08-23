@@ -14,7 +14,6 @@ module.exports = {
     // if (isServer) {
     //   require("./lib/generate-sitemap");
     // }
-
     return config;
   },
   output: "standalone",
@@ -27,6 +26,17 @@ module.exports = {
       {
         source: "/logout",
         destination: "/api/auth/logout",
+        permanent: false,
+      },
+      //Redirect naked pipeline and model links to the playground
+      {
+        source: "/:namespace/pipelines/:pipelineId",
+        destination: "/:namespace/pipelines/:pipelineId/playground",
+        permanent: false,
+      },
+      {
+        source: "/:namespace/models/:modelId",
+        destination: "/:namespace/models/:modelId/playground",
         permanent: false,
       },
     ];

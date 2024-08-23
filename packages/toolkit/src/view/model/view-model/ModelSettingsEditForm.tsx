@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -74,13 +74,14 @@ export const ModelSettingsEditForm = ({
   onUpdate,
 }: ModelSettingsEditFormProps) => {
   const { accessToken } = useInstillStore(useShallow(selector));
-  const [hardwareCustomValue, setHardwareCustomValue] = useState<string>("");
-  const [updating, setUpdating] = useState(false);
+  const [hardwareCustomValue, setHardwareCustomValue] =
+    React.useState<string>("");
+  const [updating, setUpdating] = React.useState(false);
   const { amplitudeIsInit } = useAmplitudeCtx();
 
   const modelRegions = useModelRegions({ accessToken });
 
-  const hardwareOptions = useMemo(() => {
+  const hardwareOptions = React.useMemo(() => {
     if (!modelRegions.data || !model) {
       return [];
     }
@@ -99,7 +100,7 @@ export const ModelSettingsEditForm = ({
       );
   }, [modelRegions, model]);
 
-  const defaultValues = useMemo(() => {
+  const defaultValues = React.useMemo(() => {
     if (!model) {
       return undefined;
     }
