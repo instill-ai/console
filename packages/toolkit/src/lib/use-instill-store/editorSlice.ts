@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Monaco } from "@monaco-editor/react";
 import { editor } from "monaco-editor";
 import { StateCreator } from "zustand";
@@ -111,4 +112,6 @@ export const createEditorSlice: StateCreator<
         selectedComponentId: fn(state.selectedComponentId),
       };
     }),
+  importRecipeInputTriggerRef:
+    React.createRef<HTMLInputElement>() as React.MutableRefObject<HTMLInputElement>,
 });

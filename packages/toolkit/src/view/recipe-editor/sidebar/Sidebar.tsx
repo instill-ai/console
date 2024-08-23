@@ -1,23 +1,31 @@
 "use client";
 
 import * as React from "react";
-import { Nullable, PipelineComponentMap } from "instill-sdk";
+import {
+  Nullable,
+  PipelineComponentMap,
+  PipelineOutputFieldMap,
+  PipelineVariableFieldMap,
+} from "instill-sdk";
 
 import { Icons, Separator } from "@instill-ai/design-system";
 
 import { env } from "../../../server";
 import { ComponentSection } from "./ComponentSection";
-import { PipelineSection } from "./PipelineSection";
+import { OutputSection } from "./OutputSection";
 import { RemainingCredit } from "./RemainingCredit";
 import { SubscribeCTA } from "./SubscribeCTA";
 import { SupportLinks } from "./SupportLinks";
+import { VariableSection } from "./VariableSection";
 
 export const Sidebar = ({
-  pipelineId,
   pipelineComponentMap,
+  pipelineVariableFieldMap,
+  pipelineOutputFieldMap,
 }: {
-  pipelineId: Nullable<string>;
   pipelineComponentMap: Nullable<PipelineComponentMap>;
+  pipelineVariableFieldMap: Nullable<PipelineVariableFieldMap>;
+  pipelineOutputFieldMap: Nullable<PipelineOutputFieldMap>;
 }) => {
   const searchCodeInputRef = React.useRef<HTMLInputElement>(null);
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
@@ -29,7 +37,7 @@ export const Sidebar = ({
           onClick={() => {
             searchCodeInputRef.current?.focus();
           }}
-          className="mb-1.5 pl-2 h-8 w-full items-center flex flex-row gap-x-2 bg-semantic-bg-primary border border-semantic-bg-line rounded"
+          className="mb-2 pl-2 h-8 w-full items-center flex flex-row gap-x-2 bg-semantic-bg-primary border border-semantic-bg-line rounded"
         >
           <Icons.SearchSm className="w-4 h-4 stroke-semantic-fg-primary" />
           <input
@@ -40,13 +48,23 @@ export const Sidebar = ({
             onChange={(e) => setSearchCode(e.target.value)}
           />
         </div>
-        <PipelineSection className="mb-2" pipelineId={pipelineId} />
-        <div className="px-1 mb-2">
+        <VariableSection
+          searchCode={searchCode}
+          pipelineVariableFieldMap={pipelineVariableFieldMap}
+        />
+        <div className="px-1 my-2">
           <Separator orientation="horizontal" />
         </div>
         <ComponentSection
           searchCode={searchCode}
           pipelineComponentMap={pipelineComponentMap}
+        />
+        <div className="px-1 my-2">
+          <Separator orientation="horizontal" />
+        </div>
+        <OutputSection
+          searchCode={searchCode}
+          pipelineOutputFieldMap={pipelineOutputFieldMap}
         />
       </div>
       <div className="flex flex-col gap-y-2">

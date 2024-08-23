@@ -35,12 +35,11 @@ export const ShareDialogTrigger = () => {
     <React.Fragment>
       <Button
         size="md"
-        variant="secondaryGrey"
-        className="flex !h-8 flex-row gap-x-2"
+        variant="tertiaryGrey"
+        className="p-[9px] my-auto"
         onClick={() => updateDialogSharePipelineIsOpen((prev) => !prev)}
       >
-        Share
-        <Icons.Share07 className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
+        <Icons.Share07 className="my-auto h-[14px] w-[14px] stroke-semantic-fg-primary" />
       </Button>
 
       {pipeline.isSuccess ? (

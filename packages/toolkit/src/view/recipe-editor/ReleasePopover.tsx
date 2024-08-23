@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { Button, cn, Icons, Popover } from "@instill-ai/design-system";
+import { Button, Icons, Popover } from "@instill-ai/design-system";
 
 import { ReleaseMenu } from "../pipeline-builder";
 
@@ -17,11 +17,10 @@ export const ReleasePopover = () => {
       <Popover.Trigger asChild>
         <Button
           size="md"
-          variant="secondaryGrey"
-          className={cn("flex !h-8 cursor-pointer flex-row gap-x-2")}
+          variant="tertiaryGrey"
+          className="flex !p-[9px] my-auto"
         >
-          Release
-          <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
+          <Icons.Rocket02 className="h-[14px] w-[14px] stroke-semantic-fg-primary" />
         </Button>
       </Popover.Trigger>
       <Popover.Content align="end" className="!w-[392px]">

@@ -53,7 +53,7 @@ export const SubscribeCTA = () => {
     <a
       rel="noopener noreferrer"
       target="_blank"
-      className="flex rounded hover:bg-semantic-bg-alt-primary bg-semantic-bg-primary border border-semantic-bg-line items-center justify-center gap-x-2"
+      className="flex py-[9px] rounded hover:bg-semantic-bg-alt-primary bg-semantic-bg-primary border border-semantic-bg-line items-center justify-center gap-x-2"
       href={redirectURL}
     >
       <Icons.Lightning01 className="w-[14px] h-[14px] stroke-semantic-fg-primary" />

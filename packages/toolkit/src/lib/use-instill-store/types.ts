@@ -176,6 +176,15 @@ export type EditorSlice = {
     fn: (prev: EditorMultiScreenModel) => EditorMultiScreenModel,
   ) => void;
   rawRecipeOnDom: Nullable<string>;
+
+  /**
+   * This value is only for caching the user input in the editor.
+   *
+   * Don't use this to update the raw value of the editor. If it is for actions like
+   * adding a new component, updating a component, etc, use the respective actions
+   * from the monaco-editor to have history record for undo/redo.
+   * @returns void
+   */
   updateRawRecipeOnDom: (
     fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
@@ -183,6 +192,13 @@ export type EditorSlice = {
   updateIsSavingRecipe: (fn: (prev: boolean) => boolean) => void;
   hasUnsavedRecipe: boolean;
   updateHasUnsavedRecipe: (fn: (prev: boolean) => boolean) => void;
+
+  /**
+   * This is used to trigger the import recipe file uploader
+   * Once this is triggered and the user select the desired file,
+   * The import recipe dialog will be opened and the file will be read
+   */
+  importRecipeInputTriggerRef: React.MutableRefObject<HTMLInputElement>;
 };
 
 export type RecentlyUsedSlice = {

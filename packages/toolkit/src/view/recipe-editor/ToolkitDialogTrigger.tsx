@@ -73,12 +73,11 @@ export const ToolkitDialogTrigger = () => {
     <React.Fragment>
       <Button
         size="md"
-        variant="secondaryGrey"
-        className="flex !h-8 flex-row gap-x-2"
+        variant="tertiaryGrey"
+        className="!p-[9px] my-auto"
         onClick={() => setToolKitIsOpen((prev) => !prev)}
       >
-        Toolkit
-        <Icons.CodeSquare02 className="h-4 w-4 stroke-semantic-fg-secondary" />
+        <Icons.CodeSquare02 className="h-[14px] w-[14px] stroke-semantic-fg-secondary" />
       </Button>
       <PipelineToolkitDialog
         snippet={codeSnippet}

@@ -27,10 +27,17 @@ const CommandDialog = React.forwardRef<
   DialogPrimitive.DialogProps & {
     dialogContentClassName?: string;
     commandRootClassName?: string;
+    disabledCloseButton?: boolean;
   }
 >(
   (
-    { children, dialogContentClassName, commandRootClassName, ...props },
+    {
+      children,
+      dialogContentClassName,
+      disabledCloseButton,
+      commandRootClassName,
+      ...props
+    },
     ref,
   ) => {
     return (
@@ -47,7 +54,7 @@ const CommandDialog = React.forwardRef<
           >
             {children}
           </CommandRoot>
-          <Dialog.Close />
+          {disabledCloseButton ? null : <Dialog.Close />}
         </Dialog.Content>
       </Dialog.Root>
     );
