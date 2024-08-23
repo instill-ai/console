@@ -6,6 +6,7 @@ export const getQueryString = ({
   queryParams,
   orderBy,
   view,
+  page,
   visibility,
   owner,
   start,
@@ -19,6 +20,7 @@ export const getQueryString = ({
   orderBy?: string;
   view?: string;
   visibility?: string;
+  page?: number;
 
   // Just pure query params, the function will handle tialing '&'
   queryParams?: string;
@@ -52,6 +54,10 @@ export const getQueryString = ({
 
   if (pageSize) {
     url += `pageSize=${pageSize}&`;
+  }
+
+  if (page) {
+    url += `page=${page}&`;
   }
 
   if (pageToken) {

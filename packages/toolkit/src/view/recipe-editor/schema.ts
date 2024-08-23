@@ -122,7 +122,11 @@ export const InstillYamlSchema = {
             type: {
               type: "string",
               description: "Please specify the component type",
-              enum: [...operatorDefinitionIds, ...connectorDefinitionIds],
+              enum: [
+                ...operatorDefinitionIds,
+                ...connectorDefinitionIds,
+                "iterator",
+              ],
             },
             task: {
               type: "string",

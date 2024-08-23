@@ -836,7 +836,7 @@ export const VscodeEditor = () => {
   return (
     <div className="w-full h-full relative">
       {pipeline.isSuccess && currentVersion !== "latest" ? (
-        <div className="absolute z-10 inset-0 bg-semantic-fg-primary opacity-25"></div>
+        <div className="absolute z-10 inset-0 bg-semantic-fg-primary opacity-15"></div>
       ) : null}
       <style jsx={true}>{`
         .rendered-markdown > h1 {

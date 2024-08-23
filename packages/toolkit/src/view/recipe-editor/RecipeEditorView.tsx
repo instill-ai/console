@@ -28,6 +28,7 @@ import { ActionCmdk, ComponentCmdo } from "./commands";
 import { EditorProvider } from "./EditorContext";
 import { EditorViewSectionBar } from "./EditorViewSectionBar";
 import { Flow } from "./flow";
+import { ImportRecipeDialog } from "./ImportRecipeDialog";
 import { InOutputEmptyView } from "./InOutputEmptyView";
 import { Input } from "./Input";
 import { Output } from "./Output";
@@ -60,7 +61,6 @@ export const RecipeEditorView = () => {
   const {
     accessToken,
     enabledQuery,
-    updateOpenActionCmdk,
     editorMultiScreenModel,
     updateEditorMultiScreenModel,
     editorRef,
@@ -96,11 +96,11 @@ export const RecipeEditorView = () => {
     }
 
     updateRawRecipeOnDom(() => pipeline.data.rawRecipe);
-  }, [pipeline.isSuccess, pipeline.data]);
+  }, [pipeline.isSuccess, pipeline.data, updateRawRecipeOnDom]);
 
   React.useEffect(() => {
     updateCurrentVersion(() => "latest");
-  }, []);
+  }, [updateCurrentVersion]);
 
   React.useEffect(() => {
     if (!pipeline.isSuccess) {
@@ -168,7 +168,7 @@ export const RecipeEditorView = () => {
         currentViewId: "main-input",
       },
     }));
-  }, [pipeline.data, pipeline.isSuccess]);
+  }, [pipeline.data, pipeline.isSuccess, updateEditorMultiScreenModel]);
 
   const isCloud = env("NEXT_PUBLIC_APP_ENV") === "CLOUD";
 
@@ -201,61 +201,44 @@ export const RecipeEditorView = () => {
   return (
     <PageBase>
       <div className="flex flex-row px-3 h-12 items-center bg-semantic-bg-secondary">
-        <div className="flex flex-row gap-x-2">
-          <Button
-            size="sm"
-            className="!w-8 !h-8 items-center justify-center"
-            onClick={() => setIsSidebarOpen((prev) => !prev)}
-            variant="tertiaryGrey"
-          >
-            <Icons.LayoutLeft className="w-4 h-4 stroke-semantic-fg-primary" />
-          </Button>
-          <Button
-            size="sm"
-            className="!w-8 !h-8 items-center justify-center"
-            variant="tertiaryGrey"
-            onClick={() => {
-              navigate(
-                `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/playground`,
-              );
-            }}
-          >
-            <Icons.ArrowLeft className="w-4 h-4 stroke-semantic-fg-primary" />
-          </Button>
-          <PipelineNamePopover sharing={pipeline.data?.sharing ?? null} />
-        </div>
-        <div className="flex flex-1 items-center justify-center">
-          <RunButton />
-        </div>
-        <div className="flex flex-row gap-x-2">
-          <button
-            onClick={() => {
-              updateOpenActionCmdk(() => true);
-            }}
-            className="flex flex-row gap-x-2 h-8 rounded border border-semantic-bg-line bg-semantic-bg-primary items-center px-2"
-          >
-            <Icons.SearchSm className="w-4 h-4 stroke-semantic-fg-primary" />
-            <span
-              className="product-body-text-3-regular"
-              style={{ color: "#1D2433CC" }}
+        <div className="flex flex-row w-1/2">
+          <div className="flex flex-row gap-x-2">
+            <Button
+              size="sm"
+              className="!w-8 !h-8 items-center justify-center"
+              onClick={() => setIsSidebarOpen((prev) => !prev)}
+              variant="tertiaryGrey"
             >
-              Search...
-            </span>
-            <div className="border flex border-semantic-bg-line rounded h-6 bg-semantic-bg-alt-primary px-1">
-              <span
-                className="product-body-text-3-regular my-auto"
-                style={{ color: "#1D2433CC" }}
-              >
-                ⌘K
-              </span>
-            </div>
-          </button>
+              <Icons.LayoutLeft className="w-4 h-4 stroke-semantic-fg-primary" />
+            </Button>
+            <Button
+              size="sm"
+              className="!w-8 !h-8 items-center justify-center"
+              variant="tertiaryGrey"
+              onClick={() => {
+                navigate(
+                  `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/playground`,
+                );
+              }}
+            >
+              <Icons.ArrowLeft className="w-4 h-4 stroke-semantic-fg-primary" />
+            </Button>
+            <PipelineNamePopover sharing={pipeline.data?.sharing ?? null} />
+          </div>
+          <div className="flex flex-1 flex-row gap-x-2 items-center justify-end">
+            <ComponentCmdo />
+            <ImportRecipeDialog />
+            <RunButton />
+          </div>
+        </div>
+        <div className="flex flex-row gap-x-2 w-1/2 justify-end">
+          <ActionCmdk />
           <ToolkitDialogTrigger />
           <ShareDialogTrigger />
           <ReleasePopover />
-        </div>
-        <div className="ml-4 flex">
-          {isCloud ? <CloudTopbarDropdown /> : <CETopbarDropdown />}
+          <div className="ml-4 flex">
+            {isCloud ? <CloudTopbarDropdown /> : <CETopbarDropdown />}
+          </div>
         </div>
       </div>
       <PageBase.Container>
@@ -269,11 +252,13 @@ export const RecipeEditorView = () => {
             >
               <Sidebar
                 pipelineComponentMap={pipeline.data?.recipe.component ?? null}
-                pipelineId={pipeline.data?.id ?? null}
+                pipelineVariableFieldMap={
+                  pipeline.data?.recipe.variable ?? null
+                }
+                pipelineOutputFieldMap={pipeline.data?.recipe?.output ?? null}
               />
             </div>
-            <ActionCmdk />
-            <ComponentCmdo />
+
             <div
               className={cn(
                 "h-full transition-all ease-in-out duration-300",

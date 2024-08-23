@@ -63,6 +63,7 @@ import { File02 } from "./File02";
 import { File04 } from "./File04";
 import { File05 } from "./File05";
 import { File06 } from "./File06";
+import { FileDownload03 } from "./FileDownload03";
 import { FileMinus01 } from "./FileMinus01";
 import { FilePlus01 } from "./FilePlus01";
 import { FilePlus02 } from "./FilePlus02";
@@ -120,6 +121,7 @@ import { ReferenceIconX } from "./ReferenceIconX";
 import { RefreshCw05 } from "./RefreshCw05";
 import { Repeat04 } from "./Repeat04";
 import { Rocket01 } from "./Rocket01";
+import { Rocket02 } from "./Rocket02";
 import { Save01 } from "./Save01";
 import { Save02 } from "./Save02";
 import { Scales02 } from "./Scales02";
@@ -231,6 +233,7 @@ export const Icons = {
   FilePlus01,
   FilePlus02,
   FilterLines,
+  FileDownload03,
   Flag04,
   Gear01,
   GitMerge,
@@ -284,6 +287,7 @@ export const Icons = {
   ReferenceIconCheck,
   ReferenceIconX,
   Rocket01,
+  Rocket02,
   Save01,
   Save02,
   Scales02,
