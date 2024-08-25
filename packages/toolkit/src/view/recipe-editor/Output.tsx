@@ -9,7 +9,7 @@ export const Output = ({
   outputSchema: Nullable<InstillJSONSchema>;
 }) => {
   return (
-    <div className="flex flex-col py-4">
+    <div className="flex flex-col py-4 w-full">
       <ComponentOutputs
         componentID={id}
         outputSchema={outputSchema}

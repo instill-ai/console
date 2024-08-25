@@ -25,6 +25,7 @@ import {
 
 import { EntitySelector, LoadingSpin } from "../../../components";
 import { DataTestID, InstillErrors } from "../../../constant";
+import { defaultRawRecipe } from "../../../constant/pipeline";
 import {
   InstillStore,
   Nullable,
@@ -130,12 +131,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
         namespaceName: targetNamespace.name,
         id: data.id,
         description: data.description ?? undefined,
-        recipe: {
-          version: "v1beta",
-          variable: undefined,
-          output: undefined,
-          component: undefined,
-        },
+        rawRecipe: defaultRawRecipe,
         metadata: {
           component: {
             trigger: {

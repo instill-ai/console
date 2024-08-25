@@ -154,7 +154,7 @@ export const Input = ({
   }, [sseURL, updateIsTriggeringPipeline, updateTriggerWithStreamData]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <h3 className="py-2 product-body-text-1-semibold text-semantic-fg-primary">
         Input
       </h3>

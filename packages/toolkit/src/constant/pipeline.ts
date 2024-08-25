@@ -127,3 +127,19 @@ export const getInstillPipelineHttpRequestExample = ({
 
   return snippet;
 };
+
+export const defaultRawRecipe = `# VDP Version
+version: v1beta
+
+# ---------- Data ----------
+# Variables that manually trigger the pipeline and can be referenced in component actions
+variable:
+
+# Custom user-defined output
+output:
+
+# ---------- Schema ----------
+# Component actions executed during the pipeline run
+# Click "⌘O" to add a new component
+component:
+`;

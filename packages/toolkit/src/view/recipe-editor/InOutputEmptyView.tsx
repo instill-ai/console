@@ -1,6 +1,15 @@
 import { Icons } from "@instill-ai/design-system";
 
-export const InOutputEmptyView = () => {
+export const InOutputEmptyView = ({
+  reason,
+}: {
+  reason: "variableIsEmpty" | "outputIsEmpty";
+}) => {
+  const description =
+    reason === "variableIsEmpty"
+      ? "This pipeline cannot be run. Please check the variable configuration."
+      : "This pipeline cannot be run. Please check the output configuration.";
+
   return (
     <div className="flex w-full relative h-full bg-semantic-bg-alt-primary">
       <img
@@ -19,8 +28,7 @@ export const InOutputEmptyView = () => {
               Pipeline is not runnable
             </p>
             <p className="text-semantic-fg-secondary text-center">
-              This pipeline cannot be run. Please check the configuration and
-              ensure all necessary components are set up correctly.
+              {description}
             </p>
           </div>
         </div>
