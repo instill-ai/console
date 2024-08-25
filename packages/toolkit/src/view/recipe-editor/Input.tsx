@@ -1,4 +1,3 @@
-import * as React from "react";
 import { PipelineVariableFieldMap } from "instill-sdk";
 import * as z from "zod";
 
@@ -14,7 +13,6 @@ import {
   useStreamingTriggerUserPipeline,
   useUserNamespaces,
 } from "../../lib";
-import { env } from "../../server";
 import { recursiveHelpers } from "../pipeline-builder";
 
 const selector = (store: InstillStore) => ({
@@ -37,8 +35,6 @@ export const Input = ({
     accessToken,
     updateTriggerWithStreamData,
   } = useInstillStore(useShallow(selector));
-
-  const [sseURL, setSseURL] = React.useState<Nullable<string>>(null);
 
   const { Schema, fieldItems, form } = usePipelineTriggerRequestForm({
     mode: "build",
@@ -98,7 +94,7 @@ export const Input = ({
         (ns) => ns.id === navigationNamespaceAnchor,
       );
 
-      const data = await triggerPipeline.mutateAsync({
+      const stream = await triggerPipeline.mutateAsync({
         namespacePipelineName: pipelineName,
         accessToken,
         inputs: [parsedStructuredData],
@@ -106,52 +102,49 @@ export const Input = ({
         requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
       });
 
-      setSseURL(
-        `${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1beta/sse/${data.sessionUUID}`,
-      );
+      for await (const chunk of stream.body) {
+        if (chunk === null) {
+          continue;
+        }
+
+        console.log(chunk);
+        const text =
+          typeof chunk === "string" ? chunk : new TextDecoder().decode(chunk);
+        const eventStrings = text
+          .split("\n\n")
+          .filter((str) => str.trim() !== "");
+
+        const events = eventStrings.map((eventString) => {
+          const lines = eventString.split("\n");
+          let event = "";
+          let data = "";
+
+          for (const line of lines) {
+            if (line.startsWith("event:")) {
+              event = line.slice(6).trim();
+            } else if (line.startsWith("data:")) {
+              data = line.slice(5).trim();
+            }
+          }
+
+          // Parse the data as JSON if possible
+          try {
+            data = JSON.parse(data);
+          } catch (e) {
+            // If parsing fails, keep data as a string
+          }
+
+          return { event, data };
+        });
+
+        for (const event of events) {
+          console.log(event);
+        }
+      }
     } catch (error) {
       console.error(error);
     }
   }
-
-  React.useEffect(() => {
-    if (!sseURL) {
-      return;
-    }
-
-    const sse = new EventSource(sseURL);
-
-    sse.addEventListener("output", (event) => {
-      let data: Nullable<GeneralRecord> = null;
-
-      try {
-        data = JSON.parse(event.data);
-        if (data) {
-          const result = data.result;
-
-          if (result) {
-            updateTriggerWithStreamData((prev) => [...prev, result]);
-          }
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    });
-
-    sse.addEventListener("done", () => {
-      updateIsTriggeringPipeline(() => false);
-      sse.close();
-    });
-
-    sse.onerror = (event) => {
-      console.log(event);
-      sse.close();
-    };
-
-    return () => {
-      sse.close();
-    };
-  }, [sseURL, updateIsTriggeringPipeline, updateTriggerWithStreamData]);
 
   return (
     <div className="flex flex-col w-full">

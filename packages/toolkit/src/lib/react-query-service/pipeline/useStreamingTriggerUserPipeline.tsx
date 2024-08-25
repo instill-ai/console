@@ -9,7 +9,7 @@ import { getInstillAPIClient } from "../../vdp-sdk";
 export function useStreamingTriggerUserPipeline() {
   return useMutation({
     mutationFn: async (
-      props: Omit<TriggerNamespacePipelineRequest, "streaming"> & {
+      props: Omit<TriggerNamespacePipelineRequest, "stream"> & {
         accessToken: Nullable<string>;
         triggerNamespaceName?: string;
       },
@@ -22,7 +22,7 @@ export function useStreamingTriggerUserPipeline() {
 
       const response = await client.vdp.trigger.triggerNamespacePipeline({
         ...payload,
-        streaming: true,
+        stream: true,
       });
 
       return Promise.resolve(response);

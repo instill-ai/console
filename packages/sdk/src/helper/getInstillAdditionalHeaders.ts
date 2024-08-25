@@ -2,12 +2,12 @@ export function getInstillAdditionalHeaders({
   returnTraces,
   requesterUid,
   shareCode,
-  streaming,
+  stream,
 }: {
   returnTraces?: boolean;
   requesterUid?: string;
   shareCode?: string;
-  streaming?: boolean;
+  stream?: boolean;
 }) {
   const headers: Record<string, string> = {};
   const corsHeaders: string[] = [];
@@ -27,7 +27,7 @@ export function getInstillAdditionalHeaders({
     corsHeaders.push("instill-share-code");
   }
 
-  if (streaming) {
+  if (stream) {
     headers["Instill-Use-SSE"] = "true";
     corsHeaders.push("Instill-Use-SSE");
   }

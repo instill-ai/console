@@ -111,8 +111,6 @@ export function validateVSCodeYaml(
     console.log(error);
   }
 
-  console.log(":mm", markers);
-
   if (markers.length === 0) {
     return { success: true, data: yamlData };
   } else {

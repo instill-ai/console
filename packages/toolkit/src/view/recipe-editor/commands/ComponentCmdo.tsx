@@ -296,7 +296,6 @@ export const ComponentCmdo = () => {
       open={openComponentCmdo}
       onOpenChange={(open) => {
         if (!open) {
-          console.log("closing");
           setSelectedComponentDefinition(null);
           setSelectedTask(null);
           setSelectedComponentDefaultValue(null);

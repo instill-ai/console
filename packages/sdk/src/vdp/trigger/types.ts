@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { GeneralRecord, Operation } from "../../types";
 import { PipelineTrace } from "../pipeline";
 
@@ -11,7 +13,7 @@ export type TriggerNamespacePipelineRequest = {
   returnTraces?: boolean;
   shareCode?: string;
   requesterUid?: string;
-  streaming?: boolean;
+  stream?: boolean;
 };
 
 export type TriggerNamespacePipelineResponse = {
@@ -19,10 +21,15 @@ export type TriggerNamespacePipelineResponse = {
   metadata: PipelineTriggerMetadata;
 };
 
-export type TriggerNamespacePipelineWithStreamingResponse = {
-  sessionUUID: string;
-  sourceInstanceId: string;
-};
+export type TriggerNamespacePipelineStreamEvent =
+  | "pipeline_output_updated"
+  | "pipeline_completed"
+  | "component_status_updated"
+  | "component_input_updated"
+  | "component_output_updated"
+  | "component_error";
+
+export type TriggerNamespacePipelineWithStreamResponse = any;
 
 export type TriggerAsyncNamespacePipelineRequest = {
   namespacePipelineName: string;
@@ -42,7 +49,7 @@ export type TriggerNamespacePipelineReleaseRequest = {
   returnTraces?: boolean;
   shareCode?: string;
   requesterUid?: string;
-  streaming?: boolean;
+  stream?: boolean;
 };
 
 export type TriggerNamespacePipelineReleaseResponse = {

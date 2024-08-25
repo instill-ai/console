@@ -671,11 +671,6 @@ export const VscodeEditor = () => {
             .reverse()
             .find((map) => map.lineNumber <= position.lineNumber);
 
-        console.log(
-          "smallestComponentTopLevelKeyLineNumberMap",
-          smallestComponentTopLevelKeyLineNumberMap,
-        );
-
         if (!smallestComponentTopLevelKeyLineNumberMap) {
           return null;
         }

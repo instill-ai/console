@@ -36,8 +36,6 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     );
   }, [reactflowEdges, id]);
 
-  console.log(reactflowEdges);
-
   const hasSourceEdges = React.useMemo(() => {
     return reactflowEdges.some(
       (edge) => edge.source === id && edge.target !== "response",
