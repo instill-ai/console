@@ -180,11 +180,11 @@ export const VscodeEditor = () => {
       return;
     }
 
-    console.log("tyoyo", markErrors);
-
     monacoRef.current.editor.setModelMarkers(model, "owner", markErrors);
   }, [markErrors]);
 
+  // When the pipeline is updated, we need to re-register the services we used
+  // in the monaco editor
   React.useEffect(() => {
     if (!monacoRef.current || !pipeline.isSuccess) {
       return;
@@ -265,9 +265,6 @@ export const VscodeEditor = () => {
         };
       }
 
-      // We need to hint task type for every component.
-      // 1. We need to find the component that the user is typing in. -> Check the closest and smallest component key line number.
-      // 2. We need to find the task type for the component.
       const componentKeyLineNumberMaps =
         keyLineNumberMapHelpers.getAllComponentKeyLineNumberMaps(allValue);
 
@@ -280,6 +277,10 @@ export const VscodeEditor = () => {
         pipeline.isSuccess &&
         pipeline.data.recipe.component
       ) {
+        // [HINT task]
+        // We need to hint task type for every component.
+        // 1. We need to find the component that the user is typing in. -> Check the closest and smallest component key line number.
+        // 2. We need to find the task type for the component.
         if (last_chars.includes("task:")) {
           const targetComponent =
             pipeline.data.recipe.component[
@@ -287,15 +288,12 @@ export const VscodeEditor = () => {
             ];
 
           if (targetComponent && isPipelineGeneralComponent(targetComponent)) {
-            const taskKeys =
-              targetComponent.definition?.tasks.map((task) => task.name) ?? [];
-
-            for (const key of taskKeys) {
+            for (const task of targetComponent.definition?.tasks ?? []) {
               result.push({
-                label: key,
+                label: task.name,
                 kind: monaco.languages.CompletionItemKind.Field,
-                insertText: key,
-                filterText: key,
+                insertText: task.name,
+                filterText: task.name,
                 range: new monaco.Range(
                   position.lineNumber,
                   position.column - active_typing.length,
@@ -303,7 +301,7 @@ export const VscodeEditor = () => {
                   position.column,
                 ),
                 documentation: {
-                  value: `# ${key} \n hello-world [Microsoft](http://www.microsoft.com)`,
+                  value: `**${task.name}** \n\n ${task.title} \n\n --- \n\n ${task.description}`,
                   isTrusted: true,
                 },
               });
@@ -320,7 +318,6 @@ export const VscodeEditor = () => {
         // }
       }
 
-      // We need to hint instill-format for variables
       const topLevelKeyLineNumberMaps =
         keyLineNumberMapHelpers.getRecipeTopLevelKeyLineNumberMaps(allValue);
 
@@ -328,6 +325,21 @@ export const VscodeEditor = () => {
         .reverse()
         .find((map) => map.lineNumber <= position.lineNumber);
 
+      const componentTopLevelKeyLineNumberMaps =
+        smallestComponentKeyLineNumberMap
+          ? keyLineNumberMapHelpers.getComponentTopLevelKeyLineNumberMaps(
+              allValue,
+              smallestComponentKeyLineNumberMap.key,
+            )
+          : undefined;
+
+      const smallestComponentTopLevelKeyLineNumberMap =
+        componentTopLevelKeyLineNumberMaps
+          ?.reverse()
+          .find((map) => map.lineNumber <= position.lineNumber);
+
+      // [HINT variable.instill-format]
+      // We need to hint instill-format for variables
       if (
         smallestTopLevelKeyLineNumberMap &&
         smallestTopLevelKeyLineNumberMap.key === "variable" &&
@@ -367,14 +379,20 @@ export const VscodeEditor = () => {
       // If the user is typing a member object
       // For example: when user type ${o we first need to hint them the available components id
       if (isMember) {
-        if (active_typing.includes("secret") && namespaceSecrets.isSuccess) {
+        // [HINT secret]
+        // We need to hint secret for component setup
+        if (
+          active_typing.includes("secret") &&
+          namespaceSecrets.isSuccess &&
+          smallestComponentTopLevelKeyLineNumberMap &&
+          smallestComponentTopLevelKeyLineNumberMap.key === "setup"
+        ) {
           for (const secret of namespaceSecrets.data) {
             result.push({
               label: secret.id,
               kind: monaco.languages.CompletionItemKind.Field,
               insertText: "${" + "secret." + secret.id,
               filterText: "${" + "secret." + secret.id,
-              documentation: secret.description ?? undefined,
               range: new monaco.Range(
                 position.lineNumber,
                 position.column - active_typing.length,
@@ -382,6 +400,9 @@ export const VscodeEditor = () => {
                 position.column,
               ),
               detail: secret.description ?? undefined,
+              documentation: {
+                value: `**${secret.id}** \n\n --- \n\n ${secret.description}`,
+              },
             });
           }
 
@@ -390,6 +411,7 @@ export const VscodeEditor = () => {
           };
         }
 
+        // [HINT reference to variable]
         if (active_typing.includes("variable") && recipe.variable) {
           const allHints = recipe.variable;
 
@@ -400,7 +422,7 @@ export const VscodeEditor = () => {
               insertText: "${" + "variable." + key,
               filterText: "${" + "variable." + key,
               documentation: {
-                value: `**${key}** \n\n instill-format: ${value.instillFormat}`,
+                value: `**${key}** \n\n --- \n\n instill-format: ${value.instillFormat}`,
               },
               range: new monaco.Range(
                 position.lineNumber,
@@ -436,6 +458,7 @@ export const VscodeEditor = () => {
           }
         }
 
+        // [HINT component output]
         // Is a member, get a list of all members, and the prefix
         const objPath = active_typing
           .substring(0, active_typing.length - 1)
@@ -457,13 +480,15 @@ export const VscodeEditor = () => {
               objPathWoIndex,
             ) as GeneralRecord;
 
-            for (const [key] of Object.entries(arrayHint)) {
+            for (const [key, value] of Object.entries(arrayHint)) {
               result.push({
                 label: key,
                 kind: monaco.languages.CompletionItemKind.Field,
                 insertText: "${" + objPath + "." + key,
                 filterText: "${" + objPath + "." + key,
-                documentation: `## ${key}  OMG`,
+                documentation: {
+                  value: `**${key}** \n\n ${value.instillFormat} \n\n --- \n\n ${value.description}`,
+                },
                 range: new monaco.Range(
                   position.lineNumber,
                   position.column - active_typing.length,
@@ -489,14 +514,15 @@ export const VscodeEditor = () => {
             kind: monaco.languages.CompletionItemKind.Field,
             insertText: "${" + objPath + "." + key,
             filterText: "${" + objPath + "." + key,
-            documentation: `## ${key} \n\n ${value.description}`,
+            documentation: {
+              value: `**${key}** \n\n ${value.instillFormat} \n\n --- \n\n ${value.description}`,
+            },
             range: new monaco.Range(
               position.lineNumber,
               position.column - active_typing.length,
               position.lineNumber,
               position.column,
             ),
-            detail: value.instillFormat ?? "",
           });
         }
 
@@ -508,6 +534,7 @@ export const VscodeEditor = () => {
       const referenceRegex = /\${/g;
       const isReference = referenceRegex.test(active_typing);
 
+      // [HINT component key]
       if (isReference) {
         const componentKeys: string[] = [];
         for (const [key, value] of Object.entries(component)) {
@@ -516,23 +543,25 @@ export const VscodeEditor = () => {
           }
         }
 
-        for (const key of componentKeys) {
-          result.push({
-            label: key,
-            kind: monaco.languages.CompletionItemKind.Function,
-            insertText: "${" + key,
-            filterText: "${" + key,
-            documentation: {
-              value: `## ${key} hello-world`,
-              isTrusted: true,
-            },
-            range: new monaco.Range(
-              position.lineNumber,
-              position.column - active_typing.length,
-              position.lineNumber,
-              position.column,
-            ),
-          });
+        for (const [key, value] of Object.entries(component)) {
+          if (isPipelineGeneralComponent(value)) {
+            result.push({
+              label: key,
+              kind: monaco.languages.CompletionItemKind.Function,
+              insertText: "${" + key,
+              filterText: "${" + key,
+              documentation: {
+                value: `**${key}** \n\n --- \n\n Component type: ${value.definition?.id}`,
+                isTrusted: true,
+              },
+              range: new monaco.Range(
+                position.lineNumber,
+                position.column - active_typing.length,
+                position.lineNumber,
+                position.column,
+              ),
+            });
+          }
         }
 
         if (recipe.variable) {
@@ -541,9 +570,6 @@ export const VscodeEditor = () => {
             kind: monaco.languages.CompletionItemKind.Variable,
             insertText: "${" + "variable",
             filterText: "${" + "variable",
-            documentation: {
-              value: `## hello-world`,
-            },
             range: new monaco.Range(
               position.lineNumber,
               position.column - active_typing.length,
@@ -553,21 +579,28 @@ export const VscodeEditor = () => {
           });
         }
 
-        result.push({
-          label: "secret",
-          kind: monaco.languages.CompletionItemKind.Variable,
-          insertText: "${" + "secret",
-          filterText: "${" + "secret",
-          documentation: {
-            value: "Instill Secret",
-          },
-          range: new monaco.Range(
-            position.lineNumber,
-            position.column - active_typing.length,
-            position.lineNumber,
-            position.column,
-          ),
-        });
+        // [HINT secret key]
+        // This keyword will only be used under setup component toplevel key
+        if (
+          smallestComponentTopLevelKeyLineNumberMap &&
+          smallestComponentTopLevelKeyLineNumberMap.key === "setup"
+        ) {
+          result.push({
+            label: "secret",
+            kind: monaco.languages.CompletionItemKind.Variable,
+            insertText: "${" + "secret",
+            filterText: "${" + "secret",
+            documentation: {
+              value: "Instill Secret",
+            },
+            range: new monaco.Range(
+              position.lineNumber,
+              position.column - active_typing.length,
+              position.lineNumber,
+              position.column,
+            ),
+          });
+        }
 
         return {
           suggestions: result,
@@ -839,7 +872,7 @@ export const VscodeEditor = () => {
         <div className="absolute z-10 inset-0 bg-semantic-fg-primary opacity-15"></div>
       ) : null}
       <style jsx={true}>{`
-        .rendered-markdown > h1 {
+        ..rendered-markdown > h1 {
           font-size: 1.5rem;
           font-weight: 600;
         }
@@ -847,6 +880,11 @@ export const VscodeEditor = () => {
         .rendered-markdown > h2 {
           font-size: 1.2rem;
           font-weight: 600;
+        }
+
+        .rendered-markdown > hr {
+          margin-top: 0.5rem;
+          margin-bottom: 0.5rem;
         }
 
         .codelens-decoration > a {

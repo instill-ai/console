@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import dynamic from "next/dynamic";
 import { arrayMove } from "@dnd-kit/sortable";
 import { Nullable } from "instill-sdk";
 
@@ -40,7 +41,12 @@ import { RunButton } from "./RunButton";
 import { ShareDialogTrigger } from "./ShareDialogTrigger";
 import { Sidebar } from "./sidebar";
 import { ToolkitDialogTrigger } from "./ToolkitDialogTrigger";
-import { VscodeEditor } from "./VscodeEditor";
+
+// Dynamic load this component to solve hydration error
+const VscodeEditor = dynamic(
+  () => import("./VscodeEditor").then((mod) => mod.VscodeEditor),
+  { ssr: false },
+);
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -113,17 +119,21 @@ export const RecipeEditorView = () => {
         fields={pipeline.data?.recipe.variable ?? null}
       />
     ) : (
-      <InOutputEmptyView />
+      <InOutputEmptyView reason="variableIsEmpty" />
     );
 
-    const outputView = pipeline.data?.dataSpecification?.output ? (
-      <Output
-        id="test"
-        outputSchema={pipeline.data?.dataSpecification?.output ?? null}
-      />
-    ) : (
-      <InOutputEmptyView />
-    );
+    const outputView =
+      pipeline.data?.dataSpecification?.output &&
+      pipeline.data.dataSpecification.output?.properties &&
+      Object.keys(pipeline.data.dataSpecification.output?.properties).length !==
+        0 ? (
+        <Output
+          id="test"
+          outputSchema={pipeline.data?.dataSpecification?.output ?? null}
+        />
+      ) : (
+        <InOutputEmptyView reason="outputIsEmpty" />
+      );
 
     updateEditorMultiScreenModel(() => ({
       topRight: {

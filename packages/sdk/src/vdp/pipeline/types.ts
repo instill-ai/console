@@ -251,7 +251,7 @@ export type CreateNamespacePipelineRequest = {
   namespaceName: string;
   id: string;
   description?: string;
-  recipe: PipelineRecipe;
+  recipe?: PipelineRecipe;
   metadata: GeneralRecord;
   sharing?: PipelineSharing;
   readme?: string;
