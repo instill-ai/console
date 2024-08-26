@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { Nullable } from "instill-sdk";
 
@@ -56,6 +54,14 @@ export const GetCatalogTab = ({
     accessToken,
     enabled: enabledQuery && Boolean(selectedNamespace),
   });
+
+  const successfulFiles = React.useMemo(() => {
+    return (
+      filesData.data?.filter(
+        (file) => file.processStatus === "FILE_PROCESS_STATUS_COMPLETED",
+      ) || []
+    );
+  }, [filesData.data]);
 
   const curlCommand1 = React.useMemo(() => {
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
@@ -119,7 +125,7 @@ export const GetCatalogTab = ({
               </DropdownMenu.Trigger>
               <DropdownMenu.Content className="w-64">
                 <ScrollArea.Root className="max-h-64 overflow-auto">
-                  {filesData.data?.map((file) => (
+                  {successfulFiles.map((file) => (
                     <DropdownMenu.Item
                       key={file.fileUid}
                       onSelect={() => setSelectedFile(file)}
