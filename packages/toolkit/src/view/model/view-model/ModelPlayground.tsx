@@ -155,8 +155,9 @@ export const ModelPlayground = ({
 
   const existingModelTriggerResult = useLastModelTriggerResult({
     accessToken,
-    modelName: model?.name || null,
-    fullView: true,
+    modelId: model?.id || null,
+    userId: me.data?.id || null,
+    view: "VIEW_FULL",
     enabled: enabledQuery,
   });
 

@@ -1,5 +1,6 @@
 import { getInstillAdditionalHeaders, getQueryString } from "../helper";
 import { APIResource } from "../main/resource";
+import { ResourceView } from "../vdp";
 import {
   CreateNamespaceModelRequest,
   CreateNamespaceModelResponse,
@@ -7,6 +8,7 @@ import {
   DeleteNamespaceModelVersionRequest,
   GetModelDefinitionRequest,
   GetModelDefinitionResponse,
+  GetNamespaceModelOperationResultResponse,
   GetNamespaceModelReadmeRequest,
   GetNamespaceModelReadmeResponse,
   GetNamespaceModelRequest,
@@ -606,6 +608,29 @@ export class ModelClient extends APIResource {
             body: JSON.stringify({ taskInputs }),
           },
         );
+      return Promise.resolve(data);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  /* -------------------------------------------------------------------------
+   * Get Model Trigger Result
+   * -----------------------------------------------------------------------*/
+
+  async getNamespaceModelOperationResult({
+    namespaceModelName,
+    view,
+  }: {
+    namespaceModelName: string;
+    view: ResourceView;
+  }) {
+    try {
+      const data =
+        await this._client.get<GetNamespaceModelOperationResultResponse>(
+          `/${namespaceModelName}/operation?view=${view}`,
+        );
+
       return Promise.resolve(data);
     } catch (err) {
       return Promise.reject(err);

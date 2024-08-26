@@ -348,3 +348,22 @@ export type TriggerAsyncNamespaceModelLatestVersionRequest = {
 export type TriggerAsyncNamespaceModelLatestVersionResponse = {
   operation: Operation;
 };
+
+export type GetNamespaceModelOperationResultResponse = {
+  operation: Nullable<
+    Operation & {
+      response?: {
+        "@type": string;
+        request: {
+          name: string;
+          taskInputs: GeneralRecord[];
+          version: string;
+        };
+        response: {
+          task: string;
+          taskOutputs: GeneralRecord[];
+        };
+      };
+    }
+  >;
+};

@@ -5,7 +5,6 @@ import { Nullable } from "vitest";
 
 import { InstillJSONSchema } from "../../use-instill-form";
 import { User } from "../mgmt/types";
-import { Operation } from "../operation/types";
 import { Organization } from "../organization";
 import { Permission, Visibility } from "../types";
 
@@ -130,22 +129,3 @@ export type ModelVersion = {
 };
 
 export type ModelsWatchState = Record<string, Nullable<ModelWatchState>>;
-
-export type ModelTriggerResult = {
-  operation: Nullable<
-    Operation & {
-      response?: {
-        "@type": string;
-        request: {
-          name: string;
-          taskInputs: Record<string, any>[];
-          version: string;
-        };
-        response: {
-          task: string;
-          taskOutputs: Record<string, any>[];
-        };
-      };
-    }
-  >;
-};

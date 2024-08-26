@@ -4,7 +4,6 @@ import type {
   ModelDefinition,
   ModelReadme,
   ModelRegion,
-  ModelTriggerResult,
   ModelVersion,
 } from "./types";
 import { getInstillModelAPIClient } from "..";
@@ -423,30 +422,6 @@ export async function watchUserModel({
       namespaceModelName: modelName,
     });
     return Promise.resolve(state);
-  } catch (err) {
-    return Promise.reject(err);
-  }
-}
-
-/* -------------------------------------------------------------------------
- * Get Model Trigger Result
- * -----------------------------------------------------------------------*/
-
-export async function getModelOperationResult({
-  modelName,
-  accessToken,
-  fullView,
-}: {
-  modelName: string;
-  accessToken: Nullable<string>;
-  fullView: boolean;
-}) {
-  try {
-    const client = createInstillAxiosClient(accessToken, true);
-    const { data } = await client.get<ModelTriggerResult>(
-      `/${modelName}/operation${fullView ? "?view=VIEW_FULL" : ""}`,
-    );
-    return Promise.resolve(data);
   } catch (err) {
     return Promise.reject(err);
   }

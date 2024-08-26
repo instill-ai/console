@@ -1,29 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
+import { ResourceView } from "instill-sdk";
 
 import type { Nullable } from "../../type";
-import { getModelOperationResult } from "../../vdp-sdk";
+import { getInstillModelAPIClient } from "../../vdp-sdk";
 
 export function useLastModelTriggerResult({
-  modelName,
+  modelId,
+  userId,
   accessToken,
   enabled,
-  fullView,
+  view = "VIEW_BASIC",
   retry,
 }: {
-  modelName: Nullable<string>;
+  modelId: Nullable<string>;
+  userId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  fullView?: boolean;
+  view?: ResourceView;
   retry?: false | number;
 }) {
   let enableQuery = false;
   const queryKey = ["models", "operation"];
 
-  if (modelName && enabled) {
+  if (modelId && enabled) {
     enableQuery = true;
 
-    queryKey.push(modelName);
-    queryKey.push(`fullView=${Boolean(fullView)}`);
+    queryKey.push(modelId);
+    queryKey.push(view);
   }
 
   return useQuery({
@@ -33,14 +36,17 @@ export function useLastModelTriggerResult({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      if (!modelName) {
-        return Promise.reject(new Error("Model name not provided"));
+      if (!modelId) {
+        return Promise.reject(new Error("Model id not provided"));
       }
 
-      const operation = await getModelOperationResult({
-        modelName,
-        accessToken,
-        fullView: !!fullView,
+      const client = getInstillModelAPIClient({
+        accessToken: accessToken ?? undefined,
+      });
+
+      const operation = await client.model.getNamespaceModelOperationResult({
+        namespaceModelName: `namespaces/${userId}/models/${modelId}`,
+        view,
       });
 
       return Promise.resolve(operation);
