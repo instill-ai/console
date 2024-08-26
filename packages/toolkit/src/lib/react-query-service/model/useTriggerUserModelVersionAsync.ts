@@ -30,7 +30,7 @@ export function useTriggerUserModelVersionAsync() {
       });
 
       const response = await client.model.triggerAsyncNamespaceModelVersion({
-        namespaceModelVersionName: `users/${userId}/models/${modelId}/versions/${versionId}`,
+        namespaceModelVersionName: `namespaces/${userId}/models/${modelId}/versions/${versionId}`,
         taskInputs: payload.taskInputs,
         requesterUid,
         returnTraces,
