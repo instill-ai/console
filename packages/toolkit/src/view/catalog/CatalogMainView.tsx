@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { Nullable } from "instill-sdk";
 
 import { cn } from "@instill-ai/design-system";
@@ -61,6 +62,8 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   const [namespaceType, setNamespaceType] =
     React.useState<Nullable<"user" | "organization">>(null);
   const [isAutomaticTabChange, setIsAutomaticTabChange] = React.useState(false);
+
+  const router = useRouter();
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector),
@@ -162,11 +165,18 @@ export const CatalogMainView = (props: CatalogViewProps) => {
       setShowWarnDialog(true);
       setPendingTabChange(tab);
     } else {
-      setActiveTab(tab);
-      if (tab === "catalogs") {
-        setSelectedCatalog(null);
-      }
+      changeTab(tab);
     }
+  };
+
+  const changeTab = (tab: string) => {
+    setActiveTab(tab);
+    if (tab === "catalogs") {
+      setSelectedCatalog(null);
+    } else if (!selectedCatalog && catalogs.data && catalogs.data.length > 0) {
+      setSelectedCatalog(catalogs.data[0] || null);
+    }
+    router.push(`#${tab}`, { scroll: false });
   };
 
   const handleWarnDialogClose = async (): Promise<void> => {
@@ -180,10 +190,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
 
   const handleWarnDialogDiscard = () => {
     if (pendingTabChange) {
-      setActiveTab(pendingTabChange);
-      if (pendingTabChange === "catalogs") {
-        setSelectedCatalog(null);
-      }
+      changeTab(pendingTabChange);
     }
     setShowWarnDialog(false);
     setPendingTabChange(null);
@@ -220,7 +227,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
       });
       if (selectedCatalog?.catalogId === catalog.catalogId) {
         setSelectedCatalog(null);
-        setActiveTab("catalogs");
+        changeTab("catalogs");
       }
       catalogs.refetch();
     } catch (error) {
@@ -246,7 +253,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
 
   React.useEffect(() => {
     setSelectedCatalog(null);
-    setActiveTab("catalogs");
+    changeTab("catalogs");
     setHasUnsavedChanges(false);
   }, [selectedNamespace]);
 
@@ -257,6 +264,35 @@ export const CatalogMainView = (props: CatalogViewProps) => {
       }
     };
   }, [creditUsageTimer]);
+
+  React.useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1);
+      if (
+        hash &&
+        [
+          "catalogs",
+          "upload",
+          "files",
+          "chunks",
+          "retrieve",
+          "ask_question",
+          "get_catalog",
+        ].includes(hash)
+      ) {
+        changeTab(hash);
+      } else {
+        changeTab("catalogs");
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, [catalogs.data]);
 
   return (
     <div className="h-screen w-full bg-semantic-bg-alt-primary">
