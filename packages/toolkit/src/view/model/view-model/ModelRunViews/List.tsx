@@ -1,4 +1,4 @@
-import type { Model } from "instill-sdk";
+import type { Model, ModelRun } from "instill-sdk";
 import * as React from "react";
 import Link from "next/link";
 
@@ -15,7 +15,6 @@ import {
 import {
   convertToSecondsAndMilliseconds,
   InstillStore,
-  ModelRun,
   useInstillStore,
   usePaginatedModelRuns,
   useRouteInfo,

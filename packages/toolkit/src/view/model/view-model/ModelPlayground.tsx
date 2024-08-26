@@ -241,11 +241,11 @@ export const ModelPlayground = ({
 
         setInputFromExistingResult(
           convertValuesToString(
-            existingTriggerState.response?.request.taskInputs[0][taskPropName],
+            existingTriggerState?.response?.request.taskInputs[0][taskPropName],
           ),
         );
         setModelRunResult(
-          existingTriggerState.response?.response.taskOutputs[0][taskPropName],
+          existingTriggerState?.response?.response.taskOutputs[0][taskPropName],
         );
 
         setIsModelRunInProgress(false);
