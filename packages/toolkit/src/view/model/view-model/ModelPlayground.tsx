@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import * as React from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import { Operation } from "instill-sdk";
 import { z } from "zod";
 
 import {
@@ -12,6 +13,7 @@ import {
   TabMenu,
   useToast,
 } from "@instill-ai/design-system";
+
 import {
   CodeBlock,
   LoadingSpin,
@@ -42,7 +44,6 @@ import {
 } from "../../../lib";
 import { recursiveHelpers } from "../../pipeline-builder";
 import { OPERATION_POLL_TIMEOUT } from "./constants";
-import { Operation } from "instill-sdk";
 
 export type ModelOutputActiveView = "preview" | "json";
 
@@ -241,11 +242,15 @@ export const ModelPlayground = ({
 
         setInputFromExistingResult(
           convertValuesToString(
-            existingTriggerState.response?.request.taskInputs[0]?.[taskPropName],
+            existingTriggerState.response?.request.taskInputs[0]?.[
+              taskPropName
+            ],
           ),
         );
         setModelRunResult(
-          existingTriggerState.response?.response.taskOutputs[0]?.[taskPropName],
+          existingTriggerState.response?.response.taskOutputs[0]?.[
+            taskPropName
+          ],
         );
 
         setIsModelRunInProgress(false);
