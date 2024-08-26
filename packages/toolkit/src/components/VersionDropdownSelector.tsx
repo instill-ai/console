@@ -73,7 +73,11 @@ export const VersionDropdownSelector = ({
         Version
       </div>
       <Popover.Root
-        onOpenChange={() => setIsVersionSelectorOpen((current) => !current)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setIsVersionSelectorOpen(open);
+          }
+        }}
         open={isVersionSelectorOpen}
       >
         <Popover.Trigger asChild={true} className="my-auto">
