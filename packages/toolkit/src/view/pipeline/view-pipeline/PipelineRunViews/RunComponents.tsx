@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { ComponentRun, GeneralRecord, Nullable } from "instill-sdk";

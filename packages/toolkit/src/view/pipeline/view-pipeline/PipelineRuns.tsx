@@ -1,3 +1,5 @@
+"use client";
+
 import type { Pipeline } from "instill-sdk";
 import { useParams } from "next/navigation";
 

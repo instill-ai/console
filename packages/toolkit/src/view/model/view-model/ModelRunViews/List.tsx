@@ -1,3 +1,5 @@
+"use client";
+
 import type { Model, ModelRun } from "instill-sdk";
 import * as React from "react";
 import Link from "next/link";

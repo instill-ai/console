@@ -1,3 +1,5 @@
+"use client";
+
 import type { Model } from "instill-sdk";
 import { useParams } from "next/navigation";
 

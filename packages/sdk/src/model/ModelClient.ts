@@ -406,11 +406,12 @@ export class ModelClient extends APIResource {
   }: ListModelRunsRequest) {
     try {
       const queryString = getQueryString({
-        baseURL: `${modelName}/runs?view=${view}`,
+        baseURL: `${modelName}/runs`,
         pageSize,
         page,
         filter,
         orderBy,
+        view,
       });
 
       const data = await this._client.get<ListModelRunsResponse>(queryString);
