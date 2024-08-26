@@ -126,7 +126,18 @@ export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 export type Operation = {
   name: string;
-  response?: GeneralRecord;
+  response?: {
+    "@type": string;
+    request: {
+      name: string;
+      taskInputs: GeneralRecord[];
+      version: string;
+    };
+    response: {
+      task: string;
+      taskOutputs: GeneralRecord[];
+    };
+  };
   metadata?: GeneralRecord;
   error?: GeneralRecord;
   done: boolean;

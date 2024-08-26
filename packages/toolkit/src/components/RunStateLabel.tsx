@@ -2,7 +2,8 @@
 
 import { cn } from "@instill-ai/design-system";
 
-import type { Nullable, RunStatus } from "../lib";
+import type { Nullable } from "../lib";
+import { RunStatus } from "instill-sdk";
 
 export type RunStateLabelProps = {
   state?: Nullable<RunStatus>;

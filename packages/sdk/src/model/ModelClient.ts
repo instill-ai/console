@@ -31,6 +31,7 @@ import {
   RenameNamespaceModelResponse,
   TriggerAsyncNamespaceModelLatestVersionRequest,
   TriggerAsyncNamespaceModelVersionRequest,
+  TriggerAsyncNamespaceModelVersionResponse,
   TriggerNamespaceModelLatestVersionRequest,
   TriggerNamespaceModelLatestVersionResponse,
   TriggerNamespaceModelVersionRequest,
@@ -558,7 +559,7 @@ export class ModelClient extends APIResource {
       });
 
       const data =
-        await this._client.post<TriggerNamespaceModelVersionResponse>(
+        await this._client.post<TriggerAsyncNamespaceModelVersionResponse>(
           `/${namespaceModelVersionName}/trigger-async`,
           {
             body: JSON.stringify({ taskInputs }),

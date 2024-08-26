@@ -12,8 +12,6 @@ import {
   TabMenu,
   useToast,
 } from "@instill-ai/design-system";
-
-import type { ModelTriggerResult } from "../../../lib";
 import {
   CodeBlock,
   LoadingSpin,
@@ -44,6 +42,7 @@ import {
 } from "../../../lib";
 import { recursiveHelpers } from "../../pipeline-builder";
 import { OPERATION_POLL_TIMEOUT } from "./constants";
+import { Operation } from "instill-sdk";
 
 export type ModelOutputActiveView = "preview" | "json";
 
@@ -122,7 +121,7 @@ export const ModelPlayground = ({
     unknown
   > | null>(null);
   const [existingTriggerState, setExistingTriggerState] =
-    useState<ModelTriggerResult["operation"]>(null);
+    useState<Nullable<Operation>>(null);
   const { accessToken, enabledQuery, navigationNamespaceAnchor } =
     useInstillStore(useShallow(selector));
 
@@ -242,11 +241,11 @@ export const ModelPlayground = ({
 
         setInputFromExistingResult(
           convertValuesToString(
-            existingTriggerState.response.request.taskInputs[0][taskPropName],
+            existingTriggerState.response?.request.taskInputs[0][taskPropName],
           ),
         );
         setModelRunResult(
-          existingTriggerState.response.response.taskOutputs[0][taskPropName],
+          existingTriggerState.response?.response.taskOutputs[0][taskPropName],
         );
 
         setIsModelRunInProgress(false);
