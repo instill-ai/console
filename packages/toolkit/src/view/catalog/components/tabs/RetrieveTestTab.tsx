@@ -93,7 +93,7 @@ export const RetrieveTestTab = ({
           <div className="mb-12">
             <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
             <CodeBlock
-              codeString={`${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}/chunks/similarity`}
+              codeString={`${env("NEXT_PUBLIC_API_GATEWAY_URL")}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}/chunks/retrieve`}
               wrapLongLines={true}
               customStyle={defaultCodeSnippetStyles}
             />
