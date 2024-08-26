@@ -292,13 +292,14 @@ export const ModelPlayground = ({
       (namespace) => namespace.id === navigationNamespaceAnchor,
     );
 
-    if (!targetNamespace) {
+    if (!targetNamespace || !me.isSuccess) {
       return;
     }
 
     try {
       const data = await triggerModel.mutateAsync({
-        modelName: model.name,
+        modelId: model.id,
+        userId: me.data.id,
         accessToken,
         payload: {
           taskInputs: [

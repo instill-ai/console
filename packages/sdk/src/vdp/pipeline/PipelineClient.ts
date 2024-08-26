@@ -120,7 +120,7 @@ export class PipelineClient extends APIResource {
   async listPaginatedNamespacePipelineRuns(
     props: ListPaginatedNamespacePipelineRunsRequest,
   ) {
-    const { pipelineName, fullView, pageSize, page, orderBy, filter } = props;
+    const { pipelineName, view, pageSize, page, orderBy, filter } = props;
 
     try {
       const queryString = getQueryString({
@@ -129,7 +129,7 @@ export class PipelineClient extends APIResource {
         page,
         filter,
         orderBy,
-        view: fullView ? "VIEW_FULL" : "VIEW_BASIC",
+        view,
       });
 
       const data =
@@ -146,20 +146,16 @@ export class PipelineClient extends APIResource {
   async listPaginatedNamespacePipelineRunComponents(
     props: ListPaginatedNamespacePipelineRunComponentsRequest,
   ) {
-    const {
-      pipelineRunId,
-      /* fullView, */ pageSize,
-      page /* orderBy, filter */,
-    } = props;
+    const { pipelineRunId, view, pageSize, page, orderBy, filter } = props;
 
     try {
       const queryString = getQueryString({
         baseURL: `/pipeline-runs/${pipelineRunId}/component-runs`,
         pageSize,
         page,
-        //filter,
-        //orderBy,
-        //view: fullView ? "VIEW_FULL" : "VIEW_BASIC",
+        filter,
+        orderBy,
+        view,
       });
 
       const data =

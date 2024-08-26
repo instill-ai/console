@@ -1,7 +1,7 @@
-import { Icons } from "@instill-ai/design-system";
+import { Icons, Nullable } from "@instill-ai/design-system";
 
 export type RunTableSortableColHeaderProps = {
-  currentSortParamValue?: string;
+  currentSortParamValue?: Nullable<string>;
   paramName: string;
   onSort: (value: string) => void;
   title: string;

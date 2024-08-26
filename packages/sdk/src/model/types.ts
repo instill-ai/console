@@ -1,7 +1,9 @@
+import { RunSource, RunStatus } from "..";
 import { Organization, User } from "../core";
 import {
   GeneralRecord,
   InstillJSONSchema,
+  Nullable,
   Operation,
   Permission,
   Visibility,
@@ -176,6 +178,38 @@ export type ListNamespaceModelsResponse = {
   totalSize: number;
 };
 
+export type ListModelRunsRequest = {
+  modelName: string;
+  fullView: boolean;
+  pageSize: number;
+  page: number;
+  orderBy: Nullable<string>;
+  filter: Nullable<string>;
+};
+
+export type ModelRun = {
+  uid: string;
+  modelUid: string;
+  runnerId: string;
+  status: RunStatus;
+  source: RunSource;
+  totalDuration: number;
+  endTime: string;
+  createTime: string;
+  updateTime: string;
+  version: string;
+  taskInputs: GeneralRecord[];
+  taskOutputs: GeneralRecord[];
+  creditAmount: Nullable<number>;
+};
+
+export type ListModelRunsResponse = {
+  runs: ModelRun[];
+  totalSize: number;
+  pageSize: number;
+  page: number;
+};
+
 export type CreateNamespaceModelRequest = {
   namespaceName: string;
   id: string;
@@ -288,6 +322,8 @@ export type TriggerNamespaceModelVersionResponse = {
 export type TriggerAsyncNamespaceModelVersionRequest = {
   namespaceModelVersionName: string;
   taskInputs: Record<string, unknown>[];
+  returnTraces?: boolean;
+  requesterUid?: string;
 };
 
 export type TriggerAsyncNamespaceModelVersionResponse = {

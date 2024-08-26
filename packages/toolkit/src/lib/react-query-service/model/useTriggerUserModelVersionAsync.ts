@@ -2,34 +2,38 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import type { TriggerUserModelPayload } from "../../vdp-sdk";
 import { Nullable } from "../../type";
-import { triggerUserModelVersionActionAsync } from "../../vdp-sdk";
+import { getInstillModelAPIClient } from "../../vdp-sdk";
 
 export function useTriggerUserModelVersionAsync() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
-      modelName,
+      modelId,
+      userId,
       payload,
       accessToken,
       requesterUid,
       returnTraces,
       versionId,
     }: {
-      modelName: string;
+      modelId: string;
+      userId: string;
       payload: TriggerUserModelPayload;
       accessToken: Nullable<string>;
       requesterUid?: string;
       returnTraces?: boolean;
       versionId: Nullable<string>;
     }) => {
-      const response = await triggerUserModelVersionActionAsync({
-        modelName,
-        payload,
-        accessToken,
+      const client = getInstillModelAPIClient({
+        accessToken: accessToken ?? undefined,
+      });
+
+      const response = await client.model.triggerAsyncNamespaceModelVersion({
+        namespaceModelVersionName: `users/${userId}/models/${modelId}/versions/${versionId}`,
+        taskInputs: payload.taskInputs,
         requesterUid,
         returnTraces,
-        versionId,
       });
 
       return Promise.resolve(response);

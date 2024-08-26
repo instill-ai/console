@@ -16,7 +16,6 @@ export function getGeneralComponentInOutputSchema(
   }
 
   const targetTask = task ?? component.task;
-  console.log(component);
   // We need to support the breaking changes that maybe the previous selected task's
   // definition is not support anymore. Console need to check this.
   if (

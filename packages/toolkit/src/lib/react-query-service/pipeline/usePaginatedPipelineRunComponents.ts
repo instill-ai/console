@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { ResourceView } from "instill-sdk";
 
 import type { Nullable } from "../../type";
 import { env } from "../../../server";
@@ -11,37 +12,37 @@ export function usePaginatedPipelineRunComponents({
   retry,
   pageSize,
   page,
-  //orderBy,
-  //filter,
-  //fullView,
+  orderBy,
+  filter,
+  view = "VIEW_BASIC",
 }: {
   pipelineRunId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   retry?: false | number;
-  //fullView?: boolean;
+  view?: ResourceView;
   pageSize?: number;
   page?: number;
-  //orderBy?: string;
-  //filter?: string;
+  orderBy?: Nullable<string>;
+  filter?: string;
 }) {
   const queryKey = [
     "pipeline-component-runs",
     pipelineRunId,
     "paginated",
     accessToken ? "withAuth" : "unAuth",
-    //fullView ? 'VIEW_FULL' : 'VIEW_BASIC',
+    view,
     pageSize || env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
     page || 0,
   ];
 
-  /* if (orderBy) {
+  if (orderBy) {
     queryKey.push(orderBy);
-  } */
+  }
 
-  /* if (filter) {
+  if (filter) {
     queryKey.push(filter);
-  } */
+  }
 
   return useQuery({
     queryKey,
@@ -58,10 +59,10 @@ export function usePaginatedPipelineRunComponents({
         await client.vdp.pipeline.listPaginatedNamespacePipelineRunComponents({
           pipelineRunId,
           pageSize: pageSize || env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-          //fullView: !!fullView,
+          view,
           page: page || 0,
-          //orderBy: orderBy || null,
-          //filter: filter || null,
+          orderBy: orderBy || null,
+          filter: filter || null,
         });
 
       return Promise.resolve(data);

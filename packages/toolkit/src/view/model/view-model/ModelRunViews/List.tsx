@@ -21,7 +21,7 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../../../lib";
-import { getHumanReadableStringFromTime } from "../../../../server";
+import { env, getHumanReadableStringFromTime } from "../../../../server";
 import { TABLE_PAGE_SIZE } from "../constants";
 
 const selector = (store: InstillStore) => ({
@@ -50,7 +50,7 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
   const modelRuns = usePaginatedModelRuns({
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
-    modelName: `namespaces/${routeInfo.data.namespaceId}/models/${routeInfo.data.resourceId}`,
+    modelName: `/namespaces/${routeInfo.data.namespaceId}/models/${routeInfo.data.resourceId}`,
     pageSize: TABLE_PAGE_SIZE,
     page: paginationState.pageIndex,
     orderBy,
@@ -63,7 +63,7 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
 
     const owner = model.owner?.user || model.owner?.organization;
 
-    if (!owner || !owner.profile) {
+    if (!owner) {
       return OWNER;
     }
 
@@ -88,132 +88,139 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
     setOrderBy(sortValue);
   };
 
-  const columns: ColumnDef<ModelRun>[] = [
-    {
-      accessorKey: "uid",
-      header: () => <div className="text-left">Run ID</div>,
-      cell: ({ row }) => {
-        return (
-          <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            <Link
-              href={`/${owner.id}/models/${model?.id}/runs/${row.getValue("uid")}`}
-              className="text-semantic-accent-default hover:underline"
-            >
-              {row.getValue("uid")}
-            </Link>
-          </div>
-        );
+  const columns = React.useMemo(() => {
+    const columns: ColumnDef<ModelRun>[] = [
+      {
+        accessorKey: "uid",
+        header: () => <div className="text-left">Run ID</div>,
+        cell: ({ row }) => {
+          return (
+            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+              <Link
+                href={`/${owner.id}/models/${model?.id}/runs/${row.getValue("uid")}`}
+                className="text-semantic-accent-default hover:underline"
+              >
+                {row.getValue("uid")}
+              </Link>
+            </div>
+          );
+        },
       },
-    },
-    {
-      accessorKey: "version",
-      header: () => <div className="text-left">Version</div>,
-      cell: ({ row }) => {
-        return (
-          <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            <Link
-              href={`/${owner.id}/models/${model?.id}/playground?version=${row.getValue("version")}`}
-              className="text-semantic-accent-default hover:underline"
-            >
-              {row.getValue("version")}
-            </Link>
-          </div>
-        );
+      {
+        accessorKey: "version",
+        header: () => <div className="text-left">Version</div>,
+        cell: ({ row }) => {
+          return (
+            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+              <Link
+                href={`/${owner.id}/models/${model?.id}/playground?version=${row.getValue("version")}`}
+                className="text-semantic-accent-default hover:underline"
+              >
+                {row.getValue("version")}
+              </Link>
+            </div>
+          );
+        },
       },
-    },
-    {
-      accessorKey: "status",
-      header: () => <div className="text-left">Status</div>,
-      cell: ({ row }) => {
-        return (
-          <RunStateLabel
-            state={row.getValue("status")}
-            className="inline-flex"
+      {
+        accessorKey: "status",
+        header: () => <div className="text-left">Status</div>,
+        cell: ({ row }) => {
+          return (
+            <RunStateLabel
+              state={row.getValue("status")}
+              className="inline-flex"
+            />
+          );
+        },
+      },
+      {
+        accessorKey: "source",
+        header: () => <div className="text-left">Source</div>,
+        cell: ({ row }) => {
+          return (
+            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+              {row.getValue("source") === "RUN_SOURCE_CONSOLE" ? "Web" : "API"}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "totalDuration",
+        header: () => (
+          <RunsTableSortableColHeader
+            title="Total Duration"
+            paramName="total_duration"
+            currentSortParamValue={orderBy}
+            onSort={onSortOrderUpdate}
           />
-        );
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="font-normal text-semantic-bg-secondary-alt-primary">
+              {convertToSecondsAndMilliseconds(
+                (row.getValue("totalDuration") as number) / 1000,
+              )}
+            </div>
+          );
+        },
       },
-    },
-    {
-      accessorKey: "source",
-      header: () => <div className="text-left">Source</div>,
-      cell: ({ row }) => {
-        return (
-          <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            {row.getValue("source") === "RUN_SOURCE_CONSOLE" ? "Web" : "API"}
-          </div>
-        );
+      {
+        accessorKey: "createTime",
+        header: () => (
+          <RunsTableSortableColHeader
+            title="Created"
+            paramName="create_time"
+            currentSortParamValue={orderBy}
+            onSort={onSortOrderUpdate}
+          />
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="font-normal text-semantic-bg-secondary-alt-primary">
+              {getHumanReadableStringFromTime(
+                row.getValue("createTime"),
+                Date.now(),
+              )}
+            </div>
+          );
+        },
       },
-    },
-    {
-      accessorKey: "totalDuration",
-      header: () => (
-        <RunsTableSortableColHeader
-          title="Total Duration"
-          paramName="total_duration"
-          currentSortParamValue={orderBy}
-          onSort={onSortOrderUpdate}
-        />
-      ),
-      cell: ({ row }) => {
-        return (
-          <div className="font-normal text-semantic-bg-secondary-alt-primary">
-            {convertToSecondsAndMilliseconds(
-              (row.getValue("totalDuration") as number) / 1000,
-            )}
-          </div>
-        );
+      {
+        accessorKey: "runnerId",
+        header: () => <div className="text-left">Runner</div>,
+        cell: ({ row }) => {
+          return (
+            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+              <Link
+                target="_blank"
+                className="text-semantic-accent-default hover:underline"
+                href={`/${row.getValue("runnerId")}`}
+              >
+                {row.getValue("runnerId")}
+              </Link>
+            </div>
+          );
+        },
       },
-    },
-    {
-      accessorKey: "createTime",
-      header: () => (
-        <RunsTableSortableColHeader
-          title="Created"
-          paramName="create_time"
-          currentSortParamValue={orderBy}
-          onSort={onSortOrderUpdate}
-        />
-      ),
-      cell: ({ row }) => {
-        return (
-          <div className="font-normal text-semantic-bg-secondary-alt-primary">
-            {getHumanReadableStringFromTime(
-              row.getValue("createTime"),
-              Date.now(),
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "runnerId",
-      header: () => <div className="text-left">Runner</div>,
-      cell: ({ row }) => {
-        return (
-          <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            <Link
-              target="_blank"
-              className="text-semantic-accent-default hover:underline"
-              href={`/${row.getValue("runnerId")}`}
-            >
-              {row.getValue("runnerId")}
-            </Link>
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "creditAmount",
-      header: () => <div className="text-left">Credit</div>,
-      cell: ({ row }) => {
-        return (
-          <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            {row.getValue("creditAmount")}
-          </div>
-        );
-      },
-    },
-  ];
+    ];
+
+    if (env("NEXT_PUBLIC_APP_ENV") === "CLOUD") {
+      columns.push({
+        accessorKey: "creditAmount",
+        header: () => <div className="text-left">Credit</div>,
+        cell: ({ row }) => {
+          return (
+            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+              {row.getValue("creditAmount")}
+            </div>
+          );
+        },
+      });
+    }
+
+    return columns;
+  }, [modelRuns.isSuccess, modelRuns.data]);
 
   if (modelRuns.isSuccess && !modelRuns.data.runs.length) {
     return (

@@ -90,3 +90,13 @@ export const PipelineRecipeSchema = z.object({
   variable: PipelineVariableFieldMapSchema.optional(),
   output: PipelineOutputFieldMapSchema.optional(),
 });
+
+export type RunStatus =
+  | "RUN_STATUS_PROCESSING"
+  | "RUN_STATUS_COMPLETED"
+  | "RUN_STATUS_FAILED"
+  | "RUN_STATUS_QUEUED";
+
+export type RunSource = "RUN_SOURCE_CONSOLE" | "RUN_SOURCE_API";
+
+export type ResourceView = "VIEW_FULL" | "VIEW_BASIC";

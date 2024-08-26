@@ -6,11 +6,6 @@ import {
   PipelineRunList,
 } from "./PipelineRunViews";
 
-/* const selector = (store: InstillStore) => ({
-  accessToken: store.accessToken,
-  enabledQuery: store.enabledQuery,
-}); */
-
 export type PipelineRunsProps = {
   pipeline?: Pipeline;
 };

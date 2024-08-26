@@ -1,4 +1,4 @@
-import { getQueryString } from "../helper";
+import { getInstillAdditionalHeaders, getQueryString } from "../helper";
 import { APIResource } from "../main/resource";
 import {
   CreateNamespaceModelRequest,
@@ -16,6 +16,8 @@ import {
   ListAvailableRegionResponse,
   ListModelDefinitionsRequest,
   ListModelDefinitionsResponse,
+  ListModelRunsRequest,
+  ListModelRunsResponse,
   ListNamespaceModelsRequest,
   ListNamespaceModelsResponse,
   ListNamespaceModelVersionsRequest,
@@ -389,6 +391,35 @@ export class ModelClient extends APIResource {
     }
   }
 
+  /* -------------------------------------------------------------------------
+   * List Model Runs
+   * -----------------------------------------------------------------------*/
+
+  async listModelRunsQuery({
+    modelName,
+    fullView,
+    pageSize,
+    page,
+    orderBy,
+    filter,
+  }: ListModelRunsRequest) {
+    try {
+      const queryString = getQueryString({
+        baseURL: `${modelName}/runs${fullView ? "?view=VIEW_FULL" : ""}`,
+        pageSize,
+        page,
+        filter,
+        orderBy,
+      });
+
+      const data = await this._client.get<ListModelRunsResponse>(queryString);
+
+      return Promise.resolve(data);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
   /* ----------------------------------------------------------------------------
    * Mutation
    * ---------------------------------------------------------------------------*/
@@ -517,13 +548,24 @@ export class ModelClient extends APIResource {
   async triggerAsyncNamespaceModelVersion({
     namespaceModelVersionName,
     taskInputs,
+    requesterUid,
+    returnTraces,
   }: TriggerAsyncNamespaceModelVersionRequest) {
     try {
+      const additionalHeaders = getInstillAdditionalHeaders({
+        requesterUid,
+        returnTraces,
+      });
+
       const data =
         await this._client.post<TriggerNamespaceModelVersionResponse>(
-          `/${namespaceModelVersionName}/triggerAsync`,
+          `/${namespaceModelVersionName}/trigger-async`,
           {
             body: JSON.stringify({ taskInputs }),
+            additionalHeaders: {
+              "Content-Type": "application/json",
+              ...additionalHeaders,
+            },
           },
         );
       return Promise.resolve(data);
@@ -557,7 +599,7 @@ export class ModelClient extends APIResource {
     try {
       const data =
         await this._client.post<TriggerNamespaceModelVersionResponse>(
-          `/${namespaceModelName}/triggerAsync`,
+          `/${namespaceModelName}/trigger-async`,
           {
             body: JSON.stringify({ taskInputs }),
           },

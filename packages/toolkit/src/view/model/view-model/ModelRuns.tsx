@@ -1,7 +1,7 @@
 import type { Model } from "instill-sdk";
 import { useParams } from "next/navigation";
 
-import { ModelRun, ModelRunList /* , ModelRun */ } from "./ModelRunViews";
+import { ModelRun, ModelRunList } from "./ModelRunViews";
 
 export type ModelRunsProps = {
   model?: Model;

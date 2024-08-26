@@ -11,13 +11,14 @@ import {
 } from "../../../../components";
 import {
   convertToSecondsAndMilliseconds,
-  formatDate,
+  formatDateFull,
   InstillStore,
   useInstillStore,
   useRouteInfo,
   useShallow,
 } from "../../../../lib";
 import { usePaginatedPipelineRunComponents } from "../../../../lib/react-query-service/pipeline";
+import { env } from "../../../../server";
 import { TABLE_PAGE_SIZE } from "../constants";
 
 const selector = (store: InstillStore) => ({
@@ -31,7 +32,7 @@ export const PipelineRunComponents = ({
   pipelineRunId: Nullable<string>;
 }) => {
   const routeInfo = useRouteInfo();
-  const [orderBy, setOrderBy] = React.useState<string>();
+  const [orderBy, setOrderBy] = React.useState<Nullable<string>>(null);
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const [paginationState, setPaginationState] = React.useState<PaginationState>(
     {
@@ -39,10 +40,13 @@ export const PipelineRunComponents = ({
       pageSize: TABLE_PAGE_SIZE,
     },
   );
+  console.log(`ORDER:`, orderBy);
   const pipelineComponentRuns = usePaginatedPipelineRunComponents({
     pipelineRunId: pipelineRunId,
     enabled: enabledQuery && routeInfo.isSuccess,
     accessToken,
+    view: "VIEW_FULL",
+    orderBy,
   });
   const pageCount = React.useMemo(() => {
     if (!pipelineComponentRuns.data) {
@@ -65,109 +69,115 @@ export const PipelineRunComponents = ({
     setOrderBy(sortValue);
   };
 
-  const componentRunsColumns: ColumnDef<ComponentRun>[] = [
-    {
-      accessorKey: "componentId",
-      header: () => (
-        <RunsTableSortableColHeader
-          title="Component ID"
-          paramName="component_id"
-          currentSortParamValue={orderBy}
-          onSort={onSortOrderUpdate}
-        />
-      ),
-      cell: ({ row }) => {
-        return (
-          <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            {row.getValue("componentId")}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "status",
-      header: () => <div className="text-left">Status</div>,
-      cell: ({ row }) => {
-        return (
-          <RunStateLabel
-            state={row.getValue("status")}
-            className="inline-flex"
+  const columns = React.useMemo(() => {
+    const columns: ColumnDef<ComponentRun>[] = [
+      {
+        accessorKey: "componentId",
+        header: () => (
+          <RunsTableSortableColHeader
+            title="Component ID"
+            paramName="component_id"
+            currentSortParamValue={orderBy}
+            onSort={onSortOrderUpdate}
           />
-        );
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+              {row.getValue("componentId")}
+            </div>
+          );
+        },
       },
-    },
-    {
-      accessorKey: "totalDuration",
-      header: () => (
-        <RunsTableSortableColHeader
-          title="Total Duration"
-          paramName="total_duration"
-          currentSortParamValue={orderBy}
-          onSort={onSortOrderUpdate}
-        />
-      ),
-      cell: ({ row }) => {
-        return (
-          <div className="font-normal text-semantic-bg-secondary-alt-primary">
-            {row.getValue("totalDuration")
-              ? convertToSecondsAndMilliseconds(
-                  (row.getValue("totalDuration") as number) / 1000,
-                )
-              : null}
-          </div>
-        );
+      {
+        accessorKey: "status",
+        header: () => <div className="text-left">Status</div>,
+        cell: ({ row }) => {
+          return (
+            <RunStateLabel
+              state={row.getValue("status")}
+              className="inline-flex"
+            />
+          );
+        },
       },
-    },
-    {
-      accessorKey: "startTime",
-      header: () => (
-        <RunsTableSortableColHeader
-          title="Start Time"
-          paramName="started_time"
-          currentSortParamValue={orderBy}
-          onSort={onSortOrderUpdate}
-        />
-      ),
-      cell: ({ row }) => {
-        return (
-          <div className="font-normal text-semantic-bg-secondary-alt-primary">
-            {formatDate(row.getValue("startTime"))}
-          </div>
-        );
+      {
+        accessorKey: "totalDuration",
+        header: () => (
+          <RunsTableSortableColHeader
+            title="Total Duration"
+            paramName="total_duration"
+            currentSortParamValue={orderBy}
+            onSort={onSortOrderUpdate}
+          />
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="font-normal text-semantic-bg-secondary-alt-primary">
+              {row.getValue("totalDuration")
+                ? convertToSecondsAndMilliseconds(
+                    (row.getValue("totalDuration") as number) / 1000,
+                  )
+                : null}
+            </div>
+          );
+        },
       },
-    },
-    {
-      accessorKey: "completeTime",
-      header: () => (
-        <RunsTableSortableColHeader
-          title="Completed Time"
-          paramName="completed_time"
-          currentSortParamValue={orderBy}
-          onSort={onSortOrderUpdate}
-        />
-      ),
-      cell: ({ row }) => {
-        return (
-          <div className="font-normal text-semantic-bg-secondary-alt-primary">
-            {row.getValue("completeTime")
-              ? formatDate(row.getValue("completeTime"))
-              : null}
-          </div>
-        );
+      {
+        accessorKey: "startTime",
+        header: () => (
+          <RunsTableSortableColHeader
+            title="Start Time"
+            paramName="started_time"
+            currentSortParamValue={orderBy}
+            onSort={onSortOrderUpdate}
+          />
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="font-normal text-semantic-bg-secondary-alt-primary">
+              {formatDateFull(row.getValue("startTime"))}
+            </div>
+          );
+        },
       },
-    },
-    {
-      accessorKey: "creditAmount",
-      header: () => <div className="text-left">Credits</div>,
-      cell: ({ row }) => {
-        return (
-          <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-            {row.getValue("creditAmount")}
-          </div>
-        );
+      {
+        accessorKey: "completeTime",
+        header: () => (
+          <RunsTableSortableColHeader
+            title="Completed Time"
+            paramName="completed_time"
+            currentSortParamValue={orderBy}
+            onSort={onSortOrderUpdate}
+          />
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="font-normal text-semantic-bg-secondary-alt-primary">
+              {row.getValue("completeTime")
+                ? formatDateFull(row.getValue("completeTime"))
+                : null}
+            </div>
+          );
+        },
       },
-    },
-    {
+    ];
+
+    if (env("NEXT_PUBLIC_APP_ENV") === "CLOUD") {
+      columns.push({
+        accessorKey: "creditAmount",
+        header: () => <div className="text-left">Credits</div>,
+        cell: ({ row }) => {
+          return (
+            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+              {row.getValue("creditAmount")}
+            </div>
+          );
+        },
+      });
+    }
+
+    columns.push({
       accessorKey: "outputs",
       header: () => <div className="text-left">Output</div>,
       cell: ({ row }) => {
@@ -192,10 +202,16 @@ export const PipelineRunComponents = ({
           </div>
         );
       },
-    },
-  ];
+    });
 
-  if (!pipelineComponentRuns.data?.componentRuns.length) {
+    return columns;
+  }, [pipelineComponentRuns.isSuccess, pipelineComponentRuns.data]);
+
+  if (
+    !pipelineComponentRuns.isFetching &&
+    !pipelineComponentRuns.isLoading &&
+    !pipelineComponentRuns.data?.componentRuns.length
+  ) {
     return null;
   }
 
@@ -204,9 +220,9 @@ export const PipelineRunComponents = ({
       <ModelSectionHeader className="mb-4">
         Component Run Metadata
       </ModelSectionHeader>
-      <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th]:w-40 [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(6)]:w-28 [&_table_th:nth-child(7)]:w-32">
+      <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th]:w-40 [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(4)]:w-52 [&_table_th:nth-child(5)]:w-52 [&_table_th:nth-child(6)]:w-32 [&_table_th:nth-child(7)]:w-32">
         <DataTable
-          columns={componentRunsColumns}
+          columns={columns}
           data={
             pipelineComponentRuns.isSuccess
               ? pipelineComponentRuns.data.componentRuns

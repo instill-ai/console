@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { ResourceView } from "instill-sdk";
 
 import type { Nullable } from "../../type";
 import { env } from "../../../server";
@@ -9,7 +10,7 @@ export function usePaginatedPipelineRuns({
   accessToken,
   enabled,
   retry,
-  fullView,
+  view = "VIEW_BASIC",
   pageSize,
   page,
   orderBy,
@@ -19,7 +20,7 @@ export function usePaginatedPipelineRuns({
   accessToken: Nullable<string>;
   enabled: boolean;
   retry?: false | number;
-  fullView?: boolean;
+  view?: ResourceView;
   pageSize?: number;
   page?: number;
   orderBy?: string;
@@ -30,7 +31,7 @@ export function usePaginatedPipelineRuns({
     pipelineName,
     "paginated",
     accessToken ? "withAuth" : "unAuth",
-    fullView ? "VIEW_FULL" : "VIEW_BASIC",
+    view,
     pageSize || env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
     page || 0,
   ];
@@ -58,7 +59,7 @@ export function usePaginatedPipelineRuns({
         {
           pipelineName,
           pageSize: pageSize || env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-          fullView: !!fullView,
+          view,
           page: page || 0,
           orderBy: orderBy || null,
           filter: filter || null,

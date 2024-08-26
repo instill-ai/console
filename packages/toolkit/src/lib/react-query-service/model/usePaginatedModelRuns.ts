@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import type { Nullable } from "../../type";
 import { env } from "../../../server";
-import { listModelRunsQuery } from "../../vdp-sdk";
+import { getInstillModelAPIClient } from "../../vdp-sdk";
 
 export function usePaginatedModelRuns({
   modelName,
@@ -50,8 +50,11 @@ export function usePaginatedModelRuns({
         return Promise.reject(new Error("modelName not provided"));
       }
 
-      const data = await listModelRunsQuery({
-        accessToken,
+      const client = getInstillModelAPIClient({
+        accessToken: accessToken ?? undefined,
+      });
+
+      const data = await client.model.listModelRunsQuery({
         modelName,
         fullView: !!fullView,
         pageSize: pageSize || env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),

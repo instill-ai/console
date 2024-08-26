@@ -1,13 +1,13 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
-import { GeneralRecord, ModelWatchState, Pipeline } from "instill-sdk";
+import { ModelWatchState, Pipeline } from "instill-sdk";
 import { Nullable } from "vitest";
 
 import { InstillJSONSchema } from "../../use-instill-form";
 import { User } from "../mgmt/types";
 import { Operation } from "../operation/types";
 import { Organization } from "../organization";
-import { Permission, RunSource, RunStatus, Visibility } from "../types";
+import { Permission, Visibility } from "../types";
 
 export type ModelReleaseStage =
   | "RELEASE_STAGE_UNSPECIFIED"
@@ -119,22 +119,6 @@ export type ModelWithPipelines = Model & {
 export type ModelRegion = {
   regionName: string;
   hardware: string[];
-};
-
-export type ModelRun = {
-  uid: string;
-  modelUid: string;
-  runnerId: string;
-  status: RunStatus;
-  source: RunSource;
-  totalDuration: number;
-  endTime: string;
-  createTime: string;
-  updateTime: string;
-  version: string;
-  taskInputs: GeneralRecord[];
-  taskOutputs: Record<string, any>[];
-  creditAmount: Nullable<number>;
 };
 
 export type ModelVersion = {

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import Link from "next/link";
 import { Nullable, Pipeline } from "instill-sdk";
@@ -20,7 +22,7 @@ import {
   useShallow,
 } from "../../../../lib";
 import { usePaginatedPipelineRuns } from "../../../../lib/react-query-service/pipeline";
-import { getHumanReadableStringFromTime } from "../../../../server";
+import { env, getHumanReadableStringFromTime } from "../../../../server";
 import {
   InOutputSkeleton,
   PipelineOutputActiveView,
@@ -47,7 +49,7 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
     pageSize: 1,
     page: 0,
     filter: `pipelineTriggerUID="${id}"`,
-    fullView: true,
+    view: "VIEW_FULL",
   });
   const pipelineRun = React.useMemo(() => {
     return pipelineRuns.data?.pipelineRuns[0] || null;
@@ -63,13 +65,13 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
 
   const componentOutputFields = useComponentOutputFields({
     mode: "demo",
-    schema: pipelineRun?.dataSpecification.output || null,
+    schema: pipelineRun?.dataSpecification?.output || null,
     data: pipelineRun?.outputs[0] || null,
   });
 
   const [outputActiveView, setOutputActiveView] =
     React.useState<PipelineOutputActiveView>("preview");
-
+  console.log(123);
   return (
     <React.Fragment>
       <div className="flex flex-col gap-6">
@@ -134,9 +136,9 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
                 <b>{pipelineRun?.runnerId}</b>
               </Link>
             </div>
-            {pipelineRun && pipelineRun.creditAmount !== null ? (
+            {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
               <div>
-                Credits <b>{pipelineRun.creditAmount}</b>
+                Credits <b>{pipelineRun?.creditAmount}</b>
               </div>
             ) : null}
           </div>

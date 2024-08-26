@@ -12,15 +12,7 @@ import {
   PermissionSchema,
 } from "../../types";
 import { PipelineRelease, PipelineReleaseSchema } from "../release";
-import { PipelineRecipe } from "../types";
-
-export type RunStatus =
-  | "RUN_STATUS_PROCESSING"
-  | "RUN_STATUS_COMPLETED"
-  | "RUN_STATUS_FAILED"
-  | "RUN_STATUS_QUEUED";
-
-export type RunSource = "RUN_SOURCE_CONSOLE" | "RUN_SOURCE_API";
+import { PipelineRecipe, ResourceView, RunSource, RunStatus } from "../types";
 
 export type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
@@ -233,7 +225,7 @@ export type ListNamespacePipelinesRequest = {
 
 export type ListPaginatedNamespacePipelineRunsRequest = {
   pipelineName: string;
-  fullView: boolean;
+  view: ResourceView;
   pageSize: number;
   page: number;
   orderBy: Nullable<string>;
@@ -276,11 +268,11 @@ export type PipelineRun = {
 
 export type ListPaginatedNamespacePipelineRunComponentsRequest = {
   pipelineRunId: string;
-  //fullView: boolean;
+  view: ResourceView;
   pageSize: number;
   page: number;
-  //orderBy: Nullable<string>;
-  //filter: Nullable<string>;
+  orderBy: Nullable<string>;
+  filter: Nullable<string>;
 };
 
 export type ListPaginatedNamespacePipelineRunComponentsResponse = {
