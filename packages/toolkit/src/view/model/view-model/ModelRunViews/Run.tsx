@@ -112,7 +112,9 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
           <div>
             Total Duration{" "}
             <b>
-              {convertToSecondsAndMilliseconds(modelRun?.totalDuration || 0)}
+              {convertToSecondsAndMilliseconds(
+                (modelRun?.totalDuration || 0) / 1000,
+              )}
             </b>
           </div>
           <div>
