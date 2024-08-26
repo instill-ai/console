@@ -155,7 +155,7 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-alt-primary">
               {convertToSecondsAndMilliseconds(
-                (row.getValue("totalDuration") as number) / 1000,
+                (row.getValue("totalDuration") as number || 0) / 1000,
               )}
             </div>
           );
