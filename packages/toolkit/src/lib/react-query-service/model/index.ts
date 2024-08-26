@@ -17,5 +17,6 @@ export * from "./useUserModels";
 export * from "./useLastModelTriggerResult";
 export * from "./usePaginatedModelRuns";
 export * from "./useTriggerUserModelVersionAsync";
+export * from "./useModelVersionTriggerResult";
 
 export * from "./use-user-model";

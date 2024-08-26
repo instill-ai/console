@@ -348,3 +348,7 @@ export type TriggerAsyncNamespaceModelLatestVersionRequest = {
 export type TriggerAsyncNamespaceModelLatestVersionResponse = {
   operation: Operation;
 };
+
+export type GetNamespaceModelOperationResultResponse = {
+  operation: Nullable<Operation>;
+};
