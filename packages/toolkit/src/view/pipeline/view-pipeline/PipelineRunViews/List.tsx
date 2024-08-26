@@ -1,3 +1,5 @@
+"use client";
+
 import type { Pipeline, PipelineRun } from "instill-sdk";
 import * as React from "react";
 import Link from "next/link";

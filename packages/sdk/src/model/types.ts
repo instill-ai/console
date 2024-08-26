@@ -1,4 +1,4 @@
-import { RunSource, RunStatus } from "..";
+import { ResourceView, RunSource, RunStatus } from "..";
 import { Organization, User } from "../core";
 import {
   GeneralRecord,
@@ -180,7 +180,7 @@ export type ListNamespaceModelsResponse = {
 
 export type ListModelRunsRequest = {
   modelName: string;
-  fullView: boolean;
+  view: ResourceView;
   pageSize: number;
   page: number;
   orderBy: Nullable<string>;

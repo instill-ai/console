@@ -398,7 +398,7 @@ export class ModelClient extends APIResource {
 
   async listModelRunsQuery({
     modelName,
-    fullView,
+    view,
     pageSize,
     page,
     orderBy,
@@ -406,7 +406,7 @@ export class ModelClient extends APIResource {
   }: ListModelRunsRequest) {
     try {
       const queryString = getQueryString({
-        baseURL: `${modelName}/runs${fullView ? "?view=VIEW_FULL" : ""}`,
+        baseURL: `${modelName}/runs?view=${view}`,
         pageSize,
         page,
         filter,

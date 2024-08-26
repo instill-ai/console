@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { ResourceView } from "instill-sdk";
 
 import type { Nullable } from "../../type";
 import { env } from "../../../server";
@@ -9,7 +10,7 @@ export function usePaginatedModelRuns({
   accessToken,
   enabled,
   retry,
-  fullView,
+  view = "VIEW_BASIC",
   pageSize,
   page,
   orderBy,
@@ -19,7 +20,7 @@ export function usePaginatedModelRuns({
   accessToken: Nullable<string>;
   enabled: boolean;
   retry?: false | number;
-  fullView?: boolean;
+  view?: ResourceView;
   pageSize?: number;
   page?: number;
   orderBy?: string;
@@ -30,7 +31,7 @@ export function usePaginatedModelRuns({
     modelName,
     "paginated",
     accessToken ? "withAuth" : "unAuth",
-    fullView ? "VIEW_FULL" : "VIEW_BASIC",
+    view,
     pageSize || env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
     page || 0,
   ];
@@ -56,7 +57,7 @@ export function usePaginatedModelRuns({
 
       const data = await client.model.listModelRunsQuery({
         modelName,
-        fullView: !!fullView,
+        view,
         pageSize: pageSize || env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         page: page || 0,
         orderBy: orderBy || null,

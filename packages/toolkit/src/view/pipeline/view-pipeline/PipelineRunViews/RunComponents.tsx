@@ -40,7 +40,7 @@ export const PipelineRunComponents = ({
       pageSize: TABLE_PAGE_SIZE,
     },
   );
-  console.log(`ORDER:`, orderBy);
+
   const pipelineComponentRuns = usePaginatedPipelineRunComponents({
     pipelineRunId: pipelineRunId,
     enabled: enabledQuery && routeInfo.isSuccess,

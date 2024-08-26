@@ -71,7 +71,7 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
 
   const [outputActiveView, setOutputActiveView] =
     React.useState<PipelineOutputActiveView>("preview");
-  console.log(123);
+
   return (
     <React.Fragment>
       <div className="flex flex-col gap-6">

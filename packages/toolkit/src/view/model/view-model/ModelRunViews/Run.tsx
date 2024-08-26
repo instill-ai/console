@@ -49,7 +49,7 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
     pageSize: 1,
     page: 0,
     filter: `uid="${id}"`,
-    fullView: true,
+    view: "VIEW_FULL",
   });
   const modelRun = React.useMemo(() => {
     return modelRuns.data?.runs[0] || null;
