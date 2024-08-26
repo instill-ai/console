@@ -37,21 +37,15 @@ export const SelectOrganization = () => {
 
   const [selectedOrg, setSelectedOrg] = React.useState<Nullable<string>>(null);
 
-  React.useEffect(() => {
-    if (organizations.isSuccess && organizations.data[0]?.organization.id) {
-      setSelectedOrg(organizations.data[0].organization.id);
-    }
-  }, [organizations.isSuccess, organizations.data]);
-
   const getSelectedOrgUid = React.useCallback(
     (orgId: Nullable<string> | undefined): string => {
       if (!organizations.isSuccess) return "Loading...";
       const org = organizations.data.find(
-        (membership) => membership.organization.id === orgId,
+        (membership) => membership.organization.id === orgId
       );
-      return org ? org.organization.uid : "Loading...";
+      return org ? org.organization.uid : "Select an organization";
     },
-    [organizations.isSuccess, organizations.data],
+    [organizations.isSuccess, organizations.data]
   );
 
   const codeString = React.useMemo(() => {
@@ -92,10 +86,7 @@ export const SelectOrganization = () => {
           <p className="product-button-button-2 text-semantic-fg-secondary">
             Organization:
           </p>
-          <Select.Root
-            value={selectedOrg || undefined}
-            onValueChange={setSelectedOrg}
-          >
+          <Select.Root value={selectedOrg || undefined} onValueChange={setSelectedOrg}>
             <Select.Trigger className="flex gap-2 items-center px-2.5 py-1.5 text-xs leading-none bg-semantic-bg-primary rounded border border-semantic-bg-line min-w-[240px] text-semantic-fg-primary w-[280px]">
               <Select.Value placeholder="Select an organization" />
             </Select.Trigger>
