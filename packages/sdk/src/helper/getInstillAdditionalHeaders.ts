@@ -28,8 +28,8 @@ export function getInstillAdditionalHeaders({
   }
 
   if (stream) {
-    headers["Instill-Use-SSE"] = "true";
-    corsHeaders.push("Instill-Use-SSE");
+    headers["Accept"] = "text/event-stream";
+    corsHeaders.push("Accept");
   }
 
   return corsHeaders.length > 0

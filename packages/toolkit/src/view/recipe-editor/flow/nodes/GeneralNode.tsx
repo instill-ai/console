@@ -5,9 +5,9 @@ import { Nullable } from "instill-sdk";
 import { NodeProps, Position, useEdges } from "reactflow";
 import YAML from "yaml";
 
-import { Button, cn, Icons } from "@instill-ai/design-system";
+import { Button, cn, Icons, Tooltip } from "@instill-ai/design-system";
 
-import { ImageWithFallback } from "../../../../components";
+import { ImageWithFallback, LoadingSpin } from "../../../../components";
 import {
   InstillStore,
   useInstillStore,
@@ -26,7 +26,20 @@ const selector = (store: InstillStore) => ({
   updateEditorMultiScreenModel: store.updateEditorMultiScreenModel,
   selectedComponentId: store.selectedComponentId,
   updateSelectedComponentId: store.updateSelectedComponentId,
+  triggerPipelineStreamMap: store.triggerPipelineStreamMap,
+  forceStopTriggerPipelineStream: store.forceStopTriggerPipelineStream,
+  updateForceStopTriggerPipelineStream:
+    store.updateForceStopTriggerPipelineStream,
 });
+
+type ComponentErrorState =
+  | {
+      error: true;
+      message: string;
+    }
+  | {
+      error: false;
+    };
 
 export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
   const reactflowEdges = useEdges();
@@ -50,6 +63,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     updateEditorMultiScreenModel,
     selectedComponentId,
     updateSelectedComponentId,
+    triggerPipelineStreamMap,
   } = useInstillStore(useShallow(selector));
 
   const routeInfo = useRouteInfo();
@@ -116,7 +130,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
         editorRef.focus();
       }, 1);
     }
-  }, [editorRef, pipeline.isSuccess]);
+  }, [editorRef, pipeline.isSuccess, updateEditorMultiScreenModel]);
 
   const handleOpenDocumentation = React.useCallback(() => {
     let documentationUrl: Nullable<string> = null;
@@ -178,7 +192,64 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
         currentViewId: viewId,
       },
     }));
-  }, [data]);
+  }, [data, updateEditorMultiScreenModel]);
+
+  const errorState = React.useMemo<ComponentErrorState>(() => {
+    if (!triggerPipelineStreamMap || !triggerPipelineStreamMap.component) {
+      return {
+        error: false,
+      };
+    }
+
+    const component = triggerPipelineStreamMap.component[id];
+
+    if (!component) {
+      return {
+        error: false,
+      };
+    }
+
+    let beautifyError: Nullable<string> = null;
+
+    try {
+      beautifyError = JSON.stringify(component.error?.message, null, 2);
+    } catch (error) {
+      console.error(error);
+    }
+
+    if (component.status?.errored) {
+      return {
+        error: true,
+        message: beautifyError ? beautifyError : component.error?.message,
+      };
+    }
+
+    return {
+      error: false,
+    };
+  }, [triggerPipelineStreamMap, id]);
+
+  const isProcessing = React.useMemo(() => {
+    if (!triggerPipelineStreamMap || !triggerPipelineStreamMap.component) {
+      return false;
+    }
+
+    const component = triggerPipelineStreamMap.component[id];
+
+    if (!component) {
+      return false;
+    }
+
+    if (
+      component.status?.started &&
+      !component.status?.errored &&
+      !component.status.completed
+    ) {
+      return true;
+    }
+
+    return false;
+  }, [triggerPipelineStreamMap, id]);
 
   return (
     <div className="relative nowheel">
@@ -215,21 +286,52 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
       <div
         onClick={handleClick}
         className={cn(
-          "flex items-center justify-center w-[160px] h-[160px] flex-col rounded p-3 bg-semantic-bg-base-bg",
+          "flex relative items-center border-2 border-[#94a0b8] justify-center w-[160px] h-[160px] flex-col rounded p-3 bg-semantic-bg-base-bg",
           isFinished ? "bg-semantic-success-bg" : "",
+          errorState.error ? "border-4 border-semantic-error-default" : "",
         )}
-        style={{
-          border: "1px solid #94a0b8",
-        }}
       >
+        {isProcessing ? (
+          <div className="absolute right-2 bottom-2">
+            <LoadingSpin className="w-6 h-6 text-semantic-fg-primary" />
+          </div>
+        ) : null}
+        {errorState.error && (
+          <Tooltip.Provider delayDuration={300}>
+            <Tooltip.Root>
+              <Tooltip.Trigger asChild>
+                <Icons.AlertTriangle className="w-6 h-6 right-2 bottom-2 absolute stroke-semantic-error-default" />
+              </Tooltip.Trigger>
+              <Tooltip.Portal>
+                <Tooltip.Content
+                  className="w-[200px]"
+                  sideOffset={5}
+                  side="bottom"
+                >
+                  <div className="!rounded-sm !bg-semantic-bg-secondary-base-bg !p-3">
+                    <p className="product-body-text-4-medium text-semantic-bg-primary">
+                      {errorState.message}
+                    </p>
+                  </div>
+                  <Tooltip.Arrow
+                    className="fill-semantic-bg-secondary-base-bg"
+                    offset={5}
+                    width={9}
+                    height={6}
+                  />
+                </Tooltip.Content>
+              </Tooltip.Portal>
+            </Tooltip.Root>
+          </Tooltip.Provider>
+        )}
         <div className="flex flex-row items-center justify-center">
           <ImageWithFallback
             src={`/icons/${data.definition?.id}.svg`}
-            width={96}
-            height={96}
+            width={80}
+            height={80}
             alt={`${data.definition?.title}-icon`}
             fallbackImg={
-              <Icons.Box className="my-auto h-24 w-24 stroke-semantic-fg-primary" />
+              <Icons.Box className="my-auto h-20 w-20 stroke-semantic-fg-primary" />
             }
           />
         </div>
@@ -246,10 +348,31 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
           id={id}
         />
       </div>
-      <div className={cn("bottom-0 w-full flex absolute translate-y-full")}>
-        <p className="product-body-text-3-medium w-full text-center text-semantic-fg-disabled">
-          {id}
-        </p>
+      <div
+        className={cn(
+          "bottom-0 w-full flex flex-col absolute translate-y-full gap-y-2",
+        )}
+      >
+        <div className="flex flex-col">
+          <p className="product-body-text-3-medium w-full text-center text-semantic-fg-disabled">
+            {id}
+          </p>
+          <p className="product-body-text-4-regular text-semantic-fg-disabled w-full text-center">
+            {data.task}
+          </p>
+        </div>
+        {data.description ? (
+          <div
+            className={cn(
+              "bg-semantic-warning-bg shadow-xxs p-2 duration-300 transition-opacity ease-in-out",
+              isSelected ? "opacity-100" : "opacity-0",
+            )}
+          >
+            <p className="product-body-text-4-medium text-semantic-fg-disabled">
+              {data.description}
+            </p>
+          </div>
+        ) : null}
       </div>
     </div>
   );

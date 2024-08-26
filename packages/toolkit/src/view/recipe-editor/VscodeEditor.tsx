@@ -25,7 +25,6 @@ import type { editor, IDisposable, languages, Position } from "monaco-editor";
 import * as React from "react";
 import { Editor } from "@monaco-editor/react";
 import { PipelineRecipe } from "instill-sdk";
-import YAML from "yaml";
 
 import { Dialog } from "@instill-ai/design-system";
 
@@ -47,10 +46,12 @@ import { transformInstillJSONSchemaToFormTree } from "../../lib/use-instill-form
 import { transformFormTreeToNestedSmartHints } from "../../lib/use-smart-hint/transformFormTreeToNestedSmartHints";
 import { getGeneralComponentInOutputSchema } from "../pipeline-builder";
 import { isPipelineGeneralComponent } from "../pipeline-builder/lib/checkComponentType";
-import { analyzeColonInString } from "./helpers";
-import { keyLineNumberMapHelpers } from "./keyLineNumberMapHelpers";
-import { tomorrowTheme } from "./tomorrowTheme";
-import { validateVSCodeYaml } from "./validateVSCodeYaml";
+import {
+  analyzeColonInString,
+  keyLineNumberMapHelpers,
+  tomorrowTheme,
+  validateVSCodeYaml,
+} from "./lib";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -182,48 +183,6 @@ export const VscodeEditor = () => {
 
     monacoRef.current.editor.setModelMarkers(model, "owner", markErrors);
   }, [markErrors]);
-
-  // When the pipeline is updated, we need to re-register the services we used
-  // in the monaco editor
-  React.useEffect(() => {
-    if (!monacoRef.current || !pipeline.isSuccess) {
-      return;
-    }
-
-    if (autoCompleteDisposableRef.current) {
-      autoCompleteDisposableRef.current.dispose();
-    }
-
-    if (hoverHintDisposableRef.current) {
-      hoverHintDisposableRef.current.dispose();
-    }
-
-    const autoCompleteDisposable =
-      monacoRef.current.languages.registerCompletionItemProvider("yaml", {
-        triggerCharacters: ["${", "."],
-        provideCompletionItems: (model, position) => {
-          return handleAutoComplete({
-            model,
-            position,
-            monaco: monacoRef.current,
-            recipe: pipeline.data.recipe,
-          });
-        },
-      });
-    autoCompleteDisposableRef.current = autoCompleteDisposable;
-
-    const hoverHintDisposable =
-      monacoRef.current.languages.registerHoverProvider("yaml", {
-        provideHover: (model, position) => {
-          return handleHoverHint({
-            model,
-            position,
-            monaco: monacoRef.current,
-          });
-        },
-      });
-    hoverHintDisposableRef.current = hoverHintDisposable;
-  }, [pipeline.data, pipeline.isSuccess]);
 
   const handleAutoComplete = React.useCallback(
     ({
@@ -793,73 +752,118 @@ export const VscodeEditor = () => {
       monaco: Nullable<Monaco>;
       commandId: Nullable<string>;
     }) => {
-      if (!monaco || !commandId) {
+      if (!monaco || !commandId || !model) {
         return;
       }
 
-      const codeLenses: languages.CodeLens[] = [];
-      const currentEditorValue = model.getValue();
+      return null;
 
-      const lineCounter = new YAML.LineCounter();
-      const yamlData = YAML.parse(currentEditorValue);
-      const doc = YAML.parseAllDocuments<YAML.YAMLMap>(currentEditorValue, {
-        lineCounter,
-      });
+      // The codelens will be used on integration warning in the future
+      // const codeLenses: languages.CodeLens[] = [];
+      // const currentEditorValue = model.getValue();
 
-      if (!yamlData || !doc || !doc[0]) {
-        return null;
-      }
+      // const lineCounter = new YAML.LineCounter();
+      // const yamlData = YAML.parse(currentEditorValue);
+      // const doc = YAML.parseAllDocuments<YAML.YAMLMap>(currentEditorValue, {
+      //   lineCounter,
+      // });
 
-      const yamlComponent = yamlData?.component as GeneralRecord | undefined;
+      // if (!yamlData || !doc || !doc[0]) {
+      //   return null;
+      // }
 
-      if (!yamlComponent) {
-        return null;
-      }
+      // const yamlComponent = yamlData?.component as GeneralRecord | undefined;
 
-      for (const [key, value] of Object.entries(yamlComponent)) {
-        if (!value) {
-          continue;
-        }
+      // if (!yamlComponent) {
+      //   return null;
+      // }
 
-        if (isPipelineGeneralComponent(value)) {
-          if (value.setup) {
-            const apiKey = value.setup["api-key"];
-            if (apiKey && apiKey.includes("secret.INSTILL_CREDIT")) {
-              const node = doc[0].getIn(["component", key], true) as YAML.Node;
+      // for (const [key, value] of Object.entries(yamlComponent)) {
+      //   if (!value) {
+      //     continue;
+      //   }
 
-              if (node && node.range) {
-                const pos = lineCounter.linePos(node.range[0]);
-                const adjustedLine =
-                  node instanceof YAML.Scalar ? pos.col : pos.line - 1;
-                codeLenses.push({
-                  range: new monaco.Range(
-                    adjustedLine - 1,
-                    pos.col,
-                    adjustedLine - 1,
-                    pos.col,
-                  ),
-                  id: key,
-                  command: {
-                    id: commandId,
-                    title: `Component ${key} is using Instill Credit`,
-                    tooltip: "",
-                  },
-                });
-              }
-            }
-          }
-        }
-      }
+      //   if (isPipelineGeneralComponent(value)) {
+      //     if (value.setup) {
+      //       const apiKey = value.setup["api-key"];
+      //       if (apiKey && apiKey.includes("secret.INSTILL_CREDIT")) {
+      //         const node = doc[0].getIn(["component", key], true) as YAML.Node;
 
-      return {
-        lenses: codeLenses,
-        dispose: () => {
-          console.log("Disposing code lenses");
-        },
-      };
+      //         if (node && node.range) {
+      //           const pos = lineCounter.linePos(node.range[0]);
+      //           const adjustedLine =
+      //             node instanceof YAML.Scalar ? pos.col : pos.line - 1;
+      //           codeLenses.push({
+      //             range: new monaco.Range(
+      //               adjustedLine - 1,
+      //               pos.col,
+      //               adjustedLine - 1,
+      //               pos.col,
+      //             ),
+      //             id: key,
+      //             command: {
+      //               id: commandId,
+      //               title: `Component ${key} is using Instill Credit`,
+      //               tooltip: "",
+      //             },
+      //           });
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
+
+      // return {
+      //   lenses: codeLenses,
+      //   dispose: () => {
+      //     console.log("Disposing code lenses");
+      //   },
+      // };
     },
     [],
   );
+
+  // When the pipeline is updated, we need to re-register the services we used
+  // in the monaco editor
+  React.useEffect(() => {
+    if (!monacoRef.current || !pipeline.isSuccess) {
+      return;
+    }
+
+    if (autoCompleteDisposableRef.current) {
+      autoCompleteDisposableRef.current.dispose();
+    }
+
+    if (hoverHintDisposableRef.current) {
+      hoverHintDisposableRef.current.dispose();
+    }
+
+    const autoCompleteDisposable =
+      monacoRef.current.languages.registerCompletionItemProvider("yaml", {
+        triggerCharacters: ["${", "."],
+        provideCompletionItems: (model, position) => {
+          return handleAutoComplete({
+            model,
+            position,
+            monaco: monacoRef.current,
+            recipe: pipeline.data.recipe,
+          });
+        },
+      });
+    autoCompleteDisposableRef.current = autoCompleteDisposable;
+
+    const hoverHintDisposable =
+      monacoRef.current.languages.registerHoverProvider("yaml", {
+        provideHover: (model, position) => {
+          return handleHoverHint({
+            model,
+            position,
+            monaco: monacoRef.current,
+          });
+        },
+      });
+    hoverHintDisposableRef.current = hoverHintDisposable;
+  }, [pipeline.data, pipeline.isSuccess, handleAutoComplete, handleHoverHint]);
 
   return (
     <div className="w-full h-full relative">

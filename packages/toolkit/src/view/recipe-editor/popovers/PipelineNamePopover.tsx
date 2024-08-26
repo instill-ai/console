@@ -21,7 +21,7 @@ import {
   Separator,
 } from "@instill-ai/design-system";
 
-import { LoadingSpin } from "../../components";
+import { LoadingSpin } from "../../../components";
 import {
   InstillStore,
   useInstillStore,
@@ -29,7 +29,7 @@ import {
   useRouteInfo,
   useShallow,
   useUpdateNamespacePipeline,
-} from "../../lib";
+} from "../../../lib";
 
 const pipelineNameSchema = z.object({
   id: z.string().min(1, "Pipeline name is required"),

@@ -1,6 +1,6 @@
 "use client";
 
-import cn from "clsx";
+import { cn } from "@instill-ai/design-system";
 
 export type LoadingSpinProps = {
   className?: string;

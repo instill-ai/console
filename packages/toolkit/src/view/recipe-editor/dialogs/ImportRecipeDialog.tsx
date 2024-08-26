@@ -5,8 +5,8 @@ import { Nullable } from "instill-sdk";
 
 import { Button, Dialog, Icons } from "@instill-ai/design-system";
 
-import { InstillStore, useInstillStore, useShallow } from "../../lib";
-import { validateVSCodeYaml } from "./validateVSCodeYaml";
+import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import { validateVSCodeYaml } from "../lib/validateVSCodeYaml";
 
 const selector = (store: InstillStore) => ({
   editorRef: store.editorRef,
