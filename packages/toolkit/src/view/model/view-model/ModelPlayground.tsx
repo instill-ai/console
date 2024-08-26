@@ -37,7 +37,7 @@ import {
   useComponentOutputFields,
   useInstillForm,
   useInstillStore,
-  useLastModelTriggerResult,
+  useModelVersionTriggerResult,
   useNavigateBackAfterLogin,
   useQueryClient,
   useShallow,
@@ -88,6 +88,7 @@ const defaultCurrentOperationIdPollingData = {
   name: null,
   timeoutRunning: false,
   isRendered: false,
+  modelVersion: null,
 };
 
 export const ModelPlayground = ({
@@ -102,10 +103,16 @@ export const ModelPlayground = ({
   // ref, it has new value and the very next render cycle will already have
   // the fresh data.
   const currentOperationIdPollingData = React.useRef<{
-    name: string | null;
+    name: Nullable<string>;
     timeoutRunning: boolean;
     isRendered: boolean;
-  }>({ name: null, timeoutRunning: false, isRendered: false });
+    modelVersion: Nullable<string>;
+  }>({
+    name: null,
+    timeoutRunning: false,
+    isRendered: false,
+    modelVersion: null,
+  });
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [isModelRunInProgress, setIsModelRunInProgress] = useState(true);
@@ -153,12 +160,13 @@ export const ModelPlayground = ({
     },
   );
 
-  const existingModelTriggerResult = useLastModelTriggerResult({
+  const existingModelTriggerResult = useModelVersionTriggerResult({
     accessToken,
     modelId: model?.id || null,
     userId: me.data?.id || null,
+    versionId: activeVersion,
     view: "VIEW_FULL",
-    enabled: enabledQuery,
+    enabled: !!activeVersion && enabledQuery,
   });
 
   const pollForResponse = React.useCallback(async () => {
@@ -168,6 +176,14 @@ export const ModelPlayground = ({
 
     existingModelTriggerResult.refetch();
   }, [existingModelTriggerResult.refetch]);
+
+  useEffect(() => {
+    if (activeVersion !== currentOperationIdPollingData.current.modelVersion) {
+      currentOperationIdPollingData.current =
+        defaultCurrentOperationIdPollingData;
+      setExistingTriggerState(null);
+    }
+  }, [activeVersion]);
 
   useEffect(() => {
     if (
@@ -218,6 +234,7 @@ export const ModelPlayground = ({
       }
     }
   }, [
+    existingTriggerState,
     existingModelTriggerResult.isSuccess,
     existingModelTriggerResult.data,
     accessToken,
@@ -264,6 +281,7 @@ export const ModelPlayground = ({
       currentOperationIdPollingData.current = {
         ...defaultCurrentOperationIdPollingData,
         name: existingTriggerState.name,
+        modelVersion: existingTriggerState.response?.request.version || null,
       };
     }
   }, [existingTriggerState]);

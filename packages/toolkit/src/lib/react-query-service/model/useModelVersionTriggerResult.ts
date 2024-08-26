@@ -4,9 +4,10 @@ import { ResourceView } from "instill-sdk";
 import type { Nullable } from "../../type";
 import { getInstillModelAPIClient } from "../../vdp-sdk";
 
-export function useLastModelTriggerResult({
+export function useModelVersionTriggerResult({
   modelId,
   userId,
+  versionId,
   accessToken,
   enabled,
   view = "VIEW_BASIC",
@@ -14,6 +15,7 @@ export function useLastModelTriggerResult({
 }: {
   modelId: Nullable<string>;
   userId: Nullable<string>;
+  versionId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   view?: ResourceView;
@@ -22,11 +24,12 @@ export function useLastModelTriggerResult({
   let enableQuery = false;
   const queryKey = ["models", "operation"];
 
-  if (modelId && enabled) {
+  if (modelId && versionId && enabled) {
     enableQuery = true;
 
     queryKey.push(modelId);
     queryKey.push(view);
+    queryKey.push(versionId);
   }
 
   return useQuery({
@@ -36,12 +39,16 @@ export function useLastModelTriggerResult({
         return Promise.reject(new Error("Model id not provided"));
       }
 
+      if (!versionId) {
+        return Promise.reject(new Error("Version id not provided"));
+      }
+
       const client = getInstillModelAPIClient({
         accessToken: accessToken ?? undefined,
       });
 
       const operation = await client.model.getNamespaceModelOperationResult({
-        namespaceModelName: `namespaces/${userId}/models/${modelId}`,
+        namespaceModelName: `namespaces/${userId}/models/${modelId}/versions/${versionId}`,
         view,
       });
 
