@@ -63,14 +63,14 @@ export const GetCatalogTab = ({
     );
   }, [filesData.data]);
 
-  const curlCommand1 = React.useMemo(() => {
+  const curlCommand = React.useMemo(() => {
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
     return `curl -X GET '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}?fileUid=${selectedFile?.fileUid || ""}' \\
 --header "Content-Type: application/json" \\
 --header "Authorization: Bearer $INSTILL_API_TOKEN"`;
   }, [namespaceId, catalogId, selectedFile]);
 
-  const apiEndpoint1 = React.useMemo(() => {
+  const apiEndpoint = React.useMemo(() => {
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
     return `${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}?fileUid=${selectedFile?.fileUid || ""}`;
   }, [namespaceId, catalogId, selectedFile]);
@@ -152,7 +152,7 @@ export const GetCatalogTab = ({
           <div className={cn("mb-8", !selectedFile ? "opacity-50" : "")}>
             <p className="mb-2 text-lg font-semibold">Example cURL command:</p>
             <CodeBlock
-              codeString={curlCommand1}
+              codeString={curlCommand}
               wrapLongLines={true}
               language="bash"
               customStyle={defaultCodeSnippetStyles}
@@ -163,7 +163,7 @@ export const GetCatalogTab = ({
           <div className={`mb-12 ${!selectedFile ? "opacity-50" : ""}`}>
             <p className="mb-2 text-lg font-semibold">API Endpoint:</p>
             <CodeBlock
-              codeString={apiEndpoint1}
+              codeString={apiEndpoint}
               wrapLongLines={true}
               customStyle={defaultCodeSnippetStyles}
               disableCopy={!selectedFile}
