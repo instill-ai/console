@@ -182,6 +182,8 @@ export const ModelPlayground = ({
       currentOperationIdPollingData.current =
         defaultCurrentOperationIdPollingData;
       setExistingTriggerState(null);
+      setInputFromExistingResult(null);
+      setModelRunResult(null);
     }
   }, [activeVersion]);
 

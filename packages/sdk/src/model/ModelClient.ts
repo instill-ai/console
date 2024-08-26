@@ -626,9 +626,14 @@ export class ModelClient extends APIResource {
     view: ResourceView;
   }) {
     try {
+      const queryString = getQueryString({
+        baseURL: `/${namespaceModelName}/operation`,
+        view,
+      });
+
       const data =
         await this._client.get<GetNamespaceModelOperationResultResponse>(
-          `/${namespaceModelName}/operation?view=${view}`,
+          queryString,
         );
 
       return Promise.resolve(data);
