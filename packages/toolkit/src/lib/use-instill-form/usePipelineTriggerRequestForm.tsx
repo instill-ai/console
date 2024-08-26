@@ -24,7 +24,7 @@ export type UseStartOperatorTriggerPipelineFormProps = Pick<
   | "disabledReferenceHint"
   | "keyPrefix"
   | "fields"
->;
+> & { values?: Record<string, any> };
 
 export function usePipelineTriggerRequestForm({
   mode,
@@ -35,6 +35,7 @@ export function usePipelineTriggerRequestForm({
   disabledFieldControls,
   disabledReferenceHint,
   keyPrefix,
+  values,
 }: UseStartOperatorTriggerPipelineFormProps) {
   const superRefineRules = React.useMemo(() => {
     if (!fields) {
@@ -66,6 +67,7 @@ export function usePipelineTriggerRequestForm({
   const form = useForm<z.infer<typeof Schema>>({
     resolver: zodResolver(Schema),
     mode: "onChange",
+    values,
   });
 
   const fieldItems = React.useMemo(() => {

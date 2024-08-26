@@ -14,6 +14,7 @@ import { LoadingSpin } from "../../../components";
 import { Model, ModelState, Nullable, useRouteInfo } from "../../../lib";
 import { ModelTabNames } from "../../../server";
 import { ModelReadme } from "./ModelReadme";
+import { ModelRuns } from "./ModelRuns";
 
 export type ModelContentViewerProps = {
   selectedTab: ModelTabNames;
@@ -64,6 +65,11 @@ export const ModelContentViewer = ({
     }
     case "readme": {
       content = <ModelReadme model={model} onUpdate={onUpdate} />;
+
+      break;
+    }
+    case "runs": {
+      content = <ModelRuns model={model} />;
 
       break;
     }

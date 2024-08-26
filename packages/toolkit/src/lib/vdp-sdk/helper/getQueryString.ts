@@ -4,6 +4,7 @@ export const getQueryString = ({
   baseURL,
   pageSize,
   nextPageToken,
+  page,
   filter,
   queryParams,
   orderBy,
@@ -14,7 +15,8 @@ export const getQueryString = ({
 }: {
   baseURL: string;
   pageSize: Nullable<number>;
-  nextPageToken: Nullable<string>;
+  nextPageToken?: Nullable<string>;
+  page?: Nullable<number>;
   filter?: Nullable<string>;
   orderBy?: Nullable<string>;
 
@@ -30,6 +32,7 @@ export const getQueryString = ({
   if (
     pageSize ||
     nextPageToken ||
+    page ||
     filter ||
     orderBy ||
     queryParams ||
@@ -52,6 +55,10 @@ export const getQueryString = ({
 
   if (nextPageToken) {
     url += `pageToken=${nextPageToken}&`;
+  }
+
+  if (page) {
+    url += `page=${page}&`;
   }
 
   if (filter) {

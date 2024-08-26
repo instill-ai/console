@@ -1,7 +1,9 @@
+import { ResourceView, RunSource, RunStatus } from "..";
 import { Organization, User } from "../core";
 import {
   GeneralRecord,
   InstillJSONSchema,
+  Nullable,
   Operation,
   Permission,
   Visibility,
@@ -87,6 +89,11 @@ export type Model = {
   outputSchema: InstillJSONSchema | null;
   sampleInput: Record<string, GeneralRecord>;
   sampleOutput: Record<string, GeneralRecord>;
+  stats: {
+    numberOfRuns: number;
+    lastRunTime: string;
+  };
+  versions: string[];
 };
 
 export type ModelRegion = {
@@ -169,6 +176,38 @@ export type ListNamespaceModelsResponse = {
   models: Model[];
   nextPageToken: string;
   totalSize: number;
+};
+
+export type ListModelRunsRequest = {
+  modelName: string;
+  view: ResourceView;
+  pageSize: number;
+  page: number;
+  orderBy: Nullable<string>;
+  filter: Nullable<string>;
+};
+
+export type ModelRun = {
+  uid: string;
+  modelUid: string;
+  runnerId: string;
+  status: RunStatus;
+  source: RunSource;
+  totalDuration: number;
+  endTime: string;
+  createTime: string;
+  updateTime: string;
+  version: string;
+  taskInputs: GeneralRecord[];
+  taskOutputs: GeneralRecord[];
+  creditAmount: Nullable<number>;
+};
+
+export type ListModelRunsResponse = {
+  runs: ModelRun[];
+  totalSize: number;
+  pageSize: number;
+  page: number;
 };
 
 export type CreateNamespaceModelRequest = {
@@ -283,6 +322,8 @@ export type TriggerNamespaceModelVersionResponse = {
 export type TriggerAsyncNamespaceModelVersionRequest = {
   namespaceModelVersionName: string;
   taskInputs: Record<string, unknown>[];
+  returnTraces?: boolean;
+  requesterUid?: string;
 };
 
 export type TriggerAsyncNamespaceModelVersionResponse = {

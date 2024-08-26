@@ -2,6 +2,7 @@ import { Activity } from "./Activity";
 import { AlertCircle } from "./AlertCircle";
 import { AlertTriangle } from "./AlertTriangle";
 import { AlignLeft } from "./AlignLeft";
+import { Announcement02 } from "./Announcement02";
 import { ArrowDown } from "./ArrowDown";
 import { ArrowLeft } from "./ArrowLeft";
 import { ArrowNarrowLeft } from "./ArrowNarrowLeft";
@@ -9,12 +10,14 @@ import { ArrowNarrowRight } from "./ArrowNarrowRight";
 import { ArrowRight } from "./ArrowRight";
 import { ArrowUp } from "./ArrowUp";
 import { ArrowUpRight } from "./ArrowUpRight";
+import { BankNote01 } from "./BankNote01";
 import { BankNote03 } from "./BankNote03";
 import { BarChartSquare02 } from "./BarChartSquare02";
 import { BookOpen02 } from "./BookOpen02";
 import { Box } from "./Box";
 import { BracketSlash } from "./BracketSlash";
 import { Building05 } from "./Building05";
+import { CalendarCheck01 } from "./CalendarCheck01";
 import { CardRefresh } from "./CardRefresh";
 import { Check } from "./Check";
 import { CheckCircle } from "./CheckCircle";
@@ -146,6 +149,7 @@ import { Tool01 } from "./Tool01";
 import { Trash01 } from "./Trash01";
 import { Trash03 } from "./Trash03";
 import { TrendUp } from "./TrendUp";
+import { Truck02 } from "./Truck02";
 import { Tv03 } from "./Tv03";
 import { TXTFile } from "./TXTFile";
 import { Type01 } from "./Type01";
@@ -163,12 +167,14 @@ import { VisualQuestionAnswering } from "./VisualQuestionAnswering";
 import { X } from "./X";
 import { XLSXFile } from "./XLSXFile";
 import { Zap } from "./Zap";
+import { ZapFast } from "./ZapFast";
 
 export const Icons = {
   Activity,
   AlertCircle,
   AlertTriangle,
   AlignLeft,
+  Announcement02,
   ArrowUp,
   ArrowDown,
   ArrowLeft,
@@ -176,12 +182,14 @@ export const Icons = {
   ArrowNarrowLeft,
   ArrowNarrowRight,
   ArrowUpRight,
+  BankNote01,
   BankNote03,
   BarChartSquare02,
   BookOpen02,
   Box,
   BracketSlash,
   Building05,
+  CalendarCheck01,
   CardRefresh,
   Check,
   CheckCircle,
@@ -312,6 +320,7 @@ export const Icons = {
   Trash01,
   Trash03,
   TrendUp,
+  Truck02,
   Type01,
   Type02,
   TypePlus,
@@ -330,4 +339,5 @@ export const Icons = {
   X,
   XLSXFile,
   Zap,
+  ZapFast,
 };

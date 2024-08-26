@@ -70,9 +70,3 @@ export type OrganizationOwner = {
 export type Owner = UserOwner | OrganizationOwner;
 
 export type Definition = ComponentDefinition | IteratorDefinition;
-
-export type Status =
-  | "STATUS_UNSPECIFIED"
-  | "STATUS_COMPLETED"
-  | "STATUS_SKIPPED"
-  | "STATUS_ERROR";

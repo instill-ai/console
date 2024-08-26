@@ -18,7 +18,5 @@ test.skip("getRemainingInstillCredit", async () => {
   const parsedData =
     getRemainingInstillCreditResponseValidator.safeParse(credit);
 
-  console.log(credit, parsedData, parsedData.error?.errors[0]);
-
   expect(parsedData.success).toBe(true);
 });

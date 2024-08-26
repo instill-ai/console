@@ -11,6 +11,7 @@ import { PipelineApi } from "./PipelineApi";
 import { PipelinePlayground } from "./PipelinePlayground";
 import { PipelinePreview } from "./PipelinePreview";
 import { PipelineReadme } from "./PipelineReadme";
+import { PipelineRuns } from "./PipelineRuns";
 import { PipelineSettings } from "./PipelineSettings";
 import { PipelineVersions } from "./PipelineVersions";
 
@@ -78,11 +79,11 @@ export const PipelineContentViewer = ({
 
       break;
     }
-    /* case "runs": {
+    case "runs": {
       content = <PipelineRuns pipeline={pipeline} />;
 
       break;
-    } */
+    }
     case "playground":
     default: {
       content = <PipelinePlayground pipeline={pipeline} releases={releases} />;

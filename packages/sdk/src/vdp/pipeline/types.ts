@@ -12,7 +12,7 @@ import {
   PermissionSchema,
 } from "../../types";
 import { PipelineRelease, PipelineReleaseSchema } from "../release";
-import { PipelineRecipe } from "../types";
+import { PipelineRecipe, ResourceView, RunSource, RunStatus } from "../types";
 
 export type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
@@ -221,6 +221,76 @@ export type ListNamespacePipelinesRequest = {
   showDeleted?: boolean;
   visibility?: string;
   orderBy?: string;
+};
+
+export type ListPaginatedNamespacePipelineRunsRequest = {
+  pipelineName: string;
+  view: ResourceView;
+  pageSize: number;
+  page: number;
+  orderBy: Nullable<string>;
+  filter: Nullable<string>;
+};
+
+export type ListPaginatedNamespacePipelineRunsResponse = {
+  pipelineRuns: PipelineRun[];
+  totalSize: number;
+  page: number;
+  pageSize: number;
+};
+
+export type FileReference = {
+  name: string;
+  type: string;
+  size: number;
+  url: string;
+};
+
+export type PipelineRun = {
+  pipelineUid: string;
+  pipelineRunUid: string;
+  pipelineVersion: string;
+  status: RunStatus;
+  source: RunSource;
+  totalDuration: number;
+  runnerId: string;
+  inputsReference: FileReference[];
+  inputs: GeneralRecord[];
+  outputsReference: FileReference[];
+  outputs: GeneralRecord[];
+  recipeSnapshot: Nullable<GeneralRecord>;
+  startTime: string;
+  completeTime: string;
+  creditAmount: Nullable<number>;
+  error: Nullable<string>;
+  dataSpecification: DataSpecification;
+};
+
+export type ListPaginatedNamespacePipelineRunComponentsRequest = {
+  pipelineRunId: string;
+  view: ResourceView;
+  pageSize: number;
+  page: number;
+  orderBy: Nullable<string>;
+  filter: Nullable<string>;
+};
+
+export type ListPaginatedNamespacePipelineRunComponentsResponse = {
+  componentRuns: ComponentRun[];
+  totalSize: number;
+  page: number;
+  pageSize: number;
+};
+
+export type ComponentRun = {
+  pipelineRunUid: string;
+  componentId: string;
+  status: RunStatus;
+  totalDuration: number;
+  startTime: string;
+  completeTime: string;
+  inputs: GeneralRecord[];
+  outputs: GeneralRecord[];
 };
 
 export type ListNamespacePipelinesResponse = {

@@ -46,7 +46,7 @@ const selector = (store: InstillStore) => ({
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
-type ModelOutputActiveView = "preview" | "json";
+export type PipelineOutputActiveView = "preview" | "json";
 
 export const PipelinePlayground = ({
   releases,
@@ -64,7 +64,7 @@ export const PipelinePlayground = ({
   const { toast } = useToast();
   const [isPipelineRunning, setIsPipelineRunning] = React.useState(false);
   const [outputActiveView, setOutputActiveView] =
-    React.useState<ModelOutputActiveView>("preview");
+    React.useState<PipelineOutputActiveView>("preview");
   const queryClient = useQueryClient();
 
   const { accessToken, navigationNamespaceAnchor } = useInstillStore(
@@ -383,7 +383,7 @@ export const PipelinePlayground = ({
             <TabMenu.Root
               value={outputActiveView}
               onValueChange={(value: Nullable<string>) =>
-                setOutputActiveView(value as ModelOutputActiveView)
+                setOutputActiveView(value as PipelineOutputActiveView)
               }
               disabledDeSelect={true}
               className="mb-3 border-b border-semantic-bg-line"

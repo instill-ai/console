@@ -88,6 +88,7 @@ export const CardModel = (props: CardModelProps) => {
         <Stats
           task={model.task}
           updatedAt={model.updateTime || model.createTime}
+          runCount={model.stats.numberOfRuns}
         />
       </div>
     </div>

@@ -1,9 +1,8 @@
 "use client";
 
-import { getModelInstanceTaskToolkit } from "@instill-ai/design-system";
+import { getModelInstanceTaskToolkit, Icons } from "@instill-ai/design-system";
 
-//import { convertLongNumberToK } from "../../lib";
-import { ModelTask } from "../../lib";
+import { convertLongNumberToK, ModelTask } from "../../lib";
 import { getHumanReadableStringFromTime } from "../../server";
 
 export type StatsProps = {
@@ -13,7 +12,7 @@ export type StatsProps = {
 };
 
 export const Stats = (props: StatsProps) => {
-  const { task, updatedAt /* , runCount */ } = props;
+  const { task, updatedAt, runCount } = props;
   const { label, getIcon } = getModelInstanceTaskToolkit(task);
 
   return (
@@ -22,13 +21,11 @@ export const Stats = (props: StatsProps) => {
         {getIcon("w-4 h-4 stroke-semantic-fg-primary")}
         {label}
       </div>
-      {
-        //TODO: uncomment when the run count is available from BE
-        /* <div className="flex flex-row items-center gap-x-1 uppercase text-semantic-fg-secondary">
+      <div className="flex flex-row items-center gap-x-1 uppercase text-semantic-fg-secondary">
         <Icons.Rocket01 className="w-4 h-4 stroke-semantic-fg-primary" />
-        {convertLongNumberToK(2500)} Runs
-      </div> */
-      }
+        {runCount ? convertLongNumberToK(runCount) : 0} Run
+        {runCount !== 1 ? "s" : ""}
+      </div>
       <div className="ml-auto text-sm text-semantic-fg-disabled">
         Updated {getHumanReadableStringFromTime(updatedAt, Date.now())}
       </div>

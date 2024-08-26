@@ -13,6 +13,10 @@ import {
   ListAccessiblePipelinesRequest,
   ListNamespacePipelinesRequest,
   ListNamespacePipelinesResponse,
+  ListPaginatedNamespacePipelineRunComponentsRequest,
+  ListPaginatedNamespacePipelineRunComponentsResponse,
+  ListPaginatedNamespacePipelineRunsRequest,
+  ListPaginatedNamespacePipelineRunsResponse,
   Pipeline,
   RenameNamespacePipelineRequest,
   RenameNamespacePipelineResponse,
@@ -108,6 +112,58 @@ export class PipelineClient extends APIResource {
       }
 
       return Promise.resolve(pipelines);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  async listPaginatedNamespacePipelineRuns(
+    props: ListPaginatedNamespacePipelineRunsRequest,
+  ) {
+    const { pipelineName, view, pageSize, page, orderBy, filter } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/${pipelineName}/runs`,
+        pageSize,
+        page,
+        filter,
+        orderBy,
+        view,
+      });
+
+      const data =
+        await this._client.get<ListPaginatedNamespacePipelineRunsResponse>(
+          queryString,
+        );
+
+      return Promise.resolve(data);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  async listPaginatedNamespacePipelineRunComponents(
+    props: ListPaginatedNamespacePipelineRunComponentsRequest,
+  ) {
+    const { pipelineRunId, view, pageSize, page, orderBy, filter } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/pipeline-runs/${pipelineRunId}/component-runs`,
+        pageSize,
+        page,
+        filter,
+        orderBy,
+        view,
+      });
+
+      const data =
+        await this._client.get<ListPaginatedNamespacePipelineRunComponentsResponse>(
+          queryString,
+        );
+
+      return Promise.resolve(data);
     } catch (err) {
       return Promise.reject(err);
     }

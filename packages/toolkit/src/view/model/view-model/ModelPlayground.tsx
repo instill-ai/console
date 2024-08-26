@@ -1,6 +1,10 @@
+"use client";
+
 import { useEffect, useMemo, useState } from "react";
 import * as React from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { Operation } from "instill-sdk";
 import { z } from "zod";
 
 import {
@@ -12,7 +16,6 @@ import {
   useToast,
 } from "@instill-ai/design-system";
 
-import type { ModelTriggerResult } from "../../../lib";
 import {
   CodeBlock,
   LoadingSpin,
@@ -38,13 +41,13 @@ import {
   useNavigateBackAfterLogin,
   useQueryClient,
   useShallow,
-  useTriggerUserModelAsync,
+  useTriggerUserModelVersionAsync,
   useUserNamespaces,
 } from "../../../lib";
 import { recursiveHelpers } from "../../pipeline-builder";
 import { OPERATION_POLL_TIMEOUT } from "./constants";
 
-type ModelOutputActiveView = "preview" | "json";
+export type ModelOutputActiveView = "preview" | "json";
 
 export type ModelPlaygroundProps = {
   model?: Model;
@@ -57,7 +60,7 @@ const selector = (store: InstillStore) => ({
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
-const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
+export const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
   taskName
     ? convertSentenceToCamelCase(
         // This removes "TASK_" and replaces "_" with a space. The first
@@ -67,7 +70,7 @@ const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
       )
     : null;
 
-const convertValuesToString = (props: Record<string, unknown>) => {
+export const convertValuesToString = (props: Record<string, unknown>) => {
   const convertedProps: Record<string, unknown> = {};
 
   for (const key in props) {
@@ -91,6 +94,8 @@ export const ModelPlayground = ({
   model,
   modelState,
 }: ModelPlaygroundProps) => {
+  const searchParams = useSearchParams();
+  const activeVersion = searchParams.get("version");
   const queryClient = useQueryClient();
   // This ref is used here to store the currently active operation id. It's in
   // ref so we don't have to worry about stale data. As soon as we update the
@@ -119,7 +124,7 @@ export const ModelPlayground = ({
     unknown
   > | null>(null);
   const [existingTriggerState, setExistingTriggerState] =
-    useState<ModelTriggerResult["operation"]>(null);
+    useState<Nullable<Operation>>(null);
   const { accessToken, enabledQuery, navigationNamespaceAnchor } =
     useInstillStore(useShallow(selector));
 
@@ -239,11 +244,15 @@ export const ModelPlayground = ({
 
         setInputFromExistingResult(
           convertValuesToString(
-            existingTriggerState.response.request.taskInputs[0][taskPropName],
+            existingTriggerState.response?.request.taskInputs[0]?.[
+              taskPropName
+            ],
           ),
         );
         setModelRunResult(
-          existingTriggerState.response.response.taskOutputs[0][taskPropName],
+          existingTriggerState.response?.response.taskOutputs[0]?.[
+            taskPropName
+          ],
         );
 
         setIsModelRunInProgress(false);
@@ -258,7 +267,7 @@ export const ModelPlayground = ({
     }
   }, [existingTriggerState]);
 
-  const triggerModel = useTriggerUserModelAsync();
+  const triggerModel = useTriggerUserModelVersionAsync();
 
   async function onRunModel(
     formData: Record<string, unknown> /* z.infer<typeof Schema> */,
@@ -289,13 +298,14 @@ export const ModelPlayground = ({
       (namespace) => namespace.id === navigationNamespaceAnchor,
     );
 
-    if (!targetNamespace) {
+    if (!targetNamespace || !me.isSuccess) {
       return;
     }
 
     try {
       const data = await triggerModel.mutateAsync({
-        modelName: model.name,
+        modelId: model.id,
+        userId: me.data.id,
         accessToken,
         payload: {
           taskInputs: [
@@ -305,6 +315,7 @@ export const ModelPlayground = ({
           ],
         },
         requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+        versionId: activeVersion,
       });
 
       onTriggerInvalidateCredits({
