@@ -52,13 +52,7 @@ export const PipelineContentViewer = ({
       break;
     }
     case "versions": {
-      content = (
-        <PipelineVersions
-          pipeline={pipeline}
-          releases={releases}
-          isReady={isReady}
-        />
-      );
+      content = <PipelineVersions releases={releases} isReady={isReady} />;
 
       break;
     }
