@@ -409,7 +409,12 @@ export const ModelPlayground = ({
                 >
                   Run
                   {isModelRunInProgress ? (
-                    <LoadingSpin className="ml-2 !h-4 !w-4 !text-semantic-accent-hover" />
+                    <>
+                      <LoadingSpin className="ml-2 !h-4 !w-4 !text-semantic-accent-hover" />
+                      <p className="text-sm text-semantic-fg-secondary">
+                        Running
+                      </p>
+                    </>
                   ) : (
                     <Icons.Play className="ml-2 h-4 w-4 stroke-semantic-accent-hover" />
                   )}

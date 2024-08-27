@@ -87,7 +87,7 @@ export const CatalogFilesTab = ({
 
   React.useEffect(() => {
     filesData.refetch();
-  }, [catalog, filesData.refetch]);
+  }, [catalog, filesData.refetch, filesData]);
 
   const deleteCatalogFile = useDeleteCatalogFile();
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);

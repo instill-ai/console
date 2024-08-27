@@ -21,6 +21,7 @@ import { CatalogCard } from "../CatalogCard";
 import CatalogSearchSort, { SortAnchor, SortOrder } from "../CatalogSearchSort";
 import { CreateCatalogCard } from "../CreateCatalogCard";
 import { CreateCatalogDialog } from "../CreateCatalogDialog";
+import { EditCatalogDialogData } from "../EditCatalogDialog";
 import { UpgradePlanLink } from "../notifications";
 
 type CatalogTabProps = {
@@ -34,16 +35,10 @@ type CatalogTabProps = {
   isLocalEnvironment: boolean;
 };
 
-type EditCatalogDialogData = {
-  name: string;
-  description?: string;
-  tags?: string[];
-};
-
 const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().optional(),
-  tags: z.array(z.string()).optional(),
+  tags: z.string(z.string()).optional(),
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
@@ -89,7 +84,7 @@ export const CatalogTab = ({
     if (selectedNamespace) {
       catalogState.refetch();
     }
-  }, [selectedNamespace, catalogState.refetch]);
+  }, [selectedNamespace, catalogState.refetch, catalogState]);
 
   const handleCreateCatalogSubmit = async (
     data: z.infer<typeof CreateCatalogFormSchema>,
@@ -101,7 +96,7 @@ export const CatalogTab = ({
         payload: {
           name: data.name,
           description: data.description,
-          tags: data.tags ?? [],
+          // tags: data.tags ?? "",
           ownerId: data.namespaceId,
         },
         ownerId: data.namespaceId,
@@ -127,7 +122,7 @@ export const CatalogTab = ({
         payload: {
           name: data.name,
           description: data.description,
-          tags: data.tags || [],
+          // tags: data.tags || "",
         },
         accessToken,
       });
@@ -143,7 +138,7 @@ export const CatalogTab = ({
     const clonedCatalog = {
       name: `${catalog.name}-clone`,
       description: catalog.description,
-      tags: catalog.tags || [],
+      tags: catalog.tags || "",
     };
 
     try {
@@ -151,6 +146,7 @@ export const CatalogTab = ({
         payload: {
           ...clonedCatalog,
           ownerId: selectedNamespace,
+          tags: clonedCatalog.tags.join(", "),
         },
         ownerId: selectedNamespace,
         accessToken,

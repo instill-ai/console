@@ -37,19 +37,13 @@ export const SelectOrganization = () => {
 
   const [selectedOrg, setSelectedOrg] = React.useState<Nullable<string>>(null);
 
-  React.useEffect(() => {
-    if (organizations.isSuccess && organizations.data[0]?.organization.id) {
-      setSelectedOrg(organizations.data[0].organization.id);
-    }
-  }, [organizations.isSuccess, organizations.data]);
-
   const getSelectedOrgUid = React.useCallback(
     (orgId: Nullable<string> | undefined): string => {
       if (!organizations.isSuccess) return "Loading...";
       const org = organizations.data.find(
         (membership) => membership.organization.id === orgId,
       );
-      return org ? org.organization.uid : "Loading...";
+      return org ? org.organization.uid : "Select an organization";
     },
     [organizations.isSuccess, organizations.data],
   );

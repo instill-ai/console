@@ -12,7 +12,7 @@ async function updateCatalogMutation({
   payload: {
     name: string;
     description?: string;
-    tags?: string[];
+    tags?: string;
   };
   ownerId: string;
   catalogId: string;

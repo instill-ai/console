@@ -377,7 +377,10 @@ export const PipelinePlayground = ({
       <div className="flex w-1/2 flex-col pb-6 pl-6">
         <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
         {isPipelineRunning ? (
-          <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />
+          <>
+            <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />
+            <p className="text-sm text-semantic-fg-secondary">Running</p>
+          </>
         ) : pipelineRunResponse ? (
           <React.Fragment>
             <TabMenu.Root

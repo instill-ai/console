@@ -22,7 +22,7 @@ import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().optional(),
-  tags: z.array(z.string()).optional(),
+  // tags: z.string().optional(),
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
@@ -56,7 +56,7 @@ export const CreateCatalogDialog = ({
     defaultValues: {
       name: "",
       description: "",
-      tags: [],
+      // tags: "",
       namespaceId: navigationNamespaceAnchor || "",
     },
     mode: "onChange",
@@ -97,7 +97,7 @@ export const CreateCatalogDialog = ({
       form.reset({
         name: "",
         description: "",
-        tags: [],
+        // tags: "",
         namespaceId: navigationNamespaceAnchor || "",
       });
     }
@@ -109,9 +109,20 @@ export const CreateCatalogDialog = ({
     setCreating(true);
 
     try {
-      await onSubmit({
+      const formattedData = {
         ...data,
         name: formatName(data.name),
+        // tags: data.tags
+        //   ? data.tags
+        //     .split(",")
+        //     .map((tag) => tag.trim())
+        //     .filter((tag) => tag !== "")
+        //   : [],
+      };
+
+      await onSubmit({
+        ...formattedData,
+        // tags: formattedData.tags.join(","),
       });
 
       // Update the navigation namespace anchor if a different namespace was selected
@@ -232,35 +243,34 @@ export const CreateCatalogDialog = ({
                 </Form.Item>
               )}
             />
-            {/* Coming in V2 */}
+            {/* Coming in v2 */}
             {/* <Form.Field
               control={form.control}
               name="tags"
-              render={({ field }) => (
-                <Form.Item>
-                  <div className="flex items-center justify-between">
-                    <Form.Label className="mb-1 text-semantic-fg-primary product-button-button-2">
+              render={({ field }) => {
+                return (
+                  <Form.Item className="flex flex-col gap-y-2.5">
+                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
                       Tags
                     </Form.Label>
-                    <p className="my-auto text-semantic-fg-secondary product-body-text-4-regular">
-                      Optional
+                    <Form.Control>
+                      <Input.Root>
+                        <Input.Core
+                          {...field}
+                          className="!product-body-text-2-regular"
+                          type="text"
+                          placeholder="Add a tag"
+                          required={false}
+                        />
+                      </Input.Root>
+                    </Form.Control>
+                    <Form.Message />
+                    <p className="text-xs text-semantic-fg-secondary">
+                      {`Separate tags with a comma.`}
                     </p>
-                  </div>
-                  <Form.Control>
-                    <Input.Root>
-                      <Input.Core
-                        {...field}
-                        id={field.name}
-                        placeholder="Add tag"
-                        onChange={(e) => {
-                          field.onChange(e);
-                        }}
-                      />
-                    </Input.Root>
-                  </Form.Control>
-                  <Form.Message />
-                </Form.Item>
-              )}
+                  </Form.Item>
+                );
+              }}
             /> */}
             <div className="mt-8 flex justify-end gap-x-3">
               <Button variant="secondaryGrey" onClick={onClose}>

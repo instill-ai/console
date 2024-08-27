@@ -11,7 +11,7 @@ async function createCatalogMutation({
   payload: {
     name: string;
     description?: string;
-    tags?: string[];
+    tags?: string;
     ownerId: string;
   };
   ownerId: string;
