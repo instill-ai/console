@@ -96,7 +96,7 @@ export const CatalogTab = ({
         payload: {
           name: data.name,
           description: data.description,
-          tags: data.tags ?? "",
+          // tags: data.tags ?? "",
           ownerId: data.namespaceId,
         },
         ownerId: data.namespaceId,
@@ -122,7 +122,7 @@ export const CatalogTab = ({
         payload: {
           name: data.name,
           description: data.description,
-          tags: data.tags || "",
+          // tags: data.tags || "",
         },
         accessToken,
       });

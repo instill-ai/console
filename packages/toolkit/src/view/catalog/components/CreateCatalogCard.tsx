@@ -217,7 +217,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
         initialValues={{
           name: catalog.name,
           description: catalog.description,
-          tags: catalog.tags ? catalog.tags : [],
+          // tags: catalog.tags ? catalog.tags : [],
         }}
       />
     </React.Fragment>

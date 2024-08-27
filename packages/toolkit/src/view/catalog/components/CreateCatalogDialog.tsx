@@ -22,7 +22,7 @@ import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().optional(),
-  tags: z.string().optional(),
+  // tags: z.string().optional(),
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
@@ -56,7 +56,7 @@ export const CreateCatalogDialog = ({
     defaultValues: {
       name: "",
       description: "",
-      tags: "",
+      // tags: "",
       namespaceId: navigationNamespaceAnchor || "",
     },
     mode: "onChange",
@@ -97,7 +97,7 @@ export const CreateCatalogDialog = ({
       form.reset({
         name: "",
         description: "",
-        tags: "",
+        // tags: "",
         namespaceId: navigationNamespaceAnchor || "",
       });
     }
@@ -112,17 +112,17 @@ export const CreateCatalogDialog = ({
       const formattedData = {
         ...data,
         name: formatName(data.name),
-        tags: data.tags
-          ? data.tags
-              .split(",")
-              .map((tag) => tag.trim())
-              .filter((tag) => tag !== "")
-          : [],
+        // tags: data.tags
+        //   ? data.tags
+        //     .split(",")
+        //     .map((tag) => tag.trim())
+        //     .filter((tag) => tag !== "")
+        //   : [],
       };
 
       await onSubmit({
         ...formattedData,
-        tags: formattedData.tags.join(","),
+        // tags: formattedData.tags.join(","),
       });
 
       // Update the navigation namespace anchor if a different namespace was selected
