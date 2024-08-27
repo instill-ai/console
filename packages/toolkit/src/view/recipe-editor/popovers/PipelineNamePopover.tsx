@@ -122,7 +122,7 @@ export const PipelineNamePopover = ({
         });
 
         router.push(
-          `/${routeInfo.data.namespaceId}/pipelines/${formData.id}/low-code`,
+          `/${routeInfo.data.namespaceId}/pipelines/${formData.id}/editor`,
         );
         setOpen(false);
       } catch (error) {

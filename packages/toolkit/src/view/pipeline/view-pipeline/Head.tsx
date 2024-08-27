@@ -324,19 +324,6 @@ export const Head = ({
                         <Icons.Tool01 className="h-4 w-4 stroke-semantic-fg-secondary" />
                         Edit
                       </Button>
-                      <Button
-                        onClick={() => {
-                          router.push(
-                            `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/low-code`,
-                          );
-                        }}
-                        size="md"
-                        variant="secondaryGrey"
-                        className="gap-x-2 h-[32px]"
-                      >
-                        <Icons.Tool01 className="h-4 w-4 stroke-semantic-fg-secondary" />
-                        Edit low code
-                      </Button>
                     </React.Fragment>
                   ) : null}
                 </React.Fragment>

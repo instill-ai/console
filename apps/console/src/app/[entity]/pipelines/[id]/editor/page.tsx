@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-import { PipelineBuilderRender } from "./render";
+import { RecipeEditorViewRender } from "./render";
 
 type Props = {
   params: { id: string; entity: string };
@@ -20,5 +20,5 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function Page() {
-  return <PipelineBuilderRender />;
+  return <RecipeEditorViewRender />;
 }

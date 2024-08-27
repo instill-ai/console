@@ -109,6 +109,14 @@ describe("setter", () => {
     expect(obj).toStrictEqual({ x: "y", foo: { 0: "b" } });
   });
 
+  test("set deeper nested value", () => {
+    const obj = { input: { model: "gpt-4" } };
+    dot.setter(obj, "input.response-format.type", "json_object");
+    expect(obj).toStrictEqual({
+      input: { model: "gpt-4", "response-format": { type: "json_object" } },
+    });
+  });
+
   // We are currently don't support bracket path
   // eslint-disable-next-line vitest/no-commented-out-tests
   // it("supports bracket path", () => {

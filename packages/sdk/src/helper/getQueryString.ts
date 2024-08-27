@@ -67,10 +67,6 @@ export const getQueryString = ({
     url += `pageToken=${pageToken}&`;
   }
 
-  if (page) {
-    url += `page=${page}&`;
-  }
-
   if (filter) {
     url += `filter=${filter}&`;
   }
