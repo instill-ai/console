@@ -73,6 +73,8 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
   const [outputActiveView, setOutputActiveView] =
     React.useState<PipelineOutputActiveView>("preview");
 
+  // Setting the max height of the recipe code block based on the available
+  // space, so it fits the viewport height and is scrollable
   const [codeBlockMaxHeight, setCodeBlockMaxHeight] = React.useState("auto");
   const windowSize = useWindowSize();
   const wrapperRef = React.useRef<HTMLDivElement>(null);
