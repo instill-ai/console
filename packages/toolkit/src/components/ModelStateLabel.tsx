@@ -8,9 +8,10 @@ import type { Nullable } from "../lib";
 export type ModelStateLabelProps = {
   state?: Nullable<ModelState>;
   className?: string;
+  hardware?: string;
 };
 
-export const ModelStateLabel = ({ state, className }: ModelStateLabelProps) => {
+export const ModelStateLabel = ({ state, className, hardware }: ModelStateLabelProps) => {
   if (!state) {
     return null;
   }
@@ -24,14 +25,14 @@ export const ModelStateLabel = ({ state, className }: ModelStateLabelProps) => {
     case "STATE_ACTIVE": {
       textColor = "text-semantic-success-hover";
       bgColor = "bg-semantic-success-bg";
-      stateLabelName = "Active";
+      stateLabelName = "Your request is being processed, please hold on.";
       indicatorColor = "bg-semantic-success-default";
       break;
     }
     case "STATE_IDLE": {
       textColor = "text-semantic-fg-primary";
       bgColor = "bg-semantic-bg-base-bg";
-      stateLabelName = "Idle";
+      stateLabelName = "Model deployment takes time. Credits won't be consumed during this period. Please wait.";
       indicatorColor = "bg-semantic-success-default";
       break;
     }
@@ -52,7 +53,7 @@ export const ModelStateLabel = ({ state, className }: ModelStateLabelProps) => {
     case "STATE_SCALING_UP": {
       textColor = "text-semantic-warning-hover";
       bgColor = "bg-semantic-warning-bg";
-      stateLabelName = "Scaling up";
+      stateLabelName = `The requested ${hardware} compute resource is being provisioned, please wait...`;
       indicatorColor = "bg-semantic-warning-default";
       break;
     }

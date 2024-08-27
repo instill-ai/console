@@ -99,7 +99,7 @@ export const ModelHead = ({
                 </Link>
                 /<span className="text-semantic-fg-primary">{model?.id}</span>
               </div>
-              {modelState ? <ModelStateLabel state={modelState} /> : null}
+              {modelState ? <ModelStateLabel state={modelState} hardware={model?.hardware} /> : null}
               <Tag
                 className="my-auto h-6 gap-x-1 !border-0 !py-0 !text-sm"
                 variant="lightNeutral"
