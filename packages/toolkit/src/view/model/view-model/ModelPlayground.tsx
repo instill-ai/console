@@ -40,6 +40,7 @@ import {
   useModelVersionTriggerResult,
   useNavigateBackAfterLogin,
   useQueryClient,
+  useRouteInfo,
   useShallow,
   useTriggerUserModelVersionAsync,
   useUserNamespaces,
@@ -95,6 +96,7 @@ export const ModelPlayground = ({
   model,
   modelState,
 }: ModelPlaygroundProps) => {
+  const routeInfo = useRouteInfo();
   const searchParams = useSearchParams();
   const activeVersion = searchParams.get("version");
   const queryClient = useQueryClient();
@@ -163,7 +165,7 @@ export const ModelPlayground = ({
   const existingModelTriggerResult = useModelVersionTriggerResult({
     accessToken,
     modelId: model?.id || null,
-    userId: me.data?.id || null,
+    userId: routeInfo.data.namespaceId,
     versionId: activeVersion,
     view: "VIEW_FULL",
     enabled: !!activeVersion && enabledQuery,
@@ -319,14 +321,14 @@ export const ModelPlayground = ({
       (namespace) => namespace.id === navigationNamespaceAnchor,
     );
 
-    if (!targetNamespace || !me.isSuccess) {
+    if (!targetNamespace || !routeInfo.data.namespaceId) {
       return;
     }
 
     try {
       const data = await triggerModel.mutateAsync({
         modelId: model.id,
-        userId: me.data.id,
+        userId: routeInfo.data.namespaceId,
         accessToken,
         payload: {
           taskInputs: [
