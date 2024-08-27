@@ -31,7 +31,7 @@ export function useEditorCommandListener() {
           return;
         }
 
-        if (e.key === "r" && (e.metaKey || e.ctrlKey)) {
+        if (e.key === "i" && (e.metaKey || e.ctrlKey)) {
           e.preventDefault();
           updateOpenActionCmdk(() => false);
           if (importRecipeInputTriggerRef.current) {
@@ -39,6 +39,13 @@ export function useEditorCommandListener() {
           }
         }
         return;
+      }
+
+      if (e.key === "i" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        if (importRecipeInputTriggerRef.current) {
+          importRecipeInputTriggerRef.current.click();
+        }
       }
 
       if (openComponentCmdo) {

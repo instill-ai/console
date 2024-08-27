@@ -10,7 +10,6 @@ import { CommandShortcutBadge } from "./CommandShortcutBadge";
 
 const selector = (store: InstillStore) => ({
   openActionCmdk: store.openActionCmdk,
-  openComponentCmdo: store.openComponentCmdo,
   updateOpenActionCmdk: store.updateOpenActionCmdk,
   updateOpenComponentCmdo: store.updateOpenComponentCmdo,
   importRecipeInputTriggerRef: store.importRecipeInputTriggerRef,
@@ -20,54 +19,10 @@ export const ActionCmdk = () => {
   const commandRef = React.useRef<Nullable<HTMLDivElement>>(null);
   const {
     openActionCmdk,
-    openComponentCmdo,
     updateOpenActionCmdk,
     updateOpenComponentCmdo,
     importRecipeInputTriggerRef,
   } = useInstillStore(useShallow(selector));
-
-  React.useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (openComponentCmdo) {
-        return;
-      }
-
-      // Trigger the action command
-      if (!openActionCmdk) {
-        if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-          e.preventDefault();
-          updateOpenActionCmdk((open) => !open);
-        }
-        return;
-      }
-
-      // Trigger the shortcut inside the action command
-      if (e.key === "o" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        updateOpenActionCmdk(() => false);
-        updateOpenComponentCmdo(() => true);
-      }
-
-      if (e.key === "r" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        updateOpenActionCmdk(() => false);
-        if (importRecipeInputTriggerRef.current) {
-          importRecipeInputTriggerRef.current.click();
-        }
-      }
-    };
-
-    document.addEventListener("keydown", down);
-    return () => {
-      document.removeEventListener("keydown", down);
-    };
-  }, [
-    openComponentCmdo,
-    openActionCmdk,
-    importRecipeInputTriggerRef,
-    updateOpenComponentCmdo,
-    updateOpenActionCmdk,
-  ]);
 
   return (
     <React.Fragment>
@@ -126,7 +81,7 @@ export const ActionCmdk = () => {
                     Import Recipe
                   </p>
                 </div>
-                <CommandShortcutBadge shortcut="⌘R" />
+                <CommandShortcutBadge shortcut="⌘I" />
               </Command.Item>
             </Command.Group>
           </div>

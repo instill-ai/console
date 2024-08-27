@@ -9,6 +9,7 @@ export type TransformInstillFormTreeToDefaultValueOptions = {
   // This is only for FieldArray
   isRoot?: boolean;
   selectedConditionMap?: SelectedConditionMap;
+  skipPath?: string[];
 };
 
 export function transformInstillFormTreeToDefaultValue(
@@ -18,7 +19,7 @@ export function transformInstillFormTreeToDefaultValue(
   const initialData = options?.initialData ?? {};
   const isRoot = options?.isRoot ?? false;
   const selectedConditionMap = options?.selectedConditionMap ?? {};
-
+  const skipPath = options?.skipPath ?? [];
   // We don't need to set the field key for formCondition because in the
   // conditions are formGroup, we will set the fieldKey there
 
@@ -37,6 +38,7 @@ export function transformInstillFormTreeToDefaultValue(
             initialData,
             selectedConditionMap,
             isRoot,
+            skipPath,
           });
 
           dot.setter(
@@ -56,6 +58,7 @@ export function transformInstillFormTreeToDefaultValue(
             initialData,
             selectedConditionMap,
             isRoot,
+            skipPath,
           });
 
           dot.setter(initialData, constPath, defaultCondition.const as string);
@@ -67,18 +70,13 @@ export function transformInstillFormTreeToDefaultValue(
   }
 
   if (tree._type === "formGroup") {
-    const formGroupValue: GeneralRecord = {};
-
     for (const property of tree.properties) {
       transformInstillFormTreeToDefaultValue(property, {
-        initialData: formGroupValue,
+        initialData: initialData,
         selectedConditionMap,
         isRoot,
+        skipPath,
       });
-    }
-
-    for (const [key, value] of Object.entries(formGroupValue)) {
-      dot.setter(initialData, key, value);
     }
 
     return initialData;
@@ -91,6 +89,7 @@ export function transformInstillFormTreeToDefaultValue(
       initialData: objectArrayValue,
       isRoot: true,
       selectedConditionMap,
+      skipPath,
     });
 
     if (tree.path) {
@@ -98,6 +97,7 @@ export function transformInstillFormTreeToDefaultValue(
     }
     return initialData;
   }
+
   if (tree._type === "arrayArray") {
     if (tree.path) {
       dot.setter(initialData, tree.path, []);
@@ -105,11 +105,22 @@ export function transformInstillFormTreeToDefaultValue(
     return initialData;
   }
 
-  let defaultValue: Nullable<string> = null;
+  let defaultValue: Nullable<string | number> = null;
 
   const key = isRoot ? tree.fieldKey : tree.path;
 
   if (!key) {
+    return initialData;
+  }
+
+  // We deliverately make api-key optional
+  console.log(
+    "tree.path",
+    tree.path,
+    skipPath,
+    skipPath.includes(tree.path ?? ""),
+  );
+  if (tree.path && skipPath.includes(tree.path)) {
     return initialData;
   }
 
@@ -136,7 +147,7 @@ export function transformInstillFormTreeToDefaultValue(
         }
         break;
       case "number":
-        defaultValue = `${tree.examples}`;
+        defaultValue = tree.examples;
         break;
       case "string":
         defaultValue = tree.examples;
@@ -145,17 +156,19 @@ export function transformInstillFormTreeToDefaultValue(
         defaultValue = null;
     }
 
-    dot.setter(initialData, key, defaultValue);
-    return initialData;
+    if (defaultValue) {
+      dot.setter(initialData, key, defaultValue);
+      return initialData;
+    }
   }
 
   if ("example" in tree && tree.example) {
     switch (typeof tree.example) {
       case "number":
-        defaultValue = `${tree.example}`;
+        defaultValue = tree.example;
         break;
       case "string":
-        defaultValue = `${tree.example}`;
+        defaultValue = String(tree.example);
         break;
       default:
         defaultValue = null;

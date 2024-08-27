@@ -43,6 +43,28 @@ const selector = (store: InstillStore) => ({
   editorRef: store.editorRef,
 });
 
+function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
+  const formTree = transformInstillJSONSchemaToFormTree(schema);
+
+  const selectedConditionMap =
+    transformInstillFormTreeToInitialSelectedCondition(formTree, {
+      initialData: taskName
+        ? {
+            task: taskName,
+          }
+        : undefined,
+    });
+
+  const data = transformInstillFormTreeToDefaultValue(formTree, {
+    selectedConditionMap,
+    skipPath: ["setup.api-key"],
+  });
+
+  console.log("output default data", formTree, data);
+
+  return data;
+}
+
 export const ComponentCmdo = () => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const routeInfo = useRouteInfo();
@@ -181,25 +203,6 @@ export const ComponentCmdo = () => {
       return definition.type === "COMPONENT_TYPE_GENERIC";
     });
   }, [filteredDefinitions]);
-
-  function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
-    const formTree = transformInstillJSONSchemaToFormTree(schema);
-
-    const selectedConditionMap =
-      transformInstillFormTreeToInitialSelectedCondition(formTree, {
-        initialData: taskName
-          ? {
-              task: taskName,
-            }
-          : undefined,
-      });
-
-    const data = transformInstillFormTreeToDefaultValue(formTree, {
-      selectedConditionMap,
-    });
-
-    return data;
-  }
 
   function onSelectTask() {
     if (

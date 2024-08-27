@@ -1,13 +1,13 @@
 "use client";
 
-import { NamespaceSwitch, PipelineBuilderMainView } from "@instill-ai/toolkit";
+import { RecipeEditorView } from "@instill-ai/toolkit";
 
 import { useAppAccessToken } from "~/lib/use-app-access-token";
 import { useAppTrackToken } from "~/lib/useAppTrackToken";
 
-export const PipelineBuilderRender = () => {
+export const RecipeEditorViewRender = () => {
   useAppAccessToken();
   useAppTrackToken({ enabled: true });
 
-  return <PipelineBuilderMainView namespaceSwitch={<NamespaceSwitch />} />;
+  return <RecipeEditorView />;
 };
