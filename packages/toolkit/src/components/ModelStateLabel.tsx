@@ -8,7 +8,7 @@ import type { Nullable } from "../lib";
 export type ModelStateLabelProps = {
   state?: Nullable<ModelState>;
   className?: string;
-  hardware?: string;
+  hardware?: Nullable<string>;
 };
 
 export const ModelStateLabel = ({
@@ -58,7 +58,7 @@ export const ModelStateLabel = ({
     case "STATE_SCALING_UP": {
       textColor = "text-semantic-warning-hover";
       bgColor = "bg-semantic-warning-bg";
-      stateLabelName = `The requested ${hardware} compute resource is being provisioned, please wait...`;
+      stateLabelName = `The requested ${hardware ? hardware : ""} is being provisioned, please wait...`;
       indicatorColor = "bg-semantic-warning-default";
       break;
     }
