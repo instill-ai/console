@@ -26,13 +26,9 @@ export const Output = ({
   });
 
   return (
-    <div className="flex flex-col py-4 w-full">
-      <div className="flex flex-col">
-        <div className="flex max-h-[400px] w-full flex-col overflow-y-auto">
-          <div className="flex flex-col gap-y-1 rounded bg-semantic-bg-primary">
-            {componentOutputFields}
-          </div>
-        </div>
+    <div className="flex flex-col py-4 w-full h-full">
+      <div className="flex flex-col gap-y-1 rounded bg-semantic-bg-primary">
+        {componentOutputFields}
       </div>
     </div>
   );

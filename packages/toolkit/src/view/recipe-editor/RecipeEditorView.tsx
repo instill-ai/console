@@ -502,7 +502,7 @@ export const RecipeEditorView = () => {
                             }));
                           }}
                         />
-                        <div className="rounded-b w-full h-full overflow-hidden bg-semantic-bg-alt-primary">
+                        <div className="rounded-b w-full h-full overflow-y-auto bg-semantic-bg-alt-primary">
                           {editorMultiScreenModel.topRight.views.map((view) => (
                             <div
                               key={view.id}
@@ -606,7 +606,7 @@ export const RecipeEditorView = () => {
                             }));
                           }}
                         />
-                        <div className="w-full h-full rounded-b bg-semantic-bg-alt-primary px-4 overflow-hidden">
+                        <div className="w-full h-full rounded-b bg-semantic-bg-alt-primary px-4 overflow-y-auto">
                           {editorMultiScreenModel.bottomRight.views.map(
                             (view) => (
                               <div

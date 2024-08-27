@@ -184,6 +184,34 @@ export const VscodeEditor = () => {
     monacoRef.current.editor.setModelMarkers(model, "owner", markErrors);
   }, [markErrors]);
 
+  // Change editor background color, when the released version is selected
+  React.useEffect(() => {
+    let newTheme = tomorrowTheme;
+
+    if (currentVersion === "latest") {
+      newTheme = {
+        ...tomorrowTheme,
+        colors: {
+          ...tomorrowTheme.colors,
+          "editor.background": "#f8f9fc",
+        },
+      };
+    } else {
+      newTheme = {
+        ...tomorrowTheme,
+        colors: {
+          ...tomorrowTheme.colors,
+          "editor.background": "#e1e6ef",
+        },
+      };
+    }
+
+    monacoRef.current?.editor.defineTheme(
+      "tomorrow",
+      newTheme as editor.IStandaloneThemeData,
+    );
+  }, [currentVersion, tomorrowTheme]);
+
   const handleAutoComplete = React.useCallback(
     ({
       model,
@@ -867,9 +895,9 @@ export const VscodeEditor = () => {
 
   return (
     <div className="w-full h-full relative">
-      {pipeline.isSuccess && currentVersion !== "latest" ? (
+      {/* {pipeline.isSuccess && currentVersion !== "latest" ? (
         <div className="absolute z-10 inset-0 bg-semantic-fg-primary opacity-15"></div>
-      ) : null}
+      ) : null} */}
       <style jsx={true}>{`
         ..rendered-markdown > h1 {
           font-size: 1.5rem;

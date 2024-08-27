@@ -60,6 +60,7 @@ export function useEditorCommandListener() {
           e.preventDefault();
           updateOpenActionCmdk((open) => !open);
         }
+
         return;
       }
     };
