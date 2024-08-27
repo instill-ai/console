@@ -19,10 +19,10 @@ import {
 import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { CatalogCard } from "../CatalogCard";
 import CatalogSearchSort, { SortAnchor, SortOrder } from "../CatalogSearchSort";
-import { CreateCatalogDialog } from "../CreateCatalogDialog";
-import { UpgradePlanLink } from "../notifications";
-import { EditCatalogDialogData } from "../EditCatalogDialog";
 import { CreateCatalogCard } from "../CreateCatalogCard";
+import { CreateCatalogDialog } from "../CreateCatalogDialog";
+import { EditCatalogDialogData } from "../EditCatalogDialog";
+import { UpgradePlanLink } from "../notifications";
 
 type CatalogTabProps = {
   onCatalogSelect: (catalog: Catalog) => void;
@@ -34,7 +34,6 @@ type CatalogTabProps = {
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
   isLocalEnvironment: boolean;
 };
-
 
 const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),

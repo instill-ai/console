@@ -13,7 +13,6 @@ import {
 } from "../../../lib/react-query-service/catalog";
 import { Catalog } from "../../../lib/react-query-service/catalog/types";
 
-
 type CreateCatalogCardProps = {
   catalog: Catalog;
   onCardClick: () => void;

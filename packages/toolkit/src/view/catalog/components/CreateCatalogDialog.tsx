@@ -104,7 +104,7 @@ export const CreateCatalogDialog = ({
   }, [isOpen, navigationNamespaceAnchor, form]);
 
   const handleSubmit = async (
-    data: z.infer<typeof CreateCatalogFormSchema>
+    data: z.infer<typeof CreateCatalogFormSchema>,
   ) => {
     setCreating(true);
 
@@ -114,9 +114,9 @@ export const CreateCatalogDialog = ({
         name: formatName(data.name),
         tags: data.tags
           ? data.tags
-            .split(",")
-            .map((tag) => tag.trim())
-            .filter((tag) => tag !== "")
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter((tag) => tag !== "")
           : [],
       };
 

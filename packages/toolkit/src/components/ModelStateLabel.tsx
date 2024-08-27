@@ -11,7 +11,11 @@ export type ModelStateLabelProps = {
   hardware?: string;
 };
 
-export const ModelStateLabel = ({ state, className, hardware }: ModelStateLabelProps) => {
+export const ModelStateLabel = ({
+  state,
+  className,
+  hardware,
+}: ModelStateLabelProps) => {
   if (!state) {
     return null;
   }
@@ -32,7 +36,8 @@ export const ModelStateLabel = ({ state, className, hardware }: ModelStateLabelP
     case "STATE_IDLE": {
       textColor = "text-semantic-fg-primary";
       bgColor = "bg-semantic-bg-base-bg";
-      stateLabelName = "Model deployment takes time. Credits won't be consumed during this period. Please wait.";
+      stateLabelName =
+        "Model deployment takes time. Credits won't be consumed during this period. Please wait.";
       indicatorColor = "bg-semantic-success-default";
       break;
     }

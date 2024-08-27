@@ -4,6 +4,7 @@ import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+
 import {
   Button,
   Dialog,
@@ -11,8 +12,9 @@ import {
   Input,
   Textarea,
 } from "@instill-ai/design-system";
-import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
+
 import { LoadingSpin } from "../../../components";
+import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
 
 const EditCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -74,10 +76,10 @@ export const EditCatalogDialog = ({
         ...data,
         tags: data.tags
           ? data.tags
-            .split(",")
-            .map((tag) => tag.trim())
-            .filter((tag) => tag !== "")
-            .join(",")
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter((tag) => tag !== "")
+              .join(",")
           : "",
       };
       await onSubmit(formattedData);
