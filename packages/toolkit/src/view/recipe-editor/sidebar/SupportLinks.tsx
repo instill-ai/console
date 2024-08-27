@@ -1,11 +1,42 @@
 import { Icons } from "@instill-ai/design-system";
 
+import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import { gettingStartedEditorView } from "../getting-started-view";
+
+const selector = (store: InstillStore) => ({
+  updateEditorMultiScreenModel: store.updateEditorMultiScreenModel,
+});
+
 export const SupportLinks = () => {
+  const { updateEditorMultiScreenModel } = useInstillStore(
+    useShallow(selector),
+  );
+
   return (
     <div className="flex flex-col gap-y-2">
+      <button
+        onClick={() => {
+          updateEditorMultiScreenModel((prev) => ({
+            ...prev,
+            topRight: {
+              views: [
+                ...prev.topRight.views.filter(
+                  (view) => view.id !== "getting-started",
+                ),
+                gettingStartedEditorView,
+              ],
+              currentViewId: "getting-started",
+            },
+          }));
+        }}
+        className="flex gap-x-2 py-1.5 px-2 hover:bg-semantic-bg-alt-primary rounded"
+      >
+        <Icons.MagicWand01 className="h-3 w-3 stroke-semantic-fg-disabled" />
+        <span className="my-auto product-button-button-3">Getting Started</span>
+      </button>
       <a
         href="https://discord.com/invite/sevxWsqpGh"
-        className="flex gap-x-2 py-1.5 px-2"
+        className="flex gap-x-2 py-1.5 px-2 hover:bg-semantic-bg-alt-primary rounded"
         rel="noopener noreferrer"
         target="_blank"
       >
@@ -14,7 +45,7 @@ export const SupportLinks = () => {
       </a>
       <a
         href="https://www.instill.tech/docs"
-        className="flex gap-x-2 py-1.5 px-2"
+        className="flex gap-x-2 py-1.5 px-2 hover:bg-semantic-bg-alt-primary rounded"
         rel="noopener noreferrer"
         target="_blank"
       >

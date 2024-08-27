@@ -17,6 +17,7 @@ import { LoadingSpin, PageBase } from "../../components";
 import { CETopbarDropdown } from "../../components/top-bar/CETopbarDropdown";
 import { CloudTopbarDropdown } from "../../components/top-bar/CloudTopbarDropdown";
 import {
+  EditorView,
   InstillStore,
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
@@ -31,6 +32,7 @@ import { ImportRecipeDialog } from "./dialogs/ImportRecipeDialog";
 import { EditorProvider } from "./EditorContext";
 import { EditorViewSectionBar } from "./EditorViewSectionBar";
 import { Flow } from "./flow";
+import { gettingStartedEditorView } from "./getting-started-view";
 import { InOutputEmptyView } from "./InOutputEmptyView";
 import { Input } from "./input/Input";
 import { prettifyYaml, useEditorCommandListener } from "./lib";
@@ -136,49 +138,69 @@ export const RecipeEditorView = () => {
         <InOutputEmptyView reason="outputIsEmpty" />
       );
 
-    updateEditorMultiScreenModel(() => ({
-      topRight: {
-        views: [
-          {
-            id: "main-preview-flow",
-            title: "Preview",
-            type: "preview",
-            view: (
-              <Flow
-                pipelineId={pipeline.data?.id ?? null}
-                recipe={pipeline.data?.recipe ?? null}
-                pipelineMetadata={pipeline.data?.metadata ?? null}
-              />
-            ),
-            closeable: false,
-          },
-        ],
-        currentViewId: "main-preview-flow",
-      },
-      main: {
-        views: [],
-        currentViewId: null,
-      },
-      bottomRight: {
-        views: [
-          {
-            id: "main-input",
-            title: "Input",
-            type: "input",
-            view: inputView,
-            closeable: false,
-          },
-          {
-            id: "main-output",
-            title: "Output",
-            type: "output",
-            view: outputView,
-            closeable: false,
-          },
-        ],
-        currentViewId: "main-input",
-      },
-    }));
+    let pipelineIsNew = false;
+
+    if (
+      !pipeline.data.recipe.component &&
+      !pipeline.data.recipe.variable &&
+      !pipeline.data.recipe.output
+    ) {
+      pipelineIsNew = true;
+    }
+
+    updateEditorMultiScreenModel(() => {
+      const topRightViews: EditorView[] = [
+        {
+          id: "main-preview-flow",
+          title: "Preview",
+          type: "preview",
+          view: (
+            <Flow
+              pipelineId={pipeline.data?.id ?? null}
+              recipe={pipeline.data?.recipe ?? null}
+              pipelineMetadata={pipeline.data?.metadata ?? null}
+            />
+          ),
+          closeable: false,
+        },
+      ];
+
+      if (pipelineIsNew) {
+        topRightViews.push(gettingStartedEditorView);
+      }
+
+      return {
+        topRight: {
+          views: topRightViews,
+          currentViewId: pipelineIsNew
+            ? "getting-started"
+            : "main-preview-flow",
+        },
+        main: {
+          views: [],
+          currentViewId: null,
+        },
+        bottomRight: {
+          views: [
+            {
+              id: "main-input",
+              title: "Input",
+              type: "input",
+              view: inputView,
+              closeable: false,
+            },
+            {
+              id: "main-output",
+              title: "Output",
+              type: "output",
+              view: outputView,
+              closeable: false,
+            },
+          ],
+          currentViewId: "main-input",
+        },
+      };
+    });
   }, [pipeline.data, pipeline.isSuccess, updateEditorMultiScreenModel]);
 
   const isCloud = env("NEXT_PUBLIC_APP_ENV") === "CLOUD";
@@ -485,7 +507,7 @@ export const RecipeEditorView = () => {
                             <div
                               key={view.id}
                               className={cn(
-                                "flex w-full h-full",
+                                "flex w-full h-full overflow-auto",
                                 view.id ===
                                   editorMultiScreenModel.topRight?.currentViewId
                                   ? ""
