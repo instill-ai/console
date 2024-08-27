@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { Separator, Tooltip } from "@instill-ai/design-system";
 
-import { CatalogCardMenu, EditCatalogDialog } from ".";
+import { CatalogCardMenu, EditCatalogDialog, EditCatalogDialogData } from ".";
 import { GeneralDeleteResourceDialog } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import {
@@ -13,11 +13,6 @@ import {
 } from "../../../lib/react-query-service/catalog";
 import { Catalog } from "../../../lib/react-query-service/catalog/types";
 
-type EditCatalogDialogData = {
-  name: string;
-  description?: string;
-  tags?: string[];
-};
 
 type CreateCatalogCardProps = {
   catalog: Catalog;
@@ -48,6 +43,8 @@ export const CreateCatalogCard = ({
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isHovered, setIsHovered] = React.useState(false);
+  const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
   const cardRef = React.useRef<HTMLDivElement>(null);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
@@ -58,7 +55,7 @@ export const CreateCatalogCard = ({
     namespaceId: selectedNamespace,
     catalogId: catalog.catalogId,
     accessToken: accessToken || null,
-    enabled: enabledQuery,
+    enabled: enabledQuery && isHovered,
   });
 
   const chunks = useGetAllChunks({
@@ -68,7 +65,7 @@ export const CreateCatalogCard = ({
     fileUid: existingFiles.isSuccess
       ? existingFiles.data?.[0]?.fileUid
       : undefined,
-    enabled: Boolean(existingFiles.data) && Boolean(accessToken),
+    enabled: Boolean(existingFiles.data) && Boolean(accessToken) && isHovered,
   });
 
   const totalChunks = React.useMemo(() => {
@@ -76,6 +73,8 @@ export const CreateCatalogCard = ({
   }, [chunks.data]);
 
   const tooltipContent = React.useMemo(() => {
+    if (!isHovered) return "";
+
     return `
 Converting pipeline ID: ${catalog.convertingPipelines?.[0] || "N/A"}
 Splitting pipeline ID: ${catalog.splittingPipelines?.[0] || "N/A"}
@@ -84,7 +83,7 @@ Files #: ${catalog.totalFiles || "N/A"}
 Text Chunks #: ${totalChunks}
 Tokens: #: ${catalog.totalTokens || "N/A"}
 `.trim();
-  }, [catalog, totalChunks]);
+  }, [catalog, totalChunks, isHovered]);
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -106,15 +105,32 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
     setEditDialogIsOpen(false);
   };
 
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePosition({
+      x: e.clientX - rect.left - 300,
+      y: e.clientY - rect.top - 150,
+    });
+  };
+
+  // Coming in v2
+  // const handleTagsClick = (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   setEditDialogIsOpen(true);
+  // };
+
   return (
     <React.Fragment>
       <Tooltip.Provider>
-        <Tooltip.Root>
+        <Tooltip.Root disableHoverableContent={isMenuOpen}>
           <Tooltip.Trigger asChild>
             <div
               ref={cardRef}
               className="flex h-[175px] w-[360px] cursor-pointer flex-col rounded-md border border-semantic-bg-line bg-semantic-bg-primary p-5 shadow hover:bg-semantic-bg-base-bg"
               onClick={onCardClick}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              onMouseMove={handleMouseMove}
             >
               <div className="flex items-center justify-between">
                 <div className="product-headings-heading-4">{catalog.name}</div>
@@ -123,6 +139,35 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
               <p className="mb-auto line-clamp-3 product-body-text-3-regular whitespace-pre-wrap break-words">
                 {catalog.description}
               </p>
+              {/* Coming in v2 */}
+              {/* <div className="flex flex-wrap gap-1 mt-auto">
+                {catalog.tags && catalog.tags.length > 0 ? (
+                  <>
+                    {catalog.tags.slice(0, MAX_VISIBLE_TAGS).map((tag, index) => (
+                      <Tag key={index} variant="lightBlue">
+                        {tag}
+                      </Tag>
+                    ))}
+                    {catalog.tags.length > MAX_VISIBLE_TAGS && (
+                      <Button
+                        variant="tertiaryGrey"
+                        size="sm"
+                        onClick={handleTagsClick}
+                      >
+                        +{catalog.tags.length - MAX_VISIBLE_TAGS}
+                      </Button>
+                    )}
+                  </>
+                ) : (
+                  <Button
+                    variant="tertiaryGrey"
+                    size="sm"
+                    onClick={handleTagsClick}
+                  >
+                    + Tags
+                  </Button>
+                )}
+              </div> */}
               <div
                 className="flex items-end justify-end"
                 onClick={(e) => e.stopPropagation()}
@@ -139,7 +184,13 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
             </div>
           </Tooltip.Trigger>
           <Tooltip.Portal>
-            <Tooltip.Content className="absolute w-[300px] max-w-[300px] rounded-md bg-semantic-bg-primary p-4 shadow-lg !z-10">
+            <Tooltip.Content
+              className="absolute w-[300px] max-w-[300px] rounded-md bg-semantic-bg-primary p-4 shadow-lg !z-10"
+              style={{
+                left: `${mousePosition.x}px`,
+                top: `${mousePosition.y}px`,
+              }}
+            >
               <div className="whitespace-pre-wrap text-xs break-words">
                 {tooltipContent}
               </div>
@@ -167,7 +218,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
         initialValues={{
           name: catalog.name,
           description: catalog.description,
-          tags: catalog.tags || [],
+          tags: catalog.tags ? catalog.tags : [],
         }}
       />
     </React.Fragment>

@@ -167,6 +167,7 @@ export const GetCatalogTab = ({
               wrapLongLines={true}
               customStyle={defaultCodeSnippetStyles}
               disableCopy={!selectedFile}
+              language="bash"
             />
           </div>
           <ModelSectionHeader>JSON Schema</ModelSectionHeader>
