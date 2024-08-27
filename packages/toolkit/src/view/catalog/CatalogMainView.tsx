@@ -292,7 +292,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
     return () => {
       window.removeEventListener("hashchange", handleHashChange);
     };
-  }, [catalogs.data]);
+  }, [catalogs.data, changeTab]);
 
   return (
     <div className="h-screen w-full bg-semantic-bg-alt-primary">
