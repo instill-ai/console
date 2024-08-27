@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { Button, Icons, Popover } from "@instill-ai/design-system";
 
-import { ReleaseMenu } from "../pipeline-builder";
+import { ReleaseMenu } from "../../pipeline-builder";
 
 export const ReleasePopover = () => {
   const [releaseMenuOpen, setReleaseMenuOpen] = React.useState(false);

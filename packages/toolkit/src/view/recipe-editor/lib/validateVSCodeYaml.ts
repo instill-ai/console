@@ -10,7 +10,7 @@ import type { editor } from "monaco-editor";
 import Ajv from "ajv";
 import YAML from "yaml";
 
-import { GeneralRecord, Nullable } from "../../lib";
+import { GeneralRecord, Nullable } from "../../../lib";
 import { InstillYamlSchema } from "./schema";
 
 const ajv = new Ajv({ allErrors: true });
@@ -110,8 +110,6 @@ export function validateVSCodeYaml(
   } catch (error) {
     console.log(error);
   }
-
-  console.log(":mm", markers);
 
   if (markers.length === 0) {
     return { success: true, data: yamlData };

@@ -90,9 +90,6 @@ const FilePreview = () => {
       embeddingModel: "",
     },
   });
-  // const onSubmit: SubmitHandler<UploadExploreFormData> = async (data) => {
-  //   console.log(data);
-  // };
 
   const tabTriggerStyle =
     "rounded-t-sm border border-semantic-bg-line bg-semantic-bg-base-bg px-3 py-1.5 text-[#1D2433] text-opacity-80 product-body-text-3-semibold data-[state=active]:bg-semantic-bg-primary data-[state=active]:text-opacity-100";

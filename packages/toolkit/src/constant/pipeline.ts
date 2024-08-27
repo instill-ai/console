@@ -1,4 +1,4 @@
-import type { PipelineVariableFieldMap } from "instill-sdk";
+import type { PipelineRecipe, PipelineVariableFieldMap } from "instill-sdk";
 import { Node } from "reactflow";
 
 import type { NodeData, TriggerNodeData } from "../view";
@@ -81,6 +81,18 @@ export const generateInputsPayload = (fields: PipelineVariableFieldMap) => {
   return input;
 };
 
+export function generatePipelineHttpInputStringFromRecipe(
+  recipe: PipelineRecipe,
+) {
+  if (!recipe.variable) {
+    return "";
+  }
+
+  const input = generateInputsPayload(recipe.variable);
+
+  return JSON.stringify({ inputs: [input] }, null, "\t");
+}
+
 export const generatePipelineHttpInputStringFromNodes = (
   nodes: Node<NodeData>[],
 ) => {
@@ -133,13 +145,13 @@ version: v1beta
 
 # ---------- Data ----------
 # Variables that manually trigger the pipeline and can be referenced in component actions
-variable:
+# variable:
 
 # Custom user-defined output
-output:
+# output:
 
 # ---------- Schema ----------
 # Component actions executed during the pipeline run
 # Click "⌘O" to add a new component
-component:
+# component:
 `;

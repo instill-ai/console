@@ -23,6 +23,7 @@ import {
 export type RequestOption = {
   body?: string;
   additionalHeaders?: GeneralRecord;
+  stream?: boolean;
 };
 
 export class InstillAPIClient {
@@ -84,6 +85,10 @@ export class InstillAPIClient {
             },
         body: opt?.body,
       });
+
+      if (opt && opt.stream) {
+        return response as Rsp;
+      }
 
       if (!response.ok) {
         if (this.debug) {

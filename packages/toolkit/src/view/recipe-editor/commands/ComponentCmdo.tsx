@@ -39,7 +39,6 @@ const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
   openComponentCmdo: store.openComponentCmdo,
-  openActionCmdk: store.openActionCmdk,
   updateOpenComponentCmdo: store.updateOpenComponentCmdo,
   editorRef: store.editorRef,
 });
@@ -53,7 +52,6 @@ export const ComponentCmdo = () => {
     openComponentCmdo,
     updateOpenComponentCmdo,
     editorRef,
-    openActionCmdk,
   } = useInstillStore(useShallow(selector));
 
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
@@ -184,22 +182,6 @@ export const ComponentCmdo = () => {
     });
   }, [filteredDefinitions]);
 
-  React.useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (openActionCmdk) {
-        return;
-      }
-
-      if (e.key === "o" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        updateOpenComponentCmdo((open) => !open);
-      }
-    };
-
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, [openActionCmdk, updateOpenComponentCmdo]);
-
   function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
     const formTree = transformInstillJSONSchemaToFormTree(schema);
 
@@ -296,7 +278,6 @@ export const ComponentCmdo = () => {
       open={openComponentCmdo}
       onOpenChange={(open) => {
         if (!open) {
-          console.log("closing");
           setSelectedComponentDefinition(null);
           setSelectedTask(null);
           setSelectedComponentDefaultValue(null);

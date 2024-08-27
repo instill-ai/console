@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { getInstillAdditionalHeaders } from "../../helper";
 import { APIResource } from "../../main/resource";
 import {
@@ -9,7 +11,7 @@ import {
   TriggerNamespacePipelineReleaseResponse,
   TriggerNamespacePipelineRequest,
   TriggerNamespacePipelineResponse,
-  TriggerNamespacePipelineWithStreamingResponse,
+  TriggerNamespacePipelineWithStreamResponse,
 } from "./types";
 
 export class TriggerClient extends APIResource {
@@ -19,19 +21,19 @@ export class TriggerClient extends APIResource {
     returnTraces,
     requesterUid,
     shareCode,
-    streaming,
+    stream,
   }: TriggerNamespacePipelineRequest & {
-    streaming: true;
-  }): Promise<TriggerNamespacePipelineWithStreamingResponse>;
+    stream: true;
+  }): Promise<TriggerNamespacePipelineWithStreamResponse>;
   async triggerNamespacePipeline({
     namespacePipelineName,
     inputs,
     returnTraces,
     requesterUid,
     shareCode,
-    streaming,
+    stream,
   }: TriggerNamespacePipelineRequest & {
-    streaming: false;
+    stream: false;
   }): Promise<TriggerNamespacePipelineResponse>;
   async triggerNamespacePipeline({
     namespacePipelineName,
@@ -39,9 +41,9 @@ export class TriggerClient extends APIResource {
     returnTraces,
     requesterUid,
     shareCode,
-    streaming,
+    stream,
   }: TriggerNamespacePipelineRequest & {
-    streaming?: undefined;
+    stream?: undefined;
   }): Promise<TriggerNamespacePipelineResponse>;
   async triggerNamespacePipeline({
     namespacePipelineName,
@@ -49,12 +51,12 @@ export class TriggerClient extends APIResource {
     returnTraces,
     requesterUid,
     shareCode,
-    streaming,
+    stream,
   }: TriggerNamespacePipelineRequest & {
-    streaming?: boolean;
+    stream?: boolean;
   }): Promise<
     | TriggerNamespacePipelineResponse
-    | TriggerNamespacePipelineWithStreamingResponse
+    | TriggerNamespacePipelineWithStreamResponse
   >;
   async triggerNamespacePipeline({
     namespacePipelineName,
@@ -62,25 +64,29 @@ export class TriggerClient extends APIResource {
     requesterUid,
     returnTraces,
     shareCode,
-    streaming,
+    stream,
   }: TriggerNamespacePipelineRequest) {
     const additionalHeaders = getInstillAdditionalHeaders({
       requesterUid,
       returnTraces,
       shareCode,
-      streaming,
+      stream,
     });
 
     try {
-      const data = this._client.post(`/${namespacePipelineName}/trigger`, {
-        body: JSON.stringify({ inputs }),
-        additionalHeaders,
-      });
+      const data = (await this._client.post(
+        `/${namespacePipelineName}/trigger`,
+        {
+          body: JSON.stringify({ inputs }),
+          additionalHeaders,
+          stream: true,
+        },
+      )) as any;
 
-      if (streaming) {
+      if (stream) {
         return Promise.resolve(
           data,
-        ) as Promise<TriggerNamespacePipelineWithStreamingResponse>;
+        ) as Promise<TriggerNamespacePipelineWithStreamResponse>;
       } else {
         return Promise.resolve(data);
       }
@@ -123,15 +129,15 @@ export class TriggerClient extends APIResource {
     returnTraces,
     requesterUid,
     shareCode,
-    streaming,
+    stream,
   }: TriggerNamespacePipelineReleaseRequest & {
-    streaming?: boolean;
+    stream?: boolean;
   }) {
     const additionalHeaders = getInstillAdditionalHeaders({
       requesterUid,
       returnTraces,
       shareCode,
-      streaming,
+      stream,
     });
 
     try {

@@ -26,21 +26,22 @@ import {
 } from "../../lib";
 import { env } from "../../server";
 import { ActionCmdk, ComponentCmdo } from "./commands";
+import { PipelineToolkitDialog, SharePipelineDialog } from "./dialogs";
+import { ImportRecipeDialog } from "./dialogs/ImportRecipeDialog";
 import { EditorProvider } from "./EditorContext";
 import { EditorViewSectionBar } from "./EditorViewSectionBar";
 import { Flow } from "./flow";
-import { ImportRecipeDialog } from "./ImportRecipeDialog";
 import { InOutputEmptyView } from "./InOutputEmptyView";
-import { Input } from "./Input";
+import { Input } from "./input/Input";
+import { prettifyYaml, useEditorCommandListener } from "./lib";
 import { Output } from "./Output";
-import { PipelineNamePopover } from "./PipelineNamePopover";
-import { prettifyYaml } from "./prettifyYaml";
-import { ReleasedVersionPopover } from "./ReleasedVersionPopover";
-import { ReleasePopover } from "./ReleasePopover";
+import {
+  PipelineNamePopover,
+  ReleasedVersionPopover,
+  ReleasePopover,
+} from "./popovers";
 import { RunButton } from "./RunButton";
-import { ShareDialogTrigger } from "./ShareDialogTrigger";
 import { Sidebar } from "./sidebar";
-import { ToolkitDialogTrigger } from "./ToolkitDialogTrigger";
 
 // Dynamic load this component to solve hydration error
 const VscodeEditor = dynamic(
@@ -77,6 +78,7 @@ export const RecipeEditorView = () => {
     updateCurrentVersion,
     currentVersion,
   } = useInstillStore(useShallow(selector));
+  useEditorCommandListener();
   const routeInfo = useRouteInfo();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
   const [currentExpandView, setCurrentExpandView] =
@@ -128,7 +130,6 @@ export const RecipeEditorView = () => {
       Object.keys(pipeline.data.dataSpecification.output?.properties).length !==
         0 ? (
         <Output
-          id="test"
           outputSchema={pipeline.data?.dataSpecification?.output ?? null}
         />
       ) : (
@@ -243,8 +244,8 @@ export const RecipeEditorView = () => {
         </div>
         <div className="flex flex-row gap-x-2 w-1/2 justify-end">
           <ActionCmdk />
-          <ToolkitDialogTrigger />
-          <ShareDialogTrigger />
+          <PipelineToolkitDialog />
+          <SharePipelineDialog />
           <ReleasePopover />
           <div className="ml-4 flex">
             {isCloud ? <CloudTopbarDropdown /> : <CETopbarDropdown />}

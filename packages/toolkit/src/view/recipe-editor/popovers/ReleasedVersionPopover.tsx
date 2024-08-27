@@ -18,8 +18,8 @@ import {
   useRouteInfo,
   useShallow,
   useSortedReleases,
-} from "../../lib";
-import { getHumanReadableStringFromTime } from "../../server";
+} from "../../../lib";
+import { getHumanReadableStringFromTime } from "../../../server";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

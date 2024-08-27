@@ -59,6 +59,7 @@ export type PipelineGeneralComponent = {
   input: GeneralRecord;
   condition: Nullable<string>;
   setup: Nullable<GeneralRecord>;
+  description?: string;
 } & ComponentBasicFields;
 
 export type PipelineIteratorComponent = {

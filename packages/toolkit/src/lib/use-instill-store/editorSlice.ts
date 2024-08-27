@@ -9,6 +9,7 @@ import {
   EditorSlice,
   InstillStore,
   InstillStoreMutators,
+  TriggerPipelineStreamMap,
 } from "./types";
 
 export const createEditorSlice: StateCreator<
@@ -114,4 +115,26 @@ export const createEditorSlice: StateCreator<
     }),
   importRecipeInputTriggerRef:
     React.createRef<HTMLInputElement>() as React.MutableRefObject<HTMLInputElement>,
+  triggerPipelineStreamMap: null,
+  updateTriggerPipelineStreamMap: (
+    fn: (
+      prev: Nullable<TriggerPipelineStreamMap>,
+    ) => Nullable<TriggerPipelineStreamMap>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        triggerPipelineStreamMap: fn(state.triggerPipelineStreamMap),
+      };
+    }),
+  forceStopTriggerPipelineStream: false,
+  updateForceStopTriggerPipelineStream: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        forceStopTriggerPipelineStream: fn(
+          state.forceStopTriggerPipelineStream,
+        ),
+      };
+    }),
 });

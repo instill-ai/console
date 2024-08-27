@@ -1,4 +1,6 @@
 import type {
+  GeneralRecord,
+  PipelineStreamStatus,
   Secret,
   TriggerNamespacePipelineResponse,
   TriggerUserPipelineWithStreamData,
@@ -199,6 +201,39 @@ export type EditorSlice = {
    * The import recipe dialog will be opened and the file will be read
    */
   importRecipeInputTriggerRef: React.MutableRefObject<HTMLInputElement>;
+
+  /**
+   * This is used to store the pipeline and component status, input, output, and error
+   * for the trigger pipeline stream
+   */
+  triggerPipelineStreamMap: Nullable<TriggerPipelineStreamMap>;
+  updateTriggerPipelineStreamMap: (
+    fn: (
+      prev: Nullable<TriggerPipelineStreamMap>,
+    ) => Nullable<TriggerPipelineStreamMap>,
+  ) => void;
+
+  forceStopTriggerPipelineStream: boolean;
+  updateForceStopTriggerPipelineStream: (
+    fn: (prev: boolean) => boolean,
+  ) => void;
+};
+
+export type TriggerPipelineStreamMap = {
+  component?: Record<
+    string,
+    {
+      status?: PipelineStreamStatus;
+      input?: GeneralRecord;
+      output?: GeneralRecord;
+      error?: GeneralRecord;
+    }
+  >;
+  pipeline?: {
+    status?: PipelineStreamStatus;
+    output?: GeneralRecord;
+    error?: GeneralRecord;
+  };
 };
 
 export type RecentlyUsedSlice = {
