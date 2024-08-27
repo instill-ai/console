@@ -1,29 +1,21 @@
-import type { Pipeline, PipelineRelease } from "instill-sdk";
-import { useRouter, useSearchParams } from "next/navigation";
+import type { PipelineRelease } from "instill-sdk";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Button, DataTable } from "@instill-ai/design-system";
+import { DataTable } from "@instill-ai/design-system";
 
 import { EmptyView, LoadingSpin } from "../../../components";
-import { useRouteInfo } from "../../../lib";
 import { getHumanReadableStringFromTime } from "../../../server";
 import { TABLE_PAGE_SIZE } from "./constants";
 
 export type PipelineVersionsProps = {
-  pipeline?: Pipeline;
   releases: PipelineRelease[];
   isReady: boolean;
 };
 
 export const PipelineVersions = ({
-  pipeline,
   releases,
   isReady,
 }: PipelineVersionsProps) => {
-  const router = useRouter();
-  const routeInfo = useRouteInfo();
-  const searchParams = useSearchParams();
-  const currentVersion = searchParams.get("version");
   const columns: ColumnDef<PipelineRelease>[] = [
     {
       accessorKey: "id",
@@ -50,46 +42,7 @@ export const PipelineVersions = ({
         );
       },
     },
-    {
-      accessorKey: "createdTime",
-      header: () => null,
-      cell: ({ row }) => {
-        const version = row.getValue("id") as string;
-        const isActive = version === currentVersion;
-
-        return !isActive ? (
-          <div className="flex flex-row justify-end">
-            <Button
-              variant="secondaryGrey"
-              disabled={isActive}
-              onClick={() => onTestVersion(version)}
-              className="-my-2"
-            >
-              Test
-            </Button>
-          </div>
-        ) : null;
-      },
-    },
   ];
-
-  const onTestVersion = (version: string) => {
-    if (!pipeline) {
-      return;
-    }
-
-    const newSearchParams = new URLSearchParams();
-    newSearchParams.set("version", version);
-
-    const combinedSearchParams = new URLSearchParams({
-      ...Object.fromEntries(searchParams),
-      ...Object.fromEntries(newSearchParams),
-    });
-
-    router.replace(
-      `/${routeInfo.data.namespaceId}/pipelines/${pipeline?.id}/playground?${combinedSearchParams.toString()}`,
-    );
-  };
 
   if (!isReady) {
     return <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />;
@@ -107,7 +60,7 @@ export const PipelineVersions = ({
   }
 
   return (
-    <div className="[&_table]:table-fixed [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(2)]:w-40 [&_table_th:nth-child(3)]:w-28">
+    <div className="[&_table]:table-fixed [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(2)]:w-40">
       <DataTable
         columns={columns}
         data={releases}
