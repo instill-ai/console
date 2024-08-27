@@ -84,7 +84,7 @@ export const CatalogTab = ({
     if (selectedNamespace) {
       catalogState.refetch();
     }
-  }, [selectedNamespace, catalogState.refetch]);
+  }, [selectedNamespace, catalogState.refetch, catalogState]);
 
   const handleCreateCatalogSubmit = async (
     data: z.infer<typeof CreateCatalogFormSchema>,

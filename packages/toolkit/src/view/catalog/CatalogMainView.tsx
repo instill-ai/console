@@ -255,7 +255,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
     setSelectedCatalog(null);
     changeTab("catalogs");
     setHasUnsavedChanges(false);
-  }, [selectedNamespace]);
+  }, [selectedNamespace, changeTab]);
 
   React.useEffect(() => {
     return () => {
