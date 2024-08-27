@@ -169,7 +169,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
     }
   };
 
-  const changeTab = (tab: string) => {
+  const changeTab = React.useCallback((tab: string) => {
     setActiveTab(tab);
     if (tab === "catalogs") {
       setSelectedCatalog(null);
@@ -177,7 +177,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
       setSelectedCatalog(catalogs.data[0] || null);
     }
     router.push(`#${tab}`, { scroll: false });
-  };
+  }, [selectedCatalog, catalogs.data, router]);
 
   const handleWarnDialogClose = async (): Promise<void> => {
     return new Promise((resolve) => {
