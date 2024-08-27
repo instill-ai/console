@@ -1,4 +1,5 @@
-'use client';
+"use client";
+
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Nullable } from "instill-sdk";
@@ -170,13 +171,16 @@ export const CatalogMainView = (props: CatalogViewProps) => {
     }
   };
 
-  const changeTab = React.useCallback((tab: string) => {
-    setActiveTab(tab);
-    if (tab === "catalogs") {
-      setSelectedCatalog(null);
-    }
-    router.push(`#${tab}`, { scroll: false });
-  }, [router]);
+  const changeTab = React.useCallback(
+    (tab: string) => {
+      setActiveTab(tab);
+      if (tab === "catalogs") {
+        setSelectedCatalog(null);
+      }
+      router.push(`#${tab}`, { scroll: false });
+    },
+    [router],
+  );
 
   const handleWarnDialogClose = async (): Promise<void> => {
     return new Promise((resolve) => {
