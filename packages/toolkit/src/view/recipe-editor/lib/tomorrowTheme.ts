@@ -235,7 +235,7 @@ export const tomorrowTheme = {
   ],
   colors: {
     "editor.foreground": "#4D4D4C",
-    "editor.background": "#FFFFFF",
+    "editor.background": "#f8f9fc",
     "editor.selectionBackground": "#D6D6D6",
     "editor.lineHighlightBackground": "#EFEFEF",
     "editorCursor.foreground": "#AEAFAD",

@@ -21,7 +21,6 @@ import { CustomHandle } from "./CustomHandle";
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
-  triggerWithStreamData: store.triggerWithStreamData,
   editorRef: store.editorRef,
   updateEditorMultiScreenModel: store.updateEditorMultiScreenModel,
   selectedComponentId: store.selectedComponentId,
@@ -58,7 +57,6 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
   const {
     accessToken,
     enabledQuery,
-    triggerWithStreamData,
     editorRef,
     updateEditorMultiScreenModel,
     selectedComponentId,
@@ -77,22 +75,6 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
   });
-
-  const isFinished = React.useMemo(() => {
-    const targetTrace = triggerWithStreamData.find((data) => {
-      if (!data.metadata.traces) {
-        return false;
-      }
-      const traceKey = Object.keys(data.metadata.traces)[0];
-      return traceKey === id;
-    });
-
-    if (targetTrace) {
-      return true;
-    } else {
-      false;
-    }
-  }, [triggerWithStreamData, id]);
 
   const handleClick = React.useCallback(() => {
     if (!pipeline.isSuccess || !editorRef) {
@@ -251,6 +233,24 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     return false;
   }, [triggerPipelineStreamMap, id]);
 
+  const isCompleted = React.useMemo(() => {
+    if (!triggerPipelineStreamMap || !triggerPipelineStreamMap.component) {
+      return false;
+    }
+
+    const component = triggerPipelineStreamMap.component[id];
+
+    if (!component) {
+      return false;
+    }
+
+    if (component.status && component.status.completed) {
+      return true;
+    }
+
+    return false;
+  }, [triggerPipelineStreamMap, id]);
+
   return (
     <div className="relative nowheel">
       <div
@@ -287,7 +287,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
         onClick={handleClick}
         className={cn(
           "flex relative items-center border-2 border-[#94a0b8] justify-center w-[160px] h-[160px] flex-col rounded p-3 bg-semantic-bg-base-bg",
-          isFinished ? "bg-semantic-success-bg" : "",
+          isCompleted ? "border-4 border-semantic-success-default" : "",
           errorState.error ? "border-4 border-semantic-error-default" : "",
         )}
       >

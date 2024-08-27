@@ -24,12 +24,12 @@ export const RunButton = () => {
         {isTriggeringPipeline ? (
           <React.Fragment>
             Stop
-            <Icons.Stop className="h-4 w-4 stroke-semantic-bg-primary" />
+            <Icons.Stop className="h-4 w-4 fill-semantic-bg-primary stroke-semantic-bg-primary" />
           </React.Fragment>
         ) : (
           <React.Fragment>
             Run
-            <Icons.Play className="h-4 w-4 !stroke-semantic-bg-primary" />
+            <Icons.Play className="h-4 w-4 fill-semantic-bg-primary !stroke-semantic-bg-primary" />
           </React.Fragment>
         )}
       </Button>
