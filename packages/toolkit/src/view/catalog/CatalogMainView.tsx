@@ -173,11 +173,9 @@ export const CatalogMainView = (props: CatalogViewProps) => {
     setActiveTab(tab);
     if (tab === "catalogs") {
       setSelectedCatalog(null);
-    } else if (!selectedCatalog && catalogs.data && catalogs.data.length > 0) {
-      setSelectedCatalog(catalogs.data[0] || null);
     }
     router.push(`#${tab}`, { scroll: false });
-  }, [selectedCatalog, catalogs.data, router]);
+  }, [router]);
 
   const handleWarnDialogClose = async (): Promise<void> => {
     return new Promise((resolve) => {
