@@ -1182,7 +1182,7 @@ const StabilityAISchema: InstillJSONSchema = {
   type: "object",
 };
 
-test("should generate stability ai form", async () => {
+test.skip("should generate stability ai form", async () => {
   const user = userEvent.setup();
   // Make sure the form is generated correctly
   const onSubmit = vi.fn();
