@@ -93,6 +93,7 @@ import { Lock03 } from "./Lock03";
 import { LockUnlocked03 } from "./LockUnlocked03";
 import { Logout01 } from "./Logout01";
 import { Logout04 } from "./Logout04";
+import { MagicWand01 } from "./MagicWand01";
 import { Mail01 } from "./Mail01";
 import { MasterCard } from "./MasterCard";
 import { Maximize02 } from "./Maximize02";
@@ -272,6 +273,7 @@ export const Icons = {
   PauseCircle,
   MasterCard,
   MDFile,
+  MagicWand01,
   Menu01,
   MessageChatSquare,
   Minus,
