@@ -177,7 +177,7 @@ export const ModelPlayground = ({
     });
 
     existingModelTriggerResult.refetch();
-  }, [existingModelTriggerResult.refetch]);
+  }, [existingModelTriggerResult.refetch, model?.name, queryClient, existingModelTriggerResult]);
 
   useEffect(() => {
     if (activeVersion !== currentOperationIdPollingData.current.modelVersion) {
@@ -242,6 +242,7 @@ export const ModelPlayground = ({
     existingModelTriggerResult.isSuccess,
     existingModelTriggerResult.data,
     accessToken,
+    pollForResponse,
   ]);
 
   useEffect(() => {
@@ -288,7 +289,7 @@ export const ModelPlayground = ({
         modelVersion: existingTriggerState.response?.request.version || null,
       };
     }
-  }, [existingTriggerState]);
+  }, [existingTriggerState, model, pollForResponse]);
 
   const triggerModel = useTriggerUserModelVersionAsync();
 
