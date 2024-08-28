@@ -133,16 +133,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
         description: data.description ?? undefined,
         rawRecipe: defaultRawRecipe,
         metadata: {
-          component: {
-            trigger: {
-              x: 0,
-              y: 0,
-            },
-            response: {
-              x: 0,
-              y: 0,
-            },
-          },
+          pipelineIsNew: true,
         },
         sharing,
       };

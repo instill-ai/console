@@ -65,7 +65,11 @@ export const BackToLatestVersionTopBar = () => {
         <span
           className="cursor-pointer text-semantic-accent-default product-body-text-4-medium hover:!underline"
           onClick={() => {
-            if (sortedReleases.data.length === 0 || !pipeline.isSuccess) {
+            if (
+              sortedReleases.data.length === 0 ||
+              !pipeline.isSuccess ||
+              !pipeline.data.recipe
+            ) {
               return;
             }
 

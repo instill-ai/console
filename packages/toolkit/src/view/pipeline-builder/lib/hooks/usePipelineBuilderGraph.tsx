@@ -87,6 +87,10 @@ export function usePipelineBuilderGraph() {
       return;
     }
 
+    if (!pipeline.data.recipe) {
+      return;
+    }
+
     updatePipelineIsReadOnly(() => false);
 
     // Update pipeline information

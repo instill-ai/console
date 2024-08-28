@@ -80,7 +80,7 @@ export const PipelinePlayground = ({
   const variables = React.useMemo(() => {
     if (pipeline) {
       if (!currentVersion || releases.length === 0) {
-        return pipeline.recipe.variable ?? null;
+        return pipeline.recipe?.variable ?? null;
       }
 
       const pipelineVersion = releases.find(
@@ -99,7 +99,7 @@ export const PipelinePlayground = ({
   const outputs = React.useMemo(() => {
     if (pipeline) {
       if (!currentVersion || releases.length === 0) {
-        return pipeline.recipe.output ?? null;
+        return pipeline.recipe?.output ?? null;
       }
 
       const pipelineVersion = releases.find(

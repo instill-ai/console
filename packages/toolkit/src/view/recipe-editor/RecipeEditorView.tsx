@@ -121,7 +121,7 @@ export const RecipeEditorView = () => {
       return;
     }
 
-    const inputView = pipeline.data?.recipe.variable ? (
+    const inputView = pipeline.data?.recipe?.variable ? (
       <Input
         pipelineName={pipeline.data?.name ?? null}
         fields={pipeline.data?.recipe.variable ?? null}
@@ -142,15 +142,7 @@ export const RecipeEditorView = () => {
         <InOutputEmptyView reason="outputIsEmpty" />
       );
 
-    let pipelineIsNew = false;
-
-    if (
-      !pipeline.data.recipe.component &&
-      !pipeline.data.recipe.variable &&
-      !pipeline.data.recipe.output
-    ) {
-      pipelineIsNew = true;
-    }
+    const pipelineIsNew = pipeline.data.metadata.pipelineIsNew ?? false;
 
     updateEditorMultiScreenModel((prev) => {
       const topRightViews: EditorView[] = [
@@ -172,7 +164,12 @@ export const RecipeEditorView = () => {
         ) ?? []),
       ];
 
-      if (pipelineIsNew) {
+      if (
+        pipelineIsNew &&
+        prev.topRight?.views.findIndex(
+          (e) => e.id === DefaultEditorViewIDs.GETTING_STARTED,
+        ) === -1
+      ) {
         topRightViews.push(getGettingStartedEditorView());
       }
 
@@ -299,9 +296,9 @@ export const RecipeEditorView = () => {
               )}
             >
               <Sidebar
-                pipelineComponentMap={pipeline.data?.recipe.component ?? null}
+                pipelineComponentMap={pipeline.data?.recipe?.component ?? null}
                 pipelineVariableFieldMap={
-                  pipeline.data?.recipe.variable ?? null
+                  pipeline.data?.recipe?.variable ?? null
                 }
                 pipelineOutputFieldMap={pipeline.data?.recipe?.output ?? null}
               />

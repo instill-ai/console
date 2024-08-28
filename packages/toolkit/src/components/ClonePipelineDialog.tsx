@@ -116,7 +116,7 @@ export const ClonePipelineDialog = ({
 
   const createPipeline = useCreateNamespacePipeline();
   async function handleClone(data: z.infer<typeof ClonePipelineSchema>) {
-    if (!me.isSuccess || !accessToken || !pipeline) {
+    if (!me.isSuccess || !accessToken || !pipeline || !pipeline.recipe) {
       return;
     }
 

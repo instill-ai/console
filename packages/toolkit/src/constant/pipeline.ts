@@ -82,9 +82,9 @@ export const generateInputsPayload = (fields: PipelineVariableFieldMap) => {
 };
 
 export function generatePipelineHttpInputStringFromRecipe(
-  recipe: PipelineRecipe,
+  recipe: Nullable<PipelineRecipe>,
 ) {
-  if (!recipe.variable) {
+  if (!recipe?.variable) {
     return "";
   }
 

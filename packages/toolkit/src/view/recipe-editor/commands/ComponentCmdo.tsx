@@ -147,7 +147,7 @@ export const ComponentCmdo = () => {
       ? selectedComponentDefinition.tasks[0].name
       : undefined;
 
-    const componentIds = pipeline.data.recipe.component
+    const componentIds = pipeline.data.recipe?.component
       ? Object.keys(pipeline.data.recipe.component)
       : [];
 
@@ -213,7 +213,7 @@ export const ComponentCmdo = () => {
       return;
     }
 
-    const componentIds = pipeline.data.recipe.component
+    const componentIds = pipeline.data.recipe?.component
       ? Object.keys(pipeline.data.recipe.component)
       : [];
 
@@ -446,7 +446,7 @@ export const ComponentCmdo = () => {
 
                     setSelectedComponentDefinition(definition);
 
-                    const componentIds = pipeline.data.recipe.component
+                    const componentIds = pipeline.data.recipe?.component
                       ? Object.keys(pipeline.data.recipe.component)
                       : [];
 

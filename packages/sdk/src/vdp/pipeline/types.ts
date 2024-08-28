@@ -112,7 +112,7 @@ export type Pipeline = {
   readme: string;
   createTime: string;
   updateTime: string;
-  recipe: PipelineRecipe;
+  recipe: Nullable<PipelineRecipe>;
   rawRecipe: Nullable<string>;
   dataSpecification: DataSpecification;
   owner: Owner;
