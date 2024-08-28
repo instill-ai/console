@@ -20,6 +20,7 @@ import {
   usePipelineTriggerRequestForm,
   useRouteInfo,
   useShallow,
+  useWindowSize,
 } from "../../../../lib";
 import { usePaginatedPipelineRuns } from "../../../../lib/react-query-service/pipeline";
 import { env, getHumanReadableStringFromTime } from "../../../../server";
@@ -72,9 +73,34 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
   const [outputActiveView, setOutputActiveView] =
     React.useState<PipelineOutputActiveView>("preview");
 
+  // Setting the max height of the recipe code block based on the available
+  // space, so it fits the viewport height and is scrollable
+  const [codeBlockMaxHeight, setCodeBlockMaxHeight] = React.useState("auto");
+  const windowSize = useWindowSize();
+  const wrapperRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (!wrapperRef.current || !windowSize) {
+      return;
+    }
+    // If the layout changes, this needs to be updated
+    const header = wrapperRef.current.parentElement
+      ?.previousSibling as HTMLDivElement;
+
+    if (!header) {
+      return;
+    }
+
+    const headerBoundingRect = header.getBoundingClientRect();
+
+    setCodeBlockMaxHeight(
+      `${windowSize?.height - (headerBoundingRect.bottom + 52)}px`,
+    );
+  }, [windowSize?.height]);
+
   return (
     <React.Fragment>
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6" ref={wrapperRef}>
         <Button
           className="text-semantic-accent-default gap-x-2 !bg-transparent self-start"
           variant="secondaryColour"
@@ -153,7 +179,12 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
             }
             wrapLongLines={true}
             language="json"
-            customStyle={defaultCodeSnippetStyles}
+            customStyle={{
+              ...defaultCodeSnippetStyles,
+              maxHeight: codeBlockMaxHeight,
+              minHeight: "200px",
+              overflowY: "auto",
+            }}
           />
         </div>
         <div className="flex flex-row">
