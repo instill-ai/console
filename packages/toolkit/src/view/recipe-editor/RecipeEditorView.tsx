@@ -148,7 +148,7 @@ export const RecipeEditorView = () => {
       pipelineIsNew = true;
     }
 
-    updateEditorMultiScreenModel(() => {
+    updateEditorMultiScreenModel((prev) => {
       const topRightViews: EditorView[] = [
         {
           id: "main-preview-flow",
@@ -163,6 +163,9 @@ export const RecipeEditorView = () => {
           ),
           closeable: false,
         },
+        ...(prev.topRight?.views.filter(
+          (view) => view.id !== "main-preview-flow",
+        ) ?? []),
       ];
 
       if (pipelineIsNew) {
