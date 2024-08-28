@@ -2,7 +2,6 @@
 
 import type { ModelState } from "instill-sdk";
 import cn from "clsx";
-
 import type { Nullable } from "../lib";
 
 export type ModelStateLabelProps = {
@@ -26,19 +25,28 @@ export const ModelStateLabel = ({
   let indicatorColor: string;
 
   switch (state) {
-    case "STATE_ACTIVE": {
+    case "STATE_ACTIVE":
+    case "STATE_SCALING_DOWN":
+    case "STATE_STARTING":
+    case "STATE_IDLE": {
       textColor = "text-semantic-success-hover";
       bgColor = "bg-semantic-success-bg";
       stateLabelName = "Your request is being processed, please hold on.";
       indicatorColor = "bg-semantic-success-default";
       break;
     }
-    case "STATE_IDLE": {
-      textColor = "text-semantic-fg-primary";
-      bgColor = "bg-semantic-bg-base-bg";
-      stateLabelName =
-        "Model deployment takes time. Credits won't be consumed during this period. Please wait.";
-      indicatorColor = "bg-semantic-success-default";
+    case "STATE_OFFLINE": {
+      textColor = "text-semantic-fg-on-default";
+      bgColor = "bg-semantic-bg-secondary-alt-primary";
+      stateLabelName = "Model deployment takes time. Credits won't be consumed during this period. Please wait.";
+      indicatorColor = "bg-semantic-fg-on-default";
+      break;
+    }
+    case "STATE_SCALING_UP": {
+      textColor = "text-semantic-warning-hover";
+      bgColor = "bg-semantic-warning-bg";
+      stateLabelName = `The requested ${hardware ? hardware : "compute resource"} is being provisioned, please wait.`;
+      indicatorColor = "bg-semantic-warning-default";
       break;
     }
     case "STATE_ERROR": {
@@ -48,33 +56,11 @@ export const ModelStateLabel = ({
       indicatorColor = "bg-semantic-error-default";
       break;
     }
-    case "STATE_OFFLINE": {
-      textColor = "text-semantic-fg-on-default";
-      bgColor = "bg-semantic-bg-secondary-alt-primary";
-      stateLabelName = "Offline";
-      indicatorColor = "bg-semantic-fg-on-default";
-      break;
-    }
-    case "STATE_SCALING_UP": {
-      textColor = "text-semantic-warning-hover";
-      bgColor = "bg-semantic-warning-bg";
-      stateLabelName = `The requested ${hardware ? hardware : ""} is being provisioned, please wait...`;
-      indicatorColor = "bg-semantic-warning-default";
-      break;
-    }
-    case "STATE_SCALING_DOWN": {
-      textColor = "text-semantic-warning-hover";
-      bgColor = "bg-semantic-warning-bg";
-      stateLabelName = "Scaling down";
-      indicatorColor = "bg-semantic-warning-default";
-      break;
-    }
     case "STATE_UNSPECIFIED":
-    case "STATE_STARTING":
     default: {
       textColor = "text-semantic-error-hover";
       bgColor = "bg-semantic-error-bg";
-      stateLabelName = "Starting";
+      stateLabelName = "Unspecified";
       indicatorColor = "bg-semantic-error-default";
     }
   }
