@@ -108,6 +108,7 @@ export const InstillYamlSchema = {
               type: "string",
             },
           },
+          additionalProperties: false,
           required: ["value"],
         },
       },
