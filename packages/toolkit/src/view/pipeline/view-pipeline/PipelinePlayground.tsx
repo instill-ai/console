@@ -394,7 +394,10 @@ export const PipelinePlayground = ({
         {isPipelineRunning ? (
           <>
             <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />
-            <p className="text-sm text-semantic-fg-secondary">Running</p>
+            <p className="text-semantic-fg-primary product-headings-heading-2">
+              Running
+            </p>
+            <div className="product-body-text-2-regular">Our CPU/GPU is powering up—it might take a moment.</div>
           </>
         ) : pipelineRunResponse ? (
           <React.Fragment>
