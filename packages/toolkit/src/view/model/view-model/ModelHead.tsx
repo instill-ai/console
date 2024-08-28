@@ -6,7 +6,6 @@ import { useSearchParams } from "next/navigation";
 import cn from "clsx";
 
 import {
-  getModelHardwareToolkit,
   getModelInstanceTaskToolkit,
   GitHubIcon,
   Icons,
@@ -103,7 +102,6 @@ export const ModelHead = ({
               {modelState ? (
                 <ModelStateLabel
                   state={modelState}
-                  hardware={getModelHardwareToolkit(model?.hardware || "")}
                 />
               ) : null}
               <Tag

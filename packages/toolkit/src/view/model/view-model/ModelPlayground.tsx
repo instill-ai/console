@@ -46,7 +46,7 @@ import {
   useUserNamespaces,
 } from "../../../lib";
 import { recursiveHelpers } from "../../pipeline-builder";
-import { OPERATION_POLL_TIMEOUT } from "./constants";
+import { OPERATION_POLL_TIMEOUT, getStatusMessage } from "./constants";
 
 export type ModelOutputActiveView = "preview" | "json";
 
@@ -440,7 +440,7 @@ export const ModelPlayground = ({
               Running
             </p>
             <div className="text-center product-body-text-2-regular">
-              Our CPU/GPU is powering up—it might take a moment.
+              {getStatusMessage(modelState, model?.hardware || "CPU")}
             </div>
           </div>
         ) : modelRunResult ? (
