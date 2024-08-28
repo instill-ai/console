@@ -80,7 +80,7 @@ export const PipelinePlayground = ({
   const variables = React.useMemo(() => {
     if (pipeline) {
       if (!currentVersion || releases.length === 0) {
-        return pipeline.recipe.variable ?? null;
+        return pipeline.recipe?.variable ?? null;
       }
 
       const pipelineVersion = releases.find(
@@ -99,7 +99,7 @@ export const PipelinePlayground = ({
   const outputs = React.useMemo(() => {
     if (pipeline) {
       if (!currentVersion || releases.length === 0) {
-        return pipeline.recipe.output ?? null;
+        return pipeline.recipe?.output ?? null;
       }
 
       const pipelineVersion = releases.find(
@@ -303,7 +303,22 @@ export const PipelinePlayground = ({
       <EmptyView
         iconName="AlertCircle"
         title="Pipeline is not runnable"
-        description="This pipeline cannot be run. Please check the configuration and ensure all necessary components are set up correctly."
+        description={
+          <p className="product-body-text-2-regular text-center text-semantic-fg-secondary">
+            This pipeline cannot be run.{" "}
+            <span
+              onClick={() => {
+                router.push(
+                  `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/editor`,
+                );
+              }}
+              className="cursor-pointer underline text-semantic-accent-default"
+            >
+              Please check the configuration
+            </span>{" "}
+            and ensure all necessary components are set up correctly.
+          </p>
+        }
         className="flex-1"
       />
     );

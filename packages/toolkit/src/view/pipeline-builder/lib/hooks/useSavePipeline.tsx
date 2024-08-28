@@ -117,6 +117,10 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
             sendAmplitudeData("update_pipeline_recipe");
           }
 
+          if (!newPipeline.recipe) {
+            return;
+          }
+
           const newNodes = createNodesFromPipelineRecipe(newPipeline.recipe, {
             metadata: newPipeline.metadata,
           });
@@ -166,6 +170,10 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
           payload,
           accessToken,
         });
+
+        if (!newPipeline.recipe) {
+          return;
+        }
 
         const newNodes = createNodesFromPipelineRecipe(newPipeline.recipe, {
           metadata: newPipeline.metadata,

@@ -98,7 +98,7 @@ export const BottomBar = () => {
                       id="latest"
                       currentVersion={currentVersion}
                       onClick={() => {
-                        if (!pipeline.isSuccess) {
+                        if (!pipeline.isSuccess || !pipeline.data.recipe) {
                           return;
                         }
 

@@ -44,6 +44,7 @@ import {
   ReleasedVersionPopover,
   ReleasePopover,
 } from "./popovers";
+import { PreviewEmptyView } from "./PreviewEmptyView";
 import { RunButton } from "./RunButton";
 import { Sidebar } from "./sidebar";
 
@@ -121,13 +122,23 @@ export const RecipeEditorView = () => {
       return;
     }
 
-    const inputView = pipeline.data?.recipe.variable ? (
+    const inputView = pipeline.data?.recipe?.variable ? (
       <Input
         pipelineName={pipeline.data?.name ?? null}
         fields={pipeline.data?.recipe.variable ?? null}
       />
     ) : (
       <InOutputEmptyView reason="variableIsEmpty" />
+    );
+
+    const previewView = pipeline.data.recipe ? (
+      <Flow
+        pipelineId={pipeline.data?.id ?? null}
+        recipe={pipeline.data?.recipe ?? null}
+        pipelineMetadata={pipeline.data?.metadata ?? null}
+      />
+    ) : (
+      <PreviewEmptyView />
     );
 
     const outputView =
@@ -142,15 +153,7 @@ export const RecipeEditorView = () => {
         <InOutputEmptyView reason="outputIsEmpty" />
       );
 
-    let pipelineIsNew = false;
-
-    if (
-      !pipeline.data.recipe.component &&
-      !pipeline.data.recipe.variable &&
-      !pipeline.data.recipe.output
-    ) {
-      pipelineIsNew = true;
-    }
+    const pipelineIsNew = pipeline.data.metadata.pipelineIsNew ?? false;
 
     updateEditorMultiScreenModel((prev) => {
       const topRightViews: EditorView[] = [
@@ -158,13 +161,7 @@ export const RecipeEditorView = () => {
           id: DefaultEditorViewIDs.MAIN_PREVIEW_FLOW,
           title: "Preview",
           type: "preview",
-          view: (
-            <Flow
-              pipelineId={pipeline.data?.id ?? null}
-              recipe={pipeline.data?.recipe ?? null}
-              pipelineMetadata={pipeline.data?.metadata ?? null}
-            />
-          ),
+          view: previewView,
           closeable: false,
         },
         ...(prev.topRight?.views.filter(
@@ -172,7 +169,12 @@ export const RecipeEditorView = () => {
         ) ?? []),
       ];
 
-      if (pipelineIsNew) {
+      if (
+        pipelineIsNew &&
+        prev.topRight?.views.findIndex(
+          (e) => e.id === DefaultEditorViewIDs.GETTING_STARTED,
+        ) === -1
+      ) {
         topRightViews.push(getGettingStartedEditorView());
       }
 
@@ -299,9 +301,9 @@ export const RecipeEditorView = () => {
               )}
             >
               <Sidebar
-                pipelineComponentMap={pipeline.data?.recipe.component ?? null}
+                pipelineComponentMap={pipeline.data?.recipe?.component ?? null}
                 pipelineVariableFieldMap={
-                  pipeline.data?.recipe.variable ?? null
+                  pipeline.data?.recipe?.variable ?? null
                 }
                 pipelineOutputFieldMap={pipeline.data?.recipe?.output ?? null}
               />

@@ -41,22 +41,11 @@ export function validateVSCodeYaml(
 
   let yamlData: Nullable<GeneralRecord> = null;
 
-  const lineCounter = new YAML.LineCounter();
-
-  const doc = YAML.parseAllDocuments<YAML.YAMLMap>(recipe, { lineCounter });
-
-  if (!doc || !doc[0]) {
-    return {
-      success: false,
-      markers: [],
-    };
-  }
-
   try {
     yamlData = YAML.parse(recipe);
   } catch (error) {
+    console.log("parse error", error);
     if (error instanceof YAML.YAMLError) {
-      console.log("parse error", error, error.linePos, error.message);
       if (error.linePos && error.linePos.length > 0) {
         markers.push({
           startLineNumber: error.linePos[0].line,
@@ -73,7 +62,22 @@ export function validateVSCodeYaml(
   }
 
   if (!yamlData) {
+    console.log("yamlData is null");
     return { success: false, markers };
+  }
+
+  const lineCounter = new YAML.LineCounter();
+
+  const doc = YAML.parseAllDocuments<YAML.YAMLMap>(recipe, { lineCounter });
+
+  console.log("doc", doc);
+
+  if (!doc || !doc[0]) {
+    console.log("doc is null");
+    return {
+      success: false,
+      markers: [],
+    };
   }
 
   if (skipInstillFormatCheck) {

@@ -21,10 +21,10 @@
 // suggest-details-list
 // suggest-details-list-item
 import type { Monaco } from "@monaco-editor/react";
-import type { editor, IDisposable, languages, Position } from "monaco-editor";
 import * as React from "react";
 import { Editor } from "@monaco-editor/react";
 import { PipelineRecipe } from "instill-sdk";
+import { editor, IDisposable, languages, Position } from "monaco-editor";
 
 import { Dialog } from "@instill-ai/design-system";
 
@@ -144,27 +144,26 @@ export const VscodeEditor = () => {
           return;
         }
 
-        const res = validateVSCodeYaml(newRawRecipe);
+        try {
+          updateIsSavingRecipe(() => true);
 
-        if (res.success) {
-          try {
-            updateIsSavingRecipe(() => true);
+          updatePipeline.mutateAsync({
+            rawRecipe: newRawRecipe,
+            namespacePipelineName: pipelineName,
+            accessToken,
+            metadata: {
+              pipelineIsNew: false,
+            },
+          });
 
-            updatePipeline.mutateAsync({
-              rawRecipe: newRawRecipe,
-              namespacePipelineName: pipelineName,
-              accessToken,
-            });
-
-            // Smooth the indicator transition, if the update goes too fast, the indicator
-            // will blink
-            setTimeout(() => {
-              updateIsSavingRecipe(() => false);
-              updateHasUnsavedRecipe(() => false);
-            }, 500);
-          } catch (error) {
-            console.error(error);
-          }
+          // Smooth the indicator transition, if the update goes too fast, the indicator
+          // will blink
+          setTimeout(() => {
+            updateIsSavingRecipe(() => false);
+            updateHasUnsavedRecipe(() => false);
+          }, 500);
+        } catch (error) {
+          console.error(error);
         }
       },
       3000,
@@ -173,6 +172,7 @@ export const VscodeEditor = () => {
   );
 
   React.useEffect(() => {
+    console.log("new error", markErrors);
     if (!editorRef.current || !monacoRef.current) {
       return;
     }
@@ -184,7 +184,9 @@ export const VscodeEditor = () => {
     }
 
     monacoRef.current.editor.setModelMarkers(model, "owner", markErrors);
-  }, [markErrors]);
+    /** We need to constantly get the monacoRef and editorRef */
+    /** eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [markErrors, editorRef.current, monacoRef.current]);
 
   // Change editor background color, when the released version is selected
   React.useEffect(() => {
@@ -264,6 +266,7 @@ export const VscodeEditor = () => {
       if (
         smallestComponentKeyLineNumberMap &&
         pipeline.isSuccess &&
+        pipeline.data.recipe &&
         pipeline.data.recipe.component
       ) {
         // [HINT task]
@@ -272,7 +275,7 @@ export const VscodeEditor = () => {
         // 2. We need to find the task type for the component.
         if (last_chars.includes("task:")) {
           const targetComponent =
-            pipeline.data.recipe.component[
+            pipeline.data.recipe?.component[
               smallestComponentKeyLineNumberMap.key
             ];
 
@@ -339,7 +342,7 @@ export const VscodeEditor = () => {
         );
 
         const componenetKey = smallestComponentKeyLineNumberMap.key;
-        const targetComponent = pipeline.data?.recipe.component
+        const targetComponent = pipeline.data?.recipe?.component
           ? pipeline.data.recipe.component[componenetKey]
           : undefined;
 
@@ -756,7 +759,7 @@ export const VscodeEditor = () => {
           }
         }
 
-        const targetComponent = pipeline.data.recipe.component
+        const targetComponent = pipeline.data.recipe?.component
           ? pipeline.data.recipe.component[
               smallestComponentKeyLineNumberMap.key
             ]
@@ -964,6 +967,21 @@ export const VscodeEditor = () => {
       });
     hoverHintDisposableRef.current = hoverHintDisposable;
   }, [pipeline.data, pipeline.isSuccess, handleAutoComplete, handleHoverHint]);
+
+  // Handle initial render's error
+  React.useEffect(() => {
+    if (!pipeline.isSuccess) {
+      return;
+    }
+
+    const res = validateVSCodeYaml(pipeline.data?.rawRecipe ?? "");
+
+    if (res.success) {
+      setMarkErrors([]);
+    } else {
+      setMarkErrors(res.markers);
+    }
+  }, [pipeline.isSuccess, pipeline.data]);
 
   return (
     <div className="w-full h-full relative">
