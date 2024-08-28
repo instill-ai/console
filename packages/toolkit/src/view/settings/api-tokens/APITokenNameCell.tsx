@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { Button, Icons } from "@instill-ai/design-system";
 
+import { CopiedTooltip } from "../../../components";
+
 export type APITokenNameCellProps = {
   id: string;
   accessToken: string;
@@ -23,22 +25,24 @@ export const APITokenNameCell = (props: APITokenNameCellProps) => {
           {accessToken}
         </p>
       </div>
-      <Button
-        onClick={async () => {
-          await navigator.clipboard.writeText(accessToken);
-          setCopied(true);
-          setTimeout(() => setCopied(false), 3000);
-        }}
-        variant="tertiaryGrey"
-        size="sm"
-        className="!px-2 !py-2"
-      >
-        {copied ? (
-          <Icons.Check className="h-4 w-4 stroke-semantic-fg-primary" />
-        ) : (
-          <Icons.Copy06 className="h-4 w-4 stroke-semantic-fg-primary" />
-        )}
-      </Button>
+      <CopiedTooltip isOpen={copied}>
+        <Button
+          onClick={async () => {
+            await navigator.clipboard.writeText(accessToken);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 3000);
+          }}
+          variant="tertiaryGrey"
+          size="sm"
+          className="!px-2 !py-2"
+        >
+          {copied ? (
+            <Icons.Check className="h-4 w-4 stroke-semantic-fg-primary" />
+          ) : (
+            <Icons.Copy06 className="h-4 w-4 stroke-semantic-fg-primary" />
+          )}
+        </Button>
+      </CopiedTooltip>
     </div>
   );
 };
