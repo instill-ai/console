@@ -44,42 +44,51 @@ export function transformPipelineTriggerRequestFieldsToZod(
             .optional(),
         );
         break;
+      case "audio":
       case "audio/*":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;
+      case "array:audio":
       case "array:audio/*":
         zodSchema = zodSchema.setKey(
           key,
           z.array(z.string().nullable().optional()).nullable().optional(),
         );
         break;
+      case "image":
       case "image/*":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;
+      case "array:image":
       case "array:image/*":
         zodSchema = zodSchema.setKey(
           key,
           z.array(z.string().nullable().optional()).nullable().optional(),
         );
         break;
+      case "video":
       case "video/*":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;
+      case "array:video":
       case "array:video/*":
         zodSchema = zodSchema.setKey(
           key,
           z.array(z.string().nullable().optional()).nullable().optional(),
         );
         break;
+      case "file":
       case "*/*":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;
+      case "array:file":
       case "array:*/*":
         zodSchema = zodSchema.setKey(
           key,
           z.array(z.string().nullable().optional()).nullable().optional(),
         );
         break;
+      case "json":
       case "semi-structured/json":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;

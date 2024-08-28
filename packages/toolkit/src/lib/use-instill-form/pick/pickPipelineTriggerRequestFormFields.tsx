@@ -182,6 +182,7 @@ export function pickPipelineTriggerRequestFormFields({
           ),
         });
         break;
+      case "audio":
       case "audio/*":
         items.push({
           key,
@@ -205,6 +206,7 @@ export function pickPipelineTriggerRequestFormFields({
           ),
         });
         break;
+      case "array:audio":
       case "array:audio/*":
         items.push({
           key,
@@ -228,6 +230,7 @@ export function pickPipelineTriggerRequestFormFields({
           ),
         });
         break;
+      case "image":
       case "image/*":
         items.push({
           key,
@@ -251,6 +254,7 @@ export function pickPipelineTriggerRequestFormFields({
           ),
         });
         break;
+      case "array:image":
       case "array:image/*":
         items.push({
           key,
@@ -275,6 +279,7 @@ export function pickPipelineTriggerRequestFormFields({
         });
         break;
 
+      case "video":
       case "video/*":
         items.push({
           key,
@@ -298,6 +303,7 @@ export function pickPipelineTriggerRequestFormFields({
           ),
         });
         break;
+      case "array:video":
       case "array:video/*":
         items.push({
           key,
@@ -321,6 +327,7 @@ export function pickPipelineTriggerRequestFormFields({
           ),
         });
         break;
+      case "file":
       case "*/*":
         items.push({
           key,
@@ -344,6 +351,7 @@ export function pickPipelineTriggerRequestFormFields({
           ),
         });
         break;
+      case "array:file":
       case "array:*/*":
         items.push({
           key,
@@ -367,6 +375,7 @@ export function pickPipelineTriggerRequestFormFields({
           ),
         });
         break;
+      case "json":
       case "semi-structured/json":
         items.push({
           key,
