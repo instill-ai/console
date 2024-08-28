@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 
-import { Button, Icons, Nullable } from "@instill-ai/design-system";
-import * as React from "react";
+import { Button, Icons } from "@instill-ai/design-system";
+
 import { CopiedTooltip } from "../../../components";
 
 export type APITokenNameCellProps = {
@@ -14,7 +14,6 @@ export type APITokenNameCellProps = {
 export const APITokenNameCell = (props: APITokenNameCellProps) => {
   const { id, accessToken } = props;
   const [copied, setCopied] = useState(false);
-  const copyButtonRef = React.useRef<Nullable<HTMLButtonElement>>(null);
 
   return (
     <div className="flex flex-row">
@@ -36,7 +35,6 @@ export const APITokenNameCell = (props: APITokenNameCellProps) => {
           variant="tertiaryGrey"
           size="sm"
           className="!px-2 !py-2"
-          ref={copyButtonRef}
         >
           {copied ? (
             <Icons.Check className="h-4 w-4 stroke-semantic-fg-primary" />

@@ -1,13 +1,18 @@
 import * as React from "react";
+
 import { Tooltip } from "@instill-ai/design-system";
 
-export function CopiedTooltip({ children, isOpen }: { children: React.ReactElement, isOpen: boolean }) {
+export function CopiedTooltip({
+  children,
+  isOpen,
+}: {
+  children: React.ReactElement;
+  isOpen: boolean;
+}) {
   return (
     <Tooltip.Provider>
       <Tooltip.Root open={isOpen}>
-        <Tooltip.Trigger asChild>
-          {children}
-        </Tooltip.Trigger>
+        <Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content
             align="center"
