@@ -6,7 +6,7 @@ import { stackoverflowLight } from "react-syntax-highlighter/dist/esm/styles/hlj
 
 import { cn, Icons, Separator } from "@instill-ai/design-system";
 
-import { EditorView } from "../../../lib";
+import { DefaultEditorViewIDs, EditorView } from "../../../lib";
 import {
   addOutputCodeHint,
   addOutputCodeTemplate,
@@ -95,7 +95,7 @@ export const GettingStartedView = () => {
 };
 
 export const gettingStartedEditorView: EditorView = {
-  id: "getting-started",
+  id: DefaultEditorViewIDs.GETTING_STARTED,
   title: "Getting Started",
   type: "docs",
   view: <GettingStartedView />,

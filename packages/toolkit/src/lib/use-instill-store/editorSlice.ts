@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Monaco } from "@monaco-editor/react";
 import { editor } from "monaco-editor";
+import { ReactFlowInstance } from "reactflow";
 import { StateCreator } from "zustand";
 
 import { Nullable } from "../type";
@@ -55,7 +56,6 @@ export const createEditorSlice: StateCreator<
         monacoRef: fn(state.monacoRef),
       };
     }),
-  cursorPosition: 0,
   editorMultiScreenModel: {
     main: {
       views: [],
@@ -127,13 +127,15 @@ export const createEditorSlice: StateCreator<
         triggerPipelineStreamMap: fn(state.triggerPipelineStreamMap),
       };
     }),
-  forceStopTriggerPipelineStream: false,
-  updateForceStopTriggerPipelineStream: (fn: (prev: boolean) => boolean) =>
+  editorPreviewReactFlowInstance: null,
+  updateEditorPreviewReactFlowInstance: (
+    fn: (prev: Nullable<ReactFlowInstance>) => Nullable<ReactFlowInstance>,
+  ) =>
     set((state) => {
       return {
         ...state,
-        forceStopTriggerPipelineStream: fn(
-          state.forceStopTriggerPipelineStream,
+        editorPreviewReactFlowInstance: fn(
+          state.editorPreviewReactFlowInstance,
         ),
       };
     }),

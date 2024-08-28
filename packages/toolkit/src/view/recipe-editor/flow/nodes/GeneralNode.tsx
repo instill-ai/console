@@ -26,9 +26,6 @@ const selector = (store: InstillStore) => ({
   selectedComponentId: store.selectedComponentId,
   updateSelectedComponentId: store.updateSelectedComponentId,
   triggerPipelineStreamMap: store.triggerPipelineStreamMap,
-  forceStopTriggerPipelineStream: store.forceStopTriggerPipelineStream,
-  updateForceStopTriggerPipelineStream:
-    store.updateForceStopTriggerPipelineStream,
 });
 
 type ComponentErrorState =
@@ -108,11 +105,19 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
         column: 0,
       });
 
+      // We need this happen after the editor is updated
       setTimeout(() => {
         editorRef.focus();
-      }, 1);
+      });
     }
-  }, [editorRef, pipeline.isSuccess, updateEditorMultiScreenModel]);
+  }, [
+    id,
+    editorRef,
+    pipeline.isSuccess,
+    pipeline.data,
+    updateSelectedComponentId,
+    updateEditorMultiScreenModel,
+  ]);
 
   const handleOpenDocumentation = React.useCallback(() => {
     let documentationUrl: Nullable<string> = null;
@@ -174,7 +179,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
         currentViewId: viewId,
       },
     }));
-  }, [data, updateEditorMultiScreenModel]);
+  }, [id, data, updateEditorMultiScreenModel]);
 
   const errorState = React.useMemo<ComponentErrorState>(() => {
     if (!triggerPipelineStreamMap || !triggerPipelineStreamMap.component) {

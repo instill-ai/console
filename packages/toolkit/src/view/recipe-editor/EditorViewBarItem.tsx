@@ -7,7 +7,7 @@ import { Nullable } from "instill-sdk";
 
 import { Button, cn, Icons } from "@instill-ai/design-system";
 
-import { EditorViewType } from "../../lib";
+import { EditorViewID, EditorViewType } from "../../lib";
 
 export const EditorViewBarItem = ({
   id,
@@ -18,12 +18,12 @@ export const EditorViewBarItem = ({
   onDelete,
   closeable,
 }: {
-  id: string;
+  id: EditorViewID;
   title: string;
   type: EditorViewType;
-  currentViewId: Nullable<string>;
-  onClick: (id: string) => void;
-  onDelete: (id: string) => void;
+  currentViewId: Nullable<EditorViewID>;
+  onClick: (id: EditorViewID) => void;
+  onDelete: (id: EditorViewID) => void;
   closeable: boolean;
 }) => {
   const {

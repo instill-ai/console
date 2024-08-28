@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import * as React from "react";
 import dynamic from "next/dynamic";
 import { arrayMove } from "@dnd-kit/sortable";
 import { Nullable } from "instill-sdk";
@@ -17,6 +17,7 @@ import { LoadingSpin, PageBase } from "../../components";
 import { CETopbarDropdown } from "../../components/top-bar/CETopbarDropdown";
 import { CloudTopbarDropdown } from "../../components/top-bar/CloudTopbarDropdown";
 import {
+  DefaultEditorViewIDs,
   EditorView,
   InstillStore,
   useGuardPipelineBuilderUnsavedChangesNavigation,
@@ -31,7 +32,7 @@ import { PipelineToolkitDialog, SharePipelineDialog } from "./dialogs";
 import { ImportRecipeDialog } from "./dialogs/ImportRecipeDialog";
 import { EditorProvider } from "./EditorContext";
 import { EditorViewSectionBar } from "./EditorViewSectionBar";
-import { Flow } from "./flow";
+import { fitViewOptions, Flow } from "./flow";
 import { gettingStartedEditorView } from "./getting-started-view";
 import { InOutputEmptyView } from "./InOutputEmptyView";
 import { Input } from "./input/Input";
@@ -64,6 +65,7 @@ const selector = (store: InstillStore) => ({
   isSavingRecipe: store.isSavingRecipe,
   updateCurrentVersion: store.updateCurrentVersion,
   currentVersion: store.currentVersion,
+  editorPreviewReactFlowInstance: store.editorPreviewReactFlowInstance,
 });
 
 export const RecipeEditorView = () => {
@@ -79,6 +81,7 @@ export const RecipeEditorView = () => {
     isSavingRecipe,
     updateCurrentVersion,
     currentVersion,
+    editorPreviewReactFlowInstance,
   } = useInstillStore(useShallow(selector));
   useEditorCommandListener();
   const routeInfo = useRouteInfo();
@@ -151,7 +154,7 @@ export const RecipeEditorView = () => {
     updateEditorMultiScreenModel((prev) => {
       const topRightViews: EditorView[] = [
         {
-          id: "main-preview-flow",
+          id: DefaultEditorViewIDs.MAIN_PREVIEW_FLOW,
           title: "Preview",
           type: "preview",
           view: (
@@ -164,7 +167,7 @@ export const RecipeEditorView = () => {
           closeable: false,
         },
         ...(prev.topRight?.views.filter(
-          (view) => view.id !== "main-preview-flow",
+          (view) => view.id !== DefaultEditorViewIDs.MAIN_PREVIEW_FLOW,
         ) ?? []),
       ];
 
@@ -176,8 +179,9 @@ export const RecipeEditorView = () => {
         topRight: {
           views: topRightViews,
           currentViewId: pipelineIsNew
-            ? "getting-started"
-            : (prev.topRight?.currentViewId ?? "main-preview-flow"),
+            ? DefaultEditorViewIDs.GETTING_STARTED
+            : (prev.topRight?.currentViewId ??
+              DefaultEditorViewIDs.MAIN_PREVIEW_FLOW),
         },
         main: {
           views: [],
@@ -186,21 +190,22 @@ export const RecipeEditorView = () => {
         bottomRight: {
           views: [
             {
-              id: "main-input",
+              id: DefaultEditorViewIDs.MAIN_INPUT,
               title: "Input",
               type: "input",
               view: inputView,
               closeable: false,
             },
             {
-              id: "main-output",
+              id: DefaultEditorViewIDs.MAIN_OUTPUT,
               title: "Output",
               type: "output",
               view: outputView,
               closeable: false,
             },
           ],
-          currentViewId: prev.bottomRight?.currentViewId ?? "main-input",
+          currentViewId:
+            prev.bottomRight?.currentViewId ?? DefaultEditorViewIDs.MAIN_INPUT,
         },
       };
     });
@@ -445,6 +450,18 @@ export const RecipeEditorView = () => {
                               bottomRightPanelRef.current?.resize(0);
                               setCurrentExpandView("topRight");
                             }
+
+                            if (
+                              editorMultiScreenModel.topRight.currentViewId ===
+                              DefaultEditorViewIDs.MAIN_PREVIEW_FLOW
+                            ) {
+                              // We need this happen after the view is updated
+                              setTimeout(() => {
+                                editorPreviewReactFlowInstance?.fitView(
+                                  fitViewOptions,
+                                );
+                              });
+                            }
                           }}
                           onDragEnd={(event) => {
                             const { active, over } = event;
@@ -500,7 +517,8 @@ export const RecipeEditorView = () => {
                                 views: prev.topRight.views.filter(
                                   (view) => view.id !== id,
                                 ),
-                                currentViewId: "main-preview-flow",
+                                currentViewId:
+                                  DefaultEditorViewIDs.MAIN_PREVIEW_FLOW,
                               },
                             }));
                           }}
@@ -604,7 +622,7 @@ export const RecipeEditorView = () => {
                                 views: prev.bottomRight.views.filter(
                                   (view) => view.id !== id,
                                 ),
-                                currentViewId: "main-input",
+                                currentViewId: DefaultEditorViewIDs.MAIN_INPUT,
                               },
                             }));
                           }}

@@ -406,7 +406,7 @@ export const VscodeEditor = () => {
           result.push({
             label: format,
             kind: monaco.languages.CompletionItemKind.Field,
-            insertText: `"${format}"`,
+            insertText: format,
             filterText: format,
             range: new monaco.Range(
               position.lineNumber,
