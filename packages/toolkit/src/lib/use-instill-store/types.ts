@@ -7,7 +7,14 @@ import type {
 } from "instill-sdk";
 import { Monaco } from "@monaco-editor/react";
 import { editor } from "monaco-editor";
-import { Edge, Node, OnConnect, OnEdgesChange, OnNodesChange } from "reactflow";
+import {
+  Edge,
+  Node,
+  OnConnect,
+  OnEdgesChange,
+  OnNodesChange,
+  ReactFlowInstance,
+} from "reactflow";
 
 import { NodeData } from "../../view";
 import { Nullable } from "../type";
@@ -134,10 +141,19 @@ export type GeneralSlice = {
   ) => void;
 };
 
+export enum DefaultEditorViewIDs {
+  MAIN_PREVIEW_FLOW,
+  MAIN_INPUT,
+  MAIN_OUTPUT,
+  GETTING_STARTED,
+}
+
+export type EditorViewID = string | DefaultEditorViewIDs;
+
 export type EditorViewType = "preview" | "docs" | "input" | "output";
 
 export type EditorView = {
-  id: string;
+  id: EditorViewID;
   type: EditorViewType;
   view: React.ReactNode;
   title: string;
@@ -146,7 +162,7 @@ export type EditorView = {
 
 export type EditorViewSection = {
   views: EditorView[];
-  currentViewId: Nullable<string>;
+  currentViewId: Nullable<EditorViewID>;
 };
 
 export type EditorMultiScreenModel = {
@@ -164,7 +180,6 @@ export type EditorSlice = {
   updateSelectedComponentId: (
     fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
-  cursorPosition: number;
   editorRef: Nullable<editor.IStandaloneCodeEditor>;
   updateEditorRef: (
     fn: (
@@ -173,12 +188,23 @@ export type EditorSlice = {
   ) => void;
   monacoRef: Nullable<Monaco>;
   updateMonacoRef: (fn: (prev: Nullable<Monaco>) => Nullable<Monaco>) => void;
+
+  /**
+   * We use this value to control the multile screen editor
+   */
   editorMultiScreenModel: EditorMultiScreenModel;
   updateEditorMultiScreenModel: (
     fn: (prev: EditorMultiScreenModel) => EditorMultiScreenModel,
   ) => void;
-  rawRecipeOnDom: Nullable<string>;
 
+  /**
+   * This is used to store the react flow instance for the editor preview
+   * You can control the react flow instance via this instance
+   */
+  editorPreviewReactFlowInstance: Nullable<ReactFlowInstance>;
+  updateEditorPreviewReactFlowInstance: (
+    fn: (prev: Nullable<ReactFlowInstance>) => Nullable<ReactFlowInstance>,
+  ) => void;
   /**
    * This value is only for caching the user input in the editor.
    *
@@ -187,6 +213,7 @@ export type EditorSlice = {
    * from the monaco-editor to have history record for undo/redo.
    * @returns void
    */
+  rawRecipeOnDom: Nullable<string>;
   updateRawRecipeOnDom: (
     fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
@@ -211,11 +238,6 @@ export type EditorSlice = {
     fn: (
       prev: Nullable<TriggerPipelineStreamMap>,
     ) => Nullable<TriggerPipelineStreamMap>,
-  ) => void;
-
-  forceStopTriggerPipelineStream: boolean;
-  updateForceStopTriggerPipelineStream: (
-    fn: (prev: boolean) => boolean,
   ) => void;
 };
 

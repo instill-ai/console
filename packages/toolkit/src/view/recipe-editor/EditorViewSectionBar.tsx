@@ -5,7 +5,7 @@ import { Nullable } from "instill-sdk";
 
 import { Icons } from "@instill-ai/design-system";
 
-import { EditorView } from "../../lib";
+import { EditorView, EditorViewID } from "../../lib";
 import { EditorViewBarItem } from "./EditorViewBarItem";
 import { HorizontalSortableWrapper } from "./HorizontalSortableWrapper";
 
@@ -22,9 +22,9 @@ export const EditorViewSectionBar = ({
   onDragEnd: (event: DragEndEvent) => void;
   isExpanded: boolean;
   onToggleExpand: () => void;
-  onClick: (id: string) => void;
-  onDelete: (id: string) => void;
-  currentViewId: Nullable<string>;
+  onClick: (id: EditorViewID) => void;
+  onDelete: (id: EditorViewID) => void;
+  currentViewId: Nullable<EditorViewID>;
 }) => {
   return (
     <div className="flex flex-row rounded-t min-h-8 pr-1 bg-semantic-bg-base-bg box-border border-b border-semantic-bg-line">

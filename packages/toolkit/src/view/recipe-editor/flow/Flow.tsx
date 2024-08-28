@@ -5,7 +5,6 @@ import { PipelineRecipe } from "instill-sdk";
 import ReactFlow, {
   Background,
   BackgroundVariant,
-  ReactFlowInstance,
   SelectionMode,
   useEdgesState,
   useNodesState,
@@ -44,7 +43,15 @@ const edgeTypes = {
 
 const selector = (store: InstillStore) => ({
   updateSelectedComponentId: store.updateSelectedComponentId,
+  editorPreviewReactFlowInstance: store.editorPreviewReactFlowInstance,
+  updateEditorPreviewReactFlowInstance:
+    store.updateEditorPreviewReactFlowInstance,
 });
+
+export const fitViewOptions = {
+  includeHiddenNodes: true,
+  padding: 10,
+};
 
 export const Flow = ({
   pipelineId,
@@ -57,10 +64,12 @@ export const Flow = ({
 }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [reactFlowInstance, setReactFlowInstance] =
-    React.useState<Nullable<ReactFlowInstance>>(null);
 
-  const { updateSelectedComponentId } = useInstillStore(useShallow(selector));
+  const {
+    updateSelectedComponentId,
+    editorPreviewReactFlowInstance,
+    updateEditorPreviewReactFlowInstance,
+  } = useInstillStore(useShallow(selector));
 
   React.useEffect(() => {
     if (!recipe || !pipelineMetadata) return;
@@ -78,21 +87,24 @@ export const Flow = ({
       .catch((err) => {
         console.error(err);
       });
-  }, [recipe, pipelineMetadata, setEdges, setNodes, reactFlowInstance]);
+  }, [
+    recipe,
+    pipelineMetadata,
+    setEdges,
+    setNodes,
+    editorPreviewReactFlowInstance,
+  ]);
 
   return (
     <div className="flex flex-col w-full h-full group">
       <div className="flex flex-row h-9 justify-between items-center bg-semantic-bg-alt-primary border-b border-semantic-bg-line">
         <button
           onClick={() => {
-            if (!reactFlowInstance) {
+            if (!editorPreviewReactFlowInstance) {
               return;
             }
 
-            reactFlowInstance.fitView({
-              includeHiddenNodes: true,
-              padding: 10,
-            });
+            editorPreviewReactFlowInstance.fitView(fitViewOptions);
           }}
           className="p-1.5"
         >
@@ -102,11 +114,11 @@ export const Flow = ({
           <button
             className="p-1.5"
             onClick={() => {
-              if (!reactFlowInstance) {
+              if (!editorPreviewReactFlowInstance) {
                 return;
               }
 
-              reactFlowInstance.zoomIn();
+              editorPreviewReactFlowInstance.zoomIn();
             }}
           >
             <Icons.Plus className="w-3 h-3 stroke-semantic-fg-primary" />
@@ -114,11 +126,11 @@ export const Flow = ({
           <button
             className="p-1.5"
             onClick={() => {
-              if (!reactFlowInstance) {
+              if (!editorPreviewReactFlowInstance) {
                 return;
               }
 
-              reactFlowInstance.zoomOut();
+              editorPreviewReactFlowInstance.zoomOut();
             }}
           >
             <Icons.Minus className="w-3 h-3 stroke-semantic-fg-primary" />
@@ -134,16 +146,15 @@ export const Flow = ({
         onEdgesChange={onEdgesChange}
         fitView={true}
         minZoom={0.5}
-        fitViewOptions={{
-          includeHiddenNodes: true,
-          padding: 10,
-        }}
+        fitViewOptions={fitViewOptions}
         onPaneClick={() => {
           updateSelectedComponentId(() => null);
         }}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        onInit={setReactFlowInstance}
+        onInit={(instance) => {
+          updateEditorPreviewReactFlowInstance(() => instance);
+        }}
         proOptions={{ hideAttribution: true }}
         elevateNodesOnSelect={true}
         // To enable Figma-like zoom-in-out experience

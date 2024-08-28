@@ -1,6 +1,11 @@
 import { Icons } from "@instill-ai/design-system";
 
-import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import {
+  DefaultEditorViewIDs,
+  InstillStore,
+  useInstillStore,
+  useShallow,
+} from "../../../lib";
 import { gettingStartedEditorView } from "../getting-started-view";
 
 const selector = (store: InstillStore) => ({
@@ -21,11 +26,11 @@ export const SupportLinks = () => {
             topRight: {
               views: [
                 ...prev.topRight.views.filter(
-                  (view) => view.id !== "getting-started",
+                  (view) => view.id !== DefaultEditorViewIDs.GETTING_STARTED,
                 ),
                 gettingStartedEditorView,
               ],
-              currentViewId: "getting-started",
+              currentViewId: DefaultEditorViewIDs.GETTING_STARTED,
             },
           }));
         }}

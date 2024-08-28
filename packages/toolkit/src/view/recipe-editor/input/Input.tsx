@@ -15,6 +15,7 @@ import * as z from "zod";
 import { Form } from "@instill-ai/design-system";
 
 import {
+  DefaultEditorViewIDs,
   GeneralRecord,
   InstillStore,
   Nullable,
@@ -32,7 +33,6 @@ const selector = (store: InstillStore) => ({
   updateIsTriggeringPipeline: store.updateIsTriggeringPipeline,
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
   accessToken: store.accessToken,
-  triggerPipelineStreamMap: store.triggerPipelineStreamMap,
   updateTriggerPipelineStreamMap: store.updateTriggerPipelineStreamMap,
   updateEditorMultiScreenModel: store.updateEditorMultiScreenModel,
 });
@@ -50,7 +50,6 @@ export const Input = ({
     navigationNamespaceAnchor,
     accessToken,
     updateTriggerPipelineStreamMap,
-    triggerPipelineStreamMap,
     updateEditorMultiScreenModel,
   } = useInstillStore(useShallow(selector));
 
@@ -104,7 +103,7 @@ export const Input = ({
         ...prev,
         bottomRight: {
           ...prev.bottomRight,
-          currentViewId: "main-output",
+          currentViewId: DefaultEditorViewIDs.MAIN_OUTPUT,
         },
       }));
 
@@ -289,7 +288,6 @@ export const Input = ({
       isTriggeringPipeline,
       updateIsTriggeringPipeline,
       updateTriggerPipelineStreamMap,
-      triggerPipelineStreamMap,
       namespace,
       navigationNamespaceAnchor,
       accessToken,
