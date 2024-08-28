@@ -34,6 +34,7 @@ import {
   transformInstillJSONSchemaToFormTree,
 } from "../../../lib/use-instill-form/transform";
 import { generateUniqueNodeIdFromDefinition } from "../../pipeline-builder/lib/generateUniqueNodeIdFromDefinition";
+import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -59,8 +60,6 @@ function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
     selectedConditionMap,
     skipPath: ["setup.api-key"],
   });
-
-  console.log("output default data", formTree, data);
 
   return data;
 }
@@ -290,16 +289,18 @@ export const ComponentCmdo = () => {
       }}
     >
       <Dialog.Trigger asChild>
-        <Button
-          onClick={() => {
-            updateOpenComponentCmdo(() => true);
-          }}
-          className="flex flex-row gap-x-2"
-          variant="tertiaryGrey"
-        >
-          <Icons.Plus className="w-[14px] h-[14px] stroke-semantic-fg-primary" />
-          Add Component
-        </Button>
+        <EditorButtonTooltipWrapper tooltipContent="⌘ O">
+          <Button
+            onClick={() => {
+              updateOpenComponentCmdo(() => true);
+            }}
+            className="flex flex-row gap-x-2"
+            variant="tertiaryGrey"
+          >
+            <Icons.Plus className="w-[14px] h-[14px] stroke-semantic-fg-primary" />
+            Add Component
+          </Button>
+        </EditorButtonTooltipWrapper>
       </Dialog.Trigger>
       <Dialog.Content
         onOpenAutoFocus={() => {

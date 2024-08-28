@@ -139,4 +139,17 @@ export const createEditorSlice: StateCreator<
         ),
       };
     }),
+  runButtonRef:
+    React.createRef<HTMLButtonElement>() as React.MutableRefObject<HTMLButtonElement>,
+  updateRunButtonRef: (
+    fn: (
+      prev: React.MutableRefObject<HTMLButtonElement>,
+    ) => React.MutableRefObject<HTMLButtonElement>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        runButtonRef: fn(state.runButtonRef),
+      };
+    }),
 });

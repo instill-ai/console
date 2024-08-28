@@ -6,6 +6,7 @@ import { Nullable } from "instill-sdk";
 import { Icons } from "@instill-ai/design-system";
 
 import { EditorView, EditorViewID } from "../../lib";
+import { EditorButtonTooltipWrapper } from "./EditorButtonTooltipWrapper";
 import { EditorViewBarItem } from "./EditorViewBarItem";
 import { HorizontalSortableWrapper } from "./HorizontalSortableWrapper";
 
@@ -49,9 +50,13 @@ export const EditorViewSectionBar = ({
       </HorizontalSortableWrapper>
       <button className="ml-auto px-2" onClick={onToggleExpand}>
         {isExpanded ? (
-          <Icons.Minimize01 className="w-3 h-3 stroke-semantic-fg-primary" />
+          <EditorButtonTooltipWrapper tooltipContent="Restore pane">
+            <Icons.Minimize01 className="w-3 h-3 stroke-semantic-fg-primary" />
+          </EditorButtonTooltipWrapper>
         ) : (
-          <Icons.Expand01 className="w-3 h-3 stroke-semantic-fg-primary" />
+          <EditorButtonTooltipWrapper tooltipContent="Maximize pane">
+            <Icons.Expand01 className="w-3 h-3 stroke-semantic-fg-primary" />
+          </EditorButtonTooltipWrapper>
         )}
       </button>
     </div>

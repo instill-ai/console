@@ -6,6 +6,7 @@ import { Nullable } from "instill-sdk";
 import { Command, Icons } from "@instill-ai/design-system";
 
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
 import { CommandShortcutBadge } from "./CommandShortcutBadge";
 
 const selector = (store: InstillStore) => ({
@@ -26,14 +27,16 @@ export const ActionCmdk = () => {
 
   return (
     <React.Fragment>
-      <button
-        onClick={() => {
-          updateOpenActionCmdk(() => true);
-        }}
-        className="p-[9px] my-auto hover:bg-semantic-bg-base-bg"
-      >
-        <Icons.SearchSm className="w-[14px] h-[14px] stroke-semantic-fg-primary" />
-      </button>
+      <EditorButtonTooltipWrapper tooltipContent="Search ⌘ K">
+        <button
+          onClick={() => {
+            updateOpenActionCmdk(() => true);
+          }}
+          className="p-[9px] my-auto hover:bg-semantic-bg-base-bg"
+        >
+          <Icons.SearchSm className="w-[14px] h-[14px] stroke-semantic-fg-primary" />
+        </button>
+      </EditorButtonTooltipWrapper>
       <Command.Dialog
         ref={commandRef}
         dialogContentClassName="w-[480px] h-[325px]"

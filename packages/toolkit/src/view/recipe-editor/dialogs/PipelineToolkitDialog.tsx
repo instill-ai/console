@@ -23,6 +23,7 @@ import {
   useShallow,
   useSortedReleases,
 } from "../../../lib";
+import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
 
 const tabTriggerStyle =
   "rounded-t-sm border border-semantic-bg-line bg-semantic-bg-base-bg px-3 py-1.5 text-[#1D2433] text-opacity-80 product-body-text-3-semibold data-[state=active]:bg-semantic-bg-primary data-[state=active]:text-opacity-100";
@@ -109,14 +110,16 @@ export const PipelineToolkitDialog = () => {
       open={toolKitIsOpen}
       onOpenChange={(open) => setToolKitIsOpen(open)}
     >
-      <Button
-        size="md"
-        variant="tertiaryGrey"
-        className="!p-[9px] my-auto"
-        onClick={() => setToolKitIsOpen((prev) => !prev)}
-      >
-        <Icons.CodeSquare02 className="h-[14px] w-[14px] stroke-semantic-fg-secondary" />
-      </Button>
+      <EditorButtonTooltipWrapper tooltipContent="Toolkit">
+        <Button
+          size="md"
+          variant="tertiaryGrey"
+          className="!p-[9px] my-auto"
+          onClick={() => setToolKitIsOpen((prev) => !prev)}
+        >
+          <Icons.CodeSquare02 className="h-[14px] w-[14px] stroke-semantic-fg-secondary" />
+        </Button>
+      </EditorButtonTooltipWrapper>
       <Dialog.Content className="!h-[475px] !max-w-[560px]">
         <div className="flex flex-col">
           <div className="mb-6 flex flex-row space-x-4">

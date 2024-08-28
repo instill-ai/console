@@ -30,6 +30,7 @@ import {
   useShallow,
   useUpdateNamespacePipeline,
 } from "../../../lib";
+import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
 
 const pipelineNameSchema = z.object({
   id: z.string().min(1, "Pipeline name is required"),
@@ -143,16 +144,22 @@ export const PipelineNamePopover = ({
         setOpen(newOpen);
       }}
     >
-      <Popover.Trigger asChild>
-        {routeInfo.isSuccess ? (
-          <Button className="flex !h-8 flex-row gap-x-2" variant="tertiaryGrey">
-            <p className="cursor-pointer text-semantic-fg-primary product-body-text-3-semibold">
-              {routeInfo.data.resourceId}
-            </p>
-            <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
-          </Button>
-        ) : null}
-      </Popover.Trigger>
+      <EditorButtonTooltipWrapper tooltipContent="Edit pipeline Name">
+        <Popover.Anchor asChild>
+          {routeInfo.isSuccess ? (
+            <Button
+              className="flex !h-8 flex-row gap-x-2"
+              variant="tertiaryGrey"
+              onClick={() => setOpen((prev) => !prev)}
+            >
+              <p className="cursor-pointer text-semantic-fg-primary product-body-text-3-semibold">
+                {routeInfo.data.resourceId}
+              </p>
+              <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-primary" />
+            </Button>
+          ) : null}
+        </Popover.Anchor>
+      </EditorButtonTooltipWrapper>
       <Popover.Content align="start" className="flex flex-col !w-[320px]">
         <Form.Root {...form}>
           <form

@@ -30,6 +30,7 @@ import { env } from "../../server";
 import { ActionCmdk, ComponentCmdo } from "./commands";
 import { PipelineToolkitDialog, SharePipelineDialog } from "./dialogs";
 import { ImportRecipeDialog } from "./dialogs/ImportRecipeDialog";
+import { EditorButtonTooltipWrapper } from "./EditorButtonTooltipWrapper";
 import { EditorProvider } from "./EditorContext";
 import { EditorViewSectionBar } from "./EditorViewSectionBar";
 import { fitViewOptions, Flow } from "./flow";
@@ -244,26 +245,32 @@ export const RecipeEditorView = () => {
       <div className="flex flex-row px-3 h-12 items-center bg-semantic-bg-secondary">
         <div className="flex flex-row w-1/2">
           <div className="flex flex-row gap-x-2">
-            <Button
-              size="sm"
-              className="!w-8 !h-8 items-center justify-center"
-              onClick={() => setIsSidebarOpen((prev) => !prev)}
-              variant="tertiaryGrey"
-            >
-              <Icons.LayoutLeft className="w-4 h-4 stroke-semantic-fg-primary" />
-            </Button>
-            <Button
-              size="sm"
-              className="!w-8 !h-8 items-center justify-center"
-              variant="tertiaryGrey"
-              onClick={() => {
-                navigate(
-                  `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/playground`,
-                );
-              }}
-            >
-              <Icons.ArrowLeft className="w-4 h-4 stroke-semantic-fg-primary" />
-            </Button>
+            <EditorButtonTooltipWrapper tooltipContent="Open sidebar">
+              <Button
+                size="sm"
+                className="!w-8 !h-8 items-center justify-center"
+                onClick={() => setIsSidebarOpen((prev) => !prev)}
+                variant="tertiaryGrey"
+              >
+                <Icons.LayoutLeft className="w-4 h-4 stroke-semantic-fg-primary" />
+              </Button>
+            </EditorButtonTooltipWrapper>
+
+            <EditorButtonTooltipWrapper tooltipContent="Go to overview page">
+              <Button
+                size="sm"
+                className="!w-8 !h-8 items-center justify-center"
+                variant="tertiaryGrey"
+                onClick={() => {
+                  navigate(
+                    `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/playground`,
+                  );
+                }}
+              >
+                <Icons.ArrowLeft className="w-4 h-4 stroke-semantic-fg-primary" />
+              </Button>
+            </EditorButtonTooltipWrapper>
+
             <PipelineNamePopover sharing={pipeline.data?.sharing ?? null} />
           </div>
           <div className="flex flex-1 flex-row gap-x-2 items-center justify-end">

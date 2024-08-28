@@ -312,7 +312,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
                   sideOffset={5}
                   side="bottom"
                 >
-                  <div className="!rounded-sm !bg-semantic-bg-secondary-base-bg !p-3">
+                  <div className="rounded-sm bg-semantic-bg-secondary-base-bg p-3">
                     <p className="product-body-text-4-medium text-semantic-bg-primary">
                       {errorState.message}
                     </p>

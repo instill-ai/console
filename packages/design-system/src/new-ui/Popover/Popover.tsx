@@ -9,6 +9,8 @@ const PopoverRoot = PopoverPrimitive.Root;
 
 const PopoverTrigger = PopoverPrimitive.Trigger;
 
+const PopoverAnchor = PopoverPrimitive.Anchor;
+
 const popoverStyle = cn(
   "z-50 w-72 rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-4 shadow-md outline-none",
   "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
@@ -36,4 +38,5 @@ export const Popover = {
   Root: PopoverRoot,
   Trigger: PopoverTrigger,
   Content: PopoverContent,
+  Anchor: PopoverAnchor,
 };
