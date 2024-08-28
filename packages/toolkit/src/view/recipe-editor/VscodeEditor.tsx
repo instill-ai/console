@@ -210,7 +210,7 @@ export const VscodeEditor = () => {
       "tomorrow",
       newTheme as editor.IStandaloneThemeData,
     );
-  }, [currentVersion, tomorrowTheme]);
+  }, [currentVersion]);
 
   const handleAutoComplete = React.useCallback(
     ({
@@ -325,6 +325,76 @@ export const VscodeEditor = () => {
           ?.reverse()
           .find((map) => map.lineNumber <= position.lineNumber);
 
+      // [HINT Component Input key value]
+      if (
+        smallestComponentKeyLineNumberMap &&
+        smallestComponentTopLevelKeyLineNumberMap &&
+        smallestComponentTopLevelKeyLineNumberMap.key === "input"
+      ) {
+        const { substringBeforeColon } = analyzeColonInString(
+          last_chars,
+          position.column,
+        );
+
+        const componenetKey = smallestComponentKeyLineNumberMap.key;
+        const targetComponent = pipeline.data?.recipe.component
+          ? pipeline.data.recipe.component[componenetKey]
+          : undefined;
+
+        if (
+          targetComponent &&
+          isPipelineGeneralComponent(targetComponent) &&
+          targetComponent.definition
+        ) {
+          const targetTaskDefinition =
+            targetComponent.definition.spec.componentSpecification.oneOf?.find(
+              (oneOf) => oneOf.properties?.task?.const === targetComponent.task,
+            );
+
+          if (targetTaskDefinition) {
+            const formTree =
+              transformInstillJSONSchemaToFormTree(targetTaskDefinition);
+
+            if (formTree._type === "formGroup") {
+              const inputProperties = formTree.properties.find(
+                (e) => e.path === "input",
+              );
+
+              if (inputProperties && inputProperties._type === "formGroup") {
+                const targetProperty = inputProperties.properties.find(
+                  (e) => e.fieldKey === substringBeforeColon,
+                );
+
+                if (
+                  targetProperty &&
+                  targetProperty._type === "formItem" &&
+                  targetProperty.enum
+                ) {
+                  for (const enumValue of targetProperty.enum) {
+                    result.push({
+                      label: enumValue,
+                      kind: monaco.languages.CompletionItemKind.Field,
+                      insertText: enumValue,
+                      filterText: enumValue,
+                      range: new monaco.Range(
+                        position.lineNumber,
+                        position.column - active_typing.length,
+                        position.lineNumber,
+                        position.column,
+                      ),
+                    });
+                  }
+
+                  return {
+                    suggestions: result,
+                  };
+                }
+              }
+            }
+          }
+        }
+      }
+
       // [HINT variable.instill-format]
       // We need to hint instill-format for variables
       if (
@@ -336,7 +406,7 @@ export const VscodeEditor = () => {
           result.push({
             label: format,
             kind: monaco.languages.CompletionItemKind.Field,
-            insertText: format,
+            insertText: `"${format}"`,
             filterText: format,
             range: new monaco.Range(
               position.lineNumber,

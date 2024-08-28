@@ -55,8 +55,8 @@ export function validateVSCodeYaml(
   try {
     yamlData = YAML.parse(recipe);
   } catch (error) {
-    console.log("parse error", error);
     if (error instanceof YAML.YAMLError) {
+      console.log("parse error", error, error.linePos, error.message);
       if (error.linePos && error.linePos.length > 0) {
         markers.push({
           startLineNumber: error.linePos[0].line,
@@ -68,6 +68,8 @@ export function validateVSCodeYaml(
         });
       }
     }
+
+    return { success: false, markers };
   }
 
   if (!yamlData) {

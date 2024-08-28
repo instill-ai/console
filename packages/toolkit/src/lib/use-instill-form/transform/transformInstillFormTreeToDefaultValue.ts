@@ -113,13 +113,6 @@ export function transformInstillFormTreeToDefaultValue(
     return initialData;
   }
 
-  // We deliverately make api-key optional
-  console.log(
-    "tree.path",
-    tree.path,
-    skipPath,
-    skipPath.includes(tree.path ?? ""),
-  );
   if (tree.path && skipPath.includes(tree.path)) {
     return initialData;
   }
@@ -134,7 +127,7 @@ export function transformInstillFormTreeToDefaultValue(
     ((tree.type === "integer" && (tree.default ?? null) !== null) ||
       tree.default)
   ) {
-    defaultValue = `${tree.default}`;
+    defaultValue = tree.default as string | number;
     dot.setter(initialData, key, defaultValue);
     return initialData;
   }
@@ -143,7 +136,7 @@ export function transformInstillFormTreeToDefaultValue(
     switch (typeof tree.examples) {
       case "object":
         if (Array.isArray(tree.examples)) {
-          defaultValue = `${tree.examples[0]}`;
+          defaultValue = tree.examples[0] as string | number;
         }
         break;
       case "number":
@@ -156,10 +149,8 @@ export function transformInstillFormTreeToDefaultValue(
         defaultValue = null;
     }
 
-    if (defaultValue) {
-      dot.setter(initialData, key, defaultValue);
-      return initialData;
-    }
+    dot.setter(initialData, key, defaultValue);
+    return initialData;
   }
 
   if ("example" in tree && tree.example) {

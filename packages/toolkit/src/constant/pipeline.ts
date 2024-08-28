@@ -145,9 +145,22 @@ version: v1beta
 
 # ---------- Data ----------
 # Variables that manually trigger the pipeline and can be referenced in component actions
+# Structure example:
+# variable:
+#   key:              # Unique identifier for the variable.
+#     instill-format:  # Format type, e.g., image, string, array:string.
+#     title:          # Title of this input field.
+#     description:    # Introduction of what should be input. 
+#
 # variable:
 
 # Custom user-defined output
+# Structure example:
+# output:
+#   key:      # Unique identifier for the output.
+#     title:  # Title of this output field.
+#     value:  # Can be a value or use \${} to reference data.
+#
 # output:
 
 # ---------- Schema ----------
