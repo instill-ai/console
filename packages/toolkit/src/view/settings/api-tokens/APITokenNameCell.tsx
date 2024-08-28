@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 import { Button, Icons, Nullable } from "@instill-ai/design-system";
-import { CopiedTooltip } from "../../../components";
 import * as React from "react";
+import { CopiedTooltip } from "../../../components";
 
 export type APITokenNameCellProps = {
   id: string;
@@ -26,9 +26,7 @@ export const APITokenNameCell = (props: APITokenNameCellProps) => {
           {accessToken}
         </p>
       </div>
-      <CopiedTooltip
-        isOpen={copied}
-      >
+      <CopiedTooltip isOpen={copied}>
         <Button
           onClick={async () => {
             await navigator.clipboard.writeText(accessToken);
