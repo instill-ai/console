@@ -1,4 +1,4 @@
 export {
-  gettingStartedEditorView,
+  getGettingStartedEditorView,
   GettingStartedView,
 } from "./GettingStartedView";

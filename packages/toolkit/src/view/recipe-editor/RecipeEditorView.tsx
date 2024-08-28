@@ -34,7 +34,7 @@ import { EditorButtonTooltipWrapper } from "./EditorButtonTooltipWrapper";
 import { EditorProvider } from "./EditorContext";
 import { EditorViewSectionBar } from "./EditorViewSectionBar";
 import { fitViewOptions, Flow } from "./flow";
-import { gettingStartedEditorView } from "./getting-started-view";
+import { getGettingStartedEditorView } from "./getting-started-view";
 import { InOutputEmptyView } from "./InOutputEmptyView";
 import { Input } from "./input/Input";
 import { prettifyYaml, useEditorCommandListener } from "./lib";
@@ -173,7 +173,7 @@ export const RecipeEditorView = () => {
       ];
 
       if (pipelineIsNew) {
-        topRightViews.push(gettingStartedEditorView);
+        topRightViews.push(getGettingStartedEditorView());
       }
 
       return {

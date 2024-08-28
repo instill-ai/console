@@ -6,7 +6,7 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../lib";
-import { gettingStartedEditorView } from "../getting-started-view";
+import { getGettingStartedEditorView } from "../getting-started-view";
 
 const selector = (store: InstillStore) => ({
   updateEditorMultiScreenModel: store.updateEditorMultiScreenModel,
@@ -28,7 +28,7 @@ export const SupportLinks = () => {
                 ...prev.topRight.views.filter(
                   (view) => view.id !== DefaultEditorViewIDs.GETTING_STARTED,
                 ),
-                gettingStartedEditorView,
+                getGettingStartedEditorView(),
               ],
               currentViewId: DefaultEditorViewIDs.GETTING_STARTED,
             },
