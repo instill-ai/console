@@ -31,10 +31,12 @@ export const generateInputsPayload = (fields: PipelineVariableFieldMap) => {
         input[key] = [123456, 654321];
         break;
       }
+      case "image":
       case "image/*": {
         input[key] = "your image base64 encoded string";
         break;
       }
+      case "array:image":
       case "array:image/*": {
         input[key] = [
           "Please put your first image base64 encoded string",
@@ -43,10 +45,12 @@ export const generateInputsPayload = (fields: PipelineVariableFieldMap) => {
         ];
         break;
       }
+      case "audio":
       case "audio/*": {
         input[key] = "Please put your audio base64 encoded string";
         break;
       }
+      case "array:audio":
       case "array:audio/*": {
         input[key] = [
           "Please put your first audio base64 encoded string",
@@ -55,10 +59,12 @@ export const generateInputsPayload = (fields: PipelineVariableFieldMap) => {
         ];
         break;
       }
+      case "video":
       case "video/*": {
         input[key] = "Please put your video base64 encoded string";
         break;
       }
+      case "array:video":
       case "array:video/*": {
         input[key] = [
           "Please put your first video base64 encoded string",

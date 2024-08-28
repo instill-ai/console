@@ -11,7 +11,10 @@ export function pickSmartHintsFromAcceptFormats(
   }
 
   // Deal with */* -> means it accepts all types
-  if (instillAcceptFormats.includes("*/*")) {
+  if (
+    instillAcceptFormats.includes("*/*") ||
+    instillAcceptFormats.includes("file")
+  ) {
     return hints;
   }
 
