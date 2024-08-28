@@ -1,7 +1,7 @@
 "use client";
 
 import type { ModelState } from "instill-sdk";
-import cn from "clsx";
+import { cn } from "@instill-ai/design-system";
 import type { Nullable } from "../lib";
 
 export type ModelStateLabelProps = {
