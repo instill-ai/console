@@ -1,9 +1,11 @@
+import * as React from "react";
+
 import { cn, Icons } from "@instill-ai/design-system";
 
 export type EmptyViewProps = {
   iconName: keyof typeof Icons;
   title: string;
-  description?: string;
+  description?: string | React.ReactNode;
   className?: string;
 };
 
@@ -37,9 +39,13 @@ export const EmptyView = ({
             {title}
           </p>
           {description ? (
-            <p className="text-semantic-fg-secondary text-center">
-              {description}
-            </p>
+            typeof description === "string" ? (
+              <p className="text-semantic-fg-secondary text-center">
+                {description}
+              </p>
+            ) : (
+              description
+            )
           ) : null}
         </div>
       </div>

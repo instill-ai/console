@@ -44,6 +44,7 @@ import {
   ReleasedVersionPopover,
   ReleasePopover,
 } from "./popovers";
+import { PreviewEmptyView } from "./PreviewEmptyView";
 import { RunButton } from "./RunButton";
 import { Sidebar } from "./sidebar";
 
@@ -130,6 +131,16 @@ export const RecipeEditorView = () => {
       <InOutputEmptyView reason="variableIsEmpty" />
     );
 
+    const previewView = pipeline.data.recipe ? (
+      <Flow
+        pipelineId={pipeline.data?.id ?? null}
+        recipe={pipeline.data?.recipe ?? null}
+        pipelineMetadata={pipeline.data?.metadata ?? null}
+      />
+    ) : (
+      <PreviewEmptyView />
+    );
+
     const outputView =
       pipeline.data?.dataSpecification?.output &&
       pipeline.data.dataSpecification.output?.properties &&
@@ -150,13 +161,7 @@ export const RecipeEditorView = () => {
           id: DefaultEditorViewIDs.MAIN_PREVIEW_FLOW,
           title: "Preview",
           type: "preview",
-          view: (
-            <Flow
-              pipelineId={pipeline.data?.id ?? null}
-              recipe={pipeline.data?.recipe ?? null}
-              pipelineMetadata={pipeline.data?.metadata ?? null}
-            />
-          ),
+          view: previewView,
           closeable: false,
         },
         ...(prev.topRight?.views.filter(

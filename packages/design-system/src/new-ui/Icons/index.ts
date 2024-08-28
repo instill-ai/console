@@ -62,6 +62,7 @@ import { Edit05 } from "./Edit05";
 import { Expand01 } from "./Expand01";
 import { Expand06 } from "./Expand06";
 import { Eye } from "./Eye";
+import { Eyeoff } from "./Eyeoff";
 import { File02 } from "./File02";
 import { File04 } from "./File04";
 import { File05 } from "./File05";
@@ -233,6 +234,7 @@ export const Icons = {
   Edit03,
   Edit05,
   Eye,
+  Eyeoff,
   Expand01,
   Expand06,
   File02,
