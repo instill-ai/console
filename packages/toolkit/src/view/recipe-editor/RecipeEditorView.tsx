@@ -226,7 +226,7 @@ export const RecipeEditorView = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `${pipeline.data.id}_recipe.txt`;
+      link.download = `${pipeline.data.id}_recipe.yaml`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
