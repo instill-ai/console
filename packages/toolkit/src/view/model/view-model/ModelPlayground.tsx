@@ -434,13 +434,15 @@ export const ModelPlayground = ({
       <div className="flex w-1/2 flex-col pb-6 pl-6 py-6">
         <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
         {isModelRunInProgress ? (
-          <>
-            <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />
-            <p className="text-semantic-fg-primary product-headings-heading-2">
+          <div className="flex flex-col items-center justify-center h-full">
+            <LoadingSpin className="!m-0 !text-semantic-fg-secondary mb-10" />
+            <p className="text-semantic-fg-primary product-headings-heading-2 mb-2">
               Running
             </p>
-            <div className="product-body-text-2-regular">Our CPU/GPU is powering up—it might take a moment.</div>
-          </>
+            <div className="text-center product-body-text-2-regular">
+              Our CPU/GPU is powering up—it might take a moment.
+            </div>
+          </div>
         ) : modelRunResult ? (
           <React.Fragment>
             <TabMenu.Root
