@@ -177,7 +177,7 @@ export const RecipeEditorView = () => {
           views: topRightViews,
           currentViewId: pipelineIsNew
             ? "getting-started"
-            : "main-preview-flow",
+            : (prev.topRight?.currentViewId ?? "main-preview-flow"),
         },
         main: {
           views: [],
@@ -200,7 +200,7 @@ export const RecipeEditorView = () => {
               closeable: false,
             },
           ],
-          currentViewId: "main-input",
+          currentViewId: prev.bottomRight?.currentViewId ?? "main-input",
         },
       };
     });
