@@ -64,6 +64,7 @@ const selector = (store: InstillStore) => ({
   updateHasUnsavedRecipe: store.updateHasUnsavedRecipe,
   updateIsSavingRecipe: store.updateIsSavingRecipe,
   currentVersion: store.currentVersion,
+  runButtonRef: store.runButtonRef,
 });
 
 const availableInstillFormats = [
@@ -110,6 +111,7 @@ export const VscodeEditor = () => {
     updateHasUnsavedRecipe,
     updateIsSavingRecipe,
     currentVersion,
+    runButtonRef,
   } = useInstillStore(useShallow(selector));
 
   const routeInfo = useRouteInfo();
@@ -1122,6 +1124,16 @@ export const VscodeEditor = () => {
             contextMenuOrder: 1,
             run: () => {
               updateOpenActionCmdk(() => true);
+            },
+          });
+
+          editor.addAction({
+            id: "run-pipeline",
+            label: "Run Pipeline",
+            keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
+            contextMenuOrder: 1,
+            run: () => {
+              runButtonRef.current?.click();
             },
           });
         }}

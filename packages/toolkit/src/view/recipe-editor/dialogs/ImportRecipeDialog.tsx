@@ -6,6 +6,7 @@ import { Nullable } from "instill-sdk";
 import { Button, Dialog, Icons } from "@instill-ai/design-system";
 
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
 import { validateVSCodeYaml } from "../lib/validateVSCodeYaml";
 
 const selector = (store: InstillStore) => ({
@@ -29,16 +30,18 @@ export const ImportRecipeDialog = () => {
         setOpen(open);
       }}
     >
-      <Button
-        onClick={() => {
-          importRecipeInputTriggerRef?.current?.click();
-        }}
-        className="flex flex-row gap-x-2"
-        variant="tertiaryGrey"
-      >
-        <Icons.FileDownload03 className="w-[14px] h-[14px] stroke-semantic-fg-primary" />
-        Import Recipe
-      </Button>
+      <EditorButtonTooltipWrapper tooltipContent="⌘ I">
+        <Button
+          onClick={() => {
+            importRecipeInputTriggerRef?.current?.click();
+          }}
+          className="flex flex-row gap-x-2"
+          variant="tertiaryGrey"
+        >
+          <Icons.FileDownload03 className="w-[14px] h-[14px] stroke-semantic-fg-primary" />
+          Import Recipe
+        </Button>
+      </EditorButtonTooltipWrapper>
       <input
         onChange={async (e) => {
           const file = e.target.files?.[0];

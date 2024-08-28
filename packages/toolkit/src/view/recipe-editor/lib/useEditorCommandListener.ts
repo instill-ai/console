@@ -10,6 +10,7 @@ const selector = (store: InstillStore) => ({
   openComponentCmdo: store.openComponentCmdo,
   updateOpenComponentCmdo: store.updateOpenComponentCmdo,
   importRecipeInputTriggerRef: store.importRecipeInputTriggerRef,
+  runButtonRef: store.runButtonRef,
 });
 
 export function useEditorCommandListener() {
@@ -19,6 +20,7 @@ export function useEditorCommandListener() {
     openComponentCmdo,
     updateOpenComponentCmdo,
     importRecipeInputTriggerRef,
+    runButtonRef,
   } = useInstillStore(useShallow(selector));
 
   React.useEffect(() => {
@@ -41,13 +43,6 @@ export function useEditorCommandListener() {
         return;
       }
 
-      if (e.key === "i" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        if (importRecipeInputTriggerRef.current) {
-          importRecipeInputTriggerRef.current.click();
-        }
-      }
-
       if (openComponentCmdo) {
         if (e.key === "o" && (e.metaKey || e.ctrlKey)) {
           e.preventDefault();
@@ -56,19 +51,30 @@ export function useEditorCommandListener() {
         return;
       }
 
+      // When none of the above commands are open
+
+      if (e.key === "i" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        if (importRecipeInputTriggerRef.current) {
+          importRecipeInputTriggerRef.current.click();
+        }
+      }
+
       if (e.key === "o" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         updateOpenComponentCmdo((open) => !open);
         return;
       }
 
-      if (!openActionCmdk) {
-        if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-          e.preventDefault();
-          updateOpenActionCmdk((open) => !open);
-        }
-
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        updateOpenActionCmdk((open) => !open);
         return;
+      }
+
+      if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        runButtonRef.current?.click();
       }
     };
 

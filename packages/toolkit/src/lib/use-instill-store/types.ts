@@ -239,6 +239,17 @@ export type EditorSlice = {
       prev: Nullable<TriggerPipelineStreamMap>,
     ) => Nullable<TriggerPipelineStreamMap>,
   ) => void;
+
+  /**
+   * This is the ref for run button
+   * You can use this ref to click the run button and then trigger the pipeline
+   */
+  runButtonRef: React.MutableRefObject<HTMLButtonElement>;
+  updateRunButtonRef: (
+    fn: (
+      prev: React.MutableRefObject<HTMLButtonElement>,
+    ) => React.MutableRefObject<HTMLButtonElement>,
+  ) => void;
 };
 
 export type TriggerPipelineStreamMap = {

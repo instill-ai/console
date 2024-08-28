@@ -26,6 +26,7 @@ import {
 } from "../../pipeline-builder";
 import { canvasPanOnDrag } from "../../pipeline-builder/components/canvasPanOnDrag";
 import { createNodesFromPipelineRecipe } from "../../pipeline-builder/lib/createNodesFromPipelineRecipe";
+import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
 import { GeneralNode } from "./nodes/GeneralNode";
 import { ResponseNode } from "./nodes/ResponseNode";
 import { VariableNode } from "./nodes/VariableNode";
@@ -98,43 +99,49 @@ export const Flow = ({
   return (
     <div className="flex flex-col w-full h-full group">
       <div className="flex flex-row h-9 justify-between items-center bg-semantic-bg-alt-primary border-b border-semantic-bg-line">
-        <button
-          onClick={() => {
-            if (!editorPreviewReactFlowInstance) {
-              return;
-            }
+        <EditorButtonTooltipWrapper tooltipContent="Fit view">
+          <button
+            onClick={() => {
+              if (!editorPreviewReactFlowInstance) {
+                return;
+              }
 
-            editorPreviewReactFlowInstance.fitView(fitViewOptions);
-          }}
-          className="p-1.5"
-        >
-          <Icons.Maximize02 className="w-3 h-3 stroke-semantic-fg-primary" />
-        </button>
+              editorPreviewReactFlowInstance.fitView(fitViewOptions);
+            }}
+            className="p-1.5"
+          >
+            <Icons.Maximize02 className="w-3 h-3 stroke-semantic-fg-primary" />
+          </button>
+        </EditorButtonTooltipWrapper>
         <div className="flex flex-row">
-          <button
-            className="p-1.5"
-            onClick={() => {
-              if (!editorPreviewReactFlowInstance) {
-                return;
-              }
+          <EditorButtonTooltipWrapper tooltipContent="Zoom in">
+            <button
+              className="p-1.5"
+              onClick={() => {
+                if (!editorPreviewReactFlowInstance) {
+                  return;
+                }
 
-              editorPreviewReactFlowInstance.zoomIn();
-            }}
-          >
-            <Icons.Plus className="w-3 h-3 stroke-semantic-fg-primary" />
-          </button>
-          <button
-            className="p-1.5"
-            onClick={() => {
-              if (!editorPreviewReactFlowInstance) {
-                return;
-              }
+                editorPreviewReactFlowInstance.zoomIn();
+              }}
+            >
+              <Icons.Plus className="w-3 h-3 stroke-semantic-fg-primary" />
+            </button>
+          </EditorButtonTooltipWrapper>
+          <EditorButtonTooltipWrapper tooltipContent="Zoom out">
+            <button
+              className="p-1.5"
+              onClick={() => {
+                if (!editorPreviewReactFlowInstance) {
+                  return;
+                }
 
-              editorPreviewReactFlowInstance.zoomOut();
-            }}
-          >
-            <Icons.Minus className="w-3 h-3 stroke-semantic-fg-primary" />
-          </button>
+                editorPreviewReactFlowInstance.zoomOut();
+              }}
+            >
+              <Icons.Minus className="w-3 h-3 stroke-semantic-fg-primary" />
+            </button>
+          </EditorButtonTooltipWrapper>
         </div>
       </div>
       <ReactFlow

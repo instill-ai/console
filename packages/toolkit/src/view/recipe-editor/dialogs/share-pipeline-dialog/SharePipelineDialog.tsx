@@ -12,6 +12,7 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../../../lib";
+import { EditorButtonTooltipWrapper } from "../../EditorButtonTooltipWrapper";
 import { Head } from "./Head";
 import { TabPublish } from "./TabPublish";
 import { TabShare } from "./TabShare";
@@ -57,14 +58,16 @@ export const SharePipelineDialog = () => {
       open={dialogSharePipelineIsOpen}
       onOpenChange={(open) => updateDialogSharePipelineIsOpen(() => open)}
     >
-      <Button
-        size="md"
-        variant="tertiaryGrey"
-        className="p-[9px] my-auto"
-        onClick={() => updateDialogSharePipelineIsOpen((prev) => !prev)}
-      >
-        <Icons.Share07 className="my-auto h-[14px] w-[14px] stroke-semantic-fg-primary" />
-      </Button>
+      <EditorButtonTooltipWrapper tooltipContent="Share">
+        <Button
+          size="md"
+          variant="tertiaryGrey"
+          className="p-[9px] my-auto"
+          onClick={() => updateDialogSharePipelineIsOpen((prev) => !prev)}
+        >
+          <Icons.Share07 className="my-auto h-[14px] w-[14px] stroke-semantic-fg-primary" />
+        </Button>
+      </EditorButtonTooltipWrapper>
       <Dialog.Content className="!w-[480px] !p-0">
         <div className="flex w-full flex-col">
           <Head selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
