@@ -177,7 +177,12 @@ export const ModelPlayground = ({
     });
 
     existingModelTriggerResult.refetch();
-  }, [existingModelTriggerResult.refetch, model?.name, queryClient, existingModelTriggerResult]);
+  }, [
+    existingModelTriggerResult.refetch,
+    model?.name,
+    queryClient,
+    existingModelTriggerResult,
+  ]);
 
   useEffect(() => {
     if (activeVersion !== currentOperationIdPollingData.current.modelVersion) {
