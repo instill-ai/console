@@ -34,7 +34,7 @@
     "prettier": "latest",
     "@instill-ai/prettier-config-cortex": "workspace:*",
     "turbo": "latest",
-    "typescript": "^5.4.2"
+    "typescript": "^5.5.4"
   },
   "engines": {
     "node": ">=20.0.0"
