@@ -14,14 +14,7 @@ export const EditorButtonTooltipWrapper = ({
   return (
     <Tooltip.Provider>
       <Tooltip.Root>
-        <Tooltip.Trigger asChild>
-          {/* 
-            eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-          */}
-          <span className="flex" tabIndex={0}>
-            {children}
-          </span>
-        </Tooltip.Trigger>
+        <Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content className="rounded-sm !bg-semantic-bg-secondary-base-bg !text-semantic-bg-primary !px-3 !py-2 !product-body-text-4-semibold">
             {tooltipContent}

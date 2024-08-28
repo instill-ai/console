@@ -150,6 +150,7 @@ export const PipelineNamePopover = ({
             <Button
               className="flex !h-8 flex-row gap-x-2"
               variant="tertiaryGrey"
+              onClick={() => setOpen((prev) => !prev)}
             >
               <p className="cursor-pointer text-semantic-fg-primary product-body-text-3-semibold">
                 {routeInfo.data.resourceId}
