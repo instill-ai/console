@@ -64,11 +64,11 @@ const selector = (store: InstillStore) => ({
 export const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
   taskName
     ? convertSentenceToCamelCase(
-      // This removes "TASK_" and replaces "_" with a space. The first
-      // argument has and OR operator for matching both substrings. The second
-      // argument is a function with a condition.
-      taskName.replace(/TASK_|_/g, (d) => (d === "TASK_" ? "" : " ")),
-    )
+        // This removes "TASK_" and replaces "_" with a space. The first
+        // argument has and OR operator for matching both substrings. The second
+        // argument is a function with a condition.
+        taskName.replace(/TASK_|_/g, (d) => (d === "TASK_" ? "" : " ")),
+      )
     : null;
 
 export const convertValuesToString = (props: Record<string, unknown>) => {
@@ -149,8 +149,8 @@ export const ModelPlayground = ({
   const isModelTriggerable = useMemo(() => {
     return accessToken && model && modelState
       ? model.permission.canTrigger &&
-      !isModelRunInProgress &&
-      !["STATE_UNSPECIFIED", "STATE_ERROR"].includes(modelState)
+          !isModelRunInProgress &&
+          !["STATE_UNSPECIFIED", "STATE_ERROR"].includes(modelState)
       : false;
   }, [modelState, model, isModelRunInProgress, accessToken]);
 
@@ -205,7 +205,7 @@ export const ModelPlayground = ({
       !existingModelTriggerResult.data.operation ||
       (currentOperationIdPollingData.current.name &&
         existingModelTriggerResult.data?.operation?.name !==
-        currentOperationIdPollingData.current.name)
+          currentOperationIdPollingData.current.name)
     ) {
       return;
     }
@@ -229,10 +229,10 @@ export const ModelPlayground = ({
     } else {
       if (
         existingTriggerState?.done !==
-        existingModelTriggerResult.data.operation.done &&
+          existingModelTriggerResult.data.operation.done &&
         (!currentOperationIdPollingData.current.name ||
           existingModelTriggerResult.data.operation.name ===
-          currentOperationIdPollingData.current.name)
+            currentOperationIdPollingData.current.name)
       ) {
         setExistingTriggerState(existingModelTriggerResult.data.operation);
       }
@@ -268,13 +268,13 @@ export const ModelPlayground = ({
         setInputFromExistingResult(
           convertValuesToString(
             existingTriggerState.response?.request.taskInputs[0]?.[
-            taskPropName
+              taskPropName
             ],
           ),
         );
         setModelRunResult(
           existingTriggerState.response?.response.taskOutputs[0]?.[
-          taskPropName
+            taskPropName
           ],
         );
 
