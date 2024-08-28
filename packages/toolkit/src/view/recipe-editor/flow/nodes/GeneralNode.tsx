@@ -116,7 +116,6 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     pipeline.isSuccess,
     pipeline.data,
     updateSelectedComponentId,
-    updateEditorMultiScreenModel,
   ]);
 
   const handleOpenDocumentation = React.useCallback(() => {
