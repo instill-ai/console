@@ -64,11 +64,11 @@ const selector = (store: InstillStore) => ({
 export const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
   taskName
     ? convertSentenceToCamelCase(
-        // This removes "TASK_" and replaces "_" with a space. The first
-        // argument has and OR operator for matching both substrings. The second
-        // argument is a function with a condition.
-        taskName.replace(/TASK_|_/g, (d) => (d === "TASK_" ? "" : " ")),
-      )
+      // This removes "TASK_" and replaces "_" with a space. The first
+      // argument has and OR operator for matching both substrings. The second
+      // argument is a function with a condition.
+      taskName.replace(/TASK_|_/g, (d) => (d === "TASK_" ? "" : " ")),
+    )
     : null;
 
 export const convertValuesToString = (props: Record<string, unknown>) => {
@@ -149,8 +149,8 @@ export const ModelPlayground = ({
   const isModelTriggerable = useMemo(() => {
     return accessToken && model && modelState
       ? model.permission.canTrigger &&
-          !isModelRunInProgress &&
-          !["STATE_UNSPECIFIED", "STATE_ERROR"].includes(modelState)
+      !isModelRunInProgress &&
+      !["STATE_UNSPECIFIED", "STATE_ERROR"].includes(modelState)
       : false;
   }, [modelState, model, isModelRunInProgress, accessToken]);
 
@@ -205,7 +205,7 @@ export const ModelPlayground = ({
       !existingModelTriggerResult.data.operation ||
       (currentOperationIdPollingData.current.name &&
         existingModelTriggerResult.data?.operation?.name !==
-          currentOperationIdPollingData.current.name)
+        currentOperationIdPollingData.current.name)
     ) {
       return;
     }
@@ -229,10 +229,10 @@ export const ModelPlayground = ({
     } else {
       if (
         existingTriggerState?.done !==
-          existingModelTriggerResult.data.operation.done &&
+        existingModelTriggerResult.data.operation.done &&
         (!currentOperationIdPollingData.current.name ||
           existingModelTriggerResult.data.operation.name ===
-            currentOperationIdPollingData.current.name)
+          currentOperationIdPollingData.current.name)
       ) {
         setExistingTriggerState(existingModelTriggerResult.data.operation);
       }
@@ -267,13 +267,13 @@ export const ModelPlayground = ({
         setInputFromExistingResult(
           convertValuesToString(
             existingTriggerState.response?.request.taskInputs[0]?.[
-              taskPropName
+            taskPropName
             ],
           ),
         );
         setModelRunResult(
           existingTriggerState.response?.response.taskOutputs[0]?.[
-            taskPropName
+          taskPropName
           ],
         );
 
@@ -409,12 +409,7 @@ export const ModelPlayground = ({
                 >
                   Run
                   {isModelRunInProgress ? (
-                    <>
-                      <LoadingSpin className="ml-2 !h-4 !w-4 !text-semantic-accent-hover" />
-                      <p className="text-sm text-semantic-fg-secondary">
-                        Running
-                      </p>
-                    </>
+                    <LoadingSpin className="ml-2 !h-4 !w-4 !text-semantic-accent-hover" />
                   ) : (
                     <Icons.Play className="ml-2 h-4 w-4 stroke-semantic-accent-hover" />
                   )}
@@ -436,10 +431,16 @@ export const ModelPlayground = ({
           </form>
         </Form.Root>
       </div>
-      <div className="flex w-1/2 flex-col pb-6 pl-6">
+      <div className="flex w-1/2 flex-col pb-6 pl-6 py-6">
         <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
         {isModelRunInProgress ? (
-          <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />
+          <>
+            <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />
+            <p className="text-semantic-fg-primary product-headings-heading-2">
+              Running
+            </p>
+            <div className="product-body-text-2-regular">Our CPU/GPU is powering up—it might take a moment.</div>
+          </>
         ) : modelRunResult ? (
           <React.Fragment>
             <TabMenu.Root
