@@ -1005,7 +1005,7 @@ test("should transform objectArray", () => {
   const value = transformInstillFormTreeToDefaultValue(tree);
 
   expect(value).toStrictEqual({
-    ports: [{ port: "5432" }],
+    ports: [{ port: 5432 }],
   });
 });
 
@@ -2776,7 +2776,7 @@ test("should transform complicated real-world case", () => {
     input: {
       model: "gpt-4o",
       "response-format": { type: "text" },
-      "top-p": "1",
+      "top-p": 1,
     },
     condition: null,
     task: "TASK_TEXT_GENERATION",

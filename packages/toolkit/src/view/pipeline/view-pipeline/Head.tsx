@@ -255,10 +255,12 @@ export const Head = ({
                   <Icons.CheckCircle className="h-4 w-4" />
                   Examples
                 </TabMenu.Item> */}
-              <TabMenu.Item value="preview">
+
+              {/* This will come back when we introduce new pipeline tab*/}
+              {/* <TabMenu.Item value="preview">
                 <Icons.Dataflow03 className="h-4 w-4" />
                 Preview
-              </TabMenu.Item>
+              </TabMenu.Item> */}
               <TabMenu.Item value="runs">
                 <Icons.Zap className="h-4 w-4" />
                 Runs

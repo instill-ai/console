@@ -140,7 +140,6 @@ export type GeneralSlice = {
     fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
 };
-
 export enum DefaultEditorViewIDs {
   MAIN_PREVIEW_FLOW,
   MAIN_INPUT,

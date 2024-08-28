@@ -94,13 +94,15 @@ export const GettingStartedView = () => {
   );
 };
 
-export const gettingStartedEditorView: EditorView = {
-  id: DefaultEditorViewIDs.GETTING_STARTED,
-  title: "Getting Started",
-  type: "docs",
-  view: <GettingStartedView />,
-  closeable: true,
-};
+export function getGettingStartedEditorView(): EditorView {
+  return {
+    id: DefaultEditorViewIDs.GETTING_STARTED,
+    title: "Getting Started",
+    type: "docs",
+    view: <GettingStartedView />,
+    closeable: true,
+  };
+}
 
 const Block = ({
   index,
