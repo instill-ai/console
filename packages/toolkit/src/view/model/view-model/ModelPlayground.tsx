@@ -431,7 +431,7 @@ export const ModelPlayground = ({
           </form>
         </Form.Root>
       </div>
-      <div className="flex w-1/2 flex-col pb-6 pl-6 py-6">
+      <div className="flex w-1/2 flex-col pb-6 pl-6">
         <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
         {isModelRunInProgress ? (
           <div className="flex flex-col items-center justify-center h-full">
