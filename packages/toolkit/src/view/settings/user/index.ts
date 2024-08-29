@@ -3,3 +3,4 @@ export * from "./UserAPITokenTab";
 export * from "./UserProfileTab";
 export * from "./UserSidebar";
 export * from "./UserSecretTab";
+export * from "./UserIntegrationsTab";

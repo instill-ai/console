@@ -29,6 +29,11 @@ export const UserSidebar = () => {
         name="API Tokens"
         highlighted={pathname.split("/")[2] === "api-tokens"}
       />
+      <Setting.SidebarItem
+        href="/settings/integrations"
+        name="Integrations"
+        highlighted={pathname.split("/")[2] === "integrations"}
+      />
     </Setting.SidebarRoot>
   );
 };

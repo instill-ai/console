@@ -8,13 +8,13 @@ import {
   NamespaceSwitch,
   PageBase,
   Setting,
-  UserAPITokenTab,
+  UserIntegrationsTab,
   UserSidebar,
 } from "@instill-ai/toolkit";
 
 import { useAppAccessToken } from "~/lib/use-app-access-token";
 
-export function ApiTokenSettingsPageRender() {
+export function IntegrationsSettingsPageRender() {
   const accessToken = useAppAccessToken();
 
   const router = useRouter();
@@ -30,7 +30,7 @@ export function ApiTokenSettingsPageRender() {
           </div>
           <Setting.Root>
             <UserSidebar />
-            <UserAPITokenTab
+            <UserIntegrationsTab
               router={router}
               accessToken={accessToken.isSuccess ? accessToken.data : null}
               enableQuery={accessToken.isSuccess}
