@@ -393,7 +393,7 @@ export const PipelinePlayground = ({
         <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
         {isPipelineRunning ? (
           <div className="flex flex-col items-center justify-center h-full">
-            <LoadingSpin className="!text-semantic-fg-secondary !mb-10" />
+            <LoadingSpin className="!text-semantic-accent-hover !mb-10 !w-20 !h-20" />
             <p className="text-semantic-fg-primary product-headings-heading-2 mb-2">
               Running
             </p>
