@@ -434,7 +434,7 @@ export const ModelPlayground = ({
         </Form.Root>
       </div>
       <div className="flex w-1/2 flex-col pb-6 pl-6">
-        <ModelSectionHeader className="mb-24">Output</ModelSectionHeader>
+        <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
         {isModelRunInProgress ? (
           <div className="flex flex-col items-center justify-center">
             <LoadingSpin className="!text-semantic-accent-hover !mb-10 !w-20 !h-20" />
