@@ -6,7 +6,6 @@ import { useSearchParams } from "next/navigation";
 import cn from "clsx";
 
 import {
-  getModelHardwareToolkit,
   getModelInstanceTaskToolkit,
   GitHubIcon,
   Icons,
@@ -100,12 +99,7 @@ export const ModelHead = ({
                 </Link>
                 /<span className="text-semantic-fg-primary">{model?.id}</span>
               </div>
-              {modelState ? (
-                <ModelStateLabel
-                  state={modelState}
-                  hardware={getModelHardwareToolkit(model?.hardware || "")}
-                />
-              ) : null}
+              {modelState ? <ModelStateLabel state={modelState} /> : null}
               <Tag
                 className="my-auto h-6 gap-x-1 !border-0 !py-0 !text-sm"
                 variant="lightNeutral"

@@ -46,7 +46,7 @@ import {
   useUserNamespaces,
 } from "../../../lib";
 import { recursiveHelpers } from "../../pipeline-builder";
-import { OPERATION_POLL_TIMEOUT } from "./constants";
+import { getStatusMessage, OPERATION_POLL_TIMEOUT } from "./constants";
 
 export type ModelOutputActiveView = "preview" | "json";
 
@@ -177,7 +177,7 @@ export const ModelPlayground = ({
     });
 
     existingModelTriggerResult.refetch();
-  }, [existingModelTriggerResult.refetch]);
+  }, [model?.name, queryClient, existingModelTriggerResult]);
 
   useEffect(() => {
     if (activeVersion !== currentOperationIdPollingData.current.modelVersion) {
@@ -242,6 +242,7 @@ export const ModelPlayground = ({
     existingModelTriggerResult.isSuccess,
     existingModelTriggerResult.data,
     accessToken,
+    pollForResponse,
   ]);
 
   useEffect(() => {
@@ -288,7 +289,7 @@ export const ModelPlayground = ({
         modelVersion: existingTriggerState.response?.request.version || null,
       };
     }
-  }, [existingTriggerState]);
+  }, [existingTriggerState, model, pollForResponse]);
 
   const triggerModel = useTriggerUserModelVersionAsync();
 
@@ -409,12 +410,7 @@ export const ModelPlayground = ({
                 >
                   Run
                   {isModelRunInProgress ? (
-                    <>
-                      <LoadingSpin className="ml-2 !h-4 !w-4 !text-semantic-accent-hover" />
-                      <p className="text-sm text-semantic-fg-secondary">
-                        Running
-                      </p>
-                    </>
+                    <LoadingSpin className="ml-2 !h-4 !w-4 !text-semantic-accent-hover" />
                   ) : (
                     <Icons.Play className="ml-2 h-4 w-4 stroke-semantic-accent-hover" />
                   )}
@@ -439,7 +435,15 @@ export const ModelPlayground = ({
       <div className="flex w-1/2 flex-col pb-6 pl-6">
         <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
         {isModelRunInProgress ? (
-          <LoadingSpin className="!m-0 !text-semantic-fg-secondary" />
+          <div className="flex flex-col items-center justify-center h-full">
+            <LoadingSpin className="!text-semantic-fg-secondary !mb-10 !w-20 !h-20" />
+            <p className="text-semantic-fg-primary product-headings-heading-2 mb-2">
+              Running
+            </p>
+            <div className="text-center product-body-text-2-regular">
+              {getStatusMessage(modelState, model?.hardware || "CPU")}
+            </div>
+          </div>
         ) : modelRunResult ? (
           <React.Fragment>
             <TabMenu.Root
