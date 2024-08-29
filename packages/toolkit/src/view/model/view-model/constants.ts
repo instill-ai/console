@@ -5,7 +5,7 @@ export const TABLE_PAGE_SIZE = 10;
 
 export const getStatusMessage = (
   state: Nullable<ModelState>,
-  hardwareType: string
+  hardwareType: string,
 ) => {
   switch (state) {
     case "STATE_OFFLINE":
