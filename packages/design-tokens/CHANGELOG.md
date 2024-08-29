@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.7.0...@instill-ai/design-tokens-v0.7.1) (2024-08-29)
+
+
+### Bug Fixes
+
+* fix ts version that cause build issue ([#1407](https://github.com/instill-ai/console/issues/1407)) ([f7b2b13](https://github.com/instill-ai/console/commit/f7b2b13f3e6494915b8e6555b5f23498d32f792e))
+
 ## [0.7.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.6.1...@instill-ai/design-tokens-v0.7.0) (2024-07-16)
 
 
