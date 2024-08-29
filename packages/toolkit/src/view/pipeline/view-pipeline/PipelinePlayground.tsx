@@ -390,9 +390,9 @@ export const PipelinePlayground = ({
         )}
       </div>
       <div className="flex w-1/2 flex-col pb-6 pl-6">
-        <ModelSectionHeader className="mb-3">Output</ModelSectionHeader>
+        <ModelSectionHeader className="mb-24">Output</ModelSectionHeader>
         {isPipelineRunning ? (
-          <div className="flex flex-col items-center justify-center h-full">
+          <div className="flex flex-col items-center justify-center">
             <LoadingSpin className="!text-semantic-accent-hover !mb-10 !w-20 !h-20" />
             <p className="text-semantic-fg-primary product-headings-heading-2 mb-2">
               Running
