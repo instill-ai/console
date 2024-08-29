@@ -1,5 +1,55 @@
 # Changelog
 
+## [0.100.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.99.0...@instill-ai/toolkit-v0.100.0) (2024-08-29)
+
+
+### Features
+
+* adapt new instill-format ([#1409](https://github.com/instill-ai/console/issues/1409)) ([d1b33f9](https://github.com/instill-ai/console/commit/d1b33f9dffc7cee182fdcd5bd4ff792e950c7a99))
+* add a copy notification when the user click the copy CTA ([#1404](https://github.com/instill-ai/console/issues/1404)) ([6b7f79a](https://github.com/instill-ai/console/commit/6b7f79a6c56eb1b3ffd514efa520bd251333833e))
+* **catalog:** feat add 2 new API pages ([#1380](https://github.com/instill-ai/console/issues/1380)) ([4c2a5db](https://github.com/instill-ai/console/commit/4c2a5db337ee033c15ba01d7a2f90b09780a141d))
+* **dashboard:** feat enhance UI/UX for consuming organization credits ([#1374](https://github.com/instill-ai/console/issues/1374)) ([0de5580](https://github.com/instill-ai/console/commit/0de5580e1265068da659f2a89c5a627388d5e15e))
+* **editor:** add getting started view into low-code editor ([#1394](https://github.com/instill-ai/console/issues/1394)) ([f3f6f68](https://github.com/instill-ai/console/commit/f3f6f688fd4f2e89900e31faa743637605ba2d47))
+* **editor:** add tooltip information on interactive button ([#1403](https://github.com/instill-ai/console/issues/1403)) ([7e09729](https://github.com/instill-ai/console/commit/7e09729e06c83d104e4c3fce267ce639653523eb))
+* **editor:** support saving non-valid recipe ([#1408](https://github.com/instill-ai/console/issues/1408)) ([a991779](https://github.com/instill-ai/console/commit/a9917797c7692737cb685bb54c8ae83498c7ab6d))
+* enrich low-code editor hint features ([#1386](https://github.com/instill-ai/console/issues/1386)) ([c810679](https://github.com/instill-ai/console/commit/c810679460823a408e7465b909b7fb95da2d4372))
+* introduce low-code editor ([#1385](https://github.com/instill-ai/console/issues/1385)) ([34a62b0](https://github.com/instill-ai/console/commit/34a62b0ea3f863014b0c892fa26340678281d1d6))
+* make the recipe code block to have max height ([#1395](https://github.com/instill-ai/console/issues/1395)) ([4483bac](https://github.com/instill-ai/console/commit/4483bac85d848f78f9e40d730beab132e584527b))
+* **pipelines:** feat add running states ([#1413](https://github.com/instill-ai/console/issues/1413)) ([0e625da](https://github.com/instill-ai/console/commit/0e625dad6a37c48893a48ca631f7e85c67afb6b2))
+* remove preview tab from pipeline overview ([#1405](https://github.com/instill-ai/console/issues/1405)) ([f28a640](https://github.com/instill-ai/console/commit/f28a64020f9fa28dbaa73f53a749fd25bf4dd4a1))
+* removed Test button from pipeline versions table ([#1393](https://github.com/instill-ai/console/issues/1393)) ([dcadb87](https://github.com/instill-ai/console/commit/dcadb87617b45c0996a702e13ce84ab809689bbf))
+* support streaming with new low code editor ([#1391](https://github.com/instill-ai/console/issues/1391)) ([20edfde](https://github.com/instill-ai/console/commit/20edfdee1cd7fbccd4abe2e7c9c296ff671143f4))
+* view pipeline and model run logs ([#1383](https://github.com/instill-ai/console/issues/1383)) ([f0b60fb](https://github.com/instill-ai/console/commit/f0b60fb592876a92c853b85d9fe216a6ee528f7c))
+
+
+### Bug Fixes
+
+* adjust margin for model run output ([#1417](https://github.com/instill-ai/console/issues/1417)) ([8ab3e11](https://github.com/instill-ai/console/commit/8ab3e113eb778201d395ccd2f9a79904b654f2de))
+* **catalog:** catalog/model UI fixes ([#1397](https://github.com/instill-ai/console/issues/1397)) ([c07ffe1](https://github.com/instill-ai/console/commit/c07ffe1fbf9930738d416a607ab8c963179f77c0))
+* **catalog:** fix rename knowledge base to catalog ([#1371](https://github.com/instill-ai/console/issues/1371)) ([aa64ddd](https://github.com/instill-ai/console/commit/aa64ddd99492c0787a0ecf3d94529a1c7195b990))
+* **editor:** fix can not correctly hint model key ([#1399](https://github.com/instill-ai/console/issues/1399)) ([06b7ba4](https://github.com/instill-ai/console/commit/06b7ba421ec419933e587723be9c6b9713a1f124))
+* **editor:** fix focus tab will get changed when update the recipe ([#1400](https://github.com/instill-ai/console/issues/1400)) ([501443d](https://github.com/instill-ai/console/commit/501443d33b354c19a6b08fb39fb76d932301bbf9))
+* **editor:** fix maximize and minimize view will cause preview not focus ([#1402](https://github.com/instill-ai/console/issues/1402)) ([22edad3](https://github.com/instill-ai/console/commit/22edad3027e7854d6f5f436d72c1d8f4e5a20183))
+* **editor:** fix not correctly add component skeleton ([#1398](https://github.com/instill-ai/console/issues/1398)) ([09054ff](https://github.com/instill-ai/console/commit/09054ffc272e961fc33279380ebf2b64d370b2d6))
+* **editor:** fix the wrong indent when adding the component into recipe ([#1410](https://github.com/instill-ai/console/issues/1410)) ([163ee23](https://github.com/instill-ai/console/commit/163ee23d2eb16c5e1537791328bea6d447decb2b))
+* **editor:** fix unable to copy recipe when version is not latest ([#1396](https://github.com/instill-ai/console/issues/1396)) ([d018c33](https://github.com/instill-ai/console/commit/d018c336ba42f8366a57905f5eb972ece9d0ee81))
+* **editor:** replace .txt with .yaml as download extension for low-code editor ([#1401](https://github.com/instill-ai/console/issues/1401)) ([f211cff](https://github.com/instill-ai/console/commit/f211cff39826c5f49d530e70c11b4fb59f7ee463))
+* fetch specific version operation ([#1390](https://github.com/instill-ai/console/issues/1390)) ([5d0ff52](https://github.com/instill-ai/console/commit/5d0ff521eac76cf99b9133645b4257b2871d12b8))
+* fix can not trigger release pipeline in editor ([#1416](https://github.com/instill-ai/console/issues/1416)) ([3d0d4ee](https://github.com/instill-ai/console/commit/3d0d4ee87e97d9c0294d28e6a872b308b5f296bf))
+* fix formatting ([#1388](https://github.com/instill-ai/console/issues/1388)) ([1605af0](https://github.com/instill-ai/console/commit/1605af09d0837881a327b9b74c01d07cc8cc2db9))
+* fix model triggering ([#1392](https://github.com/instill-ai/console/issues/1392)) ([41eef19](https://github.com/instill-ai/console/commit/41eef196284196bd195bc253a25e35621dd05914))
+* fix ts version that cause build issue ([#1407](https://github.com/instill-ai/console/issues/1407)) ([f7b2b13](https://github.com/instill-ai/console/commit/f7b2b13f3e6494915b8e6555b5f23498d32f792e))
+* **model:** fix loading spinner colours  ([#1414](https://github.com/instill-ai/console/issues/1414)) ([953649e](https://github.com/instill-ai/console/commit/953649e7c83eda3a51a41b888bc5047965a8733a))
+* **model:** fix LoadingSpin position  ([#1415](https://github.com/instill-ai/console/issues/1415)) ([282aab4](https://github.com/instill-ai/console/commit/282aab42d8412c94afca3b384691b5627be81203))
+* **pipelines:** fix add redirection to playground and to settings tab ([#1376](https://github.com/instill-ai/console/issues/1376)) ([2e31306](https://github.com/instill-ai/console/commit/2e31306f51017db7aa468e440e570f84c813327b))
+* wording fix ([#1412](https://github.com/instill-ai/console/issues/1412)) ([e39a6b6](https://github.com/instill-ai/console/commit/e39a6b6a0802d2e2e3386221eec92ef35490fc16))
+
+
+### Miscellaneous
+
+* replace connector related query in vdp-sdk with packages/sdk ([#1378](https://github.com/instill-ai/console/issues/1378)) ([7670640](https://github.com/instill-ai/console/commit/76706400dad86855b87416e0b9780c517f1afbe9))
+* retire the toolkit/vdp-sdk/hub ([#1379](https://github.com/instill-ai/console/issues/1379)) ([0f12ea6](https://github.com/instill-ai/console/commit/0f12ea6fd35af05bd348d5bb6bfe862ef02c9b1e))
+
 ## [0.99.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.98.3...@instill-ai/toolkit-v0.99.0) (2024-08-13)
 
 

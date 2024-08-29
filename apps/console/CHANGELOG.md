@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.55.0-beta](https://github.com/instill-ai/console/compare/v0.54.0-beta...v0.55.0-beta) (2024-08-29)
+
+
+### Features
+
+* **catalog:** feat add 2 new API pages ([#1380](https://github.com/instill-ai/console/issues/1380)) ([4c2a5db](https://github.com/instill-ai/console/commit/4c2a5db337ee033c15ba01d7a2f90b09780a141d))
+* introduce low-code editor ([#1385](https://github.com/instill-ai/console/issues/1385)) ([34a62b0](https://github.com/instill-ai/console/commit/34a62b0ea3f863014b0c892fa26340678281d1d6))
+* view pipeline and model run logs ([#1383](https://github.com/instill-ai/console/issues/1383)) ([f0b60fb](https://github.com/instill-ai/console/commit/f0b60fb592876a92c853b85d9fe216a6ee528f7c))
+
+
+### Bug Fixes
+
+* **catalog:** fix rename knowledge base to catalog ([#1371](https://github.com/instill-ai/console/issues/1371)) ([aa64ddd](https://github.com/instill-ai/console/commit/aa64ddd99492c0787a0ecf3d94529a1c7195b990))
+* **editor:** fix not correctly add component skeleton ([#1398](https://github.com/instill-ai/console/issues/1398)) ([09054ff](https://github.com/instill-ai/console/commit/09054ffc272e961fc33279380ebf2b64d370b2d6))
+* fix ts version that cause build issue ([#1407](https://github.com/instill-ai/console/issues/1407)) ([f7b2b13](https://github.com/instill-ai/console/commit/f7b2b13f3e6494915b8e6555b5f23498d32f792e))
+* **pipelines:** fix add redirection to playground and to settings tab ([#1376](https://github.com/instill-ai/console/issues/1376)) ([2e31306](https://github.com/instill-ai/console/commit/2e31306f51017db7aa468e440e570f84c813327b))
+
 ## [0.54.0-beta](https://github.com/instill-ai/console/compare/v0.53.0-beta...v0.54.0-beta) (2024-08-13)
 
 

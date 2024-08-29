@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.4.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.3.1...instill-sdk-v0.4.0) (2024-08-29)
+
+
+### Features
+
+* **catalog:** feat add 2 new API pages ([#1380](https://github.com/instill-ai/console/issues/1380)) ([4c2a5db](https://github.com/instill-ai/console/commit/4c2a5db337ee033c15ba01d7a2f90b09780a141d))
+* **editor:** support saving non-valid recipe ([#1408](https://github.com/instill-ai/console/issues/1408)) ([a991779](https://github.com/instill-ai/console/commit/a9917797c7692737cb685bb54c8ae83498c7ab6d))
+* enrich low-code editor hint features ([#1386](https://github.com/instill-ai/console/issues/1386)) ([c810679](https://github.com/instill-ai/console/commit/c810679460823a408e7465b909b7fb95da2d4372))
+* introduce low-code editor ([#1385](https://github.com/instill-ai/console/issues/1385)) ([34a62b0](https://github.com/instill-ai/console/commit/34a62b0ea3f863014b0c892fa26340678281d1d6))
+* support streaming with new low code editor ([#1391](https://github.com/instill-ai/console/issues/1391)) ([20edfde](https://github.com/instill-ai/console/commit/20edfdee1cd7fbccd4abe2e7c9c296ff671143f4))
+* view pipeline and model run logs ([#1383](https://github.com/instill-ai/console/issues/1383)) ([f0b60fb](https://github.com/instill-ai/console/commit/f0b60fb592876a92c853b85d9fe216a6ee528f7c))
+
+
+### Bug Fixes
+
+* **catalog:** fix rename knowledge base to catalog ([#1371](https://github.com/instill-ai/console/issues/1371)) ([aa64ddd](https://github.com/instill-ai/console/commit/aa64ddd99492c0787a0ecf3d94529a1c7195b990))
+* **editor:** fix can not correctly hint model key ([#1399](https://github.com/instill-ai/console/issues/1399)) ([06b7ba4](https://github.com/instill-ai/console/commit/06b7ba421ec419933e587723be9c6b9713a1f124))
+* **editor:** fix not correctly add component skeleton ([#1398](https://github.com/instill-ai/console/issues/1398)) ([09054ff](https://github.com/instill-ai/console/commit/09054ffc272e961fc33279380ebf2b64d370b2d6))
+* fetch specific version operation ([#1390](https://github.com/instill-ai/console/issues/1390)) ([5d0ff52](https://github.com/instill-ai/console/commit/5d0ff521eac76cf99b9133645b4257b2871d12b8))
+* fix can not trigger release pipeline in editor ([#1416](https://github.com/instill-ai/console/issues/1416)) ([3d0d4ee](https://github.com/instill-ai/console/commit/3d0d4ee87e97d9c0294d28e6a872b308b5f296bf))
+
+
+### Miscellaneous
+
+* replace connector related query in vdp-sdk with packages/sdk ([#1378](https://github.com/instill-ai/console/issues/1378)) ([7670640](https://github.com/instill-ai/console/commit/76706400dad86855b87416e0b9780c517f1afbe9))
+
 ## [0.3.1](https://github.com/instill-ai/console/compare/instill-sdk-v0.3.0...instill-sdk-v0.3.1) (2024-08-05)
 
 

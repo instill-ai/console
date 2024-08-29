@@ -1,5 +1,24 @@
 # @instill-ai/design-system
 
+## [0.77.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.76.0...@instill-ai/design-system-v0.77.0) (2024-08-29)
+
+
+### Features
+
+* **catalog:** feat add 2 new API pages ([#1380](https://github.com/instill-ai/console/issues/1380)) ([4c2a5db](https://github.com/instill-ai/console/commit/4c2a5db337ee033c15ba01d7a2f90b09780a141d))
+* **editor:** add getting started view into low-code editor ([#1394](https://github.com/instill-ai/console/issues/1394)) ([f3f6f68](https://github.com/instill-ai/console/commit/f3f6f688fd4f2e89900e31faa743637605ba2d47))
+* **editor:** add tooltip information on interactive button ([#1403](https://github.com/instill-ai/console/issues/1403)) ([7e09729](https://github.com/instill-ai/console/commit/7e09729e06c83d104e4c3fce267ce639653523eb))
+* **editor:** support saving non-valid recipe ([#1408](https://github.com/instill-ai/console/issues/1408)) ([a991779](https://github.com/instill-ai/console/commit/a9917797c7692737cb685bb54c8ae83498c7ab6d))
+* introduce low-code editor ([#1385](https://github.com/instill-ai/console/issues/1385)) ([34a62b0](https://github.com/instill-ai/console/commit/34a62b0ea3f863014b0c892fa26340678281d1d6))
+* support streaming with new low code editor ([#1391](https://github.com/instill-ai/console/issues/1391)) ([20edfde](https://github.com/instill-ai/console/commit/20edfdee1cd7fbccd4abe2e7c9c296ff671143f4))
+* view pipeline and model run logs ([#1383](https://github.com/instill-ai/console/issues/1383)) ([f0b60fb](https://github.com/instill-ai/console/commit/f0b60fb592876a92c853b85d9fe216a6ee528f7c))
+
+
+### Bug Fixes
+
+* **catalog:** fix rename knowledge base to catalog ([#1371](https://github.com/instill-ai/console/issues/1371)) ([aa64ddd](https://github.com/instill-ai/console/commit/aa64ddd99492c0787a0ecf3d94529a1c7195b990))
+* fix ts version that cause build issue ([#1407](https://github.com/instill-ai/console/issues/1407)) ([f7b2b13](https://github.com/instill-ai/console/commit/f7b2b13f3e6494915b8e6555b5f23498d32f792e))
+
 ## [0.76.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.75.0...@instill-ai/design-system-v0.76.0) (2024-08-13)
 
 
