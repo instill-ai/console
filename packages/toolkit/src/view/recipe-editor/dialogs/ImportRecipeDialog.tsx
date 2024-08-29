@@ -72,7 +72,7 @@ export const ImportRecipeDialog = () => {
           }
         }}
         type="file"
-        accept=".txt"
+        accept=".yaml"
         ref={(e) => {
           if (!e) {
             return;
