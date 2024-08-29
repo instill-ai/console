@@ -1,7 +1,6 @@
-/**
- * @type {import('next').NextConfig}
- */
-module.exports = {
+import MillionLint from "@million/lint";
+
+const nextConfig = {
   swcMinify: true,
   reactStrictMode: true,
   transpilePackages: [
@@ -27,7 +26,9 @@ module.exports = {
         source: "/logout",
         destination: "/api/auth/logout",
         permanent: false,
-      }
+      },
     ];
   },
 };
+
+export default MillionLint.next({ rsc: true })(nextConfig);

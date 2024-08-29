@@ -28,13 +28,13 @@
   "devDependencies": {
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
+    "@instill-ai/prettier-config-cortex": "workspace:*",
     "husky": "^7.0.0",
     "lint-staged": ">=10",
-    "yaml": "^2.5.0",
     "prettier": "latest",
-    "@instill-ai/prettier-config-cortex": "workspace:*",
     "turbo": "latest",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "yaml": "^2.5.0"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -52,5 +52,8 @@
       "eslint --cache --fix",
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "@million/lint": "1.0.0-rc.84"
   }
 }

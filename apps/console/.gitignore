@@ -48,3 +48,6 @@ yarn-error.log*
 # Generated env file
 
 /public/__env.js
+
+# Million Lint
+.million

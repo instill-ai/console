@@ -30,6 +30,7 @@
     "@instill-ai/prettier-config-cortex": "workspace:*",
     "@instill-ai/toolkit": "workspace:*",
     "@instill-ai/tsconfig": "workspace:*",
+    "@million/lint": "1.0.0-rc.84",
     "@radix-ui/react-checkbox": "^1.0.3",
     "@radix-ui/react-collapsible": "^1.0.2",
     "@radix-ui/react-dialog": "^1.0.3",
