@@ -216,7 +216,10 @@ export const PipelinePlayground = ({
           returnTraces: true,
           shareCode: shareCode ?? undefined,
           requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+          stream: false,
         });
+
+        console.log("data", data);
 
         onTriggerInvalidateCredits({
           ownerName: targetNamespace?.name ?? null,

@@ -86,11 +86,7 @@ export const Menu = ({ pipeline, handleDeletePipeline }: MenuProps) => {
                 : (pipeline.owner.organization.profile?.displayName ?? null)
             }
           />
-          <PublishPipelineDialog
-            pipelineName={routeInfo.data.pipelineName}
-            entity={routeInfo.data.namespaceId}
-            id={routeInfo.data.resourceId}
-          />
+          <PublishPipelineDialog />
           <ClonePipelineDialog
             pipeline={pipeline}
             open={cloneDialogIsOpen}

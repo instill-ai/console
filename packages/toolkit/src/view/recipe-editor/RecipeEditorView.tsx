@@ -27,6 +27,7 @@ import {
   useShallow,
 } from "../../lib";
 import { env } from "../../server";
+import { PublishPipelineDialog } from "../pipeline-builder";
 import { ActionCmdk, ComponentCmdo } from "./commands";
 import { PipelineToolkitDialog, SharePipelineDialog } from "./dialogs";
 import { ImportRecipeDialog } from "./dialogs/ImportRecipeDialog";
@@ -68,6 +69,7 @@ const selector = (store: InstillStore) => ({
   updateCurrentVersion: store.updateCurrentVersion,
   currentVersion: store.currentVersion,
   editorPreviewReactFlowInstance: store.editorPreviewReactFlowInstance,
+  editorFirstRenderedHeight: store.editorFirstRenderedHeight,
 });
 
 export const RecipeEditorView = () => {
@@ -84,6 +86,7 @@ export const RecipeEditorView = () => {
     updateCurrentVersion,
     currentVersion,
     editorPreviewReactFlowInstance,
+    editorFirstRenderedHeight,
   } = useInstillStore(useShallow(selector));
   useEditorCommandListener();
   const routeInfo = useRouteInfo();
@@ -285,6 +288,7 @@ export const RecipeEditorView = () => {
           <ActionCmdk />
           <PipelineToolkitDialog />
           <SharePipelineDialog />
+          <PublishPipelineDialog />
           <ReleasePopover />
           <div className="ml-4 flex">
             {isCloud ? <CloudTopbarDropdown /> : <CETopbarDropdown />}
@@ -389,8 +393,17 @@ export const RecipeEditorView = () => {
                         </span>
                       </button>
                     </div>
-                    {currentVersion !== "latest" && pipeline.isSuccess ? (
-                      <div className="flex p-1.5 w-full flex-col bg-semantic-bg-base-bg">
+
+                    <div className="w-full flex-1 bg-semantic-bg-primary">
+                      <div
+                        id="editor-past-version-hint"
+                        className={cn(
+                          "flex p-1.5 w-full flex-col bg-semantic-bg-base-bg",
+                          currentVersion !== "latest" && pipeline.isSuccess
+                            ? ""
+                            : "hidden",
+                        )}
+                      >
                         <p className="product-body-text-3-medium break-words">
                           <span className="text-semantic-fg-secondary">
                             You are viewing a past version of this pipeline,
@@ -400,14 +413,35 @@ export const RecipeEditorView = () => {
                           <span
                             className="cursor-pointer text-semantic-accent-default hover:!underline"
                             onClick={() => {
-                              if (!pipeline.isSuccess) {
+                              if (!pipeline.isSuccess || !editorRef) {
                                 return;
                               }
 
-                              updateCurrentVersion(() => "latest");
-                              updateRawRecipeOnDom(
-                                () => pipeline.data.rawRecipe,
-                              );
+                              // We first update the value then update the version to latest
+                              // Because the guard of the recipe updater will check whether the
+                              // version is latest, if we don't have this delay, the updater will
+                              // get wrongly trigger
+                              editorRef.setValue(pipeline.data.rawRecipe ?? "");
+
+                              // Because the past version hint is listening to the version change,
+                              // so we need to bundle the layout update and version update together
+                              setTimeout(() => {
+                                const editorLayoutInfo =
+                                  editorRef.getLayoutInfo();
+
+                                if (!editorFirstRenderedHeight.current) {
+                                  editorFirstRenderedHeight.current =
+                                    editorLayoutInfo.height;
+                                }
+
+                                editorRef.layout({
+                                  width: editorLayoutInfo.width,
+                                  height: editorFirstRenderedHeight.current
+                                    ? editorFirstRenderedHeight.current
+                                    : editorLayoutInfo.height,
+                                });
+                                updateCurrentVersion(() => "latest");
+                              }, 1);
                             }}
                           >
                             Click Here
@@ -418,8 +452,6 @@ export const RecipeEditorView = () => {
                           </span>
                         </p>
                       </div>
-                    ) : null}
-                    <div className="w-full flex-1 bg-semantic-bg-primary">
                       <VscodeEditor />
                     </div>
                     <div className="h-7 shrink-0 flex flex-row bg-semantic-bg-alt-primary">

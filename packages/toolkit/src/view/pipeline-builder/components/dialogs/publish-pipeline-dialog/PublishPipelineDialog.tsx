@@ -12,12 +12,12 @@ import { Dialog, Form, LinkButton, useToast } from "@instill-ai/design-system";
 
 import {
   InstillStore,
-  Nullable,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
   useInstillStore,
   useNamespacePipeline,
+  useRouteInfo,
   useUpdateNamespacePipeline,
 } from "../../../../../lib";
 import { Head } from "./Head";
@@ -39,18 +39,11 @@ export const PublishPipelineFormSchema = z.object({
   license: z.string().optional().nullable(),
 });
 
-export const PublishPipelineDialog = ({
-  pipelineName,
-  entity,
-  id,
-}: {
-  pipelineName: Nullable<string>;
-  entity: Nullable<string>;
-  id: Nullable<string>;
-}) => {
+export const PublishPipelineDialog = () => {
   const router = useRouter();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [isPublishing, setIsPublishing] = React.useState(false);
+  const routeInfo = useRouteInfo();
 
   const { toast } = useToast();
 
@@ -67,9 +60,9 @@ export const PublishPipelineDialog = ({
   });
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: pipelineName,
+    namespacePipelineName: routeInfo.data.pipelineName,
     accessToken,
-    enabled: enabledQuery && !pipelineIsNew && !!pipelineName,
+    enabled: enabledQuery && !pipelineIsNew && routeInfo.isSuccess,
   });
 
   const updatePipeline = useUpdateNamespacePipeline();
@@ -77,12 +70,19 @@ export const PublishPipelineDialog = ({
   async function handlePublish(
     formData: z.infer<typeof PublishPipelineFormSchema>,
   ) {
-    if (isPublishing || !pipeline.isSuccess || !pipelineName) return;
+    if (
+      isPublishing ||
+      !pipeline.isSuccess ||
+      !routeInfo.isSuccess ||
+      !routeInfo.data.pipelineName
+    ) {
+      return;
+    }
 
     setIsPublishing(true);
 
     const payload: UpdateNamespacePipelineRequest = {
-      namespacePipelineName: pipelineName,
+      namespacePipelineName: routeInfo.data.pipelineName,
       description: formData.description ?? undefined,
       readme: formData.readme ?? undefined,
       sharing: {
@@ -122,7 +122,9 @@ export const PublishPipelineDialog = ({
           <div className="flex flex-row">
             <LinkButton
               onClick={() => {
-                router.push(`/${entity}/pipelines/${id}/playground`);
+                router.push(
+                  `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/playground`,
+                );
               }}
               variant="primary"
               size="sm"
@@ -161,7 +163,10 @@ export const PublishPipelineDialog = ({
         <Form.Root {...form}>
           <form onSubmit={form.handleSubmit(handlePublish)}>
             <div className="flex h-full flex-col">
-              <Head entity={entity} id={id} />
+              <Head
+                entity={routeInfo.data.namespaceId}
+                id={routeInfo.data.resourceId}
+              />
               <Metadata
                 form={form}
                 description={

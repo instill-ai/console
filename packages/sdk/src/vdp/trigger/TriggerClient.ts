@@ -79,7 +79,7 @@ export class TriggerClient extends APIResource {
         {
           body: JSON.stringify({ inputs }),
           additionalHeaders,
-          stream: true,
+          stream,
         },
       )) as any;
 

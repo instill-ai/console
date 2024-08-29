@@ -11,6 +11,7 @@ import {
   ScrollArea,
 } from "@instill-ai/design-system";
 
+import { editorPastVersionHintHeight } from "../../../constant/pipeline";
 import {
   InstillStore,
   useInstillStore,
@@ -26,8 +27,8 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
   currentVersion: store.currentVersion,
   updateCurrentVersion: store.updateCurrentVersion,
-  updateRawRecipeOnDom: store.updateRawRecipeOnDom,
   editorRef: store.editorRef,
+  editorFirstRenderedHeight: store.editorFirstRenderedHeight,
 });
 
 export const ReleasedVersionPopover = () => {
@@ -38,8 +39,8 @@ export const ReleasedVersionPopover = () => {
     enabledQuery,
     currentVersion,
     updateCurrentVersion,
-    updateRawRecipeOnDom,
     editorRef,
+    editorFirstRenderedHeight,
   } = useInstillStore(useShallow(selector));
 
   const sortedReleases = useSortedReleases({
@@ -84,23 +85,34 @@ export const ReleasedVersionPopover = () => {
                   id="latest"
                   currentVersion={currentVersion}
                   onClick={() => {
-                    if (!pipeline.isSuccess) {
+                    if (!pipeline.isSuccess || !editorRef) {
                       return;
                     }
 
-                    updateCurrentVersion(() => "latest");
-                    updateRawRecipeOnDom(() => pipeline.data.rawRecipe);
+                    // We first update the value then update the version to latest
+                    // Because the guard of the recipe updater will check whether the
+                    // version is latest, if we don't have this delay, the updater will
+                    // get wrongly trigger
+                    editorRef.setValue(pipeline.data.rawRecipe ?? "");
 
-                    if (!editorRef) {
-                      return;
-                    }
+                    // Because the past version hint is listening to the version change,
+                    // so we need to bundle the layout update and version update together
+                    setTimeout(() => {
+                      const editorLayoutInfo = editorRef.getLayoutInfo();
 
-                    const editorWidth = editorRef.getLayoutInfo().width;
-                    editorRef.layout({
-                      width: editorWidth,
-                      // We give a random number to let the editor recalculate the height
-                      height: 1,
-                    });
+                      if (!editorFirstRenderedHeight.current) {
+                        editorFirstRenderedHeight.current =
+                          editorLayoutInfo.height;
+                      }
+
+                      editorRef.layout({
+                        width: editorLayoutInfo.width,
+                        height: editorFirstRenderedHeight.current
+                          ? editorFirstRenderedHeight.current
+                          : editorLayoutInfo.height,
+                      });
+                      updateCurrentVersion(() => "latest");
+                    }, 1);
                   }}
                 />
                 {sortedReleases.data.map((release) => (
@@ -110,19 +122,35 @@ export const ReleasedVersionPopover = () => {
                     currentVersion={currentVersion}
                     createTime={release.createTime}
                     onClick={() => {
-                      updateCurrentVersion(() => release.id);
-                      updateRawRecipeOnDom(() => release.rawRecipe);
-
                       if (!editorRef) {
                         return;
                       }
 
-                      const editorWidth = editorRef.getLayoutInfo().width;
+                      // We first update the current version to the release id,
+                      // so the vscode updater will first know that we are in
+                      // previous version and won't trigger update process, so we won't
+                      // accidentally update the recipe to the previous version
+                      updateCurrentVersion(() => release.id);
+
+                      const editorLayoutInfo = editorRef.getLayoutInfo();
+
+                      if (!editorFirstRenderedHeight.current) {
+                        editorFirstRenderedHeight.current =
+                          editorLayoutInfo.height;
+                      }
+
                       editorRef.layout({
-                        width: editorWidth,
-                        // We give a random number to let the editor recalculate the height
-                        height: 1,
+                        width: editorLayoutInfo.width,
+                        height: editorFirstRenderedHeight.current
+                          ? editorFirstRenderedHeight.current -
+                            editorPastVersionHintHeight
+                          : editorLayoutInfo.height -
+                            editorPastVersionHintHeight,
                       });
+
+                      setTimeout(() => {
+                        editorRef.setValue(release.rawRecipe);
+                      }, 1);
                     }}
                   />
                 ))}

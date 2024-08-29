@@ -6,6 +6,8 @@ import { GeneralRecord, Nullable } from "../lib";
 import { env } from "../server";
 import { triggerPipelineSnippet } from "../view/pipeline-builder/components/triggerPipelineSnippet";
 
+export const editorPastVersionHintHeight = 52;
+
 export const generateInputsPayload = (fields: PipelineVariableFieldMap) => {
   const input: GeneralRecord = {};
 

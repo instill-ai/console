@@ -985,10 +985,7 @@ export const VscodeEditor = () => {
   }, [pipeline.isSuccess, pipeline.data]);
 
   return (
-    <div className="w-full h-full relative">
-      {/* {pipeline.isSuccess && currentVersion !== "latest" ? (
-        <div className="absolute z-10 inset-0 bg-semantic-fg-primary opacity-15"></div>
-      ) : null} */}
+    <div className="w-full relative h-full">
       <style jsx={true}>{`
         ..rendered-markdown > h1 {
           font-size: 1.5rem;
@@ -1022,16 +1019,18 @@ export const VscodeEditor = () => {
       `}</style>
       <Editor
         language="yaml"
-        className="rounded-b"
+        className="rounded-b h-full"
         loading={
           <div className="w-10 h-10 flex items-center justify-center">
             <LoadingSpin className="!text-semantic-fg-primary" />
           </div>
         }
         onChange={(value) => {
-          if (!value || !pipeline.isSuccess) {
+          if (!value || !pipeline.isSuccess || currentVersion !== "latest") {
             return;
           }
+
+          console.log("titjrijt", currentVersion);
 
           updateHasUnsavedRecipe(() => true);
 
@@ -1066,6 +1065,7 @@ export const VscodeEditor = () => {
           minimap: {
             enabled: false,
           },
+          scrollBeyondLastLine: false,
           tabSize: 2,
           automaticLayout: true,
           quickSuggestions: {
@@ -1088,6 +1088,7 @@ export const VscodeEditor = () => {
           updateEditorRef(() => editor);
           monacoRef.current = monaco;
           updateMonacoRef(() => monaco);
+
           const autoCompleteDisposable =
             monaco.languages.registerCompletionItemProvider("yaml", {
               triggerCharacters: ["${", "."],
@@ -1157,6 +1158,7 @@ export const VscodeEditor = () => {
           });
         }}
       />
+
       <Dialog.Root
         open={openInstillCreditDialog}
         onOpenChange={(open) => setOpenInstillCreditDialog(open)}

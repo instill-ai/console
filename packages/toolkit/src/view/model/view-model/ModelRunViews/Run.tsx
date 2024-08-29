@@ -76,6 +76,7 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
     taskInputOutput.input,
     {
       disabledAll: true,
+      stringifyDefaultValue: true,
     },
   );
   const componentOutputFields = useComponentOutputFields({

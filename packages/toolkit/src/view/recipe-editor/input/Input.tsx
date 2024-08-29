@@ -143,6 +143,8 @@ export const Input = ({
           (ns) => ns.id === navigationNamespaceAnchor,
         );
 
+        console.log("rock");
+
         const stream = await triggerPipeline.mutateAsync({
           namespacePipelineName: pipelineName,
           accessToken,
@@ -151,10 +153,14 @@ export const Input = ({
           requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
         });
 
+        console.log("stream", stream);
+
         for await (const chunk of stream.body) {
           if (chunk === null) {
             continue;
           }
+
+          console.log("chunk", chunk);
 
           if (forceStopTriggerPipelineStream.current) {
             break;
