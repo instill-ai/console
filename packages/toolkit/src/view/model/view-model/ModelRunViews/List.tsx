@@ -170,7 +170,7 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
         accessorKey: "createTime",
         header: () => (
           <RunsTableSortableColHeader
-            title="Created"
+            title="Trigger Time"
             paramName="create_time"
             currentSortParamValue={orderBy}
             onSort={onSortOrderUpdate}
