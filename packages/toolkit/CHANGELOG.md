@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.100.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.100.0...@instill-ai/toolkit-v0.100.1) (2024-08-29)
+
+
+### Bug Fixes
+
+* resolve import file issue related to file extension ([#1418](https://github.com/instill-ai/console/issues/1418)) ([a2a318f](https://github.com/instill-ai/console/commit/a2a318ff07fd1d53d63de30808acec6ef6eb3507))
+
 ## [0.100.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.99.0...@instill-ai/toolkit-v0.100.0) (2024-08-29)
 
 
