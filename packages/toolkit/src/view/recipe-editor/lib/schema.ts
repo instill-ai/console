@@ -18,7 +18,7 @@ const connectorDefinitionIds = [
   "anthropic",
   "mistral-ai",
   "cohere",
-  "firework-ai",
+  "fireworks-ai",
   "groq",
   "ollama",
   "github",
