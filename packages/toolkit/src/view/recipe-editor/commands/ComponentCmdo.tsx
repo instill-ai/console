@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import { ComponentDefinition, IteratorDefinition } from "instill-sdk";
+import { editor } from "monaco-editor";
+// import { Range } from "monaco-editor";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { stackoverflowLight } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import YAML from "yaml";
@@ -35,6 +37,7 @@ import {
 } from "../../../lib/use-instill-form/transform";
 import { generateUniqueNodeIdFromDefinition } from "../../pipeline-builder/lib/generateUniqueNodeIdFromDefinition";
 import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
+import { keyLineNumberMapHelpers } from "../lib";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -42,6 +45,7 @@ const selector = (store: InstillStore) => ({
   openComponentCmdo: store.openComponentCmdo,
   updateOpenComponentCmdo: store.updateOpenComponentCmdo,
   editorRef: store.editorRef,
+  monacoRef: store.monacoRef,
 });
 
 function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
@@ -73,6 +77,7 @@ export const ComponentCmdo = () => {
     openComponentCmdo,
     updateOpenComponentCmdo,
     editorRef,
+    monacoRef,
   } = useInstillStore(useShallow(selector));
 
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
@@ -213,6 +218,10 @@ export const ComponentCmdo = () => {
       return;
     }
 
+    const stringfyOptions: YAML.ToStringOptions = {
+      indent: 2,
+    };
+
     const componentIds = pipeline.data.recipe?.component
       ? Object.keys(pipeline.data.recipe.component)
       : [];
@@ -224,11 +233,15 @@ export const ComponentCmdo = () => {
         selectedComponentDefinition,
         componentIds,
       );
-      doc = YAML.stringify({
-        [id]: {
-          type: "iterator",
+
+      doc = YAML.stringify(
+        {
+          [id]: {
+            type: "iterator",
+          },
         },
-      });
+        stringfyOptions,
+      );
     }
 
     if (isComponentDefinition(selectedComponentDefinition)) {
@@ -241,38 +254,144 @@ export const ComponentCmdo = () => {
         selectedTask,
       );
 
-      doc = YAML.stringify({
-        [id]: {
-          type: selectedComponentDefinition.id,
-          ...defaultValue,
+      doc = YAML.stringify(
+        {
+          [id]: {
+            type: selectedComponentDefinition.id,
+            ...defaultValue,
+          },
         },
-      });
+        stringfyOptions,
+      );
     }
 
     setSelectedComponentDefaultValue(doc);
   }
 
   function onAddComponent() {
-    if (!selectedComponentDefaultValue || !editorRef) {
+    if (!selectedComponentDefaultValue || !editorRef || !monacoRef) {
       return;
     }
 
     const selection = editorRef.getSelection();
 
-    if (selectedComponentDefaultValue && selection) {
-      editorRef.executeEdits("cmdk", [
-        {
-          range: selection,
-          text: selectedComponentDefaultValue,
-        },
-      ]);
-
-      // We need this setTimeout to correctly focus the editor after the edit
-      setTimeout(() => {
-        editorRef.focus();
-        updateOpenComponentCmdo(() => false);
-      }, 100);
+    if (!selection) {
+      return;
     }
+
+    // const lines = selectedComponentDefaultValue.split("\n");
+
+    const yamlLines = selectedComponentDefaultValue.split("\n");
+    const edits: editor.IIdentifiedSingleEditOperation[] = [];
+
+    // get the line number of the current model
+    const lineCount = editorRef.getModel()?.getLineCount();
+
+    const allValue = editorRef.getModel()?.getValue();
+
+    if (!allValue) {
+      return;
+    }
+
+    let dontHaveComponentAfterSelection = false;
+
+    try {
+      const componentKeyLineNumberMaps =
+        keyLineNumberMapHelpers.getAllComponentKeyLineNumberMaps(allValue);
+
+      const biggestKeyLineNumber = componentKeyLineNumberMaps
+        .map((map) => map.lineNumber)
+        .sort((a, b) => b - a)[0];
+
+      if (
+        biggestKeyLineNumber &&
+        selection.selectionStartLineNumber > biggestKeyLineNumber
+      ) {
+        dontHaveComponentAfterSelection = true;
+      }
+
+      // This is a safe guard, for example, when user have a very long component configuration, but
+      // one of the component's indent is not correct, the getAllComponentKeyLineNumberMaps will
+      // not get the full list of component key line number maps. In this case we will fall back
+      if (lineCount && selection.selectionStartLineNumber < lineCount - 10) {
+        dontHaveComponentAfterSelection = false;
+      }
+
+      console.log(
+        selection.selectionStartLineNumber,
+        dontHaveComponentAfterSelection,
+        biggestKeyLineNumber,
+        componentKeyLineNumberMaps,
+        allValue,
+      );
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (!dontHaveComponentAfterSelection) {
+      edits.push(
+        ...[
+          {
+            range: new monacoRef.Range(
+              selection.selectionStartLineNumber,
+              4,
+              selection.endLineNumber,
+              4,
+            ),
+            text: "  ",
+            forceMoveMarkers: true,
+          },
+          {
+            range: new monacoRef.Range(
+              selection.selectionStartLineNumber,
+              4,
+              selection.endLineNumber,
+              4,
+            ),
+            text: selectedComponentDefaultValue,
+            forceMoveMarkers: true,
+          },
+        ],
+      );
+    } else {
+      yamlLines.forEach((line, index) => {
+        edits.push(
+          ...[
+            {
+              range: new monacoRef.Range(
+                selection.selectionStartLineNumber + index,
+                4,
+                selection.endLineNumber + index,
+                4,
+              ),
+              text: "  ",
+              forceMoveMarkers: true,
+            },
+            {
+              range: new monacoRef.Range(
+                selection.selectionStartLineNumber + index,
+                4,
+                selection.endLineNumber + index,
+                4,
+              ),
+              text: line + "\n",
+              forceMoveMarkers: true,
+            },
+          ],
+        );
+      });
+    }
+
+    editorRef.executeEdits("cmdk", edits);
+
+    // editorRef.trigger("keyboard", "type", "hello");
+    // editorRef.trigger("anyString", "editor.action.formatDocument", "");
+
+    // We need this setTimeout to correctly focus the editor after the edit
+    setTimeout(() => {
+      editorRef.focus();
+      updateOpenComponentCmdo(() => false);
+    }, 100);
   }
 
   return (

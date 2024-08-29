@@ -62,7 +62,6 @@ export function validateVSCodeYaml(
   }
 
   if (!yamlData) {
-    console.log("yamlData is null");
     return { success: false, markers };
   }
 
@@ -70,10 +69,7 @@ export function validateVSCodeYaml(
 
   const doc = YAML.parseAllDocuments<YAML.YAMLMap>(recipe, { lineCounter });
 
-  console.log("doc", doc);
-
   if (!doc || !doc[0]) {
-    console.log("doc is null");
     return {
       success: false,
       markers: [],
