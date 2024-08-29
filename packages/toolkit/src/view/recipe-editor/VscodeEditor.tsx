@@ -173,7 +173,6 @@ export const VscodeEditor = () => {
   );
 
   React.useEffect(() => {
-    console.log("new error", markErrors);
     if (!editorRef.current || !monacoRef.current) {
       return;
     }

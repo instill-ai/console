@@ -137,25 +137,28 @@ export const RecipeEditorView = () => {
         ? pipeline.data
         : sortedReleases.data?.find((e) => e.id === currentVersion);
 
-    if (!targetPipeline) {
-      return;
-    }
+    const release = sortedReleases.data?.find((e) => e.id === currentVersion);
 
-    console.log("targetPipeline", targetPipeline);
+    const recipe =
+      currentVersion === "latest" ? pipeline.data.recipe : release?.recipe;
+    const dataSpecification =
+      currentVersion === "latest"
+        ? pipeline.data.dataSpecification
+        : release?.dataSpecification;
 
-    const inputView = targetPipeline?.recipe?.variable ? (
+    const inputView = recipe?.variable ? (
       <Input
-        pipelineName={targetPipeline?.name ?? null}
-        fields={targetPipeline.recipe?.variable ?? null}
+        pipelineName={pipeline.data?.name ?? null}
+        fields={recipe?.variable ?? null}
       />
     ) : (
       <InOutputEmptyView reason="variableIsEmpty" />
     );
 
-    const previewView = targetPipeline.recipe ? (
+    const previewView = recipe ? (
       <Flow
-        pipelineId={targetPipeline?.id ?? null}
-        recipe={targetPipeline?.recipe ?? null}
+        pipelineId={pipeline.data?.id ?? null}
+        recipe={recipe ?? null}
         pipelineMetadata={targetPipeline?.metadata ?? null}
       />
     ) : (
@@ -163,18 +166,15 @@ export const RecipeEditorView = () => {
     );
 
     const outputView =
-      targetPipeline?.dataSpecification?.output &&
-      targetPipeline.dataSpecification.output?.properties &&
-      Object.keys(targetPipeline.dataSpecification.output?.properties)
-        .length !== 0 ? (
-        <Output
-          outputSchema={targetPipeline?.dataSpecification?.output ?? null}
-        />
+      dataSpecification?.output &&
+      dataSpecification.output?.properties &&
+      Object.keys(dataSpecification.output?.properties).length !== 0 ? (
+        <Output outputSchema={dataSpecification?.output ?? null} />
       ) : (
         <InOutputEmptyView reason="outputIsEmpty" />
       );
 
-    const pipelineIsNew = targetPipeline.metadata.pipelineIsNew ?? false;
+    const pipelineIsNew = pipeline.data.metadata.pipelineIsNew ?? false;
 
     updateEditorMultiScreenModel((prev) => {
       const topRightViews: EditorView[] = [
@@ -479,7 +479,7 @@ export const RecipeEditorView = () => {
                       </div>
                       <VscodeEditor />
                     </div>
-                    <div className="h-7 shrink-0 flex flex-row bg-semantic-bg-alt-primary">
+                    <div className="h-7 z-50 shrink-0 flex flex-row bg-semantic-bg-alt-primary">
                       <ReleasedVersionPopover />
                     </div>
                   </div>
