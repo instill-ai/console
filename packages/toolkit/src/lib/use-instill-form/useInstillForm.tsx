@@ -19,6 +19,7 @@ import { useInstillSelectedConditionMap } from "./useInstillSelectedConditionMap
 
 export type UseInstillFormOptions = {
   checkIsHidden?: CheckIsHidden;
+  stringifyDefaultValue?: boolean;
 } & Pick<
   PickRegularFieldsFromInstillFormTreeOptions,
   | "chooseTitleFrom"
@@ -46,6 +47,7 @@ export function useInstillForm(
   const disabledAll = options?.disabledAll ?? false;
   const chooseTitleFrom = options?.chooseTitleFrom ?? "title";
   const checkIsHidden = options?.checkIsHidden ?? undefined;
+  const stringifyDefaultValue = options?.stringifyDefaultValue ?? false;
   const enableSmartHint = options?.enableSmartHint ?? false;
   const componentID = options?.componentID ?? "";
   const size = options?.size;
@@ -109,7 +111,9 @@ export function useInstillForm(
 
     setValidatorSchema(_ValidatorSchema);
 
-    const _data = transformInstillFormTreeToDefaultValue(_formTree);
+    const _data = transformInstillFormTreeToDefaultValue(_formTree, {
+      stringify: stringifyDefaultValue,
+    });
 
     // Set initial values to the form. The data may be null or empty object
     const _defaultValues = data
@@ -118,8 +122,17 @@ export function useInstillForm(
         : _data
       : _data;
 
+    console.log(stringifyDefaultValue, _defaultValues);
+
     setInitialValues(_defaultValues);
-  }, [schema, checkIsHidden, data, form, setSelectedConditionMap]);
+  }, [
+    schema,
+    checkIsHidden,
+    data,
+    form,
+    setSelectedConditionMap,
+    stringifyDefaultValue,
+  ]);
 
   // This will react to the first render and when the selectedConditionMap is changed
   React.useEffect(() => {

@@ -86,11 +86,7 @@ export const TopControlMenu = ({
           <Release />
         </div>
       </div>
-      <PublishPipelineDialog
-        pipelineName={routeInfo.data.pipelineName}
-        entity={routeInfo.data.namespaceId}
-        id={routeInfo.data.resourceId}
-      />
+      <PublishPipelineDialog />
     </React.Fragment>
   );
 };

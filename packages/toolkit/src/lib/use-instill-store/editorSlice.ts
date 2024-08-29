@@ -152,4 +152,5 @@ export const createEditorSlice: StateCreator<
         runButtonRef: fn(state.runButtonRef),
       };
     }),
+  editorFirstRenderedHeight: React.createRef<Nullable<number>>(),
 });

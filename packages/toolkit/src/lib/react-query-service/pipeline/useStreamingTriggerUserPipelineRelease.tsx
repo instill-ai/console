@@ -1,15 +1,15 @@
 "use client";
 
-import type { TriggerNamespacePipelineRequest } from "instill-sdk";
+import type { TriggerNamespacePipelineReleaseRequest } from "instill-sdk";
 import { useMutation } from "@tanstack/react-query";
 
 import { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../vdp-sdk";
 
-export function useStreamingTriggerUserPipeline() {
+export function useStreamingTriggerUserPipelineRelease() {
   return useMutation({
     mutationFn: async (
-      props: Omit<TriggerNamespacePipelineRequest, "stream"> & {
+      props: Omit<TriggerNamespacePipelineReleaseRequest, "stream"> & {
         accessToken: Nullable<string>;
         triggerNamespaceName?: string;
       },
@@ -20,11 +20,13 @@ export function useStreamingTriggerUserPipeline() {
         accessToken: accessToken ?? undefined,
       });
 
-      const response = await client.vdp.trigger.triggerNamespacePipeline({
-        ...payload,
-        stream: true,
-        isConsole: true,
-      });
+      const response = await client.vdp.trigger.triggerNamespacePipelineRelease(
+        {
+          ...payload,
+          stream: true,
+          isConsole: true,
+        },
+      );
 
       return Promise.resolve(response);
     },

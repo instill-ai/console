@@ -14,6 +14,7 @@ export type TriggerNamespacePipelineRequest = {
   shareCode?: string;
   requesterUid?: string;
   stream?: boolean;
+  isConsole?: boolean;
 };
 
 export type TriggerNamespacePipelineResponse = {
@@ -154,6 +155,8 @@ export type TriggerAsyncNamespacePipelineReleaseRequest = {
   shareCode?: string;
   requesterUid?: string;
 };
+
+export type TriggerNamespacePipelineReleaseWithStreamResponse = any;
 
 export type TriggerAsyncNamespacePipelineReleaseResponse = {
   operation: Operation;

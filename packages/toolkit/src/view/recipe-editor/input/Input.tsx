@@ -23,6 +23,7 @@ import {
   usePipelineTriggerRequestForm,
   useShallow,
   useStreamingTriggerUserPipeline,
+  useStreamingTriggerUserPipelineRelease,
   useUserNamespaces,
 } from "../../../lib";
 import { recursiveHelpers } from "../../pipeline-builder";
@@ -35,6 +36,7 @@ const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   updateTriggerPipelineStreamMap: store.updateTriggerPipelineStreamMap,
   updateEditorMultiScreenModel: store.updateEditorMultiScreenModel,
+  currentVersion: store.currentVersion,
 });
 
 export const Input = ({
@@ -51,6 +53,7 @@ export const Input = ({
     accessToken,
     updateTriggerPipelineStreamMap,
     updateEditorMultiScreenModel,
+    currentVersion,
   } = useInstillStore(useShallow(selector));
 
   const forceStopTriggerPipelineStream = React.useRef(false);
@@ -66,7 +69,7 @@ export const Input = ({
 
   const namespace = useUserNamespaces();
   const triggerPipeline = useStreamingTriggerUserPipeline();
-
+  const triggerPipelineRelease = useStreamingTriggerUserPipelineRelease();
   const onStreamTriggerPipeline = React.useCallback(
     async (formData: z.infer<typeof Schema>) => {
       if (!pipelineName || !formData || !fields) return;
@@ -138,19 +141,39 @@ export const Input = ({
         }
       }
 
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+      let stream: any = null;
+      const tartgetNamespace = namespace.find(
+        (ns) => ns.id === navigationNamespaceAnchor,
+      );
+
       try {
-        const tartgetNamespace = namespace.find(
-          (ns) => ns.id === navigationNamespaceAnchor,
-        );
+        if (currentVersion !== "latest") {
+          stream = await triggerPipelineRelease.mutateAsync({
+            namespacePipelineReleaseName: `${pipelineName}/releases/${currentVersion}`,
+            accessToken,
+            inputs: [parsedStructuredData],
+            returnTraces: true,
+            requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
+          });
+        } else {
+          stream = await triggerPipeline.mutateAsync({
+            namespacePipelineName: pipelineName,
+            accessToken,
+            inputs: [parsedStructuredData],
+            returnTraces: true,
+            requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
+          });
+        }
+      } catch (error) {
+        return;
+      }
 
-        const stream = await triggerPipeline.mutateAsync({
-          namespacePipelineName: pipelineName,
-          accessToken,
-          inputs: [parsedStructuredData],
-          returnTraces: true,
-          requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
-        });
+      if (!stream) {
+        return;
+      }
 
+      try {
         for await (const chunk of stream.body) {
           if (chunk === null) {
             continue;

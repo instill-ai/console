@@ -249,6 +249,8 @@ export type EditorSlice = {
       prev: React.MutableRefObject<HTMLButtonElement>,
     ) => React.MutableRefObject<HTMLButtonElement>,
   ) => void;
+
+  editorFirstRenderedHeight: React.MutableRefObject<Nullable<number>>;
 };
 
 export type TriggerPipelineStreamMap = {

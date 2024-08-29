@@ -316,14 +316,6 @@ export const ComponentCmdo = () => {
       if (lineCount && selection.selectionStartLineNumber < lineCount - 10) {
         dontHaveComponentAfterSelection = false;
       }
-
-      console.log(
-        selection.selectionStartLineNumber,
-        dontHaveComponentAfterSelection,
-        biggestKeyLineNumber,
-        componentKeyLineNumberMaps,
-        allValue,
-      );
     } catch (error) {
       console.log(error);
     }

@@ -10,6 +10,7 @@ export type TransformInstillFormTreeToDefaultValueOptions = {
   isRoot?: boolean;
   selectedConditionMap?: SelectedConditionMap;
   skipPath?: string[];
+  stringify?: boolean;
 };
 
 export function transformInstillFormTreeToDefaultValue(
@@ -20,6 +21,7 @@ export function transformInstillFormTreeToDefaultValue(
   const isRoot = options?.isRoot ?? false;
   const selectedConditionMap = options?.selectedConditionMap ?? {};
   const skipPath = options?.skipPath ?? [];
+  const stringify = options?.stringify ?? false;
   // We don't need to set the field key for formCondition because in the
   // conditions are formGroup, we will set the fieldKey there
 
@@ -39,6 +41,7 @@ export function transformInstillFormTreeToDefaultValue(
             selectedConditionMap,
             isRoot,
             skipPath,
+            stringify,
           });
 
           dot.setter(
@@ -59,6 +62,7 @@ export function transformInstillFormTreeToDefaultValue(
             selectedConditionMap,
             isRoot,
             skipPath,
+            stringify,
           });
 
           dot.setter(initialData, constPath, defaultCondition.const as string);
@@ -76,6 +80,7 @@ export function transformInstillFormTreeToDefaultValue(
         selectedConditionMap,
         isRoot,
         skipPath,
+        stringify,
       });
     }
 
@@ -90,6 +95,7 @@ export function transformInstillFormTreeToDefaultValue(
       isRoot: true,
       selectedConditionMap,
       skipPath,
+      stringify,
     });
 
     if (tree.path) {
@@ -127,7 +133,9 @@ export function transformInstillFormTreeToDefaultValue(
     ((tree.type === "integer" && (tree.default ?? null) !== null) ||
       tree.default)
   ) {
-    defaultValue = tree.default as string | number;
+    defaultValue = stringify
+      ? String(tree.default)
+      : (tree.default as string | number);
     dot.setter(initialData, key, defaultValue);
     return initialData;
   }
@@ -136,14 +144,16 @@ export function transformInstillFormTreeToDefaultValue(
     switch (typeof tree.examples) {
       case "object":
         if (Array.isArray(tree.examples)) {
-          defaultValue = tree.examples[0] as string | number;
+          defaultValue = stringify
+            ? String(tree.examples[0])
+            : (tree.examples[0] as string | number);
         }
         break;
       case "number":
-        defaultValue = tree.examples;
+        defaultValue = stringify ? String(tree.examples) : tree.examples;
         break;
       case "string":
-        defaultValue = tree.examples;
+        defaultValue = stringify ? String(tree.examples) : tree.examples;
         break;
       default:
         defaultValue = null;
@@ -156,10 +166,10 @@ export function transformInstillFormTreeToDefaultValue(
   if ("example" in tree && tree.example) {
     switch (typeof tree.example) {
       case "number":
-        defaultValue = tree.example;
+        defaultValue = stringify ? String(tree.example) : tree.example;
         break;
       case "string":
-        defaultValue = String(tree.example);
+        defaultValue = stringify ? String(tree.example) : tree.example;
         break;
       default:
         defaultValue = null;

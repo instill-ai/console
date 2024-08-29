@@ -10,6 +10,7 @@ export * from "./useInfiniteNamespacePipelines";
 export * from "./useInfiniteNamespacePipelineReleases.js";
 export * from "./useRenameNamespacePipeline";
 export * from "./useStreamingTriggerUserPipeline";
+export * from "./useStreamingTriggerUserPipelineRelease";
 export * from "./useTriggerNamespacePipeline";
 export * from "./useTriggerNamespacePipelineRelease";
 export * from "./useUpdateNamespacePipeline";

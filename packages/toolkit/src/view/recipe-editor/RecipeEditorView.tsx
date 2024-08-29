@@ -25,8 +25,10 @@ import {
   useNamespacePipeline,
   useRouteInfo,
   useShallow,
+  useSortedReleases,
 } from "../../lib";
 import { env } from "../../server";
+import { PublishPipelineDialog } from "../pipeline-builder";
 import { ActionCmdk, ComponentCmdo } from "./commands";
 import { PipelineToolkitDialog, SharePipelineDialog } from "./dialogs";
 import { ImportRecipeDialog } from "./dialogs/ImportRecipeDialog";
@@ -68,6 +70,7 @@ const selector = (store: InstillStore) => ({
   updateCurrentVersion: store.updateCurrentVersion,
   currentVersion: store.currentVersion,
   editorPreviewReactFlowInstance: store.editorPreviewReactFlowInstance,
+  editorFirstRenderedHeight: store.editorFirstRenderedHeight,
 });
 
 export const RecipeEditorView = () => {
@@ -84,6 +87,7 @@ export const RecipeEditorView = () => {
     updateCurrentVersion,
     currentVersion,
     editorPreviewReactFlowInstance,
+    editorFirstRenderedHeight,
   } = useInstillStore(useShallow(selector));
   useEditorCommandListener();
   const routeInfo = useRouteInfo();
@@ -105,6 +109,12 @@ export const RecipeEditorView = () => {
     enabled: enabledQuery,
   });
 
+  const sortedReleases = useSortedReleases({
+    pipelineName: routeInfo.data.pipelineName,
+    accessToken,
+    enabledQuery: enabledQuery && routeInfo.isSuccess,
+  });
+
   React.useEffect(() => {
     if (!pipeline.isSuccess) {
       return;
@@ -122,33 +132,44 @@ export const RecipeEditorView = () => {
       return;
     }
 
-    const inputView = pipeline.data?.recipe?.variable ? (
+    const targetPipeline =
+      currentVersion === "latest"
+        ? pipeline.data
+        : sortedReleases.data?.find((e) => e.id === currentVersion);
+
+    const release = sortedReleases.data?.find((e) => e.id === currentVersion);
+
+    const recipe =
+      currentVersion === "latest" ? pipeline.data.recipe : release?.recipe;
+    const dataSpecification =
+      currentVersion === "latest"
+        ? pipeline.data.dataSpecification
+        : release?.dataSpecification;
+
+    const inputView = recipe?.variable ? (
       <Input
         pipelineName={pipeline.data?.name ?? null}
-        fields={pipeline.data?.recipe.variable ?? null}
+        fields={recipe?.variable ?? null}
       />
     ) : (
       <InOutputEmptyView reason="variableIsEmpty" />
     );
 
-    const previewView = pipeline.data.recipe ? (
+    const previewView = recipe ? (
       <Flow
         pipelineId={pipeline.data?.id ?? null}
-        recipe={pipeline.data?.recipe ?? null}
-        pipelineMetadata={pipeline.data?.metadata ?? null}
+        recipe={recipe ?? null}
+        pipelineMetadata={targetPipeline?.metadata ?? null}
       />
     ) : (
       <PreviewEmptyView />
     );
 
     const outputView =
-      pipeline.data?.dataSpecification?.output &&
-      pipeline.data.dataSpecification.output?.properties &&
-      Object.keys(pipeline.data.dataSpecification.output?.properties).length !==
-        0 ? (
-        <Output
-          outputSchema={pipeline.data?.dataSpecification?.output ?? null}
-        />
+      dataSpecification?.output &&
+      dataSpecification.output?.properties &&
+      Object.keys(dataSpecification.output?.properties).length !== 0 ? (
+        <Output outputSchema={dataSpecification?.output ?? null} />
       ) : (
         <InOutputEmptyView reason="outputIsEmpty" />
       );
@@ -212,7 +233,14 @@ export const RecipeEditorView = () => {
         },
       };
     });
-  }, [pipeline.data, pipeline.isSuccess, updateEditorMultiScreenModel]);
+  }, [
+    pipeline.data,
+    pipeline.isSuccess,
+    updateEditorMultiScreenModel,
+    currentVersion,
+    sortedReleases.isSuccess,
+    sortedReleases.data,
+  ]);
 
   const isCloud = env("NEXT_PUBLIC_APP_ENV") === "CLOUD";
 
@@ -285,6 +313,7 @@ export const RecipeEditorView = () => {
           <ActionCmdk />
           <PipelineToolkitDialog />
           <SharePipelineDialog />
+          <PublishPipelineDialog />
           <ReleasePopover />
           <div className="ml-4 flex">
             {isCloud ? <CloudTopbarDropdown /> : <CETopbarDropdown />}
@@ -389,8 +418,17 @@ export const RecipeEditorView = () => {
                         </span>
                       </button>
                     </div>
-                    {currentVersion !== "latest" && pipeline.isSuccess ? (
-                      <div className="flex p-1.5 w-full flex-col bg-semantic-bg-base-bg">
+
+                    <div className="w-full flex-1 bg-semantic-bg-primary">
+                      <div
+                        id="editor-past-version-hint"
+                        className={cn(
+                          "flex p-1.5 w-full flex-col bg-semantic-bg-base-bg",
+                          currentVersion !== "latest" && pipeline.isSuccess
+                            ? ""
+                            : "hidden",
+                        )}
+                      >
                         <p className="product-body-text-3-medium break-words">
                           <span className="text-semantic-fg-secondary">
                             You are viewing a past version of this pipeline,
@@ -400,14 +438,35 @@ export const RecipeEditorView = () => {
                           <span
                             className="cursor-pointer text-semantic-accent-default hover:!underline"
                             onClick={() => {
-                              if (!pipeline.isSuccess) {
+                              if (!pipeline.isSuccess || !editorRef) {
                                 return;
                               }
 
-                              updateCurrentVersion(() => "latest");
-                              updateRawRecipeOnDom(
-                                () => pipeline.data.rawRecipe,
-                              );
+                              // We first update the value then update the version to latest
+                              // Because the guard of the recipe updater will check whether the
+                              // version is latest, if we don't have this delay, the updater will
+                              // get wrongly trigger
+                              editorRef.setValue(pipeline.data.rawRecipe ?? "");
+
+                              // Because the past version hint is listening to the version change,
+                              // so we need to bundle the layout update and version update together
+                              setTimeout(() => {
+                                const editorLayoutInfo =
+                                  editorRef.getLayoutInfo();
+
+                                if (!editorFirstRenderedHeight.current) {
+                                  editorFirstRenderedHeight.current =
+                                    editorLayoutInfo.height;
+                                }
+
+                                editorRef.layout({
+                                  width: editorLayoutInfo.width,
+                                  height: editorFirstRenderedHeight.current
+                                    ? editorFirstRenderedHeight.current
+                                    : editorLayoutInfo.height,
+                                });
+                                updateCurrentVersion(() => "latest");
+                              }, 1);
                             }}
                           >
                             Click Here
@@ -418,11 +477,9 @@ export const RecipeEditorView = () => {
                           </span>
                         </p>
                       </div>
-                    ) : null}
-                    <div className="w-full flex-1 bg-semantic-bg-primary">
                       <VscodeEditor />
                     </div>
-                    <div className="h-7 shrink-0 flex flex-row bg-semantic-bg-alt-primary">
+                    <div className="h-7 z-50 shrink-0 flex flex-row bg-semantic-bg-alt-primary">
                       <ReleasedVersionPopover />
                     </div>
                   </div>

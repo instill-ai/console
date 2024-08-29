@@ -9,6 +9,7 @@ import {
   TriggerAsyncNamespacePipelineResponse,
   TriggerNamespacePipelineReleaseRequest,
   TriggerNamespacePipelineReleaseResponse,
+  TriggerNamespacePipelineReleaseWithStreamResponse,
   TriggerNamespacePipelineRequest,
   TriggerNamespacePipelineResponse,
   TriggerNamespacePipelineWithStreamResponse,
@@ -65,12 +66,14 @@ export class TriggerClient extends APIResource {
     returnTraces,
     shareCode,
     stream,
+    isConsole,
   }: TriggerNamespacePipelineRequest) {
     const additionalHeaders = getInstillAdditionalHeaders({
       requesterUid,
       returnTraces,
       shareCode,
       stream,
+      isConsole,
     });
 
     try {
@@ -79,7 +82,7 @@ export class TriggerClient extends APIResource {
         {
           body: JSON.stringify({ inputs }),
           additionalHeaders,
-          stream: true,
+          stream,
         },
       )) as any;
 
@@ -130,14 +133,17 @@ export class TriggerClient extends APIResource {
     requesterUid,
     shareCode,
     stream,
+    isConsole,
   }: TriggerNamespacePipelineReleaseRequest & {
     stream?: boolean;
+    isConsole?: boolean;
   }) {
     const additionalHeaders = getInstillAdditionalHeaders({
       requesterUid,
       returnTraces,
       shareCode,
       stream,
+      isConsole,
     });
 
     try {
@@ -147,8 +153,17 @@ export class TriggerClient extends APIResource {
           {
             body: JSON.stringify({ inputs }),
             additionalHeaders,
+            stream,
           },
         );
+
+      if (stream) {
+        return Promise.resolve(
+          data,
+        ) as Promise<TriggerNamespacePipelineReleaseWithStreamResponse>;
+      } else {
+        return Promise.resolve(data);
+      }
 
       return Promise.resolve(data);
     } catch (error) {
@@ -178,6 +193,7 @@ export class TriggerClient extends APIResource {
             additionalHeaders,
           },
         );
+
       return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);

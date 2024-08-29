@@ -534,13 +534,19 @@ export class ModelClient extends APIResource {
   async triggerNamespaceModelVersion({
     namespaceModelVersionName,
     taskInputs,
+    isConsole,
   }: TriggerNamespaceModelVersionRequest) {
+    const additionalHeaders = getInstillAdditionalHeaders({
+      isConsole,
+    });
+
     try {
       const data =
         await this._client.post<TriggerNamespaceModelVersionResponse>(
           `/${namespaceModelVersionName}/trigger`,
           {
             body: JSON.stringify({ taskInputs }),
+            additionalHeaders,
           },
         );
       return Promise.resolve(data);
@@ -554,11 +560,13 @@ export class ModelClient extends APIResource {
     taskInputs,
     requesterUid,
     returnTraces,
+    isConsole,
   }: TriggerAsyncNamespaceModelVersionRequest) {
     try {
       const additionalHeaders = getInstillAdditionalHeaders({
         requesterUid,
         returnTraces,
+        isConsole,
       });
 
       const data =

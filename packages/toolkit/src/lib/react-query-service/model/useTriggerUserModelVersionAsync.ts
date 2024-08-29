@@ -34,6 +34,7 @@ export function useTriggerUserModelVersionAsync() {
         taskInputs: payload.taskInputs,
         requesterUid,
         returnTraces,
+        isConsole: true,
       });
 
       return Promise.resolve(response);
