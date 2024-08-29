@@ -1030,8 +1030,6 @@ export const VscodeEditor = () => {
             return;
           }
 
-          console.log("titjrijt", currentVersion);
-
           updateHasUnsavedRecipe(() => true);
 
           // In the updater we will check whether the value is valid or not again, the reason

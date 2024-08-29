@@ -25,6 +25,7 @@ import {
   useNamespacePipeline,
   useRouteInfo,
   useShallow,
+  useSortedReleases,
 } from "../../lib";
 import { env } from "../../server";
 import { PublishPipelineDialog } from "../pipeline-builder";
@@ -108,6 +109,12 @@ export const RecipeEditorView = () => {
     enabled: enabledQuery,
   });
 
+  const sortedReleases = useSortedReleases({
+    pipelineName: routeInfo.data.pipelineName,
+    accessToken,
+    enabledQuery: enabledQuery && routeInfo.isSuccess,
+  });
+
   React.useEffect(() => {
     if (!pipeline.isSuccess) {
       return;
@@ -125,38 +132,49 @@ export const RecipeEditorView = () => {
       return;
     }
 
-    const inputView = pipeline.data?.recipe?.variable ? (
+    const targetPipeline =
+      currentVersion === "latest"
+        ? pipeline.data
+        : sortedReleases.data?.find((e) => e.id === currentVersion);
+
+    if (!targetPipeline) {
+      return;
+    }
+
+    console.log("targetPipeline", targetPipeline);
+
+    const inputView = targetPipeline?.recipe?.variable ? (
       <Input
-        pipelineName={pipeline.data?.name ?? null}
-        fields={pipeline.data?.recipe.variable ?? null}
+        pipelineName={targetPipeline?.name ?? null}
+        fields={targetPipeline.recipe?.variable ?? null}
       />
     ) : (
       <InOutputEmptyView reason="variableIsEmpty" />
     );
 
-    const previewView = pipeline.data.recipe ? (
+    const previewView = targetPipeline.recipe ? (
       <Flow
-        pipelineId={pipeline.data?.id ?? null}
-        recipe={pipeline.data?.recipe ?? null}
-        pipelineMetadata={pipeline.data?.metadata ?? null}
+        pipelineId={targetPipeline?.id ?? null}
+        recipe={targetPipeline?.recipe ?? null}
+        pipelineMetadata={targetPipeline?.metadata ?? null}
       />
     ) : (
       <PreviewEmptyView />
     );
 
     const outputView =
-      pipeline.data?.dataSpecification?.output &&
-      pipeline.data.dataSpecification.output?.properties &&
-      Object.keys(pipeline.data.dataSpecification.output?.properties).length !==
-        0 ? (
+      targetPipeline?.dataSpecification?.output &&
+      targetPipeline.dataSpecification.output?.properties &&
+      Object.keys(targetPipeline.dataSpecification.output?.properties)
+        .length !== 0 ? (
         <Output
-          outputSchema={pipeline.data?.dataSpecification?.output ?? null}
+          outputSchema={targetPipeline?.dataSpecification?.output ?? null}
         />
       ) : (
         <InOutputEmptyView reason="outputIsEmpty" />
       );
 
-    const pipelineIsNew = pipeline.data.metadata.pipelineIsNew ?? false;
+    const pipelineIsNew = targetPipeline.metadata.pipelineIsNew ?? false;
 
     updateEditorMultiScreenModel((prev) => {
       const topRightViews: EditorView[] = [
@@ -215,7 +233,14 @@ export const RecipeEditorView = () => {
         },
       };
     });
-  }, [pipeline.data, pipeline.isSuccess, updateEditorMultiScreenModel]);
+  }, [
+    pipeline.data,
+    pipeline.isSuccess,
+    updateEditorMultiScreenModel,
+    currentVersion,
+    sortedReleases.isSuccess,
+    sortedReleases.data,
+  ]);
 
   const isCloud = env("NEXT_PUBLIC_APP_ENV") === "CLOUD";
 

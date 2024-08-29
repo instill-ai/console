@@ -312,6 +312,7 @@ export type DeleteNamespaceModelVersionRequest = {
 export type TriggerNamespaceModelVersionRequest = {
   namespaceModelVersionName: string;
   taskInputs: Record<string, unknown>[];
+  isConsole?: boolean;
 };
 
 export type TriggerNamespaceModelVersionResponse = {
@@ -324,6 +325,7 @@ export type TriggerAsyncNamespaceModelVersionRequest = {
   taskInputs: Record<string, unknown>[];
   returnTraces?: boolean;
   requesterUid?: string;
+  isConsole?: boolean;
 };
 
 export type TriggerAsyncNamespaceModelVersionResponse = {
