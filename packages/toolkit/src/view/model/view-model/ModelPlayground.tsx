@@ -178,7 +178,6 @@ export const ModelPlayground = ({
 
     existingModelTriggerResult.refetch();
   }, [
-    existingModelTriggerResult.refetch,
     model?.name,
     queryClient,
     existingModelTriggerResult,
