@@ -122,8 +122,17 @@ export function useInstillForm(
         : _data
       : _data;
 
+    console.log(stringifyDefaultValue, _defaultValues);
+
     setInitialValues(_defaultValues);
-  }, [schema, checkIsHidden, data, form, setSelectedConditionMap]);
+  }, [
+    schema,
+    checkIsHidden,
+    data,
+    form,
+    setSelectedConditionMap,
+    stringifyDefaultValue,
+  ]);
 
   // This will react to the first render and when the selectedConditionMap is changed
   React.useEffect(() => {

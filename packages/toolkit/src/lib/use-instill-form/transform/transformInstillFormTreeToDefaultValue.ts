@@ -133,7 +133,9 @@ export function transformInstillFormTreeToDefaultValue(
     ((tree.type === "integer" && (tree.default ?? null) !== null) ||
       tree.default)
   ) {
-    defaultValue = tree.default as string | number;
+    defaultValue = stringify
+      ? String(tree.default)
+      : (tree.default as string | number);
     dot.setter(initialData, key, defaultValue);
     return initialData;
   }
