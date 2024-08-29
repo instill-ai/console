@@ -66,8 +66,8 @@ export const ModelStateLabel = ({ state, className }: ModelStateLabelProps) => {
     case "STATE_UNSPECIFIED":
     case "STATE_STARTING":
     default: {
-      textColor = "text-semantic-error-hover";
-      bgColor = "bg-semantic-error-bg";
+      textColor = "text-semantic-success-default";
+      bgColor = "bg-semantic-base-bg";
       stateLabelName = "Starting";
       indicatorColor = "bg-semantic-error-default";
     }
