@@ -1,9 +1,7 @@
 "use client";
 
 import { Fragment, ReactNode } from "react";
-
 import { Icons, Skeleton, Tag } from "@instill-ai/design-system";
-
 import { Nullable, PipelineTriggersStatusSummaryItem } from "../../lib";
 
 const ModelTriggersSummaryCard = (props: {
@@ -13,7 +11,7 @@ const ModelTriggersSummaryCard = (props: {
     return (
       <div
         key={`cards-skeleton`}
-        className="inline-flex h-[110px] w-[246] flex-col items-start justify-start gap-2 rounded-sm border border-semantic-bg-line bg-white p-6 shadow"
+        className="inline-flex h-[110px] w-[246] flex-col items-start justify-start gap-2 rounded-sm border border-semantic-bg-line bg-semantic-bg-alt-primary p-6"
       >
         <div className="self-stretch">
           <Skeleton className="h-5 w-full rounded" />
@@ -46,12 +44,12 @@ const ModelTriggersSummaryCard = (props: {
   }
 
   return (
-    <div className="inline-flex flex-col items-start justify-start gap-2 rounded-sm border border-semantic-bg-line bg-semantic-bg-primary p-6 shadow">
-      <div className="self-stretch text-semantic-fg-secondary product-body-text-3-medium">
+    <div className="inline-flex flex-col items-start justify-start gap-2 rounded-sm border border-semantic-bg-line bg-semantic-bg-alt-primary p-[8px_12px_8px_12px]">
+      <div className="self-stretch text-semantic-fg-secondary product-label-label-1">
         {summaryName}
       </div>
       <div className="inline-flex items-end justify-start gap-4 self-stretch">
-        <div className="mr-auto text-semantic-fg-primary product-headings-heading-1">
+        <div className="mr-auto text-semantic-fg-primary product-body-text-2-semibold">
           {amount}
         </div>
         <div className="my-auto flex items-center justify-center">
@@ -81,7 +79,7 @@ export type ModelTriggersSummaryProps = {
 };
 
 export const ModelTriggersSummary = (
-  props: ModelTriggersSummaryProps,
+  props: ModelTriggersSummaryProps
 ) => {
   const { children } = props;
 
@@ -91,4 +89,5 @@ export const ModelTriggersSummary = (
     </Fragment>
   );
 };
+
 ModelTriggersSummary.Card = ModelTriggersSummaryCard;

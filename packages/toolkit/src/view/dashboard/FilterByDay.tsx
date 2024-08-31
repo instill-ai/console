@@ -20,14 +20,6 @@ export const FilterByDay = ({
 }: FilterProps) => {
   return (
     <div className="flex flex-row space-x-4">
-      <Button
-        className="my-auto h-10 w-10 !p-3"
-        variant="secondaryGrey"
-        size="sm"
-        onClick={() => refetch()}
-      >
-        <Icons.RefreshCw05 className="h-4 w-4 stroke-semantic-fg-primary" />
-      </Button>
       <div className="border-semantic flex items-start justify-start">
         {dashboardOptions.timeLine.map((timeLineOption) => (
           <button
@@ -48,6 +40,14 @@ export const FilterByDay = ({
           </button>
         ))}
       </div>
+      <Button
+        className="my-auto h-10 w-10 !p-3"
+        variant="secondaryGrey"
+        size="sm"
+        onClick={() => refetch()}
+      >
+        <Icons.RefreshCw05 className="h-4 w-4 stroke-semantic-fg-primary" />
+      </Button>
     </div>
   );
 };
