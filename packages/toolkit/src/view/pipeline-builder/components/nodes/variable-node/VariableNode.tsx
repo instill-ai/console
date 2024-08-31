@@ -276,7 +276,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
     const semiStructuredObjectKeys: string[] = [];
 
     Object.entries(data.fields).forEach(([key, value]) => {
-      if (value.instillFormat === "semi-structured/json") {
+      if (value?.instillFormat === "semi-structured/json") {
         semiStructuredObjectKeys.push(key);
       }
     });

@@ -12,76 +12,78 @@ export const generateInputsPayload = (fields: PipelineVariableFieldMap) => {
   const input: GeneralRecord = {};
 
   for (const [key, value] of Object.entries(fields)) {
-    switch (value.instillFormat) {
-      case "string": {
-        input[key] = "Please put your value here";
-        break;
-      }
-      case "array:string": {
-        input[key] = [
-          "Please put your first value here",
-          "Please put your second value here",
-          "...",
-        ];
-        break;
-      }
-      case "number": {
-        input[key] = 123456;
-        break;
-      }
-      case "array:number": {
-        input[key] = [123456, 654321];
-        break;
-      }
-      case "image":
-      case "image/*": {
-        input[key] = "your image base64 encoded string";
-        break;
-      }
-      case "array:image":
-      case "array:image/*": {
-        input[key] = [
-          "Please put your first image base64 encoded string",
-          "Please put your second image base64 encoded string",
-          "...",
-        ];
-        break;
-      }
-      case "audio":
-      case "audio/*": {
-        input[key] = "Please put your audio base64 encoded string";
-        break;
-      }
-      case "array:audio":
-      case "array:audio/*": {
-        input[key] = [
-          "Please put your first audio base64 encoded string",
-          "Please put your second audio base64 encoded string",
-          "...",
-        ];
-        break;
-      }
-      case "video":
-      case "video/*": {
-        input[key] = "Please put your video base64 encoded string";
-        break;
-      }
-      case "array:video":
-      case "array:video/*": {
-        input[key] = [
-          "Please put your first video base64 encoded string",
-          "Please put your second video base64 encoded string",
-          "...",
-        ];
-        break;
-      }
-      case "boolean": {
-        input[key] = true;
-        break;
-      }
-      case "array:boolean": {
-        input[key] = [true, false];
-        break;
+    if (value) {
+      switch (value.instillFormat) {
+        case "string": {
+          input[key] = "Please put your value here";
+          break;
+        }
+        case "array:string": {
+          input[key] = [
+            "Please put your first value here",
+            "Please put your second value here",
+            "...",
+          ];
+          break;
+        }
+        case "number": {
+          input[key] = 123456;
+          break;
+        }
+        case "array:number": {
+          input[key] = [123456, 654321];
+          break;
+        }
+        case "image":
+        case "image/*": {
+          input[key] = "your image base64 encoded string";
+          break;
+        }
+        case "array:image":
+        case "array:image/*": {
+          input[key] = [
+            "Please put your first image base64 encoded string",
+            "Please put your second image base64 encoded string",
+            "...",
+          ];
+          break;
+        }
+        case "audio":
+        case "audio/*": {
+          input[key] = "Please put your audio base64 encoded string";
+          break;
+        }
+        case "array:audio":
+        case "array:audio/*": {
+          input[key] = [
+            "Please put your first audio base64 encoded string",
+            "Please put your second audio base64 encoded string",
+            "...",
+          ];
+          break;
+        }
+        case "video":
+        case "video/*": {
+          input[key] = "Please put your video base64 encoded string";
+          break;
+        }
+        case "array:video":
+        case "array:video/*": {
+          input[key] = [
+            "Please put your first video base64 encoded string",
+            "Please put your second video base64 encoded string",
+            "...",
+          ];
+          break;
+        }
+        case "boolean": {
+          input[key] = true;
+          break;
+        }
+        case "array:boolean": {
+          input[key] = [true, false];
+          break;
+        }
       }
     }
   }

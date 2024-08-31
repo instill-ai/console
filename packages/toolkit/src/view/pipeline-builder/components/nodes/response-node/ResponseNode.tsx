@@ -182,27 +182,31 @@ export const ResponseNode = ({ data, id }: NodeProps<ResponseNodeData>) => {
   >([]);
 
   React.useEffect(() => {
-    const endOperatorInputItems = Object.entries(data.fields)
-      .map(([key, value]) => {
-        return {
+    let endOperatorInputItems: PipelineResponseNodeFieldSortedItem[] = [];
+
+    for (const [key, value] of Object.entries(data.fields)) {
+      if (value) {
+        endOperatorInputItems.push({
           key,
           ...value,
-        };
-      })
-      .sort((a, b) => {
-        const aOrder = a.instillUiOrder;
-        const bOrder = b.instillUiOrder;
+        });
+      }
+    }
 
-        if (typeof aOrder === "undefined") {
-          return 1;
-        }
+    endOperatorInputItems = endOperatorInputItems.sort((a, b) => {
+      const aOrder = a.instillUiOrder;
+      const bOrder = b.instillUiOrder;
 
-        if (typeof bOrder === "undefined") {
-          return -1;
-        }
+      if (typeof aOrder === "undefined") {
+        return 1;
+      }
 
-        return aOrder > bOrder ? 1 : -1;
-      });
+      if (typeof bOrder === "undefined") {
+        return -1;
+      }
+
+      return aOrder > bOrder ? 1 : -1;
+    });
 
     setSortedItems(endOperatorInputItems);
   }, [data]);

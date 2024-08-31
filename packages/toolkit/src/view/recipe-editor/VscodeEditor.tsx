@@ -484,7 +484,7 @@ export const VscodeEditor = () => {
               insertText: "${" + "variable." + key,
               filterText: "${" + "variable." + key,
               documentation: {
-                value: `**${key}** \n\n --- \n\n instill-format: ${value.instillFormat}`,
+                value: `**${key}** \n\n --- \n\n instill-format: ${value?.instillFormat}`,
               },
               range: new monaco.Range(
                 position.lineNumber,
@@ -492,7 +492,7 @@ export const VscodeEditor = () => {
                 position.lineNumber,
                 position.column,
               ),
-              detail: `${value.instillFormat}`,
+              detail: `${value?.instillFormat}`,
             });
           }
 

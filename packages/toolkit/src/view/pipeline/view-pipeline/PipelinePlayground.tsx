@@ -173,7 +173,7 @@ export const PipelinePlayground = ({
 
     if (variables) {
       Object.entries(variables).forEach(([key, value]) => {
-        if (value.instillFormat === "semi-structured/json") {
+        if (value?.instillFormat === "semi-structured/json") {
           semiStructuredObjectKeys.push(key);
         }
       });
