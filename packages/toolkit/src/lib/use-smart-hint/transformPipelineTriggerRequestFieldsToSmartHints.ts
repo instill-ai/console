@@ -7,12 +7,14 @@ export function transformPipelineTriggerRequestFieldsToSmartHints(
 ): SmartHint[] {
   const hints: SmartHint[] = [];
   for (const [key, value] of Object.entries(fields)) {
-    hints.push({
-      path: `variable.${key}`,
-      key: key,
-      instillFormat: value.instillFormat ?? "null",
-      type: "null",
-    });
+    if (value) {
+      hints.push({
+        path: `variable.${key}`,
+        key: key,
+        instillFormat: value.instillFormat ?? "null",
+        type: "null",
+      });
+    }
   }
 
   return hints;

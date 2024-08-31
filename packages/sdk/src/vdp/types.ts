@@ -24,10 +24,13 @@ export const PipelineVariableFieldSchema = z.object({
   instillUiMultiline: z.boolean().optional(),
 });
 
-export type PipelineVariableFieldMap = Record<string, PipelineVariableField>;
+export type PipelineVariableFieldMap = Record<
+  string,
+  Nullable<PipelineVariableField>
+>;
 
 export const PipelineVariableFieldMapSchema = z.record(
-  PipelineVariableFieldSchema,
+  PipelineVariableFieldSchema.nullable(),
 );
 
 export type PipelineOutputField = {
@@ -44,9 +47,14 @@ export const PipelineOutputFieldSchema = z.object({
   instillUiOrder: z.number().optional(),
 });
 
-export type PipelineOutputFieldMap = Record<string, PipelineOutputField>;
+export type PipelineOutputFieldMap = Record<
+  string,
+  Nullable<PipelineOutputField>
+>;
 
-export const PipelineOutputFieldMapSchema = z.record(PipelineOutputFieldSchema);
+export const PipelineOutputFieldMapSchema = z.record(
+  PipelineOutputFieldSchema.nullable(),
+);
 
 export type ComponentBasicFields = {
   metadata?: GeneralRecord;

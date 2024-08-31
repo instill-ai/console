@@ -25,12 +25,17 @@ export const VariableSection = ({
 }) => {
   const searchedVariableFields: VariableFieldWKey[] = React.useMemo(() => {
     if (!pipelineVariableFieldMap) return [];
-    const variableFieldsWithKey = Object.entries(pipelineVariableFieldMap).map(
-      ([key, field]) => ({
-        key,
-        ...field,
-      }),
-    );
+
+    const variableFieldsWithKey: VariableFieldWKey[] = [];
+
+    for (const [key, field] of Object.entries(pipelineVariableFieldMap)) {
+      if (field) {
+        variableFieldsWithKey.push({
+          key,
+          ...field,
+        });
+      }
+    }
 
     if (!searchCode) return variableFieldsWithKey;
 

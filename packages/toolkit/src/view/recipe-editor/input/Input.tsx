@@ -116,7 +116,7 @@ export const Input = ({
       const semiStructuredObjectKeys: string[] = [];
 
       Object.entries(fields).forEach(([key, value]) => {
-        if (value.instillFormat === "semi-structured/json") {
+        if (value?.instillFormat === "semi-structured/json") {
           semiStructuredObjectKeys.push(key);
         }
       });
