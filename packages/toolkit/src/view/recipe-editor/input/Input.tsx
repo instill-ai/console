@@ -6,13 +6,14 @@ import {
   isComponentInputUpdatedEvent,
   isComponentOutputUpdatedEvent,
   isComponentStatusUpdatedEvent,
+  isPipelineErrorUpdatedEvent,
   isPipelineOutputUpdatedEvent,
   isPipelineStatusUpdatedEvent,
   PipelineVariableFieldMap,
 } from "instill-sdk";
 import * as z from "zod";
 
-import { Form } from "@instill-ai/design-system";
+import { Form, useToast } from "@instill-ai/design-system";
 
 import {
   DefaultEditorViewIDs,
@@ -21,6 +22,7 @@ import {
   Nullable,
   useInstillStore,
   usePipelineTriggerRequestForm,
+  useRouteInfo,
   useShallow,
   useStreamingTriggerUserPipeline,
   useStreamingTriggerUserPipelineRelease,
@@ -56,6 +58,7 @@ export const Input = ({
     currentVersion,
   } = useInstillStore(useShallow(selector));
 
+  const { toast } = useToast();
   const forceStopTriggerPipelineStream = React.useRef(false);
 
   const { Schema, fieldItems, form } = usePipelineTriggerRequestForm({
@@ -67,12 +70,13 @@ export const Input = ({
     disabledReferenceHint: true,
   });
 
+  const routeInfo = useRouteInfo();
   const namespace = useUserNamespaces();
   const triggerPipeline = useStreamingTriggerUserPipeline();
   const triggerPipelineRelease = useStreamingTriggerUserPipelineRelease();
   const onStreamTriggerPipeline = React.useCallback(
     async (formData: z.infer<typeof Schema>) => {
-      if (!pipelineName || !formData || !fields) return;
+      if (!pipelineName || !formData || !fields || !routeInfo.isSuccess) return;
 
       if (isTriggeringPipeline) {
         forceStopTriggerPipelineStream.current = true;
@@ -143,8 +147,10 @@ export const Input = ({
 
       /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       let stream: any = null;
+
+      // We use the current route namespace as the requester namespace
       const tartgetNamespace = namespace.find(
-        (ns) => ns.id === navigationNamespaceAnchor,
+        (ns) => ns.id === routeInfo.data.namespaceId,
       );
 
       try {
@@ -297,6 +303,19 @@ export const Input = ({
                 updateIsTriggeringPipeline(() => false);
               }
             }
+
+            if (isPipelineErrorUpdatedEvent(event)) {
+              if (event.data.status.errored) {
+                updateIsTriggeringPipeline(() => false);
+                toast({
+                  title: "Something went wrong when trigger the pipeline",
+                  variant: "alert-error",
+                  size: "large",
+                  description: event.data.error?.message ?? undefined,
+                  duration: 15000,
+                });
+              }
+            }
           }
         }
       } catch (error) {
@@ -316,6 +335,9 @@ export const Input = ({
       accessToken,
       forceStopTriggerPipelineStream,
       updateEditorMultiScreenModel,
+      routeInfo.data,
+      routeInfo.isSuccess,
+      currentVersion,
     ],
   );
 
