@@ -385,6 +385,7 @@ export const ComponentCmdo = () => {
     }
   }
 
+  // Prepare initial selection when the dialog is opened
   function prepareInitialSelection() {
     if (
       !definitions.isSuccess ||
@@ -433,6 +434,13 @@ export const ComponentCmdo = () => {
 
     setSelectedComponentDefaultValue(doc);
   }
+  React.useEffect(() => {
+    if (!openComponentCmdo) {
+      return;
+    }
+
+    prepareInitialSelection();
+  }, [openComponentCmdo]);
 
   return (
     <Dialog.Root
@@ -450,7 +458,6 @@ export const ComponentCmdo = () => {
           <Button
             onClick={() => {
               updateOpenComponentCmdo(() => true);
-              prepareInitialSelection();
             }}
             className="flex flex-row gap-x-2"
             variant="tertiaryGrey"
