@@ -20,7 +20,6 @@ import {
 import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
-import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import { ModelsTriggerCountsLineChart } from "./ModelsTriggerCountsLineChart";
 
 export type DashboardPipelineListPageMainViewProps = GeneralAppPageProp;
@@ -173,22 +172,6 @@ export const DashboardPipelineListPageMainView = (
       {/* Status */}
 
       <div className="flex items-stretch space-x-4">
-        <div className="w-2/3">
-          <PipelineTriggersSummary>
-            <PipelineTriggersSummary.Card
-              summary={
-                pipelineTriggersSummary
-                  ? pipelineTriggersSummary.completed
-                  : null
-              }
-            />
-            <PipelineTriggersSummary.Card
-              summary={
-                pipelineTriggersSummary ? pipelineTriggersSummary.errored : null
-              }
-            />
-          </PipelineTriggersSummary>
-        </div>
 
         {/* Filter for graph */}
 

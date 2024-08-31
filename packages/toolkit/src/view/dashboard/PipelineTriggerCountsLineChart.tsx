@@ -91,27 +91,24 @@ export const PipelineTriggerCountsLineChart: React.FC<PipelineTriggerCountsLineC
         tooltip: {
           trigger: "item",
           tiggerOn: "click",
-
+          backgroundColor: 'white',
+          borderColor: 'transparent',
+          textStyle: {
+            color: 'var(--semantic-fg-primary)'
+          },
           /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
           formatter: function (params: any) {
             const triggerTime = params.name;
-            const pipelineId = params.seriesName;
             const computeTimeDuration = params.value;
             return `
               <div class="Content" style="padding: 5px; background: white; border-radius: 4px; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex">
                 <div class="TextAndSupportingText" style="border-radius: 8px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 4px; display: flex">
-                  <div class="Date" style="color: rgba(29, 36, 51, 0.65); font-size: 12px;  line-height: 16px; word-wrap: break-word">${triggerTime}</div>
-                  <div class="Data1" style="justify-content: flex-start; align-items: center; gap: 4px; display: inline-flex">
-                    <div class="Dot" style="width: 10px; height: 10px; position: relative">
-                      <div class="Dot" style="width: 8px; height: 8px; left: 1px; top: 1px; position: absolute; background: ${params.color}; border-radius: 9999px"></div>
-                    </div>
-                    <div class="PipelineId" style="height: 22px; color: rgba(29, 36, 51, 0.80); font-size: 14px;  line-height: 20px; word-wrap: break-word; overflow-wrap: break-word;">
-                      ${pipelineId}
-                    </div>
-                  </div>
-                  <div class="Data2" style="justify-content: flex-start; align-items: flex-start; gap: 4px; display: inline-flex">
-                    <div class="TriggerNumber" style="color: rgba(29, 36, 51, 0.80); font-size: 14px;  font-weight: 400; line-height: 20px; word-wrap: break-word">Triggers: </div>
-                    <div class="Number" style="color: #1D2433; font-size: 14px;  font-weight: 600; line-height: 20px; word-wrap: break-word">${computeTimeDuration}</div>
+                  <div class="Date product-body-text-4-medium" style="color: var(--semantic-fg-disabled); font-size: 12px; line-height: 16px; word-wrap: break-word">${triggerTime}</div>
+                  <div style="display: flex; align-items: center; white-space: nowrap;">
+                    <span class="PipelineId product-body-text-3-regular" style="color: var(--semantic-fg-secondary); font-size: 14px; line-height: 20px;">
+                      All pipeline triggers:&nbsp;
+                    </span>
+                    <span class="Number product-body-text-3-semibold" style="color: var(--semantic-fg-primary); font-size: 14px; line-height: 20px;">${computeTimeDuration}</span>
                   </div>
                 </div>
               </div>
@@ -140,7 +137,15 @@ export const PipelineTriggerCountsLineChart: React.FC<PipelineTriggerCountsLineC
             color: "#6B7280",
           },
         },
-        series: seriesData,
+        series: seriesData.map(series => ({
+          ...series,
+          symbol: 'circle',
+          symbolSize: 8,
+          itemStyle: {
+            borderColor: 'white',
+            borderWidth: 2
+          }
+        })),
       };
 
       myChart.setOption(option, true);
