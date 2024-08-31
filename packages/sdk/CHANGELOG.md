@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/instill-ai/console/compare/instill-sdk-v0.4.0...instill-sdk-v0.4.1) (2024-08-31)
+
+
+### Bug Fixes
+
+* adapt the possibility that BE might return a null variable ([#1420](https://github.com/instill-ai/console/issues/1420)) ([3f5bc0f](https://github.com/instill-ai/console/commit/3f5bc0f00781175287c2621a32f95c8ba07127f9))
+
 ## [0.4.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.3.1...instill-sdk-v0.4.0) (2024-08-29)
 
 
