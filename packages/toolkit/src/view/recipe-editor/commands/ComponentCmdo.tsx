@@ -123,62 +123,6 @@ export const ComponentCmdo = () => {
       });
   }, [searchCode, definitions.isSuccess, definitions.data]);
 
-  // Set the default selected component definition
-  // React.useEffect(() => {
-  //   if (
-  //     filteredDefinitions.length === 0 ||
-  //     selectedComponentDefinition ||
-  //     !filteredDefinitions[0]
-  //   ) {
-  //     return;
-  //   }
-
-  //   const defaultSelectedComponentDefinition = filteredDefinitions[0];
-
-  //   setSelectedComponentDefinition(defaultSelectedComponentDefinition);
-  // }, [filteredDefinitions, selectedComponentDefinition]);
-
-  // Set the default selected task
-  // React.useEffect(() => {
-  //   if (
-  //     !selectedComponentDefinition ||
-  //     !pipeline.isSuccess ||
-  //     !isComponentDefinition(selectedComponentDefinition) ||
-  //     !selectedTaskName
-  //   ) {
-  //     return;
-  //   }
-
-  //   const defaultSelectedTask = selectedComponentDefinition.tasks[0]
-  //     ? selectedComponentDefinition.tasks[0].name
-  //     : undefined;
-
-  //   const componentIds = pipeline.data.recipe?.component
-  //     ? Object.keys(pipeline.data.recipe.component)
-  //     : [];
-
-  //   if (isComponentDefinition(selectedComponentDefinition)) {
-  //     const id = generateUniqueNodeIdFromDefinition(
-  //       selectedComponentDefinition,
-  //       componentIds,
-  //     );
-
-  //     const defaultValue = generateDefaultValue(
-  //       selectedComponentDefinition.spec.componentSpecification,
-  //       defaultSelectedTask,
-  //     );
-
-  //     const doc = YAML.stringify({
-  //       [id]: {
-  //         type: selectedComponentDefinition.id,
-  //         ...defaultValue,
-  //       },
-  //     });
-  //     setSelectedComponentDefaultValue(doc);
-  //   }
-  //   setSelectedTaskName(defaultSelectedTask ?? null);
-  // }, [selectedComponentDefinition, pipeline.isSuccess, pipeline.data]);
-
   const filteredAiDefinitions = React.useMemo(() => {
     return filteredDefinitions.filter((definition) => {
       return definition.type === "COMPONENT_TYPE_AI";
