@@ -84,7 +84,7 @@ export const ComponentCmdo = () => {
 
   const [selectedComponentDefinition, setSelectedComponentDefinition] =
     React.useState<Nullable<ComponentDefinition | IteratorDefinition>>(null);
-  const [selectedTask, setSelectedTask] =
+  const [selectedTaskName, setSelectedTaskName] =
     React.useState<Nullable<string>>(null);
   const [selectedComponentDefaultValue, setSelectedComponentDefaultValue] =
     React.useState<Nullable<string>>(null);
@@ -124,59 +124,60 @@ export const ComponentCmdo = () => {
   }, [searchCode, definitions.isSuccess, definitions.data]);
 
   // Set the default selected component definition
-  React.useEffect(() => {
-    if (
-      filteredDefinitions.length === 0 ||
-      selectedComponentDefinition ||
-      !filteredDefinitions[0]
-    ) {
-      return;
-    }
+  // React.useEffect(() => {
+  //   if (
+  //     filteredDefinitions.length === 0 ||
+  //     selectedComponentDefinition ||
+  //     !filteredDefinitions[0]
+  //   ) {
+  //     return;
+  //   }
 
-    const defaultSelectedComponentDefinition = filteredDefinitions[0];
+  //   const defaultSelectedComponentDefinition = filteredDefinitions[0];
 
-    setSelectedComponentDefinition(defaultSelectedComponentDefinition);
-  }, [filteredDefinitions, selectedComponentDefinition]);
+  //   setSelectedComponentDefinition(defaultSelectedComponentDefinition);
+  // }, [filteredDefinitions, selectedComponentDefinition]);
 
   // Set the default selected task
-  React.useEffect(() => {
-    if (
-      !selectedComponentDefinition ||
-      !pipeline.isSuccess ||
-      !isComponentDefinition(selectedComponentDefinition)
-    ) {
-      return;
-    }
+  // React.useEffect(() => {
+  //   if (
+  //     !selectedComponentDefinition ||
+  //     !pipeline.isSuccess ||
+  //     !isComponentDefinition(selectedComponentDefinition) ||
+  //     !selectedTaskName
+  //   ) {
+  //     return;
+  //   }
 
-    const defaultSelectedTask = selectedComponentDefinition.tasks[0]
-      ? selectedComponentDefinition.tasks[0].name
-      : undefined;
+  //   const defaultSelectedTask = selectedComponentDefinition.tasks[0]
+  //     ? selectedComponentDefinition.tasks[0].name
+  //     : undefined;
 
-    const componentIds = pipeline.data.recipe?.component
-      ? Object.keys(pipeline.data.recipe.component)
-      : [];
+  //   const componentIds = pipeline.data.recipe?.component
+  //     ? Object.keys(pipeline.data.recipe.component)
+  //     : [];
 
-    if (isComponentDefinition(selectedComponentDefinition)) {
-      const id = generateUniqueNodeIdFromDefinition(
-        selectedComponentDefinition,
-        componentIds,
-      );
+  //   if (isComponentDefinition(selectedComponentDefinition)) {
+  //     const id = generateUniqueNodeIdFromDefinition(
+  //       selectedComponentDefinition,
+  //       componentIds,
+  //     );
 
-      const defaultValue = generateDefaultValue(
-        selectedComponentDefinition.spec.componentSpecification,
-        defaultSelectedTask,
-      );
+  //     const defaultValue = generateDefaultValue(
+  //       selectedComponentDefinition.spec.componentSpecification,
+  //       defaultSelectedTask,
+  //     );
 
-      const doc = YAML.stringify({
-        [id]: {
-          type: selectedComponentDefinition.id,
-          ...defaultValue,
-        },
-      });
-      setSelectedComponentDefaultValue(doc);
-    }
-    setSelectedTask(defaultSelectedTask ?? null);
-  }, [selectedComponentDefinition, pipeline.isSuccess, pipeline.data]);
+  //     const doc = YAML.stringify({
+  //       [id]: {
+  //         type: selectedComponentDefinition.id,
+  //         ...defaultValue,
+  //       },
+  //     });
+  //     setSelectedComponentDefaultValue(doc);
+  //   }
+  //   setSelectedTaskName(defaultSelectedTask ?? null);
+  // }, [selectedComponentDefinition, pipeline.isSuccess, pipeline.data]);
 
   const filteredAiDefinitions = React.useMemo(() => {
     return filteredDefinitions.filter((definition) => {
@@ -208,13 +209,8 @@ export const ComponentCmdo = () => {
     });
   }, [filteredDefinitions]);
 
-  function onSelectTask() {
-    if (
-      !pipeline.isSuccess ||
-      !editorRef ||
-      !selectedComponentDefinition ||
-      !selectedTask
-    ) {
+  function onSelectTask(taskName: string) {
+    if (!pipeline.isSuccess || !editorRef || !selectedComponentDefinition) {
       return;
     }
 
@@ -251,7 +247,7 @@ export const ComponentCmdo = () => {
       );
       const defaultValue = generateDefaultValue(
         selectedComponentDefinition.spec.componentSpecification,
-        selectedTask,
+        taskName,
       );
 
       doc = YAML.stringify(
@@ -376,9 +372,6 @@ export const ComponentCmdo = () => {
 
     editorRef.executeEdits("cmdk", edits);
 
-    // editorRef.trigger("keyboard", "type", "hello");
-    // editorRef.trigger("anyString", "editor.action.formatDocument", "");
-
     // We need this setTimeout to correctly focus the editor after the edit
     setTimeout(() => {
       editorRef.focus();
@@ -386,14 +379,123 @@ export const ComponentCmdo = () => {
     }, 100);
   }
 
+  function onDialogClose() {
+    setSelectedComponentDefinition(null);
+    setSelectedTaskName(null);
+    setSelectedComponentDefaultValue(null);
+  }
+
+  function onSelectComponentDefinition(
+    definition: ComponentDefinition | IteratorDefinition,
+  ) {
+    if (!pipeline.isSuccess) {
+      return;
+    }
+
+    setSelectedComponentDefinition(definition);
+
+    if (isComponentDefinition(definition)) {
+      // set default task
+      const defaultTask = definition.tasks[0];
+
+      if (!defaultTask) {
+        return;
+      }
+
+      const componentIds = pipeline.data.recipe?.component
+        ? Object.keys(pipeline.data.recipe.component)
+        : [];
+
+      const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
+
+      const defaultValue = generateDefaultValue(
+        definition.spec.componentSpecification,
+        defaultTask.name,
+      );
+
+      const doc = YAML.stringify({
+        [id]: {
+          type: definition.id,
+          ...defaultValue,
+        },
+      });
+
+      setSelectedComponentDefaultValue(doc);
+      setSelectedTaskName(defaultTask.name);
+    }
+
+    if (isIteratorDefinition(definition)) {
+      const componentIds = pipeline.data.recipe?.component
+        ? Object.keys(pipeline.data.recipe.component)
+        : [];
+
+      const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
+
+      const doc = YAML.stringify({
+        [id]: {
+          type: "iterator",
+        },
+      });
+
+      setSelectedComponentDefaultValue(doc);
+    }
+  }
+
+  function prepareInitialSelection() {
+    if (
+      !definitions.isSuccess ||
+      !pipeline.isSuccess ||
+      filteredDefinitions.length === 0
+    ) {
+      return;
+    }
+
+    const defaultDefinition = filteredDefinitions[0];
+
+    if (!defaultDefinition) {
+      return;
+    }
+
+    setSelectedComponentDefinition(defaultDefinition);
+
+    const defaultTask = defaultDefinition.tasks[0];
+
+    if (!defaultTask) {
+      return;
+    }
+
+    setSelectedTaskName(defaultTask.name);
+
+    const componentIds = pipeline.data.recipe?.component
+      ? Object.keys(pipeline.data.recipe.component)
+      : [];
+
+    const id = generateUniqueNodeIdFromDefinition(
+      defaultDefinition,
+      componentIds,
+    );
+
+    const defaultValue = generateDefaultValue(
+      defaultDefinition.spec.componentSpecification,
+      defaultTask.name,
+    );
+
+    const doc = YAML.stringify({
+      [id]: {
+        type: defaultDefinition.id,
+        ...defaultValue,
+      },
+    });
+
+    setSelectedComponentDefaultValue(doc);
+  }
+
   return (
     <Dialog.Root
       open={openComponentCmdo}
       onOpenChange={(open) => {
         if (!open) {
-          setSelectedComponentDefinition(null);
-          setSelectedTask(null);
-          setSelectedComponentDefaultValue(null);
+          onDialogClose();
         }
 
         updateOpenComponentCmdo(() => open);
@@ -404,6 +506,7 @@ export const ComponentCmdo = () => {
           <Button
             onClick={() => {
               updateOpenComponentCmdo(() => true);
+              prepareInitialSelection();
             }}
             className="flex flex-row gap-x-2"
             variant="tertiaryGrey"
@@ -434,6 +537,7 @@ export const ComponentCmdo = () => {
             </div>
             <button
               onClick={() => {
+                onDialogClose();
                 updateOpenComponentCmdo(() => false);
               }}
               className="p-3 my-auto border border-semantic-bg-line bg-semantic-bg-primary shadow rounded-[10px] hover:bg-semantic-bg-base-bg"
@@ -458,7 +562,7 @@ export const ComponentCmdo = () => {
                     <CommandItem
                       key={definition.id}
                       onClick={() => {
-                        setSelectedComponentDefinition(definition);
+                        onSelectComponentDefinition(definition);
                       }}
                       definition={definition}
                       isSelected={
@@ -476,7 +580,7 @@ export const ComponentCmdo = () => {
                     <CommandItem
                       key={definition.id}
                       onClick={() => {
-                        setSelectedComponentDefinition(definition);
+                        onSelectComponentDefinition(definition);
                       }}
                       definition={definition}
                       isSelected={
@@ -494,7 +598,7 @@ export const ComponentCmdo = () => {
                     <CommandItem
                       key={definition.id}
                       onClick={() => {
-                        setSelectedComponentDefinition(definition);
+                        onSelectComponentDefinition(definition);
                       }}
                       definition={definition}
                       isSelected={
@@ -512,7 +616,7 @@ export const ComponentCmdo = () => {
                     <CommandItem
                       key={definition.id}
                       onClick={() => {
-                        setSelectedComponentDefinition(definition);
+                        onSelectComponentDefinition(definition);
                       }}
                       definition={definition}
                       isSelected={
@@ -530,7 +634,7 @@ export const ComponentCmdo = () => {
                     <CommandItem
                       key={definition.id}
                       onClick={() => {
-                        setSelectedComponentDefinition(definition);
+                        onSelectComponentDefinition(definition);
                       }}
                       definition={definition}
                       isSelected={
@@ -555,27 +659,7 @@ export const ComponentCmdo = () => {
                       uid: "uid",
                     };
 
-                    setSelectedComponentDefinition(definition);
-
-                    const componentIds = pipeline.data.recipe?.component
-                      ? Object.keys(pipeline.data.recipe.component)
-                      : [];
-
-                    const id = generateUniqueNodeIdFromDefinition(
-                      definition,
-                      componentIds,
-                    );
-
-                    const doc = YAML.stringify({
-                      [id]: {
-                        type: "iterator",
-                        component: "\n",
-                      },
-                    });
-
-                    setSelectedTask("iterator");
-
-                    setSelectedComponentDefaultValue(doc);
+                    onSelectComponentDefinition(definition);
                   }}
                   isSelected={selectedComponentDefinition?.id === "iterator"}
                   definition={{
@@ -599,10 +683,10 @@ export const ComponentCmdo = () => {
                         key={task.name}
                         taskTitle={task.title}
                         onClick={() => {
-                          setSelectedTask(task.name);
-                          onSelectTask();
+                          setSelectedTaskName(task.name);
+                          onSelectTask(task.name);
                         }}
-                        isSelected={selectedTask === task.name}
+                        isSelected={selectedTaskName === task.name}
                       />
                     ))}
                   </CommandGroup>
