@@ -19,13 +19,21 @@ export const FilterByDay = ({
   setSelectedTimeOption,
 }: FilterProps) => {
   return (
-    <div className="flex flex-row-reverse space-x-4 space-x-reverse">
+    <div className="flex flex-row space-x-4">
+      <Button
+        className="my-auto h-10 w-10 !p-3"
+        variant="secondaryGrey"
+        size="sm"
+        onClick={() => refetch()}
+      >
+        <Icons.RefreshCw05 className="h-4 w-4 stroke-semantic-fg-primary" />
+      </Button>
       <div className="border-semantic flex items-start justify-start">
         {dashboardOptions.timeLine.map((timeLineOption) => (
           <button
             key={timeLineOption.value}
             className={cn(
-              "my-auto flex !h-10 cursor-pointer items-center justify-center self-stretch !px-4 !py-1 outline outline-1 outline-semantic-bg-line first:rounded-l-sm last:rounded-r-sm hover:bg-semantic-bg-secondary",
+              "my-auto flex !h-10 cursor-pointer items-center justify-center self-stretch !px-4 !py-1 outline outline-1 outline-semantic-bg-line first:rounded-l-[2px] last:rounded-r-[2px] hover:bg-semantic-bg-secondary",
               timeLineOption.value === selectedTimeOption?.value
                 ? "bg-semantic-bg-line"
                 : "bg-white",
@@ -40,14 +48,6 @@ export const FilterByDay = ({
           </button>
         ))}
       </div>
-      <Button
-        className="my-auto h-10 w-10 !p-3"
-        variant="secondaryGrey"
-        size="sm"
-        onClick={() => refetch()}
-      >
-        <Icons.RefreshCw05 className="h-4 w-4 stroke-semantic-fg-primary" />
-      </Button>
     </div>
   );
 };

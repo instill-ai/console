@@ -4,10 +4,10 @@ import * as React from 'react';
 import * as echarts from "echarts";
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
 import { generateChartData, PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
-import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
+import { ModelTriggersSummary } from "./ModelTriggersSummary";
 import { Nullable } from 'instill-sdk';
 
-type PipelineTriggerCountsLineChartProps = {
+type ModelsTriggerCountsLineChartProps = {
   pipelines: PipelinesChart[];
   isLoading: boolean;
   selectedTimeOption: SelectOption;
@@ -36,14 +36,17 @@ function unselectGraph(params: any, myChart: echarts.ECharts): void {
   }
 }
 
-export const PipelineTriggerCountsLineChart: React.FC<PipelineTriggerCountsLineChartProps> = ({
+export const ModelsTriggerCountsLineChart: React.FC<ModelsTriggerCountsLineChartProps> = ({
   isLoading,
   pipelines,
   selectedTimeOption,
   pipelineTriggersSummary,
 }) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
-  const { xAxis, yAxis } = generateChartData(pipelines, selectedTimeOption.value);
+  const { xAxis, yAxis } = generateChartData(
+    pipelines,
+    selectedTimeOption.value,
+  );
 
   const xAxisData = xAxis;
   const seriesData = yAxis;
@@ -166,7 +169,7 @@ export const PipelineTriggerCountsLineChart: React.FC<PipelineTriggerCountsLineC
         <div className="inline-flex items-center justify-between gap-2.5 self-stretch p-8">
           <div className="flex items-center justify-start gap-2.5">
             <div className="text-semantic-fg-primary product-headings-heading-2">
-              Number of pipeline triggers
+              Number of model triggers
             </div>
             <Tooltip.Provider>
               <Tooltip.Root>
@@ -188,7 +191,7 @@ export const PipelineTriggerCountsLineChart: React.FC<PipelineTriggerCountsLineC
                         </div>
                         <div className="self-stretch text-semantic-fg-secondary product-body-text-4-medium">
                           Select any pipeline from the table below to view the
-                          number of pipeline triggers within the last 7 days.
+                          number of model triggers within the last 7 days.
                         </div>
                       </div>
                     </div>
@@ -208,14 +211,14 @@ export const PipelineTriggerCountsLineChart: React.FC<PipelineTriggerCountsLineC
           </div>
         </div>
         <div className="px-8 pb-8 w-full">
-          <PipelineTriggersSummary>
-            <PipelineTriggersSummary.Card
+          <ModelTriggersSummary>
+            <ModelTriggersSummary.Card
               summary={pipelineTriggersSummary ? pipelineTriggersSummary.completed : null}
             />
-            <PipelineTriggersSummary.Card
+            <ModelTriggersSummary.Card
               summary={pipelineTriggersSummary ? pipelineTriggersSummary.errored : null}
             />
-          </PipelineTriggersSummary>
+          </ModelTriggersSummary>
         </div>
         <div
           id="main"
