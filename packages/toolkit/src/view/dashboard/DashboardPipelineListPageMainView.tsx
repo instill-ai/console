@@ -21,6 +21,7 @@ import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
+import { ModelsTriggerCountsLineChart } from "./ModelsTriggerCountsLineChart";
 
 export type DashboardPipelineListPageMainViewProps = GeneralAppPageProp;
 
@@ -207,14 +208,28 @@ export const DashboardPipelineListPageMainView = (
         </div>
       </div>
 
-      {/* Pipeline Chart */}
+      <div className="flex gap-5 w-full">
+        {/* Pipeline Chart */}
 
-      <div className="my-8">
-        <PipelineTriggerCountsLineChart
-          isLoading={pipelinesChart.isLoading}
-          pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
-          selectedTimeOption={selectedTimeOption}
-        />
+        <div className="my-8 w-full">
+          <PipelineTriggerCountsLineChart
+            isLoading={pipelinesChart.isLoading}
+            pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
+            selectedTimeOption={selectedTimeOption}
+            pipelineTriggersSummary={pipelineTriggersSummary}
+          />
+        </div>
+
+        {/* Model Chart */}
+
+        <div className="my-8 w-full">
+          <ModelsTriggerCountsLineChart
+            isLoading={pipelinesChart.isLoading}
+            pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
+            selectedTimeOption={selectedTimeOption}
+            pipelineTriggersSummary={pipelineTriggersSummary}
+          />
+        </div>
       </div>
 
       {/* Pipeline Table */}
