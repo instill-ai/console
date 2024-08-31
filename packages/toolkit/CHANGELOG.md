@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.100.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.100.1...@instill-ai/toolkit-v0.100.2) (2024-08-31)
+
+
+### Bug Fixes
+
+* adapt the possibility that BE might return a null variable ([#1420](https://github.com/instill-ai/console/issues/1420)) ([3f5bc0f](https://github.com/instill-ai/console/commit/3f5bc0f00781175287c2621a32f95c8ba07127f9))
+* fix add component dialog result wrong pre-filled error ([#1422](https://github.com/instill-ai/console/issues/1422)) ([912f36a](https://github.com/instill-ai/console/commit/912f36a728d3b20b81897b33eb00adc5566176a5))
+* fix editor not listening to error event ([#1423](https://github.com/instill-ai/console/issues/1423)) ([c0788db](https://github.com/instill-ai/console/commit/c0788db679516647b60b57037f220ed5c53cb2c1))
+
 ## [0.100.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.100.0...@instill-ai/toolkit-v0.100.1) (2024-08-29)
 
 
