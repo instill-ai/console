@@ -19,7 +19,7 @@ export const FilterByDay = ({
   setSelectedTimeOption,
 }: FilterProps) => {
   return (
-    <div className="flex flex-row space-x-4">
+    <div className="flex flex-row space-x-4 mb-8">
       <div className="border-semantic flex items-start justify-start">
         {dashboardOptions.timeLine.map((timeLineOption) => (
           <button

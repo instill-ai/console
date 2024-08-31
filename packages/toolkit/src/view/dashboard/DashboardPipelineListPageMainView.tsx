@@ -21,6 +21,7 @@ import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
 import { ModelsTriggerCountsLineChart } from "./ModelsTriggerCountsLineChart";
+import { TotalCreditCostChart } from "./TotalCreditCostChart";
 
 export type DashboardPipelineListPageMainViewProps = GeneralAppPageProp;
 
@@ -165,12 +166,6 @@ export const DashboardPipelineListPageMainView = (
 
   return (
     <div className="flex flex-col">
-      <h2 className="mb-10 w-full text-3xl font-semibold leading-[38px] text-semantic-fg-primary">
-        Pipeline Triggers
-      </h2>
-
-      {/* Status */}
-
       <div className="flex items-stretch space-x-4">
 
         {/* Filter for graph */}
@@ -194,7 +189,7 @@ export const DashboardPipelineListPageMainView = (
       <div className="flex gap-5 w-full">
         {/* Pipeline Chart */}
 
-        <div className="my-8 w-full">
+        <div className="mb-8 w-full">
           <PipelineTriggerCountsLineChart
             isLoading={pipelinesChart.isLoading}
             pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
@@ -205,7 +200,7 @@ export const DashboardPipelineListPageMainView = (
 
         {/* Model Chart */}
 
-        <div className="my-8 w-full">
+        <div className="mb-8 w-full">
           <ModelsTriggerCountsLineChart
             isLoading={pipelinesChart.isLoading}
             pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
@@ -213,7 +208,18 @@ export const DashboardPipelineListPageMainView = (
             pipelineTriggersSummary={pipelineTriggersSummary}
           />
         </div>
+        {/* Total Credit Cost Chart */}
+        <div className="mb-8 w-full">
+          <TotalCreditCostChart
+            isLoading={pipelinesChart.isLoading}
+            pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
+            selectedTimeOption={selectedTimeOption}
+            pipelineTriggersSummary={pipelineTriggersSummary}
+          />
+        </div>
       </div>
+
+
 
       {/* Pipeline Table */}
 
