@@ -106,7 +106,7 @@ export const PipelineTriggerCountsLineChart: React.FC<PipelineTriggerCountsLineC
                   <div class="Date product-body-text-4-medium" style="color: var(--semantic-fg-disabled); font-size: 12px; line-height: 16px; word-wrap: break-word">${triggerTime}</div>
                   <div style="display: flex; align-items: center; white-space: nowrap;">
                     <span class="PipelineId product-body-text-3-regular" style="color: var(--semantic-fg-secondary); font-size: 14px; line-height: 20px;">
-                      All pipeline triggers:&nbsp;
+                      All pipeline triggers&nbsp;
                     </span>
                     <span class="Number product-body-text-3-semibold" style="color: var(--semantic-fg-primary); font-size: 14px; line-height: 20px;">${computeTimeDuration}</span>
                   </div>
@@ -122,7 +122,7 @@ export const PipelineTriggerCountsLineChart: React.FC<PipelineTriggerCountsLineC
             fontSize: "14px",
             fontFamily: "var(--font-ibm-plex-sans)",
             fontStyle: "normal",
-            fontWeight: "600",
+            fontWeight: "500",
             color: "#6B7280",
           },
         },
@@ -133,7 +133,7 @@ export const PipelineTriggerCountsLineChart: React.FC<PipelineTriggerCountsLineC
             fontSize: "14px",
             fontFamily: "var(--font-ibm-plex-sans)",
             fontStyle: "normal",
-            fontWeight: "600",
+            fontWeight: "500",
             color: "#6B7280",
           },
         },
@@ -168,7 +168,7 @@ export const PipelineTriggerCountsLineChart: React.FC<PipelineTriggerCountsLineC
   return (
     <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">
       <div className="flex flex-col items-start justify-start gap-[30px] self-stretch">
-        <div className="inline-flex items-center justify-between gap-2.5 self-stretch p-8">
+        <div className="inline-flex items-center justify-between gap-2.5 self-stretch pt-8 px-8">
           <div className="flex items-center justify-start gap-2.5">
             <div className="text-semantic-fg-primary product-headings-heading-2">
               Number of pipeline triggers
@@ -212,6 +212,7 @@ export const PipelineTriggerCountsLineChart: React.FC<PipelineTriggerCountsLineC
             View more details
           </div>
         </div>
+        {/* Status */}
         <div className="px-8 pb-8 w-full">
           <PipelineTriggersSummary>
             <PipelineTriggersSummary.Card
