@@ -36,12 +36,12 @@ function unselectGraph(params: any, myChart: echarts.ECharts): void {
   }
 }
 
-export const PipelineTriggerCountsLineChart: React.FC<PipelineTriggerCountsLineChartProps> = ({
+export const PipelineTriggerCountsLineChart = ({
   isLoading,
   pipelines,
   selectedTimeOption,
   pipelineTriggersSummary,
-}) => {
+}: PipelineTriggerCountsLineChartProps) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
   const { xAxis, yAxis } = generateChartData(pipelines, selectedTimeOption.value);
 
