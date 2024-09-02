@@ -15,13 +15,14 @@ type TotalCreditCostChartProps = {
 
 export const TotalCreditCostChart = ({
     isLoading,
-    // pipelines,
-    // selectedTimeOption,
-    // pipelineTriggersSummary,
+    pipelines,
+    selectedTimeOption,
+    pipelineTriggersSummary,
 }: TotalCreditCostChartProps) => {
     const chartRef = React.useRef<HTMLDivElement>(null);
+    console.log(isLoading, pipelines, selectedTimeOption, pipelineTriggersSummary )
 
-    // Mock data - replace with actual data when available
+    // Mock data
     const pipelinePercentage = 66;
     const modelPercentage = 34;
     const totalCreditCost = 70310;
@@ -39,7 +40,7 @@ export const TotalCreditCostChart = ({
                 series: [
                     {
                         type: 'pie',
-                        radius: ['40%', '70%'],
+                        radius: ['50%', '70%'],
                         avoidLabelOverlap: false,
                         label: {
                             show: false,
@@ -59,9 +60,9 @@ export const TotalCreditCostChart = ({
         }
     }, [pipelinePercentage, modelPercentage]);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    // if (isLoading) {
+    //     return <div>Loading...</div>;
+    // }
 
     return (
         <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">
@@ -105,12 +106,15 @@ export const TotalCreditCostChart = ({
                             </Tooltip.Root>
                         </Tooltip.Provider>
                     </div>
+                    <div className="text-semantic-fg-secondary product-button-button-2 px-3 py-1 border border-semantic-fg-disabled rounded-full">
+                        Top Up Credits
+                    </div>
                 </div>
-                <div className="px-8 pb-8 w-full flex items-center">
+                <div className="px-8 pb-8 w-full flex items-center" style={{ height: '460px' }}>
                     <div className="w-1/2 relative">
                         <div
                             ref={chartRef}
-                            style={{ width: "100%", height: "200px" }}
+                            style={{ width: "100%", height: "400px" }}
                         />
                         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
                             <div className="text-semantic-fg-primary product-body-text-4-regular">Total Credit Cost</div>
