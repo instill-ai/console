@@ -25,9 +25,7 @@ export const ExistingConnection = ({ id }: { id: string }) => {
     });
   };
 
-  async function onSubmit(props: {
-    payload: Record<string, unknown>;
-  }) {
+  async function onSubmit(props: { payload: Record<string, unknown> }) {
     setIsProcessing(true);
 
     console.log(props);
