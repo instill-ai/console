@@ -22,6 +22,7 @@ import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
 import { ModelsTriggerCountsLineChart } from "./ModelsTriggerCountsLineChart";
 import { TotalCreditCostChart } from "./TotalCreditCostChart";
+import { TotalCreditTrendChart } from "./TotalCreditTrendChart";
 
 export type DashboardPipelineListPageMainViewProps = GeneralAppPageProp;
 
@@ -208,6 +209,9 @@ export const DashboardPipelineListPageMainView = (
             pipelineTriggersSummary={pipelineTriggersSummary}
           />
         </div>
+      </div>
+
+      <div className="flex gap-5 w-full">
         {/* Total Credit Cost Chart */}
         <div className="mb-8 w-full">
           <TotalCreditCostChart
@@ -217,9 +221,17 @@ export const DashboardPipelineListPageMainView = (
             pipelineTriggersSummary={pipelineTriggersSummary}
           />
         </div>
+
+        {/* Total Credit Trend Chart */}
+        <div className="mb-8 w-full">
+          <TotalCreditTrendChart
+            isLoading={pipelinesChart.isLoading}
+            pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
+            selectedTimeOption={selectedTimeOption}
+            pipelineTriggersSummary={pipelineTriggersSummary}
+          />
+        </div>
       </div>
-
-
 
       {/* Pipeline Table */}
 
@@ -233,5 +245,5 @@ export const DashboardPipelineListPageMainView = (
         />
       </div>
     </div>
-  );
-};
+  )
+}
