@@ -21,3 +21,5 @@ export * from "./use-user";
 export * from "./use-api-tokens";
 
 export * from "./onTriggerInvalidateCredits";
+export * from "./useInfiniteIntegrations";
+export * from "./useIntegration";

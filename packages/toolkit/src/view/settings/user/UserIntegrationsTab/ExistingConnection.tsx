@@ -1,6 +1,4 @@
 import * as React from "react";
-import { UserExternalServiceConnectionRequest } from "instill-sdk";
-import { z } from "zod";
 
 import {
   Accordion,
@@ -11,7 +9,7 @@ import {
 } from "@instill-ai/design-system";
 
 import { GeneralDeleteResourceDialog } from "../../../../components";
-import { ConnectionForm, ConnectionSchema } from "./ConnectionForm";
+import { ConnectionForm } from "./ConnectionForm";
 
 export const ExistingConnection = ({ id }: { id: string }) => {
   const [isProcessing, setIsProcessing] = React.useState(false);
@@ -27,12 +25,12 @@ export const ExistingConnection = ({ id }: { id: string }) => {
     });
   };
 
-  async function onSubmit(data: z.infer<typeof ConnectionSchema>) {
+  async function onSubmit(props: {
+    payload: Record<string, unknown>;
+  }) {
     setIsProcessing(true);
 
-    const payload: UserExternalServiceConnectionRequest = data;
-
-    console.log(payload);
+    console.log(props);
 
     setIsProcessing(false);
   }
@@ -110,6 +108,7 @@ export const ExistingConnection = ({ id }: { id: string }) => {
           </Dialog.Header>
           <ConnectionForm
             id={id}
+            method="METHOD_DICTIONARY"
             onSubmit={onSubmit}
             className="mt-6"
             isProcessing={isProcessing}

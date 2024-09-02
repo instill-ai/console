@@ -129,10 +129,3 @@ export type GetUserResponse = {
 };
 
 export const getUserResponseValidator = UserSchema;
-
-export type UserExternalServiceConnectionRequest = {
-  id: string;
-  method: string;
-  account: string;
-  key: string;
-};

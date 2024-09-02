@@ -1,20 +1,74 @@
 "use client";
 
 import * as React from "react";
+import { Integration } from "instill-sdk";
 
-import { Icons, Input, Nullable } from "@instill-ai/design-system";
+import { Icons, Input, Nullable, Skeleton } from "@instill-ai/design-system";
 
 import { Setting } from "../..";
-import { GeneralAppPageProp } from "../../../../lib";
-import { AvailableConnection } from "./AvailableConnection";
+import {
+  debounce,
+  GeneralAppPageProp,
+  useInfiniteIntegrations,
+} from "../../../../lib";
+import { AvailableIntegration } from "./AvailableIntegration";
 import { ExistingConnection } from "./ExistingConnection";
 import { Section } from "./Section";
 
 export type UserIntegrationsTabProps = GeneralAppPageProp;
 
-export const UserIntegrationsTab = (/* props: UserIntegrationsTabProps */) => {
+export const UserIntegrationsTab = (props: UserIntegrationsTabProps) => {
+  const { accessToken, enableQuery } = props;
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
+  const debouncedSetSearchValue = React.useMemo(
+    () =>
+      debounce((value: string) => {
+        setSearchInputValue(value);
+      }, 300),
+    [],
+  );
+  const availableIntegrations = useInfiniteIntegrations({
+    accessToken,
+    enabled: enableQuery,
+    filter: searchInputValue ? `qIntegration="${searchInputValue}"` : null,
+  });
+
+  React.useEffect(() => {
+    if (!availableIntegrations.data) {
+      return;
+    }
+
+    if (
+      availableIntegrations.data.pages[
+        availableIntegrations.data.pages.length - 1
+      ]?.nextPageToken
+    ) {
+      availableIntegrations.fetchNextPage();
+    }
+  }, [availableIntegrations.isSuccess, availableIntegrations.data]);
+
+  const availableIntegrationList = React.useMemo(() => {
+    return (
+      availableIntegrations.data?.pages.reduce(
+        (acc: Integration[], page) => acc.concat(page.integrations),
+        [],
+      ) || []
+    );
+  }, [availableIntegrations.data]);
+
+  const isLoadingAvailableIntegrations =
+    !availableIntegrations.isFetched ||
+    availableIntegrations.isLoading ||
+    availableIntegrations.isFetching ||
+    availableIntegrations.isFetchingNextPage;
+
+  const IntegrationSkeleton = () => (
+    <div className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-semantic-bg-line flex flex-row gap-4 items-center p-4 w-full">
+      <Skeleton className="h-12 w-12 rounded-sm" />
+      <Skeleton className="h-6 w-24 rounded" />
+    </div>
+  );
 
   return (
     <Setting.TabRoot>
@@ -28,10 +82,10 @@ export const UserIntegrationsTab = (/* props: UserIntegrationsTabProps */) => {
             <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
           </Input.LeftIcon>
           <Input.Core
-            value={searchInputValue ?? ""}
+            disabled={isLoadingAvailableIntegrations}
             placeholder="Search connections"
             onChange={(event) => {
-              setSearchInputValue(event.target.value);
+              debouncedSetSearchValue(event.target.value);
             }}
             className="!leading-[22px]"
           />
@@ -42,8 +96,18 @@ export const UserIntegrationsTab = (/* props: UserIntegrationsTabProps */) => {
         <ExistingConnection id="bye" />
       </Section>
       <Section title="All">
-        <AvailableConnection id="oi" />
-        <AvailableConnection id="ai" />
+        {isLoadingAvailableIntegrations
+          ? Array.from(new Array(2)).map((_item, index) => (
+              <IntegrationSkeleton key={index} />
+            ))
+          : availableIntegrationList.map((item) => (
+              <AvailableIntegration
+                key={item.id}
+                integration={item}
+                accessToken={accessToken}
+                enableQuery={enableQuery}
+              />
+            ))}
       </Section>
     </Setting.TabRoot>
   );
