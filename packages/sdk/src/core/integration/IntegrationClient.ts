@@ -1,6 +1,8 @@
 import { getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
 import {
+  AddIntegrationRequest,
+  AddIntegrationResponse,
   GetIntegrationRequest,
   GetIntegrationResponse,
   GetIntegrationsRequest,
@@ -10,7 +12,7 @@ import {
 
 export class IntegrationClient extends APIResource {
   /**
-   * Returns a paginated list of the available integration.
+   * Returns a paginated list of the available integrations.
    */
   async getIntegrations(
     props: GetIntegrationsRequest & { enablePagination: true },
@@ -64,6 +66,9 @@ export class IntegrationClient extends APIResource {
     }
   }
 
+  /**
+   * Gets a specific integration
+   */
   async getIntegration(props: GetIntegrationRequest) {
     const { view, integrationId } = props;
 
@@ -75,7 +80,36 @@ export class IntegrationClient extends APIResource {
 
       const data = await this._client.get<GetIntegrationResponse>(queryString);
 
-      return Promise.resolve(data);
+      return Promise.resolve(data.integration);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  /**
+   * Adds an integration the authenticated user.
+   */
+  async addIntegration({
+    id,
+    integrationId,
+    namespaceId,
+    setup,
+    method,
+  }: AddIntegrationRequest) {
+    try {
+      const data = await this._client.post<AddIntegrationResponse>(
+        `/namespaces/${namespaceId}/connections`,
+        {
+          body: JSON.stringify({
+            id,
+            integrationId,
+            method,
+            setup,
+          }),
+        },
+      );
+
+      return Promise.resolve(data.connection);
     } catch (error) {
       return Promise.reject(error);
     }

@@ -2,9 +2,9 @@ import * as React from "react";
 import Image from "next/image";
 import { Integration, IntegrationMethod, Nullable } from "instill-sdk";
 
-import { Button, Dialog, TabMenu } from "@instill-ai/design-system";
+import { Button, Dialog, TabMenu, useToast } from "@instill-ai/design-system";
 
-import { useIntegration } from "../../../../lib";
+import { useAddIntegrationConnection, useIntegration } from "../../../../lib";
 import { ConnectionForm } from "./ConnectionForm";
 
 const METHOD_TITLE: Record<IntegrationMethod, string> = {
@@ -16,17 +16,21 @@ export type AvailableIntegrationProps = {
   integration: Integration;
   accessToken: Nullable<string>;
   enableQuery: boolean;
+  namespaceId: Nullable<string>;
 };
 
 export const AvailableIntegration = ({
   integration,
   accessToken,
   enableQuery,
+  namespaceId,
 }: AvailableIntegrationProps) => {
+  const { toast } = useToast();
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [isConnectDialogOpen, setIsConnectDialogOpen] = React.useState(false);
   const [activeIntegrationMethod, setActiveIntegrationMethod] =
     React.useState<IntegrationMethod | null>(null);
+  const addIntegrationConnection = useAddIntegrationConnection();
 
   const integrationFull = useIntegration({
     accessToken: accessToken || undefined,
@@ -39,25 +43,44 @@ export const AvailableIntegration = ({
     if (
       !integrationFull.isSuccess ||
       !integrationFull.data ||
-      !integrationFull.data.integration.schemas[0]
+      !integrationFull.data.schemas[0]
     ) {
       return;
     }
 
-    setActiveIntegrationMethod(
-      integrationFull.data.integration.schemas[0].method,
-    );
+    setActiveIntegrationMethod(integrationFull.data.schemas[0].method);
   }, [integrationFull.isSuccess, integrationFull.data]);
 
   async function onSubmit(props: {
     method: IntegrationMethod;
     payload: Record<string, unknown>;
+    id: string;
   }) {
+    if (!namespaceId) {
+      return;
+    }
+
     setIsProcessing(true);
 
-    console.log(props);
+    await addIntegrationConnection.mutateAsync({
+      payload: {
+        method: props.method,
+        id: props.id,
+        setup: props.payload,
+        integrationId: integration.id,
+        namespaceId,
+      },
+      accessToken,
+    });
+
+    toast({
+      size: "small",
+      title: `The ${integration.title} integration has been added!`,
+      variant: "alert-success",
+    });
 
     setIsProcessing(false);
+    setIsConnectDialogOpen(false);
   }
 
   return (
@@ -91,7 +114,7 @@ export const AvailableIntegration = ({
           </Dialog.Header>
           {integrationFull.isSuccess ? (
             <React.Fragment>
-              {integrationFull.data.integration.schemas.length > 1 ? (
+              {integrationFull.data.schemas.length > 1 ? (
                 <TabMenu.Root
                   value={activeIntegrationMethod}
                   onValueChange={(value: Nullable<string>) =>
@@ -100,7 +123,7 @@ export const AvailableIntegration = ({
                   disabledDeSelect={true}
                   className="mb-3 border-b border-semantic-bg-line"
                 >
-                  {integrationFull.data.integration.schemas.map((item) => (
+                  {integrationFull.data.schemas.map((item) => (
                     <TabMenu.Item
                       key={item.method}
                       value={item.method}
@@ -118,7 +141,7 @@ export const AvailableIntegration = ({
                   key={activeIntegrationMethod}
                   method={activeIntegrationMethod}
                   schema={
-                    integrationFull.data.integration.schemas.find(
+                    integrationFull.data.schemas.find(
                       (item) => item.method === activeIntegrationMethod,
                     )?.schema
                   }

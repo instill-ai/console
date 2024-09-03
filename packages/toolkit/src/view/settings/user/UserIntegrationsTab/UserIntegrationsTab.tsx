@@ -9,6 +9,7 @@ import { Setting } from "../..";
 import {
   debounce,
   GeneralAppPageProp,
+  useAuthenticatedUser,
   useInfiniteIntegrations,
 } from "../../../../lib";
 import { AvailableIntegration } from "./AvailableIntegration";
@@ -19,6 +20,10 @@ export type UserIntegrationsTabProps = GeneralAppPageProp;
 
 export const UserIntegrationsTab = (props: UserIntegrationsTabProps) => {
   const { accessToken, enableQuery } = props;
+  const me = useAuthenticatedUser({
+    accessToken,
+    enabled: enableQuery,
+  });
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
   const debouncedSetSearchValue = React.useMemo(
@@ -50,10 +55,17 @@ export const UserIntegrationsTab = (props: UserIntegrationsTabProps) => {
 
   const availableIntegrationList = React.useMemo(() => {
     return (
-      availableIntegrations.data?.pages.reduce(
-        (acc: Integration[], page) => acc.concat(page.integrations),
-        [],
-      ) || []
+      availableIntegrations.data?.pages
+        .reduce((acc: Integration[], page) => acc.concat(page.integrations), [])
+        .sort((a, b) => {
+          if (a.title < b.title) {
+            return -1;
+          }
+          if (a.title > b.title) {
+            return 1;
+          }
+          return 0;
+        }) || []
     );
   }, [availableIntegrations.data]);
 
@@ -106,6 +118,7 @@ export const UserIntegrationsTab = (props: UserIntegrationsTabProps) => {
                 integration={item}
                 accessToken={accessToken}
                 enableQuery={enableQuery}
+                namespaceId={me.isSuccess ? me.data.id : null}
               />
             ))}
       </Section>

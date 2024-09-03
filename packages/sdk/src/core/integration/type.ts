@@ -37,3 +37,26 @@ export type GetIntegrationRequest = {
 export type GetIntegrationResponse = {
   integration: Integration;
 };
+
+export type AddIntegrationRequest = {
+  namespaceId: string;
+  id: string;
+  integrationId: string;
+  setup: Record<string, unknown>;
+  method: IntegrationMethod;
+};
+
+export type AddIntegrationResponse = {
+  connection: {
+    uid: string;
+    id: string;
+    namespaceId: string;
+    integrationTitle: string;
+    pipelineIds: string[];
+    method: IntegrationMethod;
+    setup: Record<string, unknown>;
+    view: ResourceView;
+    createTime: string;
+    updateTime: string;
+  };
+};
