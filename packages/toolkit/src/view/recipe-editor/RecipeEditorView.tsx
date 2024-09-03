@@ -396,7 +396,14 @@ export const RecipeEditorView = () => {
                             return;
                           }
 
+                          const model = editorRef.getModel();
+
+                          if (!model) {
+                            return;
+                          }
+
                           let prettifiedRecipe: Nullable<string> = null;
+                          const currentPosition = editorRef?.getPosition();
 
                           try {
                             prettifiedRecipe =
@@ -406,8 +413,21 @@ export const RecipeEditorView = () => {
                             console.error(error);
                           }
 
-                          if (prettifiedRecipe) {
-                            editorRef?.setValue(prettifiedRecipe);
+                          // Replace the entire content
+                          model.pushEditOperations(
+                            [],
+                            [
+                              {
+                                range: model.getFullModelRange(),
+                                text: prettifiedRecipe,
+                              },
+                            ],
+                            () => null,
+                          );
+
+                          // Restore the cursor position
+                          if (currentPosition) {
+                            editorRef?.setPosition(currentPosition);
                           }
                         }}
                         className="flex flex-row items-center gap-x-1 px-1"
