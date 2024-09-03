@@ -49,7 +49,7 @@ export const SelectOrganization = () => {
   );
 
   const codeString = React.useMemo(() => {
-    return `--header Instill-Requester-Uid:${getSelectedOrgUid(selectedOrg)}`;
+    return `--header "Instill-Requester-Uid: ${getSelectedOrgUid(selectedOrg)}"`;
   }, [selectedOrg, getSelectedOrgUid]);
 
   if (
