@@ -442,6 +442,14 @@ export const ComponentCmdo = () => {
     prepareInitialSelection();
   }, [openComponentCmdo]);
 
+  const displayIteratorDefinition = React.useMemo(() => {
+    if (!searchCode) {
+      return true;
+    }
+
+    return "iterator".includes(searchCode.toLowerCase());
+  }, [filteredDefinitions]);
+
   return (
     <Dialog.Root
       open={openComponentCmdo}
@@ -596,31 +604,33 @@ export const ComponentCmdo = () => {
                 ) : (
                   <LoadingSpin />
                 )}
-                <CommandItem
-                  onClick={() => {
-                    if (!pipeline.isSuccess) {
-                      return;
-                    }
+                {displayIteratorDefinition ? (
+                  <CommandItem
+                    onClick={() => {
+                      if (!pipeline.isSuccess) {
+                        return;
+                      }
 
-                    const definition: IteratorDefinition = {
+                      const definition: IteratorDefinition = {
+                        id: "iterator",
+                        title: "Iterator",
+                        icon: "iterator.svg",
+                        name: "iterator/iterator",
+                        uid: "uid",
+                      };
+
+                      onSelectComponentDefinition(definition);
+                    }}
+                    isSelected={selectedComponentDefinition?.id === "iterator"}
+                    definition={{
                       id: "iterator",
                       title: "Iterator",
                       icon: "iterator.svg",
                       name: "iterator/iterator",
                       uid: "uid",
-                    };
-
-                    onSelectComponentDefinition(definition);
-                  }}
-                  isSelected={selectedComponentDefinition?.id === "iterator"}
-                  definition={{
-                    id: "iterator",
-                    title: "Iterator",
-                    icon: "iterator.svg",
-                    name: "iterator/iterator",
-                    uid: "uid",
-                  }}
-                />
+                    }}
+                  />
+                ) : null}
               </CommandGroup>
             </ScrollArea.Root>
             <Separator orientation="vertical" className="!mx-3" />
