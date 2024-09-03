@@ -129,7 +129,7 @@ export const ModelsTriggerCountsLineChart = ({
             color: "#6B7280",
           },
         },
-        yAxis: {
+  yAxis: {
           type: "value",
           minInterval: 1,
           axisLabel: {
