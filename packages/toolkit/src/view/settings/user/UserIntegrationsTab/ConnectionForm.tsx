@@ -1,5 +1,9 @@
 import * as React from "react";
-import { InstillJSONSchema, IntegrationMethod } from "instill-sdk";
+import {
+  GeneralRecord,
+  InstillJSONSchema,
+  IntegrationMethod,
+} from "instill-sdk";
 import { z } from "zod";
 
 import { Button, cn, Form, Input } from "@instill-ai/design-system";
@@ -18,6 +22,8 @@ export const ConnectionForm = ({
   additionalCta,
   schema,
   method,
+  values,
+  isEdit,
 }: {
   id: string;
   onSubmit: (props: {
@@ -30,12 +36,20 @@ export const ConnectionForm = ({
   additionalCta?: React.ReactNode;
   schema?: InstillJSONSchema;
   method: IntegrationMethod;
+  values?: GeneralRecord;
+  isEdit?: boolean;
 }) => {
   const { fields, form, ValidatorSchema } = useInstillForm(
     schema || null,
-    null,
+    values || null,
   );
   const [connectionId, setConnectionId] = React.useState("");
+
+  React.useEffect(() => {
+    if (values?.id) {
+      setConnectionId(values.id);
+    }
+  }, [values]);
 
   const onFormSubmit = (payload: Record<string, unknown>) => {
     const id = connectionId.trim();
@@ -104,6 +118,8 @@ export const ConnectionForm = ({
                       onChange={(event) => {
                         setConnectionId(event.target.value);
                       }}
+                      defaultValue={form.getValues("id")}
+                      disabled={isEdit}
                     />
                   </Input.Root>
                 </Form.Control>
@@ -128,8 +144,10 @@ export const ConnectionForm = ({
           >
             {isProcessing ? (
               <LoadingSpin className="!text-semantic-fg-secondary" />
-            ) : (
+            ) : !isEdit ? (
               "Connect"
+            ) : (
+              "Save"
             )}
           </Button>
         </div>

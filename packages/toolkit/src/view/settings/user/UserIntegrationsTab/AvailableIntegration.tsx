@@ -139,13 +139,13 @@ export const AvailableIntegration = ({
               {activeIntegrationMethod ? (
                 <ConnectionForm
                   key={activeIntegrationMethod}
+                  id={`${integration.id}-${activeIntegrationMethod}`}
                   method={activeIntegrationMethod}
                   schema={
                     integrationFull.data.schemas.find(
                       (item) => item.method === activeIntegrationMethod,
                     )?.schema
                   }
-                  id={`${integration.id}-${activeIntegrationMethod}`}
                   onSubmit={onSubmit}
                   className="mt-6"
                   isProcessing={isProcessing}

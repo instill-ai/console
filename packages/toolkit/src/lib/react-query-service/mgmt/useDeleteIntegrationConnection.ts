@@ -1,18 +1,19 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AddIntegrationRequest } from "instill-sdk";
 
 import type { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../vdp-sdk";
 
-export function useAddIntegrationConnection() {
+export function useDeleteIntegrationConnection() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
-      payload,
+      namespaceId,
+      connectionId,
       accessToken,
     }: {
-      payload: AddIntegrationRequest;
+      namespaceId: string;
+      connectionId: string;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
@@ -21,17 +22,24 @@ export function useAddIntegrationConnection() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      const data = await client.core.integration.addIntegration(payload);
+      const result = await client.core.integration.deleteIntegrationConnection({
+        namespaceId,
+        connectionId,
+      });
 
-      return Promise.resolve(data);
+      return Promise.resolve(result);
     },
-    onSuccess: (connection) => {
+    onSuccess: ({ connectionId, namespaceId }) => {
       queryClient.invalidateQueries({
         queryKey: [
-          "integration-connections",
-          connection.namespaceId,
-          "infinite",
+          "integration-connection",
+          connectionId,
+          namespaceId,
+          "VIEW_FULL",
         ],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["integration-connections", namespaceId, "infinite"],
       });
     },
   });

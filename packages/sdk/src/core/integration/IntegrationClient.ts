@@ -3,11 +3,23 @@ import { APIResource } from "../../main/resource";
 import {
   AddIntegrationRequest,
   AddIntegrationResponse,
+  DeleteIntegrationConnectionRequest,
+  GetConnectionPipelinesRequest,
+  GetConnectionPipelinesResponse,
+  GetIntegrationConnectionRequest,
+  GetIntegrationConnectionResponse,
+  GetIntegrationConnectionsRequest,
+  GetIntegrationConnectionsResponse,
   GetIntegrationRequest,
   GetIntegrationResponse,
   GetIntegrationsRequest,
   GetIntegrationsResponse,
   Integration,
+  IntegrationConnection,
+  TestIntegrationConnectionRequest,
+  TestIntegrationConnectionResponse,
+  UpdateIntegrationConnectionRequest,
+  UpdateIntegrationConnectionResponse,
 } from "./type";
 
 export class IntegrationClient extends APIResource {
@@ -67,7 +79,130 @@ export class IntegrationClient extends APIResource {
   }
 
   /**
-   * Gets a specific integration
+   * Returns a paginated list of the connected integrations.
+   */
+  async getIntegrationConnections(
+    props: GetIntegrationConnectionsRequest & { enablePagination: true },
+  ): Promise<GetIntegrationConnectionsResponse>;
+  async getIntegrationConnections(
+    props: GetIntegrationConnectionsRequest & { enablePagination: false },
+  ): Promise<IntegrationConnection[]>;
+  async getIntegrationConnections(
+    props: GetIntegrationConnectionsRequest & { enablePagination: undefined },
+  ): Promise<IntegrationConnection[]>;
+  async getIntegrationConnections(
+    props: GetIntegrationConnectionsRequest & { enablePagination?: boolean },
+  ): Promise<GetIntegrationConnectionsResponse | IntegrationConnection[]>;
+  async getIntegrationConnections(
+    props: GetIntegrationConnectionsRequest & { enablePagination?: boolean },
+  ) {
+    const { pageSize, pageToken, enablePagination, filter, namespaceId } =
+      props;
+
+    try {
+      const connections: IntegrationConnection[] = [];
+
+      const queryString = getQueryString({
+        baseURL: `/namespaces/${namespaceId}/connections`,
+        pageSize,
+        pageToken,
+        filter,
+      });
+
+      const data =
+        await this._client.get<GetIntegrationConnectionsResponse>(queryString);
+
+      if (enablePagination) {
+        return Promise.resolve(data);
+      }
+
+      connections.push(...data.connections);
+
+      if (data.nextPageToken) {
+        connections.push(
+          ...(await this.getIntegrationConnections({
+            namespaceId,
+            pageSize,
+            pageToken: data.nextPageToken,
+            enablePagination: false,
+            filter,
+          })),
+        );
+      }
+
+      return Promise.resolve(connections);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  /**
+   * Returns a paginated list of the connection pipelines.
+   */
+  async getConnectionPipelines(
+    props: GetConnectionPipelinesRequest & { enablePagination: true },
+  ): Promise<GetConnectionPipelinesResponse>;
+  async getConnectionPipelines(
+    props: GetConnectionPipelinesRequest & { enablePagination: false },
+  ): Promise<string[]>;
+  async getConnectionPipelines(
+    props: GetConnectionPipelinesRequest & { enablePagination: undefined },
+  ): Promise<string[]>;
+  async getConnectionPipelines(
+    props: GetConnectionPipelinesRequest & { enablePagination?: boolean },
+  ): Promise<GetConnectionPipelinesResponse | string[]>;
+  async getConnectionPipelines(
+    props: GetConnectionPipelinesRequest & { enablePagination?: boolean },
+  ) {
+    const {
+      pageSize,
+      pageToken,
+      enablePagination,
+      filter,
+      namespaceId,
+      connectionId,
+    } = props;
+
+    try {
+      const pipelineIds: string[] = [];
+
+      const queryString = getQueryString({
+        baseURL: `/namespaces/${namespaceId}/connections/${connectionId}/referenced-pipelines`,
+        pageSize,
+        pageToken,
+        filter,
+      });
+
+      const data =
+        await this._client.get<GetConnectionPipelinesResponse>(queryString);
+
+      if (enablePagination) {
+        return Promise.resolve(data);
+      }
+
+      pipelineIds.push(...data.pipelineIds);
+
+      if (data.nextPageToken) {
+        pipelineIds.push(
+          ...(await this.getConnectionPipelines({
+            connectionId,
+            namespaceId,
+            pageSize,
+            pageToken: data.nextPageToken,
+            enablePagination: false,
+            filter,
+          })),
+        );
+      }
+
+      return Promise.resolve(pipelineIds);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  /**
+   * Gets a specific integration connection
    */
   async getIntegration(props: GetIntegrationRequest) {
     const { view, integrationId } = props;
@@ -87,7 +222,28 @@ export class IntegrationClient extends APIResource {
   }
 
   /**
-   * Adds an integration the authenticated user.
+   * Gets a specific integration
+   */
+  async getIntegrationConnection(props: GetIntegrationConnectionRequest) {
+    const { view, connectionId, namespaceId } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/namespaces/${namespaceId}/connections/${connectionId}`,
+        view,
+      });
+
+      const data =
+        await this._client.get<GetIntegrationConnectionResponse>(queryString);
+
+      return Promise.resolve(data.connection);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  /**
+   * Adds an integration connection
    */
   async addIntegration({
     id,
@@ -110,6 +266,58 @@ export class IntegrationClient extends APIResource {
       );
 
       return Promise.resolve(data.connection);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  /**
+   * Updates an integration connection
+   */
+  async updateIntegrationConnection(props: UpdateIntegrationConnectionRequest) {
+    try {
+      const data =
+        await this._client.patch<UpdateIntegrationConnectionResponse>(
+          `/namespaces/${props.namespaceId}/connections/${props.connectionId}`,
+          {
+            body: JSON.stringify(props.payload),
+          },
+        );
+
+      return Promise.resolve(data.connection);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  /**
+   * Deletes an integration connection
+   */
+  async deleteIntegrationConnection({
+    namespaceId,
+    connectionId,
+  }: DeleteIntegrationConnectionRequest) {
+    try {
+      await this._client.delete(
+        `/namespaces/${namespaceId}/connections/${connectionId}`,
+      );
+
+      return Promise.resolve({ namespaceId, connectionId });
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  /**
+   * Tests an integration connection
+   */
+  async testIntegrationConnection(props: TestIntegrationConnectionRequest) {
+    try {
+      await this._client.post<TestIntegrationConnectionResponse>(
+        `/namespaces/${props.namespaceId}/connections/${props.connectionId}/test`,
+      );
+
+      return Promise.resolve(props.connectionId);
     } catch (error) {
       return Promise.reject(error);
     }

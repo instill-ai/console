@@ -17,6 +17,20 @@ export type Integration = {
   view: ResourceView;
 };
 
+export type IntegrationConnection = {
+  uid: string;
+  id: string;
+  namespaceId: string;
+  integrationId: string;
+  integrationTitle: string;
+  pipelineIds: string[];
+  method: IntegrationMethod;
+  setup: Record<string, unknown>;
+  view: ResourceView;
+  createTime: string;
+  updateTime: string;
+};
+
 export type GetIntegrationsRequest = {
   pageToken?: string;
   pageSize: number;
@@ -38,6 +52,16 @@ export type GetIntegrationResponse = {
   integration: Integration;
 };
 
+export type GetIntegrationConnectionRequest = {
+  view?: ResourceView;
+  namespaceId: string;
+  connectionId: string;
+};
+
+export type GetIntegrationConnectionResponse = {
+  connection: IntegrationConnection;
+};
+
 export type AddIntegrationRequest = {
   namespaceId: string;
   id: string;
@@ -47,16 +71,56 @@ export type AddIntegrationRequest = {
 };
 
 export type AddIntegrationResponse = {
-  connection: {
-    uid: string;
-    id: string;
-    namespaceId: string;
-    integrationTitle: string;
-    pipelineIds: string[];
-    method: IntegrationMethod;
+  connection: IntegrationConnection;
+};
+
+export type GetIntegrationConnectionsRequest = {
+  namespaceId: string;
+  pageToken?: string;
+  pageSize: number;
+  filter: Nullable<string>;
+};
+
+export type GetIntegrationConnectionsResponse = {
+  connections: IntegrationConnection[];
+  nextPageToken: Nullable<string>;
+  totalSize: number;
+};
+
+export type UpdateIntegrationConnectionRequest = {
+  namespaceId: string;
+  connectionId: string;
+  payload: {
     setup: Record<string, unknown>;
-    view: ResourceView;
-    createTime: string;
-    updateTime: string;
   };
 };
+
+export type UpdateIntegrationConnectionResponse = {
+  connection: IntegrationConnection;
+};
+
+export type GetConnectionPipelinesRequest = {
+  namespaceId: string;
+  connectionId: string;
+  pageToken?: string;
+  pageSize: number;
+  filter: Nullable<string>;
+};
+
+export type GetConnectionPipelinesResponse = {
+  pipelineIds: string[];
+  nextPageToken: Nullable<string>;
+  totalSize: number;
+};
+
+export type DeleteIntegrationConnectionRequest = {
+  namespaceId: string;
+  connectionId: string;
+};
+
+export type TestIntegrationConnectionRequest = {
+  namespaceId: string;
+  connectionId: string;
+};
+
+export type TestIntegrationConnectionResponse = unknown;
