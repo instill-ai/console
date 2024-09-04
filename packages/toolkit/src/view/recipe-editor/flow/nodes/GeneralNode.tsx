@@ -255,8 +255,6 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     return false;
   }, [triggerPipelineStreamMap, id]);
 
-  console.log("triggerPipelineStreamMap", triggerPipelineStreamMap);
-
   return (
     <div className="relative nowheel">
       <div

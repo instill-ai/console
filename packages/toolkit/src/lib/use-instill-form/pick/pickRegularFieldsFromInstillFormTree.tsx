@@ -4,6 +4,7 @@ import cn from "clsx";
 
 import { GeneralUseFormReturn, Nullable } from "../../type";
 import { RegularFields } from "../components";
+import { ObjectArrayForm } from "../components/regular/ObjectArrayForm";
 import { SmartHintFields } from "../components/smart-hint";
 import {
   ChooseTitleFrom,
@@ -33,6 +34,10 @@ export type PickRegularFieldsFromInstillFormTreeOptions = {
   supportInstillCredit?: boolean;
   updateSupportInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
   updateIsUsingInstillCredit?: React.Dispatch<React.SetStateAction<boolean>>;
+  parentIsObjectArray?: boolean;
+  objectArrayIndex?: number;
+  parentPath?: string;
+  parentIsFormCondition?: boolean;
 };
 
 export function pickRegularFieldsFromInstillFormTree(
@@ -66,6 +71,10 @@ export function pickRegularFieldsFromInstillFormTree(
   const updateForceOpenCollapsibleFormGroups =
     options?.updateForceOpenCollapsibleFormGroups;
   const updateIsUsingInstillCredit = options?.updateIsUsingInstillCredit;
+  const parentIsObjectArray = options?.parentIsObjectArray ?? false;
+  const objectArrayIndex = options?.objectArrayIndex ?? undefined;
+  const parentPath = options?.parentPath ?? undefined;
+  const parentIsFormCondition = options?.parentIsFormCondition ?? false;
 
   let title: Nullable<string> = null;
 
@@ -75,6 +84,27 @@ export function pickRegularFieldsFromInstillFormTree(
     title = tree.fieldKey ?? tree.title ?? null;
   } else {
     title = tree.path ?? tree.fieldKey ?? tree.title ?? null;
+  }
+
+  let modifiedPath = tree.path;
+
+  const parentPathArray = parentPath ? parentPath.split(".") : [];
+
+  if (parentIsObjectArray) {
+    if (parentPath && tree.fieldKey) {
+      const modifiedPathArray = [...parentPathArray, `${objectArrayIndex}`];
+      modifiedPath = modifiedPathArray.join(".");
+    }
+  } else {
+    if (parentPath && tree.fieldKey) {
+      if (parentIsFormCondition) {
+        const modifiedPathArray = [...parentPathArray];
+        modifiedPath = modifiedPathArray.join(".");
+      } else {
+        const modifiedPathArray = [...parentPathArray, tree.fieldKey];
+        modifiedPath = modifiedPathArray.join(".");
+      }
+    }
   }
 
   if (tree._type === "formGroup") {
@@ -102,14 +132,20 @@ export function pickRegularFieldsFromInstillFormTree(
 
     if (!tree.fieldKey) {
       return (
-        <React.Fragment key={tree.path || tree.fieldKey}>
+        <React.Fragment key={modifiedPath || tree.fieldKey}>
           {tree.properties.map((property) => {
             return pickRegularFieldsFromInstillFormTree(
               property,
               form,
               selectedConditionMap,
               setSelectedConditionMap,
-              options,
+              {
+                ...options,
+                parentPath: modifiedPath ?? undefined,
+                objectArrayIndex: undefined,
+                parentIsObjectArray: false,
+                parentIsFormCondition: false,
+              },
             );
           })}
         </React.Fragment>
@@ -119,7 +155,7 @@ export function pickRegularFieldsFromInstillFormTree(
     if (enabledCollapsibleFormGroup) {
       return (
         <RegularFields.CollapsibleFormGroup
-          path={tree.path || tree.fieldKey}
+          path={modifiedPath || tree.fieldKey}
           title={title}
           defaultOpen={collapsibleDefaultOpen}
           forceCloseCollapsibleFormGroups={forceCloseCollapsibleFormGroups}
@@ -141,6 +177,10 @@ export function pickRegularFieldsFromInstillFormTree(
                 // We only enable collapsible form group for the first level
                 ...options,
                 enabledCollapsibleFormGroup: false,
+                parentPath: modifiedPath ?? undefined,
+                objectArrayIndex: undefined,
+                parentIsObjectArray: false,
+                parentIsFormCondition: false,
               },
             );
           })}
@@ -149,7 +189,7 @@ export function pickRegularFieldsFromInstillFormTree(
     }
 
     return (
-      <div key={tree.path || tree.fieldKey}>
+      <div key={modifiedPath || tree.fieldKey}>
         <p
           className={cn(
             "mb-2 text-semantic-fg-primary",
@@ -167,7 +207,13 @@ export function pickRegularFieldsFromInstillFormTree(
               form,
               selectedConditionMap,
               setSelectedConditionMap,
-              options,
+              {
+                ...options,
+                parentPath: modifiedPath ?? undefined,
+                objectArrayIndex: undefined,
+                parentIsObjectArray: false,
+                parentIsFormCondition: false,
+              },
             );
           })}
         </div>
@@ -188,7 +234,13 @@ export function pickRegularFieldsFromInstillFormTree(
               form,
               selectedConditionMap,
               setSelectedConditionMap,
-              options,
+              {
+                ...options,
+                parentPath: modifiedPath ?? undefined,
+                objectArrayIndex: undefined,
+                parentIsObjectArray: false,
+                parentIsFormCondition: true,
+              },
             ),
             title: constInfo?.title ?? null,
           },
@@ -213,10 +265,15 @@ export function pickRegularFieldsFromInstillFormTree(
       );
     }
 
+    if (!modifiedPath || !defaultCondition.fieldKey) {
+      return null;
+    }
+
     return (
       <RegularFields.OneOfConditionField
         form={form}
-        path={defaultCondition.path}
+        formConditionLayerPath={modifiedPath}
+        constFullPath={modifiedPath + "." + defaultCondition.fieldKey}
         tree={tree}
         selectedConditionMap={selectedConditionMap}
         setSelectedConditionMap={setSelectedConditionMap}
@@ -241,34 +298,44 @@ export function pickRegularFieldsFromInstillFormTree(
   }
 
   if (tree._type === "objectArray") {
-    return (
-      <React.Fragment key={tree.path || tree.fieldKey}>
-        {pickRegularFieldsFromInstillFormTree(
-          tree.properties,
-          form,
-          selectedConditionMap,
-          setSelectedConditionMap,
-          options,
-        )}
-      </React.Fragment>
-    );
+    if (modifiedPath) {
+      return (
+        <ObjectArrayForm
+          form={form}
+          path={modifiedPath}
+          tree={tree}
+          options={options}
+          selectedConditionMap={selectedConditionMap}
+          setSelectedConditionMap={setSelectedConditionMap}
+          parentPath={modifiedPath}
+        />
+      );
+    } else {
+      return null;
+    }
   }
 
   if (tree._type === "arrayArray") {
     return (
-      <React.Fragment key={tree.path || tree.fieldKey}>
+      <React.Fragment key={modifiedPath || tree.fieldKey}>
         {pickRegularFieldsFromInstillFormTree(
           tree.items,
           form,
           selectedConditionMap,
           setSelectedConditionMap,
-          options,
+          {
+            ...options,
+            parentPath: modifiedPath ?? undefined,
+            objectArrayIndex: undefined,
+            parentIsObjectArray: false,
+            parentIsFormCondition: false,
+          },
         )}
       </React.Fragment>
     );
   }
 
-  if (tree.const || !tree.path) {
+  if (tree.const || !modifiedPath) {
     return null;
   }
 
@@ -284,7 +351,7 @@ export function pickRegularFieldsFromInstillFormTree(
         return (
           <RegularFields.ImagesField
             key={tree.path}
-            path={tree.path}
+            path={modifiedPath}
             title={title}
             form={form}
             description={tree.description ?? null}
@@ -303,8 +370,8 @@ export function pickRegularFieldsFromInstillFormTree(
       if (tree.instillAcceptFormats[0]?.includes("image")) {
         return (
           <RegularFields.ImageField
-            key={tree.path}
-            path={tree.path}
+            key={modifiedPath}
+            path={modifiedPath}
             title={title}
             form={form}
             description={tree.description ?? null}
@@ -322,8 +389,8 @@ export function pickRegularFieldsFromInstillFormTree(
   if (tree.type === "boolean") {
     return (
       <RegularFields.BooleanField
-        key={tree.path}
-        path={tree.path}
+        key={modifiedPath}
+        path={modifiedPath}
         title={title}
         form={form}
         description={tree.description ?? null}
@@ -340,8 +407,8 @@ export function pickRegularFieldsFromInstillFormTree(
     return (
       <RegularFields.SingleSelectField
         tree={tree}
-        key={tree.path}
-        path={tree.path}
+        key={modifiedPath}
+        path={modifiedPath}
         form={form}
         title={title}
         options={tree.enum}
@@ -368,8 +435,8 @@ export function pickRegularFieldsFromInstillFormTree(
     if (enableSmartHint) {
       return (
         <SmartHintFields.TextArea
-          key={tree.path}
-          path={tree.path}
+          key={modifiedPath}
+          path={modifiedPath}
           form={form}
           title={title}
           description={tree.description ?? null}
@@ -392,8 +459,8 @@ export function pickRegularFieldsFromInstillFormTree(
 
     return (
       <RegularFields.TextAreaField
-        key={tree.path}
-        path={tree.path}
+        key={modifiedPath}
+        path={modifiedPath}
         form={form}
         title={title}
         description={tree.description ?? null}
@@ -409,8 +476,8 @@ export function pickRegularFieldsFromInstillFormTree(
   if (enableSmartHint) {
     return (
       <SmartHintFields.TextField
-        key={tree.path}
-        path={tree.path}
+        key={modifiedPath}
+        path={modifiedPath}
         form={form}
         title={title}
         description={tree.description ?? null}
@@ -433,8 +500,8 @@ export function pickRegularFieldsFromInstillFormTree(
 
   return (
     <RegularFields.TextField
-      key={tree.path}
-      path={tree.path}
+      key={modifiedPath}
+      path={modifiedPath}
       form={form}
       title={title}
       description={tree.description ?? null}

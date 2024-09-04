@@ -5,12 +5,12 @@ import { InstillFormTree, SelectedConditionMap } from "../types";
 
 export type TransformInstillFormTreeToDefaultValueOptions = {
   initialData?: GeneralRecord;
-
-  // This is only for FieldArray
-  isRoot?: boolean;
   selectedConditionMap?: SelectedConditionMap;
   skipPath?: string[];
   stringify?: boolean;
+  parentIsObjectArray?: boolean;
+  parentIsFormCondition?: boolean;
+  parentPath?: string;
 };
 
 export function transformInstillFormTreeToDefaultValue(
@@ -18,16 +18,46 @@ export function transformInstillFormTreeToDefaultValue(
   options?: TransformInstillFormTreeToDefaultValueOptions,
 ): GeneralRecord {
   const initialData = options?.initialData ?? {};
-  const isRoot = options?.isRoot ?? false;
   const selectedConditionMap = options?.selectedConditionMap ?? {};
   const skipPath = options?.skipPath ?? [];
   const stringify = options?.stringify ?? false;
+  const parentIsObjectArray = options?.parentIsObjectArray ?? false;
+  const parentIsFormCondition = options?.parentIsFormCondition ?? false;
+  const parentPath = options?.parentPath ?? undefined;
+
   // We don't need to set the field key for formCondition because in the
   // conditions are formGroup, we will set the fieldKey there
+
+  let modifiedPath = tree.path;
+
+  const parentPathArray = parentPath ? parentPath.split(".") : [];
+
+  // The reason we need to have parentPath and do this kind of adding up again even though
+  // we already did it when transform InstillJSONSchema to formTree, is due to we need to
+  // react to the index value of objectArray and the possibility that formCondition and formGroup
+  // will have the same path
+  if (parentIsObjectArray) {
+    if (parentPath && tree.fieldKey) {
+      const modifiedPathArray = [...parentPathArray, "0"];
+      modifiedPath = modifiedPathArray.join(".");
+    }
+  } else {
+    if (parentPath && tree.fieldKey) {
+      if (parentIsFormCondition) {
+        const modifiedPathArray = [...parentPathArray];
+        modifiedPath = modifiedPathArray.join(".");
+      } else {
+        const modifiedPathArray = [...parentPathArray, tree.fieldKey];
+        modifiedPath = modifiedPathArray.join(".");
+      }
+    }
+  }
 
   if (tree._type === "formCondition") {
     const defaultCondition = pickDefaultCondition(tree);
     const constPath = defaultCondition?.path;
+
+    console.log("selected", selectedConditionMap, constPath);
 
     if (defaultCondition && constPath) {
       if (selectedConditionMap && selectedConditionMap[constPath]) {
@@ -35,18 +65,22 @@ export function transformInstillFormTreeToDefaultValue(
         const selectedCondition = selectedConditionKey
           ? tree.conditions[selectedConditionKey]
           : null;
+
         if (selectedCondition) {
           transformInstillFormTreeToDefaultValue(selectedCondition, {
             initialData,
             selectedConditionMap,
-            isRoot,
             skipPath,
             stringify,
+            parentPath: modifiedPath ?? undefined,
+            parentIsFormCondition: true,
           });
 
           dot.setter(
             initialData,
-            constPath,
+            modifiedPath
+              ? modifiedPath + "." + defaultCondition.fieldKey
+              : (defaultCondition.fieldKey ?? ""),
             selectedConditionMap[constPath] as string,
           );
         }
@@ -60,12 +94,19 @@ export function transformInstillFormTreeToDefaultValue(
           transformInstillFormTreeToDefaultValue(headCondition, {
             initialData,
             selectedConditionMap,
-            isRoot,
             skipPath,
             stringify,
+            parentPath: modifiedPath ?? undefined,
+            parentIsFormCondition: true,
           });
 
-          dot.setter(initialData, constPath, defaultCondition.const as string);
+          dot.setter(
+            initialData,
+            modifiedPath
+              ? modifiedPath + "." + defaultCondition.fieldKey
+              : (defaultCondition.fieldKey ?? ""),
+            defaultCondition.const as string,
+          );
         }
       }
     }
@@ -78,9 +119,9 @@ export function transformInstillFormTreeToDefaultValue(
       transformInstillFormTreeToDefaultValue(property, {
         initialData: initialData,
         selectedConditionMap,
-        isRoot,
         skipPath,
         stringify,
+        parentPath: modifiedPath ?? undefined,
       });
     }
 
@@ -88,34 +129,35 @@ export function transformInstillFormTreeToDefaultValue(
   }
 
   if (tree._type === "objectArray") {
-    const objectArrayValue: GeneralRecord = {};
-
-    transformInstillFormTreeToDefaultValue(tree.properties, {
-      initialData: objectArrayValue,
-      isRoot: true,
-      selectedConditionMap,
-      skipPath,
-      stringify,
-    });
-
-    if (tree.path) {
-      dot.setter(initialData, tree.path, [objectArrayValue]);
+    if (modifiedPath) {
+      transformInstillFormTreeToDefaultValue(tree.properties, {
+        initialData,
+        selectedConditionMap,
+        skipPath,
+        stringify,
+        parentIsObjectArray: true,
+        parentPath: modifiedPath ?? undefined,
+      });
     }
+
     return initialData;
   }
 
   if (tree._type === "arrayArray") {
-    if (tree.path) {
-      dot.setter(initialData, tree.path, []);
+    if (modifiedPath) {
+      dot.setter(initialData, modifiedPath, []);
     }
     return initialData;
   }
 
   let defaultValue: Nullable<string | number> = null;
 
-  const key = isRoot ? tree.fieldKey : tree.path;
+  if (!modifiedPath) {
+    return initialData;
+  }
 
-  if (!key) {
+  // We deal with const in the previous formCondition step
+  if ("const" in tree) {
     return initialData;
   }
 
@@ -124,7 +166,7 @@ export function transformInstillFormTreeToDefaultValue(
   }
 
   if (tree.type === "boolean") {
-    dot.setter(initialData, key, false);
+    dot.setter(initialData, modifiedPath, false);
     return initialData;
   }
 
@@ -136,7 +178,7 @@ export function transformInstillFormTreeToDefaultValue(
     defaultValue = stringify
       ? String(tree.default)
       : (tree.default as string | number);
-    dot.setter(initialData, key, defaultValue);
+    dot.setter(initialData, modifiedPath, defaultValue);
     return initialData;
   }
 
@@ -159,7 +201,7 @@ export function transformInstillFormTreeToDefaultValue(
         defaultValue = null;
     }
 
-    dot.setter(initialData, key, defaultValue);
+    dot.setter(initialData, modifiedPath, defaultValue);
     return initialData;
   }
 
@@ -175,10 +217,10 @@ export function transformInstillFormTreeToDefaultValue(
         defaultValue = null;
     }
 
-    dot.setter(initialData, key, defaultValue);
+    dot.setter(initialData, modifiedPath, defaultValue);
     return initialData;
   }
 
-  dot.setter(initialData, key, defaultValue);
+  dot.setter(initialData, modifiedPath, defaultValue);
   return initialData;
 }
