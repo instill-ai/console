@@ -75,9 +75,11 @@ export const UserIntegrationsTab = (props: UserIntegrationsTabProps) => {
 
   const availableIntegrationList = React.useMemo(() => {
     return (
-      availableIntegrations.data?.pages
-        .reduce((acc: Integration[], page) => acc.concat(page.integrations), [])
-        .sort((a, b) => (a.title < b.title ? -1 : a.title > b.title ? 1 : 0)) ||
+      availableIntegrations.data?.pages.reduce(
+        (acc: Integration[], page) => acc.concat(page.integrations),
+        [],
+      ) ||
+      //.sort((a, b) => (a.title < b.title ? -1 : a.title > b.title ? 1 : 0))
       []
     );
   }, [availableIntegrations.isSuccess, availableIntegrations.data]);
@@ -100,7 +102,7 @@ export const UserIntegrationsTab = (props: UserIntegrationsTabProps) => {
     });
 
     Object.keys(dic)
-      .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+      //.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
       .forEach((integrationId) => {
         const integration = availableIntegrationList.find(
           (item) => item.id === integrationId,
