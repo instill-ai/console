@@ -24,7 +24,7 @@ const EditCatalogFormSchema = z.object({
       message: `Description must be ${MAX_DESCRIPTION_LENGTH} characters or less`,
     })
     .optional(),
-  // tags: z.string().optional(),
+  tags: z.string().optional(),
 });
 
 export type EditCatalogDialogData = z.infer<typeof EditCatalogFormSchema>;
@@ -36,7 +36,7 @@ type EditCatalogDialogProps = {
   initialValues: {
     name: string;
     description: string;
-    // tags: string[];
+    tags: string[];
   };
 };
 
@@ -52,7 +52,7 @@ export const EditCatalogDialog = ({
     resolver: zodResolver(EditCatalogFormSchema),
     defaultValues: {
       ...initialValues,
-      // tags: initialValues.tags.join(", "),
+      tags: initialValues.tags.join(", "),
     },
     mode: "onChange",
   });
@@ -64,7 +64,7 @@ export const EditCatalogDialog = ({
     if (isOpen) {
       reset({
         ...initialValues,
-        // tags: initialValues.tags.join(", "),
+        tags: initialValues.tags.join(", "),
       });
     }
   }, [isOpen, initialValues, reset]);
@@ -74,13 +74,13 @@ export const EditCatalogDialog = ({
     try {
       const formattedData = {
         ...data,
-        // tags: data.tags
-        //   ? data.tags
-        //     .split(",")
-        //     .map((tag) => tag.trim())
-        //     .filter((tag) => tag !== "")
-        //     .join(",")
-        //   : "",
+        tags: data.tags
+          ? data.tags
+            .split(",")
+            .map((tag) => tag.trim())
+            .filter((tag) => tag !== "")
+            .join(",")
+          : "",
       };
       await onSubmit(formattedData);
       setIsSubmitting(false);
@@ -157,13 +157,12 @@ export const EditCatalogDialog = ({
                 </Form.Item>
               )}
             />
-            {/* Coming in v2 */}
-            {/* <Form.Field
+             <Form.Field
               control={form.control}
               name="tags"
               render={({ field }) => {
                 return (
-                  <Form.Item className="flex flex-col gap-y-2.5">
+                  <Form.Item className="flex flex-col">
                     <Form.Label className="text-semantic-fg-primary product-button-button-2">
                       Tags
                     </Form.Label>
@@ -185,7 +184,7 @@ export const EditCatalogDialog = ({
                   </Form.Item>
                 );
               }}
-            /> */}
+            /> 
             <div className="mt-8 flex justify-end gap-x-3">
               <Button variant="secondaryGrey" onClick={onClose}>
                 Cancel

@@ -22,7 +22,7 @@ import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().optional(),
-  // tags: z.string().optional(),
+  tags: z.array(z.string()).optional(),
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
@@ -56,7 +56,7 @@ export const CreateCatalogDialog = ({
     defaultValues: {
       name: "",
       description: "",
-      // tags: "",
+      tags: [],
       namespaceId: navigationNamespaceAnchor || "",
     },
     mode: "onChange",
@@ -97,14 +97,14 @@ export const CreateCatalogDialog = ({
       form.reset({
         name: "",
         description: "",
-        // tags: "",
+        tags: [],
         namespaceId: navigationNamespaceAnchor || "",
       });
     }
   }, [isOpen, navigationNamespaceAnchor, form]);
 
   const handleSubmit = async (
-    data: z.infer<typeof CreateCatalogFormSchema>,
+    data: z.infer<typeof CreateCatalogFormSchema>
   ) => {
     setCreating(true);
 
@@ -112,18 +112,10 @@ export const CreateCatalogDialog = ({
       const formattedData = {
         ...data,
         name: formatName(data.name),
-        // tags: data.tags
-        //   ? data.tags
-        //     .split(",")
-        //     .map((tag) => tag.trim())
-        //     .filter((tag) => tag !== "")
-        //   : [],
+        tags: data.tags || [],
       };
 
-      await onSubmit({
-        ...formattedData,
-        // tags: formattedData.tags.join(","),
-      });
+      await onSubmit(formattedData);
 
       // Update the navigation namespace anchor if a different namespace was selected
       if (data.namespaceId !== navigationNamespaceAnchor) {
@@ -243,8 +235,7 @@ export const CreateCatalogDialog = ({
                 </Form.Item>
               )}
             />
-            {/* Coming in v2 */}
-            {/* <Form.Field
+            <Form.Field
               control={form.control}
               name="tags"
               render={({ field }) => {
@@ -256,10 +247,17 @@ export const CreateCatalogDialog = ({
                     <Form.Control>
                       <Input.Root>
                         <Input.Core
-                          {...field}
+                          value={field.value ? field.value.join(", ") : ""}
+                          onChange={(e) => {
+                            const tags = e.target.value
+                              .split(",")
+                              .map((tag) => tag.trim())
+                              .filter((tag) => tag !== "");
+                            field.onChange(tags);
+                          }}
                           className="!product-body-text-2-regular"
                           type="text"
-                          placeholder="Add a tag"
+                          placeholder="Add tags"
                           required={false}
                         />
                       </Input.Root>
@@ -271,7 +269,7 @@ export const CreateCatalogDialog = ({
                   </Form.Item>
                 );
               }}
-            /> */}
+            /> 
             <div className="mt-8 flex justify-end gap-x-3">
               <Button variant="secondaryGrey" onClick={onClose}>
                 Cancel

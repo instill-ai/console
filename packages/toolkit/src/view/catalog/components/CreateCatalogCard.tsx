@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { Separator, Tooltip } from "@instill-ai/design-system";
+import { Button, Separator, Tag, Tooltip } from "@instill-ai/design-system";
 
 import { CatalogCardMenu, EditCatalogDialog, EditCatalogDialogData } from ".";
 import { GeneralDeleteResourceDialog } from "../../../components";
@@ -12,6 +12,7 @@ import {
   useListCatalogFiles,
 } from "../../../lib/react-query-service/catalog";
 import { Catalog } from "../../../lib/react-query-service/catalog/types";
+import { MAX_VISIBLE_TAGS } from "./lib/constant";
 
 type CreateCatalogCardProps = {
   catalog: Catalog;
@@ -96,7 +97,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
 
   const handleDuplicate = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onCloneCatalog(catalog);
+    onCloneCatalog({...catalog, tags: catalog.tags || []});
   };
 
   const handleEditCatalogSubmit = async (data: EditCatalogDialogData) => {
@@ -112,11 +113,10 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
     });
   };
 
-  // Coming in v2
-  // const handleTagsClick = (e: React.MouseEvent) => {
-  //   e.stopPropagation();
-  //   setEditDialogIsOpen(true);
-  // };
+  const handleTagsClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setEditDialogIsOpen(true);
+  };
 
   return (
     <React.Fragment>
@@ -138,8 +138,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
               <p className="mb-auto line-clamp-3 product-body-text-3-regular whitespace-pre-wrap break-words">
                 {catalog.description}
               </p>
-              {/* Coming in v2 */}
-              {/* <div className="flex flex-wrap gap-1 mt-auto">
+              <div className="flex flex-wrap gap-1 mt-auto">
                 {catalog.tags && catalog.tags.length > 0 ? (
                   <>
                     {catalog.tags.slice(0, MAX_VISIBLE_TAGS).map((tag, index) => (
@@ -166,7 +165,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
                     + Tags
                   </Button>
                 )}
-              </div> */}
+              </div>
               <div
                 className="flex items-end justify-end"
                 onClick={(e) => e.stopPropagation()}
@@ -217,7 +216,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
         initialValues={{
           name: catalog.name,
           description: catalog.description,
-          // tags: catalog.tags ? catalog.tags : [],
+          tags: catalog.tags || [],
         }}
       />
     </React.Fragment>
