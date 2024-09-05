@@ -76,6 +76,7 @@ export const generateInputsPayload = (fields: PipelineVariableFieldMap) => {
           ];
           break;
         }
+        case "file":
         case "*/*": {
           input[key] = "Please put your file base64 encoded string";
           break;
