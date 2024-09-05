@@ -1,4 +1,8 @@
-// import { test } from "@playwright/test";
+import { test } from "@playwright/test";
+
+import { skeletonTest } from "./tests/skeleton";
+
+test.describe(skeletonTest);
 
 // import { shouldChangeComponentID } from "./tests/should-change-component-id.test";
 // import { shouldEditAndCreateStartAndEndOperatorField } from "./tests/should-edit-create-start-end-field.test";

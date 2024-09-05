@@ -74,8 +74,6 @@ export function transformInstillFormTreeToInitialSelectedCondition(
   }
 
   if (tree._type === "formCondition") {
-    console.log("aaaaaaa", modifiedPath);
-
     const constKey = Object.keys(tree.conditions)[0];
 
     const constField = constKey

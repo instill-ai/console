@@ -53,11 +53,15 @@ export function transformInstillFormTreeToDefaultValue(
     }
   }
 
+  if (modifiedPath === null || modifiedPath === undefined) {
+    modifiedPath = tree.fieldKey;
+  }
+
+  console.log("modifiedPath", modifiedPath);
+
   if (tree._type === "formCondition") {
     const defaultCondition = pickDefaultCondition(tree);
     const constPath = defaultCondition?.path;
-
-    console.log("selected", selectedConditionMap, constPath);
 
     if (defaultCondition && constPath) {
       if (selectedConditionMap && selectedConditionMap[constPath]) {
@@ -159,6 +163,69 @@ export function transformInstillFormTreeToDefaultValue(
   // We deal with const in the previous formCondition step
   if ("const" in tree) {
     return initialData;
+  }
+
+  if (tree.anyOf) {
+    const instillUpstreamValue = tree.anyOf.find(
+      (e) => e.instillUpstreamType === "value",
+    );
+
+    console.log("anyOf", instillUpstreamValue);
+
+    if (instillUpstreamValue) {
+      if (instillUpstreamValue.default) {
+        defaultValue = stringify
+          ? String(instillUpstreamValue.default)
+          : (instillUpstreamValue.default as string | number);
+        dot.setter(initialData, modifiedPath, defaultValue);
+        return initialData;
+      }
+
+      if (instillUpstreamValue.examples) {
+        switch (typeof instillUpstreamValue.examples) {
+          case "object":
+            if (Array.isArray(instillUpstreamValue.examples)) {
+              defaultValue = stringify
+                ? String(instillUpstreamValue.examples[0])
+                : (instillUpstreamValue.examples[0] as string | number);
+            }
+            break;
+          case "number":
+            defaultValue = stringify
+              ? String(instillUpstreamValue.examples)
+              : instillUpstreamValue.examples;
+            break;
+          case "string":
+            defaultValue = stringify
+              ? String(instillUpstreamValue.examples)
+              : instillUpstreamValue.examples;
+            break;
+        }
+
+        dot.setter(initialData, modifiedPath, defaultValue);
+        return initialData;
+      }
+
+      if (instillUpstreamValue.example) {
+        switch (typeof instillUpstreamValue.example) {
+          case "number":
+            defaultValue = stringify
+              ? String(instillUpstreamValue.example)
+              : instillUpstreamValue.example;
+            break;
+          case "string":
+            defaultValue = stringify
+              ? String(instillUpstreamValue.example)
+              : instillUpstreamValue.example;
+            break;
+          default:
+            defaultValue = null;
+        }
+
+        dot.setter(initialData, modifiedPath, defaultValue);
+        return initialData;
+      }
+    }
   }
 
   if (tree.path && skipPath.includes(tree.path)) {

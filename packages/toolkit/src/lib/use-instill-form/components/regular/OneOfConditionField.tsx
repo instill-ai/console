@@ -147,10 +147,6 @@ export const OneOfConditionField = ({
 
                     setSelectedConditionMap(newSelectedConditionMap);
 
-                    if (!tree.path) {
-                      return;
-                    }
-
                     const defaultCondition = pickDefaultCondition(tree);
                     const constPath = defaultCondition?.path;
 
@@ -172,6 +168,13 @@ export const OneOfConditionField = ({
                     );
 
                     const formValues = getValues();
+
+                    // If the tree.path is not exist, most likely it's a component.task
+                    // formCondition, we need to deal with it differently
+                    if (!tree.path) {
+                      reset(defaultValue);
+                      return;
+                    }
 
                     const constLayerData = dot.getter(defaultValue, tree.path);
                     dot.setter(

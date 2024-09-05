@@ -91,7 +91,7 @@ export function pickRegularFieldsFromInstillFormTree(
   const parentPathArray = parentPath ? parentPath.split(".") : [];
 
   if (parentIsObjectArray) {
-    if (parentPath && tree.fieldKey) {
+    if (parentPath) {
       const modifiedPathArray = [...parentPathArray, `${objectArrayIndex}`];
       modifiedPath = modifiedPathArray.join(".");
     }
@@ -105,6 +105,10 @@ export function pickRegularFieldsFromInstillFormTree(
         modifiedPath = modifiedPathArray.join(".");
       }
     }
+  }
+
+  if (modifiedPath === null || modifiedPath === undefined) {
+    modifiedPath = tree.fieldKey;
   }
 
   if (tree._type === "formGroup") {
@@ -265,15 +269,21 @@ export function pickRegularFieldsFromInstillFormTree(
       );
     }
 
-    if (!modifiedPath || !defaultCondition.fieldKey) {
-      return null;
+    // Some BE schema won't have fieldKey and path in the schema which result in
+    // multiple layer of null path. This is usually happening on the component.task
+    // BE uses many null path their within oneOf field
+    let oneOfPath: Nullable<string> = null;
+    if (modifiedPath && defaultCondition.fieldKey) {
+      oneOfPath = modifiedPath + "." + defaultCondition.fieldKey;
+    } else {
+      oneOfPath = defaultCondition.path;
     }
 
     return (
       <RegularFields.OneOfConditionField
         form={form}
-        formConditionLayerPath={modifiedPath}
-        constFullPath={modifiedPath + "." + defaultCondition.fieldKey}
+        formConditionLayerPath={modifiedPath ?? oneOfPath}
+        constFullPath={oneOfPath}
         tree={tree}
         selectedConditionMap={selectedConditionMap}
         setSelectedConditionMap={setSelectedConditionMap}

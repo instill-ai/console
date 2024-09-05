@@ -1182,7 +1182,7 @@ const StabilityAISchema: InstillJSONSchema = {
   type: "object",
 };
 
-test.skip("should generate stability ai form", async () => {
+test("should generate stability ai form", async () => {
   const user = userEvent.setup();
   // Make sure the form is generated correctly
   const onSubmit = vi.fn();
@@ -1383,14 +1383,14 @@ test.skip("should generate stability ai form", async () => {
     condition: null,
     task: "TASK_IMAGE_TO_IMAGE",
     input: {
-      cfg_scale: "7",
+      cfg_scale: 7,
       clip_guidance_preset: "NONE",
-      image_strength: "0.35",
+      image_strength: 0.35,
       sampler: "K_DPM_2_ANCESTRAL",
-      samples: "1",
-      step_schedule_end: "0.01",
-      step_schedule_start: "0.65",
-      steps: "30",
+      samples: 1,
+      step_schedule_end: 0.01,
+      step_schedule_start: 0.65,
+      steps: 30,
       prompts,
       weights,
       engine,
