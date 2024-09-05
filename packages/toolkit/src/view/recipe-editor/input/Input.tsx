@@ -336,6 +336,13 @@ export const Input = ({
           streamReader.releaseLock();
         }
       } catch (error) {
+        console.error(error);
+        toast({
+          title: "Something went wrong when trigger the pipeline",
+          variant: "alert-error",
+          size: "small",
+          duration: 15000,
+        });
         return;
       } finally {
         updateIsTriggeringPipeline(() => false);
