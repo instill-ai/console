@@ -5,18 +5,21 @@ import cn from "clsx";
 
 import { Form, Select } from "@instill-ai/design-system";
 
+import { dot } from "../../../dot";
 import { Nullable } from "../../../type";
-import { recursivelyResetFormData } from "../../transform";
+import { pickDefaultCondition } from "../../pick";
+import { transformInstillFormTreeToDefaultValue } from "../../transform";
 import {
   AutoFormFieldBaseProps,
-  InstillFormTree,
+  InstillFormConditionItem,
   SelectedConditionMap,
 } from "../../types";
 import { FieldDescriptionTooltip } from "../common";
 
 export const OneOfConditionField = ({
   form,
-  path,
+  constFullPath,
+  formConditionLayerPath,
   title,
   tree,
   conditionComponentsMap,
@@ -29,7 +32,7 @@ export const OneOfConditionField = ({
   isHidden,
   isRequired,
 }: {
-  tree: InstillFormTree;
+  tree: InstillFormConditionItem;
   selectedConditionMap: Nullable<SelectedConditionMap>;
   setSelectedConditionMap: React.Dispatch<
     React.SetStateAction<Nullable<SelectedConditionMap>>
@@ -40,10 +43,16 @@ export const OneOfConditionField = ({
   >;
   shortDescription?: string;
   disabled?: boolean;
-} & AutoFormFieldBaseProps) => {
-  const [prevSelectedConditionMap, setPrevSelectedConditionMap] =
-    React.useState<Nullable<SelectedConditionMap>>(null);
 
+  // something like foo.bar.baz
+  // If we have array then it will be foo.0.bar.baz
+  // If the formCondition layer's path is foo.bar.baz, and it's const fieldKey is type
+  // then the constFullPath will be foo.bar.baz.type
+  constFullPath: string;
+
+  // In the above example, the formConditionLayerPath will be foo.bar.baz
+  formConditionLayerPath: string;
+} & Omit<AutoFormFieldBaseProps, "path">) => {
   const conditionOptions = React.useMemo(() => {
     return Object.entries(conditionComponentsMap).map(([k, v]) => ({
       key: k,
@@ -57,28 +66,62 @@ export const OneOfConditionField = ({
   const conditionComponents = React.useMemo(() => {
     if (!selectedConditionMap) return null;
 
-    const selectedCondition = selectedConditionMap[path];
+    const selectedCondition = selectedConditionMap[constFullPath];
 
     return selectedCondition ? conditionComponentsMap[selectedCondition] : null;
-  }, [conditionComponentsMap, selectedConditionMap, path]);
+  }, [conditionComponentsMap, selectedConditionMap, constFullPath]);
 
   const { reset, getValues } = form;
 
-  React.useEffect(() => {
-    if (prevSelectedConditionMap && selectedConditionMap) {
-      const formValues = getValues();
-      recursivelyResetFormData(tree, selectedConditionMap, formValues);
-      setPrevSelectedConditionMap(null);
-      reset(formValues);
-    }
-  }, [prevSelectedConditionMap, selectedConditionMap, reset, tree, getValues]);
+  // Leave for future reference
+  // React.useEffect(() => {
+  //   if (prevSelectedConditionMap && selectedConditionMap && tree.path) {
+  //     const formValues = getValues();
+  //     // recursivelyResetFormData(tree, selectedConditionMap, formValues);
+
+  //     const defaultValue = transformInstillFormTreeToDefaultValue(tree, {
+  //       selectedConditionMap: selectedConditionMap,
+  //       parentIsFormCondition: true,
+  //       parentIsObjectArray: false,
+  //       parentPath: undefined,
+  //     });
+
+  //     const constLayerData = dot.getter(defaultValue, tree.path);
+  //     const resetData = dot.setter(
+  //       formValues,
+  //       formConditionLayerPath,
+  //       constLayerData,
+  //     );
+
+  //     console.log(
+  //       "defaultValue",
+  //       tree,
+  //       selectedConditionMap,
+  //       defaultValue,
+  //       formValues,
+  //       constLayerData,
+  //       resetData,
+  //     );
+
+  //     setPrevSelectedConditionMap(null);
+  //     reset(formValues);
+  //   }
+  // }, [
+  //   prevSelectedConditionMap,
+  //   selectedConditionMap,
+  //   constFullPath,
+  //   formConditionLayerPath,
+  //   reset,
+  //   tree,
+  //   getValues,
+  // ]);
 
   return (
-    <div key={path} className="flex flex-col gap-y-5">
+    <div key={constFullPath} className="flex flex-col gap-y-5">
       {isHidden ? null : (
         <Form.Field
           control={form.control}
-          name={path}
+          name={constFullPath}
           render={({ field }) => {
             return (
               <Form.Item>
@@ -96,13 +139,51 @@ export const OneOfConditionField = ({
                   onValueChange={(event) => {
                     if (!event || event === "") return;
                     field.onChange(event);
-                    setSelectedConditionMap((prev) => {
-                      setPrevSelectedConditionMap(prev);
-                      return {
-                        ...prev,
-                        [path]: event,
-                      };
-                    });
+
+                    const newSelectedConditionMap = {
+                      ...selectedConditionMap,
+                      [constFullPath]: event,
+                    };
+
+                    setSelectedConditionMap(newSelectedConditionMap);
+
+                    const defaultCondition = pickDefaultCondition(tree);
+                    const constPath = defaultCondition?.path;
+
+                    if (!constPath) {
+                      return;
+                    }
+
+                    // use the constPath without array index since the default value
+                    // we get will not recognize this
+                    const staticSelectedConditionMap = {
+                      [constPath]: event,
+                    };
+
+                    const defaultValue = transformInstillFormTreeToDefaultValue(
+                      tree,
+                      {
+                        selectedConditionMap: staticSelectedConditionMap,
+                      },
+                    );
+
+                    const formValues = getValues();
+
+                    // If the tree.path is not exist, most likely it's a component.task
+                    // formCondition, we need to deal with it differently
+                    if (!tree.path) {
+                      reset(defaultValue);
+                      return;
+                    }
+
+                    const constLayerData = dot.getter(defaultValue, tree.path);
+                    dot.setter(
+                      formValues,
+                      formConditionLayerPath,
+                      constLayerData,
+                    );
+
+                    reset(formValues);
                   }}
                   value={field.value ?? undefined}
                   disabled={disabled}

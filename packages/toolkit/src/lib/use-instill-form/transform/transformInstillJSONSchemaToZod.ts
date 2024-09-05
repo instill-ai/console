@@ -308,9 +308,12 @@ export function transformInstillJSONSchemaToZod({
             // superRefine.
 
             if (isRequired) {
-              instillZodSchema = z.string().min(1, "This field is required");
+              instillZodSchema = z.union([
+                z.string().min(1, "This field is required"),
+                z.number(),
+              ]);
             } else {
-              instillZodSchema = z.string();
+              instillZodSchema = z.union([z.string(), z.number()]);
             }
             break;
           }
@@ -541,9 +544,12 @@ export function transformInstillJSONSchemaToZod({
       // superRefine.
 
       if (isRequired) {
-        instillZodSchema = z.string().min(1, "This field is required");
+        instillZodSchema = z.union([
+          z.string().min(1, "This field is required"),
+          z.number(),
+        ]);
       } else {
-        instillZodSchema = z.string();
+        instillZodSchema = z.union([z.string(), z.number()]);
       }
       break;
     }

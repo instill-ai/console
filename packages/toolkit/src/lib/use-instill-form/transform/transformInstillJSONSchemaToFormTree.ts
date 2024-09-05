@@ -210,6 +210,34 @@ export function transformInstillJSONSchemaToFormTree(
     targetSchema.type === "array" &&
     typeof targetSchema.items === "object" &&
     !Array.isArray(targetSchema.items) &&
+    targetSchema.items.oneOf &&
+    targetSchema.items.oneOf.length > 0
+  ) {
+    const itemsFormTree = transformInstillJSONSchemaToFormTree(
+      targetSchema.items,
+      {
+        parentSchema: targetSchema,
+        key,
+        path,
+        checkIsHidden,
+      },
+    );
+
+    return {
+      ...baseFields,
+      properties: itemsFormTree,
+      jsonSchema: targetSchema,
+      _type: "objectArray",
+      fieldKey: key ?? null,
+      path: (path || key) ?? null,
+      isRequired,
+    };
+  }
+
+  if (
+    targetSchema.type === "array" &&
+    typeof targetSchema.items === "object" &&
+    !Array.isArray(targetSchema.items) &&
     targetSchema.items.properties &&
     !targetSchema.items.instillFormat
   ) {

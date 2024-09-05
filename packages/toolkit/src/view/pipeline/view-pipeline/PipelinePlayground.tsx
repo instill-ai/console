@@ -219,8 +219,6 @@ export const PipelinePlayground = ({
           stream: false,
         });
 
-        console.log("data", data);
-
         onTriggerInvalidateCredits({
           ownerName: targetNamespace?.name ?? null,
           namespaceNames: namespaces.map((namespace) => namespace.name),
