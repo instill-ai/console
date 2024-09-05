@@ -150,6 +150,7 @@ export const PipelinePlayground = ({
     mode: "demo",
     schema: formSchema?.output || null,
     data: pipelineRunResponse?.outputs[0] || null,
+    chooseTitleFrom: "title",
   });
 
   const triggerPipeline = useTriggerNamespacePipeline();
