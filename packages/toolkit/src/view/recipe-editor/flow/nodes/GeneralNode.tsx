@@ -265,15 +265,16 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
       >
         <div className="flex flex-row mx-auto gap-x-2.5">
           <Button
+            disabled={true}
             variant="tertiaryGrey"
             className="!px-2 opacity-0 pointer-events-none"
           >
             <Icons.Play className="w-4 h-4 stroke-semantic-fg-primary" />
           </Button>
           <Button
-            disabled={!isSelected}
+            disabled={true}
             variant="tertiaryGrey"
-            className="!px-2"
+            className="!px-2 opacity-0"
           >
             <Icons.Trash01 className="w-4 h-4 stroke-semantic-fg-primary" />
           </Button>
