@@ -1,11 +1,13 @@
 import * as React from "react";
 import { useFieldArray } from "react-hook-form";
 
+import { dot } from "../../../dot";
 import { GeneralUseFormReturn } from "../../../type";
 import {
   pickRegularFieldsFromInstillFormTree,
   PickRegularFieldsFromInstillFormTreeOptions,
 } from "../../pick";
+import { transformInstillFormTreeToDefaultValue } from "../../transform";
 import { InstillObjectArrayItem, SelectedConditionMap } from "../../types";
 
 export const ObjectArrayForm = ({
@@ -35,7 +37,7 @@ export const ObjectArrayForm = ({
   return (
     <div className="flex flex-col p-4 gap-y-1 border border-semantic-bg-line rounded">
       {fields.map((field, index) => (
-        <div key={field.id}>
+        <div className="flex flex-col" key={field.id}>
           {pickRegularFieldsFromInstillFormTree(
             tree.properties,
             form,
@@ -59,7 +61,18 @@ export const ObjectArrayForm = ({
         <button
           className="text-semantic-fg-disabled product-body-text-3-medium"
           type="button"
-          onClick={() => append({})}
+          onClick={() => {
+            if (!tree.path) {
+              return;
+            }
+            const defaultValue = transformInstillFormTreeToDefaultValue(
+              tree.properties,
+            );
+
+            const valueWOParentDotPath = dot.getter(defaultValue, tree.path);
+            console.log(tree, path, defaultValue, valueWOParentDotPath);
+            append(valueWOParentDotPath);
+          }}
         >
           Add
         </button>
