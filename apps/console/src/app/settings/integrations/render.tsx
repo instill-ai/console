@@ -8,6 +8,7 @@ import {
   NamespaceSwitch,
   PageBase,
   Setting,
+  useAuthenticatedUser,
   UserIntegrationsTab,
   UserSidebar,
 } from "@instill-ai/toolkit";
@@ -16,6 +17,10 @@ import { useAppAccessToken } from "~/lib/use-app-access-token";
 
 export function IntegrationsSettingsPageRender() {
   const accessToken = useAppAccessToken();
+  const me = useAuthenticatedUser({
+    accessToken: accessToken.isSuccess ? accessToken.data : null,
+    enabled: accessToken.isSuccess,
+  });
 
   const router = useRouter();
   return (
@@ -34,6 +39,7 @@ export function IntegrationsSettingsPageRender() {
               router={router}
               accessToken={accessToken.isSuccess ? accessToken.data : null}
               enableQuery={accessToken.isSuccess}
+              namespaceId={me.isSuccess ? me.data.id : null}
             />
           </Setting.Root>
         </PageBase.Content>

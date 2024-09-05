@@ -9,7 +9,6 @@ import { Setting } from "../..";
 import {
   debounce,
   GeneralAppPageProp,
-  useAuthenticatedUser,
   useInfiniteIntegrationConnections,
   useInfiniteIntegrations,
 } from "../../../../lib";
@@ -17,14 +16,12 @@ import { AvailableIntegration } from "./AvailableIntegration";
 import { ExistingConnection } from "./ExistingConnection";
 import { Section } from "./Section";
 
-export type UserIntegrationsTabProps = GeneralAppPageProp;
+export type UserIntegrationsTabProps = GeneralAppPageProp & {
+  namespaceId: Nullable<string>;
+};
 
 export const UserIntegrationsTab = (props: UserIntegrationsTabProps) => {
-  const { accessToken, enableQuery } = props;
-  const me = useAuthenticatedUser({
-    accessToken,
-    enabled: enableQuery,
-  });
+  const { accessToken, enableQuery, namespaceId } = props;
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
   const debouncedSetSearchValue = React.useMemo(
@@ -40,7 +37,7 @@ export const UserIntegrationsTab = (props: UserIntegrationsTabProps) => {
     filter: searchInputValue ? `qIntegration="${searchInputValue}"` : null,
   });
   const integrationConnections = useInfiniteIntegrationConnections({
-    namespaceId: me.isSuccess ? me.data.id : null,
+    namespaceId,
     accessToken,
     enabled: enableQuery,
     filter: searchInputValue ? `qConnection="${searchInputValue}"` : null,
@@ -177,7 +174,7 @@ export const UserIntegrationsTab = (props: UserIntegrationsTabProps) => {
               connections={item.connections}
               accessToken={accessToken}
               enableQuery={enableQuery}
-              namespaceId={me.isSuccess ? me.data.id : null}
+              namespaceId={namespaceId}
             />
           ))
         ) : (
@@ -200,7 +197,7 @@ export const UserIntegrationsTab = (props: UserIntegrationsTabProps) => {
               integration={item}
               accessToken={accessToken}
               enableQuery={enableQuery}
-              namespaceId={me.isSuccess ? me.data.id : null}
+              namespaceId={namespaceId}
             />
           ))
         ) : (
