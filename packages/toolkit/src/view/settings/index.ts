@@ -12,6 +12,7 @@ import {
 export * from "./user";
 export * from "./instillUserRoles";
 export * from "./secrets";
+export * from "./integrations";
 
 export const Setting = {
   Root: SettingRoot,

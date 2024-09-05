@@ -4,7 +4,7 @@ import { Integration, IntegrationMethod, Nullable } from "instill-sdk";
 
 import { Button, Dialog, TabMenu, useToast } from "@instill-ai/design-system";
 
-import { useAddIntegrationConnection, useIntegration } from "../../../../lib";
+import { useAddIntegrationConnection, useIntegration } from "../../../lib";
 import { ConnectionForm } from "./ConnectionForm";
 
 const METHOD_TITLE: Record<IntegrationMethod, string> = {

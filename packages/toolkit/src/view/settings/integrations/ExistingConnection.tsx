@@ -18,14 +18,14 @@ import {
 import {
   CopiedTooltip,
   GeneralDeleteResourceDialog,
-} from "../../../../components";
+} from "../../../components";
 import {
   formatDate,
   useDeleteIntegrationConnection,
   useIntegration,
   useIntegrationConnection,
   useUpdateIntegrationConnection,
-} from "../../../../lib";
+} from "../../../lib";
 import { ConnectionForm } from "./ConnectionForm";
 
 export type ExistingConnectionProps = {

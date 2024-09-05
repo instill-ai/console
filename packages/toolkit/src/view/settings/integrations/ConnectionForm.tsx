@@ -8,9 +8,9 @@ import { z } from "zod";
 
 import { Button, cn, Form, Input } from "@instill-ai/design-system";
 
-import { LoadingSpin } from "../../../../components";
-import { useInstillForm } from "../../../../lib";
-import { FieldDescriptionTooltip } from "../../../../lib/use-instill-form/components/common";
+import { LoadingSpin } from "../../../components";
+import { useInstillForm } from "../../../lib";
+import { FieldDescriptionTooltip } from "../../../lib/use-instill-form/components/common";
 
 export const connectionFormID = "connection-form";
 

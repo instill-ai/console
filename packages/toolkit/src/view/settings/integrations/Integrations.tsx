@@ -5,22 +5,22 @@ import { Integration, IntegrationConnection } from "instill-sdk";
 
 import { Icons, Input, Nullable, Skeleton } from "@instill-ai/design-system";
 
-import { Setting } from "../..";
 import {
   debounce,
-  GeneralAppPageProp,
   useInfiniteIntegrationConnections,
   useInfiniteIntegrations,
-} from "../../../../lib";
+} from "../../../lib";
 import { AvailableIntegration } from "./AvailableIntegration";
 import { ExistingConnection } from "./ExistingConnection";
 import { Section } from "./Section";
 
-export type UserIntegrationsTabProps = GeneralAppPageProp & {
+export type IntegrationsProps = {
   namespaceId: Nullable<string>;
+  enableQuery: boolean;
+  accessToken: Nullable<string>;
 };
 
-export const UserIntegrationsTab = (props: UserIntegrationsTabProps) => {
+export const Integrations = (props: IntegrationsProps) => {
   const { accessToken, enableQuery, namespaceId } = props;
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
@@ -139,11 +139,7 @@ export const UserIntegrationsTab = (props: UserIntegrationsTabProps) => {
   );
 
   return (
-    <Setting.TabRoot>
-      <Setting.TabHeader
-        title="Integration"
-        description="Easily configure and protect your connections"
-      />
+    <React.Fragment>
       <div className="flex flex-row gap-x-4 mt-1" style={{ width: "400px" }}>
         <Input.Root className="w-full">
           <Input.LeftIcon>
@@ -208,6 +204,6 @@ export const UserIntegrationsTab = (props: UserIntegrationsTabProps) => {
           </p>
         )}
       </Section>
-    </Setting.TabRoot>
+    </React.Fragment>
   );
 };
