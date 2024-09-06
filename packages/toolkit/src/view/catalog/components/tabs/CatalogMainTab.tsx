@@ -25,8 +25,8 @@ import {
   CreateCatalogFormSchema,
 } from "../CreateCatalogDialog";
 import { EditCatalogDialogData } from "../EditCatalogDialog";
-import { UpgradePlanLink } from "../notifications";
 import { convertTagsToArray } from "../lib/helpers";
+import { UpgradePlanLink } from "../notifications";
 
 type CatalogTabProps = {
   onCatalogSelect: (catalog: Catalog) => void;
