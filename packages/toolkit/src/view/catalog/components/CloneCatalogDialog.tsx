@@ -28,7 +28,7 @@ const CloneCatalogFormSchema = z.object({
       message: `Description must be ${MAX_DESCRIPTION_LENGTH} characters or less`,
     })
     .optional(),
-  tags: z.array(z.string()).optional(),
+  tags: z.string().optional(),
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
@@ -67,7 +67,7 @@ export const CloneCatalogDialog = ({
     resolver: zodResolver(CloneCatalogFormSchema),
     defaultValues: {
       ...initialValues,
-      tags: initialValues.tags,
+      tags: initialValues.tags.join(", ") || [] as unknown as string,
       namespaceId: navigationNamespaceAnchor || "",
     },
     mode: "onChange",
@@ -108,7 +108,7 @@ export const CloneCatalogDialog = ({
     if (isOpen) {
       reset({
         ...initialValues,
-        tags: initialValues.tags,
+        tags: initialValues.tags.join(", "),
         namespaceId: navigationNamespaceAnchor || "",
       });
     }
@@ -120,10 +120,20 @@ export const CloneCatalogDialog = ({
       const formattedData = {
         ...data,
         name: formatName(data.name),
-        tags: data.tags || [],
+        tags: data.tags
+          ? data.tags
+            .split(",")
+            .map((tag) => tag.trim())
+            .filter((tag) => tag !== "")
+          : undefined,
       };
 
-      await onSubmit(formattedData);
+      await onSubmit({
+        name: formattedData.name,
+        namespaceId: formattedData.namespaceId,
+        description: formattedData.description,
+        tags: formattedData.tags?.join(", ") || undefined,
+      });
 
       // Update the navigation namespace anchor if a different namespace was selected
       if (data.namespaceId !== navigationNamespaceAnchor) {
@@ -135,7 +145,7 @@ export const CloneCatalogDialog = ({
       setIsSubmitting(false);
       onClose();
     } catch (error) {
-console.error("Error cloning catalog:", error);
+      console.error("Error cloning catalog:", error);
       setIsSubmitting(false);
     }
   };
@@ -248,25 +258,28 @@ console.error("Error cloning catalog:", error);
               name="tags"
               render={({ field }) => {
                 return (
-                  <Form.Item className="flex flex-col gap-y-2.5">
-                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
-                      Tags
-                    </Form.Label>
+                  <Form.Item className="flex flex-col gap-y-1">
+                    <div className="flex items-center justify-between">
+                      <Form.Label className="product-body-text-3-semibold">
+                        Tags
+                      </Form.Label>
+                      <p className="my-auto text-semantic-fg-secondary product-body-text-4-regular">
+                        Optional
+                      </p>
+                    </div>
                     <Form.Control>
                       <Input.Root>
                         <Input.Core
-                          value={field.value ? field.value.join(", ") : ""}
-                          onChange={(e) => {
-                            const tags = e.target.value
-                              .split(",")
-                              .map((tag) => tag.trim())
-                              .filter((tag) => tag !== "");
-                            field.onChange(tags);
-                          }}
+                          {...field}
                           className="!product-body-text-2-regular"
                           type="text"
                           placeholder="Add tags"
                           required={false}
+                          value={typeof field.value === 'string' ? field.value : (field.value as string[] | undefined)?.join(', ') || ''}
+                          onChange={(e) => {
+                            const inputValue = e.target.value;
+                            field.onChange(inputValue);
+                          }}
                         />
                       </Input.Root>
                     </Form.Control>

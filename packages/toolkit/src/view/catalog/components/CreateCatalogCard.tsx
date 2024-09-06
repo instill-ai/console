@@ -226,14 +226,14 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
             ...catalog,
             name: clonedCatalog.name,
             description: clonedCatalog.description ?? "",
-            tags: clonedCatalog.tags ?? [],
+            tags: clonedCatalog.tags ? [...clonedCatalog.tags] : []
           });
           setCloneDialogIsOpen(false);
         }}
         initialValues={{
           name: `${catalog.name}-clone`,
           description: catalog.description,
-          tags: catalog.tags || [],
+          tags: catalog.tags ? catalog.tags : [],
         }}
       />
     </React.Fragment>

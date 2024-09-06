@@ -24,7 +24,7 @@ const EditCatalogFormSchema = z.object({
       message: `Description must be ${MAX_DESCRIPTION_LENGTH} characters or less`,
     })
     .optional(),
-  tags: z.array(z.string()).optional(),
+  tags: z.string().optional(),
 });
 
 export type EditCatalogDialogData = z.infer<typeof EditCatalogFormSchema>;
@@ -52,7 +52,7 @@ export const EditCatalogDialog = ({
     resolver: zodResolver(EditCatalogFormSchema),
     defaultValues: {
       ...initialValues,
-      tags: initialValues.tags,
+      tags: initialValues.tags.join(", "),
     },
     mode: "onChange",
   });
@@ -64,7 +64,7 @@ export const EditCatalogDialog = ({
     if (isOpen) {
       reset({
         ...initialValues,
-        tags: initialValues.tags,
+        tags: initialValues.tags.join(", "),
       });
     }
   }, [isOpen, initialValues, reset]);
@@ -72,7 +72,13 @@ export const EditCatalogDialog = ({
   const handleSubmit = async (data: EditCatalogDialogData) => {
     setIsSubmitting(true);
     try {
-      await onSubmit(data);
+      const formattedData = {
+        ...data,
+        tags: data.tags
+          ? Array.isArray(data.tags) ? data.tags.join(", ") : data.tags
+          : undefined,
+      };
+      await onSubmit(formattedData);
       setIsSubmitting(false);
       onClose();
     } catch (error) {
@@ -152,24 +158,22 @@ export const EditCatalogDialog = ({
               name="tags"
               render={({ field }) => {
                 return (
-                  <Form.Item className="flex flex-col">
-                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
-                      Tags
-                    </Form.Label>
+                  <Form.Item className="flex flex-col gap-y-1">
+                    <div className="flex items-center justify-between">
+                      <Form.Label className="product-body-text-3-semibold">
+                        Tags
+                      </Form.Label>
+                      <p className="my-auto text-semantic-fg-secondary product-body-text-4-regular">
+                        Optional
+                      </p>
+                    </div>
                     <Form.Control>
                       <Input.Root>
                         <Input.Core
-                          value={field.value ? field.value.join(", ") : ""}
-                          onChange={(e) => {
-                            const tags = e.target.value
-                              .split(",")
-                              .map((tag) => tag.trim())
-                              .filter((tag) => tag !== "");
-                            field.onChange(tags);
-                          }}
+                          {...field}
                           className="!product-body-text-2-regular"
                           type="text"
-                          placeholder="Add tags (comma-separated)"
+                          placeholder="Add a tag"
                           required={false}
                         />
                       </Input.Root>

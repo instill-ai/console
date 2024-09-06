@@ -19,10 +19,10 @@ import { EntitySelector, LoadingSpin } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 
-const CreateCatalogFormSchema = z.object({
+export const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().optional(),
-  tags: z.array(z.string()).optional(),
+  tags: z.union([z.array(z.string()), z.string()]).optional(),
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
@@ -112,7 +112,15 @@ export const CreateCatalogDialog = ({
       const formattedData = {
         ...data,
         name: formatName(data.name),
-        tags: data.tags || [],
+        tags: Array.isArray(data.tags)
+          ? data.tags
+          : typeof data.tags === 'string'
+            ? data.tags
+              .trim()
+              .split(",")
+              .map((item: string) => item.trim())
+              .filter((item: string) => item !== "")
+            : [],
       };
 
       await onSubmit(formattedData);
@@ -241,35 +249,33 @@ export const CreateCatalogDialog = ({
               render={({ field }) => {
                 return (
                   <Form.Item className="flex flex-col gap-y-2.5">
-                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
+                    <Form.Label className="product-body-text-3-semibold">
                       Tags
                     </Form.Label>
                     <Form.Control>
                       <Input.Root>
                         <Input.Core
-                          value={field.value ? field.value.join(", ") : ""}
-                          onChange={(e) => {
-                            const tags = e.target.value
-                              .split(",")
-                              .map((tag) => tag.trim())
-                              .filter((tag) => tag !== "");
-                            field.onChange(tags);
-                          }}
+                          {...field}
                           className="!product-body-text-2-regular"
                           type="text"
                           placeholder="Add tags"
                           required={false}
+                          value={typeof field.value === 'string' ? field.value : field.value?.join(', ') || ''}
+                          onChange={(e) => {
+                            const inputValue = e.target.value;
+                            field.onChange(inputValue);
+                          }}
                         />
                       </Input.Root>
                     </Form.Control>
                     <Form.Message />
                     <p className="text-xs text-semantic-fg-secondary">
-                      {`Separate tags with a comma.`}
+                      Separate tags with a comma.
                     </p>
                   </Form.Item>
                 );
               }}
-            /> 
+            />
             <div className="mt-8 flex justify-end gap-x-3">
               <Button variant="secondaryGrey" onClick={onClose}>
                 Cancel
