@@ -32,6 +32,7 @@ import {
   useUpdateIntegrationConnection,
 } from "../../../lib";
 import { ConnectionForm } from "./ConnectionForm";
+import { ConnectionPipelineList } from "./PipelineList";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -128,15 +129,10 @@ export const ExistingConnection = ({
               {formatDate(connection.createTime)}
             </div>
           </div>
-          {/* <div className="flex flex-row">
-            <div className="w-32 text-semantic-fg-disabled text-sm font-normal">
-              Second element:
-            </div>
-            <div className="text-sm font-normal flex flex-col [&>a]:text-semantic-accent-default [&>a:hover]:underline">
-              <a href="/">Link 1</a>
-              <a href="/">Link 2</a>
-            </div>
-          </div> */}
+          <ConnectionPipelineList
+            namespaceId={namespaceId}
+            connectionId={connection.id}
+          />
         </div>
       </div>
     );

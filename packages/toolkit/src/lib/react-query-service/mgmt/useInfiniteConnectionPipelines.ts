@@ -11,8 +11,8 @@ export function useInfiniteConnectionPipelines({
   retry,
   filter,
 }: {
-  namespaceId: string;
-  connectionId: string;
+  namespaceId: Nullable<string>;
+  connectionId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   retry?: false | number;
@@ -34,6 +34,14 @@ export function useInfiniteConnectionPipelines({
     queryFn: async ({ pageParam }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
+      }
+
+      if (!namespaceId) {
+        return Promise.reject(new Error("namespaceId not provided"));
+      }
+
+      if (!connectionId) {
+        return Promise.reject(new Error("connectionId not provided"));
       }
 
       const client = getInstillAPIClient({ accessToken });
