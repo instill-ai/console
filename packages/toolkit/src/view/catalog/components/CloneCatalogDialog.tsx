@@ -272,7 +272,7 @@ console.error("Error cloning catalog:", error);
                     </Form.Control>
                     <Form.Message />
                     <p className="text-xs text-semantic-fg-secondary">
-                      {`Separate tags with a comma.`}
+                      Separate tags with a comma.
                     </p>
                   </Form.Item>
                 );

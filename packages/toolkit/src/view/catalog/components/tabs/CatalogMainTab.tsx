@@ -38,7 +38,7 @@ type CatalogTabProps = {
 const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().optional(),
-  tags: z.string(z.string()).optional(),
+  tags: z.array(z.string()).optional(),
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
@@ -96,7 +96,7 @@ export const CatalogTab = ({
         payload: {
           name: data.name,
           description: data.description,
-          // tags: data.tags ?? "",
+          tags: data.tags ?? [],
           ownerId: data.namespaceId,
         },
         ownerId: data.namespaceId,
@@ -122,7 +122,7 @@ export const CatalogTab = ({
         payload: {
           name: data.name,
           description: data.description,
-          // tags: data.tags || "",
+          tags: data.tags ?? [],
         },
         accessToken,
       });
@@ -137,8 +137,8 @@ export const CatalogTab = ({
 
     const clonedCatalog = {
       name: `${catalog.name}-clone`,
-      description: catalog.description,
-      tags: catalog.tags || "",
+      description: catalog.description ?? "",
+      tags: catalog.tags ?? [],
     };
 
     try {
@@ -146,7 +146,7 @@ export const CatalogTab = ({
         payload: {
           ...clonedCatalog,
           ownerId: selectedNamespace,
-          tags: clonedCatalog.tags.join(", "),
+          tags: clonedCatalog.tags,
         },
         ownerId: selectedNamespace,
         accessToken,

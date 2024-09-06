@@ -24,7 +24,7 @@ const EditCatalogFormSchema = z.object({
       message: `Description must be ${MAX_DESCRIPTION_LENGTH} characters or less`,
     })
     .optional(),
-  tags: z.string().optional(),
+  tags: z.array(z.string()).optional(),
 });
 
 export type EditCatalogDialogData = z.infer<typeof EditCatalogFormSchema>;
@@ -52,7 +52,7 @@ export const EditCatalogDialog = ({
     resolver: zodResolver(EditCatalogFormSchema),
     defaultValues: {
       ...initialValues,
-      tags: initialValues.tags.join(", "),
+      tags: initialValues.tags,
     },
     mode: "onChange",
   });
@@ -64,7 +64,7 @@ export const EditCatalogDialog = ({
     if (isOpen) {
       reset({
         ...initialValues,
-        tags: initialValues.tags.join(", "),
+        tags: initialValues.tags,
       });
     }
   }, [isOpen, initialValues, reset]);
@@ -72,17 +72,7 @@ export const EditCatalogDialog = ({
   const handleSubmit = async (data: EditCatalogDialogData) => {
     setIsSubmitting(true);
     try {
-      const formattedData = {
-        ...data,
-        tags: data.tags
-          ? data.tags
-            .split(",")
-            .map((tag) => tag.trim())
-            .filter((tag) => tag !== "")
-            .join(",")
-          : "",
-      };
-      await onSubmit(formattedData);
+      await onSubmit(data);
       setIsSubmitting(false);
       onClose();
     } catch (error) {
@@ -169,10 +159,17 @@ export const EditCatalogDialog = ({
                     <Form.Control>
                       <Input.Root>
                         <Input.Core
-                          {...field}
+                          value={field.value ? field.value.join(", ") : ""}
+                          onChange={(e) => {
+                            const tags = e.target.value
+                              .split(",")
+                              .map((tag) => tag.trim())
+                              .filter((tag) => tag !== "");
+                            field.onChange(tags);
+                          }}
                           className="!product-body-text-2-regular"
                           type="text"
-                          placeholder="Add a tag"
+                          placeholder="Add tags (comma-separated)"
                           required={false}
                         />
                       </Input.Root>
