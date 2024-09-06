@@ -1,4 +1,5 @@
 import * as React from "react";
+import { GeneralRecord } from "instill-sdk";
 import { useFieldArray } from "react-hook-form";
 
 import { dot } from "../../../dot";
@@ -51,7 +52,52 @@ export const ObjectArrayForm = ({
             },
           )}
           {fields.length === 1 ? null : (
-            <button type="button" onClick={() => remove(index)}>
+            <button
+              type="button"
+              onClick={() => {
+                if (!selectedConditionMap) {
+                  return;
+                }
+
+                const propsToUpdate: string[] = [];
+                const propsToCopy: string[] = [];
+
+                Object.keys(selectedConditionMap).forEach((item) => {
+                  const currentIndex = parseInt(
+                    item.replace(`${path}.`, "").split(".")[0] || "",
+                    10,
+                  );
+
+                  if (currentIndex > index) {
+                    propsToUpdate.push(item);
+                  } else if (currentIndex < index) {
+                    propsToCopy.push(item);
+                  }
+                });
+
+                const newSelectedConditionMap: GeneralRecord = {};
+
+                propsToCopy.forEach(
+                  (item) =>
+                    (newSelectedConditionMap[item] =
+                      selectedConditionMap[item]),
+                );
+                propsToUpdate.forEach((item) => {
+                  const number = parseInt(
+                    item.replace(`${path}.`, "").split(".")[0] || "",
+                    10,
+                  );
+                  const suffix = item.replace(`${path}.${number}.`, "");
+
+                  newSelectedConditionMap[`${path}.${number - 1}.${suffix}`] =
+                    selectedConditionMap[`${path}.${number}.${suffix}`];
+                });
+
+                setSelectedConditionMap(newSelectedConditionMap);
+
+                remove(index);
+              }}
+            >
               remove
             </button>
           )}

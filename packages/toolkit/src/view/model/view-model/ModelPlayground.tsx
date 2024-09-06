@@ -131,7 +131,8 @@ export const ModelPlayground = ({
   const [inputFromExistingResult, setInputFromExistingResult] = useState<Record<
     string,
     unknown
-  > | null>(null);
+    // Stupid hack, because the model name field needs to use the models' name
+  > | null>({ data: { model: model?.id } });
   const [existingTriggerState, setExistingTriggerState] =
     useState<Nullable<Operation>>(null);
   const { accessToken, enabledQuery, navigationNamespaceAnchor } =
@@ -185,7 +186,8 @@ export const ModelPlayground = ({
       currentOperationIdPollingData.current =
         defaultCurrentOperationIdPollingData;
       setExistingTriggerState(null);
-      setInputFromExistingResult(null);
+      // Stupid hack, because the model name field needs to use the models' name
+      setInputFromExistingResult({ data: { model: model?.id } });
       setModelRunResult(null);
     }
   }, [activeVersion]);
@@ -333,11 +335,7 @@ export const ModelPlayground = ({
         userId: routeInfo.data.namespaceId,
         accessToken,
         payload: {
-          taskInputs: [
-            {
-              [taskPropName]: parsedStructuredData,
-            },
-          ],
+          taskInputs: [parsedStructuredData],
         },
         requesterUid: targetNamespace ? targetNamespace.uid : undefined,
         versionId: activeVersion,

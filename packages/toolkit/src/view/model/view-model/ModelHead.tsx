@@ -162,7 +162,7 @@ export const ModelHead = ({
               size="sm"
             >
               {task.getIcon(
-                `w-3 h-3 ${["TASK_TEXT_GENERATION_CHAT", "TASK_IMAGE_TO_IMAGE", "TASK_VISUAL_QUESTION_ANSWERING"].includes(model?.task || "") ? "stroke-semantic-secondary-on-bg [&>*]:!stroke-semantic-secondary-on-bg" : "[&>*]:!fill-semantic-secondary-on-bg"}`,
+                `w-3 h-3 ${["TASK_CHAT", "TASK_IMAGE_TO_IMAGE"].includes(model?.task || "") ? "stroke-semantic-secondary-on-bg [&>*]:!stroke-semantic-secondary-on-bg" : "[&>*]:!fill-semantic-secondary-on-bg"}`,
               )}
               {task.label}
             </Tag>
