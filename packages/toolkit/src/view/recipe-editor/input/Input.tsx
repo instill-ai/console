@@ -207,7 +207,6 @@ export const Input = ({
             updateTriggerPipelineStreamMap((prev) => {
               let newTriggerPipelineStreamMap = prev;
               for (const event of events) {
-                console.log("event", event);
                 if (isPipelineStatusUpdatedEvent(event)) {
                   newTriggerPipelineStreamMap = {
                     pipeline: {

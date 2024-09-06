@@ -198,6 +198,10 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
       <Dialog.Content
         data-testid={DataTestID.createPipelineDialog}
         className="!w-[600px] !p-0"
+        onOpenAutoFocus={(e) => {
+          e.preventDefault();
+          form.setFocus("id");
+        }}
       >
         {routeInfo.isSuccess ? (
           <div className="flex flex-col">
