@@ -111,11 +111,11 @@ export const VersionDropdownSelector = ({
           align="end"
           className="flex flex-col !rounded-sm !p-0"
           style={{
-            maxWidth: "160px",
-            maxHeight: "260px",
+            width: "145px",
+            height: "260px",
           }}
         >
-          <ScrollArea.Root className="[&>div>div]:!block">
+          <ScrollArea.Root className="[&>div>div]:!block !h-[260px]">
             <div className="flex flex-col gap-y-1 px-1.5 py-1">
               {versions.length > 0 ? (
                 <React.Fragment>
