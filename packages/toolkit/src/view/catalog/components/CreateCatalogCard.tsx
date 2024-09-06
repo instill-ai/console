@@ -2,13 +2,7 @@
 
 import * as React from "react";
 
-import {
-  Button,
-  ScrollArea,
-  Separator,
-  Tag,
-  Tooltip,
-} from "@instill-ai/design-system";
+import { Button, Separator, Tag, Tooltip } from "@instill-ai/design-system";
 
 import {
   CatalogCardMenu,
@@ -147,11 +141,11 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
                 <div className="product-headings-heading-4">{catalog.name}</div>
               </div>
               <Separator orientation="horizontal" className="my-[10px]" />
-              <ScrollArea.Root className="flex-grow overflow-hidden h-[50px]">
-                <p className="product-body-text-3-regular whitespace-pre-wrap break-words">
+              <div className="flex-grow">
+                <p className="product-body-text-3-regular line-clamp-2 break-words">
                   {catalog.description}
                 </p>
-              </ScrollArea.Root>
+              </div>
               <div className="mt-auto overflow-x-auto">
                 <div className="flex gap-1 pb-2">
                   {catalog.tags ? (
