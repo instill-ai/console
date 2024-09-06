@@ -57,8 +57,6 @@ export function transformInstillFormTreeToDefaultValue(
     modifiedPath = tree.fieldKey;
   }
 
-  console.log("modifiedPath", modifiedPath);
-
   if (tree._type === "formCondition") {
     const defaultCondition = pickDefaultCondition(tree);
     const constPath = defaultCondition?.path;
@@ -169,8 +167,6 @@ export function transformInstillFormTreeToDefaultValue(
     const instillUpstreamValue = tree.anyOf.find(
       (e) => e.instillUpstreamType === "value",
     );
-
-    console.log("anyOf", instillUpstreamValue);
 
     if (instillUpstreamValue) {
       if (instillUpstreamValue.default) {

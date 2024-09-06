@@ -26,22 +26,19 @@ import { Editor } from "@monaco-editor/react";
 import { PipelineRecipe } from "instill-sdk";
 import { editor, IDisposable, languages, Position } from "monaco-editor";
 
-import { Dialog, useToast } from "@instill-ai/design-system";
+import { Dialog } from "@instill-ai/design-system";
 
 import { LoadingSpin } from "../../components";
 import {
-  debounce,
   dot,
   GeneralRecord,
   InstillStore,
   Nullable,
-  toastInstillError,
   useInstillStore,
   useNamespacePipeline,
   useNamespaceSecrets,
   useRouteInfo,
   useShallow,
-  useUpdateNamespacePipeline,
 } from "../../lib";
 import { transformInstillJSONSchemaToFormTree } from "../../lib/use-instill-form/transform";
 import { transformFormTreeToNestedSmartHints } from "../../lib/use-smart-hint/transformFormTreeToNestedSmartHints";
@@ -51,6 +48,8 @@ import {
   analyzeColonInString,
   keyLineNumberMapHelpers,
   tomorrowTheme,
+  useAutonomousEditorRecipeUpdater,
+  useDebouncedRecipeUpdater,
   validateVSCodeYaml,
 } from "./lib";
 
@@ -63,7 +62,6 @@ const selector = (store: InstillStore) => ({
   rawRecipeOnDom: store.rawRecipeOnDom,
   updateRawRecipeOnDom: store.updateRawRecipeOnDom,
   updateHasUnsavedRecipe: store.updateHasUnsavedRecipe,
-  updateIsSavingRecipe: store.updateIsSavingRecipe,
   currentVersion: store.currentVersion,
   runButtonRef: store.runButtonRef,
 });
@@ -89,12 +87,13 @@ const availableInstillFormats = [
 const componentTopLevelKeys = ["type", "input", "setup", "condition", "task"];
 
 export const VscodeEditor = () => {
-  const { toast } = useToast();
   const [markErrors, setMarkErrors] = React.useState<editor.IMarkerData[]>([]);
 
   const autoCompleteDisposableRef = React.useRef<Nullable<IDisposable>>(null);
   const hoverHintDisposableRef = React.useRef<Nullable<IDisposable>>(null);
   const codeLensDisposableRef = React.useRef<Nullable<IDisposable>>(null);
+  const forceUpdateActionDisposableRef =
+    React.useRef<Nullable<IDisposable>>(null);
   const editorRef = React.useRef<Nullable<editor.IStandaloneCodeEditor>>(null);
   const monacoRef = React.useRef<Nullable<Monaco>>(null);
 
@@ -112,7 +111,6 @@ export const VscodeEditor = () => {
     rawRecipeOnDom,
     updateRawRecipeOnDom,
     updateHasUnsavedRecipe,
-    updateIsSavingRecipe,
     currentVersion,
     runButtonRef,
   } = useInstillStore(useShallow(selector));
@@ -131,54 +129,8 @@ export const VscodeEditor = () => {
     enabled: enabledQuery,
   });
 
-  const updatePipeline = useUpdateNamespacePipeline();
-  const recipeUpdater = React.useCallback(
-    debounce(
-      ({
-        pipelineName,
-        newRawRecipe,
-        accessToken,
-      }: {
-        pipelineName: Nullable<string>;
-        newRawRecipe: string;
-        accessToken: Nullable<string>;
-      }) => {
-        if (!accessToken || !pipelineName) {
-          return;
-        }
-
-        try {
-          updateIsSavingRecipe(() => true);
-
-          updatePipeline.mutateAsync({
-            rawRecipe: newRawRecipe,
-            namespacePipelineName: pipelineName,
-            accessToken,
-            metadata: {
-              pipelineIsNew: false,
-            },
-          });
-
-          // Smooth the indicator transition, if the update goes too fast, the indicator
-          // will blink
-          setTimeout(() => {
-            updateIsSavingRecipe(() => false);
-            updateHasUnsavedRecipe(() => false);
-          }, 500);
-        } catch (error) {
-          toastInstillError({
-            toast,
-            title: "Failed to update pipeline",
-            error,
-          });
-          console.error(error);
-        }
-      },
-      3000,
-    ),
-    [],
-  );
-
+  const debouncedRecipeUpdater = useDebouncedRecipeUpdater();
+  const autonomousRecipeUpdater = useAutonomousEditorRecipeUpdater();
   React.useEffect(() => {
     if (!editorRef.current || !monacoRef.current) {
       return;
@@ -936,7 +888,7 @@ export const VscodeEditor = () => {
   // When the pipeline is updated, we need to re-register the services we used
   // in the monaco editor
   React.useEffect(() => {
-    if (!monacoRef.current || !pipeline.isSuccess) {
+    if (!monacoRef.current || !editorRef.current || !pipeline.isSuccess) {
       return;
     }
 
@@ -946,6 +898,10 @@ export const VscodeEditor = () => {
 
     if (hoverHintDisposableRef.current) {
       hoverHintDisposableRef.current.dispose();
+    }
+
+    if (forceUpdateActionDisposableRef.current) {
+      forceUpdateActionDisposableRef.current.dispose();
     }
 
     const autoCompleteDisposable =
@@ -973,6 +929,19 @@ export const VscodeEditor = () => {
         },
       });
     hoverHintDisposableRef.current = hoverHintDisposable;
+
+    const forceUpdateActionDisposable = editorRef.current?.addAction({
+      id: "force-update",
+      label: "Force Update",
+      keybindings: [
+        monacoRef.current.KeyMod.CtrlCmd | monacoRef.current.KeyCode.KeyS,
+      ],
+      contextMenuOrder: 1,
+      run: () => {
+        autonomousRecipeUpdater();
+      },
+    });
+    forceUpdateActionDisposableRef.current = forceUpdateActionDisposable;
   }, [pipeline.data, pipeline.isSuccess, handleAutoComplete, handleHoverHint]);
 
   // Handle initial render's error
@@ -1038,15 +1007,7 @@ export const VscodeEditor = () => {
 
           updateHasUnsavedRecipe(() => true);
 
-          // In the updater we will check whether the value is valid or not again, the reason
-          // why we do this duplicated check is due to we want to invoke the updater function
-          // every time the user type something, so it didn't send the wrong value to the backend
-
-          // For example, if we only invoke updater only when the recipe is valid, once the user
-          // type something wrong, then the updater will send the last valid value to the backend
-          // and overwrite the value that the user is typing.
-
-          recipeUpdater({
+          debouncedRecipeUpdater({
             pipelineName: pipeline.data.name,
             newRawRecipe: value,
             accessToken,
@@ -1055,8 +1016,6 @@ export const VscodeEditor = () => {
           updateRawRecipeOnDom(() => value);
 
           const res = validateVSCodeYaml(value);
-
-          console.log(res);
 
           if (res.success) {
             setMarkErrors([]);
@@ -1162,6 +1121,17 @@ export const VscodeEditor = () => {
               runButtonRef.current?.click();
             },
           });
+
+          const forceUpdateActionDisposable = editor.addAction({
+            id: "force-update",
+            label: "Force Update",
+            keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
+            contextMenuOrder: 1,
+            run: () => {
+              autonomousRecipeUpdater();
+            },
+          });
+          forceUpdateActionDisposableRef.current = forceUpdateActionDisposable;
         }}
       />
 

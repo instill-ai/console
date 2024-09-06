@@ -4,6 +4,7 @@ import { editor } from "monaco-editor";
 import { ReactFlowInstance } from "reactflow";
 import { StateCreator } from "zustand";
 
+import { EditorRecipeUpdater } from "../../view/recipe-editor/lib";
 import { Nullable } from "../type";
 import {
   EditorMultiScreenModel,
@@ -153,4 +154,14 @@ export const createEditorSlice: StateCreator<
       };
     }),
   editorFirstRenderedHeight: React.createRef<Nullable<number>>(),
+  editorDebouncedRecipeUpdater: null,
+  updateEditorDebouncedRecipeUpdater: (
+    fn: (prev: Nullable<EditorRecipeUpdater>) => Nullable<EditorRecipeUpdater>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        editorDebouncedRecipeUpdater: fn(state.editorDebouncedRecipeUpdater),
+      };
+    }),
 });
