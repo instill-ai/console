@@ -79,62 +79,62 @@ export const CatalogTab = ({
     }
   }, [selectedNamespace, catalogState.refetch, catalogState]);
 
-const handleCreateCatalogSubmit = async (
-  data: z.infer<typeof CreateCatalogFormSchema>,
-) => {
-  if (!accessToken) return;
+  const handleCreateCatalogSubmit = async (
+    data: z.infer<typeof CreateCatalogFormSchema>,
+  ) => {
+    if (!accessToken) return;
 
-  try {
-    const formattedTags = Array.isArray(data.tags)
-      ? data.tags
-      : typeof data.tags === 'string'
-        ? data.tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '')
-        : [];
+    try {
+      const formattedTags = Array.isArray(data.tags)
+        ? data.tags
+        : typeof data.tags === 'string'
+          ? data.tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '')
+          : [];
 
-    await createCatalog.mutateAsync({
-      payload: {
-        name: data.name,
-        description: data.description,
-        tags: formattedTags,
+      await createCatalog.mutateAsync({
+        payload: {
+          name: data.name,
+          description: data.description,
+          tags: formattedTags,
+          ownerId: data.namespaceId,
+        },
         ownerId: data.namespaceId,
-      },
-      ownerId: data.namespaceId,
-      accessToken,
-    });
-    catalogState.refetch();
-    setIsCreateDialogOpen(false);
-  } catch (error) {
-    console.error("Error creating catalog:", error);
-  }
-};
+        accessToken,
+      });
+      catalogState.refetch();
+      setIsCreateDialogOpen(false);
+    } catch (error) {
+      console.error("Error creating catalog:", error);
+    }
+  };
 
 
-const handleUpdateCatalog = async (
-  data: EditCatalogDialogData,
-  catalogId: string,
-) => {
-  if (!selectedNamespace || !accessToken) return;
-  try {
-    await updateCatalog.mutateAsync({
-      ownerId: selectedNamespace,
-      catalogId: catalogId,
-      payload: {
-        name: data.name,
-        description: data.description,
-        tags: data.tags
-          ? data.tags
+  const handleUpdateCatalog = async (
+    data: EditCatalogDialogData,
+    catalogId: string,
+  ) => {
+    if (!selectedNamespace || !accessToken) return;
+    try {
+      await updateCatalog.mutateAsync({
+        ownerId: selectedNamespace,
+        catalogId: catalogId,
+        payload: {
+          name: data.name,
+          description: data.description,
+          tags: data.tags
+            ? data.tags
               .split(",")
               .map((tag) => tag.trim())
               .filter((tag) => tag !== "")
-          : undefined,
-      },
-      accessToken,
-    });
-    catalogState.refetch();
-  } catch (error) {
-    console.error("Error updating catalog:", error);
-  }
-};
+            : undefined,
+        },
+        accessToken,
+      });
+      catalogState.refetch();
+    } catch (error) {
+      console.error("Error updating catalog:", error);
+    }
+  };
 
   const handleCloneCatalog = async (catalog: Catalog) => {
     if (!selectedNamespace || !accessToken) return;
@@ -150,7 +150,6 @@ const handleUpdateCatalog = async (
         payload: {
           ...clonedCatalog,
           ownerId: selectedNamespace,
-          tags: clonedCatalog.tags,
         },
         ownerId: selectedNamespace,
         accessToken,

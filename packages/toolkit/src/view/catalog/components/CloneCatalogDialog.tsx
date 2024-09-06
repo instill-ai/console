@@ -132,7 +132,7 @@ export const CloneCatalogDialog = ({
         name: formattedData.name,
         namespaceId: formattedData.namespaceId,
         description: formattedData.description,
-        tags: formattedData.tags?.join(", ") || undefined,
+        tags: formattedData.tags ? formattedData.tags.join(", ") : undefined,
       });
 
       // Update the navigation namespace anchor if a different namespace was selected
