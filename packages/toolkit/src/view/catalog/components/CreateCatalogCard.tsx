@@ -1,10 +1,8 @@
-"use client";
-
+'use client'
 import * as React from "react";
-
 import { Button, Separator, Tag, Tooltip } from "@instill-ai/design-system";
 
-import { CatalogCardMenu, EditCatalogDialog, EditCatalogDialogData } from ".";
+import { CatalogCardMenu, EditCatalogDialog, EditCatalogDialogData, CloneCatalogDialog } from ".";
 import { GeneralDeleteResourceDialog } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import {
@@ -19,7 +17,7 @@ type CreateCatalogCardProps = {
   onCardClick: () => void;
   onUpdateCatalog: (
     data: EditCatalogDialogData,
-    catalogId: string,
+    catalogId: string
   ) => Promise<void>;
   onCloneCatalog: (catalog: Catalog) => Promise<void>;
   onDeleteCatalog: (catalog: Catalog) => Promise<void>;
@@ -42,13 +40,14 @@ export const CreateCatalogCard = ({
 }: CreateCatalogCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
+  const [cloneDialogIsOpen, setCloneDialogIsOpen] = React.useState(false);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isHovered, setIsHovered] = React.useState(false);
   const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
   const cardRef = React.useRef<HTMLDivElement>(null);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector),
+    useShallow(selector)
   );
 
   const existingFiles = useListCatalogFiles({
@@ -95,9 +94,9 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
     setEditDialogIsOpen(true);
   };
 
-  const handleDuplicate = (e: React.MouseEvent) => {
+  const handleClone = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onCloneCatalog({...catalog, tags: catalog.tags || []});
+    setCloneDialogIsOpen(true);
   };
 
   const handleEditCatalogSubmit = async (data: EditCatalogDialogData) => {
@@ -142,7 +141,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
                 {catalog.tags && catalog.tags.length > 0 ? (
                   <>
                     {catalog.tags.slice(0, MAX_VISIBLE_TAGS).map((tag, index) => (
-                      <Tag key={index} variant="lightBlue">
+                      <Tag key={index} variant="lightNeutral">
                         {tag}
                       </Tag>
                     ))}
@@ -173,7 +172,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
                 <CatalogCardMenu
                   onDelete={handleDelete}
                   onEdit={handleEdit}
-                  onDuplicate={handleDuplicate}
+                  onClone={handleClone}
                   disabled={disabled}
                   isOpen={isMenuOpen}
                   setIsOpen={setIsMenuOpen}
@@ -215,6 +214,24 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
         onSubmit={handleEditCatalogSubmit}
         initialValues={{
           name: catalog.name,
+          description: catalog.description,
+          tags: catalog.tags || [],
+        }}
+      />
+      <CloneCatalogDialog
+        isOpen={cloneDialogIsOpen}
+        onClose={() => setCloneDialogIsOpen(false)}
+        onSubmit={async (clonedCatalog) => {
+          await onCloneCatalog({
+            ...catalog,
+            name: clonedCatalog.name,
+            description: clonedCatalog.description ?? "",
+            tags: clonedCatalog.tags ?? [],
+          });
+          setCloneDialogIsOpen(false);
+        }}
+        initialValues={{
+          name: `${catalog.name}-clone`,
           description: catalog.description,
           tags: catalog.tags || [],
         }}

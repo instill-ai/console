@@ -112,7 +112,7 @@ export const EditCatalogDialog = ({
               render={({ field }) => (
                 <Form.Item>
                   <Form.Label className="text-semantic-fg-primary product-button-button-2">
-                    Name
+                    Catalog Name
                   </Form.Label>
                   <Form.Control>
                     <Input.Root>
@@ -157,7 +157,7 @@ export const EditCatalogDialog = ({
                 </Form.Item>
               )}
             />
-             <Form.Field
+            <Form.Field
               control={form.control}
               name="tags"
               render={({ field }) => {
@@ -184,7 +184,7 @@ export const EditCatalogDialog = ({
                   </Form.Item>
                 );
               }}
-            /> 
+            />
             <div className="mt-8 flex justify-end gap-x-3">
               <Button variant="secondaryGrey" onClick={onClose}>
                 Cancel
