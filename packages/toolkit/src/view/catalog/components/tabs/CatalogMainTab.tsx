@@ -20,8 +20,12 @@ import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { CatalogCard } from "../CatalogCard";
 import CatalogSearchSort, { SortAnchor, SortOrder } from "../CatalogSearchSort";
 import { CreateCatalogCard } from "../CreateCatalogCard";
-import { CreateCatalogDialog } from "../CreateCatalogDialog";
+import {
+  CreateCatalogDialog,
+  CreateCatalogFormSchema,
+} from "../CreateCatalogDialog";
 import { EditCatalogDialogData } from "../EditCatalogDialog";
+import { convertTagsToArray } from "../lib/helpers";
 import { UpgradePlanLink } from "../notifications";
 
 type CatalogTabProps = {
@@ -34,13 +38,6 @@ type CatalogTabProps = {
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
   isLocalEnvironment: boolean;
 };
-
-const CreateCatalogFormSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
-  description: z.string().optional(),
-  tags: z.string(z.string()).optional(),
-  namespaceId: z.string().min(1, { message: "Namespace is required" }),
-});
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -96,7 +93,7 @@ export const CatalogTab = ({
         payload: {
           name: data.name,
           description: data.description,
-          // tags: data.tags ?? "",
+          tags: convertTagsToArray(data.tags),
           ownerId: data.namespaceId,
         },
         ownerId: data.namespaceId,
@@ -114,7 +111,6 @@ export const CatalogTab = ({
     catalogId: string,
   ) => {
     if (!selectedNamespace || !accessToken) return;
-
     try {
       await updateCatalog.mutateAsync({
         ownerId: selectedNamespace,
@@ -122,7 +118,7 @@ export const CatalogTab = ({
         payload: {
           name: data.name,
           description: data.description,
-          // tags: data.tags || "",
+          tags: convertTagsToArray(data.tags),
         },
         accessToken,
       });
@@ -137,8 +133,8 @@ export const CatalogTab = ({
 
     const clonedCatalog = {
       name: `${catalog.name}-clone`,
-      description: catalog.description,
-      tags: catalog.tags || "",
+      description: catalog.description ?? "",
+      tags: catalog.tags ?? [],
     };
 
     try {
@@ -146,7 +142,6 @@ export const CatalogTab = ({
         payload: {
           ...clonedCatalog,
           ownerId: selectedNamespace,
-          tags: clonedCatalog.tags.join(", "),
         },
         ownerId: selectedNamespace,
         accessToken,

@@ -2,9 +2,14 @@
 
 import * as React from "react";
 
-import { Separator, Tooltip } from "@instill-ai/design-system";
+import { Button, Separator, Tag, Tooltip } from "@instill-ai/design-system";
 
-import { CatalogCardMenu, EditCatalogDialog, EditCatalogDialogData } from ".";
+import {
+  CatalogCardMenu,
+  CloneCatalogDialog,
+  EditCatalogDialog,
+  EditCatalogDialogData,
+} from ".";
 import { GeneralDeleteResourceDialog } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import {
@@ -12,6 +17,7 @@ import {
   useListCatalogFiles,
 } from "../../../lib/react-query-service/catalog";
 import { Catalog } from "../../../lib/react-query-service/catalog/types";
+import { convertTagsToArray } from "./lib/helpers";
 
 type CreateCatalogCardProps = {
   catalog: Catalog;
@@ -41,6 +47,7 @@ export const CreateCatalogCard = ({
 }: CreateCatalogCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
+  const [cloneDialogIsOpen, setCloneDialogIsOpen] = React.useState(false);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isHovered, setIsHovered] = React.useState(false);
   const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
@@ -94,9 +101,9 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
     setEditDialogIsOpen(true);
   };
 
-  const handleDuplicate = (e: React.MouseEvent) => {
+  const handleClone = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onCloneCatalog(catalog);
+    setCloneDialogIsOpen(true);
   };
 
   const handleEditCatalogSubmit = async (data: EditCatalogDialogData) => {
@@ -112,11 +119,10 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
     });
   };
 
-  // Coming in v2
-  // const handleTagsClick = (e: React.MouseEvent) => {
-  //   e.stopPropagation();
-  //   setEditDialogIsOpen(true);
-  // };
+  const handleTagsClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setEditDialogIsOpen(true);
+  };
 
   return (
     <React.Fragment>
@@ -135,38 +141,34 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
                 <div className="product-headings-heading-4">{catalog.name}</div>
               </div>
               <Separator orientation="horizontal" className="my-[10px]" />
-              <p className="mb-auto line-clamp-3 product-body-text-3-regular whitespace-pre-wrap break-words">
-                {catalog.description}
-              </p>
-              {/* Coming in v2 */}
-              {/* <div className="flex flex-wrap gap-1 mt-auto">
-                {catalog.tags && catalog.tags.length > 0 ? (
-                  <>
-                    {catalog.tags.slice(0, MAX_VISIBLE_TAGS).map((tag, index) => (
-                      <Tag key={index} variant="lightBlue">
+              <div className="flex-grow">
+                <p className="product-body-text-3-regular line-clamp-2 break-words">
+                  {catalog.description}
+                </p>
+              </div>
+              <div className="mt-auto overflow-x-auto">
+                <div className="flex gap-1 pb-2">
+                  {catalog.tags ? (
+                    catalog.tags.map((tag, index) => (
+                      <Tag
+                        key={index}
+                        variant="lightNeutral"
+                        className="shrink-0 !py-0.5 !px-2"
+                      >
                         {tag}
                       </Tag>
-                    ))}
-                    {catalog.tags.length > MAX_VISIBLE_TAGS && (
-                      <Button
-                        variant="tertiaryGrey"
-                        size="sm"
-                        onClick={handleTagsClick}
-                      >
-                        +{catalog.tags.length - MAX_VISIBLE_TAGS}
-                      </Button>
-                    )}
-                  </>
-                ) : (
-                  <Button
-                    variant="tertiaryGrey"
-                    size="sm"
-                    onClick={handleTagsClick}
-                  >
-                    + Tags
-                  </Button>
-                )}
-              </div> */}
+                    ))
+                  ) : (
+                    <Button
+                      variant="tertiaryGrey"
+                      size="sm"
+                      onClick={handleTagsClick}
+                    >
+                      + Tags
+                    </Button>
+                  )}
+                </div>
+              </div>
               <div
                 className="flex items-end justify-end"
                 onClick={(e) => e.stopPropagation()}
@@ -174,7 +176,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
                 <CatalogCardMenu
                   onDelete={handleDelete}
                   onEdit={handleEdit}
-                  onDuplicate={handleDuplicate}
+                  onClone={handleClone}
                   disabled={disabled}
                   isOpen={isMenuOpen}
                   setIsOpen={setIsMenuOpen}
@@ -217,7 +219,25 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
         initialValues={{
           name: catalog.name,
           description: catalog.description,
-          // tags: catalog.tags ? catalog.tags : [],
+          tags: catalog.tags || [],
+        }}
+      />
+      <CloneCatalogDialog
+        isOpen={cloneDialogIsOpen}
+        onClose={() => setCloneDialogIsOpen(false)}
+        onSubmit={async (clonedCatalog) => {
+          await onCloneCatalog({
+            ...catalog,
+            name: clonedCatalog.name,
+            description: clonedCatalog.description ?? "",
+            tags: convertTagsToArray(clonedCatalog.tags),
+          });
+          setCloneDialogIsOpen(false);
+        }}
+        initialValues={{
+          name: catalog.name,
+          description: catalog.description,
+          tags: catalog.tags ? [catalog.tags.join(", ")] : [],
         }}
       />
     </React.Fragment>

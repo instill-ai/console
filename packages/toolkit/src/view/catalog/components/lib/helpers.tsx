@@ -219,3 +219,42 @@ export const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   return date.toLocaleString();
 };
+
+export const convertTagsToArray = (
+  tags: string | string[] | undefined,
+): string[] => {
+  if (Array.isArray(tags)) {
+    return tags.map((tag) => tag.trim()).filter((tag) => tag !== "");
+  }
+  if (typeof tags === "string") {
+    return tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag !== "");
+  }
+  return [];
+};
+
+export const formatName = (name: string) => {
+  // First, lowercase the name and replace invalid characters with hyphens
+  let formatted = name.toLowerCase().replace(/[^a-z0-9-]/g, "-");
+
+  // Remove leading hyphens
+  formatted = formatted.replace(/^-+/, "");
+
+  // Ensure it starts with a letter
+  if (!/^[a-z]/.test(formatted)) {
+    formatted = "c" + formatted;
+  }
+
+  // Remove consecutive hyphens
+  formatted = formatted.replace(/-+/g, "-");
+
+  // Truncate to 32 characters
+  formatted = formatted.slice(0, 32);
+
+  // Remove trailing hyphens
+  formatted = formatted.replace(/-+$/, "");
+
+  return formatted;
+};

@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 
 import {
@@ -12,7 +10,7 @@ import {
 type CatalogCardMenuProps = {
   onDelete: (e: React.MouseEvent) => void;
   onEdit: (e: React.MouseEvent) => void;
-  onDuplicate: (e: React.MouseEvent) => void;
+  onClone: (e: React.MouseEvent) => void;
   disabled: boolean;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -21,7 +19,7 @@ type CatalogCardMenuProps = {
 export const CatalogCardMenu = ({
   onDelete,
   onEdit,
-  onDuplicate,
+  onClone,
   disabled,
   isOpen,
   setIsOpen,
@@ -46,12 +44,12 @@ export const CatalogCardMenu = ({
             Edit info
           </DropdownMenu.Item>
           <DropdownMenu.Item
-            onClick={onDuplicate}
+            onClick={onClone}
             className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
             disabled={disabled}
           >
             <Icons.Copy07 className="mr-2 h-4 w-4 stroke-semantic-fg-secondary" />
-            Duplicate
+            Clone
           </DropdownMenu.Item>
           {/* Coming in V2 */}
           {/* <DropdownMenu.Item

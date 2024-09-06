@@ -18,11 +18,12 @@ import {
 import { EntitySelector, LoadingSpin } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
+import { convertTagsToArray, formatName } from "./lib/helpers";
 
-const CreateCatalogFormSchema = z.object({
+export const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().optional(),
-  // tags: z.string().optional(),
+  tags: z.string().optional(),
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
@@ -56,7 +57,7 @@ export const CreateCatalogDialog = ({
     defaultValues: {
       name: "",
       description: "",
-      // tags: "",
+      tags: "",
       namespaceId: navigationNamespaceAnchor || "",
     },
     mode: "onChange",
@@ -65,31 +66,6 @@ export const CreateCatalogDialog = ({
   const { formState, watch, setValue } = form;
   const nameValue = watch("name");
 
-  const formatName = (name: string) => {
-    // First, lowercase the name and replace invalid characters with hyphens
-    let formatted = name.toLowerCase().replace(/[^a-z0-9-]/g, "-");
-
-    // Remove leading hyphens
-    formatted = formatted.replace(/^-+/, "");
-
-    // Ensure it starts with a letter
-    if (!/^[a-z]/.test(formatted)) {
-      formatted = "c" + formatted;
-    }
-
-    // Remove consecutive hyphens
-    formatted = formatted.replace(/-+/g, "-");
-
-    // Truncate to 32 characters
-    formatted = formatted.slice(0, 32);
-
-    // Remove trailing hyphens
-    formatted = formatted.replace(/-+$/, "");
-
-    return formatted;
-  };
-
-  // const isNameValid = (name: string) => /^[a-z][-a-z0-9]{0,31}$/.test(name);
   const formattedName = formatName(nameValue);
 
   React.useEffect(() => {
@@ -97,7 +73,7 @@ export const CreateCatalogDialog = ({
       form.reset({
         name: "",
         description: "",
-        // tags: "",
+        tags: "",
         namespaceId: navigationNamespaceAnchor || "",
       });
     }
@@ -112,18 +88,10 @@ export const CreateCatalogDialog = ({
       const formattedData = {
         ...data,
         name: formatName(data.name),
-        // tags: data.tags
-        //   ? data.tags
-        //     .split(",")
-        //     .map((tag) => tag.trim())
-        //     .filter((tag) => tag !== "")
-        //   : [],
+        tags: convertTagsToArray(data.tags).join(", "),
       };
 
-      await onSubmit({
-        ...formattedData,
-        // tags: formattedData.tags.join(","),
-      });
+      await onSubmit(formattedData);
 
       // Update the navigation namespace anchor if a different namespace was selected
       if (data.namespaceId !== navigationNamespaceAnchor) {
@@ -243,14 +211,13 @@ export const CreateCatalogDialog = ({
                 </Form.Item>
               )}
             />
-            {/* Coming in v2 */}
-            {/* <Form.Field
+            <Form.Field
               control={form.control}
               name="tags"
               render={({ field }) => {
                 return (
                   <Form.Item className="flex flex-col gap-y-2.5">
-                    <Form.Label className="text-semantic-fg-primary product-button-button-2">
+                    <Form.Label className="product-body-text-3-semibold">
                       Tags
                     </Form.Label>
                     <Form.Control>
@@ -266,12 +233,12 @@ export const CreateCatalogDialog = ({
                     </Form.Control>
                     <Form.Message />
                     <p className="text-xs text-semantic-fg-secondary">
-                      {`Separate tags with a comma.`}
+                      Separate tags with a comma.
                     </p>
                   </Form.Item>
                 );
               }}
-            /> */}
+            />
             <div className="mt-8 flex justify-end gap-x-3">
               <Button variant="secondaryGrey" onClick={onClose}>
                 Cancel
