@@ -146,7 +146,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
                 <div className="product-headings-heading-4">{catalog.name}</div>
               </div>
               <Separator orientation="horizontal" className="my-[10px]" />
-              <ScrollArea.Root className="flex-grow overflow-hidden">
+              <ScrollArea.Root className="flex-grow overflow-hidden h-[50px]">
                 <p className="product-body-text-3-regular whitespace-pre-wrap break-words">
                   {catalog.description}
                 </p>
@@ -239,7 +239,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
           });
           setCloneDialogIsOpen(false);
         }}
-        initialValues={{  
+        initialValues={{
           name: catalog.name,
           description: catalog.description,
           tags: catalog.tags ? catalog.tags : [],
