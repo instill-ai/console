@@ -34,7 +34,6 @@ import { parseEventReadableStream } from "./parseEventReadableStream";
 const selector = (store: InstillStore) => ({
   isTriggeringPipeline: store.isTriggeringPipeline,
   updateIsTriggeringPipeline: store.updateIsTriggeringPipeline,
-  navigationNamespaceAnchor: store.navigationNamespaceAnchor,
   accessToken: store.accessToken,
   updateTriggerPipelineStreamMap: store.updateTriggerPipelineStreamMap,
   updateEditorMultiScreenModel: store.updateEditorMultiScreenModel,
@@ -51,7 +50,6 @@ export const Input = ({
   const {
     isTriggeringPipeline,
     updateIsTriggeringPipeline,
-    navigationNamespaceAnchor,
     accessToken,
     updateTriggerPipelineStreamMap,
     updateEditorMultiScreenModel,
@@ -145,17 +143,15 @@ export const Input = ({
         }
       }
 
-      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-      let stream: any = null;
-
       // We use the current route namespace as the requester namespace
       const tartgetNamespace = namespace.find(
         (ns) => ns.id === routeInfo.data.namespaceId,
       );
 
       try {
+        let response: Response;
         if (currentVersion !== "latest") {
-          stream = await triggerPipelineRelease.mutateAsync({
+          response = await triggerPipelineRelease.mutateAsync({
             namespacePipelineReleaseName: `${pipelineName}/releases/${currentVersion}`,
             accessToken,
             inputs: [parsedStructuredData],
@@ -163,7 +159,7 @@ export const Input = ({
             requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
           });
         } else {
-          stream = await triggerPipeline.mutateAsync({
+          response = await triggerPipeline.mutateAsync({
             namespacePipelineName: pipelineName,
             accessToken,
             inputs: [parsedStructuredData],
@@ -171,155 +167,185 @@ export const Input = ({
             requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
           });
         }
-      } catch (error) {
-        return;
-      }
 
-      if (!stream) {
-        return;
-      }
+        if (!response || !response.body) {
+          return;
+        }
 
-      try {
-        for await (const chunk of stream.body) {
-          if (chunk === null) {
-            continue;
-          }
+        // Read the stream
+        const reader = response.body.getReader();
+        const stream = new ReadableStream({
+          async start(controller) {
+            // We need this while loop to keep reading the stream
+            /* eslint-disable-next-line no-constant-condition */
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done || forceStopTriggerPipelineStream.current) {
+                break;
+              }
+              controller.enqueue(value);
+            }
+            controller.close();
+            reader.releaseLock();
+          },
+        });
 
-          if (forceStopTriggerPipelineStream.current) {
-            break;
-          }
+        const streamReader = stream.getReader();
 
-          const events = parseEventReadableStream(chunk);
+        // Parse the stream
+        try {
+          // We need this while loop to keep reading the stream
+          /* eslint-disable-next-line no-constant-condition */
+          while (true) {
+            const { done, value } = await streamReader.read();
+            if (done) {
+              break;
+            }
 
-          updateTriggerPipelineStreamMap((prev) => {
-            let newTriggerPipelineStreamMap = prev;
+            const events = parseEventReadableStream(value);
+
+            updateTriggerPipelineStreamMap((prev) => {
+              let newTriggerPipelineStreamMap = prev;
+              for (const event of events) {
+                console.log("event", event);
+                if (isPipelineStatusUpdatedEvent(event)) {
+                  newTriggerPipelineStreamMap = {
+                    pipeline: {
+                      ...newTriggerPipelineStreamMap?.pipeline,
+                      status: event.data.status,
+                    },
+                    component: newTriggerPipelineStreamMap?.component
+                      ? newTriggerPipelineStreamMap.component
+                      : {},
+                  };
+                }
+
+                if (isPipelineOutputUpdatedEvent(event)) {
+                  newTriggerPipelineStreamMap = {
+                    pipeline: {
+                      ...newTriggerPipelineStreamMap?.pipeline,
+                      output: event.data.output,
+                    },
+                    component: newTriggerPipelineStreamMap?.component
+                      ? newTriggerPipelineStreamMap.component
+                      : {},
+                  };
+                }
+
+                if (isComponentStatusUpdatedEvent(event)) {
+                  const targetComponent =
+                    newTriggerPipelineStreamMap?.component?.[
+                      event.data.componentID
+                    ];
+
+                  newTriggerPipelineStreamMap = {
+                    pipeline: newTriggerPipelineStreamMap?.pipeline,
+                    component: {
+                      ...newTriggerPipelineStreamMap?.component,
+                      [event.data.componentID]: {
+                        ...targetComponent,
+                        status: event.data.status,
+                      },
+                    },
+                  };
+                }
+
+                if (isComponentOutputUpdatedEvent(event)) {
+                  const targetComponent =
+                    newTriggerPipelineStreamMap?.component?.[
+                      event.data.componentID
+                    ];
+
+                  newTriggerPipelineStreamMap = {
+                    pipeline: newTriggerPipelineStreamMap?.pipeline,
+                    component: {
+                      ...newTriggerPipelineStreamMap?.component,
+                      [event.data.componentID]: {
+                        ...targetComponent,
+                        output: event.data.output,
+                        status: event.data.status,
+                      },
+                    },
+                  };
+                }
+
+                if (isComponentErrorUpdatedEvent(event)) {
+                  const targetComponent =
+                    newTriggerPipelineStreamMap?.component?.[
+                      event.data.componentID
+                    ];
+
+                  newTriggerPipelineStreamMap = {
+                    pipeline: newTriggerPipelineStreamMap?.pipeline,
+                    component: {
+                      ...newTriggerPipelineStreamMap?.component,
+                      [event.data.componentID]: {
+                        ...targetComponent,
+                        error: event.data.error,
+                        status: event.data.status,
+                      },
+                    },
+                  };
+                }
+
+                if (isComponentInputUpdatedEvent(event)) {
+                  const targetComponent =
+                    newTriggerPipelineStreamMap?.component?.[
+                      event.data.componentID
+                    ];
+
+                  newTriggerPipelineStreamMap = {
+                    pipeline: newTriggerPipelineStreamMap?.pipeline,
+                    component: {
+                      ...newTriggerPipelineStreamMap?.component,
+                      [event.data.componentID]: {
+                        ...targetComponent,
+                        input: event.data.input,
+                        status: event.data.status,
+                      },
+                    },
+                  };
+                }
+              }
+
+              return newTriggerPipelineStreamMap;
+            });
+
             for (const event of events) {
               if (isPipelineStatusUpdatedEvent(event)) {
-                newTriggerPipelineStreamMap = {
-                  pipeline: {
-                    ...newTriggerPipelineStreamMap?.pipeline,
-                    status: event.data.status,
-                  },
-                  component: newTriggerPipelineStreamMap?.component
-                    ? newTriggerPipelineStreamMap.component
-                    : {},
-                };
+                if (event.data.status.completed) {
+                  updateIsTriggeringPipeline(() => false);
+                }
               }
 
-              if (isPipelineOutputUpdatedEvent(event)) {
-                newTriggerPipelineStreamMap = {
-                  pipeline: {
-                    ...newTriggerPipelineStreamMap?.pipeline,
-                    output: event.data.output,
-                  },
-                  component: newTriggerPipelineStreamMap?.component
-                    ? newTriggerPipelineStreamMap.component
-                    : {},
-                };
-              }
-
-              if (isComponentStatusUpdatedEvent(event)) {
-                const targetComponent =
-                  newTriggerPipelineStreamMap?.component?.[
-                    event.data.componentID
-                  ];
-
-                newTriggerPipelineStreamMap = {
-                  pipeline: newTriggerPipelineStreamMap?.pipeline,
-                  component: {
-                    ...newTriggerPipelineStreamMap?.component,
-                    [event.data.componentID]: {
-                      ...targetComponent,
-                      status: event.data.status,
-                    },
-                  },
-                };
-              }
-
-              if (isComponentOutputUpdatedEvent(event)) {
-                const targetComponent =
-                  newTriggerPipelineStreamMap?.component?.[
-                    event.data.componentID
-                  ];
-
-                newTriggerPipelineStreamMap = {
-                  pipeline: newTriggerPipelineStreamMap?.pipeline,
-                  component: {
-                    ...newTriggerPipelineStreamMap?.component,
-                    [event.data.componentID]: {
-                      ...targetComponent,
-                      output: event.data.output,
-                      status: event.data.status,
-                    },
-                  },
-                };
-              }
-
-              if (isComponentErrorUpdatedEvent(event)) {
-                const targetComponent =
-                  newTriggerPipelineStreamMap?.component?.[
-                    event.data.componentID
-                  ];
-
-                newTriggerPipelineStreamMap = {
-                  pipeline: newTriggerPipelineStreamMap?.pipeline,
-                  component: {
-                    ...newTriggerPipelineStreamMap?.component,
-                    [event.data.componentID]: {
-                      ...targetComponent,
-                      error: event.data.error,
-                      status: event.data.status,
-                    },
-                  },
-                };
-              }
-
-              if (isComponentInputUpdatedEvent(event)) {
-                const targetComponent =
-                  newTriggerPipelineStreamMap?.component?.[
-                    event.data.componentID
-                  ];
-
-                newTriggerPipelineStreamMap = {
-                  pipeline: newTriggerPipelineStreamMap?.pipeline,
-                  component: {
-                    ...newTriggerPipelineStreamMap?.component,
-                    [event.data.componentID]: {
-                      ...targetComponent,
-                      input: event.data.input,
-                      status: event.data.status,
-                    },
-                  },
-                };
-              }
-            }
-
-            return newTriggerPipelineStreamMap;
-          });
-
-          for (const event of events) {
-            if (isPipelineStatusUpdatedEvent(event)) {
-              if (event.data.status.completed) {
-                updateIsTriggeringPipeline(() => false);
-              }
-            }
-
-            if (isPipelineErrorUpdatedEvent(event)) {
-              if (event.data.status.errored) {
-                updateIsTriggeringPipeline(() => false);
-                toast({
-                  title: "Something went wrong when trigger the pipeline",
-                  variant: "alert-error",
-                  size: "large",
-                  description: event.data.error?.message ?? undefined,
-                  duration: 15000,
-                });
+              if (isPipelineErrorUpdatedEvent(event)) {
+                if (event.data.status.errored) {
+                  updateIsTriggeringPipeline(() => false);
+                  toast({
+                    title: "Something went wrong when trigger the pipeline",
+                    variant: "alert-error",
+                    size: "large",
+                    description: event.data.error?.message ?? undefined,
+                    duration: 15000,
+                  });
+                }
               }
             }
           }
+        } finally {
+          streamReader.releaseLock();
         }
       } catch (error) {
         console.error(error);
+        toast({
+          title: "Something went wrong when trigger the pipeline",
+          variant: "alert-error",
+          size: "small",
+          duration: 15000,
+        });
+        return;
+      } finally {
+        updateIsTriggeringPipeline(() => false);
       }
     },
     [
@@ -331,13 +357,14 @@ export const Input = ({
       updateIsTriggeringPipeline,
       updateTriggerPipelineStreamMap,
       namespace,
-      navigationNamespaceAnchor,
       accessToken,
       forceStopTriggerPipelineStream,
       updateEditorMultiScreenModel,
       routeInfo.data,
       routeInfo.isSuccess,
       currentVersion,
+      toast,
+      triggerPipelineRelease,
     ],
   );
 
