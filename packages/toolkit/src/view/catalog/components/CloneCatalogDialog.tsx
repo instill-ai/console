@@ -19,6 +19,7 @@ import { EntitySelector, LoadingSpin } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
+import { convertTagsToArray, formatName } from "./lib/helpers";
 
 const CloneCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -28,7 +29,7 @@ const CloneCatalogFormSchema = z.object({
       message: `Description must be ${MAX_DESCRIPTION_LENGTH} characters or less`,
     })
     .optional(),
-  tags: z.array(z.string()).optional(),
+  tags: z.string().optional(),
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
@@ -67,7 +68,7 @@ export const CloneCatalogDialog = ({
     resolver: zodResolver(CloneCatalogFormSchema),
     defaultValues: {
       ...initialValues,
-      tags: initialValues.tags,
+      tags: initialValues.tags.join(", "),
       namespaceId: navigationNamespaceAnchor || "",
     },
     mode: "onChange",
@@ -77,30 +78,6 @@ export const CloneCatalogDialog = ({
   const nameValue = watch("name");
   const description = watch("description");
 
-  const formatName = (name: string) => {
-    // First, lowercase the name and replace invalid characters with hyphens
-    let formatted = name.toLowerCase().replace(/[^a-z0-9-]/g, "-");
-
-    // Remove leading hyphens
-    formatted = formatted.replace(/^-+/, "");
-
-    // Ensure it starts with a letter
-    if (!/^[a-z]/.test(formatted)) {
-      formatted = "c" + formatted;
-    }
-
-    // Remove consecutive hyphens
-    formatted = formatted.replace(/-+/g, "-");
-
-    // Truncate to 32 characters
-    formatted = formatted.slice(0, 32);
-
-    // Remove trailing hyphens
-    formatted = formatted.replace(/-+$/, "");
-
-    return formatted;
-  };
-
   // const isNameValid = (name: string) => /^[a-z][-a-z0-9]{0,31}$/.test(name);
   const formattedName = formatName(nameValue);
 
@@ -108,7 +85,7 @@ export const CloneCatalogDialog = ({
     if (isOpen) {
       reset({
         ...initialValues,
-        tags: initialValues.tags,
+        tags: initialValues.tags.join(", "),
         namespaceId: navigationNamespaceAnchor || "",
       });
     }
@@ -120,13 +97,14 @@ export const CloneCatalogDialog = ({
       const formattedData = {
         ...data,
         name: formatName(data.name),
+        tags: convertTagsToArray(data.tags),
       };
 
       await onSubmit({
         name: formattedData.name,
         namespaceId: formattedData.namespaceId,
         description: formattedData.description,
-        tags: formattedData.tags ? formattedData.tags : undefined,
+        tags: formattedData.tags.join(","),
       });
 
       // Update the navigation namespace anchor if a different namespace was selected
@@ -267,19 +245,8 @@ export const CloneCatalogDialog = ({
                           {...field}
                           className="!product-body-text-2-regular"
                           type="text"
-                          placeholder="Add tags"
+                          placeholder="Add a tag"
                           required={false}
-                          value={
-                            typeof field.value === "string"
-                              ? field.value
-                              : (field.value as string[] | undefined)?.join(
-                                ", ",
-                              ) || ""
-                          }
-                          onChange={(e) => {
-                            const inputValue = e.target.value;
-                            field.onChange(inputValue);
-                          }}
                         />
                       </Input.Root>
                     </Form.Control>

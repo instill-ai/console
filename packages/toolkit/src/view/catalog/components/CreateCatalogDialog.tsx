@@ -18,11 +18,12 @@ import {
 import { EntitySelector, LoadingSpin } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
+import { convertTagsToArray, formatName } from "./lib/helpers";
 
 export const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().optional(),
-  tags: z.array(z.string()).optional(),
+  tags: z.string().optional(),
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
@@ -56,7 +57,7 @@ export const CreateCatalogDialog = ({
     defaultValues: {
       name: "",
       description: "",
-      tags: [],
+      tags: "",
       namespaceId: navigationNamespaceAnchor || "",
     },
     mode: "onChange",
@@ -65,31 +66,6 @@ export const CreateCatalogDialog = ({
   const { formState, watch, setValue } = form;
   const nameValue = watch("name");
 
-  const formatName = (name: string) => {
-    // First, lowercase the name and replace invalid characters with hyphens
-    let formatted = name.toLowerCase().replace(/[^a-z0-9-]/g, "-");
-
-    // Remove leading hyphens
-    formatted = formatted.replace(/^-+/, "");
-
-    // Ensure it starts with a letter
-    if (!/^[a-z]/.test(formatted)) {
-      formatted = "c" + formatted;
-    }
-
-    // Remove consecutive hyphens
-    formatted = formatted.replace(/-+/g, "-");
-
-    // Truncate to 32 characters
-    formatted = formatted.slice(0, 32);
-
-    // Remove trailing hyphens
-    formatted = formatted.replace(/-+$/, "");
-
-    return formatted;
-  };
-
-  // const isNameValid = (name: string) => /^[a-z][-a-z0-9]{0,31}$/.test(name);
   const formattedName = formatName(nameValue);
 
   React.useEffect(() => {
@@ -97,7 +73,7 @@ export const CreateCatalogDialog = ({
       form.reset({
         name: "",
         description: "",
-        tags: [],
+        tags: "",
         namespaceId: navigationNamespaceAnchor || "",
       });
     }
@@ -112,6 +88,7 @@ export const CreateCatalogDialog = ({
       const formattedData = {
         ...data,
         name: formatName(data.name),
+        tags: convertTagsToArray(data.tags).join(", "),
       };
 
       await onSubmit(formattedData);
@@ -249,17 +226,8 @@ export const CreateCatalogDialog = ({
                           {...field}
                           className="!product-body-text-2-regular"
                           type="text"
-                          placeholder="Add tags"
+                          placeholder="Add a tag"
                           required={false}
-                          value={
-                            typeof field.value === "string"
-                              ? field.value
-                              : field.value?.join(", ") || ""
-                          }
-                          onChange={(e) => {
-                            const inputValue = e.target.value;
-                            field.onChange(inputValue);
-                          }}
                         />
                       </Input.Root>
                     </Form.Control>

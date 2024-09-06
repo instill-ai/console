@@ -26,6 +26,7 @@ import {
 } from "../CreateCatalogDialog";
 import { EditCatalogDialogData } from "../EditCatalogDialog";
 import { UpgradePlanLink } from "../notifications";
+import { convertTagsToArray } from "../lib/helpers";
 
 type CatalogTabProps = {
   onCatalogSelect: (catalog: Catalog) => void;
@@ -92,7 +93,7 @@ export const CatalogTab = ({
         payload: {
           name: data.name,
           description: data.description,
-          tags: data.tags,
+          tags: convertTagsToArray(data.tags),
           ownerId: data.namespaceId,
         },
         ownerId: data.namespaceId,
@@ -117,7 +118,7 @@ export const CatalogTab = ({
         payload: {
           name: data.name,
           description: data.description,
-          tags: data.tags,
+          tags: convertTagsToArray(data.tags),
         },
         accessToken,
       });

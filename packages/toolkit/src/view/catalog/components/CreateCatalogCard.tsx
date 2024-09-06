@@ -23,6 +23,7 @@ import {
   useListCatalogFiles,
 } from "../../../lib/react-query-service/catalog";
 import { Catalog } from "../../../lib/react-query-service/catalog/types";
+import { convertTagsToArray } from "./lib/helpers";
 
 type CreateCatalogCardProps = {
   catalog: Catalog;
@@ -153,7 +154,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
               </ScrollArea.Root>
               <div className="mt-auto overflow-x-auto">
                 <div className="flex gap-1 pb-2">
-                  {catalog.tags && catalog.tags.length > 0 ? (
+                  {catalog.tags ? (
                     catalog.tags.map((tag, index) => (
                       <Tag
                         key={index}
@@ -235,14 +236,14 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
             ...catalog,
             name: clonedCatalog.name,
             description: clonedCatalog.description ?? "",
-            tags: clonedCatalog.tags ?? [],
+            tags: convertTagsToArray(clonedCatalog.tags),
           });
           setCloneDialogIsOpen(false);
         }}
         initialValues={{
           name: catalog.name,
           description: catalog.description,
-          tags: catalog.tags ? catalog.tags : [],
+          tags: catalog.tags ? [catalog.tags.join(', ')] : [],
         }}
       />
     </React.Fragment>

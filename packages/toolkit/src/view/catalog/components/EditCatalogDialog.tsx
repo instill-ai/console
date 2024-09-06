@@ -15,6 +15,7 @@ import {
 
 import { LoadingSpin } from "../../../components";
 import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
+import { convertTagsToArray } from "./lib/helpers";
 
 const EditCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -24,7 +25,7 @@ const EditCatalogFormSchema = z.object({
       message: `Description must be ${MAX_DESCRIPTION_LENGTH} characters or less`,
     })
     .optional(),
-  tags: z.array(z.string()).optional(),
+  tags: z.string().optional(),
 });
 
 export type EditCatalogDialogData = z.infer<typeof EditCatalogFormSchema>;
@@ -52,7 +53,7 @@ export const EditCatalogDialog = ({
     resolver: zodResolver(EditCatalogFormSchema),
     defaultValues: {
       ...initialValues,
-      tags: initialValues.tags,
+      tags: initialValues.tags.join(", "),
     },
     mode: "onChange",
   });
@@ -64,7 +65,7 @@ export const EditCatalogDialog = ({
     if (isOpen) {
       reset({
         ...initialValues,
-        tags: initialValues.tags,
+        tags: initialValues.tags.join(", "),
       });
     }
   }, [isOpen, initialValues, reset]);
@@ -74,7 +75,7 @@ export const EditCatalogDialog = ({
     try {
       const formattedData = {
         ...data,
-        tags: data.tags || [],
+        tags: convertTagsToArray(data.tags).join(", "),
       };
 
       await onSubmit(formattedData);
