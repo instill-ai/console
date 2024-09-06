@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { Button, Separator, Tag, Tooltip } from "@instill-ai/design-system";
+import { Button, ScrollArea, Separator, Tag, Tooltip } from "@instill-ai/design-system";
 
 import {
   CatalogCardMenu,
@@ -17,7 +17,6 @@ import {
   useListCatalogFiles,
 } from "../../../lib/react-query-service/catalog";
 import { Catalog } from "../../../lib/react-query-service/catalog/types";
-import { MAX_VISIBLE_TAGS } from "./lib/constant";
 
 type CreateCatalogCardProps = {
   catalog: Catalog;
@@ -141,38 +140,29 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
                 <div className="product-headings-heading-4">{catalog.name}</div>
               </div>
               <Separator orientation="horizontal" className="my-[10px]" />
-              <p className="mb-auto line-clamp-3 product-body-text-3-regular whitespace-pre-wrap break-words">
-                {catalog.description}
-              </p>
-              <div className="flex flex-wrap gap-1 mt-auto">
-                {catalog.tags && catalog.tags.length > 0 ? (
-                  <>
-                    {catalog.tags
-                      .slice(0, MAX_VISIBLE_TAGS)
-                      .map((tag, index) => (
-                        <Tag key={index} variant="lightNeutral">
-                          {tag}
-                        </Tag>
-                      ))}
-                    {catalog.tags.length > MAX_VISIBLE_TAGS && (
-                      <Button
-                        variant="tertiaryGrey"
-                        size="sm"
-                        onClick={handleTagsClick}
-                      >
-                        +{catalog.tags.length - MAX_VISIBLE_TAGS}
-                      </Button>
-                    )}
-                  </>
-                ) : (
-                  <Button
-                    variant="tertiaryGrey"
-                    size="sm"
-                    onClick={handleTagsClick}
-                  >
-                    + Tags
-                  </Button>
-                )}
+              <ScrollArea.Root className="flex-grow overflow-hidden">
+                <p className="product-body-text-3-regular whitespace-pre-wrap break-words">
+                  {catalog.description}
+                </p>
+              </ScrollArea.Root>
+              <div className="mt-auto overflow-x-auto">
+                <div className="flex gap-1 pb-2">
+                  {catalog.tags && catalog.tags.length > 0 ? (
+                    catalog.tags.map((tag, index) => (
+                      <Tag key={index} variant="lightNeutral" className="shrink-0 !py-0.5 !px-2">
+                        {tag}
+                      </Tag>
+                    ))
+                  ) : (
+                    <Button
+                      variant="tertiaryGrey"
+                      size="sm"
+                      onClick={handleTagsClick}
+                    >
+                      + Tags
+                    </Button>
+                  )}
+                </div>
               </div>
               <div
                 className="flex items-end justify-end"
@@ -237,9 +227,9 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
             description: clonedCatalog.description ?? "",
             tags: clonedCatalog.tags
               ? clonedCatalog.tags
-                  .split(",")
-                  .map((tag) => tag.trim())
-                  .filter((tag) => tag !== "")
+                .split(",")
+                .map((tag) => tag.trim())
+                .filter((tag) => tag !== "")
               : [],
           });
           setCloneDialogIsOpen(false);

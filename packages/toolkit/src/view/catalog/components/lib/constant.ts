@@ -11,7 +11,6 @@ export const STORAGE_LIMIT_PRO = 500 * 1024 * 1024; // 500MB
 export const STORAGE_LIMIT_TEAM = 2 * 1024 * 1024 * 1024; // 2GB
 export const MAX_DESCRIPTION_LENGTH = 150;
 export const STORAGE_WARNING_THRESHOLD = 5; // 5%
-export const MAX_VISIBLE_TAGS = 5;
 
 export const AskQuestionTabInputSchema = `{
   "type": "object",
