@@ -24,7 +24,7 @@ const EditCatalogFormSchema = z.object({
       message: `Description must be ${MAX_DESCRIPTION_LENGTH} characters or less`,
     })
     .optional(),
-  tags: z.string().optional(),
+  tags: z.array(z.string()).optional(),
 });
 
 export type EditCatalogDialogData = z.infer<typeof EditCatalogFormSchema>;
@@ -52,7 +52,7 @@ export const EditCatalogDialog = ({
     resolver: zodResolver(EditCatalogFormSchema),
     defaultValues: {
       ...initialValues,
-      tags: initialValues.tags.join(", "),
+      tags: initialValues.tags,
     },
     mode: "onChange",
   });
@@ -64,7 +64,7 @@ export const EditCatalogDialog = ({
     if (isOpen) {
       reset({
         ...initialValues,
-        tags: initialValues.tags.join(", "),
+        tags: initialValues.tags,
       });
     }
   }, [isOpen, initialValues, reset]);
@@ -74,12 +74,9 @@ export const EditCatalogDialog = ({
     try {
       const formattedData = {
         ...data,
-        tags: data.tags
-          ? Array.isArray(data.tags)
-            ? data.tags.join(", ")
-            : data.tags
-          : undefined,
+        tags: data.tags || [],
       };
+
       await onSubmit(formattedData);
       setIsSubmitting(false);
       onClose();

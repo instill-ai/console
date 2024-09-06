@@ -88,20 +88,11 @@ export const CatalogTab = ({
     if (!accessToken) return;
 
     try {
-      const formattedTags = Array.isArray(data.tags)
-        ? data.tags
-        : typeof data.tags === "string"
-          ? data.tags
-              .split(",")
-              .map((tag) => tag.trim())
-              .filter((tag) => tag !== "")
-          : [];
-
       await createCatalog.mutateAsync({
         payload: {
           name: data.name,
           description: data.description,
-          tags: formattedTags,
+          tags: data.tags,
           ownerId: data.namespaceId,
         },
         ownerId: data.namespaceId,
@@ -126,12 +117,7 @@ export const CatalogTab = ({
         payload: {
           name: data.name,
           description: data.description,
-          tags: data.tags
-            ? data.tags
-                .split(",")
-                .map((tag) => tag.trim())
-                .filter((tag) => tag !== "")
-            : undefined,
+          tags: data.tags,
         },
         accessToken,
       });

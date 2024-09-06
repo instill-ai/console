@@ -28,7 +28,7 @@ const CloneCatalogFormSchema = z.object({
       message: `Description must be ${MAX_DESCRIPTION_LENGTH} characters or less`,
     })
     .optional(),
-  tags: z.string().optional(),
+  tags: z.array(z.string()).optional(),
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
@@ -67,7 +67,7 @@ export const CloneCatalogDialog = ({
     resolver: zodResolver(CloneCatalogFormSchema),
     defaultValues: {
       ...initialValues,
-      tags: initialValues.tags.join(", ") || ([] as unknown as string),
+      tags: initialValues.tags,
       namespaceId: navigationNamespaceAnchor || "",
     },
     mode: "onChange",
@@ -108,7 +108,7 @@ export const CloneCatalogDialog = ({
     if (isOpen) {
       reset({
         ...initialValues,
-        tags: initialValues.tags.join(", "),
+        tags: initialValues.tags,
         namespaceId: navigationNamespaceAnchor || "",
       });
     }
@@ -120,19 +120,13 @@ export const CloneCatalogDialog = ({
       const formattedData = {
         ...data,
         name: formatName(data.name),
-        tags: data.tags
-          ? data.tags
-              .split(",")
-              .map((tag) => tag.trim())
-              .filter((tag) => tag !== "")
-          : undefined,
       };
 
       await onSubmit({
         name: formattedData.name,
         namespaceId: formattedData.namespaceId,
         description: formattedData.description,
-        tags: formattedData.tags ? formattedData.tags.join(", ") : undefined,
+        tags: formattedData.tags ? formattedData.tags : undefined,
       });
 
       // Update the navigation namespace anchor if a different namespace was selected
@@ -279,8 +273,8 @@ export const CloneCatalogDialog = ({
                             typeof field.value === "string"
                               ? field.value
                               : (field.value as string[] | undefined)?.join(
-                                  ", ",
-                                ) || ""
+                                ", ",
+                              ) || ""
                           }
                           onChange={(e) => {
                             const inputValue = e.target.value;

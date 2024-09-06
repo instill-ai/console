@@ -235,16 +235,11 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
             ...catalog,
             name: clonedCatalog.name,
             description: clonedCatalog.description ?? "",
-            tags: clonedCatalog.tags
-              ? clonedCatalog.tags
-                  .split(",")
-                  .map((tag) => tag.trim())
-                  .filter((tag) => tag !== "")
-              : [],
+            tags: clonedCatalog.tags ?? [],
           });
           setCloneDialogIsOpen(false);
         }}
-        initialValues={{
+        initialValues={{  
           name: catalog.name,
           description: catalog.description,
           tags: catalog.tags ? catalog.tags : [],

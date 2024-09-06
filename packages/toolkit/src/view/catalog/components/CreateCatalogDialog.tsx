@@ -22,7 +22,7 @@ import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 export const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().optional(),
-  tags: z.union([z.array(z.string()), z.string()]).optional(),
+  tags: z.array(z.string()).optional(),
   namespaceId: z.string().min(1, { message: "Namespace is required" }),
 });
 
@@ -112,15 +112,6 @@ export const CreateCatalogDialog = ({
       const formattedData = {
         ...data,
         name: formatName(data.name),
-        tags: Array.isArray(data.tags)
-          ? data.tags
-          : typeof data.tags === "string"
-            ? data.tags
-                .trim()
-                .split(",")
-                .map((item: string) => item.trim())
-                .filter((item: string) => item !== "")
-            : [],
       };
 
       await onSubmit(formattedData);
