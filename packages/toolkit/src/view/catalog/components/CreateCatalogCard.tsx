@@ -2,7 +2,13 @@
 
 import * as React from "react";
 
-import { Button, ScrollArea, Separator, Tag, Tooltip } from "@instill-ai/design-system";
+import {
+  Button,
+  ScrollArea,
+  Separator,
+  Tag,
+  Tooltip,
+} from "@instill-ai/design-system";
 
 import {
   CatalogCardMenu,
@@ -149,7 +155,11 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
                 <div className="flex gap-1 pb-2">
                   {catalog.tags && catalog.tags.length > 0 ? (
                     catalog.tags.map((tag, index) => (
-                      <Tag key={index} variant="lightNeutral" className="shrink-0 !py-0.5 !px-2">
+                      <Tag
+                        key={index}
+                        variant="lightNeutral"
+                        className="shrink-0 !py-0.5 !px-2"
+                      >
                         {tag}
                       </Tag>
                     ))
@@ -227,9 +237,9 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
             description: clonedCatalog.description ?? "",
             tags: clonedCatalog.tags
               ? clonedCatalog.tags
-                .split(",")
-                .map((tag) => tag.trim())
-                .filter((tag) => tag !== "")
+                  .split(",")
+                  .map((tag) => tag.trim())
+                  .filter((tag) => tag !== "")
               : [],
           });
           setCloneDialogIsOpen(false);
