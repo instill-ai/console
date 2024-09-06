@@ -223,7 +223,9 @@ export const formatDate = (dateString: string): string => {
 export const convertTagsToArray = (
   tags: string | string[] | undefined,
 ): string[] => {
-  if (Array.isArray(tags)) return tags;
+  if (Array.isArray(tags)) {
+    return tags.map((tag) => tag.trim()).filter((tag) => tag !== "");
+  }
   if (typeof tags === "string") {
     return tags
       .split(",")
