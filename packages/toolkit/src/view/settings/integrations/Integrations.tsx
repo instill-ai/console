@@ -168,8 +168,6 @@ export const Integrations = (props: IntegrationsProps) => {
               key={item.integration.id}
               integration={item.integration}
               connections={item.connections}
-              accessToken={accessToken}
-              enableQuery={enableQuery}
               namespaceId={namespaceId}
             />
           ))
@@ -191,8 +189,6 @@ export const Integrations = (props: IntegrationsProps) => {
             <AvailableIntegration
               key={item.id}
               integration={item}
-              accessToken={accessToken}
-              enableQuery={enableQuery}
               namespaceId={namespaceId}
             />
           ))

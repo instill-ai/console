@@ -1,10 +1,18 @@
+"use client";
+
 import * as React from "react";
 import Image from "next/image";
 import { Integration, IntegrationMethod, Nullable } from "instill-sdk";
 
 import { Button, Dialog, TabMenu, useToast } from "@instill-ai/design-system";
 
-import { useAddIntegrationConnection, useIntegration } from "../../../lib";
+import {
+  InstillStore,
+  useAddIntegrationConnection,
+  useInstillStore,
+  useIntegration,
+  useShallow,
+} from "../../../lib";
 import { ConnectionForm } from "./ConnectionForm";
 
 const METHOD_TITLE: Record<IntegrationMethod, string> = {
@@ -12,19 +20,21 @@ const METHOD_TITLE: Record<IntegrationMethod, string> = {
   METHOD_OAUTH: "oAuth",
 };
 
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
+
 export type AvailableIntegrationProps = {
   integration: Integration;
-  accessToken: Nullable<string>;
-  enableQuery: boolean;
   namespaceId: Nullable<string>;
 };
 
 export const AvailableIntegration = ({
   integration,
-  accessToken,
-  enableQuery,
   namespaceId,
 }: AvailableIntegrationProps) => {
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [isConnectDialogOpen, setIsConnectDialogOpen] = React.useState(false);
@@ -34,7 +44,7 @@ export const AvailableIntegration = ({
 
   const integrationFull = useIntegration({
     accessToken: accessToken || undefined,
-    enabled: enableQuery && isConnectDialogOpen,
+    enabled: enabledQuery && isConnectDialogOpen,
     view: "VIEW_FULL",
     integrationId: integration.id,
   });

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import Image from "next/image";
 import {
@@ -21,28 +23,33 @@ import {
 } from "../../../components";
 import {
   formatDate,
+  InstillStore,
   useDeleteIntegrationConnection,
+  useInstillStore,
   useIntegration,
   useIntegrationConnection,
+  useShallow,
   useUpdateIntegrationConnection,
 } from "../../../lib";
 import { ConnectionForm } from "./ConnectionForm";
+
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
 
 export type ExistingConnectionProps = {
   integration: Integration;
   connections: IntegrationConnection[];
   namespaceId: Nullable<string>;
-  accessToken: Nullable<string>;
-  enableQuery: boolean;
 };
 
 export const ExistingConnection = ({
   integration,
   connections,
   namespaceId,
-  enableQuery,
-  accessToken,
 }: ExistingConnectionProps) => {
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [editConnection, setEditConnection] =
     React.useState<Nullable<IntegrationConnection>>(null);
@@ -55,14 +62,14 @@ export const ExistingConnection = ({
 
   const integrationFull = useIntegration({
     accessToken: accessToken || undefined,
-    enabled: enableQuery && !!editConnection,
+    enabled: enabledQuery && !!editConnection,
     view: "VIEW_FULL",
     integrationId: integration.id,
   });
 
   const connectionFull = useIntegrationConnection({
     accessToken: accessToken || undefined,
-    enabled: enableQuery && !!editConnection,
+    enabled: enabledQuery && !!editConnection,
     view: "VIEW_FULL",
     connectionId: editConnection?.id || null,
     namespaceId,

@@ -274,13 +274,17 @@ export class IntegrationClient extends APIResource {
   /**
    * Updates an integration connection
    */
-  async updateIntegrationConnection(props: UpdateIntegrationConnectionRequest) {
+  async updateIntegrationConnection({
+    namespaceId,
+    connectionId,
+    payload,
+  }: UpdateIntegrationConnectionRequest) {
     try {
       const data =
         await this._client.patch<UpdateIntegrationConnectionResponse>(
-          `/namespaces/${props.namespaceId}/connections/${props.connectionId}`,
+          `/namespaces/${namespaceId}/connections/${connectionId}`,
           {
-            body: JSON.stringify(props.payload),
+            body: JSON.stringify(payload),
           },
         );
 

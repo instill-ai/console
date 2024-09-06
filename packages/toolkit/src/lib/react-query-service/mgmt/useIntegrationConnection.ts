@@ -21,6 +21,10 @@ export function useIntegrationConnection({
   return useQuery({
     queryKey: ["integration-connection", connectionId, namespaceId, view],
     queryFn: async () => {
+      if (!accessToken) {
+        return Promise.reject(new Error("accessToken not provided"));
+      }
+
       if (!connectionId) {
         return Promise.reject(new Error("integrationId not provided"));
       }

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import {
   GeneralRecord,
@@ -6,7 +8,7 @@ import {
 } from "instill-sdk";
 import { z } from "zod";
 
-import { Button, cn, Form, Input } from "@instill-ai/design-system";
+import { Button, cn, Form, Input, useToast } from "@instill-ai/design-system";
 
 import { LoadingSpin } from "../../../components";
 import { useInstillForm } from "../../../lib";
@@ -39,6 +41,7 @@ export const ConnectionForm = ({
   values?: GeneralRecord;
   isEdit?: boolean;
 }) => {
+  const { toast } = useToast();
   const { fields, form, ValidatorSchema } = useInstillForm(
     schema || null,
     values || null,
@@ -79,7 +82,16 @@ export const ConnectionForm = ({
       parsedData = ValidatorSchema.parse(payload);
     } catch (err) {
       if (err instanceof z.ZodError) {
-        console.log(err);
+        toast({
+          title: "There was an error creating a connection",
+          variant: "alert-error",
+          size: "large",
+          description: err.issues.reduce(
+            (acc, curr, index) =>
+              `${acc}${index > 0 ? `\n` : ""}${curr.message}`,
+            "",
+          ),
+        });
       }
 
       return;
