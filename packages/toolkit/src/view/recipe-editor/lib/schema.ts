@@ -135,7 +135,17 @@ export const InstillYamlSchema = {
               description: "Please specify the component task",
             },
           },
-          required: ["type", "task"],
+          if: {
+            properties: {
+              type: {
+                const: "iterator",
+              },
+            },
+            required: ["type"],
+          },
+          else: {
+            required: ["type", "task"],
+          },
         },
       },
     },

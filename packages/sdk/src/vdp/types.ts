@@ -76,6 +76,7 @@ export type PipelineIteratorComponent = {
   component: PipelineComponentMap;
   condition: Nullable<string>;
   dataSpecification: Nullable<DataSpecification>;
+  description?: string;
 } & ComponentBasicFields;
 
 export type PipelineComponent =

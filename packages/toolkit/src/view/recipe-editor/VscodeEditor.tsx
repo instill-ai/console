@@ -26,7 +26,7 @@ import { Editor } from "@monaco-editor/react";
 import { PipelineRecipe } from "instill-sdk";
 import { editor, IDisposable, languages, Position } from "monaco-editor";
 
-import { Dialog } from "@instill-ai/design-system";
+import { Dialog, useToast } from "@instill-ai/design-system";
 
 import { LoadingSpin } from "../../components";
 import {
@@ -35,6 +35,7 @@ import {
   GeneralRecord,
   InstillStore,
   Nullable,
+  toastInstillError,
   useInstillStore,
   useNamespacePipeline,
   useNamespaceSecrets,
@@ -88,6 +89,7 @@ const availableInstillFormats = [
 const componentTopLevelKeys = ["type", "input", "setup", "condition", "task"];
 
 export const VscodeEditor = () => {
+  const { toast } = useToast();
   const [markErrors, setMarkErrors] = React.useState<editor.IMarkerData[]>([]);
 
   const autoCompleteDisposableRef = React.useRef<Nullable<IDisposable>>(null);
@@ -164,6 +166,11 @@ export const VscodeEditor = () => {
             updateHasUnsavedRecipe(() => false);
           }, 500);
         } catch (error) {
+          toastInstillError({
+            toast,
+            title: "Failed to update pipeline",
+            error,
+          });
           console.error(error);
         }
       },
@@ -1048,6 +1055,8 @@ export const VscodeEditor = () => {
           updateRawRecipeOnDom(() => value);
 
           const res = validateVSCodeYaml(value);
+
+          console.log(res);
 
           if (res.success) {
             setMarkErrors([]);

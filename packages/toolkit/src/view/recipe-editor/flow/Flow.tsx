@@ -27,15 +27,13 @@ import {
 import { canvasPanOnDrag } from "../../pipeline-builder/components/canvasPanOnDrag";
 import { createNodesFromPipelineRecipe } from "../../pipeline-builder/lib/createNodesFromPipelineRecipe";
 import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
-import { GeneralNode } from "./nodes/GeneralNode";
-import { ResponseNode } from "./nodes/ResponseNode";
-import { VariableNode } from "./nodes/VariableNode";
+import { GeneralNode, IteratorNode, ResponseNode, VariableNode } from "./nodes";
 
 const nodeTypes = {
+  generalNode: GeneralNode,
+  iteratorNode: IteratorNode,
   variableNode: VariableNode,
   responseNode: ResponseNode,
-  generalNode: GeneralNode,
-  iteratorNode: GeneralNode,
 };
 
 const edgeTypes = {

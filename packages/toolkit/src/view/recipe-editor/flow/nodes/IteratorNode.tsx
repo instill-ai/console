@@ -12,8 +12,8 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../../../lib";
-import { GeneralNodeData } from "../../../pipeline-builder";
-import { NodeBase } from "./NodeBase";
+import { IteratorNodeData } from "../../../pipeline-builder";
+import { ComponentErrorState, NodeBase } from "./NodeBase";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -25,16 +25,7 @@ const selector = (store: InstillStore) => ({
   triggerPipelineStreamMap: store.triggerPipelineStreamMap,
 });
 
-type ComponentErrorState =
-  | {
-      error: true;
-      message: string;
-    }
-  | {
-      error: false;
-    };
-
-export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
+export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
   const reactflowEdges = useEdges();
   const hasTargetEdges = React.useMemo(() => {
     return reactflowEdges.some(
@@ -116,40 +107,11 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
   ]);
 
   const handleOpenDocumentation = React.useCallback(() => {
-    let documentationUrl: Nullable<string> = null;
-
-    if (!data.definition) {
-      return;
-    }
-
-    const urlPrefix = "https://www.instill.tech/docs/component";
-    const viewId = `${id}-documentation-view`;
-    const viewTitle = `${data.definition.title} Documentation`;
-
-    switch (data.definition.type) {
-      case "COMPONENT_TYPE_OPERATOR":
-        documentationUrl = urlPrefix + `/operator/${data.definition.id}`;
-        break;
-      case "COMPONENT_TYPE_AI":
-        documentationUrl = urlPrefix + `/ai/${data.definition.id}`;
-        break;
-      case "COMPONENT_TYPE_DATA":
-        documentationUrl = urlPrefix + `/data/${data.definition.id}`;
-        break;
-      case "COMPONENT_TYPE_APPLICATION":
-        documentationUrl = urlPrefix + `/application/${data.definition.id}`;
-        break;
-      case "COMPONENT_TYPE_GENERIC":
-        documentationUrl = urlPrefix + `/generic/${data.definition.id}`;
-        break;
-    }
-
-    if (!documentationUrl) {
-      return;
-    }
-
-    // Purely render docs only without any interaction
-    documentationUrl = documentationUrl + "?isOnlyForConsoleRenderingDocs=true";
+    const viewId = "iterator-documentation-view";
+    const viewTitle = "Iterator Documentation";
+    const documentationUrl =
+      "https://www.instill.tech/docs/component/generic/iterator" +
+      "?isOnlyForConsoleRenderingDocs=true";
 
     updateEditorMultiScreenModel((prev) => ({
       ...prev,
@@ -264,8 +226,8 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
       hasTargetEdges={hasTargetEdges}
       hasSourceEdges={hasSourceEdges}
       nodeDescription={data.description}
-      definitionId={data.definition?.id}
-      definitionTitle={data.definition?.title}
+      definitionId="iterator"
+      definitionTitle="Iterator"
     />
   );
 };

@@ -95,6 +95,7 @@ export const RecipeEditorView = () => {
   const [currentExpandView, setCurrentExpandView] =
     React.useState<Nullable<"left" | "topRight" | "bottomRight">>(null);
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
+  const [isInitialized, setIsInitialized] = React.useState(false);
 
   const leftPanelRef = React.useRef<ImperativePanelHandle>(null);
   const rightPanelRef = React.useRef<ImperativePanelHandle>(null);
@@ -116,12 +117,13 @@ export const RecipeEditorView = () => {
   });
 
   React.useEffect(() => {
-    if (!pipeline.isSuccess) {
+    if (!pipeline.isSuccess || isInitialized) {
       return;
     }
 
     updateRawRecipeOnDom(() => pipeline.data.rawRecipe);
-  }, [pipeline.isSuccess, pipeline.data, updateRawRecipeOnDom]);
+    setIsInitialized(true);
+  }, [pipeline.isSuccess, pipeline.data, updateRawRecipeOnDom, isInitialized]);
 
   React.useEffect(() => {
     updateCurrentVersion(() => "latest");
