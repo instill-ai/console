@@ -1,8 +1,15 @@
-'use client'
+"use client";
+
 import * as React from "react";
+
 import { Button, Separator, Tag, Tooltip } from "@instill-ai/design-system";
 
-import { CatalogCardMenu, EditCatalogDialog, EditCatalogDialogData, CloneCatalogDialog } from ".";
+import {
+  CatalogCardMenu,
+  CloneCatalogDialog,
+  EditCatalogDialog,
+  EditCatalogDialogData,
+} from ".";
 import { GeneralDeleteResourceDialog } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import {
@@ -17,7 +24,7 @@ type CreateCatalogCardProps = {
   onCardClick: () => void;
   onUpdateCatalog: (
     data: EditCatalogDialogData,
-    catalogId: string
+    catalogId: string,
   ) => Promise<void>;
   onCloneCatalog: (catalog: Catalog) => Promise<void>;
   onDeleteCatalog: (catalog: Catalog) => Promise<void>;
@@ -47,7 +54,7 @@ export const CreateCatalogCard = ({
   const cardRef = React.useRef<HTMLDivElement>(null);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector)
+    useShallow(selector),
   );
 
   const existingFiles = useListCatalogFiles({
@@ -140,11 +147,13 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
               <div className="flex flex-wrap gap-1 mt-auto">
                 {catalog.tags && catalog.tags.length > 0 ? (
                   <>
-                    {catalog.tags.slice(0, MAX_VISIBLE_TAGS).map((tag, index) => (
-                      <Tag key={index} variant="lightNeutral">
-                        {tag}
-                      </Tag>
-                    ))}
+                    {catalog.tags
+                      .slice(0, MAX_VISIBLE_TAGS)
+                      .map((tag, index) => (
+                        <Tag key={index} variant="lightNeutral">
+                          {tag}
+                        </Tag>
+                      ))}
                     {catalog.tags.length > MAX_VISIBLE_TAGS && (
                       <Button
                         variant="tertiaryGrey"
@@ -227,7 +236,10 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
             name: clonedCatalog.name,
             description: clonedCatalog.description ?? "",
             tags: clonedCatalog.tags
-              ? clonedCatalog.tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '')
+              ? clonedCatalog.tags
+                  .split(",")
+                  .map((tag) => tag.trim())
+                  .filter((tag) => tag !== "")
               : [],
           });
           setCloneDialogIsOpen(false);

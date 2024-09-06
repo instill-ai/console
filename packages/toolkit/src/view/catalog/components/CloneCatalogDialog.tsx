@@ -67,7 +67,7 @@ export const CloneCatalogDialog = ({
     resolver: zodResolver(CloneCatalogFormSchema),
     defaultValues: {
       ...initialValues,
-      tags: initialValues.tags.join(", ") || [] as unknown as string,
+      tags: initialValues.tags.join(", ") || ([] as unknown as string),
       namespaceId: navigationNamespaceAnchor || "",
     },
     mode: "onChange",
@@ -122,9 +122,9 @@ export const CloneCatalogDialog = ({
         name: formatName(data.name),
         tags: data.tags
           ? data.tags
-            .split(",")
-            .map((tag) => tag.trim())
-            .filter((tag) => tag !== "")
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter((tag) => tag !== "")
           : undefined,
       };
 
@@ -275,7 +275,13 @@ export const CloneCatalogDialog = ({
                           type="text"
                           placeholder="Add tags"
                           required={false}
-                          value={typeof field.value === 'string' ? field.value : (field.value as string[] | undefined)?.join(', ') || ''}
+                          value={
+                            typeof field.value === "string"
+                              ? field.value
+                              : (field.value as string[] | undefined)?.join(
+                                  ", ",
+                                ) || ""
+                          }
                           onChange={(e) => {
                             const inputValue = e.target.value;
                             field.onChange(inputValue);

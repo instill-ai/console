@@ -20,7 +20,10 @@ import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { CatalogCard } from "../CatalogCard";
 import CatalogSearchSort, { SortAnchor, SortOrder } from "../CatalogSearchSort";
 import { CreateCatalogCard } from "../CreateCatalogCard";
-import { CreateCatalogDialog, CreateCatalogFormSchema } from "../CreateCatalogDialog";
+import {
+  CreateCatalogDialog,
+  CreateCatalogFormSchema,
+} from "../CreateCatalogDialog";
 import { EditCatalogDialogData } from "../EditCatalogDialog";
 import { UpgradePlanLink } from "../notifications";
 
@@ -87,8 +90,11 @@ export const CatalogTab = ({
     try {
       const formattedTags = Array.isArray(data.tags)
         ? data.tags
-        : typeof data.tags === 'string'
-          ? data.tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '')
+        : typeof data.tags === "string"
+          ? data.tags
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter((tag) => tag !== "")
           : [];
 
       await createCatalog.mutateAsync({
@@ -108,7 +114,6 @@ export const CatalogTab = ({
     }
   };
 
-
   const handleUpdateCatalog = async (
     data: EditCatalogDialogData,
     catalogId: string,
@@ -123,9 +128,9 @@ export const CatalogTab = ({
           description: data.description,
           tags: data.tags
             ? data.tags
-              .split(",")
-              .map((tag) => tag.trim())
-              .filter((tag) => tag !== "")
+                .split(",")
+                .map((tag) => tag.trim())
+                .filter((tag) => tag !== "")
             : undefined,
         },
         accessToken,

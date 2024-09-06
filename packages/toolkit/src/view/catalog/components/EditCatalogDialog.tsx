@@ -75,7 +75,9 @@ export const EditCatalogDialog = ({
       const formattedData = {
         ...data,
         tags: data.tags
-          ? Array.isArray(data.tags) ? data.tags.join(", ") : data.tags
+          ? Array.isArray(data.tags)
+            ? data.tags.join(", ")
+            : data.tags
           : undefined,
       };
       await onSubmit(formattedData);

@@ -104,7 +104,7 @@ export const CreateCatalogDialog = ({
   }, [isOpen, navigationNamespaceAnchor, form]);
 
   const handleSubmit = async (
-    data: z.infer<typeof CreateCatalogFormSchema>
+    data: z.infer<typeof CreateCatalogFormSchema>,
   ) => {
     setCreating(true);
 
@@ -114,12 +114,12 @@ export const CreateCatalogDialog = ({
         name: formatName(data.name),
         tags: Array.isArray(data.tags)
           ? data.tags
-          : typeof data.tags === 'string'
+          : typeof data.tags === "string"
             ? data.tags
-              .trim()
-              .split(",")
-              .map((item: string) => item.trim())
-              .filter((item: string) => item !== "")
+                .trim()
+                .split(",")
+                .map((item: string) => item.trim())
+                .filter((item: string) => item !== "")
             : [],
       };
 
@@ -260,7 +260,11 @@ export const CreateCatalogDialog = ({
                           type="text"
                           placeholder="Add tags"
                           required={false}
-                          value={typeof field.value === 'string' ? field.value : field.value?.join(', ') || ''}
+                          value={
+                            typeof field.value === "string"
+                              ? field.value
+                              : field.value?.join(", ") || ""
+                          }
                           onChange={(e) => {
                             const inputValue = e.target.value;
                             field.onChange(inputValue);
