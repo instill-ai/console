@@ -11,6 +11,7 @@ export type TransformInstillFormTreeToInitialSelectedConditionOptions = {
   parentPath?: string;
   parentIsObjectArray?: boolean;
   parentIsFormCondition?: boolean;
+  objectArrayIndex?: number;
 };
 
 export function transformInstillFormTreeToInitialSelectedCondition(
@@ -21,6 +22,7 @@ export function transformInstillFormTreeToInitialSelectedCondition(
   const parentPath = options?.parentPath ?? undefined;
   const parentIsObjectArray = options?.parentIsObjectArray ?? false;
   const parentIsFormCondition = options?.parentIsFormCondition ?? false;
+  const objectArrayIndex = options?.objectArrayIndex ?? undefined;
 
   let modifiedPath = tree.path;
 
@@ -32,7 +34,10 @@ export function transformInstillFormTreeToInitialSelectedCondition(
   // will have the same path
   if (parentIsObjectArray) {
     if (parentPathArray && tree.fieldKey) {
-      const modifiedPathArray = [...parentPathArray, "0"];
+      const modifiedPathArray = objectArrayIndex
+        ? [...parentPathArray, objectArrayIndex]
+        : [...parentPathArray, "0"];
+      objectArrayIndex;
       modifiedPath = modifiedPathArray.join(".");
     }
   } else {
@@ -56,6 +61,7 @@ export function transformInstillFormTreeToInitialSelectedCondition(
           parentPath: modifiedPath ?? undefined,
           parentIsFormCondition: false,
           parentIsObjectArray: false,
+          objectArrayIndex: undefined,
         }),
       };
     }
@@ -69,6 +75,7 @@ export function transformInstillFormTreeToInitialSelectedCondition(
         parentIsObjectArray: true,
         parentIsFormCondition: false,
         parentPath: modifiedPath ?? undefined,
+        objectArrayIndex: undefined,
       }),
     };
   }
@@ -131,7 +138,13 @@ export function transformInstillFormTreeToInitialSelectedCondition(
           ...selectedConditionMap,
           ...transformInstillFormTreeToInitialSelectedCondition(
             selectedCondition,
-            options,
+            {
+              ...options,
+              parentPath: modifiedPath ?? undefined,
+              parentIsFormCondition: true,
+              parentIsObjectArray: false,
+              objectArrayIndex: undefined,
+            },
           ),
         };
       }
