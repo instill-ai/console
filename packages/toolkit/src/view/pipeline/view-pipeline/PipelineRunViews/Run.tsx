@@ -62,6 +62,7 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
     disabledFields: true,
     disabledFieldControls: true,
     values: pipelineRun?.inputs[0],
+    forceStringMultiline: true,
   });
 
   const componentOutputFields = useComponentOutputFields({

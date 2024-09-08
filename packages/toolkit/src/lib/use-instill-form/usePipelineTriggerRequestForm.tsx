@@ -24,6 +24,7 @@ export type UseStartOperatorTriggerPipelineFormProps = Pick<
   | "disabledReferenceHint"
   | "keyPrefix"
   | "fields"
+  | "forceStringMultiline"
 > & { values?: Record<string, any> };
 
 export function usePipelineTriggerRequestForm({
@@ -36,6 +37,7 @@ export function usePipelineTriggerRequestForm({
   disabledReferenceHint,
   keyPrefix,
   values,
+  forceStringMultiline,
 }: UseStartOperatorTriggerPipelineFormProps) {
   const superRefineRules = React.useMemo(() => {
     if (!fields) {
@@ -85,6 +87,7 @@ export function usePipelineTriggerRequestForm({
       disabledFieldControls,
       disabledReferenceHint,
       keyPrefix,
+      forceStringMultiline,
     });
   }, [
     mode,
@@ -96,6 +99,7 @@ export function usePipelineTriggerRequestForm({
     disabledReferenceHint,
     disabledFields,
     keyPrefix,
+    forceStringMultiline,
   ]);
 
   return {

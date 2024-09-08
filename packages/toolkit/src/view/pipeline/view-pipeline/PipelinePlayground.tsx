@@ -144,6 +144,7 @@ export const PipelinePlayground = ({
     keyPrefix: "pipeline-details-page-trigger-pipeline-form",
     disabledFields: false,
     disabledFieldControls: true,
+    forceStringMultiline: true,
   });
 
   const componentOutputFields = useComponentOutputFields({
