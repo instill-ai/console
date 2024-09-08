@@ -159,7 +159,7 @@ export const ModelPlayground = ({
     inputFromExistingResult,
     {
       disabledAll: !isModelTriggerable,
-      stringifyDefaultValue: true,
+      stringifyDefaultValue: false,
     },
   );
 
