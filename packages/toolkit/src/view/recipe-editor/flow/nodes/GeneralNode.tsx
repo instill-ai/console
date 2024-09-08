@@ -71,13 +71,9 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
   });
 
   const handleClick = React.useCallback(() => {
-    if (!pipeline.isSuccess || !editorRef) {
-      return;
-    }
-
     updateSelectedComponentId(() => id);
 
-    if (!pipeline.data.rawRecipe) {
+    if (!pipeline.isSuccess || !editorRef || !pipeline.data.rawRecipe) {
       return;
     }
 

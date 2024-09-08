@@ -262,6 +262,14 @@ export type EditorSlice = {
   updateEditorDebouncedRecipeUpdater: (
     fn: (prev: Nullable<EditorRecipeUpdater>) => Nullable<EditorRecipeUpdater>,
   ) => void;
+
+  /**
+   * This is to control the flow's control is under demo mode or not
+   * When in the editor, it will be false
+   * When in the pipeline preview, it will be true
+   */
+  flowIsUnderDemoMode: boolean;
+  updateFlowIsUnderDemoMode: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type TriggerPipelineStreamMap = {
