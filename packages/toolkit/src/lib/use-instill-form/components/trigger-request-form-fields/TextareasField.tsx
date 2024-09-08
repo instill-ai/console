@@ -99,8 +99,6 @@ export const TextareasField = ({
                         newTextareasValue[idx + 1] = e.target.value;
                         setTextareasValue(newTextareasValue);
 
-                        console.log(newTextareasValue);
-
                         field.onChange(newTextareasValue);
                       }}
                       disabled={disabled}

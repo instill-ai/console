@@ -171,7 +171,6 @@ export const Flow = ({
         minZoom={0.5}
         fitViewOptions={fitViewOptions}
         onPaneClick={() => {
-          console.log("onPaneClick");
           updateSelectedComponentId(() => null);
         }}
         nodeTypes={nodeTypes}

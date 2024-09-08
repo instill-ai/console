@@ -71,6 +71,7 @@ const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,
   editorPreviewReactFlowInstance: store.editorPreviewReactFlowInstance,
   editorFirstRenderedHeight: store.editorFirstRenderedHeight,
+  updateTriggerPipelineStreamMap: store.updateTriggerPipelineStreamMap,
 });
 
 export const RecipeEditorView = () => {
@@ -88,6 +89,7 @@ export const RecipeEditorView = () => {
     currentVersion,
     editorPreviewReactFlowInstance,
     editorFirstRenderedHeight,
+    updateTriggerPipelineStreamMap,
   } = useInstillStore(useShallow(selector));
   useEditorCommandListener();
   const routeInfo = useRouteInfo();
@@ -122,6 +124,7 @@ export const RecipeEditorView = () => {
     }
 
     updateRawRecipeOnDom(() => pipeline.data.rawRecipe);
+    updateTriggerPipelineStreamMap(() => null);
     setIsInitialized(true);
   }, [pipeline.isSuccess, pipeline.data, updateRawRecipeOnDom, isInitialized]);
 
