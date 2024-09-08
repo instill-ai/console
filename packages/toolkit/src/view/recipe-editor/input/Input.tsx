@@ -66,6 +66,7 @@ export const Input = ({
     onEditField: () => {},
     disabledFieldControls: true,
     disabledReferenceHint: true,
+    forceStringMultiline: true,
   });
 
   const routeInfo = useRouteInfo();

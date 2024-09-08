@@ -17,6 +17,7 @@ export type PickPipelineTriggerRequestFormFieldsProps = {
   disabledFieldControls?: boolean;
   disabledReferenceHint?: boolean;
   fields: Nullable<PipelineVariableFieldMap>;
+  forceStringMultiline?: boolean;
 };
 
 export function pickPipelineTriggerRequestFormFields({
@@ -29,6 +30,7 @@ export function pickPipelineTriggerRequestFormFields({
   disabledFieldControls,
   keyPrefix,
   disabledReferenceHint,
+  forceStringMultiline,
 }: PickPipelineTriggerRequestFormFieldsProps) {
   const items: StartOperatorFreeFormFieldItem[] = [];
 
@@ -43,7 +45,7 @@ export function pickPipelineTriggerRequestFormFields({
 
     switch (value.instillFormat) {
       case "string":
-        if (value.instillUiMultiline) {
+        if (value.instillUiMultiline || forceStringMultiline) {
           items.push({
             key,
             instillUIOrder: value.instillUiOrder,
@@ -90,27 +92,52 @@ export function pickPipelineTriggerRequestFormFields({
         }
         break;
       case "array:string": {
-        items.push({
-          key,
-          instillUIOrder: value.instillUiOrder,
-          component: (
-            <TriggerRequestFormFields.TextsField
-              mode={mode}
-              key={key}
-              form={form}
-              path={key}
-              title={value.title}
-              onDeleteField={onDeleteField}
-              onEditField={onEditField}
-              description={value.description ?? null}
-              disabled={disabledFields}
-              keyPrefix={keyPrefix}
-              disabledFieldControl={disabledFieldControls}
-              disabledReferenceHint={disabledReferenceHint}
-              instillFormat={value.instillFormat}
-            />
-          ),
-        });
+        if (forceStringMultiline) {
+          items.push({
+            key,
+            instillUIOrder: value.instillUiOrder,
+            component: (
+              <TriggerRequestFormFields.TextareasField
+                mode={mode}
+                key={key}
+                form={form}
+                path={key}
+                title={value.title}
+                onDeleteField={onDeleteField}
+                onEditField={onEditField}
+                description={value.description ?? null}
+                disabled={disabledFields}
+                keyPrefix={keyPrefix}
+                disabledFieldControl={disabledFieldControls}
+                disabledReferenceHint={disabledReferenceHint}
+                instillFormat={value.instillFormat}
+              />
+            ),
+          });
+        } else {
+          items.push({
+            key,
+            instillUIOrder: value.instillUiOrder,
+            component: (
+              <TriggerRequestFormFields.TextsField
+                mode={mode}
+                key={key}
+                form={form}
+                path={key}
+                title={value.title}
+                onDeleteField={onDeleteField}
+                onEditField={onEditField}
+                description={value.description ?? null}
+                disabled={disabledFields}
+                keyPrefix={keyPrefix}
+                disabledFieldControl={disabledFieldControls}
+                disabledReferenceHint={disabledReferenceHint}
+                instillFormat={value.instillFormat}
+              />
+            ),
+          });
+        }
+
         break;
       }
       case "boolean":
