@@ -92,7 +92,9 @@ export function pickRegularFieldsFromInstillFormTree(
 
   if (parentIsObjectArray) {
     if (parentPath) {
-      const modifiedPathArray = [...parentPathArray, `${objectArrayIndex}`];
+      const modifiedPathArray = objectArrayIndex
+        ? [...parentPathArray, `${objectArrayIndex}`]
+        : [...parentPathArray, "0"];
       modifiedPath = modifiedPathArray.join(".");
     }
   } else {
@@ -317,7 +319,6 @@ export function pickRegularFieldsFromInstillFormTree(
           options={options}
           selectedConditionMap={selectedConditionMap}
           setSelectedConditionMap={setSelectedConditionMap}
-          parentPath={modifiedPath}
         />
       );
     } else {
