@@ -17,6 +17,7 @@ import {
 } from "reactflow";
 
 import { NodeData } from "../../view";
+import { EditorRecipeUpdater } from "../../view/recipe-editor/lib";
 import { Nullable } from "../type";
 import { InstillJSONSchema } from "../use-instill-form";
 import { SmartHint } from "../use-smart-hint";
@@ -251,6 +252,16 @@ export type EditorSlice = {
   ) => void;
 
   editorFirstRenderedHeight: React.MutableRefObject<Nullable<number>>;
+
+  /**
+   * This is the returned of useDebouncedRecipeUpdater, we store it in the store
+   * due to we might want to cancel or flush all the debounce invokion like when
+   * user force saved using autonomousRecipeUpdater
+   */
+  editorDebouncedRecipeUpdater: Nullable<EditorRecipeUpdater>;
+  updateEditorDebouncedRecipeUpdater: (
+    fn: (prev: Nullable<EditorRecipeUpdater>) => Nullable<EditorRecipeUpdater>,
+  ) => void;
 };
 
 export type TriggerPipelineStreamMap = {

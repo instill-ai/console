@@ -58,6 +58,7 @@ export function useEditorCommandListener() {
         if (importRecipeInputTriggerRef.current) {
           importRecipeInputTriggerRef.current.click();
         }
+        return;
       }
 
       if (e.key === "o" && (e.metaKey || e.ctrlKey)) {
@@ -75,6 +76,7 @@ export function useEditorCommandListener() {
       if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         runButtonRef.current?.click();
+        return;
       }
     };
 

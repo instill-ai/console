@@ -70,7 +70,6 @@ export const ObjectArrayForm = ({
             );
 
             const valueWOParentDotPath = dot.getter(defaultValue, tree.path);
-            console.log(tree, path, defaultValue, valueWOParentDotPath);
             append(valueWOParentDotPath);
           }}
         >
