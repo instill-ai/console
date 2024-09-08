@@ -451,7 +451,7 @@ export const PipelinePlayground = ({
               alt="Square shapes"
             />
             <p className="font-mono text-sm italic text-semantic-fg-disabled">
-              Execute the pipeline to view the results
+              Run the pipeline to view the results
             </p>
           </div>
         )}
