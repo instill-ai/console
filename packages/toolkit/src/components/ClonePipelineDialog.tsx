@@ -122,8 +122,6 @@ export const ClonePipelineDialog = ({
 
     setCloning(true);
 
-    return;
-
     const sharing: PipelineSharing =
       permission === "public"
         ? {
