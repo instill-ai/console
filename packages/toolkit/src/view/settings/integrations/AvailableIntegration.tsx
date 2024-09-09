@@ -113,8 +113,14 @@ export const AvailableIntegration = ({
       >
         Connect
       </Button>
-      <Dialog.Root open={isConnectDialogOpen}>
-        <Dialog.Content className="h-full md:h-auto lg:max-w-1/2 overflow-hidden">
+      <Dialog.Root
+        open={isConnectDialogOpen}
+        onOpenChange={setIsConnectDialogOpen}
+      >
+        <Dialog.Content
+          className="h-auto overflow-hidden"
+          style={{ width: "761px" }}
+        >
           <Dialog.Header>
             <Dialog.Title>Add connection</Dialog.Title>
             <Dialog.Close
@@ -157,7 +163,7 @@ export const AvailableIntegration = ({
                     )?.schema
                   }
                   onSubmit={onSubmit}
-                  className="mt-6"
+                  className="mt-6 max-h-[600px] overflow-y-auto"
                   isProcessing={isProcessing}
                   additionalCta={
                     <Button
