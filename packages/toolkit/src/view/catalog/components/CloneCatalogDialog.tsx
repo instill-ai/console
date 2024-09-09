@@ -43,6 +43,7 @@ type CloneCatalogDialogProps = {
     name: string;
     description: string;
     tags: string[];
+    namespaceId: string;
   };
 };
 
