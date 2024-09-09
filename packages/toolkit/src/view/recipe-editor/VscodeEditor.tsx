@@ -1041,7 +1041,7 @@ export const VscodeEditor = () => {
           suggest: {
             showSnippets: true,
           },
-          fontSize: 18,
+          fontSize: 12,
           readOnly: currentVersion !== "latest",
           readOnlyMessage: {
             value:
