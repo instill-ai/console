@@ -214,6 +214,8 @@ export const ClonePipelineDialog = ({
             ? navigationNamespaceAnchor
             : routeInfo?.data.namespaceId || "",
         });
+
+        setCloning(false);
         if (onOpenChange) {
           onOpenChange(open);
         } else {
@@ -388,7 +390,7 @@ export const ClonePipelineDialog = ({
               type="submit"
             >
               {cloning ? (
-                <LoadingSpin className="!text-semantic-fg-secondary" />
+                <LoadingSpin className="!text-semantic-fg-secondary !w-4 !h-4" />
               ) : (
                 "Clone"
               )}
