@@ -164,4 +164,12 @@ export const createEditorSlice: StateCreator<
         editorDebouncedRecipeUpdater: fn(state.editorDebouncedRecipeUpdater),
       };
     }),
+  flowIsUnderDemoMode: false,
+  updateFlowIsUnderDemoMode: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        flowIsUnderDemoMode: fn(state.flowIsUnderDemoMode),
+      };
+    }),
 });

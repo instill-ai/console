@@ -2,7 +2,8 @@ import type { Pipeline, PipelineRelease } from "instill-sdk";
 import * as React from "react";
 import { useSearchParams } from "next/navigation";
 
-import { ReadOnlyPipelineBuilder } from "../../pipeline-builder";
+import { Flow } from "../../recipe-editor/flow";
+import { PreviewEmptyView } from "../../recipe-editor/PreviewEmptyView";
 
 export type PipelinePreviewProps = {
   pipeline?: Pipeline;
@@ -35,17 +36,29 @@ export const PipelinePreview = ({
   }, [releases, currentVersion]);
 
   return (
-    <ReadOnlyPipelineBuilder
+    <div
+      className="h-full w-full"
       ref={onMount}
-      pipelineName={pipeline?.name || null}
-      recipe={activeRelease ? activeRelease.recipe : (pipeline?.recipe ?? null)}
-      metadata={
-        activeRelease ? activeRelease.metadata : (pipeline?.metadata ?? null)
-      }
-      className="min-h-80 w-full"
       style={{
         height: `calc(100vh - ${topOffset + 32}px)`,
       }}
-    />
+    >
+      {pipeline ? (
+        <Flow
+          pipelineId={pipeline?.id ?? null}
+          recipe={
+            activeRelease ? activeRelease?.recipe : (pipeline?.recipe ?? null)
+          }
+          pipelineMetadata={
+            activeRelease
+              ? activeRelease?.metadata
+              : (pipeline?.metadata ?? null)
+          }
+          demoMode={true}
+        />
+      ) : (
+        <PreviewEmptyView />
+      )}
+    </div>
   );
 };

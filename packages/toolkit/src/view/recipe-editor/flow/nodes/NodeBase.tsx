@@ -1,8 +1,11 @@
+"use client";
+
 import { Position } from "reactflow";
 
 import { Button, cn, Icons, Tooltip } from "@instill-ai/design-system";
 
 import { ImageWithFallback, LoadingSpin } from "../../../../components";
+import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import { CustomHandle } from "./CustomHandle";
 
 export type ComponentErrorState =
@@ -13,6 +16,10 @@ export type ComponentErrorState =
   | {
       error: false;
     };
+
+const selector = (store: InstillStore) => ({
+  flowIsUnderDemoMode: store.flowIsUnderDemoMode,
+});
 
 export const NodeBase = ({
   id,
@@ -41,6 +48,7 @@ export const NodeBase = ({
   definitionId?: string;
   definitionTitle?: string;
 }) => {
+  const { flowIsUnderDemoMode } = useInstillStore(useShallow(selector));
   return (
     <div className="relative nowheel">
       <div
@@ -65,10 +73,10 @@ export const NodeBase = ({
             <Icons.Trash01 className="w-4 h-4 stroke-semantic-fg-primary" />
           </Button>
           <Button
-            disabled={!isSelected}
+            disabled={!isSelected || flowIsUnderDemoMode}
             onClick={handleOpenDocumentation}
             variant="tertiaryGrey"
-            className="!px-2"
+            className={cn("!px-2", flowIsUnderDemoMode ? "opacity-0" : "")}
           >
             <Icons.Logout04 className="w-4 h-4 stroke-semantic-fg-primary" />
           </Button>
@@ -144,6 +152,12 @@ export const NodeBase = ({
           "bottom-0 w-full flex flex-col absolute translate-y-full gap-y-2",
         )}
       >
+        <div className="flex flex-col">
+          <p className="product-body-text-3-medium w-full text-center text-semantic-fg-disabled">
+            {id}
+          </p>
+        </div>
+
         {nodeDescription ? (
           <div
             className={cn(

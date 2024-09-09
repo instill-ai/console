@@ -42,12 +42,6 @@ export const PipelineContentViewer = ({
       const playgroundPath = `/${routeInfo.data?.namespaceId}/pipelines/${pipeline.id}/playground`;
       router.push(playgroundPath);
     }
-
-    // We are temporarily redirecting preview tab to playground tab
-    if (pipeline && selectedTab === "preview") {
-      const previewPath = `/${routeInfo.data?.namespaceId}/pipelines/${pipeline.id}/playground`;
-      router.push(previewPath);
-    }
   }, [selectedTab, pipeline, routeInfo.data?.namespaceId, router]);
 
   let content = null;
@@ -92,7 +86,7 @@ export const PipelineContentViewer = ({
   }
 
   return (
-    <div className="w-full pt-8 flex-1 flex flex-col">
+    <div className="w-full pt-8 flex-1 flex flex-col h-full">
       {pipeline ? (
         content
       ) : (

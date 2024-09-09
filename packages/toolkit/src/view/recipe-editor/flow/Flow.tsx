@@ -5,6 +5,7 @@ import { PipelineRecipe } from "instill-sdk";
 import ReactFlow, {
   Background,
   BackgroundVariant,
+  Controls,
   SelectionMode,
   useEdgesState,
   useNodesState,
@@ -45,6 +46,7 @@ const selector = (store: InstillStore) => ({
   editorPreviewReactFlowInstance: store.editorPreviewReactFlowInstance,
   updateEditorPreviewReactFlowInstance:
     store.updateEditorPreviewReactFlowInstance,
+  updateFlowIsUnderDemoMode: store.updateFlowIsUnderDemoMode,
 });
 
 export const fitViewOptions = {
@@ -56,10 +58,14 @@ export const Flow = ({
   pipelineId,
   recipe,
   pipelineMetadata,
+  demoMode,
 }: {
   recipe: Nullable<PipelineRecipe>;
   pipelineId: Nullable<string>;
   pipelineMetadata: Nullable<GeneralRecord>;
+
+  // Under demo mode, the flow's control will be the reactflow's default control
+  demoMode?: boolean;
 }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -68,7 +74,17 @@ export const Flow = ({
     updateSelectedComponentId,
     editorPreviewReactFlowInstance,
     updateEditorPreviewReactFlowInstance,
+    updateFlowIsUnderDemoMode,
   } = useInstillStore(useShallow(selector));
+
+  React.useEffect(() => {
+    if (demoMode) {
+      updateFlowIsUnderDemoMode(() => true);
+      return;
+    }
+
+    updateFlowIsUnderDemoMode(() => false);
+  }, [updateFlowIsUnderDemoMode, demoMode]);
 
   React.useEffect(() => {
     if (!recipe || !pipelineMetadata) return;
@@ -96,52 +112,54 @@ export const Flow = ({
 
   return (
     <div className="flex flex-col w-full h-full group">
-      <div className="flex flex-row h-9 justify-between items-center bg-semantic-bg-alt-primary border-b border-semantic-bg-line">
-        <EditorButtonTooltipWrapper tooltipContent="Fit view">
-          <button
-            onClick={() => {
-              if (!editorPreviewReactFlowInstance) {
-                return;
-              }
-
-              editorPreviewReactFlowInstance.fitView(fitViewOptions);
-            }}
-            className="p-1.5"
-          >
-            <Icons.Maximize02 className="w-3 h-3 stroke-semantic-fg-primary" />
-          </button>
-        </EditorButtonTooltipWrapper>
-        <div className="flex flex-row">
-          <EditorButtonTooltipWrapper tooltipContent="Zoom in">
+      {demoMode ? null : (
+        <div className="flex flex-row h-9 justify-between items-center bg-semantic-bg-alt-primary border-b border-semantic-bg-line">
+          <EditorButtonTooltipWrapper tooltipContent="Fit view">
             <button
-              className="p-1.5"
               onClick={() => {
                 if (!editorPreviewReactFlowInstance) {
                   return;
                 }
 
-                editorPreviewReactFlowInstance.zoomIn();
+                editorPreviewReactFlowInstance.fitView(fitViewOptions);
               }}
-            >
-              <Icons.Plus className="w-3 h-3 stroke-semantic-fg-primary" />
-            </button>
-          </EditorButtonTooltipWrapper>
-          <EditorButtonTooltipWrapper tooltipContent="Zoom out">
-            <button
               className="p-1.5"
-              onClick={() => {
-                if (!editorPreviewReactFlowInstance) {
-                  return;
-                }
-
-                editorPreviewReactFlowInstance.zoomOut();
-              }}
             >
-              <Icons.Minus className="w-3 h-3 stroke-semantic-fg-primary" />
+              <Icons.Maximize02 className="w-3 h-3 stroke-semantic-fg-primary" />
             </button>
           </EditorButtonTooltipWrapper>
+          <div className="flex flex-row">
+            <EditorButtonTooltipWrapper tooltipContent="Zoom in">
+              <button
+                className="p-1.5"
+                onClick={() => {
+                  if (!editorPreviewReactFlowInstance) {
+                    return;
+                  }
+
+                  editorPreviewReactFlowInstance.zoomIn();
+                }}
+              >
+                <Icons.Plus className="w-3 h-3 stroke-semantic-fg-primary" />
+              </button>
+            </EditorButtonTooltipWrapper>
+            <EditorButtonTooltipWrapper tooltipContent="Zoom out">
+              <button
+                className="p-1.5"
+                onClick={() => {
+                  if (!editorPreviewReactFlowInstance) {
+                    return;
+                  }
+
+                  editorPreviewReactFlowInstance.zoomOut();
+                }}
+              >
+                <Icons.Minus className="w-3 h-3 stroke-semantic-fg-primary" />
+              </button>
+            </EditorButtonTooltipWrapper>
+          </div>
         </div>
-      </div>
+      )}
       <ReactFlow
         id={pipelineId ?? undefined}
         className="w-full h-full rounded-b"
@@ -177,6 +195,9 @@ export const Flow = ({
           className="!bg-semantic-bg-alt-primary"
           size={3}
         />
+        {demoMode ? (
+          <Controls id={pipelineId ?? undefined} showInteractive={false} />
+        ) : null}
       </ReactFlow>
     </div>
   );
