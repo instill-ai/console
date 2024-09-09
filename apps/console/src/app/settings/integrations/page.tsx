@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 
-import { ApiTokenSettingsPageRender } from "./render";
+import { IntegrationsSettingsPageRender } from "./render";
 
 export async function generateMetadata(): Promise<Metadata> {
   const metadata: Metadata = {
-    title: `Instill Core | API Token Setting`,
+    title: `Instill Core | Integrations`,
     openGraph: {
       images: ["/instill-open-graph.png"],
     },
@@ -13,5 +13,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  return <ApiTokenSettingsPageRender />;
+  return <IntegrationsSettingsPageRender />;
 }

@@ -2,6 +2,7 @@ import "whatwg-fetch";
 
 import {
   CreditClient,
+  IntegrationClient,
   MembershipClient,
   MetricClient,
   OrganizationClient,
@@ -133,6 +134,7 @@ export class InstillAPIClient {
     credit: new CreditClient(this),
     utils: new UtilsClient(this),
     membership: new MembershipClient(this),
+    integration: new IntegrationClient(this),
   };
 
   model = new ModelClient(this);
