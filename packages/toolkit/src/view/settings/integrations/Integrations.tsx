@@ -44,7 +44,7 @@ export const Integrations = (props: IntegrationsProps) => {
   });
 
   React.useEffect(() => {
-    if (availableIntegrations.data) {
+    if (availableIntegrations.isSuccess) {
       if (
         availableIntegrations.data.pages[
           availableIntegrations.data.pages.length - 1
@@ -54,7 +54,7 @@ export const Integrations = (props: IntegrationsProps) => {
       }
     }
 
-    if (integrationConnections.data) {
+    if (integrationConnections.isSuccess) {
       if (
         integrationConnections.data.pages[
           integrationConnections.data.pages.length - 1
@@ -71,14 +71,20 @@ export const Integrations = (props: IntegrationsProps) => {
   ]);
 
   const availableIntegrationList = React.useMemo(() => {
-    return (
-      availableIntegrations.data?.pages.reduce(
-        (acc: Integration[], page) => acc.concat(page.integrations),
-        [],
-      ) ||
-      //.sort((a, b) => (a.title < b.title ? -1 : a.title > b.title ? 1 : 0))
-      []
-    );
+    const integrations: Integration[] = [];
+
+    if (!availableIntegrations.isSuccess) {
+      return integrations;
+    }
+
+    for (const page of availableIntegrations.data.pages) {
+      for (const integration of page.integrations) {
+        integrations.push(integration);
+      }
+    }
+    // Uncomment the following line to sort the integrations by title
+    // integrations.sort((a, b) => a.title.localeCompare(b.title));
+    return integrations;
   }, [availableIntegrations.isSuccess, availableIntegrations.data]);
 
   const integrationConnectionList = React.useMemo(() => {

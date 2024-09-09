@@ -1,9 +1,11 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import * as React from "react";
 import Link from "next/link";
-import { Nullable } from "instill-sdk";
 
+import type { InstillStore } from "../../../lib";
 import {
-  InstillStore,
   useInfiniteConnectionPipelines,
   useInstillStore,
   useShallow,
@@ -34,22 +36,30 @@ export const ConnectionPipelineList = ({
   });
 
   const pipelineIds = React.useMemo(() => {
-    return (
-      relatedPipelineIds.data?.pages.reduce(
-        (acc: string[], page) => acc.concat(page.pipelineIds),
-        [],
-      ) || []
-    );
+    const result: string[] = [];
+
+    if (!relatedPipelineIds.isSuccess) {
+      return result;
+    }
+
+    for (const page of relatedPipelineIds.data.pages) {
+      for (const id of page.pipelineIds) {
+        result.push(id);
+      }
+    }
+    return result;
   }, [relatedPipelineIds.isSuccess, relatedPipelineIds.data]);
 
   React.useEffect(() => {
-    if (relatedPipelineIds.data) {
-      if (
-        relatedPipelineIds.data.pages[relatedPipelineIds.data.pages.length - 1]
-          ?.nextPageToken
-      ) {
-        relatedPipelineIds.fetchNextPage();
-      }
+    if (!relatedPipelineIds.isSuccess) {
+      return;
+    }
+
+    if (
+      relatedPipelineIds.data.pages[relatedPipelineIds.data.pages.length - 1]
+        ?.nextPageToken
+    ) {
+      relatedPipelineIds.fetchNextPage();
     }
   }, [relatedPipelineIds.isSuccess, relatedPipelineIds.data]);
 
