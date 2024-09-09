@@ -24,7 +24,6 @@ import {
 import { defaultCodeSnippetStyles } from "../../../constant";
 import {
   convertSentenceToCamelCase,
-  GeneralRecord,
   InstillStore,
   Model,
   ModelState,
@@ -131,7 +130,8 @@ export const ModelPlayground = ({
   const [inputFromExistingResult, setInputFromExistingResult] = useState<Record<
     string,
     unknown
-  > | null>(null);
+    // Stupid hack, because the model name field needs to use the models' name
+  > | null>({ data: { model: model?.id } });
   const [existingTriggerState, setExistingTriggerState] =
     useState<Nullable<Operation>>(null);
   const { accessToken, enabledQuery, navigationNamespaceAnchor } =
@@ -314,10 +314,10 @@ export const ModelPlayground = ({
     setIsModelRunInProgress(true);
 
     const input = recursiveHelpers.removeUndefinedAndNullFromArray(
-      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(parsedData),
+      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+        recursiveHelpers.parseToNum(parsedData),
+      ),
     );
-
-    const parsedStructuredData: GeneralRecord = input;
 
     const targetNamespace = namespaces.find(
       (namespace) => namespace.id === navigationNamespaceAnchor,
@@ -333,11 +333,7 @@ export const ModelPlayground = ({
         userId: routeInfo.data.namespaceId,
         accessToken,
         payload: {
-          taskInputs: [
-            {
-              [taskPropName]: parsedStructuredData,
-            },
-          ],
+          taskInputs: [input],
         },
         requesterUid: targetNamespace ? targetNamespace.uid : undefined,
         versionId: activeVersion,

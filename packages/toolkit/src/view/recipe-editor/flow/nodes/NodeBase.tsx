@@ -153,7 +153,7 @@ export const NodeBase = ({
         )}
       >
         <div className="flex flex-col">
-          <p className="product-body-text-4-medium w-full text-center text-semantic-fg-disabled">
+          <p className="product-body-text-3-medium w-full text-center text-semantic-fg-disabled">
             {id}
           </p>
         </div>
