@@ -205,8 +205,18 @@ export const ExistingConnection = ({
           <ConnectionItem key={connection.id} connection={connection} />
         ))}
       </Accordion.Content>
-      <Dialog.Root open={editConnection !== null}>
-        <Dialog.Content className="h-full md:h-auto lg:max-w-1/2 overflow-hidden">
+      <Dialog.Root
+        open={editConnection !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setEditConnection(null);
+          }
+        }}
+      >
+        <Dialog.Content
+          className="h-auto overflow-hidden"
+          style={{ width: "761px" }}
+        >
           <Dialog.Header>
             <Dialog.Title>Edit Connection</Dialog.Title>
             <Dialog.Close
@@ -226,12 +236,12 @@ export const ExistingConnection = ({
                   (item) => item.method === editConnection.method,
                 )?.schema
               }
+              className="mt-6 max-h-[600px] overflow-y-auto"
               values={{
                 ...connectionFull.data.setup,
                 id: editConnection.id,
               }}
               onSubmit={onSubmit}
-              className="mt-6"
               isProcessing={isProcessing}
               additionalCta={
                 <Button

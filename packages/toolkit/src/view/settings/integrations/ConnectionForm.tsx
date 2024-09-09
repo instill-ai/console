@@ -13,6 +13,7 @@ import { Button, cn, Form, Input, useToast } from "@instill-ai/design-system";
 import { LoadingSpin } from "../../../components";
 import { useInstillForm } from "../../../lib";
 import { FieldDescriptionTooltip } from "../../../lib/use-instill-form/components/common";
+import { recursiveHelpers } from "../../pipeline-builder";
 
 export const connectionFormID = "connection-form";
 
@@ -97,6 +98,10 @@ export const ConnectionForm = ({
       return;
     }
 
+    parsedData = recursiveHelpers.removeUndefinedAndNullFromArray(
+      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(parsedData),
+    );
+
     onSubmit({
       method,
       id,
@@ -109,43 +114,45 @@ export const ConnectionForm = ({
       <form
         id={`${connectionFormID}-${id}`}
         onSubmit={form.handleSubmit(onFormSubmit)}
-        className={cn("flex flex-col gap-y-3", className)}
+        className={cn("flex flex-col gap-y-3 px-[1px]", className)}
       >
-        <Form.Field
-          control={form.control}
-          name="id"
-          render={({ field }) => {
-            return (
-              <Form.Item>
-                <div className="flex flex-row gap-x-2">
-                  <Form.Label htmlFor={field.name}>ID *</Form.Label>
-                  <FieldDescriptionTooltip description="The component definition ID" />
-                </div>
-                <Form.Control>
-                  <Input.Root>
-                    <Input.Core
-                      id={field.name}
-                      className="nodrag nowheel placeholder:text-semantic-fg-disabled"
-                      type="text"
-                      onChange={(event) => {
-                        setConnectionId(event.target.value);
-                      }}
-                      defaultValue={form.getValues("id")}
-                      disabled={isEdit}
-                    />
-                  </Input.Root>
-                </Form.Control>
-                <Form.Description
-                  className="nodrag nopan cursor-text select-text"
-                  text="The component definition ID"
-                />
-                <Form.Message />
-              </Form.Item>
-            );
-          }}
-        />
-        {fields}
-        <div className="mt-3 flex flex-row justify-end gap-x-5">
+        <div className="flex flex-col gap-y-3 overflow-y-auto">
+          <Form.Field
+            control={form.control}
+            name="id"
+            render={({ field }) => {
+              return (
+                <Form.Item>
+                  <div className="flex flex-row gap-x-2">
+                    <Form.Label htmlFor={field.name}>ID *</Form.Label>
+                    <FieldDescriptionTooltip description="The component definition ID" />
+                  </div>
+                  <Form.Control>
+                    <Input.Root>
+                      <Input.Core
+                        id={field.name}
+                        className="nodrag nowheel placeholder:text-semantic-fg-disabled"
+                        type="text"
+                        onChange={(event) => {
+                          setConnectionId(event.target.value);
+                        }}
+                        defaultValue={form.getValues("id")}
+                        disabled={isEdit}
+                      />
+                    </Input.Root>
+                  </Form.Control>
+                  <Form.Description
+                    className="nodrag nopan cursor-text select-text"
+                    text="The component definition ID"
+                  />
+                  <Form.Message />
+                </Form.Item>
+              );
+            }}
+          />
+          {fields}
+        </div>
+        <div className="flex flex-row justify-end gap-x-5">
           {additionalCta}
           <Button
             disabled={isProcessing}
