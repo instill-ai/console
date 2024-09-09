@@ -128,7 +128,10 @@ export const CatalogTab = ({
     }
   };
 
-  const handleCloneCatalog = async (catalog: Catalog, newNamespaceId: string) => {
+  const handleCloneCatalog = async (
+    catalog: Catalog,
+    newNamespaceId: string,
+  ) => {
     if (!accessToken) return;
 
     const clonedCatalog = {
@@ -150,7 +153,7 @@ export const CatalogTab = ({
     } catch (error) {
       console.error("Error cloning catalog:", error);
     }
-  }
+  };
 
   const filteredAndSortedCatalogs = React.useMemo(() => {
     const filtered = catalogs.filter(

@@ -18,8 +18,8 @@ import {
 import { EntitySelector, LoadingSpin } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
-import { convertTagsToArray, formatName } from "./lib/helpers";
 import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
+import { convertTagsToArray, formatName } from "./lib/helpers";
 
 export const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -203,7 +203,7 @@ export const CreateCatalogDialog = ({
                     </p>
                   </div>
                   <Form.Control>
-                  <Textarea
+                    <Textarea
                       {...field}
                       id={field.name}
                       placeholder="Fill with a short description"
@@ -218,7 +218,7 @@ export const CreateCatalogDialog = ({
                 </Form.Item>
               )}
             />
-              <Form.Field
+            <Form.Field
               control={form.control}
               name="tags"
               render={({ field }) => {
