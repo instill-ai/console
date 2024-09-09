@@ -18,6 +18,7 @@ import {
 import { EntitySelector, LoadingSpin } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
+import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
 import { convertTagsToArray, formatName } from "./lib/helpers";
 
 export const CreateCatalogFormSchema = z.object({
@@ -65,6 +66,7 @@ export const CreateCatalogDialog = ({
 
   const { formState, watch, setValue } = form;
   const nameValue = watch("name");
+  const description = watch("description");
 
   const formattedName = formatName(nameValue);
 
@@ -205,9 +207,14 @@ export const CreateCatalogDialog = ({
                       {...field}
                       id={field.name}
                       placeholder="Fill with a short description"
+                      className="min-h-[100px] whitespace-pre-wrap"
+                      maxLength={MAX_DESCRIPTION_LENGTH}
                     />
                   </Form.Control>
                   <Form.Message />
+                  <div className="text-right text-semantic-fg-secondary product-body-text-4-regular">
+                    {description?.length || 0}/{MAX_DESCRIPTION_LENGTH}
+                  </div>
                 </Form.Item>
               )}
             />
@@ -216,10 +223,15 @@ export const CreateCatalogDialog = ({
               name="tags"
               render={({ field }) => {
                 return (
-                  <Form.Item className="flex flex-col gap-y-2.5">
-                    <Form.Label className="product-body-text-3-semibold">
-                      Tags
-                    </Form.Label>
+                  <Form.Item className="flex flex-col gap-y-1">
+                    <div className="flex items-center justify-between">
+                      <Form.Label className="product-body-text-3-semibold">
+                        Tags
+                      </Form.Label>
+                      <p className="my-auto text-semantic-fg-secondary product-body-text-4-regular">
+                        Optional
+                      </p>
+                    </div>
                     <Form.Control>
                       <Input.Root>
                         <Input.Core

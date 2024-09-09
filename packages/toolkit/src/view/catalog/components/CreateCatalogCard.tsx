@@ -26,7 +26,7 @@ type CreateCatalogCardProps = {
     data: EditCatalogDialogData,
     catalogId: string,
   ) => Promise<void>;
-  onCloneCatalog: (catalog: Catalog) => Promise<void>;
+  onCloneCatalog: (catalog: Catalog, newNamespaceId: string) => Promise<void>;
   onDeleteCatalog: (catalog: Catalog) => Promise<void>;
   disabled?: boolean;
 };
@@ -226,18 +226,22 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
         isOpen={cloneDialogIsOpen}
         onClose={() => setCloneDialogIsOpen(false)}
         onSubmit={async (clonedCatalog) => {
-          await onCloneCatalog({
-            ...catalog,
-            name: clonedCatalog.name,
-            description: clonedCatalog.description ?? "",
-            tags: convertTagsToArray(clonedCatalog.tags),
-          });
+          await onCloneCatalog(
+            {
+              ...catalog,
+              name: clonedCatalog.name,
+              description: clonedCatalog.description ?? "",
+              tags: convertTagsToArray(clonedCatalog.tags),
+            },
+            clonedCatalog.namespaceId,
+          );
           setCloneDialogIsOpen(false);
         }}
         initialValues={{
           name: catalog.name,
           description: catalog.description,
           tags: catalog.tags ? [catalog.tags.join(", ")] : [],
+          namespaceId: selectedNamespace || "",
         }}
       />
     </React.Fragment>
