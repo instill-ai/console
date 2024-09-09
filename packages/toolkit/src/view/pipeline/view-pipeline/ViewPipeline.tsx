@@ -50,6 +50,7 @@ export const ViewPipeline = () => {
   const releases = useSortedReleases({
     pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
     enabledQuery: enabledQuery && routeInfo.isSuccess,
+    shareCode: shareCode ?? undefined,
     accessToken,
   });
 
