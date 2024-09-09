@@ -78,7 +78,6 @@ export const CloneCatalogDialog = ({
   const nameValue = watch("name");
   const description = watch("description");
 
-  // const isNameValid = (name: string) => /^[a-z][-a-z0-9]{0,31}$/.test(name);
   const formattedName = formatName(nameValue);
 
   React.useEffect(() => {
@@ -108,12 +107,12 @@ export const CloneCatalogDialog = ({
       });
 
       // Update the navigation namespace anchor if a different namespace was selected
-      if (data.namespaceId !== navigationNamespaceAnchor) {
-        updateNavigationNamespaceAnchor(() => data.namespaceId);
+      if (formattedData.namespaceId !== navigationNamespaceAnchor) {
+        updateNavigationNamespaceAnchor(() => formattedData.namespaceId);
       }
 
       // Redirect to the new catalog page
-      router.push(`/${data.namespaceId}/catalog`);
+      router.push(`/${formattedData.namespaceId}/catalog`);
       setIsSubmitting(false);
       onClose();
     } catch (error) {
