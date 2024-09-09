@@ -61,6 +61,9 @@ export const PipelineContentViewer = ({
       if (pipeline?.permission.canEdit) {
         content = <PipelineSettings pipeline={pipeline} onUpdate={onUpdate} />;
       }
+      else{
+        content = <PipelinePlayground pipeline={pipeline} releases={releases} />;
+      }
 
       break;
     }
