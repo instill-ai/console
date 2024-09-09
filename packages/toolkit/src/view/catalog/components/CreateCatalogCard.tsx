@@ -238,7 +238,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
           setCloneDialogIsOpen(false);
         }}
         initialValues={{
-          name: `${catalog.name}-clone`,
+          name: catalog.name,
           description: catalog.description,
           tags: catalog.tags ? [catalog.tags.join(", ")] : [],
           namespaceId: selectedNamespace || "",
