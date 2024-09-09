@@ -5,6 +5,7 @@ export const InstillModelVisibility = [
   "VISIBILITY_PRIVATE",
   "VISIBILITY_PUBLIC",
 ] as const;
+
 export const InstillModelTask = [
   "TASK_CLASSIFICATION",
   "TASK_DETECTION",
@@ -12,12 +13,15 @@ export const InstillModelTask = [
   "TASK_OCR",
   "TASK_INSTANCE_SEGMENTATION",
   "TASK_SEMANTIC_SEGMENTATION",
-  "TASK_TEXT_GENERATION",
-  "TASK_TEXT_GENERATION_CHAT",
   "TASK_TEXT_TO_IMAGE",
   "TASK_IMAGE_TO_IMAGE",
-  "TASK_VISUAL_QUESTION_ANSWERING",
+  "TASK_EMBEDDING",
+  "TASK_SPEECH_RECOGNITION",
+  "TASK_CHAT",
+  "TASK_COMPLETION",
+  "TASK_CUSTOM",
 ] as const;
+
 export const defaultCodeSnippetStyles = {
   fontSize: "14px",
   backgroundColor: "transparent",
@@ -26,6 +30,9 @@ export const defaultCodeSnippetStyles = {
 };
 
 const taskPayloads = {
+  TASK_EMBEDDING: ``,
+  TASK_SPEECH_RECOGNITION: ``,
+  TASK_CUSTOM: ``,
   TASK_CLASSIFICATION: `"classification": {
         "imageUrl": {your-input-image-url}
       }`,
@@ -44,14 +51,14 @@ const taskPayloads = {
   TASK_SEMANTIC_SEGMENTATION: `"semanticSegmentation": {
         "imageUrl": {your-input-image-url}
       }`,
-  TASK_TEXT_GENERATION: `"textGeneration": {
+  TASK_COMPLETION: `"textGeneration": {
         "prompt": "In this beautiful day,",
         "systemMessage": "you are a helpful assistant",
         "maxNewTokens": 1024,
         "topK": 5,
         "temperature": 0.7
       }`,
-  TASK_TEXT_GENERATION_CHAT: `"textGeneration": {
+  TASK_CHAT: `"textGeneration": {
         "prompt": "How is the weather today?",
         "chatHistory": [
           {
@@ -83,18 +90,6 @@ const taskPayloads = {
         "cfgScale": 5.5,
         "seed": 1,
         "samples": 1
-      }`,
-  TASK_VISUAL_QUESTION_ANSWERING: `"visualQuestionAnswering": {
-        "prompt": "what is in the image?",
-        "promptImages": [
-          {
-            "promptImageUrl": "https://artifacts.instill.tech/imgs/dog.jpg"
-          }
-        ],
-        "systemMessage": "you are a helpful assistant",
-        "maxNewTokens": 1024,
-        "topK": 5,
-        "temperature": 0.7
       }`,
 };
 

@@ -671,6 +671,7 @@ export const ComponentCmdo = () => {
                           padding: "0.5em",
                           color: "#2f3337",
                           background: "#F8F9FC",
+                          fontSize: "12px",
                         },
                       }}
                       wrapLines={true}
