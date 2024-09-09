@@ -150,7 +150,6 @@ export const NodeBase = ({
       <div
         className={cn(
           "bottom-0 w-full flex flex-col absolute translate-y-full gap-y-2",
-          isSelected ? "opacity-100" : "opacity-0",
         )}
       >
         <div className="flex flex-col">
@@ -160,7 +159,12 @@ export const NodeBase = ({
         </div>
 
         {nodeDescription ? (
-          <div className="bg-semantic-warning-bg shadow-xxs p-2 duration-300 transition-opacity ease-in-out">
+          <div
+            className={cn(
+              "bg-semantic-warning-bg shadow-xxs p-2 duration-300 transition-opacity ease-in-out",
+              isSelected ? "opacity-100" : "opacity-0",
+            )}
+          >
             <p className="product-body-text-4-medium text-semantic-fg-disabled">
               {nodeDescription}
             </p>
