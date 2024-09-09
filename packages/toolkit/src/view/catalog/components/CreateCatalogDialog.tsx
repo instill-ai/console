@@ -19,6 +19,7 @@ import { EntitySelector, LoadingSpin } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 import { convertTagsToArray, formatName } from "./lib/helpers";
+import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
 
 export const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -65,6 +66,7 @@ export const CreateCatalogDialog = ({
 
   const { formState, watch, setValue } = form;
   const nameValue = watch("name");
+  const description = watch("description");
 
   const formattedName = formatName(nameValue);
 
@@ -201,25 +203,35 @@ export const CreateCatalogDialog = ({
                     </p>
                   </div>
                   <Form.Control>
-                    <Textarea
+                  <Textarea
                       {...field}
                       id={field.name}
                       placeholder="Fill with a short description"
+                      className="min-h-[100px] whitespace-pre-wrap"
+                      maxLength={MAX_DESCRIPTION_LENGTH}
                     />
                   </Form.Control>
                   <Form.Message />
+                  <div className="text-right text-semantic-fg-secondary product-body-text-4-regular">
+                    {description?.length || 0}/{MAX_DESCRIPTION_LENGTH}
+                  </div>
                 </Form.Item>
               )}
             />
-            <Form.Field
+              <Form.Field
               control={form.control}
               name="tags"
               render={({ field }) => {
                 return (
-                  <Form.Item className="flex flex-col gap-y-2.5">
-                    <Form.Label className="product-body-text-3-semibold">
-                      Tags
-                    </Form.Label>
+                  <Form.Item className="flex flex-col gap-y-1">
+                    <div className="flex items-center justify-between">
+                      <Form.Label className="product-body-text-3-semibold">
+                        Tags
+                      </Form.Label>
+                      <p className="my-auto text-semantic-fg-secondary product-body-text-4-regular">
+                        Optional
+                      </p>
+                    </div>
                     <Form.Control>
                       <Input.Root>
                         <Input.Core

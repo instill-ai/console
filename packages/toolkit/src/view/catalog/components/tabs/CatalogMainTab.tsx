@@ -128,8 +128,8 @@ export const CatalogTab = ({
     }
   };
 
-  const handleCloneCatalog = async (catalog: Catalog) => {
-    if (!selectedNamespace || !accessToken) return;
+  const handleCloneCatalog = async (catalog: Catalog, newNamespaceId: string) => {
+    if (!accessToken) return;
 
     const clonedCatalog = {
       name: `${catalog.name}-clone`,
@@ -141,16 +141,16 @@ export const CatalogTab = ({
       await createCatalog.mutateAsync({
         payload: {
           ...clonedCatalog,
-          ownerId: selectedNamespace,
+          ownerId: newNamespaceId,
         },
-        ownerId: selectedNamespace,
+        ownerId: newNamespaceId,
         accessToken,
       });
       catalogState.refetch();
     } catch (error) {
       console.error("Error cloning catalog:", error);
     }
-  };
+  }
 
   const filteredAndSortedCatalogs = React.useMemo(() => {
     const filtered = catalogs.filter(
