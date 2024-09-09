@@ -26,7 +26,7 @@ async function getModelData(entity: string, id: string, accessToken: Nullable<st
   }
 }
 
-export default async function ModelPage({ params }: Props) {
+export default async function RedirectionModelPage({ params }: Props) {
   const { entity, id } = params;
   
   const cookieStore = cookies();
