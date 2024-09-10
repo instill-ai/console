@@ -90,7 +90,7 @@ export const getModelInstanceTaskToolkit = (task: string) => {
             />
           );
         },
-        label: "Completion Text Generation",
+        label: "Text Completion",
       };
 
     case "TASK_EMBEDDING":

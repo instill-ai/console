@@ -10,8 +10,16 @@ import { Switch } from "@instill-ai/design-system";
 import { Nullable } from "../../../type";
 import { CopyButton } from "./CopyButton";
 
-export const MDTextViewer = ({ text }: { text: Nullable<string> }) => {
-  const [enableFormattedText, setEnableFormattedText] = React.useState(false);
+export const MDTextViewer = ({
+  text,
+  forceFormatted,
+}: {
+  text: Nullable<string>;
+  forceFormatted?: boolean;
+}) => {
+  const [enableFormattedText, setEnableFormattedText] = React.useState(
+    forceFormatted ?? false,
+  );
 
   const sanitizedHtmlText = sanitizeHtml(text ?? "");
 

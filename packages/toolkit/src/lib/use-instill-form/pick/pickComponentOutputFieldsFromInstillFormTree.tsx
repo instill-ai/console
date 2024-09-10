@@ -1,6 +1,5 @@
 import * as React from "react";
 
-import { dot } from "../../dot";
 import { GeneralRecord, Nullable } from "../../type";
 import { ComponentOutputFields } from "../components";
 import { ChooseTitleFrom, FieldMode, InstillFormTree } from "../types";
@@ -12,6 +11,7 @@ export type PickComponentOutputFieldsFromInstillFormTreeProps = {
   chooseTitleFrom?: ChooseTitleFrom;
   hideField?: boolean;
   objectArrayIndex?: number;
+  forceFormatted?: boolean;
 };
 
 export function pickComponentOutputFieldsFromInstillFormTree(
@@ -19,7 +19,8 @@ export function pickComponentOutputFieldsFromInstillFormTree(
 ) {
   // 1. Preprocess
 
-  const { tree, data, chooseTitleFrom, hideField, mode } = props;
+  const { tree, data, chooseTitleFrom, hideField, mode, forceFormatted } =
+    props;
 
   let title: Nullable<string> = null;
 
@@ -36,7 +37,11 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   let propertyValue: any = null;
 
   if (tree._type === "formGroup") {
-    propertyValue = data ?? null;
+    if (tree.fieldKey) {
+      propertyValue = data ? data[tree.fieldKey] : null;
+    } else {
+      propertyValue = data ?? null;
+    }
   } else if (tree._type === "objectArray") {
     if (tree.fieldKey) {
       propertyValue = data
@@ -48,8 +53,8 @@ export function pickComponentOutputFieldsFromInstillFormTree(
       propertyValue = Array.isArray(data) ? data : null;
     }
   } else if (tree._type === "formItem") {
-    if (tree.path) {
-      propertyValue = data ? (dot.getter(data, tree.path) ?? null) : null;
+    if (tree.fieldKey) {
+      propertyValue = data ? data[tree.fieldKey] : null;
     }
   } else if (tree._type === "arrayArray") {
     if (tree.fieldKey) {
@@ -125,10 +130,9 @@ export function pickComponentOutputFieldsFromInstillFormTree(
 
   if (tree._type === "objectArray") {
     const objectArrayData = propertyValue as GeneralRecord[];
-
     return propertyValue && tree.fieldKey ? (
       <div key={tree.path || tree.fieldKey} className="flex flex-col gap-y-2">
-        {objectArrayData.map((data, idx) => {
+        {objectArrayData.map((object, idx) => {
           return pickComponentOutputFieldsFromInstillFormTree({
             ...props,
             tree: tree.properties,
@@ -138,7 +142,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
             // Down below the formTree the foo field's path is data.foo
             // So we need to restructure the data to {data:{foo: 1}} and {data:{foo: 2}}
             data: {
-              [tree.fieldKey as string]: data,
+              [tree.fieldKey as string]: object,
             },
             objectArrayIndex: idx,
           });
@@ -190,6 +194,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         title={title}
         text={propertyValue}
         hideField={hideField}
+        forceFormatted={forceFormatted}
       />
     );
   }
@@ -259,6 +264,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
             title={title}
             texts={propertyValue}
             hideField={hideField}
+            forceFormatted={forceFormatted}
           />
         );
       }
@@ -299,6 +305,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
             title={title}
             texts={propertyValue}
             hideField={hideField}
+            forceFormatted={forceFormatted}
           />
         );
       }
@@ -310,6 +317,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
             title={title}
             texts={propertyValue}
             hideField={hideField}
+            forceFormatted={forceFormatted}
           />
         );
       }
@@ -342,6 +350,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           title={title}
           text={propertyValue}
           hideField={hideField}
+          forceFormatted={forceFormatted}
         />
       );
     }
@@ -382,6 +391,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           title={title}
           text={propertyValue}
           hideField={hideField}
+          forceFormatted={forceFormatted}
         />
       );
     }
@@ -402,6 +412,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           title={title}
           text={propertyValue}
           hideField={hideField}
+          forceFormatted={forceFormatted}
         />
       );
     }

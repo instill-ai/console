@@ -83,6 +83,7 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
     mode: "demo",
     schema: model?.outputSchema || null,
     data: taskInputOutput.output,
+    forceFormatted: true,
   });
 
   return (

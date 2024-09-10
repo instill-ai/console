@@ -8,10 +8,11 @@ import { NoOutput } from "./NoOutput";
 
 export type TextFieldProps = {
   text: Nullable<string>;
+  forceFormatted?: boolean;
 } & ComponentOutputFieldBaseProps;
 
 export const TextField = (props: TextFieldProps) => {
-  const { title, text, hideField } = props;
+  const { title, text, hideField, forceFormatted } = props;
 
   const normalizedText = text ? String(text) : null;
 
@@ -19,7 +20,7 @@ export const TextField = (props: TextFieldProps) => {
     <FieldRoot title={title} fieldKey={`${title}-field`}>
       {!hideField ? (
         typeof normalizedText === "string" ? (
-          <MDTextViewer text={normalizedText} />
+          <MDTextViewer text={normalizedText} forceFormatted={forceFormatted} />
         ) : (
           <NoOutput />
         )
