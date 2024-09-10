@@ -192,6 +192,7 @@ export const Input = ({
         });
 
         const streamReader = stream.getReader();
+        let buffer = "";
 
         // Parse the stream
         try {
@@ -202,132 +203,144 @@ export const Input = ({
             if (done) {
               break;
             }
+            // Append the new chunk to the buffer
+            buffer += new TextDecoder().decode(value);
 
-            const events = parseEventReadableStream(value);
+            // Split the buffer into complete events
+            const eventStrings = buffer.split("\n\n");
 
-            updateTriggerPipelineStreamMap((prev) => {
-              let newTriggerPipelineStreamMap = prev;
-              for (const event of events) {
-                if (isPipelineStatusUpdatedEvent(event)) {
-                  newTriggerPipelineStreamMap = {
-                    pipeline: {
-                      ...newTriggerPipelineStreamMap?.pipeline,
-                      status: event.data.status,
-                    },
-                    component: newTriggerPipelineStreamMap?.component
-                      ? newTriggerPipelineStreamMap.component
-                      : {},
-                  };
-                }
+            // The last element might be incomplete, so we keep it in the buffer
+            buffer = eventStrings.pop() || "";
 
-                if (isPipelineOutputUpdatedEvent(event)) {
-                  newTriggerPipelineStreamMap = {
-                    pipeline: {
-                      ...newTriggerPipelineStreamMap?.pipeline,
-                      output: event.data.output,
-                    },
-                    component: newTriggerPipelineStreamMap?.component
-                      ? newTriggerPipelineStreamMap.component
-                      : {},
-                  };
-                }
+            for (const eventString of eventStrings) {
+              if (eventString.trim()) {
+                const events = parseEventReadableStream(eventString);
 
-                if (isComponentStatusUpdatedEvent(event)) {
-                  const targetComponent =
-                    newTriggerPipelineStreamMap?.component?.[
-                      event.data.componentID
-                    ];
+                updateTriggerPipelineStreamMap((prev) => {
+                  let newTriggerPipelineStreamMap = prev;
+                  for (const event of events) {
+                    if (isPipelineStatusUpdatedEvent(event)) {
+                      newTriggerPipelineStreamMap = {
+                        pipeline: {
+                          ...newTriggerPipelineStreamMap?.pipeline,
+                          status: event.data.status,
+                        },
+                        component: newTriggerPipelineStreamMap?.component
+                          ? newTriggerPipelineStreamMap.component
+                          : {},
+                      };
+                    }
 
-                  newTriggerPipelineStreamMap = {
-                    pipeline: newTriggerPipelineStreamMap?.pipeline,
-                    component: {
-                      ...newTriggerPipelineStreamMap?.component,
-                      [event.data.componentID]: {
-                        ...targetComponent,
-                        status: event.data.status,
-                      },
-                    },
-                  };
-                }
+                    if (isPipelineOutputUpdatedEvent(event)) {
+                      newTriggerPipelineStreamMap = {
+                        pipeline: {
+                          ...newTriggerPipelineStreamMap?.pipeline,
+                          output: event.data.output,
+                        },
+                        component: newTriggerPipelineStreamMap?.component
+                          ? newTriggerPipelineStreamMap.component
+                          : {},
+                      };
+                    }
 
-                if (isComponentOutputUpdatedEvent(event)) {
-                  const targetComponent =
-                    newTriggerPipelineStreamMap?.component?.[
-                      event.data.componentID
-                    ];
+                    if (isComponentStatusUpdatedEvent(event)) {
+                      const targetComponent =
+                        newTriggerPipelineStreamMap?.component?.[
+                          event.data.componentID
+                        ];
 
-                  newTriggerPipelineStreamMap = {
-                    pipeline: newTriggerPipelineStreamMap?.pipeline,
-                    component: {
-                      ...newTriggerPipelineStreamMap?.component,
-                      [event.data.componentID]: {
-                        ...targetComponent,
-                        output: event.data.output,
-                        status: event.data.status,
-                      },
-                    },
-                  };
-                }
+                      newTriggerPipelineStreamMap = {
+                        pipeline: newTriggerPipelineStreamMap?.pipeline,
+                        component: {
+                          ...newTriggerPipelineStreamMap?.component,
+                          [event.data.componentID]: {
+                            ...targetComponent,
+                            status: event.data.status,
+                          },
+                        },
+                      };
+                    }
 
-                if (isComponentErrorUpdatedEvent(event)) {
-                  const targetComponent =
-                    newTriggerPipelineStreamMap?.component?.[
-                      event.data.componentID
-                    ];
+                    if (isComponentOutputUpdatedEvent(event)) {
+                      const targetComponent =
+                        newTriggerPipelineStreamMap?.component?.[
+                          event.data.componentID
+                        ];
 
-                  newTriggerPipelineStreamMap = {
-                    pipeline: newTriggerPipelineStreamMap?.pipeline,
-                    component: {
-                      ...newTriggerPipelineStreamMap?.component,
-                      [event.data.componentID]: {
-                        ...targetComponent,
-                        error: event.data.error,
-                        status: event.data.status,
-                      },
-                    },
-                  };
-                }
+                      newTriggerPipelineStreamMap = {
+                        pipeline: newTriggerPipelineStreamMap?.pipeline,
+                        component: {
+                          ...newTriggerPipelineStreamMap?.component,
+                          [event.data.componentID]: {
+                            ...targetComponent,
+                            output: event.data.output,
+                            status: event.data.status,
+                          },
+                        },
+                      };
+                    }
 
-                if (isComponentInputUpdatedEvent(event)) {
-                  const targetComponent =
-                    newTriggerPipelineStreamMap?.component?.[
-                      event.data.componentID
-                    ];
+                    if (isComponentErrorUpdatedEvent(event)) {
+                      const targetComponent =
+                        newTriggerPipelineStreamMap?.component?.[
+                          event.data.componentID
+                        ];
 
-                  newTriggerPipelineStreamMap = {
-                    pipeline: newTriggerPipelineStreamMap?.pipeline,
-                    component: {
-                      ...newTriggerPipelineStreamMap?.component,
-                      [event.data.componentID]: {
-                        ...targetComponent,
-                        input: event.data.input,
-                        status: event.data.status,
-                      },
-                    },
-                  };
-                }
-              }
+                      newTriggerPipelineStreamMap = {
+                        pipeline: newTriggerPipelineStreamMap?.pipeline,
+                        component: {
+                          ...newTriggerPipelineStreamMap?.component,
+                          [event.data.componentID]: {
+                            ...targetComponent,
+                            error: event.data.error,
+                            status: event.data.status,
+                          },
+                        },
+                      };
+                    }
 
-              return newTriggerPipelineStreamMap;
-            });
+                    if (isComponentInputUpdatedEvent(event)) {
+                      const targetComponent =
+                        newTriggerPipelineStreamMap?.component?.[
+                          event.data.componentID
+                        ];
 
-            for (const event of events) {
-              if (isPipelineStatusUpdatedEvent(event)) {
-                if (event.data.status.completed) {
-                  updateIsTriggeringPipeline(() => false);
-                }
-              }
+                      newTriggerPipelineStreamMap = {
+                        pipeline: newTriggerPipelineStreamMap?.pipeline,
+                        component: {
+                          ...newTriggerPipelineStreamMap?.component,
+                          [event.data.componentID]: {
+                            ...targetComponent,
+                            input: event.data.input,
+                            status: event.data.status,
+                          },
+                        },
+                      };
+                    }
+                  }
 
-              if (isPipelineErrorUpdatedEvent(event)) {
-                if (event.data.status.errored) {
-                  updateIsTriggeringPipeline(() => false);
-                  toast({
-                    title: "Something went wrong when trigger the pipeline",
-                    variant: "alert-error",
-                    size: "large",
-                    description: event.data.error?.message ?? undefined,
-                    duration: 15000,
-                  });
+                  return newTriggerPipelineStreamMap;
+                });
+
+                for (const event of events) {
+                  if (isPipelineStatusUpdatedEvent(event)) {
+                    if (event.data.status.completed) {
+                      updateIsTriggeringPipeline(() => false);
+                    }
+                  }
+
+                  if (isPipelineErrorUpdatedEvent(event)) {
+                    if (event.data.status.errored) {
+                      updateIsTriggeringPipeline(() => false);
+                      toast({
+                        title: "Something went wrong when trigger the pipeline",
+                        variant: "alert-error",
+                        size: "large",
+                        description: event.data.error?.message ?? undefined,
+                        duration: 15000,
+                      });
+                    }
+                  }
                 }
               }
             }

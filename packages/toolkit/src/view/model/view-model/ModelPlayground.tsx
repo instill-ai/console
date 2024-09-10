@@ -262,22 +262,19 @@ export const ModelPlayground = ({
           isRendered: true,
         };
 
-        const taskPropName = convertTaskNameToPayloadPropName(
-          model.task,
-        ) as string;
+        if (existingTriggerState.response?.request.taskInputs[0]) {
+          setInputFromExistingResult(
+            convertValuesToString(
+              existingTriggerState.response?.request.taskInputs[0],
+            ),
+          );
+        }
 
-        setInputFromExistingResult(
-          convertValuesToString(
-            existingTriggerState.response?.request.taskInputs[0]?.[
-              taskPropName
-            ],
-          ),
-        );
-        setModelRunResult(
-          existingTriggerState.response?.response.taskOutputs[0]?.[
-            taskPropName
-          ],
-        );
+        if (existingTriggerState.response?.response.taskOutputs[0]) {
+          setModelRunResult(
+            existingTriggerState.response?.response.taskOutputs[0],
+          );
+        }
 
         setIsModelRunInProgress(false);
       }

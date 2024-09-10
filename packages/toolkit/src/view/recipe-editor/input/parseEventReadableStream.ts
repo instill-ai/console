@@ -5,7 +5,7 @@ import {
 } from "instill-sdk";
 import { Nullable } from "vitest";
 
-export function parseEventReadableStream(chunk: Uint8Array) {
+export function parseEventReadableStream(chunk: Uint8Array | string) {
   const text =
     typeof chunk === "string" ? chunk : new TextDecoder().decode(chunk);
   const eventStrings = text.split("\n\n").filter((str) => str.trim() !== "");
