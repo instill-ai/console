@@ -13,7 +13,7 @@ export type UseComponentOutputFieldsProps = {
   data: Nullable<GeneralRecord>;
 } & Pick<
   PickComponentOutputFieldsFromInstillFormTreeProps,
-  "chooseTitleFrom" | "hideField" | "mode"
+  "chooseTitleFrom" | "hideField" | "mode" | "forceFormatted"
 >;
 
 export function useComponentOutputFields({
@@ -22,6 +22,7 @@ export function useComponentOutputFields({
   chooseTitleFrom,
   hideField,
   mode,
+  forceFormatted,
 }: UseComponentOutputFieldsProps) {
   const fields = React.useMemo(() => {
     if (!schema) {
@@ -36,10 +37,11 @@ export function useComponentOutputFields({
       chooseTitleFrom,
       hideField,
       mode,
+      forceFormatted,
     });
 
     return fields;
-  }, [schema, data, chooseTitleFrom, hideField, mode]);
+  }, [schema, data, chooseTitleFrom, hideField, mode, forceFormatted]);
 
   return fields;
 }

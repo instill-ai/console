@@ -82,6 +82,7 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
     mode: "demo",
     schema: pipelineRun?.dataSpecification?.output || null,
     data: pipelineRun?.outputs[0] || null,
+    forceFormatted: true,
   });
 
   const [outputActiveView, setOutputActiveView] =

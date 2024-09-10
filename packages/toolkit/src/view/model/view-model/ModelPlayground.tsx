@@ -371,6 +371,7 @@ export const ModelPlayground = ({
     mode: "demo",
     schema: model?.outputSchema || {},
     data: modelRunResult || null,
+    forceFormatted: true,
   });
 
   return (

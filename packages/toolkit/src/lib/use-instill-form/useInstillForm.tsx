@@ -122,6 +122,8 @@ export function useInstillForm(
         : _data
       : _data;
 
+    console.log("initialValues", _defaultValues);
+
     setInitialValues(_defaultValues);
   }, [
     schema,

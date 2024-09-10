@@ -28,6 +28,7 @@ export const Output = ({
     schema: outputSchema,
     data: triggerPipelineStreamMap?.pipeline?.output ?? null,
     chooseTitleFrom: "title",
+    forceFormatted: true,
   });
 
   const hasOutput = React.useMemo(() => {

@@ -8,10 +8,11 @@ import { NoOutput } from "./NoOutput";
 
 export type TextsFieldProps = {
   texts: Nullable<string>[];
+  forceFormatted?: boolean;
 } & ComponentOutputFieldBaseProps;
 
 export const TextsField = (props: TextsFieldProps) => {
-  const { title, texts, hideField } = props;
+  const { title, texts, hideField, forceFormatted } = props;
 
   const normalizedTexts = Array.isArray(texts)
     ? texts?.map((text) => String(text))
@@ -23,7 +24,11 @@ export const TextsField = (props: TextsFieldProps) => {
         <div className="flex w-full flex-col flex-wrap gap-2">
           {normalizedTexts && normalizedTexts.length > 0 ? (
             normalizedTexts.map((text) => (
-              <MDTextViewer key={`${title}-${text}-field`} text={text} />
+              <MDTextViewer
+                key={`${title}-${text}-field`}
+                text={text}
+                forceFormatted={forceFormatted}
+              />
             ))
           ) : (
             <NoOutput />

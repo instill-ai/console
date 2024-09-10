@@ -63,6 +63,7 @@ export const ComponentOutputs = ({
     schema: outputSchema,
     data,
     chooseTitleFrom,
+    forceFormatted: true,
   });
 
   return (
