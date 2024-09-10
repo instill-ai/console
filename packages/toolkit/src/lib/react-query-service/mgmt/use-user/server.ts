@@ -14,12 +14,10 @@ export async function fetchUser({
     return Promise.reject(new Error("userName not provided"));
   }
 
-  if (!accessToken) {
-    return Promise.reject(new Error("accessToken not provided"));
-  }
-
   try {
-    const client = getInstillAPIClient({ accessToken });
+    const client = getInstillAPIClient({
+      accessToken: accessToken ?? undefined,
+    });
 
     const user = await client.core.user.getUser({ userName });
 
