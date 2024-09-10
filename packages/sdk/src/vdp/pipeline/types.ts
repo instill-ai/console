@@ -230,6 +230,7 @@ export type ListPaginatedNamespacePipelineRunsRequest = {
   page: number;
   orderBy: Nullable<string>;
   filter: Nullable<string>;
+  requesterUid?: string;
 };
 
 export type ListPaginatedNamespacePipelineRunsResponse = {
@@ -273,6 +274,7 @@ export type ListPaginatedNamespacePipelineRunComponentsRequest = {
   page: number;
   orderBy: Nullable<string>;
   filter: Nullable<string>;
+  requesterUid?: string;
 };
 
 export type ListPaginatedNamespacePipelineRunComponentsResponse = {
