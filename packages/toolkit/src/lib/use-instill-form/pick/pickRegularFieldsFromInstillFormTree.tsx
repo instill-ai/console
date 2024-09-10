@@ -196,16 +196,19 @@ export function pickRegularFieldsFromInstillFormTree(
 
     return (
       <div key={modifiedPath || tree.fieldKey}>
-        <p
-          className={cn(
-            "mb-2 text-semantic-fg-primary",
-            size === "sm"
-              ? "product-body-text-4-medium"
-              : "product-body-text-3-medium",
-          )}
-        >
-          {title}
-        </p>
+        {parentIsObjectArray ? null : (
+          <p
+            className={cn(
+              "mb-2 text-semantic-fg-primary",
+              size === "sm"
+                ? "product-body-text-4-medium"
+                : "product-body-text-3-medium",
+            )}
+          >
+            {title}
+          </p>
+        )}
+
         <div className={cn("flex flex-col gap-y-4")}>
           {tree.properties.map((property) => {
             return pickRegularFieldsFromInstillFormTree(
