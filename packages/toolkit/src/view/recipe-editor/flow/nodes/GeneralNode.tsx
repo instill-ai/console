@@ -140,6 +140,10 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
         break;
     }
 
+    if (data.definition.id === "instill-model") {
+      documentationUrl = "https://www.instill.tech/docs/component/ai/instill";
+    }
+
     if (!documentationUrl) {
       return;
     }
