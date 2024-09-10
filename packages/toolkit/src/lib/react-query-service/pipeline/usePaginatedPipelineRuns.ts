@@ -15,6 +15,7 @@ export function usePaginatedPipelineRuns({
   page,
   orderBy,
   filter,
+  requesterUid,
 }: {
   pipelineName: Nullable<string>;
   accessToken: Nullable<string>;
@@ -25,6 +26,7 @@ export function usePaginatedPipelineRuns({
   page?: number;
   orderBy?: string;
   filter?: string;
+  requesterUid?: string;
 }) {
   const queryKey = [
     "pipeline-runs",
@@ -63,6 +65,7 @@ export function usePaginatedPipelineRuns({
           page: page || 0,
           orderBy: orderBy || null,
           filter: filter || null,
+          requesterUid,
         },
       );
 

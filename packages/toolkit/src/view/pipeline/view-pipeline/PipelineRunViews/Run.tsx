@@ -20,6 +20,7 @@ import {
   usePipelineTriggerRequestForm,
   useRouteInfo,
   useShallow,
+  useUserNamespaces,
   useWindowSize,
 } from "../../../../lib";
 import { usePaginatedPipelineRuns } from "../../../../lib/react-query-service/pipeline";
@@ -38,11 +39,20 @@ export type PipelineRunProps = {
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
 export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
   const routeInfo = useRouteInfo();
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, navigationNamespaceAnchor } =
+    useInstillStore(useShallow(selector));
+
+  const namespaces = useUserNamespaces();
+
+  const targetNamespace = namespaces.find(
+    (namespace) => namespace.id === navigationNamespaceAnchor,
+  );
+
   const pipelineRuns = usePaginatedPipelineRuns({
     pipelineName: `namespaces/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`,
     enabled: enabledQuery && routeInfo.isSuccess,
@@ -51,10 +61,13 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
     page: 0,
     filter: `pipelineTriggerUID="${id}"`,
     view: "VIEW_FULL",
+    requesterUid: targetNamespace ? targetNamespace.uid : undefined,
   });
+
   const pipelineRun = React.useMemo(() => {
     return pipelineRuns.data?.pipelineRuns[0] || null;
   }, [pipelineRuns.isSuccess, pipelineRuns.data]);
+
   const { fieldItems: fields, form } = usePipelineTriggerRequestForm({
     mode: "demo",
     fields: pipelineRun?.recipeSnapshot?.variable || null,

@@ -15,6 +15,7 @@ export function usePaginatedPipelineRunComponents({
   orderBy,
   filter,
   view = "VIEW_BASIC",
+  requesterUid,
 }: {
   pipelineRunId: Nullable<string>;
   accessToken: Nullable<string>;
@@ -25,6 +26,7 @@ export function usePaginatedPipelineRunComponents({
   page?: number;
   orderBy?: Nullable<string>;
   filter?: string;
+  requesterUid?: string;
 }) {
   const queryKey = [
     "pipeline-component-runs",
@@ -63,6 +65,7 @@ export function usePaginatedPipelineRunComponents({
           page: page || 0,
           orderBy: orderBy || null,
           filter: filter || null,
+          requesterUid,
         });
 
       return Promise.resolve(data);

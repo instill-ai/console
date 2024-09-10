@@ -120,7 +120,15 @@ export class PipelineClient extends APIResource {
   async listPaginatedNamespacePipelineRuns(
     props: ListPaginatedNamespacePipelineRunsRequest,
   ) {
-    const { pipelineName, view, pageSize, page, orderBy, filter } = props;
+    const {
+      pipelineName,
+      view,
+      pageSize,
+      page,
+      orderBy,
+      filter,
+      requesterUid,
+    } = props;
 
     try {
       const queryString = getQueryString({
@@ -132,9 +140,14 @@ export class PipelineClient extends APIResource {
         view,
       });
 
+      const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
+
       const data =
         await this._client.get<ListPaginatedNamespacePipelineRunsResponse>(
           queryString,
+          {
+            additionalHeaders,
+          },
         );
 
       return Promise.resolve(data);
@@ -146,9 +159,19 @@ export class PipelineClient extends APIResource {
   async listPaginatedNamespacePipelineRunComponents(
     props: ListPaginatedNamespacePipelineRunComponentsRequest,
   ) {
-    const { pipelineRunId, view, pageSize, page, orderBy, filter } = props;
+    const {
+      pipelineRunId,
+      view,
+      pageSize,
+      page,
+      orderBy,
+      filter,
+      requesterUid,
+    } = props;
 
     try {
+      const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
+
       const queryString = getQueryString({
         baseURL: `/pipeline-runs/${pipelineRunId}/component-runs`,
         pageSize,
@@ -161,6 +184,9 @@ export class PipelineClient extends APIResource {
       const data =
         await this._client.get<ListPaginatedNamespacePipelineRunComponentsResponse>(
           queryString,
+          {
+            additionalHeaders,
+          },
         );
 
       return Promise.resolve(data);
