@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.5.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.4.1...instill-sdk-v0.5.0) (2024-09-11)
+
+
+### Features
+
+* Integration page ([#1411](https://github.com/instill-ai/console/issues/1411)) ([c1f800b](https://github.com/instill-ai/console/commit/c1f800b862ea3d766d6597d8ce81881d99220159))
+* optimistic update the pipeline recipe to avoid jittering cursor position ([#1433](https://github.com/instill-ai/console/issues/1433)) ([bcc24dd](https://github.com/instill-ai/console/commit/bcc24dd8eaa2b556aed387386658574094f986b6))
+* use the preview in the editor as the pipeline preview tab ([#1441](https://github.com/instill-ai/console/issues/1441)) ([bb4cadc](https://github.com/instill-ai/console/commit/bb4cadc43ede0d0d7059c3cb39bada7ddae94bd2))
+
+
+### Bug Fixes
+
+* add missing instill requester uid header in list pipeline runs ([#1453](https://github.com/instill-ai/console/issues/1453)) ([aebbe96](https://github.com/instill-ai/console/commit/aebbe96f57ba5b877812072743531c601834f19b))
+* fix model input type issue and add icons ([#1448](https://github.com/instill-ai/console/issues/1448)) ([1a71760](https://github.com/instill-ai/console/commit/1a7176059699ed212020ffa08389eb04d5832a47))
+* fix model output issue ([#1454](https://github.com/instill-ai/console/issues/1454)) ([a4e833c](https://github.com/instill-ai/console/commit/a4e833c9b1bf9e2af7de050d1ba3e8de08edd79e))
+* fix pipeline overview share-by-link is not working ([#1443](https://github.com/instill-ai/console/issues/1443)) ([d46fdeb](https://github.com/instill-ai/console/commit/d46fdeb64fc78b6390e83803b7a66d6274c9b6aa))
+
 ## [0.4.1](https://github.com/instill-ai/console/compare/instill-sdk-v0.4.0...instill-sdk-v0.4.1) (2024-08-31)
 
 
