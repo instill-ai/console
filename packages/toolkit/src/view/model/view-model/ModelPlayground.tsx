@@ -263,17 +263,13 @@ export const ModelPlayground = ({
         };
 
         if (existingTriggerState.response?.request.taskInputs[0]) {
-          setInputFromExistingResult(
-            convertValuesToString(
-              existingTriggerState.response?.request.taskInputs[0],
-            ),
-          );
+          const input = existingTriggerState.response?.request.taskInputs[0];
+          setInputFromExistingResult(convertValuesToString(input));
         }
 
         if (existingTriggerState.response?.response.taskOutputs[0]) {
-          setModelRunResult(
-            existingTriggerState.response?.response.taskOutputs[0],
-          );
+          const output = existingTriggerState.response?.response.taskOutputs[0];
+          setModelRunResult(output);
         }
 
         setIsModelRunInProgress(false);

@@ -101,7 +101,7 @@ export function transformInstillFormTreeToInitialSelectedCondition(
       if (options?.initialData) {
         const selectedConditionKey = dot.getter(
           options.initialData,
-          constField.path,
+          finalConstPath,
         );
 
         if (selectedConditionKey) {
