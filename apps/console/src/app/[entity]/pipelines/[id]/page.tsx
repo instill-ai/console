@@ -43,4 +43,7 @@ export default async function RedirectionPipelinePage({ params }: RedirectionPip
     return redirect('/404');
   }
 
+  // If the pipeline exists, redirect to the playground
+  return redirect(`/${entity}/pipelines/${id}/playground`);
+
 }
