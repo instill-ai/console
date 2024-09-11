@@ -24,7 +24,6 @@ import {
 } from "../../../../lib";
 import { env, getHumanReadableStringFromTime } from "../../../../server";
 import {
-  convertTaskNameToPayloadPropName,
   convertValuesToString,
   ModelOutputActiveView,
 } from "../ModelPlayground";
@@ -57,17 +56,11 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
     return modelRuns.data?.runs[0] || null;
   }, [modelRuns.isSuccess, modelRuns.data]);
   const taskInputOutput = React.useMemo(() => {
-    const taskPropName = convertTaskNameToPayloadPropName(
-      model?.task,
-    ) as string;
-
     return {
       input: modelRun?.taskInputs[0]
-        ? convertValuesToString(modelRun?.taskInputs[0][taskPropName])
+        ? convertValuesToString(modelRun?.taskInputs[0])
         : null,
-      output: modelRun?.taskOutputs[0]
-        ? modelRun?.taskOutputs[0][taskPropName]
-        : null,
+      output: modelRun?.taskOutputs[0] ? modelRun?.taskOutputs[0] : null,
     };
   }, [modelRun, model]);
 
