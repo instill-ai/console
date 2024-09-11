@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { fetchNamespaceType, fetchUserModel } from '@instill-ai/toolkit/server';
 import { Nullable } from '@instill-ai/toolkit';
 
-type Props = {
+type RedirectionModelPageProps = {
   params: { id: string; entity: string };
 };
 
@@ -26,7 +26,7 @@ async function getModelData(entity: string, id: string, accessToken: Nullable<st
   }
 }
 
-export default async function RedirectionModelPage({ params }: Props) {
+export default async function RedirectionModelPage({ params }: RedirectionModelPageProps) {
   const { entity, id } = params;
 
   const cookieStore = cookies();

@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { fetchNamespacePipeline, fetchNamespaceType } from '@instill-ai/toolkit/server';
 import { Nullable } from '@instill-ai/toolkit';
 
-type Props = {
+type RedirectionPipelinePageProps = {
   params: { id: string; entity: string };
 };
 
@@ -26,7 +26,7 @@ async function getPipelineData(entity: string, id: string, accessToken: Nullable
   }
 }
 
-export default async function RedirectionPipelinePage({ params }: Props) {
+export default async function RedirectionPipelinePage({ params }: RedirectionPipelinePageProps) {
   const { entity, id } = params;
 
   const cookieStore = cookies();
