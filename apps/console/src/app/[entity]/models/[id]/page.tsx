@@ -22,27 +22,27 @@ async function getModelData(entity: string, id: string, accessToken: Nullable<st
     }
   } catch (error) {
     console.error(error);
-    return null;
+    return Promise.reject(null);
   }
 }
 
 export default async function RedirectionModelPage({ params }: Props) {
   const { entity, id } = params;
-  
+
   const cookieStore = cookies();
   const authSessionCookie = cookieStore.get("instill-auth-session")?.value;
   let accessToken: Nullable<string> = null;
   if (authSessionCookie) {
     accessToken = JSON.parse(authSessionCookie).accessToken;
   }
-  
+
   const modelData = await getModelData(entity, id, accessToken);
-  
+
   // Redirect to 404 if the model doesn't exist
   if (!modelData) {
     return redirect('/404');
   }
-  
+
   // If the model exists, redirect to the playground
   return redirect(`/${entity}/models/${id}/playground`);
 }
