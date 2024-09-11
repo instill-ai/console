@@ -405,6 +405,7 @@ export class ModelClient extends APIResource {
     page,
     orderBy,
     filter,
+    requesterUid,
   }: ListModelRunsRequest) {
     try {
       const queryString = getQueryString({
@@ -416,7 +417,11 @@ export class ModelClient extends APIResource {
         view,
       });
 
-      const data = await this._client.get<ListModelRunsResponse>(queryString);
+      const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
+
+      const data = await this._client.get<ListModelRunsResponse>(queryString, {
+        additionalHeaders,
+      });
 
       return Promise.resolve(data);
     } catch (err) {
