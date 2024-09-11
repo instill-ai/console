@@ -1,5 +1,47 @@
 # Changelog
 
+## [0.101.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.100.2...@instill-ai/toolkit-v0.101.0) (2024-09-11)
+
+
+### Features
+
+* adapt new ai task schema for auto gen form ([#1429](https://github.com/instill-ai/console/issues/1429)) ([95ce7e0](https://github.com/instill-ai/console/commit/95ce7e0f2f141b5e6bd92f39479284bed8a99d88))
+* **catalog:** feat add tags to catalog ([#1435](https://github.com/instill-ai/console/issues/1435)) ([2a81894](https://github.com/instill-ai/console/commit/2a81894c7b966514fee805af4c4c1618e7ddff22))
+* **editor:** add the pipeline run output placeholder view  ([#1440](https://github.com/instill-ai/console/issues/1440)) ([9d15d6d](https://github.com/instill-ai/console/commit/9d15d6d35dab23a328113a1ef0ae239671117aa0))
+* **editor:** allow restoring history after formatting the code ([#1424](https://github.com/instill-ai/console/issues/1424)) ([b64d941](https://github.com/instill-ai/console/commit/b64d9415c432130e304dcba171b202b942fb99b1))
+* **editor:** enable force update shortcut on editor ([#1437](https://github.com/instill-ai/console/issues/1437)) ([a158fa0](https://github.com/instill-ai/console/commit/a158fa0c8584415be1a495eee604ca2d3a6e0099))
+* **editor:** replace asyncIterator with ReadableStream to enable streaming in Safari ([#1432](https://github.com/instill-ai/console/issues/1432)) ([97656cd](https://github.com/instill-ai/console/commit/97656cd314782df921be44d17180942e8a92f853))
+* force pipeline related string input to be multiline to make input experience better ([#1439](https://github.com/instill-ai/console/issues/1439)) ([8bdc784](https://github.com/instill-ai/console/commit/8bdc78404d10eeecac3f3c3dc14b14fd13b5ad62))
+* hide the TASK_CUSTOM model type ([#1455](https://github.com/instill-ai/console/issues/1455)) ([68b9efd](https://github.com/instill-ai/console/commit/68b9efd9f6ade32b0862690d605d78391483f98a))
+* Integration page ([#1411](https://github.com/instill-ai/console/issues/1411)) ([c1f800b](https://github.com/instill-ai/console/commit/c1f800b862ea3d766d6597d8ce81881d99220159))
+* optimistic update the pipeline recipe to avoid jittering cursor position ([#1433](https://github.com/instill-ai/console/issues/1433)) ([bcc24dd](https://github.com/instill-ai/console/commit/bcc24dd8eaa2b556aed387386658574094f986b6))
+* **QoL:** auto focus pipelineId field create pipeline dialog on open ([#1436](https://github.com/instill-ai/console/issues/1436)) ([a37c900](https://github.com/instill-ai/console/commit/a37c900718802c50eb351a7642bf6c176337c72c))
+* reduce the low-code editor font-size to 12px ([#1445](https://github.com/instill-ai/console/issues/1445)) ([5661fa6](https://github.com/instill-ai/console/commit/5661fa63ed94375724f73f6c66376a78bc3a66f1))
+* update object array style ([#1450](https://github.com/instill-ai/console/issues/1450)) ([e31c06d](https://github.com/instill-ai/console/commit/e31c06de816d99fc90b2c91e9f8fde1b8ab476fa))
+* use the preview in the editor as the pipeline preview tab ([#1441](https://github.com/instill-ai/console/issues/1441)) ([bb4cadc](https://github.com/instill-ai/console/commit/bb4cadc43ede0d0d7059c3cb39bada7ddae94bd2))
+* use title to display output on pipeline playground ([#1430](https://github.com/instill-ai/console/issues/1430)) ([07cc435](https://github.com/instill-ai/console/commit/07cc435e494a072ae98a1d49b65a52442467c7e4))
+
+
+### Bug Fixes
+
+* add missing instill requester uid header in list pipeline runs ([#1453](https://github.com/instill-ai/console/issues/1453)) ([aebbe96](https://github.com/instill-ai/console/commit/aebbe96f57ba5b877812072743531c601834f19b))
+* **catalog:** fix clone bug ([#1442](https://github.com/instill-ai/console/issues/1442)) ([dc01d5c](https://github.com/instill-ai/console/commit/dc01d5cddf6ee1d430c7e628ee9bfd5fe34b9df5))
+* **editor:** disable the delete button on node ([#1431](https://github.com/instill-ai/console/issues/1431)) ([016bc2a](https://github.com/instill-ai/console/commit/016bc2a4c2724816874093f63a2738722202d4d9))
+* **editor:** fix iterator not respect search code in CMDO ([#1426](https://github.com/instill-ai/console/issues/1426)) ([3365265](https://github.com/instill-ai/console/commit/33652656b818e94ebb28ecb765007a379a6e43a6))
+* **editor:** fix streaming output image cannot display on the editor output ([#1449](https://github.com/instill-ai/console/issues/1449)) ([29644c6](https://github.com/instill-ai/console/commit/29644c6499f0a6482b0f9bd908e20e44813d730b))
+* **editor:** fix the broken documentation link of instill-model component ([#1452](https://github.com/instill-ai/console/issues/1452)) ([f2ec8a7](https://github.com/instill-ai/console/commit/f2ec8a7b2a113a2e68011b71ffd8a9023c0cab43))
+* fix clone pipeline dialog will expand when cloning ([#1444](https://github.com/instill-ai/console/issues/1444)) ([d3f547c](https://github.com/instill-ai/console/commit/d3f547cd60201411ac256b9e05e7a01f226bf20b))
+* fix form condition not correctly get selected condition ([#1456](https://github.com/instill-ai/console/issues/1456)) ([439699e](https://github.com/instill-ai/console/commit/439699e0101dd3dcb2f83ed965c9b79574f9af48))
+* fix model auto-gen-form array issue with [@orangecoloured](https://github.com/orangecoloured)'s solution ([#1438](https://github.com/instill-ai/console/issues/1438)) ([9d07566](https://github.com/instill-ai/console/commit/9d075661ccdebc386f03a5746c3911da0acb23d2))
+* fix model input type issue and add icons ([#1448](https://github.com/instill-ai/console/issues/1448)) ([1a71760](https://github.com/instill-ai/console/commit/1a7176059699ed212020ffa08389eb04d5832a47))
+* fix model output issue ([#1454](https://github.com/instill-ai/console/issues/1454)) ([a4e833c](https://github.com/instill-ai/console/commit/a4e833c9b1bf9e2af7de050d1ba3e8de08edd79e))
+* fix multiple integration form issue ([#1447](https://github.com/instill-ai/console/issues/1447)) ([09054cf](https://github.com/instill-ai/console/commit/09054cf62813659a1d1329c334d885d333c4cb37))
+* fix pipeline overview share-by-link is not working ([#1443](https://github.com/instill-ai/console/issues/1443)) ([d46fdeb](https://github.com/instill-ai/console/commit/d46fdeb64fc78b6390e83803b7a66d6274c9b6aa))
+* fix user profile is not public available ([#1451](https://github.com/instill-ai/console/issues/1451)) ([5f789ac](https://github.com/instill-ai/console/commit/5f789ac2572e07aeb027a0efb347bf64b91a5de5))
+* fix version selector can't be scrolled on pipeline overview page ([#1434](https://github.com/instill-ai/console/issues/1434)) ([4a05a77](https://github.com/instill-ai/console/commit/4a05a77f942417f565aca2fa7aa4c509eeabedfb))
+* **settings:** fix incorrect Requester-Uid header ([#1427](https://github.com/instill-ai/console/issues/1427)) ([51b137e](https://github.com/instill-ai/console/commit/51b137e1cbab535746a75b631ce28dac2cd0685b))
+* update payload generator for any files ([#1428](https://github.com/instill-ai/console/issues/1428)) ([58faa1f](https://github.com/instill-ai/console/commit/58faa1fd590559e588b8579a23522a82186302f3))
+
 ## [0.100.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.100.1...@instill-ai/toolkit-v0.100.2) (2024-08-31)
 
 

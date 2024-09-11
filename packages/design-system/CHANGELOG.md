@@ -1,5 +1,20 @@
 # @instill-ai/design-system
 
+## [0.78.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.77.0...@instill-ai/design-system-v0.78.0) (2024-09-11)
+
+
+### Features
+
+* Integration page ([#1411](https://github.com/instill-ai/console/issues/1411)) ([c1f800b](https://github.com/instill-ai/console/commit/c1f800b862ea3d766d6597d8ce81881d99220159))
+* use the preview in the editor as the pipeline preview tab ([#1441](https://github.com/instill-ai/console/issues/1441)) ([bb4cadc](https://github.com/instill-ai/console/commit/bb4cadc43ede0d0d7059c3cb39bada7ddae94bd2))
+
+
+### Bug Fixes
+
+* fix model input type issue and add icons ([#1448](https://github.com/instill-ai/console/issues/1448)) ([1a71760](https://github.com/instill-ai/console/commit/1a7176059699ed212020ffa08389eb04d5832a47))
+* fix model output issue ([#1454](https://github.com/instill-ai/console/issues/1454)) ([a4e833c](https://github.com/instill-ai/console/commit/a4e833c9b1bf9e2af7de050d1ba3e8de08edd79e))
+* fix pipeline overview share-by-link is not working ([#1443](https://github.com/instill-ai/console/issues/1443)) ([d46fdeb](https://github.com/instill-ai/console/commit/d46fdeb64fc78b6390e83803b7a66d6274c9b6aa))
+
 ## [0.77.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.76.0...@instill-ai/design-system-v0.77.0) (2024-08-29)
 
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.56.0-beta](https://github.com/instill-ai/console/compare/v0.55.0-beta...v0.56.0-beta) (2024-09-11)
+
+
+### Features
+
+* adapt new ai task schema for auto gen form ([#1429](https://github.com/instill-ai/console/issues/1429)) ([95ce7e0](https://github.com/instill-ai/console/commit/95ce7e0f2f141b5e6bd92f39479284bed8a99d88))
+* Integration page ([#1411](https://github.com/instill-ai/console/issues/1411)) ([c1f800b](https://github.com/instill-ai/console/commit/c1f800b862ea3d766d6597d8ce81881d99220159))
+
 ## [0.55.0-beta](https://github.com/instill-ai/console/compare/v0.54.0-beta...v0.55.0-beta) (2024-08-29)
 
 
