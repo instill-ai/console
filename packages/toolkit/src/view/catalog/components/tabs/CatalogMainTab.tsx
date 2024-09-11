@@ -68,6 +68,12 @@ export const CatalogTab = ({
 
   const createCatalog = useCreateCatalog();
   const updateCatalog = useUpdateCatalog();
+  const getSelectedNamespaceCatalogs = useGetCatalogs({
+    accessToken,
+    ownerId: selectedNamespace ?? null,
+    enabled: !!accessToken && !!selectedNamespace,
+  });
+
   const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
   const isTeamPlan = subscription?.plan === "PLAN_TEAM";
 
@@ -128,38 +134,53 @@ export const CatalogTab = ({
     }
   };
 
-  const handleCloneCatalog = async (
-    catalog: Catalog,
-    newNamespaceId: string,
-  ) => {
-    if (!accessToken) return;
+  const handleCloneCatalog = React.useCallback(
+    async (catalog: Catalog, newNamespaceId: string) => {
+      if (!accessToken) return;
 
-    const clonedCatalog = {
-      name: `${catalog.name}-clone`,
-      description: catalog.description ?? "",
-      tags: catalog.tags ?? [],
-    };
+      try {
+        // Fetch catalogs in the selected namespace
+        const { data: selectedNamespaceCatalogs } = await getSelectedNamespaceCatalogs.refetch();
 
-    try {
-      await createCatalog.mutateAsync({
-        payload: {
-          ...clonedCatalog,
+        if (!selectedNamespaceCatalogs) {
+          throw new Error("Failed to fetch catalogs for the selected namespace");
+        }
+
+        let clonedName = catalog.name;
+        let suffix = 1;
+
+        // Check for name conflicts in the selected namespace
+        while (selectedNamespaceCatalogs.some((c) => c.name === clonedName)) {
+          clonedName = `${catalog.name}-clone${suffix > 1 ? `-${suffix}` : ''}`;
+          suffix++;
+        }
+
+        const clonedCatalog = {
+          name: clonedName,
+          description: catalog.description ?? "",
+          tags: catalog.tags ?? [],
           ownerId: newNamespaceId,
-        },
-        ownerId: newNamespaceId,
-        accessToken,
-      });
-      catalogState.refetch();
-    } catch (error) {
-      console.error("Error cloning catalog:", error);
-    }
-  };
+        };
+
+        await createCatalog.mutateAsync({
+          payload: clonedCatalog,
+          ownerId: newNamespaceId,
+          accessToken,
+        });
+
+        catalogState.refetch();
+      } catch (error) {
+        console.error("Error cloning catalog:", error);
+      }
+    },
+    [accessToken, getSelectedNamespaceCatalogs, createCatalog, catalogState]
+  );
 
   const filteredAndSortedCatalogs = React.useMemo(() => {
     const filtered = catalogs.filter(
       (kb) =>
         kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        kb.description.toLowerCase().includes(searchTerm.toLowerCase()),
+        kb.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     filtered.sort((a, b) => {
@@ -182,11 +203,7 @@ export const CatalogTab = ({
           return 0;
       }
 
-      if (selectedSortOrder === "asc") {
-        return aValue - bValue;
-      } else {
-        return bValue - aValue;
-      }
+      return selectedSortOrder === "asc" ? aValue - bValue : bValue - aValue;
     });
 
     return filtered;
