@@ -510,7 +510,7 @@ export const UploadExploreTab = ({
             </div>
           </div>
           {isProcessing && processingFileIndex === index ? (
-            <div className="w-24 h-2 bg-semantic-fg-disabled rounded-full">
+            <div className="w-24 h-2 bg-semantic-bg-base-bg rounded-full">
               <div
                 className="h-full bg-semantic-accent-default rounded-full"
                 style={{ width: `${uploadProgress[file.name] || 0}%` }}
