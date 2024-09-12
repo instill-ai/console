@@ -208,7 +208,7 @@ export const ModelPlayground = ({
         variant: "alert-error",
         size: "large",
         description: existingModelTriggerResult.data.operation.error.message,
-        duration: 15000,
+        duration: 150000,
       });
 
       return;

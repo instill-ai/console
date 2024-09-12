@@ -65,7 +65,7 @@ const ToastCore = React.forwardRef<
   return (
     <ToastPrimitives.Root
       ref={ref}
-      className={cn(toastVariants({ variant, size }), className)}
+      className={cn(toastVariants({ variant, size }), "shrink-0", className)}
       {...props}
     />
   );
@@ -120,7 +120,7 @@ const ToastDescription = React.forwardRef<
   <ToastPrimitives.Description
     ref={ref}
     className={cn(
-      "text-semantic-fg-secondary product-body-text-3-regular",
+      "text-semantic-fg-secondary product-body-text-3-regular break-words",
       className,
     )}
     {...props}
