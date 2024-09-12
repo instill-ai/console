@@ -9,7 +9,7 @@ import {
 import { Icons } from "@instill-ai/design-system";
 
 import { getInstillAPIClient } from "../../../../lib";
-import { FileStatus } from "../../../../lib/react-query-service/catalog/types";
+import { FileStatus, CatalogFile } from "../../../../lib/react-query-service/catalog/types";
 import { MAX_FILE_NAME_LENGTH, STORAGE_WARNING_THRESHOLD } from "./constant";
 
 export const getStatusSortValue = (status: FileStatus): number => {
@@ -282,7 +282,7 @@ export const validateFile = (
   file: File,
   planMaxFileSize: number,
   remainingStorageSpace: number,
-  existingFiles: File[]
+  existingFiles: CatalogFile[]
 ) => {
   if (file.size > planMaxFileSize) {
     return { isValid: false, error: "FILE_TOO_LARGE" };

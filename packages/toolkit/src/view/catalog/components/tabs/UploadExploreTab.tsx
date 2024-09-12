@@ -35,12 +35,14 @@ import {
   useUploadCatalogFile,
 } from "../../../../lib/react-query-service/catalog";
 import { Catalog } from "../../../../lib/react-query-service/catalog/types";
-import { FILE_ERROR_TIMEOUT, MAX_FILE_NAME_LENGTH } from "../lib/constant";
+import { FILE_ERROR_TIMEOUT } from "../lib/constant";
 import {
   getFileType,
   getPlanMaxFileSize,
   getPlanStorageLimit,
+  readFileAsBase64,
   shouldShowStorageWarning,
+  validateFile,
 } from "../lib/helpers";
 import {
   DuplicateFileNotification,
@@ -201,53 +203,48 @@ export const UploadExploreTab = ({
   });
 
   const handleFileUpload = async (file: File) => {
-    if (file.size > planMaxFileSize) {
-      setIncorrectFileName(file.name);
-      setShowFileTooLargeMessage(true);
-      fileTooLargeTimeoutRef.current = setTimeout(() => {
-        setShowFileTooLargeMessage(false);
-      }, FILE_ERROR_TIMEOUT);
-      return;
-    }
+    const validationResult = validateFile(
+      file,
+      planMaxFileSize,
+      remainingStorageSpace,
+      existingFiles.data || []
+    );
 
-    if (file.size > remainingStorageSpace) {
-      setIncorrectFileName(file.name);
-      setShowInsufficientStorageMessage(true);
-      insufficientStorageTimeoutRef.current = setTimeout(() => {
-        setShowInsufficientStorageMessage(false);
-      }, FILE_ERROR_TIMEOUT);
-      return;
-    }
-
-    const fileType = getFileType(file);
-    if (fileType === "FILE_TYPE_UNSPECIFIED") {
-      setIncorrectFileName(file.name);
-      setShowUnsupportedFileMessage(true);
-      unsupportedFileTypeTimeoutRef.current = setTimeout(() => {
-        setShowUnsupportedFileMessage(false);
-      }, FILE_ERROR_TIMEOUT);
-      return;
-    }
-
-    if (file.name.length > MAX_FILE_NAME_LENGTH) {
-      setTooLongFileName(file.name);
-      setShowFileTooLongMessage(true);
-      return;
-    }
-
-    const isDuplicate =
-      existingFiles.isSuccess && existingFiles.data
-        ? existingFiles.data.some(
-            (existingFile) => existingFile.name === file.name,
-          )
-        : false;
-
-    if (isDuplicate) {
-      setDuplicateFileName(file.name);
-      setShowDuplicateFileMessage(true);
-      duplicateFileTimeoutRef.current = setTimeout(() => {
-        setShowDuplicateFileMessage(false);
-      }, FILE_ERROR_TIMEOUT);
+    if (!validationResult.isValid) {
+      switch (validationResult.error) {
+        case "FILE_TOO_LARGE":
+          setIncorrectFileName(file.name);
+          setShowFileTooLargeMessage(true);
+          fileTooLargeTimeoutRef.current = setTimeout(() => {
+            setShowFileTooLargeMessage(false);
+          }, FILE_ERROR_TIMEOUT);
+          break;
+        case "INSUFFICIENT_STORAGE":
+          setIncorrectFileName(file.name);
+          setShowInsufficientStorageMessage(true);
+          insufficientStorageTimeoutRef.current = setTimeout(() => {
+            setShowInsufficientStorageMessage(false);
+          }, FILE_ERROR_TIMEOUT);
+          break;
+        case "UNSUPPORTED_FILE_TYPE":
+          setIncorrectFileName(file.name);
+          setShowUnsupportedFileMessage(true);
+          unsupportedFileTypeTimeoutRef.current = setTimeout(() => {
+            setShowUnsupportedFileMessage(false);
+          }, FILE_ERROR_TIMEOUT);
+          break;
+        case "FILE_NAME_TOO_LONG":
+          setTooLongFileName(file.name);
+          setShowFileTooLongMessage(true);
+          break;
+        case "DUPLICATE_FILE":
+          setDuplicateFileName(file.name);
+          setShowDuplicateFileMessage(true);
+          duplicateFileTimeoutRef.current = setTimeout(() => {
+            setShowDuplicateFileMessage(false);
+          }, FILE_ERROR_TIMEOUT);
+          break;
+      }
       return;
     }
 
@@ -292,7 +289,7 @@ export const UploadExploreTab = ({
 
     try {
       const targetNamespace = namespaces.find(
-        (namespace) => namespace.id === navigationNamespaceAnchor,
+        (namespace) => namespace.id === navigationNamespaceAnchor
       );
 
       if (!targetNamespace) {
@@ -306,19 +303,9 @@ export const UploadExploreTab = ({
         setProcessingFileIndex(i);
         setProcessingProgress(((i + 1) / files.length) * 100);
 
-        const reader = new FileReader();
-        const content = await new Promise<string>((resolve) => {
-          reader.onload = (event) => {
-            if (event.target?.result) {
-              resolve(btoa(event.target.result as string));
-            } else {
-              resolve("");
-            }
-          };
-          reader.readAsBinaryString(file);
-        });
-
         try {
+          const content = await readFileAsBase64(file);
+
           const uploadedFile = await uploadCatalogFile.mutateAsync({
             ownerId: navigationNamespaceAnchor,
             catalogId: catalog.catalogId,
@@ -351,7 +338,7 @@ export const UploadExploreTab = ({
         "files",
         form
           .getValues("files")
-          .filter((file) => isFile(file) && !processedFiles.has(file.name)),
+          .filter((file) => isFile(file) && !processedFiles.has(file.name))
       );
       onTriggerInvalidateCredits({
         ownerName: targetNamespace?.name ?? null,
@@ -428,11 +415,10 @@ export const UploadExploreTab = ({
               <Form.Item className="w-full">
                 <Form.Control>
                   <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${
-                      isDragging
-                        ? "border-semantic-accent-default"
-                        : "border-semantic-bg-line"
-                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
+                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${isDragging
+                      ? "border-semantic-accent-default"
+                      : "border-semantic-bg-line"
+                      } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
                     onDragEnter={(e) => {
                       e.preventDefault();
                       setIsDragging(true);
