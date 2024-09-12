@@ -23,11 +23,9 @@ import {
 } from "../../../components";
 import { defaultCodeSnippetStyles } from "../../../constant";
 import {
-  convertSentenceToCamelCase,
   InstillStore,
   Model,
   ModelState,
-  ModelTask,
   onTriggerInvalidateCredits,
   sendAmplitudeData,
   toastInstillError,
@@ -59,16 +57,6 @@ const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
-
-export const convertTaskNameToPayloadPropName = (taskName?: ModelTask) =>
-  taskName
-    ? convertSentenceToCamelCase(
-        // This removes "TASK_" and replaces "_" with a space. The first
-        // argument has and OR operator for matching both substrings. The second
-        // argument is a function with a condition.
-        taskName.replace(/TASK_|_/g, (d) => (d === "TASK_" ? "" : " ")),
-      )
-    : null;
 
 export const convertValuesToString = (props: Record<string, unknown>) => {
   const convertedProps: Record<string, unknown> = {};
@@ -119,10 +107,6 @@ export const ModelPlayground = ({
   const [isModelRunInProgress, setIsModelRunInProgress] = useState(true);
   const [outputActiveView, setOutputActiveView] =
     useState<ModelOutputActiveView>("preview");
-  const taskPropName = useMemo(
-    () => convertTaskNameToPayloadPropName(model?.task),
-    [model],
-  );
   const [modelRunResult, setModelRunResult] = useState<Record<
     string,
     unknown
@@ -243,7 +227,6 @@ export const ModelPlayground = ({
     existingModelTriggerResult.isSuccess,
     existingModelTriggerResult.data,
     accessToken,
-    pollForResponse,
   ]);
 
   useEffect(() => {
@@ -290,7 +273,7 @@ export const ModelPlayground = ({
   async function onRunModel(
     formData: Record<string, unknown> /* z.infer<typeof Schema> */,
   ) {
-    if (!model || !model.name || !taskPropName) return;
+    if (!model || !model.name) return;
 
     let parsedData;
 
