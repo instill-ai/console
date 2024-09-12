@@ -48,7 +48,6 @@ export const useUploadWithProgress = () => {
             xhr.setRequestHeader('Authorization', `Bearer ${accessToken}`);
             xhr.send(formData);
 
-            // Wait for the XHR request to complete
             await new Promise((resolve, reject) => {
                 xhr.onload = resolve;
                 xhr.onerror = reject;
