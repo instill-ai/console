@@ -9,7 +9,10 @@ import {
 import { Icons } from "@instill-ai/design-system";
 
 import { getInstillAPIClient } from "../../../../lib";
-import { FileStatus, CatalogFile } from "../../../../lib/react-query-service/catalog/types";
+import {
+  CatalogFile,
+  FileStatus,
+} from "../../../../lib/react-query-service/catalog/types";
 import { MAX_FILE_NAME_LENGTH, STORAGE_WARNING_THRESHOLD } from "./constant";
 
 export const getStatusSortValue = (status: FileStatus): number => {
@@ -267,10 +270,10 @@ export const readFileAsBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
-      if (typeof reader.result === 'string') {
+      if (typeof reader.result === "string") {
         resolve(btoa(reader.result));
       } else {
-        reject(new Error('Failed to read file as base64'));
+        reject(new Error("Failed to read file as base64"));
       }
     };
     reader.onerror = reject;
@@ -282,7 +285,7 @@ export const validateFile = (
   file: File,
   planMaxFileSize: number,
   remainingStorageSpace: number,
-  existingFiles: CatalogFile[]
+  existingFiles: CatalogFile[],
 ) => {
   if (file.size > planMaxFileSize) {
     return { isValid: false, error: "FILE_TOO_LARGE" };
@@ -302,7 +305,7 @@ export const validateFile = (
   }
 
   const isDuplicate = existingFiles.some(
-    (existingFile) => existingFile.name === file.name
+    (existingFile) => existingFile.name === file.name,
   );
   if (isDuplicate) {
     return { isValid: false, error: "DUPLICATE_FILE" };

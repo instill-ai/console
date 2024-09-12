@@ -46,6 +46,7 @@ import {
   shouldShowStorageWarning,
   validateFile,
 } from "../lib/helpers";
+import { useUploadWithProgress } from "../lib/uploadFileWithProgress";
 import {
   DuplicateFileNotification,
   FileSizeNotification,
@@ -55,8 +56,6 @@ import {
   InsufficientStorageNotification,
   UpgradePlanLink,
 } from "../notifications";
-import { useUploadWithProgress } from "../lib/uploadFileWithProgress";
-
 
 const UploadExploreFormSchema = z.object({
   files: z.array(
@@ -115,7 +114,8 @@ export const UploadExploreTab = ({
 }: UploadExploreTabProps) => {
   const queryClient = useQueryClient();
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const { uploadFile, uploadProgress, setUploadProgress } = useUploadWithProgress();
+  const { uploadFile, uploadProgress, setUploadProgress } =
+    useUploadWithProgress();
 
   const form = useForm<UploadExploreFormData>({
     resolver: zodResolver(UploadExploreFormSchema),
@@ -207,7 +207,7 @@ export const UploadExploreTab = ({
       file,
       planMaxFileSize,
       remainingStorageSpace,
-      existingFiles.data || []
+      existingFiles.data || [],
     );
 
     if (!validationResult.isValid) {
@@ -289,7 +289,7 @@ export const UploadExploreTab = ({
 
     try {
       const targetNamespace = namespaces.find(
-        (namespace) => namespace.id === navigationNamespaceAnchor
+        (namespace) => namespace.id === navigationNamespaceAnchor,
       );
 
       if (!targetNamespace) {
@@ -316,15 +316,12 @@ export const UploadExploreTab = ({
             accessToken,
           });
 
-          await uploadFile(
-            file,
-            (progress) => {
-              setUploadProgress((prev) => ({
-                ...prev,
-                [file.name]: progress,
-              }));
-            }
-          );
+          await uploadFile(file, (progress) => {
+            setUploadProgress((prev) => ({
+              ...prev,
+              [file.name]: progress,
+            }));
+          });
 
           await processCatalogFiles.mutateAsync({
             fileUids: [uploadedFile.fileUid],
@@ -347,7 +344,7 @@ export const UploadExploreTab = ({
         "files",
         form
           .getValues("files")
-          .filter((file) => isFile(file) && !processedFiles.has(file.name))
+          .filter((file) => isFile(file) && !processedFiles.has(file.name)),
       );
       onTriggerInvalidateCredits({
         ownerName: targetNamespace?.name ?? null,
@@ -427,7 +424,7 @@ export const UploadExploreTab = ({
                       {
                         "border-semantic-accent-default": isDragging,
                         "border-semantic-bg-line": !isDragging,
-                      }
+                      },
                     )}
                     onDragEnter={(e) => {
                       e.preventDefault();
@@ -521,14 +518,10 @@ export const UploadExploreTab = ({
             </div>
           ) : (
             <Icons.X
-              className={cn(
-                "h-4 w-4 stroke-semantic-fg-secondary",
-                {
-                  "cursor-not-allowed opacity-50": isProcessing,
-                  "cursor-pointer": !isProcessing,
-                }
-              )}
-
+              className={cn("h-4 w-4 stroke-semantic-fg-secondary", {
+                "cursor-not-allowed opacity-50": isProcessing,
+                "cursor-pointer": !isProcessing,
+              })}
               onClick={() => !isProcessing && handleRemoveFile(index)}
             />
           )}
