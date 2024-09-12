@@ -318,9 +318,6 @@ export const UploadExploreTab = ({
 
           await uploadFile(
             file,
-            navigationNamespaceAnchor,
-            catalog.catalogId,
-            accessToken,
             (progress) => {
               setUploadProgress((prev) => ({
                 ...prev,
