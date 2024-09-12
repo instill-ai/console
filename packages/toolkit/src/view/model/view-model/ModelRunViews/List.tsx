@@ -21,6 +21,7 @@ import {
   usePaginatedModelRuns,
   useRouteInfo,
   useShallow,
+  useUserNamespaces,
 } from "../../../../lib";
 import { env, getHumanReadableStringFromTime } from "../../../../server";
 import { TABLE_PAGE_SIZE } from "../constants";
@@ -28,6 +29,7 @@ import { TABLE_PAGE_SIZE } from "../constants";
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
 export type ModelRunListProps = {
@@ -46,8 +48,13 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
       pageSize: TABLE_PAGE_SIZE,
     },
   );
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, navigationNamespaceAnchor } =
+    useInstillStore(useShallow(selector));
   const routeInfo = useRouteInfo();
+  const namespaces = useUserNamespaces();
+  const targetNamespace = namespaces.find(
+    (namespace) => namespace.id === navigationNamespaceAnchor,
+  );
   const modelRuns = usePaginatedModelRuns({
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
@@ -55,6 +62,7 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
     pageSize: TABLE_PAGE_SIZE,
     page: paginationState.pageIndex,
     orderBy,
+    requesterUid: targetNamespace ? targetNamespace.uid : undefined,
   });
 
   const owner = React.useMemo(() => {

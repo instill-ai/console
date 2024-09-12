@@ -21,6 +21,7 @@ import {
   usePaginatedModelRuns,
   useRouteInfo,
   useShallow,
+  useUserNamespaces,
 } from "../../../../lib";
 import { env, getHumanReadableStringFromTime } from "../../../../server";
 import {
@@ -37,13 +38,19 @@ export type ModelRunProps = {
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
 export const ModelRun = ({ id, model }: ModelRunProps) => {
   const routeInfo = useRouteInfo();
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, navigationNamespaceAnchor } =
+    useInstillStore(useShallow(selector));
   const [outputActiveView, setOutputActiveView] =
     React.useState<ModelOutputActiveView>("preview");
+  const namespaces = useUserNamespaces();
+  const targetNamespace = namespaces.find(
+    (namespace) => namespace.id === navigationNamespaceAnchor,
+  );
   const modelRuns = usePaginatedModelRuns({
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
@@ -52,6 +59,7 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
     page: 0,
     filter: `uid="${id}"`,
     view: "VIEW_FULL",
+    requesterUid: targetNamespace ? targetNamespace.uid : undefined,
   });
   const modelRun = React.useMemo(() => {
     return modelRuns.data?.runs[0] || null;

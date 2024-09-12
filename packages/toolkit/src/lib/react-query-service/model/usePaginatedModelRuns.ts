@@ -15,6 +15,7 @@ export function usePaginatedModelRuns({
   page,
   orderBy,
   filter,
+  requesterUid,
 }: {
   modelName: Nullable<string>;
   accessToken: Nullable<string>;
@@ -25,6 +26,7 @@ export function usePaginatedModelRuns({
   page?: number;
   orderBy?: string;
   filter?: string;
+  requesterUid?: string;
 }) {
   const queryKey = [
     "model-runs",
@@ -62,6 +64,7 @@ export function usePaginatedModelRuns({
         page: page || 0,
         orderBy: orderBy || null,
         filter: filter || null,
+        requesterUid,
       });
 
       return Promise.resolve(data);

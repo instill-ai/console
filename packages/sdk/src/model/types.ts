@@ -187,6 +187,7 @@ export type ListModelRunsRequest = {
   page: number;
   orderBy: Nullable<string>;
   filter: Nullable<string>;
+  requesterUid?: string;
 };
 
 export type ModelRun = {
