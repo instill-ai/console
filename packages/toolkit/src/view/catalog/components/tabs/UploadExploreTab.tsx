@@ -338,6 +338,11 @@ export const UploadExploreTab = ({
           processedFiles.add(file.name);
         } catch (error) {
           console.error(`Error processing file ${file.name}:`, error);
+          toastInstillError({
+            title: `Error processing file ${file.name}`,
+            error,
+            toast,
+          });
         }
       }
 
@@ -363,6 +368,11 @@ export const UploadExploreTab = ({
       }
     } catch (error) {
       console.error("Error processing files:", error);
+      toastInstillError({
+        title: "Error processing files",
+        error,
+        toast,
+      });
     } finally {
       setIsProcessing(false);
       setProcessingFileIndex(null);
