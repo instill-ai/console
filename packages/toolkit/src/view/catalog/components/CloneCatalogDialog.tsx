@@ -68,6 +68,7 @@ export const CloneCatalogDialog = ({
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [showLimitNotification, setShowLimitNotification] = React.useState(false);
+  const [initialNamespace, setInitialNamespace] = React.useState(initialValues.namespaceId);
 
   const { accessToken, enabledQuery, navigationNamespaceAnchor, updateNavigationNamespaceAnchor } =
     useInstillStore(useShallow(selector));
@@ -83,7 +84,7 @@ export const CloneCatalogDialog = ({
     mode: "onChange",
   });
 
-  const { formState, reset, watch, setValue } = form;
+  const { formState, watch, setValue } = form;
   const nameValue = watch("name");
   const description = watch("description");
   const selectedNamespace = watch("namespaceId");
@@ -137,14 +138,11 @@ export const CloneCatalogDialog = ({
 
   React.useEffect(() => {
     if (isOpen) {
-      reset({
-        ...initialValues,
-        tags: initialValues.tags.join(", "),
-        namespaceId: navigationNamespaceAnchor || "",
-      });
-      setShowLimitNotification(false); // Reset notification state when dialog opens
+      setInitialNamespace(navigationNamespaceAnchor || initialValues.namespaceId);
+      setValue("namespaceId", navigationNamespaceAnchor || initialValues.namespaceId);
+      setShowLimitNotification(false);
     }
-  }, [isOpen, initialValues, navigationNamespaceAnchor, reset]);
+  }, [isOpen, initialValues.namespaceId, navigationNamespaceAnchor, setValue]);
 
   const checkCatalogLimit = React.useCallback((namespace: string) => {
     if (catalogs.data && catalogLimit) {
@@ -156,7 +154,17 @@ export const CloneCatalogDialog = ({
 
   const handleNamespaceChange = (value: string) => {
     setValue("namespaceId", value, { shouldValidate: true });
-    setShowLimitNotification(checkCatalogLimit(value));
+    const isLimitReached = checkCatalogLimit(value);
+    setShowLimitNotification(isLimitReached);
+  };
+
+  const handleClose = () => {
+    if (showLimitNotification) {
+      // Revert to the initial namespace if limit was reached for selected namespace
+      setValue("namespaceId", initialNamespace);
+      setShowLimitNotification(false);
+    }
+    onClose();
   };
 
   const handleSubmit = async (data: CloneCatalogDialogData) => {
@@ -194,7 +202,7 @@ export const CloneCatalogDialog = ({
 
   return (
     <>
-      <Dialog.Root open={isOpen} onOpenChange={onClose}>
+      <Dialog.Root open={isOpen} onOpenChange={handleClose}>
         <Dialog.Content className="!w-[600px] rounded-md">
           <Dialog.Header className="flex justify-between">
             <Dialog.Title className="text-semantic-fg-primary !product-body-text-1-semibold">
@@ -326,7 +334,7 @@ export const CloneCatalogDialog = ({
                 }}
               />
               <div className="mt-8 flex justify-end gap-x-3">
-                <Button variant="secondaryGrey" onClick={onClose}>
+                <Button variant="secondaryGrey" onClick={handleClose}>
                   Cancel
                 </Button>
                 <Button
