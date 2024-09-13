@@ -96,12 +96,7 @@ export const ModelPlayground = ({
     timeoutRunning: boolean;
     isRendered: boolean;
     modelVersion: Nullable<string>;
-  }>({
-    name: null,
-    timeoutRunning: false,
-    isRendered: false,
-    modelVersion: null,
-  });
+  }>(defaultCurrentOperationIdPollingData);
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [isModelRunInProgress, setIsModelRunInProgress] = useState(true);
@@ -157,11 +152,43 @@ export const ModelPlayground = ({
   });
 
   const pollForResponse = React.useCallback(async () => {
+    // If the polling is already running, stop
+    if (currentOperationIdPollingData.current.timeoutRunning) {
+      return;
+    }
+
+    // If the data that is being polled is rendered, stop and reset polling running state
+    if (currentOperationIdPollingData.current.isRendered) {
+      currentOperationIdPollingData.current = {
+        ...currentOperationIdPollingData.current,
+        timeoutRunning: false,
+      };
+
+      return;
+    }
+
+    // Set the polling running state to active before making the request and
+    // launching the timeout
+    currentOperationIdPollingData.current = {
+      ...currentOperationIdPollingData.current,
+      timeoutRunning: true,
+    };
+
     await queryClient.invalidateQueries({
       queryKey: ["models", "operation", model?.name],
     });
 
     existingModelTriggerResult.refetch();
+
+    setTimeout(() => {
+      // Resetting the polling running state so it can proceed on the next call
+      currentOperationIdPollingData.current = {
+        ...currentOperationIdPollingData.current,
+        timeoutRunning: false,
+      };
+
+      pollForResponse();
+    }, OPERATION_POLL_TIMEOUT);
   }, [model?.name, queryClient, existingModelTriggerResult]);
 
   useEffect(() => {
@@ -215,21 +242,7 @@ export const ModelPlayground = ({
     }
 
     if (!existingModelTriggerResult.data?.operation?.done) {
-      if (!currentOperationIdPollingData.current.timeoutRunning) {
-        currentOperationIdPollingData.current = {
-          ...currentOperationIdPollingData.current,
-          timeoutRunning: true,
-        };
-
-        setTimeout(() => {
-          currentOperationIdPollingData.current = {
-            ...currentOperationIdPollingData.current,
-            timeoutRunning: false,
-          };
-
-          pollForResponse();
-        }, OPERATION_POLL_TIMEOUT);
-      }
+      pollForResponse();
     } else {
       if (
         existingTriggerState?.done !==
@@ -254,9 +267,7 @@ export const ModelPlayground = ({
     }
 
     if (!existingTriggerState.done) {
-      if (!currentOperationIdPollingData.current.timeoutRunning) {
-        pollForResponse();
-      }
+      pollForResponse();
     } else {
       if (!currentOperationIdPollingData.current.isRendered) {
         currentOperationIdPollingData.current = {
@@ -279,13 +290,16 @@ export const ModelPlayground = ({
     }
 
     if (!currentOperationIdPollingData.current.name) {
+      // Updating the polling data based on the current `existingTriggerState`
+      // data so the `pollForResponse` can react accordingly
       currentOperationIdPollingData.current = {
         ...defaultCurrentOperationIdPollingData,
+        isRendered: existingTriggerState.done,
         name: existingTriggerState.name,
         modelVersion: existingTriggerState.response?.request.version || null,
       };
     }
-  }, [existingTriggerState, model, pollForResponse]);
+  }, [existingTriggerState, model]);
 
   const triggerModel = useTriggerUserModelVersionAsync();
 
