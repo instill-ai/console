@@ -45,7 +45,10 @@ export function Toaster(props: ToasterProps) {
                     </div>
                     <Toast.Close />
                   </div>
-                  <div className="flex w-full flex-col space-y-4 pl-8">
+                  <div
+                    className="flex w-full flex-col space-y-4 pl-8 overflow-y-auto"
+                    style={{ maxHeight: "100px" }}
+                  >
                     {description && (
                       <Toast.Description>{description}</Toast.Description>
                     )}

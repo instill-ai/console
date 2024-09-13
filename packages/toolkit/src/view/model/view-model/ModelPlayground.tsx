@@ -179,7 +179,8 @@ export const ModelPlayground = ({
       !accessToken ||
       (existingModelTriggerResult.isSuccess &&
         !currentOperationIdPollingData.current.name &&
-        !existingModelTriggerResult.data.operation)
+        !existingModelTriggerResult.data.operation) ||
+      existingModelTriggerResult.data?.operation?.error
     ) {
       setIsModelRunInProgress(false);
     }
@@ -192,6 +193,24 @@ export const ModelPlayground = ({
         existingModelTriggerResult.data?.operation?.name !==
           currentOperationIdPollingData.current.name)
     ) {
+      return;
+    }
+
+    if (existingModelTriggerResult.data.operation.error) {
+      currentOperationIdPollingData.current = {
+        ...currentOperationIdPollingData.current,
+        timeoutRunning: false,
+        isRendered: false,
+      };
+
+      toast({
+        title: "Something went wrong when triggering the model",
+        variant: "alert-error",
+        size: "large",
+        description: existingModelTriggerResult.data.operation.error.message,
+        duration: 150000,
+      });
+
       return;
     }
 
