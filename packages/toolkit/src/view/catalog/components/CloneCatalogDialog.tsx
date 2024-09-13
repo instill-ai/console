@@ -19,8 +19,12 @@ import { EntitySelector, LoadingSpin } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
-import { convertTagsToArray, formatName } from "./lib/helpers";
+import { checkNamespaceType, convertTagsToArray, formatName, getSubscriptionInfo } from "./lib/helpers";
 import { CatalogLimitNotification } from "./notifications";
+import { useGetCatalogs } from "../../../lib/react-query-service/catalog";
+import { getCatalogLimit } from "./lib/helpers";
+import { useAuthenticatedUserSubscription, useOrganizationSubscription } from "../../../lib";
+import { Nullable } from "instill-sdk";
 
 const CloneCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -46,11 +50,11 @@ type CloneCatalogDialogProps = {
     tags: string[];
     namespaceId: string;
   };
-  namespaceCatalogCounts: Record<string, number>;
-  catalogLimit: number;
 };
 
 const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
   updateNavigationNamespaceAnchor: store.updateNavigationNamespaceAnchor,
 });
@@ -60,14 +64,12 @@ export const CloneCatalogDialog = ({
   onClose,
   onSubmit,
   initialValues,
-  namespaceCatalogCounts,
-  catalogLimit,
 }: CloneCatalogDialogProps) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [showLimitNotification, setShowLimitNotification] = React.useState(false);
 
-  const { navigationNamespaceAnchor, updateNavigationNamespaceAnchor } =
+  const { accessToken, enabledQuery, navigationNamespaceAnchor, updateNavigationNamespaceAnchor } =
     useInstillStore(useShallow(selector));
   const userNamespaces = useUserNamespaces();
 
@@ -85,8 +87,53 @@ export const CloneCatalogDialog = ({
   const nameValue = watch("name");
   const description = watch("description");
   const selectedNamespace = watch("namespaceId");
+  const [namespaceType, setNamespaceType] =
+    React.useState<Nullable<"user" | "organization">>(null);
 
   const formattedName = formatName(nameValue);
+
+  React.useEffect(() => {
+    const getNamespaceType = async () => {
+      if (selectedNamespace && accessToken) {
+        const type = await checkNamespaceType(selectedNamespace, accessToken);
+        setNamespaceType(type);
+      } else {
+        setNamespaceType(null);
+      }
+    };
+
+    getNamespaceType();
+  }, [selectedNamespace, accessToken]);
+
+  const catalogs = useGetCatalogs({
+    accessToken,
+    ownerId: selectedNamespace,
+    enabled: enabledQuery && !!selectedNamespace,
+  });
+
+  const userSub = useAuthenticatedUserSubscription({
+    enabled: enabledQuery,
+    accessToken,
+  });
+
+  const orgSub = useOrganizationSubscription({
+    organizationID: selectedNamespace ? selectedNamespace : null,
+    accessToken,
+    enabled: enabledQuery && namespaceType === "organization",
+  });
+
+  const subscriptionInfo = React.useMemo(() => {
+    return getSubscriptionInfo(
+      namespaceType,
+      userSub.data || null,
+      orgSub.data || null,
+    );
+  }, [selectedNamespace, userSub.data, orgSub.data]);
+
+  const catalogLimit = React.useMemo(
+    () => getCatalogLimit(subscriptionInfo.plan),
+    [subscriptionInfo.plan],
+  );
 
   React.useEffect(() => {
     if (isOpen) {
@@ -98,9 +145,14 @@ export const CloneCatalogDialog = ({
     }
   }, [isOpen, initialValues, navigationNamespaceAnchor, reset]);
 
+  React.useEffect(() => {
+    if (catalogs.data && catalogLimit) {
+      setShowLimitNotification(catalogs.data.length >= catalogLimit);
+    }
+  }, [catalogs.data, catalogLimit]);
+
   const handleSubmit = async (data: CloneCatalogDialogData) => {
-    if ((namespaceCatalogCounts[data.namespaceId] ?? 0) >= catalogLimit) {
-      setShowLimitNotification(true);
+    if (showLimitNotification) {
       return;
     }
 
@@ -131,8 +183,6 @@ export const CloneCatalogDialog = ({
       setIsSubmitting(false);
     }
   };
-
-  const isNamespaceLimitReached = namespaceCatalogCounts[selectedNamespace] !== undefined && namespaceCatalogCounts[selectedNamespace] >= catalogLimit;
 
   return (
     <>
@@ -167,11 +217,7 @@ export const CloneCatalogDialog = ({
                               shouldValidate: true,
                             });
                           }}
-                          data={userNamespaces.map(namespace => ({
-                            ...namespace,
-                            disabled: (namespaceCatalogCounts[namespace.id] ?? 0) >= catalogLimit,
-                            label: `${namespace.name}${(namespaceCatalogCounts[namespace.id] ?? 0) >= catalogLimit ? " (Limit Reached)" : ""}`
-                          }))}
+                          data={userNamespaces}
                         />
                       </Form.Control>
                       <div className="h-6">
@@ -274,7 +320,8 @@ export const CloneCatalogDialog = ({
                     </Form.Item>
                   );
                 }}
-              />              <div className="mt-8 flex justify-end gap-x-3">
+              />
+              <div className="mt-8 flex justify-end gap-x-3">
                 <Button variant="secondaryGrey" onClick={onClose}>
                   Cancel
                 </Button>
@@ -282,7 +329,7 @@ export const CloneCatalogDialog = ({
                   variant="primary"
                   type="submit"
                   className="text-semantic-fg-on-default"
-                  disabled={!formState.isValid || isSubmitting || isNamespaceLimitReached}
+                  disabled={!formState.isValid || isSubmitting}
                 >
                   {isSubmitting ? (
                     <LoadingSpin className="!text-semantic-fg-secondary" />

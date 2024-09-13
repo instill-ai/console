@@ -28,9 +28,6 @@ type CreateCatalogCardProps = {
   ) => Promise<void>;
   onCloneCatalog: (catalog: Catalog, newNamespaceId: string) => Promise<void>;
   onDeleteCatalog: (catalog: Catalog) => Promise<void>;
-  disabled?: boolean;
-    namespaceCatalogCounts: Record<string, number>;
-  catalogLimit: number;
 };
 
 const selector = (store: InstillStore) => ({
@@ -45,9 +42,6 @@ export const CreateCatalogCard = ({
   onUpdateCatalog,
   onCloneCatalog,
   onDeleteCatalog,
-  disabled = false,
-    namespaceCatalogCounts,
-  catalogLimit,
 }: CreateCatalogCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
@@ -181,7 +175,6 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
                   onDelete={handleDelete}
                   onEdit={handleEdit}
                   onClone={handleClone}
-                  disabled={disabled}
                   isOpen={isMenuOpen}
                   setIsOpen={setIsMenuOpen}
                 />
@@ -226,7 +219,7 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
           tags: catalog.tags || [],
         }}
       />
-<CloneCatalogDialog
+      <CloneCatalogDialog
         isOpen={cloneDialogIsOpen}
         onClose={() => setCloneDialogIsOpen(false)}
         onSubmit={async (clonedCatalog) => {
@@ -247,8 +240,6 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
           tags: catalog.tags ? [catalog.tags.join(", ")] : [],
           namespaceId: selectedNamespace || "",
         }}
-        namespaceCatalogCounts={namespaceCatalogCounts}
-        catalogLimit={catalogLimit}
       />
     </React.Fragment>
   );

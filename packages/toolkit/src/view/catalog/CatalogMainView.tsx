@@ -64,7 +64,6 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   const [namespaceType, setNamespaceType] =
     React.useState<Nullable<"user" | "organization">>(null);
   const [isAutomaticTabChange, setIsAutomaticTabChange] = React.useState(false);
-  const [namespaceCatalogCounts, setNamespaceCatalogCounts] = React.useState<Record<string, number>>({});
 
   const router = useRouter();
 
@@ -131,18 +130,6 @@ export const CatalogMainView = (props: CatalogViewProps) => {
       );
     }
   }, [catalogs.data, subscriptionInfo.planStorageLimit]);
-
-
-  React.useEffect(() => {
-    if (catalogs.data) {
-      const counts: Record<string, number> = {};
-      catalogs.data.forEach((catalog) => {
-        counts[catalog.ownerId] = (counts[catalog.ownerId] || 0) + 1;
-      });
-      setNamespaceCatalogCounts(counts);
-    }
-  }, [catalogs.data]);
-
 
   const updateRemainingSpace = React.useCallback(
     (fileSize: number, isAdding: boolean) => {
@@ -347,7 +334,6 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               namespaceType={namespaceType}
               subscription={subscriptionInfo.subscription}
               isLocalEnvironment={isLocalEnvironment}
-              namespaceCatalogCounts={namespaceCatalogCounts}
             />
           ) : null}
           {activeTab === "files" && selectedCatalog ? (

@@ -37,7 +37,6 @@ type CatalogTabProps = {
   namespaceType: Nullable<"user" | "organization">;
   subscription: Nullable<UserSubscription | OrganizationSubscription>;
   isLocalEnvironment: boolean;
-  namespaceCatalogCounts: Record<string, number>;
 };
 
 const selector = (store: InstillStore) => ({
@@ -55,7 +54,6 @@ export const CatalogTab = ({
   namespaceType,
   subscription,
   isLocalEnvironment,
-  namespaceCatalogCounts,
 }: CatalogTabProps) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -264,9 +262,6 @@ export const CatalogTab = ({
               onUpdateCatalog={handleUpdateCatalog}
               onCloneCatalog={handleCloneCatalog}
               onDeleteCatalog={onDeleteCatalog}
-              disabled={hasReachedLimit}
-              namespaceCatalogCounts={namespaceCatalogCounts}
-              catalogLimit={catalogLimit}
             />
           ))}
         </div>
