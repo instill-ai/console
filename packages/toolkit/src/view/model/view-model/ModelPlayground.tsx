@@ -96,12 +96,7 @@ export const ModelPlayground = ({
     timeoutRunning: boolean;
     isRendered: boolean;
     modelVersion: Nullable<string>;
-  }>({
-    name: null,
-    timeoutRunning: false,
-    isRendered: false,
-    modelVersion: null,
-  });
+  }>(defaultCurrentOperationIdPollingData);
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [isModelRunInProgress, setIsModelRunInProgress] = useState(true);
@@ -157,10 +152,12 @@ export const ModelPlayground = ({
   });
 
   const pollForResponse = React.useCallback(async () => {
+    // If the polling is already running, stop
     if (currentOperationIdPollingData.current.timeoutRunning) {
       return;
     }
 
+    // If the data that is being polled is rendered, stop and reset polling running state
     if (currentOperationIdPollingData.current.isRendered) {
       currentOperationIdPollingData.current = {
         ...currentOperationIdPollingData.current,
@@ -170,6 +167,8 @@ export const ModelPlayground = ({
       return;
     }
 
+    // Set the polling running state to active before making the request and
+    // launching the timeout
     currentOperationIdPollingData.current = {
       ...currentOperationIdPollingData.current,
       timeoutRunning: true,
@@ -182,6 +181,7 @@ export const ModelPlayground = ({
     existingModelTriggerResult.refetch();
 
     setTimeout(() => {
+      // Resetting the polling running state so it can proceed on the next call
       currentOperationIdPollingData.current = {
         ...currentOperationIdPollingData.current,
         timeoutRunning: false,
@@ -271,6 +271,8 @@ export const ModelPlayground = ({
     }
 
     if (!currentOperationIdPollingData.current.name) {
+      // Updating the polling data based on the current `existingTriggerState`
+      // data so the `pollForResponse` can react accordingly
       currentOperationIdPollingData.current = {
         ...defaultCurrentOperationIdPollingData,
         isRendered: existingTriggerState.done,
