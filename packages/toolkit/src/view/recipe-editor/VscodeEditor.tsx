@@ -23,7 +23,7 @@
 import type { Monaco } from "@monaco-editor/react";
 import * as React from "react";
 import { Editor } from "@monaco-editor/react";
-import { PipelineRecipe } from "instill-sdk";
+import { PipelineRecipe, Secret } from "instill-sdk";
 import { editor, IDisposable, languages, Position } from "monaco-editor";
 
 import { Dialog } from "@instill-ai/design-system";
@@ -46,6 +46,7 @@ import { getGeneralComponentInOutputSchema } from "../pipeline-builder";
 import { isPipelineGeneralComponent } from "../pipeline-builder/lib/checkComponentType";
 import {
   analyzeColonInString,
+  EditorKeyLineNumberMap,
   keyLineNumberMapHelpers,
   tomorrowTheme,
   useAutonomousEditorRecipeUpdater,
@@ -85,6 +86,517 @@ const availableInstillFormats = [
 ];
 
 const componentTopLevelKeys = ["type", "input", "setup", "condition", "task"];
+
+function getComponentTaskAutocompletions({
+  monaco,
+  recipe,
+  smallestComponentKeyLineNumberMap,
+  position,
+  activeTyping,
+}: {
+  monaco: Nullable<Monaco>;
+  recipe: Nullable<PipelineRecipe>;
+  smallestComponentKeyLineNumberMap: Nullable<EditorKeyLineNumberMap>;
+  position: Position;
+  activeTyping: Nullable<string>;
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+
+  if (
+    !monaco ||
+    !recipe ||
+    !recipe.component ||
+    !smallestComponentKeyLineNumberMap
+  ) {
+    return autocomletions;
+  }
+
+  const _activeTyping = activeTyping ?? "";
+
+  const targetComponent =
+    recipe.component[smallestComponentKeyLineNumberMap.key];
+
+  if (targetComponent && isPipelineGeneralComponent(targetComponent)) {
+    for (const task of targetComponent.definition?.tasks ?? []) {
+      autocomletions.push({
+        label: task.name,
+        kind: monaco.languages.CompletionItemKind.Field,
+        insertText: task.name,
+        filterText: task.name,
+        range: new monaco.Range(
+          position.lineNumber,
+          position.column - _activeTyping.length,
+          position.lineNumber,
+          position.column,
+        ),
+        documentation: {
+          value: `**${task.name}** \n\n ${task.title} \n\n --- \n\n ${task.description}`,
+          isTrusted: true,
+        },
+      });
+    }
+  }
+
+  return autocomletions;
+}
+
+function getComponentInputAutocompletions({
+  monaco,
+  recipe,
+  smallestComponentKeyLineNumberMap,
+  position,
+  activeTyping,
+  charactersBeforeCursor,
+}: {
+  monaco: Nullable<Monaco>;
+  recipe: Nullable<PipelineRecipe>;
+  smallestComponentKeyLineNumberMap: EditorKeyLineNumberMap;
+  position: Position;
+  activeTyping: Nullable<string>;
+  charactersBeforeCursor: Nullable<string>;
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+
+  if (!monaco || !recipe || !recipe.component || !charactersBeforeCursor) {
+    return autocomletions;
+  }
+
+  const _activeTyping = activeTyping ?? "";
+
+  const { substringBeforeColon } = analyzeColonInString(
+    charactersBeforeCursor,
+    position.column,
+  );
+
+  const componenetKey = smallestComponentKeyLineNumberMap.key;
+  const targetComponent = recipe.component[componenetKey];
+
+  if (
+    !targetComponent ||
+    !isPipelineGeneralComponent(targetComponent) ||
+    !targetComponent.definition
+  ) {
+    return autocomletions;
+  }
+
+  const targetTaskDefinition =
+    targetComponent.definition.spec.componentSpecification.oneOf?.find(
+      (oneOf) => oneOf.properties?.task?.const === targetComponent.task,
+    );
+
+  if (!targetTaskDefinition) {
+    return autocomletions;
+  }
+
+  const formTree = transformInstillJSONSchemaToFormTree(targetTaskDefinition);
+
+  if (formTree._type === "formGroup") {
+    const inputProperties = formTree.properties.find((e) => e.path === "input");
+
+    if (inputProperties && inputProperties._type === "formGroup") {
+      const targetProperty = inputProperties.properties.find(
+        (e) => e.fieldKey === substringBeforeColon,
+      );
+
+      if (
+        targetProperty &&
+        targetProperty._type === "formItem" &&
+        targetProperty.enum
+      ) {
+        for (const enumValue of targetProperty.enum) {
+          autocomletions.push({
+            label: enumValue,
+            kind: monaco.languages.CompletionItemKind.Field,
+            insertText: enumValue,
+            filterText: enumValue,
+            range: new monaco.Range(
+              position.lineNumber,
+              position.column - _activeTyping.length,
+              position.lineNumber,
+              position.column,
+            ),
+          });
+        }
+      }
+    }
+  }
+
+  return autocomletions;
+}
+
+function getComponentVariableAutocompletions({
+  monaco,
+  position,
+  activeTyping,
+}: {
+  monaco: Nullable<Monaco>;
+  position: Position;
+  activeTyping: Nullable<string>;
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+
+  if (!monaco) {
+    return autocomletions;
+  }
+
+  const _activeTyping = activeTyping ?? "";
+
+  for (const format of availableInstillFormats) {
+    autocomletions.push({
+      label: format,
+      kind: monaco.languages.CompletionItemKind.Field,
+      insertText: format,
+      filterText: format,
+      range: new monaco.Range(
+        position.lineNumber,
+        position.column - _activeTyping.length,
+        position.lineNumber,
+        position.column,
+      ),
+    });
+  }
+
+  return autocomletions;
+}
+
+function getSecretReferenceAutocompletions({
+  monaco,
+  position,
+  activeTyping,
+  secrets,
+}: {
+  monaco: Nullable<Monaco>;
+  position: Position;
+  activeTyping: Nullable<string>;
+  secrets: Secret[];
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+
+  if (!monaco) {
+    return autocomletions;
+  }
+
+  const _activeTyping = activeTyping ?? "";
+
+  for (const secret of secrets) {
+    autocomletions.push({
+      label: secret.id,
+      kind: monaco.languages.CompletionItemKind.Field,
+      insertText: "${" + "secret." + secret.id,
+      filterText: "${" + "secret." + secret.id,
+      range: new monaco.Range(
+        position.lineNumber,
+        position.column - _activeTyping.length,
+        position.lineNumber,
+        position.column,
+      ),
+      detail: secret.description ?? undefined,
+      documentation: {
+        value: `**${secret.id}** \n\n --- \n\n ${secret.description}`,
+      },
+    });
+  }
+
+  return autocomletions;
+}
+
+function getAllComponentOutputHints({
+  recipe,
+}: {
+  recipe: Nullable<PipelineRecipe>;
+}) {
+  const outputHints: GeneralRecord = {};
+
+  if (!recipe || !recipe.component) {
+    return outputHints;
+  }
+
+  for (const [key, value] of Object.entries(recipe.component)) {
+    if (isPipelineGeneralComponent(value)) {
+      const { outputSchema } = getGeneralComponentInOutputSchema(value);
+
+      if (outputSchema) {
+        const outputFormTree =
+          transformInstillJSONSchemaToFormTree(outputSchema);
+
+        const hints = transformFormTreeToNestedSmartHints(outputFormTree);
+
+        outputHints[key] = {
+          output: hints,
+        };
+      }
+    }
+  }
+
+  return outputHints;
+}
+
+function getVariableReferenceAutocompletions({
+  monaco,
+  position,
+  activeTyping,
+  recipe,
+}: {
+  monaco: Nullable<Monaco>;
+  position: Position;
+  activeTyping: Nullable<string>;
+  recipe: Nullable<PipelineRecipe>;
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+
+  if (!monaco || !recipe) {
+    return autocomletions;
+  }
+
+  const _activeTyping = activeTyping ?? "";
+
+  const allHints = recipe.variable;
+
+  if (!allHints) {
+    return autocomletions;
+  }
+
+  for (const [key, value] of Object.entries(allHints)) {
+    autocomletions.push({
+      label: key,
+      kind: monaco.languages.CompletionItemKind.Field,
+      insertText: "${" + "variable." + key,
+      filterText: "${" + "variable." + key,
+      documentation: {
+        value: `**${key}** \n\n --- \n\n instill-format: ${value?.instillFormat}`,
+      },
+      range: new monaco.Range(
+        position.lineNumber,
+        position.column - _activeTyping.length,
+        position.lineNumber,
+        position.column,
+      ),
+      detail: `${value?.instillFormat}`,
+    });
+  }
+
+  return autocomletions;
+}
+
+function getComponentObjectArrayOutputAutocompletions({
+  monaco,
+  position,
+  activeTyping,
+  objectArrayPath,
+  objectArrayPathWithoutIndex,
+  hint,
+}: {
+  monaco: Nullable<Monaco>;
+  position: Position;
+  activeTyping: Nullable<string>;
+  objectArrayPath: Nullable<string>;
+  objectArrayPathWithoutIndex: Nullable<string>;
+  hint: Nullable<GeneralRecord>;
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+
+  if (!monaco || !objectArrayPath || !objectArrayPathWithoutIndex || !hint) {
+    return autocomletions;
+  }
+
+  const _activeTyping = activeTyping ?? "";
+
+  const regex = /\[(\d+)\]/g;
+  const matches = objectArrayPath.match(regex);
+
+  if (matches && matches[0]) {
+    for (const [key, value] of Object.entries(hint)) {
+      if (typeof value !== "object") {
+        continue;
+      }
+
+      autocomletions.push({
+        label: key,
+        kind: monaco.languages.CompletionItemKind.Field,
+        insertText: "${" + objectArrayPath + "." + key,
+        filterText: "${" + objectArrayPath + "." + key,
+        documentation: {
+          value: `**${key}** \nobjectArrayPath\n ${value.instillFormat} \n\n --- \n\n ${value.description}`,
+        },
+        range: new monaco.Range(
+          position.lineNumber,
+          position.column - _activeTyping.length,
+          position.lineNumber,
+          position.column,
+        ),
+      });
+    }
+  }
+
+  return autocomletions;
+}
+
+function getComponentOutputAutocompletions({
+  monaco,
+  position,
+  activeTyping,
+  objectPath,
+  hint,
+}: {
+  monaco: Nullable<Monaco>;
+  position: Position;
+  activeTyping: Nullable<string>;
+  objectPath: Nullable<string>;
+  hint: Nullable<GeneralRecord>;
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+
+  if (!monaco || !objectPath || !hint) {
+    return autocomletions;
+  }
+
+  const _activeTyping = activeTyping ?? "";
+
+  for (const [key, value] of Object.entries(hint)) {
+    if (typeof value !== "object") {
+      continue;
+    }
+
+    autocomletions.push({
+      label: key,
+      kind: monaco.languages.CompletionItemKind.Field,
+      insertText: "${" + objectPath + "." + key,
+      filterText: "${" + objectPath + "." + key,
+      documentation: {
+        value: `**${key}** \n\n ${value.instillFormat} \n\n --- \n\n ${value.description}`,
+      },
+      range: new monaco.Range(
+        position.lineNumber,
+        position.column - _activeTyping.length,
+        position.lineNumber,
+        position.column,
+      ),
+    });
+  }
+
+  return autocomletions;
+}
+
+function getComponentKeyAutocompletions({
+  monaco,
+  recipe,
+  position,
+  activeTyping,
+}: {
+  monaco: Nullable<Monaco>;
+  recipe: Nullable<PipelineRecipe>;
+  position: Position;
+  activeTyping: Nullable<string>;
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+  const component = recipe?.component;
+
+  if (!monaco || !recipe || !component) {
+    return autocomletions;
+  }
+
+  const _activeTyping = activeTyping ?? "";
+
+  const componentKeys: string[] = [];
+  for (const [key, value] of Object.entries(component)) {
+    if (isPipelineGeneralComponent(value)) {
+      componentKeys.push(key);
+    }
+  }
+
+  for (const [key, value] of Object.entries(component)) {
+    if (isPipelineGeneralComponent(value)) {
+      autocomletions.push({
+        label: key,
+        kind: monaco.languages.CompletionItemKind.Function,
+        insertText: "${" + key,
+        filterText: "${" + key,
+        documentation: {
+          value: `**${key}** \n\n --- \n\n Component type: ${value.definition?.id}`,
+          isTrusted: true,
+        },
+        range: new monaco.Range(
+          position.lineNumber,
+          position.column - _activeTyping.length,
+          position.lineNumber,
+          position.column,
+        ),
+      });
+    }
+  }
+
+  return autocomletions;
+}
+
+/**
+ * This is for hint user to put variable after ${
+ */
+function getVariablePrefixAutoCompletions({
+  monaco,
+  position,
+  activeTyping,
+}: {
+  monaco: Nullable<Monaco>;
+  position: Position;
+  activeTyping: Nullable<string>;
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+
+  if (!monaco) {
+    return autocomletions;
+  }
+
+  const _activeTyping = activeTyping ?? "";
+
+  autocomletions.push({
+    label: "variable",
+    kind: monaco.languages.CompletionItemKind.Variable,
+    insertText: "${" + "variable",
+    filterText: "${" + "variable",
+    range: new monaco.Range(
+      position.lineNumber,
+      position.column - _activeTyping.length,
+      position.lineNumber,
+      position.column,
+    ),
+  });
+
+  return autocomletions;
+}
+
+function getSecretPrefixAutoCompletions({
+  monaco,
+  position,
+  activeTyping,
+}: {
+  monaco: Nullable<Monaco>;
+  position: Position;
+  activeTyping: Nullable<string>;
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+
+  if (!monaco || !activeTyping) {
+    return autocomletions;
+  }
+
+  autocomletions.push({
+    label: "secret",
+    kind: monaco.languages.CompletionItemKind.Variable,
+    insertText: "${" + "secret",
+    filterText: "${" + "secret",
+    documentation: {
+      value: "Instill Secret",
+    },
+    range: new monaco.Range(
+      position.lineNumber,
+      position.column - activeTyping.length,
+      position.lineNumber,
+      position.column,
+    ),
+  });
+
+  return autocomletions;
+}
 
 export const VscodeEditor = () => {
   const [markErrors, setMarkErrors] = React.useState<editor.IMarkerData[]>([]);
@@ -195,7 +707,7 @@ export const VscodeEditor = () => {
         };
       }
 
-      const last_chars = model.getValueInRange({
+      const charactersBeforeCursor = model.getValueInRange({
         startLineNumber: position.lineNumber,
         startColumn: 0,
         endLineNumber: position.lineNumber,
@@ -204,12 +716,19 @@ export const VscodeEditor = () => {
 
       const allValue = model.getValue();
 
-      const words = last_chars.replace("\t", "").split(" ");
+      const words = charactersBeforeCursor.replace("\t", "").split(" ");
 
       // What the user is currently typing (everything after the last space)
-      const active_typing = words[words.length - 1];
+      const activeTyping = words[words.length - 1] ?? null;
 
-      if (!active_typing) {
+      const isSpace =
+        charactersBeforeCursor.charAt(charactersBeforeCursor.length - 1) ===
+        " ";
+
+      // If the last character typed is a period then we need to look at member objects of the obj object
+      const isMember = activeTyping?.charAt(activeTyping.length - 1) == ".";
+
+      if (!activeTyping && !isSpace) {
         return {
           suggestions: result,
         };
@@ -221,53 +740,6 @@ export const VscodeEditor = () => {
       const smallestComponentKeyLineNumberMap = componentKeyLineNumberMaps
         .reverse()
         .find((map) => map.lineNumber <= position.lineNumber);
-
-      if (
-        smallestComponentKeyLineNumberMap &&
-        pipeline.isSuccess &&
-        pipeline.data.recipe &&
-        pipeline.data.recipe.component
-      ) {
-        // [HINT task]
-        // We need to hint task type for every component.
-        // 1. We need to find the component that the user is typing in. -> Check the closest and smallest component key line number.
-        // 2. We need to find the task type for the component.
-        if (last_chars.includes("task:")) {
-          const targetComponent =
-            pipeline.data.recipe?.component[
-              smallestComponentKeyLineNumberMap.key
-            ];
-
-          if (targetComponent && isPipelineGeneralComponent(targetComponent)) {
-            for (const task of targetComponent.definition?.tasks ?? []) {
-              result.push({
-                label: task.name,
-                kind: monaco.languages.CompletionItemKind.Field,
-                insertText: task.name,
-                filterText: task.name,
-                range: new monaco.Range(
-                  position.lineNumber,
-                  position.column - active_typing.length,
-                  position.lineNumber,
-                  position.column,
-                ),
-                documentation: {
-                  value: `**${task.name}** \n\n ${task.title} \n\n --- \n\n ${task.description}`,
-                  isTrusted: true,
-                },
-              });
-            }
-
-            return {
-              suggestions: result,
-            };
-          }
-        }
-
-        // We need to hint component type for every component
-        // if (last_chars.includes("type:")) {
-        // }
-      }
 
       const topLevelKeyLineNumberMaps =
         keyLineNumberMapHelpers.getRecipeTopLevelKeyLineNumberMaps(allValue);
@@ -289,74 +761,49 @@ export const VscodeEditor = () => {
           ?.reverse()
           .find((map) => map.lineNumber <= position.lineNumber);
 
+      if (smallestComponentKeyLineNumberMap && pipeline.isSuccess) {
+        // [HINT task]
+        // We need to hint task type for every component.
+        // 1. We need to find the component that the user is typing in. -> Check the closest and smallest component key line number.
+        // 2. We need to find the task type for the component.
+        if (charactersBeforeCursor.includes("task:")) {
+          const autocomletions = getComponentTaskAutocompletions({
+            monaco,
+            recipe: pipeline.data.recipe,
+            smallestComponentKeyLineNumberMap,
+            position,
+            activeTyping,
+          });
+
+          return {
+            suggestions: autocomletions,
+          };
+        }
+
+        // We need to hint component type for every component
+        // if (last_chars.includes("type:")) {
+        // }
+      }
+
       // [HINT Component Input key value]
       if (
+        pipeline.isSuccess &&
         smallestComponentKeyLineNumberMap &&
         smallestComponentTopLevelKeyLineNumberMap &&
         smallestComponentTopLevelKeyLineNumberMap.key === "input"
       ) {
-        const { substringBeforeColon } = analyzeColonInString(
-          last_chars,
-          position.column,
-        );
+        const autoCompletions = getComponentInputAutocompletions({
+          monaco,
+          recipe: pipeline.data.recipe,
+          smallestComponentKeyLineNumberMap,
+          position,
+          activeTyping,
+          charactersBeforeCursor,
+        });
 
-        const componenetKey = smallestComponentKeyLineNumberMap.key;
-        const targetComponent = pipeline.data?.recipe?.component
-          ? pipeline.data.recipe.component[componenetKey]
-          : undefined;
-
-        if (
-          targetComponent &&
-          isPipelineGeneralComponent(targetComponent) &&
-          targetComponent.definition
-        ) {
-          const targetTaskDefinition =
-            targetComponent.definition.spec.componentSpecification.oneOf?.find(
-              (oneOf) => oneOf.properties?.task?.const === targetComponent.task,
-            );
-
-          if (targetTaskDefinition) {
-            const formTree =
-              transformInstillJSONSchemaToFormTree(targetTaskDefinition);
-
-            if (formTree._type === "formGroup") {
-              const inputProperties = formTree.properties.find(
-                (e) => e.path === "input",
-              );
-
-              if (inputProperties && inputProperties._type === "formGroup") {
-                const targetProperty = inputProperties.properties.find(
-                  (e) => e.fieldKey === substringBeforeColon,
-                );
-
-                if (
-                  targetProperty &&
-                  targetProperty._type === "formItem" &&
-                  targetProperty.enum
-                ) {
-                  for (const enumValue of targetProperty.enum) {
-                    result.push({
-                      label: enumValue,
-                      kind: monaco.languages.CompletionItemKind.Field,
-                      insertText: enumValue,
-                      filterText: enumValue,
-                      range: new monaco.Range(
-                        position.lineNumber,
-                        position.column - active_typing.length,
-                        position.lineNumber,
-                        position.column,
-                      ),
-                    });
-                  }
-
-                  return {
-                    suggestions: result,
-                  };
-                }
-              }
-            }
-          }
-        }
+        return {
+          suggestions: autoCompletions,
+        };
       }
 
       // [HINT variable.instill-format]
@@ -364,38 +811,18 @@ export const VscodeEditor = () => {
       if (
         smallestTopLevelKeyLineNumberMap &&
         smallestTopLevelKeyLineNumberMap.key === "variable" &&
-        last_chars.includes("instill-format:")
+        charactersBeforeCursor.includes("instill-format:")
       ) {
-        for (const format of availableInstillFormats) {
-          result.push({
-            label: format,
-            kind: monaco.languages.CompletionItemKind.Field,
-            insertText: format,
-            filterText: format,
-            range: new monaco.Range(
-              position.lineNumber,
-              position.column - active_typing.length,
-              position.lineNumber,
-              position.column,
-            ),
-          });
-        }
+        const autocomletions = getComponentVariableAutocompletions({
+          monaco,
+          position,
+          activeTyping,
+        });
 
         return {
-          suggestions: result,
+          suggestions: autocomletions,
         };
       }
-
-      const component = recipe?.component;
-
-      if (!component) {
-        return {
-          suggestions: result,
-        };
-      }
-
-      // If the last character typed is a period then we need to look at member objects of the obj object
-      const isMember = active_typing.charAt(active_typing.length - 1) == ".";
 
       // If the user is typing a member object
       // For example: when user type ${o we first need to hint them the available components id
@@ -403,202 +830,118 @@ export const VscodeEditor = () => {
         // [HINT secret]
         // We need to hint secret for component setup
         if (
-          active_typing.includes("secret") &&
+          activeTyping.includes("secret") &&
           namespaceSecrets.isSuccess &&
           smallestComponentTopLevelKeyLineNumberMap &&
           smallestComponentTopLevelKeyLineNumberMap.key === "setup"
         ) {
-          for (const secret of namespaceSecrets.data) {
-            result.push({
-              label: secret.id,
-              kind: monaco.languages.CompletionItemKind.Field,
-              insertText: "${" + "secret." + secret.id,
-              filterText: "${" + "secret." + secret.id,
-              range: new monaco.Range(
-                position.lineNumber,
-                position.column - active_typing.length,
-                position.lineNumber,
-                position.column,
-              ),
-              detail: secret.description ?? undefined,
-              documentation: {
-                value: `**${secret.id}** \n\n --- \n\n ${secret.description}`,
-              },
-            });
-          }
+          const autocomletions = getSecretReferenceAutocompletions({
+            monaco,
+            position,
+            activeTyping,
+            secrets: namespaceSecrets.data,
+          });
 
           return {
-            suggestions: result,
+            suggestions: autocomletions,
           };
         }
 
         // [HINT reference to variable]
-        if (active_typing.includes("variable") && recipe.variable) {
-          const allHints = recipe.variable;
-
-          for (const [key, value] of Object.entries(allHints)) {
-            result.push({
-              label: key,
-              kind: monaco.languages.CompletionItemKind.Field,
-              insertText: "${" + "variable." + key,
-              filterText: "${" + "variable." + key,
-              documentation: {
-                value: `**${key}** \n\n --- \n\n instill-format: ${value?.instillFormat}`,
-              },
-              range: new monaco.Range(
-                position.lineNumber,
-                position.column - active_typing.length,
-                position.lineNumber,
-                position.column,
-              ),
-              detail: `${value?.instillFormat}`,
-            });
-          }
+        if (activeTyping.includes("variable") && recipe.variable) {
+          const autocomletions = getVariableReferenceAutocompletions({
+            monaco,
+            position,
+            activeTyping,
+            recipe,
+          });
 
           return {
-            suggestions: result,
+            suggestions: autocomletions,
           };
         }
 
-        const allHints: GeneralRecord = {};
-
-        for (const [key, value] of Object.entries(component)) {
-          if (isPipelineGeneralComponent(value)) {
-            const { outputSchema } = getGeneralComponentInOutputSchema(value);
-
-            if (outputSchema) {
-              const outputFormTree =
-                transformInstillJSONSchemaToFormTree(outputSchema);
-
-              const hints = transformFormTreeToNestedSmartHints(outputFormTree);
-
-              allHints[key] = {
-                output: hints,
-              };
-            }
-          }
-        }
+        const allHintMap = getAllComponentOutputHints({
+          recipe,
+        });
 
         // [HINT component output]
         // Is a member, get a list of all members, and the prefix
-        const objPath = active_typing
-          .substring(0, active_typing.length - 1)
+        const objectPath = activeTyping
+          .substring(0, activeTyping.length - 1)
           .replaceAll("${", "")
           .replaceAll("}", "");
         const regex = /\[(\d+)\]/g;
-        // const matches = objPath.match(regex);
-        const objPathWoIndex = objPath.replaceAll(regex, "");
+        const objectArrayPathWithoutIndex = objectPath.replaceAll(regex, "");
 
-        const hint = dot.getter(allHints, objPathWoIndex) as GeneralRecord;
+        const hint = dot.getter(
+          allHintMap,
+          objectArrayPathWithoutIndex,
+        ) as GeneralRecord;
 
-        if (hint.type === "objectArray") {
-          const regex = /\[(\d+)\]/g;
-          const matches = objPath.match(regex);
+        console.log(
+          "hint",
+          allHintMap,
+          objectPath,
+          objectArrayPathWithoutIndex,
+          hint,
+        );
 
-          if (matches && matches[0]) {
-            const arrayHint = dot.getter(
-              allHints,
-              objPathWoIndex,
-            ) as GeneralRecord;
+        if (hint && hint.type === "objectArray") {
+          const autocomletions = getComponentObjectArrayOutputAutocompletions({
+            monaco,
+            position,
+            activeTyping,
+            objectArrayPath: objectPath,
+            objectArrayPathWithoutIndex: objectArrayPathWithoutIndex,
+            hint,
+          });
 
-            for (const [key, value] of Object.entries(arrayHint)) {
-              result.push({
-                label: key,
-                kind: monaco.languages.CompletionItemKind.Field,
-                insertText: "${" + objPath + "." + key,
-                filterText: "${" + objPath + "." + key,
-                documentation: {
-                  value: `**${key}** \n\n ${value.instillFormat} \n\n --- \n\n ${value.description}`,
-                },
-                range: new monaco.Range(
-                  position.lineNumber,
-                  position.column - active_typing.length,
-                  position.lineNumber,
-                  position.column,
-                ),
-              });
-            }
-          }
+          console.log("aaa autocomletions", autocomletions);
 
           return {
-            suggestions: result,
+            suggestions: autocomletions,
           };
         }
 
-        for (const [key, value] of Object.entries(hint)) {
-          if (typeof value !== "object") {
-            continue;
-          }
+        const autocomletions = getComponentOutputAutocompletions({
+          monaco,
+          position,
+          activeTyping,
+          objectPath,
+          hint,
+        });
 
-          result.push({
-            label: key,
-            kind: monaco.languages.CompletionItemKind.Field,
-            insertText: "${" + objPath + "." + key,
-            filterText: "${" + objPath + "." + key,
-            documentation: {
-              value: `**${key}** \n\n ${value.instillFormat} \n\n --- \n\n ${value.description}`,
-            },
-            range: new monaco.Range(
-              position.lineNumber,
-              position.column - active_typing.length,
-              position.lineNumber,
-              position.column,
-            ),
-          });
-        }
+        console.log(autocomletions);
 
         return {
-          suggestions: result,
+          suggestions: autocomletions,
         };
       }
 
       const referenceRegex = /\${/g;
-      const isReference = referenceRegex.test(active_typing);
+      const isReference = activeTyping
+        ? referenceRegex.test(activeTyping)
+        : false;
 
       // [HINT component key]
       if (isReference) {
-        const componentKeys: string[] = [];
-        for (const [key, value] of Object.entries(component)) {
-          if (isPipelineGeneralComponent(value)) {
-            componentKeys.push(key);
-          }
-        }
+        const componentKeyAutocompletions = getComponentKeyAutocompletions({
+          monaco,
+          position,
+          activeTyping,
+          recipe,
+        });
 
-        for (const [key, value] of Object.entries(component)) {
-          if (isPipelineGeneralComponent(value)) {
-            result.push({
-              label: key,
-              kind: monaco.languages.CompletionItemKind.Function,
-              insertText: "${" + key,
-              filterText: "${" + key,
-              documentation: {
-                value: `**${key}** \n\n --- \n\n Component type: ${value.definition?.id}`,
-                isTrusted: true,
-              },
-              range: new monaco.Range(
-                position.lineNumber,
-                position.column - active_typing.length,
-                position.lineNumber,
-                position.column,
-              ),
-            });
-          }
-        }
+        result.push(...componentKeyAutocompletions);
 
-        if (recipe.variable) {
-          result.push({
-            label: "variable",
-            kind: monaco.languages.CompletionItemKind.Variable,
-            insertText: "${" + "variable",
-            filterText: "${" + "variable",
-            range: new monaco.Range(
-              position.lineNumber,
-              position.column - active_typing.length,
-              position.lineNumber,
-              position.column,
-            ),
-          });
-        }
+        const variablePrefixAutocompletions = getVariablePrefixAutoCompletions({
+          monaco,
+          position,
+          activeTyping,
+        });
+
+        result.push(...variablePrefixAutocompletions);
 
         // [HINT secret key]
         // This keyword will only be used under setup component toplevel key
@@ -606,27 +949,23 @@ export const VscodeEditor = () => {
           smallestComponentTopLevelKeyLineNumberMap &&
           smallestComponentTopLevelKeyLineNumberMap.key === "setup"
         ) {
-          result.push({
-            label: "secret",
-            kind: monaco.languages.CompletionItemKind.Variable,
-            insertText: "${" + "secret",
-            filterText: "${" + "secret",
-            documentation: {
-              value: "Instill Secret",
-            },
-            range: new monaco.Range(
-              position.lineNumber,
-              position.column - active_typing.length,
-              position.lineNumber,
-              position.column,
-            ),
+          const secretPrefixAutocompletions = getSecretPrefixAutoCompletions({
+            monaco,
+            position,
+            activeTyping,
           });
+
+          result.push(...secretPrefixAutocompletions);
         }
 
         return {
           suggestions: result,
         };
       }
+
+      return {
+        suggestions: result,
+      };
     },
     [
       namespaceSecrets.isSuccess,
@@ -906,7 +1245,7 @@ export const VscodeEditor = () => {
 
     const autoCompleteDisposable =
       monacoRef.current.languages.registerCompletionItemProvider("yaml", {
-        triggerCharacters: ["${", "."],
+        triggerCharacters: ["${", ".", " ", ":"],
         provideCompletionItems: (model, position) => {
           return handleAutoComplete({
             model,
@@ -1056,7 +1395,7 @@ export const VscodeEditor = () => {
 
           const autoCompleteDisposable =
             monaco.languages.registerCompletionItemProvider("yaml", {
-              triggerCharacters: ["${", "."],
+              triggerCharacters: ["${", ".", " ", ":"],
               provideCompletionItems: (model, position) => {
                 // Split everything the user has typed on the current line up at each space, and only look at the last word
                 return handleAutoComplete({
