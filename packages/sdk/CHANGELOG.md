@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/instill-ai/console/compare/instill-sdk-v0.5.0...instill-sdk-v0.5.1) (2024-09-13)
+
+
+### Bug Fixes
+
+* add requester id header to model runs request ([#1458](https://github.com/instill-ai/console/issues/1458)) ([a20b152](https://github.com/instill-ai/console/commit/a20b15282ba72754be03e6908de1c6f5ca1d83ea))
+
 ## [0.5.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.4.1...instill-sdk-v0.5.0) (2024-09-11)
 
 
