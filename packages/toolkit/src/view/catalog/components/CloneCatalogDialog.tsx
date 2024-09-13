@@ -128,7 +128,7 @@ export const CloneCatalogDialog = ({
       userSub.data || null,
       orgSub.data || null,
     );
-  }, [selectedNamespace, userSub.data, orgSub.data]);
+  }, [namespaceType, userSub.data, orgSub.data]);
 
   const catalogLimit = React.useMemo(
     () => getCatalogLimit(subscriptionInfo.plan),
@@ -142,14 +142,22 @@ export const CloneCatalogDialog = ({
         tags: initialValues.tags.join(", "),
         namespaceId: navigationNamespaceAnchor || "",
       });
+      setShowLimitNotification(false); // Reset notification state when dialog opens
     }
   }, [isOpen, initialValues, navigationNamespaceAnchor, reset]);
 
-  React.useEffect(() => {
+  const checkCatalogLimit = React.useCallback((namespace: string) => {
     if (catalogs.data && catalogLimit) {
-      setShowLimitNotification(catalogs.data.length >= catalogLimit);
+      const namespaceCatalogs = catalogs.data.filter(catalog => catalog.ownerId === namespace);
+      return namespaceCatalogs.length >= catalogLimit;
     }
+    return false;
   }, [catalogs.data, catalogLimit]);
+
+  const handleNamespaceChange = (value: string) => {
+    setValue("namespaceId", value, { shouldValidate: true });
+    setShowLimitNotification(checkCatalogLimit(value));
+  };
 
   const handleSubmit = async (data: CloneCatalogDialogData) => {
     if (showLimitNotification) {
@@ -212,11 +220,7 @@ export const CloneCatalogDialog = ({
                       <Form.Control>
                         <EntitySelector
                           value={field.value}
-                          onChange={(value: string) => {
-                            setValue("namespaceId", value, {
-                              shouldValidate: true,
-                            });
-                          }}
+                          onChange={handleNamespaceChange}
                           data={userNamespaces}
                         />
                       </Form.Control>
