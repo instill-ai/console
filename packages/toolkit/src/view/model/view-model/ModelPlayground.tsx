@@ -157,11 +157,38 @@ export const ModelPlayground = ({
   });
 
   const pollForResponse = React.useCallback(async () => {
+    if (currentOperationIdPollingData.current.timeoutRunning) {
+      return;
+    }
+
+    if (currentOperationIdPollingData.current.isRendered) {
+      currentOperationIdPollingData.current = {
+        ...currentOperationIdPollingData.current,
+        timeoutRunning: false,
+      };
+
+      return;
+    }
+
+    currentOperationIdPollingData.current = {
+      ...currentOperationIdPollingData.current,
+      timeoutRunning: true,
+    };
+
     await queryClient.invalidateQueries({
       queryKey: ["models", "operation", model?.name],
     });
 
     existingModelTriggerResult.refetch();
+
+    setTimeout(() => {
+      currentOperationIdPollingData.current = {
+        ...currentOperationIdPollingData.current,
+        timeoutRunning: false,
+      };
+
+      pollForResponse();
+    }, OPERATION_POLL_TIMEOUT);
   }, [model?.name, queryClient, existingModelTriggerResult]);
 
   useEffect(() => {
@@ -196,21 +223,7 @@ export const ModelPlayground = ({
     }
 
     if (!existingModelTriggerResult.data?.operation?.done) {
-      if (!currentOperationIdPollingData.current.timeoutRunning) {
-        currentOperationIdPollingData.current = {
-          ...currentOperationIdPollingData.current,
-          timeoutRunning: true,
-        };
-
-        setTimeout(() => {
-          currentOperationIdPollingData.current = {
-            ...currentOperationIdPollingData.current,
-            timeoutRunning: false,
-          };
-
-          pollForResponse();
-        }, OPERATION_POLL_TIMEOUT);
-      }
+      pollForResponse();
     } else {
       if (
         existingTriggerState?.done !==
@@ -235,9 +248,7 @@ export const ModelPlayground = ({
     }
 
     if (!existingTriggerState.done) {
-      if (!currentOperationIdPollingData.current.timeoutRunning) {
-        pollForResponse();
-      }
+      pollForResponse();
     } else {
       if (!currentOperationIdPollingData.current.isRendered) {
         currentOperationIdPollingData.current = {
@@ -262,11 +273,12 @@ export const ModelPlayground = ({
     if (!currentOperationIdPollingData.current.name) {
       currentOperationIdPollingData.current = {
         ...defaultCurrentOperationIdPollingData,
+        isRendered: existingTriggerState.done,
         name: existingTriggerState.name,
         modelVersion: existingTriggerState.response?.request.version || null,
       };
     }
-  }, [existingTriggerState, model, pollForResponse]);
+  }, [existingTriggerState, model]);
 
   const triggerModel = useTriggerUserModelVersionAsync();
 
