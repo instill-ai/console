@@ -1,7 +1,7 @@
 "use client";
 
-import { Nullable } from "instill-sdk";
 import * as React from "react";
+import { Nullable } from "instill-sdk";
 
 type UploadProgressState = Record<string, number>;
 
@@ -20,7 +20,10 @@ export function useUploadWithProgress() {
           await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate network delay
           uploadedSize = Math.min(uploadedSize + chunkSize, totalSize);
           const progress = (uploadedSize / totalSize) * 100;
-          setUploadProgress((prev) => ({ ...(prev ?? {}), [file.name]: progress }));
+          setUploadProgress((prev) => ({
+            ...(prev ?? {}),
+            [file.name]: progress,
+          }));
           onProgress(progress);
         }
 
@@ -38,7 +41,7 @@ export function useUploadWithProgress() {
         }, 1000);
       }
     },
-    []
+    [],
   );
 
   return { uploadFile, uploadProgress, setUploadProgress };
