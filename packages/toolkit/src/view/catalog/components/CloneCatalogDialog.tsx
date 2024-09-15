@@ -143,7 +143,7 @@ export const CloneCatalogDialog = ({
       userSub.data || null,
       orgSub.data || null,
     );
-  }, [selectedNamespace, userSub.data, orgSub.data]);
+  }, [selectedNamespace, userSub.data, orgSub.data, namespaceType]);
 
   const catalogLimit = React.useMemo(
     () => getCatalogLimit(subscriptionInfo.plan),
