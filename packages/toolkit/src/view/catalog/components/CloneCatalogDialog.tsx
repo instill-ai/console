@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Nullable } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -16,15 +17,24 @@ import {
 } from "@instill-ai/design-system";
 
 import { EntitySelector, LoadingSpin } from "../../../components";
-import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import {
+  InstillStore,
+  useAuthenticatedUserSubscription,
+  useInstillStore,
+  useOrganizationSubscription,
+  useShallow,
+} from "../../../lib";
+import { useGetCatalogs } from "../../../lib/react-query-service/catalog";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
-import { checkNamespaceType, convertTagsToArray, formatName, getSubscriptionInfo } from "./lib/helpers";
+import {
+  checkNamespaceType,
+  convertTagsToArray,
+  formatName,
+  getCatalogLimit,
+  getSubscriptionInfo,
+} from "./lib/helpers";
 import { CatalogLimitNotification } from "./notifications";
-import { useGetCatalogs } from "../../../lib/react-query-service/catalog";
-import { getCatalogLimit } from "./lib/helpers";
-import { useAuthenticatedUserSubscription, useOrganizationSubscription } from "../../../lib";
-import { Nullable } from "instill-sdk";
 
 const CloneCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -67,10 +77,15 @@ export const CloneCatalogDialog = ({
 }: CloneCatalogDialogProps) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [showLimitNotification, setShowLimitNotification] = React.useState(false);
+  const [showLimitNotification, setShowLimitNotification] =
+    React.useState(false);
 
-  const { accessToken, enabledQuery, navigationNamespaceAnchor, updateNavigationNamespaceAnchor } =
-    useInstillStore(useShallow(selector));
+  const {
+    accessToken,
+    enabledQuery,
+    navigationNamespaceAnchor,
+    updateNavigationNamespaceAnchor,
+  } = useInstillStore(useShallow(selector));
   const userNamespaces = useUserNamespaces();
 
   const form = useForm<CloneCatalogDialogData>({
