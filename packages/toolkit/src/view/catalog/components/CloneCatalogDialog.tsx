@@ -184,6 +184,13 @@ export const CloneCatalogDialog = ({
     }
   };
 
+  const handleNamespaceChange = (value: string) => {
+    setValue("namespaceId", value, { shouldValidate: true });
+    if (catalogs.data && catalogLimit) {
+      setShowLimitNotification(catalogs.data.length >= catalogLimit);
+    }
+  };
+
   return (
     <>
       <Dialog.Root open={isOpen} onOpenChange={onClose}>
@@ -212,11 +219,7 @@ export const CloneCatalogDialog = ({
                       <Form.Control>
                         <EntitySelector
                           value={field.value}
-                          onChange={(value: string) => {
-                            setValue("namespaceId", value, {
-                              shouldValidate: true,
-                            });
-                          }}
+                          onChange={handleNamespaceChange}
                           data={userNamespaces}
                         />
                       </Form.Control>
