@@ -68,7 +68,6 @@ export const CloneCatalogDialog = ({
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [showLimitNotification, setShowLimitNotification] = React.useState(false);
-  const [initialNamespace, setInitialNamespace] = React.useState(initialValues.namespaceId);
 
   const { accessToken, enabledQuery, navigationNamespaceAnchor, updateNavigationNamespaceAnchor } =
     useInstillStore(useShallow(selector));
@@ -84,7 +83,7 @@ export const CloneCatalogDialog = ({
     mode: "onChange",
   });
 
-  const { formState, watch, setValue } = form;
+  const { formState, reset, watch, setValue } = form;
   const nameValue = watch("name");
   const description = watch("description");
   const selectedNamespace = watch("namespaceId");
@@ -129,7 +128,7 @@ export const CloneCatalogDialog = ({
       userSub.data || null,
       orgSub.data || null,
     );
-  }, [namespaceType, userSub.data, orgSub.data]);
+  }, [selectedNamespace, userSub.data, orgSub.data]);
 
   const catalogLimit = React.useMemo(
     () => getCatalogLimit(subscriptionInfo.plan),
@@ -138,34 +137,19 @@ export const CloneCatalogDialog = ({
 
   React.useEffect(() => {
     if (isOpen) {
-      setInitialNamespace(navigationNamespaceAnchor || initialValues.namespaceId);
-      setValue("namespaceId", navigationNamespaceAnchor || initialValues.namespaceId);
-      setShowLimitNotification(false);
+      reset({
+        ...initialValues,
+        tags: initialValues.tags.join(", "),
+        namespaceId: navigationNamespaceAnchor || "",
+      });
     }
-  }, [isOpen, initialValues.namespaceId, navigationNamespaceAnchor, setValue]);
+  }, [isOpen, initialValues, navigationNamespaceAnchor, reset]);
 
-  const checkCatalogLimit = React.useCallback((namespace: string) => {
+  React.useEffect(() => {
     if (catalogs.data && catalogLimit) {
-      const namespaceCatalogs = catalogs.data.filter(catalog => catalog.ownerId === namespace);
-      return namespaceCatalogs.length >= catalogLimit;
+      setShowLimitNotification(catalogs.data.length >= catalogLimit);
     }
-    return false;
   }, [catalogs.data, catalogLimit]);
-
-  const handleNamespaceChange = (value: string) => {
-    setValue("namespaceId", value, { shouldValidate: true });
-    const isLimitReached = checkCatalogLimit(value);
-    setShowLimitNotification(isLimitReached);
-  };
-
-  const handleClose = () => {
-    if (showLimitNotification) {
-      // Revert to the initial namespace if limit was reached for selected namespace
-      setValue("namespaceId", initialNamespace);
-      setShowLimitNotification(false);
-    }
-    onClose();
-  };
 
   const handleSubmit = async (data: CloneCatalogDialogData) => {
     if (showLimitNotification) {
@@ -202,7 +186,7 @@ export const CloneCatalogDialog = ({
 
   return (
     <>
-      <Dialog.Root open={isOpen} onOpenChange={handleClose}>
+      <Dialog.Root open={isOpen} onOpenChange={onClose}>
         <Dialog.Content className="!w-[600px] rounded-md">
           <Dialog.Header className="flex justify-between">
             <Dialog.Title className="text-semantic-fg-primary !product-body-text-1-semibold">
@@ -228,7 +212,11 @@ export const CloneCatalogDialog = ({
                       <Form.Control>
                         <EntitySelector
                           value={field.value}
-                          onChange={handleNamespaceChange}
+                          onChange={(value: string) => {
+                            setValue("namespaceId", value, {
+                              shouldValidate: true,
+                            });
+                          }}
                           data={userNamespaces}
                         />
                       </Form.Control>
@@ -334,7 +322,7 @@ export const CloneCatalogDialog = ({
                 }}
               />
               <div className="mt-8 flex justify-end gap-x-3">
-                <Button variant="secondaryGrey" onClick={handleClose}>
+                <Button variant="secondaryGrey" onClick={onClose}>
                   Cancel
                 </Button>
                 <Button
