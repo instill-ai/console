@@ -20,7 +20,7 @@ import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
 import { checkNamespaceType, convertTagsToArray, formatName, getSubscriptionInfo } from "./lib/helpers";
-import { CatalogLimitNotification, AllNamespacesFullNotification } from "./notifications";
+import { CatalogLimitNotification } from "./notifications";
 import { useGetCatalogs } from "../../../lib/react-query-service/catalog";
 import { getCatalogLimit } from "./lib/helpers";
 import { useAuthenticatedUserSubscription, useOrganizationSubscription } from "../../../lib";
@@ -68,7 +68,6 @@ export const CloneCatalogDialog = ({
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [showLimitNotification, setShowLimitNotification] = React.useState(false);
-  const [showAllNamespacesFullNotification, setShowAllNamespacesFullNotification] = React.useState(false);
 
   const { accessToken, enabledQuery, navigationNamespaceAnchor, updateNavigationNamespaceAnchor } =
     useInstillStore(useShallow(selector));
@@ -129,31 +128,12 @@ export const CloneCatalogDialog = ({
       userSub.data || null,
       orgSub.data || null,
     );
-  }, [namespaceType, userSub.data, orgSub.data]);
+  }, [selectedNamespace, userSub.data, orgSub.data]);
 
   const catalogLimit = React.useMemo(
     () => getCatalogLimit(subscriptionInfo.plan),
     [subscriptionInfo.plan],
   );
-
-  const checkNamespaceLimits = React.useCallback((namespaceId: Nullable<string>) => {
-    if (catalogs.data && catalogLimit && namespaceId) {
-      const namespaceCatalogs = catalogs.data.filter(catalog => catalog.ownerId === namespaceId);
-      const currentNamespaceFull = namespaceCatalogs.length >= catalogLimit;
-      setShowLimitNotification(currentNamespaceFull);
-
-      if (currentNamespaceFull) {
-        const availableNamespace = userNamespaces.find(namespace => {
-          const otherNamespaceCatalogs = catalogs.data.filter(catalog => catalog.ownerId === namespace.id);
-          return otherNamespaceCatalogs.length < catalogLimit;
-        });
-
-        setShowAllNamespacesFullNotification(!availableNamespace);
-      } else {
-        setShowAllNamespacesFullNotification(false);
-      }
-    }
-  }, [catalogs.data, catalogLimit, userNamespaces]);
 
   React.useEffect(() => {
     if (isOpen) {
@@ -162,23 +142,17 @@ export const CloneCatalogDialog = ({
         tags: initialValues.tags.join(", "),
         namespaceId: navigationNamespaceAnchor || "",
       });
-      if (navigationNamespaceAnchor && catalogs.data) {
-        checkNamespaceLimits(navigationNamespaceAnchor);
-      }
-    } else {
-      setShowLimitNotification(false);
-      setShowAllNamespacesFullNotification(false);
     }
-  }, [isOpen, initialValues, navigationNamespaceAnchor, reset, catalogs.data, checkNamespaceLimits]);
+  }, [isOpen, initialValues, navigationNamespaceAnchor, reset]);
 
   React.useEffect(() => {
-    if (selectedNamespace && catalogs.data) {
-      checkNamespaceLimits(selectedNamespace);
+    if (catalogs.data && catalogLimit) {
+      setShowLimitNotification(catalogs.data.length >= catalogLimit);
     }
-  }, [selectedNamespace, catalogs.data, checkNamespaceLimits]);
+  }, [catalogs.data, catalogLimit]);
 
   const handleSubmit = async (data: CloneCatalogDialogData) => {
-    if (showLimitNotification || showAllNamespacesFullNotification) {
+    if (showLimitNotification) {
       return;
     }
 
@@ -210,41 +184,16 @@ export const CloneCatalogDialog = ({
     }
   };
 
-  const handleLimitNotificationClose = () => {
-    setShowLimitNotification(false);
-
-    const availableNamespace = userNamespaces.find(namespace => {
-      const namespaceCatalogs = catalogs.data?.filter(catalog => catalog.ownerId === namespace.id) || [];
-      return namespaceCatalogs.length < catalogLimit;
-    });
-
-    if (availableNamespace) {
-      setValue("namespaceId", availableNamespace.id, { shouldValidate: true });
-      checkNamespaceLimits(availableNamespace.id);
-    } else {
-      setShowAllNamespacesFullNotification(true);
-    }
-  };
-
-  const handleAllNamespacesFullNotificationClose = () => {
-    setShowAllNamespacesFullNotification(false);
-    onClose();
-  };
-
-  const handleDialogClose = () => {
-    setShowLimitNotification(false);
-    setShowAllNamespacesFullNotification(false);
-    onClose();
-  };
-
   const handleNamespaceChange = (value: string) => {
     setValue("namespaceId", value, { shouldValidate: true });
-    checkNamespaceLimits(value);
+    if (catalogs.data && catalogLimit) {
+      setShowLimitNotification(catalogs.data.length >= catalogLimit);
+    }
   };
 
   return (
     <>
-      <Dialog.Root open={isOpen} onOpenChange={handleDialogClose}>
+      <Dialog.Root open={isOpen} onOpenChange={onClose}>
         <Dialog.Content className="!w-[600px] rounded-md">
           <Dialog.Header className="flex justify-between">
             <Dialog.Title className="text-semantic-fg-primary !product-body-text-1-semibold">
@@ -376,7 +325,7 @@ export const CloneCatalogDialog = ({
                 }}
               />
               <div className="mt-8 flex justify-end gap-x-3">
-                <Button variant="secondaryGrey" onClick={handleDialogClose}>
+                <Button variant="secondaryGrey" onClick={onClose}>
                   Cancel
                 </Button>
                 <Button
@@ -397,12 +346,8 @@ export const CloneCatalogDialog = ({
         </Dialog.Content>
       </Dialog.Root>
       <CatalogLimitNotification
-        isOpen={showLimitNotification && !showAllNamespacesFullNotification}
-        onClose={handleLimitNotificationClose}
-      />
-      <AllNamespacesFullNotification
-        isOpen={showAllNamespacesFullNotification}
-        onClose={handleAllNamespacesFullNotificationClose}
+        isOpen={showLimitNotification}
+        onClose={() => setShowLimitNotification(false)}
       />
     </>
   );

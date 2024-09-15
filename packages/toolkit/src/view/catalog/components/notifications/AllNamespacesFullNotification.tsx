@@ -1,3 +1,4 @@
+//This will be used in the updated version of cloning flow
 import { Button, Dialog, Icons } from "@instill-ai/design-system";
 
 type AllNamespacesFullNotificationProps = {
