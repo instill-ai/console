@@ -11,3 +11,4 @@ export * from "./InsufficientStorageBanner";
 export * from "./UpgradePlanLink";
 export * from "./InsufficientStorageNotification";
 export * from "./CatalogLimitNotification";
+export * from "./AllNamespacesFullNotification";

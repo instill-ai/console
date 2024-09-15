@@ -1,27 +1,27 @@
 import { Button, Dialog, Icons } from "@instill-ai/design-system";
 
-export type CatalogLimitNotificationProps = {
+type AllNamespacesFullNotificationProps = {
     isOpen: boolean;
     onClose: () => void;
 };
 
-export const CatalogLimitNotification = ({
+export const AllNamespacesFullNotification = ({
     isOpen,
     onClose,
-}: CatalogLimitNotificationProps) => {
+}: AllNamespacesFullNotificationProps) => {
     return (
         <Dialog.Root open={isOpen} onOpenChange={onClose}>
             <Dialog.Content className="!w-[400px]">
                 <div className="flex flex-col gap-y-6">
-                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-semantic-warning-bg">
-                        <Icons.AlertTriangle className="h-6 w-6 stroke-semantic-warning-on-bg" />
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-semantic-error-bg">
+                        <Icons.AlertCircle className="h-6 w-6 stroke-semantic-error-on-bg" />
                     </div>
                     <div className="flex flex-col">
                         <Dialog.Title className="!mx-auto !product-headings-heading-3">
-                            Catalog Limit Reached
+                            All Namespaces Full
                         </Dialog.Title>
                         <Dialog.Description className="!mx-auto !text-center">
-                            This namespace has reached the limit of Catalogs. Please consider deleting one if you want to clone one.
+                            All your namespaces have reached their Catalog limit. Please remove a Catalog from one of your namespaces before cloning.
                         </Dialog.Description>
                     </div>
                     <div className="flex flex-row justify-end">
@@ -31,13 +31,12 @@ export const CatalogLimitNotification = ({
                             size="lg"
                             className="!px-2.5"
                         >
-                            Understood
+                            Close
                         </Button>
                     </div>
                 </div>
                 <Dialog.Close className="absolute right-4 top-4">
                     <Icons.X className="h-4 w-4" />
-                    <span className="sr-only">Close</span>
                 </Dialog.Close>
             </Dialog.Content>
         </Dialog.Root>
