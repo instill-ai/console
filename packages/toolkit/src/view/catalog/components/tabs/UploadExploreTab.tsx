@@ -513,7 +513,7 @@ export const UploadExploreTab = ({
             <div className="w-24 h-2 bg-semantic-bg-base-bg rounded-full">
               <div
                 className="h-full bg-semantic-accent-default rounded-full"
-                style={{ width: `${uploadProgress[file.name] || 0}%` }}
+                style={{ width: `${uploadProgress?.[file.name] ?? 0}%` }}
               ></div>
             </div>
           ) : (
