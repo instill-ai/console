@@ -85,7 +85,7 @@ export const NodeBase = ({
       <div
         onClick={handleClick}
         className={cn(
-          "flex relative items-center border-2 border-[#94a0b8] justify-center w-[160px] h-[160px] flex-col rounded p-3 bg-semantic-bg-base-bg",
+          "flex relative items-center border-2 border-[#94a0b8] justify-center w-[160px] h-[160px] flex-col rounded-md p-3 bg-semantic-bg-base-bg",
           isCompleted ? "border-4 border-semantic-success-default" : "",
           errorState.error ? "border-4 border-semantic-error-default" : "",
         )}
@@ -153,7 +153,7 @@ export const NodeBase = ({
         )}
       >
         <div className="flex flex-col">
-          <p className="product-body-text-1-medium w-full text-center text-semantic-fg-disabled">
+          <p className="product-body-text-1-semibold w-full text-center text-semantic-fg-disabled">
             {id}
           </p>
         </div>
