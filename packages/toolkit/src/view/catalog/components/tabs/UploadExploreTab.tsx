@@ -471,7 +471,7 @@ export const UploadExploreTab = ({
                           </label>
                           <div className="">
                             Support TXT, MARKDOWN, PDF, DOCX, DOC, PPTX, PPT,
-                            HTML, XLSX
+                            HTML, XLSX, CSV, XLS
                           </div>
                           <div className="">
                             Max {planMaxFileSize / (1024 * 1024)}MB each
