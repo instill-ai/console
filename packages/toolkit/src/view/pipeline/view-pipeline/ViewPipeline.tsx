@@ -79,12 +79,6 @@ export const ViewPipeline = () => {
   };
 
   React.useEffect(() => {
-    if (pipeline.isError) {
-      router.push("/404");
-    }
-  }, [pipeline.isError, router]);
-
-  React.useEffect(() => {
     if (releases.isSuccess) {
       if (activeVersion) {
         if (releases.data.length > 0) {
