@@ -31,20 +31,23 @@ export const ModelContentViewer = ({
 }: ModelContentViewerProps) => {
   const router = useRouter();
   const routeInfo = useRouteInfo();
+
   React.useEffect(() => {
-    if (model) {
-      if (!model.permission.canEdit && selectedTab === "settings") {
-        const playgroundPath = `/${routeInfo.data?.namespaceId}/models/${model.id}/playground`;
-        router.push(playgroundPath);
-      }
+    if (
+      model &&
+      selectedTab === "settings" &&
+      !model.permission.canEdit
+    ) {
+      const playgroundPath = `/${routeInfo.data?.namespaceId}/models/${model.id}/playground`;
+      router.push(playgroundPath);
     }
-  }, [model, routeInfo.data?.namespaceId, router]);
+  }, [selectedTab, model, routeInfo.data?.namespaceId, router]);
+
   let content = null;
 
   switch (selectedTab) {
     case "api": {
       content = <ModelApi model={model} />;
-
       break;
     }
     case "versions": {
@@ -53,12 +56,13 @@ export const ModelContentViewer = ({
       ) : (
         <NoVersionsPlaceholder />
       );
-
       break;
     }
     case "settings": {
       if (model?.permission.canEdit) {
         content = <ModelSettingsEditForm model={model} onUpdate={onUpdate} />;
+      } else {
+        content = null;
       }
 
       break;

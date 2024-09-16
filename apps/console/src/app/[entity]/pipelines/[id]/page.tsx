@@ -24,6 +24,7 @@ async function getPipelineData(entity: string, id: string, accessToken: Nullable
     console.error(error);
     return null;
   }
+  return null; // Return null if namespaceType doesn't match
 }
 
 export default async function RedirectionPipelinePage({ params }: RedirectionPipelinePageProps) {
@@ -36,14 +37,18 @@ export default async function RedirectionPipelinePage({ params }: RedirectionPip
     accessToken = JSON.parse(authSessionCookie).accessToken;
   }
 
-  const pipelineData = await getPipelineData(entity, id, accessToken);
+  try {
+    const pipelineData = await getPipelineData(entity, id, accessToken);
 
-  // Redirect to 404 if the pipeline doesn't exist
-  if (!pipelineData) {
-    return redirect('/404');
+    // Redirect to 404 if the pipeline doesn't exist
+    if (!pipelineData) {
+      return redirect('/404');
+    }
+
+    // If the pipeline exists, redirect to the playground
+    return redirect(`/${entity}/pipelines/${id}/playground`);
+  } catch (error) {
+    console.error("Error in RedirectionPipelinePage:", error);
+    return redirect('/404'); // Redirect to 404 on any error
   }
-
-  // If the pipeline exists, redirect to the playground
-  return redirect(`/${entity}/pipelines/${id}/playground`);
-
 }

@@ -22,8 +22,9 @@ async function getModelData(entity: string, id: string, accessToken: Nullable<st
     }
   } catch (error) {
     console.error(error);
-    return Promise.reject(null);
+    return null;
   }
+  return null; // Return null if namespaceType doesn't match
 }
 
 export default async function RedirectionModelPage({ params }: RedirectionModelPageProps) {
@@ -36,13 +37,18 @@ export default async function RedirectionModelPage({ params }: RedirectionModelP
     accessToken = JSON.parse(authSessionCookie).accessToken;
   }
 
-  const modelData = await getModelData(entity, id, accessToken);
+  try {
+    const modelData = await getModelData(entity, id, accessToken);
 
-  // Redirect to 404 if the model doesn't exist
-  if (!modelData) {
-    return redirect('/404');
+    // Redirect to 404 if the model doesn't exist
+    if (!modelData) {
+      return redirect('/404');
+    }
+
+    // If the model exists, redirect to the playground
+    return redirect(`/${entity}/models/${id}/playground`);
+  } catch (error) {
+    console.error("Error in RedirectionModelPage:", error);
+    return redirect('/404'); // Redirect to 404 on any error
   }
-
-  // If the model exists, redirect to the playground
-  return redirect(`/${entity}/models/${id}/playground`);
 }
