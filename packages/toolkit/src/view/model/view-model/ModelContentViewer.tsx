@@ -33,11 +33,7 @@ export const ModelContentViewer = ({
   const routeInfo = useRouteInfo();
 
   React.useEffect(() => {
-    if (
-      model &&
-      selectedTab === "settings" &&
-      !model.permission.canEdit
-    ) {
+    if (model && selectedTab === "settings" && !model.permission.canEdit) {
       const playgroundPath = `/${routeInfo.data?.namespaceId}/models/${model.id}/playground`;
       router.push(playgroundPath);
     }

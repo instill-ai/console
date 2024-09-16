@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from 'react'
+import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import debounce from "lodash.debounce";
 
@@ -50,7 +50,6 @@ export const ModelHubListPageMainView = () => {
   React.useEffect(() => {
     setPageNumber(0);
   }, [selectedVisibilityOption, searchCode]);
-
 
   /* -------------------------------------------------------------------------
    * Query resource data
