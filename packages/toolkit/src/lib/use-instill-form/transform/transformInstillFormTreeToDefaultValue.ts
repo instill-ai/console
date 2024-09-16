@@ -11,6 +11,11 @@ export type TransformInstillFormTreeToDefaultValueOptions = {
   parentIsObjectArray?: boolean;
   parentIsFormCondition?: boolean;
   parentPath?: string;
+
+  // By default we use null to represent the absence of value.
+  // In some cases, we want to use empty string instead of null.
+  // This is to make the generated YAML looks nicer.
+  replaceNullWithEmptyString?: boolean;
 };
 
 export function transformInstillFormTreeToDefaultValue(
@@ -24,7 +29,8 @@ export function transformInstillFormTreeToDefaultValue(
   const parentIsObjectArray = options?.parentIsObjectArray ?? false;
   const parentIsFormCondition = options?.parentIsFormCondition ?? false;
   const parentPath = options?.parentPath ?? undefined;
-
+  const replaceNullWithEmptyString =
+    options?.replaceNullWithEmptyString ?? false;
   // We don't need to set the field key for formCondition because in the
   // conditions are formGroup, we will set the fieldKey there
 
@@ -76,6 +82,7 @@ export function transformInstillFormTreeToDefaultValue(
             stringify,
             parentPath: modifiedPath ?? undefined,
             parentIsFormCondition: true,
+            replaceNullWithEmptyString,
           });
 
           dot.setter(
@@ -100,6 +107,7 @@ export function transformInstillFormTreeToDefaultValue(
             stringify,
             parentPath: modifiedPath ?? undefined,
             parentIsFormCondition: true,
+            replaceNullWithEmptyString,
           });
 
           dot.setter(
@@ -124,6 +132,7 @@ export function transformInstillFormTreeToDefaultValue(
         skipPath,
         stringify,
         parentPath: modifiedPath ?? undefined,
+        replaceNullWithEmptyString,
       });
     }
 
@@ -139,6 +148,7 @@ export function transformInstillFormTreeToDefaultValue(
         stringify,
         parentIsObjectArray: true,
         parentPath: modifiedPath ?? undefined,
+        replaceNullWithEmptyString,
       });
     }
 
@@ -152,7 +162,9 @@ export function transformInstillFormTreeToDefaultValue(
     return initialData;
   }
 
-  let defaultValue: Nullable<string | number> = null;
+  let defaultValue: Nullable<string | number> = replaceNullWithEmptyString
+    ? ""
+    : null;
 
   if (!modifiedPath) {
     return initialData;
@@ -196,6 +208,8 @@ export function transformInstillFormTreeToDefaultValue(
               ? String(instillUpstreamValue.examples)
               : instillUpstreamValue.examples;
             break;
+          default:
+            defaultValue = replaceNullWithEmptyString ? "" : null;
         }
 
         dot.setter(initialData, modifiedPath, defaultValue);
@@ -215,7 +229,7 @@ export function transformInstillFormTreeToDefaultValue(
               : instillUpstreamValue.example;
             break;
           default:
-            defaultValue = null;
+            defaultValue = replaceNullWithEmptyString ? "" : null;
         }
 
         dot.setter(initialData, modifiedPath, defaultValue);
@@ -261,7 +275,7 @@ export function transformInstillFormTreeToDefaultValue(
         defaultValue = stringify ? String(tree.examples) : tree.examples;
         break;
       default:
-        defaultValue = null;
+        defaultValue = replaceNullWithEmptyString ? "" : null;
     }
 
     dot.setter(initialData, modifiedPath, defaultValue);
@@ -277,7 +291,7 @@ export function transformInstillFormTreeToDefaultValue(
         defaultValue = stringify ? String(tree.example) : tree.example;
         break;
       default:
-        defaultValue = null;
+        defaultValue = replaceNullWithEmptyString ? "" : null;
     }
 
     dot.setter(initialData, modifiedPath, defaultValue);

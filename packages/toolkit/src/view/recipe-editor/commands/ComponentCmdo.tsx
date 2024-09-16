@@ -48,6 +48,11 @@ const selector = (store: InstillStore) => ({
 
 const normalComponentIndent = "  ";
 
+const stringfyOptions: YAML.ToStringOptions = {
+  indent: 2,
+  nullStr: "",
+};
+
 function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
   const formTree = transformInstillJSONSchemaToFormTree(schema);
 
@@ -64,6 +69,8 @@ function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
     selectedConditionMap,
     skipPath: ["setup.api-key"],
   });
+
+  console.log(data);
 
   return data;
 }
@@ -157,10 +164,6 @@ export const ComponentCmdo = () => {
     if (!pipeline.isSuccess || !editorRef || !selectedComponentDefinition) {
       return;
     }
-
-    const stringfyOptions: YAML.ToStringOptions = {
-      indent: 2,
-    };
 
     const componentIds = pipeline.data.recipe?.component
       ? Object.keys(pipeline.data.recipe.component)
@@ -293,12 +296,15 @@ export const ComponentCmdo = () => {
         defaultTask.name,
       );
 
-      const doc = YAML.stringify({
-        [id]: {
-          type: definition.id,
-          ...defaultValue,
+      const doc = YAML.stringify(
+        {
+          [id]: {
+            type: definition.id,
+            ...defaultValue,
+          },
         },
-      });
+        stringfyOptions,
+      );
 
       setSelectedComponentDefaultValue(doc);
       setSelectedTaskName(defaultTask.name);
@@ -311,11 +317,14 @@ export const ComponentCmdo = () => {
 
       const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
 
-      const doc = YAML.stringify({
-        [id]: {
-          type: "iterator",
+      const doc = YAML.stringify(
+        {
+          [id]: {
+            type: "iterator",
+          },
         },
-      });
+        stringfyOptions,
+      );
 
       setSelectedComponentDefaultValue(doc);
     }
@@ -361,12 +370,15 @@ export const ComponentCmdo = () => {
       defaultTask.name,
     );
 
-    const doc = YAML.stringify({
-      [id]: {
-        type: defaultDefinition.id,
-        ...defaultValue,
+    const doc = YAML.stringify(
+      {
+        [id]: {
+          type: defaultDefinition.id,
+          ...defaultValue,
+        },
       },
-    });
+      stringfyOptions,
+    );
 
     setSelectedComponentDefaultValue(doc);
   }
