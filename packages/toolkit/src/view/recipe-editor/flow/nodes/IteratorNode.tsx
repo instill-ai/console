@@ -89,6 +89,8 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
         column: 0,
       });
 
+      editorRef.revealLineInCenter(adjustedLine);
+
       // We need this happen after the editor is updated
       setTimeout(() => {
         editorRef.focus();
