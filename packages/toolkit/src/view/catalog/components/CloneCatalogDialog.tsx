@@ -77,8 +77,8 @@ export const CloneCatalogDialog = ({
 }: CloneCatalogDialogProps) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [showLimitNotification, setShowLimitNotification] =
-    React.useState(false);
+  const [showLimitNotification, setShowLimitNotification] = React.useState(false);
+  const [hasNamespaceChanged, setHasNamespaceChanged] = React.useState(false);
 
   const {
     accessToken,
@@ -102,8 +102,7 @@ export const CloneCatalogDialog = ({
   const nameValue = watch("name");
   const description = watch("description");
   const selectedNamespace = watch("namespaceId");
-  const [namespaceType, setNamespaceType] =
-    React.useState<Nullable<"user" | "organization">>(null);
+  const [namespaceType, setNamespaceType] = React.useState<Nullable<"user" | "organization">>(null);
 
   const formattedName = formatName(nameValue);
 
@@ -143,7 +142,7 @@ export const CloneCatalogDialog = ({
       userSub.data || null,
       orgSub.data || null,
     );
-  }, [selectedNamespace, userSub.data, orgSub.data, namespaceType]);
+  }, [userSub.data, orgSub.data, namespaceType]);
 
   const catalogLimit = React.useMemo(
     () => getCatalogLimit(subscriptionInfo.plan),
@@ -157,14 +156,16 @@ export const CloneCatalogDialog = ({
         tags: initialValues.tags.join(", "),
         namespaceId: navigationNamespaceAnchor || "",
       });
+      setShowLimitNotification(false);
+      setHasNamespaceChanged(false);
     }
   }, [isOpen, initialValues, navigationNamespaceAnchor, reset]);
 
   React.useEffect(() => {
-    if (catalogs.data && catalogLimit) {
+    if (hasNamespaceChanged && catalogs.data && catalogLimit) {
       setShowLimitNotification(catalogs.data.length >= catalogLimit);
     }
-  }, [catalogs.data, catalogLimit]);
+  }, [catalogs.data, catalogLimit, hasNamespaceChanged]);
 
   const handleSubmit = async (data: CloneCatalogDialogData) => {
     if (showLimitNotification) {
@@ -201,9 +202,7 @@ export const CloneCatalogDialog = ({
 
   const handleNamespaceChange = (value: string) => {
     setValue("namespaceId", value, { shouldValidate: true });
-    if (catalogs.data && catalogLimit) {
-      setShowLimitNotification(catalogs.data.length >= catalogLimit);
-    }
+    setHasNamespaceChanged(true);
   };
 
   return (
