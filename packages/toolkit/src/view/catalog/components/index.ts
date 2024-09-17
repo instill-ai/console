@@ -18,3 +18,4 @@ export * from "./FileTable";
 export * from "./CatalogCardMenu";
 export * from "./WarnDiscardFilesDialog";
 export * from "./CloneCatalogDialog";
+export * from "./DragAndDropUpload";

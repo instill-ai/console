@@ -11,7 +11,6 @@ import {
   cn,
   Form,
   Icons,
-  Input,
   Nullable,
   Separator,
   toast,
@@ -56,12 +55,13 @@ import {
   InsufficientStorageNotification,
   UpgradePlanLink,
 } from "../notifications";
+import { DragAndDropUpload } from "../DragAndDropUpload";
 
 const UploadExploreFormSchema = z.object({
   files: z.array(
     z.unknown().refine((value): value is File => isFile(value), {
       message: "Invalid file type",
-    }),
+    })
   ),
   convertTransformFiles: z
     .string()
@@ -146,7 +146,6 @@ export const UploadExploreTab = ({
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
   const [tooLongFileName, setTooLongFileName] = React.useState<string>("");
   const [isProcessing, setIsProcessing] = React.useState(false);
-  const [isDragging, setIsDragging] = React.useState(false);
   const [processingFileIndex, setProcessingFileIndex] =
     React.useState<Nullable<number>>(null);
 
@@ -178,7 +177,7 @@ export const UploadExploreTab = ({
   const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
 
   const [showStorageWarning, setShowStorageWarning] = React.useState(
-    shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
+    shouldShowStorageWarning(remainingStorageSpace, planStorageLimit)
   );
 
   const selectedNamespaceType = useNamespaceType({
@@ -207,7 +206,7 @@ export const UploadExploreTab = ({
       file,
       planMaxFileSize,
       remainingStorageSpace,
-      existingFiles.data || [],
+      existingFiles.data || []
     );
 
     if (!validationResult.isValid) {
@@ -289,7 +288,7 @@ export const UploadExploreTab = ({
 
     try {
       const targetNamespace = namespaces.find(
-        (namespace) => namespace.id === navigationNamespaceAnchor,
+        (namespace) => namespace.id === navigationNamespaceAnchor
       );
 
       if (!targetNamespace) {
@@ -344,7 +343,7 @@ export const UploadExploreTab = ({
         "files",
         form
           .getValues("files")
-          .filter((file) => isFile(file) && !processedFiles.has(file.name)),
+          .filter((file) => isFile(file) && !processedFiles.has(file.name))
       );
       onTriggerInvalidateCredits({
         ownerName: targetNamespace?.name ?? null,
@@ -375,7 +374,7 @@ export const UploadExploreTab = ({
 
   React.useEffect(() => {
     setShowStorageWarning(
-      shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
+      shouldShowStorageWarning(remainingStorageSpace, planStorageLimit)
     );
   }, [remainingStorageSpace, planStorageLimit]);
 
@@ -418,76 +417,10 @@ export const UploadExploreTab = ({
             render={() => (
               <Form.Item className="w-full">
                 <Form.Control>
-                  <div
-                    className={cn(
-                      "flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]",
-                      {
-                        "border-semantic-accent-default": isDragging,
-                        "border-semantic-bg-line": !isDragging,
-                      },
-                    )}
-                    onDragEnter={(e) => {
-                      e.preventDefault();
-                      setIsDragging(true);
-                    }}
-                    onDragLeave={(e) => {
-                      e.preventDefault();
-                      if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-                        setIsDragging(false);
-                      }
-                    }}
-                    onDragOver={(e) => {
-                      e.preventDefault();
-                    }}
-                    onDrop={async (e) => {
-                      e.preventDefault();
-                      setIsDragging(false);
-                      const files = Array.from(e.dataTransfer.files);
-                      for (const file of files) {
-                        await handleFileUpload(file);
-                      }
-                    }}
-                  >
-                    <Form.Label
-                      htmlFor="upload-file-field"
-                      className="flex cursor-pointer flex-col items-center justify-center"
-                    >
-                      <div className="flex flex-col items-center justify-center text-semantic-fg-primary product-body-text-4-regular pb-2">
-                        <Icons.Upload01 className="mb-4 mt-10 h-8 w-8 stroke-semantic-fg-secondary" />
-                        <div className="w-full text-center">
-                          <span>Drag-and-drop file, or </span>
-                          <label
-                            htmlFor="upload-file-field"
-                            className="cursor-pointer text-semantic-accent-default"
-                          >
-                            browse computer
-                          </label>
-                          <div className="">
-                            Support TXT, MARKDOWN, PDF, DOCX, DOC, PPTX, PPT,
-                            HTML, XLSX
-                          </div>
-                          <div className="">
-                            Max {planMaxFileSize / (1024 * 1024)}MB each
-                          </div>
-                        </div>
-                      </div>
-                    </Form.Label>
-                    <Input.Root className="hidden">
-                      <Input.Core
-                        id="upload-file-field"
-                        type="file"
-                        accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html,.xlsx"
-                        multiple
-                        value={""}
-                        onChange={async (e) => {
-                          const files = Array.from(e.target.files || []);
-                          for (const file of files) {
-                            await handleFileUpload(file);
-                          }
-                        }}
-                      />
-                    </Input.Root>
-                  </div>
+                  <DragAndDropUpload
+                    onFileUpload={handleFileUpload}
+                    planMaxFileSize={planMaxFileSize}
+                  />
                 </Form.Control>
                 <Form.Message />
               </Form.Item>
