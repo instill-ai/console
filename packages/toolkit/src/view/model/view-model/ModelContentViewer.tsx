@@ -10,7 +10,7 @@ import {
   ModelVersions,
   NoVersionsPlaceholder,
 } from ".";
-import { LoadingSpin } from "../../../components";
+import { PlaygroundSkeleton } from "../../../components";
 import { Model, ModelState, Nullable, useRouteInfo } from "../../../lib";
 import { ModelTabNames } from "../../../server";
 import { ModelReadme } from "./ModelReadme";
@@ -85,11 +85,7 @@ export const ModelContentViewer = ({
 
   return (
     <div className="w-full pt-8">
-      {model ? (
-        content
-      ) : (
-        <LoadingSpin className="m-none !text-semantic-fg-secondary" />
-      )}
+      {model ? content : <PlaygroundSkeleton />}
     </div>
   );
 };
