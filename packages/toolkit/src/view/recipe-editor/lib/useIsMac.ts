@@ -3,9 +3,10 @@
 import * as React from "react";
 
 export function useIsMac() {
-  const isMac = React.useMemo(() => {
-    console.log("navigator.userAgent", navigator.userAgent);
-    return navigator.userAgent.includes("Macintosh");
+  const [isMac, setIsMac] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMac(navigator.userAgent.includes("Macintosh"));
   }, []);
 
   return isMac;
