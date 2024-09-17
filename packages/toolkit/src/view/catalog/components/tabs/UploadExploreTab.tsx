@@ -35,6 +35,7 @@ import {
   useUploadCatalogFile,
 } from "../../../../lib/react-query-service/catalog";
 import { Catalog } from "../../../../lib/react-query-service/catalog/types";
+import { DragAndDropUpload } from "../DragAndDropUpload";
 import { FILE_ERROR_TIMEOUT } from "../lib/constant";
 import {
   getFileType,
@@ -55,13 +56,12 @@ import {
   InsufficientStorageNotification,
   UpgradePlanLink,
 } from "../notifications";
-import { DragAndDropUpload } from "../DragAndDropUpload";
 
 const UploadExploreFormSchema = z.object({
   files: z.array(
     z.unknown().refine((value): value is File => isFile(value), {
       message: "Invalid file type",
-    })
+    }),
   ),
   convertTransformFiles: z
     .string()
@@ -177,7 +177,7 @@ export const UploadExploreTab = ({
   const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
 
   const [showStorageWarning, setShowStorageWarning] = React.useState(
-    shouldShowStorageWarning(remainingStorageSpace, planStorageLimit)
+    shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
   );
 
   const selectedNamespaceType = useNamespaceType({
@@ -206,7 +206,7 @@ export const UploadExploreTab = ({
       file,
       planMaxFileSize,
       remainingStorageSpace,
-      existingFiles.data || []
+      existingFiles.data || [],
     );
 
     if (!validationResult.isValid) {
@@ -288,7 +288,7 @@ export const UploadExploreTab = ({
 
     try {
       const targetNamespace = namespaces.find(
-        (namespace) => namespace.id === navigationNamespaceAnchor
+        (namespace) => namespace.id === navigationNamespaceAnchor,
       );
 
       if (!targetNamespace) {
@@ -343,7 +343,7 @@ export const UploadExploreTab = ({
         "files",
         form
           .getValues("files")
-          .filter((file) => isFile(file) && !processedFiles.has(file.name))
+          .filter((file) => isFile(file) && !processedFiles.has(file.name)),
       );
       onTriggerInvalidateCredits({
         ownerName: targetNamespace?.name ?? null,
@@ -374,7 +374,7 @@ export const UploadExploreTab = ({
 
   React.useEffect(() => {
     setShowStorageWarning(
-      shouldShowStorageWarning(remainingStorageSpace, planStorageLimit)
+      shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
     );
   }, [remainingStorageSpace, planStorageLimit]);
 
