@@ -326,6 +326,40 @@ export const Input = ({
                   if (isPipelineStatusUpdatedEvent(event)) {
                     if (event.data.status.completed) {
                       updateIsTriggeringPipeline(() => false);
+
+                      // update all the component status to be completed
+                      updateTriggerPipelineStreamMap((prev) => {
+                        if (!prev || !prev.component) {
+                          return prev;
+                        }
+
+                        const newComponent: GeneralRecord = {};
+
+                        Object.entries(prev.component).forEach(
+                          ([key, value]) => {
+                            if (value && value.status) {
+                              if (value.status.errored) {
+                                newComponent[key] = value;
+                              } else {
+                                newComponent[key] = {
+                                  ...value,
+                                  status: {
+                                    ...value.status,
+                                    completed: true,
+                                  },
+                                };
+                              }
+                            }
+                          },
+                        );
+
+                        const newTriggerPipelineStreamMap = {
+                          ...prev,
+                          component: newComponent,
+                        };
+
+                        return newTriggerPipelineStreamMap;
+                      });
                     }
                   }
 

@@ -3,7 +3,7 @@ import { Edge, Node, Position } from "reactflow";
 
 import { NodeData } from "../type";
 
-// This is the default dimension of a connector node we have right now
+// This is the default dimension of a component node we have right now
 const TRIGGER_RESPONSE_NODE = {
   width: 318,
   height: 54,

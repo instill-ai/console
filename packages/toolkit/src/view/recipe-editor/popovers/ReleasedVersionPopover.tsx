@@ -82,7 +82,7 @@ export const ReleasedVersionPopover = () => {
             {sortedReleases.data.length > 0 ? (
               <React.Fragment>
                 <VersionButton
-                  id="latest"
+                  id="unversioned"
                   currentVersion={currentVersion}
                   onClick={() => {
                     if (!pipeline.isSuccess || !editorRef) {

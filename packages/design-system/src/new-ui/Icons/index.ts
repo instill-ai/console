@@ -44,6 +44,7 @@ import { Coins01 } from "./Coins01";
 import { CoinsStacked01 } from "./CoinsStacked01";
 import { Copy06 } from "./Copy06";
 import { Copy07 } from "./Copy07";
+import { CSVFile } from "./CSVFile";
 import { Cube01 } from "./Cube01";
 import { CubeOutline } from "./CubeOutline";
 import { CurrencyDollar } from "./CurrencyDollar";
@@ -168,6 +169,7 @@ import { VideoRecorder } from "./VideoRecorder";
 import { Visa } from "./Visa";
 import { VisualQuestionAnswering } from "./VisualQuestionAnswering";
 import { X } from "./X";
+import { XLSFile } from "./XLSFile";
 import { XLSXFile } from "./XLSXFile";
 import { Zap } from "./Zap";
 import { ZapFast } from "./ZapFast";
@@ -219,6 +221,7 @@ export const Icons = {
   CoinsStacked01,
   Copy06,
   Copy07,
+  CSVFile,
   Cube01,
   CubeOutline,
   CurrencyDollar,
@@ -343,6 +346,7 @@ export const Icons = {
   Visa,
   VisualQuestionAnswering,
   X,
+  XLSFile,
   XLSXFile,
   Zap,
   ZapFast,

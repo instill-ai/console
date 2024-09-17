@@ -4,7 +4,7 @@ import type { Pipeline, PipelineRelease } from "instill-sdk";
 import * as React from "react";
 import { useRouter } from "next/navigation";
 
-import { LoadingSpin } from "../../../components";
+import { PlaygroundSkeleton } from "../../../components";
 import { useRouteInfo } from "../../../lib";
 import { PipelineTabNames } from "../../../server";
 import { PipelineApi } from "./PipelineApi";
@@ -60,6 +60,8 @@ export const PipelineContentViewer = ({
     case "settings": {
       if (pipeline?.permission.canEdit) {
         content = <PipelineSettings pipeline={pipeline} onUpdate={onUpdate} />;
+      } else {
+        content = null;
       }
 
       break;
@@ -87,11 +89,7 @@ export const PipelineContentViewer = ({
 
   return (
     <div className="w-full pt-8 flex-1 flex flex-col h-full">
-      {pipeline ? (
-        content
-      ) : (
-        <LoadingSpin className="m-none !text-semantic-fg-secondary" />
-      )}
+      {pipeline ? content : <PlaygroundSkeleton />}
     </div>
   );
 };

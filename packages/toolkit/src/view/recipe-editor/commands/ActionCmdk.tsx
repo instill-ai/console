@@ -7,6 +7,7 @@ import { Command, Icons } from "@instill-ai/design-system";
 
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
+import { useIsMac } from "../lib";
 import { CommandShortcutBadge } from "./CommandShortcutBadge";
 
 const selector = (store: InstillStore) => ({
@@ -17,6 +18,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const ActionCmdk = () => {
+  const isMac = useIsMac();
   const commandRef = React.useRef<Nullable<HTMLDivElement>>(null);
   const {
     openActionCmdk,
@@ -27,7 +29,7 @@ export const ActionCmdk = () => {
 
   return (
     <React.Fragment>
-      <EditorButtonTooltipWrapper tooltipContent="Search ⌘ K">
+      <EditorButtonTooltipWrapper tooltipContent={isMac ? "CMD K" : "CTRL K"}>
         <button
           onClick={() => {
             updateOpenActionCmdk(() => true);

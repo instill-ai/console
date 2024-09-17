@@ -98,6 +98,8 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
         column: 0,
       });
 
+      editorRef.revealLineInCenter(adjustedLine);
+
       // We need this happen after the editor is updated
       setTimeout(() => {
         editorRef.focus();

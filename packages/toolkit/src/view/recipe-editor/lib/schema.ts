@@ -39,6 +39,9 @@ const connectorDefinitionIds = [
   "weaviate",
   "qdrant",
   "artifact",
+  "freshdesk",
+  "asana",
+  "chroma",
 ];
 
 export const InstillYamlSchema = {

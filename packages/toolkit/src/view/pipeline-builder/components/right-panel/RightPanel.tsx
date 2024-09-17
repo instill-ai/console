@@ -36,7 +36,7 @@ export const RightPanel = () => {
     <div className="flex h-full w-full flex-col">
       <div className="mb-6 flex w-full flex-row gap-x-1">
         <p className="flex flex-1 items-center justify-center rounded-sm bg-semantic-bg-base-bg py-2 text-semantic-fg-primary product-body-text-1-semibold">
-          Connector Properties
+          Component Properties
         </p>
         <Button
           className="h-10 w-10 !px-0 !py-0"

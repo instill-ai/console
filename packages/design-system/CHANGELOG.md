@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.78.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.78.0...@instill-ai/design-system-v0.78.1) (2024-09-13)
+
+
+### Bug Fixes
+
+* show operation error in model playground ([#1461](https://github.com/instill-ai/console/issues/1461)) ([67c0535](https://github.com/instill-ai/console/commit/67c05359e6fa0ccbad55bd7ba3323335b71e4d6f))
+
 ## [0.78.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.77.0...@instill-ai/design-system-v0.78.0) (2024-09-11)
 
 

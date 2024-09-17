@@ -6,4 +6,5 @@ export * from "./tomorrowTheme";
 export * from "./useEditorCommandListener";
 export * from "./useAutonomousEditorRecipeUpdater";
 export * from "./useDebouncedRecipeUpdater";
+export * from "./useIsMac";
 export * from "./validateVSCodeYaml";

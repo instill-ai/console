@@ -3,7 +3,6 @@
 import * as React from "react";
 import { ComponentDefinition, IteratorDefinition } from "instill-sdk";
 import { editor } from "monaco-editor";
-// import { Range } from "monaco-editor";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { stackoverflowLight } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import YAML from "yaml";
@@ -37,7 +36,7 @@ import {
 } from "../../../lib/use-instill-form/transform";
 import { generateUniqueNodeIdFromDefinition } from "../../pipeline-builder/lib/generateUniqueNodeIdFromDefinition";
 import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
-import { keyLineNumberMapHelpers } from "../lib";
+import { useIsMac } from "../lib";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -47,6 +46,13 @@ const selector = (store: InstillStore) => ({
   editorRef: store.editorRef,
   monacoRef: store.monacoRef,
 });
+
+const normalComponentIndent = "  ";
+
+const stringfyOptions: YAML.ToStringOptions = {
+  indent: 2,
+  nullStr: "",
+};
 
 function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
   const formTree = transformInstillJSONSchemaToFormTree(schema);
@@ -71,6 +77,7 @@ function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
 export const ComponentCmdo = () => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const routeInfo = useRouteInfo();
+  const isMac = useIsMac();
   const {
     accessToken,
     enabledQuery,
@@ -158,10 +165,6 @@ export const ComponentCmdo = () => {
       return;
     }
 
-    const stringfyOptions: YAML.ToStringOptions = {
-      indent: 2,
-    };
-
     const componentIds = pipeline.data.recipe?.component
       ? Object.keys(pipeline.data.recipe.component)
       : [];
@@ -214,105 +217,41 @@ export const ComponentCmdo = () => {
     }
 
     const selection = editorRef.getSelection();
-
     if (!selection) {
       return;
     }
 
-    // const lines = selectedComponentDefaultValue.split("\n");
-
-    const yamlLines = selectedComponentDefaultValue.split("\n");
-    const edits: editor.IIdentifiedSingleEditOperation[] = [];
-
-    // get the line number of the current model
-    const lineCount = editorRef.getModel()?.getLineCount();
-
-    const allValue = editorRef.getModel()?.getValue();
-
-    if (!allValue) {
+    const model = editorRef.getModel();
+    if (!model) {
       return;
     }
 
-    let dontHaveComponentAfterSelection = false;
+    const yamlLines = selectedComponentDefaultValue
+      .split("\n")
+      .filter((line) => line.trim() !== "");
 
-    try {
-      const componentKeyLineNumberMaps =
-        keyLineNumberMapHelpers.getAllComponentKeyLineNumberMaps(allValue);
+    const edits: editor.IIdentifiedSingleEditOperation[] = [];
 
-      const biggestKeyLineNumber = componentKeyLineNumberMaps
-        .map((map) => map.lineNumber)
-        .sort((a, b) => b - a)[0];
+    const defaultValueAddedIndent = yamlLines
+      .map((line) => {
+        const indentation = line.match(/^\s*/);
 
-      if (
-        biggestKeyLineNumber &&
-        selection.selectionStartLineNumber > biggestKeyLineNumber
-      ) {
-        dontHaveComponentAfterSelection = true;
-      }
-
-      // This is a safe guard, for example, when user have a very long component configuration, but
-      // one of the component's indent is not correct, the getAllComponentKeyLineNumberMaps will
-      // not get the full list of component key line number maps. In this case we will fall back
-      if (lineCount && selection.selectionStartLineNumber < lineCount - 10) {
-        dontHaveComponentAfterSelection = false;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-
-    if (!dontHaveComponentAfterSelection) {
-      edits.push(
-        ...[
-          {
-            range: new monacoRef.Range(
-              selection.selectionStartLineNumber,
-              4,
-              selection.endLineNumber,
-              4,
-            ),
-            text: "  ",
-            forceMoveMarkers: true,
-          },
-          {
-            range: new monacoRef.Range(
-              selection.selectionStartLineNumber,
-              4,
-              selection.endLineNumber,
-              4,
-            ),
-            text: selectedComponentDefaultValue,
-            forceMoveMarkers: true,
-          },
-        ],
-      );
-    } else {
-      yamlLines.forEach((line, index) => {
-        edits.push(
-          ...[
-            {
-              range: new monacoRef.Range(
-                selection.selectionStartLineNumber + index,
-                4,
-                selection.endLineNumber + index,
-                4,
-              ),
-              text: "  ",
-              forceMoveMarkers: true,
-            },
-            {
-              range: new monacoRef.Range(
-                selection.selectionStartLineNumber + index,
-                4,
-                selection.endLineNumber + index,
-                4,
-              ),
-              text: line + "\n",
-              forceMoveMarkers: true,
-            },
-          ],
+        return (
+          (indentation ? indentation[0] + normalComponentIndent : "") +
+          line.trim()
         );
-      });
-    }
+      })
+      .join("\n");
+
+    edits.push({
+      range: new monacoRef.Range(
+        selection.startLineNumber,
+        1,
+        selection.startLineNumber,
+        1,
+      ),
+      text: defaultValueAddedIndent,
+    });
 
     editorRef.executeEdits("cmdk", edits);
 
@@ -357,12 +296,15 @@ export const ComponentCmdo = () => {
         defaultTask.name,
       );
 
-      const doc = YAML.stringify({
-        [id]: {
-          type: definition.id,
-          ...defaultValue,
+      const doc = YAML.stringify(
+        {
+          [id]: {
+            type: definition.id,
+            ...defaultValue,
+          },
         },
-      });
+        stringfyOptions,
+      );
 
       setSelectedComponentDefaultValue(doc);
       setSelectedTaskName(defaultTask.name);
@@ -375,11 +317,14 @@ export const ComponentCmdo = () => {
 
       const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
 
-      const doc = YAML.stringify({
-        [id]: {
-          type: "iterator",
+      const doc = YAML.stringify(
+        {
+          [id]: {
+            type: "iterator",
+          },
         },
-      });
+        stringfyOptions,
+      );
 
       setSelectedComponentDefaultValue(doc);
     }
@@ -425,12 +370,15 @@ export const ComponentCmdo = () => {
       defaultTask.name,
     );
 
-    const doc = YAML.stringify({
-      [id]: {
-        type: defaultDefinition.id,
-        ...defaultValue,
+    const doc = YAML.stringify(
+      {
+        [id]: {
+          type: defaultDefinition.id,
+          ...defaultValue,
+        },
       },
-    });
+      stringfyOptions,
+    );
 
     setSelectedComponentDefaultValue(doc);
   }
@@ -462,7 +410,9 @@ export const ComponentCmdo = () => {
       }}
     >
       <Dialog.Trigger asChild>
-        <EditorButtonTooltipWrapper tooltipContent="⌘ O">
+        <EditorButtonTooltipWrapper
+          tooltipContent={isMac ? "CMD O" : "CTRL  O"}
+        >
           <Button
             onClick={() => {
               updateOpenComponentCmdo(() => true);

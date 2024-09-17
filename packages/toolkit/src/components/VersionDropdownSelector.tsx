@@ -6,7 +6,6 @@ import {
   Icons,
   Nullable,
   Popover,
-  ScrollArea,
   Tag,
 } from "@instill-ai/design-system";
 
@@ -112,32 +111,30 @@ export const VersionDropdownSelector = ({
           className="flex flex-col !rounded-sm !p-0"
           style={{
             width: "145px",
-            height: "260px",
+            maxHeight: "260px",
           }}
         >
-          <ScrollArea.Root className="[&>div>div]:!block !h-[260px]">
-            <div className="flex flex-col gap-y-1 px-1.5 py-1">
-              {versions.length > 0 ? (
-                <React.Fragment>
-                  {versions.map((version) => (
-                    <VersionButton
-                      key={version}
-                      id={version}
-                      currentVersion={activeVersion}
-                      onClick={() => {
-                        onVersionUpdate(version);
-                        setIsVersionSelectorOpen(false);
-                      }}
-                    />
-                  ))}
-                </React.Fragment>
-              ) : (
-                <div className="p-2 text-semantic-fg-disabled product-body-text-4-medium">
-                  No versions
-                </div>
-              )}
-            </div>
-          </ScrollArea.Root>
+          <div className="flex flex-col gap-y-1 px-1.5 py-1 h-full overflow-y-auto">
+            {versions.length > 0 ? (
+              <React.Fragment>
+                {versions.map((version) => (
+                  <VersionButton
+                    key={version}
+                    id={version}
+                    currentVersion={activeVersion}
+                    onClick={() => {
+                      onVersionUpdate(version);
+                      setIsVersionSelectorOpen(false);
+                    }}
+                  />
+                ))}
+              </React.Fragment>
+            ) : (
+              <div className="p-2 text-semantic-fg-disabled product-body-text-4-medium">
+                No versions
+              </div>
+            )}
+          </div>
         </Popover.Content>
       </Popover.Root>
     </div>

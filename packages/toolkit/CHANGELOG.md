@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.102.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.101.0...@instill-ai/toolkit-v0.102.0) (2024-09-13)
+
+
+### Features
+
+* pipelines version "latest" -&gt; "unversioned" ([#1460](https://github.com/instill-ai/console/issues/1460)) ([74e35f6](https://github.com/instill-ai/console/commit/74e35f610c950269dc68658b86dd0a9b51901a09))
+
+
+### Bug Fixes
+
+* add requester id header to model runs request ([#1458](https://github.com/instill-ai/console/issues/1458)) ([a20b152](https://github.com/instill-ai/console/commit/a20b15282ba72754be03e6908de1c6f5ca1d83ea))
+* fix the model trigger loading state, remove unnecessary task prop name ([#1457](https://github.com/instill-ai/console/issues/1457)) ([ec58429](https://github.com/instill-ai/console/commit/ec5842908cf21f6ac3ef447cc1bd9afb62199373))
+* show operation error in model playground ([#1461](https://github.com/instill-ai/console/issues/1461)) ([67c0535](https://github.com/instill-ai/console/commit/67c05359e6fa0ccbad55bd7ba3323335b71e4d6f))
+
 ## [0.101.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.100.2...@instill-ai/toolkit-v0.101.0) (2024-09-11)
 
 

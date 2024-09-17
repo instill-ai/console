@@ -36,6 +36,8 @@ export const getFileIcon = (fileType: string) => {
       return <Icons.TXTFile className="h-5 w-5" />;
     case "FILE_TYPE_PDF":
       return <Icons.PDFFile className="h-5 w-5" />;
+    case "FILE_TYPE_CSV":
+      return <Icons.CSVFile className="h-5 w-5" />;
     case "FILE_TYPE_DOC":
       return <Icons.DOCFile className="h-5 w-5" />;
     case "FILE_TYPE_DOCX":
@@ -46,6 +48,8 @@ export const getFileIcon = (fileType: string) => {
       return <Icons.PPTXFile className="h-5 w-5" />;
     case "FILE_TYPE_HTML":
       return <Icons.HTMLFile className="h-5 w-5" />;
+    case "FILE_TYPE_XLS":
+      return <Icons.XLSFile className="h-5 w-5" />;
     case "FILE_TYPE_XLSX":
       return <Icons.XLSXFile className="h-5 w-5" />;
     default:
@@ -61,6 +65,8 @@ export const getFileType = (file: File) => {
     case "md":
     case "markdown":
       return "FILE_TYPE_MARKDOWN";
+    case "csv":
+      return "FILE_TYPE_CSV";
     case "pdf":
       return "FILE_TYPE_PDF";
     case "docx":
@@ -73,6 +79,8 @@ export const getFileType = (file: File) => {
       return "FILE_TYPE_PPT";
     case "html":
       return "FILE_TYPE_HTML";
+    case "xls":
+      return "FILE_TYPE_XLS";
     case "xlsx":
       return "FILE_TYPE_XLSX";
     default:
@@ -86,6 +94,8 @@ export const convertFileType = (type: string): string => {
       return "txt";
     case "FILE_TYPE_MARKDOWN":
       return "md";
+    case "FILE_TYPE_CSV":
+      return "csv";
     case "FILE_TYPE_PDF":
       return "pdf";
     case "FILE_TYPE_DOCX":
@@ -98,6 +108,8 @@ export const convertFileType = (type: string): string => {
       return "ppt";
     case "FILE_TYPE_HTML":
       return "html";
+    case "FILE_TYPE_XLS":
+      return "xls";
     case "FILE_TYPE_XLSX":
       return "xlsx";
     default:

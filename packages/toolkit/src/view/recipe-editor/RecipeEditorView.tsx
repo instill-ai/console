@@ -56,6 +56,10 @@ const VscodeEditor = dynamic(
   { ssr: false },
 );
 
+const sidebarDefaultSize = 15;
+const leftPanelDefaultSize = 45;
+// const rightPanelDefaultSize = 40;
+
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
@@ -99,6 +103,7 @@ export const RecipeEditorView = () => {
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
   const [isInitialized, setIsInitialized] = React.useState(false);
 
+  const sidebarRef = React.useRef<ImperativePanelHandle>(null);
   const leftPanelRef = React.useRef<ImperativePanelHandle>(null);
   const rightPanelRef = React.useRef<ImperativePanelHandle>(null);
   const topRightPanelRef = React.useRef<ImperativePanelHandle>(null);
@@ -284,7 +289,24 @@ export const RecipeEditorView = () => {
               <Button
                 size="sm"
                 className="!w-8 !h-8 items-center justify-center"
-                onClick={() => setIsSidebarOpen((prev) => !prev)}
+                onClick={() => {
+                  if (
+                    sidebarRef.current &&
+                    sidebarRef.current?.getSize() === 0
+                  ) {
+                    sidebarRef.current?.resize(sidebarDefaultSize);
+                    setIsSidebarOpen(true);
+                    return;
+                  }
+
+                  if (isSidebarOpen) {
+                    sidebarRef.current?.resize(0);
+                    setIsSidebarOpen(false);
+                  } else {
+                    sidebarRef.current?.resize(sidebarDefaultSize);
+                    setIsSidebarOpen(true);
+                  }
+                }}
                 variant="tertiaryGrey"
               >
                 <Icons.LayoutLeft className="w-4 h-4 stroke-semantic-fg-primary" />
@@ -328,34 +350,42 @@ export const RecipeEditorView = () => {
       <PageBase.Container>
         <EditorProvider>
           <div className="flex h-[calc(100vh-var(--topbar-controller-height))] bg-semantic-bg-secondary w-full flex-row px-2 py-1.5">
-            <div
-              className={cn(
-                "h-[calc(100vh-var(--topbar-controller-height)-12px)] transition-transform duration-300 top-[var(--topbar-controller-height)] absolute left-0 pb-2",
-                isSidebarOpen ? "translate-x-0" : "-translate-x-full",
-              )}
-            >
-              <Sidebar
-                pipelineComponentMap={pipeline.data?.recipe?.component ?? null}
-                pipelineVariableFieldMap={
-                  pipeline.data?.recipe?.variable ?? null
-                }
-                pipelineOutputFieldMap={pipeline.data?.recipe?.output ?? null}
-              />
-            </div>
-
-            <div
-              className={cn(
-                "h-full transition-all ease-in-out duration-300",
-                isSidebarOpen
-                  ? "ml-[280px] w-[calc(100%-280px)]"
-                  : "ml-0 w-full",
-              )}
-            >
+            <div className="h-full w-full transition-all ease-in-out duration-300">
               <Resizable.PanelGroup direction="horizontal" className="w-full">
+                <Resizable.Panel
+                  id="sidebar"
+                  ref={sidebarRef}
+                  defaultSize={sidebarDefaultSize}
+                  maxSize={20}
+                >
+                  <Sidebar
+                    pipelineComponentMap={
+                      pipeline.data?.recipe?.component ?? null
+                    }
+                    pipelineVariableFieldMap={
+                      pipeline.data?.recipe?.variable ?? null
+                    }
+                    pipelineOutputFieldMap={
+                      pipeline.data?.recipe?.output ?? null
+                    }
+                  />
+                </Resizable.Panel>
+                <Resizable.Handle
+                  className={cn(
+                    "opacity-0 w-1 data-[resize-handle-active]:opacity-100",
+                    currentExpandView === "topRight" ||
+                      currentExpandView === "bottomRight"
+                      ? "hidden"
+                      : "",
+                  )}
+                  onDragging={() => {
+                    setCurrentExpandView(null);
+                  }}
+                />
                 <Resizable.Panel
                   id="left-panel"
                   ref={leftPanelRef}
-                  defaultSize={50}
+                  defaultSize={45}
                 >
                   <div className="flex flex-col w-full h-full">
                     <div className="flex flex-row justify-between border-b border-semantic-bg-line rounded-tr bg-semantic-bg-base-bg h-8 items-center">
@@ -371,77 +401,92 @@ export const RecipeEditorView = () => {
                         ) : null}
                       </div>
                       <div className="flex flex-row">
-                        <button
-                          className="p-1.5"
-                          onClick={() => {
-                            if (currentExpandView === "left") {
-                              rightPanelRef.current?.resize(50);
-                              setCurrentExpandView(null);
-                            } else {
-                              rightPanelRef.current?.resize(0);
-                              setCurrentExpandView("left");
-                            }
-                          }}
+                        <EditorButtonTooltipWrapper
+                          tooltipContent={
+                            currentExpandView === "left"
+                              ? "Minimize panel"
+                              : "Maximize panel"
+                          }
                         >
-                          {currentExpandView === "left" ? (
-                            <Icons.Minimize01 className="w-3 h-3 stroke-semantic-fg-primary" />
-                          ) : (
-                            <Icons.Expand01 className="w-3 h-3 stroke-semantic-fg-primary" />
-                          )}
-                        </button>
-                        <button className="p-1.5" onClick={handleDownload}>
-                          <Icons.Download01 className="w-3 h-3 stroke-semantic-fg-primary" />
-                        </button>
+                          <button
+                            className="p-1.5"
+                            onClick={() => {
+                              if (currentExpandView === "left") {
+                                rightPanelRef.current?.resize(
+                                  leftPanelDefaultSize,
+                                );
+                                setCurrentExpandView(null);
+                              } else {
+                                rightPanelRef.current?.resize(0);
+                                setCurrentExpandView("left");
+                              }
+                            }}
+                          >
+                            {currentExpandView === "left" ? (
+                              <Icons.Minimize01 className="w-3 h-3 stroke-semantic-fg-primary" />
+                            ) : (
+                              <Icons.Expand01 className="w-3 h-3 stroke-semantic-fg-primary" />
+                            )}
+                          </button>
+                        </EditorButtonTooltipWrapper>
+
+                        <EditorButtonTooltipWrapper tooltipContent="Download recipe">
+                          <button className="p-1.5" onClick={handleDownload}>
+                            <Icons.Download01 className="w-3 h-3 stroke-semantic-fg-primary" />
+                          </button>
+                        </EditorButtonTooltipWrapper>
                       </div>
                     </div>
                     <div className="flex h-7 shrink-0 items-center flex-row-reverse bg-semantic-bg-alt-primary border-b border-semantic-bg-line">
-                      <button
-                        onClick={async () => {
-                          if (!rawRecipeOnDom || !editorRef) {
-                            return;
-                          }
+                      <EditorButtonTooltipWrapper tooltipContent="Format recipe">
+                        <button
+                          onClick={async () => {
+                            if (!rawRecipeOnDom || !editorRef) {
+                              return;
+                            }
 
-                          const model = editorRef.getModel();
+                            const model = editorRef.getModel();
 
-                          if (!model) {
-                            return;
-                          }
+                            if (!model) {
+                              return;
+                            }
 
-                          let prettifiedRecipe: Nullable<string> = null;
-                          const currentPosition = editorRef?.getPosition();
+                            let prettifiedRecipe: Nullable<string> = null;
+                            const currentPosition = editorRef?.getPosition();
 
-                          try {
-                            prettifiedRecipe =
-                              await prettifyYaml(rawRecipeOnDom);
-                          } catch (error) {
-                            prettifiedRecipe = rawRecipeOnDom;
-                            console.error(error);
-                          }
+                            try {
+                              prettifiedRecipe =
+                                await prettifyYaml(rawRecipeOnDom);
+                            } catch (error) {
+                              prettifiedRecipe = rawRecipeOnDom;
+                              console.error(error);
+                            }
 
-                          // Replace the entire content
-                          model.pushEditOperations(
-                            [],
-                            [
-                              {
-                                range: model.getFullModelRange(),
-                                text: prettifiedRecipe,
-                              },
-                            ],
-                            () => null,
-                          );
+                            // Replace the entire content
+                            model.pushEditOperations(
+                              [],
+                              [
+                                {
+                                  range: model.getFullModelRange(),
+                                  text: prettifiedRecipe,
+                                },
+                              ],
+                              () => null,
+                            );
 
-                          // Restore the cursor position
-                          if (currentPosition) {
-                            editorRef?.setPosition(currentPosition);
-                          }
-                        }}
-                        className="flex flex-row items-center gap-x-1 px-1"
-                      >
-                        <Icons.AlignLeft className="w-3 h-3 stroke-semantic-fg-secondary" />
-                        <span className="text-xs font-sans text-semantic-fg-secondary">
-                          Format
-                        </span>
-                      </button>
+                            // Restore the cursor position
+                            if (currentPosition) {
+                              editorRef?.setPosition(currentPosition);
+                            }
+                          }}
+                          className="flex flex-row items-center gap-x-1 px-1"
+                        >
+                          <Icons.AlignLeft className="w-3 h-3 stroke-semantic-fg-secondary" />
+                          <span className="text-xs font-sans text-semantic-fg-secondary">
+                            Format
+                          </span>
+                        </button>
+                      </EditorButtonTooltipWrapper>
                     </div>
 
                     <div className="w-full flex-1 bg-semantic-bg-primary">
@@ -510,12 +555,15 @@ export const RecipeEditorView = () => {
                   </div>
                 </Resizable.Panel>
                 <Resizable.Handle
-                  className={cn("opacity-0", currentExpandView ? "" : "mr-3")}
+                  className="opacity-0 w-1 data-[resize-handle-active]:opacity-100"
+                  onDragging={() => {
+                    setCurrentExpandView(null);
+                  }}
                 />
                 <Resizable.Panel
                   id="right-panel"
                   ref={rightPanelRef}
-                  defaultSize={50}
+                  defaultSize={40}
                 >
                   <Resizable.PanelGroup direction="vertical">
                     <Resizable.Panel
@@ -533,7 +581,9 @@ export const RecipeEditorView = () => {
                           isExpanded={currentExpandView === "topRight"}
                           onToggleExpand={() => {
                             if (currentExpandView === "topRight") {
-                              leftPanelRef.current?.resize(50);
+                              leftPanelRef.current?.resize(
+                                leftPanelDefaultSize,
+                              );
                               bottomRightPanelRef.current?.resize(50);
                               setCurrentExpandView(null);
                             } else {
@@ -632,7 +682,7 @@ export const RecipeEditorView = () => {
                         </div>
                       </div>
                     </Resizable.Panel>
-                    <Resizable.Handle className="mb-2 opacity-0" />
+                    <Resizable.Handle className="opacity-0 !h-1 data-[resize-handle-active]:opacity-100" />
                     <Resizable.Panel
                       id="bottom-right-panel"
                       ref={bottomRightPanelRef}
@@ -650,7 +700,9 @@ export const RecipeEditorView = () => {
                           }
                           onToggleExpand={() => {
                             if (currentExpandView === "bottomRight") {
-                              leftPanelRef.current?.resize(50);
+                              leftPanelRef.current?.resize(
+                                leftPanelDefaultSize,
+                              );
                               topRightPanelRef.current?.resize(50);
                               setCurrentExpandView(null);
                             } else {

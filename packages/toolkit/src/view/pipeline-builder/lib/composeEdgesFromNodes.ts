@@ -140,7 +140,7 @@ function getAvailableReferencesFromNodes(nodes: Node<NodeData>[]) {
       }
     }
 
-    // 2. Extract output properties for operator, connector and iterator
+    // 2. Extract output properties for operator, component and iterator
 
     let outputSchema: Nullable<InstillJSONSchema> = null;
 
