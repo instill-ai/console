@@ -879,14 +879,6 @@ export const VscodeEditor = () => {
           objectArrayPathWithoutIndex,
         ) as GeneralRecord;
 
-        console.log(
-          "hint",
-          allHintMap,
-          objectPath,
-          objectArrayPathWithoutIndex,
-          hint,
-        );
-
         if (hint && hint.type === "objectArray") {
           const autocomletions = getComponentObjectArrayOutputAutocompletions({
             monaco,
@@ -896,8 +888,6 @@ export const VscodeEditor = () => {
             objectArrayPathWithoutIndex: objectArrayPathWithoutIndex,
             hint,
           });
-
-          console.log("aaa autocomletions", autocomletions);
 
           return {
             suggestions: autocomletions,
@@ -911,8 +901,6 @@ export const VscodeEditor = () => {
           objectPath,
           hint,
         });
-
-        console.log(autocomletions);
 
         return {
           suggestions: autocomletions,
@@ -1092,7 +1080,7 @@ export const VscodeEditor = () => {
           hoveredKeyPathWoComponentKey,
         );
 
-        if (targetHint) {
+        if (targetHint && targetHint.key) {
           if (cachedHoveredHints.current) {
             cachedHoveredHints.current = {
               ...cachedHoveredHints.current,
@@ -1124,21 +1112,6 @@ export const VscodeEditor = () => {
       }
 
       return null;
-
-      // return {
-      //   range: new monaco.Range(
-      //     1,
-      //     1,
-      //     model.getLineCount(),
-      //     model.getLineMaxColumn(model.getLineCount()),
-      //   ),
-      //   contents: [
-      //     { value: "**SOURCE**" },
-      //     {
-      //       value: "```html\n",
-      //     },
-      //   ],
-      // };
     },
     [pipeline.isSuccess, pipeline.data],
   );
