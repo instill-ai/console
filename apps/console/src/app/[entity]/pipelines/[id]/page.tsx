@@ -15,24 +15,19 @@ async function getPipelineData(entity: string, id: string, accessToken: Nullable
     });
     if (namespaceType === "NAMESPACE_USER" || namespaceType === "NAMESPACE_ORGANIZATION") {
       const namespaceName = `${namespaceType === "NAMESPACE_USER" ? "users" : "organizations"}/${entity}`;
-      const pipelineData = await fetchNamespacePipeline({
+      return await fetchNamespacePipeline({
         namespacePipelineName: `${namespaceName}/pipelines/${id}`,
         accessToken,
       });
-      if (pipelineData) {
-        return pipelineData;
-      }
     }
-    return Promise.reject(null);
   } catch (error) {
-    console.error(error);
-    return Promise.reject(null);
+    return null;
   }
+  return null;
 }
 
 export default async function RedirectionPipelinePage({ params }: RedirectionPipelinePageProps) {
   const { entity, id } = params;
-
   const cookieStore = cookies();
   const authSessionCookie = cookieStore.get("instill-auth-session")?.value;
   let accessToken: Nullable<string> = null;
@@ -40,12 +35,9 @@ export default async function RedirectionPipelinePage({ params }: RedirectionPip
     accessToken = JSON.parse(authSessionCookie).accessToken;
   }
 
-  try {
-    await getPipelineData(entity, id, accessToken);
-    // If the pipeline exists, redirect to the playground
+  const pipelineData = await getPipelineData(entity, id, accessToken);
+  if (pipelineData) {
     return redirect(`/${entity}/pipelines/${id}/playground`);
-  } catch (error) {
-    console.error("Error in RedirectionPipelinePage:", error);
-    return redirect('/404'); // Redirect to 404 if the pipeline doesn't exist or on any error
   }
+  return redirect('/404');
 }
