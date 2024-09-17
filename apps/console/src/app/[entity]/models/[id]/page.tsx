@@ -1,19 +1,27 @@
-import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
-import { fetchNamespaceType, fetchUserModel } from '@instill-ai/toolkit/server';
-import { Nullable } from '@instill-ai/toolkit';
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+import { Nullable } from "@instill-ai/toolkit";
+import { fetchNamespaceType, fetchUserModel } from "@instill-ai/toolkit/server";
 
 type RedirectionModelPageProps = {
   params: { id: string; entity: string };
 };
 
-async function getModelData(entity: string, id: string, accessToken: Nullable<string>) {
+async function getModelData(
+  entity: string,
+  id: string,
+  accessToken: Nullable<string>,
+) {
   try {
     const namespaceType = await fetchNamespaceType({
       namespace: entity,
       accessToken,
     });
-    if (namespaceType === "NAMESPACE_USER" || namespaceType === "NAMESPACE_ORGANIZATION") {
+    if (
+      namespaceType === "NAMESPACE_USER" ||
+      namespaceType === "NAMESPACE_ORGANIZATION"
+    ) {
       const namespaceName = `${namespaceType === "NAMESPACE_USER" ? "users" : "organizations"}/${entity}`;
       return await fetchUserModel({
         modelName: `${namespaceName}/models/${id}`,
@@ -26,7 +34,9 @@ async function getModelData(entity: string, id: string, accessToken: Nullable<st
   return null;
 }
 
-export default async function RedirectionModelPage({ params }: RedirectionModelPageProps) {
+export default async function RedirectionModelPage({
+  params,
+}: RedirectionModelPageProps) {
   const { entity, id } = params;
   const cookieStore = cookies();
   const authSessionCookie = cookieStore.get("instill-auth-session")?.value;
@@ -39,5 +49,5 @@ export default async function RedirectionModelPage({ params }: RedirectionModelP
   if (modelData) {
     return redirect(`/${entity}/models/${id}/playground`);
   }
-  return redirect('/404');
+  return redirect("/404");
 }
