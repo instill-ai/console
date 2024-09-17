@@ -60,6 +60,8 @@ export const PipelineContentViewer = ({
     case "settings": {
       if (pipeline?.permission.canEdit) {
         content = <PipelineSettings pipeline={pipeline} onUpdate={onUpdate} />;
+      } else {
+        content = null;
       }
 
       break;

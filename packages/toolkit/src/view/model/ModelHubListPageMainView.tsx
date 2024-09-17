@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import debounce from "lodash.debounce";
 
@@ -26,7 +26,7 @@ export const ModelHubListPageMainView = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const visibility = searchParams.get("visibility");
-  const [pageNumber, setPageNumber] = useState(0);
+  const [pageNumber, setPageNumber] = React.useState(0);
   const routeInfo = useRouteInfo();
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
@@ -47,7 +47,7 @@ export const ModelHubListPageMainView = () => {
       : "VISIBILITY_UNSPECIFIED",
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     setPageNumber(0);
   }, [selectedVisibilityOption, searchCode]);
 
