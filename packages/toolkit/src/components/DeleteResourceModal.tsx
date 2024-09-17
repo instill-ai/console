@@ -56,7 +56,7 @@ export const DeleteResourceModal = ({
       description =
         "Something went wrong when try to activate the flow of deleting resource, please contact our support.";
       console.error(
-        "You have passed resource not included in Pipeline, Model, Connector, Application and AI",
+        "You have passed resource not included in Pipeline, Model, Component, Application and AI",
       );
     }
 

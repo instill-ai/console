@@ -7,7 +7,7 @@ Besides scripts inside the `package.json`, there are multiple scripts outside of
 - [root](/package.json)
   - `ci-build-packages`: all-in-one scripts, useful on CI/CD
 - [apps/console](/apps/console/package.json)
-  - `download-airbyte-icons`: use to download Airbyte maintained connector's icons from their GitHub.
+  - `download-airbyte-icons`: use to download Airbyte maintained component's icons from their GitHub.
   - `check-pnpm-overrides`: check whether there has pnpm overrides configured. Currently, we don't allow this.
 - [packages/design-system](/packages/design-system/package.json)
   - `watch:css`: use for local development with TailwindCSS
