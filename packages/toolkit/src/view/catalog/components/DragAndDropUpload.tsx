@@ -79,7 +79,7 @@ export const DragAndDropUpload = ({
                             browse computer
                         </label>
                         <div className="">
-                            Support TXT, MARKDOWN, PDF, DOCX, DOC, PPTX, PPT, HTML, XLSX
+                            Support TXT, MARKDOWN, PDF, DOCX, DOC, PPTX, PPT, HTML, XLSX, XLS, CSV
                         </div>
                         <div className="">
                             Max {planMaxFileSize / (1024 * 1024)}MB each
@@ -91,7 +91,7 @@ export const DragAndDropUpload = ({
                 <Input.Core
                     id="upload-file-field"
                     type="file"
-                    accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html,.xlsx"
+                    accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html,.xlsx,.xls,.csv"
                     multiple
                     onChange={handleFileInputChange}
                 />
