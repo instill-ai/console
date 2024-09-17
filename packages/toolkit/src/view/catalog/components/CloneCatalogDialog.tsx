@@ -77,7 +77,8 @@ export const CloneCatalogDialog = ({
 }: CloneCatalogDialogProps) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [showLimitNotification, setShowLimitNotification] = React.useState(false);
+  const [showLimitNotification, setShowLimitNotification] =
+    React.useState(false);
   const [hasNamespaceChanged, setHasNamespaceChanged] = React.useState(false);
 
   const {
@@ -102,7 +103,8 @@ export const CloneCatalogDialog = ({
   const nameValue = watch("name");
   const description = watch("description");
   const selectedNamespace = watch("namespaceId");
-  const [namespaceType, setNamespaceType] = React.useState<Nullable<"user" | "organization">>(null);
+  const [namespaceType, setNamespaceType] =
+    React.useState<Nullable<"user" | "organization">>(null);
 
   const formattedName = formatName(nameValue);
 
