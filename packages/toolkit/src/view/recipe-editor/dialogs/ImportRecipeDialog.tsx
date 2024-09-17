@@ -7,6 +7,7 @@ import { Button, Dialog, Icons } from "@instill-ai/design-system";
 
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
+import { useIsMac } from "../lib";
 import { validateVSCodeYaml } from "../lib/validateVSCodeYaml";
 
 const selector = (store: InstillStore) => ({
@@ -15,6 +16,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const ImportRecipeDialog = () => {
+  const isMac = useIsMac();
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState<Nullable<string>>(null);
   const [recipe, setRecipe] = React.useState<Nullable<string>>(null);
@@ -30,7 +32,7 @@ export const ImportRecipeDialog = () => {
         setOpen(open);
       }}
     >
-      <EditorButtonTooltipWrapper tooltipContent="⌘ I">
+      <EditorButtonTooltipWrapper tooltipContent={isMac ? "CMD I" : "CTRL I"}>
         <Button
           onClick={() => {
             importRecipeInputTriggerRef?.current?.click();
