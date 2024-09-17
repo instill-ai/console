@@ -50,11 +50,11 @@ export const EditorViewSectionBar = ({
       </HorizontalSortableWrapper>
       <button className="ml-auto px-2" onClick={onToggleExpand}>
         {isExpanded ? (
-          <EditorButtonTooltipWrapper tooltipContent="Restore pane">
+          <EditorButtonTooltipWrapper tooltipContent="Restore panel">
             <Icons.Minimize01 className="w-3 h-3 stroke-semantic-fg-primary" />
           </EditorButtonTooltipWrapper>
         ) : (
-          <EditorButtonTooltipWrapper tooltipContent="Maximize pane">
+          <EditorButtonTooltipWrapper tooltipContent="Maximize panel">
             <Icons.Expand01 className="w-3 h-3 stroke-semantic-fg-primary" />
           </EditorButtonTooltipWrapper>
         )}

@@ -36,6 +36,7 @@ import {
 } from "../../../lib/use-instill-form/transform";
 import { generateUniqueNodeIdFromDefinition } from "../../pipeline-builder/lib/generateUniqueNodeIdFromDefinition";
 import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
+import { useIsMac } from "../lib";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -70,14 +71,13 @@ function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
     skipPath: ["setup.api-key"],
   });
 
-  console.log(data);
-
   return data;
 }
 
 export const ComponentCmdo = () => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const routeInfo = useRouteInfo();
+  const isMac = useIsMac();
   const {
     accessToken,
     enabledQuery,
@@ -410,7 +410,9 @@ export const ComponentCmdo = () => {
       }}
     >
       <Dialog.Trigger asChild>
-        <EditorButtonTooltipWrapper tooltipContent="⌘ O">
+        <EditorButtonTooltipWrapper
+          tooltipContent={isMac ? "CMD O" : "CTRL  O"}
+        >
           <Button
             onClick={() => {
               updateOpenComponentCmdo(() => true);

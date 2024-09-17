@@ -401,79 +401,92 @@ export const RecipeEditorView = () => {
                         ) : null}
                       </div>
                       <div className="flex flex-row">
-                        <button
-                          className="p-1.5"
-                          onClick={() => {
-                            if (currentExpandView === "left") {
-                              rightPanelRef.current?.resize(
-                                leftPanelDefaultSize,
-                              );
-                              setCurrentExpandView(null);
-                            } else {
-                              rightPanelRef.current?.resize(0);
-                              setCurrentExpandView("left");
-                            }
-                          }}
+                        <EditorButtonTooltipWrapper
+                          tooltipContent={
+                            currentExpandView === "left"
+                              ? "Minimize panel"
+                              : "Maximize panel"
+                          }
                         >
-                          {currentExpandView === "left" ? (
-                            <Icons.Minimize01 className="w-3 h-3 stroke-semantic-fg-primary" />
-                          ) : (
-                            <Icons.Expand01 className="w-3 h-3 stroke-semantic-fg-primary" />
-                          )}
-                        </button>
-                        <button className="p-1.5" onClick={handleDownload}>
-                          <Icons.Download01 className="w-3 h-3 stroke-semantic-fg-primary" />
-                        </button>
+                          <button
+                            className="p-1.5"
+                            onClick={() => {
+                              if (currentExpandView === "left") {
+                                rightPanelRef.current?.resize(
+                                  leftPanelDefaultSize,
+                                );
+                                setCurrentExpandView(null);
+                              } else {
+                                rightPanelRef.current?.resize(0);
+                                setCurrentExpandView("left");
+                              }
+                            }}
+                          >
+                            {currentExpandView === "left" ? (
+                              <Icons.Minimize01 className="w-3 h-3 stroke-semantic-fg-primary" />
+                            ) : (
+                              <Icons.Expand01 className="w-3 h-3 stroke-semantic-fg-primary" />
+                            )}
+                          </button>
+                        </EditorButtonTooltipWrapper>
+
+                        <EditorButtonTooltipWrapper tooltipContent="Download recipe">
+                          <button className="p-1.5" onClick={handleDownload}>
+                            <Icons.Download01 className="w-3 h-3 stroke-semantic-fg-primary" />
+                          </button>
+                        </EditorButtonTooltipWrapper>
                       </div>
                     </div>
                     <div className="flex h-7 shrink-0 items-center flex-row-reverse bg-semantic-bg-alt-primary border-b border-semantic-bg-line">
-                      <button
-                        onClick={async () => {
-                          if (!rawRecipeOnDom || !editorRef) {
-                            return;
-                          }
+                      <EditorButtonTooltipWrapper tooltipContent="Format recipe">
+                        <button
+                          onClick={async () => {
+                            if (!rawRecipeOnDom || !editorRef) {
+                              return;
+                            }
 
-                          const model = editorRef.getModel();
+                            const model = editorRef.getModel();
 
-                          if (!model) {
-                            return;
-                          }
+                            if (!model) {
+                              return;
+                            }
 
-                          let prettifiedRecipe: Nullable<string> = null;
-                          const currentPosition = editorRef?.getPosition();
+                            let prettifiedRecipe: Nullable<string> = null;
+                            const currentPosition = editorRef?.getPosition();
 
-                          try {
-                            prettifiedRecipe =
-                              await prettifyYaml(rawRecipeOnDom);
-                          } catch (error) {
-                            prettifiedRecipe = rawRecipeOnDom;
-                            console.error(error);
-                          }
+                            try {
+                              prettifiedRecipe =
+                                await prettifyYaml(rawRecipeOnDom);
+                            } catch (error) {
+                              prettifiedRecipe = rawRecipeOnDom;
+                              console.error(error);
+                            }
 
-                          // Replace the entire content
-                          model.pushEditOperations(
-                            [],
-                            [
-                              {
-                                range: model.getFullModelRange(),
-                                text: prettifiedRecipe,
-                              },
-                            ],
-                            () => null,
-                          );
+                            // Replace the entire content
+                            model.pushEditOperations(
+                              [],
+                              [
+                                {
+                                  range: model.getFullModelRange(),
+                                  text: prettifiedRecipe,
+                                },
+                              ],
+                              () => null,
+                            );
 
-                          // Restore the cursor position
-                          if (currentPosition) {
-                            editorRef?.setPosition(currentPosition);
-                          }
-                        }}
-                        className="flex flex-row items-center gap-x-1 px-1"
-                      >
-                        <Icons.AlignLeft className="w-3 h-3 stroke-semantic-fg-secondary" />
-                        <span className="text-xs font-sans text-semantic-fg-secondary">
-                          Format
-                        </span>
-                      </button>
+                            // Restore the cursor position
+                            if (currentPosition) {
+                              editorRef?.setPosition(currentPosition);
+                            }
+                          }}
+                          className="flex flex-row items-center gap-x-1 px-1"
+                        >
+                          <Icons.AlignLeft className="w-3 h-3 stroke-semantic-fg-secondary" />
+                          <span className="text-xs font-sans text-semantic-fg-secondary">
+                            Format
+                          </span>
+                        </button>
+                      </EditorButtonTooltipWrapper>
                     </div>
 
                     <div className="w-full flex-1 bg-semantic-bg-primary">

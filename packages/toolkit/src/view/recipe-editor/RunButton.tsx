@@ -6,6 +6,7 @@ import { Button, Icons } from "@instill-ai/design-system";
 
 import { InstillStore, useInstillStore, useShallow } from "../../lib";
 import { EditorButtonTooltipWrapper } from "./EditorButtonTooltipWrapper";
+import { useIsMac } from "./lib";
 
 const selector = (store: InstillStore) => ({
   isTriggeringPipeline: store.isTriggeringPipeline,
@@ -13,13 +14,16 @@ const selector = (store: InstillStore) => ({
 });
 
 export const RunButton = () => {
+  const isMac = useIsMac();
   const { isTriggeringPipeline, runButtonRef } = useInstillStore(
     useShallow(selector),
   );
 
   return (
     <div className="flex flex-row gap-x-1 items-center">
-      <EditorButtonTooltipWrapper tooltipContent="⌘ Return">
+      <EditorButtonTooltipWrapper
+        tooltipContent={isMac ? "CMD Return" : "CTRL Return"}
+      >
         <Button
           size="md"
           variant="primary"
