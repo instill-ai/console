@@ -31,7 +31,7 @@ export const Sidebar = ({
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
 
   return (
-    <div className="flex flex-col w-[280px] h-full px-2.5">
+    <div className="flex flex-col h-full px-2.5">
       <div className="flex flex-col mb-auto">
         <div
           onClick={() => {
