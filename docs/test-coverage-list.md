@@ -10,7 +10,7 @@ This list is to estabilish a semantic meaning toward the unit/e2e test coverage
 
 - [x] Create Pipeline
 - [x] Delete Pipeline
-- [x] Delete Connector
+- [x] Delete Component
 - [x] **pipeline-builder:** should correctly change component's ID [test](../apps/console/integration-test/tests/should-change-component-id.test.ts)
 - [x] **pipeline-builder:** should correctly unmarshal input when trigger the pipeline [test](../apps/console/integration-test/tests/should-unmarshal.test.ts)
 - [x] **pipeline-builder:** should correctly create/edit fields in start and end operator [test](../apps/console/integration-test/tests/should-edit-create-start-end-field.test.ts)

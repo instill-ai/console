@@ -65,7 +65,7 @@ Playground.args = {
         <div className="w-full bg-[#285863]">
           <div className="flex w-7/12 flex-col p-5">
             <div className="flex text-base text-white">
-              A data connector in charge of ingesting unstructured data into a
+              A data component in charge of ingesting unstructured data into a
               Pipeline.
             </div>
           </div>
@@ -101,7 +101,7 @@ Playground.args = {
         <div className="w-full bg-[#285863]">
           <div className="flex w-7/12 flex-col p-5">
             <div className="flex text-base text-white">
-              A data connector to load the standardised AI task output from
+              A data component to load the standardised AI task output from
               Model to the Destination.
             </div>
           </div>
