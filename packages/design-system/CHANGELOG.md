@@ -1,5 +1,13 @@
 # @instill-ai/design-system
 
+## [0.79.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.78.1...@instill-ai/design-system-v0.79.0) (2024-09-18)
+
+
+### Features
+
+* **catalog:** feat support new file types  ([#1467](https://github.com/instill-ai/console/issues/1467)) ([a55c7c0](https://github.com/instill-ai/console/commit/a55c7c077dba953a14b36e3bbbdb8095551bfc24))
+* change "connector" to "component" ([#1476](https://github.com/instill-ai/console/issues/1476)) ([bb2129f](https://github.com/instill-ai/console/commit/bb2129f687657d68a8906eb2788444ff834b3a9b))
+
 ## [0.78.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.78.0...@instill-ai/design-system-v0.78.1) (2024-09-13)
 
 

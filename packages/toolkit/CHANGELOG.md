@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.103.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.102.0...@instill-ai/toolkit-v0.103.0) (2024-09-18)
+
+
+### Features
+
+* **catalog:** feat support new file types  ([#1467](https://github.com/instill-ai/console/issues/1467)) ([a55c7c0](https://github.com/instill-ai/console/commit/a55c7c077dba953a14b36e3bbbdb8095551bfc24))
+* change "connector" to "component" ([#1476](https://github.com/instill-ai/console/issues/1476)) ([bb2129f](https://github.com/instill-ai/console/commit/bb2129f687657d68a8906eb2788444ff834b3a9b))
+* **editor:** close all imcomplete status of components when pipeline is completed ([#1473](https://github.com/instill-ai/console/issues/1473)) ([d595169](https://github.com/instill-ai/console/commit/d5951695946a32235cc89f2f13f382eb952de91e))
+* **editor:** make left sidebar width adjustable ([#1472](https://github.com/instill-ai/console/issues/1472)) ([c3d64f1](https://github.com/instill-ai/console/commit/c3d64f17f6acce5930888093a0cc1999b6ffce49))
+* **editor:** replace null with empty string when add the component ([#1469](https://github.com/instill-ai/console/issues/1469)) ([910fee3](https://github.com/instill-ai/console/commit/910fee3b9280e3642e2230912c11195f4d74cd41))
+* **editor:** scroll to target component line when click the node ([#1470](https://github.com/instill-ai/console/issues/1470)) ([f3ddab9](https://github.com/instill-ai/console/commit/f3ddab9ca7e781babe9022f1ee0a4725de17aae1))
+* **editor:** update node border radius and id style ([#1471](https://github.com/instill-ai/console/issues/1471)) ([4f67e6b](https://github.com/instill-ai/console/commit/4f67e6bd862bdc695c0203b433d5634fbeb5cba6))
+* import smart hint that user can directly input space to trigger hint window ([#1463](https://github.com/instill-ai/console/issues/1463)) ([aab53ba](https://github.com/instill-ai/console/commit/aab53ba07e3f240e72efe2be080621daeca33137))
+* use CMD and ctrl instead of ⌘ to hint shortcut ([#1475](https://github.com/instill-ai/console/issues/1475)) ([b92b64f](https://github.com/instill-ai/console/commit/b92b64fd6ebdaba6d9b60d57936c5d1750edcb67))
+
+
+### Bug Fixes
+
+* **editor:** fix recipe didn't allow asana component ([#1478](https://github.com/instill-ai/console/issues/1478)) ([aabf360](https://github.com/instill-ai/console/commit/aabf360d444035ef83b2f9c72f6d4ba3b7fe60e8))
+* **editor:** fix the wrong indent when adding the component placeholder ([#1468](https://github.com/instill-ai/console/issues/1468)) ([8a55a7c](https://github.com/instill-ai/console/commit/8a55a7c64e5c5ae70f7ca6127ee5ed49e59554b7))
+* **editor:** stop editor from displaying undefined hover hint ([#1474](https://github.com/instill-ai/console/issues/1474)) ([7b069d7](https://github.com/instill-ai/console/commit/7b069d732fb947aeb3e0b786d43246ec4ac39feb))
+* fix model playground polling ([#1465](https://github.com/instill-ai/console/issues/1465)) ([55d9479](https://github.com/instill-ai/console/commit/55d94795a2447499e32bfccd7a060e3dcde27096))
+* **pipeline/models:** fix add redirections ([#1446](https://github.com/instill-ai/console/issues/1446)) ([77ef8fa](https://github.com/instill-ai/console/commit/77ef8fa90bd8ce252f20b10c5eec7c68985d5720))
+* redirect user to 404 if they are on editor and pipeline is not exist ([#1480](https://github.com/instill-ai/console/issues/1480)) ([8a55d73](https://github.com/instill-ai/console/commit/8a55d738cb497b26ee7e10748e6d97e0e20154fc))
+
+
+### Miscellaneous
+
+* loading placeholders for model and pipeline pages ([#1477](https://github.com/instill-ai/console/issues/1477)) ([14e5dc9](https://github.com/instill-ai/console/commit/14e5dc998356488b47f8d2b7c0572fa917468df7))
+
 ## [0.102.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.101.0...@instill-ai/toolkit-v0.102.0) (2024-09-13)
 
 
