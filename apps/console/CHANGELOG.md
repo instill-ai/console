@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.57.0-beta](https://github.com/instill-ai/console/compare/v0.56.0-beta...v0.57.0-beta) (2024-09-18)
+
+
+### Features
+
+* change "connector" to "component" ([#1476](https://github.com/instill-ai/console/issues/1476)) ([bb2129f](https://github.com/instill-ai/console/commit/bb2129f687657d68a8906eb2788444ff834b3a9b))
+
+
+### Bug Fixes
+
+* **editor:** fix recipe didn't allow asana component ([#1478](https://github.com/instill-ai/console/issues/1478)) ([aabf360](https://github.com/instill-ai/console/commit/aabf360d444035ef83b2f9c72f6d4ba3b7fe60e8))
+* **pipeline/models:** fix add redirections ([#1446](https://github.com/instill-ai/console/issues/1446)) ([77ef8fa](https://github.com/instill-ai/console/commit/77ef8fa90bd8ce252f20b10c5eec7c68985d5720))
+
 ## [0.56.0-beta](https://github.com/instill-ai/console/compare/v0.55.0-beta...v0.56.0-beta) (2024-09-11)
 
 
