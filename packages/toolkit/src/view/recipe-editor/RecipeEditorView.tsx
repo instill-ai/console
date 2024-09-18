@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { arrayMove } from "@dnd-kit/sortable";
 import { Nullable } from "instill-sdk";
 
@@ -79,6 +80,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const RecipeEditorView = () => {
+  const router = useRouter();
   const {
     accessToken,
     enabledQuery,
@@ -116,6 +118,13 @@ export const RecipeEditorView = () => {
     accessToken,
     enabled: enabledQuery,
   });
+
+  // redirect to 404 if the pipeline is not found
+  React.useEffect(() => {
+    if (pipeline.isError) {
+      router.push("/404");
+    }
+  }, [pipeline.isError]);
 
   const sortedReleases = useSortedReleases({
     pipelineName: routeInfo.data.pipelineName,
