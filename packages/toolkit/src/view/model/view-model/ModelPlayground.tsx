@@ -124,6 +124,9 @@ export const ModelPlayground = ({
   });
 
   const namespaces = useUserNamespaces();
+  const targetNamespace = namespaces.find(
+    (namespace) => namespace.id === navigationNamespaceAnchor,
+  );
 
   const isModelTriggerable = useMemo(() => {
     return accessToken && model && modelState
@@ -149,6 +152,7 @@ export const ModelPlayground = ({
     versionId: activeVersion,
     view: "VIEW_FULL",
     enabled: !!activeVersion && enabledQuery,
+    requesterUid: targetNamespace ? targetNamespace.uid : undefined,
   });
 
   const pollForResponse = React.useCallback(async () => {

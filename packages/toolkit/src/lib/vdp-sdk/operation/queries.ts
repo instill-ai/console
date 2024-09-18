@@ -25,7 +25,7 @@ export async function getOperationQuery({
   }
 }
 
-export async function checkUntilOperationIsDoen({
+export async function checkUntilOperationIsDone({
   operationName,
   accessToken,
 }: {
@@ -42,7 +42,7 @@ export async function checkUntilOperationIsDoen({
       return Promise.resolve(true);
     } else {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      const result = await checkUntilOperationIsDoen({
+      const result = await checkUntilOperationIsDone({
         operationName,
         accessToken,
       });
