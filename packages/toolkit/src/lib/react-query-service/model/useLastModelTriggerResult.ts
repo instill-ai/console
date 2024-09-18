@@ -11,6 +11,7 @@ export function useLastModelTriggerResult({
   enabled,
   view = "VIEW_BASIC",
   retry,
+  requesterUid,
 }: {
   modelId: Nullable<string>;
   userId: Nullable<string>;
@@ -18,6 +19,7 @@ export function useLastModelTriggerResult({
   enabled: boolean;
   view?: ResourceView;
   retry?: false | number;
+  requesterUid?: string;
 }) {
   let enableQuery = false;
   const queryKey = ["models", "operation"];
@@ -43,6 +45,7 @@ export function useLastModelTriggerResult({
       const operation = await client.model.getNamespaceModelOperationResult({
         namespaceModelName: `namespaces/${userId}/models/${modelId}`,
         view,
+        requesterUid,
       });
 
       return Promise.resolve(operation);

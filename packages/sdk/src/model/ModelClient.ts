@@ -634,9 +634,11 @@ export class ModelClient extends APIResource {
   async getNamespaceModelOperationResult({
     namespaceModelName,
     view,
+    requesterUid,
   }: {
     namespaceModelName: string;
     view: ResourceView;
+    requesterUid?: string;
   }) {
     try {
       const queryString = getQueryString({
@@ -644,9 +646,14 @@ export class ModelClient extends APIResource {
         view,
       });
 
+      const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
+
       const data =
         await this._client.get<GetNamespaceModelOperationResultResponse>(
           queryString,
+          {
+            additionalHeaders,
+          },
         );
 
       return Promise.resolve(data);

@@ -12,6 +12,7 @@ export function useModelVersionTriggerResult({
   enabled,
   view = "VIEW_BASIC",
   retry,
+  requesterUid,
 }: {
   modelId: Nullable<string>;
   userId: Nullable<string>;
@@ -20,6 +21,7 @@ export function useModelVersionTriggerResult({
   enabled: boolean;
   view?: ResourceView;
   retry?: false | number;
+  requesterUid?: string;
 }) {
   let enableQuery = false;
   const queryKey = ["models", "operation"];
@@ -50,6 +52,7 @@ export function useModelVersionTriggerResult({
       const operation = await client.model.getNamespaceModelOperationResult({
         namespaceModelName: `namespaces/${userId}/models/${modelId}/versions/${versionId}`,
         view,
+        requesterUid,
       });
 
       return Promise.resolve(operation);
