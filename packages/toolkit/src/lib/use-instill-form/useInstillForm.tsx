@@ -100,8 +100,6 @@ export function useInstillForm(
         initialData: data ?? undefined,
       });
 
-    console.log("selectedConditionMap", _selectedConditionMap, data);
-
     setSelectedConditionMap(_selectedConditionMap);
 
     const _ValidatorSchema = transformInstillJSONSchemaToZod({

@@ -258,6 +258,7 @@ export const ComponentCmdo = () => {
     // We need this setTimeout to correctly focus the editor after the edit
     setTimeout(() => {
       editorRef.focus();
+      onDialogClose();
       updateOpenComponentCmdo(() => false);
     }, 100);
   }
