@@ -3,9 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ColumnDef } from "@tanstack/react-table";
-
 import { Button, DataTable } from "@instill-ai/design-system";
-
 import { SortIcon, TableError } from "../../components";
 import { TriggeredPipeline } from "../../lib";
 import { PipelineTablePlaceholder } from "../pipeline";
@@ -14,40 +12,50 @@ export type DashboardPipelinesTableProps = {
   pipelineTriggerCounts: TriggeredPipeline[];
   isError: boolean;
   isLoading: boolean;
+  costView: "model" | "pipeline";
 };
 
 export const DashboardPipelinesTable = (
-  props: DashboardPipelinesTableProps,
+  props: DashboardPipelinesTableProps
 ) => {
   const { entity, days } = useParams();
-  const { pipelineTriggerCounts, isError, isLoading } = props;
+  const { pipelineTriggerCounts, isError, isLoading, costView } = props;
 
   const columns: ColumnDef<TriggeredPipeline>[] = [
     {
-      accessorKey: "pipelineId",
-      header: () => <div className="min-w-[450px] text-left">Pipeline Id</div>,
+      accessorKey: costView === "pipeline" ? "pipelineId" : "modelId",
+      header: () => (
+        <div className="min-w-[450px] text-left">
+          {costView === "pipeline" ? "Pipeline Id" : "Model Id"}
+        </div>
+      ),
       cell: ({ row }) => {
         return (
           <div className="flex flex-row">
-            {/* <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              aria-label="Select row"
-              className="h-5 w-5"
-            /> */}
             <Link
-              href={`/${entity}/dashboard/pipeline/${row.getValue(
-                "pipelineId",
+              href={`/${entity}/dashboard/${costView}/${row.getValue(
+                costView === "pipeline" ? "pipelineId" : "modelId"
               )}${days ? "?days=" + days : ""}`}
             >
-              {row.getValue("pipelineId")}
+              {row.getValue(costView === "pipeline" ? "pipelineId" : "modelId")}
             </Link>
           </div>
         );
       },
     },
     {
-      accessorKey: "triggerCountCompleted",
+      accessorKey: "version",
+      header: () => <div className="text-center">Version</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
+            {row.getValue("version")}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "duration",
       header: ({ column }) => {
         return (
           <div className="text-center">
@@ -59,7 +67,7 @@ export const DashboardPipelinesTable = (
                 column.toggleSorting(column.getIsSorted() === "asc")
               }
             >
-              <span className="min-w-[130px]">Completed Triggers</span>
+              <span className="min-w-[130px">Duration</span>
               <SortIcon type={column.getIsSorted()} />
             </Button>
           </div>
@@ -68,13 +76,13 @@ export const DashboardPipelinesTable = (
       cell: ({ row }) => {
         return (
           <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
-            {row.getValue("triggerCountCompleted")}
+            {row.getValue("duration")}
           </div>
         );
       },
     },
     {
-      accessorKey: "triggerCountErrored",
+      accessorKey: "creditCost",
       header: ({ column }) => (
         <div className="text-center">
           <Button
@@ -83,7 +91,7 @@ export const DashboardPipelinesTable = (
             size="sm"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            <span className="min-w-[110px]">Errored Triggers</span>
+            <span className="min-w-[110px]">Credit Cost</span>
             <SortIcon type={column.getIsSorted()} />
           </Button>
         </div>
@@ -91,7 +99,7 @@ export const DashboardPipelinesTable = (
       cell: ({ row }) => {
         return (
           <div className="truncate text-center text-semantic-fg-secondary product-body-text-3-regular">
-            {row.getValue("triggerCountErrored")}
+            {row.getValue("creditCost")}
           </div>
         );
       },
@@ -108,8 +116,7 @@ export const DashboardPipelinesTable = (
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
-        primaryText="Pipelines"
-        secondaryText="Select pipelines from the table below to view the number of pipeline triggers"
+        primaryText={costView === "pipeline" ? "Pipelines" : "Models"}
       >
         <TableError marginBottom="!border-0" />
       </DataTable>
@@ -126,8 +133,9 @@ export const DashboardPipelinesTable = (
         searchKey={null}
         isLoading={isLoading}
         loadingRows={6}
-        primaryText="Pipelines"
-        secondaryText="Select pipelines from the table below to view the number of pipeline triggers"
+        primaryText={costView === "pipeline" ? "Pipelines" : "Models"}
+        secondaryText={`Select ${costView === "pipeline" ? "pipelines" : "models"
+          } from the table below to view the cost details`}
       >
         <PipelineTablePlaceholder
           enableCreateButton={false}
@@ -142,12 +150,14 @@ export const DashboardPipelinesTable = (
       columns={columns}
       data={pipelineTriggerCounts}
       pageSize={6}
-      searchPlaceholder={"Search Pipelines"}
-      searchKey={"pipelineId"}
+      searchPlaceholder={`Search ${costView === "pipeline" ? "Pipelines" : "Models"
+        }`}
+      searchKey={costView === "pipeline" ? "pipelineId" : "modelId"}
       isLoading={isLoading}
       loadingRows={6}
-      primaryText="Pipelines"
-      secondaryText="Select pipelines from the table below to view the number of pipeline triggers"
+      primaryText={costView === "pipeline" ? "Pipelines" : "Models"}
+      secondaryText={`Select ${costView === "pipeline" ? "pipelines" : "models"
+        } from the table below to view the cost details`}
     />
   );
 };
