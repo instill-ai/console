@@ -363,7 +363,7 @@ export const CloneCatalogDialog = ({
       </Dialog.Root>
       <CatalogLimitNotification
         isOpen={showLimitNotification}
-        setIsOpen={setShowLimitNotification}
+        setIsOpen={() => setShowLimitNotification(false)}
       />
     </>
   );
