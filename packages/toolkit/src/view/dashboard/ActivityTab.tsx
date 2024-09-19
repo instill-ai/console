@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Select, SelectOption } from "@instill-ai/design-system";
+import { Icons, Input, Select, SelectOption } from "@instill-ai/design-system";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
 import { DataTableDashboard } from "./DataTableDashboard";
@@ -28,6 +28,8 @@ export const ActivityTab = ({
     pipelineTriggersSummary,
 }: ActivityTabProps) => {
     const [sortOption, setSortOption] = React.useState("newest");
+    const [searchTerm, setSearchTerm] = React.useState("");
+
 
     return (
         <div>
@@ -42,6 +44,16 @@ export const ActivityTab = ({
                             <Select.Item value="oldest">Oldest</Select.Item>
                         </Select.Content>
                     </Select.Root>
+                    <Input.Root className="!rounded">
+                        <Input.LeftIcon>
+                            <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
+                        </Input.LeftIcon>
+                        <Input.Core
+                            placeholder="Search..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </Input.Root>
                 </div>
                 <FilterByDay
                     refetch={() => pipelinesChart.refetch()}
@@ -49,7 +61,7 @@ export const ActivityTab = ({
                     setSelectedTimeOption={setSelectedTimeOption}
                 />
             </div>
-            <div className="mb-8 w-full">
+            <div className="mb-2 w-full">
                 <PipelineTriggerCountsLineChart
                     isLoading={pipelinesChart.isLoading}
                     pipelines={pipelinesChartList}
