@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.103.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.103.0...@instill-ai/toolkit-v0.103.1) (2024-09-19)
+
+
+### Bug Fixes
+
+* add requester ID to the model operation request ([#1481](https://github.com/instill-ai/console/issues/1481)) ([008fd97](https://github.com/instill-ai/console/commit/008fd973a34d69b354f47086e8ca3938a82df87a))
+* **editor:** fix can not activate hint for variable ([#1486](https://github.com/instill-ai/console/issues/1486)) ([73d6cdc](https://github.com/instill-ai/console/commit/73d6cdcc58c07bc84983f2621333b7aba4e206f3))
+* **editor:** fix can't fitview on pipeline preview ([#1484](https://github.com/instill-ai/console/issues/1484)) ([3d61067](https://github.com/instill-ai/console/commit/3d610675ca58a8e9eaf1eb30c00e4f5416a79c25))
+* **editor:** fix selected task can't scroll to button result in covering up some text in CMDO ([#1485](https://github.com/instill-ai/console/issues/1485)) ([55dbcbe](https://github.com/instill-ai/console/commit/55dbcbe42b8c7a255bf76d9eb114aa09f165b48a))
+
+
+### Miscellaneous
+
+* update nextjs version to 14.2.10, clean up playwright deps ([#1483](https://github.com/instill-ai/console/issues/1483)) ([d5ae86a](https://github.com/instill-ai/console/commit/d5ae86a051e0816e7138066bde2005e5ff29b24e))
+
 ## [0.103.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.102.0...@instill-ai/toolkit-v0.103.0) (2024-09-18)
 
 
