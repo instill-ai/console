@@ -28,6 +28,7 @@ export const NodeBase = ({
   isCompleted,
   errorState,
   handleOpenDocumentation,
+  handleOpenComponentOutput,
   handleClick,
   hasTargetEdges,
   hasSourceEdges,
@@ -41,6 +42,7 @@ export const NodeBase = ({
   isCompleted: boolean;
   errorState: ComponentErrorState;
   handleOpenDocumentation: () => void;
+  handleOpenComponentOutput: () => void;
   handleClick: () => void;
   hasTargetEdges: boolean;
   hasSourceEdges: boolean;
@@ -66,9 +68,10 @@ export const NodeBase = ({
             <Icons.Play className="w-4 h-4 stroke-semantic-fg-primary" />
           </Button>
           <Button
-            disabled={true}
+            disabled={!isSelected || flowIsUnderDemoMode}
             variant="tertiaryGrey"
-            className="!px-2 opacity-0"
+            onClick={handleOpenComponentOutput}
+            className="!px-2"
           >
             <Icons.Trash01 className="w-4 h-4 stroke-semantic-fg-primary" />
           </Button>

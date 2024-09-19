@@ -212,6 +212,10 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
     return false;
   }, [triggerPipelineStreamMap, id]);
 
+  const handleOpenComponentOutput = React.useCallback(() => {
+    console.log(id);
+  }, [id, data]);
+
   return (
     <NodeBase
       id={id}
@@ -220,6 +224,7 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
       isCompleted={isCompleted}
       errorState={errorState}
       handleOpenDocumentation={handleOpenDocumentation}
+      handleOpenComponentOutput={handleOpenComponentOutput}
       handleClick={handleClick}
       hasTargetEdges={hasTargetEdges}
       hasSourceEdges={hasSourceEdges}
