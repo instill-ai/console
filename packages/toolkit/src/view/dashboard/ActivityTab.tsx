@@ -1,9 +1,8 @@
-"use client";
-
 import * as React from "react";
 import { Icons, Input, Popover, SelectOption } from "@instill-ai/design-system";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
+import { ModelsTriggerCountsLineChart } from "./ModelsTriggerCountsLineChart";
 import { PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
 import { Nullable } from "instill-sdk";
 
@@ -34,9 +33,9 @@ export const ActivityTab = ({
     ];
 
     return (
-        <div>
-            <div className="flex justify-between items-center mb-5">
-                <div className="flex space-x-3">
+        <div className="w-full">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 gap-4">
+                <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
                     <Popover.Root>
                         <Popover.Trigger asChild>
                             <button className="flex flex-row gap-x-2 rounded border border-semantic-bg-line bg-semantic-bg-primary px-4 py-3 text-semantic-fg-primary product-button-button-1">
@@ -62,7 +61,7 @@ export const ActivityTab = ({
                         </Popover.Content>
                     </Popover.Root>
 
-                    <Input.Root className="!rounded w-[250px]">
+                    <Input.Root className="!rounded w-full sm:w-[250px]">
                         <Input.LeftIcon>
                             <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
                         </Input.LeftIcon>
@@ -79,13 +78,23 @@ export const ActivityTab = ({
                     setSelectedTimeOption={setSelectedTimeOption}
                 />
             </div>
-            <div className="mb-2 w-full">
-                <PipelineTriggerCountsLineChart
-                    isLoading={pipelinesChart.isLoading}
-                    pipelines={pipelinesChartList}
-                    selectedTimeOption={selectedTimeOption}
-                    pipelineTriggersSummary={pipelineTriggersSummary}
-                />
+            <div className="w-full flex flex-col lg:flex-row gap-4">
+                <div className="w-full lg:w-1/2">
+                    <PipelineTriggerCountsLineChart
+                        isLoading={pipelinesChart.isLoading}
+                        pipelines={pipelinesChartList}
+                        selectedTimeOption={selectedTimeOption}
+                        pipelineTriggersSummary={pipelineTriggersSummary}
+                    />
+                </div>
+                <div className="w-full lg:w-1/2">
+                    <ModelsTriggerCountsLineChart
+                        isLoading={pipelinesChart.isLoading}
+                        pipelines={pipelinesChartList}
+                        selectedTimeOption={selectedTimeOption}
+                        pipelineTriggersSummary={pipelineTriggersSummary}
+                    />
+                </div>
             </div>
         </div>
     );

@@ -4,10 +4,10 @@ import * as React from "react";
 import { Icons, Input, Popover, SelectOption } from "@instill-ai/design-system";
 import { FilterByDay } from "./FilterByDay";
 import { CreditCostTrendChart } from "./CreditCostTrendChart";
-import { DataTableDashboard } from "./DataTableDashboard";
-import { columns, mockTableData } from "./helpers";
 import { PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
 import { Nullable } from "instill-sdk";
+import { DashboardListPipeline } from "./DashboardListPipeline";
+import { DashboardListModel } from "./DashboardListModel";
 
 type CostTabProps = {
     pipelinesChart: {
@@ -81,6 +81,7 @@ export const CostTab = ({
                     setSelectedTimeOption={setSelectedTimeOption}
                 />
             </div>
+
             <div className="mb-2 w-full">
                 <CreditCostTrendChart
                     isLoading={pipelinesChart.isLoading}
@@ -90,14 +91,13 @@ export const CostTab = ({
                     costView={costView}
                 />
             </div>
+
             <div className="mt-8">
-                <DataTableDashboard
-                    columns={columns}
-                    data={mockTableData}
-                    pageSize={10}
-                    isLoading={pipelinesChart.isLoading}
-                    loadingRows={10}
-                />
+                {costView === "model" ? (
+                    <DashboardListModel />
+                ) : (
+                    <DashboardListPipeline />
+                )}
             </div>
         </div>
     );
