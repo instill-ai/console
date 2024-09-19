@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.79.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.79.0...@instill-ai/design-system-v0.79.1) (2024-09-19)
+
+
+### Miscellaneous
+
+* update nextjs version to 14.2.10, clean up playwright deps ([#1483](https://github.com/instill-ai/console/issues/1483)) ([d5ae86a](https://github.com/instill-ai/console/commit/d5ae86a051e0816e7138066bde2005e5ff29b24e))
+
 ## [0.79.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.78.1...@instill-ai/design-system-v0.79.0) (2024-09-18)
 
 

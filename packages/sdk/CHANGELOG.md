@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/instill-ai/console/compare/instill-sdk-v0.5.1...instill-sdk-v0.5.2) (2024-09-19)
+
+
+### Bug Fixes
+
+* add requester ID to the model operation request ([#1481](https://github.com/instill-ai/console/issues/1481)) ([008fd97](https://github.com/instill-ai/console/commit/008fd973a34d69b354f47086e8ca3938a82df87a))
+
 ## [0.5.1](https://github.com/instill-ai/console/compare/instill-sdk-v0.5.0...instill-sdk-v0.5.1) (2024-09-13)
 
 

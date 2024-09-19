@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.57.1-beta](https://github.com/instill-ai/console/compare/v0.57.0-beta...v0.57.1-beta) (2024-09-19)
+
+
+### Bug Fixes
+
+* **editor:** fix selected task can't scroll to button result in covering up some text in CMDO ([#1485](https://github.com/instill-ai/console/issues/1485)) ([55dbcbe](https://github.com/instill-ai/console/commit/55dbcbe42b8c7a255bf76d9eb114aa09f165b48a))
+
+
+### Miscellaneous
+
+* update nextjs version to 14.2.10, clean up playwright deps ([#1483](https://github.com/instill-ai/console/issues/1483)) ([d5ae86a](https://github.com/instill-ai/console/commit/d5ae86a051e0816e7138066bde2005e5ff29b24e))
+
 ## [0.57.0-beta](https://github.com/instill-ai/console/compare/v0.56.0-beta...v0.57.0-beta) (2024-09-18)
 
 
