@@ -4,8 +4,6 @@ import * as React from "react";
 import { Icons, Input, Popover, SelectOption } from "@instill-ai/design-system";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
-import { DataTableDashboard } from "./DataTableDashboard";
-import { columns, mockTableData } from "./helpers";
 import { PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
 import { Nullable } from "instill-sdk";
 
@@ -87,15 +85,6 @@ export const ActivityTab = ({
                     pipelines={pipelinesChartList}
                     selectedTimeOption={selectedTimeOption}
                     pipelineTriggersSummary={pipelineTriggersSummary}
-                />
-            </div>
-            <div className="mt-8">
-                <DataTableDashboard
-                    columns={columns}
-                    data={mockTableData}
-                    pageSize={10}
-                    isLoading={pipelinesChart.isLoading}
-                    loadingRows={10}
                 />
             </div>
         </div>
