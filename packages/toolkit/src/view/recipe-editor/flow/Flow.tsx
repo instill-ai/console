@@ -195,9 +195,12 @@ export const Flow = ({
           className="!bg-semantic-bg-alt-primary"
           size={3}
         />
-        {demoMode ? (
-          <Controls id={pipelineId ?? undefined} showInteractive={false} />
-        ) : null}
+        <Controls
+          className={demoMode ? "" : "hidden"}
+          id={pipelineId ?? undefined}
+          showInteractive={false}
+          fitViewOptions={fitViewOptions}
+        />
       </ReactFlow>
     </div>
   );
