@@ -20,7 +20,7 @@ export const TotalCreditCostChart = ({
     pipelineTriggersSummary,
 }: TotalCreditCostChartProps) => {
     const chartRef = React.useRef<HTMLDivElement>(null);
-    console.log(isLoading, pipelines, selectedTimeOption, pipelineTriggersSummary )
+    console.log(isLoading, pipelines, selectedTimeOption, pipelineTriggersSummary)
 
     // Mock data
     const pipelinePercentage = 66;
@@ -75,8 +75,8 @@ export const TotalCreditCostChart = ({
                         <Tooltip.Provider>
                             <Tooltip.Root>
                                 <Tooltip.Trigger asChild>
-                                    <div className="relative h-3.5 w-3.5">
-                                        <Icons.AlertCircle className="h-3.5 w-3.5 stroke-semantic-fg-primary" />
+                                    <div className="relative h-4 w-4">
+                                        <Icons.AlertCircle className="h-4 w-4 stroke-semantic-fg-primary" />
                                     </div>
                                 </Tooltip.Trigger>
                                 <Tooltip.Portal>
