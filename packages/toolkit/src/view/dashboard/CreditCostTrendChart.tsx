@@ -24,13 +24,13 @@ export const CreditCostTrendChart = ({
     const chartRef = React.useRef<HTMLDivElement>(null);
 
     const mockData = React.useMemo(() => [
-        { date: '2023-09-01', value: 150 },
-        { date: '2023-09-02', value: 200 },
-        { date: '2023-09-03', value: 180 },
-        { date: '2023-09-04', value: 220 },
-        { date: '2023-09-05', value: 250 },
-        { date: '2023-09-06', value: 190 },
-        { date: '2023-09-07', value: 210 },
+        { date: '2023-04-07 09:32:04', pipelineValue: 150, modelValue: 100 },
+        { date: '2023-04-08 10:30:15', pipelineValue: 200, modelValue: 120 },
+        { date: '2023-04-09 11:45:30', pipelineValue: 180, modelValue: 90 },
+        { date: '2023-04-10 13:15:45', pipelineValue: 220, modelValue: 130 },
+        { date: '2023-04-11 14:30:00', pipelineValue: 250, modelValue: 150 },
+        { date: '2023-04-12 16:00:20', pipelineValue: 190, modelValue: 110 },
+        { date: '2023-04-13 17:30:40', pipelineValue: 210, modelValue: 140 },
     ], []);
 
     React.useEffect(() => {
@@ -46,33 +46,50 @@ export const CreditCostTrendChart = ({
                         type: 'shadow'
                     },
                     formatter: function (params: { axisValue: string; value: number }[]) {
-                        const date = params[0]?.axisValue ?? '';
+                        const date = new Date(params[0]?.axisValue ?? '');
+                        const formattedDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}, ${date.getFullYear()} - ${date.toTimeString().split(' ')[0]}`;
                         const value = params[0]?.value ?? 0;
+                        const total = value;
+
                         return `
                             <div style="font-size: 14px; color: #666;">
-                                <div style="margin-bottom: 5px;">${date}</div>
-                                <div>
-                                    <span style="display: inline-block; width: 10px; height: 10px; background-color: ${costView === 'pipeline' ? '#3B7AF7' : '#2EC291'}; margin-right: 5px;"></span>
-                                    ${costView === 'pipeline' ? 'Pipeline' : 'Model'}: ${value}
+                                <div class="product-body-text-4-medium" style="margin-bottom: 5px;">${formattedDate}</div>
+                                <div style="display: flex; align-items: center; margin-bottom: 3px;">
+                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: ${costView === 'pipeline' ? '#3B7AF7' : '#2EC291'};"></span>
+                                    <div class="product-body-text-3-medium" style="margin-left: 15px;">${value} (100%)</div>
                                 </div>
+                                <div class="product-body-text-3-regular">Total credits: <span class="product-body-text-3-semibold">${total}</span></div>
                             </div>
                         `;
                     }
                 },
                 xAxis: {
                     type: 'category',
-                    data: mockData.map(item => item.date)
+                    data: mockData.map(item => item.date.split(' ')[0]),
+                    axisLabel: {
+                        formatter: (value: string) => {
+                            const date = new Date(value);
+                            return `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}`;
+                        }
+                    }
                 },
                 yAxis: {
                     type: 'value'
                 },
                 series: [
                     {
-                        name: costView === 'pipeline' ? 'Pipeline' : 'Model',
+                        name: 'Pipeline',
                         type: 'bar',
-                        data: mockData.map(item => item.value),
-                        itemStyle: { color: costView === 'pipeline' ? '#3B7AF7' : '#2EC291' },
-                        barWidth: 30
+                        data: mockData.map(item => costView === 'pipeline' ? item.pipelineValue : null),
+                        itemStyle: { color: '#3B7AF7' },
+                        barWidth: '24px'
+                    },
+                    {
+                        name: 'Model',
+                        type: 'bar',
+                        data: mockData.map(item => costView === 'model' ? item.modelValue : null),
+                        itemStyle: { color: '#2EC291' },
+                        barWidth: '24px'
                     }
                 ]
             };
