@@ -586,23 +586,21 @@ export const ComponentCmdo = () => {
             <Separator orientation="vertical" className="!mx-3" />
             {selectedComponentDefinition &&
             isComponentDefinition(selectedComponentDefinition) ? (
-              <div className="w-[160px] py-3 shrink-0 mr-3">
-                <ScrollArea.Root className="flex w-full h-[306px]">
-                  <CommandGroup headingWrapperClassName="px-2" heading="Task">
-                    {selectedComponentDefinition.tasks.map((task) => (
-                      <TaskItem
-                        key={task.name}
-                        taskTitle={task.title}
-                        onClick={() => {
-                          setSelectedTaskName(task.name);
-                          onSelectTask(task.name);
-                        }}
-                        isSelected={selectedTaskName === task.name}
-                      />
-                    ))}
-                  </CommandGroup>
-                </ScrollArea.Root>
-              </div>
+              <ScrollArea.Root className="flex w-[160px] mr-3 shrink-0 py-3 h-[300px]">
+                <CommandGroup headingWrapperClassName="px-2" heading="Task">
+                  {selectedComponentDefinition.tasks.map((task) => (
+                    <TaskItem
+                      key={task.name}
+                      taskTitle={task.title}
+                      onClick={() => {
+                        setSelectedTaskName(task.name);
+                        onSelectTask(task.name);
+                      }}
+                      isSelected={selectedTaskName === task.name}
+                    />
+                  ))}
+                </CommandGroup>
+              </ScrollArea.Root>
             ) : null}
             <div className="flex flex-col w-[275px] h-[300px] gap-y-2">
               <div className="w-full p-5 flex-1 rounded-sm bg-semantic-bg-base-bg border border-semantic-bg-line">
