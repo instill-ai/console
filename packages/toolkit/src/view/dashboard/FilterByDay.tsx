@@ -17,7 +17,7 @@ export const FilterByDay = ({
   setSelectedTimeOption,
 }: FilterProps) => {
   return (
-    <div className="flex flex-row space-x-1 items-center">
+    <div className="flex flex-row space-x-4 items-center">
       <div className="bg-semantic-bg-secondary p-1 rounded-sm flex items-center space-x-1 border-semantic-bg-line border">
         {dashboardOptions.timeLine.map((timeLineOption) => (
           <button
@@ -37,7 +37,7 @@ export const FilterByDay = ({
         ))}
       </div>
       <Button
-        className="my-auto h-10 w-10 !p-3"
+        className="my-auto h-12 w-12 !p-3 "
         variant="secondaryGrey"
         size="sm"
         onClick={() => refetch()}
