@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Select, SelectOption } from "@instill-ai/design-system";
+import { Icons, Input, Select, SelectOption } from "@instill-ai/design-system";
 import { FilterByDay } from "./FilterByDay";
 import { CreditCostTrendChart } from "./CreditCostTrendChart";
 import { DataTableDashboard } from "./DataTableDashboard";
@@ -28,6 +28,7 @@ export const CostTab = ({
     pipelineTriggersSummary,
 }: CostTabProps) => {
     const [costView, setCostView] = React.useState<"model" | "pipeline">("pipeline");
+    const [searchTerm, setSearchTerm] = React.useState("");
 
     return (
         <div>
@@ -42,6 +43,16 @@ export const CostTab = ({
                             <Select.Item value="model">Model</Select.Item>
                         </Select.Content>
                     </Select.Root>
+                    <Input.Root className="!rounded">
+                        <Input.LeftIcon>
+                            <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
+                        </Input.LeftIcon>
+                        <Input.Core
+                            placeholder="Search..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </Input.Root>
                 </div>
                 <FilterByDay
                     refetch={() => pipelinesChart.refetch()}
@@ -49,7 +60,7 @@ export const CostTab = ({
                     setSelectedTimeOption={setSelectedTimeOption}
                 />
             </div>
-            <div className="mb-8 w-full">
+            <div className="mb-2 w-full">
                 <CreditCostTrendChart
                     isLoading={pipelinesChart.isLoading}
                     pipelines={pipelinesChartList}

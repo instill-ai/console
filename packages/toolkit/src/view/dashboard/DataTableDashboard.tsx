@@ -14,7 +14,6 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 
-
 import { StatusTag } from "./StatusTag";
 import { Nullable } from "instill-sdk";
 import { Skeleton, Table } from "@instill-ai/design-system";
@@ -150,10 +149,15 @@ const DataTableDashboard = <TData, TValue>({
                                                 ) : cell.column.id === "status" ? (
                                                     <StatusTag
                                                         status={
-                                                            (flexRender(
-                                                                cell.column.columnDef.cell,
-                                                                cell.getContext(),
-                                                            ) as string).replace("FILE_PROCESS_STATUS_", "")
+                                                            (() => {
+                                                                const rendered = flexRender(
+                                                                    cell.column.columnDef.cell,
+                                                                    cell.getContext(),
+                                                                );
+                                                                return typeof rendered === 'string'
+                                                                    ? rendered.replace("FILE_PROCESS_STATUS_", "")
+                                                                    : String(rendered);
+                                                            })()
                                                         }
                                                     />
                                                 ) : (

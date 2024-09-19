@@ -17,25 +17,21 @@ export const UsageSwitch = ({
     ];
 
     return (
-        <div className="flex flex-row space-x-4 mb-8">
-            <div className="border-semantic flex items-start justify-start">
-                {options.map((option) => (
-                    <button
-                        key={option.value}
-                        className={cn(
-                            "my-auto flex !h-10 cursor-pointer items-center justify-center self-stretch !px-4 !py-1 outline outline-1 outline-semantic-bg-line first:rounded-l-[2px] last:rounded-r-[2px] hover:bg-semantic-bg-secondary",
-                            option.value === activeTab
-                                ? "bg-semantic-bg-line"
-                                : "bg-white",
-                        )}
-                        onClick={() => setActiveTab(option.value as "activity" | "cost")}
-                    >
-                        <p className="text-semantic-fg-primary product-body-text-4-semibold">
-                            {option.label}
-                        </p>
-                    </button>
-                ))}
-            </div>
+        <div className="flex space-x-1 mb-2 bg-semantic-bg-secondary p-1 rounded-sm border-semantic-bg-line w-fit border">
+            {options.map((option) => (
+                <button
+                    key={option.value}
+                    className={cn(
+                        "flex items-center justify-center px-4 py-2 rounded transition-all duration-200 ease-in-out product-body-text-3-semibold",
+                        option.value === activeTab
+                            ? "bg-semantic-bg-primary shadow text-semantic-fg-primary"
+                            : "bg-transparent text-semantic-fg-disabled hover:bg-semantic-bg-line"
+                    )}
+                    onClick={() => setActiveTab(option.value as "activity" | "cost")}
+                >
+                    {option.label}
+                </button>
+            ))}
         </div>
     );
 };
