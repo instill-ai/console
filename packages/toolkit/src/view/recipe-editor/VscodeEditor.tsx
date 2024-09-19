@@ -727,6 +727,10 @@ export const VscodeEditor = () => {
 
       // If the last character typed is a period then we need to look at member objects of the obj object
       const isMember = activeTyping?.charAt(activeTyping.length - 1) == ".";
+      const referenceRegex = /\${/g;
+      const isReference = activeTyping
+        ? referenceRegex.test(activeTyping)
+        : false;
 
       if (!activeTyping && !isSpace) {
         return {
@@ -790,7 +794,9 @@ export const VscodeEditor = () => {
         pipeline.isSuccess &&
         smallestComponentKeyLineNumberMap &&
         smallestComponentTopLevelKeyLineNumberMap &&
-        smallestComponentTopLevelKeyLineNumberMap.key === "input"
+        smallestComponentTopLevelKeyLineNumberMap.key === "input" &&
+        !isMember &&
+        !isReference
       ) {
         const autoCompletions = getComponentInputAutocompletions({
           monaco,
@@ -811,7 +817,9 @@ export const VscodeEditor = () => {
       if (
         smallestTopLevelKeyLineNumberMap &&
         smallestTopLevelKeyLineNumberMap.key === "variable" &&
-        charactersBeforeCursor.includes("instill-format:")
+        charactersBeforeCursor.includes("instill-format:") &&
+        !isMember &&
+        !isReference
       ) {
         const autocomletions = getComponentVariableAutocompletions({
           monaco,
@@ -906,11 +914,6 @@ export const VscodeEditor = () => {
           suggestions: autocomletions,
         };
       }
-
-      const referenceRegex = /\${/g;
-      const isReference = activeTyping
-        ? referenceRegex.test(activeTyping)
-        : false;
 
       // [HINT component key]
       if (isReference) {
