@@ -2,15 +2,15 @@ import { Button, Dialog, Icons } from "@instill-ai/design-system";
 
 export type CatalogLimitNotificationProps = {
   isOpen: boolean;
-  onClose: () => void;
+  setIsOpen: (isOpen: boolean) => void;
 };
 
 export const CatalogLimitNotification = ({
   isOpen,
-  onClose,
+  setIsOpen,
 }: CatalogLimitNotificationProps) => {
   return (
-    <Dialog.Root open={isOpen} onOpenChange={onClose}>
+    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Content className="!w-[400px]">
         <div className="flex flex-col gap-y-6">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-semantic-warning-bg">
@@ -27,7 +27,7 @@ export const CatalogLimitNotification = ({
           </div>
           <div className="flex flex-row justify-end">
             <Button
-              onClick={onClose}
+              onClick={() => setIsOpen(false)}
               variant="primary"
               size="lg"
               className="!px-2.5"
