@@ -1,9 +1,7 @@
 "use client";
 
 import * as React from "react";
-
 import { SelectOption } from "@instill-ai/design-system";
-
 import {
   DashboardAvailableTimeframe,
   GeneralAppPageProp,
@@ -17,32 +15,31 @@ import {
   usePipelineTriggerMetric,
   useRouteInfo,
 } from "../../lib";
-import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
-import { FilterByDay } from "./FilterByDay";
-import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
-import { ModelsTriggerCountsLineChart } from "./ModelsTriggerCountsLineChart";
-import { TotalCreditCostChart } from "./TotalCreditCostChart";
-import { TotalCreditTrendChart } from "./TotalCreditTrendChart";
+// import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
+// import { FilterByDay } from "./FilterByDay";
+// import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
+// import { ModelsTriggerCountsLineChart } from "./ModelsTriggerCountsLineChart";
+// import { TotalCreditCostChart } from "./TotalCreditCostChart";
+// import { TotalCreditTrendChart } from "./TotalCreditTrendChart";
+import { UsageSwitch } from "./UsageSwitch";
+import { ActivityTab } from "./ActivityTab";
+import { CostTab } from "./CostTab";
 
 export type DashboardPipelineListPageMainViewProps = GeneralAppPageProp;
 
-export const DashboardPipelineListPageMainView = (
-  props: DashboardPipelineListPageMainViewProps,
-) => {
-  const { accessToken, enableQuery, router } = props;
-
-  /* -------------------------------------------------------------------------
-   * Get the pipeline definition and static state for fields
-   * -----------------------------------------------------------------------*/
-  const [selectedTimeOption, setSelectedTimeOption] =
-    React.useState<SelectOption>({
-      label: "Today",
-      value: "24h",
-    });
+export const DashboardPipelineListPageMainView = ({
+  accessToken,
+  enableQuery,
+  router,
+}: DashboardPipelineListPageMainViewProps) => {
+  const [selectedTimeOption, setSelectedTimeOption] = React.useState<SelectOption>({
+    label: "Today",
+    value: "24h",
+  });
 
   const [queryString, setQueryString] = React.useState<Nullable<string>>(null);
-  const [queryStringPrevious, setQueryStringPrevious] =
-    React.useState<Nullable<string>>(null);
+  const [queryStringPrevious, setQueryStringPrevious] = React.useState<Nullable<string>>(null);
+  const [activeTab, setActiveTab] = React.useState<"activity" | "cost">("activity");
 
   const routeInfo = useRouteInfo();
 
@@ -56,17 +53,13 @@ export const DashboardPipelineListPageMainView = (
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(
-        selectedTimeOption.value === "24h"
-          ? "todayStart"
-          : selectedTimeOption.value,
+        selectedTimeOption.value === "24h" ? "todayStart" : selectedTimeOption.value
       );
       const stop = getTimeInRFC3339Format(
-        selectedTimeOption?.value === "1d" ? "todayStart" : "now",
+        selectedTimeOption?.value === "1d" ? "todayStart" : "now"
       );
       const previousTime = getTimeInRFC3339Format(
-        getPreviousTimeframe(
-          selectedTimeOption.value as DashboardAvailableTimeframe,
-        ),
+        getPreviousTimeframe(selectedTimeOption.value as DashboardAvailableTimeframe)
       );
 
       queryParams += ` AND start='${start}' AND stop='${stop}'`;
@@ -75,11 +68,7 @@ export const DashboardPipelineListPageMainView = (
 
     setQueryString(queryParams);
     setQueryStringPrevious(queryParamsPrevious);
-  }, [selectedTimeOption, routeInfo.isSuccess, routeInfo.data.namespaceName]);
-
-  /* -------------------------------------------------------------------------
-   * Query pipeline and triggers data
-   * -----------------------------------------------------------------------*/
+  }, [selectedTimeOption, routeInfo.isSuccess, routeInfo.data?.namespaceName]);
 
   const triggeredPipelines = usePipelineTriggerMetric({
     enabled: enableQuery && !!queryString,
@@ -98,8 +87,6 @@ export const DashboardPipelineListPageMainView = (
     filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,
   });
-
-  // Guard this page
 
   React.useEffect(() => {
     if (
@@ -121,11 +108,9 @@ export const DashboardPipelineListPageMainView = (
       return [];
     }
 
-    const chartList = pipelinesChart.data.map((pipeline) => ({
+    return pipelinesChart.data.map((pipeline) => ({
       ...pipeline,
     }));
-
-    return chartList;
   }, [pipelinesChart.data, pipelinesChart.isSuccess]);
 
   const triggeredPipelineList = React.useMemo<TriggeredPipeline[]>(() => {
@@ -133,11 +118,9 @@ export const DashboardPipelineListPageMainView = (
       return [];
     }
 
-    const tableList = triggeredPipelines.data.map((pipeline) => ({
+    return triggeredPipelines.data.map((pipeline) => ({
       ...pipeline,
     }));
-
-    return tableList;
   }, [triggeredPipelines]);
 
   const pipelineTriggersSummary = React.useMemo(() => {
@@ -146,14 +129,14 @@ export const DashboardPipelineListPageMainView = (
     }
 
     const triggeredPipelineIdList = triggeredPipelineList.map(
-      (e) => e.pipelineId,
+      (e) => e.pipelineId
     );
 
     return getPipelineTriggersSummary(
       triggeredPipelineList,
       previoustriggeredPipelines.data.filter((trigger) =>
-        triggeredPipelineIdList.includes(trigger.pipelineId),
-      ),
+        triggeredPipelineIdList.includes(trigger.pipelineId)
+      )
     );
   }, [
     previoustriggeredPipelines.isSuccess,
@@ -161,89 +144,27 @@ export const DashboardPipelineListPageMainView = (
     triggeredPipelineList,
   ]);
 
-  /* -------------------------------------------------------------------------
-   * Render
-   * -----------------------------------------------------------------------*/
-
   return (
     <div className="flex flex-col">
-      <div className="flex items-stretch space-x-4">
-
-        {/* Filter for graph */}
-
-        <div className="w-1/2 self-end">
-          <div className="flex flex-col space-y-8">
-            <div className="my-1">
-              <FilterByDay
-                refetch={() => {
-                  pipelinesChart.refetch();
-                  triggeredPipelines.refetch();
-                }}
-                selectedTimeOption={selectedTimeOption}
-                setSelectedTimeOption={setSelectedTimeOption}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex gap-5 w-full">
-        {/* Pipeline Chart */}
-
-        <div className="mb-8 w-full">
-          <PipelineTriggerCountsLineChart
-            isLoading={pipelinesChart.isLoading}
-            pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
-            selectedTimeOption={selectedTimeOption}
-            pipelineTriggersSummary={pipelineTriggersSummary}
-          />
-        </div>
-
-        {/* Model Chart */}
-
-        <div className="mb-8 w-full">
-          <ModelsTriggerCountsLineChart
-            isLoading={pipelinesChart.isLoading}
-            pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
-            selectedTimeOption={selectedTimeOption}
-            pipelineTriggersSummary={pipelineTriggersSummary}
-          />
-        </div>
-      </div>
-
-      <div className="flex gap-5 w-full">
-        {/* Total Credit Cost Chart */}
-        <div className="mb-8 w-full">
-          <TotalCreditCostChart
-            isLoading={pipelinesChart.isLoading}
-            pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
-            selectedTimeOption={selectedTimeOption}
-            pipelineTriggersSummary={pipelineTriggersSummary}
-          />
-        </div>
-
-        {/* Total Credit Trend Chart */}
-        <div className="mb-8 w-full">
-          <TotalCreditTrendChart
-            isLoading={pipelinesChart.isLoading}
-            pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
-            selectedTimeOption={selectedTimeOption}
-            pipelineTriggersSummary={pipelineTriggersSummary}
-          />
-        </div>
-      </div>
-
-      {/* Pipeline Table */}
-
-      <div className="my-4">
-        <DashboardPipelinesTable
-          pipelineTriggerCounts={
-            triggeredPipelines.data ? triggeredPipelineList : []
-          }
-          isError={triggeredPipelines.isError}
-          isLoading={triggeredPipelines.isLoading}
+      <h1 className="text-2xl font-bold mb-4">Usage</h1>
+      <UsageSwitch activeTab={activeTab} setActiveTab={setActiveTab} />
+      {activeTab === "activity" ? (
+        <ActivityTab
+          pipelinesChart={pipelinesChart}
+          pipelinesChartList={pipelinesChartList}
+          selectedTimeOption={selectedTimeOption}
+          setSelectedTimeOption={setSelectedTimeOption}
+          pipelineTriggersSummary={pipelineTriggersSummary}
         />
-      </div>
+      ) : (
+        <CostTab
+          pipelinesChart={pipelinesChart}
+          pipelinesChartList={pipelinesChartList}
+          selectedTimeOption={selectedTimeOption}
+          setSelectedTimeOption={setSelectedTimeOption}
+          pipelineTriggersSummary={pipelineTriggersSummary}
+        />
+      )}
     </div>
-  )
-}
+  );
+};
