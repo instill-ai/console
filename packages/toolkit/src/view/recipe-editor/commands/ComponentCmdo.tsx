@@ -258,12 +258,12 @@ export const ComponentCmdo = () => {
     // We need this setTimeout to correctly focus the editor after the edit
     setTimeout(() => {
       editorRef.focus();
-      onDialogClose();
       updateOpenComponentCmdo(() => false);
     }, 100);
   }
 
   function onDialogClose() {
+    console.log("onDialogClose");
     setSelectedComponentDefinition(null);
     setSelectedTaskName(null);
     setSelectedComponentDefaultValue(null);
@@ -383,8 +383,13 @@ export const ComponentCmdo = () => {
 
     setSelectedComponentDefaultValue(doc);
   }
+
+  // Since we will open or close the dialog from outside of the component,
+  // so there has no clear action when we need to initialize the dialog state
+  // we will use this hook to reset the dialog state when the dialog is closed
   React.useEffect(() => {
     if (!openComponentCmdo) {
+      onDialogClose();
       return;
     }
 
@@ -403,10 +408,6 @@ export const ComponentCmdo = () => {
     <Dialog.Root
       open={openComponentCmdo}
       onOpenChange={(open) => {
-        if (!open) {
-          onDialogClose();
-        }
-
         updateOpenComponentCmdo(() => open);
       }}
     >
@@ -447,7 +448,6 @@ export const ComponentCmdo = () => {
             </div>
             <button
               onClick={() => {
-                onDialogClose();
                 updateOpenComponentCmdo(() => false);
               }}
               className="p-3 my-auto border border-semantic-bg-line bg-semantic-bg-primary shadow rounded-[10px] hover:bg-semantic-bg-base-bg"
