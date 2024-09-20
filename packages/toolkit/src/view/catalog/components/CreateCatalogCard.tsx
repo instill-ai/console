@@ -28,7 +28,6 @@ type CreateCatalogCardProps = {
   ) => Promise<void>;
   onCloneCatalog: (catalog: Catalog, newNamespaceId: string) => Promise<void>;
   onDeleteCatalog: (catalog: Catalog) => Promise<void>;
-  disabled?: boolean;
 };
 
 const selector = (store: InstillStore) => ({
@@ -43,7 +42,6 @@ export const CreateCatalogCard = ({
   onUpdateCatalog,
   onCloneCatalog,
   onDeleteCatalog,
-  disabled = false,
 }: CreateCatalogCardProps) => {
   const [deleteDialogIsOpen, setDeleteDialogIsOpen] = React.useState(false);
   const [editDialogIsOpen, setEditDialogIsOpen] = React.useState(false);
@@ -177,7 +175,6 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
                   onDelete={handleDelete}
                   onEdit={handleEdit}
                   onClone={handleClone}
-                  disabled={disabled}
                   isOpen={isMenuOpen}
                   setIsOpen={setIsMenuOpen}
                 />

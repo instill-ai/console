@@ -11,7 +11,6 @@ type CatalogCardMenuProps = {
   onDelete: (e: React.MouseEvent) => void;
   onEdit: (e: React.MouseEvent) => void;
   onClone: (e: React.MouseEvent) => void;
-  disabled: boolean;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 };
@@ -20,7 +19,6 @@ export const CatalogCardMenu = ({
   onDelete,
   onEdit,
   onClone,
-  disabled,
   isOpen,
   setIsOpen,
 }: CatalogCardMenuProps) => {
@@ -46,7 +44,6 @@ export const CatalogCardMenu = ({
           <DropdownMenu.Item
             onClick={onClone}
             className="!px-4 !py-2.5 !text-semantic-fg-secondary product-body-text-4-medium"
-            disabled={disabled}
           >
             <Icons.Copy07 className="mr-2 h-4 w-4 stroke-semantic-fg-secondary" />
             Clone

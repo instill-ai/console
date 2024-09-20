@@ -262,7 +262,6 @@ export const CatalogTab = ({
               onUpdateCatalog={handleUpdateCatalog}
               onCloneCatalog={handleCloneCatalog}
               onDeleteCatalog={onDeleteCatalog}
-              disabled={hasReachedLimit}
             />
           ))}
         </div>

@@ -15,6 +15,7 @@ export type Catalog = {
   totalFiles: number;
   totalTokens: number;
   usedStorage: number;
+  ownerId: string;
 };
 
 export type FileSnippet = {
