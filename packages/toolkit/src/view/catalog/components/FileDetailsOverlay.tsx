@@ -149,7 +149,7 @@ const FileDetailsOverlay = ({
               />
             </div>
           </div>
-            <Dialog.Close />
+          <Dialog.Close />
         </div>
         <ScrollArea.Root className="flex-grow overflow-hidden">
           {isLoadingContent ? (
