@@ -1,30 +1,32 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
-import { Nullable } from "../../../type";
-import { fetchUserModel, getUseUserModelQueryKey } from "./server";
+import { fetchNamespaceModel, getUseNamespaceModelQueryKey } from "./server";
 
-export function useUserModel({
-  modelName,
+export function useNamespaceModel({
+  namespaceModelName,
   accessToken,
   enabled,
   retry,
 }: {
-  modelName: Nullable<string>;
+  namespaceModelName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
   retry?: false | number;
 }) {
   let enableQuery = false;
 
-  if (modelName && enabled) {
+  if (namespaceModelName && enabled) {
     enableQuery = true;
   }
 
   return useQuery({
-    queryKey: getUseUserModelQueryKey(modelName),
+    queryKey: getUseNamespaceModelQueryKey(namespaceModelName),
     queryFn: async () => {
-      return await fetchUserModel({
-        modelName,
+      return await fetchNamespaceModel({
+        namespaceModelName,
         accessToken,
       });
     },
