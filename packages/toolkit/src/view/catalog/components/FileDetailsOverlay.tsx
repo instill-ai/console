@@ -1,17 +1,22 @@
 "use client";
 
 import * as React from "react";
-import sanitizeHtml from "sanitize-html";
+import { Nullable } from "instill-sdk";
 import Markdown from "markdown-to-jsx";
+import sanitizeHtml from "sanitize-html";
 
-import { Dialog, ScrollArea, Skeleton, Switch } from "@instill-ai/design-system";
+import {
+  Dialog,
+  ScrollArea,
+  Skeleton,
+  Switch,
+} from "@instill-ai/design-system";
 
 import {
   useGetFileContent,
   useListChunks,
 } from "../../../lib/react-query-service/catalog";
 import { getFileIcon } from "./lib/helpers";
-import { Nullable } from "instill-sdk";
 
 type FileDetailsOverlayProps = {
   fileUid: string;
