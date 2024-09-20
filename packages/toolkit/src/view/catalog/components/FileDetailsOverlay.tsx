@@ -167,9 +167,9 @@ const FileDetailsOverlay = ({
                   <Markdown>{sanitizedHtmlText}</Markdown>
                 </div>
               ) : (
-                <pre className="whitespace-pre-wrap break-words text-sm w-full">
-                  {sanitizedHtmlText}
-                </pre>
+                <article className="prose whitespace-pre-wrap">
+                  <div dangerouslySetInnerHTML={{ __html: sanitizedHtmlText }} />
+                </article>
               )}
             </div>
           )}
