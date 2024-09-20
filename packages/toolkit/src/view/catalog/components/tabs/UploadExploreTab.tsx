@@ -8,9 +8,9 @@ import * as z from "zod";
 
 import {
   Button,
+  cn,
   Form,
   Icons,
-  Input,
   Nullable,
   Separator,
   toast,
@@ -35,13 +35,18 @@ import {
   useUploadCatalogFile,
 } from "../../../../lib/react-query-service/catalog";
 import { Catalog } from "../../../../lib/react-query-service/catalog/types";
-import { FILE_ERROR_TIMEOUT, MAX_FILE_NAME_LENGTH } from "../lib/constant";
+import { DragAndDropUpload } from "../DragAndDropUpload";
+import { FILE_ERROR_TIMEOUT } from "../lib/constant";
 import {
   getFileType,
   getPlanMaxFileSize,
   getPlanStorageLimit,
+  isFile,
+  readFileAsBase64,
   shouldShowStorageWarning,
+  validateFile,
 } from "../lib/helpers";
+import { useUploadWithProgress } from "../lib/uploadFileWithProgress";
 import {
   DuplicateFileNotification,
   FileSizeNotification,
@@ -51,10 +56,6 @@ import {
   InsufficientStorageNotification,
   UpgradePlanLink,
 } from "../notifications";
-
-const isFile = (value: unknown): value is File => {
-  return typeof window !== "undefined" && value instanceof File;
-};
 
 const UploadExploreFormSchema = z.object({
   files: z.array(
@@ -113,6 +114,8 @@ export const UploadExploreTab = ({
 }: UploadExploreTabProps) => {
   const queryClient = useQueryClient();
   const { amplitudeIsInit } = useAmplitudeCtx();
+  const { uploadFile, uploadProgress, setUploadProgress } =
+    useUploadWithProgress();
 
   const form = useForm<UploadExploreFormData>({
     resolver: zodResolver(UploadExploreFormSchema),
@@ -143,8 +146,6 @@ export const UploadExploreTab = ({
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
   const [tooLongFileName, setTooLongFileName] = React.useState<string>("");
   const [isProcessing, setIsProcessing] = React.useState(false);
-  const [isDragging, setIsDragging] = React.useState(false);
-  const [processingProgress, setProcessingProgress] = React.useState(0);
   const [processingFileIndex, setProcessingFileIndex] =
     React.useState<Nullable<number>>(null);
 
@@ -201,53 +202,48 @@ export const UploadExploreTab = ({
   });
 
   const handleFileUpload = async (file: File) => {
-    if (file.size > planMaxFileSize) {
-      setIncorrectFileName(file.name);
-      setShowFileTooLargeMessage(true);
-      fileTooLargeTimeoutRef.current = setTimeout(() => {
-        setShowFileTooLargeMessage(false);
-      }, FILE_ERROR_TIMEOUT);
-      return;
-    }
+    const validationResult = validateFile(
+      file,
+      planMaxFileSize,
+      remainingStorageSpace,
+      existingFiles.data || [],
+    );
 
-    if (file.size > remainingStorageSpace) {
-      setIncorrectFileName(file.name);
-      setShowInsufficientStorageMessage(true);
-      insufficientStorageTimeoutRef.current = setTimeout(() => {
-        setShowInsufficientStorageMessage(false);
-      }, FILE_ERROR_TIMEOUT);
-      return;
-    }
-
-    const fileType = getFileType(file);
-    if (fileType === "FILE_TYPE_UNSPECIFIED") {
-      setIncorrectFileName(file.name);
-      setShowUnsupportedFileMessage(true);
-      unsupportedFileTypeTimeoutRef.current = setTimeout(() => {
-        setShowUnsupportedFileMessage(false);
-      }, FILE_ERROR_TIMEOUT);
-      return;
-    }
-
-    if (file.name.length > MAX_FILE_NAME_LENGTH) {
-      setTooLongFileName(file.name);
-      setShowFileTooLongMessage(true);
-      return;
-    }
-
-    const isDuplicate =
-      existingFiles.isSuccess && existingFiles.data
-        ? existingFiles.data.some(
-            (existingFile) => existingFile.name === file.name,
-          )
-        : false;
-
-    if (isDuplicate) {
-      setDuplicateFileName(file.name);
-      setShowDuplicateFileMessage(true);
-      duplicateFileTimeoutRef.current = setTimeout(() => {
-        setShowDuplicateFileMessage(false);
-      }, FILE_ERROR_TIMEOUT);
+    if (!validationResult.isValid) {
+      switch (validationResult.error) {
+        case "FILE_TOO_LARGE":
+          setIncorrectFileName(file.name);
+          setShowFileTooLargeMessage(true);
+          fileTooLargeTimeoutRef.current = setTimeout(() => {
+            setShowFileTooLargeMessage(false);
+          }, FILE_ERROR_TIMEOUT);
+          break;
+        case "INSUFFICIENT_STORAGE":
+          setIncorrectFileName(file.name);
+          setShowInsufficientStorageMessage(true);
+          insufficientStorageTimeoutRef.current = setTimeout(() => {
+            setShowInsufficientStorageMessage(false);
+          }, FILE_ERROR_TIMEOUT);
+          break;
+        case "UNSUPPORTED_FILE_TYPE":
+          setIncorrectFileName(file.name);
+          setShowUnsupportedFileMessage(true);
+          unsupportedFileTypeTimeoutRef.current = setTimeout(() => {
+            setShowUnsupportedFileMessage(false);
+          }, FILE_ERROR_TIMEOUT);
+          break;
+        case "FILE_NAME_TOO_LONG":
+          setTooLongFileName(file.name);
+          setShowFileTooLongMessage(true);
+          break;
+        case "DUPLICATE_FILE":
+          setDuplicateFileName(file.name);
+          setShowDuplicateFileMessage(true);
+          duplicateFileTimeoutRef.current = setTimeout(() => {
+            setShowDuplicateFileMessage(false);
+          }, FILE_ERROR_TIMEOUT);
+          break;
+      }
       return;
     }
 
@@ -304,21 +300,10 @@ export const UploadExploreTab = ({
         if (!isFile(file) || processedFiles.has(file.name)) continue;
 
         setProcessingFileIndex(i);
-        setProcessingProgress(((i + 1) / files.length) * 100);
-
-        const reader = new FileReader();
-        const content = await new Promise<string>((resolve) => {
-          reader.onload = (event) => {
-            if (event.target?.result) {
-              resolve(btoa(event.target.result as string));
-            } else {
-              resolve("");
-            }
-          };
-          reader.readAsBinaryString(file);
-        });
 
         try {
+          const content = await readFileAsBase64(file);
+
           const uploadedFile = await uploadCatalogFile.mutateAsync({
             ownerId: navigationNamespaceAnchor,
             catalogId: catalog.catalogId,
@@ -328,6 +313,13 @@ export const UploadExploreTab = ({
               content,
             },
             accessToken,
+          });
+
+          await uploadFile(file, (progress) => {
+            setUploadProgress((prev) => ({
+              ...prev,
+              [file.name]: progress,
+            }));
           });
 
           await processCatalogFiles.mutateAsync({
@@ -358,7 +350,6 @@ export const UploadExploreTab = ({
         namespaceNames: namespaces.map((namespace) => namespace.name),
         queryClient,
       });
-      setProcessingProgress(100);
       onProcessFile();
       setHasUnsavedChanges(false);
       onTabChange("files");
@@ -377,7 +368,6 @@ export const UploadExploreTab = ({
       });
     } finally {
       setIsProcessing(false);
-      setProcessingProgress(0);
       setProcessingFileIndex(null);
     }
   };
@@ -427,74 +417,10 @@ export const UploadExploreTab = ({
             render={() => (
               <Form.Item className="w-full">
                 <Form.Control>
-                  <div
-                    className={`flex w-full cursor-pointer flex-col items-center justify-center rounded bg-semantic-accent-bg text-semantic-fg-secondary product-body-text-4-regular ${
-                      isDragging
-                        ? "border-semantic-accent-default"
-                        : "border-semantic-bg-line"
-                    } [border-dash-gap:6px] [border-dash:6px] [border-style:dashed] [border-width:2px]`}
-                    onDragEnter={(e) => {
-                      e.preventDefault();
-                      setIsDragging(true);
-                    }}
-                    onDragLeave={(e) => {
-                      e.preventDefault();
-                      if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-                        setIsDragging(false);
-                      }
-                    }}
-                    onDragOver={(e) => {
-                      e.preventDefault();
-                    }}
-                    onDrop={async (e) => {
-                      e.preventDefault();
-                      setIsDragging(false);
-                      const files = Array.from(e.dataTransfer.files);
-                      for (const file of files) {
-                        await handleFileUpload(file);
-                      }
-                    }}
-                  >
-                    <Form.Label
-                      htmlFor="upload-file-field"
-                      className="flex cursor-pointer flex-col items-center justify-center"
-                    >
-                      <div className="flex flex-col items-center justify-center text-semantic-fg-primary product-body-text-4-regular pb-2">
-                        <Icons.Upload01 className="mb-4 mt-10 h-8 w-8 stroke-semantic-fg-secondary" />
-                        <div className="w-full text-center">
-                          <span>Drag-and-drop file, or </span>
-                          <label
-                            htmlFor="upload-file-field"
-                            className="cursor-pointer text-semantic-accent-default"
-                          >
-                            browse computer
-                          </label>
-                          <div className="">
-                            Support TXT, MARKDOWN, PDF, DOCX, DOC, PPTX, PPT,
-                            HTML, XLSX, CSV, XLS
-                          </div>
-                          <div className="">
-                            Max {planMaxFileSize / (1024 * 1024)}MB each
-                          </div>
-                        </div>
-                      </div>
-                    </Form.Label>
-                    <Input.Root className="hidden">
-                      <Input.Core
-                        id="upload-file-field"
-                        type="file"
-                        accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html,.xlsx"
-                        multiple
-                        value={""}
-                        onChange={async (e) => {
-                          const files = Array.from(e.target.files || []);
-                          for (const file of files) {
-                            await handleFileUpload(file);
-                          }
-                        }}
-                      />
-                    </Input.Root>
-                  </div>
+                  <DragAndDropUpload
+                    onFileUpload={handleFileUpload}
+                    planMaxFileSize={planMaxFileSize}
+                  />
                 </Form.Control>
                 <Form.Message />
               </Form.Item>
@@ -517,10 +443,18 @@ export const UploadExploreTab = ({
             </div>
           </div>
           {isProcessing && processingFileIndex === index ? (
-            <Icons.LayersTwo01 className="h-4 w-4 animate-spin stroke-semantic-fg-secondary" />
+            <div className="w-24 h-2 bg-semantic-bg-base-bg rounded-full">
+              <div
+                className="h-full bg-semantic-accent-default rounded-full"
+                style={{ width: `${uploadProgress?.[file.name] ?? 0}%` }}
+              ></div>
+            </div>
           ) : (
             <Icons.X
-              className={`h-4 w-4 ${isProcessing ? "cursor-not-allowed opacity-50" : "cursor-pointer"} stroke-semantic-fg-secondary`}
+              className={cn("h-4 w-4 stroke-semantic-fg-secondary", {
+                "cursor-not-allowed opacity-50": isProcessing,
+                "cursor-pointer": !isProcessing,
+              })}
               onClick={() => !isProcessing && handleRemoveFile(index)}
             />
           )}
@@ -567,19 +501,6 @@ export const UploadExploreTab = ({
         />
       )}
       <div className="flex flex-col items-end">
-        {isProcessing && (
-          <div className="mb-4 w-full">
-            <div className="h-2 w-full bg-gray-200 rounded-full">
-              <div
-                className="h-full bg-semantic-accent-default rounded-full"
-                style={{ width: `${processingProgress}%` }}
-              ></div>
-            </div>
-            <p className="text-right mt-1 text-sm text-gray-600">
-              Processing: {Math.round(processingProgress)}%
-            </p>
-          </div>
-        )}
         <Button
           variant="primary"
           size="lg"

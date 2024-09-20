@@ -9,8 +9,11 @@ import {
 import { Icons } from "@instill-ai/design-system";
 
 import { getInstillAPIClient } from "../../../../lib";
-import { FileStatus } from "../../../../lib/react-query-service/catalog/types";
-import { STORAGE_WARNING_THRESHOLD } from "./constant";
+import {
+  CatalogFile,
+  FileStatus,
+} from "../../../../lib/react-query-service/catalog/types";
+import { MAX_FILE_NAME_LENGTH, STORAGE_WARNING_THRESHOLD } from "./constant";
 
 export const getStatusSortValue = (status: FileStatus): number => {
   const statusOrder: Record<FileStatus, number> = {
@@ -269,4 +272,56 @@ export const formatName = (name: string) => {
   formatted = formatted.replace(/-+$/, "");
 
   return formatted;
+};
+
+export const isFile = (value: unknown): value is File => {
+  return typeof window !== "undefined" && value instanceof File;
+};
+
+export const readFileAsBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        resolve(btoa(reader.result));
+      } else {
+        reject(new Error("Failed to read file as base64"));
+      }
+    };
+    reader.onerror = reject;
+    reader.readAsBinaryString(file);
+  });
+};
+
+export const validateFile = (
+  file: File,
+  planMaxFileSize: number,
+  remainingStorageSpace: number,
+  existingFiles: CatalogFile[],
+) => {
+  if (file.size > planMaxFileSize) {
+    return { isValid: false, error: "FILE_TOO_LARGE" };
+  }
+
+  if (file.size > remainingStorageSpace) {
+    return { isValid: false, error: "INSUFFICIENT_STORAGE" };
+  }
+
+  const fileType = getFileType(file);
+  if (fileType === "FILE_TYPE_UNSPECIFIED") {
+    return { isValid: false, error: "UNSUPPORTED_FILE_TYPE" };
+  }
+
+  if (file.name.length > MAX_FILE_NAME_LENGTH) {
+    return { isValid: false, error: "FILE_NAME_TOO_LONG" };
+  }
+
+  const isDuplicate = existingFiles.some(
+    (existingFile) => existingFile.name === file.name,
+  );
+  if (isDuplicate) {
+    return { isValid: false, error: "DUPLICATE_FILE" };
+  }
+
+  return { isValid: true, error: null };
 };
