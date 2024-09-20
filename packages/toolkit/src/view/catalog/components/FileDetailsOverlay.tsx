@@ -149,7 +149,7 @@ const FileDetailsOverlay = ({
               />
             </div>
           </div>
-          <Dialog.Close />
+            <Dialog.Close />
         </div>
         <ScrollArea.Root className="flex-grow overflow-hidden">
           {isLoadingContent ? (
@@ -165,9 +165,11 @@ const FileDetailsOverlay = ({
                   <Markdown>{sanitizedHtmlText}</Markdown>
                 </div>
               ) : (
-                <pre className="whitespace-pre-wrap break-words text-sm w-full">
-                  {sanitizedHtmlText}
-                </pre>
+                <article className="whitespace-pre-wrap">
+                  <div
+                    dangerouslySetInnerHTML={{ __html: sanitizedHtmlText }}
+                  />
+                </article>
               )}
             </div>
           )}
