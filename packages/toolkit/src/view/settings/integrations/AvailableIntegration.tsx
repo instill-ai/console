@@ -8,6 +8,7 @@ import { Button, Dialog, TabMenu, useToast } from "@instill-ai/design-system";
 
 import {
   InstillStore,
+  toastInstillError,
   useAddIntegrationConnection,
   useInstillStore,
   useIntegration,
@@ -72,25 +73,34 @@ export const AvailableIntegration = ({
 
     setIsProcessing(true);
 
-    await addIntegrationConnection.mutateAsync({
-      payload: {
-        method: props.method,
-        id: props.id,
-        setup: props.payload,
-        integrationId: integration.id,
-        namespaceId,
-      },
-      accessToken,
-    });
+    try {
+      await addIntegrationConnection.mutateAsync({
+        payload: {
+          method: props.method,
+          id: props.id,
+          setup: props.payload,
+          integrationId: integration.id,
+          namespaceId,
+        },
+        accessToken,
+      });
 
-    toast({
-      size: "small",
-      title: `The ${integration.title} integration has been added!`,
-      variant: "alert-success",
-    });
+      setIsConnectDialogOpen(false);
+
+      toast({
+        size: "small",
+        title: `The ${integration.title} integration has been added!`,
+        variant: "alert-success",
+      });
+    } catch (error) {
+      toastInstillError({
+        title: "Something went wrong adding an integration",
+        error,
+        toast,
+      });
+    }
 
     setIsProcessing(false);
-    setIsConnectDialogOpen(false);
   }
 
   return (

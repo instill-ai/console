@@ -24,6 +24,7 @@ import {
 import {
   formatDate,
   InstillStore,
+  toastInstillError,
   useDeleteIntegrationConnection,
   useInstillStore,
   useIntegration,
@@ -157,25 +158,34 @@ export const ExistingConnection = ({
 
     setIsProcessing(true);
 
-    await updateIntegrationConnection.mutateAsync({
-      payload: {
-        namespaceId,
-        connectionId: editConnection.id,
+    try {
+      await updateIntegrationConnection.mutateAsync({
         payload: {
-          setup: props.payload,
+          namespaceId,
+          connectionId: editConnection.id,
+          payload: {
+            setup: props.payload,
+          },
         },
-      },
-      accessToken,
-    });
+        accessToken,
+      });
 
-    toast({
-      size: "small",
-      title: `The ${editConnection.id} connection has been updated!`,
-      variant: "alert-success",
-    });
+      setEditConnection(null);
+
+      toast({
+        size: "small",
+        title: `The ${editConnection.id} connection has been updated!`,
+        variant: "alert-success",
+      });
+    } catch (error) {
+      toastInstillError({
+        title: "Something went wrong adding an integration",
+        error,
+        toast,
+      });
+    }
 
     setIsProcessing(false);
-    setEditConnection(null);
   }
 
   return (
