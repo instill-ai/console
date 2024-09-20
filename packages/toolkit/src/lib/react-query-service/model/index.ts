@@ -19,4 +19,4 @@ export * from "./usePaginatedModelRuns";
 export * from "./useTriggerUserModelVersionAsync";
 export * from "./useModelVersionTriggerResult";
 
-export * from "./use-user-model";
+export * from "./use-namespace-model";
