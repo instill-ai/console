@@ -168,7 +168,9 @@ const FileDetailsOverlay = ({
                 </div>
               ) : (
                 <article className="prose whitespace-pre-wrap">
-                  <div dangerouslySetInnerHTML={{ __html: sanitizedHtmlText }} />
+                  <div
+                    dangerouslySetInnerHTML={{ __html: sanitizedHtmlText }}
+                  />
                 </article>
               )}
             </div>
