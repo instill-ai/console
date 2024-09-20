@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.103.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.103.1...@instill-ai/toolkit-v0.103.2) (2024-09-20)
+
+
+### Bug Fixes
+
+* **editor:** fix broken CMDO when user added component once ([#1487](https://github.com/instill-ai/console/issues/1487)) ([42e1f99](https://github.com/instill-ai/console/commit/42e1f997891ff0e9c460c346ccdfab8877c30657))
+
 ## [0.103.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.103.0...@instill-ai/toolkit-v0.103.1) (2024-09-19)
 
 
