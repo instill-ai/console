@@ -139,8 +139,6 @@ const FileDetailsOverlay = ({
                 {fileType.replace("FILE_TYPE_", "")}
               </div>
             </div>
-          </div>
-          <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               <p className="text-semantic-fg-primary product-body-text-4-medium">
                 Formatted
@@ -150,8 +148,8 @@ const FileDetailsOverlay = ({
                 onCheckedChange={setEnableFormattedText}
               />
             </div>
-            <Dialog.Close />
           </div>
+            <Dialog.Close />
         </div>
         <ScrollArea.Root className="flex-grow overflow-hidden">
           {isLoadingContent ? (
@@ -167,11 +165,9 @@ const FileDetailsOverlay = ({
                   <Markdown>{sanitizedHtmlText}</Markdown>
                 </div>
               ) : (
-                <article className="prose whitespace-pre-wrap">
-                  <div
-                    dangerouslySetInnerHTML={{ __html: sanitizedHtmlText }}
-                  />
-                </article>
+                <pre className="whitespace-pre-wrap break-words text-sm w-full">
+                  {sanitizedHtmlText}
+                </pre>
               )}
             </div>
           )}
