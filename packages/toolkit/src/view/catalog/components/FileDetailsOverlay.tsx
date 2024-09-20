@@ -2,18 +2,20 @@
 
 import * as React from "react";
 import sanitizeHtml from "sanitize-html";
+import Markdown from "markdown-to-jsx";
 
-import { Dialog, ScrollArea, Skeleton } from "@instill-ai/design-system";
+import { Dialog, ScrollArea, Skeleton, Switch } from "@instill-ai/design-system";
 
 import {
   useGetFileContent,
   useListChunks,
 } from "../../../lib/react-query-service/catalog";
 import { getFileIcon } from "./lib/helpers";
+import { Nullable } from "instill-sdk";
 
 type FileDetailsOverlayProps = {
   fileUid: string;
-  accessToken: string | null;
+  accessToken: Nullable<string>;
   onClose: () => void;
   catalogId: string;
   showFullFile: boolean;
@@ -38,6 +40,8 @@ const FileDetailsOverlay = ({
   highlightChunk = false,
   fileType,
 }: FileDetailsOverlayProps) => {
+  const [enableFormattedText, setEnableFormattedText] = React.useState(true);
+
   const { data: fileContent, isLoading: isLoadingContent } = useGetFileContent({
     fileUid,
     catalogId,
@@ -117,17 +121,31 @@ const FileDetailsOverlay = ({
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Content className="flex flex-col h-[90vh] max-w-[40vw]">
-        <div className="flex-shrink-0 mb-3 flex flex-row space-x-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs overflow-hidden">
-            {fileIcon}
-          </div>
-          <div className="flex flex-col min-w-0">
-            <Dialog.Title className="truncate product-headings-heading-6 text-semantic-fg-disabled">
-              {fileName}
-            </Dialog.Title>
-            <div className="truncate product-headings-heading-5 text-semantic-fg-primary">
-              {fileType.replace("FILE_TYPE_", "")}
+        <div className="flex-shrink-0 mb-3 flex flex-row items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs overflow-hidden">
+              {fileIcon}
             </div>
+            <div className="flex flex-col min-w-0">
+              <Dialog.Title className="truncate product-headings-heading-6 text-semantic-fg-disabled">
+                {fileName}
+              </Dialog.Title>
+              <div className="truncate product-headings-heading-5 text-semantic-fg-primary">
+                {fileType.replace("FILE_TYPE_", "")}
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <p className="text-semantic-fg-primary product-body-text-4-medium">
+                Formatted
+              </p>
+              <Switch
+                checked={enableFormattedText}
+                onCheckedChange={setEnableFormattedText}
+              />
+            </div>
+            <Dialog.Close />
           </div>
         </div>
         <ScrollArea.Root className="flex-grow overflow-hidden">
@@ -138,12 +156,19 @@ const FileDetailsOverlay = ({
               <Skeleton className="h-4 w-3/4" />
             </div>
           ) : (
-            <article className="prose whitespace-pre-wrap">
-              <div dangerouslySetInnerHTML={{ __html: sanitizedHtmlText }} />
-            </article>
+            <div className="w-full">
+              {enableFormattedText ? (
+                <div className="prose max-w-none">
+                  <Markdown>{sanitizedHtmlText}</Markdown>
+                </div>
+              ) : (
+                <pre className="whitespace-pre-wrap break-words text-sm w-full">
+                  {sanitizedHtmlText}
+                </pre>
+              )}
+            </div>
           )}
         </ScrollArea.Root>
-        <Dialog.Close />
       </Dialog.Content>
     </Dialog.Root>
   );
