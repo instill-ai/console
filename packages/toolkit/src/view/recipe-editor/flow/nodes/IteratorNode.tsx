@@ -225,6 +225,7 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
       errorState={errorState}
       handleOpenDocumentation={handleOpenDocumentation}
       handleOpenComponentOutput={handleOpenComponentOutput}
+      disabledOpenComponentOutputButton={true}
       handleClick={handleClick}
       hasTargetEdges={hasTargetEdges}
       hasSourceEdges={hasSourceEdges}

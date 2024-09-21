@@ -1,11 +1,13 @@
 "use client";
 
+import * as React from "react";
 import { Position } from "reactflow";
 
 import { Button, cn, Icons, Tooltip } from "@instill-ai/design-system";
 
 import { ImageWithFallback, LoadingSpin } from "../../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
+import { EditorButtonTooltipWrapper } from "../../EditorButtonTooltipWrapper";
 import { CustomHandle } from "./CustomHandle";
 
 export type ComponentErrorState =
@@ -35,6 +37,8 @@ export const NodeBase = ({
   nodeDescription,
   definitionId,
   definitionTitle,
+  disabledOpenDocumentationButton,
+  disabledOpenComponentOutputButton,
 }: {
   id: string;
   isSelected: boolean;
@@ -42,7 +46,9 @@ export const NodeBase = ({
   isCompleted: boolean;
   errorState: ComponentErrorState;
   handleOpenDocumentation: () => void;
+  disabledOpenDocumentationButton?: boolean;
   handleOpenComponentOutput: () => void;
+  disabledOpenComponentOutputButton?: boolean;
   handleClick: () => void;
   hasTargetEdges: boolean;
   hasSourceEdges: boolean;
@@ -51,6 +57,19 @@ export const NodeBase = ({
   definitionTitle?: string;
 }) => {
   const { flowIsUnderDemoMode } = useInstillStore(useShallow(selector));
+
+  const isDisabledOpenDocumentationButton = React.useMemo(() => {
+    return disabledOpenDocumentationButton
+      ? true
+      : !isSelected || flowIsUnderDemoMode;
+  }, [disabledOpenDocumentationButton, isSelected, flowIsUnderDemoMode]);
+
+  const isDisabledOpenComponentOutputButton = React.useMemo(() => {
+    return disabledOpenComponentOutputButton
+      ? true
+      : !isSelected || flowIsUnderDemoMode;
+  }, [disabledOpenComponentOutputButton, isSelected, flowIsUnderDemoMode]);
+
   return (
     <div className="relative nowheel">
       <div
@@ -67,22 +86,33 @@ export const NodeBase = ({
           >
             <Icons.Play className="w-4 h-4 stroke-semantic-fg-primary" />
           </Button>
-          <Button
-            disabled={!isSelected || flowIsUnderDemoMode}
-            variant="tertiaryGrey"
-            onClick={handleOpenComponentOutput}
-            className="!px-2"
-          >
-            <Icons.Trash01 className="w-4 h-4 stroke-semantic-fg-primary" />
-          </Button>
-          <Button
-            disabled={!isSelected || flowIsUnderDemoMode}
-            onClick={handleOpenDocumentation}
-            variant="tertiaryGrey"
-            className={cn("!px-2", flowIsUnderDemoMode ? "opacity-0" : "")}
-          >
-            <Icons.Logout04 className="w-4 h-4 stroke-semantic-fg-primary" />
-          </Button>
+          <EditorButtonTooltipWrapper tooltipContent="View component output">
+            <Button
+              disabled={isDisabledOpenComponentOutputButton}
+              variant="tertiaryGrey"
+              onClick={handleOpenComponentOutput}
+              className={cn(
+                "!px-2",
+                isDisabledOpenComponentOutputButton ? "opacity-0" : "",
+              )}
+            >
+              <Icons.Logout04 className="w-4 h-4 stroke-semantic-fg-primary" />
+            </Button>
+          </EditorButtonTooltipWrapper>
+
+          <EditorButtonTooltipWrapper tooltipContent="Open documentation">
+            <Button
+              disabled={isDisabledOpenDocumentationButton}
+              onClick={handleOpenDocumentation}
+              variant="tertiaryGrey"
+              className={cn(
+                "!px-2",
+                isDisabledOpenDocumentationButton ? "opacity-0" : "",
+              )}
+            >
+              <Icons.File05 className="w-4 h-4 stroke-semantic-fg-primary" />
+            </Button>
+          </EditorButtonTooltipWrapper>
         </div>
       </div>
       <div

@@ -29,7 +29,7 @@ export const ComponentOutputView = ({
       return null;
     }
 
-    const output = triggerPipelineStreamMap.component[id];
+    const output = triggerPipelineStreamMap.component[id]?.output;
 
     return output ?? null;
   }, [triggerPipelineStreamMap]);
