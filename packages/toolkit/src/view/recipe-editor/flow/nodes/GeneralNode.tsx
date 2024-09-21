@@ -12,7 +12,11 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../../../lib";
-import { GeneralNodeData } from "../../../pipeline-builder";
+import {
+  GeneralNodeData,
+  getGeneralComponentInOutputSchema,
+} from "../../../pipeline-builder";
+import { ComponentOutputView } from "./ComponentOutputView";
 import { NodeBase } from "./NodeBase";
 
 const selector = (store: InstillStore) => ({
@@ -254,6 +258,31 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     return false;
   }, [triggerPipelineStreamMap, id]);
 
+  const handleOpenComponentOutput = React.useCallback(() => {
+    const viewId = `${id}-output-view`;
+    const viewTitle = `${data.definition?.title} Output`;
+
+    const { outputSchema } = getGeneralComponentInOutputSchema(data, data.task);
+
+    updateEditorMultiScreenModel((prev) => ({
+      ...prev,
+      bottomRight: {
+        ...prev.bottomRight,
+        views: [
+          ...prev.bottomRight.views.filter((view) => view.id !== viewId),
+          {
+            id: viewId,
+            type: "output",
+            view: <ComponentOutputView id={id} outputSchema={outputSchema} />,
+            title: viewTitle,
+            closeable: true,
+          },
+        ],
+        currentViewId: viewId,
+      },
+    }));
+  }, [id, data]);
+
   return (
     <NodeBase
       id={id}
@@ -262,6 +291,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
       isCompleted={isCompleted}
       errorState={errorState}
       handleOpenDocumentation={handleOpenDocumentation}
+      handleOpenComponentOutput={handleOpenComponentOutput}
       handleClick={handleClick}
       hasTargetEdges={hasTargetEdges}
       hasSourceEdges={hasSourceEdges}
