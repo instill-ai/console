@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.57.2-beta](https://github.com/instill-ai/console/compare/v0.57.1-beta...v0.57.2-beta) (2024-09-21)
+
+
+### Bug Fixes
+
+* replace readme with description in both model and pipeline page metadata ([#1489](https://github.com/instill-ai/console/issues/1489)) ([6cd643f](https://github.com/instill-ai/console/commit/6cd643f24b11a27874966c3f094c242a756f9c4e))
+
 ## [0.57.1-beta](https://github.com/instill-ai/console/compare/v0.57.0-beta...v0.57.1-beta) (2024-09-19)
 
 
