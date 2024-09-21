@@ -1,5 +1,7 @@
 "use client";
 
+import * as React from "react";
+
 import { RecipeEditorView } from "@instill-ai/toolkit";
 
 import { useAppAccessToken } from "~/lib/use-app-access-token";

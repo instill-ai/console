@@ -39,35 +39,35 @@ export const NodeBase = ({
   definitionTitle,
   disabledOpenDocumentationButton,
   disabledOpenComponentOutputButton,
+  additionalControlButton,
+  children,
 }: {
   id: string;
   isSelected: boolean;
-  isProcessing: boolean;
-  isCompleted: boolean;
-  errorState: ComponentErrorState;
+  isProcessing?: boolean;
+  isCompleted?: boolean;
+  errorState?: ComponentErrorState;
   handleOpenDocumentation: () => void;
   disabledOpenDocumentationButton?: boolean;
   handleOpenComponentOutput: () => void;
   disabledOpenComponentOutputButton?: boolean;
+  additionalControlButton?: React.ReactNode;
   handleClick: () => void;
   hasTargetEdges: boolean;
   hasSourceEdges: boolean;
   nodeDescription?: string;
   definitionId?: string;
   definitionTitle?: string;
+  children?: React.ReactNode;
 }) => {
   const { flowIsUnderDemoMode } = useInstillStore(useShallow(selector));
 
   const isDisabledOpenDocumentationButton = React.useMemo(() => {
-    return disabledOpenDocumentationButton
-      ? true
-      : !isSelected || flowIsUnderDemoMode;
+    return disabledOpenDocumentationButton ? true : flowIsUnderDemoMode;
   }, [disabledOpenDocumentationButton, isSelected, flowIsUnderDemoMode]);
 
   const isDisabledOpenComponentOutputButton = React.useMemo(() => {
-    return disabledOpenComponentOutputButton
-      ? true
-      : !isSelected || flowIsUnderDemoMode;
+    return disabledOpenComponentOutputButton ? true : flowIsUnderDemoMode;
   }, [disabledOpenComponentOutputButton, isSelected, flowIsUnderDemoMode]);
 
   return (
@@ -78,7 +78,7 @@ export const NodeBase = ({
           isSelected ? "opacity-100" : "opacity-0",
         )}
       >
-        <div className="flex flex-row mx-auto gap-x-2.5">
+        <div className="flex flex-row-reverse mx-auto gap-x-2.5">
           <Button
             disabled={true}
             variant="tertiaryGrey"
@@ -86,33 +86,31 @@ export const NodeBase = ({
           >
             <Icons.Play className="w-4 h-4 stroke-semantic-fg-primary" />
           </Button>
-          <EditorButtonTooltipWrapper tooltipContent="View component output">
-            <Button
-              disabled={isDisabledOpenComponentOutputButton}
-              variant="tertiaryGrey"
-              onClick={handleOpenComponentOutput}
-              className={cn(
-                "!px-2",
-                isDisabledOpenComponentOutputButton ? "opacity-0" : "",
-              )}
-            >
-              <Icons.Logout04 className="w-4 h-4 stroke-semantic-fg-primary" />
-            </Button>
-          </EditorButtonTooltipWrapper>
+          {isDisabledOpenComponentOutputButton ? null : (
+            <EditorButtonTooltipWrapper tooltipContent="View component output">
+              <Button
+                disabled={isDisabledOpenComponentOutputButton}
+                variant="tertiaryGrey"
+                onClick={handleOpenComponentOutput}
+                className={cn("!px-2", isSelected ? "" : "opacity-0")}
+              >
+                <Icons.Logout04 className="w-4 h-4 stroke-semantic-fg-primary" />
+              </Button>
+            </EditorButtonTooltipWrapper>
+          )}
 
-          <EditorButtonTooltipWrapper tooltipContent="Open documentation">
-            <Button
-              disabled={isDisabledOpenDocumentationButton}
-              onClick={handleOpenDocumentation}
-              variant="tertiaryGrey"
-              className={cn(
-                "!px-2",
-                isDisabledOpenDocumentationButton ? "opacity-0" : "",
-              )}
-            >
-              <Icons.File05 className="w-4 h-4 stroke-semantic-fg-primary" />
-            </Button>
-          </EditorButtonTooltipWrapper>
+          {isDisabledOpenDocumentationButton ? null : (
+            <EditorButtonTooltipWrapper tooltipContent="Open documentation">
+              <Button
+                onClick={handleOpenDocumentation}
+                variant="tertiaryGrey"
+                className={cn("!px-2", isSelected ? "" : "opacity-0")}
+              >
+                <Icons.File05 className="w-4 h-4 stroke-semantic-fg-primary" />
+              </Button>
+            </EditorButtonTooltipWrapper>
+          )}
+          {additionalControlButton}
         </div>
       </div>
       <div
@@ -120,7 +118,7 @@ export const NodeBase = ({
         className={cn(
           "flex relative items-center border-2 border-[#94a0b8] justify-center w-[160px] h-[160px] flex-col rounded-md p-3 bg-semantic-bg-base-bg",
           isCompleted ? "border-4 border-semantic-success-default" : "",
-          errorState.error ? "border-4 border-semantic-error-default" : "",
+          errorState?.error ? "border-4 border-semantic-error-default" : "",
         )}
       >
         {isProcessing ? (
@@ -128,7 +126,7 @@ export const NodeBase = ({
             <LoadingSpin className="w-6 h-6 text-semantic-fg-primary" />
           </div>
         ) : null}
-        {errorState.error && (
+        {errorState?.error && (
           <Tooltip.Provider delayDuration={300}>
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
@@ -204,6 +202,7 @@ export const NodeBase = ({
           </div>
         ) : null}
       </div>
+      {children}
     </div>
   );
 };

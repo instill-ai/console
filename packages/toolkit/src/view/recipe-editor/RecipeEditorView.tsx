@@ -76,6 +76,7 @@ const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,
   editorPreviewReactFlowInstance: store.editorPreviewReactFlowInstance,
   updateTriggerPipelineStreamMap: store.updateTriggerPipelineStreamMap,
+  showWebhook: store.showWebhook,
 });
 
 export const RecipeEditorView = () => {
@@ -94,6 +95,7 @@ export const RecipeEditorView = () => {
     currentVersion,
     editorPreviewReactFlowInstance,
     updateTriggerPipelineStreamMap,
+    showWebhook,
   } = useInstillStore(useShallow(selector));
   useEditorCommandListener();
   const routeInfo = useRouteInfo();
@@ -102,6 +104,8 @@ export const RecipeEditorView = () => {
     React.useState<Nullable<"left" | "topRight" | "bottomRight">>(null);
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
   const [isInitialized, setIsInitialized] = React.useState(false);
+
+  console.log("showWebhook", showWebhook);
 
   const sidebarRef = React.useRef<ImperativePanelHandle>(null);
   const leftPanelRef = React.useRef<ImperativePanelHandle>(null);

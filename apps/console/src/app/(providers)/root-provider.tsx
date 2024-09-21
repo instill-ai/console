@@ -19,15 +19,23 @@ import { ReactQueryProvider } from "./react-query-client-provider";
 
 const selector = (store: InstillStore) => ({
   initPipelineBuilder: store.initPipelineBuilder,
-  initIteratorRelatedState: store.initIteratorRelatedState,
+  updateShowWebhook: store.updateShowWebhook,
 });
 
-export const RootProvider = ({ children }: { children: React.ReactNode }) => {
+export const RootProvider = ({
+  children,
+  showWebhook,
+}: {
+  children: React.ReactNode;
+  showWebhook: boolean;
+}) => {
   const pathname = usePathname();
   const [previousPathname, setPreviousPathname] =
     React.useState<Nullable<string>>(null);
 
-  const { initPipelineBuilder } = useInstillStore(useShallow(selector));
+  const { initPipelineBuilder, updateShowWebhook } = useInstillStore(
+    useShallow(selector),
+  );
 
   const initCreateResourceFormStore = useCreateResourceFormStore(
     (store) => store.init,
@@ -35,6 +43,10 @@ export const RootProvider = ({ children }: { children: React.ReactNode }) => {
   const closeModal = useModalStore((store) => store.closeModal);
 
   const { dismiss: dismissToast } = useToast();
+
+  React.useEffect(() => {
+    updateShowWebhook(() => showWebhook);
+  }, [showWebhook]);
 
   React.useEffect(() => {
     // When ever user leave /editor page to what ever destination
