@@ -251,8 +251,6 @@ export type EditorSlice = {
     ) => React.MutableRefObject<HTMLButtonElement>,
   ) => void;
 
-  editorFirstRenderedHeight: React.MutableRefObject<Nullable<number>>;
-
   /**
    * This is the returned of useDebouncedRecipeUpdater, we store it in the store
    * due to we might want to cancel or flush all the debounce invokion like when

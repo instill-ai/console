@@ -11,7 +11,6 @@ import {
   ScrollArea,
 } from "@instill-ai/design-system";
 
-import { editorPastVersionHintHeight } from "../../../constant/pipeline";
 import {
   InstillStore,
   useInstillStore,
@@ -28,10 +27,13 @@ const selector = (store: InstillStore) => ({
   currentVersion: store.currentVersion,
   updateCurrentVersion: store.updateCurrentVersion,
   editorRef: store.editorRef,
-  editorFirstRenderedHeight: store.editorFirstRenderedHeight,
 });
 
-export const ReleasedVersionPopover = () => {
+export const ReleasedVersionPopover = ({
+  editorContainerRef,
+}: {
+  editorContainerRef: React.RefObject<HTMLDivElement>;
+}) => {
   const routeInfo = useRouteInfo();
 
   const {
@@ -40,7 +42,6 @@ export const ReleasedVersionPopover = () => {
     currentVersion,
     updateCurrentVersion,
     editorRef,
-    editorFirstRenderedHeight,
   } = useInstillStore(useShallow(selector));
 
   const sortedReleases = useSortedReleases({
@@ -85,7 +86,11 @@ export const ReleasedVersionPopover = () => {
                   id="unversioned"
                   currentVersion={currentVersion}
                   onClick={() => {
-                    if (!pipeline.isSuccess || !editorRef) {
+                    if (
+                      !pipeline.isSuccess ||
+                      !editorRef ||
+                      !editorContainerRef.current
+                    ) {
                       return;
                     }
 
@@ -98,18 +103,23 @@ export const ReleasedVersionPopover = () => {
                     // Because the past version hint is listening to the version change,
                     // so we need to bundle the layout update and version update together
                     setTimeout(() => {
+                      if (!editorContainerRef.current) {
+                        return;
+                      }
+
                       const editorLayoutInfo = editorRef.getLayoutInfo();
 
-                      if (!editorFirstRenderedHeight.current) {
-                        editorFirstRenderedHeight.current =
-                          editorLayoutInfo.height;
-                      }
+                      const newHeight =
+                        window.innerHeight -
+                        editorContainerRef.current?.offsetTop -
+                        // 40 is the height of the release popover and the gap at the bottom
+                        40 +
+                        // 52 is the height of the past version hint
+                        52;
 
                       editorRef.layout({
                         width: editorLayoutInfo.width,
-                        height: editorFirstRenderedHeight.current
-                          ? editorFirstRenderedHeight.current
-                          : editorLayoutInfo.height,
+                        height: newHeight,
                       });
                       updateCurrentVersion(() => "latest");
                     }, 1);
@@ -122,7 +132,7 @@ export const ReleasedVersionPopover = () => {
                     currentVersion={currentVersion}
                     createTime={release.createTime}
                     onClick={() => {
-                      if (!editorRef) {
+                      if (!editorRef || !editorContainerRef.current) {
                         return;
                       }
 
@@ -134,18 +144,18 @@ export const ReleasedVersionPopover = () => {
 
                       const editorLayoutInfo = editorRef.getLayoutInfo();
 
-                      if (!editorFirstRenderedHeight.current) {
-                        editorFirstRenderedHeight.current =
-                          editorLayoutInfo.height;
-                      }
+                      const newHeight =
+                        window.innerHeight -
+                        editorContainerRef.current.offsetTop -
+                        // 52 is the height of the past version hint, and if the hint is already shown,
+                        // we don't need to subtract the hint height
+                        (currentVersion === "latest" ? 52 : 0) -
+                        // 40 is the height of the release popover and the gap at the bottom
+                        40;
 
                       editorRef.layout({
                         width: editorLayoutInfo.width,
-                        height: editorFirstRenderedHeight.current
-                          ? editorFirstRenderedHeight.current -
-                            editorPastVersionHintHeight
-                          : editorLayoutInfo.height -
-                            editorPastVersionHintHeight,
+                        height: newHeight,
                       });
 
                       setTimeout(() => {
