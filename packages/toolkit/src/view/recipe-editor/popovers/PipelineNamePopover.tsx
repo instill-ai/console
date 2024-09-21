@@ -30,6 +30,7 @@ import {
   useShallow,
   useUpdateNamespacePipeline,
 } from "../../../lib";
+import { formatResourceId } from "../../../server";
 import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
 
 const pipelineNameSchema = z.object({
@@ -54,6 +55,10 @@ export const PipelineNamePopover = ({
     resolver: zodResolver(pipelineNameSchema),
   });
 
+  const {
+    formState: { isDirty },
+  } = form;
+
   const pipelineIsPublic = React.useMemo(() => {
     return sharing?.users["*/*"]?.enabled ?? false;
   }, [sharing]);
@@ -72,6 +77,8 @@ export const PipelineNamePopover = ({
     });
   }, [routeInfo.isSuccess, routeInfo.data.resourceId, form, pipelineIsPublic]);
 
+  const formattedPipelineId = formatResourceId(form.watch("id"), "p");
+
   const renamePipeline = useRenameNamespacePipeline();
   const updatePipeline = useUpdateNamespacePipeline();
   const onSubmit = async (formData: z.infer<typeof pipelineNameSchema>) => {
@@ -79,6 +86,7 @@ export const PipelineNamePopover = ({
       !routeInfo.isSuccess ||
       !routeInfo.data.resourceId ||
       !routeInfo.data.pipelineName ||
+      !formattedPipelineId ||
       sharing === null
     ) {
       return;
@@ -88,7 +96,7 @@ export const PipelineNamePopover = ({
 
     if (String(pipelineIsPublic) !== formData.isPublic) {
       const payload: UpdateNamespacePipelineRequest = {
-        namespacePipelineName: `${routeInfo.data.namespaceName}/pipelines/${formData.id}`,
+        namespacePipelineName: `${routeInfo.data.namespaceName}/pipelines/${formattedPipelineId}`,
         sharing: {
           ...sharing,
           users: {
@@ -112,18 +120,18 @@ export const PipelineNamePopover = ({
       }
     }
 
-    if (currentPipelineId !== formData.id) {
+    if (currentPipelineId !== formattedPipelineId) {
       try {
         await renamePipeline.mutateAsync({
           payload: {
             namespacePipelineName: routeInfo.data.pipelineName,
-            newPipelineId: formData.id,
+            newPipelineId: formattedPipelineId,
           },
           accessToken,
         });
 
         router.push(
-          `/${routeInfo.data.namespaceId}/pipelines/${formData.id}/editor`,
+          `/${routeInfo.data.namespaceId}/pipelines/${formattedPipelineId}/editor`,
         );
         setOpen(false);
       } catch (error) {
@@ -188,6 +196,11 @@ export const PipelineNamePopover = ({
                           />
                         </Input.Root>
                       </Form.Control>
+                      {isDirty ? (
+                        <p className="text-semantic-fg-secondary product-body-text-4-regular">
+                          Name will be transformed to: {formattedPipelineId}
+                        </p>
+                      ) : null}
                       <Form.Message />
                     </Form.Item>
                   );

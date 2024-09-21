@@ -18,8 +18,9 @@ import {
 import { EntitySelector, LoadingSpin } from "../../../components";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
+import { formatResourceId } from "../../../server";
 import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
-import { convertTagsToArray, formatName } from "./lib/helpers";
+import { convertTagsToArray } from "./lib/helpers";
 
 export const CreateCatalogFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -68,7 +69,7 @@ export const CreateCatalogDialog = ({
   const nameValue = watch("name");
   const description = watch("description");
 
-  const formattedName = formatName(nameValue);
+  const formattedName = formatResourceId(nameValue, "c");
 
   React.useEffect(() => {
     if (isOpen) {
@@ -84,12 +85,16 @@ export const CreateCatalogDialog = ({
   const handleSubmit = async (
     data: z.infer<typeof CreateCatalogFormSchema>,
   ) => {
+    if (!formattedName) {
+      return;
+    }
+
     setCreating(true);
 
     try {
       const formattedData = {
         ...data,
-        name: formatName(data.name),
+        name: formattedName,
         tags: convertTagsToArray(data.tags).join(", "),
       };
 

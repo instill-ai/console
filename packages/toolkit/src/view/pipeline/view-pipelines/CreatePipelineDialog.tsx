@@ -24,7 +24,7 @@ import {
 } from "@instill-ai/design-system";
 
 import { EntitySelector, LoadingSpin } from "../../../components";
-import { DataTestID, InstillErrors } from "../../../constant";
+import { DataTestID } from "../../../constant";
 import { defaultRawRecipe } from "../../../constant/pipeline";
 import {
   InstillStore,
@@ -38,23 +38,13 @@ import {
   useShallow,
 } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
-import { env, validateInstillResourceID } from "../../../server";
+import { env, formatResourceId } from "../../../server";
 
-const CreatePipelineSchema = z
-  .object({
-    id: z.string(),
-    namespaceId: z.string(),
-    description: z.string().optional().nullable(),
-  })
-  .superRefine((state, ctx) => {
-    if (!validateInstillResourceID(state.id)) {
-      return ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: InstillErrors.ResourceIDInvalidError,
-        path: ["id"],
-      });
-    }
-  });
+const CreatePipelineSchema = z.object({
+  id: z.string(),
+  namespaceId: z.string(),
+  description: z.string().optional().nullable(),
+});
 
 type Permission = "public" | "private";
 
@@ -92,10 +82,11 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
   const routeInfo = useRouteInfo();
 
   const namespaces = useUserNamespaces();
+  const formattedPipelineId = formatResourceId(form.watch("id"), "p");
 
   const createPipeline = useCreateNamespacePipeline();
   async function onSubmit(data: z.infer<typeof CreatePipelineSchema>) {
-    if (!routeInfo.isSuccess) {
+    if (!routeInfo.isSuccess || !formattedPipelineId) {
       return;
     }
 
@@ -129,7 +120,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
     if (targetNamespace) {
       const payload: CreateNamespacePipelineRequest = {
         namespaceName: targetNamespace.name,
-        id: data.id,
+        id: formattedPipelineId,
         description: data.description ?? undefined,
         rawRecipe: defaultRawRecipe,
         metadata: {
@@ -150,7 +141,9 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
 
         updateNavigationNamespaceAnchor(() => targetNamespace.id);
 
-        router.push(`/${data.namespaceId}/pipelines/${data.id}/editor`);
+        router.push(
+          `/${data.namespaceId}/pipelines/${formattedPipelineId}/editor`,
+        );
       } catch (error) {
         setCreating(false);
         toastInstillError({
@@ -285,7 +278,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                                 "NEXT_PUBLIC_CONSOLE_BASE_URL",
                               )}/${form.getValues(
                                 "namespaceId",
-                              )}/pipelines/${form.getValues("id")}`
+                              )}/pipelines/${formattedPipelineId}`
                             : null}
                         </span>
                       </p>
