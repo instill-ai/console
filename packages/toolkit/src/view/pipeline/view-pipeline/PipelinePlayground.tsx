@@ -89,7 +89,7 @@ export const PipelinePlayground = ({
       );
 
       if (pipelineVersion) {
-        return pipelineVersion?.recipe.variable ?? null;
+        return pipelineVersion?.recipe?.variable ?? null;
       }
     }
 
@@ -108,7 +108,7 @@ export const PipelinePlayground = ({
       );
 
       if (pipelineVersion) {
-        return pipelineVersion?.recipe.output ?? null;
+        return pipelineVersion?.recipe?.output ?? null;
       }
     }
 
