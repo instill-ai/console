@@ -99,7 +99,9 @@ export const ConnectionForm = ({
     }
 
     parsedData = recursiveHelpers.removeUndefinedAndNullFromArray(
-      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(parsedData),
+      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+        recursiveHelpers.parseToNum(parsedData),
+      ),
     );
 
     onSubmit({
