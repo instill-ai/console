@@ -153,7 +153,6 @@ export const createEditorSlice: StateCreator<
         runButtonRef: fn(state.runButtonRef),
       };
     }),
-  editorFirstRenderedHeight: React.createRef<Nullable<number>>(),
   editorDebouncedRecipeUpdater: null,
   updateEditorDebouncedRecipeUpdater: (
     fn: (prev: Nullable<EditorRecipeUpdater>) => Nullable<EditorRecipeUpdater>,

@@ -75,7 +75,6 @@ const selector = (store: InstillStore) => ({
   updateCurrentVersion: store.updateCurrentVersion,
   currentVersion: store.currentVersion,
   editorPreviewReactFlowInstance: store.editorPreviewReactFlowInstance,
-  editorFirstRenderedHeight: store.editorFirstRenderedHeight,
   updateTriggerPipelineStreamMap: store.updateTriggerPipelineStreamMap,
 });
 
@@ -94,7 +93,6 @@ export const RecipeEditorView = () => {
     updateCurrentVersion,
     currentVersion,
     editorPreviewReactFlowInstance,
-    editorFirstRenderedHeight,
     updateTriggerPipelineStreamMap,
   } = useInstillStore(useShallow(selector));
   useEditorCommandListener();
@@ -110,6 +108,7 @@ export const RecipeEditorView = () => {
   const rightPanelRef = React.useRef<ImperativePanelHandle>(null);
   const topRightPanelRef = React.useRef<ImperativePanelHandle>(null);
   const bottomRightPanelRef = React.useRef<ImperativePanelHandle>(null);
+  const editorContainerRef = React.useRef<HTMLDivElement>(null);
 
   const pipeline = useNamespacePipeline({
     namespacePipelineName: routeInfo.isSuccess
@@ -125,6 +124,25 @@ export const RecipeEditorView = () => {
       router.push("/404");
     }
   }, [pipeline.isError]);
+
+  // re-layout the editor when window size changes
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (editorRef && editorContainerRef.current) {
+        const newHeight =
+          // 40 is the height of the release popover and the gap at the bottom
+          window.innerHeight - editorContainerRef.current.offsetTop - 40;
+        editorRef.layout({
+          width: editorContainerRef.current.offsetWidth,
+          height: newHeight,
+        });
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    // Call handleResize initially to set the correct size
+    handleResize();
+  }, [editorRef]);
 
   const sortedReleases = useSortedReleases({
     pipelineName: routeInfo.data.pipelineName,
@@ -530,19 +548,24 @@ export const RecipeEditorView = () => {
                               // Because the past version hint is listening to the version change,
                               // so we need to bundle the layout update and version update together
                               setTimeout(() => {
+                                if (!editorContainerRef.current) {
+                                  return;
+                                }
+
                                 const editorLayoutInfo =
                                   editorRef.getLayoutInfo();
 
-                                if (!editorFirstRenderedHeight.current) {
-                                  editorFirstRenderedHeight.current =
-                                    editorLayoutInfo.height;
-                                }
+                                const newHeight =
+                                  window.innerHeight -
+                                  editorContainerRef.current?.offsetTop -
+                                  // 40 is the height of the release popover and the gap at the bottom
+                                  40 +
+                                  // 52 is the height of the past version hint
+                                  52;
 
                                 editorRef.layout({
                                   width: editorLayoutInfo.width,
-                                  height: editorFirstRenderedHeight.current
-                                    ? editorFirstRenderedHeight.current
-                                    : editorLayoutInfo.height,
+                                  height: newHeight,
                                 });
                                 updateCurrentVersion(() => "latest");
                               }, 1);
@@ -556,10 +579,14 @@ export const RecipeEditorView = () => {
                           </span>
                         </p>
                       </div>
-                      <VscodeEditor />
-                    </div>
-                    <div className="h-7 z-50 shrink-0 flex flex-row bg-semantic-bg-alt-primary">
-                      <ReleasedVersionPopover />
+                      <div ref={editorContainerRef} className="flex flex-1">
+                        <VscodeEditor />
+                      </div>
+                      <div className="h-7 shrink-0 flex flex-row bg-semantic-bg-alt-primary">
+                        <ReleasedVersionPopover
+                          editorContainerRef={editorContainerRef}
+                        />
+                      </div>
                     </div>
                   </div>
                 </Resizable.Panel>
