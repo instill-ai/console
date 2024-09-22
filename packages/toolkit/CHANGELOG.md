@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.104.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.103.2...@instill-ai/toolkit-v0.104.0) (2024-09-21)
+
+
+### Features
+
+* **catalog:** feat add warning when cloning to full namespace  ([#1466](https://github.com/instill-ai/console/issues/1466)) ([67671c7](https://github.com/instill-ai/console/commit/67671c753ee1968c170638b3f0ce5030a03a8aa5))
+* **catalog:** feat update tracking progress for files  ([#1462](https://github.com/instill-ai/console/issues/1462)) ([d2cedf2](https://github.com/instill-ai/console/commit/d2cedf259494ce7d08ea6da610b3c40d726fa927))
+* **editor:** add view for per component output ([#1493](https://github.com/instill-ai/console/issues/1493)) ([ebff3fb](https://github.com/instill-ai/console/commit/ebff3fb1c91e86593594385ef198546d836f2d74))
+
+
+### Bug Fixes
+
+* **editor:** fix editor height not responsive issue ([#1495](https://github.com/instill-ai/console/issues/1495)) ([192bcdf](https://github.com/instill-ai/console/commit/192bcdf9f91ea2cac51f9edf14a301daca4734db))
+* fix integration form submit logic ([#1492](https://github.com/instill-ai/console/issues/1492)) ([c1a7d3b](https://github.com/instill-ai/console/commit/c1a7d3ba3720b8654aad135bc22c7f9ec91c0f1f))
+* fix object output is wrong when BE response semi-structure result type but the result is actually string ([#1496](https://github.com/instill-ai/console/issues/1496)) ([2785499](https://github.com/instill-ai/console/commit/2785499c649742e5f0d82b621832c95321ce93e6))
+* replace readme with description in both model and pipeline page metadata ([#1489](https://github.com/instill-ai/console/issues/1489)) ([6cd643f](https://github.com/instill-ai/console/commit/6cd643f24b11a27874966c3f094c242a756f9c4e))
+
 ## [0.103.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.103.1...@instill-ai/toolkit-v0.103.2) (2024-09-20)
 
 
