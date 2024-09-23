@@ -6,7 +6,6 @@ import { Pipeline } from "instill-sdk";
 
 import { Icons, Skeleton, Tag } from "@instill-ai/design-system";
 
-import { Menu } from "./Menu";
 import { Stats } from "./Stats";
 import { Tags } from "./Tags";
 
@@ -14,7 +13,6 @@ import { Tags } from "./Tags";
 export const CardPipelineSkeleton = () => {
   return (
     <div className="flex flex-row gap-x-6 rounded-md border border-semantic-bg-line bg-white p-4">
-      <Skeleton className="h-40 w-40 rounded" />
       <div className="flex grow flex-col gap-y-2">
         <Skeleton className="h-6 w-60 rounded" />
         <div className="flex flex-row gap-x-2">
@@ -33,13 +31,11 @@ export const CardPipelineSkeleton = () => {
 
 export type CardPipelineProps = {
   pipeline: Pipeline;
-  onDelete?: (model: Pipeline) => Promise<void>;
   hidePublicLabel?: boolean;
 };
 
 export const CardPipeline = ({
   pipeline,
-  onDelete,
   hidePublicLabel,
 }: CardPipelineProps) => {
   const ownerId = React.useMemo(() => {
@@ -59,34 +55,30 @@ export const CardPipeline = ({
           >
             {ownerId}/{pipeline.id}
           </Link>
+        </div>
+        <div className="flex space-x-2">
           {!hidePublicLabel ? (
             <Tag
               variant="lightNeutral"
-              size="md"
-              className="gap-x-1.5 rounded-sm !py-0.5"
+              size="sm"
+              className="gap-x-1.5 rounded-full !py-0.5"
             >
               {!pipeline.sharing.users["*/*"]?.enabled ? (
-                <React.Fragment>
+                <div className="flex items-center gap-1">
                   <Icons.Lock03 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
-                  Private
-                </React.Fragment>
+                  <span className="product-body-text-4-medium text-semantic-fg-secondary">private</span>
+                </div>
               ) : (
-                <React.Fragment>
+                <div className="flex items-center gap-1">
                   <Icons.BookOpen02 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
-                  Public
-                </React.Fragment>
+                  <span className="product-body-text-4-medium text-semantic-fg-secondary">public</span>
+                </div>
               )}
             </Tag>
           ) : null}
           {pipeline.tags.length > 0 ? <Tags tags={pipeline.tags} /> : null}
-          {onDelete ? (
-            <Menu
-              handleDeletePipeline={() => onDelete(pipeline)}
-              pipeline={pipeline}
-            />
-          ) : null}
         </div>
-        <p className="text-base text-semantic-fg-secondary">
+        <p className="text-semantic-fg-secondary product-body-text-2-regular mb-2">
           {pipeline.description}
         </p>
         <Stats

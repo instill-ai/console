@@ -2,18 +2,9 @@
 
 import { Pipeline } from "instill-sdk";
 
-import { cn, useToast } from "@instill-ai/design-system";
+import { cn } from "@instill-ai/design-system";
 
-import type { InstillStore } from "../../../lib";
 import { CardPipeline, CardPipelineSkeleton } from "../../../components";
-import {
-  sendAmplitudeData,
-  toastInstillError,
-  useAmplitudeCtx,
-  useDeleteNamespacePipeline,
-  useInstillStore,
-  useShallow,
-} from "../../../lib";
 
 export type PipelinesListProps = {
   pipelines?: Pipeline[];
@@ -22,15 +13,9 @@ export type PipelinesListProps = {
   isSearchActive: boolean;
 };
 
-const selector = (store: InstillStore) => ({
-  accessToken: store.accessToken,
-});
 
 export const PipelinesList = (props: PipelinesListProps) => {
-  const { pipelines, onPipelineDelete, isLoading, isSearchActive } = props;
-  const { accessToken } = useInstillStore(useShallow(selector));
-  const { amplitudeIsInit } = useAmplitudeCtx();
-  const { toast } = useToast();
+  const { pipelines, isLoading, isSearchActive } = props;
 
   const isEmpty = !isLoading && !pipelines?.length;
 
@@ -38,31 +23,6 @@ export const PipelinesList = (props: PipelinesListProps) => {
    * Handle pipeline pipeline
    * -----------------------------------------------------------------------*/
 
-  const deletePipeline = useDeleteNamespacePipeline();
-  const handleDeletePipeline = async (pipeline: Pipeline) => {
-    if (!pipeline) return;
-
-    try {
-      await deletePipeline.mutateAsync({
-        namespacePipelineName: pipeline.name,
-        accessToken: accessToken ? accessToken : null,
-      });
-
-      if (amplitudeIsInit) {
-        sendAmplitudeData("delete_pipeline");
-      }
-
-      if (onPipelineDelete) {
-        onPipelineDelete();
-      }
-    } catch (error) {
-      toastInstillError({
-        title: "Something went wrong while deleting the pipeline",
-        error,
-        toast,
-      });
-    }
-  };
 
   return (
     <div
@@ -81,7 +41,6 @@ export const PipelinesList = (props: PipelinesListProps) => {
             <CardPipeline
               pipeline={pipeline}
               key={index}
-              onDelete={handleDeletePipeline}
             />
           );
         })
