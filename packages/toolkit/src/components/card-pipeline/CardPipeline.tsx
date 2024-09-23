@@ -6,6 +6,7 @@ import { Pipeline } from "instill-sdk";
 
 import { Icons, Skeleton, Tag } from "@instill-ai/design-system";
 
+import { Menu } from "./Menu";
 import { Stats } from "./Stats";
 import { Tags } from "./Tags";
 
@@ -31,11 +32,13 @@ export const CardPipelineSkeleton = () => {
 
 export type CardPipelineProps = {
   pipeline: Pipeline;
+  onDelete?: (model: Pipeline) => Promise<void>;
   hidePublicLabel?: boolean;
 };
 
 export const CardPipeline = ({
   pipeline,
+  onDelete,
   hidePublicLabel,
 }: CardPipelineProps) => {
   const ownerId = React.useMemo(() => {
@@ -75,6 +78,12 @@ export const CardPipeline = ({
             </Tag>
           ) : null}
           {pipeline.tags.length > 0 ? <Tags tags={pipeline.tags} /> : null}
+          {onDelete ? (
+            <Menu
+              handleDeletePipeline={() => onDelete(pipeline)}
+              pipeline={pipeline}
+            />
+          ) : null}
         </div>
         <p className="text-semantic-fg-secondary product-body-text-2-regular mb-2">
           {pipeline.description}
