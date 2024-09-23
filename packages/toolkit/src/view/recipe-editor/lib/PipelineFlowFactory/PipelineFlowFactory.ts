@@ -73,18 +73,11 @@ export class PipelineFlowFactory {
     const userDefinedReferences =
       edgeHelpers.getUserDefinedReferencesFromRecipe(recipe);
 
-    console.log("userDefinedReferences", userDefinedReferences);
-
     const {
       variableNodeConnectableReferencePaths,
       componentNodeConnectableReferencePaths,
       runOnNodeConnectableReferencePaths,
     } = edgeHelpers.getConnectableReferencePathsFromRecipe(recipe);
-
-    console.log(
-      "runOnNodeConnectableReferencePaths",
-      runOnNodeConnectableReferencePaths,
-    );
 
     for (const reference of userDefinedReferences) {
       const newEdges = edgeHelpers.composeEdgesForReference({
