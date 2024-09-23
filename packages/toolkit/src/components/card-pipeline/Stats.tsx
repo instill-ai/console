@@ -19,7 +19,7 @@ export const Stats = (props: StatsProps) => {
         <Icons.Zap className="h-4 w-4 stroke-semantic-fg-primary" />
         {convertLongNumberToK(runCount)} triggered
       </div>
-      <div className="ml-auto text-sm text-semantic-fg-disabled">
+      <div className="ml-auto product-body-text-3-regular text-semantic-node-connector-off">
         Updated {getHumanReadableStringFromTime(updatedAt, Date.now())}
       </div>
     </div>
