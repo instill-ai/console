@@ -24,6 +24,7 @@ import {
   InstillErrors,
   InstillModelTask,
   InstillModelVisibility,
+  resourceIdPrefix,
 } from "../../constant";
 import {
   CreateUserModelPayload,
@@ -103,7 +104,11 @@ export const CreateModelForm = () => {
 
   const userNamespaces = useUserNamespaces();
 
-  const formattedModelId = formatResourceId(form.watch("id"), "m");
+  const formattedModelId = formatResourceId(
+    form.watch("id"),
+    resourceIdPrefix.model,
+  );
+
   const {
     formState: { isDirty },
   } = form;

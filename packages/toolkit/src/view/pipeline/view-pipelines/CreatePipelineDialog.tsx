@@ -24,7 +24,7 @@ import {
 } from "@instill-ai/design-system";
 
 import { EntitySelector, LoadingSpin } from "../../../components";
-import { DataTestID } from "../../../constant";
+import { DataTestID, resourceIdPrefix } from "../../../constant";
 import { defaultRawRecipe } from "../../../constant/pipeline";
 import {
   InstillStore,
@@ -82,7 +82,10 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
   const routeInfo = useRouteInfo();
 
   const namespaces = useUserNamespaces();
-  const formattedPipelineId = formatResourceId(form.watch("id"), "p");
+  const formattedPipelineId = formatResourceId(
+    form.watch("id"),
+    resourceIdPrefix.pipeline,
+  );
 
   const createPipeline = useCreateNamespacePipeline();
   async function onSubmit(data: z.infer<typeof CreatePipelineSchema>) {

@@ -16,6 +16,7 @@ import {
 } from "@instill-ai/design-system";
 
 import { EntitySelector, LoadingSpin } from "../../../components";
+import { resourceIdPrefix } from "../../../constant";
 import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 import { formatResourceId } from "../../../server";
@@ -69,7 +70,7 @@ export const CreateCatalogDialog = ({
   const nameValue = watch("name");
   const description = watch("description");
 
-  const formattedName = formatResourceId(nameValue, "c");
+  const formattedName = formatResourceId(nameValue, resourceIdPrefix.catalog);
 
   React.useEffect(() => {
     if (isOpen) {

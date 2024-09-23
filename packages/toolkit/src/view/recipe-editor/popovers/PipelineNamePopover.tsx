@@ -22,6 +22,7 @@ import {
 } from "@instill-ai/design-system";
 
 import { LoadingSpin } from "../../../components";
+import { resourceIdPrefix } from "../../../constant";
 import {
   InstillStore,
   useInstillStore,
@@ -77,7 +78,10 @@ export const PipelineNamePopover = ({
     });
   }, [routeInfo.isSuccess, routeInfo.data.resourceId, form, pipelineIsPublic]);
 
-  const formattedPipelineId = formatResourceId(form.watch("id"), "p");
+  const formattedPipelineId = formatResourceId(
+    form.watch("id"),
+    resourceIdPrefix.pipeline,
+  );
 
   const renamePipeline = useRenameNamespacePipeline();
   const updatePipeline = useUpdateNamespacePipeline();
