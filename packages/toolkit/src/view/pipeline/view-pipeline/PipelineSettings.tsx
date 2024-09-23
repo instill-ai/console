@@ -20,7 +20,7 @@ import {
   useToast,
 } from "@instill-ai/design-system";
 
-import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
+import { LoadingSpin } from "../../../components";
 import {
   Nullable,
   sendAmplitudeData,
@@ -36,7 +36,6 @@ const PipelineSettingsSchema = z.object({
   sourceUrl: z.literal("").or(z.string().url()),
   documentationUrl: z.literal("").or(z.string().url()),
   license: z.literal("").or(z.string().url()),
-  profileImage: z.string().optional(),
   isPublic: z.string(),
   tags: z.string().optional(),
 });
@@ -60,7 +59,6 @@ export const PipelineSettings = ({
       sourceUrl: pipeline.sourceUrl,
       documentationUrl: pipeline.documentationUrl,
       license: pipeline.license,
-      profileImage: pipeline.profileImage,
       isPublic: (!!pipeline.sharing.users["*/*"]?.enabled).toString(),
       tags: pipeline.tags.join(", "),
     };
@@ -98,7 +96,6 @@ export const PipelineSettings = ({
       sourceUrl: data.sourceUrl,
       documentationUrl: data.documentationUrl,
       license: data.license,
-      profileImage: data.profileImage,
       sharing: {
         ...sharing,
         users: {
@@ -200,11 +197,6 @@ export const PipelineSettings = ({
                   </Form.Item>
                 );
               }}
-            />
-            <UploadImageFieldWithCrop
-              fieldName="profileImage"
-              form={form}
-              title="Cover image"
             />
             <RadioGroup.Root
               onValueChange={(value: "true" | "false") => {

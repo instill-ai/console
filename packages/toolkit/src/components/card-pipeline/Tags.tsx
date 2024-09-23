@@ -13,8 +13,8 @@ export const Tags = (props: TagsProps) => {
         <Tag
           key={index}
           variant="lightNeutral"
-          size="md"
-          className="gap-x-1.5 rounded-sm !py-0.5"
+          size="sm"
+          className="gap-x-1.5 !py-0.5 rounded-full product-body-text-4-medium text-semantic-fg-secondary"
         >
           {title}
         </Tag>

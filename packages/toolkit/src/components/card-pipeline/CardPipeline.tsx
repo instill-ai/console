@@ -6,22 +6,13 @@ import { Pipeline } from "instill-sdk";
 
 import { Icons, Skeleton, Tag } from "@instill-ai/design-system";
 
-import { ImageWithFallback } from "..";
 import { Menu } from "./Menu";
 import { Stats } from "./Stats";
 import { Tags } from "./Tags";
 
-const modelCoverImageCommonProps = {
-  alt: "Cover",
-  className: "shrink-0 rounded",
-  width: 156,
-  height: 156,
-};
-
 export const CardPipelineSkeleton = () => {
   return (
     <div className="flex flex-row gap-x-6 rounded-md border border-semantic-bg-line bg-white p-4">
-      <Skeleton className="h-40 w-40 rounded" />
       <div className="flex grow flex-col gap-y-2">
         <Skeleton className="h-6 w-60 rounded" />
         <div className="flex flex-row gap-x-2">
@@ -55,45 +46,15 @@ export const CardPipeline = ({
 
   return (
     <div className="flex flex-row gap-x-6 rounded-md border border-semantic-bg-line bg-white p-4">
-      <ImageWithFallback
-        src={pipeline.profileImage}
-        fallbackImg={
-          <img
-            src="/images/models/model-placeholder.svg"
-            {...modelCoverImageCommonProps}
-          />
-        }
-        {...modelCoverImageCommonProps}
-      />
       <div className="flex grow flex-col gap-y-2">
-        <div className="flex w-full flex-row items-start gap-x-2">
+        <div className="flex w-full flex-row items-center gap-x-2">
           <Icons.Pipeline className="h-6 w-6 stroke-semantic-accent-default" />
           <Link
             href={`/${ownerId}/pipelines/${pipeline.id}/playground`}
-            className="break-all font-medium text-semantic-accent-default hover:!underline"
+            className="break-all product-body-text-1-semibold text-semantic-accent-default hover:!underline"
           >
             {ownerId}/{pipeline.id}
           </Link>
-          {!hidePublicLabel ? (
-            <Tag
-              variant="lightNeutral"
-              size="md"
-              className="gap-x-1.5 rounded-sm !py-0.5"
-            >
-              {!pipeline.sharing.users["*/*"]?.enabled ? (
-                <React.Fragment>
-                  <Icons.Lock03 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
-                  Private
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <Icons.BookOpen02 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
-                  Public
-                </React.Fragment>
-              )}
-            </Tag>
-          ) : null}
-          {pipeline.tags.length > 0 ? <Tags tags={pipeline.tags} /> : null}
           {onDelete ? (
             <Menu
               handleDeletePipeline={() => onDelete(pipeline)}
@@ -101,7 +62,33 @@ export const CardPipeline = ({
             />
           ) : null}
         </div>
-        <p className="text-base text-semantic-fg-secondary">
+        <div className="flex space-x-2">
+          {!hidePublicLabel ? (
+            <Tag
+              variant="lightNeutral"
+              size="sm"
+              className="gap-x-1.5 rounded-full !py-0.5"
+            >
+              {!pipeline.sharing.users["*/*"]?.enabled ? (
+                <div className="flex items-center gap-1">
+                  <Icons.Lock03 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
+                  <span className="product-body-text-4-medium text-semantic-fg-secondary">
+                    private
+                  </span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-1">
+                  <Icons.BookOpen02 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
+                  <span className="product-body-text-4-medium text-semantic-fg-secondary">
+                    public
+                  </span>
+                </div>
+              )}
+            </Tag>
+          ) : null}
+          {pipeline.tags.length > 0 ? <Tags tags={pipeline.tags} /> : null}
+        </div>
+        <p className="text-semantic-fg-secondary product-body-text-2-regular mb-2">
           {pipeline.description}
         </p>
         <Stats

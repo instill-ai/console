@@ -57,32 +57,33 @@ export const CardModel = (props: CardModelProps) => {
           <img
             src="/images/models/model-placeholder.svg"
             {...modelCoverImageCommonProps}
+            alt="Model Cover Fallback"
           />
         }
         {...modelCoverImageCommonProps}
       />
-      <div className="flex grow flex-col gap-y-2">
-        <div className="flex w-full flex-row items-start gap-x-2">
+      <div className="flex grow flex-col">
+        <div className="flex w-full flex-row items-start">
           <Link
             href={`/${owner.id}/models/${model.id}/playground`}
-            className="break-all font-medium text-semantic-accent-default hover:!underline"
+            className="break-all product-body-text-1-semibold text-semantic-accent-default hover:!underline"
           >
             {owner.id}/{model.id}
           </Link>
-          <Tags
-            visibilityStatus={
-              props.hidePublicLabel && model.visibility === "VISIBILITY_PUBLIC"
-                ? null
-                : model.visibility
-            }
-            region={getModelRegionToolkit(model.region) || ""}
-            hardware={getModelHardwareToolkit(model.hardware) || model.hardware}
-          />
           {onDelete ? (
             <Menu handleDeleteModel={() => onDelete(model)} model={model} />
           ) : null}
         </div>
-        <p className="text-base text-semantic-fg-secondary">
+        <Tags
+          visibilityStatus={
+            props.hidePublicLabel && model.visibility === "VISIBILITY_PUBLIC"
+              ? null
+              : model.visibility
+          }
+          region={getModelRegionToolkit(model.region) || ""}
+          hardware={getModelHardwareToolkit(model.hardware) || model.hardware}
+        />
+        <p className="product-body-text-2-regular text-semantic-fg-secondary">
           {model.description}
         </p>
         <Stats
