@@ -65,7 +65,7 @@ export const CardModel = (props: CardModelProps) => {
         <div className="flex w-full flex-row items-start">
           <Link
             href={`/${owner.id}/models/${model.id}/playground`}
-            className="break-all font-medium text-semantic-accent-default hover:!underline"
+            className="break-all product-body-text-1-semibold text-semantic-accent-default hover:!underline"
           >
             {owner.id}/{model.id}
           </Link>

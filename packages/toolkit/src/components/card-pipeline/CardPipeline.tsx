@@ -48,14 +48,20 @@ export const CardPipeline = ({
   return (
     <div className="flex flex-row gap-x-6 rounded-md border border-semantic-bg-line bg-white p-4">
       <div className="flex grow flex-col gap-y-2">
-        <div className="flex w-full flex-row items-start gap-x-2">
+        <div className="flex w-full flex-row items-center gap-x-2">
           <Icons.Pipeline className="h-6 w-6 stroke-semantic-accent-default" />
           <Link
             href={`/${ownerId}/pipelines/${pipeline.id}/playground`}
-            className="break-all font-medium text-semantic-accent-default hover:!underline"
+            className="break-all product-body-text-1-semibold text-semantic-accent-default hover:!underline"
           >
             {ownerId}/{pipeline.id}
           </Link>
+          {onDelete ? (
+            <Menu
+              handleDeletePipeline={() => onDelete(pipeline)}
+              pipeline={pipeline}
+            />
+          ) : null}
         </div>
         <div className="flex space-x-2">
           {!hidePublicLabel ? (
@@ -78,12 +84,6 @@ export const CardPipeline = ({
             </Tag>
           ) : null}
           {pipeline.tags.length > 0 ? <Tags tags={pipeline.tags} /> : null}
-          {onDelete ? (
-            <Menu
-              handleDeletePipeline={() => onDelete(pipeline)}
-              pipeline={pipeline}
-            />
-          ) : null}
         </div>
         <p className="text-semantic-fg-secondary product-body-text-2-regular mb-2">
           {pipeline.description}
