@@ -23,9 +23,9 @@ export const Stats = (props: StatsProps) => {
           {label}
         </div>
       </Tag>
-      <div className="flex flex-row items-center gap-x-1 uppercase text-semantic-fg-secondary font-medium">
+      <div className="flex flex-row items-center gap-x-1 uppercase text-semantic-fg-secondary font-medium text-sm">
         <Icons.Rocket01 className="w-4 h-4 stroke-semantic-fg-primary" />
-        {runCount ? convertLongNumberToK(runCount) : 0} Run
+        {runCount ? convertLongNumberToK(runCount) : 0} Run  
         {runCount !== 1 ? "s" : ""}
       </div>
       <div className="ml-auto product-body-text-3-regular text-semantic-node-connector-off">
