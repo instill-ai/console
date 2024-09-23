@@ -20,7 +20,7 @@ import {
   useToast,
 } from "@instill-ai/design-system";
 
-import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
+import { LoadingSpin } from "../../../components";
 import {
   Nullable,
   sendAmplitudeData,
@@ -200,11 +200,6 @@ export const PipelineSettings = ({
                   </Form.Item>
                 );
               }}
-            />
-            <UploadImageFieldWithCrop
-              fieldName="profileImage"
-              form={form}
-              title="Cover image"
             />
             <RadioGroup.Root
               onValueChange={(value: "true" | "false") => {
