@@ -57,6 +57,7 @@ export const CardModel = (props: CardModelProps) => {
           <img
             src="/images/models/model-placeholder.svg"
             {...modelCoverImageCommonProps}
+            alt="Model Cover Fallback"
           />
         }
         {...modelCoverImageCommonProps}
