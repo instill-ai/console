@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { arrayMove } from "@dnd-kit/sortable";
 import { Nullable } from "instill-sdk";
+import { ErrorBoundary } from "react-error-boundary";
 
 import {
   Button,
@@ -123,7 +124,7 @@ export const RecipeEditorView = () => {
     if (pipeline.isError) {
       router.push("/404");
     }
-  }, [pipeline.isError]);
+  }, [pipeline.isError, router]);
 
   // re-layout the editor when window size changes
   React.useEffect(() => {
@@ -158,7 +159,13 @@ export const RecipeEditorView = () => {
     updateRawRecipeOnDom(() => pipeline.data.rawRecipe);
     updateTriggerPipelineStreamMap(() => null);
     setIsInitialized(true);
-  }, [pipeline.isSuccess, pipeline.data, updateRawRecipeOnDom, isInitialized]);
+  }, [
+    pipeline.isSuccess,
+    pipeline.data,
+    updateRawRecipeOnDom,
+    isInitialized,
+    updateTriggerPipelineStreamMap,
+  ]);
 
   React.useEffect(() => {
     updateCurrentVersion(() => "latest");
@@ -193,11 +200,13 @@ export const RecipeEditorView = () => {
     );
 
     const previewView = recipe ? (
-      <Flow
-        pipelineId={pipeline.data?.id ?? null}
-        recipe={recipe ?? null}
-        pipelineMetadata={targetPipeline?.metadata ?? null}
-      />
+      <ErrorBoundary fallbackRender={() => <PreviewEmptyView />}>
+        <Flow
+          pipelineId={pipeline.data?.id ?? null}
+          recipe={recipe ?? null}
+          pipelineMetadata={targetPipeline?.metadata ?? null}
+        />
+      </ErrorBoundary>
     ) : (
       <PreviewEmptyView />
     );

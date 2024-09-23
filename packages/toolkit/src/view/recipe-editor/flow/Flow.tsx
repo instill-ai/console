@@ -20,21 +20,24 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../lib";
-import {
-  composeEdgesFromNodes,
-  createGraphLayout,
-  CustomEdge,
-} from "../../pipeline-builder";
+import { CustomEdge } from "../../pipeline-builder";
 import { canvasPanOnDrag } from "../../pipeline-builder/components/canvasPanOnDrag";
-import { createNodesFromPipelineRecipe } from "../../pipeline-builder/lib/createNodesFromPipelineRecipe";
 import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
-import { GeneralNode, IteratorNode, ResponseNode, VariableNode } from "./nodes";
+import { PipelineFlowFactory, renderFlowLayout } from "../lib";
+import {
+  GeneralNode,
+  IteratorNode,
+  OutputNode,
+  RunOnEventNode,
+  VariableNode,
+} from "./nodes";
 
 const nodeTypes = {
   generalNode: GeneralNode,
   iteratorNode: IteratorNode,
   variableNode: VariableNode,
-  responseNode: ResponseNode,
+  outputNode: OutputNode,
+  runOnEventNode: RunOnEventNode,
 };
 
 const edgeTypes = {
@@ -89,12 +92,14 @@ export const Flow = ({
   React.useEffect(() => {
     if (!recipe || !pipelineMetadata) return;
 
-    const nodes = createNodesFromPipelineRecipe(recipe, {
-      metadata: pipelineMetadata,
-    });
-    const edges = composeEdgesFromNodes(nodes);
+    const pipelineFlowFactory = new PipelineFlowFactory(
+      recipe,
+      pipelineMetadata,
+    );
 
-    createGraphLayout(nodes, edges)
+    const { nodes, edges } = pipelineFlowFactory.createFlow();
+
+    renderFlowLayout(nodes, edges)
       .then((graphData) => {
         setNodes(graphData.nodes);
         setEdges(graphData.edges);

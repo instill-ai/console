@@ -263,7 +263,6 @@ export const ComponentCmdo = () => {
   }
 
   function onDialogClose() {
-    console.log("onDialogClose");
     setSelectedComponentDefinition(null);
     setSelectedTaskName(null);
     setSelectedComponentDefaultValue(null);

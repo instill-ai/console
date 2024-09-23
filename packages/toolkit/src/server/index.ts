@@ -21,6 +21,11 @@ export * from "../lib/react-query-service/model/use-namespace-model/server";
 export * from "../lib/react-query-service/pipeline/use-namespace-secret/server";
 export * from "../lib/react-query-service/pipeline/use-namespace-secrets/server";
 
+// We don't directly export the flags from this entry point because it will cause
+// Module build failed: UnhandledSchemeError: Reading from "node:async_hooks" is not
+// handled by plugins (Unhandled scheme)
+// export * from "./flags";
+
 export {
   authLoginAction,
   authLogoutAction,

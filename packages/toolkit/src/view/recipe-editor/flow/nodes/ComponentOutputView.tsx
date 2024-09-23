@@ -32,7 +32,7 @@ export const ComponentOutputView = ({
     const output = triggerPipelineStreamMap.component[id]?.output;
 
     return output ?? null;
-  }, [triggerPipelineStreamMap]);
+  }, [triggerPipelineStreamMap, id]);
 
   const componentOutputFields = useComponentOutputFields({
     mode: "build",

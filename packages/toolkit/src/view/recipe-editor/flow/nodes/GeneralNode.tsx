@@ -281,7 +281,7 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
         currentViewId: viewId,
       },
     }));
-  }, [id, data]);
+  }, [id, data, updateEditorMultiScreenModel]);
 
   return (
     <NodeBase

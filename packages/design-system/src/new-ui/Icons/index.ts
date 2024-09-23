@@ -90,6 +90,7 @@ import { IntersectSquare } from "./IntersectSquare";
 import { LayersTwo01 } from "./LayersTwo01";
 import { LayoutLeft } from "./LayoutLeft";
 import { Lightning01 } from "./Lightning01";
+import { Lightning02 } from "./Lightning02";
 import { Link01 } from "./Link01";
 import { Lock03 } from "./Lock03";
 import { LockUnlocked03 } from "./LockUnlocked03";
@@ -271,6 +272,7 @@ export const Icons = {
   Logout04,
   LayersTwo01,
   Lightning01,
+  Lightning02,
   LayoutLeft,
   Model,
   MultipleVideo,

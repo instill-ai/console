@@ -53,7 +53,9 @@ export default function RootLayout({
         <script src="/__env.js" />
       </head>
       <body className="overflow-y-hidden">
-        <RootProvider>{children}</RootProvider>
+        <RootProvider showWebhook={process.env.WEBHOOK_ENABLED === "1"}>
+          {children}
+        </RootProvider>
       </body>
     </html>
   );

@@ -5,9 +5,11 @@ import { Tooltip } from "@instill-ai/design-system";
 export function CopiedTooltip({
   children,
   isOpen,
+  side,
 }: {
   children: React.ReactElement;
   isOpen: boolean;
+  side?: "top" | "right" | "bottom" | "left";
 }) {
   return (
     <Tooltip.Provider>
@@ -16,8 +18,8 @@ export function CopiedTooltip({
         <Tooltip.Portal>
           <Tooltip.Content
             align="center"
-            side="right"
-            sideOffset={8}
+            side={side ?? "top"}
+            sideOffset={4}
             className="rounded-sm"
           >
             <div className="px-2.5 py-1.5 rounded-sm bg-semantic-fg-primary text-semantic-bg-primary text-xs font-semibold">

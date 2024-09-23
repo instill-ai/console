@@ -270,6 +270,11 @@ export type EditorSlice = {
   updateFlowIsUnderDemoMode: (fn: (prev: boolean) => boolean) => void;
 };
 
+export type FeatureFlagSlice = {
+  showWebhook: boolean;
+  updateShowWebhook: (fn: (prev: boolean) => boolean) => void;
+};
+
 export type TriggerPipelineStreamMap = {
   component?: Record<
     string,
@@ -298,7 +303,8 @@ export type InstillStore = SmartHintSlice &
   PipelineBuilderSlice &
   GeneralSlice &
   RecentlyUsedSlice &
-  EditorSlice;
+  EditorSlice &
+  FeatureFlagSlice;
 
 export type InstillStoreMutators = [
   ["zustand/devtools", never],

@@ -87,11 +87,26 @@ export type PipelineComponentMap = Record<string, PipelineComponent>;
 
 export const PipelineComponentMapSchema = z.record(z.any());
 
+export type PipelineRunOnEventItem = {
+  type: string;
+};
+
+export type PipelineRunOnEventItemMap = Record<string, PipelineRunOnEventItem>;
+
+export const PipelineRunOnEventItemMapSchema = z.record(z.any());
+
+export type PipelineRunOnMap = {
+  event: PipelineRunOnEventItemMap;
+};
+
+export const PipelineRunOnMapSchema = z.record(z.any());
+
 export type PipelineRecipe = {
   version: string;
   component?: PipelineComponentMap;
   variable?: PipelineVariableFieldMap;
   output?: PipelineOutputFieldMap;
+  on?: PipelineRunOnMap;
 };
 
 export const PipelineRecipeSchema = z.object({
@@ -99,6 +114,7 @@ export const PipelineRecipeSchema = z.object({
   component: PipelineComponentMapSchema.optional(),
   variable: PipelineVariableFieldMapSchema.optional(),
   output: PipelineOutputFieldMapSchema.optional(),
+  on: PipelineRunOnMapSchema.optional(),
 });
 
 export type RunStatus =

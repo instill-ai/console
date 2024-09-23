@@ -79,6 +79,10 @@ export function useAutonomousEditorRecipeUpdater() {
     routeInfo.data.pipelineName,
     accessToken,
     editorDebouncedRecipeUpdater,
+    updateIsSavingRecipe,
+    updateHasUnsavedRecipe,
+    updatePipeline,
+    toast,
   ]);
 
   return autonomousRecipeUpdater;

@@ -43,6 +43,8 @@ export function useDebouncedRecipeUpdater(): EditorRecipeUpdater {
     updateEditorDebouncedRecipeUpdater,
   } = useInstillStore(useShallow(selector));
   const updatePipeline = useUpdateNamespacePipeline();
+
+  /* eslint-disable-next-line react-hooks/exhaustive-deps */
   const debounceRecipeUpdater = React.useCallback(
     debounce(
       ({
@@ -92,7 +94,7 @@ export function useDebouncedRecipeUpdater(): EditorRecipeUpdater {
 
   React.useEffect(() => {
     updateEditorDebouncedRecipeUpdater(() => debounceRecipeUpdater);
-  }, []);
+  }, [updateEditorDebouncedRecipeUpdater, debounceRecipeUpdater]);
 
   return debounceRecipeUpdater;
 }

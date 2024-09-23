@@ -1,6 +1,11 @@
+export * from "./PipelineFlowFactory";
+
 export * from "./analyzeColonInString";
+export * from "./checkComponentTypeHelper";
+export * from "./checkIsValidComponentMetadata";
 export * from "./keyLineNumberMapHelpers";
 export * from "./prettifyYaml";
+export * from "./renderFlowLayout";
 export * from "./schema";
 export * from "./tomorrowTheme";
 export * from "./useEditorCommandListener";
