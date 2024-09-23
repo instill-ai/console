@@ -24,12 +24,16 @@ export const Tags = (props: TagsProps) => {
           {visibilityStatus === "VISIBILITY_PRIVATE" ? (
             <div className="flex items-center gap-1">
               <Icons.Lock03 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
-              <span className="product-body-text-4-medium text-semantic-fg-secondary">private</span>
+              <span className="product-body-text-4-medium text-semantic-fg-secondary">
+                private
+              </span>
             </div>
           ) : (
             <div className="flex items-center gap-1">
               <Icons.BookOpen02 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
-              <span className="product-body-text-4-medium text-semantic-fg-secondary">public</span>
+              <span className="product-body-text-4-medium text-semantic-fg-secondary">
+                public
+              </span>
             </div>
           )}
         </Tag>

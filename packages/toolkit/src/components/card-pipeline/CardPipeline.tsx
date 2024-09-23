@@ -10,7 +10,6 @@ import { Menu } from "./Menu";
 import { Stats } from "./Stats";
 import { Tags } from "./Tags";
 
-
 export const CardPipelineSkeleton = () => {
   return (
     <div className="flex flex-row gap-x-6 rounded-md border border-semantic-bg-line bg-white p-4">
@@ -73,12 +72,16 @@ export const CardPipeline = ({
               {!pipeline.sharing.users["*/*"]?.enabled ? (
                 <div className="flex items-center gap-1">
                   <Icons.Lock03 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
-                  <span className="product-body-text-4-medium text-semantic-fg-secondary">private</span>
+                  <span className="product-body-text-4-medium text-semantic-fg-secondary">
+                    private
+                  </span>
                 </div>
               ) : (
                 <div className="flex items-center gap-1">
                   <Icons.BookOpen02 className="h-2.5 w-2.5 stroke-semantic-fg-secondary" />
-                  <span className="product-body-text-4-medium text-semantic-fg-secondary">public</span>
+                  <span className="product-body-text-4-medium text-semantic-fg-secondary">
+                    public
+                  </span>
                 </div>
               )}
             </Tag>
