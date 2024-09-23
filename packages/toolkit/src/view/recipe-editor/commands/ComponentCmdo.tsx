@@ -266,6 +266,7 @@ export const ComponentCmdo = () => {
     setSelectedComponentDefinition(null);
     setSelectedTaskName(null);
     setSelectedComponentDefaultValue(null);
+    setSearchCode(null);
   }
 
   function onSelectComponentDefinition(
