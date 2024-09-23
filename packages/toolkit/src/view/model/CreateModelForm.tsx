@@ -24,6 +24,7 @@ import {
   InstillErrors,
   InstillModelTask,
   InstillModelVisibility,
+  resourceIdPrefix,
 } from "../../constant";
 import {
   CreateUserModelPayload,
@@ -40,7 +41,7 @@ import {
 } from "../../lib";
 import { FieldDescriptionTooltip } from "../../lib/use-instill-form/components/common";
 import { useUserNamespaces } from "../../lib/useUserNamespaces";
-import { env, validateInstillResourceID } from "../../server";
+import { env, formatResourceId } from "../../server";
 
 type Option = {
   value: string;
@@ -61,14 +62,6 @@ const CreateModelSchema = z
     namespaceId: z.string(),
   })
   .superRefine((state, ctx) => {
-    if (!validateInstillResourceID(state.id)) {
-      return ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: InstillErrors.ResourceIDInvalidError,
-        path: ["id"],
-      });
-    }
-
     if (state.hardware === "Custom" && !state.hardwareCustom) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -106,9 +99,19 @@ export const CreateModelForm = () => {
   const form = useForm<z.infer<typeof CreateModelSchema>>({
     resolver: zodResolver(CreateModelSchema),
     mode: "onChange",
+    defaultValues: { id: "" },
   });
 
   const userNamespaces = useUserNamespaces();
+
+  const formattedModelId = formatResourceId(
+    form.watch("id"),
+    resourceIdPrefix.model,
+  );
+
+  const {
+    formState: { isDirty },
+  } = form;
 
   const modelRegions = useModelRegions({ accessToken });
 
@@ -179,14 +182,14 @@ export const CreateModelForm = () => {
 
   const createModel = useCreateUserModel();
   async function onSubmit(data: z.infer<typeof CreateModelSchema>) {
-    if (!routeInfo.isSuccess) {
+    if (!routeInfo.isSuccess || !formattedModelId) {
       return;
     }
 
     setCreating(true);
 
     const payload: CreateUserModelPayload = {
-      id: data.id,
+      id: formattedModelId,
       description: data.description,
       visibility: data.visibility ?? "VISIBILITY_PUBLIC",
       region: data.region,
@@ -215,7 +218,9 @@ export const CreateModelForm = () => {
 
         updateNavigationNamespaceAnchor(() => targetNamespace.id);
 
-        router.push(`/${data.namespaceId}/models/${data.id}/playground`);
+        router.push(
+          `/${data.namespaceId}/models/${formattedModelId}/playground`,
+        );
       } catch (error) {
         setCreating(false);
         toastInstillError({
@@ -276,6 +281,9 @@ export const CreateModelForm = () => {
                               data={userNamespaces}
                             />
                           </Form.Control>
+                          <p className="text-semantic-fg-secondary product-body-text-4-regular">
+                            Use the drop-down to choose a different owner.
+                          </p>
                           <Form.Message />
                         </Form.Item>
                       );
@@ -312,15 +320,17 @@ export const CreateModelForm = () => {
                               />
                             </Input.Root>
                           </Form.Control>
+                          {isDirty ? (
+                            <p className="text-semantic-fg-secondary product-body-text-4-regular">
+                              ID will be transformed to: {formattedModelId}
+                            </p>
+                          ) : null}
                           <Form.Message />
                         </Form.Item>
                       );
                     }}
                   />
                 </div>
-                <p className="text-xs text-semantic-fg-secondary">
-                  {`Give it a short and memorable ID, like 'cat-detector'. Use the drop-down to choose a different owner.`}
-                </p>
               </div>
               <Form.Field
                 control={form.control}
