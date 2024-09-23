@@ -127,6 +127,15 @@ export type Pipeline = {
   sourceUrl: string;
   documentationUrl: string;
   license: string;
+  endpoints: {
+    webhooks: Record<
+      string,
+      {
+        description: string;
+        url: string;
+      }
+    >;
+  };
 };
 
 export const PipelineSchema = z.object({

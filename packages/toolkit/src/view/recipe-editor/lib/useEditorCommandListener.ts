@@ -87,5 +87,7 @@ export function useEditorCommandListener() {
     updateOpenComponentCmdo,
     importRecipeInputTriggerRef,
     updateOpenActionCmdk,
+    runButtonRef,
+    openComponentCmdo,
   ]);
 }

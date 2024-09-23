@@ -5,10 +5,7 @@ import { Nullable, PipelineComponent, PipelineComponentMap } from "instill-sdk";
 import { Icons } from "@instill-ai/design-system";
 
 import { ImageWithFallback } from "../../../components";
-import {
-  isPipelineGeneralComponent,
-  isPipelineIteratorComponent,
-} from "../../pipeline-builder/lib/checkComponentType";
+import { checkComponentTypeHelper } from "../lib/checkComponentTypeHelper";
 import { SidebarSection } from "./SidebarSection";
 
 type PipelineComponentWKey = PipelineComponent & {
@@ -48,7 +45,9 @@ export const ComponentSection = ({
         ? searchedComponents.map((component) => (
             <div key={component.key} className="flex flex-row gap-x-2">
               <div className="rounded-[2px] flex items-center justify-center w-6 h-6 bg-semantic-bg-primary border border-semantic-bg-line">
-                {isPipelineGeneralComponent(component) ? (
+                {checkComponentTypeHelper.isPipelineGeneralComponent(
+                  component,
+                ) ? (
                   <ImageWithFallback
                     src={`/icons/${component.definition?.id}.svg`}
                     width={16}
@@ -59,7 +58,9 @@ export const ComponentSection = ({
                     }
                   />
                 ) : null}
-                {isPipelineIteratorComponent(component) ? (
+                {checkComponentTypeHelper.isPipelineIteratorComponent(
+                  component,
+                ) ? (
                   <ImageWithFallback
                     src={`/icons/iterator.svg`}
                     width={16}

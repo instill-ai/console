@@ -22,11 +22,11 @@ export function getReferencesFromAny(value: any) {
         return [...references, ...refs];
       }
     } else if (typeof value === "object" && value !== null) {
-      let refs = [...references];
+      const refs = [...references];
 
       for (const nestedKey in value) {
         if (value[nestedKey] !== null) {
-          refs = [...refs, ...getReferences(value[nestedKey])];
+          refs.push(...getReferences(value[nestedKey]));
         }
       }
 

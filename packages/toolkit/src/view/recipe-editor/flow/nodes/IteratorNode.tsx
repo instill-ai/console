@@ -135,7 +135,7 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
         currentViewId: viewId,
       },
     }));
-  }, [id, data, updateEditorMultiScreenModel]);
+  }, [updateEditorMultiScreenModel]);
 
   const errorState = React.useMemo<ComponentErrorState>(() => {
     if (!triggerPipelineStreamMap || !triggerPipelineStreamMap.component) {
@@ -214,7 +214,7 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
 
   const handleOpenComponentOutput = React.useCallback(() => {
     console.log(id);
-  }, [id, data]);
+  }, [id]);
 
   return (
     <NodeBase

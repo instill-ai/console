@@ -64,11 +64,11 @@ export const NodeBase = ({
 
   const isDisabledOpenDocumentationButton = React.useMemo(() => {
     return disabledOpenDocumentationButton ? true : flowIsUnderDemoMode;
-  }, [disabledOpenDocumentationButton, isSelected, flowIsUnderDemoMode]);
+  }, [disabledOpenDocumentationButton, flowIsUnderDemoMode]);
 
   const isDisabledOpenComponentOutputButton = React.useMemo(() => {
     return disabledOpenComponentOutputButton ? true : flowIsUnderDemoMode;
-  }, [disabledOpenComponentOutputButton, isSelected, flowIsUnderDemoMode]);
+  }, [disabledOpenComponentOutputButton, flowIsUnderDemoMode]);
 
   return (
     <div className="relative nowheel">
@@ -78,14 +78,7 @@ export const NodeBase = ({
           isSelected ? "opacity-100" : "opacity-0",
         )}
       >
-        <div className="flex flex-row-reverse mx-auto gap-x-2.5">
-          <Button
-            disabled={true}
-            variant="tertiaryGrey"
-            className="!px-2 opacity-0 pointer-events-none"
-          >
-            <Icons.Play className="w-4 h-4 stroke-semantic-fg-primary" />
-          </Button>
+        <div className="flex flex-row-reverse mx-auto w-full gap-x-2.5 px-2">
           {isDisabledOpenComponentOutputButton ? null : (
             <EditorButtonTooltipWrapper tooltipContent="View component output">
               <Button

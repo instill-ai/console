@@ -1,4 +1,5 @@
 export * from "./GeneralNode";
 export * from "./IteratorNode";
-export * from "./ResponseNode";
+export * from "./OutputNode";
+export * from "./RunOnEventNode";
 export * from "./VariableNode";
