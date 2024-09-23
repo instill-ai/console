@@ -42,8 +42,6 @@ export const CardPipeline = ({
     return pipeline.name.split("/")[1];
   }, [pipeline]);
 
-  console.log("pipeline", pipeline);
-
   return (
     <div className="flex flex-row gap-x-6 rounded-md border border-semantic-bg-line bg-white p-4">
       <div className="flex grow flex-col gap-y-2">

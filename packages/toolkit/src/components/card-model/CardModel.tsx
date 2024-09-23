@@ -10,7 +10,6 @@ import {
 
 import { ImageWithFallback } from "..";
 import { Model } from "../../lib";
-import { Menu } from "./Menu";
 import { Stats } from "./Stats";
 import { Tags } from "./Tags";
 
@@ -32,7 +31,7 @@ const OWNER = {
 };
 
 export const CardModel = (props: CardModelProps) => {
-  const { model, onDelete } = props;
+  const { model } = props;
   const owner = React.useMemo(() => {
     if (!model) {
       return OWNER;
@@ -78,9 +77,6 @@ export const CardModel = (props: CardModelProps) => {
             region={getModelRegionToolkit(model.region) || ""}
             hardware={getModelHardwareToolkit(model.hardware) || model.hardware}
           />
-          {onDelete ? (
-            <Menu handleDeleteModel={() => onDelete(model)} model={model} />
-          ) : null}
         </div>
         <p className="text-base text-semantic-fg-secondary">
           {model.description}

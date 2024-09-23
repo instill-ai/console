@@ -2,19 +2,10 @@
 
 import cn from "clsx";
 
-import { useToast } from "@instill-ai/design-system";
-
 import { CardModel } from "../../components/card-model/CardModel";
 import { CardModelSkeleton } from "../../components/card-model/Skeleton";
 import {
-  InstillStore,
   Model,
-  sendAmplitudeData,
-  toastInstillError,
-  useAmplitudeCtx,
-  useDeleteModel,
-  useInstillStore,
-  useShallow,
 } from "../../lib";
 
 export type ModelsListProps = {
@@ -24,15 +15,10 @@ export type ModelsListProps = {
   isSearchActive: boolean;
 };
 
-const selector = (store: InstillStore) => ({
-  accessToken: store.accessToken,
-});
+
 
 export const ModelsList = (props: ModelsListProps) => {
-  const { models, onModelDelete, isLoading, isSearchActive } = props;
-  const { accessToken } = useInstillStore(useShallow(selector));
-  const { amplitudeIsInit } = useAmplitudeCtx();
-  const { toast } = useToast();
+  const { models, isLoading, isSearchActive } = props;
 
   const isEmpty = !isLoading && models.length === 0;
 
@@ -40,28 +26,7 @@ export const ModelsList = (props: ModelsListProps) => {
    * Handle delete model
    * -----------------------------------------------------------------------*/
 
-  const deleteModel = useDeleteModel();
-  const handleDeleteModel = async (model: Model) => {
-    if (!model) return;
 
-    try {
-      await deleteModel.mutateAsync({ modelName: model.name, accessToken });
-
-      if (amplitudeIsInit) {
-        sendAmplitudeData("delete_model");
-      }
-
-      if (onModelDelete) {
-        onModelDelete();
-      }
-    } catch (error) {
-      toastInstillError({
-        title: "Something went wrong while deleting the model",
-        error,
-        toast,
-      });
-    }
-  };
 
   return (
     <div
@@ -77,7 +42,7 @@ export const ModelsList = (props: ModelsListProps) => {
       ) : !isEmpty ? (
         models.map((model, index) => {
           return (
-            <CardModel model={model} key={index} onDelete={handleDeleteModel} />
+            <CardModel model={model} key={index} />
           );
         })
       ) : (
