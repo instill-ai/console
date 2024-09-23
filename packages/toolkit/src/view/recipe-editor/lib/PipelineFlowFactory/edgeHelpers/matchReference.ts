@@ -43,5 +43,17 @@ export function matchReference(
     return true;
   }
 
+  // Check if the reference match run on event, for example, for reference like
+  // "on.event.event_id.event_data_key", we will check if "on.event.event_id" is
+  // available
+
+  if (referenceValueWithoutArray.includes("on.event")) {
+    const eventId = referenceValueWithoutArray.split(".")[2];
+    const availableEventId = availableReference.split(".")[2];
+    if (eventId === availableEventId) {
+      return true;
+    }
+  }
+
   return false;
 }

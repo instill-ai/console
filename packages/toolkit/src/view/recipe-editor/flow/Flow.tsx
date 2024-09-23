@@ -99,7 +99,7 @@ export const Flow = ({
 
     const { nodes, edges } = pipelineFlowFactory.createFlow();
 
-    console.log(nodes);
+    console.log(nodes, edges);
 
     renderFlowLayout(nodes, edges)
       .then((graphData) => {

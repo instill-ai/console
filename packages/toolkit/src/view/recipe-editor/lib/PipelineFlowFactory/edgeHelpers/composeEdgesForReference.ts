@@ -12,16 +12,48 @@ export function composeEdgesForReference({
   currentEdges,
   variableNodeConnectableReferencePaths,
   componentNodeConnectableReferencePaths,
+  runOnNodeConnectableReferencePaths,
 }: {
   reference: InstillReferenceWithID;
   currentEdges: Edge[];
   variableNodeConnectableReferencePaths: string[];
   componentNodeConnectableReferencePaths: string[];
+  runOnNodeConnectableReferencePaths: string[];
 }) {
   const newEdges: Edge[] = [];
 
   const referencePrefix =
     reference.referenceValue.withoutCurlyBraces.split(".")[0];
+
+  if (referencePrefix && referencePrefix.includes("on")) {
+    const referenceIsAvailable = runOnNodeConnectableReferencePaths.some(
+      (availableReference) =>
+        matchReference(
+          reference.referenceValue.withoutCurlyBraces,
+          availableReference,
+        ),
+    );
+
+    // the reference is like "on.event.event_id.event_data_key"
+    const sourceId = reference.referenceValue.withoutCurlyBraces.split(".")[2];
+
+    const hasNoEdgeForThisReference =
+      currentEdges.find(
+        (edge) =>
+          edge.source === `on-${sourceId}` && edge.target === reference.id,
+      ) === undefined;
+
+    if (referenceIsAvailable && hasNoEdgeForThisReference && reference.id) {
+      newEdges.push({
+        id: uuidv4(),
+        source: `on-${sourceId}`,
+        target: reference.id,
+        type: "customEdge",
+      });
+    }
+
+    return newEdges;
+  }
 
   // 1. Check if the reference is toward variable
   if (referencePrefix && referencePrefix.includes("variable")) {
@@ -60,17 +92,14 @@ export function composeEdgesForReference({
       ),
   );
 
+  const sourceId = reference.referenceValue.withoutCurlyBraces.split(".")[0];
+
   const hasNoEdgeForThisReference =
     currentEdges.find(
-      (edge) =>
-        edge.source ===
-          reference.referenceValue.withoutCurlyBraces.split(".")[0] &&
-        edge.target === reference.id,
+      (edge) => edge.source === sourceId && edge.target === reference.id,
     ) === undefined;
 
   if (referenceIsAvailable && hasNoEdgeForThisReference && reference.id) {
-    const sourceId = reference.referenceValue.withoutCurlyBraces.split(".")[0];
-
     if (sourceId) {
       newEdges.push({
         id: uuidv4(),

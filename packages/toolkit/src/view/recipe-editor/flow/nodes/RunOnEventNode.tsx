@@ -66,7 +66,6 @@ export const RunOnEventNode = ({ id }: NodeProps) => {
   }, [id, updateSelectedComponentId]);
 
   const handleOpenWebhookURL = React.useCallback(() => {
-    console.log("pipeline", pipeline.data);
     if (
       !pipeline.isSuccess ||
       !pipeline.data.endpoints ||
@@ -83,8 +82,6 @@ export const RunOnEventNode = ({ id }: NodeProps) => {
     if (!targetUrl) {
       return;
     }
-
-    console.log("targetUrl", targetUrl);
 
     updateEditorMultiScreenModel((prev) => ({
       ...prev,

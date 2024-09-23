@@ -17,14 +17,21 @@ export function getConnectableReferencePathsFromRecipe(
 ): {
   variableNodeConnectableReferencePaths: string[];
   componentNodeConnectableReferencePaths: string[];
+  runOnNodeConnectableReferencePaths: string[];
 } {
   const variableNodeConnectableReferencePaths: string[] = [];
   const componentNodeConnectableReferencePaths: string[] = [];
-
+  const runOnNodeConnectableReferencePaths: string[] = [];
   // 1. Extract connectable references for variable
   if (recipe && recipe.variable) {
     for (const [key] of Object.entries(recipe.variable)) {
       variableNodeConnectableReferencePaths.push(`variable.${key}`);
+    }
+  }
+
+  if (recipe && recipe.on && recipe.on.event) {
+    for (const [key] of Object.entries(recipe.on.event)) {
+      runOnNodeConnectableReferencePaths.push(`on.event.${key}`);
     }
   }
 
@@ -76,5 +83,6 @@ export function getConnectableReferencePathsFromRecipe(
   return {
     variableNodeConnectableReferencePaths,
     componentNodeConnectableReferencePaths,
+    runOnNodeConnectableReferencePaths,
   };
 }

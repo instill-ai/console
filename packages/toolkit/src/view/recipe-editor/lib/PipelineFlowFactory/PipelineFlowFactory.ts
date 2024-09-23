@@ -7,11 +7,13 @@ import { nodeHelpers } from "./nodeHelpers";
 
 export class PipelineFlowFactory {
   recipe: Nullable<PipelineRecipe>;
+  metadata: Nullable<GeneralRecord>;
   nodes: Node<NodeData>[] = [];
   edges: Edge[] = [];
 
   constructor(recipe: PipelineRecipe, metadata?: GeneralRecord) {
     this.recipe = recipe;
+    this.metadata = metadata ?? null;
     this.nodes = this.composeNodes(recipe, metadata);
     this.edges = this.composeEdges(recipe);
   }
@@ -76,13 +78,20 @@ export class PipelineFlowFactory {
     const {
       variableNodeConnectableReferencePaths,
       componentNodeConnectableReferencePaths,
+      runOnNodeConnectableReferencePaths,
     } = edgeHelpers.getConnectableReferencePathsFromRecipe(recipe);
+
+    console.log(
+      "runOnNodeConnectableReferencePaths",
+      runOnNodeConnectableReferencePaths,
+    );
 
     for (const reference of userDefinedReferences) {
       const newEdges = edgeHelpers.composeEdgesForReference({
         reference,
         variableNodeConnectableReferencePaths,
         componentNodeConnectableReferencePaths,
+        runOnNodeConnectableReferencePaths,
         currentEdges: edges,
       });
 
