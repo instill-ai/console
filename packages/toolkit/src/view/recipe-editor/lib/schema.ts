@@ -42,6 +42,7 @@ const connectorDefinitionIds = [
   "freshdesk",
   "asana",
   "chroma",
+  "collection",
 ];
 
 export const InstillYamlSchema = {
