@@ -43,6 +43,7 @@ const connectorDefinitionIds = [
   "asana",
   "chroma",
   "collection",
+  "universal-ai",
 ];
 
 export const InstillYamlSchema = {
