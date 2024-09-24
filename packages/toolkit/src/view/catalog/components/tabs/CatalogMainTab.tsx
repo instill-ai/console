@@ -28,7 +28,7 @@ import { EditCatalogDialogData } from "../EditCatalogDialog";
 import { convertTagsToArray } from "../lib/helpers";
 import { UpgradePlanLink } from "../notifications";
 
-type CatalogTabProps = {
+type CatalogMainTabProps = {
   onCatalogSelect: (catalog: Catalog) => void;
   accessToken: Nullable<string>;
   onDeleteCatalog: (catalog: Catalog) => Promise<void>;
@@ -45,7 +45,7 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const CatalogTab = ({
+export const CatalogMainTab = ({
   onCatalogSelect,
   accessToken,
   onDeleteCatalog,
@@ -54,7 +54,7 @@ export const CatalogTab = ({
   namespaceType,
   subscription,
   isLocalEnvironment,
-}: CatalogTabProps) => {
+}: CatalogMainTabProps) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [selectedSortOrder, setSelectedSortOrder] =
@@ -68,6 +68,7 @@ export const CatalogTab = ({
 
   const createCatalog = useCreateCatalog();
   const updateCatalog = useUpdateCatalog();
+  const getCatalogsQuery = useGetCatalogs;
   const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
   const isTeamPlan = subscription?.plan === "PLAN_TEAM";
 
@@ -130,17 +131,44 @@ export const CatalogTab = ({
 
   const handleCloneCatalog = async (
     catalog: Catalog,
-    newNamespaceId: string,
+    newNamespaceId: string
   ) => {
     if (!accessToken) return;
 
-    const clonedCatalog = {
-      name: `${catalog.name}-clone`,
-      description: catalog.description ?? "",
-      tags: catalog.tags ?? [],
-    };
-
     try {
+      const { data: destinationCatalogs } = await getCatalogsQuery({
+        accessToken,
+        ownerId: newNamespaceId,
+        enabled: true,
+      }).refetch();
+
+      const getUniqueCatalogName = (baseName: string): string => {
+        let newName = baseName;
+        let suffix = 1;
+        const checkCatalogExists = (name: string) => {
+          return (destinationCatalogs || []).some((c) => c.name === name);
+        };
+        if (!checkCatalogExists(newName)) {
+          return newName;
+        }
+        while (checkCatalogExists(newName)) {
+          if (suffix === 1) {
+            newName = `${baseName}-clone`;
+          } else {
+            newName = `${baseName}-clone-${suffix}`;
+          }
+          suffix++;
+        }
+        return newName;
+      };
+
+      const newCatalogName = getUniqueCatalogName(catalog.name);
+      const clonedCatalog = {
+        name: newCatalogName,
+        description: catalog.description ?? "",
+        tags: catalog.tags ?? [],
+      };
+
       await createCatalog.mutateAsync({
         payload: {
           ...clonedCatalog,
@@ -149,17 +177,19 @@ export const CatalogTab = ({
         ownerId: newNamespaceId,
         accessToken,
       });
+
       catalogState.refetch();
     } catch (error) {
       console.error("Error cloning catalog:", error);
     }
   };
 
+
   const filteredAndSortedCatalogs = React.useMemo(() => {
     const filtered = catalogs.filter(
-      (kb) =>
-        kb.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        kb.description.toLowerCase().includes(searchTerm.toLowerCase()),
+      (catalog) =>
+        catalog.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        catalog.description.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
     filtered.sort((a, b) => {

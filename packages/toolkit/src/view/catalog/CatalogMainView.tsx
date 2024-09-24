@@ -33,7 +33,7 @@ import { CreditUsageFileNotification } from "./components/notifications";
 import {
   AskQuestionTab,
   CatalogFilesTab,
-  CatalogTab,
+  CatalogMainTab,
   ChunkTab,
   GetCatalogTab,
   RetrieveTestTab,
@@ -122,7 +122,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   React.useEffect(() => {
     if (catalogs.data) {
       const totalUsed = catalogs.data.reduce(
-        (total, kb) => total + parseInt(String(kb.usedStorage)),
+        (total, catalog) => total + parseInt(String(catalog.usedStorage)),
         0,
       );
       setRemainingStorageSpace(
@@ -325,7 +325,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
           )}
         >
           {activeTab === "catalogs" ? (
-            <CatalogTab
+            <CatalogMainTab
               onCatalogSelect={handleCatalogSelect}
               onDeleteCatalog={handleDeleteCatalog}
               accessToken={props.accessToken}
