@@ -38,7 +38,7 @@ const connectorDefinitionIds = [
   "sql",
   "weaviate",
   "qdrant",
-  "artifact",
+  "instill-artifact",
   "freshdesk",
   "asana",
   "chroma",
