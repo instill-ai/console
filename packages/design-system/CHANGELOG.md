@@ -1,5 +1,17 @@
 # @instill-ai/design-system
 
+## [0.80.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.79.1...@instill-ai/design-system-v0.80.0) (2024-09-24)
+
+
+### Features
+
+* support run-on-event webhook URL on editor ([#1498](https://github.com/instill-ai/console/issues/1498)) ([d0ed46d](https://github.com/instill-ai/console/commit/d0ed46dc02b24fc4085d8e6e8ac223d4a4239b8f))
+
+
+### Bug Fixes
+
+* **editor:** fix CMDO not correctly initialized searchCode issue ([#1500](https://github.com/instill-ai/console/issues/1500)) ([88d7705](https://github.com/instill-ai/console/commit/88d7705f7a4afcd984f6fd1ec8ebb95398621828))
+
 ## [0.79.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.79.0...@instill-ai/design-system-v0.79.1) (2024-09-19)
 
 

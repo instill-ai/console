@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.105.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.104.0...@instill-ai/toolkit-v0.105.0) (2024-09-24)
+
+
+### Features
+
+* **editor:** support universal ai component on schema validation ([#1502](https://github.com/instill-ai/console/issues/1502)) ([4c3f93c](https://github.com/instill-ai/console/commit/4c3f93c408a0268290cefad6e319d03079599996))
+* hint transformed id on model and pipeline creation ([#1494](https://github.com/instill-ai/console/issues/1494)) ([e2eb395](https://github.com/instill-ai/console/commit/e2eb395f8d045ba779d2f4af690fbb3b1c0050d3))
+* **models/pipelines:** feat cards improvements  ([#1497](https://github.com/instill-ai/console/issues/1497)) ([ca29f64](https://github.com/instill-ai/console/commit/ca29f64c5758d3b171869c5c7d0a7b9bd9e416a4))
+* support run-on-event webhook URL on editor ([#1498](https://github.com/instill-ai/console/issues/1498)) ([d0ed46d](https://github.com/instill-ai/console/commit/d0ed46dc02b24fc4085d8e6e8ac223d4a4239b8f))
+
+
+### Bug Fixes
+
+* **editor:** fix CMDO not correctly initialized searchCode issue ([#1500](https://github.com/instill-ai/console/issues/1500)) ([88d7705](https://github.com/instill-ai/console/commit/88d7705f7a4afcd984f6fd1ec8ebb95398621828))
+* **explore:** fix capitalise some tags ([#1505](https://github.com/instill-ai/console/issues/1505)) ([83cf04e](https://github.com/instill-ai/console/commit/83cf04ee85b64cbb45a8e6bdc52209b1dd7feb2d))
+
+
+### Miscellaneous
+
+* adapt backend instill-artifact naming changes ([#1503](https://github.com/instill-ai/console/issues/1503)) ([fa027a8](https://github.com/instill-ai/console/commit/fa027a822f65e8263f066092a863400ce34d39ab))
+* add Collection component ([#1501](https://github.com/instill-ai/console/issues/1501)) ([101af5f](https://github.com/instill-ai/console/commit/101af5f62c0c58832978643643cde1a668a23f95))
+
 ## [0.104.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.103.2...@instill-ai/toolkit-v0.104.0) (2024-09-21)
 
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.5.2...instill-sdk-v0.6.0) (2024-09-24)
+
+
+### Features
+
+* support run-on-event webhook URL on editor ([#1498](https://github.com/instill-ai/console/issues/1498)) ([d0ed46d](https://github.com/instill-ai/console/commit/d0ed46dc02b24fc4085d8e6e8ac223d4a4239b8f))
+
+
+### Bug Fixes
+
+* **editor:** fix CMDO not correctly initialized searchCode issue ([#1500](https://github.com/instill-ai/console/issues/1500)) ([88d7705](https://github.com/instill-ai/console/commit/88d7705f7a4afcd984f6fd1ec8ebb95398621828))
+
 ## [0.5.2](https://github.com/instill-ai/console/compare/instill-sdk-v0.5.1...instill-sdk-v0.5.2) (2024-09-19)
 
 

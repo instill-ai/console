@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.58.0-beta](https://github.com/instill-ai/console/compare/v0.57.2-beta...v0.58.0-beta) (2024-09-24)
+
+
+### Features
+
+* **editor:** support universal ai component on schema validation ([#1502](https://github.com/instill-ai/console/issues/1502)) ([4c3f93c](https://github.com/instill-ai/console/commit/4c3f93c408a0268290cefad6e319d03079599996))
+* support run-on-event webhook URL on editor ([#1498](https://github.com/instill-ai/console/issues/1498)) ([d0ed46d](https://github.com/instill-ai/console/commit/d0ed46dc02b24fc4085d8e6e8ac223d4a4239b8f))
+
+
+### Miscellaneous
+
+* adapt backend instill-artifact naming changes ([#1503](https://github.com/instill-ai/console/issues/1503)) ([fa027a8](https://github.com/instill-ai/console/commit/fa027a822f65e8263f066092a863400ce34d39ab))
+* add Collection component ([#1501](https://github.com/instill-ai/console/issues/1501)) ([101af5f](https://github.com/instill-ai/console/commit/101af5f62c0c58832978643643cde1a668a23f95))
+
 ## [0.57.2-beta](https://github.com/instill-ai/console/compare/v0.57.1-beta...v0.57.2-beta) (2024-09-21)
 
 
