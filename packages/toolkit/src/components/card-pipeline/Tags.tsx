@@ -1,6 +1,6 @@
 "use client";
 
-import { Tag } from "@instill-ai/design-system";
+import { cn, Tag } from "@instill-ai/design-system";
 
 export type TagsProps = {
   tags: string[];
@@ -14,7 +14,10 @@ export const Tags = (props: TagsProps) => {
           key={index}
           variant="lightNeutral"
           size="sm"
-          className="gap-x-1.5 !py-0.5 rounded-full product-body-text-4-medium text-semantic-fg-secondary lowercase"
+          className={cn(
+            "gap-x-1.5 !py-0.5 rounded-full product-body-text-4-medium text-semantic-fg-secondary",
+            title?.toLowerCase() === 'featured' ? '!capitalize' : '!lowercase'
+          )}
         >
           {title}
         </Tag>
