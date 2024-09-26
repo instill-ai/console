@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.105.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.105.0...@instill-ai/toolkit-v0.105.1) (2024-09-26)
+
+
+### Bug Fixes
+
+* fix wrongly handle reference prefix cause connecting is missing ([#1506](https://github.com/instill-ai/console/issues/1506)) ([ad0aa6a](https://github.com/instill-ai/console/commit/ad0aa6a77e0c8eb09007b14838074f841f8b0a6a))
+
 ## [0.105.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.104.0...@instill-ai/toolkit-v0.105.0) (2024-09-24)
 
 
