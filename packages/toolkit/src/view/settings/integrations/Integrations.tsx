@@ -7,6 +7,7 @@ import { Icons, Input, Nullable, Skeleton } from "@instill-ai/design-system";
 
 import {
   debounce,
+  initializeIntegrationConnection,
   useInfiniteIntegrationConnections,
   useInfiniteIntegrations,
 } from "../../../lib";
@@ -147,6 +148,17 @@ export const Integrations = (props: IntegrationsProps) => {
   return (
     <React.Fragment>
       <div className="flex flex-row gap-x-4 mt-1" style={{ width: "400px" }}>
+        <button
+          onClick={async () => {
+            await initializeIntegrationConnection(
+              "google",
+              "hello-world",
+              "admin",
+            );
+          }}
+        >
+          Login
+        </button>
         <Input.Root className="w-full">
           <Input.LeftIcon>
             <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />

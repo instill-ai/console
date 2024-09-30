@@ -31,6 +31,8 @@ export * from "./convertSentenceToCamelCase";
 export * from "./useUserNamespaces";
 export * from "./stringToHash32Bit";
 
+export { initializeIntegrationConnection } from "./integrations/helpers";
+
 export { debounce };
 
 export { isEqual };

@@ -1,3 +1,5 @@
+"use client";
+
 import { useSearchParams } from "next/navigation";
 
 import { Button, Icons, Skeleton } from "@instill-ai/design-system";

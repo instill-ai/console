@@ -38,3 +38,6 @@ export {
   dehydrate,
   HydrationBoundary,
 } from "@tanstack/react-query";
+
+export * from "../lib/integrations/core";
+export * from "../lib/integrations/types";

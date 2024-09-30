@@ -68,6 +68,7 @@ export type AddIntegrationRequest = {
   integrationId: string;
   setup: Record<string, unknown>;
   method: IntegrationMethod;
+  oAuthAccessDetails?: Record<string, unknown>;
 };
 
 export type AddIntegrationResponse = {
