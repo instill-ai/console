@@ -29,68 +29,94 @@ export const defaultCodeSnippetStyles = {
   padding: "16px",
 };
 
+const imageUrlTask = `{
+      "data": {
+        "image-url": "https://artifacts.instill.tech/imgs/bear.jpg",
+        "type":"image-url"
+      }
+    }`;
+
 const taskPayloads = {
-  TASK_EMBEDDING: ``,
-  TASK_SPEECH_RECOGNITION: ``,
-  TASK_CUSTOM: ``,
-  TASK_CLASSIFICATION: `"classification": {
-        "imageUrl": {your-input-image-url}
-      }`,
-  TASK_DETECTION: `"detection": {
-        "imageUrl": {your-input-image-url}
-      }`,
-  TASK_KEYPOINT: `"keypoint": {
-        "imageUrl": {your-input-image-url}
-      }`,
-  TASK_OCR: `"ocr": {
-        "imageUrl": {your-input-image-url}
-      }`,
-  TASK_INSTANCE_SEGMENTATION: `"instanceSegmentation": {
-        "imageUrl": {your-input-image-url}
-      }`,
-  TASK_SEMANTIC_SEGMENTATION: `"semanticSegmentation": {
-        "imageUrl": {your-input-image-url}
-      }`,
-  TASK_COMPLETION: `"textGeneration": {
-        "prompt": "In this beautiful day,",
-        "systemMessage": "you are a helpful assistant",
-        "maxNewTokens": 1024,
-        "topK": 5,
-        "temperature": 0.7
-      }`,
-  TASK_CHAT: `"textGeneration": {
-        "prompt": "How is the weather today?",
-        "chatHistory": [
+  TASK_EMBEDDING: `{
+      "data": {
+        "embeddings": [
           {
-            "role": "user",
+            "text": "This is a text content to be embedded",
+            "type": "text"
+          },
+          {
+            "text": "This is another text content to be embedded",
+            "type": "text"
+          },
+          {
+            "image-url": "https://artifacts.instill.tech/imgs/bear.jpg",
+            "type": "image-url"
+          },
+          {
+            "text": "This is the third text content to be embedded",
+            "type": "text"
+          }
+        ]
+      }
+    }`,
+  TASK_SPEECH_RECOGNITION: ``,
+  TASK_CUSTOM: `{
+      "data": {
+        "your-custom-property-name": "your custom property value"
+      }
+    }`,
+  TASK_CLASSIFICATION: imageUrlTask,
+  TASK_DETECTION: imageUrlTask,
+  TASK_KEYPOINT: imageUrlTask,
+  TASK_OCR: imageUrlTask,
+  TASK_INSTANCE_SEGMENTATION: imageUrlTask,
+  TASK_SEMANTIC_SEGMENTATION: imageUrlTask,
+  TASK_COMPLETION: `{
+      "data": {
+        prompt": "In this beautiful day, I",
+      },
+      "parameter": {
+        "max-tokens": 256,
+        "n": 1,
+        "seed": 0,
+        "stream": false,
+        "temperature": 0.7,
+        "top-p": 1
+      }
+    }`,
+  TASK_CHAT: `{
+      "data": {
+        "messages": [
+          {
             "content": [
               {
-                "type": "text",
-                "text": "hi"
+                "text": "what is basketball?",
+                "type": "text"
               }
-            ]
+            ],
+            "role": "user"
           }
-        ],
-        "systemMessage": "you are a helpful assistant",
-        "maxNewTokens": 1024,
-        "topK": 5,
-        "temperature": 0.7
-      }`,
-  TASK_TEXT_TO_IMAGE: `"textToImage": {
-        "prompt": "award winning high resolution photo of a giant tortoise",
-        "steps": 1,
-        "cfgScale": 5.5,
-        "seed": 1,
-        "samples": 1
-      }`,
-  TASK_IMAGE_TO_IMAGE: `"imageToImage": {
-        "prompt": "spacedog",
-        "promptImageUrl": "https://artifacts.instill.tech/imgs/dog.jpg",
-        "steps": 1,
-        "cfgScale": 5.5,
-        "seed": 1,
-        "samples": 1
-      }`,
+        ]
+      },
+      "parameter": {
+        "max-tokens": 256,
+        "n": 1,
+        "seed": 0,
+        "stream": false,
+        "temperature": 0.7,
+        "top-p": 1
+      }
+    }`,
+  TASK_TEXT_TO_IMAGE: `{
+      "data": {
+        "prompt": "A cute cat napping",
+      },
+      "parameter": {
+        "n": 1,
+        "seed": 0
+      }
+    }`,
+  TASK_IMAGE_TO_IMAGE: ``,
 };
 
 export const getInstillTaskHttpRequestExample = (model?: Model) => {
@@ -105,9 +131,7 @@ export const getInstillTaskHttpRequestExample = (model?: Model) => {
 --header "Authorization: Bearer $INSTILL_API_TOKEN" \\
 --data '{
   "taskInputs": [
-    {
-      ${taskPayloads[model.task]}
-    }
+    ${taskPayloads[model.task]}
   ]
 }'`;
 };
