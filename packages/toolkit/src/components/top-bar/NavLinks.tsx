@@ -140,7 +140,12 @@ export const NavLinks = ({ isExploreRoute }: { isExploreRoute?: boolean }) => {
     <React.Fragment>
       {me.isSuccess
         ? navLinkItems
-            .filter((item) => isCloud || item.pathname !== "applications")
+            .filter((item) => {
+              if (isCloud) {
+                return true;
+              }
+              return item.pathname !== "applications";
+            })
             .map(({ pathname, Icon, title }) => (
               <NavLink
                 key={pathname}
