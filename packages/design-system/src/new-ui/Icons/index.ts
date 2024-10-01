@@ -16,6 +16,7 @@ import { BarChartSquare02 } from "./BarChartSquare02";
 import { BookOpen02 } from "./BookOpen02";
 import { Box } from "./Box";
 import { BracketSlash } from "./BracketSlash";
+import { Browser } from "./Browser";
 import { Building05 } from "./Building05";
 import { CalendarCheck01 } from "./CalendarCheck01";
 import { CardRefresh } from "./CardRefresh";
@@ -194,6 +195,7 @@ export const Icons = {
   BookOpen02,
   Box,
   BracketSlash,
+  Browser,
   Building05,
   CalendarCheck01,
   CardRefresh,
