@@ -4,9 +4,17 @@ import * as React from "react";
 import Image from "next/image";
 import { Integration, IntegrationMethod, Nullable } from "instill-sdk";
 
-import { Button, Dialog, TabMenu, useToast } from "@instill-ai/design-system";
-
 import {
+  Button,
+  Dialog,
+  Icons,
+  TabMenu,
+  useToast,
+} from "@instill-ai/design-system";
+
+import { AvailableOAuthIntegration } from "../../../constant";
+import {
+  initializeIntegrationConnection,
   InstillStore,
   toastInstillError,
   useAddIntegrationConnection,
@@ -14,12 +22,8 @@ import {
   useIntegration,
   useShallow,
 } from "../../../lib";
+import { IntegrationProvider } from "../../../server";
 import { ConnectionForm } from "./ConnectionForm";
-
-const METHOD_TITLE: Record<IntegrationMethod, string> = {
-  METHOD_DICTIONARY: "Dictionary",
-  METHOD_OAUTH: "oAuth",
-};
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -40,17 +44,24 @@ export const AvailableIntegration = ({
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [isConnectDialogOpen, setIsConnectDialogOpen] = React.useState(false);
   const [activeIntegrationMethod, setActiveIntegrationMethod] =
-    React.useState<IntegrationMethod | null>(null);
+    React.useState<Nullable<IntegrationMethod>>(null);
   const addIntegrationConnection = useAddIntegrationConnection();
 
   const integrationFull = useIntegration({
-    accessToken: accessToken || undefined,
+    accessToken,
     enabled: enabledQuery && isConnectDialogOpen,
     view: "VIEW_FULL",
     integrationId: integration.id,
   });
 
+  const oAuthIsAvailable = AvailableOAuthIntegration.includes(integration.id);
+
   React.useEffect(() => {
+    if (oAuthIsAvailable) {
+      setActiveIntegrationMethod("METHOD_OAUTH");
+      return;
+    }
+
     if (
       !integrationFull.isSuccess ||
       !integrationFull.data ||
@@ -60,9 +71,13 @@ export const AvailableIntegration = ({
     }
 
     setActiveIntegrationMethod(integrationFull.data.schemas[0].method);
-  }, [integrationFull.isSuccess, integrationFull.data]);
+  }, [integrationFull.isSuccess, integrationFull.data, oAuthIsAvailable]);
 
-  async function onSubmit(props: {
+  async function onSubmit({
+    method,
+    payload,
+    id,
+  }: {
     method: IntegrationMethod;
     payload: Record<string, unknown>;
     id: string;
@@ -71,14 +86,37 @@ export const AvailableIntegration = ({
       return;
     }
 
+    if (method === "METHOD_OAUTH") {
+      let provider: Nullable<IntegrationProvider> = null;
+
+      switch (integration.id) {
+        case "github":
+          provider = "github";
+          break;
+        default:
+          break;
+      }
+
+      if (provider) {
+        initializeIntegrationConnection(
+          provider,
+          id,
+          namespaceId,
+          integration.id,
+        );
+      }
+
+      return;
+    }
+
     setIsProcessing(true);
 
     try {
       await addIntegrationConnection.mutateAsync({
         payload: {
-          method: props.method,
-          id: props.id,
-          setup: props.payload,
+          method,
+          id,
+          setup: payload,
           integrationId: integration.id,
           namespaceId,
         },
@@ -131,35 +169,37 @@ export const AvailableIntegration = ({
           className="h-auto overflow-hidden"
           style={{ width: "761px" }}
         >
-          <Dialog.Header>
-            <Dialog.Title>Add connection</Dialog.Title>
-            <Dialog.Close
-              onClick={() => setIsConnectDialogOpen(false)}
-              className="!right-6 !top-6"
-            />
-          </Dialog.Header>
+          <div className="flex flex-row justify-between">
+            <h3 className="product-headings-heading-3 my-auto text-semantic-fg-primary">
+              Add Connection
+            </h3>
+            <button className="p-3 border hover:bg-semantic-bg-base-bg rounded-[10px] border-semantic-bg-line shadow-xxs">
+              <Icons.X className="w-6 h-6 stroke-semantic-fg-primary" />
+            </button>
+          </div>
           {integrationFull.isSuccess ? (
             <React.Fragment>
-              {integrationFull.data.schemas.length > 1 ? (
+              {oAuthIsAvailable ? (
                 <TabMenu.Root
                   value={activeIntegrationMethod}
                   onValueChange={(value: Nullable<string>) =>
                     setActiveIntegrationMethod(value as IntegrationMethod)
                   }
                   disabledDeSelect={true}
-                  className="mb-3 border-b border-semantic-bg-line"
+                  className="border-b border-semantic-bg-line"
                 >
-                  {integrationFull.data.schemas.map((item) => (
-                    <TabMenu.Item
-                      key={item.method}
-                      value={item.method}
-                      className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
-                    >
-                      <span className="text-sm">
-                        {METHOD_TITLE[item.method]}
-                      </span>
-                    </TabMenu.Item>
-                  ))}
+                  <TabMenu.Item
+                    className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
+                    value="METHOD_OAUTH"
+                  >
+                    OAuth
+                  </TabMenu.Item>
+                  <TabMenu.Item
+                    className="hover:!text-semantic-accent-default data-[selected=true]:!text-semantic-accent-default"
+                    value="METHOD_DICTIONARY"
+                  >
+                    Manual Setting
+                  </TabMenu.Item>
                 </TabMenu.Root>
               ) : null}
               {activeIntegrationMethod ? (
@@ -173,7 +213,7 @@ export const AvailableIntegration = ({
                     )?.schema
                   }
                   onSubmit={onSubmit}
-                  className="mt-6 max-h-[600px] overflow-y-auto"
+                  className="max-h-[600px] overflow-y-auto"
                   isProcessing={isProcessing}
                   additionalCta={
                     <Button

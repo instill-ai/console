@@ -1,3 +1,5 @@
+"use client";
+
 import { useQuery } from "@tanstack/react-query";
 import { Nullable, ResourceView } from "instill-sdk";
 
@@ -11,7 +13,7 @@ export function useIntegrationConnection({
   namespaceId,
   accessToken,
 }: {
-  accessToken?: string;
+  accessToken: Nullable<string>;
   enabled: boolean;
   retry?: false | number;
   view: ResourceView;

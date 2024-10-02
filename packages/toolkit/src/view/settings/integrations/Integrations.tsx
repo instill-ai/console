@@ -1,10 +1,16 @@
 "use client";
 
 import * as React from "react";
+import { useSearchParams } from "next/navigation";
 import { Integration, IntegrationConnection } from "instill-sdk";
 
 import { Icons, Input, Nullable, Skeleton } from "@instill-ai/design-system";
 
+import {
+  OAuthCallbackConnectionIdQueryParam,
+  OAuthCallbackIntegrationIdQueryParam,
+  OAuthCallbackStatusQueryParam,
+} from "../../../constant";
 import {
   debounce,
   initializeIntegrationConnection,
@@ -12,7 +18,10 @@ import {
   useInfiniteIntegrations,
 } from "../../../lib";
 import { AvailableIntegration } from "./AvailableIntegration";
-import { ExistingConnection } from "./ExistingConnection";
+import {
+  ExistingConnection,
+  getAccordionId,
+} from "./existing-connection/ExistingConnection";
 import { Section } from "./Section";
 
 export type IntegrationsProps = {
@@ -22,6 +31,17 @@ export type IntegrationsProps = {
 };
 
 export const Integrations = (props: IntegrationsProps) => {
+  const searchParams = useSearchParams();
+  const oAuthCallbackConnectionId = searchParams.get(
+    OAuthCallbackConnectionIdQueryParam,
+  );
+  const oAuthCallbackIntegrationId = searchParams.get(
+    OAuthCallbackIntegrationIdQueryParam,
+  );
+  const oAuthCallbackStatus = searchParams.get(OAuthCallbackStatusQueryParam);
+  const isHighlightedSuccessfullyCreatedIntegration = React.useRef(false);
+  const [initialAccordionValue, setInitialAccordionValue] =
+    React.useState<Nullable<string>>(null);
   const { accessToken, enableQuery, namespaceId } = props;
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
@@ -32,6 +52,31 @@ export const Integrations = (props: IntegrationsProps) => {
       }, 500),
     [],
   );
+
+  React.useEffect(() => {
+    let timeoutId: NodeJS.Timeout | undefined;
+
+    if (
+      oAuthCallbackStatus === "success" &&
+      oAuthCallbackConnectionId &&
+      oAuthCallbackIntegrationId &&
+      !isHighlightedSuccessfullyCreatedIntegration.current
+    ) {
+      setInitialAccordionValue(getAccordionId(oAuthCallbackIntegrationId));
+      console.log(
+        "setInitialAccordionValue",
+        getAccordionId(oAuthCallbackIntegrationId),
+      );
+      isHighlightedSuccessfullyCreatedIntegration.current = true;
+    }
+
+    return () => clearTimeout(timeoutId);
+  }, [
+    oAuthCallbackStatus,
+    oAuthCallbackConnectionId,
+    oAuthCallbackIntegrationId,
+  ]);
+
   const availableIntegrations = useInfiniteIntegrations({
     accessToken,
     enabled: enableQuery,
@@ -154,6 +199,7 @@ export const Integrations = (props: IntegrationsProps) => {
               "google",
               "hello-world",
               "admin",
+              "google",
             );
           }}
         >
@@ -174,6 +220,7 @@ export const Integrations = (props: IntegrationsProps) => {
         </Input.Root>
       </div>
       <Section
+        initialAccordionValue={initialAccordionValue}
         title={`Connected${integrationConnectionList.length > 0 ? ` (${integrationConnectionList.length})` : ""}`}
       >
         {isLoading ? (
@@ -197,7 +244,7 @@ export const Integrations = (props: IntegrationsProps) => {
           </p>
         )}
       </Section>
-      <Section title="All">
+      <Section initialAccordionValue={null} title="All">
         {isLoading ? (
           Array.from(new Array(2)).map((_item, index) => (
             <IntegrationSkeleton key={index} />

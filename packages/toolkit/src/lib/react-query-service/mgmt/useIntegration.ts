@@ -1,5 +1,7 @@
+"use client";
+
 import { useQuery } from "@tanstack/react-query";
-import { ResourceView } from "instill-sdk";
+import { Nullable, ResourceView } from "instill-sdk";
 
 import { getInstillAPIClient } from "../../vdp-sdk";
 
@@ -10,7 +12,7 @@ export function useIntegration({
   integrationId,
   accessToken,
 }: {
-  accessToken?: string;
+  accessToken: Nullable<string>;
   enabled: boolean;
   retry?: false | number;
   view: ResourceView;
@@ -23,7 +25,9 @@ export function useIntegration({
         return Promise.reject(new Error("integrationId not provided"));
       }
 
-      const client = getInstillAPIClient({ accessToken });
+      const client = getInstillAPIClient({
+        accessToken: accessToken ?? undefined,
+      });
 
       const data = await client.core.integration.getIntegration({
         integrationId,

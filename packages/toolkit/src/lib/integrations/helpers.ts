@@ -3,12 +3,18 @@
 import { signIn } from "next-auth/react";
 
 import type { IntegrationProvider } from "./types";
+import {
+  OAuthCallbackConnectionIdQueryParam,
+  OAuthCallbackIntegrationIdQueryParam,
+  OAuthCallbackStatusQueryParam,
+} from "../../constant";
 import { TempIntegrationObjectKey } from "./core";
 
 export async function initializeIntegrationConnection(
   provider: IntegrationProvider,
   connectionId: string,
   namespaceId: string,
+  integrationId: string,
 ) {
   try {
     const setCookiePayload = {
@@ -27,10 +33,12 @@ export async function initializeIntegrationConnection(
 
     signIn(provider, {
       redirectTo:
-        "/settings/integrations?connectionId=" +
+        `/settings/integrations?${OAuthCallbackConnectionIdQueryParam}=` +
         connectionId +
-        "&provider=" +
-        provider,
+        `&${OAuthCallbackIntegrationIdQueryParam}=` +
+        integrationId +
+        `&${OAuthCallbackStatusQueryParam}=` +
+        "success",
     });
   } catch (error) {
     console.error(error);

@@ -17,6 +17,12 @@ import { recursiveHelpers } from "../../pipeline-builder";
 
 export const connectionFormID = "connection-form";
 
+export type ConnectionFormOnSubmit = (props: {
+  method: IntegrationMethod;
+  payload: Record<string, unknown>;
+  id: string;
+}) => Promise<void>;
+
 export const ConnectionForm = ({
   id,
   onSubmit,
@@ -29,11 +35,7 @@ export const ConnectionForm = ({
   isEdit,
 }: {
   id: string;
-  onSubmit: (props: {
-    method: IntegrationMethod;
-    payload: Record<string, unknown>;
-    id: string;
-  }) => Promise<void>;
+  onSubmit: ConnectionFormOnSubmit;
   className?: string;
   isProcessing: boolean;
   additionalCta?: React.ReactNode;

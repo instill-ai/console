@@ -4,12 +4,12 @@ import type { Nullable } from "instill-sdk";
 import * as React from "react";
 import Link from "next/link";
 
-import type { InstillStore } from "../../../lib";
+import type { InstillStore } from "../../../../lib";
 import {
   useInfiniteConnectionPipelines,
   useInstillStore,
   useShallow,
-} from "../../../lib";
+} from "../../../../lib";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -61,7 +61,11 @@ export const ConnectionPipelineList = ({
     ) {
       relatedPipelineIds.fetchNextPage();
     }
-  }, [relatedPipelineIds.isSuccess, relatedPipelineIds.data]);
+  }, [
+    relatedPipelineIds.isSuccess,
+    relatedPipelineIds.data,
+    relatedPipelineIds,
+  ]);
 
   if (!pipelineIds.length) {
     return null;

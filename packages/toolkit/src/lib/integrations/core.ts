@@ -1,6 +1,8 @@
 import { AddIntegrationRequest, Nullable } from "instill-sdk";
 import NextAuth from "next-auth";
+import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import SlackProvider from "next-auth/providers/slack";
 
 import { getInstillAPIClient } from "../vdp-sdk";
 
@@ -21,11 +23,37 @@ export function getAuthHandler({
 }: GetAuthHandlerProps) {
   return NextAuth({
     providers: [
+      GitHubProvider({
+        clientId: String(process.env.GITHUB_CLIENT_ID),
+        clientSecret: String(process.env.GITHUB_CLIENT_SECRET),
+        authorization: {
+          url: "https://github.com/login/oauth/authorize",
+          params: {
+            prompt: "consent",
+            access_type: "offline",
+            response_type: "code",
+            scope: "repo read:user",
+          },
+        },
+      }),
       GoogleProvider({
         clientId: String(process.env.GOOGLE_CLIENT_ID),
         clientSecret: String(process.env.GOOGLE_CLIENT_SECRET),
         authorization: {
           url: "https://accounts.google.com/o/oauth2/v2/auth",
+          params: {
+            prompt: "consent",
+            access_type: "offline",
+            response_type: "code",
+            scope: "openid",
+          },
+        },
+      }),
+      SlackProvider({
+        clientId: String(process.env.SLACK_CLIENT_ID),
+        clientSecret: String(process.env.SLACK_CLIENT_SECRET),
+        authorization: {
+          url: "https://slack.com/oauth/v2/authorize",
           params: {
             prompt: "consent",
             access_type: "offline",
@@ -42,7 +70,6 @@ export function getAuthHandler({
           account &&
           account.provider &&
           account.access_token &&
-          account.refresh_token &&
           namespaceId &&
           connectionId
         ) {
@@ -50,8 +77,22 @@ export function getAuthHandler({
 
           switch (account.provider) {
             case "google": {
+              // payload = {
+              //   integrationId: "google",
+              //   method: "METHOD_OAUTH",
+              //   setup: {
+              //     token: account.access_token,
+              //   },
+              //   namespaceId,
+              //   id: connectionId,
+              //   oAuthAccessDetails: account,
+              // };
+              payload = null;
+              break;
+            }
+            case "github": {
               payload = {
-                integrationId: "google",
+                integrationId: "github",
                 method: "METHOD_OAUTH",
                 setup: {
                   token: account.access_token,
@@ -60,6 +101,20 @@ export function getAuthHandler({
                 id: connectionId,
                 oAuthAccessDetails: account,
               };
+              break;
+            }
+            case "slack": {
+              payload = {
+                integrationId: "slack",
+                method: "METHOD_OAUTH",
+                setup: {
+                  token: account.access_token,
+                },
+                namespaceId,
+                id: connectionId,
+                oAuthAccessDetails: account,
+              };
+              break;
             }
           }
 
