@@ -23,7 +23,20 @@ export type UserNamespace = {
   avatarUrl: Nullable<string>;
 };
 
-export function useUserNamespaces() {
+export type UseUserNamespacesReturn =
+  | {
+      isSuccess: true;
+      data: UserNamespace[];
+    }
+  | {
+      isSuccess: false;
+      data: null;
+    };
+
+export function useUserNamespaces(): UseUserNamespacesReturn {
+  const [isSuccess, setIsSuccess] = React.useState(false);
+  const [namespaces, setNamespaces] =
+    React.useState<Nullable<UserNamespace[]>>(null);
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
@@ -37,11 +50,11 @@ export function useUserNamespaces() {
     accessToken,
   });
 
-  const namespaces = React.useMemo(() => {
+  React.useEffect(() => {
     const orgsAndUserList: UserNamespace[] = [];
 
     if (!userMemberships.isSuccess || !me.isSuccess) {
-      return orgsAndUserList;
+      return;
     }
 
     userMemberships.data
@@ -81,8 +94,19 @@ export function useUserNamespaces() {
       });
     }
 
-    return orgsAndUserList;
+    setNamespaces(orgsAndUserList);
+    setIsSuccess(true);
   }, [userMemberships.isSuccess, userMemberships.data, me.isSuccess, me.data]);
 
-  return namespaces;
+  if (isSuccess) {
+    return {
+      isSuccess: true,
+      data: namespaces ?? [],
+    };
+  } else {
+    return {
+      isSuccess: false,
+      data: null,
+    };
+  }
 }

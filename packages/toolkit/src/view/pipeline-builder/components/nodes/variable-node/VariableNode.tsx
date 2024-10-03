@@ -97,7 +97,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [isCreating, setIsCreating] = React.useState(false);
 
-  const namespaces = useUserNamespaces();
+  const userNamespaces = useUserNamespaces();
 
   const form = useForm<z.infer<typeof TriggerNodeFreeFormSchema>>({
     resolver: zodResolver(TriggerNodeFreeFormSchema),
@@ -264,7 +264,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
   async function onTriggerPipeline(
     formData: z.infer<typeof TriggerPipelineFormSchema>,
   ) {
-    if (!pipelineName || !formData) return;
+    if (!pipelineName || !formData || !userNamespaces.isSuccess) return;
 
     const input = recursiveHelpers.removeUndefinedAndNullFromArray(
       recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData),
@@ -308,7 +308,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
 
     if (currentVersion === "latest") {
       try {
-        const targetNamespace = namespaces.find(
+        const targetNamespace = userNamespaces.data.find(
           (ns) => ns.id === navigationNamespaceAnchor,
         );
 
@@ -322,7 +322,9 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
 
         onTriggerInvalidateCredits({
           ownerName: targetNamespace?.name ?? null,
-          namespaceNames: namespaces.map((namespace) => namespace.name),
+          namespaceNames: userNamespaces.data.map(
+            (namespace) => namespace.name,
+          ),
           queryClient,
         });
 
@@ -344,7 +346,7 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
       }
     } else {
       try {
-        const targetNamespace = namespaces.find(
+        const targetNamespace = userNamespaces.data.find(
           (ns) => ns.id === navigationNamespaceAnchor,
         );
 
@@ -358,7 +360,9 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
 
         onTriggerInvalidateCredits({
           ownerName: targetNamespace?.name ?? null,
-          namespaceNames: namespaces.map((namespace) => namespace.name),
+          namespaceNames: userNamespaces.data.map(
+            (namespace) => namespace.name,
+          ),
           queryClient,
         });
 

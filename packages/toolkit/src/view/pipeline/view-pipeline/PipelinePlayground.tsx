@@ -60,7 +60,7 @@ export const PipelinePlayground = ({
   const searchParams = useSearchParams();
   const shareCode = searchParams.get("view");
   const currentVersion = searchParams.get("version");
-  const namespaces = useUserNamespaces();
+  const userNamespaces = useUserNamespaces();
   const { toast } = useToast();
   const [isPipelineRunning, setIsPipelineRunning] = React.useState(false);
   const [outputActiveView, setOutputActiveView] =
@@ -159,7 +159,12 @@ export const PipelinePlayground = ({
   const triggerPipelineRelease = useTriggerNamespacePipelineRelease();
 
   async function onTriggerPipeline(formData: z.infer<typeof ValidatorSchema>) {
-    if (!routeInfo.isSuccess || !routeInfo.data?.pipelineName || !pipeline) {
+    if (
+      !routeInfo.isSuccess ||
+      !routeInfo.data?.pipelineName ||
+      !pipeline ||
+      !userNamespaces.isSuccess
+    ) {
       return;
     }
 
@@ -208,7 +213,7 @@ export const PipelinePlayground = ({
 
     if (!currentVersion) {
       try {
-        const targetNamespace = namespaces.find(
+        const targetNamespace = userNamespaces.data.find(
           (namespace) => namespace.id === navigationNamespaceAnchor,
         );
 
@@ -224,7 +229,9 @@ export const PipelinePlayground = ({
 
         onTriggerInvalidateCredits({
           ownerName: targetNamespace?.name ?? null,
-          namespaceNames: namespaces.map((namespace) => namespace.name),
+          namespaceNames: userNamespaces.data.map(
+            (namespace) => namespace.name,
+          ),
           queryClient,
         });
 
@@ -244,7 +251,7 @@ export const PipelinePlayground = ({
       }
     } else {
       try {
-        const targetNamespace = namespaces.find(
+        const targetNamespace = userNamespaces.data.find(
           (namespace) => namespace.id === navigationNamespaceAnchor,
         );
 
@@ -259,7 +266,9 @@ export const PipelinePlayground = ({
 
         onTriggerInvalidateCredits({
           ownerName: targetNamespace?.name ?? null,
-          namespaceNames: namespaces.map((namespace) => namespace.name),
+          namespaceNames: userNamespaces.data.map(
+            (namespace) => namespace.name,
+          ),
           queryClient,
         });
 

@@ -46,16 +46,26 @@ export const PipelineRunComponents = ({
     },
   );
 
-  const namespaces = useUserNamespaces();
+  const userNamespaces = useUserNamespaces();
 
-  const targetNamespace = namespaces.find(
-    (namespace) => namespace.id === navigationNamespaceAnchor,
-  );
+  const targetNamespace = React.useMemo(() => {
+    if (!userNamespaces.isSuccess || !navigationNamespaceAnchor) {
+      return null;
+    }
+
+    return userNamespaces.data.find(
+      (namespace) => namespace.id === navigationNamespaceAnchor,
+    );
+  }, [
+    userNamespaces.isSuccess,
+    userNamespaces.data,
+    navigationNamespaceAnchor,
+  ]);
 
   const pipelineComponentRuns = usePaginatedPipelineRunComponents({
     pipelineRunId: pipelineRunId,
     requesterUid: targetNamespace ? targetNamespace.uid : undefined,
-    enabled: enabledQuery && routeInfo.isSuccess,
+    enabled: enabledQuery && routeInfo.isSuccess && userNamespaces.isSuccess,
     accessToken,
     view: "VIEW_FULL",
     orderBy,

@@ -19,34 +19,45 @@ import { ReactQueryProvider } from "./react-query-client-provider";
 
 const selector = (store: InstillStore) => ({
   initPipelineBuilder: store.initPipelineBuilder,
-  updateShowWebhook: store.updateShowWebhook,
+  updateFeatureFlagWebhookEnabled: store.updateFeatureFlagWebhookEnabled,
+  updateFeatureFlagApplicationEnabled:
+    store.updateFeatureFlagApplicationEnabled,
 });
 
 export const RootProvider = ({
   children,
-  showWebhook,
+  featureFlagWebhookEnabled,
+  featureFlagApplicationEnabled,
 }: {
   children: React.ReactNode;
-  showWebhook: boolean;
+  featureFlagWebhookEnabled: boolean;
+  featureFlagApplicationEnabled: boolean;
 }) => {
   const pathname = usePathname();
   const [previousPathname, setPreviousPathname] =
     React.useState<Nullable<string>>(null);
 
-  const { initPipelineBuilder, updateShowWebhook } = useInstillStore(
-    useShallow(selector),
-  );
+  const {
+    initPipelineBuilder,
+    updateFeatureFlagWebhookEnabled,
+    updateFeatureFlagApplicationEnabled,
+  } = useInstillStore(useShallow(selector));
 
   const initCreateResourceFormStore = useCreateResourceFormStore(
     (store) => store.init,
   );
+
   const closeModal = useModalStore((store) => store.closeModal);
 
   const { dismiss: dismissToast } = useToast();
 
   React.useEffect(() => {
-    updateShowWebhook(() => showWebhook);
-  }, [showWebhook]);
+    updateFeatureFlagWebhookEnabled(() => featureFlagWebhookEnabled);
+  }, [featureFlagWebhookEnabled]);
+
+  React.useEffect(() => {
+    updateFeatureFlagApplicationEnabled(() => featureFlagApplicationEnabled);
+  }, [featureFlagApplicationEnabled]);
 
   React.useEffect(() => {
     // When ever user leave /editor page to what ever destination

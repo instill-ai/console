@@ -32,6 +32,7 @@ export function usePaginatedModelRuns({
     "model-runs",
     modelName,
     "paginated",
+    requesterUid,
     accessToken ? "withAuth" : "unAuth",
     view,
     pageSize || env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),

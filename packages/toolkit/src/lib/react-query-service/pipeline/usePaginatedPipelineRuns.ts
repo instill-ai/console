@@ -32,6 +32,7 @@ export function usePaginatedPipelineRuns({
     "pipeline-runs",
     pipelineName,
     "paginated",
+    requesterUid,
     accessToken ? "withAuth" : "unAuth",
     view,
     pageSize || env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),

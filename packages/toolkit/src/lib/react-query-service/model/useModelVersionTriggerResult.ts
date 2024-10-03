@@ -24,7 +24,7 @@ export function useModelVersionTriggerResult({
   requesterUid?: string;
 }) {
   let enableQuery = false;
-  const queryKey = ["models", "operation"];
+  const queryKey = ["models", "operation", requesterUid];
 
   if (modelId && versionId && enabled) {
     enableQuery = true;

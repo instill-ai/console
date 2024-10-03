@@ -56,12 +56,16 @@ export const NamespaceSwitch = () => {
   const [switchIsOpen, setSwitchIsOpen] = React.useState(false);
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
 
-  const namespaces = useUserNamespaces();
+  const userNamespaces = useUserNamespaces();
   const pathname = usePathname();
 
   const namespaceNames = React.useMemo(() => {
-    return namespaces.map((e) => e.name);
-  }, [namespaces]);
+    if (!userNamespaces.isSuccess) {
+      return [];
+    }
+
+    return userNamespaces.data.map((e) => e.name);
+  }, [userNamespaces.isSuccess, userNamespaces.data]);
 
   const namespacesRemainingCredit = useNamespacesRemainingCredit({
     namespaceNames,
@@ -91,36 +95,43 @@ export const NamespaceSwitch = () => {
   });
 
   const namespacesWithRemainingCredit = React.useMemo(() => {
-    if (namespacesRemainingCredit.isSuccess) {
-      return namespaces.map((namespace) => {
-        return {
-          ...namespace,
-          remainingCredit:
-            namespacesRemainingCredit.data.find(
-              (e) => e.namespaceName === namespace.name,
-            )?.remainingCredit.total ?? 0,
-        };
-      });
+    if (!userNamespaces.isSuccess || !namespacesRemainingCredit.isSuccess) {
+      return [];
     }
 
-    return [];
+    return userNamespaces.data.map((namespace) => {
+      return {
+        ...namespace,
+        remainingCredit:
+          namespacesRemainingCredit.data.find(
+            (e) => e.namespaceName === namespace.name,
+          )?.remainingCredit.total ?? 0,
+      };
+    });
   }, [
+    userNamespaces.isSuccess,
+    userNamespaces.data,
     namespacesRemainingCredit.isSuccess,
     namespacesRemainingCredit.data,
-    namespaces,
   ]);
 
   const selectedNamespace = React.useMemo(() => {
-    if (!navigationNamespaceAnchor) {
+    if (!navigationNamespaceAnchor || !userNamespaces.isSuccess) {
       return null;
     }
 
     return namespacesWithRemainingCredit.length === 0
-      ? (namespaces.find((e) => e.id === navigationNamespaceAnchor) ?? null)
+      ? (userNamespaces.data.find((e) => e.id === navigationNamespaceAnchor) ??
+          null)
       : (namespacesWithRemainingCredit.find(
           (e) => e.id === navigationNamespaceAnchor,
         ) ?? null);
-  }, [namespacesWithRemainingCredit, namespaces, navigationNamespaceAnchor]);
+  }, [
+    namespacesWithRemainingCredit,
+    userNamespaces.isSuccess,
+    userNamespaces.data,
+    navigationNamespaceAnchor,
+  ]);
 
   // This is to deal with user entering their own setting page, we should
   // switch the namespace to the user's namespace
@@ -151,7 +162,7 @@ export const NamespaceSwitch = () => {
       currentNamespaceType = routeInfo.data.namespaceType;
     }
 
-    if (!me.isSuccess) {
+    if (!me.isSuccess || !userNamespaces.isSuccess) {
       return;
     }
 
@@ -169,18 +180,24 @@ export const NamespaceSwitch = () => {
         if (currentNamespaceId && currentNamespaceType) {
           if (
             currentNamespaceType === "NAMESPACE_USER" &&
-            namespaces.findIndex((e) => e.id === currentNamespaceId) !== -1
+            userNamespaces.data.findIndex(
+              (e) => e.id === currentNamespaceId,
+            ) !== -1
           ) {
             namespaceAnchor = currentNamespaceId;
           } else if (
             currentNamespaceType === "NAMESPACE_ORGANIZATION" &&
-            namespaces.findIndex((e) => e.id === currentNamespaceId) !== -1
+            userNamespaces.data.findIndex(
+              (e) => e.id === currentNamespaceId,
+            ) !== -1
           ) {
             namespaceAnchor = currentNamespaceId;
             // The user didn't have direct permission toward this resource
             // We will try to find the first namespace that the user has
           } else {
-            namespaceAnchor = namespaces[0] ? namespaces[0].id : null;
+            namespaceAnchor = userNamespaces.data[0]
+              ? userNamespaces.data[0].id
+              : null;
           }
         } else {
           namespaceAnchor = me.data.id;
@@ -197,16 +214,22 @@ export const NamespaceSwitch = () => {
         if (currentNamespaceId && currentNamespaceType) {
           if (
             currentNamespaceType === "NAMESPACE_USER" &&
-            namespaces.findIndex((e) => e.id === currentNamespaceId) !== -1
+            userNamespaces.data.findIndex(
+              (e) => e.id === currentNamespaceId,
+            ) !== -1
           ) {
             namespaceAnchor = currentNamespaceId;
           } else if (
             currentNamespaceType === "NAMESPACE_ORGANIZATION" &&
-            namespaces.findIndex((e) => e.id === currentNamespaceId) !== -1
+            userNamespaces.data.findIndex(
+              (e) => e.id === currentNamespaceId,
+            ) !== -1
           ) {
             namespaceAnchor = currentNamespaceId;
           } else {
-            namespaceAnchor = namespaces[0] ? namespaces[0].id : null;
+            namespaceAnchor = userNamespaces.data[0]
+              ? userNamespaces.data[0].id
+              : null;
           }
         } else {
           namespaceAnchor = me.data.id;
@@ -218,7 +241,8 @@ export const NamespaceSwitch = () => {
       }
     }
   }, [
-    namespaces,
+    userNamespaces.isSuccess,
+    userNamespaces.data,
     navigationNamespaceAnchor,
     namespacesRemainingCredit.isSuccess,
     namespacesRemainingCredit.data,
@@ -241,7 +265,9 @@ export const NamespaceSwitch = () => {
         updateNavigationNamespaceAnchor(() => value);
 
         const pathnameArray = pathname.split("/");
-        const targetNamespace = namespaces.find((e) => e.id === value);
+        const targetNamespace = userNamespaces.data?.find(
+          (e) => e.id === value,
+        );
 
         if (!routeInfo.isSuccess) {
           // When the user is in its personal setting page and then he switch to organization
