@@ -12,7 +12,6 @@ import {
   useToast,
 } from "@instill-ai/design-system";
 
-import { AvailableOAuthIntegration } from "../../../constant";
 import {
   initializeIntegrationConnection,
   InstillStore,
@@ -22,6 +21,7 @@ import {
   useIntegration,
   useShallow,
 } from "../../../lib";
+import { isOAuthAvailable } from "../../../lib/integrations/helpers";
 import { IntegrationProvider } from "../../../server";
 import { ConnectionForm } from "./ConnectionForm";
 
@@ -54,7 +54,7 @@ export const AvailableIntegration = ({
     integrationId: integration.id,
   });
 
-  const oAuthIsAvailable = AvailableOAuthIntegration.includes(integration.id);
+  const oAuthIsAvailable = isOAuthAvailable(integration.id);
 
   React.useEffect(() => {
     if (oAuthIsAvailable) {
@@ -83,29 +83,6 @@ export const AvailableIntegration = ({
     id: string;
   }) {
     if (!namespaceId) {
-      return;
-    }
-
-    if (method === "METHOD_OAUTH") {
-      let provider: Nullable<IntegrationProvider> = null;
-
-      switch (integration.id) {
-        case "github":
-          provider = "github";
-          break;
-        default:
-          break;
-      }
-
-      if (provider) {
-        initializeIntegrationConnection(
-          provider,
-          id,
-          namespaceId,
-          integration.id,
-        );
-      }
-
       return;
     }
 
@@ -157,7 +134,35 @@ export const AvailableIntegration = ({
       <Button
         variant="primary"
         className="ml-auto"
-        onClick={() => setIsConnectDialogOpen(true)}
+        onClick={() => {
+          if (oAuthIsAvailable) {
+            if (!namespaceId) {
+              return;
+            }
+
+            let provider: Nullable<IntegrationProvider> = null;
+
+            switch (integration.id) {
+              case "github":
+                provider = "github";
+                break;
+              default:
+                break;
+            }
+
+            if (provider) {
+              initializeIntegrationConnection({
+                provider,
+                namespaceId,
+                integrationId: integration.id,
+              });
+            }
+
+            return;
+          }
+
+          setIsConnectDialogOpen(true);
+        }}
       >
         Connect
       </Button>

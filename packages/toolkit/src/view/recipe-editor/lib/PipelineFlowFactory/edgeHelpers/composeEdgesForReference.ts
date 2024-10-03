@@ -25,7 +25,7 @@ export function composeEdgesForReference({
   const referencePrefix =
     reference.referenceValue.withoutCurlyBraces.split(".")[0];
 
-  if (referencePrefix && referencePrefix.startsWith("on")) {
+  if (referencePrefix && referencePrefix === "on") {
     const referenceIsAvailable = runOnNodeConnectableReferencePaths.some(
       (availableReference) =>
         matchReference(
@@ -56,7 +56,7 @@ export function composeEdgesForReference({
   }
 
   // 1. Check if the reference is toward variable
-  if (referencePrefix && referencePrefix.startsWith("variable")) {
+  if (referencePrefix && referencePrefix === "variable") {
     const referenceIsAvailable = variableNodeConnectableReferencePaths.some(
       (availableReference) =>
         matchReference(

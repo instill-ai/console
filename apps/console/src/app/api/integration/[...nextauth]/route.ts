@@ -6,6 +6,7 @@ import {
   getAuthHandler,
   GetAuthHandlerProps,
   TempIntegrationObjectKey,
+  TempIntegrationObjectSchema,
 } from "@instill-ai/toolkit/server";
 
 const getAuthHandlerProps = () => {
@@ -25,12 +26,21 @@ const getAuthHandlerProps = () => {
   let getAuthHandlerProps: Nullable<GetAuthHandlerProps> = null;
 
   if (tempIntegrationObjectString) {
-    const tempIntegrationObject = JSON.parse(tempIntegrationObjectString);
-    getAuthHandlerProps = {
-      instillAccessToken: accessToken ?? undefined,
-      namespaceId: tempIntegrationObject.namespaceId,
-      connectionId: tempIntegrationObject.connectionId,
-    };
+    try {
+      const tempIntegrationObject = TempIntegrationObjectSchema.parse(
+        JSON.parse(tempIntegrationObjectString),
+      );
+      getAuthHandlerProps = {
+        instillAccessToken: accessToken ?? undefined,
+        namespaceId: tempIntegrationObject.namespaceId,
+        integrationId: tempIntegrationObject.integrationId,
+      };
+    } catch (error) {
+      console.error(error);
+      getAuthHandlerProps = {
+        instillAccessToken: accessToken ?? undefined,
+      };
+    }
   } else {
     getAuthHandlerProps = {
       instillAccessToken: accessToken ?? undefined,

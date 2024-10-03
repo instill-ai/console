@@ -23,7 +23,7 @@
 import type { Monaco } from "@monaco-editor/react";
 import * as React from "react";
 import { Editor } from "@monaco-editor/react";
-import { PipelineRecipe, Secret } from "instill-sdk";
+import { IntegrationConnection, PipelineRecipe, Secret } from "instill-sdk";
 import { editor, IDisposable, languages, Position } from "monaco-editor";
 
 import { Dialog } from "@instill-ai/design-system";
@@ -35,6 +35,7 @@ import {
   InstillStore,
   Nullable,
   useInstillStore,
+  useIntegrationConnections,
   useNamespacePipeline,
   useNamespaceSecrets,
   useRouteInfo,
@@ -133,6 +134,61 @@ function getComponentTaskAutocompletions({
           value: `**${task.name}** \n\n ${task.title} \n\n --- \n\n ${task.description}`,
           isTrusted: true,
         },
+      });
+    }
+  }
+
+  return autocomletions;
+}
+
+function getComponentIntegrationAutocompletions({
+  monaco,
+  recipe,
+  smallestComponentKeyLineNumberMap,
+  position,
+  activeTyping,
+  integrationConnections,
+}: {
+  monaco: Nullable<Monaco>;
+  recipe: Nullable<PipelineRecipe>;
+  smallestComponentKeyLineNumberMap: Nullable<EditorKeyLineNumberMap>;
+  position: Position;
+  activeTyping: Nullable<string>;
+  integrationConnections: IntegrationConnection[];
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+
+  if (
+    !monaco ||
+    !recipe ||
+    !recipe.component ||
+    !smallestComponentKeyLineNumberMap
+  ) {
+    return autocomletions;
+  }
+
+  const _activeTyping = activeTyping ?? "";
+
+  const targetComponent =
+    recipe.component[smallestComponentKeyLineNumberMap.key];
+
+  if (targetComponent && isPipelineGeneralComponent(targetComponent)) {
+    const targetIntegrationConnections = integrationConnections.filter(
+      (e) => e.integrationId === targetComponent.type,
+    );
+
+    for (const connection of targetIntegrationConnections) {
+      autocomletions.push({
+        label: connection.id,
+        kind: monaco.languages.CompletionItemKind.Field,
+        insertText: "${" + connection.id,
+        filterText: "${" + connection.id,
+        range: new monaco.Range(
+          position.lineNumber,
+          position.column - _activeTyping.length,
+          position.lineNumber,
+          position.column,
+        ),
       });
     }
   }
@@ -641,6 +697,14 @@ export const VscodeEditor = () => {
     enabled: enabledQuery,
   });
 
+  const integrationConnections = useIntegrationConnections({
+    namespaceId: routeInfo.data.namespaceId,
+    accessToken,
+    enabled: enabledQuery && routeInfo.isSuccess,
+    filter: null,
+    view: "VIEW_BASIC",
+  });
+
   const debouncedRecipeUpdater = useDebouncedRecipeUpdater();
   const autonomousRecipeUpdater = useAutonomousEditorRecipeUpdater();
   React.useEffect(() => {
@@ -869,6 +933,27 @@ export const VscodeEditor = () => {
           };
         }
 
+        // [Hint setup integration]
+        if (
+          charactersBeforeCursor.includes("setup:") &&
+          integrationConnections.isSuccess &&
+          pipeline.isSuccess &&
+          smallestComponentKeyLineNumberMap
+        ) {
+          const autocomletions = getComponentIntegrationAutocompletions({
+            monaco,
+            recipe: pipeline.data.recipe,
+            smallestComponentKeyLineNumberMap,
+            position,
+            activeTyping,
+            integrationConnections: integrationConnections.data,
+          });
+
+          return {
+            suggestions: autocomletions,
+          };
+        }
+
         const allHintMap = getAllComponentOutputHints({
           recipe,
         });
@@ -963,6 +1048,8 @@ export const VscodeEditor = () => {
       namespaceSecrets.data,
       pipeline.isSuccess,
       pipeline.data,
+      integrationConnections.isSuccess,
+      integrationConnections.data,
     ],
   );
 
