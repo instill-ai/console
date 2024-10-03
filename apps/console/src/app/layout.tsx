@@ -53,7 +53,14 @@ export default function RootLayout({
         <script src="/__env.js" />
       </head>
       <body className="overflow-y-hidden">
-        <RootProvider showWebhook={process.env.WEBHOOK_ENABLED === "1"}>
+        <RootProvider
+          featureFlagWebhookEnabled={
+            process.env.FEATURE_FLAG_WEBHOOK_ENABLED === "1"
+          }
+          featureFlagApplicationEnabled={
+            process.env.FEATURE_FLAG_APPLICATION_ENABLED === "1"
+          }
+        >
           {children}
         </RootProvider>
       </body>

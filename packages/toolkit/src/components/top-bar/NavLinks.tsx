@@ -82,11 +82,15 @@ export const NavLink = ({
     }
   }, [pathname, currentPathname, strict, isExploreRoute]);
 
-  const namespaces = useUserNamespaces();
+  const userNamespaces = useUserNamespaces();
 
   const namespaceAnchor = React.useMemo(() => {
+    if (!userNamespaces.isSuccess) {
+      return null;
+    }
+
     if (!navigationNamespaceAnchor) {
-      const userNamespace = namespaces.find(
+      const userNamespace = userNamespaces.data.find(
         (namespace) => namespace.type === "user",
       );
 
@@ -96,7 +100,11 @@ export const NavLink = ({
     }
 
     return navigationNamespaceAnchor;
-  }, [namespaces, navigationNamespaceAnchor]);
+  }, [
+    userNamespaces.isSuccess,
+    userNamespaces.data,
+    navigationNamespaceAnchor,
+  ]);
 
   return (
     <button
@@ -123,12 +131,12 @@ export const NavLink = ({
 const navLinksSelector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  featureFlagApplicationEnabled: store.featureFlagApplicationEnabled,
 });
 
 export const NavLinks = ({ isExploreRoute }: { isExploreRoute?: boolean }) => {
-  const { accessToken, enabledQuery } = useInstillStore(
-    useShallow(navLinksSelector),
-  );
+  const { accessToken, enabledQuery, featureFlagApplicationEnabled } =
+    useInstillStore(useShallow(navLinksSelector));
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
@@ -141,7 +149,7 @@ export const NavLinks = ({ isExploreRoute }: { isExploreRoute?: boolean }) => {
       {me.isSuccess
         ? navLinkItems
             .filter((item) => {
-              if (isCloud) {
+              if (isCloud && featureFlagApplicationEnabled) {
                 return true;
               }
               return item.pathname !== "applications";

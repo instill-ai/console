@@ -18,7 +18,7 @@ import { WebhookURLView } from "./WebhookURLView";
 
 const selector = (store: InstillStore) => ({
   selectedComponentId: store.selectedComponentId,
-  showWebhook: store.showWebhook,
+  featureFlagWebhookEnabled: store.featureFlagWebhookEnabled,
   flowIsUnderDemoMode: store.flowIsUnderDemoMode,
   updateEditorMultiScreenModel: store.updateEditorMultiScreenModel,
   accessToken: store.accessToken,
@@ -43,7 +43,7 @@ export const RunOnEventNode = ({ id }: NodeProps) => {
 
   const {
     selectedComponentId,
-    showWebhook,
+    featureFlagWebhookEnabled,
     flowIsUnderDemoMode,
     updateEditorMultiScreenModel,
     accessToken,
@@ -102,7 +102,7 @@ export const RunOnEventNode = ({ id }: NodeProps) => {
     }));
   }, [id, pipeline.isSuccess, pipeline.data, updateEditorMultiScreenModel]);
 
-  return showWebhook ? (
+  return featureFlagWebhookEnabled ? (
     <NodeBase
       id={id}
       isSelected={isSelected}

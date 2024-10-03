@@ -50,15 +50,25 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
     },
   );
 
-  const namespaces = useUserNamespaces();
+  const userNamespaces = useUserNamespaces();
 
-  const targetNamespace = namespaces.find(
-    (namespace) => namespace.id === navigationNamespaceAnchor,
-  );
+  const targetNamespace = React.useMemo(() => {
+    if (!userNamespaces.isSuccess || !navigationNamespaceAnchor) {
+      return null;
+    }
+
+    return userNamespaces.data.find(
+      (namespace) => namespace.id === navigationNamespaceAnchor,
+    );
+  }, [
+    userNamespaces.isSuccess,
+    userNamespaces.data,
+    navigationNamespaceAnchor,
+  ]);
 
   const pipelineRuns = usePaginatedPipelineRuns({
     pipelineName: `namespaces/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`,
-    enabled: enabledQuery && routeInfo.isSuccess,
+    enabled: enabledQuery && routeInfo.isSuccess && userNamespaces.isSuccess,
     accessToken,
     pageSize: TABLE_PAGE_SIZE,
     page: paginationState.pageIndex,

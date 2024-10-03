@@ -51,13 +51,26 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
   const { accessToken, enabledQuery, navigationNamespaceAnchor } =
     useInstillStore(useShallow(selector));
   const routeInfo = useRouteInfo();
-  const namespaces = useUserNamespaces();
-  const targetNamespace = namespaces.find(
-    (namespace) => namespace.id === navigationNamespaceAnchor,
-  );
+
+  const userNamespaces = useUserNamespaces();
+
+  const targetNamespace = React.useMemo(() => {
+    if (!userNamespaces.isSuccess || !navigationNamespaceAnchor) {
+      return null;
+    }
+
+    return userNamespaces.data.find(
+      (namespace) => namespace.id === navigationNamespaceAnchor,
+    );
+  }, [
+    userNamespaces.isSuccess,
+    userNamespaces.data,
+    navigationNamespaceAnchor,
+  ]);
+
   const modelRuns = usePaginatedModelRuns({
     accessToken,
-    enabled: enabledQuery && routeInfo.isSuccess,
+    enabled: enabledQuery && routeInfo.isSuccess && userNamespaces.isSuccess,
     modelName: `/namespaces/${routeInfo.data.namespaceId}/models/${routeInfo.data.resourceId}`,
     pageSize: TABLE_PAGE_SIZE,
     page: paginationState.pageIndex,

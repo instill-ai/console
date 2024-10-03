@@ -123,10 +123,21 @@ export const ModelPlayground = ({
     accessToken,
   });
 
-  const namespaces = useUserNamespaces();
-  const targetNamespace = namespaces.find(
-    (namespace) => namespace.id === navigationNamespaceAnchor,
-  );
+  const userNamespaces = useUserNamespaces();
+
+  const targetNamespace = React.useMemo(() => {
+    if (!userNamespaces.isSuccess || !navigationNamespaceAnchor) {
+      return null;
+    }
+
+    return userNamespaces.data.find(
+      (namespace) => namespace.id === navigationNamespaceAnchor,
+    );
+  }, [
+    userNamespaces.isSuccess,
+    userNamespaces.data,
+    navigationNamespaceAnchor,
+  ]);
 
   const isModelTriggerable = useMemo(() => {
     return accessToken && model && modelState
@@ -151,7 +162,11 @@ export const ModelPlayground = ({
     userId: routeInfo.data.namespaceId,
     versionId: activeVersion,
     view: "VIEW_FULL",
-    enabled: !!activeVersion && enabledQuery,
+    enabled:
+      !!activeVersion &&
+      enabledQuery &&
+      userNamespaces.isSuccess &&
+      routeInfo.isSuccess,
     requesterUid: targetNamespace ? targetNamespace.uid : undefined,
   });
 
@@ -310,7 +325,7 @@ export const ModelPlayground = ({
   async function onRunModel(
     formData: Record<string, unknown> /* z.infer<typeof Schema> */,
   ) {
-    if (!model || !model.name) return;
+    if (!model || !model.name || !userNamespaces.isSuccess) return;
 
     let parsedData;
 
@@ -332,7 +347,7 @@ export const ModelPlayground = ({
       ),
     );
 
-    const targetNamespace = namespaces.find(
+    const targetNamespace = userNamespaces.data.find(
       (namespace) => namespace.id === navigationNamespaceAnchor,
     );
 
@@ -354,7 +369,7 @@ export const ModelPlayground = ({
 
       onTriggerInvalidateCredits({
         ownerName: targetNamespace.name ?? null,
-        namespaceNames: namespaces.map((namespace) => namespace.name),
+        namespaceNames: userNamespaces.data.map((namespace) => namespace.name),
         queryClient,
       });
 

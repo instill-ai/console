@@ -112,11 +112,17 @@ export const ClonePipelineDialog = ({
     accessToken,
   });
 
-  const namespaces = useUserNamespaces();
+  const userNamespaces = useUserNamespaces();
 
   const createPipeline = useCreateNamespacePipeline();
   async function handleClone(data: z.infer<typeof ClonePipelineSchema>) {
-    if (!me.isSuccess || !accessToken || !pipeline || !pipeline.recipe) {
+    if (
+      !me.isSuccess ||
+      !accessToken ||
+      !pipeline ||
+      !pipeline.recipe ||
+      !userNamespaces.isSuccess
+    ) {
       return;
     }
 
@@ -151,7 +157,7 @@ export const ClonePipelineDialog = ({
 
     const recipe = composePipelineRecipeFromNodes(nodes);
 
-    const namespace = namespaces.find(
+    const namespace = userNamespaces.data.find(
       (account) => account.id === data.namespaceId,
     );
 
@@ -256,7 +262,11 @@ export const ClonePipelineDialog = ({
                                   onChange={(value: string) => {
                                     field.onChange(value);
                                   }}
-                                  data={namespaces}
+                                  data={
+                                    userNamespaces.isSuccess
+                                      ? userNamespaces.data
+                                      : []
+                                  }
                                 />
                               </Form.Control>
 

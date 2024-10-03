@@ -182,7 +182,11 @@ export const CreateModelForm = () => {
 
   const createModel = useCreateUserModel();
   async function onSubmit(data: z.infer<typeof CreateModelSchema>) {
-    if (!routeInfo.isSuccess || !formattedModelId) {
+    if (
+      !routeInfo.isSuccess ||
+      !formattedModelId ||
+      !userNamespaces.isSuccess
+    ) {
       return;
     }
 
@@ -200,7 +204,7 @@ export const CreateModelForm = () => {
       configuration: {},
     };
 
-    const targetNamespace = userNamespaces.find(
+    const targetNamespace = userNamespaces.data.find(
       (namespace) => namespace.id === data.namespaceId,
     );
 
@@ -278,7 +282,11 @@ export const CreateModelForm = () => {
                                   form.trigger("id");
                                 }
                               }}
-                              data={userNamespaces}
+                              data={
+                                userNamespaces.isSuccess
+                                  ? userNamespaces.data
+                                  : []
+                              }
                             />
                           </Form.Control>
                           <p className="text-semantic-fg-secondary product-body-text-4-regular">
@@ -583,7 +591,11 @@ export const CreateModelForm = () => {
             </div>
             <div className="pb-14 pt-12">
               <Button
-                disabled={creating || userNamespaces.length === 0}
+                disabled={
+                  creating ||
+                  !userNamespaces.isSuccess ||
+                  userNamespaces.data.length === 0
+                }
                 form={formID}
                 variant="primary"
                 size="lg"

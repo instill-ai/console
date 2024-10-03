@@ -236,7 +236,9 @@ export const CloneCatalogDialog = ({
                         <EntitySelector
                           value={field.value}
                           onChange={handleNamespaceChange}
-                          data={userNamespaces}
+                          data={
+                            userNamespaces.isSuccess ? userNamespaces.data : []
+                          }
                         />
                       </Form.Control>
                       <div className="h-6">

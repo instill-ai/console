@@ -36,8 +36,8 @@ import {
   useInstillStore,
   useRouteInfo,
   useShallow,
+  useUserNamespaces,
 } from "../../../lib";
-import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 import { env, formatResourceId } from "../../../server";
 
 const CreatePipelineSchema = z.object({
@@ -81,7 +81,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
 
   const routeInfo = useRouteInfo();
 
-  const namespaces = useUserNamespaces();
+  const userNamespaces = useUserNamespaces();
   const formattedPipelineId = formatResourceId(
     form.watch("id"),
     resourceIdPrefix.pipeline,
@@ -89,7 +89,11 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
 
   const createPipeline = useCreateNamespacePipeline();
   async function onSubmit(data: z.infer<typeof CreatePipelineSchema>) {
-    if (!routeInfo.isSuccess || !formattedPipelineId) {
+    if (
+      !routeInfo.isSuccess ||
+      !formattedPipelineId ||
+      !userNamespaces.isSuccess
+    ) {
       return;
     }
 
@@ -116,7 +120,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
             shareCode: null,
           };
 
-    const targetNamespace = namespaces.find(
+    const targetNamespace = userNamespaces.data.find(
       (account) => account.id === data.namespaceId,
     );
 
@@ -232,7 +236,11 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
                                         form.trigger("id");
                                       }
                                     }}
-                                    data={namespaces}
+                                    data={
+                                      userNamespaces.isSuccess
+                                        ? userNamespaces.data
+                                        : []
+                                    }
                                   />
                                 </Form.Control>
                                 <Form.Message />
@@ -371,7 +379,11 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
 
             <div className="flex flex-row-reverse px-6 pb-6 pt-8">
               <Button
-                disabled={creating || namespaces.length === 0}
+                disabled={
+                  creating ||
+                  !userNamespaces.isSuccess ||
+                  userNamespaces.data.length === 0
+                }
                 form={formID}
                 variant="primary"
                 size="lg"

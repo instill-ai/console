@@ -162,7 +162,7 @@ export const UploadExploreTab = ({
   const { accessToken, navigationNamespaceAnchor, enabledQuery } =
     useInstillStore(useShallow(selector));
 
-  const namespaces = useUserNamespaces();
+  const userNamespaces = useUserNamespaces();
 
   const existingFiles = useListCatalogFiles({
     namespaceId: navigationNamespaceAnchor,
@@ -279,7 +279,8 @@ export const UploadExploreTab = ({
 
     setIsProcessing(true);
     const files = form.getValues("files");
-    if (files.length === 0) {
+
+    if (files.length === 0 || !userNamespaces.isSuccess) {
       setIsProcessing(false);
       return;
     }
@@ -287,7 +288,7 @@ export const UploadExploreTab = ({
     const processedFiles = new Set<string>();
 
     try {
-      const targetNamespace = namespaces.find(
+      const targetNamespace = userNamespaces.data.find(
         (namespace) => namespace.id === navigationNamespaceAnchor,
       );
 
@@ -347,7 +348,7 @@ export const UploadExploreTab = ({
       );
       onTriggerInvalidateCredits({
         ownerName: targetNamespace?.name ?? null,
-        namespaceNames: namespaces.map((namespace) => namespace.name),
+        namespaceNames: userNamespaces.data.map((namespace) => namespace.name),
         queryClient,
       });
       onProcessFile();

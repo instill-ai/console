@@ -70,12 +70,20 @@ export const Input = ({
   });
 
   const routeInfo = useRouteInfo();
-  const namespace = useUserNamespaces();
+  const userNamespaces = useUserNamespaces();
   const triggerPipeline = useStreamingTriggerUserPipeline();
   const triggerPipelineRelease = useStreamingTriggerUserPipelineRelease();
   const onStreamTriggerPipeline = React.useCallback(
     async (formData: z.infer<typeof Schema>) => {
-      if (!pipelineName || !formData || !fields || !routeInfo.isSuccess) return;
+      if (
+        !pipelineName ||
+        !formData ||
+        !fields ||
+        !routeInfo.isSuccess ||
+        !userNamespaces.isSuccess
+      ) {
+        return;
+      }
 
       if (isTriggeringPipeline) {
         forceStopTriggerPipelineStream.current = true;
@@ -145,7 +153,7 @@ export const Input = ({
       }
 
       // We use the current route namespace as the requester namespace
-      const tartgetNamespace = namespace.find(
+      const tartgetNamespace = userNamespaces.data.find(
         (ns) => ns.id === routeInfo.data.namespaceId,
       );
 
@@ -403,7 +411,8 @@ export const Input = ({
       isTriggeringPipeline,
       updateIsTriggeringPipeline,
       updateTriggerPipelineStreamMap,
-      namespace,
+      userNamespaces.isSuccess,
+      userNamespaces.data,
       accessToken,
       forceStopTriggerPipelineStream,
       updateEditorMultiScreenModel,

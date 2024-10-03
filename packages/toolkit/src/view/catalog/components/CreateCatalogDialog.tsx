@@ -153,7 +153,9 @@ export const CreateCatalogDialog = ({
                             shouldValidate: true,
                           });
                         }}
-                        data={userNamespaces}
+                        data={
+                          userNamespaces.isSuccess ? userNamespaces.data : []
+                        }
                       />
                     </Form.Control>
                     <div className="h-6">

@@ -8,12 +8,20 @@ export const createFeatureFlagSlice: StateCreator<
   [],
   FeatureFlagSlice
 > = (set) => ({
-  showWebhook: false,
-  updateShowWebhook: (fn: (prev: boolean) => boolean) =>
+  featureFlagWebhookEnabled: false,
+  updateFeatureFlagWebhookEnabled: (fn: (prev: boolean) => boolean) =>
     set((state) => {
       return {
         ...state,
-        showWebhook: fn(state.showWebhook),
+        featureFlagWebhookEnabled: fn(state.featureFlagWebhookEnabled),
+      };
+    }),
+  featureFlagApplicationEnabled: false,
+  updateFeatureFlagApplicationEnabled: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        featureFlagApplicationEnabled: fn(state.featureFlagApplicationEnabled),
       };
     }),
 });
