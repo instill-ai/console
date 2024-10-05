@@ -141,7 +141,7 @@ function getComponentTaskAutocompletions({
   return autocomletions;
 }
 
-function getComponentIntegrationAutocompletions({
+function getComponentIntegrationConnectionAutocompletions({
   monaco,
   recipe,
   smallestComponentKeyLineNumberMap,
@@ -181,8 +181,8 @@ function getComponentIntegrationAutocompletions({
       autocomletions.push({
         label: connection.id,
         kind: monaco.languages.CompletionItemKind.Field,
-        insertText: "${" + connection.id,
-        filterText: "${" + connection.id,
+        insertText: "${connection." + connection.id,
+        filterText: "${connection." + connection.id,
         range: new monaco.Range(
           position.lineNumber,
           position.column - _activeTyping.length,
@@ -584,6 +584,39 @@ function getComponentKeyAutocompletions({
   return autocomletions;
 }
 
+function getConnectionPrefixAutoCompletions({
+  monaco,
+  position,
+  activeTyping,
+}: {
+  monaco: Nullable<Monaco>;
+  position: Position;
+  activeTyping: Nullable<string>;
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+
+  if (!monaco) {
+    return autocomletions;
+  }
+
+  const _activeTyping = activeTyping ?? "";
+
+  autocomletions.push({
+    label: "connection",
+    kind: monaco.languages.CompletionItemKind.Variable,
+    insertText: "${" + "connection",
+    filterText: "${" + "connection",
+    range: new monaco.Range(
+      position.lineNumber,
+      position.column - _activeTyping.length,
+      position.lineNumber,
+      position.column,
+    ),
+  });
+
+  return autocomletions;
+}
+
 /**
  * This is for hint user to put variable after ${
  */
@@ -933,21 +966,25 @@ export const VscodeEditor = () => {
           };
         }
 
+        console.log("activeTyping", activeTyping);
+
         // [Hint setup integration]
         if (
+          activeTyping.includes("connection") &&
           charactersBeforeCursor.includes("setup:") &&
           integrationConnections.isSuccess &&
           pipeline.isSuccess &&
           smallestComponentKeyLineNumberMap
         ) {
-          const autocomletions = getComponentIntegrationAutocompletions({
-            monaco,
-            recipe: pipeline.data.recipe,
-            smallestComponentKeyLineNumberMap,
-            position,
-            activeTyping,
-            integrationConnections: integrationConnections.data,
-          });
+          const autocomletions =
+            getComponentIntegrationConnectionAutocompletions({
+              monaco,
+              recipe: pipeline.data.recipe,
+              smallestComponentKeyLineNumberMap,
+              position,
+              activeTyping,
+              integrationConnections: integrationConnections.data,
+            });
 
           return {
             suggestions: autocomletions,
@@ -1018,6 +1055,15 @@ export const VscodeEditor = () => {
         });
 
         result.push(...variablePrefixAutocompletions);
+
+        const connectionPrefixAutocompletions =
+          getConnectionPrefixAutoCompletions({
+            monaco,
+            position,
+            activeTyping,
+          });
+
+        result.push(...connectionPrefixAutocompletions);
 
         // [HINT secret key]
         // This keyword will only be used under setup component toplevel key

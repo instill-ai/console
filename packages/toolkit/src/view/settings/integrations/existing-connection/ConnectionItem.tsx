@@ -109,7 +109,7 @@ export const ConnectionItem = ({
           </p>
         ) : null}
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-y-1">
         <div className="flex flex-row">
           <div className="w-32 text-semantic-fg-disabled text-sm font-normal">
             Date connected:
