@@ -76,7 +76,7 @@ export const ConnectionPipelineList = ({
       <div className="w-32 text-semantic-fg-disabled text-sm font-normal">
         Pipelines:
       </div>
-      <div className="text-sm font-normal flex flex-col [&>a]:text-semantic-accent-default [&>a:hover]:underline">
+      <div className="text-sm font-normal flex flex-col [&>a]:text-semantic-accent-default [&>a:hover]:underline flex-1 bg-semantic-bg-alt-primary border border-semantic-bg-line rounded p-2">
         {pipelineIds.map((item) => (
           <Link
             target="_blank"

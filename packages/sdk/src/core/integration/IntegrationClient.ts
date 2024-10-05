@@ -1,8 +1,8 @@
 import { getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
 import {
-  AddIntegrationRequest,
-  AddIntegrationResponse,
+  CreateIntegrationConnectionRequest,
+  CreateIntegrationConnectionResponse,
   DeleteIntegrationConnectionRequest,
   GetConnectionPipelinesRequest,
   GetConnectionPipelinesResponse,
@@ -245,15 +245,16 @@ export class IntegrationClient extends APIResource {
   /**
    * Adds an integration connection
    */
-  async addIntegration({
+  async createIntegrationConnection({
     id,
     integrationId,
     namespaceId,
     setup,
     method,
-  }: AddIntegrationRequest) {
+    identity,
+  }: CreateIntegrationConnectionRequest) {
     try {
-      const data = await this._client.post<AddIntegrationResponse>(
+      const data = await this._client.post<CreateIntegrationConnectionResponse>(
         `/namespaces/${namespaceId}/connections`,
         {
           body: JSON.stringify({
@@ -261,6 +262,7 @@ export class IntegrationClient extends APIResource {
             integrationId,
             method,
             setup,
+            identity,
           }),
         },
       );

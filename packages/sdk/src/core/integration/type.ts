@@ -29,6 +29,8 @@ export type IntegrationConnection = {
   view: ResourceView;
   createTime: string;
   updateTime: string;
+  oAuthAccessDetails?: Record<string, unknown>;
+  identity?: string;
 };
 
 export type GetIntegrationsRequest = {
@@ -62,16 +64,17 @@ export type GetIntegrationConnectionResponse = {
   connection: IntegrationConnection;
 };
 
-export type AddIntegrationRequest = {
+export type CreateIntegrationConnectionRequest = {
   namespaceId: string;
   id: string;
   integrationId: string;
   setup: Record<string, unknown>;
   method: IntegrationMethod;
   oAuthAccessDetails?: Record<string, unknown>;
+  identity?: string;
 };
 
-export type AddIntegrationResponse = {
+export type CreateIntegrationConnectionResponse = {
   connection: IntegrationConnection;
 };
 

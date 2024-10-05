@@ -220,7 +220,7 @@ export const OnboardingForm = () => {
           cookieToken: token,
         }),
       });
-      await router.push(`/${user.id}/pipelines`);
+      router.push(`/${user.id}/pipelines`);
     } catch (error) {
       const message =
         error instanceof Error

@@ -1,4 +1,4 @@
-export * from "./useAddIntegrationConnection";
+export * from "./useCreateIntegrationConnection";
 export * from "./useDeleteIntegrationConnection";
 export * from "./useInfiniteConnectionPipelines";
 export * from "./useInfiniteIntegrationConnections";

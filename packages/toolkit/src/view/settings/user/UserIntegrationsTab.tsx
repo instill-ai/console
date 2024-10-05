@@ -1,28 +1,19 @@
 "use client";
 
-import { Nullable } from "@instill-ai/design-system";
+import * as React from "react";
 
 import { Integrations, Setting } from "../..";
-import { GeneralAppPageProp } from "../../../lib";
 
-export type UserIntegrationsTabProps = GeneralAppPageProp & {
-  namespaceId: Nullable<string>;
-};
-
-export const UserIntegrationsTab = (props: UserIntegrationsTabProps) => {
-  const { accessToken, enableQuery, namespaceId } = props;
-
+export const UserIntegrationsTab = () => {
   return (
     <Setting.TabRoot>
       <Setting.TabHeader
         title="Integration"
         description="Easily configure and protect your connections"
       />
-      <Integrations
-        accessToken={accessToken}
-        enableQuery={enableQuery}
-        namespaceId={namespaceId}
-      />
+      <React.Suspense>
+        <Integrations />
+      </React.Suspense>
     </Setting.TabRoot>
   );
 };

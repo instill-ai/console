@@ -1,7 +1,6 @@
-import { AddIntegrationRequest, Nullable } from "instill-sdk";
+import { CreateIntegrationConnectionRequest, Nullable } from "instill-sdk";
 import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google";
 import SlackProvider from "next-auth/providers/slack";
 
 import { getInstillAPIClient } from "../vdp-sdk";
@@ -11,14 +10,12 @@ export type GetAuthHandlerProps = {
   instillAccessToken?: string;
   namespaceId?: string;
   onCallback?: () => void;
-  integrationId?: string;
 };
 
 export function getAuthHandler({
   instillAccessToken,
   namespaceId,
   onCallback,
-  integrationId,
 }: GetAuthHandlerProps) {
   return NextAuth({
     providers: [
@@ -31,20 +28,7 @@ export function getAuthHandler({
             prompt: "consent",
             access_type: "offline",
             response_type: "code",
-            scope: "repo user:email read:user",
-          },
-        },
-      }),
-      GoogleProvider({
-        clientId: String(process.env.GOOGLE_CLIENT_ID),
-        clientSecret: String(process.env.GOOGLE_CLIENT_SECRET),
-        authorization: {
-          url: "https://accounts.google.com/o/oauth2/v2/auth",
-          params: {
-            prompt: "consent",
-            access_type: "offline",
-            response_type: "code",
-            scope: "openid",
+            scope: "repo:status write:repo_hook user:email read:user",
           },
         },
       }),
@@ -54,38 +38,37 @@ export function getAuthHandler({
         authorization: {
           url: "https://slack.com/oauth/v2/authorize",
           params: {
-            prompt: "consent",
-            access_type: "offline",
-            response_type: "code",
-            scope: "openid",
+            scope: "channels:history groups:history chat:write",
+            user_scope: "users:read users:read.email users.profile:read",
+            granular_bot_scope: "1",
           },
         },
       }),
     ],
     callbacks: {
-      async jwt({ token, account }) {
-        console.log("account", account);
+      async jwt({ token, account, profile }) {
+        console.log(
+          "account",
+          instillAccessToken,
+          namespaceId,
+          account,
+          profile,
+        );
         if (
           instillAccessToken &&
           account &&
           account.provider &&
           account.access_token &&
-          namespaceId
+          namespaceId &&
+          profile
         ) {
-          let payload: Nullable<AddIntegrationRequest> = null;
+          let payload: Nullable<CreateIntegrationConnectionRequest> = null;
 
-          const client = getInstillAPIClient({
-            accessToken: instillAccessToken,
-          });
-
-          // We now assume that user won't create more than 100 connections for a single integration
-          const integrationConnections =
-            await client.core.integration.getIntegrationConnections({
-              namespaceId,
-              filter: `integration_id="${integrationId}"`,
-              pageSize: 100,
-              enablePagination: false,
-            });
+          const identity =
+            profile.email ??
+            profile.name ??
+            (profile.login as string | undefined) ??
+            profile.id;
 
           switch (account.provider) {
             case "google": {
@@ -103,6 +86,12 @@ export function getAuthHandler({
               break;
             }
             case "github": {
+              const prefilledIntegrationConnectionId =
+                getPrefilledOAuthIntegrationConnectionId({
+                  provider: "github",
+                  connectionIdentity: profile.login as string,
+                });
+
               payload = {
                 integrationId: "github",
                 method: "METHOD_OAUTH",
@@ -110,16 +99,22 @@ export function getAuthHandler({
                   token: account.access_token,
                 },
                 namespaceId,
-                id: getPrefilledOAuthIntegrationConnectionId({
-                  provider: "github",
-                  connectionIdentity: account.userId as string,
-                  index: integrationConnections.length,
-                }),
-                oAuthAccessDetails: account,
+                id: prefilledIntegrationConnectionId,
+                oAuthAccessDetails: {
+                  ...account,
+                  ...profile,
+                },
+                identity: identity ?? undefined,
               };
               break;
             }
             case "slack": {
+              const prefilledIntegrationConnectionId =
+                getPrefilledOAuthIntegrationConnectionId({
+                  provider: "github",
+                  connectionIdentity: profile.email as string,
+                });
+
               payload = {
                 integrationId: "slack",
                 method: "METHOD_OAUTH",
@@ -127,15 +122,25 @@ export function getAuthHandler({
                   token: account.access_token,
                 },
                 namespaceId,
-                id: "",
-                oAuthAccessDetails: account,
+                id: prefilledIntegrationConnectionId,
+                oAuthAccessDetails: {
+                  ...account,
+                  ...profile,
+                },
+                identity: identity ?? undefined,
               };
               break;
             }
           }
 
+          console.log("payload", payload);
+
+          const client = getInstillAPIClient({
+            accessToken: instillAccessToken,
+          });
+
           if (payload) {
-            await client.core.integration.addIntegration(payload);
+            await client.core.integration.createIntegrationConnection(payload);
             if (onCallback) {
               onCallback();
             }
@@ -144,5 +149,6 @@ export function getAuthHandler({
         return token;
       },
     },
+    trustHost: true,
   });
 }

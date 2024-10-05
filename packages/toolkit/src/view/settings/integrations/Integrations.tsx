@@ -13,23 +13,26 @@ import {
 } from "../../../constant";
 import {
   debounce,
+  InstillStore,
+  useAuthenticatedUser,
   useInfiniteIntegrationConnections,
   useInfiniteIntegrations,
+  useInstillStore,
+  useShallow,
 } from "../../../lib";
-import { AvailableIntegration } from "./AvailableIntegration";
+import { ConnectableIntegration } from "./connectable-integration";
 import {
   ExistingConnection,
   getAccordionId,
 } from "./existing-connection/ExistingConnection";
 import { Section } from "./Section";
 
-export type IntegrationsProps = {
-  namespaceId: Nullable<string>;
-  enableQuery: boolean;
-  accessToken: Nullable<string>;
-};
+const selector = (store: InstillStore) => ({
+  enabledQuery: store.enabledQuery,
+  accessToken: store.accessToken,
+});
 
-export const Integrations = (props: IntegrationsProps) => {
+export const Integrations = () => {
   const searchParams = useSearchParams();
   const oAuthCallbackConnectionId = searchParams.get(
     OAuthCallbackConnectionIdQueryParam,
@@ -39,9 +42,16 @@ export const Integrations = (props: IntegrationsProps) => {
   );
   const oAuthCallbackStatus = searchParams.get(OAuthCallbackStatusQueryParam);
   const isHighlightedSuccessfullyCreatedIntegration = React.useRef(false);
+
+  const { enabledQuery, accessToken } = useInstillStore(useShallow(selector));
+
+  const me = useAuthenticatedUser({
+    accessToken: accessToken,
+    enabled: enabledQuery,
+  });
+
   const [initialAccordionValue, setInitialAccordionValue] =
     React.useState<Nullable<string>>(null);
-  const { accessToken, enableQuery, namespaceId } = props;
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
   const debouncedSetSearchValue = React.useMemo(
@@ -78,13 +88,14 @@ export const Integrations = (props: IntegrationsProps) => {
 
   const availableIntegrations = useInfiniteIntegrations({
     accessToken,
-    enabled: enableQuery,
+    enabled: enabledQuery,
     filter: searchInputValue ? `qIntegration="${searchInputValue}"` : null,
   });
+
   const integrationConnections = useInfiniteIntegrationConnections({
-    namespaceId,
+    namespaceId: me.isSuccess ? me.data.id : null,
     accessToken,
-    enabled: enableQuery,
+    enabled: enabledQuery && me.isSuccess,
     filter: searchInputValue ? `qConnection="${searchInputValue}"` : null,
   });
 
@@ -139,15 +150,17 @@ export const Integrations = (props: IntegrationsProps) => {
       connections: IntegrationConnection[];
     }[] = [];
 
-    integrationConnections.data?.pages.forEach((page) => {
-      page.connections.forEach((connection) => {
-        if (!dic[connection.integrationId]) {
-          dic[connection.integrationId] = [];
-        }
+    if (integrationConnections.isSuccess) {
+      integrationConnections.data?.pages.forEach((page) => {
+        page.connections.forEach((connection) => {
+          if (!dic[connection.integrationId]) {
+            dic[connection.integrationId] = [];
+          }
 
-        dic[connection.integrationId]?.push(connection);
+          dic[connection.integrationId]?.push(connection);
+        });
       });
-    });
+    }
 
     Object.keys(dic)
       //.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
@@ -220,7 +233,7 @@ export const Integrations = (props: IntegrationsProps) => {
               key={item.integration.id}
               integration={item.integration}
               connections={item.connections}
-              namespaceId={namespaceId}
+              namespaceId={me.isSuccess ? me.data.id : null}
             />
           ))
         ) : (
@@ -238,10 +251,10 @@ export const Integrations = (props: IntegrationsProps) => {
           ))
         ) : availableIntegrationList.length > 0 ? (
           availableIntegrationList.map((item) => (
-            <AvailableIntegration
+            <ConnectableIntegration
               key={item.id}
               integration={item}
-              namespaceId={namespaceId}
+              namespaceId={me.isSuccess ? me.data.id : null}
             />
           ))
         ) : (

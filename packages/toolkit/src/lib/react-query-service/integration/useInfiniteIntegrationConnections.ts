@@ -1,5 +1,4 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { ResourceView } from "instill-sdk";
 
 import type { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../vdp-sdk";
@@ -16,7 +15,6 @@ export function useInfiniteIntegrationConnections({
   enabled: boolean;
   retry?: false | number;
   filter: Nullable<string>;
-  view?: ResourceView;
 }) {
   const queryKey = ["integration-connections", namespaceId, "infinite"];
 

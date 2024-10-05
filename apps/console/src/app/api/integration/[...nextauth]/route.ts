@@ -33,7 +33,6 @@ const getAuthHandlerProps = () => {
       getAuthHandlerProps = {
         instillAccessToken: accessToken ?? undefined,
         namespaceId: tempIntegrationObject.namespaceId,
-        integrationId: tempIntegrationObject.integrationId,
       };
     } catch (error) {
       console.error(error);
@@ -61,9 +60,6 @@ export async function GET(req: NextRequest) {
 
   const handler = getAuthHandler({
     ...authHandlerProps,
-    onCallback: () => {
-      cookies().delete(TempIntegrationObjectKey);
-    },
   });
 
   return handler.handlers.GET(req);

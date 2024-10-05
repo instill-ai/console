@@ -70,7 +70,7 @@ export const NamespaceSwitch = () => {
   const namespacesRemainingCredit = useNamespacesRemainingCredit({
     namespaceNames,
     accessToken,
-    enabled: enabledQuery,
+    enabled: enabledQuery && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
   });
 
   const routeInfo = useRouteInfo();
@@ -95,7 +95,7 @@ export const NamespaceSwitch = () => {
   });
 
   const namespacesWithRemainingCredit = React.useMemo(() => {
-    if (!userNamespaces.isSuccess || !namespacesRemainingCredit.isSuccess) {
+    if (!userNamespaces.isSuccess) {
       return [];
     }
 
@@ -103,9 +103,11 @@ export const NamespaceSwitch = () => {
       return {
         ...namespace,
         remainingCredit:
-          namespacesRemainingCredit.data.find(
-            (e) => e.namespaceName === namespace.name,
-          )?.remainingCredit.total ?? 0,
+          env("NEXT_PUBLIC_APP_ENV") === "CLOUD"
+            ? (namespacesRemainingCredit.data?.find(
+                (e) => e.namespaceName === namespace.name,
+              )?.remainingCredit.total ?? 0)
+            : 0,
       };
     });
   }, [
@@ -366,7 +368,13 @@ export const NamespaceSwitch = () => {
       onOpenChange={(value) => {
         setSwitchIsOpen(value);
       }}
-      disabled={namespacesRemainingCredit.isSuccess ? false : true}
+      disabled={
+        env("NEXT_PUBLIC_APP_ENV") === "CLOUD"
+          ? namespacesRemainingCredit.isSuccess
+            ? false
+            : true
+          : false
+      }
     >
       <Select.Trigger
         icon={<React.Fragment />}

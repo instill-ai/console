@@ -103,10 +103,10 @@ export const ExistingConnection = ({
   return (
     <Accordion.Item
       value={getAccordionId(integration.id)}
-      className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-semantic-bg-line"
+      className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-semantic-bg-line bg-semantic-bg-primary"
     >
       <Accordion.Trigger className="flex flex-row gap-4 items-center p-4 w-full [&[data-state=open]>svg]:rotate-180">
-        <div className="w-12 h-12 rounded-sm border-semantic-bg-line border flex items-center justify-center">
+        <div className="w-12 h-12 rounded-sm border-semantic-bg-line border shadow-xxs flex items-center justify-center">
           <Image
             width={24}
             height={24}
@@ -120,7 +120,7 @@ export const ExistingConnection = ({
         <Icons.ChevronDown className="ml-auto h-5 w-5 stroke-semantic-fg-secondary transition-transform duration-200" />
       </Accordion.Trigger>
       <Accordion.Content
-        className="mx-4 py-4 border-t border-semantic-bg-line flex-col gap-y-4 data-[state=open]:flex"
+        className="px-3 py-4 border-t border-semantic-bg-line flex-col gap-y-4 data-[state=open]:flex"
         style={{ width: "calc(100% - 32px)" }}
       >
         {connections.map((connection) => (

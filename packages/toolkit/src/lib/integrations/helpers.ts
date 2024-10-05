@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import type { IntegrationProvider } from "./types";
 import { AvailableOAuthIntegration } from "../../constant";
+import { createNaiveRandomString } from "../createNaiveRandomString";
 
 export async function initializeIntegrationConnection({
   provider,
@@ -48,16 +49,22 @@ export function isOAuthAvailable(integrationId: string) {
 export function getPrefilledOAuthIntegrationConnectionId({
   provider,
   connectionIdentity,
-  index,
 }: {
   provider: IntegrationProvider;
 
   // This is the connection identity that is returned from the OAuth flow
   // For example, for GitHub, it is the user's GitHub username
   connectionIdentity: string;
-  index: number;
 }) {
-  return `${connectionIdentity}-${provider}-connection-#${index}`;
+  const naiveRandomString = createNaiveRandomString(3);
+  const randomStringSuffix = `-${naiveRandomString}`;
+  const maxIdentityLength = 32 - randomStringSuffix.length;
+  const truncatedIdentity = `${provider}-${connectionIdentity}`.slice(
+    0,
+    maxIdentityLength,
+  );
+
+  return `${truncatedIdentity}${randomStringSuffix}`.toLowerCase();
 }
 
 export const TempIntegrationObjectSchema = z.object({

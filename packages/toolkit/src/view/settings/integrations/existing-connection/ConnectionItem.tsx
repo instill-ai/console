@@ -4,7 +4,7 @@ import * as React from "react";
 import { useSearchParams } from "next/navigation";
 import { IntegrationConnection, Nullable } from "instill-sdk";
 
-import { cn, Icons, Tag } from "@instill-ai/design-system";
+import { Button, cn, Icons, Tag } from "@instill-ai/design-system";
 
 import { CopiedTooltip } from "../../../../components";
 import {
@@ -12,7 +12,7 @@ import {
   OAuthCallbackIntegrationIdQueryParam,
   OAuthCallbackStatusQueryParam,
 } from "../../../../constant";
-import { formatDate } from "../../../../lib";
+import { formatDateFull } from "../../../../lib";
 import { ConnectionPipelineList } from "./ConnectionPipelineList";
 
 export const ConnectionItem = ({
@@ -57,55 +57,57 @@ export const ConnectionItem = ({
   ]);
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-row justify-between w-full">
-        <div className="flex flex-row gap-x-2 items-center">
-          <span className="text-semantic-fg-primary font-semibold text-sm">
-            {connection.id}
-          </span>
+    <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-1">
+        <div className="flex flex-row justify-between w-full">
+          <div className="flex flex-row gap-x-2 items-center">
+            <span className="text-semantic-fg-primary font-semibold text-sm">
+              {connection.id}
+            </span>
 
-          <CopiedTooltip isOpen={copied}>
-            <Icons.Copy06
+            <CopiedTooltip isOpen={copied}>
+              <Button
+                onClick={async () => {
+                  await navigator.clipboard.writeText(
+                    `\${connection.${connection.id}}`,
+                  );
+                  setCopied(true);
+                  setTimeout(() => {
+                    setCopied(false);
+                  }, 1000);
+                }}
+                variant="tertiaryGrey"
+                size="sm"
+              >
+                <Icons.Copy06 className="w-3 h-3 stroke-semantic-fg-secondary cursor-pointer" />
+              </Button>
+            </CopiedTooltip>
+            <Tag
+              className={cn(
+                "transition-opacity duration-300",
+                justConnected ? "opacity-100" : "opacity-0",
+              )}
+              variant="lightGreen"
+            >
+              Connected
+            </Tag>
+          </div>
+          <div className="flex flex-row gap-x-2 items-center">
+            <Icons.Edit05
               className="w-4 h-4 stroke-semantic-fg-secondary cursor-pointer"
-              onClick={async () => {
-                await navigator.clipboard.writeText(
-                  `\${connection.${connection.id}}`,
-                );
-                setCopied(true);
-                setTimeout(() => {
-                  setCopied(false);
-                }, 1000);
-              }}
+              onClick={() => setEditingConnection(connection)}
             />
-          </CopiedTooltip>
-          <Tag
-            className={cn(
-              "transition-opacity duration-300",
-              justConnected ? "opacity-100" : "opacity-0",
-            )}
-            variant="lightGreen"
-          >
-            Connected
-          </Tag>
+            <Icons.Trash01
+              className="w-4 h-4 stroke-semantic-fg-secondary cursor-pointer"
+              onClick={() => setDeleteConnection(connection)}
+            />
+          </div>
         </div>
-        <div className="flex flex-row gap-x-2 items-center">
-          {/* <Button
-          variant="secondaryGrey"
-          className="ml-auto"
-          size="sm"
-          onClick={onTest}
-        >
-          Test
-        </Button> */}
-          <Icons.Edit05
-            className="w-4 h-4 stroke-semantic-fg-secondary cursor-pointer"
-            onClick={() => setEditingConnection(connection)}
-          />
-          <Icons.Trash01
-            className="w-4 h-4 stroke-semantic-fg-secondary cursor-pointer"
-            onClick={() => setDeleteConnection(connection)}
-          />
-        </div>
+        {connection.method === "METHOD_OAUTH" && connection.identity ? (
+          <p className="product-body-text-4-regular text-semantic-fg-secondary">
+            {connection.identity as string}
+          </p>
+        ) : null}
       </div>
       <div className="flex flex-col gap-1">
         <div className="flex flex-row">
@@ -113,7 +115,7 @@ export const ConnectionItem = ({
             Date connected:
           </div>
           <div className="text-semantic-fg-primary text-sm font-normal">
-            {formatDate(connection.createTime)}
+            {formatDateFull(connection.createTime)}
           </div>
         </div>
         <ConnectionPipelineList

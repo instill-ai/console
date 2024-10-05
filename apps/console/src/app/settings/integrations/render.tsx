@@ -1,14 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import {
   AppTopbar,
   BreadcrumbWithLink,
   NamespaceSwitch,
   PageBase,
   Setting,
-  useAuthenticatedUser,
   UserIntegrationsTab,
   UserSidebar,
 } from "@instill-ai/toolkit";
@@ -16,13 +13,8 @@ import {
 import { useAppAccessToken } from "~/lib/use-app-access-token";
 
 export function IntegrationsSettingsPageRender() {
-  const accessToken = useAppAccessToken();
-  const me = useAuthenticatedUser({
-    accessToken: accessToken.isSuccess ? accessToken.data : null,
-    enabled: accessToken.isSuccess,
-  });
+  useAppAccessToken();
 
-  const router = useRouter();
   return (
     <PageBase>
       <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
@@ -35,12 +27,7 @@ export function IntegrationsSettingsPageRender() {
           </div>
           <Setting.Root>
             <UserSidebar />
-            <UserIntegrationsTab
-              router={router}
-              accessToken={accessToken.isSuccess ? accessToken.data : null}
-              enableQuery={accessToken.isSuccess}
-              namespaceId={me.isSuccess ? me.data.id : null}
-            />
+            <UserIntegrationsTab />
           </Setting.Root>
         </PageBase.Content>
       </PageBase.Container>
