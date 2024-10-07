@@ -57,6 +57,23 @@ export function getUserDefinedReferencesFromRecipe(
           })),
         );
       }
+
+      if (checkComponentTypeHelper.isPipelineIteratorComponent(c)) {
+        const configuration = {
+          component: c.component,
+          input: c.input,
+        };
+
+        const userDefinedReferencesForIteratorComponent =
+          getReferencesFromAny(configuration);
+
+        references.push(
+          ...userDefinedReferencesForIteratorComponent.map((reference) => ({
+            id: cId,
+            ...reference,
+          })),
+        );
+      }
     }
   }
 
