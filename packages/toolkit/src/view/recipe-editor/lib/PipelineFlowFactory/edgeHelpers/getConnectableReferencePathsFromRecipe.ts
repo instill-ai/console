@@ -76,10 +76,6 @@ export function getConnectableReferencePathsFromRecipe(
     }
   }
 
-  // 3. Extract connectable references for runon
-  // if (recipe && recipe.on) {
-  // }
-
   return {
     variableNodeConnectableReferencePaths,
     componentNodeConnectableReferencePaths,
