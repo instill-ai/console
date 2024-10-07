@@ -45,7 +45,7 @@ const ClonePipelineSchema = z
   .object({
     id: z.string(),
     namespaceId: z.string(),
-    brief: z.string().optional().nullable(),
+    description: z.string().optional().nullable(),
   })
   .superRefine((state, ctx) => {
     if (!validateInstillResourceID(state.id)) {
@@ -98,7 +98,7 @@ export const ClonePipelineDialog = ({
     resolver: zodResolver(ClonePipelineSchema),
     defaultValues: {
       id: "",
-      brief: "",
+      description: "",
       namespaceId: navigationNamespaceAnchor
         ? navigationNamespaceAnchor
         : routeInfo?.data.namespaceId || "",
@@ -158,6 +158,7 @@ export const ClonePipelineDialog = ({
         namespacePipelineName: routeInfo.data.pipelineName,
         targetNamespaceId: targetNamespace.id,
         targetPipelineId: data.id,
+        description: data.description ?? undefined,
         sharing,
       };
 
@@ -204,7 +205,7 @@ export const ClonePipelineDialog = ({
       onOpenChange={(open) => {
         form.reset({
           id: "",
-          brief: "",
+          description: "",
           namespaceId: navigationNamespaceAnchor
             ? navigationNamespaceAnchor
             : routeInfo?.data.namespaceId || "",
@@ -312,7 +313,7 @@ export const ClonePipelineDialog = ({
                   </div>
                   <Form.Field
                     control={form.control}
-                    name="brief"
+                    name="description"
                     render={({ field }) => {
                       return (
                         <Form.Item>
