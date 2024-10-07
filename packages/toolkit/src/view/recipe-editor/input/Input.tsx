@@ -29,6 +29,7 @@ import {
   useUserNamespaces,
 } from "../../../lib";
 import { recursiveHelpers } from "../../pipeline-builder";
+import { useAutonomousEditorRecipeUpdater } from "../lib";
 import { parseEventReadableStream } from "./parseEventReadableStream";
 
 const selector = (store: InstillStore) => ({
@@ -38,6 +39,7 @@ const selector = (store: InstillStore) => ({
   updateTriggerPipelineStreamMap: store.updateTriggerPipelineStreamMap,
   updateEditorMultiScreenModel: store.updateEditorMultiScreenModel,
   currentVersion: store.currentVersion,
+  hasUnsavedRecipe: store.hasUnsavedRecipe,
 });
 
 export const Input = ({
@@ -54,6 +56,7 @@ export const Input = ({
     updateTriggerPipelineStreamMap,
     updateEditorMultiScreenModel,
     currentVersion,
+    hasUnsavedRecipe,
   } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
@@ -73,6 +76,7 @@ export const Input = ({
   const userNamespaces = useUserNamespaces();
   const triggerPipeline = useStreamingTriggerUserPipeline();
   const triggerPipelineRelease = useStreamingTriggerUserPipelineRelease();
+  const autonomousRecipeUpdater = useAutonomousEditorRecipeUpdater();
   const onStreamTriggerPipeline = React.useCallback(
     async (formData: z.infer<typeof Schema>) => {
       if (
@@ -101,6 +105,20 @@ export const Input = ({
           },
         }));
         return;
+      }
+
+      // Save the recipe is there has unsaved changes
+      if (hasUnsavedRecipe) {
+        try {
+          await autonomousRecipeUpdater();
+        } catch (error) {
+          console.error("Failed to update pipeline:", error);
+          toast({
+            title: "Failed to save pipeline",
+            description: "An error occurred while saving the pipeline.",
+            variant: "alert-error",
+          });
+        }
       }
 
       forceStopTriggerPipelineStream.current = false;

@@ -38,7 +38,7 @@ export function useAutonomousEditorRecipeUpdater() {
 
   const updatePipeline = useUpdateNamespacePipeline();
 
-  const autonomousRecipeUpdater = React.useCallback(() => {
+  const autonomousRecipeUpdater = React.useCallback(async () => {
     if (!routeInfo.isSuccess || !editorRef || !routeInfo.data.pipelineName) {
       return;
     }
@@ -48,7 +48,7 @@ export function useAutonomousEditorRecipeUpdater() {
     try {
       updateIsSavingRecipe(() => true);
 
-      updatePipeline.mutateAsync({
+      await updatePipeline.mutateAsync({
         rawRecipe,
         namespacePipelineName: routeInfo.data.pipelineName,
         accessToken,
@@ -57,6 +57,7 @@ export function useAutonomousEditorRecipeUpdater() {
         },
       });
 
+      // Cancel the debounced recipe updater sequnce to prevent the duplicate update
       editorDebouncedRecipeUpdater?.cancel();
 
       // Smooth the indicator transition, if the update goes too fast, the indicator
@@ -72,6 +73,8 @@ export function useAutonomousEditorRecipeUpdater() {
         error,
       });
       console.error(error);
+    } finally {
+      updateIsSavingRecipe(() => false);
     }
   }, [
     editorRef,

@@ -1321,14 +1321,13 @@ export const VscodeEditor = () => {
           }
 
           updateHasUnsavedRecipe(() => true);
+          updateRawRecipeOnDom(() => value);
 
           debouncedRecipeUpdater({
             pipelineName: pipeline.data.name,
             newRawRecipe: value,
             accessToken,
           });
-
-          updateRawRecipeOnDom(() => value);
 
           const res = validateVSCodeYaml(value);
 
