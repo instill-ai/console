@@ -1371,17 +1371,13 @@ export const VscodeEditor = () => {
           const autoCompleteDisposable =
             monaco.languages.registerCompletionItemProvider("yaml", {
               triggerCharacters: ["${", ".", " ", ":"],
-              provideCompletionItems: (model, position) => {
-                // Split everything the user has typed on the current line up at each space, and only look at the last word
-                return handleAutoComplete({
-                  model,
-                  position,
-                  monaco,
-                  recipe: pipeline.data?.recipe ?? null,
-                });
+              provideCompletionItems: () => {
+                return null;
               },
             });
           autoCompleteDisposableRef.current = autoCompleteDisposable;
+
+          console.log("ff");
 
           monaco.editor.defineTheme(
             "tomorrow",
