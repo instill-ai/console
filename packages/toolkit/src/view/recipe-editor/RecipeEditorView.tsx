@@ -321,7 +321,9 @@ export const RecipeEditorView = () => {
       <div className="flex flex-row px-3 h-12 items-center bg-semantic-bg-secondary">
         <div className="flex flex-row w-1/2">
           <div className="flex flex-row gap-x-2">
-            <EditorButtonTooltipWrapper tooltipContent="Open sidebar">
+            <EditorButtonTooltipWrapper
+              tooltipContent={isSidebarOpen ? "Close Sidebar" : "Open Sidebar"}
+            >
               <Button
                 size="sm"
                 className="!w-8 !h-8 items-center justify-center"
