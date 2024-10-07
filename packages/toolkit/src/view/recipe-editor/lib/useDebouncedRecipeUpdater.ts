@@ -87,7 +87,7 @@ export function useDebouncedRecipeUpdater(): EditorRecipeUpdater {
           console.error(error);
         }
       },
-      1500,
+      1000,
     ),
     [],
   );
