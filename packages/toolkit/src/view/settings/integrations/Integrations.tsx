@@ -19,6 +19,7 @@ import {
   useInfiniteIntegrations,
   useInstillStore,
   useShallow,
+  useUserNamespaces,
 } from "../../../lib";
 import { ConnectableIntegration } from "./connectable-integration";
 import {
@@ -30,6 +31,7 @@ import { Section } from "./Section";
 const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
   accessToken: store.accessToken,
+  navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 });
 
 export const Integrations = () => {
@@ -43,12 +45,15 @@ export const Integrations = () => {
   const oAuthCallbackStatus = searchParams.get(OAuthCallbackStatusQueryParam);
   const isHighlightedSuccessfullyCreatedIntegration = React.useRef(false);
 
-  const { enabledQuery, accessToken } = useInstillStore(useShallow(selector));
+  const { enabledQuery, accessToken, navigationNamespaceAnchor } =
+    useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
     accessToken: accessToken,
     enabled: enabledQuery,
   });
+
+  const userNamespaces = useUserNamespaces();
 
   const [initialAccordionValue, setInitialAccordionValue] =
     React.useState<Nullable<string>>(null);
@@ -61,6 +66,31 @@ export const Integrations = () => {
       }, 500),
     [],
   );
+
+  const selectedNamespaceId = React.useMemo(() => {
+    if (
+      !navigationNamespaceAnchor ||
+      !userNamespaces.isSuccess ||
+      !me.isSuccess
+    ) {
+      return null;
+    }
+
+    if (userNamespaces.data.length === 0) {
+      return me.data.id;
+    }
+
+    return (
+      userNamespaces.data.find((e) => e.id === navigationNamespaceAnchor)?.id ??
+      null
+    );
+  }, [
+    userNamespaces.isSuccess,
+    userNamespaces.data,
+    navigationNamespaceAnchor,
+    me.isSuccess,
+    me.data,
+  ]);
 
   React.useEffect(() => {
     let timeoutId: NodeJS.Timeout | undefined;
@@ -233,7 +263,7 @@ export const Integrations = () => {
               key={item.integration.id}
               integration={item.integration}
               connections={item.connections}
-              namespaceId={me.isSuccess ? me.data.id : null}
+              namespaceId={selectedNamespaceId}
             />
           ))
         ) : (
@@ -254,7 +284,7 @@ export const Integrations = () => {
             <ConnectableIntegration
               key={item.id}
               integration={item}
-              namespaceId={me.isSuccess ? me.data.id : null}
+              namespaceId={selectedNamespaceId}
             />
           ))
         ) : (

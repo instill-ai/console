@@ -28,7 +28,7 @@ export function getAuthHandler({
             prompt: "consent",
             access_type: "offline",
             response_type: "code",
-            scope: "repo:status write:repo_hook user:email read:user",
+            scope: "repo write:repo_hook user:email read:user",
           },
         },
       }),
@@ -38,7 +38,8 @@ export function getAuthHandler({
         authorization: {
           url: "https://slack.com/oauth/v2/authorize",
           params: {
-            scope: "channels:history groups:history chat:write",
+            scope:
+              "users:read users:read.email users.profile:read channels:history groups:history chat:write",
             user_scope: "users:read users:read.email users.profile:read",
             granular_bot_scope: "1",
           },
@@ -47,106 +48,142 @@ export function getAuthHandler({
     ],
     callbacks: {
       async jwt({ token, account, profile }) {
-        console.log(
-          "account",
-          instillAccessToken,
-          namespaceId,
-          account,
-          profile,
-        );
-        if (
-          instillAccessToken &&
-          account &&
-          account.provider &&
-          account.access_token &&
-          namespaceId &&
-          profile
-        ) {
-          let payload: Nullable<CreateIntegrationConnectionRequest> = null;
+        try {
+          console.log(
+            "account",
+            instillAccessToken,
+            namespaceId,
+            account,
+            profile,
+          );
+          if (
+            instillAccessToken &&
+            account &&
+            account.provider &&
+            account.access_token &&
+            namespaceId &&
+            profile
+          ) {
+            let payload: Nullable<CreateIntegrationConnectionRequest> = null;
 
-          const identity =
-            profile.email ??
-            profile.name ??
-            (profile.login as string | undefined) ??
-            profile.id;
+            const identity =
+              profile.email ??
+              profile.name ??
+              (profile.login as string | undefined) ??
+              profile.id;
 
-          switch (account.provider) {
-            case "google": {
-              // payload = {
-              //   integrationId: "google",
-              //   method: "METHOD_OAUTH",
-              //   setup: {
-              //     token: account.access_token,
-              //   },
-              //   namespaceId,
-              //   id: connectionId,
-              //   oAuthAccessDetails: account,
-              // };
-              payload = null;
-              break;
+            switch (account.provider) {
+              case "google": {
+                // payload = {
+                //   integrationId: "google",
+                //   method: "METHOD_OAUTH",
+                //   setup: {
+                //     token: account.access_token,
+                //   },
+                //   namespaceId,
+                //   id: connectionId,
+                //   oAuthAccessDetails: account,
+                // };
+                payload = null;
+                break;
+              }
+              case "github": {
+                const prefilledIntegrationConnectionId =
+                  getPrefilledOAuthIntegrationConnectionId({
+                    provider: "github",
+                    connectionIdentity: profile.login as string,
+                  });
+
+                payload = {
+                  integrationId: "github",
+                  method: "METHOD_OAUTH",
+                  setup: {
+                    token: account.access_token,
+                  },
+                  namespaceId,
+                  id: prefilledIntegrationConnectionId,
+                  oAuthAccessDetails: {
+                    ...account,
+                    ...profile,
+                  },
+                  identity: identity ?? undefined,
+                };
+                break;
+              }
+              case "slack": {
+                const prefilledIntegrationConnectionId =
+                  getPrefilledOAuthIntegrationConnectionId({
+                    provider: "github",
+                    connectionIdentity: profile.email as string,
+                  });
+
+                // get user infor from slack
+
+                // const slackUserInfo = await fetch(
+                //   "https://slack.com/api/users.info",
+                //   {
+                //     headers: {
+                //       Authorization: `Bearer ${account.access_token}`,
+                //       "Content-Type": "application/json",
+                //     },
+                //     method: "POST",
+                //     body: JSON.stringify({
+                //       user: profile.email as string,
+                //     }),
+                //   },
+                // );
+
+                // if (user.ok) {
+                //   identity =
+                //     user.user?.profile?.email ??
+                //     user.user?.name ??
+                //     user.user?.id;
+                // }
+
+                if (!identity) {
+                  throw new Error("Slack user not found");
+                }
+
+                payload = {
+                  integrationId: "slack",
+                  method: "METHOD_OAUTH",
+                  setup: {
+                    token: account.access_token,
+                  },
+                  namespaceId,
+                  id: prefilledIntegrationConnectionId,
+                  oAuthAccessDetails: {
+                    ...account,
+                    ...profile,
+                  },
+                  identity: identity ?? undefined,
+                };
+                break;
+              }
             }
-            case "github": {
-              const prefilledIntegrationConnectionId =
-                getPrefilledOAuthIntegrationConnectionId({
-                  provider: "github",
-                  connectionIdentity: profile.login as string,
-                });
 
-              payload = {
-                integrationId: "github",
-                method: "METHOD_OAUTH",
-                setup: {
-                  token: account.access_token,
-                },
-                namespaceId,
-                id: prefilledIntegrationConnectionId,
-                oAuthAccessDetails: {
-                  ...account,
-                  ...profile,
-                },
-                identity: identity ?? undefined,
-              };
-              break;
-            }
-            case "slack": {
-              const prefilledIntegrationConnectionId =
-                getPrefilledOAuthIntegrationConnectionId({
-                  provider: "github",
-                  connectionIdentity: profile.email as string,
-                });
+            console.log("payload", payload);
 
-              payload = {
-                integrationId: "slack",
-                method: "METHOD_OAUTH",
-                setup: {
-                  token: account.access_token,
-                },
-                namespaceId,
-                id: prefilledIntegrationConnectionId,
-                oAuthAccessDetails: {
-                  ...account,
-                  ...profile,
-                },
-                identity: identity ?? undefined,
-              };
-              break;
+            const client = getInstillAPIClient({
+              accessToken: instillAccessToken,
+            });
+
+            if (payload) {
+              await client.core.integration.createIntegrationConnection(
+                payload,
+              );
+              if (onCallback) {
+                onCallback();
+              }
             }
           }
-
-          console.log("payload", payload);
-
-          const client = getInstillAPIClient({
-            accessToken: instillAccessToken,
-          });
-
-          if (payload) {
-            await client.core.integration.createIntegrationConnection(payload);
-            if (onCallback) {
-              onCallback();
-            }
-          }
+          return token;
+        } catch (error) {
+          console.error("Error in jwt callback:", error);
+          // You might want to handle the error differently or rethrow it
+          // depending on your error handling strategy
+          return token;
         }
-        return token;
       },
     },
     trustHost: true,
