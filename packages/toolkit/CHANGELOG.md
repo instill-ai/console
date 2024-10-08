@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.106.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.106.0...@instill-ai/toolkit-v0.106.1) (2024-10-08)
+
+
+### Bug Fixes
+
+* fix cant update connection id ([#1522](https://github.com/instill-ai/console/issues/1522)) ([f22578a](https://github.com/instill-ai/console/commit/f22578ae820f6617942f5c07e876b1f488e40c8e))
+
 ## [0.106.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.105.1...@instill-ai/toolkit-v0.106.0) (2024-10-08)
 
 
