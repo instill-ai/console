@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.6.0...instill-sdk-v0.7.0) (2024-10-08)
+
+
+### Features
+
+* oauth wip ([#1509](https://github.com/instill-ai/console/issues/1509)) ([c8a92ad](https://github.com/instill-ai/console/commit/c8a92ad3d363a6ed65a67649cf8c45362e5aafec))
+* **vdp:** update and adapt clone namespace pipeline endpoint ([#1516](https://github.com/instill-ai/console/issues/1516)) ([b585e2e](https://github.com/instill-ai/console/commit/b585e2ecbb2fc60ac13476d117859727faa690d5))
+
 ## [0.6.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.5.2...instill-sdk-v0.6.0) (2024-09-24)
 
 
