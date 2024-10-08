@@ -67,10 +67,16 @@ export const ExistingConnection = ({
           payload: newId
             ? {
                 id: newId,
-                setup: payload,
+                setup: {
+                  ...payload,
+                  id: undefined,
+                },
               }
             : {
-                setup: payload,
+                setup: {
+                  ...payload,
+                  id: undefined,
+                },
               },
         },
         accessToken,
