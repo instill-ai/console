@@ -13,6 +13,7 @@ import { Button, cn, Form, Input, useToast } from "@instill-ai/design-system";
 import { LoadingSpin } from "../../../components";
 import { useInstillForm } from "../../../lib";
 import { FieldDescriptionTooltip } from "../../../lib/use-instill-form/components/common";
+import { parseResourceId } from "../../../server";
 import { recursiveHelpers } from "../../pipeline-builder";
 
 export const connectionFormID = "connection-form";
@@ -47,7 +48,9 @@ export const ConnectionForm = ({
     schema || null,
     values || null,
   );
+
   const [connectionId, setConnectionId] = React.useState("");
+  const [idIsInvalid, setIdIsInvalid] = React.useState(false);
 
   React.useEffect(() => {
     if (values?.id) {
@@ -133,10 +136,26 @@ export const ConnectionForm = ({
                     <Input.Root>
                       <Input.Core
                         id={field.name}
-                        className="nodrag nowheel placeholder:text-semantic-fg-disabled"
+                        className="placeholder:text-semantic-fg-disabled"
                         type="text"
                         onChange={(event) => {
-                          setConnectionId(event.target.value);
+                          const {
+                            isValid,
+                            originalResourceId,
+                            formattedResourceId,
+                          } = parseResourceId({
+                            resourceId: event.target.value,
+                            resourceType:
+                              "RESOURCE_TYPE_INTEGRATION_CONNECTION",
+                          });
+
+                          if (isValid) {
+                            setConnectionId(originalResourceId);
+                            setIdIsInvalid(false);
+                          } else {
+                            setConnectionId(formattedResourceId);
+                            setIdIsInvalid(true);
+                          }
                         }}
                         defaultValue={form.getValues("id")}
                       />
@@ -144,7 +163,11 @@ export const ConnectionForm = ({
                   </Form.Control>
                   <Form.Description
                     className="nodrag nopan cursor-text select-text"
-                    text="The component definition ID"
+                    text={
+                      idIsInvalid
+                        ? `ID will be transformed to: ${connectionId}`
+                        : "The component definition ID"
+                    }
                   />
                   <Form.Message />
                 </Form.Item>

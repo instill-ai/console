@@ -47,13 +47,13 @@ export const ManualSettingDialog = ({
   async function onSubmit({
     method,
     payload,
-    id,
+    newId,
   }: {
     method: IntegrationMethod;
     payload: Record<string, unknown>;
-    id: string;
+    newId?: string;
   }) {
-    if (!namespaceId) {
+    if (!namespaceId || !newId) {
       return;
     }
 
@@ -63,7 +63,7 @@ export const ManualSettingDialog = ({
       await createIntegrationConnection.mutateAsync({
         payload: {
           method,
-          id,
+          id: newId,
           setup: payload,
           integrationId: integration.id,
           namespaceId,
@@ -84,9 +84,9 @@ export const ManualSettingDialog = ({
         error,
         toast,
       });
+    } finally {
+      setIsProcessing(false);
     }
-
-    setIsProcessing(false);
   }
 
   return (

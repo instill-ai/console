@@ -84,6 +84,7 @@ export const ExistingConnection = ({
         variant: "alert-success",
       });
     } catch (error) {
+      console.log(error);
       toastInstillError({
         title: "Something went wrong adding an integration",
         error,
