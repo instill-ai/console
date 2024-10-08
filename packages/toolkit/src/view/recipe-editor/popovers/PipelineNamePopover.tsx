@@ -54,6 +54,9 @@ export const PipelineNamePopover = ({
 
   const form = useForm<z.infer<typeof pipelineNameSchema>>({
     resolver: zodResolver(pipelineNameSchema),
+    defaultValues: {
+      id: "",
+    },
   });
 
   const {
