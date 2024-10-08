@@ -120,42 +120,15 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
   const handleOpenDocumentation = React.useCallback(() => {
     let documentationUrl: Nullable<string> = null;
 
-    if (!data.definition) {
+    if (!data.definition || !data.definition.documentationUrl) {
       return;
     }
 
-    const urlPrefix = "https://www.instill.tech/docs/component";
     const viewId = `${id}-documentation-view`;
     const viewTitle = `${data.definition.title} Documentation`;
 
-    switch (data.definition.type) {
-      case "COMPONENT_TYPE_OPERATOR":
-        documentationUrl = urlPrefix + `/operator/${data.definition.id}`;
-        break;
-      case "COMPONENT_TYPE_AI":
-        documentationUrl = urlPrefix + `/ai/${data.definition.id}`;
-        break;
-      case "COMPONENT_TYPE_DATA":
-        documentationUrl = urlPrefix + `/data/${data.definition.id}`;
-        break;
-      case "COMPONENT_TYPE_APPLICATION":
-        documentationUrl = urlPrefix + `/application/${data.definition.id}`;
-        break;
-      case "COMPONENT_TYPE_GENERIC":
-        documentationUrl = urlPrefix + `/generic/${data.definition.id}`;
-        break;
-    }
-
-    if (data.definition.id === "instill-model") {
-      documentationUrl = "https://www.instill.tech/docs/component/ai/instill";
-    }
-
-    if (!documentationUrl) {
-      return;
-    }
-
     // Purely render docs only without any interaction
-    documentationUrl = documentationUrl + "?isOnlyForConsoleRenderingDocs=true";
+    documentationUrl = data.definition.documentationUrl + "?isOnlyForConsoleRenderingDocs=true";
 
     updateEditorMultiScreenModel((prev) => ({
       ...prev,
