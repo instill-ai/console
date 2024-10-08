@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.106.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.106.1...@instill-ai/toolkit-v0.106.2) (2024-10-08)
+
+
+### Bug Fixes
+
+* fix component documentation urls in the pipeline builder ([#1524](https://github.com/instill-ai/console/issues/1524)) ([ee880c8](https://github.com/instill-ai/console/commit/ee880c84c4f3f2a7e93fca3d3e6eccb482f1a03d))
+
 ## [0.106.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.106.0...@instill-ai/toolkit-v0.106.1) (2024-10-08)
 
 
