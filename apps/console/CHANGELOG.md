@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.59.0-beta](https://github.com/instill-ai/console/compare/v0.58.0-beta...v0.59.0-beta) (2024-10-08)
+
+
+### Features
+
+* oauth wip ([#1509](https://github.com/instill-ai/console/issues/1509)) ([c8a92ad](https://github.com/instill-ai/console/commit/c8a92ad3d363a6ed65a67649cf8c45362e5aafec))
+* update document component icon ([#1517](https://github.com/instill-ai/console/issues/1517)) ([a0ac17b](https://github.com/instill-ai/console/commit/a0ac17bcc2f5fa8994d49088042cd0416394e39d))
+
+
+### Bug Fixes
+
+* fix console not correctly update the namespace requester uid when requesting run related endpoint ([#1513](https://github.com/instill-ai/console/issues/1513)) ([ec89e4e](https://github.com/instill-ai/console/commit/ec89e4e17d5517a189ea1a7f0d6bf98b7e8b69bf))
+
+
+### Miscellaneous
+
+* update Collection component icon ([#1508](https://github.com/instill-ai/console/issues/1508)) ([8ea6793](https://github.com/instill-ai/console/commit/8ea6793eec7b27c18f114f13b706f6dcdff8518c))
+
 ## [0.58.0-beta](https://github.com/instill-ai/console/compare/v0.57.2-beta...v0.58.0-beta) (2024-09-24)
 
 

@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.106.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.105.1...@instill-ai/toolkit-v0.106.0) (2024-10-08)
+
+
+### Features
+
+* **assistant:** feat add assistant navbar  ([#1512](https://github.com/instill-ai/console/issues/1512)) ([c3245b8](https://github.com/instill-ai/console/commit/c3245b8b2c0fe56696d65736fe9c484d4c965d22))
+* **editor:** save unsaved pipeline when user run before auto-save ([#1515](https://github.com/instill-ai/console/issues/1515)) ([e69399f](https://github.com/instill-ai/console/commit/e69399f07d12fc353f11f10ee528edacafda06d9))
+* oauth wip ([#1509](https://github.com/instill-ai/console/issues/1509)) ([c8a92ad](https://github.com/instill-ai/console/commit/c8a92ad3d363a6ed65a67649cf8c45362e5aafec))
+* **vdp:** update and adapt clone namespace pipeline endpoint ([#1516](https://github.com/instill-ai/console/issues/1516)) ([b585e2e](https://github.com/instill-ai/console/commit/b585e2ecbb2fc60ac13476d117859727faa690d5))
+
+
+### Bug Fixes
+
+* fix console not correctly update the namespace requester uid when requesting run related endpoint ([#1513](https://github.com/instill-ai/console/issues/1513)) ([ec89e4e](https://github.com/instill-ai/console/commit/ec89e4e17d5517a189ea1a7f0d6bf98b7e8b69bf))
+* **recipe-editor:** fix iterator connection is missing ([#1514](https://github.com/instill-ai/console/issues/1514)) ([ab4ac4c](https://github.com/instill-ai/console/commit/ab4ac4c1339ba5a0f4cc793831b4049661436c3b))
+* update task payload examples ([#1510](https://github.com/instill-ai/console/issues/1510)) ([00e4e03](https://github.com/instill-ai/console/commit/00e4e03b12d1a102af288a13f4f09fdd13f50a5b))
+* **vdp:** fix recipe editor sidebar tooltip not respond to whether the sidebar is open or not ([#1518](https://github.com/instill-ai/console/issues/1518)) ([06fe799](https://github.com/instill-ai/console/commit/06fe799d9a4276049c2420d18c8d7708bc45bc3a))
+* **vdp:** fix recipe editor's autocomplete gives duplicated suggestion ([#1519](https://github.com/instill-ai/console/issues/1519)) ([2499b32](https://github.com/instill-ai/console/commit/2499b32ddd41583b7874dc8c4aa9e77e456301a0))
+
 ## [0.105.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.105.0...@instill-ai/toolkit-v0.105.1) (2024-09-26)
 
 

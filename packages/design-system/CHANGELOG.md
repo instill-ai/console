@@ -1,5 +1,17 @@
 # @instill-ai/design-system
 
+## [0.81.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.80.0...@instill-ai/design-system-v0.81.0) (2024-10-08)
+
+
+### Features
+
+* **assistant:** feat add assistant navbar  ([#1512](https://github.com/instill-ai/console/issues/1512)) ([c3245b8](https://github.com/instill-ai/console/commit/c3245b8b2c0fe56696d65736fe9c484d4c965d22))
+
+
+### Bug Fixes
+
+* fix console not correctly update the namespace requester uid when requesting run related endpoint ([#1513](https://github.com/instill-ai/console/issues/1513)) ([ec89e4e](https://github.com/instill-ai/console/commit/ec89e4e17d5517a189ea1a7f0d6bf98b7e8b69bf))
+
 ## [0.80.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.79.1...@instill-ai/design-system-v0.80.0) (2024-09-24)
 
 
