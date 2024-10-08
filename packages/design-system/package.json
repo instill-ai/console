@@ -97,7 +97,7 @@
     "react-dom": "^18.2.0",
     "require-from-string": "^2.0.2",
     "rimraf": "^3.0.2",
-    "rollup": "^2.77.2",
+    "rollup": "^2.79.2",
     "storybook": "^8.1.4",
     "tailwindcss": "^3.3.2",
     "tsup": "^8.1.0",
