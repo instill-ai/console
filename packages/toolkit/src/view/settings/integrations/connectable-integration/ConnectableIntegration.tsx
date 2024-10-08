@@ -20,7 +20,7 @@ export const ConnectableIntegration = ({
   integration,
   namespaceId,
 }: ConnectableIntegrationProps) => {
-  const [isConnectDialogOpen, setIsConnectDialogOpen] = React.useState(false);
+  const [editingDialogIsOpen, setEditingDialogIsOpen] = React.useState(false);
 
   const oAuthIsAvailable = isOAuthAvailable(integration.id);
 
@@ -52,9 +52,10 @@ export const ConnectableIntegration = ({
               case "github":
                 provider = "github";
                 break;
-              case "slack":
-                provider = "slack";
-                break;
+              // temp disable slack OAuth
+              // case "slack":
+              //   provider = "slack";
+              //   break;
               default:
                 break;
             }
@@ -70,14 +71,14 @@ export const ConnectableIntegration = ({
             return;
           }
 
-          setIsConnectDialogOpen(true);
+          setEditingDialogIsOpen(true);
         }}
       >
         Connect
       </Button>
       <ManualSettingDialog
-        isOpen={isConnectDialogOpen}
-        onOpenChange={setIsConnectDialogOpen}
+        isOpen={editingDialogIsOpen}
+        onOpenChange={setEditingDialogIsOpen}
         namespaceId={namespaceId}
         integration={integration}
       />

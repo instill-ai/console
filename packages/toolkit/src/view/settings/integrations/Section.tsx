@@ -10,9 +10,9 @@ export const Section = ({
 }: {
   title: string;
   children: React.ReactNode;
-  initialAccordionValue: Nullable<string>;
+  initialAccordionValue: Nullable<string[]>;
 }) => {
-  const [value, setValue] = React.useState<Nullable<string>>(null);
+  const [value, setValue] = React.useState<Nullable<string[]>>(null);
 
   React.useEffect(() => {
     if (initialAccordionValue) {
@@ -27,8 +27,7 @@ export const Section = ({
       </div>
       <Accordion.Root
         value={value ?? undefined}
-        collapsible={true}
-        type="single"
+        type="multiple"
         className="flex flex-col border-semantic-bg-line border rounded"
         onValueChange={setValue}
       >

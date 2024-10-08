@@ -36,8 +36,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(500).end("Value not provided");
   }
 
-  console.log("req.cookies", env("NEXT_PUBLIC_CONSOLE_BASE_URL"), body);
-
   try {
     const targetCookie = req.cookies[body.key];
     if (targetCookie) {

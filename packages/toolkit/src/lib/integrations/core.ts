@@ -45,18 +45,19 @@ export function getAuthHandler({
             granular_bot_scope: "1",
           },
         },
+        // TODO: implement Slack OAuth customize method
+        // token: {
+        //   url: "https://slack.com/api/oauth.v2.access",
+        //   async request(context: any) {
+        //     // use fetch to exchange code for token
+        //     console.log("context", context);
+        //   },
+        // },
       }),
     ],
     callbacks: {
       async jwt({ token, account, profile }) {
         try {
-          console.log(
-            "account",
-            instillAccessToken,
-            namespaceId,
-            account,
-            profile,
-          );
           if (
             instillAccessToken &&
             account &&
@@ -171,8 +172,6 @@ export function getAuthHandler({
                 break;
               }
             }
-
-            console.log("payload", payload);
 
             const client = getInstillAPIClient({
               accessToken: instillAccessToken,

@@ -1,16 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { useSearchParams } from "next/navigation";
 import { Integration, IntegrationConnection } from "instill-sdk";
 
 import { Icons, Input, Nullable, Skeleton } from "@instill-ai/design-system";
 
-import {
-  OAuthCallbackConnectionIdQueryParam,
-  OAuthCallbackIntegrationIdQueryParam,
-  OAuthCallbackStatusQueryParam,
-} from "../../../constant";
 import {
   debounce,
   InstillStore,
@@ -22,10 +16,7 @@ import {
   useUserNamespaces,
 } from "../../../lib";
 import { ConnectableIntegration } from "./connectable-integration";
-import {
-  ExistingConnection,
-  getAccordionId,
-} from "./existing-connection/ExistingConnection";
+import { ExistingConnection } from "./existing-connection/ExistingConnection";
 import { Section } from "./Section";
 
 const selector = (store: InstillStore) => ({
@@ -35,16 +26,6 @@ const selector = (store: InstillStore) => ({
 });
 
 export const Integrations = () => {
-  const searchParams = useSearchParams();
-  const oAuthCallbackConnectionId = searchParams.get(
-    OAuthCallbackConnectionIdQueryParam,
-  );
-  const oAuthCallbackIntegrationId = searchParams.get(
-    OAuthCallbackIntegrationIdQueryParam,
-  );
-  const oAuthCallbackStatus = searchParams.get(OAuthCallbackStatusQueryParam);
-  const isHighlightedSuccessfullyCreatedIntegration = React.useRef(false);
-
   const { enabledQuery, accessToken, navigationNamespaceAnchor } =
     useInstillStore(useShallow(selector));
 
@@ -55,8 +36,6 @@ export const Integrations = () => {
 
   const userNamespaces = useUserNamespaces();
 
-  const [initialAccordionValue, setInitialAccordionValue] =
-    React.useState<Nullable<string>>(null);
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
   const debouncedSetSearchValue = React.useMemo(
@@ -90,30 +69,6 @@ export const Integrations = () => {
     navigationNamespaceAnchor,
     me.isSuccess,
     me.data,
-  ]);
-
-  React.useEffect(() => {
-    let timeoutId: NodeJS.Timeout | undefined;
-
-    if (
-      oAuthCallbackStatus === "success" &&
-      oAuthCallbackConnectionId &&
-      oAuthCallbackIntegrationId &&
-      !isHighlightedSuccessfullyCreatedIntegration.current
-    ) {
-      setInitialAccordionValue(getAccordionId(oAuthCallbackIntegrationId));
-      console.log(
-        "setInitialAccordionValue",
-        getAccordionId(oAuthCallbackIntegrationId),
-      );
-      isHighlightedSuccessfullyCreatedIntegration.current = true;
-    }
-
-    return () => clearTimeout(timeoutId);
-  }, [
-    oAuthCallbackStatus,
-    oAuthCallbackConnectionId,
-    oAuthCallbackIntegrationId,
   ]);
 
   const availableIntegrations = useInfiniteIntegrations({
@@ -250,7 +205,7 @@ export const Integrations = () => {
         </Input.Root>
       </div>
       <Section
-        initialAccordionValue={initialAccordionValue}
+        initialAccordionValue={null}
         title={`Connected${integrationConnectionList.length > 0 ? ` (${integrationConnectionList.length})` : ""}`}
       >
         {isLoading ? (

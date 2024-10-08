@@ -99,7 +99,10 @@ export const ManualSettingDialog = ({
           <h3 className="product-headings-heading-3 my-auto text-semantic-fg-primary">
             Add Connection
           </h3>
-          <button className="p-3 border hover:bg-semantic-bg-base-bg rounded-[10px] border-semantic-bg-line shadow-xxs">
+          <button
+            onClick={() => onOpenChange(false)}
+            className="p-3 border hover:bg-semantic-bg-base-bg rounded-[10px] border-semantic-bg-line shadow-xxs"
+          >
             <Icons.X className="w-6 h-6 stroke-semantic-fg-primary" />
           </button>
         </div>
