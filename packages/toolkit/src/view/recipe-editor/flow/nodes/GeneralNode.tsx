@@ -128,7 +128,8 @@ export const GeneralNode = ({ data, id }: NodeProps<GeneralNodeData>) => {
     const viewTitle = `${data.definition.title} Documentation`;
 
     // Purely render docs only without any interaction
-    documentationUrl = data.definition.documentationUrl + "?isOnlyForConsoleRenderingDocs=true";
+    documentationUrl =
+      data.definition.documentationUrl + "?isOnlyForConsoleRenderingDocs=true";
 
     updateEditorMultiScreenModel((prev) => ({
       ...prev,
