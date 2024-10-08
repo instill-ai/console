@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.59.1-beta](https://github.com/instill-ai/console/compare/v0.59.0-beta...v0.59.1-beta) (2024-10-08)
+
+
+### Bug Fixes
+
+* fix component documentation urls in the pipeline builder ([#1524](https://github.com/instill-ai/console/issues/1524)) ([ee880c8](https://github.com/instill-ai/console/commit/ee880c84c4f3f2a7e93fca3d3e6eccb482f1a03d))
+
 ## [0.59.0-beta](https://github.com/instill-ai/console/compare/v0.58.0-beta...v0.59.0-beta) (2024-10-08)
 
 
