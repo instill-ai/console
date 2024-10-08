@@ -74,7 +74,6 @@ export const EditConnectionDialog = ({
         integrationFull.isSuccess &&
         connectionFull.isSuccess ? (
           <ConnectionForm
-            isEdit
             id={`${editingConnection.id}-${editingConnection.method}`}
             method={editingConnection.method}
             schema={

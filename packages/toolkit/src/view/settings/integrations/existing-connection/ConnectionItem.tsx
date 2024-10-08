@@ -93,14 +93,20 @@ export const ConnectionItem = ({
             </Tag>
           </div>
           <div className="flex flex-row gap-x-2 items-center">
-            <Icons.Edit05
-              className="w-4 h-4 stroke-semantic-fg-secondary cursor-pointer"
+            <Button
               onClick={() => setEditingConnection(connection)}
-            />
-            <Icons.Trash01
-              className="w-4 h-4 stroke-semantic-fg-secondary cursor-pointer"
+              variant="tertiaryGrey"
+              size="sm"
+            >
+              <Icons.Edit05 className="w-3 h-3 stroke-semantic-fg-secondary cursor-pointer" />
+            </Button>
+            <Button
               onClick={() => setDeleteConnection(connection)}
-            />
+              variant="tertiaryGrey"
+              size="sm"
+            >
+              <Icons.Trash01 className="w-3 h-3 stroke-semantic-fg-secondary cursor-pointer" />
+            </Button>
           </div>
         </div>
         {connection.method === "METHOD_OAUTH" && connection.identity ? (

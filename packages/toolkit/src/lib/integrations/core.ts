@@ -40,7 +40,8 @@ export function getAuthHandler({
           params: {
             scope:
               "users:read users:read.email users.profile:read channels:history groups:history chat:write",
-            user_scope: "users:read users:read.email users.profile:read",
+            user_scope:
+              "users:read users:read.email users.profile:read channels:history groups:history chat:write",
             granular_bot_scope: "1",
           },
         },
@@ -66,7 +67,7 @@ export function getAuthHandler({
           ) {
             let payload: Nullable<CreateIntegrationConnectionRequest> = null;
 
-            const identity =
+            let identity =
               profile.email ??
               profile.name ??
               (profile.login as string | undefined) ??
@@ -111,38 +112,47 @@ export function getAuthHandler({
                 break;
               }
               case "slack": {
-                const prefilledIntegrationConnectionId =
-                  getPrefilledOAuthIntegrationConnectionId({
-                    provider: "github",
-                    connectionIdentity: profile.email as string,
-                  });
+                const userId = profile.sub;
+
+                if (!userId) {
+                  throw new Error("Slack user not found");
+                }
 
                 // get user infor from slack
 
-                // const slackUserInfo = await fetch(
-                //   "https://slack.com/api/users.info",
-                //   {
-                //     headers: {
-                //       Authorization: `Bearer ${account.access_token}`,
-                //       "Content-Type": "application/json",
-                //     },
-                //     method: "POST",
-                //     body: JSON.stringify({
-                //       user: profile.email as string,
-                //     }),
-                //   },
-                // );
+                const slackUserInfoResponse = await fetch(
+                  `https://slack.com/api/users.info?user=${userId}`,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${account.access_token}`,
+                      "Content-Type": "application/json",
+                    },
+                    method: "GET",
+                  },
+                );
 
-                // if (user.ok) {
-                //   identity =
-                //     user.user?.profile?.email ??
-                //     user.user?.name ??
-                //     user.user?.id;
-                // }
+                let userName: Nullable<string> = null;
 
-                if (!identity) {
+                if (slackUserInfoResponse.ok) {
+                  const user = await slackUserInfoResponse.json();
+
+                  identity =
+                    user.user?.profile?.email ??
+                    user.user?.name ??
+                    user.user?.id;
+
+                  userName = user.user?.name;
+                }
+
+                if (!identity || !userName) {
                   throw new Error("Slack user not found");
                 }
+
+                const prefilledIntegrationConnectionId =
+                  getPrefilledOAuthIntegrationConnectionId({
+                    provider: "slack",
+                    connectionIdentity: userName,
+                  });
 
                 payload = {
                   integrationId: "slack",
@@ -180,8 +190,6 @@ export function getAuthHandler({
           return token;
         } catch (error) {
           console.error("Error in jwt callback:", error);
-          // You might want to handle the error differently or rethrow it
-          // depending on your error handling strategy
           return token;
         }
       },

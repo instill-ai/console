@@ -20,7 +20,7 @@ export const connectionFormID = "connection-form";
 export type ConnectionFormOnSubmit = (props: {
   method: IntegrationMethod;
   payload: Record<string, unknown>;
-  id: string;
+  newId?: string;
 }) => Promise<void>;
 
 export const ConnectionForm = ({
@@ -32,7 +32,6 @@ export const ConnectionForm = ({
   schema,
   method,
   values,
-  isEdit,
 }: {
   id: string;
   onSubmit: ConnectionFormOnSubmit;
@@ -42,7 +41,6 @@ export const ConnectionForm = ({
   schema?: InstillJSONSchema;
   method: IntegrationMethod;
   values?: GeneralRecord;
-  isEdit?: boolean;
 }) => {
   const { toast } = useToast();
   const { fields, form, ValidatorSchema } = useInstillForm(
@@ -108,7 +106,7 @@ export const ConnectionForm = ({
 
     onSubmit({
       method,
-      id,
+      newId: values?.id === id ? undefined : id,
       payload: parsedData,
     });
   };
@@ -141,7 +139,6 @@ export const ConnectionForm = ({
                           setConnectionId(event.target.value);
                         }}
                         defaultValue={form.getValues("id")}
-                        disabled={isEdit}
                       />
                     </Input.Root>
                   </Form.Control>
@@ -167,8 +164,6 @@ export const ConnectionForm = ({
           >
             {isProcessing ? (
               <LoadingSpin className="!text-semantic-fg-secondary" />
-            ) : !isEdit ? (
-              "Connect"
             ) : (
               "Save"
             )}

@@ -4,7 +4,8 @@ import { signIn } from "next-auth/react";
 import { z } from "zod";
 
 import type { IntegrationProvider } from "./types";
-import { AvailableOAuthIntegration } from "../../constant";
+import { AvailableOAuthIntegration, resourceIdPrefix } from "../../constant";
+import { formatResourceId } from "../../server";
 import { createNaiveRandomString } from "../createNaiveRandomString";
 
 export async function initializeIntegrationConnection({
@@ -64,7 +65,7 @@ export function getPrefilledOAuthIntegrationConnectionId({
     maxIdentityLength,
   );
 
-  return `${truncatedIdentity}${randomStringSuffix}`.toLowerCase();
+  return `${formatResourceId(truncatedIdentity, resourceIdPrefix.integrationConnection)}${randomStringSuffix}`;
 }
 
 export const TempIntegrationObjectSchema = z.object({

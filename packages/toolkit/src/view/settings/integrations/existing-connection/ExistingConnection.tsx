@@ -2,12 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import {
-  Integration,
-  IntegrationConnection,
-  IntegrationMethod,
-  Nullable,
-} from "instill-sdk";
+import { Integration, IntegrationConnection, Nullable } from "instill-sdk";
 
 import { Accordion, Icons, useToast } from "@instill-ai/design-system";
 
@@ -51,18 +46,12 @@ export const ExistingConnection = ({
 
   const updateIntegrationConnection = useUpdateIntegrationConnection();
 
-  /* const onTest = () => {
-    toast({
-      size: "small",
-      title: "Model readme updated successfully",
-      variant: Math.random() > 0.5 ? "alert-success" : "alert-error",
-    });
-  }; */
-
-  async function onSubmit(props: {
-    method: IntegrationMethod;
+  async function onSubmit({
+    payload,
+    newId,
+  }: {
     payload: Record<string, unknown>;
-    id: string;
+    newId?: string;
   }) {
     if (!namespaceId || !editingConnection) {
       return;
@@ -75,9 +64,14 @@ export const ExistingConnection = ({
         payload: {
           namespaceId,
           connectionId: editingConnection.id,
-          payload: {
-            setup: props.payload,
-          },
+          payload: newId
+            ? {
+                id: newId,
+                setup: payload,
+              }
+            : {
+                setup: payload,
+              },
         },
         accessToken,
       });
@@ -120,7 +114,7 @@ export const ExistingConnection = ({
         <Icons.ChevronDown className="ml-auto h-5 w-5 stroke-semantic-fg-secondary transition-transform duration-200" />
       </Accordion.Trigger>
       <Accordion.Content
-        className="px-3 py-4 border-t border-semantic-bg-line flex-col gap-y-4 data-[state=open]:flex"
+        className="px-3 mx-auto w-full py-4 border-t border-semantic-bg-line flex-col gap-y-4 data-[state=open]:flex"
         style={{ width: "calc(100% - 32px)" }}
       >
         {connections.map((connection) => (

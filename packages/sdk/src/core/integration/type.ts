@@ -95,6 +95,7 @@ export type UpdateIntegrationConnectionRequest = {
   namespaceId: string;
   connectionId: string;
   payload: {
+    id?: string;
     setup: Record<string, unknown>;
   };
 };
