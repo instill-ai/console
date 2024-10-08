@@ -27,9 +27,12 @@ export * from "./getCaptializeTwoWordsFromName";
 export * from "./convertLongNumberToK";
 export * from "./formatNumberToLocale";
 export * from "./generateDateInPast";
+export * from "./createNaiveRandomString";
 export * from "./convertSentenceToCamelCase";
 export * from "./useUserNamespaces";
 export * from "./stringToHash32Bit";
+
+export { initializeIntegrationConnection } from "./integrations/helpers";
 
 export { debounce };
 

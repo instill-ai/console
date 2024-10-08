@@ -13,9 +13,16 @@ import { Button, cn, Form, Input, useToast } from "@instill-ai/design-system";
 import { LoadingSpin } from "../../../components";
 import { useInstillForm } from "../../../lib";
 import { FieldDescriptionTooltip } from "../../../lib/use-instill-form/components/common";
+import { parseResourceId } from "../../../server";
 import { recursiveHelpers } from "../../pipeline-builder";
 
 export const connectionFormID = "connection-form";
+
+export type ConnectionFormOnSubmit = (props: {
+  method: IntegrationMethod;
+  payload: Record<string, unknown>;
+  newId?: string;
+}) => Promise<void>;
 
 export const ConnectionForm = ({
   id,
@@ -26,28 +33,24 @@ export const ConnectionForm = ({
   schema,
   method,
   values,
-  isEdit,
 }: {
   id: string;
-  onSubmit: (props: {
-    method: IntegrationMethod;
-    payload: Record<string, unknown>;
-    id: string;
-  }) => Promise<void>;
+  onSubmit: ConnectionFormOnSubmit;
   className?: string;
   isProcessing: boolean;
   additionalCta?: React.ReactNode;
   schema?: InstillJSONSchema;
   method: IntegrationMethod;
   values?: GeneralRecord;
-  isEdit?: boolean;
 }) => {
   const { toast } = useToast();
   const { fields, form, ValidatorSchema } = useInstillForm(
     schema || null,
     values || null,
   );
+
   const [connectionId, setConnectionId] = React.useState("");
+  const [idIsInvalid, setIdIsInvalid] = React.useState(false);
 
   React.useEffect(() => {
     if (values?.id) {
@@ -106,7 +109,7 @@ export const ConnectionForm = ({
 
     onSubmit({
       method,
-      id,
+      newId: values?.id === id ? undefined : id,
       payload: parsedData,
     });
   };
@@ -133,19 +136,38 @@ export const ConnectionForm = ({
                     <Input.Root>
                       <Input.Core
                         id={field.name}
-                        className="nodrag nowheel placeholder:text-semantic-fg-disabled"
+                        className="placeholder:text-semantic-fg-disabled"
                         type="text"
                         onChange={(event) => {
-                          setConnectionId(event.target.value);
+                          const {
+                            isValid,
+                            originalResourceId,
+                            formattedResourceId,
+                          } = parseResourceId({
+                            resourceId: event.target.value,
+                            resourceType:
+                              "RESOURCE_TYPE_INTEGRATION_CONNECTION",
+                          });
+
+                          if (isValid) {
+                            setConnectionId(originalResourceId);
+                            setIdIsInvalid(false);
+                          } else {
+                            setConnectionId(formattedResourceId);
+                            setIdIsInvalid(true);
+                          }
                         }}
                         defaultValue={form.getValues("id")}
-                        disabled={isEdit}
                       />
                     </Input.Root>
                   </Form.Control>
                   <Form.Description
                     className="nodrag nopan cursor-text select-text"
-                    text="The component definition ID"
+                    text={
+                      idIsInvalid
+                        ? `ID will be transformed to: ${connectionId}`
+                        : "The component definition ID"
+                    }
                   />
                   <Form.Message />
                 </Form.Item>
@@ -165,8 +187,6 @@ export const ConnectionForm = ({
           >
             {isProcessing ? (
               <LoadingSpin className="!text-semantic-fg-secondary" />
-            ) : !isEdit ? (
-              "Connect"
             ) : (
               "Save"
             )}

@@ -7,21 +7,35 @@ import { Icons, Input, Nullable, Skeleton } from "@instill-ai/design-system";
 
 import {
   debounce,
+  InstillStore,
+  useAuthenticatedUser,
   useInfiniteIntegrationConnections,
   useInfiniteIntegrations,
+  useInstillStore,
+  useShallow,
+  useUserNamespaces,
 } from "../../../lib";
-import { AvailableIntegration } from "./AvailableIntegration";
-import { ExistingConnection } from "./ExistingConnection";
+import { ConnectableIntegration } from "./connectable-integration";
+import { ExistingConnection } from "./existing-connection/ExistingConnection";
 import { Section } from "./Section";
 
-export type IntegrationsProps = {
-  namespaceId: Nullable<string>;
-  enableQuery: boolean;
-  accessToken: Nullable<string>;
-};
+const selector = (store: InstillStore) => ({
+  enabledQuery: store.enabledQuery,
+  accessToken: store.accessToken,
+  navigationNamespaceAnchor: store.navigationNamespaceAnchor,
+});
 
-export const Integrations = (props: IntegrationsProps) => {
-  const { accessToken, enableQuery, namespaceId } = props;
+export const Integrations = () => {
+  const { enabledQuery, accessToken, navigationNamespaceAnchor } =
+    useInstillStore(useShallow(selector));
+
+  const me = useAuthenticatedUser({
+    accessToken: accessToken,
+    enabled: enabledQuery,
+  });
+
+  const userNamespaces = useUserNamespaces();
+
   const [searchInputValue, setSearchInputValue] =
     React.useState<Nullable<string>>(null);
   const debouncedSetSearchValue = React.useMemo(
@@ -31,15 +45,42 @@ export const Integrations = (props: IntegrationsProps) => {
       }, 500),
     [],
   );
+
+  const selectedNamespaceId = React.useMemo(() => {
+    if (
+      !navigationNamespaceAnchor ||
+      !userNamespaces.isSuccess ||
+      !me.isSuccess
+    ) {
+      return null;
+    }
+
+    if (userNamespaces.data.length === 0) {
+      return me.data.id;
+    }
+
+    return (
+      userNamespaces.data.find((e) => e.id === navigationNamespaceAnchor)?.id ??
+      null
+    );
+  }, [
+    userNamespaces.isSuccess,
+    userNamespaces.data,
+    navigationNamespaceAnchor,
+    me.isSuccess,
+    me.data,
+  ]);
+
   const availableIntegrations = useInfiniteIntegrations({
     accessToken,
-    enabled: enableQuery,
+    enabled: enabledQuery,
     filter: searchInputValue ? `qIntegration="${searchInputValue}"` : null,
   });
+
   const integrationConnections = useInfiniteIntegrationConnections({
-    namespaceId,
+    namespaceId: me.isSuccess ? me.data.id : null,
     accessToken,
-    enabled: enableQuery,
+    enabled: enabledQuery && me.isSuccess,
     filter: searchInputValue ? `qConnection="${searchInputValue}"` : null,
   });
 
@@ -94,15 +135,17 @@ export const Integrations = (props: IntegrationsProps) => {
       connections: IntegrationConnection[];
     }[] = [];
 
-    integrationConnections.data?.pages.forEach((page) => {
-      page.connections.forEach((connection) => {
-        if (!dic[connection.integrationId]) {
-          dic[connection.integrationId] = [];
-        }
+    if (integrationConnections.isSuccess) {
+      integrationConnections.data?.pages.forEach((page) => {
+        page.connections.forEach((connection) => {
+          if (!dic[connection.integrationId]) {
+            dic[connection.integrationId] = [];
+          }
 
-        dic[connection.integrationId]?.push(connection);
+          dic[connection.integrationId]?.push(connection);
+        });
       });
-    });
+    }
 
     Object.keys(dic)
       //.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
@@ -162,6 +205,7 @@ export const Integrations = (props: IntegrationsProps) => {
         </Input.Root>
       </div>
       <Section
+        initialAccordionValue={null}
         title={`Connected${integrationConnectionList.length > 0 ? ` (${integrationConnectionList.length})` : ""}`}
       >
         {isLoading ? (
@@ -174,7 +218,7 @@ export const Integrations = (props: IntegrationsProps) => {
               key={item.integration.id}
               integration={item.integration}
               connections={item.connections}
-              namespaceId={namespaceId}
+              namespaceId={selectedNamespaceId}
             />
           ))
         ) : (
@@ -185,17 +229,17 @@ export const Integrations = (props: IntegrationsProps) => {
           </p>
         )}
       </Section>
-      <Section title="All">
+      <Section initialAccordionValue={null} title="All">
         {isLoading ? (
           Array.from(new Array(2)).map((_item, index) => (
             <IntegrationSkeleton key={index} />
           ))
         ) : availableIntegrationList.length > 0 ? (
           availableIntegrationList.map((item) => (
-            <AvailableIntegration
+            <ConnectableIntegration
               key={item.id}
               integration={item}
-              namespaceId={namespaceId}
+              namespaceId={selectedNamespaceId}
             />
           ))
         ) : (

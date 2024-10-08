@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/toolkit",
-  "version": "0.105.2-rc.1",
+  "version": "0.106.0-rc.9",
   "description": "Instill AI's frontend toolkit",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -151,6 +151,7 @@
     "markdown-it": "^13.0.2",
     "markdown-to-jsx": "^7.3.2",
     "monaco-editor": "^0.50.0",
+    "next-auth": "5.0.0-beta.21",
     "prosemirror-markdown": "^1.11.2",
     "prosemirror-model": "^1.19.3",
     "react-avatar-editor": "^13.0.2",

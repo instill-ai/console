@@ -38,3 +38,10 @@ export {
   dehydrate,
   HydrationBoundary,
 } from "@tanstack/react-query";
+
+export * from "../lib/integrations/core";
+export {
+  TempIntegrationObjectSchema,
+  TempIntegrationObjectKey,
+} from "../lib/integrations/helpers";
+export * from "../lib/integrations/types";

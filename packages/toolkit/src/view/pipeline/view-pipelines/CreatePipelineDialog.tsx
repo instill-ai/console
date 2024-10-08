@@ -71,6 +71,9 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
   const form = useForm<z.infer<typeof CreatePipelineSchema>>({
     resolver: zodResolver(CreatePipelineSchema),
     mode: "onChange",
+    defaultValues: {
+      id: "",
+    },
   });
 
   const {

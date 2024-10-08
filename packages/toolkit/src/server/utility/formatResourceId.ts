@@ -1,8 +1,4 @@
-export const formatResourceId = (name?: string, prefix?: string) => {
-  if (!name) {
-    return name;
-  }
-
+export const formatResourceId = (name: string, prefix?: string) => {
   // First, lowercase the name and replace invalid characters with hyphens
   let formatted = name.toLowerCase().replace(/[^a-z0-9-]/g, "-");
 

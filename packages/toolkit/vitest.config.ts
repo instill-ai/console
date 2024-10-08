@@ -9,5 +9,12 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./setupTests.ts"],
     testTimeout: 20000,
+    server: {
+      deps: {
+        // To solve Cannot find module ERROR
+        // https://github.com/vitest-dev/vitest/issues/4554
+        inline: ["next-auth"],
+      },
+    },
   },
 });

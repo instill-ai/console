@@ -1,3 +1,5 @@
+"use client";
+
 import { useRouter } from "next/navigation";
 
 import { Button, Skeleton } from "@instill-ai/design-system";

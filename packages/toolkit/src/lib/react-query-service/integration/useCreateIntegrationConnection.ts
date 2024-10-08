@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AddIntegrationRequest } from "instill-sdk";
+import { CreateIntegrationConnectionRequest } from "instill-sdk";
 
 import type { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../vdp-sdk";
 
-export function useAddIntegrationConnection() {
+export function useCreateIntegrationConnection() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -12,7 +12,7 @@ export function useAddIntegrationConnection() {
       payload,
       accessToken,
     }: {
-      payload: AddIntegrationRequest;
+      payload: CreateIntegrationConnectionRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
@@ -21,7 +21,8 @@ export function useAddIntegrationConnection() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      const data = await client.core.integration.addIntegration(payload);
+      const data =
+        await client.core.integration.createIntegrationConnection(payload);
 
       return Promise.resolve(data);
     },

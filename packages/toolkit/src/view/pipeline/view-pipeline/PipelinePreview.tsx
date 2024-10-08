@@ -1,3 +1,5 @@
+"use client";
+
 import type { Pipeline, PipelineRelease } from "instill-sdk";
 import * as React from "react";
 import { useSearchParams } from "next/navigation";

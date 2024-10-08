@@ -4,12 +4,12 @@ import type { Nullable } from "instill-sdk";
 import * as React from "react";
 import Link from "next/link";
 
-import type { InstillStore } from "../../../lib";
+import type { InstillStore } from "../../../../lib";
 import {
   useInfiniteConnectionPipelines,
   useInstillStore,
   useShallow,
-} from "../../../lib";
+} from "../../../../lib";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -61,7 +61,11 @@ export const ConnectionPipelineList = ({
     ) {
       relatedPipelineIds.fetchNextPage();
     }
-  }, [relatedPipelineIds.isSuccess, relatedPipelineIds.data]);
+  }, [
+    relatedPipelineIds.isSuccess,
+    relatedPipelineIds.data,
+    relatedPipelineIds,
+  ]);
 
   if (!pipelineIds.length) {
     return null;
@@ -72,7 +76,7 @@ export const ConnectionPipelineList = ({
       <div className="w-32 text-semantic-fg-disabled text-sm font-normal">
         Pipelines:
       </div>
-      <div className="text-sm font-normal flex flex-col [&>a]:text-semantic-accent-default [&>a:hover]:underline">
+      <div className="text-sm font-normal flex flex-col [&>a]:text-semantic-accent-default [&>a:hover]:underline flex-1 bg-semantic-bg-alt-primary border border-semantic-bg-line rounded p-2">
         {pipelineIds.map((item) => (
           <Link
             target="_blank"
