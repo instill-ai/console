@@ -1,7 +1,7 @@
 "use client";
 
 import type {
-  CreateNamespacePipelineRequest,
+  CloneNamespacePipelineRequest,
   Pipeline,
   PipelineSharing,
 } from "instill-sdk";
@@ -31,15 +31,13 @@ import {
   toastInstillError,
   useAmplitudeCtx,
   useAuthenticatedUser,
-  useCreateNamespacePipeline,
+  useCloneNamespacePipeline,
   useInstillStore,
   useRouteInfo,
   useShallow,
 } from "../lib";
 import { useUserNamespaces } from "../lib/useUserNamespaces";
 import { env, validateInstillResourceID } from "../server";
-import { composePipelineRecipeFromNodes } from "../view";
-import { createNodesFromPipelineRecipe } from "../view/pipeline-builder/lib/createNodesFromPipelineRecipe";
 import { EntitySelector } from "./EntitySelector";
 import { LoadingSpin } from "./LoadingSpin";
 
@@ -47,7 +45,7 @@ const ClonePipelineSchema = z
   .object({
     id: z.string(),
     namespaceId: z.string(),
-    brief: z.string().optional().nullable(),
+    description: z.string().optional().nullable(),
   })
   .superRefine((state, ctx) => {
     if (!validateInstillResourceID(state.id)) {
@@ -100,7 +98,7 @@ export const ClonePipelineDialog = ({
     resolver: zodResolver(ClonePipelineSchema),
     defaultValues: {
       id: "",
-      brief: "",
+      description: "",
       namespaceId: navigationNamespaceAnchor
         ? navigationNamespaceAnchor
         : routeInfo?.data.namespaceId || "",
@@ -114,14 +112,16 @@ export const ClonePipelineDialog = ({
 
   const userNamespaces = useUserNamespaces();
 
-  const createPipeline = useCreateNamespacePipeline();
+  const clonePipeline = useCloneNamespacePipeline();
   async function handleClone(data: z.infer<typeof ClonePipelineSchema>) {
     if (
       !me.isSuccess ||
       !accessToken ||
       !pipeline ||
       !pipeline.recipe ||
-      !userNamespaces.isSuccess
+      !userNamespaces.isSuccess ||
+      !routeInfo.isSuccess ||
+      !routeInfo.data.pipelineName
     ) {
       return;
     }
@@ -149,40 +149,26 @@ export const ClonePipelineDialog = ({
             shareCode: null,
           };
 
-    // Mimic how we compose recipe from nodes here to remove unnecessary
-    // data like definition in the payload
-    const nodes = createNodesFromPipelineRecipe(pipeline.recipe, {
-      metadata: pipeline.metadata,
-    });
-
-    const recipe = composePipelineRecipeFromNodes(nodes);
-
-    const namespace = userNamespaces.data.find(
+    const targetNamespace = userNamespaces.data.find(
       (account) => account.id === data.namespaceId,
     );
 
-    if (namespace) {
-      const payload: CreateNamespacePipelineRequest = {
-        namespaceName: namespace.name,
-        id: data.id,
-        recipe,
-        metadata: pipeline.metadata,
-        readme: pipeline.readme,
-        description: data.brief ? data.brief : pipeline.description,
+    if (targetNamespace) {
+      const payload: CloneNamespacePipelineRequest = {
+        namespacePipelineName: `namespaces/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`,
+        targetNamespaceId: targetNamespace.id,
+        targetPipelineId: data.id,
+        description: data.description ?? undefined,
         sharing,
       };
 
       try {
-        await createPipeline.mutateAsync({ payload, accessToken });
+        await clonePipeline.mutateAsync({ payload, accessToken });
         if (amplitudeIsInit) {
-          if (pipeline.ownerName === me.data.name) {
-            sendAmplitudeData("duplicate_pipeline");
-          } else {
-            sendAmplitudeData("clone_pipeline");
-          }
+          sendAmplitudeData("clone_pipeline");
         }
-        updateNavigationNamespaceAnchor(() => namespace.id);
-        router.push(`/${data.namespaceId}/pipelines/${payload.id}/playground`);
+        updateNavigationNamespaceAnchor(() => targetNamespace.id);
+        router.push(`/${targetNamespace.id}/pipelines/${data.id}/playground`);
       } catch (error) {
         console.log("error", error);
 
@@ -215,7 +201,7 @@ export const ClonePipelineDialog = ({
       onOpenChange={(open) => {
         form.reset({
           id: "",
-          brief: "",
+          description: "",
           namespaceId: navigationNamespaceAnchor
             ? navigationNamespaceAnchor
             : routeInfo?.data.namespaceId || "",
@@ -323,7 +309,7 @@ export const ClonePipelineDialog = ({
                   </div>
                   <Form.Field
                     control={form.control}
-                    name="brief"
+                    name="description"
                     render={({ field }) => {
                       return (
                         <Form.Item>
