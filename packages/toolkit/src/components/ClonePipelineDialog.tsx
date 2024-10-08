@@ -155,7 +155,7 @@ export const ClonePipelineDialog = ({
 
     if (targetNamespace) {
       const payload: CloneNamespacePipelineRequest = {
-        namespacePipelineName: routeInfo.data.pipelineName,
+        namespacePipelineName: `namespaces/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`,
         targetNamespaceId: targetNamespace.id,
         targetPipelineId: data.id,
         description: data.description ?? undefined,
@@ -165,11 +165,7 @@ export const ClonePipelineDialog = ({
       try {
         await clonePipeline.mutateAsync({ payload, accessToken });
         if (amplitudeIsInit) {
-          if (pipeline.ownerName === me.data.name) {
-            sendAmplitudeData("duplicate_pipeline");
-          } else {
-            sendAmplitudeData("clone_pipeline");
-          }
+          sendAmplitudeData("clone_pipeline");
         }
         updateNavigationNamespaceAnchor(() => targetNamespace.id);
         router.push(`/${targetNamespace.id}/pipelines/${data.id}/playground`);
