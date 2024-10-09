@@ -90,6 +90,8 @@ export type SimilarityChunk = {
     original_file_uid: string;
     start_char_offset: number;
     end_char_offset: number;
+    start_pos: number;
+    end_pos: number;
   };
 };
 
