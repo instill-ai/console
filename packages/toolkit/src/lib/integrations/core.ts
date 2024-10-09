@@ -201,7 +201,15 @@ export function getAuthHandler({
           return token;
         }
       },
+      async redirect({ url, baseUrl }) {
+        console.log("url", url, baseUrl);
+        return url;
+      },
     },
     trustHost: true,
+    pages: {
+      signIn: "/api/nextauth/redirect-signin-page",
+      error: "/api/nextauth/redirect-error-page",
+    },
   });
 }
