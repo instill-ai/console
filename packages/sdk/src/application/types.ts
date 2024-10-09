@@ -97,8 +97,9 @@ export type Conversation = {
   uid: string;
   namespaceId: string;
   appId: string;
+  id: string;
   createTime?: string;
-  updateTime?: string;
+  updateTime: string;
   messages: Message[];
   lastUsedCatalogUid: string;
   lastUsedTopK: number;
