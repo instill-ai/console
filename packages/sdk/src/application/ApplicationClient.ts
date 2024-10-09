@@ -2,6 +2,8 @@ import { getInstillAdditionalHeaders, getQueryString } from "../helper";
 import { APIResource } from "../main/resource";
 import {
   Application,
+  Catalog,
+  Conversation,
   CreateApplicationRequest,
   CreateApplicationResponse,
   DeleteApplicationRequest,
@@ -9,6 +11,7 @@ import {
   GetApplicationResponse,
   ListApplicationsRequest,
   ListApplicationsResponse,
+  Message,
   UpdateApplicationRequest,
   UpdateApplicationResponse,
 } from "./types";
@@ -92,6 +95,155 @@ export class ApplicationClient extends APIResource {
       );
 
       return Promise.resolve(data.app);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async createConversation({
+    ownerId,
+    appId,
+    payload,
+  }: {
+    ownerId: string;
+    appId: string;
+    payload: { conversationId: string };
+  }) {
+    try {
+      const additionalHeaders = getInstillAdditionalHeaders({});
+      const response = await this._client.post<Conversation>(
+        `/namespaces/${ownerId}/apps/${appId}/conversations`,
+        {
+          body: JSON.stringify(payload),
+          additionalHeaders,
+        },
+      );
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async getPlaygroundConversation({
+    ownerId,
+    appId,
+  }: {
+    ownerId: string;
+    appId: string;
+  }) {
+    try {
+      const additionalHeaders = getInstillAdditionalHeaders({});
+      const response = await this._client.get<{ conversation: Conversation }>(
+        `/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground/conversation`,
+        { additionalHeaders },
+      );
+      return Promise.resolve(response.conversation);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listMessages({
+    ownerId,
+    appId,
+    conversationId,
+  }: {
+    ownerId: string;
+    appId: string;
+    conversationId: string;
+  }) {
+    try {
+      const additionalHeaders = getInstillAdditionalHeaders({});
+      const response = await this._client.get<{ messages: Message[] }>(
+        `/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages?ifAll=true`,
+        { additionalHeaders },
+      );
+      return Promise.resolve(response.messages);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async restartPlaygroundConversation({
+    ownerId,
+    appId,
+  }: {
+    ownerId: string;
+    appId: string;
+  }) {
+    try {
+      const additionalHeaders = getInstillAdditionalHeaders({});
+      const response = await this._client.post<Conversation>(
+        `/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground/restart`,
+        { additionalHeaders },
+      );
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async updateConversation({
+    namespaceId,
+    appId,
+    conversationId,
+    payload,
+  }: {
+    namespaceId: string;
+    appId: string;
+    conversationId: string;
+    payload: {
+      newConversationId: string;
+      lastUsedCatalogUid: string | undefined;
+      lastUsedTopK: number;
+    };
+  }) {
+    try {
+      const additionalHeaders = getInstillAdditionalHeaders({});
+      const response = await this._client.put<Conversation>(
+        `/namespaces/${namespaceId}/apps/${appId}/conversations/${conversationId}`,
+        {
+          body: JSON.stringify(payload),
+          additionalHeaders,
+        },
+      );
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async getCatalogs({ ownerId }: { ownerId: string }) {
+    try {
+      const additionalHeaders = getInstillAdditionalHeaders({});
+      const response = await this._client.get<{ catalogs: Catalog[] }>(
+        `/namespaces/${ownerId}/catalogs`,
+        { additionalHeaders },
+      );
+      return Promise.resolve(response.catalogs || []);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async getFileContent({
+    ownerId,
+    catalogId,
+    fileUid,
+  }: {
+    ownerId: string;
+    catalogId: string;
+    fileUid: string;
+  }) {
+    try {
+      const additionalHeaders = getInstillAdditionalHeaders({});
+      const response = await this._client.get<{
+        sourceFile: { content: string };
+      }>(
+        `/namespaces/${ownerId}/catalogs/${catalogId}/files/${fileUid}/source`,
+        { additionalHeaders },
+      );
+      return Promise.resolve(response.sourceFile.content);
     } catch (error) {
       return Promise.reject(error);
     }

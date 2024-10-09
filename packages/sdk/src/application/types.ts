@@ -20,6 +20,11 @@ export type Application = {
     };
   };
   permission: Permission;
+  appId: string;
+  appUid: string;
+  tags?: string[];
+  namespaceId?: string;
+  ownerUid?: string;
 };
 
 export type ListApplicationsRequest = {
@@ -68,4 +73,95 @@ export type UpdateApplicationResponse = {
 export type DeleteApplicationRequest = {
   ownerId: string;
   appId: string;
+};
+
+export type SimilarityChunk = {
+  id: string;
+  content: string;
+  fileName: string;
+  score: number;
+  metadata: Record<string, string>;
+  fileType: string;
+  text_content: string;
+  source_file: string;
+  chunk_uid: string;
+  similarity_score: number;
+  chunk_metadata: {
+    original_file_uid: string;
+    start_char_offset: number;
+    end_char_offset: number;
+  };
+};
+
+export type Conversation = {
+  uid: string;
+  namespaceId: string;
+  appId: string;
+  id: string;
+  createTime: string;
+  updateTime: string;
+  messages: Message[];
+  lastUsedCatalogUid: string;
+  lastUsedTopK: number;
+};
+
+export enum MessageType {
+  TEXT = "MESSAGE_TYPE_TEXT",
+}
+
+export type Message = {
+  uid: string;
+  appUid: string;
+  conversationUid: string;
+  content: string;
+  role: string;
+  type: MessageType;
+  createTime: string;
+  updateTime: string;
+  msgSenderUid: string;
+  outputs: unknown[]; // need to change it to a proper type
+  chunks?: SimilarityChunk[];
+  senderProfiles?: [];
+};
+
+export type Catalog = {
+  catalogId: string;
+  name: string;
+  description: string;
+  createTime: string;
+  updateTime: string;
+  ownerName: string;
+  tags: string[];
+  id: string;
+  uid: string;
+  catalogUid: string;
+  totalTokens: number;
+};
+
+export type FileStatus =
+  | "FILE_PROCESS_STATUS_NOTSTARTED"
+  | "FILE_PROCESS_STATUS_WAITING"
+  | "FILE_PROCESS_STATUS_CONVERTING"
+  | "FILE_PROCESS_STATUS_CHUNKING"
+  | "FILE_PROCESS_STATUS_EMBEDDING"
+  | "FILE_PROCESS_STATUS_COMPLETED"
+  | "FILE_PROCESS_STATUS_FAILED";
+
+export type File = {
+  fileUid: string;
+  name: string;
+  type: string;
+  processStatus: FileStatus;
+  processOutcome: string;
+  retrievable: boolean;
+  content: string;
+  ownerUid: string;
+  creatorUid: string;
+  kbUid: string;
+  createTime: string;
+  updateTime: string;
+  deleteTime: string;
+  size: number;
+  totalChunks: number;
+  totalTokens: number;
 };
