@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.59.2-beta](https://github.com/instill-ai/console/compare/v0.59.1-beta...v0.59.2-beta) (2024-10-09)
+
+
+### Bug Fixes
+
+* the getInstillClient on the sdk has wrongly cache issue on Vercel SSR ([#1528](https://github.com/instill-ai/console/issues/1528)) ([c8e1fe3](https://github.com/instill-ai/console/commit/c8e1fe317b9e460047338e9ad3e583332c2385b5))
+
 ## [0.59.1-beta](https://github.com/instill-ai/console/compare/v0.59.0-beta...v0.59.1-beta) (2024-10-08)
 
 

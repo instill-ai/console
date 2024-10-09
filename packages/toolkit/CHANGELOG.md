@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.106.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.106.2...@instill-ai/toolkit-v0.106.3) (2024-10-09)
+
+
+### Bug Fixes
+
+* formatting fix ([#1526](https://github.com/instill-ai/console/issues/1526)) ([a147b78](https://github.com/instill-ai/console/commit/a147b7860801b08047114347b7113f143580dba4))
+* the getInstillClient on the sdk has wrongly cache issue on Vercel SSR ([#1528](https://github.com/instill-ai/console/issues/1528)) ([c8e1fe3](https://github.com/instill-ai/console/commit/c8e1fe317b9e460047338e9ad3e583332c2385b5))
+
 ## [0.106.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.106.1...@instill-ai/toolkit-v0.106.2) (2024-10-08)
 
 
