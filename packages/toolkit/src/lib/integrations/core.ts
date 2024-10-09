@@ -1,9 +1,12 @@
-import { CreateIntegrationConnectionRequest, Nullable } from "instill-sdk";
+import {
+  CreateIntegrationConnectionRequest,
+  InstillAPIClient,
+  Nullable,
+} from "instill-sdk";
 import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import SlackProvider from "next-auth/providers/slack";
 
-import { getInstillAPIClient } from "../vdp-sdk";
 import { getPrefilledOAuthIntegrationConnectionId } from "./helpers";
 
 export type GetAuthHandlerProps = {
@@ -173,14 +176,20 @@ export function getAuthHandler({
               }
             }
 
-            const client = getInstillAPIClient({
-              accessToken: instillAccessToken,
+            const baseURL = `${
+              process.env.NEXT_SERVER_API_GATEWAY_URL
+            }/${process.env.NEXT_PUBLIC_GENERAL_API_VERSION}`;
+
+            const client = new InstillAPIClient({
+              baseURL,
+              apiToken: instillAccessToken,
             });
 
             if (payload) {
               await client.core.integration.createIntegrationConnection(
                 payload,
               );
+
               if (onCallback) {
                 onCallback();
               }
@@ -192,7 +201,15 @@ export function getAuthHandler({
           return token;
         }
       },
+      async redirect({ url, baseUrl }) {
+        console.log("url", url, baseUrl);
+        return url;
+      },
     },
     trustHost: true,
+    pages: {
+      signIn: "/api/nextauth/redirect-signin-page",
+      error: "/api/nextauth/redirect-error-page",
+    },
   });
 }

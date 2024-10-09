@@ -966,8 +966,6 @@ export const VscodeEditor = () => {
           };
         }
 
-        console.log("activeTyping", activeTyping);
-
         // [Hint setup integration]
         if (
           activeTyping.includes("connection") &&
@@ -1509,8 +1507,6 @@ export const VscodeEditor = () => {
               },
             });
           autoCompleteDisposableRef.current = autoCompleteDisposable;
-
-          console.log("ff");
 
           monaco.editor.defineTheme(
             "tomorrow",
