@@ -3,17 +3,25 @@ import { APIResource } from "../main/resource";
 import {
   Application,
   Catalog,
+  ChatRequest,
   Conversation,
   CreateApplicationRequest,
   CreateApplicationResponse,
+  CreateConversationRequest,
   DeleteApplicationRequest,
   GetApplicationRequest,
   GetApplicationResponse,
+  GetCatalogsRequest,
+  GetFileContentRequest,
+  GetPlaygroundConversationRequest,
   ListApplicationsRequest,
   ListApplicationsResponse,
+  ListMessagesRequest,
   Message,
+  RestartPlaygroundConversationRequest,
   UpdateApplicationRequest,
   UpdateApplicationResponse,
+  UpdateConversationRequest,
 } from "./types";
 
 export class ApplicationClient extends APIResource {
@@ -104,11 +112,7 @@ export class ApplicationClient extends APIResource {
     ownerId,
     appId,
     payload,
-  }: {
-    ownerId: string;
-    appId: string;
-    payload: { conversationId: string };
-  }) {
+  }: CreateConversationRequest) {
     try {
       const additionalHeaders = getInstillAdditionalHeaders({});
       const response = await this._client.post<Conversation>(
@@ -127,10 +131,7 @@ export class ApplicationClient extends APIResource {
   async getPlaygroundConversation({
     ownerId,
     appId,
-  }: {
-    ownerId: string;
-    appId: string;
-  }) {
+  }: GetPlaygroundConversationRequest) {
     try {
       const additionalHeaders = getInstillAdditionalHeaders({});
       const response = await this._client.get<{ conversation: Conversation }>(
@@ -143,15 +144,41 @@ export class ApplicationClient extends APIResource {
     }
   }
 
-  async listMessages({
+  async chat({
     ownerId,
     appId,
-    conversationId,
-  }: {
-    ownerId: string;
-    appId: string;
-    conversationId: string;
-  }) {
+    catalogId,
+    conversationUid,
+    message,
+    topK = 5,
+    namespaceId,
+  }: ChatRequest): Promise<ReadableStream> {
+    try {
+      const additionalHeaders = getInstillAdditionalHeaders({
+        requesterUid: namespaceId,
+      });
+      const response = await this._client.post<ReadableStream>(
+        `/namespaces/${ownerId}/apps/${appId}/chat`,
+        {
+          body: JSON.stringify({
+            catalog_id: catalogId,
+            conversation_uid: conversationUid,
+            message: message,
+            top_k: topK,
+          }),
+          additionalHeaders: {
+            ...additionalHeaders,
+            Accept: "text/event-stream",
+          },
+        },
+      );
+      return response;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listMessages({ ownerId, appId, conversationId }: ListMessagesRequest) {
     try {
       const additionalHeaders = getInstillAdditionalHeaders({});
       const response = await this._client.get<{ messages: Message[] }>(
@@ -167,15 +194,14 @@ export class ApplicationClient extends APIResource {
   async restartPlaygroundConversation({
     ownerId,
     appId,
-  }: {
-    ownerId: string;
-    appId: string;
-  }) {
+  }: RestartPlaygroundConversationRequest) {
     try {
       const additionalHeaders = getInstillAdditionalHeaders({});
       const response = await this._client.post<Conversation>(
         `/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground/restart`,
-        { additionalHeaders },
+        {
+          additionalHeaders,
+        },
       );
       return Promise.resolve(response);
     } catch (error) {
@@ -188,16 +214,7 @@ export class ApplicationClient extends APIResource {
     appId,
     conversationId,
     payload,
-  }: {
-    namespaceId: string;
-    appId: string;
-    conversationId: string;
-    payload: {
-      newConversationId: string;
-      lastUsedCatalogUid: string | undefined;
-      lastUsedTopK: number;
-    };
-  }) {
+  }: UpdateConversationRequest) {
     try {
       const additionalHeaders = getInstillAdditionalHeaders({});
       const response = await this._client.put<Conversation>(
@@ -213,7 +230,7 @@ export class ApplicationClient extends APIResource {
     }
   }
 
-  async getCatalogs({ ownerId }: { ownerId: string }) {
+  async getCatalogs({ ownerId }: GetCatalogsRequest) {
     try {
       const additionalHeaders = getInstillAdditionalHeaders({});
       const response = await this._client.get<{ catalogs: Catalog[] }>(
@@ -226,15 +243,7 @@ export class ApplicationClient extends APIResource {
     }
   }
 
-  async getFileContent({
-    ownerId,
-    catalogId,
-    fileUid,
-  }: {
-    ownerId: string;
-    catalogId: string;
-    fileUid: string;
-  }) {
+  async getFileContent({ ownerId, catalogId, fileUid }: GetFileContentRequest) {
     try {
       const additionalHeaders = getInstillAdditionalHeaders({});
       const response = await this._client.get<{

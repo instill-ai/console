@@ -97,9 +97,8 @@ export type Conversation = {
   uid: string;
   namespaceId: string;
   appId: string;
-  id: string;
-  createTime: string;
-  updateTime: string;
+  createTime?: string;
+  updateTime?: string;
   messages: Message[];
   lastUsedCatalogUid: string;
   lastUsedTopK: number;
@@ -164,4 +163,57 @@ export type File = {
   size: number;
   totalChunks: number;
   totalTokens: number;
+};
+
+export type CreateConversationRequest = {
+  ownerId: string;
+  appId: string;
+  payload: { conversationId: string };
+};
+
+export type GetPlaygroundConversationRequest = {
+  ownerId: string;
+  appId: string;
+};
+
+export type ChatRequest = {
+  ownerId: string;
+  appId: string;
+  catalogId: string;
+  conversationUid: string;
+  message: string;
+  topK?: number;
+  namespaceId?: string;
+};
+
+export type ListMessagesRequest = {
+  ownerId: string;
+  appId: string;
+  conversationId: string;
+};
+
+export type RestartPlaygroundConversationRequest = {
+  ownerId: string;
+  appId: string;
+};
+
+export type UpdateConversationRequest = {
+  namespaceId: string;
+  appId: string;
+  conversationId: string;
+  payload: {
+    newConversationId: string;
+    lastUsedCatalogUid: string | undefined;
+    lastUsedTopK: number;
+  };
+};
+
+export type GetCatalogsRequest = {
+  ownerId: string;
+};
+
+export type GetFileContentRequest = {
+  ownerId: string;
+  catalogId: string;
+  fileUid: string;
 };
