@@ -138,7 +138,7 @@ export class ApplicationClient extends APIResource {
         `/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground/conversation`,
         { additionalHeaders },
       );
-      return Promise.resolve(response.conversation);
+      return Promise.resolve(response);
     } catch (error) {
       return Promise.reject(error);
     }
