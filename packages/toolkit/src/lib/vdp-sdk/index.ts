@@ -57,10 +57,7 @@ export function getInstillModelAPIClient({
 
 export function getInstillApplicationAPIClient({ accessToken }: { accessToken?: string }) {
   if (!instillApplicationAPIClient) {
-    // Use NEXT_PUBLIC_API_GATEWAY_URL as it's set in the environment
     const apiGatewayUrl = process.env.NEXT_PUBLIC_API_GATEWAY_URL || 'https://api-d0.instill-inc.tech';
-
-    // Use NEXT_PUBLIC_APPLICATION_API_VERSION
     const apiVersion = process.env.NEXT_PUBLIC_APPLICATION_API_VERSION || 'v1alpha';
 
     const baseURL = `${apiGatewayUrl}/${apiVersion}`;
