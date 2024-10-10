@@ -19,9 +19,10 @@ let instillApplicationAPIClient: Nullable<InstillAPIClient> = null;
 
 export function getInstillAPIClient({ accessToken }: { accessToken?: string }) {
   if (!instillAPIClient) {
-    const baseURL = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-      }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
 
     instillAPIClient = new InstillAPIClient({
       baseURL,
@@ -40,9 +41,10 @@ export function getInstillModelAPIClient({
   accessToken?: string;
 }) {
   if (!instillModelAPIClient) {
-    const baseURL = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-      }/${env("NEXT_PUBLIC_MODEL_API_VERSION")}`;
+    }/${env("NEXT_PUBLIC_MODEL_API_VERSION")}`;
 
     instillModelAPIClient = new InstillAPIClient({
       baseURL,
@@ -55,10 +57,17 @@ export function getInstillModelAPIClient({
   return instillModelAPIClient;
 }
 
-export function getInstillApplicationAPIClient({ accessToken }: { accessToken?: string }) {
+export function getInstillApplicationAPIClient({
+  accessToken,
+}: {
+  accessToken?: string;
+}) {
   if (!instillApplicationAPIClient) {
-    const apiGatewayUrl = process.env.NEXT_PUBLIC_API_GATEWAY_URL || 'https://api-d0.instill-inc.tech';
-    const apiVersion = process.env.NEXT_PUBLIC_APPLICATION_API_VERSION || 'v1alpha';
+    const apiGatewayUrl =
+      process.env.NEXT_PUBLIC_API_GATEWAY_URL ||
+      "https://api-d0.instill-inc.tech";
+    const apiVersion =
+      process.env.NEXT_PUBLIC_APPLICATION_API_VERSION || "v1alpha";
 
     const baseURL = `${apiGatewayUrl}/${apiVersion}`;
 
