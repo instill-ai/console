@@ -195,7 +195,7 @@ export class ApplicationClient extends APIResource {
   async restartPlaygroundConversation({
     ownerId,
     appId,
-  }: RestartPlaygroundConversationRequest) {
+  }: RestartPlaygroundConversationRequest): Promise<Conversation> {
     try {
       const additionalHeaders = getInstillAdditionalHeaders({});
       const response = await this._client.post<Conversation>(
@@ -204,9 +204,10 @@ export class ApplicationClient extends APIResource {
           additionalHeaders,
         },
       );
-      return Promise.resolve(response);
+      return response;
     } catch (error) {
-      return Promise.reject(error);
+      console.error("Error in restartPlaygroundConversation:", error);
+      throw error;
     }
   }
 
