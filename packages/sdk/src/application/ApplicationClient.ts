@@ -138,7 +138,6 @@ export class ApplicationClient extends APIResource {
         `/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground/conversation`,
         { additionalHeaders },
       );
-      console.log(response);
       return Promise.resolve(response.conversation);
     } catch (error) {
       return Promise.reject(error);
@@ -151,14 +150,14 @@ export class ApplicationClient extends APIResource {
     catalogId,
     conversationUid,
     message,
-    topK = 5,
+    topK = 15,
     namespaceId,
-  }: ChatRequest): Promise<ReadableStream> {
+  }: ChatRequest): Promise<Response> {
     try {
       const additionalHeaders = getInstillAdditionalHeaders({
         requesterUid: namespaceId,
       });
-      const response = await this._client.post<ReadableStream>(
+      const response = await this._client.post<Response>(
         `/namespaces/${ownerId}/apps/${appId}/chat`,
         {
           body: JSON.stringify({
