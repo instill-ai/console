@@ -206,8 +206,7 @@ export class ApplicationClient extends APIResource {
       );
       return response;
     } catch (error) {
-      console.error("Error in restartPlaygroundConversation:", error);
-      throw error;
+      return Promise.reject(error);
     }
   }
 
