@@ -97,6 +97,29 @@ export type SimilarityChunk = {
   };
 };
 
+export type CreateApplicationPayload = {
+  appId: string;
+  name: string;
+  description?: string;
+  tags?: string[];
+  namespaceId: string;
+};
+
+export type EditApplicationPayload = {
+  appId?: string;
+  name?: string;
+  description?: Nullable<string>;
+  tags?: string[];
+};
+
+export type CloneApplicationPayload = {
+  appId: string;
+  name: string;
+  description?: string;
+  tags?: string[];
+  namespaceId: string;
+};
+
 export type Conversation = {
   uid: string;
   namespaceId: string;
