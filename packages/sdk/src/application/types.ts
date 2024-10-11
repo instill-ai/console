@@ -29,9 +29,9 @@ export type Application = {
 
 export type ListApplicationsRequest = {
   ownerId: string;
-  pageSize?: Nullable<number>;
-  pageToken?: Nullable<string>;
-  view?: Nullable<string>;
+  pageSize?: number;
+  pageToken?: string;
+  view?: string;
 };
 
 export type ListApplicationsResponse = {
@@ -260,12 +260,3 @@ export type DeleteConversationRequest = {
   appId: string;
   conversationId: string;
 };
-
-export type UpdateAIAssistantAppPlaygroundRequest = {
-  ownerId: string;
-  appId: string;
-  lastAiAppCatalogUid?: string;
-  lastAiAppTopK?: number;
-};
-
-export type UpdateAIAssistantAppPlaygroundResponse = Record<string, never>;

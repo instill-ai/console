@@ -4,6 +4,7 @@ import {
   Application,
   ChatRequest,
   ChatResponse,
+  Conversation,
   CreateApplicationRequest,
   CreateApplicationResponse,
   CreateConversationRequest,
@@ -23,10 +24,9 @@ import {
   ListConversationsResponse,
   ListMessagesRequest,
   ListMessagesResponse,
+  Message,
   RestartPlaygroundConversationRequest,
   RestartPlaygroundConversationResponse,
-  UpdateAIAssistantAppPlaygroundRequest,
-  UpdateAIAssistantAppPlaygroundResponse,
   UpdateApplicationRequest,
   UpdateApplicationResponse,
   UpdateConversationRequest,
@@ -38,39 +38,54 @@ import {
 export class ApplicationClient extends APIResource {
   async listApplications(
     props: ListApplicationsRequest & {
-      enablePagination?: boolean;
+      enablePagination: true;
     },
-  ): Promise<ListApplicationsResponse | Application[]> {
+  ): Promise<ListApplicationsResponse>;
+  async listApplications(
+    props: ListApplicationsRequest & {
+      enablePagination: false;
+    },
+  ): Promise<Application[]>;
+  async listApplications(
+    props: ListApplicationsRequest & {
+      enablePagination: boolean;
+    },
+  ): Promise<ListApplicationsResponse | Application[]>;
+  async listApplications(
+    props: ListApplicationsRequest & {
+      enablePagination: boolean;
+    },
+  ) {
     const { pageSize, pageToken, view, enablePagination, ownerId } = props;
 
     try {
+      const applications: Application[] = [];
+
       const queryString = getQueryString({
         baseURL: `/v1alpha/namespaces/${ownerId}/apps`,
-        pageSize: pageSize ?? undefined,
-        pageToken: pageToken ?? undefined,
-        view: view ?? undefined,
+        pageSize,
+        pageToken,
+        view,
       });
 
-      const data = await this._client.get<ListApplicationsResponse>(
-        queryString,
-        {},
-      );
+      const data =
+        await this._client.get<ListApplicationsResponse>(queryString);
 
       if (enablePagination) {
         return Promise.resolve(data);
       }
 
-      const applications = data.apps;
+      applications.push(...data.apps);
 
       if (data.nextPageToken) {
         applications.push(
-          ...((await this.listApplications({
+          ...(await this.listApplications({
             pageSize,
             pageToken: data.nextPageToken,
-            enablePagination,
+            enablePagination: false,
             view,
             ownerId,
-          })) as Application[]),
+          })),
         );
       }
 
@@ -88,10 +103,7 @@ export class ApplicationClient extends APIResource {
         baseURL: `/${applicationName}`,
       });
 
-      const data = await this._client.get<GetApplicationResponse>(
-        queryString,
-        {},
-      );
+      const data = await this._client.get<GetApplicationResponse>(queryString);
 
       return Promise.resolve(data.app);
     } catch (error) {
@@ -154,7 +166,7 @@ export class ApplicationClient extends APIResource {
         baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}`,
       });
 
-      await this._client.delete(queryString, {});
+      await this._client.delete(queryString);
       return Promise.resolve();
     } catch (error) {
       return Promise.reject(error);
@@ -162,23 +174,58 @@ export class ApplicationClient extends APIResource {
   }
 
   async listConversations(
-    props: ListConversationsRequest,
-  ): Promise<ListConversationsResponse> {
-    const { ownerId, appId, pageSize, pageToken } = props;
+    props: ListConversationsRequest & {
+      enablePagination: true;
+    },
+  ): Promise<ListConversationsResponse>;
+  async listConversations(
+    props: ListConversationsRequest & {
+      enablePagination: false;
+    },
+  ): Promise<Conversation[]>;
+  async listConversations(
+    props: ListConversationsRequest & {
+      enablePagination: boolean;
+    },
+  ): Promise<ListConversationsResponse | Conversation[]>;
+  async listConversations(
+    props: ListConversationsRequest & {
+      enablePagination: boolean;
+    },
+  ) {
+    const { ownerId, appId, pageSize, pageToken, enablePagination } = props;
 
     try {
+      const conversations: Conversation[] = [];
+
       const queryString = getQueryString({
         baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations`,
         pageSize,
         pageToken,
       });
 
-      const data = await this._client.get<ListConversationsResponse>(
-        queryString,
-        {},
-      );
+      const data =
+        await this._client.get<ListConversationsResponse>(queryString);
 
-      return Promise.resolve(data);
+      if (enablePagination) {
+        return Promise.resolve(data);
+      }
+
+      conversations.push(...data.conversations);
+
+      if (data.nextPageToken) {
+        conversations.push(
+          ...(await this.listConversations({
+            ownerId,
+            appId,
+            pageSize,
+            pageToken: data.nextPageToken,
+            enablePagination: false,
+          })),
+        );
+      }
+
+      return Promise.resolve(conversations);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -236,7 +283,7 @@ export class ApplicationClient extends APIResource {
         baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}`,
       });
 
-      await this._client.delete(queryString, {});
+      await this._client.delete(queryString);
       return Promise.resolve();
     } catch (error) {
       return Promise.reject(error);
@@ -244,20 +291,54 @@ export class ApplicationClient extends APIResource {
   }
 
   async listMessages(
-    props: ListMessagesRequest,
-  ): Promise<ListMessagesResponse> {
-    const { ownerId, appId, conversationId } = props;
+    props: ListMessagesRequest & {
+      enablePagination: true;
+    },
+  ): Promise<ListMessagesResponse>;
+  async listMessages(
+    props: ListMessagesRequest & {
+      enablePagination: false;
+    },
+  ): Promise<Message[]>;
+  async listMessages(
+    props: ListMessagesRequest & {
+      enablePagination: boolean;
+    },
+  ): Promise<ListMessagesResponse | Message[]>;
+  async listMessages(
+    props: ListMessagesRequest & {
+      enablePagination: boolean;
+    },
+  ) {
+    const { ownerId, appId, conversationId, enablePagination } = props;
 
     try {
+      const messages: Message[] = [];
+
       const queryString = getQueryString({
         baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages`,
       });
 
-      const response = await this._client.get<ListMessagesResponse>(
-        queryString,
-        {},
-      );
-      return Promise.resolve(response);
+      const data = await this._client.get<ListMessagesResponse>(queryString);
+
+      if (enablePagination) {
+        return Promise.resolve(data);
+      }
+
+      messages.push(...data.messages);
+
+      if (data.nextPageToken) {
+        messages.push(
+          ...(await this.listMessages({
+            ownerId,
+            appId,
+            conversationId,
+            enablePagination: false,
+          })),
+        );
+      }
+
+      return Promise.resolve(messages);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -315,7 +396,7 @@ export class ApplicationClient extends APIResource {
         baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages/${messageUid}`,
       });
 
-      await this._client.delete(queryString, {});
+      await this._client.delete(queryString);
       return Promise.resolve();
     } catch (error) {
       return Promise.reject(error);
@@ -333,10 +414,7 @@ export class ApplicationClient extends APIResource {
       });
 
       const response =
-        await this._client.get<GetPlaygroundConversationResponse>(
-          queryString,
-          {},
-        );
+        await this._client.get<GetPlaygroundConversationResponse>(queryString);
       return Promise.resolve(response);
     } catch (error) {
       return Promise.reject(error);
@@ -356,32 +434,8 @@ export class ApplicationClient extends APIResource {
       const response =
         await this._client.post<RestartPlaygroundConversationResponse>(
           queryString,
-          {},
         );
       return response;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async updateAIAssistantAppPlayground(
-    props: UpdateAIAssistantAppPlaygroundRequest,
-  ): Promise<UpdateAIAssistantAppPlaygroundResponse> {
-    const { ownerId, appId, ...payload } = props;
-
-    try {
-      const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground`,
-      });
-
-      const response =
-        await this._client.put<UpdateAIAssistantAppPlaygroundResponse>(
-          queryString,
-          {
-            body: JSON.stringify(payload),
-          },
-        );
-      return Promise.resolve(response);
     } catch (error) {
       return Promise.reject(error);
     }
