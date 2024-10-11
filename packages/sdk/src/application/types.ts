@@ -123,7 +123,7 @@ export type Message = {
   createTime: string;
   updateTime: string;
   msgSenderUid: string;
-  outputs: unknown[]; // TODO: Change to a proper type when known
+  outputs: unknown[];
   chunks?: SimilarityChunk[];
   senderProfiles?: unknown[];
 };
