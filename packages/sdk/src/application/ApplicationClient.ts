@@ -310,7 +310,8 @@ export class ApplicationClient extends APIResource {
       enablePagination: boolean;
     },
   ) {
-    const { ownerId, appId, conversationId, enablePagination } = props;
+    const { ownerId, appId, conversationId, enablePagination, pageSize } =
+      props;
 
     try {
       const messages: Message[] = [];
@@ -330,6 +331,8 @@ export class ApplicationClient extends APIResource {
       if (data.nextPageToken) {
         messages.push(
           ...(await this.listMessages({
+            pageSize,
+            pageToken: data.nextPageToken,
             ownerId,
             appId,
             conversationId,

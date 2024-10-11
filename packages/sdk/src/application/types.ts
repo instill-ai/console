@@ -181,6 +181,8 @@ export type ListMessagesRequest = {
   ownerId: string;
   appId: string;
   conversationId: string;
+  pageSize?: number;
+  pageToken?: string;
 };
 
 export type ListMessagesResponse = {
