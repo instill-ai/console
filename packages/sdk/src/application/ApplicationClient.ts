@@ -2,89 +2,75 @@ import { getInstillAdditionalHeaders, getQueryString } from "../helper";
 import { APIResource } from "../main/resource";
 import {
   Application,
-  Catalog,
   ChatRequest,
-  Conversation,
+  ChatResponse,
   CreateApplicationRequest,
   CreateApplicationResponse,
   CreateConversationRequest,
+  CreateConversationResponse,
+  CreateMessageRequest,
+  CreateMessageResponse,
   DeleteApplicationRequest,
+  DeleteConversationRequest,
+  DeleteMessageRequest,
   GetApplicationRequest,
   GetApplicationResponse,
-  GetCatalogsRequest,
-  GetFileContentRequest,
   GetPlaygroundConversationRequest,
+  GetPlaygroundConversationResponse,
   ListApplicationsRequest,
   ListApplicationsResponse,
+  ListConversationsRequest,
+  ListConversationsResponse,
   ListMessagesRequest,
-  Message,
+  ListMessagesResponse,
   RestartPlaygroundConversationRequest,
+  RestartPlaygroundConversationResponse,
+  UpdateAIAssistantAppPlaygroundRequest,
+  UpdateAIAssistantAppPlaygroundResponse,
   UpdateApplicationRequest,
   UpdateApplicationResponse,
   UpdateConversationRequest,
+  UpdateConversationResponse,
+  UpdateMessageRequest,
+  UpdateMessageResponse,
 } from "./types";
 
 export class ApplicationClient extends APIResource {
-  /* ----------------------------------------------------------------------------
-   * Query
-   * ---------------------------------------------------------------------------*/
-
   async listApplications(
     props: ListApplicationsRequest & {
-      enablePagination: true;
+      enablePagination?: boolean;
     },
-  ): Promise<ListApplicationsResponse>;
-  async listApplications(
-    props: ListApplicationsRequest & {
-      enablePagination: false;
-    },
-  ): Promise<Application[]>;
-  async listApplications(
-    props: ListApplicationsRequest & {
-      enablePagination: boolean;
-    },
-  ): Promise<ListApplicationsResponse | Application[]>;
-  async listApplications(
-    props: ListApplicationsRequest & {
-      enablePagination: boolean;
-    },
-  ) {
+  ): Promise<ListApplicationsResponse | Application[]> {
     const { pageSize, pageToken, view, enablePagination, ownerId } = props;
 
     try {
-      const applications: Application[] = [];
-
       const queryString = getQueryString({
-        baseURL: `/namespaces/${ownerId}/apps`,
-        pageSize: pageSize !== null ? pageSize : undefined,
-        pageToken: pageToken !== null ? pageToken : undefined,
-        view: view !== null ? view : undefined,
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps`,
+        pageSize: pageSize ?? undefined,
+        pageToken: pageToken ?? undefined,
+        view: view ?? undefined,
       });
-
-      const additionalHeaders = getInstillAdditionalHeaders({});
 
       const data = await this._client.get<ListApplicationsResponse>(
         queryString,
-        {
-          additionalHeaders,
-        },
+        {},
       );
 
       if (enablePagination) {
         return Promise.resolve(data);
       }
 
-      applications.push(...data.apps);
+      const applications = data.apps;
 
       if (data.nextPageToken) {
         applications.push(
-          ...(await this.listApplications({
+          ...((await this.listApplications({
             pageSize,
             pageToken: data.nextPageToken,
             enablePagination,
             view,
             ownerId,
-          })),
+          })) as Application[]),
         );
       }
 
@@ -94,12 +80,17 @@ export class ApplicationClient extends APIResource {
     }
   }
 
-  async getApplication({ applicationName }: GetApplicationRequest) {
+  async getApplication({
+    applicationName,
+  }: GetApplicationRequest): Promise<Application> {
     try {
-      const additionalHeaders = getInstillAdditionalHeaders({});
+      const queryString = getQueryString({
+        baseURL: `/${applicationName}`,
+      });
+
       const data = await this._client.get<GetApplicationResponse>(
-        `/${applicationName}`,
-        { additionalHeaders },
+        queryString,
+        {},
       );
 
       return Promise.resolve(data.app);
@@ -108,170 +99,20 @@ export class ApplicationClient extends APIResource {
     }
   }
 
-  async createConversation({
-    ownerId,
-    appId,
-    payload,
-  }: CreateConversationRequest) {
-    try {
-      const additionalHeaders = getInstillAdditionalHeaders({});
-      const response = await this._client.post<Conversation>(
-        `/namespaces/${ownerId}/apps/${appId}/conversations`,
-        {
-          body: JSON.stringify(payload),
-          additionalHeaders,
-        },
-      );
-      return Promise.resolve(response);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async getPlaygroundConversation({
-    ownerId,
-    appId,
-  }: GetPlaygroundConversationRequest) {
-    try {
-      const additionalHeaders = getInstillAdditionalHeaders({});
-      const response = await this._client.get<{ conversation: Conversation }>(
-        `/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground/conversation`,
-        { additionalHeaders },
-      );
-      return Promise.resolve(response.conversation);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async chat({
-    ownerId,
-    appId,
-    catalogId,
-    conversationUid,
-    message,
-    topK = 15,
-    namespaceId,
-  }: ChatRequest): Promise<Response> {
-    try {
-      const additionalHeaders = getInstillAdditionalHeaders({
-        requesterUid: namespaceId,
-      });
-      const response = await this._client.post<Response>(
-        `/namespaces/${ownerId}/apps/${appId}/chat`,
-        {
-          body: JSON.stringify({
-            catalog_id: catalogId,
-            conversation_uid: conversationUid,
-            message: message,
-            top_k: topK,
-          }),
-          additionalHeaders: {
-            ...additionalHeaders,
-            Accept: "text/event-stream",
-          },
-        },
-      );
-      return response;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async listMessages({ ownerId, appId, conversationId }: ListMessagesRequest) {
-    try {
-      const additionalHeaders = getInstillAdditionalHeaders({});
-      const response = await this._client.get<{ messages: Message[] }>(
-        `/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages?ifAll=true`,
-        { additionalHeaders },
-      );
-      return Promise.resolve(response.messages);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async restartPlaygroundConversation({
-    ownerId,
-    appId,
-  }: RestartPlaygroundConversationRequest): Promise<Conversation> {
-    try {
-      const additionalHeaders = getInstillAdditionalHeaders({});
-      const response = await this._client.post<Conversation>(
-        `/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground/restart`,
-        {
-          additionalHeaders,
-        },
-      );
-      return response;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async updateConversation({
-    namespaceId,
-    appId,
-    conversationId,
-    payload,
-  }: UpdateConversationRequest) {
-    try {
-      const additionalHeaders = getInstillAdditionalHeaders({});
-      const response = await this._client.put<Conversation>(
-        `/namespaces/${namespaceId}/apps/${appId}/conversations/${conversationId}`,
-        {
-          body: JSON.stringify(payload),
-          additionalHeaders,
-        },
-      );
-      return Promise.resolve(response);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async getCatalogs({ ownerId }: GetCatalogsRequest) {
-    try {
-      const additionalHeaders = getInstillAdditionalHeaders({});
-      const response = await this._client.get<{ catalogs: Catalog[] }>(
-        `/namespaces/${ownerId}/catalogs`,
-        { additionalHeaders },
-      );
-      return Promise.resolve(response.catalogs || []);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async getFileContent({ ownerId, catalogId, fileUid }: GetFileContentRequest) {
-    try {
-      const additionalHeaders = getInstillAdditionalHeaders({});
-      const response = await this._client.get<{
-        sourceFile: { content: string };
-      }>(
-        `/namespaces/${ownerId}/catalogs/${catalogId}/files/${fileUid}/source`,
-        { additionalHeaders },
-      );
-      return Promise.resolve(response.sourceFile.content);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  /* ----------------------------------------------------------------------------
-   * Mutation
-   * ---------------------------------------------------------------------------*/
-
-  async createApplication(props: CreateApplicationRequest) {
+  async createApplication(
+    props: CreateApplicationRequest,
+  ): Promise<Application> {
     const { ownerId, ...payload } = props;
 
     try {
-      const additionalHeaders = getInstillAdditionalHeaders({});
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps`,
+      });
+
       const data = await this._client.post<CreateApplicationResponse>(
-        `/namespaces/${ownerId}/apps`,
+        queryString,
         {
           body: JSON.stringify(payload),
-          additionalHeaders,
         },
       );
 
@@ -281,16 +122,20 @@ export class ApplicationClient extends APIResource {
     }
   }
 
-  async updateApplication(props: UpdateApplicationRequest) {
+  async updateApplication(
+    props: UpdateApplicationRequest,
+  ): Promise<Application> {
     const { ownerId, appId, ...payload } = props;
 
     try {
-      const additionalHeaders = getInstillAdditionalHeaders({});
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}`,
+      });
+
       const data = await this._client.put<UpdateApplicationResponse>(
-        `/namespaces/${ownerId}/apps/${appId}`,
+        queryString,
         {
           body: JSON.stringify(payload),
-          additionalHeaders,
         },
       );
 
@@ -300,13 +145,265 @@ export class ApplicationClient extends APIResource {
     }
   }
 
-  async deleteApplication({ ownerId, appId }: DeleteApplicationRequest) {
+  async deleteApplication({
+    ownerId,
+    appId,
+  }: DeleteApplicationRequest): Promise<void> {
     try {
-      const additionalHeaders = getInstillAdditionalHeaders({});
-      await this._client.delete(`/namespaces/${ownerId}/apps/${appId}`, {
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}`,
+      });
+
+      await this._client.delete(queryString, {});
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listConversations(
+    props: ListConversationsRequest,
+  ): Promise<ListConversationsResponse> {
+    const { ownerId, appId, pageSize, pageToken } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations`,
+        pageSize,
+        pageToken,
+      });
+
+      const data = await this._client.get<ListConversationsResponse>(
+        queryString,
+        {},
+      );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async createConversation(
+    props: CreateConversationRequest,
+  ): Promise<CreateConversationResponse> {
+    const { ownerId, appId, payload } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations`,
+      });
+
+      const response = await this._client.post<CreateConversationResponse>(
+        queryString,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async updateConversation(
+    props: UpdateConversationRequest,
+  ): Promise<UpdateConversationResponse> {
+    const { namespaceId, appId, conversationId, payload } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${namespaceId}/apps/${appId}/conversations/${conversationId}`,
+      });
+
+      const response = await this._client.put<UpdateConversationResponse>(
+        queryString,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async deleteConversation(props: DeleteConversationRequest): Promise<void> {
+    const { ownerId, appId, conversationId } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}`,
+      });
+
+      await this._client.delete(queryString, {});
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listMessages(
+    props: ListMessagesRequest,
+  ): Promise<ListMessagesResponse> {
+    const { ownerId, appId, conversationId } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages`,
+      });
+
+      const response = await this._client.get<ListMessagesResponse>(
+        queryString,
+        {},
+      );
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async createMessage(
+    props: CreateMessageRequest,
+  ): Promise<CreateMessageResponse> {
+    const { ownerId, appId, conversationId, ...payload } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages`,
+      });
+
+      const response = await this._client.post<CreateMessageResponse>(
+        queryString,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async updateMessage(
+    props: UpdateMessageRequest,
+  ): Promise<UpdateMessageResponse> {
+    const { ownerId, appId, conversationId, messageUid, ...payload } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages/${messageUid}`,
+      });
+
+      const response = await this._client.put<UpdateMessageResponse>(
+        queryString,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async deleteMessage(props: DeleteMessageRequest): Promise<void> {
+    const { ownerId, appId, conversationId, messageUid } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages/${messageUid}`,
+      });
+
+      await this._client.delete(queryString, {});
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async getPlaygroundConversation(
+    props: GetPlaygroundConversationRequest,
+  ): Promise<GetPlaygroundConversationResponse> {
+    const { ownerId, appId } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground/conversation`,
+      });
+
+      const response =
+        await this._client.get<GetPlaygroundConversationResponse>(
+          queryString,
+          {},
+        );
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async restartPlaygroundConversation(
+    props: RestartPlaygroundConversationRequest,
+  ): Promise<RestartPlaygroundConversationResponse> {
+    const { ownerId, appId } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground/restart`,
+      });
+
+      const response =
+        await this._client.post<RestartPlaygroundConversationResponse>(
+          queryString,
+          {},
+        );
+      return response;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async updateAIAssistantAppPlayground(
+    props: UpdateAIAssistantAppPlaygroundRequest,
+  ): Promise<UpdateAIAssistantAppPlaygroundResponse> {
+    const { ownerId, appId, ...payload } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground`,
+      });
+
+      const response =
+        await this._client.put<UpdateAIAssistantAppPlaygroundResponse>(
+          queryString,
+          {
+            body: JSON.stringify(payload),
+          },
+        );
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async chat(props: ChatRequest): Promise<ChatResponse> {
+    const { ownerId, appId, ...payload } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/chat`,
+      });
+
+      const additionalHeaders = getInstillAdditionalHeaders({
+        stream: true,
+      });
+
+      const response = await this._client.post<ChatResponse>(queryString, {
+        body: JSON.stringify(payload),
         additionalHeaders,
       });
-      return Promise.resolve();
+      return response;
     } catch (error) {
       return Promise.reject(error);
     }

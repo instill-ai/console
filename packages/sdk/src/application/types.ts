@@ -75,6 +75,8 @@ export type DeleteApplicationRequest = {
   appId: string;
 };
 
+export type DeleteApplicationResponse = Record<string, never>;
+
 export type SimilarityChunk = {
   id: string;
   content: string;
@@ -121,51 +123,9 @@ export type Message = {
   createTime: string;
   updateTime: string;
   msgSenderUid: string;
-  outputs: unknown[]; // need to change it to a proper type
+  outputs: unknown[]; // TODO: Change to a proper type when known
   chunks?: SimilarityChunk[];
-  senderProfiles?: [];
-};
-
-export type Catalog = {
-  catalogId: string;
-  name: string;
-  description: string;
-  createTime: string;
-  updateTime: string;
-  ownerName: string;
-  tags: string[];
-  id: string;
-  uid: string;
-  catalogUid: string;
-  totalTokens: number;
-};
-
-export type FileStatus =
-  | "FILE_PROCESS_STATUS_NOTSTARTED"
-  | "FILE_PROCESS_STATUS_WAITING"
-  | "FILE_PROCESS_STATUS_CONVERTING"
-  | "FILE_PROCESS_STATUS_CHUNKING"
-  | "FILE_PROCESS_STATUS_EMBEDDING"
-  | "FILE_PROCESS_STATUS_COMPLETED"
-  | "FILE_PROCESS_STATUS_FAILED";
-
-export type File = {
-  fileUid: string;
-  name: string;
-  type: string;
-  processStatus: FileStatus;
-  processOutcome: string;
-  retrievable: boolean;
-  content: string;
-  ownerUid: string;
-  creatorUid: string;
-  kbUid: string;
-  createTime: string;
-  updateTime: string;
-  deleteTime: string;
-  size: number;
-  totalChunks: number;
-  totalTokens: number;
+  senderProfiles?: unknown[];
 };
 
 export type CreateConversationRequest = {
@@ -174,9 +134,17 @@ export type CreateConversationRequest = {
   payload: { conversationId: string };
 };
 
+export type CreateConversationResponse = {
+  conversation: Conversation;
+};
+
 export type GetPlaygroundConversationRequest = {
   ownerId: string;
   appId: string;
+};
+
+export type GetPlaygroundConversationResponse = {
+  conversation: Conversation;
 };
 
 export type ChatRequest = {
@@ -189,15 +157,87 @@ export type ChatRequest = {
   namespaceId?: string;
 };
 
+export type ChatResponse = {
+  outputs: unknown[];
+  chunks: SimilarityChunk[];
+};
+
+export type ListConversationsRequest = {
+  ownerId: string;
+  appId: string;
+  pageSize?: number;
+  pageToken?: string;
+  conversationId?: string;
+  ifAll?: boolean;
+};
+
+export type ListConversationsResponse = {
+  conversations: Conversation[];
+  nextPageToken: string;
+  totalSize: number;
+};
+
 export type ListMessagesRequest = {
   ownerId: string;
   appId: string;
   conversationId: string;
 };
 
+export type ListMessagesResponse = {
+  messages: Message[];
+  nextPageToken: string;
+  totalSize: number;
+  senderProfiles: MessageSenderProfile[];
+};
+
+export type MessageSenderProfile = {
+  msgSenderUid: string;
+  msgSenderId: string;
+  displayName: string;
+  avatar: string;
+};
+
+export type CreateMessageRequest = {
+  ownerId: string;
+  appId: string;
+  conversationId: string;
+  content: string;
+  role: string;
+  type: MessageType;
+};
+
+export type CreateMessageResponse = {
+  message: Message;
+};
+
+export type UpdateMessageRequest = {
+  ownerId: string;
+  appId: string;
+  conversationId: string;
+  messageUid: string;
+  content: string;
+};
+
+export type UpdateMessageResponse = {
+  message: Message;
+};
+
+export type DeleteMessageRequest = {
+  ownerId: string;
+  appId: string;
+  conversationId: string;
+  messageUid: string;
+};
+
+export type DeleteMessageResponse = Record<string, never>;
+
 export type RestartPlaygroundConversationRequest = {
   ownerId: string;
   appId: string;
+};
+
+export type RestartPlaygroundConversationResponse = {
+  conversation: Conversation;
 };
 
 export type UpdateConversationRequest = {
@@ -211,12 +251,21 @@ export type UpdateConversationRequest = {
   };
 };
 
-export type GetCatalogsRequest = {
-  ownerId: string;
+export type UpdateConversationResponse = {
+  conversation: Conversation;
 };
 
-export type GetFileContentRequest = {
+export type DeleteConversationRequest = {
   ownerId: string;
-  catalogId: string;
-  fileUid: string;
+  appId: string;
+  conversationId: string;
 };
+
+export type UpdateAIAssistantAppPlaygroundRequest = {
+  ownerId: string;
+  appId: string;
+  lastAiAppCatalogUid?: string;
+  lastAiAppTopK?: number;
+};
+
+export type UpdateAIAssistantAppPlaygroundResponse = Record<string, never>;
