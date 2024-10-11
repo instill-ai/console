@@ -19,9 +19,10 @@ let instillApplicationAPIClient: Nullable<InstillAPIClient> = null;
 
 export function getInstillAPIClient({ accessToken }: { accessToken?: string }) {
   if (!instillAPIClient) {
-    const baseURL = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-      }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
 
     instillAPIClient = new InstillAPIClient({
       baseURL,
@@ -40,9 +41,10 @@ export function getInstillModelAPIClient({
   accessToken?: string;
 }) {
   if (!instillModelAPIClient) {
-    const baseURL = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-      }/${env("NEXT_PUBLIC_MODEL_API_VERSION")}`;
+    }/${env("NEXT_PUBLIC_MODEL_API_VERSION")}`;
 
     instillModelAPIClient = new InstillAPIClient({
       baseURL,
@@ -61,9 +63,10 @@ export function getInstillApplicationAPIClient({
   accessToken?: string;
 }) {
   if (!instillApplicationAPIClient) {
-    const baseURL = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-      }/${env("NEXT_PUBLIC_APPLICATION_API_VERSION")}`;
+    }/${env("NEXT_PUBLIC_APPLICATION_API_VERSION")}`;
 
     instillApplicationAPIClient = new InstillAPIClient({
       baseURL,
