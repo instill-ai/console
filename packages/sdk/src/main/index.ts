@@ -1,5 +1,6 @@
 import "whatwg-fetch";
 
+import { ApplicationClient } from "../application";
 import {
   CreditClient,
   IntegrationClient,
@@ -138,4 +139,5 @@ export class InstillAPIClient {
   };
 
   model = new ModelClient(this);
+  application = new ApplicationClient(this);
 }

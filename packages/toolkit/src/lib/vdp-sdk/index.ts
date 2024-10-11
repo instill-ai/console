@@ -15,6 +15,7 @@ export * from "./helper";
 
 let instillAPIClient: Nullable<InstillAPIClient> = null;
 let instillModelAPIClient: Nullable<InstillAPIClient> = null;
+let instillApplicationAPIClient: Nullable<InstillAPIClient> = null;
 
 export function getInstillAPIClient({ accessToken }: { accessToken?: string }) {
   if (!instillAPIClient) {
@@ -54,4 +55,27 @@ export function getInstillModelAPIClient({
   }
 
   return instillModelAPIClient;
+}
+
+export function getInstillApplicationAPIClient({
+  accessToken,
+}: {
+  accessToken?: string;
+}) {
+  if (!instillApplicationAPIClient) {
+    const apiGatewayUrl =
+      process.env.NEXT_PUBLIC_API_GATEWAY_URL ||
+      "https://api-d0.instill-inc.tech";
+    const apiVersion =
+      process.env.NEXT_PUBLIC_APPLICATION_API_VERSION || "v1alpha";
+
+    const baseURL = `${apiGatewayUrl}/${apiVersion}`;
+
+    instillApplicationAPIClient = new InstillAPIClient({
+      baseURL,
+      apiToken: accessToken,
+    });
+  }
+
+  return instillApplicationAPIClient;
 }
