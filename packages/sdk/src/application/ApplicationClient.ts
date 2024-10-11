@@ -62,7 +62,7 @@ export class ApplicationClient extends APIResource {
       const applications: Application[] = [];
 
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps`,
+        baseURL: `/namespaces/${ownerId}/apps`,
         pageSize,
         pageToken,
         view,
@@ -118,7 +118,7 @@ export class ApplicationClient extends APIResource {
 
     try {
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps`,
+        baseURL: `/namespaces/${ownerId}/apps`,
       });
 
       const data = await this._client.post<CreateApplicationResponse>(
@@ -141,7 +141,7 @@ export class ApplicationClient extends APIResource {
 
     try {
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}`,
+        baseURL: `/namespaces/${ownerId}/apps/${appId}`,
       });
 
       const data = await this._client.put<UpdateApplicationResponse>(
@@ -163,7 +163,7 @@ export class ApplicationClient extends APIResource {
   }: DeleteApplicationRequest): Promise<void> {
     try {
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}`,
+        baseURL: `/namespaces/${ownerId}/apps/${appId}`,
       });
 
       await this._client.delete(queryString);
@@ -199,7 +199,7 @@ export class ApplicationClient extends APIResource {
       const conversations: Conversation[] = [];
 
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations`,
+        baseURL: `/namespaces/${ownerId}/apps/${appId}/conversations`,
         pageSize,
         pageToken,
       });
@@ -238,7 +238,7 @@ export class ApplicationClient extends APIResource {
 
     try {
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations`,
+        baseURL: `/namespaces/${ownerId}/apps/${appId}/conversations`,
       });
 
       const response = await this._client.post<CreateConversationResponse>(
@@ -260,7 +260,7 @@ export class ApplicationClient extends APIResource {
 
     try {
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${namespaceId}/apps/${appId}/conversations/${conversationId}`,
+        baseURL: `/namespaces/${namespaceId}/apps/${appId}/conversations/${conversationId}`,
       });
 
       const response = await this._client.put<UpdateConversationResponse>(
@@ -280,7 +280,7 @@ export class ApplicationClient extends APIResource {
 
     try {
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}`,
+        baseURL: `/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}`,
       });
 
       await this._client.delete(queryString);
@@ -317,7 +317,7 @@ export class ApplicationClient extends APIResource {
       const messages: Message[] = [];
 
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages`,
+        baseURL: `/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages`,
       });
 
       const data = await this._client.get<ListMessagesResponse>(queryString);
@@ -354,7 +354,7 @@ export class ApplicationClient extends APIResource {
 
     try {
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages`,
+        baseURL: `/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages`,
       });
 
       const response = await this._client.post<CreateMessageResponse>(
@@ -376,7 +376,7 @@ export class ApplicationClient extends APIResource {
 
     try {
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages/${messageUid}`,
+        baseURL: `/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages/${messageUid}`,
       });
 
       const response = await this._client.put<UpdateMessageResponse>(
@@ -396,7 +396,7 @@ export class ApplicationClient extends APIResource {
 
     try {
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages/${messageUid}`,
+        baseURL: `/namespaces/${ownerId}/apps/${appId}/conversations/${conversationId}/messages/${messageUid}`,
       });
 
       await this._client.delete(queryString);
@@ -413,7 +413,7 @@ export class ApplicationClient extends APIResource {
 
     try {
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground/conversation`,
+        baseURL: `/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground/conversation`,
       });
 
       const response =
@@ -431,7 +431,7 @@ export class ApplicationClient extends APIResource {
 
     try {
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground/restart`,
+        baseURL: `/namespaces/${ownerId}/apps/${appId}/ai_assistant_playground/restart`,
       });
 
       const response =
@@ -449,7 +449,7 @@ export class ApplicationClient extends APIResource {
 
     try {
       const queryString = getQueryString({
-        baseURL: `/v1alpha/namespaces/${ownerId}/apps/${appId}/chat`,
+        baseURL: `/namespaces/${ownerId}/apps/${appId}/chat`,
       });
 
       const additionalHeaders = getInstillAdditionalHeaders({

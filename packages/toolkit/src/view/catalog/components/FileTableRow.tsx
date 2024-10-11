@@ -7,7 +7,7 @@ import { Button, Dialog, Icons, Tag } from "@instill-ai/design-system";
 import { File } from "../../../lib/react-query-service/catalog/types";
 import {
   convertFileType,
-  formatDate,
+  formatDateFileTableRow,
   formatFileSize,
   truncateName,
 } from "./lib/helpers";
@@ -63,7 +63,7 @@ export const FileTableRow = ({
           <div>{`${item.totalChunks ?? "N/A"} chunks, ${item.totalTokens} tokens`}</div>
         </div>
         <div className="flex items-center justify-center text-semantic-bg-secondary-alt-primary product-body-text-3-regular">
-          {formatDate(item.createTime)}
+          {formatDateFileTableRow(item.createTime)}
         </div>
         <div className="flex items-center justify-center">
           <Button

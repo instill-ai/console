@@ -63,13 +63,10 @@ export function getInstillApplicationAPIClient({
   accessToken?: string;
 }) {
   if (!instillApplicationAPIClient) {
-    const apiGatewayUrl =
-      process.env.NEXT_PUBLIC_API_GATEWAY_URL ||
-      "https://api-d0.instill-inc.tech";
-    const apiVersion =
-      process.env.NEXT_PUBLIC_APPLICATION_API_VERSION || "v1alpha";
-
-    const baseURL = `${apiGatewayUrl}/${apiVersion}`;
+    const baseURL = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
+      env("NEXT_PUBLIC_API_GATEWAY_URL")
+    }/${env("NEXT_PUBLIC_APPLICATION_API_VERSION")}`;
 
     instillApplicationAPIClient = new InstillAPIClient({
       baseURL,
