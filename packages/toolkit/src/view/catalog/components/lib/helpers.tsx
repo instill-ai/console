@@ -230,7 +230,7 @@ export const formatFileSize = (bytes: number | undefined): string => {
   return (bytes / Math.pow(1024, i)).toFixed(2) + " " + sizes[i];
 };
 
-export const formatDate = (dateString: string): string => {
+export const formatDateFileTableRow = (dateString: string): string => {
   const date = new Date(dateString);
   return date.toLocaleString();
 };
