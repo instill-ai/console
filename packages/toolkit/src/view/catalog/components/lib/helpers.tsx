@@ -329,7 +329,7 @@ export const validateFile = (
 
 export const getCatalogNameByUid = (
   catalogUid: string | undefined,
-  catalogs: Catalog[]
+  catalogs: Catalog[],
 ): string => {
   const catalog = catalogs.find((c) => c.catalogUid === catalogUid);
   return catalog ? catalog.name : "Select";
@@ -337,7 +337,7 @@ export const getCatalogNameByUid = (
 
 export const getCatalogUidByName = (
   catalogName: string,
-  catalogs: Catalog[] | undefined
+  catalogs: Catalog[] | undefined,
 ): string | undefined => {
   const catalog = catalogs?.find((catalog) => catalog.name === catalogName);
   return catalog?.catalogUid;
