@@ -1,4 +1,5 @@
 import {
+  Catalog,
   Nullable,
   OrganizationSubscription,
   OrganizationSubscriptionPlan,
@@ -324,4 +325,50 @@ export const validateFile = (
   }
 
   return { isValid: true, error: null };
+};
+
+export const getCatalogNameByUid = (
+  catalogUid: string | undefined,
+  catalogs: Catalog[],
+): string => {
+  const catalog = catalogs.find((c) => c.catalogUid === catalogUid);
+  return catalog ? catalog.name : "Select";
+};
+
+export const getCatalogUidByName = (
+  catalogName: string,
+  catalogs: Catalog[] | undefined,
+): string | undefined => {
+  const catalog = catalogs?.find((catalog) => catalog.name === catalogName);
+  return catalog?.catalogUid;
+};
+
+export const getFileTypeByExtension = (extension: string) => {
+  switch (extension) {
+    case "txt":
+      return "FILE_TYPE_TEXT";
+    case "md":
+    case "markdown":
+      return "FILE_TYPE_MARKDOWN";
+    case "csv":
+      return "FILE_TYPE_CSV";
+    case "pdf":
+      return "FILE_TYPE_PDF";
+    case "docx":
+      return "FILE_TYPE_DOCX";
+    case "doc":
+      return "FILE_TYPE_DOC";
+    case "pptx":
+      return "FILE_TYPE_PPTX";
+    case "ppt":
+      return "FILE_TYPE_PPT";
+    case "html":
+      return "FILE_TYPE_HTML";
+    case "xls":
+      return "FILE_TYPE_XLS";
+    case "xlsx":
+      return "FILE_TYPE_XLSX";
+    default:
+      return "FILE_TYPE_UNSPECIFIED";
+  }
 };
