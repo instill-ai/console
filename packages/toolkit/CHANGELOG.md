@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.107.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.106.3...@instill-ai/toolkit-v0.107.0) (2024-10-13)
+
+
+### Features
+
+* **application:** feat add sdk ([#1529](https://github.com/instill-ai/console/issues/1529)) ([e6c5381](https://github.com/instill-ai/console/commit/e6c53816fb38c7bb8c16716c098ac1cf8acf2193))
+* **application:** feat export functions to helpers  ([#1532](https://github.com/instill-ai/console/issues/1532)) ([31a5b26](https://github.com/instill-ai/console/commit/31a5b260c87f45d02344f66c96978e6148e9ed3c))
+* **catalog:** feat expose helpers and static  ([#1531](https://github.com/instill-ai/console/issues/1531)) ([1235d62](https://github.com/instill-ai/console/commit/1235d6230b69ebdea6979a7501666b7dfd89dc1b))
+
+
+### Bug Fixes
+
+* fix integration org page not correctly use selected namespace ([#1533](https://github.com/instill-ai/console/issues/1533)) ([688aff9](https://github.com/instill-ai/console/commit/688aff9185e28a77e670e45c68657a5b0eba68e5))
+
 ## [0.106.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.106.2...@instill-ai/toolkit-v0.106.3) (2024-10-09)
 
 

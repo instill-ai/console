@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.7.0...instill-sdk-v0.8.0) (2024-10-13)
+
+
+### Features
+
+* **application:** feat add sdk ([#1529](https://github.com/instill-ai/console/issues/1529)) ([e6c5381](https://github.com/instill-ai/console/commit/e6c53816fb38c7bb8c16716c098ac1cf8acf2193))
+* **catalog:** feat expose helpers and static  ([#1531](https://github.com/instill-ai/console/issues/1531)) ([1235d62](https://github.com/instill-ai/console/commit/1235d6230b69ebdea6979a7501666b7dfd89dc1b))
+
 ## [0.7.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.6.0...instill-sdk-v0.7.0) (2024-10-08)
 
 
