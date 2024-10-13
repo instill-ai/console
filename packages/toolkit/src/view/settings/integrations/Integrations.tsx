@@ -36,16 +36,6 @@ export const Integrations = () => {
 
   const userNamespaces = useUserNamespaces();
 
-  const [searchInputValue, setSearchInputValue] =
-    React.useState<Nullable<string>>(null);
-  const debouncedSetSearchValue = React.useMemo(
-    () =>
-      debounce((value: string) => {
-        setSearchInputValue(value);
-      }, 500),
-    [],
-  );
-
   const selectedNamespaceId = React.useMemo(() => {
     if (
       !navigationNamespaceAnchor ||
@@ -71,6 +61,16 @@ export const Integrations = () => {
     me.data,
   ]);
 
+  const [searchInputValue, setSearchInputValue] =
+    React.useState<Nullable<string>>(null);
+  const debouncedSetSearchValue = React.useMemo(
+    () =>
+      debounce((value: string) => {
+        setSearchInputValue(value);
+      }, 500),
+    [],
+  );
+
   const availableIntegrations = useInfiniteIntegrations({
     accessToken,
     enabled: enabledQuery,
@@ -78,7 +78,7 @@ export const Integrations = () => {
   });
 
   const integrationConnections = useInfiniteIntegrationConnections({
-    namespaceId: me.isSuccess ? me.data.id : null,
+    namespaceId: selectedNamespaceId,
     accessToken,
     enabled: enabledQuery && me.isSuccess,
     filter: searchInputValue ? `qConnection="${searchInputValue}"` : null,
@@ -147,21 +147,19 @@ export const Integrations = () => {
       });
     }
 
-    Object.keys(dic)
-      //.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
-      .forEach((integrationId) => {
-        const integration = availableIntegrationList.find(
-          (item) => item.id === integrationId,
-        );
-        const connections = dic[integrationId];
+    Object.keys(dic).forEach((integrationId) => {
+      const integration = availableIntegrationList.find(
+        (item) => item.id === integrationId,
+      );
+      const connections = dic[integrationId];
 
-        if (integration && connections) {
-          list.push({
-            integration,
-            connections,
-          });
-        }
-      });
+      if (integration && connections) {
+        list.push({
+          integration,
+          connections,
+        });
+      }
+    });
 
     return list;
   }, [
