@@ -176,10 +176,10 @@ export type ChatRequest = {
   catalogId: string;
   conversationUid: string;
   message: string;
-  topK?: number;
-  namespaceUid?: string;
   accessToken: string;
-  requesterUid?: string;
+  topK?: number;
+  namespaceUid: Nullable<string> | undefined;
+  requesterUid: string;
 };
 
 export type ChatResponse = {
