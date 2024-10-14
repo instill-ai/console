@@ -462,7 +462,6 @@ export class ApplicationClient extends APIResource {
           "Content-Type": "application/json",
           ...additionalHeaders,
           Accept: "text/event-stream",
-          Authorization: `Bearer ${requesterUid}`,
         },
         body: JSON.stringify(payload),
       });
