@@ -3,8 +3,6 @@ import { APIResource } from "../main/resource";
 import {
   Application,
   ChatRequest,
-  ChatResponse,
-  // ChatResponse,
   Conversation,
   CreateApplicationRequest,
   CreateApplicationResponse,
@@ -439,13 +437,13 @@ export class ApplicationClient extends APIResource {
         await this._client.post<RestartPlaygroundConversationResponse>(
           queryString,
         );
-      return response;
+      return Promise.resolve(response);
     } catch (error) {
       return Promise.reject(error);
     }
   }
 
-  async chat(props: ChatRequest): Promise<ChatResponse> {
+  async chat(props: ChatRequest): Promise<Response> {
     const { ownerId, appId, requesterUid, ...payload } = props;
 
     try {
@@ -458,25 +456,23 @@ export class ApplicationClient extends APIResource {
         requesterUid: requesterUid,
       });
 
-      const response = await fetch(this._client.baseURL + queryString, {
-        method: "POST",
-        headers: {
-          ...additionalHeaders,
-          Accept: "text/event-stream",
-        },
+      const response = await this._client.post<Response>(queryString, {
         body: JSON.stringify(payload),
+        additionalHeaders: {
+          "Content-Type": "application/json",
+          ...additionalHeaders,
+        },
+        stream: true,
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(
+          `HTTP error! status: ${response.status}, message: ${errorText}`,
+        );
       }
 
-      return {
-        data: response.body,
-        status: response.status,
-        statusText: response.statusText,
-        headers: response.headers,
-      };
+      return response;
     } catch (error) {
       return Promise.reject(error);
     }
