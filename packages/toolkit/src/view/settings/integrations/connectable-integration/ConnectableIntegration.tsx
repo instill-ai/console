@@ -52,10 +52,9 @@ export const ConnectableIntegration = ({
               case "github":
                 provider = "github";
                 break;
-              // temp disable slack OAuth
-              // case "slack":
-              //   provider = "slack";
-              //   break;
+              case "slack":
+                provider = "slack";
+                break;
               default:
                 break;
             }
@@ -68,6 +67,15 @@ export const ConnectableIntegration = ({
               });
             }
 
+            return;
+          }
+
+          if (integration.id === "slack" && namespaceId) {
+            initializeIntegrationConnection({
+              provider: "slack",
+              namespaceId,
+              integrationId: integration.id,
+            });
             return;
           }
 
