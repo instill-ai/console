@@ -18,3 +18,24 @@ export function formatDateTime(timeStr: string, format: string): string {
   }
   return `${month} ${day}`;
 }
+
+export function formatDateTimeWithSeconds(timeStr: string, format: string): string {
+  const dt = new Date(timeStr);
+  const month = new Intl.DateTimeFormat("en", { month: "short" }).format(dt);
+  const day = dt.getDate();
+
+  if (format === "1d" || format === "24h") {
+    const hours = dt.getHours();
+    const minutes = dt.getMinutes();
+    const seconds = dt.getSeconds();
+    const period = hours >= 12 ? "PM" : "AM";
+    const formattedHours = hours % 12 || 12;
+
+    return `${month} ${day}, ${formattedHours}:${String(minutes).padStart(
+      2,
+      "0"
+    )}:${String(seconds).padStart(2, "0")} ${period}`;
+  }
+
+  return `${month} ${day}`;
+}
