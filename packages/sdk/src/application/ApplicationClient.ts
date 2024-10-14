@@ -456,13 +456,13 @@ export class ApplicationClient extends APIResource {
         requesterUid: requesterUid,
       });
 
-      const response = await this._client.post<Response>(queryString, {
-        body: JSON.stringify(payload),
-        additionalHeaders: {
+      const response = await fetch(queryString, {
+        method: "POST",
+        headers: {
           "Content-Type": "application/json",
           ...additionalHeaders,
         },
-        stream: true,
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
@@ -470,6 +470,11 @@ export class ApplicationClient extends APIResource {
         throw new Error(
           `HTTP error! status: ${response.status}, message: ${errorText}`,
         );
+      }
+
+      const contentType = response.headers.get("Content-Type");
+      if (contentType !== "text/event-stream") {
+        throw new Error(`Unexpected Content-Type: ${contentType}`);
       }
 
       return response;
