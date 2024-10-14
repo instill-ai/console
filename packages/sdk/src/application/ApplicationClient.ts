@@ -3,6 +3,7 @@ import { APIResource } from "../main/resource";
 import {
   Application,
   ChatRequest,
+  ChatResponse,
   // ChatResponse,
   Conversation,
   CreateApplicationRequest,
@@ -444,8 +445,8 @@ export class ApplicationClient extends APIResource {
     }
   }
 
-  async chat(props: ChatRequest): Promise<Response> {
-    const { ownerId, appId, ...payload } = props;
+  async chat(props: ChatRequest): Promise<ChatResponse> {
+    const { ownerId, appId, requesterUid, ...payload } = props;
 
     try {
       const queryString = getQueryString({
@@ -454,6 +455,7 @@ export class ApplicationClient extends APIResource {
 
       const additionalHeaders = getInstillAdditionalHeaders({
         stream: true,
+        requesterUid: requesterUid,
       });
 
       const response = await fetch(this._client.baseURL + queryString, {
@@ -469,7 +471,12 @@ export class ApplicationClient extends APIResource {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      return response;
+      return {
+        data: response.body,
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers,
+      };
     } catch (error) {
       return Promise.reject(error);
     }

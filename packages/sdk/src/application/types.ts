@@ -178,11 +178,15 @@ export type ChatRequest = {
   message: string;
   topK?: number;
   namespaceId?: string;
+  accessToken: string;
+  requesterUid: string;
 };
 
 export type ChatResponse = {
-  outputs: unknown[];
-  chunks: SimilarityChunk[];
+  data: ReadableStream<Uint8Array> | null;
+  status: number;
+  statusText: string;
+  headers: Headers;
 };
 
 export type ListConversationsRequest = {
