@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {
   CreateIntegrationConnectionRequest,
   InstillAPIClient,
@@ -5,7 +7,6 @@ import {
 } from "instill-sdk";
 import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
-import SlackProvider from "next-auth/providers/slack";
 
 import { getPrefilledOAuthIntegrationConnectionId } from "./helpers";
 
@@ -22,6 +23,40 @@ export function getAuthHandler({
 }: GetAuthHandlerProps) {
   return NextAuth({
     providers: [
+      {
+        id: "slack",
+        name: "Slack",
+        type: "oauth",
+        clientId: String(process.env.SLACK_CLIENT_ID),
+        clientSecret: String(process.env.SLACK_CLIENT_SECRET),
+        authorization: {
+          url: "https://slack.com/oauth/v2/authorize",
+          params: {
+            scope:
+              "users:read users:read.email users.profile:read channels:history groups:history chat:write",
+            user_scope:
+              "users:read users:read.email users.profile:read channels:history groups:history chat:write",
+            granular_bot_scope: "1",
+          },
+        },
+        token: "https://slack.com/api/oauth.v2.access",
+        userinfo: {
+          url: "https://slack.com/api/users.info",
+          async request({ tokens }: { tokens: any; provider: any }) {
+            const profile = await fetch(
+              `https://slack.com/api/users.info?user=${tokens.authed_user.id}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${tokens.access_token}`,
+                  "User-Agent": "authjs",
+                },
+              },
+            ).then(async (res) => await res.json());
+
+            return profile.user;
+          },
+        },
+      },
       GitHubProvider({
         clientId: String(process.env.GITHUB_CLIENT_ID),
         clientSecret: String(process.env.GITHUB_CLIENT_SECRET),
@@ -35,31 +70,10 @@ export function getAuthHandler({
           },
         },
       }),
-      SlackProvider({
-        clientId: String(process.env.SLACK_CLIENT_ID),
-        clientSecret: String(process.env.SLACK_CLIENT_SECRET),
-        authorization: {
-          url: "https://slack.com/oauth/v2/authorize",
-          params: {
-            scope:
-              "users:read users:read.email users.profile:read channels:history groups:history chat:write",
-            user_scope:
-              "users:read users:read.email users.profile:read channels:history groups:history chat:write",
-            granular_bot_scope: "1",
-          },
-        },
-        // TODO: implement Slack OAuth customize method
-        // token: {
-        //   url: "https://slack.com/api/oauth.v2.access",
-        //   async request(context: any) {
-        //     // use fetch to exchange code for token
-        //     console.log("context", context);
-        //   },
-        // },
-      }),
     ],
     callbacks: {
       async jwt({ token, account, profile }) {
+        console.log("all", token, account, profile);
         try {
           if (
             instillAccessToken &&
@@ -122,47 +136,36 @@ export function getAuthHandler({
                   throw new Error("Slack user not found");
                 }
 
-                // get user infor from slack
+                identity =
+                  // the profile we get from slack is not typed
+                  (profile.profile as any).email ??
+                  profile.real_name ??
+                  profile.name;
 
-                const slackUserInfoResponse = await fetch(
-                  `https://slack.com/api/users.info?user=${userId}`,
-                  {
-                    headers: {
-                      Authorization: `Bearer ${account.access_token}`,
-                      "Content-Type": "application/json",
-                    },
-                    method: "GET",
-                  },
-                );
-
-                let userName: Nullable<string> = null;
-
-                if (slackUserInfoResponse.ok) {
-                  const user = await slackUserInfoResponse.json();
-
-                  identity =
-                    user.user?.profile?.email ??
-                    user.user?.name ??
-                    user.user?.id;
-
-                  userName = user.user?.name;
-                }
-
-                if (!identity || !userName) {
-                  throw new Error("Slack user not found");
+                if (!identity) {
+                  throw new Error(
+                    "Slack user not found, can't get the identity",
+                  );
                 }
 
                 const prefilledIntegrationConnectionId =
                   getPrefilledOAuthIntegrationConnectionId({
                     provider: "slack",
-                    connectionIdentity: userName,
+                    connectionIdentity: identity,
                   });
+
+                if (!account.authed_user) {
+                  throw new Error(
+                    "Slack user not found, can't get the authed_user object",
+                  );
+                }
 
                 payload = {
                   integrationId: "slack",
                   method: "METHOD_OAUTH",
                   setup: {
-                    token: account.access_token,
+                    botToken: account.access_token,
+                    userToken: (account.authed_user as any).access_token,
                   },
                   namespaceId,
                   id: prefilledIntegrationConnectionId,
@@ -201,10 +204,6 @@ export function getAuthHandler({
           return token;
         }
       },
-      async redirect({ url, baseUrl }) {
-        console.log("url", url, baseUrl);
-        return url;
-      },
     },
     trustHost: true,
     pages: {
@@ -213,3 +212,42 @@ export function getAuthHandler({
     },
   });
 }
+
+// https://github.com/nextauthjs/next-auth/issues/8868
+
+export const slackAccessTokenInterceptor =
+  (originalFetch: typeof fetch) =>
+  async (
+    url: Parameters<typeof fetch>[0],
+    options: Parameters<typeof fetch>[1] = {},
+  ) => {
+    console.log("interceptor url", url);
+    if (
+      url === "https://slack.com/api/oauth.v2.access" &&
+      options.method === "POST"
+    ) {
+      const response = await originalFetch(url, options);
+      /* Clone the response to be able to modify it */
+      const clonedResponse = response.clone();
+      const body = await clonedResponse.json();
+
+      console.log("interceptor body", body);
+
+      // Since we use the https://slack.com/api/oauth.v2.access, the token_type is not bearer but "bot"
+      // but next-auth expect the token_type to be bearer
+      body.token_type = "bearer";
+      /*  Create a new response with the modified body */
+      const modifiedResponse = new Response(JSON.stringify(body), {
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers,
+      });
+
+      /* Add the original url to the response */
+      return Object.defineProperty(modifiedResponse, "url", {
+        value: response.url,
+      });
+    }
+
+    return originalFetch(url, options);
+  };
