@@ -443,44 +443,49 @@ export class ApplicationClient extends APIResource {
     }
   }
 
-  async chat(props: ChatRequest): Promise<Response> {
-    const { ownerId, appId, requesterUid, ...payload } = props;
+  async chat(
+    props: ChatRequest,
+    stream: boolean = true,
+  ): Promise<ReadableStream<Uint8Array>> {
+    const { ownerId, appId, requesterUid, accessToken, ...payload } = props;
+
+    if (
+      !accessToken ||
+      !ownerId ||
+      !appId ||
+      !payload.catalogId ||
+      !payload.conversationUid
+    ) {
+      throw new Error("Required parameters are missing");
+    }
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${ownerId}/apps/${appId}/chat`,
+    });
+
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+      stream,
+    });
 
     try {
-      const queryString = getQueryString({
-        baseURL: `/namespaces/${ownerId}/apps/${appId}/chat`,
-      });
-
-      const additionalHeaders = getInstillAdditionalHeaders({
-        stream: true,
-        requesterUid: requesterUid,
-      });
-
-      const response = await fetch(queryString, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...additionalHeaders,
-          Accept: "text/event-stream",
+      const response = (await this._client.post(
+        queryString,
+        {
+          body: JSON.stringify(payload),
+          additionalHeaders,
         },
-        body: JSON.stringify(payload),
-      });
+        /* eslint-disable @typescript-eslint/no-explicit-any */
+      )) as any;
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(
-          `HTTP error! status: ${response.status}, message: ${errorText}`,
-        );
+      if (stream) {
+        return response.body as ReadableStream<Uint8Array>;
+      } else {
+        return response.json();
       }
-
-      const contentType = response.headers.get("Content-Type");
-      if (contentType !== "text/event-stream") {
-        throw new Error(`Unexpected Content-Type: ${contentType}`);
-      }
-
-      return Promise.resolve(response);
     } catch (error) {
-      return Promise.reject(error);
+      console.error("Fetch failed:", error);
+      throw error;
     }
   }
 }

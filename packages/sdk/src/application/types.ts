@@ -179,7 +179,7 @@ export type ChatRequest = {
   accessToken: string;
   topK?: number;
   namespaceUid: Nullable<string> | undefined;
-  requesterUid: string;
+  requesterUid: string | undefined;
 };
 
 export type ChatResponse = {
