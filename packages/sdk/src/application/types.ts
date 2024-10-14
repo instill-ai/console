@@ -177,9 +177,9 @@ export type ChatRequest = {
   conversationUid: string;
   message: string;
   topK?: number;
-  namespaceId?: string;
+  namespaceUid?: string;
   accessToken: string;
-  requesterUid: string;
+  requesterUid?: string;
 };
 
 export type ChatResponse = {

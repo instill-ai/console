@@ -461,6 +461,8 @@ export class ApplicationClient extends APIResource {
         headers: {
           "Content-Type": "application/json",
           ...additionalHeaders,
+          Accept: "text/event-stream",
+          Authorization: `Bearer ${requesterUid}`,
         },
         body: JSON.stringify(payload),
       });
@@ -477,7 +479,7 @@ export class ApplicationClient extends APIResource {
         throw new Error(`Unexpected Content-Type: ${contentType}`);
       }
 
-      return response;
+      return Promise.resolve(response);
     } catch (error) {
       return Promise.reject(error);
     }
