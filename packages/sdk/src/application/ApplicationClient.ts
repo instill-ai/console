@@ -444,7 +444,10 @@ export class ApplicationClient extends APIResource {
     }
   }
 
-  async chat(props: ChatRequest, stream: boolean = true): Promise<ChatRequest> {
+  async chat(
+    props: ChatRequest,
+    stream: boolean = true,
+  ): Promise<ChatResponse | unknown> {
     const { ownerId, appId, requesterUid, ...payload } = props;
 
     if (!ownerId) {
@@ -479,7 +482,7 @@ export class ApplicationClient extends APIResource {
       if (stream) {
         return Promise.resolve(data as ChatResponse);
       } else {
-        return Promise.resolve(data as ChatResponse);
+        return Promise.resolve(data);
       }
     } catch (error) {
       console.error("Fetch failed:", error);
