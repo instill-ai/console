@@ -477,7 +477,7 @@ export class ApplicationClient extends APIResource {
       });
 
       if (stream) {
-        return Promise.resolve(data as ChatRequest) as Promise<ChatResponse>;
+        return Promise.resolve(data as ChatResponse);
       } else {
         return Promise.resolve(data as ChatResponse);
       }
