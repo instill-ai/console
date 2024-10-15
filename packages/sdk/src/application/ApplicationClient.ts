@@ -5,6 +5,7 @@ import {
   Application,
   ChatRequest,
   ChatResponse,
+  ChatWithSreamResponse,
   Conversation,
   CreateApplicationRequest,
   CreateApplicationResponse,
@@ -454,7 +455,9 @@ export class ApplicationClient extends APIResource {
   ): Promise<ChatResponse>;
   async chat(
     props: ChatRequest & { stream?: boolean },
-  ): Promise<ChatResponse | ReadableStream<Uint8Array>> {
+  ): Promise<
+    ChatResponse | ReadableStream<Uint8Array> | ChatWithSreamResponse
+  > {
     const { ownerId, stream, appId, requesterUid, ...payload } = props;
     if (!ownerId) {
       throw new Error("Required parameter missing: ownerId");
@@ -483,7 +486,7 @@ export class ApplicationClient extends APIResource {
       });
 
       if (stream) {
-        return Promise.resolve(data as ChatResponse);
+        return Promise.resolve(data as ChatWithSreamResponse);
       } else {
         return data as ChatResponse;
       }
