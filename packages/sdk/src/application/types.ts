@@ -183,37 +183,39 @@ export type ChatRequest = {
   stream: boolean;
 };
 
-export interface ChatResponse {
-  updateTime: string;
-  status: {
-    completed: boolean;
-    errored: boolean;
-    started: boolean;
-  };
-  output: {
-    assistant_reply: Nullable<string>;
-    chunks: Nullable<
-      Array<{
-        chunk_uid: string;
-        similarity_score: number;
-        text_content: string;
-        source_file: string;
-        chunk_metadata: {
-          chunk_uid: string;
-          retrievable: boolean;
-          start_pos: number;
-          end_pos: number;
-          tokens: number;
-          create_time: {
-            seconds: number;
-            nanos: number;
-          };
-          original_file_uid: string;
-        };
-      }>
-    >;
-  };
-}
+// export interface ChatResponse {
+//   updateTime: string;
+//   status: {
+//     completed: boolean;
+//     errored: boolean;
+//     started: boolean;
+//   };
+//   output: {
+//     assistant_reply: Nullable<string>;
+//     chunks: Nullable<
+//       Array<{
+//         chunk_uid: string;
+//         similarity_score: number;
+//         text_content: string;
+//         source_file: string;
+//         chunk_metadata: {
+//           chunk_uid: string;
+//           retrievable: boolean;
+//           start_pos: number;
+//           end_pos: number;
+//           tokens: number;
+//           create_time: {
+//             seconds: number;
+//             nanos: number;
+//           };
+//           original_file_uid: string;
+//         };
+//       }>
+//     >;
+//   };
+// }
+
+export type ChatResponse = any;
 
 export type ListConversationsRequest = {
   ownerId: string;
