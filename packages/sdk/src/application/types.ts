@@ -180,6 +180,7 @@ export type ChatRequest = {
   topK: number;
   namespaceUid: Nullable<string> | undefined;
   requesterUid: string | undefined;
+  stream: boolean;
 };
 
 export type ChatResponse = any;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getInstillAdditionalHeaders, getQueryString } from "../helper";
 import { APIResource } from "../main/resource";
 import {
@@ -444,12 +445,17 @@ export class ApplicationClient extends APIResource {
     }
   }
 
+  async chat(props: ChatRequest): Promise<ChatResponse>;
+  async chat(props: ChatRequest, stream: false): Promise<ChatResponse>;
+  async chat(
+    props: ChatRequest,
+    stream: true,
+  ): Promise<ReadableStream<Uint8Array> | any>;
   async chat(
     props: ChatRequest,
     stream: boolean = true,
-  ): Promise<ChatResponse | unknown> {
+  ): Promise<ChatResponse> {
     const { ownerId, appId, requesterUid, ...payload } = props;
-
     if (!ownerId) {
       throw new Error("Required parameter missing: ownerId");
     }
