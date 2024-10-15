@@ -84,6 +84,10 @@ export const ModelHubSettingPageMainView = () => {
     }
   };
 
+  const onModelRun = () => {
+    modelsWatchState.refetch();
+  }
+
   const updateActiveVersionUrl = (version: Nullable<string>) => {
     if (version === null) {
       router.replace(pathname);
@@ -135,6 +139,7 @@ export const ModelHubSettingPageMainView = () => {
         selectedTab={path?.[0] as ModelTabNames}
         model={model.data}
         onUpdate={onModelUpdate}
+        onRun={onModelRun}
         modelState={modelState}
       />
     </div>
