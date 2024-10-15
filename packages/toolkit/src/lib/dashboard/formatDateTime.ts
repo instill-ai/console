@@ -19,7 +19,10 @@ export function formatDateTime(timeStr: string, format: string): string {
   return `${month} ${day}`;
 }
 
-export function formatDateTimeWithSeconds(timeStr: string, format: string): string {
+export function formatDateTimeWithSeconds(
+  timeStr: string,
+  format: string,
+): string {
   const dt = new Date(timeStr);
   const month = new Intl.DateTimeFormat("en", { month: "short" }).format(dt);
   const day = dt.getDate();
@@ -33,7 +36,7 @@ export function formatDateTimeWithSeconds(timeStr: string, format: string): stri
 
     return `${month} ${day}, ${formattedHours}:${String(minutes).padStart(
       2,
-      "0"
+      "0",
     )}:${String(seconds).padStart(2, "0")} ${period}`;
   }
 
