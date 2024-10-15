@@ -448,16 +448,14 @@ export class ApplicationClient extends APIResource {
 
   async chat(
     props: ChatRequest & { stream: true },
-  ): Promise<ReadableStream<Uint8Array>>;
+  ): Promise<ChatWithStreamResponse>;
   async chat(props: ChatRequest & { stream: false }): Promise<ChatResponse>;
   async chat(
     props: ChatRequest & { stream?: undefined },
   ): Promise<ChatResponse>;
   async chat(
     props: ChatRequest & { stream?: boolean },
-  ): Promise<
-    ChatResponse | ReadableStream<Uint8Array> | ChatWithStreamResponse
-  > {
+  ): Promise<ChatResponse | ChatWithStreamResponse> {
     const { ownerId, stream, appId, requesterUid, ...payload } = props;
     if (!ownerId) {
       throw new Error("Required parameter missing: ownerId");
