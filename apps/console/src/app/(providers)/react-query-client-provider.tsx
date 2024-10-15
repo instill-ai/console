@@ -30,7 +30,7 @@ function makeQueryClient() {
           if (
             Object.hasOwnProperty.call(error, "status") &&
             //@ts-ignore
-            [401, 403, 404, 500, 502, 503, 504].includes(error.status)
+            [401, 403, 404].includes(error.status)
           ) {
             //@ts-ignore
             console.log(`Aborting retry due to ${error.status} status`);
