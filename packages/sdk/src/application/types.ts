@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Nullable, Permission } from "../types";
 
 export type Application = {
@@ -176,18 +177,12 @@ export type ChatRequest = {
   catalogId: string;
   conversationUid: string;
   message: string;
-  accessToken: string;
   topK?: number;
   namespaceUid: Nullable<string> | undefined;
   requesterUid: string | undefined;
 };
 
-export type ChatResponse = {
-  data: ReadableStream<Uint8Array> | null;
-  status: number;
-  statusText: string;
-  headers: Headers;
-};
+export type ChatResponse = any;
 
 export type ListConversationsRequest = {
   ownerId: string;

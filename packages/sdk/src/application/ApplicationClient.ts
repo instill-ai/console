@@ -3,6 +3,7 @@ import { APIResource } from "../main/resource";
 import {
   Application,
   ChatRequest,
+  ChatResponse,
   Conversation,
   CreateApplicationRequest,
   CreateApplicationResponse,
@@ -443,20 +444,20 @@ export class ApplicationClient extends APIResource {
     }
   }
 
-  async chat(
-    props: ChatRequest,
-    stream: boolean = true,
-  ): Promise<ReadableStream<Uint8Array>> {
-    const { ownerId, appId, requesterUid, accessToken, ...payload } = props;
+  async chat(props: ChatRequest, stream: boolean = true): Promise<ChatRequest> {
+    const { ownerId, appId, requesterUid, ...payload } = props;
 
-    if (
-      !accessToken ||
-      !ownerId ||
-      !appId ||
-      !payload.catalogId ||
-      !payload.conversationUid
-    ) {
-      throw new Error("Required parameters are missing");
+    if (!ownerId) {
+      throw new Error("Required parameter missing: ownerId");
+    }
+    if (!appId) {
+      throw new Error("Required parameter missing: appId");
+    }
+    if (!payload.catalogId) {
+      throw new Error("Required parameter missing: catalogId");
+    }
+    if (!payload.conversationUid) {
+      throw new Error("Required parameter missing: conversationUid");
     }
 
     const queryString = getQueryString({
@@ -469,19 +470,16 @@ export class ApplicationClient extends APIResource {
     });
 
     try {
-      const response = (await this._client.post(
-        queryString,
-        {
-          body: JSON.stringify(payload),
-          additionalHeaders,
-        },
-        /* eslint-disable @typescript-eslint/no-explicit-any */
-      )) as any;
+      const data = await this._client.post(queryString, {
+        body: JSON.stringify(payload),
+        additionalHeaders,
+        stream,
+      });
 
       if (stream) {
-        return response.body as ReadableStream<Uint8Array>;
+        return Promise.resolve(data as ChatRequest) as Promise<ChatResponse>;
       } else {
-        return response.json();
+        return Promise.resolve(data as ChatResponse);
       }
     } catch (error) {
       console.error("Fetch failed:", error);
