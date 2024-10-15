@@ -86,7 +86,7 @@ export const ModelHubSettingPageMainView = () => {
 
   const onModelRun = () => {
     modelsWatchState.refetch();
-  }
+  };
 
   const updateActiveVersionUrl = (version: Nullable<string>) => {
     if (version === null) {
