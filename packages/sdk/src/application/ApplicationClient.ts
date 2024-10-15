@@ -5,7 +5,6 @@ import {
   Application,
   ChatRequest,
   ChatResponse,
-  ChatWithStreamResponse,
   Conversation,
   CreateApplicationRequest,
   CreateApplicationResponse,
@@ -448,14 +447,14 @@ export class ApplicationClient extends APIResource {
 
   async chat(
     props: ChatRequest & { stream: true },
-  ): Promise<ChatWithStreamResponse>;
+  ): Promise<ReadableStream<Uint8Array>>;
   async chat(props: ChatRequest & { stream: false }): Promise<ChatResponse>;
   async chat(
     props: ChatRequest & { stream?: undefined },
   ): Promise<ChatResponse>;
   async chat(
     props: ChatRequest & { stream?: boolean },
-  ): Promise<ChatResponse | ChatWithStreamResponse> {
+  ): Promise<ChatResponse | ReadableStream<Uint8Array>> {
     const { ownerId, stream, appId, requesterUid, ...payload } = props;
     if (!ownerId) {
       throw new Error("Required parameter missing: ownerId");
@@ -484,7 +483,7 @@ export class ApplicationClient extends APIResource {
       });
 
       if (stream) {
-        return Promise.resolve(data as ChatWithStreamResponse);
+        return Promise.resolve(data as ReadableStream<Uint8Array>);
       } else {
         return data as ChatResponse;
       }
