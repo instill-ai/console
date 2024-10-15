@@ -53,7 +53,6 @@ export function usePipelineBuilderGraph() {
     enabled: enabledQuery && !pipelineIsNew && routeInfo.isSuccess,
     namespacePipelineName: routeInfo.data.pipelineName,
     accessToken,
-    retry: false,
   });
 
   // Initialize the pipeline graph for existed pipeline

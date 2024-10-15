@@ -18,12 +18,10 @@ export function useNamespacesRemainingCredit({
   namespaceNames,
   accessToken,
   enabled,
-  retry,
 }: {
   namespaceNames: string[];
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   let enabledQuery = false;
 
@@ -62,7 +60,6 @@ export function useNamespacesRemainingCredit({
       return Promise.resolve(remainingCredits);
     },
     enabled: enabledQuery,
-    retry: retry === false ? false : retry ? retry : 3,
     refetchOnWindowFocus: false,
   });
 }

@@ -9,7 +9,6 @@ export function usePaginatedModelRuns({
   modelName,
   accessToken,
   enabled,
-  retry,
   view = "VIEW_BASIC",
   pageSize,
   page,
@@ -20,7 +19,6 @@ export function usePaginatedModelRuns({
   modelName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
   view?: ResourceView;
   pageSize?: number;
   page?: number;
@@ -71,6 +69,5 @@ export function usePaginatedModelRuns({
       return Promise.resolve(data);
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

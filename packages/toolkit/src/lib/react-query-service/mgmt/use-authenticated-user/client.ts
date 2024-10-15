@@ -11,11 +11,9 @@ import {
 export function useAuthenticatedUser({
   accessToken,
   enabled,
-  retry,
 }: {
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   const queryKey = getUseAuthenticatedUserQueryKey();
   return useQuery({
@@ -24,6 +22,5 @@ export function useAuthenticatedUser({
       return await fetchAuthenticatedUser({ accessToken });
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

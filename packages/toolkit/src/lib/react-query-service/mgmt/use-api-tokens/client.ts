@@ -10,11 +10,9 @@ import { getUseApiTokensQueryKey } from "./server";
 export function useApiTokens({
   accessToken,
   enabled,
-  retry,
 }: {
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   const queryKey = getUseApiTokensQueryKey();
   return useQuery({
@@ -33,6 +31,5 @@ export function useApiTokens({
       return Promise.resolve(tokens);
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

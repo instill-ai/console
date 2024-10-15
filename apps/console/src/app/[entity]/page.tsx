@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 import { Nullable, User } from "@instill-ai/toolkit";
-import { fetchUser } from "@instill-ai/toolkit/server";
+import { fetchUser, generateNextMetaBase } from "@instill-ai/toolkit/server";
 
 import { ProfilePageRender } from "./render";
 
@@ -24,6 +24,9 @@ export async function generateMetadata({
 
     const metadata: Metadata = {
       title: `Instill Core | ${params.entity}`,
+      metadataBase: generateNextMetaBase({
+        defaultBase: "http://localhost:3000",
+      }),
       description: user.profile?.bio,
       openGraph: {
         images: ["/instill-open-graph.png"],

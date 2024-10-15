@@ -8,12 +8,10 @@ export function useComponentDefinitions({
   componentType,
   accessToken,
   enabled,
-  retry,
 }: {
   componentType: ComponentType | "all";
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   return useQuery({
     queryKey: ["component-definitions", componentType],
@@ -37,6 +35,5 @@ export function useComponentDefinitions({
       return Promise.resolve(connectorDefinitions);
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

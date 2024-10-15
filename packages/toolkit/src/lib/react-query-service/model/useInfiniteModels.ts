@@ -8,7 +8,6 @@ export function useInfiniteModels({
   accessToken,
   pageSize,
   enabledQuery,
-  retry,
   filter,
   visibility,
   orderBy,
@@ -17,7 +16,6 @@ export function useInfiniteModels({
   pageSize?: number;
   accessToken: Nullable<string>;
   enabledQuery: boolean;
-  retry?: false | number;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
   orderBy: Nullable<string>;
@@ -62,6 +60,5 @@ export function useInfiniteModels({
       return lastPage.nextPageToken;
     },
     enabled: enabledQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

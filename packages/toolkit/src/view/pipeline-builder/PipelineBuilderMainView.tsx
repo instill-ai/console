@@ -82,7 +82,6 @@ export const PipelineBuilderMainView = ({
     namespacePipelineName: routeInfo.data.pipelineName,
     enabled: enabledQuery && routeInfo.isSuccess && !pipelineIsNew,
     accessToken,
-    retry: false,
   });
 
   React.useEffect(() => {

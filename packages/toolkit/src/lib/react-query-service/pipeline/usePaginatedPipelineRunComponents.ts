@@ -9,7 +9,6 @@ export function usePaginatedPipelineRunComponents({
   pipelineRunId,
   accessToken,
   enabled,
-  retry,
   pageSize,
   page,
   orderBy,
@@ -20,7 +19,6 @@ export function usePaginatedPipelineRunComponents({
   pipelineRunId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
   view?: ResourceView;
   pageSize?: number;
   page?: number;
@@ -72,6 +70,5 @@ export function usePaginatedPipelineRunComponents({
       return Promise.resolve(data);
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

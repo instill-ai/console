@@ -50,7 +50,6 @@ export const BackToLatestVersionTopBar = () => {
     enabled: enabledQuery && !pipelineIsNew,
     namespacePipelineName: pipelineName,
     accessToken,
-    retry: false,
   });
 
   return currentVersion === "latest" ||

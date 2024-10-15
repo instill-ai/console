@@ -10,13 +10,11 @@ export function useNamespacePipelineReleases({
   namespacePipelineName,
   enabled,
   accessToken,
-  retry,
   shareCode,
 }: {
   namespacePipelineName: Nullable<string>;
   enabled: boolean;
   accessToken: Nullable<string>;
-  retry?: false | number;
   shareCode?: string;
 }) {
   let enableQuery = false;
@@ -43,6 +41,5 @@ export function useNamespacePipelineReleases({
       }
     },
     enabled: enableQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

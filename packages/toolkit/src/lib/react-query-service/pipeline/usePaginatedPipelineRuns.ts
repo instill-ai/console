@@ -9,7 +9,6 @@ export function usePaginatedPipelineRuns({
   pipelineName,
   accessToken,
   enabled,
-  retry,
   view = "VIEW_BASIC",
   pageSize,
   page,
@@ -20,7 +19,6 @@ export function usePaginatedPipelineRuns({
   pipelineName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
   view?: ResourceView;
   pageSize?: number;
   page?: number;
@@ -73,6 +71,5 @@ export function usePaginatedPipelineRuns({
       return Promise.resolve(data);
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

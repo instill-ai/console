@@ -30,6 +30,5 @@ export const useChangelogs = () => {
         );
       return filteredAndSortedChangelogs.slice(0, 3);
     },
-    retry: 3,
   });
 };

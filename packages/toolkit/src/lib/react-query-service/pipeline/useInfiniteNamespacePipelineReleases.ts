@@ -20,7 +20,6 @@ export function useInfiniteNamespacePipelineReleases({
   enabledQuery,
   accessToken,
   pageSize,
-  retry,
   shareCode,
   disabledViewFull,
 }: {
@@ -28,7 +27,6 @@ export function useInfiniteNamespacePipelineReleases({
   enabledQuery: boolean;
   accessToken: Nullable<string>;
   pageSize?: number;
-  retry?: false | number;
   shareCode?: string;
   disabledViewFull?: boolean;
 }): UseInfiniteQueryResult<
@@ -76,6 +74,5 @@ export function useInfiniteNamespacePipelineReleases({
       return lastPage.nextPageToken;
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

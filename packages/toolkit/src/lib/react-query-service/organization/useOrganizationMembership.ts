@@ -8,14 +8,11 @@ export function useOrganizationMembership({
   userID,
   accessToken,
   enabled,
-  retry,
 }: {
   organizationID: Nullable<string>;
   userID: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-
-  retry?: false | number;
 }) {
   let enableQuery = false;
 
@@ -46,6 +43,5 @@ export function useOrganizationMembership({
       return Promise.resolve(membership);
     },
     enabled: enableQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

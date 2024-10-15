@@ -8,14 +8,12 @@ export function useInfiniteUserModels({
   userName,
   accessToken,
   enabled,
-  retry,
   filter,
   visibility,
 }: {
   userName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
 }) {
@@ -61,6 +59,5 @@ export function useInfiniteUserModels({
       return lastPage.nextPageToken;
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

@@ -7,11 +7,9 @@ import { listOrganizationsQuery } from "../../vdp-sdk";
 export function useOrganizations({
   accessToken,
   enabled,
-  retry,
 }: {
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   return useQuery({
     queryKey: ["organizations"],
@@ -26,6 +24,5 @@ export function useOrganizations({
       return Promise.resolve(tokens);
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

@@ -7,12 +7,10 @@ export function useUserMemberships({
   userID,
   accessToken,
   enabled,
-  retry,
 }: {
   userID: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   let enabledQuery = false;
 
@@ -39,6 +37,5 @@ export function useUserMemberships({
       return Promise.resolve(memberships);
     },
     enabled: enabledQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

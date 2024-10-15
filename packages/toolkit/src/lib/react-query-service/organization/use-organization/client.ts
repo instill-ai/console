@@ -9,12 +9,10 @@ export function useOrganization({
   organizationID,
   accessToken,
   enabled,
-  retry,
 }: {
   organizationID: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   let enableQuery = false;
 
@@ -33,6 +31,5 @@ export function useOrganization({
       });
     },
     enabled: enableQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

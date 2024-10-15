@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { Nullable } from "@instill-ai/toolkit";
 import {
   fetchNamespacePipeline,
+  generateNextMetaBase,
   getPipelineTabTitle,
   PipelineTabNames,
 } from "@instill-ai/toolkit/server";
@@ -40,6 +41,9 @@ export async function generateMetadata({
     metadata = {
       title: `Instill Core | ${id} | ${getPipelineTabTitle(params.path[0] as PipelineTabNames)}`,
       description: pipeline?.description,
+      metadataBase: generateNextMetaBase({
+        defaultBase: "http://localhost:3000",
+      }),
       openGraph: {
         images: ["/instill-open-graph.png"],
       },
@@ -47,6 +51,9 @@ export async function generateMetadata({
   } catch (error) {
     metadata = {
       title: `Instill Core | ${id} | ${getPipelineTabTitle(params.path[0] as PipelineTabNames)}`,
+      metadataBase: generateNextMetaBase({
+        defaultBase: "http://localhost:3000",
+      }),
       openGraph: {
         images: ["/instill-open-graph.png"],
       },

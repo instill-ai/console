@@ -8,12 +8,10 @@ export function usePipelineTriggerMetric({
   enabled,
   accessToken,
   filter,
-  retry,
 }: {
   enabled: boolean;
   accessToken: Nullable<string>;
   filter: Nullable<string>;
-  retry?: false | number;
 }) {
   return useQuery({
     queryKey: ["tables", filter],
@@ -33,6 +31,5 @@ export function usePipelineTriggerMetric({
       return Promise.resolve(triggerMetric);
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

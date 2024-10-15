@@ -6,7 +6,6 @@ import { getInstillAPIClient } from "../../vdp-sdk";
 export function useCreditConsumptionChartRecords({
   enabled,
   accessToken,
-  retry,
   start,
   stop,
   owner,
@@ -18,7 +17,6 @@ export function useCreditConsumptionChartRecords({
   start: Nullable<string>;
   stop: Nullable<string>;
   aggregationWindow: Nullable<string>;
-  retry?: false | number;
 }) {
   let enabledQuery = false;
 
@@ -75,6 +73,5 @@ export function useCreditConsumptionChartRecords({
       return Promise.resolve(data);
     },
     enabled: enabledQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

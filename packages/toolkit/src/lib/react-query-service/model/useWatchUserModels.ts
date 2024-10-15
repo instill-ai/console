@@ -8,12 +8,10 @@ export function useWatchUserModels({
   modelNames,
   accessToken,
   enabled,
-  retry,
 }: {
   modelNames: Nullable<string[]>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   let enableQuery = false;
   const queryKey = ["models", "watch"];
@@ -48,6 +46,5 @@ export function useWatchUserModels({
       return Promise.resolve(watches);
     },
     enabled: enableQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

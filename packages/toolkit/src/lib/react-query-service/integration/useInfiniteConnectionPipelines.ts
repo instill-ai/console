@@ -8,14 +8,12 @@ export function useInfiniteConnectionPipelines({
   connectionId,
   accessToken,
   enabled,
-  retry,
   filter,
 }: {
   namespaceId: Nullable<string>;
   connectionId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
   filter: Nullable<string>;
 }) {
   const queryKey = [
@@ -66,6 +64,5 @@ export function useInfiniteConnectionPipelines({
       return lastPage.nextPageToken;
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

@@ -7,12 +7,10 @@ export function useModelDefinition({
   modelDefinitionName,
   accessToken,
   enabled,
-  retry,
 }: {
   modelDefinitionName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   let enableQuery = false;
 
@@ -39,6 +37,5 @@ export function useModelDefinition({
       return Promise.resolve(definition);
     },
     enabled: enableQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

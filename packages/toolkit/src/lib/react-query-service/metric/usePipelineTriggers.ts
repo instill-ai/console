@@ -8,13 +8,11 @@ export function usePipelineTriggers({
   enabled,
   accessToken,
   filter,
-  retry,
   filterId,
 }: {
   enabled: boolean;
   accessToken: Nullable<string>;
   filter: Nullable<string>;
-  retry?: false | number;
   filterId: Nullable<string>;
 }) {
   const queryKey = ["metrics", "pipelines", "triggers"];
@@ -41,6 +39,5 @@ export function usePipelineTriggers({
       return Promise.resolve(triggers);
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

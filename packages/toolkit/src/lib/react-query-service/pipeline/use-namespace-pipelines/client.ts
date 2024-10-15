@@ -13,7 +13,6 @@ export function useNamespacePipelines({
   namespaceName,
   enabled,
   accessToken,
-  retry,
   filter,
   visibility,
   disabledViewFull,
@@ -26,11 +25,6 @@ export function useNamespacePipelines({
   visibility: Nullable<Visibility>;
   disabledViewFull?: boolean;
   pageSize?: number;
-  /**
-   * - Default is 3
-   * - Set to false to disable retry
-   */
-  retry?: false | number;
 }) {
   let enableQuery = false;
 
@@ -57,6 +51,5 @@ export function useNamespacePipelines({
       }
     },
     enabled: enableQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

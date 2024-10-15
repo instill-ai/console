@@ -107,6 +107,5 @@ export const useBlogPosts = () => {
   return useQuery({
     queryKey: ["blogPosts"],
     queryFn: fetchBlogPosts,
-    retry: 3,
   });
 };

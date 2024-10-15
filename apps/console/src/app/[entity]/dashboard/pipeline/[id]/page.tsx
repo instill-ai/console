@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 
+import { generateNextMetaBase } from "@instill-ai/toolkit/server";
+
 import { PipelineDashboardPageRender } from "./render";
 
 type Props = {
@@ -9,6 +11,9 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const metadata: Metadata = {
     title: `Instill Core | ${params.id} Dashboard`,
+    metadataBase: generateNextMetaBase({
+      defaultBase: "http://localhost:3000",
+    }),
     openGraph: {
       images: ["/instill-open-graph.png"],
     },
