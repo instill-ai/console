@@ -182,7 +182,6 @@ export type ChatRequest = {
   namespaceUid: Nullable<string> | undefined;
   requesterUid: string | undefined;
   stream: boolean;
-  accessToken: string;
 };
 
 export type ChatResponse = {
@@ -197,6 +196,8 @@ export type ChatResponse = {
     chunks: Nullable<Chunk[]>;
   };
 };
+
+export type ChatWithStreamResponse = any;
 
 export type ListConversationsRequest = {
   ownerId: string;

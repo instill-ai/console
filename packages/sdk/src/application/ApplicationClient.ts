@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getInstillAdditionalHeaders, getQueryString } from "../helper";
 import { APIResource } from "../main/resource";
 import {
   Application,
   ChatRequest,
   ChatResponse,
+  ChatWithStreamResponse,
   Conversation,
   CreateApplicationRequest,
   CreateApplicationResponse,
@@ -446,14 +448,14 @@ export class ApplicationClient extends APIResource {
 
   async chat(
     props: ChatRequest & { stream: true },
-  ): Promise<ReadableStream<Uint8Array>>;
+  ): Promise<ChatWithStreamResponse>;
   async chat(props: ChatRequest & { stream: false }): Promise<ChatResponse>;
   async chat(
     props: ChatRequest & { stream?: undefined },
   ): Promise<ChatResponse>;
   async chat(
     props: ChatRequest & { stream?: boolean },
-  ): Promise<ChatResponse | ReadableStream<Uint8Array>> {
+  ): Promise<ChatResponse | ChatWithStreamResponse> {
     const { ownerId, stream, appId, requesterUid, ...payload } = props;
     if (!ownerId) {
       throw new Error("Required parameter missing: ownerId");
@@ -482,7 +484,7 @@ export class ApplicationClient extends APIResource {
       });
 
       if (stream) {
-        return Promise.resolve(data as ReadableStream<Uint8Array>);
+        return Promise.resolve(data as ChatWithStreamResponse);
       } else {
         return data as ChatResponse;
       }
