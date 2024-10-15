@@ -80,14 +80,7 @@ export const RootProvider = ({
     closeModal();
     dismissToast();
     setPreviousPathname(pathname);
-  }, [
-    pathname,
-    closeModal,
-    dismissToast,
-    initPipelineBuilder,
-    initCreateResourceFormStore,
-    previousPathname,
-  ]);
+  }, [pathname, previousPathname]);
 
   return (
     <ReactQueryProvider>

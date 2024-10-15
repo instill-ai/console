@@ -72,7 +72,7 @@ export const CETopbarDropdown = () => {
                 {me.data.profile?.displayName}
               </h3>
               <p className="text-semantic-fg-secondary product-body-text-4-regular">
-                {me.data.profile?.publicEmail}
+                {me.data.email}
               </p>
             </div>
           </div>
