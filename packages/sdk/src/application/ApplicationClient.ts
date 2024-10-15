@@ -5,7 +5,7 @@ import {
   Application,
   ChatRequest,
   ChatResponse,
-  ChatWithSreamResponse,
+  ChatWithStreamResponse,
   Conversation,
   CreateApplicationRequest,
   CreateApplicationResponse,
@@ -456,7 +456,7 @@ export class ApplicationClient extends APIResource {
   async chat(
     props: ChatRequest & { stream?: boolean },
   ): Promise<
-    ChatResponse | ReadableStream<Uint8Array> | ChatWithSreamResponse
+    ChatResponse | ReadableStream<Uint8Array> | ChatWithStreamResponse
   > {
     const { ownerId, stream, appId, requesterUid, ...payload } = props;
     if (!ownerId) {
@@ -486,7 +486,7 @@ export class ApplicationClient extends APIResource {
       });
 
       if (stream) {
-        return Promise.resolve(data as ChatWithSreamResponse);
+        return Promise.resolve(data as ChatWithStreamResponse);
       } else {
         return data as ChatResponse;
       }

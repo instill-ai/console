@@ -197,7 +197,7 @@ export type ChatResponse = {
   };
 };
 
-export type ChatWithSreamResponse = any;
+export type ChatWithStreamResponse = any;
 
 export type ListConversationsRequest = {
   ownerId: string;
