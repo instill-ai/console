@@ -468,16 +468,13 @@ export class ApplicationClient extends APIResource {
     if (!payload.conversationUid) {
       throw new Error("Required parameter missing: conversationUid");
     }
-
     const queryString = getQueryString({
       baseURL: `/namespaces/${ownerId}/apps/${appId}/chat`,
     });
-
     const additionalHeaders = getInstillAdditionalHeaders({
       requesterUid,
       stream,
     });
-
     try {
       const data = await this._client.post(queryString, {
         body: JSON.stringify(payload),
@@ -488,7 +485,7 @@ export class ApplicationClient extends APIResource {
       if (stream) {
         return Promise.resolve(data as ChatResponse);
       } else {
-        return Promise.resolve(data);
+        return data as ChatResponse;
       }
     } catch (error) {
       console.error("Fetch failed:", error);
