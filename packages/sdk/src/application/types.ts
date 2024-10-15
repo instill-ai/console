@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Chunk } from "../catalog";
 import { Nullable, Permission } from "../types";
-import { Chunk } from "./../../../toolkit/src/lib/react-query-service/catalog/types";
 
 export type Application = {
   name: string;
