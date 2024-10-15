@@ -177,7 +177,7 @@ export type ChatRequest = {
   catalogId: string;
   conversationUid: string;
   message: string;
-  topK?: number;
+  topK: number;
   namespaceUid: Nullable<string> | undefined;
   requesterUid: string | undefined;
 };
