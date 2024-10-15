@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Chunk } from "../catalog";
 import { Nullable, Permission } from "../types";
 
 export type Application = {
@@ -176,14 +178,26 @@ export type ChatRequest = {
   catalogId: string;
   conversationUid: string;
   message: string;
-  topK?: number;
-  namespaceId?: string;
+  topK: number;
+  namespaceUid: Nullable<string> | undefined;
+  requesterUid: string | undefined;
+  stream: boolean;
 };
 
 export type ChatResponse = {
-  outputs: unknown[];
-  chunks: SimilarityChunk[];
+  updateTime: string;
+  status: {
+    completed: boolean;
+    errored: boolean;
+    started: boolean;
+  };
+  output: {
+    assistant_reply: Nullable<string>;
+    chunks: Nullable<Chunk[]>;
+  };
 };
+
+export type ChatWithStreamResponse = any;
 
 export type ListConversationsRequest = {
   ownerId: string;

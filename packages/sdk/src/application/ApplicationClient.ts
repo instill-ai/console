@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getInstillAdditionalHeaders, getQueryString } from "../helper";
 import { APIResource } from "../main/resource";
 import {
   Application,
   ChatRequest,
   ChatResponse,
+  ChatWithStreamResponse,
   Conversation,
   CreateApplicationRequest,
   CreateApplicationResponse,
@@ -438,31 +440,57 @@ export class ApplicationClient extends APIResource {
         await this._client.post<RestartPlaygroundConversationResponse>(
           queryString,
         );
-      return response;
+      return Promise.resolve(response);
     } catch (error) {
       return Promise.reject(error);
     }
   }
 
-  async chat(props: ChatRequest): Promise<ChatResponse> {
-    const { ownerId, appId, ...payload } = props;
-
+  async chat(
+    props: ChatRequest & { stream: true },
+  ): Promise<ChatWithStreamResponse>;
+  async chat(props: ChatRequest & { stream: false }): Promise<ChatResponse>;
+  async chat(
+    props: ChatRequest & { stream?: undefined },
+  ): Promise<ChatResponse>;
+  async chat(
+    props: ChatRequest & { stream?: boolean },
+  ): Promise<ChatResponse | ChatWithStreamResponse> {
+    const { ownerId, stream, appId, requesterUid, ...payload } = props;
+    if (!ownerId) {
+      throw new Error("Required parameter missing: ownerId");
+    }
+    if (!appId) {
+      throw new Error("Required parameter missing: appId");
+    }
+    if (!payload.catalogId) {
+      throw new Error("Required parameter missing: catalogId");
+    }
+    if (!payload.conversationUid) {
+      throw new Error("Required parameter missing: conversationUid");
+    }
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${ownerId}/apps/${appId}/chat`,
+    });
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+      stream,
+    });
     try {
-      const queryString = getQueryString({
-        baseURL: `/namespaces/${ownerId}/apps/${appId}/chat`,
-      });
-
-      const additionalHeaders = getInstillAdditionalHeaders({
-        stream: true,
-      });
-
-      const response = await this._client.post<ChatResponse>(queryString, {
+      const data = await this._client.post(queryString, {
         body: JSON.stringify(payload),
         additionalHeaders,
+        stream,
       });
-      return response;
+
+      if (stream) {
+        return Promise.resolve(data as ChatWithStreamResponse);
+      } else {
+        return data as ChatResponse;
+      }
     } catch (error) {
-      return Promise.reject(error);
+      console.error("Fetch failed:", error);
+      throw error;
     }
   }
 }

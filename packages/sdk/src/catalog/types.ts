@@ -39,3 +39,14 @@ export type File = {
   totalChunks: number;
   totalTokens: number;
 };
+
+export type Chunk = {
+  chunkUid: string;
+  content: string;
+  retrievable: boolean;
+  tokens: number;
+  startPos: number;
+  endPos: number;
+  originalFileUid: string;
+  type: string;
+};
