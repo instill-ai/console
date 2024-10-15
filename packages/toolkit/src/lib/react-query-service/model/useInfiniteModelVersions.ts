@@ -15,13 +15,11 @@ export function useInfiniteModelVersions({
   enabledQuery,
   modelName,
   pageSize,
-  retry,
 }: {
   accessToken: Nullable<string>;
   enabledQuery: boolean;
   modelName: Nullable<string>;
   pageSize?: number;
-  retry?: false | number;
 }): UseInfiniteQueryResult<InfiniteData<ListModelVersionsResponse>, Error> {
   let enabled = false;
 
@@ -65,6 +63,5 @@ export function useInfiniteModelVersions({
       return lastPage.page + 1;
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

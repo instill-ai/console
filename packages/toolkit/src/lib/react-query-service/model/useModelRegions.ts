@@ -5,10 +5,8 @@ import { listModelRegionsQuery } from "../../vdp-sdk";
 
 export function useModelRegions({
   accessToken,
-  retry,
 }: {
   accessToken: Nullable<string>;
-  retry?: false | number;
 }) {
   const queryKey = ["available-model-regions"];
 
@@ -23,6 +21,5 @@ export function useModelRegions({
 
       return Promise.resolve(regions);
     },
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

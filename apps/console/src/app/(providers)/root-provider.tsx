@@ -53,11 +53,11 @@ export const RootProvider = ({
 
   React.useEffect(() => {
     updateFeatureFlagWebhookEnabled(() => featureFlagWebhookEnabled);
-  }, [featureFlagWebhookEnabled]);
+  }, [featureFlagWebhookEnabled, updateFeatureFlagWebhookEnabled]);
 
   React.useEffect(() => {
     updateFeatureFlagApplicationEnabled(() => featureFlagApplicationEnabled);
-  }, [featureFlagApplicationEnabled]);
+  }, [featureFlagApplicationEnabled, updateFeatureFlagApplicationEnabled]);
 
   React.useEffect(() => {
     // When ever user leave /editor page to what ever destination
@@ -80,7 +80,14 @@ export const RootProvider = ({
     closeModal();
     dismissToast();
     setPreviousPathname(pathname);
-  }, [pathname]);
+  }, [
+    pathname,
+    closeModal,
+    dismissToast,
+    initPipelineBuilder,
+    initCreateResourceFormStore,
+    previousPathname,
+  ]);
 
   return (
     <ReactQueryProvider>

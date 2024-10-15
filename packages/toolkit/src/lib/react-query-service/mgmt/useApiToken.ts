@@ -7,12 +7,10 @@ export function useApiToken({
   tokenName,
   accessToken,
   enabled,
-  retry,
 }: {
   tokenName: string;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   return useQuery({
     queryKey: ["api-tokens", tokenName],
@@ -30,6 +28,5 @@ export function useApiToken({
       return Promise.resolve(token);
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

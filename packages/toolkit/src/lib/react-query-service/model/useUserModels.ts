@@ -31,7 +31,6 @@ export const useUserModels = ({
   userName,
   enabled,
   accessToken,
-  retry,
   filter,
   visibility,
 }: {
@@ -40,7 +39,6 @@ export const useUserModels = ({
   accessToken: Nullable<string>;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
-  retry?: false | number;
 }) => {
   let enableQuery = false;
 
@@ -64,6 +62,5 @@ export const useUserModels = ({
       return Promise.resolve(models);
     },
     enabled: enableQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 };

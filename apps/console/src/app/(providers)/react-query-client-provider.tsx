@@ -2,7 +2,11 @@
 
 // We can not useState or useRef in a server component, which is why we are
 // extracting this part out into it's own file with 'use client' on top
-import { QueryClientProvider, ReactQueryDevtools } from "@instill-ai/toolkit";
+import {
+  QueryClientProvider,
+  REACT_QUERY_MAX_RETRIES,
+  ReactQueryDevtools,
+} from "@instill-ai/toolkit";
 import { QueryClient } from "@instill-ai/toolkit/server";
 
 let browserQueryClient: QueryClient | undefined = undefined;
@@ -14,6 +18,27 @@ function makeQueryClient() {
         // With SSR, we usually want to set some default staleTime
         // above 0 to avoid refetching immediately on the client
         staleTime: 60 * 1000,
+
+        // For the following status code, we do not want to retry
+        retry: (failureCount, error) => {
+          if (failureCount > REACT_QUERY_MAX_RETRIES) {
+            return false;
+          }
+
+          console.log("error in retry", error);
+
+          if (
+            Object.hasOwnProperty.call(error, "status") &&
+            //@ts-ignore
+            [401, 403, 404, 500, 502, 503, 504].includes(error.status)
+          ) {
+            //@ts-ignore
+            console.log(`Aborting retry due to ${error.status} status`);
+            return false;
+          }
+
+          return true;
+        },
       },
     },
   });

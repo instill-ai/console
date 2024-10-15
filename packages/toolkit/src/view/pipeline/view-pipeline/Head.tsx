@@ -73,7 +73,6 @@ export const Head = ({
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
-    retry: false,
   });
 
   const deletePipeline = useDeleteNamespacePipeline();

@@ -7,11 +7,9 @@ import { listModelDefinitionsQuery } from "../../vdp-sdk";
 export function useModelDefinitions({
   accessToken,
   enabled,
-  retry,
 }: {
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   return useQuery({
     queryKey: ["model-definitions"],
@@ -29,6 +27,5 @@ export function useModelDefinitions({
       return Promise.resolve(definitions);
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

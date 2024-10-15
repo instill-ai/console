@@ -9,12 +9,10 @@ export function useUser({
   userName,
   accessToken,
   enabled,
-  retry,
 }: {
   userName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   let enabledQuery = false;
 
@@ -33,6 +31,5 @@ export function useUser({
       });
     },
     enabled: enabledQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

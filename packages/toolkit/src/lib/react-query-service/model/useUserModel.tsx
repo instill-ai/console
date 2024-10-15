@@ -7,12 +7,10 @@ export function useUserModel({
   modelName,
   accessToken,
   enabled,
-  retry,
 }: {
   modelName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   let enableQuery = false;
 
@@ -32,6 +30,5 @@ export function useUserModel({
       return Promise.resolve(model);
     },
     enabled: enableQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

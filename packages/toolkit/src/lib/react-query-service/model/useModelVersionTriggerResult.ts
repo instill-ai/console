@@ -11,7 +11,6 @@ export function useModelVersionTriggerResult({
   accessToken,
   enabled,
   view = "VIEW_BASIC",
-  retry,
   requesterUid,
 }: {
   modelId: Nullable<string>;
@@ -20,7 +19,6 @@ export function useModelVersionTriggerResult({
   accessToken: Nullable<string>;
   enabled: boolean;
   view?: ResourceView;
-  retry?: false | number;
   requesterUid?: string;
 }) {
   let enableQuery = false;
@@ -58,6 +56,5 @@ export function useModelVersionTriggerResult({
       return Promise.resolve(operation);
     },
     enabled: enableQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

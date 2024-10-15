@@ -55,7 +55,6 @@ export function useAppAccessToken(props?: UseAccessTokenProps) {
         return Promise.reject(error);
       }
     },
-    retry: false,
     refetchOnWindowFocus: false,
   });
 

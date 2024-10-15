@@ -11,12 +11,10 @@ export function useRemainingCredit({
   ownerName,
   accessToken,
   enabled,
-  retry,
 }: {
   ownerName: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   let enabledQuery = false;
 
@@ -47,6 +45,5 @@ export function useRemainingCredit({
       return Promise.resolve(remainingCredit);
     },
     enabled: enabledQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

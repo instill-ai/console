@@ -6,12 +6,10 @@ import { getInstillAPIClient } from "../../vdp-sdk";
 export function useInfiniteIntegrations({
   accessToken,
   enabled,
-  retry,
   filter,
 }: {
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
   filter: Nullable<string>;
 }) {
   const queryKey = ["integrations", "infinite"];
@@ -47,6 +45,5 @@ export function useInfiniteIntegrations({
       return lastPage.nextPageToken;
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

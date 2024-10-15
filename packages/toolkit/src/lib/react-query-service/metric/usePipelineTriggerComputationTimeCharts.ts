@@ -8,12 +8,10 @@ export function usePipelineTriggerComputationTimeCharts({
   enabled,
   accessToken,
   filter,
-  retry,
 }: {
   enabled: boolean;
   accessToken: Nullable<string>;
   filter: Nullable<string>;
-  retry?: false | number;
 }) {
   return useQuery({
     queryKey: ["charts", filter],
@@ -33,6 +31,5 @@ export function usePipelineTriggerComputationTimeCharts({
       return Promise.resolve(triggers);
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

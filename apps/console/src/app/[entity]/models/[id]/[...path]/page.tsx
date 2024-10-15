@@ -4,6 +4,7 @@ import { Nullable } from "instill-sdk";
 
 import {
   fetchNamespaceModel,
+  generateNextMetaBase,
   getModelTabTitle,
   ModelTabNames,
 } from "@instill-ai/toolkit/server";
@@ -40,6 +41,9 @@ export async function generateMetadata({
     metadata = {
       title: `Instill Core | ${id} | ${getModelTabTitle(params.path[0] as ModelTabNames)}`,
       description: model?.description,
+      metadataBase: generateNextMetaBase({
+        defaultBase: "http://localhost:3000",
+      }),
       openGraph: {
         images: ["/instill-open-graph.png"],
       },
@@ -48,6 +52,9 @@ export async function generateMetadata({
     console.log(error);
     metadata = {
       title: `Instill Core | ${id} | ${getModelTabTitle(params.path[0] as ModelTabNames)}`,
+      metadataBase: generateNextMetaBase({
+        defaultBase: "http://localhost:3000",
+      }),
       openGraph: {
         images: ["/instill-open-graph.png"],
       },

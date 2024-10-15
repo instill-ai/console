@@ -7,11 +7,9 @@ import { getInstillAPIClient } from "../../vdp-sdk";
 export function useUsers({
   accessToken,
   enabled,
-  retry,
 }: {
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   return useQuery({
     queryKey: ["users"],
@@ -30,6 +28,5 @@ export function useUsers({
       return Promise.resolve(users);
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

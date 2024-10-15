@@ -7,13 +7,7 @@ export type HubStatsResponse = {
   numberOfFeaturedPipelines: number;
 };
 
-export function useHubStats({
-  enabled,
-  retry,
-}: {
-  enabled: boolean;
-  retry?: false | number;
-}) {
+export function useHubStats({ enabled }: { enabled: boolean }) {
   return useQuery({
     queryKey: ["hub-stats"],
     queryFn: async () => {
@@ -25,6 +19,5 @@ export function useHubStats({
       return Promise.resolve(stats);
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

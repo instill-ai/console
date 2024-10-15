@@ -63,7 +63,6 @@ export const BottomBar = () => {
     namespacePipelineName: routeInfo.data.pipelineName,
     enabled: enabledQuery && routeInfo.isSuccess && !pipelineIsNew,
     accessToken,
-    retry: false,
   });
 
   return (

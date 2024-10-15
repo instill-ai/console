@@ -9,12 +9,10 @@ export function useNamespaceType({
   namespace,
   accessToken,
   enabled,
-  retry,
 }: {
   namespace: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
 }) {
   let enabledQuery = false;
 
@@ -33,6 +31,5 @@ export function useNamespaceType({
       });
     },
     enabled: enabledQuery,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

@@ -2,13 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { listRepoFileContent } from "../../github";
 
-export function useMgmtDefinition({
-  enabled,
-  retry,
-}: {
-  enabled: boolean;
-  retry?: false | number;
-}) {
+export function useMgmtDefinition({ enabled }: { enabled: boolean }) {
   return useQuery({
     queryKey: ["mgmt", "encoded-definition"],
     queryFn: async () => {
@@ -22,6 +16,5 @@ export function useMgmtDefinition({
       return Promise.resolve(decode);
     },
     enabled: enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

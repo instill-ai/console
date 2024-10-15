@@ -7,7 +7,6 @@ import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useIntegrationConnection({
   enabled,
-  retry,
   view = "VIEW_BASIC",
   connectionId,
   namespaceId,
@@ -15,7 +14,6 @@ export function useIntegrationConnection({
 }: {
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
   view: ResourceView;
   connectionId: Nullable<string>;
   namespaceId: Nullable<string>;
@@ -46,6 +44,5 @@ export function useIntegrationConnection({
       return Promise.resolve(data);
     },
     enabled: enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

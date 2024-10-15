@@ -7,13 +7,11 @@ export function useInfiniteIntegrationConnections({
   namespaceId,
   accessToken,
   enabled,
-  retry,
   filter,
 }: {
   namespaceId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  retry?: false | number;
   filter: Nullable<string>;
 }) {
   const queryKey = ["integration-connections", namespaceId, "infinite"];
@@ -55,6 +53,5 @@ export function useInfiniteIntegrationConnections({
       return lastPage.nextPageToken;
     },
     enabled,
-    retry: retry === false ? false : retry ? retry : 3,
   });
 }

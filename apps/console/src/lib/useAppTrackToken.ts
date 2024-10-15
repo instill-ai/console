@@ -29,7 +29,6 @@ export function useAppTrackToken({ enabled }: { enabled: boolean }) {
         return Promise.reject(error);
       }
     },
-    retry: false,
     refetchOnWindowFocus: false,
     enabled,
   });
