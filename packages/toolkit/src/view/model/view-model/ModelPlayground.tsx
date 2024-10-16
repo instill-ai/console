@@ -156,6 +156,9 @@ export const ModelPlayground = ({
     },
   );
 
+  console.log('ROUTE INFO', routeInfo);
+  console.log('NAMESPACE', routeInfo?.data?.namespaceId);
+
   const existingModelTriggerResult = useModelVersionTriggerResult({
     accessToken,
     modelId: model?.id || null,
@@ -169,6 +172,9 @@ export const ModelPlayground = ({
       routeInfo.isSuccess,
     requesterUid: targetNamespace ? targetNamespace.uid : undefined,
   });
+
+  console.log('TRIGGER RESULT', existingModelTriggerResult.data?.operation);
+  console.log('TRIGGER RESULT', existingModelTriggerResult.data?.operation?.response);
 
   const pollForResponse = React.useCallback(async () => {
     // If the polling is already running, stop
