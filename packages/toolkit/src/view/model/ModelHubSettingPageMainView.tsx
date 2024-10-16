@@ -92,18 +92,18 @@ export const ModelHubSettingPageMainView = () => {
     (version: Nullable<string>) => {
       if (version === null) {
         router.replace(pathname);
-  
+
         return;
       }
-  
+
       const newSearchParams = new URLSearchParams();
       newSearchParams.set("version", version);
-  
+
       const combinedSearchParams = new URLSearchParams({
         ...Object.fromEntries(searchParams),
         ...Object.fromEntries(newSearchParams),
       });
-  
+
       router.replace(`${pathname}?${combinedSearchParams.toString()}`);
     },
     [searchParams, pathname, router],
