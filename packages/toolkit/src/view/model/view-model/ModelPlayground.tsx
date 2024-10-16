@@ -275,6 +275,7 @@ export const ModelPlayground = ({
         setExistingTriggerState(existingModelTriggerResult.data.operation);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     existingTriggerState,
     existingModelTriggerResult.isSuccess,
@@ -321,6 +322,7 @@ export const ModelPlayground = ({
         modelVersion: existingTriggerState.response?.request.version || null,
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existingTriggerState, model]);
 
   const triggerModel = useTriggerUserModelVersionAsync();

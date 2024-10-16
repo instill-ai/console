@@ -74,7 +74,7 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
   });
   const modelRun = React.useMemo(() => {
     return modelRuns.data?.runs[0] || null;
-  }, [modelRuns.isSuccess, modelRuns.data]);
+  }, [modelRuns.data]);
   const taskInputOutput = React.useMemo(() => {
     return {
       input: modelRun?.taskInputs[0]
@@ -82,6 +82,7 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
         : null,
       output: modelRun?.taskOutputs[0] ? modelRun?.taskOutputs[0] : null,
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modelRun, model]);
 
   const { fields, form } = useInstillForm(

@@ -100,7 +100,7 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
     }
 
     return Math.ceil(modelRuns.data.totalSize / modelRuns.data.pageSize);
-  }, [modelRuns.isSuccess, modelRuns.data]);
+  }, [modelRuns.data]);
 
   const onSortOrderUpdate = (sortValue: string) => {
     setPaginationState((currentValue) => ({
@@ -242,6 +242,7 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
     }
 
     return columns;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modelRuns.isSuccess, modelRuns.data]);
 
   if (modelRuns.isSuccess && !modelRuns.data.runs.length) {

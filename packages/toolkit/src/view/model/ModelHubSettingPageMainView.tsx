@@ -88,23 +88,26 @@ export const ModelHubSettingPageMainView = () => {
     modelsWatchState.refetch();
   };
 
-  const updateActiveVersionUrl = (version: Nullable<string>) => {
-    if (version === null) {
-      router.replace(pathname);
-
-      return;
-    }
-
-    const newSearchParams = new URLSearchParams();
-    newSearchParams.set("version", version);
-
-    const combinedSearchParams = new URLSearchParams({
-      ...Object.fromEntries(searchParams),
-      ...Object.fromEntries(newSearchParams),
-    });
-
-    router.replace(`${pathname}?${combinedSearchParams.toString()}`);
-  };
+  const updateActiveVersionUrl = React.useCallback(
+    (version: Nullable<string>) => {
+      if (version === null) {
+        router.replace(pathname);
+  
+        return;
+      }
+  
+      const newSearchParams = new URLSearchParams();
+      newSearchParams.set("version", version);
+  
+      const combinedSearchParams = new URLSearchParams({
+        ...Object.fromEntries(searchParams),
+        ...Object.fromEntries(newSearchParams),
+      });
+  
+      router.replace(`${pathname}?${combinedSearchParams.toString()}`);
+    },
+    [searchParams, pathname, router],
+  );
 
   React.useEffect(() => {
     if (model.isSuccess) {
@@ -123,6 +126,7 @@ export const ModelHubSettingPageMainView = () => {
         updateActiveVersionUrl(model.data.versions[0]);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [model.isSuccess, model.data, activeVersion, pathname]);
 
   return (
