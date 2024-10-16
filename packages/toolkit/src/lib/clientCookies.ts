@@ -1,4 +1,4 @@
-export const clientCookieSet = (
+const clientCookieSet = (
   cname: string,
   cvalue: string,
   exdays: number = 30,
@@ -12,7 +12,7 @@ export const clientCookieSet = (
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 };
 
-export const clientCookieGet = (cname: string) => {
+const clientCookieGet = (cname: string) => {
   const name = cname + "=";
   const decodedCookie = decodeURIComponent(document.cookie);
   const ca = decodedCookie.split(";");
@@ -32,4 +32,9 @@ export const clientCookieGet = (cname: string) => {
   }
 
   return null;
+};
+
+export const ClientCookie = {
+  get: clientCookieGet,
+  set: clientCookieSet,
 };
