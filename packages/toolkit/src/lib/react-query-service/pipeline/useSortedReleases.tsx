@@ -58,7 +58,7 @@ export function useSortedReleases({
     ) {
       pipelineReleases.fetchNextPage();
     }
-  }, [pipelineReleases.isSuccess, pipelineReleases.data]);
+  }, [pipelineReleases, pipelineReleases.data]);
 
   const sortedReleases = React.useMemo(() => {
     if (!pipelineReleases.isSuccess) {

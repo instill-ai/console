@@ -20,6 +20,7 @@ export type ModelContentViewerProps = {
   selectedTab: ModelTabNames;
   model?: Model;
   onUpdate: () => void;
+  onRun: () => void;
   modelState: Nullable<ModelState>;
 };
 
@@ -27,6 +28,7 @@ export const ModelContentViewer = ({
   selectedTab,
   model,
   onUpdate,
+  onRun,
   modelState,
 }: ModelContentViewerProps) => {
   const router = useRouter();
@@ -76,7 +78,7 @@ export const ModelContentViewer = ({
     case "playground":
     default: {
       content = modelState ? (
-        <ModelPlayground model={model} modelState={modelState} />
+        <ModelPlayground model={model} modelState={modelState} onRun={onRun} />
       ) : (
         <NoVersionsPlaceholder />
       );
