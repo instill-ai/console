@@ -31,6 +31,7 @@ export * from "./createNaiveRandomString";
 export * from "./convertSentenceToCamelCase";
 export * from "./useUserNamespaces";
 export * from "./stringToHash32Bit";
+export * from "./clientCookies";
 
 export { initializeIntegrationConnection } from "./integrations/helpers";
 
