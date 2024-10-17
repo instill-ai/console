@@ -265,7 +265,11 @@ export const PipelineSettings = ({
                           placeholder="Add a tag"
                           required={false}
                           value={field.value || ""}
-                          onChange={event => field.onChange(event.target.value.toLocaleLowerCase())}
+                          onChange={(event) =>
+                            field.onChange(
+                              event.target.value.toLocaleLowerCase(),
+                            )
+                          }
                         />
                       </Input.Root>
                     </Form.Control>
