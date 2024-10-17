@@ -77,6 +77,7 @@ const defaultCurrentOperationIdPollingData = {
   timeoutRunning: false,
   isRendered: false,
   modelVersion: null,
+  targetNamespace: null,
 };
 
 export const ModelPlayground = ({
@@ -96,6 +97,7 @@ export const ModelPlayground = ({
     timeoutRunning: boolean;
     isRendered: boolean;
     modelVersion: Nullable<string>;
+    targetNamespace: Nullable<string>
   }>(defaultCurrentOperationIdPollingData);
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -156,9 +158,6 @@ export const ModelPlayground = ({
     },
   );
 
-  console.log('ROUTE INFO', routeInfo);
-  console.log('NAMESPACE', routeInfo?.data?.namespaceId);
-
   const existingModelTriggerResult = useModelVersionTriggerResult({
     accessToken,
     modelId: model?.id || null,
@@ -172,9 +171,6 @@ export const ModelPlayground = ({
       routeInfo.isSuccess,
     requesterUid: targetNamespace ? targetNamespace.uid : undefined,
   });
-
-  console.log('TRIGGER RESULT', existingModelTriggerResult.data?.operation);
-  console.log('TRIGGER RESULT', existingModelTriggerResult.data?.operation?.response);
 
   const pollForResponse = React.useCallback(async () => {
     // If the polling is already running, stop
@@ -216,15 +212,21 @@ export const ModelPlayground = ({
     }, OPERATION_POLL_TIMEOUT);
   }, [model?.name, queryClient, existingModelTriggerResult]);
 
+  const resetStatesAndCurrentOperationIdPollingData = () => {
+    currentOperationIdPollingData.current = defaultCurrentOperationIdPollingData;
+    setExistingTriggerState(null);
+    setInputFromExistingResult(null);
+    setModelRunResult(null);
+  }
+
   useEffect(() => {
-    if (activeVersion !== currentOperationIdPollingData.current.modelVersion) {
-      currentOperationIdPollingData.current =
-        defaultCurrentOperationIdPollingData;
-      setExistingTriggerState(null);
-      setInputFromExistingResult(null);
-      setModelRunResult(null);
+    if (
+      activeVersion !== currentOperationIdPollingData.current.modelVersion ||
+      targetNamespace !== currentOperationIdPollingData.current.targetNamespace
+    ) {
+      resetStatesAndCurrentOperationIdPollingData();
     }
-  }, [activeVersion]);
+  }, [activeVersion, targetNamespace]);
 
   useEffect(() => {
     if (
@@ -322,8 +324,10 @@ export const ModelPlayground = ({
         isRendered: existingTriggerState.done,
         name: existingTriggerState.name,
         modelVersion: existingTriggerState.response?.request.version || null,
+        targetNamespace: targetNamespace?.id || null,
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existingTriggerState, model]);
 
   const triggerModel = useTriggerUserModelVersionAsync();
