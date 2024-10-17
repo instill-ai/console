@@ -77,6 +77,7 @@ const defaultCurrentOperationIdPollingData = {
   timeoutRunning: false,
   isRendered: false,
   modelVersion: null,
+  targetNamespace: null,
 };
 
 export const ModelPlayground = ({
@@ -96,6 +97,7 @@ export const ModelPlayground = ({
     timeoutRunning: boolean;
     isRendered: boolean;
     modelVersion: Nullable<string>;
+    targetNamespace: Nullable<string>;
   }>(defaultCurrentOperationIdPollingData);
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -210,15 +212,22 @@ export const ModelPlayground = ({
     }, OPERATION_POLL_TIMEOUT);
   }, [model?.name, queryClient, existingModelTriggerResult]);
 
+  const resetStatesAndCurrentOperationIdPollingData = () => {
+    currentOperationIdPollingData.current =
+      defaultCurrentOperationIdPollingData;
+    setExistingTriggerState(null);
+    setInputFromExistingResult(null);
+    setModelRunResult(null);
+  };
+
   useEffect(() => {
-    if (activeVersion !== currentOperationIdPollingData.current.modelVersion) {
-      currentOperationIdPollingData.current =
-        defaultCurrentOperationIdPollingData;
-      setExistingTriggerState(null);
-      setInputFromExistingResult(null);
-      setModelRunResult(null);
+    if (
+      activeVersion !== currentOperationIdPollingData.current.modelVersion ||
+      targetNamespace !== currentOperationIdPollingData.current.targetNamespace
+    ) {
+      resetStatesAndCurrentOperationIdPollingData();
     }
-  }, [activeVersion]);
+  }, [activeVersion, targetNamespace]);
 
   useEffect(() => {
     if (
@@ -273,6 +282,10 @@ export const ModelPlayground = ({
         setExistingTriggerState(existingModelTriggerResult.data.operation);
       }
     }
+    // "toast" update doesn't matter here
+    // and the "pollForResponse" mainly uses ref and a couple of methods that
+    // don't depend on the state of the data
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     existingTriggerState,
     existingModelTriggerResult.isSuccess,
@@ -316,8 +329,10 @@ export const ModelPlayground = ({
         isRendered: existingTriggerState.done,
         name: existingTriggerState.name,
         modelVersion: existingTriggerState.response?.request.version || null,
+        targetNamespace: targetNamespace?.id || null,
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existingTriggerState, model]);
 
   const triggerModel = useTriggerUserModelVersionAsync();
