@@ -97,7 +97,7 @@ export const ModelPlayground = ({
     timeoutRunning: boolean;
     isRendered: boolean;
     modelVersion: Nullable<string>;
-    targetNamespace: Nullable<string>
+    targetNamespace: Nullable<string>;
   }>(defaultCurrentOperationIdPollingData);
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -213,11 +213,12 @@ export const ModelPlayground = ({
   }, [model?.name, queryClient, existingModelTriggerResult]);
 
   const resetStatesAndCurrentOperationIdPollingData = () => {
-    currentOperationIdPollingData.current = defaultCurrentOperationIdPollingData;
+    currentOperationIdPollingData.current =
+      defaultCurrentOperationIdPollingData;
     setExistingTriggerState(null);
     setInputFromExistingResult(null);
     setModelRunResult(null);
-  }
+  };
 
   useEffect(() => {
     if (
