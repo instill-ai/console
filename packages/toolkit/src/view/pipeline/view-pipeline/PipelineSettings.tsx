@@ -108,6 +108,7 @@ export const PipelineSettings = ({
       tags:
         data.tags
           ?.trim()
+          .toLowerCase()
           .split(",")
           .map((item) => item.trim())
           .filter((item) => item) || [],
@@ -264,6 +265,7 @@ export const PipelineSettings = ({
                           placeholder="Add a tag"
                           required={false}
                           value={field.value || ""}
+                          onChange={event => field.onChange(event.target.value.toLocaleLowerCase())}
                         />
                       </Input.Root>
                     </Form.Control>
