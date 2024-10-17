@@ -126,7 +126,13 @@ export const ModelHubSettingPageMainView = () => {
         updateActiveVersionUrl(model.data.versions[0]);
       }
     }
-  }, [model.isSuccess, model.data, activeVersion, pathname, updateActiveVersionUrl]);
+  }, [
+    model.isSuccess,
+    model.data,
+    activeVersion,
+    pathname,
+    updateActiveVersionUrl,
+  ]);
 
   return (
     <div className="flex flex-col">
