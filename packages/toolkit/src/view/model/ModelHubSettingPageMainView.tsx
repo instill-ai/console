@@ -126,8 +126,7 @@ export const ModelHubSettingPageMainView = () => {
         updateActiveVersionUrl(model.data.versions[0]);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [model.isSuccess, model.data, activeVersion, pathname]);
+  }, [model.isSuccess, model.data, activeVersion, pathname, updateActiveVersionUrl]);
 
   return (
     <div className="flex flex-col">

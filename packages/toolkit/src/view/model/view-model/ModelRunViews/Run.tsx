@@ -82,8 +82,7 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
         : null,
       output: modelRun?.taskOutputs[0] ? modelRun?.taskOutputs[0] : null,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modelRun, model]);
+  }, [modelRun]);
 
   const { fields, form } = useInstillForm(
     model?.inputSchema || null,

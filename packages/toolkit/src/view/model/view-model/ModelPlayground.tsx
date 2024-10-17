@@ -335,6 +335,8 @@ export const ModelPlayground = ({
         targetNamespace: targetNamespace?.id || null,
       };
     }
+    // this effect should not depend on "pollForResponse"
+    // "onRun" is provided as props and its state doesn't matter here
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existingTriggerState, model]);
 
