@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/instill-ai/console/compare/instill-sdk-v0.8.0...instill-sdk-v0.8.1) (2024-10-17)
+
+
+### Bug Fixes
+
+* **application:** fix streaming ([#1535](https://github.com/instill-ai/console/issues/1535)) ([e128e78](https://github.com/instill-ai/console/commit/e128e7817e7ad1b10a78f1e778782fb50e4d40ea))
+
 ## [0.8.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.7.0...instill-sdk-v0.8.0) (2024-10-13)
 
 
