@@ -282,6 +282,10 @@ export const ModelPlayground = ({
         setExistingTriggerState(existingModelTriggerResult.data.operation);
       }
     }
+    // "toast" update doesn't matter here
+    // and the "pollForResponse" mainly uses ref and a couple of methods that
+    // don't depend on the state of the data
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     existingTriggerState,
     existingModelTriggerResult.isSuccess,
