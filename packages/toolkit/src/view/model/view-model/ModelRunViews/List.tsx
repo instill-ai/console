@@ -242,8 +242,7 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
     }
 
     return columns;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modelRuns.isSuccess, modelRuns.data]);
+  }, [orderBy, owner.id, model?.id]);
 
   if (modelRuns.isSuccess && !modelRuns.data.runs.length) {
     return (
