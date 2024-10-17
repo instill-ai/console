@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.108.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.107.0...@instill-ai/toolkit-v0.108.0) (2024-10-17)
+
+
+### Features
+
+* client cookie management functions ([#1540](https://github.com/instill-ai/console/issues/1540)) ([faaab42](https://github.com/instill-ai/console/commit/faaab429db47fa93173f4ff6345c7173635dcaed))
+* only allow users to manually add pipeline tags in lowercase ([#1544](https://github.com/instill-ai/console/issues/1544)) ([7d78d4e](https://github.com/instill-ai/console/commit/7d78d4ef95e867f4156032ec0b5e36cbe8b48106))
+* unify retry option of react-query, clean up metabase issue and browserlist ([#1536](https://github.com/instill-ai/console/issues/1536)) ([057d4af](https://github.com/instill-ai/console/commit/057d4af8d0465171c2244d035de86cf61f8fb93f))
+
+
+### Bug Fixes
+
+* **application:** fix streaming ([#1535](https://github.com/instill-ai/console/issues/1535)) ([e128e78](https://github.com/instill-ai/console/commit/e128e7817e7ad1b10a78f1e778782fb50e4d40ea))
+* refactor onboarding form and align topdown and profile page with cloud ([#1538](https://github.com/instill-ai/console/issues/1538)) ([e955b44](https://github.com/instill-ai/console/commit/e955b4463d8c68d9f359c066b9e1a8ffa7611dc6))
+
 ## [0.107.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.106.3...@instill-ai/toolkit-v0.107.0) (2024-10-13)
 
 
