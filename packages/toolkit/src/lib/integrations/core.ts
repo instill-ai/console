@@ -33,9 +33,9 @@ export function getAuthHandler({
           url: "https://slack.com/oauth/v2/authorize",
           params: {
             scope:
-              "users:read users:read.email users.profile:read channels:history groups:history chat:write",
+              "channels:history channels:read chat:write groups:history groups:read users.profile:read users:read users:read.email",
             user_scope:
-              "users:read users:read.email users.profile:read channels:history groups:history chat:write",
+              "channels:history channels:read chat:write groups:history groups:read users.profile:read users:read users:read.email",
             granular_bot_scope: "1",
           },
         },
