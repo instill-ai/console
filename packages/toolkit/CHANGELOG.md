@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.108.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.107.0...@instill-ai/toolkit-v0.108.0) (2024-10-18)
+
+
+### Features
+
+* client cookie management functions ([#1540](https://github.com/instill-ai/console/issues/1540)) ([faaab42](https://github.com/instill-ai/console/commit/faaab429db47fa93173f4ff6345c7173635dcaed))
+* dynamically update model UI state on run ([#1539](https://github.com/instill-ai/console/issues/1539)) ([a39c7b5](https://github.com/instill-ai/console/commit/a39c7b5b482018b368cb0f1b65eeb4584d4ae508))
+* only allow users to manually add pipeline tags in lowercase ([#1544](https://github.com/instill-ai/console/issues/1544)) ([7d78d4e](https://github.com/instill-ai/console/commit/7d78d4ef95e867f4156032ec0b5e36cbe8b48106))
+* put back image input preview, clean up ([#1546](https://github.com/instill-ai/console/issues/1546)) ([9a65578](https://github.com/instill-ai/console/commit/9a65578f751c28578b1efc55cf8117f95c06a3c0))
+* unify retry option of react-query, clean up metabase issue and browserlist ([#1536](https://github.com/instill-ai/console/issues/1536)) ([057d4af](https://github.com/instill-ai/console/commit/057d4af8d0465171c2244d035de86cf61f8fb93f))
+
+
+### Bug Fixes
+
+* **application:** fix streaming ([#1535](https://github.com/instill-ai/console/issues/1535)) ([e128e78](https://github.com/instill-ai/console/commit/e128e7817e7ad1b10a78f1e778782fb50e4d40ea))
+* fix onboarding form e2e ([#1545](https://github.com/instill-ai/console/issues/1545)) ([e630cb0](https://github.com/instill-ai/console/commit/e630cb068e43e5e4df5f7cca04d0adb7202167b8))
+* refactor onboarding form and align topdown and profile page with cloud ([#1538](https://github.com/instill-ai/console/issues/1538)) ([e955b44](https://github.com/instill-ai/console/commit/e955b4463d8c68d9f359c066b9e1a8ffa7611dc6))
+* reset playground i/o data on namespace change ([#1543](https://github.com/instill-ai/console/issues/1543)) ([de2ae66](https://github.com/instill-ai/console/commit/de2ae6636a8d6f38295522332ae7c7b6a7adabeb))
+
 ## [0.107.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.106.3...@instill-ai/toolkit-v0.107.0) (2024-10-13)
 
 
