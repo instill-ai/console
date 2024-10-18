@@ -113,7 +113,6 @@ export const NamespaceSwitch = () => {
   }, [
     userNamespaces.isSuccess,
     userNamespaces.data,
-    namespacesRemainingCredit.isSuccess,
     namespacesRemainingCredit.data,
   ]);
 

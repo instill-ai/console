@@ -41,6 +41,7 @@ export function useTriggerUserModelVersionAsync() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["model-runs"] });
+      queryClient.invalidateQueries({ queryKey: ["models", "watch"] });
     },
   });
 }

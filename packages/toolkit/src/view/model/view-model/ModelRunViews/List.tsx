@@ -100,7 +100,7 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
     }
 
     return Math.ceil(modelRuns.data.totalSize / modelRuns.data.pageSize);
-  }, [modelRuns.isSuccess, modelRuns.data]);
+  }, [modelRuns.data]);
 
   const onSortOrderUpdate = (sortValue: string) => {
     setPaginationState((currentValue) => ({
@@ -242,7 +242,7 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
     }
 
     return columns;
-  }, [modelRuns.isSuccess, modelRuns.data]);
+  }, [orderBy, owner.id, model?.id]);
 
   if (modelRuns.isSuccess && !modelRuns.data.runs.length) {
     return (

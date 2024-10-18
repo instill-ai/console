@@ -50,6 +50,7 @@ export type ModelOutputActiveView = "preview" | "json";
 export type ModelPlaygroundProps = {
   model?: Model;
   modelState: Nullable<ModelState>;
+  onRun: () => void;
 };
 
 const selector = (store: InstillStore) => ({
@@ -83,6 +84,7 @@ const defaultCurrentOperationIdPollingData = {
 export const ModelPlayground = ({
   model,
   modelState,
+  onRun,
 }: ModelPlaygroundProps) => {
   const routeInfo = useRouteInfo();
   const searchParams = useSearchParams();
@@ -318,6 +320,7 @@ export const ModelPlayground = ({
         }
 
         setIsModelRunInProgress(false);
+        onRun();
       }
     }
 
@@ -332,6 +335,8 @@ export const ModelPlayground = ({
         targetNamespace: targetNamespace?.id || null,
       };
     }
+    // this effect should not depend on "pollForResponse"
+    // "onRun" is provided as props and its state doesn't matter here
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existingTriggerState, model]);
 
@@ -400,6 +405,7 @@ export const ModelPlayground = ({
       };
 
       setExistingTriggerState(data.operation);
+      onRun();
     } catch (error) {
       setIsModelRunInProgress(false);
 

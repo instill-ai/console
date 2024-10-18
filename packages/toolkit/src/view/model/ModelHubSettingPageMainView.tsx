@@ -84,23 +84,30 @@ export const ModelHubSettingPageMainView = () => {
     }
   };
 
-  const updateActiveVersionUrl = (version: Nullable<string>) => {
-    if (version === null) {
-      router.replace(pathname);
-
-      return;
-    }
-
-    const newSearchParams = new URLSearchParams();
-    newSearchParams.set("version", version);
-
-    const combinedSearchParams = new URLSearchParams({
-      ...Object.fromEntries(searchParams),
-      ...Object.fromEntries(newSearchParams),
-    });
-
-    router.replace(`${pathname}?${combinedSearchParams.toString()}`);
+  const onModelRun = () => {
+    modelsWatchState.refetch();
   };
+
+  const updateActiveVersionUrl = React.useCallback(
+    (version: Nullable<string>) => {
+      if (version === null) {
+        router.replace(pathname);
+
+        return;
+      }
+
+      const newSearchParams = new URLSearchParams();
+      newSearchParams.set("version", version);
+
+      const combinedSearchParams = new URLSearchParams({
+        ...Object.fromEntries(searchParams),
+        ...Object.fromEntries(newSearchParams),
+      });
+
+      router.replace(`${pathname}?${combinedSearchParams.toString()}`);
+    },
+    [searchParams, pathname, router],
+  );
 
   React.useEffect(() => {
     if (model.isSuccess) {
@@ -119,7 +126,13 @@ export const ModelHubSettingPageMainView = () => {
         updateActiveVersionUrl(model.data.versions[0]);
       }
     }
-  }, [model.isSuccess, model.data, activeVersion, pathname]);
+  }, [
+    model.isSuccess,
+    model.data,
+    activeVersion,
+    pathname,
+    updateActiveVersionUrl,
+  ]);
 
   return (
     <div className="flex flex-col">
@@ -135,6 +148,7 @@ export const ModelHubSettingPageMainView = () => {
         selectedTab={path?.[0] as ModelTabNames}
         model={model.data}
         onUpdate={onModelUpdate}
+        onRun={onModelRun}
         modelState={modelState}
       />
     </div>
