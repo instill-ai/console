@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.8.0...instill-sdk-v0.9.0) (2024-10-18)
+
+
+### Features
+
+* put back image input preview, clean up ([#1546](https://github.com/instill-ai/console/issues/1546)) ([9a65578](https://github.com/instill-ai/console/commit/9a65578f751c28578b1efc55cf8117f95c06a3c0))
+
+
+### Bug Fixes
+
+* **application:** fix streaming ([#1535](https://github.com/instill-ai/console/issues/1535)) ([e128e78](https://github.com/instill-ai/console/commit/e128e7817e7ad1b10a78f1e778782fb50e4d40ea))
+
 ## [0.8.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.7.0...instill-sdk-v0.8.0) (2024-10-13)
 
 

@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.60.0-beta](https://github.com/instill-ai/console/compare/v0.59.2-beta...v0.60.0-beta) (2024-10-18)
+
+
+### Features
+
+* unify retry option of react-query, clean up metabase issue and browserlist ([#1536](https://github.com/instill-ai/console/issues/1536)) ([057d4af](https://github.com/instill-ai/console/commit/057d4af8d0465171c2244d035de86cf61f8fb93f))
+
+
+### Bug Fixes
+
+* fix onboarding form e2e ([#1545](https://github.com/instill-ai/console/issues/1545)) ([e630cb0](https://github.com/instill-ai/console/commit/e630cb068e43e5e4df5f7cca04d0adb7202167b8))
+* refactor onboarding form and align topdown and profile page with cloud ([#1538](https://github.com/instill-ai/console/issues/1538)) ([e955b44](https://github.com/instill-ai/console/commit/e955b4463d8c68d9f359c066b9e1a8ffa7611dc6))
+
 ## [0.59.2-beta](https://github.com/instill-ai/console/compare/v0.59.1-beta...v0.59.2-beta) (2024-10-09)
 
 
