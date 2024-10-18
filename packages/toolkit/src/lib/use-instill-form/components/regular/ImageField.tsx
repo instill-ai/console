@@ -58,32 +58,58 @@ export const ImageField = ({
               </Form.Label>
               <FieldDescriptionTooltip description={description} />
             </div>
-            <FileInputDropArea
-              disabled={disabled}
-              onDrop={async (fileList: FileList | null) => {
-                onUpdateFile(field, fileList?.[0]);
-              }}
-            >
-              , or{" "}
-              <Form.Control>
-                <UploadFileInput
-                  keyPrefix={path}
-                  ref={inputRef}
-                  title="browse computer"
-                  fieldKey={path}
-                  accept="image/*"
-                  onChange={async (event) => {
-                    await onUpdateFile(field, event.target.files?.[0]);
-
-                    // Reset the input value so we can use the same file again
-                    // after we delete it
-                    event.target.value = "";
-                  }}
-                  disabled={disabled}
-                  className="font-normal no-underline !bg-transparent !p-0 !inline-block"
+            <div className="w-full">
+              {imageFile ? (
+                <img
+                  key={`${path}-${imageFile.name}`}
+                  src={URL.createObjectURL(imageFile)}
+                  alt={`${path}-${imageFile.name}`}
+                  className="h-[360px] w-full object-contain"
                 />
-              </Form.Control>
-            </FileInputDropArea>
+              ) : value ? (
+                <img
+                  key={`${value.slice(
+                    value.indexOf(",") + 1,
+                    value.indexOf(",") + 13,
+                  )}`}
+                  src={value}
+                  alt={path}
+                  className="h-[360px] w-full object-contain"
+                />
+              ) : (
+                <div
+                  key={`${path}-image-placeholder`}
+                  className="w-full rounded-sm border border-semantic-bg-line bg-transparent"
+                >
+                  <FileInputDropArea
+                    disabled={disabled}
+                    onDrop={async (fileList: FileList | null) => {
+                      onUpdateFile(field, fileList?.[0]);
+                    }}
+                  >
+                    , or{" "}
+                    <Form.Control>
+                      <UploadFileInput
+                        keyPrefix={path}
+                        ref={inputRef}
+                        title="browse computer"
+                        fieldKey={path}
+                        accept="image/*"
+                        onChange={async (event) => {
+                          await onUpdateFile(field, event.target.files?.[0]);
+
+                          // Reset the input value so we can use the same file again
+                          // after we delete it
+                          event.target.value = "";
+                        }}
+                        disabled={disabled}
+                        className="font-normal no-underline !bg-transparent !p-0 !inline-block"
+                      />
+                    </Form.Control>
+                  </FileInputDropArea>
+                </div>
+              )}
+            </div>
             {imageFile ? (
               <FileListItem
                 name={imageFile.name}

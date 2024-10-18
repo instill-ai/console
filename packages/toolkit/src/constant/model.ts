@@ -14,7 +14,6 @@ export const InstillModelTask = [
   "TASK_INSTANCE_SEGMENTATION",
   "TASK_SEMANTIC_SEGMENTATION",
   "TASK_TEXT_TO_IMAGE",
-  "TASK_IMAGE_TO_IMAGE",
   "TASK_EMBEDDING",
   "TASK_SPEECH_RECOGNITION",
   "TASK_CHAT",
@@ -116,7 +115,6 @@ const taskPayloads = {
         "seed": 0
       }
     }`,
-  TASK_IMAGE_TO_IMAGE: ``,
 };
 
 export const getInstillTaskHttpRequestExample = (model?: Model) => {

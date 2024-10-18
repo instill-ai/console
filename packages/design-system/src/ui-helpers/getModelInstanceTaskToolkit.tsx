@@ -120,7 +120,7 @@ export const getModelInstanceTaskToolkit = (task: string) => {
         label: "Text To Image",
       };
 
-    case "TASK_IMAGE_TO_IMAGE":
+    /* case "TASK_IMAGE_TO_IMAGE":
       return {
         getIcon: (className?: string) => {
           return (
@@ -133,7 +133,7 @@ export const getModelInstanceTaskToolkit = (task: string) => {
         label: "Image To Image",
       };
 
-    /* case "TASK_IMAGE_TO_TEXT":
+    case "TASK_IMAGE_TO_TEXT":
       return {
         getIcon: (className?: string) => {
           return (
