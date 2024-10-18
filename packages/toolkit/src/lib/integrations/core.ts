@@ -130,12 +130,6 @@ export function getAuthHandler({
                 break;
               }
               case "slack": {
-                const userId = profile.sub;
-
-                if (!userId) {
-                  throw new Error("Slack user not found");
-                }
-
                 identity =
                   // the profile we get from slack is not typed
                   (profile.profile as any).email ??
@@ -144,7 +138,7 @@ export function getAuthHandler({
 
                 if (!identity) {
                   throw new Error(
-                    "Slack user not found, can't get the identity",
+                    "Instill Integration Error: Slack user not found, can't get the identity",
                   );
                 }
 
@@ -156,7 +150,7 @@ export function getAuthHandler({
 
                 if (!account.authed_user) {
                   throw new Error(
-                    "Slack user not found, can't get the authed_user object",
+                    "Instill Integration Error: Slack user not found, can't get the authed_user object",
                   );
                 }
 
@@ -164,8 +158,8 @@ export function getAuthHandler({
                   integrationId: "slack",
                   method: "METHOD_OAUTH",
                   setup: {
-                    botToken: account.access_token,
-                    userToken: (account.authed_user as any).access_token,
+                    "bot-token": account.access_token,
+                    "user-token": (account.authed_user as any).access_token,
                   },
                   namespaceId,
                   id: prefilledIntegrationConnectionId,

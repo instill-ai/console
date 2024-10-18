@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
   if (url.pathname === "/api/integration/callback/slack") {
     /* Intercept the fetch request to patch access_token request to be oauth compliant */
     global.fetch = slackAccessTokenInterceptor(fetch);
-    const response = await handler.handlers.GET(req);
+    const response = handler.handlers.GET(req);
     global.fetch = fetch;
     return response;
   }
