@@ -16,6 +16,7 @@ import {
   useToast,
 } from "@instill-ai/design-system";
 import {
+  DataTestID,
   instillUserRoles,
   toastInstillError,
   useInstillStore,
@@ -197,7 +198,10 @@ export const OnboardingForm = () => {
                       field.onChange(value);
                     }}
                   >
-                    <Select.Trigger className="mt-auto w-full">
+                    <Select.Trigger
+                      data-testid={DataTestID.onboardingFormRoleField}
+                      className="mt-auto w-full"
+                    >
                       <Select.Value />
                     </Select.Trigger>
                     <Select.Content>

@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-import { DataTestID } from "../data-testid";
+import { DataTestID } from "@instill-ai/toolkit";
+
 import { createPipeline, deletePipeline } from "../helpers/actions/pipeline";
 import { getSelectContent } from "../helpers/component-helpers/select";
 import { PipelineBuilderPage } from "../pages/pipeline-builder.page";

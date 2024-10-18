@@ -3,4 +3,5 @@ export const DataTestID = {
   setupComponentDialog: "setup-component-dialog",
   createPipelineDialog: "create-pipeline-dialog",
   SelectComponentDialog: "select-component-dialog",
+  onboardingFormRoleField: "onboarding-form-role-field",
 };
