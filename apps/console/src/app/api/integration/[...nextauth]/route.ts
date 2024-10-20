@@ -5,6 +5,7 @@ import { Nullable } from "instill-sdk";
 import {
   getAuthHandler,
   GetAuthHandlerProps,
+  slackAccessTokenInterceptor,
   TempIntegrationObjectKey,
   TempIntegrationObjectSchema,
 } from "@instill-ai/toolkit/server";
@@ -61,6 +62,16 @@ export async function GET(req: NextRequest) {
   const handler = getAuthHandler({
     ...authHandlerProps,
   });
+
+  const url = new URL(req.url);
+
+  if (url.pathname === "/api/integration/callback/slack") {
+    /* Intercept the fetch request to patch access_token request to be oauth compliant */
+    global.fetch = slackAccessTokenInterceptor(fetch);
+    const response = handler.handlers.GET(req);
+    global.fetch = fetch;
+    return response;
+  }
 
   return handler.handlers.GET(req);
 }
