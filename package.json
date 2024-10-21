@@ -23,18 +23,19 @@
     "ci-build-packages": "turbo run build lint test",
     "ci-build-storybook": "turbo run build --filter=@instill-ai/design-tokens --filter=@instill-ai/design-system",
     "prettier:fix": "prettier --write",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "download-component-icons": "pnpm --filter=instillai-console download-component-icons"
   },
   "devDependencies": {
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
+    "@instill-ai/prettier-config-cortex": "workspace:*",
     "husky": "^7.0.0",
     "lint-staged": ">=10",
-    "yaml": "^2.5.0",
     "prettier": "latest",
-    "@instill-ai/prettier-config-cortex": "workspace:*",
     "turbo": "latest",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "yaml": "^2.5.0"
   },
   "engines": {
     "node": ">=20.0.0"
