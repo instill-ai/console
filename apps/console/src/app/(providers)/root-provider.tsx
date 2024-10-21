@@ -80,7 +80,7 @@ export const RootProvider = ({
     closeModal();
     dismissToast();
     setPreviousPathname(pathname);
-  }, [pathname, previousPathname]);
+  }, [pathname]);
 
   return (
     <ReactQueryProvider>
