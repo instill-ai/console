@@ -16,6 +16,19 @@ export type GetAuthHandlerProps = {
   onCallback?: () => void;
 };
 
+const slackScopes = [
+  "channels:history",
+  "channels:read",
+  "chat:write",
+  "groups:history",
+  "groups:read",
+  "users.profile:read",
+  "users:read",
+  "users:read.email",
+];
+
+const githubScopes = ["repo", "write:repo_hook", "user:email", "read:user"];
+
 export function getAuthHandler({
   instillAccessToken,
   namespaceId,
@@ -32,10 +45,8 @@ export function getAuthHandler({
         authorization: {
           url: "https://slack.com/oauth/v2/authorize",
           params: {
-            scope:
-              "channels:history channels:read chat:write groups:history groups:read users.profile:read users:read users:read.email",
-            user_scope:
-              "channels:history channels:read chat:write groups:history groups:read users.profile:read users:read users:read.email",
+            scope: slackScopes.join(" "),
+            user_scope: slackScopes.join(" "),
             granular_bot_scope: "1",
           },
         },
@@ -66,7 +77,7 @@ export function getAuthHandler({
             prompt: "consent",
             access_type: "offline",
             response_type: "code",
-            scope: "repo write:repo_hook user:email read:user",
+            scope: githubScopes.join(" "),
           },
         },
       }),
@@ -126,6 +137,7 @@ export function getAuthHandler({
                     ...profile,
                   },
                   identity: identity ?? undefined,
+                  scopes: githubScopes,
                 };
                 break;
               }
@@ -168,6 +180,7 @@ export function getAuthHandler({
                     ...profile,
                   },
                   identity: identity ?? undefined,
+                  scopes: slackScopes,
                 };
                 break;
               }

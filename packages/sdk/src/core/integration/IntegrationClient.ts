@@ -252,6 +252,8 @@ export class IntegrationClient extends APIResource {
     setup,
     method,
     identity,
+    scopes,
+    oAuthAccessDetails,
   }: CreateIntegrationConnectionRequest) {
     try {
       const data = await this._client.post<CreateIntegrationConnectionResponse>(
@@ -263,6 +265,8 @@ export class IntegrationClient extends APIResource {
             method,
             setup,
             identity,
+            scopes,
+            oAuthAccessDetails,
           }),
         },
       );

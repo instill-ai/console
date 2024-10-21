@@ -72,6 +72,7 @@ export type CreateIntegrationConnectionRequest = {
   method: IntegrationMethod;
   oAuthAccessDetails?: Record<string, unknown>;
   identity?: string;
+  scopes?: string[];
 };
 
 export type CreateIntegrationConnectionResponse = {
