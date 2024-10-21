@@ -220,7 +220,7 @@ export type ListMessagesRequest = {
   conversationId: string;
   pageSize?: number;
   pageToken?: string;
-  ifAll: boolean;
+  ifAll?: boolean;
 };
 
 export type ListMessagesResponse = {
