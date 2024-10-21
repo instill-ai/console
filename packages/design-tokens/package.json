@@ -33,7 +33,7 @@
     "@instill-ai/eslint-config-cortex": "workspace:*",
     "@instill-ai/prettier-config-cortex": "workspace:*",
     "@testing-library/jest-dom": "^6.2.1",
-    "@types/node": "^18.14.1",
+    "@types/node": "^20",
     "@vitejs/plugin-react": "^4.3.0",
     "postcss-import": "^15.1.0",
     "rimraf": "^3.0.2",

@@ -80,6 +80,10 @@ jobs:
         if: ${{ (github.event_name == 'release') && startsWith(github.event.release.tag_name, 'v') }}
         run: rm -rf node_modules && pnpm i --frozen-lockfile
 
+      - name: Download component icons
+        if: ${{ steps.release.outputs.releases_created }}
+        run: GITHUB_TOKEN=${{ secrets.botGitHubToken }} pnpm download-component-icons
+
       - name: Set up Docker Buildx
         # Only console released tag is starting with v, others are starting with @
         if: ${{ (github.event_name == 'release') && startsWith(github.event.release.tag_name, 'v') }}
