@@ -17,7 +17,7 @@ The primary objective of the console is to offer a unified, streamlined, and use
   - design-token: The design-token that unify the style
   - toolkit: All the high level component of instill-ai frontend projects
 
-Normally, we won't touch the components of design-system due to the casualty will be big. Most of our development is centering around the toolkit. And the console only consume the components from toolkit without having its own components.
+Normally, we won't touch the components of design-system due to the casualty will be huge. Most of our development is centering around the toolkit. And the console only consume the components from toolkit without having its own components.
 
 ## Code Style and Best practices
 
@@ -26,6 +26,13 @@ Please refer to the [Instill AI Frontend Engineer Handbook](https://instill-ai.n
 ## Contributing
 
 Please refer to the [Contributing Guidelines](./.github/CONTRIBUTING.md) for more details.
+
+## How to contribute to the console's integration connection
+
+We plan to support using our component through OAuth, so user don't need to manually input the token. Right now console already support Slack and Github integration connection. We will add more integration connection in the future.
+
+If you want to add a new integration connection, you can refer to the [Integration Connection document](/docs/integration-connection.md) for more details.
+
 
 ## Available scripts
 
