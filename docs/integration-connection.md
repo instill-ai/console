@@ -212,3 +212,19 @@ Key points:
 3. After getting the response, restore the global `fetch` to the original one.
 
 Now the Slack integration should work as expected.
+ 
+## About ngrok usage
+
+In some cases like Slack, it's OAuth endpoint callback doesn't allow http request, we need to use ngrok to redirect the request to the local server. To test locally, you can follow these steps:
+
+- Install ngrok: `brew install ngrok/ngrok/ngrok`
+- Run ngrok: `ngrok http 3000`
+- Replace the `NEXTAUTH_URL` in the [.env.local](/apps/console/.env.local) file with the ngrok url plus our api path, it will looks like this: `https://<ngrok_url>.ngrok-free.app/api/integration`
+- In the OAuth provider, replace the `redirect_uri` with the ngrok url plus our api path, it will looks like this: `https://<ngrok_url>.ngrok-free.app/api/integration/callback/<integration_name>`
+- Build the app: `pnpm build` in the console folder
+- Run the app: `pnpm start` in the console folder
+- Test the integration connection in the console through ngrok url
+
+Here are some side notes:
+
+- Since we are using the standalone server, the environment is `production` and this will trigger the set-cookie functionality to set `secure` flag in the cookie. Which might result in the login session keep getting removed. This will not happened once you deploy it to https domain.
