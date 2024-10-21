@@ -339,6 +339,7 @@ export class ApplicationClient extends APIResource {
             appId,
             conversationId,
             enablePagination: false,
+            ifAll: false,
           })),
         );
       }
