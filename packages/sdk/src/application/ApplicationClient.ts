@@ -312,8 +312,14 @@ export class ApplicationClient extends APIResource {
       enablePagination: boolean;
     },
   ) {
-    const { ownerId, appId, conversationId, enablePagination, pageSize } =
-      props;
+    const {
+      ownerId,
+      appId,
+      conversationId,
+      enablePagination,
+      pageSize,
+      ifAll,
+    } = props;
 
     try {
       const messages: Message[] = [];
@@ -339,6 +345,7 @@ export class ApplicationClient extends APIResource {
             appId,
             conversationId,
             enablePagination: false,
+            ifAll,
           })),
         );
       }
