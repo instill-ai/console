@@ -62,24 +62,24 @@ But what we want is this:
 ```ts
 {
   "ok": true,
-  "access_token": "xoxb-17653672481-19874698323-pdFZKVeTuE8sk7oOcBrzbqgy",
+  "access_token": "...",
   "token_type": "bot",
-  "scope": "commands,incoming-webhook",
-  "bot_user_id": "U0KRQLJ9H",
-  "app_id": "A0KRD7HC3",
+  "scope": "...",
+  "bot_user_id": "...",
+  "app_id": "...",
   "team": {
-      "name": "Slack Pickleball Team",
-      "id": "T9TK3CUKW"
+    "name": "...",
+    "id": "..."
   },
   "enterprise": {
-      "name": "slack-pickleball",
-      "id": "E12345678"
+    "name": "...",
+    "id": "..."
   },
   "authed_user": {
-      "id": "U1234",
-      "scope": "chat:write",
-      "access_token": "xoxp-1234",
-      "token_type": "user"
+    "id": "...",
+    "scope": "...",
+    "access_token": "...",
+    "token_type": "user"
   }
 }
 ```
