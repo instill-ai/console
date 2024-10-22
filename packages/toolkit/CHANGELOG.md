@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.108.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.107.0...@instill-ai/toolkit-v0.108.0) (2024-10-22)
+
+
+### Features
+
+* added model tags ([#1554](https://github.com/instill-ai/console/issues/1554)) ([19326e7](https://github.com/instill-ai/console/commit/19326e73ad6dc666ad98ca3819f10b4edaf9fe4d))
+* **application:** add ifAll to listMessages ([#1550](https://github.com/instill-ai/console/issues/1550)) ([9e87490](https://github.com/instill-ai/console/commit/9e874904484fa9164670cbef453500bdd55fdaf4))
+* automatically download icons ([#1551](https://github.com/instill-ai/console/issues/1551)) ([02c7223](https://github.com/instill-ai/console/commit/02c722362601e07bc37b646750ef29183b72fe0a))
+* client cookie management functions ([#1540](https://github.com/instill-ai/console/issues/1540)) ([faaab42](https://github.com/instill-ai/console/commit/faaab429db47fa93173f4ff6345c7173635dcaed))
+* dynamically update model UI state on run ([#1539](https://github.com/instill-ai/console/issues/1539)) ([a39c7b5](https://github.com/instill-ai/console/commit/a39c7b5b482018b368cb0f1b65eeb4584d4ae508))
+* enable instill-app component in recipe validation ([#1552](https://github.com/instill-ai/console/issues/1552)) ([788231e](https://github.com/instill-ai/console/commit/788231e5030f445336e3c3414973e7bbc55d2652))
+* only allow users to manually add pipeline tags in lowercase ([#1544](https://github.com/instill-ai/console/issues/1544)) ([7d78d4e](https://github.com/instill-ai/console/commit/7d78d4ef95e867f4156032ec0b5e36cbe8b48106))
+* put back image input preview, clean up ([#1546](https://github.com/instill-ai/console/issues/1546)) ([9a65578](https://github.com/instill-ai/console/commit/9a65578f751c28578b1efc55cf8117f95c06a3c0))
+* support Slack OAuth integration ([#1534](https://github.com/instill-ai/console/issues/1534)) ([0a4da01](https://github.com/instill-ai/console/commit/0a4da01843f8cda178956ada167ea312970d7e53))
+* unify retry option of react-query, clean up metabase issue and browserlist ([#1536](https://github.com/instill-ai/console/issues/1536)) ([057d4af](https://github.com/instill-ai/console/commit/057d4af8d0465171c2244d035de86cf61f8fb93f))
+
+
+### Bug Fixes
+
+* **application:** fix streaming ([#1535](https://github.com/instill-ai/console/issues/1535)) ([e128e78](https://github.com/instill-ai/console/commit/e128e7817e7ad1b10a78f1e778782fb50e4d40ea))
+* **editor:** fix can't construct multiple edges to multiple components from single component ([#1547](https://github.com/instill-ai/console/issues/1547)) ([7ef2795](https://github.com/instill-ai/console/commit/7ef279566e3140644909eec0bdbd317e60e77a46))
+* fix console wrongly parse the JSON object ([#1556](https://github.com/instill-ai/console/issues/1556)) ([c1ddb34](https://github.com/instill-ai/console/commit/c1ddb348992b3474839b01f90af54d0a36541615))
+* fix onboarding form e2e ([#1545](https://github.com/instill-ai/console/issues/1545)) ([e630cb0](https://github.com/instill-ai/console/commit/e630cb068e43e5e4df5f7cca04d0adb7202167b8))
+* fix sdk didn't add oAuthAccessDetails and scopes into the payload ([#1548](https://github.com/instill-ai/console/issues/1548)) ([05235a5](https://github.com/instill-ai/console/commit/05235a53aa0f3da9b184270ffb476d8999b900fd))
+* fixed SDK Model type ([#1555](https://github.com/instill-ai/console/issues/1555)) ([1c0d30e](https://github.com/instill-ai/console/commit/1c0d30e417d255ddfcfdcc4053d37001a3934e58))
+* refactor onboarding form and align topdown and profile page with cloud ([#1538](https://github.com/instill-ai/console/issues/1538)) ([e955b44](https://github.com/instill-ai/console/commit/e955b4463d8c68d9f359c066b9e1a8ffa7611dc6))
+* reset playground i/o data on namespace change ([#1543](https://github.com/instill-ai/console/issues/1543)) ([de2ae66](https://github.com/instill-ai/console/commit/de2ae6636a8d6f38295522332ae7c7b6a7adabeb))
+
 ## [0.107.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.106.3...@instill-ai/toolkit-v0.107.0) (2024-10-13)
 
 

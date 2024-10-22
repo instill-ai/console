@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.9.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.8.0...instill-sdk-v0.9.0) (2024-10-22)
+
+
+### Features
+
+* **application:** add ifAll to listMessages ([#1550](https://github.com/instill-ai/console/issues/1550)) ([9e87490](https://github.com/instill-ai/console/commit/9e874904484fa9164670cbef453500bdd55fdaf4))
+* put back image input preview, clean up ([#1546](https://github.com/instill-ai/console/issues/1546)) ([9a65578](https://github.com/instill-ai/console/commit/9a65578f751c28578b1efc55cf8117f95c06a3c0))
+
+
+### Bug Fixes
+
+* **application:** fix streaming ([#1535](https://github.com/instill-ai/console/issues/1535)) ([e128e78](https://github.com/instill-ai/console/commit/e128e7817e7ad1b10a78f1e778782fb50e4d40ea))
+* fix sdk didn't add oAuthAccessDetails and scopes into the payload ([#1548](https://github.com/instill-ai/console/issues/1548)) ([05235a5](https://github.com/instill-ai/console/commit/05235a53aa0f3da9b184270ffb476d8999b900fd))
+* fixed SDK Model type ([#1555](https://github.com/instill-ai/console/issues/1555)) ([1c0d30e](https://github.com/instill-ai/console/commit/1c0d30e417d255ddfcfdcc4053d37001a3934e58))
+
 ## [0.8.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.7.0...instill-sdk-v0.8.0) (2024-10-13)
 
 

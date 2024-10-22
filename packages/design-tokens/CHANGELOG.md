@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.7.1...@instill-ai/design-tokens-v0.8.0) (2024-10-22)
+
+
+### Features
+
+* automatically download icons ([#1551](https://github.com/instill-ai/console/issues/1551)) ([02c7223](https://github.com/instill-ai/console/commit/02c722362601e07bc37b646750ef29183b72fe0a))
+
 ## [0.7.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.7.0...@instill-ai/design-tokens-v0.7.1) (2024-08-29)
 
 

@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.82.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.81.0...@instill-ai/design-system-v0.82.0) (2024-10-22)
+
+
+### Features
+
+* put back image input preview, clean up ([#1546](https://github.com/instill-ai/console/issues/1546)) ([9a65578](https://github.com/instill-ai/console/commit/9a65578f751c28578b1efc55cf8117f95c06a3c0))
+
 ## [0.81.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.80.0...@instill-ai/design-system-v0.81.0) (2024-10-08)
 
 
