@@ -76,9 +76,6 @@ async function getComponentIcons(
       return [];
     }
 
-    // In the folder, we can find the version like v0, v1, etc. The structure is like this:
-    // pkg/component/ai/anthropic/v0
-    // We need to get the latest version
     for (const componentFolder of componentFolders) {
       if (componentFolder.type !== "dir") {
         continue;
@@ -94,39 +91,63 @@ async function getComponentIcons(
         continue;
       }
 
-      const componentVersions = componentFolderContent.map((c) =>
-        Number(c.name.replace("v", "")),
-      );
+      // In the folder, we can find the version like v0, v1, etc. The structure is like this:
+      // pkg/component/ai/anthropic/v0
+      // We need to get the latest version
+      const componentVersions = componentFolderContent
+        .map((c) => Number(c.name.replace("v", "")))
+        .sort((a, b) => b - a);
 
-      const latestVersion = "v" + componentVersions.sort().pop();
+      let definitionFileContent: GitHubContent | undefined;
+      let targetFolderContent: GitHubContent | undefined;
+      let definitionFilePath: string | undefined;
 
-      const targetFolderContent = componentFolderContent.find(
-        (c) => c.name === latestVersion,
-      );
-
-      if (!targetFolderContent) {
-        console.error(
-          `Target folder content not found: ${componentFolder.url}`,
+      // Edge case: In some case BE will put an non valid definition file in one specific version folder
+      // We will treat it as invalid version try to find the definition file in the previous version
+      for (const version of componentVersions) {
+        const versionString = `v${version}`;
+        targetFolderContent = componentFolderContent.find(
+          (c) => c.name === versionString,
         );
-        continue;
+
+        if (!targetFolderContent) {
+          console.error(
+            `Target folder content not found: ${componentFolder.url}`,
+          );
+          continue;
+        }
+
+        // We need to get the icon's file name, but to obey the go naming convention, the folder name
+        // is named like stabilityai but the icon is named like stability-ai.svg, so we need to get into
+        // the definition file and get the icon name
+
+        definitionFilePath =
+          bathPath + "/" + targetFolderContent.path + "/config/definition.json";
+
+        definitionFileContent = (await fetch(definitionFilePath, {
+          headers: {
+            Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+          },
+        }).then((res) => res.json())) as GitHubContent | undefined;
+
+        if (!definitionFileContent || !definitionFileContent.content) {
+          console.warn(
+            `Definition file not found in version ${versionString}, trying previous version.`,
+          );
+          continue;
+        }
       }
-
-      // We need to get the icon's file name, but to obey the go naming convention, the folder name
-      // is named like stabilityai but the icon is named like stability-ai.svg, so we need to get into
-      // the definition file and get the icon name
-
-      const definitionFilePath =
-        bathPath + "/" + targetFolderContent.path + "/config/definition.json";
-
-      const definitionFileContent = (await fetch(definitionFilePath, {
-        headers: {
-          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-        },
-      }).then((res) => res.json())) as GitHubContent | undefined;
 
       if (!definitionFileContent || !definitionFileContent.content) {
         console.error(
           `Definition file content not found: ${definitionFilePath}`,
+        );
+        continue;
+      }
+
+      if (!targetFolderContent) {
+        console.error(
+          `Target folder content not found: ${componentFolder.url}`,
         );
         continue;
       }
