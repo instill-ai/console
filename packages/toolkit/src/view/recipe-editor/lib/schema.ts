@@ -44,6 +44,7 @@ const connectorDefinitionIds = [
   "chroma",
   "collection",
   "universal-ai",
+  "instill-app",
 ];
 
 export const InstillYamlSchema = {
