@@ -145,7 +145,12 @@ export const Input = ({
       const semiStructuredObjectKeys: string[] = [];
 
       Object.entries(fields).forEach(([key, value]) => {
-        if (value?.instillFormat === "semi-structured/json") {
+        if (
+          value?.instillFormat === "semi-structured/json" ||
+          value?.instillFormat === "array:semi-structured/json" ||
+          value?.instillFormat === "json" ||
+          value?.instillFormat === "array:json"
+        ) {
           semiStructuredObjectKeys.push(key);
         }
       });
