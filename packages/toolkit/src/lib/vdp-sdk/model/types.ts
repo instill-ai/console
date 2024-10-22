@@ -70,6 +70,7 @@ export type Model = {
     lastRunTime: string;
   };
   versions: string[];
+  tags: string[];
 };
 
 export type ModelState =

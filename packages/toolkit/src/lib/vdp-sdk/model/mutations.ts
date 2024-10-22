@@ -45,6 +45,7 @@ export type UpdateUserModelPayload = {
   configuration?: Record<string, string>;
   profileImage?: string;
   readme?: string;
+  tags: string[];
 };
 
 export type CreateUserGitHubModelPayload = {

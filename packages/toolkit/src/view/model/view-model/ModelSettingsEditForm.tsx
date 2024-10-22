@@ -53,6 +53,7 @@ const EditModelSchema = z
     hardware: z.string(),
     hardwareCustom: z.string().optional(),
     profileImage: z.string().optional(),
+    tags: z.string().optional(),
     //configuration: z.object({}),
   })
   .superRefine((state, ctx) => {
@@ -119,6 +120,7 @@ export const ModelSettingsEditForm = ({
       hardware: hardwareName === null ? "Custom" : model.hardware,
       hardwareCustom: hardwareName === null ? model.hardware : "",
       profileImage: model.profileImage,
+      tags: model.tags.join(", "),
     };
   }, [model]);
 
@@ -146,6 +148,13 @@ export const ModelSettingsEditForm = ({
       hardware:
         data.hardware === "Custom" ? data.hardwareCustom || "" : data.hardware,
       profileImage: data.profileImage,
+      tags:
+        data.tags
+          ?.trim()
+          .toLowerCase()
+          .split(",")
+          .map((item) => item.trim())
+          .filter((item) => item) || [],
     };
 
     try {
@@ -401,6 +410,40 @@ export const ModelSettingsEditForm = ({
                     <Form.Message />
                     <p className="text-xs text-semantic-fg-secondary">
                       {`This will affect the model's performance and operational costs. Please refer to the documentation for detailed pricing information.`}
+                    </p>
+                  </Form.Item>
+                );
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="tags"
+              render={({ field }) => {
+                return (
+                  <Form.Item className="flex flex-col gap-y-2.5 md:w-1/2">
+                    <Form.Label className="product-body-text-3-semibold">
+                      Tags
+                    </Form.Label>
+                    <Form.Control>
+                      <Input.Root>
+                        <Input.Core
+                          {...field}
+                          className="!product-body-text-2-regular"
+                          type="text"
+                          placeholder="Add a tag"
+                          required={false}
+                          value={field.value || ""}
+                          onChange={(event) =>
+                            field.onChange(
+                              event.target.value.toLocaleLowerCase(),
+                            )
+                          }
+                        />
+                      </Input.Root>
+                    </Form.Control>
+                    <Form.Message />
+                    <p className="text-xs text-semantic-fg-secondary">
+                      {`Separate tags with a comma.`}
                     </p>
                   </Form.Item>
                 );
