@@ -166,6 +166,16 @@ export const ModelHead = ({
               )}
               {task.label}
             </Tag>
+            {model?.tags.map((tag) => (
+              <Tag
+                key={tag}
+                className="my-auto h-5 gap-x-1 !border-0 !py-0 text-semantic-secondary-on-bg"
+                variant="lightNeutral"
+                size="sm"
+              >
+                {tag}
+              </Tag>
+            ))}
             {/* TODO: uncomment and implement this when we have runs count available
               
               <Tag
