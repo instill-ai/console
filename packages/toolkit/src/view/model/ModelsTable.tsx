@@ -64,7 +64,9 @@ export const ModelsTable = (props: ModelsTableProps) => {
               iconElement={getIcon(
                 cn(
                   "w-4 h-4",
-                  ["TASK_CHAT", "TASK_CUSTOM"].includes(row.original.task || "") ? "stroke-semantic-fg-primary [&>*]:!stroke-semantic-fg-primary" : "[&>*]:!fill-semantic-fg-primary"
+                  ["TASK_CHAT", "TASK_CUSTOM"].includes(row.original.task || "")
+                    ? "stroke-semantic-fg-primary [&>*]:!stroke-semantic-fg-primary"
+                    : "[&>*]:!fill-semantic-fg-primary",
                 ),
               )}
             />
