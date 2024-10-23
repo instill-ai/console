@@ -177,7 +177,12 @@ export const getModelInstanceTaskToolkit = (task: string) => {
     case "TASK_CUSTOM":
       return {
         getIcon: (className?: string) => {
-          return <ComplicateIcons.TaskCustom className={className ?? "h-4 w-4"} pathColor="stroke-semantic-fg-primary" />;
+          return (
+            <ComplicateIcons.TaskCustom
+              className={className ?? "h-4 w-4"}
+              pathColor="stroke-semantic-fg-primary"
+            />
+          );
         },
         label: "Custom",
       };
