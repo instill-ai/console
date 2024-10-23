@@ -1,5 +1,5 @@
-import { Nullable } from "../../type";
-import { User } from "../mgmt";
+import type { Nullable, User } from "instill-sdk";
+
 import { StripeSubscriptionDetail } from "../types";
 
 export type OrganizationProfile = {

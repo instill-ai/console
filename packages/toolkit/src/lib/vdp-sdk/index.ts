@@ -5,7 +5,6 @@ import { Nullable } from "../type";
 
 export * from "./helper";
 export * from "./metric";
-export * from "./mgmt";
 export * from "./model";
 export * from "./operation";
 export * from "./organization";
@@ -75,4 +74,121 @@ export function getInstillApplicationAPIClient({
   }
 
   return instillApplicationAPIClient;
+}
+
+export type ChangePasswordPayload = {
+  oldPassword: string;
+  newPassword: string;
+};
+
+export async function changePasswordMutation({
+  payload,
+  accessToken,
+}: {
+  payload: ChangePasswordPayload;
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const baseURL: Nullable<string> = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
+      env("NEXT_PUBLIC_API_GATEWAY_URL")
+    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+
+    await fetch(baseURL + "/auth/change_password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export async function authLogoutAction({
+  accessToken,
+}: {
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const baseURL: Nullable<string> = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
+      env("NEXT_PUBLIC_API_GATEWAY_URL")
+    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+
+    await fetch(baseURL + "/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export async function authValidateTokenAction({
+  accessToken,
+}: {
+  accessToken: Nullable<string>;
+}) {
+  try {
+    const baseURL: Nullable<string> = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
+      env("NEXT_PUBLIC_API_GATEWAY_URL")
+    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+
+    await fetch(baseURL + "/auth/validate_access_token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+export type AuthLoginActionPayload = {
+  username: string;
+  password: string;
+};
+
+export type AuthLoginActionResponse = {
+  accessToken: string;
+};
+
+export async function authLoginAction({
+  payload,
+}: {
+  payload: AuthLoginActionPayload;
+}) {
+  try {
+    const baseURL: Nullable<string> = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
+      env("NEXT_PUBLIC_API_GATEWAY_URL")
+    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+
+    const res = await fetch(baseURL + "/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      return Promise.reject(res.statusText);
+    }
+
+    const data = (await res.json()) as AuthLoginActionResponse;
+
+    return Promise.resolve(data.accessToken);
+  } catch (err) {
+    return Promise.reject(err);
+  }
 }

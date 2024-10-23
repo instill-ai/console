@@ -1,10 +1,10 @@
 "use client";
 
+import type { Nullable, User } from "instill-sdk";
 import Link from "next/link";
 
 import { Button, Icons, Skeleton } from "@instill-ai/design-system";
 
-import { Nullable, User } from "../../lib";
 import SemiCircleProgress from "./SemiCircleProgress";
 
 export type Subscription = {

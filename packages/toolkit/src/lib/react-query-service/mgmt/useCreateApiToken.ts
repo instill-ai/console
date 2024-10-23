@@ -1,8 +1,9 @@
+"use client";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CreateApiTokenRequest } from "instill-sdk";
+import { ApiToken, CreateApiTokenRequest } from "instill-sdk";
 
 import type { Nullable } from "../../type";
-import type { ApiToken } from "../../vdp-sdk";
 import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useCreateApiToken() {

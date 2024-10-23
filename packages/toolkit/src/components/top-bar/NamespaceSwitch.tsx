@@ -22,7 +22,7 @@ import {
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
   useNamespacePipeline,
-  useNamespacesRemainingCredit,
+  useNamespacesRemainingInstillCredit,
   useRouteInfo,
   useShallow,
   useUserModel,
@@ -67,7 +67,7 @@ export const NamespaceSwitch = () => {
     return userNamespaces.data.map((e) => e.name);
   }, [userNamespaces.isSuccess, userNamespaces.data]);
 
-  const namespacesRemainingCredit = useNamespacesRemainingCredit({
+  const namespacesRemainingCredit = useNamespacesRemainingInstillCredit({
     namespaceNames,
     accessToken,
     enabled: enabledQuery && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",

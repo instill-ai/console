@@ -1,20 +1,22 @@
+"use client";
+
+import type { GetRemainingInstillCreditResponse, Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
-import { Nullable } from "../../type";
-import { getInstillAPIClient, GetRemainingCreditResponse } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
-export type NamespaceRemainingCredit = {
+export type NamespaceRemainingInstillCredit = {
   namespaceName: string;
-  remainingCredit: GetRemainingCreditResponse;
+  remainingCredit: GetRemainingInstillCreditResponse;
 };
 
-export function getUseNamespacesRemainingCreditQueryKey(
+export function getUseNamespacesRemainingInstillCreditQueryKey(
   namespaceNames: string[],
 ) {
-  return ["namespaces-credit", namespaceNames.join(",")];
+  return ["namespaces-instill-credit", namespaceNames.join(",")];
 }
 
-export function useNamespacesRemainingCredit({
+export function useNamespacesRemainingInstillCredit({
   namespaceNames,
   accessToken,
   enabled,
@@ -29,7 +31,8 @@ export function useNamespacesRemainingCredit({
     enabledQuery = true;
   }
 
-  const queryKey = getUseNamespacesRemainingCreditQueryKey(namespaceNames);
+  const queryKey =
+    getUseNamespacesRemainingInstillCreditQueryKey(namespaceNames);
 
   return useQuery({
     queryKey,
@@ -38,7 +41,7 @@ export function useNamespacesRemainingCredit({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const remainingCredits: NamespaceRemainingCredit[] = [];
+      const remainingInstillCredits: NamespaceRemainingInstillCredit[] = [];
 
       const client = getInstillAPIClient({ accessToken });
 
@@ -48,7 +51,7 @@ export function useNamespacesRemainingCredit({
             await client.core.credit.getRemainingInstillCredit({
               ownerName: namespaceName,
             });
-          remainingCredits.push({
+          remainingInstillCredits.push({
             namespaceName,
             remainingCredit,
           });
@@ -57,7 +60,7 @@ export function useNamespacesRemainingCredit({
         }
       }
 
-      return Promise.resolve(remainingCredits);
+      return Promise.resolve(remainingInstillCredits);
     },
     enabled: enabledQuery,
     refetchOnWindowFocus: false,

@@ -1,6 +1,8 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
 import { env } from "../../../server";
 import { getInstillAPIClient } from "../../vdp-sdk";
 
