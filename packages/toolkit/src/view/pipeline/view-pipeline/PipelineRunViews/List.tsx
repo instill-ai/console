@@ -103,7 +103,7 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
         header: () => <div className="text-left">Run ID</div>,
         cell: ({ row }) => {
           return (
-            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+            <div className="font-normal text-semantic-bg-secondary-secondary whitespace-nowrap overflow-hidden text-ellipsis">
               <Link
                 href={`/${ownerId}/pipelines/${pipeline?.id}/runs/${row.getValue("pipelineRunUid")}`}
                 className="text-semantic-accent-default hover:underline"
@@ -220,6 +220,23 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
           );
         },
       },
+      {
+        accessorKey: "requesterId",
+        header: () => <div className="text-left">Credit Owner</div>,
+        cell: ({ row }) => {
+          return (
+            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+              <Link
+                target="_blank"
+                className="text-semantic-accent-default hover:underline"
+                href={`/${row.getValue("requesterId")}`}
+              >
+                {row.getValue("requesterId")}
+              </Link>
+            </div>
+          );
+        },
+      },
     ];
 
     if (env("NEXT_PUBLIC_APP_ENV") === "CLOUD") {
@@ -274,7 +291,7 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
   }
 
   return (
-    <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th]:w-40 [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(7)]:w-52 [&_table_th:nth-child(8)]:w-28">
+    <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th]:w-40 [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(7)]:w-52 [&_table_th:nth-child(8)]:w-52 [&_table_th:nth-child(9)]:w-28">
       <DataTable
         columns={columns}
         data={pipelineRuns.isSuccess ? pipelineRuns.data.pipelineRuns : []}

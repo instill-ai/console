@@ -145,6 +145,21 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
                 : null}
             </b>
           </div>
+          {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
+            <div>
+              Credits <b>{modelRun?.creditAmount}</b>
+            </div>
+          ) : null}
+          <div>
+            Credit Owner{" "}
+            <Link
+              target="_blank"
+              className="text-semantic-accent-default hover:underline"
+              href={`/${modelRun?.requesterId}`}
+            >
+              <b>{modelRun?.requesterId}</b>
+            </Link>
+          </div>
           <div>
             Runner{" "}
             <Link
@@ -155,11 +170,6 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
               <b>{modelRun?.runnerId}</b>
             </Link>
           </div>
-          {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
-            <div>
-              Credits <b>{modelRun?.creditAmount}</b>
-            </div>
-          ) : null}
         </div>
       </div>
       <div className="flex flex-row">
