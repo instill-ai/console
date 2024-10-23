@@ -1,5 +1,6 @@
 "use client";
 
+import type { PipelineTriggerTableRecord } from "instill-sdk";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ColumnDef } from "@tanstack/react-table";
@@ -7,11 +8,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button, DataTable } from "@instill-ai/design-system";
 
 import { SortIcon, TableError } from "../../components";
-import { TriggeredPipeline } from "../../lib";
 import { PipelineTablePlaceholder } from "../pipeline";
 
 export type DashboardPipelinesTableProps = {
-  pipelineTriggerCounts: TriggeredPipeline[];
+  pipelineTriggerCounts: PipelineTriggerTableRecord[];
   isError: boolean;
   isLoading: boolean;
 };
@@ -22,7 +22,7 @@ export const DashboardPipelinesTable = (
   const { entity, days } = useParams();
   const { pipelineTriggerCounts, isError, isLoading } = props;
 
-  const columns: ColumnDef<TriggeredPipeline>[] = [
+  const columns: ColumnDef<PipelineTriggerTableRecord>[] = [
     {
       accessorKey: "pipelineId",
       header: () => <div className="min-w-[450px] text-left">Pipeline Id</div>,

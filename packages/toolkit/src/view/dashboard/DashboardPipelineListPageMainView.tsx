@@ -1,5 +1,9 @@
 "use client";
 
+import type {
+  PipelineTriggerChartRecord,
+  PipelineTriggerTableRecord,
+} from "instill-sdk";
 import * as React from "react";
 
 import { SelectOption } from "@instill-ai/design-system";
@@ -11,8 +15,6 @@ import {
   getPreviousTimeframe,
   getTimeInRFC3339Format,
   Nullable,
-  PipelinesChart,
-  TriggeredPipeline,
   usePipelineTriggerComputationTimeCharts,
   usePipelineTriggerMetric,
   useRouteInfo,
@@ -114,7 +116,7 @@ export const DashboardPipelineListPageMainView = (
     previoustriggeredPipelines.isError,
   ]);
 
-  const pipelinesChartList = React.useMemo<PipelinesChart[]>(() => {
+  const pipelinesChartList = React.useMemo<PipelineTriggerChartRecord[]>(() => {
     if (!pipelinesChart.isSuccess) {
       return [];
     }
@@ -126,7 +128,9 @@ export const DashboardPipelineListPageMainView = (
     return chartList;
   }, [pipelinesChart.data, pipelinesChart.isSuccess]);
 
-  const triggeredPipelineList = React.useMemo<TriggeredPipeline[]>(() => {
+  const triggeredPipelineList = React.useMemo<
+    PipelineTriggerTableRecord[]
+  >(() => {
     if (!triggeredPipelines.isSuccess) {
       return [];
     }
