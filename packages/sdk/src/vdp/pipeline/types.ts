@@ -274,6 +274,7 @@ export type PipelineRun = {
   creditAmount: Nullable<number>;
   error: Nullable<string>;
   dataSpecification: DataSpecification;
+  requesterId: string;
 };
 
 export type ListPaginatedNamespacePipelineRunComponentsRequest = {

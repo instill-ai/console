@@ -204,6 +204,7 @@ export type ModelRun = {
   taskInputs: GeneralRecord[];
   taskOutputs: GeneralRecord[];
   creditAmount: Nullable<number>;
+  requesterId: string;
 };
 
 export type ListModelRunsResponse = {

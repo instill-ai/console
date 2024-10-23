@@ -177,6 +177,21 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
                   : null}
               </b>
             </div>
+            {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
+              <div>
+                Credits <b>{pipelineRun?.creditAmount}</b>
+              </div>
+            ) : null}
+            <div>
+              Credit Owner{" "}
+              <Link
+                target="_blank"
+                className="text-semantic-accent-default hover:underline"
+                href={`/${pipelineRun?.requesterId}`}
+              >
+                <b>{pipelineRun?.requesterId}</b>
+              </Link>
+            </div>
             <div>
               Runner{" "}
               <Link
@@ -187,11 +202,6 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
                 <b>{pipelineRun?.runnerId}</b>
               </Link>
             </div>
-            {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? (
-              <div>
-                Credits <b>{pipelineRun?.creditAmount}</b>
-              </div>
-            ) : null}
           </div>
         </div>
         <div>
