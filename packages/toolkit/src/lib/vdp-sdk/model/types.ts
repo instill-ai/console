@@ -1,10 +1,8 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
-import { ModelWatchState, Pipeline } from "instill-sdk";
-import { Nullable } from "vitest";
+import type { ModelWatchState, Nullable, Pipeline, User } from "instill-sdk";
 
 import { InstillJSONSchema } from "../../use-instill-form";
-import { User } from "../mgmt/types";
 import { Organization } from "../organization";
 import { Permission, Visibility } from "../types";
 

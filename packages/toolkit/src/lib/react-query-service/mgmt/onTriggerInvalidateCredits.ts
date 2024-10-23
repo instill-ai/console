@@ -1,7 +1,9 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { QueryClient } from "@tanstack/react-query";
 
-import { Nullable } from "../../type";
-import { getUseNamespacesRemainingCreditQueryKey } from "./useNamespacesRemainingCredit";
+import { getUseNamespacesRemainingInstillCreditQueryKey } from ".";
 import { getUseRemainingCreditQueryKey } from "./useRemainingCredit";
 
 export function onTriggerInvalidateCredits({
@@ -13,10 +15,12 @@ export function onTriggerInvalidateCredits({
   namespaceNames: string[];
   queryClient: QueryClient;
 }) {
-  const ownerCreditQueryKey = getUseRemainingCreditQueryKey(ownerName);
-  const namespacesCreditQueryKey =
-    getUseNamespacesRemainingCreditQueryKey(namespaceNames);
+  const ownerInstillCreditQueryKey = getUseRemainingCreditQueryKey(ownerName);
+  const namespacesInstillCreditQueryKey =
+    getUseNamespacesRemainingInstillCreditQueryKey(namespaceNames);
 
-  queryClient.invalidateQueries({ queryKey: ownerCreditQueryKey });
-  queryClient.invalidateQueries({ queryKey: namespacesCreditQueryKey });
+  queryClient.invalidateQueries({ queryKey: ownerInstillCreditQueryKey });
+  queryClient.invalidateQueries({
+    queryKey: namespacesInstillCreditQueryKey,
+  });
 }

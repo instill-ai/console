@@ -1,8 +1,13 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { UpdateAuthenticatedUserRequest } from "instill-sdk";
+"use client";
 
-import type { Nullable } from "../../type";
-import { AuthenticatedUser, getInstillAPIClient } from "../../vdp-sdk";
+import type {
+  AuthenticatedUser,
+  Nullable,
+  UpdateAuthenticatedUserRequest,
+} from "instill-sdk";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useUpdateAuthenticatedUser() {
   const queryClient = useQueryClient();

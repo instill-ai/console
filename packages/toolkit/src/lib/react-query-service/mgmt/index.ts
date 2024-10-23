@@ -9,9 +9,9 @@ export {
   getUseRemainingCreditQueryKey,
 } from "./useRemainingCredit";
 export {
-  useNamespacesRemainingCredit,
-  getUseNamespacesRemainingCreditQueryKey,
-} from "./useNamespacesRemainingCredit";
+  useNamespacesRemainingInstillCredit,
+  getUseNamespacesRemainingInstillCreditQueryKey,
+} from "./useNamespacesRemainingInstillCredit";
 export { useUpdateAuthenticatedUser } from "./useUpdateAuthenticatedUser";
 export { useUsers } from "./useUsers";
 

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AuthenticatedUser } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -17,7 +18,6 @@ import {
 import { Setting } from "..";
 import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
 import {
-  AuthenticatedUser,
   GeneralAppPageProp,
   sendAmplitudeData,
   toastInstillError,

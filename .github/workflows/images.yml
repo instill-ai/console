@@ -81,7 +81,7 @@ jobs:
         run: rm -rf node_modules && pnpm i --frozen-lockfile
 
       - name: Download component icons
-        if: ${{ steps.release.outputs.releases_created }}
+        if: ${{ (github.event_name == 'release') && startsWith(github.event.release.tag_name, 'v') }}
         run: GITHUB_TOKEN=${{ secrets.botGitHubToken }} pnpm download-component-icons
 
       - name: Set up Docker Buildx

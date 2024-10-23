@@ -1,12 +1,11 @@
 "use client";
 
+import type { NamespaceType, Nullable } from "instill-sdk";
 import * as React from "react";
 import { useParams } from "next/navigation";
 
 import { useNamespaceType } from "./react-query-service";
-import { Nullable } from "./type";
 import { InstillStore, useInstillStore, useShallow } from "./use-instill-store";
-import { NamespaceType } from "./vdp-sdk";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

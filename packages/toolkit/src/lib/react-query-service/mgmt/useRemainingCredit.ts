@@ -1,6 +1,8 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
-import { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function getUseRemainingCreditQueryKey(ownerName: Nullable<string>) {

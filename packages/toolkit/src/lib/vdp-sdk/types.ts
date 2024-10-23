@@ -1,8 +1,11 @@
-import { ComponentDefinition, IteratorDefinition } from "instill-sdk";
+import type {
+  ComponentDefinition,
+  IteratorDefinition,
+  Nullable,
+  User,
+} from "instill-sdk";
 
-import { Nullable } from "../type";
 import { InstillJSONSchema } from "../use-instill-form";
-import { User } from "./mgmt";
 import { Organization } from "./organization";
 
 export type ErrorDetails = {

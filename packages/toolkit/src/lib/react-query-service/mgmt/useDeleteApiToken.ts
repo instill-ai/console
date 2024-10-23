@@ -1,7 +1,8 @@
+"use client";
+
+import type { ApiToken, Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
-import type { ApiToken } from "../../vdp-sdk";
 import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useDeleteApiToken() {

@@ -1,6 +1,6 @@
-import { Metadata } from "next";
+import type { Nullable, User } from "instill-sdk";
+import type { Metadata } from "next";
 
-import { Nullable, User } from "@instill-ai/toolkit";
 import { fetchUser, generateNextMetaBase } from "@instill-ai/toolkit/server";
 
 import { ProfilePageRender } from "./render";
