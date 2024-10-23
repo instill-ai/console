@@ -162,7 +162,7 @@ export const ModelHead = ({
               size="sm"
             >
               {task.getIcon(
-                `w-3 h-3 ${["TASK_CHAT"].includes(model?.task || "") ? "stroke-semantic-secondary-on-bg [&>*]:!stroke-semantic-secondary-on-bg" : "[&>*]:!fill-semantic-secondary-on-bg"}`,
+                `w-3 h-3 ${["TASK_CHAT", "TASK_CUSTOM"].includes(model?.task || "") ? "stroke-semantic-secondary-on-bg [&>*]:!stroke-semantic-secondary-on-bg" : "[&>*]:!fill-semantic-secondary-on-bg"}`,
               )}
               {task.label}
             </Tag>
