@@ -1,3 +1,4 @@
+import { cn } from "..";
 import { ComplicateIcons, Icons } from "../new-ui";
 
 export const getModelInstanceTaskToolkit = (task: string) => {
@@ -177,7 +178,12 @@ export const getModelInstanceTaskToolkit = (task: string) => {
     case "TASK_CUSTOM":
       return {
         getIcon: (className?: string) => {
-          return <Icons.TaskCustom className={className ?? "h-4 w-4"} />;
+          return (
+            <ComplicateIcons.TaskCustom
+              className={cn("h-4 w-4", className)}
+              pathColor="stroke-semantic-fg-primary"
+            />
+          );
         },
         label: "Custom",
       };

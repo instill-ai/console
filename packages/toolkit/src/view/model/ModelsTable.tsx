@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import {
   Button,
+  cn,
   DataTable,
   getModelInstanceTaskToolkit,
 } from "@instill-ai/design-system";
@@ -61,7 +62,12 @@ export const ModelsTable = (props: ModelsTableProps) => {
               secondaryLink={null}
               secondaryText={label}
               iconElement={getIcon(
-                `w-4 h-4 ${["TASK_CHAT"].includes(row.original.task || "") ? "stroke-semantic-fg-primary [&>*]:!stroke-semantic-fg-primary" : "[&>*]:!fill-semantic-fg-primary"}`,
+                cn(
+                  "w-4 h-4",
+                  ["TASK_CHAT", "TASK_CUSTOM"].includes(row.original.task || "")
+                    ? "stroke-semantic-fg-primary [&>*]:!stroke-semantic-fg-primary"
+                    : "[&>*]:!fill-semantic-fg-primary",
+                ),
               )}
             />
           </div>

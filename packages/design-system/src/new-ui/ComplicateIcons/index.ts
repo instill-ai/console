@@ -10,6 +10,7 @@ import { Number } from "./Number";
 import { ObjectDetection } from "./ObjectDetection";
 import { OpticalCharacterRecognition } from "./OpticalCharacterRecognition";
 import { SemanticSegmentation } from "./SemanticSegmentation";
+import { TaskCustom } from "./TaskCustom";
 import { TextEmbedding } from "./TextEmbedding";
 import { TextGeneration } from "./TextGeneration";
 import { TextToImage } from "./TextToImage";
@@ -32,4 +33,5 @@ export const ComplicateIcons = {
   TextGeneration,
   TextToImage,
   Drag,
+  TaskCustom,
 };

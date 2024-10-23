@@ -147,7 +147,6 @@ import { SpeechRecognition } from "./SpeechRecognition";
 import { Star06 } from "./Star06";
 import { Stop } from "./Stop";
 import { Tag01 } from "./Tag01";
-import { TaskCustom } from "./TaskCustom";
 import { TextA } from "./TextA";
 import { TextGenerationChat } from "./TextGenerationChat";
 import { ThumbsDown } from "./ThumbsDown";
@@ -326,7 +325,6 @@ export const Icons = {
   SortLinesUp,
   Star06,
   Tag01,
-  TaskCustom,
   TextA,
   TextGenerationChat,
   ThumbsDown,

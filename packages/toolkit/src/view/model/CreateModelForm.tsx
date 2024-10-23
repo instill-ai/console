@@ -390,9 +390,7 @@ export const CreateModelForm = () => {
                           </Select.Trigger>
                           <Select.Content>
                             <Select.Group>
-                              {InstillModelTask.filter(
-                                (task) => task !== "TASK_CUSTOM",
-                              ).map((task) => {
+                              {InstillModelTask.map((task) => {
                                 const { label } =
                                   getModelInstanceTaskToolkit(task);
 
