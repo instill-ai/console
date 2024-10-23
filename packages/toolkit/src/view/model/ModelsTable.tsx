@@ -62,7 +62,9 @@ export const ModelsTable = (props: ModelsTableProps) => {
               secondaryLink={null}
               secondaryText={label}
               iconElement={getIcon(
-                cn(`w-4 h-4 ${["TASK_CHAT", "TASK_CUSTOM"].includes(row.original.task || "") ? "stroke-semantic-fg-primary [&>*]:!stroke-semantic-fg-primary" : "[&>*]:!fill-semantic-fg-primary"}`),
+                cn(
+                  `w-4 h-4 ${["TASK_CHAT", "TASK_CUSTOM"].includes(row.original.task || "") ? "stroke-semantic-fg-primary [&>*]:!stroke-semantic-fg-primary" : "[&>*]:!fill-semantic-fg-primary"}`,
+                ),
               )}
             />
           </div>
