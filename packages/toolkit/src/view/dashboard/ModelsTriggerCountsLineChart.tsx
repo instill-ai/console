@@ -211,9 +211,6 @@ export const ModelsTriggerCountsLineChart = ({
               </Tooltip.Root>
             </Tooltip.Provider>
           </div>
-          <div className="text-semantic-fg-secondary product-button-button-2 px-3 py-1 border border-semantic-fg-disabled rounded-full">
-            View more details
-          </div>
         </div>
         {/* Status */}
         <div className="px-8 pb-8 w-full">
