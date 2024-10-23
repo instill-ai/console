@@ -15,12 +15,6 @@ import {
   usePipelineTriggerMetric,
   useRouteInfo,
 } from "../../lib";
-// import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
-// import { FilterByDay } from "./FilterByDay";
-// import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
-// import { ModelsTriggerCountsLineChart } from "./ModelsTriggerCountsLineChart";
-// import { TotalCreditCostChart } from "./TotalCreditCostChart";
-// import { TotalCreditTrendChart } from "./TotalCreditTrendChart";
 import { UsageSwitch } from "./UsageSwitch";
 import { ActivityTab } from "./ActivityTab";
 import { CostTab } from "./CostTab";
