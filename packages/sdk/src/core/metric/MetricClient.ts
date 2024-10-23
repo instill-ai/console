@@ -1,7 +1,11 @@
 import { getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
 import {
+  GetPipelineTriggerCountRequest,
+  GetPipelineTriggerCountResponse,
   ListCreditConsumptionChartRecordResponse,
+  ListCreditConsumptionChartRecordsRequest,
+  ListCreditConsumptionChartRecordsResponse,
   ListPipelineTriggerComputationTimeChartsRequest,
   ListPipelineTriggerComputationTimeChartsResponse,
   ListPipelineTriggerMetricRequest,
@@ -36,6 +40,50 @@ export class MetricClient extends APIResource {
 
       const data =
         await this._client.get<ListCreditConsumptionChartRecordResponse>(
+          queryString,
+        );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async getPipelineTriggerCount(props: GetPipelineTriggerCountRequest) {
+    try {
+      const { namespaceId, start, stop } = props;
+
+      const queryString = getQueryString({
+        baseURL: `/metrics/vdp/pipeline/trigger-count`,
+        owner: namespaceId, // Changed to use owner instead of namespaceId
+        start: start ?? undefined,
+        stop: stop ?? undefined,
+      });
+
+      const data =
+        await this._client.get<GetPipelineTriggerCountResponse>(queryString);
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listCreditConsumptionChartRecords(
+    props: ListCreditConsumptionChartRecordsRequest,
+  ) {
+    try {
+      const { namespaceId, aggregationWindow, start, stop } = props;
+
+      const queryString = getQueryString({
+        baseURL: `/metrics/credit/charts`,
+        owner: namespaceId, // Changed to use owner instead of namespaceId
+        aggregationWindow: aggregationWindow ?? undefined,
+        start: start ?? undefined,
+        stop: stop ?? undefined,
+      });
+
+      const data =
+        await this._client.get<ListCreditConsumptionChartRecordsResponse>(
           queryString,
         );
 
