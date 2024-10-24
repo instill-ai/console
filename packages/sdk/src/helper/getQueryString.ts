@@ -94,6 +94,10 @@ export const getQueryString = ({
     url += `owner=${owner}&`;
   }
 
+  if (namespaceId) {
+    url += `namespaceId=${namespaceId}&`;
+  }
+
   if (start) {
     url += `start=${start}&`;
   }
