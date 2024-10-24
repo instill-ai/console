@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.82.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.82.0...@instill-ai/design-system-v0.82.1) (2024-10-24)
+
+
+### Bug Fixes
+
+* fix custom task icon ([#1560](https://github.com/instill-ai/console/issues/1560)) ([2477f00](https://github.com/instill-ai/console/commit/2477f00d1c2e39bb3f802d7db05c698a8f692b6c))
+
 ## [0.82.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.81.0...@instill-ai/design-system-v0.82.0) (2024-10-22)
 
 

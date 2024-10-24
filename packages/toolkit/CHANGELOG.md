@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.109.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.108.0...@instill-ai/toolkit-v0.109.0) (2024-10-24)
+
+
+### Features
+
+* show credit owner for runs ([#1561](https://github.com/instill-ai/console/issues/1561)) ([93a275a](https://github.com/instill-ai/console/commit/93a275aa2239f16e45c5445a7380c51b0972ec56))
+* support default value for variable ([#1562](https://github.com/instill-ai/console/issues/1562)) ([1fdb718](https://github.com/instill-ai/console/commit/1fdb718a052d56c77e9773e4df5519fa9fe6f454))
+
+
+### Bug Fixes
+
+* fix custom task icon ([#1560](https://github.com/instill-ai/console/issues/1560)) ([2477f00](https://github.com/instill-ai/console/commit/2477f00d1c2e39bb3f802d7db05c698a8f692b6c))
+
+
+### Miscellaneous
+
+* retire vdp-sdk/mgmt ([#1557](https://github.com/instill-ai/console/issues/1557)) ([f683265](https://github.com/instill-ai/console/commit/f683265fa766631abf5fa417864b4e94927591b2))
+
 ## [0.108.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.107.0...@instill-ai/toolkit-v0.108.0) (2024-10-22)
 
 
