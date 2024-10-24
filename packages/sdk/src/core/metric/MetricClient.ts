@@ -6,6 +6,8 @@ import {
   ListCreditConsumptionChartRecordResponse,
   ListCreditConsumptionChartRecordsRequest,
   ListCreditConsumptionChartRecordsResponse,
+  ListModelTriggerMetricRequest,
+  ListModelTriggerMetricResponse,
   ListPipelineTriggerComputationTimeChartsRequest,
   ListPipelineTriggerComputationTimeChartsResponse,
   ListPipelineTriggerMetricRequest,
@@ -259,6 +261,66 @@ export class MetricClient extends APIResource {
 
       pipelineTriggerChartRecords.push(...data.pipelineTriggerChartRecords);
       return Promise.resolve(pipelineTriggerChartRecords);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listModelTriggerMetric(
+    props: ListModelTriggerMetricRequest & {
+      enablePagination?: boolean;
+    },
+  ) {
+    const { pageSize, pageToken, filter, enablePagination } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/metrics/model/triggers/metrics`,
+        pageSize,
+        pageToken,
+        filter,
+      });
+
+      const response =
+        await this._client.get<ListModelTriggerMetricResponse>(queryString);
+
+      if (enablePagination) {
+        return Promise.resolve(response);
+      }
+
+      return Promise.resolve(response.modelTriggerTableRecords);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async getModelTriggersChart(props: {
+    namespaceId: string;
+    start?: string;
+    stop?: string;
+    aggregationWindow?: string;
+  }) {
+    try {
+      const { namespaceId, start, stop, aggregationWindow } = props;
+
+      const queryString = getQueryString({
+        baseURL: `/metrics/model/triggers/chart`,
+        owner: namespaceId,
+        start: start ?? undefined,
+        stop: stop ?? undefined,
+        aggregationWindow: aggregationWindow ?? undefined,
+      });
+
+      const data = await this._client.get<{
+        modelTriggers: {
+          modelId: string;
+          timeBuckets: string[];
+          triggerCounts: number[];
+          computeTimeDuration: number[];
+        }[];
+      }>(queryString);
+
+      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }

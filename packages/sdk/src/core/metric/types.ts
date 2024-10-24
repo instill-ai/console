@@ -113,3 +113,23 @@ export type PipelineTriggerChartRecord = {
 export type ListPipelineTriggerComputationTimeChartsResponse = {
   pipelineTriggerChartRecords: PipelineTriggerChartRecord[];
 };
+
+export type ModelTriggerTableRecord = {
+  modelId: string;
+  modelUid: string;
+  triggerCountCompleted: number;
+  triggerCountErrored: number;
+};
+
+export type ListModelTriggerMetricRequest = {
+  pageSize?: number;
+  pageToken?: string;
+  filter?: string;
+  enablePagination?: boolean;
+};
+
+export type ListModelTriggerMetricResponse = {
+  modelTriggerTableRecords: ModelTriggerTableRecord[];
+  nextPageToken?: string;
+  totalSize: number;
+};
