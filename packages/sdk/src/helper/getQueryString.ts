@@ -14,6 +14,7 @@ export const getQueryString = ({
   start,
   stop,
   aggregationWindow,
+  namespaceId,
 }: {
   baseURL: string;
   pageSize?: number;
@@ -27,6 +28,7 @@ export const getQueryString = ({
   // Just pure query params, the function will handle tialing '&'
   queryParams?: string;
   owner?: string;
+  namespaceId?: string;
   start?: string;
   stop?: string;
   aggregationWindow?: string;
@@ -43,6 +45,7 @@ export const getQueryString = ({
     visibility ||
     queryParams ||
     owner ||
+    namespaceId ||
     start ||
     stop ||
     aggregationWindow

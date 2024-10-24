@@ -22,12 +22,12 @@ import {
 
 export class MetricClient extends APIResource {
   async listInstillCreditConsumptionTimeChart({
-    owner,
+    namespaceId,
     start,
     stop,
     aggregationWindow,
   }: {
-    owner: string;
+    namespaceId: string;
     start?: string;
     stop?: string;
     aggregationWindow?: string;
@@ -35,7 +35,7 @@ export class MetricClient extends APIResource {
     try {
       const queryString = getQueryString({
         baseURL: `/metrics/credit/charts`,
-        owner,
+        namespaceId,
         start: start ?? undefined,
         stop: stop ?? undefined,
         aggregationWindow: aggregationWindow ?? undefined,
@@ -58,7 +58,7 @@ export class MetricClient extends APIResource {
 
       const queryString = getQueryString({
         baseURL: `/metrics/vdp/pipeline/trigger-count`,
-        owner: namespaceId, // Changed to use owner instead of namespaceId
+        owner: namespaceId,
         start: start ?? undefined,
         stop: stop ?? undefined,
       });

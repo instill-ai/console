@@ -41,7 +41,7 @@ export const PipelineCreditCostTrendChart = ({
     const creditConsumption = useCreditConsumptionChartRecords({
         enabled: enabledQuery,
         accessToken,
-        owner: namespaceId,
+        namespaceId: namespaceId,
         start,
         stop,
         aggregationWindow: selectedTimeOption.value === "24h" ? "1h" : "24h",
