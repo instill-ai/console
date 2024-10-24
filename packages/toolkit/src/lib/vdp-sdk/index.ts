@@ -1,4 +1,4 @@
-import { InstillAPIClient } from "instill-sdk";
+import { InstillAPIClient, InstillError } from "instill-sdk";
 
 import { env } from "../../server";
 import { Nullable } from "../type";
@@ -94,7 +94,7 @@ export async function changePasswordMutation({
       env("NEXT_PUBLIC_API_GATEWAY_URL")
     }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
 
-    await fetch(baseURL + "/auth/change_password", {
+    const res = await fetch(baseURL + "/auth/change_password", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -102,6 +102,11 @@ export async function changePasswordMutation({
       },
       body: JSON.stringify(payload),
     });
+
+    if (!res.ok) {
+      const error = await res.json();
+      return Promise.reject(new InstillError(error.message, res.status, error));
+    }
   } catch (err) {
     return Promise.reject(err);
   }
@@ -118,13 +123,18 @@ export async function authLogoutAction({
       env("NEXT_PUBLIC_API_GATEWAY_URL")
     }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
 
-    await fetch(baseURL + "/auth/logout", {
+    const res = await fetch(baseURL + "/auth/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
+    if (!res.ok) {
+      const error = await res.json();
+      return Promise.reject(new InstillError(error.message, res.status, error));
+    }
   } catch (err) {
     return Promise.reject(err);
   }
@@ -141,14 +151,20 @@ export async function authValidateTokenAction({
       env("NEXT_PUBLIC_API_GATEWAY_URL")
     }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
 
-    await fetch(baseURL + "/auth/validate_access_token", {
+    const res = await fetch(baseURL + "/auth/validate_access_token", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
+    if (!res.ok) {
+      const error = await res.json();
+      return Promise.reject(new InstillError(error.message, res.status, error));
+    }
   } catch (err) {
+    console.error("Something went wrong when validate token", err);
     return Promise.reject(err);
   }
 }
@@ -182,7 +198,8 @@ export async function authLoginAction({
     });
 
     if (!res.ok) {
-      return Promise.reject(res.statusText);
+      const error = await res.json();
+      return Promise.reject(new InstillError(error.message, res.status, error));
     }
 
     const data = (await res.json()) as AuthLoginActionResponse;
