@@ -7,6 +7,7 @@ import { DashboardListPipeline } from "./DashboardListPipeline";
 import { DashboardListModel } from "./DashboardListModel";
 import { ModelCreditCostTrendChart } from "./ModelCreditCostTrendChart";
 import { PipelineCreditCostTrendChart } from "./PipelineCreditCostTrendChart";
+import { Nullable } from "instill-sdk";
 
 type CostTabProps = {
     pipelinesChart: {
@@ -19,7 +20,7 @@ type CostTabProps = {
     };
     selectedTimeOption: SelectOption;
     setSelectedTimeOption: React.Dispatch<React.SetStateAction<SelectOption>>;
-    accessToken: string;
+    accessToken: Nullable<string>;
     enabledQuery: boolean;
 };
 

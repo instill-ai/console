@@ -1,13 +1,14 @@
 import * as React from "react";
 import * as echarts from "echarts";
 import { Icons, Tooltip, SelectOption } from "@instill-ai/design-system";
-import {  useCreditConsumption } from "../../lib";
 import { useRouteInfo } from "../../lib";
+import { useCreditConsumptionChartRecords } from "../../lib/react-query-service/metric";
+import { Nullable } from "instill-sdk";
 
 type PipelineCreditCostTrendChartProps = {
     isLoading: boolean;
     selectedTimeOption: SelectOption;
-    accessToken: string;
+    accessToken: Nullable<string>;
     enabledQuery: boolean;
 };
 
@@ -20,20 +21,34 @@ export const PipelineCreditCostTrendChart = ({
     const chartRef = React.useRef<HTMLDivElement>(null);
     const routeInfo = useRouteInfo();
 
-    const creditConsumption = useCreditConsumption({
-        enabled: enabledQuery && Boolean(routeInfo.data?.namespaceName),
+    const start = React.useMemo(() => {
+        if (selectedTimeOption.value === "24h") {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return today.toISOString();
+        }
+        const date = new Date();
+        date.setDate(date.getDate() - parseInt(selectedTimeOption.value));
+        return date.toISOString();
+    }, [selectedTimeOption.value]);
+
+    const stop = React.useMemo(() => {
+        return new Date().toISOString();
+    }, []);
+
+    const creditConsumption = useCreditConsumptionChartRecords({
+        enabled: enabledQuery,
         accessToken,
-        namespaceId: routeInfo.data?.namespaceName || "",
-        aggregationWindow: selectedTimeOption.value === "24h" ? undefined : "24h",
-        start: selectedTimeOption.value === "24h"
-            ? undefined
-            : new Date(Date.now() - parseInt(selectedTimeOption.value) * 24 * 60 * 60 * 1000).toISOString(),
+        owner: routeInfo.data?.namespaceName || null,
+        start,
+        stop,
+        aggregationWindow: selectedTimeOption.value === "24h" ? "1h" : "24h",
     });
 
     const pipelineData = React.useMemo(() => {
         if (!creditConsumption.data) return { dates: [], values: [] };
 
-        const pipelineRecord = creditConsumption.data.creditConsumptionChartRecords.find(
+        const pipelineRecord = creditConsumption.data.creditConsumptionChartRecords?.find(
             (record) => record.source === "pipeline"
         );
 
@@ -66,16 +81,14 @@ export const PipelineCreditCostTrendChart = ({
                         const value = params[0]?.value ?? 0;
 
                         return `
-              <div style="font-size: 14px; color: #666;">
-                <div class="product-body-text-4-medium" style="margin-bottom: 5px;">${formattedDate}</div>
-                <div style="display: flex; align-items: center; margin-bottom: 3px;">
-                  <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #3B7AF7"></span>
-                  <div class="product-body-text-3-medium" style="margin-left: 15px;">${value.toFixed(
-                            2
-                        )} credits</div>
-                </div>
-              </div>
-            `;
+                            <div style="font-size: 14px; color: #666;">
+                                <div class="product-body-text-4-medium" style="margin-bottom: 5px;">${formattedDate}</div>
+                                <div style="display: flex; align-items: center; margin-bottom: 3px;">
+                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #3B7AF7"></span>
+                                    <div class="product-body-text-3-medium" style="margin-left: 15px;">${value.toFixed(2)} credits</div>
+                                </div>
+                            </div>
+                        `;
                     },
                 },
                 xAxis: {

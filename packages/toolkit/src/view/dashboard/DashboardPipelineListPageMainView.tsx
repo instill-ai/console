@@ -215,7 +215,7 @@ export const DashboardPipelineListPageMainView = ({
           setSelectedTimeOption={setSelectedTimeOption}
           pipelinesChart={pipelinesChart}
           modelsChart={modelsChart}
-          accessToken={""} 
+          accessToken={accessToken}
           enabledQuery={false} />
       )}
     </div>

@@ -79,7 +79,7 @@ export class MetricClient extends APIResource {
 
       const queryString = getQueryString({
         baseURL: `/metrics/credit/charts`,
-        owner: namespaceId, // Changed to use owner instead of namespaceId
+        owner: namespaceId,
         aggregationWindow: aggregationWindow ?? undefined,
         start: start ?? undefined,
         stop: stop ?? undefined,

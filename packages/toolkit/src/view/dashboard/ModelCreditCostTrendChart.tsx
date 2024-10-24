@@ -2,12 +2,13 @@ import * as React from "react";
 import * as echarts from "echarts";
 import { Icons, Tooltip, SelectOption } from "@instill-ai/design-system";
 import { useRouteInfo } from "../../lib";
-import { useCreditConsumption } from "../../lib/react-query-service/metric";
+import { useCreditConsumptionChartRecords } from "../../lib/react-query-service/metric";
+import { Nullable } from "instill-sdk";
 
 type ModelCreditCostTrendChartProps = {
     isLoading: boolean;
     selectedTimeOption: SelectOption;
-    accessToken: string;
+    accessToken: Nullable<string>;
     enabledQuery: boolean;
 };
 
@@ -20,20 +21,36 @@ export const ModelCreditCostTrendChart = ({
     const chartRef = React.useRef<HTMLDivElement>(null);
     const routeInfo = useRouteInfo();
 
-    const creditConsumption = useCreditConsumption({
-        enabled: enabledQuery && Boolean(routeInfo.data?.namespaceName),
+    const start = React.useMemo(() => {
+        if (selectedTimeOption.value === "24h") {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return today.toISOString();
+        }
+        const date = new Date();
+        date.setDate(date.getDate() - parseInt(selectedTimeOption.value));
+        return date.toISOString();
+    }, [selectedTimeOption.value]);
+
+    const stop = React.useMemo(() => {
+        return new Date().toISOString();
+    }, []);
+
+    const creditConsumption = useCreditConsumptionChartRecords({
+        enabled: enabledQuery,
         accessToken,
-        namespaceId: routeInfo.data?.namespaceName || "",
-        aggregationWindow: selectedTimeOption.value === "24h" ? undefined : "24h",
-        start: selectedTimeOption.value === "24h"
-            ? undefined
-            : new Date(Date.now() - parseInt(selectedTimeOption.value) * 24 * 60 * 60 * 1000).toISOString(),
+        owner: routeInfo.data?.namespaceName || null,
+        start,
+        stop,
+        aggregationWindow: selectedTimeOption.value === "24h" ? "1h" : "24h",
     });
+
+    console.log(creditConsumption);
 
     const modelData = React.useMemo(() => {
         if (!creditConsumption.data) return { dates: [], values: [] };
 
-        const modelRecord = creditConsumption.data.creditConsumptionChartRecords.find(
+        const modelRecord = creditConsumption.data.creditConsumptionChartRecords?.find(
             (record) => record.source === "model"
         );
 
@@ -43,7 +60,7 @@ export const ModelCreditCostTrendChart = ({
             dates: modelRecord.timeBuckets,
             values: modelRecord.amount,
         };
-    }, [creditConsumption.data]);
+    }, [creditConsumption.data, isLoading]);
 
     React.useEffect(() => {
         if (chartRef.current && modelData.dates.length > 0) {
@@ -66,16 +83,14 @@ export const ModelCreditCostTrendChart = ({
                         const value = params[0]?.value ?? 0;
 
                         return `
-              <div style="font-size: 14px; color: #666;">
-                <div class="product-body-text-4-medium" style="margin-bottom: 5px;">${formattedDate}</div>
-                <div style="display: flex; align-items: center; margin-bottom: 3px;">
-                  <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #2EC291"></span>
-                  <div class="product-body-text-3-medium" style="margin-left: 15px;">${value.toFixed(
-                            2
-                        )} credits</div>
-                </div>
-              </div>
-            `;
+                            <div style="font-size: 14px; color: #666;">
+                                <div class="product-body-text-4-medium" style="margin-bottom: 5px;">${formattedDate}</div>
+                                <div style="display: flex; align-items: center; margin-bottom: 3px;">
+                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #2EC291"></span>
+                                    <div class="product-body-text-3-medium" style="margin-left: 15px;">${value.toFixed(2)} credits</div>
+                                </div>
+                            </div>
+                        `;
                     },
                 },
                 xAxis: {
@@ -111,7 +126,7 @@ export const ModelCreditCostTrendChart = ({
                 chart.dispose();
             };
         }
-    }, [isLoading, modelData]);
+    }, [modelData]);
 
     return (
         <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">
