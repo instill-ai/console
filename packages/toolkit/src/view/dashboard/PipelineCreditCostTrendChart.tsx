@@ -1,88 +1,108 @@
-"use client";
-
-import * as React from 'react';
+import * as React from "react";
 import * as echarts from "echarts";
 import { Icons, Tooltip, SelectOption } from "@instill-ai/design-system";
-import { PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
-import { Nullable } from 'instill-sdk';
+import {  useCreditConsumption } from "../../lib";
+import { useRouteInfo } from "../../lib";
 
 type PipelineCreditCostTrendChartProps = {
     isLoading: boolean;
-    pipelines: PipelinesChart[];
     selectedTimeOption: SelectOption;
-    pipelineTriggersSummary: Nullable<PipelineTriggersStatusSummary>;
+    accessToken: string;
+    enabledQuery: boolean;
 };
 
 export const PipelineCreditCostTrendChart = ({
     isLoading,
-    pipelines,
     selectedTimeOption,
-    pipelineTriggersSummary,
+    accessToken,
+    enabledQuery,
 }: PipelineCreditCostTrendChartProps) => {
     const chartRef = React.useRef<HTMLDivElement>(null);
+    const routeInfo = useRouteInfo();
 
-    const mockData = React.useMemo(() => [
-        { date: '2023-04-07 09:32:04', pipelineValue: 150, modelValue: 100 },
-        { date: '2023-04-08 10:30:15', pipelineValue: 200, modelValue: 120 },
-        { date: '2023-04-09 11:45:30', pipelineValue: 180, modelValue: 90 },
-        { date: '2023-04-10 13:15:45', pipelineValue: 220, modelValue: 130 },
-        { date: '2023-04-11 14:30:00', pipelineValue: 250, modelValue: 150 },
-        { date: '2023-04-12 16:00:20', pipelineValue: 190, modelValue: 110 },
-        { date: '2023-04-13 17:30:40', pipelineValue: 210, modelValue: 140 },
-    ], []);
+    const creditConsumption = useCreditConsumption({
+        enabled: enabledQuery && Boolean(routeInfo.data?.namespaceName),
+        accessToken,
+        namespaceId: routeInfo.data?.namespaceName || "",
+        aggregationWindow: selectedTimeOption.value === "24h" ? undefined : "24h",
+        start: selectedTimeOption.value === "24h"
+            ? undefined
+            : new Date(Date.now() - parseInt(selectedTimeOption.value) * 24 * 60 * 60 * 1000).toISOString(),
+    });
+
+    const pipelineData = React.useMemo(() => {
+        if (!creditConsumption.data) return { dates: [], values: [] };
+
+        const pipelineRecord = creditConsumption.data.creditConsumptionChartRecords.find(
+            (record) => record.source === "pipeline"
+        );
+
+        if (!pipelineRecord) return { dates: [], values: [] };
+
+        return {
+            dates: pipelineRecord.timeBuckets,
+            values: pipelineRecord.amount,
+        };
+    }, [creditConsumption.data]);
 
     React.useEffect(() => {
-        if (chartRef.current) {
+        if (chartRef.current && pipelineData.dates.length > 0) {
             const chart = echarts.init(chartRef.current, null, {
                 renderer: "svg",
             });
 
             const option = {
                 tooltip: {
-                    trigger: 'axis',
+                    trigger: "axis",
                     axisPointer: {
-                        type: 'shadow'
+                        type: "shadow",
                     },
                     formatter: function (params: { axisValue: string; value: number }[]) {
-                        const date = new Date(params[0]?.axisValue ?? '');
-                        const formattedDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}, ${date.getFullYear()} - ${date.toTimeString().split(' ')[0]}`;
+                        const date = new Date(params[0]?.axisValue ?? "");
+                        const formattedDate = `${date.getDate()} ${date.toLocaleString(
+                            "default",
+                            { month: "short" }
+                        )}, ${date.getFullYear()} - ${date.toTimeString().split(" ")[0]}`;
                         const value = params[0]?.value ?? 0;
-                        const total = value;
 
                         return `
-                            <div style="font-size: 14px; color: #666;">
-                                <div class="product-body-text-4-medium" style="margin-bottom: 5px;">${formattedDate}</div>
-                                <div style="display: flex; align-items: center; margin-bottom: 3px;">
-                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #3B7AF7"></span>
-                                    <div class="product-body-text-3-medium" style="margin-left: 15px;">${value} (100%)</div>
-                                </div>
-                                <div class="product-body-text-3-regular">Total credits: <span class="product-body-text-3-semibold">${total}</span></div>
-                            </div>
-                        `;
-                    }
+              <div style="font-size: 14px; color: #666;">
+                <div class="product-body-text-4-medium" style="margin-bottom: 5px;">${formattedDate}</div>
+                <div style="display: flex; align-items: center; margin-bottom: 3px;">
+                  <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #3B7AF7"></span>
+                  <div class="product-body-text-3-medium" style="margin-left: 15px;">${value.toFixed(
+                            2
+                        )} credits</div>
+                </div>
+              </div>
+            `;
+                    },
                 },
                 xAxis: {
-                    type: 'category',
-                    data: mockData.map(item => item.date.split(' ')[0]),
+                    type: "category",
+                    data: pipelineData.dates,
                     axisLabel: {
                         formatter: (value: string) => {
                             const date = new Date(value);
-                            return `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}`;
-                        }
-                    }
+                            return `${date.getDate()} ${date.toLocaleString("default", {
+                                month: "short",
+                            })}`;
+                        },
+                    },
                 },
                 yAxis: {
-                    type: 'value'
+                    type: "value",
+                    name: "Credits",
                 },
                 series: [
                     {
-                        name: 'Pipeline',
-                        type: 'bar',
-                        data: mockData.map(item => item.pipelineValue),
-                        itemStyle: { color: '#3B7AF7' },
-                        barWidth: '24px'
+                        name: "Pipeline",
+                        type: "bar",
+                        data: pipelineData.values,
+                        itemStyle: { color: "#3B7AF7" },
+                        barWidth: "24px",
                     },
-                ]
+                ],
             };
 
             chart.setOption(option);
@@ -91,7 +111,7 @@ export const PipelineCreditCostTrendChart = ({
                 chart.dispose();
             };
         }
-    }, [isLoading, pipelines, selectedTimeOption, pipelineTriggersSummary, mockData]);
+    }, [isLoading, pipelineData]);
 
     return (
         <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">

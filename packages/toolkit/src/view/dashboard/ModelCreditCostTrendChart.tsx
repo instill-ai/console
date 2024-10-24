@@ -1,88 +1,108 @@
-"use client";
-
-import * as React from 'react';
+import * as React from "react";
 import * as echarts from "echarts";
 import { Icons, Tooltip, SelectOption } from "@instill-ai/design-system";
-import { ModelsChart, ModelTriggersStatusSummary } from "../../lib";
-import { Nullable } from 'instill-sdk';
+import { useRouteInfo } from "../../lib";
+import { useCreditConsumption } from "../../lib/react-query-service/metric";
 
 type ModelCreditCostTrendChartProps = {
     isLoading: boolean;
-    models: ModelsChart[];
     selectedTimeOption: SelectOption;
-    modelTriggersSummary: Nullable<ModelTriggersStatusSummary>;
+    accessToken: string;
+    enabledQuery: boolean;
 };
 
 export const ModelCreditCostTrendChart = ({
     isLoading,
-    models,
     selectedTimeOption,
-    modelTriggersSummary,
+    accessToken,
+    enabledQuery,
 }: ModelCreditCostTrendChartProps) => {
     const chartRef = React.useRef<HTMLDivElement>(null);
+    const routeInfo = useRouteInfo();
 
-    const mockData = React.useMemo(() => [
-        { date: '2023-04-07 09:32:04', pipelineValue: 150, modelValue: 100 },
-        { date: '2023-04-08 10:30:15', pipelineValue: 200, modelValue: 120 },
-        { date: '2023-04-09 11:45:30', pipelineValue: 180, modelValue: 90 },
-        { date: '2023-04-10 13:15:45', pipelineValue: 220, modelValue: 130 },
-        { date: '2023-04-11 14:30:00', pipelineValue: 250, modelValue: 150 },
-        { date: '2023-04-12 16:00:20', pipelineValue: 190, modelValue: 110 },
-        { date: '2023-04-13 17:30:40', pipelineValue: 210, modelValue: 140 },
-    ], []);
+    const creditConsumption = useCreditConsumption({
+        enabled: enabledQuery && Boolean(routeInfo.data?.namespaceName),
+        accessToken,
+        namespaceId: routeInfo.data?.namespaceName || "",
+        aggregationWindow: selectedTimeOption.value === "24h" ? undefined : "24h",
+        start: selectedTimeOption.value === "24h"
+            ? undefined
+            : new Date(Date.now() - parseInt(selectedTimeOption.value) * 24 * 60 * 60 * 1000).toISOString(),
+    });
+
+    const modelData = React.useMemo(() => {
+        if (!creditConsumption.data) return { dates: [], values: [] };
+
+        const modelRecord = creditConsumption.data.creditConsumptionChartRecords.find(
+            (record) => record.source === "model"
+        );
+
+        if (!modelRecord) return { dates: [], values: [] };
+
+        return {
+            dates: modelRecord.timeBuckets,
+            values: modelRecord.amount,
+        };
+    }, [creditConsumption.data]);
 
     React.useEffect(() => {
-        if (chartRef.current) {
+        if (chartRef.current && modelData.dates.length > 0) {
             const chart = echarts.init(chartRef.current, null, {
                 renderer: "svg",
             });
 
             const option = {
                 tooltip: {
-                    trigger: 'axis',
+                    trigger: "axis",
                     axisPointer: {
-                        type: 'shadow'
+                        type: "shadow",
                     },
                     formatter: function (params: { axisValue: string; value: number }[]) {
-                        const date = new Date(params[0]?.axisValue ?? '');
-                        const formattedDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}, ${date.getFullYear()} - ${date.toTimeString().split(' ')[0]}`;
+                        const date = new Date(params[0]?.axisValue ?? "");
+                        const formattedDate = `${date.getDate()} ${date.toLocaleString(
+                            "default",
+                            { month: "short" }
+                        )}, ${date.getFullYear()} - ${date.toTimeString().split(" ")[0]}`;
                         const value = params[0]?.value ?? 0;
-                        const total = value;
 
                         return `
-                            <div style="font-size: 14px; color: #666;">
-                                <div class="product-body-text-4-medium" style="margin-bottom: 5px;">${formattedDate}</div>
-                                <div style="display: flex; align-items: center; margin-bottom: 3px;">
-                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #2EC291"></span>
-                                    <div class="product-body-text-3-medium" style="margin-left: 15px;">${value} (100%)</div>
-                                </div>
-                                <div class="product-body-text-3-regular">Total credits: <span class="product-body-text-3-semibold">${total}</span></div>
-                            </div>
-                        `;
-                    }
+              <div style="font-size: 14px; color: #666;">
+                <div class="product-body-text-4-medium" style="margin-bottom: 5px;">${formattedDate}</div>
+                <div style="display: flex; align-items: center; margin-bottom: 3px;">
+                  <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #2EC291"></span>
+                  <div class="product-body-text-3-medium" style="margin-left: 15px;">${value.toFixed(
+                            2
+                        )} credits</div>
+                </div>
+              </div>
+            `;
+                    },
                 },
                 xAxis: {
-                    type: 'category',
-                    data: mockData.map(item => item.date.split(' ')[0]),
+                    type: "category",
+                    data: modelData.dates,
                     axisLabel: {
                         formatter: (value: string) => {
                             const date = new Date(value);
-                            return `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}`;
-                        }
-                    }
+                            return `${date.getDate()} ${date.toLocaleString("default", {
+                                month: "short",
+                            })}`;
+                        },
+                    },
                 },
                 yAxis: {
-                    type: 'value'
+                    type: "value",
+                    name: "Credits",
                 },
                 series: [
                     {
-                        name: 'Model',
-                        type: 'bar',
-                        data: mockData.map(item => item.modelValue),
-                        itemStyle: { color: '#2EC291' },
-                        barWidth: '24px'
-                    }
-                ]
+                        name: "Model",
+                        type: "bar",
+                        data: modelData.values,
+                        itemStyle: { color: "#2EC291" },
+                        barWidth: "24px",
+                    },
+                ],
             };
 
             chart.setOption(option);
@@ -91,7 +111,7 @@ export const ModelCreditCostTrendChart = ({
                 chart.dispose();
             };
         }
-    }, [isLoading, models, selectedTimeOption, modelTriggersSummary, mockData]);
+    }, [isLoading, modelData]);
 
     return (
         <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">

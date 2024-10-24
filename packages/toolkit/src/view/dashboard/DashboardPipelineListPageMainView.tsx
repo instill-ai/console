@@ -29,7 +29,7 @@ export type DashboardPipelineListPageMainViewProps = GeneralAppPageProp;
 export const DashboardPipelineListPageMainView = ({
   accessToken,
   enableQuery,
-  router,
+  // router,
 }: DashboardPipelineListPageMainViewProps) => {
   const [selectedTimeOption, setSelectedTimeOption] = React.useState<SelectOption>({
     label: "Today",
@@ -105,26 +105,26 @@ export const DashboardPipelineListPageMainView = ({
     accessToken,
   });
 
-  React.useEffect(() => {
-    if (
-      triggeredPipelines.isError ||
-      pipelinesChart.isError ||
-      previousTriggeredPipelines.isError ||
-      triggeredModels.isError ||
-      modelsChart.isError ||
-      previousTriggeredModels.isError
-    ) {
-      router.push("/404");
-    }
-  }, [
-    router,
-    triggeredPipelines.isError,
-    pipelinesChart.isError,
-    previousTriggeredPipelines.isError,
-    triggeredModels.isError,
-    modelsChart.isError,
-    previousTriggeredModels.isError,
-  ]);
+  // React.useEffect(() => {
+  //   if (
+  //     triggeredPipelines.isError ||
+  //     pipelinesChart.isError ||
+  //     previousTriggeredPipelines.isError ||
+  //     triggeredModels.isError ||
+  //     modelsChart.isError ||
+  //     previousTriggeredModels.isError
+  //   ) {
+  //     router.push("/404");
+  //   }
+  // }, [
+  //   router,
+  //   triggeredPipelines.isError,
+  //   pipelinesChart.isError,
+  //   previousTriggeredPipelines.isError,
+  //   triggeredModels.isError,
+  //   modelsChart.isError,
+  //   previousTriggeredModels.isError,
+  // ]);
 
   const pipelinesChartList = React.useMemo<PipelinesChart[]>(() => {
     if (!pipelinesChart.isSuccess) {
@@ -211,15 +211,12 @@ export const DashboardPipelineListPageMainView = ({
         />
       ) : (
         <CostTab
-          pipelinesChart={pipelinesChart}
-          modelsChart={modelsChart}
-          pipelinesChartList={pipelinesChartList}
-          modelsChartList={modelChartList}
           selectedTimeOption={selectedTimeOption}
           setSelectedTimeOption={setSelectedTimeOption}
-          pipelineTriggersSummary={pipelineTriggersSummary}
-          modelTriggersSummary={modelTriggersSummary}
-        />
+          pipelinesChart={pipelinesChart}
+          modelsChart={modelsChart}
+          accessToken={""} 
+          enabledQuery={false} />
       )}
     </div>
   );

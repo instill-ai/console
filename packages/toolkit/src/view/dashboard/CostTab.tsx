@@ -3,8 +3,6 @@
 import * as React from "react";
 import { Icons, Input, Popover, SelectOption } from "@instill-ai/design-system";
 import { FilterByDay } from "./FilterByDay";
-import { ModelsChart, ModelTriggersStatusSummary, PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
-import { Nullable } from "instill-sdk";
 import { DashboardListPipeline } from "./DashboardListPipeline";
 import { DashboardListModel } from "./DashboardListModel";
 import { ModelCreditCostTrendChart } from "./ModelCreditCostTrendChart";
@@ -19,30 +17,34 @@ type CostTabProps = {
         isLoading: boolean;
         refetch: () => void;
     };
-    pipelinesChartList: PipelinesChart[];
-    modelsChartList: ModelsChart[];
     selectedTimeOption: SelectOption;
     setSelectedTimeOption: React.Dispatch<React.SetStateAction<SelectOption>>;
-    pipelineTriggersSummary: Nullable<PipelineTriggersStatusSummary>;
-    modelTriggersSummary: Nullable<ModelTriggersStatusSummary>;
+    accessToken: string;
+    enabledQuery: boolean;
 };
 
 export const CostTab = ({
     pipelinesChart,
     modelsChart,
-    pipelinesChartList,
-    modelsChartList,
     selectedTimeOption,
     setSelectedTimeOption,
-    pipelineTriggersSummary,
-    modelTriggersSummary,
+    accessToken,
+    enabledQuery,
 }: CostTabProps) => {
     const [costView, setCostView] = React.useState<"model" | "pipeline">("pipeline");
     const [searchTerm, setSearchTerm] = React.useState("");
 
     const options = [
-        { value: "pipeline", label: "Pipeline", icon: <Icons.Pipeline className="h-4 w-4" /> },
-        { value: "model", label: "Model", icon: <Icons.Model className="h-4 w-4" /> },
+        {
+            value: "pipeline",
+            label: "Pipeline",
+            icon: <Icons.Pipeline className="h-4 w-4" />
+        },
+        {
+            value: "model",
+            label: "Model",
+            icon: <Icons.Model className="h-4 w-4" />
+        },
     ];
 
     return (
@@ -86,7 +88,13 @@ export const CostTab = ({
                     </Input.Root>
                 </div>
                 <FilterByDay
-                    refetch={() => pipelinesChart.refetch()}
+                    refetch={() => {
+                        if (costView === "model") {
+                            modelsChart.refetch();
+                        } else {
+                            pipelinesChart.refetch();
+                        }
+                    }}
                     selectedTimeOption={selectedTimeOption}
                     setSelectedTimeOption={setSelectedTimeOption}
                 />
@@ -96,18 +104,19 @@ export const CostTab = ({
                 {costView === "model" ? (
                     <ModelCreditCostTrendChart
                         isLoading={modelsChart.isLoading}
-                        models={modelsChartList}
                         selectedTimeOption={selectedTimeOption}
-                        modelTriggersSummary={modelTriggersSummary}
+                        accessToken={accessToken}
+                        enabledQuery={enabledQuery}
                     />
                 ) : (
                     <PipelineCreditCostTrendChart
                         isLoading={pipelinesChart.isLoading}
-                        pipelines={pipelinesChartList}
                         selectedTimeOption={selectedTimeOption}
-                        pipelineTriggersSummary={pipelineTriggersSummary}
+                        accessToken={accessToken}
+                        enabledQuery={enabledQuery}
                     />
-                )}
+                )
+                }
             </div>
 
             <div className="mt-8">
