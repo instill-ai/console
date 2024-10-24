@@ -8,6 +8,7 @@ import { DashboardListModel } from "./DashboardListModel";
 import { ModelCreditCostTrendChart } from "./ModelCreditCostTrendChart";
 import { PipelineCreditCostTrendChart } from "./PipelineCreditCostTrendChart";
 import { Nullable } from "instill-sdk";
+import { useAuthenticatedUser } from "../../lib";
 
 type CostTabProps = {
     pipelinesChart: {
@@ -34,6 +35,12 @@ export const CostTab = ({
 }: CostTabProps) => {
     const [costView, setCostView] = React.useState<"model" | "pipeline">("pipeline");
     const [searchTerm, setSearchTerm] = React.useState("");
+
+
+    const me = useAuthenticatedUser({
+        enabled: enabledQuery,
+        accessToken,
+    });
 
     const options = [
         {
@@ -108,6 +115,7 @@ export const CostTab = ({
                         selectedTimeOption={selectedTimeOption}
                         accessToken={accessToken}
                         enabledQuery={enabledQuery}
+                        namespaceId={me.data?.id ?? ""}
                     />
                 ) : (
                     <PipelineCreditCostTrendChart
@@ -115,6 +123,7 @@ export const CostTab = ({
                         selectedTimeOption={selectedTimeOption}
                         accessToken={accessToken}
                         enabledQuery={enabledQuery}
+                        namespaceId={me.data?.id ?? ""}
                     />
                 )
                 }

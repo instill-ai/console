@@ -1,15 +1,17 @@
 import * as React from "react";
 import * as echarts from "echarts";
 import { Icons, Tooltip, SelectOption } from "@instill-ai/design-system";
-import { useRouteInfo } from "../../lib";
 import { useCreditConsumptionChartRecords } from "../../lib/react-query-service/metric";
 import { Nullable } from "instill-sdk";
+import Link from "next/link";
 
 type PipelineCreditCostTrendChartProps = {
     isLoading: boolean;
     selectedTimeOption: SelectOption;
     accessToken: Nullable<string>;
     enabledQuery: boolean;
+    namespaceId: Nullable<string>
+
 };
 
 export const PipelineCreditCostTrendChart = ({
@@ -17,9 +19,9 @@ export const PipelineCreditCostTrendChart = ({
     selectedTimeOption,
     accessToken,
     enabledQuery,
+    namespaceId
 }: PipelineCreditCostTrendChartProps) => {
     const chartRef = React.useRef<HTMLDivElement>(null);
-    const routeInfo = useRouteInfo();
 
     const start = React.useMemo(() => {
         if (selectedTimeOption.value === "24h") {
@@ -39,7 +41,7 @@ export const PipelineCreditCostTrendChart = ({
     const creditConsumption = useCreditConsumptionChartRecords({
         enabled: enabledQuery,
         accessToken,
-        owner: routeInfo.data?.namespaceName || null,
+        owner: namespaceId,
         start,
         stop,
         aggregationWindow: selectedTimeOption.value === "24h" ? "1h" : "24h",
@@ -168,9 +170,12 @@ export const PipelineCreditCostTrendChart = ({
                             </Tooltip.Root>
                         </Tooltip.Provider>
                     </div>
-                    <div className="text-semantic-fg-secondary product-button-button-2 px-3 py-1 border border-semantic-fg-disabled rounded-full">
+                    <Link
+                        className="text-semantic-fg-secondary product-button-button-2 px-3 py-1 border border-semantic-fg-disabled rounded-full"
+                        href={`/${namespaceId}/settings/billing/credits`}
+                    >
                         View billing details
-                    </div>
+                    </Link>
                 </div>
                 <div className="px-8 pb-8 w-full" style={{ height: '460px' }}>
                     <div

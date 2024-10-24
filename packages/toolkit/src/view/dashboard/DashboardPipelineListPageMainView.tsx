@@ -216,7 +216,9 @@ export const DashboardPipelineListPageMainView = ({
           pipelinesChart={pipelinesChart}
           modelsChart={modelsChart}
           accessToken={accessToken}
-          enabledQuery={false} />
+          enabledQuery={enableQuery} 
+          />
+          
       )}
     </div>
   );

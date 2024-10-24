@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as echarts from "echarts";
 import { Icons, Tooltip, SelectOption } from "@instill-ai/design-system";
-import { useRouteInfo } from "../../lib";
 import { useCreditConsumptionChartRecords } from "../../lib/react-query-service/metric";
 import { Nullable } from "instill-sdk";
 
@@ -10,6 +9,7 @@ type ModelCreditCostTrendChartProps = {
     selectedTimeOption: SelectOption;
     accessToken: Nullable<string>;
     enabledQuery: boolean;
+    namespaceId: Nullable<string>
 };
 
 export const ModelCreditCostTrendChart = ({
@@ -17,9 +17,9 @@ export const ModelCreditCostTrendChart = ({
     selectedTimeOption,
     accessToken,
     enabledQuery,
+    namespaceId
 }: ModelCreditCostTrendChartProps) => {
     const chartRef = React.useRef<HTMLDivElement>(null);
-    const routeInfo = useRouteInfo();
 
     const start = React.useMemo(() => {
         if (selectedTimeOption.value === "24h") {
@@ -39,13 +39,12 @@ export const ModelCreditCostTrendChart = ({
     const creditConsumption = useCreditConsumptionChartRecords({
         enabled: enabledQuery,
         accessToken,
-        owner: routeInfo.data?.namespaceName || null,
+        owner: namespaceId,
         start,
         stop,
         aggregationWindow: selectedTimeOption.value === "24h" ? "1h" : "24h",
     });
 
-    console.log(creditConsumption);
 
     const modelData = React.useMemo(() => {
         if (!creditConsumption.data) return { dates: [], values: [] };
