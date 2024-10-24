@@ -56,6 +56,7 @@ export function useAppAccessToken(props?: UseAccessTokenProps) {
       }
     },
     refetchOnWindowFocus: false,
+    retry: false,
   });
 
   React.useEffect(() => {
