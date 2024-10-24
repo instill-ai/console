@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.9.0...instill-sdk-v0.10.0) (2024-10-24)
+
+
+### Features
+
+* show credit owner for runs ([#1561](https://github.com/instill-ai/console/issues/1561)) ([93a275a](https://github.com/instill-ai/console/commit/93a275aa2239f16e45c5445a7380c51b0972ec56))
+
 ## [0.9.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.8.0...instill-sdk-v0.9.0) (2024-10-22)
 
 

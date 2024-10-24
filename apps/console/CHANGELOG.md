@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.61.0-beta](https://github.com/instill-ai/console/compare/v0.60.0-beta...v0.61.0-beta) (2024-10-24)
+
+
+### Features
+
+* support default value for variable ([#1562](https://github.com/instill-ai/console/issues/1562)) ([1fdb718](https://github.com/instill-ai/console/commit/1fdb718a052d56c77e9773e4df5519fa9fe6f454))
+
+
+### Miscellaneous
+
+* retire vdp-sdk/mgmt ([#1557](https://github.com/instill-ai/console/issues/1557)) ([f683265](https://github.com/instill-ai/console/commit/f683265fa766631abf5fa417864b4e94927591b2))
+
 ## [0.60.0-beta](https://github.com/instill-ai/console/compare/v0.59.2-beta...v0.60.0-beta) (2024-10-22)
 
 
