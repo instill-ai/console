@@ -3,7 +3,7 @@ import { formatDateTime } from "./formatDateTime";
 import { getDateRange } from "./getDateRange";
 import { sortByDate } from "./sortByDate";
 
-export function generateChartData(
+export function generatePipelineChartData(
   apiResponse: PipelinesChart[],
   range: string,
 ): { xAxis: string[]; yAxis: number[][] } {

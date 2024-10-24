@@ -3,29 +3,39 @@
 import * as React from "react";
 import { Icons, Input, Popover, SelectOption } from "@instill-ai/design-system";
 import { FilterByDay } from "./FilterByDay";
-import { CreditCostTrendChart } from "./CreditCostTrendChart";
-import { PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
+import { ModelsChart, ModelTriggersStatusSummary, PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
 import { Nullable } from "instill-sdk";
 import { DashboardListPipeline } from "./DashboardListPipeline";
 import { DashboardListModel } from "./DashboardListModel";
+import { ModelCreditCostTrendChart } from "./ModelCreditCostTrendChart";
+import { PipelineCreditCostTrendChart } from "./PipelineCreditCostTrendChart";
 
 type CostTabProps = {
     pipelinesChart: {
         isLoading: boolean;
         refetch: () => void;
     };
+    modelsChart: {
+        isLoading: boolean;
+        refetch: () => void;
+    };
     pipelinesChartList: PipelinesChart[];
+    modelsChartList: ModelsChart[];
     selectedTimeOption: SelectOption;
     setSelectedTimeOption: React.Dispatch<React.SetStateAction<SelectOption>>;
     pipelineTriggersSummary: Nullable<PipelineTriggersStatusSummary>;
+    modelTriggersSummary: Nullable<ModelTriggersStatusSummary>;
 };
 
 export const CostTab = ({
     pipelinesChart,
+    modelsChart,
     pipelinesChartList,
+    modelsChartList,
     selectedTimeOption,
     setSelectedTimeOption,
     pipelineTriggersSummary,
+    modelTriggersSummary,
 }: CostTabProps) => {
     const [costView, setCostView] = React.useState<"model" | "pipeline">("pipeline");
     const [searchTerm, setSearchTerm] = React.useState("");
@@ -83,13 +93,21 @@ export const CostTab = ({
             </div>
 
             <div className="mb-2 w-full">
-                <CreditCostTrendChart
-                    isLoading={pipelinesChart.isLoading}
-                    pipelines={pipelinesChartList}
-                    selectedTimeOption={selectedTimeOption}
-                    pipelineTriggersSummary={pipelineTriggersSummary}
-                    costView={costView}
-                />
+                {costView === "model" ? (
+                    <ModelCreditCostTrendChart
+                        isLoading={modelsChart.isLoading}
+                        models={modelsChartList}
+                        selectedTimeOption={selectedTimeOption}
+                        modelTriggersSummary={modelTriggersSummary}
+                    />
+                ) : (
+                    <PipelineCreditCostTrendChart
+                        isLoading={pipelinesChart.isLoading}
+                        pipelines={pipelinesChartList}
+                        selectedTimeOption={selectedTimeOption}
+                        pipelineTriggersSummary={pipelineTriggersSummary}
+                    />
+                )}
             </div>
 
             <div className="mt-8">

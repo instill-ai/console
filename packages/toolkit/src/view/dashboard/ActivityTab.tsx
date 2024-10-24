@@ -3,7 +3,7 @@ import { Icons, Input, Popover, SelectOption } from "@instill-ai/design-system";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
 import { ModelsTriggerCountsLineChart } from "./ModelsTriggerCountsLineChart";
-import { PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
+import { ModelsChart, ModelTriggersStatusSummary, PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
 import { Nullable } from "instill-sdk";
 
 type ActivityTabProps = {
@@ -11,18 +11,27 @@ type ActivityTabProps = {
         isLoading: boolean;
         refetch: () => void;
     };
+    modelsChart: {
+        isLoading: boolean;
+        refetch: () => void;
+    };
     pipelinesChartList: PipelinesChart[];
+    modelsChartList: ModelsChart[];
     selectedTimeOption: SelectOption;
     setSelectedTimeOption: React.Dispatch<React.SetStateAction<SelectOption>>;
     pipelineTriggersSummary: Nullable<PipelineTriggersStatusSummary>;
+    modelTriggersSummary: Nullable<ModelTriggersStatusSummary>;
 };
 
 export const ActivityTab = ({
     pipelinesChart,
+    modelsChart,
     pipelinesChartList,
+    modelsChartList,
     selectedTimeOption,
     setSelectedTimeOption,
     pipelineTriggersSummary,
+    modelTriggersSummary,
 }: ActivityTabProps) => {
     const [sortOption, setSortOption] = React.useState<"newest" | "oldest">("newest");
     const [searchTerm, setSearchTerm] = React.useState("");
@@ -89,10 +98,10 @@ export const ActivityTab = ({
                 </div>
                 <div className="w-full lg:w-1/2">
                     <ModelsTriggerCountsLineChart
-                        isLoading={pipelinesChart.isLoading}
-                        pipelines={pipelinesChartList}
+                        isLoading={modelsChart.isLoading}
+                        models={modelsChartList}
                         selectedTimeOption={selectedTimeOption}
-                        pipelineTriggersSummary={pipelineTriggersSummary}
+                        modelTriggersSummary={modelTriggersSummary}
                     />
                 </div>
             </div>

@@ -8,6 +8,7 @@ import {
   ListCreditConsumptionChartRecordsResponse,
   ListModelTriggerMetricRequest,
   ListModelTriggerMetricResponse,
+  ListModelTriggersChartResponse,
   ListPipelineTriggerComputationTimeChartsRequest,
   ListPipelineTriggerComputationTimeChartsResponse,
   ListPipelineTriggerMetricRequest,
@@ -321,6 +322,27 @@ export class MetricClient extends APIResource {
       }>(queryString);
 
       return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listModelTriggersChart(props: {
+    pageSize?: number;
+    pageToken?: string;
+    filter?: string;
+  }) {
+    try {
+      const queryString = getQueryString({
+        baseURL: `/metrics/model/triggers/charts`,
+        pageSize: props.pageSize,
+        pageToken: props.pageToken,
+        filter: props.filter,
+      });
+
+      const response =
+        await this._client.get<ListModelTriggersChartResponse>(queryString);
+      return Promise.resolve(response);
     } catch (error) {
       return Promise.reject(error);
     }

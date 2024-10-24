@@ -3,7 +3,7 @@
 import * as React from 'react';
 import * as echarts from "echarts";
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
-import { generateChartData, PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
+import { generatePipelineChartData, PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import { Nullable } from 'instill-sdk';
 
@@ -43,7 +43,7 @@ export const PipelineTriggerCountsLineChart = ({
   pipelineTriggersSummary,
 }: PipelineTriggerCountsLineChartProps) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
-  const { xAxis, yAxis } = generateChartData(pipelines, selectedTimeOption.value);
+  const { xAxis, yAxis } = generatePipelineChartData(pipelines, selectedTimeOption.value);
 
   const xAxisData = xAxis;
   const seriesData = yAxis;

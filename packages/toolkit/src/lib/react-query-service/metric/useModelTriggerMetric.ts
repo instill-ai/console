@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../vdp-sdk";
+import { env } from "../../../server";
+import { ModelTriggerTableRecord } from "instill-sdk";
 
 export function useModelTriggerMetric({
     enabled,
@@ -11,7 +13,7 @@ export function useModelTriggerMetric({
     accessToken: Nullable<string>;
     filter: Nullable<string>;
 }) {
-    return useQuery({
+    return useQuery<ModelTriggerTableRecord[]>({
         queryKey: ["modelTriggerMetrics", filter],
         queryFn: async () => {
             if (!accessToken) {
@@ -19,16 +21,17 @@ export function useModelTriggerMetric({
             }
 
             const client = getInstillAPIClient({ accessToken });
-
-            const modelTriggerMetric = await client.core.metric.listModelTriggerMetric({
-                pageSize: 100, // Adjust page size as needed
+            const response = await client.core.metric.listModelTriggerMetric({
+                pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
                 filter: filter ?? undefined,
-                enablePagination: false, // Set to true if you want to handle pagination
+                enablePagination: false,
             });
 
-            return modelTriggerMetric;
+            if ('modelTriggerTableRecords' in response) {
+                return response.modelTriggerTableRecords;
+            }
+            return response;
         },
         enabled,
-        staleTime: 5 * 60 * 1000, // 5 minutes
     });
 }

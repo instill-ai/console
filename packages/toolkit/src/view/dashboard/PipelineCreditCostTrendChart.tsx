@@ -6,21 +6,19 @@ import { Icons, Tooltip, SelectOption } from "@instill-ai/design-system";
 import { PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
 import { Nullable } from 'instill-sdk';
 
-type CreditCostTrendChartProps = {
+type PipelineCreditCostTrendChartProps = {
     isLoading: boolean;
     pipelines: PipelinesChart[];
     selectedTimeOption: SelectOption;
     pipelineTriggersSummary: Nullable<PipelineTriggersStatusSummary>;
-    costView: "model" | "pipeline";
 };
 
-export const CreditCostTrendChart = ({
+export const PipelineCreditCostTrendChart = ({
     isLoading,
     pipelines,
     selectedTimeOption,
     pipelineTriggersSummary,
-    costView,
-}: CreditCostTrendChartProps) => {
+}: PipelineCreditCostTrendChartProps) => {
     const chartRef = React.useRef<HTMLDivElement>(null);
 
     const mockData = React.useMemo(() => [
@@ -55,7 +53,7 @@ export const CreditCostTrendChart = ({
                             <div style="font-size: 14px; color: #666;">
                                 <div class="product-body-text-4-medium" style="margin-bottom: 5px;">${formattedDate}</div>
                                 <div style="display: flex; align-items: center; margin-bottom: 3px;">
-                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: ${costView === 'pipeline' ? '#3B7AF7' : '#2EC291'};"></span>
+                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #3B7AF7"></span>
                                     <div class="product-body-text-3-medium" style="margin-left: 15px;">${value} (100%)</div>
                                 </div>
                                 <div class="product-body-text-3-regular">Total credits: <span class="product-body-text-3-semibold">${total}</span></div>
@@ -80,17 +78,10 @@ export const CreditCostTrendChart = ({
                     {
                         name: 'Pipeline',
                         type: 'bar',
-                        data: mockData.map(item => costView === 'pipeline' ? item.pipelineValue : null),
+                        data: mockData.map(item => item.pipelineValue),
                         itemStyle: { color: '#3B7AF7' },
                         barWidth: '24px'
                     },
-                    {
-                        name: 'Model',
-                        type: 'bar',
-                        data: mockData.map(item => costView === 'model' ? item.modelValue : null),
-                        itemStyle: { color: '#2EC291' },
-                        barWidth: '24px'
-                    }
                 ]
             };
 
@@ -100,7 +91,7 @@ export const CreditCostTrendChart = ({
                 chart.dispose();
             };
         }
-    }, [costView, isLoading, pipelines, selectedTimeOption, pipelineTriggersSummary, mockData]);
+    }, [isLoading, pipelines, selectedTimeOption, pipelineTriggersSummary, mockData]);
 
     return (
         <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">
@@ -129,7 +120,7 @@ export const CreditCostTrendChart = ({
                                                     Credit Cost Trend
                                                 </div>
                                                 <div className="self-stretch text-semantic-fg-secondary product-body-text-4-medium">
-                                                    View the trend of credit cost for {costView === 'pipeline' ? 'pipelines' : 'models'} over time.
+                                                    View the trend of credit cost for pipelines over time.
                                                 </div>
                                             </div>
                                         </div>

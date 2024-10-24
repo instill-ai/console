@@ -6,11 +6,16 @@ import {
   DashboardAvailableTimeframe,
   GeneralAppPageProp,
   getPipelineTriggersSummary,
+  getModelTriggersSummary,
   getPreviousTimeframe,
   getTimeInRFC3339Format,
+  ModelsChart,
   Nullable,
   PipelinesChart,
+  TriggeredModel,
   TriggeredPipeline,
+  useModelTriggerComputationTimeCharts,
+  useModelTriggerMetric,
   usePipelineTriggerComputationTimeCharts,
   usePipelineTriggerMetric,
   useRouteInfo,
@@ -76,7 +81,25 @@ export const DashboardPipelineListPageMainView = ({
     accessToken,
   });
 
-  const previoustriggeredPipelines = usePipelineTriggerMetric({
+  const modelsChart = useModelTriggerComputationTimeCharts({
+    enabled: enableQuery && !!queryString,
+    filter: queryString ? queryString : null,
+    accessToken,
+  });
+
+  const triggeredModels = useModelTriggerMetric({
+    enabled: enableQuery && !!queryString,
+    filter: queryString ? queryString : null,
+    accessToken,
+  });
+
+  const previousTriggeredPipelines = usePipelineTriggerMetric({
+    enabled: enableQuery && !!queryStringPrevious,
+    filter: queryStringPrevious ? queryStringPrevious : null,
+    accessToken,
+  });
+
+  const previousTriggeredModels = useModelTriggerMetric({
     enabled: enableQuery && !!queryStringPrevious,
     filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,
@@ -86,7 +109,10 @@ export const DashboardPipelineListPageMainView = ({
     if (
       triggeredPipelines.isError ||
       pipelinesChart.isError ||
-      previoustriggeredPipelines.isError
+      previousTriggeredPipelines.isError ||
+      triggeredModels.isError ||
+      modelsChart.isError ||
+      previousTriggeredModels.isError
     ) {
       router.push("/404");
     }
@@ -94,7 +120,10 @@ export const DashboardPipelineListPageMainView = ({
     router,
     triggeredPipelines.isError,
     pipelinesChart.isError,
-    previoustriggeredPipelines.isError,
+    previousTriggeredPipelines.isError,
+    triggeredModels.isError,
+    modelsChart.isError,
+    previousTriggeredModels.isError,
   ]);
 
   const pipelinesChartList = React.useMemo<PipelinesChart[]>(() => {
@@ -107,20 +136,28 @@ export const DashboardPipelineListPageMainView = ({
     }));
   }, [pipelinesChart.data, pipelinesChart.isSuccess]);
 
-  const triggeredPipelineList = React.useMemo<TriggeredPipeline[]>(() => {
-    if (!triggeredPipelines.isSuccess) {
+  const modelChartList = React.useMemo<ModelsChart[]>(() => {
+    if (!modelsChart.isSuccess) {
       return [];
     }
 
-    return triggeredPipelines.data.map((pipeline) => ({
-      ...pipeline,
+    return modelsChart.data.map((model) => ({
+      ...model,
     }));
-  }, [triggeredPipelines]);
+  }, [modelsChart.data, modelsChart.isSuccess]);
+
+  const triggeredPipelineList = React.useMemo<TriggeredPipeline[]>(() => {
+    if (!triggeredPipelines.isSuccess) return [];
+    return triggeredPipelines.data;
+  }, [triggeredPipelines.data, triggeredPipelines.isSuccess]);
+
+  const triggeredModelList = React.useMemo<TriggeredModel[]>(() => {
+    if (!triggeredModels.isSuccess) return [];
+    return triggeredModels.data;
+  }, [triggeredModels.data, triggeredModels.isSuccess]);
 
   const pipelineTriggersSummary = React.useMemo(() => {
-    if (!previoustriggeredPipelines.isSuccess) {
-      return null;
-    }
+    if (!previousTriggeredPipelines.isSuccess) return null;
 
     const triggeredPipelineIdList = triggeredPipelineList.map(
       (e) => e.pipelineId
@@ -128,14 +165,33 @@ export const DashboardPipelineListPageMainView = ({
 
     return getPipelineTriggersSummary(
       triggeredPipelineList,
-      previoustriggeredPipelines.data.filter((trigger) =>
+      previousTriggeredPipelines.data.filter((trigger) =>
         triggeredPipelineIdList.includes(trigger.pipelineId)
       )
     );
   }, [
-    previoustriggeredPipelines.isSuccess,
-    previoustriggeredPipelines.data,
+    previousTriggeredPipelines.isSuccess,
+    previousTriggeredPipelines.data,
     triggeredPipelineList,
+  ]);
+
+  const modelTriggersSummary = React.useMemo(() => {
+    if (!previousTriggeredModels.isSuccess) return null;
+
+    const triggeredModelIdList = triggeredModelList.map(
+      (e) => e.modelId
+    );
+
+    return getModelTriggersSummary(
+      triggeredModelList,
+      previousTriggeredModels.data.filter((trigger) =>
+        triggeredModelIdList.includes(trigger.modelId)
+      )
+    );
+  }, [
+    previousTriggeredModels.isSuccess,
+    previousTriggeredModels.data,
+    triggeredModelList,
   ]);
 
   return (
@@ -145,18 +201,24 @@ export const DashboardPipelineListPageMainView = ({
       {activeTab === "activity" ? (
         <ActivityTab
           pipelinesChart={pipelinesChart}
+          modelsChart={modelsChart}
           pipelinesChartList={pipelinesChartList}
+          modelsChartList={modelChartList}
           selectedTimeOption={selectedTimeOption}
           setSelectedTimeOption={setSelectedTimeOption}
           pipelineTriggersSummary={pipelineTriggersSummary}
+          modelTriggersSummary={modelTriggersSummary}
         />
       ) : (
         <CostTab
           pipelinesChart={pipelinesChart}
+          modelsChart={modelsChart}
           pipelinesChartList={pipelinesChartList}
+          modelsChartList={modelChartList}
           selectedTimeOption={selectedTimeOption}
           setSelectedTimeOption={setSelectedTimeOption}
           pipelineTriggersSummary={pipelineTriggersSummary}
+          modelTriggersSummary={modelTriggersSummary}
         />
       )}
     </div>

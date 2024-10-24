@@ -1,3 +1,4 @@
+import { ModelReleaseStage } from "../../model";
 import { PipelineMode, PipelineReleaseState } from "../../vdp";
 
 export type Mode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
@@ -117,8 +118,9 @@ export type ListPipelineTriggerComputationTimeChartsResponse = {
 export type ModelTriggerTableRecord = {
   modelId: string;
   modelUid: string;
-  triggerCountCompleted: number;
-  triggerCountErrored: number;
+  triggerCountCompleted: string;
+  triggerCountErrored: string;
+  watchState?: ModelReleaseStage;
 };
 
 export type ListModelTriggerMetricRequest = {
@@ -132,4 +134,26 @@ export type ListModelTriggerMetricResponse = {
   modelTriggerTableRecords: ModelTriggerTableRecord[];
   nextPageToken?: string;
   totalSize: number;
+};
+
+export type ModelMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
+
+export type ModelTriggerStatus =
+  | "STATUS_UNSPECIFIED"
+  | "STATUS_COMPLETED"
+  | "STATUS_ERRORED";
+
+export type ModelTriggerChartRecord = {
+  modelId: string;
+  modelUid: string;
+  triggerMode: ModelMode;
+  status: ModelTriggerStatus;
+  timeBuckets: string[];
+  triggerCounts: number[];
+  computeTimeDuration: number[];
+  watchState?: ModelReleaseStage;
+};
+
+export type ListModelTriggersChartResponse = {
+  modelTriggerChartRecords: ModelTriggerChartRecord[];
 };

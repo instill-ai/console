@@ -3,15 +3,15 @@
 import * as React from 'react';
 import * as echarts from "echarts";
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
-import { generateChartData, PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
+import { generateModelChartData, ModelTriggersStatusSummary, ModelsChart } from "../../lib";
 import { ModelTriggersSummary } from "./ModelTriggersSummary";
 import { Nullable } from 'instill-sdk';
 
 type ModelsTriggerCountsLineChartProps = {
-  pipelines: PipelinesChart[];
+  models: ModelsChart[];
   isLoading: boolean;
   selectedTimeOption: SelectOption;
-  pipelineTriggersSummary: Nullable<PipelineTriggersStatusSummary>;
+  modelTriggersSummary: Nullable<ModelTriggersStatusSummary>;
 };
 
 /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
@@ -38,13 +38,13 @@ function unselectGraph(params: any, myChart: echarts.ECharts): void {
 
 export const ModelsTriggerCountsLineChart = ({
   isLoading,
-  pipelines,
+  models,
   selectedTimeOption,
-  pipelineTriggersSummary,
+  modelTriggersSummary,
 }: ModelsTriggerCountsLineChartProps) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
-  const { xAxis, yAxis } = generateChartData(
-    pipelines,
+  const { xAxis, yAxis } = generateModelChartData(
+    models,
     selectedTimeOption.value,
   );
 
@@ -71,13 +71,13 @@ export const ModelsTriggerCountsLineChart = ({
             image: "/images/no-chart-placeholder.svg",
             x: "45%",
             y: "0%",
-            width: pipelines.length === 0 ? 225 : 0,
-            height: pipelines.length === 0 ? 225 : 0,
+            width: models.length === 0 ? 225 : 0,
+            height: models.length === 0 ? 225 : 0,
           },
         },
         animation: false,
         title: {
-          show: pipelines.length === 0,
+          show: models.length === 0,
           textStyle: {
             color: "#1D2433A6",
             fontSize: 14,
@@ -166,7 +166,7 @@ export const ModelsTriggerCountsLineChart = ({
         }
       });
     }
-  }, [isLoading, xAxisData, seriesData, pipelines]);
+  }, [isLoading, xAxisData, seriesData, models]);
 
   return (
     <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">
@@ -216,10 +216,10 @@ export const ModelsTriggerCountsLineChart = ({
         <div className="px-8 pb-8 w-full">
           <ModelTriggersSummary>
             <ModelTriggersSummary.Card
-              summary={pipelineTriggersSummary ? pipelineTriggersSummary.completed : null}
+              summary={modelTriggersSummary ? modelTriggersSummary.completed : null}
             />
             <ModelTriggersSummary.Card
-              summary={pipelineTriggersSummary ? pipelineTriggersSummary.errored : null}
+              summary={modelTriggersSummary ? modelTriggersSummary.errored : null}
             />
           </ModelTriggersSummary>
         </div>
