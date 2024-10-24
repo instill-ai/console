@@ -1,8 +1,8 @@
 "use client";
 
-import { cn } from "@instill-ai/design-system";
+import type { Nullable, PipelineTriggerStatus } from "instill-sdk";
 
-import type { Nullable, PipelineTriggerStatus } from "../lib";
+import { cn } from "@instill-ai/design-system";
 
 export type PipelineRunStateLabelProps = {
   state?: Nullable<PipelineTriggerStatus>;

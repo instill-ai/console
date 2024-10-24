@@ -1,4 +1,7 @@
-import { Count } from "../vdp-sdk";
+export type Count = {
+  triggerTime: string | Date;
+  count: number;
+};
 
 export function orderCountsByTriggerTime(counts: Count[]): Count[] {
   const formattedCounts: Count[] = counts.map((count) => {

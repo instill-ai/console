@@ -1,9 +1,25 @@
-import { PipelineTriggersStatusSummary, TriggeredPipeline } from "../vdp-sdk";
+import type {
+  PipelineTriggerStatus,
+  PipelineTriggerTableRecord,
+} from "instill-sdk";
+
 import { calculatePercentageDelta } from "./calculatePercentageDelta";
 
+export type PipelineTriggersStatusSummaryItem = {
+  statusType: PipelineTriggerStatus;
+  amount: number;
+  type: "pipeline" | "model";
+  delta: number;
+};
+
+export type PipelineTriggersStatusSummary = {
+  completed: PipelineTriggersStatusSummaryItem;
+  errored: PipelineTriggersStatusSummaryItem;
+};
+
 export function getPipelineTriggersSummary(
-  pipelines: TriggeredPipeline[],
-  pipelinesPrevious: TriggeredPipeline[],
+  pipelines: PipelineTriggerTableRecord[],
+  pipelinesPrevious: PipelineTriggerTableRecord[],
 ): PipelineTriggersStatusSummary {
   let pipelineCompleteAmount = 0;
   let pipelineCompleteAmountPrevious = 0;

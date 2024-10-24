@@ -1,5 +1,6 @@
 "use client";
 
+import type { PipelineTriggerRecord } from "instill-sdk";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Button, DataTable } from "@instill-ai/design-system";
@@ -9,7 +10,6 @@ import {
   convertTimestampToLocal,
   convertToSecondsAndMilliseconds,
   parseTriggerStatusLabel,
-  PipelineTriggerRecord,
 } from "../../lib";
 import { TriggersTablePlaceholder } from "./TriggersTablePlaceholder";
 

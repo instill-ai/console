@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import type { PipelineTriggerChartRecord } from "instill-sdk";
+import * as React from "react";
 import * as echarts from "echarts";
 
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
 
-import { generateChartData, PipelinesChart } from "../../lib";
+import { generateChartData } from "../../lib";
 
 type PipelineTriggerCountsLineChartProps = {
-  pipelines: PipelinesChart[];
+  pipelines: PipelineTriggerChartRecord[];
   isLoading: boolean;
   selectedTimeOption: SelectOption;
 };
@@ -40,7 +41,7 @@ export const PipelineTriggerCountsLineChart = ({
   pipelines,
   selectedTimeOption,
 }: PipelineTriggerCountsLineChartProps) => {
-  const chartRef = useRef<HTMLDivElement>(null);
+  const chartRef = React.useRef<HTMLDivElement>(null);
   const { xAxis, yAxis } = generateChartData(
     pipelines,
     selectedTimeOption.value,
@@ -49,7 +50,7 @@ export const PipelineTriggerCountsLineChart = ({
   const xAxisData = xAxis;
   const seriesData = yAxis;
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (chartRef.current) {
       // Dispose the previous chart instance
       echarts.dispose(chartRef.current); // eslint-disable-line

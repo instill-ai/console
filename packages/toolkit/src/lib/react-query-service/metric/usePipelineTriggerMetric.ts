@@ -1,7 +1,9 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
 import { env } from "../../../server";
-import { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function usePipelineTriggerMetric({

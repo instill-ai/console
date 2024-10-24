@@ -1,4 +1,4 @@
-import { PipelineTriggerStatus } from "../vdp-sdk";
+import type { PipelineTriggerStatus } from "instill-sdk";
 
 export function parseTriggerStatusLabel(status: PipelineTriggerStatus) {
   const convertedStatus = status
