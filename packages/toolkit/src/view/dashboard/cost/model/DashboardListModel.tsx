@@ -7,7 +7,7 @@ import {
     DataTable,
     PaginationState,
 } from "@instill-ai/design-system";
-import { InstillStore, useInstillStore, useListModelRunsByRequester, useShallow } from "../../../../lib";
+import { InstillStore, useInstillStore, useListModelRunsByRequester, useShallow, useUserNamespaces } from "../../../../lib";
 import { TABLE_PAGE_SIZE } from "../../../pipeline/view-pipeline/constants";
 import { RunsTableSortableColHeader, RunStateLabel } from "../../../../components";
 import { getHumanReadableStringFromTime } from "../../../../server";
@@ -16,16 +16,28 @@ import { ModelRun } from "instill-sdk";
 const selector = (store: InstillStore) => ({
     accessToken: store.accessToken,
     enabledQuery: store.enabledQuery,
+    navigationNamespaceAnchor: store.navigationNamespaceAnchor,
+
 });
 
 export const DashboardListModel = () => {
+    const { accessToken, enabledQuery, navigationNamespaceAnchor } = useInstillStore(useShallow(selector));
+
+    const userNamespaces = useUserNamespaces();
+    const targetNamespace = React.useMemo(() => {
+        if (!userNamespaces.isSuccess || !navigationNamespaceAnchor) {
+            return null;
+        }
+
+        return userNamespaces.data.find(
+            (namespace) => namespace.id === navigationNamespaceAnchor,
+        );
+    }, [userNamespaces.isSuccess, userNamespaces.data, navigationNamespaceAnchor]);
     const [orderBy, setOrderBy] = React.useState<string>();
     const [paginationState, setPaginationState] = React.useState<PaginationState>({
         pageIndex: 0,
         pageSize: TABLE_PAGE_SIZE,
     });
-
-    const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
     const modelRuns = useListModelRunsByRequester({
         enabled: enabledQuery,
@@ -33,6 +45,7 @@ export const DashboardListModel = () => {
         pageSize: paginationState.pageSize,
         pageToken: paginationState.pageIndex.toString(),
         filter: orderBy,
+        requesterUid: targetNamespace?.uid,
     });
 
     const onSortOrderUpdate = (sortValue: string) => {

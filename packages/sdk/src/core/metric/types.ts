@@ -158,26 +158,28 @@ export type ListModelTriggersChartResponse = {
   modelTriggerChartRecords: ModelTriggerChartRecord[];
 };
 
-export type ListModelRunsByRequesterRequest = {
-  pageSize?: number;
-  pageToken?: string;
-  filter?: string;
-};
-
 export type ListModelRunsByRequesterResponse = {
   modelRuns: ModelRun[];
   nextPageToken: string;
   totalSize: number;
 };
 
-export type ListPipelineRunsByRequesterRequest = {
-  pageSize?: number;
-  pageToken?: string;
-  filter?: string;
-};
-
 export type ListPipelineRunsByRequesterResponse = {
   pipelineRuns: PipelineRun[];
   nextPageToken: string;
   totalSize: number;
+};
+
+export type ListModelRunsByRequesterRequest = {
+  pageSize?: number;
+  pageToken?: string;
+  filter?: string;
+  requesterUid?: string;
+};
+
+export type ListPipelineRunsByRequesterRequest = {
+  pageSize?: number;
+  pageToken?: string;
+  filter?: string;
+  requesterUid?: string;
 };

@@ -1,7 +1,5 @@
-import { getQueryString } from "../../helper";
+import { getInstillAdditionalHeaders, getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
-import { ModelRun } from "../../model";
-import { PipelineRun } from "../../vdp";
 import {
   GetPipelineTriggerCountRequest,
   GetPipelineTriggerCountResponse,
@@ -356,20 +354,15 @@ export class MetricClient extends APIResource {
 
   async listModelRunsByRequester(
     props: ListModelRunsByRequesterRequest & {
-      enablePagination: true;
-    },
-  ): Promise<ListModelRunsByRequesterResponse>;
-  async listModelRunsByRequester(
-    props: ListModelRunsByRequesterRequest & {
-      enablePagination: false;
-    },
-  ): Promise<ModelRun[]>;
-  async listModelRunsByRequester(
-    props: ListModelRunsByRequesterRequest & {
       enablePagination?: boolean;
     },
   ) {
-    const { pageSize, pageToken, filter, enablePagination } = props;
+    const { pageSize, pageToken, filter, enablePagination, requesterUid } =
+      props;
+
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+    });
 
     try {
       const queryString = getQueryString({
@@ -379,8 +372,12 @@ export class MetricClient extends APIResource {
         filter,
       });
 
-      const data =
-        await this._client.get<ListModelRunsByRequesterResponse>(queryString);
+      const data = await this._client.get<ListModelRunsByRequesterResponse>(
+        queryString,
+        {
+          additionalHeaders,
+        },
+      );
 
       if (enablePagination) {
         return Promise.resolve(data);
@@ -391,22 +388,18 @@ export class MetricClient extends APIResource {
       return Promise.reject(error);
     }
   }
-  async listPipelineRunsByRequester(
-    props: ListPipelineRunsByRequesterRequest & {
-      enablePagination: true;
-    },
-  ): Promise<ListPipelineRunsByRequesterResponse>;
-  async listPipelineRunsByRequester(
-    props: ListPipelineRunsByRequesterRequest & {
-      enablePagination: false;
-    },
-  ): Promise<PipelineRun[]>;
+
   async listPipelineRunsByRequester(
     props: ListPipelineRunsByRequesterRequest & {
       enablePagination?: boolean;
     },
   ) {
-    const { pageSize, pageToken, filter, enablePagination } = props;
+    const { pageSize, pageToken, filter, enablePagination, requesterUid } =
+      props;
+
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+    });
 
     try {
       const queryString = getQueryString({
@@ -416,10 +409,12 @@ export class MetricClient extends APIResource {
         filter,
       });
 
-      const data =
-        await this._client.get<ListPipelineRunsByRequesterResponse>(
-          queryString,
-        );
+      const data = await this._client.get<ListPipelineRunsByRequesterResponse>(
+        queryString,
+        {
+          additionalHeaders,
+        },
+      );
 
       if (enablePagination) {
         return Promise.resolve(data);
