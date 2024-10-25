@@ -9,26 +9,21 @@ import { DashboardListModel } from "./cost/model/DashboardListModel";
 import { ModelCreditCostTrendChart } from "./cost/model/ModelCreditCostTrendChart";
 import { PipelineCreditCostTrendChart } from "./cost/pipeline/PipelineCreditCostTrendChart";
 import { Nullable } from "instill-sdk";
-import { useAuthenticatedUser } from "../../lib";
+import { useAuthenticatedUser, useCreditConsumptionChartRecords } from "../../lib";
 
 type CostTabProps = {
-    pipelinesChart: {
-        isLoading: boolean;
-        refetch: () => void;
-    };
-    modelsChart: {
-        isLoading: boolean;
-        refetch: () => void;
-    };
     selectedTimeOption: SelectOption;
     setSelectedTimeOption: React.Dispatch<React.SetStateAction<SelectOption>>;
     accessToken: Nullable<string>;
     enabledQuery: boolean;
 };
 
+type ChartData = {
+    dates: string[];
+    values: number[];
+};
+
 export const CostTab = ({
-    pipelinesChart,
-    modelsChart,
     selectedTimeOption,
     setSelectedTimeOption,
     accessToken,
@@ -36,14 +31,63 @@ export const CostTab = ({
 }: CostTabProps) => {
     const router = useRouter();
     const pathname = usePathname();
-
-    // Determine the current view based on the URL
     const costView = pathname.includes("/cost/model") ? "model" : "pipeline";
 
     const me = useAuthenticatedUser({
         enabled: enabledQuery,
         accessToken,
     });
+
+    const start = React.useMemo(() => {
+        if (selectedTimeOption.value === "24h") {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return today.toISOString();
+        }
+        const date = new Date();
+        date.setDate(date.getDate() - parseInt(selectedTimeOption.value));
+        return date.toISOString();
+    }, [selectedTimeOption.value]);
+
+    const stop = React.useMemo(() => {
+        return new Date().toISOString();
+    }, []);
+
+    const creditConsumption = useCreditConsumptionChartRecords({
+        enabled: enabledQuery,
+        accessToken,
+        namespaceId: me.data?.id ?? "",
+        start,
+        stop,
+        aggregationWindow: selectedTimeOption.value === "24h" ? "1h" : "24h",
+    });
+
+    // Extract model and pipeline data
+    const modelChartData: ChartData = React.useMemo(() => {
+        const modelRecord = creditConsumption.data?.creditConsumptionChartRecords?.find(
+            (record) => record.source === "model"
+        );
+        if (modelRecord) {
+            return {
+                dates: modelRecord.timeBuckets,
+                values: modelRecord.amount,
+            };
+        }
+        return { dates: [], values: [] };
+    }, [creditConsumption.data]);
+
+    const pipelineChartData: ChartData = React.useMemo(() => {
+        const pipelineRecord = creditConsumption.data?.creditConsumptionChartRecords?.find(
+            (record) => record.source === "pipeline"
+        );
+        if (pipelineRecord) {
+            return {
+                dates: pipelineRecord.timeBuckets,
+                values: pipelineRecord.amount,
+            };
+        }
+        return { dates: [], values: [] };
+    }, [creditConsumption.data]);
 
     const options = [
         {
@@ -73,8 +117,7 @@ export const CostTab = ({
                             {options.map((option) => (
                                 <button
                                     key={option.value}
-                                    className={`flex items-center p-2 hover:bg-semantic-bg-line ${costView === option.value ? "bg-semantic-bg-line" : ""
-                                        }`}
+                                    className={`flex items-center p-2 hover:bg-semantic-bg-line ${costView === option.value ? "bg-semantic-bg-line" : ""}`}
                                     onClick={() => {
                                         router.push(`/${me?.data?.id}/dashboard/cost/${option.value}`);
                                     }}
@@ -90,13 +133,7 @@ export const CostTab = ({
                     </Popover.Root>
                 </div>
                 <FilterByDay
-                    refetch={() => {
-                        if (costView === "model") {
-                            modelsChart.refetch();
-                        } else {
-                            pipelinesChart.refetch();
-                        }
-                    }}
+                    refetch={() => creditConsumption.refetch()}
                     selectedTimeOption={selectedTimeOption}
                     setSelectedTimeOption={setSelectedTimeOption}
                 />
@@ -105,18 +142,16 @@ export const CostTab = ({
             <div className="mb-2 w-full">
                 {costView === "model" ? (
                     <ModelCreditCostTrendChart
-                        isLoading={modelsChart.isLoading}
-                        selectedTimeOption={selectedTimeOption}
-                        accessToken={accessToken}
-                        enabledQuery={enabledQuery}
+                        dates={modelChartData.dates}
+                        values={modelChartData.values}
+                        isLoading={creditConsumption.isLoading}
                         namespaceId={me.data?.id ?? ""}
                     />
                 ) : (
                     <PipelineCreditCostTrendChart
-                        isLoading={pipelinesChart.isLoading}
-                        selectedTimeOption={selectedTimeOption}
-                        accessToken={accessToken}
-                        enabledQuery={enabledQuery}
+                        dates={pipelineChartData.dates}
+                        values={pipelineChartData.values}
+                        isLoading={creditConsumption.isLoading}
                         namespaceId={me.data?.id ?? ""}
                     />
                 )}

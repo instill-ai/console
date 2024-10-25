@@ -1,69 +1,26 @@
+'use client'
 import * as React from "react";
 import * as echarts from "echarts";
-import { Icons, Tooltip, SelectOption } from "@instill-ai/design-system";
-import { useCreditConsumptionChartRecords } from "../../../../lib/react-query-service/metric";
-import { Nullable } from "instill-sdk";
+import { Icons, Tooltip } from "@instill-ai/design-system";
 import Link from "next/link";
 
 type PipelineCreditCostTrendChartProps = {
+    dates: string[];
+    values: number[];
     isLoading: boolean;
-    selectedTimeOption: SelectOption;
-    accessToken: Nullable<string>;
-    enabledQuery: boolean;
-    namespaceId: Nullable<string>
-    
+    namespaceId: string;
 };
 
 export const PipelineCreditCostTrendChart = ({
+    dates,
+    values,
     isLoading,
-    selectedTimeOption,
-    accessToken,
-    enabledQuery,
-    namespaceId
+    namespaceId,
 }: PipelineCreditCostTrendChartProps) => {
     const chartRef = React.useRef<HTMLDivElement>(null);
 
-    const start = React.useMemo(() => {
-        if (selectedTimeOption.value === "24h") {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            return today.toISOString();
-        }
-        const date = new Date();
-        date.setDate(date.getDate() - parseInt(selectedTimeOption.value));
-        return date.toISOString();
-    }, [selectedTimeOption.value]);
-
-    const stop = React.useMemo(() => {
-        return new Date().toISOString();
-    }, []);
-
-    const creditConsumption = useCreditConsumptionChartRecords({
-        enabled: enabledQuery,
-        accessToken,
-        namespaceId: namespaceId,
-        start,
-        stop,
-        aggregationWindow: selectedTimeOption.value === "24h" ? "1h" : "24h",
-    });
-
-    const pipelineData = React.useMemo(() => {
-        if (!creditConsumption.data) return { dates: [], values: [] };
-
-        const pipelineRecord = creditConsumption.data.creditConsumptionChartRecords?.find(
-            (record) => record.source === "pipeline"
-        );
-
-        if (!pipelineRecord) return { dates: [], values: [] };
-
-        return {
-            dates: pipelineRecord.timeBuckets,
-            values: pipelineRecord.amount,
-        };
-    }, [creditConsumption.data]);
-
     React.useEffect(() => {
-        if (chartRef.current && pipelineData.dates.length > 0) {
+        if (chartRef.current && dates.length > 0) {
             const chart = echarts.init(chartRef.current, null, {
                 renderer: "svg",
             });
@@ -95,7 +52,7 @@ export const PipelineCreditCostTrendChart = ({
                 },
                 xAxis: {
                     type: "category",
-                    data: pipelineData.dates,
+                    data: dates,
                     axisLabel: {
                         formatter: (value: string) => {
                             const date = new Date(value);
@@ -113,7 +70,7 @@ export const PipelineCreditCostTrendChart = ({
                     {
                         name: "Pipeline",
                         type: "bar",
-                        data: pipelineData.values,
+                        data: values,
                         itemStyle: { color: "#3B7AF7" },
                         barWidth: "24px",
                     },
@@ -126,7 +83,7 @@ export const PipelineCreditCostTrendChart = ({
                 chart.dispose();
             };
         }
-    }, [isLoading, pipelineData]);
+    }, [dates, values]);
 
     return (
         <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">
@@ -178,10 +135,14 @@ export const PipelineCreditCostTrendChart = ({
                     </Link>
                 </div>
                 <div className="px-8 pb-8 w-full" style={{ height: '460px' }}>
-                    <div
-                        ref={chartRef}
-                        style={{ width: "100%", height: "400px" }}
-                    />
+                    {isLoading ? (
+                        <div>Loading...</div>
+                    ) : (
+                        <div
+                            ref={chartRef}
+                            style={{ width: "100%", height: "400px" }}
+                        />
+                    )}
                 </div>
             </div>
         </div>

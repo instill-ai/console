@@ -1,68 +1,26 @@
+'use client';
 import * as React from "react";
 import * as echarts from "echarts";
-import { Icons, Tooltip, SelectOption } from "@instill-ai/design-system";
-import { useCreditConsumptionChartRecords } from "../../../../lib/react-query-service/metric";
-import { Nullable } from "instill-sdk";
+import { Icons, Tooltip } from "@instill-ai/design-system";
+import Link from "next/link";
 
 type ModelCreditCostTrendChartProps = {
+    dates: string[];
+    values: number[];
     isLoading: boolean;
-    selectedTimeOption: SelectOption;
-    accessToken: Nullable<string>;
-    enabledQuery: boolean;
-    namespaceId: Nullable<string>
+    namespaceId: string;
 };
 
 export const ModelCreditCostTrendChart = ({
+    dates,
+    values,
     isLoading,
-    selectedTimeOption,
-    accessToken,
-    enabledQuery,
-    namespaceId
+    namespaceId,
 }: ModelCreditCostTrendChartProps) => {
     const chartRef = React.useRef<HTMLDivElement>(null);
 
-    const start = React.useMemo(() => {
-        if (selectedTimeOption.value === "24h") {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            return today.toISOString();
-        }
-        const date = new Date();
-        date.setDate(date.getDate() - parseInt(selectedTimeOption.value));
-        return date.toISOString();
-    }, [selectedTimeOption.value]);
-
-    const stop = React.useMemo(() => {
-        return new Date().toISOString();
-    }, []);
-
-    const creditConsumption = useCreditConsumptionChartRecords({
-        enabled: enabledQuery,
-        accessToken,
-        namespaceId: namespaceId,
-        start,
-        stop,
-        aggregationWindow: selectedTimeOption.value === "24h" ? "1h" : "24h",
-    });
-
-
-    const modelData = React.useMemo(() => {
-        if (!creditConsumption.data) return { dates: [], values: [] };
-
-        const modelRecord = creditConsumption.data.creditConsumptionChartRecords?.find(
-            (record) => record.source === "model"
-        );
-
-        if (!modelRecord) return { dates: [], values: [] };
-
-        return {
-            dates: modelRecord.timeBuckets,
-            values: modelRecord.amount,
-        };
-    }, [creditConsumption.data, isLoading]);
-
     React.useEffect(() => {
-        if (chartRef.current && modelData.dates.length > 0) {
+        if (chartRef.current && dates.length > 0) {
             const chart = echarts.init(chartRef.current, null, {
                 renderer: "svg",
             });
@@ -94,7 +52,7 @@ export const ModelCreditCostTrendChart = ({
                 },
                 xAxis: {
                     type: "category",
-                    data: modelData.dates,
+                    data: dates,
                     axisLabel: {
                         formatter: (value: string) => {
                             const date = new Date(value);
@@ -112,7 +70,7 @@ export const ModelCreditCostTrendChart = ({
                     {
                         name: "Model",
                         type: "bar",
-                        data: modelData.values,
+                        data: values,
                         itemStyle: { color: "#2EC291" },
                         barWidth: "24px",
                     },
@@ -125,7 +83,7 @@ export const ModelCreditCostTrendChart = ({
                 chart.dispose();
             };
         }
-    }, [modelData]);
+    }, [dates, values]);
 
     return (
         <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">
@@ -169,15 +127,22 @@ export const ModelCreditCostTrendChart = ({
                             </Tooltip.Root>
                         </Tooltip.Provider>
                     </div>
-                    <div className="text-semantic-fg-secondary product-button-button-2 px-3 py-1 border border-semantic-fg-disabled rounded-full">
+                    <Link
+                        className="text-semantic-fg-secondary product-button-button-2 px-3 py-1 border border-semantic-fg-disabled rounded-full"
+                        href={`/${namespaceId}/settings/billing/credits`}
+                    >
                         View billing details
-                    </div>
+                    </Link>
                 </div>
                 <div className="px-8 pb-8 w-full" style={{ height: '460px' }}>
-                    <div
-                        ref={chartRef}
-                        style={{ width: "100%", height: "400px" }}
-                    />
+                    {isLoading ? (
+                        <div>Loading...</div>
+                    ) : (
+                        <div
+                            ref={chartRef}
+                            style={{ width: "100%", height: "400px" }}
+                        />
+                    )}
                 </div>
             </div>
         </div>
