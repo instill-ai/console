@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import * as echarts from "echarts"
-import { Icons, Tooltip } from "@instill-ai/design-system"
+import { Icons, Skeleton, Tooltip } from "@instill-ai/design-system"
 import Link from "next/link"
 import { Nullable } from "instill-sdk"
 
@@ -27,14 +27,16 @@ export const CreditCostTrendChart = ({
     const chartColor = type === "model" ? "#2EC291" : "#3B7AF7"
 
     React.useEffect(() => {
-        if (!chartRef.current || dates.length === 0) return
+        if (!chartRef.current || !dates.length) return
 
+        // Always clean up previous instance first
         if (chartInstanceRef.current) {
             chartInstanceRef.current.dispose()
+            chartInstanceRef.current = null
         }
 
         const chart = echarts.init(chartRef.current, null, {
-            renderer: "svg",
+            renderer: "svg"
         })
 
         chartInstanceRef.current = chart
@@ -45,7 +47,7 @@ export const CreditCostTrendChart = ({
                 axisPointer: {
                     type: "shadow",
                 },
-                formatter: function (params: { axisValue: string; value: number }[]) {
+                formatter: (params: { axisValue: string; value: number }[]) => {
                     const date = new Date(params[0]?.axisValue ?? "")
                     const formattedDate = `${date.getDate()} ${date.toLocaleString(
                         "default",
@@ -94,13 +96,13 @@ export const CreditCostTrendChart = ({
         chart.setOption(option)
 
         const handleResize = () => {
-            chart?.resize()
+            chartInstanceRef.current?.resize()
         }
 
-        window.addEventListener('resize', handleResize)
+        window.addEventListener("resize", handleResize)
 
         return () => {
-            window.removeEventListener('resize', handleResize)
+            window.removeEventListener("resize", handleResize)
             if (chartInstanceRef.current) {
                 chartInstanceRef.current.dispose()
                 chartInstanceRef.current = null
@@ -108,11 +110,44 @@ export const CreditCostTrendChart = ({
         }
     }, [dates, values, chartColor, type])
 
+    // Resize on loading state change
     React.useEffect(() => {
-        if (chartInstanceRef.current) {
-            chartInstanceRef.current.resize()
-        }
+        chartInstanceRef.current?.resize()
     }, [isLoading])
+
+    const LoadingSkeleton = () => (
+        <div className="w-full h-[400px] flex flex-col justify-between">
+            {/* Y-axis labels */}
+            <div className="absolute left-8 h-full flex flex-col justify-between py-8">
+                <Skeleton className="h-4 w-12" />
+                <Skeleton className="h-4 w-12" />
+                <Skeleton className="h-4 w-12" />
+                <Skeleton className="h-4 w-12" />
+            </div>
+
+            {/* Graph bars */}
+            <div className="flex items-end justify-between w-full h-full pl-16 space-x-12">
+                <Skeleton className="w-6 h-[60%] rounded-t-sm rounded-b-none" />
+                <Skeleton className="w-6 h-[80%] rounded-t-sm rounded-b-none" />
+                <Skeleton className="w-6 h-[40%] rounded-t-sm rounded-b-none" />
+                <Skeleton className="w-6 h-[70%] rounded-t-sm rounded-b-none" />
+                <Skeleton className="w-6 h-[55%] rounded-t-sm rounded-b-none" />
+                <Skeleton className="w-6 h-[65%] rounded-t-sm rounded-b-none" />
+                <Skeleton className="w-6 h-[45%] rounded-t-sm rounded-b-none" />
+            </div>
+
+            {/* X-axis labels */}
+            <div className="flex justify-between w-full pl-16 pt-4">
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-16" />
+            </div>
+        </div>
+    )
 
     return (
         <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">
@@ -163,9 +198,9 @@ export const CreditCostTrendChart = ({
                         View billing details
                     </Link>
                 </div>
-                <div className="px-8 pb-8 w-full" style={{ height: "460px" }}>
+                <div className="px-8 pb-8 w-full relative" style={{ height: "460px" }}>
                     {isLoading ? (
-                        <div>Loading...</div>
+                        <LoadingSkeleton />
                     ) : (
                         <div
                             ref={chartRef}
