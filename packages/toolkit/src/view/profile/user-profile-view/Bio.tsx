@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { UserMembership } from "instill-sdk";
 
 import {
   Button,
@@ -14,7 +15,6 @@ import {
 } from "@instill-ai/design-system";
 
 import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
-import { UserMembership } from "../../../lib";
 
 export const UserBioSkeleton = () => {
   return (

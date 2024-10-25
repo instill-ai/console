@@ -1,10 +1,9 @@
+"use client";
+
+import type { Nullable, UpdateUserMembershipRequest } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
-import {
-  updateUserMembershipMutation,
-  UpdateUserMembershipPayload,
-} from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function useUpdateUserMembership() {
   const queryClient = useQueryClient();
@@ -13,24 +12,27 @@ export function useUpdateUserMembership() {
       payload,
       accessToken,
     }: {
-      payload: UpdateUserMembershipPayload;
+      payload: UpdateUserMembershipRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("AccessToken not provided"));
       }
 
-      if (!payload.organizationID) {
+      if (!payload.organizationId) {
         return Promise.reject(new Error("Organization name not provided"));
       }
-      if (!payload.userID) {
+
+      if (!payload.userId) {
         return Promise.reject(new Error("User name not provided"));
       }
 
-      const membership = await updateUserMembershipMutation({
-        payload,
+      const client = getInstillAPIClient({
         accessToken,
       });
+
+      const membership =
+        await client.core.membership.updateUserMembership(payload);
 
       return Promise.resolve({ membership });
     },

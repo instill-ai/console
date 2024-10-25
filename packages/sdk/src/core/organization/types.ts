@@ -71,7 +71,7 @@ export type CreateOrganizationResponse = {
 };
 
 export type GetOrganizationRequest = {
-  name: string;
+  organizationId: string;
 };
 
 export type GetOrganizationResponse = {
@@ -79,12 +79,12 @@ export type GetOrganizationResponse = {
 };
 
 export type DeleteOrganizationRequest = {
-  name: string;
+  organizationId: string;
 };
 
 export type UpdateOrganizationRequest = {
-  name: string;
-  id?: string;
+  organizationId: string;
+  newOrganizationId?: string;
   profile?: Partial<OrganizationProfile>;
 };
 

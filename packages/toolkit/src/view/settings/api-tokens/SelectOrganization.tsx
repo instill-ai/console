@@ -31,7 +31,7 @@ export const SelectOrganization = () => {
 
   const organizations = useUserMemberships({
     enabled: enabledQuery && me.isSuccess,
-    userID: me.isSuccess ? me.data.id : null,
+    userId: me.isSuccess ? me.data.id : null,
     accessToken,
   });
 

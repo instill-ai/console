@@ -1,38 +1,48 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
-import { deleteOrganizationMembershipMutation } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
+import { getUseOrganizationMembershipsQueryKey } from "./use-organization-memberships/server";
+import { getUseUserMembershipsQueryKey } from "./useUserMemberships";
 
 export function useDeleteOrganizationMembership() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
-      organizationID,
-      userID,
+      organizationId,
+      userId,
       accessToken,
     }: {
-      organizationID: string;
-      userID: string;
+      organizationId: string;
+      userId: string;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("AccessToken not provided"));
       }
 
-      await deleteOrganizationMembershipMutation({
-        organizationID,
-        userID,
+      const client = getInstillAPIClient({
         accessToken,
       });
 
-      return Promise.resolve({ organizationID, userID });
-    },
-    onSuccess: ({ organizationID, userID }) => {
-      queryClient.invalidateQueries({
-        queryKey: ["organizations", organizationID, "memberships"],
+      await client.core.membership.deleteOrganizationMembership({
+        organizationId,
+        userId,
       });
+
+      return Promise.resolve({ organizationId, userId });
+    },
+    onSuccess: ({ organizationId, userId }) => {
+      const organizationMembershipsQueryKey =
+        getUseOrganizationMembershipsQueryKey(organizationId);
       queryClient.invalidateQueries({
-        queryKey: ["users", userID, "memberships"],
+        queryKey: organizationMembershipsQueryKey,
+      });
+      const userMembershipsQueryKey = getUseUserMembershipsQueryKey(userId);
+      queryClient.invalidateQueries({
+        queryKey: userMembershipsQueryKey,
       });
     },
   });

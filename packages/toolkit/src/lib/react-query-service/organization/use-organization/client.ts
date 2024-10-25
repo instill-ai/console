@@ -1,32 +1,32 @@
 "use client";
 
+import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
-import type { Nullable } from "../../../type";
 import { fetchOrganization, getUseOrganizationQueryKey } from "./server";
 
 export function useOrganization({
-  organizationID,
+  organizationId,
   accessToken,
   enabled,
 }: {
-  organizationID: Nullable<string>;
+  organizationId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
 }) {
   let enableQuery = false;
 
-  if (organizationID && enabled) {
+  if (organizationId && enabled) {
     enableQuery = true;
   }
 
-  const queryKey = getUseOrganizationQueryKey(organizationID);
+  const queryKey = getUseOrganizationQueryKey(organizationId);
 
   return useQuery({
     queryKey,
     queryFn: async () => {
       return await fetchOrganization({
-        organizationID,
+        organizationId,
         accessToken,
       });
     },

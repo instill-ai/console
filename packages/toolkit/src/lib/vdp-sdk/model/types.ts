@@ -1,9 +1,14 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
-import type { ModelWatchState, Nullable, Pipeline, User } from "instill-sdk";
+import type {
+  ModelWatchState,
+  Nullable,
+  Organization,
+  Pipeline,
+  User,
+} from "instill-sdk";
 
 import { InstillJSONSchema } from "../../use-instill-form";
-import { Organization } from "../organization";
 import { Permission, Visibility } from "../types";
 
 export type ModelReleaseStage =

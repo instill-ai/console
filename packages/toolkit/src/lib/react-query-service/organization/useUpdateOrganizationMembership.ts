@@ -1,10 +1,14 @@
+"use client";
+
+import type {
+  Nullable,
+  UpdateOrganizationMembershipRequest,
+} from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
-import {
-  updateOrganizationMembershipMutation,
-  UpdateOrganizationMembershipPayload,
-} from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
+import { getUseOrganizationMembershipsQueryKey } from "./use-organization-memberships/server";
+import { getUseUserMembershipsQueryKey } from "./useUserMemberships";
 
 export function useUpdateOrganizationMembership() {
   const queryClient = useQueryClient();
@@ -13,26 +17,41 @@ export function useUpdateOrganizationMembership() {
       payload,
       accessToken,
     }: {
-      payload: UpdateOrganizationMembershipPayload;
+      payload: UpdateOrganizationMembershipRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("AccessToken not provided"));
       }
 
-      const membership = await updateOrganizationMembershipMutation({
-        payload,
+      if (!payload.organizationId) {
+        return Promise.reject(new Error("Organization ID not provided"));
+      }
+
+      if (!payload.userId) {
+        return Promise.reject(new Error("User ID not provided"));
+      }
+
+      const client = getInstillAPIClient({
         accessToken,
       });
+
+      const membership =
+        await client.core.membership.updateOrganizationMembership(payload);
 
       return Promise.resolve({ membership });
     },
     onSuccess: ({ membership }) => {
+      const organizationMembershipsQueryKey =
+        getUseOrganizationMembershipsQueryKey(membership.organization.id);
       queryClient.invalidateQueries({
-        queryKey: ["organizations", membership.organization.id, "memberships"],
+        queryKey: organizationMembershipsQueryKey,
       });
+      const userMembershipsQueryKey = getUseUserMembershipsQueryKey(
+        membership.user.id,
+      );
       queryClient.invalidateQueries({
-        queryKey: ["users", membership.user.id, "memberships"],
+        queryKey: userMembershipsQueryKey,
       });
     },
   });

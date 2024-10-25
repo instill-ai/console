@@ -1,11 +1,15 @@
+"use client";
+
+import type {
+  CreateOrganizationRequest,
+  Nullable,
+  Organization,
+} from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
-import {
-  createOrganizationMutation,
-  CreateOrganizationPayload,
-  Organization,
-} from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
+import { getUseOrganizationQueryKey } from "./use-organization/server";
+import { getUseOrganizationsQueryKey } from "./use-organizations/server";
 
 export function useCreateOrganization() {
   const queryClient = useQueryClient();
@@ -14,26 +18,31 @@ export function useCreateOrganization() {
       payload,
       accessToken,
     }: {
-      payload: CreateOrganizationPayload;
+      payload: CreateOrganizationRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const organization = await createOrganizationMutation({
-        payload,
+      const client = getInstillAPIClient({
         accessToken,
       });
+
+      const organization =
+        await client.core.organization.createOrganization(payload);
 
       return Promise.resolve({ organization });
     },
     onSuccess: ({ organization }) => {
-      queryClient.setQueryData<Organization[]>(["organizations"], (old) =>
+      const organizationsQueryKey = getUseOrganizationsQueryKey();
+      queryClient.setQueryData<Organization[]>(organizationsQueryKey, (old) =>
         old ? [...old, organization] : [organization],
       );
+
+      const organizationQueryKey = getUseOrganizationQueryKey(organization.id);
       queryClient.setQueryData<Organization>(
-        ["organizations", organization],
+        organizationQueryKey,
         organization,
       );
     },

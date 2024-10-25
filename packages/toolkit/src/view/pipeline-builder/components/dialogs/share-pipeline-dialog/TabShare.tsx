@@ -1,7 +1,11 @@
 "use client";
 
+import type {
+  OrganizationOwner,
+  UpdateNamespacePipelineRequest,
+  UserOwner,
+} from "instill-sdk";
 import * as React from "react";
-import { UpdateNamespacePipelineRequest } from "instill-sdk";
 
 import { Button, Icons, Separator, useToast } from "@instill-ai/design-system";
 
@@ -10,13 +14,11 @@ import { NamespaceAvatarWithFallback } from "../../../../../components/Namespace
 import {
   InstillStore,
   Nullable,
-  OrganizationOwner,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
   useInstillStore,
   useNamespacePipeline,
-  UserOwner,
   useShallow,
   useUpdateNamespacePipeline,
 } from "../../../../../lib";

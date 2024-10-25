@@ -19,11 +19,11 @@ export class SubscriptionClient extends APIResource {
   }
 
   async getOrganizationSubscription({
-    organizationName,
+    organizationId,
   }: GetOrganizationSubscriptionRequest) {
     try {
       const data = await this._client.get<GetOrganizationSubscriptionResponse>(
-        `/${organizationName}/subscription`,
+        `/organizations/${organizationId}/subscription`,
       );
       return Promise.resolve(data.subscription);
     } catch (error) {

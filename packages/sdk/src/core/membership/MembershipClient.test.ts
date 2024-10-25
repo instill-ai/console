@@ -15,7 +15,7 @@ test("listUserMemberships", async () => {
   });
 
   const memberships = await client.core.membership.listUserMemberships({
-    userName: "users/uid",
+    userId: "uid",
   });
 
   const parsedData =
@@ -32,7 +32,8 @@ test("getUserMembership", async () => {
   });
 
   const membership = await client.core.membership.getUserMembership({
-    userMembershipName: "users/uid/memberships/mid",
+    userId: "uid",
+    organizationId: "oid",
     view: "FULL",
   });
 
@@ -49,7 +50,7 @@ test("listOrganizationMemberships", async () => {
   });
 
   const memberships = await client.core.membership.listOrganizationMemberships({
-    organizationName: "organizations/oid",
+    organizationId: "oid",
   });
 
   const parsedData =
@@ -66,7 +67,8 @@ test("getOrganizationMembership", async () => {
   });
 
   const membership = await client.core.membership.getOrganizationMembership({
-    organizationMembershipName: "organizations/oid/memberships/mid",
+    userId: "mid",
+    organizationId: "oid",
     view: "FULL",
   });
 

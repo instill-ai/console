@@ -48,7 +48,7 @@ export const UserProfileCard = ({
 
   const memberships = useUserMemberships({
     enabled: enabledQuery && me.isSuccess,
-    userID: me.isSuccess ? me.data.id : null,
+    userId: me.isSuccess ? me.data.id : null,
     accessToken,
   });
 

@@ -1,28 +1,36 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../vdp-sdk";
 
+export function getUseOrganizationSubscriptionQueryKey(
+  organizationId: Nullable<string>,
+) {
+  return ["organization", organizationId, "subscription"];
+}
+
 export function useOrganizationSubscription({
-  organizationID,
+  organizationId,
   accessToken,
   enabled,
 }: {
-  organizationID: Nullable<string>;
+  organizationId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
 }) {
   let enableQuery = false;
 
-  if (organizationID && enabled) {
+  if (organizationId && enabled) {
     enableQuery = true;
   }
 
   return useQuery({
-    queryKey: ["organization", organizationID, "subscription"],
+    queryKey: getUseOrganizationSubscriptionQueryKey(organizationId),
     queryFn: async () => {
-      if (!organizationID) {
-        return Promise.reject(new Error("organizationID not provided"));
+      if (!organizationId) {
+        return Promise.reject(new Error("organizationId not provided"));
       }
 
       if (!accessToken) {
@@ -35,7 +43,7 @@ export function useOrganizationSubscription({
 
       const subscription =
         await client.core.subscription.getOrganizationSubscription({
-          organizationName: `organizations/${organizationID}`,
+          organizationId,
         });
 
       return Promise.resolve(subscription);

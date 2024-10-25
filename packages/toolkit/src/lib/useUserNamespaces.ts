@@ -46,7 +46,7 @@ export function useUserNamespaces(): UseUserNamespacesReturn {
 
   const userMemberships = useUserMemberships({
     enabled: me.isSuccess,
-    userID: me.isSuccess ? me.data.id : null,
+    userId: me.isSuccess ? me.data.id : null,
     accessToken,
   });
 

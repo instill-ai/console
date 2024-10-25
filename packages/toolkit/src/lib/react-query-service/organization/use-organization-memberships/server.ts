@@ -1,24 +1,33 @@
+import type { Nullable } from "instill-sdk";
 import { QueryClient } from "@tanstack/react-query";
 
-import { Nullable } from "../../../type";
-import { getOrganizationMembershipsQuery } from "../../../vdp-sdk";
+import { getInstillAPIClient } from "../../../vdp-sdk";
 
 export async function fetchOrganizationMemberships({
-  organizationID,
+  organizationId,
   accessToken,
 }: {
-  organizationID: Nullable<string>;
+  organizationId: Nullable<string>;
   accessToken: Nullable<string>;
 }) {
   try {
-    if (!organizationID) {
-      return Promise.reject(new Error("organizationID not provided"));
+    if (!organizationId) {
+      return Promise.reject(new Error("organizationId not provided"));
     }
 
-    const membership = await getOrganizationMembershipsQuery({
-      organizationID,
+    if (!accessToken) {
+      return Promise.reject(new Error("accessToken not provided"));
+    }
+
+    const client = getInstillAPIClient({
       accessToken,
     });
+
+    const membership = await client.core.membership.listOrganizationMemberships(
+      {
+        organizationId,
+      },
+    );
 
     return Promise.resolve(membership);
   } catch (error) {
@@ -27,26 +36,26 @@ export async function fetchOrganizationMemberships({
 }
 
 export function getUseOrganizationMembershipsQueryKey(
-  organizationID: Nullable<string>,
+  organizationId: Nullable<string>,
 ) {
-  return ["organizations", organizationID, "memberships"];
+  return ["organizations", organizationId, "memberships"];
 }
 
 export function prefetchOrganizationMemberships({
-  organizationID,
+  organizationId,
   accessToken,
   queryClient,
 }: {
-  organizationID: Nullable<string>;
+  organizationId: Nullable<string>;
   accessToken: Nullable<string>;
   queryClient: QueryClient;
 }) {
-  const queryKey = getUseOrganizationMembershipsQueryKey(organizationID);
+  const queryKey = getUseOrganizationMembershipsQueryKey(organizationId);
   return queryClient.prefetchQuery({
     queryKey,
     queryFn: async () => {
       return await fetchOrganizationMemberships({
-        organizationID,
+        organizationId,
         accessToken,
       });
     },
