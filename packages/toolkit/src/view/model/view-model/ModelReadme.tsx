@@ -1,19 +1,18 @@
 "use client";
 
-import { useMemo } from "react";
+import * as React from "react";
+import { Model, UpdateNamespaceModelRequest } from "instill-sdk";
 
 import { useToast } from "@instill-ai/design-system";
 
 import { ReadmeEditor } from "../../../components";
 import {
   InstillStore,
-  Model,
   sendAmplitudeData,
-  UpdateUserModelPayload,
   useAmplitudeCtx,
   useInstillStore,
   useShallow,
-  useUpdateUserModel,
+  useUpdateNamespaceModel,
 } from "../../../lib";
 
 const selector = (store: InstillStore) => ({
@@ -29,23 +28,30 @@ export const ModelReadme = ({ model, onUpdate }: ModelReadmeProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken } = useInstillStore(useShallow(selector));
   const { toast } = useToast();
-  const canEdit = useMemo(() => {
+  const canEdit = React.useMemo(() => {
     return !!accessToken && !!model?.permission.canEdit;
   }, [model, accessToken]);
 
-  const updateUserModel = useUpdateUserModel();
+  const updateNamespaceModel = useUpdateNamespaceModel();
 
   const onUpdateModelReadme = async (readme: string) => {
     if (!accessToken || !model) {
       return;
     }
 
-    const payload: UpdateUserModelPayload = {
+    const namespaceId = model.name.split("/")[2];
+
+    if (!namespaceId) {
+      return;
+    }
+
+    const payload: UpdateNamespaceModelRequest = {
+      namespaceId,
+      modelId: model.id,
       readme,
     };
 
-    await updateUserModel.mutateAsync({
-      name: model.name,
+    await updateNamespaceModel.mutateAsync({
       payload,
       accessToken,
     });

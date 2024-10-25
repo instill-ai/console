@@ -1,9 +1,13 @@
 "use client";
 
+import type {
+  CreateNamespaceModelRequest,
+  ModelTask,
+  Visibility,
+} from "instill-sdk";
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Visibility } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -29,15 +33,13 @@ import {
   resourceIdPrefix,
 } from "../../constant";
 import {
-  CreateUserModelPayload,
   InstillStore,
-  ModelTask,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useCreateUserModel,
+  useCreateNamespaceModel,
   useInstillStore,
-  useModelRegions,
+  useModelAvailableRegions,
   useRouteInfo,
   useShallow,
 } from "../../lib";
@@ -75,6 +77,7 @@ const CreateModelSchema = z
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
   navigationNamespaceAnchor: store.navigationNamespaceAnchor,
   updateNavigationNamespaceAnchor: store.updateNavigationNamespaceAnchor,
 });
@@ -82,6 +85,7 @@ const selector = (store: InstillStore) => ({
 export const CreateModelForm = () => {
   const {
     accessToken,
+    enabledQuery,
     navigationNamespaceAnchor,
     updateNavigationNamespaceAnchor,
   } = useInstillStore(useShallow(selector));
@@ -115,7 +119,10 @@ export const CreateModelForm = () => {
     formState: { isDirty },
   } = form;
 
-  const modelRegions = useModelRegions({ accessToken });
+  const modelRegions = useModelAvailableRegions({
+    accessToken,
+    enabledQuery,
+  });
 
   React.useEffect(() => {
     if (regionOptions.length && Object.keys(hardwareOptions).length) {
@@ -182,7 +189,7 @@ export const CreateModelForm = () => {
     }
   }, [form, modelRegions.isSuccess, modelRegions.data, regionOptions.length]);
 
-  const createModel = useCreateUserModel();
+  const createModel = useCreateNamespaceModel();
   async function onSubmit(data: z.infer<typeof CreateModelSchema>) {
     if (
       !routeInfo.isSuccess ||
@@ -194,27 +201,29 @@ export const CreateModelForm = () => {
 
     setCreating(true);
 
-    const payload: CreateUserModelPayload = {
-      id: formattedModelId,
-      description: data.description,
-      visibility: data.visibility ?? "VISIBILITY_PUBLIC",
-      region: data.region,
-      hardware:
-        data.hardware === "Custom" ? data.hardwareCustom || "" : data.hardware,
-      task: data.task,
-      modelDefinition: "model-definitions/container",
-      configuration: {},
-    };
-
     const targetNamespace = userNamespaces.data.find(
       (namespace) => namespace.id === data.namespaceId,
     );
 
     if (targetNamespace) {
+      const payload: CreateNamespaceModelRequest = {
+        namespaceId: targetNamespace.id,
+        id: formattedModelId,
+        description: data.description,
+        visibility: data.visibility ?? "VISIBILITY_PUBLIC",
+        region: data.region,
+        hardware:
+          data.hardware === "Custom"
+            ? data.hardwareCustom || ""
+            : data.hardware,
+        task: data.task,
+        modelDefinition: "model-definitions/container",
+        configuration: {},
+      };
+
       try {
         await createModel.mutateAsync({
           accessToken,
-          entityName: targetNamespace.name,
           payload,
         });
 

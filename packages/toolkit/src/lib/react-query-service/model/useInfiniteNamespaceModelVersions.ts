@@ -1,39 +1,42 @@
-import {
-  InfiniteData,
-  useInfiniteQuery,
-  UseInfiniteQueryResult,
-} from "@tanstack/react-query";
+"use client";
 
-import type { Nullable } from "../../type";
-import {
-  getInstillModelAPIClient,
-  ListModelVersionsResponse,
-} from "../../vdp-sdk";
+import type { Nullable } from "instill-sdk";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
-export function useInfiniteModelVersions({
+import { getInstillModelAPIClient } from "../../vdp-sdk";
+import { queryKeyStore } from "../queryKeyStore";
+
+export function useInfiniteNamespaceModelVersions({
   accessToken,
   enabledQuery,
-  modelName,
   pageSize,
+  namespaceId,
+  modelId,
 }: {
   accessToken: Nullable<string>;
   enabledQuery: boolean;
-  modelName: Nullable<string>;
-  pageSize?: number;
-}): UseInfiniteQueryResult<InfiniteData<ListModelVersionsResponse>, Error> {
+  pageSize: Nullable<number>;
+  namespaceId: Nullable<string>;
+  modelId: Nullable<string>;
+}) {
   let enabled = false;
 
-  if (modelName && enabledQuery) {
+  if (namespaceId && modelId && enabledQuery) {
     enabled = true;
   }
 
-  const queryKey = ["available-model-versions", modelName, "infinite"];
-
   return useInfiniteQuery({
-    queryKey,
+    queryKey: queryKeyStore.model.getUseInfiniteNamespaceModelVersionsQueryKey({
+      namespaceId,
+      modelId,
+    }),
     queryFn: async ({ pageParam }) => {
-      if (!modelName) {
-        return Promise.reject(new Error("modelName not provided"));
+      if (!namespaceId) {
+        return Promise.reject(new Error("namespaceId not provided"));
+      }
+
+      if (!modelId) {
+        return Promise.reject(new Error("modelId not provided"));
       }
 
       const client = getInstillModelAPIClient({
@@ -43,8 +46,9 @@ export function useInfiniteModelVersions({
       const versions = await client.model.listNamespaceModelVersions({
         pageSize: pageSize || undefined,
         page: pageParam || undefined,
-        namespaceModelName: modelName,
         enablePagination: true,
+        namespaceId,
+        modelId,
       });
 
       return Promise.resolve(versions);

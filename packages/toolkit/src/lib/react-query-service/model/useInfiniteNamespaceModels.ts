@@ -1,46 +1,55 @@
 "use client";
 
-import type { Nullable } from "instill-sdk";
+import type { Nullable, Visibility } from "instill-sdk";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { env } from "../../../server";
 import { getInstillModelAPIClient } from "../../vdp-sdk";
 import { queryKeyStore } from "../queryKeyStore";
 
-export function useInfiniteModels({
+export function useInfiniteNamespaceModels({
+  namespaceId,
   accessToken,
-  enabledQuery,
+  enabled,
   filter,
   visibility,
   orderBy,
-  disabledViewFull,
 }: {
+  namespaceId: Nullable<string>;
   accessToken: Nullable<string>;
-  enabledQuery: boolean;
-  disabledViewFull?: boolean;
+  enabled: boolean;
   filter: Nullable<string>;
-  visibility: Nullable<string>;
+  visibility: Nullable<Visibility>;
   orderBy: Nullable<string>;
 }) {
   return useInfiniteQuery({
-    queryKey: queryKeyStore.model.getUseInfiniteModelsQueryKey({
+    queryKey: queryKeyStore.model.getUseInfiniteNamespaceModelsQueryKey(
+      namespaceId,
       filter,
       visibility,
       orderBy,
-    }),
+    ),
     queryFn: async ({ pageParam }) => {
+      if (!accessToken) {
+        return Promise.reject(new Error("accessToken not provided"));
+      }
+
+      if (!namespaceId) {
+        return Promise.reject(new Error("namespaceId not provided"));
+      }
+
       const client = getInstillModelAPIClient({
-        accessToken: accessToken ?? undefined,
+        accessToken,
       });
 
-      const models = await client.model.listModels({
-        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE") ?? null,
-        view: disabledViewFull ? "VIEW_FULL" : "VIEW_BASIC",
+      const models = await client.model.listNamespaceModels({
+        namespaceId,
+        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         pageToken: pageParam ?? null,
-        enablePagination: true,
         filter: filter ?? undefined,
         visibility: visibility ?? undefined,
         orderBy: orderBy ?? undefined,
+        enablePagination: true,
       });
 
       return Promise.resolve(models);
@@ -53,6 +62,6 @@ export function useInfiniteModels({
 
       return lastPage.nextPageToken;
     },
-    enabled: enabledQuery,
+    enabled,
   });
 }

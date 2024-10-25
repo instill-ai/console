@@ -1,12 +1,14 @@
 "use client";
 
+import type { ModelTask } from "instill-sdk";
+
 import {
   getModelInstanceTaskToolkit,
   Icons,
   Tag,
 } from "@instill-ai/design-system";
 
-import { convertLongNumberToK, ModelTask } from "../../lib";
+import { convertLongNumberToK } from "../../lib";
 import { getHumanReadableStringFromTime } from "../../server";
 
 export type StatsProps = {

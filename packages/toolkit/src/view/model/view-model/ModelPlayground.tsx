@@ -1,6 +1,6 @@
 "use client";
 
-import type { Operation } from "instill-sdk";
+import type { Model, ModelState, Operation } from "instill-sdk";
 import * as React from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -23,8 +23,6 @@ import {
 import { defaultCodeSnippetStyles } from "../../../constant";
 import {
   InstillStore,
-  Model,
-  ModelState,
   onTriggerInvalidateCredits,
   sendAmplitudeData,
   toastInstillError,
@@ -33,12 +31,12 @@ import {
   useComponentOutputFields,
   useInstillForm,
   useInstillStore,
-  useModelVersionTriggerResult,
+  useNamespaceModelVersionOperationResult,
   useNavigateBackAfterLogin,
   useQueryClient,
   useRouteInfo,
   useShallow,
-  useTriggerUserModelVersionAsync,
+  useTriggerAsyncNamespaceModelVersion,
   useUserNamespaces,
 } from "../../../lib";
 import { recursiveHelpers } from "../../pipeline-builder";
@@ -160,10 +158,10 @@ export const ModelPlayground = ({
     },
   );
 
-  const existingModelTriggerResult = useModelVersionTriggerResult({
+  const existingModelTriggerResult = useNamespaceModelVersionOperationResult({
     accessToken,
     modelId: model?.id || null,
-    userId: routeInfo.data.namespaceId,
+    namespaceId: routeInfo.data.namespaceId,
     versionId: activeVersion,
     view: "VIEW_FULL",
     enabled:
@@ -171,7 +169,7 @@ export const ModelPlayground = ({
       enabledQuery &&
       userNamespaces.isSuccess &&
       routeInfo.isSuccess,
-    requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+    requesterUid: targetNamespace ? targetNamespace.uid : null,
   });
 
   const pollForResponse = React.useCallback(async () => {
@@ -340,7 +338,7 @@ export const ModelPlayground = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existingTriggerState, model]);
 
-  const triggerModel = useTriggerUserModelVersionAsync();
+  const triggerModel = useTriggerAsyncNamespaceModelVersion();
 
   async function onRunModel(
     formData: Record<string, unknown> /* z.infer<typeof Schema> */,
@@ -371,18 +369,16 @@ export const ModelPlayground = ({
       (namespace) => namespace.id === navigationNamespaceAnchor,
     );
 
-    if (!targetNamespace || !routeInfo.data.namespaceId) {
+    if (!targetNamespace || !routeInfo.data.namespaceId || !activeVersion) {
       return;
     }
 
     try {
       const data = await triggerModel.mutateAsync({
         modelId: model.id,
-        userId: routeInfo.data.namespaceId,
+        namespaceId: routeInfo.data.namespaceId,
         accessToken,
-        payload: {
-          taskInputs: [input],
-        },
+        taskInputs: [input],
         requesterUid: targetNamespace ? targetNamespace.uid : undefined,
         versionId: activeVersion,
       });

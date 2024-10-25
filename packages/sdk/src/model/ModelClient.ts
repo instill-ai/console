@@ -1,6 +1,5 @@
 import { getInstillAdditionalHeaders, getQueryString } from "../helper";
 import { APIResource } from "../main/resource";
-import { ResourceView } from "../vdp";
 import {
   CreateNamespaceModelRequest,
   CreateNamespaceModelResponse,
@@ -8,18 +7,20 @@ import {
   DeleteNamespaceModelVersionRequest,
   GetModelDefinitionRequest,
   GetModelDefinitionResponse,
+  GetNamespaceModelOperationResultRequest,
   GetNamespaceModelOperationResultResponse,
   GetNamespaceModelReadmeRequest,
   GetNamespaceModelReadmeResponse,
   GetNamespaceModelRequest,
   GetNamespaceModelResponse,
-  ListAccessibleModelsRequest,
-  ListAccessibleModelsResponse,
+  GetNamespaceModelVersionOperationResultRequest,
   ListAvailableRegionResponse,
   ListModelDefinitionsRequest,
   ListModelDefinitionsResponse,
   ListModelRunsRequest,
   ListModelRunsResponse,
+  ListModelsRequest,
+  ListModelsResponse,
   ListNamespaceModelsRequest,
   ListNamespaceModelsResponse,
   ListNamespaceModelVersionsRequest,
@@ -135,23 +136,23 @@ export class ModelClient extends APIResource {
     }
   }
 
-  async listAccessibleModels(
-    props: ListAccessibleModelsRequest & {
+  async listModels(
+    props: ListModelsRequest & {
       enablePagination: true;
     },
-  ): Promise<ListAccessibleModelsResponse>;
-  async listAccessibleModels(
-    props: ListAccessibleModelsRequest & {
+  ): Promise<ListModelsResponse>;
+  async listModels(
+    props: ListModelsRequest & {
       enablePagination: false;
     },
   ): Promise<Model[]>;
-  async listAccessibleModels(
-    props: ListAccessibleModelsRequest & {
+  async listModels(
+    props: ListModelsRequest & {
       enablePagination: boolean;
     },
-  ): Promise<ListAccessibleModelsResponse | Model[]>;
-  async listAccessibleModels(
-    props: ListAccessibleModelsRequest & {
+  ): Promise<ListModelsResponse | Model[]>;
+  async listModels(
+    props: ListModelsRequest & {
       enablePagination: boolean;
     },
   ) {
@@ -178,8 +179,7 @@ export class ModelClient extends APIResource {
         view,
       });
 
-      const data =
-        await this._client.get<ListAccessibleModelsResponse>(queryString);
+      const data = await this._client.get<ListModelsResponse>(queryString);
 
       if (enablePagination) {
         return Promise.resolve(data);
@@ -189,7 +189,7 @@ export class ModelClient extends APIResource {
 
       if (data.nextPageToken) {
         models.push(
-          ...(await this.listAccessibleModels({
+          ...(await this.listModels({
             pageSize,
             pageToken: data.nextPageToken,
             enablePagination: false,
@@ -208,11 +208,12 @@ export class ModelClient extends APIResource {
   }
 
   async getNamespaceModel({
-    namespaceModelName,
+    namespaceId,
+    modelId,
     view,
   }: GetNamespaceModelRequest) {
     const queryString = getQueryString({
-      baseURL: `/${namespaceModelName}`,
+      baseURL: `/namespaces/${namespaceId}/models/${modelId}`,
       view,
     });
 
@@ -229,7 +230,7 @@ export class ModelClient extends APIResource {
     props: ListNamespaceModelsRequest & {
       enablePagination: true;
     },
-  ): Promise<ListAccessibleModelsResponse>;
+  ): Promise<ListNamespaceModelsResponse>;
   async listNamespaceModels(
     props: ListNamespaceModelsRequest & {
       enablePagination: false;
@@ -239,13 +240,14 @@ export class ModelClient extends APIResource {
     props: ListNamespaceModelsRequest & {
       enablePagination: boolean;
     },
-  ): Promise<ListAccessibleModelsResponse | Model[]>;
+  ): Promise<ListNamespaceModelsResponse | Model[]>;
   async listNamespaceModels(
     props: ListNamespaceModelsRequest & {
       enablePagination: boolean;
     },
   ) {
     const {
+      namespaceId,
       pageSize,
       pageToken,
       view,
@@ -259,7 +261,7 @@ export class ModelClient extends APIResource {
       const models: Model[] = [];
 
       const queryString = getQueryString({
-        baseURL: "/models",
+        baseURL: `/namespaces/${namespaceId}/models`,
         pageSize,
         pageToken,
         visibility,
@@ -279,7 +281,8 @@ export class ModelClient extends APIResource {
 
       if (data.nextPageToken) {
         models.push(
-          ...(await this.listAccessibleModels({
+          ...(await this.listNamespaceModels({
+            namespaceId,
             pageSize,
             pageToken: data.nextPageToken,
             enablePagination: false,
@@ -327,12 +330,13 @@ export class ModelClient extends APIResource {
   }
 
   async watchNamespaceModelLatestVersionState({
-    namespaceModelName,
+    namespaceId,
+    modelId,
   }: WatchNamespaceModelLatestVersionStateRequest) {
     try {
       const data =
         await this._client.get<WatchNamespaceModelLatestVersionStateResponse>(
-          `/${namespaceModelName}/watch`,
+          `/namespaces/${namespaceId}/models/${modelId}/watch`,
         );
 
       return Promise.resolve(data);
@@ -356,12 +360,12 @@ export class ModelClient extends APIResource {
   async listNamespaceModelVersions(
     props: ListNamespaceModelVersionsRequest & { enablePagination?: boolean },
   ) {
-    const { namespaceModelName, pageSize, page, enablePagination } = props;
+    const { namespaceId, modelId, pageSize, page, enablePagination } = props;
 
     try {
       const versions: ModelVersion[] = [];
       const queryString = getQueryString({
-        baseURL: `/${namespaceModelName}/versions`,
+        baseURL: `/namespaces/${namespaceId}/models/${modelId}/versions`,
         pageSize,
         queryParams: page ? `page=${page}` : undefined,
       });
@@ -380,7 +384,8 @@ export class ModelClient extends APIResource {
       if (data.page < lastPage) {
         versions.push(
           ...(await this.listNamespaceModelVersions({
-            namespaceModelName,
+            namespaceId,
+            modelId,
             page: data.page + 1,
             pageSize,
             enablePagination: false,
@@ -398,8 +403,9 @@ export class ModelClient extends APIResource {
    * List Model Runs
    * -----------------------------------------------------------------------*/
 
-  async listModelRunsQuery({
-    modelName,
+  async listModelRuns({
+    namespaceId,
+    modelId,
     view,
     pageSize,
     page,
@@ -409,7 +415,7 @@ export class ModelClient extends APIResource {
   }: ListModelRunsRequest) {
     try {
       const queryString = getQueryString({
-        baseURL: `${modelName}/runs`,
+        baseURL: `/namespaces/${namespaceId}/models/${modelId}/runs`,
         pageSize,
         page,
         filter,
@@ -434,11 +440,11 @@ export class ModelClient extends APIResource {
    * ---------------------------------------------------------------------------*/
 
   async createNamespaceModel(props: CreateNamespaceModelRequest) {
-    const { namespaceName, ...payload } = props;
+    const { namespaceId, ...payload } = props;
 
     try {
       const data = await this._client.post<CreateNamespaceModelResponse>(
-        `/${namespaceName}/models`,
+        `/namespaces/${namespaceId}/models`,
         {
           body: JSON.stringify(payload),
         },
@@ -451,10 +457,11 @@ export class ModelClient extends APIResource {
   }
 
   async deleteNamespaceModel({
-    namespaceModelName,
+    namespaceId,
+    modelId,
   }: DeleteNamespaceModelRequest) {
     try {
-      await this._client.delete(`/${namespaceModelName}`);
+      await this._client.delete(`/namespaces/${namespaceId}/models/${modelId}`);
       return Promise.resolve();
     } catch (error) {
       return Promise.reject(error);
@@ -462,11 +469,11 @@ export class ModelClient extends APIResource {
   }
 
   async updateNamespaceModel(props: UpdateNamespaceModelRequest) {
-    const { namespaceModelName, ...payload } = props;
+    const { namespaceId, modelId, ...payload } = props;
 
     try {
       const data = await this._client.patch<UpdateNamespaceModelResponse>(
-        `/${namespaceModelName}`,
+        `/namespaces/${namespaceId}/models/${modelId}`,
         {
           body: JSON.stringify(payload),
         },
@@ -561,7 +568,9 @@ export class ModelClient extends APIResource {
   }
 
   async triggerAsyncNamespaceModelVersion({
-    namespaceModelVersionName,
+    namespaceId,
+    modelId,
+    versionId,
     taskInputs,
     requesterUid,
     returnTraces,
@@ -576,13 +585,10 @@ export class ModelClient extends APIResource {
 
       const data =
         await this._client.post<TriggerAsyncNamespaceModelVersionResponse>(
-          `/${namespaceModelVersionName}/trigger-async`,
+          `/namespaces/${namespaceId}/models/${modelId}/versions/${versionId}/trigger-async`,
           {
             body: JSON.stringify({ taskInputs }),
-            additionalHeaders: {
-              "Content-Type": "application/json",
-              ...additionalHeaders,
-            },
+            additionalHeaders,
           },
         );
       return Promise.resolve(data);
@@ -632,17 +638,43 @@ export class ModelClient extends APIResource {
    * -----------------------------------------------------------------------*/
 
   async getNamespaceModelOperationResult({
-    namespaceModelName,
+    namespaceId,
+    modelId,
     view,
     requesterUid,
-  }: {
-    namespaceModelName: string;
-    view: ResourceView;
-    requesterUid?: string;
-  }) {
+  }: GetNamespaceModelOperationResultRequest) {
     try {
       const queryString = getQueryString({
-        baseURL: `/${namespaceModelName}/operation`,
+        baseURL: `/namespaces/${namespaceId}/models/${modelId}/operation`,
+        view,
+      });
+
+      const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
+
+      const data =
+        await this._client.get<GetNamespaceModelOperationResultResponse>(
+          queryString,
+          {
+            additionalHeaders,
+          },
+        );
+
+      return Promise.resolve(data);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  async getNamespaceModelVersionOperationResult({
+    namespaceId,
+    modelId,
+    versionId,
+    view,
+    requesterUid,
+  }: GetNamespaceModelVersionOperationResultRequest) {
+    try {
+      const queryString = getQueryString({
+        baseURL: `/namespaces/${namespaceId}/models/${modelId}/versions/${versionId}/operation`,
         view,
       });
 

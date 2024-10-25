@@ -1,9 +1,11 @@
-import { useMemo } from "react";
+"use client";
+
+import type { ListModelsResponse } from "instill-sdk";
+import * as React from "react";
 import { InfiniteData, UseInfiniteQueryResult } from "@tanstack/react-query";
 
 import { Pagination } from "@instill-ai/design-system";
 
-import { ListModelsResponse } from "../../lib";
 import { env } from "../../server";
 
 const defaultPaginationProps = {
@@ -24,7 +26,7 @@ export const ModelsListPagination = ({
   pageNumber,
   setPageNumber,
 }: ModelsListPaginationProps) => {
-  const paginationProps = useMemo(() => {
+  const paginationProps = React.useMemo(() => {
     if (
       !models.data ||
       models.data.pages.length === 0 ||

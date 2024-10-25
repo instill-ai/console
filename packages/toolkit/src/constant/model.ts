@@ -1,4 +1,5 @@
-import { Model } from "../lib";
+import { Model } from "instill-sdk";
+
 import { env } from "../server";
 
 export const InstillModelVisibility = [
