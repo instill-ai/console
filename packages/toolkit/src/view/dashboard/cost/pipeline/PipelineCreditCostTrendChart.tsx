@@ -1,24 +1,26 @@
 import * as React from "react";
 import * as echarts from "echarts";
 import { Icons, Tooltip, SelectOption } from "@instill-ai/design-system";
-import { useCreditConsumptionChartRecords } from "../../lib/react-query-service/metric";
+import { useCreditConsumptionChartRecords } from "../../../../lib/react-query-service/metric";
 import { Nullable } from "instill-sdk";
+import Link from "next/link";
 
-type ModelCreditCostTrendChartProps = {
+type PipelineCreditCostTrendChartProps = {
     isLoading: boolean;
     selectedTimeOption: SelectOption;
     accessToken: Nullable<string>;
     enabledQuery: boolean;
     namespaceId: Nullable<string>
+
 };
 
-export const ModelCreditCostTrendChart = ({
+export const PipelineCreditCostTrendChart = ({
     isLoading,
     selectedTimeOption,
     accessToken,
     enabledQuery,
     namespaceId
-}: ModelCreditCostTrendChartProps) => {
+}: PipelineCreditCostTrendChartProps) => {
     const chartRef = React.useRef<HTMLDivElement>(null);
 
     const start = React.useMemo(() => {
@@ -45,24 +47,23 @@ export const ModelCreditCostTrendChart = ({
         aggregationWindow: selectedTimeOption.value === "24h" ? "1h" : "24h",
     });
 
-
-    const modelData = React.useMemo(() => {
+    const pipelineData = React.useMemo(() => {
         if (!creditConsumption.data) return { dates: [], values: [] };
 
-        const modelRecord = creditConsumption.data.creditConsumptionChartRecords?.find(
-            (record) => record.source === "model"
+        const pipelineRecord = creditConsumption.data.creditConsumptionChartRecords?.find(
+            (record) => record.source === "pipeline"
         );
 
-        if (!modelRecord) return { dates: [], values: [] };
+        if (!pipelineRecord) return { dates: [], values: [] };
 
         return {
-            dates: modelRecord.timeBuckets,
-            values: modelRecord.amount,
+            dates: pipelineRecord.timeBuckets,
+            values: pipelineRecord.amount,
         };
-    }, [creditConsumption.data, isLoading]);
+    }, [creditConsumption.data]);
 
     React.useEffect(() => {
-        if (chartRef.current && modelData.dates.length > 0) {
+        if (chartRef.current && pipelineData.dates.length > 0) {
             const chart = echarts.init(chartRef.current, null, {
                 renderer: "svg",
             });
@@ -85,7 +86,7 @@ export const ModelCreditCostTrendChart = ({
                             <div style="font-size: 14px; color: #666;">
                                 <div class="product-body-text-4-medium" style="margin-bottom: 5px;">${formattedDate}</div>
                                 <div style="display: flex; align-items: center; margin-bottom: 3px;">
-                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #2EC291"></span>
+                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #3B7AF7"></span>
                                     <div class="product-body-text-3-medium" style="margin-left: 15px;">${value.toFixed(2)} credits</div>
                                 </div>
                             </div>
@@ -94,7 +95,7 @@ export const ModelCreditCostTrendChart = ({
                 },
                 xAxis: {
                     type: "category",
-                    data: modelData.dates,
+                    data: pipelineData.dates,
                     axisLabel: {
                         formatter: (value: string) => {
                             const date = new Date(value);
@@ -110,10 +111,10 @@ export const ModelCreditCostTrendChart = ({
                 },
                 series: [
                     {
-                        name: "Model",
+                        name: "Pipeline",
                         type: "bar",
-                        data: modelData.values,
-                        itemStyle: { color: "#2EC291" },
+                        data: pipelineData.values,
+                        itemStyle: { color: "#3B7AF7" },
                         barWidth: "24px",
                     },
                 ],
@@ -125,7 +126,7 @@ export const ModelCreditCostTrendChart = ({
                 chart.dispose();
             };
         }
-    }, [modelData]);
+    }, [isLoading, pipelineData]);
 
     return (
         <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">
@@ -154,7 +155,7 @@ export const ModelCreditCostTrendChart = ({
                                                     Credit Cost Trend
                                                 </div>
                                                 <div className="self-stretch text-semantic-fg-secondary product-body-text-4-medium">
-                                                    View the trend of credit cost for models over time.
+                                                    View the trend of credit cost for pipelines over time.
                                                 </div>
                                             </div>
                                         </div>
@@ -169,9 +170,12 @@ export const ModelCreditCostTrendChart = ({
                             </Tooltip.Root>
                         </Tooltip.Provider>
                     </div>
-                    <div className="text-semantic-fg-secondary product-button-button-2 px-3 py-1 border border-semantic-fg-disabled rounded-full">
+                    <Link
+                        className="text-semantic-fg-secondary product-button-button-2 px-3 py-1 border border-semantic-fg-disabled rounded-full"
+                        href={`/${namespaceId}/settings/billing/credits`}
+                    >
                         View billing details
-                    </div>
+                    </Link>
                 </div>
                 <div className="px-8 pb-8 w-full" style={{ height: '460px' }}>
                     <div

@@ -2,7 +2,7 @@
 
 import { Fragment, ReactNode } from "react";
 import { Icons, Skeleton, Tag } from "@instill-ai/design-system";
-import { Nullable, PipelineTriggersStatusSummaryItem } from "../../lib";
+import { Nullable, PipelineTriggersStatusSummaryItem } from "../../../lib";
 
 const PipelineTriggersSummaryCard = (props: {
   summary: Nullable<PipelineTriggersStatusSummaryItem>;

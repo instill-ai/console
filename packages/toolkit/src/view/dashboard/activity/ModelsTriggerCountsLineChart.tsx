@@ -3,7 +3,7 @@
 import * as React from 'react';
 import * as echarts from "echarts";
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
-import { generateModelChartData, ModelTriggersStatusSummary, ModelsChart } from "../../lib";
+import { generateModelChartData, ModelTriggersStatusSummary, ModelsChart } from "../../../lib";
 import { ModelTriggersSummary } from "./ModelTriggersSummary";
 import { Nullable } from 'instill-sdk';
 

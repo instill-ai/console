@@ -5,8 +5,8 @@ import { Icons, Input, Popover, SelectOption } from "@instill-ai/design-system";
 import { FilterByDay } from "./FilterByDay";
 import { DashboardListPipeline } from "./DashboardListPipeline";
 import { DashboardListModel } from "./DashboardListModel";
-import { ModelCreditCostTrendChart } from "./ModelCreditCostTrendChart";
-import { PipelineCreditCostTrendChart } from "./PipelineCreditCostTrendChart";
+import { ModelCreditCostTrendChart } from "./cost/model/ModelCreditCostTrendChart";
+import { PipelineCreditCostTrendChart } from "./cost/pipeline/PipelineCreditCostTrendChart";
 import { Nullable } from "instill-sdk";
 import { useAuthenticatedUser } from "../../lib";
 

@@ -3,7 +3,7 @@
 import * as React from 'react';
 import * as echarts from "echarts";
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
-import { generatePipelineChartData, PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
+import { generatePipelineChartData, PipelinesChart, PipelineTriggersStatusSummary } from "../../../lib";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import { Nullable } from 'instill-sdk';
 
