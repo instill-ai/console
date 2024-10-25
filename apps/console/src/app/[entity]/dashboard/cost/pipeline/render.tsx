@@ -2,10 +2,9 @@
 "use client";
 
 import * as React from "react";
-import { AppTopbar, NamespaceSwitch, PageBase } from "@instill-ai/toolkit";
+import { AppTopbar, DashboardCostPipelinePageMainView, NamespaceSwitch, PageBase } from "@instill-ai/toolkit";
 import { useAppAccessToken } from "~/lib/use-app-access-token";
 import { useAppTrackToken } from "~/lib/useAppTrackToken";
-import { DashboardCostPipelinePageMainView } from "node_modules/@instill-ai/toolkit/src/view";
 import { useRouter } from "next/navigation";
 
 

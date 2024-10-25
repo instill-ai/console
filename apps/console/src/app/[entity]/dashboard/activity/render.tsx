@@ -2,10 +2,9 @@
 "use client";
 
 import * as React from "react";
-import { AppTopbar, NamespaceSwitch, PageBase } from "@instill-ai/toolkit";
+import { AppTopbar, DashboardActivityPageMainView, NamespaceSwitch, PageBase } from "@instill-ai/toolkit";
 import { useAppAccessToken } from "~/lib/use-app-access-token";
 import { useAppTrackToken } from "~/lib/useAppTrackToken";
-import { DashboardActivityPageMainView } from "../../../../../../../packages/toolkit/src/view/dashboard";
 import { useRouter } from "next/navigation";
 
 
