@@ -1,27 +1,26 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { Icons, Popover, SelectOption } from "@instill-ai/design-system";
-import { useRouter, usePathname } from "next/navigation";
-import { FilterByDay } from "./FilterByDay";
-import { DashboardListPipeline } from "./cost/pipeline/DashboardListPipeline";
-import { DashboardListModel } from "./cost/model/DashboardListModel";
-import { ModelCreditCostTrendChart } from "./cost/model/ModelCreditCostTrendChart";
-import { PipelineCreditCostTrendChart } from "./cost/pipeline/PipelineCreditCostTrendChart";
-import { Nullable } from "instill-sdk";
-import { useAuthenticatedUser, useCreditConsumptionChartRecords } from "../../lib";
+import * as React from "react"
+import { Icons, Popover, SelectOption } from "@instill-ai/design-system"
+import { useRouter, usePathname } from "next/navigation"
+import { FilterByDay } from "./FilterByDay"
+import { DashboardListPipeline } from "./cost/pipeline/DashboardListPipeline"
+import { DashboardListModel } from "./cost/model/DashboardListModel"
+import { Nullable } from "instill-sdk"
+import { useAuthenticatedUser, useCreditConsumptionChartRecords } from "../../lib"
+import { CreditCostTrendChart } from "./cost/CreditCostTrendChart"
 
 type CostTabProps = {
-    selectedTimeOption: SelectOption;
-    setSelectedTimeOption: React.Dispatch<React.SetStateAction<SelectOption>>;
-    accessToken: Nullable<string>;
-    enabledQuery: boolean;
-};
+    selectedTimeOption: SelectOption
+    setSelectedTimeOption: React.Dispatch<React.SetStateAction<SelectOption>>
+    accessToken: Nullable<string>
+    enabledQuery: boolean
+}
 
 type ChartData = {
-    dates: string[];
-    values: number[];
-};
+    dates: string[]
+    values: number[]
+}
 
 export const CostTab = ({
     selectedTimeOption,
@@ -29,29 +28,29 @@ export const CostTab = ({
     accessToken,
     enabledQuery,
 }: CostTabProps) => {
-    const router = useRouter();
-    const pathname = usePathname();
-    const costView = pathname.includes("/cost/model") ? "model" : "pipeline";
+    const router = useRouter()
+    const pathname = usePathname()
+    const costView = pathname.includes("/cost/model") ? "model" : "pipeline"
 
     const me = useAuthenticatedUser({
         enabled: enabledQuery,
         accessToken,
-    });
+    })
 
     const start = React.useMemo(() => {
         if (selectedTimeOption.value === "24h") {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            return today.toISOString();
+            const today = new Date()
+            today.setHours(0, 0, 0, 0)
+            return today.toISOString()
         }
-        const date = new Date();
-        date.setDate(date.getDate() - parseInt(selectedTimeOption.value));
-        return date.toISOString();
-    }, [selectedTimeOption.value]);
+        const date = new Date()
+        date.setDate(date.getDate() - parseInt(selectedTimeOption.value))
+        return date.toISOString()
+    }, [selectedTimeOption.value])
 
     const stop = React.useMemo(() => {
-        return new Date().toISOString();
-    }, []);
+        return new Date().toISOString()
+    }, [])
 
     const creditConsumption = useCreditConsumptionChartRecords({
         enabled: enabledQuery,
@@ -60,47 +59,33 @@ export const CostTab = ({
         start,
         stop,
         aggregationWindow: selectedTimeOption.value === "24h" ? "1h" : "24h",
-    });
+    })
 
-    // Extract model and pipeline data
-    const modelChartData: ChartData = React.useMemo(() => {
-        const modelRecord = creditConsumption.data?.creditConsumptionChartRecords?.find(
-            (record) => record.source === "model"
-        );
-        if (modelRecord) {
+    const chartData: ChartData = React.useMemo(() => {
+        const record = creditConsumption.data?.creditConsumptionChartRecords?.find(
+            (record) => record.source === costView
+        )
+        if (record) {
             return {
-                dates: modelRecord.timeBuckets,
-                values: modelRecord.amount,
-            };
+                dates: record.timeBuckets,
+                values: record.amount,
+            }
         }
-        return { dates: [], values: [] };
-    }, [creditConsumption.data]);
-
-    const pipelineChartData: ChartData = React.useMemo(() => {
-        const pipelineRecord = creditConsumption.data?.creditConsumptionChartRecords?.find(
-            (record) => record.source === "pipeline"
-        );
-        if (pipelineRecord) {
-            return {
-                dates: pipelineRecord.timeBuckets,
-                values: pipelineRecord.amount,
-            };
-        }
-        return { dates: [], values: [] };
-    }, [creditConsumption.data]);
+        return { dates: [], values: [] }
+    }, [creditConsumption.data, costView])
 
     const options = [
         {
             value: "pipeline",
             label: "Pipeline",
-            icon: <Icons.Pipeline className="h-4 w-4" />
+            icon: <Icons.Pipeline className="h-4 w-4" />,
         },
         {
             value: "model",
             label: "Model",
-            icon: <Icons.Model className="h-4 w-4" />
+            icon: <Icons.Model className="h-4 w-4" />,
         },
-    ];
+    ]
 
     return (
         <div>
@@ -117,9 +102,10 @@ export const CostTab = ({
                             {options.map((option) => (
                                 <button
                                     key={option.value}
-                                    className={`flex items-center p-2 hover:bg-semantic-bg-line ${costView === option.value ? "bg-semantic-bg-line" : ""}`}
+                                    className={`flex items-center p-2 hover:bg-semantic-bg-line ${costView === option.value ? "bg-semantic-bg-line" : ""
+                                        }`}
                                     onClick={() => {
-                                        router.push(`/${me?.data?.id}/dashboard/cost/${option.value}`);
+                                        router.push(`/${me?.data?.id}/dashboard/cost/${option.value}`)
                                     }}
                                 >
                                     {option.icon}
@@ -140,30 +126,18 @@ export const CostTab = ({
             </div>
 
             <div className="mb-2 w-full">
-                {costView === "model" ? (
-                    <ModelCreditCostTrendChart
-                        dates={modelChartData.dates}
-                        values={modelChartData.values}
-                        isLoading={creditConsumption.isLoading}
-                        namespaceId={me.data?.id ?? ""}
-                    />
-                ) : (
-                    <PipelineCreditCostTrendChart
-                        dates={pipelineChartData.dates}
-                        values={pipelineChartData.values}
-                        isLoading={creditConsumption.isLoading}
-                        namespaceId={me.data?.id ?? ""}
-                    />
-                )}
+                <CreditCostTrendChart
+                    dates={chartData.dates}
+                    values={chartData.values}
+                    isLoading={creditConsumption.isLoading}
+                    namespaceId={me.data?.id ?? ""}
+                    type={costView}
+                />
             </div>
 
             <div className="mt-8">
-                {costView === "model" ? (
-                    <DashboardListModel />
-                ) : (
-                    <DashboardListPipeline />
-                )}
+                {costView === "model" ? <DashboardListModel /> : <DashboardListPipeline />}
             </div>
         </div>
-    );
-};
+    )
+}
