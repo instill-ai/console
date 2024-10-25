@@ -1,10 +1,11 @@
-import { PipelinesChart } from "../vdp-sdk";
+import type { PipelineTriggerChartRecord } from "instill-sdk";
+
 import { formatDateTime } from "./formatDateTime";
 import { getDateRange } from "./getDateRange";
 import { sortByDate } from "./sortByDate";
 
 export function generateChartData(
-  apiResponse: PipelinesChart[],
+  apiResponse: PipelineTriggerChartRecord[],
   range: string,
 ): { xAxis: string[]; yAxis: number[][] } {
   const pipelineData = apiResponse;

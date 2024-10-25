@@ -1,4 +1,4 @@
-import { PipelineTriggerRecord } from "../vdp-sdk";
+import type { PipelineTriggerRecord } from "instill-sdk";
 
 export function sortByTriggerTime(
   data: PipelineTriggerRecord[],

@@ -1,12 +1,15 @@
 "use client";
 
-import type { ModelState, PipelineReleaseState } from "instill-sdk";
+import type {
+  ModelState,
+  Nullable,
+  PipelineReleaseState,
+  PipelineTriggerStatus,
+} from "instill-sdk";
 import { ReactElement } from "react";
 import cn from "clsx";
 
 import { Tag } from "@instill-ai/design-system";
-
-import { Nullable, PipelineTriggerStatus } from "../../lib";
 
 export type GeneralStateCellProps = {
   state: ModelState | PipelineReleaseState | PipelineTriggerStatus;

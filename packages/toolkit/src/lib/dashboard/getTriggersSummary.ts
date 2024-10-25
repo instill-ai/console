@@ -1,8 +1,7 @@
-import {
-  PipelineTriggerRecord,
-  PipelineTriggersStatusSummary,
-} from "../vdp-sdk";
+import type { PipelineTriggerRecord } from "instill-sdk";
+
 import { calculatePercentageDelta } from "./calculatePercentageDelta";
+import { PipelineTriggersStatusSummary } from "./getPipelineTriggersSummary";
 
 export function getTriggersSummary(
   triggers: PipelineTriggerRecord[],
