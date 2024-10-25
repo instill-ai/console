@@ -36,7 +36,7 @@ export const ActivityTab = ({
 
     return (
         <div className="w-full">
-            <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center mb-5 gap-4">
+            <div className="flex flex-col sm:flex-row justify-end items-center sm:items-center mb-5">
                 <FilterByDay
                     refetch={() => pipelinesChart.refetch()}
                     selectedTimeOption={selectedTimeOption}
