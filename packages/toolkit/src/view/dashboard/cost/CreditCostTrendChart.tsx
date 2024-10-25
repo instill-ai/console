@@ -10,7 +10,7 @@ type CreditCostTrendChartProps = {
     dates: string[]
     values: number[]
     isLoading: boolean
-    namespaceId: string
+    namespaceId: Nullable<string>
     type: "model" | "pipeline"
 }
 

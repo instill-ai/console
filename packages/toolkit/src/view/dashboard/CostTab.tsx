@@ -6,15 +6,16 @@ import { useRouter, usePathname } from "next/navigation"
 import { FilterByDay } from "./FilterByDay"
 import { DashboardListPipeline } from "./cost/pipeline/DashboardListPipeline"
 import { DashboardListModel } from "./cost/model/DashboardListModel"
-import { Nullable } from "instill-sdk"
-import { useAuthenticatedUser, useCreditConsumptionChartRecords } from "../../lib"
+import { useCreditConsumptionChartRecords } from "../../lib"
 import { CreditCostTrendChart } from "./cost/CreditCostTrendChart"
+import { Nullable } from "instill-sdk"
 
 type CostTabProps = {
     selectedTimeOption: SelectOption
     setSelectedTimeOption: React.Dispatch<React.SetStateAction<SelectOption>>
     accessToken: Nullable<string>
     enabledQuery: boolean
+    namespaceId: Nullable<string>
 }
 
 type ChartData = {
@@ -27,15 +28,11 @@ export const CostTab = ({
     setSelectedTimeOption,
     accessToken,
     enabledQuery,
+    namespaceId,
 }: CostTabProps) => {
     const router = useRouter()
     const pathname = usePathname()
     const costView = pathname.includes("/cost/model") ? "model" : "pipeline"
-
-    const me = useAuthenticatedUser({
-        enabled: enabledQuery,
-        accessToken,
-    })
 
     const start = React.useMemo(() => {
         if (selectedTimeOption.value === "24h") {
@@ -53,9 +50,9 @@ export const CostTab = ({
     }, [])
 
     const creditConsumption = useCreditConsumptionChartRecords({
-        enabled: enabledQuery,
+        enabled: enabledQuery && Boolean(namespaceId),
         accessToken,
-        namespaceId: me.data?.id ?? "",
+        namespaceId,
         start,
         stop,
         aggregationWindow: selectedTimeOption.value === "24h" ? "1h" : "24h",
@@ -87,6 +84,10 @@ export const CostTab = ({
         },
     ]
 
+    const handleOptionClick = (optionValue: string) => {
+        router.push(`/${namespaceId}/dashboard/cost/${optionValue}`)
+    }
+
     return (
         <div>
             <div className="flex justify-between items-center mb-5">
@@ -104,9 +105,7 @@ export const CostTab = ({
                                     key={option.value}
                                     className={`flex items-center p-2 hover:bg-semantic-bg-line ${costView === option.value ? "bg-semantic-bg-line" : ""
                                         }`}
-                                    onClick={() => {
-                                        router.push(`/${me?.data?.id}/dashboard/cost/${option.value}`)
-                                    }}
+                                    onClick={() => handleOptionClick(option.value)}
                                 >
                                     {option.icon}
                                     <span className="ml-2">{option.label}</span>
@@ -130,13 +129,18 @@ export const CostTab = ({
                     dates={chartData.dates}
                     values={chartData.values}
                     isLoading={creditConsumption.isLoading}
-                    namespaceId={me.data?.id ?? ""}
+                    namespaceId={namespaceId}
                     type={costView}
+                    key={`chart-${namespaceId}-${costView}`}
                 />
             </div>
 
             <div className="mt-8">
-                {costView === "model" ? <DashboardListModel /> : <DashboardListPipeline />}
+                {costView === "model" ? (
+                    <DashboardListModel namespaceId={namespaceId} key={`model-list-${namespaceId}`} />
+                ) : (
+                    <DashboardListPipeline namespaceId={namespaceId} key={`pipeline-list-${namespaceId}`} />
+                )}
             </div>
         </div>
     )

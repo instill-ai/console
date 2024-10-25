@@ -28,7 +28,6 @@ export type DashboardActivityPageMainViewProps = GeneralAppPageProp;
 export const DashboardActivityPageMainView = ({
   accessToken,
   enableQuery,
-  // router,
 }: DashboardActivityPageMainViewProps) => {
   const [selectedTimeOption, setSelectedTimeOption] = React.useState<SelectOption>({
     label: "Today",
