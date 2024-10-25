@@ -31,17 +31,6 @@ export type CreditConsumptionChartRecord = {
   creditOwner: string;
 };
 
-export type ListCreditConsumptionChartRecordsRequest = {
-  namespaceId: string;
-  aggregationWindow?: string;
-  start?: string;
-  stop?: string;
-};
-
-export type ListCreditConsumptionChartRecordsResponse = {
-  creditConsumptionChartRecords: CreditConsumptionChartRecord[];
-};
-
 export type ListCreditConsumptionChartRecordResponse = {
   creditConsumptionChartRecords: CreditConsumptionChartRecord[];
   totalAmount: number;

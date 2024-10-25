@@ -131,7 +131,6 @@ export const CostTab = ({
                     dates={chartData.dates}
                     values={chartData.values}
                     isLoading={creditConsumption.isLoading}
-                    namespaceId={me.data?.id ?? ""}
                     type={costView}
                 />
             </div>

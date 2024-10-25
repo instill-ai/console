@@ -13,13 +13,11 @@ import {
 } from "recharts";
 import { Icons, Tooltip as TooltipDS, Skeleton } from "@instill-ai/design-system";
 import Link from "next/link";
-import { Nullable } from "instill-sdk";
 
 type CreditCostTrendChartProps = {
     dates: string[];
     values: number[];
     isLoading: boolean;
-    namespaceId: Nullable<string>;
     type: "model" | "pipeline";
 };
 
@@ -27,7 +25,6 @@ export const CreditCostTrendChart = ({
     dates,
     values,
     isLoading,
-    namespaceId,
     type,
 }: CreditCostTrendChartProps) => {
     const chartColor = type === "model" ? "#2EC291" : "#3B7AF7";
@@ -145,7 +142,7 @@ export const CreditCostTrendChart = ({
                     </div>
                     <Link
                         className="text-semantic-fg-secondary product-button-button-2 px-3 py-1 border border-semantic-fg-disabled rounded-full"
-                        href={`/${namespaceId}/settings/billing/credits`}
+                        href={`/settings/billing/credits`}
                     >
                         View billing details
                     </Link>

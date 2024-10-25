@@ -4,8 +4,6 @@ import {
   GetPipelineTriggerCountRequest,
   GetPipelineTriggerCountResponse,
   ListCreditConsumptionChartRecordResponse,
-  ListCreditConsumptionChartRecordsRequest,
-  ListCreditConsumptionChartRecordsResponse,
   ListModelRunsByRequesterRequest,
   ListModelRunsByRequesterResponse,
   ListModelTriggerMetricRequest,
@@ -69,31 +67,6 @@ export class MetricClient extends APIResource {
 
       const data =
         await this._client.get<GetPipelineTriggerCountResponse>(queryString);
-      return Promise.resolve(data);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async listCreditConsumptionChartRecords(
-    props: ListCreditConsumptionChartRecordsRequest,
-  ) {
-    try {
-      const { namespaceId, aggregationWindow, start, stop } = props;
-
-      const queryString = getQueryString({
-        baseURL: `/metrics/credit/charts`,
-        owner: namespaceId,
-        aggregationWindow: aggregationWindow ?? undefined,
-        start: start ?? undefined,
-        stop: stop ?? undefined,
-      });
-
-      const data =
-        await this._client.get<ListCreditConsumptionChartRecordsResponse>(
-          queryString,
-        );
-
       return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
