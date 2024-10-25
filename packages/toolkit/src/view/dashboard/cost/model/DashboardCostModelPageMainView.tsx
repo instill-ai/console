@@ -26,7 +26,7 @@ export const DashboardCostModelPageMainView = ({
   });
 
   const [queryString, setQueryString] = React.useState<Nullable<string>>(null);
-  const [activeTab, setActiveTab] = React.useState<"activity" | "cost">("activity");
+  const [activeTab, setActiveTab] = React.useState<"activity" | "cost">("cost");
 
   const routeInfo = useRouteInfo();
 

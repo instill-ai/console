@@ -87,7 +87,7 @@ export const ModelsTriggerCountsLineChart = ({
           },
           text: isLoading
             ? "Loading..."
-            : "No pipelines have been triggered yet",
+            : "No models have been triggered yet",
           left: `${isLoading ? "49.5%" : "44.5%"}`,
           bottom: 100,
         },
