@@ -1,13 +1,17 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { ColumnDef, DataTable, PaginationState } from "@instill-ai/design-system"
-import { InstillStore, useInstillStore, useListModelRunsByRequester, useShallow, useUserNamespaces } from "../../../../lib"
-import { TABLE_PAGE_SIZE } from "../../../pipeline/view-pipeline/constants"
-import { RunsTableSortableColHeader, RunStateLabel } from "../../../../components"
-import { getHumanReadableStringFromTime } from "../../../../server"
-import { ModelRun, Nullable } from "instill-sdk"
+import * as React from "react";
+import Link from "next/link";
+import {
+    ColumnDef,
+    DataTable,
+    PaginationState,
+} from "@instill-ai/design-system";
+import { InstillStore, useInstillStore, useListModelRunsByRequester, useShallow, useUserNamespaces } from "../../../../lib";
+import { TABLE_PAGE_SIZE } from "../../../pipeline/view-pipeline/constants";
+import { RunsTableSortableColHeader, RunStateLabel } from "../../../../components";
+import { getHumanReadableStringFromTime } from "../../../../server";
+import { ModelRun } from "instill-sdk";
 
 const selector = (store: InstillStore) => ({
     accessToken: store.accessToken,
@@ -15,13 +19,9 @@ const selector = (store: InstillStore) => ({
     navigationNamespaceAnchor: store.navigationNamespaceAnchor,
 
 });
-type DashboardListModelProps = {
-    namespaceId: Nullable<string>
-}
 
-export const DashboardListModel = ({ namespaceId }: DashboardListModelProps) => {
+export const DashboardListModel = () => {
     const { accessToken, enabledQuery, navigationNamespaceAnchor } = useInstillStore(useShallow(selector));
-
 
     const userNamespaces = useUserNamespaces();
     const targetNamespace = React.useMemo(() => {
@@ -30,18 +30,17 @@ export const DashboardListModel = ({ namespaceId }: DashboardListModelProps) => 
         }
 
         return userNamespaces.data.find(
-            (namespace) => namespace.id === namespaceId,
+            (namespace) => namespace.id === navigationNamespaceAnchor,
         );
     }, [userNamespaces.isSuccess, userNamespaces.data, navigationNamespaceAnchor]);
-
-    const [orderBy, setOrderBy] = React.useState<string>()
+    const [orderBy, setOrderBy] = React.useState<string>();
     const [paginationState, setPaginationState] = React.useState<PaginationState>({
         pageIndex: 0,
         pageSize: TABLE_PAGE_SIZE,
-    })
+    });
 
     const modelRuns = useListModelRunsByRequester({
-        enabled: enabledQuery && Boolean(namespaceId),
+        enabled: enabledQuery,
         accessToken,
         pageSize: paginationState.pageSize,
         pageToken: paginationState.pageIndex.toString(),

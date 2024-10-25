@@ -17,7 +17,7 @@ import {
 import { TABLE_PAGE_SIZE } from "../../../pipeline/view-pipeline/constants";
 import { RunsTableSortableColHeader, RunStateLabel } from "../../../../components";
 import { getHumanReadableStringFromTime } from "../../../../server";
-import { Nullable, PipelineRun } from "instill-sdk";
+import { PipelineRun } from "instill-sdk";
 
 const selector = (store: InstillStore) => ({
     accessToken: store.accessToken,
@@ -26,12 +26,7 @@ const selector = (store: InstillStore) => ({
 
 });
 
-type DashboardListPipelineProps = {
-    namespaceId: Nullable<string>
-}
-
-
-export const DashboardListPipeline = ({ namespaceId }: DashboardListPipelineProps) => {
+export const DashboardListPipeline = () => {
     const { accessToken, enabledQuery, navigationNamespaceAnchor } = useInstillStore(useShallow(selector));
 
     const userNamespaces = useUserNamespaces();
@@ -41,7 +36,7 @@ export const DashboardListPipeline = ({ namespaceId }: DashboardListPipelineProp
         }
 
         return userNamespaces.data.find(
-            (namespace) => namespace.id === namespaceId,
+            (namespace) => namespace.id === navigationNamespaceAnchor,
         );
     }, [userNamespaces.isSuccess, userNamespaces.data, navigationNamespaceAnchor]);
 

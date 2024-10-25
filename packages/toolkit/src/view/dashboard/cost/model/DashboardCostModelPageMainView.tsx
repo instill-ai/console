@@ -1,12 +1,15 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { SelectOption } from "@instill-ai/design-system"
-import { GeneralAppPageProp, useRouteInfo } from "../../../../lib"
-import { UsageSwitch } from "../../UsageSwitch"
-import { CostTab } from "../../CostTab"
+import * as React from "react";
+import { SelectOption } from "@instill-ai/design-system";
+import {
+  GeneralAppPageProp,
+  useRouteInfo,
+} from "../../../../lib";
+import { UsageSwitch } from "../../UsageSwitch";
+import { CostTab } from "../../CostTab";
 
-export type DashboardCostModelPageMainViewProps = GeneralAppPageProp
+export type DashboardCostModelPageMainViewProps = GeneralAppPageProp;
 
 export const DashboardCostModelPageMainView = ({
   accessToken,
@@ -15,10 +18,11 @@ export const DashboardCostModelPageMainView = ({
   const [selectedTimeOption, setSelectedTimeOption] = React.useState<SelectOption>({
     label: "Today",
     value: "24h",
-  })
-  const [activeTab, setActiveTab] = React.useState<"activity" | "cost">("cost")
+  });
 
-  const routeInfo = useRouteInfo()
+  const [activeTab, setActiveTab] = React.useState<"activity" | "cost">("cost");
+
+  const routeInfo = useRouteInfo();
 
   React.useEffect(() => {
     if (!routeInfo.isSuccess) {
@@ -47,16 +51,13 @@ export const DashboardCostModelPageMainView = ({
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         namespaceId={routeInfo.data.namespaceId}
-        key={`usage-switch-${routeInfo.data.namespaceId}`}
       />
       <CostTab
         selectedTimeOption={selectedTimeOption}
         setSelectedTimeOption={setSelectedTimeOption}
         accessToken={accessToken}
         enabledQuery={enableQuery}
-        namespaceId={routeInfo.data.namespaceId}
-        key={`cost-tab-${routeInfo.data.namespaceId}`}
       />
     </div>
-  )
-}
+  );
+};

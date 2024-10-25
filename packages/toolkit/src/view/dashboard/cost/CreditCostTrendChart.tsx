@@ -1,18 +1,27 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as echarts from "echarts"
-import { Icons, Skeleton, Tooltip } from "@instill-ai/design-system"
-import Link from "next/link"
-import { Nullable } from "instill-sdk"
+import * as React from "react";
+import {
+    ResponsiveContainer,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    TooltipProps,
+} from "recharts";
+import { Icons, Tooltip as TooltipDS, Skeleton } from "@instill-ai/design-system";
+import Link from "next/link";
+import { Nullable } from "instill-sdk";
 
 type CreditCostTrendChartProps = {
-    dates: string[]
-    values: number[]
-    isLoading: boolean
-    namespaceId: Nullable<string>
-    type: "model" | "pipeline"
-}
+    dates: string[];
+    values: number[];
+    isLoading: boolean;
+    namespaceId: Nullable<string>;
+    type: "model" | "pipeline";
+};
 
 export const CreditCostTrendChart = ({
     dates,
@@ -21,111 +30,56 @@ export const CreditCostTrendChart = ({
     namespaceId,
     type,
 }: CreditCostTrendChartProps) => {
-    const chartRef = React.useRef<HTMLDivElement>(null)
-    const chartInstanceRef = React.useRef<Nullable<echarts.ECharts>>(null)
+    const chartColor = type === "model" ? "#2EC291" : "#3B7AF7";
 
-    const chartColor = type === "model" ? "#2EC291" : "#3B7AF7"
+    const data = React.useMemo(() => {
+        return dates.map((date, index) => ({
+            date,
+            value: values[index] ?? 0,
+        }));
+    }, [dates, values]);
 
-    React.useEffect(() => {
-        if (!chartRef.current || !dates.length) return
+    const formatXAxis = (value: string) => {
+        const date = new Date(value);
+        return `${date.getDate()} ${date.toLocaleString("default", {
+            month: "short",
+        })}`;
+    };
 
-        // Always clean up previous instance first
-        if (chartInstanceRef.current) {
-            chartInstanceRef.current.dispose()
-            chartInstanceRef.current = null
-        }
+    const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
+        if (!active || !payload || !payload.length) return null;
 
-        const chart = echarts.init(chartRef.current, null, {
-            renderer: "svg"
-        })
+        const date = new Date(label);
+        const formattedDate = `${date.getDate()} ${date.toLocaleString("default", {
+            month: "short",
+        })}, ${date.getFullYear()} - ${date.toTimeString().split(" ")[0]}`;
 
-        chartInstanceRef.current = chart
-
-        const option = {
-            tooltip: {
-                trigger: "axis",
-                axisPointer: {
-                    type: "shadow",
-                },
-                formatter: (params: { axisValue: string; value: number }[]) => {
-                    const date = new Date(params[0]?.axisValue ?? "")
-                    const formattedDate = `${date.getDate()} ${date.toLocaleString(
-                        "default",
-                        { month: "short" }
-                    )}, ${date.getFullYear()} - ${date.toTimeString().split(" ")[0]}`
-                    const value = params[0]?.value ?? 0
-
-                    return `
-            <div style="font-size: 14px; color: #666;">
-              <div class="product-body-text-4-medium" style="margin-bottom: 5px;">${formattedDate}</div>
-              <div style="display: flex; align-items: center; margin-bottom: 3px;">
-                <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: ${chartColor}"></span>
-                <div class="product-body-text-3-medium" style="margin-left: 15px;">${value.toFixed(2)} credits</div>
-              </div>
+        return (
+            <div className="rounded-sm bg-white p-3 shadow">
+                <p className="mb-1 text-semantic-fg-disabled product-body-text-4-medium">
+                    {formattedDate}
+                </p>
+                <div className="flex items-center gap-2">
+                    <div
+                        className="h-2.5 w-2.5 rounded-full"
+                        style={{ backgroundColor: chartColor }}
+                    />
+                    <p className="text-semantic-fg-primary product-body-text-3-medium">
+                        {(payload[0]?.value ?? 0).toFixed(2)} credits
+                    </p>
+                </div>
             </div>
-          `
-                },
-            },
-            xAxis: {
-                type: "category",
-                data: dates,
-                axisLabel: {
-                    formatter: (value: string) => {
-                        const date = new Date(value)
-                        return `${date.getDate()} ${date.toLocaleString("default", {
-                            month: "short",
-                        })}`
-                    },
-                },
-            },
-            yAxis: {
-                type: "value",
-                name: "Credits",
-            },
-            series: [
-                {
-                    name: type === "model" ? "Model" : "Pipeline",
-                    type: "bar",
-                    data: values,
-                    itemStyle: { color: chartColor },
-                    barWidth: "24px",
-                },
-            ],
-        }
-
-        chart.setOption(option)
-
-        const handleResize = () => {
-            chartInstanceRef.current?.resize()
-        }
-
-        window.addEventListener("resize", handleResize)
-
-        return () => {
-            window.removeEventListener("resize", handleResize)
-            if (chartInstanceRef.current) {
-                chartInstanceRef.current.dispose()
-                chartInstanceRef.current = null
-            }
-        }
-    }, [dates, values, chartColor, type])
-
-    // Resize on loading state change
-    React.useEffect(() => {
-        chartInstanceRef.current?.resize()
-    }, [isLoading])
+        );
+    };
 
     const LoadingSkeleton = () => (
-        <div className="w-full h-[400px] flex flex-col justify-between">
-            {/* Y-axis labels */}
+        <div className="w-full h-[400px] flex flex-col justify-between relative">
             <div className="absolute left-8 h-full flex flex-col justify-between py-8">
                 <Skeleton className="h-4 w-12" />
                 <Skeleton className="h-4 w-12" />
                 <Skeleton className="h-4 w-12" />
                 <Skeleton className="h-4 w-12" />
             </div>
-
-            {/* Graph bars */}
             <div className="flex items-end justify-between w-full h-full pl-16 space-x-12">
                 <Skeleton className="w-6 h-[60%] rounded-t-sm rounded-b-none" />
                 <Skeleton className="w-6 h-[80%] rounded-t-sm rounded-b-none" />
@@ -135,8 +89,6 @@ export const CreditCostTrendChart = ({
                 <Skeleton className="w-6 h-[65%] rounded-t-sm rounded-b-none" />
                 <Skeleton className="w-6 h-[45%] rounded-t-sm rounded-b-none" />
             </div>
-
-            {/* X-axis labels */}
             <div className="flex justify-between w-full pl-16 pt-4">
                 <Skeleton className="h-4 w-16" />
                 <Skeleton className="h-4 w-16" />
@@ -147,7 +99,7 @@ export const CreditCostTrendChart = ({
                 <Skeleton className="h-4 w-16" />
             </div>
         </div>
-    )
+    );
 
     return (
         <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">
@@ -157,15 +109,15 @@ export const CreditCostTrendChart = ({
                         <div className="text-semantic-fg-primary product-headings-heading-2">
                             Credit Cost Trend
                         </div>
-                        <Tooltip.Provider>
-                            <Tooltip.Root>
-                                <Tooltip.Trigger asChild>
+                        <TooltipDS.Provider>
+                            <TooltipDS.Root>
+                                <TooltipDS.Trigger asChild>
                                     <div className="relative h-4 w-4">
                                         <Icons.AlertCircle className="h-4 w-4 stroke-semantic-fg-primary" />
                                     </div>
-                                </Tooltip.Trigger>
-                                <Tooltip.Portal>
-                                    <Tooltip.Content
+                                </TooltipDS.Trigger>
+                                <TooltipDS.Portal>
+                                    <TooltipDS.Content
                                         className="rounded-sm"
                                         sideOffset={5}
                                         side="right"
@@ -180,16 +132,16 @@ export const CreditCostTrendChart = ({
                                                 </div>
                                             </div>
                                         </div>
-                                        <Tooltip.Arrow
+                                        <TooltipDS.Arrow
                                             className="fill-semantic-bg-primary"
                                             offset={10}
                                             width={9}
                                             height={6}
                                         />
-                                    </Tooltip.Content>
-                                </Tooltip.Portal>
-                            </Tooltip.Root>
-                        </Tooltip.Provider>
+                                    </TooltipDS.Content>
+                                </TooltipDS.Portal>
+                            </TooltipDS.Root>
+                        </TooltipDS.Provider>
                     </div>
                     <Link
                         className="text-semantic-fg-secondary product-button-button-2 px-3 py-1 border border-semantic-fg-disabled rounded-full"
@@ -198,17 +150,41 @@ export const CreditCostTrendChart = ({
                         View billing details
                     </Link>
                 </div>
-                <div className="px-8 pb-8 w-full relative" style={{ height: "460px" }}>
+                <div className="px-8 pb-8 w-full" style={{ height: "460px" }}>
                     {isLoading ? (
                         <LoadingSkeleton />
                     ) : (
-                        <div
-                            ref={chartRef}
-                            style={{ width: "100%", height: "400px" }}
-                        />
+                        <ResponsiveContainer width="100%" height={400}>
+                            <BarChart data={data}>
+                                <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                                <XAxis
+                                    dataKey="date"
+                                    tickFormatter={formatXAxis}
+                                    tickLine={false}
+                                    stroke="#6B7280"
+                                />
+                                <YAxis
+                                    tickLine={false}
+                                    stroke="#6B7280"
+                                    domain={[0, 'auto']}
+                                    allowDecimals={false}
+                                    label={{ value: 'Credits', angle: -90, position: 'insideLeft' }}
+                                />
+                                <Tooltip
+                                    content={CustomTooltip}
+                                    cursor={{ fill: "transparent" }}
+                                />
+                                <Bar
+                                    dataKey="value"
+                                    fill={chartColor}
+                                    barSize={24}
+                                    radius={[2, 2, 0, 0]}
+                                />
+                            </BarChart>
+                        </ResponsiveContainer>
                     )}
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
