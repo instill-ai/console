@@ -1,5 +1,5 @@
 import { ModelReleaseStage, ModelRun } from "../../model";
-import { PipelineMode, PipelineReleaseState } from "../../vdp";
+import { PipelineMode, PipelineReleaseState, PipelineRun } from "../../vdp";
 
 export type Mode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
@@ -166,6 +166,18 @@ export type ListModelRunsByRequesterRequest = {
 
 export type ListModelRunsByRequesterResponse = {
   modelRuns: ModelRun[];
+  nextPageToken: string;
+  totalSize: number;
+};
+
+export type ListPipelineRunsByRequesterRequest = {
+  pageSize?: number;
+  pageToken?: string;
+  filter?: string;
+};
+
+export type ListPipelineRunsByRequesterResponse = {
+  pipelineRuns: PipelineRun[];
   nextPageToken: string;
   totalSize: number;
 };
