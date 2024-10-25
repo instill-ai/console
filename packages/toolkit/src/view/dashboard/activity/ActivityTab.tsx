@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Icons, Input, SelectOption } from "@instill-ai/design-system";
+import { SelectOption } from "@instill-ai/design-system";
 import { FilterByDay } from "../FilterByDay";
 import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
 import { ModelsTriggerCountsLineChart } from "./ModelsTriggerCountsLineChart";
@@ -33,24 +33,10 @@ export const ActivityTab = ({
     pipelineTriggersSummary,
     modelTriggersSummary,
 }: ActivityTabProps) => {
-    const [searchTerm, setSearchTerm] = React.useState("");
 
     return (
         <div className="w-full">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 gap-4">
-                <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
-
-                    <Input.Root className="!rounded w-full sm:w-[250px]">
-                        <Input.LeftIcon>
-                            <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
-                        </Input.LeftIcon>
-                        <Input.Core
-                            placeholder="Search..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </Input.Root>
-                </div>
+            <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center mb-5 gap-4">
                 <FilterByDay
                     refetch={() => pipelinesChart.refetch()}
                     selectedTimeOption={selectedTimeOption}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icons, Input, Popover, SelectOption } from "@instill-ai/design-system";
+import { Icons, Popover, SelectOption } from "@instill-ai/design-system";
 import { useRouter, usePathname } from "next/navigation";
 import { FilterByDay } from "./FilterByDay";
 import { DashboardListPipeline } from "./cost/pipeline/DashboardListPipeline";
@@ -34,7 +34,6 @@ export const CostTab = ({
     accessToken,
     enabledQuery,
 }: CostTabProps) => {
-    const [searchTerm, setSearchTerm] = React.useState("");
     const router = useRouter();
     const pathname = usePathname();
 
@@ -89,17 +88,6 @@ export const CostTab = ({
                             ))}
                         </Popover.Content>
                     </Popover.Root>
-
-                    <Input.Root className="!rounded w-[250px]">
-                        <Input.LeftIcon>
-                            <Icons.SearchSm className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
-                        </Input.LeftIcon>
-                        <Input.Core
-                            placeholder="Search..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </Input.Root>
                 </div>
                 <FilterByDay
                     refetch={() => {
