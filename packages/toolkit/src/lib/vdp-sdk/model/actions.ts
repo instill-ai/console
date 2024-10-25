@@ -1,9 +1,9 @@
-import { Nullable } from "../../type";
+import type { Nullable, Operation } from "instill-sdk";
+
 import {
   createInstillAxiosClient,
   getInstillAdditionalHeaders,
 } from "../helper";
-import { Operation } from "../operation/types";
 import { ModelTask } from "./types";
 
 export type DeployUserModelResponse = {
