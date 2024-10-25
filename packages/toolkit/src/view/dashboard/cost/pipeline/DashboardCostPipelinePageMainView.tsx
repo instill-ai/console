@@ -7,7 +7,7 @@ import {
   useRouteInfo,
 } from "../../../../lib";
 import { UsageSwitch } from "../../UsageSwitch";
-import { CostTab } from "../../CostTab";
+import { CostTab } from "../CostTab";
 
 export type DashboardCostPipelinePageMainViewProps = GeneralAppPageProp;
 

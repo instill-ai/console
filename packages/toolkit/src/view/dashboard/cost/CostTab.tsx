@@ -3,12 +3,12 @@
 import * as React from "react"
 import { Icons, Popover, SelectOption } from "@instill-ai/design-system"
 import { useRouter, usePathname } from "next/navigation"
-import { FilterByDay } from "./FilterByDay"
-import { DashboardListPipeline } from "./cost/pipeline/DashboardListPipeline"
-import { DashboardListModel } from "./cost/model/DashboardListModel"
+import { FilterByDay } from "../FilterByDay"
+import { DashboardListPipeline } from "./pipeline/DashboardListPipeline"
+import { DashboardListModel } from "./model/DashboardListModel"
 import { Nullable } from "instill-sdk"
-import { useAuthenticatedUser, useCreditConsumptionChartRecords } from "../../lib"
-import { CreditCostTrendChart } from "./cost/CreditCostTrendChart"
+import { useAuthenticatedUser, useCreditConsumptionChartRecords } from "../../../lib"
+import { CreditCostTrendChart } from "./CreditCostTrendChart"
 
 type CostTabProps = {
     selectedTimeOption: SelectOption
@@ -127,6 +127,7 @@ export const CostTab = ({
 
             <div className="mb-2 w-full">
                 <CreditCostTrendChart
+                    key={costView}
                     dates={chartData.dates}
                     values={chartData.values}
                     isLoading={creditConsumption.isLoading}

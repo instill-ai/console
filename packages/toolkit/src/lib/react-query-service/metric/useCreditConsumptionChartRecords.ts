@@ -24,29 +24,13 @@ export function useCreditConsumptionChartRecords({
     enabledQuery = true;
   }
 
-  const startDate = start
-    ? new Date(start).toLocaleString("en-us", {
-      hour: "2-digit",
-      month: "2-digit",
-      day: "2-digit",
-    })
-    : null;
-
-  const stopDate = stop
-    ? new Date(stop).toLocaleString("en-us", {
-      hour: "2-digit",
-      month: "2-digit",
-      day: "2-digit",
-    })
-    : null;
-
   return useQuery({
     queryKey: [
       namespaceId,
       "charts",
       "creditConsumption",
-      startDate,
-      stopDate,
+      start,
+      stop,
       aggregationWindow,
     ],
     queryFn: async () => {
@@ -62,16 +46,16 @@ export function useCreditConsumptionChartRecords({
         accessToken,
       });
 
-      const data =
-        await client.core.metric.listInstillCreditConsumptionTimeChart({
-          namespaceId,
-          start: start ?? undefined,
-          stop: stop ?? undefined,
-          aggregationWindow: aggregationWindow ?? undefined,
-        });
+      const data = await client.core.metric.listCreditConsumptionChartRecords({
+        namespaceId,
+        start: start ?? undefined,
+        stop: stop ?? undefined,
+        aggregationWindow: aggregationWindow ?? undefined,
+      });
 
       return Promise.resolve(data);
     },
     enabled: enabledQuery,
   });
+
 }
