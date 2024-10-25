@@ -1,22 +1,15 @@
-import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
-import { generateNextMetaBase } from "@instill-ai/toolkit/server";
+type RedirectionDashboardPageProps = {
+  params: { id: string; entity: string };
+};
 
-import { DashboardPageRender } from "./render";
+const RedirectionDashboardPage = ({ params }: RedirectionDashboardPageProps) => {
+  const { entity } = params;
 
-export async function generateMetadata(): Promise<Metadata> {
-  const metadata: Metadata = {
-    title: `Instill Core | Dashboard`,
-    metadataBase: generateNextMetaBase({
-      defaultBase: "http://localhost:3000",
-    }),
-    openGraph: {
-      images: ["/instill-open-graph.png"],
-    },
-  };
-  return Promise.resolve(metadata);
-}
+  return redirect(`/${entity}/dashboard/activity`);
 
-export default async function Page() {
-  return <DashboardPageRender />;
-}
+  return null;
+};
+
+export default RedirectionDashboardPage;

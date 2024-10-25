@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Icons, Input, SelectOption } from "@instill-ai/design-system";
-import { FilterByDay } from "./FilterByDay";
-import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
-import { ModelsTriggerCountsLineChart } from "./ModelsTriggerCountsLineChart";
-import { ModelsChart, ModelTriggersStatusSummary, PipelinesChart, PipelineTriggersStatusSummary } from "../../lib";
+import { FilterByDay } from "../FilterByDay";
+import { PipelineTriggerCountsLineChart } from "../PipelineTriggerCountsLineChart";
+import { ModelsTriggerCountsLineChart } from "../ModelsTriggerCountsLineChart";
+import { ModelsChart, ModelTriggersStatusSummary, PipelinesChart, PipelineTriggersStatusSummary } from "../../../lib";
 import { Nullable } from "instill-sdk";
 
 type ActivityTabProps = {

@@ -19,18 +19,18 @@ import {
   usePipelineTriggerComputationTimeCharts,
   usePipelineTriggerMetric,
   useRouteInfo,
-} from "../../lib";
-import { UsageSwitch } from "./UsageSwitch";
+} from "../../../lib";
+import { UsageSwitch } from "../UsageSwitch";
 import { ActivityTab } from "./ActivityTab";
-import { CostTab } from "./CostTab";
+import { CostTab } from "../CostTab";
 
-export type DashboardPipelineListPageMainViewProps = GeneralAppPageProp;
+export type DashboardActivityPageMainViewProps = GeneralAppPageProp;
 
-export const DashboardPipelineListPageMainView = ({
+export const DashboardActivityPageMainView = ({
   accessToken,
   enableQuery,
   // router,
-}: DashboardPipelineListPageMainViewProps) => {
+}: DashboardActivityPageMainViewProps) => {
   const [selectedTimeOption, setSelectedTimeOption] = React.useState<SelectOption>({
     label: "Today",
     value: "24h",
@@ -216,9 +216,9 @@ export const DashboardPipelineListPageMainView = ({
           pipelinesChart={pipelinesChart}
           modelsChart={modelsChart}
           accessToken={accessToken}
-          enabledQuery={enableQuery} 
-          />
-          
+          enabledQuery={enableQuery}
+        />
+
       )}
     </div>
   );

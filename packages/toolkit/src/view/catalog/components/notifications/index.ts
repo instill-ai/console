@@ -2,7 +2,7 @@ export * from "./CreditUsageFileNotification";
 export * from "./DeleteFileNotification";
 export * from "./DeleteCatalogNotification";
 export * from "./DuplicateFileNotification";
-export * from "./FileSizeNotification.js";
+export * from "./FileSizeNotification";
 export * from "./FileTooLongNotification";
 export * from "./IncorrectFormatFileNotification";
 export * from "./WarnFileUploadDialog";
