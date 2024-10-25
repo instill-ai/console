@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Icons, Input, Popover, SelectOption } from "@instill-ai/design-system";
+import { useRouter, usePathname } from "next/navigation";
 import { FilterByDay } from "./FilterByDay";
 import { DashboardListPipeline } from "./DashboardListPipeline";
 import { DashboardListModel } from "./DashboardListModel";
@@ -33,9 +34,12 @@ export const CostTab = ({
     accessToken,
     enabledQuery,
 }: CostTabProps) => {
-    const [costView, setCostView] = React.useState<"model" | "pipeline">("pipeline");
     const [searchTerm, setSearchTerm] = React.useState("");
+    const router = useRouter();
+    const pathname = usePathname();
 
+    // Determine the current view based on the URL
+    const costView = pathname.includes("/cost/model") ? "model" : "pipeline";
 
     const me = useAuthenticatedUser({
         enabled: enabledQuery,
@@ -72,7 +76,9 @@ export const CostTab = ({
                                     key={option.value}
                                     className={`flex items-center p-2 hover:bg-semantic-bg-line ${costView === option.value ? "bg-semantic-bg-line" : ""
                                         }`}
-                                    onClick={() => setCostView(option.value as "pipeline" | "model")}
+                                    onClick={() => {
+                                        router.push(`/${me?.data?.id}/dashboard/cost/${option.value}`);
+                                    }}
                                 >
                                     {option.icon}
                                     <span className="ml-2">{option.label}</span>
@@ -125,8 +131,7 @@ export const CostTab = ({
                         enabledQuery={enabledQuery}
                         namespaceId={me.data?.id ?? ""}
                     />
-                )
-                }
+                )}
             </div>
 
             <div className="mt-8">

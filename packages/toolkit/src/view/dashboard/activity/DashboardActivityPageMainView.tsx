@@ -22,7 +22,6 @@ import {
 } from "../../../lib";
 import { UsageSwitch } from "../UsageSwitch";
 import { ActivityTab } from "./ActivityTab";
-import { CostTab } from "../CostTab";
 
 export type DashboardActivityPageMainViewProps = GeneralAppPageProp;
 
@@ -197,29 +196,21 @@ export const DashboardActivityPageMainView = ({
   return (
     <div className="flex flex-col">
       <h1 className="product-headings-heading-4 mb-2">Usage</h1>
-      <UsageSwitch activeTab={activeTab} setActiveTab={setActiveTab} />
-      {activeTab === "activity" ? (
-        <ActivityTab
-          pipelinesChart={pipelinesChart}
-          modelsChart={modelsChart}
-          pipelinesChartList={pipelinesChartList}
-          modelsChartList={modelChartList}
-          selectedTimeOption={selectedTimeOption}
-          setSelectedTimeOption={setSelectedTimeOption}
-          pipelineTriggersSummary={pipelineTriggersSummary}
-          modelTriggersSummary={modelTriggersSummary}
-        />
-      ) : (
-        <CostTab
-          selectedTimeOption={selectedTimeOption}
-          setSelectedTimeOption={setSelectedTimeOption}
-          pipelinesChart={pipelinesChart}
-          modelsChart={modelsChart}
-          accessToken={accessToken}
-          enabledQuery={enableQuery}
-        />
-
-      )}
+      <UsageSwitch
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        namespaceId={routeInfo.data.namespaceId}
+      />
+      <ActivityTab
+        pipelinesChart={pipelinesChart}
+        modelsChart={modelsChart}
+        pipelinesChartList={pipelinesChartList}
+        modelsChartList={modelChartList}
+        selectedTimeOption={selectedTimeOption}
+        setSelectedTimeOption={setSelectedTimeOption}
+        pipelineTriggersSummary={pipelineTriggersSummary}
+        modelTriggersSummary={modelTriggersSummary}
+      />
     </div>
   );
 };

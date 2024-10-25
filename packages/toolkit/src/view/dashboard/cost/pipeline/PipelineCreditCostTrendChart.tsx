@@ -11,7 +11,7 @@ type PipelineCreditCostTrendChartProps = {
     accessToken: Nullable<string>;
     enabledQuery: boolean;
     namespaceId: Nullable<string>
-
+    
 };
 
 export const PipelineCreditCostTrendChart = ({
