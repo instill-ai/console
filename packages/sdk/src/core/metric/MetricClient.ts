@@ -1,11 +1,14 @@
 import { getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
+import { ModelRun } from "../../model";
 import {
   GetPipelineTriggerCountRequest,
   GetPipelineTriggerCountResponse,
   ListCreditConsumptionChartRecordResponse,
   ListCreditConsumptionChartRecordsRequest,
   ListCreditConsumptionChartRecordsResponse,
+  ListModelRunsByRequesterRequest,
+  ListModelRunsByRequesterResponse,
   ListModelTriggerMetricRequest,
   ListModelTriggerMetricResponse,
   ListModelTriggersChartResponse,
@@ -343,6 +346,44 @@ export class MetricClient extends APIResource {
       const response =
         await this._client.get<ListModelTriggersChartResponse>(queryString);
       return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listModelRunsByRequester(
+    props: ListModelRunsByRequesterRequest & {
+      enablePagination: true;
+    },
+  ): Promise<ListModelRunsByRequesterResponse>;
+  async listModelRunsByRequester(
+    props: ListModelRunsByRequesterRequest & {
+      enablePagination: false;
+    },
+  ): Promise<ModelRun[]>;
+  async listModelRunsByRequester(
+    props: ListModelRunsByRequesterRequest & {
+      enablePagination?: boolean;
+    },
+  ) {
+    const { pageSize, pageToken, filter, enablePagination } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/dashboard/models/runs`,
+        pageSize,
+        pageToken,
+        filter,
+      });
+
+      const data =
+        await this._client.get<ListModelRunsByRequesterResponse>(queryString);
+
+      if (enablePagination) {
+        return Promise.resolve(data);
+      }
+
+      return Promise.resolve(data.modelRuns);
     } catch (error) {
       return Promise.reject(error);
     }

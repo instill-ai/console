@@ -1,4 +1,4 @@
-import { ModelReleaseStage } from "../../model";
+import { ModelReleaseStage, ModelRun } from "../../model";
 import { PipelineMode, PipelineReleaseState } from "../../vdp";
 
 export type Mode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
@@ -156,4 +156,16 @@ export type ModelTriggerChartRecord = {
 
 export type ListModelTriggersChartResponse = {
   modelTriggerChartRecords: ModelTriggerChartRecord[];
+};
+
+export type ListModelRunsByRequesterRequest = {
+  pageSize?: number;
+  pageToken?: string;
+  filter?: string;
+};
+
+export type ListModelRunsByRequesterResponse = {
+  modelRuns: ModelRun[];
+  nextPageToken: string;
+  totalSize: number;
 };

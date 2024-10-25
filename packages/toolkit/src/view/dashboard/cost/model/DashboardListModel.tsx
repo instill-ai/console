@@ -7,18 +7,16 @@ import {
     DataTable,
     PaginationState,
 } from "@instill-ai/design-system";
-import { mockTableData } from "../../helpers";
-// import { InstillStore, useInstillStore, useRouteInfo, useShallow } from "../../lib";
+import { InstillStore, useInstillStore, useListModelRunsByRequester, useShallow } from "../../../../lib";
 import { TABLE_PAGE_SIZE } from "../../../pipeline/view-pipeline/constants";
 import { RunsTableSortableColHeader, RunStateLabel } from "../../../../components";
 import { getHumanReadableStringFromTime } from "../../../../server";
+import { ModelRun } from "instill-sdk";
 
-// const selector = (store: InstillStore) => ({
-//     accessToken: store.accessToken,
-//     enabledQuery: store.enabledQuery,
-// });
-
-type TableData = typeof mockTableData[0];
+const selector = (store: InstillStore) => ({
+    accessToken: store.accessToken,
+    enabledQuery: store.enabledQuery,
+});
 
 export const DashboardListModel = () => {
     const [orderBy, setOrderBy] = React.useState<string>();
@@ -26,12 +24,16 @@ export const DashboardListModel = () => {
         pageIndex: 0,
         pageSize: TABLE_PAGE_SIZE,
     });
-    // const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-    // const routeInfo = useRouteInfo();
 
-    const pageCount = React.useMemo(() => {
-        return Math.ceil(mockTableData.length / TABLE_PAGE_SIZE);
-    }, []);
+    const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
+    const modelRuns = useListModelRunsByRequester({
+        enabled: enabledQuery,
+        accessToken,
+        pageSize: paginationState.pageSize,
+        pageToken: paginationState.pageIndex.toString(),
+        filter: orderBy,
+    });
 
     const onSortOrderUpdate = (sortValue: string) => {
         setPaginationState((currentValue) => ({
@@ -42,34 +44,36 @@ export const DashboardListModel = () => {
     };
 
     const tableColumns = React.useMemo(() => {
-        const baseColumns: ColumnDef<TableData>[] = [
+        const baseColumns: ColumnDef<ModelRun>[] = [
             {
-                accessorKey: "pipelineId",
+                accessorKey: "modelId",
                 header: () => <div className="text-left">Model ID</div>,
                 cell: ({ row }) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
                             <Link
-                                href={`/models/${row.getValue("pipelineId")}`}
+                                href={`/models/${row.getValue("modelId")}`}
                                 className="text-semantic-accent-default hover:underline"
                             >
-                                {row.getValue("pipelineId")}
+                                {row.getValue("modelId")}
                             </Link>
                         </div>
                     );
                 },
             },
             {
-                accessorKey: "runId",
+                accessorKey: "id",
                 header: () => <div className="text-left">Run ID</div>,
                 cell: ({ row }) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
                             <Link
-                                href={`/models/${row.getValue("pipelineId")}/runs/${row.getValue("runId")}`}
+                                href={`/models/${row.getValue("modelId")}/runs/${row.getValue(
+                                    "id"
+                                )}`}
                                 className="text-semantic-accent-default hover:underline"
                             >
-                                {row.getValue("runId")}
+                                {row.getValue("id")}
                             </Link>
                         </div>
                     );
@@ -192,7 +196,7 @@ export const DashboardListModel = () => {
         return baseColumns;
     }, [orderBy]);
 
-    if (mockTableData.length === 0) {
+    if (modelRuns.data?.modelRuns.length === 0) {
         return (
             <div className="relative flex flex-col items-center">
                 <img
@@ -215,11 +219,11 @@ export const DashboardListModel = () => {
         <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th]:w-40 [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(7)]:w-52 [&_table_th:nth-child(8)]:w-28">
             <DataTable
                 columns={tableColumns}
-                data={mockTableData}
+                data={modelRuns.data?.modelRuns || []}
                 pageSize={paginationState.pageSize}
-                isLoading={false}
+                isLoading={modelRuns.isLoading}
                 loadingRows={paginationState.pageSize}
-                pageCount={pageCount}
+                pageCount={Math.ceil((modelRuns.data?.totalSize || 0) / TABLE_PAGE_SIZE)}
                 manualPagination={true}
                 showPageNumbers
                 onPaginationStateChange={setPaginationState}

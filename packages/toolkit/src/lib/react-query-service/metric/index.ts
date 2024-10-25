@@ -5,3 +5,4 @@ export * from "./usePipelineTriggerComputationTimeCharts";
 export * from "./useModelTriggerComputationTimeCharts";
 export * from "./useModelTriggerMetric";
 export * from "./useCreditConsumption";
+export * from "./useListModelRunsByRequester";
