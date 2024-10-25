@@ -5,7 +5,6 @@ import { Nullable } from "../type";
 
 export * from "./helper";
 export * from "./model";
-export * from "./operation";
 export * from "./organization";
 export * from "./types";
 

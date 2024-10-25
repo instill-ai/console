@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import type { Operation } from "instill-sdk";
 import * as React from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { Operation } from "instill-sdk";
 import { z } from "zod";
 
 import {
@@ -103,20 +102,21 @@ export const ModelPlayground = ({
   }>(defaultCurrentOperationIdPollingData);
   const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const [isModelRunInProgress, setIsModelRunInProgress] = useState(true);
+  const [isModelRunInProgress, setIsModelRunInProgress] = React.useState(true);
   const [outputActiveView, setOutputActiveView] =
-    useState<ModelOutputActiveView>("preview");
-  const [modelRunResult, setModelRunResult] = useState<Record<
+    React.useState<ModelOutputActiveView>("preview");
+  const [modelRunResult, setModelRunResult] = React.useState<Record<
     string,
     unknown
   > | null>(null);
-  const [inputFromExistingResult, setInputFromExistingResult] = useState<Record<
-    string,
-    unknown
-    // Stupid hack, because the model name field needs to use the models' name
-  > | null>({ data: { model: model?.id } });
+  const [inputFromExistingResult, setInputFromExistingResult] =
+    React.useState<Record<
+      string,
+      unknown
+      // Stupid hack, because the model name field needs to use the models' name
+    > | null>({ data: { model: model?.id } });
   const [existingTriggerState, setExistingTriggerState] =
-    useState<Nullable<Operation>>(null);
+    React.useState<Nullable<Operation>>(null);
   const { accessToken, enabledQuery, navigationNamespaceAnchor } =
     useInstillStore(useShallow(selector));
 
@@ -143,7 +143,7 @@ export const ModelPlayground = ({
     navigationNamespaceAnchor,
   ]);
 
-  const isModelTriggerable = useMemo(() => {
+  const isModelTriggerable = React.useMemo(() => {
     return accessToken && model && modelState
       ? model.permission.canTrigger &&
           !isModelRunInProgress &&
@@ -222,7 +222,7 @@ export const ModelPlayground = ({
     setModelRunResult(null);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (
       activeVersion !== currentOperationIdPollingData.current.modelVersion ||
       targetNamespace !== currentOperationIdPollingData.current.targetNamespace
@@ -231,7 +231,7 @@ export const ModelPlayground = ({
     }
   }, [activeVersion, targetNamespace]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (
       !accessToken ||
       (existingModelTriggerResult.isSuccess &&
@@ -295,7 +295,7 @@ export const ModelPlayground = ({
     accessToken,
   ]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!existingTriggerState || !model) {
       return;
     }
