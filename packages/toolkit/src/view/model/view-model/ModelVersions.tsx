@@ -3,6 +3,7 @@
 import type { Model, ModelVersion } from "instill-sdk";
 import * as React from "react";
 import { ColumnDef, PaginationState } from "@tanstack/react-table";
+import { InstillNameInterpreter } from "instill-sdk";
 
 import { DataTable } from "@instill-ai/design-system";
 
@@ -85,7 +86,9 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
   ];
 
   const versions = useInfiniteNamespaceModelVersions({
-    namespaceId: model?.name?.split("/")[2] ?? null,
+    namespaceId: model
+      ? InstillNameInterpreter.model(model.name).namespaceId
+      : null,
     modelId: model?.id ?? null,
     accessToken,
     enabledQuery,

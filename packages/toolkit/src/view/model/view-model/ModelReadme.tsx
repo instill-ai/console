@@ -1,7 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { Model, UpdateNamespaceModelRequest } from "instill-sdk";
+import {
+  InstillNameInterpreter,
+  Model,
+  UpdateNamespaceModelRequest,
+} from "instill-sdk";
 
 import { useToast } from "@instill-ai/design-system";
 
@@ -39,7 +43,7 @@ export const ModelReadme = ({ model, onUpdate }: ModelReadmeProps) => {
       return;
     }
 
-    const namespaceId = model.name.split("/")[2];
+    const { namespaceId } = InstillNameInterpreter.model(model.name);
 
     if (!namespaceId) {
       return;

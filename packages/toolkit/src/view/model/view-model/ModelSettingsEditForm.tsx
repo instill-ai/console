@@ -3,6 +3,7 @@
 import type { Model, UpdateNamespaceModelRequest } from "instill-sdk";
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { InstillNameInterpreter } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -139,7 +140,7 @@ export const ModelSettingsEditForm = ({
       return;
     }
 
-    const namespaceId = model.name.split("/")[2];
+    const { namespaceId } = InstillNameInterpreter.model(model.name);
 
     if (!namespaceId) {
       return;
