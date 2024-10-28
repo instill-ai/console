@@ -8,12 +8,9 @@ import {
   useGetFileContent,
   useListChunks,
 } from "../../../lib/react-query-service/catalog";
-import {
-  Catalog,
-  CatalogFile,
-  Chunk,
-} from "../../../lib/react-query-service/catalog/types";
+
 import ChunkCard from "./ChunkCard";
+import { Catalog, CatalogFile, Chunk } from "instill-sdk";
 
 type FileChunksProps = {
   file: CatalogFile;
@@ -41,7 +38,7 @@ const FileChunks = ({
     catalogId: catalog.catalogId,
     accessToken: accessToken || null,
     enabled: expanded,
-    ownerId: catalog.ownerName,
+    namespaceId: catalog.ownerName,
     fileUid: file.fileUid,
   });
 

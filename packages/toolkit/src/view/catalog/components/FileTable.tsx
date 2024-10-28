@@ -2,13 +2,10 @@
 
 import * as React from "react";
 
-import {
-  File,
-  FileStatus,
-} from "../../../lib/react-query-service/catalog/types";
 import { FileTableHeader } from "./FileTableHeader";
 import { FileTableRow } from "./FileTableRow";
 import { getStatusSortValue } from "./lib/helpers";
+import { File, FileStatus } from "instill-sdk";
 
 type FileTableProps = {
   files: File[];

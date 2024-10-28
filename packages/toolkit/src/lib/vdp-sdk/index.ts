@@ -11,13 +11,13 @@ export * from "./helper";
 let instillAPIClient: Nullable<InstillAPIClient> = null;
 let instillModelAPIClient: Nullable<InstillAPIClient> = null;
 let instillApplicationAPIClient: Nullable<InstillAPIClient> = null;
+let instillCatalogAPIClient: Nullable<InstillAPIClient> = null;
 
 export function getInstillAPIClient({ accessToken }: { accessToken?: string }) {
   if (!instillAPIClient) {
-    const baseURL = `${
-      process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+      }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
 
     instillAPIClient = new InstillAPIClient({
       baseURL,
@@ -36,10 +36,9 @@ export function getInstillModelAPIClient({
   accessToken?: string;
 }) {
   if (!instillModelAPIClient) {
-    const baseURL = `${
-      process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-    }/${env("NEXT_PUBLIC_MODEL_API_VERSION")}`;
+      }/${env("NEXT_PUBLIC_MODEL_API_VERSION")}`;
 
     instillModelAPIClient = new InstillAPIClient({
       baseURL,
@@ -58,13 +57,35 @@ export function getInstillApplicationAPIClient({
   accessToken?: string;
 }) {
   if (!instillApplicationAPIClient) {
-    const baseURL = `${
-      process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-    }/${env("NEXT_PUBLIC_APPLICATION_API_VERSION")}`;
+      }/${env("NEXT_PUBLIC_APPLICATION_API_VERSION")}`;
 
     instillApplicationAPIClient = new InstillAPIClient({
       baseURL,
+
+      // When non logged in user is viewing some pages, accessToken will be null
+      apiToken: accessToken,
+    });
+  }
+
+  return instillApplicationAPIClient;
+}
+
+export function getInstillCatalogAPIClient({
+  accessToken,
+}: {
+  accessToken?: string;
+}) {
+  if (!instillCatalogAPIClient) {
+    const baseURL = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
+      env("NEXT_PUBLIC_API_GATEWAY_URL")
+      }/${env("NEXT_PUBLIC_CATALOG_API_VERSION")}`;
+
+    instillCatalogAPIClient = new InstillAPIClient({
+      baseURL,
+
+      // When non logged in user is viewing some pages, accessToken will be null
       apiToken: accessToken,
     });
   }
@@ -77,6 +98,8 @@ export type ChangePasswordPayload = {
   newPassword: string;
 };
 
+
+
 export async function changePasswordMutation({
   payload,
   accessToken,
@@ -85,10 +108,9 @@ export async function changePasswordMutation({
   accessToken: Nullable<string>;
 }) {
   try {
-    const baseURL: Nullable<string> = `${
-      process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL: Nullable<string> = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+      }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
 
     const res = await fetch(baseURL + "/auth/change_password", {
       method: "POST",
@@ -114,10 +136,9 @@ export async function authLogoutAction({
   accessToken: Nullable<string>;
 }) {
   try {
-    const baseURL: Nullable<string> = `${
-      process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL: Nullable<string> = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+      }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
 
     const res = await fetch(baseURL + "/auth/logout", {
       method: "POST",
@@ -142,10 +163,9 @@ export async function authValidateTokenAction({
   accessToken: Nullable<string>;
 }) {
   try {
-    const baseURL: Nullable<string> = `${
-      process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL: Nullable<string> = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+      }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
 
     const res = await fetch(baseURL + "/auth/validate_access_token", {
       method: "POST",
@@ -180,10 +200,9 @@ export async function authLoginAction({
   payload: AuthLoginActionPayload;
 }) {
   try {
-    const baseURL: Nullable<string> = `${
-      process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL: Nullable<string> = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+      }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
 
     const res = await fetch(baseURL + "/auth/login", {
       method: "POST",

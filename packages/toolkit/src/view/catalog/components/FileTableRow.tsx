@@ -4,7 +4,6 @@ import * as React from "react";
 
 import { Button, Dialog, Icons, Tag } from "@instill-ai/design-system";
 
-import { File } from "../../../lib/react-query-service/catalog/types";
 import {
   convertFileType,
   formatDateFileTableRow,
@@ -12,6 +11,7 @@ import {
   truncateName,
 } from "./lib/helpers";
 import { StatusTag } from "./StatusTag";
+import { File } from "instill-sdk";
 
 type FileTableRowProps = {
   item: File;

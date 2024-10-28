@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Nullable } from "instill-sdk";
+import { Catalog, CatalogFile, Chunk, Nullable } from "instill-sdk";
 
 import { Button, Separator, Skeleton } from "@instill-ai/design-system";
 
@@ -16,11 +16,7 @@ import {
   useListCatalogFiles,
   useUpdateChunk,
 } from "../../../../lib/react-query-service/catalog";
-import {
-  Catalog,
-  CatalogFile,
-  Chunk,
-} from "../../../../lib/react-query-service/catalog/types";
+
 import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 
@@ -94,11 +90,15 @@ export const ChunkTab = ({ catalog, onGoToUpload }: ChunkTabProps) => {
     chunkUid: string,
     currentValue: boolean,
   ) => {
+    if (!selectedNamespace) return;
+
     try {
       await updateChunkMutation.mutateAsync({
         chunkUid,
         accessToken,
         retrievable: !currentValue,
+        namespaceId: selectedNamespace,
+        catalogId: catalog.catalogId,
       });
     } catch (error) {
       console.error("Failed to update chunk retrievable status:", error);

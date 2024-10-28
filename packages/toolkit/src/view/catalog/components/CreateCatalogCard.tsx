@@ -16,8 +16,8 @@ import {
   useGetAllChunks,
   useListCatalogFiles,
 } from "../../../lib/react-query-service/catalog";
-import { Catalog } from "../../../lib/react-query-service/catalog/types";
 import { convertTagsToArray } from "./lib/helpers";
+import { Catalog } from "instill-sdk";
 
 type CreateCatalogCardProps = {
   catalog: Catalog;

@@ -1,8 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-import { Nullable } from "../../type";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { File } from "./types";
+import { getInstillApplicationAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
+import { Nullable } from "instill-sdk";
 
 export function useUploadCatalogFile() {
   const queryClient = useQueryClient();
@@ -14,7 +11,7 @@ export function useUploadCatalogFile() {
       payload,
       accessToken,
     }: {
-      ownerId: Nullable<string>;
+      ownerId: string
       catalogId: string;
       payload: {
         name: string;
@@ -22,19 +19,24 @@ export function useUploadCatalogFile() {
         content: string;
       };
       accessToken: Nullable<string>;
-    }): Promise<File> => {
+    }) => {
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        throw new Error("accessToken not provided");
       }
-      const client = createInstillAxiosClient(accessToken, true);
-      const response = await client.post<{ file: File }>(
-        `/namespaces/${ownerId}/catalogs/${catalogId}/files`,
+
+      const client = getInstillApplicationAPIClient({ accessToken });
+      const file = await client.catalog.uploadCatalogFile({
+        ownerId,
+        catalogId,
         payload,
-      );
-      return response.data.file;
+      });
+
+      return Promise.resolve(file);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["catalogFiles"] });
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["catalogFiles", variables.ownerId, variables.catalogId],
+      });
     },
   });
 }

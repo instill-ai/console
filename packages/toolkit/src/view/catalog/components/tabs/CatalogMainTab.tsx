@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import {
+  Catalog,
   Nullable,
   OrganizationSubscription,
   UserSubscription,
@@ -16,7 +17,6 @@ import {
   useGetCatalogs,
   useUpdateCatalog,
 } from "../../../../lib/react-query-service/catalog";
-import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { CatalogCard } from "../CatalogCard";
 import CatalogSearchSort, { SortAnchor, SortOrder } from "../CatalogSearchSort";
 import { CreateCatalogCard } from "../CreateCatalogCard";

@@ -1,6 +1,6 @@
 import { Button, Icons } from "@instill-ai/design-system";
+import { File } from "instill-sdk";
 
-import { File } from "../../../lib/react-query-service/catalog/types";
 
 type FileTableHeaderProps = {
   sortConfig: {

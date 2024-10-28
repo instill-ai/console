@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import {
+  Catalog,
+  File,
   Nullable,
   OrganizationSubscription,
   UserSubscription,
@@ -19,10 +21,7 @@ import {
   useDeleteCatalogFile,
   useListCatalogFiles,
 } from "../../../../lib/react-query-service/catalog";
-import {
-  Catalog,
-  File,
-} from "../../../../lib/react-query-service/catalog/types";
+
 import { EmptyState } from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";
@@ -139,6 +138,8 @@ export const CatalogFilesTab = ({
         await deleteCatalogFile.mutateAsync({
           fileUid,
           accessToken,
+          catalogId: catalog.catalogId,
+          ownerId: catalog.ownerName,
         });
         updateRemainingSpace(fileToDelete.size, false);
       }
