@@ -1,6 +1,7 @@
 import "whatwg-fetch";
 
 import { ApplicationClient } from "../application";
+import { CatalogClient } from "../catalog";
 import {
   CreditClient,
   IntegrationClient,
@@ -140,4 +141,5 @@ export class InstillAPIClient {
 
   model = new ModelClient(this);
   application = new ApplicationClient(this);
+  catalog = new CatalogClient(this);
 }

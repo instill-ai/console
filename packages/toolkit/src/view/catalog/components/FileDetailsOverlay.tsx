@@ -11,10 +11,11 @@ import {
   useListChunks,
 } from "../../../lib/react-query-service/catalog";
 import { getFileIcon } from "./lib/helpers";
+import { Nullable } from "instill-sdk";
 
 type FileDetailsOverlayProps = {
   fileUid: string;
-  accessToken: string | null;
+  accessToken: Nullable<string>;
   onClose: () => void;
   catalogId: string;
   showFullFile: boolean;
@@ -51,7 +52,7 @@ const FileDetailsOverlay = ({
     catalogId,
     accessToken,
     enabled: isOpen && highlightChunk,
-    ownerId,
+    namespaceId: ownerId,
     fileUid,
   });
 

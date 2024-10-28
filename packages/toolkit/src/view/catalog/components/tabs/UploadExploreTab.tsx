@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OrganizationSubscription, UserSubscription } from "instill-sdk";
+import { OrganizationSubscription, UserSubscription, Catalog } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -34,7 +34,6 @@ import {
   useProcessCatalogFiles,
   useUploadCatalogFile,
 } from "../../../../lib/react-query-service/catalog";
-import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { DragAndDropUpload } from "../DragAndDropUpload";
 import { FILE_ERROR_TIMEOUT } from "../lib/constant";
 import {
@@ -306,7 +305,7 @@ export const UploadExploreTab = ({
           const content = await readFileAsBase64(file);
 
           const uploadedFile = await uploadCatalogFile.mutateAsync({
-            ownerId: navigationNamespaceAnchor,
+            ownerId: navigationNamespaceAnchor ?? "",
             catalogId: catalog.catalogId,
             payload: {
               name: file.name,

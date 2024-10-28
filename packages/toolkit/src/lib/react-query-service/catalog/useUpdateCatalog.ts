@@ -1,36 +1,49 @@
-import type { Nullable } from "instill-sdk";
-import { useMutation } from "@tanstack/react-query";
-
-import { createInstillAxiosClient } from "../../sdk-helper";
-import { Catalog } from "./types";
-
-async function updateCatalogMutation({
-  payload,
-  ownerId,
-  catalogId,
-  accessToken,
-}: {
-  payload: {
-    name: string;
-    description?: string;
-    tags?: string[];
-  };
-  ownerId: string;
-  catalogId: string;
-  accessToken: Nullable<string>;
-}): Promise<Catalog> {
-  if (!accessToken) {
-    return Promise.reject(new Error("accessToken not provided"));
-  }
-  const client = createInstillAxiosClient(accessToken, true);
-  const response = await client.put<{
-    catalog: Catalog;
-  }>(`/namespaces/${ownerId}/catalogs/${catalogId}`, payload);
-  return response.data.catalog;
-}
+import { getInstillCatalogAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
+import { Catalog, Nullable } from "instill-sdk";
 
 export function useUpdateCatalog() {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: updateCatalogMutation,
+    mutationFn: async ({
+      ownerId,
+      catalogId,
+      payload,
+      accessToken,
+    }: {
+      ownerId: string;
+      catalogId: string;
+      payload: {
+        name: string;
+        description?: string;
+        tags?: string[];
+      };
+      accessToken: Nullable<string>;
+    }) => {
+      if (!accessToken) {
+        throw new Error("accessToken not provided");
+      }
+
+      const client = getInstillCatalogAPIClient({ accessToken });
+      const catalog = await client.catalog.updateCatalog({
+        ownerId,
+        catalogId,
+        ...payload,
+      });
+
+      return Promise.resolve(catalog);
+    },
+    onSuccess: (updatedCatalog, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["catalogs", variables.ownerId],
+      });
+      queryClient.setQueryData<Catalog[]>(
+        ["catalogs", variables.ownerId],
+        (oldData) =>
+          oldData?.map((catalog) =>
+            catalog.catalogId === variables.catalogId ? updatedCatalog : catalog
+          ) || []
+      );
+    },
   });
 }

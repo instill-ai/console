@@ -1,7 +1,5 @@
-import type { Nullable } from "instill-sdk";
-import { useQuery } from "@tanstack/react-query";
-
-import { createInstillAxiosClient } from "../../sdk-helper";
+import { getInstillCatalogAPIClient, useQuery } from "@instill-ai/toolkit";
+import { Nullable } from "instill-sdk";
 
 export function useGetFileContent({
   fileUid,
@@ -22,12 +20,16 @@ export function useGetFileContent({
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
-      const client = createInstillAxiosClient(accessToken, true);
-      const response = await client.get<{ sourceFile: { content: string } }>(
-        `/namespaces/${ownerId}/catalogs/${catalogId}/files/${fileUid}/source`,
-      );
-      return response.data.sourceFile.content;
+
+      const client = getInstillCatalogAPIClient({ accessToken });
+      const fileContent = await client.catalog.getFileContent({
+        ownerId,
+        catalogId,
+        fileUid,
+      });
+
+      return Promise.resolve(fileContent.content);
     },
-    enabled,
+    enabled: enabled && Boolean(accessToken),
   });
 }

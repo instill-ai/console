@@ -12,7 +12,7 @@ import {
   Catalog,
   CatalogFile,
   Chunk,
-} from "../../../lib/react-query-service/catalog/types";
+} from "instill-sdk";
 import ChunkCard from "./ChunkCard";
 
 type FileChunksProps = {
@@ -41,7 +41,7 @@ const FileChunks = ({
     catalogId: catalog.catalogId,
     accessToken: accessToken || null,
     enabled: expanded,
-    ownerId: catalog.ownerName,
+    namespaceId: catalog.ownerName,
     fileUid: file.fileUid,
   });
 

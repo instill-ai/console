@@ -1,29 +1,35 @@
-import { useMutation } from "@tanstack/react-query";
-
-import { createInstillAxiosClient } from "../../sdk-helper";
-import { Catalog } from "./types";
-
-async function deleteCatalogMutation({
-  ownerId,
-  catalogId,
-  accessToken,
-}: {
-  ownerId: string;
-  catalogId: string;
-  accessToken: string | null;
-}): Promise<Catalog> {
-  if (!accessToken) {
-    return Promise.reject(new Error("accessToken not provided"));
-  }
-  const client = createInstillAxiosClient(accessToken, true);
-  const response = await client.delete<{
-    catalog: Catalog;
-  }>(`/namespaces/${ownerId}/catalogs/${catalogId}`);
-  return response.data.catalog;
-}
+import { getInstillCatalogAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
+import { Catalog, Nullable } from "instill-sdk";
 
 export function useDeleteCatalog() {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: deleteCatalogMutation,
+    mutationFn: async ({
+      ownerId,
+      catalogId,
+      accessToken,
+    }: {
+      ownerId: string;
+      catalogId: string;
+      accessToken: Nullable<string>;
+    }) => {
+      if (!accessToken) {
+        throw new Error("accessToken not provided");
+      }
+
+      const client = getInstillCatalogAPIClient({ accessToken });
+      await client.catalog.deleteCatalog({ ownerId, catalogId });
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["catalogs", variables.ownerId],
+      });
+      queryClient.setQueryData<Catalog[]>(
+        ["catalogs", variables.ownerId],
+        (oldData) =>
+          oldData?.filter((catalog) => catalog.catalogId !== variables.catalogId) || []
+      );
+    },
   });
 }

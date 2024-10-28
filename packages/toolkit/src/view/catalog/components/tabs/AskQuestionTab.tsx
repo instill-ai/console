@@ -1,13 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { Nullable } from "instill-sdk";
+import { Nullable, Catalog } from "instill-sdk";
 
 import { Separator } from "@instill-ai/design-system";
 
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
-import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import { env } from "../../../../server";
 import {
   AskQuestionTabInputSchema,

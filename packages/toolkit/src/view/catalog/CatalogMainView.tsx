@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Nullable } from "instill-sdk";
+import { Catalog, Nullable } from "instill-sdk";
 
 import { cn } from "@instill-ai/design-system";
 
@@ -19,7 +19,6 @@ import {
   useGetCatalogs,
   useListCatalogFiles,
 } from "../../lib/react-query-service/catalog";
-import { Catalog } from "../../lib/react-query-service/catalog/types";
 import { env } from "../../server";
 import { Sidebar, WarnDiscardFilesDialog } from "./components";
 import { CREDIT_TIMEOUT } from "./components/lib/constant";

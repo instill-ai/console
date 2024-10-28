@@ -5,6 +5,8 @@ import {
   Nullable,
   OrganizationSubscription,
   UserSubscription,
+  Catalog,
+  File,
 } from "instill-sdk";
 
 import { Separator, Skeleton } from "@instill-ai/design-system";
@@ -19,10 +21,7 @@ import {
   useDeleteCatalogFile,
   useListCatalogFiles,
 } from "../../../../lib/react-query-service/catalog";
-import {
-  Catalog,
-  File,
-} from "../../../../lib/react-query-service/catalog/types";
+
 import { EmptyState } from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";

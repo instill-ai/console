@@ -1,8 +1,5 @@
-import type { Nullable } from "instill-sdk";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-import { createInstillAxiosClient } from "../../sdk-helper";
-import { Chunk } from "./types";
+import { getInstillCatalogAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
+import { Nullable } from "instill-sdk";
 
 export function useUpdateChunk() {
   const queryClient = useQueryClient();
@@ -21,20 +18,16 @@ export function useUpdateChunk() {
         throw new Error("accessToken not provided");
       }
 
-      const client = createInstillAxiosClient(accessToken, true);
-
-      try {
-        const response = await client.post(`/chunks/${chunkUid}`, {
-          retrievable,
-        });
-        return response.data.chunk as Chunk;
-      } catch (error) {
-        console.error("Error updating chunk:", error);
-        throw new Error("Failed to update chunk. Please try again later.");
-      }
+      const client = getInstillCatalogAPIClient({ accessToken });
+      await client.catalog.updateChunk({
+        chunkUid,
+        retrievable,
+      });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["chunks"] });
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["chunks", variables.chunkUid],
+      });
     },
   });
 }

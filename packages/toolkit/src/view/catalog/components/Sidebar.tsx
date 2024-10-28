@@ -5,12 +5,12 @@ import { useRouter } from "next/navigation";
 
 import { cn, Icons } from "@instill-ai/design-system";
 
-import { Catalog } from "../../../lib/react-query-service/catalog/types";
+import { Catalog, Nullable } from "instill-sdk";
 
 type SidebarProps = {
   activeTab: string;
   onTabChange: (tab: string) => void;
-  selectedCatalog: Catalog | null;
+  selectedCatalog: Nullable<Catalog>;
   onDeselectCatalog: () => void;
 };
 

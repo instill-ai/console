@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Nullable } from "instill-sdk";
 
 import { Button, Separator, Skeleton } from "@instill-ai/design-system";
 
@@ -20,7 +19,8 @@ import {
   Catalog,
   CatalogFile,
   Chunk,
-} from "../../../../lib/react-query-service/catalog/types";
+  Nullable
+} from "instill-sdk";
 import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 

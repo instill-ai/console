@@ -12,7 +12,7 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 
-import { Catalog } from "../../../../lib/react-query-service/catalog/types";
+import { Catalog } from "instill-sdk";
 import MetadataPreview from "../MetadataPreview";
 
 type ImageTabProps = {
@@ -130,7 +130,7 @@ export const ImageTab = ({ catalog }: ImageTabProps) => {
                             </span>
                             <Switch
                               checked={item.status}
-                              onCheckedChange={() => {}}
+                              onCheckedChange={() => { }}
                               className=""
                             ></Switch>
                           </div>

@@ -1,7 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { Nullable } from "instill-sdk";
+import {
+  Nullable,
+  Catalog,
+  File,
+} from "instill-sdk";
 
 import {
   Button,
@@ -15,10 +19,6 @@ import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
 import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import { useListCatalogFiles } from "../../../../lib/react-query-service/catalog";
-import {
-  Catalog,
-  File,
-} from "../../../../lib/react-query-service/catalog/types";
 import { env } from "../../../../server";
 import {
   GetCatalogTabInputSchema,
