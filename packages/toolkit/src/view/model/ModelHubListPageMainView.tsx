@@ -62,6 +62,7 @@ export const ModelHubListPageMainView = () => {
     filter: searchCode ? `q="${searchCode}"` : null,
     visibility: selectedVisibilityOption ?? null,
     orderBy: null,
+    view: "VIEW_FULL",
   });
 
   const isLoadingResource =

@@ -37,6 +37,7 @@ export async function generateMetadata({
       namespaceId: entity,
       modelId: id,
       accessToken,
+      view: "VIEW_BASIC",
     });
 
     metadata = {
