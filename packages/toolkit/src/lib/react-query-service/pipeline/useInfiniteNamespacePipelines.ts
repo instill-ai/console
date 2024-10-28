@@ -5,11 +5,11 @@ import {
   useInfiniteQuery,
   UseInfiniteQueryResult,
 } from "@tanstack/react-query";
-import { ListNamespacePipelinesResponse } from "instill-sdk";
+import { ListNamespacePipelinesResponse, Visibility } from "instill-sdk";
 
 import { env } from "../../../server";
+import { getInstillAPIClient } from "../../sdk-helper";
 import { Nullable } from "../../type";
-import { getInstillAPIClient, Visibility } from "../../vdp-sdk";
 
 export function useInfiniteNamespacePipelines({
   namespaceName,

@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CloneNamespacePipelineRequest } from "instill-sdk";
 
 import type { Nullable } from "../../type";
-import { getInstillAPIClient } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../sdk-helper";
 
 export function useCloneNamespacePipeline() {
   const queryClient = useQueryClient();

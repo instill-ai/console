@@ -6,8 +6,8 @@ import {
 import { ListNamespacePipelineReleaseResponse } from "instill-sdk";
 
 import { env } from "../../../server";
+import { getInstillAPIClient } from "../../sdk-helper";
 import { Nullable } from "../../type";
-import { getInstillAPIClient } from "../../vdp-sdk";
 
 export function getUseInfiniteNamespacePipelineReleasesQueryKey(
   namespacePipelineName: Nullable<string>,

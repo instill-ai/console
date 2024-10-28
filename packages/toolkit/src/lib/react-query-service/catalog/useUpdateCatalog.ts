@@ -1,6 +1,7 @@
+import type { Nullable } from "instill-sdk";
 import { useMutation } from "@tanstack/react-query";
 
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { createInstillAxiosClient } from "../../sdk-helper";
 import { Catalog } from "./types";
 
 async function updateCatalogMutation({
@@ -16,7 +17,7 @@ async function updateCatalogMutation({
   };
   ownerId: string;
   catalogId: string;
-  accessToken: string | null;
+  accessToken: Nullable<string>;
 }): Promise<Catalog> {
   if (!accessToken) {
     return Promise.reject(new Error("accessToken not provided"));

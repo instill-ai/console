@@ -1,6 +1,10 @@
 "use client";
 
-import type { Model, UpdateNamespaceModelRequest } from "instill-sdk";
+import type {
+  Model,
+  UpdateNamespaceModelRequest,
+  Visibility,
+} from "instill-sdk";
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InstillNameInterpreter } from "instill-sdk";
@@ -30,7 +34,6 @@ import {
   useModelAvailableRegions,
   useShallow,
   useUpdateNamespaceModel,
-  Visibility,
 } from "../../../lib";
 
 export type ModelSettingsEditFormProps = {

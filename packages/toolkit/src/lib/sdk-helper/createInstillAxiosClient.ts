@@ -1,7 +1,7 @@
 import axios from "axios";
 
-import { env } from "../../../server";
-import { Nullable } from "../../type";
+import { env } from "../../server";
+import { Nullable } from "../type";
 
 export function createInstillAxiosClient(
   accessToken: Nullable<string>,

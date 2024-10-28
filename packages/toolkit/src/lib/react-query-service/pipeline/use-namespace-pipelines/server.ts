@@ -1,6 +1,7 @@
+import type { Nullable, Visibility } from "instill-sdk";
+
 import { env, QueryClient } from "../../../../server";
-import { Nullable } from "../../../type";
-import { getInstillAPIClient, Visibility } from "../../../vdp-sdk";
+import { getInstillAPIClient } from "../../../sdk-helper";
 
 export async function fetchNamespacePipelines({
   namespaceName,

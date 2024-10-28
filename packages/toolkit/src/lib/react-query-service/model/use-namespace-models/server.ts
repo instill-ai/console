@@ -1,7 +1,7 @@
 import type { Nullable, Visibility } from "instill-sdk";
 
 import { env, QueryClient } from "../../../../server";
-import { getInstillModelAPIClient } from "../../../vdp-sdk";
+import { getInstillModelAPIClient } from "../../../sdk-helper";
 import { queryKeyStore } from "../../queryKeyStore";
 
 export async function fetchNamespaceModels({

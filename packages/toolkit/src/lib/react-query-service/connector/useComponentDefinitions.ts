@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ComponentType, Nullable } from "instill-sdk";
 
 import { env } from "../../../server";
-import { getInstillAPIClient } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../sdk-helper";
 
 export function useComponentDefinitions({
   componentType,

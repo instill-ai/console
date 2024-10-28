@@ -3,7 +3,7 @@
 import type { ModelsWatchState, Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
-import { getInstillModelAPIClient } from "../../vdp-sdk";
+import { getInstillModelAPIClient } from "../../sdk-helper";
 import { queryKeyStore } from "../queryKeyStore";
 
 export function useWatchNamespaceModels({

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateIntegrationConnectionRequest } from "instill-sdk";
 
 import type { Nullable } from "../../type";
-import { getInstillAPIClient } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../sdk-helper";
 
 export function useCreateIntegrationConnection() {
   const queryClient = useQueryClient();

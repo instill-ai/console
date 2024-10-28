@@ -3,7 +3,7 @@ import { ResourceView } from "instill-sdk";
 
 import type { Nullable } from "../../type";
 import { env } from "../../../server";
-import { getInstillAPIClient } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../sdk-helper";
 
 export function usePaginatedPipelineRunComponents({
   pipelineRunId,

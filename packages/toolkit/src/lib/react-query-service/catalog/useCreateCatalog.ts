@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { createInstillAxiosClient } from "../../sdk-helper";
 import { Catalog } from "./types";
 
 async function createCatalogMutation({

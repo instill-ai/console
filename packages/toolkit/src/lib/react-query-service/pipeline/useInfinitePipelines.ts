@@ -1,6 +1,10 @@
 "use client";
 
-import type { ListAccessiblePipelineResponse } from "instill-sdk";
+import type {
+  ListAccessiblePipelineResponse,
+  Nullable,
+  Visibility,
+} from "instill-sdk";
 import {
   InfiniteData,
   useInfiniteQuery,
@@ -8,8 +12,7 @@ import {
 } from "@tanstack/react-query";
 
 import { env } from "../../../server";
-import { Nullable } from "../../type";
-import { getInstillAPIClient, Visibility } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../sdk-helper";
 
 export function useInfinitePipelines({
   accessToken,

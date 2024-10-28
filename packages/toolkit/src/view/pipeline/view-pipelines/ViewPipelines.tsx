@@ -1,5 +1,6 @@
 "use client";
 
+import type { Visibility } from "instill-sdk";
 import * as React from "react";
 import { useSearchParams } from "next/navigation";
 import debounce from "lodash.debounce";
@@ -13,7 +14,6 @@ import {
   useInstillStore,
   useRouteInfo,
   useShallow,
-  Visibility,
 } from "../../../lib";
 import { CreatePipelineDialog } from "./CreatePipelineDialog";
 import { PipelinesList } from "./PipelinesList";

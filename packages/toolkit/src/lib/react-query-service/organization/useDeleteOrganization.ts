@@ -3,7 +3,7 @@
 import type { Nullable, Organization } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { getInstillAPIClient } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../sdk-helper";
 import { getUseOrganizationsQueryKey } from "./use-organizations/server";
 
 export function useDeleteOrganization() {
