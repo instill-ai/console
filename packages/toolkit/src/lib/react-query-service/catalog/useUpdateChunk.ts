@@ -1,8 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-import { Nullable } from "../../type";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { Chunk } from "./types";
+import { getInstillApplicationAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
+import { Nullable } from "instill-sdk";
 
 export function useUpdateChunk() {
   const queryClient = useQueryClient();
@@ -12,29 +9,31 @@ export function useUpdateChunk() {
       chunkUid,
       accessToken,
       retrievable,
+      namespaceId,
+      catalogId,
     }: {
       chunkUid: string;
       accessToken: Nullable<string>;
       retrievable: boolean;
+      namespaceId: string;
+      catalogId: string;
     }) => {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
 
-      const client = createInstillAxiosClient(accessToken, true);
-
-      try {
-        const response = await client.post(`/chunks/${chunkUid}`, {
-          retrievable,
-        });
-        return response.data.chunk as Chunk;
-      } catch (error) {
-        console.error("Error updating chunk:", error);
-        throw new Error("Failed to update chunk. Please try again later.");
-      }
+      const client = getInstillApplicationAPIClient({ accessToken });
+      await client.catalog.updateChunk({
+        namespaceId,
+        catalogId,
+        chunkUid,
+        retrievable,
+      });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["chunks"] });
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["chunks", variables.catalogId],
+      });
     },
   });
 }

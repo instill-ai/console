@@ -1,34 +1,35 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
-import { Catalog } from "./types";
+import { Nullable } from "instill-sdk";
+import { getInstillApplicationAPIClient } from "../../vdp-sdk";
 
-async function createCatalogMutation({
-  payload,
-  ownerId,
-  accessToken,
-}: {
-  payload: {
-    name: string;
-    description?: string;
-    tags?: string[];
-    ownerId: string;
-  };
-  ownerId: string;
-  accessToken: string | null;
-}): Promise<Catalog> {
-  if (!accessToken) {
-    return Promise.reject(new Error("accessToken not provided"));
-  }
-  const client = createInstillAxiosClient(accessToken, true);
-  const response = await client.post<{
-    catalog: Catalog;
-  }>(`/namespaces/${ownerId}/catalogs`, payload);
-  return response.data.catalog;
-}
 
 export function useCreateCatalog() {
   return useMutation({
-    mutationFn: createCatalogMutation,
+    mutationFn: async ({
+      payload,
+      ownerId,
+      accessToken,
+    }: {
+      payload: {
+        name: string;
+        description?: string;
+        tags?: string[];
+        ownerId: string;
+      };
+      ownerId: string;
+      accessToken: Nullable<string>;
+    }) => {
+      if (!accessToken) {
+        throw new Error("accessToken not provided");
+      }
+
+      const client = getInstillApplicationAPIClient({ accessToken });
+      const catalog = await client.catalog.createCatalog({
+        ownerId,
+        payload,
+      });
+      return catalog;
+    },
   });
 }
