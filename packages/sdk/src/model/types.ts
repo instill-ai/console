@@ -127,7 +127,7 @@ export type GetModelDefinitionResponse = {
 export type ListModelDefinitionsRequest = {
   pageSize?: number;
   pageToken?: string;
-  view?: string;
+  view?: ResourceView;
 };
 
 export type ListModelDefinitionsResponse = {
@@ -140,24 +140,25 @@ export type ListAvailableRegionResponse = {
   regions: ModelRegion[];
 };
 
-export type ListAccessibleModelsRequest = {
+export type ListModelsRequest = {
   pageSize?: number;
   pageToken?: string;
   filter?: string;
   visibility?: string;
   orderBy?: string;
-  view?: string;
+  view?: ResourceView;
 };
 
-export type ListAccessibleModelsResponse = {
+export type ListModelsResponse = {
   models: Model[];
   nextPageToken: string;
   totalSize: number;
 };
 
 export type GetNamespaceModelRequest = {
-  namespaceModelName: string;
-  view?: string;
+  namespaceId: string;
+  modelId: string;
+  view?: ResourceView;
 };
 
 export type GetNamespaceModelResponse = {
@@ -165,13 +166,13 @@ export type GetNamespaceModelResponse = {
 };
 
 export type ListNamespaceModelsRequest = {
-  namespaceName: string;
+  namespaceId: string;
   pageSize?: number;
   pageToken?: string;
   filter?: string;
-  visibility?: string;
+  visibility?: Visibility;
   orderBy?: string;
-  view?: string;
+  view?: ResourceView;
 };
 
 export type ListNamespaceModelsResponse = {
@@ -181,12 +182,13 @@ export type ListNamespaceModelsResponse = {
 };
 
 export type ListModelRunsRequest = {
-  modelName: string;
-  view: ResourceView;
-  pageSize: number;
-  page: number;
-  orderBy: Nullable<string>;
-  filter: Nullable<string>;
+  namespaceId: string;
+  modelId: string;
+  view?: ResourceView;
+  pageSize?: number;
+  page?: number;
+  orderBy?: string;
+  filter?: string;
   requesterUid?: string;
 };
 
@@ -215,7 +217,7 @@ export type ListModelRunsResponse = {
 };
 
 export type CreateNamespaceModelRequest = {
-  namespaceName: string;
+  namespaceId: string;
   id: string;
   description?: string;
   visibility: Visibility;
@@ -231,18 +233,26 @@ export type CreateNamespaceModelResponse = {
 };
 
 export type DeleteNamespaceModelRequest = {
-  namespaceModelName: string;
+  namespaceId: string;
+  modelId: string;
 };
 
 export type UpdateNamespaceModelRequest = {
-  namespaceModelName: string;
+  namespaceId: string;
+  modelId: string;
+  id?: string;
   description?: string;
-  visibility: Visibility;
-  region: string;
-  hardware: string;
-  task: ModelTask;
-  modelDefinition: string;
-  configuration: Record<string, string>;
+  visibility?: Visibility;
+  region?: string;
+  hardware?: string;
+  task?: ModelTask;
+  configuration?: Record<string, string>;
+  readme?: string;
+  license?: string;
+  profileImage?: string;
+  sourceUrl?: string;
+  documentationUrl?: string;
+  tags?: string[];
 };
 
 export type UpdateNamespaceModelResponse = {
@@ -291,13 +301,15 @@ export type WatchNamespaceModelVersionStateResponse = {
 };
 
 export type WatchNamespaceModelLatestVersionStateRequest = {
-  namespaceModelName: string;
+  namespaceId: string;
+  modelId: string;
 };
 
 export type WatchNamespaceModelLatestVersionStateResponse = ModelWatchState;
 
 export type ListNamespaceModelVersionsRequest = {
-  namespaceModelName: string;
+  namespaceId: string;
+  modelId: string;
   pageSize?: number;
   page?: number;
 };
@@ -325,7 +337,9 @@ export type TriggerNamespaceModelVersionResponse = {
 };
 
 export type TriggerAsyncNamespaceModelVersionRequest = {
-  namespaceModelVersionName: string;
+  namespaceId: string;
+  modelId: string;
+  versionId: string;
   taskInputs: Record<string, unknown>[];
   returnTraces?: boolean;
   requesterUid?: string;
@@ -355,6 +369,27 @@ export type TriggerAsyncNamespaceModelLatestVersionResponse = {
   operation: Operation;
 };
 
+export type GetNamespaceModelOperationResultRequest = {
+  namespaceId: string;
+  modelId: string;
+  view?: ResourceView;
+  requesterUid?: string;
+};
+
 export type GetNamespaceModelOperationResultResponse = {
   operation: Nullable<Operation>;
 };
+
+export type GetNamespaceModelVersionOperationResultRequest = {
+  namespaceId: string;
+  modelId: string;
+  versionId: string;
+  view?: ResourceView;
+  requesterUid?: string;
+};
+
+export type GetNamespaceModelVersionOperationResultResponse = {
+  operation: Nullable<Operation>;
+};
+
+export type ModelsWatchState = Record<string, Nullable<ModelWatchState>>;

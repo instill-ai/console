@@ -1,5 +1,9 @@
+"use client";
+
+import type { Model, UpdateNamespaceModelRequest } from "instill-sdk";
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { InstillNameInterpreter } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -19,15 +23,13 @@ import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
 import { InstillErrors, InstillModelVisibility } from "../../../constant";
 import {
   InstillStore,
-  Model,
   sendAmplitudeData,
   toastInstillError,
-  UpdateUserModelPayload,
   useAmplitudeCtx,
   useInstillStore,
-  useModelRegions,
+  useModelAvailableRegions,
   useShallow,
-  useUpdateUserModel,
+  useUpdateNamespaceModel,
   Visibility,
 } from "../../../lib";
 
@@ -68,19 +70,20 @@ const EditModelSchema = z
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
 });
 
 export const ModelSettingsEditForm = ({
   model,
   onUpdate,
 }: ModelSettingsEditFormProps) => {
-  const { accessToken } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const [hardwareCustomValue, setHardwareCustomValue] =
     React.useState<string>("");
   const [updating, setUpdating] = React.useState(false);
   const { amplitudeIsInit } = useAmplitudeCtx();
 
-  const modelRegions = useModelRegions({ accessToken });
+  const modelRegions = useModelAvailableRegions({ accessToken, enabledQuery });
 
   const hardwareOptions = React.useMemo(() => {
     if (!modelRegions.data || !model) {
@@ -130,16 +133,24 @@ export const ModelSettingsEditForm = ({
     values: defaultValues,
     disabled: !model?.permission.canEdit,
   });
-  const updateUserModel = useUpdateUserModel();
+  const updateNamespaceModel = useUpdateNamespaceModel();
 
   async function onSubmit(data: z.infer<typeof EditModelSchema>) {
     if (!model) {
       return;
     }
 
+    const { namespaceId } = InstillNameInterpreter.model(model.name);
+
+    if (!namespaceId) {
+      return;
+    }
+
     setUpdating(true);
 
-    const payload: UpdateUserModelPayload = {
+    const payload: UpdateNamespaceModelRequest = {
+      namespaceId,
+      modelId: model.id,
       description: data.description,
       sourceUrl: data.sourceUrl,
       documentationUrl: data.documentationUrl,
@@ -158,8 +169,7 @@ export const ModelSettingsEditForm = ({
     };
 
     try {
-      await updateUserModel.mutateAsync({
-        name: model.name,
+      await updateNamespaceModel.mutateAsync({
         payload,
         accessToken,
       });

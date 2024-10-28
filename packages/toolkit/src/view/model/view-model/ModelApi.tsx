@@ -1,4 +1,7 @@
-import React, { useMemo } from "react";
+"use client";
+
+import type { Model } from "instill-sdk";
+import * as React from "react";
 
 import { CodeBlock, ModelSectionHeader } from "../../../components";
 import { CodeString } from "../../../components/CodeString";
@@ -6,7 +9,6 @@ import {
   defaultCodeSnippetStyles,
   getInstillTaskHttpRequestExample,
 } from "../../../constant";
-import { Model } from "../../../lib";
 
 export type ModelApiProps = {
   model?: Model;
@@ -17,7 +19,7 @@ const OWNER = {
 };
 
 export const ModelApi = ({ model }: ModelApiProps) => {
-  const owner = useMemo(() => {
+  const owner = React.useMemo(() => {
     if (!model) {
       return OWNER;
     }

@@ -1,25 +1,39 @@
+"use client";
+
+import type { Nullable, ResourceView } from "instill-sdk";
 import { QueryClient } from "@tanstack/react-query";
-import { Nullable } from "instill-sdk";
 
 import { getInstillModelAPIClient } from "../../../vdp-sdk";
 
 export async function fetchNamespaceModel({
-  namespaceModelName,
+  namespaceId,
+  modelId,
   accessToken,
+  view,
 }: {
-  namespaceModelName: Nullable<string>;
+  namespaceId: Nullable<string>;
+  modelId: Nullable<string>;
   accessToken: Nullable<string>;
+  view: Nullable<ResourceView>;
 }) {
   try {
-    if (!namespaceModelName) {
-      return Promise.reject(new Error("namespaceModelName not provided"));
+    if (!namespaceId) {
+      return Promise.reject(new Error("namespaceId is not provided"));
+    }
+
+    if (!modelId) {
+      return Promise.reject(new Error("modelId is not provided"));
     }
 
     const client = getInstillModelAPIClient({
       accessToken: accessToken ?? undefined,
     });
 
-    const model = await client.model.getNamespaceModel({ namespaceModelName });
+    const model = await client.model.getNamespaceModel({
+      namespaceId,
+      modelId,
+      view: view ?? undefined,
+    });
 
     return Promise.resolve(model);
   } catch (error) {
@@ -28,28 +42,35 @@ export async function fetchNamespaceModel({
 }
 
 export function getUseNamespaceModelQueryKey(
-  namespaceModelName: Nullable<string>,
+  namespaceId: Nullable<string>,
+  modelId: Nullable<string>,
 ) {
-  return ["models", namespaceModelName];
+  return [namespaceId, "models", modelId];
 }
 
 export function prefetchNamespaceModel({
-  namespaceModelName,
+  namespaceId,
+  modelId,
   accessToken,
   queryClient,
+  view,
 }: {
-  namespaceModelName: Nullable<string>;
+  namespaceId: Nullable<string>;
+  modelId: Nullable<string>;
   accessToken: Nullable<string>;
   queryClient: QueryClient;
+  view: Nullable<ResourceView>;
 }) {
-  const queryKey = getUseNamespaceModelQueryKey(namespaceModelName);
+  const queryKey = getUseNamespaceModelQueryKey(namespaceId, modelId);
 
   return queryClient.prefetchQuery({
     queryKey,
     queryFn: async () => {
       return await fetchNamespaceModel({
-        namespaceModelName,
+        namespaceId,
+        modelId,
         accessToken,
+        view,
       });
     },
   });

@@ -1,5 +1,4 @@
-import { Nullable } from "./type";
-import { Model } from "./vdp-sdk";
+import type { Model, Nullable } from "instill-sdk";
 
 export function isPublicModel(model: Nullable<Model>) {
   if (!model) {

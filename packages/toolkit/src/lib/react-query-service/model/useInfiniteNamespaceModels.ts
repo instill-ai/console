@@ -1,47 +1,59 @@
 "use client";
 
-import type { Nullable, ResourceView } from "instill-sdk";
+import type { Nullable, ResourceView, Visibility } from "instill-sdk";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { env } from "../../../server";
 import { getInstillModelAPIClient } from "../../vdp-sdk";
 import { queryKeyStore } from "../queryKeyStore";
 
-export function useInfiniteModels({
+export function useInfiniteNamespaceModels({
+  namespaceId,
   accessToken,
-  enabledQuery,
+  enabled,
   filter,
   visibility,
   orderBy,
   view,
 }: {
+  namespaceId: Nullable<string>;
   accessToken: Nullable<string>;
-  enabledQuery: boolean;
+  enabled: boolean;
   filter: Nullable<string>;
-  visibility: Nullable<string>;
+  visibility: Nullable<Visibility>;
   orderBy: Nullable<string>;
   view: Nullable<ResourceView>;
 }) {
   return useInfiniteQuery({
-    queryKey: queryKeyStore.model.getUseInfiniteModelsQueryKey({
+    queryKey: queryKeyStore.model.getUseInfiniteNamespaceModelsQueryKey(
+      namespaceId,
       filter,
       visibility,
       orderBy,
       view,
-    }),
+    ),
     queryFn: async ({ pageParam }) => {
+      if (!accessToken) {
+        return Promise.reject(new Error("accessToken not provided"));
+      }
+
+      if (!namespaceId) {
+        return Promise.reject(new Error("namespaceId not provided"));
+      }
+
       const client = getInstillModelAPIClient({
-        accessToken: accessToken ?? undefined,
+        accessToken,
       });
 
-      const models = await client.model.listModels({
-        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE") ?? undefined,
-        view: view ?? undefined,
+      const models = await client.model.listNamespaceModels({
+        namespaceId,
+        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         pageToken: pageParam ?? undefined,
-        enablePagination: true,
         filter: filter ?? undefined,
         visibility: visibility ?? undefined,
         orderBy: orderBy ?? undefined,
+        enablePagination: true,
+        view: view ?? undefined,
       });
 
       return Promise.resolve(models);
@@ -54,6 +66,6 @@ export function useInfiniteModels({
 
       return lastPage.nextPageToken;
     },
-    enabled: enabledQuery,
+    enabled,
   });
 }

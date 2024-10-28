@@ -8,7 +8,7 @@ import { Button, Icons, Input } from "@instill-ai/design-system";
 
 import {
   InstillStore,
-  useInfiniteUserModels,
+  useInfiniteNamespaceModels,
   useInstillStore,
   useRouteInfo,
   useShallow,
@@ -55,12 +55,14 @@ export const ModelHubListPageMainView = () => {
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const models = useInfiniteUserModels({
-    userName: routeInfo.data.namespaceName,
+  const models = useInfiniteNamespaceModels({
+    namespaceId: routeInfo.isSuccess ? routeInfo.data.namespaceId : null,
     enabled: routeInfo.isSuccess && enabledQuery,
     accessToken,
     filter: searchCode ? `q="${searchCode}"` : null,
     visibility: selectedVisibilityOption ?? null,
+    orderBy: null,
+    view: "VIEW_FULL",
   });
 
   const isLoadingResource =

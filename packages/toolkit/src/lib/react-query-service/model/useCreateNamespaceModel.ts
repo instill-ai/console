@@ -1,26 +1,36 @@
+"use client";
+
+import type { CreateNamespaceModelRequest, Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
-import { deleteUserModelMutation } from "../../vdp-sdk";
+import { getInstillModelAPIClient } from "../../vdp-sdk";
 import { onSuccessAfterModelMutation } from "./onSuccessAfterModelMutation";
 
-export function useDeleteModel() {
+export function useCreateNamespaceModel() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
-      modelName,
+      payload,
       accessToken,
     }: {
-      modelName: string;
+      payload: CreateNamespaceModelRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      await deleteUserModelMutation({ modelName, accessToken });
+      const client = getInstillModelAPIClient({
+        accessToken,
+      });
 
-      return Promise.resolve({ modelName, accessToken });
+      const model = await client.model.createNamespaceModel(payload);
+
+      return Promise.resolve({
+        model,
+        accessToken,
+        modelName: model.name,
+      });
     },
     onSuccess: async ({ modelName }) => {
       await onSuccessAfterModelMutation({

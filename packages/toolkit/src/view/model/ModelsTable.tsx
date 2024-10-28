@@ -1,5 +1,6 @@
 "use client";
 
+import type { Model } from "instill-sdk";
 import { ColumnDef } from "@tanstack/react-table";
 
 import {
@@ -13,10 +14,10 @@ import { ModelStateLabel, SortIcon, TableError } from "../../components";
 import { TableCell } from "../../components/cells/TableCell";
 import {
   InstillStore,
-  Model,
   useInstillStore,
+  useRouteInfo,
   useShallow,
-  useWatchUserModels,
+  useWatchNamespaceModels,
 } from "../../lib";
 import { formatDate } from "../../lib/table";
 import { ModelTablePlaceholder } from "./ModelTablePlaceholder";
@@ -33,12 +34,14 @@ const selector = (store: InstillStore) => ({
 });
 
 export const ModelsTable = (props: ModelsTableProps) => {
+  const routeInfo = useRouteInfo();
   const { accessToken, enableQuery } = useInstillStore(useShallow(selector));
   const { models, isError, isLoading } = props;
 
-  const modelsWatchState = useWatchUserModels({
-    modelNames: models.length > 0 ? models.map((model) => model.name) : [],
-    enabled: enableQuery && models.length > 0,
+  const modelsWatchState = useWatchNamespaceModels({
+    modelIds: models.length > 0 ? models.map((model) => model.id) : [],
+    namespaceId: routeInfo.isSuccess ? routeInfo.data.namespaceId : null,
+    enabled: enableQuery && routeInfo.isSuccess && models.length > 0,
     accessToken,
   });
 
@@ -78,11 +81,11 @@ export const ModelsTable = (props: ModelsTableProps) => {
       accessorKey: "state",
       header: () => <div className="min-w-[100px] text-center">Status</div>,
       cell: ({ row }) => {
-        const name = row.original.name;
+        const id = row.original.id;
 
         return (
           <div className="grid justify-items-center">
-            <ModelStateLabel state={modelsWatchState.data?.[name]?.state} />
+            <ModelStateLabel state={modelsWatchState.data?.[id]?.state} />
           </div>
         );
       },

@@ -21,11 +21,11 @@ import {
   useAuthenticatedUser,
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
+  useNamespaceModel,
   useNamespacePipeline,
   useNamespacesRemainingInstillCredit,
   useRouteInfo,
   useShallow,
-  useUserModel,
 } from "../../lib";
 import { useUserNamespaces } from "../../lib/useUserNamespaces";
 import { env } from "../../server";
@@ -88,10 +88,12 @@ export const NamespaceSwitch = () => {
     enabled: enabledQuery && pathnameEvaluator.isPipelineOverviewPage(pathname),
   });
 
-  const model = useUserModel({
-    modelName: routeInfo.isSuccess ? routeInfo.data.modelName : null,
+  const model = useNamespaceModel({
+    modelId: routeInfo.isSuccess ? routeInfo.data.resourceId : null,
+    namespaceId: routeInfo.isSuccess ? routeInfo.data.namespaceId : null,
     accessToken,
     enabled: enabledQuery && pathnameEvaluator.isModelPlaygroundPage(pathname),
+    view: "VIEW_BASIC",
   });
 
   const namespacesWithRemainingCredit = React.useMemo(() => {

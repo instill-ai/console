@@ -12,11 +12,11 @@ import { Nullable } from "instill-sdk";
 import {
   InstillStore,
   useInstillStore,
+  useNamespaceModel,
   useQueryClient,
   useRouteInfo,
   useShallow,
-  useUserModel,
-  useWatchUserModels,
+  useWatchNamespaceModels,
 } from "../../lib";
 import { ModelTabNames } from "../../server";
 import { ModelContentViewer, ModelHead } from "./view-model";
@@ -47,10 +47,12 @@ export const ModelHubSettingPageMainView = () => {
    * Query resource data
    * -----------------------------------------------------------------------*/
 
-  const model = useUserModel({
-    modelName: routeInfo.isSuccess ? routeInfo.data.modelName : null,
+  const model = useNamespaceModel({
+    namespaceId: routeInfo.isSuccess ? routeInfo.data.namespaceId : null,
+    modelId: routeInfo.isSuccess ? routeInfo.data.resourceId : null,
     enabled: enabledQuery && routeInfo.isSuccess,
     accessToken,
+    view: "VIEW_FULL",
   });
 
   React.useEffect(() => {
@@ -59,15 +61,16 @@ export const ModelHubSettingPageMainView = () => {
     }
   }, [model.isError, router]);
 
-  const modelsWatchState = useWatchUserModels({
-    modelNames: model.isSuccess ? [model.data.name] : [],
+  const modelsWatchState = useWatchNamespaceModels({
+    modelIds: model.isSuccess ? [model.data.id] : [],
+    namespaceId: routeInfo.isSuccess ? routeInfo.data.namespaceId : null,
     enabled: enabledQuery && model.isSuccess,
     accessToken,
   });
 
   const modelState = React.useMemo(() => {
     if (model.isSuccess && modelsWatchState.isSuccess) {
-      return modelsWatchState.data[model.data.name]?.state || null;
+      return modelsWatchState.data[model.data.id]?.state || null;
     }
 
     return null;

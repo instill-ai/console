@@ -1,6 +1,6 @@
 "use client";
 
-import type { Model, ModelRun } from "instill-sdk";
+import type { Model, ModelRun, Nullable } from "instill-sdk";
 import * as React from "react";
 import Link from "next/link";
 
@@ -18,7 +18,7 @@ import {
   convertToSecondsAndMilliseconds,
   InstillStore,
   useInstillStore,
-  usePaginatedModelRuns,
+  usePaginatedNamespaceModelRuns,
   useRouteInfo,
   useShallow,
   useUserNamespaces,
@@ -41,7 +41,7 @@ const OWNER = {
 };
 
 export const ModelRunList = ({ model }: ModelRunListProps) => {
-  const [orderBy, setOrderBy] = React.useState<string>();
+  const [orderBy, setOrderBy] = React.useState<Nullable<string>>(null);
   const [paginationState, setPaginationState] = React.useState<PaginationState>(
     {
       pageIndex: 0,
@@ -68,14 +68,17 @@ export const ModelRunList = ({ model }: ModelRunListProps) => {
     navigationNamespaceAnchor,
   ]);
 
-  const modelRuns = usePaginatedModelRuns({
+  const modelRuns = usePaginatedNamespaceModelRuns({
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess && userNamespaces.isSuccess,
-    modelName: `/namespaces/${routeInfo.data.namespaceId}/models/${routeInfo.data.resourceId}`,
+    namespaceId: routeInfo.data?.namespaceId,
+    modelId: routeInfo.data?.resourceId,
     pageSize: TABLE_PAGE_SIZE,
     page: paginationState.pageIndex,
     orderBy,
-    requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+    requesterUid: targetNamespace ? targetNamespace.uid : null,
+    view: "VIEW_FULL",
+    filter: null,
   });
 
   const owner = React.useMemo(() => {

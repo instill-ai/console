@@ -1,5 +1,6 @@
 "use client";
 
+import type { Model, ModelState, Nullable } from "instill-sdk";
 import * as React from "react";
 import { useRouter } from "next/navigation";
 
@@ -11,7 +12,7 @@ import {
   NoVersionsPlaceholder,
 } from ".";
 import { PlaygroundSkeleton } from "../../../components";
-import { Model, ModelState, Nullable, useRouteInfo } from "../../../lib";
+import { useRouteInfo } from "../../../lib";
 import { ModelTabNames } from "../../../server";
 import { ModelReadme } from "./ModelReadme";
 import { ModelRuns } from "./ModelRuns";

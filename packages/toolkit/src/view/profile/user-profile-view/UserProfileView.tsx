@@ -8,12 +8,12 @@ import {
   InstillStore,
   useAuthenticatedUser,
   useInstillStore,
+  useNamespaceModels,
   useNamespacePipelines,
   useRouteInfo,
   useShallow,
   useUser,
 } from "../../../lib";
-import { useUserModels } from "../../../lib/react-query-service/model/useUserModels";
 import { ModelsTable } from "../../model";
 import { PipelinesTable } from "../../pipeline";
 import { ProfileSeparator } from "../ProfileSeparator";
@@ -53,10 +53,10 @@ export const UserProfileView = () => {
     visibility: null,
   });
 
-  const models = useUserModels({
+  const models = useNamespaceModels({
     accessToken: accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
-    userName: routeInfo.isSuccess ? routeInfo.data.namespaceName : null,
+    namespaceId: routeInfo.isSuccess ? routeInfo.data.namespaceId : null,
     filter: null,
     visibility: null,
   });

@@ -4,7 +4,6 @@ import { env } from "../../server";
 import { Nullable } from "../type";
 
 export * from "./helper";
-export * from "./model";
 export * from "./types";
 
 export * from "./helper";

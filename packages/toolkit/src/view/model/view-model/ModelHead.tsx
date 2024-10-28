@@ -4,6 +4,7 @@ import React, { useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import cn from "clsx";
+import { Model, ModelState } from "instill-sdk";
 
 import {
   getModelInstanceTaskToolkit,
@@ -21,7 +22,6 @@ import {
   VersionDropdownSelector,
 } from "../../../components";
 import { NamespaceAvatarWithFallback } from "../../../components/NamespaceAvatarWithFallback";
-import { Model, ModelState } from "../../../lib";
 import { ModelTabNames } from "../../../server";
 
 export type HeadProps = {

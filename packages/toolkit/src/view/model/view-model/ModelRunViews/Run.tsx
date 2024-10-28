@@ -18,7 +18,7 @@ import {
   useComponentOutputFields,
   useInstillForm,
   useInstillStore,
-  usePaginatedModelRuns,
+  usePaginatedNamespaceModelRuns,
   useRouteInfo,
   useShallow,
   useUserNamespaces,
@@ -62,16 +62,19 @@ export const ModelRun = ({ id, model }: ModelRunProps) => {
     navigationNamespaceAnchor,
   ]);
 
-  const modelRuns = usePaginatedModelRuns({
+  const modelRuns = usePaginatedNamespaceModelRuns({
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess && userNamespaces.isSuccess,
-    modelName: `/namespaces/${routeInfo.data.namespaceId}/models/${routeInfo.data.resourceId}`,
+    namespaceId: routeInfo.data?.namespaceId,
+    modelId: routeInfo.data?.resourceId,
     pageSize: 1,
     page: 0,
     filter: `uid="${id}"`,
     view: "VIEW_FULL",
-    requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+    requesterUid: targetNamespace ? targetNamespace.uid : null,
+    orderBy: null,
   });
+
   const modelRun = React.useMemo(() => {
     return modelRuns.data?.runs[0] || null;
   }, [modelRuns.data]);

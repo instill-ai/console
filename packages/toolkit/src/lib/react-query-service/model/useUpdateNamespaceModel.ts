@@ -1,26 +1,30 @@
+"use client";
+
+import type { Nullable, UpdateNamespaceModelRequest } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
-import { updateModelMutation, UpdateUserModelPayload } from "../../vdp-sdk";
+import { getInstillModelAPIClient } from "../../vdp-sdk";
 import { onSuccessAfterModelMutation } from "./onSuccessAfterModelMutation";
 
-export function useUpdateUserModel() {
+export function useUpdateNamespaceModel() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
-      name,
       payload,
       accessToken,
     }: {
-      name: string;
-      payload: UpdateUserModelPayload;
+      payload: UpdateNamespaceModelRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      const model = await updateModelMutation({ name, payload, accessToken });
+      const client = getInstillModelAPIClient({
+        accessToken,
+      });
+
+      const model = await client.model.updateNamespaceModel(payload);
 
       return Promise.resolve({ model, accessToken });
     },

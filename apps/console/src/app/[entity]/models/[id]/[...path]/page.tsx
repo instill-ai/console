@@ -34,8 +34,10 @@ export async function generateMetadata({
 
   try {
     const model = await fetchNamespaceModel({
-      namespaceModelName: `namespaces/${entity}/models/${id}`,
+      namespaceId: entity,
+      modelId: id,
       accessToken,
+      view: "VIEW_BASIC",
     });
 
     metadata = {

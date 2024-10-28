@@ -1,37 +1,44 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import type { TriggerUserModelPayload } from "../../vdp-sdk";
-import { Nullable } from "../../type";
 import { getInstillModelAPIClient } from "../../vdp-sdk";
 
-export function useTriggerUserModelVersionAsync() {
+export function useTriggerAsyncNamespaceModelVersion() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
+      namespaceId,
       modelId,
-      userId,
-      payload,
+      versionId,
+      taskInputs,
       accessToken,
       requesterUid,
       returnTraces,
-      versionId,
     }: {
+      namespaceId: string;
       modelId: string;
-      userId: string;
-      payload: TriggerUserModelPayload;
+      versionId: string;
+      taskInputs: Record<string, unknown>[];
       accessToken: Nullable<string>;
       requesterUid?: string;
       returnTraces?: boolean;
-      versionId: Nullable<string>;
     }) => {
+      if (!accessToken) {
+        throw new Error("Access token is required");
+      }
+
       const client = getInstillModelAPIClient({
         accessToken: accessToken ?? undefined,
       });
 
       const response = await client.model.triggerAsyncNamespaceModelVersion({
-        namespaceModelVersionName: `namespaces/${userId}/models/${modelId}/versions/${versionId}`,
-        taskInputs: payload.taskInputs,
+        namespaceId,
+        modelId,
+        versionId,
+        taskInputs,
         requesterUid,
         returnTraces,
         isConsole: true,

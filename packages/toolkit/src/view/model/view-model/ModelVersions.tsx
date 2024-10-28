@@ -1,14 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+"use client";
+
+import type { Model, ModelVersion } from "instill-sdk";
+import * as React from "react";
 import { ColumnDef, PaginationState } from "@tanstack/react-table";
+import { InstillNameInterpreter } from "instill-sdk";
 
 import { DataTable } from "@instill-ai/design-system";
 
 import { ModelStateLabel } from "../../../components";
 import {
   InstillStore,
-  Model,
-  ModelVersion,
-  useInfiniteModelVersions,
+  useInfiniteNamespaceModelVersions,
   useInstillStore,
   useShallow,
 } from "../../../lib";
@@ -26,10 +28,12 @@ const selector = (store: InstillStore) => ({
 });
 
 export const ModelVersions = ({ model }: ModelVersionsProps) => {
-  const [paginationState, setPaginationState] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: PAGE_SIZE,
-  });
+  const [paginationState, setPaginationState] = React.useState<PaginationState>(
+    {
+      pageIndex: 0,
+      pageSize: PAGE_SIZE,
+    },
+  );
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const columns: ColumnDef<ModelVersion>[] = [
     {
@@ -81,20 +85,23 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
     },
   ];
 
-  const versions = useInfiniteModelVersions({
+  const versions = useInfiniteNamespaceModelVersions({
+    namespaceId: model
+      ? InstillNameInterpreter.model(model.name).namespaceId
+      : null,
+    modelId: model?.id ?? null,
     accessToken,
     enabledQuery,
-    modelName: model?.name || null,
     pageSize: PAGE_SIZE,
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (versions.isSuccess && !versions.data.pages[paginationState.pageIndex]) {
       versions.fetchNextPage();
     }
   }, [paginationState.pageIndex, versions]);
 
-  const pageCount = useMemo(() => {
+  const pageCount = React.useMemo(() => {
     if (versions.data?.pages[0]) {
       return Math.ceil(
         versions.data.pages[0].totalSize / versions.data.pages[0].pageSize,
@@ -104,14 +111,14 @@ export const ModelVersions = ({ model }: ModelVersionsProps) => {
     return 1;
   }, [versions.data]);
 
-  const versionList = useMemo(() => {
+  const versionList = React.useMemo(() => {
     return versions.data?.pages.reduce(
       (acc: ModelVersion[], page) => [...acc, ...page.versions],
       [],
     );
   }, [versions.data]);
 
-  const currentPageData = useMemo(() => {
+  const currentPageData = React.useMemo(() => {
     if (!versionList) {
       return [];
     }

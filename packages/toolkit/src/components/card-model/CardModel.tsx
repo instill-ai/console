@@ -1,5 +1,6 @@
 "use client";
 
+import type { Model } from "instill-sdk";
 import * as React from "react";
 import Link from "next/link";
 
@@ -9,7 +10,6 @@ import {
 } from "@instill-ai/design-system";
 
 import { ImageWithFallback } from "..";
-import { Model } from "../../lib";
 import { Menu } from "./Menu";
 import { Stats } from "./Stats";
 import { Tags } from "./Tags";

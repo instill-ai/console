@@ -1,5 +1,6 @@
 "use client";
 
+import type { Model } from "instill-sdk";
 import cn from "clsx";
 
 import { useToast } from "@instill-ai/design-system";
@@ -8,12 +9,12 @@ import { CardModel } from "../../components/card-model/CardModel";
 import { CardModelSkeleton } from "../../components/card-model/Skeleton";
 import {
   InstillStore,
-  Model,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useDeleteModel,
+  useDeleteNamespaceModel,
   useInstillStore,
+  useRouteInfo,
   useShallow,
 } from "../../lib";
 
@@ -29,6 +30,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const ModelsList = (props: ModelsListProps) => {
+  const routeInfo = useRouteInfo();
   const { models, onModelDelete, isLoading, isSearchActive } = props;
   const { accessToken } = useInstillStore(useShallow(selector));
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -40,12 +42,16 @@ export const ModelsList = (props: ModelsListProps) => {
    * Handle delete model
    * -----------------------------------------------------------------------*/
 
-  const deleteModel = useDeleteModel();
+  const deleteModel = useDeleteNamespaceModel();
   const handleDeleteModel = async (model: Model) => {
-    if (!model) return;
+    if (!model || !routeInfo.isSuccess || !routeInfo.data.namespaceId) return;
 
     try {
-      await deleteModel.mutateAsync({ modelName: model.name, accessToken });
+      await deleteModel.mutateAsync({
+        namespaceId: routeInfo.data.namespaceId,
+        modelId: model.id,
+        accessToken,
+      });
 
       if (amplitudeIsInit) {
         sendAmplitudeData("delete_model");
