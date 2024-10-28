@@ -3,7 +3,7 @@
 import type { Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { getInstillModelAPIClient } from "../../vdp-sdk";
+import { getInstillModelAPIClient } from "../../sdk-helper";
 import { onSuccessAfterModelMutation } from "./onSuccessAfterModelMutation";
 
 export function useDeleteNamespaceModel() {

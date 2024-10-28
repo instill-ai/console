@@ -1,6 +1,6 @@
 import { UseToastReturn } from "@instill-ai/design-system";
 
-import { getInstillApiErrorMessage } from "./vdp-sdk";
+import { getInstillApiErrorMessage } from "./sdk-helper/getInstillApiErrorMessage";
 
 export function toastInstillError({
   title,

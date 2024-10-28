@@ -17,7 +17,7 @@ export * from "./use-controllable-state";
 export * from "./use-instill-form";
 export * from "./use-instill-store";
 export * from "./use-smart-hint";
-export * from "./vdp-sdk";
+export * from "./sdk-helper";
 export * from "./fillArrayWithZero";
 export * from "./isPublicModel";
 export * from "./isPublicPipeline";

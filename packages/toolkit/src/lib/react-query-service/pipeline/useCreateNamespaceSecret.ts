@@ -8,7 +8,7 @@ import {
   getUseNamespaceSecretQueryKey,
   getUseNamespaceSecretsQueryKey,
 } from "../../../server";
-import { getInstillAPIClient } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../sdk-helper";
 
 export function useCreateNamespaceSecret() {
   const queryClient = useQueryClient();

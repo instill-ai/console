@@ -2,8 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 
+import { getInstillAPIClient } from "../../../sdk-helper";
 import { Nullable } from "../../../type";
-import { getInstillAPIClient } from "../../../vdp-sdk";
 import { getUseApiTokensQueryKey } from "./server";
 
 export function useApiTokens({

@@ -6,7 +6,7 @@ import type {
 } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { getInstillAPIClient } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../sdk-helper";
 import { getUseOrganizationMembershipsQueryKey } from "./use-organization-memberships/server";
 import { getUseUserMembershipsQueryKey } from "./useUserMemberships";
 

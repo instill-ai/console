@@ -7,7 +7,7 @@ import type {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import type { Nullable } from "../../type";
-import { getInstillAPIClient } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../sdk-helper";
 import { getUseNamespacePipelineReleasesQueryKey } from "./use-namespace-pipeline-releases/server";
 import { getUseInfiniteNamespacePipelineReleasesQueryKey } from "./useInfiniteNamespacePipelineReleases";
 

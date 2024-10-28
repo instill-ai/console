@@ -3,7 +3,7 @@
 import type { GetRemainingInstillCreditResponse, Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
-import { getInstillAPIClient } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../sdk-helper";
 
 export type NamespaceRemainingInstillCredit = {
   namespaceName: string;

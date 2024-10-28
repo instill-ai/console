@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
+import { getQueryString, Nullable } from "instill-sdk";
 
-import { Nullable } from "../../type";
-import { createInstillAxiosClient, getQueryString } from "../../vdp-sdk/helper";
+import { createInstillAxiosClient } from "../../sdk-helper";
 import { File } from "./types";
 
 export async function listCatalogFiles({
@@ -9,33 +9,33 @@ export async function listCatalogFiles({
   catalogId,
   accessToken,
   pageSize,
-  nextPageToken,
+  pageToken,
 }: {
   namespaceId: string;
   catalogId: string;
   accessToken: string;
   pageSize: number;
-  nextPageToken: Nullable<string>;
+  pageToken: Nullable<string>;
 }): Promise<{
   files: File[];
-  nextPageToken: Nullable<string>;
+  pageToken: Nullable<string>;
   totalSize: number;
 }> {
   const client = createInstillAxiosClient(accessToken, true);
   const queryString = getQueryString({
     baseURL: `/namespaces/${namespaceId}/catalogs/${catalogId}/files`,
     pageSize,
-    nextPageToken,
+    pageToken: pageToken ?? undefined,
   });
   try {
     const { data } = await client.get<{
       files: File[];
-      nextPageToken: Nullable<string>;
+      pageToken: Nullable<string>;
       totalSize: number;
     }>(queryString);
     return {
       files: data.files,
-      nextPageToken: data.nextPageToken,
+      pageToken: data.pageToken,
       totalSize: data.totalSize,
     };
   } catch (error) {
@@ -68,7 +68,7 @@ export function useListCatalogFiles({
       }
 
       let allFiles: File[] = [];
-      let nextPageToken: Nullable<string> = null;
+      let pageToken: Nullable<string> = null;
       let totalSize = 0;
 
       do {
@@ -77,18 +77,18 @@ export function useListCatalogFiles({
           catalogId,
           accessToken,
           pageSize: 10,
-          nextPageToken,
+          pageToken,
         });
 
         allFiles = [...allFiles, ...result.files];
-        nextPageToken = result.nextPageToken;
+        pageToken = result.pageToken;
         totalSize = result.totalSize;
 
         // Stop fetching if we've received all files
         if (allFiles.length >= totalSize) {
           break;
         }
-      } while (nextPageToken && nextPageToken !== "");
+      } while (pageToken && pageToken !== "");
 
       // Ensure we don't return more files than the total
       return allFiles.slice(0, totalSize);

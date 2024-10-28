@@ -1,7 +1,7 @@
+import type { Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { Nullable } from "../../type";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { createInstillAxiosClient } from "../../sdk-helper";
 
 export function useDeleteCatalogFile() {
   const queryClient = useQueryClient();

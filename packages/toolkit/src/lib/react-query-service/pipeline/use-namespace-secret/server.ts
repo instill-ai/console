@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 
+import { getInstillAPIClient } from "../../../sdk-helper";
 import { Nullable } from "../../../type";
-import { getInstillAPIClient } from "../../../vdp-sdk";
 
 export async function fetchNamespaceSecret({
   namespaceSecretName,

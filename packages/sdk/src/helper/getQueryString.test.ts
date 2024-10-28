@@ -5,67 +5,67 @@ import { getQueryString } from "./getQueryString";
 test("baseURL contains no query string", () => {
   const baseURL = "https://www.google.com";
   const pageSize = 10;
-  const nextPageToken = "nextPageToken";
+  const pageToken = "pageToken";
   const filter = "filter=a";
 
   const queryString = getQueryString({
     baseURL,
     pageSize,
-    nextPageToken,
+    pageToken,
     filter,
   });
 
   expect(queryString).toBe(
-    "https://www.google.com?pageSize=10&pageToken=nextPageToken&filter=filter=a",
+    "https://www.google.com?pageSize=10&pageToken=pageToken&filter=filter=a",
   );
 });
 
 test("baseURL contains a query string", () => {
   const baseURL = "https://www.google.com?q=hello";
   const pageSize = 10;
-  const nextPageToken = "nextPageToken";
+  const pageToken = "pageToken";
   const filter = "filter=a";
 
   const queryString = getQueryString({
     baseURL,
     pageSize,
-    nextPageToken,
+    pageToken,
     filter,
   });
 
   expect(queryString).toBe(
-    "https://www.google.com?q=hello&pageSize=10&pageToken=nextPageToken&filter=filter=a",
+    "https://www.google.com?q=hello&pageSize=10&pageToken=pageToken&filter=filter=a",
   );
 });
 
 test("pageSize is null", () => {
   const baseURL = "https://www.google.com";
-  const pageSize = null;
-  const nextPageToken = "nextPageToken";
+  const pageSize = undefined;
+  const pageToken = "pageToken";
   const filter = "filter=a";
 
   const queryString = getQueryString({
     baseURL,
     pageSize,
-    nextPageToken,
+    pageToken,
     filter,
   });
 
   expect(queryString).toBe(
-    "https://www.google.com?pageToken=nextPageToken&filter=filter=a",
+    "https://www.google.com?pageToken=pageToken&filter=filter=a",
   );
 });
 
-test("nextPageToken is null", () => {
+test("pageToken is null", () => {
   const baseURL = "https://www.google.com";
   const pageSize = 10;
-  const nextPageToken = null;
+  const pageToken = undefined;
   const filter = "filter=a";
 
   const queryString = getQueryString({
     baseURL,
     pageSize,
-    nextPageToken,
+    pageToken,
     filter,
   });
 
@@ -77,31 +77,31 @@ test("nextPageToken is null", () => {
 test("filter is null", () => {
   const baseURL = "https://www.google.com";
   const pageSize = 10;
-  const nextPageToken = "nextPageToken";
+  const pageToken = "pageToken";
   const filter = null;
 
   const queryString = getQueryString({
     baseURL,
     pageSize,
-    nextPageToken,
+    pageToken,
     filter,
   });
 
   expect(queryString).toBe(
-    "https://www.google.com?pageSize=10&pageToken=nextPageToken",
+    "https://www.google.com?pageSize=10&pageToken=pageToken",
   );
 });
 
-test("pageSize and nextPageToken are null", () => {
+test("pageSize and pageToken are null", () => {
   const baseURL = "https://www.google.com";
-  const pageSize = null;
-  const nextPageToken = null;
+  const pageSize = undefined;
+  const pageToken = undefined;
   const filter = "filter=a";
 
   const queryString = getQueryString({
     baseURL,
     pageSize,
-    nextPageToken,
+    pageToken,
     filter,
   });
 
@@ -110,62 +110,62 @@ test("pageSize and nextPageToken are null", () => {
 
 test("pageSize and filter are null", () => {
   const baseURL = "https://www.google.com";
-  const pageSize = null;
-  const nextPageToken = "nextPageToken";
+  const pageSize = undefined;
+  const pageToken = "pageToken";
   const filter = null;
 
   const queryString = getQueryString({
     baseURL,
     pageSize,
-    nextPageToken,
+    pageToken,
     filter,
   });
 
-  expect(queryString).toBe("https://www.google.com?pageToken=nextPageToken");
+  expect(queryString).toBe("https://www.google.com?pageToken=pageToken");
 });
 
-test("nextPageToken and filter are null", () => {
+test("pageToken and filter are null", () => {
   const baseURL = "https://www.google.com";
   const pageSize = 10;
-  const nextPageToken = null;
+  const pageToken = undefined;
   const filter = null;
 
   const queryString = getQueryString({
     baseURL,
     pageSize,
-    nextPageToken,
+    pageToken,
     filter,
   });
 
   expect(queryString).toBe("https://www.google.com?pageSize=10");
 });
 
-test("pageSize and nextPageToken and filter are null", () => {
+test("pageSize and pageToken and filter are null", () => {
   const baseURL = "https://www.google.com";
-  const pageSize = null;
-  const nextPageToken = null;
+  const pageSize = undefined;
+  const pageToken = undefined;
   const filter = null;
 
   const queryString = getQueryString({
     baseURL,
     pageSize,
-    nextPageToken,
+    pageToken,
     filter,
   });
 
   expect(queryString).toBe("https://www.google.com");
 });
 
-test("baseURL contains a query string, pageSize and nextPageToken and filter are null", () => {
+test("baseURL contains a query string, pageSize and pageToken and filter are null", () => {
   const baseURL = "https://www.google.com?q=hello";
-  const pageSize = null;
-  const nextPageToken = null;
+  const pageSize = undefined;
+  const pageToken = undefined;
   const filter = null;
 
   const queryString = getQueryString({
     baseURL,
     pageSize,
-    nextPageToken,
+    pageToken,
     filter,
   });
 
@@ -174,32 +174,32 @@ test("baseURL contains a query string, pageSize and nextPageToken and filter are
 
 test("baseURL contains a query string, pageSize and filter are null", () => {
   const baseURL = "https://www.google.com?q=hello";
-  const pageSize = null;
-  const nextPageToken = "nextPageToken";
+  const pageSize = undefined;
+  const pageToken = "pageToken";
   const filter = null;
 
   const queryString = getQueryString({
     baseURL,
     pageSize,
-    nextPageToken,
+    pageToken,
     filter,
   });
 
   expect(queryString).toBe(
-    "https://www.google.com?q=hello&pageToken=nextPageToken",
+    "https://www.google.com?q=hello&pageToken=pageToken",
   );
 });
 
-test("baseURL contains a query string, nextPageToken and filter is null", () => {
+test("baseURL contains a query string, pageToken and filter is null", () => {
   const baseURL = "https://www.google.com?q=hello";
   const pageSize = 10;
-  const nextPageToken = null;
+  const pageToken = undefined;
   const filter = null;
 
   const queryString = getQueryString({
     baseURL,
     pageSize,
-    nextPageToken,
+    pageToken,
     filter,
   });
 
@@ -209,17 +209,17 @@ test("baseURL contains a query string, nextPageToken and filter is null", () => 
 test("baseURL contains a query string, all other fields included", () => {
   const baseURL = "https://www.google.com?q=hello";
   const pageSize = 10;
-  const nextPageToken = "nextPageToken";
+  const pageToken = "pageToken";
   const filter = "filter=a";
 
   const queryString = getQueryString({
     baseURL,
     pageSize,
-    nextPageToken,
+    pageToken,
     filter,
   });
 
   expect(queryString).toBe(
-    "https://www.google.com?q=hello&pageSize=10&pageToken=nextPageToken&filter=filter=a",
+    "https://www.google.com?q=hello&pageSize=10&pageToken=pageToken&filter=filter=a",
   );
 });

@@ -6,11 +6,11 @@ import { Position, ReactFlowInstance } from "reactflow";
 
 import {
   InstillStore,
+  isIteratorDefinition,
   Nullable,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
-import { isIteratorDefinition } from "../../../../lib/vdp-sdk/helper";
 import { generateUniqueIndex } from "../generateUniqueIndex";
 import { getAllNodeID } from "../getAllNodeID";
 import { transformConnectorDefinitionIDToComponentIDPrefix } from "../transformConnectorDefinitionIDToComponentIDPrefix";

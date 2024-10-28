@@ -1,13 +1,13 @@
 "use client";
 
-import { Icons, Tag } from "@instill-ai/design-system";
+import type { Nullable, Visibility } from "instill-sdk";
 
-import { Visibility } from "../../lib";
+import { Icons, Tag } from "@instill-ai/design-system";
 
 export type TagsProps = {
   region: string;
   hardware: string;
-  visibilityStatus: Visibility | null;
+  visibilityStatus: Nullable<Visibility>;
 };
 
 export const Tags = (props: TagsProps) => {

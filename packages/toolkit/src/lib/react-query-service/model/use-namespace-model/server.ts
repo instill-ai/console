@@ -3,7 +3,7 @@
 import type { Nullable, ResourceView } from "instill-sdk";
 import { QueryClient } from "@tanstack/react-query";
 
-import { getInstillModelAPIClient } from "../../../vdp-sdk";
+import { getInstillModelAPIClient } from "../../../sdk-helper";
 
 export async function fetchNamespaceModel({
   namespaceId,

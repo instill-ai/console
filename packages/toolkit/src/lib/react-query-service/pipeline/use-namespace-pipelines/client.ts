@@ -1,7 +1,6 @@
+import type { Nullable, Visibility } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
-import { Nullable } from "../../../type";
-import { Visibility } from "../../../vdp-sdk";
 import {
   fetchNamespacePipelines,
   getUseNamespacePipelinesQueryKey,

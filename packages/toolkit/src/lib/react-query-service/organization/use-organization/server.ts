@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import { Nullable } from "instill-sdk";
 
-import { getInstillAPIClient } from "../../../vdp-sdk";
+import { getInstillAPIClient } from "../../../sdk-helper";
 
 export async function fetchOrganization({
   organizationId,

@@ -1,5 +1,6 @@
 "use client";
 
+import type { Visibility } from "instill-sdk";
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import debounce from "lodash.debounce";
@@ -12,7 +13,6 @@ import {
   useInstillStore,
   useRouteInfo,
   useShallow,
-  Visibility,
 } from "../../lib";
 import { ModelsList } from "./ModelsList";
 import { ModelsListPagination } from "./ModelsListPagination";

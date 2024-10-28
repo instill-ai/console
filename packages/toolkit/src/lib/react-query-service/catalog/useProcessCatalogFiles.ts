@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getInstillAdditionalHeaders } from "instill-sdk";
+import { getInstillAdditionalHeaders, Nullable } from "instill-sdk";
 
-import { Nullable } from "../../type";
-import { createInstillAxiosClient } from "../../vdp-sdk/helper";
+import { createInstillAxiosClient } from "../../sdk-helper";
 import { File } from "./types";
 
 export function useProcessCatalogFiles() {

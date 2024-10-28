@@ -30,7 +30,7 @@ export {
   authLoginAction,
   authLogoutAction,
   authValidateTokenAction,
-} from "../lib/vdp-sdk";
+} from "../lib/sdk-helper";
 
 export {
   QueryClient,

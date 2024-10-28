@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Nullable, ResourceView } from "instill-sdk";
 
-import { getInstillAPIClient } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../sdk-helper";
 
 export function useIntegration({
   enabled,
