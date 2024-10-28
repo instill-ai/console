@@ -1,20 +1,16 @@
+import type { ListOrganizationsRequest, Nullable } from "instill-sdk";
 import { QueryClient } from "@tanstack/react-query";
-import { Nullable } from "instill-sdk";
 
 import { getInstillAPIClient } from "../../../vdp-sdk";
 
-export async function fetchOrganization({
-  organizationId,
+export async function fetchOrganizations({
   accessToken,
+  payload,
 }: {
-  organizationId: Nullable<string>;
   accessToken: Nullable<string>;
+  payload: ListOrganizationsRequest;
 }) {
   try {
-    if (!organizationId) {
-      return Promise.reject(new Error("organizationId not provided"));
-    }
-
     if (!accessToken) {
       return Promise.reject(new Error("accessToken not provided"));
     }
@@ -23,8 +19,9 @@ export async function fetchOrganization({
       accessToken,
     });
 
-    const organization = await client.core.organization.getOrganization({
-      organizationId,
+    const organization = await client.core.organization.listOrganizations({
+      ...payload,
+      enablePagination: false,
     });
 
     return Promise.resolve(organization);
@@ -33,26 +30,26 @@ export async function fetchOrganization({
   }
 }
 
-export function getUseOrganizationQueryKey(organizationId: Nullable<string>) {
-  return ["organization", organizationId];
+export function getUseOrganizationsQueryKey() {
+  return ["organizations"];
 }
 
-export function prefetchOrganization({
-  organizationId,
+export function prefetchOrganizations({
+  payload,
   accessToken,
   queryClient,
 }: {
-  organizationId: Nullable<string>;
+  payload: ListOrganizationsRequest;
   accessToken: Nullable<string>;
   queryClient: QueryClient;
 }) {
-  const queryKey = getUseOrganizationQueryKey(organizationId);
+  const queryKey = getUseOrganizationsQueryKey();
 
   return queryClient.prefetchQuery({
     queryKey,
     queryFn: async () => {
-      return await fetchOrganization({
-        organizationId,
+      return await fetchOrganizations({
+        payload,
         accessToken,
       });
     },

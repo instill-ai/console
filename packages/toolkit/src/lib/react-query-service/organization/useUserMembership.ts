@@ -1,44 +1,56 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
-import { getUserMembershipQuery } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
+
+export function getUseUserMembershipQueryKey(
+  userId: Nullable<string>,
+  organizationId: Nullable<string>,
+) {
+  return ["users", userId, "memberships", organizationId];
+}
 
 export function useUserMembership({
-  userID,
-  organizationID,
+  userId,
+  organizationId,
   accessToken,
   enabled,
 }: {
-  userID: Nullable<string>;
-  organizationID: Nullable<string>;
+  userId: Nullable<string>;
+  organizationId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
 }) {
   let enabledQuery = false;
 
-  if (userID && enabled && organizationID) {
+  if (userId && enabled && organizationId) {
     enabledQuery = true;
   }
 
   return useQuery({
-    queryKey: ["users", userID, "memberships", organizationID],
+    queryKey: getUseUserMembershipQueryKey(userId, organizationId),
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      if (!userID) {
-        return Promise.reject(new Error("userID not provided"));
+      if (!userId) {
+        return Promise.reject(new Error("userId not provided"));
       }
 
-      if (!organizationID) {
-        return Promise.reject(new Error("organizationID not provided"));
+      if (!organizationId) {
+        return Promise.reject(new Error("organizationId not provided"));
       }
 
-      const membership = await getUserMembershipQuery({
-        userID,
-        organizationID,
+      const client = getInstillAPIClient({
         accessToken,
+      });
+
+      const membership = await client.core.membership.getUserMembership({
+        userId,
+        organizationId,
       });
 
       return Promise.resolve(membership);

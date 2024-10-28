@@ -27,7 +27,7 @@ export const SubscribeCTA = () => {
   });
 
   const orgSub = useOrganizationSubscription({
-    organizationID: routeInfo.data.namespaceId,
+    organizationId: routeInfo.data.namespaceId,
     accessToken,
     enabled:
       enabledQuery && routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION",

@@ -76,9 +76,11 @@ export class OrganizationClient extends APIResource {
   /**
    * Returns the organization details by its Name
    */
-  async getOrganization({ name }: GetOrganizationRequest) {
+  async getOrganization({ organizationId }: GetOrganizationRequest) {
     try {
-      const data = await this._client.get<GetOrganizationResponse>(`/${name}`);
+      const data = await this._client.get<GetOrganizationResponse>(
+        `/organizations/${organizationId}`,
+      );
 
       return Promise.resolve(data.organization);
     } catch (err) {
@@ -93,12 +95,12 @@ export class OrganizationClient extends APIResource {
   /**
    * Creates an organization.
    */
-  async createOrganization(props: CreateOrganizationRequest) {
+  async createOrganization({ id, profile }: CreateOrganizationRequest) {
     try {
       const data = await this._client.post<CreateOrganizationResponse>(
         "/organizations",
         {
-          body: JSON.stringify(props),
+          body: JSON.stringify({ id, profile }),
         },
       );
 
@@ -111,9 +113,9 @@ export class OrganizationClient extends APIResource {
   /**
    * Deletes an organization by its name
    */
-  async deleteOrganization({ name }: DeleteOrganizationRequest) {
+  async deleteOrganization({ organizationId }: DeleteOrganizationRequest) {
     try {
-      await this._client.delete(`/${name}`);
+      await this._client.delete(`/organizations/${organizationId}`);
     } catch (err) {
       return Promise.reject(err);
     }
@@ -122,14 +124,16 @@ export class OrganizationClient extends APIResource {
   /**
    * Updates an organization by its name
    */
-  async updateOrganization(props: UpdateOrganizationRequest) {
-    const { name, ...payload } = props;
-
+  async updateOrganization({
+    organizationId,
+    newOrganizationId,
+    profile,
+  }: UpdateOrganizationRequest) {
     try {
       const data = await this._client.patch<UpdateOrganizationResponse>(
-        `/${name}`,
+        `/organizations/${organizationId}`,
         {
-          body: JSON.stringify(payload),
+          body: JSON.stringify({ profile, id: newOrganizationId }),
         },
       );
 

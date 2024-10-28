@@ -52,12 +52,7 @@ export type GetAuthenticatedUserSubscriptionResponse = {
 };
 
 export type GetOrganizationSubscriptionRequest = {
-  /**
-   * The parent resource, i.e., the organization to which the subscription
-   * refers
-   * Format: organizations/{organization.id}.
-   */
-  organizationName: string;
+  organizationId: string;
 };
 
 export type GetOrganizationSubscriptionResponse = {

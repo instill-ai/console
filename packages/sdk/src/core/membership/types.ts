@@ -48,7 +48,7 @@ export const OrganizationMembershipSchema = z.object({
 });
 
 export type ListUserMembershipsRequest = {
-  userName: string;
+  userId: string;
 };
 
 export type ListUserMembershipsResponse = {
@@ -59,7 +59,8 @@ export const listUserMembershipsResponseValidator =
   z.array(UserMembershipSchema);
 
 export type GetUserMembershipRequest = {
-  userMembershipName: string;
+  userId: string;
+  organizationId: string;
   view?: string;
 };
 
@@ -70,7 +71,7 @@ export type GetUserMembershipResponse = {
 export const getUserMembershipResponseValidator = UserMembershipSchema;
 
 export type ListOrganizationMembershipsRequest = {
-  organizationName: string;
+  organizationId: string;
 };
 
 export type ListOrganizationMembershipsResponse = {
@@ -82,7 +83,8 @@ export const listOrganizationMembershipsResponseValidator = z.array(
 );
 
 export type GetOrganizationMembershipRequest = {
-  organizationMembershipName: string;
+  userId: string;
+  organizationId: string;
   view?: string;
 };
 
@@ -94,11 +96,13 @@ export const getOrganizationMembershipResponseValidator =
   OrganizationMembershipSchema;
 
 export type DeleteUserMembershipRequest = {
-  userMembershipName: string;
+  userId: string;
+  organizationId: string;
 };
 
 export type UpdateUserMembershipRequest = {
-  userMembershipName: string;
+  userId: string;
+  organizationId: string;
   state?: MembershipState;
 };
 
@@ -107,11 +111,13 @@ export type UpdateUserMembershipResponse = {
 };
 
 export type DeleteOrganizationMembershipRequest = {
-  organizationMembershipName: string;
+  organizationId: string;
+  userId: string;
 };
 
 export type UpdateOrganizationMembershipRequest = {
-  organizationMembershipName: string;
+  userId: string;
+  organizationId: string;
   role?: MembershipRole;
   state?: MembershipState;
 };

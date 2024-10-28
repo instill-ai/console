@@ -1,32 +1,43 @@
+"use client";
+
+import type { Nullable, Organization } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
-import { deleteOrganizationMutation, Organization } from "../../vdp-sdk";
+import { getInstillAPIClient } from "../../vdp-sdk";
+import { getUseOrganizationsQueryKey } from "./use-organizations/server";
 
 export function useDeleteOrganization() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
-      organizationID,
+      organizationId,
       accessToken,
     }: {
-      organizationID: Nullable<string>;
+      organizationId: Nullable<string>;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         return Promise.reject(new Error("AccessToken not provided"));
       }
-      if (!organizationID) {
-        return Promise.reject(new Error("organizationID not provided"));
+
+      if (!organizationId) {
+        return Promise.reject(new Error("organizationId not provided"));
       }
 
-      await deleteOrganizationMutation({ organizationID, accessToken });
+      const client = getInstillAPIClient({
+        accessToken,
+      });
 
-      return Promise.resolve(organizationID);
+      await client.core.organization.deleteOrganization({
+        organizationId,
+      });
+
+      return Promise.resolve(organizationId);
     },
-    onSuccess: (organizationID) => {
-      queryClient.setQueryData<Organization[]>(["organizations"], (old) =>
-        old ? old.filter((e) => e.id !== organizationID) : [],
+    onSuccess: (organizationId) => {
+      const organizationsQueryKey = getUseOrganizationsQueryKey();
+      queryClient.setQueryData<Organization[]>(organizationsQueryKey, (old) =>
+        old ? old.filter((e) => e.id !== organizationId) : [],
       );
     },
   });

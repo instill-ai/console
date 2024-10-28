@@ -2,11 +2,9 @@ import type {
   ComponentDefinition,
   IteratorDefinition,
   Nullable,
-  User,
 } from "instill-sdk";
 
 import { InstillJSONSchema } from "../use-instill-form";
-import { Organization } from "./organization";
 
 export type ErrorDetails = {
   "@type": string;
@@ -61,15 +59,5 @@ export type StripeSubscriptionStatus =
   | "STATUS_CANCELED"
   | "STATUS_UNPAID"
   | "STATUS_PAUSED";
-
-export type UserOwner = {
-  user: User;
-};
-
-export type OrganizationOwner = {
-  organization: Organization;
-};
-
-export type Owner = UserOwner | OrganizationOwner;
 
 export type Definition = ComponentDefinition | IteratorDefinition;

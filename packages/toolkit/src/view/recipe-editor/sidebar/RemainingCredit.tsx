@@ -35,7 +35,7 @@ export const RemainingCredit = () => {
   });
 
   const organization = useOrganization({
-    organizationID: routeInfo.data.namespaceId,
+    organizationId: routeInfo.data.namespaceId,
     accessToken,
     enabled:
       enabledQuery &&

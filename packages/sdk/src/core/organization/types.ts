@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { ResourceView } from "../../vdp";
 import { User, UserSchema } from "../user";
 
 export type OrganizationProfile = {
@@ -51,7 +52,7 @@ export const OrganizationSchema = z.object({
 export type ListOrganizationsRequest = {
   pageSize?: number;
   pageToken?: string;
-  view?: string;
+  view?: ResourceView;
   filter?: string;
 };
 
@@ -71,7 +72,7 @@ export type CreateOrganizationResponse = {
 };
 
 export type GetOrganizationRequest = {
-  name: string;
+  organizationId: string;
 };
 
 export type GetOrganizationResponse = {
@@ -79,12 +80,12 @@ export type GetOrganizationResponse = {
 };
 
 export type DeleteOrganizationRequest = {
-  name: string;
+  organizationId: string;
 };
 
 export type UpdateOrganizationRequest = {
-  name: string;
-  id?: string;
+  organizationId: string;
+  newOrganizationId?: string;
   profile?: Partial<OrganizationProfile>;
 };
 

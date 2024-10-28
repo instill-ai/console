@@ -93,7 +93,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   });
 
   const orgSub = useOrganizationSubscription({
-    organizationID: selectedNamespace ? selectedNamespace : null,
+    organizationId: selectedNamespace ? selectedNamespace : null,
     accessToken,
     enabled: enabledQuery && namespaceType === "organization",
   });
