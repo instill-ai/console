@@ -138,8 +138,6 @@ export const CatalogFilesTab = ({
         await deleteCatalogFile.mutateAsync({
           fileUid,
           accessToken,
-          catalogId: catalog.catalogId,
-          ownerId: catalog.ownerName,
         });
         updateRemainingSpace(fileToDelete.size, false);
       }
