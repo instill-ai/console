@@ -97,8 +97,6 @@ export const ChunkTab = ({ catalog, onGoToUpload }: ChunkTabProps) => {
         chunkUid,
         accessToken,
         retrievable: !currentValue,
-        namespaceId: selectedNamespace,
-        catalogId: catalog.catalogId,
       });
     } catch (error) {
       console.error("Failed to update chunk retrievable status:", error);

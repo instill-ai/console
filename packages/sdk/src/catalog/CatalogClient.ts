@@ -348,14 +348,14 @@ export class CatalogClient extends APIResource {
   }
 
   async updateChunk(props: UpdateChunkRequest): Promise<Chunk> {
-    const { namespaceId, catalogId, chunkUid, retrievable } = props;
+    const { chunkUid, retrievable } = props;
 
     try {
       const queryString = getQueryString({
-        baseURL: `/namespaces/${namespaceId}/catalogs/${catalogId}/chunks/${chunkUid}`,
+        baseURL: `chunks/${chunkUid}`,
       });
 
-      const data = await this._client.patch<{ chunk: Chunk }>(queryString, {
+      const data = await this._client.post<{ chunk: Chunk }>(queryString, {
         body: JSON.stringify({ retrievable }),
       });
 

@@ -181,8 +181,6 @@ export type GetChunkContentRequest = {
 };
 
 export type UpdateChunkRequest = {
-  namespaceId: string;
-  catalogId: string;
   chunkUid: string;
   retrievable: boolean;
 };

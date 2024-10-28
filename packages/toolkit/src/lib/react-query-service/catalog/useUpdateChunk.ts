@@ -9,14 +9,10 @@ export function useUpdateChunk() {
       chunkUid,
       accessToken,
       retrievable,
-      namespaceId,
-      catalogId,
     }: {
       chunkUid: string;
       accessToken: Nullable<string>;
       retrievable: boolean;
-      namespaceId: string;
-      catalogId: string;
     }) => {
       if (!accessToken) {
         throw new Error("accessToken not provided");
@@ -24,15 +20,13 @@ export function useUpdateChunk() {
 
       const client = getInstillCatalogAPIClient({ accessToken });
       await client.catalog.updateChunk({
-        namespaceId,
-        catalogId,
         chunkUid,
         retrievable,
       });
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ["chunks", variables.catalogId],
+        queryKey: ["chunks", variables.chunkUid],
       });
     },
   });
