@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { Nullable } from "instill-sdk";
-import { getInstillApplicationAPIClient } from "../../vdp-sdk";
+import { getInstillCatalogAPIClient } from "../../vdp-sdk";
 
 
 export function useCreateCatalog() {
@@ -24,7 +24,7 @@ export function useCreateCatalog() {
         throw new Error("accessToken not provided");
       }
 
-      const client = getInstillApplicationAPIClient({ accessToken });
+      const client = getInstillCatalogAPIClient({ accessToken });
       const catalog = await client.catalog.createCatalog({
         ownerId,
         payload,

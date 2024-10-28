@@ -1,4 +1,4 @@
-import { getInstillApplicationAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
+import { getInstillCatalogAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
 import { Catalog, Nullable } from "instill-sdk";
 
 export function useDeleteCatalog() {
@@ -18,7 +18,7 @@ export function useDeleteCatalog() {
         throw new Error("accessToken not provided");
       }
 
-      const client = getInstillApplicationAPIClient({ accessToken });
+      const client = getInstillCatalogAPIClient({ accessToken });
       await client.catalog.deleteCatalog({ ownerId, catalogId });
     },
     onSuccess: (_, variables) => {

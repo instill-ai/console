@@ -1,4 +1,4 @@
-import { getInstillApplicationAPIClient, useQuery } from "@instill-ai/toolkit";
+import { getInstillCatalogAPIClient, useQuery } from "@instill-ai/toolkit";
 import { Nullable } from "instill-sdk";
 
 export function useGetCatalogs({
@@ -17,7 +17,7 @@ export function useGetCatalogs({
         throw new Error("Both ownerId and accessToken are required");
       }
 
-      const client = getInstillApplicationAPIClient({ accessToken });
+      const client = getInstillCatalogAPIClient({ accessToken });
       const catalogs = await client.catalog.listCatalogs({
         ownerId,
         enablePagination: false,

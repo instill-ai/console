@@ -90,7 +90,7 @@ export function getInstillCatalogAPIClient({
     });
   }
 
-  return instillApplicationAPIClient;
+  return instillCatalogAPIClient;
 }
 
 export type ChangePasswordPayload = {

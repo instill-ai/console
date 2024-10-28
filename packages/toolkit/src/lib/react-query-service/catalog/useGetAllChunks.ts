@@ -1,4 +1,4 @@
-import { getInstillApplicationAPIClient, useQuery } from "@instill-ai/toolkit";
+import { getInstillCatalogAPIClient, useQuery } from "@instill-ai/toolkit";
 import { Nullable } from "instill-sdk";
 
 export function useGetAllChunks({
@@ -21,7 +21,7 @@ export function useGetAllChunks({
         throw new Error("Required parameters are missing");
       }
 
-      const client = getInstillApplicationAPIClient({ accessToken });
+      const client = getInstillCatalogAPIClient({ accessToken });
       const chunks = await client.catalog.listChunks({
         namespaceId: ownerName,
         catalogId,

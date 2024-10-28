@@ -1,4 +1,4 @@
-import { getInstillApplicationAPIClient, useQuery } from "@instill-ai/toolkit";
+import { getInstillCatalogAPIClient, useQuery } from "@instill-ai/toolkit";
 import { Nullable } from "instill-sdk";
 
 export function useGetFileContent({
@@ -21,7 +21,7 @@ export function useGetFileContent({
         throw new Error("accessToken not provided");
       }
 
-      const client = getInstillApplicationAPIClient({ accessToken });
+      const client = getInstillCatalogAPIClient({ accessToken });
       const fileContent = await client.catalog.getFileContent({
         ownerId,
         catalogId,

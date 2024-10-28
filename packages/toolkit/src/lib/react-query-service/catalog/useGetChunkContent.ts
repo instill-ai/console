@@ -1,4 +1,4 @@
-import { getInstillApplicationAPIClient, useQuery } from "@instill-ai/toolkit";
+import { getInstillCatalogAPIClient, useQuery } from "@instill-ai/toolkit";
 import { Nullable } from "instill-sdk";
 
 //Unused for now, might be removed later
@@ -22,7 +22,7 @@ export function useGetChunkContent({
         throw new Error("accessToken not provided");
       }
 
-      const client = getInstillApplicationAPIClient({ accessToken });
+      const client = getInstillCatalogAPIClient({ accessToken });
       const content = await client.catalog.getChunkContent({
         namespaceId,
         catalogId,

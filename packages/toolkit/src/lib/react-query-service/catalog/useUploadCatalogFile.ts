@@ -1,4 +1,4 @@
-import { getInstillApplicationAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
+import { getInstillCatalogAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
 import { Nullable } from "instill-sdk";
 
 export function useUploadCatalogFile() {
@@ -24,7 +24,7 @@ export function useUploadCatalogFile() {
         throw new Error("accessToken not provided");
       }
 
-      const client = getInstillApplicationAPIClient({ accessToken });
+      const client = getInstillCatalogAPIClient({ accessToken });
       const file = await client.catalog.uploadCatalogFile({
         ownerId,
         catalogId,

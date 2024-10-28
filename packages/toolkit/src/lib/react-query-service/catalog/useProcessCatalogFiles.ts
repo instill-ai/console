@@ -1,4 +1,4 @@
-import { getInstillApplicationAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
+import { getInstillCatalogAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
 import { Nullable, CatalogFile } from "instill-sdk";
 
 export function useProcessCatalogFiles() {
@@ -22,7 +22,7 @@ export function useProcessCatalogFiles() {
         throw new Error("namespaceUid not provided");
       }
 
-      const client = getInstillApplicationAPIClient({ accessToken });
+      const client = getInstillCatalogAPIClient({ accessToken });
       const files = await client.catalog.processCatalogFiles({
         fileUids,
         namespaceUid,

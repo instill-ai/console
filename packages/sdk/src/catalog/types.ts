@@ -136,9 +136,7 @@ export type ListCatalogFilesResponse = {
 };
 
 export type DeleteCatalogFileRequest = {
-  ownerId: string;
-  catalogId: string;
-  fileId: string;
+  fileUid: string;
 };
 
 export type GetFileDetailsRequest = {

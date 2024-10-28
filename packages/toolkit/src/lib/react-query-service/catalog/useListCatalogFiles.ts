@@ -1,4 +1,4 @@
-import { getInstillApplicationAPIClient, useQuery } from "@instill-ai/toolkit";
+import { getInstillCatalogAPIClient, useQuery } from "@instill-ai/toolkit";
 import { File, Nullable } from "instill-sdk";
 
 export function useListCatalogFiles({
@@ -19,7 +19,7 @@ export function useListCatalogFiles({
         throw new Error("Required parameters are missing");
       }
 
-      const client = getInstillApplicationAPIClient({ accessToken });
+      const client = getInstillCatalogAPIClient({ accessToken });
       const files = await client.catalog.listCatalogFiles({
         ownerId: namespaceId,
         catalogId,

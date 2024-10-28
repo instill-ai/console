@@ -1,4 +1,4 @@
-import { getInstillApplicationAPIClient, useQuery } from "@instill-ai/toolkit";
+import { getInstillCatalogAPIClient, useQuery } from "@instill-ai/toolkit";
 import { Chunk, Nullable } from "instill-sdk";
 
 export function useListChunks({
@@ -21,7 +21,7 @@ export function useListChunks({
         throw new Error("accessToken not provided");
       }
 
-      const client = getInstillApplicationAPIClient({ accessToken });
+      const client = getInstillCatalogAPIClient({ accessToken });
       const chunks = await client.catalog.listChunks({
         namespaceId,
         catalogId,

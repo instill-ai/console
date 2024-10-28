@@ -1,4 +1,4 @@
-import { getInstillApplicationAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
+import { getInstillCatalogAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
 import { Nullable } from "instill-sdk";
 
 export function useDeleteCatalogFile() {
@@ -6,13 +6,9 @@ export function useDeleteCatalogFile() {
 
   return useMutation({
     mutationFn: async ({
-      ownerId,
-      catalogId,
       fileUid,
       accessToken,
     }: {
-      ownerId: string;
-      catalogId: string;
       fileUid: string;
       accessToken: Nullable<string>;
     }) => {
@@ -20,17 +16,13 @@ export function useDeleteCatalogFile() {
         throw new Error("accessToken not provided");
       }
 
-      const client = getInstillApplicationAPIClient({ accessToken });
+      const client = getInstillCatalogAPIClient({ accessToken });
       await client.catalog.deleteCatalogFile({
-        ownerId,
-        catalogId,
-        fileId: fileUid,
+        fileUid,
       });
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: ["catalogFiles", variables.ownerId, variables.catalogId],
-      });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["catalogFiles"] });
     },
   });
 }

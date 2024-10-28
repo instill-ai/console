@@ -201,14 +201,10 @@ export class CatalogClient extends APIResource {
   }
 
   async deleteCatalogFile(props: DeleteCatalogFileRequest): Promise<void> {
-    const { ownerId, catalogId, fileId } = props;
+    const { fileUid } = props;
 
     try {
-      const queryString = getQueryString({
-        baseURL: `/namespaces/${ownerId}/catalogs/${catalogId}/files/${fileId}`,
-      });
-
-      await this._client.delete(queryString);
+      await this._client.delete(`/catalogs/files?fileUid=${fileUid}`);
       return Promise.resolve();
     } catch (error) {
       return Promise.reject(error);
