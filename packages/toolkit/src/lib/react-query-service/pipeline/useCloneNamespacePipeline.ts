@@ -25,7 +25,9 @@ export function useCloneNamespacePipeline() {
 
       await client.vdp.pipeline.cloneNamespacePipeline(payload);
 
-      return Promise.resolve({ pipelineName: payload.namespacePipelineName });
+      return Promise.resolve({
+        pipelineName: `namespaces/${payload.namespaceId}/pipelines/${payload.pipelineId}`,
+      });
     },
     onSuccess: async ({ pipelineName }) => {
       const namespace = pipelineName.split("/").splice(0, 2).join("/");

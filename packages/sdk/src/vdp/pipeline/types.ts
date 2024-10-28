@@ -395,7 +395,8 @@ export type RenameNamespacePipelineResponse = {
 };
 
 export type CloneNamespacePipelineRequest = {
-  namespacePipelineName: string;
+  namespaceId: string;
+  pipelineId: string;
   targetNamespaceId: string;
   targetPipelineId: string;
   description?: string;
