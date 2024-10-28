@@ -31,7 +31,7 @@ export async function fetchOrganizations({
 }
 
 export function getUseOrganizationsQueryKey() {
-  return ["organization"];
+  return ["organizations"];
 }
 
 export function prefetchOrganizations({

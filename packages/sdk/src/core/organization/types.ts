@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { ResourceView } from "../../vdp";
 import { User, UserSchema } from "../user";
 
 export type OrganizationProfile = {
@@ -51,7 +52,7 @@ export const OrganizationSchema = z.object({
 export type ListOrganizationsRequest = {
   pageSize?: number;
   pageToken?: string;
-  view?: string;
+  view?: ResourceView;
   filter?: string;
 };
 
