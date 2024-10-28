@@ -8,6 +8,7 @@ import type {
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { InstillNameInterpreter } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -155,7 +156,8 @@ export const ClonePipelineDialog = ({
 
     if (targetNamespace) {
       const payload: CloneNamespacePipelineRequest = {
-        namespacePipelineName: `namespaces/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`,
+        namespaceId: InstillNameInterpreter.pipeline(pipeline.name).namespaceId,
+        pipelineId: pipeline.id,
         targetNamespaceId: targetNamespace.id,
         targetPipelineId: data.id,
         description: data.description ?? undefined,
@@ -164,9 +166,11 @@ export const ClonePipelineDialog = ({
 
       try {
         await clonePipeline.mutateAsync({ payload, accessToken });
+
         if (amplitudeIsInit) {
           sendAmplitudeData("clone_pipeline");
         }
+
         updateNavigationNamespaceAnchor(() => targetNamespace.id);
         router.push(`/${targetNamespace.id}/pipelines/${data.id}/playground`);
       } catch (error) {

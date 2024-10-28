@@ -372,12 +372,15 @@ export class PipelineClient extends APIResource {
   }
 
   async cloneNamespacePipeline(props: CloneNamespacePipelineRequest) {
-    const { namespacePipelineName, ...payload } = props;
+    const { namespaceId, pipelineId, ...payload } = props;
 
     try {
-      await this._client.post(`/${namespacePipelineName}/clone`, {
-        body: JSON.stringify(payload),
-      });
+      await this._client.post(
+        `/namespaces/${namespaceId}/pipelines/${pipelineId}/clone`,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
     } catch (error) {
       return Promise.reject(error);
     }
