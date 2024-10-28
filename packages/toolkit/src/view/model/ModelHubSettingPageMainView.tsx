@@ -52,6 +52,7 @@ export const ModelHubSettingPageMainView = () => {
     modelId: routeInfo.isSuccess ? routeInfo.data.resourceId : null,
     enabled: enabledQuery && routeInfo.isSuccess,
     accessToken,
+    view: "VIEW_FULL",
   });
 
   React.useEffect(() => {

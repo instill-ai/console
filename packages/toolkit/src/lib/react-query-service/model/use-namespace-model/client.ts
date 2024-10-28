@@ -1,6 +1,6 @@
 "use client";
 
-import type { Nullable } from "instill-sdk";
+import type { Nullable, ResourceView } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
 import { fetchNamespaceModel, getUseNamespaceModelQueryKey } from "./server";
@@ -10,11 +10,13 @@ export function useNamespaceModel({
   modelId,
   accessToken,
   enabled,
+  view,
 }: {
   namespaceId: Nullable<string>;
   modelId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
+  view: Nullable<ResourceView>;
 }) {
   let enableQuery = false;
 
@@ -29,6 +31,7 @@ export function useNamespaceModel({
         namespaceId,
         modelId,
         accessToken,
+        view,
       });
     },
     enabled: enableQuery,

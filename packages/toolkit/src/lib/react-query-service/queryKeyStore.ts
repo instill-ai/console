@@ -5,10 +5,12 @@ export const modelQueryKeyStore = {
     filter,
     visibility,
     orderBy,
+    view,
   }: {
     filter: Nullable<string>;
     visibility: Nullable<string>;
     orderBy: Nullable<string>;
+    view: Nullable<ResourceView>;
   }) {
     const queryKey = ["models", "infinite"];
 
@@ -24,6 +26,10 @@ export const modelQueryKeyStore = {
       queryKey.push(orderBy);
     }
 
+    if (view) {
+      queryKey.push(view);
+    }
+
     return queryKey;
   },
   getUseInfiniteNamespaceModelsQueryKey(
@@ -31,6 +37,7 @@ export const modelQueryKeyStore = {
     filter: Nullable<string>,
     visibility: Nullable<string>,
     orderBy: Nullable<string>,
+    view: Nullable<ResourceView>,
   ) {
     const queryKey = [namespaceId, "models", "infinite"];
 
@@ -44,6 +51,10 @@ export const modelQueryKeyStore = {
 
     if (orderBy) {
       queryKey.push(orderBy);
+    }
+
+    if (view) {
+      queryKey.push(view);
     }
 
     return queryKey;

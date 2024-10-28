@@ -1,6 +1,6 @@
 "use client";
 
-import type { Nullable, Visibility } from "instill-sdk";
+import type { Nullable, ResourceView, Visibility } from "instill-sdk";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { env } from "../../../server";
@@ -14,6 +14,7 @@ export function useInfiniteNamespaceModels({
   filter,
   visibility,
   orderBy,
+  view,
 }: {
   namespaceId: Nullable<string>;
   accessToken: Nullable<string>;
@@ -21,6 +22,7 @@ export function useInfiniteNamespaceModels({
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
   orderBy: Nullable<string>;
+  view: Nullable<ResourceView>;
 }) {
   return useInfiniteQuery({
     queryKey: queryKeyStore.model.getUseInfiniteNamespaceModelsQueryKey(
@@ -28,6 +30,7 @@ export function useInfiniteNamespaceModels({
       filter,
       visibility,
       orderBy,
+      view,
     ),
     queryFn: async ({ pageParam }) => {
       if (!accessToken) {
@@ -45,11 +48,12 @@ export function useInfiniteNamespaceModels({
       const models = await client.model.listNamespaceModels({
         namespaceId,
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-        pageToken: pageParam ?? null,
+        pageToken: pageParam ?? undefined,
         filter: filter ?? undefined,
         visibility: visibility ?? undefined,
         orderBy: orderBy ?? undefined,
         enablePagination: true,
+        view: view ?? undefined,
       });
 
       return Promise.resolve(models);

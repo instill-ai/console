@@ -1,6 +1,6 @@
 "use client";
 
-import type { Nullable } from "instill-sdk";
+import type { Nullable, ResourceView } from "instill-sdk";
 import { QueryClient } from "@tanstack/react-query";
 
 import { getInstillModelAPIClient } from "../../../vdp-sdk";
@@ -9,10 +9,12 @@ export async function fetchNamespaceModel({
   namespaceId,
   modelId,
   accessToken,
+  view,
 }: {
   namespaceId: Nullable<string>;
   modelId: Nullable<string>;
   accessToken: Nullable<string>;
+  view: Nullable<ResourceView>;
 }) {
   try {
     if (!namespaceId) {
@@ -30,6 +32,7 @@ export async function fetchNamespaceModel({
     const model = await client.model.getNamespaceModel({
       namespaceId,
       modelId,
+      view: view ?? undefined,
     });
 
     return Promise.resolve(model);
@@ -50,11 +53,13 @@ export function prefetchNamespaceModel({
   modelId,
   accessToken,
   queryClient,
+  view,
 }: {
   namespaceId: Nullable<string>;
   modelId: Nullable<string>;
   accessToken: Nullable<string>;
   queryClient: QueryClient;
+  view: Nullable<ResourceView>;
 }) {
   const queryKey = getUseNamespaceModelQueryKey(namespaceId, modelId);
 
@@ -65,6 +70,7 @@ export function prefetchNamespaceModel({
         namespaceId,
         modelId,
         accessToken,
+        view,
       });
     },
   });

@@ -44,8 +44,8 @@ export function useInfiniteNamespaceModelVersions({
       });
 
       const versions = await client.model.listNamespaceModelVersions({
-        pageSize: pageSize || undefined,
-        page: pageParam || undefined,
+        pageSize: pageSize ?? undefined,
+        page: pageParam ?? undefined,
         enablePagination: true,
         namespaceId,
         modelId,

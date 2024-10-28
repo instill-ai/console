@@ -1,6 +1,6 @@
 "use client";
 
-import type { Nullable } from "instill-sdk";
+import type { Nullable, ResourceView } from "instill-sdk";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { env } from "../../../server";
@@ -13,20 +13,21 @@ export function useInfiniteModels({
   filter,
   visibility,
   orderBy,
-  disabledViewFull,
+  view,
 }: {
   accessToken: Nullable<string>;
   enabledQuery: boolean;
-  disabledViewFull?: boolean;
   filter: Nullable<string>;
   visibility: Nullable<string>;
   orderBy: Nullable<string>;
+  view: Nullable<ResourceView>;
 }) {
   return useInfiniteQuery({
     queryKey: queryKeyStore.model.getUseInfiniteModelsQueryKey({
       filter,
       visibility,
       orderBy,
+      view,
     }),
     queryFn: async ({ pageParam }) => {
       const client = getInstillModelAPIClient({
@@ -34,9 +35,9 @@ export function useInfiniteModels({
       });
 
       const models = await client.model.listModels({
-        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE") ?? null,
-        view: disabledViewFull ? "VIEW_FULL" : "VIEW_BASIC",
-        pageToken: pageParam ?? null,
+        pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE") ?? undefined,
+        view: view ?? undefined,
+        pageToken: pageParam ?? undefined,
         enablePagination: true,
         filter: filter ?? undefined,
         visibility: visibility ?? undefined,

@@ -127,7 +127,7 @@ export type GetModelDefinitionResponse = {
 export type ListModelDefinitionsRequest = {
   pageSize?: number;
   pageToken?: string;
-  view?: string;
+  view?: ResourceView;
 };
 
 export type ListModelDefinitionsResponse = {
@@ -146,7 +146,7 @@ export type ListModelsRequest = {
   filter?: string;
   visibility?: string;
   orderBy?: string;
-  view?: string;
+  view?: ResourceView;
 };
 
 export type ListModelsResponse = {
@@ -158,7 +158,7 @@ export type ListModelsResponse = {
 export type GetNamespaceModelRequest = {
   namespaceId: string;
   modelId: string;
-  view?: string;
+  view?: ResourceView;
 };
 
 export type GetNamespaceModelResponse = {
@@ -172,7 +172,7 @@ export type ListNamespaceModelsRequest = {
   filter?: string;
   visibility?: Visibility;
   orderBy?: string;
-  view?: string;
+  view?: ResourceView;
 };
 
 export type ListNamespaceModelsResponse = {
