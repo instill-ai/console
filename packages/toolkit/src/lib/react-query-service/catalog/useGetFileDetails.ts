@@ -41,6 +41,6 @@ export function useGetFileDetails({
 
       return file;
     },
-    enabled: enabled && Boolean(accessToken) && Boolean(fileUid),
+    enabled,
   });
 }

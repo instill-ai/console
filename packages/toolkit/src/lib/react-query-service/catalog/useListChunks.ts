@@ -42,6 +42,6 @@ export function useListChunks({
 
       return Promise.resolve(chunks);
     },
-    enabled: enabled && Boolean(accessToken) && Boolean(catalogId) && Boolean(fileUid),
+    enabled: enabled && Boolean(accessToken),
   });
 }
