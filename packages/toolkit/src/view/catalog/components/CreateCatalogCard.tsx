@@ -48,7 +48,6 @@ export const CreateCatalogCard = ({
   const [cloneDialogIsOpen, setCloneDialogIsOpen] = React.useState(false);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isHovered, setIsHovered] = React.useState(false);
-  const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
   const cardRef = React.useRef<HTMLDivElement>(null);
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
@@ -109,14 +108,6 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
     setEditDialogIsOpen(false);
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
-      x: e.clientX - rect.left - 300,
-      y: e.clientY - rect.top - 150,
-    });
-  };
-
   const handleTagsClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setEditDialogIsOpen(true);
@@ -133,7 +124,6 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
               onClick={onCardClick}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              onMouseMove={handleMouseMove}
             >
               <div className="flex items-center justify-between">
                 <div className="product-headings-heading-4">{catalog.name}</div>
@@ -181,20 +171,16 @@ Tokens: #: ${catalog.totalTokens || "N/A"}
               </div>
             </div>
           </Tooltip.Trigger>
-          <Tooltip.Portal>
-            <Tooltip.Content
-              className="absolute w-[300px] max-w-[300px] rounded-md bg-semantic-bg-primary p-4 shadow-lg !z-10"
-              style={{
-                left: `${mousePosition.x}px`,
-                top: `${mousePosition.y}px`,
-              }}
-            >
-              <div className="whitespace-pre-wrap text-xs break-words">
-                {tooltipContent}
-              </div>
-              <Tooltip.Arrow className="fill-semantic-bg-primary" />
-            </Tooltip.Content>
-          </Tooltip.Portal>
+          {isHovered && tooltipContent && (
+            <Tooltip.Portal>
+              <Tooltip.Content className="z-10 w-[300px] max-w-[300px] rounded-md bg-semantic-bg-primary p-4 shadow-lg">
+                <div className="whitespace-pre-wrap text-xs break-words">
+                  {tooltipContent}
+                </div>
+                <Tooltip.Arrow className="fill-semantic-bg-primary" />
+              </Tooltip.Content>
+            </Tooltip.Portal>
+          )}
         </Tooltip.Root>
       </Tooltip.Provider>
       <GeneralDeleteResourceDialog
