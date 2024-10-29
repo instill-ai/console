@@ -90,7 +90,7 @@ export const RetrieveTestTab = ({
             </p>
             <CodeBlock
               codeString={`$ export INSTILL_API_TOKEN=********
-${isOrganization && !isLocalEnvironment ? "export ORGANIZATION_UID=********" : ""}`}
+${isOrganization && !isLocalEnvironment ? "$ export ORGANIZATION_UID=********" : ""}`}
               wrapLongLines={true}
               language="bash"
               customStyle={defaultCodeSnippetStyles}
