@@ -20,14 +20,14 @@ export const RetrieveTestTab = ({
   onGoToUpload,
   namespaceId,
   namespaceType,
-  isLocalEnvironment
+  isLocalEnvironment,
 }: {
   catalog: Catalog;
   isProcessed: boolean;
   onGoToUpload: () => void;
   namespaceId: Nullable<string>;
   namespaceType: Nullable<"user" | "organization">;
-  isLocalEnvironment: boolean
+  isLocalEnvironment: boolean;
 }) => {
   const catalogId = catalog.catalogId;
 
