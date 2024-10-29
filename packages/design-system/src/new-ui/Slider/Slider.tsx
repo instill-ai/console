@@ -4,11 +4,13 @@ import * as React from "react"
 import * as SliderPrimitive from "@radix-ui/react-slider"
 import { cn } from "../../utils"
 
-interface SliderProps extends React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {
-  trackClassName?: string
-  rangeClassName?: string
-  thumbClassName?: string
-}
+import { ComponentPropsWithoutRef } from "react";
+
+type SliderProps = ComponentPropsWithoutRef<typeof SliderPrimitive.Root> & {
+  trackClassName?: string;
+  rangeClassName?: string;
+  thumbClassName?: string;
+};
 
 const Slider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
