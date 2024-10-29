@@ -1,5 +1,6 @@
-import { getInstillCatalogAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Catalog, Nullable } from "instill-sdk";
+import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
 export function useDeleteCatalog() {
   const queryClient = useQueryClient();

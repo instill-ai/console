@@ -1,4 +1,5 @@
-import { getInstillCatalogAPIClient, useMutation, useQueryClient } from "@instill-ai/toolkit";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getInstillCatalogAPIClient } from "../../sdk-helper";
 import { Nullable } from "instill-sdk";
 
 export function useUploadCatalogFile() {

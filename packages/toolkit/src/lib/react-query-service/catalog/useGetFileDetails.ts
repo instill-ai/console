@@ -1,4 +1,5 @@
-import { getInstillCatalogAPIClient, useQuery } from "@instill-ai/toolkit";
+import { useQuery } from "@tanstack/react-query";
+import { getInstillCatalogAPIClient } from "../../sdk-helper";
 import { CatalogFile, Nullable } from "instill-sdk";
 
 export function useGetFileDetails({
