@@ -4,6 +4,7 @@ import { env } from "../../server";
 
 export * from "./checkIsDefinition";
 export * from "./createInstillAxiosClient";
+export * from "./getInstillApiErrorMessage";
 export * from "./getInstillAPIClient";
 export * from "./getInstillApplicationAPIClient";
 export * from "./getInstillModelAPIClient";

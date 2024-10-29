@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Markdown from "markdown-to-jsx";
 import sanitizeHtml from "sanitize-html";
 
 import { Dialog, ScrollArea, Skeleton } from "@instill-ai/design-system";
@@ -138,8 +139,8 @@ const FileDetailsOverlay = ({
               <Skeleton className="h-4 w-3/4" />
             </div>
           ) : (
-            <article className="prose whitespace-pre-wrap">
-              <div dangerouslySetInnerHTML={{ __html: sanitizedHtmlText }} />
+            <article className="prose-sm prose-ol:list-decimal prose-ul:list-disc">
+              <Markdown>{sanitizedHtmlText}</Markdown>
             </article>
           )}
         </ScrollArea.Root>
