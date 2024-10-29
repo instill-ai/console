@@ -6,7 +6,7 @@ import { Slider } from "@instill-ai/design-system";
 import { cn } from "../../utils";
 
 const meta: Meta<typeof Slider.Root> = {
-    title: "Components/Slider",
+    title: "Components/NewUi/Slider",
     component: Slider.Root,
 };
 
