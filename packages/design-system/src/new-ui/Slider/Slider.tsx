@@ -3,7 +3,6 @@
 import * as React from "react";
 import { ComponentPropsWithoutRef } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
-
 import { cn } from "../../utils";
 
 const Root = React.forwardRef<
@@ -14,7 +13,7 @@ const Root = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex w-full touch-none select-none items-center",
-      className,
+      className
     )}
     {...props}
   />
@@ -28,8 +27,8 @@ const Track = React.forwardRef<
   <SliderPrimitive.Track
     ref={ref}
     className={cn(
-      "relative h-2 w-full grow overflow-hidden rounded-full bg-secondary",
-      className,
+      "relative h-2 w-full grow overflow-hidden rounded-full bg-semantic-bg-secondary",
+      className
     )}
     {...props}
   />
@@ -42,7 +41,10 @@ const Range = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SliderPrimitive.Range
     ref={ref}
-    className={cn("absolute h-full bg-primary", className)}
+    className={cn(
+      "absolute h-full bg-semantic-accent-default",
+      className
+    )}
     {...props}
   />
 ));
@@ -55,8 +57,10 @@ const Thumb = React.forwardRef<
   <SliderPrimitive.Thumb
     ref={ref}
     className={cn(
-      "block h-5 w-5 rounded-full border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-      className,
+      "block h-5 w-5 rounded-full border-2 border-semantic-accent-default bg-semantic-bg-primary transition-colors",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-semantic-accent-default focus-visible:ring-offset-2",
+      "disabled:pointer-events-none disabled:opacity-50",
+      className
     )}
     {...props}
   />
