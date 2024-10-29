@@ -158,6 +158,8 @@ ${isOrganization && !isLocalEnvironment ? "$ export ORGANIZATION_UID=********" :
             <a
               href="https://www.instill.tech/docs/artifact/search"
               className="text-semantic-accent-default underline"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Artifact&apos;s API reference
             </a>
