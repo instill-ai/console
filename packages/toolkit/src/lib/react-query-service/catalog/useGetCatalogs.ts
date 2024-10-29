@@ -5,28 +5,28 @@ import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
 export function useGetCatalogs({
   accessToken,
-  ownerId,
+  namespaceId,
   enabled,
 }: {
   accessToken: Nullable<string>;
-  ownerId: Nullable<string>;
+  namespaceId: Nullable<string>;
   enabled: boolean;
 }) {
   return useQuery({
-    queryKey: ["catalogs", ownerId],
+    queryKey: ["catalogs", namespaceId],
     queryFn: async () => {
-      if (!ownerId || !accessToken) {
-        throw new Error("Both ownerId and accessToken are required");
+      if (!namespaceId || !accessToken) {
+        throw new Error("Both namespaceId and accessToken are required");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const catalogs = await client.catalog.listCatalogs({
-        ownerId,
+        namespaceId,
         enablePagination: false,
       });
 
       return Promise.resolve(catalogs);
     },
-    enabled: enabled && Boolean(ownerId) && Boolean(accessToken),
+    enabled: enabled && Boolean(namespaceId) && Boolean(accessToken),
   });
 }

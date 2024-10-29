@@ -42,13 +42,13 @@ export class CatalogClient extends APIResource {
   async listCatalogs(
     props: ListCatalogsRequest & { enablePagination: boolean },
   ): Promise<ListCatalogsResponse | Catalog[]> {
-    const { pageSize, pageToken, view, enablePagination, ownerId } = props;
+    const { pageSize, pageToken, view, enablePagination, namespaceId } = props;
 
     try {
       const catalogs: Catalog[] = [];
 
       const queryString = getQueryString({
-        baseURL: `/namespaces/${ownerId}/catalogs`,
+        baseURL: `/namespaces/${namespaceId}/catalogs`,
         pageSize,
         pageToken,
         view,
@@ -69,7 +69,7 @@ export class CatalogClient extends APIResource {
             pageToken: data.nextPageToken,
             enablePagination: false,
             view,
-            ownerId,
+            namespaceId,
           })),
         );
       }
@@ -83,11 +83,11 @@ export class CatalogClient extends APIResource {
   async createCatalog(
     props: CreateCatalogRequest,
   ): Promise<CreateCatalogResponse> {
-    const { ownerId, payload } = props;
+    const { namespaceId, payload } = props;
 
     try {
       const queryString = getQueryString({
-        baseURL: `/namespaces/${ownerId}/catalogs`,
+        baseURL: `/namespaces/${namespaceId}/catalogs`,
       });
 
       const data = await this._client.post<{ catalog: Catalog }>(queryString, {
@@ -103,11 +103,11 @@ export class CatalogClient extends APIResource {
   async updateCatalog(
     props: UpdateCatalogRequest,
   ): Promise<UpdateCatalogResponse> {
-    const { ownerId, catalogId, ...payload } = props;
+    const { namespaceId, catalogId, ...payload } = props;
 
     try {
       const queryString = getQueryString({
-        baseURL: `/namespaces/${ownerId}/catalogs/${catalogId}`,
+        baseURL: `/namespaces/${namespaceId}/catalogs/${catalogId}`,
       });
 
       const data = await this._client.put<{ catalog: Catalog }>(queryString, {
@@ -121,11 +121,11 @@ export class CatalogClient extends APIResource {
   }
 
   async deleteCatalog(props: DeleteCatalogRequest): Promise<void> {
-    const { ownerId, catalogId } = props;
+    const { namespaceId, catalogId } = props;
 
     try {
       const queryString = getQueryString({
-        baseURL: `/namespaces/${ownerId}/catalogs/${catalogId}`,
+        baseURL: `/namespaces/${namespaceId}/catalogs/${catalogId}`,
       });
 
       await this._client.delete(queryString);
@@ -138,11 +138,11 @@ export class CatalogClient extends APIResource {
   async uploadCatalogFile(
     props: UploadCatalogFileRequest,
   ): Promise<UploadCatalogFileResponse> {
-    const { ownerId, catalogId, payload } = props;
+    const { namespaceId, catalogId, payload } = props;
 
     try {
       const queryString = getQueryString({
-        baseURL: `/namespaces/${ownerId}/catalogs/${catalogId}/files`,
+        baseURL: `/namespaces/${namespaceId}/catalogs/${catalogId}/files`,
       });
 
       const data = await this._client.post<{ file: File }>(queryString, {
@@ -164,13 +164,14 @@ export class CatalogClient extends APIResource {
   async listCatalogFiles(
     props: ListCatalogFilesRequest & { enablePagination: boolean },
   ): Promise<ListCatalogFilesResponse | File[]> {
-    const { ownerId, catalogId, pageSize, pageToken, enablePagination } = props;
+    const { namespaceId, catalogId, pageSize, pageToken, enablePagination } =
+      props;
 
     try {
       const files: File[] = [];
 
       const queryString = getQueryString({
-        baseURL: `/namespaces/${ownerId}/catalogs/${catalogId}/files`,
+        baseURL: `/namespaces/${namespaceId}/catalogs/${catalogId}/files`,
         pageSize,
         pageToken,
       });
@@ -187,7 +188,7 @@ export class CatalogClient extends APIResource {
       if (data.nextPageToken) {
         files.push(
           ...(await this.listCatalogFiles({
-            ownerId,
+            namespaceId,
             catalogId,
             pageSize,
             pageToken: data.nextPageToken,
@@ -216,11 +217,11 @@ export class CatalogClient extends APIResource {
   async getFileDetails(
     props: GetFileDetailsRequest,
   ): Promise<GetFileDetailsResponse> {
-    const { ownerId, catalogId, fileId } = props;
+    const { namespaceId, catalogId, fileId } = props;
 
     try {
       const queryString = getQueryString({
-        baseURL: `/namespaces/${ownerId}/catalogs/${catalogId}/files/${fileId}`,
+        baseURL: `/namespaces/${namespaceId}/catalogs/${catalogId}/files/${fileId}`,
       });
 
       const data = await this._client.get<{ file: File }>(queryString);
@@ -233,11 +234,11 @@ export class CatalogClient extends APIResource {
   async getFileContent(
     props: GetFileContentRequest,
   ): Promise<GetFileContentResponse> {
-    const { ownerId, catalogId, fileUid } = props;
+    const { namespaceId, catalogId, fileUid } = props;
 
     try {
       const queryString = getQueryString({
-        baseURL: `/namespaces/${ownerId}/catalogs/${catalogId}/files/${fileUid}/source`,
+        baseURL: `/namespaces/${namespaceId}/catalogs/${catalogId}/files/${fileUid}/source`,
       });
 
       const data = await this._client.get<{ sourceFile: FileContent }>(

@@ -25,7 +25,7 @@ export function useGetFileDetails({
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const file = await client.catalog.getFileDetails({
-        ownerId: namespaceId,
+        namespaceId,
         catalogId,
         fileId: fileUid,
       });

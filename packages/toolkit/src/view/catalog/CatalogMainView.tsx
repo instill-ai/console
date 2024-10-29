@@ -74,7 +74,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   const deleteCatalog = useDeleteCatalog();
   const catalogs = useGetCatalogs({
     accessToken,
-    ownerId: selectedNamespace ?? null,
+    namespaceId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
   });
 
@@ -223,7 +223,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
 
     try {
       await deleteCatalog.mutateAsync({
-        ownerId: selectedNamespace,
+        namespaceId: selectedNamespace,
         catalogId: catalog.catalogId,
         accessToken,
       });

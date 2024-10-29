@@ -46,7 +46,7 @@ const FileChunks = ({
     catalogId: catalog.catalogId,
     accessToken: accessToken || null,
     enabled: expanded,
-    ownerId: catalog.ownerName,
+    namespaceId: catalog.ownerName,
   });
 
   const isProcessing = file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED";

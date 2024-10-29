@@ -195,7 +195,7 @@ export const ChunkTab = ({ catalog, onGoToUpload }: ChunkTabProps) => {
           onClose={closeOverlay}
           showFullFile={true}
           selectedChunkUid={selectedChunk.chunkUid}
-          ownerId={catalog.ownerName}
+          namespaceId={catalog.ownerName}
           isOpen={isFileDetailsOpen}
           setIsOpen={setIsFileDetailsOpen}
           fileName={selectedFile.name}

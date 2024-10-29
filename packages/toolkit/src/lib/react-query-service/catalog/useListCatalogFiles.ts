@@ -23,7 +23,7 @@ export function useListCatalogFiles({
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const files = await client.catalog.listCatalogFiles({
-        ownerId: namespaceId,
+        namespaceId,
         catalogId,
         enablePagination: false,
       });

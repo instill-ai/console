@@ -8,12 +8,12 @@ export function useUploadCatalogFile() {
 
   return useMutation({
     mutationFn: async ({
-      ownerId,
+      namespaceId,
       catalogId,
       payload,
       accessToken,
     }: {
-      ownerId: string;
+      namespaceId: string;
       catalogId: string;
       payload: {
         name: string;
@@ -28,7 +28,7 @@ export function useUploadCatalogFile() {
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const file = await client.catalog.uploadCatalogFile({
-        ownerId,
+        namespaceId,
         catalogId,
         payload,
       });
@@ -37,7 +37,7 @@ export function useUploadCatalogFile() {
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ["catalogFiles", variables.ownerId, variables.catalogId],
+        queryKey: ["catalogFiles", variables.namespaceId, variables.catalogId],
       });
     },
   });

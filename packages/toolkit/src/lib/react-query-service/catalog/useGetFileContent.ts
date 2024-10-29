@@ -8,13 +8,13 @@ export function useGetFileContent({
   accessToken,
   enabled,
   catalogId,
-  ownerId,
+  namespaceId,
 }: {
   fileUid: string;
   accessToken: Nullable<string>;
   enabled: boolean;
   catalogId: string;
-  ownerId: string;
+  namespaceId: string;
 }) {
   return useQuery<string>({
     queryKey: ["fileContent", fileUid],
@@ -25,7 +25,7 @@ export function useGetFileContent({
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const fileContent = await client.catalog.getFileContent({
-        ownerId,
+        namespaceId,
         catalogId,
         fileUid,
       });

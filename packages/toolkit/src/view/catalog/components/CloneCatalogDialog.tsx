@@ -123,7 +123,7 @@ export const CloneCatalogDialog = ({
 
   const catalogs = useGetCatalogs({
     accessToken,
-    ownerId: selectedNamespace,
+    namespaceId: selectedNamespace,
     enabled: enabledQuery && !!selectedNamespace,
   });
 

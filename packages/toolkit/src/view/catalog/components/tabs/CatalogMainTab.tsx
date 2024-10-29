@@ -73,7 +73,7 @@ export const CatalogTab = ({
 
   const catalogState = useGetCatalogs({
     accessToken,
-    ownerId: selectedNamespace ?? null,
+    namespaceId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
   });
 
@@ -94,9 +94,9 @@ export const CatalogTab = ({
           name: data.name,
           description: data.description,
           tags: convertTagsToArray(data.tags),
-          ownerId: data.namespaceId,
+          namespaceId: data.namespaceId,
         },
-        ownerId: data.namespaceId,
+        namespaceId: data.namespaceId,
         accessToken,
       });
       catalogState.refetch();
@@ -113,7 +113,7 @@ export const CatalogTab = ({
     if (!selectedNamespace || !accessToken) return;
     try {
       await updateCatalog.mutateAsync({
-        ownerId: selectedNamespace,
+        namespaceId: selectedNamespace,
         catalogId: catalogId,
         payload: {
           name: data.name,
@@ -144,9 +144,9 @@ export const CatalogTab = ({
       await createCatalog.mutateAsync({
         payload: {
           ...clonedCatalog,
-          ownerId: newNamespaceId,
+          namespaceId: newNamespaceId,
         },
-        ownerId: newNamespaceId,
+        namespaceId: newNamespaceId,
         accessToken,
       });
       catalogState.refetch();

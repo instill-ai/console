@@ -17,7 +17,7 @@ export type Catalog = {
   totalFiles: number;
   totalTokens: number;
   usedStorage: number;
-  ownerId: string;
+  namespaceId: string;
   catalogUid: string;
 };
 
@@ -77,7 +77,7 @@ export type CatalogFile = {
 };
 
 export type ListCatalogsRequest = {
-  ownerId: string;
+  namespaceId: string;
   pageSize?: number;
   pageToken?: string;
   view?: string;
@@ -90,19 +90,19 @@ export type ListCatalogsResponse = {
 };
 
 export type CreateCatalogRequest = {
-  ownerId: string;
+  namespaceId: string;
   payload: {
     name: string;
     description?: string;
     tags?: string[];
-    ownerId: string;
+    namespaceId: string;
   };
 };
 
 export type CreateCatalogResponse = Catalog;
 
 export type UpdateCatalogRequest = {
-  ownerId: string;
+  namespaceId: string;
   catalogId: string;
   description?: string;
 };
@@ -110,12 +110,12 @@ export type UpdateCatalogRequest = {
 export type UpdateCatalogResponse = Catalog;
 
 export type DeleteCatalogRequest = {
-  ownerId: string;
+  namespaceId: string;
   catalogId: string;
 };
 
 export type GetFileDetailsRequest = {
-  ownerId: string;
+  namespaceId: string;
   catalogId: string;
   fileId: string;
 };
@@ -123,7 +123,7 @@ export type GetFileDetailsRequest = {
 export type GetFileDetailsResponse = File;
 
 export type GetFileContentRequest = {
-  ownerId: string;
+  namespaceId: string;
   catalogId: string;
   fileUid: string;
 };
@@ -131,7 +131,7 @@ export type GetFileContentRequest = {
 export type GetFileContentResponse = FileContent;
 
 export type UploadCatalogFileRequest = {
-  ownerId: string;
+  namespaceId: string;
   catalogId: string;
   payload: {
     name: string;
@@ -143,7 +143,7 @@ export type UploadCatalogFileRequest = {
 export type UploadCatalogFileResponse = File;
 
 export type ListCatalogFilesRequest = {
-  ownerId: string;
+  namespaceId: string;
   catalogId: string;
   pageSize?: number;
   pageToken?: string;

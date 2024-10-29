@@ -8,12 +8,12 @@ export function useUpdateCatalog() {
 
   return useMutation({
     mutationFn: async ({
-      ownerId,
+      namespaceId,
       catalogId,
       payload,
       accessToken,
     }: {
-      ownerId: string;
+      namespaceId: string;
       catalogId: string;
       payload: {
         name: string;
@@ -28,7 +28,7 @@ export function useUpdateCatalog() {
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const catalog = await client.catalog.updateCatalog({
-        ownerId,
+        namespaceId,
         catalogId,
         ...payload,
       });
@@ -37,10 +37,10 @@ export function useUpdateCatalog() {
     },
     onSuccess: (updatedCatalog, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ["catalogs", variables.ownerId],
+        queryKey: ["catalogs", variables.namespaceId],
       });
       queryClient.setQueryData<Catalog[]>(
-        ["catalogs", variables.ownerId],
+        ["catalogs", variables.namespaceId],
         (oldData) =>
           oldData?.map((catalog) =>
             catalog.catalogId === variables.catalogId

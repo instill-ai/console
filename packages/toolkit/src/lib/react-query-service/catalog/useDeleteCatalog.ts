@@ -8,11 +8,11 @@ export function useDeleteCatalog() {
 
   return useMutation({
     mutationFn: async ({
-      ownerId,
+      namespaceId,
       catalogId,
       accessToken,
     }: {
-      ownerId: string;
+      namespaceId: string;
       catalogId: string;
       accessToken: Nullable<string>;
     }) => {
@@ -21,14 +21,14 @@ export function useDeleteCatalog() {
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
-      await client.catalog.deleteCatalog({ ownerId, catalogId });
+      await client.catalog.deleteCatalog({ namespaceId, catalogId });
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ["catalogs", variables.ownerId],
+        queryKey: ["catalogs", variables.namespaceId],
       });
       queryClient.setQueryData<Catalog[]>(
-        ["catalogs", variables.ownerId],
+        ["catalogs", variables.namespaceId],
         (oldData) =>
           oldData?.filter(
             (catalog) => catalog.catalogId !== variables.catalogId,

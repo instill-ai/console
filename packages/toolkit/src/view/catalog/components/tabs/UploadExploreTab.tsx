@@ -309,7 +309,7 @@ export const UploadExploreTab = ({
           const content = await readFileAsBase64(file);
 
           const uploadedFile = await uploadCatalogFile.mutateAsync({
-            ownerId: navigationNamespaceAnchor ?? "",
+            namespaceId: navigationNamespaceAnchor ?? "",
             catalogId: catalog.catalogId,
             payload: {
               name: file.name,

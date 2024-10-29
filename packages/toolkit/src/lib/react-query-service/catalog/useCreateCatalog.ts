@@ -7,16 +7,16 @@ export function useCreateCatalog() {
   return useMutation({
     mutationFn: async ({
       payload,
-      ownerId,
+      namespaceId,
       accessToken,
     }: {
       payload: {
         name: string;
         description?: string;
         tags?: string[];
-        ownerId: string;
+        namespaceId: string;
       };
-      ownerId: string;
+      namespaceId: string;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
@@ -25,7 +25,7 @@ export function useCreateCatalog() {
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const catalog = await client.catalog.createCatalog({
-        ownerId,
+        namespaceId,
         payload,
       });
       return catalog;

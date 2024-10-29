@@ -20,7 +20,7 @@ type FileDetailsOverlayProps = {
   catalogId: string;
   showFullFile: boolean;
   selectedChunkUid?: string;
-  ownerId: string;
+  namespaceId: string;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   fileName: string;
@@ -33,7 +33,7 @@ const FileDetailsOverlay = ({
   accessToken,
   catalogId,
   selectedChunkUid,
-  ownerId,
+  namespaceId,
   isOpen,
   setIsOpen,
   fileName,
@@ -45,14 +45,14 @@ const FileDetailsOverlay = ({
     catalogId,
     accessToken,
     enabled: isOpen,
-    ownerId,
+    namespaceId,
   });
 
   const { data: chunks } = useListChunks({
     catalogId,
     accessToken,
     enabled: isOpen && highlightChunk,
-    namespaceId: ownerId,
+    namespaceId,
     fileUid,
   });
 
