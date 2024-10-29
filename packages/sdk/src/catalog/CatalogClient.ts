@@ -5,13 +5,17 @@ import {
   Chunk,
   ChunkContent,
   CreateCatalogRequest,
+  CreateCatalogResponse,
   DeleteCatalogFileRequest,
   DeleteCatalogRequest,
   File,
   FileContent,
   GetChunkContentRequest,
+  GetChunkContentResponse,
   GetFileContentRequest,
+  GetFileContentResponse,
   GetFileDetailsRequest,
+  GetFileDetailsResponse,
   ListCatalogFilesRequest,
   ListCatalogFilesResponse,
   ListCatalogsRequest,
@@ -19,26 +23,24 @@ import {
   ListChunksRequest,
   ListChunksResponse,
   ProcessCatalogFilesRequest,
+  ProcessCatalogFilesResponse,
   UpdateCatalogRequest,
+  UpdateCatalogResponse,
   UpdateChunkRequest,
+  UpdateChunkResponse,
   UploadCatalogFileRequest,
+  UploadCatalogFileResponse,
 } from "./types";
 
 export class CatalogClient extends APIResource {
   async listCatalogs(
-    props: ListCatalogsRequest & {
-      enablePagination: true;
-    },
+    props: ListCatalogsRequest & { enablePagination: true },
   ): Promise<ListCatalogsResponse>;
   async listCatalogs(
-    props: ListCatalogsRequest & {
-      enablePagination: false;
-    },
+    props: ListCatalogsRequest & { enablePagination: false },
   ): Promise<Catalog[]>;
   async listCatalogs(
-    props: ListCatalogsRequest & {
-      enablePagination: boolean;
-    },
+    props: ListCatalogsRequest & { enablePagination: boolean },
   ): Promise<ListCatalogsResponse | Catalog[]> {
     const { pageSize, pageToken, view, enablePagination, ownerId } = props;
 
@@ -78,7 +80,9 @@ export class CatalogClient extends APIResource {
     }
   }
 
-  async createCatalog(props: CreateCatalogRequest): Promise<Catalog> {
+  async createCatalog(
+    props: CreateCatalogRequest,
+  ): Promise<CreateCatalogResponse> {
     const { ownerId, payload } = props;
 
     try {
@@ -96,7 +100,9 @@ export class CatalogClient extends APIResource {
     }
   }
 
-  async updateCatalog(props: UpdateCatalogRequest): Promise<Catalog> {
+  async updateCatalog(
+    props: UpdateCatalogRequest,
+  ): Promise<UpdateCatalogResponse> {
     const { ownerId, catalogId, ...payload } = props;
 
     try {
@@ -129,7 +135,9 @@ export class CatalogClient extends APIResource {
     }
   }
 
-  async uploadCatalogFile(props: UploadCatalogFileRequest): Promise<File> {
+  async uploadCatalogFile(
+    props: UploadCatalogFileRequest,
+  ): Promise<UploadCatalogFileResponse> {
     const { ownerId, catalogId, payload } = props;
 
     try {
@@ -148,19 +156,13 @@ export class CatalogClient extends APIResource {
   }
 
   async listCatalogFiles(
-    props: ListCatalogFilesRequest & {
-      enablePagination: true;
-    },
+    props: ListCatalogFilesRequest & { enablePagination: true },
   ): Promise<ListCatalogFilesResponse>;
   async listCatalogFiles(
-    props: ListCatalogFilesRequest & {
-      enablePagination: false;
-    },
+    props: ListCatalogFilesRequest & { enablePagination: false },
   ): Promise<File[]>;
   async listCatalogFiles(
-    props: ListCatalogFilesRequest & {
-      enablePagination: boolean;
-    },
+    props: ListCatalogFilesRequest & { enablePagination: boolean },
   ): Promise<ListCatalogFilesResponse | File[]> {
     const { ownerId, catalogId, pageSize, pageToken, enablePagination } = props;
 
@@ -211,7 +213,9 @@ export class CatalogClient extends APIResource {
     }
   }
 
-  async getFileDetails(props: GetFileDetailsRequest): Promise<File> {
+  async getFileDetails(
+    props: GetFileDetailsRequest,
+  ): Promise<GetFileDetailsResponse> {
     const { ownerId, catalogId, fileId } = props;
 
     try {
@@ -226,7 +230,9 @@ export class CatalogClient extends APIResource {
     }
   }
 
-  async getFileContent(props: GetFileContentRequest): Promise<FileContent> {
+  async getFileContent(
+    props: GetFileContentRequest,
+  ): Promise<GetFileContentResponse> {
     const { ownerId, catalogId, fileUid } = props;
 
     try {
@@ -245,7 +251,7 @@ export class CatalogClient extends APIResource {
 
   async processCatalogFiles(
     props: ProcessCatalogFilesRequest,
-  ): Promise<File[]> {
+  ): Promise<ProcessCatalogFilesResponse> {
     const { fileUids, namespaceUid } = props;
 
     if (!namespaceUid) {
@@ -273,19 +279,13 @@ export class CatalogClient extends APIResource {
   }
 
   async listChunks(
-    props: ListChunksRequest & {
-      enablePagination: true;
-    },
+    props: ListChunksRequest & { enablePagination: true },
   ): Promise<ListChunksResponse>;
   async listChunks(
-    props: ListChunksRequest & {
-      enablePagination: false;
-    },
+    props: ListChunksRequest & { enablePagination: false },
   ): Promise<Chunk[]>;
   async listChunks(
-    props: ListChunksRequest & {
-      enablePagination: boolean;
-    },
+    props: ListChunksRequest & { enablePagination: boolean },
   ): Promise<ListChunksResponse | Chunk[]> {
     const {
       namespaceId,
@@ -330,7 +330,10 @@ export class CatalogClient extends APIResource {
       return Promise.reject(error);
     }
   }
-  async getChunkContent(props: GetChunkContentRequest): Promise<ChunkContent> {
+
+  async getChunkContent(
+    props: GetChunkContentRequest,
+  ): Promise<GetChunkContentResponse> {
     const { namespaceId, catalogId, chunkUid } = props;
 
     try {
@@ -347,12 +350,12 @@ export class CatalogClient extends APIResource {
     }
   }
 
-  async updateChunk(props: UpdateChunkRequest): Promise<Chunk> {
+  async updateChunk(props: UpdateChunkRequest): Promise<UpdateChunkResponse> {
     const { chunkUid, retrievable } = props;
 
     try {
       const queryString = getQueryString({
-        baseURL: `chunks/${chunkUid}`,
+        baseURL: `/chunks/${chunkUid}`,
       });
 
       const data = await this._client.post<{ chunk: Chunk }>(queryString, {

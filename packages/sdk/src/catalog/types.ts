@@ -60,15 +60,13 @@ export type File = {
   totalTokens: number;
 };
 
-export type FileSnippet = {
-  id: string;
+export type FileContent = {
   content: string;
-  fileName: string;
-  sectionTitle: string;
-  chapters: string[][];
-  score: number;
 };
 
+export type ChunkContent = {
+  content: string;
+};
 export type CatalogFile = {
   fileUid: string;
   name: string;
@@ -101,16 +99,36 @@ export type CreateCatalogRequest = {
   };
 };
 
+export type CreateCatalogResponse = Catalog;
+
 export type UpdateCatalogRequest = {
   ownerId: string;
   catalogId: string;
   description?: string;
 };
 
+export type UpdateCatalogResponse = Catalog;
+
 export type DeleteCatalogRequest = {
   ownerId: string;
   catalogId: string;
 };
+
+export type GetFileDetailsRequest = {
+  ownerId: string;
+  catalogId: string;
+  fileId: string;
+};
+
+export type GetFileDetailsResponse = File;
+
+export type GetFileContentRequest = {
+  ownerId: string;
+  catalogId: string;
+  fileUid: string;
+};
+
+export type GetFileContentResponse = FileContent;
 
 export type UploadCatalogFileRequest = {
   ownerId: string;
@@ -121,6 +139,8 @@ export type UploadCatalogFileRequest = {
     content: string;
   };
 };
+
+export type UploadCatalogFileResponse = File;
 
 export type ListCatalogFilesRequest = {
   ownerId: string;
@@ -139,26 +159,12 @@ export type DeleteCatalogFileRequest = {
   fileUid: string;
 };
 
-export type GetFileDetailsRequest = {
-  ownerId: string;
-  catalogId: string;
-  fileId: string;
-};
-
-export type GetFileContentRequest = {
-  ownerId: string;
-  catalogId: string;
-  fileUid: string;
-};
-
-export type FileContent = {
-  content: string;
-};
-
 export type ProcessCatalogFilesRequest = {
   fileUids: string[];
   namespaceUid: Nullable<string>;
 };
+
+export type ProcessCatalogFilesResponse = File[];
 
 export type ListChunksRequest = {
   namespaceId: string;
@@ -180,11 +186,11 @@ export type GetChunkContentRequest = {
   chunkUid: string;
 };
 
+export type GetChunkContentResponse = ChunkContent;
+
 export type UpdateChunkRequest = {
   chunkUid: string;
   retrievable: boolean;
 };
 
-export type ChunkContent = {
-  content: string;
-};
+export type UpdateChunkResponse = Chunk;
