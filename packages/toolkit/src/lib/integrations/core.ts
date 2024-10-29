@@ -7,6 +7,7 @@ import {
 } from "instill-sdk";
 import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 
 import { getPrefilledOAuthIntegrationConnectionId } from "./helpers";
 
@@ -25,6 +26,12 @@ const slackScopes = [
   "users.profile:read",
   "users:read",
   "users:read.email",
+];
+
+const googleDriveScopes = [
+  "https://www.googleapis.com/auth/drive.readonly",
+  "https://www.googleapis.com/auth/userinfo.email",
+  "https://www.googleapis.com/auth/userinfo.profile",
 ];
 
 const githubScopes = ["repo", "write:repo_hook", "user:email", "read:user"];
@@ -53,7 +60,7 @@ export function getAuthHandler({
         token: "https://slack.com/api/oauth.v2.access",
         userinfo: {
           url: "https://slack.com/api/users.info",
-          async request({ tokens }: { tokens: any; provider: any }) {
+          async request({ tokens }: { tokens: any }) {
             const profile = await fetch(
               `https://slack.com/api/users.info?user=${tokens.authed_user.id}`,
               {
@@ -68,6 +75,22 @@ export function getAuthHandler({
           },
         },
       },
+      GoogleProvider({
+        id: "google-drive",
+        clientId: String(process.env.INTEGRATION_GOOGLE_DRIVE_CLIENT_ID),
+        clientSecret: String(
+          process.env.INTEGRATION_GOOGLE_DRIVE_CLIENT_SECRET,
+        ),
+        authorization: {
+          url: "https://accounts.google.com/o/oauth2/auth",
+          params: {
+            scope: googleDriveScopes.join(" "),
+            prompt: "consent",
+            access_type: "offline",
+            response_type: "code",
+          },
+        },
+      }),
       GitHubProvider({
         clientId: String(process.env.GITHUB_CLIENT_ID),
         clientSecret: String(process.env.GITHUB_CLIENT_SECRET),
@@ -96,32 +119,53 @@ export function getAuthHandler({
           ) {
             let payload: Nullable<CreateIntegrationConnectionRequest> = null;
 
-            let identity =
-              profile.email ??
-              profile.name ??
-              (profile.login as string | undefined) ??
-              profile.id;
-
             switch (account.provider) {
-              case "google": {
-                // payload = {
-                //   integrationId: "google",
-                //   method: "METHOD_OAUTH",
-                //   setup: {
-                //     token: account.access_token,
-                //   },
-                //   namespaceId,
-                //   id: connectionId,
-                //   oAuthAccessDetails: account,
-                // };
-                payload = null;
+              case "google-drive": {
+                const identity = profile.email ?? profile.name;
+
+                if (!identity) {
+                  throw new Error(
+                    "Instill Integration Error: Google Drive user not found, can't get the identity",
+                  );
+                }
+
+                const prefilledIntegrationConnectionId =
+                  getPrefilledOAuthIntegrationConnectionId({
+                    provider: "google-drive",
+                    connectionIdentity: identity,
+                  });
+
+                payload = {
+                  integrationId: "google-drive",
+                  method: "METHOD_OAUTH",
+                  setup: {
+                    token: account.access_token,
+                    "refresh-token": account.refresh_token,
+                  },
+                  namespaceId,
+                  id: prefilledIntegrationConnectionId,
+                  oAuthAccessDetails: {
+                    ...account,
+                    ...profile,
+                  },
+                  identity: identity,
+                  scopes: googleDriveScopes,
+                };
                 break;
               }
               case "github": {
+                const identity = profile.login as string | undefined;
+
+                if (!identity) {
+                  throw new Error(
+                    "Instill Integration Error: GitHub user not found, can't get the identity",
+                  );
+                }
+
                 const prefilledIntegrationConnectionId =
                   getPrefilledOAuthIntegrationConnectionId({
                     provider: "github",
-                    connectionIdentity: profile.login as string,
+                    connectionIdentity: identity,
                   });
 
                 payload = {
@@ -136,13 +180,13 @@ export function getAuthHandler({
                     ...account,
                     ...profile,
                   },
-                  identity: identity ?? undefined,
+                  identity: identity,
                   scopes: githubScopes,
                 };
                 break;
               }
               case "slack": {
-                identity =
+                const identity =
                   // the profile we get from slack is not typed
                   (profile.profile as any).email ??
                   profile.real_name ??
@@ -179,7 +223,7 @@ export function getAuthHandler({
                     ...account,
                     ...profile,
                   },
-                  identity: identity ?? undefined,
+                  identity: identity,
                   scopes: slackScopes,
                 };
                 break;
@@ -194,6 +238,8 @@ export function getAuthHandler({
               baseURL,
               apiToken: instillAccessToken,
             });
+
+            console.log("payload", payload);
 
             if (payload) {
               await client.core.integration.createIntegrationConnection(
