@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Nullable } from "instill-sdk";
 
-import { Separator } from "@instill-ai/design-system";
+import { cn, Separator } from "@instill-ai/design-system";
 
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
@@ -94,7 +94,9 @@ ${isOrganization && !isLocalEnvironment ? "$ export ORGANIZATION_UID=********" :
               wrapLongLines={true}
               language="bash"
               customStyle={defaultCodeSnippetStyles}
-              className="mb-4"
+              className={cn({
+                "mb-4": isOrganization && !isLocalEnvironment,
+              })}
             />
             {isOrganization && !isLocalEnvironment ? (
               <p className="product-body-text-3-regular">
