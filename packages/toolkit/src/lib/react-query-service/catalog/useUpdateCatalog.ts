@@ -25,6 +25,15 @@ export function useUpdateCatalog() {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
+      if (!namespaceId) {
+        throw new Error("namespaceId not provided");
+      }
+      if (!catalogId) {
+        throw new Error("catalogId not provided");
+      }
+      if (!payload || !payload.name) {
+        throw new Error("payload with at least a name is required");
+      }
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const catalog = await client.catalog.updateCatalog({

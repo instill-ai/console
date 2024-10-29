@@ -17,6 +17,9 @@ export function useDeleteCatalogFile() {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
+      if (!fileUid) {
+        throw new Error("fileUid not provided");
+      }
 
       const client = getInstillCatalogAPIClient({ accessToken });
       await client.catalog.deleteCatalogFile({

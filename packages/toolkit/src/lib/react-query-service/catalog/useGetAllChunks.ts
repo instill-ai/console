@@ -19,8 +19,11 @@ export function useGetAllChunks({
   return useQuery({
     queryKey: ["chunks", catalogId, fileUid],
     queryFn: async () => {
-      if (!accessToken || !fileUid) {
-        throw new Error("Required parameters are missing");
+      if (!accessToken) {
+        throw new Error("accessToken not provided");
+      }
+      if (!fileUid) {
+        throw new Error("fileUid not provided");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });

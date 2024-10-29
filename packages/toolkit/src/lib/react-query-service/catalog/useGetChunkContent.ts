@@ -3,7 +3,7 @@ import { Nullable } from "instill-sdk";
 
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
-//Unused for now, might be removed later
+// Unused for now, might be removed later
 export function useGetChunkContent({
   chunkUid,
   accessToken,
@@ -23,6 +23,15 @@ export function useGetChunkContent({
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
+      if (!chunkUid) {
+        throw new Error("chunkUid not provided");
+      }
+      if (!catalogId) {
+        throw new Error("catalogId not provided");
+      }
+      if (!namespaceId) {
+        throw new Error("namespaceId not provided");
+      }
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const content = await client.catalog.getChunkContent({
@@ -33,6 +42,6 @@ export function useGetChunkContent({
 
       return Promise.resolve(content.content);
     },
-    enabled: enabled && Boolean(accessToken),
+    enabled: enabled && Boolean(accessToken) && Boolean(chunkUid),
   });
 }

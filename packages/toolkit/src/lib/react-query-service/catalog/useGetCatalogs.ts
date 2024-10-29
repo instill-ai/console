@@ -15,8 +15,11 @@ export function useGetCatalogs({
   return useQuery({
     queryKey: ["catalogs", namespaceId],
     queryFn: async () => {
-      if (!namespaceId || !accessToken) {
-        throw new Error("Both namespaceId and accessToken are required");
+      if (!namespaceId) {
+        throw new Error("namespaceId not provided");
+      }
+      if (!accessToken) {
+        throw new Error("accessToken not provided");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });

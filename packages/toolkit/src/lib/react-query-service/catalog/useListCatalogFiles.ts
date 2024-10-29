@@ -17,8 +17,14 @@ export function useListCatalogFiles({
   return useQuery<File[]>({
     queryKey: ["catalogFiles", namespaceId, catalogId],
     queryFn: async () => {
-      if (!namespaceId || !accessToken || !catalogId) {
-        throw new Error("Required parameters are missing");
+      if (!namespaceId) {
+        throw new Error("namespaceId not provided");
+      }
+      if (!accessToken) {
+        throw new Error("accessToken not provided");
+      }
+      if (!catalogId) {
+        throw new Error("catalogId not provided");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });

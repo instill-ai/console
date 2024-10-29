@@ -22,6 +22,15 @@ export function useListChunks({
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
+      if (!catalogId) {
+        throw new Error("catalogId not provided");
+      }
+      if (!namespaceId) {
+        throw new Error("namespaceId not provided");
+      }
+      if (!fileUid) {
+        throw new Error("fileUid not provided");
+      }
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const chunks = await client.catalog.listChunks({
@@ -33,6 +42,6 @@ export function useListChunks({
 
       return Promise.resolve(chunks);
     },
-    enabled: enabled && Boolean(accessToken),
+    enabled: enabled && Boolean(accessToken) && Boolean(catalogId) && Boolean(fileUid),
   });
 }

@@ -22,6 +22,15 @@ export function useGetFileContent({
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
+      if (!fileUid) {
+        throw new Error("fileUid not provided");
+      }
+      if (!catalogId) {
+        throw new Error("catalogId not provided");
+      }
+      if (!namespaceId) {
+        throw new Error("namespaceId not provided");
+      }
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const fileContent = await client.catalog.getFileContent({
@@ -32,6 +41,6 @@ export function useGetFileContent({
 
       return Promise.resolve(fileContent.content);
     },
-    enabled: enabled && Boolean(accessToken),
+    enabled: enabled && Boolean(accessToken) && Boolean(fileUid),
   });
 }

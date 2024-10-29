@@ -19,6 +19,12 @@ export function useDeleteCatalog() {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
+      if (!namespaceId) {
+        throw new Error("namespaceId not provided");
+      }
+      if (!catalogId) {
+        throw new Error("catalogId not provided");
+      }
 
       const client = getInstillCatalogAPIClient({ accessToken });
       await client.catalog.deleteCatalog({ namespaceId, catalogId });

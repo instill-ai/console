@@ -22,6 +22,15 @@ export function useGetFileDetails({
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
+      if (!fileUid) {
+        throw new Error("fileUid not provided");
+      }
+      if (!catalogId) {
+        throw new Error("catalogId not provided");
+      }
+      if (!namespaceId) {
+        throw new Error("namespaceId not provided");
+      }
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const file = await client.catalog.getFileDetails({
@@ -32,6 +41,6 @@ export function useGetFileDetails({
 
       return file;
     },
-    enabled,
+    enabled: enabled && Boolean(accessToken) && Boolean(fileUid),
   });
 }

@@ -19,9 +19,11 @@ export function useProcessCatalogFiles() {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
-
       if (!namespaceUid) {
         throw new Error("namespaceUid not provided");
+      }
+      if (!fileUids || fileUids.length === 0) {
+        throw new Error("fileUids must be a non-empty array");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });

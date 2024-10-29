@@ -19,6 +19,12 @@ export function useUpdateChunk() {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
+      if (!chunkUid) {
+        throw new Error("chunkUid not provided");
+      }
+      if (retrievable === undefined || retrievable === null) {
+        throw new Error("retrievable flag must be provided");
+      }
 
       const client = getInstillCatalogAPIClient({ accessToken });
       await client.catalog.updateChunk({

@@ -22,6 +22,15 @@ export function useCreateCatalog() {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
+      if (!namespaceId) {
+        throw new Error("namespaceId not provided");
+      }
+      if (!payload) {
+        throw new Error("payload must be provided");
+      }
+      if (!payload.name) {
+        throw new Error("payload.name is required");
+      }
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const catalog = await client.catalog.createCatalog({
