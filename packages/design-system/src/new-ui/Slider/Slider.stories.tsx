@@ -3,9 +3,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 
-import { Slider } from "@instill-ai/design-system";
-
 import { cn } from "../../utils";
+import { Slider } from "./Slider";
 
 const meta: Meta<typeof Slider.Root> = {
   title: "Components/NewUi/Slider",
