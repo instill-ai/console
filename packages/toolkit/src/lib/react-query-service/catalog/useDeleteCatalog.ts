@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Catalog, Nullable } from "instill-sdk";
+
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
 export function useDeleteCatalog() {
@@ -29,7 +30,9 @@ export function useDeleteCatalog() {
       queryClient.setQueryData<Catalog[]>(
         ["catalogs", variables.ownerId],
         (oldData) =>
-          oldData?.filter((catalog) => catalog.catalogId !== variables.catalogId) || []
+          oldData?.filter(
+            (catalog) => catalog.catalogId !== variables.catalogId,
+          ) || [],
       );
     },
   });

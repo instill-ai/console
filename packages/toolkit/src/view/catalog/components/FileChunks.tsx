@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Catalog, CatalogFile, Chunk } from "instill-sdk";
 
 import { cn, Icons, Nullable } from "@instill-ai/design-system";
 
@@ -8,11 +9,6 @@ import {
   useGetFileContent,
   useListChunks,
 } from "../../../lib/react-query-service/catalog";
-import {
-  Catalog,
-  CatalogFile,
-  Chunk,
-} from "instill-sdk";
 import ChunkCard from "./ChunkCard";
 
 type FileChunksProps = {

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getInstillCatalogAPIClient } from "../../sdk-helper";
 import { Nullable } from "instill-sdk";
+
+import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
 export function useUpdateChunk() {
   const queryClient = useQueryClient();

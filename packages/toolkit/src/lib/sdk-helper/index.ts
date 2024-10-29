@@ -23,9 +23,10 @@ export async function changePasswordMutation({
   accessToken: Nullable<string>;
 }) {
   try {
-    const baseURL: Nullable<string> = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL: Nullable<string> = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-      }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
 
     const res = await fetch(baseURL + "/auth/change_password", {
       method: "POST",
@@ -51,9 +52,10 @@ export async function authLogoutAction({
   accessToken: Nullable<string>;
 }) {
   try {
-    const baseURL: Nullable<string> = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL: Nullable<string> = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-      }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
 
     const res = await fetch(baseURL + "/auth/logout", {
       method: "POST",
@@ -78,9 +80,10 @@ export async function authValidateTokenAction({
   accessToken: Nullable<string>;
 }) {
   try {
-    const baseURL: Nullable<string> = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL: Nullable<string> = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-      }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
 
     const res = await fetch(baseURL + "/auth/validate_access_token", {
       method: "POST",
@@ -115,9 +118,10 @@ export async function authLoginAction({
   payload: AuthLoginActionPayload;
 }) {
   try {
-    const baseURL: Nullable<string> = `${process.env.NEXT_SERVER_API_GATEWAY_URL ??
+    const baseURL: Nullable<string> = `${
+      process.env.NEXT_SERVER_API_GATEWAY_URL ??
       env("NEXT_PUBLIC_API_GATEWAY_URL")
-      }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
+    }/${env("NEXT_PUBLIC_GENERAL_API_VERSION")}`;
 
     const res = await fetch(baseURL + "/auth/login", {
       method: "POST",

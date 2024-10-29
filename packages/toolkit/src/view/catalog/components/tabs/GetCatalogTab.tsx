@@ -1,11 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  Nullable,
-  Catalog,
-  File,
-} from "instill-sdk";
+import { Catalog, File, Nullable } from "instill-sdk";
 
 import {
   Button,

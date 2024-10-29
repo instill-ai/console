@@ -1,11 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { File, FileStatus } from "instill-sdk";
 
-import {
-  File,
-  FileStatus,
-} from "instill-sdk";
 import { FileTableHeader } from "./FileTableHeader";
 import { FileTableRow } from "./FileTableRow";
 import { getStatusSortValue } from "./lib/helpers";

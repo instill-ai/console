@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Catalog } from "instill-sdk";
 
 import { Button, Separator, Tag, Tooltip } from "@instill-ai/design-system";
 
@@ -17,7 +18,6 @@ import {
   useListCatalogFiles,
 } from "../../../lib/react-query-service/catalog";
 import { convertTagsToArray } from "./lib/helpers";
-import { Catalog } from "instill-sdk";
 
 type CreateCatalogCardProps = {
   catalog: Catalog;

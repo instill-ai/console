@@ -2,11 +2,11 @@
 
 import * as React from "react";
 import {
+  Catalog,
+  File,
   Nullable,
   OrganizationSubscription,
   UserSubscription,
-  Catalog,
-  File,
 } from "instill-sdk";
 
 import { Separator, Skeleton } from "@instill-ai/design-system";
@@ -21,7 +21,6 @@ import {
   useDeleteCatalogFile,
   useListCatalogFiles,
 } from "../../../../lib/react-query-service/catalog";
-
 import { EmptyState } from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";

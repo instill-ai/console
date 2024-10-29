@@ -2,10 +2,9 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import { Catalog, Nullable } from "instill-sdk";
 
 import { cn, Icons } from "@instill-ai/design-system";
-
-import { Catalog, Nullable } from "instill-sdk";
 
 type SidebarProps = {
   activeTab: string;

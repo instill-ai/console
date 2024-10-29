@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { File, Nullable } from "instill-sdk";
+
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
 export function useListCatalogFiles({
@@ -29,6 +30,10 @@ export function useListCatalogFiles({
 
       return Promise.resolve(files);
     },
-    enabled: enabled && Boolean(namespaceId) && Boolean(accessToken) && Boolean(catalogId),
+    enabled:
+      enabled &&
+      Boolean(namespaceId) &&
+      Boolean(accessToken) &&
+      Boolean(catalogId),
   });
 }

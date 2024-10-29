@@ -1,8 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-
 import { Nullable } from "instill-sdk";
-import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
+import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
 export function useCreateCatalog() {
   return useMutation({

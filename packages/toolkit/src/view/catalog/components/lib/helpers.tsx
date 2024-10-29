@@ -1,12 +1,12 @@
 import {
   Catalog,
+  CatalogFile,
+  FileStatus,
   Nullable,
   OrganizationSubscription,
   OrganizationSubscriptionPlan,
   UserSubscription,
   UserSubscriptionPlan,
-  CatalogFile,
-  FileStatus,
 } from "instill-sdk";
 
 import { Icons } from "@instill-ai/design-system";

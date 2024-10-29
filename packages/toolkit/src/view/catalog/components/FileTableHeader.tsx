@@ -1,6 +1,6 @@
-import { Button, Icons } from "@instill-ai/design-system";
+import { File } from "instill-sdk";
 
-import { File } from  "instill-sdk";
+import { Button, Icons } from "@instill-ai/design-system";
 
 type FileTableHeaderProps = {
   sortConfig: {

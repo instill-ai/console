@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CatalogFile, Nullable } from "instill-sdk";
+
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
-import { Nullable, CatalogFile } from "instill-sdk";
 
 export function useProcessCatalogFiles() {
   const queryClient = useQueryClient();

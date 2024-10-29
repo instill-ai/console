@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Nullable, Catalog } from "instill-sdk";
+import { Catalog, Nullable } from "instill-sdk";
 
 import { Separator } from "@instill-ai/design-system";
 

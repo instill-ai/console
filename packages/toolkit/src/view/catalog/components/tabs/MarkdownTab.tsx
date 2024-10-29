@@ -1,6 +1,7 @@
 " use client";
 
 import * as React from "react";
+import { Catalog } from "instill-sdk";
 
 import {
   Button,
@@ -10,8 +11,6 @@ import {
   Tag,
   Textarea,
 } from "@instill-ai/design-system";
-
-import { Catalog } from "instill-sdk";
 
 type MarkdownTabProps = {
   catalog: Catalog;
@@ -122,7 +121,7 @@ export const MarkdownTab = ({ catalog }: MarkdownTabProps) => {
                     onClick={() => requestSort("fileName")}
                   >
                     {sortConfig.key === "fileName" &&
-                      sortConfig.direction === "ascending" ? (
+                    sortConfig.direction === "ascending" ? (
                       <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                     ) : (
                       <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -155,7 +154,7 @@ export const MarkdownTab = ({ catalog }: MarkdownTabProps) => {
                     onClick={() => requestSort("fileType")}
                   >
                     {sortConfig.key === "fileType" &&
-                      sortConfig.direction === "ascending" ? (
+                    sortConfig.direction === "ascending" ? (
                       <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                     ) : (
                       <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -188,7 +187,7 @@ export const MarkdownTab = ({ catalog }: MarkdownTabProps) => {
                     onClick={() => requestSort("processedStatus")}
                   >
                     {sortConfig.key === "processedStatus" &&
-                      sortConfig.direction === "ascending" ? (
+                    sortConfig.direction === "ascending" ? (
                       <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                     ) : (
                       <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -221,7 +220,7 @@ export const MarkdownTab = ({ catalog }: MarkdownTabProps) => {
                     onClick={() => requestSort("createTime")}
                   >
                     {sortConfig.key === "createTime" &&
-                      sortConfig.direction === "ascending" ? (
+                    sortConfig.direction === "ascending" ? (
                       <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                     ) : (
                       <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -254,7 +253,7 @@ export const MarkdownTab = ({ catalog }: MarkdownTabProps) => {
                     onClick={() => requestSort("createTime")}
                   >
                     {sortConfig.key === "createTime" &&
-                      sortConfig.direction === "ascending" ? (
+                    sortConfig.direction === "ascending" ? (
                       <Icons.ChevronUp className="h-4 w-4 stroke-semantic-fg-secondary" />
                     ) : (
                       <Icons.ChevronDown className="h-4 w-4 stroke-semantic-fg-secondary" />
@@ -266,7 +265,7 @@ export const MarkdownTab = ({ catalog }: MarkdownTabProps) => {
                 <div key={index}>
                   <div className="h-16 flex-col items-center justify-center px-3">
                     <div className=" product-label-label-2">Retrievable</div>
-                    <Switch checked={item.status} onCheckedChange={() => { }} />
+                    <Switch checked={item.status} onCheckedChange={() => {}} />
                   </div>
                   {index !== sortedData.length - 1 ? (
                     <Separator orientation="horizontal" />

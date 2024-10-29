@@ -1,6 +1,7 @@
-import { Nullable } from "instill-sdk";
-import { getInstillCatalogAPIClient } from "../../sdk-helper";
 import { useQuery } from "@tanstack/react-query";
+import { Nullable } from "instill-sdk";
+
+import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
 //Unused for now, might be removed later
 export function useGetChunkContent({

@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import {
+  Catalog,
   Nullable,
   OrganizationSubscription,
   UserSubscription,
-  Catalog
 } from "instill-sdk";
 import * as z from "zod";
 

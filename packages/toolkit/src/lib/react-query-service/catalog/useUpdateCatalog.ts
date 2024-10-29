@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getInstillCatalogAPIClient } from "../../sdk-helper";
 import { Catalog, Nullable } from "instill-sdk";
+
+import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
 export function useUpdateCatalog() {
   const queryClient = useQueryClient();
@@ -42,8 +43,10 @@ export function useUpdateCatalog() {
         ["catalogs", variables.ownerId],
         (oldData) =>
           oldData?.map((catalog) =>
-            catalog.catalogId === variables.catalogId ? updatedCatalog : catalog
-          ) || []
+            catalog.catalogId === variables.catalogId
+              ? updatedCatalog
+              : catalog,
+          ) || [],
       );
     },
   });

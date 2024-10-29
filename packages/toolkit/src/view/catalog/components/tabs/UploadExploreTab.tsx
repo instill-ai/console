@@ -2,7 +2,11 @@
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OrganizationSubscription, UserSubscription, Catalog } from "instill-sdk";
+import {
+  Catalog,
+  OrganizationSubscription,
+  UserSubscription,
+} from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 

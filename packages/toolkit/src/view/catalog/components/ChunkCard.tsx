@@ -1,10 +1,9 @@
 "use client";
 
 import * as React from "react";
-
-import { Icons, Separator, Switch, Tag } from "@instill-ai/design-system";
 import { Chunk } from "instill-sdk";
 
+import { Icons, Separator, Switch, Tag } from "@instill-ai/design-system";
 
 type ChunkCardProps = {
   chunk: Chunk;
