@@ -3,7 +3,7 @@ import { Nullable } from "instill-sdk";
 
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
-export function useGetFileContent({
+export function useGetCatalogSingleSourceOfTruthFile({
   fileUid,
   accessToken,
   enabled,
@@ -33,11 +33,12 @@ export function useGetFileContent({
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
-      const fileContent = await client.catalog.getFileContent({
-        namespaceId,
-        catalogId,
-        fileUid,
-      });
+      const fileContent =
+        await client.catalog.getCatalogSingleSourceOfTruthFile({
+          namespaceId,
+          catalogId,
+          fileUid,
+        });
 
       return Promise.resolve(fileContent.content);
     },

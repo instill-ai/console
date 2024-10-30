@@ -10,10 +10,10 @@ import {
   DeleteCatalogRequest,
   File,
   FileContent,
+  GetCatalogSingleSourceOfTruthFileRequest,
+  GetCatalogSingleSourceOfTruthFileResponse,
   GetChunkContentRequest,
   GetChunkContentResponse,
-  GetFileContentRequest,
-  GetFileContentResponse,
   GetFileDetailsRequest,
   GetFileDetailsResponse,
   ListCatalogFilesRequest,
@@ -231,9 +231,9 @@ export class CatalogClient extends APIResource {
     }
   }
 
-  async getFileContent(
-    props: GetFileContentRequest,
-  ): Promise<GetFileContentResponse> {
+  async getCatalogSingleSourceOfTruthFile(
+    props: GetCatalogSingleSourceOfTruthFileRequest,
+  ): Promise<GetCatalogSingleSourceOfTruthFileResponse> {
     const { namespaceId, catalogId, fileUid } = props;
 
     try {

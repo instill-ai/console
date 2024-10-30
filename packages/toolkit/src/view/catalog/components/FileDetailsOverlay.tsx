@@ -8,7 +8,7 @@ import sanitizeHtml from "sanitize-html";
 import { Dialog, ScrollArea, Skeleton } from "@instill-ai/design-system";
 
 import {
-  useGetFileContent,
+  useGetCatalogSingleSourceOfTruthFile,
   useListChunks,
 } from "../../../lib/react-query-service/catalog";
 import { getFileIcon } from "./lib/helpers";
@@ -40,13 +40,14 @@ const FileDetailsOverlay = ({
   highlightChunk = false,
   fileType,
 }: FileDetailsOverlayProps) => {
-  const { data: fileContent, isLoading: isLoadingContent } = useGetFileContent({
-    fileUid,
-    catalogId,
-    accessToken,
-    enabled: isOpen,
-    namespaceId,
-  });
+  const { data: fileContent, isLoading: isLoadingContent } =
+    useGetCatalogSingleSourceOfTruthFile({
+      fileUid,
+      catalogId,
+      accessToken,
+      enabled: isOpen,
+      namespaceId,
+    });
 
   const { data: chunks } = useListChunks({
     catalogId,

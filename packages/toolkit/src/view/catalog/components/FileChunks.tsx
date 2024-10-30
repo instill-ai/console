@@ -6,7 +6,7 @@ import { Catalog, CatalogFile, Chunk } from "instill-sdk";
 import { cn, Icons, Nullable } from "@instill-ai/design-system";
 
 import {
-  useGetFileContent,
+  useGetCatalogSingleSourceOfTruthFile,
   useListChunks,
 } from "../../../lib/react-query-service/catalog";
 import ChunkCard from "./ChunkCard";
@@ -41,7 +41,7 @@ const FileChunks = ({
     fileUid: file.fileUid,
   });
 
-  const { data: fileContent } = useGetFileContent({
+  const { data: fileContent } = useGetCatalogSingleSourceOfTruthFile({
     fileUid: file.fileUid,
     catalogId: catalog.catalogId,
     accessToken: accessToken || null,

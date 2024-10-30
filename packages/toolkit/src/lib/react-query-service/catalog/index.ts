@@ -7,7 +7,7 @@ export * from "./useProcessCatalogFiles";
 export * from "./useListCatalogFiles";
 export * from "./useDeleteCatalogFile";
 export * from "./useGetFileDetails";
-export * from "./useGetFileContent";
+export * from "./useGetCatalogSingleSourceOfTruthFile";
 export * from "./useListChunks";
 export * from "./useUpdateChunk";
 export * from "./useGetChunkContent";

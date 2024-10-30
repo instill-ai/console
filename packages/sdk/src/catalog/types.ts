@@ -122,13 +122,13 @@ export type GetFileDetailsRequest = {
 
 export type GetFileDetailsResponse = File;
 
-export type GetFileContentRequest = {
+export type GetCatalogSingleSourceOfTruthFileRequest = {
   namespaceId: string;
   catalogId: string;
   fileUid: string;
 };
 
-export type GetFileContentResponse = FileContent;
+export type GetCatalogSingleSourceOfTruthFileResponse = FileContent;
 
 export type UploadCatalogFileRequest = {
   namespaceId: string;
