@@ -1,33 +1,34 @@
+import type { Nullable } from "instill-sdk";
 import { QueryClient } from "@tanstack/react-query";
 
 import { env } from "../../../../server";
 import { getInstillAPIClient } from "../../../sdk-helper";
-import { Nullable } from "../../../type";
+import { queryKeyStore } from "../../queryKeyStore";
 
 export async function fetchNamespaceSecrets({
-  namespaceName,
+  namespaceId,
   accessToken,
   pageSize,
 }: {
-  namespaceName: Nullable<string>;
+  namespaceId: Nullable<string>;
   accessToken: Nullable<string>;
   pageSize?: number;
 }) {
-  if (!namespaceName) {
-    throw new Error("namespaceName not provided");
+  if (!namespaceId) {
+    throw new Error("namespaceId is required");
   }
 
   if (!accessToken) {
-    throw new Error("accessToken not provided");
+    throw new Error("accessToken is required");
   }
 
   try {
     const client = getInstillAPIClient({ accessToken });
 
     const userSecrets = await client.vdp.secret.listNamespaceSecrets({
-      pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-      namespaceName,
+      namespaceId,
       enablePagination: false,
+      pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
     });
 
     return Promise.resolve(userSecrets);
@@ -36,28 +37,22 @@ export async function fetchNamespaceSecrets({
   }
 }
 
-export function getUseNamespaceSecretsQueryKey(
-  namespaceName: Nullable<string>,
-) {
-  return ["secrets", namespaceName];
-}
-
 export function prefetchNamespaceSecrets({
-  namespaceName,
+  namespaceId,
   accessToken,
   queryClient,
 }: {
-  namespaceName: Nullable<string>;
+  namespaceId: Nullable<string>;
   accessToken: Nullable<string>;
   queryClient: QueryClient;
 }) {
-  const queryKey = getUseNamespaceSecretsQueryKey(namespaceName);
-
   return queryClient.prefetchQuery({
-    queryKey,
+    queryKey: queryKeyStore.secret.getUseNamespaceSecretsQueryKey({
+      namespaceId,
+    }),
     queryFn: async () => {
       return await fetchNamespaceSecrets({
-        namespaceName,
+        namespaceId,
         accessToken,
       });
     },

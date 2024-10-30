@@ -92,7 +92,7 @@ export const PipelineNamePopover = ({
     if (
       !routeInfo.isSuccess ||
       !routeInfo.data.resourceId ||
-      !routeInfo.data.pipelineName ||
+      !routeInfo.data.namespaceId ||
       !formattedPipelineId ||
       sharing === null
     ) {
@@ -103,7 +103,8 @@ export const PipelineNamePopover = ({
 
     if (String(pipelineIsPublic) !== formData.isPublic) {
       const payload: UpdateNamespacePipelineRequest = {
-        namespacePipelineName: `${routeInfo.data.namespaceName}/pipelines/${formattedPipelineId}`,
+        namespaceId: routeInfo.data.namespaceId,
+        pipelineId: routeInfo.data.resourceId,
         sharing: {
           ...sharing,
           users: {
@@ -131,7 +132,8 @@ export const PipelineNamePopover = ({
       try {
         await renamePipeline.mutateAsync({
           payload: {
-            namespacePipelineName: routeInfo.data.pipelineName,
+            namespaceId: routeInfo.data.namespaceId,
+            pipelineId: routeInfo.data.resourceId,
             newPipelineId: formattedPipelineId,
           },
           accessToken,

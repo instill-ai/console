@@ -3,6 +3,7 @@
 import type {
   ListAccessiblePipelineResponse,
   Nullable,
+  ResourceView,
   Visibility,
 } from "instill-sdk";
 import {
@@ -13,15 +14,16 @@ import {
 
 import { env } from "../../../server";
 import { getInstillAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
-export function useInfinitePipelines({
+export function useInfiniteAccessiblePipelines({
   accessToken,
   pageSize,
   enabledQuery,
   visibility,
   filter,
   orderBy,
-  disabledViewFull,
+  view,
 }: {
   pageSize: number;
   enabledQuery: boolean;
@@ -29,40 +31,31 @@ export function useInfinitePipelines({
   visibility: Nullable<Visibility>;
   filter: Nullable<string>;
   orderBy: Nullable<string>;
-  disabledViewFull?: boolean;
+  view: Nullable<ResourceView>;
 }): UseInfiniteQueryResult<
   InfiniteData<ListAccessiblePipelineResponse>,
   Error
 > {
-  const queryKey = ["pipelines", "infinite"];
-
-  if (filter) {
-    queryKey.push(filter);
-  }
-
-  if (visibility) {
-    queryKey.push(visibility);
-  }
-
-  if (orderBy) {
-    queryKey.push(orderBy);
-  }
-
   return useInfiniteQuery({
-    queryKey: queryKey,
+    queryKey: queryKeyStore.pipeline.getUseInfiniteAccessiblePipelinesQueryKey({
+      filter,
+      visibility,
+      view,
+      orderBy,
+    }),
     queryFn: async ({ pageParam }) => {
       const client = getInstillAPIClient({
         accessToken: accessToken ?? undefined,
       });
 
       const pipelines = await client.vdp.pipeline.listAccessiblePipelines({
-        pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE") ?? null,
-        pageToken: pageParam ?? undefined,
         enablePagination: true,
+        pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE") ?? undefined,
+        pageToken: pageParam ?? undefined,
         visibility: visibility ?? undefined,
         filter: filter ?? undefined,
         orderBy: orderBy ?? undefined,
-        view: disabledViewFull ? undefined : "VIEW_FULL",
+        view: view ?? "VIEW_BASIC",
       });
 
       return Promise.resolve(pipelines);

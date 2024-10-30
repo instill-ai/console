@@ -1,10 +1,14 @@
 "use client";
 
-import type { Pipeline, UpdateNamespacePipelineRequest } from "instill-sdk";
+import type {
+  Nullable,
+  Pipeline,
+  UpdateNamespacePipelineRequest,
+} from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
 export function useUpdateNamespacePipeline() {
   const queryClient = useQueryClient();
@@ -25,29 +29,49 @@ export function useUpdateNamespacePipeline() {
       const pipeline =
         await client.vdp.pipeline.updateNamespacePipeline(payload);
 
-      return Promise.resolve({ pipeline });
+      return Promise.resolve({
+        namespaceId: payload.namespaceId,
+        pipelineId: payload.pipelineId,
+        pipeline,
+      });
     },
-    onSuccess: async ({ pipeline }) => {
-      // At this stage the pipelineName will be users/<uid>/pipelines/<pid>
-      const pipelineNameArray = pipeline.name.split("/");
-      const userName = `${pipelineNameArray[0]}/${pipelineNameArray[1]}`;
-
+    onSuccess: async ({ namespaceId, pipelineId, pipeline }) => {
       queryClient.setQueryData<Pipeline>(
-        ["pipelines", pipeline.name],
+        queryKeyStore.pipeline.getUseNamespacePipelineQueryKey({
+          namespaceId,
+          pipelineId,
+        }),
         pipeline,
       );
 
-      queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) =>
-        old
-          ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
-          : [pipeline],
-      );
+      queryClient.invalidateQueries({
+        queryKey: queryKeyStore.pipeline.getUseNamespacePipelinesQueryKey({
+          namespaceId,
+          view: null,
+          filter: null,
+          visibility: null,
+        }),
+      });
 
-      queryClient.setQueryData<Pipeline[]>(["pipelines", userName], (old) =>
-        old
-          ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
-          : [pipeline],
-      );
+      queryClient.invalidateQueries({
+        queryKey:
+          queryKeyStore.pipeline.getUseInfiniteNamespacePipelinesQueryKey({
+            namespaceId,
+            filter: null,
+            visibility: null,
+            view: null,
+          }),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey:
+          queryKeyStore.pipeline.getUseInfiniteAccessiblePipelinesQueryKey({
+            filter: null,
+            visibility: null,
+            view: null,
+            orderBy: null,
+          }),
+      });
     },
   });
 }

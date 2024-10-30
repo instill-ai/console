@@ -14,6 +14,7 @@ export const getQueryString = ({
   start,
   stop,
   aggregationWindow,
+  showDeleted,
 }: {
   baseURL: string;
   pageSize?: number;
@@ -30,6 +31,7 @@ export const getQueryString = ({
   start?: string;
   stop?: string;
   aggregationWindow?: string;
+  showDeleted?: boolean;
 }) => {
   let url = baseURL;
 
@@ -45,7 +47,8 @@ export const getQueryString = ({
     owner ||
     start ||
     stop ||
-    aggregationWindow
+    aggregationWindow ||
+    showDeleted
   ) {
     // Check if the baseURL already has a query string
     if (baseURL.includes("?")) {
@@ -101,6 +104,10 @@ export const getQueryString = ({
 
   if (aggregationWindow) {
     url += `aggregationWindow=${aggregationWindow}&`;
+  }
+
+  if (showDeleted) {
+    url += `showDeleted=${showDeleted}&`;
   }
 
   if (url.endsWith("&")) {

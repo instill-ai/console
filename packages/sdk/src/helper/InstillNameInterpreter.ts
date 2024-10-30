@@ -15,4 +15,5 @@ export const InstillNameInterpreter = {
   model: generalGetter,
   pipeline: generalGetter,
   artifact: generalGetter,
+  secret: generalGetter,
 };

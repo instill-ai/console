@@ -13,7 +13,6 @@ export function useTriggerNamespacePipeline() {
     mutationFn: async (
       props: Omit<TriggerNamespacePipelineRequest, "streaming"> & {
         accessToken: Nullable<string>;
-        triggerNamespaceName?: string;
       },
     ) => {
       const { accessToken, ...payload } = props;

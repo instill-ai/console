@@ -1,25 +1,26 @@
-import type { Nullable, Visibility } from "instill-sdk";
+import type { Nullable, ResourceView, Visibility } from "instill-sdk";
 
 import { env, QueryClient } from "../../../../server";
 import { getInstillAPIClient } from "../../../sdk-helper";
+import { queryKeyStore } from "../../queryKeyStore";
 
 export async function fetchNamespacePipelines({
-  namespaceName,
+  namespaceId,
   accessToken,
   filter,
   visibility,
-  disabledViewFull,
   pageSize,
+  view,
 }: {
-  namespaceName: Nullable<string>;
+  namespaceId: Nullable<string>;
   accessToken: Nullable<string>;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
-  disabledViewFull?: boolean;
   pageSize?: number;
+  view: Nullable<ResourceView>;
 }) {
-  if (!namespaceName) {
-    throw new Error("namespaceName not provided");
+  if (!namespaceId) {
+    throw new Error("namespaceId is required");
   }
 
   try {
@@ -28,12 +29,12 @@ export async function fetchNamespacePipelines({
     });
 
     const pipelines = await client.vdp.pipeline.listNamespacePipelines({
-      namespaceName,
+      namespaceId,
       pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
       enablePagination: false,
       filter: filter ?? undefined,
       visibility: visibility ?? undefined,
-      view: disabledViewFull ? undefined : "VIEW_FULL",
+      view: view ?? "VIEW_FULL",
     });
 
     return Promise.resolve(pipelines);
@@ -42,38 +43,35 @@ export async function fetchNamespacePipelines({
   }
 }
 
-export function getUseNamespacePipelinesQueryKey(
-  namespaceName: Nullable<string>,
-) {
-  return ["pipelines", namespaceName];
-}
-
 export function prefetchNamespacePipelines({
-  namespaceName,
+  namespaceId,
   accessToken,
   filter,
   visibility,
   queryClient,
-  disabledViewFull,
+  view,
 }: {
-  namespaceName: Nullable<string>;
+  namespaceId: Nullable<string>;
   accessToken: Nullable<string>;
   queryClient: QueryClient;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
-  disabledViewFull?: boolean;
+  view: Nullable<ResourceView>;
 }) {
-  const queryKey = getUseNamespacePipelinesQueryKey(namespaceName);
-
   return queryClient.prefetchQuery({
-    queryKey,
+    queryKey: queryKeyStore.pipeline.getUseNamespacePipelinesQueryKey({
+      namespaceId,
+      view,
+      filter,
+      visibility,
+    }),
     queryFn: async () => {
       return await fetchNamespacePipelines({
-        namespaceName,
+        namespaceId,
         accessToken,
         filter,
         visibility,
-        disabledViewFull,
+        view,
       });
     },
   });

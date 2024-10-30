@@ -1,7 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { Nullable, UpdateNamespacePipelineRequest } from "instill-sdk";
+import {
+  InstillNameInterpreter,
+  Nullable,
+  UpdateNamespacePipelineRequest,
+} from "instill-sdk";
 
 import { Button, Dialog, useToast } from "@instill-ai/design-system";
 
@@ -34,18 +38,28 @@ export const UnpublishPipelineDialog = ({
   const { toast } = useToast();
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: pipelineName,
+    namespaceId: pipelineName
+      ? InstillNameInterpreter.pipeline(pipelineName).namespaceId
+      : null,
+    pipelineId: pipelineName
+      ? InstillNameInterpreter.pipeline(pipelineName).resourceId
+      : null,
     enabled: enabledQuery && !!pipelineName,
     accessToken,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   const updatePipeline = useUpdateNamespacePipeline();
   async function unPublishPipeline() {
     if (!pipeline.isSuccess || !pipelineName) return;
 
+    const instillName = InstillNameInterpreter.pipeline(pipelineName);
+
     try {
       const payload: UpdateNamespacePipelineRequest = {
-        namespacePipelineName: pipelineName,
+        namespaceId: instillName.namespaceId,
+        pipelineId: instillName.resourceId,
         sharing: {
           ...pipeline.data.sharing,
           users: {

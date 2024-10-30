@@ -1,6 +1,6 @@
 "use client";
 
-import type { Pipeline, PipelineRun } from "instill-sdk";
+import type { Nullable, Pipeline, PipelineRun } from "instill-sdk";
 import * as React from "react";
 import Link from "next/link";
 
@@ -20,11 +20,11 @@ import {
   convertToSecondsAndMilliseconds,
   InstillStore,
   useInstillStore,
+  usePaginatedNamespacePipelineRuns,
   useRouteInfo,
   useShallow,
   useUserNamespaces,
 } from "../../../../lib";
-import { usePaginatedPipelineRuns } from "../../../../lib/react-query-service/pipeline";
 import { env, getHumanReadableStringFromTime } from "../../../../server";
 import { TABLE_PAGE_SIZE } from "../constants";
 
@@ -39,7 +39,7 @@ export type PipelineRunListProps = {
 };
 
 export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
-  const [orderBy, setOrderBy] = React.useState<string>();
+  const [orderBy, setOrderBy] = React.useState<Nullable<string>>(null);
   const { accessToken, enabledQuery, navigationNamespaceAnchor } =
     useInstillStore(useShallow(selector));
   const routeInfo = useRouteInfo();
@@ -66,14 +66,17 @@ export const PipelineRunList = ({ pipeline }: PipelineRunListProps) => {
     navigationNamespaceAnchor,
   ]);
 
-  const pipelineRuns = usePaginatedPipelineRuns({
-    pipelineName: `namespaces/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`,
+  const pipelineRuns = usePaginatedNamespacePipelineRuns({
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     enabled: enabledQuery && routeInfo.isSuccess && userNamespaces.isSuccess,
     accessToken,
     pageSize: TABLE_PAGE_SIZE,
     page: paginationState.pageIndex,
     orderBy,
-    requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+    requesterUid: targetNamespace ? targetNamespace.uid : null,
+    view: "VIEW_FULL",
+    filter: null,
   });
 
   const ownerId = React.useMemo(() => {

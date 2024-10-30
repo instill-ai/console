@@ -6,6 +6,7 @@ import type {
   UserOwner,
 } from "instill-sdk";
 import * as React from "react";
+import { InstillNameInterpreter } from "instill-sdk";
 
 import { Button, Icons, Separator, useToast } from "@instill-ai/design-system";
 
@@ -52,9 +53,16 @@ export const TabShare = ({
   const { toast } = useToast();
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: pipelineName,
+    namespaceId: pipelineName
+      ? InstillNameInterpreter.pipeline(pipelineName).namespaceId
+      : null,
+    pipelineId: pipelineName
+      ? InstillNameInterpreter.pipeline(pipelineName).resourceId
+      : null,
     enabled: enableQuery && !!pipelineName && !pipelineIsNew,
     accessToken,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   const pipelineIsPublic = React.useMemo(() => {
@@ -98,9 +106,10 @@ export const TabShare = ({
 
     let link: Nullable<string> = null;
 
-    if (!enabledShareByLink) {
+    if (!enabledShareByLink && pipelineName) {
       const payload: UpdateNamespacePipelineRequest = {
-        namespacePipelineName: pipelineName,
+        namespaceId: InstillNameInterpreter.pipeline(pipelineName).namespaceId,
+        pipelineId: InstillNameInterpreter.pipeline(pipelineName).resourceId,
         sharing: {
           users: pipeline.data.sharing.users,
           shareCode: {

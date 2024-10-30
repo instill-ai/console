@@ -1,7 +1,6 @@
 import { getInstillAdditionalHeaders, getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
 import {
-  CloneNamespacePipelineReleaseRequest,
   CloneNamespacePipelineRequest,
   CreateNamespacePipelineRequest,
   CreateNamespacePipelineResponse,
@@ -13,10 +12,6 @@ import {
   ListAccessiblePipelinesRequest,
   ListNamespacePipelinesRequest,
   ListNamespacePipelinesResponse,
-  ListPaginatedNamespacePipelineRunComponentsRequest,
-  ListPaginatedNamespacePipelineRunComponentsResponse,
-  ListPaginatedNamespacePipelineRunsRequest,
-  ListPaginatedNamespacePipelineRunsResponse,
   Pipeline,
   RenameNamespacePipelineRequest,
   RenameNamespacePipelineResponse,
@@ -117,84 +112,6 @@ export class PipelineClient extends APIResource {
     }
   }
 
-  async listPaginatedNamespacePipelineRuns(
-    props: ListPaginatedNamespacePipelineRunsRequest,
-  ) {
-    const {
-      pipelineName,
-      view,
-      pageSize,
-      page,
-      orderBy,
-      filter,
-      requesterUid,
-    } = props;
-
-    try {
-      const queryString = getQueryString({
-        baseURL: `/${pipelineName}/runs`,
-        pageSize,
-        page,
-        filter,
-        orderBy,
-        view,
-      });
-
-      const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
-
-      const data =
-        await this._client.get<ListPaginatedNamespacePipelineRunsResponse>(
-          queryString,
-          {
-            additionalHeaders,
-          },
-        );
-
-      return Promise.resolve(data);
-    } catch (err) {
-      return Promise.reject(err);
-    }
-  }
-
-  async listPaginatedNamespacePipelineRunComponents(
-    props: ListPaginatedNamespacePipelineRunComponentsRequest,
-  ) {
-    const {
-      pipelineRunId,
-      view,
-      pageSize,
-      page,
-      orderBy,
-      filter,
-      requesterUid,
-    } = props;
-
-    try {
-      const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
-
-      const queryString = getQueryString({
-        baseURL: `/pipeline-runs/${pipelineRunId}/component-runs`,
-        pageSize,
-        page,
-        filter,
-        orderBy,
-        view,
-      });
-
-      const data =
-        await this._client.get<ListPaginatedNamespacePipelineRunComponentsResponse>(
-          queryString,
-          {
-            additionalHeaders,
-          },
-        );
-
-      return Promise.resolve(data);
-    } catch (err) {
-      return Promise.reject(err);
-    }
-  }
-
   async listNamespacePipelines(
     props: ListNamespacePipelinesRequest & {
       enablePagination: true;
@@ -218,23 +135,25 @@ export class PipelineClient extends APIResource {
     const {
       pageSize,
       pageToken,
-      namespaceName,
+      namespaceId,
       enablePagination,
       filter,
       visibility,
       view,
+      showDeleted,
     } = props;
 
     try {
       const pipelines: Pipeline[] = [];
 
       const queryString = getQueryString({
-        baseURL: `/${namespaceName}/pipelines`,
+        baseURL: `/namespaces/${namespaceId}/pipelines`,
         pageSize,
         pageToken,
         visibility,
         filter,
         view,
+        showDeleted,
       });
 
       const data =
@@ -251,7 +170,7 @@ export class PipelineClient extends APIResource {
           ...(await this.listNamespacePipelines({
             pageSize,
             pageToken: data.nextPageToken,
-            namespaceName,
+            namespaceId,
             enablePagination,
             filter,
             visibility,
@@ -267,13 +186,14 @@ export class PipelineClient extends APIResource {
   }
 
   async getNamespacePipeline({
-    namespacePipelineName,
+    namespaceId,
+    pipelineId,
     view,
     shareCode,
   }: GetNamespacePipelineRequest) {
     try {
       const queryString = getQueryString({
-        baseURL: `/${namespacePipelineName}`,
+        baseURL: `/namespaces/${namespaceId}/pipelines/${pipelineId}`,
         view,
       });
 
@@ -299,11 +219,11 @@ export class PipelineClient extends APIResource {
    * ---------------------------------------------------------------------------*/
 
   async createNamespacePipeline(props: CreateNamespacePipelineRequest) {
-    const { namespaceName, ...payload } = props;
+    const { namespaceId, ...payload } = props;
 
     try {
       const data = await this._client.post<CreateNamespacePipelineResponse>(
-        `/${namespaceName}/pipelines`,
+        `/namespaces/${namespaceId}/pipelines`,
         {
           body: JSON.stringify(payload),
         },
@@ -316,21 +236,24 @@ export class PipelineClient extends APIResource {
   }
 
   async deleteNamespacePipeline({
-    namespacePipelineName,
+    namespaceId,
+    pipelineId,
   }: DeleteNamespacePipelineRequest) {
     try {
-      await this._client.delete(`/${namespacePipelineName}`);
+      await this._client.delete(
+        `/namespaces/${namespaceId}/pipelines/${pipelineId}`,
+      );
     } catch (error) {
       return Promise.reject(error);
     }
   }
 
   async updateNamespacePipeline(props: UpdateNamespacePipelineRequest) {
-    const { namespacePipelineName, ...payload } = props;
+    const { namespaceId, pipelineId, ...payload } = props;
 
     try {
       const data = await this._client.patch<UpdateNamespacePipelineResponse>(
-        `/${namespacePipelineName}`,
+        `/namespaces/${namespaceId}/pipelines/${pipelineId}`,
         {
           body: JSON.stringify(payload),
         },
@@ -342,11 +265,12 @@ export class PipelineClient extends APIResource {
   }
 
   async validateNamespacePipeline({
-    namespacePipelineName,
+    namespaceId,
+    pipelineId,
   }: ValidateNamespacePipelineRequest) {
     try {
       const data = await this._client.post<ValidateNamespacePipelineResponse>(
-        `/${namespacePipelineName}/validate`,
+        `/namespaces/${namespaceId}/pipelines/${pipelineId}/validate`,
       );
       return Promise.resolve(data);
     } catch (error) {
@@ -355,12 +279,13 @@ export class PipelineClient extends APIResource {
   }
 
   async renameNamespacePipeline({
-    namespacePipelineName,
+    namespaceId,
+    pipelineId,
     newPipelineId,
   }: RenameNamespacePipelineRequest) {
     try {
       const data = await this._client.post<RenameNamespacePipelineResponse>(
-        `/${namespacePipelineName}/rename`,
+        `/namespaces/${namespaceId}/pipelines/${pipelineId}/rename`,
         {
           body: JSON.stringify({ newPipelineId }),
         },
@@ -381,20 +306,6 @@ export class PipelineClient extends APIResource {
           body: JSON.stringify(payload),
         },
       );
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async cloneNamespacePipelineRelease(
-    props: CloneNamespacePipelineReleaseRequest,
-  ) {
-    const { namespacePipelineReleaseName, ...payload } = props;
-
-    try {
-      await this._client.post(`/${namespacePipelineReleaseName}/clone`, {
-        body: JSON.stringify(payload),
-      });
     } catch (error) {
       return Promise.reject(error);
     }

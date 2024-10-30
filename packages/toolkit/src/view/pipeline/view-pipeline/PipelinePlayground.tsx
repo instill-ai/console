@@ -161,7 +161,8 @@ export const PipelinePlayground = ({
   async function onTriggerPipeline(formData: z.infer<typeof ValidatorSchema>) {
     if (
       !routeInfo.isSuccess ||
-      !routeInfo.data?.pipelineName ||
+      !routeInfo.data.resourceId ||
+      !routeInfo.data.namespaceId ||
       !pipeline ||
       !userNamespaces.isSuccess
     ) {
@@ -223,7 +224,8 @@ export const PipelinePlayground = ({
         );
 
         const data = await triggerPipeline.mutateAsync({
-          namespacePipelineName: routeInfo.data.pipelineName,
+          namespaceId: routeInfo.data.namespaceId,
+          pipelineId: routeInfo.data.resourceId,
           accessToken,
           inputs: [parsedStructuredData],
           returnTraces: true,
@@ -261,7 +263,9 @@ export const PipelinePlayground = ({
         );
 
         const data = await triggerPipelineRelease.mutateAsync({
-          namespacePipelineReleaseName: `${routeInfo.data.pipelineName}/releases/${currentVersion}`,
+          namespaceId: routeInfo.data.namespaceId,
+          pipelineId: routeInfo.data.resourceId,
+          releaseId: currentVersion,
           inputs: [parsedStructuredData],
           accessToken,
           returnTraces: true,

@@ -17,13 +17,13 @@ import {
   InstillStore,
   useComponentOutputFields,
   useInstillStore,
+  usePaginatedNamespacePipelineRuns,
   usePipelineTriggerRequestForm,
   useRouteInfo,
   useShallow,
   useUserNamespaces,
   useWindowSize,
 } from "../../../../lib";
-import { usePaginatedPipelineRuns } from "../../../../lib/react-query-service/pipeline";
 import { env, getHumanReadableStringFromTime } from "../../../../server";
 import {
   InOutputSkeleton,
@@ -63,15 +63,17 @@ export const PipelineRunView = ({ id, pipeline }: PipelineRunProps) => {
     navigationNamespaceAnchor,
   ]);
 
-  const pipelineRuns = usePaginatedPipelineRuns({
-    pipelineName: `namespaces/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}`,
+  const pipelineRuns = usePaginatedNamespacePipelineRuns({
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     enabled: enabledQuery && routeInfo.isSuccess && userNamespaces.isSuccess,
     accessToken,
     pageSize: 1,
     page: 0,
     filter: `pipelineTriggerUID="${id}"`,
     view: "VIEW_FULL",
-    requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+    requesterUid: targetNamespace ? targetNamespace.uid : null,
+    orderBy: null,
   });
 
   const pipelineRun = React.useMemo(() => {

@@ -44,9 +44,7 @@ const selector = (store: InstillStore) => ({
 
 export const Input = ({
   fields,
-  pipelineName,
 }: {
-  pipelineName: Nullable<string>;
   fields: Nullable<PipelineVariableFieldMap>;
 }) => {
   const {
@@ -80,10 +78,11 @@ export const Input = ({
   const onStreamTriggerPipeline = React.useCallback(
     async (formData: z.infer<typeof Schema>) => {
       if (
-        !pipelineName ||
         !formData ||
         !fields ||
         !routeInfo.isSuccess ||
+        !routeInfo.data.namespaceId ||
+        !routeInfo.data.resourceId ||
         !userNamespaces.isSuccess
       ) {
         return;
@@ -182,9 +181,11 @@ export const Input = ({
 
       try {
         let response: Response;
-        if (currentVersion !== "latest") {
+        if (currentVersion !== "latest" && currentVersion) {
           response = await triggerPipelineRelease.mutateAsync({
-            namespacePipelineReleaseName: `${pipelineName}/releases/${currentVersion}`,
+            namespaceId: routeInfo.data.namespaceId,
+            pipelineId: routeInfo.data.resourceId,
+            releaseId: currentVersion,
             accessToken,
             inputs: [parsedStructuredData],
             returnTraces: true,
@@ -192,7 +193,8 @@ export const Input = ({
           });
         } else {
           response = await triggerPipeline.mutateAsync({
-            namespacePipelineName: pipelineName,
+            namespaceId: routeInfo.data.namespaceId,
+            pipelineId: routeInfo.data.resourceId,
             accessToken,
             inputs: [parsedStructuredData],
             returnTraces: true,
@@ -427,7 +429,6 @@ export const Input = ({
       }
     },
     [
-      pipelineName,
       fields,
       form,
       triggerPipeline,

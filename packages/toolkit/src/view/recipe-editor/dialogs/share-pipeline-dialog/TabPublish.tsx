@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Nullable } from "instill-sdk";
+import { InstillNameInterpreter, Nullable } from "instill-sdk";
 
 import { Button } from "@instill-ai/design-system";
 
@@ -33,9 +33,16 @@ export const TabPublish = ({
   } = useInstillStore(useShallow(selector));
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: pipelineName,
+    namespaceId: pipelineName
+      ? InstillNameInterpreter.pipeline(pipelineName).namespaceId
+      : null,
+    pipelineId: pipelineName
+      ? InstillNameInterpreter.pipeline(pipelineName).resourceId
+      : null,
     enabled: enabledQuery && !!pipelineName,
     accessToken,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   const pipelineIsPublic = React.useMemo(() => {

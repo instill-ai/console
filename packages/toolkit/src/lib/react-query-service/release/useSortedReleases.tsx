@@ -1,6 +1,6 @@
 "use client";
 
-import type { Nullable, PipelineRelease } from "instill-sdk";
+import type { Nullable, PipelineRelease, ResourceView } from "instill-sdk";
 import * as React from "react";
 import * as semver from "semver";
 
@@ -30,21 +30,28 @@ export function sortPipelineReleases(releases: PipelineRelease[]) {
 }
 
 export function useSortedReleases({
-  pipelineName,
+  namespaceId,
+  pipelineId,
   accessToken,
   enabledQuery,
   shareCode,
+  view,
 }: {
-  pipelineName: Nullable<string>;
+  namespaceId: Nullable<string>;
+  pipelineId: Nullable<string>;
   accessToken: Nullable<string>;
   enabledQuery: boolean;
-  shareCode?: string;
+  shareCode: Nullable<string>;
+  view: Nullable<ResourceView>;
 }) {
   const pipelineReleases = useInfiniteNamespacePipelineReleases({
-    namespacePipelineName: pipelineName,
+    namespaceId: namespaceId,
+    pipelineId: pipelineId,
     enabledQuery,
     accessToken,
     shareCode,
+    view,
+    pageSize: null,
   });
 
   React.useEffect(() => {
@@ -74,7 +81,12 @@ export function useSortedReleases({
 
     // When every user change pipelineName we will rerender the pipelineReleases
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [pipelineReleases.data, pipelineReleases.isSuccess, pipelineName]);
+  }, [
+    pipelineReleases.data,
+    pipelineReleases.isSuccess,
+    namespaceId,
+    pipelineId,
+  ]);
 
   return {
     isFetchingNextPage: pipelineReleases.isFetchingNextPage,

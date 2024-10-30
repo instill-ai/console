@@ -12,7 +12,11 @@ import {
   PermissionSchema,
 } from "../../types";
 import { PipelineRelease, PipelineReleaseSchema } from "../release";
-import { PipelineRecipe, ResourceView, RunSource, RunStatus } from "../types";
+import {
+  PipelineRecipe,
+  ResourceView,
+  ResourceViewWithRecipeView,
+} from "../types";
 
 export type PipelineMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
 
@@ -203,7 +207,7 @@ export type ListAccessiblePipelinesRequest = {
   pageSize?: number;
   pageToken?: string;
   filter?: string;
-  view?: string;
+  view?: ResourceView;
   showDeleted?: boolean;
   visibility?: string;
   orderBy?: string;
@@ -222,87 +226,14 @@ export const listAccessiblePipelinesWithPaginationResponseValidator = z.object({
 });
 
 export type ListNamespacePipelinesRequest = {
-  namespaceName: string;
+  namespaceId: string;
   pageSize?: number;
   pageToken?: string;
   filter?: string;
-  view?: string;
+  view?: ResourceView;
   showDeleted?: boolean;
   visibility?: string;
   orderBy?: string;
-};
-
-export type ListPaginatedNamespacePipelineRunsRequest = {
-  pipelineName: string;
-  view: ResourceView;
-  pageSize: number;
-  page: number;
-  orderBy: Nullable<string>;
-  filter: Nullable<string>;
-  requesterUid?: string;
-};
-
-export type ListPaginatedNamespacePipelineRunsResponse = {
-  pipelineRuns: PipelineRun[];
-  totalSize: number;
-  page: number;
-  pageSize: number;
-};
-
-export type FileReference = {
-  name: string;
-  type: string;
-  size: number;
-  url: string;
-};
-
-export type PipelineRun = {
-  pipelineUid: string;
-  pipelineRunUid: string;
-  pipelineVersion: string;
-  status: RunStatus;
-  source: RunSource;
-  totalDuration: number;
-  runnerId: string;
-  inputsReference: FileReference[];
-  inputs: GeneralRecord[];
-  outputsReference: FileReference[];
-  outputs: GeneralRecord[];
-  recipeSnapshot: Nullable<GeneralRecord>;
-  startTime: string;
-  completeTime: string;
-  creditAmount: Nullable<number>;
-  error: Nullable<string>;
-  dataSpecification: DataSpecification;
-  requesterId: string;
-};
-
-export type ListPaginatedNamespacePipelineRunComponentsRequest = {
-  pipelineRunId: string;
-  view: ResourceView;
-  pageSize: number;
-  page: number;
-  orderBy: Nullable<string>;
-  filter: Nullable<string>;
-  requesterUid?: string;
-};
-
-export type ListPaginatedNamespacePipelineRunComponentsResponse = {
-  componentRuns: ComponentRun[];
-  totalSize: number;
-  page: number;
-  pageSize: number;
-};
-
-export type ComponentRun = {
-  pipelineRunUid: string;
-  componentId: string;
-  status: RunStatus;
-  totalDuration: number;
-  startTime: string;
-  completeTime: string;
-  inputs: GeneralRecord[];
-  outputs: GeneralRecord[];
 };
 
 export type ListNamespacePipelinesResponse = {
@@ -318,8 +249,9 @@ export const listNamespacePipelinesWithPaginationResponseValidator = z.object({
 });
 
 export type GetNamespacePipelineRequest = {
-  namespacePipelineName: string;
-  view?: string;
+  namespaceId: string;
+  pipelineId: string;
+  view?: ResourceViewWithRecipeView;
   shareCode?: string;
 };
 
@@ -330,7 +262,7 @@ export type GetNamespacePipelineResponse = {
 export const getNamespacePipelineResponseValidator = PipelineSchema;
 
 export type CreateNamespacePipelineRequest = {
-  namespaceName: string;
+  namespaceId: string;
   id: string;
   description?: string;
   recipe?: PipelineRecipe;
@@ -347,22 +279,24 @@ export type CreateNamespacePipelineResponse = {
 export const createNamespacePipelineResponseValidator = PipelineSchema;
 
 export type DeleteNamespacePipelineRequest = {
-  namespacePipelineName: string;
+  namespaceId: string;
+  pipelineId: string;
 };
 
 export type UpdateNamespacePipelineRequest = {
-  namespacePipelineName: string;
+  namespaceId: string;
+  pipelineId: string;
   description?: string;
   recipe?: PipelineRecipe;
-  rawRecipe?: string;
   sharing?: PipelineSharing;
   metadata?: GeneralRecord;
   readme?: string;
+  tags?: string[];
+  rawRecipe?: string;
   sourceUrl?: string;
   documentationUrl?: string;
   license?: string;
   profileImage?: string;
-  tags?: string[];
 };
 
 export type UpdateNamespacePipelineResponse = {
@@ -377,7 +311,8 @@ export type ValidatePipelineRecipeError = {
 };
 
 export type ValidateNamespacePipelineRequest = {
-  namespacePipelineName: string;
+  namespaceId: string;
+  pipelineId: string;
 };
 
 export type ValidateNamespacePipelineResponse = {
@@ -386,7 +321,8 @@ export type ValidateNamespacePipelineResponse = {
 };
 
 export type RenameNamespacePipelineRequest = {
-  namespacePipelineName: string;
+  namespaceId: string;
+  pipelineId: string;
   newPipelineId: string;
 };
 
@@ -399,13 +335,6 @@ export type CloneNamespacePipelineRequest = {
   pipelineId: string;
   targetNamespaceId: string;
   targetPipelineId: string;
-  description?: string;
-  sharing?: PipelineSharing;
-};
-
-export type CloneNamespacePipelineReleaseRequest = {
-  namespacePipelineReleaseName: string;
-  target: string;
   description?: string;
   sharing?: PipelineSharing;
 };

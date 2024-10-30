@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Nullable } from "instill-sdk";
+import { InstillNameInterpreter, Nullable } from "instill-sdk";
 import debounce from "lodash.debounce";
 
 import { useToast } from "@instill-ai/design-system";
@@ -60,12 +60,15 @@ export function useDebouncedRecipeUpdater(): EditorRecipeUpdater {
           return;
         }
 
+        const instillName = InstillNameInterpreter.pipeline(pipelineName);
+
         try {
           updateIsSavingRecipe(() => true);
 
           updatePipeline.mutateAsync({
             rawRecipe: newRawRecipe,
-            namespacePipelineName: pipelineName,
+            namespaceId: instillName.namespaceId,
+            pipelineId: instillName.resourceId,
             accessToken,
             metadata: {
               pipelineIsNew: false,

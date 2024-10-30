@@ -39,7 +39,13 @@ export function useAutonomousEditorRecipeUpdater() {
   const updatePipeline = useUpdateNamespacePipeline();
 
   const autonomousRecipeUpdater = React.useCallback(async () => {
-    if (!routeInfo.isSuccess || !editorRef || !routeInfo.data.pipelineName) {
+    if (
+      !routeInfo.isSuccess ||
+      !editorRef ||
+      !routeInfo.data.pipelineName ||
+      !routeInfo.data.namespaceId ||
+      !routeInfo.data.resourceId
+    ) {
       return;
     }
 
@@ -50,7 +56,8 @@ export function useAutonomousEditorRecipeUpdater() {
 
       await updatePipeline.mutateAsync({
         rawRecipe,
-        namespacePipelineName: routeInfo.data.pipelineName,
+        namespaceId: routeInfo.data.namespaceId,
+        pipelineId: routeInfo.data.resourceId,
         accessToken,
         metadata: {
           pipelineIsNew: false,
@@ -79,7 +86,8 @@ export function useAutonomousEditorRecipeUpdater() {
   }, [
     editorRef,
     routeInfo.isSuccess,
-    routeInfo.data.pipelineName,
+    routeInfo.data.namespaceId,
+    routeInfo.data.resourceId,
     accessToken,
     editorDebouncedRecipeUpdater,
     updateIsSavingRecipe,

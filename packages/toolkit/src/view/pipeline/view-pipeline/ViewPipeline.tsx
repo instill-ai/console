@@ -39,19 +39,21 @@ export const ViewPipeline = () => {
   const routeInfo = useRouteInfo();
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.isSuccess
-      ? routeInfo.data.pipelineName
-      : null,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     enabled: enabledQuery && routeInfo.isSuccess,
-    shareCode: shareCode ?? undefined,
+    shareCode,
+    view: "VIEW_FULL",
     accessToken,
   });
 
   const releases = useSortedReleases({
-    pipelineName: routeInfo.isSuccess ? routeInfo.data.pipelineName : null,
+    namespaceId: routeInfo.isSuccess ? routeInfo.data.namespaceId : null,
+    pipelineId: routeInfo.isSuccess ? routeInfo.data.resourceId : null,
     enabledQuery: enabledQuery && routeInfo.isSuccess,
-    shareCode: shareCode ?? undefined,
+    shareCode,
     accessToken,
+    view: "VIEW_FULL",
   });
 
   React.useEffect(() => {

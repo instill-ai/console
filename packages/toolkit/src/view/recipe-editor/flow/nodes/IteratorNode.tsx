@@ -54,11 +54,12 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
   const isSelected = selectedComponentId === id;
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.isSuccess
-      ? routeInfo.data.pipelineName
-      : null,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   const handleClick = React.useCallback(() => {

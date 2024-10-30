@@ -1,38 +1,45 @@
 "use client";
 
+import type { Nullable, ResourceView } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
-import type { Nullable } from "../../../type";
-import {
-  fetchNamespacePipeline,
-  getUseNamespacePipelineQueryKey,
-} from "./server";
+import { queryKeyStore } from "../../queryKeyStore";
+import { fetchNamespacePipeline } from "./server";
 
 export function useNamespacePipeline({
-  namespacePipelineName,
+  namespaceId,
+  pipelineId,
   accessToken,
   enabled,
   shareCode,
+  view,
 }: {
-  namespacePipelineName: Nullable<string>;
+  namespaceId: Nullable<string>;
+  pipelineId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
-  shareCode?: string;
+  shareCode: Nullable<string>;
+  view: Nullable<ResourceView>;
 }) {
   let enableQuery = false;
 
-  if (namespacePipelineName && enabled) {
+  if (namespaceId && pipelineId && enabled) {
     enableQuery = true;
   }
 
   return useQuery({
-    queryKey: getUseNamespacePipelineQueryKey(namespacePipelineName),
+    queryKey: queryKeyStore.pipeline.getUseNamespacePipelineQueryKey({
+      namespaceId,
+      pipelineId,
+    }),
     queryFn: async () => {
       try {
         return await fetchNamespacePipeline({
-          namespacePipelineName,
+          namespaceId,
+          pipelineId,
           accessToken,
           shareCode,
+          view,
         });
       } catch (error) {
         return Promise.reject(error);

@@ -45,15 +45,21 @@ export const PipelineToolkitDialog = () => {
   );
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.data.pipelineName,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   const pipelineReleases = useSortedReleases({
-    pipelineName: routeInfo.data.pipelineName,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     accessToken,
     enabledQuery: enabledQuery && routeInfo.isSuccess,
+    shareCode: null,
+    view: "VIEW_FULL",
   });
 
   const codeSnippet = React.useMemo(() => {

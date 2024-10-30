@@ -718,16 +718,18 @@ export const VscodeEditor = () => {
 
   const routeInfo = useRouteInfo();
   const namespaceSecrets = useNamespaceSecrets({
-    namespaceName: routeInfo.data.namespaceName,
+    namespaceId: routeInfo.data.namespaceId,
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
   });
+
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.isSuccess
-      ? routeInfo.data.pipelineName
-      : null,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     accessToken,
-    enabled: enabledQuery,
+    enabled: enabledQuery && routeInfo.isSuccess,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   const integrationConnections = useIntegrationConnections({

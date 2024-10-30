@@ -5,7 +5,8 @@ import {
   DataSpecificationSchema,
   GeneralRecord,
 } from "../../types";
-import { PipelineRecipe } from "../types";
+import { PipelineSharing } from "../pipeline";
+import { PipelineRecipe, ResourceViewWithRecipeView } from "../types";
 
 export type PipelineRelease = {
   name: string;
@@ -42,8 +43,10 @@ export const PipelineReleaseSchema = z.object({
 });
 
 export type GetNamespacePipelineReleaseRequest = {
-  namespacePipelineReleaseName: string;
-  view?: string;
+  namespaceId: string;
+  pipelineId: string;
+  releaseId: string;
+  view?: ResourceViewWithRecipeView;
 };
 
 export type GetNamespacePipelineReleaseResponse = {
@@ -51,8 +54,9 @@ export type GetNamespacePipelineReleaseResponse = {
 };
 
 export type ListNamespacePipelineReleaseRequest = {
-  namespacePipelineName: string;
-  view?: string;
+  namespaceId: string;
+  pipelineId: string;
+  view?: ResourceViewWithRecipeView;
   pageSize?: number;
   pageToken?: string;
   filter?: string;
@@ -66,7 +70,8 @@ export type ListNamespacePipelineReleaseResponse = {
 };
 
 export type CreateNamespacePipelineReleaseRequest = {
-  namespacePipelineName: string;
+  namespaceId: string;
+  pipelineId: string;
 
   /**
    * Release resource ID (used in name as the last segment). It must be a
@@ -76,6 +81,7 @@ export type CreateNamespacePipelineReleaseRequest = {
   description?: string;
   metadata?: GeneralRecord;
   readme?: string;
+  rawRecipe?: string;
 };
 
 export type CreateNamespacePipelineReleaseResponse = {
@@ -83,31 +89,31 @@ export type CreateNamespacePipelineReleaseResponse = {
 };
 
 export type DeleteNamespacePipelineReleaseRequest = {
-  namespacePipelineReleaseName: string;
+  namespaceId: string;
+  pipelineId: string;
+  releaseId: string;
 };
 
 export type UpdateNamespacePipelineReleaseRequest = {
-  namespacePipelineReleaseName: string;
+  namespaceId: string;
+  pipelineId: string;
+  releaseId: string;
   description?: string;
+  metadata?: GeneralRecord;
+  readme?: string;
+  rawRecipe?: string;
 };
 
 export type UpdateNamespacePipelineReleaseResponse = {
   release: PipelineRelease;
 };
 
-export type SetPinnedNamespacePipelineReleaseRequest = {
-  namespacePipelineReleaseName: string;
-};
-
-export type SetPinnedNamespacePipelineReleaseResponse = {
-  release: PipelineRelease;
-};
-
-export type RenameNamespacePipelineReleaseRequest = {
-  namespacePipelineReleaseName: string;
-  newPipelineReleaseId: string;
-};
-
-export type RenameNamespacePipelineReleaseResponse = {
-  release: PipelineRelease;
+export type CloneNamespacePipelineReleaseRequest = {
+  namespaceId: string;
+  pipelineId: string;
+  releaseId: string;
+  targetNamespaceId: string;
+  targetPipelineId: string;
+  description?: string;
+  sharing?: PipelineSharing;
 };

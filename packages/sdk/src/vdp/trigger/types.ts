@@ -1,14 +1,89 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { GeneralRecord, Operation } from "../../types";
+import {
+  DataSpecification,
+  FileReference,
+  GeneralRecord,
+  Nullable,
+  Operation,
+} from "../../types";
 import { PipelineTrace } from "../pipeline";
+import { ResourceView, RunSource, RunStatus } from "../types";
+
+export type PipelineRun = {
+  pipelineUid: string;
+  pipelineRunUid: string;
+  pipelineVersion: string;
+  status: RunStatus;
+  source: RunSource;
+  totalDuration: number;
+  runnerId: string;
+  inputsReference: FileReference[];
+  inputs: GeneralRecord[];
+  outputsReference: FileReference[];
+  outputs: GeneralRecord[];
+  recipeSnapshot: Nullable<GeneralRecord>;
+  startTime: string;
+  completeTime: string;
+  creditAmount: Nullable<number>;
+  error: Nullable<string>;
+  dataSpecification: DataSpecification;
+  requesterId: string;
+};
+
+export type ListPaginatedNamespacePipelineRunsRequest = {
+  namespaceId: string;
+  pipelineId: string;
+  view?: ResourceView;
+  pageSize?: number;
+  page?: number;
+  orderBy?: string;
+  filter?: string;
+  requesterUid?: string;
+};
+
+export type ListPaginatedNamespacePipelineRunsResponse = {
+  pipelineRuns: PipelineRun[];
+  totalSize: number;
+  page: number;
+  pageSize: number;
+};
+
+export type ComponentRun = {
+  pipelineRunUid: string;
+  componentId: string;
+  status: RunStatus;
+  totalDuration: number;
+  startTime: string;
+  completeTime: string;
+  inputs: GeneralRecord[];
+  outputs: GeneralRecord[];
+};
+
+export type ListPaginatedNamespacePipelineComponentRunsRequest = {
+  pipelineRunId: string;
+  pageSize?: number;
+  page?: number;
+  view?: ResourceView;
+  orderBy?: string;
+  filter?: string;
+  requesterUid?: string;
+};
+
+export type ListPaginatedNamespacePipelineComponentRunsResponse = {
+  componentRuns: ComponentRun[];
+  totalSize: number;
+  page: number;
+  pageSize: number;
+};
 
 export type PipelineTriggerMetadata = {
   traces?: Record<string, PipelineTrace>;
 };
 
 export type TriggerNamespacePipelineRequest = {
-  namespacePipelineName: string;
+  namespaceId: string;
+  pipelineId: string;
   inputs: GeneralRecord[];
   returnTraces?: boolean;
   shareCode?: string;
@@ -123,7 +198,8 @@ export type TriggerNamespacePipelineStreamEvent =
 export type TriggerNamespacePipelineWithStreamResponse = any;
 
 export type TriggerAsyncNamespacePipelineRequest = {
-  namespacePipelineName: string;
+  namespaceId: string;
+  pipelineId: string;
   inputs: GeneralRecord[];
   returnTraces?: boolean;
   shareCode?: string;
@@ -135,7 +211,9 @@ export type TriggerAsyncNamespacePipelineResponse = {
 };
 
 export type TriggerNamespacePipelineReleaseRequest = {
-  namespacePipelineReleaseName: string;
+  namespaceId: string;
+  pipelineId: string;
+  releaseId: string;
   inputs: GeneralRecord[];
   returnTraces?: boolean;
   shareCode?: string;
@@ -149,7 +227,9 @@ export type TriggerNamespacePipelineReleaseResponse = {
 };
 
 export type TriggerAsyncNamespacePipelineReleaseRequest = {
-  namespacePipelineReleaseName: string;
+  namespaceId: string;
+  pipelineId: string;
+  releaseId: string;
   inputs: GeneralRecord[];
   returnTraces?: boolean;
   shareCode?: string;

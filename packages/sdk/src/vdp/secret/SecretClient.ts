@@ -17,10 +17,13 @@ export class SecretClient extends APIResource {
    * Query
    * ---------------------------------------------------------------------------*/
 
-  async getNamespaceSecret({ namespaceSecretName }: GetNamespaceSecretRequest) {
+  async getNamespaceSecret({
+    namespaceId,
+    secretId,
+  }: GetNamespaceSecretRequest) {
     try {
       const data = await this._client.get<GetNamespaceSecretResponse>(
-        `/${namespaceSecretName}`,
+        `/namespaces/${namespaceId}/secrets/${secretId}`,
       );
       return Promise.resolve(data.secret);
     } catch (error) {
@@ -40,13 +43,13 @@ export class SecretClient extends APIResource {
   async listNamespaceSecrets(
     props: ListNamespaceSecretsRequest & { enablePagination: boolean },
   ) {
-    const { namespaceName, pageSize, pageToken, enablePagination } = props;
+    const { namespaceId, pageSize, pageToken, enablePagination } = props;
 
     try {
       const secrets: Secret[] = [];
 
       const queryString = getQueryString({
-        baseURL: `/${namespaceName}/secrets`,
+        baseURL: `/namespaces/${namespaceId}/secrets`,
         pageSize,
         pageToken,
       });
@@ -63,7 +66,7 @@ export class SecretClient extends APIResource {
       if (data.nextPageToken) {
         secrets.push(
           ...(await this.listNamespaceSecrets({
-            namespaceName,
+            namespaceId,
             pageSize,
             pageToken: data.nextPageToken,
             enablePagination,
@@ -82,11 +85,11 @@ export class SecretClient extends APIResource {
    * ---------------------------------------------------------------------------*/
 
   async createNamespaceSecret(props: CreateNamespaceSecretRequest) {
-    const { namespaceName, ...payload } = props;
+    const { namespaceId, ...payload } = props;
 
     try {
       const data = await this._client.post<CreateNamespaceSecretResponse>(
-        `/${namespaceName}/secrets`,
+        `/namespaces/${namespaceId}/secrets`,
         {
           body: JSON.stringify(payload),
         },
@@ -98,22 +101,28 @@ export class SecretClient extends APIResource {
   }
 
   async deleteNamespaceSecret({
-    namespaceSecretName,
+    namespaceId,
+    secretId,
   }: DeleteNamespaceSecretRequest) {
     try {
-      await this._client.delete(`/${namespaceSecretName}`);
+      await this._client.delete(
+        `/namespaces/${namespaceId}/secrets/${secretId}`,
+      );
     } catch (error) {
       return Promise.reject(error);
     }
   }
 
   async updateNamespaceSecret(props: UpdateNamespaceSecretRequest) {
-    const { namespaceSecretName, ...payload } = props;
+    const { namespaceId, secretId, ...payload } = props;
 
     try {
-      const data = await this._client.patch(`/${namespaceSecretName}`, {
-        body: JSON.stringify(payload),
-      });
+      const data = await this._client.patch(
+        `/namespaces/${namespaceId}/secrets/${secretId}`,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
       return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);

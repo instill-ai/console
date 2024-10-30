@@ -81,11 +81,15 @@ export const NamespaceSwitch = () => {
   });
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.isSuccess
-      ? routeInfo.data.pipelineName
-      : null,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     accessToken,
-    enabled: enabledQuery && pathnameEvaluator.isPipelineOverviewPage(pathname),
+    enabled:
+      enabledQuery &&
+      routeInfo.isSuccess &&
+      pathnameEvaluator.isPipelineOverviewPage(pathname),
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   const model = useNamespaceModel({

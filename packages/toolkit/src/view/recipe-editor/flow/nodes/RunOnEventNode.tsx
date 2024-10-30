@@ -52,11 +52,12 @@ export const RunOnEventNode = ({ id }: NodeProps) => {
   } = useInstillStore(useShallow(selector));
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.isSuccess
-      ? routeInfo.data.pipelineName
-      : null,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   const isSelected = selectedComponentId === id;

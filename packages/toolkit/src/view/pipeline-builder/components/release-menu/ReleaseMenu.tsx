@@ -51,12 +51,17 @@ export const ReleaseMenu = ({ onRelease }: { onRelease?: () => void }) => {
 
   const onSubmit = React.useCallback(
     async (data: z.infer<typeof ReleasePipelineFormSchema>) => {
-      if (!routeInfo.isSuccess || !routeInfo.data.pipelineName) {
+      if (
+        !routeInfo.isSuccess ||
+        !routeInfo.data.namespaceId ||
+        !routeInfo.data.resourceId
+      ) {
         return;
       }
 
       const payload: CreateNamespacePipelineReleaseRequest = {
-        namespacePipelineName: routeInfo.data.pipelineName,
+        pipelineId: routeInfo.data.resourceId,
+        namespaceId: routeInfo.data.namespaceId,
         id: data.id,
         description: data.description ?? undefined,
       };
