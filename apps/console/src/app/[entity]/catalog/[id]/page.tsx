@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
 
-type RedirectionModelPageProps = {
+type RedirectionCatalogPageProps = {
   params: { tab: string; entity: string };
 };
 
 export default async function RedirectionCatalogPage({
   params,
-}: RedirectionModelPageProps) {
+}: RedirectionCatalogPageProps) {
   const { entity, tab } = params;
   return redirect(`/${entity}/catalog/${tab}/upload`);
 }
