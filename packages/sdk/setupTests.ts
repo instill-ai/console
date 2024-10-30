@@ -2,14 +2,12 @@ import { config } from "dotenv";
 import { setupServer } from "msw/node";
 import { afterAll, afterEach, beforeAll } from "vitest";
 
-import { handlers as coreHandlers } from "./mocks/core/handlers.js";
-import { handlers as modelHandlers } from "./mocks/model/handlers.js";
-import { handlers as vdpHandlers } from "./mocks/vdp/handlers.js";
+import { handlers } from "./mocks/handlers.js";
 
 config();
 
 // The order is important.
-const worker = setupServer(...vdpHandlers, ...coreHandlers, ...modelHandlers);
+const worker = setupServer(...handlers);
 
 // Start worker before all tests
 beforeAll(() => {

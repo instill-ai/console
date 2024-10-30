@@ -7,8 +7,6 @@ git clone --depth 1 --branch "${1:-main}" https://github.com/instill-ai/protobuf
 
 cd protobufs
 
-make openapi
-
 ## Back to the root of the SDK
 cd ..
 
