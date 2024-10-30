@@ -1,6 +1,7 @@
 import { getInstillAdditionalHeaders, getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
 import {
+  CloneNamespacePipelineReleaseRequest,
   CreateNamespacePipelineReleaseRequest,
   CreateNamespacePipelineReleaseResponse,
   DeleteNamespacePipelineReleaseRequest,
@@ -9,9 +10,6 @@ import {
   ListNamespacePipelineReleaseRequest,
   ListNamespacePipelineReleaseResponse,
   PipelineRelease,
-  RenameNamespacePipelineReleaseRequest,
-  RenameNamespacePipelineReleaseResponse,
-  SetPinnedNamespacePipelineReleaseRequest,
   UpdateNamespacePipelineReleaseRequest,
   UpdateNamespacePipelineReleaseResponse,
 } from "./types";
@@ -22,12 +20,21 @@ export class ReleaseClient extends APIResource {
    * ---------------------------------------------------------------------------*/
 
   async GetNamespacePipelineRelease({
-    namespacePipelineReleaseName,
+    namespaceId,
+    pipelineId,
+    releaseId,
+    view,
   }: GetNamespacePipelineReleaseRequest) {
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/pipelines/${pipelineId}/releases/${releaseId}`,
+      view,
+    });
+
     try {
-      const data = await this._client.get<GetNamespacePipelineReleaseResponse>(
-        `/${namespacePipelineReleaseName}`,
-      );
+      const data =
+        await this._client.get<GetNamespacePipelineReleaseResponse>(
+          queryString,
+        );
 
       return Promise.resolve(data.release);
     } catch (error) {
@@ -59,7 +66,8 @@ export class ReleaseClient extends APIResource {
     props: ListNamespacePipelineReleaseRequest & { enablePagination?: boolean },
   ) {
     const {
-      namespacePipelineName,
+      namespaceId,
+      pipelineId,
       pageSize,
       pageToken,
       shareCode,
@@ -72,7 +80,7 @@ export class ReleaseClient extends APIResource {
       const releases: PipelineRelease[] = [];
 
       const queryString = getQueryString({
-        baseURL: `/${namespacePipelineName}/releases`,
+        baseURL: `/namespaces/${namespaceId}/pipelines/${pipelineId}/releases`,
         pageSize,
         pageToken,
         view,
@@ -99,7 +107,8 @@ export class ReleaseClient extends APIResource {
       if (data.nextPageToken) {
         releases.push(
           ...(await this.listNamespacePipelineReleases({
-            namespacePipelineName,
+            namespaceId,
+            pipelineId,
             pageSize,
             pageToken: data.nextPageToken,
             shareCode,
@@ -123,12 +132,12 @@ export class ReleaseClient extends APIResource {
   async createNamespacePipelineRelease(
     props: CreateNamespacePipelineReleaseRequest,
   ) {
-    const { namespacePipelineName, ...payload } = props;
+    const { namespaceId, pipelineId, ...payload } = props;
 
     try {
       const data =
         await this._client.post<CreateNamespacePipelineReleaseResponse>(
-          `/${namespacePipelineName}/releases`,
+          `/namespaces/${namespaceId}/pipelines/${pipelineId}/releases`,
           {
             body: JSON.stringify(payload),
           },
@@ -141,10 +150,14 @@ export class ReleaseClient extends APIResource {
   }
 
   async deleteNamespacePipelineRelease({
-    namespacePipelineReleaseName,
+    namespaceId,
+    pipelineId,
+    releaseId,
   }: DeleteNamespacePipelineReleaseRequest) {
     try {
-      await this._client.delete(`/${namespacePipelineReleaseName}`);
+      await this._client.delete(
+        `/namespaces/${namespaceId}/pipelines/${pipelineId}/releases/${releaseId}`,
+      );
 
       return Promise.resolve();
     } catch (error) {
@@ -152,16 +165,17 @@ export class ReleaseClient extends APIResource {
     }
   }
 
-  async updateNamespacePipelineRelease({
-    namespacePipelineReleaseName,
-    description,
-  }: UpdateNamespacePipelineReleaseRequest) {
+  async updateNamespacePipelineRelease(
+    props: UpdateNamespacePipelineReleaseRequest,
+  ) {
+    const { namespaceId, pipelineId, releaseId, ...payload } = props;
+
     try {
       const data =
         await this._client.patch<UpdateNamespacePipelineReleaseResponse>(
-          `/${namespacePipelineReleaseName}`,
+          `/namespaces/${namespaceId}/pipelines/${pipelineId}/releases/${releaseId}`,
           {
-            body: JSON.stringify({ description }),
+            body: JSON.stringify(payload),
           },
         );
 
@@ -171,32 +185,18 @@ export class ReleaseClient extends APIResource {
     }
   }
 
-  async setPinnedNamespacePipelineRelease({
-    namespacePipelineReleaseName,
-  }: SetPinnedNamespacePipelineReleaseRequest) {
+  async cloneNamespacePipelineRelease(
+    props: CloneNamespacePipelineReleaseRequest,
+  ) {
+    const { namespaceId, pipelineId, releaseId, ...payload } = props;
+
     try {
-      await this._client.post(`/${namespacePipelineReleaseName}/restore`);
-
-      return Promise.resolve();
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async renameNamespacePipelineRelease({
-    namespacePipelineReleaseName,
-    newPipelineReleaseId,
-  }: RenameNamespacePipelineReleaseRequest) {
-    try {
-      const data =
-        await this._client.post<RenameNamespacePipelineReleaseResponse>(
-          `/${namespacePipelineReleaseName}/rename`,
-          {
-            body: JSON.stringify({ id: newPipelineReleaseId }),
-          },
-        );
-
-      return Promise.resolve(data.release);
+      await this._client.post(
+        `/namespaces/${namespaceId}/pipelines/${pipelineId}/releases/${releaseId}/clone`,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
     } catch (error) {
       return Promise.reject(error);
     }

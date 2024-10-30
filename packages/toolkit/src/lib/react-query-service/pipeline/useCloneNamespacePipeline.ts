@@ -1,10 +1,10 @@
 "use client";
 
+import type { CloneNamespacePipelineRequest, Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CloneNamespacePipelineRequest } from "instill-sdk";
 
-import type { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
 export function useCloneNamespacePipeline() {
   const queryClient = useQueryClient();
@@ -26,20 +26,37 @@ export function useCloneNamespacePipeline() {
       await client.vdp.pipeline.cloneNamespacePipeline(payload);
 
       return Promise.resolve({
-        pipelineName: `namespaces/${payload.namespaceId}/pipelines/${payload.pipelineId}`,
+        namespaceId: payload.namespaceId,
       });
     },
-    onSuccess: async ({ pipelineName }) => {
-      const namespace = pipelineName.split("/").splice(0, 2).join("/");
-      queryClient.invalidateQueries({ queryKey: ["pipelines", "infinite"] });
+    onSuccess: async ({ namespaceId }) => {
       queryClient.invalidateQueries({
-        queryKey: ["pipelines", namespace, "infinite"],
+        queryKey:
+          queryKeyStore.pipeline.getUseInfiniteNamespacePipelinesQueryKey({
+            namespaceId,
+            filter: null,
+            visibility: null,
+            view: null,
+          }),
       });
+
       queryClient.invalidateQueries({
-        queryKey: ["pipelines", namespace],
+        queryKey: queryKeyStore.pipeline.getUseNamespacePipelinesQueryKey({
+          namespaceId,
+          view: null,
+          filter: null,
+          visibility: null,
+        }),
       });
+
       queryClient.invalidateQueries({
-        queryKey: ["pipelines"],
+        queryKey:
+          queryKeyStore.pipeline.getUseInfiniteAccessiblePipelinesQueryKey({
+            filter: null,
+            visibility: null,
+            view: null,
+            orderBy: null,
+          }),
       });
     },
   });

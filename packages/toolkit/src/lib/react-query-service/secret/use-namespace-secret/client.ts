@@ -1,31 +1,38 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
-import { Nullable } from "../../../type";
-import { fetchNamespaceSecret, getUseNamespaceSecretQueryKey } from "./server";
+import { queryKeyStore } from "../../queryKeyStore";
+import { fetchNamespaceSecret } from "./server";
 
 export function useNamespaceSecret({
-  namespaceSecretName,
+  namespaceId,
+  secretId,
   accessToken,
   enabled,
 }: {
-  namespaceSecretName: Nullable<string>;
+  namespaceId: Nullable<string>;
+  secretId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
 }) {
   let enabledQuery = false;
 
-  if (namespaceSecretName && enabled) {
+  if (namespaceId && secretId && enabled) {
     enabledQuery = true;
   }
 
-  const queryKey = getUseNamespaceSecretQueryKey(namespaceSecretName);
-
   return useQuery({
-    queryKey,
+    queryKey: queryKeyStore.secret.getUseNamespaceSecretQueryKey({
+      namespaceId,
+      secretId,
+    }),
     queryFn: async () => {
       try {
         return await fetchNamespaceSecret({
-          namespaceSecretName,
+          namespaceId,
+          secretId,
           accessToken,
         });
       } catch (error) {

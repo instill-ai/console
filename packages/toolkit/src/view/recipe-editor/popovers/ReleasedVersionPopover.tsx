@@ -45,15 +45,21 @@ export const ReleasedVersionPopover = ({
   } = useInstillStore(useShallow(selector));
 
   const sortedReleases = useSortedReleases({
-    pipelineName: routeInfo.data.pipelineName,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     accessToken,
     enabledQuery: enabledQuery && routeInfo.isSuccess,
+    shareCode: null,
+    view: "VIEW_FULL",
   });
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.data.pipelineName,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   return (

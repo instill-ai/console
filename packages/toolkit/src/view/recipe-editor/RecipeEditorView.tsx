@@ -112,11 +112,12 @@ export const RecipeEditorView = () => {
   const editorContainerRef = React.useRef<HTMLDivElement>(null);
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.isSuccess
-      ? routeInfo.data.pipelineName
-      : null,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     accessToken,
     enabled: enabledQuery,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   // redirect to 404 if the pipeline is not found
@@ -146,9 +147,12 @@ export const RecipeEditorView = () => {
   }, [editorRef]);
 
   const sortedReleases = useSortedReleases({
-    pipelineName: routeInfo.data.pipelineName,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     accessToken,
     enabledQuery: enabledQuery && routeInfo.isSuccess,
+    shareCode: null,
+    view: "VIEW_FULL",
   });
 
   React.useEffect(() => {
@@ -191,10 +195,7 @@ export const RecipeEditorView = () => {
         : release?.dataSpecification;
 
     const inputView = recipe?.variable ? (
-      <Input
-        pipelineName={pipeline.data?.name ?? null}
-        fields={recipe?.variable ?? null}
-      />
+      <Input fields={recipe?.variable ?? null} />
     ) : (
       <InOutputEmptyView reason="variableIsEmpty" />
     );

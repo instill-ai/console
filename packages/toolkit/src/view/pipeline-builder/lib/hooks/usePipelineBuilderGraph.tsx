@@ -51,8 +51,11 @@ export function usePipelineBuilderGraph() {
 
   const pipeline = useNamespacePipeline({
     enabled: enabledQuery && !pipelineIsNew && routeInfo.isSuccess,
-    namespacePipelineName: routeInfo.data.pipelineName,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     accessToken,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   // Initialize the pipeline graph for existed pipeline

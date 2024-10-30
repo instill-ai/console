@@ -190,3 +190,10 @@ export type InstillErrorResponse = {
   message: string;
   details: ErrorDetails[];
 };
+
+export type FileReference = {
+  name: string;
+  type: string;
+  size: number;
+  url: string;
+};

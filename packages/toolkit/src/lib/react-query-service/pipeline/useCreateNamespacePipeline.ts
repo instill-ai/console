@@ -1,10 +1,10 @@
 "use client";
 
-import type { CreateNamespacePipelineRequest, Pipeline } from "instill-sdk";
+import type { CreateNamespacePipelineRequest, Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
 export function useCreateNamespacePipeline() {
   const queryClient = useQueryClient();
@@ -27,31 +27,39 @@ export function useCreateNamespacePipeline() {
         await client.vdp.pipeline.createNamespacePipeline(payload);
 
       return Promise.resolve({
+        namespaceId: payload.namespaceId,
         pipeline,
-        namespaceName: payload.namespaceName,
       });
     },
-    onSuccess: async ({ pipeline, namespaceName }) => {
-      queryClient.setQueryData<Pipeline>(
-        ["pipelines", pipeline.name],
-        pipeline,
-      );
-      queryClient.invalidateQueries({ queryKey: ["pipelines", "infinite"] });
+    onSuccess: async ({ namespaceId }) => {
       queryClient.invalidateQueries({
-        queryKey: ["pipelines", namespaceName, "infinite"],
+        queryKey:
+          queryKeyStore.pipeline.getUseInfiniteNamespacePipelinesQueryKey({
+            namespaceId,
+            filter: null,
+            visibility: null,
+            view: null,
+          }),
       });
-      queryClient.setQueryData<Pipeline[]>(
-        ["pipelines", namespaceName],
-        (old) =>
-          old
-            ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
-            : [pipeline],
-      );
-      queryClient.setQueryData<Pipeline[]>(["pipelines"], (old) =>
-        old
-          ? [...old.filter((e) => e.name !== pipeline.name), pipeline]
-          : [pipeline],
-      );
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeyStore.pipeline.getUseNamespacePipelinesQueryKey({
+          namespaceId,
+          view: null,
+          filter: null,
+          visibility: null,
+        }),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey:
+          queryKeyStore.pipeline.getUseInfiniteAccessiblePipelinesQueryKey({
+            filter: null,
+            visibility: null,
+            view: null,
+            orderBy: null,
+          }),
+      });
     },
   });
 }

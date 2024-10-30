@@ -1,17 +1,24 @@
+import type { Nullable } from "instill-sdk";
 import { QueryClient } from "@tanstack/react-query";
 
 import { getInstillAPIClient } from "../../../sdk-helper";
-import { Nullable } from "../../../type";
+import { queryKeyStore } from "../../queryKeyStore";
 
 export async function fetchNamespaceSecret({
-  namespaceSecretName,
+  namespaceId,
+  secretId,
   accessToken,
 }: {
-  namespaceSecretName: Nullable<string>;
+  namespaceId: Nullable<string>;
+  secretId: Nullable<string>;
   accessToken: Nullable<string>;
 }) {
-  if (!namespaceSecretName) {
-    throw new Error("namespaceSecretName not provided");
+  if (!namespaceId) {
+    throw new Error("namespaceId is required");
+  }
+
+  if (!secretId) {
+    throw new Error("secretId is required");
   }
 
   if (!accessToken) {
@@ -22,7 +29,8 @@ export async function fetchNamespaceSecret({
     const client = getInstillAPIClient({ accessToken });
 
     const userSecret = await client.vdp.secret.getNamespaceSecret({
-      namespaceSecretName,
+      namespaceId,
+      secretId,
     });
 
     return Promise.resolve(userSecret);
@@ -31,26 +39,26 @@ export async function fetchNamespaceSecret({
   }
 }
 
-export function getUseNamespaceSecretQueryKey(secretName: Nullable<string>) {
-  return ["secrets", secretName];
-}
-
 export function prefetchNamespaceSecret({
-  namespaceSecretName,
+  namespaceId,
+  secretId,
   accessToken,
   queryClient,
 }: {
-  namespaceSecretName: Nullable<string>;
+  namespaceId: Nullable<string>;
+  secretId: Nullable<string>;
   accessToken: Nullable<string>;
   queryClient: QueryClient;
 }) {
-  const queryKey = getUseNamespaceSecretQueryKey(namespaceSecretName);
-
   return queryClient.prefetchQuery({
-    queryKey,
+    queryKey: queryKeyStore.secret.getUseNamespaceSecretQueryKey({
+      namespaceId,
+      secretId,
+    }),
     queryFn: async () => {
       return await fetchNamespaceSecret({
-        namespaceSecretName,
+        namespaceId,
+        secretId,
         accessToken,
       });
     },

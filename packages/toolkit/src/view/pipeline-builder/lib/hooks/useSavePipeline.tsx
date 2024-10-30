@@ -80,8 +80,8 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
       if (
         !pipelineId ||
         !routeInfo.isSuccess ||
-        !routeInfo.data.pipelineName ||
-        !routeInfo.data.namespaceName
+        !routeInfo.data.namespaceId ||
+        !routeInfo.data.resourceId
       ) {
         return;
       }
@@ -102,7 +102,8 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
 
       if (!pipelineIsNew && pipelineRecipeIsDirty) {
         const payload: UpdateNamespacePipelineRequest = {
-          namespacePipelineName: routeInfo.data.pipelineName,
+          namespaceId: routeInfo.data.namespaceId,
+          pipelineId: routeInfo.data.resourceId,
           recipe: composePipelineRecipeFromNodes(targetNodes),
           metadata: composePipelineMetadataMapFromNodes(targetNodes),
         };
@@ -159,7 +160,7 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
       // If the user haven't created the pipeline yet, we will create the pipeline
 
       const payload: CreateNamespacePipelineRequest = {
-        namespaceName: routeInfo.data.namespaceName,
+        namespaceId: routeInfo.data.namespaceId,
         id: pipelineId,
         recipe: composePipelineRecipeFromNodes(targetNodes),
         metadata: composePipelineMetadataMapFromNodes(targetNodes),

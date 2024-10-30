@@ -74,7 +74,12 @@ export const PipelineSettings = ({
 
   const updateUserPipeline = useUpdateNamespacePipeline();
   async function onSubmit(data: z.infer<typeof PipelineSettingsSchema>) {
-    if (!routeInfo.isSuccess || !routeInfo?.data.pipelineName || !accessToken) {
+    if (
+      !routeInfo.isSuccess ||
+      !routeInfo.data.namespaceId ||
+      !routeInfo.data.resourceId ||
+      !accessToken
+    ) {
       return;
     }
 
@@ -91,7 +96,8 @@ export const PipelineSettings = ({
     };
 
     const payload: UpdateNamespacePipelineRequest = {
-      namespacePipelineName: routeInfo.data.pipelineName,
+      namespaceId: routeInfo.data.namespaceId,
+      pipelineId: routeInfo.data.resourceId,
       description: data.description ?? undefined,
       sourceUrl: data.sourceUrl,
       documentationUrl: data.documentationUrl,

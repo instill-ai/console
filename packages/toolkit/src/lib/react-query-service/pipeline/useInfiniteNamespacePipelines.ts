@@ -1,57 +1,57 @@
 "use client";
 
+import type {
+  ListNamespacePipelinesResponse,
+  Nullable,
+  ResourceView,
+  Visibility,
+} from "instill-sdk";
 import {
   InfiniteData,
   useInfiniteQuery,
   UseInfiniteQueryResult,
 } from "@tanstack/react-query";
-import { ListNamespacePipelinesResponse, Visibility } from "instill-sdk";
 
 import { env } from "../../../server";
 import { getInstillAPIClient } from "../../sdk-helper";
-import { Nullable } from "../../type";
+import { queryKeyStore } from "../queryKeyStore";
 
 export function useInfiniteNamespacePipelines({
-  namespaceName,
+  namespaceId,
   accessToken,
   pageSize,
   enabledQuery,
   filter,
   visibility,
-  disabledViewFull,
+  view,
 }: {
-  namespaceName: Nullable<string>;
+  namespaceId: Nullable<string>;
   accessToken: Nullable<string>;
-  pageSize?: number;
+  pageSize: Nullable<number>;
   enabledQuery: boolean;
   filter: Nullable<string>;
   visibility: Nullable<Visibility>;
-  disabledViewFull?: boolean;
+  view: Nullable<ResourceView>;
 }): UseInfiniteQueryResult<
   InfiniteData<ListNamespacePipelinesResponse>,
   Error
 > {
   let enabled = false;
 
-  if (namespaceName && enabledQuery) {
+  if (namespaceId && enabledQuery) {
     enabled = true;
   }
 
-  const queryKey = ["pipelines", namespaceName, "infinite"];
-
-  if (filter) {
-    queryKey.push(filter);
-  }
-
-  if (visibility) {
-    queryKey.push(visibility);
-  }
-
   return useInfiniteQuery({
-    queryKey,
+    queryKey: queryKeyStore.pipeline.getUseInfiniteNamespacePipelinesQueryKey({
+      namespaceId,
+      filter,
+      visibility,
+      view,
+    }),
     queryFn: async ({ pageParam }) => {
-      if (!namespaceName) {
-        return Promise.reject(new Error("namespaceName not provided"));
+      if (!namespaceId) {
+        return Promise.reject(new Error("namespaceId not provided"));
       }
 
       const client = getInstillAPIClient({
@@ -61,11 +61,11 @@ export function useInfiniteNamespacePipelines({
       const pipelines = await client.vdp.pipeline.listNamespacePipelines({
         pageSize: pageSize ?? env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
         pageToken: pageParam ?? undefined,
-        namespaceName,
+        namespaceId,
         enablePagination: true,
         filter: filter ?? undefined,
         visibility: visibility ?? undefined,
-        view: disabledViewFull ? undefined : "VIEW_FULL",
+        view: view ?? "VIEW_BASIC",
       });
 
       return Promise.resolve(pipelines);

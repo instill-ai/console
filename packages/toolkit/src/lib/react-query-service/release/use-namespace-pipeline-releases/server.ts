@@ -1,20 +1,28 @@
+import type { Nullable, ResourceView } from "instill-sdk";
+
 import { env, QueryClient } from "../../../../server";
 import { getInstillAPIClient } from "../../../sdk-helper";
-import { Nullable } from "../../../type";
+import { queryKeyStore } from "../../queryKeyStore";
 
 export async function fetchNamespacePipelineReleases({
-  namespacePipelineName,
+  namespaceId,
+  pipelineId,
   accessToken,
   shareCode,
-  disableViewFull,
+  view,
 }: {
-  namespacePipelineName: Nullable<string>;
+  namespaceId: Nullable<string>;
+  pipelineId: Nullable<string>;
   accessToken: Nullable<string>;
-  shareCode?: string;
-  disableViewFull?: boolean;
+  shareCode: Nullable<string>;
+  view: Nullable<ResourceView>;
 }) {
-  if (!namespacePipelineName) {
-    throw new Error("namespacePipelineName not provided");
+  if (!namespaceId) {
+    throw new Error("namespaceId is required");
+  }
+
+  if (!pipelineId) {
+    throw new Error("pipelineId is required");
   }
 
   try {
@@ -24,11 +32,12 @@ export async function fetchNamespacePipelineReleases({
 
     const pipelineReleases =
       await client.vdp.release.listNamespacePipelineReleases({
-        namespacePipelineName,
+        namespaceId,
+        pipelineId,
         pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-        shareCode: shareCode,
+        shareCode: shareCode ?? undefined,
         enablePagination: false,
-        view: disableViewFull ? undefined : "VIEW_FULL",
+        view: view ?? "VIEW_BASIC",
       });
 
     return Promise.resolve(pipelineReleases);
@@ -37,37 +46,35 @@ export async function fetchNamespacePipelineReleases({
   }
 }
 
-export function getUseNamespacePipelineReleasesQueryKey(
-  namespacePipelineName: Nullable<string>,
-) {
-  return ["pipelineReleases", namespacePipelineName];
-}
-
 export function prefetchNamespacePipelineReleases({
-  namespacePipelineName,
+  namespaceId,
+  pipelineId,
   accessToken,
   queryClient,
   shareCode,
-  disableViewFull,
+  view,
 }: {
-  namespacePipelineName: Nullable<string>;
-  accessToken: Nullable<string>;
   queryClient: QueryClient;
-  shareCode?: string;
-  disableViewFull?: boolean;
+  namespaceId: Nullable<string>;
+  pipelineId: Nullable<string>;
+  accessToken: Nullable<string>;
+  shareCode: Nullable<string>;
+  view: Nullable<ResourceView>;
 }) {
-  const queryKey = getUseNamespacePipelineReleasesQueryKey(
-    namespacePipelineName,
-  );
-
   return queryClient.prefetchQuery({
-    queryKey,
+    queryKey: queryKeyStore.release.getUseNamespacePipelineReleasesQueryKey({
+      namespaceId,
+      pipelineId,
+      view,
+      shareCode,
+    }),
     queryFn: async () => {
       return await fetchNamespacePipelineReleases({
-        namespacePipelineName,
+        namespaceId,
+        pipelineId,
         accessToken,
         shareCode,
-        disableViewFull,
+        view,
       });
     },
   });

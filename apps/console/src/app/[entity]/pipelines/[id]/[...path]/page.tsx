@@ -34,8 +34,11 @@ export async function generateMetadata({
 
   try {
     const pipeline = await fetchNamespacePipeline({
-      namespacePipelineName: `namespaces/${entity}/pipelines/${id}`,
+      namespaceId: entity,
+      pipelineId: id,
       accessToken,
+      view: "VIEW_BASIC",
+      shareCode: null,
     });
 
     metadata = {

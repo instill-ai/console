@@ -1,5 +1,6 @@
 "use client";
 
+import { InstillNameInterpreter } from "instill-sdk";
 import { Edge, Node } from "reactflow";
 import { useShallow } from "zustand/react/shallow";
 
@@ -41,15 +42,29 @@ export const BackToLatestVersionTopBar = () => {
   } = useInstillStore(useShallow(selector));
 
   const sortedReleases = useSortedReleases({
-    pipelineName,
+    namespaceId: pipelineName
+      ? InstillNameInterpreter.pipeline(pipelineName).namespaceId
+      : null,
+    pipelineId: pipelineName
+      ? InstillNameInterpreter.pipeline(pipelineName).resourceId
+      : null,
     accessToken,
     enabledQuery: pipelineIsNew ? false : enabledQuery,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   const pipeline = useNamespacePipeline({
-    enabled: enabledQuery && !pipelineIsNew,
-    namespacePipelineName: pipelineName,
+    enabled: enabledQuery && !!pipelineName && !pipelineIsNew,
+    namespaceId: pipelineName
+      ? InstillNameInterpreter.pipeline(pipelineName).namespaceId
+      : null,
+    pipelineId: pipelineName
+      ? InstillNameInterpreter.pipeline(pipelineName).resourceId
+      : null,
     accessToken,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   return currentVersion === "latest" ||

@@ -2,6 +2,7 @@
 
 import type { Secret } from "instill-sdk";
 import { ColumnDef } from "@tanstack/react-table";
+import { InstillNameInterpreter } from "instill-sdk";
 
 import { Button, DataTable } from "@instill-ai/design-system";
 
@@ -64,9 +65,14 @@ export const SecretTable = (props: APITokenTableProps) => {
       accessorKey: "uid",
       header: () => <div className="max-w-[100px] text-center"></div>,
       cell: ({ row }) => {
+        const instillName = InstillNameInterpreter.secret(row.original.name);
+
         return (
           <div className="flex justify-center">
-            <DeleteSecretDialog secretName={row.original.name} />
+            <DeleteSecretDialog
+              namespaceId={instillName.namespaceId}
+              secretId={row.original.id}
+            />
           </div>
         );
       },

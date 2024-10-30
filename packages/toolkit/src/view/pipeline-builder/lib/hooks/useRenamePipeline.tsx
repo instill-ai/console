@@ -62,8 +62,8 @@ export function useRenamePipeline() {
       if (
         !pipelineId ||
         !routeInfo.isSuccess ||
-        !routeInfo.data.namespaceName ||
-        !routeInfo.data.pipelineName ||
+        !routeInfo.data.namespaceId ||
+        !routeInfo.data.resourceId ||
         !accessToken
       ) {
         return;
@@ -71,7 +71,7 @@ export function useRenamePipeline() {
 
       if (pipelineIsNew) {
         const payload: CreateNamespacePipelineRequest = {
-          namespaceName: routeInfo.data.namespaceName,
+          namespaceId: routeInfo.data.namespaceId,
           id: newId,
           recipe: composePipelineRecipeFromNodes(nodes),
           metadata: composePipelineMetadataMapFromNodes(nodes),
@@ -121,7 +121,8 @@ export function useRenamePipeline() {
 
       if (pipelineRecipeIsDirty) {
         const payload: UpdateNamespacePipelineRequest = {
-          namespacePipelineName: routeInfo.data.pipelineName,
+          namespaceId: routeInfo.data.namespaceId,
+          pipelineId: routeInfo.data.resourceId,
           recipe: composePipelineRecipeFromNodes(nodes),
           metadata: composePipelineMetadataMapFromNodes(nodes),
         };
@@ -149,7 +150,8 @@ export function useRenamePipeline() {
       }
 
       const payload: RenameNamespacePipelineRequest = {
-        namespacePipelineName: routeInfo.data.pipelineName,
+        namespaceId: routeInfo.data.namespaceId,
+        pipelineId: routeInfo.data.resourceId,
         newPipelineId: newId,
       };
 

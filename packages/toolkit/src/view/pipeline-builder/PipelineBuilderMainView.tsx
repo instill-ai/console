@@ -68,7 +68,7 @@ export const PipelineBuilderMainView = ({
   const routeInfo = useRouteInfo();
 
   const entitySecrets = useNamespaceSecrets({
-    namespaceName: routeInfo.data.namespaceName,
+    namespaceId: routeInfo.data.namespaceId,
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
   });
@@ -79,9 +79,12 @@ export const PipelineBuilderMainView = ({
   }, [entitySecrets.isSuccess, entitySecrets.data, updateEntitySecrets]);
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.data.pipelineName,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     enabled: enabledQuery && routeInfo.isSuccess && !pipelineIsNew,
     accessToken,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   React.useEffect(() => {

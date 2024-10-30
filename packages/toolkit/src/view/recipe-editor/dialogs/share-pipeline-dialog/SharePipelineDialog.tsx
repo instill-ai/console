@@ -38,9 +38,12 @@ export const SharePipelineDialog = () => {
   const routeInfo = useRouteInfo();
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.data.pipelineName,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   const ownerDisplayName = React.useMemo(() => {

@@ -1,11 +1,17 @@
 "use client";
 
 import * as React from "react";
-import cn from "clsx";
+import { InstillNameInterpreter } from "instill-sdk";
 import { Edge, Node } from "reactflow";
 import { useShallow } from "zustand/react/shallow";
 
-import { Button, Icons, Popover, ScrollArea } from "@instill-ai/design-system";
+import {
+  Button,
+  cn,
+  Icons,
+  Popover,
+  ScrollArea,
+} from "@instill-ai/design-system";
 
 import {
   InstillStore,
@@ -52,17 +58,28 @@ export const BottomBar = () => {
   } = useInstillStore(useShallow(selector));
 
   const sortedReleases = useSortedReleases({
-    pipelineName,
+    namespaceId: pipelineName
+      ? InstillNameInterpreter.pipeline(pipelineName).namespaceId
+      : null,
+    pipelineId: pipelineName
+      ? InstillNameInterpreter.pipeline(pipelineName).resourceId
+      : null,
     accessToken,
-    enabledQuery: pipelineIsNew ? false : enabledQuery,
+    enabledQuery: pipelineIsNew ? false : enabledQuery && !!pipelineName,
+    shareCode: null,
+    view: "VIEW_FULL",
   });
 
   const routeInfo = useRouteInfo();
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.data.pipelineName,
-    enabled: enabledQuery && routeInfo.isSuccess && !pipelineIsNew,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
+    enabled:
+      enabledQuery && routeInfo.isSuccess && !!pipelineName && !pipelineIsNew,
     accessToken,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   return (

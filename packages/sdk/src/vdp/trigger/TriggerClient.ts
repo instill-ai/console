@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { getInstillAdditionalHeaders } from "../../helper";
-import { APIResource } from "../../main/resource";
-import {
+import type {
+  ListPaginatedNamespacePipelineComponentRunsRequest,
+  ListPaginatedNamespacePipelineComponentRunsResponse,
+  ListPaginatedNamespacePipelineRunsRequest,
+  ListPaginatedNamespacePipelineRunsResponse,
   TriggerAsyncNamespacePipelineReleaseRequest,
   TriggerAsyncNamespacePipelineReleaseResponse,
   TriggerAsyncNamespacePipelineRequest,
@@ -14,10 +16,92 @@ import {
   TriggerNamespacePipelineResponse,
   TriggerNamespacePipelineWithStreamResponse,
 } from "./types";
+import { getInstillAdditionalHeaders, getQueryString } from "../../helper";
+import { APIResource } from "../../main/resource";
 
 export class TriggerClient extends APIResource {
+  async listPaginatedNamespacePipelineRuns(
+    props: ListPaginatedNamespacePipelineRunsRequest,
+  ) {
+    const {
+      namespaceId,
+      pipelineId,
+      view,
+      pageSize,
+      page,
+      orderBy,
+      filter,
+      requesterUid,
+    } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/namespaces/${namespaceId}/pipelines/${pipelineId}/runs`,
+        pageSize,
+        page,
+        filter,
+        orderBy,
+        view,
+      });
+
+      const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
+
+      const data =
+        await this._client.get<ListPaginatedNamespacePipelineRunsResponse>(
+          queryString,
+          {
+            additionalHeaders,
+          },
+        );
+
+      return Promise.resolve(data);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  async listPaginatedNamespacePipelineComponentRuns(
+    props: ListPaginatedNamespacePipelineComponentRunsRequest,
+  ) {
+    const {
+      pipelineRunId,
+      view,
+      pageSize,
+      page,
+      orderBy,
+      filter,
+      requesterUid,
+    } = props;
+
+    try {
+      const additionalHeaders = getInstillAdditionalHeaders({ requesterUid });
+
+      const queryString = getQueryString({
+        baseURL: `/pipeline-runs/${pipelineRunId}/component-runs`,
+        pageSize,
+        page,
+        filter,
+        orderBy,
+        view,
+      });
+
+      const data =
+        await this._client.get<ListPaginatedNamespacePipelineComponentRunsResponse>(
+          queryString,
+          {
+            additionalHeaders,
+          },
+        );
+
+      return Promise.resolve(data);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
   async triggerNamespacePipeline({
-    namespacePipelineName,
+    namespaceId,
+    pipelineId,
     inputs,
     returnTraces,
     requesterUid,
@@ -27,7 +111,8 @@ export class TriggerClient extends APIResource {
     stream: true;
   }): Promise<TriggerNamespacePipelineWithStreamResponse>;
   async triggerNamespacePipeline({
-    namespacePipelineName,
+    namespaceId,
+    pipelineId,
     inputs,
     returnTraces,
     requesterUid,
@@ -37,7 +122,8 @@ export class TriggerClient extends APIResource {
     stream: false;
   }): Promise<TriggerNamespacePipelineResponse>;
   async triggerNamespacePipeline({
-    namespacePipelineName,
+    namespaceId,
+    pipelineId,
     inputs,
     returnTraces,
     requesterUid,
@@ -47,7 +133,8 @@ export class TriggerClient extends APIResource {
     stream?: undefined;
   }): Promise<TriggerNamespacePipelineResponse>;
   async triggerNamespacePipeline({
-    namespacePipelineName,
+    namespaceId,
+    pipelineId,
     inputs,
     returnTraces,
     requesterUid,
@@ -60,7 +147,8 @@ export class TriggerClient extends APIResource {
     | TriggerNamespacePipelineWithStreamResponse
   >;
   async triggerNamespacePipeline({
-    namespacePipelineName,
+    namespaceId,
+    pipelineId,
     inputs,
     requesterUid,
     returnTraces,
@@ -78,7 +166,7 @@ export class TriggerClient extends APIResource {
 
     try {
       const data = (await this._client.post(
-        `/${namespacePipelineName}/trigger`,
+        `/namespaces/${namespaceId}/pipelines/${pipelineId}/trigger`,
         {
           body: JSON.stringify({ inputs }),
           additionalHeaders,
@@ -99,7 +187,8 @@ export class TriggerClient extends APIResource {
   }
 
   async triggerAsyncNamespacePipeline({
-    namespacePipelineName,
+    namespaceId,
+    pipelineId,
     inputs,
     returnTraces,
     requesterUid,
@@ -114,7 +203,7 @@ export class TriggerClient extends APIResource {
     try {
       const data =
         await this._client.post<TriggerAsyncNamespacePipelineResponse>(
-          `/${namespacePipelineName}/triggerAsync`,
+          `/namespaces/${namespaceId}/pipelines/${pipelineId}/triggerAsync`,
           {
             body: JSON.stringify({ inputs }),
             additionalHeaders,
@@ -127,7 +216,9 @@ export class TriggerClient extends APIResource {
   }
 
   async triggerNamespacePipelineRelease({
-    namespacePipelineReleaseName,
+    namespaceId,
+    pipelineId,
+    releaseId,
     inputs,
     returnTraces,
     requesterUid,
@@ -149,7 +240,7 @@ export class TriggerClient extends APIResource {
     try {
       const data =
         await this._client.post<TriggerNamespacePipelineReleaseResponse>(
-          `/${namespacePipelineReleaseName}/trigger`,
+          `/namespaces/${namespaceId}/pipelines/${pipelineId}/releases/${releaseId}/trigger`,
           {
             body: JSON.stringify({ inputs }),
             additionalHeaders,
@@ -164,15 +255,15 @@ export class TriggerClient extends APIResource {
       } else {
         return Promise.resolve(data);
       }
-
-      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }
   }
 
   async triggerAsyncNamespacePipelineRelease({
-    namespacePipelineReleaseName,
+    namespaceId,
+    pipelineId,
+    releaseId,
     inputs,
     returnTraces,
     requesterUid,
@@ -187,7 +278,7 @@ export class TriggerClient extends APIResource {
     try {
       const data =
         await this._client.post<TriggerAsyncNamespacePipelineReleaseResponse>(
-          `/${namespacePipelineReleaseName}/triggerAsync`,
+          `/namespaces/${namespaceId}/pipelines/${pipelineId}/releases/${releaseId}/triggerAsync`,
           {
             body: JSON.stringify({ inputs }),
             additionalHeaders,

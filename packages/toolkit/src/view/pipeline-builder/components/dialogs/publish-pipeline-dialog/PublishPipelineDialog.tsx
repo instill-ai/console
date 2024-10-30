@@ -60,9 +60,12 @@ export const PublishPipelineDialog = () => {
   });
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.data.pipelineName,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     accessToken,
-    enabled: enabledQuery && !pipelineIsNew && routeInfo.isSuccess,
+    enabled: enabledQuery && routeInfo.isSuccess && !pipelineIsNew,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   const updatePipeline = useUpdateNamespacePipeline();
@@ -74,7 +77,8 @@ export const PublishPipelineDialog = () => {
       isPublishing ||
       !pipeline.isSuccess ||
       !routeInfo.isSuccess ||
-      !routeInfo.data.pipelineName
+      !routeInfo.data.namespaceId ||
+      !routeInfo.data.resourceId
     ) {
       return;
     }
@@ -82,7 +86,8 @@ export const PublishPipelineDialog = () => {
     setIsPublishing(true);
 
     const payload: UpdateNamespacePipelineRequest = {
-      namespacePipelineName: routeInfo.data.pipelineName,
+      namespaceId: routeInfo.data.namespaceId,
+      pipelineId: routeInfo.data.resourceId,
       description: formData.description ?? undefined,
       readme: formData.readme ?? undefined,
       sharing: {

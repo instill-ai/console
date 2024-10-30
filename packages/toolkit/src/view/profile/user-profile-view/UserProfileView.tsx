@@ -46,11 +46,12 @@ export const UserProfileView = () => {
   });
 
   const pipelines = useNamespacePipelines({
-    namespaceName: routeInfo.isSuccess ? routeInfo.data.namespaceName : null,
+    namespaceId: routeInfo.isSuccess ? routeInfo.data.namespaceId : null,
     accessToken: accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
     filter: null,
     visibility: null,
+    view: null,
   });
 
   const models = useNamespaceModels({

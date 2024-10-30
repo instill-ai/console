@@ -129,7 +129,7 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
 
     if (targetNamespace) {
       const payload: CreateNamespacePipelineRequest = {
-        namespaceName: targetNamespace.name,
+        namespaceId: targetNamespace.id,
         id: formattedPipelineId,
         description: data.description ?? undefined,
         rawRecipe: defaultRawRecipe,

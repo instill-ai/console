@@ -28,7 +28,7 @@ export const UserSecretTab = () => {
   });
 
   const secrets = useNamespaceSecrets({
-    namespaceName: me.data?.name ?? null,
+    namespaceId: me.data?.id ?? null,
     accessToken,
     enabled: enabledQuery && me.isSuccess,
   });

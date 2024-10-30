@@ -2,6 +2,7 @@
 
 import type { Pipeline } from "instill-sdk";
 import * as React from "react";
+import { InstillNameInterpreter } from "instill-sdk";
 
 import { useToast } from "@instill-ai/design-system";
 
@@ -39,8 +40,11 @@ export const PipelineReadme = ({ pipeline, onUpdate }: PipelineReadmeProps) => {
       return;
     }
 
+    const instillName = InstillNameInterpreter.pipeline(pipeline.name);
+
     await updatePipeline.mutateAsync({
-      namespacePipelineName: pipeline.name,
+      namespaceId: instillName.namespaceId,
+      pipelineId: instillName.resourceId,
       readme,
       accessToken,
     });

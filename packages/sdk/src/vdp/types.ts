@@ -126,3 +126,5 @@ export type RunStatus =
 export type RunSource = "RUN_SOURCE_CONSOLE" | "RUN_SOURCE_API";
 
 export type ResourceView = "VIEW_FULL" | "VIEW_BASIC";
+
+export type ResourceViewWithRecipeView = ResourceView | "VIEW_RECIPE";

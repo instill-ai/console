@@ -1,6 +1,6 @@
 "use client";
 
-import { Pipeline } from "instill-sdk";
+import { InstillNameInterpreter, Pipeline } from "instill-sdk";
 
 import { cn, useToast } from "@instill-ai/design-system";
 
@@ -42,9 +42,12 @@ export const PipelinesList = (props: PipelinesListProps) => {
   const handleDeletePipeline = async (pipeline: Pipeline) => {
     if (!pipeline) return;
 
+    const instillName = InstillNameInterpreter.pipeline(pipeline.name);
+
     try {
       await deletePipeline.mutateAsync({
-        namespacePipelineName: pipeline.name,
+        namespaceId: instillName.namespaceId,
+        pipelineId: pipeline.id,
         accessToken: accessToken ? accessToken : null,
       });
 

@@ -11,7 +11,6 @@ export function useStreamingTriggerUserPipeline() {
     mutationFn: async (
       props: Omit<TriggerNamespacePipelineRequest, "stream"> & {
         accessToken: Nullable<string>;
-        triggerNamespaceName?: string;
       },
     ) => {
       const { accessToken, ...payload } = props;

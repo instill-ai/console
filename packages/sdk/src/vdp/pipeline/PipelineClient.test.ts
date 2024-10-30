@@ -34,7 +34,7 @@ test("listNamespacePipelines", async () => {
   });
 
   const pipelines = await client.vdp.pipeline.listNamespacePipelines({
-    namespaceName: "organizations/userid",
+    namespaceId: "nid",
     enablePagination: true,
   });
 
@@ -52,7 +52,8 @@ test("getNamespacePipeline", async () => {
   });
 
   const pipeline = await client.vdp.pipeline.getNamespacePipeline({
-    namespacePipelineName: "users/uid/pipelines/pid",
+    namespaceId: "nid",
+    pipelineId: "pid",
   });
 
   const parsedData = getNamespacePipelineResponseValidator.safeParse(pipeline);
@@ -68,7 +69,7 @@ test("createNamespacePipeline", async () => {
   });
 
   const pipeline = await client.vdp.pipeline.createNamespacePipeline({
-    namespaceName: "users/uid",
+    namespaceId: "nid",
     id: "hello",
     recipe: {
       version: "v1beta",
@@ -90,7 +91,8 @@ test("updateNamespacePipeline", async () => {
   });
 
   const pipeline = await client.vdp.pipeline.updateNamespacePipeline({
-    namespacePipelineName: "users/uid/pipelines/pid",
+    namespaceId: "nid",
+    pipelineId: "pid",
     recipe: {
       version: "v1beta",
     },

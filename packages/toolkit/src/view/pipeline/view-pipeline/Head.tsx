@@ -5,6 +5,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import cn from "clsx";
+import { InstillNameInterpreter } from "instill-sdk";
 
 import {
   Button,
@@ -81,9 +82,12 @@ export const Head = ({
       return;
     }
 
+    const instillName = InstillNameInterpreter.pipeline(pipeline.name);
+
     try {
       await deletePipeline.mutateAsync({
-        namespacePipelineName: pipeline.name,
+        namespaceId: instillName.namespaceId,
+        pipelineId: pipeline.id,
         accessToken: accessToken ? accessToken : null,
       });
 

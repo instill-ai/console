@@ -13,7 +13,8 @@ export type Secret = {
 };
 
 export type GetNamespaceSecretRequest = {
-  namespaceSecretName: string;
+  namespaceId: string;
+  secretId: string;
 };
 
 export type GetNamespaceSecretResponse = {
@@ -21,7 +22,7 @@ export type GetNamespaceSecretResponse = {
 };
 
 export type ListNamespaceSecretsRequest = {
-  namespaceName: string;
+  namespaceId: string;
   pageSize?: number;
   pageToken?: string;
 };
@@ -33,7 +34,7 @@ export type ListNamespaceSecretResponse = {
 };
 
 export type CreateNamespaceSecretRequest = {
-  namespaceName: string;
+  namespaceId: string;
   id: string;
   value: string;
   description?: string;
@@ -44,11 +45,13 @@ export type CreateNamespaceSecretResponse = {
 };
 
 export type DeleteNamespaceSecretRequest = {
-  namespaceSecretName: string;
+  namespaceId: string;
+  secretId: string;
 };
 
 export type UpdateNamespaceSecretRequest = {
-  namespaceSecretName: string;
+  namespaceId: string;
+  secretId: string;
   id?: string;
   value?: string;
   description?: string;

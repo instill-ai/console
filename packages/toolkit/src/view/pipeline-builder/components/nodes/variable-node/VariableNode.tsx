@@ -3,13 +3,13 @@
 import * as React from "react";
 import { arrayMove } from "@dnd-kit/sortable";
 import { zodResolver } from "@hookform/resolvers/zod";
-import cn from "clsx";
+import { InstillNameInterpreter } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import { NodeProps } from "reactflow";
 import * as z from "zod";
 import { useShallow } from "zustand/react/shallow";
 
-import { Button, Form, Icons, useToast } from "@instill-ai/design-system";
+import { Button, cn, Form, Icons, useToast } from "@instill-ai/design-system";
 
 import {
   GeneralRecord,
@@ -306,6 +306,8 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
     // The user can trigger different version of pipleine when they are
     // pro or enterprise users
 
+    const instillName = InstillNameInterpreter.pipeline(pipelineName);
+
     if (currentVersion === "latest") {
       try {
         const targetNamespace = userNamespaces.data.find(
@@ -313,7 +315,8 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
         );
 
         const data = await triggerPipeline.mutateAsync({
-          namespacePipelineName: pipelineName,
+          namespaceId: instillName.namespaceId,
+          pipelineId: instillName.resourceId,
           accessToken,
           inputs: [parsedStructuredData],
           returnTraces: true,
@@ -345,13 +348,19 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
         });
       }
     } else {
+      if (!currentVersion) {
+        return;
+      }
+
       try {
         const targetNamespace = userNamespaces.data.find(
           (ns) => ns.id === navigationNamespaceAnchor,
         );
 
         const data = await triggerPipelineRelease.mutateAsync({
-          namespacePipelineReleaseName: `${pipelineName}/releases/${currentVersion}`,
+          namespaceId: instillName.namespaceId,
+          pipelineId: instillName.resourceId,
+          releaseId: currentVersion,
           inputs: [parsedStructuredData],
           accessToken,
           returnTraces: true,

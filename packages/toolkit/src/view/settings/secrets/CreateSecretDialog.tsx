@@ -90,25 +90,25 @@ export const CreateSecretDialog = () => {
   ) => {
     if (!accessToken || !me.isSuccess) return;
 
-    let namespaceName: Nullable<string> = null;
+    let namespaceId: Nullable<string> = null;
 
     if (
       routeInfo.isSuccess &&
       routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION"
     ) {
-      namespaceName = routeInfo.data.namespaceName;
+      namespaceId = routeInfo.data.namespaceId;
     } else {
-      namespaceName = me.data.name;
+      namespaceId = me.data.id;
     }
 
-    if (!namespaceName) {
+    if (!namespaceId) {
       return;
     }
 
     setIsLoading(true);
 
     const payload: CreateNamespaceSecretRequest = {
-      namespaceName,
+      namespaceId,
       id: data.name,
       value: data.value,
       description: data.description ?? undefined,

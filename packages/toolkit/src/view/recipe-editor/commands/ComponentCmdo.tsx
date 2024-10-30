@@ -97,11 +97,12 @@ export const ComponentCmdo = () => {
     React.useState<Nullable<string>>(null);
 
   const pipeline = useNamespacePipeline({
-    namespacePipelineName: routeInfo.isSuccess
-      ? routeInfo.data.pipelineName
-      : null,
+    namespaceId: routeInfo.data.namespaceId,
+    pipelineId: routeInfo.data.resourceId,
     accessToken,
-    enabled: enabledQuery,
+    enabled: enabledQuery && routeInfo.isSuccess,
+    view: "VIEW_FULL",
+    shareCode: null,
   });
 
   const definitions = useComponentDefinitions({

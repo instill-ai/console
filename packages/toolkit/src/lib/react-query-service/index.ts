@@ -7,6 +7,8 @@ export * from "./model";
 export * from "./pipeline";
 export * from "./organization";
 export * from "./misc";
+export * from "./release";
+export * from "./secret";
 
 /** Re export react-query to solve ESM, CJS confict issue */
 export {

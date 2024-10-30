@@ -16,11 +16,11 @@ import {
   formatDateFull,
   InstillStore,
   useInstillStore,
+  usePaginatedNamepsacePipelineComponentRuns,
   useRouteInfo,
   useShallow,
   useUserNamespaces,
 } from "../../../../lib";
-import { usePaginatedPipelineRunComponents } from "../../../../lib/react-query-service/pipeline";
 import { env } from "../../../../server";
 import { TABLE_PAGE_SIZE } from "../constants";
 
@@ -62,13 +62,16 @@ export const PipelineRunComponents = ({
     navigationNamespaceAnchor,
   ]);
 
-  const pipelineComponentRuns = usePaginatedPipelineRunComponents({
+  const pipelineComponentRuns = usePaginatedNamepsacePipelineComponentRuns({
     pipelineRunId: pipelineRunId,
-    requesterUid: targetNamespace ? targetNamespace.uid : undefined,
+    requesterUid: targetNamespace ? targetNamespace.uid : null,
     enabled: enabledQuery && routeInfo.isSuccess && userNamespaces.isSuccess,
     accessToken,
     view: "VIEW_FULL",
     orderBy,
+    filter: null,
+    pageSize: null,
+    page: null,
   });
 
   const pageCount = React.useMemo(() => {
