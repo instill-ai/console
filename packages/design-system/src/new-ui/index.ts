@@ -26,6 +26,7 @@ export * from "./ScrollArea";
 export * from "./Select";
 export * from "./Skeleton";
 export * from "./Separator";
+export * from "./Slider";
 export * from "./Switch";
 export * from "./tab-menu";
 export * from "./Table";
