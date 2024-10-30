@@ -68,6 +68,7 @@ export class PipelineClient extends APIResource {
       filter,
       orderBy,
       view,
+      showDeleted,
     } = props;
 
     try {
@@ -81,6 +82,7 @@ export class PipelineClient extends APIResource {
         orderBy,
         view,
         visibility,
+        showDeleted,
       });
 
       const data =
@@ -141,6 +143,7 @@ export class PipelineClient extends APIResource {
       visibility,
       view,
       showDeleted,
+      orderBy,
     } = props;
 
     try {
@@ -154,6 +157,7 @@ export class PipelineClient extends APIResource {
         filter,
         view,
         showDeleted,
+        orderBy,
       });
 
       const data =

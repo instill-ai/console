@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { ResourceView } from "../../vdp";
+
 export type OnboardingStatus =
   | "ONBOARDING_STATUS_UNSPECIFIED"
   | "ONBOARDING_STATUS_IN_PROGRESS"
@@ -106,6 +108,8 @@ export const updateAuthenticatedUserResponseValidator = AuthenticatedUserSchema;
 export type ListUsersRequest = {
   pageSize?: number;
   pageToken?: string;
+  view?: ResourceView;
+  filter?: string;
 };
 
 export type ListUsersResponse = {
@@ -121,7 +125,8 @@ export const listUsersWithPaginationResponseValidator = z.object({
 });
 
 export type GetUserRequest = {
-  userName: string;
+  userId: string;
+  view?: ResourceView;
 };
 
 export type GetUserResponse = {

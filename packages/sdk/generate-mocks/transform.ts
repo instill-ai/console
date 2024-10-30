@@ -21,6 +21,7 @@ export type ResponseMap = {
 export type Operation = {
   verb: string;
   path: string;
+  parameters: OpenAPIV3.ParameterObject[];
   response: ResponseMap[];
 };
 
@@ -89,10 +90,59 @@ export function transformToHandlerCode(
         return "";
       }
 
+      // Get query parameters from the OpenAPI definition
+      const queryParams =
+        op.parameters
+          ?.filter((param) => param.in === "query")
+          .map((param) => param.name) ?? [];
+
       const identifier = getResIdentifierName(successResponse);
 
-      return `http.${op.verb}(\`\${baseURL}${op.path}\`, async () => {
-          return HttpResponse.json(await ${identifier}())
+      return `http.${op.verb}(\`\${baseURL}${op.path}\`, async ({ request }) => {
+          try {
+            const url = new URL(request.url);
+            const paramKeys = Array.from(url.searchParams.keys())
+
+            const unexpectedParams = [];
+            const missingParams = [];
+
+            for (const param of paramKeys) {
+              if (!${JSON.stringify(queryParams)}.includes(param)) {
+                unexpectedParams.push(param);
+              }
+            }
+
+            for (const param of ${JSON.stringify(queryParams)}) {
+              if (!paramKeys.includes(param)) {
+                missingParams.push(param);
+              }
+            }
+
+            const statusText = [];
+
+            if (unexpectedParams.length > 0) {
+              statusText.push(\`Unexpected query parameters: \${unexpectedParams.join(', ')}\`);
+            }
+
+            if (missingParams.length > 0) {
+              statusText.push(\`Missing query parameters: \${missingParams.join(', ')}\`);
+            }
+
+            if (statusText.length > 0) {
+              return new HttpResponse(null, {
+                status: 400,
+                statusText: statusText.join("; ")
+              });
+            }
+
+            return HttpResponse.json(await ${identifier}())
+          } catch(error){
+            console.error(error)
+            return new HttpResponse(null, {
+              status: 500,
+              statusText: "Internal Server Error"
+            });
+          }
         }),\n`;
 
       // The code below is for future reference
