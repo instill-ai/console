@@ -10,17 +10,17 @@ export function useProcessCatalogFiles() {
     mutationFn: async ({
       fileUids,
       accessToken,
-      namespaceUid,
+      requesterUid,
     }: {
       fileUids: string[];
       accessToken: Nullable<string>;
-      namespaceUid: Nullable<string>;
+      requesterUid: Nullable<string>;
     }): Promise<CatalogFile[]> => {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
-      if (!namespaceUid) {
-        throw new Error("namespaceUid not provided");
+      if (!requesterUid) {
+        throw new Error("requesterUid not provided");
       }
       if (!fileUids || fileUids.length === 0) {
         throw new Error("fileUids must be a non-empty array");
@@ -29,7 +29,7 @@ export function useProcessCatalogFiles() {
       const client = getInstillCatalogAPIClient({ accessToken });
       const files = await client.catalog.processCatalogFiles({
         fileUids,
-        namespaceUid,
+        requesterUid,
       });
 
       return files;

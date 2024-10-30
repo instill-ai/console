@@ -161,7 +161,7 @@ export type DeleteCatalogFileRequest = {
 
 export type ProcessCatalogFilesRequest = {
   fileUids: string[];
-  namespaceUid: Nullable<string>;
+  requesterUid: Nullable<string>;
 };
 
 export type ProcessCatalogFilesResponse = File[];

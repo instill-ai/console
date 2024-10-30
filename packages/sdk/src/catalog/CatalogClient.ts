@@ -253,10 +253,10 @@ export class CatalogClient extends APIResource {
   async processCatalogFiles(
     props: ProcessCatalogFilesRequest,
   ): Promise<ProcessCatalogFilesResponse> {
-    const { fileUids, namespaceUid } = props;
+    const { fileUids, requesterUid } = props;
 
-    if (!namespaceUid) {
-      return Promise.reject(new Error("namespaceUid not provided"));
+    if (!requesterUid) {
+      return Promise.reject(new Error("requesterUid not provided"));
     }
 
     try {
@@ -265,7 +265,7 @@ export class CatalogClient extends APIResource {
       });
 
       const additionalHeaders = getInstillAdditionalHeaders({
-        requesterUid: namespaceUid,
+        requesterUid: requesterUid,
       });
 
       const data = await this._client.post<{ files: File[] }>(queryString, {

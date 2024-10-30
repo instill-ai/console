@@ -329,7 +329,7 @@ export const UploadExploreTab = ({
           await processCatalogFiles.mutateAsync({
             fileUids: [uploadedFile.fileUid],
             accessToken,
-            namespaceUid: targetNamespace.uid,
+            requesterUid: targetNamespace.uid,
           });
 
           processedFiles.add(file.name);
