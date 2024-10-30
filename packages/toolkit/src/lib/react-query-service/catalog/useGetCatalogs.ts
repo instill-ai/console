@@ -1,46 +1,35 @@
 import { useQuery } from "@tanstack/react-query";
+import { Nullable } from "instill-sdk";
 
-import { createInstillAxiosClient } from "../../sdk-helper";
-import { Catalog } from "./types";
-
-async function getCatalogs({
-  ownerId,
-  accessToken,
-}: {
-  ownerId: string;
-  accessToken: string | null;
-}): Promise<Catalog[]> {
-  if (!accessToken) {
-    return Promise.reject(new Error("accessToken not provided"));
-  }
-  const client = createInstillAxiosClient(accessToken, true);
-  const response = await client.get<{
-    catalogs: Catalog[];
-  }>(`/namespaces/${ownerId}/catalogs`);
-  return response.data.catalogs || [];
-}
+import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
 export function useGetCatalogs({
   accessToken,
-  ownerId,
+  namespaceId,
   enabled,
 }: {
-  accessToken: string | null;
-  ownerId: string | null;
+  accessToken: Nullable<string>;
+  namespaceId: Nullable<string>;
   enabled: boolean;
 }) {
   return useQuery({
-    queryKey: ["catalogs", ownerId],
+    queryKey: ["catalogs", namespaceId],
     queryFn: async () => {
-      if (!ownerId || !accessToken) {
-        throw new Error("ownerId and accessToken are required");
+      if (!namespaceId) {
+        throw new Error("namespaceId not provided");
       }
-      const data = await getCatalogs({ ownerId, accessToken });
-      if (!data) {
-        throw new Error("No catalogs data returned");
+      if (!accessToken) {
+        throw new Error("accessToken not provided");
       }
-      return data;
+
+      const client = getInstillCatalogAPIClient({ accessToken });
+      const catalogs = await client.catalog.listCatalogs({
+        namespaceId,
+        enablePagination: false,
+      });
+
+      return Promise.resolve(catalogs);
     },
-    enabled: enabled && !!ownerId && !!accessToken,
+    enabled: enabled && Boolean(namespaceId) && Boolean(accessToken),
   });
 }

@@ -1,18 +1,14 @@
 "use client";
 
 import * as React from "react";
+import { Catalog, CatalogFile, Chunk } from "instill-sdk";
 
 import { cn, Icons, Nullable } from "@instill-ai/design-system";
 
 import {
-  useGetFileContent,
+  useGetCatalogSingleSourceOfTruthFile,
   useListChunks,
 } from "../../../lib/react-query-service/catalog";
-import {
-  Catalog,
-  CatalogFile,
-  Chunk,
-} from "../../../lib/react-query-service/catalog/types";
 import ChunkCard from "./ChunkCard";
 
 type FileChunksProps = {
@@ -41,16 +37,16 @@ const FileChunks = ({
     catalogId: catalog.catalogId,
     accessToken: accessToken || null,
     enabled: expanded,
-    ownerId: catalog.ownerName,
+    namespaceId: catalog.ownerName,
     fileUid: file.fileUid,
   });
 
-  const { data: fileContent } = useGetFileContent({
+  const { data: fileContent } = useGetCatalogSingleSourceOfTruthFile({
     fileUid: file.fileUid,
     catalogId: catalog.catalogId,
     accessToken: accessToken || null,
     enabled: expanded,
-    ownerId: catalog.ownerName,
+    namespaceId: catalog.ownerName,
   });
 
   const isProcessing = file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED";

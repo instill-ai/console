@@ -1,20 +1,19 @@
-import type { Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Nullable } from "instill-sdk";
 
-import { createInstillAxiosClient } from "../../sdk-helper";
-import { File } from "./types";
+import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
 export function useUploadCatalogFile() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
-      ownerId,
+      namespaceId,
       catalogId,
       payload,
       accessToken,
     }: {
-      ownerId: Nullable<string>;
+      namespaceId: string;
       catalogId: string;
       payload: {
         name: string;
@@ -22,19 +21,42 @@ export function useUploadCatalogFile() {
         content: string;
       };
       accessToken: Nullable<string>;
-    }): Promise<File> => {
+    }) => {
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        throw new Error("accessToken not provided");
       }
-      const client = createInstillAxiosClient(accessToken, true);
-      const response = await client.post<{ file: File }>(
-        `/namespaces/${ownerId}/catalogs/${catalogId}/files`,
+      if (!namespaceId) {
+        throw new Error("namespaceId not provided");
+      }
+      if (!catalogId) {
+        throw new Error("catalogId not provided");
+      }
+      if (!payload) {
+        throw new Error("payload must be provided");
+      }
+      if (!payload.name) {
+        throw new Error("payload.name is required");
+      }
+      if (!payload.type) {
+        throw new Error("payload.type is required");
+      }
+      if (!payload.content) {
+        throw new Error("payload.content is required");
+      }
+
+      const client = getInstillCatalogAPIClient({ accessToken });
+      const file = await client.catalog.uploadCatalogFile({
+        namespaceId,
+        catalogId,
         payload,
-      );
-      return response.data.file;
+      });
+
+      return Promise.resolve(file);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["catalogFiles"] });
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["catalogFiles", variables.namespaceId, variables.catalogId],
+      });
     },
   });
 }

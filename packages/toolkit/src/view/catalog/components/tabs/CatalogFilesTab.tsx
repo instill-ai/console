@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import {
+  Catalog,
+  File,
   Nullable,
   OrganizationSubscription,
   UserSubscription,
@@ -19,10 +21,6 @@ import {
   useDeleteCatalogFile,
   useListCatalogFiles,
 } from "../../../../lib/react-query-service/catalog";
-import {
-  Catalog,
-  File,
-} from "../../../../lib/react-query-service/catalog/types";
 import { EmptyState } from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";
@@ -223,7 +221,7 @@ export const CatalogFilesTab = ({
           accessToken={accessToken}
           onClose={closeOverlay}
           showFullFile={true}
-          ownerId={catalog.ownerName}
+          namespaceId={catalog.ownerName}
           isOpen={isFileDetailsOpen}
           setIsOpen={setIsFileDetailsOpen}
           fileName={selectedFile.name}

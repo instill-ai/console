@@ -1,25 +1,26 @@
 "use client";
 
 import * as React from "react";
+import { Nullable } from "instill-sdk";
 import Markdown from "markdown-to-jsx";
 import sanitizeHtml from "sanitize-html";
 
 import { Dialog, ScrollArea, Skeleton } from "@instill-ai/design-system";
 
 import {
-  useGetFileContent,
+  useGetCatalogSingleSourceOfTruthFile,
   useListChunks,
 } from "../../../lib/react-query-service/catalog";
 import { getFileIcon } from "./lib/helpers";
 
 type FileDetailsOverlayProps = {
   fileUid: string;
-  accessToken: string | null;
+  accessToken: Nullable<string>;
   onClose: () => void;
   catalogId: string;
   showFullFile: boolean;
   selectedChunkUid?: string;
-  ownerId: string;
+  namespaceId: string;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   fileName: string;
@@ -32,26 +33,27 @@ const FileDetailsOverlay = ({
   accessToken,
   catalogId,
   selectedChunkUid,
-  ownerId,
+  namespaceId,
   isOpen,
   setIsOpen,
   fileName,
   highlightChunk = false,
   fileType,
 }: FileDetailsOverlayProps) => {
-  const { data: fileContent, isLoading: isLoadingContent } = useGetFileContent({
-    fileUid,
-    catalogId,
-    accessToken,
-    enabled: isOpen,
-    ownerId,
-  });
+  const { data: fileContent, isLoading: isLoadingContent } =
+    useGetCatalogSingleSourceOfTruthFile({
+      fileUid,
+      catalogId,
+      accessToken,
+      enabled: isOpen,
+      namespaceId,
+    });
 
   const { data: chunks } = useListChunks({
     catalogId,
     accessToken,
     enabled: isOpen && highlightChunk,
-    ownerId,
+    namespaceId,
     fileUid,
   });
 

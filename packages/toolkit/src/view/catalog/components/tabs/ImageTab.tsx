@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Catalog } from "instill-sdk";
 
 import {
   Button,
@@ -12,7 +13,6 @@ import {
   Tag,
 } from "@instill-ai/design-system";
 
-import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 import MetadataPreview from "../MetadataPreview";
 
 type ImageTabProps = {

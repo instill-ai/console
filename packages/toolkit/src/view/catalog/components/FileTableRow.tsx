@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
+import { File } from "instill-sdk";
 
 import { Button, Dialog, Icons, Tag } from "@instill-ai/design-system";
 
-import { File } from "../../../lib/react-query-service/catalog/types";
 import {
   convertFileType,
   formatDateFileTableRow,

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Nullable } from "instill-sdk";
+import { Catalog, CatalogFile, Chunk, Nullable } from "instill-sdk";
 
 import { Button, Separator, Skeleton } from "@instill-ai/design-system";
 
@@ -16,11 +16,6 @@ import {
   useListCatalogFiles,
   useUpdateChunk,
 } from "../../../../lib/react-query-service/catalog";
-import {
-  Catalog,
-  CatalogFile,
-  Chunk,
-} from "../../../../lib/react-query-service/catalog/types";
 import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 
@@ -200,7 +195,7 @@ export const ChunkTab = ({ catalog, onGoToUpload }: ChunkTabProps) => {
           onClose={closeOverlay}
           showFullFile={true}
           selectedChunkUid={selectedChunk.chunkUid}
-          ownerId={catalog.ownerName}
+          namespaceId={catalog.ownerName}
           isOpen={isFileDetailsOpen}
           setIsOpen={setIsFileDetailsOpen}
           fileName={selectedFile.name}

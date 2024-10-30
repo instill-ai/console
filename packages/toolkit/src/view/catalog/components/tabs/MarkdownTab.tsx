@@ -1,18 +1,16 @@
 " use client";
 
 import * as React from "react";
+import { Catalog } from "instill-sdk";
 
 import {
   Button,
   Icons,
   Separator,
-  // Select,
   Switch,
   Tag,
   Textarea,
 } from "@instill-ai/design-system";
-
-import { Catalog } from "../../../../lib/react-query-service/catalog/types";
 
 type MarkdownTabProps = {
   catalog: Catalog;

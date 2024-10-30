@@ -1,33 +1,45 @@
-import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
+import { CatalogFile, Nullable } from "instill-sdk";
 
-import { createInstillAxiosClient } from "../../sdk-helper";
-import { File } from "./types";
+import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
 export function useGetFileDetails({
   fileUid,
   accessToken,
   enabled,
   catalogId,
-  ownerId,
+  namespaceId,
 }: {
   fileUid: string;
   accessToken: Nullable<string>;
   enabled: boolean;
   catalogId: string;
-  ownerId: string;
+  namespaceId: string;
 }) {
-  return useQuery<File>({
+  return useQuery<CatalogFile>({
     queryKey: ["fileDetails", fileUid],
     queryFn: async () => {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
-      const client = createInstillAxiosClient(accessToken, true);
-      const response = await client.get<{ file: File }>(
-        `/namespaces/${ownerId}/catalogs/${catalogId}/files/${fileUid}`,
-      );
-      return response.data.file;
+      if (!fileUid) {
+        throw new Error("fileUid not provided");
+      }
+      if (!catalogId) {
+        throw new Error("catalogId not provided");
+      }
+      if (!namespaceId) {
+        throw new Error("namespaceId not provided");
+      }
+
+      const client = getInstillCatalogAPIClient({ accessToken });
+      const file = await client.catalog.getFileDetails({
+        namespaceId,
+        catalogId,
+        fileId: fileUid,
+      });
+
+      return file;
     },
     enabled,
   });

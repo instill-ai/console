@@ -8,6 +8,7 @@ export * from "./getInstillApiErrorMessage";
 export * from "./getInstillAPIClient";
 export * from "./getInstillApplicationAPIClient";
 export * from "./getInstillModelAPIClient";
+export * from "./getInstillCatalogAPIClient";
 
 export type ChangePasswordPayload = {
   oldPassword: string;

@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getInstillAdditionalHeaders, Nullable } from "instill-sdk";
+import { CatalogFile, Nullable } from "instill-sdk";
 
-import { createInstillAxiosClient } from "../../sdk-helper";
-import { File } from "./types";
+import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
 export function useProcessCatalogFiles() {
   const queryClient = useQueryClient();
@@ -11,34 +10,29 @@ export function useProcessCatalogFiles() {
     mutationFn: async ({
       fileUids,
       accessToken,
-      namespaceUid,
+      requesterUid,
     }: {
       fileUids: string[];
       accessToken: Nullable<string>;
-      namespaceUid: Nullable<string>;
-    }): Promise<File[]> => {
+      requesterUid: Nullable<string>;
+    }): Promise<CatalogFile[]> => {
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        throw new Error("accessToken not provided");
       }
-      if (!namespaceUid) {
-        return Promise.reject(new Error("namespaceUid not provided"));
+      if (!requesterUid) {
+        throw new Error("requesterUid not provided");
+      }
+      if (!fileUids || fileUids.length === 0) {
+        throw new Error("fileUids must be a non-empty array");
       }
 
-      const client = createInstillAxiosClient(accessToken, true);
-
-      const additionalHeaders = getInstillAdditionalHeaders({
-        requesterUid: namespaceUid,
+      const client = getInstillCatalogAPIClient({ accessToken });
+      const files = await client.catalog.processCatalogFiles({
+        fileUids,
+        requesterUid,
       });
 
-      const response = await client.post<{ files: File[] }>(
-        `/catalogs/files/processAsync`,
-        { file_uids: fileUids },
-        {
-          headers: additionalHeaders,
-        },
-      );
-
-      return response.data.files;
+      return files;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["catalogFiles"] });
