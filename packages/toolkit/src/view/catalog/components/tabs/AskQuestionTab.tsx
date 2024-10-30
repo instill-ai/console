@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Nullable } from "instill-sdk";
 
-import { Separator } from "@instill-ai/design-system";
+import { cn, Separator } from "@instill-ai/design-system";
 
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
@@ -19,24 +19,39 @@ export const AskQuestionTab = ({
   isProcessed,
   onGoToUpload,
   namespaceId,
+  namespaceType,
+  isLocalEnvironment,
 }: {
   catalog: Catalog;
   isProcessed: boolean;
   onGoToUpload: () => void;
   namespaceId: Nullable<string>;
+  namespaceType: Nullable<"user" | "organization">;
+  isLocalEnvironment: boolean;
 }) => {
   const catalogId = catalog.catalogId;
 
+  const isOrganization = namespaceType === "organization";
+
   const curlCommand = React.useMemo(() => {
     const baseUrl = env("NEXT_PUBLIC_API_GATEWAY_URL");
-    return `curl -X POST '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}/ask' \\
+    let command = `curl -X POST '${baseUrl}/v1alpha/namespaces/${namespaceId}/catalogs/${catalogId}/ask' \\
 --header "Content-Type: application/json" \\
---header "Authorization: Bearer $INSTILL_API_TOKEN" \\
+--header "Authorization: Bearer $INSTILL_API_TOKEN"`;
+
+    if (isOrganization && !isLocalEnvironment) {
+      command += ` \\
+--header "Instill-Requester-Uid: $ORGANIZATION_UID"`;
+    }
+
+    command += ` \\
 --data '{
   "question": "Please put your question here",
   "topK": 5
 }'`;
-  }, [namespaceId, catalogId]);
+
+    return command;
+  }, [namespaceId, catalogId, isOrganization, isLocalEnvironment]);
 
   return (
     <div className="flex flex-col mb-10">
@@ -73,11 +88,29 @@ export const AskQuestionTab = ({
               Set Environment Variable:
             </p>
             <CodeBlock
-              codeString={"$ export INSTILL_API_TOKEN=********"}
+              codeString={`$ export INSTILL_API_TOKEN=********
+${isOrganization && !isLocalEnvironment ? "$ export ORGANIZATION_UID=********" : ""}`}
               wrapLongLines={true}
               language="bash"
               customStyle={defaultCodeSnippetStyles}
+              className={cn({
+                "mb-4": isOrganization && !isLocalEnvironment,
+              })}
             />
+            {isOrganization && !isLocalEnvironment ? (
+              <p className="product-body-text-3-regular">
+                You can refer{" "}
+                <a
+                  href="/settings/organizations"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-semantic-accent-default underline"
+                >
+                  here
+                </a>{" "}
+                to find the corresponding organization UID.
+              </p>
+            ) : null}
           </div>
           <div className="mb-8">
             <p className="mb-2 text-lg font-semibold">Example cURL command:</p>
@@ -124,6 +157,8 @@ export const AskQuestionTab = ({
             <a
               href="https://www.instill.tech/docs/artifact/ask"
               className="text-semantic-accent-default underline"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Artifact&apos;s API reference
             </a>

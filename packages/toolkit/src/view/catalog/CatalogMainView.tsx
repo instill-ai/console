@@ -373,6 +373,8 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}
+              namespaceType={namespaceType}
+              isLocalEnvironment={isLocalEnvironment}
             />
           ) : null}
           {activeTab === "ask_question" && selectedCatalog ? (
@@ -381,6 +383,8 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}
+              namespaceType={namespaceType}
+              isLocalEnvironment={isLocalEnvironment}
             />
           ) : null}
           {activeTab === "get_catalog" && selectedCatalog ? (
