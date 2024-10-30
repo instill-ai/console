@@ -19,6 +19,7 @@ import { LoadingSpin } from "../../../components";
 import { InstillErrors } from "../../../constant";
 import {
   InstillStore,
+  Nullable,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
@@ -87,19 +88,27 @@ export const CreateSecretDialog = () => {
   const handleCreateAPIToken = async (
     data: z.infer<typeof CreateSecretSchema>,
   ) => {
+    if (!accessToken || !me.isSuccess) return;
+
+    let namespaceId: Nullable<string> = null;
+
     if (
-      !accessToken ||
-      !me.isSuccess ||
-      !routeInfo.isSuccess ||
-      !routeInfo.data.namespaceId
+      routeInfo.isSuccess &&
+      routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION"
     ) {
+      namespaceId = routeInfo.data.namespaceId;
+    } else {
+      namespaceId = me.data.id;
+    }
+
+    if (!namespaceId) {
       return;
     }
 
     setIsLoading(true);
 
     const payload: CreateNamespaceSecretRequest = {
-      namespaceId: routeInfo.data.namespaceId,
+      namespaceId,
       id: data.name,
       value: data.value,
       description: data.description ?? undefined,
