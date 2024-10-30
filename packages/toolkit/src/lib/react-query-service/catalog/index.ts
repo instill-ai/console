@@ -10,5 +10,4 @@ export * from "./useGetFileDetails";
 export * from "./useGetCatalogSingleSourceOfTruthFile";
 export * from "./useListChunks";
 export * from "./useUpdateChunk";
-export * from "./useGetChunkContent";
 export * from "./useGetAllChunks";

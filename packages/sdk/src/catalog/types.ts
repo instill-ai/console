@@ -64,9 +64,6 @@ export type FileContent = {
   content: string;
 };
 
-export type ChunkContent = {
-  content: string;
-};
 export type CatalogFile = {
   fileUid: string;
   name: string;
@@ -179,14 +176,6 @@ export type ListChunksResponse = {
   nextPageToken: string;
   totalSize: number;
 };
-
-export type GetChunkContentRequest = {
-  namespaceId: string;
-  catalogId: string;
-  chunkUid: string;
-};
-
-export type GetChunkContentResponse = ChunkContent;
 
 export type UpdateChunkRequest = {
   chunkUid: string;

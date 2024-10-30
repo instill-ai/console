@@ -3,7 +3,6 @@ import { APIResource } from "../main/resource";
 import {
   Catalog,
   Chunk,
-  ChunkContent,
   CreateCatalogRequest,
   CreateCatalogResponse,
   DeleteCatalogFileRequest,
@@ -12,8 +11,6 @@ import {
   FileContent,
   GetCatalogSingleSourceOfTruthFileRequest,
   GetCatalogSingleSourceOfTruthFileResponse,
-  GetChunkContentRequest,
-  GetChunkContentResponse,
   GetFileDetailsRequest,
   GetFileDetailsResponse,
   ListCatalogFilesRequest,
@@ -327,25 +324,6 @@ export class CatalogClient extends APIResource {
       }
 
       return Promise.resolve(chunks);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async getChunkContent(
-    props: GetChunkContentRequest,
-  ): Promise<GetChunkContentResponse> {
-    const { namespaceId, catalogId, chunkUid } = props;
-
-    try {
-      const queryString = getQueryString({
-        baseURL: `/namespaces/${namespaceId}/catalogs/${catalogId}/chunks/${chunkUid}/content`,
-      });
-
-      const data = await this._client.get<{ content: ChunkContent }>(
-        queryString,
-      );
-      return Promise.resolve(data.content);
     } catch (error) {
       return Promise.reject(error);
     }
