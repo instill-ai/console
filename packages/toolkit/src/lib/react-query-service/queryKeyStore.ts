@@ -500,9 +500,16 @@ export const releaseQueryKeyStore = {
   },
 };
 
+export const mgmtQueryKeyStore = {
+  getUseUserQueryKey({ userId }: { userId: Nullable<string> }) {
+    return ["users", userId];
+  },
+};
+
 export const queryKeyStore = {
   model: modelQueryKeyStore,
   pipeline: pipelineQueryKeyStore,
   release: releaseQueryKeyStore,
   secret: secretQueryKeyStore,
+  mgmt: mgmtQueryKeyStore,
 };
