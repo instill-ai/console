@@ -326,7 +326,7 @@ export class MetricClient extends APIResource {
   }) {
     try {
       const queryString = getQueryString({
-        baseURL: `/metrics/model/triggers/charts`,
+        baseURL: `/model-runs:query-charts`,
         pageSize: props.pageSize,
         pageToken: props.pageToken,
         filter: props.filter,

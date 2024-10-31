@@ -138,11 +138,11 @@ export type ModelTriggerStatus =
 export type ModelTriggerChartRecord = {
   modelId: string;
   modelUid: string;
-  triggerMode: ModelMode;
-  status: ModelTriggerStatus;
-  timeBuckets: string[];
-  triggerCounts: number[];
-  computeTimeDuration: number[];
+  triggerMode?: ModelMode;
+  status?: ModelTriggerStatus;
+  timeBuckets?: string[];
+  triggerCounts?: number[];
+  computeTimeDuration?: number[];
   watchState?: ModelReleaseStage;
 };
 

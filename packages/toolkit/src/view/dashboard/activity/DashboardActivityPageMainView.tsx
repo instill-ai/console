@@ -9,7 +9,6 @@ import {
   getModelTriggersSummary,
   getPreviousTimeframe,
   getTimeInRFC3339Format,
-  ModelsChart,
   Nullable,
   PipelinesChart,
   TriggeredModel,
@@ -81,8 +80,8 @@ export const DashboardActivityPageMainView = ({
 
   const modelsChart = useModelTriggerComputationTimeCharts({
     enabled: enableQuery && !!queryString,
-    filter: queryString ? queryString : null,
     accessToken,
+    requesterId: routeInfo.data.namespaceId,
   });
 
   const triggeredModels = useModelTriggerMetric({
@@ -134,7 +133,7 @@ export const DashboardActivityPageMainView = ({
     }));
   }, [pipelinesChart.data, pipelinesChart.isSuccess]);
 
-  const modelChartList = React.useMemo<ModelsChart[]>(() => {
+  const modelChartList = React.useMemo<TriggeredModel[]>(() => {
     if (!modelsChart.isSuccess) {
       return [];
     }

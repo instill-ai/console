@@ -9,6 +9,7 @@ import { DashboardListModel } from "./model/DashboardListModel"
 import { Nullable } from "instill-sdk"
 import { useAuthenticatedUser, useCreditConsumptionChartRecords } from "../../../lib"
 import { CreditCostTrendChart } from "./CreditCostTrendChart"
+import { formatDateToRFC3339, getStartOfDay } from "../helpers"
 
 type CostTabProps = {
     selectedTimeOption: SelectOption
@@ -22,18 +23,7 @@ type ChartData = {
     values: number[]
 }
 
-// Helper function to format dates in the correct RFC3339 format with milliseconds
-const formatDateToRFC3339 = (date: Date) => {
-    // Ensure the date string always has milliseconds (.000) and Z suffix
-    return date.toISOString().split('.')[0] + '.000Z'
-}
 
-// Helper function to create start of day date with correct format
-const getStartOfDay = (date: Date) => {
-    const newDate = new Date(date)
-    newDate.setHours(0, 0, 0, 0)
-    return formatDateToRFC3339(newDate)
-}
 
 export const CostTab = ({
     selectedTimeOption,

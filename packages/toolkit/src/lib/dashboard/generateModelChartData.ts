@@ -11,7 +11,10 @@ export function generateModelChartData(
 
   // Preprocess and format time bucket dates
   const formattedTimeBuckets: string[][] = modelData.map((model) => {
-    return model.timeBuckets.map((bucket) => formatDateTime(bucket, range));
+    if (model.timeBuckets) {
+      return model.timeBuckets.map((bucket) => formatDateTime(bucket, range));
+    }
+    return [];
   });
 
   const xAxisSortedDates = sortByDate([
@@ -45,10 +48,10 @@ export function generateModelChartData(
         if (xAxisIndex !== -1) {
           if (yAxis[modelIndex]["data"][xAxisIndex]) {
             yAxis[modelIndex]["data"][xAxisIndex] +=
-              model.triggerCounts[bucketIndex];
+              model.triggerCounts?.[bucketIndex] ?? 0;
           } else {
             yAxis[modelIndex]["data"][xAxisIndex] +=
-              model.triggerCounts[bucketIndex];
+              model.triggerCounts?.[bucketIndex] ?? 0;
           }
         }
       }

@@ -1,6 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
-import type { ModelTriggerTableRecord, ModelWatchState, Nullable, Pipeline, User } from "instill-sdk";
+import type { ModelTriggerChartRecord, ModelTriggerTableRecord, ModelWatchState, Nullable, Pipeline, User } from "instill-sdk";
 
 import { InstillJSONSchema } from "../../use-instill-form";
 import { Organization } from "../organization";
@@ -152,16 +152,5 @@ export type ModelTriggersStatusSummary = {
 
 export type TriggeredModel = ModelTriggerTableRecord;
 
-
-export type ModelTriggerChartRecord = {
-  modelId: string;
-  modelUid: string;
-  triggerMode: ModelMode;
-  status: ModelTriggerStatus;
-  timeBuckets: string[];
-  triggerCounts: number[];
-  computeTimeDuration: number[];
-  watchState?: ModelReleaseStage;
-};
 
 export type ModelsWatchState = Record<string, Nullable<ModelWatchState>>;
