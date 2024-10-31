@@ -28,6 +28,7 @@ export const CatalogPageRender = () => {
             accessToken={accessToken.isSuccess ? accessToken.data : null}
             enableQuery={accessToken.isSuccess}
             router={router}
+            activeTab="catalogs"
           />
         </PageBase.Content>
       </PageBase.Container>

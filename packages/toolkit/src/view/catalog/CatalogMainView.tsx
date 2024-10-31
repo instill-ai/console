@@ -37,7 +37,9 @@ import {
   UploadExploreTab,
 } from "./components/tabs";
 
-export type CatalogViewProps = GeneralAppPageProp;
+export type CatalogViewProps = GeneralAppPageProp & {
+  activeTab?: string;
+};
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -174,7 +176,8 @@ export const CatalogMainView = (props: CatalogViewProps) => {
       if (tab === "catalogs") {
         setSelectedCatalog(null);
       }
-      router.push(`#${tab}`, { scroll: false });
+      // Navigate to /catalog/[tab]
+      router.push(`/catalog/${tab}`, { scroll: false });
     },
     [router],
   );
@@ -252,47 +255,12 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   };
 
   React.useEffect(() => {
-    setSelectedCatalog(null);
-    changeTab("catalogs");
-    setHasUnsavedChanges(false);
-  }, [selectedNamespace, changeTab]);
-
-  React.useEffect(() => {
     return () => {
       if (creditUsageTimer) {
         clearTimeout(creditUsageTimer);
       }
     };
   }, [creditUsageTimer]);
-
-  React.useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.slice(1);
-      if (
-        hash &&
-        [
-          "catalogs",
-          "upload",
-          "files",
-          "chunks",
-          "retrieve",
-          "ask_question",
-          "get_catalog",
-        ].includes(hash)
-      ) {
-        changeTab(hash);
-      } else {
-        changeTab("catalogs");
-      }
-    };
-
-    handleHashChange();
-    window.addEventListener("hashchange", handleHashChange);
-
-    return () => {
-      window.removeEventListener("hashchange", handleHashChange);
-    };
-  }, [catalogs.data, changeTab]);
 
   return (
     <div className="h-screen w-full bg-semantic-bg-alt-primary">
@@ -321,7 +289,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               : "col-span-12",
           )}
         >
-          {activeTab === "catalogs" ? (
+          {activeTab === "catalogs" && (
             <CatalogTab
               onCatalogSelect={handleCatalogSelect}
               onDeleteCatalog={handleDeleteCatalog}
@@ -332,8 +300,8 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               subscription={subscriptionInfo.subscription}
               isLocalEnvironment={isLocalEnvironment}
             />
-          ) : null}
-          {activeTab === "files" && selectedCatalog ? (
+          )}
+          {activeTab === "files" && selectedCatalog && (
             <CatalogFilesTab
               catalog={selectedCatalog}
               onGoToUpload={handleGoToUpload}
@@ -343,8 +311,8 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               namespaceType={namespaceType}
               isLocalEnvironment={isLocalEnvironment}
             />
-          ) : null}
-          {activeTab === "upload" && selectedCatalog ? (
+          )}
+          {activeTab === "upload" && selectedCatalog && (
             <UploadExploreTab
               catalog={selectedCatalog}
               onProcessFile={handleProcessFile}
@@ -357,14 +325,14 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
               selectedNamespace={selectedNamespace}
             />
-          ) : null}
-          {activeTab === "chunks" && selectedCatalog ? (
+          )}
+          {activeTab === "chunks" && selectedCatalog && (
             <ChunkTab
               catalog={selectedCatalog}
               onGoToUpload={handleGoToUpload}
             />
-          ) : null}
-          {activeTab === "retrieve" && selectedCatalog ? (
+          )}
+          {activeTab === "retrieve" && selectedCatalog && (
             <RetrieveTestTab
               catalog={selectedCatalog}
               isProcessed={isProcessed}
@@ -373,8 +341,8 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               namespaceType={namespaceType}
               isLocalEnvironment={isLocalEnvironment}
             />
-          ) : null}
-          {activeTab === "ask_question" && selectedCatalog ? (
+          )}
+          {activeTab === "ask_question" && selectedCatalog && (
             <AskQuestionTab
               catalog={selectedCatalog}
               isProcessed={isProcessed}
@@ -383,15 +351,15 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               namespaceType={namespaceType}
               isLocalEnvironment={isLocalEnvironment}
             />
-          ) : null}
-          {activeTab === "get_catalog" && selectedCatalog ? (
+          )}
+          {activeTab === "get_catalog" && selectedCatalog && (
             <GetCatalogTab
               catalog={selectedCatalog}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}
             />
-          ) : null}
+          )}
         </div>
       </div>
       <WarnDiscardFilesDialog

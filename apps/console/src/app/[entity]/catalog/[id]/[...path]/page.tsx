@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 import { generateNextMetaBase } from "@instill-ai/toolkit/server";
 
-import { CatalogPageRender } from "./render";
+import { CatalogTabPageRender } from "./render";
 
 export async function generateMetadata() {
   const metadata: Metadata = {
@@ -19,5 +19,5 @@ export async function generateMetadata() {
 }
 
 export default async function Page() {
-  return <CatalogPageRender />;
+  return <CatalogTabPageRender />;
 }

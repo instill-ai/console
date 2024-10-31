@@ -1,3 +1,5 @@
+// components/Sidebar.tsx
+
 "use client";
 
 import * as React from "react";
@@ -25,9 +27,11 @@ export const Sidebar = ({
   const handleTabChange = (tab: string) => {
     if (tab === "catalogs") {
       onDeselectCatalog();
+      router.push(`/catalog`, { scroll: false });
+    } else if (selectedCatalog) {
+      onTabChange(tab);
+      router.push(`/catalog/${selectedCatalog.catalogId}/${tab}`, { scroll: false });
     }
-    onTabChange(tab);
-    router.push(`#${tab}`, { scroll: false });
   };
 
   const getTabClassName = (tabName: string) =>
@@ -51,7 +55,7 @@ export const Sidebar = ({
   const handleApiClick = () => {
     const newExpandedState = !isApiExpanded;
     setIsApiExpanded(newExpandedState);
-    if (newExpandedState && !isApiTabActive) {
+    if (newExpandedState && !isApiTabActive && selectedCatalog) {
       handleTabChange("retrieve");
     }
   };
