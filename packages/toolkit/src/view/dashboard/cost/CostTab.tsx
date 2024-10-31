@@ -22,6 +22,19 @@ type ChartData = {
     values: number[]
 }
 
+// Helper function to format dates in the correct RFC3339 format with milliseconds
+const formatDateToRFC3339 = (date: Date) => {
+    // Ensure the date string always has milliseconds (.000) and Z suffix
+    return date.toISOString().split('.')[0] + '.000Z'
+}
+
+// Helper function to create start of day date with correct format
+const getStartOfDay = (date: Date) => {
+    const newDate = new Date(date)
+    newDate.setHours(0, 0, 0, 0)
+    return formatDateToRFC3339(newDate)
+}
+
 export const CostTab = ({
     selectedTimeOption,
     setSelectedTimeOption,
@@ -37,19 +50,22 @@ export const CostTab = ({
         accessToken,
     })
 
+    // Calculate start date based on selected time option
     const start = React.useMemo(() => {
         if (selectedTimeOption.value === "24h") {
-            const today = new Date()
-            today.setHours(0, 0, 0, 0)
-            return today.toISOString()
+            // For today, start at 00:00:00.000
+            return getStartOfDay(new Date())
         }
+
+        // For other periods, calculate days back and start at 00:00:00.000
         const date = new Date()
         date.setDate(date.getDate() - parseInt(selectedTimeOption.value))
-        return date.toISOString()
+        return getStartOfDay(date)
     }, [selectedTimeOption.value])
 
+    // Calculate stop date (current time with milliseconds)
     const stop = React.useMemo(() => {
-        return new Date().toISOString()
+        return formatDateToRFC3339(new Date())
     }, [])
 
     const creditConsumption = useCreditConsumptionChartRecords({
@@ -58,7 +74,7 @@ export const CostTab = ({
         namespaceId: me.data?.id ?? "",
         start,
         stop,
-        aggregationWindow: selectedTimeOption.value === "24h" ? "1h" : "24h",
+        aggregationWindow: selectedTimeOption.value === "24h" || selectedTimeOption.value === "1d" ? "1h" : "24h",
     })
 
     const chartData: ChartData = React.useMemo(() => {
@@ -102,8 +118,7 @@ export const CostTab = ({
                             {options.map((option) => (
                                 <button
                                     key={option.value}
-                                    className={`flex items-center p-2 hover:bg-semantic-bg-line ${costView === option.value ? "bg-semantic-bg-line" : ""
-                                        }`}
+                                    className={`flex items-center p-2 hover:bg-semantic-bg-line ${costView === option.value ? "bg-semantic-bg-line" : ""}`}
                                     onClick={() => {
                                         router.push(`/${me?.data?.id}/dashboard/cost/${option.value}`)
                                     }}
