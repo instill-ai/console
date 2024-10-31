@@ -15,6 +15,7 @@ export const getQueryString = ({
   stop,
   aggregationWindow,
   namespaceId,
+  requesterId,
 }: {
   baseURL: string;
   pageSize?: number;
@@ -29,6 +30,7 @@ export const getQueryString = ({
   queryParams?: string;
   owner?: string;
   namespaceId?: string;
+  requesterId?: string;
   start?: string;
   stop?: string;
   aggregationWindow?: string;
@@ -46,6 +48,7 @@ export const getQueryString = ({
     queryParams ||
     owner ||
     namespaceId ||
+    requesterId ||
     start ||
     stop ||
     aggregationWindow
@@ -96,6 +99,10 @@ export const getQueryString = ({
 
   if (namespaceId) {
     url += `namespaceId=${namespaceId}&`;
+  }
+
+  if (requesterId) {
+    url += `requesterId=${requesterId}&`;
   }
 
   if (start) {

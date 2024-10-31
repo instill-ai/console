@@ -51,7 +51,7 @@ export const DashboardListPipeline = () => {
         enabled: enabledQuery,
         accessToken,
         pageSize: paginationState.pageSize,
-        pageToken: paginationState.pageIndex.toString(),
+        page: paginationState.pageIndex,
         filter: orderBy,
         requesterUid: targetNamespace?.uid,
     });

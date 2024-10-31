@@ -367,7 +367,7 @@ export class MetricClient extends APIResource {
       enablePagination?: boolean;
     },
   ) {
-    const { pageSize, pageToken, filter, enablePagination, requesterUid } =
+    const { pageSize, page, filter, enablePagination, requesterUid, start } =
       props;
 
     const additionalHeaders = getInstillAdditionalHeaders({
@@ -378,8 +378,10 @@ export class MetricClient extends APIResource {
       const queryString = getQueryString({
         baseURL: `/dashboard/pipelines/runs`,
         pageSize,
-        pageToken,
+        page,
         filter,
+        requesterId: requesterUid,
+        start,
       });
 
       const data = await this._client.get<ListPipelineRunsByRequesterResponse>(

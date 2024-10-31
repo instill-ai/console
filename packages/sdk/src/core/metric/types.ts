@@ -1,4 +1,5 @@
 import { ModelReleaseStage, ModelRun } from "../../model";
+import { Nullable } from "../../types";
 import { PipelineMode, PipelineReleaseState, PipelineRun } from "../../vdp";
 
 export type Mode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
@@ -168,7 +169,8 @@ export type ListModelRunsByRequesterRequest = {
 
 export type ListPipelineRunsByRequesterRequest = {
   pageSize?: number;
-  pageToken?: string;
+  page: Nullable<number>;
   filter?: string;
   requesterUid?: string;
+  start?: string;
 };
