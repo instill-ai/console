@@ -7,7 +7,13 @@ import {
     DataTable,
     PaginationState,
 } from "@instill-ai/design-system";
-import { InstillStore, useInstillStore, useListModelRunsByRequester, useShallow, useUserNamespaces } from "../../../../lib";
+import {
+    InstillStore,
+    useInstillStore,
+    useListModelRunsByRequester,
+    useShallow,
+    useUserNamespaces
+} from "../../../../lib";
 import { TABLE_PAGE_SIZE } from "../../../pipeline/view-pipeline/constants";
 import { RunsTableSortableColHeader, RunStateLabel } from "../../../../components";
 import { getHumanReadableStringFromTime } from "../../../../server";
@@ -17,7 +23,6 @@ const selector = (store: InstillStore) => ({
     accessToken: store.accessToken,
     enabledQuery: store.enabledQuery,
     navigationNamespaceAnchor: store.navigationNamespaceAnchor,
-
 });
 
 type DashboardListModelProps = {
@@ -37,6 +42,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
             (namespace) => namespace.id === navigationNamespaceAnchor,
         );
     }, [userNamespaces.isSuccess, userNamespaces.data, navigationNamespaceAnchor]);
+
     const [orderBy, setOrderBy] = React.useState<string>();
     const [paginationState, setPaginationState] = React.useState<PaginationState>({
         pageIndex: 0,
@@ -71,7 +77,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
                             <Link
-                                href={`/models/${row.getValue("modelId")}`}
+                                href={`${targetNamespace?.id}/models/${row.getValue("modelId")}`}
                                 className="text-semantic-accent-default hover:underline"
                             >
                                 {row.getValue("modelId")}
@@ -81,30 +87,28 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
                 },
             },
             {
-                accessorKey: "id",
+                accessorKey: "modelRunUid",
                 header: () => <div className="text-left">Run ID</div>,
                 cell: ({ row }) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
                             <Link
-                                href={`/models/${row.getValue("modelId")}/runs/${row.getValue(
-                                    "id"
-                                )}`}
+                                href={`${targetNamespace?.id}/models/${row.getValue("modelId")}/runs/${row.getValue("modelRunUid")}`}
                                 className="text-semantic-accent-default hover:underline"
                             >
-                                {row.getValue("id")}
+                                {row.getValue("modelRunUid")}
                             </Link>
                         </div>
                     );
                 },
             },
             {
-                accessorKey: "version",
+                accessorKey: "modelVersion",
                 header: () => <div className="text-left">Version</div>,
                 cell: ({ row }) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-                            {row.getValue("version")}
+                            {row.getValue("modelVersion")}
                         </div>
                     );
                 },
@@ -151,11 +155,11 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
                 },
             },
             {
-                accessorKey: "triggerTime",
+                accessorKey: "startTime",
                 header: () => (
                     <RunsTableSortableColHeader
                         title="Trigger Time"
-                        paramName="trigger_time"
+                        paramName="startTime"
                         currentSortParamValue={orderBy}
                         onSort={onSortOrderUpdate}
                     />
@@ -164,7 +168,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-alt-primary">
                             {getHumanReadableStringFromTime(
-                                row.getValue("triggerTime"),
+                                row.getValue("startTime"),
                                 Date.now()
                             )}
                         </div>
@@ -180,7 +184,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
                             <Link
                                 target="_blank"
                                 className="text-semantic-accent-default hover:underline"
-                                href={`/${row.getValue("runner")}`}
+                                href={`${targetNamespace?.id}/models/${row.getValue("runner")}`}
                             >
                                 {row.getValue("runner")}
                             </Link>
@@ -189,23 +193,23 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
                 },
             },
             {
-                accessorKey: "credit",
+                accessorKey: "creditAmount",
                 header: () => <div className="text-left">Credit</div>,
                 cell: ({ row }) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-                            {row.getValue("credit")}
+                            {row.getValue("creditAmount")}
                         </div>
                     );
                 },
             },
             {
-                accessorKey: "creditOwner",
+                accessorKey: "runnerId",
                 header: () => <div className="text-left">Credit Owner</div>,
                 cell: ({ row }) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-                            {row.getValue("creditOwner")}
+                            {row.getValue("runnerId")}
                         </div>
                     );
                 },
@@ -215,7 +219,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
         return baseColumns;
     }, [orderBy]);
 
-    if (modelRuns.data?.modelRuns.length === 0) {
+    if (modelRuns.data?.modelRuns?.length === 0 && modelRuns.isSuccess) {
         return (
             <div className="relative flex flex-col items-center">
                 <img

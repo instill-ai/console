@@ -30,7 +30,7 @@ export const getQueryString = ({
   queryParams?: string;
   owner?: string;
   namespaceId?: string;
-  requesterId?: string;
+  requesterId?: Nullable<string>;
   start?: string;
   stop?: string;
   aggregationWindow?: string;

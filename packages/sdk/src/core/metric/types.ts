@@ -115,9 +115,11 @@ export type ModelTriggerTableRecord = {
 
 export type ListModelTriggerMetricRequest = {
   pageSize?: number;
-  pageToken?: string;
+  page?: Nullable<number>;
   filter?: string;
-  enablePagination?: boolean;
+  requesterUid?: string;
+  requesterId?: Nullable<string>;
+  start?: string;
 };
 
 export type ListModelTriggerMetricResponse = {

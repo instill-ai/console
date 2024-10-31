@@ -32,7 +32,7 @@ export function useListModelRunsByRequester({
                 accessToken,
             });
 
-            const data = await client.core.metric.listModelRunsByRequester({
+            const data = await client.model.listModelRunsByRequester({
                 pageSize,
                 page,
                 filter,

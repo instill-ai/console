@@ -4,8 +4,6 @@ import {
   GetPipelineTriggerCountRequest,
   GetPipelineTriggerCountResponse,
   ListCreditConsumptionChartRecordResponse,
-  ListModelRunsByRequesterRequest,
-  ListModelRunsByRequesterResponse,
   ListModelTriggerMetricRequest,
   ListModelTriggerMetricResponse,
   ListModelTriggersChartResponse,
@@ -249,18 +247,35 @@ export class MetricClient extends APIResource {
       enablePagination?: boolean;
     },
   ) {
-    const { pageSize, pageToken, filter, enablePagination } = props;
+    const {
+      pageSize,
+      page,
+      filter,
+      enablePagination,
+      requesterId,
+      requesterUid,
+      start,
+    } = props;
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+    });
 
     try {
       const queryString = getQueryString({
-        baseURL: `/metrics/model/triggers/metrics`,
+        baseURL: `/model-runs:query-charts`,
         pageSize,
-        pageToken,
+        page,
         filter,
+        requesterId,
+        start,
       });
 
-      const response =
-        await this._client.get<ListModelTriggerMetricResponse>(queryString);
+      const response = await this._client.get<ListModelTriggerMetricResponse>(
+        queryString,
+        {
+          additionalHeaders,
+        },
+      );
 
       if (enablePagination) {
         return Promise.resolve(response);
@@ -320,53 +335,6 @@ export class MetricClient extends APIResource {
       const response =
         await this._client.get<ListModelTriggersChartResponse>(queryString);
       return Promise.resolve(response);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async listModelRunsByRequester(
-    props: ListModelRunsByRequesterRequest & {
-      enablePagination?: boolean;
-    },
-  ) {
-    const {
-      pageSize,
-      page,
-      filter,
-      enablePagination,
-      requesterUid,
-      requesterId,
-      start,
-    } = props;
-
-    const additionalHeaders = getInstillAdditionalHeaders({
-      requesterUid,
-    });
-
-    try {
-      const queryString = getQueryString({
-        //this idealy would be fixed in the future
-        baseURL: `/model-runs:query-charts`,
-        pageSize,
-        page,
-        filter,
-        requesterId,
-        start,
-      });
-
-      const data = await this._client.get<ListModelRunsByRequesterResponse>(
-        queryString,
-        {
-          additionalHeaders,
-        },
-      );
-
-      if (enablePagination) {
-        return Promise.resolve(data);
-      }
-
-      return Promise.resolve(data.modelRuns);
     } catch (error) {
       return Promise.reject(error);
     }

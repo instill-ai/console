@@ -79,7 +79,7 @@ export const DashboardListPipeline = ({ start }: DashboardListPipelineProps) => 
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
                             <Link
-                                href={`/pipelines/${row.getValue("pipelineId")}`}
+                                href={`${targetNamespace?.id}/pipelines/${row.getValue("pipelineId")}`}
                                 className="text-semantic-accent-default hover:underline"
                             >
                                 {row.getValue("pipelineId")}
@@ -89,28 +89,28 @@ export const DashboardListPipeline = ({ start }: DashboardListPipelineProps) => 
                 },
             },
             {
-                accessorKey: "id",
+                accessorKey: "pipelineRunUid",
                 header: () => <div className="text-left">Run ID</div>,
                 cell: ({ row }) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
                             <Link
-                                href={`/pipelines/${row.getValue("pipelineId")}/runs/${row.getValue("id")}`}
+                                href={`${targetNamespace?.id}/pipelines/${row.getValue("pipelineId")}/runs/${row.getValue("pipelineRunUid")}`}
                                 className="text-semantic-accent-default hover:underline"
                             >
-                                {row.getValue("id")}
+                                {row.getValue("pipelineRunUid")}
                             </Link>
                         </div>
                     );
                 },
             },
             {
-                accessorKey: "version",
+                accessorKey: "pipelineVersion",
                 header: () => <div className="text-left">Version</div>,
                 cell: ({ row }) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-                            {row.getValue("version")}
+                            {row.getValue("pipelineVersion")}
                         </div>
                     );
                 },
@@ -157,11 +157,11 @@ export const DashboardListPipeline = ({ start }: DashboardListPipelineProps) => 
                 },
             },
             {
-                accessorKey: "triggerTime",
+                accessorKey: "startTime",
                 header: () => (
                     <RunsTableSortableColHeader
                         title="Trigger Time"
-                        paramName="trigger_time"
+                        paramName="startTime"
                         currentSortParamValue={orderBy}
                         onSort={onSortOrderUpdate}
                     />
@@ -170,7 +170,7 @@ export const DashboardListPipeline = ({ start }: DashboardListPipelineProps) => 
                     return (
                         <div className="font-normal text-semantic-bg-secondary-alt-primary">
                             {getHumanReadableStringFromTime(
-                                row.getValue("triggerTime"),
+                                row.getValue("startTime"),
                                 Date.now()
                             )}
                         </div>
@@ -186,7 +186,7 @@ export const DashboardListPipeline = ({ start }: DashboardListPipelineProps) => 
                             <Link
                                 target="_blank"
                                 className="text-semantic-accent-default hover:underline"
-                                href={`/${row.getValue("runner")}`}
+                                href={`${targetNamespace?.id}/pipelines/${row.getValue("runner")}`}
                             >
                                 {row.getValue("runner")}
                             </Link>
@@ -195,23 +195,23 @@ export const DashboardListPipeline = ({ start }: DashboardListPipelineProps) => 
                 },
             },
             {
-                accessorKey: "credit",
+                accessorKey: "creditAmount",
                 header: () => <div className="text-left">Credit</div>,
                 cell: ({ row }) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-                            {row.getValue("credit")}
+                            {row.getValue("creditAmount")}
                         </div>
                     );
                 },
             },
             {
-                accessorKey: "creditOwner",
+                accessorKey: "runnerId",
                 header: () => <div className="text-left">Credit Owner</div>,
                 cell: ({ row }) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-                            {row.getValue("creditOwner")}
+                            {row.getValue("runnerId")}
                         </div>
                     );
                 },

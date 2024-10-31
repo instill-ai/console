@@ -87,8 +87,8 @@ export const DashboardActivityPageMainView = ({
 
   const triggeredModels = useModelTriggerMetric({
     enabled: enableQuery && !!queryString,
-    filter: queryString ? queryString : null,
     accessToken,
+    requesterId: routeInfo.data.namespaceId,
   });
 
   const previousTriggeredPipelines = usePipelineTriggerMetric({
@@ -99,8 +99,8 @@ export const DashboardActivityPageMainView = ({
 
   const previousTriggeredModels = useModelTriggerMetric({
     enabled: enableQuery && !!queryStringPrevious,
-    filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,
+    requesterId: routeInfo.data.namespaceId,
   });
 
   // React.useEffect(() => {
