@@ -330,7 +330,7 @@ export class MetricClient extends APIResource {
       enablePagination?: boolean;
     },
   ) {
-    const { pageSize, pageToken, filter, enablePagination, requesterUid } =
+    const { pageSize, page, filter, enablePagination, requesterUid, start } =
       props;
 
     const additionalHeaders = getInstillAdditionalHeaders({
@@ -339,10 +339,13 @@ export class MetricClient extends APIResource {
 
     try {
       const queryString = getQueryString({
-        baseURL: `/dashboard/models/runs`,
+        //this idealy would be fixed in the future
+        baseURL: `/model-runs:query-charts`,
         pageSize,
-        pageToken,
+        page,
         filter,
+        requesterId: requesterUid,
+        start,
       });
 
       const data = await this._client.get<ListModelRunsByRequesterResponse>(

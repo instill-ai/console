@@ -26,7 +26,11 @@ const selector = (store: InstillStore) => ({
 
 });
 
-export const DashboardListPipeline = () => {
+type DashboardListPipelineProps = {
+    start: string
+}
+
+export const DashboardListPipeline = ({ start }: DashboardListPipelineProps) => {
     const { accessToken, enabledQuery, navigationNamespaceAnchor } = useInstillStore(useShallow(selector));
 
     const userNamespaces = useUserNamespaces();
@@ -54,6 +58,7 @@ export const DashboardListPipeline = () => {
         page: paginationState.pageIndex,
         filter: orderBy,
         requesterUid: targetNamespace?.uid,
+        start
     });
 
     const onSortOrderUpdate = (sortValue: string) => {

@@ -20,7 +20,11 @@ const selector = (store: InstillStore) => ({
 
 });
 
-export const DashboardListModel = () => {
+type DashboardListModelProps = {
+    start: string
+}
+
+export const DashboardListModel = ({ start }: DashboardListModelProps) => {
     const { accessToken, enabledQuery, navigationNamespaceAnchor } = useInstillStore(useShallow(selector));
 
     const userNamespaces = useUserNamespaces();
@@ -43,9 +47,10 @@ export const DashboardListModel = () => {
         enabled: enabledQuery,
         accessToken,
         pageSize: paginationState.pageSize,
-        pageToken: paginationState.pageIndex.toString(),
+        page: paginationState.pageIndex,
         filter: orderBy,
         requesterUid: targetNamespace?.uid,
+        start,
     });
 
     const onSortOrderUpdate = (sortValue: string) => {

@@ -6,19 +6,21 @@ export function useListModelRunsByRequester({
     enabled,
     accessToken,
     pageSize,
-    pageToken,
+    page,
     filter,
     requesterUid,
+    start,
 }: {
     enabled: boolean;
     accessToken: Nullable<string>;
     pageSize?: number;
-    pageToken?: string;
+    page: Nullable<number>;
     filter?: string;
     requesterUid?: string;
+    start?: string;
 }) {
     return useQuery<ListModelRunsByRequesterResponse>({
-        queryKey: ['modelRuns', pageSize, pageToken, filter, requesterUid],
+        queryKey: ['modelRuns', pageSize, page, filter, requesterUid, start],
         queryFn: async () => {
             if (!accessToken) {
                 return Promise.reject(new Error("accessToken not provided"));
@@ -30,15 +32,15 @@ export function useListModelRunsByRequester({
 
             const data = await client.core.metric.listModelRunsByRequester({
                 pageSize,
-                pageToken,
+                page,
                 filter,
                 requesterUid,
+                start,
                 enablePagination: true,
             });
 
             //need to fix the casting 
             return data as ListModelRunsByRequesterResponse;
-
         },
         enabled: enabled,
     });

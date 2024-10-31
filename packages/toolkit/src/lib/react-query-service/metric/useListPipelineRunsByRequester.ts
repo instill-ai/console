@@ -17,7 +17,7 @@ export function useListPipelineRunsByRequester({
     page: Nullable<number>;
     filter?: string;
     requesterUid?: string;
-    start?: string;
+    start: string;
 }) {
     return useQuery<ListPipelineRunsByRequesterResponse>({
         queryKey: ['pipelineRuns', pageSize, page, filter, requesterUid, start],

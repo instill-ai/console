@@ -162,9 +162,10 @@ export type ListPipelineRunsByRequesterResponse = {
 
 export type ListModelRunsByRequesterRequest = {
   pageSize?: number;
-  pageToken?: string;
+  page: Nullable<number>;
   filter?: string;
   requesterUid?: string;
+  start?: string;
 };
 
 export type ListPipelineRunsByRequesterRequest = {

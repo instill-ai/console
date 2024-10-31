@@ -136,7 +136,7 @@ export const CostTab = ({
             </div>
 
             <div className="mt-8">
-                {costView === "model" ? <DashboardListModel /> : <DashboardListPipeline />}
+                {costView === "model" ? <DashboardListModel start={start} /> : <DashboardListPipeline start={start} />}
             </div>
         </div>
     )
