@@ -49,6 +49,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
         pageSize: paginationState.pageSize,
         page: paginationState.pageIndex,
         filter: orderBy,
+        requesterId: targetNamespace?.id,
         requesterUid: targetNamespace?.uid,
         start,
     });

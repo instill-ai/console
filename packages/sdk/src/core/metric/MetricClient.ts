@@ -330,8 +330,15 @@ export class MetricClient extends APIResource {
       enablePagination?: boolean;
     },
   ) {
-    const { pageSize, page, filter, enablePagination, requesterUid, start } =
-      props;
+    const {
+      pageSize,
+      page,
+      filter,
+      enablePagination,
+      requesterUid,
+      requesterId,
+      start,
+    } = props;
 
     const additionalHeaders = getInstillAdditionalHeaders({
       requesterUid,
@@ -344,7 +351,7 @@ export class MetricClient extends APIResource {
         pageSize,
         page,
         filter,
-        requesterId: requesterUid,
+        requesterId,
         start,
       });
 
@@ -370,8 +377,15 @@ export class MetricClient extends APIResource {
       enablePagination?: boolean;
     },
   ) {
-    const { pageSize, page, filter, enablePagination, requesterUid, start } =
-      props;
+    const {
+      pageSize,
+      page,
+      filter,
+      enablePagination,
+      requesterUid,
+      requesterId,
+      start,
+    } = props;
 
     const additionalHeaders = getInstillAdditionalHeaders({
       requesterUid,
@@ -383,7 +397,7 @@ export class MetricClient extends APIResource {
         pageSize,
         page,
         filter,
-        requesterId: requesterUid,
+        requesterId,
         start,
       });
 

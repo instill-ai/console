@@ -165,6 +165,7 @@ export type ListModelRunsByRequesterRequest = {
   page: Nullable<number>;
   filter?: string;
   requesterUid?: string;
+  requesterId?: string;
   start?: string;
 };
 
@@ -173,5 +174,6 @@ export type ListPipelineRunsByRequesterRequest = {
   page: Nullable<number>;
   filter?: string;
   requesterUid?: string;
+  requesterId?: string;
   start?: string;
 };

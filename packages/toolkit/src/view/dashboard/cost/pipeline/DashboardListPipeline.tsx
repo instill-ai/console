@@ -57,6 +57,7 @@ export const DashboardListPipeline = ({ start }: DashboardListPipelineProps) => 
         pageSize: paginationState.pageSize,
         page: paginationState.pageIndex,
         filter: orderBy,
+        requesterId: targetNamespace?.id,
         requesterUid: targetNamespace?.uid,
         start
     });

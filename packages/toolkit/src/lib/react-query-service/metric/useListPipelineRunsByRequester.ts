@@ -8,6 +8,7 @@ export function useListPipelineRunsByRequester({
     pageSize,
     page,
     filter,
+    requesterId,
     requesterUid,
     start,
 }: {
@@ -17,10 +18,11 @@ export function useListPipelineRunsByRequester({
     page: Nullable<number>;
     filter?: string;
     requesterUid?: string;
+    requesterId?: string;
     start: string;
 }) {
     return useQuery<ListPipelineRunsByRequesterResponse>({
-        queryKey: ['pipelineRuns', pageSize, page, filter, requesterUid, start],
+        queryKey: ['pipelineRuns', pageSize, page, filter, requesterId, start],
         queryFn: async () => {
             if (!accessToken) {
                 return Promise.reject(new Error("accessToken not provided"));
@@ -34,6 +36,7 @@ export function useListPipelineRunsByRequester({
                 pageSize,
                 page,
                 filter,
+                requesterId,
                 requesterUid,
                 start,
                 enablePagination: true,
