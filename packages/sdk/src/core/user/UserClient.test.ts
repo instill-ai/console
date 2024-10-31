@@ -46,7 +46,10 @@ test("getUser", async () => {
     debug: true,
   });
 
-  const user = await client.core.user.getUser({ userName: "users/userid" });
+  const user = await client.core.user.getUser({
+    userId: "userid",
+    view: "VIEW_FULL",
+  });
 
   const parsedData = getUserResponseValidator.safeParse(user);
 
@@ -60,7 +63,13 @@ test("listUsers", async () => {
     debug: true,
   });
 
-  const users = await client.core.user.listUsers({ enablePagination: true });
+  const users = await client.core.user.listUsers({
+    enablePagination: true,
+    view: "VIEW_FULL",
+    filter: "filter",
+    pageSize: 10,
+    pageToken: "pt",
+  });
 
   const parsedData = listUsersWithPaginationResponseValidator.safeParse(users);
 

@@ -71,6 +71,7 @@ type OperationDefinition = {
   verb: string;
   responses: OpenAPIV3.ResponsesObject;
   id: string;
+  parameters: OpenAPIV3.ParameterObject[];
 };
 
 function getOperationDefinitions(
@@ -99,6 +100,7 @@ function getOperationDefinitions(
         verb,
         id,
         responses: operation.responses,
+        parameters: (operation.parameters as OpenAPIV3.ParameterObject[]) ?? [],
       });
     }
 
@@ -153,7 +155,7 @@ function toOperation(
   definition: OperationDefinition,
   apiGen: ApiGenerator,
 ): Operation {
-  const { verb, path, responses, id } = definition;
+  const { verb, path, responses, id, parameters } = definition;
 
   const responseMap = Object.entries(responses).map(([code, response]) => {
     const content = apiGen.resolve(response).content;
@@ -184,6 +186,7 @@ function toOperation(
     verb,
     path: toExpressLikePath(path),
     response: responseMap,
+    parameters,
   };
 }
 

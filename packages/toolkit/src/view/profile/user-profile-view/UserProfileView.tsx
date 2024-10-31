@@ -36,7 +36,7 @@ export const UserProfileView = () => {
   });
 
   const user = useUser({
-    userName: routeInfo.data.namespaceName,
+    userId: routeInfo.data.namespaceId,
     accessToken: accessToken,
     enabled:
       enabledQuery &&

@@ -16,7 +16,7 @@ export async function generateMetadata({
     let user: Nullable<User> = null;
 
     user = await fetchUser({
-      userName: "users/" + params.entity,
+      userId: params.entity,
 
       // This is a public route, we don't need to request it with access token
       accessToken: null,

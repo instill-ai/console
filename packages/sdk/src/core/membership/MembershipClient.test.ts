@@ -34,7 +34,7 @@ test("getUserMembership", async () => {
   const membership = await client.core.membership.getUserMembership({
     userId: "uid",
     organizationId: "oid",
-    view: "FULL",
+    view: "VIEW_FULL",
   });
 
   const parsedData = getUserMembershipResponseValidator.safeParse(membership);

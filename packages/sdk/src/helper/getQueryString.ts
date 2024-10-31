@@ -48,7 +48,7 @@ export const getQueryString = ({
     start ||
     stop ||
     aggregationWindow ||
-    showDeleted
+    showDeleted !== undefined
   ) {
     // Check if the baseURL already has a query string
     if (baseURL.includes("?")) {
@@ -106,7 +106,7 @@ export const getQueryString = ({
     url += `aggregationWindow=${aggregationWindow}&`;
   }
 
-  if (showDeleted) {
+  if (showDeleted !== undefined) {
     url += `showDeleted=${showDeleted}&`;
   }
 

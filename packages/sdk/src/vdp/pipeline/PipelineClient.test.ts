@@ -18,6 +18,13 @@ test("listAccessiblePipelines", async () => {
 
   const pipelines = await client.vdp.pipeline.listAccessiblePipelines({
     enablePagination: true,
+    pageSize: 10,
+    pageToken: "pt",
+    filter: "filter",
+    showDeleted: false,
+    visibility: "VISIBILITY_PUBLIC",
+    orderBy: "order_by",
+    view: "VIEW_FULL",
   });
 
   const parsedData =
@@ -36,6 +43,13 @@ test("listNamespacePipelines", async () => {
   const pipelines = await client.vdp.pipeline.listNamespacePipelines({
     namespaceId: "nid",
     enablePagination: true,
+    pageSize: 10,
+    pageToken: "pt",
+    view: "VIEW_FULL",
+    filter: "filter",
+    showDeleted: false,
+    visibility: "VISIBILITY_PUBLIC",
+    orderBy: "order_by",
   });
 
   const parsedData =
@@ -54,6 +68,8 @@ test("getNamespacePipeline", async () => {
   const pipeline = await client.vdp.pipeline.getNamespacePipeline({
     namespaceId: "nid",
     pipelineId: "pid",
+    view: "VIEW_FULL",
+    shareCode: "share_code",
   });
 
   const parsedData = getNamespacePipelineResponseValidator.safeParse(pipeline);

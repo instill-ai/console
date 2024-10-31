@@ -49,13 +49,15 @@ export class UserClient extends APIResource {
     props: ListUsersRequest & { enablePagination?: boolean },
   ): Promise<ListUsersResponse | User[]>;
   async listUsers(props: ListUsersRequest & { enablePagination?: boolean }) {
-    const { pageSize, pageToken, enablePagination } = props;
+    const { pageSize, view, filter, pageToken, enablePagination } = props;
     const users: User[] = [];
     try {
       const queryString = getQueryString({
         baseURL: "/users",
         pageSize,
         pageToken,
+        view,
+        filter,
       });
 
       const data = await this._client.get<ListUsersResponse>(queryString);
@@ -82,9 +84,14 @@ export class UserClient extends APIResource {
     }
   }
 
-  async getUser({ userName }: GetUserRequest) {
+  async getUser({ userId, view }: GetUserRequest) {
+    const queryString = getQueryString({
+      baseURL: `/users/${userId}`,
+      view,
+    });
+
     try {
-      const data = await this._client.get<GetUserResponse>(`/${userName}`);
+      const data = await this._client.get<GetUserResponse>(queryString);
       return Promise.resolve(data.user);
     } catch (error) {
       return Promise.reject(error);
