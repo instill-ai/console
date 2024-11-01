@@ -1,50 +1,59 @@
 import { useQuery } from "@tanstack/react-query";
 import { ListPipelineRunsByRequesterResponse, Nullable } from "instill-sdk";
+
 import { getInstillAPIClient } from "../../sdk-helper";
 
 export function useListPipelineRunsByRequester({
-    enabled,
-    accessToken,
-    pageSize,
-    page,
-    filter,
-    requesterId,
-    requesterUid,
-    start,
+  enabled,
+  accessToken,
+  pageSize,
+  page,
+  filter,
+  requesterId,
+  requesterUid,
+  start,
 }: {
-    enabled: boolean;
-    accessToken: Nullable<string>;
-    pageSize?: number;
-    page: Nullable<number>;
-    filter?: string;
-    requesterId?: string;
-    requesterUid?: string;
-    start: string;
+  enabled: boolean;
+  accessToken: Nullable<string>;
+  pageSize?: number;
+  page: Nullable<number>;
+  filter?: string;
+  requesterId?: string;
+  requesterUid?: string;
+  start: string;
 }) {
-    return useQuery<ListPipelineRunsByRequesterResponse>({
-        queryKey: ["pipelineRuns", requesterId, requesterUid, pageSize, page, filter, start],
-        queryFn: async () => {
-            if (!accessToken) {
-                return Promise.reject(new Error("accessToken not provided"));
-            }
+  return useQuery<ListPipelineRunsByRequesterResponse>({
+    queryKey: [
+      "pipelineRuns",
+      requesterId,
+      requesterUid,
+      pageSize,
+      page,
+      filter,
+      start,
+    ],
+    queryFn: async () => {
+      if (!accessToken) {
+        return Promise.reject(new Error("accessToken not provided"));
+      }
 
-            const client = getInstillAPIClient({
-                accessToken,
-            });
+      const client = getInstillAPIClient({
+        accessToken,
+      });
 
-            const data = await client.core.metric.listPipelineRunsByRequester({
-                pageSize,
-                page,
-                filter,
-                requesterId,
-                requesterUid,
-                start,
-                enablePagination: true,
-            });
-            // Need to fix the casting
-            return data as ListPipelineRunsByRequesterResponse;
-        },
-        enabled: enabled,
-        staleTime: 0, // Optional: Ensures data is considered stale immediately, forcing refetch
-    });
+      const data = await client.core.metric.listPipelineRunsByRequester({
+        pageSize,
+        page,
+        filter,
+        requesterId,
+        requesterUid,
+        start,
+        enablePagination: true,
+      });
+      // Need to fix the casting
+      return data as ListPipelineRunsByRequesterResponse;
+    },
+    enabled: enabled,
+    staleTime: 0, // Optional: Ensures data is considered stale immediately, forcing refetch
+  });
 }

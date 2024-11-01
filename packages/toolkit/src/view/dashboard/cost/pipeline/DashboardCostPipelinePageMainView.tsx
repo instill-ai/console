@@ -8,7 +8,6 @@ import { useRouteInfo } from "../../../../lib";
 import { UsageSwitch } from "../../UsageSwitch";
 import { CostTab } from "../CostTab";
 
-
 export const DashboardCostPipelinePageMainView = () => {
   const [selectedTimeOption, setSelectedTimeOption] =
     React.useState<SelectOption>({

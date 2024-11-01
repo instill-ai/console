@@ -183,9 +183,9 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
             <div className="font-normal text-semantic-bg-secondary-alt-primary">
               {createTime
                 ? getHumanReadableStringFromTime(
-                  createTime as string,
-                  Date.now(),
-                )
+                    createTime as string,
+                    Date.now(),
+                  )
                 : "-"}
             </div>
           );

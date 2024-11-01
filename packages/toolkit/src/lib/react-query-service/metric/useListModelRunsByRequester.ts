@@ -25,7 +25,15 @@ export function useListModelRunsByRequester({
   start?: string;
 }) {
   return useQuery<ListModelRunsByRequesterResponse>({
-    queryKey: ["modelRuns", requesterId, requesterUid, pageSize, page, filter, start],
+    queryKey: [
+      "modelRuns",
+      requesterId,
+      requesterUid,
+      pageSize,
+      page,
+      filter,
+      start,
+    ],
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));

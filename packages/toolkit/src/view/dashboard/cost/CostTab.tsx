@@ -29,7 +29,6 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-
 export const CostTab = ({
   selectedTimeOption,
   setSelectedTimeOption,
