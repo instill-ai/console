@@ -41,16 +41,6 @@ export type CreditConsumptionChartRecord = {
   creditOwner: string;
 };
 
-export type GetPipelineTriggerCountRequest = {
-  namespaceId: string;
-  start?: string;
-  stop?: string;
-};
-
-export type GetPipelineTriggerCountResponse = {
-  pipelineTriggerCounts: PipelineTriggerCount[];
-};
-
 export type ListCreditConsumptionChartRecordResponse = {
   creditConsumptionChartRecords: CreditConsumptionChartRecord[];
   totalAmount: number;

@@ -1,8 +1,6 @@
 import { getInstillAdditionalHeaders, getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
 import {
-  GetPipelineTriggerCountRequest,
-  GetPipelineTriggerCountResponse,
   ListCreditConsumptionChartRecordResponse,
   ListModelTriggerMetricRequest,
   ListModelTriggerMetricResponse,
@@ -53,25 +51,6 @@ export class MetricClient extends APIResource {
     }
   }
 
-  async getPipelineTriggerCount(props: GetPipelineTriggerCountRequest) {
-    try {
-      const { namespaceId, start, stop } = props;
-
-      const queryString = getQueryString({
-        baseURL: `/metrics/vdp/pipeline/trigger-count`,
-        owner: namespaceId,
-        start: start ?? undefined,
-        stop: stop ?? undefined,
-      });
-
-      const data =
-        await this._client.get<GetPipelineTriggerCountResponse>(queryString);
-      return Promise.resolve(data);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
   async listModelTriggerMetric(
     props: ListModelTriggerMetricRequest & {
       enablePagination?: boolean;
@@ -112,38 +91,6 @@ export class MetricClient extends APIResource {
       }
 
       return Promise.resolve(response.modelTriggerTableRecords);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async getModelTriggersChart(props: {
-    namespaceId: string;
-    start?: string;
-    stop?: string;
-    aggregationWindow?: string;
-  }) {
-    try {
-      const { namespaceId, start, stop, aggregationWindow } = props;
-
-      const queryString = getQueryString({
-        baseURL: `/metrics/model/triggers/chart`,
-        owner: namespaceId,
-        start: start ?? undefined,
-        stop: stop ?? undefined,
-        aggregationWindow: aggregationWindow ?? undefined,
-      });
-
-      const data = await this._client.get<{
-        modelTriggers: {
-          modelId: string;
-          timeBuckets: string[];
-          triggerCounts: number[];
-          computeTimeDuration: number[];
-        }[];
-      }>(queryString);
-
-      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }

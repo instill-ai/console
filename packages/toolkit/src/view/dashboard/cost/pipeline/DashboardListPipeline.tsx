@@ -236,6 +236,12 @@ export const DashboardListPipeline = ({
   if (pipelineRuns.isSuccess && !pipelineRuns.data.pipelineRuns.length) {
     return (
       <div className="relative flex flex-col items-center">
+        <img
+          width={513}
+          height={481}
+          src="/images/models/no-pipelines-placeholder.svg"
+          alt="A box and a looking glass"
+        />
         <p className="absolute left-1/2 top-3/4 flex -translate-x-1/2 flex-col items-center gap-y-2 text-center text-xl font-semibold text-semantic-fg-primary">
           <span className="whitespace-nowrap">No pipeline runs found</span>
           <span className="text-base font-normal text-semantic-fg-secondary">
