@@ -173,7 +173,7 @@ export const DashboardListPipeline = ({
         header: () => (
           <RunsTableSortableColHeader
             title="Trigger Time"
-            paramName="startTime"
+            paramName="start_time"
             currentSortParamValue={orderBy}
             onSort={onSortOrderUpdate}
           />
