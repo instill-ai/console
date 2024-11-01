@@ -11,6 +11,8 @@ export const getQueryString = ({
   page,
   visibility,
   owner,
+  namespaceId,
+  requesterId,
   start,
   stop,
   aggregationWindow,
@@ -30,6 +32,8 @@ export const getQueryString = ({
   // Just pure query params, the function will handle tialing '&'
   queryParams?: string;
   owner?: string;
+  namespaceId?: string;
+  requesterId?: Nullable<string>;
   start?: string;
   stop?: string;
   aggregationWindow?: string;
@@ -98,6 +102,14 @@ export const getQueryString = ({
 
   if (owner) {
     url += `owner=${owner}&`;
+  }
+
+  if (namespaceId) {
+    url += `namespaceId=${namespaceId}&`;
+  }
+
+  if (requesterId) {
+    url += `requesterId=${requesterId}&`;
   }
 
   if (start) {
