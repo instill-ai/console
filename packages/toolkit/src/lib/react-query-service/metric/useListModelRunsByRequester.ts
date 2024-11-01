@@ -1,7 +1,7 @@
 'use client';
 import { useQuery } from "@tanstack/react-query";
 import { ListModelRunsByRequesterResponse, Nullable } from "instill-sdk";
-import { getInstillAPIClient } from "../../sdk-helper";
+import { getInstillModelAPIClient } from "../../sdk-helper";
 
 export function useListModelRunsByRequester({
     enabled,
@@ -29,7 +29,7 @@ export function useListModelRunsByRequester({
                 return Promise.reject(new Error("accessToken not provided"));
             }
 
-            const client = getInstillAPIClient({
+            const client = getInstillModelAPIClient({
                 accessToken,
             });
 
