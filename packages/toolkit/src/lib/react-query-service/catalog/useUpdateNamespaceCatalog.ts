@@ -22,11 +22,11 @@ export function useUpdateNamespaceCatalog() {
       }
 
       if (!payload.namespaceId) {
-        throw new Error("namespaceId not provided");
+        throw new Error("namespaceId is required");
       }
 
       if (!payload.catalogId) {
-        throw new Error("catalogId not provided");
+        throw new Error("catalogId is required");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });

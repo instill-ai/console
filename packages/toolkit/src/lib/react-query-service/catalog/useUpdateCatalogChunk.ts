@@ -11,6 +11,8 @@ export function useUpdateCatalogChunk() {
 
   return useMutation({
     mutationFn: async ({
+      // Because the mutation reponse didn't have these information, but we need them to
+      // update the cache, so we need to pass them in as variables.
       namespaceId,
       catalogId,
       fileUid,
@@ -38,12 +40,17 @@ export function useUpdateCatalogChunk() {
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
-      await client.catalog.updateCatalogChunk({
+      const res = await client.catalog.updateCatalogChunk({
         chunkUid,
         retrievable,
       });
 
-      return Promise.resolve({ namespaceId, catalogId, fileUid });
+      return Promise.resolve({
+        namespaceId,
+        catalogId,
+        fileUid,
+        response: res,
+      });
     },
     onSuccess: ({ namespaceId, catalogId, fileUid }) => {
       queryClient.invalidateQueries({

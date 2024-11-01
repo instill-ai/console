@@ -22,11 +22,11 @@ export function useDeleteCatalogFile() {
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
-        throw new Error("accessToken not provided");
+        throw new Error("accessToken is required");
       }
 
       if (!fileUid) {
-        throw new Error("fileUid not provided");
+        throw new Error("fileUid is required");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });

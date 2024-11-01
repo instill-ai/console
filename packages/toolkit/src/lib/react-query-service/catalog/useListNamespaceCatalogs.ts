@@ -29,11 +29,11 @@ export function useListNamespaceCatalogs({
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
-      const catalogs = await client.catalog.listNamespaceCatalogs({
+      const res = await client.catalog.listNamespaceCatalogs({
         namespaceId,
       });
 
-      return Promise.resolve(catalogs.catalogs);
+      return Promise.resolve(res.catalogs);
     },
     enabled: enabled && Boolean(namespaceId) && Boolean(accessToken),
   });

@@ -8,7 +8,7 @@ import sanitizeHtml from "sanitize-html";
 import { Dialog, ScrollArea, Skeleton } from "@instill-ai/design-system";
 
 import {
-  useGetCatalogSingleSourceOfTruthFile,
+  useGetNamespaceCatalogSingleSourceOfTruthFile,
   useListNamespaceCatalogChunks,
 } from "../../../lib";
 import { getFileIcon } from "./lib/helpers";
@@ -40,13 +40,14 @@ const FileDetailsOverlay = ({
   highlightChunk = false,
   fileType,
 }: FileDetailsOverlayProps) => {
-  const catalogSingleSourceOfTruthFile = useGetCatalogSingleSourceOfTruthFile({
-    fileUid,
-    catalogId,
-    accessToken,
-    enabled: isOpen,
-    namespaceId,
-  });
+  const catalogSingleSourceOfTruthFile =
+    useGetNamespaceCatalogSingleSourceOfTruthFile({
+      fileUid,
+      catalogId,
+      accessToken,
+      enabled: isOpen,
+      namespaceId,
+    });
 
   const namespaceCatalogChunks = useListNamespaceCatalogChunks({
     catalogId,

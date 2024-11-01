@@ -255,7 +255,7 @@ export class CatalogClient extends APIResource {
     }
   }
 
-  async getCatalogSingleSourceOfTruthFile({
+  async getNamespaceCatalogSingleSourceOfTruthFile({
     namespaceId,
     catalogId,
     fileUid,

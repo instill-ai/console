@@ -5,7 +5,7 @@ import { Catalog, CatalogFile, Chunk } from "instill-sdk";
 
 import { cn, Icons, Nullable } from "@instill-ai/design-system";
 
-import { useGetCatalogSingleSourceOfTruthFile } from "../../..";
+import { useGetNamespaceCatalogSingleSourceOfTruthFile } from "../../..";
 import { useListNamespaceCatalogChunks } from "../../../lib";
 import ChunkCard from "./ChunkCard";
 
@@ -40,13 +40,14 @@ const FileChunks = ({
     chunkUids: null,
   });
 
-  const catalogSingleSourceOfTruthFile = useGetCatalogSingleSourceOfTruthFile({
-    fileUid: file.fileUid,
-    catalogId: catalog.catalogId,
-    accessToken: accessToken || null,
-    enabled: expanded,
-    namespaceId: catalog.ownerName,
-  });
+  const catalogSingleSourceOfTruthFile =
+    useGetNamespaceCatalogSingleSourceOfTruthFile({
+      fileUid: file.fileUid,
+      catalogId: catalog.catalogId,
+      accessToken: accessToken || null,
+      enabled: expanded,
+      namespaceId: catalog.ownerName,
+    });
 
   const isProcessing = file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED";
 
