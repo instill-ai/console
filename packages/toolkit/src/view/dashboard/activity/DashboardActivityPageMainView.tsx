@@ -21,6 +21,7 @@ import {
 } from "../../../lib";
 import { UsageSwitch } from "../UsageSwitch";
 import { ActivityTab } from "./ActivityTab";
+import { ModelTriggerChartRecord } from "instill-sdk";
 
 export type DashboardActivityPageMainViewProps = GeneralAppPageProp;
 
@@ -133,7 +134,7 @@ export const DashboardActivityPageMainView = ({
     }));
   }, [pipelinesChart.data, pipelinesChart.isSuccess]);
 
-  const modelChartList = React.useMemo<TriggeredModel[]>(() => {
+  const modelChartList = React.useMemo<ModelTriggerChartRecord[]>(() => {
     if (!modelsChart.isSuccess) {
       return [];
     }

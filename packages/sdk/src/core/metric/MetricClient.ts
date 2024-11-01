@@ -15,6 +15,7 @@ import {
   ListPipelineTriggerMetricResponse,
   ListPipelineTriggerRequest,
   ListPipelineTriggersResponse,
+  ModelTriggerChartRecord,
   PipelineTriggerChartRecord,
   PipelineTriggerRecord,
   PipelineTriggerTableRecord,
@@ -323,7 +324,7 @@ export class MetricClient extends APIResource {
     pageSize?: number;
     pageToken?: string;
     filter?: string;
-  }) {
+  }): Promise<ModelTriggerChartRecord[]> {
     try {
       const queryString = getQueryString({
         baseURL: `/model-runs:query-charts`,
@@ -334,7 +335,7 @@ export class MetricClient extends APIResource {
 
       const response =
         await this._client.get<ListModelTriggersChartResponse>(queryString);
-      return Promise.resolve(response);
+      return Promise.resolve(response.modelTriggerChartRecords);
     } catch (error) {
       return Promise.reject(error);
     }
