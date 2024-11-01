@@ -18,13 +18,6 @@ type CostTabProps = {
     enabledQuery: boolean
 }
 
-type ChartData = {
-    dates: string[]
-    values: number[]
-}
-
-
-
 export const CostTab = ({
     selectedTimeOption,
     setSelectedTimeOption,
@@ -67,7 +60,7 @@ export const CostTab = ({
         aggregationWindow: selectedTimeOption.value === "24h" || selectedTimeOption.value === "1d" ? "1h" : "24h",
     })
 
-    const chartData: ChartData = React.useMemo(() => {
+    const chartData = React.useMemo(() => {
         const record = creditConsumption.data?.creditConsumptionChartRecords?.find(
             (record) => record.source === costView
         )
@@ -129,8 +122,7 @@ export const CostTab = ({
                     setSelectedTimeOption={setSelectedTimeOption}
                 />
             </div>
-
-            <div className="mb-2 w-full">
+            <div className="mb-10 w-full">
                 <CreditCostTrendChart
                     key={costView}
                     dates={chartData.dates}
@@ -139,10 +131,7 @@ export const CostTab = ({
                     type={costView}
                 />
             </div>
-
-            <div className="mt-8">
-                {costView === "model" ? <DashboardListModel start={start} /> : <DashboardListPipeline start={start} />}
-            </div>
+            {costView === "model" ? <DashboardListModel start={start} /> : <DashboardListPipeline start={start} />}
         </div>
     )
 }
