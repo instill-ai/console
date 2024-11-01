@@ -87,28 +87,28 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
                 },
             },
             {
-                accessorKey: "modelRunUid",
+                accessorKey: "uid",
                 header: () => <div className="text-left">Run ID</div>,
                 cell: ({ row }) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
                             <Link
-                                href={`${targetNamespace?.id}/models/${row.getValue("modelId")}/runs/${row.getValue("modelRunUid")}`}
+                                href={`${targetNamespace?.id}/models/${row.getValue("modelId")}/runs/${row.getValue("uid")}`}
                                 className="text-semantic-accent-default hover:underline"
                             >
-                                {row.getValue("modelRunUid")}
+                                {row.getValue("uid")}
                             </Link>
                         </div>
                     );
                 },
             },
             {
-                accessorKey: "modelVersion",
+                accessorKey: "version",
                 header: () => <div className="text-left">Version</div>,
                 cell: ({ row }) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-                            {row.getValue("modelVersion")}
+                            {row.getValue("version")}
                         </div>
                     );
                 },
@@ -159,7 +159,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
                 header: () => (
                     <RunsTableSortableColHeader
                         title="Trigger Time"
-                        paramName="startTime"
+                        paramName="createTime"
                         currentSortParamValue={orderBy}
                         onSort={onSortOrderUpdate}
                     />
@@ -168,7 +168,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-alt-primary">
                             {getHumanReadableStringFromTime(
-                                row.getValue("startTime"),
+                                row.getValue("createTime"),
                                 Date.now()
                             )}
                         </div>
@@ -176,7 +176,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
                 },
             },
             {
-                accessorKey: "runner",
+                accessorKey: "runnerId",
                 header: () => <div className="text-left">Runner</div>,
                 cell: ({ row }) => {
                     return (
@@ -184,9 +184,9 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
                             <Link
                                 target="_blank"
                                 className="text-semantic-accent-default hover:underline"
-                                href={`${targetNamespace?.id}/models/${row.getValue("runner")}`}
+                                href={`${targetNamespace?.id}/models/${row.getValue("runnerId")}`}
                             >
-                                {row.getValue("runner")}
+                                {row.getValue("runnerId")}
                             </Link>
                         </div>
                     );
@@ -209,7 +209,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
                 cell: ({ row }) => {
                     return (
                         <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-                            {row.getValue("runnerId")}
+                            {row.getValue("requesterId")}
                         </div>
                     );
                 },
@@ -219,7 +219,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
         return baseColumns;
     }, [orderBy]);
 
-    if (modelRuns.data?.modelRuns?.length === 0 && modelRuns.isSuccess) {
+    if (modelRuns.isSuccess && (!modelRuns.data?.runs || modelRuns.data.runs.length === 0)) {
         return (
             <div className="relative flex flex-col items-center">
                 <img
@@ -242,7 +242,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
         <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th]:w-40 [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(7)]:w-52 [&_table_th:nth-child(8)]:w-28">
             <DataTable
                 columns={tableColumns}
-                data={modelRuns.data?.modelRuns || []}
+                data={modelRuns.data?.runs || []}
                 pageSize={paginationState.pageSize}
                 isLoading={modelRuns.isLoading}
                 loadingRows={paginationState.pageSize}
