@@ -1,7 +1,9 @@
 "use client";
 
 import { Fragment, ReactNode } from "react";
+
 import { Icons, Skeleton, Tag } from "@instill-ai/design-system";
+
 import { Nullable, PipelineTriggersStatusSummaryItem } from "../../../lib";
 
 const ModelTriggersSummaryCard = (props: {
@@ -78,9 +80,7 @@ export type ModelTriggersSummaryProps = {
   children: ReactNode;
 };
 
-export const ModelTriggersSummary = (
-  props: ModelTriggersSummaryProps
-) => {
+export const ModelTriggersSummary = (props: ModelTriggersSummaryProps) => {
   const { children } = props;
 
   return (

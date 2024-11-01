@@ -1,12 +1,16 @@
 "use client";
 
-import * as React from 'react';
+import * as React from "react";
 import * as echarts from "echarts";
+import { Nullable, PipelinesChart } from "instill-sdk";
+
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
+
+import {
+  generatePipelineChartData,
+  PipelineTriggersStatusSummary,
+} from "../../../lib";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
-import { Nullable } from 'instill-sdk';
-import { generatePipelineChartData, PipelineTriggersStatusSummary } from '../../../lib';
-import { PipelinesChart } from 'instill-sdk';
 
 type PipelineTriggerCountsLineChartProps = {
   pipelines: PipelinesChart[];
@@ -44,7 +48,10 @@ export const PipelineTriggerCountsLineChart = ({
   pipelineTriggersSummary,
 }: PipelineTriggerCountsLineChartProps) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
-  const { xAxis, yAxis } = generatePipelineChartData(pipelines, selectedTimeOption.value);
+  const { xAxis, yAxis } = generatePipelineChartData(
+    pipelines,
+    selectedTimeOption.value,
+  );
 
   const xAxisData = xAxis;
   const seriesData = yAxis;
@@ -92,10 +99,10 @@ export const PipelineTriggerCountsLineChart = ({
         tooltip: {
           trigger: "item",
           tiggerOn: "click",
-          backgroundColor: 'white',
-          borderColor: 'transparent',
+          backgroundColor: "white",
+          borderColor: "transparent",
           textStyle: {
-            color: 'var(--semantic-fg-primary)'
+            color: "var(--semantic-fg-primary)",
           },
           /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
           formatter: function (params: any) {
@@ -138,14 +145,14 @@ export const PipelineTriggerCountsLineChart = ({
             color: "#6B7280",
           },
         },
-        series: seriesData.map(series => ({
+        series: seriesData.map((series) => ({
           ...series,
-          symbol: 'circle',
+          symbol: "circle",
           symbolSize: 8,
           itemStyle: {
-            borderColor: 'white',
-            borderWidth: 2
-          }
+            borderColor: "white",
+            borderWidth: 2,
+          },
         })),
       };
 
@@ -214,10 +221,16 @@ export const PipelineTriggerCountsLineChart = ({
         <div className="px-8 pb-8 w-full">
           <PipelineTriggersSummary>
             <PipelineTriggersSummary.Card
-              summary={pipelineTriggersSummary ? pipelineTriggersSummary.completed : null}
+              summary={
+                pipelineTriggersSummary
+                  ? pipelineTriggersSummary.completed
+                  : null
+              }
             />
             <PipelineTriggersSummary.Card
-              summary={pipelineTriggersSummary ? pipelineTriggersSummary.errored : null}
+              summary={
+                pipelineTriggersSummary ? pipelineTriggersSummary.errored : null
+              }
             />
           </PipelineTriggersSummary>
         </div>

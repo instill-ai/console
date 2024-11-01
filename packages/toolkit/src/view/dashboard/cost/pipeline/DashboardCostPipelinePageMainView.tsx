@@ -1,11 +1,10 @@
 "use client";
 
 import * as React from "react";
+
 import { SelectOption } from "@instill-ai/design-system";
-import {
-  GeneralAppPageProp,
-  useRouteInfo,
-} from "../../../../lib";
+
+import { GeneralAppPageProp, useRouteInfo } from "../../../../lib";
 import { UsageSwitch } from "../../UsageSwitch";
 import { CostTab } from "../CostTab";
 
@@ -15,10 +14,11 @@ export const DashboardCostPipelinePageMainView = ({
   accessToken,
   enableQuery,
 }: DashboardCostPipelinePageMainViewProps) => {
-  const [selectedTimeOption, setSelectedTimeOption] = React.useState<SelectOption>({
-    label: "Today",
-    value: "24h",
-  });
+  const [selectedTimeOption, setSelectedTimeOption] =
+    React.useState<SelectOption>({
+      label: "Today",
+      value: "24h",
+    });
 
   const [activeTab, setActiveTab] = React.useState<"activity" | "cost">("cost");
 

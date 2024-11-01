@@ -1,8 +1,10 @@
 "use client";
 
 import { Fragment, ReactNode } from "react";
-import { Icons, Skeleton, Tag } from "@instill-ai/design-system";
 import { Nullable } from "instill-sdk";
+
+import { Icons, Skeleton, Tag } from "@instill-ai/design-system";
+
 import { PipelineTriggersStatusSummaryItem } from "../../../lib";
 
 const PipelineTriggersSummaryCard = (props: {
@@ -80,7 +82,7 @@ export type PipelineTriggersSummaryProps = {
 };
 
 export const PipelineTriggersSummary = (
-  props: PipelineTriggersSummaryProps
+  props: PipelineTriggersSummaryProps,
 ) => {
   const { children } = props;
 

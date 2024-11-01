@@ -19,11 +19,10 @@ import {
   usePipelineTriggerMetric,
   useRouteInfo,
 } from "../../lib";
+import { PipelineTriggerCountsLineChart } from "./activity/PipelineTriggerCountsLineChart";
+import { PipelineTriggersSummary } from "./activity/PipelineTriggersSummary";
 import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
 import { FilterByDay } from "./FilterByDay";
-import { PipelineTriggersSummary } from "./activity/PipelineTriggersSummary";
-import { PipelineTriggerCountsLineChart } from "./activity/PipelineTriggerCountsLineChart";
-
 
 export type DashboardPipelineListPageMainViewProps = GeneralAppPageProp;
 
@@ -218,7 +217,8 @@ export const DashboardPipelineListPageMainView = (
         <PipelineTriggerCountsLineChart
           isLoading={pipelinesChart.isLoading}
           pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
-          selectedTimeOption={selectedTimeOption} pipelineTriggersSummary={null}
+          selectedTimeOption={selectedTimeOption}
+          pipelineTriggersSummary={null}
         />
       </div>
 

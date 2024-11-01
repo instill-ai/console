@@ -419,3 +419,18 @@ export type ModelTriggersStatusSummary = {
 export type TriggeredModel = ModelTriggerTableRecord;
 
 export type ModelsWatchState = Record<string, Nullable<ModelWatchState>>;
+
+export type ListModelRunsByRequesterRequest = {
+  pageSize?: number;
+  page: Nullable<number>;
+  filter?: string;
+  requesterUid?: string;
+  requesterId?: string;
+  start?: string;
+};
+
+export type ListModelRunsByRequesterResponse = {
+  runs: ModelRun[];
+  nextPageToken: string;
+  totalSize: number;
+};

@@ -1,4 +1,4 @@
-import { ModelReleaseStage, ModelRun, ModelTriggerStatus } from "../../model";
+import { ModelReleaseStage, ModelTriggerStatus } from "../../model";
 import { Nullable } from "../../types";
 import { PipelineMode, PipelineReleaseState, PipelineRun } from "../../vdp";
 
@@ -160,25 +160,10 @@ export type ListModelTriggersChartResponse = {
   modelTriggerChartRecords: ModelTriggerChartRecord[];
 };
 
-export type ListModelRunsByRequesterResponse = {
-  runs: ModelRun[];
-  nextPageToken: string;
-  totalSize: number;
-};
-
 export type ListPipelineRunsByRequesterResponse = {
   pipelineRuns: PipelineRun[];
   nextPageToken: string;
   totalSize: number;
-};
-
-export type ListModelRunsByRequesterRequest = {
-  pageSize?: number;
-  page: Nullable<number>;
-  filter?: string;
-  requesterUid?: string;
-  requesterId?: string;
-  start?: string;
 };
 
 export type ListPipelineRunsByRequesterRequest = {
