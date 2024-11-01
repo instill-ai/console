@@ -251,7 +251,7 @@ export class ModelClient extends APIResource {
         return Promise.resolve(data);
       }
 
-      return Promise.resolve(data.modelRuns);
+      return Promise.resolve(data.runs);
     } catch (error) {
       return Promise.reject(error);
     }

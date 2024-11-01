@@ -161,7 +161,7 @@ export type ListModelTriggersChartResponse = {
 };
 
 export type ListModelRunsByRequesterResponse = {
-  modelRuns: ModelRun[];
+  runs: ModelRun[];
   nextPageToken: string;
   totalSize: number;
 };
