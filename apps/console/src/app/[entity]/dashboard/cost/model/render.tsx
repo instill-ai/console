@@ -16,14 +16,12 @@ export default function CostModelRender() {
   useAppAccessToken();
   useAppTrackToken({ enabled: true });
 
-
   return (
     <PageBase>
       <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="p-8">
-          <DashboardCostModelPageMainView
-          />
+          <DashboardCostModelPageMainView />
         </PageBase.Content>
       </PageBase.Container>
     </PageBase>

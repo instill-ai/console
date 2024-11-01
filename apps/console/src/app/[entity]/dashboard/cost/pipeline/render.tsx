@@ -17,14 +17,12 @@ export default function CostPipelineRender() {
   useAppTrackToken({ enabled: true });
   useAppTrackToken({ enabled: true });
 
-
   return (
     <PageBase>
       <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="p-8">
-          <DashboardCostPipelinePageMainView
-          />
+          <DashboardCostPipelinePageMainView />
         </PageBase.Content>
       </PageBase.Container>
     </PageBase>

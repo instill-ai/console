@@ -29,7 +29,6 @@ import {
 import { UsageSwitch } from "../UsageSwitch";
 import { ActivityTab } from "./ActivityTab";
 
-
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
@@ -85,7 +84,12 @@ export const DashboardActivityPageMainView = () => {
 
     setQueryString(queryParams);
     setQueryStringPrevious(queryParamsPrevious);
-  }, [selectedTimeOption, routeInfo.isSuccess, routeInfo.data?.namespaceName, selectedNamespace]);
+  }, [
+    selectedTimeOption,
+    routeInfo.isSuccess,
+    routeInfo.data?.namespaceName,
+    selectedNamespace,
+  ]);
 
   const triggeredPipelines = usePipelineTriggerMetric({
     enabled: enabledQuery && !!queryString,
