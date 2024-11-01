@@ -7,9 +7,7 @@ import {
   TriggeredModel,
   TriggeredPipeline,
 } from "instill-sdk";
-
 import { SelectOption } from "@instill-ai/design-system";
-
 import {
   DashboardAvailableTimeframe,
   getModelTriggersSummary,
@@ -25,6 +23,7 @@ import {
   usePipelineTriggerMetric,
   useRouteInfo,
   useShallow,
+  useUserNamespaces,
 } from "../../../lib";
 import { UsageSwitch } from "../UsageSwitch";
 import { ActivityTab } from "./ActivityTab";
@@ -36,59 +35,77 @@ const selector = (store: InstillStore) => ({
 });
 
 export const DashboardActivityPageMainView = () => {
-  const [selectedTimeOption, setSelectedTimeOption] =
-    React.useState<SelectOption>({
-      label: "Today",
-      value: "24h",
-    });
+  const [selectedTimeOption, setSelectedTimeOption] = React.useState<SelectOption>({
+    label: "Today",
+    value: "24h",
+  });
 
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector),
   );
 
-  const [queryString, setQueryString] = React.useState<Nullable<string>>(null);
-  const [queryStringPrevious, setQueryStringPrevious] =
-    React.useState<Nullable<string>>(null);
-  const [activeTab, setActiveTab] = React.useState<"activity" | "cost">(
-    "activity",
-  );
+  const [activeTab, setActiveTab] = React.useState<"activity" | "cost">("activity");
 
   const routeInfo = useRouteInfo();
+  const userNamespaces = useUserNamespaces();
 
-  React.useEffect(() => {
-    if (!routeInfo.isSuccess) {
-      return;
+  const targetNamespace = React.useMemo(() => {
+    if (!userNamespaces.isSuccess || !selectedNamespace) {
+      return null;
     }
 
-    let queryParams = `ownerName='${routeInfo.data.namespaceName}'`;
-    let queryParamsPrevious = `ownerName='${routeInfo.data.namespaceName}'`;
+    return userNamespaces.data.find(
+      (namespace) => namespace.id === selectedNamespace,
+    );
+  }, [
+    userNamespaces.isSuccess,
+    userNamespaces.data,
+    selectedNamespace,
+  ]);
+
+  // Compute queryString using useMemo and targetNamespace
+  const queryString = React.useMemo<Nullable<string>>(() => {
+    if (!targetNamespace) return null;
+
+    let q = `ownerName='${targetNamespace.name}'`;
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(
-        selectedTimeOption.value === "24h"
-          ? "todayStart"
-          : selectedTimeOption.value,
+        selectedTimeOption.value === "24h" ? "todayStart" : selectedTimeOption.value,
       );
       const stop = getTimeInRFC3339Format(
-        selectedTimeOption?.value === "1d" ? "todayStart" : "now",
-      );
-      const previousTime = getTimeInRFC3339Format(
-        getPreviousTimeframe(
-          selectedTimeOption.value as DashboardAvailableTimeframe,
-        ),
+        selectedTimeOption.value === "1d" ? "todayStart" : "now",
       );
 
-      queryParams += ` AND start='${start}' AND stop='${stop}'`;
-      queryParamsPrevious += ` AND start='${previousTime}' AND stop='${start}'`;
+      q += ` AND start='${start}' AND stop='${stop}'`;
     }
 
-    setQueryString(queryParams);
-    setQueryStringPrevious(queryParamsPrevious);
+    return q;
   }, [
     selectedTimeOption,
-    routeInfo.isSuccess,
-    routeInfo.data?.namespaceName,
-    selectedNamespace,
+    targetNamespace,
+  ]);
+
+  const queryStringPrevious = React.useMemo<Nullable<string>>(() => {
+    if (!targetNamespace) return null;
+
+    let qPrev = `ownerName='${targetNamespace.name}'`;
+
+    if (selectedTimeOption) {
+      const previousTime = getTimeInRFC3339Format(
+        getPreviousTimeframe(selectedTimeOption.value as DashboardAvailableTimeframe),
+      );
+      const start = getTimeInRFC3339Format(
+        selectedTimeOption.value === "1d" ? "todayStart" : selectedTimeOption.value,
+      );
+
+      qPrev += ` AND start='${previousTime}' AND stop='${start}'`;
+    }
+
+    return qPrev;
+  }, [
+    selectedTimeOption,
+    targetNamespace,
   ]);
 
   const triggeredPipelines = usePipelineTriggerMetric({
