@@ -21,7 +21,7 @@ export function useModelTriggerMetric({
   requesterId: Nullable<string>;
 }) {
   return useQuery<ModelTriggerTableRecord[]>({
-    queryKey: ["tables", filter, requesterId],
+    queryKey: ["modelTriggerMetrics", filter, requesterId],
     queryFn: async () => {
       if (!accessToken) {
         throw new Error("accessToken not provided");

@@ -85,18 +85,21 @@ export const DashboardPipelineListPageMainView = (
     enabled: enableQuery && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
+    requesterId: routeInfo.data.namespaceId ?? undefined
   });
 
   const pipelinesChart = usePipelineTriggerComputationTimeCharts({
     enabled: enableQuery && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
+    requesterId: routeInfo.data.namespaceId ?? undefined
   });
 
   const previoustriggeredPipelines = usePipelineTriggerMetric({
     enabled: enableQuery && !!queryStringPrevious,
     filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,
+    requesterId: routeInfo.data.namespaceId ?? undefined,
   });
 
   // Guard this page
