@@ -2,13 +2,15 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Nullable } from "instill-sdk";
 
 import { Icons, Popover, SelectOption } from "@instill-ai/design-system";
 
 import {
+  InstillStore,
   useAuthenticatedUser,
   useCreditConsumptionChartRecords,
+  useInstillStore,
+  useShallow,
 } from "../../../lib";
 import { FilterByDay } from "../FilterByDay";
 import { formatDateToRFC3339, getStartOfDay } from "../helpers";
@@ -19,19 +21,26 @@ import { DashboardListPipeline } from "./pipeline/DashboardListPipeline";
 type CostTabProps = {
   selectedTimeOption: SelectOption;
   setSelectedTimeOption: React.Dispatch<React.SetStateAction<SelectOption>>;
-  accessToken: Nullable<string>;
-  enabledQuery: boolean;
 };
+
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+  selectedNamespace: store.navigationNamespaceAnchor,
+});
+
 
 export const CostTab = ({
   selectedTimeOption,
   setSelectedTimeOption,
-  accessToken,
-  enabledQuery,
 }: CostTabProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const costView = pathname.includes("/cost/model") ? "model" : "pipeline";
+
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
+    useShallow(selector),
+  );
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
@@ -59,7 +68,7 @@ export const CostTab = ({
   const creditConsumption = useCreditConsumptionChartRecords({
     enabled: enabledQuery,
     accessToken,
-    namespaceId: me.data?.id ?? "",
+    namespaceId: selectedNamespace,
     start,
     stop,
     aggregationWindow:

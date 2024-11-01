@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
 
 import {
   AppTopbar,
@@ -16,11 +15,8 @@ import { useAppTrackToken } from "~/lib/useAppTrackToken";
 export default function CostPipelineRender() {
   useAppAccessToken();
   useAppTrackToken({ enabled: true });
-
-  const accessToken = useAppAccessToken();
   useAppTrackToken({ enabled: true });
 
-  const router = useRouter();
 
   return (
     <PageBase>
@@ -28,9 +24,6 @@ export default function CostPipelineRender() {
       <PageBase.Container>
         <PageBase.Content contentPadding="p-8">
           <DashboardCostPipelinePageMainView
-            accessToken={accessToken.isSuccess ? accessToken.data : null}
-            enableQuery={accessToken.isSuccess}
-            router={router}
           />
         </PageBase.Content>
       </PageBase.Container>

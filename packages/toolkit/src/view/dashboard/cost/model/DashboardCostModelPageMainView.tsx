@@ -4,16 +4,11 @@ import * as React from "react";
 
 import { SelectOption } from "@instill-ai/design-system";
 
-import { GeneralAppPageProp, useRouteInfo } from "../../../../lib";
+import { useRouteInfo } from "../../../../lib";
 import { UsageSwitch } from "../../UsageSwitch";
 import { CostTab } from "../CostTab";
 
-export type DashboardCostModelPageMainViewProps = GeneralAppPageProp;
-
-export const DashboardCostModelPageMainView = ({
-  accessToken,
-  enableQuery,
-}: DashboardCostModelPageMainViewProps) => {
+export const DashboardCostModelPageMainView = () => {
   const [selectedTimeOption, setSelectedTimeOption] =
     React.useState<SelectOption>({
       label: "Today",
@@ -35,8 +30,6 @@ export const DashboardCostModelPageMainView = ({
       <CostTab
         selectedTimeOption={selectedTimeOption}
         setSelectedTimeOption={setSelectedTimeOption}
-        accessToken={accessToken}
-        enabledQuery={enableQuery}
       />
     </div>
   );

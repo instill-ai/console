@@ -12,32 +12,40 @@ import { SelectOption } from "@instill-ai/design-system";
 
 import {
   DashboardAvailableTimeframe,
-  GeneralAppPageProp,
   getModelTriggersSummary,
   getPipelineTriggersSummary,
   getPreviousTimeframe,
   getTimeInRFC3339Format,
+  InstillStore,
   Nullable,
+  useInstillStore,
   useModelTriggerComputationTimeCharts,
   useModelTriggerMetric,
   usePipelineTriggerComputationTimeCharts,
   usePipelineTriggerMetric,
   useRouteInfo,
+  useShallow,
 } from "../../../lib";
 import { UsageSwitch } from "../UsageSwitch";
 import { ActivityTab } from "./ActivityTab";
 
-export type DashboardActivityPageMainViewProps = GeneralAppPageProp;
 
-export const DashboardActivityPageMainView = ({
-  accessToken,
-  enableQuery,
-}: DashboardActivityPageMainViewProps) => {
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+  selectedNamespace: store.navigationNamespaceAnchor,
+});
+
+export const DashboardActivityPageMainView = () => {
   const [selectedTimeOption, setSelectedTimeOption] =
     React.useState<SelectOption>({
       label: "Today",
       value: "24h",
     });
+
+  const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
+    useShallow(selector),
+  );
 
   const [queryString, setQueryString] = React.useState<Nullable<string>>(null);
   const [queryStringPrevious, setQueryStringPrevious] =
@@ -77,47 +85,47 @@ export const DashboardActivityPageMainView = ({
 
     setQueryString(queryParams);
     setQueryStringPrevious(queryParamsPrevious);
-  }, [selectedTimeOption, routeInfo.isSuccess, routeInfo.data?.namespaceName]);
+  }, [selectedTimeOption, routeInfo.isSuccess, routeInfo.data?.namespaceName, selectedNamespace]);
 
   const triggeredPipelines = usePipelineTriggerMetric({
-    enabled: enableQuery && !!queryString,
+    enabled: enabledQuery && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
-    requesterId: routeInfo.data.namespaceId ?? undefined
+    requesterId: selectedNamespace ?? undefined,
   });
 
   const pipelinesChart = usePipelineTriggerComputationTimeCharts({
-    enabled: enableQuery && !!queryString,
+    enabled: enabledQuery && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
-    requesterId: routeInfo.data.namespaceId ?? undefined
+    requesterId: selectedNamespace ?? undefined,
   });
 
   const modelsChart = useModelTriggerComputationTimeCharts({
-    enabled: enableQuery && !!queryString,
+    enabled: enabledQuery && !!queryString,
     accessToken,
-    requesterId: routeInfo.data.namespaceId,
+    requesterId: selectedNamespace ?? undefined,
     filter: queryString ? queryString : null,
   });
 
   const triggeredModels = useModelTriggerMetric({
-    enabled: enableQuery && !!queryString,
+    enabled: enabledQuery && !!queryString,
     accessToken,
-    requesterId: routeInfo.data.namespaceId,
+    requesterId: selectedNamespace ?? undefined,
     filter: queryString ? queryString : null,
   });
 
   const previousTriggeredPipelines = usePipelineTriggerMetric({
-    enabled: enableQuery && !!queryStringPrevious,
+    enabled: enabledQuery && !!queryStringPrevious,
     filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,
-    requesterId: routeInfo.data.namespaceId ?? undefined,
+    requesterId: selectedNamespace ?? undefined,
   });
 
   const previousTriggeredModels = useModelTriggerMetric({
-    enabled: enableQuery && !!queryStringPrevious,
+    enabled: enabledQuery && !!queryStringPrevious,
     accessToken,
-    requesterId: routeInfo.data.namespaceId,
+    requesterId: selectedNamespace ?? undefined,
     filter: queryStringPrevious ? queryStringPrevious : null,
   });
 
