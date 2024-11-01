@@ -2,7 +2,9 @@
 
 import * as React from "react";
 import cn from "clsx";
+
 import { Button, Icons, SelectOption } from "@instill-ai/design-system";
+
 import { dashboardOptions } from "../../lib";
 
 export type FilterProps = {
@@ -26,7 +28,7 @@ export const FilterByDay = ({
               "flex items-center justify-center px-4 py-2 rounded transition-all duration-200 ease-in-out product-body-text-3-semibold",
               timeLineOption.value === selectedTimeOption?.value
                 ? "bg-semantic-bg-primary shadow text-semantic-fg-primary"
-                : "bg-transparent text-semantic-fg-disabled hover:bg-semantic-bg-line"
+                : "bg-transparent text-semantic-fg-disabled hover:bg-semantic-bg-line",
             )}
             onClick={() => {
               setSelectedTimeOption(timeLineOption);

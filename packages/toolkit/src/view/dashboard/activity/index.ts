@@ -1,1 +1,1 @@
-export * from './DashboardActivityPageMainView';
+export * from "./DashboardActivityPageMainView";

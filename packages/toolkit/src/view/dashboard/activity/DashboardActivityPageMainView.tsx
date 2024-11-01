@@ -1,12 +1,20 @@
 "use client";
 
 import * as React from "react";
+import {
+  ModelTriggerChartRecord,
+  PipelinesChart,
+  TriggeredModel,
+  TriggeredPipeline,
+} from "instill-sdk";
+
 import { SelectOption } from "@instill-ai/design-system";
+
 import {
   DashboardAvailableTimeframe,
   GeneralAppPageProp,
-  getPipelineTriggersSummary,
   getModelTriggersSummary,
+  getPipelineTriggersSummary,
   getPreviousTimeframe,
   getTimeInRFC3339Format,
   Nullable,
@@ -18,7 +26,6 @@ import {
 } from "../../../lib";
 import { UsageSwitch } from "../UsageSwitch";
 import { ActivityTab } from "./ActivityTab";
-import { ModelTriggerChartRecord, PipelinesChart, TriggeredModel, TriggeredPipeline } from "instill-sdk";
 
 export type DashboardActivityPageMainViewProps = GeneralAppPageProp;
 
@@ -26,14 +33,18 @@ export const DashboardActivityPageMainView = ({
   accessToken,
   enableQuery,
 }: DashboardActivityPageMainViewProps) => {
-  const [selectedTimeOption, setSelectedTimeOption] = React.useState<SelectOption>({
-    label: "Today",
-    value: "24h",
-  });
+  const [selectedTimeOption, setSelectedTimeOption] =
+    React.useState<SelectOption>({
+      label: "Today",
+      value: "24h",
+    });
 
   const [queryString, setQueryString] = React.useState<Nullable<string>>(null);
-  const [queryStringPrevious, setQueryStringPrevious] = React.useState<Nullable<string>>(null);
-  const [activeTab, setActiveTab] = React.useState<"activity" | "cost">("activity");
+  const [queryStringPrevious, setQueryStringPrevious] =
+    React.useState<Nullable<string>>(null);
+  const [activeTab, setActiveTab] = React.useState<"activity" | "cost">(
+    "activity",
+  );
 
   const routeInfo = useRouteInfo();
 
@@ -47,13 +58,17 @@ export const DashboardActivityPageMainView = ({
 
     if (selectedTimeOption) {
       const start = getTimeInRFC3339Format(
-        selectedTimeOption.value === "24h" ? "todayStart" : selectedTimeOption.value
+        selectedTimeOption.value === "24h"
+          ? "todayStart"
+          : selectedTimeOption.value,
       );
       const stop = getTimeInRFC3339Format(
-        selectedTimeOption?.value === "1d" ? "todayStart" : "now"
+        selectedTimeOption?.value === "1d" ? "todayStart" : "now",
       );
       const previousTime = getTimeInRFC3339Format(
-        getPreviousTimeframe(selectedTimeOption.value as DashboardAvailableTimeframe)
+        getPreviousTimeframe(
+          selectedTimeOption.value as DashboardAvailableTimeframe,
+        ),
       );
 
       queryParams += ` AND start='${start}' AND stop='${stop}'`;
@@ -158,14 +173,14 @@ export const DashboardActivityPageMainView = ({
     if (!previousTriggeredPipelines.isSuccess) return null;
 
     const triggeredPipelineIdList = triggeredPipelineList.map(
-      (e) => e.pipelineId
+      (e) => e.pipelineId,
     );
 
     return getPipelineTriggersSummary(
       triggeredPipelineList,
       previousTriggeredPipelines.data.filter((trigger) =>
-        triggeredPipelineIdList.includes(trigger.pipelineId)
-      )
+        triggeredPipelineIdList.includes(trigger.pipelineId),
+      ),
     );
   }, [
     previousTriggeredPipelines.isSuccess,
@@ -176,15 +191,13 @@ export const DashboardActivityPageMainView = ({
   const modelTriggersSummary = React.useMemo(() => {
     if (!previousTriggeredModels.isSuccess) return null;
 
-    const triggeredModelIdList = triggeredModelList.map(
-      (e) => e.modelId
-    );
+    const triggeredModelIdList = triggeredModelList.map((e) => e.modelId);
 
     return getModelTriggersSummary(
       triggeredModelList,
       previousTriggeredModels.data.filter((trigger) =>
-        triggeredModelIdList.includes(trigger.modelId)
-      )
+        triggeredModelIdList.includes(trigger.modelId),
+      ),
     );
   }, [
     previousTriggeredModels.isSuccess,

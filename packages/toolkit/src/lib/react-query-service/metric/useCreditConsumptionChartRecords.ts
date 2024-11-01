@@ -1,7 +1,9 @@
-'use client';
+"use client";
+
 import { useQuery } from "@tanstack/react-query";
-import { Nullable } from "../../type";
+
 import { getInstillAPIClient } from "../../sdk-helper";
+import { Nullable } from "../../type";
 
 export function useCreditConsumptionChartRecords({
   enabled,
@@ -45,16 +47,16 @@ export function useCreditConsumptionChartRecords({
         accessToken,
       });
 
-      const data = await client.core.metric.listInstillCreditConsumptionTimeChart({
-        namespaceId,
-        start: start ?? undefined,
-        stop: stop ?? undefined,
-        aggregationWindow: aggregationWindow ?? undefined,
-      });
+      const data =
+        await client.core.metric.listInstillCreditConsumptionTimeChart({
+          namespaceId,
+          start: start ?? undefined,
+          stop: stop ?? undefined,
+          aggregationWindow: aggregationWindow ?? undefined,
+        });
 
       return Promise.resolve(data);
     },
     enabled: enabledQuery,
   });
-
 }

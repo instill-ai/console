@@ -17,9 +17,9 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../lib";
+import { PipelineTriggersSummary } from "./activity/PipelineTriggersSummary";
 import { FilterByDay } from "./FilterByDay";
 import { PipelineTriggersTable } from "./PipelineTriggersTable";
-import { PipelineTriggersSummary } from "./activity/PipelineTriggersSummary";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,

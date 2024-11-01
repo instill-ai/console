@@ -1,11 +1,13 @@
 "use client";
 
-import * as React from 'react';
+import * as React from "react";
 import * as echarts from "echarts";
+import { ModelsChart, ModelTriggersStatusSummary, Nullable } from "instill-sdk";
+
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
+
+import { generateModelChartData } from "../../../lib";
 import { ModelTriggersSummary } from "./ModelTriggersSummary";
-import { ModelsChart, ModelTriggersStatusSummary, Nullable } from 'instill-sdk';
-import { generateModelChartData } from '../../../lib';
 
 type ModelsTriggerCountsLineChartProps = {
   models: ModelsChart[];
@@ -85,19 +87,17 @@ export const ModelsTriggerCountsLineChart = ({
             fontFamily: "var(--font-ibm-plex-sans)",
             fontStyle: "italic",
           },
-          text: isLoading
-            ? "Loading..."
-            : "No models have been triggered yet",
+          text: isLoading ? "Loading..." : "No models have been triggered yet",
           left: `${isLoading ? "49.5%" : "44.5%"}`,
           bottom: 100,
         },
         tooltip: {
           trigger: "item",
           tiggerOn: "click",
-          backgroundColor: 'white',
-          borderColor: 'transparent',
+          backgroundColor: "white",
+          borderColor: "transparent",
           textStyle: {
-            color: 'var(--semantic-fg-primary)'
+            color: "var(--semantic-fg-primary)",
           },
           /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
           formatter: function (params: any) {
@@ -142,12 +142,12 @@ export const ModelsTriggerCountsLineChart = ({
         },
         series: seriesData.map((series) => ({
           ...series,
-          symbol: 'circle',
+          symbol: "circle",
           symbolSize: 8,
           itemStyle: {
-            borderColor: 'white',
-            borderWidth: 2
-          }
+            borderColor: "white",
+            borderWidth: 2,
+          },
         })),
       };
 
@@ -216,10 +216,14 @@ export const ModelsTriggerCountsLineChart = ({
         <div className="px-8 pb-8 w-full">
           <ModelTriggersSummary>
             <ModelTriggersSummary.Card
-              summary={modelTriggersSummary ? modelTriggersSummary.completed : null}
+              summary={
+                modelTriggersSummary ? modelTriggersSummary.completed : null
+              }
             />
             <ModelTriggersSummary.Card
-              summary={modelTriggersSummary ? modelTriggersSummary.errored : null}
+              summary={
+                modelTriggersSummary ? modelTriggersSummary.errored : null
+              }
             />
           </ModelTriggersSummary>
         </div>

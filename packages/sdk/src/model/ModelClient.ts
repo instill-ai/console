@@ -1,7 +1,3 @@
-import {
-  ListModelRunsByRequesterRequest,
-  ListModelRunsByRequesterResponse,
-} from "../core";
 import { getInstillAdditionalHeaders, getQueryString } from "../helper";
 import { APIResource } from "../main/resource";
 import {
@@ -21,6 +17,8 @@ import {
   ListAvailableRegionResponse,
   ListModelDefinitionsRequest,
   ListModelDefinitionsResponse,
+  ListModelRunsByRequesterRequest,
+  ListModelRunsByRequesterResponse,
   ListModelRunsRequest,
   ListModelRunsResponse,
   ListModelsRequest,
