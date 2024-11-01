@@ -33,6 +33,14 @@ export type TriggeredPipeline = {
   watchState?: PipelineReleaseState;
 };
 
+export type CreditConsumptionChartRecord = {
+  namespaceId: string;
+  timeBuckets: string[];
+  amount: number[];
+  source: string;
+  creditOwner: string;
+};
+
 export type GetPipelineTriggerCountRequest = {
   namespaceId: string;
   start?: string;
@@ -41,14 +49,6 @@ export type GetPipelineTriggerCountRequest = {
 
 export type GetPipelineTriggerCountResponse = {
   pipelineTriggerCounts: PipelineTriggerCount[];
-};
-
-export type CreditConsumptionChartRecord = {
-  namespaceId: string;
-  timeBuckets: string[];
-  amount: number[];
-  source: string;
-  creditOwner: string;
 };
 
 export type ListCreditConsumptionChartRecordResponse = {
