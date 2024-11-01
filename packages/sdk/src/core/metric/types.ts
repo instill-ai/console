@@ -159,7 +159,7 @@ export type ListPipelineRunsByRequesterResponse = {
 export type ListPipelineRunsByRequesterRequest = {
   pageSize?: number;
   page: Nullable<number>;
-  filter?: string;
+  orderBy?: string;
   requesterUid?: string;
   requesterId?: string;
   start?: string;

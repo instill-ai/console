@@ -423,7 +423,7 @@ export type ModelsWatchState = Record<string, Nullable<ModelWatchState>>;
 export type ListModelRunsByRequesterRequest = {
   pageSize?: number;
   page: Nullable<number>;
-  filter?: string;
+  orderBy?: string;
   requesterUid?: string;
   requesterId?: string;
   start?: string;

@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
 
 import {
   AppTopbar,
@@ -17,10 +16,6 @@ export default function ActivityRender() {
   useAppAccessToken();
   useAppTrackToken({ enabled: true });
 
-  const accessToken = useAppAccessToken();
-  useAppTrackToken({ enabled: true });
-
-  const router = useRouter();
 
   return (
     <PageBase>
@@ -28,9 +23,6 @@ export default function ActivityRender() {
       <PageBase.Container>
         <PageBase.Content contentPadding="p-8">
           <DashboardActivityPageMainView
-            accessToken={accessToken.isSuccess ? accessToken.data : null}
-            enableQuery={accessToken.isSuccess}
-            router={router}
           />
         </PageBase.Content>
       </PageBase.Container>
