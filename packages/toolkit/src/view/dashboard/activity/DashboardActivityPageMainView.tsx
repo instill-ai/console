@@ -118,7 +118,7 @@ export const DashboardActivityPageMainView = ({
     enabled: enableQuery && !!queryStringPrevious,
     accessToken,
     requesterId: routeInfo.data.namespaceId,
-    filter: queryString ? queryString : null,
+    filter: queryStringPrevious ? queryStringPrevious : null,
   });
 
   // React.useEffect(() => {
