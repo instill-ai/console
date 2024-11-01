@@ -147,15 +147,16 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
                     />
                 ),
                 cell: ({ row }) => {
+                    const duration = row.getValue("totalDuration");
                     return (
                         <div className="font-normal text-semantic-bg-secondary-alt-primary">
-                            {row.getValue("totalDuration")}
+                            {duration ? `${duration}ms` : "-"}
                         </div>
                     );
                 },
             },
             {
-                accessorKey: "startTime",
+                accessorKey: "createTime",
                 header: () => (
                     <RunsTableSortableColHeader
                         title="Trigger Time"
@@ -165,12 +166,10 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
                     />
                 ),
                 cell: ({ row }) => {
+                    const createTime = row.getValue("createTime");
                     return (
                         <div className="font-normal text-semantic-bg-secondary-alt-primary">
-                            {getHumanReadableStringFromTime(
-                                row.getValue("createTime"),
-                                Date.now()
-                            )}
+                            {createTime ? getHumanReadableStringFromTime(createTime as string, Date.now()) : "-"}
                         </div>
                     );
                 },
