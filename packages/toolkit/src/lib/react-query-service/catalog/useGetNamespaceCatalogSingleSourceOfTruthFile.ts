@@ -1,9 +1,11 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
-import { Nullable } from "instill-sdk";
 
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
-export function useGetCatalogSingleSourceOfTruthFile({
+export function useGetNamespaceCatalogSingleSourceOfTruthFile({
   fileUid,
   accessToken,
   enabled,
@@ -16,31 +18,34 @@ export function useGetCatalogSingleSourceOfTruthFile({
   catalogId: string;
   namespaceId: string;
 }) {
-  return useQuery<string>({
+  return useQuery({
     queryKey: ["fileContent", fileUid],
     queryFn: async () => {
       if (!accessToken) {
-        throw new Error("accessToken not provided");
+        throw new Error("accessToken is required");
       }
+
       if (!fileUid) {
-        throw new Error("fileUid not provided");
+        throw new Error("fileUid is required");
       }
+
       if (!catalogId) {
-        throw new Error("catalogId not provided");
+        throw new Error("catalogId is required");
       }
+
       if (!namespaceId) {
-        throw new Error("namespaceId not provided");
+        throw new Error("namespaceId is required");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
-      const fileContent =
-        await client.catalog.getCatalogSingleSourceOfTruthFile({
+      const res =
+        await client.catalog.getNamespaceCatalogSingleSourceOfTruthFile({
           namespaceId,
           catalogId,
           fileUid,
         });
 
-      return Promise.resolve(fileContent.content);
+      return Promise.resolve(res.sourceFile);
     },
     enabled: enabled && Boolean(accessToken) && Boolean(fileUid),
   });

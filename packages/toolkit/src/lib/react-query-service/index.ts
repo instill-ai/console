@@ -1,3 +1,4 @@
+export * from "./catalog";
 export * from "./connector";
 export * from "./hub";
 export * from "./integration";

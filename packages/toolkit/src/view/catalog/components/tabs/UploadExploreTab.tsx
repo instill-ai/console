@@ -4,6 +4,7 @@ import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Catalog,
+  CreateNamespaceCatalogFileRequest,
   OrganizationSubscription,
   UserSubscription,
 } from "instill-sdk";
@@ -25,19 +26,17 @@ import {
   onTriggerInvalidateCredits,
   sendAmplitudeData,
   toastInstillError,
+  useCreateNamespaceCatalogFile,
   useInstillStore,
+  useListNamespaceCatalogFiles,
   useNamespaceType,
+  useProcessCatalogFiles,
   useQueryClient,
   useRemainingCredit,
   useShallow,
   useUserNamespaces,
 } from "../../../../lib";
 import { useAmplitudeCtx } from "../../../../lib/amplitude";
-import {
-  useListCatalogFiles,
-  useProcessCatalogFiles,
-  useUploadCatalogFile,
-} from "../../../../lib/react-query-service/catalog";
 import { DragAndDropUpload } from "../DragAndDropUpload";
 import { FILE_ERROR_TIMEOUT } from "../lib/constant";
 import {
@@ -159,7 +158,7 @@ export const UploadExploreTab = ({
   const insufficientStorageTimeoutRef =
     React.useRef<Nullable<NodeJS.Timeout>>(null);
 
-  const uploadCatalogFile = useUploadCatalogFile();
+  const createNamespaceCatalogFile = useCreateNamespaceCatalogFile();
   const processCatalogFiles = useProcessCatalogFiles();
 
   const { accessToken, navigationNamespaceAnchor, enabledQuery } =
@@ -167,7 +166,7 @@ export const UploadExploreTab = ({
 
   const userNamespaces = useUserNamespaces();
 
-  const existingFiles = useListCatalogFiles({
+  const namespaceCatalogFiles = useListNamespaceCatalogFiles({
     namespaceId: navigationNamespaceAnchor,
     catalogId: catalog.catalogId,
     accessToken,
@@ -209,7 +208,7 @@ export const UploadExploreTab = ({
       file,
       planMaxFileSize,
       remainingStorageSpace,
-      existingFiles.data || [],
+      namespaceCatalogFiles.data || [],
     );
 
     if (!validationResult.isValid) {
@@ -283,7 +282,11 @@ export const UploadExploreTab = ({
     setIsProcessing(true);
     const files = form.getValues("files");
 
-    if (files.length === 0 || !userNamespaces.isSuccess) {
+    if (
+      files.length === 0 ||
+      !userNamespaces.isSuccess ||
+      !navigationNamespaceAnchor
+    ) {
       setIsProcessing(false);
       return;
     }
@@ -308,14 +311,16 @@ export const UploadExploreTab = ({
         try {
           const content = await readFileAsBase64(file);
 
-          const uploadedFile = await uploadCatalogFile.mutateAsync({
-            namespaceId: navigationNamespaceAnchor ?? "",
+          const payload: CreateNamespaceCatalogFileRequest = {
+            namespaceId: navigationNamespaceAnchor ?? null,
             catalogId: catalog.catalogId,
-            payload: {
-              name: file.name,
-              type: getFileType(file),
-              content,
-            },
+            name: file.name,
+            type: getFileType(file),
+            content,
+          };
+
+          const uploadedFile = await createNamespaceCatalogFile.mutateAsync({
+            payload,
             accessToken,
           });
 

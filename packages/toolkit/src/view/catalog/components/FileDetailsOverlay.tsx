@@ -8,9 +8,9 @@ import sanitizeHtml from "sanitize-html";
 import { Dialog, ScrollArea, Skeleton } from "@instill-ai/design-system";
 
 import {
-  useGetCatalogSingleSourceOfTruthFile,
-  useListChunks,
-} from "../../../lib/react-query-service/catalog";
+  useGetNamespaceCatalogSingleSourceOfTruthFile,
+  useListNamespaceCatalogChunks,
+} from "../../../lib";
 import { getFileIcon } from "./lib/helpers";
 
 type FileDetailsOverlayProps = {
@@ -40,8 +40,8 @@ const FileDetailsOverlay = ({
   highlightChunk = false,
   fileType,
 }: FileDetailsOverlayProps) => {
-  const { data: fileContent, isLoading: isLoadingContent } =
-    useGetCatalogSingleSourceOfTruthFile({
+  const catalogSingleSourceOfTruthFile =
+    useGetNamespaceCatalogSingleSourceOfTruthFile({
       fileUid,
       catalogId,
       accessToken,
@@ -49,18 +49,19 @@ const FileDetailsOverlay = ({
       namespaceId,
     });
 
-  const { data: chunks } = useListChunks({
+  const namespaceCatalogChunks = useListNamespaceCatalogChunks({
     catalogId,
     accessToken,
     enabled: isOpen && highlightChunk,
     namespaceId,
     fileUid,
+    chunkUids: null,
   });
 
   const highlightChunkInContent = React.useCallback(
     (content: string, chunkUid?: string) => {
       if (!highlightChunk || !chunkUid || !content) return content;
-      const chunk = chunks?.find(
+      const chunk = namespaceCatalogChunks.data?.find(
         (c: { chunkUid: string }) => c.chunkUid === chunkUid,
       );
       if (!chunk) return content;
@@ -95,13 +96,23 @@ const FileDetailsOverlay = ({
           .join("\n");
       }
     },
-    [chunks, highlightChunk, fileType],
+    [namespaceCatalogChunks.data, highlightChunk, fileType],
   );
 
   const displayContent = React.useMemo(
     () =>
-      fileContent ? highlightChunkInContent(fileContent, selectedChunkUid) : "",
-    [fileContent, highlightChunkInContent, selectedChunkUid],
+      catalogSingleSourceOfTruthFile.isSuccess
+        ? highlightChunkInContent(
+            catalogSingleSourceOfTruthFile.data.content,
+            selectedChunkUid,
+          )
+        : "",
+    [
+      catalogSingleSourceOfTruthFile.data,
+      catalogSingleSourceOfTruthFile.isSuccess,
+      highlightChunkInContent,
+      selectedChunkUid,
+    ],
   );
 
   const sanitizedHtmlText = React.useMemo(
@@ -134,7 +145,7 @@ const FileDetailsOverlay = ({
           </div>
         </div>
         <ScrollArea.Root className="flex-grow overflow-hidden">
-          {isLoadingContent ? (
+          {catalogSingleSourceOfTruthFile.isLoading ? (
             <div className="space-y-2 p-4">
               <Skeleton className="h-4 w-full" />
               <Skeleton className="h-4 w-full" />

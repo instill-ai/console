@@ -5,10 +5,8 @@ import { Catalog, CatalogFile, Chunk } from "instill-sdk";
 
 import { cn, Icons, Nullable } from "@instill-ai/design-system";
 
-import {
-  useGetCatalogSingleSourceOfTruthFile,
-  useListChunks,
-} from "../../../lib/react-query-service/catalog";
+import { useGetNamespaceCatalogSingleSourceOfTruthFile } from "../../..";
+import { useListNamespaceCatalogChunks } from "../../../lib";
 import ChunkCard from "./ChunkCard";
 
 type FileChunksProps = {
@@ -33,21 +31,23 @@ const FileChunks = ({
   onChunkClick,
   onRetrievableToggle,
 }: FileChunksProps) => {
-  const { data: chunks, refetch } = useListChunks({
+  const namespaceCatalogChunks = useListNamespaceCatalogChunks({
     catalogId: catalog.catalogId,
     accessToken: accessToken || null,
     enabled: expanded,
     namespaceId: catalog.ownerName,
     fileUid: file.fileUid,
+    chunkUids: null,
   });
 
-  const { data: fileContent } = useGetCatalogSingleSourceOfTruthFile({
-    fileUid: file.fileUid,
-    catalogId: catalog.catalogId,
-    accessToken: accessToken || null,
-    enabled: expanded,
-    namespaceId: catalog.ownerName,
-  });
+  const catalogSingleSourceOfTruthFile =
+    useGetNamespaceCatalogSingleSourceOfTruthFile({
+      fileUid: file.fileUid,
+      catalogId: catalog.catalogId,
+      accessToken: accessToken || null,
+      enabled: expanded,
+      namespaceId: catalog.ownerName,
+    });
 
   const isProcessing = file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED";
 
@@ -63,7 +63,7 @@ const FileChunks = ({
     // Set up an interval to refetch chunks if the file is still processing
     if (isProcessing) {
       interval = setInterval(() => {
-        refetch();
+        namespaceCatalogChunks.refetch();
       }, 5000);
     }
 
@@ -72,7 +72,7 @@ const FileChunks = ({
         clearInterval(interval);
       }
     };
-  }, [isProcessing, refetch]);
+  }, [isProcessing, namespaceCatalogChunks.refetch]);
 
   return (
     <div className="mb-4">
@@ -106,20 +106,27 @@ const FileChunks = ({
           </p>
         )}
       </div>
-      {expanded && !isProcessing && chunks && chunks.length > 0 && (
-        <div className="grid grid-cols-[repeat(auto-fit,360px)] justify-start gap-[15px]">
-          {chunks.map((chunk: Chunk, i: number) => (
-            <ChunkCard
-              key={chunk.chunkUid}
-              chunk={chunk}
-              index={i}
-              onChunkClick={() => onChunkClick(file, chunk)}
-              onRetrievableToggle={onRetrievableToggle}
-              fileContent={fileContent || ""}
-            />
-          ))}
-        </div>
-      )}
+      {expanded &&
+        !isProcessing &&
+        namespaceCatalogChunks.isSuccess &&
+        namespaceCatalogChunks.data.length > 0 && (
+          <div className="grid grid-cols-[repeat(auto-fit,360px)] justify-start gap-[15px]">
+            {namespaceCatalogChunks.data.map((chunk: Chunk, i: number) => (
+              <ChunkCard
+                key={chunk.chunkUid}
+                chunk={chunk}
+                index={i}
+                onChunkClick={() => onChunkClick(file, chunk)}
+                onRetrievableToggle={onRetrievableToggle}
+                fileContent={
+                  catalogSingleSourceOfTruthFile.isSuccess
+                    ? catalogSingleSourceOfTruthFile.data.content
+                    : ""
+                }
+              />
+            ))}
+          </div>
+        )}
     </div>
   );
 };

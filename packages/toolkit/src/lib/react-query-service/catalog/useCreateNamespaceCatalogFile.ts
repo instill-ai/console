@@ -1,50 +1,45 @@
 "use client";
 
-import type { Nullable } from "instill-sdk";
+import type { CreateNamespaceCatalogFileRequest, Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
 import { queryKeyStore } from "../queryKeyStore";
 
-export function useDeleteCatalogFile() {
+export function useCreateNamespaceCatalogFile() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
-      fileUid,
-      namespaceId,
-      catalogId,
+      payload,
       accessToken,
     }: {
-      fileUid: string;
-      namespaceId: Nullable<string>;
-      catalogId: Nullable<string>;
+      payload: CreateNamespaceCatalogFileRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         throw new Error("accessToken is required");
       }
 
-      if (!fileUid) {
-        throw new Error("fileUid is required");
+      if (!payload.namespaceId) {
+        throw new Error("namespaceId is required");
+      }
+
+      if (!payload.catalogId) {
+        throw new Error("catalogId is required");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
-      await client.catalog.deleteCatalogFile({
-        fileUid,
-      });
+      const res = await client.catalog.createNamespaceCatalogFile(payload);
 
-      return Promise.resolve({
-        namespaceId,
-        catalogId,
-      });
+      return Promise.resolve(res.file);
     },
-    onSuccess: ({ namespaceId, catalogId }) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: queryKeyStore.catalog.getUseListNamespaceCatalogFilesQueryKey(
           {
-            namespaceId,
-            catalogId,
+            namespaceId: variables.payload.namespaceId,
+            catalogId: variables.payload.catalogId,
           },
         ),
       });

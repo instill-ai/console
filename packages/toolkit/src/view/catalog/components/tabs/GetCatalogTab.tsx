@@ -13,8 +13,12 @@ import {
 
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
 import { defaultCodeSnippetStyles } from "../../../../constant";
-import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
-import { useListCatalogFiles } from "../../../../lib/react-query-service/catalog";
+import {
+  InstillStore,
+  useInstillStore,
+  useListNamespaceCatalogFiles,
+  useShallow,
+} from "../../../../lib";
 import { env } from "../../../../server";
 import {
   GetCatalogTabInputSchema,
@@ -46,7 +50,7 @@ export const GetCatalogTab = ({
     useShallow(selector),
   );
 
-  const filesData = useListCatalogFiles({
+  const filesData = useListNamespaceCatalogFiles({
     namespaceId: selectedNamespace,
     catalogId: catalog.catalogId,
     accessToken,

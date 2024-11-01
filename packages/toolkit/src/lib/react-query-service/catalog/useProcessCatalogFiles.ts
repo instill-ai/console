@@ -1,5 +1,7 @@
+"use client";
+
+import type { CatalogFile, Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CatalogFile, Nullable } from "instill-sdk";
 
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
@@ -17,12 +19,18 @@ export function useProcessCatalogFiles() {
       requesterUid: Nullable<string>;
     }): Promise<CatalogFile[]> => {
       if (!accessToken) {
-        throw new Error("accessToken not provided");
+        throw new Error("accessToken is required");
       }
+
       if (!requesterUid) {
-        throw new Error("requesterUid not provided");
+        throw new Error("requesterUid is required");
       }
-      if (!fileUids || fileUids.length === 0) {
+
+      if (!fileUids) {
+        throw new Error("fileUids is required");
+      }
+
+      if (fileUids.length === 0) {
         throw new Error("fileUids must be a non-empty array");
       }
 
@@ -32,7 +40,7 @@ export function useProcessCatalogFiles() {
         requesterUid,
       });
 
-      return files;
+      return Promise.resolve(files);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["catalogFiles"] });

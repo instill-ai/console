@@ -1,9 +1,12 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
-import { Nullable } from "instill-sdk";
 
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
-export function useGetCatalogs({
+export function useListNamespaceCatalogs({
   accessToken,
   namespaceId,
   enabled,
@@ -13,22 +16,24 @@ export function useGetCatalogs({
   enabled: boolean;
 }) {
   return useQuery({
-    queryKey: ["catalogs", namespaceId],
+    queryKey: queryKeyStore.catalog.getUseListNamespaceCatalogsQueryKey({
+      namespaceId,
+    }),
     queryFn: async () => {
       if (!namespaceId) {
-        throw new Error("namespaceId not provided");
+        throw new Error("namespaceId is required");
       }
+
       if (!accessToken) {
-        throw new Error("accessToken not provided");
+        throw new Error("accessToken is required");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
-      const catalogs = await client.catalog.listCatalogs({
+      const res = await client.catalog.listNamespaceCatalogs({
         namespaceId,
-        enablePagination: false,
       });
 
-      return Promise.resolve(catalogs);
+      return Promise.resolve(res.catalogs);
     },
     enabled: enabled && Boolean(namespaceId) && Boolean(accessToken),
   });

@@ -14,13 +14,11 @@ import { Separator, Skeleton } from "@instill-ai/design-system";
 import {
   InstillStore,
   useAuthenticatedUser,
+  useDeleteCatalogFile,
   useInstillStore,
+  useListNamespaceCatalogFiles,
   useShallow,
 } from "../../../../lib";
-import {
-  useDeleteCatalogFile,
-  useListCatalogFiles,
-} from "../../../../lib/react-query-service/catalog";
 import { EmptyState } from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";
@@ -69,7 +67,7 @@ export const CatalogFilesTab = ({
     accessToken,
   });
 
-  const filesData = useListCatalogFiles({
+  const filesData = useListNamespaceCatalogFiles({
     namespaceId: selectedNamespace,
     catalogId: catalog.catalogId,
     accessToken,
@@ -137,6 +135,8 @@ export const CatalogFilesTab = ({
         await deleteCatalogFile.mutateAsync({
           fileUid,
           accessToken,
+          namespaceId: catalog.namespaceId,
+          catalogId: catalog.catalogId,
         });
         updateRemainingSpace(fileToDelete.size, false);
       }
