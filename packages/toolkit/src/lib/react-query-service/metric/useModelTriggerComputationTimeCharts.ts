@@ -1,3 +1,4 @@
+'use client';
 import { ModelTriggerTableRecord } from "instill-sdk";
 import { getInstillAPIClient } from "../../vdp-sdk";
 import { Nullable } from "vitest";

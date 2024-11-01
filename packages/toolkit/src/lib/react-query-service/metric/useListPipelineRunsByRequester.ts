@@ -1,3 +1,4 @@
+'use client';
 import { useQuery } from "@tanstack/react-query";
 import { ListPipelineRunsByRequesterResponse, Nullable } from "instill-sdk";
 import { getInstillAPIClient } from "../../vdp-sdk";

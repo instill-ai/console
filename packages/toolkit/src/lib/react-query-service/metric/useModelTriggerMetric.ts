@@ -1,3 +1,4 @@
+'use client';
 import { useQuery } from "@tanstack/react-query";
 import { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../vdp-sdk";
