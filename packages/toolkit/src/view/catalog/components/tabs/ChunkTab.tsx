@@ -10,12 +10,10 @@ import {
   InstillStore,
   useAuthenticatedUser,
   useInstillStore,
+  useListNamespaceCatalogFiles,
   useShallow,
+  useUpdateCatalogChunk,
 } from "../../../../lib";
-import {
-  useListCatalogFiles,
-  useUpdateChunk,
-} from "../../../../lib/react-query-service/catalog";
 import FileChunks from "../FileChunks";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 
@@ -47,7 +45,7 @@ export const ChunkTab = ({ catalog, onGoToUpload }: ChunkTabProps) => {
     accessToken,
   });
 
-  const catalogFiles = useListCatalogFiles({
+  const namespaceCatalogFiles = useListNamespaceCatalogFiles({
     namespaceId: selectedNamespace,
     catalogId: catalog.catalogId,
     accessToken,
@@ -55,15 +53,15 @@ export const ChunkTab = ({ catalog, onGoToUpload }: ChunkTabProps) => {
   });
 
   const files = React.useMemo(() => {
-    if (!catalogFiles.isSuccess) {
+    if (!namespaceCatalogFiles.isSuccess) {
       return [];
     }
-    return (catalogFiles.data || []).filter(
+    return (namespaceCatalogFiles.data || []).filter(
       (file) => file.processStatus !== "FILE_PROCESS_STATUS_FAILED",
     );
-  }, [catalogFiles.isSuccess, catalogFiles.data]);
+  }, [namespaceCatalogFiles.isSuccess, namespaceCatalogFiles.data]);
 
-  const updateChunkMutation = useUpdateChunk();
+  const updateCatalogChunk = useUpdateCatalogChunk();
 
   const toggleFileExpansion = (fileUid: string) => {
     setExpandedFiles((prev) =>
@@ -90,7 +88,10 @@ export const ChunkTab = ({ catalog, onGoToUpload }: ChunkTabProps) => {
     currentValue: boolean,
   ) => {
     try {
-      await updateChunkMutation.mutateAsync({
+      await updateCatalogChunk.mutateAsync({
+        namespaceId: catalog.namespaceId,
+        catalogId: catalog.catalogId,
+        fileUid: null,
         chunkUid,
         accessToken,
         retrievable: !currentValue,
@@ -109,7 +110,7 @@ export const ChunkTab = ({ catalog, onGoToUpload }: ChunkTabProps) => {
       )
     ) {
       interval = setInterval(() => {
-        catalogFiles.refetch();
+        namespaceCatalogFiles.refetch();
       }, 5000);
     }
 
@@ -118,7 +119,7 @@ export const ChunkTab = ({ catalog, onGoToUpload }: ChunkTabProps) => {
         clearInterval(interval);
       }
     };
-  }, [files, catalogFiles]);
+  }, [files, namespaceCatalogFiles.refetch]);
 
   return (
     <div className="flex-col">
@@ -128,7 +129,7 @@ export const ChunkTab = ({ catalog, onGoToUpload }: ChunkTabProps) => {
         </p>
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {catalogFiles.isLoading ? (
+      {namespaceCatalogFiles.isLoading ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div

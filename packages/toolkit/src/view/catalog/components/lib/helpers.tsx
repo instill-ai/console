@@ -2,6 +2,7 @@ import {
   Catalog,
   CatalogFile,
   FileStatus,
+  FileType,
   Nullable,
   OrganizationSubscription,
   OrganizationSubscriptionPlan,
@@ -56,7 +57,7 @@ export const getFileIcon = (fileType: string) => {
   }
 };
 
-export const getFileType = (file: File) => {
+export const getFileType = (file: File): FileType => {
   const extension = file.name.split(".").pop()?.toLowerCase();
   switch (extension) {
     case "txt":

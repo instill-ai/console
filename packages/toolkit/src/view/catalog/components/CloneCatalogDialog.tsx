@@ -24,7 +24,7 @@ import {
   useOrganizationSubscription,
   useShallow,
 } from "../../../lib";
-import { useGetCatalogs } from "../../../lib/react-query-service/catalog";
+import { useListNamespaceCatalogs } from "../../../lib/react-query-service/catalog";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
 import {
@@ -121,7 +121,7 @@ export const CloneCatalogDialog = ({
     getNamespaceType();
   }, [selectedNamespace, accessToken]);
 
-  const catalogs = useGetCatalogs({
+  const catalogs = useListNamespaceCatalogs({
     accessToken,
     namespaceId: selectedNamespace,
     enabled: enabledQuery && !!selectedNamespace,

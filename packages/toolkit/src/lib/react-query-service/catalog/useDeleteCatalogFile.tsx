@@ -1,7 +1,10 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Nullable } from "instill-sdk";
 
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
 export function useDeleteCatalogFile() {
   const queryClient = useQueryClient();
@@ -9,14 +12,19 @@ export function useDeleteCatalogFile() {
   return useMutation({
     mutationFn: async ({
       fileUid,
+      namespaceId,
+      catalogId,
       accessToken,
     }: {
       fileUid: string;
+      namespaceId: Nullable<string>;
+      catalogId: Nullable<string>;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
         throw new Error("accessToken not provided");
       }
+
       if (!fileUid) {
         throw new Error("fileUid not provided");
       }
@@ -25,9 +33,21 @@ export function useDeleteCatalogFile() {
       await client.catalog.deleteCatalogFile({
         fileUid,
       });
+
+      return Promise.resolve({
+        namespaceId,
+        catalogId,
+      });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["catalogFiles"] });
+    onSuccess: ({ namespaceId, catalogId }) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeyStore.catalog.getUseListNamespaceCatalogFilesQueryKey(
+          {
+            namespaceId,
+            catalogId,
+          },
+        ),
+      });
     },
   });
 }

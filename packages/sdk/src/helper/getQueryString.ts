@@ -15,6 +15,8 @@ export const getQueryString = ({
   stop,
   aggregationWindow,
   showDeleted,
+  fileUid,
+  chunkUids,
 }: {
   baseURL: string;
   pageSize?: number;
@@ -32,6 +34,8 @@ export const getQueryString = ({
   stop?: string;
   aggregationWindow?: string;
   showDeleted?: boolean;
+  fileUid?: string;
+  chunkUids?: string[];
 }) => {
   let url = baseURL;
 
@@ -108,6 +112,16 @@ export const getQueryString = ({
 
   if (showDeleted !== undefined) {
     url += `showDeleted=${showDeleted}&`;
+  }
+
+  if (fileUid) {
+    url += `fileUid=${fileUid}&`;
+  }
+
+  if (chunkUids) {
+    for (const chunkUid of chunkUids) {
+      url += `chunkUids=${chunkUid}&`;
+    }
   }
 
   if (url.endsWith("&")) {

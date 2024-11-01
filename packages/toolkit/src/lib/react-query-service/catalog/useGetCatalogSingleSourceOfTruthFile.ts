@@ -1,5 +1,7 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
-import { Nullable } from "instill-sdk";
 
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
 
@@ -16,7 +18,7 @@ export function useGetCatalogSingleSourceOfTruthFile({
   catalogId: string;
   namespaceId: string;
 }) {
-  return useQuery<string>({
+  return useQuery({
     queryKey: ["fileContent", fileUid],
     queryFn: async () => {
       if (!accessToken) {
@@ -40,7 +42,7 @@ export function useGetCatalogSingleSourceOfTruthFile({
           fileUid,
         });
 
-      return Promise.resolve(fileContent.content);
+      return Promise.resolve(fileContent.sourceFile);
     },
     enabled: enabled && Boolean(accessToken) && Boolean(fileUid),
   });

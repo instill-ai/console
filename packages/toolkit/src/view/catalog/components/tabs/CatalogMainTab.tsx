@@ -3,20 +3,24 @@
 import * as React from "react";
 import {
   Catalog,
+  CreateNamespaceCatalogRequest,
   Nullable,
   OrganizationSubscription,
+  UpdateNamespaceCatalogRequest,
   UserSubscription,
 } from "instill-sdk";
 import * as z from "zod";
 
 import { Separator, Skeleton } from "@instill-ai/design-system";
 
-import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import {
-  useCreateCatalog,
-  useGetCatalogs,
-  useUpdateCatalog,
-} from "../../../../lib/react-query-service/catalog";
+  InstillStore,
+  useCreateNamespaceCatalog,
+  useInstillStore,
+  useListNamespaceCatalogs,
+  useShallow,
+  useUpdateNamespaceCatalog,
+} from "../../../../lib";
 import { CatalogCard } from "../CatalogCard";
 import CatalogSearchSort, { SortAnchor, SortOrder } from "../CatalogSearchSort";
 import { CreateCatalogCard } from "../CreateCatalogCard";
@@ -66,12 +70,12 @@ export const CatalogTab = ({
     useShallow(selector),
   );
 
-  const createCatalog = useCreateCatalog();
-  const updateCatalog = useUpdateCatalog();
+  const createCatalog = useCreateNamespaceCatalog();
+  const updateCatalog = useUpdateNamespaceCatalog();
   const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
   const isTeamPlan = subscription?.plan === "PLAN_TEAM";
 
-  const catalogState = useGetCatalogs({
+  const catalogState = useListNamespaceCatalogs({
     accessToken,
     namespaceId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
@@ -88,15 +92,16 @@ export const CatalogTab = ({
   ) => {
     if (!accessToken) return;
 
+    const payload: CreateNamespaceCatalogRequest = {
+      name: data.name,
+      description: data.description,
+      tags: convertTagsToArray(data.tags),
+      namespaceId: data.namespaceId,
+    };
+
     try {
       await createCatalog.mutateAsync({
-        payload: {
-          name: data.name,
-          description: data.description,
-          tags: convertTagsToArray(data.tags),
-          namespaceId: data.namespaceId,
-        },
-        namespaceId: data.namespaceId,
+        payload,
         accessToken,
       });
       catalogState.refetch();
@@ -111,15 +116,17 @@ export const CatalogTab = ({
     catalogId: string,
   ) => {
     if (!selectedNamespace || !accessToken) return;
+
+    const payload: UpdateNamespaceCatalogRequest = {
+      namespaceId: selectedNamespace,
+      catalogId: catalogId,
+      description: data.description,
+      tags: convertTagsToArray(data.tags),
+    };
+
     try {
       await updateCatalog.mutateAsync({
-        namespaceId: selectedNamespace,
-        catalogId: catalogId,
-        payload: {
-          name: data.name,
-          description: data.description,
-          tags: convertTagsToArray(data.tags),
-        },
+        payload,
         accessToken,
       });
       catalogState.refetch();
@@ -134,19 +141,16 @@ export const CatalogTab = ({
   ) => {
     if (!accessToken) return;
 
-    const clonedCatalog = {
+    const clonedCatalog: CreateNamespaceCatalogRequest = {
       name: `${catalog.name}-clone`,
       description: catalog.description ?? "",
       tags: catalog.tags ?? [],
+      namespaceId: newNamespaceId,
     };
 
     try {
       await createCatalog.mutateAsync({
-        payload: {
-          ...clonedCatalog,
-          namespaceId: newNamespaceId,
-        },
-        namespaceId: newNamespaceId,
+        payload: clonedCatalog,
         accessToken,
       });
       catalogState.refetch();

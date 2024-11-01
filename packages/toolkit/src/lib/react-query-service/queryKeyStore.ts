@@ -506,10 +506,53 @@ export const mgmtQueryKeyStore = {
   },
 };
 
+export const catalogQueryKeyStore = {
+  getUseListNamespaceCatalogsQueryKey({
+    namespaceId,
+  }: {
+    namespaceId: Nullable<string>;
+  }) {
+    return [namespaceId, "catalogs"];
+  },
+  getUseListNamespaceCatalogFilesQueryKey({
+    namespaceId,
+    catalogId,
+  }: {
+    namespaceId: Nullable<string>;
+    catalogId: Nullable<string>;
+  }) {
+    return [namespaceId, "catalogs", catalogId, "files"];
+  },
+  getUseListNamespaceCatalogChunksQueryKey({
+    namespaceId,
+    catalogId,
+    fileUid,
+    chunkUids,
+  }: {
+    namespaceId: Nullable<string>;
+    catalogId: Nullable<string>;
+    fileUid: Nullable<string>;
+    chunkUids: Nullable<string[]>;
+  }) {
+    const queryKey = [namespaceId, "catalogs", catalogId];
+
+    if (fileUid) {
+      queryKey.push("files", fileUid);
+    }
+
+    if (chunkUids) {
+      queryKey.push("chunks", ...chunkUids);
+    }
+
+    return queryKey;
+  },
+};
+
 export const queryKeyStore = {
   model: modelQueryKeyStore,
   pipeline: pipelineQueryKeyStore,
   release: releaseQueryKeyStore,
   secret: secretQueryKeyStore,
   mgmt: mgmtQueryKeyStore,
+  catalog: catalogQueryKeyStore,
 };

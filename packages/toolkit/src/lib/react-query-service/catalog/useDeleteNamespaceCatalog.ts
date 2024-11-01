@@ -1,9 +1,12 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Catalog, Nullable } from "instill-sdk";
 
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
-export function useDeleteCatalog() {
+export function useDeleteNamespaceCatalog() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -17,29 +20,26 @@ export function useDeleteCatalog() {
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
-        throw new Error("accessToken not provided");
+        throw new Error("accessToken is required");
       }
+
       if (!namespaceId) {
-        throw new Error("namespaceId not provided");
+        throw new Error("namespaceId is required");
       }
+
       if (!catalogId) {
-        throw new Error("catalogId not provided");
+        throw new Error("catalogId is required");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
-      await client.catalog.deleteCatalog({ namespaceId, catalogId });
+      await client.catalog.deleteNamespaceCatalog({ namespaceId, catalogId });
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ["catalogs", variables.namespaceId],
+        queryKey: queryKeyStore.catalog.getUseListNamespaceCatalogsQueryKey({
+          namespaceId: variables.namespaceId,
+        }),
       });
-      queryClient.setQueryData<Catalog[]>(
-        ["catalogs", variables.namespaceId],
-        (oldData) =>
-          oldData?.filter(
-            (catalog) => catalog.catalogId !== variables.catalogId,
-          ) || [],
-      );
     },
   });
 }

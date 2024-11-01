@@ -10,15 +10,13 @@ import {
   GeneralAppPageProp,
   InstillStore,
   useAuthenticatedUserSubscription,
+  useDeleteNamespaceCatalog,
   useInstillStore,
+  useListNamespaceCatalogFiles,
+  useListNamespaceCatalogs,
   useOrganizationSubscription,
   useShallow,
 } from "../../lib";
-import {
-  useDeleteCatalog,
-  useGetCatalogs,
-  useListCatalogFiles,
-} from "../../lib/react-query-service/catalog";
 import { env } from "../../server";
 import { Sidebar, WarnDiscardFilesDialog } from "./components";
 import { CREDIT_TIMEOUT } from "./components/lib/constant";
@@ -71,16 +69,16 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   );
   const isLocalEnvironment = env("NEXT_PUBLIC_APP_ENV") === "CE";
 
-  const deleteCatalog = useDeleteCatalog();
-  const catalogs = useGetCatalogs({
+  const deleteCatalog = useDeleteNamespaceCatalog();
+  const catalogs = useListNamespaceCatalogs({
     accessToken,
     namespaceId: selectedNamespace ?? null,
     enabled: enabledQuery && !!selectedNamespace,
   });
 
-  const filesData = useListCatalogFiles({
+  const filesData = useListNamespaceCatalogFiles({
     namespaceId: selectedNamespace ?? null,
-    catalogId: selectedCatalog?.catalogId ?? "",
+    catalogId: selectedCatalog?.catalogId ?? null,
     accessToken,
     enabled:
       enabledQuery && Boolean(selectedNamespace) && Boolean(selectedCatalog),

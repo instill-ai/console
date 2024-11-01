@@ -12,11 +12,13 @@ import {
   EditCatalogDialogData,
 } from ".";
 import { GeneralDeleteResourceDialog } from "../../../components";
-import { InstillStore, useInstillStore, useShallow } from "../../../lib";
 import {
-  useGetAllChunks,
-  useListCatalogFiles,
-} from "../../../lib/react-query-service/catalog";
+  InstillStore,
+  useInstillStore,
+  useListNamespaceCatalogChunks,
+  useListNamespaceCatalogFiles,
+  useShallow,
+} from "../../../lib";
 import { convertTagsToArray } from "./lib/helpers";
 
 type CreateCatalogCardProps = {
@@ -54,21 +56,22 @@ export const CreateCatalogCard = ({
     useShallow(selector),
   );
 
-  const existingFiles = useListCatalogFiles({
+  const existingFiles = useListNamespaceCatalogFiles({
     namespaceId: selectedNamespace,
     catalogId: catalog.catalogId,
     accessToken: accessToken || null,
     enabled: enabledQuery && isHovered,
   });
 
-  const chunks = useGetAllChunks({
+  const chunks = useListNamespaceCatalogChunks({
     accessToken,
-    ownerName: catalog.ownerName,
+    namespaceId: catalog.namespaceId,
     catalogId: catalog.catalogId,
     fileUid: existingFiles.isSuccess
-      ? existingFiles.data?.[0]?.fileUid
-      : undefined,
+      ? (existingFiles.data?.[0]?.fileUid ?? null)
+      : null,
     enabled: Boolean(existingFiles.data) && Boolean(accessToken) && isHovered,
+    chunkUids: null,
   });
 
   const totalChunks = React.useMemo(() => {
