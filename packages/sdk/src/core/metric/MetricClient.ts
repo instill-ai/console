@@ -125,7 +125,7 @@ export class MetricClient extends APIResource {
     const {
       pageSize,
       page,
-      filter,
+      orderBy,
       enablePagination,
       requesterUid,
       requesterId,
@@ -141,7 +141,7 @@ export class MetricClient extends APIResource {
         baseURL: `/dashboard/pipelines/runs`,
         pageSize,
         page,
-        filter,
+        orderBy,
         requesterId,
         start,
       });

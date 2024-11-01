@@ -68,7 +68,7 @@ export const DashboardListPipeline = ({
     accessToken,
     pageSize: paginationState.pageSize,
     page: paginationState.pageIndex,
-    filter: orderBy,
+    orderBy: orderBy,
     requesterId: targetNamespace?.id,
     requesterUid: targetNamespace?.uid,
     start,

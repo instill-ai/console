@@ -10,7 +10,7 @@ export function useListModelRunsByRequester({
   accessToken,
   pageSize,
   page,
-  filter,
+  orderBy,
   requesterId,
   requesterUid,
   start,
@@ -19,7 +19,7 @@ export function useListModelRunsByRequester({
   accessToken: Nullable<string>;
   pageSize?: number;
   page: Nullable<number>;
-  filter?: string;
+  orderBy?: string;
   requesterId?: string;
   requesterUid?: string;
   start?: string;
@@ -31,7 +31,7 @@ export function useListModelRunsByRequester({
       requesterUid,
       pageSize,
       page,
-      filter,
+      orderBy,
       start,
     ],
     queryFn: async () => {
@@ -46,7 +46,7 @@ export function useListModelRunsByRequester({
       const data = await client.model.listModelRunsByRequester({
         pageSize,
         page,
-        filter,
+        orderBy,
         requesterId,
         requesterUid,
         start,

@@ -217,7 +217,7 @@ export class ModelClient extends APIResource {
     const {
       pageSize,
       page,
-      filter,
+      orderBy,
       enablePagination,
       requesterUid,
       requesterId,
@@ -233,7 +233,7 @@ export class ModelClient extends APIResource {
         baseURL: `/dashboard/models/runs`,
         pageSize,
         page,
-        filter,
+        orderBy,
         requesterId,
         start,
       });

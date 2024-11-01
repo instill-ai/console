@@ -7,7 +7,6 @@ import { Icons, Popover, SelectOption } from "@instill-ai/design-system";
 
 import {
   InstillStore,
-  useAuthenticatedUser,
   useCreditConsumptionChartRecords,
   useInstillStore,
   useShallow,
@@ -41,10 +40,6 @@ export const CostTab = ({
     useShallow(selector),
   );
 
-  const me = useAuthenticatedUser({
-    enabled: enabledQuery,
-    accessToken,
-  });
 
   // Calculate start date based on selected time option
   const start = React.useMemo(() => {
@@ -123,7 +118,7 @@ export const CostTab = ({
                   className={`flex items-center p-2 hover:bg-semantic-bg-line ${costView === option.value ? "bg-semantic-bg-line" : ""}`}
                   onClick={() => {
                     router.push(
-                      `/${me?.data?.id}/dashboard/cost/${option.value}`,
+                      `/${selectedNamespace}/dashboard/cost/${option.value}`,
                     );
                   }}
                 >
