@@ -1,8 +1,6 @@
-"use client";
-
-import type { Nullable } from "instill-sdk";
+'use client';
 import { useQuery } from "@tanstack/react-query";
-
+import { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../sdk-helper";
 
 export function useCreditConsumptionChartRecords({
@@ -10,45 +8,28 @@ export function useCreditConsumptionChartRecords({
   accessToken,
   start,
   stop,
-  owner,
+  namespaceId,
   aggregationWindow,
 }: {
   enabled: boolean;
-  owner: Nullable<string>;
+  namespaceId: Nullable<string>;
   accessToken: Nullable<string>;
   start: Nullable<string>;
   stop: Nullable<string>;
   aggregationWindow: Nullable<string>;
 }) {
   let enabledQuery = false;
-
   if (enabled && start && stop && aggregationWindow) {
     enabledQuery = true;
   }
 
-  const startDate = start
-    ? new Date(start).toLocaleString("en-us", {
-        hour: "2-digit",
-        month: "2-digit",
-        day: "2-digit",
-      })
-    : null;
-
-  const stopDate = stop
-    ? new Date(stop).toLocaleString("en-us", {
-        hour: "2-digit",
-        month: "2-digit",
-        day: "2-digit",
-      })
-    : null;
-
   return useQuery({
     queryKey: [
-      owner,
+      namespaceId,
       "charts",
       "creditConsumption",
-      startDate,
-      stopDate,
+      start,
+      stop,
       aggregationWindow,
     ],
     queryFn: async () => {
@@ -56,24 +37,24 @@ export function useCreditConsumptionChartRecords({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      if (!owner) {
-        return Promise.reject(new Error("owner not provided"));
+      if (!namespaceId) {
+        return Promise.reject(new Error("namespaceId not provided"));
       }
 
       const client = getInstillAPIClient({
         accessToken,
       });
 
-      const data =
-        await client.core.metric.listInstillCreditConsumptionTimeChart({
-          owner,
-          start: start ?? undefined,
-          stop: stop ?? undefined,
-          aggregationWindow: aggregationWindow ?? undefined,
-        });
+      const data = await client.core.metric.listInstillCreditConsumptionTimeChart({
+        namespaceId,
+        start: start ?? undefined,
+        stop: stop ?? undefined,
+        aggregationWindow: aggregationWindow ?? undefined,
+      });
 
       return Promise.resolve(data);
     },
     enabled: enabledQuery,
   });
+
 }

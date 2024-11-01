@@ -1,17 +1,17 @@
 "use client";
 
-import type { PipelineTriggerChartRecord } from "instill-sdk";
-import * as React from "react";
+import * as React from 'react';
 import * as echarts from "echarts";
-
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
+import { ModelTriggersSummary } from "./ModelTriggersSummary";
+import { ModelsChart, ModelTriggersStatusSummary, Nullable } from 'instill-sdk';
+import { generateModelChartData } from '../../../lib';
 
-import { generateChartData } from "../../lib";
-
-type PipelineTriggerCountsLineChartProps = {
-  pipelines: PipelineTriggerChartRecord[];
+type ModelsTriggerCountsLineChartProps = {
+  models: ModelsChart[];
   isLoading: boolean;
   selectedTimeOption: SelectOption;
+  modelTriggersSummary: Nullable<ModelTriggersStatusSummary>;
 };
 
 /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
@@ -36,14 +36,15 @@ function unselectGraph(params: any, myChart: echarts.ECharts): void {
   }
 }
 
-export const PipelineTriggerCountsLineChart = ({
+export const ModelsTriggerCountsLineChart = ({
   isLoading,
-  pipelines,
+  models,
   selectedTimeOption,
-}: PipelineTriggerCountsLineChartProps) => {
+  modelTriggersSummary,
+}: ModelsTriggerCountsLineChartProps) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
-  const { xAxis, yAxis } = generateChartData(
-    pipelines,
+  const { xAxis, yAxis } = generateModelChartData(
+    models,
     selectedTimeOption.value,
   );
 
@@ -70,13 +71,13 @@ export const PipelineTriggerCountsLineChart = ({
             image: "/images/no-chart-placeholder.svg",
             x: "45%",
             y: "0%",
-            width: pipelines.length === 0 ? 225 : 0,
-            height: pipelines.length === 0 ? 225 : 0,
+            width: models.length === 0 ? 225 : 0,
+            height: models.length === 0 ? 225 : 0,
           },
         },
         animation: false,
         title: {
-          show: pipelines.length === 0,
+          show: models.length === 0,
           textStyle: {
             color: "#1D2433A6",
             fontSize: 14,
@@ -86,34 +87,31 @@ export const PipelineTriggerCountsLineChart = ({
           },
           text: isLoading
             ? "Loading..."
-            : "No pipelines have been triggered yet",
+            : "No models have been triggered yet",
           left: `${isLoading ? "49.5%" : "44.5%"}`,
           bottom: 100,
         },
         tooltip: {
           trigger: "item",
           tiggerOn: "click",
-
+          backgroundColor: 'white',
+          borderColor: 'transparent',
+          textStyle: {
+            color: 'var(--semantic-fg-primary)'
+          },
           /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
           formatter: function (params: any) {
             const triggerTime = params.name;
-            const pipelineId = params.seriesName;
             const computeTimeDuration = params.value;
             return `
               <div class="Content" style="padding: 5px; background: white; border-radius: 4px; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex">
                 <div class="TextAndSupportingText" style="border-radius: 8px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 4px; display: flex">
-                  <div class="Date" style="color: rgba(29, 36, 51, 0.65); font-size: 12px;  line-height: 16px; word-wrap: break-word">${triggerTime}</div>
-                  <div class="Data1" style="justify-content: flex-start; align-items: center; gap: 4px; display: inline-flex">
-                    <div class="Dot" style="width: 10px; height: 10px; position: relative">
-                      <div class="Dot" style="width: 8px; height: 8px; left: 1px; top: 1px; position: absolute; background: ${params.color}; border-radius: 9999px"></div>
-                    </div>
-                    <div class="PipelineId" style="height: 22px; color: rgba(29, 36, 51, 0.80); font-size: 14px;  line-height: 20px; word-wrap: break-word; overflow-wrap: break-word;">
-                      ${pipelineId}
-                    </div>
-                  </div>
-                  <div class="Data2" style="justify-content: flex-start; align-items: flex-start; gap: 4px; display: inline-flex">
-                    <div class="TriggerNumber" style="color: rgba(29, 36, 51, 0.80); font-size: 14px;  font-weight: 400; line-height: 20px; word-wrap: break-word">Triggers: </div>
-                    <div class="Number" style="color: #1D2433; font-size: 14px;  font-weight: 600; line-height: 20px; word-wrap: break-word">${computeTimeDuration}</div>
+                  <div class="Date product-body-text-4-medium" style="color: var(--semantic-fg-disabled); font-size: 12px; line-height: 16px; word-wrap: break-word">${triggerTime}</div>
+                  <div style="display: flex; align-items: center; white-space: nowrap;">
+                    <span class="PipelineId product-body-text-3-regular" style="color: var(--semantic-fg-secondary); font-size: 14px; line-height: 20px;">
+                      All model triggers&nbsp;
+                    </span>
+                    <span class="Number product-body-text-3-semibold" style="color: var(--semantic-fg-primary); font-size: 14px; line-height: 20px;">${computeTimeDuration}</span>
                   </div>
                 </div>
               </div>
@@ -127,7 +125,7 @@ export const PipelineTriggerCountsLineChart = ({
             fontSize: "14px",
             fontFamily: "var(--font-ibm-plex-sans)",
             fontStyle: "normal",
-            fontWeight: "600",
+            fontWeight: "500",
             color: "#6B7280",
           },
         },
@@ -138,11 +136,19 @@ export const PipelineTriggerCountsLineChart = ({
             fontSize: "14px",
             fontFamily: "var(--font-ibm-plex-sans)",
             fontStyle: "normal",
-            fontWeight: "600",
+            fontWeight: "500",
             color: "#6B7280",
           },
         },
-        series: seriesData,
+        series: seriesData.map((series) => ({
+          ...series,
+          symbol: 'circle',
+          symbolSize: 8,
+          itemStyle: {
+            borderColor: 'white',
+            borderWidth: 2
+          }
+        })),
       };
 
       myChart.setOption(option, true);
@@ -160,22 +166,21 @@ export const PipelineTriggerCountsLineChart = ({
         }
       });
     }
-  }, [isLoading, xAxisData, seriesData, pipelines]);
+  }, [isLoading, xAxisData, seriesData, models]);
 
   return (
     <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">
       <div className="flex flex-col items-start justify-start gap-[30px] self-stretch">
-        <div className="inline-flex items-center justify-start gap-2.5 self-stretch p-8">
+        <div className="inline-flex items-center justify-between gap-2.5 self-stretch pt-8 px-8">
           <div className="flex items-center justify-start gap-2.5">
             <div className="text-semantic-fg-primary product-headings-heading-2">
-              Number of triggers
+              Number of model triggers
             </div>
-            {/* Tooltip about the chart */}
             <Tooltip.Provider>
               <Tooltip.Root>
                 <Tooltip.Trigger asChild>
-                  <div className="relative h-6 w-6">
-                    <Icons.HelpCircle className="h-6 w-6 stroke-semantic-fg-primary" />
+                  <div className="relative h-4 w-4">
+                    <Icons.AlertCircle className="h-4 w-4 stroke-semantic-fg-primary" />
                   </div>
                 </Tooltip.Trigger>
                 <Tooltip.Portal>
@@ -187,11 +192,11 @@ export const PipelineTriggerCountsLineChart = ({
                     <div className="inline-flex w-80 flex-col items-start justify-start rounded-sm bg-semantic-bg-primary p-3">
                       <div className="flex flex-col items-start justify-start gap-1 self-stretch">
                         <div className="self-stretch text-semantic-fg-primary product-body-text-4-semibold">
-                          Number of triggers tooltip
+                          Number of triggers
                         </div>
                         <div className="self-stretch text-semantic-fg-secondary product-body-text-4-medium">
                           Select any pipeline from the table below to view the
-                          number of pipeline triggers within the last 7 days.
+                          number of model triggers within the last 7 days.
                         </div>
                       </div>
                     </div>
@@ -206,6 +211,17 @@ export const PipelineTriggerCountsLineChart = ({
               </Tooltip.Root>
             </Tooltip.Provider>
           </div>
+        </div>
+        {/* Status */}
+        <div className="px-8 pb-8 w-full">
+          <ModelTriggersSummary>
+            <ModelTriggersSummary.Card
+              summary={modelTriggersSummary ? modelTriggersSummary.completed : null}
+            />
+            <ModelTriggersSummary.Card
+              summary={modelTriggersSummary ? modelTriggersSummary.errored : null}
+            />
+          </ModelTriggersSummary>
         </div>
         <div
           id="main"

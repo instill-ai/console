@@ -1,5 +1,10 @@
 import { ResourceView, RunSource, RunStatus } from "..";
-import { Organization, User } from "../core";
+import {
+  ModelTriggerChartRecord,
+  ModelTriggerTableRecord,
+  Organization,
+  User,
+} from "../core";
 import {
   GeneralRecord,
   InstillJSONSchema,
@@ -391,5 +396,26 @@ export type GetNamespaceModelVersionOperationResultRequest = {
 export type GetNamespaceModelVersionOperationResultResponse = {
   operation: Nullable<Operation>;
 };
+
+export type ModelTriggerStatus =
+  | "STATUS_UNSPECIFIED"
+  | "STATUS_COMPLETED"
+  | "STATUS_ERRORED";
+
+export type ModelsChart = ModelTriggerChartRecord;
+
+export type ModelTriggersStatusSummaryItem = {
+  statusType: ModelTriggerStatus;
+  amount: number;
+  type: "pipeline" | "model";
+  delta: number;
+};
+
+export type ModelTriggersStatusSummary = {
+  completed: ModelTriggersStatusSummaryItem;
+  errored: ModelTriggersStatusSummaryItem;
+};
+
+export type TriggeredModel = ModelTriggerTableRecord;
 
 export type ModelsWatchState = Record<string, Nullable<ModelWatchState>>;
