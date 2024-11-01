@@ -28,7 +28,7 @@ export function useCreditConsumptionChartRecords({
   return useQuery({
     queryKey: [
       namespaceId,
-      "charts",
+      "modelTriggerCharts",
       "creditConsumption",
       start,
       stop,

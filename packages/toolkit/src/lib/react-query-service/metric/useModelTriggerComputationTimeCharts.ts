@@ -18,7 +18,7 @@ export function useModelTriggerComputationTimeCharts({
   requesterId: Nullable<string>;
 }) {
   return useQuery<ModelTriggerChartRecord[]>({
-    queryKey: ["charts", filter, requesterId],
+    queryKey: ["modelTriggerCharts", filter, requesterId],
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));

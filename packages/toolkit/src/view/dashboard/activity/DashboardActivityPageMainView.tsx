@@ -83,12 +83,14 @@ export const DashboardActivityPageMainView = ({
     enabled: enableQuery && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
+    requesterId: routeInfo.data.namespaceId ?? undefined
   });
 
   const pipelinesChart = usePipelineTriggerComputationTimeCharts({
     enabled: enableQuery && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
+    requesterId: routeInfo.data.namespaceId ?? undefined
   });
 
   const modelsChart = useModelTriggerComputationTimeCharts({
@@ -109,6 +111,7 @@ export const DashboardActivityPageMainView = ({
     enabled: enableQuery && !!queryStringPrevious,
     filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,
+    requesterId: routeInfo.data.namespaceId ?? undefined,
   });
 
   const previousTriggeredModels = useModelTriggerMetric({
