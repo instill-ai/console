@@ -1,5 +1,6 @@
-'use client';
-import { ModelTriggerTableRecord } from "instill-sdk";
+"use client";
+
+import { ModelTriggerChartRecord } from "instill-sdk";
 import { getInstillAPIClient } from "../../vdp-sdk";
 import { Nullable } from "vitest";
 import { useQuery } from "@tanstack/react-query";
@@ -7,44 +8,40 @@ import { useQuery } from "@tanstack/react-query";
 export function useModelTriggerComputationTimeCharts({
   enabled,
   accessToken,
-  pageSize,
-  page,
   filter,
   requesterId,
-  requesterUid,
-  start,
 }: {
   enabled: boolean;
   accessToken: Nullable<string>;
-  pageSize?: number;
-  page?: Nullable<number>;
-  filter?: string;
+  filter: Nullable<string>;
   requesterId: Nullable<string>;
-  requesterUid?: string;
-  start?: string;
 }) {
-  return useQuery<ModelTriggerTableRecord[]>({
-    queryKey: ["modelTriggerMetrics", pageSize, page, filter, requesterId, start],
+  return useQuery<ModelTriggerChartRecord[]>({
+    queryKey: ["charts", filter, requesterId],
     queryFn: async () => {
       if (!accessToken) {
-        throw new Error("accessToken not provided");
+        return Promise.reject(new Error("accessToken not provided"));
       }
 
       const client = getInstillAPIClient({ accessToken });
-      const response = await client.core.metric.listModelTriggerMetric({
-        pageSize,
-        page,
-        filter,
-        requesterId,
-        requesterUid,
-        start,
-        enablePagination: true,
+
+      const response = await client.core.metric.listModelTriggersChart({
+        pageSize: undefined,
+        filter: filter ?? undefined,
       });
 
-      if ('modelTriggerTableRecords' in response) {
-        return response.modelTriggerTableRecords;
-      }
-      return response;
+      const transformedData: ModelTriggerChartRecord[] = response.map((record) => ({
+        modelId: record.modelId,
+        modelUid: record.modelUid,
+        triggerMode: record.triggerMode,
+        status: record.status,
+        timeBuckets: record.timeBuckets || [],
+        triggerCounts: record.triggerCounts || [],
+        computeTimeDuration: record.computeTimeDuration || [],
+        watchState: record.watchState,
+      }));
+
+      return transformedData;
     },
     enabled,
   });

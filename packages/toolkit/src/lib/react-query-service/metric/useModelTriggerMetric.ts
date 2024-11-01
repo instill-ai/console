@@ -1,30 +1,23 @@
-'use client';
-import { useQuery } from "@tanstack/react-query";
-import { Nullable } from "../../type";
+"use client";
+
+import { ModelTriggerTableRecord, ListModelTriggerMetricResponse } from "instill-sdk";
 import { getInstillAPIClient } from "../../vdp-sdk";
-import { ModelTriggerTableRecord } from "instill-sdk";
+import { Nullable } from "vitest";
+import { useQuery } from "@tanstack/react-query";
 
 export function useModelTriggerMetric({
     enabled,
     accessToken,
-    pageSize,
-    page,
     filter,
     requesterId,
-    requesterUid,
-    start,
 }: {
     enabled: boolean;
     accessToken: Nullable<string>;
-    pageSize?: number;
-    page?: Nullable<number>;
-    filter?: string;
+    filter: Nullable<string>;
     requesterId: Nullable<string>;
-    requesterUid?: string;
-    start?: string;
 }) {
     return useQuery<ModelTriggerTableRecord[]>({
-        queryKey: ["modelTriggerMetrics", pageSize, page, filter, requesterId, start],
+        queryKey: ["tables", filter, requesterId],
         queryFn: async () => {
             if (!accessToken) {
                 throw new Error("accessToken not provided");
@@ -32,19 +25,17 @@ export function useModelTriggerMetric({
 
             const client = getInstillAPIClient({ accessToken });
             const response = await client.core.metric.listModelTriggerMetric({
-                pageSize,
-                page,
-                filter,
+                pageSize: undefined,
+                filter: filter ?? undefined,
                 requesterId,
-                requesterUid,
-                start,
-                enablePagination: true,
-            });
+                enablePagination: false,
+            }) as ListModelTriggerMetricResponse | ModelTriggerTableRecord[];
 
-            if ('modelTriggerTableRecords' in response) {
-                return response.modelTriggerTableRecords;
+            if (Array.isArray(response)) {
+                return response;
             }
-            return response;
+
+            return response.modelTriggerTableRecords || [];
         },
         enabled,
     });
