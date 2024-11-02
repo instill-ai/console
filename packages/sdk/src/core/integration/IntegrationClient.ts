@@ -1,78 +1,99 @@
 import { getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
 import {
-  CreateIntegrationConnectionRequest,
-  CreateIntegrationConnectionResponse,
-  DeleteIntegrationConnectionRequest,
-  GetConnectionPipelinesRequest,
-  GetConnectionPipelinesResponse,
-  GetIntegrationConnectionRequest,
-  GetIntegrationConnectionResponse,
-  GetIntegrationConnectionsRequest,
-  GetIntegrationConnectionsResponse,
+  CreateNamespaceConnectionRequest,
+  CreateNamespaceConnectionResponse,
+  DeleteNamespaceConnectionRequest,
   GetIntegrationRequest,
   GetIntegrationResponse,
-  GetIntegrationsRequest,
-  GetIntegrationsResponse,
+  GetNamespaceConnectionRequest,
+  GetNamespaceConnectionResponse,
   Integration,
   IntegrationConnection,
-  TestIntegrationConnectionRequest,
-  TestIntegrationConnectionResponse,
-  UpdateIntegrationConnectionRequest,
-  UpdateIntegrationConnectionResponse,
+  ListIntegrationsRequest,
+  ListIntegrationsResponse,
+  ListNamespaceConnectionReferencedPipelinesRequest,
+  ListNamespaceConnectionReferencedPipelinesResponse,
+  ListNamespaceConnectionsRequest,
+  ListNamespaceConnectionsResponse,
+  ListPaginatedIntegrationsRequest,
+  ListPaginatedIntegrationsResponse,
+  ListPaginatedNamespaceConnectionReferencedPipelinesRequest,
+  ListPaginatedNamespaceConnectionReferencedPipelinesResponse,
+  ListPaginatedNamespaceConnectionsRequest,
+  ListPaginatedNamespaceConnectionsResponse,
+  TestNamespaceConnectionRequest,
+  TestNamespaceConnectionResponse,
+  UpdateNamespaceConnectionRequest,
+  UpdateNamespaceConnectionResponse,
 } from "./type";
 
 export class IntegrationClient extends APIResource {
   /**
    * Returns a paginated list of the available integrations.
    */
-  async getIntegrations(
-    props: GetIntegrationsRequest & { enablePagination: true },
-  ): Promise<GetIntegrationsResponse>;
-  async getIntegrations(
-    props: GetIntegrationsRequest & { enablePagination: false },
-  ): Promise<Integration[]>;
-  async getIntegrations(
-    props: GetIntegrationsRequest & { enablePagination: undefined },
-  ): Promise<Integration[]>;
-  async getIntegrations(
-    props: GetIntegrationsRequest & { enablePagination?: boolean },
-  ): Promise<GetIntegrationsResponse | Integration[]>;
-  async getIntegrations(
-    props: GetIntegrationsRequest & { enablePagination?: boolean },
-  ) {
-    const { pageSize, pageToken, enablePagination, filter } = props;
+  async listPaginatedIntegrations({
+    pageToken,
+    pageSize,
+    filter,
+  }: ListPaginatedIntegrationsRequest) {
+    const queryString = getQueryString({
+      baseURL: "/integrations",
+      pageToken,
+      pageSize,
+      filter,
+    });
+
+    try {
+      const data =
+        await this._client.get<ListPaginatedIntegrationsResponse>(queryString);
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  /**
+   * Returns a list of the available integrations.
+   */
+
+  async listIntegrations({
+    pageSize = 100,
+    pageToken,
+    filter,
+  }: ListIntegrationsRequest) {
+    const queryString = getQueryString({
+      baseURL: "/integrations",
+      pageSize,
+      pageToken,
+      filter,
+    });
 
     try {
       const integrations: Integration[] = [];
 
-      const queryString = getQueryString({
-        baseURL: "/integrations",
-        pageSize,
-        pageToken,
-        filter,
-      });
-
-      const data = await this._client.get<GetIntegrationsResponse>(queryString);
-
-      if (enablePagination) {
-        return Promise.resolve(data);
-      }
+      const data =
+        await this._client.get<ListPaginatedIntegrationsResponse>(queryString);
 
       integrations.push(...data.integrations);
 
       if (data.nextPageToken) {
         integrations.push(
-          ...(await this.getIntegrations({
-            pageSize,
-            pageToken: data.nextPageToken,
-            enablePagination: false,
-            filter,
-          })),
+          ...(
+            await this.listIntegrations({
+              pageSize,
+              pageToken: data.nextPageToken,
+              filter,
+            })
+          ).integrations,
         );
       }
 
-      return Promise.resolve(integrations);
+      const res: ListIntegrationsResponse = {
+        integrations,
+      };
+
+      return Promise.resolve(res);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -81,56 +102,74 @@ export class IntegrationClient extends APIResource {
   /**
    * Returns a paginated list of the connected integrations.
    */
-  async getIntegrationConnections(
-    props: GetIntegrationConnectionsRequest & { enablePagination: true },
-  ): Promise<GetIntegrationConnectionsResponse>;
-  async getIntegrationConnections(
-    props: GetIntegrationConnectionsRequest & { enablePagination: false },
-  ): Promise<IntegrationConnection[]>;
-  async getIntegrationConnections(
-    props: GetIntegrationConnectionsRequest & { enablePagination: undefined },
-  ): Promise<IntegrationConnection[]>;
-  async getIntegrationConnections(
-    props: GetIntegrationConnectionsRequest & { enablePagination?: boolean },
-  ): Promise<GetIntegrationConnectionsResponse | IntegrationConnection[]>;
-  async getIntegrationConnections(
-    props: GetIntegrationConnectionsRequest & { enablePagination?: boolean },
-  ) {
-    const { pageSize, pageToken, enablePagination, filter, namespaceId } =
-      props;
+  async listPaginatedNamespaceConnections({
+    namespaceId,
+    pageToken,
+    pageSize,
+    filter,
+  }: ListPaginatedNamespaceConnectionsRequest) {
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/connections`,
+      pageToken,
+      pageSize,
+      filter,
+    });
+
+    try {
+      const data =
+        await this._client.get<ListPaginatedNamespaceConnectionsResponse>(
+          queryString,
+        );
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  /**
+   * Returns a list of the connected integrations.
+   */
+  async listNamespaceConnections({
+    namespaceId,
+    pageToken,
+    pageSize = 100,
+    filter,
+  }: ListNamespaceConnectionsRequest) {
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/connections`,
+      pageSize,
+      pageToken,
+      filter,
+    });
 
     try {
       const connections: IntegrationConnection[] = [];
 
-      const queryString = getQueryString({
-        baseURL: `/namespaces/${namespaceId}/connections`,
-        pageSize,
-        pageToken,
-        filter,
-      });
-
       const data =
-        await this._client.get<GetIntegrationConnectionsResponse>(queryString);
-
-      if (enablePagination) {
-        return Promise.resolve(data);
-      }
+        await this._client.get<ListPaginatedNamespaceConnectionsResponse>(
+          queryString,
+        );
 
       connections.push(...data.connections);
 
       if (data.nextPageToken) {
         connections.push(
-          ...(await this.getIntegrationConnections({
-            namespaceId,
-            pageSize,
-            pageToken: data.nextPageToken,
-            enablePagination: false,
-            filter,
-          })),
+          ...(
+            await this.listNamespaceConnections({
+              namespaceId,
+              pageSize,
+              pageToken: data.nextPageToken,
+              filter,
+            })
+          ).connections,
         );
       }
 
-      return Promise.resolve(connections);
+      const res: ListNamespaceConnectionsResponse = {
+        connections,
+      };
+
+      return Promise.resolve(res);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -139,83 +178,77 @@ export class IntegrationClient extends APIResource {
   /**
    * Returns a paginated list of the connection pipelines.
    */
-  async getConnectionPipelines(
-    props: GetConnectionPipelinesRequest & { enablePagination: true },
-  ): Promise<GetConnectionPipelinesResponse>;
-  async getConnectionPipelines(
-    props: GetConnectionPipelinesRequest & { enablePagination: false },
-  ): Promise<string[]>;
-  async getConnectionPipelines(
-    props: GetConnectionPipelinesRequest & { enablePagination: undefined },
-  ): Promise<string[]>;
-  async getConnectionPipelines(
-    props: GetConnectionPipelinesRequest & { enablePagination?: boolean },
-  ): Promise<GetConnectionPipelinesResponse | string[]>;
-  async getConnectionPipelines(
-    props: GetConnectionPipelinesRequest & { enablePagination?: boolean },
-  ) {
-    const {
-      pageSize,
+  async listPaginatedNamespaceConnectionReferencedPipelines({
+    namespaceId,
+    connectionId,
+    pageToken,
+    pageSize = 100,
+    filter,
+  }: ListPaginatedNamespaceConnectionReferencedPipelinesRequest) {
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/connections/${connectionId}/referenced-pipelines`,
       pageToken,
-      enablePagination,
+      pageSize,
       filter,
-      namespaceId,
-      connectionId,
-    } = props;
+    });
 
     try {
-      const pipelineIds: string[] = [];
-
-      const queryString = getQueryString({
-        baseURL: `/namespaces/${namespaceId}/connections/${connectionId}/referenced-pipelines`,
-        pageSize,
-        pageToken,
-        filter,
-      });
-
       const data =
-        await this._client.get<GetConnectionPipelinesResponse>(queryString);
-
-      if (enablePagination) {
-        return Promise.resolve(data);
-      }
-
-      pipelineIds.push(...data.pipelineIds);
-
-      if (data.nextPageToken) {
-        pipelineIds.push(
-          ...(await this.getConnectionPipelines({
-            connectionId,
-            namespaceId,
-            pageSize,
-            pageToken: data.nextPageToken,
-            enablePagination: false,
-            filter,
-          })),
+        await this._client.get<ListPaginatedNamespaceConnectionReferencedPipelinesResponse>(
+          queryString,
         );
-      }
-
-      return Promise.resolve(pipelineIds);
+      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }
   }
 
   /**
-   * Gets a specific integration connection
+   * Returns a list of the connection pipelines.
    */
-  async getIntegration(props: GetIntegrationRequest) {
-    const { view, integrationId } = props;
+  async listNamespaceConnectionReferencedPipelines({
+    namespaceId,
+    connectionId,
+    pageToken,
+    pageSize = 100,
+    filter,
+  }: ListNamespaceConnectionReferencedPipelinesRequest) {
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/connections/${connectionId}/referenced-pipelines`,
+      pageSize,
+      pageToken,
+      filter,
+    });
 
     try {
-      const queryString = getQueryString({
-        baseURL: `/integrations/${integrationId}`,
-        view,
-      });
+      const pipelineIds: string[] = [];
 
-      const data = await this._client.get<GetIntegrationResponse>(queryString);
+      const data =
+        await this._client.get<ListPaginatedNamespaceConnectionReferencedPipelinesResponse>(
+          queryString,
+        );
 
-      return Promise.resolve(data.integration);
+      pipelineIds.push(...data.pipelineIds);
+
+      if (data.nextPageToken) {
+        pipelineIds.push(
+          ...(
+            await this.listNamespaceConnectionReferencedPipelines({
+              connectionId,
+              namespaceId,
+              pageSize,
+              pageToken: data.nextPageToken,
+              filter,
+            })
+          ).pipelineIds,
+        );
+      }
+
+      const res: ListNamespaceConnectionReferencedPipelinesResponse = {
+        pipelineIds,
+      };
+
+      return Promise.resolve(res);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -224,28 +257,49 @@ export class IntegrationClient extends APIResource {
   /**
    * Gets a specific integration
    */
-  async getIntegrationConnection(props: GetIntegrationConnectionRequest) {
-    const { view, connectionId, namespaceId } = props;
+
+  async getIntegration({ view, integrationId }: GetIntegrationRequest) {
+    const queryString = getQueryString({
+      baseURL: `/integrations/${integrationId}`,
+      view,
+    });
 
     try {
-      const queryString = getQueryString({
-        baseURL: `/namespaces/${namespaceId}/connections/${connectionId}`,
-        view,
-      });
+      const data = await this._client.get<GetIntegrationResponse>(queryString);
 
-      const data =
-        await this._client.get<GetIntegrationConnectionResponse>(queryString);
-
-      return Promise.resolve(data.connection);
+      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }
   }
 
   /**
-   * Adds an integration connection
+   * Gets a specific integration connection
    */
-  async createIntegrationConnection({
+  async getNamespaceConnection({
+    view,
+    connectionId,
+    namespaceId,
+  }: GetNamespaceConnectionRequest) {
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/connections/${connectionId}`,
+      view,
+    });
+
+    try {
+      const data =
+        await this._client.get<GetNamespaceConnectionResponse>(queryString);
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  /**
+   * Creates an integration connection
+   */
+  async createNamespaceConnection({
     id,
     integrationId,
     namespaceId,
@@ -254,10 +308,14 @@ export class IntegrationClient extends APIResource {
     identity,
     scopes,
     oAuthAccessDetails,
-  }: CreateIntegrationConnectionRequest) {
+  }: CreateNamespaceConnectionRequest) {
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/connections`,
+    });
+
     try {
-      const data = await this._client.post<CreateIntegrationConnectionResponse>(
-        `/namespaces/${namespaceId}/connections`,
+      const data = await this._client.post<CreateNamespaceConnectionResponse>(
+        queryString,
         {
           body: JSON.stringify({
             id,
@@ -271,7 +329,7 @@ export class IntegrationClient extends APIResource {
         },
       );
 
-      return Promise.resolve(data.connection);
+      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -280,21 +338,24 @@ export class IntegrationClient extends APIResource {
   /**
    * Updates an integration connection
    */
-  async updateIntegrationConnection({
+  async updateNamespaceConnection({
     namespaceId,
     connectionId,
-    payload,
-  }: UpdateIntegrationConnectionRequest) {
+    id,
+    setup,
+  }: UpdateNamespaceConnectionRequest) {
     try {
-      const data =
-        await this._client.patch<UpdateIntegrationConnectionResponse>(
-          `/namespaces/${namespaceId}/connections/${connectionId}`,
-          {
-            body: JSON.stringify(payload),
-          },
-        );
+      const data = await this._client.patch<UpdateNamespaceConnectionResponse>(
+        `/namespaces/${namespaceId}/connections/${connectionId}`,
+        {
+          body: JSON.stringify({
+            id,
+            setup,
+          }),
+        },
+      );
 
-      return Promise.resolve(data.connection);
+      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -303,10 +364,10 @@ export class IntegrationClient extends APIResource {
   /**
    * Deletes an integration connection
    */
-  async deleteIntegrationConnection({
+  async deleteNamespaceConnection({
     namespaceId,
     connectionId,
-  }: DeleteIntegrationConnectionRequest) {
+  }: DeleteNamespaceConnectionRequest) {
     try {
       await this._client.delete(
         `/namespaces/${namespaceId}/connections/${connectionId}`,
@@ -321,13 +382,14 @@ export class IntegrationClient extends APIResource {
   /**
    * Tests an integration connection
    */
-  async testIntegrationConnection(props: TestIntegrationConnectionRequest) {
+  async testNamespaceConnection({
+    namespaceId,
+    connectionId,
+  }: TestNamespaceConnectionRequest) {
     try {
-      await this._client.post<TestIntegrationConnectionResponse>(
-        `/namespaces/${props.namespaceId}/connections/${props.connectionId}/test`,
+      await this._client.post<TestNamespaceConnectionResponse>(
+        `/namespaces/${namespaceId}/connections/${connectionId}/test`,
       );
-
-      return Promise.resolve(props.connectionId);
     } catch (error) {
       return Promise.reject(error);
     }

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import {
-  CreateIntegrationConnectionRequest,
+  CreateNamespaceConnectionRequest,
   InstillAPIClient,
   Nullable,
 } from "instill-sdk";
@@ -117,7 +117,7 @@ export function getAuthHandler({
             namespaceId &&
             profile
           ) {
-            let payload: Nullable<CreateIntegrationConnectionRequest> = null;
+            let payload: Nullable<CreateNamespaceConnectionRequest> = null;
 
             switch (account.provider) {
               case "google-drive": {
@@ -239,12 +239,8 @@ export function getAuthHandler({
               apiToken: instillAccessToken,
             });
 
-            console.log("payload", payload);
-
             if (payload) {
-              await client.core.integration.createIntegrationConnection(
-                payload,
-              );
+              await client.core.integration.createNamespaceConnection(payload);
 
               if (onCallback) {
                 onCallback();

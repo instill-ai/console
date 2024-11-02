@@ -1,9 +1,12 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
-export function useInfiniteIntegrationConnections({
+export function useInfiniteListNamespaceConnections({
   namespaceId,
   accessToken,
   enabled,
@@ -14,35 +17,32 @@ export function useInfiniteIntegrationConnections({
   enabled: boolean;
   filter: Nullable<string>;
 }) {
-  const queryKey = ["integration-connections", namespaceId, "infinite"];
-
-  if (filter) {
-    queryKey.push(filter);
-  }
-
   return useInfiniteQuery({
-    queryKey,
+    queryKey:
+      queryKeyStore.integration.getUseInfiniteListNamespaceConnectionsQueryKey({
+        namespaceId,
+        filter,
+      }),
     queryFn: async ({ pageParam }) => {
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        return Promise.reject(new Error("accessToken is required"));
       }
 
       if (!namespaceId) {
-        return Promise.reject(new Error("namespaceId not provided"));
+        return Promise.reject(new Error("namespaceId is required"));
       }
 
       const client = getInstillAPIClient({ accessToken });
 
-      const connections =
-        await client.core.integration.getIntegrationConnections({
+      const res =
+        await client.core.integration.listPaginatedNamespaceConnections({
           namespaceId,
           pageSize: 100,
           pageToken: pageParam ?? null,
-          filter,
-          enablePagination: true,
+          filter: filter ?? undefined,
         });
 
-      return Promise.resolve(connections);
+      return Promise.resolve(res);
     },
     initialPageParam: "",
     getNextPageParam: (lastPage) => {

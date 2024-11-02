@@ -127,4 +127,6 @@ export type RunSource = "RUN_SOURCE_CONSOLE" | "RUN_SOURCE_API";
 
 export type ResourceView = "VIEW_FULL" | "VIEW_BASIC";
 
+export const ResourceViewSchema = z.enum(["VIEW_FULL", "VIEW_BASIC"]);
+
 export type ResourceViewWithRecipeView = ResourceView | "VIEW_RECIPE";

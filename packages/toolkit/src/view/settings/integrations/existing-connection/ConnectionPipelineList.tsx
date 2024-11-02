@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import type { InstillStore } from "../../../../lib";
 import {
-  useInfiniteConnectionPipelines,
+  useInfiniteListNamespaceConnectionReferencedPipelines,
   useInstillStore,
   useShallow,
 } from "../../../../lib";
@@ -27,13 +27,14 @@ export const ConnectionPipelineList = ({
 }: ConnectionPipelineListProps) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const relatedPipelineIds = useInfiniteConnectionPipelines({
-    namespaceId,
-    connectionId,
-    accessToken,
-    enabled: enabledQuery,
-    filter: null,
-  });
+  const relatedPipelineIds =
+    useInfiniteListNamespaceConnectionReferencedPipelines({
+      namespaceId,
+      connectionId,
+      accessToken,
+      enabled: enabledQuery,
+      filter: null,
+    });
 
   const pipelineIds = React.useMemo(() => {
     const result: string[] = [];

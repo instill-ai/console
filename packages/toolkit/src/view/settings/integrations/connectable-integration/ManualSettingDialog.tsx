@@ -9,8 +9,8 @@ import {
   InstillStore,
   toastInstillError,
   useCreateIntegrationConnection,
+  useGetIntegration,
   useInstillStore,
-  useIntegration,
   useShallow,
 } from "../../../../lib";
 import { ConnectionForm } from "../ConnectionForm";
@@ -37,7 +37,7 @@ export const ManualSettingDialog = ({
 
   const createIntegrationConnection = useCreateIntegrationConnection();
 
-  const integrationFull = useIntegration({
+  const integrationFull = useGetIntegration({
     accessToken,
     enabled: enabledQuery && isOpen,
     view: "VIEW_FULL",
@@ -46,11 +46,11 @@ export const ManualSettingDialog = ({
 
   async function onSubmit({
     method,
-    payload,
+    setup,
     newId,
   }: {
     method: IntegrationMethod;
-    payload: Record<string, unknown>;
+    setup: Record<string, unknown>;
     newId?: string;
   }) {
     if (!namespaceId || !newId) {
@@ -64,7 +64,7 @@ export const ManualSettingDialog = ({
         payload: {
           method,
           id: newId,
-          setup: payload,
+          setup,
           integrationId: integration.id,
           namespaceId,
         },

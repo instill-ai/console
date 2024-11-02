@@ -35,7 +35,7 @@ import {
   InstillStore,
   Nullable,
   useInstillStore,
-  useIntegrationConnections,
+  useListNamespaceConnections,
   useNamespacePipeline,
   useNamespaceSecrets,
   useRouteInfo,
@@ -732,7 +732,7 @@ export const VscodeEditor = () => {
     shareCode: null,
   });
 
-  const integrationConnections = useIntegrationConnections({
+  const connections = useListNamespaceConnections({
     namespaceId: routeInfo.data.namespaceId,
     accessToken,
     enabled: enabledQuery && routeInfo.isSuccess,
@@ -972,7 +972,7 @@ export const VscodeEditor = () => {
         if (
           activeTyping.includes("connection") &&
           charactersBeforeCursor.includes("setup:") &&
-          integrationConnections.isSuccess &&
+          connections.isSuccess &&
           pipeline.isSuccess &&
           smallestComponentKeyLineNumberMap
         ) {
@@ -983,7 +983,7 @@ export const VscodeEditor = () => {
               smallestComponentKeyLineNumberMap,
               position,
               activeTyping,
-              integrationConnections: integrationConnections.data,
+              integrationConnections: connections.data,
             });
 
           return {
@@ -1094,8 +1094,8 @@ export const VscodeEditor = () => {
       namespaceSecrets.data,
       pipeline.isSuccess,
       pipeline.data,
-      integrationConnections.isSuccess,
-      integrationConnections.data,
+      connections.isSuccess,
+      connections.data,
     ],
   );
 

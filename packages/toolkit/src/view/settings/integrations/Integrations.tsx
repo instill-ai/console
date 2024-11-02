@@ -9,8 +9,8 @@ import {
   debounce,
   InstillStore,
   useAuthenticatedUser,
-  useInfiniteIntegrationConnections,
-  useInfiniteIntegrations,
+  useInfiniteListIntegrations,
+  useInfiniteListNamespaceConnections,
   useInstillStore,
   useShallow,
   useUserNamespaces,
@@ -71,13 +71,13 @@ export const Integrations = () => {
     [],
   );
 
-  const availableIntegrations = useInfiniteIntegrations({
+  const availableIntegrations = useInfiniteListIntegrations({
     accessToken,
     enabled: enabledQuery,
     filter: searchInputValue ? `qIntegration="${searchInputValue}"` : null,
   });
 
-  const integrationConnections = useInfiniteIntegrationConnections({
+  const connections = useInfiniteListNamespaceConnections({
     namespaceId: selectedNamespaceId,
     accessToken,
     enabled: enabledQuery && me.isSuccess,
@@ -95,20 +95,18 @@ export const Integrations = () => {
       }
     }
 
-    if (integrationConnections.isSuccess) {
+    if (connections.isSuccess) {
       if (
-        integrationConnections.data.pages[
-          integrationConnections.data.pages.length - 1
-        ]?.nextPageToken
+        connections.data.pages[connections.data.pages.length - 1]?.nextPageToken
       ) {
-        integrationConnections.fetchNextPage();
+        connections.fetchNextPage();
       }
     }
   }, [
     availableIntegrations.isSuccess,
     availableIntegrations.data,
-    integrationConnections.isSuccess,
-    integrationConnections.data,
+    connections.isSuccess,
+    connections.data,
   ]);
 
   const availableIntegrationList = React.useMemo(() => {
@@ -135,8 +133,8 @@ export const Integrations = () => {
       connections: IntegrationConnection[];
     }[] = [];
 
-    if (integrationConnections.isSuccess) {
-      integrationConnections.data?.pages.forEach((page) => {
+    if (connections.isSuccess) {
+      connections.data?.pages.forEach((page) => {
         page.connections.forEach((connection) => {
           if (!dic[connection.integrationId]) {
             dic[connection.integrationId] = [];
@@ -162,21 +160,17 @@ export const Integrations = () => {
     });
 
     return list;
-  }, [
-    availableIntegrationList,
-    integrationConnections.isSuccess,
-    integrationConnections.data,
-  ]);
+  }, [availableIntegrationList, connections.isSuccess, connections.data]);
 
   const isLoading =
     !availableIntegrations.isFetched ||
     availableIntegrations.isLoading ||
     availableIntegrations.isFetching ||
     availableIntegrations.isFetchingNextPage ||
-    !integrationConnections.isFetched ||
-    integrationConnections.isLoading ||
-    integrationConnections.isFetching ||
-    integrationConnections.isFetchingNextPage;
+    !connections.isFetched ||
+    connections.isLoading ||
+    connections.isFetching ||
+    connections.isFetchingNextPage;
 
   const IntegrationSkeleton = () => (
     <div className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-semantic-bg-line flex flex-row gap-4 items-center p-4 w-full">
