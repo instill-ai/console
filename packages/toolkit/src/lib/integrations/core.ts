@@ -47,8 +47,8 @@ export function getAuthHandler({
         id: "slack",
         name: "Slack",
         type: "oauth",
-        clientId: String(process.env.SLACK_CLIENT_ID),
-        clientSecret: String(process.env.SLACK_CLIENT_SECRET),
+        clientId: String(process.env.INTEGRATION_SLACK_CLIENT_ID),
+        clientSecret: String(process.env.INTEGRATION_SLACK_CLIENT_SECRET),
         authorization: {
           url: "https://slack.com/oauth/v2/authorize",
           params: {
@@ -92,8 +92,8 @@ export function getAuthHandler({
         },
       }),
       GitHubProvider({
-        clientId: String(process.env.GITHUB_CLIENT_ID),
-        clientSecret: String(process.env.GITHUB_CLIENT_SECRET),
+        clientId: String(process.env.INTEGRATION_GITHUB_CLIENT_ID),
+        clientSecret: String(process.env.INTEGRATION_GITHUB_CLIENT_SECRET),
         authorization: {
           url: "https://github.com/login/oauth/authorize",
           params: {
