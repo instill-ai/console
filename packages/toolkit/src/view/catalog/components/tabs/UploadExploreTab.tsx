@@ -27,16 +27,16 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useCreateNamespaceCatalogFile,
+  useGetNamespaceRemainingInstillCredit,
   useInstillStore,
   useListNamespaceCatalogFiles,
-  useNamespaceType,
   useProcessCatalogFiles,
   useQueryClient,
-  useRemainingCredit,
   useShallow,
   useUserNamespaces,
 } from "../../../../lib";
 import { useAmplitudeCtx } from "../../../../lib/amplitude";
+import { env } from "../../../../server";
 import { DragAndDropUpload } from "../DragAndDropUpload";
 import { FILE_ERROR_TIMEOUT } from "../lib/constant";
 import {
@@ -182,25 +182,13 @@ export const UploadExploreTab = ({
     shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
   );
 
-  const selectedNamespaceType = useNamespaceType({
-    namespace: navigationNamespaceAnchor,
-    accessToken,
-    enabled: Boolean(navigationNamespaceAnchor),
-  });
-
-  const remainingCredit = useRemainingCredit({
-    ownerName:
-      selectedNamespaceType.data === "NAMESPACE_USER"
-        ? `users/${navigationNamespaceAnchor}`
-        : selectedNamespaceType.data === "NAMESPACE_ORGANIZATION"
-          ? `organizations/${navigationNamespaceAnchor}`
-          : null,
+  const remainingCredit = useGetNamespaceRemainingInstillCredit({
+    namespaceId: navigationNamespaceAnchor,
     accessToken,
     enabled:
       enabledQuery &&
-      selectedNamespaceType.isSuccess &&
-      (selectedNamespaceType.data === "NAMESPACE_USER" ||
-        selectedNamespaceType.data === "NAMESPACE_ORGANIZATION"),
+      Boolean(navigationNamespaceAnchor) &&
+      env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
   });
 
   const handleFileUpload = async (file: File) => {
@@ -355,8 +343,8 @@ export const UploadExploreTab = ({
           .filter((file) => isFile(file) && !processedFiles.has(file.name)),
       );
       onTriggerInvalidateCredits({
-        ownerName: targetNamespace?.name ?? null,
-        namespaceNames: userNamespaces.data.map((namespace) => namespace.name),
+        namespaceId: targetNamespace?.id ?? null,
+        namespaceIds: userNamespaces.data.map((namespace) => namespace.id),
         queryClient,
       });
       onProcessFile();

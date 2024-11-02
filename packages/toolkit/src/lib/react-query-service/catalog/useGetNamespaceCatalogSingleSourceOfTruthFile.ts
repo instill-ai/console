@@ -4,6 +4,7 @@ import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
 export function useGetNamespaceCatalogSingleSourceOfTruthFile({
   fileUid,
@@ -19,7 +20,14 @@ export function useGetNamespaceCatalogSingleSourceOfTruthFile({
   namespaceId: string;
 }) {
   return useQuery({
-    queryKey: ["fileContent", fileUid],
+    queryKey:
+      queryKeyStore.catalog.getUseNamespaceCatalogSingleSourceOfTruthFileQueryKey(
+        {
+          fileUid,
+          catalogId,
+          namespaceId,
+        },
+      ),
     queryFn: async () => {
       if (!accessToken) {
         throw new Error("accessToken is required");

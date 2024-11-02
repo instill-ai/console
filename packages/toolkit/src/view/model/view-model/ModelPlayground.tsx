@@ -384,8 +384,8 @@ export const ModelPlayground = ({
       });
 
       onTriggerInvalidateCredits({
-        ownerName: targetNamespace.name ?? null,
-        namespaceNames: userNamespaces.data.map((namespace) => namespace.name),
+        namespaceId: targetNamespace.id ?? null,
+        namespaceIds: userNamespaces.data.map((namespace) => namespace.id),
         queryClient,
       });
 

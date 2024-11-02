@@ -1,22 +1,21 @@
 import { expect, test } from "vitest";
 
 import { InstillAPIClient } from "../../main";
-import { getRemainingInstillCreditResponseValidator } from "./types";
+import { getNamespaceRemainingInstillCreditResponseValidator } from "./types";
 
-// We have issue in our protobuf
-test.skip("getRemainingInstillCredit", async () => {
+test("getNamespaceRemainingInstillCredit", async () => {
   const client = new InstillAPIClient({
     baseURL: `http://localhost:8080/${process.env.INSTILL_API_VERSION}`,
     apiToken: "test",
     debug: true,
   });
 
-  const credit = await client.core.credit.getRemainingInstillCredit({
-    ownerName: "users/uid",
+  const credit = await client.core.credit.getNamespaceRemainingInstillCredit({
+    namespaceId: "uid",
   });
 
   const parsedData =
-    getRemainingInstillCreditResponseValidator.safeParse(credit);
+    getNamespaceRemainingInstillCreditResponseValidator.safeParse(credit);
 
   expect(parsedData.success).toBe(true);
 });

@@ -1,41 +1,39 @@
 "use client";
 
-import type { GetRemainingInstillCreditResponse, Nullable } from "instill-sdk";
+import type {
+  GetNamespaceRemainingInstillCreditResponse,
+  Nullable,
+} from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
 import { getInstillAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
 export type NamespaceRemainingInstillCredit = {
-  namespaceName: string;
-  remainingCredit: GetRemainingInstillCreditResponse;
+  namespaceId: string;
+  remainingCredit: GetNamespaceRemainingInstillCreditResponse;
 };
 
-export function getUseNamespacesRemainingInstillCreditQueryKey(
-  namespaceNames: string[],
-) {
-  return ["namespaces-instill-credit", namespaceNames.join(",")];
-}
-
-export function useNamespacesRemainingInstillCredit({
-  namespaceNames,
+export function useListNamespacesRemainingInstillCredit({
+  namespaceIds,
   accessToken,
   enabled,
 }: {
-  namespaceNames: string[];
+  namespaceIds: string[];
   accessToken: Nullable<string>;
   enabled: boolean;
 }) {
   let enabledQuery = false;
 
-  if (namespaceNames.length !== 0 && enabled) {
+  if (namespaceIds.length !== 0 && enabled) {
     enabledQuery = true;
   }
 
-  const queryKey =
-    getUseNamespacesRemainingInstillCreditQueryKey(namespaceNames);
-
   return useQuery({
-    queryKey,
+    queryKey:
+      queryKeyStore.mgmt.getUseListNamespacesRemainingInstillCreditQueryKey({
+        namespaceIds,
+      }),
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));
@@ -45,14 +43,15 @@ export function useNamespacesRemainingInstillCredit({
 
       const client = getInstillAPIClient({ accessToken });
 
-      for (const namespaceName of namespaceNames) {
+      for (const namespaceId of namespaceIds) {
         try {
           const remainingCredit =
-            await client.core.credit.getRemainingInstillCredit({
-              ownerName: namespaceName,
+            await client.core.credit.getNamespaceRemainingInstillCredit({
+              namespaceId,
             });
+
           remainingInstillCredits.push({
-            namespaceName,
+            namespaceId,
             remainingCredit,
           });
         } catch (error) {

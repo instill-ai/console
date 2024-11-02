@@ -1,17 +1,18 @@
-import { APIResource } from "../../main/resource";
-import {
-  GetRemainingInstillCreditRequest,
-  GetRemainingInstillCreditResponse,
+import type {
+  GetNamespaceRemainingInstillCreditRequest,
+  GetNamespaceRemainingInstillCreditResponse,
 } from "./types";
+import { APIResource } from "../../main/resource";
 
 export class CreditClient extends APIResource {
-  async getRemainingInstillCredit({
-    ownerName,
-  }: GetRemainingInstillCreditRequest) {
+  async getNamespaceRemainingInstillCredit({
+    namespaceId,
+  }: GetNamespaceRemainingInstillCreditRequest) {
     try {
-      const data = await this._client.get<GetRemainingInstillCreditResponse>(
-        `/${ownerName}/credit`,
-      );
+      const data =
+        await this._client.get<GetNamespaceRemainingInstillCreditResponse>(
+          `/namespaces/${namespaceId}/credit`,
+        );
 
       return Promise.resolve(data);
     } catch (error) {

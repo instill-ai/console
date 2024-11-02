@@ -21,9 +21,9 @@ import {
   useAuthenticatedUser,
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
+  useListNamespacesRemainingInstillCredit,
   useNamespaceModel,
   useNamespacePipeline,
-  useNamespacesRemainingInstillCredit,
   useRouteInfo,
   useShallow,
 } from "../../lib";
@@ -59,16 +59,16 @@ export const NamespaceSwitch = () => {
   const userNamespaces = useUserNamespaces();
   const pathname = usePathname();
 
-  const namespaceNames = React.useMemo(() => {
+  const namespaceIds = React.useMemo(() => {
     if (!userNamespaces.isSuccess) {
       return [];
     }
 
-    return userNamespaces.data.map((e) => e.name);
+    return userNamespaces.data.map((e) => e.id);
   }, [userNamespaces.isSuccess, userNamespaces.data]);
 
-  const namespacesRemainingCredit = useNamespacesRemainingInstillCredit({
-    namespaceNames,
+  const namespacesRemainingCredit = useListNamespacesRemainingInstillCredit({
+    namespaceIds,
     accessToken,
     enabled: enabledQuery && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
   });
@@ -111,7 +111,7 @@ export const NamespaceSwitch = () => {
         remainingCredit:
           env("NEXT_PUBLIC_APP_ENV") === "CLOUD"
             ? (namespacesRemainingCredit.data?.find(
-                (e) => e.namespaceName === namespace.name,
+                (e) => e.namespaceId === namespace.id,
               )?.remainingCredit.total ?? 0)
             : 0,
       };
