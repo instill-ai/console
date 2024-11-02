@@ -10,9 +10,9 @@ export * from "./use-namespace-type";
 export * from "./use-user";
 export * from "./use-api-tokens";
 
-export * from "./useAPIToken_m";
-export * from "./useCreateAPIToken_m";
-export * from "./useDeleteAPIToken_m";
+export * from "./useAPIToken";
+export * from "./useCreateAPIToken";
+export * from "./useDeleteAPIToken";
 export * from "./onTriggerInvalidateCredits";
 export * from "./useGetNamespaceRemainingInstillCredit";
 export * from "./useListNamespacesRemainingInstillCredit";
