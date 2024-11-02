@@ -3,47 +3,41 @@ import { QueryClient } from "@tanstack/react-query";
 import { env } from "../../../../server";
 import { getInstillAPIClient } from "../../../sdk-helper";
 import { Nullable } from "../../../type";
+import { queryKeyStore } from "../../queryKeyStore";
 
-export async function fetchApiTokens({
+export async function fetchAPITokens({
   accessToken,
 }: {
   accessToken: Nullable<string>;
 }) {
   if (!accessToken) {
-    return Promise.reject(new Error("accessToken not provided"));
+    return Promise.reject(new Error("accessToken is required"));
   }
 
   try {
     const client = getInstillAPIClient({ accessToken });
 
-    const apiTokens = await client.core.token.listAPITokens({
+    const res = await client.core.token.listAPITokens({
       pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
-      enablePagination: false,
     });
 
-    return Promise.resolve(apiTokens);
+    return Promise.resolve(res.tokens);
   } catch (error) {
     return Promise.reject(error);
   }
 }
 
-export function getUseApiTokensQueryKey() {
-  return ["api-tokens"];
-}
-
-export function prefetchApiTokens({
+export function prefetchAPITokens({
   accessToken,
   queryClient,
 }: {
   accessToken: Nullable<string>;
   queryClient: QueryClient;
 }) {
-  const queryKey = getUseApiTokensQueryKey();
-
   return queryClient.prefetchQuery({
-    queryKey,
+    queryKey: queryKeyStore.mgmt.getUseAPITokensQueryKey(),
     queryFn: async () => {
-      return await fetchApiTokens({
+      return await fetchAPITokens({
         accessToken,
       });
     },

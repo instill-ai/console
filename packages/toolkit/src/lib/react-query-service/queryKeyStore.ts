@@ -518,6 +518,12 @@ export const mgmtQueryKeyStore = {
   }) {
     return [namespaceId, "remaining-instill-credit"];
   },
+  getUseAPITokensQueryKey() {
+    return ["tokens"];
+  },
+  getUseAPITokenQueryKey({ tokenId }: { tokenId: string }) {
+    return ["tokens", tokenId];
+  },
 };
 
 export const catalogQueryKeyStore = {

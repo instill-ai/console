@@ -18,7 +18,7 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useDeleteApiToken,
+  useDeleteAPIToken,
   useInstillStore,
 } from "../../../lib";
 
@@ -26,7 +26,7 @@ const DeleteAPITokenSchema = z.object({
   code: z.string().min(1, "Code is required"),
 });
 
-export const DeleteAPITokenDialog = ({ tokenName }: { tokenName: string }) => {
+export const DeleteAPITokenDialog = ({ tokenId }: { tokenId: string }) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -41,7 +41,7 @@ export const DeleteAPITokenDialog = ({ tokenName }: { tokenName: string }) => {
 
   const { toast } = useToast();
 
-  const deleteAPIToken = useDeleteApiToken();
+  const deleteAPIToken = useDeleteAPIToken();
 
   const handleDeleteApiToken = async () => {
     if (!accessToken) return;
@@ -49,7 +49,7 @@ export const DeleteAPITokenDialog = ({ tokenName }: { tokenName: string }) => {
 
     try {
       await deleteAPIToken.mutateAsync({
-        tokenName,
+        tokenId,
         accessToken,
       });
       setIsLoading(false);
@@ -122,7 +122,7 @@ export const DeleteAPITokenDialog = ({ tokenName }: { tokenName: string }) => {
                           <Form.Label className="!block" htmlFor={field.name}>
                             Please type
                             <span className="mx-1 select-all font-bold">
-                              {tokenName}
+                              {tokenId}
                             </span>
                             to confirm.
                           </Form.Label>
@@ -157,7 +157,7 @@ export const DeleteAPITokenDialog = ({ tokenName }: { tokenName: string }) => {
                     className="w-full flex-1"
                     variant="primary"
                     size="lg"
-                    disabled={form.watch("code") === tokenName ? false : true}
+                    disabled={form.watch("code") === tokenId ? false : true}
                   >
                     {isLoading ? <LoadingSpin /> : "Delete Token"}
                   </Button>

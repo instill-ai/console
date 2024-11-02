@@ -1,36 +1,41 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ApiToken, CreateApiTokenRequest } from "instill-sdk";
+import { APIToken, CreateAPITokenRequest, Nullable } from "instill-sdk";
 
-import type { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
-export function useCreateApiToken() {
+export function useCreateAPIToken() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
       payload,
       accessToken,
     }: {
-      payload: CreateApiTokenRequest;
+      payload: CreateAPITokenRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        return Promise.reject(new Error("accessToken is required"));
       }
 
       const client = getInstillAPIClient({ accessToken });
 
-      const token = await client.core.token.createApiToken(payload);
+      const res = await client.core.token.createAPIToken(payload);
 
-      return Promise.resolve({ token });
+      return Promise.resolve(res.token);
     },
-    onSuccess: ({ token }) => {
-      queryClient.setQueryData<ApiToken[]>(["api-tokens"], (old) =>
-        old ? [...old, token] : [token],
+    onSuccess: (token) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeyStore.mgmt.getUseAPITokensQueryKey(),
+      });
+      queryClient.setQueryData<APIToken>(
+        queryKeyStore.mgmt.getUseAPITokenQueryKey({
+          tokenId: token.id,
+        }),
+        token,
       );
-      queryClient.setQueryData<ApiToken>(["api-tokens", token.name], token);
     },
   });
 }

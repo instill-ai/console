@@ -1,7 +1,4 @@
-export { useApiToken } from "./useApiToken";
 export { useAuthenticatedUserSubscription } from "./useAuthenticatedUserSubscription";
-export { useCreateApiToken } from "./useCreateApiToken";
-export { useDeleteApiToken } from "./useDeleteApiToken";
 export { useMgmtDefinition } from "./useMgmtDefinition";
 export { useNamespaceType } from "./use-namespace-type/client";
 
@@ -13,6 +10,9 @@ export * from "./use-namespace-type";
 export * from "./use-user";
 export * from "./use-api-tokens";
 
+export * from "./useAPIToken";
+export * from "./useCreateAPIToken";
+export * from "./useDeleteAPIToken";
 export * from "./onTriggerInvalidateCredits";
 export * from "./useGetNamespaceRemainingInstillCredit";
 export * from "./useListNamespacesRemainingInstillCredit";

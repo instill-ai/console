@@ -4,30 +4,31 @@ import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
 import { getInstillAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
-export function useApiToken({
-  tokenName,
+export function useAPIToken({
+  tokenId,
   accessToken,
   enabled,
 }: {
-  tokenName: string;
+  tokenId: string;
   accessToken: Nullable<string>;
   enabled: boolean;
 }) {
   return useQuery({
-    queryKey: ["api-tokens", tokenName],
+    queryKey: queryKeyStore.mgmt.getUseAPITokenQueryKey({ tokenId }),
     queryFn: async () => {
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        return Promise.reject(new Error("accessToken is required"));
       }
 
       const client = getInstillAPIClient({ accessToken });
 
-      const token = await client.core.token.getApiToken({
-        tokenName,
+      const res = await client.core.token.getAPIToken({
+        tokenId,
       });
 
-      return Promise.resolve(token);
+      return Promise.resolve(res.token);
     },
     enabled,
   });

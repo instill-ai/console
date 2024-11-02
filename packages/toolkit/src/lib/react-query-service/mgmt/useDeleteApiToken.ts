@@ -1,37 +1,39 @@
 "use client";
 
-import type { ApiToken, Nullable } from "instill-sdk";
+import type { Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { getInstillAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
-export function useDeleteApiToken() {
+export function useDeleteAPIToken() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({
-      tokenName,
+      tokenId,
       accessToken,
     }: {
-      tokenName: string;
+      tokenId: string;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        return Promise.reject(new Error("accessToken is required"));
       }
 
       const client = getInstillAPIClient({ accessToken });
 
-      await client.core.token.deleteApiToken({ tokenName });
+      await client.core.token.deleteAPIToken({ tokenId });
 
-      return Promise.resolve(tokenName);
+      return Promise.resolve(tokenId);
     },
-    onSuccess: (tokenName) => {
-      queryClient.setQueryData<ApiToken[]>(["api-tokens"], (old) =>
-        old ? old.filter((e) => e.name !== tokenName) : [],
-      );
+    onSuccess: (tokenId) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeyStore.mgmt.getUseAPITokensQueryKey(),
+      });
       queryClient.removeQueries({
-        queryKey: ["api-tokens", tokenName],
-        exact: true,
+        queryKey: queryKeyStore.mgmt.getUseAPITokenQueryKey({
+          tokenId,
+        }),
       });
     },
   });
