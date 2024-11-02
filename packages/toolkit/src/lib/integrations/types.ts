@@ -7,4 +7,4 @@ export type OnOAuthCallbackProps = {
 
 export type OnOAuthCallback = (props: OnOAuthCallbackProps) => void;
 
-export type IntegrationProvider = "google" | "slack" | "github";
+export type IntegrationProvider = "google-drive" | "slack" | "github";
