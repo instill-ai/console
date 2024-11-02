@@ -8,8 +8,8 @@ import {
   InstillStore,
   useAuthenticatedUser,
   useAuthenticatedUserSubscription,
+  useGetNamespaceRemainingInstillCredit,
   useInstillStore,
-  useRemainingCredit,
   useShallow,
 } from "../../lib";
 import { env } from "../../server";
@@ -32,8 +32,8 @@ export const RemainingCreditCTA = ({
     accessToken,
   });
 
-  const remainingCredit = useRemainingCredit({
-    ownerName: me.isSuccess ? me.data.name : null,
+  const remainingCredit = useGetNamespaceRemainingInstillCredit({
+    namespaceId: me.isSuccess ? me.data.id : null,
     accessToken,
     enabled:
       enabledQuery && me.isSuccess && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",

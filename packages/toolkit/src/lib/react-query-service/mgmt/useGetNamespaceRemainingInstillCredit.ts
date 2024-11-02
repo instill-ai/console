@@ -4,44 +4,42 @@ import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
 
 import { getInstillAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
-export function getUseRemainingCreditQueryKey(ownerName: Nullable<string>) {
-  return ["credit", ownerName];
-}
-
-export function useRemainingCredit({
-  ownerName,
+export function useGetNamespaceRemainingInstillCredit({
+  namespaceId,
   accessToken,
   enabled,
 }: {
-  ownerName: Nullable<string>;
+  namespaceId: Nullable<string>;
   accessToken: Nullable<string>;
   enabled: boolean;
 }) {
   let enabledQuery = false;
 
-  if (ownerName && enabled) {
+  if (namespaceId && enabled) {
     enabledQuery = true;
   }
 
-  const queryKey = getUseRemainingCreditQueryKey(ownerName);
-
   return useQuery({
-    queryKey,
+    queryKey:
+      queryKeyStore.mgmt.getUseGetNamespaceRemainingInstillCreditQueryKey({
+        namespaceId,
+      }),
     queryFn: async () => {
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        return Promise.reject(new Error("accessToken is required"));
       }
 
-      if (!ownerName) {
-        return Promise.reject(new Error("ownerName not provided"));
+      if (!namespaceId) {
+        return Promise.reject(new Error("namespaceId is required"));
       }
 
       const client = getInstillAPIClient({ accessToken });
 
       const remainingCredit =
-        await client.core.credit.getRemainingInstillCredit({
-          ownerName,
+        await client.core.credit.getNamespaceRemainingInstillCredit({
+          namespaceId,
         });
 
       return Promise.resolve(remainingCredit);

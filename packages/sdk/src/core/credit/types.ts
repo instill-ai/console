@@ -1,20 +1,14 @@
 import { z } from "zod";
 
-export type GetRemainingInstillCreditRequest = {
-  /**
-   * The user or organization to which the credit belongs.
-   * Format: {[users|organizations]}/{id}.
-   */
-  ownerName: string;
+export type GetNamespaceRemainingInstillCreditRequest = {
+  namespaceId: string;
 };
 
-export type GetRemainingInstillCreditResponse = {
-  perishable: number;
-  imperishable: number;
-  total: number;
-};
+export type GetNamespaceRemainingInstillCreditResponse = z.infer<
+  typeof getNamespaceRemainingInstillCreditResponseValidator
+>;
 
-export const getRemainingInstillCreditResponseValidator = z.object({
+export const getNamespaceRemainingInstillCreditResponseValidator = z.object({
   perishable: z.number(),
   imperishable: z.number(),
   total: z.number(),

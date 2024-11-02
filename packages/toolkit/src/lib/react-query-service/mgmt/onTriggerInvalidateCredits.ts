@@ -3,21 +3,25 @@
 import type { Nullable } from "instill-sdk";
 import { QueryClient } from "@tanstack/react-query";
 
-import { getUseNamespacesRemainingInstillCreditQueryKey } from ".";
-import { getUseRemainingCreditQueryKey } from "./useRemainingCredit";
+import { queryKeyStore } from "../queryKeyStore";
 
 export function onTriggerInvalidateCredits({
-  ownerName,
-  namespaceNames,
+  namespaceId,
+  namespaceIds,
   queryClient,
 }: {
-  ownerName: Nullable<string>;
-  namespaceNames: string[];
+  namespaceId: Nullable<string>;
+  namespaceIds: string[];
   queryClient: QueryClient;
 }) {
-  const ownerInstillCreditQueryKey = getUseRemainingCreditQueryKey(ownerName);
+  const ownerInstillCreditQueryKey =
+    queryKeyStore.mgmt.getUseGetNamespaceRemainingInstillCreditQueryKey({
+      namespaceId,
+    });
   const namespacesInstillCreditQueryKey =
-    getUseNamespacesRemainingInstillCreditQueryKey(namespaceNames);
+    queryKeyStore.mgmt.getUseListNamespacesRemainingInstillCreditQueryKey({
+      namespaceIds,
+    });
 
   queryClient.invalidateQueries({ queryKey: ownerInstillCreditQueryKey });
   queryClient.invalidateQueries({

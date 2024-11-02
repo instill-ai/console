@@ -504,6 +504,20 @@ export const mgmtQueryKeyStore = {
   getUseUserQueryKey({ userId }: { userId: Nullable<string> }) {
     return ["users", userId];
   },
+  getUseListNamespacesRemainingInstillCreditQueryKey({
+    namespaceIds,
+  }: {
+    namespaceIds: string[];
+  }) {
+    return [namespaceIds.join(","), "remaining-instill-credit"];
+  },
+  getUseGetNamespaceRemainingInstillCreditQueryKey({
+    namespaceId,
+  }: {
+    namespaceId: Nullable<string>;
+  }) {
+    return [namespaceId, "remaining-instill-credit"];
+  },
 };
 
 export const catalogQueryKeyStore = {
@@ -545,6 +559,17 @@ export const catalogQueryKeyStore = {
     }
 
     return queryKey;
+  },
+  getUseNamespaceCatalogSingleSourceOfTruthFileQueryKey({
+    namespaceId,
+    catalogId,
+    fileUid,
+  }: {
+    namespaceId: Nullable<string>;
+    catalogId: Nullable<string>;
+    fileUid: Nullable<string>;
+  }) {
+    return [namespaceId, "catalogs", catalogId, "files", fileUid, "source"];
   },
 };
 

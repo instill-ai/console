@@ -8,9 +8,9 @@ import { NamespaceAvatarWithFallback } from "../../../components";
 import {
   InstillStore,
   useAuthenticatedUser,
+  useGetNamespaceRemainingInstillCredit,
   useInstillStore,
   useOrganization,
-  useRemainingCredit,
   useRouteInfo,
   useShallow,
 } from "../../../lib";
@@ -43,10 +43,13 @@ export const RemainingCredit = () => {
       routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION",
   });
 
-  const remainingCredit = useRemainingCredit({
-    ownerName: routeInfo.data.namespaceName,
+  const remainingCredit = useGetNamespaceRemainingInstillCredit({
+    namespaceId: routeInfo.data.namespaceId,
     accessToken,
-    enabled: enabledQuery && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
+    enabled:
+      enabledQuery &&
+      routeInfo.isSuccess &&
+      env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
   });
 
   const avatar = React.useMemo(() => {

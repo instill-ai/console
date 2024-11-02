@@ -4,14 +4,7 @@ export { useCreateApiToken } from "./useCreateApiToken";
 export { useDeleteApiToken } from "./useDeleteApiToken";
 export { useMgmtDefinition } from "./useMgmtDefinition";
 export { useNamespaceType } from "./use-namespace-type/client";
-export {
-  useRemainingCredit,
-  getUseRemainingCreditQueryKey,
-} from "./useRemainingCredit";
-export {
-  useNamespacesRemainingInstillCredit,
-  getUseNamespacesRemainingInstillCreditQueryKey,
-} from "./useNamespacesRemainingInstillCredit";
+
 export { useUpdateAuthenticatedUser } from "./useUpdateAuthenticatedUser";
 export { useUsers } from "./useUsers";
 
@@ -21,3 +14,5 @@ export * from "./use-user";
 export * from "./use-api-tokens";
 
 export * from "./onTriggerInvalidateCredits";
+export * from "./useGetNamespaceRemainingInstillCredit";
+export * from "./useListNamespacesRemainingInstillCredit";
