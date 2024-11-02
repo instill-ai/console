@@ -55,6 +55,9 @@ export const ConnectableIntegration = ({
               case "slack":
                 provider = "slack";
                 break;
+              case "google-drive":
+                provider = "google-drive";
+                break;
               default:
                 break;
             }
@@ -67,15 +70,6 @@ export const ConnectableIntegration = ({
               });
             }
 
-            return;
-          }
-
-          if (integration.id === "slack" && namespaceId) {
-            initializeIntegrationConnection({
-              provider: "slack",
-              namespaceId,
-              integrationId: integration.id,
-            });
             return;
           }
 

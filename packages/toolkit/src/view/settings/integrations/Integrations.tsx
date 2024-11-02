@@ -7,7 +7,6 @@ import { Icons, Input, Nullable, Skeleton } from "@instill-ai/design-system";
 
 import {
   debounce,
-  initializeIntegrationConnection,
   InstillStore,
   useAuthenticatedUser,
   useInfiniteIntegrationConnections,
@@ -203,17 +202,6 @@ export const Integrations = () => {
           />
         </Input.Root>
       </div>
-      <button
-        onClick={() => {
-          initializeIntegrationConnection({
-            provider: "google-drive",
-            namespaceId: "admin",
-            integrationId: "google-drive",
-          });
-        }}
-      >
-        google
-      </button>
       <Section
         initialAccordionValue={null}
         title={`Connected${integrationConnectionList.length > 0 ? ` (${integrationConnectionList.length})` : ""}`}

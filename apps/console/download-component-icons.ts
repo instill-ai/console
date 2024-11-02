@@ -8,7 +8,7 @@ dotenv.config({ path: path.resolve(process.cwd(), ".env.local") });
 
 async function main() {
   try {
-    console.log("Downloading AI component icons...");
+    console.log("Downloading component icons...");
     await getComponentIcons("ai");
     await getComponentIcons("data");
     await getComponentIcons("application");
@@ -73,6 +73,7 @@ async function getComponentIcons(
     }).then((res) => res.json())) as GitHubContent[] | undefined;
 
     if (!componentFolders || !componentFolders.length) {
+      console.warn(`No component folders found: ${folderPath}`);
       return [];
     }
 
@@ -88,6 +89,9 @@ async function getComponentIcons(
       }).then((res) => res.json())) as GitHubContent[] | undefined;
 
       if (!componentFolderContent || !componentFolderContent.length) {
+        console.warn(
+          `No component folder content found: ${componentFolder.url}`,
+        );
         continue;
       }
 
