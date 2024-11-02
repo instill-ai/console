@@ -11,7 +11,7 @@ import {
   toastInstillError,
   useInstillStore,
   useShallow,
-  useUpdateIntegrationConnection,
+  useUpdateNamespaceConnection,
 } from "../../../../lib";
 import { ConnectionItem } from "./ConnectionItem";
 import { DeleteConnectionDialog } from "./DeleteConnectionDialog";
@@ -44,13 +44,13 @@ export const ExistingConnection = ({
     React.useState<Nullable<IntegrationConnection>>(null);
   const { toast } = useToast();
 
-  const updateIntegrationConnection = useUpdateIntegrationConnection();
+  const updateConnection = useUpdateNamespaceConnection();
 
   async function onSubmit({
-    payload,
+    setup,
     newId,
   }: {
-    payload: Record<string, unknown>;
+    setup: Record<string, unknown>;
     newId?: string;
   }) {
     if (!namespaceId || !editingConnection) {
@@ -59,25 +59,15 @@ export const ExistingConnection = ({
 
     setIsProcessing(true);
 
+    console.log(setup);
+
     try {
-      await updateIntegrationConnection.mutateAsync({
+      await updateConnection.mutateAsync({
         payload: {
           namespaceId,
           connectionId: editingConnection.id,
-          payload: newId
-            ? {
-                id: newId,
-                setup: {
-                  ...payload,
-                  id: undefined,
-                },
-              }
-            : {
-                setup: {
-                  ...payload,
-                  id: undefined,
-                },
-              },
+          id: newId ?? undefined,
+          setup,
         },
         accessToken,
       });

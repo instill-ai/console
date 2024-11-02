@@ -20,7 +20,7 @@ export const connectionFormID = "connection-form";
 
 export type ConnectionFormOnSubmit = (props: {
   method: IntegrationMethod;
-  payload: Record<string, unknown>;
+  setup: Record<string, unknown>;
   newId?: string;
 }) => Promise<void>;
 
@@ -110,7 +110,7 @@ export const ConnectionForm = ({
     onSubmit({
       method,
       newId: values?.id === id ? undefined : id,
-      payload: parsedData,
+      setup: parsedData,
     });
   };
 

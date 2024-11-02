@@ -573,6 +573,106 @@ export const catalogQueryKeyStore = {
   },
 };
 
+export const integrationQueryKeyStore = {
+  getUseInfiniteListNamespaceConnectionReferencedPipelinesQueryKey({
+    namespaceId,
+    connectionId,
+    filter,
+  }: {
+    namespaceId: Nullable<string>;
+    connectionId: Nullable<string>;
+    filter: Nullable<string>;
+  }) {
+    const queryKey = [
+      namespaceId,
+      "connections",
+      connectionId,
+      "referenced-pipelines",
+    ];
+
+    if (filter) {
+      queryKey.push(filter);
+    }
+
+    return queryKey;
+  },
+  getUseInfiniteListNamespaceConnectionsQueryKey({
+    namespaceId,
+    filter,
+  }: {
+    namespaceId: Nullable<string>;
+    filter: Nullable<string>;
+  }) {
+    const queryKey = [namespaceId, "connections", "infinite"];
+
+    if (filter) {
+      queryKey.push(filter);
+    }
+
+    return queryKey;
+  },
+  getUseInfiniteListIntegrationsQueryKey({
+    filter,
+  }: {
+    filter: Nullable<string>;
+  }) {
+    const queryKey = ["integrations", "infinite"];
+
+    if (filter) {
+      queryKey.push(filter);
+    }
+
+    return queryKey;
+  },
+  getUseGetIntegrationQueryKey({
+    integrationId,
+    view,
+  }: {
+    integrationId: string;
+    view: Nullable<ResourceView>;
+  }) {
+    const queryKey = ["integrations", integrationId];
+
+    if (view) {
+      queryKey.push(view);
+    }
+
+    return queryKey;
+  },
+  getUseListNamespaceConnectionsQueryKey({
+    namespaceId,
+    view,
+  }: {
+    namespaceId: Nullable<string>;
+    view: Nullable<ResourceView>;
+  }) {
+    const queryKey = [namespaceId, "connections"];
+
+    if (view) {
+      queryKey.push(view);
+    }
+
+    return queryKey;
+  },
+  getUseGetNamespaceConnectionQueryKey({
+    namespaceId,
+    connectionId,
+    view,
+  }: {
+    namespaceId: Nullable<string>;
+    connectionId: Nullable<string>;
+    view: Nullable<ResourceView>;
+  }) {
+    const queryKey = [namespaceId, "connections", connectionId];
+
+    if (view) {
+      queryKey.push(view);
+    }
+
+    return queryKey;
+  },
+};
+
 export const queryKeyStore = {
   model: modelQueryKeyStore,
   pipeline: pipelineQueryKeyStore,
@@ -580,4 +680,5 @@ export const queryKeyStore = {
   secret: secretQueryKeyStore,
   mgmt: mgmtQueryKeyStore,
   catalog: catalogQueryKeyStore,
+  integration: integrationQueryKeyStore,
 };

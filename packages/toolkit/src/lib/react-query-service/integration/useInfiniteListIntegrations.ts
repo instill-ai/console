@@ -1,9 +1,12 @@
+"use client";
+
+import type { Nullable } from "instill-sdk";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-import type { Nullable } from "../../type";
 import { getInstillAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
-export function useInfiniteIntegrations({
+export function useInfiniteListIntegrations({
   accessToken,
   enabled,
   filter,
@@ -12,29 +15,24 @@ export function useInfiniteIntegrations({
   enabled: boolean;
   filter: Nullable<string>;
 }) {
-  const queryKey = ["integrations", "infinite"];
-
-  if (filter) {
-    queryKey.push(filter);
-  }
-
   return useInfiniteQuery({
-    queryKey,
+    queryKey: queryKeyStore.integration.getUseInfiniteListIntegrationsQueryKey({
+      filter,
+    }),
     queryFn: async ({ pageParam }) => {
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        return Promise.reject(new Error("accessToken is required"));
       }
 
       const client = getInstillAPIClient({ accessToken });
 
-      const integrations = await client.core.integration.getIntegrations({
+      const res = await client.core.integration.listPaginatedIntegrations({
         pageSize: 100,
-        pageToken: pageParam ?? null,
-        filter,
-        enablePagination: true,
+        pageToken: pageParam ?? undefined,
+        filter: filter ?? undefined,
       });
 
-      return Promise.resolve(integrations);
+      return Promise.resolve(res);
     },
     initialPageParam: "",
     getNextPageParam: (lastPage) => {

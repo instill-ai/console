@@ -1,22 +1,20 @@
 "use client";
 
-import type { Nullable } from "instill-sdk";
+import type { Nullable, UpdateNamespaceConnectionRequest } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { getInstillAPIClient } from "../../sdk-helper";
 import { queryKeyStore } from "../queryKeyStore";
 
-export function useDeleteIntegrationConnection() {
+export function useUpdateNamespaceConnection() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
-      namespaceId,
-      connectionId,
+      payload,
       accessToken,
     }: {
-      namespaceId: string;
-      connectionId: string;
+      payload: UpdateNamespaceConnectionRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
@@ -25,19 +23,17 @@ export function useDeleteIntegrationConnection() {
 
       const client = getInstillAPIClient({ accessToken });
 
-      const res = await client.core.integration.deleteNamespaceConnection({
-        namespaceId,
-        connectionId,
-      });
+      const res =
+        await client.core.integration.updateNamespaceConnection(payload);
 
-      return Promise.resolve(res);
+      return Promise.resolve(res.connection);
     },
     onSuccess: (_, variables) => {
-      queryClient.removeQueries({
+      queryClient.invalidateQueries({
         queryKey:
           queryKeyStore.integration.getUseGetNamespaceConnectionQueryKey({
-            connectionId: variables.connectionId,
-            namespaceId: variables.namespaceId,
+            connectionId: variables.payload.connectionId,
+            namespaceId: variables.payload.namespaceId,
             view: null,
           }),
       });
@@ -45,7 +41,7 @@ export function useDeleteIntegrationConnection() {
         queryKey:
           queryKeyStore.integration.getUseInfiniteListNamespaceConnectionsQueryKey(
             {
-              namespaceId: variables.namespaceId,
+              namespaceId: variables.payload.namespaceId,
               filter: null,
             },
           ),

@@ -1,8 +1,8 @@
-import { CreateIntegrationConnectionRequest } from "instill-sdk";
+import type { CreateNamespaceConnectionRequest } from "instill-sdk";
 
 export type OnOAuthCallbackProps = {
   instillAccessToken?: string;
-  addConnectionPayload: CreateIntegrationConnectionRequest;
+  addConnectionPayload: CreateNamespaceConnectionRequest;
 };
 
 export type OnOAuthCallback = (props: OnOAuthCallbackProps) => void;

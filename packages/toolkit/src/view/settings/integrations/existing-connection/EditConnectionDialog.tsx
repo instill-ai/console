@@ -6,9 +6,9 @@ import { Button, Dialog } from "@instill-ai/design-system";
 
 import {
   InstillStore,
+  useGetIntegration,
+  useGetNamespaceConnection,
   useInstillStore,
-  useIntegration,
-  useIntegrationConnection,
   useShallow,
 } from "../../../../lib";
 import { ConnectionForm, ConnectionFormOnSubmit } from "../ConnectionForm";
@@ -35,18 +35,18 @@ export const EditConnectionDialog = ({
 }) => {
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const integrationFull = useIntegration({
+  const integrationFull = useGetIntegration({
     accessToken,
-    enabled: enabledQuery && !!editingConnection,
+    enabled: enabledQuery && Boolean(editingConnection),
     view: "VIEW_FULL",
     integrationId,
   });
 
-  const connectionFull = useIntegrationConnection({
+  const connectionFull = useGetNamespaceConnection({
     accessToken,
-    enabled: enabledQuery && !!editingConnection,
+    enabled: enabledQuery && Boolean(editingConnection),
     view: "VIEW_FULL",
-    connectionId: editingConnection?.id || null,
+    connectionId: editingConnection?.id ?? null,
     namespaceId,
   });
 

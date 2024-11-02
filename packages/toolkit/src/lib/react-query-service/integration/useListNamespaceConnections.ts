@@ -4,10 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Nullable, ResourceView } from "instill-sdk";
 
 import { getInstillAPIClient } from "../../sdk-helper";
+import { queryKeyStore } from "../queryKeyStore";
 
-export function useIntegrationConnections({
+export function useListNamespaceConnections({
   enabled,
-  view = "VIEW_BASIC",
+  view,
   namespaceId,
   filter,
   accessToken,
@@ -16,31 +17,32 @@ export function useIntegrationConnections({
   namespaceId: Nullable<string>;
   enabled: boolean;
   filter: Nullable<string>;
-  view: ResourceView;
+  view: Nullable<ResourceView>;
 }) {
   return useQuery({
-    queryKey: ["integration-connections", namespaceId, view],
+    queryKey: queryKeyStore.integration.getUseListNamespaceConnectionsQueryKey({
+      namespaceId,
+      view,
+    }),
     queryFn: async () => {
       if (!namespaceId) {
-        return Promise.reject(new Error("namespaceId not provided"));
+        return Promise.reject(new Error("namespaceId is required"));
       }
 
       if (!accessToken) {
-        return Promise.reject(new Error("accessToken not provided"));
+        return Promise.reject(new Error("accessToken is required"));
       }
 
       const client = getInstillAPIClient({
         accessToken: accessToken ?? undefined,
       });
 
-      const data = await client.core.integration.getIntegrationConnections({
+      const res = await client.core.integration.listNamespaceConnections({
         namespaceId,
-        filter,
-        enablePagination: false,
-        pageSize: 10,
+        filter: filter ?? undefined,
       });
 
-      return Promise.resolve(data);
+      return Promise.resolve(res.connections);
     },
     enabled: enabled,
   });
