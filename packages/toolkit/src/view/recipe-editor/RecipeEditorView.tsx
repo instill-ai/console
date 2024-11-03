@@ -221,7 +221,7 @@ export const RecipeEditorView = () => {
         <InOutputEmptyView reason="outputIsEmpty" />
       );
 
-    const pipelineIsNew = pipeline.data.metadata.pipelineIsNew ?? false;
+    const pipelineIsNew = pipeline.data.metadata?.pipelineIsNew ?? false;
 
     updateEditorMultiScreenModel((prev) => {
       const topRightViews: EditorView[] = [
