@@ -227,7 +227,7 @@ export const CatalogFilesTab = ({
             </div>
           </div>
         </div>
-        {selectedFile && (
+        {selectedFile ? (
           <FileDetailsOverlay
             fileUid={selectedFile.fileUid}
             catalogId={catalog.catalogId}
@@ -240,7 +240,7 @@ export const CatalogFilesTab = ({
             fileName={selectedFile.name}
             fileType={selectedFile.type}
           />
-        )}
+        ) : null}
       </div>
 
       {deletingFile ? (
