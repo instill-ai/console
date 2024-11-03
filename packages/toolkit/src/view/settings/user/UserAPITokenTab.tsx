@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { Setting } from "..";
-import { GeneralAppPageProp, useApiTokens } from "../../../lib";
+import { GeneralAppPageProp, useAPITokens } from "../../../lib";
 import { env } from "../../../server";
 import {
   APITokenTable,
@@ -16,7 +16,7 @@ export type UserAPITokenTabProps = GeneralAppPageProp;
 export const UserAPITokenTab = (props: UserAPITokenTabProps) => {
   const { accessToken, enableQuery, router } = props;
 
-  const apiTokens = useApiTokens({
+  const apiTokens = useAPITokens({
     accessToken,
     enabled: enableQuery,
   });

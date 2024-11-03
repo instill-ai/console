@@ -1,14 +1,16 @@
 import { getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
 import {
-  ApiToken,
-  CreateApiTokenRequest,
-  CreateApiTokenResponse,
-  DeleteApiTokenRequest,
-  GetApiTokenRequest,
-  GetApiTokenResponse,
-  ListApiTokenRequest,
-  ListApiTokensResponse,
+  APIToken,
+  CreateAPITokenRequest,
+  CreateAPITokenResponse,
+  DeleteAPITokenRequest,
+  GetAPITokenRequest,
+  GetAPITokenResponse,
+  ListAPITokenRequest,
+  ListAPITokensResponse,
+  ListPaginatedAPITokenRequest,
+  ListPaginatedAPITokensResponse,
 } from "./type";
 
 export class TokenClient extends APIResource {
@@ -19,51 +21,59 @@ export class TokenClient extends APIResource {
   /**
    * Returns a paginated list of the API tokens of the authenticated user.
    */
-  async listAPITokens(
-    props: ListApiTokenRequest & { enablePagination: true },
-  ): Promise<ListApiTokensResponse>;
-  async listAPITokens(
-    props: ListApiTokenRequest & { enablePagination: false },
-  ): Promise<ApiToken[]>;
-  async listAPITokens(
-    props: ListApiTokenRequest & { enablePagination: undefined },
-  ): Promise<ApiToken[]>;
-  async listAPITokens(
-    props: ListApiTokenRequest & { enablePagination?: boolean },
-  ): Promise<ListApiTokensResponse | ApiToken[]>;
-  async listAPITokens(
-    props: ListApiTokenRequest & { enablePagination?: boolean },
-  ) {
-    const { pageSize, pageToken, enablePagination } = props;
+  async listPaginatedAPITokens({
+    pageSize,
+    pageToken,
+  }: ListPaginatedAPITokenRequest) {
+    const queryString = getQueryString({
+      baseURL: "/tokens",
+      pageSize,
+      pageToken,
+    });
 
     try {
-      const tokens: ApiToken[] = [];
+      const data =
+        await this._client.get<ListPaginatedAPITokensResponse>(queryString);
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
 
-      const queryString = getQueryString({
-        baseURL: "/tokens",
-        pageSize,
-        pageToken,
-      });
+  /**
+   * Returns a list of the API tokens of the authenticated user.
+   */
+  async listAPITokens({ pageSize = 100, pageToken }: ListAPITokenRequest) {
+    const queryString = getQueryString({
+      baseURL: "/tokens",
+      pageSize,
+      pageToken,
+    });
 
-      const data = await this._client.get<ListApiTokensResponse>(queryString);
+    try {
+      const tokens: APIToken[] = [];
 
-      if (enablePagination) {
-        return Promise.resolve(data);
-      }
+      const res =
+        await this._client.get<ListPaginatedAPITokensResponse>(queryString);
 
-      tokens.push(...data.tokens);
+      tokens.push(...res.tokens);
 
-      if (data.nextPageToken) {
+      if (res.nextPageToken) {
         tokens.push(
-          ...(await this.listAPITokens({
-            pageSize,
-            pageToken: data.nextPageToken,
-            enablePagination: false,
-          })),
+          ...(
+            await this.listAPITokens({
+              pageSize,
+              pageToken: res.nextPageToken,
+            })
+          ).tokens,
         );
       }
 
-      return Promise.resolve(tokens);
+      const response: ListAPITokensResponse = {
+        tokens,
+      };
+
+      return Promise.resolve(response);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -72,10 +82,14 @@ export class TokenClient extends APIResource {
   /**
    * Returns the details of an API token.
    */
-  async getApiToken({ tokenName }: GetApiTokenRequest) {
+  async getAPIToken({ tokenId }: GetAPITokenRequest) {
+    const queryString = getQueryString({
+      baseURL: `/tokens/${tokenId}`,
+    });
+
     try {
-      const data = await this._client.get<GetApiTokenResponse>(`/${tokenName}`);
-      return Promise.resolve(data.token);
+      const data = await this._client.get<GetAPITokenResponse>(queryString);
+      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -88,15 +102,22 @@ export class TokenClient extends APIResource {
   /**
    * Creates an API token for the authenticated user.
    */
-  async createApiToken({ id, ttl }: CreateApiTokenRequest) {
+  async createAPIToken({ id, ttl }: CreateAPITokenRequest) {
+    const queryString = getQueryString({
+      baseURL: "/tokens",
+    });
+
     try {
-      const data = await this._client.post<CreateApiTokenResponse>("/tokens", {
-        body: JSON.stringify({
-          id,
-          ttl,
-        }),
-      });
-      return Promise.resolve(data.token);
+      const data = await this._client.post<CreateAPITokenResponse>(
+        queryString,
+        {
+          body: JSON.stringify({
+            id,
+            ttl,
+          }),
+        },
+      );
+      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -105,9 +126,13 @@ export class TokenClient extends APIResource {
   /**
    * Deletes an API token.
    */
-  async deleteApiToken({ tokenName }: DeleteApiTokenRequest) {
+  async deleteAPIToken({ tokenId }: DeleteAPITokenRequest) {
+    const queryString = getQueryString({
+      baseURL: `/tokens/${tokenId}`,
+    });
+
     try {
-      await this._client.delete(`/${tokenName}`);
+      await this._client.delete(queryString);
     } catch (error) {
       return Promise.reject(error);
     }

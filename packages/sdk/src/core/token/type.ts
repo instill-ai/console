@@ -1,4 +1,4 @@
-export type ApiToken = {
+export type APIToken = {
   name: string;
   uid: string;
   id: string;
@@ -16,42 +16,43 @@ export type ApiTokenState =
   | "STATE_ACTIVE"
   | "STATE_EXPIRED";
 
-export type ListApiTokenRequest = {
+export type ListPaginatedAPITokenRequest = {
   pageSize?: number;
   pageToken?: string;
 };
 
-export type ListApiTokensResponse = {
-  tokens: ApiToken[];
+export type ListPaginatedAPITokensResponse = {
+  tokens: APIToken[];
   nextPageToken: string;
   totalSize: string;
 };
 
-export type GetApiTokenRequest = {
-  /**
-   * The resource name of the token, which allows its access by ID.
-   * Format: tokens/{token.id}.
-   */
-  tokenName: string;
+export type ListAPITokenRequest = {
+  pageSize?: number;
+  pageToken?: string;
 };
 
-export type GetApiTokenResponse = {
-  token: ApiToken;
+export type ListAPITokensResponse = {
+  tokens: APIToken[];
 };
 
-export type CreateApiTokenRequest = {
+export type GetAPITokenRequest = {
+  tokenId: string;
+};
+
+export type GetAPITokenResponse = {
+  token: APIToken;
+};
+
+export type CreateAPITokenRequest = {
   id: string;
   ttl: number;
 };
 
-export type CreateApiTokenResponse = {
-  token: ApiToken;
+export type CreateAPITokenResponse = {
+  token: APIToken;
 };
 
-export type DeleteApiTokenRequest = {
-  /**
-   * The resource name of the token, which allows its access by ID.
-   * Format: tokens/{token.id}.
-   */
-  tokenName: string;
+export type DeleteAPITokenRequest = {
+  tokenId: string;
 };

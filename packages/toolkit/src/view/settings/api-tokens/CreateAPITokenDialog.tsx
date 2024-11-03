@@ -20,7 +20,7 @@ import {
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
-  useCreateApiToken,
+  useCreateAPIToken,
   useInstillStore,
 } from "../../../lib";
 import { validateInstillResourceID } from "../../../server";
@@ -54,7 +54,7 @@ export const CreateAPITokenDialog = () => {
     },
   });
 
-  const createAPIToken = useCreateApiToken();
+  const createAPIToken = useCreateAPIToken();
   const handleCreateAPIToken = async (
     data: z.infer<typeof CreateTokenSchema>,
   ) => {
