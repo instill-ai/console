@@ -5,7 +5,6 @@ export * from "./DuplicateFileNotification";
 export * from "./FileSizeNotification.js";
 export * from "./FileTooLongNotification";
 export * from "./IncorrectFormatFileNotification";
-export * from "./WarnFileUploadDialog";
 export * from "./InsufficientStorageNotification";
 export * from "./InsufficientStorageBanner";
 export * from "./UpgradePlanLink";
