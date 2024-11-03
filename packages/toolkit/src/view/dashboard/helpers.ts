@@ -41,9 +41,7 @@ export const columns = [
   },
 ];
 
-// Helper function to format dates in the correct RFC3339 format with milliseconds
 export const formatDateToRFC3339 = (date: Date) => {
-  // Ensure the date string always has milliseconds (.000) and Z suffix
   return date.toISOString().split(".")[0] + ".000Z";
 };
 
