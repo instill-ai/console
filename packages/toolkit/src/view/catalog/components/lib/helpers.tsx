@@ -298,7 +298,7 @@ export const validateFile = (
   planMaxFileSize: number,
   remainingStorageSpace: number,
   existingFiles: CatalogFile[],
-  isLocalEnvironment: boolean 
+  isLocalEnvironment: boolean,
 ) => {
   if (!isLocalEnvironment) {
     if (file.size > planMaxFileSize) {
@@ -320,7 +320,7 @@ export const validateFile = (
   }
 
   const isDuplicate = existingFiles.some(
-    (existingFile) => existingFile.name === file.name
+    (existingFile) => existingFile.name === file.name,
   );
   if (isDuplicate) {
     return { isValid: false, error: "DUPLICATE_FILE" };

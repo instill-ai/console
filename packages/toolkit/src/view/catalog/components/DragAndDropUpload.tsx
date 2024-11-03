@@ -86,7 +86,9 @@ export const DragAndDropUpload = ({
               CSV
             </div>
             {!isLocalEnvironment ? (
-              <div className="">Max {planMaxFileSize / (1024 * 1024)}MB each</div>
+              <div className="">
+                Max {planMaxFileSize / (1024 * 1024)}MB each
+              </div>
             ) : null}
           </div>
         </div>

@@ -24,9 +24,9 @@ import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";
 import { getPlanStorageLimit, shouldShowStorageWarning } from "../lib/helpers";
 import {
+  FileIsBeingDeletedNotification,
   InsufficientStorageBanner,
   UpgradePlanLink,
-  FileIsBeingDeletedNotification
 } from "../notifications";
 
 type CatalogFilesTabProps = {
@@ -79,7 +79,8 @@ export const CatalogFilesTab = ({
   });
 
   const [files, setFiles] = React.useState<File[]>([]);
-  const [deletingFile, setDeletingFile] = React.useState <Nullable<string>>(null);
+  const [deletingFile, setDeletingFile] =
+    React.useState<Nullable<string>>(null);
 
   React.useEffect(() => {
     if (filesData.isSuccess && filesData.data) {
@@ -138,9 +139,7 @@ export const CatalogFilesTab = ({
     try {
       const fileToDelete = files.find((file) => file.fileUid === fileUid);
       if (fileToDelete) {
-        setDeletingFile(
-           fileToDelete.name
-        );
+        setDeletingFile(fileToDelete.name);
 
         await deleteCatalogFile.mutateAsync({
           fileUid,
