@@ -342,6 +342,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               subscription={subscriptionInfo.subscription}
               namespaceType={namespaceType}
               isLocalEnvironment={isLocalEnvironment}
+              setHasUnsavedChanges={setHasUnsavedChanges}
             />
           ) : null}
           {activeTab === "upload" && selectedCatalog ? (

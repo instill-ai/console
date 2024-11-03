@@ -18,11 +18,14 @@ type FileTableRowProps = {
   index: number;
   handleFileClick: (file: File) => void;
   handleDelete: (fileUid: string) => void;
+  isDeleting: boolean; 
 };
+
 export const FileTableRow = ({
   item,
   handleFileClick,
   handleDelete,
+  isDeleting,
 }: FileTableRowProps) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
 
@@ -34,6 +37,11 @@ export const FileTableRow = ({
     setIsDeleteDialogOpen(false);
     handleDelete(item.fileUid);
   };
+
+  const cancelDelete = () => {
+    setIsDeleteDialogOpen(false);
+  };
+
   return (
     <>
       <div className="grid h-[72px] grid-cols-[minmax(0,3fr)_1fr_1fr_1fr_1fr_2fr_1fr] items-center bg-semantic-bg-primary border border-semantic-bg-line">
@@ -69,9 +77,14 @@ export const FileTableRow = ({
           <Button
             variant="tertiaryDanger"
             size="lg"
-            className="h-8"
+            className="h-8 flex items-center"
             onClick={handleDeleteClick}
+            disabled={isDeleting} // Disable the button during deletion
           >
+            {isDeleting ? (
+              <Icons.Trash01 className="animate-spin h-4 w-4 mr-2" />
+            ) : (
+              null)}
             Delete
           </Button>
         </div>
@@ -98,7 +111,7 @@ export const FileTableRow = ({
               <div className="flex w-full gap-2">
                 <Button
                   variant="secondaryGrey"
-                  onClick={() => setIsDeleteDialogOpen(false)}
+                  onClick={cancelDelete}
                   className="w-full"
                 >
                   Cancel

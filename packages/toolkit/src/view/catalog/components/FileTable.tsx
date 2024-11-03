@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { File, FileStatus } from "instill-sdk";
+import { File, Nullable } from "instill-sdk";
 
 import { FileTableHeader } from "./FileTableHeader";
 import { FileTableRow } from "./FileTableRow";
@@ -16,6 +16,7 @@ type FileTableProps = {
   requestSort: (key: keyof File) => void;
   handleDelete: (fileUid: string) => void;
   handleFileClick: (file: File) => void;
+  deletingFileUid: Nullable<string>; 
 };
 
 export const FileTable = ({
@@ -24,6 +25,7 @@ export const FileTable = ({
   requestSort,
   handleDelete,
   handleFileClick,
+  deletingFileUid,
 }: FileTableProps) => {
   const sortedData = React.useMemo(() => {
     if (!files) return [];
@@ -34,8 +36,8 @@ export const FileTable = ({
       let bValue: string | number | Date | boolean = b[sortConfig.key];
 
       if (sortConfig.key === "processStatus") {
-        aValue = getStatusSortValue(a.processStatus as FileStatus);
-        bValue = getStatusSortValue(b.processStatus as FileStatus);
+        aValue = getStatusSortValue(a.processStatus);
+        bValue = getStatusSortValue(b.processStatus);
       } else if (
         sortConfig.key === "size" ||
         sortConfig.key === "totalChunks" ||
@@ -68,6 +70,7 @@ export const FileTable = ({
           index={index}
           handleFileClick={handleFileClick}
           handleDelete={handleDelete}
+          isDeleting={item.fileUid === deletingFileUid} 
         />
       ))}
     </div>

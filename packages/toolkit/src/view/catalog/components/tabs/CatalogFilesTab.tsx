@@ -33,6 +33,7 @@ type CatalogFilesTabProps = {
   updateRemainingSpace: (fileSize: number, isAdding: boolean) => void;
   namespaceType: Nullable<"user" | "organization">;
   isLocalEnvironment: boolean;
+  setHasUnsavedChanges: (hasChanges: boolean) => void;
 };
 
 const selector = (store: InstillStore) => ({
@@ -49,6 +50,7 @@ export const CatalogFilesTab = ({
   updateRemainingSpace,
   namespaceType,
   isLocalEnvironment,
+  setHasUnsavedChanges,
 }: CatalogFilesTabProps) => {
   const [sortConfig, setSortConfig] = React.useState<{
     key: keyof File | "";
@@ -128,12 +130,17 @@ export const CatalogFilesTab = ({
     setIsFileDetailsOpen(false);
   };
 
-  const handleDelete = async (fileUid: string) => {
+  const [deletingFileUid, setDeletingFileUid] = React.useState<Nullable<string>>(null);
+
+  const handleDeleteFile = async (fileUid: string) => {
+    setDeletingFileUid(fileUid);
+    setHasUnsavedChanges(true);
+
     try {
       const fileToDelete = files.find((file) => file.fileUid === fileUid);
       if (fileToDelete) {
         await deleteCatalogFile.mutateAsync({
-          fileUid,
+          fileUid: fileToDelete.fileUid,
           accessToken,
           namespaceId: catalog.namespaceId,
           catalogId: catalog.catalogId,
@@ -143,6 +150,9 @@ export const CatalogFilesTab = ({
       await filesData.refetch();
     } catch (error) {
       console.error("Error deleting file:", error);
+    } finally {
+      setDeletingFileUid(null);
+      setHasUnsavedChanges(false);
     }
   };
 
@@ -205,8 +215,9 @@ export const CatalogFilesTab = ({
                 files={files}
                 sortConfig={sortConfig}
                 requestSort={requestSort}
-                handleDelete={handleDelete}
+                handleDelete={handleDeleteFile} 
                 handleFileClick={handleFileClick}
+                deletingFileUid={deletingFileUid}
               />
             ) : (
               <EmptyState onGoToUpload={onGoToUpload} />
