@@ -42,7 +42,6 @@ export const ModelsTriggerCountsLineChart = ({
   selectedTimeOption,
   modelTriggersSummary,
 }: ModelsTriggerCountsLineChartProps) => {
-  console.log(models)
   const chartRef = React.useRef<HTMLDivElement>(null);
   const { xAxis, yAxis } = React.useMemo(() =>
     generateModelTriggerChartRecordData(models, selectedTimeOption.value),

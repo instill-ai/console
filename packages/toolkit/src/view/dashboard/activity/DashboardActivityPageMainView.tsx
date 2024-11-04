@@ -192,7 +192,6 @@ export const DashboardActivityPageMainView = () => {
     }));
   }, [triggeredModels.data, triggeredModels.isSuccess]);
 
-  console.log(modelChartList)
 
   const triggeredPipelineList = React.useMemo<TriggeredPipeline[]>(() => {
     if (!triggeredPipelines.isSuccess) return [];
