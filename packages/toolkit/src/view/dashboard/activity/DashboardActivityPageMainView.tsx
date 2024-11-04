@@ -20,7 +20,7 @@ import {
   InstillStore,
   Nullable,
   useInstillStore,
-  useListModelTriggersChart,
+  useModelTriggerCount,
   useModelTriggerMetric,
   usePipelineTriggerComputationTimeCharts,
   usePipelineTriggerMetric,
@@ -67,7 +67,6 @@ export const DashboardActivityPageMainView = () => {
     );
   }, [userNamespaces.isSuccess, userNamespaces.data, selectedNamespace]);
 
-  // Compute queryString using useMemo and targetNamespace
   const queryString = React.useMemo<Nullable<string>>(() => {
     if (!targetNamespace) return null;
 
@@ -126,11 +125,10 @@ export const DashboardActivityPageMainView = () => {
     requesterId: selectedNamespace ?? undefined,
   });
 
-  const modelsChart = useListModelTriggersChart({
+  const modelsChart = useModelTriggerCount({
     enabled: enabledQuery && !!queryString,
     accessToken,
-    requesterId: selectedNamespace ?? null,
-    filter: queryString ? queryString : null,
+    requesterId: selectedNamespace ?? "",
   });
 
   const triggeredModels = useModelTriggerMetric({
@@ -186,7 +184,7 @@ export const DashboardActivityPageMainView = () => {
   }, [pipelinesChart.data, pipelinesChart.isSuccess]);
 
   const modelChartList = React.useMemo<ModelTriggerChartRecord[]>(() => {
-    if (!modelsChart.isSuccess) {
+    if (!modelsChart.isSuccess || !Array.isArray(modelsChart.data)) {
       return [];
     }
 
