@@ -40,6 +40,8 @@ export function useUpdateNamespacePipeline() {
         queryKeyStore.pipeline.getUseNamespacePipelineQueryKey({
           namespaceId,
           pipelineId,
+          view: null,
+          shareCode: null,
         }),
         pipeline,
       );

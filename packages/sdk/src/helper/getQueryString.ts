@@ -1,4 +1,4 @@
-import { Nullable } from "vitest";
+import { Nullable } from "../types";
 
 export const getQueryString = ({
   baseURL,
@@ -39,6 +39,8 @@ export const getQueryString = ({
 }) => {
   let url = baseURL;
 
+  console.log(fileUid);
+
   if (
     pageSize ||
     page ||
@@ -52,7 +54,9 @@ export const getQueryString = ({
     start ||
     stop ||
     aggregationWindow ||
-    showDeleted !== undefined
+    showDeleted !== undefined ||
+    fileUid ||
+    chunkUids
   ) {
     // Check if the baseURL already has a query string
     if (baseURL.includes("?")) {
@@ -110,7 +114,7 @@ export const getQueryString = ({
     url += `aggregationWindow=${aggregationWindow}&`;
   }
 
-  if (showDeleted !== undefined) {
+  if (showDeleted) {
     url += `showDeleted=${showDeleted}&`;
   }
 

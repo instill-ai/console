@@ -104,6 +104,7 @@ export class PipelineClient extends APIResource {
             visibility,
             orderBy,
             view,
+            showDeleted,
           })),
         );
       }

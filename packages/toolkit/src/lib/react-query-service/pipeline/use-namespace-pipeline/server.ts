@@ -69,6 +69,8 @@ export function prefetchNamespacePipeline({
     queryKey: queryKeyStore.pipeline.getUseNamespacePipelineQueryKey({
       namespaceId,
       pipelineId,
+      view,
+      shareCode,
     }),
     queryFn: async () => {
       return await fetchNamespacePipeline({
