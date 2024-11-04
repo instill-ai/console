@@ -40,7 +40,6 @@ export const ActivityTab = ({
   pipelineTriggersSummary,
   modelTriggersSummary,
 }: ActivityTabProps) => {
-  console.log(modelsChartList)
   return (
     <div className="w-full">
       <div className="flex flex-col sm:flex-row justify-end items-center sm:items-center mb-5">
