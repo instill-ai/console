@@ -50,8 +50,7 @@ export function useListPipelineRunsByRequester({
                 start,
                 enablePagination: true,
             });
-            // Need to fix the casting
-            return data as ListPipelineRunsByRequesterResponse;
+            return data;
         },
         enabled: enabled,
     });
