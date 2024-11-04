@@ -39,8 +39,6 @@ export const getQueryString = ({
 }) => {
   let url = baseURL;
 
-  console.log(fileUid);
-
   if (
     pageSize ||
     page ||
