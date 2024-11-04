@@ -10,8 +10,6 @@ const RedirectionDashboardPage = ({
   const { entity } = params;
 
   return redirect(`/${entity}/dashboard/activity`);
-
-  return null;
 };
 
 export default RedirectionDashboardPage;
