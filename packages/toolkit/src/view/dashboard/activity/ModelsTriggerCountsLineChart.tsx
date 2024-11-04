@@ -2,7 +2,11 @@
 
 import * as React from "react";
 import * as echarts from "echarts";
-import { ModelTriggerChartRecord, ModelTriggersStatusSummary, Nullable } from "instill-sdk";
+import {
+  ModelTriggerChartRecord,
+  ModelTriggersStatusSummary,
+  Nullable,
+} from "instill-sdk";
 
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
 

@@ -1,9 +1,9 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { Nullable } from "instill-sdk";
 
 import { getInstillAPIClient } from "../../sdk-helper";
-import { Nullable } from "instill-sdk";
 
 export function useCreditConsumptionChartRecords({
   enabled,
