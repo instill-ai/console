@@ -12,7 +12,7 @@ import { SelectOption } from "@instill-ai/design-system";
 
 import {
   DashboardAvailableTimeframe,
-  // getModelTriggersSummary,
+  getModelTriggersSummary,
   getPipelineTriggersSummary,
   getPreviousTimeframe,
   getTimeInRFC3339Format,
@@ -155,10 +155,10 @@ export const DashboardActivityPageMainView = () => {
     if (
       triggeredPipelines.isError ||
       pipelinesChart.isError ||
-      previousTriggeredPipelines.isError
-      // triggeredModels.isError ||
-      // modelsChart.isError ||
-      // previousTriggeredModels.isError
+      previousTriggeredPipelines.isError ||
+      triggeredModels.isError ||
+      modelsChart.isError ||
+      previousTriggeredModels.isError
     ) {
       router.push("/404");
     }
@@ -167,9 +167,9 @@ export const DashboardActivityPageMainView = () => {
     triggeredPipelines.isError,
     pipelinesChart.isError,
     previousTriggeredPipelines.isError,
-    // triggeredModels.isError,
-    // modelsChart.isError,
-    // previousTriggeredModels.isError,
+    triggeredModels.isError,
+    modelsChart.isError,
+    previousTriggeredModels.isError,
   ]);
 
   const pipelinesChartList = React.useMemo<PipelinesChart[]>(() => {
@@ -227,32 +227,12 @@ export const DashboardActivityPageMainView = () => {
       return null;
     }
 
-    const completedModel = modelsChart.data.modelTriggerCounts.find(
-      (r) => r.status === "STATUS_COMPLETED"
-    );
-
-    const erroredModel = modelsChart.data.modelTriggerCounts.find(
-      (r) => r.status === "STATUS_ERRORED"
-    );
-
-    return {
-      completed: {
-        statusType: "STATUS_COMPLETED" as const,
-        type: "model" as const,
-        amount: completedModel?.triggerCount || 0,
-        delta: 0
-      },
-      errored: {
-        statusType: "STATUS_ERRORED" as const,
-        type: "model" as const,
-        amount: erroredModel?.triggerCount || 0,
-        delta: 0
-      }
-    };
+    return getModelTriggersSummary(modelsChart.data.modelTriggerCounts);
   }, [
     previousTriggeredModels.isSuccess,
     modelsChart.isSuccess,
-    modelsChart.data?.modelTriggerCounts
+    modelsChart.data?.modelTriggerCounts,
+    selectedTimeOption // Add this to ensure refetch on date change
   ]);
 
   return (
