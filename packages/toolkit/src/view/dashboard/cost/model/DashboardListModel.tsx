@@ -220,7 +220,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
         },
       },
       {
-        accessorKey: "runnerId",
+        accessorKey: "requesterId",
         header: () => <div className="text-left">Credit Owner</div>,
         cell: ({ row }) => {
           return (
