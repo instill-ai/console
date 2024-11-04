@@ -5,7 +5,7 @@ import { ModelTriggerChartRecord, Nullable } from "instill-sdk";
 
 import { getInstillAPIClient } from "../../sdk-helper";
 
-export function useModelTriggerComputationTimeCharts({
+export function useListModelTriggersChart({
   enabled,
   accessToken,
   filter,
