@@ -84,6 +84,13 @@ export const CostTab = ({
     return { dates: [], values: [] };
   }, [creditConsumption.data, costView]);
 
+  const xAxisFormat: "date" | "hour" = React.useMemo(() => {
+    if (selectedTimeOption.value === "24h" || selectedTimeOption.value === "1d") {
+      return "hour";
+    }
+    return "date";
+  }, [selectedTimeOption.value]);
+
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
@@ -102,7 +109,8 @@ export const CostTab = ({
               {options.map((option) => (
                 <button
                   key={option.value}
-                  className={`flex items-center p-2 hover:bg-semantic-bg-line ${costView === option.value ? "bg-semantic-bg-line" : ""}`}
+                  className={`flex items-center p-2 hover:bg-semantic-bg-line ${costView === option.value ? "bg-semantic-bg-line" : ""
+                    }`}
                   onClick={() => {
                     router.push(
                       `/${selectedNamespace}/dashboard/cost/${option.value}`,
@@ -132,6 +140,7 @@ export const CostTab = ({
           values={chartData.values}
           isLoading={creditConsumption.isLoading}
           type={costView}
+          xAxisFormat={xAxisFormat}
         />
       </div>
       {costView === "model" ? (
