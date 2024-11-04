@@ -1,5 +1,5 @@
 import { ResourceView, RunSource, RunStatus } from "..";
-import { ModelTriggerTableRecord, Organization, User } from "../core";
+import { Organization, User } from "../core";
 import {
   GeneralRecord,
   InstillJSONSchema,
@@ -408,8 +408,6 @@ export type ModelTriggersStatusSummary = {
   completed: ModelTriggersStatusSummaryItem;
   errored: ModelTriggersStatusSummaryItem;
 };
-
-export type TriggeredModel = ModelTriggerTableRecord;
 
 export type ModelsWatchState = Record<string, Nullable<ModelWatchState>>;
 
