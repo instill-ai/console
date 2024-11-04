@@ -2,7 +2,6 @@
 
 import { useQuery } from "@tanstack/react-query";
 import {
-  ListModelTriggerMetricResponse,
   ModelTriggerTableRecord,
 } from "instill-sdk";
 import { Nullable } from "vitest";
@@ -33,7 +32,7 @@ export function useModelTriggerMetric({
         filter: filter ?? undefined,
         requesterId,
         enablePagination: false,
-      })) as ListModelTriggerMetricResponse | ModelTriggerTableRecord[];
+      }));
 
       if (Array.isArray(response)) {
         return response;
