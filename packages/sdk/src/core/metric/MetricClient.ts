@@ -3,9 +3,10 @@ import { APIResource } from "../../main/resource";
 import { PipelineRun } from "../../vdp";
 import {
   ListCreditConsumptionChartRecordResponse,
+  ListModelTriggerCountRequest,
+  ListModelTriggerCountResponse,
   ListModelTriggerMetricRequest,
   ListModelTriggerMetricResponse,
-  ListModelTriggersChartResponse,
   ListPipelineRunsByRequesterRequest,
   ListPipelineRunsByRequesterResponse,
   ListPipelineTriggerComputationTimeChartsRequest,
@@ -14,7 +15,6 @@ import {
   ListPipelineTriggerMetricResponse,
   ListPipelineTriggerRequest,
   ListPipelineTriggersResponse,
-  ModelTriggerChartRecord,
   PipelineTriggerChartRecord,
   PipelineTriggerRecord,
   PipelineTriggerTableRecord,
@@ -72,7 +72,7 @@ export class MetricClient extends APIResource {
 
     try {
       const queryString = getQueryString({
-        baseURL: `/model-runs:query-charts`,
+        baseURL: `/model-runs/query-charts`,
         pageSize,
         page,
         filter,
@@ -97,22 +97,27 @@ export class MetricClient extends APIResource {
     }
   }
 
-  async listModelTriggersChart(props: {
-    pageSize?: number;
-    pageToken?: string;
-    filter?: string;
-  }): Promise<ModelTriggerChartRecord[]> {
+  async listModelTriggerCount(
+    request: ListModelTriggerCountRequest,
+  ): Promise<ListModelTriggerCountResponse> {
+    const { requesterId, start, stop } = request;
+
+    if (!requesterId) {
+      return Promise.reject(new Error("requesterId is required"));
+    }
+
     try {
       const queryString = getQueryString({
-        baseURL: `/model-runs:query-charts`,
-        pageSize: props.pageSize,
-        pageToken: props.pageToken,
-        filter: props.filter,
+        baseURL: `/model-runs/count?`,
+        requesterId,
+        start: start ?? undefined,
+        stop: stop ?? undefined,
       });
 
-      const response =
-        await this._client.get<ListModelTriggersChartResponse>(queryString);
-      return Promise.resolve(response.modelTriggerChartRecords);
+      const data =
+        await this._client.get<ListModelTriggerCountResponse>(queryString);
+
+      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }
