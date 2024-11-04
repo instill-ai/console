@@ -54,6 +54,5 @@ export function useListPipelineRunsByRequester({
             return data as ListPipelineRunsByRequesterResponse;
         },
         enabled: enabled,
-        staleTime: 0, // Optional: Ensures data is considered stale immediately, forcing refetch
     });
 }
