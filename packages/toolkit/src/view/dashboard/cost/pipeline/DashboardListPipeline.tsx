@@ -64,7 +64,7 @@ export const DashboardListPipeline = ({
   );
 
   const pipelineRuns = useListPipelineRunsByRequester({
-    enabled: enabledQuery,
+    enabled: enabledQuery && !!targetNamespace,
     accessToken,
     pageSize: paginationState.pageSize,
     page: paginationState.pageIndex,
@@ -91,7 +91,7 @@ export const DashboardListPipeline = ({
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
               <Link
-                href={`${targetNamespace?.id}/pipelines/${row.getValue("pipelineId")}`}
+                href={`/${targetNamespace?.id}/pipelines/${row.getValue("pipelineId")}`}
                 className="text-semantic-accent-default hover:underline"
               >
                 {row.getValue("pipelineId")}
@@ -107,7 +107,7 @@ export const DashboardListPipeline = ({
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
               <Link
-                href={`${targetNamespace?.id}/pipelines/${row.getValue("pipelineId")}/runs/${row.getValue("pipelineRunUid")}`}
+                href={`/${targetNamespace?.id}/pipelines/${row.getValue("pipelineId")}/runs/${row.getValue("pipelineRunUid")}`}
                 className="text-semantic-accent-default hover:underline"
               >
                 {row.getValue("pipelineRunUid")}
@@ -197,8 +197,8 @@ export const DashboardListPipeline = ({
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
               <Link
                 target="_blank"
+                href={`/${targetNamespace?.id}/pipelines/${row.getValue("runner")}`}
                 className="text-semantic-accent-default hover:underline"
-                href={`${targetNamespace?.id}/pipelines/${row.getValue("runner")}`}
               >
                 {row.getValue("runner")}
               </Link>
@@ -231,9 +231,9 @@ export const DashboardListPipeline = ({
     ];
 
     return baseColumns;
-  }, [orderBy]);
+  }, [orderBy, targetNamespace?.id]);
 
-  if (pipelineRuns.isSuccess && !pipelineRuns.data.pipelineRuns.length) {
+  if (pipelineRuns.isSuccess && pipelineRuns.data.pipelineRuns.length === 0) {
     return (
       <div className="relative flex flex-col items-center">
         <img
