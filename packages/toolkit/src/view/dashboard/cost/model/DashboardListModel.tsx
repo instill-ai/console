@@ -106,7 +106,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
               <Link
                 href={`/${targetNamespace?.id}/models/${row.getValue("modelId")}/runs/${row.getValue("uid")}`}
-                className="text-semantic-accent-default hover:underline"
+                className="text-semantic-accent-default hover:underline truncate"
               >
                 {row.getValue("uid")}
               </Link>
@@ -141,9 +141,10 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
         accessorKey: "source",
         header: () => <div className="text-left">Source</div>,
         cell: ({ row }) => {
+          const sourceValue = row.getValue("source") as string;
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-              {row.getValue("source")}
+              {sourceValue === "RUN_SOURCE_CONSOLE" ? "Web" : sourceValue === "RUN_SOURCE_API" ? "API" : sourceValue}
             </div>
           );
         },
@@ -183,9 +184,9 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
             <div className="font-normal text-semantic-bg-secondary-alt-primary">
               {createTime
                 ? getHumanReadableStringFromTime(
-                    createTime as string,
-                    Date.now(),
-                  )
+                  createTime as string,
+                  Date.now(),
+                )
                 : "-"}
             </div>
           );

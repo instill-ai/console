@@ -107,8 +107,8 @@ export const DashboardListPipeline = ({
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
               <Link
-                href={`/${targetNamespace?.id}/pipelines/${row.getValue("pipelineId")}/runs/${row.getValue("pipelineRunUid")}`}
-                className="text-semantic-accent-default hover:underline"
+                href={`/${targetNamespace?.id}/pipelines/${row.getValue("pipelines")}/runs/${row.getValue("pipelineRunUid")}`}
+                className="text-semantic-accent-default hover:underline truncate"
               >
                 {row.getValue("pipelineRunUid")}
               </Link>
@@ -143,9 +143,10 @@ export const DashboardListPipeline = ({
         accessorKey: "source",
         header: () => <div className="text-left">Source</div>,
         cell: ({ row }) => {
+          const sourceValue = row.getValue("source") as string;
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-              {row.getValue("source")}
+              {sourceValue === "RUN_SOURCE_CONSOLE" ? "Web" : sourceValue === "RUN_SOURCE_API" ? "API" : sourceValue}
             </div>
           );
         },
