@@ -106,7 +106,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
               <Link
                 href={`/${targetNamespace?.id}/models/${row.getValue("modelId")}/runs/${row.getValue("uid")}`}
-                className="text-semantic-accent-default hover:underline truncate"
+                className="text-semantic-accent-default hover:underline max-w-3"
               >
                 {row.getValue("uid")}
               </Link>
@@ -200,7 +200,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
               <Link
                 target="_blank"
-                href={`/${targetNamespace?.id}/models/${row.getValue("runnerId")}`}
+                href={`/${row.getValue("runnerId")}`}
                 className="text-semantic-accent-default hover:underline"
               >
                 {row.getValue("runnerId")}
