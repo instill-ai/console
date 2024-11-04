@@ -12,11 +12,11 @@ import {
   useShallow,
 } from "../../../lib";
 import { FilterByDay } from "../FilterByDay";
+import { options } from "../lib";
 import { formatDateToRFC3339, getStartOfDay } from "../lib/helpers";
 import { CreditCostTrendChart } from "./CreditCostTrendChart";
 import { DashboardListModel } from "./model/DashboardListModel";
 import { DashboardListPipeline } from "./pipeline/DashboardListPipeline";
-import { options } from "../lib";
 
 type CostTabProps = {
   selectedTimeOption: SelectOption;
@@ -40,7 +40,6 @@ export const CostTab = ({
   const { accessToken, enabledQuery, selectedNamespace } = useInstillStore(
     useShallow(selector),
   );
-
 
   // Calculate start date based on selected time option
   const start = React.useMemo(() => {
@@ -84,7 +83,6 @@ export const CostTab = ({
     }
     return { dates: [], values: [] };
   }, [creditConsumption.data, costView]);
-
 
   return (
     <div>

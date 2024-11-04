@@ -183,9 +183,9 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
             <div className="font-normal text-semantic-bg-secondary-alt-primary">
               {createTime
                 ? getHumanReadableStringFromTime(
-                  createTime as string,
-                  Date.now(),
-                )
+                    createTime as string,
+                    Date.now(),
+                  )
                 : "-"}
             </div>
           );
@@ -235,8 +235,10 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
     return baseColumns;
   }, [orderBy, targetNamespace?.id]);
 
-
-  if (modelRuns.isSuccess && (!modelRuns.data?.runs || modelRuns.data.runs.length === 0)) {
+  if (
+    modelRuns.isSuccess &&
+    (!modelRuns.data?.runs || modelRuns.data.runs.length === 0)
+  ) {
     return (
       <div className="relative flex flex-col items-center">
         <img

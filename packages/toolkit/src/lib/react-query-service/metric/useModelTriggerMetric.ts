@@ -1,9 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import {
-  ModelTriggerTableRecord,
-} from "instill-sdk";
+import { ModelTriggerTableRecord } from "instill-sdk";
 import { Nullable } from "vitest";
 
 import { getInstillAPIClient } from "../../sdk-helper";
@@ -27,12 +25,12 @@ export function useModelTriggerMetric({
       }
 
       const client = getInstillAPIClient({ accessToken });
-      const response = (await client.core.metric.listModelTriggerMetric({
+      const response = await client.core.metric.listModelTriggerMetric({
         pageSize: undefined,
         filter: filter ?? undefined,
         requesterId,
         enablePagination: false,
-      }));
+      });
 
       if (Array.isArray(response)) {
         return response;

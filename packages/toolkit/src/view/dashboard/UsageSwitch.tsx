@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import cn from "clsx";
 import { Nullable } from "instill-sdk";
+
 import { ToggleGroup } from "@instill-ai/design-system";
 
 type UsageSwitchProps = {
@@ -55,7 +56,7 @@ export const UsageSwitch = ({
             "flex items-center justify-center px-4 py-2 rounded transition-all duration-200 ease-in-out product-body-text-3-semibold",
             option.value === activeTab
               ? "!bg-semantic-bg-primary shadow !text-semantic-fg-primary pointer-events-none"
-              : "bg-transparent text-semantic-fg-disabled hover:bg-semantic-bg-line"
+              : "bg-transparent text-semantic-fg-disabled hover:bg-semantic-bg-line",
           )}
         >
           {option.label}

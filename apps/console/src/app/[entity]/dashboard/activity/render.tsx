@@ -16,14 +16,12 @@ export default function ActivityRender() {
   useAppAccessToken();
   useAppTrackToken({ enabled: true });
 
-
   return (
     <PageBase>
       <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
         <PageBase.Content contentPadding="p-8">
-          <DashboardActivityPageMainView
-          />
+          <DashboardActivityPageMainView />
         </PageBase.Content>
       </PageBase.Container>
     </PageBase>
