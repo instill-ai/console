@@ -1,5 +1,7 @@
 import { AudioField } from "./AudioField";
 import { AudiosField } from "./AudiosField";
+import { DownloadableFileField } from "./DownloadableFileField";
+import { DownloadableFilesField } from "./DownloadableFilesField";
 import { ImageField } from "./ImageField";
 import { ImagesField } from "./ImagesField";
 import { NumberField } from "./NumberField";
@@ -24,4 +26,6 @@ export const ComponentOutputFields = {
   TextsField,
   VideoField,
   VideosField,
+  DownloadableFileField,
+  DownloadableFilesField,
 };

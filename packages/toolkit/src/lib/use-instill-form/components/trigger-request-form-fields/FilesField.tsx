@@ -26,7 +26,11 @@ export const FilesField = ({
   disabledFieldControl,
   disabledReferenceHint,
   instillFormat,
-}: StartOperatorFreeFormFieldBaseProps & AutoFormFieldBaseProps) => {
+  accept,
+}: StartOperatorFreeFormFieldBaseProps &
+  AutoFormFieldBaseProps & {
+    accept: string;
+  }) => {
   const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -56,7 +60,7 @@ export const FilesField = ({
                   keyPrefix={keyPrefix}
                   title="Upload files"
                   fieldKey={path}
-                  accept="*/*"
+                  accept={accept}
                   multiple={true}
                   onChange={async (e) => {
                     if (e.target.files && e.target.files.length > 0) {

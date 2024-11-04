@@ -213,7 +213,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   if (tree.instillFormat.includes("array:")) {
     const arrayType = tree.instillFormat.replaceAll("array:", "").split("/")[0];
 
-    if (arrayType?.includes("structured")) {
+    if (arrayType?.includes("structured") || arrayType === "json") {
       // Some time even the type hint is array:semi-structured, backend will still be possible
       // to return array of string or array of number. So we need to handle that case here
       if (Array.isArray(propertyValue) && propertyValue.length > 0) {
@@ -309,7 +309,16 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           />
         );
       }
-
+      case "document": {
+        return (
+          <ComponentOutputFields.DownloadableFilesField
+            mode={mode}
+            title={title}
+            files={propertyValue}
+            hideField={hideField}
+          />
+        );
+      }
       default: {
         return (
           <ComponentOutputFields.TextsField
@@ -328,7 +337,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   const singularType = tree.instillFormat.split("/")[0];
 
   // Process structured type like semi-structured, structured/detection_object...etc
-  if (singularType?.includes("structured")) {
+  if (singularType?.includes("structured") || singularType === "json") {
     return (
       <ComponentOutputFields.ObjectField
         mode={mode}
@@ -395,12 +404,23 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         />
       );
     }
-    case "semi-structured": {
+    case "semi-structured":
+    case "json": {
       return (
         <ComponentOutputFields.ObjectField
           mode={mode}
           title={title}
           object={propertyValue}
+          hideField={hideField}
+        />
+      );
+    }
+    case "document": {
+      return (
+        <ComponentOutputFields.DownloadableFileField
+          mode={mode}
+          title={title}
+          file={propertyValue}
           hideField={hideField}
         />
       );

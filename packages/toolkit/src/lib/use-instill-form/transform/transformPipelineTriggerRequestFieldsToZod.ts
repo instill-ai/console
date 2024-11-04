@@ -79,10 +79,12 @@ export function transformPipelineTriggerRequestFieldsToZod(
         break;
       case "file":
       case "*/*":
+      case "document":
         zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
         break;
       case "array:file":
       case "array:*/*":
+      case "array:document":
         zodSchema = zodSchema.setKey(
           key,
           z.array(z.string().nullable().optional()).nullable().optional(),
