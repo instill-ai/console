@@ -3,8 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import {
-  ModelTriggerChartRecord,
-  // ModelTriggerTableRecord,
+  ModelTriggerTableRecord,
   PipelinesChart,
   TriggeredPipeline,
 } from "instill-sdk";
@@ -131,12 +130,12 @@ export const DashboardActivityPageMainView = () => {
     requesterId: selectedNamespace ?? "",
   });
 
-  // const triggeredModels = useModelTriggerMetric({
-  //   enabled: enabledQuery && !!queryString,
-  //   accessToken,
-  //   requesterId: selectedNamespace ?? undefined,
-  //   filter: queryString ? queryString : null,
-  // });
+  const triggeredModels = useModelTriggerMetric({
+    enabled: enabledQuery && !!queryString,
+    accessToken,
+    requesterId: selectedNamespace ?? undefined,
+    filter: queryString ? queryString : null,
+  });
 
   const previousTriggeredPipelines = usePipelineTriggerMetric({
     enabled: enabledQuery && !!queryStringPrevious,
@@ -183,15 +182,17 @@ export const DashboardActivityPageMainView = () => {
     }));
   }, [pipelinesChart.data, pipelinesChart.isSuccess]);
 
-  const modelChartList = React.useMemo<ModelTriggerChartRecord[]>(() => {
-    if (!modelsChart.isSuccess || !Array.isArray(modelsChart.data)) {
+  const modelChartList = React.useMemo<ModelTriggerTableRecord[]>(() => {
+    if (!triggeredModels.isSuccess || !Array.isArray(triggeredModels.data)) {
       return [];
     }
 
-    return modelsChart.data.map((model) => ({
+    return triggeredModels.data.map((model) => ({
       ...model,
     }));
-  }, [modelsChart.data, modelsChart.isSuccess]);
+  }, [triggeredModels.data, triggeredModels.isSuccess]);
+
+  console.log(modelChartList)
 
   const triggeredPipelineList = React.useMemo<TriggeredPipeline[]>(() => {
     if (!triggeredPipelines.isSuccess) return [];

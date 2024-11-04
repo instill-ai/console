@@ -33,7 +33,7 @@ export function useModelTriggerMetric({
           enablePagination: false,
         });
 
-        return response.modelTriggerTableRecords || [];
+        return response.modelTriggerChartRecords || [];
       } catch (error) {
         throw new Error(`Failed to fetch model trigger metrics: ${error}`);
       }

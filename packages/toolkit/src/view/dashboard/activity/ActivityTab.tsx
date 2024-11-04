@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
-  ModelTriggerChartRecord,
   ModelTriggersStatusSummary,
+  ModelTriggerTableRecord,
   Nullable,
   PipelinesChart,
 } from "instill-sdk";
@@ -23,7 +23,7 @@ type ActivityTabProps = {
     refetch: () => void;
   };
   pipelinesChartList: PipelinesChart[];
-  modelsChartList: ModelTriggerChartRecord[];
+  modelsChartList: ModelTriggerTableRecord[];
   selectedTimeOption: SelectOption;
   setSelectedTimeOption: React.Dispatch<React.SetStateAction<SelectOption>>;
   pipelineTriggersSummary: Nullable<PipelineTriggersStatusSummary>;
@@ -40,6 +40,7 @@ export const ActivityTab = ({
   pipelineTriggersSummary,
   modelTriggersSummary,
 }: ActivityTabProps) => {
+  console.log(modelsChartList)
   return (
     <div className="w-full">
       <div className="flex flex-col sm:flex-row justify-end items-center sm:items-center mb-5">
