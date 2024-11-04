@@ -1,6 +1,7 @@
 import type { PipelineVariableFieldMap } from "instill-sdk";
 import { UseFormReturn } from "react-hook-form";
 
+import { DocumentInputAcceptMimeTypes } from "../../../constant/pipeline";
 import { Nullable } from "../../type";
 import { TriggerRequestFormFields } from "../components";
 import { FieldMode, StartOperatorFreeFormFieldItem } from "../types";
@@ -374,6 +375,7 @@ export function pickPipelineTriggerRequestFormFields({
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
               instillFormat={value.instillFormat}
+              accept="*/*"
             />
           ),
         });
@@ -398,6 +400,55 @@ export function pickPipelineTriggerRequestFormFields({
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
               instillFormat={value.instillFormat}
+              accept="*/*"
+            />
+          ),
+        });
+        break;
+      case "document":
+        items.push({
+          key,
+          instillUIOrder: value.instillUiOrder,
+          component: (
+            <TriggerRequestFormFields.FileField
+              mode={mode}
+              key={key}
+              form={form}
+              path={key}
+              title={value.title}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
+              description={value.description ?? null}
+              disabled={disabledFields}
+              keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
+              accept={DocumentInputAcceptMimeTypes.join(",")}
+            />
+          ),
+        });
+        break;
+      case "array:document":
+        items.push({
+          key,
+          instillUIOrder: value.instillUiOrder,
+          component: (
+            <TriggerRequestFormFields.FilesField
+              mode={mode}
+              key={key}
+              form={form}
+              path={key}
+              title={value.title}
+              onDeleteField={onDeleteField}
+              onEditField={onEditField}
+              description={value.description ?? null}
+              disabled={disabledFields}
+              keyPrefix={keyPrefix}
+              disabledFieldControl={disabledFieldControls}
+              disabledReferenceHint={disabledReferenceHint}
+              instillFormat={value.instillFormat}
+              accept={DocumentInputAcceptMimeTypes.join(",")}
             />
           ),
         });

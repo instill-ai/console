@@ -84,6 +84,8 @@ const availableInstillFormats = [
   "array:file",
   "json",
   "array:json",
+  "document",
+  "array:document",
 ];
 
 const componentTopLevelKeys = ["type", "input", "setup", "condition", "task"];

@@ -183,3 +183,18 @@ version: v1beta
 # Click "⌘O" to add a new component
 # component:
 `;
+
+export const DocumentInputAcceptMimeTypes = [
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "text/html",
+  "text/plain",
+  "text",
+  "text/markdown",
+  "text/csv",
+  "application/pdf",
+];
