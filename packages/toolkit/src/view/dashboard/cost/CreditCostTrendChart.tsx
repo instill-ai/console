@@ -24,6 +24,7 @@ type CreditCostTrendChartProps = {
   values: number[];
   isLoading: boolean;
   type: "model" | "pipeline";
+  xAxisFormat: "date" | "hour";
 };
 
 export const CreditCostTrendChart = ({
@@ -31,6 +32,7 @@ export const CreditCostTrendChart = ({
   values,
   isLoading,
   type,
+  xAxisFormat,
 }: CreditCostTrendChartProps) => {
   const chartColor = type === "model" ? "#2EC291" : "#3B7AF7";
 
@@ -43,9 +45,13 @@ export const CreditCostTrendChart = ({
 
   const formatXAxis = (value: string) => {
     const date = new Date(value);
-    return `${date.getDate()} ${date.toLocaleString("default", {
-      month: "short",
-    })}`;
+    if (xAxisFormat === "hour") {
+      return `${date.getHours()}:00`;
+    } else {
+      return `${date.getDate()} ${date.toLocaleString("default", {
+        month: "short",
+      })}`;
+    }
   };
 
   const CustomTooltip = ({
@@ -56,9 +62,12 @@ export const CreditCostTrendChart = ({
     if (!active || !payload || !payload.length) return null;
 
     const date = new Date(label);
-    const formattedDate = `${date.getDate()} ${date.toLocaleString("default", {
-      month: "short",
-    })}, ${date.getFullYear()} - ${date.toTimeString().split(" ")[0]}`;
+    const formattedDate =
+      xAxisFormat === "hour"
+        ? `${date.getHours()}:00 - ${date.getFullYear()}`
+        : `${date.getDate()} ${date.toLocaleString("default", {
+          month: "short",
+        })}, ${date.getFullYear()} - ${date.toTimeString().split(" ")[0]}`;
 
     return (
       <div className="rounded-sm bg-white p-3 shadow">
