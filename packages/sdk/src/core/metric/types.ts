@@ -143,9 +143,6 @@ export type ModelTriggerChartRecord = {
   computeTimeDuration?: number[];
   watchState?: ModelReleaseStage;
 };
-
-export type ModelTrigger = ModelTriggerChartRecord;
-
 export type ListModelTriggersChartResponse = {
   modelTriggerChartRecords: ModelTriggerChartRecord[];
 };
