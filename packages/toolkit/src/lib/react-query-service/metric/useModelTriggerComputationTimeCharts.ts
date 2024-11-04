@@ -1,8 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { ModelTriggerChartRecord } from "instill-sdk";
-import { Nullable } from "vitest";
+import { ModelTriggerChartRecord, Nullable } from "instill-sdk";
 
 import { getInstillAPIClient } from "../../sdk-helper";
 

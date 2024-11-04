@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { getInstillAPIClient } from "../../sdk-helper";
-import { Nullable } from "../../type";
+import { Nullable } from "instill-sdk";
 
 export function useCreditConsumptionChartRecords({
   enabled,

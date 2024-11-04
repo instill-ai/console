@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import cn from "clsx";
 import { Nullable } from "instill-sdk";
+import { ToggleGroup } from "@instill-ai/design-system";
 
 type UsageSwitchProps = {
   activeTab: "activity" | "cost";
@@ -23,7 +24,8 @@ export const UsageSwitch = ({
     { value: "cost", label: "Cost" },
   ];
 
-  const handleTabChange = (tab: "activity" | "cost") => {
+  const handleTabChange = (value: string) => {
+    const tab = value as "activity" | "cost";
     setActiveTab(tab);
 
     if (tab === "activity") {
@@ -39,21 +41,26 @@ export const UsageSwitch = ({
   };
 
   return (
-    <div className="flex space-x-1 mb-2 bg-semantic-bg-secondary p-1 rounded-sm border-semantic-bg-line w-fit border">
+    <ToggleGroup.Root
+      type="single"
+      value={activeTab}
+      onValueChange={handleTabChange}
+      className="flex space-x-1 mb-2 bg-semantic-bg-secondary p-1 rounded-sm border-semantic-bg-line w-fit border"
+    >
       {options.map((option) => (
-        <button
+        <ToggleGroup.Item
           key={option.value}
+          value={option.value}
           className={cn(
             "flex items-center justify-center px-4 py-2 rounded transition-all duration-200 ease-in-out product-body-text-3-semibold",
             option.value === activeTab
-              ? "bg-semantic-bg-primary shadow text-semantic-fg-primary"
-              : "bg-transparent text-semantic-fg-disabled hover:bg-semantic-bg-line",
+              ? "!bg-semantic-bg-primary shadow !text-semantic-fg-primary pointer-events-none"
+              : "bg-transparent text-semantic-fg-disabled hover:bg-semantic-bg-line"
           )}
-          onClick={() => handleTabChange(option.value as "activity" | "cost")}
         >
           {option.label}
-        </button>
+        </ToggleGroup.Item>
       ))}
-    </div>
+    </ToggleGroup.Root>
   );
 };
