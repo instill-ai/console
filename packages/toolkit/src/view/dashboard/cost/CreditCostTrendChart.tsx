@@ -66,8 +66,8 @@ export const CreditCostTrendChart = ({
       xAxisFormat === "hour"
         ? `${date.getHours()}:00 - ${date.getFullYear()}`
         : `${date.getDate()} ${date.toLocaleString("default", {
-          month: "short",
-        })}, ${date.getFullYear()} - ${date.toTimeString().split(" ")[0]}`;
+            month: "short",
+          })}, ${date.getFullYear()} - ${date.toTimeString().split(" ")[0]}`;
 
     return (
       <div className="rounded-sm bg-white p-3 shadow">

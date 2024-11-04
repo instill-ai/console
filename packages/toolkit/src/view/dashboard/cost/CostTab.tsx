@@ -85,7 +85,10 @@ export const CostTab = ({
   }, [creditConsumption.data, costView]);
 
   const xAxisFormat: "date" | "hour" = React.useMemo(() => {
-    if (selectedTimeOption.value === "24h" || selectedTimeOption.value === "1d") {
+    if (
+      selectedTimeOption.value === "24h" ||
+      selectedTimeOption.value === "1d"
+    ) {
       return "hour";
     }
     return "date";
@@ -109,8 +112,9 @@ export const CostTab = ({
               {options.map((option) => (
                 <button
                   key={option.value}
-                  className={`flex items-center p-2 hover:bg-semantic-bg-line ${costView === option.value ? "bg-semantic-bg-line" : ""
-                    }`}
+                  className={`flex items-center p-2 hover:bg-semantic-bg-line ${
+                    costView === option.value ? "bg-semantic-bg-line" : ""
+                  }`}
                   onClick={() => {
                     router.push(
                       `/${selectedNamespace}/dashboard/cost/${option.value}`,
