@@ -197,6 +197,7 @@ export const UploadExploreTab = ({
       planMaxFileSize,
       remainingStorageSpace,
       namespaceCatalogFiles.data || [],
+      isLocalEnvironment,
     );
 
     if (!validationResult.isValid) {
@@ -417,6 +418,7 @@ export const UploadExploreTab = ({
                   <DragAndDropUpload
                     onFileUpload={handleFileUpload}
                     planMaxFileSize={planMaxFileSize}
+                    isLocalEnvironment={isLocalEnvironment}
                   />
                 </Form.Control>
                 <Form.Message />

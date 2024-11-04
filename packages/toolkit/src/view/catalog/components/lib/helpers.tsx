@@ -298,13 +298,16 @@ export const validateFile = (
   planMaxFileSize: number,
   remainingStorageSpace: number,
   existingFiles: CatalogFile[],
+  isLocalEnvironment: boolean,
 ) => {
-  if (file.size > planMaxFileSize) {
-    return { isValid: false, error: "FILE_TOO_LARGE" };
-  }
+  if (!isLocalEnvironment) {
+    if (file.size > planMaxFileSize) {
+      return { isValid: false, error: "FILE_TOO_LARGE" };
+    }
 
-  if (file.size > remainingStorageSpace) {
-    return { isValid: false, error: "INSUFFICIENT_STORAGE" };
+    if (file.size > remainingStorageSpace) {
+      return { isValid: false, error: "INSUFFICIENT_STORAGE" };
+    }
   }
 
   const fileType = getFileType(file);

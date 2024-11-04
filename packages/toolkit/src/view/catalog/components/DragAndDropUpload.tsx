@@ -7,11 +7,13 @@ import { cn, Icons, Input } from "@instill-ai/design-system";
 type DragAndDropUploadProps = {
   onFileUpload: (file: File) => Promise<void>;
   planMaxFileSize: number;
+  isLocalEnvironment: boolean;
 };
 
 export const DragAndDropUpload = ({
   onFileUpload,
   planMaxFileSize,
+  isLocalEnvironment,
 }: DragAndDropUploadProps) => {
   const [isDragging, setIsDragging] = React.useState(false);
 
@@ -83,7 +85,11 @@ export const DragAndDropUpload = ({
               Support TXT, MARKDOWN, PDF, DOCX, DOC, PPTX, PPT, HTML, XLSX, XLS,
               CSV
             </div>
-            <div className="">Max {planMaxFileSize / (1024 * 1024)}MB each</div>
+            {!isLocalEnvironment ? (
+              <div className="">
+                Max {planMaxFileSize / (1024 * 1024)}MB each
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
