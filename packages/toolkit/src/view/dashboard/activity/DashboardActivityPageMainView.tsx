@@ -4,7 +4,7 @@ import * as React from "react";
 import {
   ModelTriggerChartRecord,
   PipelinesChart,
-  TriggeredModel,
+  ModelTriggerTableRecord,
   TriggeredPipeline,
 } from "instill-sdk";
 import { SelectOption } from "@instill-ai/design-system";
@@ -125,7 +125,7 @@ export const DashboardActivityPageMainView = () => {
   const modelsChart = useModelTriggerComputationTimeCharts({
     enabled: enabledQuery && !!queryString,
     accessToken,
-    requesterId: selectedNamespace ?? undefined,
+    requesterId: selectedNamespace ?? null,
     filter: queryString ? queryString : null,
   });
 
@@ -196,7 +196,7 @@ export const DashboardActivityPageMainView = () => {
     return triggeredPipelines.data;
   }, [triggeredPipelines.data, triggeredPipelines.isSuccess]);
 
-  const triggeredModelList = React.useMemo<TriggeredModel[]>(() => {
+  const triggeredModelList = React.useMemo<ModelTriggerTableRecord[]>(() => {
     if (!triggeredModels.isSuccess) return [];
     return triggeredModels.data;
   }, [triggeredModels.data, triggeredModels.isSuccess]);
