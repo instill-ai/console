@@ -15,7 +15,6 @@ import { useAppTrackToken } from "~/lib/useAppTrackToken";
 export default function CostPipelineRender() {
   useAppAccessToken();
   useAppTrackToken({ enabled: true });
-  useAppTrackToken({ enabled: true });
 
   return (
     <PageBase>
