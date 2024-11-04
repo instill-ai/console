@@ -218,12 +218,12 @@ export const DashboardListPipeline = ({
         },
       },
       {
-        accessorKey: "runnerId",
+        accessorKey: "requesterId",
         header: () => <div className="text-left">Credit Owner</div>,
         cell: ({ row }) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-              {row.getValue("runnerId")}
+              {row.getValue("requesterId")}
             </div>
           );
         },
