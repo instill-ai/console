@@ -4,7 +4,7 @@ import { formatDateTime } from "./formatDateTime";
 import { getDateRange } from "./getDateRange";
 import { sortByDate } from "./sortByDate";
 
-export function generateModelChartData(
+export function generateModelTriggerChartRecordData(
   apiResponse: ModelTriggerChartRecord[],
   range: string,
 ): { xAxis: string[]; yAxis: number[][] } {
