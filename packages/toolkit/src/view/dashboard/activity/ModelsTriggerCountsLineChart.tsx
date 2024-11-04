@@ -2,19 +2,13 @@
 
 import * as React from "react";
 import * as echarts from "echarts";
-import {
-  ModelTriggerChartRecord,
-  ModelTriggersStatusSummary,
-  Nullable,
-} from "instill-sdk";
-
+import { ModelTriggersStatusSummary, ModelTriggerTableRecord, Nullable } from "instill-sdk";
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
-
 import { generateModelTriggerChartRecordData } from "../../../lib";
 import { ModelTriggersSummary } from "./ModelTriggersSummary";
 
 type ModelsTriggerCountsLineChartProps = {
-  models: ModelTriggerChartRecord[];
+  models: ModelTriggerTableRecord[];
   isLoading: boolean;
   selectedTimeOption: SelectOption;
   modelTriggersSummary: Nullable<ModelTriggersStatusSummary>;
@@ -48,14 +42,12 @@ export const ModelsTriggerCountsLineChart = ({
   selectedTimeOption,
   modelTriggersSummary,
 }: ModelsTriggerCountsLineChartProps) => {
+  console.log(models)
   const chartRef = React.useRef<HTMLDivElement>(null);
-  const { xAxis, yAxis } = generateModelTriggerChartRecordData(
-    models,
-    selectedTimeOption.value,
+  const { xAxis, yAxis } = React.useMemo(() =>
+    generateModelTriggerChartRecordData(models, selectedTimeOption.value),
+    [models, selectedTimeOption.value]
   );
-
-  const xAxisData = xAxis;
-  const seriesData = yAxis;
 
   React.useEffect(() => {
     if (chartRef.current) {
@@ -124,7 +116,7 @@ export const ModelsTriggerCountsLineChart = ({
         },
         xAxis: {
           type: "category",
-          data: xAxisData,
+          data: xAxis,
           axisLabel: {
             fontSize: "14px",
             fontFamily: "var(--font-ibm-plex-sans)",
@@ -144,15 +136,20 @@ export const ModelsTriggerCountsLineChart = ({
             color: "#6B7280",
           },
         },
-        series: seriesData.map((series) => ({
-          ...series,
-          symbol: "circle",
-          symbolSize: 8,
-          itemStyle: {
-            borderColor: "white",
-            borderWidth: 2,
+        series: [
+          {
+            name: "Model Triggers",
+            type: "line",
+            smooth: true,
+            data: yAxis,
+            symbol: "circle",
+            symbolSize: 8,
+            itemStyle: {
+              borderColor: "white",
+              borderWidth: 2,
+            },
           },
-        })),
+        ],
       };
 
       myChart.setOption(option, true);
@@ -170,7 +167,7 @@ export const ModelsTriggerCountsLineChart = ({
         }
       });
     }
-  }, [isLoading, xAxisData, seriesData, models]);
+  }, [isLoading, xAxis, yAxis, models]);
 
   return (
     <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">

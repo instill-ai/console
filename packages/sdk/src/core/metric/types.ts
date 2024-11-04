@@ -107,11 +107,9 @@ export type ListPipelineTriggerComputationTimeChartsResponse = {
 };
 
 export type ModelTriggerTableRecord = {
-  modelId: string;
-  modelUid: string;
-  triggerCountCompleted: string;
-  triggerCountErrored: string;
-  watchState?: ModelReleaseStage;
+  timeBuckets?: string[];
+  triggerCounts: number[];
+  requesterId: string;
 };
 
 export type ListModelTriggerMetricRequest = {
@@ -124,9 +122,7 @@ export type ListModelTriggerMetricRequest = {
 };
 
 export type ListModelTriggerMetricResponse = {
-  modelTriggerTableRecords: ModelTriggerTableRecord[];
-  nextPageToken?: string;
-  totalSize: number;
+  modelTriggerChartRecords: ModelTriggerTableRecord[];
 };
 
 export type ModelMode = "MODE_UNSPECIFIED" | "MODE_SYNC" | "MODE_ASYNC";
