@@ -17,7 +17,7 @@ import {
   InstillStore,
   Nullable,
   useInstillStore,
-  useModelTriggerComputationTimeCharts,
+  useListModelTriggersChart,
   useModelTriggerMetric,
   usePipelineTriggerComputationTimeCharts,
   usePipelineTriggerMetric,
@@ -122,7 +122,7 @@ export const DashboardActivityPageMainView = () => {
     requesterId: selectedNamespace ?? undefined,
   });
 
-  const modelsChart = useModelTriggerComputationTimeCharts({
+  const modelsChart = useListModelTriggersChart({
     enabled: enabledQuery && !!queryString,
     accessToken,
     requesterId: selectedNamespace ?? null,

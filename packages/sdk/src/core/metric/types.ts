@@ -98,8 +98,6 @@ export type PipelineTriggerChartRecord = {
   timeBuckets: string[];
   triggerCounts: number[];
   computeTimeDuration: number[];
-  watchState?: PipelineReleaseState;
-  namespaceId?: string;
   pipelineReleaseId?: string;
   pipelineReleaseUid?: string;
 };
