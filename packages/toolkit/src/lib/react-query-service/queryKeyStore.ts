@@ -221,11 +221,25 @@ export const pipelineQueryKeyStore = {
   getUseNamespacePipelineQueryKey({
     namespaceId,
     pipelineId,
+    view,
+    shareCode,
   }: {
     namespaceId: Nullable<string>;
     pipelineId: Nullable<string>;
+    view: Nullable<ResourceView>;
+    shareCode: Nullable<string>;
   }) {
-    return [namespaceId, "pipelines", pipelineId];
+    const queryKey = [namespaceId, "pipelines", pipelineId];
+
+    if (view) {
+      queryKey.push(view);
+    }
+
+    if (shareCode) {
+      queryKey.push(shareCode);
+    }
+
+    return queryKey;
   },
   getUseNamespacePipelinesQueryKey({
     namespaceId,

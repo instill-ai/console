@@ -56,6 +56,8 @@ export function useDeleteNamespacePipeline() {
         queryKey: queryKeyStore.pipeline.getUseNamespacePipelineQueryKey({
           namespaceId,
           pipelineId,
+          view: null,
+          shareCode: null,
         }),
       });
 
@@ -63,6 +65,8 @@ export function useDeleteNamespacePipeline() {
         queryKey: queryKeyStore.pipeline.getUseNamespacePipelineQueryKey({
           namespaceId,
           pipelineId,
+          view: null,
+          shareCode: null,
         }),
         exact: true,
       });

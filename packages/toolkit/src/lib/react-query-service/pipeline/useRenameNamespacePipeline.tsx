@@ -34,6 +34,8 @@ export function useRenameNamespacePipeline() {
         queryKey: queryKeyStore.pipeline.getUseNamespacePipelineQueryKey({
           namespaceId,
           pipelineId: oldPipelineId,
+          view: null,
+          shareCode: null,
         }),
       });
 

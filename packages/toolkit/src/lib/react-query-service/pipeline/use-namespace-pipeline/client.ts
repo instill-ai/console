@@ -31,6 +31,8 @@ export function useNamespacePipeline({
     queryKey: queryKeyStore.pipeline.getUseNamespacePipelineQueryKey({
       namespaceId,
       pipelineId,
+      view,
+      shareCode,
     }),
     queryFn: async () => {
       try {
