@@ -90,7 +90,7 @@ export class MetricClient extends APIResource {
         return Promise.resolve(response);
       }
 
-      return Promise.resolve(response.modelTriggerTableRecords);
+      return Promise.resolve(response);
     } catch (error) {
       return Promise.reject(error);
     }
