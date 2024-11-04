@@ -241,7 +241,7 @@ export const DashboardActivityPageMainView = () => {
 
   return (
     <div className="flex flex-col">
-      <h1 className="product-headings-heading-4 mb-2">Usage</h1>
+      <h1 className="product-headings-heading-4">Usage</h1>
       <UsageSwitch
         activeTab={activeTab}
         setActiveTab={setActiveTab}
