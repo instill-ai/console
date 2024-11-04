@@ -59,8 +59,6 @@ export const ExistingConnection = ({
 
     setIsProcessing(true);
 
-    console.log(setup);
-
     try {
       await updateConnection.mutateAsync({
         payload: {

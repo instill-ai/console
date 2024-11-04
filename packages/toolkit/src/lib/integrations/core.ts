@@ -107,7 +107,6 @@ export function getAuthHandler({
     ],
     callbacks: {
       async jwt({ token, account, profile }) {
-        console.log("all", token, account, profile);
         try {
           if (
             instillAccessToken &&

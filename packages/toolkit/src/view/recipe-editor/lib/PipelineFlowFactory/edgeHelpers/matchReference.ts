@@ -38,7 +38,7 @@ export function matchReference(
     referenceValueWithoutArray.split(".").slice(0, 2).join(".");
 
   if (
-    firstThreeLayersOfReferenceValueWithoutArray.includes(availableReference)
+    firstThreeLayersOfReferenceValueWithoutArray.startsWith(availableReference)
   ) {
     return true;
   }
