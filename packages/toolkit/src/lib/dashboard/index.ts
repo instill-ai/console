@@ -3,7 +3,7 @@ export * from "./convertTimestampToLocal";
 export * from "./convertToSecondsAndMilliseconds";
 export * from "./formatDateTime";
 export * from "./getDateRange";
-export * from "./generateModelChartData";
+export * from "./generateModelTriggerChartRecordData";
 export * from "./generatePipelinesChartData";
 export * from "./getModelTriggersSummary";
 export * from "./generateChartData";

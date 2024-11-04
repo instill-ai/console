@@ -6,7 +6,7 @@ import { ModelTriggerChartRecord, ModelTriggersStatusSummary, Nullable } from "i
 
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
 
-import { generateModelChartData } from "../../../lib";
+import { generateModelTriggerChartRecordData } from "../../../lib";
 import { ModelTriggersSummary } from "./ModelTriggersSummary";
 
 type ModelsTriggerCountsLineChartProps = {
@@ -45,7 +45,7 @@ export const ModelsTriggerCountsLineChart = ({
   modelTriggersSummary,
 }: ModelsTriggerCountsLineChartProps) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
-  const { xAxis, yAxis } = generateModelChartData(
+  const { xAxis, yAxis } = generateModelTriggerChartRecordData(
     models,
     selectedTimeOption.value,
   );
