@@ -4,7 +4,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import {
   ModelTriggerChartRecord,
-  ModelTriggerTableRecord,
+  // ModelTriggerTableRecord,
   PipelinesChart,
   TriggeredPipeline,
 } from "instill-sdk";
@@ -13,7 +13,7 @@ import { SelectOption } from "@instill-ai/design-system";
 
 import {
   DashboardAvailableTimeframe,
-  getModelTriggersSummary,
+  // getModelTriggersSummary,
   getPipelineTriggersSummary,
   getPreviousTimeframe,
   getTimeInRFC3339Format,
@@ -131,12 +131,12 @@ export const DashboardActivityPageMainView = () => {
     requesterId: selectedNamespace ?? "",
   });
 
-  const triggeredModels = useModelTriggerMetric({
-    enabled: enabledQuery && !!queryString,
-    accessToken,
-    requesterId: selectedNamespace ?? undefined,
-    filter: queryString ? queryString : null,
-  });
+  // const triggeredModels = useModelTriggerMetric({
+  //   enabled: enabledQuery && !!queryString,
+  //   accessToken,
+  //   requesterId: selectedNamespace ?? undefined,
+  //   filter: queryString ? queryString : null,
+  // });
 
   const previousTriggeredPipelines = usePipelineTriggerMetric({
     enabled: enabledQuery && !!queryStringPrevious,
@@ -198,10 +198,10 @@ export const DashboardActivityPageMainView = () => {
     return triggeredPipelines.data;
   }, [triggeredPipelines.data, triggeredPipelines.isSuccess]);
 
-  const triggeredModelList = React.useMemo<ModelTriggerTableRecord[]>(() => {
-    if (!triggeredModels.isSuccess) return [];
-    return triggeredModels.data;
-  }, [triggeredModels.data, triggeredModels.isSuccess]);
+  // const triggeredModelList = React.useMemo<ModelTriggerTableRecord[]>(() => {
+  //   if (!triggeredModels.isSuccess) return [];
+  //   return triggeredModels.data;
+  // }, [triggeredModels.data, triggeredModels.isSuccess]);
 
   const pipelineTriggersSummary = React.useMemo(() => {
     if (!previousTriggeredPipelines.isSuccess) return null;
@@ -223,20 +223,36 @@ export const DashboardActivityPageMainView = () => {
   ]);
 
   const modelTriggersSummary = React.useMemo(() => {
-    if (!previousTriggeredModels.isSuccess) return null;
+    if (!previousTriggeredModels.isSuccess || !modelsChart.isSuccess || !modelsChart.data.modelTriggerCounts) {
+      return null;
+    }
 
-    const triggeredModelIdList = triggeredModelList.map((e) => e.modelId);
-
-    return getModelTriggersSummary(
-      triggeredModelList,
-      previousTriggeredModels.data.filter((trigger) =>
-        triggeredModelIdList.includes(trigger.modelId),
-      ),
+    const completedModel = modelsChart.data.modelTriggerCounts.find(
+      (r) => r.status === "STATUS_COMPLETED"
     );
+
+    const erroredModel = modelsChart.data.modelTriggerCounts.find(
+      (r) => r.status === "STATUS_ERRORED"
+    );
+
+    return {
+      completed: {
+        statusType: "STATUS_COMPLETED",
+        type: "model",
+        amount: completedModel?.triggerCount || 0,
+        delta: 0
+      },
+      errored: {
+        statusType: "STATUS_ERRORED",
+        type: "model",
+        amount: erroredModel?.triggerCount || 0,
+        delta: 0
+      }
+    };
   }, [
     previousTriggeredModels.isSuccess,
-    previousTriggeredModels.data,
-    triggeredModelList,
+    modelsChart.isSuccess,
+    modelsChart.data?.modelTriggerCounts
   ]);
 
   return (

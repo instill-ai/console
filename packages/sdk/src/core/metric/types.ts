@@ -148,8 +148,13 @@ export type ListModelTriggerCountRequest = {
   stop?: string;
 };
 
+export type ModelTriggerCountRecord = {
+  triggerCount: number;
+  status: ModelTriggerStatus;
+};
+
 export type ListModelTriggerCountResponse = {
-  modelTriggerChartRecords: ModelTriggerChartRecord[];
+  modelTriggerCounts: ModelTriggerCountRecord[];
 };
 
 export type ListPipelineRunsByRequesterResponse = {
