@@ -200,7 +200,7 @@ export const ModelsTriggerCountsLineChart = ({
                         </div>
                         <div className="self-stretch text-semantic-fg-secondary product-body-text-4-medium">
                           Select any pipeline from the table below to view the
-                          number of model triggers within the last 7 days.
+                          number of model triggers within the last {selectedTimeOption.label}
                         </div>
                       </div>
                     </div>
