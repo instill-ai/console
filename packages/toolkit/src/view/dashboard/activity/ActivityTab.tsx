@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-  ModelsChart,
+  ModelTriggerChartRecord,
   ModelTriggersStatusSummary,
   Nullable,
   PipelinesChart,
@@ -23,7 +23,7 @@ type ActivityTabProps = {
     refetch: () => void;
   };
   pipelinesChartList: PipelinesChart[];
-  modelsChartList: ModelsChart[];
+  modelsChartList: ModelTriggerChartRecord[];
   selectedTimeOption: SelectOption;
   setSelectedTimeOption: React.Dispatch<React.SetStateAction<SelectOption>>;
   pipelineTriggersSummary: Nullable<PipelineTriggersStatusSummary>;

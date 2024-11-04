@@ -1,10 +1,5 @@
 import { ResourceView, RunSource, RunStatus } from "..";
-import {
-  ModelTriggerChartRecord,
-  ModelTriggerTableRecord,
-  Organization,
-  User,
-} from "../core";
+import { ModelTriggerTableRecord, Organization, User } from "../core";
 import {
   GeneralRecord,
   InstillJSONSchema,
@@ -401,8 +396,6 @@ export type ModelTriggerStatus =
   | "STATUS_UNSPECIFIED"
   | "STATUS_COMPLETED"
   | "STATUS_ERRORED";
-
-export type ModelsChart = ModelTriggerChartRecord;
 
 export type ModelTriggersStatusSummaryItem = {
   statusType: ModelTriggerStatus;

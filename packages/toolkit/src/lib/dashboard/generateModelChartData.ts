@@ -1,11 +1,11 @@
-import { ModelsChart } from "instill-sdk";
+import { ModelTriggerChartRecord } from "instill-sdk";
 
 import { formatDateTime } from "./formatDateTime";
 import { getDateRange } from "./getDateRange";
 import { sortByDate } from "./sortByDate";
 
 export function generateModelChartData(
-  apiResponse: ModelsChart[],
+  apiResponse: ModelTriggerChartRecord[],
   range: string,
 ): { xAxis: string[]; yAxis: number[][] } {
   const modelData = apiResponse;
