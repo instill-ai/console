@@ -12,10 +12,11 @@ import {
   useShallow,
 } from "../../../lib";
 import { FilterByDay } from "../FilterByDay";
-import { formatDateToRFC3339, getStartOfDay } from "../helpers";
+import { formatDateToRFC3339, getStartOfDay } from "../lib/helpers";
 import { CreditCostTrendChart } from "./CreditCostTrendChart";
 import { DashboardListModel } from "./model/DashboardListModel";
 import { DashboardListPipeline } from "./pipeline/DashboardListPipeline";
+import { options } from "../lib";
 
 type CostTabProps = {
   selectedTimeOption: SelectOption;
@@ -84,18 +85,6 @@ export const CostTab = ({
     return { dates: [], values: [] };
   }, [creditConsumption.data, costView]);
 
-  const options = [
-    {
-      value: "pipeline",
-      label: "Pipeline",
-      icon: <Icons.Pipeline className="h-4 w-4" />,
-    },
-    {
-      value: "model",
-      label: "Model",
-      icon: <Icons.Model className="h-4 w-4" />,
-    },
-  ];
 
   return (
     <div>
