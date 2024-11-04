@@ -298,6 +298,13 @@ export const UploadExploreTab = ({
         setProcessingFileIndex(i);
 
         try {
+          await uploadFile(file, (progress) => {
+            setUploadProgress((prev) => ({
+              ...prev,
+              [file.name]: progress,
+            }));
+          });
+
           const content = await readFileAsBase64(file);
 
           const payload: CreateNamespaceCatalogFileRequest = {
@@ -311,13 +318,6 @@ export const UploadExploreTab = ({
           const uploadedFile = await createNamespaceCatalogFile.mutateAsync({
             payload,
             accessToken,
-          });
-
-          await uploadFile(file, (progress) => {
-            setUploadProgress((prev) => ({
-              ...prev,
-              [file.name]: progress,
-            }));
           });
 
           await processCatalogFiles.mutateAsync({
