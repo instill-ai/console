@@ -1,47 +1,28 @@
-// import {
-//   ModelTriggersStatusSummary,
-//   ModelTriggerTableRecord,
-// } from "instill-sdk";
+import { ModelTriggerCountRecord, ModelTriggersStatusSummary } from "instill-sdk";
 
-// import { calculatePercentageDelta } from "./calculatePercentageDelta";
+export function getModelTriggersSummary(
+    modelTriggerCounts: ModelTriggerCountRecord[]
+): ModelTriggersStatusSummary {
+    const completedModel = modelTriggerCounts.find(
+        (r) => r.status === "STATUS_COMPLETED"
+    );
 
-// export function getModelTriggersSummary(
-//   models: ModelTriggerTableRecord[],
-//   modelsPrevious: ModelTriggerTableRecord[],
-// ): ModelTriggersStatusSummary {
-//   let modelCompleteAmount = 0;
-//   let modelCompleteAmountPrevious = 0;
-//   let modelErroredAmount = 0;
-//   let modelErroredAmountPrevious = 0;
+    const erroredModel = modelTriggerCounts.find(
+        (r) => r.status === "STATUS_ERRORED"
+    );
 
-//   models.forEach((model) => {
-//     modelCompleteAmount += Number(model.triggerCountCompleted);
-//     modelErroredAmount += Number(model.triggerCountErrored);
-//   });
-
-//   modelsPrevious.forEach((model) => {
-//     modelCompleteAmountPrevious += Number(model.triggerCountCompleted);
-//     modelErroredAmountPrevious += Number(model.triggerCountErrored);
-//   });
-
-//   return {
-//     completed: {
-//       statusType: "STATUS_COMPLETED",
-//       amount: modelCompleteAmount,
-//       type: "model",
-//       delta: calculatePercentageDelta(
-//         modelCompleteAmountPrevious,
-//         modelCompleteAmount,
-//       ),
-//     },
-//     errored: {
-//       statusType: "STATUS_ERRORED",
-//       amount: modelErroredAmount,
-//       type: "model",
-//       delta: calculatePercentageDelta(
-//         modelErroredAmountPrevious,
-//         modelErroredAmount,
-//       ),
-//     },
-//   };
-// }
+    return {
+        completed: {
+            statusType: "STATUS_COMPLETED" as const,
+            type: "model" as const,
+            amount: completedModel?.triggerCount || 0,
+            delta: 0
+        },
+        errored: {
+            statusType: "STATUS_ERRORED" as const,
+            type: "model" as const,
+            amount: erroredModel?.triggerCount || 0,
+            delta: 0
+        }
+    };
+}
