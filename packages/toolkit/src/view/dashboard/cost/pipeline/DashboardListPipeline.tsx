@@ -190,17 +190,17 @@ export const DashboardListPipeline = ({
         },
       },
       {
-        accessorKey: "runner",
+        accessorKey: "runnerId",
         header: () => <div className="text-left">Runner</div>,
         cell: ({ row }) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
               <Link
                 target="_blank"
-                href={`/${targetNamespace?.id}/pipelines/${row.getValue("runner")}`}
+                href={`/${targetNamespace?.id}/pipelines/${row.getValue("runnerId")}`}
                 className="text-semantic-accent-default hover:underline"
               >
-                {row.getValue("runner")}
+                {row.getValue("runnerId")}
               </Link>
             </div>
           );
