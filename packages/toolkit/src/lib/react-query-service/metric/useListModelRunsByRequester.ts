@@ -53,8 +53,7 @@ export function useListModelRunsByRequester({
         enablePagination: true,
       });
 
-      //need to fix the casting
-      return data as ListModelRunsByRequesterResponse;
+      return data;
     },
     enabled: enabled,
   });

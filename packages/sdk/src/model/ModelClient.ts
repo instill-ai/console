@@ -29,6 +29,7 @@ import {
   ListNamespaceModelVersionsResponse,
   Model,
   ModelDefinition,
+  ModelRun,
   ModelVersion,
   PublishNamespaceModelRequest,
   PublishNamespaceModelResponse,
@@ -210,10 +211,16 @@ export class ModelClient extends APIResource {
   }
 
   async listModelRunsByRequester(
-    props: ListModelRunsByRequesterRequest & {
-      enablePagination?: boolean;
-    },
-  ) {
+    props: ListModelRunsByRequesterRequest & { enablePagination: true },
+  ): Promise<ListModelRunsByRequesterResponse>;
+
+  async listModelRunsByRequester(
+    props: ListModelRunsByRequesterRequest & { enablePagination: false },
+  ): Promise<ModelRun[]>;
+
+  async listModelRunsByRequester(
+    props: ListModelRunsByRequesterRequest & { enablePagination?: boolean },
+  ): Promise<ListModelRunsByRequesterResponse | ModelRun[]> {
     const {
       pageSize,
       page,
