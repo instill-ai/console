@@ -62,7 +62,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
   );
 
   const modelRuns = useListModelRunsByRequester({
-    enabled: enabledQuery,
+    enabled: enabledQuery && !!targetNamespace,
     accessToken,
     pageSize: paginationState.pageSize,
     page: paginationState.pageIndex,
@@ -89,7 +89,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
               <Link
-                href={`${targetNamespace?.id}/models/${row.getValue("modelId")}`}
+                href={`/${targetNamespace?.id}/models/${row.getValue("modelId")}`}
                 className="text-semantic-accent-default hover:underline"
               >
                 {row.getValue("modelId")}
@@ -105,7 +105,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
               <Link
-                href={`${targetNamespace?.id}/models/${row.getValue("modelId")}/runs/${row.getValue("uid")}`}
+                href={`/${targetNamespace?.id}/models/${row.getValue("modelId")}/runs/${row.getValue("uid")}`}
                 className="text-semantic-accent-default hover:underline"
               >
                 {row.getValue("uid")}
@@ -199,8 +199,8 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
               <Link
                 target="_blank"
+                href={`/${targetNamespace?.id}/models/${row.getValue("runnerId")}`}
                 className="text-semantic-accent-default hover:underline"
-                href={`${targetNamespace?.id}/models/${row.getValue("runnerId")}`}
               >
                 {row.getValue("runnerId")}
               </Link>
@@ -233,12 +233,10 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
     ];
 
     return baseColumns;
-  }, [orderBy]);
+  }, [orderBy, targetNamespace?.id]);
 
-  if (
-    modelRuns.isSuccess &&
-    (!modelRuns.data?.runs || modelRuns.data.runs.length === 0)
-  ) {
+
+  if (modelRuns.isSuccess && (!modelRuns.data?.runs || modelRuns.data.runs.length === 0)) {
     return (
       <div className="relative flex flex-col items-center">
         <img
