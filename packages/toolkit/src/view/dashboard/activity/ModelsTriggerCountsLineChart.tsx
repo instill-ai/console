@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as echarts from "echarts";
-import { ModelsChart, ModelTriggersStatusSummary, Nullable } from "instill-sdk";
+import { ModelTriggerChartRecord, ModelTriggersStatusSummary, Nullable } from "instill-sdk";
 
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
 
@@ -10,7 +10,7 @@ import { generateModelChartData } from "../../../lib";
 import { ModelTriggersSummary } from "./ModelTriggersSummary";
 
 type ModelsTriggerCountsLineChartProps = {
-  models: ModelsChart[];
+  models: ModelTriggerChartRecord[];
   isLoading: boolean;
   selectedTimeOption: SelectOption;
   modelTriggersSummary: Nullable<ModelTriggersStatusSummary>;
