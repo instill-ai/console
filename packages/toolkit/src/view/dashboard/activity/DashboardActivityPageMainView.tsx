@@ -29,6 +29,7 @@ import {
 } from "../../../lib";
 import { UsageSwitch } from "../UsageSwitch";
 import { ActivityTab } from "./ActivityTab";
+import { useRouter } from "next/navigation";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -50,6 +51,8 @@ export const DashboardActivityPageMainView = () => {
   const [activeTab, setActiveTab] = React.useState<"activity" | "cost">(
     "activity",
   );
+
+  const router = useRouter();
 
   const routeInfo = useRouteInfo();
   const userNamespaces = useUserNamespaces();
@@ -151,26 +154,26 @@ export const DashboardActivityPageMainView = () => {
     filter: queryStringPrevious ? queryStringPrevious : null,
   });
 
-  // React.useEffect(() => {
-  //   if (
-  //     triggeredPipelines.isError ||
-  //     pipelinesChart.isError ||
-  //     previousTriggeredPipelines.isError ||
-  //     triggeredModels.isError ||
-  //     modelsChart.isError ||
-  //     previousTriggeredModels.isError
-  //   ) {
-  //     router.push("/404");
-  //   }
-  // }, [
-  //   router,
-  //   triggeredPipelines.isError,
-  //   pipelinesChart.isError,
-  //   previousTriggeredPipelines.isError,
-  //   triggeredModels.isError,
-  //   modelsChart.isError,
-  //   previousTriggeredModels.isError,
-  // ]);
+  React.useEffect(() => {
+    if (
+      triggeredPipelines.isError ||
+      pipelinesChart.isError ||
+      previousTriggeredPipelines.isError
+      // triggeredModels.isError ||
+      // modelsChart.isError ||
+      // previousTriggeredModels.isError
+    ) {
+      router.push("/404");
+    }
+  }, [
+    router,
+    triggeredPipelines.isError,
+    pipelinesChart.isError,
+    previousTriggeredPipelines.isError,
+    // triggeredModels.isError,
+    // modelsChart.isError,
+    // previousTriggeredModels.isError,
+  ]);
 
   const pipelinesChartList = React.useMemo<PipelinesChart[]>(() => {
     if (!pipelinesChart.isSuccess) {
