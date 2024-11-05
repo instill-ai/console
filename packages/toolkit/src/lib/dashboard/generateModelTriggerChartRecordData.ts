@@ -1,4 +1,5 @@
 import { ModelTriggerTableRecord } from "instill-sdk";
+
 import { formatDateTime } from "./formatDateTime";
 import { getDateRange } from "./getDateRange";
 import { sortByDate } from "./sortByDate";
@@ -18,10 +19,15 @@ export function generateModelTriggerChartRecordData(
   const timeBuckets = model.timeBuckets ?? [];
 
   // Format the time buckets
-  const formattedTimeBuckets = timeBuckets.map(bucket => formatDateTime(bucket, range));
+  const formattedTimeBuckets = timeBuckets.map((bucket) =>
+    formatDateTime(bucket, range),
+  );
 
   // Sort and deduplicate xAxis
-  const xAxisSortedDates = sortByDate([...getDateRange(range), ...formattedTimeBuckets]);
+  const xAxisSortedDates = sortByDate([
+    ...getDateRange(range),
+    ...formattedTimeBuckets,
+  ]);
   const xAxis = Array.from(new Set(xAxisSortedDates));
 
   // Initialize yAxis with zeros
@@ -30,7 +36,7 @@ export function generateModelTriggerChartRecordData(
   // Populate yAxis with trigger counts
   timeBuckets.forEach((bucket, index) => {
     const formattedBucket = formatDateTime(bucket, range);
-    const xAxisIndex = xAxis.findIndex(date => date === formattedBucket);
+    const xAxisIndex = xAxis.findIndex((date) => date === formattedBucket);
     if (xAxisIndex !== -1) {
       yAxis[xAxisIndex] += model.triggerCounts?.[index] ?? 0;
     }

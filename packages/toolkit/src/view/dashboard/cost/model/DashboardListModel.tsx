@@ -22,8 +22,8 @@ import {
   useUserNamespaces,
 } from "../../../../lib";
 import { getHumanReadableStringFromTime } from "../../../../server";
-import { TABLE_PAGE_SIZE } from "../../../pipeline/view-pipeline/constants";
 import { truncateName } from "../../../catalog";
+import { TABLE_PAGE_SIZE } from "../../../pipeline/view-pipeline/constants";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -189,9 +189,9 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
             <div className="font-normal text-semantic-bg-secondary-alt-primary">
               {createTime
                 ? getHumanReadableStringFromTime(
-                  createTime as string,
-                  Date.now(),
-                )
+                    createTime as string,
+                    Date.now(),
+                  )
                 : "-"}
             </div>
           );
