@@ -46,7 +46,7 @@ export const UsageSwitch = ({
       type="single"
       value={activeTab}
       onValueChange={handleTabChange}
-      className="flex space-x-1 mb-2 bg-semantic-bg-secondary p-1 rounded-sm border-semantic-bg-line w-fit border"
+      className="flex !h-10 space-x-1 bg-semantic-bg-secondary p-1 rounded-sm border-semantic-bg-line w-fit border"
     >
       {options.map((option) => (
         <ToggleGroup.Item

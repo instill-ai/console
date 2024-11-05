@@ -196,6 +196,7 @@ export type ModelRun = {
   uid: string;
   modelUid: string;
   runnerId: string;
+  namespaceId: string;
   status: RunStatus;
   source: RunSource;
   totalDuration: number;

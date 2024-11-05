@@ -13,14 +13,14 @@ const PipelineTriggersSummaryCard = (props: {
   if (!props.summary) {
     return (
       <div
-        key={`cards-skeleton`}
-        className="inline-flex h-[110px] w-[246] flex-col items-start justify-start gap-2 rounded-sm border border-semantic-bg-line bg-semantic-bg-alt-primary p-6"
+        key="cards-skeleton"
+        className="inline-flex h-[62px] w-[246] flex-col items-start justify-start gap-2 rounded-sm border border-semantic-bg-line bg-semantic-bg-alt-primary px-3 py-2"
       >
         <div className="self-stretch">
-          <Skeleton className="h-5 w-full rounded" />
+          <Skeleton className="h-3 w-full rounded" />
         </div>
         <div className="self-stretch">
-          <Skeleton className="h-8 w-full rounded" />
+          <Skeleton className="h-6 w-full rounded" />
         </div>
       </div>
     );

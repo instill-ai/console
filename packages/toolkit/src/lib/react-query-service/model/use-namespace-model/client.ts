@@ -25,7 +25,7 @@ export function useNamespaceModel({
   }
 
   return useQuery({
-    queryKey: getUseNamespaceModelQueryKey(namespaceId, modelId),
+    queryKey: getUseNamespaceModelQueryKey(namespaceId, modelId, view),
     queryFn: async () => {
       return await fetchNamespaceModel({
         namespaceId,

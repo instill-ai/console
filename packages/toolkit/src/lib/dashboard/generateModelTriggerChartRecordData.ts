@@ -1,5 +1,5 @@
 import { ModelTriggerTableRecord } from "instill-sdk";
-import { formatDateTime } from "./formatDateTime";
+
 import { getDateRange } from "./getDateRange";
 import { sortByDate } from "./sortByDate";
 
@@ -18,10 +18,14 @@ export function generateModelTriggerChartRecordData(
   const timeBuckets = model.timeBuckets ?? [];
 
   // Format the time buckets
-  const formattedTimeBuckets = timeBuckets.map(bucket => formatDateTime(bucket, range));
+  const normalizedTimeBuckets = timeBuckets.map((bucket) => bucket);
 
   // Sort and deduplicate xAxis
-  const xAxisSortedDates = sortByDate([...getDateRange(range), ...formattedTimeBuckets]);
+  const xAxisSortedDates = sortByDate([
+    ...getDateRange(range),
+    ...normalizedTimeBuckets,
+  ]);
+
   const xAxis = Array.from(new Set(xAxisSortedDates));
 
   // Initialize yAxis with zeros
@@ -29,12 +33,25 @@ export function generateModelTriggerChartRecordData(
 
   // Populate yAxis with trigger counts
   timeBuckets.forEach((bucket, index) => {
-    const formattedBucket = formatDateTime(bucket, range);
-    const xAxisIndex = xAxis.findIndex(date => date === formattedBucket);
+    const xAxisIndex = xAxis.findIndex((date) => date === bucket);
     if (xAxisIndex !== -1) {
       yAxis[xAxisIndex] += model.triggerCounts?.[index] ?? 0;
     }
   });
 
-  return { xAxis, yAxis };
+  return {
+    xAxis: xAxis.map((x) =>
+      range === "24h"
+        ? new Date(x).toLocaleString("en-US", {
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          })
+        : new Date(x).toLocaleString("en-US", {
+            month: "short",
+            day: "2-digit",
+          }),
+    ),
+    yAxis,
+  };
 }

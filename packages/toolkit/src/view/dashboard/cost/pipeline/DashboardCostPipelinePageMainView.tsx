@@ -19,28 +19,9 @@ export const DashboardCostPipelinePageMainView = () => {
 
   const routeInfo = useRouteInfo();
 
-  React.useEffect(() => {
-    if (!routeInfo.isSuccess) {
-      return;
-    }
-
-    // if (selectedTimeOption) {
-    //   const start = getTimeInRFC3339Format(
-    //     selectedTimeOption.value === "24h" ? "todayStart" : selectedTimeOption.value
-    //   );
-    //   const stop = getTimeInRFC3339Format(
-    //     selectedTimeOption?.value === "1d" ? "todayStart" : "now"
-    //   );
-
-    //   queryParams += ` AND start='${start}' AND stop='${stop}'`;
-    // }
-
-    // setQueryString(queryParams);
-  }, [selectedTimeOption, routeInfo.isSuccess, routeInfo.data?.namespaceName]);
-
   return (
     <div className="flex flex-col">
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-2 mb-5">
         <h1 className="product-headings-heading-4">Usage</h1>
         <UsageSwitch
           activeTab={activeTab}

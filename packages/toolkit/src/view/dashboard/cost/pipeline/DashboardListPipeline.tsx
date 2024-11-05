@@ -23,7 +23,6 @@ import {
 } from "../../../../lib";
 import { getHumanReadableStringFromTime } from "../../../../server";
 import { TABLE_PAGE_SIZE } from "../../../pipeline/view-pipeline/constants";
-import { truncateName } from "../../../catalog";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -92,7 +91,7 @@ export const DashboardListPipeline = ({
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary truncate">
               <Link
-                href={`/${targetNamespace?.id}/pipelines/${row.getValue("pipelineId")}`}
+                href={`/${row.getValue("namespaceId")}/pipelines/${row.getValue("pipelineId")}`}
                 className="text-semantic-accent-default hover:underline"
               >
                 {row.getValue("pipelineId")}
@@ -106,12 +105,12 @@ export const DashboardListPipeline = ({
         header: () => <div className="text-left">Run ID</div>,
         cell: ({ row }) => {
           return (
-            <div className="font-normal text-semantic-bg-secondary-secondary">
+            <div className="font-normal text-semantic-bg-secondary-secondary truncate">
               <Link
                 href={`/${targetNamespace?.id}/pipelines/${row.getValue("pipelineId")}/runs/${row.getValue("pipelineRunUid")}`}
                 className="text-semantic-accent-default hover:underline"
               >
-                {truncateName(row.getValue("pipelineRunUid"))}
+                {row.getValue("pipelineRunUid")}
               </Link>
             </div>
           );
@@ -179,7 +178,7 @@ export const DashboardListPipeline = ({
         header: () => (
           <RunsTableSortableColHeader
             title="Trigger Time"
-            paramName="start_time"
+            paramName="started_time"
             currentSortParamValue={orderBy}
             onSort={onSortOrderUpdate}
           />
@@ -259,7 +258,7 @@ export const DashboardListPipeline = ({
   }
 
   return (
-    <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th]:w-40 [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(7)]:w-52 [&_table_th:nth-child(8)]:w-28">
+    <div className="[&_table]:table-fixed [&_table_td]:align-top">
       <DataTable
         columns={tableColumns}
         data={pipelineRuns.data?.pipelineRuns || []}

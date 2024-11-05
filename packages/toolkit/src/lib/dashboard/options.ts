@@ -6,10 +6,6 @@ const timeLineOptions: SelectOption[] = [
     value: "24h",
   },
   {
-    label: "Last day",
-    value: "1d",
-  },
-  {
     label: "7 days",
     value: "7d",
   },

@@ -154,10 +154,10 @@ export const PipelineTriggerCountsLineChart = ({
         series: seriesData.map((series) => ({
           ...series,
           symbol: "circle",
-          symbolSize: 8,
+          symbolSize: 4,
           itemStyle: {
             borderColor: "white",
-            borderWidth: 2,
+            borderWidth: 0,
           },
         })),
       };
@@ -203,12 +203,7 @@ export const PipelineTriggerCountsLineChart = ({
                     <div className="inline-flex w-80 flex-col items-start justify-start rounded-sm bg-semantic-bg-primary p-3">
                       <div className="flex flex-col items-start justify-start gap-1 self-stretch">
                         <div className="self-stretch text-semantic-fg-primary product-body-text-4-semibold">
-                          Number of triggers
-                        </div>
-                        <div className="self-stretch text-semantic-fg-secondary product-body-text-4-medium">
-                          Select any pipeline from the table below to view the
-                          number of pipeline triggers within the last{" "}
-                          {selectedTimeOption.label}
+                          Number of pipeline triggers
                         </div>
                       </div>
                     </div>

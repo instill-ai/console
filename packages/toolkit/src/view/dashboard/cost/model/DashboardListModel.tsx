@@ -23,7 +23,6 @@ import {
 } from "../../../../lib";
 import { getHumanReadableStringFromTime } from "../../../../server";
 import { TABLE_PAGE_SIZE } from "../../../pipeline/view-pipeline/constants";
-import { truncateName } from "../../../catalog";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -90,7 +89,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary truncate">
               <Link
-                href={`/${targetNamespace?.id}/models/${row.getValue("modelId")}`}
+                href={`/${row.getValue("namespaceId")}/models/${row.getValue("modelId")}`}
                 className="text-semantic-accent-default hover:underline"
               >
                 {row.getValue("modelId")}
@@ -104,12 +103,12 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
         header: () => <div className="text-left">Run ID</div>,
         cell: ({ row }) => {
           return (
-            <div className="font-normal text-semantic-bg-secondary-secondary">
+            <div className="font-normal text-semantic-bg-secondary-secondary truncate">
               <Link
                 href={`/${targetNamespace?.id}/models/${row.getValue("modelId")}/runs/${row.getValue("uid")}`}
                 className="text-semantic-accent-default hover:underline"
               >
-                {truncateName(row.getValue("uid"), 10)}
+                {row.getValue("uid")}
               </Link>
             </div>
           );
@@ -178,7 +177,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
         header: () => (
           <RunsTableSortableColHeader
             title="Trigger Time"
-            paramName="createTime"
+            paramName="started_time"
             currentSortParamValue={orderBy}
             onSort={onSortOrderUpdate}
           />
@@ -189,9 +188,9 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
             <div className="font-normal text-semantic-bg-secondary-alt-primary">
               {createTime
                 ? getHumanReadableStringFromTime(
-                  createTime as string,
-                  Date.now(),
-                )
+                    createTime as string,
+                    Date.now(),
+                  )
                 : "-"}
             </div>
           );
@@ -264,7 +263,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
   }
 
   return (
-    <div className="[&_table]:table-fixed [&_table_td]:align-top [&_table_th]:w-40 [&_table_th:nth-child(1)]:w-auto [&_table_th:nth-child(7)]:w-52 [&_table_th:nth-child(8)]:w-28">
+    <div className="[&_table]:table-fixed [&_table_td]:align-top">
       <DataTable
         columns={tableColumns}
         data={modelRuns.data?.runs || []}

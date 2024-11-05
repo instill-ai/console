@@ -6,7 +6,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { Icons, Popover, SelectOption } from "@instill-ai/design-system";
 
 import {
+  getDateRange,
   InstillStore,
+  sortByDate,
   useCreditConsumptionChartRecords,
   useInstillStore,
   useShallow,
@@ -76,6 +78,29 @@ export const CostTab = ({
       (record) => record.source === costView,
     );
     if (record) {
+      if (selectedTimeOption.value === "24h") {
+        // We fill in missing dates
+        const normalizedDate = sortByDate([
+          ...getDateRange(selectedTimeOption.value),
+          ...record.timeBuckets,
+        ]);
+
+        // Make sure we have unique dates
+        const dates = Array.from(new Set(normalizedDate));
+
+        const newValues = new Array(dates.length).fill(0);
+        for (let i = 0; i < dates.length; i++) {
+          if (record.amount[i]) {
+            newValues[i] = record.amount[i];
+          }
+        }
+
+        return {
+          dates,
+          values: newValues,
+        };
+      }
+
       return {
         dates: record.timeBuckets,
         values: record.amount,
@@ -95,7 +120,7 @@ export const CostTab = ({
   }, [selectedTimeOption.value]);
 
   return (
-    <div>
+    <div className="flex flex-col">
       <div className="flex justify-between items-center mb-5">
         <div className="flex space-x-3">
           <Popover.Root>

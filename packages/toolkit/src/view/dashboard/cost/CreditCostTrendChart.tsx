@@ -177,6 +177,13 @@ export const CreditCostTrendChart = ({
                   tickFormatter={formatXAxis}
                   tickLine={false}
                   stroke="#6B7280"
+                  tick={{
+                    fontSize: "10px",
+                    fontFamily: "var(--font-ibm-plex-sans)",
+                    fontStyle: "normal",
+                    fontWeight: "500",
+                    color: "#6B7280",
+                  }}
                 />
                 <YAxis
                   tickLine={false}
@@ -187,6 +194,13 @@ export const CreditCostTrendChart = ({
                     value: "Credits",
                     angle: -90,
                     position: "insideLeft",
+                  }}
+                  tick={{
+                    fontSize: "10px",
+                    fontFamily: "var(--font-ibm-plex-sans)",
+                    fontStyle: "normal",
+                    fontWeight: "500",
+                    color: "#6B7280",
                   }}
                 />
                 <Tooltip

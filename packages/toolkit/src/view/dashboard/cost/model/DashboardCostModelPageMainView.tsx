@@ -21,7 +21,7 @@ export const DashboardCostModelPageMainView = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-2 mb-5">
         <h1 className="product-headings-heading-4">Usage</h1>
         <UsageSwitch
           activeTab={activeTab}

@@ -1,60 +1,68 @@
 import { PipelinesChart } from "instill-sdk";
 
-import { formatDateTime } from "./formatDateTime";
 import { getDateRange } from "./getDateRange";
 import { sortByDate } from "./sortByDate";
 
-export function generatePipelineChartData(
-  apiResponse: PipelinesChart[],
-  range: string,
-): { xAxis: string[]; yAxis: number[][] } {
-  const pipelineData = apiResponse;
+export type YAxisData = {
+  name: string;
+  type: string;
+  smooth: boolean;
+  data: number[];
+};
 
+export function generatePipelineChartData(
+  chart: PipelinesChart[],
+  range: string,
+): { xAxis: string[]; yAxis: YAxisData[] } {
   // Preprocess and format time bucket dates
-  const formattedTimeBuckets: string[][] = pipelineData.map((pipeline) => {
-    return pipeline.timeBuckets.map((bucket) => formatDateTime(bucket, range));
+  const normalizedTimeBuckets: string[][] = chart.map((pipeline) => {
+    return pipeline.timeBuckets.map((bucket) => bucket);
   });
 
   const xAxisSortedDates = sortByDate([
     ...getDateRange(range),
-    ...formattedTimeBuckets.flat(),
+    ...normalizedTimeBuckets.flat(),
   ]);
+
+  console.log("xAxisSortedDates", xAxisSortedDates);
 
   const xAxis = Array.from(new Set(xAxisSortedDates));
 
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  const yAxis: any = [];
+  const accumulatedTriggerCounts = new Array(xAxis.length).fill(0);
 
-  // Initialize yAxis arrays for each pipeline
-  for (const pipeline of pipelineData) {
-    const triggerCounts = {
-      name: pipeline.pipelineId,
-      type: "line",
-      smooth: true,
-      data: new Array(xAxis.length).fill(0),
-    };
-
-    yAxis.push(triggerCounts);
-  }
-
-  pipelineData.forEach((pipeline, pipelineIndex) => {
-    const buckets = formattedTimeBuckets[pipelineIndex];
-
-    if (buckets) {
-      for (const [bucketIndex, formattedBucket] of buckets.entries()) {
-        const xAxisIndex = xAxis.findIndex((date) => date === formattedBucket);
-        if (xAxisIndex !== -1) {
-          if (yAxis[pipelineIndex]["data"][xAxisIndex]) {
-            yAxis[pipelineIndex]["data"][xAxisIndex] +=
-              pipeline.triggerCounts[bucketIndex];
-          } else {
-            yAxis[pipelineIndex]["data"][xAxisIndex] +=
-              pipeline.triggerCounts[bucketIndex];
-          }
-        }
+  // Accumulate trigger counts
+  for (const pipeline of chart) {
+    for (const [bucketIndex, bucket] of pipeline.timeBuckets.entries()) {
+      const xAxisIndex = xAxis.findIndex((date) => date === bucket);
+      if (xAxisIndex !== -1) {
+        accumulatedTriggerCounts[xAxisIndex] +=
+          pipeline.triggerCounts[bucketIndex];
       }
     }
-  });
+  }
 
-  return { xAxis, yAxis };
+  console.log("accumulatedTriggerCounts", accumulatedTriggerCounts);
+
+  return {
+    xAxis: xAxis.map((x) =>
+      range === "24h"
+        ? new Date(x).toLocaleString("en-US", {
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          })
+        : new Date(x).toLocaleString("en-US", {
+            month: "short",
+            day: "2-digit",
+          }),
+    ),
+    yAxis: [
+      {
+        name: "allPipelineTrigger",
+        type: "line",
+        smooth: true,
+        data: accumulatedTriggerCounts,
+      },
+    ],
+  };
 }
