@@ -1,6 +1,6 @@
 {
   "name": "instill-sdk",
-  "version": "0.11.0-rc.37",
+  "version": "0.11.0",
   "description": "Instill AI's Typescript SDK",
   "repository": "https://github.com/instill-ai/typescript-sdk.git",
   "bugs": "https://github.com/instill-ai/community/issues",
