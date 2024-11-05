@@ -10,13 +10,15 @@ export function usePipelineTriggerMetric({
   enabled,
   accessToken,
   filter,
+  requesterId,
 }: {
   enabled: boolean;
   accessToken: Nullable<string>;
   filter: Nullable<string>;
+  requesterId?: string;
 }) {
   return useQuery({
-    queryKey: ["tables", filter],
+    queryKey: ["tables", filter, requesterId],
     queryFn: async () => {
       if (!accessToken) {
         return Promise.reject(new Error("accessToken not provided"));

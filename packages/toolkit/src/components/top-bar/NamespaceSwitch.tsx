@@ -97,7 +97,7 @@ export const NamespaceSwitch = () => {
     namespaceId: routeInfo.isSuccess ? routeInfo.data.namespaceId : null,
     accessToken,
     enabled: enabledQuery && pathnameEvaluator.isModelPlaygroundPage(pathname),
-    view: "VIEW_BASIC",
+    view: "VIEW_FULL",
   });
 
   const namespacesWithRemainingCredit = React.useMemo(() => {

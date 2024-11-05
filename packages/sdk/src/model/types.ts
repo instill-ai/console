@@ -196,6 +196,7 @@ export type ModelRun = {
   uid: string;
   modelUid: string;
   runnerId: string;
+  namespaceId: string;
   status: RunStatus;
   source: RunSource;
   totalDuration: number;
@@ -207,6 +208,7 @@ export type ModelRun = {
   taskOutputs: GeneralRecord[];
   creditAmount: Nullable<number>;
   requesterId: string;
+  modelId?: string;
 };
 
 export type ListModelRunsResponse = {
@@ -392,4 +394,36 @@ export type GetNamespaceModelVersionOperationResultResponse = {
   operation: Nullable<Operation>;
 };
 
+export type ModelTriggerStatus =
+  | "STATUS_UNSPECIFIED"
+  | "STATUS_COMPLETED"
+  | "STATUS_ERRORED";
+
+export type ModelTriggersStatusSummaryItem = {
+  statusType: ModelTriggerStatus;
+  amount: number;
+  type: "pipeline" | "model";
+  delta: number;
+};
+
+export type ModelTriggersStatusSummary = {
+  completed: ModelTriggersStatusSummaryItem;
+  errored: ModelTriggersStatusSummaryItem;
+};
+
 export type ModelsWatchState = Record<string, Nullable<ModelWatchState>>;
+
+export type ListModelRunsByRequesterRequest = {
+  pageSize?: number;
+  page: Nullable<number>;
+  orderBy?: string;
+  requesterUid?: string;
+  requesterId?: string;
+  start?: string;
+};
+
+export type ListModelRunsByRequesterResponse = {
+  runs: ModelRun[];
+  nextPageToken: string;
+  totalSize: number;
+};

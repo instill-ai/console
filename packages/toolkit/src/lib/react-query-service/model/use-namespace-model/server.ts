@@ -44,8 +44,15 @@ export async function fetchNamespaceModel({
 export function getUseNamespaceModelQueryKey(
   namespaceId: Nullable<string>,
   modelId: Nullable<string>,
+  view: Nullable<ResourceView>,
 ) {
-  return [namespaceId, "models", modelId];
+  const queryKey = [namespaceId, "models", modelId];
+
+  if (view) {
+    queryKey.push(view);
+  }
+
+  return queryKey;
 }
 
 export function prefetchNamespaceModel({
@@ -61,7 +68,7 @@ export function prefetchNamespaceModel({
   queryClient: QueryClient;
   view: Nullable<ResourceView>;
 }) {
-  const queryKey = getUseNamespaceModelQueryKey(namespaceId, modelId);
+  const queryKey = getUseNamespaceModelQueryKey(namespaceId, modelId, view);
 
   return queryClient.prefetchQuery({
     queryKey,

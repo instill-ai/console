@@ -1,7 +1,14 @@
-import { getQueryString } from "../../helper";
+import { getInstillAdditionalHeaders, getQueryString } from "../../helper";
 import { APIResource } from "../../main/resource";
+import { PipelineRun } from "../../vdp";
 import {
   ListCreditConsumptionChartRecordResponse,
+  ListModelTriggerCountRequest,
+  ListModelTriggerCountResponse,
+  ListModelTriggerMetricRequest,
+  ListModelTriggerMetricResponse,
+  ListPipelineRunsByRequesterRequest,
+  ListPipelineRunsByRequesterResponse,
   ListPipelineTriggerComputationTimeChartsRequest,
   ListPipelineTriggerComputationTimeChartsResponse,
   ListPipelineTriggerMetricRequest,
@@ -15,12 +22,12 @@ import {
 
 export class MetricClient extends APIResource {
   async listInstillCreditConsumptionTimeChart({
-    owner,
+    namespaceId,
     start,
     stop,
     aggregationWindow,
   }: {
-    owner: string;
+    namespaceId: string;
     start?: string;
     stop?: string;
     aggregationWindow?: string;
@@ -28,7 +35,7 @@ export class MetricClient extends APIResource {
     try {
       const queryString = getQueryString({
         baseURL: `/metrics/credit/charts`,
-        owner,
+        namespaceId,
         start: start ?? undefined,
         stop: stop ?? undefined,
         aggregationWindow: aggregationWindow ?? undefined,
@@ -40,6 +47,129 @@ export class MetricClient extends APIResource {
         );
 
       return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listModelTriggerMetric(
+    props: ListModelTriggerMetricRequest & {
+      enablePagination?: boolean;
+    },
+  ) {
+    const {
+      pageSize,
+      page,
+      filter,
+      enablePagination,
+      requesterId,
+      requesterUid,
+      start,
+    } = props;
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+    });
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/model-runs/query-charts`,
+        pageSize,
+        page,
+        filter,
+        requesterId,
+        start,
+      });
+
+      const response = await this._client.get<ListModelTriggerMetricResponse>(
+        queryString,
+        {
+          additionalHeaders,
+        },
+      );
+
+      if (enablePagination) {
+        return Promise.resolve(response);
+      }
+
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listModelTriggerCount(
+    request: ListModelTriggerCountRequest,
+  ): Promise<ListModelTriggerCountResponse> {
+    const { requesterId, start, stop } = request;
+
+    if (!requesterId) {
+      return Promise.reject(new Error("requesterId is required"));
+    }
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/model-runs/count?`,
+        requesterId,
+        start: start ?? undefined,
+        stop: stop ?? undefined,
+      });
+
+      const data =
+        await this._client.get<ListModelTriggerCountResponse>(queryString);
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listPipelineRunsByRequester(
+    props: ListPipelineRunsByRequesterRequest & { enablePagination: true },
+  ): Promise<ListPipelineRunsByRequesterResponse>;
+
+  async listPipelineRunsByRequester(
+    props: ListPipelineRunsByRequesterRequest & { enablePagination: false },
+  ): Promise<PipelineRun[]>;
+
+  async listPipelineRunsByRequester(
+    props: ListPipelineRunsByRequesterRequest & { enablePagination?: boolean },
+  ): Promise<ListPipelineRunsByRequesterResponse | PipelineRun[]> {
+    const {
+      pageSize,
+      page,
+      orderBy,
+      enablePagination,
+      requesterUid,
+      requesterId,
+      start,
+    } = props;
+
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+    });
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/dashboard/pipelines/runs`,
+        pageSize,
+        page,
+        orderBy,
+        requesterId,
+        start,
+      });
+
+      const data = await this._client.get<ListPipelineRunsByRequesterResponse>(
+        queryString,
+        {
+          additionalHeaders,
+        },
+      );
+
+      if (enablePagination) {
+        return Promise.resolve(data);
+      }
+
+      return Promise.resolve(data.pipelineRuns);
     } catch (error) {
       return Promise.reject(error);
     }

@@ -523,14 +523,14 @@ export const mgmtQueryKeyStore = {
   }: {
     namespaceIds: string[];
   }) {
-    return [namespaceIds.join(","), "remaining-instill-credit"];
+    return [namespaceIds.join(","), "namespaces-remaining-instill-credit"];
   },
   getUseGetNamespaceRemainingInstillCreditQueryKey({
     namespaceId,
   }: {
     namespaceId: Nullable<string>;
   }) {
-    return [namespaceId, "remaining-instill-credit"];
+    return [namespaceId, "namespace-remaining-instill-credit"];
   },
   getUseAPITokensQueryKey() {
     return ["tokens"];

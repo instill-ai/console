@@ -17,8 +17,8 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../lib";
+import { PipelineTriggersSummary } from "./activity/PipelineTriggersSummary";
 import { FilterByDay } from "./FilterByDay";
-import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 import { PipelineTriggersTable } from "./PipelineTriggersTable";
 
 const selector = (store: InstillStore) => ({
