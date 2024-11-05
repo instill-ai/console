@@ -23,6 +23,7 @@ import {
 } from "../../../../lib";
 import { getHumanReadableStringFromTime } from "../../../../server";
 import { TABLE_PAGE_SIZE } from "../../../pipeline/view-pipeline/constants";
+import { truncateName } from "../../../catalog";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -105,12 +106,12 @@ export const DashboardListPipeline = ({
         header: () => <div className="text-left">Run ID</div>,
         cell: ({ row }) => {
           return (
-            <div className="font-normal text-semantic-bg-secondary-secondary truncate">
+            <div className="font-normal text-semantic-bg-secondary-secondary">
               <Link
                 href={`/${targetNamespace?.id}/pipelines/${row.getValue("pipelineId")}/runs/${row.getValue("pipelineRunUid")}`}
-                className="text-semantic-accent-default hover:underline max-w-3"
+                className="text-semantic-accent-default hover:underline"
               >
-                {row.getValue("pipelineRunUid")}
+                {truncateName(row.getValue("pipelineRunUid"))}
               </Link>
             </div>
           );
