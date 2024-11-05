@@ -13,7 +13,7 @@
   "scripts": {
     "test": "vitest --run --passWithNoTests",
     "dev": "tsup --watch",
-    "dev-ts": "tsc --watch --emitDeclaration`Only",
+    "dev-ts": "tsc --watch --emitDeclarationOnly",
     "ts-type": "tsc --emitDeclarationOnly",
     "build": "tsup && pnpm ts-type",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --cache",

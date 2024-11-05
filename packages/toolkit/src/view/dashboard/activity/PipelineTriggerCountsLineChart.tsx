@@ -126,8 +126,11 @@ export const PipelineTriggerCountsLineChart = ({
         xAxis: {
           type: "category",
           data: xAxisData,
+          axisTick: {
+            length: 0,
+          },
           axisLabel: {
-            fontSize: "14px",
+            fontSize: "10px",
             fontFamily: "var(--font-ibm-plex-sans)",
             fontStyle: "normal",
             fontWeight: "500",
@@ -137,8 +140,11 @@ export const PipelineTriggerCountsLineChart = ({
         yAxis: {
           type: "value",
           minInterval: 1,
+          axisTick: {
+            length: 0,
+          },
           axisLabel: {
-            fontSize: "14px",
+            fontSize: "10px",
             fontFamily: "var(--font-ibm-plex-sans)",
             fontStyle: "normal",
             fontWeight: "500",
@@ -201,7 +207,8 @@ export const PipelineTriggerCountsLineChart = ({
                         </div>
                         <div className="self-stretch text-semantic-fg-secondary product-body-text-4-medium">
                           Select any pipeline from the table below to view the
-                          number of pipeline triggers within the last {selectedTimeOption.label}
+                          number of pipeline triggers within the last{" "}
+                          {selectedTimeOption.label}
                         </div>
                       </div>
                     </div>
