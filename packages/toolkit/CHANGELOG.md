@@ -1,5 +1,44 @@
 # Changelog
 
+## [0.110.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.109.0...@instill-ai/toolkit-v0.110.0) (2024-11-05)
+
+
+### Features
+
+* **catalog:** add notification while file is being deleted  ([#1584](https://github.com/instill-ai/console/issues/1584)) ([43d1d2e](https://github.com/instill-ai/console/commit/43d1d2e6d25deb57ef2ff72f1b3e32d733f93a01))
+* **catalog:** add Requester UID to example code in Ask and Retrieve pages  ([#1574](https://github.com/instill-ai/console/issues/1574)) ([4f7b837](https://github.com/instill-ai/console/commit/4f7b837e50896c146d0f2c0ca8a6318b913af7c4))
+* **catalog:** migrate API calls to sdk CatalogClient ([#1572](https://github.com/instill-ai/console/issues/1572)) ([a305c98](https://github.com/instill-ai/console/commit/a305c98bdb546f8f3e0d60ab1e4abb01eff84b83))
+* **integration:** add google-drive integration ([#1569](https://github.com/instill-ai/console/issues/1569)) ([09eee30](https://github.com/instill-ai/console/commit/09eee3011b74877fb8352a2450ef6858b9134212))
+* make the sdk e2e test mark every queryParam as required ([#1577](https://github.com/instill-ai/console/issues/1577)) ([99c16a2](https://github.com/instill-ai/console/commit/99c16a2b65716ebec8712300fa0fab98836b9b01))
+* remove vdp-sdk and rename it to sdk-helper ([#1568](https://github.com/instill-ai/console/issues/1568)) ([cfcd5ae](https://github.com/instill-ai/console/commit/cfcd5ae79ffe49a340ae0b7f2220067bc297d0df))
+* replace vdp-sdk/model with instill-sdk ([#1566](https://github.com/instill-ai/console/issues/1566)) ([014f3ae](https://github.com/instill-ai/console/commit/014f3ae71ed385c67fc887c6b19902a7a2150e00))
+* replace vdp-sdk/organization with instill-sdk ([#1564](https://github.com/instill-ai/console/issues/1564)) ([2742cc7](https://github.com/instill-ai/console/commit/2742cc721843d8232800a6e042e1a1a4100814fa))
+* retire name parameter in the pipeline related endpoint ([#1575](https://github.com/instill-ai/console/issues/1575)) ([533e757](https://github.com/instill-ai/console/commit/533e757117e532a596b4e05d432af79e4834a4a7))
+* retire name parameter of token related endpoints ([#1582](https://github.com/instill-ai/console/issues/1582)) ([0de03b3](https://github.com/instill-ai/console/commit/0de03b3db6efe09f2c6be3dc98635675eb442b88))
+* retire name parameter on credit related endpoint ([#1580](https://github.com/instill-ai/console/issues/1580)) ([d1e29b9](https://github.com/instill-ai/console/commit/d1e29b910b3dadd6137badbf342d9178896558f5))
+* retire name parameter on integration related endpoint ([#1581](https://github.com/instill-ai/console/issues/1581)) ([4b9c21a](https://github.com/instill-ai/console/commit/4b9c21a59427e38959f9fa317cbf5e3e835d055b))
+* revamp catalog sdk and its react-query ([#1578](https://github.com/instill-ai/console/issues/1578)) ([a8901bd](https://github.com/instill-ai/console/commit/a8901bda57d454cf812bda0973385d83fcee755c))
+* support document format for pipeline input and output ([#1586](https://github.com/instill-ai/console/issues/1586)) ([8f5c581](https://github.com/instill-ai/console/commit/8f5c581de18216c85b2388497145d529a3577f62))
+
+
+### Bug Fixes
+
+* **artifact:** fix Artifact File details markdown format ([#1570](https://github.com/instill-ai/console/issues/1570)) ([d67e6c0](https://github.com/instill-ai/console/commit/d67e6c0f2fd7953da8a6b36be115053f594bfbe9))
+* **catalog:** disable clone button if namespace is full ([#1592](https://github.com/instill-ai/console/issues/1592)) ([e8e33b3](https://github.com/instill-ai/console/commit/e8e33b30c3fba37b1901c417ff85ff266606a282))
+* **catalog:** fix remove floating tooltip from card ([#1573](https://github.com/instill-ai/console/issues/1573)) ([0824467](https://github.com/instill-ai/console/commit/0824467d97f57bf48b73d70301c38f9eb5ef0f52))
+* **catalog:** start file upload progress tracking immediately after uploading files  ([#1587](https://github.com/instill-ai/console/issues/1587)) ([0f57e88](https://github.com/instill-ai/console/commit/0f57e8842ce0563e11b650498b66c9dab9ba5345))
+* fix and adapt new dashboard endpoint ([#1594](https://github.com/instill-ai/console/issues/1594)) ([e043500](https://github.com/instill-ai/console/commit/e043500c9063cd8fcd91f366247fe4c0298923db))
+* fix cant clone pipeline from pipeline list page ([#1567](https://github.com/instill-ai/console/issues/1567)) ([d9945a9](https://github.com/instill-ai/console/commit/d9945a98709054dc76410e3cf3f0577932340c61))
+* fix list pipeline's query key is not present, and catalog fileUid issue ([#1588](https://github.com/instill-ai/console/issues/1588)) ([8cae285](https://github.com/instill-ai/console/commit/8cae285c0949ef9589aae23f8546981c4513daf0))
+* fix pipeline is new flag not present issue ([#1583](https://github.com/instill-ai/console/issues/1583)) ([fb4ebc1](https://github.com/instill-ai/console/commit/fb4ebc1e4aef9fa3f22e13d5bc7335f5add249b8))
+* fix pipeline preview is wrong when reference the component in the same iterator ([#1589](https://github.com/instill-ai/console/issues/1589)) ([48cde51](https://github.com/instill-ai/console/commit/48cde512a824f00e2acbd7ffe76218517299277b))
+
+
+### Miscellaneous
+
+* deprecate the vdp-sdk/metric in toolkit ([#1559](https://github.com/instill-ai/console/issues/1559)) ([8ca0ad9](https://github.com/instill-ai/console/commit/8ca0ad90ad6d6eed5442228c136e423a27eff99e))
+* retire vdp-sdk/operation ([#1565](https://github.com/instill-ai/console/issues/1565)) ([0cc858a](https://github.com/instill-ai/console/commit/0cc858ad1d995778c3e6b5bb9067566a36bb9051))
+
 ## [0.109.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.108.0...@instill-ai/toolkit-v0.109.0) (2024-10-24)
 
 

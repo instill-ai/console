@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.62.0-beta](https://github.com/instill-ai/console/compare/v0.61.0-beta...v0.62.0-beta) (2024-11-05)
+
+
+### Features
+
+* **catalog:** migrate API calls to sdk CatalogClient ([#1572](https://github.com/instill-ai/console/issues/1572)) ([a305c98](https://github.com/instill-ai/console/commit/a305c98bdb546f8f3e0d60ab1e4abb01eff84b83))
+* **integration:** add google-drive integration ([#1569](https://github.com/instill-ai/console/issues/1569)) ([09eee30](https://github.com/instill-ai/console/commit/09eee3011b74877fb8352a2450ef6858b9134212))
+* make the sdk e2e test mark every queryParam as required ([#1577](https://github.com/instill-ai/console/issues/1577)) ([99c16a2](https://github.com/instill-ai/console/commit/99c16a2b65716ebec8712300fa0fab98836b9b01))
+* replace vdp-sdk/model with instill-sdk ([#1566](https://github.com/instill-ai/console/issues/1566)) ([014f3ae](https://github.com/instill-ai/console/commit/014f3ae71ed385c67fc887c6b19902a7a2150e00))
+* retire name parameter in the pipeline related endpoint ([#1575](https://github.com/instill-ai/console/issues/1575)) ([533e757](https://github.com/instill-ai/console/commit/533e757117e532a596b4e05d432af79e4834a4a7))
+
+
+### Bug Fixes
+
+* fix and adapt new dashboard endpoint ([#1594](https://github.com/instill-ai/console/issues/1594)) ([e043500](https://github.com/instill-ai/console/commit/e043500c9063cd8fcd91f366247fe4c0298923db))
+
+
+### Miscellaneous
+
+* **component:** rename restapi component to http component ([#1579](https://github.com/instill-ai/console/issues/1579)) ([be56f33](https://github.com/instill-ai/console/commit/be56f333efbd1fb0f5bc089e1b427c9a05b03ffe))
+
 ## [0.61.0-beta](https://github.com/instill-ai/console/compare/v0.60.0-beta...v0.61.0-beta) (2024-10-24)
 
 

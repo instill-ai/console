@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.83.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.82.1...@instill-ai/design-system-v0.83.0) (2024-11-05)
+
+
+### Features
+
+* **design-system:** feat add slider  ([#1571](https://github.com/instill-ai/console/issues/1571)) ([8e3e655](https://github.com/instill-ai/console/commit/8e3e655772e6814b9b05f689f2b8db695417d2ab))
+
 ## [0.82.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.82.0...@instill-ai/design-system-v0.82.1) (2024-10-24)
 
 
