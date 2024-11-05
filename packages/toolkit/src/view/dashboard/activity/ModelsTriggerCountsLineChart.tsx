@@ -19,6 +19,7 @@ import {
   Icons,
   Tooltip as InstillTooltip,
   SelectOption,
+  Skeleton,
 } from "@instill-ai/design-system";
 
 import { generateModelTriggerChartRecordData } from "../../../lib";
@@ -108,8 +109,41 @@ export const ModelsTriggerCountsLineChart = ({
 
         <div className="w-full h-[400px]">
           {isLoading ? (
-            <div className="w-full h-full flex items-center justify-center text-semantic-fg-disabled italic">
-              Loading...
+            <div className="flex w-full h-full p-8">
+              <div className="flex grow flex-col gap-y-8">
+                <div className="flex flex-col gap-y-4">
+                  <Skeleton className="h-8 w-60 rounded" />
+                  <Skeleton className="h-4 w-40 rounded" />
+                </div>
+
+                <div className="grow flex flex-col gap-y-4">
+                  <div className="flex flex-row h-full">
+                    <div className="flex flex-col justify-between w-12 pr-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Skeleton key={i} className="h-4 w-8 rounded" />
+                      ))}
+                    </div>
+
+                    <div className="grow relative">
+                      <div className="absolute inset-0 flex flex-col justify-between">
+                        {[...Array(5)].map((_, i) => (
+                          <Skeleton
+                            key={i}
+                            className="h-[1px] w-full opacity-20"
+                          />
+                        ))}
+                      </div>
+                      <Skeleton className="absolute inset-x-0 top-1/2 h-[2px] w-full" />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between mt-2">
+                    {[...Array(6)].map((_, i) => (
+                      <Skeleton key={i} className="h-4 w-16 rounded" />
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           ) : models.length === 0 ? (
             <div className="w-full h-full flex flex-col items-center justify-center">
