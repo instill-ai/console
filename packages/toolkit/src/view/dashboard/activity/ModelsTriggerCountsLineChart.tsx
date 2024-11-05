@@ -2,21 +2,27 @@
 
 import * as React from "react";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
-import { Icons, SelectOption, Tooltip as InstillTooltip } from "@instill-ai/design-system";
-import { generateModelTriggerChartRecordData } from "../../../lib";
-import { ModelTriggersSummary } from "./ModelTriggersSummary";
-import {
   ModelTriggersStatusSummary,
   ModelTriggerTableRecord,
   Nullable,
 } from "instill-sdk";
+import {
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+
+import {
+  Icons,
+  Tooltip as InstillTooltip,
+  SelectOption,
+} from "@instill-ai/design-system";
+
+import { generateModelTriggerChartRecordData } from "../../../lib";
+import { ModelTriggersSummary } from "./ModelTriggersSummary";
 
 type ModelsTriggerCountsLineChartProps = {
   models: ModelTriggerTableRecord[];
@@ -33,7 +39,7 @@ export const ModelsTriggerCountsLineChart = ({
 }: ModelsTriggerCountsLineChartProps) => {
   const { xAxis, yAxis } = React.useMemo(
     () => generateModelTriggerChartRecordData(models, selectedTimeOption.value),
-    [models, selectedTimeOption.value]
+    [models, selectedTimeOption.value],
   );
 
   const chartData = React.useMemo(() => {
@@ -154,18 +160,37 @@ export const ModelsTriggerCountsLineChart = ({
                   formatter={(value: number, name: string) => {
                     return [
                       <div key={name} style={{ padding: "5px" }}>
-                        <div style={{ color: "var(--semantic-fg-disabled)", fontSize: "12px", lineHeight: "16px" }}>
+                        <div
+                          style={{
+                            color: "var(--semantic-fg-disabled)",
+                            fontSize: "12px",
+                            lineHeight: "16px",
+                          }}
+                        >
                           {name}
                         </div>
                         <div style={{ display: "flex", alignItems: "center" }}>
-                          <span style={{ color: "var(--semantic-fg-secondary)", fontSize: "14px", lineHeight: "20px" }}>
+                          <span
+                            style={{
+                              color: "var(--semantic-fg-secondary)",
+                              fontSize: "14px",
+                              lineHeight: "20px",
+                            }}
+                          >
                             All model triggers&nbsp;
                           </span>
-                          <span style={{ color: "var(--semantic-fg-primary)", fontSize: "14px", lineHeight: "20px", fontWeight: 600 }}>
+                          <span
+                            style={{
+                              color: "var(--semantic-fg-primary)",
+                              fontSize: "14px",
+                              lineHeight: "20px",
+                              fontWeight: 600,
+                            }}
+                          >
                             {value}
                           </span>
                         </div>
-                      </div>
+                      </div>,
                     ];
                   }}
                 />

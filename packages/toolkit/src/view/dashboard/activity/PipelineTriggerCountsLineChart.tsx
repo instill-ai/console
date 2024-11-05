@@ -1,21 +1,27 @@
 "use client";
 
 import * as React from "react";
+import { Nullable, PipelinesChart } from "instill-sdk";
 import {
-  LineChart,
   Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
-  ResponsiveContainer,
 } from "recharts";
-import { Icons, SelectOption, Tooltip as InstillTooltip } from "@instill-ai/design-system";
+
+import {
+  Icons,
+  Tooltip as InstillTooltip,
+  SelectOption,
+} from "@instill-ai/design-system";
+
 import {
   generatePipelineChartData,
   PipelineTriggersStatusSummary,
 } from "../../../lib";
 import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
-import { Nullable, PipelinesChart } from "instill-sdk";
 
 type PipelineTriggerCountsLineChartProps = {
   pipelines: PipelinesChart[];
@@ -32,7 +38,7 @@ export const PipelineTriggerCountsLineChart = ({
 }: PipelineTriggerCountsLineChartProps) => {
   const { xAxis, yAxis } = generatePipelineChartData(
     pipelines,
-    selectedTimeOption.value
+    selectedTimeOption.value,
   );
 
   const chartData = React.useMemo(() => {
@@ -40,8 +46,14 @@ export const PipelineTriggerCountsLineChart = ({
       const dataPoint: Record<string, string | number> = { name: date };
       yAxis.forEach((series, seriesIndex) => {
         const pipeline = pipelines[seriesIndex];
-        if (pipeline && series && typeof series === 'object' && 'data' in series) {
-          dataPoint[pipeline.pipelineId] = (series.data as number[])[dateIndex] ?? 0;
+        if (
+          pipeline &&
+          series &&
+          typeof series === "object" &&
+          "data" in series
+        ) {
+          dataPoint[pipeline.pipelineId] =
+            (series.data as number[])[dateIndex] ?? 0;
         }
       });
       return dataPoint;
@@ -49,11 +61,11 @@ export const PipelineTriggerCountsLineChart = ({
   }, [xAxis, yAxis, pipelines]);
 
   const colors = React.useMemo(() => {
-    return yAxis.map(series => {
-      if (series && typeof series === 'object' && 'itemStyle' in series) {
-        return (series.itemStyle as { color?: string })?.color || '#3B82F6';
+    return yAxis.map((series) => {
+      if (series && typeof series === "object" && "itemStyle" in series) {
+        return (series.itemStyle as { color?: string })?.color || "#3B82F6";
       }
-      return '#3B82F6';
+      return "#3B82F6";
     });
   }, [yAxis]);
 
@@ -168,18 +180,37 @@ export const PipelineTriggerCountsLineChart = ({
                   formatter={(value: number, name: string) => {
                     return [
                       <div key={name} style={{ padding: "5px" }}>
-                        <div style={{ color: "var(--semantic-fg-disabled)", fontSize: "12px", lineHeight: "16px" }}>
+                        <div
+                          style={{
+                            color: "var(--semantic-fg-disabled)",
+                            fontSize: "12px",
+                            lineHeight: "16px",
+                          }}
+                        >
                           {name}
                         </div>
                         <div style={{ display: "flex", alignItems: "center" }}>
-                          <span style={{ color: "var(--semantic-fg-secondary)", fontSize: "14px", lineHeight: "20px" }}>
+                          <span
+                            style={{
+                              color: "var(--semantic-fg-secondary)",
+                              fontSize: "14px",
+                              lineHeight: "20px",
+                            }}
+                          >
                             All pipeline triggers&nbsp;
                           </span>
-                          <span style={{ color: "var(--semantic-fg-primary)", fontSize: "14px", lineHeight: "20px", fontWeight: 600 }}>
+                          <span
+                            style={{
+                              color: "var(--semantic-fg-primary)",
+                              fontSize: "14px",
+                              lineHeight: "20px",
+                              fontWeight: 600,
+                            }}
+                          >
                             {value}
                           </span>
                         </div>
-                      </div>
+                      </div>,
                     ];
                   }}
                 />
