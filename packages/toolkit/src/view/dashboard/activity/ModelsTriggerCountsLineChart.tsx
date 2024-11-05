@@ -1,14 +1,26 @@
 "use client";
 
 import * as React from "react";
-import * as echarts from "echarts";
 import {
   ModelTriggersStatusSummary,
   ModelTriggerTableRecord,
   Nullable,
 } from "instill-sdk";
+import {
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
-import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
+import {
+  Icons,
+  Tooltip as InstillTooltip,
+  SelectOption,
+  Skeleton,
+} from "@instill-ai/design-system";
 
 import { generateModelTriggerChartRecordData } from "../../../lib";
 import { ModelTriggersSummary } from "./ModelTriggersSummary";
@@ -20,159 +32,23 @@ type ModelsTriggerCountsLineChartProps = {
   modelTriggersSummary: Nullable<ModelTriggersStatusSummary>;
 };
 
-/* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
-function selectGraph(params: any, myChart: echarts.ECharts): void {
-  myChart.dispatchAction({
-    type: "legendSelect",
-    // legend name
-    name: params.name as string,
-  });
-}
-
-/* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
-function unselectGraph(params: any, myChart: echarts.ECharts): void {
-  for (const legend in params.selected) {
-    if (legend !== params.name) {
-      myChart.dispatchAction({
-        type: "legendUnSelect",
-        // legend name
-        name: legend,
-      });
-    }
-  }
-}
-
 export const ModelsTriggerCountsLineChart = ({
   isLoading,
   models,
   selectedTimeOption,
   modelTriggersSummary,
 }: ModelsTriggerCountsLineChartProps) => {
-  const chartRef = React.useRef<HTMLDivElement>(null);
   const { xAxis, yAxis } = React.useMemo(
     () => generateModelTriggerChartRecordData(models, selectedTimeOption.value),
     [models, selectedTimeOption.value],
   );
 
-  React.useEffect(() => {
-    if (chartRef.current) {
-      // Dispose the previous chart instance
-      echarts.dispose(chartRef.current); // eslint-disable-line
-      const myChart = echarts.init(chartRef.current, null, {
-        renderer: "svg",
-      }); // eslint-disable-line
-      const option = {
-        grid: {
-          left: "50px",
-          right: "50px",
-          top: 10,
-          bottom: 50,
-        },
-        graphic: {
-          type: "image",
-          style: {
-            image: "/images/no-chart-placeholder.svg",
-            x: "45%",
-            y: "0%",
-            width: models.length === 0 ? 225 : 0,
-            height: models.length === 0 ? 225 : 0,
-          },
-        },
-        animation: false,
-        title: {
-          show: models.length === 0,
-          textStyle: {
-            color: "#1D2433A6",
-            fontSize: 14,
-            fontWeight: 500,
-            fontFamily: "var(--font-ibm-plex-sans)",
-            fontStyle: "italic",
-          },
-          text: isLoading ? "Loading..." : "No models have been triggered yet",
-          left: `${isLoading ? "49.5%" : "44.5%"}`,
-          bottom: 100,
-        },
-        tooltip: {
-          trigger: "item",
-          tiggerOn: "click",
-          backgroundColor: "white",
-          borderColor: "transparent",
-          textStyle: {
-            color: "var(--semantic-fg-primary)",
-          },
-          /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
-          formatter: function (params: any) {
-            const triggerTime = params.name;
-            const computeTimeDuration = params.value;
-            return `
-              <div class="Content" style="padding: 5px; background: white; border-radius: 4px; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex">
-                <div class="TextAndSupportingText" style="border-radius: 8px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 4px; display: flex">
-                  <div class="Date product-body-text-4-medium" style="color: var(--semantic-fg-disabled); font-size: 12px; line-height: 16px; word-wrap: break-word">${triggerTime}</div>
-                  <div style="display: flex; align-items: center; white-space: nowrap;">
-                    <span class="PipelineId product-body-text-3-regular" style="color: var(--semantic-fg-secondary); font-size: 14px; line-height: 20px;">
-                      All model triggers&nbsp;
-                    </span>
-                    <span class="Number product-body-text-3-semibold" style="color: var(--semantic-fg-primary); font-size: 14px; line-height: 20px;">${computeTimeDuration}</span>
-                  </div>
-                </div>
-              </div>
-            `;
-          },
-        },
-        xAxis: {
-          type: "category",
-          data: xAxis,
-          axisLabel: {
-            fontSize: "10px",
-            fontFamily: "var(--font-ibm-plex-sans)",
-            fontStyle: "normal",
-            fontWeight: "500",
-            color: "#6B7280",
-          },
-        },
-        yAxis: {
-          type: "value",
-          minInterval: 1,
-          axisLabel: {
-            fontSize: "10px",
-            fontFamily: "var(--font-ibm-plex-sans)",
-            fontStyle: "normal",
-            fontWeight: "500",
-            color: "#6B7280",
-          },
-        },
-        series: [
-          {
-            name: "Model Triggers",
-            type: "line",
-            smooth: true,
-            data: yAxis,
-            symbol: "circle",
-            symbolSize: 8,
-            itemStyle: {
-              borderColor: "white",
-              borderWidth: 2,
-            },
-          },
-        ],
-      };
-
-      myChart.setOption(option, true);
-
-      /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
-      myChart.on("legendselectchanged", function (params: any) {
-        const selected = Object.values(params.selected);
-        if (selected.filter((select) => !select).length === selected.length) {
-          myChart.dispatchAction({
-            type: "legendAllSelect",
-          });
-        } else {
-          selectGraph(params, myChart);
-          unselectGraph(params, myChart);
-        }
-      });
-    }
-  }, [isLoading, xAxis, yAxis, models]);
+  const chartData = React.useMemo(() => {
+    return xAxis.map((date, index) => ({
+      name: date,
+      value: yAxis[index] || 0,
+    }));
+  }, [xAxis, yAxis]);
 
   return (
     <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">
@@ -182,18 +58,18 @@ export const ModelsTriggerCountsLineChart = ({
             <div className="text-semantic-fg-primary product-headings-heading-2">
               Number of model triggers
             </div>
-            <Tooltip.Provider>
-              <Tooltip.Root>
-                <Tooltip.Trigger asChild>
+            <InstillTooltip.Provider>
+              <InstillTooltip.Root>
+                <InstillTooltip.Trigger asChild>
                   <div className="relative h-4 w-4">
                     <Icons.AlertCircle className="h-4 w-4 stroke-semantic-fg-primary" />
                   </div>
-                </Tooltip.Trigger>
-                <Tooltip.Portal>
-                  <Tooltip.Content
+                </InstillTooltip.Trigger>
+                <InstillTooltip.Portal>
+                  <InstillTooltip.Content
                     className="rounded-sm"
                     sideOffset={5}
-                    side={"right"}
+                    side="right"
                   >
                     <div className="inline-flex w-80 flex-col items-start justify-start rounded-sm bg-semantic-bg-primary p-3">
                       <div className="flex flex-col items-start justify-start gap-1 self-stretch">
@@ -207,39 +83,168 @@ export const ModelsTriggerCountsLineChart = ({
                         </div>
                       </div>
                     </div>
-                    <Tooltip.Arrow
+                    <InstillTooltip.Arrow
                       className="fill-semantic-bg-primary"
                       offset={10}
                       width={9}
                       height={6}
                     />
-                  </Tooltip.Content>
-                </Tooltip.Portal>
-              </Tooltip.Root>
-            </Tooltip.Provider>
+                  </InstillTooltip.Content>
+                </InstillTooltip.Portal>
+              </InstillTooltip.Root>
+            </InstillTooltip.Provider>
           </div>
         </div>
-        {/* Status */}
+
         <div className="px-8 pb-8 w-full">
           <ModelTriggersSummary>
             <ModelTriggersSummary.Card
-              summary={
-                modelTriggersSummary ? modelTriggersSummary.completed : null
-              }
+              summary={modelTriggersSummary?.completed ?? null}
             />
             <ModelTriggersSummary.Card
-              summary={
-                modelTriggersSummary ? modelTriggersSummary.errored : null
-              }
+              summary={modelTriggersSummary?.errored ?? null}
             />
           </ModelTriggersSummary>
         </div>
-        <div
-          id="main"
-          ref={chartRef}
-          style={{ width: "100%", height: "400px", paddingLeft: "0px" }}
-          className="!p-0"
-        />
+
+        <div className="w-full h-[400px]">
+          {isLoading ? (
+            <div className="flex w-full h-full p-8">
+              <div className="flex grow flex-col gap-y-8">
+                <div className="flex flex-col gap-y-4">
+                  <Skeleton className="h-8 w-60 rounded" />
+                  <Skeleton className="h-4 w-40 rounded" />
+                </div>
+
+                <div className="grow flex flex-col gap-y-4">
+                  <div className="flex flex-row h-full">
+                    <div className="flex flex-col justify-between w-12 pr-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Skeleton key={i} className="h-4 w-8 rounded" />
+                      ))}
+                    </div>
+
+                    <div className="grow relative">
+                      <div className="absolute inset-0 flex flex-col justify-between">
+                        {[...Array(5)].map((_, i) => (
+                          <Skeleton
+                            key={i}
+                            className="h-[1px] w-full opacity-20"
+                          />
+                        ))}
+                      </div>
+                      <Skeleton className="absolute inset-x-0 top-1/2 h-[2px] w-full" />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between mt-2">
+                    {[...Array(6)].map((_, i) => (
+                      <Skeleton key={i} className="h-4 w-16 rounded" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : models.length === 0 ? (
+            <div className="w-full h-full flex flex-col items-center justify-center">
+              <img
+                src="/images/no-chart-placeholder.svg"
+                alt="No data"
+                className="w-56 h-56"
+              />
+              <p className="text-semantic-fg-disabled italic mt-4">
+                No models have been triggered yet
+              </p>
+            </div>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={chartData}
+                margin={{ top: 10, right: 20, left: 0, bottom: 10 }}
+              >
+                <XAxis
+                  dataKey="name"
+                  tick={{
+                    fontSize: 10,
+                    fontFamily: "var(--font-ibm-plex-sans)",
+                    fill: "#6B7280",
+                  }}
+                  axisLine={{ stroke: "#E5E7EB" }}
+                  tickLine={false}
+                />
+                <YAxis
+                  tick={{
+                    fontSize: 10,
+                    fontFamily: "var(--font-ibm-plex-sans)",
+                    fill: "#6B7280",
+                  }}
+                  axisLine={{ stroke: "#E5E7EB" }}
+                  tickLine={false}
+                  allowDecimals={false}
+                  interval="preserveStart"
+                />
+                <Tooltip
+                  trigger="click"
+                  contentStyle={{
+                    backgroundColor: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                    padding: "5px",
+                  }}
+                  formatter={(value: number, name: string) => {
+                    return [
+                      <div key={name} style={{ padding: "5px" }}>
+                        <div
+                          style={{
+                            color: "var(--semantic-fg-disabled)",
+                            fontSize: "12px",
+                            lineHeight: "16px",
+                          }}
+                        >
+                          {name}
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <span
+                            style={{
+                              color: "var(--semantic-fg-secondary)",
+                              fontSize: "14px",
+                              lineHeight: "20px",
+                            }}
+                          >
+                            All model triggers&nbsp;
+                          </span>
+                          <span
+                            style={{
+                              color: "var(--semantic-fg-primary)",
+                              fontSize: "14px",
+                              lineHeight: "20px",
+                              fontWeight: 600,
+                            }}
+                          >
+                            {value}
+                          </span>
+                        </div>
+                      </div>,
+                    ];
+                  }}
+                />
+                <Line
+                  type="linear"
+                  dataKey="value"
+                  stroke="#3B82F6"
+                  strokeWidth={2}
+                  dot={{
+                    r: 4,
+                    strokeWidth: 2,
+                    fill: "white",
+                    stroke: "#3B82F6",
+                  }}
+                  activeDot={{ r: 6 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+        </div>
       </div>
     </div>
   );
