@@ -87,7 +87,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
         header: () => <div className="text-left">Model ID</div>,
         cell: ({ row }) => {
           return (
-            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+            <div className="font-normal text-semantic-bg-secondary-secondary truncate">
               <Link
                 href={`/${targetNamespace?.id}/models/${row.getValue("modelId")}`}
                 className="text-semantic-accent-default hover:underline"
@@ -103,7 +103,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
         header: () => <div className="text-left">Run ID</div>,
         cell: ({ row }) => {
           return (
-            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+            <div className="font-normal text-semantic-bg-secondary-secondary truncate">
               <Link
                 href={`/${targetNamespace?.id}/models/${row.getValue("modelId")}/runs/${row.getValue("uid")}`}
                 className="text-semantic-accent-default hover:underline max-w-3"
@@ -144,7 +144,11 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
           const sourceValue = row.getValue("source") as string;
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-              {sourceValue === "RUN_SOURCE_CONSOLE" ? "Web" : sourceValue === "RUN_SOURCE_API" ? "API" : sourceValue}
+              {sourceValue === "RUN_SOURCE_CONSOLE"
+                ? "Web"
+                : sourceValue === "RUN_SOURCE_API"
+                  ? "API"
+                  : sourceValue}
             </div>
           );
         },
@@ -184,9 +188,9 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
             <div className="font-normal text-semantic-bg-secondary-alt-primary">
               {createTime
                 ? getHumanReadableStringFromTime(
-                  createTime as string,
-                  Date.now(),
-                )
+                    createTime as string,
+                    Date.now(),
+                  )
                 : "-"}
             </div>
           );

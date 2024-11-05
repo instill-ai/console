@@ -2,8 +2,14 @@
 
 import * as React from "react";
 import * as echarts from "echarts";
-import { ModelTriggersStatusSummary, ModelTriggerTableRecord, Nullable } from "instill-sdk";
+import {
+  ModelTriggersStatusSummary,
+  ModelTriggerTableRecord,
+  Nullable,
+} from "instill-sdk";
+
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
+
 import { generateModelTriggerChartRecordData } from "../../../lib";
 import { ModelTriggersSummary } from "./ModelTriggersSummary";
 
@@ -43,9 +49,9 @@ export const ModelsTriggerCountsLineChart = ({
   modelTriggersSummary,
 }: ModelsTriggerCountsLineChartProps) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
-  const { xAxis, yAxis } = React.useMemo(() =>
-    generateModelTriggerChartRecordData(models, selectedTimeOption.value),
-    [models, selectedTimeOption.value]
+  const { xAxis, yAxis } = React.useMemo(
+    () => generateModelTriggerChartRecordData(models, selectedTimeOption.value),
+    [models, selectedTimeOption.value],
   );
 
   React.useEffect(() => {
@@ -117,7 +123,7 @@ export const ModelsTriggerCountsLineChart = ({
           type: "category",
           data: xAxis,
           axisLabel: {
-            fontSize: "14px",
+            fontSize: "10px",
             fontFamily: "var(--font-ibm-plex-sans)",
             fontStyle: "normal",
             fontWeight: "500",
@@ -128,7 +134,7 @@ export const ModelsTriggerCountsLineChart = ({
           type: "value",
           minInterval: 1,
           axisLabel: {
-            fontSize: "14px",
+            fontSize: "10px",
             fontFamily: "var(--font-ibm-plex-sans)",
             fontStyle: "normal",
             fontWeight: "500",
@@ -196,7 +202,8 @@ export const ModelsTriggerCountsLineChart = ({
                         </div>
                         <div className="self-stretch text-semantic-fg-secondary product-body-text-4-medium">
                           Select any pipeline from the table below to view the
-                          number of model triggers within the last {selectedTimeOption.label}
+                          number of model triggers within the last{" "}
+                          {selectedTimeOption.label}
                         </div>
                       </div>
                     </div>

@@ -192,7 +192,6 @@ export const DashboardActivityPageMainView = () => {
     }));
   }, [triggeredModels.data, triggeredModels.isSuccess]);
 
-
   const triggeredPipelineList = React.useMemo<TriggeredPipeline[]>(() => {
     if (!triggeredPipelines.isSuccess) return [];
     return triggeredPipelines.data;
@@ -223,7 +222,11 @@ export const DashboardActivityPageMainView = () => {
   ]);
 
   const modelTriggersSummary = React.useMemo(() => {
-    if (!previousTriggeredModels.isSuccess || !modelsChart.isSuccess || !modelsChart.data.modelTriggerCounts) {
+    if (
+      !previousTriggeredModels.isSuccess ||
+      !modelsChart.isSuccess ||
+      !modelsChart.data.modelTriggerCounts
+    ) {
       return null;
     }
 
@@ -232,17 +235,19 @@ export const DashboardActivityPageMainView = () => {
     previousTriggeredModels.isSuccess,
     modelsChart.isSuccess,
     modelsChart.data?.modelTriggerCounts,
-    selectedTimeOption // Add this to ensure refetch on date change
+    selectedTimeOption, // Add this to ensure refetch on date change
   ]);
 
   return (
     <div className="flex flex-col">
-      <h1 className="product-headings-heading-4">Usage</h1>
-      <UsageSwitch
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        namespaceId={routeInfo.data.namespaceId}
-      />
+      <div className="flex flex-col gap-y-2">
+        <h1 className="product-headings-heading-4">Usage</h1>
+        <UsageSwitch
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          namespaceId={routeInfo.data.namespaceId}
+        />
+      </div>
       <ActivityTab
         pipelinesChart={pipelinesChart}
         modelsChart={modelsChart}

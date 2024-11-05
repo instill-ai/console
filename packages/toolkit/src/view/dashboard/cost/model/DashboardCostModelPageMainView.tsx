@@ -21,12 +21,14 @@ export const DashboardCostModelPageMainView = () => {
 
   return (
     <div className="flex flex-col">
-      <h1 className="product-headings-heading-4 mb-2">Usage</h1>
-      <UsageSwitch
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        namespaceId={routeInfo.data.namespaceId}
-      />
+      <div className="flex flex-col gap-y-2">
+        <h1 className="product-headings-heading-4">Usage</h1>
+        <UsageSwitch
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          namespaceId={routeInfo.data.namespaceId}
+        />
+      </div>
       <CostTab
         selectedTimeOption={selectedTimeOption}
         setSelectedTimeOption={setSelectedTimeOption}

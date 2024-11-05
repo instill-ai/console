@@ -100,21 +100,19 @@ export const CostTab = ({
         <div className="flex space-x-3">
           <Popover.Root>
             <Popover.Trigger asChild>
-              <button className="flex flex-row gap-x-2 rounded border border-semantic-bg-line bg-semantic-bg-primary px-4 py-3 text-semantic-fg-primary product-button-button-1">
+              <button className="flex h-10 flex-row gap-x-2 rounded border border-semantic-bg-line bg-semantic-bg-primary px-4 py-3 text-semantic-fg-primary product-button-button-1">
                 {options.find((o) => o.value === costView)?.label}
                 <Icons.ChevronDown className="my-auto h-4 w-4 stroke-semantic-fg-primary" />
               </button>
             </Popover.Trigger>
             <Popover.Content
               align="start"
-              className="flex w-48 flex-col !px-0 py-1"
+              className="flex !w-48 flex-col !px-0 py-1"
             >
               {options.map((option) => (
                 <button
                   key={option.value}
-                  className={`flex items-center p-2 hover:bg-semantic-bg-line ${
-                    costView === option.value ? "bg-semantic-bg-line" : ""
-                  }`}
+                  className="flex flex-row items-center px-4 py-[9px] hover:bg-semantic-bg-base-bg"
                   onClick={() => {
                     router.push(
                       `/${selectedNamespace}/dashboard/cost/${option.value}`,

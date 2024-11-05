@@ -89,7 +89,7 @@ export const DashboardListPipeline = ({
         header: () => <div className="text-left">Pipeline ID</div>,
         cell: ({ row }) => {
           return (
-            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+            <div className="font-normal text-semantic-bg-secondary-secondary truncate">
               <Link
                 href={`/${targetNamespace?.id}/pipelines/${row.getValue("pipelineId")}`}
                 className="text-semantic-accent-default hover:underline"
@@ -105,9 +105,9 @@ export const DashboardListPipeline = ({
         header: () => <div className="text-left">Run ID</div>,
         cell: ({ row }) => {
           return (
-            <div className="font-normal text-semantic-bg-secondary-secondary break-all">
+            <div className="font-normal text-semantic-bg-secondary-secondary truncate">
               <Link
-                href={`/${targetNamespace?.id}/pipelines/${row.getValue("pipelines")}/runs/${row.getValue("pipelineRunUid")}`}
+                href={`/${targetNamespace?.id}/pipelines/${row.getValue("pipelineId")}/runs/${row.getValue("pipelineRunUid")}`}
                 className="text-semantic-accent-default hover:underline max-w-3"
               >
                 {row.getValue("pipelineRunUid")}
@@ -146,7 +146,11 @@ export const DashboardListPipeline = ({
           const sourceValue = row.getValue("source") as string;
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary break-all">
-              {sourceValue === "RUN_SOURCE_CONSOLE" ? "Web" : sourceValue === "RUN_SOURCE_API" ? "API" : sourceValue}
+              {sourceValue === "RUN_SOURCE_CONSOLE"
+                ? "Web"
+                : sourceValue === "RUN_SOURCE_API"
+                  ? "API"
+                  : sourceValue}
             </div>
           );
         },
