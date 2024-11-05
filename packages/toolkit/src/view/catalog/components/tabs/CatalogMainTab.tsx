@@ -17,7 +17,6 @@ import {
   InstillStore,
   useCreateNamespaceCatalog,
   useInstillStore,
-  useListNamespaceCatalogs,
   useShallow,
   useUpdateNamespaceCatalog,
 } from "../../../../lib";
@@ -66,26 +65,12 @@ export const CatalogTab = ({
   const [selectedSortAnchor, setSelectedSortAnchor] =
     React.useState<SortAnchor>("createTime");
 
-  const { enabledQuery, selectedNamespace } = useInstillStore(
-    useShallow(selector),
-  );
+  const { selectedNamespace } = useInstillStore(useShallow(selector));
 
   const createCatalog = useCreateNamespaceCatalog();
   const updateCatalog = useUpdateNamespaceCatalog();
   const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
   const isTeamPlan = subscription?.plan === "PLAN_TEAM";
-
-  const catalogState = useListNamespaceCatalogs({
-    accessToken,
-    namespaceId: selectedNamespace ?? null,
-    enabled: enabledQuery && !!selectedNamespace,
-  });
-
-  React.useEffect(() => {
-    if (selectedNamespace) {
-      catalogState.refetch();
-    }
-  }, [selectedNamespace, catalogState.refetch, catalogState]);
 
   const handleCreateCatalogSubmit = async (
     data: z.infer<typeof CreateCatalogFormSchema>,
@@ -104,7 +89,6 @@ export const CatalogTab = ({
         payload,
         accessToken,
       });
-      catalogState.refetch();
       setIsCreateDialogOpen(false);
     } catch (error) {
       console.error("Error creating catalog:", error);
@@ -129,7 +113,6 @@ export const CatalogTab = ({
         payload,
         accessToken,
       });
-      catalogState.refetch();
     } catch (error) {
       console.error("Error updating catalog:", error);
     }
@@ -153,7 +136,6 @@ export const CatalogTab = ({
         payload: clonedCatalog,
         accessToken,
       });
-      catalogState.refetch();
     } catch (error) {
       console.error("Error cloning catalog:", error);
     }
@@ -230,7 +212,7 @@ export const CatalogTab = ({
         />
       </div>
       <Separator orientation="horizontal" className="mb-6" />
-      {catalogState.isLoading ? (
+      {catalogs === null || catalogs === undefined ? (
         <div className="grid gap-16 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
