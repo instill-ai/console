@@ -45,6 +45,7 @@ const connectorDefinitionIds = [
   "collection",
   "universal-ai",
   "instill-app",
+  "google-drive",
 ];
 
 export const InstillYamlSchema = {
