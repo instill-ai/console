@@ -350,7 +350,7 @@ export const CloneCatalogDialog = ({
                   variant="primary"
                   type="submit"
                   className="text-semantic-fg-on-default"
-                  disabled={!formState.isValid || isSubmitting}
+                  disabled={!formState.isValid || isSubmitting || showLimitNotification}
                 >
                   {isSubmitting ? (
                     <LoadingSpin className="!text-semantic-fg-secondary" />
