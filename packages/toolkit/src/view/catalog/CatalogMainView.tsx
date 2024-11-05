@@ -2,9 +2,6 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Catalog, Nullable } from "instill-sdk";
-
-import { cn } from "@instill-ai/design-system";
 
 import {
   GeneralAppPageProp,
@@ -36,9 +33,12 @@ import {
   RetrieveTestTab,
   UploadExploreTab,
 } from "./components/tabs";
+import { cn } from "@instill-ai/design-system";
+import { Nullable, Catalog } from "instill-sdk";
 
 export type CatalogViewProps = GeneralAppPageProp & {
-  activeTab?: string;
+  activeTab: string;
+  catalogId?: string;
 };
 
 const selector = (store: InstillStore) => ({
@@ -48,20 +48,18 @@ const selector = (store: InstillStore) => ({
 });
 
 export const CatalogMainView = (props: CatalogViewProps) => {
-  const [selectedCatalog, setSelectedCatalog] =
-    React.useState<Nullable<Catalog>>(null);
-  const [activeTab, setActiveTab] = React.useState("catalogs");
+  const { catalogId, activeTab } = props;
+
+  const [selectedCatalog, setSelectedCatalog] = React.useState<Nullable<Catalog>>(null);
+  const [activeTabState, setActiveTab] = React.useState(activeTab || "upload");
   const [isProcessed, setIsProcessed] = React.useState(false);
   const [showCreditUsage, setShowCreditUsage] = React.useState(false);
-  const [creditUsageTimer, setCreditUsageTimer] =
-    React.useState<Nullable<NodeJS.Timeout>>(null);
+  const [creditUsageTimer, setCreditUsageTimer] = React.useState<Nullable<NodeJS.Timeout>>(null);
   const [showWarnDialog, setShowWarnDialog] = React.useState(false);
-  const [pendingTabChange, setPendingTabChange] =
-    React.useState<Nullable<string>>(null);
+  const [pendingTabChange, setPendingTabChange] = React.useState<Nullable<string>>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
   const [remainingStorageSpace, setRemainingStorageSpace] = React.useState(0);
-  const [namespaceType, setNamespaceType] =
-    React.useState<Nullable<"user" | "organization">>(null);
+  const [namespaceType, setNamespaceType] = React.useState<Nullable<"user" | "organization">>(null);
   const [isAutomaticTabChange, setIsAutomaticTabChange] = React.useState(false);
 
   const router = useRouter();
@@ -176,10 +174,9 @@ export const CatalogMainView = (props: CatalogViewProps) => {
       if (tab === "catalogs") {
         setSelectedCatalog(null);
       }
-      // Navigate to /catalog/[tab]
-      router.push(`/catalog/${tab}`, { scroll: false });
+      router.push(`/${selectedNamespace}/catalog/${catalogId}/${tab}`, { scroll: false });
     },
-    [router],
+    [router, selectedNamespace, catalogId],
   );
 
   const handleWarnDialogClose = async (): Promise<void> => {
@@ -215,8 +212,8 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   };
 
   const handleCatalogSelect = (catalog: Catalog) => {
-    handleTabChangeAttempt("upload");
     setSelectedCatalog(catalog);
+    router.push(`/${selectedNamespace}/catalog/${catalog.catalogId}/upload`, { scroll: false });
   };
 
   const handleDeleteCatalog = async (catalog: Catalog) => {
@@ -274,7 +271,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
         {selectedCatalog ? (
           <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
             <Sidebar
-              activeTab={activeTab}
+              activeTab={activeTabState}
               onTabChange={handleTabChangeAttempt}
               selectedCatalog={selectedCatalog}
               onDeselectCatalog={handleDeselectCatalog}
@@ -289,11 +286,11 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               : "col-span-12",
           )}
         >
-          {activeTab === "catalogs" && (
+          {activeTabState === "catalogs" && (
             <CatalogTab
               onCatalogSelect={handleCatalogSelect}
               onDeleteCatalog={handleDeleteCatalog}
-              accessToken={props.accessToken}
+              accessToken={accessToken}
               catalogs={catalogs.data || []}
               catalogLimit={catalogLimit}
               namespaceType={namespaceType}
@@ -301,7 +298,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
             />
           )}
-          {activeTab === "files" && selectedCatalog && (
+          {activeTabState === "files" && selectedCatalog && (
             <CatalogFilesTab
               catalog={selectedCatalog}
               onGoToUpload={handleGoToUpload}
@@ -312,7 +309,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
             />
           )}
-          {activeTab === "upload" && selectedCatalog && (
+          {activeTabState === "upload" && selectedCatalog && (
             <UploadExploreTab
               catalog={selectedCatalog}
               onProcessFile={handleProcessFile}
@@ -326,13 +323,13 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               selectedNamespace={selectedNamespace}
             />
           )}
-          {activeTab === "chunks" && selectedCatalog && (
+          {activeTabState === "chunks" && selectedCatalog && (
             <ChunkTab
               catalog={selectedCatalog}
               onGoToUpload={handleGoToUpload}
             />
           )}
-          {activeTab === "retrieve" && selectedCatalog && (
+          {activeTabState === "retrieve" && selectedCatalog && (
             <RetrieveTestTab
               catalog={selectedCatalog}
               isProcessed={isProcessed}
@@ -342,7 +339,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
             />
           )}
-          {activeTab === "ask_question" && selectedCatalog && (
+          {activeTabState === "ask_question" && selectedCatalog && (
             <AskQuestionTab
               catalog={selectedCatalog}
               isProcessed={isProcessed}
@@ -352,7 +349,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
             />
           )}
-          {activeTab === "get_catalog" && selectedCatalog && (
+          {activeTabState === "get_catalog" && selectedCatalog && (
             <GetCatalogTab
               catalog={selectedCatalog}
               isProcessed={isProcessed}

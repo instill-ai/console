@@ -29,6 +29,7 @@ export const CatalogPageRender = () => {
             enableQuery={accessToken.isSuccess}
             router={router}
             activeTab="catalogs"
+            catalogId={""}
           />
         </PageBase.Content>
       </PageBase.Container>
