@@ -80,6 +80,8 @@ export const CloneCatalogDialog = ({
   const [showLimitNotification, setShowLimitNotification] =
     React.useState(false);
   const [hasNamespaceChanged, setHasNamespaceChanged] = React.useState(false);
+  const [isCatalogLimitReached, setIsCatalogLimitReached] =
+    React.useState(false);
 
   const {
     accessToken,
@@ -160,12 +162,17 @@ export const CloneCatalogDialog = ({
       });
       setShowLimitNotification(false);
       setHasNamespaceChanged(false);
+      setIsCatalogLimitReached(false);
     }
   }, [isOpen, initialValues, navigationNamespaceAnchor, reset]);
 
   React.useEffect(() => {
     if (hasNamespaceChanged && catalogs.data && catalogLimit) {
-      setShowLimitNotification(catalogs.data.length >= catalogLimit);
+      const limitReached = catalogs.data.length >= catalogLimit;
+      setIsCatalogLimitReached(limitReached);
+      if (limitReached) {
+        setShowLimitNotification(true);
+      }
     }
   }, [catalogs.data, catalogLimit, hasNamespaceChanged]);
 
@@ -350,7 +357,9 @@ export const CloneCatalogDialog = ({
                   variant="primary"
                   type="submit"
                   className="text-semantic-fg-on-default"
-                  disabled={!formState.isValid || isSubmitting}
+                  disabled={
+                    !formState.isValid || isSubmitting || isCatalogLimitReached
+                  }
                 >
                   {isSubmitting ? (
                     <LoadingSpin className="!text-semantic-fg-secondary" />
