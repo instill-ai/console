@@ -145,7 +145,7 @@ export const ModelsTriggerCountsLineChart = ({
           {
             name: "Model Triggers",
             type: "line",
-            smooth: true,
+            smooth: false,
             data: yAxis,
             symbol: "circle",
             symbolSize: 8,
