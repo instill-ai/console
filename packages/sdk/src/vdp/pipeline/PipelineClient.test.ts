@@ -21,7 +21,7 @@ test("listAccessiblePipelines", async () => {
     pageSize: 10,
     pageToken: "pt",
     filter: "filter",
-    showDeleted: false,
+    showDeleted: true,
     visibility: "VISIBILITY_PUBLIC",
     orderBy: "order_by",
     view: "VIEW_FULL",
@@ -47,7 +47,7 @@ test("listNamespacePipelines", async () => {
     pageToken: "pt",
     view: "VIEW_FULL",
     filter: "filter",
-    showDeleted: false,
+    showDeleted: true,
     visibility: "VISIBILITY_PUBLIC",
     orderBy: "order_by",
   });

@@ -89,7 +89,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary truncate">
               <Link
-                href={`/${row.getValue("namespaceId")}/models/${row.getValue("modelId")}`}
+                href={`/${row.original.namespaceId}/models/${row.original.modelId}`}
                 className="text-semantic-accent-default hover:underline"
               >
                 {row.getValue("modelId")}
@@ -105,7 +105,7 @@ export const DashboardListModel = ({ start }: DashboardListModelProps) => {
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary truncate">
               <Link
-                href={`/${targetNamespace?.id}/models/${row.getValue("modelId")}/runs/${row.getValue("uid")}`}
+                href={`/${row.original.namespaceId}/models/${row.original.modelId}/runs/${row.original.uid}`}
                 className="text-semantic-accent-default hover:underline"
               >
                 {row.getValue("uid")}
