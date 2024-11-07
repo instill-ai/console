@@ -49,9 +49,6 @@ const selector = (store: InstillStore) => ({
 
 export const CatalogMainView = (props: CatalogViewProps) => {
   const { catalogId, activeTab } = props;
-
-  const [selectedCatalog, setSelectedCatalog] = React.useState<Nullable<Catalog>>(null);
-  const [activeTabState, setActiveTab] = React.useState(activeTab || "upload");
   const [isProcessed, setIsProcessed] = React.useState(false);
   const [showCreditUsage, setShowCreditUsage] = React.useState(false);
   const [creditUsageTimer, setCreditUsageTimer] = React.useState<Nullable<NodeJS.Timeout>>(null);
@@ -78,10 +75,10 @@ export const CatalogMainView = (props: CatalogViewProps) => {
 
   const filesData = useListNamespaceCatalogFiles({
     namespaceId: selectedNamespace ?? null,
-    catalogId: selectedCatalog?.catalogId ?? null,
+    catalogId: catalogId ?? null,
     accessToken,
     enabled:
-      enabledQuery && Boolean(selectedNamespace) && Boolean(selectedCatalog),
+      enabledQuery && Boolean(selectedNamespace) && Boolean(catalogId),
   });
 
   const userSub = useAuthenticatedUserSubscription({
@@ -119,7 +116,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   React.useEffect(() => {
     if (catalogs.data) {
       const totalUsed = catalogs.data.reduce(
-        (total, kb) => total + parseInt(String(kb.usedStorage)),
+        (total, kb) => total + parseInt(String(kb.usedStorage), 10),
         0,
       );
       setRemainingStorageSpace(
@@ -155,6 +152,13 @@ export const CatalogMainView = (props: CatalogViewProps) => {
     [subscriptionInfo.plan],
   );
 
+  const selectedCatalogMemo = React.useMemo(() => {
+    if (catalogId && catalogs.data) {
+      return catalogs.data.find((c) => c.catalogId === catalogId) || null;
+    }
+    return null;
+  }, [catalogId, catalogs.data]);
+
   const handleTabChangeAttempt = (
     tab: string,
     isAutomatic: boolean = false,
@@ -164,20 +168,13 @@ export const CatalogMainView = (props: CatalogViewProps) => {
       setShowWarnDialog(true);
       setPendingTabChange(tab);
     } else {
-      changeTab(tab);
+      if (tab === "catalogs") {
+        router.push(`/${selectedNamespace}/catalog`, { scroll: false });
+      } else {
+        router.push(`/${selectedNamespace}/catalog/${catalogId}/${tab}`, { scroll: false });
+      }
     }
   };
-
-  const changeTab = React.useCallback(
-    (tab: string) => {
-      setActiveTab(tab);
-      if (tab === "catalogs") {
-        setSelectedCatalog(null);
-      }
-      router.push(`/${selectedNamespace}/catalog/${catalogId}/${tab}`, { scroll: false });
-    },
-    [router, selectedNamespace, catalogId],
-  );
 
   const handleWarnDialogClose = async (): Promise<void> => {
     return new Promise((resolve) => {
@@ -190,7 +187,11 @@ export const CatalogMainView = (props: CatalogViewProps) => {
 
   const handleWarnDialogDiscard = () => {
     if (pendingTabChange) {
-      changeTab(pendingTabChange);
+      if (pendingTabChange === "catalogs") {
+        router.push(`/${selectedNamespace}/catalog`, { scroll: false });
+      } else {
+        router.push(`/${selectedNamespace}/catalog/${catalogId}/${pendingTabChange}`, { scroll: false });
+      }
     }
     setShowWarnDialog(false);
     setPendingTabChange(null);
@@ -212,7 +213,6 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   };
 
   const handleCatalogSelect = (catalog: Catalog) => {
-    setSelectedCatalog(catalog);
     router.push(`/${selectedNamespace}/catalog/${catalog.catalogId}/upload`, { scroll: false });
   };
 
@@ -225,9 +225,8 @@ export const CatalogMainView = (props: CatalogViewProps) => {
         catalogId: catalog.catalogId,
         accessToken,
       });
-      if (selectedCatalog?.catalogId === catalog.catalogId) {
-        setSelectedCatalog(null);
-        changeTab("catalogs");
+      if (catalogId === catalog.catalogId) {
+        handleTabChangeAttempt("catalogs");
       }
       catalogs.refetch();
     } catch (error) {
@@ -268,12 +267,12 @@ export const CatalogMainView = (props: CatalogViewProps) => {
         />
       ) : null}
       <div className="grid w-full grid-cols-12 gap-6 px-8">
-        {selectedCatalog ? (
+        {selectedCatalogMemo ? (
           <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
             <Sidebar
-              activeTab={activeTabState}
+              activeTab={activeTab}
               onTabChange={handleTabChangeAttempt}
-              selectedCatalog={selectedCatalog}
+              selectedCatalog={selectedCatalogMemo}
               onDeselectCatalog={handleDeselectCatalog}
             />
           </div>
@@ -281,12 +280,12 @@ export const CatalogMainView = (props: CatalogViewProps) => {
         <div
           className={cn(
             "pt-5",
-            selectedCatalog
+            selectedCatalogMemo
               ? "sm:col-span-8 md:col-span-9 lg:col-span-10"
               : "col-span-12",
           )}
         >
-          {activeTabState === "catalogs" && (
+          {activeTab === "catalogs" && (
             <CatalogTab
               onCatalogSelect={handleCatalogSelect}
               onDeleteCatalog={handleDeleteCatalog}
@@ -298,9 +297,9 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
             />
           )}
-          {activeTabState === "files" && selectedCatalog && (
+          {activeTab === "files" && selectedCatalogMemo && (
             <CatalogFilesTab
-              catalog={selectedCatalog}
+              catalog={selectedCatalogMemo}
               onGoToUpload={handleGoToUpload}
               remainingStorageSpace={remainingStorageSpace}
               updateRemainingSpace={updateRemainingSpace}
@@ -309,9 +308,9 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
             />
           )}
-          {activeTabState === "upload" && selectedCatalog && (
+          {activeTab === "upload" && selectedCatalogMemo && (
             <UploadExploreTab
-              catalog={selectedCatalog}
+              catalog={selectedCatalogMemo}
               onProcessFile={handleProcessFile}
               onTabChange={(tab) => handleTabChangeAttempt(tab, true)}
               setHasUnsavedChanges={setHasUnsavedChanges}
@@ -323,15 +322,15 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               selectedNamespace={selectedNamespace}
             />
           )}
-          {activeTabState === "chunks" && selectedCatalog && (
+          {activeTab === "chunks" && selectedCatalogMemo && (
             <ChunkTab
-              catalog={selectedCatalog}
+              catalog={selectedCatalogMemo}
               onGoToUpload={handleGoToUpload}
             />
           )}
-          {activeTabState === "retrieve" && selectedCatalog && (
+          {activeTab === "retrieve" && selectedCatalogMemo && (
             <RetrieveTestTab
-              catalog={selectedCatalog}
+              catalog={selectedCatalogMemo}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}
@@ -339,9 +338,9 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
             />
           )}
-          {activeTabState === "ask_question" && selectedCatalog && (
+          {activeTab === "ask_question" && selectedCatalogMemo && (
             <AskQuestionTab
-              catalog={selectedCatalog}
+              catalog={selectedCatalogMemo}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}
@@ -349,9 +348,9 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
             />
           )}
-          {activeTabState === "get_catalog" && selectedCatalog && (
+          {activeTab === "get_catalog" && selectedCatalogMemo && (
             <GetCatalogTab
-              catalog={selectedCatalog}
+              catalog={selectedCatalogMemo}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}

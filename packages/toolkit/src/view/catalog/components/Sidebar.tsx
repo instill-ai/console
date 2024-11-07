@@ -1,9 +1,6 @@
-// components/Sidebar.tsx
-
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
 import { Catalog, Nullable } from "instill-sdk";
 
 import { cn, Icons } from "@instill-ai/design-system";
@@ -21,16 +18,13 @@ export const Sidebar = ({
   selectedCatalog,
   onDeselectCatalog,
 }: SidebarProps) => {
-  const router = useRouter();
   const [isApiExpanded, setIsApiExpanded] = React.useState(false);
 
   const handleTabChange = (tab: string) => {
     if (tab === "catalogs") {
       onDeselectCatalog();
-      router.push(`/catalog`, { scroll: false });
     } else if (selectedCatalog) {
       onTabChange(tab);
-      router.push(`/catalog/${selectedCatalog.catalogId}/${tab}`, { scroll: false });
     }
   };
 

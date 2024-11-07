@@ -1,14 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { AppTopbar, CatalogMainView, NamespaceSwitch, PageBase } from "@instill-ai/toolkit";
 import { useAppAccessToken } from "~/lib/use-app-access-token";
 import { useAppTrackToken } from "~/lib/useAppTrackToken";
 
 export const CatalogTabPageRender = () => {
   const params = useParams();
-  const router = useRouter();
   const { id, tab } = params as { id: string; tab?: string[] };
   const activeTab = tab?.[0] || "upload";
 
@@ -22,7 +21,6 @@ export const CatalogTabPageRender = () => {
         <CatalogMainView
           accessToken={accessToken.isSuccess ? accessToken.data : null}
           enableQuery={accessToken.isSuccess}
-          router={router}
           activeTab={activeTab}
           catalogId={id}
         />
