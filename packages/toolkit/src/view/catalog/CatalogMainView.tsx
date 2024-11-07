@@ -2,6 +2,9 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import { Catalog, Nullable } from "instill-sdk";
+
+import { cn } from "@instill-ai/design-system";
 
 import {
   InstillStore,
@@ -32,8 +35,6 @@ import {
   RetrieveTestTab,
   UploadExploreTab,
 } from "./components/tabs";
-import { cn } from "@instill-ai/design-system";
-import { Nullable, Catalog } from "instill-sdk";
 
 type CatalogViewProps = {
   activeTab: string;
@@ -50,12 +51,15 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   const { catalogId, activeTab } = props;
   const [isProcessed, setIsProcessed] = React.useState(false);
   const [showCreditUsage, setShowCreditUsage] = React.useState(false);
-  const [creditUsageTimer, setCreditUsageTimer] = React.useState<Nullable<NodeJS.Timeout>>(null);
+  const [creditUsageTimer, setCreditUsageTimer] =
+    React.useState<Nullable<NodeJS.Timeout>>(null);
   const [showWarnDialog, setShowWarnDialog] = React.useState(false);
-  const [pendingTabChange, setPendingTabChange] = React.useState<Nullable<string>>(null);
+  const [pendingTabChange, setPendingTabChange] =
+    React.useState<Nullable<string>>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
   const [remainingStorageSpace, setRemainingStorageSpace] = React.useState(0);
-  const [namespaceType, setNamespaceType] = React.useState<Nullable<"user" | "organization">>(null);
+  const [namespaceType, setNamespaceType] =
+    React.useState<Nullable<"user" | "organization">>(null);
   const [isAutomaticTabChange, setIsAutomaticTabChange] = React.useState(false);
 
   const router = useRouter();
@@ -76,8 +80,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
     namespaceId: selectedNamespace ?? null,
     catalogId: catalogId ?? null,
     accessToken,
-    enabled:
-      enabledQuery && Boolean(selectedNamespace) && Boolean(catalogId),
+    enabled: enabledQuery && Boolean(selectedNamespace) && Boolean(catalogId),
   });
 
   const userSub = useAuthenticatedUserSubscription({
@@ -170,7 +173,9 @@ export const CatalogMainView = (props: CatalogViewProps) => {
       if (tab === "catalogs") {
         router.push(`/${selectedNamespace}/catalog`, { scroll: false });
       } else {
-        router.push(`/${selectedNamespace}/catalog/${catalogId}/${tab}`, { scroll: false });
+        router.push(`/${selectedNamespace}/catalog/${catalogId}/${tab}`, {
+          scroll: false,
+        });
       }
     }
   };
@@ -189,7 +194,10 @@ export const CatalogMainView = (props: CatalogViewProps) => {
       if (pendingTabChange === "catalogs") {
         router.push(`/${selectedNamespace}/catalog`, { scroll: false });
       } else {
-        router.push(`/${selectedNamespace}/catalog/${catalogId}/${pendingTabChange}`, { scroll: false });
+        router.push(
+          `/${selectedNamespace}/catalog/${catalogId}/${pendingTabChange}`,
+          { scroll: false },
+        );
       }
     }
     setShowWarnDialog(false);
@@ -212,7 +220,9 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   };
 
   const handleCatalogSelect = (catalog: Catalog) => {
-    router.push(`/${selectedNamespace}/catalog/${catalog.catalogId}/upload`, { scroll: false });
+    router.push(`/${selectedNamespace}/catalog/${catalog.catalogId}/upload`, {
+      scroll: false,
+    });
   };
 
   const handleDeleteCatalog = async (catalog: Catalog) => {
@@ -284,7 +294,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               : "col-span-12",
           )}
         >
-          {activeTab === "catalogs" && (
+          {activeTab === "catalogs" ? (
             <CatalogTab
               onCatalogSelect={handleCatalogSelect}
               onDeleteCatalog={handleDeleteCatalog}
@@ -295,8 +305,8 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               subscription={subscriptionInfo.subscription}
               isLocalEnvironment={isLocalEnvironment}
             />
-          )}
-          {activeTab === "files" && selectedCatalog && (
+          ) : null}
+          {activeTab === "files" && selectedCatalog ? (
             <CatalogFilesTab
               catalog={selectedCatalog}
               onGoToUpload={handleGoToUpload}
@@ -306,8 +316,8 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               namespaceType={namespaceType}
               isLocalEnvironment={isLocalEnvironment}
             />
-          )}
-          {activeTab === "upload" && selectedCatalog && (
+          ) : null}
+          {activeTab === "upload" && selectedCatalog ? (
             <UploadExploreTab
               catalog={selectedCatalog}
               onProcessFile={handleProcessFile}
@@ -320,14 +330,14 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
               selectedNamespace={selectedNamespace}
             />
-          )}
+          ) : null}
           {activeTab === "chunks" && selectedCatalog && (
             <ChunkTab
               catalog={selectedCatalog}
               onGoToUpload={handleGoToUpload}
             />
           )}
-          {activeTab === "retrieve" && selectedCatalog && (
+          {activeTab === "retrieve" && selectedCatalog ? (
             <RetrieveTestTab
               catalog={selectedCatalog}
               isProcessed={isProcessed}
@@ -336,8 +346,8 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               namespaceType={namespaceType}
               isLocalEnvironment={isLocalEnvironment}
             />
-          )}
-          {activeTab === "ask_question" && selectedCatalog && (
+          ) : null}
+          {activeTab === "ask_question" && selectedCatalog ? (
             <AskQuestionTab
               catalog={selectedCatalog}
               isProcessed={isProcessed}
@@ -346,15 +356,15 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               namespaceType={namespaceType}
               isLocalEnvironment={isLocalEnvironment}
             />
-          )}
-          {activeTab === "get_catalog" && selectedCatalog && (
+          ) : null}
+          {activeTab === "get_catalog" && selectedCatalog ? (
             <GetCatalogTab
               catalog={selectedCatalog}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}
             />
-          )}
+          ) : null}
         </div>
       </div>
       <WarnDiscardFilesDialog

@@ -1,5 +1,11 @@
 import { Metadata } from "next";
-import { generateNextMetaBase, getCatalogTabTitle, CatalogTabNames } from "@instill-ai/toolkit/server";
+
+import {
+  CatalogTabNames,
+  generateNextMetaBase,
+  getCatalogTabTitle,
+} from "@instill-ai/toolkit/server";
+
 import { CatalogTabPageRender } from "./render";
 
 type Props = {
