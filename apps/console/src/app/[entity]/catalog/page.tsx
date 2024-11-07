@@ -6,7 +6,7 @@ import { CatalogPageRender } from "./render";
 
 export async function generateMetadata() {
   const metadata: Metadata = {
-    title: `Instill Cloud | Catalog`,
+    title: `Instill Cloud | Artifacts`,
     metadataBase: generateNextMetaBase({
       defaultBase: "http://localhost:3000",
     }),
