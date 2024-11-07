@@ -331,12 +331,12 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               selectedNamespace={selectedNamespace}
             />
           ) : null}
-          {activeTab === "chunks" && selectedCatalog && (
+          {activeTab === "chunks" && selectedCatalog ? (
             <ChunkTab
               catalog={selectedCatalog}
               onGoToUpload={handleGoToUpload}
             />
-          )}
+          ) : null}
           {activeTab === "retrieve" && selectedCatalog ? (
             <RetrieveTestTab
               catalog={selectedCatalog}
