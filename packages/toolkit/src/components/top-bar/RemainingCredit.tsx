@@ -44,8 +44,6 @@ export const RemainingCreditCTA = ({
     accessToken,
   });
 
-  console.log("remainingCredit", remainingCredit.data);
-
   return (
     <div className="flex w-full flex-row gap-x-2 rounded-sm bg-semantic-bg-base-bg px-3 py-4">
       {remainingCredit.isSuccess ? (

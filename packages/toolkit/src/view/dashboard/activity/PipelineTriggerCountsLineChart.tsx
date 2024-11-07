@@ -203,7 +203,9 @@ export const PipelineTriggerCountsLineChart = ({
                     <div className="inline-flex w-80 flex-col items-start justify-start rounded-sm bg-semantic-bg-primary p-3">
                       <div className="flex flex-col items-start justify-start gap-1 self-stretch">
                         <div className="self-stretch text-semantic-fg-primary product-body-text-4-semibold">
-                          Number of pipeline triggers
+                          Display the number of times all pipelines were
+                          triggered and their statuses within the specified time
+                          range.
                         </div>
                       </div>
                     </div>

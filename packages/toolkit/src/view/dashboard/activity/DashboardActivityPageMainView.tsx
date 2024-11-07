@@ -27,6 +27,7 @@ import {
   useShallow,
   useUserNamespaces,
 } from "../../../lib";
+import { env } from "../../../server";
 import { UsageSwitch } from "../UsageSwitch";
 import { ActivityTab } from "./ActivityTab";
 
@@ -55,6 +56,8 @@ export const DashboardActivityPageMainView = () => {
 
   const routeInfo = useRouteInfo();
   const userNamespaces = useUserNamespaces();
+
+  const isLocalEnvironment = env("NEXT_PUBLIC_APP_ENV") === "CE";
 
   const targetNamespace = React.useMemo(() => {
     if (!userNamespaces.isSuccess || !selectedNamespace) {
@@ -242,11 +245,13 @@ export const DashboardActivityPageMainView = () => {
     <div className="flex flex-col">
       <div className="flex flex-col gap-y-2">
         <h1 className="product-headings-heading-4">Usage</h1>
-        <UsageSwitch
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          namespaceId={routeInfo.data.namespaceId}
-        />
+        {!isLocalEnvironment ? (
+          <UsageSwitch
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            namespaceId={routeInfo.data.namespaceId}
+          />
+        ) : null}
       </div>
       <ActivityTab
         pipelinesChart={pipelinesChart}
