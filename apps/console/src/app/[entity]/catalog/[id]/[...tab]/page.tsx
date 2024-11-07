@@ -1,5 +1,5 @@
-import { Metadata } from "next"
-import { generateNextMetaBase } from "@instill-ai/toolkit/server";
+import { Metadata } from "next";
+import { generateNextMetaBase, getCatalogTabTitle, CatalogTabNames } from "@instill-ai/toolkit/server";
 import { CatalogTabPageRender } from "./render";
 
 type Props = {
@@ -8,10 +8,11 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id, tab } = params;
+  const tabName = (tab[0] as CatalogTabNames) || "catalogs";
 
   const metadata: Metadata = {
-    title: `Instill Cloud | Catalog | ${tab}`,
-    description: `${tab} tab of ${id} catalog`,
+    title: `Instill Cloud | ${id} | ${getCatalogTabTitle(tabName)}`,
+    description: `${getCatalogTabTitle(tabName)} tab of ${id} catalog`,
     metadataBase: generateNextMetaBase({
       defaultBase: "http://localhost:3000",
     }),
@@ -26,4 +27,3 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page() {
   return <CatalogTabPageRender />;
 }
-

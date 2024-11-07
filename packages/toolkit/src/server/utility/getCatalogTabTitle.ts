@@ -1,4 +1,4 @@
-export const CatalogTabsDictionary = {
+const CatalogTabsDictionary = {
     catalogs: "My Catalogs",
     upload: "Upload Documents",
     files: "Files",
