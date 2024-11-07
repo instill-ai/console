@@ -153,7 +153,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
 
   const selectedCatalog = React.useMemo(() => {
     if (catalogId && catalogs.data) {
-      return catalogs.data.find((c) => c.catalogId === catalogId) || null;
+      return catalogs.data.find((c) => c.catalogId === catalogId);
     }
     return null;
   }, [catalogId, catalogs.data]);
