@@ -201,9 +201,8 @@ export const ModelsTriggerCountsLineChart = ({
                           Number of triggers
                         </div>
                         <div className="self-stretch text-semantic-fg-secondary product-body-text-4-medium">
-                          Select any pipeline from the table below to view the
-                          number of model triggers within the last{" "}
-                          {selectedTimeOption.label}
+                          Display the number of times all models were triggered
+                          and their statuses within the specified time range.
                         </div>
                       </div>
                     </div>
