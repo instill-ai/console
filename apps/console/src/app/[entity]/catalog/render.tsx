@@ -7,11 +7,13 @@ import {
   NamespaceSwitch,
   PageBase,
 } from "@instill-ai/toolkit";
+import { useAppAccessToken } from "~/lib/use-app-access-token";
 
 import { useAppTrackToken } from "~/lib/useAppTrackToken";
 
 export const CatalogPageRender = () => {
 
+  useAppAccessToken();
   useAppTrackToken({ enabled: true });
 
   return (
