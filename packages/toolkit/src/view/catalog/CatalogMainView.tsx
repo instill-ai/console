@@ -36,7 +36,7 @@ import {
   UploadExploreTab,
 } from "./components/tabs";
 
-type CatalogViewProps = {
+type CatalogMainViewProps = {
   activeTab: string;
   catalogId?: string;
 };
@@ -47,7 +47,7 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const CatalogMainView = (props: CatalogViewProps) => {
+export const CatalogMainView = (props: CatalogMainViewProps) => {
   const { catalogId, activeTab } = props;
   const [isProcessed, setIsProcessed] = React.useState(false);
   const [showCreditUsage, setShowCreditUsage] = React.useState(false);
