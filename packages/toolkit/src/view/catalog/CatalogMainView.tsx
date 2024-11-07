@@ -35,7 +35,7 @@ import {
 import { cn } from "@instill-ai/design-system";
 import { Nullable, Catalog } from "instill-sdk";
 
-type CatalogViewProps  = {
+type CatalogViewProps = {
   activeTab: string;
   catalogId?: string;
 };
@@ -151,7 +151,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
     [subscriptionInfo.plan],
   );
 
-  const selectedCatalogMemo = React.useMemo(() => {
+  const selectedCatalog = React.useMemo(() => {
     if (catalogId && catalogs.data) {
       return catalogs.data.find((c) => c.catalogId === catalogId) || null;
     }
@@ -266,12 +266,12 @@ export const CatalogMainView = (props: CatalogViewProps) => {
         />
       ) : null}
       <div className="grid w-full grid-cols-12 gap-6 px-8">
-        {selectedCatalogMemo ? (
+        {selectedCatalog ? (
           <div className="pt-20 sm:col-span-4 md:col-span-3 lg:col-span-2">
             <Sidebar
               activeTab={activeTab}
               onTabChange={handleTabChangeAttempt}
-              selectedCatalog={selectedCatalogMemo}
+              selectedCatalog={selectedCatalog}
               onDeselectCatalog={handleDeselectCatalog}
             />
           </div>
@@ -279,7 +279,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
         <div
           className={cn(
             "pt-5",
-            selectedCatalogMemo
+            selectedCatalog
               ? "sm:col-span-8 md:col-span-9 lg:col-span-10"
               : "col-span-12",
           )}
@@ -296,9 +296,9 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
             />
           )}
-          {activeTab === "files" && selectedCatalogMemo && (
+          {activeTab === "files" && selectedCatalog && (
             <CatalogFilesTab
-              catalog={selectedCatalogMemo}
+              catalog={selectedCatalog}
               onGoToUpload={handleGoToUpload}
               remainingStorageSpace={remainingStorageSpace}
               updateRemainingSpace={updateRemainingSpace}
@@ -307,9 +307,9 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
             />
           )}
-          {activeTab === "upload" && selectedCatalogMemo && (
+          {activeTab === "upload" && selectedCatalog && (
             <UploadExploreTab
-              catalog={selectedCatalogMemo}
+              catalog={selectedCatalog}
               onProcessFile={handleProcessFile}
               onTabChange={(tab) => handleTabChangeAttempt(tab, true)}
               setHasUnsavedChanges={setHasUnsavedChanges}
@@ -321,15 +321,15 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               selectedNamespace={selectedNamespace}
             />
           )}
-          {activeTab === "chunks" && selectedCatalogMemo && (
+          {activeTab === "chunks" && selectedCatalog && (
             <ChunkTab
-              catalog={selectedCatalogMemo}
+              catalog={selectedCatalog}
               onGoToUpload={handleGoToUpload}
             />
           )}
-          {activeTab === "retrieve" && selectedCatalogMemo && (
+          {activeTab === "retrieve" && selectedCatalog && (
             <RetrieveTestTab
-              catalog={selectedCatalogMemo}
+              catalog={selectedCatalog}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}
@@ -337,9 +337,9 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
             />
           )}
-          {activeTab === "ask_question" && selectedCatalogMemo && (
+          {activeTab === "ask_question" && selectedCatalog && (
             <AskQuestionTab
-              catalog={selectedCatalogMemo}
+              catalog={selectedCatalog}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}
@@ -347,9 +347,9 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               isLocalEnvironment={isLocalEnvironment}
             />
           )}
-          {activeTab === "get_catalog" && selectedCatalogMemo && (
+          {activeTab === "get_catalog" && selectedCatalog && (
             <GetCatalogTab
-              catalog={selectedCatalogMemo}
+              catalog={selectedCatalog}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
               namespaceId={selectedNamespace}
