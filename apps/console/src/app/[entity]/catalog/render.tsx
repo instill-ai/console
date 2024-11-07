@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 
 import {
   AppTopbar,
@@ -9,15 +8,11 @@ import {
   PageBase,
 } from "@instill-ai/toolkit";
 
-import { useAppAccessToken } from "~/lib/use-app-access-token";
 import { useAppTrackToken } from "~/lib/useAppTrackToken";
 
 export const CatalogPageRender = () => {
-  const router = useRouter();
 
-  const accessToken = useAppAccessToken();
   useAppTrackToken({ enabled: true });
-  // useInitAmplitude();
 
   return (
     <PageBase>
@@ -25,11 +20,7 @@ export const CatalogPageRender = () => {
       <PageBase.Container>
         <PageBase.Content contentPadding="!p-0">
           <CatalogMainView
-            accessToken={accessToken.isSuccess ? accessToken.data : null}
-            enableQuery={accessToken.isSuccess}
-            router={router}
             activeTab="catalogs"
-            catalogId={""}
           />
         </PageBase.Content>
       </PageBase.Container>

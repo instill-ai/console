@@ -4,7 +4,6 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 
 import {
-  GeneralAppPageProp,
   InstillStore,
   useAuthenticatedUserSubscription,
   useDeleteNamespaceCatalog,
@@ -36,7 +35,7 @@ import {
 import { cn } from "@instill-ai/design-system";
 import { Nullable, Catalog } from "instill-sdk";
 
-export type CatalogViewProps = GeneralAppPageProp & {
+type CatalogViewProps  = {
   activeTab: string;
   catalogId?: string;
 };
