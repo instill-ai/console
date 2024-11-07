@@ -11,6 +11,8 @@ import { PipelineTrace } from "../pipeline";
 import { ResourceView, RunSource, RunStatus } from "../types";
 
 export type PipelineRun = {
+  namespaceId: string;
+  pipelineId: string;
   pipelineUid: string;
   pipelineRunUid: string;
   pipelineVersion: string;

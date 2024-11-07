@@ -1,7 +1,7 @@
 "use client";
 
-import type { Nullable } from "instill-sdk";
 import { useQuery } from "@tanstack/react-query";
+import { Nullable } from "instill-sdk";
 
 import { getInstillAPIClient } from "../../sdk-helper";
 
@@ -10,45 +10,28 @@ export function useCreditConsumptionChartRecords({
   accessToken,
   start,
   stop,
-  owner,
+  namespaceId,
   aggregationWindow,
 }: {
   enabled: boolean;
-  owner: Nullable<string>;
+  namespaceId: Nullable<string>;
   accessToken: Nullable<string>;
   start: Nullable<string>;
   stop: Nullable<string>;
   aggregationWindow: Nullable<string>;
 }) {
   let enabledQuery = false;
-
   if (enabled && start && stop && aggregationWindow) {
     enabledQuery = true;
   }
 
-  const startDate = start
-    ? new Date(start).toLocaleString("en-us", {
-        hour: "2-digit",
-        month: "2-digit",
-        day: "2-digit",
-      })
-    : null;
-
-  const stopDate = stop
-    ? new Date(stop).toLocaleString("en-us", {
-        hour: "2-digit",
-        month: "2-digit",
-        day: "2-digit",
-      })
-    : null;
-
   return useQuery({
     queryKey: [
-      owner,
-      "charts",
+      namespaceId,
+      "modelTriggerCharts",
       "creditConsumption",
-      startDate,
-      stopDate,
+      start,
+      stop,
       aggregationWindow,
     ],
     queryFn: async () => {
@@ -56,8 +39,8 @@ export function useCreditConsumptionChartRecords({
         return Promise.reject(new Error("accessToken not provided"));
       }
 
-      if (!owner) {
-        return Promise.reject(new Error("owner not provided"));
+      if (!namespaceId) {
+        return Promise.reject(new Error("namespaceId not provided"));
       }
 
       const client = getInstillAPIClient({
@@ -66,7 +49,7 @@ export function useCreditConsumptionChartRecords({
 
       const data =
         await client.core.metric.listInstillCreditConsumptionTimeChart({
-          owner,
+          namespaceId,
           start: start ?? undefined,
           stop: stop ?? undefined,
           aggregationWindow: aggregationWindow ?? undefined,

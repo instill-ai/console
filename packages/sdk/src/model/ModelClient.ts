@@ -17,6 +17,8 @@ import {
   ListAvailableRegionResponse,
   ListModelDefinitionsRequest,
   ListModelDefinitionsResponse,
+  ListModelRunsByRequesterRequest,
+  ListModelRunsByRequesterResponse,
   ListModelRunsRequest,
   ListModelRunsResponse,
   ListModelsRequest,
@@ -27,6 +29,7 @@ import {
   ListNamespaceModelVersionsResponse,
   Model,
   ModelDefinition,
+  ModelRun,
   ModelVersion,
   PublishNamespaceModelRequest,
   PublishNamespaceModelResponse,
@@ -204,6 +207,58 @@ export class ModelClient extends APIResource {
       return Promise.resolve(models);
     } catch (err) {
       return Promise.reject(err);
+    }
+  }
+
+  async listModelRunsByRequester(
+    props: ListModelRunsByRequesterRequest & { enablePagination: true },
+  ): Promise<ListModelRunsByRequesterResponse>;
+
+  async listModelRunsByRequester(
+    props: ListModelRunsByRequesterRequest & { enablePagination: false },
+  ): Promise<ModelRun[]>;
+
+  async listModelRunsByRequester(
+    props: ListModelRunsByRequesterRequest & { enablePagination?: boolean },
+  ): Promise<ListModelRunsByRequesterResponse | ModelRun[]> {
+    const {
+      pageSize,
+      page,
+      orderBy,
+      enablePagination,
+      requesterUid,
+      requesterId,
+      start,
+    } = props;
+
+    const additionalHeaders = getInstillAdditionalHeaders({
+      requesterUid,
+    });
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/dashboard/models/runs`,
+        pageSize,
+        page,
+        orderBy,
+        requesterId,
+        start,
+      });
+
+      const data = await this._client.get<ListModelRunsByRequesterResponse>(
+        queryString,
+        {
+          additionalHeaders,
+        },
+      );
+
+      if (enablePagination) {
+        return Promise.resolve(data);
+      }
+
+      return Promise.resolve(data.runs);
+    } catch (error) {
+      return Promise.reject(error);
     }
   }
 

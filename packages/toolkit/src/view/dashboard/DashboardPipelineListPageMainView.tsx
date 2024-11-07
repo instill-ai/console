@@ -19,10 +19,10 @@ import {
   usePipelineTriggerMetric,
   useRouteInfo,
 } from "../../lib";
+import { PipelineTriggerCountsLineChart } from "./activity/PipelineTriggerCountsLineChart";
+import { PipelineTriggersSummary } from "./activity/PipelineTriggersSummary";
 import { DashboardPipelinesTable } from "./DashboardPipelinesTable";
 import { FilterByDay } from "./FilterByDay";
-import { PipelineTriggerCountsLineChart } from "./PipelineTriggerCountsLineChart";
-import { PipelineTriggersSummary } from "./PipelineTriggersSummary";
 
 export type DashboardPipelineListPageMainViewProps = GeneralAppPageProp;
 
@@ -85,18 +85,21 @@ export const DashboardPipelineListPageMainView = (
     enabled: enableQuery && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
+    requesterId: routeInfo.data.namespaceId ?? undefined,
   });
 
   const pipelinesChart = usePipelineTriggerComputationTimeCharts({
     enabled: enableQuery && !!queryString,
     filter: queryString ? queryString : null,
     accessToken,
+    requesterId: routeInfo.data.namespaceId ?? undefined,
   });
 
   const previoustriggeredPipelines = usePipelineTriggerMetric({
     enabled: enableQuery && !!queryStringPrevious,
     filter: queryStringPrevious ? queryStringPrevious : null,
     accessToken,
+    requesterId: routeInfo.data.namespaceId ?? undefined,
   });
 
   // Guard this page
@@ -218,6 +221,7 @@ export const DashboardPipelineListPageMainView = (
           isLoading={pipelinesChart.isLoading}
           pipelines={pipelinesChart.isSuccess ? pipelinesChartList : []}
           selectedTimeOption={selectedTimeOption}
+          pipelineTriggersSummary={null}
         />
       </div>
 
