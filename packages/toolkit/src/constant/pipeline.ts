@@ -1,4 +1,8 @@
-import type { PipelineRecipe, PipelineVariableFieldMap } from "instill-sdk";
+import type {
+  ComponentDefinition,
+  PipelineRecipe,
+  PipelineVariableFieldMap,
+} from "instill-sdk";
 import { Node } from "reactflow";
 
 import type { NodeData, TriggerNodeData } from "../view";
@@ -197,4 +201,38 @@ export const DocumentInputAcceptMimeTypes = [
   "text/markdown",
   "text/csv",
   "application/pdf",
+];
+
+export const GITHUB_EVENT_COMPONENT_TYPE = [""];
+
+export const EVENT_COMPONENT_DEFINITIONS: ComponentDefinition[] = [
+  {
+    id: "slack",
+    uid: "",
+    name: "component-definitions/slack-event",
+    title: "Slack Event",
+    description: "Triggered when a new message is posted in a channel.",
+    tasks: [
+      {
+        name: "SLACK_NEW_MESSAGE",
+        title: "New Message",
+        description: "Triggered when a new message is posted in a channel.",
+      },
+    ],
+    custom: true,
+    documentationUrl: "",
+    icon: "assets/slack.svg",
+    spec: {
+      componentSpecification: {},
+      dataSpecifications: null,
+    },
+    type: "COMPONENT_TYPE_APPLICATION",
+    vendor: "slack",
+    tombstone: false,
+    public: false,
+    vendorAttributes: {},
+    sourceUrl: "",
+    version: "",
+    releaseStage: "RELEASE_STAGE_ALPHA",
+  },
 ];
