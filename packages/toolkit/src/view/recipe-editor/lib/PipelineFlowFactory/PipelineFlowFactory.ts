@@ -11,11 +11,15 @@ export class PipelineFlowFactory {
   nodes: Node<NodeData>[] = [];
   edges: Edge[] = [];
 
-  constructor(recipe: PipelineRecipe, metadata?: GeneralRecord) {
+  constructor(
+    recipe: PipelineRecipe,
+    metadata?: GeneralRecord,
+    hideEventNodes?: boolean,
+  ) {
     this.recipe = recipe;
     this.metadata = metadata ?? null;
-    this.nodes = this.composeNodes(recipe, metadata);
-    this.edges = this.composeEdges(recipe);
+    this.nodes = this.composeNodes(recipe, metadata, hideEventNodes);
+    this.edges = this.composeEdges(recipe, hideEventNodes);
   }
 
   createFlow() {
@@ -29,8 +33,16 @@ export class PipelineFlowFactory {
     return this.recipe;
   }
 
-  composeNodes(recipe: PipelineRecipe, metadata?: GeneralRecord) {
+  composeNodes(
+    recipe: PipelineRecipe,
+    metadata?: GeneralRecord,
+    hideEventNodes?: boolean,
+  ) {
     const nodes: Node<NodeData>[] = [];
+
+    // Add start node
+    const startNode = nodeHelpers.createStartNode();
+    nodes.push(startNode);
 
     if (recipe && recipe.component) {
       const componentNodes = nodeHelpers.createNodesFromComponent(
@@ -40,10 +52,11 @@ export class PipelineFlowFactory {
       nodes.push(...componentNodes);
     }
 
-    if (recipe && recipe.on && recipe.on.event) {
+    if (recipe && recipe.on) {
       const runOnEventNodes = nodeHelpers.createNodesFromRunOnEvent(
-        recipe.on.event,
+        recipe.on,
         metadata,
+        hideEventNodes,
       );
       nodes.push(...runOnEventNodes);
     }
@@ -67,7 +80,7 @@ export class PipelineFlowFactory {
     return nodes;
   }
 
-  composeEdges(recipe: PipelineRecipe) {
+  composeEdges(recipe: PipelineRecipe, hideEventNodes?: boolean) {
     const edges: Edge[] = [];
 
     const userDefinedReferences =
@@ -89,6 +102,19 @@ export class PipelineFlowFactory {
       });
 
       edges.push(...newEdges);
+    }
+
+    // compose the edges for the run on event nodes
+    if (recipe && recipe.on) {
+      for (const [id] of Object.entries(recipe.on)) {
+        edges.push({
+          id: `run-on-event-${id}`,
+          source: `on-${id}`,
+          target: "start",
+          type: "eventEdge",
+          hidden: hideEventNodes,
+        });
+      }
     }
 
     return edges;

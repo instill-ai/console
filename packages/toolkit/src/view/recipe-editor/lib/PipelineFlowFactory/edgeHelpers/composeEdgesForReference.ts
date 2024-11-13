@@ -48,7 +48,7 @@ export function composeEdgesForReference({
         id: uuidv4(),
         source: `on-${sourceId}`,
         target: reference.id,
-        type: "customEdge",
+        type: "generalEdge",
       });
     }
 
@@ -74,9 +74,9 @@ export function composeEdgesForReference({
     if (referenceIsAvailable && hasNoEdgeForThisReference && reference.id) {
       newEdges.push({
         id: uuidv4(),
-        source: "variable",
+        source: "start",
         target: reference.id,
-        type: "customEdge",
+        type: "generalEdge",
       });
     }
 
@@ -105,7 +105,7 @@ export function composeEdgesForReference({
         id: uuidv4(),
         source: sourceId,
         target: reference.id,
-        type: "customEdge",
+        type: "generalEdge",
       });
     }
   }

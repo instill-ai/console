@@ -55,6 +55,7 @@ export type PipelineBuilderState = {
   editingIteratorID: Nullable<string>;
   warnUnsavedChangesDialogState: WarnUnsavedChangesDialogState;
   triggerWithStreamData: TriggerUserPipelineWithStreamData[];
+  displayEventNodes: boolean;
 };
 
 export type PipelineBuilderAction = {
@@ -115,6 +116,7 @@ export type PipelineBuilderAction = {
       prev: TriggerUserPipelineWithStreamData[],
     ) => TriggerUserPipelineWithStreamData[],
   ) => void;
+  updateDisplayEventNodes: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type PipelineBuilderSlice = PipelineBuilderState & PipelineBuilderAction;

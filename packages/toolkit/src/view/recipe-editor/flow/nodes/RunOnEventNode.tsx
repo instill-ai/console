@@ -3,18 +3,10 @@
 import * as React from "react";
 import { NodeProps, useEdges } from "reactflow";
 
-import { Button, cn, Icons } from "@instill-ai/design-system";
+import { Icons } from "@instill-ai/design-system";
 
-import {
-  InstillStore,
-  useInstillStore,
-  useNamespacePipeline,
-  useRouteInfo,
-  useShallow,
-} from "../../../../lib";
-import { EditorButtonTooltipWrapper } from "../../EditorButtonTooltipWrapper";
+import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
 import { NodeBase } from "./NodeBase";
-import { WebhookURLView } from "./WebhookURLView";
 
 const selector = (store: InstillStore) => ({
   selectedComponentId: store.selectedComponentId,
@@ -27,7 +19,6 @@ const selector = (store: InstillStore) => ({
 });
 
 export const RunOnEventNode = ({ id }: NodeProps) => {
-  const routeInfo = useRouteInfo();
   const reactflowEdges = useEdges();
   const hasTargetEdges = React.useMemo(() => {
     return reactflowEdges.some(
@@ -44,21 +35,8 @@ export const RunOnEventNode = ({ id }: NodeProps) => {
   const {
     selectedComponentId,
     featureFlagWebhookEnabled,
-    flowIsUnderDemoMode,
-    updateEditorMultiScreenModel,
-    accessToken,
-    enabledQuery,
     updateSelectedComponentId,
   } = useInstillStore(useShallow(selector));
-
-  const pipeline = useNamespacePipeline({
-    namespaceId: routeInfo.data.namespaceId,
-    pipelineId: routeInfo.data.resourceId,
-    accessToken,
-    enabled: enabledQuery && routeInfo.isSuccess,
-    view: "VIEW_FULL",
-    shareCode: null,
-  });
 
   const isSelected = selectedComponentId === id;
 
@@ -66,49 +44,10 @@ export const RunOnEventNode = ({ id }: NodeProps) => {
     updateSelectedComponentId(() => id);
   }, [id, updateSelectedComponentId]);
 
-  const handleOpenWebhookURL = React.useCallback(() => {
-    if (
-      !pipeline.isSuccess ||
-      !pipeline.data.endpoints ||
-      !pipeline.data.endpoints.webhooks
-    ) {
-      return;
-    }
-
-    const viewId = `${id}-webhook`;
-    const viewTitle = `${id} Webhook URL`;
-
-    const targetUrl = pipeline.data.endpoints.webhooks[id]?.url;
-
-    if (!targetUrl) {
-      return;
-    }
-
-    updateEditorMultiScreenModel((prev) => ({
-      ...prev,
-      bottomRight: {
-        ...prev.bottomRight,
-        views: [
-          ...prev.bottomRight.views.filter((view) => view.id !== viewId),
-          {
-            id: viewId,
-            type: "output",
-            view: <WebhookURLView url={targetUrl} />,
-            title: viewTitle,
-            closeable: true,
-          },
-        ],
-        currentViewId: viewId,
-      },
-    }));
-  }, [id, pipeline.isSuccess, pipeline.data, updateEditorMultiScreenModel]);
-
   return featureFlagWebhookEnabled ? (
     <NodeBase
       id={id}
       isSelected={isSelected}
-      handleOpenDocumentation={() => {}}
-      handleOpenComponentOutput={() => {}}
       disabledOpenDocumentationButton={true}
       disabledOpenComponentOutputButton={true}
       handleClick={handleClick}
@@ -116,20 +55,7 @@ export const RunOnEventNode = ({ id }: NodeProps) => {
       hasSourceEdges={hasSourceEdges}
       definitionId="webhook"
       definitionTitle="Webhook"
-      additionalControlButton={
-        flowIsUnderDemoMode ? null : (
-          <EditorButtonTooltipWrapper tooltipContent="Open Webhook URL">
-            <Button
-              disabled={!isSelected}
-              variant="tertiaryGrey"
-              onClick={handleOpenWebhookURL}
-              className={cn("!px-2", isSelected ? "" : "opacity-0")}
-            >
-              <Icons.Settings02 className="w-4 h-4 stroke-semantic-fg-primary" />
-            </Button>
-          </EditorButtonTooltipWrapper>
-        )
-      }
+      customHandleClassName="!border-[#AF89FA]"
     >
       <div
         className="absolute rounded-full top-0 left-0 p-2 bg-semantic-bg-secondary -translate-x-1/2 -translate-y-1/2"

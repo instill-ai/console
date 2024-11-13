@@ -1,8 +1,4 @@
-import {
-  GeneralRecord,
-  Nullable,
-  PipelineRunOnEventItemMap,
-} from "instill-sdk";
+import { GeneralRecord, Nullable, PipelineRunOnEventMap } from "instill-sdk";
 import { Node } from "reactflow";
 
 import { NodeData, PipelineComponentMetadata } from "../../../flow/types";
@@ -12,8 +8,9 @@ import { checkIsValidComponentMetadata } from "../../checkIsValidComponentMetada
  * Create nodes from pipeline run on event map
  */
 export function createNodesFromRunOnEvent(
-  runOnEvent: PipelineRunOnEventItemMap,
+  runOnEvent: PipelineRunOnEventMap,
   metadata?: GeneralRecord,
+  hideEventNodes: boolean = false,
 ) {
   const nodes: Node<NodeData>[] = [];
 
@@ -27,6 +24,7 @@ export function createNodesFromRunOnEvent(
     nodes.push({
       id: `on-${id}`,
       type: "runOnEventNode",
+      hidden: hideEventNodes,
       data: e,
       position: componentMetadata
         ? { x: componentMetadata.x, y: componentMetadata.y }

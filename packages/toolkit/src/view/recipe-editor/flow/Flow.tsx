@@ -20,15 +20,17 @@ import {
   useInstillStore,
   useShallow,
 } from "../../../lib";
-import { CustomEdge } from "../../pipeline-builder";
 import { canvasPanOnDrag } from "../../pipeline-builder/components/canvasPanOnDrag";
 import { EditorButtonTooltipWrapper } from "../EditorButtonTooltipWrapper";
 import { PipelineFlowFactory, renderFlowLayout } from "../lib";
 import {
+  EventEdge,
+  GeneralEdge,
   GeneralNode,
   IteratorNode,
   OutputNode,
   RunOnEventNode,
+  StartNode,
   VariableNode,
 } from "./nodes";
 
@@ -38,10 +40,12 @@ const nodeTypes = {
   variableNode: VariableNode,
   outputNode: OutputNode,
   runOnEventNode: RunOnEventNode,
+  startNode: StartNode,
 };
 
 const edgeTypes = {
-  customEdge: CustomEdge,
+  generalEdge: GeneralEdge,
+  eventEdge: EventEdge,
 };
 
 const selector = (store: InstillStore) => ({
@@ -50,6 +54,7 @@ const selector = (store: InstillStore) => ({
   updateEditorPreviewReactFlowInstance:
     store.updateEditorPreviewReactFlowInstance,
   updateFlowIsUnderDemoMode: store.updateFlowIsUnderDemoMode,
+  displayEventNodes: store.displayEventNodes,
 });
 
 export const fitViewOptions = {
@@ -78,6 +83,7 @@ export const Flow = ({
     editorPreviewReactFlowInstance,
     updateEditorPreviewReactFlowInstance,
     updateFlowIsUnderDemoMode,
+    displayEventNodes,
   } = useInstillStore(useShallow(selector));
 
   React.useEffect(() => {
@@ -95,6 +101,7 @@ export const Flow = ({
     const pipelineFlowFactory = new PipelineFlowFactory(
       recipe,
       pipelineMetadata,
+      true,
     );
 
     const { nodes, edges } = pipelineFlowFactory.createFlow();
@@ -116,6 +123,50 @@ export const Flow = ({
     setNodes,
     editorPreviewReactFlowInstance,
   ]);
+
+  React.useEffect(() => {
+    if (!displayEventNodes) {
+      setNodes((prev) => {
+        return prev.map((node) => {
+          if (node.type === "runOnEventNode") {
+            return { ...node, hidden: true };
+          }
+
+          return node;
+        });
+      });
+
+      setEdges((prev) => {
+        return prev.map((edge) => {
+          if (edge.target === "start") {
+            return { ...edge, hidden: true };
+          }
+
+          return edge;
+        });
+      });
+    } else {
+      setNodes((prev) => {
+        return prev.map((node) => {
+          if (node.type === "runOnEventNode") {
+            return { ...node, hidden: false };
+          }
+
+          return node;
+        });
+      });
+
+      setEdges((prev) => {
+        return prev.map((edge) => {
+          if (edge.target === "start") {
+            return { ...edge, hidden: false };
+          }
+
+          return edge;
+        });
+      });
+    }
+  }, [displayEventNodes, setNodes]);
 
   return (
     <div className="flex flex-col w-full h-full group">
@@ -193,6 +244,7 @@ export const Flow = ({
         selectionMode={SelectionMode.Partial}
         selectionOnDrag={true}
         nodeOrigin={[0.5, 0.5]}
+        defaultViewport={{ x: 0, y: 0, zoom: 1 }}
       >
         <Background
           id={pipelineId ?? undefined}

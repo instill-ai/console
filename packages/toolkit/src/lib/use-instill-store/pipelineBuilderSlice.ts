@@ -56,6 +56,7 @@ export const pipelineBuilderInitialState: PipelineBuilderState = {
     confirmNavigation: null,
   },
   triggerWithStreamData: [],
+  displayEventNodes: false,
 };
 
 export const createPipelineBuilderSlice: StateCreator<
@@ -294,6 +295,13 @@ export const createPipelineBuilderSlice: StateCreator<
       return {
         ...state,
         triggerWithStreamData: fn(state.triggerWithStreamData),
+      };
+    }),
+  updateDisplayEventNodes: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        displayEventNodes: fn(state.displayEventNodes),
       };
     }),
 });
