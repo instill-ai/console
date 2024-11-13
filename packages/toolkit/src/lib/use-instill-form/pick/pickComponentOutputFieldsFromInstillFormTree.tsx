@@ -309,6 +309,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           />
         );
       }
+      case "file":
       case "document": {
         return (
           <ComponentOutputFields.DownloadableFilesField
@@ -319,6 +320,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           />
         );
       }
+
       default: {
         return (
           <ComponentOutputFields.TextsField
@@ -415,6 +417,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         />
       );
     }
+    case "file":
     case "document": {
       return (
         <ComponentOutputFields.DownloadableFileField

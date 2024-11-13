@@ -222,7 +222,8 @@ export function pickPipelineTriggerRequestFormFields({
           key,
           instillUIOrder: value.instillUiOrder,
           component: (
-            <TriggerRequestFormFields.AudioField
+            <TriggerRequestFormFields.FileAndStringUploadField
+              type="audio"
               mode={mode}
               key={key}
               form={form}
@@ -270,7 +271,8 @@ export function pickPipelineTriggerRequestFormFields({
           key,
           instillUIOrder: value.instillUiOrder,
           component: (
-            <TriggerRequestFormFields.ImageField
+            <TriggerRequestFormFields.FileAndStringUploadField
+              type="image"
               mode={mode}
               key={key}
               form={form}
@@ -319,7 +321,8 @@ export function pickPipelineTriggerRequestFormFields({
           key,
           instillUIOrder: value.instillUiOrder,
           component: (
-            <TriggerRequestFormFields.VideoField
+            <TriggerRequestFormFields.FileAndStringUploadField
+              type="video"
               mode={mode}
               key={key}
               form={form}
@@ -367,7 +370,8 @@ export function pickPipelineTriggerRequestFormFields({
           key,
           instillUIOrder: value.instillUiOrder,
           component: (
-            <TriggerRequestFormFields.FileField
+            <TriggerRequestFormFields.FileAndStringUploadField
+              type="file"
               mode={mode}
               key={key}
               form={form}
@@ -381,7 +385,6 @@ export function pickPipelineTriggerRequestFormFields({
               disabledFieldControl={disabledFieldControls}
               disabledReferenceHint={disabledReferenceHint}
               instillFormat={value.instillFormat}
-              accept="*/*"
             />
           ),
         });

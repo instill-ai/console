@@ -1,6 +1,7 @@
 import { AudioField } from "./AudioField";
 import { AudiosField } from "./AudiosField";
 import { BooleanField } from "./BooleanField";
+import { FileAndStringUploadField } from "./FileAndStringUploadField";
 import { FileField } from "./FileField";
 import { FilesField } from "./FilesField";
 import { ImageField } from "./ImageField";
@@ -20,6 +21,7 @@ export const TriggerRequestFormFields = {
   AudioField,
   AudiosField,
   BooleanField,
+  FileAndStringUploadField,
   FileField,
   FilesField,
   ImageField,
