@@ -191,7 +191,7 @@ export const Default = () => {
                 column.toggleSorting(column.getIsSorted() === "asc")
               }
             >
-              <span className="min-w-[130px]">Completed Triggers</span>
+              <span className="min-w-[130px]">Completed Runs</span>
               {getIcon(column.getIsSorted())}
             </Button>
           </div>
@@ -308,7 +308,7 @@ export const NoDataFound = () => {
                 column.toggleSorting(column.getIsSorted() === "asc")
               }
             >
-              <span className="min-w-[130px]">Completed Triggers</span>
+              <span className="min-w-[130px]">Completed Runs</span>
               {getIcon(column.getIsSorted())}
             </Button>
           </div>

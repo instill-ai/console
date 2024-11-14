@@ -114,7 +114,7 @@ export const PipelineTriggerCountsLineChart = ({
                   <div class="Date product-body-text-4-medium" style="color: var(--semantic-fg-disabled); font-size: 12px; line-height: 16px; word-wrap: break-word">${triggerTime}</div>
                   <div style="display: flex; align-items: center; white-space: nowrap;">
                     <span class="PipelineId product-body-text-3-regular" style="color: var(--semantic-fg-secondary); font-size: 14px; line-height: 20px;">
-                      All pipeline triggers&nbsp;
+                      All pipeline runs&nbsp;
                     </span>
                     <span class="Number product-body-text-3-semibold" style="color: var(--semantic-fg-primary); font-size: 14px; line-height: 20px;">${computeTimeDuration}</span>
                   </div>
@@ -185,7 +185,7 @@ export const PipelineTriggerCountsLineChart = ({
         <div className="inline-flex items-center justify-between gap-2.5 self-stretch pt-8 px-8">
           <div className="flex items-center justify-start gap-2.5">
             <div className="text-semantic-fg-primary product-headings-heading-2">
-              Number of pipeline triggers
+              Number of pipeline runs
             </div>
             <Tooltip.Provider>
               <Tooltip.Root>
@@ -203,7 +203,7 @@ export const PipelineTriggerCountsLineChart = ({
                     <div className="inline-flex w-80 flex-col items-start justify-start rounded-sm bg-semantic-bg-primary p-3">
                       <div className="flex flex-col items-start justify-start gap-1 self-stretch">
                         <div className="self-stretch text-semantic-fg-primary product-body-text-4-semibold">
-                          Number of pipeline triggers
+                          Number of pipeline runs
                         </div>
                       </div>
                     </div>

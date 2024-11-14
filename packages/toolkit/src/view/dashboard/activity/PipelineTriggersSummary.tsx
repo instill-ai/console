@@ -34,15 +34,15 @@ const PipelineTriggersSummaryCard = (props: {
 
   switch (statusType) {
     case "STATUS_COMPLETED": {
-      summaryName = "Completed Triggers";
+      summaryName = "Completed Runs";
       break;
     }
     case "STATUS_ERRORED": {
-      summaryName = "Error Triggers";
+      summaryName = "Error Runs";
       break;
     }
     default: {
-      summaryName = "Unspecific Triggers";
+      summaryName = "Unspecific Runs";
     }
   }
 

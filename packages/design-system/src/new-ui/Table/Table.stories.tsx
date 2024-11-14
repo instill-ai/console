@@ -19,10 +19,10 @@ export const Regular: Story = {
           <Table.Head className="w-auto text-left">Pipeline ID</Table.Head>
           <Table.Head className="w-[100px] text-center">Status</Table.Head>
           <Table.Head className="w-[200px] text-center">
-            Completed Triggers
+            Completed Runs
           </Table.Head>
           <Table.Head className="w-[150px] text-center">
-            Errored Triggers
+            Errored Runs
           </Table.Head>
         </Table.Row>
       </Table.Header>

@@ -59,7 +59,7 @@ export const DashboardPipelinesTable = (
                 column.toggleSorting(column.getIsSorted() === "asc")
               }
             >
-              <span className="min-w-[130px]">Completed Triggers</span>
+              <span className="min-w-[130px]">Completed Runs</span>
               <SortIcon type={column.getIsSorted()} />
             </Button>
           </div>
@@ -83,7 +83,7 @@ export const DashboardPipelinesTable = (
             size="sm"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            <span className="min-w-[110px]">Errored Triggers</span>
+            <span className="min-w-[110px]">Errored Runs</span>
             <SortIcon type={column.getIsSorted()} />
           </Button>
         </div>
@@ -109,7 +109,7 @@ export const DashboardPipelinesTable = (
         isLoading={isLoading}
         loadingRows={6}
         primaryText="Pipelines"
-        secondaryText="Select pipelines from the table below to view the number of pipeline triggers"
+        secondaryText="Select pipelines from the table below to view the number of pipeline runs"
       >
         <TableError marginBottom="!border-0" />
       </DataTable>
@@ -127,7 +127,7 @@ export const DashboardPipelinesTable = (
         isLoading={isLoading}
         loadingRows={6}
         primaryText="Pipelines"
-        secondaryText="Select pipelines from the table below to view the number of pipeline triggers"
+        secondaryText="Select pipelines from the table below to view the number of pipeline runs"
       >
         <PipelineTablePlaceholder
           enableCreateButton={false}
@@ -147,7 +147,7 @@ export const DashboardPipelinesTable = (
       isLoading={isLoading}
       loadingRows={6}
       primaryText="Pipelines"
-      secondaryText="Select pipelines from the table below to view the number of pipeline triggers"
+      secondaryText="Select pipelines from the table below to view the number of pipeline runs"
     />
   );
 };
