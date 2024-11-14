@@ -173,7 +173,7 @@ export const DashboardPipelineListPageMainView = (
   return (
     <div className="flex flex-col">
       <h2 className="mb-10 w-full text-3xl font-semibold leading-[38px] text-semantic-fg-primary">
-        Pipeline Triggers
+        Pipeline Runs
       </h2>
 
       {/* Status */}

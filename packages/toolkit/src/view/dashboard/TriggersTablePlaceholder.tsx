@@ -272,7 +272,7 @@ export const TriggersTablePlaceholder = (
   return (
     <TablePlaceholderBase
       placeholderItems={placeholderItems}
-      placeholderTitle="No Triggers"
+      placeholderTitle="No Runs"
       createButtonLink="/pipelines/create"
       createButtonTitle="Set up your first pipeline"
       marginBottom={marginBottom}
