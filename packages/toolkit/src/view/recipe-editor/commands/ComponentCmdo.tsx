@@ -3,8 +3,6 @@
 import * as React from "react";
 import { ComponentDefinition, IteratorDefinition } from "instill-sdk";
 import { editor } from "monaco-editor";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { stackoverflowLight } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import YAML from "yaml";
 
 import {
@@ -497,7 +495,7 @@ export const ComponentCmdo = () => {
         }}
         className="flex flex-col w-[761px] h-[480px] !p-6"
       >
-        <div className="flex w-full flex-col h-full overflow-y-hidden">
+        <div className="flex w-full flex-col h-full">
           <div className="flex w-full items-center justify-between flex-row mb-6">
             <h3 className="text-semantic-fg-primary product-headings-heading-3">
               Add Component
@@ -545,7 +543,7 @@ export const ComponentCmdo = () => {
           </div>
 
           <div className="flex flex-row w-full h-full">
-            <ScrollArea.Root className="flex py-3 shrink-0 w-[240px] h-[355px]">
+            <div className="flex flex-col">
               <div className="w-full mb-3 relative">
                 <Icons.SearchSm className="w-4 h-4 absolute top-1/2 -translate-y-1/2 left-[9px] stroke-semantic-fg-primary" />
                 <input
@@ -555,165 +553,181 @@ export const ComponentCmdo = () => {
                   className="border w-full pl-[33px] pr-[9px] py-1.5 rounded border-semantic-bg-line"
                 />
               </div>
-              {selectingComponentType === "component" ? (
-                <React.Fragment>
-                  <CommandGroup heading="AI">
-                    {definitions.isSuccess ? (
-                      filteredAiDefinitions.map((definition) => (
+              <ScrollArea.Root className="flex shrink-0 w-[240px] h-[316px]">
+                {selectingComponentType === "component" ? (
+                  <React.Fragment>
+                    <CommandGroup heading="AI">
+                      {definitions.isSuccess ? (
+                        filteredAiDefinitions.map((definition) => (
+                          <CommandItem
+                            key={definition.id}
+                            onClick={() => {
+                              onSelectComponentDefinition(definition);
+                            }}
+                            definition={definition}
+                            isSelected={
+                              selectedComponentDefinition?.id === definition.id
+                            }
+                          />
+                        ))
+                      ) : (
+                        <LoadingSpin />
+                      )}
+                    </CommandGroup>
+                    <CommandGroup heading="Application">
+                      {definitions.isSuccess ? (
+                        filteredApplicationDefinitions.map((definition) => (
+                          <CommandItem
+                            key={definition.id}
+                            onClick={() => {
+                              onSelectComponentDefinition(definition);
+                            }}
+                            definition={definition}
+                            isSelected={
+                              selectedComponentDefinition?.id === definition.id
+                            }
+                          />
+                        ))
+                      ) : (
+                        <LoadingSpin />
+                      )}
+                    </CommandGroup>
+                    <CommandGroup heading="Data">
+                      {definitions.isSuccess ? (
+                        filteredDataDefinitions.map((definition) => (
+                          <CommandItem
+                            key={definition.id}
+                            onClick={() => {
+                              onSelectComponentDefinition(definition);
+                            }}
+                            definition={definition}
+                            isSelected={
+                              selectedComponentDefinition?.id === definition.id
+                            }
+                          />
+                        ))
+                      ) : (
+                        <LoadingSpin />
+                      )}
+                    </CommandGroup>
+                    <CommandGroup heading="Operator">
+                      {definitions.isSuccess ? (
+                        filteredOperatorDefinitions.map((definition) => (
+                          <CommandItem
+                            key={definition.id}
+                            onClick={() => {
+                              onSelectComponentDefinition(definition);
+                            }}
+                            definition={definition}
+                            isSelected={
+                              selectedComponentDefinition?.id === definition.id
+                            }
+                          />
+                        ))
+                      ) : (
+                        <LoadingSpin />
+                      )}
+                    </CommandGroup>
+                    <CommandGroup heading="Generic">
+                      {definitions.isSuccess ? (
+                        filteredGenericDefinitions.map((definition) => (
+                          <CommandItem
+                            key={definition.id}
+                            onClick={() => {
+                              onSelectComponentDefinition(definition);
+                            }}
+                            definition={definition}
+                            isSelected={
+                              selectedComponentDefinition?.id === definition.id
+                            }
+                          />
+                        ))
+                      ) : (
+                        <LoadingSpin />
+                      )}
+                      {displayIteratorDefinition ? (
                         <CommandItem
-                          key={definition.id}
                           onClick={() => {
-                            onSelectComponentDefinition(definition);
-                          }}
-                          definition={definition}
-                          isSelected={
-                            selectedComponentDefinition?.id === definition.id
-                          }
-                        />
-                      ))
-                    ) : (
-                      <LoadingSpin />
-                    )}
-                  </CommandGroup>
-                  <CommandGroup heading="Application">
-                    {definitions.isSuccess ? (
-                      filteredApplicationDefinitions.map((definition) => (
-                        <CommandItem
-                          key={definition.id}
-                          onClick={() => {
-                            onSelectComponentDefinition(definition);
-                          }}
-                          definition={definition}
-                          isSelected={
-                            selectedComponentDefinition?.id === definition.id
-                          }
-                        />
-                      ))
-                    ) : (
-                      <LoadingSpin />
-                    )}
-                  </CommandGroup>
-                  <CommandGroup heading="Data">
-                    {definitions.isSuccess ? (
-                      filteredDataDefinitions.map((definition) => (
-                        <CommandItem
-                          key={definition.id}
-                          onClick={() => {
-                            onSelectComponentDefinition(definition);
-                          }}
-                          definition={definition}
-                          isSelected={
-                            selectedComponentDefinition?.id === definition.id
-                          }
-                        />
-                      ))
-                    ) : (
-                      <LoadingSpin />
-                    )}
-                  </CommandGroup>
-                  <CommandGroup heading="Operator">
-                    {definitions.isSuccess ? (
-                      filteredOperatorDefinitions.map((definition) => (
-                        <CommandItem
-                          key={definition.id}
-                          onClick={() => {
-                            onSelectComponentDefinition(definition);
-                          }}
-                          definition={definition}
-                          isSelected={
-                            selectedComponentDefinition?.id === definition.id
-                          }
-                        />
-                      ))
-                    ) : (
-                      <LoadingSpin />
-                    )}
-                  </CommandGroup>
-                  <CommandGroup heading="Generic">
-                    {definitions.isSuccess ? (
-                      filteredGenericDefinitions.map((definition) => (
-                        <CommandItem
-                          key={definition.id}
-                          onClick={() => {
-                            onSelectComponentDefinition(definition);
-                          }}
-                          definition={definition}
-                          isSelected={
-                            selectedComponentDefinition?.id === definition.id
-                          }
-                        />
-                      ))
-                    ) : (
-                      <LoadingSpin />
-                    )}
-                    {displayIteratorDefinition ? (
-                      <CommandItem
-                        onClick={() => {
-                          if (!pipeline.isSuccess) {
-                            return;
-                          }
+                            if (!pipeline.isSuccess) {
+                              return;
+                            }
 
-                          const definition: IteratorDefinition = {
+                            const definition: IteratorDefinition = {
+                              id: "iterator",
+                              title: "Iterator",
+                              icon: "iterator.svg",
+                              name: "iterator/iterator",
+                              uid: "uid",
+                            };
+
+                            onSelectComponentDefinition(definition);
+                          }}
+                          isSelected={
+                            selectedComponentDefinition?.id === "iterator"
+                          }
+                          definition={{
                             id: "iterator",
                             title: "Iterator",
                             icon: "iterator.svg",
                             name: "iterator/iterator",
                             uid: "uid",
-                          };
-
+                          }}
+                        />
+                      ) : null}
+                    </CommandGroup>
+                  </React.Fragment>
+                ) : (
+                  <CommandGroup heading="Event">
+                    {EVENT_COMPONENT_DEFINITIONS.map((definition) => (
+                      <CommandItem
+                        key={definition.id}
+                        onClick={() => {
                           onSelectComponentDefinition(definition);
                         }}
+                        definition={definition}
                         isSelected={
-                          selectedComponentDefinition?.id === "iterator"
+                          selectedComponentDefinition?.id === definition.id
                         }
-                        definition={{
-                          id: "iterator",
-                          title: "Iterator",
-                          icon: "iterator.svg",
-                          name: "iterator/iterator",
-                          uid: "uid",
-                        }}
                       />
-                    ) : null}
+                    ))}
                   </CommandGroup>
-                </React.Fragment>
-              ) : (
-                <CommandGroup heading="Event">
-                  {EVENT_COMPONENT_DEFINITIONS.map((definition) => (
-                    <CommandItem
-                      key={definition.id}
-                      onClick={() => {
-                        onSelectComponentDefinition(definition);
-                      }}
-                      definition={definition}
-                      isSelected={
-                        selectedComponentDefinition?.id === definition.id
-                      }
-                    />
-                  ))}
-                </CommandGroup>
-              )}
-            </ScrollArea.Root>
-            <Separator orientation="vertical" className="!mx-3" />
-            {selectedComponentDefinition &&
-            isComponentDefinition(selectedComponentDefinition) ? (
-              <ScrollArea.Root className="flex w-[160px] mr-3 shrink-0 py-3 h-[300px]">
-                <CommandGroup headingWrapperClassName="px-2" heading="Task">
-                  {selectedComponentDefinition.tasks.map((task) => (
-                    <TaskItem
-                      key={task.name}
-                      taskTitle={task.title}
-                      onClick={() => {
-                        setSelectedTaskName(task.name);
-                        onSelectTask(task.name);
-                      }}
-                      isSelected={selectedTaskName === task.name}
-                    />
-                  ))}
-                </CommandGroup>
+                )}
               </ScrollArea.Root>
-            ) : null}
-            <div className="flex flex-col w-[275px] h-[300px] gap-y-2">
+            </div>
+            <Separator orientation="vertical" className="!mx-3" />
+            <div className="flex flex-col  w-full h-full">
+              {selectedComponentDefinition &&
+              isComponentDefinition(selectedComponentDefinition) ? (
+                <ScrollArea.Root className="flex shrink-0 mb-auto h-[280px]">
+                  <CommandGroup headingWrapperClassName="px-2" heading="Task">
+                    {selectedComponentDefinition.tasks.map((task) => (
+                      <TaskItem
+                        key={task.name}
+                        taskTitle={task.title}
+                        taskDescription={task.description}
+                        onClick={() => {
+                          setSelectedTaskName(task.name);
+                          onSelectTask(task.name);
+                        }}
+                        isSelected={selectedTaskName === task.name}
+                      />
+                    ))}
+                  </CommandGroup>
+                </ScrollArea.Root>
+              ) : null}
+              <Button
+                onClick={onAddComponent}
+                className="ml-auto"
+                variant="primary"
+                size="md"
+              >
+                Add
+              </Button>
+            </div>
+            {/* 
+              This is the preview of the component recipe, we might need to refactor it later
+            */}
+            {/* <div className="flex flex-col w-[275px] h-[300px] gap-y-2">
               <div className="w-full p-5 flex-1 rounded-sm bg-semantic-bg-base-bg border border-semantic-bg-line">
                 <div className="flex flex-col">
                   <p className="product-label-label-2 text-semantic-fg-disabled">
@@ -741,15 +755,7 @@ export const ComponentCmdo = () => {
                   </ScrollArea.Root>
                 </div>
               </div>
-              <Button
-                onClick={onAddComponent}
-                className="ml-auto"
-                variant="primary"
-                size="md"
-              >
-                Add
-              </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </Dialog.Content>
@@ -830,10 +836,12 @@ const CommandItem = ({
 
 const TaskItem = ({
   taskTitle,
+  taskDescription,
   onClick,
   isSelected,
 }: {
   taskTitle: string;
+  taskDescription: string;
   onClick: () => void;
   isSelected: boolean;
 }) => {
@@ -841,7 +849,7 @@ const TaskItem = ({
     <button
       onClick={onClick}
       className={cn(
-        "p-2 w-full",
+        "p-2 w-full flex flex-col",
         isSelected
           ? "bg-semantic-bg-secondary"
           : "hover:bg-semantic-bg-secondary",
@@ -849,6 +857,9 @@ const TaskItem = ({
     >
       <p className="product-body-text-3-medium text-start text-semantic-fg-primary">
         {taskTitle}
+      </p>
+      <p className="product-body-text-3-regular text-start text-semantic-fg-disabled">
+        {taskDescription}
       </p>
     </button>
   );
