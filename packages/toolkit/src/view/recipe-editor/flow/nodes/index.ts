@@ -1,4 +1,5 @@
 export * from "./EventEdge";
+export * from "./EventErrorEdge";
 export * from "./GeneralEdge";
 export * from "./GeneralNode";
 export * from "./IteratorNode";

@@ -148,6 +148,13 @@ export type DataSpecification = {
   output: Nullable<InstillJSONSchema>;
 };
 
+export type EventSpecification = {
+  configSchema: Nullable<InstillJSONSchema>;
+  description: string;
+  messageExamples: GeneralRecord[];
+  messageSchema: Nullable<InstillJSONSchema>;
+};
+
 export const DataSpecificationSchema = z.object({
   input: z.any().nullable(),
   output: z.any().nullable(),
@@ -156,6 +163,7 @@ export const DataSpecificationSchema = z.object({
 export type Spec = {
   componentSpecification: InstillJSONSchema;
   dataSpecifications: Nullable<Record<string, DataSpecification>>;
+  eventSpecifications: Nullable<Record<string, EventSpecification>>;
 };
 
 export const SpecSchema = z.object({

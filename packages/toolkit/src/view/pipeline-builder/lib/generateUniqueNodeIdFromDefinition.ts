@@ -6,6 +6,7 @@ import { transformConnectorDefinitionIDToComponentIDPrefix } from "./transformCo
 export function generateUniqueNodeIdFromDefinition(
   definition: ComponentDefinition | IteratorDefinition,
   currentIds: string[],
+  midfix?: string,
 ) {
   // Construct the default component ID prefix. For example, if the definition
   // is `connector-definitions/instill-ai`, the prefix will be `instill-ai`
@@ -20,5 +21,7 @@ export function generateUniqueNodeIdFromDefinition(
   // tempSavedNodesForEditingIteratorFlow will be the nodes outside the iterator
   const nodeIndex = generateUniqueIndex(currentIds, nodePrefix);
 
-  return `${nodePrefix}-${nodeIndex}`;
+  return midfix
+    ? `${nodePrefix}-${midfix}-${nodeIndex}`
+    : `${nodePrefix}-${nodeIndex}`;
 }

@@ -82,6 +82,10 @@ export const InstillYamlSchema = {
             format: {
               type: "string",
             },
+            listen: {
+              type: "array",
+              items: { type: "string" },
+            },
           },
           additionalProperties: false,
           required: ["format"],

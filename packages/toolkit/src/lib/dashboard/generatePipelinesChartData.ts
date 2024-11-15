@@ -24,8 +24,6 @@ export function generatePipelineChartData(
     ...normalizedTimeBuckets.flat(),
   ]);
 
-  console.log("xAxisSortedDates", xAxisSortedDates);
-
   const xAxis = Array.from(new Set(xAxisSortedDates));
 
   const accumulatedTriggerCounts = new Array(xAxis.length).fill(0);
@@ -40,8 +38,6 @@ export function generatePipelineChartData(
       }
     }
   }
-
-  console.log("accumulatedTriggerCounts", accumulatedTriggerCounts);
 
   return {
     xAxis: xAxis.map((x) =>

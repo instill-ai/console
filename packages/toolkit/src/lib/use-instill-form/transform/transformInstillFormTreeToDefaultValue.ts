@@ -247,6 +247,11 @@ export function transformInstillFormTreeToDefaultValue(
     return initialData;
   }
 
+  if (tree.type === "array") {
+    dot.setter(initialData, modifiedPath, [null]);
+    return initialData;
+  }
+
   if (
     "default" in tree &&
     ((tree.type === "integer" && (tree.default ?? null) !== null) ||

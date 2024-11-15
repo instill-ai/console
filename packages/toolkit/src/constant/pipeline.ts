@@ -225,6 +225,7 @@ export const EVENT_COMPONENT_DEFINITIONS: ComponentDefinition[] = [
     spec: {
       componentSpecification: {},
       dataSpecifications: null,
+      eventSpecifications: null,
     },
     type: "COMPONENT_TYPE_APPLICATION",
     vendor: "slack",

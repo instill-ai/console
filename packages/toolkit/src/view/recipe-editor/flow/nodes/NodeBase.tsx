@@ -41,6 +41,7 @@ export const NodeBase = ({
   additionalControlButton,
   children,
   customHandleClassName,
+  nodeClassName,
 }: {
   id: string;
   isSelected: boolean;
@@ -60,6 +61,7 @@ export const NodeBase = ({
   definitionTitle?: string;
   children?: React.ReactNode;
   customHandleClassName?: string;
+  nodeClassName?: string;
 }) => {
   const { flowIsUnderDemoMode } = useInstillStore(useShallow(selector));
 
@@ -113,6 +115,7 @@ export const NodeBase = ({
           "flex relative items-center border-2 border-[#94a0b8] justify-center w-[160px] h-[160px] flex-col rounded p-3 bg-semantic-bg-alt-primary",
           isCompleted ? "border-4 border-semantic-success-default" : "",
           errorState?.error ? "border-4 border-semantic-error-default" : "",
+          nodeClassName,
         )}
       >
         {isProcessing ? (

@@ -44,6 +44,12 @@ export function pickPipelineTriggerRequestFormFields({
     // Skip the fields that don't have value or instillFormat
     if (!value || !value.instillFormat) continue;
 
+    if (value.listen) {
+      continue;
+    }
+
+    const title = value.title ?? key;
+
     switch (value.instillFormat) {
       case "string":
         if (value.instillUiMultiline || forceStringMultiline) {
@@ -56,7 +62,7 @@ export function pickPipelineTriggerRequestFormFields({
                 key={key}
                 form={form}
                 path={key}
-                title={value.title}
+                title={title}
                 onDeleteField={onDeleteField}
                 onEditField={onEditField}
                 description={value.description ?? null}
@@ -78,7 +84,7 @@ export function pickPipelineTriggerRequestFormFields({
                 key={key}
                 form={form}
                 path={key}
-                title={value.title}
+                title={title}
                 onDeleteField={onDeleteField}
                 onEditField={onEditField}
                 description={value.description ?? null}
@@ -103,7 +109,7 @@ export function pickPipelineTriggerRequestFormFields({
                 key={key}
                 form={form}
                 path={key}
-                title={value.title}
+                title={title}
                 onDeleteField={onDeleteField}
                 onEditField={onEditField}
                 description={value.description ?? null}
@@ -125,7 +131,7 @@ export function pickPipelineTriggerRequestFormFields({
                 key={key}
                 form={form}
                 path={key}
-                title={value.title}
+                title={title}
                 onDeleteField={onDeleteField}
                 onEditField={onEditField}
                 description={value.description ?? null}
@@ -151,7 +157,7 @@ export function pickPipelineTriggerRequestFormFields({
               key={key}
               form={form}
               path={key}
-              title={value.title}
+              title={title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
@@ -174,7 +180,7 @@ export function pickPipelineTriggerRequestFormFields({
               key={key}
               form={form}
               path={key}
-              title={value.title}
+              title={title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
@@ -197,7 +203,7 @@ export function pickPipelineTriggerRequestFormFields({
               key={key}
               form={form}
               path={key}
-              title={value.title}
+              title={title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
@@ -221,7 +227,7 @@ export function pickPipelineTriggerRequestFormFields({
               key={key}
               form={form}
               path={key}
-              title={value.title}
+              title={title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
@@ -245,7 +251,7 @@ export function pickPipelineTriggerRequestFormFields({
               key={key}
               form={form}
               path={key}
-              title={value.title}
+              title={title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
@@ -269,7 +275,7 @@ export function pickPipelineTriggerRequestFormFields({
               key={key}
               form={form}
               path={key}
-              title={value.title}
+              title={title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
@@ -293,7 +299,7 @@ export function pickPipelineTriggerRequestFormFields({
               key={key}
               form={form}
               path={key}
-              title={value.title}
+              title={title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
@@ -318,7 +324,7 @@ export function pickPipelineTriggerRequestFormFields({
               key={key}
               form={form}
               path={key}
-              title={value.title}
+              title={title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
@@ -342,7 +348,7 @@ export function pickPipelineTriggerRequestFormFields({
               key={key}
               form={form}
               path={key}
-              title={value.title}
+              title={title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
@@ -366,7 +372,7 @@ export function pickPipelineTriggerRequestFormFields({
               key={key}
               form={form}
               path={key}
-              title={value.title}
+              title={title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
@@ -391,7 +397,7 @@ export function pickPipelineTriggerRequestFormFields({
               key={key}
               form={form}
               path={key}
-              title={value.title}
+              title={title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
@@ -415,7 +421,7 @@ export function pickPipelineTriggerRequestFormFields({
               key={key}
               form={form}
               path={key}
-              title={value.title}
+              title={title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
@@ -439,7 +445,7 @@ export function pickPipelineTriggerRequestFormFields({
               key={key}
               form={form}
               path={key}
-              title={value.title}
+              title={title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}
@@ -464,7 +470,7 @@ export function pickPipelineTriggerRequestFormFields({
               key={key}
               form={form}
               path={key}
-              title={value.title}
+              title={title}
               onDeleteField={onDeleteField}
               onEditField={onEditField}
               description={value.description ?? null}

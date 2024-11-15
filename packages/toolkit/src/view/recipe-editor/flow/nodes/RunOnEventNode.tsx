@@ -56,14 +56,15 @@ export const RunOnEventNode = ({ id }: NodeProps) => {
       definitionId="webhook"
       definitionTitle="Webhook"
       customHandleClassName="!border-[#AF89FA]"
+      nodeClassName="!rounded-full"
     >
       <div
-        className="absolute rounded-full top-0 left-0 p-2 bg-semantic-bg-secondary -translate-x-1/2 -translate-y-1/2"
+        className="absolute rounded-full top-0 left-0 p-2 bg-semantic-bg-secondary translate-x-[15%] translate-y-[15%]"
         style={{
           border: "1px solid #AF89FA",
         }}
       >
-        <Icons.Lightning02 className="w-4 h-4 stroke-semantic-secondary-hover" />
+        <Icons.Lightning02 className="w-6 h-6 stroke-semantic-secondary-hover" />
       </div>
     </NodeBase>
   ) : null;

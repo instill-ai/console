@@ -14,6 +14,7 @@ export type PipelineVariableField = {
   description?: string;
   instillUiOrder?: number;
   instillUiMultiline?: boolean;
+  listen?: string[];
 };
 
 export const PipelineVariableFieldSchema = z.object({

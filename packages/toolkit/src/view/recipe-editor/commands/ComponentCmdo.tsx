@@ -52,6 +52,7 @@ const normalComponentIndent = "  ";
 const stringfyOptions: YAML.ToStringOptions = {
   indent: 2,
   nullStr: "",
+  collectionStyle: "block",
 };
 
 function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
@@ -133,6 +134,20 @@ export const ComponentCmdo = () => {
       });
   }, [searchCode, definitions.isSuccess, definitions.data]);
 
+  const eventDefinitions = React.useMemo(() => {
+    if (!definitions.isSuccess) {
+      return [];
+    }
+
+    return definitions.data.filter((definition) => {
+      return (
+        definition.spec.eventSpecifications &&
+        definition.spec.eventSpecifications !== null &&
+        Object.keys(definition.spec.eventSpecifications).length > 0
+      );
+    });
+  }, [definitions.isSuccess, definitions.data]);
+
   const filteredAiDefinitions = React.useMemo(() => {
     return filteredDefinitions.filter((definition) => {
       return definition.type === "COMPONENT_TYPE_AI";
@@ -191,24 +206,63 @@ export const ComponentCmdo = () => {
     }
 
     if (isComponentDefinition(selectedComponentDefinition)) {
-      const id = generateUniqueNodeIdFromDefinition(
-        selectedComponentDefinition,
-        componentIds,
-      );
-      const defaultValue = generateDefaultValue(
-        selectedComponentDefinition.spec.componentSpecification,
-        taskName,
-      );
+      if (selectingComponentType === "event") {
+        const runOnEventIds = pipeline.data.recipe?.on
+          ? Object.keys(pipeline.data.recipe.on)
+          : [];
 
-      doc = YAML.stringify(
-        {
-          [id]: {
-            type: selectedComponentDefinition.id,
-            ...defaultValue,
+        const id = generateUniqueNodeIdFromDefinition(
+          selectedComponentDefinition,
+          runOnEventIds,
+          "event",
+        );
+
+        const targetEventSchema =
+          selectedComponentDefinition.spec.eventSpecifications?.[taskName];
+
+        if (!targetEventSchema || !targetEventSchema.configSchema) {
+          return;
+        }
+
+        const formTree = transformInstillJSONSchemaToFormTree(
+          targetEventSchema.configSchema,
+        );
+
+        const defaultValue = transformInstillFormTreeToDefaultValue(
+          formTree,
+          {},
+        );
+
+        doc = YAML.stringify(
+          {
+            [id]: {
+              config: defaultValue,
+              setup: null,
+            },
           },
-        },
-        stringfyOptions,
-      );
+          stringfyOptions,
+        );
+      } else {
+        const id = generateUniqueNodeIdFromDefinition(
+          selectedComponentDefinition,
+          componentIds,
+        );
+
+        const defaultValue = generateDefaultValue(
+          selectedComponentDefinition.spec.componentSpecification,
+          taskName,
+        );
+
+        doc = YAML.stringify(
+          {
+            [id]: {
+              type: selectedComponentDefinition.id,
+              ...defaultValue,
+            },
+          },
+          stringfyOptions,
+        );
+      }
     }
 
     setSelectedComponentDefaultValue(doc);
@@ -678,7 +732,7 @@ export const ComponentCmdo = () => {
                   </React.Fragment>
                 ) : (
                   <CommandGroup heading="Event">
-                    {EVENT_COMPONENT_DEFINITIONS.map((definition) => (
+                    {eventDefinitions.map((definition) => (
                       <CommandItem
                         key={definition.id}
                         onClick={() => {
@@ -700,18 +754,36 @@ export const ComponentCmdo = () => {
               isComponentDefinition(selectedComponentDefinition) ? (
                 <ScrollArea.Root className="flex shrink-0 mb-auto h-[280px]">
                   <CommandGroup headingWrapperClassName="px-2" heading="Task">
-                    {selectedComponentDefinition.tasks.map((task) => (
-                      <TaskItem
-                        key={task.name}
-                        taskTitle={task.title}
-                        taskDescription={task.description}
-                        onClick={() => {
-                          setSelectedTaskName(task.name);
-                          onSelectTask(task.name);
-                        }}
-                        isSelected={selectedTaskName === task.name}
-                      />
-                    ))}
+                    {selectingComponentType === "component"
+                      ? selectedComponentDefinition.tasks.map((task) => (
+                          <TaskItem
+                            key={task.name}
+                            taskTitle={task.title}
+                            taskDescription={task.description}
+                            onClick={() => {
+                              setSelectedTaskName(task.name);
+                              onSelectTask(task.name);
+                            }}
+                            isSelected={selectedTaskName === task.name}
+                          />
+                        ))
+                      : selectedComponentDefinition.spec.eventSpecifications
+                        ? Object.entries(
+                            selectedComponentDefinition.spec
+                              .eventSpecifications,
+                          ).map(([key, value]) => (
+                            <TaskItem
+                              key={key}
+                              taskTitle={key}
+                              taskDescription={value.description}
+                              onClick={() => {
+                                setSelectedTaskName(key);
+                                onSelectTask(key);
+                              }}
+                              isSelected={false}
+                            />
+                          ))
+                        : null}
                   </CommandGroup>
                 </ScrollArea.Root>
               ) : null}

@@ -107,6 +107,31 @@ export class PipelineFlowFactory {
     // compose the edges for the run on event nodes
     if (recipe && recipe.on) {
       for (const [id] of Object.entries(recipe.on)) {
+        let hasVariableConnectToRunOnEvent = false;
+
+        if (recipe.variable) {
+          for (const [, value] of Object.entries(recipe.variable)) {
+            if (value && value.listen) {
+              for (const listen of value.listen) {
+                if (listen.includes(`on.${id}`)) {
+                  hasVariableConnectToRunOnEvent = true;
+                }
+              }
+            }
+          }
+        }
+
+        if (!hasVariableConnectToRunOnEvent) {
+          edges.push({
+            id: `run-on-event-${id}`,
+            source: `on-${id}`,
+            target: "start",
+            type: "eventErrorEdge",
+            hidden: hideEventNodes,
+          });
+          continue;
+        }
+
         edges.push({
           id: `run-on-event-${id}`,
           source: `on-${id}`,
