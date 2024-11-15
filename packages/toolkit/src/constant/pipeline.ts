@@ -163,7 +163,7 @@ version: v1beta
 # Structure example:
 # variable:
 #   key:              # Unique identifier for the variable.
-#     instill-format:  # Format type, e.g., image, string, array:string.
+#     format:         # Format type, e.g., image, string, array:string.
 #     title:          # Title of this input field.
 #     description:    # Introduction of what should be input. 
 #

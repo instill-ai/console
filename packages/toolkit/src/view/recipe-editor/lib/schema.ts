@@ -79,12 +79,12 @@ export const InstillYamlSchema = {
             "instill-ui-order": {
               type: "integer",
             },
-            "instill-format": {
+            format: {
               type: "string",
             },
           },
           additionalProperties: false,
-          required: ["instill-format"],
+          required: ["format"],
         },
       },
     },
