@@ -421,7 +421,7 @@ function getVariableReferenceAutocompletions({
       insertText: "${" + "variable." + key,
       filterText: "${" + "variable." + key,
       documentation: {
-        value: `**${key}** \n\n --- \n\n instill-format: ${value?.instillFormat}`,
+        value: `**${key}** \n\n --- \n\n format: ${value?.instillFormat}`,
       },
       range: new monaco.Range(
         position.lineNumber,
@@ -913,24 +913,43 @@ export const VscodeEditor = () => {
         };
       }
 
-      // [HINT variable.instill-format]
-      // We need to hint instill-format for variables
+      // [HINT variable]
       if (
         smallestTopLevelKeyLineNumberMap &&
         smallestTopLevelKeyLineNumberMap.key === "variable" &&
-        charactersBeforeCursor.includes("instill-format:") &&
         !isMember &&
         !isReference
       ) {
-        const autocomletions = getComponentVariableAutocompletions({
-          monaco,
-          position,
-          activeTyping,
-        });
+        // We need to hint format for variables
+        if (charactersBeforeCursor.includes("format:")) {
+          const autocomletions = getComponentVariableAutocompletions({
+            monaco,
+            position,
+            activeTyping,
+          });
 
-        return {
-          suggestions: autocomletions,
-        };
+          return {
+            suggestions: autocomletions,
+          };
+        }
+
+        // Hint user can input format for variables
+        // return {
+        //   suggestions: [
+        //     {
+        //       label: "format:",
+        //       kind: monaco.languages.CompletionItemKind.Field,
+        //       insertText: "format:",
+        //       filterText: "format:",
+        //       range: new monaco.Range(
+        //         position.lineNumber,
+        //         position.column - (activeTyping?.length ?? 0),
+        //         position.lineNumber,
+        //         position.column,
+        //       ),
+        //     },
+        //   ],
+        // };
       }
 
       // If the user is typing a member object
