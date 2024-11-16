@@ -21,6 +21,8 @@ export function createNodesFromRunOnEvent(
       componentMetadata = metadata.component[id] ?? null;
     }
 
+    console.log("e", e);
+
     nodes.push({
       id: `on-${id}`,
       type: "runOnEventNode",

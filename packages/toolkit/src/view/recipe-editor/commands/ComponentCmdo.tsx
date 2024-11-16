@@ -1,7 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { ComponentDefinition, IteratorDefinition } from "instill-sdk";
+import {
+  ComponentDefinition,
+  IteratorDefinition,
+  PipelineRecipe,
+} from "instill-sdk";
 import { editor } from "monaco-editor";
 import YAML from "yaml";
 
@@ -16,9 +20,7 @@ import {
 } from "@instill-ai/design-system";
 
 import { ImageWithFallback, LoadingSpin } from "../../../components";
-import { EVENT_COMPONENT_DEFINITIONS } from "../../../constant/pipeline";
 import {
-  InstillJSONSchema,
   InstillStore,
   isComponentDefinition,
   isIteratorDefinition,
@@ -55,8 +57,18 @@ const stringfyOptions: YAML.ToStringOptions = {
   collectionStyle: "block",
 };
 
-function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
-  const formTree = transformInstillJSONSchemaToFormTree(schema);
+function generateComponentDefaultYamlString(
+  definition: ComponentDefinition,
+  recipe: PipelineRecipe,
+  taskName: string,
+) {
+  const componentIds = recipe.component ? Object.keys(recipe.component) : [];
+
+  const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
+
+  const formTree = transformInstillJSONSchemaToFormTree(
+    definition.spec.componentSpecification,
+  );
 
   const selectedConditionMap =
     transformInstillFormTreeToInitialSelectedCondition(formTree, {
@@ -67,12 +79,69 @@ function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
         : undefined,
     });
 
-  const data = transformInstillFormTreeToDefaultValue(formTree, {
+  const defaultValue = transformInstillFormTreeToDefaultValue(formTree, {
     selectedConditionMap,
     skipPath: ["setup.api-key"],
   });
 
-  return data;
+  const { task, ...restDefaultValue } = defaultValue;
+
+  const doc = YAML.stringify(
+    {
+      [id]: {
+        type: definition.id,
+        task,
+        ...restDefaultValue,
+      },
+    },
+    stringfyOptions,
+  );
+
+  return doc;
+}
+
+function generateEventDefaultYamlString(
+  definition: ComponentDefinition,
+  recipe: PipelineRecipe,
+  taskName: string,
+) {
+  if (!definition.spec.eventSpecifications) {
+    return;
+  }
+
+  const runOnEventIds = recipe.on ? Object.keys(recipe.on) : [];
+
+  const id = generateUniqueNodeIdFromDefinition(
+    definition,
+    runOnEventIds,
+    "event",
+  );
+
+  const targetEventSchema = definition.spec.eventSpecifications[taskName];
+
+  if (!targetEventSchema || !targetEventSchema.configSchema) {
+    return;
+  }
+
+  const formTree = transformInstillJSONSchemaToFormTree(
+    targetEventSchema.configSchema,
+  );
+
+  const defaultValue = transformInstillFormTreeToDefaultValue(formTree, {});
+
+  const doc = YAML.stringify(
+    {
+      [id]: {
+        type: definition.id,
+        event: taskName,
+        config: defaultValue,
+        setup: null,
+      },
+    },
+    stringfyOptions,
+  );
+
+  return doc;
 }
 
 export const ComponentCmdo = () => {
@@ -179,7 +248,12 @@ export const ComponentCmdo = () => {
   }, [filteredDefinitions]);
 
   function onSelectTask(taskName: string) {
-    if (!pipeline.isSuccess || !editorRef || !selectedComponentDefinition) {
+    if (
+      !pipeline.isSuccess ||
+      !pipeline.data.recipe ||
+      !editorRef ||
+      !selectedComponentDefinition
+    ) {
       return;
     }
 
@@ -207,61 +281,29 @@ export const ComponentCmdo = () => {
 
     if (isComponentDefinition(selectedComponentDefinition)) {
       if (selectingComponentType === "event") {
-        const runOnEventIds = pipeline.data.recipe?.on
-          ? Object.keys(pipeline.data.recipe.on)
-          : [];
-
-        const id = generateUniqueNodeIdFromDefinition(
+        const eventDoc = generateEventDefaultYamlString(
           selectedComponentDefinition,
-          runOnEventIds,
-          "event",
-        );
-
-        const targetEventSchema =
-          selectedComponentDefinition.spec.eventSpecifications?.[taskName];
-
-        if (!targetEventSchema || !targetEventSchema.configSchema) {
-          return;
-        }
-
-        const formTree = transformInstillJSONSchemaToFormTree(
-          targetEventSchema.configSchema,
-        );
-
-        const defaultValue = transformInstillFormTreeToDefaultValue(
-          formTree,
-          {},
-        );
-
-        doc = YAML.stringify(
-          {
-            [id]: {
-              config: defaultValue,
-              setup: null,
-            },
-          },
-          stringfyOptions,
-        );
-      } else {
-        const id = generateUniqueNodeIdFromDefinition(
-          selectedComponentDefinition,
-          componentIds,
-        );
-
-        const defaultValue = generateDefaultValue(
-          selectedComponentDefinition.spec.componentSpecification,
+          pipeline.data.recipe,
           taskName,
         );
 
-        doc = YAML.stringify(
-          {
-            [id]: {
-              type: selectedComponentDefinition.id,
-              ...defaultValue,
-            },
-          },
-          stringfyOptions,
+        if (!eventDoc) {
+          return;
+        }
+
+        doc = eventDoc;
+      } else {
+        const componentDoc = generateComponentDefaultYamlString(
+          selectedComponentDefinition,
+          pipeline.data.recipe,
+          taskName,
         );
+
+        if (!componentDoc) {
+          return;
+        }
+
+        doc = componentDoc;
       }
     }
 
@@ -329,7 +371,7 @@ export const ComponentCmdo = () => {
   function onSelectComponentDefinition(
     definition: ComponentDefinition | IteratorDefinition,
   ) {
-    if (!pipeline.isSuccess) {
+    if (!pipeline.isSuccess || !pipeline.data.recipe) {
       return;
     }
 
@@ -343,29 +385,15 @@ export const ComponentCmdo = () => {
         return;
       }
 
-      const componentIds = pipeline.data.recipe?.component
-        ? Object.keys(pipeline.data.recipe.component)
-        : [];
-
-      const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
-
-      const defaultValue = generateDefaultValue(
-        definition.spec.componentSpecification,
+      const doc = generateComponentDefaultYamlString(
+        definition,
+        pipeline.data.recipe,
         defaultTask.name,
-      );
-
-      const doc = YAML.stringify(
-        {
-          [id]: {
-            type: definition.id,
-            ...defaultValue,
-          },
-        },
-        stringfyOptions,
       );
 
       setSelectedComponentDefaultValue(doc);
       setSelectedTaskName(defaultTask.name);
+      return;
     }
 
     if (isIteratorDefinition(definition)) {
@@ -389,56 +417,76 @@ export const ComponentCmdo = () => {
   }
 
   // Prepare initial selection when the dialog is opened
-  function prepareInitialSelection() {
+  function prepareInitialSelection(
+    selectingComponentType: "component" | "event",
+  ) {
     if (
       !definitions.isSuccess ||
       !pipeline.isSuccess ||
-      filteredDefinitions.length === 0
+      !pipeline.data.recipe
     ) {
       return;
     }
 
-    const defaultDefinition = filteredDefinitions[0];
+    if (selectingComponentType === "component") {
+      const defaultDefinition = filteredDefinitions[0];
 
-    if (!defaultDefinition) {
-      return;
+      if (!defaultDefinition) {
+        return;
+      }
+
+      setSelectedComponentDefinition(defaultDefinition);
+
+      const defaultTask = defaultDefinition.tasks[0];
+
+      if (!defaultTask) {
+        return;
+      }
+
+      setSelectedTaskName(defaultTask.name);
+
+      const doc = generateComponentDefaultYamlString(
+        defaultDefinition,
+        pipeline.data.recipe,
+        defaultTask.name,
+      );
+
+      setSelectedComponentDefaultValue(doc);
+    } else {
+      const defaultDefinition = eventDefinitions[0];
+
+      console.log("defaultDefinition", defaultDefinition);
+
+      if (!defaultDefinition || !defaultDefinition.spec.eventSpecifications) {
+        return;
+      }
+
+      onSelectComponentDefinition(defaultDefinition);
+
+      const defaultTask = Object.keys(
+        defaultDefinition.spec.eventSpecifications,
+      )[0];
+
+      console.log("defaultTask", defaultTask);
+
+      if (!defaultTask) {
+        return;
+      }
+
+      setSelectedTaskName(defaultTask);
+
+      const doc = generateEventDefaultYamlString(
+        defaultDefinition,
+        pipeline.data.recipe,
+        defaultTask,
+      );
+
+      if (!doc) {
+        return;
+      }
+
+      setSelectedComponentDefaultValue(doc);
     }
-
-    setSelectedComponentDefinition(defaultDefinition);
-
-    const defaultTask = defaultDefinition.tasks[0];
-
-    if (!defaultTask) {
-      return;
-    }
-
-    setSelectedTaskName(defaultTask.name);
-
-    const componentIds = pipeline.data.recipe?.component
-      ? Object.keys(pipeline.data.recipe.component)
-      : [];
-
-    const id = generateUniqueNodeIdFromDefinition(
-      defaultDefinition,
-      componentIds,
-    );
-
-    const defaultValue = generateDefaultValue(
-      defaultDefinition.spec.componentSpecification,
-      defaultTask.name,
-    );
-
-    const doc = YAML.stringify(
-      {
-        [id]: {
-          type: defaultDefinition.id,
-          ...defaultValue,
-        },
-      },
-      stringfyOptions,
-    );
-
-    setSelectedComponentDefaultValue(doc);
   }
 
   // Since we will open or close the dialog from outside of the component,
@@ -450,8 +498,8 @@ export const ComponentCmdo = () => {
       return;
     }
 
-    prepareInitialSelection();
-  }, [openComponentCmdo]);
+    prepareInitialSelection(selectingComponentType);
+  }, [openComponentCmdo, selectingComponentType, prepareInitialSelection]);
 
   const displayIteratorDefinition = React.useMemo(() => {
     if (!searchCode) {
@@ -459,62 +507,16 @@ export const ComponentCmdo = () => {
     }
 
     return "iterator".includes(searchCode.toLowerCase());
-  }, [filteredDefinitions]);
+  }, [filteredDefinitions, searchCode]);
 
   function onSwitchComponentType(type: "component" | "event") {
-    if (!pipeline.isSuccess) {
+    if (!pipeline.isSuccess || !pipeline.data.recipe) {
       return;
     }
 
     setSelectingComponentType(type);
     setSearchCode(null);
-
-    if (type === "component") {
-      prepareInitialSelection();
-      return;
-    }
-
-    const defaultDefinition = EVENT_COMPONENT_DEFINITIONS[0];
-
-    if (!defaultDefinition) {
-      return;
-    }
-
-    onSelectComponentDefinition(defaultDefinition);
-
-    const defaultTask = defaultDefinition.tasks[0];
-
-    if (!defaultTask) {
-      return;
-    }
-
-    setSelectedTaskName(defaultTask.name);
-
-    const componentIds = pipeline.data.recipe?.component
-      ? Object.keys(pipeline.data.recipe.component)
-      : [];
-
-    const id = generateUniqueNodeIdFromDefinition(
-      defaultDefinition,
-      componentIds,
-    );
-
-    const defaultValue = generateDefaultValue(
-      defaultDefinition.spec.componentSpecification,
-      defaultTask.name,
-    );
-
-    const doc = YAML.stringify(
-      {
-        [id]: {
-          type: defaultDefinition.id,
-          ...defaultValue,
-        },
-      },
-      stringfyOptions,
-    );
-
-    setSelectedComponentDefaultValue(doc);
+    prepareInitialSelection(type);
   }
 
   return (
@@ -780,7 +782,7 @@ export const ComponentCmdo = () => {
                                 setSelectedTaskName(key);
                                 onSelectTask(key);
                               }}
-                              isSelected={false}
+                              isSelected={key === selectedTaskName}
                             />
                           ))
                         : null}

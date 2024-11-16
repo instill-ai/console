@@ -57,6 +57,21 @@ export const InstillYamlSchema = {
     },
     on: {
       type: "object",
+      patternProperties: {
+        "^[a-z][-a-z0-9]{0,31}$": {
+          type: "object",
+          properties: {
+            type: {
+              type: "string",
+            },
+            event: {
+              type: "string",
+            },
+          },
+          additionalProperties: true,
+          required: ["type", "event"],
+        },
+      },
     },
     variable: {
       type: "object",
