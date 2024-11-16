@@ -26,6 +26,12 @@ test("should create basic variable and output flow from recipe", () => {
 
   expect(nodes).toStrictEqual([
     {
+      id: "start",
+      type: "startNode",
+      position: { x: 0, y: 0 },
+      data: {},
+    },
+    {
       id: "variable",
       type: "variableNode",
       data: recipe.variable,
@@ -39,7 +45,7 @@ test("should create basic variable and output flow from recipe", () => {
     },
   ]);
 
-  expect(edges[0]?.source).toBe("variable");
+  expect(edges[0]?.source).toBe("start");
   expect(edges[0]?.target).toBe("output");
 });
 
@@ -66,6 +72,12 @@ test("should create array-index variable and output flow from recipe", () => {
 
   expect(nodes).toStrictEqual([
     {
+      id: "start",
+      type: "startNode",
+      position: { x: 0, y: 0 },
+      data: {},
+    },
+    {
       id: "variable",
       type: "variableNode",
       data: recipe.variable,
@@ -79,6 +91,6 @@ test("should create array-index variable and output flow from recipe", () => {
     },
   ]);
 
-  expect(edges[0]?.source).toBe("variable");
+  expect(edges[0]?.source).toBe("start");
   expect(edges[0]?.target).toBe("output");
 });
