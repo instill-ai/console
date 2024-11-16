@@ -37,6 +37,36 @@ function getAllComponentKeyLineNumberMaps(
   return componentKeyLineNumberMap.sort((a, b) => a.lineNumber - b.lineNumber);
 }
 
+function getAllRunOnEventKeyLineNumberMaps(
+  recipe: string,
+): EditorKeyLineNumberMap[] {
+  const runOnEventKeyLineNumberMap: EditorKeyLineNumberMap[] = [];
+  const lineCounter = new YAML.LineCounter();
+  const yamlData = YAML.parse(recipe);
+  const doc = YAML.parseAllDocuments<YAML.YAMLMap>(recipe, { lineCounter });
+  const yamlRunOnEvent = yamlData?.on as GeneralRecord | undefined;
+
+  if (!yamlRunOnEvent || !doc || !doc[0]) {
+    return runOnEventKeyLineNumberMap;
+  }
+
+  for (const key in yamlRunOnEvent) {
+    const node = doc[0].getIn(["on", key], true) as YAML.Node;
+    if (node && node.range) {
+      // The line counter of YAML.MAP type has some offset issue
+      const line = lineCounter.linePos(node.range[0]).line;
+      const adjustedLine = node instanceof YAML.Scalar ? line : line - 1;
+      runOnEventKeyLineNumberMap.push({
+        key,
+        dotPath: `on.${key}`,
+        lineNumber: adjustedLine,
+      });
+    }
+  }
+
+  return runOnEventKeyLineNumberMap.sort((a, b) => a.lineNumber - b.lineNumber);
+}
+
 function getComponentTopLevelKeyLineNumberMaps(
   recipe: string,
   componentKey: string,
@@ -131,11 +161,25 @@ function getRecipeTopLevelKeyLineNumberMaps(
     }
   }
 
+  if (yamlData.on) {
+    const node = doc[0].getIn(["on"], true) as YAML.Node;
+    if (node && node.range) {
+      const line = lineCounter.linePos(node.range[0]).line;
+      const adjustedLine = node instanceof YAML.Scalar ? line : line - 1;
+      componentKeyLineNumberMap.push({
+        key: "on",
+        dotPath: "on",
+        lineNumber: adjustedLine,
+      });
+    }
+  }
+
   return componentKeyLineNumberMap.sort((a, b) => a.lineNumber - b.lineNumber);
 }
 
 export const keyLineNumberMapHelpers = {
   getAllComponentKeyLineNumberMaps,
+  getAllRunOnEventKeyLineNumberMaps,
   getRecipeTopLevelKeyLineNumberMaps,
   getComponentTopLevelKeyLineNumberMaps,
 };

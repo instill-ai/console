@@ -198,6 +198,55 @@ function getComponentIntegrationConnectionAutocompletions({
   return autocomletions;
 }
 
+function getComponentIntegrationConnectionForRunOnEventAutocompletions({
+  monaco,
+  recipe,
+  smallestRunOnEventKeyLineNumberMap,
+  position,
+  activeTyping,
+  integrationConnections,
+}: {
+  monaco: Nullable<Monaco>;
+  recipe: Nullable<PipelineRecipe>;
+  smallestRunOnEventKeyLineNumberMap: Nullable<EditorKeyLineNumberMap>;
+  position: Position;
+  activeTyping: Nullable<string>;
+  integrationConnections: IntegrationConnection[];
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+
+  if (!monaco || !recipe || !recipe.on || !smallestRunOnEventKeyLineNumberMap) {
+    return autocomletions;
+  }
+
+  const _activeTyping = activeTyping ?? "";
+
+  const targetComponent = recipe.on[smallestRunOnEventKeyLineNumberMap.key];
+
+  if (targetComponent) {
+    const targetIntegrationConnections = integrationConnections.filter(
+      (e) => e.integrationId === targetComponent.type,
+    );
+
+    for (const connection of targetIntegrationConnections) {
+      autocomletions.push({
+        label: connection.id,
+        kind: monaco.languages.CompletionItemKind.Field,
+        insertText: "${connection." + connection.id,
+        filterText: "${connection." + connection.id,
+        range: new monaco.Range(
+          position.lineNumber,
+          position.column - _activeTyping.length,
+          position.lineNumber,
+          position.column,
+        ),
+      });
+    }
+  }
+
+  return autocomletions;
+}
+
 function getComponentInputAutocompletions({
   monaco,
   recipe,
@@ -436,6 +485,53 @@ function getVariableReferenceAutocompletions({
   return autocomletions;
 }
 
+function getRunOnEventReferenceAutocompletions({
+  monaco,
+  position,
+  activeTyping,
+  recipe,
+}: {
+  monaco: Nullable<Monaco>;
+  position: Position;
+  activeTyping: Nullable<string>;
+  recipe: Nullable<PipelineRecipe>;
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+
+  if (!monaco || !recipe) {
+    return autocomletions;
+  }
+
+  const _activeTyping = activeTyping ?? "";
+
+  const allHints = recipe.on;
+
+  if (!allHints) {
+    return autocomletions;
+  }
+
+  for (const [key, value] of Object.entries(allHints)) {
+    autocomletions.push({
+      label: key,
+      kind: monaco.languages.CompletionItemKind.Field,
+      insertText: "${" + "on." + key,
+      filterText: "${" + "on." + key,
+      documentation: {
+        value: `**${key}** \n\n --- \n\n type: ${value?.type}`,
+      },
+      range: new monaco.Range(
+        position.lineNumber,
+        position.column - _activeTyping.length,
+        position.lineNumber,
+        position.column,
+      ),
+      detail: `${value?.type}`,
+    });
+  }
+
+  return autocomletions;
+}
+
 function getComponentObjectArrayOutputAutocompletions({
   monaco,
   position,
@@ -655,6 +751,42 @@ function getVariablePrefixAutoCompletions({
   return autocomletions;
 }
 
+/**
+ * This is for hint user to put on after ${
+ */
+function getOnPrefixAutoCompletions({
+  monaco,
+  position,
+  activeTyping,
+}: {
+  monaco: Nullable<Monaco>;
+  position: Position;
+  activeTyping: Nullable<string>;
+}) {
+  const autocomletions: languages.CompletionItem[] = [];
+
+  if (!monaco) {
+    return autocomletions;
+  }
+
+  const _activeTyping = activeTyping ?? "";
+
+  autocomletions.push({
+    label: "on",
+    kind: monaco.languages.CompletionItemKind.Variable,
+    insertText: "${" + "on",
+    filterText: "${" + "on",
+    range: new monaco.Range(
+      position.lineNumber,
+      position.column - _activeTyping.length,
+      position.lineNumber,
+      position.column,
+    ),
+  });
+
+  return autocomletions;
+}
+
 function getSecretPrefixAutoCompletions({
   monaco,
   position,
@@ -846,6 +978,13 @@ export const VscodeEditor = () => {
         .reverse()
         .find((map) => map.lineNumber <= position.lineNumber);
 
+      const runOnEventKeyLineNumberMaps =
+        keyLineNumberMapHelpers.getAllRunOnEventKeyLineNumberMaps(allValue);
+
+      const smallestRunOnEventKeyLineNumberMap = runOnEventKeyLineNumberMaps
+        .reverse()
+        .find((map) => map.lineNumber <= position.lineNumber);
+
       const topLevelKeyLineNumberMaps =
         keyLineNumberMapHelpers.getRecipeTopLevelKeyLineNumberMaps(allValue);
 
@@ -1012,6 +1151,43 @@ export const VscodeEditor = () => {
           };
         }
 
+        if (
+          activeTyping.includes("connection") &&
+          charactersBeforeCursor.includes("setup:") &&
+          connections.isSuccess &&
+          pipeline.isSuccess &&
+          smallestTopLevelKeyLineNumberMap?.key === "on" &&
+          smallestRunOnEventKeyLineNumberMap
+        ) {
+          const autocomletions =
+            getComponentIntegrationConnectionForRunOnEventAutocompletions({
+              monaco,
+              recipe: pipeline.data.recipe,
+              smallestRunOnEventKeyLineNumberMap,
+              position,
+              activeTyping,
+              integrationConnections: connections.data,
+            });
+
+          return {
+            suggestions: autocomletions,
+          };
+        }
+
+        // [Hint referernce for run on event]
+        if (activeTyping.includes("on")) {
+          const autocomletions = getRunOnEventReferenceAutocompletions({
+            monaco,
+            position,
+            activeTyping,
+            recipe,
+          });
+
+          return {
+            suggestions: autocomletions,
+          };
+        }
+
         const allHintMap = getAllComponentOutputHints({
           recipe,
         });
@@ -1085,6 +1261,14 @@ export const VscodeEditor = () => {
           });
 
         result.push(...connectionPrefixAutocompletions);
+
+        const onPrefixAutocompletions = getOnPrefixAutoCompletions({
+          monaco,
+          position,
+          activeTyping,
+        });
+
+        result.push(...onPrefixAutocompletions);
 
         // [HINT secret key]
         // This keyword will only be used under setup component toplevel key

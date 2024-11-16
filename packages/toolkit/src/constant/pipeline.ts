@@ -198,3 +198,5 @@ export const DocumentInputAcceptMimeTypes = [
   "text/csv",
   "application/pdf",
 ];
+
+export const GITHUB_EVENT_COMPONENT_TYPE = [""];

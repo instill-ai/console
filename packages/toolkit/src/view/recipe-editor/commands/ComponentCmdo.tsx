@@ -1,10 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { ComponentDefinition, IteratorDefinition } from "instill-sdk";
+import {
+  ComponentDefinition,
+  IteratorDefinition,
+  PipelineRecipe,
+} from "instill-sdk";
 import { editor } from "monaco-editor";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { stackoverflowLight } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import YAML from "yaml";
 
 import {
@@ -14,11 +16,11 @@ import {
   Icons,
   ScrollArea,
   Separator,
+  ToggleGroup,
 } from "@instill-ai/design-system";
 
 import { ImageWithFallback, LoadingSpin } from "../../../components";
 import {
-  InstillJSONSchema,
   InstillStore,
   isComponentDefinition,
   isIteratorDefinition,
@@ -52,10 +54,21 @@ const normalComponentIndent = "  ";
 const stringfyOptions: YAML.ToStringOptions = {
   indent: 2,
   nullStr: "",
+  collectionStyle: "block",
 };
 
-function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
-  const formTree = transformInstillJSONSchemaToFormTree(schema);
+function generateComponentDefaultYamlString(
+  definition: ComponentDefinition,
+  recipe: PipelineRecipe,
+  taskName: string,
+) {
+  const componentIds = recipe.component ? Object.keys(recipe.component) : [];
+
+  const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
+
+  const formTree = transformInstillJSONSchemaToFormTree(
+    definition.spec.componentSpecification,
+  );
 
   const selectedConditionMap =
     transformInstillFormTreeToInitialSelectedCondition(formTree, {
@@ -66,12 +79,69 @@ function generateDefaultValue(schema: InstillJSONSchema, taskName?: string) {
         : undefined,
     });
 
-  const data = transformInstillFormTreeToDefaultValue(formTree, {
+  const defaultValue = transformInstillFormTreeToDefaultValue(formTree, {
     selectedConditionMap,
     skipPath: ["setup.api-key"],
   });
 
-  return data;
+  const { task, ...restDefaultValue } = defaultValue;
+
+  const doc = YAML.stringify(
+    {
+      [id]: {
+        type: definition.id,
+        task,
+        ...restDefaultValue,
+      },
+    },
+    stringfyOptions,
+  );
+
+  return doc;
+}
+
+function generateEventDefaultYamlString(
+  definition: ComponentDefinition,
+  recipe: PipelineRecipe,
+  taskName: string,
+) {
+  if (!definition.spec.eventSpecifications) {
+    return;
+  }
+
+  const runOnEventIds = recipe.on ? Object.keys(recipe.on) : [];
+
+  const id = generateUniqueNodeIdFromDefinition(
+    definition,
+    runOnEventIds,
+    "event",
+  );
+
+  const targetEventSchema = definition.spec.eventSpecifications[taskName];
+
+  if (!targetEventSchema || !targetEventSchema.configSchema) {
+    return;
+  }
+
+  const formTree = transformInstillJSONSchemaToFormTree(
+    targetEventSchema.configSchema,
+  );
+
+  const defaultValue = transformInstillFormTreeToDefaultValue(formTree, {});
+
+  const doc = YAML.stringify(
+    {
+      [id]: {
+        type: definition.id,
+        event: taskName,
+        config: defaultValue,
+        setup: null,
+      },
+    },
+    stringfyOptions,
+  );
+
+  return doc;
 }
 
 export const ComponentCmdo = () => {
@@ -88,7 +158,9 @@ export const ComponentCmdo = () => {
   } = useInstillStore(useShallow(selector));
 
   const [searchCode, setSearchCode] = React.useState<Nullable<string>>(null);
-
+  const [selectingComponentType, setSelectingComponentType] = React.useState<
+    "component" | "event"
+  >("component");
   const [selectedComponentDefinition, setSelectedComponentDefinition] =
     React.useState<Nullable<ComponentDefinition | IteratorDefinition>>(null);
   const [selectedTaskName, setSelectedTaskName] =
@@ -131,6 +203,20 @@ export const ComponentCmdo = () => {
       });
   }, [searchCode, definitions.isSuccess, definitions.data]);
 
+  const eventDefinitions = React.useMemo(() => {
+    if (!definitions.isSuccess) {
+      return [];
+    }
+
+    return definitions.data.filter((definition) => {
+      return (
+        definition.spec.eventSpecifications &&
+        definition.spec.eventSpecifications !== null &&
+        Object.keys(definition.spec.eventSpecifications).length > 0
+      );
+    });
+  }, [definitions.isSuccess, definitions.data]);
+
   const filteredAiDefinitions = React.useMemo(() => {
     return filteredDefinitions.filter((definition) => {
       return definition.type === "COMPONENT_TYPE_AI";
@@ -162,7 +248,12 @@ export const ComponentCmdo = () => {
   }, [filteredDefinitions]);
 
   function onSelectTask(taskName: string) {
-    if (!pipeline.isSuccess || !editorRef || !selectedComponentDefinition) {
+    if (
+      !pipeline.isSuccess ||
+      !pipeline.data.recipe ||
+      !editorRef ||
+      !selectedComponentDefinition
+    ) {
       return;
     }
 
@@ -189,24 +280,31 @@ export const ComponentCmdo = () => {
     }
 
     if (isComponentDefinition(selectedComponentDefinition)) {
-      const id = generateUniqueNodeIdFromDefinition(
-        selectedComponentDefinition,
-        componentIds,
-      );
-      const defaultValue = generateDefaultValue(
-        selectedComponentDefinition.spec.componentSpecification,
-        taskName,
-      );
+      if (selectingComponentType === "event") {
+        const eventDoc = generateEventDefaultYamlString(
+          selectedComponentDefinition,
+          pipeline.data.recipe,
+          taskName,
+        );
 
-      doc = YAML.stringify(
-        {
-          [id]: {
-            type: selectedComponentDefinition.id,
-            ...defaultValue,
-          },
-        },
-        stringfyOptions,
-      );
+        if (!eventDoc) {
+          return;
+        }
+
+        doc = eventDoc;
+      } else {
+        const componentDoc = generateComponentDefaultYamlString(
+          selectedComponentDefinition,
+          pipeline.data.recipe,
+          taskName,
+        );
+
+        if (!componentDoc) {
+          return;
+        }
+
+        doc = componentDoc;
+      }
     }
 
     setSelectedComponentDefaultValue(doc);
@@ -273,7 +371,7 @@ export const ComponentCmdo = () => {
   function onSelectComponentDefinition(
     definition: ComponentDefinition | IteratorDefinition,
   ) {
-    if (!pipeline.isSuccess) {
+    if (!pipeline.isSuccess || !pipeline.data.recipe) {
       return;
     }
 
@@ -287,29 +385,15 @@ export const ComponentCmdo = () => {
         return;
       }
 
-      const componentIds = pipeline.data.recipe?.component
-        ? Object.keys(pipeline.data.recipe.component)
-        : [];
-
-      const id = generateUniqueNodeIdFromDefinition(definition, componentIds);
-
-      const defaultValue = generateDefaultValue(
-        definition.spec.componentSpecification,
+      const doc = generateComponentDefaultYamlString(
+        definition,
+        pipeline.data.recipe,
         defaultTask.name,
-      );
-
-      const doc = YAML.stringify(
-        {
-          [id]: {
-            type: definition.id,
-            ...defaultValue,
-          },
-        },
-        stringfyOptions,
       );
 
       setSelectedComponentDefaultValue(doc);
       setSelectedTaskName(defaultTask.name);
+      return;
     }
 
     if (isIteratorDefinition(definition)) {
@@ -333,56 +417,76 @@ export const ComponentCmdo = () => {
   }
 
   // Prepare initial selection when the dialog is opened
-  function prepareInitialSelection() {
+  function prepareInitialSelection(
+    selectingComponentType: "component" | "event",
+  ) {
     if (
       !definitions.isSuccess ||
       !pipeline.isSuccess ||
-      filteredDefinitions.length === 0
+      !pipeline.data.recipe
     ) {
       return;
     }
 
-    const defaultDefinition = filteredDefinitions[0];
+    if (selectingComponentType === "component") {
+      const defaultDefinition = filteredDefinitions[0];
 
-    if (!defaultDefinition) {
-      return;
+      if (!defaultDefinition) {
+        return;
+      }
+
+      setSelectedComponentDefinition(defaultDefinition);
+
+      const defaultTask = defaultDefinition.tasks[0];
+
+      if (!defaultTask) {
+        return;
+      }
+
+      setSelectedTaskName(defaultTask.name);
+
+      const doc = generateComponentDefaultYamlString(
+        defaultDefinition,
+        pipeline.data.recipe,
+        defaultTask.name,
+      );
+
+      setSelectedComponentDefaultValue(doc);
+    } else {
+      const defaultDefinition = eventDefinitions[0];
+
+      console.log("defaultDefinition", defaultDefinition);
+
+      if (!defaultDefinition || !defaultDefinition.spec.eventSpecifications) {
+        return;
+      }
+
+      onSelectComponentDefinition(defaultDefinition);
+
+      const defaultTask = Object.keys(
+        defaultDefinition.spec.eventSpecifications,
+      )[0];
+
+      console.log("defaultTask", defaultTask);
+
+      if (!defaultTask) {
+        return;
+      }
+
+      setSelectedTaskName(defaultTask);
+
+      const doc = generateEventDefaultYamlString(
+        defaultDefinition,
+        pipeline.data.recipe,
+        defaultTask,
+      );
+
+      if (!doc) {
+        return;
+      }
+
+      setSelectedComponentDefaultValue(doc);
     }
-
-    setSelectedComponentDefinition(defaultDefinition);
-
-    const defaultTask = defaultDefinition.tasks[0];
-
-    if (!defaultTask) {
-      return;
-    }
-
-    setSelectedTaskName(defaultTask.name);
-
-    const componentIds = pipeline.data.recipe?.component
-      ? Object.keys(pipeline.data.recipe.component)
-      : [];
-
-    const id = generateUniqueNodeIdFromDefinition(
-      defaultDefinition,
-      componentIds,
-    );
-
-    const defaultValue = generateDefaultValue(
-      defaultDefinition.spec.componentSpecification,
-      defaultTask.name,
-    );
-
-    const doc = YAML.stringify(
-      {
-        [id]: {
-          type: defaultDefinition.id,
-          ...defaultValue,
-        },
-      },
-      stringfyOptions,
-    );
-
-    setSelectedComponentDefaultValue(doc);
   }
 
   // Since we will open or close the dialog from outside of the component,
@@ -394,8 +498,8 @@ export const ComponentCmdo = () => {
       return;
     }
 
-    prepareInitialSelection();
-  }, [openComponentCmdo]);
+    prepareInitialSelection(selectingComponentType);
+  }, [openComponentCmdo, selectingComponentType, prepareInitialSelection]);
 
   const displayIteratorDefinition = React.useMemo(() => {
     if (!searchCode) {
@@ -403,7 +507,17 @@ export const ComponentCmdo = () => {
     }
 
     return "iterator".includes(searchCode.toLowerCase());
-  }, [filteredDefinitions]);
+  }, [filteredDefinitions, searchCode]);
+
+  function onSwitchComponentType(type: "component" | "event") {
+    if (!pipeline.isSuccess || !pipeline.data.recipe) {
+      return;
+    }
+
+    setSelectingComponentType(type);
+    setSearchCode(null);
+    prepareInitialSelection(type);
+  }
 
   return (
     <Dialog.Root
@@ -437,16 +551,43 @@ export const ComponentCmdo = () => {
         }}
         className="flex flex-col w-[761px] h-[480px] !p-6"
       >
-        <div className="flex w-full flex-col h-full overflow-y-hidden">
-          <div className="flex flex-row mb-6">
-            <div className="flex flex-col gap-y-2 mr-auto">
-              <h3 className="text-semantic-fg-primary product-headings-heading-3">
-                Add Component
-              </h3>
-              <p className="product-body-text-2-regular text-semantic-fg-secondary">
-                Select a component and add it to your pipeline
-              </p>
-            </div>
+        <div className="flex w-full flex-col h-full">
+          <div className="flex w-full items-center justify-between flex-row mb-6">
+            <h3 className="text-semantic-fg-primary product-headings-heading-3">
+              Add Component
+            </h3>
+            <ToggleGroup.Root
+              type="single"
+              value={selectingComponentType}
+              disabled={!pipeline.isSuccess}
+              onValueChange={(value: "component" | "event") =>
+                onSwitchComponentType(value)
+              }
+              className="flex h-10 space-x-1 rounded-sm border border-semantic-bg-line bg-semantic-bg-secondary p-1"
+            >
+              <ToggleGroup.Item
+                value="component"
+                className={cn(
+                  "flex items-center justify-center rounded px-2.5 py-1.5 transition-all duration-200 ease-in-out product-body-text-3-semibold",
+                  selectingComponentType === "component"
+                    ? "pointer-events-none !bg-semantic-bg-primary !text-semantic-fg-primary shadow"
+                    : "bg-transparent text-semantic-fg-disabled hover:bg-semantic-bg-line",
+                )}
+              >
+                Component
+              </ToggleGroup.Item>
+              <ToggleGroup.Item
+                value="event"
+                className={cn(
+                  "flex items-center justify-center rounded px-2.5 py-1.5 transition-all duration-200 ease-in-out product-body-text-3-semibold",
+                  selectingComponentType === "event"
+                    ? "pointer-events-none !bg-semantic-bg-primary !text-semantic-fg-primary shadow"
+                    : "bg-transparent text-semantic-fg-disabled hover:bg-semantic-bg-line",
+                )}
+              >
+                Event
+              </ToggleGroup.Item>
+            </ToggleGroup.Root>
             <button
               onClick={() => {
                 updateOpenComponentCmdo(() => false);
@@ -456,155 +597,211 @@ export const ComponentCmdo = () => {
               <Icons.X className="w-6 h-6 stroke-semantic-fg-primary" />
             </button>
           </div>
-          <div className="w-full mb-3 relative">
-            <Icons.SearchSm className="w-4 h-4 absolute top-1/2 -translate-y-1/2 left-[9px] stroke-semantic-fg-primary" />
-            <input
-              ref={inputRef}
-              placeholder="Search component..."
-              onChange={(e) => setSearchCode(e.target.value)}
-              className="border w-full pl-[33px] pr-[9px] py-1.5 rounded border-semantic-bg-line"
-            />
-          </div>
+
           <div className="flex flex-row w-full h-full">
-            <ScrollArea.Root className="flex py-3 shrink-0 w-[240px] h-[300px]">
-              <CommandGroup heading="AI">
-                {definitions.isSuccess ? (
-                  filteredAiDefinitions.map((definition) => (
-                    <CommandItem
-                      key={definition.id}
-                      onClick={() => {
-                        onSelectComponentDefinition(definition);
-                      }}
-                      definition={definition}
-                      isSelected={
-                        selectedComponentDefinition?.id === definition.id
-                      }
-                    />
-                  ))
-                ) : (
-                  <LoadingSpin />
-                )}
-              </CommandGroup>
-              <CommandGroup heading="Application">
-                {definitions.isSuccess ? (
-                  filteredApplicationDefinitions.map((definition) => (
-                    <CommandItem
-                      key={definition.id}
-                      onClick={() => {
-                        onSelectComponentDefinition(definition);
-                      }}
-                      definition={definition}
-                      isSelected={
-                        selectedComponentDefinition?.id === definition.id
-                      }
-                    />
-                  ))
-                ) : (
-                  <LoadingSpin />
-                )}
-              </CommandGroup>
-              <CommandGroup heading="Data">
-                {definitions.isSuccess ? (
-                  filteredDataDefinitions.map((definition) => (
-                    <CommandItem
-                      key={definition.id}
-                      onClick={() => {
-                        onSelectComponentDefinition(definition);
-                      }}
-                      definition={definition}
-                      isSelected={
-                        selectedComponentDefinition?.id === definition.id
-                      }
-                    />
-                  ))
-                ) : (
-                  <LoadingSpin />
-                )}
-              </CommandGroup>
-              <CommandGroup heading="Operator">
-                {definitions.isSuccess ? (
-                  filteredOperatorDefinitions.map((definition) => (
-                    <CommandItem
-                      key={definition.id}
-                      onClick={() => {
-                        onSelectComponentDefinition(definition);
-                      }}
-                      definition={definition}
-                      isSelected={
-                        selectedComponentDefinition?.id === definition.id
-                      }
-                    />
-                  ))
-                ) : (
-                  <LoadingSpin />
-                )}
-              </CommandGroup>
-              <CommandGroup heading="Generic">
-                {definitions.isSuccess ? (
-                  filteredGenericDefinitions.map((definition) => (
-                    <CommandItem
-                      key={definition.id}
-                      onClick={() => {
-                        onSelectComponentDefinition(definition);
-                      }}
-                      definition={definition}
-                      isSelected={
-                        selectedComponentDefinition?.id === definition.id
-                      }
-                    />
-                  ))
-                ) : (
-                  <LoadingSpin />
-                )}
-                {displayIteratorDefinition ? (
-                  <CommandItem
-                    onClick={() => {
-                      if (!pipeline.isSuccess) {
-                        return;
-                      }
+            <div className="flex flex-col">
+              <div className="w-full mb-3 relative">
+                <Icons.SearchSm className="w-4 h-4 absolute top-1/2 -translate-y-1/2 left-[9px] stroke-semantic-fg-primary" />
+                <input
+                  ref={inputRef}
+                  placeholder="Search component..."
+                  onChange={(e) => setSearchCode(e.target.value)}
+                  className="border w-full pl-[33px] pr-[9px] py-1.5 rounded border-semantic-bg-line"
+                />
+              </div>
+              <ScrollArea.Root className="flex shrink-0 w-[240px] h-[316px]">
+                {selectingComponentType === "component" ? (
+                  <React.Fragment>
+                    <CommandGroup heading="AI">
+                      {definitions.isSuccess ? (
+                        filteredAiDefinitions.map((definition) => (
+                          <CommandItem
+                            key={definition.id}
+                            onClick={() => {
+                              onSelectComponentDefinition(definition);
+                            }}
+                            definition={definition}
+                            isSelected={
+                              selectedComponentDefinition?.id === definition.id
+                            }
+                          />
+                        ))
+                      ) : (
+                        <LoadingSpin />
+                      )}
+                    </CommandGroup>
+                    <CommandGroup heading="Application">
+                      {definitions.isSuccess ? (
+                        filteredApplicationDefinitions.map((definition) => (
+                          <CommandItem
+                            key={definition.id}
+                            onClick={() => {
+                              onSelectComponentDefinition(definition);
+                            }}
+                            definition={definition}
+                            isSelected={
+                              selectedComponentDefinition?.id === definition.id
+                            }
+                          />
+                        ))
+                      ) : (
+                        <LoadingSpin />
+                      )}
+                    </CommandGroup>
+                    <CommandGroup heading="Data">
+                      {definitions.isSuccess ? (
+                        filteredDataDefinitions.map((definition) => (
+                          <CommandItem
+                            key={definition.id}
+                            onClick={() => {
+                              onSelectComponentDefinition(definition);
+                            }}
+                            definition={definition}
+                            isSelected={
+                              selectedComponentDefinition?.id === definition.id
+                            }
+                          />
+                        ))
+                      ) : (
+                        <LoadingSpin />
+                      )}
+                    </CommandGroup>
+                    <CommandGroup heading="Operator">
+                      {definitions.isSuccess ? (
+                        filteredOperatorDefinitions.map((definition) => (
+                          <CommandItem
+                            key={definition.id}
+                            onClick={() => {
+                              onSelectComponentDefinition(definition);
+                            }}
+                            definition={definition}
+                            isSelected={
+                              selectedComponentDefinition?.id === definition.id
+                            }
+                          />
+                        ))
+                      ) : (
+                        <LoadingSpin />
+                      )}
+                    </CommandGroup>
+                    <CommandGroup heading="Generic">
+                      {definitions.isSuccess ? (
+                        filteredGenericDefinitions.map((definition) => (
+                          <CommandItem
+                            key={definition.id}
+                            onClick={() => {
+                              onSelectComponentDefinition(definition);
+                            }}
+                            definition={definition}
+                            isSelected={
+                              selectedComponentDefinition?.id === definition.id
+                            }
+                          />
+                        ))
+                      ) : (
+                        <LoadingSpin />
+                      )}
+                      {displayIteratorDefinition ? (
+                        <CommandItem
+                          onClick={() => {
+                            if (!pipeline.isSuccess) {
+                              return;
+                            }
 
-                      const definition: IteratorDefinition = {
-                        id: "iterator",
-                        title: "Iterator",
-                        icon: "iterator.svg",
-                        name: "iterator/iterator",
-                        uid: "uid",
-                      };
+                            const definition: IteratorDefinition = {
+                              id: "iterator",
+                              title: "Iterator",
+                              icon: "iterator.svg",
+                              name: "iterator/iterator",
+                              uid: "uid",
+                            };
 
-                      onSelectComponentDefinition(definition);
-                    }}
-                    isSelected={selectedComponentDefinition?.id === "iterator"}
-                    definition={{
-                      id: "iterator",
-                      title: "Iterator",
-                      icon: "iterator.svg",
-                      name: "iterator/iterator",
-                      uid: "uid",
-                    }}
-                  />
-                ) : null}
-              </CommandGroup>
-            </ScrollArea.Root>
-            <Separator orientation="vertical" className="!mx-3" />
-            {selectedComponentDefinition &&
-            isComponentDefinition(selectedComponentDefinition) ? (
-              <ScrollArea.Root className="flex w-[160px] mr-3 shrink-0 py-3 h-[300px]">
-                <CommandGroup headingWrapperClassName="px-2" heading="Task">
-                  {selectedComponentDefinition.tasks.map((task) => (
-                    <TaskItem
-                      key={task.name}
-                      taskTitle={task.title}
-                      onClick={() => {
-                        setSelectedTaskName(task.name);
-                        onSelectTask(task.name);
-                      }}
-                      isSelected={selectedTaskName === task.name}
-                    />
-                  ))}
-                </CommandGroup>
+                            onSelectComponentDefinition(definition);
+                          }}
+                          isSelected={
+                            selectedComponentDefinition?.id === "iterator"
+                          }
+                          definition={{
+                            id: "iterator",
+                            title: "Iterator",
+                            icon: "iterator.svg",
+                            name: "iterator/iterator",
+                            uid: "uid",
+                          }}
+                        />
+                      ) : null}
+                    </CommandGroup>
+                  </React.Fragment>
+                ) : (
+                  <CommandGroup heading="Event">
+                    {eventDefinitions.map((definition) => (
+                      <CommandItem
+                        key={definition.id}
+                        onClick={() => {
+                          onSelectComponentDefinition(definition);
+                        }}
+                        definition={definition}
+                        isSelected={
+                          selectedComponentDefinition?.id === definition.id
+                        }
+                      />
+                    ))}
+                  </CommandGroup>
+                )}
               </ScrollArea.Root>
-            ) : null}
-            <div className="flex flex-col w-[275px] h-[300px] gap-y-2">
+            </div>
+            <Separator orientation="vertical" className="!mx-3" />
+            <div className="flex flex-col  w-full h-full">
+              {selectedComponentDefinition &&
+              isComponentDefinition(selectedComponentDefinition) ? (
+                <ScrollArea.Root className="flex shrink-0 mb-auto h-[280px]">
+                  <CommandGroup headingWrapperClassName="px-2" heading="Task">
+                    {selectingComponentType === "component"
+                      ? selectedComponentDefinition.tasks.map((task) => (
+                          <TaskItem
+                            key={task.name}
+                            taskTitle={task.title}
+                            taskDescription={task.description}
+                            onClick={() => {
+                              setSelectedTaskName(task.name);
+                              onSelectTask(task.name);
+                            }}
+                            isSelected={selectedTaskName === task.name}
+                          />
+                        ))
+                      : selectedComponentDefinition.spec.eventSpecifications
+                        ? Object.entries(
+                            selectedComponentDefinition.spec
+                              .eventSpecifications,
+                          ).map(([key, value]) => (
+                            <TaskItem
+                              key={key}
+                              taskTitle={key}
+                              taskDescription={value.description}
+                              onClick={() => {
+                                setSelectedTaskName(key);
+                                onSelectTask(key);
+                              }}
+                              isSelected={key === selectedTaskName}
+                            />
+                          ))
+                        : null}
+                  </CommandGroup>
+                </ScrollArea.Root>
+              ) : null}
+              <Button
+                onClick={onAddComponent}
+                className="ml-auto"
+                variant="primary"
+                size="md"
+              >
+                Add
+              </Button>
+            </div>
+            {/* 
+              This is the preview of the component recipe, we might need to refactor it later
+            */}
+            {/* <div className="flex flex-col w-[275px] h-[300px] gap-y-2">
               <div className="w-full p-5 flex-1 rounded-sm bg-semantic-bg-base-bg border border-semantic-bg-line">
                 <div className="flex flex-col">
                   <p className="product-label-label-2 text-semantic-fg-disabled">
@@ -632,15 +829,7 @@ export const ComponentCmdo = () => {
                   </ScrollArea.Root>
                 </div>
               </div>
-              <Button
-                onClick={onAddComponent}
-                className="ml-auto"
-                variant="primary"
-                size="md"
-              >
-                Add
-              </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </Dialog.Content>
@@ -721,10 +910,12 @@ const CommandItem = ({
 
 const TaskItem = ({
   taskTitle,
+  taskDescription,
   onClick,
   isSelected,
 }: {
   taskTitle: string;
+  taskDescription: string;
   onClick: () => void;
   isSelected: boolean;
 }) => {
@@ -732,7 +923,7 @@ const TaskItem = ({
     <button
       onClick={onClick}
       className={cn(
-        "p-2 w-full",
+        "p-2 w-full flex flex-col",
         isSelected
           ? "bg-semantic-bg-secondary"
           : "hover:bg-semantic-bg-secondary",
@@ -740,6 +931,9 @@ const TaskItem = ({
     >
       <p className="product-body-text-3-medium text-start text-semantic-fg-primary">
         {taskTitle}
+      </p>
+      <p className="product-body-text-3-regular text-start text-semantic-fg-disabled">
+        {taskDescription}
       </p>
     </button>
   );

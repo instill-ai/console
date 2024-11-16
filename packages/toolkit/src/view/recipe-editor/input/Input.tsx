@@ -9,6 +9,7 @@ import {
   isPipelineErrorUpdatedEvent,
   isPipelineOutputUpdatedEvent,
   isPipelineStatusUpdatedEvent,
+  PipelineRunOnEventMap,
   PipelineVariableFieldMap,
 } from "instill-sdk";
 import * as z from "zod";
@@ -28,8 +29,12 @@ import {
   useStreamingTriggerUserPipelineRelease,
   useUserNamespaces,
 } from "../../../lib";
-import { recursiveHelpers } from "../../pipeline-builder";
+import {
+  getReferencesFromString,
+  recursiveHelpers,
+} from "../../pipeline-builder";
 import { useAutonomousEditorRecipeUpdater } from "../lib";
+import { EventField, listenWithType } from "./EventField";
 import { parseEventReadableStream } from "./parseEventReadableStream";
 
 const selector = (store: InstillStore) => ({
@@ -42,10 +47,18 @@ const selector = (store: InstillStore) => ({
   hasUnsavedRecipe: store.hasUnsavedRecipe,
 });
 
+export type VariableConnectToRunOnEvent = {
+  listens: listenWithType[];
+  key: string;
+  title: string;
+};
+
 export const Input = ({
   fields,
+  on,
 }: {
   fields: Nullable<PipelineVariableFieldMap>;
+  on: Nullable<PipelineRunOnEventMap>;
 }) => {
   const {
     isTriggeringPipeline,
@@ -448,6 +461,52 @@ export const Input = ({
     ],
   );
 
+  const variablesConnectToRunOnEvent = React.useMemo(() => {
+    if (!on || !fields) {
+      return [];
+    }
+
+    const variablesConnectToRunOnEvent: VariableConnectToRunOnEvent[] = [];
+
+    Object.entries(fields).forEach(([key, value]) => {
+      if (!value) {
+        return;
+      }
+
+      if (value.listen) {
+        const listensWithType: listenWithType[] = [];
+
+        for (const listenItem of value.listen) {
+          const reference = getReferencesFromString(listenItem)[0];
+          if (!reference) {
+            continue;
+          }
+
+          // The referenceValue will looks like ${on.slack-0.message.text}
+          const referenceValueFrag =
+            reference.referenceValue.withoutCurlyBraces.split(".");
+          const eventKey = referenceValueFrag[1];
+          const eventType = eventKey ? on[eventKey] : undefined;
+
+          if (eventType) {
+            listensWithType.push({
+              reference: listenItem,
+              type: eventType.type,
+            });
+          }
+        }
+
+        variablesConnectToRunOnEvent.push({
+          listens: listensWithType,
+          key,
+          title: value.title,
+        });
+      }
+    });
+
+    return variablesConnectToRunOnEvent;
+  }, [on, fields]);
+
   return (
     <div className="flex flex-col w-full">
       <h3 className="py-2 product-body-text-1-semibold text-semantic-fg-primary">
@@ -467,7 +526,16 @@ export const Input = ({
           className="w-full"
           onSubmit={form.handleSubmit(onStreamTriggerPipeline)}
         >
-          <div className="flex flex-col gap-y-4">{fieldItems}</div>
+          <div className="flex flex-col gap-y-4">
+            {variablesConnectToRunOnEvent.map((variable) => (
+              <EventField
+                title={variable.title ?? variable.key}
+                key={variable.key}
+                listensWithType={variable.listens}
+              />
+            ))}
+            {fieldItems}
+          </div>
         </form>
       </Form.Root>
     </div>

@@ -195,7 +195,7 @@ export const RecipeEditorView = () => {
         : release?.dataSpecification;
 
     const inputView = recipe?.variable ? (
-      <Input fields={recipe?.variable ?? null} />
+      <Input fields={recipe?.variable ?? null} on={recipe?.on ?? null} />
     ) : (
       <InOutputEmptyView reason="variableIsEmpty" />
     );

@@ -32,7 +32,6 @@ export const NodeBase = ({
   handleOpenDocumentation,
   handleOpenComponentOutput,
   handleClick,
-  hasTargetEdges,
   hasSourceEdges,
   nodeDescription,
   definitionId,
@@ -41,15 +40,17 @@ export const NodeBase = ({
   disabledOpenComponentOutputButton,
   additionalControlButton,
   children,
+  customHandleClassName,
+  nodeClassName,
 }: {
   id: string;
   isSelected: boolean;
   isProcessing?: boolean;
   isCompleted?: boolean;
   errorState?: ComponentErrorState;
-  handleOpenDocumentation: () => void;
+  handleOpenDocumentation?: () => void;
   disabledOpenDocumentationButton?: boolean;
-  handleOpenComponentOutput: () => void;
+  handleOpenComponentOutput?: () => void;
   disabledOpenComponentOutputButton?: boolean;
   additionalControlButton?: React.ReactNode;
   handleClick: () => void;
@@ -59,6 +60,8 @@ export const NodeBase = ({
   definitionId?: string;
   definitionTitle?: string;
   children?: React.ReactNode;
+  customHandleClassName?: string;
+  nodeClassName?: string;
 }) => {
   const { flowIsUnderDemoMode } = useInstillStore(useShallow(selector));
 
@@ -109,9 +112,10 @@ export const NodeBase = ({
       <div
         onClick={handleClick}
         className={cn(
-          "flex relative items-center border-2 border-[#94a0b8] justify-center w-[160px] h-[160px] flex-col rounded-md p-3 bg-semantic-bg-base-bg",
+          "flex relative items-center border-2 border-[#94a0b8] justify-center w-[160px] h-[160px] flex-col rounded p-3 bg-semantic-bg-alt-primary",
           isCompleted ? "border-4 border-semantic-success-default" : "",
           errorState?.error ? "border-4 border-semantic-error-default" : "",
+          nodeClassName,
         )}
       >
         {isProcessing ? (
@@ -159,13 +163,17 @@ export const NodeBase = ({
           />
         </div>
         <CustomHandle
-          className={hasTargetEdges ? "" : "!opacity-0"}
+          wrapperClassName="translate-x-none opacity-0"
+          className={customHandleClassName}
           type="target"
           position={Position.Left}
           id={id}
         />
         <CustomHandle
-          className={hasSourceEdges ? "" : "!opacity-0"}
+          className={cn(
+            hasSourceEdges ? "" : "!opacity-0",
+            customHandleClassName,
+          )}
           type="source"
           position={Position.Right}
           id={id}

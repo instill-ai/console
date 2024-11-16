@@ -5,13 +5,13 @@ import { NodeData } from "../flow";
 
 // This is the default dimension of a component node we have right now
 const TRIGGER_RESPONSE_NODE = {
-  width: 318,
-  height: 54,
+  width: 160,
+  height: 160,
 };
 
 const OTHER_NODE = {
-  width: 318,
-  height: 77,
+  width: 160,
+  height: 160,
 };
 
 const elk = new ELK({
@@ -34,7 +34,7 @@ const elk = new ELK({
      * this can somewhat easily be satisfied for the segments of orthogonally
      * drawn edges, it is harder for general polylines or splines.
      */
-    "spacing.edgeEdge": "100",
+    "spacing.edgeEdge": "50",
 
     /**
      * Spacing to be preserved between pairs of edges that are routed between
@@ -54,13 +54,13 @@ const elk = new ELK({
      * Spacing to be preserved between pairs of connected components.
      * This option is only relevant if ‘separateConnectedComponents’ is activated.
      */
-    "spacing.componentComponent": "100",
+    "spacing.componentComponent": "200",
 
     /**
      * The spacing to be preserved between any pair of nodes of two adjacent layers.
      * Note that ‘spacing.nodeNode’ is used for the spacing between nodes within the layer itself.
      */
-    "spacing.nodeNodeBetweenLayers": "100",
+    "spacing.nodeNodeBetweenLayers": "200",
   },
 });
 
