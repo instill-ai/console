@@ -1,5 +1,8 @@
 "use client";
 
+import * as React from "react";
+import { useParams } from "next/navigation";
+
 import {
   AppTopbar,
   CatalogMainView,
@@ -10,7 +13,11 @@ import {
 import { useAppAccessToken } from "~/lib/use-app-access-token";
 import { useAppTrackToken } from "~/lib/useAppTrackToken";
 
-export const CatalogPageRender = () => {
+export const CatalogTabPageRender = () => {
+  const params = useParams();
+  const { id, tab } = params as { id: string; tab: string[] };
+  const activeTab = tab?.[0] || "upload";
+
   useAppAccessToken();
   useAppTrackToken({ enabled: true });
 
@@ -18,9 +25,7 @@ export const CatalogPageRender = () => {
     <PageBase>
       <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
-        <PageBase.Content contentPadding="!p-0">
-          <CatalogMainView activeTab="catalogs" />
-        </PageBase.Content>
+        <CatalogMainView activeTab={activeTab} catalogId={id} />
       </PageBase.Container>
     </PageBase>
   );

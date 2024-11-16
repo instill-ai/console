@@ -2,11 +2,11 @@ import { Metadata } from "next";
 
 import { generateNextMetaBase } from "@instill-ai/toolkit/server";
 
-import { KnowladgeBasePageRender } from "./render";
+import { CatalogPageRender } from "./render";
 
 export async function generateMetadata() {
   const metadata: Metadata = {
-    title: `Instill Cloud | Catalog`,
+    title: `Instill Cloud | Artifacts`,
     metadataBase: generateNextMetaBase({
       defaultBase: "http://localhost:3000",
     }),
@@ -19,5 +19,5 @@ export async function generateMetadata() {
 }
 
 export default async function Page() {
-  return <KnowladgeBasePageRender />;
+  return <CatalogPageRender />;
 }

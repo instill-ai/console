@@ -7,7 +7,6 @@ import { Catalog, Nullable } from "instill-sdk";
 import { cn } from "@instill-ai/design-system";
 
 import {
-  GeneralAppPageProp,
   InstillStore,
   useAuthenticatedUserSubscription,
   useDeleteNamespaceCatalog,
@@ -37,7 +36,10 @@ import {
   UploadExploreTab,
 } from "./components/tabs";
 
-export type CatalogViewProps = GeneralAppPageProp;
+type CatalogMainViewProps = {
+  activeTab: string;
+  catalogId?: string;
+};
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -45,10 +47,8 @@ const selector = (store: InstillStore) => ({
   selectedNamespace: store.navigationNamespaceAnchor,
 });
 
-export const CatalogMainView = (props: CatalogViewProps) => {
-  const [selectedCatalog, setSelectedCatalog] =
-    React.useState<Nullable<Catalog>>(null);
-  const [activeTab, setActiveTab] = React.useState("catalogs");
+export const CatalogMainView = (props: CatalogMainViewProps) => {
+  const { catalogId, activeTab } = props;
   const [isProcessed, setIsProcessed] = React.useState(false);
   const [showCreditUsage, setShowCreditUsage] = React.useState(false);
   const [creditUsageTimer, setCreditUsageTimer] =
@@ -78,10 +78,9 @@ export const CatalogMainView = (props: CatalogViewProps) => {
 
   const filesData = useListNamespaceCatalogFiles({
     namespaceId: selectedNamespace ?? null,
-    catalogId: selectedCatalog?.catalogId ?? null,
+    catalogId: catalogId ?? null,
     accessToken,
-    enabled:
-      enabledQuery && Boolean(selectedNamespace) && Boolean(selectedCatalog),
+    enabled: enabledQuery && Boolean(selectedNamespace) && Boolean(catalogId),
   });
 
   const userSub = useAuthenticatedUserSubscription({
@@ -119,7 +118,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   React.useEffect(() => {
     if (catalogs.data) {
       const totalUsed = catalogs.data.reduce(
-        (total, kb) => total + parseInt(String(kb.usedStorage)),
+        (total, kb) => total + parseInt(String(kb.usedStorage), 10),
         0,
       );
       setRemainingStorageSpace(
@@ -155,6 +154,13 @@ export const CatalogMainView = (props: CatalogViewProps) => {
     [subscriptionInfo.plan],
   );
 
+  const selectedCatalog = React.useMemo(() => {
+    if (catalogId && catalogs.data) {
+      return catalogs.data.find((c) => c.catalogId === catalogId);
+    }
+    return null;
+  }, [catalogId, catalogs.data]);
+
   const handleTabChangeAttempt = (
     tab: string,
     isAutomatic: boolean = false,
@@ -164,20 +170,15 @@ export const CatalogMainView = (props: CatalogViewProps) => {
       setShowWarnDialog(true);
       setPendingTabChange(tab);
     } else {
-      changeTab(tab);
+      if (tab === "catalogs") {
+        router.push(`/${selectedNamespace}/catalog`, { scroll: false });
+      } else {
+        router.push(`/${selectedNamespace}/catalog/${catalogId}/${tab}`, {
+          scroll: false,
+        });
+      }
     }
   };
-
-  const changeTab = React.useCallback(
-    (tab: string) => {
-      setActiveTab(tab);
-      if (tab === "catalogs") {
-        setSelectedCatalog(null);
-      }
-      router.push(`#${tab}`, { scroll: false });
-    },
-    [router],
-  );
 
   const handleWarnDialogClose = async (): Promise<void> => {
     return new Promise((resolve) => {
@@ -190,7 +191,14 @@ export const CatalogMainView = (props: CatalogViewProps) => {
 
   const handleWarnDialogDiscard = () => {
     if (pendingTabChange) {
-      changeTab(pendingTabChange);
+      if (pendingTabChange === "catalogs") {
+        router.push(`/${selectedNamespace}/catalog`, { scroll: false });
+      } else {
+        router.push(
+          `/${selectedNamespace}/catalog/${catalogId}/${pendingTabChange}`,
+          { scroll: false },
+        );
+      }
     }
     setShowWarnDialog(false);
     setPendingTabChange(null);
@@ -212,8 +220,9 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   };
 
   const handleCatalogSelect = (catalog: Catalog) => {
-    handleTabChangeAttempt("upload");
-    setSelectedCatalog(catalog);
+    router.push(`/${selectedNamespace}/catalog/${catalog.catalogId}/upload`, {
+      scroll: false,
+    });
   };
 
   const handleDeleteCatalog = async (catalog: Catalog) => {
@@ -225,9 +234,8 @@ export const CatalogMainView = (props: CatalogViewProps) => {
         catalogId: catalog.catalogId,
         accessToken,
       });
-      if (selectedCatalog?.catalogId === catalog.catalogId) {
-        setSelectedCatalog(null);
-        changeTab("catalogs");
+      if (catalogId === catalog.catalogId) {
+        handleTabChangeAttempt("catalogs");
       }
       catalogs.refetch();
     } catch (error) {
@@ -252,47 +260,12 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   };
 
   React.useEffect(() => {
-    setSelectedCatalog(null);
-    changeTab("catalogs");
-    setHasUnsavedChanges(false);
-  }, [selectedNamespace, changeTab]);
-
-  React.useEffect(() => {
     return () => {
       if (creditUsageTimer) {
         clearTimeout(creditUsageTimer);
       }
     };
   }, [creditUsageTimer]);
-
-  React.useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.slice(1);
-      if (
-        hash &&
-        [
-          "catalogs",
-          "upload",
-          "files",
-          "chunks",
-          "retrieve",
-          "ask_question",
-          "get_catalog",
-        ].includes(hash)
-      ) {
-        changeTab(hash);
-      } else {
-        changeTab("catalogs");
-      }
-    };
-
-    handleHashChange();
-    window.addEventListener("hashchange", handleHashChange);
-
-    return () => {
-      window.removeEventListener("hashchange", handleHashChange);
-    };
-  }, [catalogs.data, changeTab]);
 
   return (
     <div className="h-screen w-full bg-semantic-bg-alt-primary">
@@ -325,7 +298,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
             <CatalogTab
               onCatalogSelect={handleCatalogSelect}
               onDeleteCatalog={handleDeleteCatalog}
-              accessToken={props.accessToken}
+              accessToken={accessToken}
               catalogs={catalogs.data || []}
               catalogLimit={catalogLimit}
               namespaceType={namespaceType}
