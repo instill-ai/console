@@ -3,7 +3,6 @@ import { Nullable } from "instill-sdk";
 
 import { Button, Form, Icons } from "@instill-ai/design-system";
 
-import { readFileToBinary } from "../../../../view";
 import {
   AutoFormFieldBaseProps,
   StartOperatorFreeFormFieldBaseProps,
@@ -70,8 +69,7 @@ export const FileAndStringUploadField = ({
                   const file = e.dataTransfer.files[0];
                   if (file) {
                     setFileName(file.name);
-                    const binary = await readFileToBinary(file);
-                    field.onChange(binary);
+                    field.onChange(file);
                     setUploadedFiles(file);
                   }
                 }}
@@ -108,8 +106,7 @@ export const FileAndStringUploadField = ({
                     const file = e.target.files?.[0];
                     console.log("file", file);
                     if (file) {
-                      const binary = await readFileToBinary(file);
-                      field.onChange(binary);
+                      field.onChange(file);
                       setFileName(file.name);
                       setUploadedFiles(file);
                     }
@@ -117,7 +114,7 @@ export const FileAndStringUploadField = ({
                 />
               </div>
             </div>
-            {uploadedFile ? (
+            {uploadedFile && type !== "file" ? (
               <div className="flex flex-col gap-y-2 w-full p-2 rounded bg-semantic-bg-line">
                 <div className="flex flex-row w-full justify-between items-center">
                   <p className="product-label-label-2 text-semantic-fg-disabled">

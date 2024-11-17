@@ -19,6 +19,11 @@ export const getQueryString = ({
   showDeleted,
   fileUid,
   chunkUids,
+  objectName,
+  objectUid,
+  urlExpireDays,
+  lastModifiedTime,
+  objectExpireDays,
 }: {
   baseURL: string;
   pageSize?: number;
@@ -40,6 +45,11 @@ export const getQueryString = ({
   showDeleted?: boolean;
   fileUid?: string;
   chunkUids?: string[];
+  objectName?: string;
+  objectUid?: string;
+  urlExpireDays?: number;
+  lastModifiedTime?: string;
+  objectExpireDays?: number;
 }) => {
   let url = baseURL;
 
@@ -58,7 +68,9 @@ export const getQueryString = ({
     aggregationWindow ||
     showDeleted !== undefined ||
     fileUid ||
-    chunkUids
+    chunkUids ||
+    objectName ||
+    objectUid
   ) {
     // Check if the baseURL already has a query string
     if (baseURL.includes("?")) {
@@ -136,6 +148,26 @@ export const getQueryString = ({
     for (const chunkUid of chunkUids) {
       url += `chunkUids=${chunkUid}&`;
     }
+  }
+
+  if (objectName) {
+    url += `objectName=${objectName}&`;
+  }
+
+  if (objectUid) {
+    url += `objectUid=${objectUid}&`;
+  }
+
+  if (urlExpireDays) {
+    url += `urlExpireDays=${urlExpireDays}&`;
+  }
+
+  if (lastModifiedTime) {
+    url += `lastModifiedTime=${lastModifiedTime}&`;
+  }
+
+  if (objectExpireDays) {
+    url += `objectExpireDays=${objectExpireDays}&`;
   }
 
   if (url.endsWith("&")) {

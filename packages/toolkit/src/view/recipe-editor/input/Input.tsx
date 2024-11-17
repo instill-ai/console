@@ -20,6 +20,7 @@ import {
   DefaultEditorViewIDs,
   GeneralRecord,
   InstillStore,
+  isValidURL,
   Nullable,
   useInstillStore,
   usePipelineTriggerRequestForm,
@@ -29,6 +30,11 @@ import {
   useStreamingTriggerUserPipelineRelease,
   useUserNamespaces,
 } from "../../../lib";
+import {
+  useGetNamespaceObjectDownloadURL,
+  useGetNamespaceObjectUploadURL,
+  useUploadNamespaceObject,
+} from "../../../lib/react-query-service/artifact";
 import {
   getReferencesFromString,
   recursiveHelpers,
@@ -86,6 +92,9 @@ export const Input = ({
   const routeInfo = useRouteInfo();
   const userNamespaces = useUserNamespaces();
   const triggerPipeline = useStreamingTriggerUserPipeline();
+  const getNamespaceObjectUploadURL = useGetNamespaceObjectUploadURL();
+  const uploadNamespaceObject = useUploadNamespaceObject();
+  const getNamespaceObjectDownloadURL = useGetNamespaceObjectDownloadURL();
   const triggerPipelineRelease = useStreamingTriggerUserPipelineRelease();
   const autonomousRecipeUpdater = useAutonomousEditorRecipeUpdater();
   const onStreamTriggerPipeline = React.useCallback(
@@ -119,7 +128,7 @@ export const Input = ({
         return;
       }
 
-      // Save the recipe is there has unsaved changes
+      // Save the recipe if there has unsaved changes
       if (hasUnsavedRecipe) {
         try {
           await autonomousRecipeUpdater();
@@ -139,10 +148,6 @@ export const Input = ({
       // Initialize the trigger pipeline stream map
       updateTriggerPipelineStreamMap(() => null);
 
-      const input = recursiveHelpers.removeUndefinedAndNullFromArray(
-        recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData),
-      );
-
       updateEditorMultiScreenModel((prev) => ({
         ...prev,
         bottomRight: {
@@ -155,6 +160,7 @@ export const Input = ({
       // the metadata whether this field is a semi-structured object and parse it
 
       const semiStructuredObjectKeys: string[] = [];
+      const uploadedToArtifactKeys: string[] = [];
 
       Object.entries(fields).forEach(([key, value]) => {
         if (
@@ -165,9 +171,22 @@ export const Input = ({
         ) {
           semiStructuredObjectKeys.push(key);
         }
+
+        if (
+          value?.instillFormat === "file" ||
+          value?.instillFormat === "array:file" ||
+          value?.instillFormat === "image" ||
+          value?.instillFormat === "array:image" ||
+          value?.instillFormat === "video" ||
+          value?.instillFormat === "array:video" ||
+          value?.instillFormat === "audio" ||
+          value?.instillFormat === "array:audio"
+        ) {
+          uploadedToArtifactKeys.push(key);
+        }
       });
 
-      const parsedStructuredData: GeneralRecord = input;
+      const parsedStructuredData: GeneralRecord = formData;
 
       for (const key of semiStructuredObjectKeys) {
         if (!formData[key]) {
@@ -187,10 +206,117 @@ export const Input = ({
         }
       }
 
+      for (const key of uploadedToArtifactKeys) {
+        const targetValue = parsedStructuredData[key];
+        if (!targetValue) {
+          continue;
+        }
+
+        if (Array.isArray(targetValue)) {
+          const uploadURLs: string[] = [];
+
+          for (const item of targetValue) {
+            if (isValidURL(item)) {
+              uploadURLs.push(item);
+              continue;
+            }
+
+            const namespaceObjectUploadURL =
+              await getNamespaceObjectUploadURL.mutateAsync({
+                payload: {
+                  namespaceId: routeInfo.data.namespaceId,
+                  objectName: item.name,
+                },
+                accessToken,
+              });
+
+            if (!namespaceObjectUploadURL) {
+              continue;
+            }
+
+            await uploadNamespaceObject.mutateAsync({
+              payload: {
+                namespaceId: routeInfo.data.namespaceId,
+                objectUid: namespaceObjectUploadURL.object.uid,
+                object: item,
+              },
+              accessToken,
+            });
+
+            const downloadURLResponse =
+              await getNamespaceObjectDownloadURL.mutateAsync({
+                payload: {
+                  namespaceId: routeInfo.data.namespaceId,
+                  objectUid: namespaceObjectUploadURL.object.uid,
+                },
+                accessToken,
+              });
+
+            if (downloadURLResponse) {
+              uploadURLs.push(downloadURLResponse.downloadUrl);
+            }
+          }
+
+          parsedStructuredData[key] = uploadURLs;
+        } else {
+          console.log(targetValue);
+
+          if (isValidURL(targetValue)) {
+            parsedStructuredData[key] = targetValue;
+            continue;
+          }
+
+          const namespaceObjectUploadURL =
+            await getNamespaceObjectUploadURL.mutateAsync({
+              payload: {
+                namespaceId: routeInfo.data.namespaceId,
+                objectName: targetValue.name,
+              },
+              accessToken,
+            });
+
+          if (!namespaceObjectUploadURL) {
+            continue;
+          }
+
+          await uploadNamespaceObject.mutateAsync({
+            payload: {
+              namespaceId: routeInfo.data.namespaceId,
+              objectUid: namespaceObjectUploadURL.object.uid,
+              object: targetValue,
+            },
+            accessToken,
+          });
+
+          const downloadURLResponse =
+            await getNamespaceObjectDownloadURL.mutateAsync({
+              payload: {
+                namespaceId: routeInfo.data.namespaceId,
+                objectUid: namespaceObjectUploadURL.object.uid,
+              },
+              accessToken,
+            });
+
+          if (downloadURLResponse) {
+            parsedStructuredData[key] = downloadURLResponse.downloadUrl;
+          }
+        }
+      }
+
+      const input = recursiveHelpers.removeUndefinedAndNullFromArray(
+        recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+          parsedStructuredData,
+        ),
+      );
+
       // We use the current route namespace as the requester namespace
       const tartgetNamespace = userNamespaces.data.find(
         (ns) => ns.id === routeInfo.data.namespaceId,
       );
+
+      console.log("input", input);
+
+      return;
 
       try {
         let response: Response;

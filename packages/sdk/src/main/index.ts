@@ -1,6 +1,7 @@
 import "whatwg-fetch";
 
 import { ApplicationClient } from "../application";
+import { ArtifactClient } from "../artifact";
 import { CatalogClient } from "../catalog";
 import {
   CreditClient,
@@ -24,9 +25,10 @@ import {
 } from "../vdp";
 
 export type RequestOption = {
-  body?: string;
+  body?: string | ReadableStream;
   additionalHeaders?: GeneralRecord;
   stream?: boolean;
+  duplex?: "half";
 };
 
 export class InstillAPIClient {
@@ -73,21 +75,39 @@ export class InstillAPIClient {
     path: string,
     opt?: RequestOption,
   ): Promise<Rsp> {
+    const requestInit: RequestInit = opt?.duplex
+      ? ({
+          method,
+          headers: this.apiToken
+            ? {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${this.apiToken}`,
+                ...opt?.additionalHeaders,
+              }
+            : {
+                "Content-Type": "application/json",
+                ...opt?.additionalHeaders,
+              },
+          duplex: "half",
+          body: opt?.body,
+        } as RequestInit)
+      : {
+          method,
+          headers: this.apiToken
+            ? {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${this.apiToken}`,
+                ...opt?.additionalHeaders,
+              }
+            : {
+                "Content-Type": "application/json",
+                ...opt?.additionalHeaders,
+              },
+          body: opt?.body,
+        };
+
     try {
-      const response = await fetch(`${this.baseURL}${path}`, {
-        method,
-        headers: this.apiToken
-          ? {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${this.apiToken}`,
-              ...opt?.additionalHeaders,
-            }
-          : {
-              "Content-Type": "application/json",
-              ...opt?.additionalHeaders,
-            },
-        body: opt?.body,
-      });
+      const response = await fetch(`${this.baseURL}${path}`, requestInit);
 
       if (opt && opt.stream) {
         return response as Rsp;
@@ -142,4 +162,5 @@ export class InstillAPIClient {
   model = new ModelClient(this);
   application = new ApplicationClient(this);
   catalog = new CatalogClient(this);
+  artifact = new ArtifactClient(this);
 }

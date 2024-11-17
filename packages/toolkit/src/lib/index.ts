@@ -21,6 +21,7 @@ export * from "./sdk-helper";
 export * from "./fillArrayWithZero";
 export * from "./isPublicModel";
 export * from "./isPublicPipeline";
+export * from "./isValidURL";
 export * from "./toastInstillError";
 export * from "./useRouteInfo";
 export * from "./getCaptializeTwoWordsFromName";
