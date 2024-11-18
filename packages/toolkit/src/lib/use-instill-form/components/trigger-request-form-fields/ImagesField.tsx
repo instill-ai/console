@@ -114,7 +114,7 @@ export const ImagesField = ({
                         binaries.push(binary);
                       }
                       field.onChange(binaries);
-                      setImageFiles((prev) => [...prev, ...files]);
+                      setImageFiles(() => files);
                     }
                   }}
                   disabled={disabled}
