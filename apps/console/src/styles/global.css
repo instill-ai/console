@@ -16,11 +16,11 @@
   font-family: "instill";
   font-style: normal;
   font-weight: 400;
-  src: url("/fonts/instillFont-Regular.woff2") format("woff2"),
+  src:
+    url("/fonts/instillFont-Regular.woff2") format("woff2"),
     /* Super Modern Browsers */ url("/fonts/instillFont-Regular.woff")
       format("woff");
 }
-
 
 .code-block > pre {
   border-radius: 6px;
@@ -32,8 +32,8 @@
 /* For the topbar */
 
 :root {
-  --topbar-controller-height: 56px;
-  --topbar-nav-height: 48px; 
+  --topbar-controller-height: 48px;
+  --topbar-nav-height: 48px;
   --pipeline-builder-bottom-bar-height: 24px;
   --pipeline-builder-node-available-width: 332px;
   --pipeline-builder-node-padding-x: 12px;
