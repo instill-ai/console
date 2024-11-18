@@ -27,7 +27,7 @@ export const StartNode = ({ id }: NodeProps) => {
 
   const hasSourceEdges = React.useMemo(() => {
     return reactflowEdges.some(
-      (edge) => edge.source === id && edge.target !== "response",
+      (edge) => edge.source === id && edge.target !== "output",
     );
   }, [id, reactflowEdges]);
 

@@ -25,10 +25,10 @@ import {
 } from "../vdp";
 
 export type RequestOption = {
-  body?: string | ReadableStream;
+  body?: string | File;
   additionalHeaders?: GeneralRecord;
   stream?: boolean;
-  duplex?: "half";
+  isFullPath?: boolean;
 };
 
 export class InstillAPIClient {
@@ -75,39 +75,23 @@ export class InstillAPIClient {
     path: string,
     opt?: RequestOption,
   ): Promise<Rsp> {
-    const requestInit: RequestInit = opt?.duplex
-      ? ({
-          method,
-          headers: this.apiToken
-            ? {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${this.apiToken}`,
-                ...opt?.additionalHeaders,
-              }
-            : {
-                "Content-Type": "application/json",
-                ...opt?.additionalHeaders,
-              },
-          duplex: "half",
-          body: opt?.body,
-        } as RequestInit)
-      : {
-          method,
-          headers: this.apiToken
-            ? {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${this.apiToken}`,
-                ...opt?.additionalHeaders,
-              }
-            : {
-                "Content-Type": "application/json",
-                ...opt?.additionalHeaders,
-              },
-          body: opt?.body,
-        };
+    const requestPath = opt?.isFullPath ? path : `${this.baseURL}${path}`;
 
     try {
-      const response = await fetch(`${this.baseURL}${path}`, requestInit);
+      const response = await fetch(requestPath, {
+        method,
+        headers: this.apiToken
+          ? {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${this.apiToken}`,
+              ...opt?.additionalHeaders,
+            }
+          : {
+              "Content-Type": "application/json",
+              ...opt?.additionalHeaders,
+            },
+        body: opt?.body,
+      });
 
       if (opt && opt.stream) {
         return response as Rsp;

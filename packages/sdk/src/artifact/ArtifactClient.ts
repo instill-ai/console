@@ -35,18 +35,13 @@ export class ArtifactClient extends APIResource {
   }
 
   async uploadNamespaceObject({
-    namespaceId,
-    objectUid,
+    uploadUrl,
     object,
   }: UploadNamespaceObjectRequest) {
-    const queryString = getQueryString({
-      baseURL: `/namespaces/${namespaceId}/blob-urls/${objectUid}`,
-    });
-
     try {
-      await this._client.put(queryString, {
-        body: object.stream(),
-        duplex: "half",
+      await this._client.put(uploadUrl, {
+        body: object,
+        isFullPath: true,
       });
     } catch (error) {
       return Promise.reject(error);

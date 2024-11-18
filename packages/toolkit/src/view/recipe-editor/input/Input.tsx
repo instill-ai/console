@@ -236,8 +236,7 @@ export const Input = ({
 
             await uploadNamespaceObject.mutateAsync({
               payload: {
-                namespaceId: routeInfo.data.namespaceId,
-                objectUid: namespaceObjectUploadURL.object.uid,
+                uploadUrl: namespaceObjectUploadURL.uploadUrl,
                 object: item,
               },
               accessToken,
@@ -279,10 +278,11 @@ export const Input = ({
             continue;
           }
 
+          console.log(namespaceObjectUploadURL);
+
           await uploadNamespaceObject.mutateAsync({
             payload: {
-              namespaceId: routeInfo.data.namespaceId,
-              objectUid: namespaceObjectUploadURL.object.uid,
+              uploadUrl: namespaceObjectUploadURL.uploadUrl,
               object: targetValue,
             },
             accessToken,
@@ -584,6 +584,11 @@ export const Input = ({
       currentVersion,
       toast,
       triggerPipelineRelease,
+      autonomousRecipeUpdater,
+      getNamespaceObjectUploadURL,
+      uploadNamespaceObject,
+      getNamespaceObjectDownloadURL,
+      hasUnsavedRecipe,
     ],
   );
 

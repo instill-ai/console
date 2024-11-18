@@ -102,6 +102,8 @@ export const Integrations = () => {
         connections.fetchNextPage();
       }
     }
+    // useInfiniteQuery has some deps lint issue
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [
     availableIntegrations.isSuccess,
     availableIntegrations.data,

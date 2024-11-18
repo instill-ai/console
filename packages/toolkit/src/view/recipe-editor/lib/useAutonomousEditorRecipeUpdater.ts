@@ -88,6 +88,7 @@ export function useAutonomousEditorRecipeUpdater() {
     routeInfo.isSuccess,
     routeInfo.data.namespaceId,
     routeInfo.data.resourceId,
+    routeInfo.data.pipelineName,
     accessToken,
     editorDebouncedRecipeUpdater,
     updateIsSavingRecipe,

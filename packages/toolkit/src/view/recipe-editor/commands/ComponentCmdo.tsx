@@ -163,6 +163,8 @@ export const ComponentCmdo = () => {
   >("component");
   const [selectedComponentDefinition, setSelectedComponentDefinition] =
     React.useState<Nullable<ComponentDefinition | IteratorDefinition>>(null);
+
+  console.log("selectedComponentDefinition", selectedComponentDefinition);
   const [selectedTaskName, setSelectedTaskName] =
     React.useState<Nullable<string>>(null);
   const [selectedComponentDefaultValue, setSelectedComponentDefaultValue] =
@@ -381,6 +383,8 @@ export const ComponentCmdo = () => {
       // set default task
       const defaultTask = definition.tasks[0];
 
+      console.log("defaultTask", defaultTask);
+
       if (!defaultTask) {
         return;
       }
@@ -499,7 +503,9 @@ export const ComponentCmdo = () => {
     }
 
     prepareInitialSelection(selectingComponentType);
-  }, [openComponentCmdo, selectingComponentType, prepareInitialSelection]);
+    // We don't need to listen to prepareInitialSelection
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [openComponentCmdo, selectingComponentType]);
 
   const displayIteratorDefinition = React.useMemo(() => {
     if (!searchCode) {
@@ -507,7 +513,7 @@ export const ComponentCmdo = () => {
     }
 
     return "iterator".includes(searchCode.toLowerCase());
-  }, [filteredDefinitions, searchCode]);
+  }, [searchCode]);
 
   function onSwitchComponentType(type: "component" | "event") {
     if (!pipeline.isSuccess || !pipeline.data.recipe) {

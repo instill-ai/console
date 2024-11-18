@@ -28,8 +28,7 @@ export type GetObjectUploadURLResponse = {
 };
 
 export type UploadNamespaceObjectRequest = {
-  namespaceId: string;
-  objectUid: string;
+  uploadUrl: string;
   object: File;
 };
 
