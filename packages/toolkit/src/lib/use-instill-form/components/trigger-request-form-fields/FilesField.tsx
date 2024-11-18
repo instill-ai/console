@@ -72,7 +72,7 @@ export const FilesField = ({
                         binaries.push(binary);
                       }
                       field.onChange(binaries);
-                      setUploadedFiles((prev) => [...prev, ...files]);
+                      setUploadedFiles(() => files);
                     }
                   }}
                   disabled={disabled}

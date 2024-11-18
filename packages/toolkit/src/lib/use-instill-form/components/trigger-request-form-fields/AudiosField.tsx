@@ -68,7 +68,7 @@ export const AudiosField = ({
                         binaries.push(binary);
                       }
                       field.onChange(binaries);
-                      setAudioFiles((prev) => [...prev, ...files]);
+                      setAudioFiles(() => files);
                     }
                   }}
                   disabled={disabled}

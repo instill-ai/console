@@ -114,7 +114,6 @@ export const VideosField = ({
                         binaries.push(binary);
                       }
                       field.onChange(binaries);
-                      setVideoFiles((prev) => [...prev, ...files]);
                     }
                   }}
                   disabled={disabled}
