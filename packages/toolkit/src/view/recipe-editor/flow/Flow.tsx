@@ -166,7 +166,7 @@ export const Flow = ({
         });
       });
     }
-  }, [displayEventNodes, setNodes]);
+  }, [displayEventNodes, setNodes, setEdges]);
 
   return (
     <div className="flex flex-col w-full h-full group">

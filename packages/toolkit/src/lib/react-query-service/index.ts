@@ -1,3 +1,4 @@
+export * from "./artifact";
 export * from "./catalog";
 export * from "./connector";
 export * from "./hub";

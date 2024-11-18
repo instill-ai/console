@@ -11,10 +11,12 @@ export const AudioListItem = ({
   name,
   src,
   onDelete,
+  diabledDeleteButton,
 }: {
   name: string;
   src: string;
-  onDelete: () => void;
+  onDelete?: () => void;
+  diabledDeleteButton?: true;
 }) => {
   const timer = React.useRef<Nullable<number>>(null);
   const ref = React.useRef<HTMLAudioElement>(null);
@@ -77,13 +79,19 @@ export const AudioListItem = ({
               <Icons.PlayCircle className="h-4 w-4 stroke-semantic-fg-secondary" />
             )}
           </button>
-          <button
-            onClick={() => onDelete()}
-            className="rounded p-1 hover:bg-semantic-bg-secondary"
-            type="button"
-          >
-            <Icons.X className="h-4 w-4 stroke-semantic-fg-secondary" />
-          </button>
+          {diabledDeleteButton ? null : (
+            <button
+              onClick={() => {
+                if (onDelete) {
+                  onDelete();
+                }
+              }}
+              className="rounded p-1 hover:bg-semantic-bg-secondary"
+              type="button"
+            >
+              <Icons.X className="h-4 w-4 stroke-semantic-fg-secondary" />
+            </button>
+          )}
         </div>
       </div>
     </div>

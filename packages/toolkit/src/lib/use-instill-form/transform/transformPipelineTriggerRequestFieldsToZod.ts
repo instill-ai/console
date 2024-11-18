@@ -5,6 +5,8 @@ import * as z from "zod";
 
 import { Nullable } from "../../type";
 
+const fileOrString = z.instanceof(File).or(z.string());
+
 export function transformPipelineTriggerRequestFieldsToZod(
   fields: Nullable<PipelineVariableFieldMap>,
 ) {
@@ -46,7 +48,7 @@ export function transformPipelineTriggerRequestFieldsToZod(
         break;
       case "audio":
       case "audio/*":
-        zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
+        zodSchema = zodSchema.setKey(key, fileOrString.nullable().optional());
         break;
       case "array:audio":
       case "array:audio/*":
@@ -57,7 +59,7 @@ export function transformPipelineTriggerRequestFieldsToZod(
         break;
       case "image":
       case "image/*":
-        zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
+        zodSchema = zodSchema.setKey(key, fileOrString.nullable().optional());
         break;
       case "array:image":
       case "array:image/*":
@@ -68,7 +70,7 @@ export function transformPipelineTriggerRequestFieldsToZod(
         break;
       case "video":
       case "video/*":
-        zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
+        zodSchema = zodSchema.setKey(key, fileOrString.nullable().optional());
         break;
       case "array:video":
       case "array:video/*":
@@ -80,7 +82,7 @@ export function transformPipelineTriggerRequestFieldsToZod(
       case "file":
       case "*/*":
       case "document":
-        zodSchema = zodSchema.setKey(key, z.string().nullable().optional());
+        zodSchema = zodSchema.setKey(key, fileOrString.nullable().optional());
         break;
       case "array:file":
       case "array:*/*":

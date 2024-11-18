@@ -124,6 +124,8 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     return null;
   }
 
+  // console.log("tree", tree, data, JSON.stringify(propertyValue));
+
   // Process objectArray
   // Becase we don't know the index of the output objectArray, we need to use
   // the data as a hint here
@@ -309,6 +311,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           />
         );
       }
+      case "file":
       case "document": {
         return (
           <ComponentOutputFields.DownloadableFilesField
@@ -319,6 +322,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
           />
         );
       }
+
       default: {
         return (
           <ComponentOutputFields.TextsField
@@ -415,6 +419,7 @@ export function pickComponentOutputFieldsFromInstillFormTree(
         />
       );
     }
+    case "file":
     case "document": {
       return (
         <ComponentOutputFields.DownloadableFileField

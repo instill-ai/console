@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import {
+  InstillJSONSchema,
   isComponentErrorUpdatedEvent,
   isComponentInputUpdatedEvent,
   isComponentOutputUpdatedEvent,
@@ -10,6 +11,7 @@ import {
   isPipelineOutputUpdatedEvent,
   isPipelineStatusUpdatedEvent,
   PipelineRunOnEventMap,
+  PipelineStreamStatus,
   PipelineVariableFieldMap,
 } from "instill-sdk";
 import * as z from "zod";
@@ -20,6 +22,7 @@ import {
   DefaultEditorViewIDs,
   GeneralRecord,
   InstillStore,
+  isValidURL,
   Nullable,
   useInstillStore,
   usePipelineTriggerRequestForm,
@@ -29,6 +32,12 @@ import {
   useStreamingTriggerUserPipelineRelease,
   useUserNamespaces,
 } from "../../../lib";
+import {
+  useDownloadNamespaceObject,
+  useGetNamespaceObjectDownloadURL,
+  useGetNamespaceObjectUploadURL,
+  useUploadNamespaceObject,
+} from "../../../lib/react-query-service/artifact";
 import {
   getReferencesFromString,
   recursiveHelpers,
@@ -56,9 +65,11 @@ export type VariableConnectToRunOnEvent = {
 export const Input = ({
   fields,
   on,
+  outputSchema,
 }: {
   fields: Nullable<PipelineVariableFieldMap>;
   on: Nullable<PipelineRunOnEventMap>;
+  outputSchema: Nullable<InstillJSONSchema>;
 }) => {
   const {
     isTriggeringPipeline,
@@ -86,8 +97,14 @@ export const Input = ({
   const routeInfo = useRouteInfo();
   const userNamespaces = useUserNamespaces();
   const triggerPipeline = useStreamingTriggerUserPipeline();
+  const getNamespaceObjectUploadURL = useGetNamespaceObjectUploadURL();
+  const uploadNamespaceObject = useUploadNamespaceObject();
+  const getNamespaceObjectDownloadURL = useGetNamespaceObjectDownloadURL();
   const triggerPipelineRelease = useStreamingTriggerUserPipelineRelease();
   const autonomousRecipeUpdater = useAutonomousEditorRecipeUpdater();
+
+  const downloadNamespaceObject = useDownloadNamespaceObject();
+
   const onStreamTriggerPipeline = React.useCallback(
     async (formData: z.infer<typeof Schema>) => {
       if (
@@ -119,7 +136,7 @@ export const Input = ({
         return;
       }
 
-      // Save the recipe is there has unsaved changes
+      // Save the recipe if there has unsaved changes
       if (hasUnsavedRecipe) {
         try {
           await autonomousRecipeUpdater();
@@ -139,10 +156,6 @@ export const Input = ({
       // Initialize the trigger pipeline stream map
       updateTriggerPipelineStreamMap(() => null);
 
-      const input = recursiveHelpers.removeUndefinedAndNullFromArray(
-        recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData),
-      );
-
       updateEditorMultiScreenModel((prev) => ({
         ...prev,
         bottomRight: {
@@ -155,6 +168,7 @@ export const Input = ({
       // the metadata whether this field is a semi-structured object and parse it
 
       const semiStructuredObjectKeys: string[] = [];
+      const uploadedToArtifactKeys: string[] = [];
 
       Object.entries(fields).forEach(([key, value]) => {
         if (
@@ -165,9 +179,22 @@ export const Input = ({
         ) {
           semiStructuredObjectKeys.push(key);
         }
+
+        if (
+          value?.instillFormat === "file" ||
+          value?.instillFormat === "array:file" ||
+          value?.instillFormat === "image" ||
+          value?.instillFormat === "array:image" ||
+          value?.instillFormat === "video" ||
+          value?.instillFormat === "array:video" ||
+          value?.instillFormat === "audio" ||
+          value?.instillFormat === "array:audio"
+        ) {
+          uploadedToArtifactKeys.push(key);
+        }
       });
 
-      const parsedStructuredData: GeneralRecord = input;
+      const parsedStructuredData: GeneralRecord = formData;
 
       for (const key of semiStructuredObjectKeys) {
         if (!formData[key]) {
@@ -187,10 +214,136 @@ export const Input = ({
         }
       }
 
+      // The data comes from the form is either File or URL for these file related fields
+      // like image, video, audio, file
+      for (const key of uploadedToArtifactKeys) {
+        const targetValue = parsedStructuredData[key];
+        if (!targetValue) {
+          continue;
+        }
+
+        if (Array.isArray(targetValue)) {
+          const uploadURLs: string[] = [];
+
+          for (const item of targetValue) {
+            if (isValidURL(item)) {
+              uploadURLs.push(item);
+              continue;
+            }
+
+            const namespaceObjectUploadURL =
+              await getNamespaceObjectUploadURL.mutateAsync({
+                payload: {
+                  namespaceId: routeInfo.data.namespaceId,
+                  objectName: item.name,
+                },
+                accessToken,
+              });
+
+            if (!namespaceObjectUploadURL) {
+              continue;
+            }
+
+            await uploadNamespaceObject.mutateAsync({
+              payload: {
+                uploadUrl: namespaceObjectUploadURL.uploadUrl,
+                object: item,
+              },
+              accessToken,
+            });
+
+            const downloadURLResponse =
+              await getNamespaceObjectDownloadURL.mutateAsync({
+                payload: {
+                  namespaceId: routeInfo.data.namespaceId,
+                  objectUid: namespaceObjectUploadURL.object.uid,
+                },
+                accessToken,
+              });
+
+            if (downloadURLResponse) {
+              uploadURLs.push(downloadURLResponse.downloadUrl);
+            }
+          }
+
+          parsedStructuredData[key] = uploadURLs;
+        } else {
+          console.log(targetValue);
+
+          if (isValidURL(targetValue)) {
+            parsedStructuredData[key] = targetValue;
+            continue;
+          }
+
+          const namespaceObjectUploadURL =
+            await getNamespaceObjectUploadURL.mutateAsync({
+              payload: {
+                namespaceId: routeInfo.data.namespaceId,
+                objectName: targetValue.name,
+              },
+              accessToken,
+            });
+
+          if (!namespaceObjectUploadURL) {
+            continue;
+          }
+
+          console.log(namespaceObjectUploadURL);
+
+          await uploadNamespaceObject.mutateAsync({
+            payload: {
+              uploadUrl: namespaceObjectUploadURL.uploadUrl,
+              object: targetValue,
+            },
+            accessToken,
+          });
+
+          const downloadURLResponse =
+            await getNamespaceObjectDownloadURL.mutateAsync({
+              payload: {
+                namespaceId: routeInfo.data.namespaceId,
+                objectUid: namespaceObjectUploadURL.object.uid,
+              },
+              accessToken,
+            });
+
+          if (downloadURLResponse) {
+            parsedStructuredData[key] = downloadURLResponse.downloadUrl;
+          }
+        }
+      }
+
+      const input = recursiveHelpers.removeUndefinedAndNullFromArray(
+        recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+          parsedStructuredData,
+        ),
+      );
+
       // We use the current route namespace as the requester namespace
       const tartgetNamespace = userNamespaces.data.find(
         (ns) => ns.id === routeInfo.data.namespaceId,
       );
+
+      console.log("input", input);
+
+      const downloadedFromArtifactKeys: string[] = [];
+
+      if (outputSchema && outputSchema.properties) {
+        Object.entries(outputSchema.properties).forEach(([key, value]) => {
+          if (
+            value?.instillFormat === "file" ||
+            value?.instillFormat === "array:file" ||
+            value?.instillFormat === "image" ||
+            value?.instillFormat === "array:image" ||
+            value?.instillFormat === "video" ||
+            value?.instillFormat === "array:video" ||
+            value?.instillFormat === "audio" ||
+            value?.instillFormat === "array:audio"
+          ) {
+            downloadedFromArtifactKeys.push(key);
+          }
+        });
+      }
 
       try {
         let response: Response;
@@ -262,151 +415,117 @@ export const Input = ({
               if (eventString.trim()) {
                 const events = parseEventReadableStream(eventString);
 
-                updateTriggerPipelineStreamMap((prev) => {
-                  let newTriggerPipelineStreamMap = prev;
-                  for (const event of events) {
-                    if (isPipelineStatusUpdatedEvent(event)) {
-                      newTriggerPipelineStreamMap = {
-                        pipeline: {
-                          ...newTriggerPipelineStreamMap?.pipeline,
-                          status: event.data.status,
-                        },
-                        component: newTriggerPipelineStreamMap?.component
-                          ? newTriggerPipelineStreamMap.component
-                          : {},
-                      };
-                    }
-
-                    if (isPipelineOutputUpdatedEvent(event)) {
-                      newTriggerPipelineStreamMap = {
-                        pipeline: {
-                          ...newTriggerPipelineStreamMap?.pipeline,
-                          output: event.data.output,
-                        },
-                        component: newTriggerPipelineStreamMap?.component
-                          ? newTriggerPipelineStreamMap.component
-                          : {},
-                      };
-                    }
-
-                    if (isComponentStatusUpdatedEvent(event)) {
-                      const targetComponent =
-                        newTriggerPipelineStreamMap?.component?.[
-                          event.data.componentID
-                        ];
-
-                      newTriggerPipelineStreamMap = {
-                        pipeline: newTriggerPipelineStreamMap?.pipeline,
-                        component: {
-                          ...newTriggerPipelineStreamMap?.component,
-                          [event.data.componentID]: {
-                            ...targetComponent,
-                            status: event.data.status,
-                          },
-                        },
-                      };
-                    }
-
-                    if (isComponentOutputUpdatedEvent(event)) {
-                      const targetComponent =
-                        newTriggerPipelineStreamMap?.component?.[
-                          event.data.componentID
-                        ];
-
-                      newTriggerPipelineStreamMap = {
-                        pipeline: newTriggerPipelineStreamMap?.pipeline,
-                        component: {
-                          ...newTriggerPipelineStreamMap?.component,
-                          [event.data.componentID]: {
-                            ...targetComponent,
-                            output: event.data.output,
-                            status: event.data.status,
-                          },
-                        },
-                      };
-                    }
-
-                    if (isComponentErrorUpdatedEvent(event)) {
-                      const targetComponent =
-                        newTriggerPipelineStreamMap?.component?.[
-                          event.data.componentID
-                        ];
-
-                      newTriggerPipelineStreamMap = {
-                        pipeline: newTriggerPipelineStreamMap?.pipeline,
-                        component: {
-                          ...newTriggerPipelineStreamMap?.component,
-                          [event.data.componentID]: {
-                            ...targetComponent,
-                            error: event.data.error,
-                            status: event.data.status,
-                          },
-                        },
-                      };
-                    }
-
-                    if (isComponentInputUpdatedEvent(event)) {
-                      const targetComponent =
-                        newTriggerPipelineStreamMap?.component?.[
-                          event.data.componentID
-                        ];
-
-                      newTriggerPipelineStreamMap = {
-                        pipeline: newTriggerPipelineStreamMap?.pipeline,
-                        component: {
-                          ...newTriggerPipelineStreamMap?.component,
-                          [event.data.componentID]: {
-                            ...targetComponent,
-                            input: event.data.input,
-                            status: event.data.status,
-                          },
-                        },
-                      };
-                    }
-                  }
-
-                  return newTriggerPipelineStreamMap;
-                });
+                const newComponent: GeneralRecord = {};
+                let newPipelineOutput: GeneralRecord = {};
+                let newPipelineStatus: PipelineStreamStatus | undefined;
 
                 for (const event of events) {
                   if (isPipelineStatusUpdatedEvent(event)) {
-                    if (event.data.status.completed) {
-                      updateIsTriggeringPipeline(() => false);
+                    newPipelineStatus = event.data.status;
+                    // if (event.data.status.completed) {
+                    //   updateIsTriggeringPipeline(() => false);
+                    //   Object.entries(
+                    //     newTriggerPipelineStreamMap?.component ?? {},
+                    //   ).forEach(([key, value]) => {
+                    //     if (value && value.status) {
+                    //       if (value.status.errored) {
+                    //         newComponent[key] = value;
+                    //       } else {
+                    //         newComponent[key] = {
+                    //           ...value,
+                    //           status: {
+                    //             ...value.status,
+                    //             completed: true,
+                    //           },
+                    //         };
+                    //       }
+                    //     }
+                    //   });
+                    // } else {
+                    //   newComponent =
+                    //     newTriggerPipelineStreamMap?.component ?? {};
+                    // }
+                  }
 
-                      // update all the component status to be completed
-                      updateTriggerPipelineStreamMap((prev) => {
-                        if (!prev || !prev.component) {
-                          return prev;
-                        }
+                  if (isPipelineOutputUpdatedEvent(event)) {
+                    newPipelineOutput = event.data.output;
 
-                        const newComponent: GeneralRecord = {};
+                    for (const key of downloadedFromArtifactKeys) {
+                      const targetValue = newPipelineOutput[key];
 
-                        Object.entries(prev.component).forEach(
-                          ([key, value]) => {
-                            if (value && value.status) {
-                              if (value.status.errored) {
-                                newComponent[key] = value;
-                              } else {
-                                newComponent[key] = {
-                                  ...value,
-                                  status: {
-                                    ...value.status,
-                                    completed: true,
-                                  },
-                                };
-                              }
+                      if (!targetValue) {
+                        continue;
+                      }
+
+                      if (Array.isArray(targetValue)) {
+                        const downloadedArtifacts: string[] = [];
+                        for (const item of targetValue) {
+                          if (isValidURL(item)) {
+                            const response =
+                              await downloadNamespaceObject.mutateAsync({
+                                payload: {
+                                  downloadUrl: item,
+                                },
+                                accessToken,
+                              });
+
+                            if (!response.ok) {
+                              continue;
                             }
-                          },
-                        );
 
-                        const newTriggerPipelineStreamMap = {
-                          ...prev,
-                          component: newComponent,
-                        };
+                            const blob = await response.blob();
+                            const url = URL.createObjectURL(blob);
+                            downloadedArtifacts.push(url);
+                          }
+                        }
+                        newPipelineOutput[key] = downloadedArtifacts;
+                      } else {
+                        if (isValidURL(targetValue)) {
+                          const response =
+                            await downloadNamespaceObject.mutateAsync({
+                              payload: {
+                                downloadUrl: targetValue,
+                              },
+                              accessToken,
+                            });
 
-                        return newTriggerPipelineStreamMap;
-                      });
+                          if (!response.ok) {
+                            continue;
+                          }
+
+                          const blob = await response.blob();
+                          const url = URL.createObjectURL(blob);
+                          newPipelineOutput[key] = url;
+                        }
+                      }
                     }
+                  }
+
+                  if (isComponentStatusUpdatedEvent(event)) {
+                    newComponent[event.data.componentID] = {
+                      status: event.data.status,
+                    };
+                  }
+
+                  if (isComponentOutputUpdatedEvent(event)) {
+                    newComponent[event.data.componentID] = {
+                      output: event.data.output,
+                      status: event.data.status,
+                    };
+                  }
+
+                  if (isComponentErrorUpdatedEvent(event)) {
+                    newComponent[event.data.componentID] = {
+                      status: event.data.status,
+                      error: event.data.error,
+                    };
+                  }
+
+                  if (isComponentInputUpdatedEvent(event)) {
+                    newComponent[event.data.componentID] = {
+                      input: event.data.input,
+                      status: event.data.status,
+                    };
                   }
 
                   if (isPipelineErrorUpdatedEvent(event)) {
@@ -422,6 +541,67 @@ export const Input = ({
                     }
                   }
                 }
+
+                console.log(
+                  "newPipeline",
+                  newPipelineOutput,
+                  newPipelineStatus,
+                );
+
+                updateTriggerPipelineStreamMap((prev) => {
+                  // We need to merge the old component with the new component
+                  const mergedComponent: GeneralRecord = {};
+
+                  for (const [key, value] of Object.entries(
+                    prev?.component ?? {},
+                  )) {
+                    if (newComponent[key]) {
+                      mergedComponent[key] =
+                        newPipelineStatus?.completed === true
+                          ? {
+                              ...value,
+                              ...newComponent[key],
+                              status: {
+                                ...value.status,
+                                completed: true,
+                              },
+                            }
+                          : newComponent[key];
+                    } else {
+                      mergedComponent[key] =
+                        newPipelineStatus?.completed === true
+                          ? {
+                              ...value,
+                              status: {
+                                ...value.status,
+                                completed: true,
+                              },
+                            }
+                          : value;
+                    }
+                  }
+
+                  return {
+                    ...prev,
+                    component: mergedComponent,
+                    pipeline: newPipelineStatus
+                      ? {
+                          ...prev?.pipeline,
+                          status: newPipelineStatus,
+                          output: {
+                            ...prev?.pipeline?.output,
+                            ...newPipelineOutput,
+                          },
+                        }
+                      : {
+                          ...prev?.pipeline,
+                          output: {
+                            ...prev?.pipeline?.output,
+                            ...newPipelineOutput,
+                          },
+                        },
+                  };
+                });
               }
             }
           }
@@ -458,6 +638,12 @@ export const Input = ({
       currentVersion,
       toast,
       triggerPipelineRelease,
+      autonomousRecipeUpdater,
+      getNamespaceObjectUploadURL,
+      uploadNamespaceObject,
+      getNamespaceObjectDownloadURL,
+      hasUnsavedRecipe,
+      outputSchema,
     ],
   );
 

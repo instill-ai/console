@@ -1,6 +1,7 @@
 import "whatwg-fetch";
 
 import { ApplicationClient } from "../application";
+import { ArtifactClient } from "../artifact";
 import { CatalogClient } from "../catalog";
 import {
   CreditClient,
@@ -24,9 +25,12 @@ import {
 } from "../vdp";
 
 export type RequestOption = {
-  body?: string;
+  body?: string | File;
   additionalHeaders?: GeneralRecord;
   stream?: boolean;
+  isFullPath?: boolean;
+  isVoidReturn?: boolean;
+  isBlob?: boolean;
 };
 
 export class InstillAPIClient {
@@ -73,8 +77,10 @@ export class InstillAPIClient {
     path: string,
     opt?: RequestOption,
   ): Promise<Rsp> {
+    const requestPath = opt?.isFullPath ? path : `${this.baseURL}${path}`;
+
     try {
-      const response = await fetch(`${this.baseURL}${path}`, {
+      const response = await fetch(requestPath, {
         method,
         headers: this.apiToken
           ? {
@@ -93,6 +99,10 @@ export class InstillAPIClient {
         return response as Rsp;
       }
 
+      if (opt && opt.isBlob) {
+        return response as Rsp;
+      }
+
       if (!response.ok) {
         if (this.debug) {
           console.error(response);
@@ -108,7 +118,7 @@ export class InstillAPIClient {
         );
       }
 
-      if (method === "DELETE") {
+      if (method === "DELETE" || opt?.isVoidReturn) {
         return Promise.resolve() as Promise<Rsp>;
       }
 
@@ -142,4 +152,5 @@ export class InstillAPIClient {
   model = new ModelClient(this);
   application = new ApplicationClient(this);
   catalog = new CatalogClient(this);
+  artifact = new ArtifactClient(this);
 }
