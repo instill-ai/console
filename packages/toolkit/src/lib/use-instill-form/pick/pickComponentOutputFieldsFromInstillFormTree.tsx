@@ -124,6 +124,8 @@ export function pickComponentOutputFieldsFromInstillFormTree(
     return null;
   }
 
+  // console.log("tree", tree, data, JSON.stringify(propertyValue));
+
   // Process objectArray
   // Becase we don't know the index of the output objectArray, we need to use
   // the data as a hint here

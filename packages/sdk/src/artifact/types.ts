@@ -43,3 +43,7 @@ export type GetNamespaceObjectDownloadURLResponse = {
   urlExpireAt: string;
   object: ArtifactObject;
 };
+
+export type DownloadNamespaceObjectRequest = {
+  downloadUrl: string;
+};

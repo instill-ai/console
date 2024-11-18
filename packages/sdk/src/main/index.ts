@@ -29,6 +29,8 @@ export type RequestOption = {
   additionalHeaders?: GeneralRecord;
   stream?: boolean;
   isFullPath?: boolean;
+  isVoidReturn?: boolean;
+  isBlob?: boolean;
 };
 
 export class InstillAPIClient {
@@ -97,6 +99,10 @@ export class InstillAPIClient {
         return response as Rsp;
       }
 
+      if (opt && opt.isBlob) {
+        return response as Rsp;
+      }
+
       if (!response.ok) {
         if (this.debug) {
           console.error(response);
@@ -112,7 +118,7 @@ export class InstillAPIClient {
         );
       }
 
-      if (method === "DELETE") {
+      if (method === "DELETE" || opt?.isVoidReturn) {
         return Promise.resolve() as Promise<Rsp>;
       }
 

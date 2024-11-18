@@ -1,6 +1,7 @@
 import { getQueryString } from "../helper";
 import { APIResource } from "../main/resource";
 import {
+  DownloadNamespaceObjectRequest,
   GetNamespaceObjectDownloadURLRequest,
   GetNamespaceObjectDownloadURLResponse,
   GetNamespaceObjectUploadURLRequest,
@@ -42,6 +43,7 @@ export class ArtifactClient extends APIResource {
       await this._client.put(uploadUrl, {
         body: object,
         isFullPath: true,
+        isVoidReturn: true,
       });
     } catch (error) {
       return Promise.reject(error);
@@ -64,6 +66,21 @@ export class ArtifactClient extends APIResource {
         await this._client.get<GetNamespaceObjectDownloadURLResponse>(
           queryString,
         );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async downloadNamespaceObject({
+    downloadUrl,
+  }: DownloadNamespaceObjectRequest) {
+    try {
+      const data = await this._client.get<Response>(downloadUrl, {
+        isFullPath: true,
+        isBlob: true,
+      });
 
       return Promise.resolve(data);
     } catch (error) {

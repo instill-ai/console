@@ -4,7 +4,7 @@ export type * from "./model";
 export type * from "./vdp";
 export * from "./types";
 export * from "./helper";
-export type * from "./application";
+export * from "./application";
 export type * from "./catalog";
 export type * from "./artifact";
 
