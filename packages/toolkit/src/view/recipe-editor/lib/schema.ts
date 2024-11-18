@@ -10,7 +10,7 @@ const operatorDefinitionIds = [
 ];
 
 const connectorDefinitionIds = [
-  "restapi",
+  "http",
   "stability-ai",
   "instill-model",
   "hugging-face",
