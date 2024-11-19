@@ -30,6 +30,8 @@ export type GetObjectUploadURLResponse = {
 export type UploadNamespaceObjectRequest = {
   uploadUrl: string;
   object: File;
+  /** MIME type of the object */
+  contentType?: string;
 };
 
 export type GetNamespaceObjectDownloadURLRequest = {

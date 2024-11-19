@@ -38,12 +38,16 @@ export class ArtifactClient extends APIResource {
   async uploadNamespaceObject({
     uploadUrl,
     object,
+    contentType,
   }: UploadNamespaceObjectRequest) {
     try {
       await this._client.put(uploadUrl, {
         body: object,
         isFullPath: true,
         isVoidReturn: true,
+        additionalHeaders: {
+          "Content-Type": contentType,
+        },
       });
     } catch (error) {
       return Promise.reject(error);
