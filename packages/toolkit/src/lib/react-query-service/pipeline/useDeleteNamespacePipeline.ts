@@ -60,16 +60,6 @@ export function useDeleteNamespacePipeline() {
           shareCode: null,
         }),
       });
-
-      queryClient.removeQueries({
-        queryKey: queryKeyStore.pipeline.getUseNamespacePipelineQueryKey({
-          namespaceId,
-          pipelineId,
-          view: null,
-          shareCode: null,
-        }),
-        exact: true,
-      });
     },
   });
 }

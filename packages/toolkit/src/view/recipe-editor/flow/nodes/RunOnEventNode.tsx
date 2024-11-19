@@ -5,7 +5,14 @@ import { NodeProps, useEdges } from "reactflow";
 
 import { Icons } from "@instill-ai/design-system";
 
-import { InstillStore, useInstillStore, useShallow } from "../../../../lib";
+import {
+  InstillStore,
+  useComponentDefinitions,
+  useInstillStore,
+  useShallow,
+} from "../../../../lib";
+import { RunOnEventNodeData } from "../types";
+import { EventMessage } from "./EventMessage";
 import { NodeBase } from "./NodeBase";
 
 const selector = (store: InstillStore) => ({
@@ -18,7 +25,9 @@ const selector = (store: InstillStore) => ({
   updateSelectedComponentId: store.updateSelectedComponentId,
 });
 
-export const RunOnEventNode = ({ id, data }: NodeProps) => {
+export const RunOnEventNode = ({ id, data }: NodeProps<RunOnEventNodeData>) => {
+  console.log("data", data);
+
   const reactflowEdges = useEdges();
   const hasTargetEdges = React.useMemo(() => {
     return reactflowEdges.some(
@@ -36,12 +45,64 @@ export const RunOnEventNode = ({ id, data }: NodeProps) => {
     selectedComponentId,
     featureFlagWebhookEnabled,
     updateSelectedComponentId,
+    updateEditorMultiScreenModel,
+    enabledQuery,
+    accessToken,
   } = useInstillStore(useShallow(selector));
 
   const isSelected = selectedComponentId === id;
 
+  const definitions = useComponentDefinitions({
+    componentType: "all",
+    enabled: enabledQuery,
+    accessToken,
+  });
+
   const handleClick = React.useCallback(() => {
     updateSelectedComponentId(() => id);
+
+    const viewId = `${id}-event-message`;
+
+    const targetDefinition = definitions.data?.find(
+      (definition) => definition.id === data.type,
+    );
+
+    if (!targetDefinition) {
+      return;
+    }
+
+    const eventSpec = targetDefinition.spec.eventSpecifications?.[data.event];
+
+    if (!eventSpec || !eventSpec.messageExamples[0]) {
+      return;
+    }
+
+    updateEditorMultiScreenModel((prev) => ({
+      ...prev,
+      bottomRight: {
+        ...prev.bottomRight,
+        views: [
+          ...prev.bottomRight.views.filter((view) => view.id !== viewId),
+          {
+            id: viewId,
+            type: "output",
+            view: (
+              <EventMessage
+                id={id}
+                messageSnippet={JSON.stringify(
+                  eventSpec.messageExamples[0],
+                  null,
+                  2,
+                )}
+              />
+            ),
+            title: viewId,
+            closeable: true,
+          },
+        ],
+        currentViewId: viewId,
+      },
+    }));
   }, [id, updateSelectedComponentId]);
 
   console.log("data", data);

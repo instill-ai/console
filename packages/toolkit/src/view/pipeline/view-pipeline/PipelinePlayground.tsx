@@ -42,7 +42,15 @@ import {
   useUserNamespaces,
 } from "../../../lib";
 import { isArtifactRelatedInstillFormat } from "../../../lib/isArtifactRelatedInstillFormat";
-import { recursiveHelpers } from "../../pipeline-builder";
+import {
+  getReferencesFromString,
+  recursiveHelpers,
+} from "../../pipeline-builder";
+import { VariableConnectToRunOnEvent } from "../../recipe-editor/input";
+import {
+  EventField,
+  listenWithType,
+} from "../../recipe-editor/input/EventField";
 import { RunButton } from "./RunButton";
 
 const selector = (store: InstillStore) => ({
@@ -479,6 +487,55 @@ export const PipelinePlayground = ({
     return true;
   }, [outputs]);
 
+  const variablesConnectToRunOnEvent = React.useMemo(() => {
+    const on = pipeline?.recipe?.on;
+    const variable = pipeline?.recipe?.variable;
+
+    if (!on || !variable) {
+      return [];
+    }
+
+    const variablesConnectToRunOnEvent: VariableConnectToRunOnEvent[] = [];
+
+    Object.entries(variable).forEach(([key, value]) => {
+      if (!value) {
+        return;
+      }
+
+      if (value.listen) {
+        const listensWithType: listenWithType[] = [];
+
+        for (const listenItem of value.listen) {
+          const reference = getReferencesFromString(listenItem)[0];
+          if (!reference) {
+            continue;
+          }
+
+          // The referenceValue will looks like ${on.slack-0.message.text}
+          const referenceValueFrag =
+            reference.referenceValue.withoutCurlyBraces.split(".");
+          const eventKey = referenceValueFrag[1];
+          const eventType = eventKey ? on[eventKey] : undefined;
+
+          if (eventType) {
+            listensWithType.push({
+              reference: listenItem,
+              type: eventType.type,
+            });
+          }
+        }
+
+        variablesConnectToRunOnEvent.push({
+          listens: listensWithType,
+          key,
+          title: value.title,
+        });
+      }
+    });
+
+    return variablesConnectToRunOnEvent;
+  }, [pipeline?.recipe?.on, pipeline?.recipe?.variable]);
+
   if (!formSchema || !formSchema.input || !formSchema.output) {
     return (
       <EmptyView
@@ -541,30 +598,41 @@ export const PipelinePlayground = ({
               </Button>
             </div>
           ) : (
-            <Form.Root {...form}>
-              <form
-                id={inOutPutFormID}
-                className="w-full"
-                onSubmit={form.handleSubmit(onTriggerPipeline)}
-              >
-                <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
-                <div className="flex flex-row-reverse">
-                  {pipeline ? (
-                    <RunButton
-                      inOutPutFormID={inOutPutFormID}
-                      inputIsNotDefined={inputIsNotDefined}
-                      outputIsNotDefined={outputIsNotDefined}
-                      isTriggeringPipeline={
-                        triggerPipeline.isPending ||
-                        triggerPipelineRelease.isPending
-                      }
-                    />
-                  ) : (
-                    <div className="h-8 w-20 animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
-                  )}
-                </div>
-              </form>
-            </Form.Root>
+            <div className="flex flex-col gap-y-5">
+              <div className="flex flex-col gap-y-4">
+                {variablesConnectToRunOnEvent.map((variable) => (
+                  <EventField
+                    title={variable.title ?? variable.key}
+                    key={variable.key}
+                    listensWithType={variable.listens}
+                  />
+                ))}
+              </div>
+              <Form.Root {...form}>
+                <form
+                  id={inOutPutFormID}
+                  className="w-full"
+                  onSubmit={form.handleSubmit(onTriggerPipeline)}
+                >
+                  <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
+                  <div className="flex flex-row-reverse">
+                    {pipeline ? (
+                      <RunButton
+                        inOutPutFormID={inOutPutFormID}
+                        inputIsNotDefined={inputIsNotDefined}
+                        outputIsNotDefined={outputIsNotDefined}
+                        isTriggeringPipeline={
+                          triggerPipeline.isPending ||
+                          triggerPipelineRelease.isPending
+                        }
+                      />
+                    ) : (
+                      <div className="h-8 w-20 animate-pulse rounded bg-gradient-to-r from-[#DBDBDB]" />
+                    )}
+                  </div>
+                </form>
+              </Form.Root>
+            </div>
           )
         ) : (
           <InOutputSkeleton />

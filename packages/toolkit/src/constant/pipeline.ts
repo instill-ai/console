@@ -169,6 +169,15 @@ version: v1beta
 #
 # variable:
 
+# Run on event
+# Structure example:
+# on:
+#   key:              # Unique identifier for the variable.
+#     config:         # The configuration for the event.
+#     setup:          # The setup for the event.
+#
+# on:
+
 # Custom user-defined output
 # Structure example:
 # output:

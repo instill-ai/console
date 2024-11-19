@@ -60,9 +60,9 @@ export const EditorViewBarItem = ({
     <div
       {...attributes}
       className={cn(
-        "first:rounded-tl cursor-pointer shrink-0",
+        "first:rounded-tl cursor-pointer shrink-0 border-t border-[#316FED] border-opacity-0",
         currentViewId === id
-          ? "bg-semantic-bg-alt-primary"
+          ? "bg-semantic-bg-alt-primary border-opacity-100"
           : "bg-semantic-bg-line",
       )}
       onClick={() => onClick(id)}
