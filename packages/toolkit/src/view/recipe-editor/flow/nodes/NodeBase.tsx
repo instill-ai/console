@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Position } from "reactflow";
+import { Position, useStore } from "reactflow";
 
 import { Button, cn, Icons, Tooltip } from "@instill-ai/design-system";
 
@@ -63,6 +63,8 @@ export const NodeBase = ({
   customHandleClassName?: string;
   nodeClassName?: string;
 }) => {
+  const zoom = useStore((state) => state.transform[2]);
+
   const { flowIsUnderDemoMode } = useInstillStore(useShallow(selector));
 
   const isDisabledOpenDocumentationButton = React.useMemo(() => {
@@ -185,7 +187,12 @@ export const NodeBase = ({
         )}
       >
         <div className="flex flex-col">
-          <p className="product-body-text-1-semibold w-full text-center text-semantic-fg-disabled">
+          <p
+            style={{
+              fontSize: `${Math.max(12, 14 / zoom)}px`,
+            }}
+            className="font-semibold w-full text-center text-semantic-fg-disabled"
+          >
             {id}
           </p>
         </div>

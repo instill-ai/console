@@ -90,6 +90,7 @@ export const PipelineComponentMapSchema = z.record(z.any());
 
 export type PipelineRunOnEventItem = {
   type: string;
+  event: string;
 };
 
 export type PipelineRunOnEventMap = Record<string, PipelineRunOnEventItem>;

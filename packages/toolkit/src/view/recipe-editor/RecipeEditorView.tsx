@@ -241,29 +241,52 @@ export const RecipeEditorView = () => {
         ) ?? []),
       ];
 
+      let addGettingStartedView = false;
+
       if (
         pipelineIsNew &&
         prev.topRight?.views.findIndex(
           (e) => e.id === DefaultEditorViewIDs.GETTING_STARTED,
         ) === -1
       ) {
+        addGettingStartedView = true;
         topRightViews.push(getGettingStartedEditorView());
       }
 
       return {
         topRight: {
-          views: topRightViews,
+          views: addGettingStartedView
+            ? [
+                ...prev.topRight.views.filter(
+                  (view) =>
+                    view.id !== DefaultEditorViewIDs.GETTING_STARTED &&
+                    view.id !== DefaultEditorViewIDs.MAIN_PREVIEW_FLOW,
+                ),
+                ...topRightViews,
+                getGettingStartedEditorView(),
+              ]
+            : [
+                ...prev.topRight.views.filter(
+                  (view) => view.id !== DefaultEditorViewIDs.MAIN_PREVIEW_FLOW,
+                ),
+                ...topRightViews,
+              ],
           currentViewId: pipelineIsNew
             ? DefaultEditorViewIDs.GETTING_STARTED
             : (prev.topRight?.currentViewId ??
               DefaultEditorViewIDs.MAIN_PREVIEW_FLOW),
         },
         main: {
-          views: [],
+          views: [...prev.main.views],
           currentViewId: null,
         },
         bottomRight: {
           views: [
+            ...prev.bottomRight.views.filter(
+              (view) =>
+                view.id !== DefaultEditorViewIDs.MAIN_INPUT &&
+                view.id !== DefaultEditorViewIDs.MAIN_OUTPUT,
+            ),
             {
               id: DefaultEditorViewIDs.MAIN_INPUT,
               title: "Input",

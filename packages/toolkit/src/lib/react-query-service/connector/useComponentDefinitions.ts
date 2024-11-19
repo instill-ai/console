@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { ComponentType, Nullable } from "instill-sdk";
 
-import { env } from "../../../server";
 import { getInstillAPIClient } from "../../sdk-helper";
 
 export function useComponentDefinitions({
@@ -24,7 +23,7 @@ export function useComponentDefinitions({
 
       const connectorDefinitions =
         await client.vdp.component.listComponentDefinitions({
-          pageSize: env("NEXT_PUBLIC_QUERY_PAGE_SIZE"),
+          pageSize: 100,
           filter:
             componentType !== "all"
               ? `componentType=${componentType}`

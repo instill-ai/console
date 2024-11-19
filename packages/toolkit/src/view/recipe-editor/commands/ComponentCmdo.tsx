@@ -379,6 +379,33 @@ export const ComponentCmdo = () => {
     setSelectedComponentDefinition(definition);
 
     if (isComponentDefinition(definition)) {
+      if (
+        selectingComponentType === "event" &&
+        definition.spec.eventSpecifications
+      ) {
+        const defaultEvent = Object.keys(
+          definition.spec.eventSpecifications,
+        )[0];
+
+        if (!defaultEvent) {
+          return;
+        }
+
+        const doc = generateEventDefaultYamlString(
+          definition,
+          pipeline.data.recipe,
+          defaultEvent,
+        );
+
+        if (!doc) {
+          return;
+        }
+
+        setSelectedComponentDefaultValue(doc);
+        setSelectedTaskName(defaultEvent);
+        return;
+      }
+
       // set default task
       const defaultTask = definition.tasks[0];
 
