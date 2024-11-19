@@ -22,12 +22,15 @@ import { defaultCodeSnippetStyles } from "../../../constant";
 import {
   GeneralRecord,
   InstillStore,
+  isDownloadableArtifactBlobURL,
+  isValidURL,
   Nullable,
   onTriggerInvalidateCredits,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
   useComponentOutputFields,
+  useDownloadNamespaceObject,
   useInstillStore,
   usePipelineTriggerRequestForm,
   useQueryClient,
@@ -35,8 +38,10 @@ import {
   useShallow,
   useTriggerNamespacePipeline,
   useTriggerNamespacePipelineRelease,
+  useUploadAndGetDownloadNamespaceObjectURL,
   useUserNamespaces,
 } from "../../../lib";
+import { isArtifactRelatedInstillFormat } from "../../../lib/isArtifactRelatedInstillFormat";
 import { recursiveHelpers } from "../../pipeline-builder";
 import { RunButton } from "./RunButton";
 
@@ -157,28 +162,29 @@ export const PipelinePlayground = ({
 
   const triggerPipeline = useTriggerNamespacePipeline();
   const triggerPipelineRelease = useTriggerNamespacePipelineRelease();
-
+  const uploadAndGetDownloadNamespaceObjectURL =
+    useUploadAndGetDownloadNamespaceObjectURL();
+  const downloadNamespaceObject = useDownloadNamespaceObject();
   async function onTriggerPipeline(formData: z.infer<typeof ValidatorSchema>) {
     if (
       !routeInfo.isSuccess ||
       !routeInfo.data.resourceId ||
       !routeInfo.data.namespaceId ||
       !pipeline ||
-      !userNamespaces.isSuccess
+      !userNamespaces.isSuccess ||
+      !accessToken
     ) {
       return;
     }
 
     setIsPipelineRunning(true);
 
-    const input = recursiveHelpers.removeUndefinedAndNullFromArray(
-      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(formData),
-    );
-
     // Backend need to have the encoded JSON input. So we need to double check
     // the metadata whether this field is a semi-structured object and parse it
-
     const semiStructuredObjectKeys: string[] = [];
+
+    // For every type of file related fields, we need to upload the file to the artifact
+    const uploadedToArtifactKeys: string[] = [];
 
     if (variables) {
       Object.entries(variables).forEach(([key, value]) => {
@@ -190,10 +196,23 @@ export const PipelinePlayground = ({
         ) {
           semiStructuredObjectKeys.push(key);
         }
+
+        if (
+          value?.instillFormat === "file" ||
+          value?.instillFormat === "array:file" ||
+          value?.instillFormat === "image" ||
+          value?.instillFormat === "array:image" ||
+          value?.instillFormat === "video" ||
+          value?.instillFormat === "array:video" ||
+          value?.instillFormat === "audio" ||
+          value?.instillFormat === "array:audio"
+        ) {
+          uploadedToArtifactKeys.push(key);
+        }
       });
     }
 
-    const parsedStructuredData: GeneralRecord = input;
+    const parsedStructuredData: GeneralRecord = formData;
 
     for (const key of semiStructuredObjectKeys) {
       if (!formData[key]) {
@@ -214,11 +233,83 @@ export const PipelinePlayground = ({
       }
     }
 
+    // The data comes from the form is either File or URL for these file related fields
+    // like image, video, audio, file
+    for (const key of uploadedToArtifactKeys) {
+      const targetValue = parsedStructuredData[key];
+      if (!targetValue) {
+        continue;
+      }
+
+      if (Array.isArray(targetValue)) {
+        const uploadURLs: string[] = [];
+
+        for (const item of targetValue) {
+          if (isValidURL(item)) {
+            uploadURLs.push(item);
+            continue;
+          }
+
+          const downloadURL = await uploadAndGetDownloadNamespaceObjectURL({
+            namespaceId: routeInfo.data.namespaceId,
+            accessToken,
+            object: item,
+          });
+
+          if (downloadURL) {
+            uploadURLs.push(downloadURL.downloadUrl);
+          }
+        }
+
+        parsedStructuredData[key] = uploadURLs;
+      } else {
+        if (isValidURL(targetValue)) {
+          parsedStructuredData[key] = targetValue;
+          continue;
+        }
+        const downloadURL = await uploadAndGetDownloadNamespaceObjectURL({
+          namespaceId: routeInfo.data.namespaceId,
+          accessToken,
+          object: targetValue,
+        });
+
+        if (downloadURL) {
+          parsedStructuredData[key] = downloadURL.downloadUrl;
+        }
+      }
+    }
+
+    const input = recursiveHelpers.removeUndefinedAndNullFromArray(
+      recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
+        parsedStructuredData,
+      ),
+    );
+
     // The user can trigger different version of pipeline when they are
     // pro or enterprise users
 
+    const downloadedFromArtifactKeys: string[] = [];
+
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    let pipelineRunResponse: any;
+
     if (!currentVersion) {
       try {
+        if (
+          pipeline &&
+          pipeline.dataSpecification &&
+          pipeline.dataSpecification.output &&
+          pipeline.dataSpecification.output.properties
+        ) {
+          Object.entries(pipeline.dataSpecification.output.properties).forEach(
+            ([key, value]) => {
+              if (isArtifactRelatedInstillFormat(value?.instillFormat)) {
+                downloadedFromArtifactKeys.push(key);
+              }
+            },
+          );
+        }
+
         const targetNamespace = userNamespaces.data.find(
           (namespace) => namespace.id === navigationNamespaceAnchor,
         );
@@ -227,7 +318,7 @@ export const PipelinePlayground = ({
           namespaceId: routeInfo.data.namespaceId,
           pipelineId: routeInfo.data.resourceId,
           accessToken,
-          inputs: [parsedStructuredData],
+          inputs: [input],
           returnTraces: true,
           shareCode: shareCode ?? undefined,
           requesterUid: targetNamespace ? targetNamespace.uid : undefined,
@@ -246,7 +337,7 @@ export const PipelinePlayground = ({
           });
         }
 
-        setPipelineRunResponse(data);
+        pipelineRunResponse = data;
       } catch (error) {
         toastInstillError({
           title: "Something went wrong when trigger the pipeline",
@@ -255,6 +346,26 @@ export const PipelinePlayground = ({
         });
       }
     } else {
+      const pipelineVersion = releases.find(
+        (release) =>
+          release.id === currentVersion || release.alias === currentVersion,
+      );
+
+      if (
+        pipelineVersion &&
+        pipelineVersion.dataSpecification &&
+        pipelineVersion.dataSpecification.output &&
+        pipelineVersion.dataSpecification.output.properties
+      ) {
+        Object.entries(
+          pipelineVersion.dataSpecification.output.properties,
+        ).forEach(([key, value]) => {
+          if (isArtifactRelatedInstillFormat(value?.instillFormat)) {
+            downloadedFromArtifactKeys.push(key);
+          }
+        });
+      }
+
       try {
         const targetNamespace = userNamespaces.data.find(
           (namespace) => namespace.id === navigationNamespaceAnchor,
@@ -264,7 +375,7 @@ export const PipelinePlayground = ({
           namespaceId: routeInfo.data.namespaceId,
           pipelineId: routeInfo.data.resourceId,
           releaseId: currentVersion,
-          inputs: [parsedStructuredData],
+          inputs: [input],
           accessToken,
           returnTraces: true,
           shareCode: shareCode ?? undefined,
@@ -283,7 +394,7 @@ export const PipelinePlayground = ({
           });
         }
 
-        setPipelineRunResponse(data);
+        pipelineRunResponse = data;
       } catch (error) {
         toastInstillError({
           title: "Something went wrong when trigger the pipeline",
@@ -293,6 +404,58 @@ export const PipelinePlayground = ({
       }
     }
 
+    for (const key of downloadedFromArtifactKeys) {
+      const targetValue = pipelineRunResponse.outputs[0][key];
+
+      if (!targetValue) {
+        continue;
+      }
+
+      if (Array.isArray(targetValue)) {
+        const downloadedArtifacts: string[] = [];
+        for (const item of targetValue) {
+          if (isValidURL(item) && isDownloadableArtifactBlobURL(item)) {
+            const response = await downloadNamespaceObject.mutateAsync({
+              payload: {
+                downloadUrl: item,
+              },
+              accessToken,
+            });
+
+            if (!response.ok) {
+              continue;
+            }
+
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            downloadedArtifacts.push(url);
+          }
+        }
+        pipelineRunResponse.outputs[0][key] = downloadedArtifacts;
+      } else {
+        if (
+          isValidURL(targetValue) &&
+          isDownloadableArtifactBlobURL(targetValue)
+        ) {
+          const response = await downloadNamespaceObject.mutateAsync({
+            payload: {
+              downloadUrl: targetValue,
+            },
+            accessToken,
+          });
+
+          if (!response.ok) {
+            continue;
+          }
+
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+          pipelineRunResponse.outputs[0][key] = url;
+        }
+      }
+    }
+
+    setPipelineRunResponse(pipelineRunResponse);
     setIsPipelineRunning(false);
   }
 

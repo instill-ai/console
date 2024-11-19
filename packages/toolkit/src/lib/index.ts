@@ -19,6 +19,8 @@ export * from "./use-instill-store";
 export * from "./use-smart-hint";
 export * from "./sdk-helper";
 export * from "./fillArrayWithZero";
+export * from "./isArtifactRelatedInstillFormat";
+export * from "./isDownloadableArtifactBlobURL";
 export * from "./isPublicModel";
 export * from "./isPublicPipeline";
 export * from "./isValidURL";

@@ -22,6 +22,8 @@ import {
   DefaultEditorViewIDs,
   GeneralRecord,
   InstillStore,
+  isArtifactRelatedInstillFormat,
+  isDownloadableArtifactBlobURL,
   isValidURL,
   Nullable,
   useInstillStore,
@@ -36,8 +38,9 @@ import {
   useDownloadNamespaceObject,
   useGetNamespaceObjectDownloadURL,
   useGetNamespaceObjectUploadURL,
+  useUploadAndGetDownloadNamespaceObjectURL,
   useUploadNamespaceObject,
-} from "../../../lib/react-query-service/artifact";
+} from "../../../lib/react-query-service";
 import {
   getReferencesFromString,
   recursiveHelpers,
@@ -105,6 +108,9 @@ export const Input = ({
 
   const downloadNamespaceObject = useDownloadNamespaceObject();
 
+  const uploadAndGetDownloadNamespaceObjectURL =
+    useUploadAndGetDownloadNamespaceObjectURL();
+
   const onStreamTriggerPipeline = React.useCallback(
     async (formData: z.infer<typeof Schema>) => {
       if (
@@ -113,7 +119,8 @@ export const Input = ({
         !routeInfo.isSuccess ||
         !routeInfo.data.namespaceId ||
         !routeInfo.data.resourceId ||
-        !userNamespaces.isSuccess
+        !userNamespaces.isSuccess ||
+        !accessToken
       ) {
         return;
       }
@@ -166,8 +173,9 @@ export const Input = ({
 
       // Backend need to have the encoded JSON input. So we need to double check
       // the metadata whether this field is a semi-structured object and parse it
-
       const semiStructuredObjectKeys: string[] = [];
+
+      // For every type of file related fields, we need to upload the file to the artifact
       const uploadedToArtifactKeys: string[] = [];
 
       Object.entries(fields).forEach(([key, value]) => {
@@ -180,16 +188,7 @@ export const Input = ({
           semiStructuredObjectKeys.push(key);
         }
 
-        if (
-          value?.instillFormat === "file" ||
-          value?.instillFormat === "array:file" ||
-          value?.instillFormat === "image" ||
-          value?.instillFormat === "array:image" ||
-          value?.instillFormat === "video" ||
-          value?.instillFormat === "array:video" ||
-          value?.instillFormat === "audio" ||
-          value?.instillFormat === "array:audio"
-        ) {
+        if (isArtifactRelatedInstillFormat(value?.instillFormat)) {
           uploadedToArtifactKeys.push(key);
         }
       });
@@ -231,84 +230,31 @@ export const Input = ({
               continue;
             }
 
-            const namespaceObjectUploadURL =
-              await getNamespaceObjectUploadURL.mutateAsync({
-                payload: {
-                  namespaceId: routeInfo.data.namespaceId,
-                  objectName: item.name,
-                },
-                accessToken,
-              });
-
-            if (!namespaceObjectUploadURL) {
-              continue;
-            }
-
-            await uploadNamespaceObject.mutateAsync({
-              payload: {
-                uploadUrl: namespaceObjectUploadURL.uploadUrl,
-                object: item,
-              },
+            const downloadURL = await uploadAndGetDownloadNamespaceObjectURL({
+              namespaceId: routeInfo.data.namespaceId,
               accessToken,
+              object: item,
             });
 
-            const downloadURLResponse =
-              await getNamespaceObjectDownloadURL.mutateAsync({
-                payload: {
-                  namespaceId: routeInfo.data.namespaceId,
-                  objectUid: namespaceObjectUploadURL.object.uid,
-                },
-                accessToken,
-              });
-
-            if (downloadURLResponse) {
-              uploadURLs.push(downloadURLResponse.downloadUrl);
+            if (downloadURL) {
+              uploadURLs.push(downloadURL.downloadUrl);
             }
           }
 
           parsedStructuredData[key] = uploadURLs;
         } else {
-          console.log(targetValue);
-
           if (isValidURL(targetValue)) {
             parsedStructuredData[key] = targetValue;
             continue;
           }
-
-          const namespaceObjectUploadURL =
-            await getNamespaceObjectUploadURL.mutateAsync({
-              payload: {
-                namespaceId: routeInfo.data.namespaceId,
-                objectName: targetValue.name,
-              },
-              accessToken,
-            });
-
-          if (!namespaceObjectUploadURL) {
-            continue;
-          }
-
-          console.log(namespaceObjectUploadURL);
-
-          await uploadNamespaceObject.mutateAsync({
-            payload: {
-              uploadUrl: namespaceObjectUploadURL.uploadUrl,
-              object: targetValue,
-            },
+          const downloadURL = await uploadAndGetDownloadNamespaceObjectURL({
+            namespaceId: routeInfo.data.namespaceId,
             accessToken,
+            object: targetValue,
           });
 
-          const downloadURLResponse =
-            await getNamespaceObjectDownloadURL.mutateAsync({
-              payload: {
-                namespaceId: routeInfo.data.namespaceId,
-                objectUid: namespaceObjectUploadURL.object.uid,
-              },
-              accessToken,
-            });
-
-          if (downloadURLResponse) {
-            parsedStructuredData[key] = downloadURLResponse.downloadUrl;
+          if (downloadURL) {
+            parsedStructuredData[key] = downloadURL.downloadUrl;
           }
         }
       }
@@ -324,22 +270,11 @@ export const Input = ({
         (ns) => ns.id === routeInfo.data.namespaceId,
       );
 
-      console.log("input", input);
-
       const downloadedFromArtifactKeys: string[] = [];
 
       if (outputSchema && outputSchema.properties) {
         Object.entries(outputSchema.properties).forEach(([key, value]) => {
-          if (
-            value?.instillFormat === "file" ||
-            value?.instillFormat === "array:file" ||
-            value?.instillFormat === "image" ||
-            value?.instillFormat === "array:image" ||
-            value?.instillFormat === "video" ||
-            value?.instillFormat === "array:video" ||
-            value?.instillFormat === "audio" ||
-            value?.instillFormat === "array:audio"
-          ) {
+          if (isArtifactRelatedInstillFormat(value?.instillFormat)) {
             downloadedFromArtifactKeys.push(key);
           }
         });
@@ -353,7 +288,7 @@ export const Input = ({
             pipelineId: routeInfo.data.resourceId,
             releaseId: currentVersion,
             accessToken,
-            inputs: [parsedStructuredData],
+            inputs: [input],
             returnTraces: true,
             requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
           });
@@ -362,7 +297,7 @@ export const Input = ({
             namespaceId: routeInfo.data.namespaceId,
             pipelineId: routeInfo.data.resourceId,
             accessToken,
-            inputs: [parsedStructuredData],
+            inputs: [input],
             returnTraces: true,
             requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
           });
@@ -422,29 +357,6 @@ export const Input = ({
                 for (const event of events) {
                   if (isPipelineStatusUpdatedEvent(event)) {
                     newPipelineStatus = event.data.status;
-                    // if (event.data.status.completed) {
-                    //   updateIsTriggeringPipeline(() => false);
-                    //   Object.entries(
-                    //     newTriggerPipelineStreamMap?.component ?? {},
-                    //   ).forEach(([key, value]) => {
-                    //     if (value && value.status) {
-                    //       if (value.status.errored) {
-                    //         newComponent[key] = value;
-                    //       } else {
-                    //         newComponent[key] = {
-                    //           ...value,
-                    //           status: {
-                    //             ...value.status,
-                    //             completed: true,
-                    //           },
-                    //         };
-                    //       }
-                    //     }
-                    //   });
-                    // } else {
-                    //   newComponent =
-                    //     newTriggerPipelineStreamMap?.component ?? {};
-                    // }
                   }
 
                   if (isPipelineOutputUpdatedEvent(event)) {
@@ -460,7 +372,10 @@ export const Input = ({
                       if (Array.isArray(targetValue)) {
                         const downloadedArtifacts: string[] = [];
                         for (const item of targetValue) {
-                          if (isValidURL(item)) {
+                          if (
+                            isValidURL(item) &&
+                            isDownloadableArtifactBlobURL(item)
+                          ) {
                             const response =
                               await downloadNamespaceObject.mutateAsync({
                                 payload: {
@@ -480,7 +395,10 @@ export const Input = ({
                         }
                         newPipelineOutput[key] = downloadedArtifacts;
                       } else {
-                        if (isValidURL(targetValue)) {
+                        if (
+                          isValidURL(targetValue) &&
+                          isDownloadableArtifactBlobURL(targetValue)
+                        ) {
                           const response =
                             await downloadNamespaceObject.mutateAsync({
                               payload: {
@@ -541,12 +459,6 @@ export const Input = ({
                     }
                   }
                 }
-
-                console.log(
-                  "newPipeline",
-                  newPipelineOutput,
-                  newPipelineStatus,
-                );
 
                 updateTriggerPipelineStreamMap((prev) => {
                   // We need to merge the old component with the new component
