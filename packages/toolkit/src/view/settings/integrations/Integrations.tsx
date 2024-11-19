@@ -234,6 +234,7 @@ export const Integrations = () => {
               key={item.id}
               integration={item}
               namespaceId={selectedNamespaceId}
+              accessToken={accessToken}
             />
           ))
         ) : (

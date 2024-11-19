@@ -1,10 +1,11 @@
 "use client";
 
+import { Integration } from "instill-sdk";
 import { signIn } from "next-auth/react";
 import { z } from "zod";
 
 import type { IntegrationProvider } from "./types";
-import { AvailableOAuthIntegration, resourceIdPrefix } from "../../constant";
+import { resourceIdPrefix } from "../../constant";
 import { formatResourceId } from "../../server";
 import { createNaiveRandomString } from "../createNaiveRandomString";
 
@@ -43,8 +44,8 @@ export async function initializeIntegrationConnection({
   }
 }
 
-export function isOAuthAvailable(integrationId: string) {
-  return AvailableOAuthIntegration.includes(integrationId);
+export function isOAuthAvailable(integration: Integration) {
+  return integration.oAuthConfig && integration.oAuthConfig.authUrl;
 }
 
 export function getPrefilledOAuthIntegrationConnectionId({
