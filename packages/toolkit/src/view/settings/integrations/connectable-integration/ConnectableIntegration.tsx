@@ -4,25 +4,35 @@ import * as React from "react";
 import Image from "next/image";
 import { Integration, Nullable } from "instill-sdk";
 
-import { Button } from "@instill-ai/design-system";
+import { Button, useToast } from "@instill-ai/design-system";
 
-import { initializeIntegrationConnection } from "../../../../lib";
+import { LoadingSpin } from "../../../../components";
+import {
+  getInstillAPIClient,
+  initializeIntegrationConnection,
+  toastInstillError,
+  useQueryClient,
+} from "../../../../lib";
 import { isOAuthAvailable } from "../../../../lib/integrations/helpers";
+import { queryKeyStore } from "../../../../lib/react-query-service/queryKeyStore";
 import { IntegrationProvider } from "../../../../server";
 import { ManualSettingDialog } from "./ManualSettingDialog";
 
 export type ConnectableIntegrationProps = {
   integration: Integration;
   namespaceId: Nullable<string>;
+  accessToken: Nullable<string>;
 };
 
 export const ConnectableIntegration = ({
   integration,
   namespaceId,
+  accessToken,
 }: ConnectableIntegrationProps) => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const [isProcessing, setIsProcessing] = React.useState(false);
   const [editingDialogIsOpen, setEditingDialogIsOpen] = React.useState(false);
-
-  const oAuthIsAvailable = isOAuthAvailable(integration.id);
 
   return (
     <div className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-semantic-bg-line flex flex-row gap-4 items-center p-4 w-full">
@@ -39,44 +49,81 @@ export const ConnectableIntegration = ({
       </span>
       <Button
         variant="primary"
-        className="ml-auto"
-        onClick={() => {
-          if (oAuthIsAvailable) {
-            if (!namespaceId) {
-              return;
-            }
+        className="ml-auto w-20 items-center justify-center"
+        onClick={async () => {
+          if (!accessToken) {
+            return;
+          }
 
-            let provider: Nullable<IntegrationProvider> = null;
+          setIsProcessing(true);
 
-            switch (integration.id) {
-              case "github":
-                provider = "github";
-                break;
-              case "slack":
-                provider = "slack";
-                break;
-              case "google-drive":
-                provider = "google-drive";
-                break;
-              default:
-                break;
-            }
+          try {
+            const client = getInstillAPIClient({
+              accessToken,
+            });
 
-            if (provider) {
+            const integrationFull =
+              await client.core.integration.getIntegration({
+                integrationId: integration.id,
+                view: "VIEW_FULL",
+              });
+
+            queryClient.setQueryData(
+              queryKeyStore.integration.getUseGetIntegrationQueryKey({
+                integrationId: integration.id,
+                view: "VIEW_FULL",
+              }),
+              integrationFull.integration,
+            );
+
+            if (isOAuthAvailable(integrationFull.integration)) {
+              if (!namespaceId) {
+                setIsProcessing(false);
+                return;
+              }
+
+              let provider: Nullable<IntegrationProvider> = null;
+
+              switch (integration.id) {
+                case "github":
+                  provider = "github";
+                  break;
+                case "slack":
+                  provider = "slack";
+                  break;
+                case "google-drive":
+                  provider = "google-drive";
+                  break;
+                default:
+                  break;
+              }
+
+              if (!provider) {
+                setIsProcessing(false);
+                return;
+              }
+
+              setIsProcessing(false);
+
               initializeIntegrationConnection({
                 provider,
                 namespaceId,
                 integrationId: integration.id,
               });
             }
-
-            return;
+          } catch (error) {
+            toastInstillError({
+              toast,
+              error,
+              title: "Failed to connect to integration",
+            });
           }
 
+          setIsProcessing(false);
           setEditingDialogIsOpen(true);
         }}
       >
-        Connect
+        {isProcessing ? <LoadingSpin className="w-4 h-4" /> : "Connect"}
       </Button>
       <ManualSettingDialog
         isOpen={editingDialogIsOpen}
