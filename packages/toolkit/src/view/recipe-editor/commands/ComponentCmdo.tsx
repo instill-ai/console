@@ -164,7 +164,6 @@ export const ComponentCmdo = () => {
   const [selectedComponentDefinition, setSelectedComponentDefinition] =
     React.useState<Nullable<ComponentDefinition | IteratorDefinition>>(null);
 
-  console.log("selectedComponentDefinition", selectedComponentDefinition);
   const [selectedTaskName, setSelectedTaskName] =
     React.useState<Nullable<string>>(null);
   const [selectedComponentDefaultValue, setSelectedComponentDefaultValue] =
@@ -938,7 +937,7 @@ const TaskItem = ({
       <p className="product-body-text-3-medium text-start text-semantic-fg-primary">
         {taskTitle}
       </p>
-      <p className="product-body-text-3-regular text-start text-semantic-fg-disabled">
+      <p className="product-body-text-3-regular text-start text-semantic-fg-disabled line-clamp-3">
         {taskDescription}
       </p>
     </button>

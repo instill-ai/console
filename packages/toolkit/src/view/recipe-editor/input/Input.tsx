@@ -460,25 +460,28 @@ export const Input = ({
                   }
                 }
 
+                console.log("newComponent", newComponent);
+
                 updateTriggerPipelineStreamMap((prev) => {
                   // We need to merge the old component with the new component
-                  const mergedComponent: GeneralRecord = {};
+                  const mergedComponent: GeneralRecord = prev?.component ?? {};
 
-                  for (const [key, value] of Object.entries(
-                    prev?.component ?? {},
-                  )) {
-                    if (newComponent[key]) {
+                  for (const [key, value] of Object.entries(newComponent)) {
+                    if (mergedComponent[key]) {
                       mergedComponent[key] =
                         newPipelineStatus?.completed === true
                           ? {
+                              ...mergedComponent[key],
                               ...value,
-                              ...newComponent[key],
                               status: {
-                                ...value.status,
+                                ...mergedComponent[key].status,
                                 completed: true,
                               },
                             }
-                          : newComponent[key];
+                          : {
+                              ...mergedComponent[key],
+                              ...value,
+                            };
                     } else {
                       mergedComponent[key] =
                         newPipelineStatus?.completed === true
