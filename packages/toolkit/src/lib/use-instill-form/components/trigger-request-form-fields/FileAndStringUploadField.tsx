@@ -82,7 +82,7 @@ export const FileAndStringUploadField = ({
                     field.onChange(e.target.value);
                     setFileName(e.target.value);
                   }}
-                  placeholder="Enter a URL, paste a file, or drag a file over."
+                  placeholder="Enter a URL, upload a file, or drag a file over."
                   className="w-full p-2 border rounded"
                   disabled={disabled}
                 />

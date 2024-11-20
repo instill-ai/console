@@ -17,8 +17,7 @@ import { CustomHandle } from "./CustomHandle";
 const selector = (store: InstillStore) => ({
   enabledQuery: store.enabledQuery,
   accessToken: store.accessToken,
-  displayEventNodes: store.displayEventNodes,
-  updateDisplayEventNodes: store.updateDisplayEventNodes,
+  updateSelectedComponentId: store.updateSelectedComponentId,
 });
 
 export const StartNode = ({ id }: NodeProps) => {
@@ -31,7 +30,8 @@ export const StartNode = ({ id }: NodeProps) => {
     );
   }, [id, reactflowEdges]);
 
-  const { enabledQuery, accessToken } = useInstillStore(useShallow(selector));
+  const { enabledQuery, accessToken, updateSelectedComponentId } =
+    useInstillStore(useShallow(selector));
 
   const pipeline = useNamespacePipeline({
     namespaceId: routeInfo.data.namespaceId,
@@ -59,7 +59,12 @@ export const StartNode = ({ id }: NodeProps) => {
   }, [pipeline.data, pipeline.isSuccess]);
 
   return (
-    <div className="relative">
+    <div
+      onClick={() => {
+        updateSelectedComponentId(() => null);
+      }}
+      className="relative"
+    >
       {eventCount > 0 ? (
         <StartNodeOpenEventButton
           hasEventErrorEdge={hasEventErrorEdge}
@@ -85,6 +90,11 @@ export const StartNode = ({ id }: NodeProps) => {
   );
 };
 
+const buttonSelector = (store: InstillStore) => ({
+  displayEventNodes: store.displayEventNodes,
+  updateDisplayEventNodes: store.updateDisplayEventNodes,
+});
+
 const StartNodeOpenEventButton = ({
   eventCount,
   hasEventErrorEdge,
@@ -93,7 +103,7 @@ const StartNodeOpenEventButton = ({
   hasEventErrorEdge: boolean;
 }) => {
   const { displayEventNodes, updateDisplayEventNodes } = useInstillStore(
-    useShallow(selector),
+    useShallow(buttonSelector),
   );
 
   if (hasEventErrorEdge) {
