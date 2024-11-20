@@ -94,6 +94,11 @@ export const RunOnEventNode = ({ id, data }: NodeProps<RunOnEventNodeData>) => {
                   null,
                   2,
                 )}
+                messageDataFirstDataKey={
+                  eventSpec.messageExamples[0]
+                    ? (Object.keys(eventSpec.messageExamples[0])[0] ?? null)
+                    : null
+                }
               />
             ),
             title: viewId,
