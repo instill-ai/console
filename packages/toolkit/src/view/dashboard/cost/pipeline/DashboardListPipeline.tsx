@@ -88,7 +88,6 @@ export const DashboardListPipeline = ({
         accessorKey: "pipelineId",
         header: () => <div className="text-left">Pipeline ID</div>,
         cell: ({ row }) => {
-          console.log(row.original);
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary truncate">
               <Link

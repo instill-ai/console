@@ -11,8 +11,6 @@ export type DownloadableFilesFieldProps = {
 export const DownloadableFilesField = (props: DownloadableFilesFieldProps) => {
   const { title, hideField, files } = props;
 
-  console.log("files", files);
-
   return (
     <FieldRoot title={title} fieldKey={`${title}-field`}>
       {!hideField ? (

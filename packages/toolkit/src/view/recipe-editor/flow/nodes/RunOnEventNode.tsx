@@ -26,8 +26,6 @@ const selector = (store: InstillStore) => ({
 });
 
 export const RunOnEventNode = ({ id, data }: NodeProps<RunOnEventNodeData>) => {
-  console.log("data", data);
-
   const reactflowEdges = useEdges();
   const hasTargetEdges = React.useMemo(() => {
     return reactflowEdges.some(
@@ -109,8 +107,6 @@ export const RunOnEventNode = ({ id, data }: NodeProps<RunOnEventNodeData>) => {
       },
     }));
   }, [id, updateSelectedComponentId]);
-
-  console.log("data", data);
 
   return featureFlagWebhookEnabled ? (
     <NodeBase
