@@ -124,7 +124,7 @@ export class PipelineFlowFactory {
         if (!hasVariableConnectToRunOnEvent) {
           edges.push({
             id: `run-on-event-${id}`,
-            source: `on-${id}`,
+            source: id,
             target: "start",
             type: "eventErrorEdge",
             hidden: hideEventNodes,
@@ -134,7 +134,7 @@ export class PipelineFlowFactory {
 
         edges.push({
           id: `run-on-event-${id}`,
-          source: `on-${id}`,
+          source: id,
           target: "start",
           type: "eventEdge",
           hidden: hideEventNodes,

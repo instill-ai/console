@@ -39,14 +39,18 @@ export function composeEdgesForReference({
 
     const hasNoEdgeForThisReference =
       currentEdges.find(
-        (edge) =>
-          edge.source === `on-${sourceId}` && edge.target === reference.id,
+        (edge) => edge.source === sourceId && edge.target === reference.id,
       ) === undefined;
 
-    if (referenceIsAvailable && hasNoEdgeForThisReference && reference.id) {
+    if (
+      sourceId &&
+      referenceIsAvailable &&
+      hasNoEdgeForThisReference &&
+      reference.id
+    ) {
       newEdges.push({
         id: uuidv4(),
-        source: `on-${sourceId}`,
+        source: sourceId,
         target: reference.id,
         type: "generalEdge",
       });

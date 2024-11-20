@@ -22,7 +22,7 @@ export function createNodesFromRunOnEvent(
     }
 
     nodes.push({
-      id: `on-${id}`,
+      id: id,
       type: "runOnEventNode",
       hidden: hideEventNodes,
       data: e,
