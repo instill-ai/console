@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.111.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.111.0...@instill-ai/toolkit-v0.111.1) (2024-11-20)
+
+
+### Bug Fixes
+
+* fix event description example ([#1611](https://github.com/instill-ai/console/issues/1611)) ([1ef8ee8](https://github.com/instill-ai/console/commit/1ef8ee8b693ff502559e8e5705a3051a306ac827))
+
 ## [0.111.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.110.0...@instill-ai/toolkit-v0.111.0) (2024-11-20)
 
 
