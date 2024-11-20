@@ -460,8 +460,6 @@ export const Input = ({
                   }
                 }
 
-                console.log("newComponent", newComponent);
-
                 updateTriggerPipelineStreamMap((prev) => {
                   // We need to merge the old component with the new component
                   const mergedComponent: GeneralRecord = prev?.component ?? {};

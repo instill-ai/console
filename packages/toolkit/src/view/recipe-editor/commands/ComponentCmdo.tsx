@@ -409,8 +409,6 @@ export const ComponentCmdo = () => {
       // set default task
       const defaultTask = definition.tasks[0];
 
-      console.log("defaultTask", defaultTask);
-
       if (!defaultTask) {
         return;
       }
@@ -485,8 +483,6 @@ export const ComponentCmdo = () => {
     } else {
       const defaultDefinition = eventDefinitions[0];
 
-      console.log("defaultDefinition", defaultDefinition);
-
       if (!defaultDefinition || !defaultDefinition.spec.eventSpecifications) {
         return;
       }
@@ -496,8 +492,6 @@ export const ComponentCmdo = () => {
       const defaultTask = Object.keys(
         defaultDefinition.spec.eventSpecifications,
       )[0];
-
-      console.log("defaultTask", defaultTask);
 
       if (!defaultTask) {
         return;

@@ -104,7 +104,6 @@ export const FileAndStringUploadField = ({
                   disabled={disabled}
                   onChange={async (e) => {
                     const file = e.target.files?.[0];
-                    console.log("file", file);
                     if (file) {
                       field.onChange(file);
                       setFileName(file.name);

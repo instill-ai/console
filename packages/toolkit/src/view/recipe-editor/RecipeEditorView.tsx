@@ -209,8 +209,6 @@ export const RecipeEditorView = () => {
       (Object.keys(recipe ?? {}).length === 1 &&
         Object.keys(recipe ?? {})[0] === "version");
 
-    console.log("recipeIsEmpty", recipeIsEmpty, Object.keys(recipe ?? {}));
-
     const previewView =
       recipe && !recipeIsEmpty ? (
         <ErrorBoundary fallbackRender={() => <PreviewEmptyView />}>
@@ -249,14 +247,6 @@ export const RecipeEditorView = () => {
         view: previewView,
         closeable: false,
       };
-
-      console.log(
-        "pipelineIsNew",
-        recipe,
-        pipelineIsNew,
-        removeInitialzedViews,
-        newPreviewView,
-      );
 
       return {
         topRight: {
