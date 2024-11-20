@@ -204,17 +204,25 @@ export const RecipeEditorView = () => {
       <InOutputEmptyView reason="variableIsEmpty" />
     );
 
-    const previewView = recipe ? (
-      <ErrorBoundary fallbackRender={() => <PreviewEmptyView />}>
-        <Flow
-          pipelineId={pipeline.data?.id ?? null}
-          recipe={recipe ?? null}
-          pipelineMetadata={targetPipeline?.metadata ?? null}
-        />
-      </ErrorBoundary>
-    ) : (
-      <PreviewEmptyView />
-    );
+    const recipeIsEmpty =
+      Object.keys(recipe ?? {}).length === 0 ||
+      (Object.keys(recipe ?? {}).length === 1 &&
+        Object.keys(recipe ?? {})[0] === "version");
+
+    console.log("recipeIsEmpty", recipeIsEmpty, Object.keys(recipe ?? {}));
+
+    const previewView =
+      recipe && !recipeIsEmpty ? (
+        <ErrorBoundary fallbackRender={() => <PreviewEmptyView />}>
+          <Flow
+            pipelineId={pipeline.data?.id ?? null}
+            recipe={recipe ?? null}
+            pipelineMetadata={targetPipeline?.metadata ?? null}
+          />
+        </ErrorBoundary>
+      ) : (
+        <PreviewEmptyView />
+      );
 
     const outputView =
       dataSpecification?.output &&
@@ -228,49 +236,37 @@ export const RecipeEditorView = () => {
     const pipelineIsNew = pipeline.data.metadata?.pipelineIsNew ?? false;
 
     updateEditorMultiScreenModel((prev) => {
-      const topRightViews: EditorView[] = [
-        {
-          id: DefaultEditorViewIDs.MAIN_PREVIEW_FLOW,
-          title: "Preview",
-          type: "preview",
-          view: previewView,
-          closeable: false,
-        },
-        ...(prev.topRight?.views.filter(
-          (view) => view.id !== DefaultEditorViewIDs.MAIN_PREVIEW_FLOW,
-        ) ?? []),
-      ];
+      const removeInitialzedViews = prev.topRight?.views.filter(
+        (view) =>
+          view.id !== DefaultEditorViewIDs.MAIN_PREVIEW_FLOW &&
+          view.id !== DefaultEditorViewIDs.GETTING_STARTED,
+      );
 
-      let addGettingStartedView = false;
+      const newPreviewView: EditorView = {
+        id: DefaultEditorViewIDs.MAIN_PREVIEW_FLOW,
+        title: "Preview",
+        type: "preview",
+        view: previewView,
+        closeable: false,
+      };
 
-      if (
-        pipelineIsNew &&
-        prev.topRight?.views.findIndex(
-          (e) => e.id === DefaultEditorViewIDs.GETTING_STARTED,
-        ) === -1
-      ) {
-        addGettingStartedView = true;
-        topRightViews.push(getGettingStartedEditorView());
-      }
+      console.log(
+        "pipelineIsNew",
+        recipe,
+        pipelineIsNew,
+        removeInitialzedViews,
+        newPreviewView,
+      );
 
       return {
         topRight: {
-          views: addGettingStartedView
+          views: pipelineIsNew
             ? [
-                ...prev.topRight.views.filter(
-                  (view) =>
-                    view.id !== DefaultEditorViewIDs.GETTING_STARTED &&
-                    view.id !== DefaultEditorViewIDs.MAIN_PREVIEW_FLOW,
-                ),
-                ...topRightViews,
+                ...removeInitialzedViews,
+                newPreviewView,
                 getGettingStartedEditorView(),
               ]
-            : [
-                ...prev.topRight.views.filter(
-                  (view) => view.id !== DefaultEditorViewIDs.MAIN_PREVIEW_FLOW,
-                ),
-                ...topRightViews,
-              ],
+            : [...removeInitialzedViews, newPreviewView],
           currentViewId: pipelineIsNew
             ? DefaultEditorViewIDs.GETTING_STARTED
             : (prev.topRight?.currentViewId ??

@@ -110,6 +110,8 @@ export const ConnectableIntegration = ({
                 namespaceId,
                 integrationId: integration.id,
               });
+
+              return;
             }
           } catch (error) {
             toastInstillError({
