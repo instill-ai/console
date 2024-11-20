@@ -1,5 +1,14 @@
 # @instill-ai/design-system
 
+## [0.84.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.83.0...@instill-ai/design-system-v0.84.0) (2024-11-20)
+
+
+### Features
+
+* adapt artifact upload on pipeline preview page ([#1605](https://github.com/instill-ai/console/issues/1605)) ([37411cf](https://github.com/instill-ai/console/commit/37411cf53ec7f98cde73f443a4d35b27900c4770))
+* **dashboard:** rename pipeline/model triggers to runs ([#1597](https://github.com/instill-ai/console/issues/1597)) ([d32ce87](https://github.com/instill-ai/console/commit/d32ce8730e3ea03c9eea4123f47f4f3c835bf293))
+* support event component ([#1600](https://github.com/instill-ai/console/issues/1600)) ([af3526b](https://github.com/instill-ai/console/commit/af3526b5546a25d2fd18a3404c129f6c0128a21c))
+
 ## [0.83.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.82.1...@instill-ai/design-system-v0.83.0) (2024-11-05)
 
 
