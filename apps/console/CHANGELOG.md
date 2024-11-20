@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.63.0-beta](https://github.com/instill-ai/console/compare/v0.62.0-beta...v0.63.0-beta) (2024-11-20)
+
+
+### Features
+
+* implement blob artifact when trigger pipeline ([#1604](https://github.com/instill-ai/console/issues/1604)) ([e93cb87](https://github.com/instill-ai/console/commit/e93cb879ebc300f3042778a1cb6f24528b6f790d))
+
+
+### Bug Fixes
+
+* remove empty extra bottom space of recipe editor ([#1603](https://github.com/instill-ai/console/issues/1603)) ([7e45955](https://github.com/instill-ai/console/commit/7e4595558b40fc50129fd3f9b2c523c9162b0bf9))
+
 ## [0.62.0-beta](https://github.com/instill-ai/console/compare/v0.61.0-beta...v0.62.0-beta) (2024-11-05)
 
 

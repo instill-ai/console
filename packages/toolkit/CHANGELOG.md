@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.111.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.110.0...@instill-ai/toolkit-v0.111.0) (2024-11-20)
+
+
+### Features
+
+* adapt artifact upload on pipeline preview page ([#1605](https://github.com/instill-ai/console/issues/1605)) ([37411cf](https://github.com/instill-ai/console/commit/37411cf53ec7f98cde73f443a4d35b27900c4770))
+* add event component data example ([#1608](https://github.com/instill-ai/console/issues/1608)) ([5d03014](https://github.com/instill-ai/console/commit/5d030144bf92bb2bcb76bdebe79250940164356b))
+* **dashboard:** rename pipeline/model triggers to runs ([#1597](https://github.com/instill-ai/console/issues/1597)) ([d32ce87](https://github.com/instill-ai/console/commit/d32ce8730e3ea03c9eea4123f47f4f3c835bf293))
+* implement blob artifact when trigger pipeline ([#1604](https://github.com/instill-ai/console/issues/1604)) ([e93cb87](https://github.com/instill-ai/console/commit/e93cb879ebc300f3042778a1cb6f24528b6f790d))
+* **integration:** use the oAuthConfig presentness to determine integration setup flow ([#1606](https://github.com/instill-ai/console/issues/1606)) ([975af94](https://github.com/instill-ai/console/commit/975af94bd5761e8c74b2555534f14744fa7458e1))
+* **pipeline:** adapt instill-format to format on rawRecipe ([#1599](https://github.com/instill-ai/console/issues/1599)) ([7cedb3f](https://github.com/instill-ai/console/commit/7cedb3fb4b0dc3da580a7b4b2ff4959763b3f95a))
+* support event component ([#1600](https://github.com/instill-ai/console/issues/1600)) ([af3526b](https://github.com/instill-ai/console/commit/af3526b5546a25d2fd18a3404c129f6c0128a21c))
+
+
+### Bug Fixes
+
+* fix array file wrong UX that will make user feel that can add more files step by step ([#1601](https://github.com/instill-ai/console/issues/1601)) ([7c6b342](https://github.com/instill-ai/console/commit/7c6b34233004f0bade1f20d8f8fa723e69fbce48))
+* fix component status is wrong on streaming trigger ([#1607](https://github.com/instill-ai/console/issues/1607)) ([5b02bea](https://github.com/instill-ai/console/commit/5b02beaba97b4686512e5d4fa142506bdedb797b))
+* fix duplicated getting started tab and event message hint text on recipe editor ([#1609](https://github.com/instill-ai/console/issues/1609)) ([10e5dea](https://github.com/instill-ai/console/commit/10e5dea57c91f55fc87a47d4b1d6c2fc6f39d44b))
+* replace restapi with http on the schema validation  ([#1602](https://github.com/instill-ai/console/issues/1602)) ([48fbe92](https://github.com/instill-ai/console/commit/48fbe92589305007128d6206e0db982a32ad4120))
+
+
+### Miscellaneous
+
+* clean up unused console log ([#1610](https://github.com/instill-ai/console/issues/1610)) ([33df761](https://github.com/instill-ai/console/commit/33df76183f3d764dfb286c7b0101fbe54c313908))
+
 ## [0.110.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.109.0...@instill-ai/toolkit-v0.110.0) (2024-11-05)
 
 

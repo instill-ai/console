@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.12.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.11.0...instill-sdk-v0.12.0) (2024-11-20)
+
+
+### Features
+
+* adapt artifact upload on pipeline preview page ([#1605](https://github.com/instill-ai/console/issues/1605)) ([37411cf](https://github.com/instill-ai/console/commit/37411cf53ec7f98cde73f443a4d35b27900c4770))
+* add event component data example ([#1608](https://github.com/instill-ai/console/issues/1608)) ([5d03014](https://github.com/instill-ai/console/commit/5d030144bf92bb2bcb76bdebe79250940164356b))
+* implement blob artifact when trigger pipeline ([#1604](https://github.com/instill-ai/console/issues/1604)) ([e93cb87](https://github.com/instill-ai/console/commit/e93cb879ebc300f3042778a1cb6f24528b6f790d))
+* support event component ([#1600](https://github.com/instill-ai/console/issues/1600)) ([af3526b](https://github.com/instill-ai/console/commit/af3526b5546a25d2fd18a3404c129f6c0128a21c))
+
 ## [0.11.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.10.0...instill-sdk-v0.11.0) (2024-11-05)
 
 
