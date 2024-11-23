@@ -14,7 +14,6 @@ import { getPrefilledOAuthIntegrationConnectionId } from "./helpers";
 export type GetAuthHandlerProps = {
   instillAccessToken?: string;
   namespaceId?: string;
-  onCallback?: () => void;
 };
 
 const slackScopes = [
@@ -36,10 +35,14 @@ const googleDriveScopes = [
 
 const githubScopes = ["repo", "write:repo_hook", "user:email", "read:user"];
 
+/**
+ * @param instillAccessToken - The Instill access token
+ * @param namespaceId - The namespace ID
+ * @returns
+ */
 export function getAuthHandler({
   instillAccessToken,
   namespaceId,
-  onCallback,
 }: GetAuthHandlerProps) {
   return NextAuth({
     providers: [
@@ -240,10 +243,6 @@ export function getAuthHandler({
 
             if (payload) {
               await client.core.integration.createNamespaceConnection(payload);
-
-              if (onCallback) {
-                onCallback();
-              }
             }
           }
           return token;

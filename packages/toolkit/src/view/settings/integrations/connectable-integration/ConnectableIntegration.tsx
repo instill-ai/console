@@ -108,7 +108,6 @@ export const ConnectableIntegration = ({
               initializeIntegrationConnection({
                 provider,
                 namespaceId,
-                integrationId: integration.id,
               });
 
               return;

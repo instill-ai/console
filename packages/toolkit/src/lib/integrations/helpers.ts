@@ -12,17 +12,15 @@ import { createNaiveRandomString } from "../createNaiveRandomString";
 export async function initializeIntegrationConnection({
   provider,
   namespaceId,
-  integrationId,
+  redirectTo,
 }: {
   provider: IntegrationProvider;
   namespaceId: string;
-  integrationId: string;
+  redirectTo?: string;
 }) {
   try {
     const tempIntegrationObject: TempIntegrationObject = {
-      provider,
       namespaceId,
-      integrationId,
     };
 
     // We use this IntegrationObject to temporarily store the provider, namespaceId
@@ -37,7 +35,7 @@ export async function initializeIntegrationConnection({
       body: JSON.stringify(setCookiePayload),
     });
 
-    signIn(provider);
+    signIn(provider, { redirectTo });
   } catch (error) {
     console.error(error);
     return Promise.reject(error);
@@ -70,9 +68,7 @@ export function getPrefilledOAuthIntegrationConnectionId({
 }
 
 export const TempIntegrationObjectSchema = z.object({
-  provider: z.string(),
   namespaceId: z.string(),
-  integrationId: z.string(),
 });
 
 export type TempIntegrationObject = z.infer<typeof TempIntegrationObjectSchema>;
