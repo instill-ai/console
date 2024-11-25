@@ -187,6 +187,19 @@ export const PipelinePlayground = ({
 
     setIsPipelineRunning(true);
 
+    const targetNamespace = userNamespaces.data.find(
+      (namespace) => namespace.id === navigationNamespaceAnchor,
+    );
+
+    if (!targetNamespace) {
+      toastInstillError({
+        title: "Something went wrong, please refresh the page and try again",
+        toast,
+        error: new Error("Failed to find the target namespace"),
+      });
+      return;
+    }
+
     // Backend need to have the encoded JSON input. So we need to double check
     // the metadata whether this field is a semi-structured object and parse it
     const semiStructuredObjectKeys: string[] = [];
@@ -276,7 +289,7 @@ export const PipelinePlayground = ({
           continue;
         }
         const downloadURL = await uploadAndGetDownloadNamespaceObjectURL({
-          namespaceId: routeInfo.data.namespaceId,
+          namespaceId: targetNamespace.id,
           accessToken,
           object: targetValue,
         });
@@ -317,10 +330,6 @@ export const PipelinePlayground = ({
             },
           );
         }
-
-        const targetNamespace = userNamespaces.data.find(
-          (namespace) => namespace.id === navigationNamespaceAnchor,
-        );
 
         const data = await triggerPipeline.mutateAsync({
           namespaceId: routeInfo.data.namespaceId,

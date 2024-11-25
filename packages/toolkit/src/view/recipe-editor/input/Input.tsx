@@ -213,6 +213,12 @@ export const Input = ({
         }
       }
 
+      // We use the current route namespace as the requester namespace
+      // This only happens when the user is on the recipe editor page
+      const tartgetNamespace = userNamespaces.data.find(
+        (ns) => ns.id === routeInfo.data.namespaceId,
+      );
+
       // The data comes from the form is either File or URL for these file related fields
       // like image, video, audio, file
       for (const key of uploadedToArtifactKeys) {
@@ -263,11 +269,6 @@ export const Input = ({
         recursiveHelpers.replaceNullAndEmptyStringWithUndefined(
           parsedStructuredData,
         ),
-      );
-
-      // We use the current route namespace as the requester namespace
-      const tartgetNamespace = userNamespaces.data.find(
-        (ns) => ns.id === routeInfo.data.namespaceId,
       );
 
       const downloadedFromArtifactKeys: string[] = [];
