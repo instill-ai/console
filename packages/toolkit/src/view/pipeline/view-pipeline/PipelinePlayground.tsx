@@ -22,7 +22,6 @@ import { defaultCodeSnippetStyles } from "../../../constant";
 import {
   GeneralRecord,
   InstillStore,
-  isDownloadableArtifactBlobURL,
   isValidURL,
   Nullable,
   onTriggerInvalidateCredits,
@@ -30,7 +29,6 @@ import {
   toastInstillError,
   useAmplitudeCtx,
   useComponentOutputFields,
-  useDownloadNamespaceObject,
   useInstillStore,
   usePipelineTriggerRequestForm,
   useQueryClient,
@@ -172,7 +170,6 @@ export const PipelinePlayground = ({
   const triggerPipelineRelease = useTriggerNamespacePipelineRelease();
   const uploadAndGetDownloadNamespaceObjectURL =
     useUploadAndGetDownloadNamespaceObjectURL();
-  const downloadNamespaceObject = useDownloadNamespaceObject();
   async function onTriggerPipeline(formData: z.infer<typeof ValidatorSchema>) {
     if (
       !routeInfo.isSuccess ||
@@ -421,56 +418,58 @@ export const PipelinePlayground = ({
       }
     }
 
-    for (const key of downloadedFromArtifactKeys) {
-      const targetValue = pipelineRunResponse.outputs[0][key];
+    // Temp disable since the blob download URL's auth is currently
+    // disabled and is controlled by the expiration date
+    // for (const key of downloadedFromArtifactKeys) {
+    //   const targetValue = pipelineRunResponse.outputs[0][key];
 
-      if (!targetValue) {
-        continue;
-      }
+    //   if (!targetValue) {
+    //     continue;
+    //   }
 
-      if (Array.isArray(targetValue)) {
-        const downloadedArtifacts: string[] = [];
-        for (const item of targetValue) {
-          if (isValidURL(item) && isDownloadableArtifactBlobURL(item)) {
-            const response = await downloadNamespaceObject.mutateAsync({
-              payload: {
-                downloadUrl: item,
-              },
-              accessToken,
-            });
+    //   if (Array.isArray(targetValue)) {
+    //     const downloadedArtifacts: string[] = [];
+    //     for (const item of targetValue) {
+    //       if (isValidURL(item) && isDownloadableArtifactBlobURL(item)) {
+    //         const response = await downloadNamespaceObject.mutateAsync({
+    //           payload: {
+    //             downloadUrl: item,
+    //           },
+    //           accessToken,
+    //         });
 
-            if (!response.ok) {
-              continue;
-            }
+    //         if (!response.ok) {
+    //           continue;
+    //         }
 
-            const blob = await response.blob();
-            const url = URL.createObjectURL(blob);
-            downloadedArtifacts.push(url);
-          }
-        }
-        pipelineRunResponse.outputs[0][key] = downloadedArtifacts;
-      } else {
-        if (
-          isValidURL(targetValue) &&
-          isDownloadableArtifactBlobURL(targetValue)
-        ) {
-          const response = await downloadNamespaceObject.mutateAsync({
-            payload: {
-              downloadUrl: targetValue,
-            },
-            accessToken,
-          });
+    //         const blob = await response.blob();
+    //         const url = URL.createObjectURL(blob);
+    //         downloadedArtifacts.push(url);
+    //       }
+    //     }
+    //     pipelineRunResponse.outputs[0][key] = downloadedArtifacts;
+    //   } else {
+    //     if (
+    //       isValidURL(targetValue) &&
+    //       isDownloadableArtifactBlobURL(targetValue)
+    //     ) {
+    //       const response = await downloadNamespaceObject.mutateAsync({
+    //         payload: {
+    //           downloadUrl: targetValue,
+    //         },
+    //         accessToken,
+    //       });
 
-          if (!response.ok) {
-            continue;
-          }
+    //       if (!response.ok) {
+    //         continue;
+    //       }
 
-          const blob = await response.blob();
-          const url = URL.createObjectURL(blob);
-          pipelineRunResponse.outputs[0][key] = url;
-        }
-      }
-    }
+    //       const blob = await response.blob();
+    //       const url = URL.createObjectURL(blob);
+    //       pipelineRunResponse.outputs[0][key] = url;
+    //     }
+    //   }
+    // }
 
     setPipelineRunResponse(pipelineRunResponse);
     setIsPipelineRunning(false);
