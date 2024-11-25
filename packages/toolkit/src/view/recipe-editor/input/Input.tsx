@@ -23,7 +23,6 @@ import {
   GeneralRecord,
   InstillStore,
   isArtifactRelatedInstillFormat,
-  isDownloadableArtifactBlobURL,
   isValidURL,
   Nullable,
   useInstillStore,
@@ -35,7 +34,6 @@ import {
   useUserNamespaces,
 } from "../../../lib";
 import {
-  useDownloadNamespaceObject,
   useGetNamespaceObjectDownloadURL,
   useGetNamespaceObjectUploadURL,
   useUploadAndGetDownloadNamespaceObjectURL,
@@ -105,8 +103,6 @@ export const Input = ({
   const getNamespaceObjectDownloadURL = useGetNamespaceObjectDownloadURL();
   const triggerPipelineRelease = useStreamingTriggerUserPipelineRelease();
   const autonomousRecipeUpdater = useAutonomousEditorRecipeUpdater();
-
-  const downloadNamespaceObject = useDownloadNamespaceObject();
 
   const uploadAndGetDownloadNamespaceObjectURL =
     useUploadAndGetDownloadNamespaceObjectURL();
@@ -363,61 +359,63 @@ export const Input = ({
                   if (isPipelineOutputUpdatedEvent(event)) {
                     newPipelineOutput = event.data.output;
 
-                    for (const key of downloadedFromArtifactKeys) {
-                      const targetValue = newPipelineOutput[key];
+                    // Temp disable since the blob download URL's auth is currently
+                    // disabled and is controlled by the expiration date
+                    // for (const key of downloadedFromArtifactKeys) {
+                    //   const targetValue = newPipelineOutput[key];
 
-                      if (!targetValue) {
-                        continue;
-                      }
+                    //   if (!targetValue) {
+                    //     continue;
+                    //   }
 
-                      if (Array.isArray(targetValue)) {
-                        const downloadedArtifacts: string[] = [];
-                        for (const item of targetValue) {
-                          if (
-                            isValidURL(item) &&
-                            isDownloadableArtifactBlobURL(item)
-                          ) {
-                            const response =
-                              await downloadNamespaceObject.mutateAsync({
-                                payload: {
-                                  downloadUrl: item,
-                                },
-                                accessToken,
-                              });
+                    //   if (Array.isArray(targetValue)) {
+                    //     const downloadedArtifacts: string[] = [];
+                    //     for (const item of targetValue) {
+                    //       if (
+                    //         isValidURL(item) &&
+                    //         isDownloadableArtifactBlobURL(item)
+                    //       ) {
+                    //         const response =
+                    //           await downloadNamespaceObject.mutateAsync({
+                    //             payload: {
+                    //               downloadUrl: item,
+                    //             },
+                    //             accessToken,
+                    //           });
 
-                            if (!response.ok) {
-                              continue;
-                            }
+                    //         if (!response.ok) {
+                    //           continue;
+                    //         }
 
-                            const blob = await response.blob();
-                            const url = URL.createObjectURL(blob);
-                            downloadedArtifacts.push(url);
-                          }
-                        }
-                        newPipelineOutput[key] = downloadedArtifacts;
-                      } else {
-                        if (
-                          isValidURL(targetValue) &&
-                          isDownloadableArtifactBlobURL(targetValue)
-                        ) {
-                          const response =
-                            await downloadNamespaceObject.mutateAsync({
-                              payload: {
-                                downloadUrl: targetValue,
-                              },
-                              accessToken,
-                            });
+                    //         const blob = await response.blob();
+                    //         const url = URL.createObjectURL(blob);
+                    //         downloadedArtifacts.push(url);
+                    //       }
+                    //     }
+                    //     newPipelineOutput[key] = downloadedArtifacts;
+                    //   } else {
+                    //     if (
+                    //       isValidURL(targetValue) &&
+                    //       isDownloadableArtifactBlobURL(targetValue)
+                    //     ) {
+                    //       const response =
+                    //         await downloadNamespaceObject.mutateAsync({
+                    //           payload: {
+                    //             downloadUrl: targetValue,
+                    //           },
+                    //           accessToken,
+                    //         });
 
-                          if (!response.ok) {
-                            continue;
-                          }
+                    //       if (!response.ok) {
+                    //         continue;
+                    //       }
 
-                          const blob = await response.blob();
-                          const url = URL.createObjectURL(blob);
-                          newPipelineOutput[key] = url;
-                        }
-                      }
-                    }
+                    //       const blob = await response.blob();
+                    //       const url = URL.createObjectURL(blob);
+                    //       newPipelineOutput[key] = url;
+                    //     }
+                    //   }
+                    // }
                   }
 
                   if (isComponentStatusUpdatedEvent(event)) {
