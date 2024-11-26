@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.112.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.111.1...@instill-ai/toolkit-v0.112.0) (2024-11-25)
+
+
+### Features
+
+* disable auth when use the downloadedBlob URL ([#1615](https://github.com/instill-ai/console/issues/1615)) ([8bf29b3](https://github.com/instill-ai/console/commit/8bf29b32c87732a23c6f67ba376910c2544d5a73))
+* upload to blob based on the user selected namespace ([#1613](https://github.com/instill-ai/console/issues/1613)) ([70695ff](https://github.com/instill-ai/console/commit/70695ff256886b9732d102354c27e746ebdd9fe1))
+
 ## [0.111.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.111.0...@instill-ai/toolkit-v0.111.1) (2024-11-20)
 
 
