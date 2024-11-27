@@ -194,9 +194,8 @@ export type ListModelRunsRequest = {
 
 export type ModelRun = {
   uid: string;
-  modelUid: string;
   runnerId: string;
-  namespaceId: string;
+  modelNamespaceId: string;
   status: RunStatus;
   source: RunSource;
   totalDuration: number;

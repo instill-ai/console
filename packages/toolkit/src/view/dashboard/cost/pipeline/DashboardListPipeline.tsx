@@ -91,7 +91,7 @@ export const DashboardListPipeline = ({
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary truncate">
               <Link
-                href={`/${row.original.namespaceId}/pipelines/${row.original.pipelineId}`}
+                href={`/${row.original.pipelineNamespaceId}/pipelines/${row.original.pipelineId}`}
                 className="text-semantic-accent-default hover:underline"
               >
                 {row.getValue("pipelineId")}
@@ -107,7 +107,7 @@ export const DashboardListPipeline = ({
           return (
             <div className="font-normal text-semantic-bg-secondary-secondary truncate">
               <Link
-                href={`/${row.original.namespaceId}/pipelines/${row.original.pipelineId}/runs/${row.original.pipelineRunUid}`}
+                href={`/${row.original.pipelineNamespaceId}/pipelines/${row.original.pipelineId}/runs/${row.original.pipelineRunUid}`}
                 className="text-semantic-accent-default hover:underline"
               >
                 {row.getValue("pipelineRunUid")}
