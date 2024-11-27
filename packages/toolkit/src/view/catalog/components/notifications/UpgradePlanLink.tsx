@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Nullable } from "instill-sdk";
 
+import { env } from "../../../../server";
+
 type UpgradePlanLinkProps = {
   plan: string;
   namespaceType: Nullable<"user" | "organization">;
@@ -31,7 +33,7 @@ export const UpgradePlanLink = ({
     } else if (plan === "PLAN_TEAM" && namespaceType === "organization") {
       return {
         text: "Contact us to learn about the enterprise plan and create more storage space",
-        href: "https://cal.com/instill-ai/30min-talk",
+        href: env("NEXT_PUBLIC_INSTILL_AI_SCHEDULE_MEETING_LINK"),
       };
     }
 
