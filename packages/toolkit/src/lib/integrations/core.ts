@@ -34,6 +34,12 @@ const googleDriveScopes = [
   "https://www.googleapis.com/auth/userinfo.profile",
 ];
 
+const googleSheetsScopes = [
+  "https://www.googleapis.com/auth/spreadsheets",
+  "https://www.googleapis.com/auth/userinfo.email",
+  "https://www.googleapis.com/auth/userinfo.profile",
+];
+
 const githubScopes = ["repo", "write:repo_hook", "user:email", "read:user"];
 
 export function getAuthHandler({
@@ -85,6 +91,22 @@ export function getAuthHandler({
           url: "https://accounts.google.com/o/oauth2/auth",
           params: {
             scope: googleDriveScopes.join(" "),
+            prompt: "consent",
+            access_type: "offline",
+            response_type: "code",
+          },
+        },
+      }),
+      GoogleProvider({
+        id: "google-sheet",
+        clientId: String(process.env.INTEGRATION_GOOGLE_SHEET_CLIENT_ID),
+        clientSecret: String(
+          process.env.INTEGRATION_GOOGLE_SHEET_CLIENT_SECRET,
+        ),
+        authorization: {
+          url: "https://accounts.google.com/o/oauth2/auth",
+          params: {
+            scope: googleSheetsScopes.join(" "),
             prompt: "consent",
             access_type: "offline",
             response_type: "code",
