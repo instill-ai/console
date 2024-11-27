@@ -303,12 +303,20 @@ export type RecentlyUsedSlice = {
   ) => void;
 };
 
+export type ChatSlice = {
+  enabledTools: string[];
+  updateEnabledTools: (fn: (prev: string[]) => string[]) => void;
+  enableToolSuggestion: boolean;
+  updateEnableToolSuggestion: (fn: (prev: boolean) => boolean) => void;
+};
+
 export type InstillStore = SmartHintSlice &
   PipelineBuilderSlice &
   GeneralSlice &
   RecentlyUsedSlice &
   EditorSlice &
-  FeatureFlagSlice;
+  FeatureFlagSlice &
+  ChatSlice;
 
 export type InstillStoreMutators = [
   ["zustand/devtools", never],

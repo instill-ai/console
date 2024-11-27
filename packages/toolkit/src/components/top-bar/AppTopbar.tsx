@@ -15,6 +15,7 @@ import {
 import { useGuardPipelineBuilderUnsavedChangesNavigation } from "../../lib/hook";
 import { env } from "../../server";
 import { CETopbarDropdown } from "./CETopbarDropdown";
+import { ChatLink } from "./ChatLink";
 import { CloudTopbarDropdown } from "./CloudTopbarDropdown";
 import { ExploreLink } from "./ExploreLink";
 import { NamespaceSwitch } from "./NamespaceSwitch";
@@ -110,6 +111,7 @@ export const AppTopbar = ({
           </div>
         </div>
         <div className="flex flex-1 flex-row justify-end">
+          <ChatLink />
           {topbarControllerChildren ? (
             topbarControllerChildren
           ) : isCloud ? (
