@@ -5,6 +5,8 @@ import { Nullable } from "instill-sdk";
 
 import { Button, Icons, LinkButton } from "@instill-ai/design-system";
 
+import { env } from "../../../../server";
+
 type InsufficientStorageBannerProps = {
   setshowStorageWarning: React.Dispatch<React.SetStateAction<boolean>>;
   plan: string;
@@ -28,7 +30,7 @@ export const InsufficientStorageBanner = ({
     } else if (plan === "PLAN_PRO" && namespaceType === "user") {
       return "/settings/organizations/new";
     } else if (plan === "PLAN_TEAM" && namespaceType === "organization") {
-      return "https://cal.com/instill-ai/30min-talk";
+      return env("NEXT_PUBLIC_INSTILL_AI_SCHEDULE_MEETING_LINK");
     }
     return "/settings/billing/subscriptions";
   };
