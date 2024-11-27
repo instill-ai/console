@@ -66,8 +66,8 @@ export const MarkdownViewer = ({
         }
 
         .markdown-body img {
-            max-width: 100%;
-            object-fit: contain;
+          max-width: 100%;
+          object-fit: contain;
         }
       `}</style>
       <article

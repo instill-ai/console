@@ -1,10 +1,12 @@
 "use client";
 
 import * as React from "react";
+
 import { Button, cn, Icons, ToggleGroup } from "@instill-ai/design-system";
+
 import { debounce } from "../lib";
-import { MarkdownEditor } from "./";
 import { MarkdownViewer } from "../lib/markdown";
+import { MarkdownEditor } from "./";
 
 type ViewMode = "view" | "edit";
 type EditorMode = "edit" | "preview";
