@@ -98,10 +98,10 @@ export function getAuthHandler({
         },
       }),
       GoogleProvider({
-        id: "google-sheet",
-        clientId: String(process.env.INTEGRATION_GOOGLE_SHEET_CLIENT_ID),
+        id: "google-sheets",
+        clientId: String(process.env.INTEGRATION_GOOGLE_SHEETS_CLIENT_ID),
         clientSecret: String(
-          process.env.INTEGRATION_GOOGLE_SHEET_CLIENT_SECRET,
+          process.env.INTEGRATION_GOOGLE_SHEETS_CLIENT_SECRET,
         ),
         authorization: {
           url: "https://accounts.google.com/o/oauth2/auth",
@@ -158,6 +158,39 @@ export function getAuthHandler({
 
                 payload = {
                   integrationId: "google-drive",
+                  method: "METHOD_OAUTH",
+                  setup: {
+                    token: account.access_token,
+                    "refresh-token": account.refresh_token,
+                  },
+                  namespaceId,
+                  id: prefilledIntegrationConnectionId,
+                  oAuthAccessDetails: {
+                    ...account,
+                    ...profile,
+                  },
+                  identity: identity,
+                  scopes: googleDriveScopes,
+                };
+                break;
+              }
+              case "google-sheets": {
+                const identity = profile.email ?? profile.name;
+
+                if (!identity) {
+                  throw new Error(
+                    "Instill Integration Error: Google Sheets user not found, can't get the identity",
+                  );
+                }
+
+                const prefilledIntegrationConnectionId =
+                  getPrefilledOAuthIntegrationConnectionId({
+                    provider: "google-sheets",
+                    connectionIdentity: identity,
+                  });
+
+                payload = {
+                  integrationId: "google-sheets",
                   method: "METHOD_OAUTH",
                   setup: {
                     token: account.access_token,
