@@ -94,8 +94,8 @@ export const ConnectableIntegration = ({
                 case "google-drive":
                   provider = "google-drive";
                   break;
-                case "google-sheet":
-                  provider = "google-sheet";
+                case "google-sheets":
+                  provider = "google-sheets";
                   break;
                 default:
                   break;
