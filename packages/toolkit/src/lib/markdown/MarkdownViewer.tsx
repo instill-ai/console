@@ -14,9 +14,13 @@ import { preprocessLaTeX } from "./preprocessLatex";
 export const MarkdownViewer = ({
   className,
   markdown,
+  skipHtml,
+  style,
 }: {
   className?: string;
   markdown: string;
+  skipHtml?: boolean;
+  style?: React.CSSProperties;
 }) => {
   const sanitizedHtmlText = sanitizeHtml(markdown ?? "");
 
@@ -53,12 +57,17 @@ export const MarkdownViewer = ({
         }
 
         .markdown-body h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
+        .markdown-body h2,
+        .markdown-body h3,
+        .markdown-body h4,
+        .markdown-body h5,
+        .markdown-body h6 {
           white-space: pre-wrap !important;
+        }
+
+        .markdown-body img {
+            max-width: 100%;
+            object-fit: contain;
         }
       `}</style>
       <article
@@ -66,8 +75,10 @@ export const MarkdownViewer = ({
           "markdown-body w-full overflow-x-scroll rounded-b-sm px-1.5 py-1",
           className,
         )}
+        style={style}
       >
         <ReactMarkdown
+          skipHtml={skipHtml}
           /* @ts-expect-error remark and rehype has type conflicts */
           remarkPlugins={remarkPlugins}
           /* @ts-expect-error remark and rehype has type conflicts */

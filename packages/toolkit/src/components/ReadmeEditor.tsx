@@ -1,12 +1,10 @@
 "use client";
 
 import * as React from "react";
-import Markdown from "markdown-to-jsx";
-
 import { Button, cn, Icons, ToggleGroup } from "@instill-ai/design-system";
-
 import { debounce } from "../lib";
 import { MarkdownEditor } from "./";
+import { MarkdownViewer } from "../lib/markdown";
 
 type ViewMode = "view" | "edit";
 type EditorMode = "edit" | "preview";
@@ -71,11 +69,14 @@ export const ReadmeEditor = ({
 
   const renderMarkdown = () => {
     return (
-      <div className="markdown-body w-full overflow-x-auto p-6">
-        <Markdown options={{ disableParsingRawHTML: true }}>
-          {content || placeholder || ""}
-        </Markdown>
-      </div>
+      <MarkdownViewer
+        markdown={content || placeholder || ""}
+        skipHtml
+        className="!overflow-x-auto !rounded-none !p-6"
+        style={{
+          height: `calc(100vh - ${editorTopOffset + 32}px)`,
+        }}
+      />
     );
   };
 
@@ -96,40 +97,6 @@ export const ReadmeEditor = ({
         {`
           .mdxeditor-popup-container {
             display: none;
-          }
-
-          .markdown-body a {
-            word-break: break-all !important;
-          }
-
-          .markdown-body pre code {
-            white-space: pre-wrap !important;
-          }
-
-          .markdown-body p {
-            white-space: pre-wrap !important;
-          }
-
-          .markdown-body ul > li {
-            white-space: pre-wrap !important;
-          }
-
-          .markdown-body ol > li {
-            white-space: pre-wrap !important;
-          }
-
-          .markdown-body h1,
-          .markdown-body h2,
-          .markdown-body h3,
-          .markdown-body h4,
-          .markdown-body h5,
-          .markdown-body h6 {
-            white-space: pre-wrap !important;
-          }
-
-          .markdown-body img {
-            max-width: 100%;
-            object-fit: contain;
           }
         `}
       </style>
