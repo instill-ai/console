@@ -110,11 +110,7 @@ export const ManualSettingDialog = ({
           <ConnectionForm
             id={integration.id}
             method="METHOD_DICTIONARY"
-            schema={
-              integrationFull.data.schemas.find(
-                (item) => item.method === "METHOD_DICTIONARY",
-              )?.schema
-            }
+            schema={integrationFull.data.setupSchema}
             onSubmit={onSubmit}
             className="max-h-[600px] overflow-y-auto"
             isProcessing={isProcessing}

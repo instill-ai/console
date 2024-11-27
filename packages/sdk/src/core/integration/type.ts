@@ -27,16 +27,6 @@ export const OAuthConfigSchema = z.object({
   scopes: z.array(z.string()),
 });
 
-export type IntegrationSchema = {
-  method: IntegrationMethod;
-  schema: InstillJSONSchema;
-};
-
-export const IntegrationSchemaSchema = z.object({
-  method: z.string(),
-  schema: z.any(),
-});
-
 export type Integration = {
   uid: string;
   id: string;
@@ -48,7 +38,6 @@ export type Integration = {
   setupSchema: InstillJSONSchema;
   oAuthConfig: Nullable<OAuthConfig>;
   view: ResourceView;
-  schemas: IntegrationSchema[];
 };
 
 export const IntegrationSchema = z.object({
@@ -62,7 +51,6 @@ export const IntegrationSchema = z.object({
   setupSchema: z.any(),
   oAuthConfig: OAuthConfigSchema.nullable(),
   view: ResourceViewSchema,
-  schemas: z.array(IntegrationSchemaSchema),
 });
 
 export type IntegrationConnection = {
