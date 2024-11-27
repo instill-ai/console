@@ -67,7 +67,6 @@ export const MarkdownViewer = ({
           className,
         )}
       >
-        {/* <Markdown>{sanitizedHtmlText}</Markdown> */}
         <ReactMarkdown
           /* @ts-expect-error remark and rehype has type conflicts */
           remarkPlugins={remarkPlugins}
