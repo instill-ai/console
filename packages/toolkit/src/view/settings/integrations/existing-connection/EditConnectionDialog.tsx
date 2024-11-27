@@ -76,11 +76,7 @@ export const EditConnectionDialog = ({
           <ConnectionForm
             id={`${editingConnection.id}-${editingConnection.method}`}
             method={editingConnection.method}
-            schema={
-              integrationFull.data.schemas.find(
-                (item) => item.method === editingConnection.method,
-              )?.schema
-            }
+            schema={integrationFull.data.setupSchema}
             className="mt-6 max-h-[600px] overflow-y-auto"
             values={{
               ...connectionFull.data.setup,
