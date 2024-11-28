@@ -46,6 +46,9 @@ const connectorDefinitionIds = [
   "universal-ai",
   "instill-app",
   "google-drive",
+  "google-sheets",
+  "perplexity-ai",
+  "leadiq",
 ];
 
 export const InstillYamlSchema = {
