@@ -78,7 +78,7 @@ export const MDTextViewer = ({
         <div>
           <MarkdownViewer
             className={enableFormattedText ? "" : "hidden"}
-            markdown={text ?? ""}
+            markdown={sanitizedHtmlText}
           />
           <pre
             className={cn(
