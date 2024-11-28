@@ -1,9 +1,15 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 
 import { Setting } from "..";
-import { GeneralAppPageProp, useAPITokens } from "../../../lib";
+import {
+  InstillStore,
+  useAPITokens,
+  useInstillStore,
+  useShallow,
+} from "../../../lib";
 import { env } from "../../../server";
 import {
   APITokenTable,
@@ -11,14 +17,18 @@ import {
   SelectOrganization,
 } from "../api-tokens";
 
-export type UserAPITokenTabProps = GeneralAppPageProp;
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
 
-export const UserAPITokenTab = (props: UserAPITokenTabProps) => {
-  const { accessToken, enableQuery, router } = props;
+export const UserAPITokenTab = () => {
+  const router = useRouter();
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const apiTokens = useAPITokens({
     accessToken,
-    enabled: enableQuery,
+    enabled: enabledQuery,
   });
 
   React.useEffect(() => {

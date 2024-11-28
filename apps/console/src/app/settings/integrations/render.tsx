@@ -2,10 +2,10 @@
 
 import {
   AppTopbar,
-  BreadcrumbWithLink,
   NamespaceSwitch,
   PageBase,
   Setting,
+  SETTING_PAGE_CONTENT_PADDING,
   UserIntegrationsTab,
   UserSidebar,
 } from "@instill-ai/toolkit";
@@ -19,13 +19,13 @@ export function IntegrationsSettingsPageRender() {
     <PageBase>
       <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
-        <PageBase.Content contentPadding="p-8">
-          <div className="mb-[52px] w-full px-20">
-            <BreadcrumbWithLink
-              items={[{ label: "Home", link: "/" }, { label: "Settings" }]}
-            />
-          </div>
-          <Setting.Root>
+        <PageBase.Content contentPadding={SETTING_PAGE_CONTENT_PADDING}>
+          <Setting.Root
+            breadcrumbItems={[
+              { label: "Home", link: "/" },
+              { label: "Settings" },
+            ]}
+          >
             <UserSidebar />
             <UserIntegrationsTab />
           </Setting.Root>

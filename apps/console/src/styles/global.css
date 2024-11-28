@@ -34,6 +34,8 @@
 :root {
   --topbar-controller-height: 48px;
   --topbar-nav-height: 48px;
+  --setting-container-padding-top: 80px;
+  --setting-container-padding-bottom: 32px;
   --pipeline-builder-bottom-bar-height: 24px;
   --pipeline-builder-node-available-width: 332px;
   --pipeline-builder-node-padding-x: 12px;

@@ -2,14 +2,33 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import cn from "clsx";
+
+import { LinkButton } from "@instill-ai/design-system";
 
 export const SettingSidebarRoot = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  return <div className="flex flex-col gap-y-1">{children}</div>;
+  const pathname = usePathname();
+  return (
+    <div className="flex flex-col h-[calc(100vh-var(--topbar-controller-height)-var(--topbar-nav-height)-var(--setting-container-padding-top)-var(--setting-container-padding-bottom))]">
+      <div className="flex flex-col gap-y-1 mb-auto">{children}</div>
+      {pathname.includes("integrations") ? (
+        <LinkButton className="mx-auto" asChild variant="secondary">
+          <a
+            target="_blank"
+            rel="noreferrer noopener"
+            href="https://www.instill.tech/privacy"
+          >
+            Privacy
+          </a>
+        </LinkButton>
+      ) : null}
+    </div>
+  );
 };
 
 export const SettingSidebarItem = ({

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthenticatedUser } from "instill-sdk";
 import { useForm } from "react-hook-form";
@@ -18,11 +19,13 @@ import {
 import { Setting } from "..";
 import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
 import {
-  GeneralAppPageProp,
+  InstillStore,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
   useAuthenticatedUser,
+  useInstillStore,
+  useShallow,
   useUpdateAuthenticatedUser,
 } from "../../../lib";
 import { FormLabel } from "../FormLabel";
@@ -49,17 +52,22 @@ export const UserProfileTabSchema = z.object({
     .optional(),
 });
 
-export type UserProfileTabProps = GeneralAppPageProp;
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
 
-export const UserProfileTab = (props: UserProfileTabProps) => {
+export const UserProfileTab = () => {
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const { accessToken, enableQuery, router } = props;
+  const router = useRouter();
+
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const { toast } = useToast();
 
   const me = useAuthenticatedUser({
     accessToken,
-    enabled: enableQuery,
+    enabled: enabledQuery,
   });
 
   const form = useForm<z.infer<typeof UserProfileTabSchema>>({
