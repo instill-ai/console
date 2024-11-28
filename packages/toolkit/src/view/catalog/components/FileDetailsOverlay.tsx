@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Nullable } from "instill-sdk";
-import Markdown from "markdown-to-jsx";
 import sanitizeHtml from "sanitize-html";
 
 import { Dialog, ScrollArea, Skeleton } from "@instill-ai/design-system";
@@ -11,6 +10,7 @@ import {
   useGetNamespaceCatalogSingleSourceOfTruthFile,
   useListNamespaceCatalogChunks,
 } from "../../../lib";
+import { MarkdownViewer } from "../../../lib/markdown";
 import { getFileIcon } from "./lib/helpers";
 
 type FileDetailsOverlayProps = {
@@ -152,9 +152,7 @@ const FileDetailsOverlay = ({
               <Skeleton className="h-4 w-3/4" />
             </div>
           ) : (
-            <article className="prose-sm prose-ol:list-decimal prose-ul:list-disc">
-              <Markdown>{sanitizedHtmlText}</Markdown>
-            </article>
+            <MarkdownViewer markdown={sanitizedHtmlText} />
           )}
         </ScrollArea.Root>
         <Dialog.Close />

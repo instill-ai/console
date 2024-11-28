@@ -1,13 +1,12 @@
 "use client";
 
+import type { Nullable } from "instill-sdk";
 import * as React from "react";
-import cn from "clsx";
-import Markdown from "markdown-to-jsx";
 import sanitizeHtml from "sanitize-html";
 
-import { Switch } from "@instill-ai/design-system";
+import { cn, Switch } from "@instill-ai/design-system";
 
-import { Nullable } from "../../../type";
+import { MarkdownViewer } from "../../../markdown";
 import { CopyButton } from "./CopyButton";
 
 export const MDTextViewer = ({
@@ -77,14 +76,10 @@ export const MDTextViewer = ({
           </div>
         </div>
         <div>
-          <div
-            className={cn(
-              "markdown-body w-full overflow-x-scroll rounded-b-sm px-1.5 py-1",
-              enableFormattedText ? "" : "hidden",
-            )}
-          >
-            <Markdown>{sanitizedHtmlText}</Markdown>
-          </div>
+          <MarkdownViewer
+            className={enableFormattedText ? "" : "hidden"}
+            markdown={sanitizedHtmlText}
+          />
           <pre
             className={cn(
               "flex w-full flex-1 items-center whitespace-pre-line break-all px-1.5 py-1 text-semantic-fg-primary product-body-text-4-regular",

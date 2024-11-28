@@ -74,7 +74,7 @@ export const PipelineReadme = ({ pipeline, onUpdate }: PipelineReadmeProps) => {
           ? `You don't have a README. You can start creating one by clicking **Edit** icon in the top right corner.`
           : "There is no README for this pipeline."
       }
-      className="flex-1 flex flex-col [&>.markdown-body]:flex-1"
+      className="flex-1 flex flex-col"
     />
   );
 };
