@@ -1,13 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import {
   AppTopbar,
-  BreadcrumbWithLink,
   NamespaceSwitch,
   PageBase,
   Setting,
+  SETTING_PAGE_CONTENT_PADDING,
   UserAPITokenTab,
   UserSidebar,
 } from "@instill-ai/toolkit";
@@ -15,26 +13,21 @@ import {
 import { useAppAccessToken } from "~/lib/use-app-access-token";
 
 export function ApiTokenSettingsPageRender() {
-  const accessToken = useAppAccessToken();
+  useAppAccessToken();
 
-  const router = useRouter();
   return (
     <PageBase>
       <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
       <PageBase.Container>
-        <PageBase.Content contentPadding="p-8">
-          <div className="mb-[52px] w-full px-20">
-            <BreadcrumbWithLink
-              items={[{ label: "Home", link: "/" }, { label: "Settings" }]}
-            />
-          </div>
-          <Setting.Root>
+        <PageBase.Content contentPadding={SETTING_PAGE_CONTENT_PADDING}>
+          <Setting.Root
+            breadcrumbItems={[
+              { label: "Home", link: "/" },
+              { label: "Settings" },
+            ]}
+          >
             <UserSidebar />
-            <UserAPITokenTab
-              router={router}
-              accessToken={accessToken.isSuccess ? accessToken.data : null}
-              enableQuery={accessToken.isSuccess}
-            />
+            <UserAPITokenTab />
           </Setting.Root>
         </PageBase.Content>
       </PageBase.Container>

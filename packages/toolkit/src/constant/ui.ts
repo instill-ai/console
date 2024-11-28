@@ -1,0 +1,1 @@
+export const SETTING_PAGE_CONTENT_PADDING = "p-8";

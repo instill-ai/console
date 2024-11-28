@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -8,19 +9,28 @@ import * as z from "zod";
 import { Form, Input } from "@instill-ai/design-system";
 
 import { Setting } from "..";
-import { GeneralAppPageProp, useAuthenticatedUser } from "../../../lib";
+import {
+  InstillStore,
+  useAuthenticatedUser,
+  useInstillStore,
+  useShallow,
+} from "../../../lib";
 
 const UserAccountTabSchema = z.object({
   email: z.string(),
 });
 
-export type UserAccountTabProps = GeneralAppPageProp;
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
 
-export const UserAccountTab = (props: UserAccountTabProps) => {
-  const { accessToken, enableQuery, router } = props;
+export const UserAccountTab = () => {
+  const router = useRouter();
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
-    enabled: enableQuery,
+    enabled: enabledQuery,
     accessToken: accessToken,
   });
 

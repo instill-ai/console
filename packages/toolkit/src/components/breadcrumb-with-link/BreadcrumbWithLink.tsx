@@ -3,21 +3,22 @@
 import React, { ReactElement } from "react";
 import Link from "next/link";
 
-import { Icons } from "@instill-ai/design-system";
+import { cn, Icons } from "@instill-ai/design-system";
 
 export type BreadcrumbWithLinkItem = {
   label: ReactElement | string;
   link?: string;
 };
 
-export type BBreadcrumbWithLinkProps = {
+export type BreadcrumbWithLinkProps = {
   items: BreadcrumbWithLinkItem[];
+  className?: string;
 };
 
-const BreadcrumbWithLink = ({ items }: BBreadcrumbWithLinkProps) => {
+const BreadcrumbWithLink = ({ items, className }: BreadcrumbWithLinkProps) => {
   const activeLink = items.filter((_, index) => index != items.length - 1);
   return (
-    <div className="mb-4 flex items-center gap-x-2 text-sm">
+    <div className={cn("mb-4 flex items-center gap-x-2 text-sm", className)}>
       {activeLink.map((item) => (
         <React.Fragment key={item.link}>
           {item.link ? (

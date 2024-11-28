@@ -5,7 +5,11 @@ import cn from "clsx";
 import { Separator } from "@instill-ai/design-system";
 
 export const SettingTabRoot = ({ children }: { children: React.ReactNode }) => {
-  return <div className="flex w-full flex-col pl-8">{children}</div>;
+  return (
+    <div className="flex w-full flex-col pl-8 h-full overflow-y-auto">
+      {children}
+    </div>
+  );
 };
 
 export const SettingTabHeader = ({
