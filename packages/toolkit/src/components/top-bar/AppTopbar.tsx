@@ -24,6 +24,7 @@ import { NavLinks } from "./NavLinks";
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
+  featureFlagChatEnabled: store.featureFlagChatEnabled,
 });
 
 export const AppTopbar = ({
@@ -41,7 +42,9 @@ export const AppTopbar = ({
 }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+  const { accessToken, enabledQuery, featureFlagChatEnabled } = useInstillStore(
+    useShallow(selector),
+  );
 
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
@@ -111,7 +114,7 @@ export const AppTopbar = ({
           </div>
         </div>
         <div className="flex flex-1 flex-row justify-end">
-          <ChatLink />
+          {featureFlagChatEnabled ? <ChatLink /> : null}
           {topbarControllerChildren ? (
             topbarControllerChildren
           ) : isCloud ? (

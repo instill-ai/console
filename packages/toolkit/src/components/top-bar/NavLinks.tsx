@@ -131,12 +131,12 @@ export const NavLink = ({
 const navLinksSelector = (store: InstillStore) => ({
   accessToken: store.accessToken,
   enabledQuery: store.enabledQuery,
-  featureFlagApplicationEnabled: store.featureFlagApplicationEnabled,
 });
 
 export const NavLinks = ({ isExploreRoute }: { isExploreRoute?: boolean }) => {
-  const { accessToken, enabledQuery, featureFlagApplicationEnabled } =
-    useInstillStore(useShallow(navLinksSelector));
+  const { accessToken, enabledQuery } = useInstillStore(
+    useShallow(navLinksSelector),
+  );
   const me = useAuthenticatedUser({
     enabled: enabledQuery,
     accessToken,
@@ -149,7 +149,7 @@ export const NavLinks = ({ isExploreRoute }: { isExploreRoute?: boolean }) => {
       {me.isSuccess
         ? navLinkItems
             .filter((item) => {
-              if (isCloud && featureFlagApplicationEnabled) {
+              if (isCloud) {
                 return true;
               }
               return item.pathname !== "applications";

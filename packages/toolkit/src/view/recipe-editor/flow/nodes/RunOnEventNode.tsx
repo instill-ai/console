@@ -17,7 +17,6 @@ import { NodeBase } from "./NodeBase";
 
 const selector = (store: InstillStore) => ({
   selectedComponentId: store.selectedComponentId,
-  featureFlagWebhookEnabled: store.featureFlagWebhookEnabled,
   flowIsUnderDemoMode: store.flowIsUnderDemoMode,
   updateEditorMultiScreenModel: store.updateEditorMultiScreenModel,
   accessToken: store.accessToken,
@@ -41,7 +40,6 @@ export const RunOnEventNode = ({ id, data }: NodeProps<RunOnEventNodeData>) => {
 
   const {
     selectedComponentId,
-    featureFlagWebhookEnabled,
     updateSelectedComponentId,
     updateEditorMultiScreenModel,
     enabledQuery,
@@ -108,7 +106,7 @@ export const RunOnEventNode = ({ id, data }: NodeProps<RunOnEventNodeData>) => {
     }));
   }, [id, updateSelectedComponentId]);
 
-  return featureFlagWebhookEnabled ? (
+  return (
     <NodeBase
       id={id}
       isSelected={isSelected}
@@ -131,5 +129,5 @@ export const RunOnEventNode = ({ id, data }: NodeProps<RunOnEventNodeData>) => {
         <Icons.Lightning02 className="w-6 h-6 stroke-semantic-secondary-hover" />
       </div>
     </NodeBase>
-  ) : null;
+  );
 };

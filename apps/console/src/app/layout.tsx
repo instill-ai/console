@@ -54,12 +54,7 @@ export default function RootLayout({
       </head>
       <body className="overflow-y-hidden">
         <RootProvider
-          featureFlagWebhookEnabled={
-            process.env.FEATURE_FLAG_WEBHOOK_ENABLED === "1"
-          }
-          featureFlagApplicationEnabled={
-            process.env.FEATURE_FLAG_APPLICATION_ENABLED === "1"
-          }
+          featureFlagChatEnabled={process.env.FEATURE_FLAG_CHAT_ENABLED === "1"}
         >
           {children}
         </RootProvider>

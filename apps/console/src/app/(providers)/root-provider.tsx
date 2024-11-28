@@ -19,29 +19,23 @@ import { ReactQueryProvider } from "./react-query-client-provider";
 
 const selector = (store: InstillStore) => ({
   initPipelineBuilder: store.initPipelineBuilder,
-  updateFeatureFlagWebhookEnabled: store.updateFeatureFlagWebhookEnabled,
-  updateFeatureFlagApplicationEnabled:
-    store.updateFeatureFlagApplicationEnabled,
+  updateFeatureFlagChatEnabled: store.updateFeatureFlagChatEnabled,
 });
 
 export const RootProvider = ({
   children,
-  featureFlagWebhookEnabled,
-  featureFlagApplicationEnabled,
+  featureFlagChatEnabled,
 }: {
   children: React.ReactNode;
-  featureFlagWebhookEnabled: boolean;
-  featureFlagApplicationEnabled: boolean;
+  featureFlagChatEnabled: boolean;
 }) => {
   const pathname = usePathname();
   const [previousPathname, setPreviousPathname] =
     React.useState<Nullable<string>>(null);
 
-  const {
-    initPipelineBuilder,
-    updateFeatureFlagWebhookEnabled,
-    updateFeatureFlagApplicationEnabled,
-  } = useInstillStore(useShallow(selector));
+  const { initPipelineBuilder, updateFeatureFlagChatEnabled } = useInstillStore(
+    useShallow(selector),
+  );
 
   const initCreateResourceFormStore = useCreateResourceFormStore(
     (store) => store.init,
@@ -52,12 +46,8 @@ export const RootProvider = ({
   const { dismiss: dismissToast } = useToast();
 
   React.useEffect(() => {
-    updateFeatureFlagWebhookEnabled(() => featureFlagWebhookEnabled);
-  }, [featureFlagWebhookEnabled, updateFeatureFlagWebhookEnabled]);
-
-  React.useEffect(() => {
-    updateFeatureFlagApplicationEnabled(() => featureFlagApplicationEnabled);
-  }, [featureFlagApplicationEnabled, updateFeatureFlagApplicationEnabled]);
+    updateFeatureFlagChatEnabled(() => featureFlagChatEnabled);
+  }, [featureFlagChatEnabled, updateFeatureFlagChatEnabled]);
 
   React.useEffect(() => {
     // When ever user leave /editor page to what ever destination

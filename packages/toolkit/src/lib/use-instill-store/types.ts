@@ -273,10 +273,8 @@ export type EditorSlice = {
 };
 
 export type FeatureFlagSlice = {
-  featureFlagWebhookEnabled: boolean;
-  updateFeatureFlagWebhookEnabled: (fn: (prev: boolean) => boolean) => void;
-  featureFlagApplicationEnabled: boolean;
-  updateFeatureFlagApplicationEnabled: (fn: (prev: boolean) => boolean) => void;
+  featureFlagChatEnabled: boolean;
+  updateFeatureFlagChatEnabled: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type TriggerPipelineStreamMap = {
