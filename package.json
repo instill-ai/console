@@ -49,10 +49,15 @@
       "braces": "^3.0.3",
       "ws": "8.17.1",
       "svelte": "^4.2.19",
-      "elliptic": "^6.6.0"
+      "elliptic": "^6.6.0",
+      "tar": "^6.2.1",
+      "micromatch": "^4.0.8",
+      "semver": "^7.5.2",
+      "cross-spawn": "^7.0.5",
+      "path-to-regexp": "^6.3.0",
+      "cookie": "^0.7.1"
     }
   },
-  "prettier": "@instill-ai/prettier-config-cortex",
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
       "eslint --cache --fix",
