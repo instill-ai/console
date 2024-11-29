@@ -65,11 +65,5 @@
     "json-schema": "^0.4.0",
     "openapi-types": "^12.1.3",
     "whatwg-fetch": "^3.6.20"
-  },
-  "pnpm": {
-    "overrides": {
-      "braces": "^3.0.3",
-      "ws": "8.17.1"
-    }
   }
 }
