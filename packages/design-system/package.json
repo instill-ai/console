@@ -50,10 +50,6 @@
     "dist"
   ],
   "devDependencies": {
-    "@babel/core": "^7.17.8",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-react": "^7.16.7",
-    "@babel/preset-typescript": "^7.16.7",
     "@chromatic-com/storybook": "^1.4.0",
     "@commitlint/cli": "^16.2.3",
     "@commitlint/config-conventional": "^16.2.1",
@@ -96,7 +92,7 @@
     "rimraf": "^3.0.2",
     "storybook": "^8.1.4",
     "tailwindcss": "catalog:",
-    "tsup": "^8.1.0",
+    "tsup": "catalog:",
     "typescript": "^5.5.4",
     "vitest": "^1.6.0"
   },
