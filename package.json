@@ -55,7 +55,9 @@
       "semver": "^7.5.2",
       "cross-spawn": "^7.0.5",
       "path-to-regexp": "^6.3.0",
-      "cookie": "^0.7.1"
+      "cookie": "^0.7.1",
+      "markdown-to-jsx": "^7.4.0",
+      "webpack": "^5.89.0"
     }
   },
   "lint-staged": {
