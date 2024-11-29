@@ -57,7 +57,7 @@
       "path-to-regexp": "^6.3.0",
       "cookie": "^0.7.1",
       "markdown-to-jsx": "^7.4.0",
-      "webpack": "^5.89.0"
+      "webpack": "^5.94.0"
     }
   },
   "lint-staged": {
