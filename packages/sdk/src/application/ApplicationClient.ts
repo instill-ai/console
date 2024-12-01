@@ -8,13 +8,19 @@ import {
   Conversation,
   CreateApplicationRequest,
   CreateApplicationResponse,
+  CreateChatResponse,
   CreateConversationRequest,
   CreateConversationResponse,
   CreateMessageRequest,
   CreateMessageResponse,
+  CreateNamespaceAgentRequest,
+  CreateNamespaceAgentResponse,
+  CreateNamespaceChatRequest,
   DeleteApplicationRequest,
   DeleteConversationRequest,
   DeleteMessageRequest,
+  DeleteNamespaceAgentRequest,
+  DeleteNamespaceChatRequest,
   GetApplicationRequest,
   GetApplicationResponse,
   GetPlaygroundConversationRequest,
@@ -25,6 +31,10 @@ import {
   ListConversationsResponse,
   ListMessagesRequest,
   ListMessagesResponse,
+  ListNamespaceAgentsRequest,
+  ListNamespaceAgentsResponse,
+  ListNamespaceChatsRequest,
+  ListNamespaceChatsResponse,
   Message,
   RestartPlaygroundConversationRequest,
   RestartPlaygroundConversationResponse,
@@ -34,6 +44,10 @@ import {
   UpdateConversationResponse,
   UpdateMessageRequest,
   UpdateMessageResponse,
+  UpdateNamespaceAgentRequest,
+  UpdateNamespaceAgentResponse,
+  UpdateNamespaceChatRequest,
+  UpdateNamespaceChatResponse,
 } from "./types";
 
 export class ApplicationClient extends APIResource {
@@ -497,6 +511,156 @@ export class ApplicationClient extends APIResource {
     } catch (error) {
       console.error("Fetch failed:", error);
       throw error;
+    }
+  }
+
+  /* ----------------------------------------------------------------------------
+   * Agent
+   * ---------------------------------------------------------------------------*/
+
+  async createNamespaceAgent(props: CreateNamespaceAgentRequest) {
+    const { namespaceId, ...payload } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/agents`,
+    });
+
+    try {
+      const response = await this._client.post<CreateNamespaceAgentResponse>(
+        queryString,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listNamespaceAgents(props: ListNamespaceAgentsRequest) {
+    const { namespaceId } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/agents`,
+    });
+
+    try {
+      const response =
+        await this._client.get<ListNamespaceAgentsResponse>(queryString);
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async updateNamespaceAgent(props: UpdateNamespaceAgentRequest) {
+    const { namespaceId, agentUid, ...payload } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/agents/${agentUid}`,
+    });
+
+    try {
+      const response = await this._client.put<UpdateNamespaceAgentResponse>(
+        queryString,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async deleteNamespaceAgent(props: DeleteNamespaceAgentRequest) {
+    const { namespaceId, agentUid } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/agents/${agentUid}`,
+    });
+
+    try {
+      await this._client.delete(queryString);
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  /* ----------------------------------------------------------------------------
+   * Chat
+   * ---------------------------------------------------------------------------*/
+
+  async createNamespaceChat(props: CreateNamespaceChatRequest) {
+    const { namespaceId, ...payload } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/chats`,
+    });
+
+    try {
+      const response = await this._client.post<CreateChatResponse>(
+        queryString,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listNamespaceChats(props: ListNamespaceChatsRequest) {
+    const { namespaceId } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/chats`,
+    });
+
+    try {
+      const response =
+        await this._client.get<ListNamespaceChatsResponse>(queryString);
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async updateNamespaceChat(props: UpdateNamespaceChatRequest) {
+    const { namespaceId, chatUid, ...payload } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/namespaces/${namespaceId}/chats/${chatUid}`,
+      });
+
+      const response = await this._client.put<UpdateNamespaceChatResponse>(
+        queryString,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async deleteNamespaceChat(props: DeleteNamespaceChatRequest) {
+    const { namespaceId, chatUid } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/namespaces/${namespaceId}/chats/${chatUid}`,
+      });
+
+      await this._client.delete(queryString);
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
     }
   }
 }
