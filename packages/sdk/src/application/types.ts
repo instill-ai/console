@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Chunk } from "../catalog";
-import { Nullable, Permission } from "../types";
+import { GeneralRecord, Nullable, Permission } from "../types";
 
 export type Application = {
   name: string;
@@ -299,4 +299,121 @@ export type DeleteConversationRequest = {
   ownerId: string;
   appId: string;
   conversationId: string;
+};
+
+export type AiAgentTool = {
+  pipelineId: string;
+  name: string;
+  config: GeneralRecord;
+};
+
+export type AiAgentMetadata = {
+  instructions: string;
+  tools: AiAgentTool[];
+  catalogUids: string[];
+  chunkTopK: number;
+};
+
+export type CreateNamespaceAgentRequest = {
+  namespaceId: string;
+  displayName?: string;
+  description?: string;
+  tags?: string[];
+  aiAgentMetadata: AiAgentMetadata;
+};
+
+export type Agent = {
+  agentUid: string;
+  displayName: string;
+  description: string;
+  namespaceUid: string;
+  tags: string[];
+  aiAgentMetadata: AiAgentMetadata;
+  creatorUid: string;
+  createTime: string;
+  updateTime: string;
+};
+
+export type CreateNamespaceAgentResponse = {
+  agent: Agent;
+};
+
+export type ListNamespaceAgentsRequest = {
+  namespaceId: string;
+};
+
+export type ListNamespaceAgentsResponse = {
+  agents: Agent[];
+};
+
+export type DeleteNamespaceAgentRequest = {
+  namespaceId: string;
+  agentUid: string;
+};
+
+export type UpdateNamespaceAgentRequest = {
+  namespaceId: string;
+  agentUid: string;
+  displayName?: string;
+  description?: string;
+  tags?: string[];
+  aiAgentMetadata?: AiAgentMetadata;
+};
+
+export type UpdateNamespaceAgentResponse = {
+  agent: Agent;
+};
+
+export type Chat = {
+  uid: string;
+  namespaceid: string;
+  lastUsedCatalogUid: string;
+  lastUsedTopK: number;
+  createTime: string;
+  updateTime: string;
+  aiAgentMetadata: AiAgentMetadata;
+  chatDisplayName: string;
+  tempCatalogId: string;
+};
+
+export type CreateNamespaceChatRequest = {
+  namespaceId: string;
+  chatDisplayName?: string;
+  aiAgentApp: AiAgentMetadata;
+};
+
+export type CreateChatResponse = {
+  chat: Chat;
+};
+
+export type ListNamespaceChatsRequest = {
+  namespaceId: string;
+};
+
+export type ListNamespaceChatsResponse = {
+  chats: Chat[];
+};
+
+export type UpdateNamespaceChatRequest = {
+  namespaceId: string;
+  chatUid: string;
+  chatDisplayName?: string;
+  aiAgentMetadata: AiAgentMetadata;
+};
+
+export type UpdateNamespaceChatResponse = {
+  chat: Chat;
+};
+
+export type DeleteNamespaceChatRequest = {
+  namespaceId: string;
+  chatUid: string;
+};
+
+export type ListNamespaceChatMessagesRequest = {
+  namespaceId: string;
+  chatUid: string;
+  pageSize?: number;
+  pageToken?: string;
+  ifAll?: boolean;
 };

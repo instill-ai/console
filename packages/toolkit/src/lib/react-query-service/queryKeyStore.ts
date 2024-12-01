@@ -2,7 +2,7 @@ import { Nullable, ResourceView, Visibility } from "instill-sdk";
 
 import { env } from "../../server";
 
-export const modelQueryKeyStore = {
+const modelQueryKeyStore = {
   getUseInfiniteModelsQueryKey({
     filter,
     visibility,
@@ -217,7 +217,7 @@ export const modelQueryKeyStore = {
   },
 };
 
-export const pipelineQueryKeyStore = {
+const pipelineQueryKeyStore = {
   getUseNamespacePipelineQueryKey({
     namespaceId,
     pipelineId,
@@ -389,7 +389,7 @@ export const pipelineQueryKeyStore = {
   },
 };
 
-export const secretQueryKeyStore = {
+const secretQueryKeyStore = {
   getUseNamespaceSecretQueryKey({
     namespaceId,
     secretId,
@@ -408,7 +408,7 @@ export const secretQueryKeyStore = {
   },
 };
 
-export const releaseQueryKeyStore = {
+const releaseQueryKeyStore = {
   getUseInfiniteNamespacePipelineReleasesQueryKey({
     namespaceId,
     pipelineId,
@@ -514,7 +514,7 @@ export const releaseQueryKeyStore = {
   },
 };
 
-export const mgmtQueryKeyStore = {
+const mgmtQueryKeyStore = {
   getUseUserQueryKey({ userId }: { userId: Nullable<string> }) {
     return ["users", userId];
   },
@@ -540,7 +540,7 @@ export const mgmtQueryKeyStore = {
   },
 };
 
-export const catalogQueryKeyStore = {
+const catalogQueryKeyStore = {
   getUseListNamespaceCatalogsQueryKey({
     namespaceId,
   }: {
@@ -593,7 +593,7 @@ export const catalogQueryKeyStore = {
   },
 };
 
-export const integrationQueryKeyStore = {
+const integrationQueryKeyStore = {
   getUseInfiniteListNamespaceConnectionReferencedPipelinesQueryKey({
     namespaceId,
     connectionId,
@@ -693,6 +693,23 @@ export const integrationQueryKeyStore = {
   },
 };
 
+const applicationQueryKeyStore = {
+  getUseListNamespaceAgentsQueryKey({
+    namespaceId,
+  }: {
+    namespaceId: Nullable<string>;
+  }) {
+    return [namespaceId, "agents"];
+  },
+  getUseListNamespaceChatsQueryKey({
+    namespaceId,
+  }: {
+    namespaceId: Nullable<string>;
+  }) {
+    return [namespaceId, "chats"];
+  },
+};
+
 export const queryKeyStore = {
   model: modelQueryKeyStore,
   pipeline: pipelineQueryKeyStore,
@@ -701,4 +718,5 @@ export const queryKeyStore = {
   mgmt: mgmtQueryKeyStore,
   catalog: catalogQueryKeyStore,
   integration: integrationQueryKeyStore,
+  application: applicationQueryKeyStore,
 };
