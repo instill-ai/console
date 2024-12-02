@@ -31,6 +31,7 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../../lib";
+import { MarkdownViewer } from "../../../lib/markdown";
 import {
   transformInstillFormTreeToDefaultValue,
   transformInstillFormTreeToInitialSelectedCondition,
@@ -785,7 +786,7 @@ export const ComponentCmdo = () => {
               <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
                 {selectedComponentDefinition &&
                 isComponentDefinition(selectedComponentDefinition) ? (
-                  <ScrollArea.Root className="flex shrink-0 mb-auto h-full">
+                  <ScrollArea.Root className="flex shrink-0 mb-auto h-full [&>*>*>*:last-child]:mb-8">
                     {selectingComponentType === "component"
                       ? selectedComponentDefinition.tasks.map((task) => (
                           <TaskItem
@@ -828,7 +829,7 @@ export const ComponentCmdo = () => {
                 ) : null}
               </div>
               <div
-                className="w-full h-8 absolute bottom-0 left-0"
+                className="w-full h-8 absolute bottom-0 left-0 pointer-events-none"
                 style={{
                   background:
                     "linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%)",
@@ -979,17 +980,24 @@ const TaskItem = ({
       <p className="product-body-text-3-medium text-start text-semantic-fg-primary">
         {taskTitle}
       </p>
-      <p className="product-body-text-3-regular text-start text-semantic-fg-disabled line-clamp-3">
-        {taskDescription}{" "}
-        <a
-          onClick={(e) => e.stopPropagation()}
-          target="_blank"
-          rel="noopener noreferrer"
-          href={docUrl}
-        >
-          <Icons.Link01 className="h-3.5 w-3.5 inline-block stroke-semantic-accent-default" />
-        </a>
-      </p>
+      <div>
+        <MarkdownViewer
+          markdown={taskDescription}
+          className="[&>*]:product-body-text-3-regular [&>*]:text-semantic-fg-disabled [&>*]:line-clamp-3 [&>*]:inline p-0 text-left"
+          style={{ background: "none" }}
+          postFix={
+            <a
+              onClick={(e) => e.stopPropagation()}
+              target="_blank"
+              rel="noopener noreferrer"
+              href={docUrl}
+              className="ml-1"
+            >
+              <Icons.Link01 className="h-3.5 w-3.5 inline-block stroke-semantic-accent-default" />
+            </a>
+          }
+        />
+      </div>
     </button>
   );
 };
