@@ -105,6 +105,9 @@ export const InstillYamlSchema = {
               type: "array",
               items: { type: "string" },
             },
+            required: {
+              type: "boolean",
+            },
           },
           additionalProperties: false,
           required: ["format"],
