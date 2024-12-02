@@ -50,6 +50,7 @@ const connectorDefinitionIds = [
   "perplexity-ai",
   "leadiq",
   "smartlead",
+  "scheduler",
 ];
 
 export const InstillYamlSchema = {
