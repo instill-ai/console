@@ -49,7 +49,7 @@ const connectorDefinitionIds = [
   "google-sheets",
   "perplexity-ai",
   "leadiq",
-  "smartlead"
+  "smartlead",
 ];
 
 export const InstillYamlSchema = {
