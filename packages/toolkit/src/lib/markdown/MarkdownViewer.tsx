@@ -16,11 +16,13 @@ export const MarkdownViewer = ({
   markdown,
   skipHtml,
   style,
+  suffix,
 }: {
   className?: string;
   markdown: string;
   skipHtml?: boolean;
   style?: React.CSSProperties;
+  suffix?: React.ReactNode;
 }) => {
   const sanitizedHtmlText = sanitizeHtml(markdown ?? "");
 
@@ -86,6 +88,7 @@ export const MarkdownViewer = ({
         >
           {processedText}
         </ReactMarkdown>
+        {suffix}
       </article>
     </React.Fragment>
   );

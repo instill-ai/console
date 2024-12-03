@@ -31,6 +31,7 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../../lib";
+import { MarkdownViewer } from "../../../lib/markdown";
 import {
   transformInstillFormTreeToDefaultValue,
   transformInstillFormTreeToInitialSelectedCondition,
@@ -545,6 +546,10 @@ export const ComponentCmdo = () => {
     prepareInitialSelection(type);
   }
 
+  const generateDocUrl = (baseUrl: string, taskName: string) => {
+    return `${baseUrl}#${taskName.replace("TASK_", "").replaceAll("_", "-").toLowerCase()}`;
+  };
+
   return (
     <Dialog.Root
       open={openComponentCmdo}
@@ -600,7 +605,7 @@ export const ComponentCmdo = () => {
                     : "bg-transparent text-semantic-fg-disabled hover:bg-semantic-bg-line",
                 )}
               >
-                Component
+                Tasks
               </ToggleGroup.Item>
               <ToggleGroup.Item
                 value="event"
@@ -611,7 +616,7 @@ export const ComponentCmdo = () => {
                     : "bg-transparent text-semantic-fg-disabled hover:bg-semantic-bg-line",
                 )}
               >
-                Event
+                Events
               </ToggleGroup.Item>
             </ToggleGroup.Root>
             <button
@@ -777,14 +782,18 @@ export const ComponentCmdo = () => {
               </ScrollArea.Root>
             </div>
             <Separator orientation="vertical" className="!mx-3" />
-            <div className="flex flex-col  w-full h-full">
-              {selectedComponentDefinition &&
-              isComponentDefinition(selectedComponentDefinition) ? (
-                <ScrollArea.Root className="flex shrink-0 mb-auto h-[280px]">
-                  <CommandGroup headingWrapperClassName="px-2" heading="Event">
+            <div className="w-full h-full relative">
+              <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+                {selectedComponentDefinition &&
+                isComponentDefinition(selectedComponentDefinition) ? (
+                  <ScrollArea.Root className="flex shrink-0 mb-auto h-full [&>*>*>*:last-child]:mb-8">
                     {selectingComponentType === "component"
                       ? selectedComponentDefinition.tasks.map((task) => (
                           <TaskItem
+                            docUrl={generateDocUrl(
+                              selectedComponentDefinition.documentationUrl,
+                              task.name,
+                            )}
                             key={task.name}
                             taskTitle={task.title}
                             taskDescription={task.description}
@@ -801,6 +810,10 @@ export const ComponentCmdo = () => {
                               .eventSpecifications,
                           ).map(([key, value]) => (
                             <TaskItem
+                              docUrl={generateDocUrl(
+                                selectedComponentDefinition.documentationUrl,
+                                key,
+                              )}
                               key={key}
                               taskTitle={value.title}
                               taskDescription={value.description}
@@ -812,12 +825,19 @@ export const ComponentCmdo = () => {
                             />
                           ))
                         : null}
-                  </CommandGroup>
-                </ScrollArea.Root>
-              ) : null}
+                  </ScrollArea.Root>
+                ) : null}
+              </div>
+              <div
+                className="w-full h-8 absolute bottom-0 left-0 pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%)",
+                }}
+              ></div>
               <Button
                 onClick={onAddComponent}
-                className="ml-auto"
+                className="absolute bottom-0 right-0"
                 variant="primary"
                 size="md"
               >
@@ -939,7 +959,9 @@ const TaskItem = ({
   taskDescription,
   onClick,
   isSelected,
+  docUrl,
 }: {
+  docUrl: string;
   taskTitle: string;
   taskDescription: string;
   onClick: () => void;
@@ -958,9 +980,24 @@ const TaskItem = ({
       <p className="product-body-text-3-medium text-start text-semantic-fg-primary">
         {taskTitle}
       </p>
-      <p className="product-body-text-3-regular text-start text-semantic-fg-disabled line-clamp-3">
-        {taskDescription}
-      </p>
+      <div>
+        <MarkdownViewer
+          markdown={taskDescription}
+          className="[&>*]:product-body-text-3-regular [&>*]:text-semantic-fg-disabled [&>*]:line-clamp-3 [&>*]:inline p-0 text-left"
+          style={{ background: "none" }}
+          suffix={
+            <a
+              onClick={(e) => e.stopPropagation()}
+              target="_blank"
+              rel="noopener noreferrer"
+              href={docUrl}
+              className="ml-1"
+            >
+              <Icons.Link01 className="h-3.5 w-3.5 inline-block stroke-semantic-accent-default" />
+            </a>
+          }
+        />
+      </div>
     </button>
   );
 };
