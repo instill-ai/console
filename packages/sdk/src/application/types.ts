@@ -366,7 +366,7 @@ export type UpdateNamespaceAgentResponse = {
 
 export type Chat = {
   uid: string;
-  namespaceid: string;
+  namespaceId: string;
   lastUsedCatalogUid: string;
   lastUsedTopK: number;
   createTime: string;

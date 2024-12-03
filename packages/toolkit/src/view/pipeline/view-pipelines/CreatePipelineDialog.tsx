@@ -41,7 +41,7 @@ import {
 import { env, formatResourceId } from "../../../server";
 
 const CreatePipelineSchema = z.object({
-  id: z.string(),
+  id: z.string().min(1, { message: "ID is required" }),
   namespaceId: z.string(),
   description: z.string().optional().nullable(),
 });
