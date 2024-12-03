@@ -44,6 +44,7 @@ export function useRouteInfo():
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const params = useParams();
   const entity = params.entity ? String(params.entity) : null;
+
   const id = params.id ? String(params.id) : null;
 
   const namespaceType = useNamespaceType({

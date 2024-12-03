@@ -105,6 +105,7 @@ import { Maximize02 } from "./Maximize02";
 import { MDFile } from "./MDFile";
 import { Menu01 } from "./Menu01";
 import { MessageChatSquare } from "./MessageChatSquare";
+import { MessagePlusSquare } from "./MessagePlusSquare";
 import { MessageSmileSquare } from "./MessageSmileSquare";
 import { Minimize01 } from "./Minimize01";
 import { Minus } from "./Minus";
@@ -289,6 +290,7 @@ export const Icons = {
   MessageChatSquare,
   Minus,
   Mail01,
+  MessagePlusSquare,
   MessageSmileSquare,
   NewModel,
   PDFFile,
