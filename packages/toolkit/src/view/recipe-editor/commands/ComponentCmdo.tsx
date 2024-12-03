@@ -985,7 +985,7 @@ const TaskItem = ({
           markdown={taskDescription}
           className="[&>*]:product-body-text-3-regular [&>*]:text-semantic-fg-disabled [&>*]:line-clamp-3 [&>*]:inline p-0 text-left"
           style={{ background: "none" }}
-          postFix={
+          suffix={
             <a
               onClick={(e) => e.stopPropagation()}
               target="_blank"
