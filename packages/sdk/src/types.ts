@@ -149,6 +149,7 @@ export type DataSpecification = {
 };
 
 export type EventSpecification = {
+  title: string;
   configSchema: Nullable<InstillJSONSchema>;
   description: string;
   messageExamples: GeneralRecord[];
