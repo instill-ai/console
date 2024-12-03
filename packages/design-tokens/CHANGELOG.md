@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.8.0...@instill-ai/design-tokens-v0.8.1) (2024-12-03)
+
+
+### Bug Fixes
+
+* patch high vulnerabilities deps issues ([#1631](https://github.com/instill-ai/console/issues/1631)) ([955355e](https://github.com/instill-ai/console/commit/955355e4ad14baa2690d1e87273257dba6468b71))
+
 ## [0.8.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.7.1...@instill-ai/design-tokens-v0.8.0) (2024-10-22)
 
 

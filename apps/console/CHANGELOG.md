@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.64.0-beta](https://github.com/instill-ai/console/compare/v0.63.0-beta...v0.64.0-beta) (2024-12-03)
+
+
+### Features
+
+* adapt policy link and revamp setting pages ([#1629](https://github.com/instill-ai/console/issues/1629)) ([d11fab5](https://github.com/instill-ai/console/commit/d11fab5b7357c89e6c19da1e7b053431f77ba657))
+* add feature flag for chat ([#1628](https://github.com/instill-ai/console/issues/1628)) ([7455ce4](https://github.com/instill-ai/console/commit/7455ce4401b98854f103dfd3d1bc7c39ba1b14e8))
+* **chat:** user can use @ to add tool suggestion in chat ([#1617](https://github.com/instill-ai/console/issues/1617)) ([d76cd51](https://github.com/instill-ai/console/commit/d76cd516fc3fb27f6fbaa01b3c44c09c905d24db))
+* deprecate markdown-to-jsx and support Latex in markdown ([#1623](https://github.com/instill-ai/console/issues/1623)) ([cfea04e](https://github.com/instill-ai/console/commit/cfea04ed02ed69f9bbe2a3646e4dc467834cfbc5))
+* unify the Instill AI meeting schedule link ([#1619](https://github.com/instill-ai/console/issues/1619)) ([51e76ff](https://github.com/instill-ai/console/commit/51e76ffcd7dbad92b511965992e6d7170b2bddd3))
+
+
+### Bug Fixes
+
+* patch high vulnerabilities deps issues ([#1631](https://github.com/instill-ai/console/issues/1631)) ([955355e](https://github.com/instill-ai/console/commit/955355e4ad14baa2690d1e87273257dba6468b71))
+
+
+### Miscellaneous
+
+* **component:** add `scheduler` component ([#1637](https://github.com/instill-ai/console/issues/1637)) ([406361a](https://github.com/instill-ai/console/commit/406361adbf331d291f28cdb2bf31c94d235dc9b4))
+* **component:** add icon ([#1630](https://github.com/instill-ai/console/issues/1630)) ([87174b9](https://github.com/instill-ai/console/commit/87174b9c69b9beb248fb8d3d4d1a97357fbd58f4))
+* **component:** add icons for google-drive, perplexity-ai and leadiq ([#1627](https://github.com/instill-ai/console/issues/1627)) ([4bed7fc](https://github.com/instill-ai/console/commit/4bed7fcaa88ac3358cf50352456203260ebbdabe))
+
 ## [0.63.0-beta](https://github.com/instill-ai/console/compare/v0.62.0-beta...v0.63.0-beta) (2024-11-20)
 
 
