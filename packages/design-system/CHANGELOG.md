@@ -1,5 +1,18 @@
 # @instill-ai/design-system
 
+## [0.85.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.84.0...@instill-ai/design-system-v0.85.0) (2024-12-03)
+
+
+### Features
+
+* upgrade storybook deps ([#1634](https://github.com/instill-ai/console/issues/1634)) ([96bc075](https://github.com/instill-ai/console/commit/96bc07512ed161946aaeec4513312a64706e9017))
+
+
+### Bug Fixes
+
+* further fix vulnerabilities deps ([#1632](https://github.com/instill-ai/console/issues/1632)) ([bda8462](https://github.com/instill-ai/console/commit/bda84621e28898ad7ef277550086a5de21ff3ef6))
+* patch high vulnerabilities deps issues ([#1631](https://github.com/instill-ai/console/issues/1631)) ([955355e](https://github.com/instill-ai/console/commit/955355e4ad14baa2690d1e87273257dba6468b71))
+
 ## [0.84.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.83.0...@instill-ai/design-system-v0.84.0) (2024-11-20)
 
 

@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.113.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.112.0...@instill-ai/toolkit-v0.113.0) (2024-12-03)
+
+
+### Features
+
+* adapt policy link and revamp setting pages ([#1629](https://github.com/instill-ai/console/issues/1629)) ([d11fab5](https://github.com/instill-ai/console/commit/d11fab5b7357c89e6c19da1e7b053431f77ba657))
+* add chat/agent related sdk and react-queries ([#1635](https://github.com/instill-ai/console/issues/1635)) ([5b6490f](https://github.com/instill-ai/console/commit/5b6490f25518617cbe4ede9b8fa78f9e08a4e9cd))
+* add feature flag for chat ([#1628](https://github.com/instill-ai/console/issues/1628)) ([7455ce4](https://github.com/instill-ai/console/commit/7455ce4401b98854f103dfd3d1bc7c39ba1b14e8))
+* **chat:** user can use @ to add tool suggestion in chat ([#1617](https://github.com/instill-ai/console/issues/1617)) ([d76cd51](https://github.com/instill-ai/console/commit/d76cd516fc3fb27f6fbaa01b3c44c09c905d24db))
+* deprecate markdown-to-jsx and support Latex in markdown ([#1623](https://github.com/instill-ai/console/issues/1623)) ([cfea04e](https://github.com/instill-ai/console/commit/cfea04ed02ed69f9bbe2a3646e4dc467834cfbc5))
+* deprecate the usage of integration.schemas ([#1621](https://github.com/instill-ai/console/issues/1621)) ([8bd46fc](https://github.com/instill-ai/console/commit/8bd46fc00e72f5cc68e595d740ccad6c3ff8e3bb))
+* **integration:** support google sheet OAuth ([#1624](https://github.com/instill-ai/console/issues/1624)) ([d4c56a1](https://github.com/instill-ai/console/commit/d4c56a1e8521637a0e70ffbd6d9058bcf35a57b3))
+* unify the Instill AI meeting schedule link ([#1619](https://github.com/instill-ai/console/issues/1619)) ([51e76ff](https://github.com/instill-ai/console/commit/51e76ffcd7dbad92b511965992e6d7170b2bddd3))
+* update add component model UI ([#1638](https://github.com/instill-ai/console/issues/1638)) ([bfe391e](https://github.com/instill-ai/console/commit/bfe391ed20b02ca057c2ef2b6995d7aa7733d972))
+
+
+### Bug Fixes
+
+* fix cmdo event title, to make it more human readable ([#1639](https://github.com/instill-ai/console/issues/1639)) ([ec98f18](https://github.com/instill-ai/console/commit/ec98f187c92c85a4121a59d64a85f4919f1b91a0))
+* fix duplicated error message for multiple texts input of pipeline trigger form ([#1620](https://github.com/instill-ai/console/issues/1620)) ([fbbd708](https://github.com/instill-ai/console/commit/fbbd70802e8569147cfcca231da2dced29446bbc))
+* fix google sheets oauth config ([#1625](https://github.com/instill-ai/console/issues/1625)) ([92734df](https://github.com/instill-ai/console/commit/92734df039575e5220d1be0666bfbf0b28858e64))
+* further fix vulnerabilities deps ([#1632](https://github.com/instill-ai/console/issues/1632)) ([bda8462](https://github.com/instill-ai/console/commit/bda84621e28898ad7ef277550086a5de21ff3ef6))
+* patch high vulnerabilities deps issues ([#1631](https://github.com/instill-ai/console/issues/1631)) ([955355e](https://github.com/instill-ai/console/commit/955355e4ad14baa2690d1e87273257dba6468b71))
+
+
+### Miscellaneous
+
+* **component:** add `scheduler` component ([#1637](https://github.com/instill-ai/console/issues/1637)) ([406361a](https://github.com/instill-ai/console/commit/406361adbf331d291f28cdb2bf31c94d235dc9b4))
+* **component:** add icon ([#1630](https://github.com/instill-ai/console/issues/1630)) ([87174b9](https://github.com/instill-ai/console/commit/87174b9c69b9beb248fb8d3d4d1a97357fbd58f4))
+* **component:** add icons for google-drive, perplexity-ai and leadiq ([#1627](https://github.com/instill-ai/console/issues/1627)) ([4bed7fc](https://github.com/instill-ai/console/commit/4bed7fcaa88ac3358cf50352456203260ebbdabe))
+* **integration:** adjust OAuth scope for google-drive component ([#1626](https://github.com/instill-ai/console/issues/1626)) ([7b341a4](https://github.com/instill-ai/console/commit/7b341a40d4279d4615685edf9abf5c81192e3ed7))
+* **run logging:** clarify actors in Run objects ([#1622](https://github.com/instill-ai/console/issues/1622)) ([6f55bf2](https://github.com/instill-ai/console/commit/6f55bf2b52357d9d08c151d845a4361b87be4f53))
+* support `required` attribute in variable section ([#1636](https://github.com/instill-ai/console/issues/1636)) ([cb00594](https://github.com/instill-ai/console/commit/cb0059426a9c268861ece2d2c64ef8798ebcd699))
+
 ## [0.112.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.111.1...@instill-ai/toolkit-v0.112.0) (2024-11-25)
 
 

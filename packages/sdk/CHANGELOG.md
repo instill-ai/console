@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.13.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.12.0...instill-sdk-v0.13.0) (2024-12-03)
+
+
+### Features
+
+* add chat/agent related sdk and react-queries ([#1635](https://github.com/instill-ai/console/issues/1635)) ([5b6490f](https://github.com/instill-ai/console/commit/5b6490f25518617cbe4ede9b8fa78f9e08a4e9cd))
+* deprecate the usage of integration.schemas ([#1621](https://github.com/instill-ai/console/issues/1621)) ([8bd46fc](https://github.com/instill-ai/console/commit/8bd46fc00e72f5cc68e595d740ccad6c3ff8e3bb))
+
+
+### Bug Fixes
+
+* fix cmdo event title, to make it more human readable ([#1639](https://github.com/instill-ai/console/issues/1639)) ([ec98f18](https://github.com/instill-ai/console/commit/ec98f187c92c85a4121a59d64a85f4919f1b91a0))
+* further fix vulnerabilities deps ([#1632](https://github.com/instill-ai/console/issues/1632)) ([bda8462](https://github.com/instill-ai/console/commit/bda84621e28898ad7ef277550086a5de21ff3ef6))
+* patch high vulnerabilities deps issues ([#1631](https://github.com/instill-ai/console/issues/1631)) ([955355e](https://github.com/instill-ai/console/commit/955355e4ad14baa2690d1e87273257dba6468b71))
+
+
+### Miscellaneous
+
+* **run logging:** clarify actors in Run objects ([#1622](https://github.com/instill-ai/console/issues/1622)) ([6f55bf2](https://github.com/instill-ai/console/commit/6f55bf2b52357d9d08c151d845a4361b87be4f53))
+
 ## [0.12.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.11.0...instill-sdk-v0.12.0) (2024-11-20)
 
 
