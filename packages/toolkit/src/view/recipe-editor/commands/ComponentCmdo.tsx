@@ -781,7 +781,7 @@ export const ComponentCmdo = () => {
               {selectedComponentDefinition &&
               isComponentDefinition(selectedComponentDefinition) ? (
                 <ScrollArea.Root className="flex shrink-0 mb-auto h-[280px]">
-                  <CommandGroup headingWrapperClassName="px-2" heading="Task">
+                  <CommandGroup headingWrapperClassName="px-2" heading="Event">
                     {selectingComponentType === "component"
                       ? selectedComponentDefinition.tasks.map((task) => (
                           <TaskItem
@@ -802,7 +802,7 @@ export const ComponentCmdo = () => {
                           ).map(([key, value]) => (
                             <TaskItem
                               key={key}
-                              taskTitle={key}
+                              taskTitle={value.title}
                               taskDescription={value.description}
                               onClick={() => {
                                 setSelectedTaskName(key);
