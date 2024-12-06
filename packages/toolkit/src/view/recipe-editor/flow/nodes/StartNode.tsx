@@ -71,7 +71,7 @@ export const StartNode = ({ id }: NodeProps) => {
           eventCount={eventCount}
         />
       ) : null}
-      <div className="flex w-[160px] rounded bg-semantic-bg-alt-primary border-[1.5px] border-[#AF89FA] h-[160px] items-center justify-center">
+      <div className="flex w-[160px] rounded-md bg-semantic-bg-alt-primary border-[1.5px] border-[#AF89FA] h-[160px] items-center justify-center">
         <Icons.Flag06 className="w-[80px] h-[80px] stroke-semantic-fg-disabled" />
       </div>
       <CustomHandle
