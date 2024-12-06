@@ -4,5 +4,6 @@ export * from "./useDeleteNamespaceAgent";
 export * from "./useDeleteNamespaceChat";
 export * from "./useListNamespaceAgents";
 export * from "./useListNamespaceChats";
+export * from "./useListNamespaceTools";
 export * from "./useUpdateNamespaceAgent";
 export * from "./useUpdateNamespaceChat";

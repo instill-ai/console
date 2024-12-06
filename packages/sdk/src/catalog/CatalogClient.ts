@@ -7,6 +7,8 @@ import type {
   CreateNamespaceCatalogResponse,
   DeleteCatalogFileRequest,
   DeleteNamespaceCatalogRequest,
+  GetNamespaceCatalogRequest,
+  GetNamespaceCatalogResponse,
   GetNamespaceCatalogSingleSourceOfTruthFileRequest,
   GetNamespaceCatalogSingleSourceOfTruthFileResponse,
   ListCatalogsResponse,
@@ -37,6 +39,28 @@ export class CatalogClient extends APIResource {
   /* ----------------------------------------------------------------------------
    * Catalog
    * ---------------------------------------------------------------------------*/
+
+  async getNamespaceCatalog({
+    namespaceId,
+    catalogId,
+    fileId,
+    fileUid,
+  }: GetNamespaceCatalogRequest) {
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/catalogs/${catalogId}`,
+      fileId,
+      fileUid,
+    });
+
+    try {
+      const data =
+        await this._client.get<GetNamespaceCatalogResponse>(queryString);
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
 
   // This is a non paginated endpoint
   async listNamespaceCatalogs({ namespaceId }: ListNamespaceCatalogsRequest) {

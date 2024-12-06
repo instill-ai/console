@@ -10,6 +10,8 @@ import { ArrowNarrowRight } from "./ArrowNarrowRight";
 import { ArrowRight } from "./ArrowRight";
 import { ArrowUp } from "./ArrowUp";
 import { ArrowUpRight } from "./ArrowUpRight";
+import { AtSign } from "./AtSign";
+import { Attachment01 } from "./Attachment01";
 import { BankNote01 } from "./BankNote01";
 import { BankNote03 } from "./BankNote03";
 import { BarChartSquare02 } from "./BarChartSquare02";
@@ -190,6 +192,8 @@ export const Icons = {
   ArrowNarrowLeft,
   ArrowNarrowRight,
   ArrowUpRight,
+  AtSign,
+  Attachment01,
   BankNote01,
   BankNote03,
   BarChartSquare02,

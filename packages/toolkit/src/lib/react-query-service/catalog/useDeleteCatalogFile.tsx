@@ -48,6 +48,14 @@ export function useDeleteCatalogFile() {
           },
         ),
       });
+      // Invalidate all the catalogs files query
+      queryClient.invalidateQueries({
+        queryKey:
+          queryKeyStore.catalog.getUseListNamespaceCatalogsFilesQueryKey({
+            namespaceId,
+            catalogIds: [],
+          }),
+      });
     },
   });
 }
