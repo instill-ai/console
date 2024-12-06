@@ -128,6 +128,17 @@ export type CatalogFile = {
   retrievable?: boolean;
 };
 
+export type GetNamespaceCatalogRequest = {
+  namespaceId: string;
+  catalogId: string;
+  fileUid?: string;
+  fileId?: string;
+};
+
+export type GetNamespaceCatalogResponse = {
+  catalog: Catalog;
+};
+
 export type ListNamespaceCatalogsRequest = {
   namespaceId: string;
 };

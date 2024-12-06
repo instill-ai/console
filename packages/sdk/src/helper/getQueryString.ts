@@ -17,6 +17,7 @@ export const getQueryString = ({
   stop,
   aggregationWindow,
   showDeleted,
+  fileId,
   fileUid,
   chunkUids,
   objectName,
@@ -43,6 +44,7 @@ export const getQueryString = ({
   stop?: string;
   aggregationWindow?: string;
   showDeleted?: boolean;
+  fileId?: string;
   fileUid?: string;
   chunkUids?: string[];
   objectName?: string;
@@ -68,6 +70,7 @@ export const getQueryString = ({
     aggregationWindow ||
     showDeleted !== undefined ||
     fileUid ||
+    fileId ||
     chunkUids ||
     objectName ||
     objectUid
@@ -138,6 +141,10 @@ export const getQueryString = ({
 
   if (showDeleted) {
     url += `showDeleted=${showDeleted}&`;
+  }
+
+  if (fileId) {
+    url += `fileId=${fileId}&`;
   }
 
   if (fileUid) {
