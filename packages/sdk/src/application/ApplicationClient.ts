@@ -35,6 +35,8 @@ import {
   ListNamespaceAgentsResponse,
   ListNamespaceChatsRequest,
   ListNamespaceChatsResponse,
+  ListNamespaceToolsRequest,
+  ListNamespaceToolsResponse,
   Message,
   RestartPlaygroundConversationRequest,
   RestartPlaygroundConversationResponse,
@@ -659,6 +661,22 @@ export class ApplicationClient extends APIResource {
 
       await this._client.delete(queryString);
       return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listNamespaceTools(props: ListNamespaceToolsRequest) {
+    const { namespaceId } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/tools`,
+    });
+
+    try {
+      const response =
+        await this._client.get<ListNamespaceToolsResponse>(queryString);
+      return Promise.resolve(response);
     } catch (error) {
       return Promise.reject(error);
     }

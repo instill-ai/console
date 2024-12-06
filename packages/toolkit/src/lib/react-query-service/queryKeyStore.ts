@@ -557,6 +557,17 @@ const catalogQueryKeyStore = {
   }) {
     return [namespaceId, "catalogs", catalogId, "files"];
   },
+  getUseListNamespaceCatalogsFilesQueryKey({
+    namespaceId,
+    catalogIds,
+  }: {
+    namespaceId: Nullable<string>;
+    catalogIds: string[];
+  }) {
+    return catalogIds.length > 0
+      ? [namespaceId, "catalogs-files", catalogIds, "files"]
+      : [namespaceId, "catalogs-files"];
+  },
   getUseListNamespaceCatalogChunksQueryKey({
     namespaceId,
     catalogId,
@@ -707,6 +718,13 @@ const applicationQueryKeyStore = {
     namespaceId: Nullable<string>;
   }) {
     return [namespaceId, "chats"];
+  },
+  getUseListNamespaceToolsQueryKey({
+    namespaceId,
+  }: {
+    namespaceId: Nullable<string>;
+  }) {
+    return [namespaceId, "tools"];
   },
 };
 

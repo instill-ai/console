@@ -301,17 +301,21 @@ export type DeleteConversationRequest = {
   conversationId: string;
 };
 
-export type AiAgentTool = {
-  pipelineId: string;
-  name: string;
-  config: GeneralRecord;
-};
-
 export type AiAgentMetadata = {
   instructions: string;
-  tools: AiAgentTool[];
+  tools: Tool[];
   catalogUids: string[];
   chunkTopK: number;
+  chunkWeight: number;
+  connections: GeneralRecord;
+};
+
+export type AiAgentMetadataForUpdate = {
+  instructions: string;
+  tools: Omit<Tool, "connections" | "name">[];
+  catalogUids: string[];
+  chunkTopK: number;
+  chunkWeight: number;
 };
 
 export type CreateNamespaceAgentRequest = {
@@ -319,7 +323,7 @@ export type CreateNamespaceAgentRequest = {
   displayName?: string;
   description?: string;
   tags?: string[];
-  aiAgentMetadata: AiAgentMetadata;
+  aiAgentMetadata: AiAgentMetadataForUpdate;
 };
 
 export type Agent = {
@@ -357,7 +361,7 @@ export type UpdateNamespaceAgentRequest = {
   displayName?: string;
   description?: string;
   tags?: string[];
-  aiAgentMetadata?: AiAgentMetadata;
+  aiAgentMetadata?: AiAgentMetadataForUpdate;
 };
 
 export type UpdateNamespaceAgentResponse = {
@@ -379,7 +383,7 @@ export type Chat = {
 export type CreateNamespaceChatRequest = {
   namespaceId: string;
   chatDisplayName?: string;
-  aiAgentApp: AiAgentMetadata;
+  aiAgentApp: AiAgentMetadataForUpdate;
 };
 
 export type CreateChatResponse = {
@@ -398,7 +402,7 @@ export type UpdateNamespaceChatRequest = {
   namespaceId: string;
   chatUid: string;
   chatDisplayName?: string;
-  aiAgentMetadata: AiAgentMetadata;
+  aiAgentMetadata: AiAgentMetadataForUpdate;
 };
 
 export type UpdateNamespaceChatResponse = {
@@ -416,4 +420,18 @@ export type ListNamespaceChatMessagesRequest = {
   pageSize?: number;
   pageToken?: string;
   ifAll?: boolean;
+};
+
+export type Tool = {
+  pipelineId: string;
+  name: string;
+  connections: GeneralRecord;
+};
+
+export type ListNamespaceToolsRequest = {
+  namespaceId: string;
+};
+
+export type ListNamespaceToolsResponse = {
+  tools: Tool[];
 };
