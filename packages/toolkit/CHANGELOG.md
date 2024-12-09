@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.114.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.113.0...@instill-ai/toolkit-v0.114.0) (2024-12-09)
+
+
+### Features
+
+* update toggle styles ([#1645](https://github.com/instill-ai/console/issues/1645)) ([b1e1722](https://github.com/instill-ai/console/commit/b1e172235d726d8862248561b1b36ffa50d2f086))
+
+
+### Bug Fixes
+
+* fix nodes border radius ([#1641](https://github.com/instill-ai/console/issues/1641)) ([4c1048a](https://github.com/instill-ai/console/commit/4c1048a59ca8267824653779f46601856fb64930))
+* readme editor active line highlight fix ([#1646](https://github.com/instill-ai/console/issues/1646)) ([1f07494](https://github.com/instill-ai/console/commit/1f07494551a975aef03efd79663d274b47d9cf21))
+
 ## [0.113.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.112.0...@instill-ai/toolkit-v0.113.0) (2024-12-03)
 
 

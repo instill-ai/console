@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.64.1-beta](https://github.com/instill-ai/console/compare/v0.64.0-beta...v0.64.1-beta) (2024-12-09)
+
+
+### Bug Fixes
+
+* replace sql icon ([#1643](https://github.com/instill-ai/console/issues/1643)) ([3da4d79](https://github.com/instill-ai/console/commit/3da4d79a2edeba2e848ecb997935cb59cebf36d2))
+
 ## [0.64.0-beta](https://github.com/instill-ai/console/compare/v0.63.0-beta...v0.64.0-beta) (2024-12-03)
 
 
