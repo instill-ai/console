@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.86.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.85.0...@instill-ai/design-system-v0.86.0) (2024-12-09)
+
+
+### Features
+
+* update toggle styles ([#1645](https://github.com/instill-ai/console/issues/1645)) ([b1e1722](https://github.com/instill-ai/console/commit/b1e172235d726d8862248561b1b36ffa50d2f086))
+
 ## [0.85.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.84.0...@instill-ai/design-system-v0.85.0) (2024-12-03)
 
 
