@@ -165,7 +165,10 @@ export const ReadmeEditor = ({
             readOnly={!canEdit}
             markdown={content}
             onChange={debouncedUpdateModelReadme}
-            className="bg-semantic-fg-on-default overflow-y-auto h-full [&_.cm-editor]:outline-none [&_.cm-gutters]:bg-semantic-bg-alt-primary [&_.cm-activeLine]:bg-semantic-bg-alt-primary [&_.cm-activeLineGutter]:bg-semantic-bg-alt-primary [&_.cm-tooltip-autocomplete]:bg-semantic-bg-base-bg"
+            className={cn(
+              "bg-semantic-fg-on-default overflow-y-auto h-full [&_.cm-editor]:outline-none [&_.cm-gutters]:bg-semantic-bg-alt-primary [&_.cm-activeLine]:bg-transparent [&_.cm-activeLineGutter]:bg-semantic-bg-alt-primary [&_.cm-tooltip-autocomplete]:bg-semantic-bg-base-bg",
+              "[&_.cm-activeLine]:outline [&_.cm-activeLine]:outline-1 [&_.cm-activeLine]:outline-[#dce7fe]",
+            )}
           />
         </div>
       ) : (
