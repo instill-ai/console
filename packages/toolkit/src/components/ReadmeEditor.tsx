@@ -127,16 +127,8 @@ export const ReadmeEditor = ({
               value={editorMode}
               onValueChange={(value: EditorMode) => setEditorMode(value)}
             >
-              <ToggleGroup.Item
-                value="edit"
-              >
-                Edit
-              </ToggleGroup.Item>
-              <ToggleGroup.Item
-                value="preview"
-              >
-                Preview
-              </ToggleGroup.Item>
+              <ToggleGroup.Item value="edit">Edit</ToggleGroup.Item>
+              <ToggleGroup.Item value="preview">Preview</ToggleGroup.Item>
             </ToggleGroup.Root>
             <div className="flex flex-row gap-x-4">
               <Button

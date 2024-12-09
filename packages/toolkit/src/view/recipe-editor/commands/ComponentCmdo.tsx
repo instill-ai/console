@@ -595,16 +595,8 @@ export const ComponentCmdo = () => {
                 onSwitchComponentType(value)
               }
             >
-              <ToggleGroup.Item
-                value="component"
-              >
-                Tasks
-              </ToggleGroup.Item>
-              <ToggleGroup.Item
-                value="event"
-              >
-                Events
-              </ToggleGroup.Item>
+              <ToggleGroup.Item value="component">Tasks</ToggleGroup.Item>
+              <ToggleGroup.Item value="event">Events</ToggleGroup.Item>
             </ToggleGroup.Root>
             <button
               onClick={() => {

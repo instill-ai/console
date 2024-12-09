@@ -14,7 +14,7 @@ const ToggleGroupRoot = React.forwardRef<
       className,
     )}
     {...props}
-    style={{ padding: '3px' }}
+    style={{ padding: "3px" }}
   />
 ));
 ToggleGroupRoot.displayName = Toggles.Root.displayName;

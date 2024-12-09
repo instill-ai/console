@@ -48,10 +48,7 @@ export const UsageSwitch = ({
       className="w-fit"
     >
       {options.map((option) => (
-        <ToggleGroup.Item
-          key={option.value}
-          value={option.value}
-        >
+        <ToggleGroup.Item key={option.value} value={option.value}>
           {option.label}
         </ToggleGroup.Item>
       ))}
