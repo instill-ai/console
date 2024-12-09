@@ -594,27 +594,14 @@ export const ComponentCmdo = () => {
               onValueChange={(value: "component" | "event") =>
                 onSwitchComponentType(value)
               }
-              className="flex h-10 space-x-1 rounded-sm border border-semantic-bg-line bg-semantic-bg-secondary p-1"
             >
               <ToggleGroup.Item
                 value="component"
-                className={cn(
-                  "flex items-center justify-center rounded px-2.5 py-1.5 transition-all duration-200 ease-in-out product-body-text-3-semibold",
-                  selectingComponentType === "component"
-                    ? "pointer-events-none !bg-semantic-bg-primary !text-semantic-fg-primary shadow"
-                    : "bg-transparent text-semantic-fg-disabled hover:bg-semantic-bg-line",
-                )}
               >
                 Tasks
               </ToggleGroup.Item>
               <ToggleGroup.Item
                 value="event"
-                className={cn(
-                  "flex items-center justify-center rounded px-2.5 py-1.5 transition-all duration-200 ease-in-out product-body-text-3-semibold",
-                  selectingComponentType === "event"
-                    ? "pointer-events-none !bg-semantic-bg-primary !text-semantic-fg-primary shadow"
-                    : "bg-transparent text-semantic-fg-disabled hover:bg-semantic-bg-line",
-                )}
               >
                 Events
               </ToggleGroup.Item>

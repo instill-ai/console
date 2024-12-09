@@ -129,17 +129,11 @@ export const ReadmeEditor = ({
             >
               <ToggleGroup.Item
                 value="edit"
-                className={
-                  editorMode === "edit" ? "pointer-events-none" : undefined
-                }
               >
                 Edit
               </ToggleGroup.Item>
               <ToggleGroup.Item
                 value="preview"
-                className={
-                  editorMode === "preview" ? "pointer-events-none" : undefined
-                }
               >
                 Preview
               </ToggleGroup.Item>

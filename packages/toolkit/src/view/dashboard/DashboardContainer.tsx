@@ -33,13 +33,11 @@ export const DashboardContainer = ({
         >
           <ToggleGroup.Item
             value="pipeline"
-            className={type === "pipeline" ? "pointer-events-none" : undefined}
           >
             Pipeline
           </ToggleGroup.Item>
           <ToggleGroup.Item
             value="credit"
-            className={type === "credit" ? "pointer-events-none" : undefined}
           >
             Credit
           </ToggleGroup.Item>

@@ -10,10 +10,11 @@ const ToggleGroupRoot = React.forwardRef<
   <Toggles.Root
     ref={ref}
     className={cn(
-      "inline-flex flex-row space-x-px rounded bg-semantic-bg-line relative after:pointer-events-none after:content-[''] after:w-full after:h-full after:rounded-[inherit] after:border after:border-semantic-bg-line after:absolute after:top-0 after:left-0",
+      "inline-flex flex-row h-10 space-x-1 rounded-sm bg-semantic-bg-secondary relative border-2 border-semantic-bg-line",
       className,
     )}
     {...props}
+    style={{ padding: '3px' }}
   />
 ));
 ToggleGroupRoot.displayName = Toggles.Root.displayName;
@@ -25,8 +26,9 @@ const ToggleGroupItem = React.forwardRef<
   <Toggles.Item
     ref={ref}
     className={cn(
-      "flex h-full cursor-pointer items-center justify-center bg-semantic-bg-primary px-4 py-2 text-base font-semibold",
-      "first:rounded-l last:rounded-r focus:outline-none data-[state=on]:cursor-default data-[state=on]:bg-semantic-accent-bg data-[state=on]:text-semantic-accent-default",
+      "transition-all duration-200 ease-in-out",
+      "flex h-full cursor-pointer items-center justify-center text-base text-semantic-fg-disabled product-body-text-3-semibold rounded px-2.5 py-1.5 hover:bg-semantic-bg-line",
+      "focus:outline-none data-[state=on]:shadow data-[state=on]:text-semantic-fg-primary data-[state=on]:bg-semantic-bg-primary data-[state=on]:pointer-events-none data-[state=on]:cursor-default",
       className,
     )}
     {...props}
