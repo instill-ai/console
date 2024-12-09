@@ -90,8 +90,7 @@ export const InstillYamlSchema = {
             description: {
               type: "string",
             },
-            default: {
-            },
+            default: {},
             "instill-ui-multiline": {
               type: "boolean",
             },
