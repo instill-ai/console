@@ -8,12 +8,16 @@ type DragAndDropUploadProps = {
   onFileUpload: (file: File) => Promise<void>;
   planMaxFileSize: number;
   isLocalEnvironment: boolean;
+  className?: string;
+  style?: React.CSSProperties;
 };
 
 export const DragAndDropUpload = ({
   onFileUpload,
   planMaxFileSize,
   isLocalEnvironment,
+  className,
+  style,
 }: DragAndDropUploadProps) => {
   const [isDragging, setIsDragging] = React.useState(false);
 
@@ -59,20 +63,25 @@ export const DragAndDropUpload = ({
           "border-semantic-accent-default": isDragging,
           "border-semantic-bg-line": !isDragging,
         },
+        className,
       )}
-      style={{
-        borderStyle: "dashed",
-        borderWidth: "2px",
-        borderRadius: "6px",
-      }}
+      style={
+        style
+          ? style
+          : {
+              borderStyle: "dashed",
+              borderWidth: "2px",
+              borderRadius: "6px",
+            }
+      }
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
       <div className="flex cursor-pointer flex-col items-center justify-center">
-        <div className="flex flex-col items-center justify-center text-semantic-fg-primary product-body-text-4-regular pb-2">
-          <Icons.Upload01 className="mb-4 mt-10 h-8 w-8 stroke-semantic-fg-secondary" />
+        <div className="flex flex-col py-8 items-center justify-center text-semantic-fg-primary product-body-text-4-regular">
+          <Icons.Upload01 className="h-8 w-8 stroke-semantic-fg-secondary" />
           <div className="w-full text-center">
             <span>Drag-and-drop file, or </span>
             <label

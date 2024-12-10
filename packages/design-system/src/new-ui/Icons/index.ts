@@ -78,6 +78,7 @@ import { FilePlus02 } from "./FilePlus02";
 import { FilterLines } from "./FilterLines";
 import { Flag04 } from "./Flag04";
 import { Flag06 } from "./Flag06";
+import { Folder } from "./Folder";
 import { Gear01 } from "./Gear01";
 import { GitMerge } from "./GitMerge";
 import { Globe01 } from "./Globe01";
@@ -250,6 +251,7 @@ export const Icons = {
   Expand01,
   Expand06,
   File02,
+  Folder,
   File04,
   File05,
   File06,
