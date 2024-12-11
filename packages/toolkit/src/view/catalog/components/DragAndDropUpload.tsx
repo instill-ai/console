@@ -20,6 +20,7 @@ export const DragAndDropUpload = ({
   style,
 }: DragAndDropUploadProps) => {
   const [isDragging, setIsDragging] = React.useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -79,24 +80,31 @@ export const DragAndDropUpload = ({
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <div className="flex cursor-pointer flex-col items-center justify-center">
+      <div
+        onClick={() => {
+          fileInputRef.current?.click();
+        }}
+        className="flex cursor-pointer flex-col items-center justify-center"
+      >
         <div className="flex flex-col py-8 items-center justify-center text-semantic-fg-primary product-body-text-4-regular">
           <Icons.Upload01 className="h-8 w-8 stroke-semantic-fg-secondary" />
-          <div className="w-full text-center">
-            <span>Drag-and-drop file, or </span>
-            <label
-              htmlFor="upload-file-field"
-              className="cursor-pointer text-semantic-accent-default"
-            >
-              browse computer
-            </label>
-            <div className="">
+          <div className="w-full flex flex-col gap-y-1 text-center">
+            <p>
+              <span>Drag-and-drop file, or </span>
+              <label
+                htmlFor="upload-file-field"
+                className="cursor-pointer text-semantic-accent-default"
+              >
+                browse computer
+              </label>
+            </p>
+            <span>
               Support TXT, MARKDOWN, PDF, DOCX, DOC, PPTX, PPT, HTML, XLSX, XLS,
               CSV
-            </div>
+            </span>
             {!isLocalEnvironment ? (
               <div className="">
-                Max {planMaxFileSize / (1024 * 1024)}MB each
+                Max {Math.round(planMaxFileSize / (1024 * 1024))}MB each
               </div>
             ) : null}
           </div>
@@ -104,6 +112,7 @@ export const DragAndDropUpload = ({
       </div>
       <Input.Root className="hidden">
         <Input.Core
+          ref={fileInputRef}
           id="upload-file-field"
           type="file"
           accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html,.xlsx,.xls,.csv"

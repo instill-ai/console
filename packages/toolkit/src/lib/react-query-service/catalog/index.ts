@@ -7,6 +7,7 @@ export * from "./useProcessCatalogFiles";
 export * from "./useListNamespaceCatalogFiles";
 export * from "./useDeleteCatalogFile";
 export * from "./useGetNamespaceCatalogSingleSourceOfTruthFile";
+export * from "./useMoveFileToAnotherCatalog";
 export * from "./useUpdateCatalogChunk";
 export * from "./useListNamespaceCatalogChunks";
 export * from "./useListNamepsaceCatalogsFiles";

@@ -23,6 +23,8 @@ import type {
   ListPaginatedNamespaceCatalogFilesResponse,
   ListPaginatedNamespaceCatalogRunsRequest,
   ListPaginatedNamespaceCatalogRunsResponse,
+  MoveFileToAnotherCatalogRequest,
+  MoveFileToAnotherCatalogResponse,
   ProcessCatalogFilesRequest,
   ProcessCatalogFilesResponse,
   RetrieveSimilarNamespaceCatalogChunksRequest,
@@ -445,6 +447,30 @@ export class CatalogClient extends APIResource {
       }
 
       return Promise.resolve(runs);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async moveFileToAnotherCatalog({
+    fileUid,
+    namespaceId,
+    catalogId,
+    toCatalogId,
+  }: MoveFileToAnotherCatalogRequest) {
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/catalogs/${catalogId}/files:move`,
+    });
+
+    try {
+      const data = await this._client.post<MoveFileToAnotherCatalogResponse>(
+        queryString,
+        {
+          body: JSON.stringify({ fileUid, toCatalogId }),
+        },
+      );
+
+      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }

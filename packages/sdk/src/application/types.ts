@@ -301,7 +301,7 @@ export type DeleteConversationRequest = {
   conversationId: string;
 };
 
-export type AiAgentMetadata = {
+export type AIAgentAppMetadata = {
   instructions: string;
   tools: Tool[];
   catalogUids: string[];
@@ -310,20 +310,19 @@ export type AiAgentMetadata = {
   connections: GeneralRecord;
 };
 
-export type AiAgentMetadataForUpdate = {
-  instructions: string;
-  tools: Omit<Tool, "connections" | "name">[];
-  catalogUids: string[];
-  chunkTopK: number;
-  chunkWeight: number;
-};
-
 export type CreateNamespaceAgentRequest = {
   namespaceId: string;
   displayName?: string;
   description?: string;
   tags?: string[];
-  aiAgentMetadata: AiAgentMetadataForUpdate;
+  aiAgentSettings: AIAgentSettings;
+};
+
+export type AIAgentSettings = {
+  instructions: string;
+  catalogUids: string[];
+  connections: GeneralRecord;
+  toolIds: string[];
 };
 
 export type Agent = {
@@ -332,7 +331,7 @@ export type Agent = {
   description: string;
   namespaceUid: string;
   tags: string[];
-  aiAgentMetadata: AiAgentMetadata;
+  aiAgentMetadata: AIAgentAppMetadata;
   creatorUid: string;
   createTime: string;
   updateTime: string;
@@ -361,7 +360,7 @@ export type UpdateNamespaceAgentRequest = {
   displayName?: string;
   description?: string;
   tags?: string[];
-  aiAgentMetadata?: AiAgentMetadataForUpdate;
+  aiAgentSettings: AIAgentSettings;
 };
 
 export type UpdateNamespaceAgentResponse = {
@@ -375,7 +374,7 @@ export type Chat = {
   lastUsedTopK: number;
   createTime: string;
   updateTime: string;
-  aiAgentMetadata: AiAgentMetadata;
+  aiAgentMetadata: AIAgentAppMetadata;
   chatDisplayName: string;
   tempCatalogId: string;
 };
@@ -383,7 +382,7 @@ export type Chat = {
 export type CreateNamespaceChatRequest = {
   namespaceId: string;
   chatDisplayName?: string;
-  aiAgentApp: AiAgentMetadataForUpdate;
+  aiAgentSettings: AIAgentSettings;
 };
 
 export type CreateChatResponse = {
@@ -402,7 +401,7 @@ export type UpdateNamespaceChatRequest = {
   namespaceId: string;
   chatUid: string;
   chatDisplayName?: string;
-  aiAgentMetadata: AiAgentMetadataForUpdate;
+  aiAgentSettings: AIAgentSettings;
 };
 
 export type UpdateNamespaceChatResponse = {

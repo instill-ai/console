@@ -305,3 +305,14 @@ export type ListPaginatedNamespaceCatalogRunsResponse = {
   pageSize: number;
   page: number;
 };
+
+export type MoveFileToAnotherCatalogRequest = {
+  fileUid: string;
+  namespaceId: string;
+  catalogId: string;
+  toCatalogId: string;
+};
+
+export type MoveFileToAnotherCatalogResponse = {
+  fileUid: string;
+};
