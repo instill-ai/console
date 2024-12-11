@@ -47,6 +47,9 @@ export const ConnectionForm = ({
   const { fields, form, ValidatorSchema } = useInstillForm(
     schema || null,
     values || null,
+    {
+      lowCodeComponentEraSchema: true,
+    },
   );
 
   const [connectionId, setConnectionId] = React.useState("");
