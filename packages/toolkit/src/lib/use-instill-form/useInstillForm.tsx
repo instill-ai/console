@@ -37,6 +37,7 @@ export type UseInstillFormOptions = {
   | "supportInstillCredit"
   | "updateSupportInstillCredit"
   | "updateIsUsingInstillCredit"
+  | "lowCodeComponentEraSchema"
 >;
 
 export function useInstillForm(
@@ -66,7 +67,7 @@ export function useInstillForm(
   const updateForceOpenCollapsibleFormGroups =
     options?.updateForceOpenCollapsibleFormGroups;
   const updateIsUsingInstillCredit = options?.updateIsUsingInstillCredit;
-
+  const lowCodeComponentEraSchema = options?.lowCodeComponentEraSchema ?? false;
   const [formTree, setFormTree] = React.useState<InstillFormTree | null>(null);
   const [ValidatorSchema, setValidatorSchema] = React.useState<z.ZodTypeAny>(
     z.any(),
@@ -177,6 +178,7 @@ export function useInstillForm(
         forceOpenCollapsibleFormGroups,
         updateForceOpenCollapsibleFormGroups,
         updateIsUsingInstillCredit,
+        lowCodeComponentEraSchema,
       },
     );
 
@@ -201,6 +203,7 @@ export function useInstillForm(
     forceOpenCollapsibleFormGroups,
     updateForceOpenCollapsibleFormGroups,
     updateIsUsingInstillCredit,
+    lowCodeComponentEraSchema,
   ]);
 
   return {

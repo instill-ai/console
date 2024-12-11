@@ -38,6 +38,12 @@ export type PickRegularFieldsFromInstillFormTreeOptions = {
   objectArrayIndex?: number;
   parentPath?: string;
   parentIsFormCondition?: boolean;
+
+  /** In the low code era, we no longer use the const's title to determine
+   * the conditional field select item's title. Now we are using the oneOf
+   * itme root level's title to determine the conditional field select item's title
+   * */
+  lowCodeComponentEraSchema?: boolean;
 };
 
 export function pickRegularFieldsFromInstillFormTree(
@@ -75,6 +81,7 @@ export function pickRegularFieldsFromInstillFormTree(
   const objectArrayIndex = options?.objectArrayIndex ?? undefined;
   const parentPath = options?.parentPath ?? undefined;
   const parentIsFormCondition = options?.parentIsFormCondition ?? false;
+  const lowCodeComponentEraSchema = options?.lowCodeComponentEraSchema ?? false;
 
   let title: Nullable<string> = null;
 
@@ -308,6 +315,7 @@ export function pickRegularFieldsFromInstillFormTree(
         }
         size={size}
         isHidden={tree.isHidden}
+        lowCodeComponentEraSchema={lowCodeComponentEraSchema}
       />
     );
   }

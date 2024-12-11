@@ -31,6 +31,7 @@ export const OneOfConditionField = ({
   size,
   isHidden,
   isRequired,
+  lowCodeComponentEraSchema,
 }: {
   tree: InstillFormConditionItem;
   selectedConditionMap: Nullable<SelectedConditionMap>;
@@ -52,6 +53,7 @@ export const OneOfConditionField = ({
 
   // In the above example, the formConditionLayerPath will be foo.bar.baz
   formConditionLayerPath: string;
+  lowCodeComponentEraSchema?: boolean;
 } & Omit<AutoFormFieldBaseProps, "path">) => {
   const conditionOptions = React.useMemo(() => {
     return Object.entries(conditionComponentsMap).map(([k, v]) => ({
@@ -115,6 +117,8 @@ export const OneOfConditionField = ({
   //   tree,
   //   getValues,
   // ]);
+
+  console.log(tree);
 
   return (
     <div key={constFullPath} className="flex flex-col gap-y-5">
@@ -200,6 +204,17 @@ export const OneOfConditionField = ({
                   </Form.Control>
                   <Select.Content>
                     {conditionOptions.map((option) => {
+                      let title = option.title ?? option.key;
+                      const conditionItemSchema = tree.conditions[option.key];
+
+                      if (
+                        lowCodeComponentEraSchema &&
+                        conditionItemSchema &&
+                        conditionItemSchema.title
+                      ) {
+                        title = conditionItemSchema.title;
+                      }
+
                       return (
                         <Select.Item
                           key={option.key}
@@ -210,7 +225,7 @@ export const OneOfConditionField = ({
                               ? "!product-body-text-4-regular"
                               : "product-body-text-4-regular",
                           )}
-                          label={option.title ?? option.key}
+                          label={title}
                         />
                       );
                     })}
