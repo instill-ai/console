@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.115.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.115.0...@instill-ai/toolkit-v0.115.1) (2024-12-11)
+
+
+### Bug Fixes
+
+* allow more data types in the variable default field ([#1644](https://github.com/instill-ai/console/issues/1644)) ([1884bd7](https://github.com/instill-ai/console/commit/1884bd7283154ed9287923a292e542b6a3d8a725))
+
 ## [0.115.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.114.0...@instill-ai/toolkit-v0.115.0) (2024-12-11)
 
 
