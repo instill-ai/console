@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.115.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.114.0...@instill-ai/toolkit-v0.115.0) (2024-12-11)
+
+
+### Features
+
+* **integration:** add drive.file scope into google sheet ([#1649](https://github.com/instill-ai/console/issues/1649)) ([ba388d8](https://github.com/instill-ai/console/commit/ba388d801c70286651fa6cf1cd61144fe9940616))
+
+
+### Bug Fixes
+
+* fix integration item auto-gen-form issue ([#1647](https://github.com/instill-ai/console/issues/1647)) ([97d3354](https://github.com/instill-ai/console/commit/97d33549b2f7efe8d3e07d66300034ea867dcba3))
+
 ## [0.114.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.113.0...@instill-ai/toolkit-v0.114.0) (2024-12-09)
 
 
