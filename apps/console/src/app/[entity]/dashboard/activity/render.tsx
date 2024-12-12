@@ -3,10 +3,11 @@
 import * as React from "react";
 
 import {
-  AppTopbar,
   DashboardActivityPageMainView,
   NamespaceSwitch,
   PageBase,
+  SidebarNav,
+  TopNavbar,
 } from "@instill-ai/toolkit";
 
 import { useAppAccessToken } from "~/lib/use-app-access-token";
@@ -18,8 +19,11 @@ export default function ActivityRender() {
 
   return (
     <PageBase>
-      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
+      <TopNavbar />
       <PageBase.Container>
+        <PageBase.Sidebar>
+          <SidebarNav namespaceSwitch={<NamespaceSwitch />} />
+        </PageBase.Sidebar>
         <PageBase.Content contentPadding="p-8">
           <DashboardActivityPageMainView />
         </PageBase.Content>

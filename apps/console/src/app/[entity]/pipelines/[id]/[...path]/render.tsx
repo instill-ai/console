@@ -1,9 +1,10 @@
 "use client";
 
 import {
-  AppTopbar,
   NamespaceSwitch,
   PageBase,
+  SidebarNav,
+  TopNavbar,
   ViewPipeline,
 } from "@instill-ai/toolkit";
 
@@ -19,8 +20,11 @@ export function PipelineOverviewPageRender() {
 
   return (
     <PageBase>
-      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
+      <TopNavbar />
       <PageBase.Container>
+        <PageBase.Sidebar>
+          <SidebarNav namespaceSwitch={<NamespaceSwitch />} />
+        </PageBase.Sidebar>
         <PageBase.Content contentPadding="p-8">
           <ViewPipeline />
         </PageBase.Content>

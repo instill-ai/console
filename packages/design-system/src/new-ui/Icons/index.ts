@@ -20,6 +20,7 @@ import { Browser } from "./Browser";
 import { Building05 } from "./Building05";
 import { CalendarCheck01 } from "./CalendarCheck01";
 import { CardRefresh } from "./CardRefresh";
+import { ChatCircle } from "./ChatCircle";
 import { Check } from "./Check";
 import { CheckCircle } from "./CheckCircle";
 import { ChevronDown } from "./ChevronDown";
@@ -199,6 +200,7 @@ export const Icons = {
   Building05,
   CalendarCheck01,
   CardRefresh,
+  ChatCircle,
   Check,
   CheckCircle,
   ChevronDown,

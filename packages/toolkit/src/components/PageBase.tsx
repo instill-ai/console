@@ -8,7 +8,13 @@ export const PageBase = ({ children }: { children: React.ReactNode }) => {
 };
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  return <div className="flex h-full w-full flex-1">{children}</div>;
+  return <div className="flex flex-row h-full w-full flex-1">{children}</div>;
+};
+
+const Sidebar = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="shrink-0 w-44 bg-semantic-bg-secondary ">{children}</div>
+  );
 };
 
 const Content = ({
@@ -22,7 +28,7 @@ const Content = ({
     <div className="flex flex-1 bg-semantic-bg-alt-primary">
       <div
         className={cn(
-          "h-[calc(100vh-var(--topbar-controller-height)-var(--topbar-nav-height))] w-screen min-w-[927px] overflow-y-scroll",
+          "h-[calc(100vh-var(--top-nav-height))] w-full overflow-y-scroll",
           contentPadding ? contentPadding : "p-20",
         )}
       >
@@ -34,3 +40,4 @@ const Content = ({
 
 PageBase.Container = Container;
 PageBase.Content = Content;
+PageBase.Sidebar = Sidebar;
