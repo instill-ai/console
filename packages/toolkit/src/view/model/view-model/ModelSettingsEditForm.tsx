@@ -91,8 +91,27 @@ export const ModelSettingsEditForm = ({
       (item) => item.regionName === model.region,
     );
 
-    return targetModelRegion?.hardware ?? [];
+    return (
+      targetModelRegion?.hardware.map((item) => ({
+        ...item,
+        value: item.value || "Custom",
+      })) ?? []
+    );
   }, [modelRegions, model]);
+
+  React.useEffect(() => {
+    if (hardwareCustomValue || !model || !hardwareOptions.length) {
+      return;
+    }
+
+    const targetHardware = hardwareOptions.find(
+      (h) => h.value === model.hardware,
+    );
+
+    if (!targetHardware) {
+      setHardwareCustomValue(model.hardware);
+    }
+  }, [model, hardwareOptions, hardwareCustomValue]);
 
   const defaultValues = React.useMemo(() => {
     if (!model || hardwareOptions.length === 0) {

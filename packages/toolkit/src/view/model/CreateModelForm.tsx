@@ -174,7 +174,10 @@ export const CreateModelForm = () => {
       const newHardwareOptions: Record<string, Option[]> = {};
 
       for (const region of modelRegions.data) {
-        newHardwareOptions[region.regionName] = region.hardware;
+        newHardwareOptions[region.regionName] = region.hardware.map((item) => ({
+          ...item,
+          value: item.value || "Custom",
+        }));
       }
 
       setRegionOptions(newRegionOptions);
