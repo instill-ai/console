@@ -61,6 +61,11 @@ export type ModelDefinition = {
   updateTime: string;
 };
 
+export type Hardware = {
+  title: string;
+  value: string;
+};
+
 export type Model = {
   name: string;
   uid: string;
@@ -100,7 +105,7 @@ export type Model = {
 
 export type ModelRegion = {
   regionName: string;
-  hardware: string[];
+  hardware: Hardware[];
 };
 
 export type ModelWatchState = {
