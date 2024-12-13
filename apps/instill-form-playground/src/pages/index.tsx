@@ -18,69 +18,76 @@ export default function Home() {
   );
 
   return (
-    <div className="flex min-h-screen min-w-[100vh] flex-1 flex-col">
-      <div className="m-auto flex w-full max-w-[1200px] flex-row gap-x-10 p-10">
-        {`isValid - ${isValid}`}
-        <div className="flex w-1/2 flex-col gap-y-5">
-          <div className="flex h-1/3 w-full flex-col">
-            <MonacoEditor
-              language="json"
-              value={code ?? ""}
-              theme="vs-light"
-              height={300}
-              onChange={(code) => {
-                if (!code) return;
-                setCode(code);
+    <div className="flex min-h-screen min-w-[100vh] flex-1 flex-col p-10">
+      <div className="flex flex-row border gap-x-5 rounded border-semantic-fg-primary h-full w-full p-10">
+        <div className="flex w-[400px] flex-col gap-y-5">
+          <h2 className="product-headings-heading-3 text-semantic-fg-primary">
+            Your JSON Schema
+          </h2>
+          <MonacoEditor
+            language="json"
+            value={code ?? ""}
+            theme="vs-light"
+            height={800}
+            onChange={(code) => {
+              if (!code) return;
+              setCode(code);
 
-                try {
-                  const parsedCode = JSON.parse(code);
-                  setIsValid(true);
-                  setSchema(parsedCode);
-                } catch (err) {
-                  setIsValid(false);
-                }
-              }}
-              options={{
-                minimap: {
-                  enabled: false,
-                },
-                automaticLayout: true,
-              }}
-              className="h-full border border-black"
-            />
-          </div>
-          <div className="flex h-1/3 w-full flex-col">
-            <MonacoEditor
-              language="json"
-              value={formTree ? JSON.stringify(formTree, null, 2) : ""}
-              theme="vs-light"
-              height={300}
-              options={{
-                minimap: {
-                  enabled: false,
-                },
-                automaticLayout: true,
-              }}
-              className="h-full border border-black"
-            />
-          </div>
-          <div className="flex h-1/3 w-full flex-col">
-            <MonacoEditor
-              language="json"
-              value={error ? error : data ? data : ""}
-              theme="vs-light"
-              height={300}
-              options={{
-                minimap: {
-                  enabled: false,
-                },
-                automaticLayout: true,
-              }}
-              className="h-full border border-black"
-            />
-          </div>
+              try {
+                const parsedCode = JSON.parse(code);
+                setIsValid(true);
+                setSchema(parsedCode);
+              } catch (err) {
+                setIsValid(false);
+              }
+            }}
+            options={{
+              minimap: {
+                enabled: false,
+              },
+              automaticLayout: true,
+            }}
+            className="h-full border border-black"
+          />
         </div>
-        <div className="flex h-full w-1/2 flex-col p-4">
+        <div className="flex w-[400px] flex-col gap-y-5">
+          <h2 className="product-headings-heading-3 text-semantic-fg-primary">
+            Your Form Tree
+          </h2>
+          <MonacoEditor
+            language="json"
+            value={formTree ? JSON.stringify(formTree, null, 2) : ""}
+            theme="vs-light"
+            height={800}
+            options={{
+              minimap: {
+                enabled: false,
+              },
+              automaticLayout: true,
+            }}
+            className="h-full border border-black"
+          />
+        </div>
+        <div className="flex w-[400px] flex-col gap-y-5">
+          <h2 className="product-headings-heading-3 text-semantic-fg-primary">
+            Your Form Data
+          </h2>
+          <MonacoEditor
+            language="json"
+            value={error ? error : data ? data : ""}
+            theme="vs-light"
+            height={800}
+            options={{
+              minimap: {
+                enabled: false,
+              },
+              automaticLayout: true,
+            }}
+            className="h-full border border-black"
+          />
+        </div>
+        <div className="flex w-[400px] flex-col">
+          <h2 className="product-headings-heading-3 text-semantic-fg-primary">{`Is Valid - ${isValid}`}</h2>
           <Form.Root {...form}>
             <form className="w-full">
               <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
