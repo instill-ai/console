@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.115.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.115.1...@instill-ai/toolkit-v0.115.2) (2024-12-13)
+
+
+### Bug Fixes
+
+* fix model hardware options ([#1652](https://github.com/instill-ai/console/issues/1652)) ([55b98a6](https://github.com/instill-ai/console/commit/55b98a662bea5ff3fa63bab7cf3ced46d06839d0))
+
 ## [0.115.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.115.0...@instill-ai/toolkit-v0.115.1) (2024-12-11)
 
 
