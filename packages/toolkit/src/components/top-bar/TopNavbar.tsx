@@ -58,6 +58,9 @@ export const TopNavbar = () => {
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
   const currentPathname = usePathname();
   const isChatPath = currentPathname.split("/")[2] === "chat";
+  const isSettingsRoute =
+    currentPathname.includes("/settings/") ||
+    currentPathname.includes("/organization-settings/");
 
   return (
     <div className="flex flex-row items-center h-14 px-8">
@@ -85,7 +88,7 @@ export const TopNavbar = () => {
               isActive = true;
             }
           } else {
-            if (!isExternalLink && !isChatPath) {
+            if (!isChatPath && !isSettingsRoute && !isExternalLink) {
               isActive = true;
             }
           }

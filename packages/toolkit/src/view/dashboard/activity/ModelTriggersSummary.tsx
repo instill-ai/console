@@ -85,7 +85,7 @@ export const ModelTriggersSummary = (props: ModelTriggersSummaryProps) => {
 
   return (
     <Fragment>
-      <div className="grid w-[816px] grid-cols-3 gap-x-6">{children}</div>
+      <div className="grid w-full grid-cols-3 gap-x-6">{children}</div>
     </Fragment>
   );
 };

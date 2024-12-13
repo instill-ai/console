@@ -1,11 +1,10 @@
 "use client";
 
 import {
-  AppTopbar,
-  NamespaceSwitch,
   PageBase,
   Setting,
   SETTING_PAGE_CONTENT_PADDING,
+  TopNavbar,
   UserAccountTab,
   UserSidebar,
 } from "@instill-ai/toolkit";
@@ -17,7 +16,7 @@ export function AccountSettingPageRender() {
 
   return (
     <PageBase>
-      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
+      <TopNavbar />
       <PageBase.Container>
         <PageBase.Content contentPadding={SETTING_PAGE_CONTENT_PADDING}>
           <Setting.Root
