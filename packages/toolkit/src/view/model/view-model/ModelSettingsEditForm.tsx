@@ -14,7 +14,6 @@ import { z } from "zod";
 import {
   Button,
   Form,
-  getModelHardwareToolkit,
   Icons,
   Input,
   RadioGroup,
@@ -39,11 +38,6 @@ import {
 export type ModelSettingsEditFormProps = {
   model?: Model;
   onUpdate: () => void;
-};
-
-type Option = {
-  value: string;
-  title: string;
 };
 
 const EditModelSchema = z
@@ -93,26 +87,40 @@ export const ModelSettingsEditForm = ({
       return [];
     }
 
-    return modelRegions.data
-      .find((item) => item.regionName === model.region)
-      ?.hardware.reduce(
-        (acc: Option[], hardwareName) => [
-          ...acc,
-          {
-            value: hardwareName,
-            title: getModelHardwareToolkit(hardwareName) || "Unknown",
-          },
-        ],
-        [],
-      );
+    const targetModelRegion = modelRegions.data.find(
+      (item) => item.regionName === model.region,
+    );
+
+    return (
+      targetModelRegion?.hardware.map((item) => ({
+        ...item,
+        value: item.value || "Custom",
+      })) ?? []
+    );
   }, [modelRegions, model]);
 
+  React.useEffect(() => {
+    if (hardwareCustomValue || !model || !hardwareOptions.length) {
+      return;
+    }
+
+    const targetHardware = hardwareOptions.find(
+      (h) => h.value === model.hardware,
+    );
+
+    if (!targetHardware) {
+      setHardwareCustomValue(model.hardware);
+    }
+  }, [model, hardwareOptions, hardwareCustomValue]);
+
   const defaultValues = React.useMemo(() => {
-    if (!model) {
+    if (!model || hardwareOptions.length === 0) {
       return undefined;
     }
 
-    const hardwareName = getModelHardwareToolkit(model.hardware);
+    const targetHardware = hardwareOptions.find(
+      (h) => h.value === model.hardware,
+    );
 
     return {
       description: model.description,
@@ -123,12 +131,12 @@ export const ModelSettingsEditForm = ({
         Visibility,
         "VISIBILITY_UNSPECIFIED"
       >,
-      hardware: hardwareName === null ? "Custom" : model.hardware,
-      hardwareCustom: hardwareName === null ? model.hardware : "",
+      hardware: targetHardware ? targetHardware.value : "Custom",
+      hardwareCustom: targetHardware ? "" : model.hardware,
       profileImage: model.profileImage,
       tags: model.tags.join(", "),
     };
-  }, [model]);
+  }, [model, hardwareOptions]);
 
   const form = useForm<z.infer<typeof EditModelSchema>>({
     resolver: zodResolver(EditModelSchema),
@@ -136,6 +144,7 @@ export const ModelSettingsEditForm = ({
     values: defaultValues,
     disabled: !model?.permission.canEdit,
   });
+
   const updateNamespaceModel = useUpdateNamespaceModel();
 
   async function onSubmit(data: z.infer<typeof EditModelSchema>) {

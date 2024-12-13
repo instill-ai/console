@@ -14,7 +14,6 @@ import { z } from "zod";
 import {
   Button,
   Form,
-  getModelHardwareToolkit,
   getModelInstanceTaskToolkit,
   getModelRegionToolkit,
   Icons,
@@ -171,18 +170,15 @@ export const CreateModelForm = () => {
           value: item.regionName,
           title: getModelRegionToolkit(item.regionName) || "Unknown",
         }));
-      const newHardwareOptions: Record<string, Option[]> =
-        modelRegions.data.reduce((acc, curr) => {
-          const regionHardware = curr.hardware.map((item) => ({
-            value: item,
-            title: getModelHardwareToolkit(item),
-          }));
 
-          return {
-            ...acc,
-            [curr.regionName]: regionHardware,
-          };
-        }, {});
+      const newHardwareOptions: Record<string, Option[]> = {};
+
+      for (const region of modelRegions.data) {
+        newHardwareOptions[region.regionName] = region.hardware.map((item) => ({
+          ...item,
+          value: item.value || "Custom",
+        }));
+      }
 
       setRegionOptions(newRegionOptions);
       setHardwareOptions(newHardwareOptions);
@@ -498,9 +494,7 @@ export const CreateModelForm = () => {
 
                               form.setValue("hardware", targetValue);
                             }
-                            {
-                              updateCustomHardware("");
-                            }
+                            updateCustomHardware("");
                           }}
                         >
                           <Select.Trigger className="mt-auto w-full">

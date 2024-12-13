@@ -4,12 +4,15 @@ import type { Model } from "instill-sdk";
 import * as React from "react";
 import Link from "next/link";
 
-import {
-  getModelHardwareToolkit,
-  getModelRegionToolkit,
-} from "@instill-ai/design-system";
+import { getModelRegionToolkit } from "@instill-ai/design-system";
 
 import { ImageWithFallback } from "..";
+import {
+  InstillStore,
+  useInstillStore,
+  useModelAvailableRegions,
+  useShallow,
+} from "../../lib";
 import { Menu } from "./Menu";
 import { Stats } from "./Stats";
 import { Tags } from "./Tags";
@@ -31,8 +34,34 @@ const OWNER = {
   id: null,
 };
 
+const selector = (store: InstillStore) => ({
+  accessToken: store.accessToken,
+  enabledQuery: store.enabledQuery,
+});
+
 export const CardModel = (props: CardModelProps) => {
   const { model, onDelete } = props;
+
+  const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
+
+  const modelRegions = useModelAvailableRegions({ accessToken, enabledQuery });
+
+  const targetHardware = React.useMemo(() => {
+    if (!modelRegions.isSuccess || !model) {
+      return null;
+    }
+
+    const targetRegion = modelRegions.data.find(
+      (region) => region.regionName === model.region,
+    );
+
+    const targetHardware = targetRegion?.hardware.find(
+      (hardware) => hardware.value === model.hardware,
+    );
+
+    return targetHardware ?? null;
+  }, [modelRegions.data, modelRegions.isSuccess, model]);
+
   const owner = React.useMemo(() => {
     if (!model) {
       return OWNER;
@@ -81,7 +110,7 @@ export const CardModel = (props: CardModelProps) => {
               : model.visibility
           }
           region={getModelRegionToolkit(model.region) || ""}
-          hardware={getModelHardwareToolkit(model.hardware) || model.hardware}
+          hardware={targetHardware?.title ?? model.hardware}
         />
         <p className="product-body-text-2-regular text-semantic-fg-secondary">
           {model.description}
