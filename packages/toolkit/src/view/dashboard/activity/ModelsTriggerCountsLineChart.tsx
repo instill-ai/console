@@ -70,10 +70,10 @@ export const ModelsTriggerCountsLineChart = ({
         },
         graphic: {
           type: "image",
+          left: "center",
           style: {
             image: "/images/no-chart-placeholder.svg",
-            x: "45%",
-            y: "0%",
+            y: "10%",
             width: models.length === 0 ? 225 : 0,
             height: models.length === 0 ? 225 : 0,
           },
