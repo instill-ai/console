@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.86.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.86.0...@instill-ai/design-system-v0.86.1) (2024-12-13)
+
+
+### Bug Fixes
+
+* fix model hardware options ([#1652](https://github.com/instill-ai/console/issues/1652)) ([55b98a6](https://github.com/instill-ai/console/commit/55b98a662bea5ff3fa63bab7cf3ced46d06839d0))
+
 ## [0.86.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.85.0...@instill-ai/design-system-v0.86.0) (2024-12-09)
 
 
