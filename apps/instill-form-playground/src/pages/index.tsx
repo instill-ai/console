@@ -87,6 +87,7 @@ export default function Home() {
           />
         </div>
         <div className="flex w-[400px] flex-col">
+          <h2 className="product-headings-heading-3 text-semantic-fg-primary">{`Is Valid - ${isValid}`}</h2>
           <Form.Root {...form}>
             <form className="w-full">
               <div className="mb-5 flex flex-col gap-y-5">{fields}</div>
