@@ -172,7 +172,7 @@ export const getModelInstanceTaskToolkit = (task: string) => {
             <Icons.TextGenerationChat className={className ?? "h-4 w-4"} />
           );
         },
-        label: "Text Generation Chat",
+        label: "Chat",
       };
 
     case "TASK_CUSTOM":
