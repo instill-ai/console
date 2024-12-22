@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.115.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.115.2...@instill-ai/toolkit-v0.115.3) (2024-12-22)
+
+
+### Miscellaneous
+
+* **deps:** bump up next js version ([#1661](https://github.com/instill-ai/console/issues/1661)) ([4b96901](https://github.com/instill-ai/console/commit/4b96901edfb1889435dd94487cdafd719e1beb4a))
+
 ## [0.115.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.115.1...@instill-ai/toolkit-v0.115.2) (2024-12-13)
 
 

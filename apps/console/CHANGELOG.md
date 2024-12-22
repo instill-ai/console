@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.64.2-beta](https://github.com/instill-ai/console/compare/v0.64.1-beta...v0.64.2-beta) (2024-12-22)
+
+
+### Miscellaneous
+
+* **deps:** bump up next js version ([#1661](https://github.com/instill-ai/console/issues/1661)) ([4b96901](https://github.com/instill-ai/console/commit/4b96901edfb1889435dd94487cdafd719e1beb4a))
+
 ## [0.64.1-beta](https://github.com/instill-ai/console/compare/v0.64.0-beta...v0.64.1-beta) (2024-12-09)
 
 
