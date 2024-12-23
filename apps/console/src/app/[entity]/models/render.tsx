@@ -1,10 +1,11 @@
 "use client";
 
 import {
-  AppTopbar,
   ModelHubListPageMainView,
   NamespaceSwitch,
   PageBase,
+  SidebarNav,
+  TopNavbar,
 } from "@instill-ai/toolkit";
 
 import { useAppAccessToken } from "~/lib/use-app-access-token";
@@ -16,8 +17,11 @@ export function ModelsPageRender() {
 
   return (
     <PageBase>
-      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
+      <TopNavbar />
       <PageBase.Container>
+        <PageBase.Sidebar>
+          <SidebarNav namespaceSwitch={<NamespaceSwitch />} />
+        </PageBase.Sidebar>
         <PageBase.Content contentPadding="p-8">
           <ModelHubListPageMainView />
         </PageBase.Content>

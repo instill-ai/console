@@ -3,10 +3,11 @@
 import { useRouter } from "next/navigation";
 
 import {
-  AppTopbar,
   CatalogMainView,
   NamespaceSwitch,
   PageBase,
+  SidebarNav,
+  TopNavbar,
 } from "@instill-ai/toolkit";
 
 import { useAppAccessToken } from "~/lib/use-app-access-token";
@@ -21,8 +22,11 @@ export const KnowladgeBasePageRender = () => {
 
   return (
     <PageBase>
-      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
+      <TopNavbar />
       <PageBase.Container>
+        <PageBase.Sidebar>
+          <SidebarNav namespaceSwitch={<NamespaceSwitch />} />
+        </PageBase.Sidebar>
         <PageBase.Content contentPadding="!p-0">
           <CatalogMainView
             accessToken={accessToken.isSuccess ? accessToken.data : null}

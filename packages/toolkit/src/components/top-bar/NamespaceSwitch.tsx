@@ -384,10 +384,8 @@ export const NamespaceSwitch = () => {
       <Select.Trigger
         icon={<React.Fragment />}
         className={cn(
-          "!w-[136px] !border-none !p-1 hover:!bg-semantic-bg-secondary",
-          switchIsOpen
-            ? "!bg-semantic-bg-secondary"
-            : "!bg-semantic-bg-primary",
+          "!border-none !p-0 !bg-transparent !shadow-none focus:!ring-0",
+          "[&>span]:w-full",
         )}
       >
         {selectedNamespace ? (
@@ -396,7 +394,7 @@ export const NamespaceSwitch = () => {
           <Select.Value>
             <div
               key={selectedNamespace.id}
-              className="flex w-[128px] flex-row items-center justify-between gap-x-2"
+              className="flex flex-row items-center justify-between gap-x-2"
             >
               <div className="flex w-full flex-row items-center gap-x-2">
                 <NamespaceAvatarWithFallback.Root
