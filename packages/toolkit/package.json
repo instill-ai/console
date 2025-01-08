@@ -176,7 +176,7 @@
   "peerDependencies": {
     "@instill-ai/design-system": "workspace:*",
     "@instill-ai/design-tokens": "workspace:*",
-    "next": "^14.2.20",
+    "next": "^14.2.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
