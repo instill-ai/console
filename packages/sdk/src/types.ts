@@ -50,6 +50,10 @@ export const OrganizationOwnerSchema = z.object({
 
 export type Nullable<T> = T | null;
 
+export type WithNullableFields<T extends object> = {
+  [P in keyof T]-?: T[P] | null;
+};
+
 export type GeneralRecord = Record<string, any>;
 
 export type Owner = UserOwner | OrganizationOwner;

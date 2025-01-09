@@ -24,6 +24,8 @@ export const getQueryString = ({
   urlExpireDays,
   lastModifiedTime,
   objectExpireDays,
+  datetime,
+  sort,
 }: {
   baseURL: string;
   pageSize?: number;
@@ -50,6 +52,8 @@ export const getQueryString = ({
   urlExpireDays?: number;
   lastModifiedTime?: string;
   objectExpireDays?: number;
+  datetime?: string;
+  sort?: string;
 }) => {
   let url = baseURL;
 
@@ -70,7 +74,9 @@ export const getQueryString = ({
     fileUid ||
     chunkUids ||
     objectName ||
-    objectUid
+    objectUid ||
+    datetime ||
+    sort
   ) {
     // Check if the baseURL already has a query string
     if (baseURL.includes("?")) {
@@ -168,6 +174,14 @@ export const getQueryString = ({
 
   if (objectExpireDays) {
     url += `objectExpireDays=${objectExpireDays}&`;
+  }
+
+  if (datetime) {
+    url += `datetime=${datetime}&`;
+  }
+
+  if (sort) {
+    url += `sort=${sort}&`;
   }
 
   if (url.endsWith("&")) {
