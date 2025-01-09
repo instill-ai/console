@@ -710,6 +710,43 @@ const applicationQueryKeyStore = {
   },
 };
 
+const tableQueryKeyStore = {
+  getUseGetNamespaceTableQueryKey({
+    namespaceId,
+    tableUId,
+  }: {
+    namespaceId: Nullable<string>;
+    tableUId: Nullable<string>;
+  }) {
+    return [namespaceId, "tables", tableUId];
+  },
+  getUseListNamespaceTablesQueryKey({
+    namespaceId,
+  }: {
+    namespaceId: Nullable<string>;
+  }) {
+    return [namespaceId, "tables"];
+  },
+  getUseGetNamespaceTableColumnDefinitionsQueryKey({
+    namespaceId,
+    tableUId,
+  }: {
+    namespaceId: Nullable<string>;
+    tableUId: Nullable<string>;
+  }) {
+    return [namespaceId, "tables", tableUId, "column-definitions"];
+  },
+  getUseListNamespaceTableRowsQueryKey({
+    namespaceId,
+    tableUId,
+  }: {
+    namespaceId: Nullable<string>;
+    tableUId: Nullable<string>;
+  }) {
+    return [namespaceId, "tables", tableUId, "rows"];
+  },
+};
+
 export const queryKeyStore = {
   model: modelQueryKeyStore,
   pipeline: pipelineQueryKeyStore,
@@ -719,4 +756,5 @@ export const queryKeyStore = {
   catalog: catalogQueryKeyStore,
   integration: integrationQueryKeyStore,
   application: applicationQueryKeyStore,
+  table: tableQueryKeyStore,
 };
