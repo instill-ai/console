@@ -72,10 +72,10 @@ export const PipelineTriggerCountsLineChart = ({
         },
         graphic: {
           type: "image",
+          left: "center",
           style: {
             image: "/images/no-chart-placeholder.svg",
-            x: "45%",
-            y: "0%",
+            y: "10%",
             width: pipelines.length === 0 ? 225 : 0,
             height: pipelines.length === 0 ? 225 : 0,
           },

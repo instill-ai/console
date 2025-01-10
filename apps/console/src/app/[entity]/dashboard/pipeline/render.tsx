@@ -3,11 +3,12 @@
 import { useRouter } from "next/navigation";
 
 import {
-  AppTopbar,
   DashboardContainer,
   DashboardPipelineListPageMainView,
   NamespaceSwitch,
   PageBase,
+  SidebarNav,
+  TopNavbar,
 } from "@instill-ai/toolkit";
 
 import { useAppAccessToken } from "~/lib/use-app-access-token";
@@ -21,8 +22,11 @@ export function DashboardPageRender() {
 
   return (
     <PageBase>
-      <AppTopbar namespaceSwitch={<NamespaceSwitch />} />
+      <TopNavbar />
       <PageBase.Container>
+        <PageBase.Sidebar>
+          <SidebarNav namespaceSwitch={<NamespaceSwitch />} />
+        </PageBase.Sidebar>
         <PageBase.Content contentPadding="p-8">
           <DashboardContainer>
             <DashboardPipelineListPageMainView
