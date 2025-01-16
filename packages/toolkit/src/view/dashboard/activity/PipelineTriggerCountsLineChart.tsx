@@ -55,6 +55,7 @@ export const PipelineTriggerCountsLineChart = ({
 
   const xAxisData = xAxis;
   const seriesData = yAxis;
+  const showGraph = pipelines.length > 0;
 
   React.useEffect(() => {
     if (chartRef.current) {
@@ -70,16 +71,6 @@ export const PipelineTriggerCountsLineChart = ({
           top: 10,
           bottom: 50,
         },
-        graphic: {
-          type: "image",
-          style: {
-            image: "/images/no-chart-placeholder.svg",
-            x: "45%",
-            y: "0%",
-            width: pipelines.length === 0 ? 225 : 0,
-            height: pipelines.length === 0 ? 225 : 0,
-          },
-        },
         animation: false,
         title: {
           show: pipelines.length === 0,
@@ -93,8 +84,8 @@ export const PipelineTriggerCountsLineChart = ({
           text: isLoading
             ? "Loading..."
             : "No pipelines have been triggered yet",
-          left: `${isLoading ? "49.5%" : "44.5%"}`,
-          bottom: 100,
+          left: `${isLoading ? "46%" : "36%"}`,
+          top: "47.5%",
         },
         tooltip: {
           trigger: "item",
@@ -124,6 +115,7 @@ export const PipelineTriggerCountsLineChart = ({
           },
         },
         xAxis: {
+          show: showGraph,
           type: "category",
           data: xAxisData,
           axisTick: {
@@ -138,6 +130,7 @@ export const PipelineTriggerCountsLineChart = ({
           },
         },
         yAxis: {
+          show: showGraph,
           type: "value",
           minInterval: 1,
           axisTick: {
@@ -160,6 +153,12 @@ export const PipelineTriggerCountsLineChart = ({
             borderWidth: 0,
           },
         })),
+        legend: {
+          show: false,
+          selected: {
+            [`${seriesData?.[0]?.name}`]: showGraph,
+          },
+        },
       };
 
       myChart.setOption(option, true);
