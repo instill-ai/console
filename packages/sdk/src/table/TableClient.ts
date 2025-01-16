@@ -19,6 +19,7 @@ import {
   ListPaginatedNamespaceTableRowsResponse,
   ListPaginatedNamespaceTablesRequest,
   ListPaginatedNamespaceTablesResponse,
+  MoveNamespaceTableRowRequest,
   Row,
   Table,
   UpdateNamespaceTableColumnDefinitionsRequest,
@@ -290,7 +291,7 @@ export class TableClient extends APIResource {
       const data = await this._client.post<CreateNamespaceTableRowResponse>(
         `/namespaces/${namespaceId}/tables/${tableUId}/rows`,
         {
-          body: JSON.stringify(row),
+          body: JSON.stringify({ row }),
         },
       );
 
@@ -307,7 +308,7 @@ export class TableClient extends APIResource {
       const data = await this._client.patch<UpdateNamespaceTableRowResponse>(
         `/namespaces/${namespaceId}/tables/${tableUId}/rows/${rowUId}`,
         {
-          body: JSON.stringify(row),
+          body: JSON.stringify({ row }),
         },
       );
 
@@ -323,6 +324,23 @@ export class TableClient extends APIResource {
     try {
       await this._client.delete(
         `/namespaces/${namespaceId}/tables/${tableUId}/rows/${rowUId}`,
+      );
+
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async moveNamespaceTableRow(props: MoveNamespaceTableRowRequest) {
+    const { namespaceId, tableUId, rowUids, afterRowUId } = props;
+
+    try {
+      await this._client.post(
+        `/namespaces/${namespaceId}/tables/${tableUId}/rows:move`,
+        {
+          body: JSON.stringify({ rowUids, afterRowUId }),
+        },
       );
 
       return Promise.resolve();

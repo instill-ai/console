@@ -45,6 +45,11 @@ const navLinkItems: NavLinkProps[] = [
     Icon: Icons.BarChartSquare02,
     title: "Dashboard",
   },
+  {
+    pathname: "tables",
+    Icon: Icons.CubeOutline,
+    title: "Tables",
+  },
 ];
 
 const navLinkSelector = (store: InstillStore) => ({
