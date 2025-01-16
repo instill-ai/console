@@ -33,12 +33,12 @@ export function useGetNamespaceTableColumnDefinitions({
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
-      const res = await client.table.getNamespaceTable({
+      const res = await client.table.getNamespaceTableColumnDefinitions({
         namespaceId,
         tableUId,
       });
 
-      return Promise.resolve(res.table);
+      return Promise.resolve(res.columnDefinitions);
     },
     enabled: enabled && Boolean(accessToken) && Boolean(tableUId),
   });
