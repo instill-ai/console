@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.64.2-beta](https://github.com/instill-ai/console/compare/v0.64.1-beta...v0.64.2-beta) (2025-01-08)
+
+
+### Bug Fixes
+
+* update nextjs version to cope with vulnerability ([#1663](https://github.com/instill-ai/console/issues/1663)) ([e2f33b3](https://github.com/instill-ai/console/commit/e2f33b39ad8fc5f47a904ddbfba7c3bd0b60e14a))
+
+
+### Miscellaneous
+
+* **deps:** bump up next js version ([#1661](https://github.com/instill-ai/console/issues/1661)) ([4b96901](https://github.com/instill-ai/console/commit/4b96901edfb1889435dd94487cdafd719e1beb4a))
+
 ## [0.64.1-beta](https://github.com/instill-ai/console/compare/v0.64.0-beta...v0.64.1-beta) (2024-12-09)
 
 
