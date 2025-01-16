@@ -13,6 +13,8 @@ export * from "./misc";
 export * from "./release";
 export * from "./secret";
 
+export * from "./table";
+
 /** Re export react-query to solve ESM, CJS confict issue */
 export {
   QueryCache,

@@ -1,12 +1,12 @@
 "use client";
 
-import type { Nullable, UpdateNamespaceTableRowRequest } from "instill-sdk";
+import type { MoveNamespaceTableRowRequest, Nullable } from "instill-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
 import { queryKeyStore } from "../queryKeyStore";
 
-export function useUpdateNamespaceTableRow() {
+export function useMoveNamespaceTableRow() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -14,7 +14,7 @@ export function useUpdateNamespaceTableRow() {
       payload,
       accessToken,
     }: {
-      payload: UpdateNamespaceTableRowRequest;
+      payload: MoveNamespaceTableRowRequest;
       accessToken: Nullable<string>;
     }) => {
       if (!accessToken) {
@@ -25,17 +25,12 @@ export function useUpdateNamespaceTableRow() {
         throw new Error("namespaceId is required");
       }
 
-      if (!payload.rowUId) {
-        throw new Error("rowUId is required");
-      }
-
       if (!payload.tableUId) {
-        throw new Error("tableUId is required");
+        throw new Error("tableUid is required");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
-      const res = await client.table.updateNamespaceTableRow(payload);
-      return Promise.resolve(res.row);
+      await client.table.moveNamespaceTableRow(payload);
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
