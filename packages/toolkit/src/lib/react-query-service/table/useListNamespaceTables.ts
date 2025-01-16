@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { ListNamespaceTablesRequest } from "instill-sdk";
+import { ListNamespaceTablesRequest, WithNullableFields } from "instill-sdk";
 
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
 import { queryKeyStore } from "../queryKeyStore";
@@ -11,7 +11,7 @@ export function useListNamespaceTables({
   accessToken,
   namespaceId,
   enabled,
-}: QueryBaseProps & ListNamespaceTablesRequest) {
+}: QueryBaseProps & WithNullableFields<ListNamespaceTablesRequest>) {
   return useQuery({
     queryKey: queryKeyStore.table.getUseListNamespaceTablesQueryKey({
       namespaceId,
