@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.115.4](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.115.3...@instill-ai/toolkit-v0.115.4) (2025-01-20)
+
+
+### Bug Fixes
+
+* dashboard ui tweaks ([#1664](https://github.com/instill-ai/console/issues/1664)) ([faadf16](https://github.com/instill-ai/console/commit/faadf164780e4847cfdf9b53ff827831238c7c50))
+
 ## [0.115.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.115.2...@instill-ai/toolkit-v0.115.3) (2025-01-08)
 
 
