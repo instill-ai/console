@@ -53,6 +53,7 @@ export const ModelsTriggerCountsLineChart = ({
     () => generateModelTriggerChartRecordData(models, selectedTimeOption.value),
     [models, selectedTimeOption.value],
   );
+  const showGraph = models.length > 0;
 
   React.useEffect(() => {
     if (chartRef.current) {
@@ -68,16 +69,6 @@ export const ModelsTriggerCountsLineChart = ({
           top: 10,
           bottom: 50,
         },
-        graphic: {
-          type: "image",
-          style: {
-            image: "/images/no-chart-placeholder.svg",
-            x: "45%",
-            y: "0%",
-            width: models.length === 0 ? 225 : 0,
-            height: models.length === 0 ? 225 : 0,
-          },
-        },
         animation: false,
         title: {
           show: models.length === 0,
@@ -89,8 +80,8 @@ export const ModelsTriggerCountsLineChart = ({
             fontStyle: "italic",
           },
           text: isLoading ? "Loading..." : "No models have been triggered yet",
-          left: `${isLoading ? "49.5%" : "44.5%"}`,
-          bottom: 100,
+          left: `${isLoading ? "46%" : "37%"}`,
+          top: "47.5%",
         },
         tooltip: {
           trigger: "item",
@@ -120,6 +111,7 @@ export const ModelsTriggerCountsLineChart = ({
           },
         },
         xAxis: {
+          show: showGraph,
           type: "category",
           data: xAxis,
           axisLabel: {
@@ -131,6 +123,7 @@ export const ModelsTriggerCountsLineChart = ({
           },
         },
         yAxis: {
+          show: showGraph,
           type: "value",
           minInterval: 1,
           axisLabel: {
@@ -155,6 +148,12 @@ export const ModelsTriggerCountsLineChart = ({
             },
           },
         ],
+        legend: {
+          show: false,
+          selected: {
+            "Model Runs": showGraph,
+          },
+        },
       };
 
       myChart.setOption(option, true);
