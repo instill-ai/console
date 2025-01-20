@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.64.3-beta](https://github.com/instill-ai/console/compare/v0.64.2-beta...v0.64.3-beta) (2025-01-20)
+
+
+### Bug Fixes
+
+* dashboard ui tweaks ([#1664](https://github.com/instill-ai/console/issues/1664)) ([faadf16](https://github.com/instill-ai/console/commit/faadf164780e4847cfdf9b53ff827831238c7c50))
+
 ## [0.64.2-beta](https://github.com/instill-ai/console/compare/v0.64.1-beta...v0.64.2-beta) (2025-01-08)
 
 
