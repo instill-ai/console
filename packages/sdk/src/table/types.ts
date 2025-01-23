@@ -242,10 +242,3 @@ export type MoveNamespaceTableRowRequest = {
   rowUids: string[];
   beforeRowUid?: string;
 };
-
-export type MoveNamespaceTableRowRequest = {
-  namespaceId: string;
-  tableUId: string;
-  rowUids: string[];
-  afterRowUId?: string;
-};
