@@ -24,4 +24,20 @@ export const createChatSlice: StateCreator<
         enableToolSuggestion: fn(state.enableToolSuggestion),
       };
     }),
+  leftSidebarOpen: false,
+  updateLeftSidebarOpen: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        leftSidebarOpen: fn(state.leftSidebarOpen),
+      };
+    }),
+  rightSidebarOpen: false,
+  updateRightSidebarOpen: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        rightSidebarOpen: fn(state.rightSidebarOpen),
+      };
+    }),
 });

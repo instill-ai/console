@@ -49,11 +49,11 @@ export class TableClient extends APIResource {
   }
 
   async getNamespaceTable(props: GetNamespaceTableRequest) {
-    const { namespaceId, tableUId } = props;
+    const { namespaceId, tableUid } = props;
 
     try {
       const data = await this._client.get<GetNamespaceTableResponse>(
-        `/namespaces/${namespaceId}/tables/${tableUId}`,
+        `/namespaces/${namespaceId}/tables/${tableUid}`,
       );
 
       return Promise.resolve(data);
@@ -127,11 +127,11 @@ export class TableClient extends APIResource {
   }
 
   async updateNamespaceTable(props: UpdateNamespaceTableRequest) {
-    const { namespaceId, tableUId, ...payload } = props;
+    const { namespaceId, tableUid, ...payload } = props;
 
     try {
       const data = await this._client.patch<UpdateNamespaceTableResponse>(
-        `/namespaces/${namespaceId}/tables/${tableUId}`,
+        `/namespaces/${namespaceId}/tables/${tableUid}`,
         {
           body: JSON.stringify(payload),
         },
@@ -144,11 +144,11 @@ export class TableClient extends APIResource {
   }
 
   async deleteNamespaceTable(props: DeleteNamespaceTableRequest) {
-    const { namespaceId, tableUId } = props;
+    const { namespaceId, tableUid } = props;
 
     try {
       await this._client.delete(
-        `/namespaces/${namespaceId}/tables/${tableUId}`,
+        `/namespaces/${namespaceId}/tables/${tableUid}`,
       );
 
       return Promise.resolve();
@@ -160,12 +160,12 @@ export class TableClient extends APIResource {
   async getNamespaceTableColumnDefinitions(
     props: GetNamespaceTableColumnDefinitionsRequest,
   ) {
-    const { namespaceId, tableUId } = props;
+    const { namespaceId, tableUid } = props;
 
     try {
       const data =
         await this._client.get<GetNamespaceTableColumnDefinitionsResponse>(
-          `/namespaces/${namespaceId}/tables/${tableUId}/column-definitions`,
+          `/namespaces/${namespaceId}/tables/${tableUid}/column-definitions`,
         );
 
       return Promise.resolve(data);
@@ -177,12 +177,12 @@ export class TableClient extends APIResource {
   async updateNamespaceTableColumnDefinitions(
     props: UpdateNamespaceTableColumnDefinitionsRequest,
   ) {
-    const { namespaceId, tableUId, columnDefinitions } = props;
+    const { namespaceId, tableUid, columnDefinitions } = props;
 
     try {
       const data =
         await this._client.put<UpdateNamespaceTableColumnDefinitionsResponse>(
-          `/namespaces/${namespaceId}/tables/${tableUId}/column-definitions`,
+          `/namespaces/${namespaceId}/tables/${tableUid}/column-definitions`,
           {
             body: JSON.stringify(columnDefinitions),
           },
@@ -199,7 +199,7 @@ export class TableClient extends APIResource {
   ) {
     const {
       namespaceId,
-      tableUId,
+      tableUid,
       pageToken,
       pageSize,
       filter,
@@ -208,7 +208,7 @@ export class TableClient extends APIResource {
     } = props;
 
     const queryString = getQueryString({
-      baseURL: `/namespaces/${namespaceId}/tables/${tableUId}/rows`,
+      baseURL: `/namespaces/${namespaceId}/tables/${tableUid}/rows`,
       pageToken,
       pageSize,
       filter,
@@ -231,7 +231,7 @@ export class TableClient extends APIResource {
   async listNamespaceTableRows(props: ListNamespaceTableRowsRequest) {
     const {
       namespaceId,
-      tableUId,
+      tableUid,
       pageToken,
       pageSize,
       filter,
@@ -240,7 +240,7 @@ export class TableClient extends APIResource {
     } = props;
 
     const queryString = getQueryString({
-      baseURL: `/namespaces/${namespaceId}/tables/${tableUId}/rows`,
+      baseURL: `/namespaces/${namespaceId}/tables/${tableUid}/rows`,
       pageToken,
       pageSize,
       filter,
@@ -263,7 +263,7 @@ export class TableClient extends APIResource {
           ...(
             await this.listNamespaceTableRows({
               namespaceId,
-              tableUId,
+              tableUid,
               pageSize,
               pageToken: data.nextPageToken,
               filter,
@@ -285,11 +285,11 @@ export class TableClient extends APIResource {
   }
 
   async createNamespaceTableRow(props: CreateNamespaceTableRowRequest) {
-    const { namespaceId, tableUId, row } = props;
+    const { namespaceId, tableUid, row } = props;
 
     try {
       const data = await this._client.post<CreateNamespaceTableRowResponse>(
-        `/namespaces/${namespaceId}/tables/${tableUId}/rows`,
+        `/namespaces/${namespaceId}/tables/${tableUid}/rows`,
         {
           body: JSON.stringify({ row }),
         },
@@ -302,11 +302,11 @@ export class TableClient extends APIResource {
   }
 
   async updateNamespaceTableRow(props: UpdateNamespaceTableRowRequest) {
-    const { namespaceId, tableUId, rowUId, row } = props;
+    const { namespaceId, tableUid, rowUid, row } = props;
 
     try {
       const data = await this._client.patch<UpdateNamespaceTableRowResponse>(
-        `/namespaces/${namespaceId}/tables/${tableUId}/rows/${rowUId}`,
+        `/namespaces/${namespaceId}/tables/${tableUid}/rows/${rowUid}`,
         {
           body: JSON.stringify({ row }),
         },
@@ -319,11 +319,11 @@ export class TableClient extends APIResource {
   }
 
   async deleteNamespaceTableRow(props: DeleteNamespaceTableRowRequest) {
-    const { namespaceId, tableUId, rowUId } = props;
+    const { namespaceId, tableUid, rowUid } = props;
 
     try {
       await this._client.delete(
-        `/namespaces/${namespaceId}/tables/${tableUId}/rows/${rowUId}`,
+        `/namespaces/${namespaceId}/tables/${tableUid}/rows/${rowUid}`,
       );
 
       return Promise.resolve();
@@ -333,13 +333,13 @@ export class TableClient extends APIResource {
   }
 
   async moveNamespaceTableRow(props: MoveNamespaceTableRowRequest) {
-    const { namespaceId, tableUId, rowUids, afterRowUId } = props;
+    const { namespaceId, tableUid, rowUids, beforeRowUid } = props;
 
     try {
       await this._client.post(
-        `/namespaces/${namespaceId}/tables/${tableUId}/rows:move`,
+        `/namespaces/${namespaceId}/tables/${tableUid}/move-rows`,
         {
-          body: JSON.stringify({ rowUids, afterRowUId }),
+          body: JSON.stringify({ rowUids, beforeRowUid }),
         },
       );
 

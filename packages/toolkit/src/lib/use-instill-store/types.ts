@@ -306,6 +306,10 @@ export type ChatSlice = {
   updateEnabledTools: (fn: (prev: string[]) => string[]) => void;
   enableToolSuggestion: boolean;
   updateEnableToolSuggestion: (fn: (prev: boolean) => boolean) => void;
+  leftSidebarOpen: boolean;
+  updateLeftSidebarOpen: (fn: (prev: boolean) => boolean) => void;
+  rightSidebarOpen: boolean;
+  updateRightSidebarOpen: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type InstillStore = SmartHintSlice &

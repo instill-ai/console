@@ -25,12 +25,12 @@ export function useUpdateNamespaceTableRow() {
         throw new Error("namespaceId is required");
       }
 
-      if (!payload.rowUId) {
-        throw new Error("rowUId is required");
+      if (!payload.rowUid) {
+        throw new Error("rowUid is required");
       }
 
-      if (!payload.tableUId) {
-        throw new Error("tableUId is required");
+      if (!payload.tableUid) {
+        throw new Error("tableUid is required");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
@@ -41,7 +41,7 @@ export function useUpdateNamespaceTableRow() {
       queryClient.invalidateQueries({
         queryKey: queryKeyStore.table.getUseListNamespaceTableRowsQueryKey({
           namespaceId: variables.payload.namespaceId,
-          tableUId: variables.payload.tableUId,
+          tableUid: variables.payload.tableUid,
         }),
       });
     },

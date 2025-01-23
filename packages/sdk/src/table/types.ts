@@ -24,7 +24,7 @@ export type CreateNamespaceTableResponse = {
 
 export type GetNamespaceTableRequest = {
   namespaceId: string;
-  tableUId: string;
+  tableUid: string;
 };
 
 export type GetNamespaceTableResponse = {
@@ -55,7 +55,7 @@ export type ListNamespaceTablesResponse = {
 
 export type UpdateNamespaceTableRequest = {
   namespaceId: string;
-  tableUId: string;
+  tableUid: string;
   title?: string;
   description?: string;
   metadata?: GeneralRecord;
@@ -67,7 +67,7 @@ export type UpdateNamespaceTableResponse = {
 
 export type DeleteNamespaceTableRequest = {
   namespaceId: string;
-  tableUId: string;
+  tableUid: string;
 };
 
 export type ColumnDefinition = {
@@ -81,7 +81,7 @@ export type ColumnDefinitions = Record<string, ColumnDefinition>;
 
 export type GetNamespaceTableColumnDefinitionsRequest = {
   namespaceId: string;
-  tableUId: string;
+  tableUid: string;
 };
 
 export type GetNamespaceTableColumnDefinitionsResponse = {
@@ -90,7 +90,7 @@ export type GetNamespaceTableColumnDefinitionsResponse = {
 
 export type UpdateNamespaceTableColumnDefinitionsRequest = {
   namespaceId: string;
-  tableUId: string;
+  tableUid: string;
   columnDefinitions: Record<string, Omit<ColumnDefinition, "columnUid">>;
 };
 
@@ -181,7 +181,7 @@ export type RowForCreateOrUpdate = {
 
 export type ListPaginatedNamespaceTableRowsRequest = {
   namespaceId: string;
-  tableUId: string;
+  tableUid: string;
   pageToken?: string;
   pageSize?: number;
   filter?: string;
@@ -197,7 +197,7 @@ export type ListPaginatedNamespaceTableRowsResponse = {
 
 export type ListNamespaceTableRowsRequest = {
   namespaceId: string;
-  tableUId: string;
+  tableUid: string;
   pageToken?: string;
   pageSize?: number;
   filter?: string;
@@ -211,7 +211,7 @@ export type ListNamespaceTableRowsResponse = {
 
 export type CreateNamespaceTableRowRequest = {
   namespaceId: string;
-  tableUId: string;
+  tableUid: string;
   row: RowForCreateOrUpdate;
 };
 
@@ -221,8 +221,8 @@ export type CreateNamespaceTableRowResponse = {
 
 export type UpdateNamespaceTableRowRequest = {
   namespaceId: string;
-  tableUId: string;
-  rowUId: string;
+  tableUid: string;
+  rowUid: string;
   row: RowForCreateOrUpdate;
 };
 
@@ -232,13 +232,13 @@ export type UpdateNamespaceTableRowResponse = {
 
 export type DeleteNamespaceTableRowRequest = {
   namespaceId: string;
-  tableUId: string;
-  rowUId: string;
+  tableUid: string;
+  rowUid: string;
 };
 
 export type MoveNamespaceTableRowRequest = {
   namespaceId: string;
-  tableUId: string;
+  tableUid: string;
   rowUids: string[];
-  afterRowUId?: string;
+  beforeRowUid?: string;
 };
