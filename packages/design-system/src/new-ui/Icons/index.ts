@@ -22,6 +22,7 @@ import { CalendarCheck01 } from "./CalendarCheck01";
 import { CardRefresh } from "./CardRefresh";
 import { Check } from "./Check";
 import { CheckCircle } from "./CheckCircle";
+import { CheckVerified02 } from "./CheckVerified02";
 import { ChevronDown } from "./ChevronDown";
 import { ChevronDownDouble } from "./ChevronDownDouble";
 import { ChevronLeft } from "./ChevronLeft";
@@ -201,6 +202,7 @@ export const Icons = {
   CardRefresh,
   Check,
   CheckCircle,
+  CheckVerified02,
   ChevronDown,
   ChevronDownDouble,
   ChevronLeft,

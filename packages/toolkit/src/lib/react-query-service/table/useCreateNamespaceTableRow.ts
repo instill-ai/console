@@ -25,8 +25,8 @@ export function useCreateNamespaceTableRow() {
         throw new Error("namespaceId is required");
       }
 
-      if (!payload.tableUId) {
-        throw new Error("tableUId is required");
+      if (!payload.tableUid) {
+        throw new Error("tableUid is required");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });

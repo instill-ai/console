@@ -713,12 +713,12 @@ const applicationQueryKeyStore = {
 const tableQueryKeyStore = {
   getUseGetNamespaceTableQueryKey({
     namespaceId,
-    tableUId,
+    tableUid,
   }: {
     namespaceId: Nullable<string>;
-    tableUId: Nullable<string>;
+    tableUid: Nullable<string>;
   }) {
-    return [namespaceId, "tables", tableUId];
+    return [namespaceId, "tables", tableUid];
   },
   getUseListNamespaceTablesQueryKey({
     namespaceId,
@@ -729,21 +729,21 @@ const tableQueryKeyStore = {
   },
   getUseGetNamespaceTableColumnDefinitionsQueryKey({
     namespaceId,
-    tableUId,
+    tableUid,
   }: {
     namespaceId: Nullable<string>;
-    tableUId: Nullable<string>;
+    tableUid: Nullable<string>;
   }) {
-    return [namespaceId, "tables", tableUId, "column-definitions"];
+    return [namespaceId, "tables", tableUid, "column-definitions"];
   },
   getUseListNamespaceTableRowsQueryKey({
     namespaceId,
-    tableUId,
+    tableUid,
   }: {
     namespaceId: Nullable<string>;
-    tableUId: Nullable<string>;
+    tableUid: Nullable<string>;
   }) {
-    return [namespaceId, "tables", tableUId, "rows"];
+    return [namespaceId, "tables", tableUid, "rows"];
   },
 };
 
