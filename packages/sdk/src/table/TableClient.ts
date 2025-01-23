@@ -348,21 +348,4 @@ export class TableClient extends APIResource {
       return Promise.reject(error);
     }
   }
-
-  async moveNamespaceTableRow(props: MoveNamespaceTableRowRequest) {
-    const { namespaceId, tableUId, rowUids, afterRowUId } = props;
-
-    try {
-      await this._client.post(
-        `/namespaces/${namespaceId}/tables/${tableUId}/rows:move`,
-        {
-          body: JSON.stringify({ rowUids, afterRowUId }),
-        },
-      );
-
-      return Promise.resolve();
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
 }
