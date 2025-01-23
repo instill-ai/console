@@ -25,7 +25,7 @@ export function useMoveNamespaceTableRow() {
         throw new Error("namespaceId is required");
       }
 
-      if (!payload.tableUId) {
+      if (!payload.tableUid) {
         throw new Error("tableUid is required");
       }
 
@@ -36,7 +36,7 @@ export function useMoveNamespaceTableRow() {
       queryClient.invalidateQueries({
         queryKey: queryKeyStore.table.getUseListNamespaceTableRowsQueryKey({
           namespaceId: variables.payload.namespaceId,
-          tableUId: variables.payload.tableUId,
+          tableUid: variables.payload.tableUid,
         }),
       });
     },
