@@ -10,7 +10,7 @@ import { QueryBaseProps } from "../types";
 export function useListNamespaceTableRows({
   accessToken,
   namespaceId,
-  tableUId,
+  tableUid,
   enabled,
   pageSize,
   pageToken,
@@ -21,7 +21,7 @@ export function useListNamespaceTableRows({
   return useQuery({
     queryKey: queryKeyStore.table.getUseListNamespaceTableRowsQueryKey({
       namespaceId,
-      tableUId,
+      tableUid,
     }),
     queryFn: async () => {
       if (!accessToken) {
@@ -32,14 +32,14 @@ export function useListNamespaceTableRows({
         throw new Error("namespaceId is required");
       }
 
-      if (!tableUId) {
-        throw new Error("tableUId is required");
+      if (!tableUid) {
+        throw new Error("tableUid is required");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const res = await client.table.listNamespaceTableRows({
         namespaceId,
-        tableUId,
+        tableUid,
         pageToken: pageToken ?? undefined,
         pageSize: pageSize ?? undefined,
         filter: filter ?? undefined,

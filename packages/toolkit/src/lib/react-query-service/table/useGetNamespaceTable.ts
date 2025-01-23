@@ -10,13 +10,13 @@ import { QueryBaseProps } from "../types";
 export function useGetNamespaceTable({
   accessToken,
   namespaceId,
-  tableUId,
+  tableUid,
   enabled,
 }: QueryBaseProps & WithNullableFields<GetNamespaceTableRequest>) {
   return useQuery({
     queryKey: queryKeyStore.table.getUseGetNamespaceTableQueryKey({
       namespaceId,
-      tableUId,
+      tableUid,
     }),
     queryFn: async () => {
       if (!accessToken) {
@@ -27,18 +27,18 @@ export function useGetNamespaceTable({
         throw new Error("namespaceId is required");
       }
 
-      if (!tableUId) {
-        throw new Error("tableUId is required");
+      if (!tableUid) {
+        throw new Error("tableUid is required");
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
       const res = await client.table.getNamespaceTable({
         namespaceId,
-        tableUId,
+        tableUid,
       });
 
       return Promise.resolve(res.table);
     },
-    enabled: enabled && Boolean(accessToken) && Boolean(tableUId),
+    enabled: enabled && Boolean(accessToken) && Boolean(tableUid),
   });
 }

@@ -25,7 +25,7 @@ export function useDeleteNamespaceTable() {
         throw new Error("namespaceId is required");
       }
 
-      if (!payload.tableUId) {
+      if (!payload.tableUid) {
         throw new Error("tableUid is required");
       }
 

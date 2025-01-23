@@ -25,11 +25,11 @@ export function useDeleteNamespaceTableRow() {
         throw new Error("namespaceId is required");
       }
 
-      if (!payload.tableUId) {
+      if (!payload.tableUid) {
         throw new Error("tableUid is required");
       }
 
-      if (!payload.rowUId) {
+      if (!payload.rowUid) {
         throw new Error("rowUid is required");
       }
 
@@ -40,7 +40,7 @@ export function useDeleteNamespaceTableRow() {
       queryClient.invalidateQueries({
         queryKey: queryKeyStore.table.getUseListNamespaceTableRowsQueryKey({
           namespaceId: variables.payload.namespaceId,
-          tableUId: variables.payload.tableUId,
+          tableUid: variables.payload.tableUid,
         }),
       });
     },
