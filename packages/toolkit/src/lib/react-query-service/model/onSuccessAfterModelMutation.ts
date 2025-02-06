@@ -82,6 +82,8 @@ export async function onSuccessAfterModelMutation(
     queryClient.invalidateQueries({ queryKey: ["models", "watch"] });
     queryClient.invalidateQueries({ queryKey: ["models", modelName, "watch"] });
     // modelNameArray[1] - actual user name that is used in the infinite model request query
-    queryClient.invalidateQueries({ queryKey: [modelNameArray[1], "models", "infinite"] });
+    queryClient.invalidateQueries({
+      queryKey: [modelNameArray[1], "models", "infinite"],
+    });
   }, 3000);
 }
