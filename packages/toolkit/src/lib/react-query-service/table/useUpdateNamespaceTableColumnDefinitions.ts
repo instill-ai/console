@@ -19,6 +19,7 @@ export function useUpdateNamespaceTableColumnDefinitions() {
     }: {
       payload: UpdateNamespaceTableColumnDefinitionsRequest;
       accessToken: Nullable<string>;
+      disableInvalidate?: boolean;
     }) => {
       if (!accessToken) {
         throw new Error("accessToken is required");
@@ -38,6 +39,10 @@ export function useUpdateNamespaceTableColumnDefinitions() {
       return Promise.resolve(res.columnDefinitions);
     },
     onSuccess: (_, variables) => {
+      if (variables.disableInvalidate) {
+        return;
+      }
+
       queryClient.invalidateQueries({
         queryKey:
           queryKeyStore.table.getUseGetNamespaceTableColumnDefinitionsQueryKey({

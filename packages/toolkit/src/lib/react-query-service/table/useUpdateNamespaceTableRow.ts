@@ -16,6 +16,7 @@ export function useUpdateNamespaceTableRow() {
     }: {
       payload: UpdateNamespaceTableRowRequest;
       accessToken: Nullable<string>;
+      disableInvalidate?: boolean;
     }) => {
       if (!accessToken) {
         throw new Error("accessToken is required");
@@ -38,6 +39,10 @@ export function useUpdateNamespaceTableRow() {
       return Promise.resolve(res.row);
     },
     onSuccess: (_, variables) => {
+      if (variables.disableInvalidate) {
+        return;
+      }
+
       queryClient.invalidateQueries({
         queryKey: queryKeyStore.table.getUseListNamespaceTableRowsQueryKey({
           namespaceId: variables.payload.namespaceId,

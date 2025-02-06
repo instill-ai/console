@@ -16,6 +16,7 @@ export function useCreateNamespaceTableRow() {
     }: {
       payload: CreateNamespaceTableRowRequest;
       accessToken: Nullable<string>;
+      disableInvalidate?: boolean;
     }) => {
       if (!accessToken) {
         throw new Error("accessToken is required");
@@ -34,6 +35,10 @@ export function useCreateNamespaceTableRow() {
       return Promise.resolve(res.row);
     },
     onSuccess: (_, variables) => {
+      if (variables.disableInvalidate) {
+        return;
+      }
+
       queryClient.invalidateQueries({
         queryKey: queryKeyStore.table.getUseListNamespaceTablesQueryKey({
           namespaceId: variables.payload.namespaceId,
