@@ -147,13 +147,13 @@ export const getModelInstanceTaskToolkit = (task: string) => {
         label: "Image To Text",
       }; */
 
-    case "TASK_SPEECH_RECOGNITION":
+    /* case "TASK_SPEECH_RECOGNITION":
       return {
         getIcon: (className?: string) => {
           return <Icons.SpeechRecognition className={className ?? "h-4 w-4"} />;
         },
         label: "Speech Recognition",
-      };
+      }; */
 
     /* case "TASK_VISUAL_QUESTION_ANSWERING":
       return {
