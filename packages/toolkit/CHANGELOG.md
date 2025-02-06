@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.115.5](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.115.4...@instill-ai/toolkit-v0.115.5) (2025-02-06)
+
+
+### Bug Fixes
+
+* invalidate model list on new model creation ([#1667](https://github.com/instill-ai/console/issues/1667)) ([8a45206](https://github.com/instill-ai/console/commit/8a452063f8034ce02d82608d13744c17a499a491))
+
 ## [0.115.4](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.115.3...@instill-ai/toolkit-v0.115.4) (2025-01-20)
 
 

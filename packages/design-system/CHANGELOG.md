@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.86.3](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.86.2...@instill-ai/design-system-v0.86.3) (2025-02-06)
+
+
+### Bug Fixes
+
+* invalidate model list on new model creation ([#1667](https://github.com/instill-ai/console/issues/1667)) ([8a45206](https://github.com/instill-ai/console/commit/8a452063f8034ce02d82608d13744c17a499a491))
+
 ## [0.86.2](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.86.1...@instill-ai/design-system-v0.86.2) (2025-01-08)
 
 
