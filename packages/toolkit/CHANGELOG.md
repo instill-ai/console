@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.116.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.115.5...@instill-ai/toolkit-v0.116.0) (2025-02-10)
+
+
+### Features
+
+* **pipeline:** rename `format` to `type` ([#1670](https://github.com/instill-ai/console/issues/1670)) ([cbe8c0b](https://github.com/instill-ai/console/commit/cbe8c0bac7ecd0f50ef54cbc6beee1bb7cbf2325))
+
 ## [0.115.5](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.115.4...@instill-ai/toolkit-v0.115.5) (2025-02-06)
 
 
