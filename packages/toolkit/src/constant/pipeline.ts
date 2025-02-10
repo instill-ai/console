@@ -155,15 +155,13 @@ export const getInstillPipelineHttpRequestExample = ({
   return snippet;
 };
 
-export const defaultRawRecipe = `# VDP Version
-version: v1beta
-
+export const defaultRawRecipe = `
 # ---------- Data ----------
 # Variables that manually trigger the pipeline and can be referenced in component actions
 # Structure example:
 # variable:
 #   key:              # Unique identifier for the variable.
-#     format:         # Format type, e.g., image, string, array:string.
+#     type:           # Data type, e.g., image, string, array:string.
 #     title:          # Title of this input field.
 #     description:    # Introduction of what should be input. 
 #
