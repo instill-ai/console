@@ -4,12 +4,14 @@ export function getInstillAdditionalHeaders({
   shareCode,
   stream,
   isConsole,
+  userUid,
 }: {
   returnTraces?: boolean;
   requesterUid?: string;
   shareCode?: string;
   stream?: boolean;
   isConsole?: boolean;
+  userUid?: string;
 }) {
   const headers: Record<string, string> = {};
   const corsHeaders: string[] = [];
@@ -17,6 +19,11 @@ export function getInstillAdditionalHeaders({
   if (returnTraces) {
     headers["instill-return-traces"] = "true";
     corsHeaders.push("instill-return-traces");
+  }
+
+  if (userUid) {
+    headers["instill-user-uid"] = userUid;
+    corsHeaders.push("instill-user-uid");
   }
 
   if (requesterUid) {
