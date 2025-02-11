@@ -26,7 +26,7 @@ export const Stats = (props: StatsProps) => {
       <Tag variant="lightPurple">
         <div className="flex flex-row items-center gap-x-1 uppercase product-body-text-4-medium">
           {getIcon(
-            `w-4 h-4 ${["TASK_CUSTOM"].includes(task) ? "[&>*]:!stroke-semantic-secondary-on-bg" : ""}`,
+            `${["TASK_CHAT", "TASK_CUSTOM"].includes(task) ? "w-3 h-3 stroke-semantic-fg-primary [&>*]:!stroke-semantic-fg-primary" : "w-4 h-4"}`,
           )}
           {label}
         </div>

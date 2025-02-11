@@ -16,7 +16,7 @@ export const InstillModelTask = [
   "TASK_SEMANTIC_SEGMENTATION",
   "TASK_TEXT_TO_IMAGE",
   "TASK_EMBEDDING",
-  "TASK_SPEECH_RECOGNITION",
+  //"TASK_SPEECH_RECOGNITION",
   "TASK_CHAT",
   "TASK_COMPLETION",
   "TASK_CUSTOM",
@@ -59,7 +59,7 @@ const taskPayloads = {
         ]
       }
     }`,
-  TASK_SPEECH_RECOGNITION: ``,
+  //TASK_SPEECH_RECOGNITION: ``,
   TASK_CUSTOM: `{
       "data": {
         "your-custom-property-name": "your custom property value"

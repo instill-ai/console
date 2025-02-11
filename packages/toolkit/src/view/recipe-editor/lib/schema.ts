@@ -97,7 +97,7 @@ export const InstillYamlSchema = {
             "instill-ui-order": {
               type: "integer",
             },
-            format: {
+            type: {
               type: "string",
             },
             listen: {
@@ -109,7 +109,7 @@ export const InstillYamlSchema = {
             },
           },
           additionalProperties: false,
-          required: ["format"],
+          required: ["type"],
         },
       },
     },

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.2](https://github.com/instill-ai/console/compare/instill-sdk-v0.13.1...instill-sdk-v0.13.2) (2025-02-06)
+
+
+### Bug Fixes
+
+* invalidate model list on new model creation ([#1667](https://github.com/instill-ai/console/issues/1667)) ([8a45206](https://github.com/instill-ai/console/commit/8a452063f8034ce02d82608d13744c17a499a491))
+
 ## [0.13.1](https://github.com/instill-ai/console/compare/instill-sdk-v0.13.0...instill-sdk-v0.13.1) (2024-12-13)
 
 
