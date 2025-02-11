@@ -1,6 +1,6 @@
 import { Nullable } from "../types";
 
-export type CreateNamespaceChatRequest = {
+export type CreateInstillChatRequest = {
   namespaceId: string;
   chatDisplayName: string;
 };
@@ -10,7 +10,7 @@ export type ChatAgentConfig = {
   connections: Record<string, string>;
 };
 
-export type NamespaceChat = {
+export type InstillChat = {
   uid: string;
   namespaceId: string;
   chatDisplayName: string;
@@ -20,55 +20,55 @@ export type NamespaceChat = {
   deleteTime: Nullable<string>;
 };
 
-export type CreateNamespaceChatResponse = {
-  chat: NamespaceChat;
+export type CreateInstillChatResponse = {
+  chat: InstillChat;
 };
 
-export type PostNamespaceChatMessage = {
+export type PostInstillChatMessage = {
   message: string;
 };
 
-export enum NamespaceChatMessageType {
+export enum InstillChatMessageType {
   Started = "CHAT_STARTED",
   StatusUpdated = "CHAT_STATUS_UPDATED",
   OutputUpdated = "CHAT_OUTPUT_UPDATED",
   Ended = "CHAT_ENDED",
 }
 
-export type NamespaceChatMessageData = {
+export type InstillChatMessageData = {
   createTime: string;
   chatStatus?: string;
   outputChunkDelta?: string;
 };
 
-export type ListPaginatedNamespaceChatsRequest = {
+export type ListPaginatedInstillChatsRequest = {
   namespaceId: string;
   pageToken?: string;
   pageSize?: number;
 };
 
-export type ListPaginatedNamespaceChatsResponse = {
-  chats: NamespaceChat[];
+export type ListPaginatedInstillChatsResponse = {
+  chats: InstillChat[];
   nextPageToken: string;
   totalSize: number;
 };
 
-export type ListNamespaceChatsRequest = ListPaginatedNamespaceChatsRequest;
+export type ListInstillChatsRequest = ListPaginatedInstillChatsRequest;
 
-export type ListNamespaceChatsResponse = {
-  chats: NamespaceChat[];
+export type ListInstillChatsResponse = {
+  chats: InstillChat[];
 };
 
-export type DeleteNamespaceChatRequest = {
+export type DeleteInstillChatRequest = {
   namespaceId: string;
   chatId: string;
 };
 
-export type PostNamespaceChatMessageRequest = {
+export type PostInstillChatMessageRequest = {
   namespaceId: string;
   chatId: string;
   message: string;
   userUid: string;
 };
 
-export type PostNamespaceChatMessageResponse = ReadableStream;
+export type PostInstillChatMessageResponse = ReadableStream;

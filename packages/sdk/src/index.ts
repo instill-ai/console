@@ -8,5 +8,5 @@ export * from "./application";
 export type * from "./catalog";
 export type * from "./artifact";
 export type * from "./table";
-
+export type * from "./chat";
 export * from "./vdp/trigger/streamHelpers";
