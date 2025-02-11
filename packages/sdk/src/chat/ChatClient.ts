@@ -1,24 +1,24 @@
 import { getInstillAdditionalHeaders, getQueryString } from "../helper";
 import { APIResource } from "../main/resource";
 import {
-  CreateNamespaceChatRequest,
-  CreateNamespaceChatResponse,
-  DeleteNamespaceChatRequest,
-  ListNamespaceChatsRequest,
-  ListNamespaceChatsResponse,
-  ListPaginatedNamespaceChatsRequest,
-  ListPaginatedNamespaceChatsResponse,
-  NamespaceChat,
-  PostNamespaceChatMessageRequest,
-  PostNamespaceChatMessageResponse,
+  CreateInstillChatRequest,
+  CreateInstillChatResponse,
+  DeleteInstillChatRequest,
+  ListInstillChatsRequest,
+  ListInstillChatsResponse,
+  ListPaginatedInstillChatsRequest,
+  ListPaginatedInstillChatsResponse,
+  InstillChat,
+  PostInstillChatMessageRequest,
+  PostInstillChatMessageResponse,
 } from "./types";
 
 export class ChatClient extends APIResource {
-  async createNamespaceChat(props: CreateNamespaceChatRequest) {
+  async createInstillChat(props: CreateInstillChatRequest) {
     const { namespaceId, ...payload } = props;
 
     try {
-      const data = await this._client.post<CreateNamespaceChatResponse>(
+      const data = await this._client.post<CreateInstillChatResponse>(
         `/namespaces/${namespaceId}/chats`,
         {
           body: JSON.stringify(payload),
@@ -31,7 +31,7 @@ export class ChatClient extends APIResource {
     }
   }
 
-  async listPaginatedNamespaceChats(props: ListPaginatedNamespaceChatsRequest) {
+  async listPaginatedInstillChats(props: ListPaginatedInstillChatsRequest) {
     const { namespaceId, pageToken, pageSize } = props;
 
     const queryString = getQueryString({
@@ -42,9 +42,7 @@ export class ChatClient extends APIResource {
 
     try {
       const data =
-        await this._client.get<ListPaginatedNamespaceChatsResponse>(
-          queryString,
-        );
+        await this._client.get<ListPaginatedInstillChatsResponse>(queryString);
 
       return Promise.resolve(data);
     } catch (error) {
@@ -52,7 +50,7 @@ export class ChatClient extends APIResource {
     }
   }
 
-  async listNamespaceChats(props: ListNamespaceChatsRequest) {
+  async listInstillChats(props: ListInstillChatsRequest) {
     const { namespaceId, pageToken, pageSize } = props;
 
     const queryString = getQueryString({
@@ -61,20 +59,18 @@ export class ChatClient extends APIResource {
       pageSize,
     });
 
-    const chats: NamespaceChat[] = [];
+    const chats: InstillChat[] = [];
 
     try {
       const data =
-        await this._client.get<ListPaginatedNamespaceChatsResponse>(
-          queryString,
-        );
+        await this._client.get<ListPaginatedInstillChatsResponse>(queryString);
 
       chats.push(...data.chats);
 
       if (data.nextPageToken) {
         chats.push(
           ...(
-            await this.listNamespaceChats({
+            await this.listInstillChats({
               namespaceId,
               pageSize,
               pageToken: data.nextPageToken,
@@ -83,7 +79,7 @@ export class ChatClient extends APIResource {
         );
       }
 
-      const response: ListNamespaceChatsResponse = {
+      const response: ListInstillChatsResponse = {
         chats,
       };
 
@@ -93,7 +89,7 @@ export class ChatClient extends APIResource {
     }
   }
 
-  async deleteNamespaceChat(props: DeleteNamespaceChatRequest) {
+  async deleteInstillChat(props: DeleteInstillChatRequest) {
     const { namespaceId, chatId } = props;
 
     try {
@@ -105,19 +101,19 @@ export class ChatClient extends APIResource {
     }
   }
 
-  async postNamespaceChatMessage({
+  async postInstillChatMessage({
     namespaceId,
     userUid,
     chatId,
     message,
-  }: PostNamespaceChatMessageRequest) {
+  }: PostInstillChatMessageRequest) {
     const additionalHeaders = getInstillAdditionalHeaders({
       userUid,
       stream: true,
     });
 
     try {
-      const stream = await this._client.post<PostNamespaceChatMessageResponse>(
+      const stream = await this._client.post<PostInstillChatMessageResponse>(
         `/namespaces/${namespaceId}/chats/${chatId}/chat-with-agent`,
         {
           body: JSON.stringify({ message }),
