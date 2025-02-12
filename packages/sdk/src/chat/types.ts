@@ -28,13 +28,15 @@ export type PostInstillChatMessage = {
   message: string;
 };
 
-export const enum InstillChatMessageType {
+export enum InstillChatMessageEnum {
   Started = "CHAT_STARTED",
   StatusUpdated = "CHAT_STATUS_UPDATED",
   OutputUpdated = "CHAT_OUTPUT_UPDATED",
   Ended = "CHAT_ENDED",
   UserMessage = "CHAT_USER_MESSAGE",
 }
+
+export type InstillChatMessageType = `${InstillChatMessageEnum}`;
 
 export type InstillChatMessageData = {
   createTime: string;
