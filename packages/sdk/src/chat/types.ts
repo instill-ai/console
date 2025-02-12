@@ -44,6 +44,11 @@ export type InstillChatMessageData = {
   outputChunkDelta?: string;
 };
 
+export type InstillChatFeed = {
+  event: `${InstillChatMessageEnum}`;
+  data: InstillChatMessageData;
+}[];
+
 export type ListPaginatedInstillChatsRequest = {
   namespaceId: string;
   pageToken?: string;
