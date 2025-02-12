@@ -1,5 +1,5 @@
 import { Nullable } from "../types";
-import { InstillChatMessageEnum } from "./constant";
+import { instillChatMessageEnum } from "./constant";
 
 export type CreateInstillChatRequest = {
   namespaceId: string;
@@ -30,7 +30,7 @@ export type PostInstillChatMessage = {
 };
 
 export type InstillChatMessageType =
-  (typeof InstillChatMessageEnum)[keyof typeof InstillChatMessageEnum];
+  (typeof instillChatMessageEnum)[keyof typeof instillChatMessageEnum];
 
 export type InstillChatMessageData = {
   createTime: string;
