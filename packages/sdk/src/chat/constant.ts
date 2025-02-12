@@ -1,4 +1,4 @@
-export const InstillChatMessageEnum = {
+export const instillChatMessageEnum = {
   Started: "CHAT_STARTED",
   StatusUpdated: "CHAT_STATUS_UPDATED",
   OutputUpdated: "CHAT_OUTPUT_UPDATED",
