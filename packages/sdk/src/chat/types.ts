@@ -28,7 +28,7 @@ export type PostInstillChatMessage = {
   message: string;
 };
 
-export enum InstillChatMessageType {
+export const enum InstillChatMessageType {
   Started = "CHAT_STARTED",
   StatusUpdated = "CHAT_STATUS_UPDATED",
   OutputUpdated = "CHAT_OUTPUT_UPDATED",
