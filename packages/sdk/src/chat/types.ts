@@ -33,6 +33,7 @@ export enum InstillChatMessageType {
   StatusUpdated = "CHAT_STATUS_UPDATED",
   OutputUpdated = "CHAT_OUTPUT_UPDATED",
   Ended = "CHAT_ENDED",
+  UserMessage = "CHAT_USER_MESSAGE",
 }
 
 export type InstillChatMessageData = {
