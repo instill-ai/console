@@ -16,6 +16,7 @@ export function useMoveNamespaceTableRow() {
     }: {
       payload: MoveNamespaceTableRowRequest;
       accessToken: Nullable<string>;
+      disableInvalidate?: boolean;
     }) => {
       if (!accessToken) {
         throw new Error("accessToken is required");
@@ -33,6 +34,10 @@ export function useMoveNamespaceTableRow() {
       await client.table.moveNamespaceTableRow(payload);
     },
     onSuccess: (_, variables) => {
+      if (variables.disableInvalidate) {
+        return;
+      }
+
       queryClient.invalidateQueries({
         queryKey: queryKeyStore.table.getUseListNamespaceTableRowsQueryKey({
           namespaceId: variables.payload.namespaceId,
