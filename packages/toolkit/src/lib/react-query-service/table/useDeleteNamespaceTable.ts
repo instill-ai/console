@@ -16,6 +16,7 @@ export function useDeleteNamespaceTable() {
     }: {
       payload: DeleteNamespaceTableRequest;
       accessToken: Nullable<string>;
+      disableInvalidate?: boolean;
     }) => {
       if (!accessToken) {
         throw new Error("accessToken is required");
@@ -33,6 +34,10 @@ export function useDeleteNamespaceTable() {
       await client.table.deleteNamespaceTable(payload);
     },
     onSuccess: (_, variables) => {
+      if (variables.disableInvalidate) {
+        return;
+      }
+
       queryClient.invalidateQueries({
         queryKey: queryKeyStore.table.getUseListNamespaceTablesQueryKey({
           namespaceId: variables.payload.namespaceId,
