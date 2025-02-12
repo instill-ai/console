@@ -1,5 +1,4 @@
 import { Nullable } from "../types";
-import { instillChatMessageEnum } from "./constant";
 
 export type CreateInstillChatRequest = {
   namespaceId: string;
@@ -29,8 +28,15 @@ export type PostInstillChatMessage = {
   message: string;
 };
 
-export type InstillChatMessageType =
-  (typeof instillChatMessageEnum)[keyof typeof instillChatMessageEnum];
+enum InstillChatMessageEnum {
+  Started = "CHAT_STARTED",
+  StatusUpdated = "CHAT_STATUS_UPDATED",
+  OutputUpdated = "CHAT_OUTPUT_UPDATED",
+  Ended = "CHAT_ENDED",
+  UserMessage = "CHAT_USER_MESSAGE",
+}
+
+export type InstillChatMessageType = `${InstillChatMessageEnum}`;
 
 export type InstillChatMessageData = {
   createTime: string;
