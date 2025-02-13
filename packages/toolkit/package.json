@@ -5,7 +5,7 @@
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
   "keywords": [
-    "instill-ai",
+    "instill-ai", 
     "design-system",
     "toolkit",
     "react"
