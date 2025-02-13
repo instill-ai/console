@@ -242,3 +242,18 @@ export type MoveNamespaceTableRowRequest = {
   rowUids: string[];
   beforeRowUid?: string;
 };
+
+export type ExportFormat =
+  | "EXPORT_FORMAT_UNSPECIFIED"
+  | "EXPORT_FORMAT_CSV"
+  | "EXPORT_FORMAT_PARQUET";
+
+export type ExportNamespaceTableRequest = {
+  namespaceId: string;
+  tableUid: string;
+  format: ExportFormat;
+};
+
+export type ExportNamespaceTableResponse = {
+  data: string;
+};

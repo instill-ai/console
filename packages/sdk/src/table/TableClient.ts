@@ -7,6 +7,8 @@ import {
   CreateNamespaceTableRowResponse,
   DeleteNamespaceTableRequest,
   DeleteNamespaceTableRowRequest,
+  ExportNamespaceTableRequest,
+  ExportNamespaceTableResponse,
   GetNamespaceTableColumnDefinitionsRequest,
   GetNamespaceTableColumnDefinitionsResponse,
   GetNamespaceTableRequest,
@@ -344,6 +346,23 @@ export class TableClient extends APIResource {
       );
 
       return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async exportNamespaceTable(props: ExportNamespaceTableRequest) {
+    const { namespaceId, tableUid, format } = props;
+
+    try {
+      const data = await this._client.post<ExportNamespaceTableResponse>(
+        `/namespaces/${namespaceId}/tables/${tableUid}/export`,
+        {
+          body: JSON.stringify({ format }),
+        },
+      );
+
+      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }
