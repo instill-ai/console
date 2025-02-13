@@ -27,7 +27,9 @@ export function useExportNamespaceTable() {
       }
 
       const client = getInstillCatalogAPIClient({ accessToken });
-      await client.table.exportNamespaceTable(payload);
+      const res = await client.table.exportNamespaceTable(payload);
+
+      return Promise.resolve(res);
     },
   });
 }

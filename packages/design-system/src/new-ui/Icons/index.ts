@@ -118,6 +118,7 @@ import { Pipeline } from "./Pipeline";
 import { Play } from "./Play";
 import { PlayCircle } from "./PlayCircle";
 import { Plus } from "./Plus";
+import { PlusSquare } from "./PlusSquare";
 import { PPTFile } from "./PPTFile";
 import { PPTXFile } from "./PPTXFile";
 import { PuzzlePiece01 } from "./PuzzlePiece01";
@@ -298,6 +299,7 @@ export const Icons = {
   Play,
   PlayCircle,
   Plus,
+  PlusSquare,
   PPTFile,
   PPTXFile,
   PuzzlePiece01,

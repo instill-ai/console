@@ -8,7 +8,6 @@ import {
   DeleteNamespaceTableRequest,
   DeleteNamespaceTableRowRequest,
   ExportNamespaceTableRequest,
-  ExportNamespaceTableResponse,
   GetNamespaceTableColumnDefinitionsRequest,
   GetNamespaceTableColumnDefinitionsResponse,
   GetNamespaceTableRequest,
@@ -355,10 +354,11 @@ export class TableClient extends APIResource {
     const { namespaceId, tableUid, format } = props;
 
     try {
-      const data = await this._client.post<ExportNamespaceTableResponse>(
+      const data = await this._client.post<Response>(
         `/namespaces/${namespaceId}/tables/${tableUid}/export`,
         {
           body: JSON.stringify({ format }),
+          isBlob: true,
         },
       );
 
