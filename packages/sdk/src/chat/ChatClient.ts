@@ -116,6 +116,7 @@ export class ChatClient extends APIResource {
         {
           body: JSON.stringify({ message }),
           additionalHeaders,
+          stream: true,
         },
       );
 
