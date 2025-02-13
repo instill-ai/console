@@ -103,12 +103,10 @@ export class ChatClient extends APIResource {
 
   async postInstillChatMessage({
     namespaceId,
-    userUid,
     chatId,
     message,
   }: PostInstillChatMessageRequest) {
     const additionalHeaders = getInstillAdditionalHeaders({
-      userUid,
       stream: true,
     });
 

@@ -76,7 +76,6 @@ export type PostInstillChatMessageRequest = {
   namespaceId: string;
   chatId: string;
   message: string;
-  userUid: string;
 };
 
 export type PostInstillChatMessageResponse = ReadableStream;
