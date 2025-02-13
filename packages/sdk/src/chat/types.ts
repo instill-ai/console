@@ -44,10 +44,12 @@ export type InstillChatMessageData = {
   outputChunkDelta?: string;
 };
 
-export type InstillChatFeed = {
+export type InstillChatEvent = {
   event: `${InstillChatMessageEnum}`;
   data: InstillChatMessageData;
-}[];
+};
+
+export type InstillChatFeed = InstillChatEvent[];
 
 export type ListPaginatedInstillChatsRequest = {
   namespaceId: string;
@@ -78,4 +80,6 @@ export type PostInstillChatMessageRequest = {
   message: string;
 };
 
-export type PostInstillChatMessageResponse = ReadableStream;
+export type PostInstillChatMessageResponse = {
+  body: ReadableStream;
+};
