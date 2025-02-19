@@ -1,4 +1,4 @@
-import { GeneralRecord } from "../types";
+import { GeneralRecord, Nullable } from "../types";
 
 export type Table = {
   uid: string;
@@ -70,11 +70,24 @@ export type DeleteNamespaceTableRequest = {
   tableUid: string;
 };
 
+export type ColumnSort =
+  | "SORT_UNSPECIFIED"
+  | "SORT_ASCENDING"
+  | "SORT_DESCENDING";
+
+export type ColumnAgentConfig = {
+  instructions: string;
+  enableWebSearch: boolean;
+};
+
 export type ColumnDefinition = {
   columnUid: string;
+  name?: string;
   type: string;
   autofill: GeneralRecord;
   order: number;
+  sort?: ColumnSort;
+  agentConfig?: ColumnAgentConfig;
 };
 
 export type ColumnDefinitions = Record<string, ColumnDefinition>;
@@ -98,6 +111,19 @@ export type UpdateNamespaceTableColumnDefinitionsResponse = {
   columnDefinitions: ColumnDefinitions;
 };
 
+export type CellStatus =
+  | "CELL_STATUS_UNSPECIFIED"
+  | "CELL_STATUS_IDLE"
+  | "CELL_STATUS_PENDING"
+  | "CELL_STATUS_PROCESSING"
+  | "CELL_STATUS_FAILED"
+  | "CELL_STATUS_COMPLETED";
+
+export type FaithfulnessCheckingResult = {
+  score: number;
+  result: string;
+};
+
 export type BaseCell = {
   uid: string;
   columnUid: string;
@@ -105,6 +131,8 @@ export type BaseCell = {
   createTime: string;
   type: string;
   metadata: GeneralRecord;
+  status: CellStatus;
+  faithfulnessCheckingResult: Nullable<FaithfulnessCheckingResult>;
 };
 
 export type StringCell = BaseCell & {
@@ -241,4 +269,15 @@ export type MoveNamespaceTableRowRequest = {
   tableUid: string;
   rowUids: string[];
   beforeRowUid?: string;
+};
+
+export type ExportFormat =
+  | "EXPORT_FORMAT_UNSPECIFIED"
+  | "EXPORT_FORMAT_CSV"
+  | "EXPORT_FORMAT_PARQUET";
+
+export type ExportNamespaceTableRequest = {
+  namespaceId: string;
+  tableUid: string;
+  format: ExportFormat;
 };

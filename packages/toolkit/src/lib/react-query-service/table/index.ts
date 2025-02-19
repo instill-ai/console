@@ -2,6 +2,7 @@ export * from "./useCreateNamespaceTable";
 export * from "./useCreateNamespaceTableRow";
 export * from "./useDeleteNamespaceTable";
 export * from "./useDeleteNamespaceTableRow";
+export * from "./useExportNamespaceTable";
 export * from "./useGetNamespaceTable";
 export * from "./useGetNamespaceTableColumnDefinitions";
 export * from "./useListNamespaceTableRows";
