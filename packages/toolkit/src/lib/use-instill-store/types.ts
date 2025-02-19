@@ -310,6 +310,8 @@ export type ChatSlice = {
   updateLeftSidebarOpen: (fn: (prev: boolean) => boolean) => void;
   rightSidebarOpen: boolean;
   updateRightSidebarOpen: (fn: (prev: boolean) => boolean) => void;
+  activeInstillChatId: Nullable<string>;
+  updateActiveInstillChatId: (fn: (prev: Nullable<string>) => Nullable<string>) => void;
 };
 
 export type InstillStore = SmartHintSlice &
