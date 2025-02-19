@@ -28,7 +28,7 @@ export type PostInstillChatMessage = {
   message: string;
 };
 
-enum InstillChatMessageEnum {
+enum InstillChatTypeEnum {
   Started = "CHAT_STARTED",
   StatusUpdated = "CHAT_STATUS_UPDATED",
   OutputUpdated = "CHAT_OUTPUT_UPDATED",
@@ -36,7 +36,7 @@ enum InstillChatMessageEnum {
   UserMessage = "CHAT_USER_MESSAGE",
 }
 
-export type InstillChatMessageType = `${InstillChatMessageEnum}`;
+export type InstillChatType = `${InstillChatTypeEnum}`;
 
 export type InstillChatMessageData = {
   createTime: string;
@@ -45,7 +45,7 @@ export type InstillChatMessageData = {
 };
 
 export type InstillChatEvent = {
-  event: `${InstillChatMessageEnum}`;
+  event: `${InstillChatTypeEnum}`;
   data: InstillChatMessageData;
 };
 
@@ -82,4 +82,46 @@ export type PostInstillChatMessageRequest = {
 
 export type PostInstillChatMessageResponse = {
   body: ReadableStream;
+};
+
+export type ListPaginatedInstillChatMessagesRequest = {
+  namespaceId: string;
+  chatId: string;
+  pageToken?: string;
+  pageSize?: number;
+};
+
+export type ListPaginatedInstillChatMessagesResponse = {
+  messages: InstillChatMessage[];
+  nextPageToken: string;
+  totalSize: number;
+};
+
+export type ListInstillChatMessagesRequest =
+  ListPaginatedInstillChatMessagesRequest;
+
+export type ListInstillChatMessagesResponse = {
+  messages: InstillChatMessage[];
+};
+
+export type InstillChatMessageCitation = string;
+
+export type InstillChatMessageRole = "user" | "assistant";
+
+enum InstillChatMessageTypeEnum {
+  Text = "MESSAGE_TYPE_TEXT",
+}
+
+export type InstillChatMessageType = `${InstillChatMessageTypeEnum}`;
+
+export type InstillChatMessage = {
+  uid: string;
+  chatUid: string;
+  content: string;
+  role: InstillChatMessageRole;
+  type: InstillChatMessageType;
+  createTime: string;
+  updateTime: string;
+  msgSenderUid: string;
+  citations: InstillChatMessageCitation[];
 };
