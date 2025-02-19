@@ -42,7 +42,9 @@ export const createChatSlice: StateCreator<
       };
     }),
   activeInstillChatId: null,
-  updateActiveInstillChatId: (fn: (prev: Nullable<string>) => Nullable<string>) =>
+  updateActiveInstillChatId: (
+    fn: (prev: Nullable<string>) => Nullable<string>
+  ) =>
     set((state) => {
       return {
         ...state,
