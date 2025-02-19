@@ -1,6 +1,7 @@
 import { StateCreator } from "zustand";
 
 import { ChatSlice, InstillStore, InstillStoreMutators } from "./types";
+import { Nullable } from "../type";
 
 export const createChatSlice: StateCreator<
   InstillStore,
@@ -38,6 +39,14 @@ export const createChatSlice: StateCreator<
       return {
         ...state,
         rightSidebarOpen: fn(state.rightSidebarOpen),
+      };
+    }),
+  activeInstillChatId: null,
+  updateActiveInstillChatId: (fn: (prev: Nullable<string>) => Nullable<string>) =>
+    set((state) => {
+      return {
+        ...state,
+        activeInstillChatId: fn(state.activeInstillChatId),
       };
     }),
 });
