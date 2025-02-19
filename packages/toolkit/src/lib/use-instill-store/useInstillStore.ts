@@ -8,6 +8,7 @@ import { createGeneralSlice } from "./generalSlice";
 import { createPipelineBuilderSlice } from "./pipelineBuilderSlice";
 import { createRecentlyUsedSlice } from "./recentlyUsedSlice";
 import { createSmartHintSlice } from "./smartHintSlice";
+import { createTableSlice } from "./tableSlice";
 import { InstillStore } from "./types";
 
 export const useInstillStore = create<InstillStore>()(
@@ -20,6 +21,7 @@ export const useInstillStore = create<InstillStore>()(
       ...createEditorSlice(...a),
       ...createFeatureFlagSlice(...a),
       ...createChatSlice(...a),
+      ...createTableSlice(...a),
     })),
   ),
 );

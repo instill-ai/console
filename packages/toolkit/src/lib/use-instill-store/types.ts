@@ -306,10 +306,21 @@ export type ChatSlice = {
   updateEnabledTools: (fn: (prev: string[]) => string[]) => void;
   enableToolSuggestion: boolean;
   updateEnableToolSuggestion: (fn: (prev: boolean) => boolean) => void;
+};
+
+export type TableMode = "table" | "preview";
+
+export type TableSlice = {
   leftSidebarOpen: boolean;
   updateLeftSidebarOpen: (fn: (prev: boolean) => boolean) => void;
   rightSidebarOpen: boolean;
   updateRightSidebarOpen: (fn: (prev: boolean) => boolean) => void;
+  tableMode: TableMode;
+  updateTableMode: (fn: (prev: TableMode) => TableMode) => void;
+  currentTablePreviewRowUid: Nullable<string>;
+  updateCurrentTablePreviewRowUid: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
 };
 
 export type InstillStore = SmartHintSlice &
@@ -318,7 +329,8 @@ export type InstillStore = SmartHintSlice &
   RecentlyUsedSlice &
   EditorSlice &
   FeatureFlagSlice &
-  ChatSlice;
+  ChatSlice &
+  TableSlice;
 
 export type InstillStoreMutators = [
   ["zustand/devtools", never],
