@@ -11,6 +11,11 @@ import {
   InstillChat,
   PostInstillChatMessageRequest,
   PostInstillChatMessageResponse,
+  ListPaginatedInstillChatMessagesRequest,
+  ListPaginatedInstillChatMessagesResponse,
+  ListInstillChatMessagesRequest,
+  InstillChatMessage,
+  ListInstillChatMessagesResponse,
 } from "./types";
 
 export class ChatClient extends APIResource {
@@ -121,6 +126,71 @@ export class ChatClient extends APIResource {
       );
 
       return Promise.resolve(stream);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listPaginatedInstillChatMessages(
+    props: ListPaginatedInstillChatMessagesRequest,
+  ) {
+    const { namespaceId, chatId, pageToken, pageSize } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/chats/${chatId}/messages`,
+      pageToken,
+      pageSize,
+    });
+
+    try {
+      const data =
+        await this._client.get<ListPaginatedInstillChatMessagesResponse>(
+          queryString,
+        );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listInstillChatMessages(props: ListInstillChatMessagesRequest) {
+    const { namespaceId, chatId, pageToken, pageSize } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/chats/${chatId}/messages`,
+      pageToken,
+      pageSize,
+    });
+
+    const messages: InstillChatMessage[] = [];
+
+    try {
+      const data =
+        await this._client.get<ListPaginatedInstillChatMessagesResponse>(
+          queryString,
+        );
+
+      messages.push(...data.messages);
+
+      if (data.nextPageToken) {
+        messages.push(
+          ...(
+            await this.listInstillChatMessages({
+              namespaceId,
+              chatId,
+              pageSize,
+              pageToken: data.nextPageToken,
+            })
+          ).messages,
+        );
+      }
+
+      const response: ListInstillChatMessagesResponse = {
+        messages,
+      };
+
+      return Promise.resolve(response);
     } catch (error) {
       return Promise.reject(error);
     }
