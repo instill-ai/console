@@ -70,11 +70,24 @@ export type DeleteNamespaceTableRequest = {
   tableUid: string;
 };
 
+export type ColumnSort =
+  | "SORT_UNSPECIFIED"
+  | "SORT_ASCENDING"
+  | "SORT_DESCENDING";
+
+export type ColumnAgentConfig = {
+  instructions: string;
+  enableWebSearch: boolean;
+};
+
 export type ColumnDefinition = {
   columnUid: string;
+  name?: string;
   type: string;
   autofill: GeneralRecord;
   order: number;
+  sort?: ColumnSort;
+  agentConfig?: ColumnAgentConfig;
 };
 
 export type ColumnDefinitions = Record<string, ColumnDefinition>;
