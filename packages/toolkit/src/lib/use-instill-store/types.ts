@@ -308,6 +308,8 @@ export type ChatSlice = {
   updateEnableToolSuggestion: (fn: (prev: boolean) => boolean) => void;
   activeInstillChatId: Nullable<string>;
   updateActiveInstillChatId: (fn: (prev: Nullable<string>) => Nullable<string>) => void;
+  chatFullscreenOpen: boolean;
+  updateChatFullscreenOpen: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type TableMode = "table" | "preview";
