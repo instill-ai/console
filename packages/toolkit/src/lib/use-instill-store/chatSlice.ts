@@ -51,4 +51,12 @@ export const createChatSlice: StateCreator<
         activeInstillChatId: fn(state.activeInstillChatId),
       };
     }),
+  chatFullscreenOpen: true,
+  updateChatFullscreenOpen: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        chatFullscreenOpen: fn(state.chatFullscreenOpen),
+      };
+    }),
 });
