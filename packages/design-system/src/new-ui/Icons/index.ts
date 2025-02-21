@@ -149,6 +149,7 @@ import { Speaker01 } from "./Speaker01";
 import { SpeechRecognition } from "./SpeechRecognition";
 import { Star06 } from "./Star06";
 import { Stop } from "./Stop";
+import { Table } from "./Table";
 import { Tag01 } from "./Tag01";
 import { TextA } from "./TextA";
 import { TextGenerationChat } from "./TextGenerationChat";
@@ -330,6 +331,7 @@ export const Icons = {
   SortLinesDown,
   SortLinesUp,
   Star06,
+  Table,
   Tag01,
   TextA,
   TextGenerationChat,
