@@ -49,7 +49,7 @@ export type InstillChatEvent = {
   data: InstillChatMessageData;
 };
 
-export type InstillChatFeed = InstillChatEvent[];
+export type InstillChatFeed = InstillChatMessage[];
 
 export type ListPaginatedInstillChatsRequest = {
   namespaceId: string;
