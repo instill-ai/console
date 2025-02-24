@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.13.2...instill-sdk-v0.14.0) (2025-02-24)
+
+
+### Features
+
+* fully update vitest to 2.1.9 ([#1683](https://github.com/instill-ai/console/issues/1683)) ([7da518f](https://github.com/instill-ai/console/commit/7da518fb3fdbee82cc3e1a9b4c0ae1617d1db1c5))
+
 ## [0.13.2](https://github.com/instill-ai/console/compare/instill-sdk-v0.13.1...instill-sdk-v0.13.2) (2025-02-06)
 
 
