@@ -94,7 +94,7 @@
     "tailwindcss": "catalog:",
     "tsup": "catalog:",
     "typescript": "^5.5.4",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.1"
   },
   "peerDependencies": {
     "react": "^18.2.0",
