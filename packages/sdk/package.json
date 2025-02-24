@@ -54,7 +54,7 @@
     "swagger2openapi": "^7.0.8",
     "tsup": "catalog:",
     "tsx": "^4.6.2",
-    "vitest": "^2.0.4",
+    "vitest": "^2.1.9",
     "zod": "^3.23.8"
   },
   "publishConfig": {
