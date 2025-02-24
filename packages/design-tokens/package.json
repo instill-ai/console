@@ -40,7 +40,7 @@
     "tailwindcss": "catalog:",
     "tsx": "^4.6.2",
     "typescript": "^5.5.4",
-    "vitest": "^1.6.1"
+    "vitest": "^2.1.9"
   },
   "publishConfig": {
     "access": "public"
