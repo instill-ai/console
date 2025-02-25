@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.65.0-beta](https://github.com/instill-ai/console/compare/v0.64.3-beta...v0.65.0-beta) (2025-02-25)
+
+
+### Features
+
+* add env example in console ([#1685](https://github.com/instill-ai/console/issues/1685)) ([d1f2457](https://github.com/instill-ai/console/commit/d1f245756eeacd325ee607b568e489dccbeaa43b))
+
 ## [0.64.3-beta](https://github.com/instill-ai/console/compare/v0.64.2-beta...v0.64.3-beta) (2025-01-20)
 
 
