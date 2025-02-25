@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.116.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.115.5...@instill-ai/toolkit-v0.116.0) (2025-02-24)
+
+
+### Features
+
+* fully update vitest to 2.1.9 ([#1683](https://github.com/instill-ai/console/issues/1683)) ([7da518f](https://github.com/instill-ai/console/commit/7da518fb3fdbee82cc3e1a9b4c0ae1617d1db1c5))
+* **pipeline:** rename `format` to `type` ([#1670](https://github.com/instill-ai/console/issues/1670)) ([cbe8c0b](https://github.com/instill-ai/console/commit/cbe8c0bac7ecd0f50ef54cbc6beee1bb7cbf2325))
+
+
+### Bug Fixes
+
+* fix several deps vulnerability (vite, vitest) ([#1682](https://github.com/instill-ai/console/issues/1682)) ([18ef687](https://github.com/instill-ai/console/commit/18ef687eb23badb8ca3106c806bd3143b6be501a))
+
 ## [0.115.5](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.115.4...@instill-ai/toolkit-v0.115.5) (2025-02-06)
 
 

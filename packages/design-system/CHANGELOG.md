@@ -1,5 +1,17 @@
 # @instill-ai/design-system
 
+## [0.87.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.86.3...@instill-ai/design-system-v0.87.0) (2025-02-24)
+
+
+### Features
+
+* fully update vitest to 2.1.9 ([#1683](https://github.com/instill-ai/console/issues/1683)) ([7da518f](https://github.com/instill-ai/console/commit/7da518fb3fdbee82cc3e1a9b4c0ae1617d1db1c5))
+
+
+### Bug Fixes
+
+* fix several deps vulnerability (vite, vitest) ([#1682](https://github.com/instill-ai/console/issues/1682)) ([18ef687](https://github.com/instill-ai/console/commit/18ef687eb23badb8ca3106c806bd3143b6be501a))
+
 ## [0.86.3](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.86.2...@instill-ai/design-system-v0.86.3) (2025-02-06)
 
 
