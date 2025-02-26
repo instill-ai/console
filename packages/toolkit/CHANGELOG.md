@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.116.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.116.0...@instill-ai/toolkit-v0.116.1) (2025-02-26)
+
+
+### Bug Fixes
+
+* remove applications from the navbar ([#1687](https://github.com/instill-ai/console/issues/1687)) ([de95fb2](https://github.com/instill-ai/console/commit/de95fb2c304f93ffdc43c5040eb7df3a2ec20f37))
+
 ## [0.116.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.115.5...@instill-ai/toolkit-v0.116.0) (2025-02-24)
 
 
