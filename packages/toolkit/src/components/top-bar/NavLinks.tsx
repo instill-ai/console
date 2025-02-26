@@ -13,7 +13,6 @@ import {
   useShallow,
 } from "../../lib";
 import { useUserNamespaces } from "../../lib/useUserNamespaces";
-import { env } from "../../server";
 
 export type NavLinkProps = {
   title: string;
@@ -40,11 +39,6 @@ const navLinkItems: NavLinkProps[] = [
     pathname: "catalog",
     Icon: Icons.Database01,
     title: "Artifacts",
-  },
-  {
-    pathname: "applications",
-    Icon: Icons.Browser,
-    title: "Applications",
   },
   {
     pathname: "dashboard",
@@ -142,28 +136,19 @@ export const NavLinks = ({ isExploreRoute }: { isExploreRoute?: boolean }) => {
     accessToken,
   });
 
-  const isCloud = env("NEXT_PUBLIC_APP_ENV") === "CLOUD";
-
   return (
     <React.Fragment>
       {me.isSuccess
-        ? navLinkItems
-            .filter((item) => {
-              if (isCloud) {
-                return true;
-              }
-              return item.pathname !== "applications";
-            })
-            .map(({ pathname, Icon, title }) => (
-              <NavLink
-                key={pathname}
-                pathname={pathname}
-                Icon={Icon}
-                title={title}
-                isExploreRoute={isExploreRoute}
-                strict={true}
-              />
-            ))
+        ? navLinkItems.map(({ pathname, Icon, title }) => (
+            <NavLink
+              key={pathname}
+              pathname={pathname}
+              Icon={Icon}
+              title={title}
+              isExploreRoute={isExploreRoute}
+              strict={true}
+            />
+          ))
         : null}
     </React.Fragment>
   );
