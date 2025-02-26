@@ -45,7 +45,7 @@
     "@instill-ai/tsconfig": "workspace:*",
     "@types/lodash": "^4.17.7",
     "@types/whatwg-fetch": "^0.0.33",
-    "@vitest/coverage-istanbul": "^2.0.4",
+    "@vitest/coverage-istanbul": "2.1.9",
     "dotenv": "^16.0.1",
     "lodash": "^4.17.21",
     "msw": "^2.3.2",
@@ -54,7 +54,7 @@
     "swagger2openapi": "^7.0.8",
     "tsup": "catalog:",
     "tsx": "^4.6.2",
-    "vitest": "^2.1.9",
+    "vitest": "2.1.9",
     "zod": "^3.23.8"
   },
   "publishConfig": {
