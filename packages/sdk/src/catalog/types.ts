@@ -181,6 +181,7 @@ export type CreateNamespaceCatalogFileRequest = {
   name: string;
   type: FileType;
   content?: string;
+  objectUid?: string;
 };
 
 export type CreateNamespaceCatalogFileResponse = {
