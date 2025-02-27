@@ -2,6 +2,7 @@ import { Nullable } from "instill-sdk";
 import { StateCreator } from "zustand";
 
 import {
+  CurrentTableSort,
   InstillStore,
   InstillStoreMutators,
   TableMode,
@@ -46,6 +47,16 @@ export const createTableSlice: StateCreator<
       return {
         ...state,
         currentTablePreviewRowUid: fn(state.currentTablePreviewRowUid),
+      };
+    }),
+  currentTableSort: null,
+  updateCurrentTableSort: (
+    fn: (prev: Nullable<CurrentTableSort>) => Nullable<CurrentTableSort>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        currentTableSort: fn(state.currentTableSort),
       };
     }),
 });
