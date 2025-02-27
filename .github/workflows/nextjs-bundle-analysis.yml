@@ -5,6 +5,8 @@ name: "Next.js Bundle Analysis"
 
 on:
   pull_request:
+    branches:
+      - main
   push:
     branches:
       - main # change this if your default branch is named differently
