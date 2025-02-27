@@ -178,8 +178,8 @@ export type GetNamespaceCatalogSingleSourceOfTruthFileResponse = {
 export type CreateNamespaceCatalogFileRequest = {
   namespaceId: string;
   catalogId: string;
-  name: string;
-  type: FileType;
+  name?: string;
+  type?: FileType;
   content?: string;
   objectUid?: string;
 };
