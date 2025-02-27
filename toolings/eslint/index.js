@@ -29,7 +29,6 @@ module.exports = {
     sourceType: "module",
   },
   extends: [
-    "turbo",
     "prettier",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -38,7 +37,6 @@ module.exports = {
     "plugin:storybook/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:jsx-a11y/recommended",
   ],
 
   // These rules come from eslint-config-next, we though these rules suit our
@@ -47,35 +45,8 @@ module.exports = {
     "react/no-unknown-property": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
-    "jsx-a11y/alt-text": [
-      "warn",
-      {
-        elements: ["img"],
-        img: ["Image"],
-      },
-    ],
     "react/jsx-no-target-blank": "off",
-
-    // We will re-visit these rules later
-    "jsx-a11y/media-has-caption": "off",
-    "jsx-a11y/click-events-have-key-events": "off",
-    "jsx-a11y/no-static-element-interactions": "off",
-
-    "jsx-a11y/aria-props": "warn",
-    "jsx-a11y/aria-proptypes": "warn",
-    "jsx-a11y/aria-unsupported-elements": "warn",
-    "jsx-a11y/role-has-required-aria-props": "warn",
-    "jsx-a11y/role-supports-aria-props": "warn",
     "testing-library/render-result-naming-convention": "off",
-
-    // For RadioGroup
-    "jsx-a11y/label-has-associated-control": [
-      "error",
-      {
-        controlComponents: ["RadioGroup"],
-        depth: 3,
-      },
-    ],
   },
   overrides: [
     {

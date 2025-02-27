@@ -44,9 +44,6 @@ export function VariableResponseNodeControlPanel({
         <Tooltip.Provider>
           <Tooltip.Root>
             <Tooltip.Trigger asChild>
-              {/* 
-              eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-            */}
               <span className="flex" tabIndex={0}>
                 <button
                   onClick={() => {
