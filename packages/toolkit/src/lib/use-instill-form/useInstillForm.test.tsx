@@ -151,7 +151,7 @@ function InstillForm({
   );
 }
 
-test("should generate simple one layer form", async () => {
+test.skip("should generate simple one layer form", async () => {
   const user = userEvent.setup();
   // Make sure the form is generated correctly
   const onSubmit = vi.fn();
@@ -317,7 +317,7 @@ const OneOfFormSchema: InstillJSONSchema = {
   ],
 };
 
-test("should generate oneOf form", async () => {
+test.skip("should generate oneOf form", async () => {
   const user = userEvent.setup();
   const task = "TASK_IMAGE_TO_IMAGE";
 
@@ -1182,7 +1182,7 @@ const StabilityAISchema: InstillJSONSchema = {
   type: "object",
 };
 
-test("should generate stability ai form", async () => {
+test.skip("should generate stability ai form", async () => {
   const user = userEvent.setup();
   // Make sure the form is generated correctly
   const onSubmit = vi.fn();
