@@ -27,9 +27,6 @@ const NodeDropdownMenuRoot = ({
         <Tooltip.Provider>
           <Tooltip.Root>
             <Tooltip.Trigger asChild>
-              {/* 
-                eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-              */}
               <span className="flex" tabIndex={0}>
                 <Button
                   className="!my-auto !px-1 !py-1 hover:!bg-semantic-bg-secondary"
