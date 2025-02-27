@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.2](https://github.com/instill-ai/console/compare/instill-sdk-v0.14.1...instill-sdk-v0.14.2) (2025-02-27)
+
+
+### Bug Fixes
+
+* remove j11y and turbo lint rules ([#1689](https://github.com/instill-ai/console/issues/1689)) ([4f4ddf0](https://github.com/instill-ai/console/commit/4f4ddf08cdbdb6c133d1152ae352748401195cd9))
+
 ## [0.14.1](https://github.com/instill-ai/console/compare/instill-sdk-v0.14.0...instill-sdk-v0.14.1) (2025-02-26)
 
 
