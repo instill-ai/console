@@ -1,5 +1,9 @@
 import { GeneralRecord, Nullable } from "../types";
 
+export type TableAgentConfig = {
+  enableFaithfulnessChecking: boolean;
+};
+
 export type Table = {
   uid: string;
   id: string;
@@ -8,6 +12,7 @@ export type Table = {
   metadata?: GeneralRecord;
   createTime: string;
   updateTime: string;
+  agentConfig?: TableAgentConfig;
 };
 
 export type CreateNamespaceTableRequest = {
@@ -16,6 +21,7 @@ export type CreateNamespaceTableRequest = {
   title?: string;
   description?: string;
   metadata?: GeneralRecord;
+  agentConfig?: TableAgentConfig;
 };
 
 export type CreateNamespaceTableResponse = {
@@ -59,6 +65,7 @@ export type UpdateNamespaceTableRequest = {
   title?: string;
   description?: string;
   metadata?: GeneralRecord;
+  agentConfig?: TableAgentConfig;
 };
 
 export type UpdateNamespaceTableResponse = {

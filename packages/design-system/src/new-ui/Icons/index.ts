@@ -167,6 +167,7 @@ import { Type02 } from "./Type02";
 import { TypePlus } from "./TypePlus";
 import { Update } from "./Update";
 import { Upload01 } from "./Upload01";
+import { UploadCloud01 } from "./UploadCloud01";
 import { User01 } from "./User01";
 import { User02 } from "./User02";
 import { UserPlus01 } from "./UserPlus01";
@@ -349,6 +350,7 @@ export const Icons = {
   Tool01,
   Tv03,
   Upload01,
+  UploadCloud01,
   User01,
   User02,
   UserPlus01,

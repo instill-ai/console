@@ -316,6 +316,11 @@ export type ChatSlice = {
 
 export type TableMode = "table" | "preview";
 
+export type CurrentTableSort = {
+  columnUid: string;
+  direction: "asc" | "desc";
+};
+
 export type TableSlice = {
   leftSidebarOpen: boolean;
   updateLeftSidebarOpen: (fn: (prev: boolean) => boolean) => void;
@@ -326,6 +331,10 @@ export type TableSlice = {
   currentTablePreviewRowUid: Nullable<string>;
   updateCurrentTablePreviewRowUid: (
     fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
+  currentTableSort: Nullable<CurrentTableSort>;
+  updateCurrentTableSort: (
+    fn: (prev: Nullable<CurrentTableSort>) => Nullable<CurrentTableSort>,
   ) => void;
 };
 
