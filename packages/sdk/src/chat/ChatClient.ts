@@ -16,6 +16,8 @@ import {
   ListInstillChatMessagesRequest,
   InstillChatMessage,
   ListInstillChatMessagesResponse,
+  GetInstillChatRequest,
+  GetInstillChatResponse,
 } from "./types";
 
 export class ChatClient extends APIResource {
@@ -101,6 +103,20 @@ export class ChatClient extends APIResource {
       await this._client.delete(`/namespaces/${namespaceId}/chats/${chatId}`);
 
       return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async getInstillChat(props: GetInstillChatRequest) {
+    const { namespaceId, chatId } = props;
+
+    try {
+      const response = await this._client.get<GetInstillChatResponse>(
+        `/namespaces/${namespaceId}/chats/${chatId}`,
+      );
+
+      return Promise.resolve(response);
     } catch (error) {
       return Promise.reject(error);
     }

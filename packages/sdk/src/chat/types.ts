@@ -18,11 +18,14 @@ export type InstillChat = {
   createTime: string;
   updateTime: Nullable<string>;
   deleteTime: Nullable<string>;
+  catalogId: string;
 };
 
 export type CreateInstillChatResponse = {
   chat: InstillChat;
 };
+
+export type GetInstillChatResponse = CreateInstillChatResponse;
 
 export type PostInstillChatMessage = {
   message: string;
@@ -73,6 +76,8 @@ export type DeleteInstillChatRequest = {
   namespaceId: string;
   chatId: string;
 };
+
+export type GetInstillChatRequest = DeleteInstillChatRequest;
 
 export type PostInstillChatMessageRequest = {
   namespaceId: string;
