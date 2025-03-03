@@ -46,7 +46,7 @@ const navLinkItems: NavLinkProps[] = [
     title: "Dashboard",
   },
   {
-    pathname: "chat",
+    pathname: "chats",
     Icon: Icons.CubeOutline,
     title: "Chat",
   },

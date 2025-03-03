@@ -306,10 +306,6 @@ export type ChatSlice = {
   updateEnabledTools: (fn: (prev: string[]) => string[]) => void;
   enableToolSuggestion: boolean;
   updateEnableToolSuggestion: (fn: (prev: boolean) => boolean) => void;
-  activeInstillChatId: Nullable<string>;
-  updateActiveInstillChatId: (
-    fn: (prev: Nullable<string>) => Nullable<string>,
-  ) => void;
   chatFullscreenOpen: boolean;
   updateChatFullscreenOpen: (fn: (prev: boolean) => boolean) => void;
 };
