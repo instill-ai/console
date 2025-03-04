@@ -31,18 +31,19 @@ export type PostInstillChatMessage = {
   message: string;
 };
 
-enum InstillChatTypeEnum {
-  Started = "CHAT_STARTED",
-  StatusUpdated = "CHAT_STATUS_UPDATED",
-  OutputUpdated = "CHAT_OUTPUT_UPDATED",
-  Ended = "CHAT_ENDED",
-  NameUpdated = "CHAT_NAME_UPDATED",
-  DebugOutputUpdated = "CHAT_DEBUG_OUTPUT_UPDATED",
-  ReplanTriggered = "CHAT_REPLAN_TRIGGERED",
-  ErrorUpdated = "CHAT_ERROR_UPDATED",
-}
+export const InstillChatTypeEnum = {
+  Started: "CHAT_STARTED",
+  StatusUpdated: "CHAT_STATUS_UPDATED",
+  OutputUpdated: "CHAT_OUTPUT_UPDATED",
+  Ended: "CHAT_ENDED",
+  NameUpdated: "CHAT_NAME_UPDATED",
+  DebugOutputUpdated: "CHAT_DEBUG_OUTPUT_UPDATED",
+  ReplanTriggered: "CHAT_REPLAN_TRIGGERED",
+  ErrorUpdated: "CHAT_ERROR_UPDATED",
+} as const;
 
-export type InstillChatType = `${InstillChatTypeEnum}`;
+export type InstillChatEventType =
+  (typeof InstillChatTypeEnum)[keyof typeof InstillChatTypeEnum];
 
 enum InstillChatErrorTypeEnum {
   Unknown = "UnknownError",
@@ -61,42 +62,42 @@ export type InstillChatEventCommonData = {
 };
 
 export type InstillChatEventStatus = {
-  event: InstillChatTypeEnum.StatusUpdated;
+  event: typeof InstillChatTypeEnum.StatusUpdated;
   data: InstillChatEventCommonData & {
     chatStatus: string;
   };
 };
 
 export type InstillChatEventOutput = {
-  event: InstillChatTypeEnum.OutputUpdated;
+  event: typeof InstillChatTypeEnum.OutputUpdated;
   data: InstillChatEventCommonData & {
     outputChunkDelta: string;
   };
 };
 
 export type InstillChatEventName = {
-  event: InstillChatTypeEnum.NameUpdated;
+  event: typeof InstillChatTypeEnum.NameUpdated;
   data: InstillChatEventCommonData & {
     name: string;
   };
 };
 
 export type InstillChatEventDebug = {
-  event: InstillChatTypeEnum.DebugOutputUpdated;
+  event: typeof InstillChatTypeEnum.DebugOutputUpdated;
   data: InstillChatEventCommonData & {
     debugOutput: string;
   };
 };
 
 export type InstillChatEventReplan = {
-  event: InstillChatTypeEnum.ReplanTriggered;
+  event: typeof InstillChatTypeEnum.ReplanTriggered;
   data: InstillChatEventCommonData & {
     numberOfReplan: number;
   };
 };
 
 export type InstillChatEventError = {
-  event: InstillChatTypeEnum.ErrorUpdated;
+  event: typeof InstillChatTypeEnum.ErrorUpdated;
   data: InstillChatEventCommonData & {
     errorType: InstillChatErrorType;
     error: string;
@@ -104,12 +105,12 @@ export type InstillChatEventError = {
 };
 
 export type InstillChatEventStart = {
-  event: InstillChatTypeEnum.Started;
+  event: typeof InstillChatTypeEnum.Started;
   data: InstillChatEventCommonData;
 };
 
 export type InstillChatEventEnd = {
-  event: InstillChatTypeEnum.Ended;
+  event: typeof InstillChatTypeEnum.Ended;
   data: InstillChatEventCommonData;
 };
 
