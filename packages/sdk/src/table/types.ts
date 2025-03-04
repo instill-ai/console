@@ -166,39 +166,7 @@ export type FileCell = BaseCell & {
   };
 };
 
-export type DocumentCell = BaseCell & {
-  documentValue: {
-    url: string;
-  };
-};
-
-export type ImageCell = BaseCell & {
-  imageValue: {
-    url: string;
-  };
-};
-
-export type VideoCell = BaseCell & {
-  videoValue: {
-    url: string;
-  };
-};
-
-export type AudioCell = BaseCell & {
-  audioValue: {
-    url: string;
-  };
-};
-
-export type Cell =
-  | StringCell
-  | NumberCell
-  | BooleanCell
-  | FileCell
-  | DocumentCell
-  | ImageCell
-  | VideoCell
-  | AudioCell;
+export type Cell = StringCell | NumberCell | BooleanCell | FileCell;
 
 export type Row = {
   uid: string;
