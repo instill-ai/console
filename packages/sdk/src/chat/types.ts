@@ -60,60 +60,68 @@ export type InstillChatEventCommonData = {
   createTime: string;
 };
 
-export type InstillChatEventStatusData = InstillChatEventCommonData & {
-  chatStatus: string;
+export type InstillChatEventStatus = {
+  event: InstillChatTypeEnum.StatusUpdated;
+  data: InstillChatEventCommonData & {
+    chatStatus: string;
+  };
 };
 
-export type InstillChatEventOutputData = InstillChatEventCommonData & {
-  outputChunkDelta: string;
+export type InstillChatEventOutput = {
+  event: InstillChatTypeEnum.OutputUpdated;
+  data: InstillChatEventCommonData & {
+    outputChunkDelta: string;
+  };
 };
 
-export type InstillChatEventNameData = InstillChatEventCommonData & {
-  name: string;
+export type InstillChatEventName = {
+  event: InstillChatTypeEnum.NameUpdated;
+  data: InstillChatEventCommonData & {
+    name: string;
+  };
 };
 
-export type InstillChatEventDebugData = InstillChatEventCommonData & {
-  debugOutput: string;
+export type InstillChatEventDebug = {
+  event: InstillChatTypeEnum.DebugOutputUpdated;
+  data: InstillChatEventCommonData & {
+    debugOutput: string;
+  };
 };
 
-export type InstillChatEventReplanData = InstillChatEventCommonData & {
-  numberOfReplan: number;
+export type InstillChatEventReplan = {
+  event: InstillChatTypeEnum.ReplanTriggered;
+  data: InstillChatEventCommonData & {
+    numberOfReplan: number;
+  };
 };
 
-export type InstillChatEventErrorData = InstillChatEventCommonData & {
-  errorType: InstillChatErrorType;
-  error: string;
+export type InstillChatEventError = {
+  event: InstillChatTypeEnum.ErrorUpdated;
+  data: InstillChatEventCommonData & {
+    errorType: InstillChatErrorType;
+    error: string;
+  };
+};
+
+export type InstillChatEventStart = {
+  event: InstillChatTypeEnum.Started;
+  data: InstillChatEventCommonData;
+};
+
+export type InstillChatEventEnd = {
+  event: InstillChatTypeEnum.Ended;
+  data: InstillChatEventCommonData;
 };
 
 export type InstillChatEvent =
-  | {
-      event: InstillChatTypeEnum.Started | InstillChatTypeEnum.Ended;
-      data: InstillChatEventCommonData;
-    }
-  | {
-      event: InstillChatTypeEnum.StatusUpdated;
-      data: InstillChatEventStatusData;
-    }
-  | {
-      event: InstillChatTypeEnum.OutputUpdated;
-      data: InstillChatEventOutputData;
-    }
-  | {
-      event: InstillChatTypeEnum.NameUpdated;
-      data: InstillChatEventNameData;
-    }
-  | {
-      event: InstillChatTypeEnum.DebugOutputUpdated;
-      data: InstillChatEventDebugData;
-    }
-  | {
-      event: InstillChatTypeEnum.ReplanTriggered;
-      data: InstillChatEventReplanData;
-    }
-  | {
-      event: InstillChatTypeEnum.ErrorUpdated;
-      data: InstillChatEventErrorData;
-    };
+  | InstillChatEventStatus
+  | InstillChatEventOutput
+  | InstillChatEventName
+  | InstillChatEventDebug
+  | InstillChatEventReplan
+  | InstillChatEventError
+  | InstillChatEventStart
+  | InstillChatEventEnd;
 
 export type InstillChatFeed = InstillChatMessage[];
 
