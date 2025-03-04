@@ -36,21 +36,84 @@ enum InstillChatTypeEnum {
   StatusUpdated = "CHAT_STATUS_UPDATED",
   OutputUpdated = "CHAT_OUTPUT_UPDATED",
   Ended = "CHAT_ENDED",
-  UserMessage = "CHAT_USER_MESSAGE",
+  NameUpdated = "CHAT_NAME_UPDATED",
+  DebugOutputUpdated = "CHAT_DEBUG_OUTPUT_UPDATED",
+  ReplanTriggered = "CHAT_REPLAN_TRIGGERED",
+  ErrorUpdated = "CHAT_ERROR_UPDATED",
 }
 
 export type InstillChatType = `${InstillChatTypeEnum}`;
 
-export type InstillChatMessageData = {
+enum InstillChatErrorTypeEnum {
+  Unknown = "UnknownError",
+  Internal = "InternalError",
+  ReplanLimit = "ReplanLimitError",
+  CreditInsufficient = "CreditInsufficientError",
+  RefusalLLM = "RefusalLLMError",
+  InvalidLLM = "InvalidLLMError",
+  UnavailableLLM = "UnavailableLLMError",
+}
+
+export type InstillChatErrorType = `${InstillChatErrorTypeEnum}`;
+
+export type InstillChatEventCommonData = {
   createTime: string;
-  chatStatus?: string;
-  outputChunkDelta?: string;
 };
 
-export type InstillChatEvent = {
-  event: `${InstillChatTypeEnum}`;
-  data: InstillChatMessageData;
+export type InstillChatEventStatusData = InstillChatEventCommonData & {
+  chatStatus: string;
 };
+
+export type InstillChatEventOutputData = InstillChatEventCommonData & {
+  outputChunkDelta: string;
+};
+
+export type InstillChatEventNameData = InstillChatEventCommonData & {
+  name: string;
+};
+
+export type InstillChatEventDebugData = InstillChatEventCommonData & {
+  debugOutput: string;
+};
+
+export type InstillChatEventReplanData = InstillChatEventCommonData & {
+  numberOfReplan: number;
+};
+
+export type InstillChatEventErrorData = InstillChatEventCommonData & {
+  errorType: InstillChatErrorType;
+  error: string;
+};
+
+export type InstillChatEvent =
+  | {
+      event: InstillChatTypeEnum.Started | InstillChatTypeEnum.Ended;
+      data: InstillChatEventCommonData;
+    }
+  | {
+      event: InstillChatTypeEnum.StatusUpdated;
+      data: InstillChatEventStatusData;
+    }
+  | {
+      event: InstillChatTypeEnum.OutputUpdated;
+      data: InstillChatEventOutputData;
+    }
+  | {
+      event: InstillChatTypeEnum.NameUpdated;
+      data: InstillChatEventNameData;
+    }
+  | {
+      event: InstillChatTypeEnum.DebugOutputUpdated;
+      data: InstillChatEventDebugData;
+    }
+  | {
+      event: InstillChatTypeEnum.ReplanTriggered;
+      data: InstillChatEventReplanData;
+    }
+  | {
+      event: InstillChatTypeEnum.ErrorUpdated;
+      data: InstillChatEventErrorData;
+    };
 
 export type InstillChatFeed = InstillChatMessage[];
 
