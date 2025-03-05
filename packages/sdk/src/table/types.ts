@@ -87,10 +87,17 @@ export type ColumnAgentConfig = {
   enableWebSearch: boolean;
 };
 
+export type CellType =
+  | "TYPE_UNSPECIFIED"
+  | "TYPE_STRING"
+  | "TYPE_NUMBER"
+  | "TYPE_BOOLEAN"
+  | "TYPE_FILE";
+
 export type ColumnDefinition = {
   columnUid: string;
   name?: string;
-  type: string;
+  type: CellType;
   autofill: GeneralRecord;
   order: number;
   sort?: ColumnSort;
@@ -136,7 +143,7 @@ export type BaseCell = {
   columnUid: string;
   updateTime: string;
   createTime: string;
-  type: string;
+  type: CellType;
   metadata: GeneralRecord;
   status: CellStatus;
   faithfulnessCheckingResult: Nullable<FaithfulnessCheckingResult>;
