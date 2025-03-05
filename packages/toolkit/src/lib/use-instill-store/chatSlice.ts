@@ -47,4 +47,12 @@ export const createChatSlice: StateCreator<
         chatFullscreenOpen: fn(state.chatFullscreenOpen),
       };
     }),
+  chatStreamIsActive: false,
+  updateChatStreamIsActive: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        chatStreamIsActive: fn(state.chatStreamIsActive),
+      };
+    }),
 });
