@@ -18,6 +18,9 @@ import {
   ListInstillChatMessagesResponse,
   GetInstillChatRequest,
   GetInstillChatResponse,
+  ListNamespaceChatTablesRequest,
+  ListNamespaceChatTablesResponse,
+  UpdateInstillChatRequest,
 } from "./types";
 
 export class ChatClient extends APIResource {
@@ -29,6 +32,23 @@ export class ChatClient extends APIResource {
         `/namespaces/${namespaceId}/chats`,
         {
           body: JSON.stringify(payload),
+        },
+      );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async updateInstillChat(props: UpdateInstillChatRequest) {
+    const { namespaceId, chatUid, ...body } = props;
+
+    try {
+      const data = await this._client.put<CreateInstillChatResponse>(
+        `/namespaces/${namespaceId}/chats/${chatUid}`,
+        {
+          body: JSON.stringify(body),
         },
       );
 
@@ -97,10 +117,10 @@ export class ChatClient extends APIResource {
   }
 
   async deleteInstillChat(props: DeleteInstillChatRequest) {
-    const { namespaceId, chatId } = props;
+    const { namespaceId, chatUid } = props;
 
     try {
-      await this._client.delete(`/namespaces/${namespaceId}/chats/${chatId}`);
+      await this._client.delete(`/namespaces/${namespaceId}/chats/${chatUid}`);
 
       return Promise.resolve();
     } catch (error) {
@@ -109,11 +129,11 @@ export class ChatClient extends APIResource {
   }
 
   async getInstillChat(props: GetInstillChatRequest) {
-    const { namespaceId, chatId } = props;
+    const { namespaceId, chatUid } = props;
 
     try {
       const response = await this._client.get<GetInstillChatResponse>(
-        `/namespaces/${namespaceId}/chats/${chatId}`,
+        `/namespaces/${namespaceId}/chats/${chatUid}`,
       );
 
       return Promise.resolve(response);
@@ -124,7 +144,7 @@ export class ChatClient extends APIResource {
 
   async postInstillChatMessage({
     namespaceId,
-    chatId,
+    chatUid,
     message,
   }: PostInstillChatMessageRequest) {
     const additionalHeaders = getInstillAdditionalHeaders({
@@ -133,7 +153,7 @@ export class ChatClient extends APIResource {
 
     try {
       const stream = await this._client.post<PostInstillChatMessageResponse>(
-        `/namespaces/${namespaceId}/chats/${chatId}/chat-with-agent`,
+        `/namespaces/${namespaceId}/chats/${chatUid}/chat-with-agent`,
         {
           body: JSON.stringify({ message }),
           additionalHeaders,
@@ -150,10 +170,10 @@ export class ChatClient extends APIResource {
   async listPaginatedInstillChatMessages(
     props: ListPaginatedInstillChatMessagesRequest,
   ) {
-    const { namespaceId, chatId, pageToken, pageSize } = props;
+    const { namespaceId, chatUid, pageToken, pageSize } = props;
 
     const queryString = getQueryString({
-      baseURL: `/namespaces/${namespaceId}/chats/${chatId}/messages`,
+      baseURL: `/namespaces/${namespaceId}/chats/${chatUid}/messages`,
       pageToken,
       pageSize,
     });
@@ -171,10 +191,10 @@ export class ChatClient extends APIResource {
   }
 
   async listInstillChatMessages(props: ListInstillChatMessagesRequest) {
-    const { namespaceId, chatId, pageToken, pageSize } = props;
+    const { namespaceId, chatUid, pageToken, pageSize } = props;
 
     const queryString = getQueryString({
-      baseURL: `/namespaces/${namespaceId}/chats/${chatId}/messages`,
+      baseURL: `/namespaces/${namespaceId}/chats/${chatUid}/messages`,
       pageToken,
       pageSize,
     });
@@ -194,7 +214,7 @@ export class ChatClient extends APIResource {
           ...(
             await this.listInstillChatMessages({
               namespaceId,
-              chatId,
+              chatUid,
               pageSize,
               pageToken: data.nextPageToken,
             })
@@ -207,6 +227,20 @@ export class ChatClient extends APIResource {
       };
 
       return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listNamespaceChatTables(props: ListNamespaceChatTablesRequest) {
+    const { namespaceId, chatUid } = props;
+
+    try {
+      const data = await this._client.get<ListNamespaceChatTablesResponse>(
+        `/namespaces/${namespaceId}/chats/${chatUid}/tables`,
+      );
+
+      return Promise.resolve(data);
     } catch (error) {
       return Promise.reject(error);
     }
