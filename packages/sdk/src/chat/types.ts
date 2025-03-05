@@ -1,3 +1,4 @@
+import { Table } from "../table";
 import { Nullable } from "../types";
 
 export type CreateInstillChatRequest = {
@@ -22,6 +23,17 @@ export type InstillChat = {
 };
 
 export type CreateInstillChatResponse = {
+  chat: InstillChat;
+};
+
+export type UpdateInstillChatRequest = {
+  namespaceId: string;
+  chatUid: string;
+  chatDisplayName?: string;
+  agentConfig?: ChatAgentConfig;
+};
+
+export type UpdateInstillChatResponse = {
   chat: InstillChat;
 };
 
@@ -146,14 +158,14 @@ export type ListInstillChatsResponse = {
 
 export type DeleteInstillChatRequest = {
   namespaceId: string;
-  chatId: string;
+  chatUid: string;
 };
 
 export type GetInstillChatRequest = DeleteInstillChatRequest;
 
 export type PostInstillChatMessageRequest = {
   namespaceId: string;
-  chatId: string;
+  chatUid: string;
   message: string;
 };
 
@@ -163,7 +175,7 @@ export type PostInstillChatMessageResponse = {
 
 export type ListPaginatedInstillChatMessagesRequest = {
   namespaceId: string;
-  chatId: string;
+  chatUid: string;
   pageToken?: string;
   pageSize?: number;
 };
@@ -201,4 +213,13 @@ export type InstillChatMessage = {
   updateTime: string;
   msgSenderUid: string;
   citations: InstillChatMessageCitation[];
+};
+
+export type ListNamespaceChatTablesRequest = {
+  namespaceId: string;
+  chatUid: string;
+};
+
+export type ListNamespaceChatTablesResponse = {
+  tables: Table[];
 };

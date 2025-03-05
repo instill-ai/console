@@ -747,6 +747,18 @@ const tableQueryKeyStore = {
   },
 };
 
+const chatQueryKeyStore = {
+  getUseListNamespaceChatTablesQueryKey({
+    namespaceId,
+    chatUid,
+  }: {
+    namespaceId: Nullable<string>;
+    chatUid: Nullable<string>;
+  }) {
+    return [namespaceId, "chats", chatUid, "tables"];
+  },
+};
+
 export const queryKeyStore = {
   model: modelQueryKeyStore,
   pipeline: pipelineQueryKeyStore,
@@ -757,4 +769,5 @@ export const queryKeyStore = {
   integration: integrationQueryKeyStore,
   application: applicationQueryKeyStore,
   table: tableQueryKeyStore,
+  chat: chatQueryKeyStore,
 };
