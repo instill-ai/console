@@ -99,6 +99,7 @@ import { Link01 } from "./Link01";
 import { Lock03 } from "./Lock03";
 import { LockUnlocked03 } from "./LockUnlocked03";
 import { Logout01 } from "./Logout01";
+import { Logout03 } from "./Logout03";
 import { Logout04 } from "./Logout04";
 import { MagicWand01 } from "./MagicWand01";
 import { Mail01 } from "./Mail01";
@@ -279,6 +280,7 @@ export const Icons = {
   Image03,
   ImagePlus,
   Logout01,
+  Logout03,
   Logout04,
   LayersTwo01,
   Lightning01,
