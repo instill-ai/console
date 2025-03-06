@@ -1,14 +1,16 @@
 import { Table } from "../table";
 import { Nullable } from "../types";
 
-export type CreateInstillChatRequest = {
-  namespaceId: string;
-  chatDisplayName: string;
-};
-
 export type ChatAgentConfig = {
   instructions: string;
   connections: Record<string, string>;
+};
+
+export type CreateInstillChatRequest = {
+  namespaceId: string;
+  chatDisplayName?: string;
+  agentConfig?: ChatAgentConfig;
+  catalogId?: string;
 };
 
 export type InstillChat = {
