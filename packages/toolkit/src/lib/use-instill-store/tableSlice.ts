@@ -2,6 +2,7 @@ import { Nullable } from "instill-sdk";
 import { StateCreator } from "zustand";
 
 import {
+  CurrentCellPreviewAnchor,
   CurrentTableSort,
   InstillStore,
   InstillStoreMutators,
@@ -57,6 +58,18 @@ export const createTableSlice: StateCreator<
       return {
         ...state,
         currentTableSort: fn(state.currentTableSort),
+      };
+    }),
+  currentCellPreviewAnchor: null,
+  updateCurrentCellPreviewAnchor: (
+    fn: (
+      prev: Nullable<CurrentCellPreviewAnchor>,
+    ) => Nullable<CurrentCellPreviewAnchor>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        currentCellPreviewAnchor: fn(state.currentCellPreviewAnchor),
       };
     }),
 });

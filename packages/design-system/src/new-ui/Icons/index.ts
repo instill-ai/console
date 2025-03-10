@@ -181,6 +181,8 @@ import { XLSFile } from "./XLSFile";
 import { XLSXFile } from "./XLSXFile";
 import { Zap } from "./Zap";
 import { ZapFast } from "./ZapFast";
+import { ZoomIn } from "./ZoomIn";
+import { ZoomOut } from "./ZoomOut";
 
 export const Icons = {
   Activity,
@@ -366,4 +368,6 @@ export const Icons = {
   XLSXFile,
   Zap,
   ZapFast,
+  ZoomIn,
+  ZoomOut,
 };

@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/design-tokens",
-  "version": "0.9.0",
+  "version": "0.10.0-rc.0",
   "description": "Instill AI's design tokens",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -17,7 +17,8 @@
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --cache",
     "build-sd": "tsx ./src/buildSDTokens.ts",
     "build-tw": "tsx ./src/buildTailwindPreset.ts",
-    "build-css-variables": "tsx ./src/buildCSSVariables.ts"
+    "build-css-variables": "tsx ./src/buildCSSVariables.ts",
+    "publish-rc": "pnpm build && pnpm publish --no-git-checks --tag rc"
   },
   "sideEffects": [
     "**/*.css"

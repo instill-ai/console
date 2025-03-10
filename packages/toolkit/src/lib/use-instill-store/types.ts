@@ -319,6 +319,11 @@ export type CurrentTableSort = {
   direction: "asc" | "desc";
 };
 
+export type CurrentCellPreviewAnchor = {
+  rowUid: string;
+  columnUid: string;
+};
+
 export type TableSlice = {
   leftSidebarOpen: boolean;
   updateLeftSidebarOpen: (fn: (prev: boolean) => boolean) => void;
@@ -333,6 +338,12 @@ export type TableSlice = {
   currentTableSort: Nullable<CurrentTableSort>;
   updateCurrentTableSort: (
     fn: (prev: Nullable<CurrentTableSort>) => Nullable<CurrentTableSort>,
+  ) => void;
+  currentCellPreviewAnchor: Nullable<CurrentCellPreviewAnchor>;
+  updateCurrentCellPreviewAnchor: (
+    fn: (
+      prev: Nullable<CurrentCellPreviewAnchor>,
+    ) => Nullable<CurrentCellPreviewAnchor>,
   ) => void;
 };
 
