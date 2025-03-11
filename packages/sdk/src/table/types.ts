@@ -1,4 +1,4 @@
-import { GeneralRecord, Nullable } from "../types";
+import { Citation, GeneralRecord, Nullable } from "../types";
 
 export type TableAgentConfig = {
   enableFaithfulnessChecking: boolean;
@@ -138,6 +138,10 @@ export type FaithfulnessCheckingResult = {
   result: string;
 };
 
+export type CellTransparency = {
+  text: string;
+};
+
 export type BaseCell = {
   uid: string;
   columnUid: string;
@@ -147,6 +151,8 @@ export type BaseCell = {
   metadata: GeneralRecord;
   status: CellStatus;
   faithfulnessCheckingResult: Nullable<FaithfulnessCheckingResult>;
+  transparency: Nullable<CellTransparency>;
+  citations: Citation[];
 };
 
 export type StringCell = BaseCell & {

@@ -219,64 +219,6 @@
         "value": "{base.Text+Icon.Secondary Black}",
         "type": "color"
       }
-    },
-    "node": {
-      "connected-default-stroke": {
-        "value": "{semantic.success.default}",
-        "type": "color"
-      },
-      "connected-hover-stroke": {
-        "value": "{semantic.success.hover}",
-        "type": "color"
-      },
-      "connected-selected-stroke": {
-        "value": "{semantic.success.pressed}",
-        "type": "color"
-      },
-      "connected-bg": {
-        "value": "{semantic.success.bg-secondary}",
-        "type": "color"
-      },
-      "error-default-stroke": {
-        "value": "{semantic.error.default}",
-        "type": "color"
-      },
-      "error-hover-stroke": {
-        "value": "{semantic.error.hover}",
-        "type": "color"
-      },
-      "error-selected-stroke": {
-        "value": "{semantic.error.pressed}",
-        "type": "color"
-      },
-      "error-bg": {
-        "value": "{semantic.error.bg-secondary}",
-        "type": "color"
-      },
-      "disconnected-default-stroke": {
-        "value": "{base.neutral-variant.400}",
-        "type": "color"
-      },
-      "disconnected-hover-stroke": {
-        "value": "{base.neutral-variant.500}",
-        "type": "color"
-      },
-      "disconnected-selected-stroke": {
-        "value": "{base.neutral-variant.600}",
-        "type": "color"
-      },
-      "disconnected-bg": {
-        "value": "{base.neutral-variant.200}",
-        "type": "color"
-      },
-      "connector-off": {
-        "value": "{base.neutral.400}",
-        "type": "color"
-      },
-      "connector-on": {
-        "value": "{base.neutral-variant.500}",
-        "type": "color"
-      }
     }
   }
 }

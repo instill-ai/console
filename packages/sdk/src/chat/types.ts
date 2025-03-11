@@ -1,5 +1,5 @@
 import { Table } from "../table";
-import { Nullable } from "../types";
+import { Citation, Nullable } from "../types";
 
 export type ChatAgentConfig = {
   instructions: string;
@@ -54,6 +54,7 @@ export const InstillChatTypeEnum = {
   DebugOutputUpdated: "CHAT_DEBUG_OUTPUT_UPDATED",
   ReplanTriggered: "CHAT_REPLAN_TRIGGERED",
   ErrorUpdated: "CHAT_ERROR_UPDATED",
+  CitationListUpdated: "CHAT_CITATION_LIST_UPDATED",
 } as const;
 
 export type InstillChatEventType =
@@ -128,6 +129,13 @@ export type InstillChatEventEnd = {
   data: InstillChatEventCommonData;
 };
 
+export type InstillChatEventCitationList = {
+  event: typeof InstillChatTypeEnum.CitationListUpdated;
+  data: InstillChatEventCommonData & {
+    citations: Citation[];
+  };
+};
+
 export type InstillChatEvent =
   | InstillChatEventStatus
   | InstillChatEventOutput
@@ -136,8 +144,8 @@ export type InstillChatEvent =
   | InstillChatEventReplan
   | InstillChatEventError
   | InstillChatEventStart
-  | InstillChatEventEnd;
-
+  | InstillChatEventEnd
+  | InstillChatEventCitationList;
 export type InstillChatFeed = InstillChatMessage[];
 
 export type ListPaginatedInstillChatsRequest = {
@@ -169,6 +177,7 @@ export type PostInstillChatMessageRequest = {
   namespaceId: string;
   chatUid: string;
   message: string;
+  fileUids?: string[];
 };
 
 export type PostInstillChatMessageResponse = {
@@ -195,8 +204,6 @@ export type ListInstillChatMessagesResponse = {
   messages: InstillChatMessage[];
 };
 
-export type InstillChatMessageCitation = string;
-
 export type InstillChatMessageRole = "user" | "assistant";
 
 enum InstillChatMessageTypeEnum {
@@ -214,7 +221,7 @@ export type InstillChatMessage = {
   createTime: string;
   updateTime: string;
   msgSenderUid: string;
-  citations: InstillChatMessageCitation[];
+  citations: Citation[];
 };
 
 export type ListNamespaceChatTablesRequest = {

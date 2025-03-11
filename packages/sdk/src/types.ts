@@ -210,3 +210,16 @@ export type FileReference = {
   size: number;
   url: string;
 };
+
+export type CitationType =
+  | "CITATION_TYPE_UNSPECIFIED"
+  | "CITATION_TYPE_FILE"
+  | "CITATION_TYPE_WEB"
+  | "CITATION_TYPE_CELL";
+
+export type Citation = {
+  type: CitationType;
+  number: number;
+  name: string;
+  url: string;
+};
