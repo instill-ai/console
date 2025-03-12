@@ -1,5 +1,5 @@
 import { StateCreator } from "zustand";
-import { ChatSlice, InstillStore, InstillStoreMutators } from "./types";
+import { ChatSlice, InstillChatAgentStatus, InstillChatError, InstillStore, InstillStoreMutators } from "./types";
 
 export const createChatSlice: StateCreator<
   InstillStore,
@@ -53,6 +53,30 @@ export const createChatSlice: StateCreator<
       return {
         ...state,
         chatStreamIsActive: fn(state.chatStreamIsActive),
+      };
+    }),
+  chatIsBusy: false,
+  updateChatIsBusy: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        chatIsBusy: fn(state.chatIsBusy),
+      };
+    }),
+  chatAgentStatus: null,
+  updateChatAgentStatus: (fn: (prev: InstillChatAgentStatus) => InstillChatAgentStatus) =>
+    set((state) => {
+      return {
+        ...state,
+        chatAgentStatus: fn(state.chatAgentStatus),
+      };
+    }),
+  chatError: null,
+  updateChatError: (fn: (prev: InstillChatError) => InstillChatError) =>
+    set((state) => {
+      return {
+        ...state,
+        chatError: fn(state.chatError),
       };
     }),
 });

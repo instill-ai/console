@@ -301,6 +301,16 @@ export type RecentlyUsedSlice = {
   ) => void;
 };
 
+export type InstillChatAgentStatus = Nullable<{
+  content?: string;
+  createTime: string;
+}>
+
+export type InstillChatError = Nullable<{
+  content?: string;
+  createTime: string;
+}>
+
 export type ChatSlice = {
   enabledTools: string[];
   updateEnabledTools: (fn: (prev: string[]) => string[]) => void;
@@ -310,6 +320,12 @@ export type ChatSlice = {
   updateChatFullscreenOpen: (fn: (prev: boolean) => boolean) => void;
   chatStreamIsActive: boolean;
   updateChatStreamIsActive: (fn: (prev: boolean) => boolean) => void;
+  chatIsBusy: boolean;
+  updateChatIsBusy: (fn: (prev: boolean) => boolean) => void;
+  chatAgentStatus: InstillChatAgentStatus;
+  updateChatAgentStatus: (fn: (prev: InstillChatAgentStatus) => InstillChatAgentStatus) => void;
+  chatError: InstillChatAgentStatus;
+  updateChatError: (fn: (prev: InstillChatError) => InstillChatError) => void;
 };
 
 export type TableMode = "table" | "preview";
