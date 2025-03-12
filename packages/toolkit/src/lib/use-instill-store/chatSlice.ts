@@ -1,5 +1,12 @@
+import { Citation } from "instill-sdk";
 import { StateCreator } from "zustand";
-import { ChatSlice, InstillChatAgentStatus, InstillChatError, InstillStore, InstillStoreMutators } from "./types";
+import {
+  ChatSlice,
+  InstillChatAgentStatus,
+  InstillChatError,
+  InstillStore,
+  InstillStoreMutators,
+} from "./types";
 
 export const createChatSlice: StateCreator<
   InstillStore,
@@ -64,7 +71,9 @@ export const createChatSlice: StateCreator<
       };
     }),
   chatAgentStatus: null,
-  updateChatAgentStatus: (fn: (prev: InstillChatAgentStatus) => InstillChatAgentStatus) =>
+  updateChatAgentStatus: (
+    fn: (prev: InstillChatAgentStatus) => InstillChatAgentStatus
+  ) =>
     set((state) => {
       return {
         ...state,
@@ -77,6 +86,18 @@ export const createChatSlice: StateCreator<
       return {
         ...state,
         chatError: fn(state.chatError),
+      };
+    }),
+  currentActiveCitationListInTheRightDrawer: [],
+  updateCurrentActiveCitationListInTheRightDrawer: (
+    fn: (prev: Citation[]) => Citation[]
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        currentActiveCitationListInTheRightDrawer: fn(
+          state.currentActiveCitationListInTheRightDrawer
+        ),
       };
     }),
 });
