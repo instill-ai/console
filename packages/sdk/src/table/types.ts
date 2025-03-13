@@ -1,7 +1,7 @@
 import { Citation, GeneralRecord, Nullable } from "../types";
 
 export type TableAgentConfig = {
-  enableFaithfulnessChecking: boolean;
+  enableTransparency: boolean;
 };
 
 export type Table = {
@@ -156,28 +156,30 @@ export type BaseCell = {
 };
 
 export type StringCell = BaseCell & {
-  stringValue: {
+  stringValue?: {
     value: string;
   };
 };
 
 export type NumberCell = BaseCell & {
-  numberValue: {
+  numberValue?: {
     value: number;
   };
 };
 
 export type BooleanCell = BaseCell & {
-  booleanValue: {
+  booleanValue?: {
     value: boolean;
   };
 };
 
 export type FileCell = BaseCell & {
-  fileValue: {
+  fileValue?: {
     fileUid: string;
     name: string;
     mimeType: string;
+    namespaceId: string;
+    objectUid: string;
   };
 };
 

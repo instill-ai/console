@@ -215,7 +215,7 @@ export type CitationType =
   | "CITATION_TYPE_UNSPECIFIED"
   | "CITATION_TYPE_FILE"
   | "CITATION_TYPE_WEB"
-  | "CITATION_TYPE_CELL";
+  | "CITATION_TYPE_TABLE";
 
 export type Citation = {
   type: CitationType;
