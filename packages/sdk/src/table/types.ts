@@ -175,7 +175,9 @@ export type BooleanCell = BaseCell & {
 
 export type FileCell = BaseCell & {
   fileValue: {
-    url: string;
+    fileUid: string;
+    name: string;
+    mimeType: string;
   };
 };
 
