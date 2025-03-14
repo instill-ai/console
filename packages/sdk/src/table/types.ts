@@ -178,7 +178,7 @@ export type FileCell = BaseCell & {
     fileUid: string;
     name: string;
     mimeType: string;
-    namespaceId: string;
+    namespace: string;
     objectUid: string;
   };
 };
