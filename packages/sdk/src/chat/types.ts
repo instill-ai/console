@@ -217,6 +217,7 @@ export type InstillChatMessageRole = "user" | "assistant";
 
 enum InstillChatMessageTypeEnum {
   Text = "MESSAGE_TYPE_TEXT",
+  ShowTable = "MESSAGE_TYPE_SHOW_TABLE",
 }
 
 export type InstillChatMessageType = `${InstillChatMessageTypeEnum}`;
