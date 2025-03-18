@@ -1,5 +1,6 @@
 import { Citation } from "instill-sdk";
 import { StateCreator } from "zustand";
+
 import {
   ChatSlice,
   InstillChatAgentStatus,
@@ -72,7 +73,7 @@ export const createChatSlice: StateCreator<
     }),
   chatAgentStatus: null,
   updateChatAgentStatus: (
-    fn: (prev: InstillChatAgentStatus) => InstillChatAgentStatus
+    fn: (prev: InstillChatAgentStatus) => InstillChatAgentStatus,
   ) =>
     set((state) => {
       return {
@@ -90,13 +91,13 @@ export const createChatSlice: StateCreator<
     }),
   currentActiveCitationListInTheRightDrawer: [],
   updateCurrentActiveCitationListInTheRightDrawer: (
-    fn: (prev: Citation[]) => Citation[]
+    fn: (prev: Citation[]) => Citation[],
   ) =>
     set((state) => {
       return {
         ...state,
         currentActiveCitationListInTheRightDrawer: fn(
-          state.currentActiveCitationListInTheRightDrawer
+          state.currentActiveCitationListInTheRightDrawer,
         ),
       };
     }),

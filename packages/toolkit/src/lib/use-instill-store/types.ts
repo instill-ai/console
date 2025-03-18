@@ -64,7 +64,7 @@ export type PipelineBuilderAction = {
   initIteratorRelatedState: () => void;
   updatePipelineId: (fn: (prev: Nullable<string>) => Nullable<string>) => void;
   updatePipelineName: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
   updateNodes: (fn: (prev: Node<NodeData>[]) => Node<NodeData>[]) => void;
   updateEdges: (fn: (prev: Edge[]) => Edge[]) => void;
@@ -76,25 +76,25 @@ export type PipelineBuilderAction = {
   updatePipelineRecipeIsDirty: (fn: (prev: boolean) => boolean) => void;
   updatePipelineIsNew: (fn: (prev: boolean) => boolean) => void;
   updateSelectedConnectorNodeId: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
   updateCurrentAdvancedConfigurationNodeID: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
   updateConnectorFormIsDirty: (fn: (prev: boolean) => boolean) => void;
   updateSelectResourceDialogIsOpen: (fn: (prev: boolean) => boolean) => void;
   updateCollapseAllNodes: (fn: (prev: boolean) => boolean) => void;
   updateTestModeTriggerResponse: (
     fn: (
-      prev: Nullable<TriggerNamespacePipelineResponse>
-    ) => Nullable<TriggerNamespacePipelineResponse>
+      prev: Nullable<TriggerNamespacePipelineResponse>,
+    ) => Nullable<TriggerNamespacePipelineResponse>,
   ) => void;
   updatePipelineOpenAPIOutputSchema: (
-    fn: (prev: Nullable<InstillJSONSchema>) => Nullable<InstillJSONSchema>
+    fn: (prev: Nullable<InstillJSONSchema>) => Nullable<InstillJSONSchema>,
   ) => void;
 
   updateCurrentVersion: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
   updateInitializedByTemplateOrClone: (fn: (prev: boolean) => boolean) => void;
   updateIsOwner: (fn: (prev: boolean) => boolean) => void;
@@ -104,18 +104,18 @@ export type PipelineBuilderAction = {
   updatePipelineIsReadOnly: (fn: (prev: boolean) => boolean) => void;
   updateIsEditingIterator: (fn: (prev: boolean) => boolean) => void;
   updateTempSavedNodesForEditingIteratorFlow: (
-    fn: (prev: Node<NodeData>[]) => Node<NodeData>[]
+    fn: (prev: Node<NodeData>[]) => Node<NodeData>[],
   ) => void;
   updateEditingIteratorID: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
   updateWarnUnsavdChangesDialogState: (
-    fn: (prev: WarnUnsavedChangesDialogState) => WarnUnsavedChangesDialogState
+    fn: (prev: WarnUnsavedChangesDialogState) => WarnUnsavedChangesDialogState,
   ) => void;
   updateTriggerWithStreamData: (
     fn: (
-      prev: TriggerUserPipelineWithStreamData[]
-    ) => TriggerUserPipelineWithStreamData[]
+      prev: TriggerUserPipelineWithStreamData[],
+    ) => TriggerUserPipelineWithStreamData[],
   ) => void;
   updateDisplayEventNodes: (fn: (prev: boolean) => boolean) => void;
 };
@@ -141,7 +141,7 @@ export type GeneralSlice = {
 
   navigationNamespaceAnchor: Nullable<string>;
   updateNavigationNamespaceAnchor: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
 };
 export enum DefaultEditorViewIDs {
@@ -181,13 +181,13 @@ export type EditorSlice = {
   updateOpenComponentCmdo: (fn: (prev: boolean) => boolean) => void;
   selectedComponentId: Nullable<string>;
   updateSelectedComponentId: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
   editorRef: Nullable<editor.IStandaloneCodeEditor>;
   updateEditorRef: (
     fn: (
-      prev: Nullable<editor.IStandaloneCodeEditor>
-    ) => Nullable<editor.IStandaloneCodeEditor>
+      prev: Nullable<editor.IStandaloneCodeEditor>,
+    ) => Nullable<editor.IStandaloneCodeEditor>,
   ) => void;
   monacoRef: Nullable<Monaco>;
   updateMonacoRef: (fn: (prev: Nullable<Monaco>) => Nullable<Monaco>) => void;
@@ -197,7 +197,7 @@ export type EditorSlice = {
    */
   editorMultiScreenModel: EditorMultiScreenModel;
   updateEditorMultiScreenModel: (
-    fn: (prev: EditorMultiScreenModel) => EditorMultiScreenModel
+    fn: (prev: EditorMultiScreenModel) => EditorMultiScreenModel,
   ) => void;
 
   /**
@@ -206,7 +206,7 @@ export type EditorSlice = {
    */
   editorPreviewReactFlowInstance: Nullable<ReactFlowInstance>;
   updateEditorPreviewReactFlowInstance: (
-    fn: (prev: Nullable<ReactFlowInstance>) => Nullable<ReactFlowInstance>
+    fn: (prev: Nullable<ReactFlowInstance>) => Nullable<ReactFlowInstance>,
   ) => void;
   /**
    * This value is only for caching the user input in the editor.
@@ -218,7 +218,7 @@ export type EditorSlice = {
    */
   rawRecipeOnDom: Nullable<string>;
   updateRawRecipeOnDom: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
   isSavingRecipe: boolean;
   updateIsSavingRecipe: (fn: (prev: boolean) => boolean) => void;
@@ -239,8 +239,8 @@ export type EditorSlice = {
   triggerPipelineStreamMap: Nullable<TriggerPipelineStreamMap>;
   updateTriggerPipelineStreamMap: (
     fn: (
-      prev: Nullable<TriggerPipelineStreamMap>
-    ) => Nullable<TriggerPipelineStreamMap>
+      prev: Nullable<TriggerPipelineStreamMap>,
+    ) => Nullable<TriggerPipelineStreamMap>,
   ) => void;
 
   /**
@@ -250,8 +250,8 @@ export type EditorSlice = {
   runButtonRef: React.MutableRefObject<HTMLButtonElement>;
   updateRunButtonRef: (
     fn: (
-      prev: React.MutableRefObject<HTMLButtonElement>
-    ) => React.MutableRefObject<HTMLButtonElement>
+      prev: React.MutableRefObject<HTMLButtonElement>,
+    ) => React.MutableRefObject<HTMLButtonElement>,
   ) => void;
 
   /**
@@ -261,7 +261,7 @@ export type EditorSlice = {
    */
   editorDebouncedRecipeUpdater: Nullable<EditorRecipeUpdater>;
   updateEditorDebouncedRecipeUpdater: (
-    fn: (prev: Nullable<EditorRecipeUpdater>) => Nullable<EditorRecipeUpdater>
+    fn: (prev: Nullable<EditorRecipeUpdater>) => Nullable<EditorRecipeUpdater>,
   ) => void;
 
   /**
@@ -298,7 +298,7 @@ export type TriggerPipelineStreamMap = {
 export type RecentlyUsedSlice = {
   recentlyUsedStartComponentFieldTypes: string[];
   updateRecentlyUsedStartComponentFieldTypes: (
-    fn: (prev: string[]) => string[]
+    fn: (prev: string[]) => string[],
   ) => void;
 };
 
@@ -325,13 +325,13 @@ export type ChatSlice = {
   updateChatIsBusy: (fn: (prev: boolean) => boolean) => void;
   chatAgentStatus: InstillChatAgentStatus;
   updateChatAgentStatus: (
-    fn: (prev: InstillChatAgentStatus) => InstillChatAgentStatus
+    fn: (prev: InstillChatAgentStatus) => InstillChatAgentStatus,
   ) => void;
   chatError: InstillChatAgentStatus;
   updateChatError: (fn: (prev: InstillChatError) => InstillChatError) => void;
   currentActiveCitationListInTheRightDrawer: Citation[];
   updateCurrentActiveCitationListInTheRightDrawer: (
-    fn: (prev: Citation[]) => Citation[]
+    fn: (prev: Citation[]) => Citation[],
   ) => void;
 };
 
@@ -356,17 +356,17 @@ export type TableSlice = {
   updateTableMode: (fn: (prev: TableMode) => TableMode) => void;
   currentTablePreviewRowUid: Nullable<string>;
   updateCurrentTablePreviewRowUid: (
-    fn: (prev: Nullable<string>) => Nullable<string>
+    fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
   currentTableSort: Nullable<CurrentTableSort>;
   updateCurrentTableSort: (
-    fn: (prev: Nullable<CurrentTableSort>) => Nullable<CurrentTableSort>
+    fn: (prev: Nullable<CurrentTableSort>) => Nullable<CurrentTableSort>,
   ) => void;
   currentCellPreviewAnchor: Nullable<CurrentCellPreviewAnchor>;
   updateCurrentCellPreviewAnchor: (
     fn: (
-      prev: Nullable<CurrentCellPreviewAnchor>
-    ) => Nullable<CurrentCellPreviewAnchor>
+      prev: Nullable<CurrentCellPreviewAnchor>,
+    ) => Nullable<CurrentCellPreviewAnchor>,
   ) => void;
 };
 
