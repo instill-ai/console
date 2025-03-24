@@ -131,6 +131,7 @@ import { Recording04 } from "./Recording04";
 import { Recording05 } from "./Recording05";
 import { ReferenceIconCheck } from "./ReferenceIconCheck";
 import { ReferenceIconX } from "./ReferenceIconX";
+import { RefreshCCW01 } from "./RefreshCCW01";
 import { RefreshCw05 } from "./RefreshCw05";
 import { Repeat04 } from "./Repeat04";
 import { Rocket01 } from "./Rocket01";
@@ -312,6 +313,7 @@ export const Icons = {
   PPTXFile,
   PuzzlePiece01,
   RefreshCw05,
+  RefreshCCW01,
   Repeat04,
   Recording01,
   Recording02,
