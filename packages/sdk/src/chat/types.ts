@@ -187,6 +187,7 @@ export type PostInstillChatMessageRequest = {
   chatUid: string;
   message: string;
   fileUids?: string[];
+  enableWebSearch?: boolean;
 };
 
 export type PostInstillChatMessageResponse = {
