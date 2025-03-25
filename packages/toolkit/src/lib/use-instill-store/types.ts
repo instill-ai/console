@@ -333,6 +333,8 @@ export type ChatSlice = {
   updateCurrentActiveCitationListInTheRightDrawer: (
     fn: (prev: Citation[]) => Citation[],
   ) => void;
+  isWebSearchEnabled: boolean;
+  updateIsWebSearchEnabled: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type TableMode = "table" | "preview";

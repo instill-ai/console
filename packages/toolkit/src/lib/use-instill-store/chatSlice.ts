@@ -101,4 +101,12 @@ export const createChatSlice: StateCreator<
         ),
       };
     }),
+  isWebSearchEnabled: false,
+  updateIsWebSearchEnabled: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        isWebSearchEnabled: fn(state.isWebSearchEnabled),
+      };
+    }),
 });
