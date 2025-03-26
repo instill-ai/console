@@ -72,4 +72,16 @@ export const createTableSlice: StateCreator<
         currentCellPreviewAnchor: fn(state.currentCellPreviewAnchor),
       };
     }),
+  forceOpenNewlyCreatedColumnContextMenuColumnUid: null,
+  updateForceOpenNewlyCreatedColumnContextMenuColumnUid: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        forceOpenNewlyCreatedColumnContextMenuColumnUid: fn(
+          state.forceOpenNewlyCreatedColumnContextMenuColumnUid,
+        ),
+      };
+    }),
 });

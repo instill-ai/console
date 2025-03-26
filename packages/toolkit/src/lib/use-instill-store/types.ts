@@ -370,6 +370,10 @@ export type TableSlice = {
       prev: Nullable<CurrentCellPreviewAnchor>,
     ) => Nullable<CurrentCellPreviewAnchor>,
   ) => void;
+  forceOpenNewlyCreatedColumnContextMenuColumnUid: Nullable<string>;
+  updateForceOpenNewlyCreatedColumnContextMenuColumnUid: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
 };
 
 export type InstillStore = SmartHintSlice &
