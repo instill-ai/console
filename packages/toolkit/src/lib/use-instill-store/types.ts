@@ -335,6 +335,8 @@ export type ChatSlice = {
   ) => void;
   isWebSearchEnabled: boolean;
   updateIsWebSearchEnabled: (fn: (prev: boolean) => boolean) => void;
+  isTableUpdated: boolean;
+  updateIsTableUpdated: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type TableMode = "table" | "preview";

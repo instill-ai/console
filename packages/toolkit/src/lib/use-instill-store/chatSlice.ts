@@ -109,4 +109,12 @@ export const createChatSlice: StateCreator<
         isWebSearchEnabled: fn(state.isWebSearchEnabled),
       };
     }),
+  isTableUpdated: false,
+  updateIsTableUpdated: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        isTableUpdated: fn(state.isTableUpdated),
+      };
+    }),
 });
