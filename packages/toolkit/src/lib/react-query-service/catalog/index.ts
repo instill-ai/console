@@ -9,3 +9,4 @@ export * from "./useDeleteCatalogFile";
 export * from "./useGetNamespaceCatalogSingleSourceOfTruthFile";
 export * from "./useUpdateCatalogChunk";
 export * from "./useListNamespaceCatalogChunks";
+export * from "./useGetNamespaceCatalogFileSummary";

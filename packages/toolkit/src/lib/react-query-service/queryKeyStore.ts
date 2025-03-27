@@ -591,6 +591,17 @@ const catalogQueryKeyStore = {
   }) {
     return [namespaceId, "catalogs", catalogId, "files", fileUid, "source"];
   },
+  getUseCatalogFileSummaryQueryKey({
+    namespaceId,
+    catalogId,
+    fileUid,
+  }: {
+    namespaceId: Nullable<string>;
+    catalogId: Nullable<string>;
+    fileUid: Nullable<string>;
+  }) {
+    return [namespaceId, "catalogs", catalogId, "files", fileUid, "summary"];
+  },
 };
 
 const integrationQueryKeyStore = {

@@ -295,3 +295,13 @@ export type ListPaginatedNamespaceCatalogRunsResponse = {
   pageSize: number;
   page: number;
 };
+
+export type GetCatalogFileSummaryRequest = {
+  namespaceId: string;
+  catalogId: string;
+  fileUid: string;
+};
+
+export type GetCatalogFileSummaryResponse = {
+  summary: string;
+};
