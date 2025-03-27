@@ -93,6 +93,7 @@ import { InfoSquare } from "./InfoSquare";
 import { IntersectSquare } from "./IntersectSquare";
 import { LayersTwo01 } from "./LayersTwo01";
 import { LayoutLeft } from "./LayoutLeft";
+import { Lightbulb03 } from "./Lightbulb03";
 import { Lightning01 } from "./Lightning01";
 import { Lightning02 } from "./Lightning02";
 import { Link01 } from "./Link01";
@@ -288,6 +289,7 @@ export const Icons = {
   LayersTwo01,
   Lightning01,
   Lightning02,
+  Lightbulb03,
   LayoutLeft,
   Model,
   MultipleVideo,
