@@ -319,24 +319,24 @@ export type ChatSlice = {
   updateEnableToolSuggestion: (fn: (prev: boolean) => boolean) => void;
   chatFullscreenOpen: boolean;
   updateChatFullscreenOpen: (fn: (prev: boolean) => boolean) => void;
-  chatStreamIsActive: boolean;
-  updateChatStreamIsActive: (fn: (prev: boolean) => boolean) => void;
-  chatIsBusy: boolean;
-  updateChatIsBusy: (fn: (prev: boolean) => boolean) => void;
-  chatAgentStatus: InstillChatAgentStatus;
-  updateChatAgentStatus: (
-    fn: (prev: InstillChatAgentStatus) => InstillChatAgentStatus,
-  ) => void;
-  chatError: InstillChatAgentStatus;
-  updateChatError: (fn: (prev: InstillChatError) => InstillChatError) => void;
-  currentActiveCitationListInTheRightDrawer: Citation[];
-  updateCurrentActiveCitationListInTheRightDrawer: (
-    fn: (prev: Citation[]) => Citation[],
-  ) => void;
   isWebSearchEnabled: boolean;
   updateIsWebSearchEnabled: (fn: (prev: boolean) => boolean) => void;
-  isTableUpdated: boolean;
-  updateIsTableUpdated: (fn: (prev: boolean) => boolean) => void;
+  chatStreamIsActive: Record<string, boolean>;
+  updateChatStreamIsActive: (fn: (prev: Record<string, boolean>) => Record<string, boolean>) => void;
+  chatIsBusy: Record<string, boolean>;
+  updateChatIsBusy: (fn: (prev: Record<string, boolean>) => Record<string, boolean>) => void;
+  isTableUpdated: Record<string, boolean>;
+  updateIsTableUpdated: (fn: (prev: Record<string, boolean>) => Record<string, boolean>) => void;
+  chatAgentStatus: Record<string, InstillChatAgentStatus>;
+  updateChatAgentStatus: (
+    fn: (prev: Record<string, InstillChatAgentStatus>) => Record<string, InstillChatAgentStatus>,
+  ) => void;
+  chatError: Record<string, InstillChatAgentStatus>;
+  updateChatError: (fn: (prev: Record<string, InstillChatAgentStatus>) => Record<string, InstillChatAgentStatus>) => void;
+  currentActiveCitationListInTheRightDrawer: Record<string, Citation[]>;
+  updateCurrentActiveCitationListInTheRightDrawer: (
+    fn: (prev: Record<string, Citation[]>) => Record<string, Citation[]>,
+  ) => void;
 };
 
 export type TableMode = "table" | "preview";

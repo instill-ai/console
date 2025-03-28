@@ -55,25 +55,33 @@ export const createChatSlice: StateCreator<
         chatFullscreenOpen: fn(state.chatFullscreenOpen),
       };
     }),
-  chatStreamIsActive: false,
-  updateChatStreamIsActive: (fn: (prev: boolean) => boolean) =>
+  isWebSearchEnabled: false,
+  updateIsWebSearchEnabled: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        isWebSearchEnabled: fn(state.isWebSearchEnabled),
+      };
+    }),
+  chatStreamIsActive: {},
+  updateChatStreamIsActive: (fn: (prev: Record<string, boolean>) => Record<string, boolean>) =>
     set((state) => {
       return {
         ...state,
         chatStreamIsActive: fn(state.chatStreamIsActive),
       };
     }),
-  chatIsBusy: false,
-  updateChatIsBusy: (fn: (prev: boolean) => boolean) =>
+  chatIsBusy: {},
+  updateChatIsBusy: (fn: (prev: Record<string, boolean>) => Record<string, boolean>) =>
     set((state) => {
       return {
         ...state,
         chatIsBusy: fn(state.chatIsBusy),
       };
     }),
-  chatAgentStatus: null,
+  chatAgentStatus: {},
   updateChatAgentStatus: (
-    fn: (prev: InstillChatAgentStatus) => InstillChatAgentStatus,
+    fn: (prev: Record<string, InstillChatAgentStatus>) => Record<string, InstillChatAgentStatus>,
   ) =>
     set((state) => {
       return {
@@ -81,17 +89,17 @@ export const createChatSlice: StateCreator<
         chatAgentStatus: fn(state.chatAgentStatus),
       };
     }),
-  chatError: null,
-  updateChatError: (fn: (prev: InstillChatError) => InstillChatError) =>
+  chatError: {},
+  updateChatError: (fn: (prev: Record<string, InstillChatError>) => Record<string, InstillChatError>) =>
     set((state) => {
       return {
         ...state,
         chatError: fn(state.chatError),
       };
     }),
-  currentActiveCitationListInTheRightDrawer: [],
+  currentActiveCitationListInTheRightDrawer: {},
   updateCurrentActiveCitationListInTheRightDrawer: (
-    fn: (prev: Citation[]) => Citation[],
+    fn: (prev: Record<string, Citation[]>) => Record<string, Citation[]>,
   ) =>
     set((state) => {
       return {
@@ -101,16 +109,8 @@ export const createChatSlice: StateCreator<
         ),
       };
     }),
-  isWebSearchEnabled: false,
-  updateIsWebSearchEnabled: (fn: (prev: boolean) => boolean) =>
-    set((state) => {
-      return {
-        ...state,
-        isWebSearchEnabled: fn(state.isWebSearchEnabled),
-      };
-    }),
-  isTableUpdated: false,
-  updateIsTableUpdated: (fn: (prev: boolean) => boolean) =>
+  isTableUpdated: {},
+  updateIsTableUpdated: (fn: (prev: Record<string, boolean>) => Record<string, boolean>) =>
     set((state) => {
       return {
         ...state,
