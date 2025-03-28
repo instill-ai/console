@@ -64,7 +64,9 @@ export const createChatSlice: StateCreator<
       };
     }),
   chatStreamIsActive: {},
-  updateChatStreamIsActive: (fn: (prev: Record<string, boolean>) => Record<string, boolean>) =>
+  updateChatStreamIsActive: (
+    fn: (prev: Record<string, boolean>) => Record<string, boolean>,
+  ) =>
     set((state) => {
       return {
         ...state,
@@ -72,7 +74,9 @@ export const createChatSlice: StateCreator<
       };
     }),
   chatIsBusy: {},
-  updateChatIsBusy: (fn: (prev: Record<string, boolean>) => Record<string, boolean>) =>
+  updateChatIsBusy: (
+    fn: (prev: Record<string, boolean>) => Record<string, boolean>,
+  ) =>
     set((state) => {
       return {
         ...state,
@@ -81,7 +85,9 @@ export const createChatSlice: StateCreator<
     }),
   chatAgentStatus: {},
   updateChatAgentStatus: (
-    fn: (prev: Record<string, InstillChatAgentStatus>) => Record<string, InstillChatAgentStatus>,
+    fn: (
+      prev: Record<string, InstillChatAgentStatus>,
+    ) => Record<string, InstillChatAgentStatus>,
   ) =>
     set((state) => {
       return {
@@ -90,7 +96,11 @@ export const createChatSlice: StateCreator<
       };
     }),
   chatError: {},
-  updateChatError: (fn: (prev: Record<string, InstillChatError>) => Record<string, InstillChatError>) =>
+  updateChatError: (
+    fn: (
+      prev: Record<string, InstillChatError>,
+    ) => Record<string, InstillChatError>,
+  ) =>
     set((state) => {
       return {
         ...state,
@@ -110,7 +120,9 @@ export const createChatSlice: StateCreator<
       };
     }),
   isTableUpdated: {},
-  updateIsTableUpdated: (fn: (prev: Record<string, boolean>) => Record<string, boolean>) =>
+  updateIsTableUpdated: (
+    fn: (prev: Record<string, boolean>) => Record<string, boolean>,
+  ) =>
     set((state) => {
       return {
         ...state,

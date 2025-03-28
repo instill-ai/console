@@ -322,17 +322,29 @@ export type ChatSlice = {
   isWebSearchEnabled: boolean;
   updateIsWebSearchEnabled: (fn: (prev: boolean) => boolean) => void;
   chatStreamIsActive: Record<string, boolean>;
-  updateChatStreamIsActive: (fn: (prev: Record<string, boolean>) => Record<string, boolean>) => void;
+  updateChatStreamIsActive: (
+    fn: (prev: Record<string, boolean>) => Record<string, boolean>,
+  ) => void;
   chatIsBusy: Record<string, boolean>;
-  updateChatIsBusy: (fn: (prev: Record<string, boolean>) => Record<string, boolean>) => void;
+  updateChatIsBusy: (
+    fn: (prev: Record<string, boolean>) => Record<string, boolean>,
+  ) => void;
   isTableUpdated: Record<string, boolean>;
-  updateIsTableUpdated: (fn: (prev: Record<string, boolean>) => Record<string, boolean>) => void;
+  updateIsTableUpdated: (
+    fn: (prev: Record<string, boolean>) => Record<string, boolean>,
+  ) => void;
   chatAgentStatus: Record<string, InstillChatAgentStatus>;
   updateChatAgentStatus: (
-    fn: (prev: Record<string, InstillChatAgentStatus>) => Record<string, InstillChatAgentStatus>,
+    fn: (
+      prev: Record<string, InstillChatAgentStatus>,
+    ) => Record<string, InstillChatAgentStatus>,
   ) => void;
   chatError: Record<string, InstillChatAgentStatus>;
-  updateChatError: (fn: (prev: Record<string, InstillChatAgentStatus>) => Record<string, InstillChatAgentStatus>) => void;
+  updateChatError: (
+    fn: (
+      prev: Record<string, InstillChatAgentStatus>,
+    ) => Record<string, InstillChatAgentStatus>,
+  ) => void;
   currentActiveCitationListInTheRightDrawer: Record<string, Citation[]>;
   updateCurrentActiveCitationListInTheRightDrawer: (
     fn: (prev: Record<string, Citation[]>) => Record<string, Citation[]>,
