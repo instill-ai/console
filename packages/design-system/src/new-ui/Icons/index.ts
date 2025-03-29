@@ -97,6 +97,7 @@ import { Lightbulb03 } from "./Lightbulb03";
 import { Lightning01 } from "./Lightning01";
 import { Lightning02 } from "./Lightning02";
 import { Link01 } from "./Link01";
+import { LinkExternal01 } from "./LinkExternal01";
 import { Lock03 } from "./Lock03";
 import { LockUnlocked03 } from "./LockUnlocked03";
 import { Logout01 } from "./Logout01";
@@ -286,6 +287,7 @@ export const Icons = {
   Logout01,
   Logout03,
   Logout04,
+  LinkExternal01,
   LayersTwo01,
   Lightning01,
   Lightning02,
