@@ -2,6 +2,7 @@ export * from "./useCreateNamespaceCatalog";
 export * from "./useDeleteNamespaceCatalog";
 export * from "./useUpdateNamespaceCatalog";
 export * from "./useListNamespaceCatalogs";
+export * from "./useGetNamespaceCatalogFile";
 export * from "./useCreateNamespaceCatalogFile";
 export * from "./useProcessCatalogFiles";
 export * from "./useListNamespaceCatalogFiles";

@@ -113,6 +113,8 @@ export type File = {
   size: number;
   totalChunks: number;
   totalTokens: number;
+  summary: string;
+  downloadUrl: string;
 };
 
 export type FileContent = {
@@ -185,6 +187,16 @@ export type CreateNamespaceCatalogFileRequest = {
 };
 
 export type CreateNamespaceCatalogFileResponse = {
+  file: File;
+};
+
+export type GetNamespaceCatalogFileRequest = {
+  namespaceId: string;
+  catalogId: string;
+  fileUid: string;
+};
+
+export type GetNamespaceCatalogFileResponse = {
   file: File;
 };
 

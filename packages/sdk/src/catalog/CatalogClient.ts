@@ -9,6 +9,8 @@ import type {
   DeleteNamespaceCatalogRequest,
   GetCatalogFileSummaryRequest,
   GetCatalogFileSummaryResponse,
+  GetNamespaceCatalogFileRequest,
+  GetNamespaceCatalogFileResponse,
   GetNamespaceCatalogSingleSourceOfTruthFileRequest,
   GetNamespaceCatalogSingleSourceOfTruthFileResponse,
   ListCatalogsResponse,
@@ -130,6 +132,23 @@ export class CatalogClient extends APIResource {
           body: JSON.stringify(payload),
         },
       );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async getNamespaceCatalogFile(props: GetNamespaceCatalogFileRequest) {
+    const { namespaceId, catalogId, fileUid } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/catalogs/${catalogId}/files/${fileUid}`,
+    });
+
+    try {
+      const data =
+        await this._client.get<GetNamespaceCatalogFileResponse>(queryString);
 
       return Promise.resolve(data);
     } catch (error) {
