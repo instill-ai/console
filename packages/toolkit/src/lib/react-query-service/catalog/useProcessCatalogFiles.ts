@@ -22,10 +22,6 @@ export function useProcessCatalogFiles() {
         throw new Error("accessToken is required");
       }
 
-      if (!requesterUid) {
-        throw new Error("requesterUid is required");
-      }
-
       if (!fileUids) {
         throw new Error("fileUids is required");
       }
@@ -37,7 +33,7 @@ export function useProcessCatalogFiles() {
       const client = getInstillCatalogAPIClient({ accessToken });
       const files = await client.catalog.processCatalogFiles({
         fileUids,
-        requesterUid,
+        requesterUid: requesterUid ?? undefined,
       });
 
       return Promise.resolve(files);

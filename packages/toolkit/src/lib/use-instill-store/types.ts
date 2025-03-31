@@ -1,4 +1,5 @@
 import type {
+  Citation,
   GeneralRecord,
   PipelineStreamStatus,
   Secret,
@@ -301,11 +302,92 @@ export type RecentlyUsedSlice = {
   ) => void;
 };
 
+export type InstillChatAgentStatus = Nullable<{
+  content?: string;
+  createTime: string;
+}>;
+
+export type InstillChatError = Nullable<{
+  content?: string;
+  createTime: string;
+}>;
+
 export type ChatSlice = {
   enabledTools: string[];
   updateEnabledTools: (fn: (prev: string[]) => string[]) => void;
   enableToolSuggestion: boolean;
   updateEnableToolSuggestion: (fn: (prev: boolean) => boolean) => void;
+  chatFullscreenOpen: boolean;
+  updateChatFullscreenOpen: (fn: (prev: boolean) => boolean) => void;
+  isWebSearchEnabled: boolean;
+  updateIsWebSearchEnabled: (fn: (prev: boolean) => boolean) => void;
+  chatStreamIsActive: Record<string, boolean>;
+  updateChatStreamIsActive: (
+    fn: (prev: Record<string, boolean>) => Record<string, boolean>,
+  ) => void;
+  chatIsBusy: Record<string, boolean>;
+  updateChatIsBusy: (
+    fn: (prev: Record<string, boolean>) => Record<string, boolean>,
+  ) => void;
+  isTableUpdated: Record<string, boolean>;
+  updateIsTableUpdated: (
+    fn: (prev: Record<string, boolean>) => Record<string, boolean>,
+  ) => void;
+  chatAgentStatus: Record<string, InstillChatAgentStatus>;
+  updateChatAgentStatus: (
+    fn: (
+      prev: Record<string, InstillChatAgentStatus>,
+    ) => Record<string, InstillChatAgentStatus>,
+  ) => void;
+  chatError: Record<string, InstillChatAgentStatus>;
+  updateChatError: (
+    fn: (
+      prev: Record<string, InstillChatAgentStatus>,
+    ) => Record<string, InstillChatAgentStatus>,
+  ) => void;
+  currentActiveCitationListInTheRightDrawer: Record<string, Citation[]>;
+  updateCurrentActiveCitationListInTheRightDrawer: (
+    fn: (prev: Record<string, Citation[]>) => Record<string, Citation[]>,
+  ) => void;
+};
+
+export type TableMode = "table" | "preview";
+
+export type CurrentTableSort = {
+  columnUid: string;
+  direction: "asc" | "desc";
+};
+
+export type CurrentCellPreviewAnchor = {
+  rowUid: string;
+  columnUid: string;
+};
+
+export type TableSlice = {
+  leftSidebarOpen: boolean;
+  updateLeftSidebarOpen: (fn: (prev: boolean) => boolean) => void;
+  rightSidebarOpen: boolean;
+  updateRightSidebarOpen: (fn: (prev: boolean) => boolean) => void;
+  tableMode: TableMode;
+  updateTableMode: (fn: (prev: TableMode) => TableMode) => void;
+  currentTablePreviewRowUid: Nullable<string>;
+  updateCurrentTablePreviewRowUid: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
+  currentTableSort: Nullable<CurrentTableSort>;
+  updateCurrentTableSort: (
+    fn: (prev: Nullable<CurrentTableSort>) => Nullable<CurrentTableSort>,
+  ) => void;
+  currentCellPreviewAnchor: Nullable<CurrentCellPreviewAnchor>;
+  updateCurrentCellPreviewAnchor: (
+    fn: (
+      prev: Nullable<CurrentCellPreviewAnchor>,
+    ) => Nullable<CurrentCellPreviewAnchor>,
+  ) => void;
+  forceOpenNewlyCreatedColumnContextMenuColumnUid: Nullable<string>;
+  updateForceOpenNewlyCreatedColumnContextMenuColumnUid: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
 };
 
 export type InstillStore = SmartHintSlice &
@@ -314,7 +396,8 @@ export type InstillStore = SmartHintSlice &
   RecentlyUsedSlice &
   EditorSlice &
   FeatureFlagSlice &
-  ChatSlice;
+  ChatSlice &
+  TableSlice;
 
 export type InstillStoreMutators = [
   ["zustand/devtools", never],

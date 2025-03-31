@@ -7,5 +7,6 @@ export * from "./helper";
 export * from "./application";
 export type * from "./catalog";
 export type * from "./artifact";
-
+export type * from "./table";
+export * from "./chat";
 export * from "./vdp/trigger/streamHelpers";

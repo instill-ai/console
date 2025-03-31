@@ -113,6 +113,8 @@ export type File = {
   size: number;
   totalChunks: number;
   totalTokens: number;
+  summary: string;
+  downloadUrl: string;
 };
 
 export type FileContent = {
@@ -178,12 +180,23 @@ export type GetNamespaceCatalogSingleSourceOfTruthFileResponse = {
 export type CreateNamespaceCatalogFileRequest = {
   namespaceId: string;
   catalogId: string;
-  name: string;
-  type: FileType;
+  name?: string;
+  type?: FileType;
   content?: string;
+  objectUid?: string;
 };
 
 export type CreateNamespaceCatalogFileResponse = {
+  file: File;
+};
+
+export type GetNamespaceCatalogFileRequest = {
+  namespaceId: string;
+  catalogId: string;
+  fileUid: string;
+};
+
+export type GetNamespaceCatalogFileResponse = {
   file: File;
 };
 
@@ -293,4 +306,14 @@ export type ListPaginatedNamespaceCatalogRunsResponse = {
   totalSize: number;
   pageSize: number;
   page: number;
+};
+
+export type GetCatalogFileSummaryRequest = {
+  namespaceId: string;
+  catalogId: string;
+  fileUid: string;
+};
+
+export type GetCatalogFileSummaryResponse = {
+  summary: string;
 };

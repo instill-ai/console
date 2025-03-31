@@ -10,7 +10,7 @@ export const ChatLink = () => {
   const routeInfo = useRouteInfo();
 
   const pathname = usePathname();
-  const chatPath = `/${routeInfo.data.namespaceId}/chat`;
+  const chatPath = `/${routeInfo.data.namespaceId}/chats`;
 
   const isActive = pathname.startsWith(chatPath);
 

@@ -3,8 +3,8 @@
     "headings": {
       "heading-1": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-0}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.0}",
           "lineHeight": "{lineHeights.14}",
           "fontSize": "{fontSize.9}",
           "letterSpacing": "{letterSpacing.7}",
@@ -17,8 +17,8 @@
       },
       "heading-2": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-1}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.1}",
           "lineHeight": "{lineHeights.4}",
           "fontSize": "{fontSize.7}",
           "letterSpacing": "{letterSpacing.7}",
@@ -31,8 +31,8 @@
       },
       "heading-3": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-0}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.0}",
           "lineHeight": "{lineHeights.11}",
           "fontSize": "{fontSize.6}",
           "letterSpacing": "{letterSpacing.8}",
@@ -45,8 +45,8 @@
       },
       "heading-4": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-2}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.2}",
           "lineHeight": "{lineHeights.11}",
           "fontSize": "{fontSize.5}",
           "letterSpacing": "{letterSpacing.7}",
@@ -59,8 +59,8 @@
       },
       "heading-5": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-2}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.2}",
           "lineHeight": "{lineHeights.5}",
           "fontSize": "{fontSize.4}",
           "letterSpacing": "{letterSpacing.7}",
@@ -73,8 +73,8 @@
       },
       "heading-6": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-2}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.2}",
           "lineHeight": "{lineHeights.12}",
           "fontSize": "{fontSize.3}",
           "letterSpacing": "{letterSpacing.7}",
@@ -89,8 +89,8 @@
     "body": {
       "text-1-regular": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-3}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.3}",
           "lineHeight": "{lineHeights.4}",
           "fontSize": "{fontSize.5}",
           "letterSpacing": "{letterSpacing.7}",
@@ -103,8 +103,8 @@
       },
       "text-1-medium": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-Medium}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.Medium}",
           "lineHeight": "{lineHeights.4}",
           "fontSize": "{fontSize.5}",
           "letterSpacing": "{letterSpacing.7}",
@@ -117,8 +117,8 @@
       },
       "text-1-italic": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-4}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.4}",
           "lineHeight": "{lineHeights.4}",
           "fontSize": "{fontSize.5}",
           "letterSpacing": "{letterSpacing.7}",
@@ -131,8 +131,8 @@
       },
       "text-1-semibold": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-1}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.1}",
           "lineHeight": "{lineHeights.4}",
           "fontSize": "{fontSize.5}",
           "letterSpacing": "{letterSpacing.7}",
@@ -145,8 +145,8 @@
       },
       "text-2-regular": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-3}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.3}",
           "lineHeight": "{lineHeights.11}",
           "fontSize": "{fontSize.4}",
           "letterSpacing": "{letterSpacing.7}",
@@ -159,8 +159,8 @@
       },
       "text-2-medium": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-Medium}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.Medium}",
           "lineHeight": "{lineHeights.11}",
           "fontSize": "{fontSize.4}",
           "letterSpacing": "{letterSpacing.7}",
@@ -173,8 +173,8 @@
       },
       "text-2-italic": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-4}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.4}",
           "lineHeight": "{lineHeights.11}",
           "fontSize": "{fontSize.4}",
           "letterSpacing": "{letterSpacing.7}",
@@ -187,8 +187,8 @@
       },
       "text-2-semibold": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-1}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.1}",
           "lineHeight": "{lineHeights.11}",
           "fontSize": "{fontSize.4}",
           "letterSpacing": "{letterSpacing.7}",
@@ -201,8 +201,8 @@
       },
       "text-3-regular": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-3}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.3}",
           "lineHeight": "{lineHeights.5}",
           "fontSize": "{fontSize.3}",
           "letterSpacing": "{letterSpacing.7}",
@@ -215,8 +215,8 @@
       },
       "text-3-medium": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-Medium}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.Medium}",
           "lineHeight": "{lineHeights.5}",
           "fontSize": "{fontSize.3}",
           "letterSpacing": "{letterSpacing.7}",
@@ -229,8 +229,8 @@
       },
       "text-3-italic": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-4}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.4}",
           "lineHeight": "{lineHeights.5}",
           "fontSize": "{fontSize.3}",
           "letterSpacing": "{letterSpacing.7}",
@@ -243,8 +243,8 @@
       },
       "text-3-semibold": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-1}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.1}",
           "lineHeight": "{lineHeights.5}",
           "fontSize": "{fontSize.3}",
           "letterSpacing": "{letterSpacing.7}",
@@ -257,8 +257,8 @@
       },
       "text-4-regular": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-3}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.3}",
           "lineHeight": "{lineHeights.12}",
           "fontSize": "{fontSize.1}",
           "letterSpacing": "{letterSpacing.7}",
@@ -271,8 +271,8 @@
       },
       "text-4-medium": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-2}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.2}",
           "lineHeight": "{lineHeights.12}",
           "fontSize": "{fontSize.1}",
           "letterSpacing": "{letterSpacing.7}",
@@ -285,8 +285,8 @@
       },
       "text-4-italic": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-4}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.4}",
           "lineHeight": "{lineHeights.12}",
           "fontSize": "{fontSize.1}",
           "letterSpacing": "{letterSpacing.7}",
@@ -299,8 +299,8 @@
       },
       "text-4-semibold": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-1}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.1}",
           "lineHeight": "{lineHeights.12}",
           "fontSize": "{fontSize.1}",
           "letterSpacing": "{letterSpacing.7}",
@@ -315,8 +315,8 @@
     "label": {
       "label-1": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-2}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.2}",
           "lineHeight": "{lineHeights.13}",
           "fontSize": "{fontSize.1}",
           "letterSpacing": "{letterSpacing.9}",
@@ -329,8 +329,8 @@
       },
       "label-2": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-2}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.2}",
           "lineHeight": "{lineHeights.15}",
           "fontSize": "{fontSize.0}",
           "letterSpacing": "{letterSpacing.10}",
@@ -345,8 +345,8 @@
     "button": {
       "button-1": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-1}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.1}",
           "lineHeight": "{lineHeights.12}",
           "fontSize": "{fontSize.4}",
           "letterSpacing": "{letterSpacing.11}",
@@ -359,8 +359,8 @@
       },
       "button-2": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-1}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.1}",
           "lineHeight": "{lineHeights.16}",
           "fontSize": "{fontSize.3}",
           "letterSpacing": "{letterSpacing.11}",
@@ -373,8 +373,8 @@
       },
       "button-3": {
         "value": {
-          "fontFamily": "{fontFamilies.ibm-plex-sans}",
-          "fontWeight": "{fontWeights.ibm-plex-sans-1}",
+          "fontFamily": "{fontFamilies.Inter}",
+          "fontWeight": "{fontWeights.1}",
           "lineHeight": "{lineHeights.13}",
           "fontSize": "{fontSize.1}",
           "letterSpacing": "{letterSpacing.11}",
@@ -388,8 +388,8 @@
     }
   },
   "font-families": {
-    "ibm-plex-sans": {
-      "value": "IBM Plex Sans",
+    "Inter": {
+      "value": "Inter",
       "type": "fontFamilies"
     }
   }

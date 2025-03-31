@@ -10,6 +10,7 @@ import { ArrowNarrowRight } from "./ArrowNarrowRight";
 import { ArrowRight } from "./ArrowRight";
 import { ArrowUp } from "./ArrowUp";
 import { ArrowUpRight } from "./ArrowUpRight";
+import { Attachment01 } from "./Attachment01";
 import { BankNote01 } from "./BankNote01";
 import { BankNote03 } from "./BankNote03";
 import { BarChartSquare02 } from "./BarChartSquare02";
@@ -22,6 +23,7 @@ import { CalendarCheck01 } from "./CalendarCheck01";
 import { CardRefresh } from "./CardRefresh";
 import { Check } from "./Check";
 import { CheckCircle } from "./CheckCircle";
+import { CheckVerified02 } from "./CheckVerified02";
 import { ChevronDown } from "./ChevronDown";
 import { ChevronDownDouble } from "./ChevronDownDouble";
 import { ChevronLeft } from "./ChevronLeft";
@@ -91,12 +93,15 @@ import { InfoSquare } from "./InfoSquare";
 import { IntersectSquare } from "./IntersectSquare";
 import { LayersTwo01 } from "./LayersTwo01";
 import { LayoutLeft } from "./LayoutLeft";
+import { Lightbulb03 } from "./Lightbulb03";
 import { Lightning01 } from "./Lightning01";
 import { Lightning02 } from "./Lightning02";
 import { Link01 } from "./Link01";
+import { LinkExternal01 } from "./LinkExternal01";
 import { Lock03 } from "./Lock03";
 import { LockUnlocked03 } from "./LockUnlocked03";
 import { Logout01 } from "./Logout01";
+import { Logout03 } from "./Logout03";
 import { Logout04 } from "./Logout04";
 import { MagicWand01 } from "./MagicWand01";
 import { Mail01 } from "./Mail01";
@@ -117,6 +122,7 @@ import { Pipeline } from "./Pipeline";
 import { Play } from "./Play";
 import { PlayCircle } from "./PlayCircle";
 import { Plus } from "./Plus";
+import { PlusSquare } from "./PlusSquare";
 import { PPTFile } from "./PPTFile";
 import { PPTXFile } from "./PPTXFile";
 import { PuzzlePiece01 } from "./PuzzlePiece01";
@@ -127,6 +133,7 @@ import { Recording04 } from "./Recording04";
 import { Recording05 } from "./Recording05";
 import { ReferenceIconCheck } from "./ReferenceIconCheck";
 import { ReferenceIconX } from "./ReferenceIconX";
+import { RefreshCCW01 } from "./RefreshCCW01";
 import { RefreshCw05 } from "./RefreshCw05";
 import { Repeat04 } from "./Repeat04";
 import { Rocket01 } from "./Rocket01";
@@ -147,6 +154,7 @@ import { Speaker01 } from "./Speaker01";
 import { SpeechRecognition } from "./SpeechRecognition";
 import { Star06 } from "./Star06";
 import { Stop } from "./Stop";
+import { Table } from "./Table";
 import { Tag01 } from "./Tag01";
 import { TextA } from "./TextA";
 import { TextGenerationChat } from "./TextGenerationChat";
@@ -163,6 +171,7 @@ import { Type02 } from "./Type02";
 import { TypePlus } from "./TypePlus";
 import { Update } from "./Update";
 import { Upload01 } from "./Upload01";
+import { UploadCloud01 } from "./UploadCloud01";
 import { User01 } from "./User01";
 import { User02 } from "./User02";
 import { UserPlus01 } from "./UserPlus01";
@@ -175,6 +184,8 @@ import { XLSFile } from "./XLSFile";
 import { XLSXFile } from "./XLSXFile";
 import { Zap } from "./Zap";
 import { ZapFast } from "./ZapFast";
+import { ZoomIn } from "./ZoomIn";
+import { ZoomOut } from "./ZoomOut";
 
 export const Icons = {
   Activity,
@@ -189,6 +200,7 @@ export const Icons = {
   ArrowNarrowLeft,
   ArrowNarrowRight,
   ArrowUpRight,
+  Attachment01,
   BankNote01,
   BankNote03,
   BarChartSquare02,
@@ -201,6 +213,7 @@ export const Icons = {
   CardRefresh,
   Check,
   CheckCircle,
+  CheckVerified02,
   ChevronDown,
   ChevronDownDouble,
   ChevronLeft,
@@ -272,10 +285,13 @@ export const Icons = {
   Image03,
   ImagePlus,
   Logout01,
+  Logout03,
   Logout04,
+  LinkExternal01,
   LayersTwo01,
   Lightning01,
   Lightning02,
+  Lightbulb03,
   LayoutLeft,
   Model,
   MultipleVideo,
@@ -296,10 +312,12 @@ export const Icons = {
   Play,
   PlayCircle,
   Plus,
+  PlusSquare,
   PPTFile,
   PPTXFile,
   PuzzlePiece01,
   RefreshCw05,
+  RefreshCCW01,
   Repeat04,
   Recording01,
   Recording02,
@@ -326,6 +344,7 @@ export const Icons = {
   SortLinesDown,
   SortLinesUp,
   Star06,
+  Table,
   Tag01,
   TextA,
   TextGenerationChat,
@@ -341,6 +360,7 @@ export const Icons = {
   Tool01,
   Tv03,
   Upload01,
+  UploadCloud01,
   User01,
   User02,
   UserPlus01,
@@ -354,4 +374,6 @@ export const Icons = {
   XLSXFile,
   Zap,
   ZapFast,
+  ZoomIn,
+  ZoomOut,
 };

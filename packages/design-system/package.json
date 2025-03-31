@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/design-system",
-  "version": "0.87.0",
+  "version": "0.87.0-rc.13",
   "description": "Instill AI's design system",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -106,6 +106,7 @@
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-collapsible": "^1.0.2",
+    "@radix-ui/react-context-menu": "^2.2.6",
     "@radix-ui/react-dialog": "^1.0.4",
     "@radix-ui/react-dropdown-menu": "^2.0.5",
     "@radix-ui/react-label": "^2.0.2",

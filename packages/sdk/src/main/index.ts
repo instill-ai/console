@@ -23,6 +23,8 @@ import {
   SecretClient,
   TriggerClient,
 } from "../vdp";
+import { TableClient } from "../table";
+import { ChatClient } from "../chat";
 
 export type RequestOption = {
   body?: string | File;
@@ -153,4 +155,6 @@ export class InstillAPIClient {
   application = new ApplicationClient(this);
   catalog = new CatalogClient(this);
   artifact = new ArtifactClient(this);
+  table = new TableClient(this);
+  chat = new ChatClient(this);
 }

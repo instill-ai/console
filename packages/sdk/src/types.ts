@@ -50,6 +50,10 @@ export const OrganizationOwnerSchema = z.object({
 
 export type Nullable<T> = T | null;
 
+export type WithNullableFields<T extends object> = {
+  [P in keyof T]-?: T[P] | null;
+};
+
 export type GeneralRecord = Record<string, any>;
 
 export type Owner = UserOwner | OrganizationOwner;
@@ -204,5 +208,18 @@ export type FileReference = {
   name: string;
   type: string;
   size: number;
+  url: string;
+};
+
+export type CitationType =
+  | "CITATION_TYPE_UNSPECIFIED"
+  | "CITATION_TYPE_FILE"
+  | "CITATION_TYPE_WEB"
+  | "CITATION_TYPE_TABLE";
+
+export type Citation = {
+  type: CitationType;
+  number: number;
+  name: string;
   url: string;
 };

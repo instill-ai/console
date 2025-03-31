@@ -591,6 +591,28 @@ const catalogQueryKeyStore = {
   }) {
     return [namespaceId, "catalogs", catalogId, "files", fileUid, "source"];
   },
+  getUseCatalogFileSummaryQueryKey({
+    namespaceId,
+    catalogId,
+    fileUid,
+  }: {
+    namespaceId: Nullable<string>;
+    catalogId: Nullable<string>;
+    fileUid: Nullable<string>;
+  }) {
+    return [namespaceId, "catalogs", catalogId, "files", fileUid, "summary"];
+  },
+  getUseNamespaceCatalogFileQueryKey({
+    namespaceId,
+    catalogId,
+    fileUid,
+  }: {
+    namespaceId: Nullable<string>;
+    catalogId: Nullable<string>;
+    fileUid: Nullable<string>;
+  }) {
+    return [namespaceId, "catalogs", catalogId, "files", fileUid];
+  },
 };
 
 const integrationQueryKeyStore = {
@@ -710,6 +732,55 @@ const applicationQueryKeyStore = {
   },
 };
 
+const tableQueryKeyStore = {
+  getUseGetNamespaceTableQueryKey({
+    namespaceId,
+    tableUid,
+  }: {
+    namespaceId: Nullable<string>;
+    tableUid: Nullable<string>;
+  }) {
+    return [namespaceId, "tables", tableUid];
+  },
+  getUseListNamespaceTablesQueryKey({
+    namespaceId,
+  }: {
+    namespaceId: Nullable<string>;
+  }) {
+    return [namespaceId, "tables"];
+  },
+  getUseGetNamespaceTableColumnDefinitionsQueryKey({
+    namespaceId,
+    tableUid,
+  }: {
+    namespaceId: Nullable<string>;
+    tableUid: Nullable<string>;
+  }) {
+    return [namespaceId, "tables", tableUid, "column-definitions"];
+  },
+  getUseListNamespaceTableRowsQueryKey({
+    namespaceId,
+    tableUid,
+  }: {
+    namespaceId: Nullable<string>;
+    tableUid: Nullable<string>;
+  }) {
+    return [namespaceId, "tables", tableUid, "rows"];
+  },
+};
+
+const chatQueryKeyStore = {
+  getUseListNamespaceChatTablesQueryKey({
+    namespaceId,
+    chatUid,
+  }: {
+    namespaceId: Nullable<string>;
+    chatUid: Nullable<string>;
+  }) {
+    return [namespaceId, "chats", chatUid, "tables"];
+  },
+};
+
 export const queryKeyStore = {
   model: modelQueryKeyStore,
   pipeline: pipelineQueryKeyStore,
@@ -719,4 +790,6 @@ export const queryKeyStore = {
   catalog: catalogQueryKeyStore,
   integration: integrationQueryKeyStore,
   application: applicationQueryKeyStore,
+  table: tableQueryKeyStore,
+  chat: chatQueryKeyStore,
 };

@@ -12,6 +12,8 @@ export * from "./organization";
 export * from "./misc";
 export * from "./release";
 export * from "./secret";
+export * from "./chats";
+export * from "./table";
 
 /** Re export react-query to solve ESM, CJS confict issue */
 export {
@@ -39,3 +41,5 @@ export type {
 export const enum ReactQueryErrorCode {
   NO_ACCESS_TOKEN,
 }
+
+export { queryKeyStore } from "./queryKeyStore";

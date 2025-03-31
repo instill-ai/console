@@ -45,6 +45,11 @@ const navLinkItems: NavLinkProps[] = [
     Icon: Icons.BarChartSquare02,
     title: "Dashboard",
   },
+  {
+    pathname: "chats",
+    Icon: Icons.CubeOutline,
+    title: "Chat",
+  },
 ];
 
 const navLinkSelector = (store: InstillStore) => ({
