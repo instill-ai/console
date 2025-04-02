@@ -7,6 +7,7 @@ import {
   InstillChatError,
   InstillStore,
   InstillStoreMutators,
+  PendingFile,
 } from "./types";
 
 export const createChatSlice: StateCreator<
@@ -53,6 +54,14 @@ export const createChatSlice: StateCreator<
       return {
         ...state,
         chatFullscreenOpen: fn(state.chatFullscreenOpen),
+      };
+    }),
+  fileManagerOpen: true,
+  updateFileManagerOpen: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        fileManagerOpen: fn(state.fileManagerOpen),
       };
     }),
   isWebSearchEnabled: false,
@@ -127,6 +136,16 @@ export const createChatSlice: StateCreator<
       return {
         ...state,
         isTableUpdated: fn(state.isTableUpdated),
+      };
+    }),
+  uploadFilesPending: {},
+  updateUploadFilesPending: (
+    fn: (prev: Record<string, PendingFile[]>) => Record<string, PendingFile[]>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        uploadFilesPending: fn(state.uploadFilesPending),
       };
     }),
 });

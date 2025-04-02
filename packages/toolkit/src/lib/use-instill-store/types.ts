@@ -319,6 +319,8 @@ export type ChatSlice = {
   updateEnableToolSuggestion: (fn: (prev: boolean) => boolean) => void;
   chatFullscreenOpen: boolean;
   updateChatFullscreenOpen: (fn: (prev: boolean) => boolean) => void;
+  fileManagerOpen: boolean;
+  updateFileManagerOpen: (fn: (prev: boolean) => boolean) => void;
   isWebSearchEnabled: boolean;
   updateIsWebSearchEnabled: (fn: (prev: boolean) => boolean) => void;
   chatStreamIsActive: Record<string, boolean>;
@@ -348,6 +350,10 @@ export type ChatSlice = {
   currentActiveCitationListInTheRightDrawer: Record<string, Citation[]>;
   updateCurrentActiveCitationListInTheRightDrawer: (
     fn: (prev: Record<string, Citation[]>) => Record<string, Citation[]>,
+  ) => void;
+  uploadFilesPending: Record<string, PendingFile[]>;
+  updateUploadFilesPending: (
+    fn: (prev: Record<string, PendingFile[]>) => Record<string, PendingFile[]>,
   ) => void;
 };
 
@@ -403,3 +409,12 @@ export type InstillStoreMutators = [
   ["zustand/devtools", never],
   ["zustand/subscribeWithSelector", never],
 ];
+
+export type PendingFile = {
+  name: string;
+  progress: number;
+  status: "uploading" | "success" | "error";
+  type: string;
+  catalogFileUid?: string;
+  size: number;
+};
