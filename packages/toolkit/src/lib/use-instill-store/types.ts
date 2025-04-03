@@ -312,6 +312,8 @@ export type InstillChatError = Nullable<{
   createTime: string;
 }>;
 
+export type ChatDrawerType = Nullable<"files" | "citations">;
+
 export type ChatSlice = {
   enabledTools: string[];
   updateEnabledTools: (fn: (prev: string[]) => string[]) => void;
@@ -319,8 +321,8 @@ export type ChatSlice = {
   updateEnableToolSuggestion: (fn: (prev: boolean) => boolean) => void;
   chatFullscreenOpen: boolean;
   updateChatFullscreenOpen: (fn: (prev: boolean) => boolean) => void;
-  fileManagerOpen: boolean;
-  updateFileManagerOpen: (fn: (prev: boolean) => boolean) => void;
+  chatDrawerType: ChatDrawerType;
+  updateChatDrawerType: (fn: (prev: ChatDrawerType) => ChatDrawerType) => void;
   isWebSearchEnabled: boolean;
   updateIsWebSearchEnabled: (fn: (prev: boolean) => boolean) => void;
   chatStreamIsActive: Record<string, boolean>;

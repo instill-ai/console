@@ -2,6 +2,7 @@ import { Citation } from "instill-sdk";
 import { StateCreator } from "zustand";
 
 import {
+  ChatDrawerType,
   ChatSlice,
   InstillChatAgentStatus,
   InstillChatError,
@@ -56,12 +57,12 @@ export const createChatSlice: StateCreator<
         chatFullscreenOpen: fn(state.chatFullscreenOpen),
       };
     }),
-  fileManagerOpen: true,
-  updateFileManagerOpen: (fn: (prev: boolean) => boolean) =>
+  chatDrawerType: null,
+  updateChatDrawerType: (fn: (prev: ChatDrawerType) => ChatDrawerType) =>
     set((state) => {
       return {
         ...state,
-        fileManagerOpen: fn(state.fileManagerOpen),
+        chatDrawerType: fn(state.chatDrawerType),
       };
     }),
   isWebSearchEnabled: false,
