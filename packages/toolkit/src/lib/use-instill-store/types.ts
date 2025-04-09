@@ -357,6 +357,8 @@ export type ChatSlice = {
   updateUploadFilesPending: (
     fn: (prev: Record<string, PendingFile[]>) => Record<string, PendingFile[]>,
   ) => void;
+  tempFileCatalogId: string;
+  updateTempFileCatalogId: (fn: (prev: string) => string) => void;
 };
 
 export type TableMode = "table" | "preview";

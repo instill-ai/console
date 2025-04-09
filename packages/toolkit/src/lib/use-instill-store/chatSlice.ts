@@ -149,4 +149,12 @@ export const createChatSlice: StateCreator<
         uploadFilesPending: fn(state.uploadFilesPending),
       };
     }),
+  tempFileCatalogId: "",
+  updateTempFileCatalogId: (fn: (prev: string) => string) =>
+    set((state) => {
+      return {
+        ...state,
+        tempFileCatalogId: fn(state.tempFileCatalogId),
+      };
+    }),
 });
