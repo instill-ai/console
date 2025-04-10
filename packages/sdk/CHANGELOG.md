@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.14.2...instill-sdk-v0.15.0) (2025-04-10)
+
+
+### Features
+
+* new agent product line ([#1695](https://github.com/instill-ai/console/issues/1695)) ([3148f39](https://github.com/instill-ai/console/commit/3148f39780ffc0abd76e74622441f4f1727d8397))
+
 ## [0.14.2](https://github.com/instill-ai/console/compare/instill-sdk-v0.14.1...instill-sdk-v0.14.2) (2025-02-27)
 
 

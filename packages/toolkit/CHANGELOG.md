@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.117.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.116.2...@instill-ai/toolkit-v0.117.0) (2025-04-10)
+
+
+### Features
+
+* new agent product line ([#1695](https://github.com/instill-ai/console/issues/1695)) ([3148f39](https://github.com/instill-ai/console/commit/3148f39780ffc0abd76e74622441f4f1727d8397))
+* new icon and chat storage update ([#1697](https://github.com/instill-ai/console/issues/1697)) ([9fe4e4b](https://github.com/instill-ai/console/commit/9fe4e4be79a29e2b8c1ba21feb3d12ac25182947))
+
 ## [0.116.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.116.1...@instill-ai/toolkit-v0.116.2) (2025-02-27)
 
 
