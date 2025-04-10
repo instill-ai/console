@@ -1,4 +1,4 @@
-import { Citation } from "instill-sdk";
+import { Citation, Nullable } from "instill-sdk";
 import { StateCreator } from "zustand";
 
 import {
@@ -149,8 +149,8 @@ export const createChatSlice: StateCreator<
         uploadFilesPending: fn(state.uploadFilesPending),
       };
     }),
-  tempFileCatalogId: "",
-  updateTempFileCatalogId: (fn: (prev: string) => string) =>
+  tempFileCatalogId: null,
+  updateTempFileCatalogId: (fn: (prev: Nullable<string>) => Nullable<string>) =>
     set((state) => {
       return {
         ...state,
