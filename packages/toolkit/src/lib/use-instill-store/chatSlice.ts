@@ -2,11 +2,13 @@ import { Citation } from "instill-sdk";
 import { StateCreator } from "zustand";
 
 import {
+  ChatDrawerType,
   ChatSlice,
   InstillChatAgentStatus,
   InstillChatError,
   InstillStore,
   InstillStoreMutators,
+  PendingFile,
 } from "./types";
 
 export const createChatSlice: StateCreator<
@@ -53,6 +55,14 @@ export const createChatSlice: StateCreator<
       return {
         ...state,
         chatFullscreenOpen: fn(state.chatFullscreenOpen),
+      };
+    }),
+  chatDrawerType: null,
+  updateChatDrawerType: (fn: (prev: ChatDrawerType) => ChatDrawerType) =>
+    set((state) => {
+      return {
+        ...state,
+        chatDrawerType: fn(state.chatDrawerType),
       };
     }),
   isWebSearchEnabled: false,
@@ -127,6 +137,24 @@ export const createChatSlice: StateCreator<
       return {
         ...state,
         isTableUpdated: fn(state.isTableUpdated),
+      };
+    }),
+  uploadFilesPending: {},
+  updateUploadFilesPending: (
+    fn: (prev: Record<string, PendingFile[]>) => Record<string, PendingFile[]>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        uploadFilesPending: fn(state.uploadFilesPending),
+      };
+    }),
+  tempFileCatalogId: "",
+  updateTempFileCatalogId: (fn: (prev: string) => string) =>
+    set((state) => {
+      return {
+        ...state,
+        tempFileCatalogId: fn(state.tempFileCatalogId),
       };
     }),
 });
