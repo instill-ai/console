@@ -357,8 +357,10 @@ export type ChatSlice = {
   updateUploadFilesPending: (
     fn: (prev: Record<string, PendingFile[]>) => Record<string, PendingFile[]>,
   ) => void;
-  tempFileCatalogId: string;
-  updateTempFileCatalogId: (fn: (prev: string) => string) => void;
+  tempFileCatalogId: Nullable<string>;
+  updateTempFileCatalogId: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
 };
 
 export type TableMode = "table" | "preview";
@@ -419,6 +421,6 @@ export type PendingFile = {
   progress: number;
   status: "uploading" | "success" | "error";
   type: string;
-  catalogFileUid?: string;
+  fileUid?: string;
   size: number;
 };
