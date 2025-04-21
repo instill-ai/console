@@ -84,4 +84,12 @@ export const createTableSlice: StateCreator<
         ),
       };
     }),
+  currentSelectedTableRowsUid: [],
+  updateCurrentSelectedTableRowsUid: (fn: (prev: string[]) => string[]) =>
+    set((state) => {
+      return {
+        ...state,
+        currentSelectedTableRowsUid: fn(state.currentSelectedTableRowsUid),
+      };
+    }),
 });

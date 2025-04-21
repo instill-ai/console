@@ -400,6 +400,8 @@ export type TableSlice = {
   updateForceOpenNewlyCreatedColumnContextMenuColumnUid: (
     fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
+  currentSelectedTableRowsUid: string[];
+  updateCurrentSelectedTableRowsUid: (fn: (prev: string[]) => string[]) => void;
 };
 
 export type InstillStore = SmartHintSlice &
