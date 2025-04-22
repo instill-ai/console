@@ -286,13 +286,13 @@ export class TableClient extends APIResource {
   }
 
   async createNamespaceTableRow(props: CreateNamespaceTableRowRequest) {
-    const { namespaceId, tableUid, row } = props;
+    const { namespaceId, tableUid, ...rest } = props;
 
     try {
       const data = await this._client.post<CreateNamespaceTableRowResponse>(
         `/namespaces/${namespaceId}/tables/${tableUid}/rows`,
         {
-          body: JSON.stringify({ row }),
+          body: JSON.stringify(rest),
         },
       );
 

@@ -236,6 +236,7 @@ export type CreateNamespaceTableRowRequest = {
   namespaceId: string;
   tableUid: string;
   row: RowForCreateOrUpdate;
+  beforeRowUid?: string;
 };
 
 export type CreateNamespaceTableRowResponse = {
