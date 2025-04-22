@@ -47,6 +47,7 @@ import type { ImageClassificationIconProps } from "./ImageClassificationIcon";
 import type { ImageToImageIconProps } from "./ImageToImageIcon";
 import type { ImageToTextIconProps } from "./ImageToTextIcon";
 import type { InstanceSegmentationIconProps } from "./InstanceSegmentationIcon";
+import type { IntercomIconProps } from "./IntercomIcon";
 import type { IotIconProps } from "./IotIcon";
 import type { KeypointDetectionIconProps } from "./KeypointDetectionIcon";
 import type { LinkedInIconProps } from "./LinkedInIcon";
@@ -144,6 +145,7 @@ import ImageClassificationIcon from "./ImageClassificationIcon";
 import ImageToImageIcon from "./ImageToImageIcon";
 import ImageToTextIcon from "./ImageToTextIcon";
 import InstanceSegmentationIcon from "./InstanceSegmentationIcon";
+import IntercomIcon from "./IntercomIcon";
 import IotIcon from "./IotIcon";
 import KeypointDetectionIcon from "./KeypointDetectionIcon";
 import LinkedInIcon from "./LinkedInIcon";
@@ -289,6 +291,7 @@ export type {
   FilterIconProps,
   TextToImageIconProps,
   TextGenerationIconProps,
+  IntercomIconProps,
 };
 
 export {
@@ -387,4 +390,5 @@ export {
   FilterIcon,
   TextToImageIcon,
   TextGenerationIcon,
+  IntercomIcon,
 };
