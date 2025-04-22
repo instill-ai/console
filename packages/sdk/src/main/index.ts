@@ -39,19 +39,23 @@ export class InstillAPIClient {
   baseURL: string;
   apiToken: string | undefined;
   debug: boolean | undefined;
+  userProvidedAdditionalHeaders: GeneralRecord | undefined;
 
   constructor({
     baseURL,
     apiToken,
     debug,
+    userProvidedAdditionalHeaders,
   }: {
     baseURL: string;
     apiToken?: string;
     debug?: boolean;
+    userProvidedAdditionalHeaders?: GeneralRecord;
   }) {
     this.baseURL = baseURL;
     this.apiToken = apiToken;
     this.debug = debug;
+    this.userProvidedAdditionalHeaders = userProvidedAdditionalHeaders;
   }
 
   async get<Rsp>(path: string, opt?: RequestOption): Promise<Rsp> {
@@ -89,10 +93,12 @@ export class InstillAPIClient {
               "Content-Type": "application/json",
               Authorization: `Bearer ${this.apiToken}`,
               ...opt?.additionalHeaders,
+              ...this.userProvidedAdditionalHeaders,
             }
           : {
               "Content-Type": "application/json",
               ...opt?.additionalHeaders,
+              ...this.userProvidedAdditionalHeaders,
             },
         body: opt?.body,
       });
