@@ -16,6 +16,14 @@ export function getInstillAPIClient({ accessToken }: { accessToken?: string }) {
 
       // When non logged in user is viewing some pages, accessToken will be null
       apiToken: accessToken,
+      userProvidedAdditionalHeaders: {
+        "CF-Access-Client-Id": env("CF_ACCESS_CLIENT_ID")
+          ? env("CF_ACCESS_CLIENT_ID")
+          : undefined,
+        "CF-Access-Client-Secret": env("CF_ACCESS_CLIENT_SECRET")
+          ? env("CF_ACCESS_CLIENT_SECRET")
+          : undefined,
+      },
     });
   }
 
