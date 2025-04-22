@@ -1,4 +1,4 @@
-import { InstillAPIClient, Nullable } from "instill-sdk";
+import { GeneralRecord, InstillAPIClient, Nullable } from "instill-sdk";
 
 import { env } from "../../server";
 
@@ -15,17 +15,22 @@ export function getInstillArtifactAPIClient({
       env("NEXT_PUBLIC_API_GATEWAY_URL")
     }/${env("NEXT_PUBLIC_ARTIFACT_API_VERSION")}`;
 
+    let userProvidedAdditionalHeaders: GeneralRecord | undefined;
+
+    if (
+      env("NEXT_PUBLIC_CF_ACCESS_CLIENT_ID") &&
+      env("NEXT_PUBLIC_CF_ACCESS_CLIENT_SECRET")
+    ) {
+      userProvidedAdditionalHeaders = {
+        "CF-Access-Client-Id": env("NEXT_PUBLIC_CF_ACCESS_CLIENT_ID"),
+        "CF-Access-Client-Secret": env("NEXT_PUBLIC_CF_ACCESS_CLIENT_SECRET"),
+      };
+    }
+
     instillArtifactAPIClient = new InstillAPIClient({
       baseURL,
       apiToken: accessToken,
-      userProvidedAdditionalHeaders: {
-        "CF-Access-Client-Id": env("CF_ACCESS_CLIENT_ID")
-          ? env("CF_ACCESS_CLIENT_ID")
-          : undefined,
-        "CF-Access-Client-Secret": env("CF_ACCESS_CLIENT_SECRET")
-          ? env("CF_ACCESS_CLIENT_SECRET")
-          : undefined,
-      },
+      userProvidedAdditionalHeaders,
     });
   }
 
