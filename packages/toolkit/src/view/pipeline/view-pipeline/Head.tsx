@@ -78,7 +78,12 @@ export const Head = ({
 
   const deletePipeline = useDeleteNamespacePipeline();
   async function handleDeletePipeline() {
-    if (!accessToken || !pipeline) {
+    if (
+      !accessToken ||
+      !pipeline ||
+      !routeInfo.isSuccess ||
+      !routeInfo.data.namespaceId
+    ) {
       return;
     }
 
@@ -96,6 +101,7 @@ export const Head = ({
         variant: "alert-success",
         size: "large",
       });
+
       router.push(`/${routeInfo.data.namespaceId}/pipelines`);
     } catch (error) {
       console.log(error);

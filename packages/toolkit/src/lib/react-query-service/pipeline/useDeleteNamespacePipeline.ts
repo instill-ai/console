@@ -31,7 +31,7 @@ export function useDeleteNamespacePipeline() {
 
       return Promise.resolve({ namespaceId, pipelineId });
     },
-    onSuccess: ({ namespaceId, pipelineId }) => {
+    onSuccess: ({ namespaceId }) => {
       queryClient.invalidateQueries({
         queryKey:
           queryKeyStore.pipeline.getUseInfiniteAccessiblePipelinesQueryKey({
@@ -50,15 +50,6 @@ export function useDeleteNamespacePipeline() {
             visibility: null,
             view: null,
           }),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeyStore.pipeline.getUseNamespacePipelineQueryKey({
-          namespaceId,
-          pipelineId,
-          view: null,
-          shareCode: null,
-        }),
       });
     },
   });
