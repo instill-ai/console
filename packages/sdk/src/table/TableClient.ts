@@ -8,10 +8,14 @@ import {
   DeleteNamespaceTableRequest,
   DeleteNamespaceTableRowRequest,
   ExportNamespaceTableRequest,
+  GetNamespaceTableCellRequest,
+  GetNamespaceTableCellResponse,
   GetNamespaceTableColumnDefinitionsRequest,
   GetNamespaceTableColumnDefinitionsResponse,
   GetNamespaceTableRequest,
   GetNamespaceTableResponse,
+  GetNamespaceTableRowRequest,
+  GetNamespaceTableRowResponse,
   ListNamespaceTableRowsRequest,
   ListNamespaceTableRowsResponse,
   ListNamespaceTablesRequest,
@@ -20,9 +24,20 @@ import {
   ListPaginatedNamespaceTableRowsResponse,
   ListPaginatedNamespaceTablesRequest,
   ListPaginatedNamespaceTablesResponse,
+  LockNamespaceTableCellRequest,
+  LockNamespaceTableCellResponse,
   MoveNamespaceTableRowRequest,
+  RecomputeNamespaceTableCellRequest,
+  RecomputeNamespaceTableCellResponse,
+  RecomputeNamespaceTableColumnRequest,
+  ResetNamespaceTableCellRequest,
+  ResetNamespaceTableCellResponse,
   Row,
   Table,
+  UnlockNamespaceTableCellRequest,
+  UnlockNamespaceTableCellResponse,
+  UpdateNamespaceTableCellRequest,
+  UpdateNamespaceTableCellResponse,
   UpdateNamespaceTableColumnDefinitionsRequest,
   UpdateNamespaceTableColumnDefinitionsResponse,
   UpdateNamespaceTableRequest,
@@ -229,6 +244,20 @@ export class TableClient extends APIResource {
     }
   }
 
+  async getNamespaceTableRow(props: GetNamespaceTableRowRequest) {
+    const { namespaceId, tableUid, rowUid } = props;
+
+    try {
+      const data = await this._client.get<GetNamespaceTableRowResponse>(
+        `/namespaces/${namespaceId}/tables/${tableUid}/rows/${rowUid}`,
+      );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
   async listNamespaceTableRows(props: ListNamespaceTableRowsRequest) {
     const {
       namespaceId,
@@ -360,6 +389,109 @@ export class TableClient extends APIResource {
           body: JSON.stringify({ format }),
           isBlob: true,
         },
+      );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async recomputeNamespaceTableColumn(
+    props: RecomputeNamespaceTableColumnRequest,
+  ) {
+    const { namespaceId, tableUid, columnUid } = props;
+
+    try {
+      await this._client.post(
+        `/namespaces/${namespaceId}/tables/${tableUid}/column-definitions/${columnUid}/recompute`,
+      );
+
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async getNamespaceTableCell(props: GetNamespaceTableCellRequest) {
+    const { namespaceId, tableUid, rowUid, cellUid } = props;
+
+    try {
+      const data = await this._client.get<GetNamespaceTableCellResponse>(
+        `/namespaces/${namespaceId}/tables/${tableUid}/rows/${rowUid}/cells/${cellUid}`,
+      );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async updateNamespaceTableCell(props: UpdateNamespaceTableCellRequest) {
+    const { namespaceId, tableUid, rowUid, cellUid, cell } = props;
+
+    try {
+      const data = await this._client.patch<UpdateNamespaceTableCellResponse>(
+        `/namespaces/${namespaceId}/tables/${tableUid}/rows/${rowUid}/cells/${cellUid}`,
+        {
+          body: JSON.stringify({ cell }),
+        },
+      );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async resetNamespaceTableCell(props: ResetNamespaceTableCellRequest) {
+    const { namespaceId, tableUid, rowUid, cellUid } = props;
+
+    try {
+      await this._client.post<ResetNamespaceTableCellResponse>(
+        `/namespaces/${namespaceId}/tables/${tableUid}/rows/${rowUid}/cells/${cellUid}/reset`,
+      );
+
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async recomputeNamespaceTableCell(props: RecomputeNamespaceTableCellRequest) {
+    const { namespaceId, tableUid, rowUid, cellUid } = props;
+
+    try {
+      const data = await this._client.post<RecomputeNamespaceTableCellResponse>(
+        `/namespaces/${namespaceId}/tables/${tableUid}/rows/${rowUid}/cells/${cellUid}/recompute`,
+      );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async lockNamespaceTableCell(props: LockNamespaceTableCellRequest) {
+    const { namespaceId, tableUid, rowUid, cellUid } = props;
+
+    try {
+      const data = await this._client.post<LockNamespaceTableCellResponse>(
+        `/namespaces/${namespaceId}/tables/${tableUid}/rows/${rowUid}/cells/${cellUid}/lock`,
+      );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async unlockNamespaceTableCell(props: UnlockNamespaceTableCellRequest) {
+    const { namespaceId, tableUid, rowUid, cellUid } = props;
+
+    try {
+      const data = await this._client.post<UnlockNamespaceTableCellResponse>(
+        `/namespaces/${namespaceId}/tables/${tableUid}/rows/${rowUid}/cells/${cellUid}/unlock`,
       );
 
       return Promise.resolve(data);
