@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.15.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.14.2...instill-sdk-v0.15.0) (2025-04-23)
+
+
+### Features
+
+* adapt BE new table related endpoints ([#1706](https://github.com/instill-ai/console/issues/1706)) ([c681c01](https://github.com/instill-ai/console/commit/c681c01d432d891fe37a2d517fe80aed67534b4b))
+* new agent product line ([#1695](https://github.com/instill-ai/console/issues/1695)) ([3148f39](https://github.com/instill-ai/console/commit/3148f39780ffc0abd76e74622441f4f1727d8397))
+* update types and store for batch operate table's row ([#1700](https://github.com/instill-ai/console/issues/1700)) ([aa60681](https://github.com/instill-ai/console/commit/aa606810c0265c2aba38d699dc1a493fb3fcad9e))
+
+
+### Bug Fixes
+
+* include cf-token for preview env ([#1704](https://github.com/instill-ai/console/issues/1704)) ([f4eb684](https://github.com/instill-ai/console/commit/f4eb68459cffb90ee33ef7e12c8396e862d2a848))
+
 ## [0.14.2](https://github.com/instill-ai/console/compare/instill-sdk-v0.14.1...instill-sdk-v0.14.2) (2025-02-27)
 
 

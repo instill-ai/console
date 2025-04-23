@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.117.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.116.2...@instill-ai/toolkit-v0.117.0) (2025-04-23)
+
+
+### Features
+
+* adapt BE new table related endpoints ([#1706](https://github.com/instill-ai/console/issues/1706)) ([c681c01](https://github.com/instill-ai/console/commit/c681c01d432d891fe37a2d517fe80aed67534b4b))
+* new agent product line ([#1695](https://github.com/instill-ai/console/issues/1695)) ([3148f39](https://github.com/instill-ai/console/commit/3148f39780ffc0abd76e74622441f4f1727d8397))
+* new icon and chat storage update ([#1697](https://github.com/instill-ai/console/issues/1697)) ([9fe4e4b](https://github.com/instill-ai/console/commit/9fe4e4be79a29e2b8c1ba21feb3d12ac25182947))
+* update types and store for batch operate table's row ([#1700](https://github.com/instill-ai/console/issues/1700)) ([aa60681](https://github.com/instill-ai/console/commit/aa606810c0265c2aba38d699dc1a493fb3fcad9e))
+
+
+### Bug Fixes
+
+* fix not correctly invalidate query when delete pipeline ([#1698](https://github.com/instill-ai/console/issues/1698)) ([51de769](https://github.com/instill-ai/console/commit/51de769852de9fd0a9690a759775815f4f3c4f0a))
+* further fix CF token issue ([#1705](https://github.com/instill-ai/console/issues/1705)) ([101fc75](https://github.com/instill-ai/console/commit/101fc755953b3a70ea2759cbe3391dc775d8e134))
+* include cf-token for preview env ([#1704](https://github.com/instill-ai/console/issues/1704)) ([f4eb684](https://github.com/instill-ai/console/commit/f4eb68459cffb90ee33ef7e12c8396e862d2a848))
+* instill storage typing ([#1701](https://github.com/instill-ai/console/issues/1701)) ([ee2e5b2](https://github.com/instill-ai/console/commit/ee2e5b211b1d49e64ea179e43e353933aab01d76))
+
 ## [0.116.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.116.1...@instill-ai/toolkit-v0.116.2) (2025-02-27)
 
 
