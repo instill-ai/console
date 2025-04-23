@@ -1,5 +1,15 @@
 # @instill-ai/design-system
 
+## [0.88.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.87.0...@instill-ai/design-system-v0.88.0) (2025-04-23)
+
+
+### Features
+
+* add Intercom icon ([#1702](https://github.com/instill-ai/console/issues/1702)) ([a0bbf63](https://github.com/instill-ai/console/commit/a0bbf63eca3b1ce710d12b72eb2835ddc95cd454))
+* export Popover portal ([#1699](https://github.com/instill-ai/console/issues/1699)) ([6451896](https://github.com/instill-ai/console/commit/64518964e2b91303b81fc6551229f01d3c7b3161))
+* new agent product line ([#1695](https://github.com/instill-ai/console/issues/1695)) ([3148f39](https://github.com/instill-ai/console/commit/3148f39780ffc0abd76e74622441f4f1727d8397))
+* new icon and chat storage update ([#1697](https://github.com/instill-ai/console/issues/1697)) ([9fe4e4b](https://github.com/instill-ai/console/commit/9fe4e4be79a29e2b8c1ba21feb3d12ac25182947))
+
 ## [0.87.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.86.3...@instill-ai/design-system-v0.87.0) (2025-02-24)
 
 

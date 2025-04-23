@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.9.0...@instill-ai/design-tokens-v0.10.0) (2025-04-23)
+
+
+### Features
+
+* new agent product line ([#1695](https://github.com/instill-ai/console/issues/1695)) ([3148f39](https://github.com/instill-ai/console/commit/3148f39780ffc0abd76e74622441f4f1727d8397))
+
 ## [0.9.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.8.1...@instill-ai/design-tokens-v0.9.0) (2025-02-24)
 
 
