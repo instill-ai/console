@@ -742,6 +742,19 @@ const tableQueryKeyStore = {
   }) {
     return [namespaceId, "tables", tableUid];
   },
+  getUseGetNamespaceTableCellQueryKey({
+    namespaceId,
+    tableUid,
+    rowUid,
+    cellUid,
+  }: {
+    namespaceId: Nullable<string>;
+    tableUid: Nullable<string>;
+    rowUid: Nullable<string>;
+    cellUid: Nullable<string>;
+  }) {
+    return [namespaceId, "tables", tableUid, "rows", rowUid, "cells", cellUid];
+  },
   getUseListNamespaceTablesQueryKey({
     namespaceId,
   }: {

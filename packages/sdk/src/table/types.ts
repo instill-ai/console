@@ -85,6 +85,8 @@ export type ColumnSort =
 export type ColumnAgentConfig = {
   instructions: string;
   enableWebSearch: boolean;
+  enableAutomateComputation: boolean;
+  context?: string[];
 };
 
 export type CellType =
@@ -136,6 +138,11 @@ export type CellStatus =
   | "CELL_STATUS_TRANSPARENCY_PROCESSING"
   | "CELL_STATUS_TRANSPARENCY_FAILED";
 
+export type LockState =
+  | "LOCK_STATE_UNSPECIFIED"
+  | "LOCK_STATE_LOCKED"
+  | "LOCK_STATE_UNLOCKED";
+
 export type FaithfulnessCheckingResult = {
   score: number;
   result: string;
@@ -148,14 +155,15 @@ export type CellTransparency = {
 export type BaseCell = {
   uid: string;
   columnUid: string;
+  rowUid: string;
   updateTime: string;
   createTime: string;
   type: CellType;
   metadata: GeneralRecord;
   status: CellStatus;
-  faithfulnessCheckingResult: Nullable<FaithfulnessCheckingResult>;
   transparency: Nullable<CellTransparency>;
   citations: Citation[];
+  lockState: LockState;
 };
 
 export type StringCell = BaseCell & {
@@ -186,6 +194,16 @@ export type FileCell = BaseCell & {
   };
 };
 
+export type DocumentCell = BaseCell & {
+  documentValue?: {
+    namespace: string;
+    fileUid: string;
+    objectUid: string;
+    name: string;
+    mimeType: string;
+  };
+};
+
 export type Cell = StringCell | NumberCell | BooleanCell | FileCell;
 
 export type Row = {
@@ -193,6 +211,7 @@ export type Row = {
   cells: Record<string, Cell>;
   createTime: string;
   updateTime: string;
+  order: number;
 };
 
 export type RowForCreateOrUpdate = {
@@ -200,6 +219,16 @@ export type RowForCreateOrUpdate = {
     string,
     Omit<Cell, "uid" | "columnUid" | "createTime" | "updateTime">
   >;
+};
+
+export type GetNamespaceTableRowRequest = {
+  namespaceId: string;
+  tableUid: string;
+  rowUid: string;
+};
+
+export type GetNamespaceTableRowResponse = {
+  row: Row;
 };
 
 export type ListPaginatedNamespaceTableRowsRequest = {
@@ -276,4 +305,77 @@ export type ExportNamespaceTableRequest = {
   namespaceId: string;
   tableUid: string;
   format: ExportFormat;
+};
+
+export type RecomputeNamespaceTableColumnRequest = {
+  namespaceId: string;
+  tableUid: string;
+  columnUid: string;
+};
+
+export type GetNamespaceTableCellRequest = {
+  namespaceId: string;
+  tableUid: string;
+  rowUid: string;
+  cellUid: string;
+};
+
+export type GetNamespaceTableCellResponse = {
+  cell: Cell;
+};
+
+export type UpdateNamespaceTableCellRequest = {
+  namespaceId: string;
+  tableUid: string;
+  rowUid: string;
+  cellUid: string;
+  cell: Cell;
+};
+
+export type UpdateNamespaceTableCellResponse = {
+  cell: Cell;
+};
+
+export type ResetNamespaceTableCellRequest = {
+  namespaceId: string;
+  tableUid: string;
+  rowUid: string;
+  cellUid: string;
+};
+
+export type ResetNamespaceTableCellResponse = {
+  cell: Cell;
+};
+
+export type RecomputeNamespaceTableCellRequest = {
+  namespaceId: string;
+  tableUid: string;
+  rowUid: string;
+  cellUid: string;
+};
+
+export type RecomputeNamespaceTableCellResponse = {
+  cell: Cell;
+};
+
+export type LockNamespaceTableCellRequest = {
+  namespaceId: string;
+  tableUid: string;
+  rowUid: string;
+  cellUid: string;
+};
+
+export type LockNamespaceTableCellResponse = {
+  cell: Cell;
+};
+
+export type UnlockNamespaceTableCellRequest = {
+  namespaceId: string;
+  tableUid: string;
+  rowUid: string;
+  cellUid: string;
+};
+
+export type UnlockNamespaceTableCellResponse = {
+  cell: Cell;
 };
