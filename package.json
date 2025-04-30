@@ -63,7 +63,7 @@
       "prismjs": "^1.30.0",
       "image-size": "^1.2.1",
       "esbuild": "^0.25.0",
-      "tar-fs": "^3.0.4"
+      "tar-fs": "^3.0.8"
     }
   },
   "lint-staged": {
