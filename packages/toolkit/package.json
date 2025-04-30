@@ -138,7 +138,7 @@
     "@uiw/react-codemirror": "^4.22.2",
     "@uiw/react-json-view": "2.0.0-alpha.18",
     "ajv": "^8.16.0",
-    "axios": "^1.7.8",
+    "axios": "^1.8.2",
     "clsx": "^1.0.0",
     "cookie": "^0.7.1",
     "echarts": "^5.4.2",
@@ -176,7 +176,7 @@
   "peerDependencies": {
     "@instill-ai/design-system": "workspace:*",
     "@instill-ai/design-tokens": "workspace:*",
-    "next": "^14.2.21",
+    "next": "^14.2.25",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
