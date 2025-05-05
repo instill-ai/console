@@ -21,6 +21,12 @@ import {
   ListNamespaceChatTablesRequest,
   ListNamespaceChatTablesResponse,
   UpdateInstillChatRequest,
+  PostCreateTableFlowChatMessageRequest,
+  PostCreateTableFlowChatMessageResponse,
+  ListPaginatedCreateTableFlowChatMessagesRequest,
+  ListPaginatedCreateTableFlowChatMessagesResponse,
+  ListCreateTableFlowChatMessagesRequest,
+  ListCreateTableFlowChatMessagesResponse,
 } from "./types";
 
 export class ChatClient extends APIResource {
@@ -169,6 +175,32 @@ export class ChatClient extends APIResource {
     }
   }
 
+  async postCreateTableFLowChatMessage({
+    namespaceId,
+    tableUid,
+    message,
+  }: PostCreateTableFlowChatMessageRequest) {
+    const additionalHeaders = getInstillAdditionalHeaders({
+      stream: true,
+    });
+
+    try {
+      const stream =
+        await this._client.post<PostCreateTableFlowChatMessageResponse>(
+          `/namespaces/${namespaceId}/tables/${tableUid}/builder/chat-with-agent`,
+          {
+            body: JSON.stringify({ message }),
+            additionalHeaders,
+            stream: true,
+          },
+        );
+
+      return Promise.resolve(stream);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
   async listPaginatedInstillChatMessages(
     props: ListPaginatedInstillChatMessagesRequest,
   ) {
@@ -225,6 +257,73 @@ export class ChatClient extends APIResource {
       }
 
       const response: ListInstillChatMessagesResponse = {
+        messages,
+      };
+
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listPaginatedCreateTableFLowChatMessages(
+    props: ListPaginatedCreateTableFlowChatMessagesRequest,
+  ) {
+    const { namespaceId, tableUid, pageToken, pageSize } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/tables/${tableUid}/builder/messages`,
+      pageToken,
+      pageSize,
+    });
+
+    try {
+      const data =
+        await this._client.get<ListPaginatedCreateTableFlowChatMessagesResponse>(
+          queryString,
+        );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listCreateTableFLowChatMessages(
+    props: ListCreateTableFlowChatMessagesRequest,
+  ) {
+    const { namespaceId, tableUid, pageToken, pageSize } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/tables/${tableUid}/builder/messages`,
+      pageToken,
+      pageSize,
+    });
+
+    const messages: InstillChatMessage[] = [];
+
+    try {
+      const data =
+        await this._client.get<ListPaginatedCreateTableFlowChatMessagesResponse>(
+          queryString,
+        );
+
+      messages.push(...data.messages);
+
+      if (data.nextPageToken) {
+        messages.push(
+          ...(
+            await this.listCreateTableFLowChatMessages({
+              namespaceId,
+              tableUid,
+              pageSize,
+              pageToken: data.nextPageToken,
+            })
+          ).messages,
+        );
+      }
+
+      const response: ListCreateTableFlowChatMessagesResponse = {
         messages,
       };
 

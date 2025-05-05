@@ -190,7 +190,17 @@ export type PostInstillChatMessageRequest = {
   enableWebSearch?: boolean;
 };
 
+export type PostCreateTableFlowChatMessageRequest = {
+  namespaceId: string;
+  tableUid: string;
+  message: string;
+};
+
 export type PostInstillChatMessageResponse = {
+  body: ReadableStream;
+};
+
+export type PostCreateTableFlowChatMessageResponse = {
   body: ReadableStream;
 };
 
@@ -201,7 +211,20 @@ export type ListPaginatedInstillChatMessagesRequest = {
   pageSize?: number;
 };
 
+export type ListPaginatedCreateTableFlowChatMessagesRequest = {
+  namespaceId: string;
+  tableUid: string;
+  pageToken?: string;
+  pageSize?: number;
+};
+
 export type ListPaginatedInstillChatMessagesResponse = {
+  messages: InstillChatMessage[];
+  nextPageToken: string;
+  totalSize: number;
+};
+
+export type ListPaginatedCreateTableFlowChatMessagesResponse = {
   messages: InstillChatMessage[];
   nextPageToken: string;
   totalSize: number;
@@ -210,7 +233,14 @@ export type ListPaginatedInstillChatMessagesResponse = {
 export type ListInstillChatMessagesRequest =
   ListPaginatedInstillChatMessagesRequest;
 
+export type ListCreateTableFlowChatMessagesRequest =
+  ListPaginatedCreateTableFlowChatMessagesRequest;
+
 export type ListInstillChatMessagesResponse = {
+  messages: InstillChatMessage[];
+};
+
+export type ListCreateTableFlowChatMessagesResponse = {
   messages: InstillChatMessage[];
 };
 
