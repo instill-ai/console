@@ -175,7 +175,7 @@ export class ChatClient extends APIResource {
     }
   }
 
-  async postTableInstillChatMessage({
+  async postCreateTableFLowChatMessage({
     namespaceId,
     tableUid,
     message,
@@ -266,7 +266,7 @@ export class ChatClient extends APIResource {
     }
   }
 
-  async listPaginatedTableInstillChatMessages(
+  async listPaginatedCreateTableFLowChatMessages(
     props: ListPaginatedCreateTableFlowChatMessagesRequest,
   ) {
     const { namespaceId, tableUid, pageToken, pageSize } = props;
@@ -289,7 +289,7 @@ export class ChatClient extends APIResource {
     }
   }
 
-  async listTableInstillChatMessages(
+  async listCreateTableFLowChatMessages(
     props: ListCreateTableFlowChatMessagesRequest,
   ) {
     const { namespaceId, tableUid, pageToken, pageSize } = props;
@@ -313,7 +313,7 @@ export class ChatClient extends APIResource {
       if (data.nextPageToken) {
         messages.push(
           ...(
-            await this.listTableInstillChatMessages({
+            await this.listCreateTableFLowChatMessages({
               namespaceId,
               tableUid,
               pageSize,
