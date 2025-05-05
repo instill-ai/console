@@ -186,7 +186,7 @@ export type PostInstillChatMessageRequest = {
   namespaceId: string;
   chatUid: string;
   message: string;
-  fileUids?: string[];
+  objectUids?: string[];
   enableWebSearch?: boolean;
 };
 

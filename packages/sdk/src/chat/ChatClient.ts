@@ -152,7 +152,7 @@ export class ChatClient extends APIResource {
     namespaceId,
     chatUid,
     message,
-    fileUids,
+    objectUids,
     enableWebSearch = false,
   }: PostInstillChatMessageRequest) {
     const additionalHeaders = getInstillAdditionalHeaders({
@@ -163,7 +163,7 @@ export class ChatClient extends APIResource {
       const stream = await this._client.post<PostInstillChatMessageResponse>(
         `/namespaces/${namespaceId}/chats/${chatUid}/chat-with-agent`,
         {
-          body: JSON.stringify({ message, fileUids, enableWebSearch }),
+          body: JSON.stringify({ message, objectUids, enableWebSearch }),
           additionalHeaders,
           stream: true,
         },
