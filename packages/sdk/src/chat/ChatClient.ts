@@ -21,6 +21,12 @@ import {
   ListNamespaceChatTablesRequest,
   ListNamespaceChatTablesResponse,
   UpdateInstillChatRequest,
+  PostTableCreateInstillChatMessageRequest,
+  PostTableCreateInstillChatMessageResponse,
+  ListPaginatedTableCreateInstillChatMessagesRequest,
+  ListPaginatedTableCreateInstillChatMessagesResponse,
+  ListTableCreateInstillChatMessagesRequest,
+  ListTableCreateInstillChatMessagesResponse,
 } from "./types";
 
 export class ChatClient extends APIResource {
@@ -169,6 +175,32 @@ export class ChatClient extends APIResource {
     }
   }
 
+  async postTableInstillChatMessage({
+    namespaceId,
+    tableUid,
+    message,
+  }: PostTableCreateInstillChatMessageRequest) {
+    const additionalHeaders = getInstillAdditionalHeaders({
+      stream: true,
+    });
+
+    try {
+      const stream =
+        await this._client.post<PostTableCreateInstillChatMessageResponse>(
+          `/namespaces/${namespaceId}/tables/${tableUid}/builder/chat-with-agent`,
+          {
+            body: JSON.stringify({ message }),
+            additionalHeaders,
+            stream: true,
+          },
+        );
+
+      return Promise.resolve(stream);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
   async listPaginatedInstillChatMessages(
     props: ListPaginatedInstillChatMessagesRequest,
   ) {
@@ -225,6 +257,73 @@ export class ChatClient extends APIResource {
       }
 
       const response: ListInstillChatMessagesResponse = {
+        messages,
+      };
+
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listPaginatedTableInstillChatMessages(
+    props: ListPaginatedTableCreateInstillChatMessagesRequest,
+  ) {
+    const { namespaceId, tableUid, pageToken, pageSize } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/tables/${tableUid}/builder/messages`,
+      pageToken,
+      pageSize,
+    });
+
+    try {
+      const data =
+        await this._client.get<ListPaginatedTableCreateInstillChatMessagesResponse>(
+          queryString,
+        );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listTableInstillChatMessages(
+    props: ListTableCreateInstillChatMessagesRequest,
+  ) {
+    const { namespaceId, tableUid, pageToken, pageSize } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/tables/${tableUid}/builder/messages`,
+      pageToken,
+      pageSize,
+    });
+
+    const messages: InstillChatMessage[] = [];
+
+    try {
+      const data =
+        await this._client.get<ListPaginatedTableCreateInstillChatMessagesResponse>(
+          queryString,
+        );
+
+      messages.push(...data.messages);
+
+      if (data.nextPageToken) {
+        messages.push(
+          ...(
+            await this.listTableInstillChatMessages({
+              namespaceId,
+              tableUid,
+              pageSize,
+              pageToken: data.nextPageToken,
+            })
+          ).messages,
+        );
+      }
+
+      const response: ListTableCreateInstillChatMessagesResponse = {
         messages,
       };
 
