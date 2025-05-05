@@ -190,7 +190,7 @@ export type PostInstillChatMessageRequest = {
   enableWebSearch?: boolean;
 };
 
-export type PostTableCreateInstillChatMessageRequest = {
+export type PostCreateTableFlowChatMessageRequest = {
   namespaceId: string;
   tableUid: string;
   message: string;
@@ -200,7 +200,7 @@ export type PostInstillChatMessageResponse = {
   body: ReadableStream;
 };
 
-export type PostTableCreateInstillChatMessageResponse = {
+export type PostCreateTableFlowChatMessageResponse = {
   body: ReadableStream;
 };
 
@@ -211,7 +211,7 @@ export type ListPaginatedInstillChatMessagesRequest = {
   pageSize?: number;
 };
 
-export type ListPaginatedTableCreateInstillChatMessagesRequest = {
+export type ListPaginatedCreateTableFlowChatMessagesRequest = {
   namespaceId: string;
   tableUid: string;
   pageToken?: string;
@@ -224,7 +224,7 @@ export type ListPaginatedInstillChatMessagesResponse = {
   totalSize: number;
 };
 
-export type ListPaginatedTableCreateInstillChatMessagesResponse = {
+export type ListPaginatedCreateTableFlowChatMessagesResponse = {
   messages: InstillChatMessage[];
   nextPageToken: string;
   totalSize: number;
@@ -233,14 +233,14 @@ export type ListPaginatedTableCreateInstillChatMessagesResponse = {
 export type ListInstillChatMessagesRequest =
   ListPaginatedInstillChatMessagesRequest;
 
-export type ListTableCreateInstillChatMessagesRequest =
-  ListPaginatedTableCreateInstillChatMessagesRequest;
+export type ListCreateTableFlowChatMessagesRequest =
+  ListPaginatedCreateTableFlowChatMessagesRequest;
 
 export type ListInstillChatMessagesResponse = {
   messages: InstillChatMessage[];
 };
 
-export type ListTableCreateInstillChatMessagesResponse = {
+export type ListCreateTableFlowChatMessagesResponse = {
   messages: InstillChatMessage[];
 };
 

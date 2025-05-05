@@ -21,12 +21,12 @@ import {
   ListNamespaceChatTablesRequest,
   ListNamespaceChatTablesResponse,
   UpdateInstillChatRequest,
-  PostTableCreateInstillChatMessageRequest,
-  PostTableCreateInstillChatMessageResponse,
-  ListPaginatedTableCreateInstillChatMessagesRequest,
-  ListPaginatedTableCreateInstillChatMessagesResponse,
-  ListTableCreateInstillChatMessagesRequest,
-  ListTableCreateInstillChatMessagesResponse,
+  PostCreateTableFlowChatMessageRequest,
+  PostCreateTableFlowChatMessageResponse,
+  ListPaginatedCreateTableFlowChatMessagesRequest,
+  ListPaginatedCreateTableFlowChatMessagesResponse,
+  ListCreateTableFlowChatMessagesRequest,
+  ListCreateTableFlowChatMessagesResponse,
 } from "./types";
 
 export class ChatClient extends APIResource {
@@ -179,14 +179,14 @@ export class ChatClient extends APIResource {
     namespaceId,
     tableUid,
     message,
-  }: PostTableCreateInstillChatMessageRequest) {
+  }: PostCreateTableFlowChatMessageRequest) {
     const additionalHeaders = getInstillAdditionalHeaders({
       stream: true,
     });
 
     try {
       const stream =
-        await this._client.post<PostTableCreateInstillChatMessageResponse>(
+        await this._client.post<PostCreateTableFlowChatMessageResponse>(
           `/namespaces/${namespaceId}/tables/${tableUid}/builder/chat-with-agent`,
           {
             body: JSON.stringify({ message }),
@@ -267,7 +267,7 @@ export class ChatClient extends APIResource {
   }
 
   async listPaginatedTableInstillChatMessages(
-    props: ListPaginatedTableCreateInstillChatMessagesRequest,
+    props: ListPaginatedCreateTableFlowChatMessagesRequest,
   ) {
     const { namespaceId, tableUid, pageToken, pageSize } = props;
 
@@ -279,7 +279,7 @@ export class ChatClient extends APIResource {
 
     try {
       const data =
-        await this._client.get<ListPaginatedTableCreateInstillChatMessagesResponse>(
+        await this._client.get<ListPaginatedCreateTableFlowChatMessagesResponse>(
           queryString,
         );
 
@@ -290,7 +290,7 @@ export class ChatClient extends APIResource {
   }
 
   async listTableInstillChatMessages(
-    props: ListTableCreateInstillChatMessagesRequest,
+    props: ListCreateTableFlowChatMessagesRequest,
   ) {
     const { namespaceId, tableUid, pageToken, pageSize } = props;
 
@@ -304,7 +304,7 @@ export class ChatClient extends APIResource {
 
     try {
       const data =
-        await this._client.get<ListPaginatedTableCreateInstillChatMessagesResponse>(
+        await this._client.get<ListPaginatedCreateTableFlowChatMessagesResponse>(
           queryString,
         );
 
@@ -323,7 +323,7 @@ export class ChatClient extends APIResource {
         );
       }
 
-      const response: ListTableCreateInstillChatMessagesResponse = {
+      const response: ListCreateTableFlowChatMessagesResponse = {
         messages,
       };
 
