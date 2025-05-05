@@ -423,6 +423,6 @@ export type PendingFile = {
   progress: number;
   status: "uploading" | "success" | "error";
   type: string;
-  fileUid?: string;
+  objectUid?: string;
   size: number;
 };
