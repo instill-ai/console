@@ -92,4 +92,16 @@ export const createTableSlice: StateCreator<
         currentSelectedTableRowsUid: fn(state.currentSelectedTableRowsUid),
       };
     }),
+  currentLeftPanelEditingColumnUid: null,
+  updateCurrentLeftPanelEditingColumnUid: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        currentLeftPanelEditingColumnUid: fn(
+          state.currentLeftPanelEditingColumnUid,
+        ),
+      };
+    }),
 });
