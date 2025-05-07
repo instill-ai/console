@@ -13,6 +13,7 @@ export type Table = {
   createTime: string;
   updateTime: string;
   agentConfig?: TableAgentConfig;
+  draftMode: boolean;
 };
 
 export type CreateNamespaceTableRequest = {
@@ -22,6 +23,7 @@ export type CreateNamespaceTableRequest = {
   description?: string;
   metadata?: GeneralRecord;
   agentConfig?: TableAgentConfig;
+  draftMode: boolean;
 };
 
 export type CreateNamespaceTableResponse = {
@@ -66,6 +68,7 @@ export type UpdateNamespaceTableRequest = {
   description?: string;
   metadata?: GeneralRecord;
   agentConfig?: TableAgentConfig;
+  draftMode?: boolean;
 };
 
 export type UpdateNamespaceTableResponse = {
