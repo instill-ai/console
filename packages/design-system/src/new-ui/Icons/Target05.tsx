@@ -13,7 +13,7 @@ export const Target05 = React.forwardRef<
     <IconBase
       {...passThrough}
       ref={ref}
-      viewBox="0 0 40 40"
+      viewBox="0 0 24 24"
       className={className}
     >
       <g
