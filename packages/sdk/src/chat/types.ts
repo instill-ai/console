@@ -188,6 +188,7 @@ export type PostInstillChatMessageRequest = {
   message: string;
   objectUids?: string[];
   enableWebSearch?: boolean;
+  tableUids: string[];
 };
 
 export type PostCreateTableFlowChatMessageRequest = {
