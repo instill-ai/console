@@ -1,5 +1,17 @@
 # @instill-ai/design-system
 
+## [0.89.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.88.0...@instill-ai/design-system-v0.89.0) (2025-05-09)
+
+
+### Features
+
+* update chat message type ([#1717](https://github.com/instill-ai/console/issues/1717)) ([529cd96](https://github.com/instill-ai/console/commit/529cd96221a06de48d4902faf0e23dfca7d08140))
+
+
+### Bug Fixes
+
+* fix console-deps-vuln ([#1707](https://github.com/instill-ai/console/issues/1707)) ([d2e4f6a](https://github.com/instill-ai/console/commit/d2e4f6a3504c3268ac366665b7afae70d7b2b937))
+
 ## [0.88.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.87.0...@instill-ai/design-system-v0.88.0) (2025-04-23)
 
 
