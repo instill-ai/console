@@ -402,6 +402,10 @@ export type TableSlice = {
   ) => void;
   currentSelectedTableRowsUid: string[];
   updateCurrentSelectedTableRowsUid: (fn: (prev: string[]) => string[]) => void;
+  currentLeftPanelEditingColumnUid: Nullable<string>;
+  updateCurrentLeftPanelEditingColumnUid: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
 };
 
 export type InstillStore = SmartHintSlice &

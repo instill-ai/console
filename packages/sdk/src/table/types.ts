@@ -88,8 +88,10 @@ export type ColumnSort =
 export type ColumnAgentConfig = {
   instructions: string;
   enableWebSearch: boolean;
-  enableAutomateComputation: boolean;
-  context?: string[];
+  enableAutomateComputation?: boolean;
+  context?: {
+    columnUids: string[];
+  };
 };
 
 export type CellType =
