@@ -157,6 +157,7 @@ import { Star06 } from "./Star06";
 import { Stop } from "./Stop";
 import { Table } from "./Table";
 import { Tag01 } from "./Tag01";
+import { Target05 } from "./Target05";
 import { TextA } from "./TextA";
 import { TextGenerationChat } from "./TextGenerationChat";
 import { ThumbsDown } from "./ThumbsDown";
@@ -348,6 +349,7 @@ export const Icons = {
   Star06,
   Table,
   Tag01,
+  Target05,
   TextA,
   TextGenerationChat,
   ThumbsDown,

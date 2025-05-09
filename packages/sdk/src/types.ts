@@ -223,3 +223,7 @@ export type Citation = {
   name: string;
   url: string;
 };
+
+export type InstillChatMessageContext = {
+  tableUids: string[];
+};

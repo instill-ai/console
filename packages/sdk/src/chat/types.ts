@@ -1,5 +1,5 @@
 import { Table } from "../table";
-import { Citation, Nullable } from "../types";
+import { Citation, InstillChatMessageContext, Nullable } from "../types";
 
 export type ChatAgentConfig = {
   instructions: string;
@@ -188,6 +188,7 @@ export type PostInstillChatMessageRequest = {
   message: string;
   objectUids?: string[];
   enableWebSearch?: boolean;
+  tableUids: string[];
 };
 
 export type PostCreateTableFlowChatMessageRequest = {
@@ -263,6 +264,7 @@ export type InstillChatMessage = {
   updateTime: string;
   msgSenderUid: string;
   citations: Citation[];
+  context: InstillChatMessageContext;
 };
 
 export type ListNamespaceChatTablesRequest = {
