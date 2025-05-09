@@ -361,6 +361,10 @@ export type ChatSlice = {
   updateTempFileCatalogId: (
     fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
+  chatMessageTableUids: Record<string, string[]>;
+  updateChatMessageTableUids: (
+    fn: (prev: Record<string, string[]>) => Record<string, string[]>,
+  ) => void;
 };
 
 export type TableMode = "table" | "preview";
