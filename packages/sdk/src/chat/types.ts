@@ -1,5 +1,5 @@
 import { Table } from "../table";
-import { Citation, Nullable } from "../types";
+import { Citation, InstillChatMessageContext, Nullable } from "../types";
 
 export type ChatAgentConfig = {
   instructions: string;
@@ -263,6 +263,7 @@ export type InstillChatMessage = {
   updateTime: string;
   msgSenderUid: string;
   citations: Citation[];
+  context: InstillChatMessageContext;
 };
 
 export type ListNamespaceChatTablesRequest = {
