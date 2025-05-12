@@ -88,7 +88,7 @@ export type ColumnSort =
 export type ColumnAgentConfig = {
   instructions: string;
   enableWebSearch: boolean;
-  enableAutomateComputation?: boolean;
+  enableAutomaticComputation?: boolean;
   context?: {
     columnUids: string[];
   };
@@ -101,6 +101,21 @@ export type CellType =
   | "TYPE_BOOLEAN"
   | "TYPE_FILE";
 
+export type SelectionType =
+  | "SELECTION_TYPE_UNSPECIFIED"
+  | "SELECTION_TYPE_NONE"
+  | "SELECTION_TYPE_SINGLE";
+
+export type ColumnSelectionNumberOption = {
+  numberValue: number;
+  color: string;
+};
+
+export type ColumnSelectionStringOption = {
+  stringValue: string;
+  color: string;
+};
+
 export type ColumnDefinition = {
   columnUid: string;
   name?: string;
@@ -109,6 +124,7 @@ export type ColumnDefinition = {
   order: number;
   sort?: ColumnSort;
   agentConfig?: ColumnAgentConfig;
+  selection: ColumnSelection;
 };
 
 export type ColumnDefinitions = Record<string, ColumnDefinition>;
@@ -157,6 +173,15 @@ export type CellTransparency = {
   text: string;
 };
 
+export type ColumnSelectionOption =
+  | ColumnSelectionNumberOption
+  | ColumnSelectionStringOption;
+
+export type ColumnSelection = {
+  type: SelectionType;
+  options: ColumnSelectionOption[];
+};
+
 export type BaseCell = {
   uid: string;
   columnUid: string;
@@ -179,12 +204,21 @@ export type StringCell = BaseCell & {
   };
 };
 
+export type NumberFormat =
+  | "FORMAT_UNSPECIFIED"
+  | "FORMAT_COMMAS"
+  | "FORMAT_CURRENCY"
+  | "FORMAT_PERCENTAGE";
+
 export type NumberCell = BaseCell & {
   numberValue?: {
     value: number;
     userInput?: number;
     computedValue?: number;
   };
+  format?: NumberFormat;
+  decimalPlaces?: number;
+  currencyCode?: string;
 };
 
 export type BooleanCell = BaseCell & {
