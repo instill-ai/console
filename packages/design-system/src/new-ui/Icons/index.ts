@@ -85,6 +85,7 @@ import { Globe01 } from "./Globe01";
 import { GraduationHat } from "./GraduationHat";
 import { Hash2 } from "./Hash2";
 import { HelpCircle } from "./HelpCircle";
+import { HomeLine } from "./HomeLine";
 import { HTMLFile } from "./HTMLFile";
 import { Image01 } from "./Image01";
 import { Image03 } from "./Image03";
@@ -277,6 +278,7 @@ export const Icons = {
   GraduationHat,
   HelpCircle,
   HTMLFile,
+  HomeLine,
   Hash2,
   IntersectSquare,
   Link01,
