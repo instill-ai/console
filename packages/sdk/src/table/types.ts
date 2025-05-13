@@ -231,7 +231,7 @@ export type BooleanCell = BaseCell & {
 
 export type FileCell = BaseCell & {
   fileValue?: {
-    fileUid: string;
+    fileUid?: string;
     name: string;
     mimeType: string;
     namespace: string;
@@ -242,7 +242,7 @@ export type FileCell = BaseCell & {
 export type DocumentCell = BaseCell & {
   documentValue?: {
     namespace: string;
-    fileUid: string;
+    fileUid?: string;
     objectUid: string;
     name: string;
     mimeType: string;
