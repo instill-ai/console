@@ -236,16 +236,20 @@ export type FileCell = BaseCell & {
     mimeType: string;
     namespace: string;
     objectUid: string;
+    catalogId: string;
+    fileUrl: string;
   };
 };
 
 export type DocumentCell = BaseCell & {
   documentValue?: {
-    namespace: string;
     fileUid?: string;
-    objectUid: string;
     name: string;
     mimeType: string;
+    namespace: string;
+    objectUid: string;
+    catalogId: string;
+    fileUrl: string;
   };
 };
 
