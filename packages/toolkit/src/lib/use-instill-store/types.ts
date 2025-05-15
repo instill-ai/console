@@ -1,4 +1,5 @@
 import type {
+  CellType,
   Citation,
   GeneralRecord,
   PipelineStreamStatus,
@@ -375,6 +376,7 @@ export type CurrentTableSort = {
 };
 
 export type CurrentCellPreviewAnchor = {
+  type: CellType;
   rowUid: string;
   columnUid: string;
 };
