@@ -233,11 +233,11 @@ export type FileCell = BaseCell & {
   fileValue?: {
     fileUid?: string;
     name: string;
-    mimeType: string;
-    namespace: string;
+    mimeType?: string;
+    namespace?: string;
     objectUid: string;
-    catalogId: string;
-    fileUrl: string;
+    catalogId?: string;
+    fileUrl?: string;
   };
 };
 
@@ -245,11 +245,11 @@ export type DocumentCell = BaseCell & {
   documentValue?: {
     fileUid?: string;
     name: string;
-    mimeType: string;
-    namespace: string;
+    mimeType?: string;
+    namespace?: string;
     objectUid: string;
-    catalogId: string;
-    fileUrl: string;
+    catalogId?: string;
+    fileUrl?: string;
   };
 };
 
