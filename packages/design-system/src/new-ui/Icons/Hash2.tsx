@@ -17,8 +17,8 @@ export const Hash2 = React.forwardRef<
       className={className}
     >
       <path
-        d="M3.95816 1.02417L2.70816 8.52417M7.29149 1.02417L6.04149 8.52417M8.5415 3.1075H1.45817M8.12484 6.44084H1.0415"
-        strokeWidth="1.5"
+        d="M9.49999 3L6.49999 21M17.5 3L14.5 21M20.5 8H3.5M19.5 16H2.5"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
