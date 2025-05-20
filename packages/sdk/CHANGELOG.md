@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.16.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.15.0...instill-sdk-v0.16.0) (2025-05-20)
+
+
+### Features
+
+* adapt BE new cell value ([#1711](https://github.com/instill-ai/console/issues/1711)) ([05f5ddf](https://github.com/instill-ai/console/commit/05f5ddf96ce4c87be750006e25b90225a79d4303))
+* add catalog related data into fileCell ([#1721](https://github.com/instill-ai/console/issues/1721)) ([e465681](https://github.com/instill-ai/console/commit/e4656815cbfd4ae51bd2ba65e62e5d7d2567c735))
+* add draftMode for table ([#1715](https://github.com/instill-ai/console/issues/1715)) ([1cb5a09](https://github.com/instill-ai/console/commit/1cb5a096cc017cdca6a163e5e36a61fe4a599c61))
+* add editing table column state ([#1716](https://github.com/instill-ai/console/issues/1716)) ([687d2e4](https://github.com/instill-ai/console/commit/687d2e4cdaab3ef05ececd53b55a9b2541ee344e))
+* add selection type in table ([#1718](https://github.com/instill-ai/console/issues/1718)) ([22171a5](https://github.com/instill-ai/console/commit/22171a525f13c13b9048a9694161b825e94abe4b))
+* add table creation chat requests to sdk ([#1712](https://github.com/instill-ai/console/issues/1712)) ([c6e7806](https://github.com/instill-ai/console/commit/c6e7806e938078247ef0352cc4b5f682a3298a26))
+* update chat message type ([#1717](https://github.com/instill-ai/console/issues/1717)) ([529cd96](https://github.com/instill-ai/console/commit/529cd96221a06de48d4902faf0e23dfca7d08140))
+* update store type to support broader range of cell preview ([#1722](https://github.com/instill-ai/console/issues/1722)) ([7ef395f](https://github.com/instill-ai/console/commit/7ef395f259483f229a108bcc13535c1ccb8b119e))
+* update table cell type to make fileUid in the fileCell optional ([#1720](https://github.com/instill-ai/console/issues/1720)) ([9af841d](https://github.com/instill-ai/console/commit/9af841dc4948f29d16e563c11ca2bed7e2a58b9c))
+
+
+### Bug Fixes
+
+* fix chat with agent types ([#1714](https://github.com/instill-ai/console/issues/1714)) ([1457eba](https://github.com/instill-ai/console/commit/1457ebae6802bbda31cdcc9dbcf9b3c01c44b075))
+* fix console-deps-vuln ([#1707](https://github.com/instill-ai/console/issues/1707)) ([d2e4f6a](https://github.com/instill-ai/console/commit/d2e4f6a3504c3268ac366665b7afae70d7b2b937))
+
 ## [0.15.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.14.2...instill-sdk-v0.15.0) (2025-04-23)
 
 

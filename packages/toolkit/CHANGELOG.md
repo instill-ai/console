@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.118.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.117.0...@instill-ai/toolkit-v0.118.0) (2025-05-20)
+
+
+### Features
+
+* adapt BE new cell value ([#1711](https://github.com/instill-ai/console/issues/1711)) ([05f5ddf](https://github.com/instill-ai/console/commit/05f5ddf96ce4c87be750006e25b90225a79d4303))
+* adapt new upload file flow ([#1713](https://github.com/instill-ai/console/issues/1713)) ([1c1f313](https://github.com/instill-ai/console/commit/1c1f313ab4cf46bc342976b2ebabb699620221d8))
+* add catalog related data into fileCell ([#1721](https://github.com/instill-ai/console/issues/1721)) ([e465681](https://github.com/instill-ai/console/commit/e4656815cbfd4ae51bd2ba65e62e5d7d2567c735))
+* add draftMode for table ([#1715](https://github.com/instill-ai/console/issues/1715)) ([1cb5a09](https://github.com/instill-ai/console/commit/1cb5a096cc017cdca6a163e5e36a61fe4a599c61))
+* add editing table column state ([#1716](https://github.com/instill-ai/console/issues/1716)) ([687d2e4](https://github.com/instill-ai/console/commit/687d2e4cdaab3ef05ececd53b55a9b2541ee344e))
+* add selection type in table ([#1718](https://github.com/instill-ai/console/issues/1718)) ([22171a5](https://github.com/instill-ai/console/commit/22171a525f13c13b9048a9694161b825e94abe4b))
+* add table creation chat requests to sdk ([#1712](https://github.com/instill-ai/console/issues/1712)) ([c6e7806](https://github.com/instill-ai/console/commit/c6e7806e938078247ef0352cc4b5f682a3298a26))
+* remove space related catalogue warnings and info ([#1724](https://github.com/instill-ai/console/issues/1724)) ([5aab9f7](https://github.com/instill-ai/console/commit/5aab9f7932bd8d6df8693111b110554add55d5c2))
+* update chat message type ([#1717](https://github.com/instill-ai/console/issues/1717)) ([529cd96](https://github.com/instill-ai/console/commit/529cd96221a06de48d4902faf0e23dfca7d08140))
+* update more deps vuln fixes ([#1709](https://github.com/instill-ai/console/issues/1709)) ([8de02a1](https://github.com/instill-ai/console/commit/8de02a165b6f7e372cac239d3fd77af1f9faf0c0))
+* update store type to support broader range of cell preview ([#1722](https://github.com/instill-ai/console/issues/1722)) ([7ef395f](https://github.com/instill-ai/console/commit/7ef395f259483f229a108bcc13535c1ccb8b119e))
+* update table cell type to make fileUid in the fileCell optional ([#1720](https://github.com/instill-ai/console/issues/1720)) ([9af841d](https://github.com/instill-ai/console/commit/9af841dc4948f29d16e563c11ca2bed7e2a58b9c))
+
+
+### Bug Fixes
+
+* fix chat with agent types ([#1714](https://github.com/instill-ai/console/issues/1714)) ([1457eba](https://github.com/instill-ai/console/commit/1457ebae6802bbda31cdcc9dbcf9b3c01c44b075))
+* fix console-deps-vuln ([#1707](https://github.com/instill-ai/console/issues/1707)) ([d2e4f6a](https://github.com/instill-ai/console/commit/d2e4f6a3504c3268ac366665b7afae70d7b2b937))
+* fix toolkit version number ([#1725](https://github.com/instill-ai/console/issues/1725)) ([7b80a1d](https://github.com/instill-ai/console/commit/7b80a1d2c3e55ae3f087e5b16856d887fb03a84d))
+
 ## [0.117.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.116.2...@instill-ai/toolkit-v0.117.0) (2025-04-23)
 
 
