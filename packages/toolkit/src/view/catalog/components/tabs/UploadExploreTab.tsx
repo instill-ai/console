@@ -199,7 +199,10 @@ export const UploadExploreTab = ({
       isLocalEnvironment,
     );
 
-    if (!validationResult.isValid) {
+    if (
+      !validationResult.isValid &&
+      validationResult.error !== "INSUFFICIENT_STORAGE"
+    ) {
       switch (validationResult.error) {
         case "FILE_TOO_LARGE":
           setIncorrectFileName(file.name);
