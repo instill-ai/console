@@ -30,7 +30,8 @@ import {
 } from "../CreateCatalogDialog";
 import { EditCatalogDialogData } from "../EditCatalogDialog";
 import { convertTagsToArray } from "../lib/helpers";
-import { UpgradePlanLink } from "../notifications";
+
+//import { UpgradePlanLink } from "../notifications";
 
 type CatalogTabProps = {
   onCatalogSelect: (catalog: Catalog) => void;
@@ -55,8 +56,8 @@ export const CatalogTab = ({
   onDeleteCatalog,
   catalogs,
   catalogLimit,
-  namespaceType,
-  subscription,
+  //namespaceType,
+  //subscription,
   isLocalEnvironment,
 }: CatalogTabProps) => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
@@ -72,8 +73,8 @@ export const CatalogTab = ({
 
   const createCatalog = useCreateNamespaceCatalog();
   const updateCatalog = useUpdateNamespaceCatalog();
-  const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
-  const isTeamPlan = subscription?.plan === "PLAN_TEAM";
+  //const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
+  //const isTeamPlan = subscription?.plan === "PLAN_TEAM";
 
   const catalogState = useListNamespaceCatalogs({
     accessToken,
@@ -205,7 +206,7 @@ export const CatalogTab = ({
           <p className="text-semantic-fg-primary product-headings-heading-2">
             Catalogs
           </p>
-          <p className=" product-body-text-3-regular space-x-2">
+          {/* <p className=" product-body-text-3-regular space-x-2">
             <span className="text-semantic-fg-secondary">
               {isLocalEnvironment || isEnterprisePlan || isTeamPlan
                 ? `(${filteredAndSortedCatalogs.length})`
@@ -218,7 +219,7 @@ export const CatalogTab = ({
                 selectedNamespace={selectedNamespace}
               />
             ) : null}
-          </p>
+          </p> */}
         </div>
         <CatalogSearchSort
           selectedSortOrder={selectedSortOrder}

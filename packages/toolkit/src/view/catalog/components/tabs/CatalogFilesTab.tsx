@@ -22,11 +22,11 @@ import {
 import { EmptyState } from "../EmptyState";
 import FileDetailsOverlay from "../FileDetailsOverlay";
 import { FileTable } from "../FileTable";
-import { getPlanStorageLimit, shouldShowStorageWarning } from "../lib/helpers";
+//import { getPlanStorageLimit, shouldShowStorageWarning } from "../lib/helpers";
 import {
   FileIsBeingDeletedNotification,
-  InsufficientStorageBanner,
-  UpgradePlanLink,
+  //InsufficientStorageBanner,
+  //UpgradePlanLink,
 } from "../notifications";
 
 type CatalogFilesTabProps = {
@@ -48,11 +48,11 @@ const selector = (store: InstillStore) => ({
 export const CatalogFilesTab = ({
   catalog,
   onGoToUpload,
-  remainingStorageSpace,
-  subscription,
+  //remainingStorageSpace,
+  //subscription,
   updateRemainingSpace,
-  namespaceType,
-  isLocalEnvironment,
+  //namespaceType,
+  //isLocalEnvironment,
 }: CatalogFilesTabProps) => {
   const [sortConfig, setSortConfig] = React.useState<{
     key: keyof File | "";
@@ -96,13 +96,11 @@ export const CatalogFilesTab = ({
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState<Nullable<File>>(null);
 
-  const plan = subscription?.plan || "PLAN_FREE";
-  const planStorageLimit = getPlanStorageLimit(plan);
-  const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
+  //const plan = subscription?.plan || "PLAN_FREE";
+  //const planStorageLimit = getPlanStorageLimit(plan);
+  //const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
 
-  const [showStorageWarning, setShowStorageWarning] = React.useState(
-    shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
-  );
+  //const [showStorageWarning, setShowStorageWarning] = React.useState(shouldShowStorageWarning(remainingStorageSpace, planStorageLimit));
 
   React.useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -166,28 +164,28 @@ export const CatalogFilesTab = ({
     setSortConfig({ key, direction });
   };
 
-  React.useEffect(() => {
-    setShowStorageWarning(
-      shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
-    );
-  }, [remainingStorageSpace, planStorageLimit]);
+  // React.useEffect(() => {
+  //   setShowStorageWarning(
+  //     shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
+  //   );
+  // }, [remainingStorageSpace, planStorageLimit]);
 
   return (
     <React.Fragment>
       <div className="flex flex-col mb-10">
-        {!isLocalEnvironment && showStorageWarning && !isEnterprisePlan ? (
+        {/* {!isLocalEnvironment && showStorageWarning && !isEnterprisePlan ? (
           <InsufficientStorageBanner
             setshowStorageWarning={setShowStorageWarning}
             plan={subscription?.plan || "PLAN_FREE"}
             namespaceType={namespaceType}
             selectedNamespace={selectedNamespace}
           />
-        ) : null}
+        ) : null} */}
         <div className="flex flex-col items-start justify-start gap-1 mb-2">
           <p className="text-semantic-fg-primary product-headings-heading-3">
             {catalog.name}
           </p>
-          <p className="flex flex-col gap-1">
+          {/* <p className="flex flex-col gap-1">
             {!isLocalEnvironment && !isEnterprisePlan ? (
               <span className="text-semantic-fg-secondary product-body-text-3-regular">
                 Remaining storage space:{" "}
@@ -201,7 +199,7 @@ export const CatalogFilesTab = ({
                 selectedNamespace={selectedNamespace}
               />
             ) : null}
-          </p>
+          </p> */}
         </div>
         <Separator orientation="horizontal" className="mb-6" />
         <div className="flex flex-col w-full gap-2">

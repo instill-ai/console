@@ -55,8 +55,8 @@ import {
   FileTooLongNotification,
   IncorrectFormatFileNotification,
   InsufficientStorageBanner,
-  InsufficientStorageNotification,
-  UpgradePlanLink,
+  //InsufficientStorageNotification,
+  //UpgradePlanLink,
 } from "../notifications";
 
 const UploadExploreFormSchema = z.object({
@@ -142,8 +142,8 @@ export const UploadExploreTab = ({
     React.useState(false);
   const [showFileTooLongMessage, setShowFileTooLongMessage] =
     React.useState(false);
-  const [showInsufficientStorageMessage, setShowInsufficientStorageMessage] =
-    React.useState(false);
+  // const [showInsufficientStorageMessage, setShowInsufficientStorageMessage] =
+  //   React.useState(false);
   const [incorrectFileName, setIncorrectFileName] = React.useState<string>("");
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
   const [tooLongFileName, setTooLongFileName] = React.useState<string>("");
@@ -155,8 +155,7 @@ export const UploadExploreTab = ({
   const unsupportedFileTypeTimeoutRef =
     React.useRef<Nullable<NodeJS.Timeout>>(null);
   const duplicateFileTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
-  const insufficientStorageTimeoutRef =
-    React.useRef<Nullable<NodeJS.Timeout>>(null);
+  //const insufficientStorageTimeoutRef = React.useRef<Nullable<NodeJS.Timeout>>(null);
 
   const createNamespaceCatalogFile = useCreateNamespaceCatalogFile();
   const processCatalogFiles = useProcessCatalogFiles();
@@ -200,7 +199,10 @@ export const UploadExploreTab = ({
       isLocalEnvironment,
     );
 
-    if (!validationResult.isValid) {
+    if (
+      !validationResult.isValid &&
+      validationResult.error !== "INSUFFICIENT_STORAGE"
+    ) {
       switch (validationResult.error) {
         case "FILE_TOO_LARGE":
           setIncorrectFileName(file.name);
@@ -209,13 +211,13 @@ export const UploadExploreTab = ({
             setShowFileTooLargeMessage(false);
           }, FILE_ERROR_TIMEOUT);
           break;
-        case "INSUFFICIENT_STORAGE":
-          setIncorrectFileName(file.name);
-          setShowInsufficientStorageMessage(true);
-          insufficientStorageTimeoutRef.current = setTimeout(() => {
-            setShowInsufficientStorageMessage(false);
-          }, FILE_ERROR_TIMEOUT);
-          break;
+        // case "INSUFFICIENT_STORAGE":
+        //   setIncorrectFileName(file.name);
+        //   setShowInsufficientStorageMessage(true);
+        //   insufficientStorageTimeoutRef.current = setTimeout(() => {
+        //     setShowInsufficientStorageMessage(false);
+        //   }, FILE_ERROR_TIMEOUT);
+        //   break;
         case "UNSUPPORTED_FILE_TYPE":
           setIncorrectFileName(file.name);
           setShowUnsupportedFileMessage(true);
@@ -390,7 +392,7 @@ export const UploadExploreTab = ({
         <p className="text-semantic-fg-primary product-headings-heading-3">
           {catalog.name}
         </p>
-        <p className="product-body-text-3-regular flex flex-col gap-1">
+        {/* <p className="product-body-text-3-regular flex flex-col gap-1">
           {!isLocalEnvironment && !isEnterprisePlan ? (
             <span className="text-semantic-fg-secondary">
               Remaining storage space:{" "}
@@ -404,7 +406,7 @@ export const UploadExploreTab = ({
               selectedNamespace={selectedNamespace}
             />
           ) : null}
-        </p>
+        </p> */}
       </div>
       <Separator orientation="horizontal" className="mb-6" />
       <Form.Root {...form}>
@@ -490,7 +492,7 @@ export const UploadExploreTab = ({
           fileName={tooLongFileName}
         />
       )}
-      {showInsufficientStorageMessage && (
+      {/* {showInsufficientStorageMessage && (
         <InsufficientStorageNotification
           handleCloseInsufficientStorageMessage={() =>
             setShowInsufficientStorageMessage(false)
@@ -498,7 +500,7 @@ export const UploadExploreTab = ({
           fileName={incorrectFileName}
           availableSpace={planStorageLimit}
         />
-      )}
+      )} */}
       <div className="flex flex-col items-end">
         <Button
           variant="primary"
