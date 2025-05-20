@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.66.0-beta](https://github.com/instill-ai/console/compare/v0.65.0-beta...v0.66.0-beta) (2025-05-20)
+
+
+### Features
+
+* update more deps vuln fixes ([#1709](https://github.com/instill-ai/console/issues/1709)) ([8de02a1](https://github.com/instill-ai/console/commit/8de02a165b6f7e372cac239d3fd77af1f9faf0c0))
+
+
+### Bug Fixes
+
+* fix console-deps-vuln ([#1707](https://github.com/instill-ai/console/issues/1707)) ([d2e4f6a](https://github.com/instill-ai/console/commit/d2e4f6a3504c3268ac366665b7afae70d7b2b937))
+
 ## [0.65.0-beta](https://github.com/instill-ai/console/compare/v0.64.3-beta...v0.65.0-beta) (2025-02-25)
 
 

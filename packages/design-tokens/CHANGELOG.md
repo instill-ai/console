@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.10.0...@instill-ai/design-tokens-v0.10.1) (2025-05-20)
+
+
+### Bug Fixes
+
+* fix console-deps-vuln ([#1707](https://github.com/instill-ai/console/issues/1707)) ([d2e4f6a](https://github.com/instill-ai/console/commit/d2e4f6a3504c3268ac366665b7afae70d7b2b937))
+
 ## [0.10.0](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.9.0...@instill-ai/design-tokens-v0.10.0) (2025-04-23)
 
 
