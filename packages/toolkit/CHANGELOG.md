@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.118.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.118.2...@instill-ai/toolkit-v0.118.3) (2025-05-21)
+
+
+### Bug Fixes
+
+* **docs:** update out-dated doc link ([#1730](https://github.com/instill-ai/console/issues/1730)) ([adc269d](https://github.com/instill-ai/console/commit/adc269d5c4e4b546cc825e4d1fe2d4c22294c26a))
+
 ## [0.118.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.118.1...@instill-ai/toolkit-v0.118.2) (2025-05-21)
 
 
