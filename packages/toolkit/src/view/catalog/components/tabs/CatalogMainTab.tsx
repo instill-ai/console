@@ -55,7 +55,7 @@ export const CatalogTab = ({
   accessToken,
   onDeleteCatalog,
   catalogs,
-  catalogLimit,
+  //catalogLimit,
   //namespaceType,
   //subscription,
   isLocalEnvironment,
@@ -197,7 +197,7 @@ export const CatalogTab = ({
     return filtered;
   }, [catalogs, searchTerm, selectedSortAnchor, selectedSortOrder]);
 
-  const hasReachedLimit = filteredAndSortedCatalogs.length >= catalogLimit;
+  const hasReachedLimit = false; // filteredAndSortedCatalogs.length >= catalogLimit;
 
   return (
     <div className="flex flex-col">

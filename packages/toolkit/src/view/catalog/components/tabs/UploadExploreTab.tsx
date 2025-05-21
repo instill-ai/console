@@ -42,10 +42,10 @@ import { FILE_ERROR_TIMEOUT } from "../lib/constant";
 import {
   getFileType,
   getPlanMaxFileSize,
-  getPlanStorageLimit,
+  //getPlanStorageLimit,
   isFile,
   readFileAsBase64,
-  shouldShowStorageWarning,
+  //shouldShowStorageWarning,
   validateFile,
 } from "../lib/helpers";
 import { useUploadWithProgress } from "../lib/uploadFileWithProgress";
@@ -54,7 +54,7 @@ import {
   FileSizeNotification,
   FileTooLongNotification,
   IncorrectFormatFileNotification,
-  InsufficientStorageBanner,
+  //InsufficientStorageBanner,
   //InsufficientStorageNotification,
   //UpgradePlanLink,
 } from "../notifications";
@@ -110,9 +110,9 @@ export const UploadExploreTab = ({
   remainingStorageSpace,
   updateRemainingSpace,
   subscription,
-  namespaceType,
+  //namespaceType,
   isLocalEnvironment,
-  selectedNamespace,
+  //selectedNamespace,
 }: UploadExploreTabProps) => {
   const queryClient = useQueryClient();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -174,12 +174,12 @@ export const UploadExploreTab = ({
 
   const plan = subscription?.plan || "PLAN_FREE";
   const planMaxFileSize = getPlanMaxFileSize(plan);
-  const planStorageLimit = getPlanStorageLimit(plan);
-  const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
+  //const planStorageLimit = getPlanStorageLimit(plan);
+  //const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
 
-  const [showStorageWarning, setShowStorageWarning] = React.useState(
-    shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
-  );
+  // const [showStorageWarning, setShowStorageWarning] = React.useState(
+  //   shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
+  // );
 
   const remainingCredit = useGetNamespaceRemainingInstillCredit({
     namespaceId: navigationNamespaceAnchor,
@@ -372,22 +372,22 @@ export const UploadExploreTab = ({
     }
   };
 
-  React.useEffect(() => {
-    setShowStorageWarning(
-      shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
-    );
-  }, [remainingStorageSpace, planStorageLimit]);
+  // React.useEffect(() => {
+  //   setShowStorageWarning(
+  //     shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
+  //   );
+  // }, [remainingStorageSpace, planStorageLimit]);
 
   return (
     <div className="mb-32 flex flex-col">
-      {!isLocalEnvironment && showStorageWarning && !isEnterprisePlan ? (
+      {/* {!isLocalEnvironment && showStorageWarning && !isEnterprisePlan ? (
         <InsufficientStorageBanner
           setshowStorageWarning={setShowStorageWarning}
           plan={subscription?.plan || "PLAN_FREE"}
           namespaceType={namespaceType}
           selectedNamespace={selectedNamespace}
         />
-      ) : null}
+      ) : null} */}
       <div className="flex flex-col items-start justify-start gap-1 mb-2">
         <p className="text-semantic-fg-primary product-headings-heading-3">
           {catalog.name}

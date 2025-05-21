@@ -12,7 +12,7 @@ type DragAndDropUploadProps = {
 
 export const DragAndDropUpload = ({
   onFileUpload,
-  planMaxFileSize,
+  //planMaxFileSize,
   isLocalEnvironment,
 }: DragAndDropUploadProps) => {
   const [isDragging, setIsDragging] = React.useState(false);
@@ -87,7 +87,8 @@ export const DragAndDropUpload = ({
             </div>
             {!isLocalEnvironment ? (
               <div className="">
-                Max {planMaxFileSize / (1024 * 1024)}MB each
+                {/* Max {planMaxFileSize / (1024 * 1024)}MB each */}
+                Max 512MB each
               </div>
             ) : null}
           </div>
