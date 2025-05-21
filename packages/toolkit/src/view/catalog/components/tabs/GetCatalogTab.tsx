@@ -12,7 +12,7 @@ import {
 } from "@instill-ai/design-system";
 
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
-import { defaultCodeSnippetStyles } from "../../../../constant";
+import { defaultCodeSnippetStyles, DOCS_BASE_URL } from "../../../../constant";
 import {
   InstillStore,
   useInstillStore,
@@ -197,7 +197,7 @@ export const GetCatalogTab = ({
             For a more detailed overview of the input/output schemas, check out
             the{" "}
             <a
-              href="https://www.instill.tech/docs/artifact/filecatalog"
+              href={`${DOCS_BASE_URL}/artifact/filecatalog`}
               className="text-semantic-accent-default underline"
             >
               Artifact&apos;s API reference

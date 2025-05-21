@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { Button, Icons } from "@instill-ai/design-system";
 
+import { DOCS_BASE_URL } from "../../constant";
 import { LinkBlock } from "./LinkBlock";
 
 export const NotFoundView = () => {
@@ -56,7 +57,7 @@ export const NotFoundView = () => {
           title="Documentation"
           description="Dive in to learn all about our product."
           cta={{
-            link: "https://www.instill.tech/docs/welcome",
+            link: `${DOCS_BASE_URL}/welcome`,
             text: "Start Learning",
           }}
         />

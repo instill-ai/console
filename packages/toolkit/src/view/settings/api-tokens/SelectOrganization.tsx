@@ -7,7 +7,7 @@ import { Nullable, UserMembership } from "instill-sdk";
 import { Icons, Select } from "@instill-ai/design-system";
 
 import { CodeBlock } from "../../../components";
-import { defaultCodeSnippetStyles } from "../../../constant";
+import { defaultCodeSnippetStyles, DOCS_BASE_URL } from "../../../constant";
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -73,7 +73,7 @@ export const SelectOrganization = () => {
           header. If you omit this header, personal credits will be used. For
           more details, refer to the{" "}
           <Link
-            href="https://www.instill.tech/docs/core/token"
+            href={`${DOCS_BASE_URL}/core/token`}
             className="text-semantic-accent-default"
             target="_blank"
             rel="noopener noreferrer"

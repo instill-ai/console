@@ -5,6 +5,7 @@ import { Nullable } from "instill-sdk";
 import { NodeProps, useEdges } from "reactflow";
 import YAML from "yaml";
 
+import { DOCS_BASE_URL } from "../../../../constant";
 import {
   InstillStore,
   useInstillStore,
@@ -109,7 +110,7 @@ export const IteratorNode = ({ data, id }: NodeProps<IteratorNodeData>) => {
     const viewId = "iterator-documentation-view";
     const viewTitle = "Iterator Documentation";
     const documentationUrl =
-      "https://www.instill.tech/docs/component/generic/iterator" +
+      `${DOCS_BASE_URL}/component/generic/iterator` +
       "?isOnlyForConsoleRenderingDocs=true";
 
     updateEditorMultiScreenModel((prev) => ({

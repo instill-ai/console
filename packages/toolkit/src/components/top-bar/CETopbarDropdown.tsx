@@ -9,6 +9,7 @@ import {
   Separator,
 } from "@instill-ai/design-system";
 
+import { DOCS_BASE_URL } from "../../constant";
 import {
   InstillStore,
   useAuthenticatedUser,
@@ -133,7 +134,7 @@ export const CETopbarDropdown = () => {
           </TopbarDropdownItem>
           <TopbarDropdownItem asChild>
             <a
-              href="https://www.instill.tech/docs"
+              href={DOCS_BASE_URL}
               className="flex gap-x-2"
               rel="noopener noreferrer"
               target="_blank"

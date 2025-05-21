@@ -6,3 +6,4 @@ export * from "./model";
 export * from "./resourceIdPrefix";
 export * from "./react-query";
 export * from "./ui";
+export * from "./docsBaseUrl";
