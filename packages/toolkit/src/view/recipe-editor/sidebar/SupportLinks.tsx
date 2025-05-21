@@ -1,5 +1,6 @@
 import { Icons } from "@instill-ai/design-system";
 
+import { DOCS_BASE_URL } from "../../../constant";
 import {
   DefaultEditorViewIDs,
   InstillStore,
@@ -49,7 +50,7 @@ export const SupportLinks = () => {
         <div className="my-auto product-button-button-3">Support</div>
       </a>
       <a
-        href="https://www.instill.tech/docs"
+        href={DOCS_BASE_URL}
         className="flex gap-x-2 py-1.5 px-2 hover:bg-semantic-bg-alt-primary rounded"
         rel="noopener noreferrer"
         target="_blank"

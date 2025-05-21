@@ -6,7 +6,7 @@ import { Catalog, Nullable } from "instill-sdk";
 import { cn, Separator } from "@instill-ai/design-system";
 
 import { CodeBlock, ModelSectionHeader } from "../../../../components";
-import { defaultCodeSnippetStyles } from "../../../../constant";
+import { defaultCodeSnippetStyles, DOCS_BASE_URL } from "../../../../constant";
 import { env } from "../../../../server";
 import {
   RetrieveTestTabInputSchema,
@@ -155,7 +155,7 @@ ${isOrganization && !isLocalEnvironment ? "$ export ORGANIZATION_UID=********" :
             For a more detailed overview of the input/output schemas, check out
             the{" "}
             <a
-              href="https://www.instill.tech/docs/artifact/search"
+              href={`${DOCS_BASE_URL}/artifact/search`}
               className="text-semantic-accent-default underline"
               target="_blank"
               rel="noopener noreferrer"

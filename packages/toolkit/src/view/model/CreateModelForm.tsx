@@ -26,6 +26,7 @@ import {
 
 import { EntitySelector, LoadingSpin } from "../../components";
 import {
+  DOCS_BASE_URL,
   InstillErrors,
   InstillModelTask,
   InstillModelVisibility,
@@ -380,7 +381,7 @@ export const CreateModelForm = () => {
                           AI task
                         </Form.Label>
                         <FieldDescriptionTooltip
-                          description={`You can read more about AI tasks <a rel="noopener noreferrer" target="_blank" href="https://www.instill.tech/docs/model/ai-task">here</a>`}
+                          description={`You can read more about AI tasks <a rel="noopener noreferrer" target="_blank" href="${DOCS_BASE_URL}/model/ai-task">here</a>`}
                         />
                       </div>
                       <Form.Control>

@@ -1,3 +1,5 @@
+import { DOCS_BASE_URL } from "../../../constant";
+
 export const NoVersionsPlaceholder = () => {
   return (
     <div className="inline-flex flex-col gap-y-4 rounded border border-semantic-bg-line bg-semantic-bg-base-bg p-6 text-semantic-fg-primary">
@@ -9,7 +11,7 @@ export const NoVersionsPlaceholder = () => {
         <li>
           <a
             className="text-semantic-accent-default underline font-semibold text-sm"
-            href="https://www.instill.tech/docs/model/create/prepare"
+            href={`${DOCS_BASE_URL}/model/create/prepare`}
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -19,7 +21,7 @@ export const NoVersionsPlaceholder = () => {
         <li>
           <a
             className="text-semantic-accent-default underline font-semibold text-sm"
-            href="https://www.instill.tech/docs/model/create/build"
+            href={`${DOCS_BASE_URL}/model/create/build`}
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -29,7 +31,7 @@ export const NoVersionsPlaceholder = () => {
         <li>
           <a
             className="text-semantic-accent-default underline font-semibold text-sm"
-            href="https://www.instill.tech/docs/model/create/push"
+            href={`${DOCS_BASE_URL}/model/create/push`}
             rel="noopener noreferrer"
             target="_blank"
           >
