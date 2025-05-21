@@ -155,7 +155,7 @@ ${isOrganization && !isLocalEnvironment ? "$ export ORGANIZATION_UID=********" :
             For a more detailed overview of the input/output schemas, check out
             the{" "}
             <a
-              href={`${DOCS_BASE_URL}/artifact/search`}
+              href={`${DOCS_BASE_URL}/artifact/retrieve`}
               className="text-semantic-accent-default underline"
               target="_blank"
               rel="noopener noreferrer"
