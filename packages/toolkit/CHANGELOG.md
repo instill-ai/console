@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.118.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.118.0...@instill-ai/toolkit-v0.118.1) (2025-05-21)
+
+
+### Bug Fixes
+
+* more file limits removed ([#1726](https://github.com/instill-ai/console/issues/1726)) ([631fee5](https://github.com/instill-ai/console/commit/631fee5d5ffb25197bf7448f7f90f72b86742830))
+
 ## [0.118.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.117.0...@instill-ai/toolkit-v0.118.0) (2025-05-20)
 
 
