@@ -4,9 +4,13 @@ export type TableAgentConfig = {
   enableTransparency: boolean;
 };
 
+export type TablePermissions = {
+  canEdit: boolean;
+};
+
 export type Table = {
   uid: string;
-  id: string;
+  id?: string;
   title?: string;
   description?: string;
   metadata?: GeneralRecord;
@@ -14,6 +18,7 @@ export type Table = {
   updateTime: string;
   agentConfig?: TableAgentConfig;
   draftMode: boolean;
+  permission: TablePermissions;
 };
 
 export type CreateNamespaceTableRequest = {
@@ -427,4 +432,51 @@ export type UnlockNamespaceTableCellRequest = {
 
 export type UnlockNamespaceTableCellResponse = {
   cell: Cell;
+};
+
+export type TableTemplate = {
+  uid: string;
+  title: string;
+  description: string;
+  metadata: GeneralRecord;
+  createTime: string;
+  updateTime: string;
+  agentConfig: TableAgentConfig;
+  draftMode: boolean;
+  permission: TablePermissions;
+};
+
+export type ListPaginatedNamespaceTableTemplatesRequest = {
+  namespaceId: string;
+  pageToken?: string;
+  pageSize?: number;
+};
+
+export type ListPaginatedNamespaceTableTemplatesResponse = {
+  tables: TableTemplate[];
+  nextPageToken?: string;
+  total_size?: number;
+};
+
+export type ListNamespaceTableTemplatesRequest = {
+  namespaceId: string;
+  pageToken?: string;
+  pageSize?: number;
+};
+
+export type ListNamespaceTableTemplatesResponse = {
+  tables: TableTemplate[];
+};
+
+export type CreateNamespaceTableFromTemplateRequest = {
+  namespaceId: string;
+  table: {
+    title: string;
+  };
+  templateNamespaceId?: string;
+  templateTableUid: string;
+};
+
+export type CreateNamespaceTableFromTemplateResponse = {
+  table: Table;
 };
