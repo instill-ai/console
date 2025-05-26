@@ -20,6 +20,10 @@ import {
   ListNamespaceTableRowsResponse,
   ListNamespaceTablesRequest,
   ListNamespaceTablesResponse,
+  ListNamespaceTableTemplatesRequest,
+  ListNamespaceTableTemplatesResponse,
+  ListPaginatedNamespaceTableTemplatesRequest,
+  ListPaginatedNamespaceTableTemplatesResponse,
   ListPaginatedNamespaceTableRowsRequest,
   ListPaginatedNamespaceTableRowsResponse,
   ListPaginatedNamespaceTablesRequest,
@@ -44,6 +48,9 @@ import {
   UpdateNamespaceTableResponse,
   UpdateNamespaceTableRowRequest,
   UpdateNamespaceTableRowResponse,
+  TableTemplate,
+  CreateNamespaceTableFromTemplateRequest,
+  CreateNamespaceTableFromTemplateResponse,
 } from "./types";
 
 export class TableClient extends APIResource {
@@ -493,6 +500,90 @@ export class TableClient extends APIResource {
       const data = await this._client.post<UnlockNamespaceTableCellResponse>(
         `/namespaces/${namespaceId}/tables/${tableUid}/rows/${rowUid}/cells/${cellUid}/unlock`,
       );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listPaginatedNamespaceTableTemplates(
+    props: ListPaginatedNamespaceTableTemplatesRequest,
+  ) {
+    const { namespaceId, pageToken, pageSize } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/template/tables`,
+      pageToken,
+      pageSize,
+    });
+
+    try {
+      const data =
+        await this._client.get<ListPaginatedNamespaceTablesResponse>(
+          queryString,
+        );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listNamespaceTableTemplates(props: ListNamespaceTableTemplatesRequest) {
+    const { namespaceId, pageToken, pageSize } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/template/tables`,
+      pageToken,
+      pageSize,
+    });
+
+    const tables: TableTemplate[] = [];
+
+    try {
+      const data =
+        await this._client.get<ListPaginatedNamespaceTableTemplatesResponse>(
+          queryString,
+        );
+
+      tables.push(...data.tables);
+
+      if (data.nextPageToken) {
+        tables.push(
+          ...(
+            await this.listNamespaceTableTemplates({
+              namespaceId,
+              pageSize,
+              pageToken: data.nextPageToken,
+            })
+          ).tables,
+        );
+      }
+
+      const response: ListNamespaceTableTemplatesResponse = {
+        tables,
+      };
+
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async createNamespaceTableFromTemplate(
+    props: CreateNamespaceTableFromTemplateRequest,
+  ) {
+    const { namespaceId, ...rest } = props;
+
+    try {
+      const data =
+        await this._client.post<CreateNamespaceTableFromTemplateResponse>(
+          `/namespaces/${namespaceId}/tables/from-template`,
+          {
+            body: JSON.stringify(rest),
+          },
+        );
 
       return Promise.resolve(data);
     } catch (error) {
