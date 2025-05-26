@@ -510,10 +510,11 @@ export class TableClient extends APIResource {
   async listPaginatedNamespaceTableTemplates(
     props: ListPaginatedNamespaceTableTemplatesRequest,
   ) {
-    const { namespaceId, pageToken, pageSize } = props;
+    const { /* namespaceId, */ pageToken, pageSize } = props;
 
     const queryString = getQueryString({
-      baseURL: `/namespaces/${namespaceId}/template/tables`,
+      //In the future the "template" namespace can be replaced by a user's one
+      baseURL: `/namespaces/template/tables`,
       pageToken,
       pageSize,
     });
@@ -534,7 +535,8 @@ export class TableClient extends APIResource {
     const { namespaceId, pageToken, pageSize } = props;
 
     const queryString = getQueryString({
-      baseURL: `/namespaces/${namespaceId}/template/tables`,
+      //In the future the "template" namespace can be replaced by a user's one
+      baseURL: `/namespaces/template/tables`,
       pageToken,
       pageSize,
     });
