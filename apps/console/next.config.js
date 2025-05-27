@@ -34,4 +34,7 @@ module.exports = {
     // This is needed for the integration auth to work
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
 };
