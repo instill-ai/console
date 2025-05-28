@@ -216,6 +216,18 @@ export const NamespaceSwitch = () => {
           updateNavigationNamespaceAnchor(() => namespaceAnchor);
         }
       }
+
+      if (
+        activeNamespaceId.current &&
+        activeNamespaceId.current !== currentNamespaceId &&
+        (routeInfo.data.resourceId ||
+          routeInfo.data.chatUid ||
+          routeInfo.data.tableUid)
+      ) {
+        router.replace(`/${currentNamespaceId}/agents`);
+      }
+
+      activeNamespaceId.current = currentNamespaceId;
     } else {
       let namespaceAnchor: Nullable<string> = navigationNamespaceAnchor;
 
@@ -249,18 +261,6 @@ export const NamespaceSwitch = () => {
         }
       }
     }
-
-    if (
-      activeNamespaceId.current &&
-      activeNamespaceId.current !== currentNamespaceId &&
-      (routeInfo.data.resourceId ||
-        routeInfo.data.chatUid ||
-        routeInfo.data.tableUid)
-    ) {
-      router.replace(`/${currentNamespaceId}/agents`);
-    }
-
-    activeNamespaceId.current = currentNamespaceId;
   }, [
     userNamespaces.isSuccess,
     userNamespaces.data,

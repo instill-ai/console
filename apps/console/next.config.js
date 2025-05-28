@@ -34,6 +34,8 @@ module.exports = {
     // This is needed for the integration auth to work
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
+  // This settings here is to fix the building error related to the of the useSearchParams() hook
+  // https://github.com/vercel/next.js/issues/61697#issuecomment-1966289723
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
