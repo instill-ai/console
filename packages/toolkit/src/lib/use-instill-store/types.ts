@@ -381,6 +381,12 @@ export type CurrentCellPreviewAnchor = {
   columnUid: string;
 };
 
+export type UploadingFileCell = {
+  cellUid: string;
+  rowUid: string;
+  fileName: string;
+};
+
 export type TableSlice = {
   leftSidebarOpen: boolean;
   updateLeftSidebarOpen: (fn: (prev: boolean) => boolean) => void;
@@ -411,6 +417,12 @@ export type TableSlice = {
   currentLeftPanelEditingColumnUid: Nullable<string>;
   updateCurrentLeftPanelEditingColumnUid: (
     fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
+  uploadingFileCells: Record<string, UploadingFileCell[]>;
+  updateUploadingFileCells: (
+    fn: (
+      prev: Record<string, UploadingFileCell[]>,
+    ) => Record<string, UploadingFileCell[]>,
   ) => void;
 };
 
