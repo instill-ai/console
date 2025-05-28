@@ -8,6 +8,7 @@ import {
   InstillStoreMutators,
   TableMode,
   TableSlice,
+  UploadingFileCell,
 } from "./types";
 
 export const createTableSlice: StateCreator<
@@ -102,6 +103,18 @@ export const createTableSlice: StateCreator<
         currentLeftPanelEditingColumnUid: fn(
           state.currentLeftPanelEditingColumnUid,
         ),
+      };
+    }),
+  uploadingFileCells: {},
+  updateUploadingFileCells: (
+    fn: (
+      prev: Record<string, UploadingFileCell[]>,
+    ) => Record<string, UploadingFileCell[]>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        uploadingFileCells: fn(state.uploadingFileCells),
       };
     }),
 });
