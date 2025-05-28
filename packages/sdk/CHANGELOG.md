@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.17.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.16.0...instill-sdk-v0.17.0) (2025-05-28)
+
+
+### Features
+
+* table templates endpoints ([#1734](https://github.com/instill-ai/console/issues/1734)) ([0075500](https://github.com/instill-ai/console/commit/00755007574c537052271132dc5da2b7d6ba62de))
+
+
+### Bug Fixes
+
+* template endpoints update ([#1735](https://github.com/instill-ai/console/issues/1735)) ([c10db40](https://github.com/instill-ai/console/commit/c10db400b0979018bb80dc61e81af3d81f658f42))
+
 ## [0.16.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.15.0...instill-sdk-v0.16.0) (2025-05-20)
 
 

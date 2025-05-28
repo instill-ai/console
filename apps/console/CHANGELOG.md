@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.67.0-beta](https://github.com/instill-ai/console/compare/v0.66.0-beta...v0.67.0-beta) (2025-05-28)
+
+
+### Features
+
+* update namespaces selector ux ([#1736](https://github.com/instill-ai/console/issues/1736)) ([fbf2c36](https://github.com/instill-ai/console/commit/fbf2c36e142fbf16657f08738523ef69db17ceac))
+
 ## [0.66.0-beta](https://github.com/instill-ai/console/compare/v0.65.0-beta...v0.66.0-beta) (2025-05-20)
 
 

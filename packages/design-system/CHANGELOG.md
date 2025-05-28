@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.90.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.89.0...@instill-ai/design-system-v0.90.0) (2025-05-28)
+
+
+### Features
+
+* add check-square icon ([#1732](https://github.com/instill-ai/console/issues/1732)) ([7b389de](https://github.com/instill-ai/console/commit/7b389de89f300ff82e1986c6bad01105aaafd49c))
+
 ## [0.89.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.88.0...@instill-ai/design-system-v0.89.0) (2025-05-20)
 
 
