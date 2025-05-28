@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.119.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.118.3...@instill-ai/toolkit-v0.119.0) (2025-05-28)
+
+
+### Features
+
+* add UploadingFileCells for table file uploading management ([#1739](https://github.com/instill-ai/console/issues/1739)) ([333e467](https://github.com/instill-ai/console/commit/333e467bcea0ca0aa15d9143a4c810fd46b330d6))
+* table templates endpoints ([#1734](https://github.com/instill-ai/console/issues/1734)) ([0075500](https://github.com/instill-ai/console/commit/00755007574c537052271132dc5da2b7d6ba62de))
+* update namespaces selector ux ([#1736](https://github.com/instill-ai/console/issues/1736)) ([fbf2c36](https://github.com/instill-ai/console/commit/fbf2c36e142fbf16657f08738523ef69db17ceac))
+
+
+### Bug Fixes
+
+* template endpoints update ([#1735](https://github.com/instill-ai/console/issues/1735)) ([c10db40](https://github.com/instill-ai/console/commit/c10db400b0979018bb80dc61e81af3d81f658f42))
+
 ## [0.118.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.118.2...@instill-ai/toolkit-v0.118.3) (2025-05-21)
 
 
