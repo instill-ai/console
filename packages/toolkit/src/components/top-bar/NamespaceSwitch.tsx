@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import cn from "clsx";
 
 import {
@@ -55,9 +55,11 @@ export const NamespaceSwitch = () => {
   } = useInstillStore(useShallow(selector));
   const [switchIsOpen, setSwitchIsOpen] = React.useState(false);
   const navigate = useGuardPipelineBuilderUnsavedChangesNavigation();
+  const activeNamespaceId = React.useRef<Nullable<string>>(null);
 
   const userNamespaces = useUserNamespaces();
   const pathname = usePathname();
+  const router = useRouter();
 
   const namespaceIds = React.useMemo(() => {
     if (!userNamespaces.isSuccess) {
@@ -214,6 +216,18 @@ export const NamespaceSwitch = () => {
           updateNavigationNamespaceAnchor(() => namespaceAnchor);
         }
       }
+
+      if (
+        activeNamespaceId.current &&
+        activeNamespaceId.current !== currentNamespaceId &&
+        (routeInfo.data.resourceId ||
+          routeInfo.data.chatUid ||
+          routeInfo.data.tableUid)
+      ) {
+        router.replace(`/${currentNamespaceId}/agents`);
+      }
+
+      activeNamespaceId.current = currentNamespaceId;
     } else {
       let namespaceAnchor: Nullable<string> = navigationNamespaceAnchor;
 
@@ -263,6 +277,7 @@ export const NamespaceSwitch = () => {
     model.isSuccess,
     model.data,
     pathname,
+    router,
   ]);
 
   return (
