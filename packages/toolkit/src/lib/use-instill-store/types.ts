@@ -424,6 +424,8 @@ export type TableSlice = {
       prev: Record<string, UploadingFileCell[]>,
     ) => Record<string, UploadingFileCell[]>,
   ) => void;
+  isDraggingRow: boolean;
+  updateIsDraggingRow: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type InstillStore = SmartHintSlice &

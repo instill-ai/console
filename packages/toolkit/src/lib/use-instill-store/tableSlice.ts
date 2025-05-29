@@ -117,4 +117,12 @@ export const createTableSlice: StateCreator<
         uploadingFileCells: fn(state.uploadingFileCells),
       };
     }),
+  isDraggingRow: false,
+  updateIsDraggingRow: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        isDraggingRow: fn(state.isDraggingRow),
+      };
+    }),
 });
