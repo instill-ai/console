@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.119.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.119.0...@instill-ai/toolkit-v0.119.1) (2025-05-29)
+
+
+### Bug Fixes
+
+* fix nav chat link ([#1740](https://github.com/instill-ai/console/issues/1740)) ([7bf8833](https://github.com/instill-ai/console/commit/7bf883396cef0cfb841f453b12949d76ea0a51c9))
+* revert namespace switch additional logic ([#1742](https://github.com/instill-ai/console/issues/1742)) ([7984832](https://github.com/instill-ai/console/commit/7984832adcac5ca1f935e2583fcd7690568ea110))
+
 ## [0.119.0](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.118.3...@instill-ai/toolkit-v0.119.0) (2025-05-28)
 
 
