@@ -31,7 +31,7 @@ export const defaultCodeSnippetStyles = {
 
 const imageUrlTask = `{
       "data": {
-        "image-url": "https://artifacts.instill.tech/imgs/bear.jpg",
+        "image-url": "https://artifacts.instill-ai.com/imgs/bear.jpg",
         "type":"image-url"
       }
     }`;
@@ -49,7 +49,7 @@ const taskPayloads = {
             "type": "text"
           },
           {
-            "image-url": "https://artifacts.instill.tech/imgs/bear.jpg",
+            "image-url": "https://artifacts.instill-ai.com/imgs/bear.jpg",
             "type": "image-url"
           },
           {
