@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.119.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.119.1...@instill-ai/toolkit-v0.119.2) (2025-05-31)
+
+
+### Bug Fixes
+
+* **main:** chat link fix ([#1745](https://github.com/instill-ai/console/issues/1745)) ([0450a81](https://github.com/instill-ai/console/commit/0450a818ff54f64508d69d5c2748195d6dcfbb50))
+* update outdated artifact image URLs ([#1744](https://github.com/instill-ai/console/issues/1744)) ([7033d6c](https://github.com/instill-ai/console/commit/7033d6ced661cbbf5cecf1eeaaecb1ff8f60846c))
+
 ## [0.119.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.119.0...@instill-ai/toolkit-v0.119.1) (2025-05-29)
 
 
