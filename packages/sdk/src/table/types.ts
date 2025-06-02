@@ -121,6 +121,19 @@ export type ColumnSelectionStringOption = {
   color: string;
 };
 
+export type NumberFormatType =
+  | "FORMAT_UNSPECIFIED"
+  | "FORMAT_PLAIN"
+  | "FORMAT_COMMAS"
+  | "FORMAT_CURRENCY"
+  | "FORMAT_PERCENTAGE";
+
+export type NumberFormat = {
+  format?: NumberFormatType;
+  decimalPlaces?: number;
+  currencyCode?: string;
+};
+
 export type ColumnDefinition = {
   columnUid: string;
   name?: string;
@@ -130,6 +143,7 @@ export type ColumnDefinition = {
   sort?: ColumnSort;
   agentConfig?: ColumnAgentConfig;
   selection: ColumnSelection;
+  numberFormat?: NumberFormat;
 };
 
 export type ColumnDefinitions = Record<string, ColumnDefinition>;
@@ -209,21 +223,12 @@ export type StringCell = BaseCell & {
   };
 };
 
-export type NumberFormat =
-  | "FORMAT_UNSPECIFIED"
-  | "FORMAT_COMMAS"
-  | "FORMAT_CURRENCY"
-  | "FORMAT_PERCENTAGE";
-
 export type NumberCell = BaseCell & {
   numberValue?: {
     value: number;
     userInput?: number;
     computedValue?: number;
   };
-  format?: NumberFormat;
-  decimalPlaces?: number;
-  currencyCode?: string;
 };
 
 export type BooleanCell = BaseCell & {
