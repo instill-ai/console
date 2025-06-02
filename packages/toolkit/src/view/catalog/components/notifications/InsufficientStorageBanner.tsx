@@ -27,7 +27,7 @@ export const InsufficientStorageBanner = ({
       return "/subscribe";
     } else if (plan === "PLAN_FREE" && namespaceType === "organization") {
       return `/${selectedNamespace}/organization-settings/billing/subscriptions/plan`;
-    } else if (plan === "PLAN_PRO" && namespaceType === "user") {
+    } else if (plan === "PLAN_STARTER" && namespaceType === "user") {
       return "/settings/organizations/new";
     } else if (plan === "PLAN_TEAM" && namespaceType === "organization") {
       return env("NEXT_PUBLIC_INSTILL_AI_SCHEDULE_MEETING_LINK");
