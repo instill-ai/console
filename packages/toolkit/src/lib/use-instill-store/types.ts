@@ -424,6 +424,10 @@ export type TableSlice = {
       prev: Record<string, UploadingFileCell[]>,
     ) => Record<string, UploadingFileCell[]>,
   ) => void;
+  tableUidForAgGrid: Nullable<string>;
+  updateTableUidForAgGrid: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
 };
 
 export type InstillStore = SmartHintSlice &

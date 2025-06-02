@@ -117,4 +117,12 @@ export const createTableSlice: StateCreator<
         uploadingFileCells: fn(state.uploadingFileCells),
       };
     }),
+  tableUidForAgGrid: null,
+  updateTableUidForAgGrid: (fn: (prev: Nullable<string>) => Nullable<string>) =>
+    set((state) => {
+      return {
+        ...state,
+        tableUidForAgGrid: fn(state.tableUidForAgGrid),
+      };
+    }),
 });
