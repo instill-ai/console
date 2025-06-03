@@ -34,11 +34,9 @@ yarn-error.log*
 .env.production.local
 
 # Docker overrides
-
 ./docker-compose.override.yml
 
 # Deployment platforms
-
 .vercel
 /test-results/
 /playwright-report/
@@ -46,5 +44,4 @@ yarn-error.log*
 /integration-test/.auth/
 
 # Generated env file
-
 /public/__env.js
