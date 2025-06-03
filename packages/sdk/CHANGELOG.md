@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.18.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.17.0...instill-sdk-v0.18.0) (2025-06-03)
+
+
+### Features
+
+* **main:** plan pro id update ([#1748](https://github.com/instill-ai/console/issues/1748)) ([925873f](https://github.com/instill-ai/console/commit/925873f8402974b3d80f7c78be6c933f13a45597))
+
+
+### Bug Fixes
+
+* fix number format key and object in column definition ([#1747](https://github.com/instill-ai/console/issues/1747)) ([211017a](https://github.com/instill-ai/console/commit/211017af568ed84a01e175c79842784804a4d9dc))
+* remove value in table cell value ([#1750](https://github.com/instill-ai/console/issues/1750)) ([72b9ab0](https://github.com/instill-ai/console/commit/72b9ab047c026de2a94b140845c4886a7ae44a8b))
+
 ## [0.17.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.16.0...instill-sdk-v0.17.0) (2025-05-28)
 
 
