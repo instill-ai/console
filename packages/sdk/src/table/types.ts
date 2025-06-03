@@ -217,7 +217,6 @@ export type BaseCell = {
 
 export type StringCell = BaseCell & {
   stringValue?: {
-    value: string;
     userInput?: string;
     computedValue?: string;
   };
@@ -225,7 +224,6 @@ export type StringCell = BaseCell & {
 
 export type NumberCell = BaseCell & {
   numberValue?: {
-    value: number;
     userInput?: number;
     computedValue?: number;
   };
@@ -233,7 +231,6 @@ export type NumberCell = BaseCell & {
 
 export type BooleanCell = BaseCell & {
   booleanValue?: {
-    value: boolean;
     userInput?: boolean;
     computedValue?: boolean;
   };
