@@ -25,6 +25,7 @@ import {
 } from "../vdp";
 import { TableClient } from "../table";
 import { ChatClient } from "../chat";
+import { FolderClient } from "../folder";
 
 export type RequestOption = {
   body?: string | File;
@@ -163,4 +164,5 @@ export class InstillAPIClient {
   artifact = new ArtifactClient(this);
   table = new TableClient(this);
   chat = new ChatClient(this);
+  folder = new FolderClient(this);
 }
