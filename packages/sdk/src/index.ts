@@ -10,3 +10,4 @@ export type * from "./artifact";
 export type * from "./table";
 export * from "./chat";
 export * from "./vdp/trigger/streamHelpers";
+export * from "./folder";
