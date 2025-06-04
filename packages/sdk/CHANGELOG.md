@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.1](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.0...instill-sdk-v0.18.1) (2025-06-04)
+
+
+### Bug Fixes
+
+* rollback PLAN_STARTER to PLAN_PRO ([#1752](https://github.com/instill-ai/console/issues/1752)) ([e2bd207](https://github.com/instill-ai/console/commit/e2bd2073fa6e68d9f8ec2f2ea0fc71d3933615b2))
+
 ## [0.18.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.17.0...instill-sdk-v0.18.0) (2025-06-03)
 
 
