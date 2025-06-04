@@ -128,7 +128,7 @@ export const getPlanMaxFileSize = (
   switch (plan) {
     case "PLAN_FREE":
       return 50 * 1024 * 1024; // 50MB
-    case "PLAN_STARTER":
+    case "PLAN_PRO":
     case "PLAN_TEAM":
     case "PLAN_ENTERPRISE":
       return 150 * 1024 * 1024; // 150MB
@@ -143,7 +143,7 @@ export const getPlanStorageLimit = (
   switch (plan) {
     case "PLAN_FREE":
       return 50 * 1024 * 1024; // 50MB
-    case "PLAN_STARTER":
+    case "PLAN_PRO":
       return 500 * 1024 * 1024; // 500MB
     case "PLAN_TEAM":
       return 2 * 1024 * 1024 * 1024; // 2GB
@@ -160,7 +160,7 @@ export const getCatalogLimit = (
   switch (plan) {
     case "PLAN_FREE":
       return 10;
-    case "PLAN_STARTER":
+    case "PLAN_PRO":
       return 50;
     case "PLAN_TEAM":
       return Infinity;
