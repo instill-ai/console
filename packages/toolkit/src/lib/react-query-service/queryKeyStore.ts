@@ -794,6 +794,16 @@ const chatQueryKeyStore = {
   },
 };
 
+const folderQueryKeyStore = {
+  getUseListNamespaceFoldersQueryKey({
+    namespaceId,
+  }: {
+    namespaceId: Nullable<string>;
+  }) {
+    return [namespaceId, "folders"];
+  },
+};
+
 export const queryKeyStore = {
   model: modelQueryKeyStore,
   pipeline: pipelineQueryKeyStore,
@@ -805,4 +815,5 @@ export const queryKeyStore = {
   application: applicationQueryKeyStore,
   table: tableQueryKeyStore,
   chat: chatQueryKeyStore,
+  folder: folderQueryKeyStore,
 };
