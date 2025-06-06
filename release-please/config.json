@@ -7,8 +7,7 @@
       "draft": false,
       "prerelease": true,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false,
-      "changelog-sections": [{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false}, {"type":"docs","section":"Documentation","hidden":false}]
+      "bump-patch-for-minor-pre-major": false
     },
     "packages/design-system": {
       "release-type": "node",
@@ -17,8 +16,7 @@
       "draft": false,
       "prerelease": true,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false,
-      "changelog-sections": [{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false}, {"type":"docs","section":"Documentation","hidden":false}]
+      "bump-patch-for-minor-pre-major": false
     },
     "packages/design-tokens": {
       "release-type": "node",
@@ -27,8 +25,7 @@
       "draft": false,
       "prerelease": true,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false,
-      "changelog-sections": [{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false}, {"type":"docs","section":"Documentation","hidden":false}]
+      "bump-patch-for-minor-pre-major": false
     },
     "packages/eslint-config-cortex": {
       "release-type": "node",
@@ -37,8 +34,7 @@
       "draft": false,
       "prerelease": true,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false,
-      "changelog-sections": [{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false}, {"type":"docs","section":"Documentation","hidden":false}]
+      "bump-patch-for-minor-pre-major": false
     },
     "packages/prettier-config-cortex": {
       "release-type": "node",
@@ -47,8 +43,7 @@
       "draft": false,
       "prerelease": true,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false,
-      "changelog-sections": [{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false}, {"type":"docs","section":"Documentation","hidden":false}]
+      "bump-patch-for-minor-pre-major": false
     },
     "packages/toolkit": {
       "release-type": "node",
@@ -57,8 +52,7 @@
       "draft": false,
       "prerelease": true,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false,
-      "changelog-sections": [{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false}, {"type":"docs","section":"Documentation","hidden":false}]
+      "bump-patch-for-minor-pre-major": false
     },
     "packages/sdk": {
       "release-type": "node",
@@ -67,8 +61,44 @@
       "draft": false,
       "prerelease": true,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false,
-      "changelog-sections": [{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false}, {"type":"docs","section":"Documentation","hidden":false}]
+      "bump-patch-for-minor-pre-major": false
     }
-  }
+  },
+  "changelog-sections": [
+    {
+      "type": "feat",
+      "section": "Features",
+      "hidden": false
+    },
+    {
+      "type": "fix",
+      "section": "Bug Fixes",
+      "hidden": false
+    },
+    {
+      "type": "chore",
+      "section": "Miscellaneous",
+      "hidden": false
+    },
+    {
+      "type": "docs",
+      "section": "Documentation",
+      "hidden": false
+    },
+    {
+      "type": "refactor",
+      "section": "Refactor",
+      "hidden": false
+    },
+    {
+      "type": "test",
+      "section": "Tests",
+      "hidden": false
+    },
+    {
+      "type": "style",
+      "section": "Style",
+      "hidden": false
+    }
+  ]
 }
