@@ -4,7 +4,6 @@ import { env } from "@instill-ai/toolkit/server";
 
 import "../styles/global.css";
 import "../styles/github-markdown.css";
-import "@instill-ai/design-system/index.css";
 import "@instill-ai/design-tokens/dist/theme/root.css";
 import "@instill-ai/design-tokens/dist/theme/light.css";
 import "@instill-ai/design-tokens/dist/theme/dark.css";
@@ -40,13 +39,13 @@ export default function RootLayout({
         <meta
           property="og:image"
           content={`${env(
-            "NEXT_PUBLIC_CONSOLE_BASE_URL",
+            "NEXT_PUBLIC_CONSOLE_BASE_URL"
           )}/images/instill-open-graph.png`}
         />
         <meta
           property="twitter:image"
           content={`${env(
-            "NEXT_PUBLIC_CONSOLE_BASE_URL",
+            "NEXT_PUBLIC_CONSOLE_BASE_URL"
           )}/images/instill-open-graph.png`}
         />
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}

@@ -4,7 +4,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import cn from "clsx";
 
-import { SolidButton } from "@instill-ai/design-system";
+import { Button } from "@instill-ai/design-system";
 
 export type TablePlaceholderBaseProps = {
   placeholderItems: {
@@ -59,15 +59,14 @@ export const TablePlaceholderBase = ({
           {placeholderTitle}
         </h3>
         {enableCreateButton ? (
-          <SolidButton
+          <Button
             type="button"
             color="primary"
             disabled={false}
-            onClickHandler={handleOnClick}
-            position={null}
+            onClick={handleOnClick}
           >
             {createButtonTitle}
-          </SolidButton>
+          </Button>
         ) : null}
       </div>
     </div>

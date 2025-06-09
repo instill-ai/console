@@ -1,6 +1,6 @@
 {
   "name": "@instill-ai/design-system",
-  "version": "0.90.0",
+  "version": "0.91.0-rc.0",
   "description": "Instill AI's design system",
   "repository": "https://github.com/instill-ai/design-system.git",
   "bugs": "https://github.com/instill-ai/design-system/issues",
@@ -20,7 +20,7 @@
     "build-storybook": "pnpm build:css && storybook build -c .storybook",
     "test:coverage": "vitest --collectCoverage",
     "ts-types": "tsc --emitDeclarationOnly",
-    "build": "pnpm rimraf dist && tsup src && pnpm ts-types && pnpm storybook build",
+    "build": "pnpm rimraf dist && tsup src && pnpm ts-types",
     "test": "vitest --run --passWithNoTests",
     "dev": "tsup src --watch",
     "watch:css": "npx tailwindcss -i ./src/styles/global.css -o ./public/tailwind.css --watch",
