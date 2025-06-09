@@ -24,6 +24,7 @@ export type UseRouteInfoSuccessReturn = {
     modelName: Nullable<string>;
     chatUid: Nullable<string>;
     tableUid: Nullable<string>;
+    folderUid: Nullable<string>;
   };
 };
 
@@ -39,6 +40,7 @@ export type UseRouteInfoFailedReturn = {
     modelName: null;
     chatUid: null;
     tableUid: null;
+    folderUid: null;
   };
 };
 
@@ -55,6 +57,9 @@ export function useRouteInfo():
     : null;
   const tableUid = paramsSearch?.get("tableUid")
     ? String(paramsSearch.get("tableUid"))
+    : null;
+  const folderUid = paramsSearch?.get("folderUid")
+    ? String(paramsSearch.get("folderUid"))
     : null;
 
   const namespaceType = useNamespaceType({
@@ -102,6 +107,7 @@ export function useRouteInfo():
         modelName,
         chatUid,
         tableUid,
+        folderUid,
       },
       isSuccess: true,
     };
@@ -118,6 +124,7 @@ export function useRouteInfo():
         modelName: null,
         chatUid: null,
         tableUid: null,
+        folderUid: null,
       },
     };
   }
