@@ -17,7 +17,7 @@
     "@instill-ai/tsconfig": "workspace:*",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.26",
+    "next": "15.2.4",
     "zod": "^3.23.8"
   },
   "devDependencies": {
