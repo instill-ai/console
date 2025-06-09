@@ -34,7 +34,7 @@
     "lint-staged": ">=10",
     "prettier": "latest",
     "turbo": "latest",
-    "typescript": "^5.5.4",
+    "typescript": "catalog:",
     "yaml": "^2.5.0"
   },
   "engines": {

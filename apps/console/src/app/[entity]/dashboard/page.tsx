@@ -1,12 +1,11 @@
 import { redirect } from "next/navigation";
 
 type RedirectionDashboardPageProps = {
-  params: { id: string; entity: string };
+  params: Promise<{ id: string; entity: string }>;
 };
 
-const RedirectionDashboardPage = ({
-  params,
-}: RedirectionDashboardPageProps) => {
+const RedirectionDashboardPage = async (props: RedirectionDashboardPageProps) => {
+  const params = await props.params;
   const { entity } = params;
 
   return redirect(`/${entity}/dashboard/activity`);

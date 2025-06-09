@@ -54,17 +54,10 @@ import {
   FileSizeNotification,
   FileTooLongNotification,
   IncorrectFormatFileNotification,
-  //InsufficientStorageBanner,
-  //InsufficientStorageNotification,
-  //UpgradePlanLink,
 } from "../notifications";
 
 const UploadExploreFormSchema = z.object({
-  files: z.array(
-    z.unknown().refine((value): value is File => isFile(value), {
-      message: "Invalid file type",
-    }),
-  ),
+  files: z.array(z.instanceof(File)),
   convertTransformFiles: z
     .string()
     .min(1, { message: "Convert/Transform files is required" }),

@@ -30,7 +30,7 @@ export type UseReleasePipelineFormReturn = UseFormReturn<
   z.infer<typeof ReleasePipelineFormSchema>,
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   any,
-  undefined
+  z.infer<typeof ReleasePipelineFormSchema>
 >;
 
 const selector = (store: InstillStore) => ({

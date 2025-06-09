@@ -46,9 +46,7 @@ const EditModelSchema = z
     sourceUrl: z.literal("").or(z.string().url()),
     documentationUrl: z.literal("").or(z.string().url()),
     license: z.literal("").or(z.string().url()),
-    visibility: z
-      .enum(InstillModelVisibility)
-      .default(InstillModelVisibility[0]),
+    visibility: z.enum(InstillModelVisibility),
     hardware: z.string(),
     hardwareCustom: z.string().optional(),
     profileImage: z.string().optional(),

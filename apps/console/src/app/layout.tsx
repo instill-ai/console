@@ -1,4 +1,5 @@
 import cn from "clsx";
+import * as React from "react";
 
 import { env } from "@instill-ai/toolkit/server";
 
@@ -55,7 +56,7 @@ export default function RootLayout({
         <RootProvider
           featureFlagChatEnabled={process.env.FEATURE_FLAG_CHAT_ENABLED === "1"}
         >
-          {children}
+          <React.Suspense>{children}</React.Suspense>
         </RootProvider>
       </body>
     </html>
