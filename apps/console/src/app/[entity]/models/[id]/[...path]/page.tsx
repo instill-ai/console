@@ -15,7 +15,9 @@ type Props = {
   params: Promise<{ id: string; entity: string; path: string[] }>;
 };
 
-export async function generateMetadata(props: Props): Promise<Metadata | undefined> {
+export async function generateMetadata(
+  props: Props,
+): Promise<Metadata | undefined> {
   const params = await props.params;
   const cookieStore = await cookies();
   const authSessionCookie = cookieStore.get("instill-auth-session")?.value;

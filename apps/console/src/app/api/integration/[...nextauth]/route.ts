@@ -11,7 +11,7 @@ import {
 } from "@instill-ai/toolkit/server";
 
 const getAuthHandlerProps = () => {
-  const cookieStore = (cookies() as unknown as UnsafeUnwrappedCookies);
+  const cookieStore = cookies() as unknown as UnsafeUnwrappedCookies;
   const authSessionCookie = cookieStore.get("instill-auth-session")?.value;
 
   let accessToken: Nullable<string> = null;

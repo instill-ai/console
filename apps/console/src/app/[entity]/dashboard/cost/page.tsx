@@ -4,7 +4,9 @@ type RedirectionDashboardCostPageProps = {
   params: Promise<{ id: string; entity: string }>;
 };
 
-const RedirectionDashboardCostPage = async (props: RedirectionDashboardCostPageProps) => {
+const RedirectionDashboardCostPage = async (
+  props: RedirectionDashboardCostPageProps,
+) => {
   const params = await props.params;
   const { entity } = params;
 

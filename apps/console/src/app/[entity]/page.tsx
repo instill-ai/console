@@ -9,7 +9,9 @@ type Props = {
   params: Promise<{ id: string; entity: string }>;
 };
 
-export async function generateMetadata(props: Props): Promise<Metadata | undefined> {
+export async function generateMetadata(
+  props: Props,
+): Promise<Metadata | undefined> {
   const params = await props.params;
   try {
     let user: Nullable<User> = null;
