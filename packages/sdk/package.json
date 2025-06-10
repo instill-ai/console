@@ -1,6 +1,6 @@
 {
   "name": "instill-sdk",
-  "version": "0.18.1",
+  "version": "0.19.0-rc.1",
   "description": "Instill AI's Typescript SDK",
   "repository": "https://github.com/instill-ai/typescript-sdk.git",
   "bugs": "https://github.com/instill-ai/community/issues",
@@ -53,9 +53,9 @@
     "oazapfts": "^6.1.0",
     "swagger2openapi": "^7.0.8",
     "tsup": "catalog:",
-    "tsx": "^4.19.4",
+    "tsx": "catalog:",
     "vitest": "2.1.9",
-    "zod": "^3.23.8"
+    "zod": "catalog:"
   },
   "publishConfig": {
     "access": "public"

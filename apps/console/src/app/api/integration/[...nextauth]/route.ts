@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+import { cookies, type UnsafeUnwrappedCookies } from "next/headers";
 import { NextRequest } from "next/server";
 import { Nullable } from "instill-sdk";
 
@@ -11,7 +11,7 @@ import {
 } from "@instill-ai/toolkit/server";
 
 const getAuthHandlerProps = () => {
-  const cookieStore = cookies();
+  const cookieStore = cookies() as unknown as UnsafeUnwrappedCookies;
   const authSessionCookie = cookieStore.get("instill-auth-session")?.value;
 
   let accessToken: Nullable<string> = null;

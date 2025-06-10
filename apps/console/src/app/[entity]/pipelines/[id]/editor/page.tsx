@@ -5,10 +5,11 @@ import { generateNextMetaBase } from "@instill-ai/toolkit/server";
 import { RecipeEditorViewRender } from "./render";
 
 type Props = {
-  params: { id: string; entity: string };
+  params: Promise<{ id: string; entity: string }>;
 };
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   const id = params.id;
 
   const metadata: Metadata = {

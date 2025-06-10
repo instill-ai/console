@@ -53,7 +53,7 @@ export const TriggerNodeFreeForm = ({
     z.infer<typeof TriggerNodeFreeFormSchema>,
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     any,
-    undefined
+    z.infer<typeof TriggerNodeFreeFormSchema>
   >;
   selectedType: Nullable<string>;
   setSelectedType: React.Dispatch<React.SetStateAction<Nullable<string>>>;

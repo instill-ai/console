@@ -1,4 +1,5 @@
 import cn from "clsx";
+import * as React from "react";
 
 import { env } from "@instill-ai/toolkit/server";
 
@@ -39,13 +40,13 @@ export default function RootLayout({
         <meta
           property="og:image"
           content={`${env(
-            "NEXT_PUBLIC_CONSOLE_BASE_URL"
+            "NEXT_PUBLIC_CONSOLE_BASE_URL",
           )}/images/instill-open-graph.png`}
         />
         <meta
           property="twitter:image"
           content={`${env(
-            "NEXT_PUBLIC_CONSOLE_BASE_URL"
+            "NEXT_PUBLIC_CONSOLE_BASE_URL",
           )}/images/instill-open-graph.png`}
         />
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
@@ -55,7 +56,7 @@ export default function RootLayout({
         <RootProvider
           featureFlagChatEnabled={process.env.FEATURE_FLAG_CHAT_ENABLED === "1"}
         >
-          {children}
+          <React.Suspense>{children}</React.Suspense>
         </RootProvider>
       </body>
     </html>

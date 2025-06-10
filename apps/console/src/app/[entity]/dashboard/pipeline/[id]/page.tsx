@@ -5,10 +5,11 @@ import { generateNextMetaBase } from "@instill-ai/toolkit/server";
 import { PipelineDashboardPageRender } from "./render";
 
 type Props = {
-  params: { id: string; entity: string };
+  params: Promise<{ id: string; entity: string }>;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const metadata: Metadata = {
     title: `Instill Core | ${params.id} Dashboard`,
     metadataBase: generateNextMetaBase({

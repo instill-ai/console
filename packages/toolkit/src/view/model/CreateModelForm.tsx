@@ -56,13 +56,11 @@ const CreateModelSchema = z
   .object({
     id: z.string(),
     description: z.string().optional(),
-    visibility: z
-      .enum(InstillModelVisibility)
-      .default(InstillModelVisibility[1]),
+    visibility: z.enum(InstillModelVisibility),
     region: z.string(),
     hardware: z.string(),
     hardwareCustom: z.string().optional(),
-    task: z.enum(InstillModelTask).default(InstillModelTask[0]),
+    task: z.enum(InstillModelTask),
     namespaceId: z.string(),
   })
   .superRefine((state, ctx) => {

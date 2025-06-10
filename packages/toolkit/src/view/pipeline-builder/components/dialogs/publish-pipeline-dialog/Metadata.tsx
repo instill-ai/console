@@ -23,7 +23,7 @@ export const Metadata = ({
     z.infer<typeof PublishPipelineFormSchema>,
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     any,
-    undefined
+    z.infer<typeof PublishPipelineFormSchema>
   >;
   description: Nullable<string>;
 }) => {

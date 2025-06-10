@@ -6,12 +6,13 @@ import { fetchUser, generateNextMetaBase } from "@instill-ai/toolkit/server";
 import { ProfilePageRender } from "./render";
 
 type Props = {
-  params: { id: string; entity: string };
+  params: Promise<{ id: string; entity: string }>;
 };
 
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata | undefined> {
+export async function generateMetadata(
+  props: Props,
+): Promise<Metadata | undefined> {
+  const params = await props.params;
   try {
     let user: Nullable<User> = null;
 

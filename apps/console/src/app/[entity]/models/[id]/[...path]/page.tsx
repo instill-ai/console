@@ -12,13 +12,14 @@ import {
 import { ModelViewPageRender } from "./render";
 
 type Props = {
-  params: { id: string; entity: string; path: string[] };
+  params: Promise<{ id: string; entity: string; path: string[] }>;
 };
 
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata | undefined> {
-  const cookieStore = cookies();
+export async function generateMetadata(
+  props: Props,
+): Promise<Metadata | undefined> {
+  const params = await props.params;
+  const cookieStore = await cookies();
   const authSessionCookie = cookieStore.get("instill-auth-session")?.value;
 
   let accessToken: Nullable<string> = null;
