@@ -802,6 +802,15 @@ const folderQueryKeyStore = {
   }) {
     return [namespaceId, "folders"];
   },
+  getUseListNamespaceFolderQueryKey({
+    namespaceId,
+    folderUid,
+  }: {
+    namespaceId: Nullable<string>;
+    folderUid: Nullable<string>;
+  }) {
+    return [namespaceId, "folders", folderUid];
+  },
 };
 
 export const queryKeyStore = {
