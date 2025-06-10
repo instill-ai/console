@@ -1,6 +1,10 @@
 {
   "$schema": "https://turborepo.org/schema.json",
+  "ui": "tui",
   "tasks": {
+    "topo": {
+      "dependsOn": ["^topo"]
+    },
     "build": {
       "dependsOn": [
         "^build"
@@ -11,14 +15,22 @@
         "storybook-static/**"
       ]
     },
-    "lint": {
-      "outputs": [],
-      "dependsOn": [
-        "build"
-      ]
+   "dev": {
+      "cache": false,
+      "persistent": true
     },
-    "dev": {
-      "cache": false
+    "dev-ts": {
+      "cache": false,
+      "persistent": true,
+      "passThroughEnv": ["*"]
+    },
+    "format": {
+      "outputs": [".cache/.prettiercache"],
+      "outputLogs": "new-only"
+    },
+    "lint": {
+      "dependsOn": ["^topo", "^build"],
+      "outputs": [".cache/.eslintcache"]
     },
     "test": {
       "dependsOn": [
