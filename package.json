@@ -15,7 +15,7 @@
     "docker-build-test": "./scripts/docker-build-test.sh",
     "docker-run-test": "./scripts/docker-run-test.sh",
     "docker:prune-cache": "docker buildx prune",
-    "dev": "turbo run dev",
+    "dev": "turbo run dev dev-ts --continue",
     "lint": "turbo run lint",
     "format:check": "prettier --check \"**/*.{ts,tsx}\"",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
@@ -33,7 +33,7 @@
     "husky": "^7.0.0",
     "lint-staged": ">=10",
     "prettier": "latest",
-    "turbo": "latest",
+    "turbo": "^2.5.4",
     "typescript": "catalog:",
     "yaml": "^2.5.0"
   },
@@ -63,7 +63,7 @@
       "prismjs": "^1.30.0",
       "image-size": "^1.2.1",
       "esbuild": "^0.25.0",
-      "tar-fs": "^3.0.8"
+      "tar-fs": "^3.0.9"
     }
   },
   "lint-staged": {
