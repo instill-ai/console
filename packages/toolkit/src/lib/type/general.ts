@@ -20,7 +20,7 @@ export type InstillAiUserCookie = {
 export type GeneralUseFormReturn = UseFormReturn<
   { [k: string]: any },
   any,
-  { [k: string]: any }
+  { [k: string]: any } | undefined
 >;
 
 export type GeneralRecord = Record<string, any>;
