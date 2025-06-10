@@ -23,7 +23,7 @@ export const ReadmeEditor = ({
     z.infer<typeof PublishPipelineFormSchema>,
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     any,
-    z.infer<typeof PublishPipelineFormSchema> | undefined
+    z.infer<typeof PublishPipelineFormSchema>
   >;
   readme: Nullable<string>;
 }) => {

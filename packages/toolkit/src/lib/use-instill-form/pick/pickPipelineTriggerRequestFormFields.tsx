@@ -10,7 +10,7 @@ export type PickPipelineTriggerRequestFormFieldsProps = {
   mode: FieldMode;
 
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  form: UseFormReturn<{ [k: string]: any }, any, { [k: string]: any } | undefined>;
+  form: UseFormReturn<{ [k: string]: any }, any, { [k: string]: any }>;
   onEditField?: (key: string) => void;
   onDeleteField?: (key: string) => void;
   keyPrefix?: string;
