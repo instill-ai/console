@@ -42,10 +42,10 @@ export const FileInputDropArea = ({
       onDragLeave={() => setIsHovered(false)}
     >
       <Icons.Upload01 className="h-8 w-8 [&>path]:stroke-[1.5]" />
-      <p className="text-xs">
+      <div className="text-xs">
         {text || "Drag-and-drop a file"}
         {children}
-      </p>
+      </div>
     </div>
   );
 };
