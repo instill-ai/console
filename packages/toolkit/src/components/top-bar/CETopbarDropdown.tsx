@@ -1,8 +1,9 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import {
+  Button,
   ComplicateIcons,
   DropdownMenu,
   Icons,
@@ -26,6 +27,7 @@ const selector = (store: InstillStore) => ({
 });
 
 export const CETopbarDropdown = () => {
+  const router = useRouter();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
   const me = useAuthenticatedUser({
@@ -161,14 +163,15 @@ export const CETopbarDropdown = () => {
         <Separator orientation="horizontal" />
         <TopbarDropdownGroup>
           <TopbarDropdownItem asChild>
-            <Link
-              prefetch={false}
-              href="/api/auth/logout"
-              className="flex gap-x-2"
+            <Button
+              variant="tertiaryGrey"
+              onClick={() => {
+                router.push("/api/auth/logout");
+              }}
             >
-              <Icons.Logout01 className=" my-auto h-4 w-4 stroke-semantic-fg-disabled" />
+              <Icons.Logout01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
               <div className="my-auto">Log out</div>
-            </Link>
+            </Button>
           </TopbarDropdownItem>
         </TopbarDropdownGroup>
       </DropdownMenu.Content>
