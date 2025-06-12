@@ -23,6 +23,7 @@
     "build": "pnpm rimraf dist && tsup src && pnpm ts-types",
     "test": "vitest --run --passWithNoTests",
     "dev": "tsup src --watch",
+    "dev-ts": "tsc --watch --emitDeclarationOnly",
     "watch:css": "npx tailwindcss -i ./src/styles/global.css -o ./public/tailwind.css --watch",
     "build:css": "npx tailwindcss -i ./src/styles/global.css -o ./public/tailwind.css",
     "publish-rc": "pnpm rimraf dist && tsup src && pnpm ts-types && pnpm publish --no-git-checks"

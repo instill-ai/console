@@ -49,10 +49,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res: res,
       key: body.key,
       value: body.value,
-      secure: env("NEXT_PUBLIC_SET_SECURE_COOKIE") ?? true,
+      secure: env("NEXT_PUBLIC_SET_SECURE_COOKIE") ?? false,
       domain: null,
       maxAge: 60 * 60 * 24 * 30,
-      httpOnly: true,
+      httpOnly: env("NEXT_PUBLIC_SET_SECURE_COOKIE") ?? false,
     };
 
     setCookie(payload);
