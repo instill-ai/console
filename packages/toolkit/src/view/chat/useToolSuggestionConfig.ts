@@ -13,8 +13,6 @@ export const useToolSuggestionConfig = () => {
 
   const config: MentionOptions["suggestion"] = {
     items: ({ query }) => {
-      console.log("items", query);
-
       return [
         {
           id: "ask-lead-tool",
@@ -53,7 +51,6 @@ export const useToolSuggestionConfig = () => {
 
           element.appendChild(component.element);
           updateEnableToolSuggestion(() => true);
-          console.log("onStart", props);
         },
         onUpdate(props) {
           component?.updateProps(props);
@@ -84,7 +81,6 @@ export const useToolSuggestionConfig = () => {
         onExit() {
           component?.destroy();
           updateEnableToolSuggestion(() => false);
-          console.log("onExit");
         },
       };
     },

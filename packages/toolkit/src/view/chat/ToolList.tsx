@@ -65,7 +65,6 @@ export const ToolList = React.forwardRef<ToolListRef, ToolListProps>(
     React.useImperativeHandle(ref, () => ({
       onKeyDown: ({ event }) => {
         if (event.key === "ArrowUp") {
-          console.log("ArrowUp");
           upHandler();
           return true;
         }
@@ -91,8 +90,6 @@ export const ToolList = React.forwardRef<ToolListRef, ToolListProps>(
     }
 
     const rect = props.clientRect();
-
-    console.log("rect", props.clientRect());
 
     const selectItem = (index: number) => {
       const item = props.items[index];

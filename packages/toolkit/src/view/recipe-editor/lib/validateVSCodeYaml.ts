@@ -44,7 +44,6 @@ export function validateVSCodeYaml(
   try {
     yamlData = YAML.parse(recipe);
   } catch (error) {
-    console.log("parse error", error);
     if (error instanceof YAML.YAMLError) {
       if (error.linePos && error.linePos.length > 0) {
         markers.push({

@@ -45,14 +45,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
     }
 
+    // Extract hostname from request for proper domain setting
+    const host = req.headers.host;
+    const hostname = host ? host.split(":")[0] : null;
+
+    // Use localhost for local development, otherwise use the extracted hostname
+    const cookieDomain = hostname === "console" ? "localhost" : null;
+
     const payload: SetCookiePayload = {
       res: res,
       key: body.key,
       value: body.value,
       secure: env("NEXT_PUBLIC_SET_SECURE_COOKIE") ?? false,
-      domain: null,
+      domain: cookieDomain,
       maxAge: 60 * 60 * 24 * 30,
-      httpOnly: env("NEXT_PUBLIC_SET_SECURE_COOKIE") ?? false,
+      httpOnly: true,
     };
 
     setCookie(payload);
