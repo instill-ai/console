@@ -7,11 +7,16 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useShallow } from "zustand/react/shallow";
 
-import { Form, Icons, Tooltip, useToast } from "@instill-ai/design-system";
+import { Form, Icons, Tooltip } from "@instill-ai/design-system";
 
 import { AutoresizeInputWrapper } from "../../../../../components";
 import { InstillErrors } from "../../../../../constant";
-import { InstillStore, useInstillStore } from "../../../../../lib";
+import {
+  InstillStore,
+  toastInstillError,
+  toastInstillSuccess,
+  useInstillStore,
+} from "../../../../../lib";
 import { validateInstillResourceID } from "../../../../../server";
 import {
   composeEdgesFromNodes,
@@ -35,7 +40,6 @@ const selector = (store: InstillStore) => ({
 
 export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
   const nodeIDInputRef = React.useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
   const form = useForm<z.infer<typeof NodeIDEditorSchema>>({
     resolver: zodResolver(NodeIDEditorSchema),
     mode: "onBlur",
@@ -80,11 +84,10 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
           }
 
           if (!validateInstillResourceID(newID)) {
-            toast({
+            toastInstillError({
               title: InstillErrors.ResourceIDInvalidError,
-              variant: "alert-error",
-              size: "small",
             });
+
             form.reset({
               nodeID: currentNodeID,
             });
@@ -94,11 +97,10 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
           const existingNodeID = nodes.map((node) => node.id);
 
           if (existingNodeID.includes(newID)) {
-            toast({
+            toastInstillError({
               title: "Component ID already exists",
-              variant: "alert-error",
-              size: "small",
             });
+
             form.reset({
               nodeID: currentNodeID,
             });
@@ -128,10 +130,8 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
             updateSelectedConnectorNodeId(() => newID);
           }
 
-          toast({
+          toastInstillSuccess({
             title: "Successfully update node's name",
-            variant: "alert-success",
-            size: "small",
           });
 
           updatePipelineRecipeIsDirty(() => true);
@@ -142,7 +142,6 @@ export const NodeIDEditor = ({ currentNodeID }: { currentNodeID: string }) => {
       currentNodeID,
       form,
       nodes,
-      toast,
       updateEdges,
       updateNodes,
       updatePipelineRecipeIsDirty,

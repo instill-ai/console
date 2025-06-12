@@ -13,7 +13,6 @@ import {
   Input,
   Switch,
   Textarea,
-  useToast,
 } from "@instill-ai/design-system";
 
 import { Setting } from "..";
@@ -22,6 +21,7 @@ import {
   InstillStore,
   sendAmplitudeData,
   toastInstillError,
+  toastInstillSuccess,
   useAmplitudeCtx,
   useAuthenticatedUser,
   useInstillStore,
@@ -63,8 +63,6 @@ export const UserProfileTab = () => {
 
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
 
-  const { toast } = useToast();
-
   const me = useAuthenticatedUser({
     accessToken,
     enabled: enabledQuery,
@@ -105,16 +103,14 @@ export const UserProfileTab = () => {
       }
 
       form.reset(payload);
-      toast({
+
+      toastInstillSuccess({
         title: "Profile updated successfully",
-        variant: "alert-success",
-        size: "small",
       });
     } catch (error) {
       toastInstillError({
         title: "Something went wrong when updating your profile.",
         error,
-        toast,
       });
     }
   }

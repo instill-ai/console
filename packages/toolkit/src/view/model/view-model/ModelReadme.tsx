@@ -7,12 +7,11 @@ import {
   UpdateNamespaceModelRequest,
 } from "instill-sdk";
 
-import { useToast } from "@instill-ai/design-system";
-
 import { ReadmeEditor } from "../../../components";
 import {
   InstillStore,
   sendAmplitudeData,
+  toastInstillSuccess,
   useAmplitudeCtx,
   useInstillStore,
   useShallow,
@@ -31,7 +30,6 @@ export type ModelReadmeProps = {
 export const ModelReadme = ({ model, onUpdate }: ModelReadmeProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken } = useInstillStore(useShallow(selector));
-  const { toast } = useToast();
   const canEdit = React.useMemo(() => {
     return !!accessToken && !!model?.permission.canEdit;
   }, [model, accessToken]);
@@ -64,10 +62,8 @@ export const ModelReadme = ({ model, onUpdate }: ModelReadmeProps) => {
       sendAmplitudeData("update_model_readme");
     }
 
-    toast({
-      size: "small",
+    toastInstillSuccess({
       title: "Model readme updated successfully",
-      variant: "alert-success",
     });
 
     onUpdate();

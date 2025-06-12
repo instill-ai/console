@@ -7,14 +7,7 @@ import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
-import {
-  Button,
-  Form,
-  Input,
-  Select,
-  Switch,
-  useToast,
-} from "@instill-ai/design-system";
+import { Button, Form, Input, Select, Switch } from "@instill-ai/design-system";
 import {
   DataTestID,
   instillUserRoles,
@@ -33,7 +26,6 @@ const OnboardingFormSchema = z.object({
 
 export const OnboardingForm = () => {
   const router = useRouter();
-  const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const accessToken = useInstillStore((store) => store.accessToken);
   const form = useForm<z.infer<typeof OnboardingFormSchema>>({
@@ -90,7 +82,6 @@ export const OnboardingForm = () => {
     } catch (error) {
       toastInstillError({
         title: "Something went wrong when onboarding your account",
-        toast,
         error,
       });
     } finally {

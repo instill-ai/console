@@ -8,12 +8,11 @@ import {
   UpdateNamespacePipelineRequest,
 } from "instill-sdk";
 
-import { useToast } from "@instill-ai/design-system";
-
 import {
   InstillStore,
   sendAmplitudeData,
   toastInstillError,
+  toastInstillSuccess,
   useAmplitudeCtx,
   useCreateNamespacePipeline,
   useInstillStore,
@@ -40,7 +39,6 @@ const selector = (store: InstillStore) => ({
 export function useRenamePipeline() {
   const routeInfo = useRouteInfo();
   const router = useRouter();
-  const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const {
     nodes,
@@ -98,16 +96,13 @@ export function useRenamePipeline() {
             `/${routeInfo.data.namespaceId}/pipelines/${newId}/editor`,
           );
 
-          toast({
+          toastInstillSuccess({
             title: "Successfully saved the pipeline",
-            variant: "alert-success",
-            size: "small",
           });
         } catch (error) {
           toastInstillError({
             title: "Something went wrong when save the pipeline",
             error,
-            toast,
           });
 
           return Promise.reject(error);
@@ -142,7 +137,6 @@ export function useRenamePipeline() {
           toastInstillError({
             title: "Something went wrong when save the pipeline",
             error,
-            toast,
           });
 
           return Promise.reject(error);
@@ -163,10 +157,8 @@ export function useRenamePipeline() {
 
         router.push(`/${routeInfo.data.namespaceId}/pipelines/${newId}/editor`);
 
-        toast({
+        toastInstillSuccess({
           title: "Sussessfully renamed the pipeline",
-          variant: "alert-success",
-          size: "small",
         });
 
         updatePipelineId(() => newId);
@@ -177,7 +169,6 @@ export function useRenamePipeline() {
         toastInstillError({
           title: "Something went wrong when rename the pipeline",
           error,
-          toast,
         });
         return Promise.reject(error);
       }
@@ -194,7 +185,6 @@ export function useRenamePipeline() {
       pipelineRecipeIsDirty,
       renamePipeline,
       router,
-      toast,
       updatePipeline,
       updatePipelineId,
       updatePipelineIsNew,

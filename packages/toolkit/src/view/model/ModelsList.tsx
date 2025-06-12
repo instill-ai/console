@@ -3,8 +3,6 @@
 import type { Model } from "instill-sdk";
 import cn from "clsx";
 
-import { useToast } from "@instill-ai/design-system";
-
 import { CardModel } from "../../components/card-model/CardModel";
 import { CardModelSkeleton } from "../../components/card-model/Skeleton";
 import {
@@ -34,7 +32,6 @@ export const ModelsList = (props: ModelsListProps) => {
   const { models, onModelDelete, isLoading, isSearchActive } = props;
   const { accessToken } = useInstillStore(useShallow(selector));
   const { amplitudeIsInit } = useAmplitudeCtx();
-  const { toast } = useToast();
 
   const isEmpty = !isLoading && models.length === 0;
 
@@ -64,7 +61,6 @@ export const ModelsList = (props: ModelsListProps) => {
       toastInstillError({
         title: "Something went wrong while deleting the model",
         error,
-        toast,
       });
     }
   };

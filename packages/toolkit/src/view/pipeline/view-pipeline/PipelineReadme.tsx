@@ -4,12 +4,11 @@ import type { Pipeline } from "instill-sdk";
 import * as React from "react";
 import { InstillNameInterpreter } from "instill-sdk";
 
-import { useToast } from "@instill-ai/design-system";
-
 import { ReadmeEditor } from "../../../components";
 import {
   InstillStore,
   sendAmplitudeData,
+  toastInstillSuccess,
   useAmplitudeCtx,
   useInstillStore,
   useShallow,
@@ -28,7 +27,6 @@ export type PipelineReadmeProps = {
 export const PipelineReadme = ({ pipeline, onUpdate }: PipelineReadmeProps) => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { accessToken } = useInstillStore(useShallow(selector));
-  const { toast } = useToast();
   const canEdit = React.useMemo(() => {
     return !!accessToken && !!pipeline?.permission.canEdit;
   }, [pipeline, accessToken]);
@@ -53,10 +51,8 @@ export const PipelineReadme = ({ pipeline, onUpdate }: PipelineReadmeProps) => {
       sendAmplitudeData("update_pipeline_readme");
     }
 
-    toast({
-      size: "small",
+    toastInstillSuccess({
       title: "Pipeline readme updated successfully",
-      variant: "alert-success",
     });
 
     onUpdate();

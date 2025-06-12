@@ -2,7 +2,7 @@ import * as React from "react";
 import MonacoEditor from "@monaco-editor/react";
 import * as z from "zod";
 
-import { Button, Form } from "@instill-ai/design-system";
+import { Button, Form, SonnerToaster, toast } from "@instill-ai/design-system";
 import { InstillJSONSchema, useInstillForm } from "@instill-ai/toolkit";
 
 export default function Home() {
@@ -19,6 +19,18 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen min-w-[100vh] flex-1 flex-col p-10">
+      <SonnerToaster />
+      <Button
+        variant="primary"
+        onClick={() =>
+          toast.error("Hello", {
+            description: "hello world",
+            duration: 1000000,
+          })
+        }
+      >
+        Click me
+      </Button>
       <div className="flex flex-row border gap-x-5 rounded border-semantic-fg-primary h-full w-full p-10">
         <div className="flex w-[400px] flex-col gap-y-5">
           <h2 className="product-headings-heading-3 text-semantic-fg-primary">

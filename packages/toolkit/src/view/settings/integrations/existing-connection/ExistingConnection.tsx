@@ -4,11 +4,12 @@ import * as React from "react";
 import Image from "next/image";
 import { Integration, IntegrationConnection, Nullable } from "instill-sdk";
 
-import { Accordion, Icons, useToast } from "@instill-ai/design-system";
+import { Accordion, Icons } from "@instill-ai/design-system";
 
 import {
   InstillStore,
   toastInstillError,
+  toastInstillSuccess,
   useInstillStore,
   useShallow,
   useUpdateNamespaceConnection,
@@ -42,7 +43,6 @@ export const ExistingConnection = ({
     React.useState<Nullable<IntegrationConnection>>(null);
   const [deleteConnection, setDeleteConnection] =
     React.useState<Nullable<IntegrationConnection>>(null);
-  const { toast } = useToast();
 
   const updateConnection = useUpdateNamespaceConnection();
 
@@ -72,17 +72,14 @@ export const ExistingConnection = ({
 
       setEditingConnection(null);
 
-      toast({
-        size: "small",
+      toastInstillSuccess({
         title: `The ${editingConnection.id} connection has been updated!`,
-        variant: "alert-success",
       });
     } catch (error) {
       console.log(error);
       toastInstillError({
         title: "Something went wrong adding an integration",
         error,
-        toast,
       });
     }
 

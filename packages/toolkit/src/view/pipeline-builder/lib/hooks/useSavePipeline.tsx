@@ -6,8 +6,6 @@ import {
   UpdateNamespacePipelineRequest,
 } from "instill-sdk";
 
-import { useToast } from "@instill-ai/design-system";
-
 import {
   composeEdgesFromNodes,
   composePipelineMetadataMapFromNodes,
@@ -17,6 +15,7 @@ import {
   InstillStore,
   sendAmplitudeData,
   toastInstillError,
+  toastInstillSuccess,
   useAmplitudeCtx,
   useCreateNamespacePipeline,
   useInstillStore,
@@ -54,7 +53,6 @@ export type UseSavePipelineProps =
 export function useSavePipeline(props: UseSavePipelineProps = {}) {
   const { setIsSaving } = props;
   const routeInfo = useRouteInfo();
-  const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const updatePipeline = useUpdateNamespacePipeline();
   const createPipeline = useCreateNamespacePipeline();
@@ -135,10 +133,8 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
             updateEdges(() => newEdges);
           }
 
-          toast({
+          toastInstillSuccess({
             title: "Pipeline is saved",
-            variant: "alert-success",
-            size: "small",
           });
 
           updatePipelineRecipeIsDirty(() => false);
@@ -146,7 +142,6 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
           toastInstillError({
             title: "Something went wrong when save the pipeline",
             error,
-            toast,
           });
         }
 
@@ -195,16 +190,13 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
           sendAmplitudeData("create_pipeline");
         }
 
-        toast({
+        toastInstillSuccess({
           title: "Successfully saved the pipeline",
-          variant: "alert-success",
-          size: "small",
         });
       } catch (error) {
         toastInstillError({
           title: "Something went wrong when save the pipeline",
           error,
-          toast,
         });
       }
 
@@ -222,7 +214,6 @@ export function useSavePipeline(props: UseSavePipelineProps = {}) {
       pipelineId,
       pipelineIsNew,
       pipelineRecipeIsDirty,
-      toast,
       updatePipelineIsNew,
       updatePipelineRecipeIsDirty,
       updatePipeline,

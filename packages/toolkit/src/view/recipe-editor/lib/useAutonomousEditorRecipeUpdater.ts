@@ -2,8 +2,6 @@
 
 import * as React from "react";
 
-import { useToast } from "@instill-ai/design-system";
-
 import {
   InstillStore,
   toastInstillError,
@@ -27,7 +25,6 @@ const selector = (store: InstillStore) => ({
  */
 export function useAutonomousEditorRecipeUpdater() {
   const routeInfo = useRouteInfo();
-  const { toast } = useToast();
   const {
     updateIsSavingRecipe,
     updateHasUnsavedRecipe,
@@ -75,7 +72,6 @@ export function useAutonomousEditorRecipeUpdater() {
       }, 500);
     } catch (error) {
       toastInstillError({
-        toast,
         title: "Failed to update pipeline",
         error,
       });
@@ -94,7 +90,6 @@ export function useAutonomousEditorRecipeUpdater() {
     updateIsSavingRecipe,
     updateHasUnsavedRecipe,
     updatePipeline,
-    toast,
   ]);
 
   return autonomousRecipeUpdater;

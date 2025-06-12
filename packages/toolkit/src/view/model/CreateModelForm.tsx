@@ -21,7 +21,6 @@ import {
   RadioGroup,
   Select,
   Textarea,
-  toast,
 } from "@instill-ai/design-system";
 
 import { EntitySelector, LoadingSpin } from "../../components";
@@ -236,7 +235,6 @@ export const CreateModelForm = () => {
         toastInstillError({
           title: "Failed to create model",
           error,
-          toast,
         });
       }
     } else {
@@ -244,7 +242,6 @@ export const CreateModelForm = () => {
       toastInstillError({
         title: "Please choose a valid owner to create your model",
         error: null,
-        toast,
       });
     }
   }

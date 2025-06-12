@@ -5,18 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import {
-  Button,
-  Dialog,
-  Form,
-  Input,
-  useToast,
-} from "@instill-ai/design-system";
+import { Button, Dialog, Form, Input } from "@instill-ai/design-system";
 
 import { LoadingSpin } from "../../../components";
 import {
   sendAmplitudeData,
   toastInstillError,
+  toastInstillSuccess,
   useAmplitudeCtx,
   useDeleteNamespaceSecret,
   useInstillStore,
@@ -45,8 +40,6 @@ export const DeleteSecretDialog = ({
     },
   });
 
-  const { toast } = useToast();
-
   const deleteSecret = useDeleteNamespaceSecret();
 
   const handleDeleteApiToken = async () => {
@@ -67,16 +60,13 @@ export const DeleteSecretDialog = ({
 
       setOpen(false);
 
-      toast({
-        variant: "alert-success",
+      toastInstillSuccess({
         title: "Secret deleted successfully",
-        size: "small",
       });
     } catch (error) {
       toastInstillError({
         title: "Something went wrong when deleting the secret",
         error,
-        toast,
       });
     }
   };

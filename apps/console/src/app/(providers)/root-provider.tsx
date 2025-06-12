@@ -3,7 +3,6 @@
 import * as React from "react";
 import { usePathname } from "next/navigation";
 
-import { Toaster, useToast } from "@instill-ai/design-system";
 import {
   InstillStore,
   Nullable,
@@ -34,16 +33,14 @@ export const RootProvider = ({
     React.useState<Nullable<string>>(null);
 
   const { initPipelineBuilder, updateFeatureFlagChatEnabled } = useInstillStore(
-    useShallow(selector),
+    useShallow(selector)
   );
 
   const initCreateResourceFormStore = useCreateResourceFormStore(
-    (store) => store.init,
+    (store) => store.init
   );
 
   const closeModal = useModalStore((store) => store.closeModal);
-
-  const { dismiss: dismissToast } = useToast();
 
   React.useEffect(() => {
     updateFeatureFlagChatEnabled(() => featureFlagChatEnabled);
@@ -68,22 +65,12 @@ export const RootProvider = ({
 
     initCreateResourceFormStore();
     closeModal();
-    dismissToast();
     setPreviousPathname(pathname);
   }, [pathname]);
 
   return (
     <ReactQueryProvider>
-      <AmplitudeProvider>
-        {children}
-        <Toaster
-          additionalViewPortClassName={
-            pathnameEvaluator.isPipelineBuilderPage(pathname)
-              ? "!top-[var(--topbar-controller-height)]"
-              : "!top-[calc(var(--topbar-controller-height)+var(--topbar-nav-height))]"
-          }
-        />
-      </AmplitudeProvider>
+      <AmplitudeProvider>{children}</AmplitudeProvider>
     </ReactQueryProvider>
   );
 };
