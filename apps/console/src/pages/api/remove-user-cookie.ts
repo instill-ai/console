@@ -3,6 +3,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { env, removeCookie } from "@instill-ai/toolkit/server";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  console.log("remove-user-cookie");
+
   const { method } = req;
 
   if (method !== "POST") {
