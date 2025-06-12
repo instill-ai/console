@@ -1,6 +1,7 @@
 "use client";
 
-// import Link from "next/link";
+import Link from "next/link";
+
 import {
   ComplicateIcons,
   DropdownMenu,
@@ -158,14 +159,18 @@ export const CETopbarDropdown = () => {
           </TopbarDropdownItem>
         </TopbarDropdownGroup>
         <Separator orientation="horizontal" />
-        {/* <TopbarDropdownGroup>
+        <TopbarDropdownGroup>
           <TopbarDropdownItem asChild>
-            <Link href="/api/auth/logout" className="flex gap-x-2">
+            <Link
+              prefetch={false}
+              href="/api/auth/logout"
+              className="flex gap-x-2"
+            >
               <Icons.Logout01 className=" my-auto h-4 w-4 stroke-semantic-fg-disabled" />
               <div className="my-auto">Log out</div>
             </Link>
           </TopbarDropdownItem>
-        </TopbarDropdownGroup> */}
+        </TopbarDropdownGroup>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   ) : (
