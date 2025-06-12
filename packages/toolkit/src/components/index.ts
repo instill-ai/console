@@ -40,3 +40,4 @@ export * from "./RunsTableSortableColHeader";
 export * from "./VersionDropdownSelector";
 export * from "./CopiedTooltip";
 export * from "./PlaygroundSkeleton";
+export * from "./SonnerToasterWithPosition";

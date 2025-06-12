@@ -4,7 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import { Integration, Nullable } from "instill-sdk";
 
-import { Button, useToast } from "@instill-ai/design-system";
+import { Button } from "@instill-ai/design-system";
 
 import { LoadingSpin } from "../../../../components";
 import {
@@ -30,7 +30,6 @@ export const ConnectableIntegration = ({
   accessToken,
 }: ConnectableIntegrationProps) => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [editingDialogIsOpen, setEditingDialogIsOpen] = React.useState(false);
 
@@ -118,7 +117,6 @@ export const ConnectableIntegration = ({
             }
           } catch (error) {
             toastInstillError({
-              toast,
               error,
               title: "Failed to connect to integration",
             });

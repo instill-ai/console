@@ -20,7 +20,6 @@ import {
   RadioGroup,
   Separator,
   Textarea,
-  useToast,
 } from "@instill-ai/design-system";
 
 import { EntitySelector, LoadingSpin } from "../../../components";
@@ -65,8 +64,6 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
   const [permission, setPermission] =
     React.useState<Nullable<Permission>>("private");
   const router = useRouter();
-
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof CreatePipelineSchema>>({
     resolver: zodResolver(CreatePipelineSchema),
@@ -159,7 +156,6 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
         toastInstillError({
           title: "Failed to create pipeline",
           error,
-          toast,
         });
       }
     } else {
@@ -167,7 +163,6 @@ export const CreatePipelineDialog = ({ className }: { className?: string }) => {
       toastInstillError({
         title: "Please choose a valid namespace to create your pipeline",
         error: null,
-        toast,
       });
     }
   }

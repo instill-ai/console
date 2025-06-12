@@ -8,12 +8,13 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useShallow } from "zustand/react/shallow";
 
-import { Dialog, Form, LinkButton, useToast } from "@instill-ai/design-system";
+import { Dialog, Form } from "@instill-ai/design-system";
 
 import {
   InstillStore,
   sendAmplitudeData,
   toastInstillError,
+  toastInstillSuccess,
   useAmplitudeCtx,
   useInstillStore,
   useNamespacePipeline,
@@ -44,8 +45,6 @@ export const PublishPipelineDialog = () => {
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [isPublishing, setIsPublishing] = React.useState(false);
   const routeInfo = useRouteInfo();
-
-  const { toast } = useToast();
 
   const {
     accessToken,
@@ -117,28 +116,18 @@ export const PublishPipelineDialog = () => {
         sendAmplitudeData("publish_pipeline");
       }
 
-      toast({
-        size: "large",
+      toastInstillSuccess({
         title: "Pipeline published successfully!",
+        action: {
+          label: "Check Your Pipeline Here",
+          onClick: () => {
+            router.push(
+              `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/playground`,
+            );
+          },
+        },
         description:
           "Hooray! Your pipeline has been successfully published to the hub and is now available to our ever-growing community. Keep up the good work! 🎉🚀",
-        variant: "alert-success",
-        action: (
-          <div className="flex flex-row">
-            <LinkButton
-              onClick={() => {
-                router.push(
-                  `/${routeInfo.data.namespaceId}/pipelines/${routeInfo.data.resourceId}/playground`,
-                );
-              }}
-              variant="primary"
-              size="sm"
-              className="mr-auto"
-            >
-              Check Your Pipeline Here
-            </LinkButton>
-          </div>
-        ),
       });
 
       updateDialogPublishPipelineIsOpen(() => false);
@@ -148,7 +137,6 @@ export const PublishPipelineDialog = () => {
       toastInstillError({
         title: "Something went wrong when publish the pipeline",
         error: err,
-        toast,
       });
       console.error(err);
     }

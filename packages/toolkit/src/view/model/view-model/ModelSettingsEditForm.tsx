@@ -19,7 +19,6 @@ import {
   RadioGroup,
   Select,
   Textarea,
-  toast,
 } from "@instill-ai/design-system";
 
 import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
@@ -28,6 +27,7 @@ import {
   InstillStore,
   sendAmplitudeData,
   toastInstillError,
+  toastInstillSuccess,
   useAmplitudeCtx,
   useInstillStore,
   useModelAvailableRegions,
@@ -184,10 +184,8 @@ export const ModelSettingsEditForm = ({
         accessToken,
       });
 
-      toast({
+      toastInstillSuccess({
         title: "Model was successfully updated",
-        variant: "notification-success",
-        size: "small",
       });
 
       if (amplitudeIsInit) {
@@ -201,7 +199,6 @@ export const ModelSettingsEditForm = ({
       toastInstillError({
         title: "Failed to update model",
         error,
-        toast,
       });
     }
   }

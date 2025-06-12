@@ -17,7 +17,6 @@ import {
   Input,
   RadioGroup,
   Textarea,
-  useToast,
 } from "@instill-ai/design-system";
 
 import { LoadingSpin } from "../../../components";
@@ -25,6 +24,7 @@ import {
   Nullable,
   sendAmplitudeData,
   toastInstillError,
+  toastInstillSuccess,
   useAmplitudeCtx,
   useInstillStore,
   useRouteInfo,
@@ -69,7 +69,6 @@ export const PipelineSettings = ({
   });
 
   const accessToken = useInstillStore((store) => store.accessToken);
-  const { toast } = useToast();
   const routeInfo = useRouteInfo();
 
   const updateUserPipeline = useUpdateNamespacePipeline();
@@ -133,19 +132,15 @@ export const PipelineSettings = ({
         sendAmplitudeData("update_pipeline_description");
       }
 
-      toast({
-        size: "small",
+      toastInstillSuccess({
         title: "Update pipeline metadata successfully",
-        variant: "alert-success",
       });
     } catch (error) {
       setUpdating(false);
-
       toastInstillError({
         title:
           "Something went wrong, Please refresh the page and try again later",
         error,
-        toast,
       });
     }
   }

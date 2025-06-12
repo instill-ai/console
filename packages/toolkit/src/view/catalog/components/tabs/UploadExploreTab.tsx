@@ -18,7 +18,6 @@ import {
   Icons,
   Nullable,
   Separator,
-  toast,
 } from "@instill-ai/design-system";
 
 import {
@@ -103,9 +102,7 @@ export const UploadExploreTab = ({
   remainingStorageSpace,
   updateRemainingSpace,
   subscription,
-  //namespaceType,
   isLocalEnvironment,
-  //selectedNamespace,
 }: UploadExploreTabProps) => {
   const queryClient = useQueryClient();
   const { amplitudeIsInit } = useAmplitudeCtx();
@@ -258,7 +255,6 @@ export const UploadExploreTab = ({
         title: "Insufficient Credit Balance",
         error:
           "Your credit balance is too low to use this service. Please consider upgrading your plan to continue.",
-        toast,
       });
       return;
     }
@@ -327,7 +323,6 @@ export const UploadExploreTab = ({
           toastInstillError({
             title: `Error processing file ${file.name}`,
             error,
-            toast,
           });
         }
       }
@@ -357,7 +352,6 @@ export const UploadExploreTab = ({
       toastInstillError({
         title: "Error processing files",
         error,
-        toast,
       });
     } finally {
       setIsProcessing(false);

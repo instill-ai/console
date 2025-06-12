@@ -12,7 +12,6 @@ import {
   Icons,
   Nullable,
   TabMenu,
-  useToast,
 } from "@instill-ai/design-system";
 
 import {
@@ -98,7 +97,6 @@ export const ModelPlayground = ({
     modelVersion: Nullable<string>;
     targetNamespace: Nullable<string>;
   }>(defaultCurrentOperationIdPollingData);
-  const { toast } = useToast();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [isModelRunInProgress, setIsModelRunInProgress] = React.useState(true);
   const [outputActiveView, setOutputActiveView] =
@@ -258,12 +256,9 @@ export const ModelPlayground = ({
         isRendered: false,
       };
 
-      toast({
+      toastInstillError({
         title: "Something went wrong when triggering the model",
-        variant: "alert-error",
-        size: "large",
         description: existingModelTriggerResult.data.operation.error.message,
-        duration: 150000,
       });
 
       return;
@@ -408,7 +403,6 @@ export const ModelPlayground = ({
       toastInstillError({
         title: "Something went wrong when triggering the model",
         error,
-        toast,
       });
     }
   }

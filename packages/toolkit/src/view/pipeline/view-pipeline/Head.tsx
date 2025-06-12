@@ -13,7 +13,6 @@ import {
   Skeleton,
   TabMenu,
   Tag,
-  toast,
 } from "@instill-ai/design-system";
 
 import {
@@ -27,6 +26,7 @@ import {
   isPublicPipeline,
   Nullable,
   toastInstillError,
+  toastInstillSuccess,
   useAuthenticatedUser,
   useDeleteNamespacePipeline,
   useInstillStore,
@@ -96,10 +96,8 @@ export const Head = ({
         accessToken: accessToken ? accessToken : null,
       });
 
-      toast({
+      toastInstillSuccess({
         title: "Pipeline deleted",
-        variant: "alert-success",
-        size: "large",
       });
 
       router.push(`/${routeInfo.data.namespaceId}/pipelines`);
@@ -108,7 +106,6 @@ export const Head = ({
       toastInstillError({
         title: "Something went wrong when delete the pipeline",
         error,
-        toast,
       });
     }
   }

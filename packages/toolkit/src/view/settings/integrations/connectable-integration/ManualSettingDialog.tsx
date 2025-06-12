@@ -3,11 +3,12 @@
 import * as React from "react";
 import { Integration, IntegrationMethod, Nullable } from "instill-sdk";
 
-import { Button, Dialog, Icons, useToast } from "@instill-ai/design-system";
+import { Button, Dialog, Icons } from "@instill-ai/design-system";
 
 import {
   InstillStore,
   toastInstillError,
+  toastInstillSuccess,
   useCreateIntegrationConnection,
   useGetIntegration,
   useInstillStore,
@@ -31,7 +32,6 @@ export const ManualSettingDialog = ({
   namespaceId: Nullable<string>;
   integration: Integration;
 }) => {
-  const { toast } = useToast();
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
   const [isProcessing, setIsProcessing] = React.useState(false);
 
@@ -73,16 +73,13 @@ export const ManualSettingDialog = ({
 
       onOpenChange(false);
 
-      toast({
-        size: "small",
+      toastInstillSuccess({
         title: `The ${integration.title} integration has been added!`,
-        variant: "alert-success",
       });
     } catch (error) {
       toastInstillError({
         title: "Something went wrong adding an integration",
         error,
-        toast,
       });
     } finally {
       setIsProcessing(false);

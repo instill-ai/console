@@ -10,7 +10,7 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import * as z from "zod";
 
-import { Button, Form, TabMenu, useToast } from "@instill-ai/design-system";
+import { Button, Form, TabMenu } from "@instill-ai/design-system";
 
 import {
   CodeBlock,
@@ -72,7 +72,6 @@ export const PipelinePlayground = ({
   const shareCode = searchParams.get("view");
   const currentVersion = searchParams.get("version");
   const userNamespaces = useUserNamespaces();
-  const { toast } = useToast();
   const [isPipelineRunning, setIsPipelineRunning] = React.useState(false);
   const [outputActiveView, setOutputActiveView] =
     React.useState<PipelineOutputActiveView>("preview");
@@ -191,7 +190,6 @@ export const PipelinePlayground = ({
     if (!targetNamespace) {
       toastInstillError({
         title: "Something went wrong, please refresh the page and try again",
-        toast,
         error: new Error("Failed to find the target namespace"),
       });
       return;
@@ -356,7 +354,6 @@ export const PipelinePlayground = ({
         toastInstillError({
           title: "Something went wrong when trigger the pipeline",
           error,
-          toast,
         });
       }
     } else {
@@ -413,7 +410,6 @@ export const PipelinePlayground = ({
         toastInstillError({
           title: "Something went wrong when trigger the pipeline",
           error,
-          toast,
         });
       }
     }

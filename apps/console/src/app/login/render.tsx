@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import * as z from "zod";
 
-import { useToast } from "@instill-ai/design-system";
 import {
   changePasswordMutation,
   Nullable,
@@ -30,7 +29,6 @@ export const LoginPageRender = () => {
   const [loginIsComplete, setLoginIsComplete] = React.useState(false);
   const [changePasswordIsComplete, setChangePasswordIsComplete] =
     React.useState(false);
-  const { toast } = useToast();
 
   const trackToken = useAppTrackToken({
     enabled: !!accessToken && changePasswordIsComplete,
@@ -65,13 +63,12 @@ export const LoginPageRender = () => {
       toastInstillError({
         title: "Something went wrong when login",
         error,
-        toast,
       });
     }
   }
 
   async function changePassword(
-    data: z.infer<typeof ChangePasswordFormSchema>,
+    data: z.infer<typeof ChangePasswordFormSchema>
   ) {
     if (!accessToken) {
       return;
@@ -91,7 +88,6 @@ export const LoginPageRender = () => {
       toastInstillError({
         title: "Something went wrong when change password",
         error,
-        toast,
       });
     }
   }

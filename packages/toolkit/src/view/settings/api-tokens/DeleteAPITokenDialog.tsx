@@ -5,18 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import {
-  Button,
-  Dialog,
-  Form,
-  Input,
-  useToast,
-} from "@instill-ai/design-system";
+import { Button, Dialog, Form, Input } from "@instill-ai/design-system";
 
 import { LoadingSpin } from "../../../components";
 import {
   sendAmplitudeData,
   toastInstillError,
+  toastInstillSuccess,
   useAmplitudeCtx,
   useDeleteAPIToken,
   useInstillStore,
@@ -39,8 +34,6 @@ export const DeleteAPITokenDialog = ({ tokenId }: { tokenId: string }) => {
     },
   });
 
-  const { toast } = useToast();
-
   const deleteAPIToken = useDeleteAPIToken();
 
   const handleDeleteApiToken = async () => {
@@ -59,16 +52,14 @@ export const DeleteAPITokenDialog = ({ tokenId }: { tokenId: string }) => {
       }
 
       setOpen(false);
-      toast({
+
+      toastInstillSuccess({
         title: "API token deleted successfully",
-        variant: "alert-success",
-        size: "small",
       });
     } catch (error) {
       toastInstillError({
         title: "Something went wrong when deleting the token",
         error,
-        toast,
       });
     }
   };

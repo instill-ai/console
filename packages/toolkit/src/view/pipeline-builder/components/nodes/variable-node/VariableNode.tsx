@@ -9,7 +9,7 @@ import { NodeProps } from "reactflow";
 import * as z from "zod";
 import { useShallow } from "zustand/react/shallow";
 
-import { Button, cn, Form, Icons, useToast } from "@instill-ai/design-system";
+import { Button, cn, Form, Icons } from "@instill-ai/design-system";
 
 import {
   GeneralRecord,
@@ -87,8 +87,6 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
     updateRecentlyUsedStartComponentFieldTypes,
     navigationNamespaceAnchor,
   } = useInstillStore(useShallow(selector));
-
-  const { toast } = useToast();
 
   const [selectedType, setSelectedType] =
     React.useState<Nullable<string>>(null);
@@ -342,7 +340,6 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
         toastInstillError({
           title: "Something went wrong when trigger the pipeline",
           error,
-          toast,
         });
       }
     } else {
@@ -384,7 +381,6 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
         toastInstillError({
           title: "Something went wrong when trigger the pipeline",
           error,
-          toast,
         });
       }
     }

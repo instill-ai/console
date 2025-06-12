@@ -22,7 +22,6 @@ import {
   Separator,
   Tag,
   Textarea,
-  useToast,
 } from "@instill-ai/design-system";
 
 import type { InstillStore, Nullable } from "../lib";
@@ -84,7 +83,6 @@ export const ClonePipelineDialog = ({
   const [cloning, setCloning] = React.useState(false);
   const [permission, setPermission] =
     React.useState<Nullable<Permission>>("private");
-  const { toast } = useToast();
 
   const routeInfo = useRouteInfo();
 
@@ -181,7 +179,6 @@ export const ClonePipelineDialog = ({
           title:
             "Something went wrong when clone the pipeline, please try again later",
           error,
-          toast,
         });
       }
     } else {
@@ -190,7 +187,6 @@ export const ClonePipelineDialog = ({
         title:
           "Something went wrong when clone the pipeline, please try again later",
         error: null,
-        toast,
       });
     }
   }

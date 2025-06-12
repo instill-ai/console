@@ -4,8 +4,6 @@ import * as React from "react";
 import { InstillNameInterpreter, Nullable } from "instill-sdk";
 import debounce from "lodash.debounce";
 
-import { useToast } from "@instill-ai/design-system";
-
 import {
   InstillStore,
   toastInstillError,
@@ -36,7 +34,6 @@ export type EditorRecipeUpdater = ReturnType<
 >;
 
 export function useDebouncedRecipeUpdater(): EditorRecipeUpdater {
-  const { toast } = useToast();
   const {
     updateIsSavingRecipe,
     updateHasUnsavedRecipe,
@@ -83,7 +80,6 @@ export function useDebouncedRecipeUpdater(): EditorRecipeUpdater {
           }, 500);
         } catch (error) {
           toastInstillError({
-            toast,
             title: "Failed to update pipeline",
             error,
           });

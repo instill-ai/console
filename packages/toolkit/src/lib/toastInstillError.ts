@@ -1,21 +1,18 @@
-import { UseToastReturn } from "@instill-ai/design-system";
+import { toast } from "@instill-ai/design-system";
 
 import { getInstillApiErrorMessage } from "./sdk-helper/getInstillApiErrorMessage";
 
 export function toastInstillError({
   title,
-  toast,
   error,
+  description,
 }: {
   title: string;
-  toast: UseToastReturn["toast"];
-  error: unknown;
+  error?: unknown;
+  description?: string;
 }) {
-  toast({
-    title,
-    variant: "alert-error",
-    size: "large",
-    description: getInstillApiErrorMessage(error),
+  toast.error(title, {
+    description: description ?? getInstillApiErrorMessage(error),
     duration: 15000,
   });
 }

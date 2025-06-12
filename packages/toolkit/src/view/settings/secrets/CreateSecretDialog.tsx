@@ -12,7 +12,6 @@ import {
   Form,
   Input,
   Textarea,
-  useToast,
 } from "@instill-ai/design-system";
 
 import { LoadingSpin } from "../../../components";
@@ -22,6 +21,7 @@ import {
   Nullable,
   sendAmplitudeData,
   toastInstillError,
+  toastInstillSuccess,
   useAmplitudeCtx,
   useAuthenticatedUser,
   useCreateNamespaceSecret,
@@ -57,7 +57,6 @@ export const CreateSecretDialog = () => {
   const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const { accessToken, enabledQuery } = useInstillStore(useShallow(selector));
-  const { toast } = useToast();
   const routeInfo = useRouteInfo();
 
   const me = useAuthenticatedUser({
@@ -128,10 +127,8 @@ export const CreateSecretDialog = () => {
 
       setOpen(false);
 
-      toast({
-        variant: "alert-success",
+      toastInstillSuccess({
         title: "Secret created successfully",
-        size: "small",
       });
     } catch (error) {
       setIsLoading(false);
@@ -149,7 +146,6 @@ export const CreateSecretDialog = () => {
       toastInstillError({
         title: "Failed to create secret",
         error,
-        toast,
       });
     }
   };

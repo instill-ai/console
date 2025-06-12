@@ -7,12 +7,13 @@ import {
   UpdateNamespacePipelineRequest,
 } from "instill-sdk";
 
-import { Button, Dialog, useToast } from "@instill-ai/design-system";
+import { Button, Dialog } from "@instill-ai/design-system";
 
 import {
   InstillStore,
   sendAmplitudeData,
   toastInstillError,
+  toastInstillSuccess,
   useAmplitudeCtx,
   useInstillStore,
   useNamespacePipeline,
@@ -35,7 +36,6 @@ export const UnpublishPipelineDialog = ({
   const [isOpen, setIsOpen] = React.useState(false);
   const { accessToken, enabledQuery, updateDialogSharePipelineIsOpen } =
     useInstillStore(useShallow(selector));
-  const { toast } = useToast();
 
   const pipeline = useNamespacePipeline({
     namespaceId: pipelineName
@@ -77,10 +77,8 @@ export const UnpublishPipelineDialog = ({
         sendAmplitudeData("unpublish_pipeline");
       }
 
-      toast({
+      toastInstillSuccess({
         title: "Pipeline successfully unpublished",
-        variant: "alert-success",
-        size: "small",
       });
 
       updateDialogSharePipelineIsOpen(() => false);
@@ -88,7 +86,6 @@ export const UnpublishPipelineDialog = ({
       toastInstillError({
         title: "Something went wrong when unpublishing pipeline",
         error,
-        toast,
       });
     }
   }

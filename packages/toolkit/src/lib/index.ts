@@ -25,6 +25,7 @@ export * from "./isPublicModel";
 export * from "./isPublicPipeline";
 export * from "./isValidURL";
 export * from "./toastInstillError";
+export * from "./toastInstillSuccess";
 export * from "./useRouteInfo";
 export * from "./getCaptializeTwoWordsFromName";
 export * from "./convertLongNumberToK";

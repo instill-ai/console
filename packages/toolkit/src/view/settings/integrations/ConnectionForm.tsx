@@ -8,10 +8,10 @@ import {
 } from "instill-sdk";
 import { z } from "zod";
 
-import { Button, cn, Form, Input, useToast } from "@instill-ai/design-system";
+import { Button, cn, Form, Input } from "@instill-ai/design-system";
 
 import { LoadingSpin } from "../../../components";
-import { useInstillForm } from "../../../lib";
+import { toastInstillError, useInstillForm } from "../../../lib";
 import { FieldDescriptionTooltip } from "../../../lib/use-instill-form/components/common";
 import { parseResourceId } from "../../../server";
 import { recursiveHelpers } from "../../pipeline-builder";
@@ -43,7 +43,6 @@ export const ConnectionForm = ({
   method: IntegrationMethod;
   values?: GeneralRecord;
 }) => {
-  const { toast } = useToast();
   const { fields, form, ValidatorSchema } = useInstillForm(
     schema || null,
     values || null,
@@ -89,10 +88,8 @@ export const ConnectionForm = ({
       parsedData = ValidatorSchema.parse(payload);
     } catch (err) {
       if (err instanceof z.ZodError) {
-        toast({
+        toastInstillError({
           title: "There was an error creating a connection",
-          variant: "alert-error",
-          size: "large",
           description: err.issues.reduce(
             (acc, curr, index) =>
               `${acc}${index > 0 ? `\n` : ""}${curr.message}`,

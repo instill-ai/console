@@ -8,7 +8,7 @@ import type {
 import * as React from "react";
 import { InstillNameInterpreter } from "instill-sdk";
 
-import { Button, Icons, Separator, useToast } from "@instill-ai/design-system";
+import { Button, Icons, Separator } from "@instill-ai/design-system";
 
 import { LoadingSpin } from "../../../../../components";
 import { NamespaceAvatarWithFallback } from "../../../../../components/NamespaceAvatarWithFallback";
@@ -49,8 +49,6 @@ export const TabShare = ({
   const [isUpdatingShareCodePermission, setIsUpdatingShareCodePermission] =
     React.useState(false);
   const [copied, setCopied] = React.useState(false);
-
-  const { toast } = useToast();
 
   const pipeline = useNamespacePipeline({
     namespaceId: pipelineName
@@ -142,7 +140,6 @@ export const TabShare = ({
         toastInstillError({
           title: "Something went wrong when update pipeline permission",
           error,
-          toast,
         });
       }
     } else {
@@ -169,7 +166,6 @@ export const TabShare = ({
     namespaceId,
     id,
     updatePipeline,
-    toast,
     amplitudeIsInit,
     pipelineName,
   ]);

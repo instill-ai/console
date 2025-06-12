@@ -16,7 +16,7 @@ import {
 } from "instill-sdk";
 import * as z from "zod";
 
-import { Form, useToast } from "@instill-ai/design-system";
+import { Form } from "@instill-ai/design-system";
 
 import {
   DefaultEditorViewIDs,
@@ -25,6 +25,7 @@ import {
   isArtifactRelatedInstillFormat,
   isValidURL,
   Nullable,
+  toastInstillError,
   useInstillStore,
   usePipelineTriggerRequestForm,
   useRouteInfo,
@@ -82,7 +83,6 @@ export const Input = ({
     hasUnsavedRecipe,
   } = useInstillStore(useShallow(selector));
 
-  const { toast } = useToast();
   const forceStopTriggerPipelineStream = React.useRef(false);
 
   const { Schema, fieldItems, form } = usePipelineTriggerRequestForm({
@@ -145,10 +145,10 @@ export const Input = ({
           await autonomousRecipeUpdater();
         } catch (error) {
           console.error("Failed to update pipeline:", error);
-          toast({
+
+          toastInstillError({
             title: "Failed to save pipeline",
             description: "An error occurred while saving the pipeline.",
-            variant: "alert-error",
           });
         }
       }
@@ -448,12 +448,10 @@ export const Input = ({
                   if (isPipelineErrorUpdatedEvent(event)) {
                     if (event.data.status.errored) {
                       updateIsTriggeringPipeline(() => false);
-                      toast({
+
+                      toastInstillError({
                         title: "Something went wrong when trigger the pipeline",
-                        variant: "alert-error",
-                        size: "large",
                         description: event.data.error?.message ?? undefined,
-                        duration: 15000,
                       });
                     }
                   }
@@ -522,12 +520,12 @@ export const Input = ({
         }
       } catch (error) {
         console.error(error);
-        toast({
+
+        toastInstillError({
           title: "Something went wrong when trigger the pipeline",
-          variant: "alert-error",
-          size: "small",
-          duration: 15000,
+          description: "An error occurred while triggering the pipeline.",
         });
+
         return;
       } finally {
         updateIsTriggeringPipeline(() => false);
@@ -548,7 +546,6 @@ export const Input = ({
       routeInfo.data,
       routeInfo.isSuccess,
       currentVersion,
-      toast,
       triggerPipelineRelease,
       autonomousRecipeUpdater,
       getNamespaceObjectUploadURL,

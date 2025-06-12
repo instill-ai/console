@@ -14,6 +14,7 @@ import "../styles/tip-tap.css";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 
 import { RootProvider } from "./(providers)/root-provider";
+import { SonnerToasterWithPosition } from "@instill-ai/toolkit";
 
 const ibmPlexSans = IBM_Plex_Sans({
   style: ["italic", "normal"],
@@ -40,13 +41,13 @@ export default function RootLayout({
         <meta
           property="og:image"
           content={`${env(
-            "NEXT_PUBLIC_CONSOLE_BASE_URL",
+            "NEXT_PUBLIC_CONSOLE_BASE_URL"
           )}/images/instill-open-graph.png`}
         />
         <meta
           property="twitter:image"
           content={`${env(
-            "NEXT_PUBLIC_CONSOLE_BASE_URL",
+            "NEXT_PUBLIC_CONSOLE_BASE_URL"
           )}/images/instill-open-graph.png`}
         />
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
@@ -56,6 +57,7 @@ export default function RootLayout({
         <RootProvider
           featureFlagChatEnabled={process.env.FEATURE_FLAG_CHAT_ENABLED === "1"}
         >
+          <SonnerToasterWithPosition />
           <React.Suspense>{children}</React.Suspense>
         </RootProvider>
       </body>

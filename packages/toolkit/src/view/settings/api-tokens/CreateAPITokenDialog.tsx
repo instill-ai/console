@@ -6,19 +6,14 @@ import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import {
-  Button,
-  Dialog,
-  Form,
-  Input,
-  useToast,
-} from "@instill-ai/design-system";
+import { Button, Dialog, Form, Input } from "@instill-ai/design-system";
 
 import { LoadingSpin } from "../../../components";
 import { InstillErrors } from "../../../constant";
 import {
   sendAmplitudeData,
   toastInstillError,
+  toastInstillSuccess,
   useAmplitudeCtx,
   useCreateAPIToken,
   useInstillStore,
@@ -44,8 +39,6 @@ export const CreateAPITokenDialog = () => {
   const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const accessToken = useInstillStore((store) => store.accessToken);
-
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof CreateTokenSchema>>({
     resolver: zodResolver(CreateTokenSchema),
@@ -77,10 +70,8 @@ export const CreateAPITokenDialog = () => {
 
       setOpen(false);
 
-      toast({
-        variant: "alert-success",
+      toastInstillSuccess({
         title: "Token created successfully",
-        size: "small",
       });
     } catch (error) {
       setIsLoading(false);
@@ -96,7 +87,6 @@ export const CreateAPITokenDialog = () => {
 
       toastInstillError({
         title: "Failed to create API Token",
-        toast,
         error,
       });
     }
