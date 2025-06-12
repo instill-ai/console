@@ -52,14 +52,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // Use localhost for local development, otherwise use the extracted hostname
     const cookieDomain = hostname === "console" ? "localhost" : null;
 
-    console.log("Cookie debug info:", {
-      host: req.headers.host,
-      hostname,
-      cookieDomain,
-      userAgent: req.headers["user-agent"],
-      consoleBaseUrl: env("NEXT_PUBLIC_CONSOLE_BASE_URL"),
-    });
-
     const payload: SetCookiePayload = {
       res: res,
       key: body.key,
@@ -69,8 +61,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       maxAge: 60 * 60 * 24 * 30,
       httpOnly: true,
     };
-
-    console.log("Setting cookie with payload:", payload);
 
     setCookie(payload);
 
