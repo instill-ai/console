@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.69.0-beta](https://github.com/instill-ai/console/compare/v0.68.0-beta...v0.69.0-beta) (2025-06-13)
+
+
+### Features
+
+* clean up the deps and upgrade nextjs to 15 ([#1758](https://github.com/instill-ai/console/issues/1758)) ([cc0fda0](https://github.com/instill-ai/console/commit/cc0fda067922ba5f0b8cd8f060dee266e2851671))
+* deprecate old design-system ([#1756](https://github.com/instill-ai/console/issues/1756)) ([03fca09](https://github.com/instill-ai/console/commit/03fca09f66b73b104631e540f570025a503dd3a4))
+* use sonner as new toast ([#1760](https://github.com/instill-ai/console/issues/1760)) ([df8f7e0](https://github.com/instill-ai/console/commit/df8f7e0ee361ea7a6df12851309f24c0ff7afc08))
+
+
+### Bug Fixes
+
+* fix secure cookie issue, default to use not-secure cookie on http site ([#1761](https://github.com/instill-ai/console/issues/1761)) ([a2167ce](https://github.com/instill-ai/console/commit/a2167ce9d2ac65db9c90113a839902a7f62d2a00))
+* replace logout link with button ([#1762](https://github.com/instill-ai/console/issues/1762)) ([6bd01df](https://github.com/instill-ai/console/commit/6bd01dfe1892a66da9ac0c0c23be1dc63fa2d9e4))
+
 ## [0.68.0-beta](https://github.com/instill-ai/console/compare/v0.67.0-beta...v0.68.0-beta) (2025-06-03)
 
 
