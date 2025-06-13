@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.19.0](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.1...instill-sdk-v0.19.0) (2025-06-13)
+
+
+### Features
+
+* clean up the deps and upgrade nextjs to 15 ([#1758](https://github.com/instill-ai/console/issues/1758)) ([cc0fda0](https://github.com/instill-ai/console/commit/cc0fda067922ba5f0b8cd8f060dee266e2851671))
+* use sonner as new toast ([#1760](https://github.com/instill-ai/console/issues/1760)) ([df8f7e0](https://github.com/instill-ai/console/commit/df8f7e0ee361ea7a6df12851309f24c0ff7afc08))
+
 ## [0.18.1](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.0...instill-sdk-v0.18.1) (2025-06-04)
 
 
