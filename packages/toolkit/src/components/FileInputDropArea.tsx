@@ -8,11 +8,13 @@ export const FileInputDropArea = ({
   children,
   className,
   onDrop,
+  text,
 }: {
   disabled?: boolean;
   children: React.ReactNode;
   className?: string;
   onDrop: (fileList: FileList | null) => Promise<void>;
+  text?: string;
 }) => {
   const [isHovered, setIsHovered] = React.useState(false);
 
@@ -40,7 +42,10 @@ export const FileInputDropArea = ({
       onDragLeave={() => setIsHovered(false)}
     >
       <Icons.Upload01 className="h-8 w-8 [&>path]:stroke-[1.5]" />
-      <p className="text-xs">Drag-and-drop a file{children}</p>
+      <div className="text-xs">
+        {text || "Drag-and-drop a file"}
+        {children}
+      </div>
     </div>
   );
 };
