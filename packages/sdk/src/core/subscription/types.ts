@@ -14,7 +14,7 @@ export type StripeSubscriptionStatus =
 export type UserSubscriptionPlan =
   | "PLAN_UNSPECIFIED"
   | "PLAN_FREE"
-  | "PLAN_PRO"
+  | "PLAN_STARTER"
   | "PLAN_UNPAID";
 
 export type OrganizationSubscriptionPlan =
