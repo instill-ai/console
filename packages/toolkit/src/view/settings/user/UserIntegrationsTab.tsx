@@ -9,7 +9,20 @@ export const UserIntegrationsTab = () => {
     <Setting.TabRoot>
       <Setting.TabHeader
         title="Integration"
-        description="Easily configure and protect your connections"
+        description={
+          <p className="text-semantic-fg-secondary product-body-text-3-regular">
+            Easily configure and protect your connections.{" "}
+            <a
+              href="https://www.instill-ai.com/privacy"
+              className="text-semantic-accent-default underline"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Learn more about data privacy
+            </a>
+            .
+          </p>
+        }
       />
       <React.Suspense>
         <Integrations />
