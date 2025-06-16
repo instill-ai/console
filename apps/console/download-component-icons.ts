@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
+import yaml from "js-yaml";
 
 // Load .env and .env.local files
 dotenv.config({ path: path.resolve(process.cwd(), ".env") });
@@ -8,7 +9,7 @@ dotenv.config({ path: path.resolve(process.cwd(), ".env.local") });
 
 async function main() {
   try {
-    console.log("Downloading component icons...");
+    console.log("Downloading AI component icons...");
     await getComponentIcons("ai");
     await getComponentIcons("data");
     await getComponentIcons("application");
@@ -73,7 +74,6 @@ async function getComponentIcons(
     }).then((res) => res.json())) as GitHubContent[] | undefined;
 
     if (!componentFolders || !componentFolders.length) {
-      console.warn(`No component folders found: ${folderPath}`);
       return [];
     }
 
@@ -89,9 +89,6 @@ async function getComponentIcons(
       }).then((res) => res.json())) as GitHubContent[] | undefined;
 
       if (!componentFolderContent || !componentFolderContent.length) {
-        console.warn(
-          `No component folder content found: ${componentFolder.url}`,
-        );
         continue;
       }
 
@@ -126,7 +123,7 @@ async function getComponentIcons(
         // the definition file and get the icon name
 
         definitionFilePath =
-          bathPath + "/" + targetFolderContent.path + "/config/definition.json";
+          bathPath + "/" + targetFolderContent.path + "/config/definition.yaml";
 
         definitionFileContent = (await fetch(definitionFilePath, {
           headers: {
@@ -157,9 +154,9 @@ async function getComponentIcons(
       }
 
       // We need to decode the base64 to JSON and get the icon name
-      const definition = JSON.parse(
+      const definition = yaml.load(
         Buffer.from(definitionFileContent.content, "base64").toString("utf-8"),
-      );
+      ) as Record<string, any>;
 
       if (!definition || !definition.icon) {
         console.error(`Definition not found: ${definitionFileContent.url}`);
