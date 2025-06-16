@@ -39,7 +39,7 @@ type GitHubContent = {
 };
 
 async function getComponentIcons(
-  componentType: "ai" | "data" | "application" | "generic" | "operator"
+  componentType: "ai" | "data" | "application" | "generic" | "operator",
 ) {
   const bathPath =
     "https://api.github.com/repos/instill-ai/pipeline-backend/contents";
@@ -108,12 +108,12 @@ async function getComponentIcons(
       for (const version of componentVersions) {
         const versionString = `v${version}`;
         targetFolderContent = componentFolderContent.find(
-          (c) => c.name === versionString
+          (c) => c.name === versionString,
         );
 
         if (!targetFolderContent) {
           console.error(
-            `Target folder content not found: ${componentFolder.url}`
+            `Target folder content not found: ${componentFolder.url}`,
           );
           continue;
         }
@@ -133,7 +133,7 @@ async function getComponentIcons(
 
         if (!definitionFileContent || !definitionFileContent.content) {
           console.warn(
-            `Definition file not found in version ${versionString}, trying previous version.`
+            `Definition file not found in version ${versionString}, trying previous version.`,
           );
           continue;
         }
@@ -141,21 +141,21 @@ async function getComponentIcons(
 
       if (!definitionFileContent || !definitionFileContent.content) {
         console.error(
-          `Definition file content not found: ${definitionFilePath}`
+          `Definition file content not found: ${definitionFilePath}`,
         );
         continue;
       }
 
       if (!targetFolderContent) {
         console.error(
-          `Target folder content not found: ${componentFolder.url}`
+          `Target folder content not found: ${componentFolder.url}`,
         );
         continue;
       }
 
       // We need to decode the base64 to JSON and get the icon name
       const definition = yaml.load(
-        Buffer.from(definitionFileContent.content, "base64").toString("utf-8")
+        Buffer.from(definitionFileContent.content, "base64").toString("utf-8"),
       ) as Record<string, any>;
 
       if (!definition || !definition.icon) {
@@ -189,7 +189,7 @@ async function getComponentIcons(
 
       downloadIcon(
         iconFileContent.download_url,
-        "./public/icons/" + iconFileName
+        "./public/icons/" + iconFileName,
       );
     }
 
