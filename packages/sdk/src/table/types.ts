@@ -144,6 +144,7 @@ export type ColumnDefinition = {
   agentConfig?: ColumnAgentConfig;
   selection: ColumnSelection;
   numberFormat?: NumberFormat;
+  metadata?: GeneralRecord;
 };
 
 export type ColumnDefinitions = Record<string, ColumnDefinition>;
