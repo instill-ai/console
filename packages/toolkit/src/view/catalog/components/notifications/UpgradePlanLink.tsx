@@ -25,7 +25,7 @@ export const UpgradePlanLink = ({
         text: "Upgrade your plan to create more storage space",
         href: `/${selectedNamespace}/organization-settings/billing/subscriptions/plan`,
       };
-    } else if (plan === "PLAN_PRO" && namespaceType === "user") {
+    } else if (plan === "PLAN_STARTER" && namespaceType === "user") {
       return {
         text: "Create an organization to add more storage space",
         href: "/settings/organizations/new",
