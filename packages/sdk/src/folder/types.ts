@@ -1,5 +1,10 @@
 import { GeneralRecord, Permission } from "..";
 
+export type InstillCatalogInfo = {
+  fileCount: number;
+  totalSizeBytes: string;
+};
+
 export type InstillFolder = {
   uid: string;
   name: string;
@@ -9,6 +14,7 @@ export type InstillFolder = {
   updateTime: string;
   catalogId: string;
   permission: Permission;
+  catalogInfo: InstillCatalogInfo;
 };
 
 export type CreateInstillFolderRequest = {
