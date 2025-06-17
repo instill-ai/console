@@ -5,63 +5,63 @@
       "release-type": "node",
       "package-name": "",
       "draft": false,
-      "prerelease": true,
+      "prerelease": false,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false
+      "bump-patch-for-minor-pre-major": true
     },
     "packages/design-system": {
       "release-type": "node",
       "package-name": "@instill-ai/design-system",
       "component": "@instill-ai/design-system", 
       "draft": false,
-      "prerelease": true,
+      "prerelease": false,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false
+      "bump-patch-for-minor-pre-major": true
     },
     "packages/design-tokens": {
       "release-type": "node",
       "package-name": "@instill-ai/design-tokens",
       "component": "@instill-ai/design-tokens", 
       "draft": false,
-      "prerelease": true,
+      "prerelease": false,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false
+      "bump-patch-for-minor-pre-major": true
     },
     "packages/eslint-config-cortex": {
       "release-type": "node",
       "package-name": "@instill-ai/eslint-config-cortex",
       "component": "@instill-ai/eslint-config-cortex", 
       "draft": false,
-      "prerelease": true,
+      "prerelease": false,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false
+      "bump-patch-for-minor-pre-major": true
     },
     "packages/prettier-config-cortex": {
       "release-type": "node",
       "package-name": "@instill-ai/prettier-config-cortex",
       "component": "@instill-ai/prettier-config-cortex", 
       "draft": false,
-      "prerelease": true,
+      "prerelease": false,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false
+      "bump-patch-for-minor-pre-major": true
     },
     "packages/toolkit": {
       "release-type": "node",
       "package-name": "@instill-ai/toolkit",
       "component": "@instill-ai/toolkit", 
       "draft": false,
-      "prerelease": true,
+      "prerelease": false,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false
+      "bump-patch-for-minor-pre-major": true
     },
     "packages/sdk": {
       "release-type": "node",
       "package-name": "instill-sdk",
       "component": "instill-sdk", 
       "draft": false,
-      "prerelease": true,
+      "prerelease": false,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false
+      "bump-patch-for-minor-pre-major": true
     }
   },
   "changelog-sections": [
