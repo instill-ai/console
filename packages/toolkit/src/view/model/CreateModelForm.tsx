@@ -102,7 +102,11 @@ export const CreateModelForm = () => {
   const form = useForm<z.infer<typeof CreateModelSchema>>({
     resolver: zodResolver(CreateModelSchema),
     mode: "onChange",
-    defaultValues: { id: "" },
+    defaultValues: {
+      id: "",
+      task: "TASK_CLASSIFICATION",
+      visibility: "VISIBILITY_PUBLIC",
+    },
   });
 
   const userNamespaces = useUserNamespaces();
@@ -113,8 +117,10 @@ export const CreateModelForm = () => {
   );
 
   const {
-    formState: { isDirty },
+    formState: { isDirty, errors },
   } = form;
+
+  console.log(errors);
 
   const modelRegions = useModelAvailableRegions({
     accessToken,
