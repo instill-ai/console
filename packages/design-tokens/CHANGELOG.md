@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.2](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.10.1...@instill-ai/design-tokens-v0.10.2) (2025-06-17)
+
+
+### Features
+
+* clean up the deps and upgrade nextjs to 15 ([#1758](https://github.com/instill-ai/console/issues/1758)) ([cc0fda0](https://github.com/instill-ai/console/commit/cc0fda067922ba5f0b8cd8f060dee266e2851671))
+
 ## [0.10.1](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.10.0...@instill-ai/design-tokens-v0.10.1) (2025-05-20)
 
 

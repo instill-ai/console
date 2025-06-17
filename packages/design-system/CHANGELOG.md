@@ -1,5 +1,19 @@
 # @instill-ai/design-system
 
+## [0.90.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.0...@instill-ai/design-system-v0.90.1) (2025-06-17)
+
+
+### Features
+
+* clean up the deps and upgrade nextjs to 15 ([#1758](https://github.com/instill-ai/console/issues/1758)) ([cc0fda0](https://github.com/instill-ai/console/commit/cc0fda067922ba5f0b8cd8f060dee266e2851671))
+* deprecate old design-system ([#1756](https://github.com/instill-ai/console/issues/1756)) ([03fca09](https://github.com/instill-ai/console/commit/03fca09f66b73b104631e540f570025a503dd3a4))
+* use sonner as new toast ([#1760](https://github.com/instill-ai/console/issues/1760)) ([df8f7e0](https://github.com/instill-ai/console/commit/df8f7e0ee361ea7a6df12851309f24c0ff7afc08))
+
+
+### Bug Fixes
+
+* fix secure cookie issue, default to use not-secure cookie on http site ([#1761](https://github.com/instill-ai/console/issues/1761)) ([a2167ce](https://github.com/instill-ai/console/commit/a2167ce9d2ac65db9c90113a839902a7f62d2a00))
+
 ## [0.90.0](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.89.0...@instill-ai/design-system-v0.90.0) (2025-05-28)
 
 
