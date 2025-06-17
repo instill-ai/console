@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.120.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.1...@instill-ai/toolkit-v0.120.2) (2025-06-17)
+
+
+### Features
+
+* add table column definition metadata field ([#1765](https://github.com/instill-ai/console/issues/1765)) ([ac6339f](https://github.com/instill-ai/console/commit/ac6339f94cf95ece804100697c59ee0e403640fb))
+* clean up the deps and upgrade nextjs to 15 ([#1758](https://github.com/instill-ai/console/issues/1758)) ([cc0fda0](https://github.com/instill-ai/console/commit/cc0fda067922ba5f0b8cd8f060dee266e2851671))
+* deprecate old design-system ([#1756](https://github.com/instill-ai/console/issues/1756)) ([03fca09](https://github.com/instill-ai/console/commit/03fca09f66b73b104631e540f570025a503dd3a4))
+* migrate PLAN_PRO to PLAN_STARTER ([#1767](https://github.com/instill-ai/console/issues/1767)) ([4620d67](https://github.com/instill-ai/console/commit/4620d672092ce4a4880618dc1fb71fa0c7f6ff81))
+* use sonner as new toast ([#1760](https://github.com/instill-ai/console/issues/1760)) ([df8f7e0](https://github.com/instill-ai/console/commit/df8f7e0ee361ea7a6df12851309f24c0ff7afc08))
+
+
+### Bug Fixes
+
+* fix console integration setting page privacy link ([#1766](https://github.com/instill-ai/console/issues/1766)) ([d44b7bd](https://github.com/instill-ai/console/commit/d44b7bd51877a8fc396c5e6de40bf504c1c395a1))
+* fix model api page ([#1768](https://github.com/instill-ai/console/issues/1768)) ([0ab19a9](https://github.com/instill-ai/console/commit/0ab19a955bf45079924adaf4dcc426161e3f92b8))
+* remove chat link in CE version ([#1764](https://github.com/instill-ai/console/issues/1764)) ([cbec7bc](https://github.com/instill-ai/console/commit/cbec7bc6e16f3b977d22f6f17683b1be0aaaa6f7))
+* replace logout link with button ([#1762](https://github.com/instill-ai/console/issues/1762)) ([6bd01df](https://github.com/instill-ai/console/commit/6bd01dfe1892a66da9ac0c0c23be1dc63fa2d9e4))
+
 ## [0.120.1](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.0...@instill-ai/toolkit-v0.120.1) (2025-06-04)
 
 

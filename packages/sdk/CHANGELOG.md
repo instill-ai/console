@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.18.2](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.1...instill-sdk-v0.18.2) (2025-06-17)
+
+
+### Features
+
+* add table column definition metadata field ([#1765](https://github.com/instill-ai/console/issues/1765)) ([ac6339f](https://github.com/instill-ai/console/commit/ac6339f94cf95ece804100697c59ee0e403640fb))
+* clean up the deps and upgrade nextjs to 15 ([#1758](https://github.com/instill-ai/console/issues/1758)) ([cc0fda0](https://github.com/instill-ai/console/commit/cc0fda067922ba5f0b8cd8f060dee266e2851671))
+* migrate PLAN_PRO to PLAN_STARTER ([#1767](https://github.com/instill-ai/console/issues/1767)) ([4620d67](https://github.com/instill-ai/console/commit/4620d672092ce4a4880618dc1fb71fa0c7f6ff81))
+* use sonner as new toast ([#1760](https://github.com/instill-ai/console/issues/1760)) ([df8f7e0](https://github.com/instill-ai/console/commit/df8f7e0ee361ea7a6df12851309f24c0ff7afc08))
+
 ## [0.18.1](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.0...instill-sdk-v0.18.1) (2025-06-04)
 
 
