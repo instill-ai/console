@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.120.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.2...@instill-ai/toolkit-v0.120.3) (2025-06-17)
+
+
+### Bug Fixes
+
+* fix toast color and add dismiss button ([#1772](https://github.com/instill-ai/console/issues/1772)) ([4c5d9c6](https://github.com/instill-ai/console/commit/4c5d9c675636c1709a09f0c07668c45a75fc005c))
+
 ## [0.120.2](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.1...@instill-ai/toolkit-v0.120.2) (2025-06-17)
 
 
