@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.120.4](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.3...@instill-ai/toolkit-v0.120.4) (2025-06-18)
+
+
+### Bug Fixes
+
+* fix toast duration ([#1774](https://github.com/instill-ai/console/issues/1774)) ([81655e6](https://github.com/instill-ai/console/commit/81655e688092eb30bc6e2dae0a11e7c0676356d2))
+
 ## [0.120.3](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.2...@instill-ai/toolkit-v0.120.3) (2025-06-17)
 
 
