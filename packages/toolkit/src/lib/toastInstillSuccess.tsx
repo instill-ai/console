@@ -4,10 +4,12 @@ export function toastInstillSuccess({
   title,
   description,
   action,
+  duration,
 }: {
   title: string;
   description?: string;
   action?: ToastAction;
+  duration?: number;
 }) {
   toast.success(title, {
     description,
@@ -20,6 +22,6 @@ export function toastInstillSuccess({
       </div>
     ),
     className: "!bg-semantic-success-bg",
-    duration: 100000000,
+    duration: duration ?? 4000,
   });
 }

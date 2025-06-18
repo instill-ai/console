@@ -7,15 +7,17 @@ export function toastInstillError({
   error,
   description,
   action,
+  duration,
 }: {
   title: string;
   error?: unknown;
   description?: string;
   action?: ToastAction;
+  duration?: number;
 }) {
   toast.error(title, {
     description: description ?? getInstillApiErrorMessage(error),
-    duration: 15000,
+    duration: duration ?? 4000,
     action: action ?? (
       <div
         onClick={() => toast.dismiss()}
