@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.120.5](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.4...@instill-ai/toolkit-v0.120.5) (2025-06-18)
+
+
+### Bug Fixes
+
+* fix model api path ([#1776](https://github.com/instill-ai/console/issues/1776)) ([a51c6c8](https://github.com/instill-ai/console/commit/a51c6c8db57811a2beff2114ec9884454eed20e4))
+
 ## [0.120.4](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.3...@instill-ai/toolkit-v0.120.4) (2025-06-18)
 
 
