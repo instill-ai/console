@@ -125,7 +125,7 @@ export const getInstillTaskHttpRequestExample = (model?: Model) => {
 
   const apiVersion = env("NEXT_PUBLIC_MODEL_API_VERSION");
 
-  return `curl --location '${env("NEXT_PUBLIC_API_GATEWAY_URL")}/${apiVersion}/${model.name}/trigger' \\
+  return `curl --location '${env("NEXT_PUBLIC_API_GATEWAY_URL")}/${apiVersion}/namespaces/${model.ownerName.split("/")[1]}/models/${model.id}/trigger' \\
 --header "Content-Type: application/json" \\
 --header "Authorization: Bearer $INSTILL_API_TOKEN" \\
 --data '{
