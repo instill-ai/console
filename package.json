@@ -29,6 +29,7 @@
   "devDependencies": {
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
+    "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
     "@instill-ai/prettier-config-cortex": "workspace:*",
     "husky": "^7.0.0",
     "lint-staged": ">=10",
