@@ -5,9 +5,9 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-RUN npm install -g pnpm@9.1.4
+RUN npm install -g pnpm@10.12.1
 
-COPY . . 
+COPY . .
 
 RUN pnpm install --frozen-lockfile
 
@@ -16,7 +16,7 @@ WORKDIR /app
 
 ARG TEST_USER="playwright"
 
-RUN npm install -g pnpm@9.1.4
+RUN npm install -g pnpm@10.12.1
 
 # Install vim for debugging
 RUN apt-get update
@@ -25,7 +25,6 @@ RUN apt-get install vim -y
 COPY --from=builder --chown=playwright:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=playwright:nodejs /app/apps/console ./apps/console
 COPY --from=builder --chown=playwright:nodejs /app/entrypoint-playwright.sh ./
-
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 playwright
