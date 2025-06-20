@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.18.3](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.2...instill-sdk-v0.18.3) (2025-06-20)
+
+
+### Features
+
+* **sdk:** folder client ([#1754](https://github.com/instill-ai/console/issues/1754)) ([8af552b](https://github.com/instill-ai/console/commit/8af552bac3871eddc604fac9a559ca21d86e8d94))
+
+
+### Bug Fixes
+
+* fix pnpm version ([#1778](https://github.com/instill-ai/console/issues/1778)) ([582a316](https://github.com/instill-ai/console/commit/582a316bfce784c8a90fa32df67959aafd0907e2))
+
 ## [0.18.2](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.1...instill-sdk-v0.18.2) (2025-06-17)
 
 
