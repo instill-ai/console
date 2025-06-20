@@ -5,18 +5,18 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getInstillCatalogAPIClient } from "../../sdk-helper";
 import { queryKeyStore } from "../queryKeyStore";
+import { QueryBaseProps } from "../types";
 
 export function useListNamespaceCatalogFiles({
   namespaceId,
   catalogId,
   accessToken,
   enabled,
+  refetchInterval,
 }: {
   namespaceId: Nullable<string>;
   catalogId: Nullable<string>;
-  accessToken: Nullable<string>;
-  enabled: boolean;
-}) {
+} & QueryBaseProps<File[]>) {
   return useQuery<File[]>({
     queryKey: queryKeyStore.catalog.getUseListNamespaceCatalogFilesQueryKey({
       namespaceId,
@@ -43,6 +43,7 @@ export function useListNamespaceCatalogFiles({
 
       return Promise.resolve(res);
     },
+    refetchInterval,
     enabled:
       enabled &&
       Boolean(namespaceId) &&
