@@ -69,7 +69,7 @@
     "@types/testing-library__jest-dom": "^5.14.5",
     "@types/uuid": "^9.0.1",
     "@vitejs/plugin-react": "^4.3.0",
-    "eslint": "^8.35.0",
+    "eslint": "catalog:",
     "fast-glob": "^3.2.12",
     "instill-sdk": "workspace:*",
     "openapi-types": "^12.1.3",
