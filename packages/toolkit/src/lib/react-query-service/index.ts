@@ -14,6 +14,7 @@ export * from "./release";
 export * from "./secret";
 export * from "./chats";
 export * from "./table";
+export * from "./types";
 
 /** Re export react-query to solve ESM, CJS confict issue */
 export {

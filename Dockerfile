@@ -6,11 +6,11 @@ WORKDIR /app
 
 RUN npm install -g pnpm@10.12.1
 
-COPY . . 
+COPY . .
 
 RUN pnpm install --frozen-lockfile
 
-RUN pnpm run build 
+RUN pnpm run build
 
 # Production image, copy all the files and run next
 FROM node:20-alpine
@@ -33,15 +33,15 @@ RUN apk add --no-cache bash
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Automatically leverage output traces to reduce image size 
+# Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 # Due to this is a monorepo, nextjs will include all the necessary files from
 # packages. So the standalone folder structure will be similar to this
-# - apps 
+# - apps
 #   - console
 # - packages
 #   - design-system
-#   - toolkit 
+#   - toolkit
 
 COPY --from=builder --chown=nextjs:nodejs /app/apps/console/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/console/.next/static ./apps/console/.next/static
