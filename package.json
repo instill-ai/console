@@ -33,6 +33,7 @@
     "husky": "^7.0.0",
     "lint-staged": ">=10",
     "prettier": "latest",
+    "prettier-plugin-tailwindcss": "^0.6.13",
     "turbo": "^2.5.4",
     "typescript": "catalog:",
     "yaml": "^2.5.0"
