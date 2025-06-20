@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.120.6](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.5...@instill-ai/toolkit-v0.120.6) (2025-06-20)
+
+
+### Features
+
+* **hooks:** extend react query props ([#1781](https://github.com/instill-ai/console/issues/1781)) ([1a595ed](https://github.com/instill-ai/console/commit/1a595ed1593cc72f471962268a6383dc0ad8fa36))
+* **sdk:** folder client ([#1754](https://github.com/instill-ai/console/issues/1754)) ([8af552b](https://github.com/instill-ai/console/commit/8af552bac3871eddc604fac9a559ca21d86e8d94))
+
+
+### Bug Fixes
+
+* fix pnpm version ([#1778](https://github.com/instill-ai/console/issues/1778)) ([582a316](https://github.com/instill-ai/console/commit/582a316bfce784c8a90fa32df67959aafd0907e2))
+
 ## [0.120.5](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.4...@instill-ai/toolkit-v0.120.5) (2025-06-18)
 
 

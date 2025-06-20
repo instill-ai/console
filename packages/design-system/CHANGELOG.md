@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.90.2](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.1...@instill-ai/design-system-v0.90.2) (2025-06-20)
+
+
+### Bug Fixes
+
+* fix pnpm version ([#1778](https://github.com/instill-ai/console/issues/1778)) ([582a316](https://github.com/instill-ai/console/commit/582a316bfce784c8a90fa32df67959aafd0907e2))
+
 ## [0.90.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.0...@instill-ai/design-system-v0.90.1) (2025-06-17)
 
 
