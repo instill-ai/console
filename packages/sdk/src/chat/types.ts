@@ -1,3 +1,4 @@
+import { FileType } from "../catalog";
 import { Table } from "../table";
 import { Citation, InstillChatMessageContext, Nullable } from "../types";
 
@@ -254,6 +255,14 @@ enum InstillChatMessageTypeEnum {
 
 export type InstillChatMessageType = `${InstillChatMessageTypeEnum}`;
 
+export type InstillChatMessageFileAttachment = {
+  fileName: string;
+  fileSize: string;
+  contentType: string;
+  fileExtension: FileType;
+  downloadUrl: string;
+};
+
 export type InstillChatMessage = {
   uid: string;
   chatUid: string;
@@ -265,6 +274,9 @@ export type InstillChatMessage = {
   msgSenderUid: string;
   citations: Citation[];
   context: InstillChatMessageContext;
+  attachments: {
+    fileAttachments: InstillChatMessageFileAttachment[];
+  };
 };
 
 export type ListNamespaceChatTablesRequest = {
