@@ -165,7 +165,8 @@ export type InstillChatEvent =
   | InstillChatEventStart
   | InstillChatEventEnd
   | InstillChatEventCitationList
-  | InstillChatEventTableCreated;
+  | InstillChatEventTableCreated
+  | InstillChatEventAttachments;
 export type InstillChatFeed = InstillChatMessage[];
 
 export type ListPaginatedInstillChatsRequest = {
