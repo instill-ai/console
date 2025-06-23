@@ -33,7 +33,7 @@ export const createTableSlice: StateCreator<
         rightSidebarOpen: fn(state.rightSidebarOpen),
       };
     }),
-  tableMode: "table",
+  tableMode: "TABLE_MODE_NORMAL",
   updateTableMode: (fn: (prev: TableMode) => TableMode) =>
     set((state) => {
       return {
