@@ -56,6 +56,7 @@ export const InstillChatTypeEnum = {
   ReplanTriggered: "CHAT_REPLAN_TRIGGERED",
   ErrorUpdated: "CHAT_ERROR_UPDATED",
   CitationListUpdated: "CHAT_CITATION_LIST_UPDATED",
+  ChatAttachmentsUpdated: "CHAT_ATTACHMENTS_UPDATED",
   TableCreated: "CHAT_TABLE_CREATED",
 } as const;
 
@@ -131,10 +132,12 @@ export type InstillChatEventEnd = {
   data: InstillChatEventCommonData;
 };
 
-export type InstillChatEventCitationList = {
-  event: typeof InstillChatTypeEnum.CitationListUpdated;
+export type InstillChatEventAttachments = {
+  event: typeof InstillChatTypeEnum.ChatAttachmentsUpdated;
   data: InstillChatEventCommonData & {
-    citations: Citation[];
+    attachments: {
+      fileAttachments: InstillChatMessageFileAttachment[];
+    };
   };
 };
 
@@ -142,6 +145,13 @@ export type InstillChatEventTableCreated = {
   event: typeof InstillChatTypeEnum.TableCreated;
   data: InstillChatEventCommonData & {
     tableUID: string;
+  };
+};
+
+export type InstillChatEventCitationList = {
+  event: typeof InstillChatTypeEnum.CitationListUpdated;
+  data: InstillChatEventCommonData & {
+    citations: Citation[];
   };
 };
 
@@ -155,7 +165,8 @@ export type InstillChatEvent =
   | InstillChatEventStart
   | InstillChatEventEnd
   | InstillChatEventCitationList
-  | InstillChatEventTableCreated;
+  | InstillChatEventTableCreated
+  | InstillChatEventAttachments;
 export type InstillChatFeed = InstillChatMessage[];
 
 export type ListPaginatedInstillChatsRequest = {
