@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.18.3](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.2...instill-sdk-v0.18.3) (2025-06-24)
+
+
+### Features
+
+* change TableMode type ([#1782](https://github.com/instill-ai/console/issues/1782)) ([b19e07f](https://github.com/instill-ai/console/commit/b19e07f2a8fa2bb9daf47808f460bc5d34bb2024))
+* **chat:** more chat types updates ([#1784](https://github.com/instill-ai/console/issues/1784)) ([9618e80](https://github.com/instill-ai/console/commit/9618e802d0051df02b3e128d29a6359657153da7))
+* **chat:** update chat message type ([05ef774](https://github.com/instill-ai/console/commit/05ef7742e1eb8a1487716335babb3a433b7dcfe7))
+* **chat:** update chat message type ([#1783](https://github.com/instill-ai/console/issues/1783)) ([3da8022](https://github.com/instill-ai/console/commit/3da8022212b7bcf5cbd7baffa75d891384c9d3ad))
+* **sdk:** folder client ([#1754](https://github.com/instill-ai/console/issues/1754)) ([8af552b](https://github.com/instill-ai/console/commit/8af552bac3871eddc604fac9a559ca21d86e8d94))
+
+
+### Bug Fixes
+
+* fix pnpm version ([#1778](https://github.com/instill-ai/console/issues/1778)) ([582a316](https://github.com/instill-ai/console/commit/582a316bfce784c8a90fa32df67959aafd0907e2))
+
 ## [0.18.2](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.1...instill-sdk-v0.18.2) (2025-06-17)
 
 
