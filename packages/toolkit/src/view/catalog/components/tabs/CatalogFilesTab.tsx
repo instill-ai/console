@@ -76,6 +76,21 @@ export const CatalogFilesTab = ({
     catalogId: catalog.catalogId,
     accessToken,
     enabled: enabledQuery && Boolean(me.data?.id),
+    refetchInterval: (query) => {
+      console.log("query", query);
+      // Only refetch if there are files being processed
+      if (query.state.data && Array.isArray(query.state.data)) {
+        const hasProcessingFiles = query.state.data.some(
+          (file: File) =>
+            file.processStatus === "FILE_PROCESS_STATUS_CONVERTING" ||
+            file.processStatus === "FILE_PROCESS_STATUS_CHUNKING" ||
+            file.processStatus === "FILE_PROCESS_STATUS_EMBEDDING" ||
+            file.processStatus === "FILE_PROCESS_STATUS_WAITING",
+        );
+        return hasProcessingFiles ? 5000 : false;
+      }
+      return 0;
+    },
   });
 
   const [files, setFiles] = React.useState<File[]>([]);
@@ -88,10 +103,6 @@ export const CatalogFilesTab = ({
     }
   }, [filesData.isSuccess, filesData.data]);
 
-  React.useEffect(() => {
-    filesData.refetch();
-  }, [catalog, filesData.refetch, filesData]);
-
   const deleteCatalogFile = useDeleteCatalogFile();
   const [isFileDetailsOpen, setIsFileDetailsOpen] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState<Nullable<File>>(null);
@@ -101,27 +112,6 @@ export const CatalogFilesTab = ({
   //const isEnterprisePlan = subscription?.plan === "PLAN_ENTERPRISE";
 
   //const [showStorageWarning, setShowStorageWarning] = React.useState(shouldShowStorageWarning(remainingStorageSpace, planStorageLimit));
-
-  React.useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-
-    if (
-      files &&
-      files.some(
-        (file) => file.processStatus !== "FILE_PROCESS_STATUS_COMPLETED",
-      )
-    ) {
-      interval = setInterval(() => {
-        filesData.refetch();
-      }, 5000);
-    }
-
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [files, filesData]);
 
   const handleFileClick = (file: File) => {
     setSelectedFile(file);

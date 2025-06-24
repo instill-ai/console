@@ -26,6 +26,7 @@ import {
 } from "../../../lib";
 import { useListNamespaceCatalogs } from "../../../lib/react-query-service/catalog";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
+import { env } from "../../../server";
 import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
 import {
   checkNamespaceType,
@@ -130,7 +131,7 @@ export const CloneCatalogDialog = ({
   });
 
   const userSub = useAuthenticatedUserSubscription({
-    enabled: enabledQuery,
+    enabled: enabledQuery && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
     accessToken,
   });
 

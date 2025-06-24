@@ -20,6 +20,7 @@ import {
   useInstillStore,
   useShallow,
 } from "../../lib";
+import { env } from "../../server";
 import { NamespaceAvatarWithFallback } from "../NamespaceAvatarWithFallback";
 import { RemainingCreditCTA } from "./RemainingCredit";
 import { TopbarDropdownGroup, TopbarDropdownItem } from "./TopbarDropdown";
@@ -37,7 +38,8 @@ export const CloudTopbarDropdown = () => {
   });
 
   const userSub = useAuthenticatedUserSubscription({
-    enabled: me.isSuccess && enabledQuery,
+    enabled:
+      me.isSuccess && enabledQuery && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
     accessToken,
   });
 

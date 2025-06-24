@@ -40,7 +40,8 @@ export const RemainingCreditCTA = ({
   });
 
   const sub = useAuthenticatedUserSubscription({
-    enabled: me.isSuccess && enabledQuery,
+    enabled:
+      me.isSuccess && enabledQuery && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
     accessToken,
   });
 
