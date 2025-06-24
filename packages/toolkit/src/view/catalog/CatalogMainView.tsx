@@ -85,7 +85,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   });
 
   const userSub = useAuthenticatedUserSubscription({
-    enabled: enabledQuery,
+    enabled: enabledQuery && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
     accessToken,
   });
 

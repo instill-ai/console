@@ -381,7 +381,6 @@ export const NamespaceSwitch = () => {
       }
     >
       <Select.Trigger
-        icon={<React.Fragment />}
         className={cn(
           "!w-[136px] !border-none !p-1 hover:!bg-semantic-bg-secondary",
           switchIsOpen
