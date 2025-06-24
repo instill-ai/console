@@ -10,6 +10,7 @@ import {
   useRouteInfo,
   useShallow,
 } from "../../../lib";
+import { env } from "../../../server";
 
 const selector = (store: InstillStore) => ({
   accessToken: store.accessToken,
@@ -23,7 +24,10 @@ export const SubscribeCTA = () => {
 
   const userSub = useAuthenticatedUserSubscription({
     accessToken,
-    enabled: enabledQuery && routeInfo.data.namespaceType === "NAMESPACE_USER",
+    enabled:
+      enabledQuery &&
+      routeInfo.data.namespaceType === "NAMESPACE_USER" &&
+      env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
   });
 
   const orgSub = useOrganizationSubscription({
