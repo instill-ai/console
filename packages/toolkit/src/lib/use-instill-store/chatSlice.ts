@@ -157,14 +157,34 @@ export const createChatSlice: StateCreator<
         tempFileCatalogId: fn(state.tempFileCatalogId),
       };
     }),
-  chatMessageContextUids: {},
-  updateChatMessageContextUids: (
+  chatMessageContextTableUids: {},
+  updateChatMessageContextTableUids: (
     fn: (prev: Record<string, string[]>) => Record<string, string[]>,
   ) =>
     set((state) => {
       return {
         ...state,
-        chatMessageContextUids: fn(state.chatMessageContextUids),
+        chatMessageContextTableUids: fn(state.chatMessageContextTableUids),
+      };
+    }),
+  chatMessageContextFileUids: {},
+  updateChatMessageContextFileUids: (
+    fn: (prev: Record<string, string[]>) => Record<string, string[]>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        chatMessageContextFileUids: fn(state.chatMessageContextFileUids),
+      };
+    }),
+  chatMessageContextFolderUids: {},
+  updateChatMessageContextFolderUids: (
+    fn: (prev: Record<string, string[]>) => Record<string, string[]>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        chatMessageContextFolderUids: fn(state.chatMessageContextFolderUids),
       };
     }),
 });
