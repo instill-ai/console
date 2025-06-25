@@ -157,14 +157,14 @@ export const createChatSlice: StateCreator<
         tempFileCatalogId: fn(state.tempFileCatalogId),
       };
     }),
-  chatMessageTableUids: {},
-  updateChatMessageTableUids: (
+  chatMessageContextUids: {},
+  updateChatMessageContextUids: (
     fn: (prev: Record<string, string[]>) => Record<string, string[]>,
   ) =>
     set((state) => {
       return {
         ...state,
-        chatMessageTableUids: fn(state.chatMessageTableUids),
+        chatMessageContextUids: fn(state.chatMessageContextUids),
       };
     }),
 });
