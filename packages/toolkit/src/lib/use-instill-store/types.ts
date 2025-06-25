@@ -362,8 +362,16 @@ export type ChatSlice = {
   updateTempFileCatalogId: (
     fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
-  chatMessageContextUids: Record<string, string[]>;
-  updateChatMessageContextUids: (
+  chatMessageContextTableUids: Record<string, string[]>;
+  updateChatMessageContextTableUids: (
+    fn: (prev: Record<string, string[]>) => Record<string, string[]>,
+  ) => void;
+  chatMessageContextFileUids: Record<string, string[]>;
+  updateChatMessageContextFileUids: (
+    fn: (prev: Record<string, string[]>) => Record<string, string[]>,
+  ) => void;
+  chatMessageContextFolderUids: Record<string, string[]>;
+  updateChatMessageContextFolderUids: (
     fn: (prev: Record<string, string[]>) => Record<string, string[]>,
   ) => void;
 };
