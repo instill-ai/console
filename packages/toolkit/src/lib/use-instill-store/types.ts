@@ -436,6 +436,8 @@ export type TableSlice = {
   updateTableUidForAgGrid: (
     fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
+  deleteProgressTableUids: string[];
+  updateDeleteProgressTableUids: (fn: (prev: string[]) => string[]) => void;
 };
 
 export type InstillStore = SmartHintSlice &
