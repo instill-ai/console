@@ -125,4 +125,12 @@ export const createTableSlice: StateCreator<
         tableUidForAgGrid: fn(state.tableUidForAgGrid),
       };
     }),
+  deleteProgressTableUids: [],
+  updateDeleteProgressTableUids: (fn: (prev: string[]) => string[]) =>
+    set((state) => {
+      return {
+        ...state,
+        deleteProgressTableUids: fn(state.deleteProgressTableUids),
+      };
+    }),
 });
