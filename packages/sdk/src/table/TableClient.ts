@@ -51,6 +51,10 @@ import {
   TableTemplate,
   CreateNamespaceTableFromTemplateRequest,
   CreateNamespaceTableFromTemplateResponse,
+  SuggestNamespaceTableColumnDefinitionResponse,
+  SuggestNamespaceTableColumnDefinitionRequest,
+  EnhanceNamespaceTableColumnDefinitionInstructionRequest,
+  EnhanceNamespaceTableColumnDefinitionInstructionResponse,
 } from "./types";
 
 export class TableClient extends APIResource {
@@ -584,6 +588,50 @@ export class TableClient extends APIResource {
           `/namespaces/${namespaceId}/tables/from-template`,
           {
             body: JSON.stringify(rest),
+          },
+        );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async suggestNamespaceTableColumnDefinition(
+    props: SuggestNamespaceTableColumnDefinitionRequest,
+  ) {
+    const { namespaceId, tableUid, ...rest } = props;
+
+    try {
+      const data =
+        await this._client.post<SuggestNamespaceTableColumnDefinitionResponse>(
+          `/namespaces/${namespaceId}/tables/${tableUid}/column-definitions-helper/suggest`,
+          {
+            body: JSON.stringify(rest),
+          },
+        );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async enhanceNamespaceTableColumnDefinitionInstruction(
+    props: EnhanceNamespaceTableColumnDefinitionInstructionRequest,
+  ) {
+    const { namespaceId, tableUid, columnDefinition } = props;
+
+    try {
+      const data =
+        await this._client.post<EnhanceNamespaceTableColumnDefinitionInstructionResponse>(
+          `/namespaces/${namespaceId}/tables/${tableUid}/column-definitions-helper/enhance-instructions`,
+          {
+            body: JSON.stringify({
+              namespaceId,
+              tableUid,
+              columnDefinition,
+            }),
           },
         );
 
