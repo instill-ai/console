@@ -483,3 +483,30 @@ export type CreateNamespaceTableFromTemplateRequest = {
 export type CreateNamespaceTableFromTemplateResponse = {
   table: Table;
 };
+
+export type SuggestNamespaceTableColumnDefinitionRequest = {
+  namespaceId: string;
+  tableUid: string;
+  name: string;
+  type?: CellType;
+  selection?: ColumnSelection;
+  enableAutomaticComputation?: boolean;
+};
+
+export type SuggestNamespaceTableColumnDefinitionResponse = {
+  success: boolean;
+  columnDefinition: ColumnDefinition;
+  errorMessage?: string;
+};
+
+export type EnhanceNamespaceTableColumnDefinitionInstructionRequest = {
+  namespaceId: string;
+  tableUid: string;
+  columnDefinition: ColumnDefinition;
+};
+
+export type EnhanceNamespaceTableColumnDefinitionInstructionResponse = {
+  success: boolean;
+  instructions: string;
+  errorMessage?: string;
+};

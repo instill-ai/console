@@ -18,3 +18,5 @@ export * from "./useUpdateNamespaceTableColumnDefinitions";
 export * from "./useUpdateNamespaceTableRow";
 export * from "./useLockNamespaceTableCell";
 export * from "./useUnlockNamespaceTableCell";
+export * from "./useEnhanceNamespaceTableColumnDefinitionInstruction";
+export * from "./useSuggestNamespaceTableColumnDefinition";
