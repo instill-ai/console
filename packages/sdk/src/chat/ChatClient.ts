@@ -157,6 +157,7 @@ export class ChatClient extends APIResource {
     objectUids,
     enableWebSearch = false,
     tableUids,
+    folders,
   }: PostInstillChatMessageRequest) {
     const additionalHeaders = getInstillAdditionalHeaders({
       stream: true,
@@ -170,7 +171,10 @@ export class ChatClient extends APIResource {
             message,
             objectUids,
             enableWebSearch,
-            context: { tableUids },
+            context: {
+              tableUids,
+              folders,
+            },
           }),
           additionalHeaders,
           stream: true,

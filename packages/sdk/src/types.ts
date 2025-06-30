@@ -224,6 +224,12 @@ export type Citation = {
   url: string;
 };
 
+export type InstillChatMessageContextFolder = {
+  folderUid: string;
+  fileUids: string[];
+};
+
 export type InstillChatMessageContext = {
   tableUids: string[];
+  folders: InstillChatMessageContextFolder[];
 };
