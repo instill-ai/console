@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.3](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.10.2...@instill-ai/design-tokens-v0.10.3) (2025-06-30)
+
+
+### Bug Fixes
+
+* fix pnpm version ([#1778](https://github.com/instill-ai/console/issues/1778)) ([582a316](https://github.com/instill-ai/console/commit/582a316bfce784c8a90fa32df67959aafd0907e2))
+
 ## [0.10.2](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.10.1...@instill-ai/design-tokens-v0.10.2) (2025-06-17)
 
 

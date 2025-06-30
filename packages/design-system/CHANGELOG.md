@@ -1,5 +1,17 @@
 # @instill-ai/design-system
 
+## [0.90.2](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.1...@instill-ai/design-system-v0.90.2) (2025-06-30)
+
+
+### Features
+
+* add enhance/suggest table column definition sdk ([#1791](https://github.com/instill-ai/console/issues/1791)) ([81d3695](https://github.com/instill-ai/console/commit/81d36959353916ed6cfd7d9aea427197e28c39eb))
+
+
+### Bug Fixes
+
+* fix pnpm version ([#1778](https://github.com/instill-ai/console/issues/1778)) ([582a316](https://github.com/instill-ai/console/commit/582a316bfce784c8a90fa32df67959aafd0907e2))
+
 ## [0.90.1](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.0...@instill-ai/design-system-v0.90.1) (2025-06-17)
 
 
