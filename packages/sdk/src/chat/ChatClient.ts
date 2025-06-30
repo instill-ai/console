@@ -27,6 +27,8 @@ import {
   ListPaginatedCreateTableFlowChatMessagesResponse,
   ListCreateTableFlowChatMessagesRequest,
   ListCreateTableFlowChatMessagesResponse,
+  ListNamespaceChatAvailableContextsRequest,
+  ListNamespaceChatAvailableContextsResponse,
 } from "./types";
 
 export class ChatClient extends APIResource {
@@ -350,6 +352,21 @@ export class ChatClient extends APIResource {
       const data = await this._client.get<ListNamespaceChatTablesResponse>(
         `/namespaces/${namespaceId}/chats/${chatUid}/tables`,
       );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listNamespaceChatAvailableContexts(
+    props: ListNamespaceChatAvailableContextsRequest,
+  ) {
+    try {
+      const data =
+        await this._client.get<ListNamespaceChatAvailableContextsResponse>(
+          `/namespaces/${props.namespaceId}/context-options`,
+        );
 
       return Promise.resolve(data);
     } catch (error) {

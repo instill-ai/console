@@ -304,3 +304,43 @@ export type ListNamespaceChatTablesRequest = {
 export type ListNamespaceChatTablesResponse = {
   tables: Table[];
 };
+
+export type ListNamespaceChatAvailableContextsRequest = {
+  namespaceId: string;
+};
+
+export type NamespaceChatAvailableContextsFileOption = {
+  fileUid: string;
+  name: string;
+  type: FileType;
+  summary: string;
+};
+
+export type NamespaceChatAvailableContextsOption = {
+  description: string;
+  fileOptions: NamespaceChatAvailableContextsFileOption[];
+};
+
+export type NamespaceChatAvailableContextsFolderOption =
+  NamespaceChatAvailableContextsOption & {
+    folderUid: string;
+    name: string;
+  };
+
+export type NamespaceChatAvailableContextsTableOption =
+  NamespaceChatAvailableContextsOption & {
+    tableUid: string;
+    title: string;
+  };
+
+export type NamespaceChatAvailableContextsCatalogOption =
+  NamespaceChatAvailableContextsOption & {
+    catalogUid: string;
+    catalogId: string;
+  };
+
+export type ListNamespaceChatAvailableContextsResponse = {
+  folderOptions: NamespaceChatAvailableContextsFolderOption[];
+  tableOptions: NamespaceChatAvailableContextsTableOption[];
+  catalogOptions: NamespaceChatAvailableContextsCatalogOption[];
+};
