@@ -792,6 +792,13 @@ const chatQueryKeyStore = {
   }) {
     return [namespaceId, "chats", chatUid, "tables"];
   },
+  getUseGetChatAvailableContextsQueryKey({
+    namespaceId,
+  }: {
+    namespaceId: Nullable<string>;
+  }) {
+    return ["chat-contexts", namespaceId];
+  },
 };
 
 const folderQueryKeyStore = {

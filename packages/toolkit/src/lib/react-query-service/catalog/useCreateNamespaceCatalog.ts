@@ -39,6 +39,11 @@ export function useCreateNamespaceCatalog() {
           namespaceId: variables.payload.namespaceId,
         }),
       });
+      queryClient.invalidateQueries({
+        queryKey: queryKeyStore.chat.getUseGetChatAvailableContextsQueryKey({
+          namespaceId: variables.payload.namespaceId,
+        }),
+      });
     },
   });
 }
