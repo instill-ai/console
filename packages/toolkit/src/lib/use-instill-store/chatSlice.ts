@@ -187,4 +187,14 @@ export const createChatSlice: StateCreator<
         chatMessageContextFolderUids: fn(state.chatMessageContextFolderUids),
       };
     }),
+  chatMessageContextCatalogUids: {},
+  updateChatMessageContextCatalogUids: (
+    fn: (prev: Record<string, string[]>) => Record<string, string[]>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        chatMessageContextCatalogUids: fn(state.chatMessageContextCatalogUids),
+      };
+    }),
 });

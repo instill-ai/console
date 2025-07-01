@@ -374,6 +374,10 @@ export type ChatSlice = {
   updateChatMessageContextFolderUids: (
     fn: (prev: Record<string, string[]>) => Record<string, string[]>,
   ) => void;
+  chatMessageContextCatalogUids: Record<string, string[]>;
+  updateChatMessageContextCatalogUids: (
+    fn: (prev: Record<string, string[]>) => Record<string, string[]>,
+  ) => void;
 };
 
 export type TableMode = "TABLE_MODE_CREATE_TABLE_FLOW" | "TABLE_MODE_NORMAL";
