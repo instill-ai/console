@@ -229,7 +229,13 @@ export type InstillChatMessageContextFolder = {
   fileUids: string[];
 };
 
+export type InstillChatMessageContextCatalog = {
+  catalogId: string;
+  fileUids: string[];
+};
+
 export type InstillChatMessageContext = {
   tableUids: string[];
   folders: InstillChatMessageContextFolder[];
+  catalogs: InstillChatMessageContextCatalog[];
 };
