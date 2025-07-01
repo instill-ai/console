@@ -3,6 +3,7 @@ import { Table } from "../table";
 import {
   Citation,
   InstillChatMessageContext,
+  InstillChatMessageContextCatalog,
   InstillChatMessageContextFolder,
   Nullable,
 } from "../types";
@@ -207,6 +208,7 @@ export type PostInstillChatMessageRequest = {
   enableWebSearch?: boolean;
   tableUids: string[];
   folders: InstillChatMessageContextFolder[];
+  catalogs: InstillChatMessageContextCatalog[];
 };
 
 export type PostCreateTableFlowChatMessageRequest = {
