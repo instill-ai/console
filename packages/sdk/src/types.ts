@@ -235,7 +235,7 @@ export type InstillChatMessageContextFolder = {
 };
 
 export type InstillChatMessageContextCatalog = {
-  catalogId: string;
+  catalogUid: string;
   fileUids: string[];
 };
 
