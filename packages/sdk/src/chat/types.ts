@@ -207,7 +207,7 @@ export type PostInstillChatMessageRequest = {
   message: string;
   objectUids?: string[];
   enableWebSearch?: boolean;
-  tableUids: InstillChatMessageContextTable[];
+  tables: InstillChatMessageContextTable[];
   folders: InstillChatMessageContextFolder[];
   catalogs: InstillChatMessageContextCatalog[];
 };

@@ -156,7 +156,7 @@ export class ChatClient extends APIResource {
     message,
     objectUids,
     enableWebSearch = false,
-    tableUids,
+    tables,
     folders,
     catalogs,
   }: PostInstillChatMessageRequest) {
@@ -173,7 +173,7 @@ export class ChatClient extends APIResource {
             objectUids,
             enableWebSearch,
             context: {
-              tableUids,
+              tables,
               folders,
               catalogs,
             },
