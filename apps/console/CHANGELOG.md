@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.68.2](https://github.com/instill-ai/console/compare/v0.68.1...v0.68.2) (2025-06-30)
+
+
+### Bug Fixes
+
+* fix pnpm version ([#1778](https://github.com/instill-ai/console/issues/1778)) ([582a316](https://github.com/instill-ai/console/commit/582a316bfce784c8a90fa32df67959aafd0907e2))
+
 ## [0.68.1](https://github.com/instill-ai/console/compare/v0.68.0...v0.68.1) (2025-06-17)
 
 
