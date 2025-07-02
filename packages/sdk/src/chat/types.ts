@@ -5,6 +5,7 @@ import {
   InstillChatMessageContext,
   InstillChatMessageContextCatalog,
   InstillChatMessageContextFolder,
+  InstillChatMessageContextTable,
   Nullable,
 } from "../types";
 
@@ -206,7 +207,7 @@ export type PostInstillChatMessageRequest = {
   message: string;
   objectUids?: string[];
   enableWebSearch?: boolean;
-  tableUids: string[];
+  tableUids: InstillChatMessageContextTable[];
   folders: InstillChatMessageContextFolder[];
   catalogs: InstillChatMessageContextCatalog[];
 };
