@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.120.7](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.6...@instill-ai/toolkit-v0.120.7) (2025-07-04)
+
+
+### Features
+
+* **sdk:** update types and hooks ([#1793](https://github.com/instill-ai/console/issues/1793)) ([6502a00](https://github.com/instill-ai/console/commit/6502a00459ff6ceda3b07edda3e69f809e44f65f))
+
 ## [0.120.6](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.5...@instill-ai/toolkit-v0.120.6) (2025-06-30)
 
 
