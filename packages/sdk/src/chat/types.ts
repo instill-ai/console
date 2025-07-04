@@ -3,7 +3,9 @@ import { Table } from "../table";
 import {
   Citation,
   InstillChatMessageContext,
+  InstillChatMessageContextCatalog,
   InstillChatMessageContextFolder,
+  InstillChatMessageContextTable,
   Nullable,
 } from "../types";
 
@@ -205,8 +207,9 @@ export type PostInstillChatMessageRequest = {
   message: string;
   objectUids?: string[];
   enableWebSearch?: boolean;
-  tableUids: string[];
+  tables: InstillChatMessageContextTable[];
   folders: InstillChatMessageContextFolder[];
+  catalogs: InstillChatMessageContextCatalog[];
 };
 
 export type PostCreateTableFlowChatMessageRequest = {

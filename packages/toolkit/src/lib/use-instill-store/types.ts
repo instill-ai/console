@@ -366,12 +366,18 @@ export type ChatSlice = {
   updateChatMessageContextTableUids: (
     fn: (prev: Record<string, string[]>) => Record<string, string[]>,
   ) => void;
-  chatMessageContextFileUids: Record<string, string[]>;
-  updateChatMessageContextFileUids: (
-    fn: (prev: Record<string, string[]>) => Record<string, string[]>,
+  chatMessageContextFiles: Record<string, InstillChatMessageContextFile[]>;
+  updateChatMessageContextFiles: (
+    fn: (
+      prev: Record<string, InstillChatMessageContextFile[]>,
+    ) => Record<string, InstillChatMessageContextFile[]>,
   ) => void;
   chatMessageContextFolderUids: Record<string, string[]>;
   updateChatMessageContextFolderUids: (
+    fn: (prev: Record<string, string[]>) => Record<string, string[]>,
+  ) => void;
+  chatMessageContextCatalogUids: Record<string, string[]>;
+  updateChatMessageContextCatalogUids: (
     fn: (prev: Record<string, string[]>) => Record<string, string[]>,
   ) => void;
 };
@@ -461,4 +467,17 @@ export type PendingFile = {
   type: string;
   objectUid?: string;
   size: number;
+};
+
+export type InstillChatMessageContextFileParentType =
+  | "tables"
+  | "folders"
+  | "catalogs";
+
+export type InstillChatMessageContextFile = {
+  uid: string;
+  parent: {
+    uid: string;
+    type: InstillChatMessageContextFileParentType;
+  };
 };
