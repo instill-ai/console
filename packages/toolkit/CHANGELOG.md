@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.120.6](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.5...@instill-ai/toolkit-v0.120.6) (2025-06-30)
+
+
+### Features
+
+* add enhance/suggest table column definition sdk ([#1791](https://github.com/instill-ai/console/issues/1791)) ([81d3695](https://github.com/instill-ai/console/commit/81d36959353916ed6cfd7d9aea427197e28c39eb))
+* change TableMode type ([#1782](https://github.com/instill-ai/console/issues/1782)) ([b19e07f](https://github.com/instill-ai/console/commit/b19e07f2a8fa2bb9daf47808f460bc5d34bb2024))
+* **chat:** added available chat contexts api route ([#1788](https://github.com/instill-ai/console/issues/1788)) ([9f422cc](https://github.com/instill-ai/console/commit/9f422cc4e4c87015306a1adadb2a4ac8561cd356))
+* **chat:** more chat types updates ([#1784](https://github.com/instill-ai/console/issues/1784)) ([9618e80](https://github.com/instill-ai/console/commit/9618e802d0051df02b3e128d29a6359657153da7))
+* **chat:** update chat message type ([05ef774](https://github.com/instill-ai/console/commit/05ef7742e1eb8a1487716335babb3a433b7dcfe7))
+* **chat:** update chat message type ([#1783](https://github.com/instill-ai/console/issues/1783)) ([3da8022](https://github.com/instill-ai/console/commit/3da8022212b7bcf5cbd7baffa75d891384c9d3ad))
+* **hooks:** extend react query props ([#1781](https://github.com/instill-ai/console/issues/1781)) ([1a595ed](https://github.com/instill-ai/console/commit/1a595ed1593cc72f471962268a6383dc0ad8fa36))
+* **sdk:** folder client ([#1754](https://github.com/instill-ai/console/issues/1754)) ([8af552b](https://github.com/instill-ai/console/commit/8af552bac3871eddc604fac9a559ca21d86e8d94))
+* **store:** update instill store ([#1787](https://github.com/instill-ai/console/issues/1787)) ([f4a0d51](https://github.com/instill-ai/console/commit/f4a0d517c375a3fabf6248e1e177a5a931e276c6))
+
+
+### Bug Fixes
+
+* bump rc version for toolkit and sdk ([#1792](https://github.com/instill-ai/console/issues/1792)) ([806c11c](https://github.com/instill-ai/console/commit/806c11c8c8da3287ecdda68d574a845287d32f1c))
+* fix catalog file tab refetch interval ([#1785](https://github.com/instill-ai/console/issues/1785)) ([2724673](https://github.com/instill-ai/console/commit/2724673251566069274ef859992867feb8c4b864))
+* fix pnpm version ([#1778](https://github.com/instill-ai/console/issues/1778)) ([582a316](https://github.com/instill-ai/console/commit/582a316bfce784c8a90fa32df67959aafd0907e2))
+* **store:** fix store props ([#1789](https://github.com/instill-ai/console/issues/1789)) ([cf13ae0](https://github.com/instill-ai/console/commit/cf13ae0a5cbd269227dc124cecf69a8c02e91e58))
+* **store:** update packages ([#1790](https://github.com/instill-ai/console/issues/1790)) ([4f4abdc](https://github.com/instill-ai/console/commit/4f4abdc11e19fe9490cbc2e42d87d3faf3efeb7a))
+
 ## [0.120.5](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.4...@instill-ai/toolkit-v0.120.5) (2025-06-18)
 
 
