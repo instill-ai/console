@@ -6,6 +6,7 @@ import { Catalog, Nullable } from "instill-sdk";
 
 import { cn } from "@instill-ai/design-system";
 
+import type { CatalogTabs } from "./types";
 import {
   GeneralAppPageProp,
   InstillStore,
@@ -34,6 +35,7 @@ import {
   ChunkTab,
   GetCatalogTab,
   RetrieveTestTab,
+  SettingsTab,
   UploadExploreTab,
 } from "./components/tabs";
 
@@ -48,14 +50,14 @@ const selector = (store: InstillStore) => ({
 export const CatalogMainView = (props: CatalogViewProps) => {
   const [selectedCatalog, setSelectedCatalog] =
     React.useState<Nullable<Catalog>>(null);
-  const [activeTab, setActiveTab] = React.useState("catalogs");
+  const [activeTab, setActiveTab] = React.useState<CatalogTabs>("catalogs");
   const [isProcessed, setIsProcessed] = React.useState(false);
   const [showCreditUsage, setShowCreditUsage] = React.useState(false);
   const [creditUsageTimer, setCreditUsageTimer] =
     React.useState<Nullable<NodeJS.Timeout>>(null);
   const [showWarnDialog, setShowWarnDialog] = React.useState(false);
   const [pendingTabChange, setPendingTabChange] =
-    React.useState<Nullable<string>>(null);
+    React.useState<Nullable<CatalogTabs>>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
   const [remainingStorageSpace, setRemainingStorageSpace] = React.useState(0);
   const [namespaceType, setNamespaceType] =
@@ -156,7 +158,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   );
 
   const handleTabChangeAttempt = (
-    tab: string,
+    tab: CatalogTabs,
     isAutomatic: boolean = false,
   ) => {
     setIsAutomaticTabChange(isAutomatic);
@@ -169,7 +171,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
   };
 
   const changeTab = React.useCallback(
-    (tab: string) => {
+    (tab: CatalogTabs) => {
       setActiveTab(tab);
       if (tab === "catalogs") {
         setSelectedCatalog(null);
@@ -267,7 +269,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
 
   React.useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.slice(1);
+      const hash = window.location.hash.slice(1) as CatalogTabs;
       if (
         hash &&
         [
@@ -278,6 +280,7 @@ export const CatalogMainView = (props: CatalogViewProps) => {
           "retrieve",
           "ask_question",
           "get_catalog",
+          "settings",
         ].includes(hash)
       ) {
         changeTab(hash);
@@ -389,6 +392,12 @@ export const CatalogMainView = (props: CatalogViewProps) => {
               catalog={selectedCatalog}
               isProcessed={isProcessed}
               onGoToUpload={handleGoToUpload}
+              namespaceId={selectedNamespace}
+            />
+          ) : null}
+          {activeTab === "settings" && selectedCatalog ? (
+            <SettingsTab
+              catalog={selectedCatalog}
               namespaceId={selectedNamespace}
             />
           ) : null}

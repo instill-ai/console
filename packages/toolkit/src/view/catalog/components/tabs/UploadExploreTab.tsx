@@ -20,6 +20,7 @@ import {
   Separator,
 } from "@instill-ai/design-system";
 
+import type { CatalogTabs } from "../../types";
 import {
   InstillStore,
   onTriggerInvalidateCredits,
@@ -78,7 +79,7 @@ type UploadExploreFormData = z.infer<typeof UploadExploreFormSchema>;
 type UploadExploreTabProps = {
   catalog: Catalog;
   onProcessFile: () => void;
-  onTabChange: (tab: string) => void;
+  onTabChange: (tab: CatalogTabs) => void;
   setHasUnsavedChanges: (hasChanges: boolean) => void;
   remainingStorageSpace: number;
   updateRemainingSpace: (fileSize: number, isAdding: boolean) => void;

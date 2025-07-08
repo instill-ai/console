@@ -512,6 +512,17 @@ const releaseQueryKeyStore = {
 
     return queryKey;
   },
+  getUseNamespacePipelineReleaseQueryKey({
+    namespaceId,
+    pipelineId,
+    releaseId,
+  }: {
+    namespaceId: Nullable<string>;
+    pipelineId: Nullable<string>;
+    releaseId: Nullable<string>;
+  }) {
+    return [namespaceId, "pipelines", pipelineId, "releases", releaseId];
+  },
 };
 
 const mgmtQueryKeyStore = {

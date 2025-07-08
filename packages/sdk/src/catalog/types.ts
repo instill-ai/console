@@ -19,6 +19,7 @@ export type Catalog = {
   usedStorage: number;
   namespaceId: string;
   catalogUid: string;
+  summarizingPipelines: string[];
 };
 
 export type CatalogRunAction =
@@ -145,6 +146,7 @@ export type CreateNamespaceCatalogRequest = {
   name: string;
   description?: string;
   tags?: string[];
+  convertingPipelines?: string[];
 };
 
 export type CreateNamespaceCatalogResponse = {
@@ -156,6 +158,7 @@ export type UpdateNamespaceCatalogRequest = {
   catalogId: string;
   description?: string;
   tags?: string[];
+  convertingPipelines?: string[];
 };
 
 export type UpdateNamespaceCatalogResponse = {

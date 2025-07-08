@@ -7,3 +7,4 @@ export * from "./RetrieveTestTab";
 export * from "./UploadExploreTab";
 export * from "./AskQuestionTab";
 export * from "./GetCatalogTab";
+export * from "./Settings";

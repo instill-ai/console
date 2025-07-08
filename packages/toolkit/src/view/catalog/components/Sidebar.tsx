@@ -6,9 +6,11 @@ import { Catalog, Nullable } from "instill-sdk";
 
 import { cn, Icons } from "@instill-ai/design-system";
 
+import type { CatalogTabs } from "../types";
+
 type SidebarProps = {
   activeTab: string;
-  onTabChange: (tab: string) => void;
+  onTabChange: (tab: CatalogTabs) => void;
   selectedCatalog: Nullable<Catalog>;
   onDeselectCatalog: () => void;
 };
@@ -22,7 +24,7 @@ export const Sidebar = ({
   const router = useRouter();
   const [isApiExpanded, setIsApiExpanded] = React.useState(false);
 
-  const handleTabChange = (tab: string) => {
+  const handleTabChange = (tab: CatalogTabs) => {
     if (tab === "catalogs") {
       onDeselectCatalog();
     }
@@ -86,6 +88,12 @@ export const Sidebar = ({
             onClick={() => handleTabChange("chunks")}
           >
             Chunks
+          </div>
+          <div
+            className={getTabClassName("settings")}
+            onClick={() => handleTabChange("settings")}
+          >
+            Settings
           </div>
           <div
             className={cn(

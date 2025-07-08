@@ -3,3 +3,4 @@ export * from "./useCreateNamespacePipelineRelease";
 export * from "./useDeleteNamespacePipelineRelease";
 export * from "./useInfiniteNamespacePipelineReleases";
 export * from "./useSortedReleases";
+export * from "./useGetNamespacePipelineRelease";
