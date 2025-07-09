@@ -50,7 +50,7 @@ export class FolderClient extends APIResource {
     const { namespaceId, folderUid, ...body } = props;
 
     try {
-      const data = await this._client.put<CreateInstillFolderResponse>(
+      const data = await this._client.patch<CreateInstillFolderResponse>(
         `/namespaces/${namespaceId}/folders/${folderUid}`,
         {
           body: JSON.stringify(body),
