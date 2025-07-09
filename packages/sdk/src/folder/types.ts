@@ -19,9 +19,7 @@ export type InstillFolder = {
 
 export type CreateInstillFolderRequest = {
   namespaceId: string;
-  folder: Pick<InstillFolder, "name" | "description"> & {
-    metadata?: GeneralRecord;
-  };
+  folder: Partial<Pick<InstillFolder, "name" | "description" | "metadata">>;
 };
 
 export type CreateInstillFolderResponse = {
@@ -31,9 +29,7 @@ export type CreateInstillFolderResponse = {
 export type UpdateInstillFolderRequest = {
   namespaceId: string;
   folderUid: string;
-  folder: Pick<InstillFolder, "name" | "description"> & {
-    metadata?: GeneralRecord;
-  };
+  folder: Partial<Pick<InstillFolder, "name" | "description" | "metadata">>;
 };
 
 export type DeleteInstillFolderRequest = {
