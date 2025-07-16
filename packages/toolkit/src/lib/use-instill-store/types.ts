@@ -453,7 +453,8 @@ export type InstillStore = SmartHintSlice &
   EditorSlice &
   FeatureFlagSlice &
   ChatSlice &
-  TableSlice;
+  TableSlice &
+  FolderSlice;
 
 export type InstillStoreMutators = [
   ["zustand/devtools", never],
@@ -480,4 +481,11 @@ export type InstillChatMessageContextFile = {
     uid: string;
     type: InstillChatMessageContextFileParentType;
   };
+};
+
+export type FolderSlice = {
+  folderFilesBeingUploaded: Record<string, File[]>;
+  updateFolderFilesBeingUploaded: (
+    fn: (prev: Record<string, File[]>) => Record<string, File[]>,
+  ) => void;
 };
