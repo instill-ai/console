@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.18.5](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.4...instill-sdk-v0.18.5) (2025-07-16)
+
+
+### Features
+
+* **catalogs:** catalog custom pipeline ([d5d5af9](https://github.com/instill-ai/console/commit/d5d5af9d6d0707a6b2c696be3f33f1a5f940745c))
+* **table:** add cell failed status ([39584c1](https://github.com/instill-ai/console/commit/39584c1aff9aef750e539ad51a7840b9ee24c8d2))
+
+
+### Bug Fixes
+
+* **sdk:** update types and update method ([#1796](https://github.com/instill-ai/console/issues/1796)) ([b12cafd](https://github.com/instill-ai/console/commit/b12cafdcc387a2dfcbd2e76e833f9212046e8a1c))
+
 ## [0.18.4](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.3...instill-sdk-v0.18.4) (2025-07-04)
 
 
