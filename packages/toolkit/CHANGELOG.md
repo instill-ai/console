@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.120.9](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.8...@instill-ai/toolkit-v0.120.9) (2025-07-16)
+
+
+### Features
+
+* **toolkit:** update instill store ([#1798](https://github.com/instill-ai/console/issues/1798)) ([0fe07e1](https://github.com/instill-ai/console/commit/0fe07e1874cc5493cb1af270bba4146089017364))
+
 ## [0.120.8](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.7...@instill-ai/toolkit-v0.120.8) (2025-07-16)
 
 
