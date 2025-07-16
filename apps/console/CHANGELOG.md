@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.68.3](https://github.com/instill-ai/console/compare/v0.68.2...v0.68.3) (2025-07-16)
+
+
+### Miscellaneous
+
+* bump up console version ([#1797](https://github.com/instill-ai/console/issues/1797)) ([59879c7](https://github.com/instill-ai/console/commit/59879c7e36a0b36ff652123def27fe8e3fabb52f))
+
 ## [0.68.2](https://github.com/instill-ai/console/compare/v0.68.1...v0.68.2) (2025-06-30)
 
 
