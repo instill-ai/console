@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.120.10](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.9...@instill-ai/toolkit-v0.120.10) (2025-07-18)
+
+
+### Features
+
+* **billing:** adapt new PLAN_UNSPECIFIED  ([#1800](https://github.com/instill-ai/console/issues/1800)) ([3a3f613](https://github.com/instill-ai/console/commit/3a3f613bad50b183f5fbfa06ad8bc0ec87e38cdb))
+
 ## [0.120.9](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.8...@instill-ai/toolkit-v0.120.9) (2025-07-16)
 
 
