@@ -15,12 +15,18 @@ export const UpgradePlanLink = ({
   selectedNamespace,
 }: UpgradePlanLinkProps) => {
   const getLinkContent = () => {
-    if (plan === "PLAN_FREE" && namespaceType === "user") {
+    if (
+      (plan === "PLAN_FREE" || plan === "PLAN_UNSPECIFIED") &&
+      namespaceType === "user"
+    ) {
       return {
         text: "Upgrade your plan to create more storage space",
         href: "/subscribe",
       };
-    } else if (plan === "PLAN_FREE" && namespaceType === "organization") {
+    } else if (
+      (plan === "PLAN_FREE" || plan === "PLAN_UNSPECIFIED") &&
+      namespaceType === "organization"
+    ) {
       return {
         text: "Upgrade your plan to create more storage space",
         href: `/${selectedNamespace}/organization-settings/billing/subscriptions/plan`,

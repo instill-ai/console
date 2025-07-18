@@ -41,14 +41,16 @@ export const SubscribeCTA = () => {
 
   if (
     routeInfo.data.namespaceType === "NAMESPACE_ORGANIZATION" &&
-    orgSub.data?.plan === "PLAN_FREE"
+    (orgSub.data?.plan === "PLAN_FREE" ||
+      orgSub.data?.plan === "PLAN_UNSPECIFIED")
   ) {
     redirectURL = `/${routeInfo.data.namespaceId}/organization-settings/billing/subscriptions/plan`;
   }
 
   if (
     routeInfo.data.namespaceType === "NAMESPACE_USER" &&
-    userSub.data?.plan === "PLAN_FREE"
+    (userSub.data?.plan === "PLAN_FREE" ||
+      userSub.data?.plan === "PLAN_UNSPECIFIED")
   ) {
     redirectURL = "/subscribe";
   }
