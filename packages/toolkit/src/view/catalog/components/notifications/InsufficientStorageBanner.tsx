@@ -23,9 +23,15 @@ export const InsufficientStorageBanner = ({
   const router = useRouter();
 
   const getUpgradeLink = () => {
-    if (plan === "PLAN_FREE" && namespaceType === "user") {
+    if (
+      (plan === "PLAN_FREE" || plan === "PLAN_UNSPECIFIED") &&
+      namespaceType === "user"
+    ) {
       return "/subscribe";
-    } else if (plan === "PLAN_FREE" && namespaceType === "organization") {
+    } else if (
+      (plan === "PLAN_FREE" || plan === "PLAN_UNSPECIFIED") &&
+      namespaceType === "organization"
+    ) {
       return `/${selectedNamespace}/organization-settings/billing/subscriptions/plan`;
     } else if (plan === "PLAN_STARTER" && namespaceType === "user") {
       return "/settings/organizations/new";
