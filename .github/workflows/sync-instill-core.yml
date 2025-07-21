@@ -1,0 +1,17 @@
+name: Sync Instill Core Version
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Images"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  update-version:
+    uses: instill-ai/instill-core/.github/workflows/update-service-version.yml@main
+    with:
+      service: console
+    secrets:
+      botGitHubToken: ${{ secrets.botGitHubToken }} 

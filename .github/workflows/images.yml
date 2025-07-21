@@ -21,6 +21,10 @@ jobs:
           username: drop@instill-ai.com
           password: ${{ secrets.botDockerHubPassword }}
 
+      - name: Set short commit SHA
+        run: |
+          echo "COMMIT_SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Build and push (latest)
         if: ${{ (github.ref == 'refs/heads/main') && startsWith(github.event.release.tag_name, 'v') }}
         uses: docker/build-push-action@v3
@@ -28,7 +32,9 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: instill/console:latest
+          tags: |
+            instill/console:latest
+            instill/console:${{ env.COMMIT_SHORT_SHA }}
           cache-from: type=registry,ref=instill/console:buildcache
           cache-to: type=registry,ref=instill/console:buildcache,mode=max
 
