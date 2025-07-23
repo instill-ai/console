@@ -144,6 +144,8 @@ export type GeneralSlice = {
   updateNavigationNamespaceAnchor: (
     fn: (prev: Nullable<string>) => Nullable<string>,
   ) => void;
+  isTrialEndReadOnly: boolean;
+  updateIsTrialEndReadOnly: (fn: (prev: boolean) => boolean) => void;
 };
 export enum DefaultEditorViewIDs {
   MAIN_PREVIEW_FLOW,
@@ -444,6 +446,11 @@ export type TableSlice = {
   ) => void;
   deleteProgressTableUids: string[];
   updateDeleteProgressTableUids: (fn: (prev: string[]) => string[]) => void;
+
+  // Right now, a shared table in given organization is read only outside of the creator
+  // of the table
+  isSharedTableReadOnly: boolean;
+  updateIsSharedTableReadOnly: (fn: (prev: boolean) => boolean) => void;
 };
 
 export type InstillStore = SmartHintSlice &

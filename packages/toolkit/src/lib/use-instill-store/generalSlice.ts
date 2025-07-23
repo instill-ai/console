@@ -44,4 +44,12 @@ export const createGeneralSlice: StateCreator<
         navigationNamespaceAnchor: fn(state.navigationNamespaceAnchor),
       };
     }),
+  isTrialEndReadOnly: false,
+  updateIsTrialEndReadOnly: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        isTrialEndReadOnly: fn(state.isTrialEndReadOnly),
+      };
+    }),
 });

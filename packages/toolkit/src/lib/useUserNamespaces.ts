@@ -21,6 +21,8 @@ export type UserNamespace = {
   displayName: Nullable<string>;
   type: "user" | "organization";
   avatarUrl: Nullable<string>;
+  email: Nullable<string>;
+  userCount: Nullable<number>;
 };
 
 export type UseUserNamespacesReturn =
@@ -79,6 +81,8 @@ export function useUserNamespaces(): UseUserNamespacesReturn {
             type: "organization",
             avatarUrl: org.organization.profile?.avatar ?? null,
             displayName: org.organization.profile?.displayName ?? null,
+            email: null,
+            userCount: org.organization.stats.userCount ?? null,
           });
         }
       });
@@ -91,6 +95,8 @@ export function useUserNamespaces(): UseUserNamespacesReturn {
         type: "user",
         avatarUrl: me.data.profile?.avatar ?? null,
         displayName: me.data.profile?.displayName ?? null,
+        email: me.data.email ?? null,
+        userCount: null,
       });
     }
 

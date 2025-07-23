@@ -33,6 +33,7 @@ export type StripeSubscriptionDetail = {
   trialEnd?: number;
   status: StripeSubscriptionStatus;
   description: string;
+  currentPeriodEnd: number;
 };
 
 export type UserSubscription = {
