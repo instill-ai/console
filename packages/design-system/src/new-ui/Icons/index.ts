@@ -149,6 +149,7 @@ import { SearchMd } from "./SearchMd";
 import { SearchSm } from "./SearchSm";
 import { Settings02 } from "./Settings02";
 import { Share07 } from "./Share07";
+import { SlashCircle01 } from "./SlashCircle01";
 import { SlashDivider } from "./SlashDivider";
 import { Sliders01 } from "./Sliders01";
 import { SortLinesDown } from "./SortLinesDown";
@@ -348,6 +349,7 @@ export const Icons = {
   SearchMd,
   SearchSm,
   Share07,
+  SlashCircle01,
   SortLinesDown,
   SortLinesUp,
   Star06,
