@@ -37,6 +37,9 @@ export type Organization = {
   updateTime: string;
   owner: User;
   profile?: OrganizationProfile;
+  stats: {
+    userCount: number;
+  };
 };
 
 export const OrganizationSchema = z.object({
@@ -47,6 +50,9 @@ export const OrganizationSchema = z.object({
   updateTime: z.string(),
   owner: UserSchema,
   profile: OrganizationProfileSchema.optional(),
+  stats: z.object({
+    userCount: z.number(),
+  }),
 });
 
 export type ListOrganizationsRequest = {

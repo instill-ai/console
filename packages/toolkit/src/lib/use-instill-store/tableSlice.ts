@@ -133,4 +133,12 @@ export const createTableSlice: StateCreator<
         deleteProgressTableUids: fn(state.deleteProgressTableUids),
       };
     }),
+  isSharedTableReadOnly: false,
+  updateIsSharedTableReadOnly: (fn: (prev: boolean) => boolean) =>
+    set((state) => {
+      return {
+        ...state,
+        isSharedTableReadOnly: fn(state.isSharedTableReadOnly),
+      };
+    }),
 });
