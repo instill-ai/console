@@ -37,6 +37,7 @@ import { ChevronUpDouble } from "./ChevronUpDouble";
 import { Chip01 } from "./Chip01";
 import { Chip02 } from "./Chip02";
 import { Circle } from "./Circle";
+import { Clock } from "./Clock";
 import { ClockCheck } from "./ClockCheck";
 import { ClockPlus } from "./ClockPlus";
 import { ClockRewind } from "./ClockRewind";
@@ -232,6 +233,7 @@ export const Icons = {
   Chip01,
   Chip02,
   Circle,
+  Clock,
   ClockRewind,
   ClockCheck,
   ClockPlus,
