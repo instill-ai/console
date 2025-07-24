@@ -39,6 +39,7 @@ import { Chip02 } from "./Chip02";
 import { Circle } from "./Circle";
 import { Clock } from "./Clock";
 import { ClockCheck } from "./ClockCheck";
+import { Clock } from "./Clock";
 import { ClockPlus } from "./ClockPlus";
 import { ClockRewind } from "./ClockRewind";
 import { CodeBrowser } from "./CodeBrowser";

@@ -25,4 +25,5 @@ export const Clock = React.forwardRef<
     </IconBase>
   );
 });
+
 Clock.displayName = "IconClock";
