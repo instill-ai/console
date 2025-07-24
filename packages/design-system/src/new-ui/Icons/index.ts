@@ -38,6 +38,7 @@ import { Chip01 } from "./Chip01";
 import { Chip02 } from "./Chip02";
 import { Circle } from "./Circle";
 import { ClockCheck } from "./ClockCheck";
+import { Clock } from "./Clock";
 import { ClockPlus } from "./ClockPlus";
 import { ClockRewind } from "./ClockRewind";
 import { CodeBrowser } from "./CodeBrowser";
@@ -232,6 +233,7 @@ export const Icons = {
   Chip01,
   Chip02,
   Circle,
+  Clock,
   ClockRewind,
   ClockCheck,
   ClockPlus,
