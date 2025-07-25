@@ -33,6 +33,9 @@ export const UploadImageFieldWithCrop = ({
   rounded,
   showAsOptional,
   isDeletable,
+  disabledFormTitle,
+  getImageElement,
+  uploaderClassName,
 }: {
   fieldName: string;
   title: string;
@@ -46,6 +49,9 @@ export const UploadImageFieldWithCrop = ({
   rounded?: boolean;
   showAsOptional?: boolean;
   isDeletable?: boolean;
+  disabledFormTitle?: boolean;
+  getImageElement?: (image: Nullable<string | File>) => React.ReactNode;
+  uploaderClassName?: string;
 }) => {
   const [isHovered, setIsHovered] = React.useState(false);
   const [image, setImage] = React.useState<Nullable<string | File>>(null);
@@ -95,65 +101,87 @@ export const UploadImageFieldWithCrop = ({
         render={({ field }) => {
           return (
             <Form.Item className="w-full">
-              <FormLabel title={title} optional={showAsOptional} />
+              {disabledFormTitle ? null : (
+                <FormLabel title={title} optional={showAsOptional} />
+              )}
               <Form.Control>
-                <label
-                  htmlFor={`upload-image-field-${imageInputId}`}
-                  className={cn(
-                    "cursor-pointer flex w-full flex-col items-center justify-center py-4 rounded-sm border border-semantic-bg-line [&>*]:pointer-events-none",
-                    isHovered
-                      ? "border-semantic-accent-hover outline outline-1 outline-semantic-accent-hover"
-                      : "",
-                  )}
-                  onDragOver={(event) => event.preventDefault()}
-                  onDrop={async (event) => {
-                    event.preventDefault();
-
-                    onUpdate(field, event.dataTransfer.files?.[0]);
-                    setIsHovered(false);
-                  }}
-                  onDragEnter={() => setIsHovered(true)}
-                  onDragLeave={() => setIsHovered(false)}
-                >
-                  <ImageWithFallback
-                    src={image ? String(image) : field.value}
-                    alt={title}
-                    className={cn(
-                      "h-[150px] object-contain",
-                      rounded ? "rounded-full" : null,
-                    )}
-                    width={150}
-                    height={150}
-                    fallbackImg={
-                      placeholder || (
-                        <div className="py-6 gap-y-4 flex flex-col items-center pointer-events-none">
-                          <Icons.Upload01 className="h-8 w-8 [&>path]:stroke-[1.5] stroke-semantic-fg-secondary" />
-                          <p className="text-xs text-semantic-fg-primary">
-                            Drag-and-drop a file, or{" "}
-                            <span className="text-semantic-accent-default">
-                              browse computer
-                            </span>
-                          </p>
-                        </div>
-                      )
-                    }
-                  />
-                  <Input.Root className="hidden">
-                    <Input.Core
-                      {...field}
-                      id={`upload-image-field-${imageInputId}`}
-                      type="file"
-                      accept="images/*"
-                      value={undefined}
-                      onChange={async (e) => {
-                        onUpdate(field, e.target.files?.[0]);
-
-                        // reset the input value so selecting the same file can trigger onChange
-                        e.target.value = "";
-                      }}
+                <div className="flex flex-row gap-x-8">
+                  {getImageElement ? (
+                    getImageElement(image ? String(image) : field.value)
+                  ) : (
+                    <ImageWithFallback
+                      src={image ? String(image) : field.value}
+                      alt={title}
+                      className={cn(
+                        "h-[150px] object-contain",
+                        rounded ? "rounded-full" : null,
+                      )}
+                      width={150}
+                      height={150}
+                      fallbackImg={
+                        placeholder || (
+                          <div className="py-6 gap-y-4 flex flex-col items-center pointer-events-none">
+                            <Icons.Upload01 className="h-8 w-8 [&>path]:stroke-[1.5] stroke-semantic-fg-secondary" />
+                            <p className="text-xs text-semantic-fg-primary">
+                              Drag-and-drop a file, or{" "}
+                              <span className="text-semantic-accent-default">
+                                browse computer
+                              </span>
+                            </p>
+                          </div>
+                        )
+                      }
                     />
-                  </Input.Root>
-                </label>
+                  )}
+                  <label
+                    htmlFor={`upload-image-field-${imageInputId}`}
+                    className={cn(
+                      "cursor-pointer flex w-full flex-col items-center justify-center p-8 rounded-sm border border-semantic-bg-line [&>*]:pointer-events-none",
+                      isHovered
+                        ? "border-semantic-accent-hover outline outline-1 outline-semantic-accent-hover"
+                        : "",
+                      uploaderClassName,
+                    )}
+                    onDragOver={(event) => event.preventDefault()}
+                    onDrop={async (event) => {
+                      event.preventDefault();
+
+                      onUpdate(field, event.dataTransfer.files?.[0]);
+                      setIsHovered(false);
+                    }}
+                    onDragEnter={() => setIsHovered(true)}
+                    onDragLeave={() => setIsHovered(false)}
+                  >
+                    <div className="flex flex-col gap-y-4">
+                      <Icons.Upload01 className="w-8 mx-auto h-8 stroke-semantic-fg-primary" />
+                      <div className="flex flex-row product-body-text-4-regular">
+                        <span className="text-semantic-fg-primary">
+                          Drag-and-drop file, or
+                        </span>
+                        {` `}
+                        <span className="text-semantic-accent-default">
+                          browse computer
+                        </span>
+                      </div>
+                    </div>
+
+                    <Input.Root className="hidden">
+                      <Input.Core
+                        {...field}
+                        id={`upload-image-field-${imageInputId}`}
+                        type="file"
+                        accept="images/*"
+                        value={undefined}
+                        onChange={async (e) => {
+                          onUpdate(field, e.target.files?.[0]);
+
+                          // reset the input value so selecting the same file can trigger onChange
+                          e.target.value = "";
+                        }}
+                      />
+                    </Input.Root>
+                  </label>
+                </div>
               </Form.Control>
               {isDeletable && (field.value || image) ? (
                 <div className="flex w-full flex-row rounded border border-semantic-bg-line px-2 py-1.5">

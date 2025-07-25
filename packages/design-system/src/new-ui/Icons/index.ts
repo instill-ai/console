@@ -37,6 +37,7 @@ import { ChevronUpDouble } from "./ChevronUpDouble";
 import { Chip01 } from "./Chip01";
 import { Chip02 } from "./Chip02";
 import { Circle } from "./Circle";
+import { Clock } from "./Clock";
 import { ClockCheck } from "./ClockCheck";
 import { ClockPlus } from "./ClockPlus";
 import { ClockRewind } from "./ClockRewind";
@@ -149,6 +150,7 @@ import { SearchMd } from "./SearchMd";
 import { SearchSm } from "./SearchSm";
 import { Settings02 } from "./Settings02";
 import { Share07 } from "./Share07";
+import { Shield02 } from "./Shield02";
 import { SlashCircle01 } from "./SlashCircle01";
 import { SlashDivider } from "./SlashDivider";
 import { Sliders01 } from "./Sliders01";
@@ -179,7 +181,9 @@ import { Upload01 } from "./Upload01";
 import { UploadCloud01 } from "./UploadCloud01";
 import { User01 } from "./User01";
 import { User02 } from "./User02";
+import { UserMinus02 } from "./UserMinus02";
 import { UserPlus01 } from "./UserPlus01";
+import { Users01 } from "./Users01";
 import { Video } from "./Video";
 import { VideoRecorder } from "./VideoRecorder";
 import { Visa } from "./Visa";
@@ -232,6 +236,7 @@ export const Icons = {
   Chip01,
   Chip02,
   Circle,
+  Clock,
   ClockRewind,
   ClockCheck,
   ClockPlus,
@@ -340,6 +345,7 @@ export const Icons = {
   Save02,
   Scales02,
   Settings02,
+  Shield02,
   SpeechRecognition,
   Sliders01,
   SlashDivider,
@@ -373,7 +379,9 @@ export const Icons = {
   UploadCloud01,
   User01,
   User02,
+  UserMinus02,
   UserPlus01,
+  Users01,
   Update,
   Video,
   VideoRecorder,

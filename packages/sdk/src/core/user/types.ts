@@ -48,6 +48,7 @@ export type User = {
   createTime: string;
   updateTime: string;
   profile?: UserProfile;
+  email: string;
 };
 
 export const UserSchema = z.object({
@@ -57,6 +58,7 @@ export const UserSchema = z.object({
   createTime: z.string(),
   updateTime: z.string(),
   profile: UserProfileSchema.optional(),
+  email: z.string(),
 });
 
 export type AuthenticatedUser = {

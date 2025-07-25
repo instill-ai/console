@@ -98,3 +98,8 @@ export type UpdateOrganizationRequest = {
 export type UpdateOrganizationResponse = {
   organization: Organization;
 };
+
+export type InviteOrganizationMembersRequest = {
+  organizationId: string;
+  emails: string[];
+};
