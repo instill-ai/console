@@ -9,6 +9,7 @@ export * from "./useUpdateOrganizationMembership";
 export * from "./useUpdateUserMembership";
 export * from "./useUserMemberships";
 export * from "./useUserMembership";
+export * from "./useInviteOrganizationMembers";
 
 export * from "./use-organization";
 export * from "./use-organizations";

@@ -44,8 +44,8 @@ export type UserSubscription = {
 export type OrganizationSubscription = {
   plan: OrganizationSubscriptionPlan;
   detail: Nullable<StripeSubscriptionDetail>;
-  maxSeats: number;
   usedSeats: number;
+  availableSeats: number;
 };
 
 export type GetAuthenticatedUserSubscriptionResponse = {

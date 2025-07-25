@@ -6,6 +6,7 @@ import {
   DeleteOrganizationRequest,
   GetOrganizationRequest,
   GetOrganizationResponse,
+  InviteOrganizationMembersRequest,
   ListOrganizationsRequest,
   ListOrganizationsResponse,
   Organization,
@@ -138,6 +139,22 @@ export class OrganizationClient extends APIResource {
       );
 
       return Promise.resolve(data.organization);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async inviteOrganizationMembers({
+    organizationId,
+    emails,
+  }: InviteOrganizationMembersRequest) {
+    try {
+      await this._client.post(
+        `/organizations/${organizationId}/invite-members`,
+        {
+          body: JSON.stringify({ emails }),
+        },
+      );
     } catch (error) {
       return Promise.reject(error);
     }
