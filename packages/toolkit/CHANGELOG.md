@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.120.11](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.10...@instill-ai/toolkit-v0.120.11) (2025-07-26)
+
+
+### Features
+
+* add trial end readonly type and other sdk change ([#1803](https://github.com/instill-ai/console/issues/1803)) ([ba5b163](https://github.com/instill-ai/console/commit/ba5b163dea002ca7488c34be3cb212cfd4b14f6c))
+* update multiple type ([#1807](https://github.com/instill-ai/console/issues/1807)) ([1e3d155](https://github.com/instill-ai/console/commit/1e3d15592eb632316844d965a228dbb570de47f8))
+
+
+### Miscellaneous
+
+* add query key for folder files ([#1809](https://github.com/instill-ai/console/issues/1809)) ([db04347](https://github.com/instill-ai/console/commit/db0434744364b80a53fa5992dc0832861bc93716))
+
 ## [0.120.10](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.9...@instill-ai/toolkit-v0.120.10) (2025-07-18)
 
 

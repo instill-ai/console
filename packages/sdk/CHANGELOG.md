@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.18.6](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.5...instill-sdk-v0.18.6) (2025-07-26)
+
+
+### Features
+
+* add trial end readonly type and other sdk change ([#1803](https://github.com/instill-ai/console/issues/1803)) ([ba5b163](https://github.com/instill-ai/console/commit/ba5b163dea002ca7488c34be3cb212cfd4b14f6c))
+* support new folder files API ([#1808](https://github.com/instill-ai/console/issues/1808)) ([cac86bd](https://github.com/instill-ai/console/commit/cac86bd6a42b1ddf2f7c900f8742990c35b29b33))
+* update multiple type ([#1807](https://github.com/instill-ai/console/issues/1807)) ([1e3d155](https://github.com/instill-ai/console/commit/1e3d15592eb632316844d965a228dbb570de47f8))
+
 ## [0.18.5](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.4...instill-sdk-v0.18.5) (2025-07-16)
 
 
