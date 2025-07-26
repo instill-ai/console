@@ -829,6 +829,26 @@ const folderQueryKeyStore = {
   }) {
     return [namespaceId, "folders", folderUid];
   },
+  getUseListNamespaceFolderFilesQueryKey({
+    namespaceId,
+    folderUid,
+  }: {
+    namespaceId: Nullable<string>;
+    folderUid: Nullable<string>;
+  }) {
+    return [namespaceId, "folders", folderUid, "files"];
+  },
+  getUseGetNamespaceFolderFileQueryKey({
+    namespaceId,
+    folderUid,
+    fileUid,
+  }: {
+    namespaceId: Nullable<string>;
+    folderUid: Nullable<string>;
+    fileUid: Nullable<string>;
+  }) {
+    return [namespaceId, "folders", folderUid, "files", fileUid];
+  },
 };
 
 export const queryKeyStore = {
