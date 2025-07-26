@@ -1,5 +1,13 @@
 # @instill-ai/design-system
 
+## [0.90.3](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.2...@instill-ai/design-system-v0.90.3) (2025-07-26)
+
+
+### Features
+
+* add slash error 01 icon ([#1805](https://github.com/instill-ai/console/issues/1805)) ([900e7c0](https://github.com/instill-ai/console/commit/900e7c0f77ab02726c4af8619da6c8e7235e5412))
+* update multiple type ([#1807](https://github.com/instill-ai/console/issues/1807)) ([1e3d155](https://github.com/instill-ai/console/commit/1e3d15592eb632316844d965a228dbb570de47f8))
+
 ## [0.90.2](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.1...@instill-ai/design-system-v0.90.2) (2025-06-30)
 
 
