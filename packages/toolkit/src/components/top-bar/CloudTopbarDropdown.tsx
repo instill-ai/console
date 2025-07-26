@@ -114,7 +114,7 @@ export const CloudTopbarDropdown = () => {
           </TopbarDropdownItem>
           <TopbarDropdownItem
             onClick={() => {
-              navigate("/settings/profile");
+              navigate("/core-settings/profile");
             }}
           >
             <Icons.Gear01 className="my-auto h-4 w-4 stroke-semantic-fg-disabled" />
@@ -125,7 +125,7 @@ export const CloudTopbarDropdown = () => {
         <TopbarDropdownGroup>
           <TopbarDropdownItem
             onClick={() => {
-              navigate("/settings/organizations");
+              navigate("/core-settings/organizations");
             }}
             asChild
           >
