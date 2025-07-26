@@ -12,6 +12,15 @@ import {
   ListPaginatedInstillFoldersRequest,
   ListPaginatedInstillFoldersResponse,
   UpdateInstillFolderRequest,
+  CreateNamespaceFolderFileRequest,
+  CreateNamespaceFolderFileResponse,
+  GetNamespaceFolderFileRequest,
+  GetNamespaceFolderFileResponse,
+  ListPaginatedNamespaceFolderFilesRequest,
+  ListPaginatedNamespaceFolderFilesResponse,
+  ListNamespaceFolderFilesRequest,
+  ListNamespaceFolderFilesResponse,
+  DeleteFolderFileRequest,
 } from "./types";
 
 export class FolderClient extends APIResource {
@@ -134,6 +143,121 @@ export class FolderClient extends APIResource {
       };
 
       return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async createNamespaceFolderFile(props: CreateNamespaceFolderFileRequest) {
+    const { namespaceId, folderUid, ...payload } = props;
+
+    try {
+      const queryString = getQueryString({
+        baseURL: `/namespaces/${namespaceId}/folders/${folderUid}/files`,
+      });
+
+      const data = await this._client.post<CreateNamespaceFolderFileResponse>(
+        queryString,
+        {
+          body: JSON.stringify(payload),
+        },
+      );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async getNamespaceFolderFile(props: GetNamespaceFolderFileRequest) {
+    const { namespaceId, folderUid, fileUid } = props;
+
+    const queryString = getQueryString({
+      baseURL: `/namespaces/${namespaceId}/folders/${folderUid}/files/${fileUid}`,
+    });
+
+    try {
+      const data =
+        await this._client.get<GetNamespaceFolderFileResponse>(queryString);
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listPaginatedFolderFiles({
+    namespaceId,
+    folderUid,
+    pageSize,
+    pageToken,
+  }: ListPaginatedNamespaceFolderFilesRequest) {
+    try {
+      const queryString = getQueryString({
+        baseURL: `/namespaces/${namespaceId}/folders/${folderUid}/files`,
+        pageSize,
+        pageToken,
+      });
+
+      const data =
+        await this._client.get<ListPaginatedNamespaceFolderFilesResponse>(
+          queryString,
+        );
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async listNamespaceFolderFiles({
+    namespaceId,
+    folderUid,
+    pageSize = 100,
+    pageToken,
+  }: ListNamespaceFolderFilesRequest) {
+    try {
+      const files: ListNamespaceFolderFilesResponse = [];
+
+      const queryString = getQueryString({
+        baseURL: `/namespaces/${namespaceId}/folders/${folderUid}/files`,
+        pageSize,
+        pageToken,
+      });
+
+      const data =
+        await this._client.get<ListPaginatedNamespaceFolderFilesResponse>(
+          queryString,
+        );
+
+      files.push(...data.files);
+
+      if (data.nextPageToken) {
+        files.push(
+          ...(await this.listNamespaceFolderFiles({
+            namespaceId,
+            folderUid,
+            pageSize,
+            pageToken: data.nextPageToken,
+          })),
+        );
+      }
+
+      return Promise.resolve(files);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async deleteFolderFile({
+    namespaceId,
+    folderUid,
+    fileUid,
+  }: DeleteFolderFileRequest) {
+    try {
+      await this._client.delete(
+        `/namespaces/${namespaceId}/folders/${folderUid}/files/${fileUid}`,
+      );
     } catch (error) {
       return Promise.reject(error);
     }

@@ -1,4 +1,5 @@
 import { GeneralRecord, Permission } from "..";
+import { File, FileType } from "../catalog/types";
 
 export type InstillCatalogInfo = {
   fileCount: number;
@@ -60,4 +61,55 @@ export type ListInstillFoldersRequest = ListPaginatedInstillFoldersRequest;
 
 export type ListInstillFoldersResponse = {
   folders: InstillFolder[];
+};
+
+export type CreateNamespaceFolderFileRequest = {
+  namespaceId: string;
+  folderUid: string;
+  name?: string;
+  type?: FileType;
+  content?: string;
+  objectUid?: string;
+};
+
+export type CreateNamespaceFolderFileResponse = {
+  file: File;
+};
+
+export type GetNamespaceFolderFileRequest = {
+  namespaceId: string;
+  folderUid: string;
+  fileUid: string;
+};
+
+export type GetNamespaceFolderFileResponse = {
+  file: File;
+};
+
+export type ListPaginatedNamespaceFolderFilesRequest = {
+  namespaceId: string;
+  folderUid: string;
+  pageSize?: number;
+  pageToken?: string;
+};
+
+export type ListPaginatedNamespaceFolderFilesResponse = {
+  files: File[];
+  nextPageToken: string;
+  totalSize: number;
+};
+
+export type ListNamespaceFolderFilesRequest = {
+  namespaceId: string;
+  folderUid: string;
+  pageSize?: number;
+  pageToken?: string;
+};
+
+export type ListNamespaceFolderFilesResponse = File[];
+
+export type DeleteFolderFileRequest = {
+  namespaceId: string;
+  folderUid: string;
+  fileUid: string;
 };
