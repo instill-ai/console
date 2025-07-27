@@ -8,7 +8,7 @@ export type OrganizationProfile = {
   bio?: string;
   publicEmail?: string;
   avatar?: string;
-  socialProfilesLinks?: {
+  socialProfileLinks?: {
     webiste?: string;
     x?: string;
     github?: string;
@@ -20,7 +20,7 @@ export const OrganizationProfileSchema = z.object({
   bio: z.string().optional(),
   publicEmail: z.string().optional(),
   avatar: z.string().optional(),
-  socialProfilesLinks: z
+  socialProfileLinks: z
     .object({
       webiste: z.string().optional(),
       x: z.string().optional(),

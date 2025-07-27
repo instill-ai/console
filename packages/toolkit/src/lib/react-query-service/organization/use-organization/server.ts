@@ -34,7 +34,7 @@ export async function fetchOrganization({
 }
 
 export function getUseOrganizationQueryKey(organizationId: Nullable<string>) {
-  return ["organization", organizationId];
+  return ["organizations", organizationId];
 }
 
 export function prefetchOrganization({

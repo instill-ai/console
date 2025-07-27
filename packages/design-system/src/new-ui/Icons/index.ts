@@ -19,6 +19,7 @@ import { Box } from "./Box";
 import { BracketSlash } from "./BracketSlash";
 import { Browser } from "./Browser";
 import { Building05 } from "./Building05";
+import { Calendar } from "./Calendar";
 import { CalendarCheck01 } from "./CalendarCheck01";
 import { CardRefresh } from "./CardRefresh";
 import { Check } from "./Check";
@@ -219,6 +220,7 @@ export const Icons = {
   Browser,
   Building05,
   CalendarCheck01,
+  Calendar,
   CardRefresh,
   Check,
   CheckCircle,

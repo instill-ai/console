@@ -88,8 +88,8 @@ export const UserProfileView = () => {
               routeInfo.isSuccess &&
               me.data.id === String(routeInfo.data.namespaceId)
             }
-            twitterLink={user.data.profile?.socialProfilesLinks?.x ?? null}
-            githubLink={user.data.profile?.socialProfilesLinks?.github ?? null}
+            twitterLink={user.data.profile?.socialProfileLinks?.x ?? null}
+            githubLink={user.data.profile?.socialProfileLinks?.github ?? null}
             displayName={user.data.profile?.displayName ?? null}
           />
         ) : (
