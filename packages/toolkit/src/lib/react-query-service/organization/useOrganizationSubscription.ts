@@ -8,7 +8,7 @@ import { getInstillAPIClient } from "../../sdk-helper";
 export function getUseOrganizationSubscriptionQueryKey(
   organizationId: Nullable<string>,
 ) {
-  return ["organization", organizationId, "subscription"];
+  return ["organizations", organizationId, "subscription"];
 }
 
 export function useOrganizationSubscription({

@@ -19,7 +19,7 @@ export type UserProfile = {
   publicEmail?: string;
   companyName?: string;
   avatar?: string;
-  socialProfilesLinks?: {
+  socialProfileLinks?: {
     webiste?: string;
     x?: string;
     github?: string;
@@ -32,7 +32,7 @@ export const UserProfileSchema = z.object({
   publicEmail: z.string().optional(),
   companyName: z.string().optional(),
   avatar: z.string().optional(),
-  socialProfilesLinks: z
+  socialProfileLinks: z
     .object({
       webiste: z.string().optional(),
       x: z.string().optional(),
