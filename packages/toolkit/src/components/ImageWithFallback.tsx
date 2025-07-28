@@ -31,7 +31,7 @@ export const ImageWithFallback = ({
     }
   }, [src]);
 
-  return error ? (
+  return !src || error ? (
     fallbackImg
   ) : (
     <img
