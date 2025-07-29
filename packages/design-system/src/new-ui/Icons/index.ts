@@ -123,6 +123,8 @@ import { MultipleVideo } from "./MultipleVideo";
 import { NewModel } from "./NewModel";
 import { PauseCircle } from "./PauseCircle";
 import { PDFFile } from "./PDFFile";
+import { Pin01 } from "./Pin01";
+import { Pin02 } from "./Pin02";
 import { Pipeline } from "./Pipeline";
 import { Play } from "./Play";
 import { PlayCircle } from "./PlayCircle";
@@ -323,6 +325,8 @@ export const Icons = {
   MessageSmileSquare,
   NewModel,
   PDFFile,
+  Pin01,
+  Pin02,
   Pipeline,
   Play,
   PlayCircle,
