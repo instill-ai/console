@@ -74,6 +74,7 @@ export type AuthenticatedUser = {
   onboardingStatus: OnboardingStatus;
   cookieToken?: string;
   profile?: UserProfile;
+  isEligibleForOrganizationTrial: boolean;
 };
 
 export const AuthenticatedUserSchema = z.object({
