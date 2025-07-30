@@ -59,3 +59,7 @@ export type GetOrganizationSubscriptionRequest = {
 export type GetOrganizationSubscriptionResponse = {
   subscription: OrganizationSubscription;
 };
+
+export type SyncOrganizationSubscriptionRequest = {
+  organizationId: string;
+};

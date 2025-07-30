@@ -3,6 +3,7 @@ import {
   GetAuthenticatedUserSubscriptionResponse,
   GetOrganizationSubscriptionRequest,
   GetOrganizationSubscriptionResponse,
+  SyncOrganizationSubscriptionRequest,
 } from "./types";
 
 export class SubscriptionClient extends APIResource {
@@ -26,6 +27,26 @@ export class SubscriptionClient extends APIResource {
         `/organizations/${organizationId}/subscription`,
       );
       return Promise.resolve(data.subscription);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async syncAuthenticatedUserSubscription() {
+    try {
+      await this._client.post("/user/subscription/sync");
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async syncOrganizationSubscription({
+    organizationId,
+  }: SyncOrganizationSubscriptionRequest) {
+    try {
+      await this._client.post(
+        `/organizations/${organizationId}/subscription/sync`,
+      );
     } catch (error) {
       return Promise.reject(error);
     }
