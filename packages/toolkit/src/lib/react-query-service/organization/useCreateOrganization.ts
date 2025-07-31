@@ -10,6 +10,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getInstillAPIClient } from "../../sdk-helper";
 import { getUseOrganizationQueryKey } from "./use-organization/server";
 import { getUseOrganizationsQueryKey } from "./use-organizations/server";
+import { getUseUserMembershipsQueryKey } from "./useUserMemberships";
 
 export function useCreateOrganization() {
   const queryClient = useQueryClient();
@@ -35,6 +36,10 @@ export function useCreateOrganization() {
       return Promise.resolve({ organization });
     },
     onSuccess: ({ organization }) => {
+      queryClient.invalidateQueries({
+        queryKey: getUseUserMembershipsQueryKey(organization.owner.id),
+      });
+
       const organizationsQueryKey = getUseOrganizationsQueryKey();
       queryClient.setQueryData<Organization[]>(organizationsQueryKey, (old) =>
         old ? [...old, organization] : [organization],
