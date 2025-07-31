@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.7](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.6...instill-sdk-v0.18.7) (2025-07-31)
+
+
+### Bug Fixes
+
+* fix org sub react-query key ([#1810](https://github.com/instill-ai/console/issues/1810)) ([a32872a](https://github.com/instill-ai/console/commit/a32872a0973807486cc4efb518a078d1ebb7e57b))
+
 ## [0.18.6](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.5...instill-sdk-v0.18.6) (2025-07-26)
 
 
