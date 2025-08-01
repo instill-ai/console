@@ -1,5 +1,18 @@
 # @instill-ai/design-system
 
+## [0.90.4](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.3...@instill-ai/design-system-v0.90.4) (2025-07-31)
+
+
+### Features
+
+* **design-system:** add pin icons ([#1812](https://github.com/instill-ai/console/issues/1812)) ([31a9476](https://github.com/instill-ai/console/commit/31a947635c99ec0f350726b8d5695d9582681812))
+* **main:** new things for the new subscription flow ([#1806](https://github.com/instill-ai/console/issues/1806)) ([e19f352](https://github.com/instill-ai/console/commit/e19f352333f9165c4367e94d3c823b886cf821f5))
+
+
+### Bug Fixes
+
+* fix org sub react-query key ([#1810](https://github.com/instill-ai/console/issues/1810)) ([a32872a](https://github.com/instill-ai/console/commit/a32872a0973807486cc4efb518a078d1ebb7e57b))
+
 ## [0.90.3](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.2...@instill-ai/design-system-v0.90.3) (2025-07-26)
 
 
