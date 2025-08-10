@@ -37,7 +37,7 @@ export const MarkdownViewer = ({
 
   return (
     <React.Fragment>
-      <style jsx={true}>{`
+      <style jsx>{`
         .markdown-body a {
           word-break: break-all !important;
         }

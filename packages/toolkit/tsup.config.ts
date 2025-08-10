@@ -19,6 +19,8 @@ export default defineConfig([
     },
     outDir: "dist/server",
     esbuildOptions(options) {
+      // Preserve JSX so that the consumer (Next.js) can run styled-jsx transform
+      options.jsx = "preserve";
       options.external = [
         "react",
         "react-dom",
@@ -36,6 +38,8 @@ export default defineConfig([
     },
     outDir: "dist",
     esbuildOptions(options) {
+      // Preserve JSX so that the consumer (Next.js) can run styled-jsx transform
+      options.jsx = "preserve";
       options.external = [
         "react",
         "react-dom",

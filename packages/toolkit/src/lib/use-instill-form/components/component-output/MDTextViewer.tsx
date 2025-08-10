@@ -25,7 +25,7 @@ export const MDTextViewer = ({
   return (
     <React.Fragment>
       {/* The anchor, code, paragraph in the MD viewer will overflow */}
-      <style jsx={true}>{`
+      <style jsx>{`
         .markdown-body a {
           word-break: break-all !important;
         }
