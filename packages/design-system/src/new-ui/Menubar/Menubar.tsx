@@ -6,15 +6,16 @@ import * as MenubarPrimitive from "@radix-ui/react-menubar";
 import { cn } from "../../utils";
 import { Icons } from "../Icons";
 
-const MenubarMenu = MenubarPrimitive.Menu;
+// Add explicit type annotations for all primitive assignments
+const MenubarMenu: typeof MenubarPrimitive.Menu = MenubarPrimitive.Menu;
 
-const MenubarGroup = MenubarPrimitive.Group;
+const MenubarGroup: typeof MenubarPrimitive.Group = MenubarPrimitive.Group;
 
-const MenubarPortal = MenubarPrimitive.Portal;
+const MenubarPortal: typeof MenubarPrimitive.Portal = MenubarPrimitive.Portal;
 
-const MenubarSub = MenubarPrimitive.Sub;
+const MenubarSub: typeof MenubarPrimitive.Sub = MenubarPrimitive.Sub;
 
-const MenubarRadioGroup = MenubarPrimitive.RadioGroup;
+const MenubarRadioGroup: typeof MenubarPrimitive.RadioGroup = MenubarPrimitive.RadioGroup;
 
 const MenubarRoot = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Root>,
@@ -240,7 +241,24 @@ const MenubarShortcut = ({
 };
 MenubarShortcut.displayname = "MenubarShortcut";
 
-export const Menubar = {
+export const Menubar: {
+  Root: typeof MenubarRoot;
+  Menu: typeof MenubarMenu;
+  Trigger: typeof MenubarTrigger;
+  Content: typeof MenubarContent;
+  Item: typeof MenubarItem;
+  Separator: typeof MenubarSeparator;
+  Label: typeof MenubarLabel;
+  CheckboxItem: typeof MenubarCheckboxItem;
+  RadioGroup: typeof MenubarRadioGroup;
+  RadioItem: typeof MenubarRadioItem;
+  Portal: typeof MenubarPortal;
+  SubContent: typeof MenubarSubContent;
+  SubTrigger: typeof MenubarSubTrigger;
+  Group: typeof MenubarGroup;
+  Sub: typeof MenubarSub;
+  Shortcut: typeof MenubarShortcut;
+} = {
   Root: MenubarRoot,
   Menu: MenubarMenu,
   Trigger: MenubarTrigger,
