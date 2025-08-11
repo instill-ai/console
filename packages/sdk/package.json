@@ -45,8 +45,9 @@
     "@instill-ai/tsconfig": "workspace:*",
     "@types/lodash": "^4.17.7",
     "@types/whatwg-fetch": "^0.0.33",
-    "@vitest/coverage-istanbul": "^3.0.7",
+    "@vitest/coverage-istanbul": "^3.2.4",
     "dotenv": "^16.0.1",
+    "eslint": "catalog:",
     "lodash": "^4.17.21",
     "msw": "^2.3.2",
     "msw-auto-mock": "^0.25.0",
@@ -54,9 +55,8 @@
     "swagger2openapi": "^7.0.8",
     "tsup": "catalog:",
     "tsx": "catalog:",
-    "vitest": "2.1.9",
-    "zod": "catalog:",
-    "eslint": "catalog:"
+    "vitest": "^3.2.4",
+    "zod": "catalog:"
   },
   "publishConfig": {
     "access": "public"
