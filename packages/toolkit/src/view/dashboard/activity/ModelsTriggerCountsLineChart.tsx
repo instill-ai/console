@@ -1,5 +1,6 @@
 "use client";
 
+import type { ECharts, EChartsOption } from "echarts";
 import * as React from "react";
 import {
   ModelTriggersStatusSummary,
@@ -11,8 +12,6 @@ import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
 
 import { generateModelTriggerChartRecordData } from "../../../lib";
 import { ModelTriggersSummary } from "./ModelTriggersSummary";
-
-import type { ECharts, EChartsOption } from "echarts";
 
 type ModelsTriggerCountsLineChartProps = {
   models: ModelTriggerTableRecord[];
@@ -51,7 +50,9 @@ export const ModelsTriggerCountsLineChart = ({
   const chartRef = React.useRef<HTMLDivElement>(null);
 
   // Dynamic import for ECharts to prevent SSR issues
-  const [echarts, setEcharts] = React.useState<typeof import("echarts") | null>(null);
+  const [echarts, setEcharts] = React.useState<typeof import("echarts") | null>(
+    null,
+  );
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
@@ -71,7 +72,9 @@ export const ModelsTriggerCountsLineChart = ({
     if (chartRef.current && echarts) {
       // Dispose the previous chart instance
       echarts.dispose(chartRef.current); // eslint-disable-line
-      const myChart: ECharts = echarts.init(chartRef.current, null, { renderer: "svg" });
+      const myChart: ECharts = echarts.init(chartRef.current, null, {
+        renderer: "svg",
+      });
       const option: EChartsOption = {
         grid: {
           left: "50px",

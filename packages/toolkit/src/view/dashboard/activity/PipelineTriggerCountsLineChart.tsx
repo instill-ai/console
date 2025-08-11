@@ -48,11 +48,13 @@ export const PipelineTriggerCountsLineChart = ({
   const chartRef = React.useRef<HTMLDivElement>(null);
 
   // Dynamic import for ECharts to prevent SSR issues
-  const [echarts, setEcharts] = React.useState<typeof import('echarts') | null>(null);
+  const [echarts, setEcharts] = React.useState<typeof import("echarts") | null>(
+    null,
+  );
 
   React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      import('echarts').then((module) => {
+    if (typeof window !== "undefined") {
+      import("echarts").then((module) => {
         setEcharts(module);
       });
     }

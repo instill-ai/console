@@ -15,7 +15,8 @@ const MenubarPortal: typeof MenubarPrimitive.Portal = MenubarPrimitive.Portal;
 
 const MenubarSub: typeof MenubarPrimitive.Sub = MenubarPrimitive.Sub;
 
-const MenubarRadioGroup: typeof MenubarPrimitive.RadioGroup = MenubarPrimitive.RadioGroup;
+const MenubarRadioGroup: typeof MenubarPrimitive.RadioGroup =
+  MenubarPrimitive.RadioGroup;
 
 const MenubarRoot = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Root>,

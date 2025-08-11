@@ -995,9 +995,9 @@ export const VscodeEditor = () => {
       const componentTopLevelKeyLineNumberMaps =
         smallestComponentKeyLineNumberMap
           ? keyLineNumberMapHelpers.getComponentTopLevelKeyLineNumberMaps(
-            allValue,
-            smallestComponentKeyLineNumberMap.key,
-          )
+              allValue,
+              smallestComponentKeyLineNumberMap.key,
+            )
           : undefined;
 
       const smallestComponentTopLevelKeyLineNumberMap =
@@ -1388,8 +1388,8 @@ export const VscodeEditor = () => {
 
         const targetComponent = pipeline.data.recipe?.component
           ? pipeline.data.recipe.component[
-          smallestComponentKeyLineNumberMap.key
-          ]
+              smallestComponentKeyLineNumberMap.key
+            ]
           : null;
 
         if (
