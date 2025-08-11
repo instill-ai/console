@@ -12,6 +12,8 @@ import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
 import { generateModelTriggerChartRecordData } from "../../../lib";
 import { ModelTriggersSummary } from "./ModelTriggersSummary";
 
+import type { ECharts, EChartsOption } from "echarts";
+
 type ModelsTriggerCountsLineChartProps = {
   models: ModelTriggerTableRecord[];
   isLoading: boolean;
@@ -20,7 +22,7 @@ type ModelsTriggerCountsLineChartProps = {
 };
 
 /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
-function selectGraph(params: any, myChart: any): void {
+function selectGraph(params: any, myChart: ECharts): void {
   myChart.dispatchAction({
     type: "legendSelect",
     // legend name
@@ -29,7 +31,7 @@ function selectGraph(params: any, myChart: any): void {
 }
 
 /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
-function unselectGraph(params: any, myChart: any): void {
+function unselectGraph(params: any, myChart: ECharts): void {
   for (const legend in params.selected) {
     if (legend !== params.name) {
       myChart.dispatchAction({
@@ -49,11 +51,11 @@ export const ModelsTriggerCountsLineChart = ({
   const chartRef = React.useRef<HTMLDivElement>(null);
 
   // Dynamic import for ECharts to prevent SSR issues
-  const [echarts, setEcharts] = React.useState<typeof import('echarts') | null>(null);
+  const [echarts, setEcharts] = React.useState<typeof import("echarts") | null>(null);
 
   React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      import('echarts').then((module) => {
+    if (typeof window !== "undefined") {
+      import("echarts").then((module) => {
         setEcharts(module);
       });
     }
@@ -69,10 +71,8 @@ export const ModelsTriggerCountsLineChart = ({
     if (chartRef.current && echarts) {
       // Dispose the previous chart instance
       echarts.dispose(chartRef.current); // eslint-disable-line
-      const myChart = echarts.init(chartRef.current, null, {
-        renderer: "svg",
-      }); // eslint-disable-line
-      const option = {
+      const myChart: ECharts = echarts.init(chartRef.current, null, { renderer: "svg" });
+      const option: EChartsOption = {
         grid: {
           left: "50px",
           right: "50px",
@@ -95,7 +95,7 @@ export const ModelsTriggerCountsLineChart = ({
         },
         tooltip: {
           trigger: "item",
-          tiggerOn: "click",
+          triggerOn: "click",
           backgroundColor: "white",
           borderColor: "transparent",
           textStyle: {
@@ -128,7 +128,7 @@ export const ModelsTriggerCountsLineChart = ({
             fontSize: "10px",
             fontFamily: "var(--font-ibm-plex-sans)",
             fontStyle: "normal",
-            fontWeight: "500",
+            fontWeight: 500,
             color: "#6B7280",
           },
         },
@@ -140,7 +140,7 @@ export const ModelsTriggerCountsLineChart = ({
             fontSize: "10px",
             fontFamily: "var(--font-ibm-plex-sans)",
             fontStyle: "normal",
-            fontWeight: "500",
+            fontWeight: 500,
             color: "#6B7280",
           },
         },
