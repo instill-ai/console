@@ -154,7 +154,7 @@ export const UploadImageFieldWithCrop = ({
                   >
                     <div className="flex flex-col gap-y-4">
                       <Icons.Upload01 className="w-8 mx-auto h-8 stroke-semantic-fg-primary" />
-                      <div className="flex flex-row product-body-text-4-regular">
+                      <p className="product-body-text-4-regular">
                         <span className="text-semantic-fg-primary">
                           Drag-and-drop file, or
                         </span>
@@ -162,7 +162,7 @@ export const UploadImageFieldWithCrop = ({
                         <span className="text-semantic-accent-default">
                           browse computer
                         </span>
-                      </div>
+                      </p>
                     </div>
 
                     <Input.Root className="hidden">
