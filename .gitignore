@@ -46,3 +46,6 @@ packages/design-system/public/tailwind.css
 
 # jetbrains ide
 .idea
+
+# Protobufs for the SDK integration tests
+packages/sdk/protobufs/

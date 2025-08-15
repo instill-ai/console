@@ -25,7 +25,7 @@ WORKDIR /app
 # ENV NODE_ENV ${NODE_ENV}
 
 # Uncomment the following line in case you want to disable telemetry during runtime.
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # We need bash to run our entrypoint.sh
 RUN apk add --no-cache bash
@@ -62,7 +62,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/entrypoint.sh ./
 
 USER nextjs
 
-# Permisions to execute script
+# Permissions to execute script
 RUN chmod +x ./entrypoint.sh
 RUN chmod +x ./apps/console/next-env.mjs
 
@@ -72,6 +72,7 @@ RUN chmod +rwx ./apps/console/next-env.mjs
 
 EXPOSE 3000
 
-ENV PORT 3000
-# set hostname to localhost
-ENV HOSTNAME "0.0.0.0"
+ENV PORT=3000
+
+# Set hostname to allow access from outside the container
+ENV HOSTNAME="0.0.0.0"

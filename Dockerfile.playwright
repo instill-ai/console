@@ -35,7 +35,7 @@ USER ${TEST_USER}
 
 RUN echo "test user: $TEST_USER"
 
-# Permisions to execute script
+# Permissions to execute script
 RUN chmod +x ./entrypoint-playwright.sh
 RUN chmod +x ./apps/console/next-env.mjs
 
