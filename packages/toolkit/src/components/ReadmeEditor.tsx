@@ -95,13 +95,11 @@ export const ReadmeEditor = ({
         className,
       )}
     >
-      <style jsx={true}>
-        {`
-          .mdxeditor-popup-container {
-            display: none;
-          }
-        `}
-      </style>
+      <style jsx>{`
+        .mdxeditor-popup-container {
+          display: none;
+        }
+      `}</style>
       <div
         className="px-3 py-2 h-14 flex flex-row justify-between items-center"
         ref={onMarkdownHeaderMount}

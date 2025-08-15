@@ -3,7 +3,9 @@
   "ui": "tui",
   "tasks": {
     "topo": {
-      "dependsOn": ["^topo"]
+      "dependsOn": [
+        "^topo"
+      ]
     },
     "build": {
       "dependsOn": [
@@ -15,18 +17,25 @@
         "storybook-static/**"
       ]
     },
-   "dev": {
+    "dev": {
       "cache": false,
       "persistent": true
     },
     "dev-ts": {
       "cache": false,
       "persistent": true,
-      "passThroughEnv": ["*"]
+      "passThroughEnv": [
+        "*"
+      ]
     },
     "lint": {
-      "dependsOn": ["^topo", "^build"],
-      "outputs": [".cache/.eslintcache"]
+      "dependsOn": [
+        "^topo",
+        "^build"
+      ],
+      "outputs": [
+        ".cache/.eslintcache"
+      ]
     },
     "test": {
       "dependsOn": [

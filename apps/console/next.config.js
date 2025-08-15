@@ -21,6 +21,9 @@ module.exports = {
   experimental: {
     forceSwcTransforms: true,
   },
+  compiler: {
+    styledJsx: true,
+  },
   redirects: async function () {
     return [
       {

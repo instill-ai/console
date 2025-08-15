@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import * as echarts from "echarts";
 import { Nullable, PipelinesChart } from "instill-sdk";
 
 import { Icons, SelectOption, Tooltip } from "@instill-ai/design-system";
@@ -20,7 +19,7 @@ type PipelineTriggerCountsLineChartProps = {
 };
 
 /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
-function selectGraph(params: any, myChart: echarts.ECharts): void {
+function selectGraph(params: any, myChart: any): void {
   myChart.dispatchAction({
     type: "legendSelect",
     // legend name
@@ -29,12 +28,11 @@ function selectGraph(params: any, myChart: echarts.ECharts): void {
 }
 
 /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
-function unselectGraph(params: any, myChart: echarts.ECharts): void {
+function unselectGraph(params: any, myChart: any): void {
   for (const legend in params.selected) {
     if (legend !== params.name) {
       myChart.dispatchAction({
         type: "legendUnSelect",
-        // legend name
         name: legend,
       });
     }
@@ -48,6 +46,20 @@ export const PipelineTriggerCountsLineChart = ({
   pipelineTriggersSummary,
 }: PipelineTriggerCountsLineChartProps) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
+
+  // Dynamic import for ECharts to prevent SSR issues
+  const [echarts, setEcharts] = React.useState<typeof import("echarts") | null>(
+    null,
+  );
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      import("echarts").then((module) => {
+        setEcharts(module);
+      });
+    }
+  }, []);
+
   const { xAxis, yAxis } = generatePipelineChartData(
     pipelines,
     selectedTimeOption.value,
@@ -58,7 +70,7 @@ export const PipelineTriggerCountsLineChart = ({
   const showGraph = pipelines.length > 0;
 
   React.useEffect(() => {
-    if (chartRef.current) {
+    if (chartRef.current && echarts) {
       // Dispose the previous chart instance
       echarts.dispose(chartRef.current); // eslint-disable-line
       const myChart = echarts.init(chartRef.current, null, {
@@ -176,7 +188,7 @@ export const PipelineTriggerCountsLineChart = ({
         }
       });
     }
-  }, [isLoading, xAxisData, seriesData, pipelines]);
+  }, [isLoading, xAxisData, seriesData, pipelines, echarts]);
 
   return (
     <div className="inline-flex w-full flex-col items-start justify-start rounded-sm bg-semantic-bg-primary shadow">

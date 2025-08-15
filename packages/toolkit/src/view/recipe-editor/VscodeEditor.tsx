@@ -1614,8 +1614,8 @@ export const VscodeEditor = () => {
 
   return (
     <div className="w-full relative h-full">
-      <style jsx={true}>{`
-        ..rendered-markdown > h1 {
+      <style jsx>{`
+        .rendered-markdown > h1 {
           font-size: 1.5rem;
           font-weight: 600;
         }

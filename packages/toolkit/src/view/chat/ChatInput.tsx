@@ -46,16 +46,14 @@ export const ChatInput = () => {
 
   return (
     <React.Fragment>
-      <style jsx={true} global={true}>
-        {`
-          .mention {
-            background-color: #f0f0f0;
-            padding: 0.1rem 0.3rem;
-            border-radius: 0.4rem;
-            box-decoration-break: clone;
-          }
-        `}
-      </style>
+      <style jsx global>{`
+        .mention {
+          background-color: #f0f0f0;
+          padding: 0.1rem 0.3rem;
+          border-radius: 0.4rem;
+          box-decoration-break: clone;
+        }
+      `}</style>
       <div
         className="flex flex-col px-2 border rounded"
         style={{
