@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.120.13](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.12...@instill-ai/toolkit-v0.120.13) (2025-08-15)
+
+
+### Bug Fixes
+
+* **ui:** image uploader layout fix ([#1815](https://github.com/instill-ai/console/issues/1815)) ([a7c2330](https://github.com/instill-ai/console/commit/a7c2330fcc10ac8a2e41da2ed22953d4210a0a21))
+
+
+### Miscellaneous
+
+* **github,toolkit,radix,jsx:** houseclean  codebase ([#1814](https://github.com/instill-ai/console/issues/1814)) ([2329c5b](https://github.com/instill-ai/console/commit/2329c5b7b3273c31785e72965f093b41c5bfe667))
+
 ## [0.120.12](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.11...@instill-ai/toolkit-v0.120.12) (2025-07-31)
 
 

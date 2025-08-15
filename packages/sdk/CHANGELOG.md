@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.8](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.7...instill-sdk-v0.18.8) (2025-08-15)
+
+
+### Miscellaneous
+
+* **github,toolkit,radix,jsx:** houseclean  codebase ([#1814](https://github.com/instill-ai/console/issues/1814)) ([2329c5b](https://github.com/instill-ai/console/commit/2329c5b7b3273c31785e72965f093b41c5bfe667))
+
 ## [0.18.7](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.6...instill-sdk-v0.18.7) (2025-07-31)
 
 
