@@ -207,9 +207,15 @@ export type PostInstillChatMessageRequest = {
   message: string;
   objectUids?: string[];
   enableWebSearch?: boolean;
-  tables: InstillChatMessageContextTable[];
-  folders: InstillChatMessageContextFolder[];
-  catalogs: InstillChatMessageContextCatalog[];
+  tables?: InstillChatMessageContextTable[];
+  folders?: InstillChatMessageContextFolder[];
+  catalogs?: InstillChatMessageContextCatalog[];
+  context: {
+    tableUids: string[];
+    folderUids: string[];
+    catalogUids: string[];
+    fileUids: string[];
+  };
 };
 
 export type PostCreateTableFlowChatMessageRequest = {
