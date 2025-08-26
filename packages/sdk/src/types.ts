@@ -240,9 +240,6 @@ export type InstillChatMessageContextCatalog = {
 };
 
 export type InstillChatMessageContext = {
-  tables: InstillChatMessageContextTable[];
-  folders: InstillChatMessageContextFolder[];
-  catalogs: InstillChatMessageContextCatalog[];
   tableUids: string[];
   folderUids: string[];
   catalogUids: string[];
