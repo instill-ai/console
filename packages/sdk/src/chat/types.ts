@@ -1,13 +1,6 @@
 import { FileType } from "../catalog";
 import { Table } from "../table";
-import {
-  Citation,
-  InstillChatMessageContext,
-  InstillChatMessageContextCatalog,
-  InstillChatMessageContextFolder,
-  InstillChatMessageContextTable,
-  Nullable,
-} from "../types";
+import { Citation, InstillChatMessageContext, Nullable } from "../types";
 
 export type ChatAgentConfig = {
   instructions: string;
@@ -207,9 +200,6 @@ export type PostInstillChatMessageRequest = {
   message: string;
   objectUids?: string[];
   enableWebSearch?: boolean;
-  tables?: InstillChatMessageContextTable[];
-  folders?: InstillChatMessageContextFolder[];
-  catalogs?: InstillChatMessageContextCatalog[];
   context: {
     tableUids: string[];
     folderUids: string[];
