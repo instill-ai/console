@@ -6,7 +6,6 @@ import {
   ChatSlice,
   InstillChatAgentStatus,
   InstillChatError,
-  InstillChatMessageContextFile,
   InstillStore,
   InstillStoreMutators,
   PendingFile,
@@ -168,16 +167,14 @@ export const createChatSlice: StateCreator<
         chatMessageContextTableUids: fn(state.chatMessageContextTableUids),
       };
     }),
-  chatMessageContextFiles: {},
-  updateChatMessageContextFiles: (
-    fn: (
-      prev: Record<string, InstillChatMessageContextFile[]>,
-    ) => Record<string, InstillChatMessageContextFile[]>,
+  chatMessageContextFileUids: {},
+  updateChatMessageContextFileUids: (
+    fn: (prev: Record<string, string[]>) => Record<string, string[]>,
   ) =>
     set((state) => {
       return {
         ...state,
-        chatMessageContextFiles: fn(state.chatMessageContextFiles),
+        chatMessageContextFileUids: fn(state.chatMessageContextFileUids),
       };
     }),
   chatMessageContextFolderUids: {},
