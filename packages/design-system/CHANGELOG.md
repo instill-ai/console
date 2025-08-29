@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.90.5](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.4...@instill-ai/design-system-v0.90.5) (2025-08-27)
+
+
+### Miscellaneous
+
+* **github,toolkit,radix,jsx:** houseclean  codebase ([#1814](https://github.com/instill-ai/console/issues/1814)) ([2329c5b](https://github.com/instill-ai/console/commit/2329c5b7b3273c31785e72965f093b41c5bfe667))
+
 ## [0.90.4](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.3...@instill-ai/design-system-v0.90.4) (2025-07-31)
 
 
