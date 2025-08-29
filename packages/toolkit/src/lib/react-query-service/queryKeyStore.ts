@@ -529,20 +529,7 @@ const mgmtQueryKeyStore = {
   getUseUserQueryKey({ userId }: { userId: Nullable<string> }) {
     return ["users", userId];
   },
-  getUseListNamespacesRemainingInstillCreditQueryKey({
-    namespaceIds,
-  }: {
-    namespaceIds: string[];
-  }) {
-    return [namespaceIds.join(","), "namespaces-remaining-instill-credit"];
-  },
-  getUseGetNamespaceRemainingInstillCreditQueryKey({
-    namespaceId,
-  }: {
-    namespaceId: Nullable<string>;
-  }) {
-    return [namespaceId, "namespace-remaining-instill-credit"];
-  },
+
   getUseAPITokensQueryKey() {
     return ["tokens"];
   },

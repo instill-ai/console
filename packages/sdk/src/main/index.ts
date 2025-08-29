@@ -4,7 +4,6 @@ import { ApplicationClient } from "../application";
 import { ArtifactClient } from "../artifact";
 import { CatalogClient } from "../catalog";
 import {
-  CreditClient,
   IntegrationClient,
   MembershipClient,
   MetricClient,
@@ -152,7 +151,6 @@ export class InstillAPIClient {
     organization: new OrganizationClient(this),
     token: new TokenClient(this),
     subscription: new SubscriptionClient(this),
-    credit: new CreditClient(this),
     utils: new UtilsClient(this),
     membership: new MembershipClient(this),
     integration: new IntegrationClient(this),
