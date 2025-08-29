@@ -1,4 +1,3 @@
-export * from "./credit";
 export * from "./membership";
 export * from "./metric";
 export * from "./organization";

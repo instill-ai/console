@@ -13,7 +13,6 @@ import { Icons, Separator } from "@instill-ai/design-system";
 import { env } from "../../../server";
 import { ComponentSection } from "./ComponentSection";
 import { OutputSection } from "./OutputSection";
-import { RemainingCredit } from "./RemainingCredit";
 import { SubscribeCTA } from "./SubscribeCTA";
 import { SupportLinks } from "./SupportLinks";
 import { VariableSection } from "./VariableSection";
@@ -69,7 +68,7 @@ export const Sidebar = ({
       </div>
       <div className="flex flex-col gap-y-2">
         <SupportLinks />
-        {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? <RemainingCredit /> : null}
+
         {env("NEXT_PUBLIC_APP_ENV") === "CLOUD" ? <SubscribeCTA /> : null}
       </div>
     </div>
