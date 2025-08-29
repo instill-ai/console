@@ -13,6 +13,3 @@ export * from "./use-api-tokens";
 export * from "./useAPIToken";
 export * from "./useCreateAPIToken";
 export * from "./useDeleteAPIToken";
-export * from "./onTriggerInvalidateCredits";
-export * from "./useGetNamespaceRemainingInstillCredit";
-export * from "./useListNamespacesRemainingInstillCredit";

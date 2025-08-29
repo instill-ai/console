@@ -22,7 +22,6 @@ import {
 import { defaultCodeSnippetStyles } from "../../../constant";
 import {
   InstillStore,
-  onTriggerInvalidateCredits,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
@@ -376,12 +375,6 @@ export const ModelPlayground = ({
         taskInputs: [input],
         requesterUid: targetNamespace ? targetNamespace.uid : undefined,
         versionId: activeVersion,
-      });
-
-      onTriggerInvalidateCredits({
-        namespaceId: targetNamespace.id ?? null,
-        namespaceIds: userNamespaces.data.map((namespace) => namespace.id),
-        queryClient,
       });
 
       if (amplitudeIsInit) {

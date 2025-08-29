@@ -24,14 +24,12 @@ import {
   InstillStore,
   isValidURL,
   Nullable,
-  onTriggerInvalidateCredits,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
   useComponentOutputFields,
   useInstillStore,
   usePipelineTriggerRequestForm,
-  useQueryClient,
   useRouteInfo,
   useShallow,
   useTriggerNamespacePipeline,
@@ -75,7 +73,6 @@ export const PipelinePlayground = ({
   const [isPipelineRunning, setIsPipelineRunning] = React.useState(false);
   const [outputActiveView, setOutputActiveView] =
     React.useState<PipelineOutputActiveView>("preview");
-  const queryClient = useQueryClient();
 
   const { accessToken, navigationNamespaceAnchor } = useInstillStore(
     useShallow(selector),
@@ -337,12 +334,6 @@ export const PipelinePlayground = ({
           stream: false,
         });
 
-        onTriggerInvalidateCredits({
-          namespaceId: targetNamespace?.id ?? null,
-          namespaceIds: userNamespaces.data.map((namespace) => namespace.id),
-          queryClient,
-        });
-
         if (amplitudeIsInit) {
           sendAmplitudeData("trigger_pipeline", {
             page_url: window.location.href,
@@ -391,12 +382,6 @@ export const PipelinePlayground = ({
           returnTraces: true,
           shareCode: shareCode ?? undefined,
           requesterUid: targetNamespace ? targetNamespace.uid : undefined,
-        });
-
-        onTriggerInvalidateCredits({
-          namespaceId: targetNamespace?.id ?? null,
-          namespaceIds: userNamespaces.data.map((namespace) => namespace.id),
-          queryClient,
         });
 
         if (amplitudeIsInit) {
