@@ -4,7 +4,22 @@ export async function readFileToBinary(file: File) {
 
     reader.onload = (event) => {
       if (event.target) {
-        resolve(event.target.result as string);
+        const dataUrl = String(event.target.result);
+        // Inject filename metadata into data URL: data:<mime>;filename=<name>;base64,<data>
+        // If it already contains ";base64,", insert the filename parameter right before it.
+        const base64Marker = ";base64,";
+        const idx = dataUrl.indexOf(base64Marker);
+        if (idx > -1) {
+          const header = dataUrl.slice(0, idx);
+          const payload = dataUrl.slice(idx);
+          const safeFileName = encodeURIComponent(file.name);
+          const headerWithFilename = header.includes(";filename=")
+            ? header
+            : `${header};filename=${safeFileName}`;
+          resolve(`${headerWithFilename}${payload}`);
+          return;
+        }
+        resolve(dataUrl);
       }
     };
 
