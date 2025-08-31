@@ -343,7 +343,6 @@ export const NamespaceSwitch = () => {
       onOpenChange={(value) => {
         setSwitchIsOpen(value);
       }}
-      disabled={false}
     >
       <Select.Trigger
         className={cn(
