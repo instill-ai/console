@@ -25,7 +25,7 @@ export const TextsField = (props: TextsFieldProps) => {
           {normalizedTexts && normalizedTexts.length > 0 ? (
             normalizedTexts.map((text, idx) => (
               <MDTextViewer
-                key={`${title}-${idx}`}
+                key={`${title}-${text}-${idx}-field`}
                 text={text}
                 forceFormatted={forceFormatted}
               />
