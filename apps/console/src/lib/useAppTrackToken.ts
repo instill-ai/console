@@ -25,7 +25,7 @@ export function useAppTrackToken({ enabled }: { enabled: boolean }) {
         // Try to parse the data if it's a string, otherwise use it directly
         let parsedData;
         try {
-          parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+          parsedData = typeof data === "string" ? JSON.parse(data) : data;
         } catch (parseError) {
           console.warn("Failed to parse cookie data:", parseError);
           // If parsing fails, treat the data as the token directly
