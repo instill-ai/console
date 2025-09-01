@@ -23,9 +23,9 @@ export const TextsField = (props: TextsFieldProps) => {
       {!hideField ? (
         <div className="flex w-full flex-col flex-wrap gap-2">
           {normalizedTexts && normalizedTexts.length > 0 ? (
-            normalizedTexts.map((text) => (
+            normalizedTexts.map((text, idx) => (
               <MDTextViewer
-                key={`${title}-${text}-field`}
+                key={`${title}-${text}-${idx}-field`}
                 text={text}
                 forceFormatted={forceFormatted}
               />

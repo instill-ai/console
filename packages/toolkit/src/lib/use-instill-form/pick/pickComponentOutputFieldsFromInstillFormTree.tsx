@@ -88,13 +88,13 @@ export function pickComponentOutputFieldsFromInstillFormTree(
 
             return 0;
           })
-          .map((property) => {
-            return pickComponentOutputFieldsFromInstillFormTree({
+          .map((property) =>
+            pickComponentOutputFieldsFromInstillFormTree({
               ...props,
               tree: property,
               data: propertyValue,
-            });
-          })}
+            }),
+          )}
       </div>
     ) : (
       <React.Fragment
@@ -108,13 +108,13 @@ export function pickComponentOutputFieldsFromInstillFormTree(
 
             return 0;
           })
-          .map((property) => {
-            return pickComponentOutputFieldsFromInstillFormTree({
+          .map((property) =>
+            pickComponentOutputFieldsFromInstillFormTree({
               ...props,
               tree: property,
               data: propertyValue,
-            });
-          })}
+            }),
+          )}
       </React.Fragment>
     );
   }
@@ -125,15 +125,15 @@ export function pickComponentOutputFieldsFromInstillFormTree(
   }
 
   // Process objectArray
-  // Becase we don't know the index of the output objectArray, we need to use
+  // Because we don't know the index of the output objectArray, we need to use
   // the data as a hint here
 
   if (tree._type === "objectArray") {
     const objectArrayData = propertyValue as GeneralRecord[];
     return propertyValue && tree.fieldKey ? (
       <div key={tree.path || tree.fieldKey} className="flex flex-col gap-y-2">
-        {objectArrayData.map((object, idx) => {
-          return pickComponentOutputFieldsFromInstillFormTree({
+        {objectArrayData.map((object, idx) =>
+          pickComponentOutputFieldsFromInstillFormTree({
             ...props,
             tree: tree.properties,
 
@@ -145,8 +145,8 @@ export function pickComponentOutputFieldsFromInstillFormTree(
               [tree.fieldKey as string]: object,
             },
             objectArrayIndex: idx,
-          });
-        })}
+          }),
+        )}
       </div>
     ) : (
       <React.Fragment key={tree.path || tree.fieldKey}>
@@ -164,15 +164,15 @@ export function pickComponentOutputFieldsFromInstillFormTree(
 
     return propertyValue && Array.isArray(arrayArrayData) ? (
       <div key={tree.path || tree.fieldKey} className="flex flex-col gap-y-2">
-        {arrayArrayData.map((data) => {
-          return pickComponentOutputFieldsFromInstillFormTree({
+        {arrayArrayData.map((data) =>
+          pickComponentOutputFieldsFromInstillFormTree({
             ...props,
             tree: tree.items,
             data: {
               [tree.fieldKey as string]: data,
             },
-          });
-        })}
+          }),
+        )}
       </div>
     ) : null;
   }
