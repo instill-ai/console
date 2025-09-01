@@ -211,7 +211,7 @@ export const Input = ({
 
       // We use the current route namespace as the requester namespace
       // This only happens when the user is on the recipe editor page
-      const tartgetNamespace = userNamespaces.data.find(
+      const targetNamespace = userNamespaces.data.find(
         (ns) => ns.id === routeInfo.data.namespaceId,
       );
 
@@ -287,7 +287,7 @@ export const Input = ({
             accessToken,
             inputs: [input],
             returnTraces: true,
-            requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
+            requesterUid: targetNamespace ? targetNamespace.uid : undefined,
           });
         } else {
           response = await triggerPipeline.mutateAsync({
@@ -296,7 +296,7 @@ export const Input = ({
             accessToken,
             inputs: [input],
             returnTraces: true,
-            requesterUid: tartgetNamespace ? tartgetNamespace.uid : undefined,
+            requesterUid: targetNamespace ? targetNamespace.uid : undefined,
           });
         }
 
