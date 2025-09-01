@@ -23,20 +23,16 @@ import {
 import type { CatalogTabs } from "../../types";
 import {
   InstillStore,
-  onTriggerInvalidateCredits,
   sendAmplitudeData,
   toastInstillError,
   useCreateNamespaceCatalogFile,
-  useGetNamespaceRemainingInstillCredit,
   useInstillStore,
   useListNamespaceCatalogFiles,
   useProcessCatalogFiles,
-  useQueryClient,
   useShallow,
   useUserNamespaces,
 } from "../../../../lib";
 import { useAmplitudeCtx } from "../../../../lib/amplitude";
-import { env } from "../../../../server";
 import { DragAndDropUpload } from "../DragAndDropUpload";
 import { FILE_ERROR_TIMEOUT } from "../lib/constant";
 import {
@@ -105,7 +101,6 @@ export const UploadExploreTab = ({
   subscription,
   isLocalEnvironment,
 }: UploadExploreTabProps) => {
-  const queryClient = useQueryClient();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const { uploadFile, uploadProgress, setUploadProgress } =
     useUploadWithProgress();
@@ -151,8 +146,9 @@ export const UploadExploreTab = ({
   const createNamespaceCatalogFile = useCreateNamespaceCatalogFile();
   const processCatalogFiles = useProcessCatalogFiles();
 
-  const { accessToken, navigationNamespaceAnchor, enabledQuery } =
-    useInstillStore(useShallow(selector));
+  const { accessToken, navigationNamespaceAnchor } = useInstillStore(
+    useShallow(selector),
+  );
 
   const userNamespaces = useUserNamespaces();
 
@@ -171,15 +167,6 @@ export const UploadExploreTab = ({
   // const [showStorageWarning, setShowStorageWarning] = React.useState(
   //   shouldShowStorageWarning(remainingStorageSpace, planStorageLimit),
   // );
-
-  const remainingCredit = useGetNamespaceRemainingInstillCredit({
-    namespaceId: navigationNamespaceAnchor,
-    accessToken,
-    enabled:
-      enabledQuery &&
-      Boolean(navigationNamespaceAnchor) &&
-      env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
-  });
 
   const handleFileUpload = async (file: File) => {
     const validationResult = validateFile(
@@ -247,19 +234,6 @@ export const UploadExploreTab = ({
   };
 
   const handleProcessFiles = async () => {
-    if (
-      !isLocalEnvironment &&
-      remainingCredit.data &&
-      remainingCredit.data.total < 10
-    ) {
-      toastInstillError({
-        title: "Insufficient Credit Balance",
-        error:
-          "Your credit balance is too low to use this service. Please consider upgrading your plan to continue.",
-      });
-      return;
-    }
-
     setIsProcessing(true);
     const files = form.getValues("files");
 
@@ -334,11 +308,6 @@ export const UploadExploreTab = ({
           .getValues("files")
           .filter((file) => isFile(file) && !processedFiles.has(file.name)),
       );
-      onTriggerInvalidateCredits({
-        namespaceId: targetNamespace?.id ?? null,
-        namespaceIds: userNamespaces.data.map((namespace) => namespace.id),
-        queryClient,
-      });
       onProcessFile();
       setHasUnsavedChanges(false);
       onTabChange("files");
@@ -493,11 +462,7 @@ export const UploadExploreTab = ({
         <Button
           variant="primary"
           size="lg"
-          disabled={
-            form.watch("files").length === 0 ||
-            isProcessing ||
-            remainingCredit.isLoading
-          }
+          disabled={form.watch("files").length === 0 || isProcessing}
           onClick={handleProcessFiles}
         >
           {isProcessing ? (

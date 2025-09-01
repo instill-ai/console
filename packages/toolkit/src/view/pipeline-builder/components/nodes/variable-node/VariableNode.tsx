@@ -15,13 +15,11 @@ import {
   GeneralRecord,
   InstillStore,
   Nullable,
-  onTriggerInvalidateCredits,
   sendAmplitudeData,
   toastInstillError,
   useAmplitudeCtx,
   useInstillStore,
   usePipelineTriggerRequestForm,
-  useQueryClient,
   useTriggerNamespacePipeline,
   useTriggerNamespacePipelineRelease,
   useUserNamespaces,
@@ -66,7 +64,6 @@ const selector = (store: InstillStore) => ({
 });
 
 export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
-  const queryClient = useQueryClient();
   const { amplitudeIsInit } = useAmplitudeCtx();
   const [noteIsOpen, setNoteIsOpen] = React.useState<boolean>(false);
   const [nodeIsCollapsed, setNodeIsCollapsed] = React.useState(false);
@@ -321,12 +318,6 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
           requesterUid: targetNamespace ? targetNamespace.uid : undefined,
         });
 
-        onTriggerInvalidateCredits({
-          namespaceId: targetNamespace?.id ?? null,
-          namespaceIds: userNamespaces.data.map((namespace) => namespace.id),
-          queryClient,
-        });
-
         if (amplitudeIsInit) {
           sendAmplitudeData("trigger_pipeline", {
             page_url: window.location.href,
@@ -360,12 +351,6 @@ export const VariableNode = ({ data, id }: NodeProps<TriggerNodeData>) => {
           accessToken,
           returnTraces: true,
           requesterUid: targetNamespace ? targetNamespace.uid : undefined,
-        });
-
-        onTriggerInvalidateCredits({
-          namespaceId: targetNamespace?.id ?? null,
-          namespaceIds: userNamespaces.data.map((namespace) => namespace.id),
-          queryClient,
         });
 
         if (amplitudeIsInit) {

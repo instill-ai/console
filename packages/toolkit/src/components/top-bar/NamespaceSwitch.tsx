@@ -21,7 +21,6 @@ import {
   useAuthenticatedUser,
   useGuardPipelineBuilderUnsavedChangesNavigation,
   useInstillStore,
-  useListNamespacesRemainingInstillCredit,
   useNamespaceModel,
   useNamespacePipeline,
   useRouteInfo,
@@ -59,20 +58,6 @@ export const NamespaceSwitch = () => {
   const userNamespaces = useUserNamespaces();
   const pathname = usePathname();
 
-  const namespaceIds = React.useMemo(() => {
-    if (!userNamespaces.isSuccess) {
-      return [];
-    }
-
-    return userNamespaces.data.map((e) => e.id);
-  }, [userNamespaces.isSuccess, userNamespaces.data]);
-
-  const namespacesRemainingCredit = useListNamespacesRemainingInstillCredit({
-    namespaceIds,
-    accessToken,
-    enabled: enabledQuery && env("NEXT_PUBLIC_APP_ENV") === "CLOUD",
-  });
-
   const routeInfo = useRouteInfo();
 
   const me = useAuthenticatedUser({
@@ -108,19 +93,10 @@ export const NamespaceSwitch = () => {
     return userNamespaces.data.map((namespace) => {
       return {
         ...namespace,
-        remainingCredit:
-          env("NEXT_PUBLIC_APP_ENV") === "CLOUD"
-            ? (namespacesRemainingCredit.data?.find(
-                (e) => e.namespaceId === namespace.id,
-              )?.remainingCredit.total ?? 0)
-            : 0,
+        remainingCredit: 0,
       };
     });
-  }, [
-    userNamespaces.isSuccess,
-    userNamespaces.data,
-    namespacesRemainingCredit.data,
-  ]);
+  }, [userNamespaces.isSuccess, userNamespaces.data]);
 
   const selectedNamespace = React.useMemo(() => {
     if (!navigationNamespaceAnchor || !userNamespaces.isSuccess) {
@@ -174,10 +150,6 @@ export const NamespaceSwitch = () => {
     }
 
     if (env("NEXT_PUBLIC_APP_ENV") === "CLOUD") {
-      if (!namespacesRemainingCredit.isSuccess) {
-        return;
-      }
-
       let namespaceAnchor: Nullable<string> = navigationNamespaceAnchor;
 
       // If we don't have the namespace anchor, we will try to find the
@@ -250,8 +222,7 @@ export const NamespaceSwitch = () => {
     userNamespaces.isSuccess,
     userNamespaces.data,
     navigationNamespaceAnchor,
-    namespacesRemainingCredit.isSuccess,
-    namespacesRemainingCredit.data,
+
     routeInfo.isSuccess,
     routeInfo.data,
     me.isSuccess,
@@ -372,13 +343,6 @@ export const NamespaceSwitch = () => {
       onOpenChange={(value) => {
         setSwitchIsOpen(value);
       }}
-      disabled={
-        env("NEXT_PUBLIC_APP_ENV") === "CLOUD"
-          ? namespacesRemainingCredit.isSuccess
-            ? false
-            : true
-          : false
-      }
     >
       <Select.Trigger
         className={cn(

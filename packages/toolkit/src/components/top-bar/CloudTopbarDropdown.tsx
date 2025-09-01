@@ -22,7 +22,6 @@ import {
 } from "../../lib";
 import { env } from "../../server";
 import { NamespaceAvatarWithFallback } from "../NamespaceAvatarWithFallback";
-import { RemainingCreditCTA } from "./RemainingCredit";
 import { TopbarDropdownGroup, TopbarDropdownItem } from "./TopbarDropdown";
 
 const selector = (store: InstillStore) => ({
@@ -100,7 +99,6 @@ export const CloudTopbarDropdown = () => {
               </p>
             </div>
           </div>
-          <RemainingCreditCTA ctaTargetHref="/subscribe" />
         </div>
         <Separator orientation="horizontal" />
         <TopbarDropdownGroup>
