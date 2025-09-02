@@ -3,7 +3,7 @@
 import * as React from "react";
 import cn from "clsx";
 
-import { getCaptializeTwoWordsFromName, Nullable } from "../lib";
+import { getCapitalizeTwoWordsFromName, Nullable } from "../lib";
 
 export const NamespaceAvatarWithFallbackRoot = ({
   src,
@@ -59,8 +59,8 @@ export const NamespaceAvatarWithFallbackFallback = ({
         )}
       >
         {displayName && displayName !== "" && displayName !== " "
-          ? getCaptializeTwoWordsFromName(displayName)
-          : getCaptializeTwoWordsFromName(namespaceId)}
+          ? getCapitalizeTwoWordsFromName(displayName)
+          : getCapitalizeTwoWordsFromName(namespaceId)}
       </p>
     </div>
   );

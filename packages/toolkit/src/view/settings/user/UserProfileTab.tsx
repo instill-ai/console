@@ -16,7 +16,7 @@ import {
 } from "@instill-ai/design-system";
 
 import { Setting } from "..";
-import { LoadingSpin, UploadImageFieldWithCrop } from "../../../components";
+import { LoadingSpin, NamespaceAvatarWithFallback, UploadImageFieldWithCrop } from "../../../components";
 import {
   InstillStore,
   sendAmplitudeData,
@@ -258,6 +258,14 @@ export const UserProfileTab = () => {
             />
             <Setting.TabSectionContent className="gap-y-4">
               <UploadImageFieldWithCrop
+                placeholder={
+                  <NamespaceAvatarWithFallback.Fallback
+                    namespaceId={me.data?.id ?? ""}
+                    displayName={me.data?.profile?.displayName ?? null}
+                    className="h-40 w-40"
+                    textClassName="!font-sans !text-[64px] !font-semibold"
+                  />
+                }
                 fieldName="profile.avatar"
                 form={form}
                 title="Upload your image"
