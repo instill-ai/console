@@ -16,7 +16,11 @@ import {
 } from "@instill-ai/design-system";
 
 import { Setting } from "..";
-import { LoadingSpin, NamespaceAvatarWithFallback, UploadImageFieldWithCrop } from "../../../components";
+import {
+  LoadingSpin,
+  NamespaceAvatarWithFallback,
+  UploadImageFieldWithCrop,
+} from "../../../components";
 import {
   InstillStore,
   sendAmplitudeData,
@@ -227,7 +231,7 @@ export const UserProfileTab = () => {
                       <div className="flex flex-row justify-between">
                         <Form.Label
                           className="product-body-text-3-semibold"
-                          id="user-proifle-bio"
+                          id="user-profile-bio"
                         >
                           Bio
                         </Form.Label>

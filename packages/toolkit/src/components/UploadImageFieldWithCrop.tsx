@@ -4,7 +4,6 @@ import * as React from "react";
 import cn from "clsx";
 import AvatarEditor from "react-avatar-editor";
 import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
 
 import {
   Button,
@@ -57,7 +56,7 @@ export const UploadImageFieldWithCrop = ({
   const [image, setImage] = React.useState<Nullable<string | File>>(null);
   const [openImage, setOpenImage] = React.useState<boolean>(false);
   const editorRef = React.useRef<AvatarEditor>(null);
-  const [imageInputId] = React.useState(uuidv4());
+  const imageInputId = React.useId();
 
   function handleSetProfilePicture() {
     // Save the cropped image as a file or perform any other actions here
