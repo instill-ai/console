@@ -25,7 +25,14 @@ export function withMiddlewareAuthRequired(
 
     const authRes = NextResponse.next();
     const sessionCookie = req.cookies.get("instill-auth-session");
-    const session = JSON.parse(sessionCookie?.value || "{}");
+    let session: any = {};
+    try {
+      session = JSON.parse(sessionCookie?.value || "{}");
+    } catch (error) {
+      console.warn("Failed to parse session cookie:", error);
+      // If the session cookie is malformed, treat it as no session
+      session = {};
+    }
 
     if (!session.accessToken) {
       if (pathname.startsWith("/api")) {

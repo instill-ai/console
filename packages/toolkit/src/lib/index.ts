@@ -27,7 +27,7 @@ export * from "./isValidURL";
 export * from "./toastInstillError";
 export * from "./toastInstillSuccess";
 export * from "./useRouteInfo";
-export * from "./getCaptializeTwoWordsFromName";
+export * from "./getCapitalizeTwoWordsFromName";
 export * from "./convertLongNumberToK";
 export * from "./formatNumberToLocale";
 export * from "./generateDateInPast";

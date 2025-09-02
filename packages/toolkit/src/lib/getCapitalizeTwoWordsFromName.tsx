@@ -1,4 +1,4 @@
-export function getCaptializeTwoWordsFromName(name: string) {
+export function getCapitalizeTwoWordsFromName(name: string) {
   if (name.includes(" ")) {
     const [first, second] = name.split(" ");
     return `${first?.charAt(0).toUpperCase()}${second?.charAt(0).toUpperCase()}`;

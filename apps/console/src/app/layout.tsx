@@ -38,6 +38,19 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn(ibmPlexSans.variable, ibmPlexMono.variable)}>
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link
+          rel="icon"
+          href="/images/favicon-16x16.png"
+          type="image/png"
+          sizes="16x16"
+        />
+        <link
+          rel="icon"
+          href="/images/favicon-32x32.png"
+          type="image/png"
+          sizes="32x32"
+        />
         <meta
           property="og:image"
           content={`${env(
