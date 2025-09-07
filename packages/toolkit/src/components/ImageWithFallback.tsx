@@ -21,13 +21,34 @@ export const ImageWithFallback = ({
   className,
 }: ImageWithFallbackProps) => {
   const [error, setError] = React.useState(false);
+  const [noContent, setNoContent] = React.useState(false);
   const currentImageSrc = React.useRef<string>(src);
 
   React.useEffect(() => {
     if (currentImageSrc.current !== src) {
       currentImageSrc.current = src;
-
       setError(false);
+      setNoContent(false);
+
+      // In case like avatar image, we need to check if the image is empty
+      // by fetching the image with GET method
+      if (src) {
+        let cancelled = false;
+        (async () => {
+          try {
+            const response = await fetch(src, { method: "GET" });
+            if (!cancelled && response.status === 204) {
+              setNoContent(true);
+            }
+          } catch {
+            // ignore network/GET errors; onError will handle image fallback
+          }
+        })();
+
+        return () => {
+          cancelled = true;
+        };
+      }
     }
   }, [src]);
 
@@ -41,7 +62,7 @@ export const ImageWithFallback = ({
       alt={alt}
       onError={() => {
         setError(true);
-        console.error(error);
+        if (src && !noContent) console.error(error);
       }}
       className={cn("shrink-0 grow-0", className)}
     />
