@@ -17,7 +17,6 @@ import {
 
 import { Setting } from "..";
 import {
-  LoadingSpin,
   NamespaceAvatarWithFallback,
   UploadImageFieldWithCrop,
 } from "../../../components";
@@ -373,12 +372,15 @@ export const UserProfileTab = () => {
           </Setting.TabSectionRoot>
           <Setting.TabSectionSeparator />
           <div className="flex flex-row-reverse">
-            <Button type="submit" size="lg" variant="primary">
-              {updateAuthenticatedUser.isPending ? (
-                <LoadingSpin className="!h-4 !w-4" />
-              ) : (
-                "Save changes"
-              )}
+            <Button
+              type="submit"
+              size="lg"
+              variant="primary"
+              disabled={
+                updateAuthenticatedUser.isPending || !form.formState.isDirty
+              }
+            >
+              Save changes
             </Button>
           </div>
         </form>
