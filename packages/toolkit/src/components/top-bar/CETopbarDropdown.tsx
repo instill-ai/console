@@ -42,6 +42,7 @@ export const CETopbarDropdown = () => {
       <DropdownMenu.Trigger className="!my-auto !h-10 !w-10">
         <NamespaceAvatarWithFallback.Root
           src={me.data.profile?.avatar ?? null}
+          refreshKey={me.data.updateTime}
           className="my-auto h-10 w-10 cursor-pointer"
           fallback={
             <NamespaceAvatarWithFallback.Fallback
@@ -61,6 +62,7 @@ export const CETopbarDropdown = () => {
           <div className="flex flex-row gap-x-2">
             <NamespaceAvatarWithFallback.Root
               src={me.data.profile?.avatar ?? null}
+              refreshKey={me.data.updateTime}
               className="my-auto h-10 w-10 cursor-pointer"
               fallback={
                 <NamespaceAvatarWithFallback.Fallback
