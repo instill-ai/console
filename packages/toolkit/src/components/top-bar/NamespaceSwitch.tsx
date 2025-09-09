@@ -356,13 +356,15 @@ export const NamespaceSwitch = () => {
           // We force the Select.Value to re-render when the selectedNamespace changes
           // to update the image of the Select.Value
           <Select.Value>
-            <div
-              key={selectedNamespace.id}
-              className="flex w-[128px] flex-row items-center justify-between gap-x-2"
-            >
+            <div className="flex w-[128px] flex-row items-center justify-between gap-x-2">
               <div className="flex w-full flex-row items-center gap-x-2">
                 <NamespaceAvatarWithFallback.Root
                   src={selectedNamespace.avatarUrl ?? null}
+                  refreshKey={
+                    me.isSuccess && selectedNamespace.id === me.data.id
+                      ? me.data.updateTime
+                      : undefined
+                  }
                   className="h-8 w-8"
                   fallback={
                     <NamespaceAvatarWithFallback.Fallback
@@ -372,7 +374,6 @@ export const NamespaceSwitch = () => {
                     />
                   }
                 />
-
                 <p className="line-clamp-1 break-all text-semantic-fg-primary product-body-text-3-medium">
                   {truncateDisplayName(selectedNamespace.id)}
                 </p>
@@ -403,6 +404,11 @@ export const NamespaceSwitch = () => {
                       <div className="flex flex-row items-center gap-x-3">
                         <NamespaceAvatarWithFallback.Root
                           src={namespace.avatarUrl ?? null}
+                          refreshKey={
+                            me.isSuccess && namespace.id === me.data.id
+                              ? me.data.updateTime
+                              : undefined
+                          }
                           className="h-10 w-10 rounded-full"
                           fallback={
                             <NamespaceAvatarWithFallback.Fallback
