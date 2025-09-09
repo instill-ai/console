@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.68.5](https://github.com/instill-ai/console/compare/v0.68.4...v0.68.5) (2025-09-09)
+
+
+### Bug Fixes
+
+* **console,tookit:** fix misleading errors ([#1822](https://github.com/instill-ai/console/issues/1822)) ([c63ad71](https://github.com/instill-ai/console/commit/c63ad711329ad17118731b32dc1605b546028029))
+
+
+### Miscellaneous
+
+* **deps:** bump next from 15.3.3 to 15.4.7 ([#1825](https://github.com/instill-ai/console/issues/1825)) ([198ab5c](https://github.com/instill-ai/console/commit/198ab5ccbacf1798565146560d6cf10a00b43bb7))
+
 ## [0.68.4](https://github.com/instill-ai/console/compare/v0.68.3...v0.68.4) (2025-08-27)
 
 
