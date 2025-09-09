@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.120.14](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.13...@instill-ai/toolkit-v0.120.14) (2025-09-09)
+
+
+### Bug Fixes
+
+* **components,view:** fix user profile avatar issue ([#1826](https://github.com/instill-ai/console/issues/1826)) ([d2b9cc0](https://github.com/instill-ai/console/commit/d2b9cc0190e88fd2126211120a91f9edb9fb875e))
+* **console,tookit:** fix misleading errors ([#1822](https://github.com/instill-ai/console/issues/1822)) ([c63ad71](https://github.com/instill-ai/console/commit/c63ad711329ad17118731b32dc1605b546028029))
+* **toolkit:** fix form key missing errors ([#1819](https://github.com/instill-ai/console/issues/1819)) ([f1e25db](https://github.com/instill-ai/console/commit/f1e25dbbe040c8e2e945ab62c747196f783321ac))
+
+
+### Miscellaneous
+
+* **sdk:** remove credit-related API ([#1821](https://github.com/instill-ai/console/issues/1821)) ([890a80d](https://github.com/instill-ai/console/commit/890a80d7f114732333185c4cdf2cbaa5d1046626))
+* **toolkit:** add filename in base64-encoded binary payload ([#1820](https://github.com/instill-ai/console/issues/1820)) ([0ca2e13](https://github.com/instill-ai/console/commit/0ca2e133b50b8e0033d803be2f25e36ef7125c8a))
+
 ## [0.120.13](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.12...@instill-ai/toolkit-v0.120.13) (2025-08-27)
 
 

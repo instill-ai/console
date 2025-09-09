@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.9](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.8...instill-sdk-v0.18.9) (2025-09-09)
+
+
+### Miscellaneous
+
+* **sdk:** remove credit-related API ([#1821](https://github.com/instill-ai/console/issues/1821)) ([890a80d](https://github.com/instill-ai/console/commit/890a80d7f114732333185c4cdf2cbaa5d1046626))
+
 ## [0.18.8](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.7...instill-sdk-v0.18.8) (2025-08-27)
 
 
