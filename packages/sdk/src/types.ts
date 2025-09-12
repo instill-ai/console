@@ -217,11 +217,22 @@ export type CitationType =
   | "CITATION_TYPE_WEB"
   | "CITATION_TYPE_TABLE";
 
+export type CitationExtractMethod =
+  | "CITATION_EXTRACT_METHOD_TYPE_RAG"
+  | "CITATION_EXTRACT_METHOD_TYPE_DEEP_ANALYSIS"
+  | "CITATION_EXTRACT_METHOD_TYPE_UNSPECIFIED";
+
+export type CitationReferenceUnit = "page" | "second";
+
 export type Citation = {
   type: CitationType;
   number: number;
   name: string;
   url: string;
+  extractMethod: CitationExtractMethod;
+  referenceUnit: CitationReferenceUnit;
+  referenceStart: number;
+  referenceEnd: number;
 };
 
 export type InstillChatMessageContext = {
