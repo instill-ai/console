@@ -197,8 +197,8 @@ importers:
         specifier: ^4.0.9
         version: 4.0.9
       axios:
-        specifier: ^1.8.2
-        version: 1.11.0
+        specifier: ^1.12.0
+        version: 1.12.0
       clsx:
         specifier: ^1.1.1
         version: 1.2.1
@@ -916,8 +916,8 @@ importers:
         specifier: ^8.16.0
         version: 8.17.1
       axios:
-        specifier: ^1.8.2
-        version: 1.11.0
+        specifier: ^1.12.0
+        version: 1.12.0
       clsx:
         specifier: ^1.0.0
         version: 1.2.1
@@ -1143,7 +1143,7 @@ importers:
         version: 8.57.1
       eslint-config-next:
         specifier: latest
-        version: 15.4.6(eslint@8.57.1)(typescript@5.9.2)
+        version: 15.5.3(eslint@8.57.1)(typescript@5.9.2)
       eslint-config-prettier:
         specifier: latest
         version: 10.1.8(eslint@8.57.1)
@@ -1446,6 +1446,11 @@ packages:
 
   '@babel/parser@7.28.0':
     resolution: {integrity: sha512-jVZGvOxOuNSsuQuLRTh13nU0AogFlw32w/MT+LV6D3sP5WdbW61E77RnkbaO2dUvmPAYrBDJXGn5gGS6tH4j8g==}
+    engines: {node: '>=6.0.0'}
+    hasBin: true
+
+  '@babel/parser@7.28.4':
+    resolution: {integrity: sha512-yZbBqeM6TkpP9du/I2pUZnJsRMGGvOuIrhjzC1AwHwW+6he4mni6Bp/m8ijn0iOuZuPI2BfkCoSRunpyjnrQKg==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -1942,6 +1947,10 @@ packages:
     resolution: {integrity: sha512-ruv7Ae4J5dUYULmeXw1gmb7rYRz57OWCPM57pHojnLq/3Z1CK2lNSLTCVjxVk1F/TZHwOZZrOWi0ur95BbLxNQ==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/types@7.28.4':
+    resolution: {integrity: sha512-bkFqkLhh3pMBUQQkpVgWDWq/lqzc2678eUyDlTBhRqhCHFguYYGM0Efga7tYk4TogG/3x0EEl66/OQ+WGbWB/Q==}
+    engines: {node: '>=6.9.0'}
+
   '@bundled-es-modules/cookie@2.0.1':
     resolution: {integrity: sha512-8o+5fRPLNbjbdGRRmJj3h6Hh1AQJf2dk3qQ/5ZFb+PXkRNiSoMGGUKlsgLfrxneb72axVJyIYji64E2+nNfYyw==}
 
@@ -2032,6 +2041,9 @@ packages:
   '@codemirror/language@6.11.2':
     resolution: {integrity: sha512-p44TsNArL4IVXDTbapUmEkAlvWs2CFQbcfc0ymDsis1kH2wh0gcY96AS29c/vp2d0y2Tquk1EDSaawpzilUiAw==}
 
+  '@codemirror/language@6.11.3':
+    resolution: {integrity: sha512-9HBM2XnwDj7fnu0551HkGdrUrrqmYq/WC5iv6nbY2WdicXdGbhR/gfbZOH73Aqj4351alY1+aoG9rCNfiwS1RA==}
+
   '@codemirror/legacy-modes@6.5.1':
     resolution: {integrity: sha512-DJYQQ00N1/KdESpZV7jg9hafof/iBNp9h7TYo1SLMk86TWl9uDsVdho2dzd81K+v4retmK6mdC7WpuOQDytQqw==}
 
@@ -2052,6 +2064,9 @@ packages:
 
   '@codemirror/view@6.38.1':
     resolution: {integrity: sha512-RmTOkE7hRU3OVREqFVITWHz6ocgBjv08GoePscAakgVQfciA3SGCEk7mb9IzwW61cKKmlTpHXG6DUE5Ubx+MGQ==}
+
+  '@codemirror/view@6.38.2':
+    resolution: {integrity: sha512-bTWAJxL6EOFLPzTx+O5P5xAO3gTqpatQ2b/ARQ8itfU/v2LlpS3pH2fkL0A3E/Fx8Y2St2KES7ZEV0sHTsSW/A==}
 
   '@codesandbox/nodebox@0.1.8':
     resolution: {integrity: sha512-2VRS6JDSk+M+pg56GA6CryyUSGPjBEe8Pnae0QL3jJF1mJZJVMDKr93gJRtBbLkfZN6LD/DwMtf+2L0bpWrjqg==}
@@ -2793,8 +2808,14 @@ packages:
   '@jridgewell/sourcemap-codec@1.5.4':
     resolution: {integrity: sha512-VT2+G1VQs/9oz078bLrYbecdZKs912zQlkelYpuf+SXF+QvZDYJlbx/LSx+meSAwdDFnF8FVXW92AVjjkVmgFw==}
 
+  '@jridgewell/sourcemap-codec@1.5.5':
+    resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
+
   '@jridgewell/trace-mapping@0.3.29':
     resolution: {integrity: sha512-uw6guiW/gcAGPDhLmd77/6lW8QLeiV5RUTsAX46Db6oLhGaVj4lhnPwb184s1bkc8kdVg/+h988dro8GRDpmYQ==}
+
+  '@jridgewell/trace-mapping@0.3.31':
+    resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
@@ -3000,8 +3021,8 @@ packages:
   '@next/eslint-plugin-next@15.3.3':
     resolution: {integrity: sha512-VKZJEiEdpKkfBmcokGjHu0vGDG+8CehGs90tBEy/IDoDDKGngeyIStt2MmE5FYNyU9BhgR7tybNWTAJY/30u+Q==}
 
-  '@next/eslint-plugin-next@15.4.6':
-    resolution: {integrity: sha512-2NOu3ln+BTcpnbIDuxx6MNq+pRrCyey4WSXGaJIyt0D2TYicHeO9QrUENNjcf673n3B1s7hsiV5xBYRCK1Q8kA==}
+  '@next/eslint-plugin-next@15.5.3':
+    resolution: {integrity: sha512-SdhaKdko6dpsSr0DldkESItVrnPYB1NS2NpShCSX5lc7SSQmLZt5Mug6t2xbiuVWEVDLZSuIAoQyYVBYp0dR5g==}
 
   '@next/swc-darwin-arm64@15.4.7':
     resolution: {integrity: sha512-2Dkb+VUTp9kHHkSqtws4fDl2Oxms29HcZBwFIda1X7Ztudzy7M6XF9HDS2dq85TmdN47VpuhjE+i6wgnIboVzQ==}
@@ -5604,8 +5625,8 @@ packages:
     resolution: {integrity: sha512-Xm7bpRXnDSX2YE2YFfBk2FnF0ep6tmG7xPh8iHee8MIcrgq762Nkce856dYtJYLkuIoYZvGfTs/PbZhideTcEg==}
     engines: {node: '>=4'}
 
-  axios@1.11.0:
-    resolution: {integrity: sha512-1Lx3WLFQWm3ooKDYZD1eXmoGO9fxYQjrycfHFC8P0sCfQVXyROp0p9PFWBehewBOdCwHc+f/b8I0fMto5eSfwA==}
+  axios@1.12.0:
+    resolution: {integrity: sha512-oXTDccv8PcfjZmPGlWsPSwtOJCZ/b6W5jAMCNcfwJbCzDckwG0jrYJFaWH1yvivfCXjVzV/SPDEhMB3Q+DSurg==}
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -6677,8 +6698,8 @@ packages:
       typescript:
         optional: true
 
-  eslint-config-next@15.4.6:
-    resolution: {integrity: sha512-4uznvw5DlTTjrZgYZjMciSdDDMO2SWIuQgUNaFyC2O3Zw3Z91XeIejeVa439yRq2CnJb/KEvE4U2AeN/66FpUA==}
+  eslint-config-next@15.5.3:
+    resolution: {integrity: sha512-e6j+QhQFOr5pfsc8VJbuTD9xTXJaRvMHYjEeLPA2pFkheNlgPLCkxdvhxhfuM4KGcqSZj2qEnpHisdTVs3BxuQ==}
     peerDependencies:
       eslint: ^7.23.0 || ^8.0.0 || ^9.0.0
       typescript: '>=3.3.1'
@@ -8060,6 +8081,9 @@ packages:
 
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
+
+  magic-string@0.30.19:
+    resolution: {integrity: sha512-2N21sPY9Ws53PZvsEpVtNuSW+ScYbQdp4b9qUaL+9QkHUrGFKo56Lg9Emg5s9V/qrtNBmiR01sYhUOwu3H+VOw==}
 
   magicast@0.3.5:
     resolution: {integrity: sha512-L0WhttDl+2BOsybvEOLK7fW3UA0OQ0IQ2d6Zl2x/a6vVRs3bAY0ECOSHHeL5jD+SbOpOCUEi0y1DgHEn9Qn1AQ==}
@@ -11537,6 +11561,10 @@ snapshots:
     dependencies:
       '@babel/types': 7.28.2
 
+  '@babel/parser@7.28.4':
+    dependencies:
+      '@babel/types': 7.28.4
+
   '@babel/plugin-bugfix-firefox-class-in-computed-class-key@7.27.1(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
@@ -12165,6 +12193,11 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
+  '@babel/types@7.28.4':
+    dependencies:
+      '@babel/helper-string-parser': 7.27.1
+      '@babel/helper-validator-identifier': 7.27.1
+
   '@bundled-es-modules/cookie@2.0.1':
     dependencies:
       cookie: 0.7.2
@@ -12410,6 +12443,15 @@ snapshots:
       '@lezer/lr': 1.4.2
       style-mod: 4.1.2
 
+  '@codemirror/language@6.11.3':
+    dependencies:
+      '@codemirror/state': 6.5.2
+      '@codemirror/view': 6.38.2
+      '@lezer/common': 1.2.3
+      '@lezer/highlight': 1.2.1
+      '@lezer/lr': 1.4.2
+      style-mod: 4.1.2
+
   '@codemirror/legacy-modes@6.5.1':
     dependencies:
       '@codemirror/language': 6.11.2
@@ -12440,12 +12482,19 @@ snapshots:
 
   '@codemirror/theme-one-dark@6.1.3':
     dependencies:
-      '@codemirror/language': 6.11.2
+      '@codemirror/language': 6.11.3
       '@codemirror/state': 6.5.2
-      '@codemirror/view': 6.38.1
+      '@codemirror/view': 6.38.2
       '@lezer/highlight': 1.2.1
 
   '@codemirror/view@6.38.1':
+    dependencies:
+      '@codemirror/state': 6.5.2
+      crelt: 1.0.6
+      style-mod: 4.1.2
+      w3c-keyname: 2.2.8
+
+  '@codemirror/view@6.38.2':
     dependencies:
       '@codemirror/state': 6.5.2
       crelt: 1.0.6
@@ -13191,10 +13240,17 @@ snapshots:
 
   '@jridgewell/sourcemap-codec@1.5.4': {}
 
+  '@jridgewell/sourcemap-codec@1.5.5': {}
+
   '@jridgewell/trace-mapping@0.3.29':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.4
+
+  '@jridgewell/trace-mapping@0.3.31':
+    dependencies:
+      '@jridgewell/resolve-uri': 3.1.2
+      '@jridgewell/sourcemap-codec': 1.5.5
 
   '@jridgewell/trace-mapping@0.3.9':
     dependencies:
@@ -13656,7 +13712,7 @@ snapshots:
     dependencies:
       fast-glob: 3.3.1
 
-  '@next/eslint-plugin-next@15.4.6':
+  '@next/eslint-plugin-next@15.5.3':
     dependencies:
       fast-glob: 3.3.1
 
@@ -16389,7 +16445,7 @@ snapshots:
 
   '@vue/compiler-core@3.5.18':
     dependencies:
-      '@babel/parser': 7.28.0
+      '@babel/parser': 7.28.4
       '@vue/shared': 3.5.18
       entities: 4.5.0
       estree-walker: 2.0.2
@@ -16402,13 +16458,13 @@ snapshots:
 
   '@vue/compiler-sfc@3.5.18':
     dependencies:
-      '@babel/parser': 7.28.0
+      '@babel/parser': 7.28.4
       '@vue/compiler-core': 3.5.18
       '@vue/compiler-dom': 3.5.18
       '@vue/compiler-ssr': 3.5.18
       '@vue/shared': 3.5.18
       estree-walker: 2.0.2
-      magic-string: 0.30.17
+      magic-string: 0.30.19
       postcss: 8.5.6
       source-map-js: 1.2.1
 
@@ -16813,7 +16869,7 @@ snapshots:
 
   axe-core@4.10.3: {}
 
-  axios@1.11.0:
+  axios@1.12.0:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.4
@@ -17198,7 +17254,7 @@ snapshots:
 
   code-red@1.0.4:
     dependencies:
-      '@jridgewell/sourcemap-codec': 1.5.4
+      '@jridgewell/sourcemap-codec': 1.5.5
       '@types/estree': 1.0.8
       acorn: 8.15.0
       estree-walker: 3.0.3
@@ -18068,9 +18124,9 @@ snapshots:
       - eslint-plugin-import-x
       - supports-color
 
-  eslint-config-next@15.4.6(eslint@8.57.1)(typescript@5.9.2):
+  eslint-config-next@15.5.3(eslint@8.57.1)(typescript@5.9.2):
     dependencies:
-      '@next/eslint-plugin-next': 15.4.6
+      '@next/eslint-plugin-next': 15.5.3
       '@rushstack/eslint-patch': 1.12.0
       '@typescript-eslint/eslint-plugin': 7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.9.2))(eslint@8.57.1)(typescript@5.9.2)
       '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.9.2)
@@ -19784,6 +19840,10 @@ snapshots:
   magic-string@0.30.17:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.4
+
+  magic-string@0.30.19:
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.5.5
 
   magicast@0.3.5:
     dependencies:
@@ -22833,8 +22893,8 @@ snapshots:
   svelte@4.2.20:
     dependencies:
       '@ampproject/remapping': 2.3.0
-      '@jridgewell/sourcemap-codec': 1.5.4
-      '@jridgewell/trace-mapping': 0.3.29
+      '@jridgewell/sourcemap-codec': 1.5.5
+      '@jridgewell/trace-mapping': 0.3.31
       '@types/estree': 1.0.8
       acorn: 8.15.0
       aria-query: 5.3.2
@@ -22844,7 +22904,7 @@ snapshots:
       estree-walker: 3.0.3
       is-reference: 3.0.3
       locate-character: 3.0.0
-      magic-string: 0.30.17
+      magic-string: 0.30.19
       periscopic: 3.1.0
 
   swagger2openapi@7.0.8:
