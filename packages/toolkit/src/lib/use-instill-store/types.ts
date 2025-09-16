@@ -380,9 +380,9 @@ export type ChatSlice = {
   updateChatMessageContextCatalogUids: (
     fn: (prev: Record<string, string[]>) => Record<string, string[]>,
   ) => void;
-  tempPreviewEntityUid: Nullable<string>;
-  updateTempPreviewEntityUid: (
-    fn: (prev: Nullable<string>) => Nullable<string>,
+  tempPreviewEntityData: Record<string, string>;
+  updateTempPreviewEntityData: (
+    fn: (prev: Record<string, string>) => Record<string, string>,
   ) => void;
 };
 
