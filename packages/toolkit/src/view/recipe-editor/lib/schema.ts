@@ -14,6 +14,7 @@ const connectorDefinitionIds = [
   "stability-ai",
   "instill-model",
   "hugging-face",
+  "gemini",
   "openai",
   "anthropic",
   "mistral-ai",
