@@ -199,7 +199,9 @@ export const createChatSlice: StateCreator<
     }),
   tempPreviewEntityData: null,
   updateTempPreviewEntityData: (
-    fn: (prev: Nullable<Record<string, string>>) => Nullable<Record<string, string>>,
+    fn: (
+      prev: Nullable<Record<string, string>>,
+    ) => Nullable<Record<string, string>>,
   ) =>
     set((state) => {
       return {

@@ -382,7 +382,9 @@ export type ChatSlice = {
   ) => void;
   tempPreviewEntityData: Nullable<Record<string, string>>;
   updateTempPreviewEntityData: (
-    fn: (prev: Nullable<Record<string, string>>) => Nullable<Record<string, string>>,
+    fn: (
+      prev: Nullable<Record<string, string>>,
+    ) => Nullable<Record<string, string>>,
   ) => void;
 };
 
