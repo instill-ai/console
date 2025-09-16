@@ -380,6 +380,10 @@ export type ChatSlice = {
   updateChatMessageContextCatalogUids: (
     fn: (prev: Record<string, string[]>) => Record<string, string[]>,
   ) => void;
+  tempPreviewEntityUid: Nullable<string>;
+  updateTempPreviewEntityUid: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) => void;
 };
 
 export type TableMode = "TABLE_MODE_CREATE_TABLE_FLOW" | "TABLE_MODE_NORMAL";

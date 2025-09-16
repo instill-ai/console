@@ -197,4 +197,14 @@ export const createChatSlice: StateCreator<
         chatMessageContextCatalogUids: fn(state.chatMessageContextCatalogUids),
       };
     }),
+  tempPreviewEntityUid: null,
+  updateTempPreviewEntityUid: (
+    fn: (prev: Nullable<string>) => Nullable<string>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        tempPreviewEntityUid: fn(state.tempPreviewEntityUid),
+      };
+    }),
 });
