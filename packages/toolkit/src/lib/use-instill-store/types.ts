@@ -398,7 +398,10 @@ export type ChatSlice = {
   ) => void;
 };
 
-export type TableMode = "TABLE_MODE_CREATE_TABLE_FLOW" | "TABLE_MODE_NORMAL";
+export type TableMode =
+  | "TABLE_MODE_CREATE_TABLE_FLOW"
+  | "TABLE_MODE_NORMAL"
+  | "TABLE_MODE_PREVIEW";
 
 export type CurrentTableSort = {
   columnUid: string;
