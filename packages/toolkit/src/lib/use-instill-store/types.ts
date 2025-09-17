@@ -317,6 +317,16 @@ export type InstillChatError = Nullable<{
 
 export type ChatDrawerType = Nullable<"files" | "citations">;
 
+export type TempPreviewEntityDataType = {
+  tableUid?: string;
+  rowUid?: string;
+  cellUid?: string;
+  fileUrl?: string;
+  fileName?: string;
+  referenceStart?: number;
+  referenceEnd?: number;
+};
+
 export type ChatSlice = {
   enabledTools: string[];
   updateEnabledTools: (fn: (prev: string[]) => string[]) => void;
@@ -380,11 +390,11 @@ export type ChatSlice = {
   updateChatMessageContextCatalogUids: (
     fn: (prev: Record<string, string[]>) => Record<string, string[]>,
   ) => void;
-  tempPreviewEntityData: Nullable<Record<string, string>>;
+  tempPreviewEntityData: Nullable<TempPreviewEntityDataType>;
   updateTempPreviewEntityData: (
     fn: (
-      prev: Nullable<Record<string, string>>,
-    ) => Nullable<Record<string, string>>,
+      prev: Nullable<TempPreviewEntityDataType>,
+    ) => Nullable<TempPreviewEntityDataType>,
   ) => void;
 };
 

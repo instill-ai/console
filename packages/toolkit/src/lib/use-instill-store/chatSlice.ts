@@ -9,6 +9,7 @@ import {
   InstillStore,
   InstillStoreMutators,
   PendingFile,
+  TempPreviewEntityDataType,
 } from "./types";
 
 export const createChatSlice: StateCreator<
@@ -200,8 +201,8 @@ export const createChatSlice: StateCreator<
   tempPreviewEntityData: null,
   updateTempPreviewEntityData: (
     fn: (
-      prev: Nullable<Record<string, string>>,
-    ) => Nullable<Record<string, string>>,
+      prev: Nullable<TempPreviewEntityDataType>,
+    ) => Nullable<TempPreviewEntityDataType>,
   ) =>
     set((state) => {
       return {
