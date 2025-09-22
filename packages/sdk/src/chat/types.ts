@@ -1,11 +1,6 @@
 import { FileType } from "../catalog";
 import { Table } from "../table";
-import {
-  Citation,
-  CitationFlat,
-  InstillChatMessageContext,
-  Nullable,
-} from "../types";
+import { Citation, InstillChatMessageContext, Nullable } from "../types";
 
 export type ChatAgentConfig = {
   instructions: string;
@@ -156,7 +151,7 @@ export type InstillChatEventTableCreated = {
 export type InstillChatEventCitationList = {
   event: typeof InstillChatTypeEnum.CitationListUpdated;
   data: InstillChatEventCommonData & {
-    citations: CitationFlat[];
+    citations: Citation[];
   };
 };
 
