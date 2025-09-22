@@ -1,6 +1,6 @@
 import type {
   CellType,
-  Citation,
+  CitationFlat,
   GeneralRecord,
   PipelineStreamStatus,
   Secret,
@@ -319,8 +319,10 @@ export type ChatDrawerType = Nullable<"files" | "citations">;
 
 export type TempPreviewEntityDataType = {
   tableUid?: string;
+  tableName?: string;
   rowUid?: string;
   cellUid?: string;
+  fileUid?: string;
   fileUrl?: string;
   fileName?: string;
   referenceStart?: number;
@@ -362,9 +364,11 @@ export type ChatSlice = {
       prev: Record<string, InstillChatAgentStatus>,
     ) => Record<string, InstillChatAgentStatus>,
   ) => void;
-  currentActiveCitationListInTheRightDrawer: Record<string, Citation[]>;
+  currentActiveCitationListInTheRightDrawer: Record<string, CitationFlat[]>;
   updateCurrentActiveCitationListInTheRightDrawer: (
-    fn: (prev: Record<string, Citation[]>) => Record<string, Citation[]>,
+    fn: (
+      prev: Record<string, CitationFlat[]>,
+    ) => Record<string, CitationFlat[]>,
   ) => void;
   uploadFilesPending: Record<string, PendingFile[]>;
   updateUploadFilesPending: (

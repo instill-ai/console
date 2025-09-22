@@ -1,4 +1,4 @@
-import { Citation, Nullable } from "instill-sdk";
+import { CitationFlat, Nullable } from "instill-sdk";
 import { StateCreator } from "zustand";
 
 import {
@@ -120,7 +120,9 @@ export const createChatSlice: StateCreator<
     }),
   currentActiveCitationListInTheRightDrawer: {},
   updateCurrentActiveCitationListInTheRightDrawer: (
-    fn: (prev: Record<string, Citation[]>) => Record<string, Citation[]>,
+    fn: (
+      prev: Record<string, CitationFlat[]>,
+    ) => Record<string, CitationFlat[]>,
   ) =>
     set((state) => {
       return {

@@ -222,17 +222,33 @@ export type CitationExtractMethod =
   | "CITATION_EXTRACT_METHOD_TYPE_DEEP_ANALYSIS"
   | "CITATION_EXTRACT_METHOD_TYPE_UNSPECIFIED";
 
-export type CitationReferenceUnit = "page" | "second";
+export type CitationReferenceUnitFlat = "page" | "second";
+export type CitationReferenceUnit = "UNIT_PAGE" | "UNIT_SECOND";
 
-export type Citation = {
+export type CitationBase = {
   type: CitationType;
   number: number;
   name: string;
   url: string;
   extractMethod: CitationExtractMethod;
-  referenceUnit: CitationReferenceUnit;
+};
+
+export type CitationFlat = CitationBase & {
+  referenceUnit: CitationReferenceUnitFlat;
   referenceStart: number;
   referenceEnd: number;
+};
+
+export type CitationReference = {
+  unit: CitationReferenceUnit;
+  coordinates: number[];
+};
+
+export type Citation = CitationBase & {
+  reference: {
+    start: CitationReference;
+    end: CitationReference;
+  };
 };
 
 export type InstillChatMessageContext = {
