@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.68.6](https://github.com/instill-ai/console/compare/v0.68.5...v0.68.6) (2025-10-09)
+
+
+### Miscellaneous
+
+* **deps:** bump axios from 1.11.0 to 1.12.0 ([#1828](https://github.com/instill-ai/console/issues/1828)) ([d70d2b5](https://github.com/instill-ai/console/commit/d70d2b5bd51e94dea8d2e4e8216c9c4c388d024f))
+* **public:** add Gemini component icon ([#1829](https://github.com/instill-ai/console/issues/1829)) ([9d30611](https://github.com/instill-ai/console/commit/9d3061191c813fcb29939a087c20898182f97106))
+
 ## [0.68.5](https://github.com/instill-ai/console/compare/v0.68.4...v0.68.5) (2025-09-09)
 
 
