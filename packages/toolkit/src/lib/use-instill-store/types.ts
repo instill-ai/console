@@ -1,6 +1,6 @@
 import type {
   CellType,
-  Citation,
+  CitationFlat,
   GeneralRecord,
   PipelineStreamStatus,
   Secret,
@@ -317,6 +317,18 @@ export type InstillChatError = Nullable<{
 
 export type ChatDrawerType = Nullable<"files" | "citations">;
 
+export type TempPreviewEntityDataType = {
+  tableUid?: string;
+  tableName?: string;
+  rowUid?: string;
+  cellUid?: string;
+  fileUid?: string;
+  fileUrl?: string;
+  fileName?: string;
+  referenceStart?: number;
+  referenceEnd?: number;
+};
+
 export type ChatSlice = {
   enabledTools: string[];
   updateEnabledTools: (fn: (prev: string[]) => string[]) => void;
@@ -352,9 +364,11 @@ export type ChatSlice = {
       prev: Record<string, InstillChatAgentStatus>,
     ) => Record<string, InstillChatAgentStatus>,
   ) => void;
-  currentActiveCitationListInTheRightDrawer: Record<string, Citation[]>;
+  currentActiveCitationListInTheRightDrawer: Record<string, CitationFlat[]>;
   updateCurrentActiveCitationListInTheRightDrawer: (
-    fn: (prev: Record<string, Citation[]>) => Record<string, Citation[]>,
+    fn: (
+      prev: Record<string, CitationFlat[]>,
+    ) => Record<string, CitationFlat[]>,
   ) => void;
   uploadFilesPending: Record<string, PendingFile[]>;
   updateUploadFilesPending: (
@@ -380,9 +394,18 @@ export type ChatSlice = {
   updateChatMessageContextCatalogUids: (
     fn: (prev: Record<string, string[]>) => Record<string, string[]>,
   ) => void;
+  tempPreviewEntityData: Nullable<TempPreviewEntityDataType>;
+  updateTempPreviewEntityData: (
+    fn: (
+      prev: Nullable<TempPreviewEntityDataType>,
+    ) => Nullable<TempPreviewEntityDataType>,
+  ) => void;
 };
 
-export type TableMode = "TABLE_MODE_CREATE_TABLE_FLOW" | "TABLE_MODE_NORMAL";
+export type TableMode =
+  | "TABLE_MODE_CREATE_TABLE_FLOW"
+  | "TABLE_MODE_NORMAL"
+  | "TABLE_MODE_PREVIEW";
 
 export type CurrentTableSort = {
   columnUid: string;

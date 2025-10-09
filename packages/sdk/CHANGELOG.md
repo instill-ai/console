@@ -57,7 +57,7 @@
 ### Features
 
 * add enhance/suggest table column definition sdk ([#1791](https://github.com/instill-ai/console/issues/1791)) ([81d3695](https://github.com/instill-ai/console/commit/81d36959353916ed6cfd7d9aea427197e28c39eb))
-* change TableMode type ([#1782](https://github.com/instill-ai/console/issues/1782)) ([b19e07f](https://github.com/instill-ai/console/commit/b19e07f2a8fa2bb9daf47808f460bc5d34bb2024))
+* change TableMode  type ([#1782](https://github.com/instill-ai/console/issues/1782)) ([b19e07f](https://github.com/instill-ai/console/commit/b19e07f2a8fa2bb9daf47808f460bc5d34bb2024))
 * **chat:** added available chat contexts api route ([#1788](https://github.com/instill-ai/console/issues/1788)) ([9f422cc](https://github.com/instill-ai/console/commit/9f422cc4e4c87015306a1adadb2a4ac8561cd356))
 * **chat:** more chat types updates ([#1784](https://github.com/instill-ai/console/issues/1784)) ([9618e80](https://github.com/instill-ai/console/commit/9618e802d0051df02b3e128d29a6359657153da7))
 * **chat:** update chat message type ([05ef774](https://github.com/instill-ai/console/commit/05ef7742e1eb8a1487716335babb3a433b7dcfe7))

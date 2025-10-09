@@ -217,11 +217,38 @@ export type CitationType =
   | "CITATION_TYPE_WEB"
   | "CITATION_TYPE_TABLE";
 
-export type Citation = {
+export type CitationExtractMethod =
+  | "CITATION_EXTRACT_METHOD_TYPE_RAG"
+  | "CITATION_EXTRACT_METHOD_TYPE_DEEP_ANALYSIS"
+  | "CITATION_EXTRACT_METHOD_TYPE_UNSPECIFIED";
+
+export type CitationReferenceUnitFlat = "page" | "second";
+export type CitationReferenceUnit = "UNIT_PAGE" | "UNIT_SECOND";
+
+export type CitationBase = {
   type: CitationType;
   number: number;
   name: string;
   url: string;
+  extractMethod: CitationExtractMethod;
+};
+
+export type CitationFlat = CitationBase & {
+  referenceUnit: CitationReferenceUnitFlat;
+  referenceStart: number;
+  referenceEnd: number;
+};
+
+export type CitationReference = {
+  unit: CitationReferenceUnit;
+  coordinates: number[];
+};
+
+export type Citation = CitationBase & {
+  reference: {
+    start: CitationReference;
+    end: CitationReference;
+  };
 };
 
 export type InstillChatMessageContext = {

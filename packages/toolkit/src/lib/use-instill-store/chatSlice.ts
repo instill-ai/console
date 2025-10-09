@@ -1,4 +1,4 @@
-import { Citation, Nullable } from "instill-sdk";
+import { CitationFlat, Nullable } from "instill-sdk";
 import { StateCreator } from "zustand";
 
 import {
@@ -9,6 +9,7 @@ import {
   InstillStore,
   InstillStoreMutators,
   PendingFile,
+  TempPreviewEntityDataType,
 } from "./types";
 
 export const createChatSlice: StateCreator<
@@ -119,7 +120,9 @@ export const createChatSlice: StateCreator<
     }),
   currentActiveCitationListInTheRightDrawer: {},
   updateCurrentActiveCitationListInTheRightDrawer: (
-    fn: (prev: Record<string, Citation[]>) => Record<string, Citation[]>,
+    fn: (
+      prev: Record<string, CitationFlat[]>,
+    ) => Record<string, CitationFlat[]>,
   ) =>
     set((state) => {
       return {
@@ -195,6 +198,18 @@ export const createChatSlice: StateCreator<
       return {
         ...state,
         chatMessageContextCatalogUids: fn(state.chatMessageContextCatalogUids),
+      };
+    }),
+  tempPreviewEntityData: null,
+  updateTempPreviewEntityData: (
+    fn: (
+      prev: Nullable<TempPreviewEntityDataType>,
+    ) => Nullable<TempPreviewEntityDataType>,
+  ) =>
+    set((state) => {
+      return {
+        ...state,
+        tempPreviewEntityData: fn(state.tempPreviewEntityData),
       };
     }),
 });
