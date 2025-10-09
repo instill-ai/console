@@ -199,14 +199,14 @@ export type StopInstillChatStreamRequest = {
   chatUid: string;
 };
 
-export type StopInstillChatStreamResponse = Record<string, string>;
+export type StopInstillChatStreamResponse = object;
 
 export type StopCreateTableFLowChatStreamRequest = {
   namespaceId: string;
   tableUid: string;
 };
 
-export type StopCreateTableFLowChatStreamResponse = Record<string, string>;
+export type StopCreateTableFLowChatStreamResponse = object;
 
 export type PostInstillChatMessageRequest = {
   namespaceId: string;
