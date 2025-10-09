@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.10](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.9...instill-sdk-v0.18.10) (2025-10-09)
+
+
+### Features
+
+* **types:** citations types update ([#1827](https://github.com/instill-ai/console/issues/1827)) ([33b4f22](https://github.com/instill-ai/console/commit/33b4f2293f1b8d5658c99ccc37b59764636d4a4c))
+
 ## [0.18.9](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.8...instill-sdk-v0.18.9) (2025-09-09)
 
 

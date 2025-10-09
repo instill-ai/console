@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.120.15](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.14...@instill-ai/toolkit-v0.120.15) (2025-10-09)
+
+
+### Features
+
+* **types:** citations types update ([#1827](https://github.com/instill-ai/console/issues/1827)) ([33b4f22](https://github.com/instill-ai/console/commit/33b4f2293f1b8d5658c99ccc37b59764636d4a4c))
+
+
+### Miscellaneous
+
+* **deps:** bump axios from 1.11.0 to 1.12.0 ([#1828](https://github.com/instill-ai/console/issues/1828)) ([d70d2b5](https://github.com/instill-ai/console/commit/d70d2b5bd51e94dea8d2e4e8216c9c4c388d024f))
+* **toolkit:** add gemini connector definition ([#1831](https://github.com/instill-ai/console/issues/1831)) ([7ec23c8](https://github.com/instill-ai/console/commit/7ec23c852d703143bd6e82b6abad99c35c61490d))
+
 ## [0.120.14](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.13...@instill-ai/toolkit-v0.120.14) (2025-09-09)
 
 
