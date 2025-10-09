@@ -194,6 +194,20 @@ export type DeleteInstillChatRequest = {
 
 export type GetInstillChatRequest = DeleteInstillChatRequest;
 
+export type StopInstillChatStreamRequest = {
+  namespaceId: string;
+  chatUid: string;
+};
+
+export type StopInstillChatStreamResponse = object;
+
+export type StopCreateTableFLowChatStreamRequest = {
+  namespaceId: string;
+  tableUid: string;
+};
+
+export type StopCreateTableFLowChatStreamResponse = object;
+
 export type PostInstillChatMessageRequest = {
   namespaceId: string;
   chatUid: string;

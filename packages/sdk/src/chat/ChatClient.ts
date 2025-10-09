@@ -29,6 +29,10 @@ import {
   ListCreateTableFlowChatMessagesResponse,
   ListNamespaceChatAvailableContextsRequest,
   ListNamespaceChatAvailableContextsResponse,
+  StopInstillChatStreamRequest,
+  StopInstillChatStreamResponse,
+  StopCreateTableFLowChatStreamResponse,
+  StopCreateTableFLowChatStreamRequest,
 } from "./types";
 
 export class ChatClient extends APIResource {
@@ -150,6 +154,21 @@ export class ChatClient extends APIResource {
     }
   }
 
+  async stopInstillChatStream({
+    namespaceId,
+    chatUid,
+  }: StopInstillChatStreamRequest) {
+    try {
+      const response = await this._client.post<StopInstillChatStreamResponse>(
+        `/namespaces/${namespaceId}/chats/${chatUid}/chat-with-agent/stop`,
+      );
+
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
   async postInstillChatMessage({
     namespaceId,
     chatUid,
@@ -178,6 +197,22 @@ export class ChatClient extends APIResource {
       );
 
       return Promise.resolve(stream);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async stopCreateTableFLowChatStream({
+    namespaceId,
+    tableUid,
+  }: StopCreateTableFLowChatStreamRequest) {
+    try {
+      const response =
+        await this._client.post<StopCreateTableFLowChatStreamResponse>(
+          `/namespaces/${namespaceId}/tables/${tableUid}/builder/chat-with-agent/stop`,
+        );
+
+      return Promise.resolve(response);
     } catch (error) {
       return Promise.reject(error);
     }
