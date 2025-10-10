@@ -10,6 +10,7 @@ import type { CatalogTabs } from "./types";
 import {
   GeneralAppPageProp,
   InstillStore,
+  toastInstillError,
   useAuthenticatedUserSubscription,
   useDeleteNamespaceCatalog,
   useInstillStore,
@@ -233,7 +234,10 @@ export const CatalogMainView = (props: CatalogViewProps) => {
       }
       catalogs.refetch();
     } catch (error) {
-      console.error("Error deleting catalog:", error);
+      toastInstillError({
+        title: "Failed to delete catalog",
+        error,
+      });
     }
   };
 

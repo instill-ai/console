@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { isAxiosError } from "axios";
 import {
   Catalog,
   CreateNamespaceCatalogRequest,
@@ -15,6 +16,7 @@ import { Separator, Skeleton } from "@instill-ai/design-system";
 
 import {
   InstillStore,
+  toastInstillError,
   useCreateNamespaceCatalog,
   useInstillStore,
   useListNamespaceCatalogs,
@@ -108,7 +110,17 @@ export const CatalogTab = ({
       catalogState.refetch();
       setIsCreateDialogOpen(false);
     } catch (error) {
-      console.error("Error creating catalog:", error);
+      // Handle 409 conflict error (catalog name already exists)
+      if (isAxiosError(error) && error.response?.status === 409) {
+        // Re-throw to be handled by the dialog
+        throw error;
+      }
+
+      // Handle other errors with toast
+      toastInstillError({
+        title: "Failed to create catalog",
+        error,
+      });
     }
   };
 
@@ -132,7 +144,11 @@ export const CatalogTab = ({
       });
       catalogState.refetch();
     } catch (error) {
-      console.error("Error updating catalog:", error);
+      // Handle errors with toast notification
+      toastInstillError({
+        title: "Failed to update catalog",
+        error,
+      });
     }
   };
 
@@ -156,7 +172,11 @@ export const CatalogTab = ({
       });
       catalogState.refetch();
     } catch (error) {
-      console.error("Error cloning catalog:", error);
+      // Handle errors with toast notification
+      toastInstillError({
+        title: "Failed to clone catalog",
+        error,
+      });
     }
   };
 
