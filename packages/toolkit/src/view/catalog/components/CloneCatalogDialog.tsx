@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isAxiosError } from "axios";
 import { Nullable } from "instill-sdk";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -19,6 +20,7 @@ import {
 import { EntitySelector, LoadingSpin } from "../../../components";
 import {
   InstillStore,
+  toastInstillError,
   useAuthenticatedUserSubscription,
   useInstillStore,
   useOrganizationSubscription,
@@ -205,7 +207,21 @@ export const CloneCatalogDialog = ({
       setIsSubmitting(false);
       onClose();
     } catch (error) {
-      console.error("Error cloning catalog:", error);
+      // Handle 409 conflict error (catalog name already exists)
+      if (isAxiosError(error) && error.response?.status === 409) {
+        form.setError("name", {
+          type: "manual",
+          message: "Catalog name already exists",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Handle other errors with toast
+      toastInstillError({
+        title: "Failed to clone catalog",
+        error,
+      });
       setIsSubmitting(false);
     }
   };

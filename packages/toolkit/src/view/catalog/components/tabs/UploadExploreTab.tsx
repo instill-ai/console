@@ -134,6 +134,9 @@ export const UploadExploreTab = ({
   const [duplicateFileName, setDuplicateFileName] = React.useState<string>("");
   const [tooLongFileName, setTooLongFileName] = React.useState<string>("");
   const [isProcessing, setIsProcessing] = React.useState(false);
+  const [processingPhase, setProcessingPhase] = React.useState<
+    "uploading" | "processing" | null
+  >(null);
   const [processingFileIndex, setProcessingFileIndex] =
     React.useState<Nullable<number>>(null);
 
@@ -235,6 +238,7 @@ export const UploadExploreTab = ({
 
   const handleProcessFiles = async () => {
     setIsProcessing(true);
+    setProcessingPhase("uploading");
     const files = form.getValues("files");
 
     if (
@@ -243,10 +247,12 @@ export const UploadExploreTab = ({
       !navigationNamespaceAnchor
     ) {
       setIsProcessing(false);
+      setProcessingPhase(null);
       return;
     }
 
     const processedFiles = new Set<string>();
+    const uploadedFileUids: string[] = [];
 
     try {
       const targetNamespace = userNamespaces.data.find(
@@ -257,11 +263,13 @@ export const UploadExploreTab = ({
         throw new Error("Selected namespace not found");
       }
 
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        if (!isFile(file) || processedFiles.has(file.name)) continue;
+      // Phase 1: Upload all files in parallel
+      const uploadPromises = files.map(async (file, index) => {
+        if (!isFile(file) || processedFiles.has(file.name)) {
+          return null;
+        }
 
-        setProcessingFileIndex(i);
+        setProcessingFileIndex(index);
 
         try {
           await uploadFile(file, (progress) => {
@@ -286,17 +294,36 @@ export const UploadExploreTab = ({
             accessToken,
           });
 
+          processedFiles.add(file.name);
+          return uploadedFile.fileUid;
+        } catch (error) {
+          toastInstillError({
+            title: `Error uploading file ${file.name}`,
+            error,
+          });
+          return null;
+        }
+      });
+
+      // Wait for all uploads to complete
+      const results = await Promise.all(uploadPromises);
+
+      // Filter out failed uploads (null values)
+      uploadedFileUids.push(...results.filter((uid) => uid !== null));
+
+      // Phase 2: Batch process all successfully uploaded files
+      if (uploadedFileUids.length > 0) {
+        setProcessingPhase("processing");
+        setProcessingFileIndex(null);
+        try {
           await processCatalogFiles.mutateAsync({
-            fileUids: [uploadedFile.fileUid],
+            fileUids: uploadedFileUids,
             accessToken,
             requesterUid: targetNamespace.uid,
           });
-
-          processedFiles.add(file.name);
         } catch (error) {
-          console.error(`Error processing file ${file.name}:`, error);
           toastInstillError({
-            title: `Error processing file ${file.name}`,
+            title: "Error processing files",
             error,
           });
         }
@@ -318,13 +345,13 @@ export const UploadExploreTab = ({
         });
       }
     } catch (error) {
-      console.error("Error processing files:", error);
       toastInstillError({
         title: "Error processing files",
         error,
       });
     } finally {
       setIsProcessing(false);
+      setProcessingPhase(null);
       setProcessingFileIndex(null);
     }
   };
@@ -468,7 +495,11 @@ export const UploadExploreTab = ({
           {isProcessing ? (
             <>
               <Icons.LayersTwo01 className="mr-2 h-4 w-4 animate-spin" />
-              Processing...
+              {processingPhase === "uploading"
+                ? "Uploading Files..."
+                : processingPhase === "processing"
+                  ? "Processing Files..."
+                  : "Processing..."}
             </>
           ) : (
             "Process Files"

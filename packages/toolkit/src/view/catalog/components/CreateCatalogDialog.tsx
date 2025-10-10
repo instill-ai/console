@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -17,7 +18,12 @@ import {
 
 import { EntitySelector, LoadingSpin } from "../../../components";
 import { resourceIdPrefix } from "../../../constant";
-import { InstillStore, useInstillStore, useShallow } from "../../../lib";
+import {
+  InstillStore,
+  toastInstillError,
+  useInstillStore,
+  useShallow,
+} from "../../../lib";
 import { useUserNamespaces } from "../../../lib/useUserNamespaces";
 import { formatResourceId } from "../../../server";
 import { MAX_DESCRIPTION_LENGTH } from "./lib/constant";
@@ -110,7 +116,20 @@ export const CreateCatalogDialog = ({
       router.push(`/${data.namespaceId}/catalog`);
       onClose();
     } catch (error) {
-      console.error("Failed to create catalog", error);
+      // Handle 409 conflict error (catalog name already exists)
+      if (isAxiosError(error) && error.response?.status === 409) {
+        form.setError("name", {
+          type: "manual",
+          message: "Catalog name already exists",
+        });
+        return;
+      }
+
+      // Handle other errors with toast
+      toastInstillError({
+        title: "Failed to create catalog",
+        error,
+      });
     } finally {
       setCreating(false);
     }

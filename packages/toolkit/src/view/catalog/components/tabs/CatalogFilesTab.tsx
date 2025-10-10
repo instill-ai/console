@@ -13,6 +13,7 @@ import { Separator, Skeleton } from "@instill-ai/design-system";
 
 import {
   InstillStore,
+  toastInstillError,
   useAuthenticatedUser,
   useDeleteCatalogFile,
   useInstillStore,
@@ -142,6 +143,10 @@ export const CatalogFilesTab = ({
         setDeletingFile(null);
       }
     } catch (error) {
+      toastInstillError({
+        title: "Failed to delete file",
+        error,
+      });
       setDeletingFile(null);
     }
   };
