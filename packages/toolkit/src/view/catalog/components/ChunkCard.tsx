@@ -40,9 +40,9 @@ const ChunkCard = ({
           <Tag
             size="sm"
             variant="default"
-            className="!rounded border-semantic-bg-line bg-semantic-bg-base-bg border items-center h-6"
+            className="!rounded border-semantic-bg-line bg-semantic-bg-base-bg border items-center h-6 gap-0.5"
           >
-            <Icons.Hash2 className="-mr-1 h-5 w-5 stroke-semantic-fg-primary mt-3" />
+            <Icons.Hash2 className="h-3.5 w-3.5 stroke-semantic-fg-primary" />
             <span className="product-body-text-3-medium">
               {String(index + 1).padStart(3, "0")}
             </span>
