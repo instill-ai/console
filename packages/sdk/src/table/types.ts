@@ -492,6 +492,7 @@ export type SuggestNamespaceTableColumnDefinitionRequest = {
   type?: CellType;
   selection?: ColumnSelection;
   enableAutomaticComputation?: boolean;
+  prompt?: string;
 };
 
 export type SuggestNamespaceTableColumnDefinitionResponse = {
