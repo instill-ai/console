@@ -14,6 +14,8 @@ import { Attachment01 } from "./Attachment01";
 import { BankNote01 } from "./BankNote01";
 import { BankNote03 } from "./BankNote03";
 import { BarChartSquare02 } from "./BarChartSquare02";
+import { Blockquote } from "./Blockquote";
+import { Bold } from "./Bold";
 import { BookOpen02 } from "./BookOpen02";
 import { Box } from "./Box";
 import { BracketSlash } from "./BracketSlash";
@@ -87,6 +89,7 @@ import { GitMerge } from "./GitMerge";
 import { Globe01 } from "./Globe01";
 import { GraduationHat } from "./GraduationHat";
 import { Hash2 } from "./Hash2";
+import { Heading } from "./Heading";
 import { HelpCircle } from "./HelpCircle";
 import { HomeLine } from "./HomeLine";
 import { HTMLFile } from "./HTMLFile";
@@ -96,6 +99,7 @@ import { ImagePlus } from "./ImagePlus";
 import { InfoCircle } from "./InfoCircle";
 import { InfoSquare } from "./InfoSquare";
 import { IntersectSquare } from "./IntersectSquare";
+import { Italic } from "./Italic";
 import { LayersTwo01 } from "./LayersTwo01";
 import { LayoutLeft } from "./LayoutLeft";
 import { Lightbulb03 } from "./Lightbulb03";
@@ -103,6 +107,9 @@ import { Lightning01 } from "./Lightning01";
 import { Lightning02 } from "./Lightning02";
 import { Link01 } from "./Link01";
 import { LinkExternal01 } from "./LinkExternal01";
+import { ListOrdered } from "./ListOrdered";
+import { ListTask } from "./ListTask";
+import { ListUnordered } from "./ListUnordered";
 import { Lock03 } from "./Lock03";
 import { LockUnlocked03 } from "./LockUnlocked03";
 import { Logout01 } from "./Logout01";
@@ -163,6 +170,7 @@ import { Speaker01 } from "./Speaker01";
 import { SpeechRecognition } from "./SpeechRecognition";
 import { Star06 } from "./Star06";
 import { Stop } from "./Stop";
+import { Strikethrough } from "./Strikethrough";
 import { Table } from "./Table";
 import { Tag01 } from "./Tag01";
 import { Target05 } from "./Target05";
@@ -179,6 +187,7 @@ import { TXTFile } from "./TXTFile";
 import { Type01 } from "./Type01";
 import { Type02 } from "./Type02";
 import { TypePlus } from "./TypePlus";
+import { Underline } from "./Underline";
 import { Update } from "./Update";
 import { Upload01 } from "./Upload01";
 import { UploadCloud01 } from "./UploadCloud01";
@@ -216,6 +225,8 @@ export const Icons = {
   BankNote01,
   BankNote03,
   BarChartSquare02,
+  Blockquote,
+  Bold,
   BookOpen02,
   Box,
   BracketSlash,
@@ -288,6 +299,7 @@ export const Icons = {
   GitMerge,
   Globe01,
   GraduationHat,
+  Heading,
   HelpCircle,
   HTMLFile,
   HomeLine,
@@ -301,6 +313,7 @@ export const Icons = {
   Image01,
   Image03,
   ImagePlus,
+  Italic,
   Logout01,
   Logout03,
   Logout04,
@@ -309,6 +322,9 @@ export const Icons = {
   Lightning01,
   Lightning02,
   Lightbulb03,
+  ListOrdered,
+  ListUnordered,
+  ListTask,
   LayoutLeft,
   Model,
   MultipleVideo,
@@ -357,6 +373,7 @@ export const Icons = {
   SlashDivider,
   Speaker01,
   Stop,
+  Strikethrough,
   SearchLg,
   SearchMd,
   SearchSm,
@@ -381,6 +398,7 @@ export const Icons = {
   TXTFile,
   Tool01,
   Tv03,
+  Underline,
   Upload01,
   UploadCloud01,
   User01,
