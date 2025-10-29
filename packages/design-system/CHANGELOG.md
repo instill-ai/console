@@ -1,5 +1,12 @@
 # @instill-ai/design-system
 
+## [0.90.6](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.5...@instill-ai/design-system-v0.90.6) (2025-10-24)
+
+
+### Features
+
+* **icons:** new icons ([#1839](https://github.com/instill-ai/console/issues/1839)) ([4199309](https://github.com/instill-ai/console/commit/4199309bfa617a316a8569ec2c4d551f8f1e0412))
+
 ## [0.90.5](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.4...@instill-ai/design-system-v0.90.5) (2025-08-27)
 
 

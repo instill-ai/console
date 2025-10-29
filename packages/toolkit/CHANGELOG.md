@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.120.16](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.15...@instill-ai/toolkit-v0.120.16) (2025-10-24)
+
+
+### Features
+
+* **catalog:** improve error handling for dialogs and batch upload operations ([#1834](https://github.com/instill-ai/console/issues/1834)) ([95921fe](https://github.com/instill-ai/console/commit/95921fe4471866615454598f34c1621f91f828f4))
+
+
+### Bug Fixes
+
+* **artifact:** fix chunks card harsh sign ([#1836](https://github.com/instill-ai/console/issues/1836)) ([b0c1105](https://github.com/instill-ai/console/commit/b0c11053cbcfcf69ae6e5b058fbd8fe47cd77f61))
+
+
+### Miscellaneous
+
+* **package:** bump sdk and toolkit package version ([#1838](https://github.com/instill-ai/console/issues/1838)) ([bf00de4](https://github.com/instill-ai/console/commit/bf00de478852ecfa3279eacae742ba19d0935718))
+
 ## [0.120.15](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.14...@instill-ai/toolkit-v0.120.15) (2025-10-09)
 
 
