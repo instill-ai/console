@@ -344,6 +344,9 @@ export type NamespaceChatAvailableContextsTableOption =
   NamespaceChatAvailableContextsOption & {
     tableUid: string;
     title: string;
+    columnUid?: string;
+    rowUid?: string;
+    cellUid?: string;
   };
 
 export type NamespaceChatAvailableContextsCatalogOption =
