@@ -254,6 +254,6 @@ export type Citation = CitationBase & {
 export type InstillChatMessageContext = {
   tableUids: string[];
   folderUids: string[];
-  catalogUids: string[];
+  knowledgeBaseUids: string[];
   fileUids: string[];
 };

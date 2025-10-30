@@ -10,6 +10,6 @@ export const config = {
     "/(.*?)/pipelines/(.*?)/editor",
     "/(.*?)/models/:path*",
     "/settings",
-    "/(.*?)/catalog/:path*",
+    "/(.*?)/knowledge-base/:path*",
   ],
 };

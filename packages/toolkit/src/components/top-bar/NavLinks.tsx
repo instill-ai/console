@@ -37,7 +37,7 @@ const navLinkItems: NavLinkProps[] = [
     strict: true,
   },
   {
-    pathname: "catalog",
+    pathname: "knowledge-base",
     Icon: Icons.Database01,
     title: "Artifacts",
   },

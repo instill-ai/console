@@ -36,7 +36,7 @@ export type AmplitudeEvent =
   | "subscribe_to_team"
   | "create_secret"
   | "delete_secret"
-  | "process_catalog_files";
+  | "process_knowledge_base_files";
 
 export type AmplitudeEventProperties = {
   connector_definition_name?: string;
