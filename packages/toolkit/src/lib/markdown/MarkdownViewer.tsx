@@ -42,8 +42,13 @@ export const MarkdownViewer = ({
           word-break: break-all !important;
         }
 
+        .markdown-body pre {
+          overflow-x: auto !important;
+          white-space: pre !important;
+        }
+
         .markdown-body pre code {
-          white-space: pre-wrap !important;
+          white-space: pre !important;
         }
 
         .markdown-body p {
@@ -71,10 +76,16 @@ export const MarkdownViewer = ({
           max-width: 100%;
           object-fit: contain;
         }
+
+        .markdown-body table {
+          display: block;
+          overflow-x: auto;
+          white-space: nowrap;
+        }
       `}</style>
       <article
         className={cn(
-          "markdown-body w-full overflow-x-scroll rounded-b-sm px-1.5 py-1",
+          "markdown-body w-full overflow-x-auto rounded-b-sm px-1.5 py-1",
           className,
         )}
         style={style}

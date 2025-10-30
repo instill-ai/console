@@ -1,6 +1,4 @@
 import type {
-  CellType,
-  CitationFlat,
   GeneralRecord,
   PipelineStreamStatus,
   Secret,
@@ -305,202 +303,17 @@ export type RecentlyUsedSlice = {
   ) => void;
 };
 
-export type InstillChatAgentStatus = Nullable<{
-  content?: string;
-  createTime: string;
-}>;
-
-export type InstillChatError = Nullable<{
-  content?: string;
-  createTime: string;
-}>;
-
-export type ChatDrawerType = Nullable<"files" | "citations">;
-
-export type TempPreviewEntityDataType = {
-  tableUid?: string;
-  tableName?: string;
-  rowUid?: string;
-  cellUid?: string;
-  fileUid?: string;
-  fileUrl?: string;
-  fileName?: string;
-  referenceStart?: number;
-  referenceEnd?: number;
-};
-
-export type ChatSlice = {
-  enabledTools: string[];
-  updateEnabledTools: (fn: (prev: string[]) => string[]) => void;
-  enableToolSuggestion: boolean;
-  updateEnableToolSuggestion: (fn: (prev: boolean) => boolean) => void;
-  chatFullscreenOpen: boolean;
-  updateChatFullscreenOpen: (fn: (prev: boolean) => boolean) => void;
-  chatDrawerType: ChatDrawerType;
-  updateChatDrawerType: (fn: (prev: ChatDrawerType) => ChatDrawerType) => void;
-  isWebSearchEnabled: boolean;
-  updateIsWebSearchEnabled: (fn: (prev: boolean) => boolean) => void;
-  chatStreamIsActive: Record<string, boolean>;
-  updateChatStreamIsActive: (
-    fn: (prev: Record<string, boolean>) => Record<string, boolean>,
-  ) => void;
-  chatIsBusy: Record<string, boolean>;
-  updateChatIsBusy: (
-    fn: (prev: Record<string, boolean>) => Record<string, boolean>,
-  ) => void;
-  isTableUpdated: Record<string, boolean>;
-  updateIsTableUpdated: (
-    fn: (prev: Record<string, boolean>) => Record<string, boolean>,
-  ) => void;
-  chatAgentStatus: Record<string, InstillChatAgentStatus>;
-  updateChatAgentStatus: (
-    fn: (
-      prev: Record<string, InstillChatAgentStatus>,
-    ) => Record<string, InstillChatAgentStatus>,
-  ) => void;
-  chatError: Record<string, InstillChatAgentStatus>;
-  updateChatError: (
-    fn: (
-      prev: Record<string, InstillChatAgentStatus>,
-    ) => Record<string, InstillChatAgentStatus>,
-  ) => void;
-  currentActiveCitationListInTheRightDrawer: Record<string, CitationFlat[]>;
-  updateCurrentActiveCitationListInTheRightDrawer: (
-    fn: (
-      prev: Record<string, CitationFlat[]>,
-    ) => Record<string, CitationFlat[]>,
-  ) => void;
-  uploadFilesPending: Record<string, PendingFile[]>;
-  updateUploadFilesPending: (
-    fn: (prev: Record<string, PendingFile[]>) => Record<string, PendingFile[]>,
-  ) => void;
-  tempFileCatalogId: Nullable<string>;
-  updateTempFileCatalogId: (
-    fn: (prev: Nullable<string>) => Nullable<string>,
-  ) => void;
-  chatMessageContextTableUids: Record<string, string[]>;
-  updateChatMessageContextTableUids: (
-    fn: (prev: Record<string, string[]>) => Record<string, string[]>,
-  ) => void;
-  chatMessageContextFileUids: Record<string, string[]>;
-  updateChatMessageContextFileUids: (
-    fn: (prev: Record<string, string[]>) => Record<string, string[]>,
-  ) => void;
-  chatMessageContextFolderUids: Record<string, string[]>;
-  updateChatMessageContextFolderUids: (
-    fn: (prev: Record<string, string[]>) => Record<string, string[]>,
-  ) => void;
-  chatMessageContextCatalogUids: Record<string, string[]>;
-  updateChatMessageContextCatalogUids: (
-    fn: (prev: Record<string, string[]>) => Record<string, string[]>,
-  ) => void;
-  tempPreviewEntityData: Nullable<TempPreviewEntityDataType>;
-  updateTempPreviewEntityData: (
-    fn: (
-      prev: Nullable<TempPreviewEntityDataType>,
-    ) => Nullable<TempPreviewEntityDataType>,
-  ) => void;
-};
-
-export type TableMode =
-  | "TABLE_MODE_CREATE_TABLE_FLOW"
-  | "TABLE_MODE_NORMAL"
-  | "TABLE_MODE_PREVIEW";
-
-export type CurrentTableSort = {
-  columnUid: string;
-  direction: "asc" | "desc";
-};
-
-export type CurrentCellPreviewAnchor = {
-  type: CellType;
-  rowUid: string;
-  columnUid: string;
-};
-
-export type UploadingFileCell = {
-  cellUid: string;
-  rowUid: string;
-  fileName: string;
-};
-
-export type TableSlice = {
-  leftSidebarOpen: boolean;
-  updateLeftSidebarOpen: (fn: (prev: boolean) => boolean) => void;
-  rightSidebarOpen: boolean;
-  updateRightSidebarOpen: (fn: (prev: boolean) => boolean) => void;
-  tableMode: TableMode;
-  updateTableMode: (fn: (prev: TableMode) => TableMode) => void;
-  currentTablePreviewRowUid: Nullable<string>;
-  updateCurrentTablePreviewRowUid: (
-    fn: (prev: Nullable<string>) => Nullable<string>,
-  ) => void;
-  currentTableSort: Nullable<CurrentTableSort>;
-  updateCurrentTableSort: (
-    fn: (prev: Nullable<CurrentTableSort>) => Nullable<CurrentTableSort>,
-  ) => void;
-  currentCellPreviewAnchor: Nullable<CurrentCellPreviewAnchor>;
-  updateCurrentCellPreviewAnchor: (
-    fn: (
-      prev: Nullable<CurrentCellPreviewAnchor>,
-    ) => Nullable<CurrentCellPreviewAnchor>,
-  ) => void;
-  forceOpenNewlyCreatedColumnContextMenuColumnUid: Nullable<string>;
-  updateForceOpenNewlyCreatedColumnContextMenuColumnUid: (
-    fn: (prev: Nullable<string>) => Nullable<string>,
-  ) => void;
-  currentSelectedTableRowsUid: string[];
-  updateCurrentSelectedTableRowsUid: (fn: (prev: string[]) => string[]) => void;
-  currentLeftPanelEditingColumnUid: Nullable<string>;
-  updateCurrentLeftPanelEditingColumnUid: (
-    fn: (prev: Nullable<string>) => Nullable<string>,
-  ) => void;
-  uploadingFileCells: Record<string, UploadingFileCell[]>;
-  updateUploadingFileCells: (
-    fn: (
-      prev: Record<string, UploadingFileCell[]>,
-    ) => Record<string, UploadingFileCell[]>,
-  ) => void;
-  tableUidForAgGrid: Nullable<string>;
-  updateTableUidForAgGrid: (
-    fn: (prev: Nullable<string>) => Nullable<string>,
-  ) => void;
-  deleteProgressTableUids: string[];
-  updateDeleteProgressTableUids: (fn: (prev: string[]) => string[]) => void;
-
-  // Right now, a shared table in given organization is read only outside of the creator
-  // of the table
-  isSharedTableReadOnly: boolean;
-  updateIsSharedTableReadOnly: (fn: (prev: boolean) => boolean) => void;
-};
+// Note: Table, Folder, and Chat-related types have been moved to console-ee
+// as they are EE-only features. Only CE types should remain in this file.
 
 export type InstillStore = SmartHintSlice &
   PipelineBuilderSlice &
   GeneralSlice &
   RecentlyUsedSlice &
   EditorSlice &
-  FeatureFlagSlice &
-  ChatSlice &
-  TableSlice &
-  FolderSlice;
+  FeatureFlagSlice;
 
 export type InstillStoreMutators = [
   ["zustand/devtools", never],
   ["zustand/subscribeWithSelector", never],
 ];
-
-export type PendingFile = {
-  name: string;
-  progress: number;
-  status: "uploading" | "success" | "error";
-  type: string;
-  objectUid?: string;
-  size: number;
-};
-
-export type FolderSlice = {
-  folderFilesBeingUploaded: Record<string, File[]>;
-  updateFolderFilesBeingUploaded: (
-    fn: (prev: Record<string, File[]>) => Record<string, File[]>,
-  ) => void;
-};

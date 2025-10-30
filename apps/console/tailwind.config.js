@@ -89,7 +89,7 @@ module.exports = {
     // We have to use plugin to let intelligence pick up our custom classname's style
     // ref: https://github.com/tailwindlabs/tailwindcss-intellisense/issues/227
     ({ addUtilities }) => {
-      require("tailwindcss-animate"),
+      (require("tailwindcss-animate"),
         addUtilities({
           ".text-instill-h1": {
             fontFamily: `IBM Plex Sans, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`,
@@ -143,7 +143,7 @@ module.exports = {
           ".instill-toggle-loading-shadow": {
             boxShadow: "0px 0px 0px 3px #FFFCE3",
           },
-        });
+        }));
     },
   ],
 };

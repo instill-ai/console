@@ -6,9 +6,9 @@
         "input": {
           "properties": {
             "model": {
-              "type":"string"
+              "type": "string"
             }
-          }, 
+          },
           "type": "object"
         },
         "task": {
@@ -26,16 +26,11 @@
               "type": "string",
               "description": "",
               "instillFormat": "text",
-              "instillUpstreamTypes": [
-                "value",
-                "reference"
-              ],
+              "instillUpstreamTypes": ["value", "reference"],
               "title": "Text"
             }
           },
-          "required": [
-            "text"
-          ],
+          "required": ["text"],
           "type": "object"
         },
         "task": {
@@ -53,15 +48,11 @@
               "type": "string",
               "description": "The audio file object (not file name) to transcribe, in one of these formats: mp3, mp4, mpeg, mpga, m4a, wav, or webm.\n",
               "instillFormat": "audio",
-              "instillUpstreamTypes": [
-                "reference"
-              ],
+              "instillUpstreamTypes": ["reference"],
               "title": "Audio"
             }
           },
-          "required": [
-            "audio"
-          ],
+          "required": ["audio"],
           "type": "object"
         },
         "task": {

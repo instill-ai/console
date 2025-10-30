@@ -1,6 +1,6 @@
 # SDK integration test
 
-The integration test in the sdk package can help us make sure the contract between frontend and backend stay intact. We want to maintain the maximum test coverage with minimum efforts for it. So we will generate all the msw handlers direct from our openAPI schema and validate it with hand-written zod schema. Our user can also benefit from our zod schema if they demand strong run-time type checking. 
+The integration test in the sdk package can help us make sure the contract between frontend and backend stay intact. We want to maintain the maximum test coverage with minimum efforts for it. So we will generate all the msw handlers direct from our openAPI schema and validate it with hand-written zod schema. Our user can also benefit from our zod schema if they demand strong run-time type checking.
 
 ## How does it work
 
@@ -10,7 +10,7 @@ The integration test in the sdk package can help us make sure the contract betwe
   - We only want to focus on the 200 status
   - We need to handle the pageToken pagination and many other edge cases
 - We set up vitest together with msw to run the integration test.
-The verification of data will be handled by our zod validator, which is maintained by the frontend team (This is also the reason why I want to maintain the integration test in the sdk package, I can export these zod validator since there are many other Typescript dev would like to have run-time type safety when interact with our SDK, this can also serve as an additional quality of life)
+  The verification of data will be handled by our zod validator, which is maintained by the frontend team (This is also the reason why I want to maintain the integration test in the sdk package, I can export these zod validator since there are many other Typescript dev would like to have run-time type safety when interact with our SDK, this can also serve as an additional quality of life)
 - We will have istanbul to calculate the coverage of the tests
 
 ## What it tests

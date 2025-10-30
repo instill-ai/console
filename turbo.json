@@ -3,19 +3,11 @@
   "ui": "tui",
   "tasks": {
     "topo": {
-      "dependsOn": [
-        "^topo"
-      ]
+      "dependsOn": ["^topo"]
     },
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "dist/**",
-        ".next/**",
-        "storybook-static/**"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "storybook-static/**"]
     },
     "dev": {
       "cache": false,
@@ -24,23 +16,14 @@
     "dev-ts": {
       "cache": false,
       "persistent": true,
-      "passThroughEnv": [
-        "*"
-      ]
+      "passThroughEnv": ["*"]
     },
     "lint": {
-      "dependsOn": [
-        "^topo",
-        "^build"
-      ],
-      "outputs": [
-        ".cache/.eslintcache"
-      ]
+      "dependsOn": ["^topo", "^build"],
+      "outputs": [".cache/.eslintcache"]
     },
     "test": {
-      "dependsOn": [
-        "build"
-      ]
+      "dependsOn": ["build"]
     }
   },
   "globalEnv": [

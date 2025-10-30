@@ -538,35 +538,35 @@ const mgmtQueryKeyStore = {
   },
 };
 
-const catalogQueryKeyStore = {
-  getUseListNamespaceCatalogsQueryKey({
+const knowledgeBaseQueryKeyStore = {
+  getUseListNamespaceKnowledgeBasesQueryKey({
     namespaceId,
   }: {
     namespaceId: Nullable<string>;
   }) {
-    return [namespaceId, "catalogs"];
+    return [namespaceId, "knowledge-bases"];
   },
-  getUseListNamespaceCatalogFilesQueryKey({
+  getUseListNamespaceKnowledgeBaseFilesQueryKey({
     namespaceId,
-    catalogId,
+    knowledgeBaseId,
   }: {
     namespaceId: Nullable<string>;
-    catalogId: Nullable<string>;
+    knowledgeBaseId: Nullable<string>;
   }) {
-    return [namespaceId, "catalogs", catalogId, "files"];
+    return [namespaceId, "knowledge-bases", knowledgeBaseId, "files"];
   },
-  getUseListNamespaceCatalogChunksQueryKey({
+  getUseListNamespaceKnowledgeBaseChunksQueryKey({
     namespaceId,
-    catalogId,
+    knowledgeBaseId,
     fileUid,
     chunkUids,
   }: {
     namespaceId: Nullable<string>;
-    catalogId: Nullable<string>;
+    knowledgeBaseId: Nullable<string>;
     fileUid: Nullable<string>;
     chunkUids: Nullable<string[]>;
   }) {
-    const queryKey = [namespaceId, "catalogs", catalogId];
+    const queryKey = [namespaceId, "knowledge-bases", knowledgeBaseId];
 
     if (fileUid) {
       queryKey.push("files", fileUid);
@@ -578,38 +578,59 @@ const catalogQueryKeyStore = {
 
     return queryKey;
   },
-  getUseNamespaceCatalogSingleSourceOfTruthFileQueryKey({
+  getUseNamespaceKnowledgeBaseSingleSourceOfTruthFileQueryKey({
     namespaceId,
-    catalogId,
+    knowledgeBaseId,
     fileUid,
   }: {
     namespaceId: Nullable<string>;
-    catalogId: Nullable<string>;
+    knowledgeBaseId: Nullable<string>;
     fileUid: Nullable<string>;
   }) {
-    return [namespaceId, "catalogs", catalogId, "files", fileUid, "source"];
+    return [
+      namespaceId,
+      "knowledge-bases",
+      knowledgeBaseId,
+      "files",
+      fileUid,
+      "source",
+    ];
   },
-  getUseCatalogFileSummaryQueryKey({
+  getUseKnowledgeBaseFileSummaryQueryKey({
     namespaceId,
-    catalogId,
+    knowledgeBaseId,
     fileUid,
   }: {
     namespaceId: Nullable<string>;
-    catalogId: Nullable<string>;
+    knowledgeBaseId: Nullable<string>;
     fileUid: Nullable<string>;
   }) {
-    return [namespaceId, "catalogs", catalogId, "files", fileUid, "summary"];
+    return [
+      namespaceId,
+      "knowledge-bases",
+      knowledgeBaseId,
+      "files",
+      fileUid,
+      "summary",
+    ];
   },
-  getUseNamespaceCatalogFileQueryKey({
+  getUseNamespaceKnowledgeBaseFileQueryKey({
     namespaceId,
-    catalogId,
+    knowledgeBaseId,
     fileUid,
   }: {
     namespaceId: Nullable<string>;
-    catalogId: Nullable<string>;
+    knowledgeBaseId: Nullable<string>;
     fileUid: Nullable<string>;
   }) {
-    return [namespaceId, "catalogs", catalogId, "files", fileUid];
+    return [
+      namespaceId,
+      "knowledge-bases",
+      knowledgeBaseId,
+      "files",
+      fileUid,
+      "content",
+    ];
   },
 };
 
@@ -844,7 +865,7 @@ export const queryKeyStore = {
   release: releaseQueryKeyStore,
   secret: secretQueryKeyStore,
   mgmt: mgmtQueryKeyStore,
-  catalog: catalogQueryKeyStore,
+  knowledgeBase: knowledgeBaseQueryKeyStore,
   integration: integrationQueryKeyStore,
   application: applicationQueryKeyStore,
   table: tableQueryKeyStore,

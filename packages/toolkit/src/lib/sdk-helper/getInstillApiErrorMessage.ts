@@ -26,5 +26,25 @@ export function getInstillApiErrorMessage(
     return error.response?.message ?? error.message;
   }
 
+  // Handle plain error objects from fetch-based SDK client
+  // Format: {code: number, message: string, details: any[]}
+  if (
+    error &&
+    typeof error === "object" &&
+    "message" in error &&
+    typeof error.message === "string"
+  ) {
+    // If details exist and not empty, show details
+    if (
+      "details" in error &&
+      Array.isArray(error.details) &&
+      error.details.length > 0
+    ) {
+      return JSON.stringify(error.details, null, "\t");
+    }
+    // Otherwise show the message
+    return error.message;
+  }
+
   return null;
 }

@@ -2,38 +2,33 @@
 
 ## [0.9.1](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.9.0...@instill-ai/eslint-config-cortex-v0.9.1) (2024-05-24)
 
-
 ### Bug Fixes
 
-* fix eslint version and error ([#1177](https://github.com/instill-ai/console/issues/1177)) ([7e9893d](https://github.com/instill-ai/console/commit/7e9893d8368c8b2aebf8f9948d5d1994b9ae537d))
+- fix eslint version and error ([#1177](https://github.com/instill-ai/console/issues/1177)) ([7e9893d](https://github.com/instill-ai/console/commit/7e9893d8368c8b2aebf8f9948d5d1994b9ae537d))
 
 ## [0.9.0](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.8.0...@instill-ai/eslint-config-cortex-v0.9.0) (2024-03-13)
 
-
 ### Features
 
-* **pipeline-builder:** support real-time update the hints for iterator ([#1017](https://github.com/instill-ai/console/issues/1017)) ([6d91d7d](https://github.com/instill-ai/console/commit/6d91d7d6b1fc58e5699619828b82807c04a44590))
+- **pipeline-builder:** support real-time update the hints for iterator ([#1017](https://github.com/instill-ai/console/issues/1017)) ([6d91d7d](https://github.com/instill-ai/console/commit/6d91d7d6b1fc58e5699619828b82807c04a44590))
 
 ## [0.8.0](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.7.2...@instill-ai/eslint-config-cortex-v0.8.0) (2024-01-24)
 
-
 ### Features
 
-* setup the react testing library for auto-gen-form unit test ([#895](https://github.com/instill-ai/console/issues/895)) ([b3947b7](https://github.com/instill-ai/console/commit/b3947b75a3fc7d52d9b2d9e90210232ca6c96d98))
+- setup the react testing library for auto-gen-form unit test ([#895](https://github.com/instill-ai/console/issues/895)) ([b3947b7](https://github.com/instill-ai/console/commit/b3947b75a3fc7d52d9b2d9e90210232ca6c96d98))
 
 ## [0.7.2](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.7.1...@instill-ai/eslint-config-cortex-v0.7.2) (2024-01-15)
 
-
 ### Miscellaneous
 
-* make creating private pipeline as default option ([#859](https://github.com/instill-ai/console/issues/859)) ([e078b57](https://github.com/instill-ai/console/commit/e078b5724f11adb168178ccf5a407db85aa52eb5))
+- make creating private pipeline as default option ([#859](https://github.com/instill-ai/console/issues/859)) ([e078b57](https://github.com/instill-ai/console/commit/e078b5724f11adb168178ccf5a407db85aa52eb5))
 
 ## [0.7.1](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.7.0...@instill-ai/eslint-config-cortex-v0.7.1) (2024-01-02)
 
-
 ### Miscellaneous
 
-* apply prettier format and reject formatting errors in PRs ([#818](https://github.com/instill-ai/console/issues/818)) ([fa5c3b3](https://github.com/instill-ai/console/commit/fa5c3b362dfac92291926c0e9020bb53c8c10ddc))
+- apply prettier format and reject formatting errors in PRs ([#818](https://github.com/instill-ai/console/issues/818)) ([fa5c3b3](https://github.com/instill-ai/console/commit/fa5c3b362dfac92291926c0e9020bb53c8c10ddc))
 
 ## [0.7.0](https://github.com/instill-ai/console/compare/@instill-ai/eslint-config-cortex-v0.6.0...@instill-ai/eslint-config-cortex-v0.7.0) (2023-12-15)
 

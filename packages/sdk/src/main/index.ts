@@ -1,8 +1,6 @@
 import "whatwg-fetch";
 
-import { ApplicationClient } from "../application";
 import { ArtifactClient } from "../artifact";
-import { CatalogClient } from "../catalog";
 import {
   IntegrationClient,
   MembershipClient,
@@ -22,12 +20,9 @@ import {
   SecretClient,
   TriggerClient,
 } from "../vdp";
-import { TableClient } from "../table";
-import { ChatClient } from "../chat";
-import { FolderClient } from "../folder";
 
 export type RequestOption = {
-  body?: string | File;
+  body?: string | Blob | File;
   additionalHeaders?: GeneralRecord;
   stream?: boolean;
   isFullPath?: boolean;
@@ -157,10 +152,5 @@ export class InstillAPIClient {
   };
 
   model = new ModelClient(this);
-  application = new ApplicationClient(this);
-  catalog = new CatalogClient(this);
   artifact = new ArtifactClient(this);
-  table = new TableClient(this);
-  chat = new ChatClient(this);
-  folder = new FolderClient(this);
 }

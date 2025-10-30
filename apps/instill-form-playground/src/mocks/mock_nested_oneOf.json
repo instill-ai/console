@@ -12,16 +12,14 @@
                 },
                 "prompt": {
                   "anyOf": [
-                    {"type": "string", "instillUpstreamType": "value"},
-                    {"type": "string", "instillUpstreamType": "template"},
-                    {"type": "string", "instillUpstreamType": "reference"}
+                    { "type": "string", "instillUpstreamType": "value" },
+                    { "type": "string", "instillUpstreamType": "template" },
+                    { "type": "string", "instillUpstreamType": "reference" }
                   ],
                   "instillUpstreamTypes": ["value", "reference", "template"]
                 }
               },
-              "required": [
-                "prompt", "model"
-              ]
+              "required": ["prompt", "model"]
             },
             {
               "properties": {
@@ -30,23 +28,21 @@
                 },
                 "system_message": {
                   "anyOf": [
-                    {"type": "string", "instillUpstreamType": "value"}
+                    { "type": "string", "instillUpstreamType": "value" }
                   ],
                   "instillUpstreamTypes": ["value"]
                 }
               },
-              "required": [
-                "system_message", "model"
-              ]
+              "required": ["system_message", "model"]
             }
           ],
           "type": "object"
         },
         "foo": {
           "anyOf": [
-            {"type": "string", "instillUpstreamType": "value"},
-            {"type": "string", "instillUpstreamType": "template"},
-            {"type": "string", "instillUpstreamType": "reference"}
+            { "type": "string", "instillUpstreamType": "value" },
+            { "type": "string", "instillUpstreamType": "template" },
+            { "type": "string", "instillUpstreamType": "reference" }
           ],
           "instillUpstreamTypes": ["value", "reference", "template"]
         },
@@ -65,28 +61,22 @@
               "description": "",
               "instillFormat": "text",
               "anyOf": [
-                {"type": "string", "instillUpstreamType": "value"},
-                {"type": "string", "instillUpstreamType": "template"},
-                {"type": "string", "instillUpstreamType": "reference"}
+                { "type": "string", "instillUpstreamType": "value" },
+                { "type": "string", "instillUpstreamType": "template" },
+                { "type": "string", "instillUpstreamType": "reference" }
               ],
-              "instillUpstreamTypes": [
-                "value",
-                "reference",
-                "template"
-              ],
+              "instillUpstreamTypes": ["value", "reference", "template"],
               "title": "Text"
             }
           },
-          "required": [
-            "text"
-          ],
+          "required": ["text"],
           "type": "object"
         },
         "foo": {
           "anyOf": [
-            {"type": "string", "instillUpstreamType": "value"},
-            {"type": "string", "instillUpstreamType": "template"},
-            {"type": "string", "instillUpstreamType": "reference"}
+            { "type": "string", "instillUpstreamType": "value" },
+            { "type": "string", "instillUpstreamType": "template" },
+            { "type": "string", "instillUpstreamType": "reference" }
           ],
           "instillUpstreamTypes": ["value", "reference", "template"]
         },
@@ -105,24 +95,20 @@
               "description": "The audio file object (not file name) to transcribe, in one of these formats: mp3, mp4, mpeg, mpga, m4a, wav, or webm.\n",
               "instillFormat": "audio",
               "anyOf": [
-                {"type": "string", "instillUpstreamType": "reference"}
+                { "type": "string", "instillUpstreamType": "reference" }
               ],
-              "instillUpstreamTypes": [ 
-                "reference"
-              ],
+              "instillUpstreamTypes": ["reference"],
               "title": "Audio"
             }
           },
-          "required": [
-            "audio"
-          ],
+          "required": ["audio"],
           "type": "object"
         },
         "foo": {
           "anyOf": [
-            {"type": "string", "instillUpstreamType": "value"},
-            {"type": "string", "instillUpstreamType": "template"},
-            {"type": "string", "instillUpstreamType": "reference"}
+            { "type": "string", "instillUpstreamType": "value" },
+            { "type": "string", "instillUpstreamType": "template" },
+            { "type": "string", "instillUpstreamType": "reference" }
           ],
           "instillUpstreamTypes": ["value", "reference", "template"]
         },

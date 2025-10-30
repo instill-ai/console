@@ -26,7 +26,7 @@ export function parseResourceId({
     | "RESOURCE_TYPE_PIPELINE"
     | "RESOURCE_TYPE_INTEGRATION_CONNECTION"
     | "RESOURCE_TYPE_MODEL"
-    | "RESOURCE_TYPE_CATALOG";
+    | "RESOURCE_TYPE_KNOWLEDGE_BASE";
 }): ParseResourceIdResult {
   const isValid = validateInstillResourceID(resourceId);
 
@@ -42,8 +42,8 @@ export function parseResourceId({
     case "RESOURCE_TYPE_MODEL":
       resourceTypePrefix = resourceIdPrefix.model;
       break;
-    case "RESOURCE_TYPE_CATALOG":
-      resourceTypePrefix = resourceIdPrefix.catalog;
+    case "RESOURCE_TYPE_KNOWLEDGE_BASE":
+      resourceTypePrefix = resourceIdPrefix.knowledgeBase;
       break;
   }
 

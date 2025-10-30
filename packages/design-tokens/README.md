@@ -57,7 +57,6 @@ Then you can import the CSS variables file in your project at the root of the ap
 import "@instill-ai/design-tokens/dist/theme/root.css";
 import "@instill-ai/design-tokens/dist/theme/light.css";
 import "@instill-ai/design-tokens/dist/theme/dark.css";
-
 // app/layout.tsx
 import "@instill-ai/design-tokens/dist/theme/root.css";
 import "@instill-ai/design-tokens/dist/theme/light.css";
@@ -357,10 +356,17 @@ Be careful, due to Tokens Studio is using . as a separator for it's object's pat
 ## Reference
 
 [^1]: [W3C Design Tokens Technical Reports](https://tr.designtokens.org/)
+
 [^2]: [TailwindCSS - Installation](https://tailwindcss.com/docs/installation)
+
 [^3]: [Style Dictionary - attribute/cti](https://amzn.github.io/style-dictionary/#/transforms?id=attributecti)
+
 [^4]: [Style Dictionary - name/cti/kebab](https://amzn.github.io/style-dictionary/#/transforms?id=namectikebab)
+
 [^5]: [Issue - Italic font style on typography](https://github.com/tokens-studio/figma-plugin/issues/1639)
+
 [^6]: [Figma - Paragraph spacing](https://help.figma.com/hc/en-us/articles/360039956634-Explore-text-properties#paragraph-spacing)
+
 [^7]: [Figma - Paragraph indent](https://help.figma.com/hc/en-us/articles/360039956634-Explore-text-properties#paragraph-indentation)
+
 [^8]: [Figma - Letter spacing](https://help.figma.com/hc/en-us/articles/360039956634-Explore-text-properties#letter-spacing)

@@ -5,7 +5,7 @@
 
     // We need to specify this for tsup to correctly cast the jsx runtime
     "jsx": "react-jsx",
-    "outDir": "dist",
+    "outDir": "dist"
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": [
@@ -13,6 +13,6 @@
     "vitest.config.ts",
     "tsup.config.ts",
     "dist",
-    "node_modules",
-  ],
+    "node_modules"
+  ]
 }
