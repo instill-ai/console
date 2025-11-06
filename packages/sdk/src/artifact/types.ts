@@ -188,7 +188,25 @@ export type FileType =
   | "TYPE_WEBP"
   | "TYPE_TIFF"
   | "TYPE_BMP"
-  | "TYPE_HEIC";
+  | "TYPE_HEIC"
+  | "TYPE_HEIF"
+  | "TYPE_AVIF"
+  | "TYPE_MP3"
+  | "TYPE_WAV"
+  | "TYPE_AAC"
+  | "TYPE_OGG"
+  | "TYPE_FLAC"
+  | "TYPE_M4A"
+  | "TYPE_WMA"
+  | "TYPE_AIFF"
+  | "TYPE_MP4"
+  | "TYPE_AVI"
+  | "TYPE_MOV"
+  | "TYPE_WEBM_VIDEO"
+  | "TYPE_MKV"
+  | "TYPE_FLV"
+  | "TYPE_WMV"
+  | "TYPE_MPEG";
 
 export type File = {
   uid: string;

@@ -159,8 +159,10 @@ const FileDetailsOverlay = ({
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Content className="flex flex-col h-[90vh] max-w-[70vw] w-[70vw]">
         <div className="flex-shrink-0 mb-3 flex flex-row space-x-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs overflow-hidden bg-semantic-bg-secondary">
-            <div className="text-semantic-fg-primary">{fileIcon}</div>
+          <div className="flex h-16 w-16 items-center justify-center rounded-[10px] border border-semantic-bg-line shadow-xs overflow-hidden bg-semantic-bg-secondary">
+            <div className="text-semantic-fg-primary [&_svg]:!h-10 [&_svg]:!w-10">
+              {fileIcon}
+            </div>
           </div>
           <div className="flex flex-col min-w-0">
             <Dialog.Title className="truncate product-headings-heading-6 text-semantic-fg-disabled">
