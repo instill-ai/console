@@ -30,16 +30,8 @@ export const FileTable = ({
     return [...files].sort((a, b) => {
       if (sortConfig.key === "") return 0;
 
-      let aValue: string | number | Date | boolean = a[sortConfig.key] as
-        | string
-        | number
-        | Date
-        | boolean;
-      let bValue: string | number | Date | boolean = b[sortConfig.key] as
-        | string
-        | number
-        | Date
-        | boolean;
+      let aValue = a[sortConfig.key] as string | number | Date | boolean;
+      let bValue = b[sortConfig.key] as string | number | Date | boolean;
 
       if (sortConfig.key === "processStatus") {
         aValue = getStatusSortValue(a.processStatus as FileProcessStatus);
