@@ -1,4 +1,6 @@
 import { Activity } from "./Activity";
+import { AddColumn } from "./AddColumn";
+import { AddRow } from "./AddRow";
 import { AIFFFile } from "./AIFFFile";
 import { AlertCircle } from "./AlertCircle";
 import { AlertTriangle } from "./AlertTriangle";
@@ -9,6 +11,10 @@ import { ArrowLeft } from "./ArrowLeft";
 import { ArrowNarrowLeft } from "./ArrowNarrowLeft";
 import { ArrowNarrowRight } from "./ArrowNarrowRight";
 import { ArrowRight } from "./ArrowRight";
+import { ArrowSquareDown } from "./ArrowSquareDown";
+import { ArrowSquareLeft } from "./ArrowSquareLeft";
+import { ArrowSquareRight } from "./ArrowSquareRight";
+import { ArrowSquareUp } from "./ArrowSquareUp";
 import { ArrowUp } from "./ArrowUp";
 import { ArrowUpRight } from "./ArrowUpRight";
 import { Attachment01 } from "./Attachment01";
@@ -84,6 +90,7 @@ import { FileDownload03 } from "./FileDownload03";
 import { FileMinus01 } from "./FileMinus01";
 import { FilePlus01 } from "./FilePlus01";
 import { FilePlus02 } from "./FilePlus02";
+import { Film01 } from "./Film01";
 import { FilterLines } from "./FilterLines";
 import { FLACFile } from "./FLACFile";
 import { Flag04 } from "./Flag04";
@@ -107,6 +114,8 @@ import { Image03 } from "./Image03";
 import { ImagePlus } from "./ImagePlus";
 import { InfoCircle } from "./InfoCircle";
 import { InfoSquare } from "./InfoSquare";
+import { InsertColumnLeft } from "./InsertColumnLeft";
+import { InsertColumnRight } from "./InsertColumnRight";
 import { IntersectSquare } from "./IntersectSquare";
 import { Italic } from "./Italic";
 import { JPEGFile } from "./JPEGFile";
@@ -207,6 +216,7 @@ import { Type01 } from "./Type01";
 import { Type02 } from "./Type02";
 import { TypePlus } from "./TypePlus";
 import { Underline } from "./Underline";
+import { Unwrap } from "./Unwrap";
 import { Update } from "./Update";
 import { Upload01 } from "./Upload01";
 import { UploadCloud01 } from "./UploadCloud01";
@@ -225,6 +235,7 @@ import { WEBMVideoFile } from "./WEBMVideoFile";
 import { WEBPFile } from "./WEBPFile";
 import { WMAFile } from "./WMAFile";
 import { WMVFile } from "./WMVFile";
+import { Wrap } from "./Wrap";
 import { X } from "./X";
 import { XLSFile } from "./XLSFile";
 import { XLSXFile } from "./XLSXFile";
@@ -235,16 +246,22 @@ import { ZoomOut } from "./ZoomOut";
 
 export const Icons = {
   Activity,
+  AddColumn,
+  AddRow,
   AlertCircle,
   AlertTriangle,
   AlignLeft,
   Announcement02,
-  ArrowUp,
   ArrowDown,
   ArrowLeft,
-  ArrowRight,
   ArrowNarrowLeft,
   ArrowNarrowRight,
+  ArrowRight,
+  ArrowSquareDown,
+  ArrowSquareLeft,
+  ArrowSquareRight,
+  ArrowSquareUp,
+  ArrowUp,
   ArrowUpRight,
   Attachment01,
   AIFFFile,
@@ -261,8 +278,8 @@ export const Icons = {
   BracketSlash,
   Browser,
   Building05,
-  CalendarCheck01,
   Calendar,
+  CalendarCheck01,
   CardRefresh,
   Check,
   CheckCircle,
@@ -274,16 +291,16 @@ export const Icons = {
   ChevronLeftDouble,
   ChevronRight,
   ChevronRightDouble,
+  ChevronSelectorVertical,
   ChevronUp,
   ChevronUpDouble,
-  ChevronSelectorVertical,
   Chip01,
   Chip02,
   Circle,
   Clock,
-  ClockRewind,
   ClockCheck,
   ClockPlus,
+  ClockRewind,
   CodeBrowser,
   CodeSnippet01,
   CodeSnippet02,
@@ -296,7 +313,6 @@ export const Icons = {
   Cube01,
   CubeOutline,
   CurrencyDollar,
-  Download01,
   Database01,
   Dataflow03,
   Dataflow03Broken,
@@ -305,22 +321,24 @@ export const Icons = {
   DotsGrid,
   DotsHorizontal,
   DotsVertical,
+  Download01,
   DownloadCloud01,
   Edit03,
   Edit05,
-  Eye,
-  Eyeoff,
   Expand01,
   Expand06,
+  Eye,
+  Eyeoff,
   File02,
   File04,
   File05,
   File06,
+  FileDownload03,
   FileMinus01,
   FilePlus01,
   FilePlus02,
+  Film01,
   FilterLines,
-  FileDownload03,
   Flag04,
   Flag06,
   FLACFile,
@@ -331,36 +349,38 @@ export const Icons = {
   GitMerge,
   Globe01,
   GraduationHat,
+  Hash2,
   Heading,
   HEICFile,
   HEIFFile,
   HelpCircle,
-  HTMLFile,
   HomeLine,
-  Hash2,
-  IntersectSquare,
-  Link01,
-  Lock03,
-  LockUnlocked03,
-  InfoCircle,
-  InfoSquare,
+  HTMLFile,
   Image01,
   Image03,
   ImagePlus,
+  InfoCircle,
+  InfoSquare,
+  InsertColumnLeft,
+  InsertColumnRight,
+  IntersectSquare,
   Italic,
   JPEGFile,
+  LayersTwo01,
+  LayoutLeft,
+  Lightbulb03,
+  Lightning01,
+  Lightning02,
+  Link01,
+  LinkExternal01,
+  ListOrdered,
+  ListTask,
+  ListUnordered,
+  Lock03,
+  LockUnlocked03,
   Logout01,
   Logout03,
   Logout04,
-  LinkExternal01,
-  LayersTwo01,
-  Lightning01,
-  Lightning02,
-  Lightbulb03,
-  ListOrdered,
-  ListUnordered,
-  ListTask,
-  LayoutLeft,
   MKVFile,
   M4AFile,
   Model,
@@ -375,11 +395,11 @@ export const Icons = {
   MasterCard,
   MDFile,
   MagicWand01,
+  Mail01,
   Menu01,
   MessageChatSquare,
-  Minus,
-  Mail01,
   MessageSmileSquare,
+  Minus,
   NewModel,
   OGGFile,
   PDFFile,
@@ -394,9 +414,6 @@ export const Icons = {
   PPTFile,
   PPTXFile,
   PuzzlePiece01,
-  RefreshCw05,
-  RefreshCCW01,
-  Repeat04,
   Recording01,
   Recording02,
   Recording03,
@@ -404,27 +421,30 @@ export const Icons = {
   Recording05,
   ReferenceIconCheck,
   ReferenceIconX,
+  RefreshCCW01,
+  RefreshCw05,
+  Repeat04,
   Rocket01,
   Rocket02,
   Save01,
   Save02,
   Scales02,
-  Settings02,
-  Shield02,
-  SpeechRecognition,
-  Sliders01,
-  SlashDivider,
-  Speaker01,
-  Stop,
-  Strikethrough,
   SearchLg,
   SearchMd,
   SearchSm,
+  Settings02,
   Share07,
+  Shield02,
   SlashCircle01,
+  SlashDivider,
+  Sliders01,
   SortLinesDown,
   SortLinesUp,
+  Speaker01,
+  SpeechRecognition,
   Star06,
+  Stop,
+  Strikethrough,
   Table,
   Tag01,
   Target05,
@@ -432,17 +452,19 @@ export const Icons = {
   TextGenerationChat,
   ThumbsDown,
   TIFFFile,
+  Tool01,
   Trash01,
   Trash03,
   TrendUp,
   Truck02,
+  Tv03,
+  TXTFile,
   Type01,
   Type02,
   TypePlus,
-  TXTFile,
-  Tool01,
-  Tv03,
   Underline,
+  Unwrap,
+  Update,
   Upload01,
   UploadCloud01,
   User01,
@@ -450,7 +472,6 @@ export const Icons = {
   UserMinus02,
   UserPlus01,
   Users01,
-  Update,
   Video,
   VideoRecorder,
   Visa,
@@ -459,8 +480,9 @@ export const Icons = {
   WEBMAudioFile,
   WEBMVideoFile,
   WEBPFile,
-  WMVFile,
   WMAFile,
+  WMVFile,
+  Wrap,
   X,
   XLSFile,
   XLSXFile,
