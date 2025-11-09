@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.18.11](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.10...instill-sdk-v0.18.11) (2025-11-09)
+
+
+### Features
+
+* **icons:** add comprehensive multimedia file type icon support ([#1843](https://github.com/instill-ai/console/issues/1843)) ([88800c3](https://github.com/instill-ai/console/commit/88800c3fe16ee80b1d55f827a7175420d3967f63))
+* **table:** update suggest endpoint ([#1837](https://github.com/instill-ai/console/issues/1837)) ([724705f](https://github.com/instill-ai/console/commit/724705f120a1ed66cb357e553e2f8e63f209fd43))
+
+
+### Miscellaneous
+
+* **package:** bump sdk and toolkit package version ([#1838](https://github.com/instill-ai/console/issues/1838)) ([bf00de4](https://github.com/instill-ai/console/commit/bf00de478852ecfa3279eacae742ba19d0935718))
+
+
+### Refactor
+
+* **console:** consolidate artifact structure and remove CE chat features ([#1841](https://github.com/instill-ai/console/issues/1841)) ([5759444](https://github.com/instill-ai/console/commit/57594440aaff4e4e131171f8793c2a57f386df78))
+
 ## [0.18.10](https://github.com/instill-ai/console/compare/instill-sdk-v0.18.9...instill-sdk-v0.18.10) (2025-10-09)
 
 ### Features

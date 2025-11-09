@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.120.16](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.15...@instill-ai/toolkit-v0.120.16) (2025-11-09)
+
+
+### Features
+
+* **catalog:** improve error handling for dialogs and batch upload operations ([#1834](https://github.com/instill-ai/console/issues/1834)) ([95921fe](https://github.com/instill-ai/console/commit/95921fe4471866615454598f34c1621f91f828f4))
+* **icons:** add comprehensive multimedia file type icon support ([#1843](https://github.com/instill-ai/console/issues/1843)) ([88800c3](https://github.com/instill-ai/console/commit/88800c3fe16ee80b1d55f827a7175420d3967f63))
+
+
+### Bug Fixes
+
+* **artifact:** fix chunks card harsh sign ([#1836](https://github.com/instill-ai/console/issues/1836)) ([b0c1105](https://github.com/instill-ai/console/commit/b0c11053cbcfcf69ae6e5b058fbd8fe47cd77f61))
+* **icons:** convert hyphenated SVG properties to camelCase in React icons ([#1842](https://github.com/instill-ai/console/issues/1842)) ([38c1ac9](https://github.com/instill-ai/console/commit/38c1ac974d0f9865f2e239f02cf072c54248e0d0))
+
+
+### Miscellaneous
+
+* **deps:** bump next-auth from 5.0.0-beta.21 to 5.0.0-beta.30 in /packages/toolkit ([#1840](https://github.com/instill-ai/console/issues/1840)) ([b127131](https://github.com/instill-ai/console/commit/b127131340c76c217d1ada81f1fbf985962ef283))
+* **package:** bump sdk and toolkit package version ([#1838](https://github.com/instill-ai/console/issues/1838)) ([bf00de4](https://github.com/instill-ai/console/commit/bf00de478852ecfa3279eacae742ba19d0935718))
+
+
+### Refactor
+
+* **console:** consolidate artifact structure and remove CE chat features ([#1841](https://github.com/instill-ai/console/issues/1841)) ([5759444](https://github.com/instill-ai/console/commit/57594440aaff4e4e131171f8793c2a57f386df78))
+
 ## [0.120.15](https://github.com/instill-ai/console/compare/@instill-ai/toolkit-v0.120.14...@instill-ai/toolkit-v0.120.15) (2025-10-09)
 
 ### Features

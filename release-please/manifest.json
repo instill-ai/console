@@ -1,9 +1,9 @@
 {
-  "apps/console": "0.68.6",
-  "packages/design-system": "0.90.5",
-  "packages/design-tokens": "0.10.3",
+  "apps/console": "0.68.7",
+  "packages/design-system": "0.90.6",
+  "packages/design-tokens": "0.10.4",
   "packages/eslint-config-cortex": "0.9.1",
   "packages/prettier-config-cortex": "1.1.2",
-  "packages/toolkit": "0.120.15",
-  "packages/sdk": "0.18.10"
+  "packages/toolkit": "0.120.16",
+  "packages/sdk": "0.18.11"
 }

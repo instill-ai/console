@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.4](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.10.3...@instill-ai/design-tokens-v0.10.4) (2025-11-09)
+
+
+### Refactor
+
+* **console:** consolidate artifact structure and remove CE chat features ([#1841](https://github.com/instill-ai/console/issues/1841)) ([5759444](https://github.com/instill-ai/console/commit/57594440aaff4e4e131171f8793c2a57f386df78))
+
 ## [0.10.3](https://github.com/instill-ai/console/compare/@instill-ai/design-tokens-v0.10.2...@instill-ai/design-tokens-v0.10.3) (2025-06-30)
 
 ### Bug Fixes
