@@ -329,7 +329,7 @@ export const UploadExploreTab = ({
     <div className="mb-32 flex flex-col">
       {/* {!isLocalEnvironment && showStorageWarning && !isEnterprisePlan ? (
         <InsufficientStorageBanner
-          setshowStorageWarning={setShowStorageWarning}
+          setShowStorageWarning={setShowStorageWarning}
           plan={subscription?.plan || "PLAN_FREE"}
           namespaceType={namespaceType}
           selectedNamespace={selectedNamespace}

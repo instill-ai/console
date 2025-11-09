@@ -33,14 +33,18 @@ export const getFileIcon = (fileType: string) => {
   const normalizedType = fileType.toUpperCase().replace(/^FILE_/, "");
 
   switch (normalizedType) {
+    // Text-based document types
     case "TYPE_MARKDOWN":
       return <Icons.MDFile className="h-5 w-5" />;
     case "TYPE_TEXT":
       return <Icons.TXTFile className="h-5 w-5" />;
-    case "TYPE_PDF":
-      return <Icons.PDFFile className="h-5 w-5" />;
     case "TYPE_CSV":
       return <Icons.CSVFile className="h-5 w-5" />;
+    case "TYPE_HTML":
+      return <Icons.HTMLFile className="h-5 w-5" />;
+    // Container-based document types
+    case "TYPE_PDF":
+      return <Icons.PDFFile className="h-5 w-5" />;
     case "TYPE_DOC":
       return <Icons.DOCFile className="h-5 w-5" />;
     case "TYPE_DOCX":
@@ -49,12 +53,63 @@ export const getFileIcon = (fileType: string) => {
       return <Icons.PPTFile className="h-5 w-5" />;
     case "TYPE_PPTX":
       return <Icons.PPTXFile className="h-5 w-5" />;
-    case "TYPE_HTML":
-      return <Icons.HTMLFile className="h-5 w-5" />;
     case "TYPE_XLS":
       return <Icons.XLSFile className="h-5 w-5" />;
     case "TYPE_XLSX":
       return <Icons.XLSXFile className="h-5 w-5" />;
+    // Image types
+    case "TYPE_PNG":
+      return <Icons.PNGFile className="h-5 w-5" />;
+    case "TYPE_JPEG":
+      return <Icons.JPEGFile className="h-5 w-5" />;
+    case "TYPE_GIF":
+      return <Icons.GIFFile className="h-5 w-5" />;
+    case "TYPE_WEBP":
+      return <Icons.WEBPFile className="h-5 w-5" />;
+    case "TYPE_TIFF":
+      return <Icons.TIFFFile className="h-5 w-5" />;
+    case "TYPE_BMP":
+      return <Icons.BMPFile className="h-5 w-5" />;
+    case "TYPE_HEIC":
+      return <Icons.HEICFile className="h-5 w-5" />;
+    case "TYPE_HEIF":
+      return <Icons.HEIFFile className="h-5 w-5" />;
+    case "TYPE_AVIF":
+      return <Icons.AVIFFile className="h-5 w-5" />;
+    // Video types
+    case "TYPE_MP4":
+      return <Icons.MP4File className="h-5 w-5" />;
+    case "TYPE_AVI":
+      return <Icons.AVIFile className="h-5 w-5" />;
+    case "TYPE_MOV":
+      return <Icons.MOVFile className="h-5 w-5" />;
+    case "TYPE_WEBM_VIDEO":
+      return <Icons.WEBMVideoFile className="h-5 w-5" />;
+    case "TYPE_MKV":
+      return <Icons.MKVFile className="h-5 w-5" />;
+    case "TYPE_FLV":
+      return <Icons.FLVFile className="h-5 w-5" />;
+    case "TYPE_WMV":
+      return <Icons.WMVFile className="h-5 w-5" />;
+    case "TYPE_MPEG":
+      return <Icons.MPEGFile className="h-5 w-5" />;
+    // Audio types
+    case "TYPE_MP3":
+      return <Icons.MP3File className="h-5 w-5" />;
+    case "TYPE_WAV":
+      return <Icons.WAVFile className="h-5 w-5" />;
+    case "TYPE_AAC":
+      return <Icons.WEBMAudioFile className="h-5 w-5" />;
+    case "TYPE_OGG":
+      return <Icons.OGGFile className="h-5 w-5" />;
+    case "TYPE_FLAC":
+      return <Icons.FLACFile className="h-5 w-5" />;
+    case "TYPE_M4A":
+      return <Icons.M4AFile className="h-5 w-5" />;
+    case "TYPE_WMA":
+      return <Icons.WMAFile className="h-5 w-5" />;
+    case "TYPE_AIFF":
+      return <Icons.AIFFFile className="h-5 w-5" />;
     default:
       return <Icons.File05 className="h-5 w-5" />;
   }
@@ -102,6 +157,42 @@ export const getFileType = (file: File): FileType => {
       return "TYPE_BMP";
     case "heic":
       return "TYPE_HEIC";
+    case "heif":
+      return "TYPE_HEIF";
+    case "avif":
+      return "TYPE_AVIF";
+    case "mp3":
+      return "TYPE_MP3";
+    case "wav":
+      return "TYPE_WAV";
+    case "aac":
+      return "TYPE_AAC";
+    case "ogg":
+      return "TYPE_OGG";
+    case "flac":
+      return "TYPE_FLAC";
+    case "m4a":
+      return "TYPE_M4A";
+    case "wma":
+      return "TYPE_WMA";
+    case "aiff":
+      return "TYPE_AIFF";
+    case "mp4":
+      return "TYPE_MP4";
+    case "avi":
+      return "TYPE_AVI";
+    case "mov":
+      return "TYPE_MOV";
+    case "webm":
+      return "TYPE_WEBM_VIDEO";
+    case "mkv":
+      return "TYPE_MKV";
+    case "flv":
+      return "TYPE_FLV";
+    case "wmv":
+      return "TYPE_WMV";
+    case "mpeg":
+      return "TYPE_MPEG";
     default:
       return "TYPE_UNSPECIFIED";
   }

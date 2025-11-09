@@ -81,9 +81,21 @@ export const DragAndDropUpload = ({
             >
               browse computer
             </label>
-            <div className="">
-              Support TXT, MARKDOWN, PDF, DOCX, DOC, PPTX, PPT, HTML, XLSX, XLS,
-              CSV
+            <div className="text-left pt-4">
+              <div className="mb-2">
+                <strong>Documents:</strong> TXT, MD, PDF, HTML, CSV, DOCX, DOC,
+                PPTX, PPT, XLSX, XLS
+              </div>
+              <div className="mb-2">
+                <strong>Images:</strong> PNG, JPG, JPEG, GIF, WEBP, TIFF, BMP,
+                HEIC, HEIF, AVIF
+              </div>
+              <div className="mb-2">
+                <strong>Audio:</strong> MP3, WAV, AAC, OGG, FLAC, M4A, WMA, AIFF
+              </div>
+              <div>
+                <strong>Video:</strong> MP4, AVI, MOV, WEBM, MKV, FLV, WMV, MPEG
+              </div>
             </div>
             {!isLocalEnvironment ? (
               <div className="">
@@ -98,7 +110,7 @@ export const DragAndDropUpload = ({
         <Input.Core
           id="upload-file-field"
           type="file"
-          accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html,.xlsx,.xls,.csv"
+          accept=".txt,.md,.pdf,.docx,.doc,.pptx,.ppt,.html,.xlsx,.xls,.csv,.png,.jpg,.jpeg,.gif,.webp,.tiff,.bmp,.heic,.heif,.avif,.mp3,.wav,.aac,.ogg,.flac,.m4a,.wma,.aiff,.mp4,.avi,.mov,.webm,.mkv,.flv,.wmv,.mpeg"
           multiple
           onChange={handleFileInputChange}
         />

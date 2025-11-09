@@ -1,4 +1,5 @@
 import { Activity } from "./Activity";
+import { AIFFFile } from "./AIFFFile";
 import { AlertCircle } from "./AlertCircle";
 import { AlertTriangle } from "./AlertTriangle";
 import { AlignLeft } from "./AlignLeft";
@@ -11,10 +12,13 @@ import { ArrowRight } from "./ArrowRight";
 import { ArrowUp } from "./ArrowUp";
 import { ArrowUpRight } from "./ArrowUpRight";
 import { Attachment01 } from "./Attachment01";
+import { AVIFFile } from "./AVIFFile";
+import { AVIFile } from "./AVIFile";
 import { BankNote01 } from "./BankNote01";
 import { BankNote03 } from "./BankNote03";
 import { BarChartSquare02 } from "./BarChartSquare02";
 import { Blockquote } from "./Blockquote";
+import { BMPFile } from "./BMPFile";
 import { Bold } from "./Bold";
 import { BookOpen02 } from "./BookOpen02";
 import { Box } from "./Box";
@@ -81,15 +85,20 @@ import { FileMinus01 } from "./FileMinus01";
 import { FilePlus01 } from "./FilePlus01";
 import { FilePlus02 } from "./FilePlus02";
 import { FilterLines } from "./FilterLines";
+import { FLACFile } from "./FLACFile";
 import { Flag04 } from "./Flag04";
 import { Flag06 } from "./Flag06";
+import { FLVFile } from "./FLVFile";
 import { Folder } from "./Folder";
 import { Gear01 } from "./Gear01";
+import { GIFFile } from "./GIFFile";
 import { GitMerge } from "./GitMerge";
 import { Globe01 } from "./Globe01";
 import { GraduationHat } from "./GraduationHat";
 import { Hash2 } from "./Hash2";
 import { Heading } from "./Heading";
+import { HEICFile } from "./HEICFile";
+import { HEIFFile } from "./HEIFFile";
 import { HelpCircle } from "./HelpCircle";
 import { HomeLine } from "./HomeLine";
 import { HTMLFile } from "./HTMLFile";
@@ -100,6 +109,7 @@ import { InfoCircle } from "./InfoCircle";
 import { InfoSquare } from "./InfoSquare";
 import { IntersectSquare } from "./IntersectSquare";
 import { Italic } from "./Italic";
+import { JPEGFile } from "./JPEGFile";
 import { LayersTwo01 } from "./LayersTwo01";
 import { LayoutLeft } from "./LayoutLeft";
 import { Lightbulb03 } from "./Lightbulb03";
@@ -115,6 +125,7 @@ import { LockUnlocked03 } from "./LockUnlocked03";
 import { Logout01 } from "./Logout01";
 import { Logout03 } from "./Logout03";
 import { Logout04 } from "./Logout04";
+import { M4AFile } from "./M4AFile";
 import { MagicWand01 } from "./MagicWand01";
 import { Mail01 } from "./Mail01";
 import { MasterCard } from "./MasterCard";
@@ -125,9 +136,15 @@ import { MessageChatSquare } from "./MessageChatSquare";
 import { MessageSmileSquare } from "./MessageSmileSquare";
 import { Minimize01 } from "./Minimize01";
 import { Minus } from "./Minus";
+import { MKVFile } from "./MKVFile";
 import { Model } from "./Model";
+import { MOVFile } from "./MOVFile";
+import { MP3File } from "./MP3File";
+import { MP4File } from "./MP4File";
+import { MPEGFile } from "./MPEGFile";
 import { MultipleVideo } from "./MultipleVideo";
 import { NewModel } from "./NewModel";
+import { OGGFile } from "./OGGFile";
 import { PauseCircle } from "./PauseCircle";
 import { PDFFile } from "./PDFFile";
 import { Pin01 } from "./Pin01";
@@ -137,6 +154,7 @@ import { Play } from "./Play";
 import { PlayCircle } from "./PlayCircle";
 import { Plus } from "./Plus";
 import { PlusSquare } from "./PlusSquare";
+import { PNGFile } from "./PNGFile";
 import { PPTFile } from "./PPTFile";
 import { PPTXFile } from "./PPTXFile";
 import { PuzzlePiece01 } from "./PuzzlePiece01";
@@ -177,6 +195,7 @@ import { Target05 } from "./Target05";
 import { TextA } from "./TextA";
 import { TextGenerationChat } from "./TextGenerationChat";
 import { ThumbsDown } from "./ThumbsDown";
+import { TIFFFile } from "./TIFFFile";
 import { Tool01 } from "./Tool01";
 import { Trash01 } from "./Trash01";
 import { Trash03 } from "./Trash03";
@@ -200,6 +219,12 @@ import { Video } from "./Video";
 import { VideoRecorder } from "./VideoRecorder";
 import { Visa } from "./Visa";
 import { VisualQuestionAnswering } from "./VisualQuestionAnswering";
+import { WAVFile } from "./WAVFile";
+import { WEBMAudioFile } from "./WEBMAudioFile";
+import { WEBMVideoFile } from "./WEBMVideoFile";
+import { WEBPFile } from "./WEBPFile";
+import { WMAFile } from "./WMAFile";
+import { WMVFile } from "./WMVFile";
 import { X } from "./X";
 import { XLSFile } from "./XLSFile";
 import { XLSXFile } from "./XLSXFile";
@@ -222,10 +247,14 @@ export const Icons = {
   ArrowNarrowRight,
   ArrowUpRight,
   Attachment01,
+  AIFFFile,
+  AVIFFile,
+  AVIFile,
   BankNote01,
   BankNote03,
   BarChartSquare02,
   Blockquote,
+  BMPFile,
   Bold,
   BookOpen02,
   Box,
@@ -294,12 +323,17 @@ export const Icons = {
   FileDownload03,
   Flag04,
   Flag06,
+  FLACFile,
+  FLVFile,
   Folder,
   Gear01,
+  GIFFile,
   GitMerge,
   Globe01,
   GraduationHat,
   Heading,
+  HEICFile,
+  HEIFFile,
   HelpCircle,
   HTMLFile,
   HomeLine,
@@ -314,6 +348,7 @@ export const Icons = {
   Image03,
   ImagePlus,
   Italic,
+  JPEGFile,
   Logout01,
   Logout03,
   Logout04,
@@ -326,7 +361,13 @@ export const Icons = {
   ListUnordered,
   ListTask,
   LayoutLeft,
+  MKVFile,
+  M4AFile,
   Model,
+  MOVFile,
+  MP4File,
+  MP3File,
+  MPEGFile,
   MultipleVideo,
   Maximize02,
   Minimize01,
@@ -340,6 +381,7 @@ export const Icons = {
   Mail01,
   MessageSmileSquare,
   NewModel,
+  OGGFile,
   PDFFile,
   Pin01,
   Pin02,
@@ -348,6 +390,7 @@ export const Icons = {
   PlayCircle,
   Plus,
   PlusSquare,
+  PNGFile,
   PPTFile,
   PPTXFile,
   PuzzlePiece01,
@@ -388,6 +431,7 @@ export const Icons = {
   TextA,
   TextGenerationChat,
   ThumbsDown,
+  TIFFFile,
   Trash01,
   Trash03,
   TrendUp,
@@ -411,6 +455,12 @@ export const Icons = {
   VideoRecorder,
   Visa,
   VisualQuestionAnswering,
+  WAVFile,
+  WEBMAudioFile,
+  WEBMVideoFile,
+  WEBPFile,
+  WMVFile,
+  WMAFile,
   X,
   XLSFile,
   XLSXFile,

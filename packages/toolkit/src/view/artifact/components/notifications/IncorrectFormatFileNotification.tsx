@@ -24,9 +24,15 @@ export const IncorrectFormatFileNotification = ({
           {truncateName(fileName)}
         </div>
         <div className="self-stretch text-semantic-fg-secondary product-body-text-3-regular">
-          Supported file types for the knowledge base <br />
-          are .txt, .md, .doc, .docx, .pptx, .html and .pdf. Please use one of
-          these formats.
+          Supported file types for the knowledge base include: <br />
+          <strong>Documents:</strong> .txt, .md, .pdf, .html, .csv, .docx, .doc,
+          .pptx, .ppt, .xlsx, .xls <br />
+          <strong>Images:</strong> .png, .jpg, .jpeg, .gif, .webp, .tiff, .bmp,
+          .heic, .heif, .avif <br />
+          <strong>Audio:</strong> .mp3, .wav, .aac, .ogg, .flac, .m4a, .wma,
+          .aiff <br />
+          <strong>Video:</strong> .mp4, .avi, .mov, .webm, .mkv, .flv, .wmv,
+          .mpeg
         </div>
       </div>
       <Button
