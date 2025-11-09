@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.68.7](https://github.com/instill-ai/console/compare/v0.68.6...v0.68.7) (2025-11-09)
+
+
+### Refactor
+
+* **console:** consolidate artifact structure and remove CE chat features ([#1841](https://github.com/instill-ai/console/issues/1841)) ([5759444](https://github.com/instill-ai/console/commit/57594440aaff4e4e131171f8793c2a57f386df78))
+
 ## [0.68.6](https://github.com/instill-ai/console/compare/v0.68.5...v0.68.6) (2025-10-09)
 
 ### Miscellaneous

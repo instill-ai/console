@@ -1,5 +1,24 @@
 # @instill-ai/design-system
 
+## [0.90.6](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.5...@instill-ai/design-system-v0.90.6) (2025-11-09)
+
+
+### Features
+
+* **icons:** add comprehensive multimedia file type icon support ([#1843](https://github.com/instill-ai/console/issues/1843)) ([88800c3](https://github.com/instill-ai/console/commit/88800c3fe16ee80b1d55f827a7175420d3967f63))
+* **icons:** add new icons for table ([#1844](https://github.com/instill-ai/console/issues/1844)) ([16b97ec](https://github.com/instill-ai/console/commit/16b97ec9b8d4033b21c21a8d6574c667559d9f73))
+* **icons:** new icons ([#1839](https://github.com/instill-ai/console/issues/1839)) ([4199309](https://github.com/instill-ai/console/commit/4199309bfa617a316a8569ec2c4d551f8f1e0412))
+
+
+### Bug Fixes
+
+* **icons:** convert hyphenated SVG properties to camelCase in React icons ([#1842](https://github.com/instill-ai/console/issues/1842)) ([38c1ac9](https://github.com/instill-ai/console/commit/38c1ac974d0f9865f2e239f02cf072c54248e0d0))
+
+
+### Refactor
+
+* **console:** consolidate artifact structure and remove CE chat features ([#1841](https://github.com/instill-ai/console/issues/1841)) ([5759444](https://github.com/instill-ai/console/commit/57594440aaff4e4e131171f8793c2a57f386df78))
+
 ## [0.90.5](https://github.com/instill-ai/console/compare/@instill-ai/design-system-v0.90.4...@instill-ai/design-system-v0.90.5) (2025-08-27)
 
 ### Miscellaneous
